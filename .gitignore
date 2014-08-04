@@ -19,3 +19,16 @@
 *.exe
 *.out
 *.app
+
+#Output files
+*vtk
+*vtu
+*vts
+
+#Temporary files
+*~
+
+#CMAKE files
+*.cmake
+CMakeCache.txt
+CMakeFiles/
