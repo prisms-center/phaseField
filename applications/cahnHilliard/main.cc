@@ -1,4 +1,4 @@
-//beta prime precipitate evolution implementation
+//Cahn-Hilliard spinodal decomposition implementation
 //general headers
 #include "../../include/dealIIheaders.h"
 

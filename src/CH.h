@@ -1,4 +1,4 @@
-//Matrix Free implementation of Precipitate evolution (Coupled CH+AC) equations
+//Matrix Free implementation of Cahn-Hilliard spinodal decomposition mixed (split) formulation 
 //general headers
 #include <fstream>
 #include <sstream>
@@ -20,7 +20,7 @@ public:
 };
 
 //
-//Precipitate evolution Class
+//Cahn-Hilliard class
 //
 template <int dim>
 class CahnHilliardProblem:  public Subscriptor
