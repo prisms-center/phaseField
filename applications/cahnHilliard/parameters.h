@@ -11,12 +11,12 @@
 #define finiteElementDegree 1
 
 //define time step paramters
-#define dt 5.0e-3
-#define numIncrements 1000
+#define dt 1.0e-2
+#define numIncrements 500000
 
 //define results output paramters
 #define writeOutput true
-#define skipOutputSteps 100
+#define skipOutputSteps 10000
 
 //define Cahn-Hilliard paramters
 #define Mc 1.0 

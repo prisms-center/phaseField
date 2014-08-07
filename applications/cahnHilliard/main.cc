@@ -12,7 +12,7 @@ template <int dim>
 double InitialConditionC<dim>::value (const Point<dim> &p, const unsigned int /* component */) const
 {
   //return the value of the initial concentration field at point p 
-  return  0.6+ 0.2*(0.5 - (double)(std::rand() % 100 )/100.0);
+  return  0.5+ 0.2*(0.5 - (double)(std::rand() % 100 )/100.0);
 }
 
 //main

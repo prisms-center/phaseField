@@ -81,7 +81,7 @@ void CahnHilliardProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
   //initialize vals vectors
   FEEvaluation<dim,finiteElementDegree> valMu(data), valC(data);
   VectorizedArray<double> constMux, constCx;
-  constMux=Kc; constCx=-Mc*dt; 
+  constMux=Kc; constCx=-Mc*dt;
   
   //loop over all "cells"
   for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
@@ -211,12 +211,12 @@ void CahnHilliardProblem<dim>::solve ()
   //compute C^(n+1)
   updateMuRHS=false; updateRHS(); 
   for (unsigned int j=0; j<C.local_size(); ++j)
-    C.local_element(j)+=invM.local_element(j)*residualC.local_element(j);
+    C.local_element(j)=invM.local_element(j)*residualC.local_element(j);
  
   //compute Mu^(n+1)
   updateMuRHS=true; updateRHS(); 
   for (unsigned int j=0; j<Mu.local_size(); ++j)
-    Mu.local_element(j)+=invM.local_element(j)*residualMu.local_element(j);
+    Mu.local_element(j)=invM.local_element(j)*residualMu.local_element(j);
 
   pcout << "solve wall time: " << time.wall_time() << "s\n";
 }
@@ -234,15 +234,15 @@ void CahnHilliardProblem<dim>::output_results (const unsigned int cycle)
   //write to results file
   const std::string filename = "solution-" + Utilities::int_to_string (cycle, std::ceil(std::log10(numIncrements))+1);
   std::ofstream output ((filename +
-                         "." + Utilities::int_to_string (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD),4) + ".vtu").c_str());
+                         "." + Utilities::int_to_string (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD),std::ceil(std::log10(Utilities::MPI::n_mpi_processes (MPI_COMM_WORLD)))+1) + ".vtu").c_str());
   data_out.write_vtu (output);
   if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
     {
       std::vector<std::string> filenames;
       for (unsigned int i=0;i<Utilities::MPI::n_mpi_processes (MPI_COMM_WORLD); ++i)
 	filenames.push_back ("solution-" +
-			     Utilities::int_to_string (cycle, 4) + "." +
-			     Utilities::int_to_string (i, 4) + ".vtu");
+			     Utilities::int_to_string (cycle, std::ceil(std::log10(numIncrements))+1) + "." +
+			     Utilities::int_to_string (i, std::ceil(std::log10(Utilities::MPI::n_mpi_processes (MPI_COMM_WORLD)))+1) + ".vtu");
       std::ofstream master_output ((filename + ".pvtu").c_str());
       data_out.write_pvtu_record (master_output, filenames);
     }
@@ -268,7 +268,7 @@ void CahnHilliardProblem<dim>::run ()
   //compute Mu^0
   updateMuRHS=true; updateRHS(); 
   for (unsigned int j=0; j<Mu.local_size(); ++j)
-    Mu.local_element(j)+=invM.local_element(j)*residualMu.local_element(j);
+    Mu.local_element(j)=invM.local_element(j)*residualMu.local_element(j);
 
   //write initial conditions to file
   if (writeOutput) output_results(0);
