@@ -234,7 +234,7 @@ void PrecipitateProblem<dim>::solve ()
     C.local_element(j)+=invM.local_element(j)*dt*residualC.local_element(j);
   for (unsigned int i=0; i<numStructuralOrderParameters; i++){
     for (unsigned int j=0; j<N[0].local_size(); ++j)
-      if (increment>10000) N[i].local_element(j)+=invM.local_element(j)*dt*residualN[i].local_element(j);
+      if (increment>100) N[i].local_element(j)+=invM.local_element(j)*dt*residualN[i].local_element(j);
   }
   pcout << "solve wall time: " << time.wall_time() << "s\n";
 }
@@ -255,18 +255,19 @@ void PrecipitateProblem<dim>::output_results (const unsigned int cycle)
   }
   data_out.build_patches ();
   
+ 
   //write to results file
-  const std::string filename = "solution-" + Utilities::int_to_string (cycle, 5);
+  const std::string filename = "solution-" + Utilities::int_to_string (cycle, std::ceil(std::log10(numIncrements))+1);
   std::ofstream output ((filename +
-                         "." + Utilities::int_to_string (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD),4) + ".vtu").c_str());
+                         "." + Utilities::int_to_string (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD),std::ceil(std::log10(Utilities::MPI::n_mpi_processes (MPI_COMM_WORLD)))+1) + ".vtu").c_str());
   data_out.write_vtu (output);
   if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
     {
       std::vector<std::string> filenames;
       for (unsigned int i=0;i<Utilities::MPI::n_mpi_processes (MPI_COMM_WORLD); ++i)
 	filenames.push_back ("solution-" +
-			     Utilities::int_to_string (cycle, 4) + "." +
-			     Utilities::int_to_string (i, 4) + ".vtu");
+			     Utilities::int_to_string (cycle, std::ceil(std::log10(numIncrements))+1) + "." +
+			     Utilities::int_to_string (i, std::ceil(std::log10(Utilities::MPI::n_mpi_processes (MPI_COMM_WORLD)))+1) + ".vtu");
       std::ofstream master_output ((filename + ".pvtu").c_str());
       data_out.write_pvtu_record (master_output, filenames);
     }
