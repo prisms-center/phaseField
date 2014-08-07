@@ -1,4 +1,4 @@
-//Parameter list for the Cahn-Hilliard spinodal decomposition problem
+//Parameter list for the Allen-Cahn problem
 
 //define problem dimensions
 #define problemDIM 2
@@ -12,22 +12,20 @@
 
 //define time step parameters
 #define dt 1.0e-2
-#define numIncrements 500000
+#define numIncrements 200000
 
 //define results output parameters
 #define writeOutput true
 #define skipOutputSteps 10000
 
-//define Cahn-Hilliard parameters
-#define Mc 1.0 
-#define Kc 1.0 
+//define Allen-Cahn parameters
+#define Mn 1.0 
+#define Kn 1.0 
 
 //define free energy expressions
-#define fcV (4.0*c*(c-1.0)*(c-0.5))
+#define fnV (4.0*n*(n-1.0)*(n-0.5))
 
 //define required residuals
-#define rmuV  (fcV)
-#define rmuxV (cx)
-#define rcV   (c)
-#define rcxV  (mux)
+#define rnV  (n-(dt*Mn)*fnV)
+#define rnxV (nx)
 

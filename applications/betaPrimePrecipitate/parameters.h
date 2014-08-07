@@ -6,25 +6,25 @@
 #define spanY 100.0
 #define spanZ 100.0
 
-//define mesh paramters
+//define mesh parameters
 #define refineFactor 7
 #define finiteElementDegree 1
 
-//define time step paramters
+//define time step parameters
 #define dt 5.0e-3
 #define numIncrements 1000
 
-//define results output paramters
+//define results output parameters
 #define writeOutput true
 #define skipOutputSteps 100
 
-//define general physics paramters
+//define general physics parameters
 #define numStructuralOrderParameters 1
 
-//define Cahn-Hilliard paramters (No Gradient energy)
+//define Cahn-Hilliard parameters (No Gradient energy)
 #define Mc 1.0
 
-//define Allen-Cahn paramters
+//define Allen-Cahn parameters
 #define MnVals {1.0}
 #define KnVals {1.0}
 
@@ -37,6 +37,7 @@
 #define fbccV (10.0)
 #define hV (10.0*n[0]*n[0]*n[0]-15.0*n[0]*n[0]*n[0]*n[0]+6.0*n[0]*n[0]*n[0]*n[0]*n[0])
 #define hnV (30.0*n[0]*n[0]-60.0*n[0]*n[0]*n[0]+30.0*n[0]*n[0]*n[0]*n[0])
+
 //define required residuals
 #define rcxV ( cx*((1.0-hV)*faccV+hV*fbccV) + nx[0]*((fbcV-facV)*hnV) )
 #define rnV  ( (fbV-faV)*hnV )

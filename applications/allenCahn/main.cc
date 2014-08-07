@@ -1,17 +1,17 @@
-//Cahn-Hilliard spinodal decomposition implementation
+//Allen-Cahn order parameter evolution implementation
 //general headers
 #include "../../include/dealIIheaders.h"
 
-//Cahn-Hilliard problem headers
+//Allen-Cahn problem headers
 #include "parameters.h"
-#include "../../src/CH.h"
+#include "../../src/AC.h"
 
 //initial condition functions
-//concentration initial conditions
+//order parameter initial conditions
 template <int dim>
-double InitialConditionC<dim>::value (const Point<dim> &p, const unsigned int /* component */) const
+double InitialConditionN<dim>::value (const Point<dim> &p, const unsigned int /* component */) const
 {
-  //return the value of the initial concentration field at point p 
+  //return the value of the initial order parameter field at point p 
   return  0.5+ 0.2*(0.5 - (double)(std::rand() % 100 )/100.0);
 }
 
@@ -22,7 +22,7 @@ int main (int argc, char **argv)
   try
     {
       deallog.depth_console(0);
-      CahnHilliardProblem<problemDIM> problem;
+      AllenCahnProblem<problemDIM> problem;
       problem.run ();
     }
   catch (std::exception &exc)
