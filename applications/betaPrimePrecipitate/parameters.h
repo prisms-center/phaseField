@@ -1,22 +1,22 @@
 //Parameters list for beta prime precipitation evolution problem
 
 //define problem dimensions
-#define problemDIM 2
+#define problemDIM 1
 #define spanX 100.0
 #define spanY 100.0
 #define spanZ 100.0
 
 //define mesh parameters
 #define refineFactor 7
-#define finiteElementDegree 1
+#define finiteElementDegree 2
 
 //define time step parameters
-#define dt 5.0e-3
+#define dt 1.0e-4
 #define numIncrements 10000
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 100
+#define skipOutputSteps 10
 
 //define general physics parameters
 #define numStructuralOrderParameters 1
@@ -25,8 +25,8 @@
 #define Mc 1.0
 
 //define Allen-Cahn parameters
-#define MnVals {1.0}
-#define KnVals {1.0}
+#define MnVals {0.1}
+#define KnVals {2.0}
 
 //define free energy expressions
 #define faV (-1.6704-4.776*c+5.1622*c*c-2.7375*c*c*c+1.3687*c*c*c*c)

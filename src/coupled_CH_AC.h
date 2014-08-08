@@ -96,9 +96,9 @@ void PrecipitateProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
   double Mn[numStructuralOrderParameters]=MnVals;
   double Kn[numStructuralOrderParameters]=KnVals;
   //initialize vals vectors
-  std::vector<FEEvaluation<dim,finiteElementDegree>*> vals;
+  std::vector<FEEvaluation<dim,finiteElementDegree,finiteElementDegree+1,1,double>*> vals;
   for (unsigned int i=0; i<numStructuralOrderParameters+1; i++){
-    vals.push_back(new FEEvaluation<dim,finiteElementDegree>(data));
+    vals.push_back(new FEEvaluation<dim,finiteElementDegree,finiteElementDegree+1,1,double>(data));
   }
   VectorizedArray<double> constCx, constN, constNx;
   constCx=-Mc; constN=-Mn[0]; constNx=-Mn[0]*Kn[0];
