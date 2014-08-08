@@ -4,7 +4,7 @@
 
 //precipitate problem headers
 #include "parameters.h"
-#include "../../src/coupled_CH_AC.h"
+#include "../../src/coupled_mixedCH_AC.h"
 
 //initial condition functions
 //concentration initial conditions
