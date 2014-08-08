@@ -2,16 +2,16 @@
 
 //define problem dimensions
 #define problemDIM 1
-#define spanX 100.0
+#define spanX 512.0
 #define spanY 100.0
 #define spanZ 100.0
 
 //define mesh parameters
-#define refineFactor 7
+#define refineFactor 9
 #define finiteElementDegree 2
 
 //define time step parameters
-#define dt 1.0e-4
+#define dt 5.0e-3
 #define numIncrements 10000
 
 //define results output parameters
@@ -26,7 +26,7 @@
 
 //define Allen-Cahn parameters
 #define MnVals {0.1}
-#define KnVals {2.0}
+#define KnVals {4.0}
 
 //define free energy expressions
 #define faV (-1.6704-4.776*c+5.1622*c*c-2.7375*c*c*c+1.3687*c*c*c*c)
