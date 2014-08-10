@@ -3,9 +3,9 @@
 #include "../../include/dealIIheaders.h"
 
 //precipitate problem headers
-#include "parameters.h"
-#include "../../src/coupled_CH_AC.h"
-
+#include "parameters2.h"
+#include "../../src/coupled_CH_AC2.h"
+ 
 //initial condition functions
 //concentration initial conditions
 template <int dim>
@@ -15,7 +15,15 @@ double InitialConditionC<dim>::value (const Point<dim> &p, const unsigned int /*
   //double result =  0.02 + 1.0e-3*(2*(0.5 - (double)(std::rand() % 100 )/100.0));
   //return result;
   double dx=spanX/std::pow(2.0,refineFactor);
+  //  double r=0.0;
+  //#if dim==1
+  //r=p.distance(const Point<dim>(spanX/2.0));
   return 0.005+0.5*(0.125-0.005)*(1-std::tanh((p[0]-spanX/2.0)/(3*dx)));
+  //#elif dim==2
+  //r=p.distance(const Point<dim>(spanX/2.0,spanY/2.0));
+  //#elif dim==3
+  //r=p.distance(const Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
+  //#endif
 }
 
 //structural order parameter initial conditions

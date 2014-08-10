@@ -50,7 +50,7 @@ private:
   ConstraintMatrix                 constraints;
   IndexSet                         locally_relevant_dofs;
   vectorType                       C, residualC;
-  std::vector<vectorType>          N, residualN;
+  vectorType                       N, residualN;
   std::vector<vectorType*>         solutions, residuals;
   double                           setup_time;
   unsigned int                     increment;
@@ -76,14 +76,10 @@ PrecipitateProblem<dim>::PrecipitateProblem ()
   triangulation (MPI_COMM_WORLD),
   fe (QGaussLobatto<1>(finiteElementDegree+1)),
   dof_handler (triangulation),
-  N(numStructuralOrderParameters), 
-  residualN(numStructuralOrderParameters),
   pcout (std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0)
 {
   solutions.push_back(&C); residuals.push_back(&residualC);
-  for (unsigned int i=0; i<numStructuralOrderParameters; i++){
-    solutions.push_back(&N[i]); residuals.push_back(&residualN[i]);
-  }
+  solutions.push_back(&N); residuals.push_back(&residualN);
 }
 
 //right hand side vector computation for explicit time stepping
@@ -93,51 +89,33 @@ void PrecipitateProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
 					  const std::vector<vectorType*> &src,
 					  const std::pair<unsigned int,unsigned int> &cell_range) const
 {
-  double Mn[numStructuralOrderParameters]=MnVals;
-  double Kn[numStructuralOrderParameters]=KnVals;
   //initialize vals vectors
-  std::vector<FEEvaluation<dim,finiteElementDegree,finiteElementDegree+3>*> vals;
-  for (unsigned int i=0; i<numStructuralOrderParameters+1; i++){
-    vals.push_back(new FEEvaluation<dim,finiteElementDegree,finiteElementDegree+3>(data));
-  }
+  FEEvaluation<dim,finiteElementDegree> valC(data), valN(data);
   VectorizedArray<double> constCx, constN, constNx;
-  constCx=-Mc; constN=-Mn[0]; constNx=-Mn[0]*Kn[0];
+  constCx=-Mc; constN=-Mn; constNx=-Mn*Kn;
   //loop over all "cells"
   for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
-    for (unsigned int i=0; i<numStructuralOrderParameters+1; i++){
-      vals[i]->reinit (cell);
-      vals[i]->read_dof_values(*src[i]);
-      vals[i]->evaluate (true,true,false);
+    valC.reinit (cell); valN.reinit (cell);
+    valC.read_dof_values(*src[0]); valN.read_dof_values(*src[1]);
+    valC.evaluate (true,true,false);  valN.evaluate (true,true,false);
+    for (unsigned int q=0; q<valC.n_q_points; ++q){
+      VectorizedArray<double> c  = valC.get_value(q), n=valN.get_value(q);
+      Tensor<1, dim, VectorizedArray<double> >  cx = valC.get_gradient(q), nx = valN.get_gradient(q);
+      valC.submit_gradient(constCx*rcxV,q);
+      valN.submit_value(constN*rnV,q);
+      valN.submit_gradient(constNx*rnxV,q);
     }
-    for (unsigned int q=0; q<vals[0]->n_q_points; ++q){
-      VectorizedArray<double> c  = vals[0]->get_value(q), n[numStructuralOrderParameters];
-      Tensor<1, dim, VectorizedArray<double> >  cx = vals[0]->get_gradient(q), nx[numStructuralOrderParameters];
-      for (unsigned int i=0; i<numStructuralOrderParameters; i++){
-	n[i]=vals[i+1]->get_value(q);
-	nx[i]=vals[i+1]->get_gradient(q);
-      }
-      for (unsigned int i=0; i<numStructuralOrderParameters+1; i++){
-	if (i==0) vals[i]->submit_gradient(constCx*rcxV,q);
-	else{
-	  vals[i]->submit_value(constN*rnV,q);
-	  vals[i]->submit_gradient(constNx*rnxV,q);
-	}
-      }       
-    }
-    for (unsigned int i=0; i<numStructuralOrderParameters+1; i++){
-      if (i==0) vals[i]->integrate(false,true);
-      else vals[i]->integrate(true,true);
-      vals[i]->distribute_local_to_global (*dst[i]); 
-    }
-  }
-  //release memory
-  for (unsigned int i=0; i<numStructuralOrderParameters+1; i++){
-   delete[]  vals[i];
+    valC.integrate(false,true);
+    valN.integrate(true,true);
+    valC.distribute_local_to_global (*dst[0]); 
+    valN.distribute_local_to_global (*dst[1]); 
   }
 }
 
 template <int dim>
 void PrecipitateProblem<dim>::updateRHS (){
+  for (unsigned int i=0; i<residuals.size(); i++)
+    (*residuals[i])=0.0;
   data.cell_loop (&PrecipitateProblem::computeRHS, this, residuals, solutions);
 }
 
@@ -207,16 +185,13 @@ void PrecipitateProblem<dim>::setup_system ()
   //data structures
   data.initialize_dof_vector(C);
   residualC.reinit(C);
-  for (unsigned int i=0; i<numStructuralOrderParameters; i++){
-    N[i].reinit(C); residualN[i].reinit(C);
-  }
+  N.reinit(C); 
+  residualN.reinit(C);
 
   //initial Condition
   VectorTools::interpolate (dof_handler,InitialConditionC<dim> (),C);
-  for (unsigned int i=0; i<numStructuralOrderParameters; i++){
-    VectorTools::interpolate (dof_handler,InitialConditionN<dim> (i),N[i]);
-  }
-  
+  VectorTools::interpolate (dof_handler,InitialConditionN<dim> (0),N);
+    
   //timing
   setup_time += time.wall_time();
   pcout << "Wall time for matrix-free setup:    "
@@ -232,10 +207,8 @@ void PrecipitateProblem<dim>::solve ()
   updateRHS();
   for (unsigned int j=0; j<C.local_size(); ++j)
     C.local_element(j)+=invM.local_element(j)*dt*residualC.local_element(j);
-  //for (unsigned int i=0; i<numStructuralOrderParameters; i++){
-  //for (unsigned int j=0; j<N[i].local_size(); ++j)
-      //N[i].local_element(j)+=invM.local_element(j)*dt*residualN[i].local_element(j);
-  //}
+  for (unsigned int j=0; j<N.local_size(); ++j)
+    N.local_element(j)+=invM.local_element(j)*dt*residualN.local_element(j);
   pcout << "solve wall time: " << time.wall_time() << "s\n";
 }
   
@@ -244,15 +217,11 @@ template <int dim>
 void PrecipitateProblem<dim>::output_results (const unsigned int cycle)
 {
   constraints.distribute (C);
-  for (unsigned int i=0; i<numStructuralOrderParameters; i++)
-    constraints.distribute (N[i]);
+  constraints.distribute (N);
   DataOut<dim> data_out;
   data_out.attach_dof_handler (dof_handler);
   data_out.add_data_vector (C, "c");
-  for (unsigned int i=0; i<numStructuralOrderParameters; i++){
-    const std::string fieldname = "eta" + Utilities::int_to_string (i+1, 1);
-    data_out.add_data_vector (N[i], fieldname.c_str());
-  }
+  data_out.add_data_vector (N, "eta"); 
   data_out.build_patches ();
   
  
