@@ -3,8 +3,8 @@
 #include "../../include/dealIIheaders.h"
 
 //precipitate problem headers
-#include "parameters2.h"
-#include "../../src/coupled_CH_AC2.h"
+#include "parameters.h"
+#include "../../src/coupled_CH_AC.h"
  
 //initial condition functions
 //concentration initial conditions

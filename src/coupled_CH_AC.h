@@ -96,9 +96,9 @@ void PrecipitateProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
   double Mn[numStructuralOrderParameters]=MnVals;
   double Kn[numStructuralOrderParameters]=KnVals;
   //initialize vals vectors
-  std::vector<FEEvaluation<dim,finiteElementDegree,finiteElementDegree+3>*> vals;
+  std::vector<FEEvaluation<dim,finiteElementDegree>*> vals;
   for (unsigned int i=0; i<numStructuralOrderParameters+1; i++){
-    vals.push_back(new FEEvaluation<dim,finiteElementDegree,finiteElementDegree+3>(data));
+    vals.push_back(new FEEvaluation<dim,finiteElementDegree>(data));
   }
   VectorizedArray<double> constCx, constN, constNx;
   constCx=-Mc; constN=-Mn[0]; constNx=-Mn[0]*Kn[0];
@@ -138,6 +138,8 @@ void PrecipitateProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
 
 template <int dim>
 void PrecipitateProblem<dim>::updateRHS (){
+  for (unsigned int i=0; i<residuals.size(); i++)
+    (*residuals[i])=0.0;
   data.cell_loop (&PrecipitateProblem::computeRHS, this, residuals, solutions);
 }
 
@@ -232,10 +234,9 @@ void PrecipitateProblem<dim>::solve ()
   updateRHS();
   for (unsigned int j=0; j<C.local_size(); ++j)
     C.local_element(j)+=invM.local_element(j)*dt*residualC.local_element(j);
-  //for (unsigned int i=0; i<numStructuralOrderParameters; i++){
-  //for (unsigned int j=0; j<N[i].local_size(); ++j)
-      //N[i].local_element(j)+=invM.local_element(j)*dt*residualN[i].local_element(j);
-  //}
+  for (unsigned int i=0; i<numStructuralOrderParameters; i++)
+    for (unsigned int j=0; j<N[i].local_size(); ++j)
+      N[i].local_element(j)+=invM.local_element(j)*dt*residualN[i].local_element(j);
   pcout << "solve wall time: " << time.wall_time() << "s\n";
 }
   

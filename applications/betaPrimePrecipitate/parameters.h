@@ -8,15 +8,15 @@
 
 //define mesh parameters
 #define refineFactor 8
-#define finiteElementDegree 1
+#define finiteElementDegree 2
 
 //define time step parameters
-#define dt 5.0e-5
-#define numIncrements 10000
+#define dt 5.0e-3
+#define numIncrements 16000
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 10
+#define skipOutputSteps 100
 
 //define general physics parameters
 #define numStructuralOrderParameters 1
