@@ -1,4 +1,4 @@
-//Matrix Free implementation of infinitesimal stran mechanics
+//Matrix Free implementation of infinitesimal strain mechanics
 //general headers
 #include <fstream>
 #include <sstream>
@@ -27,7 +27,6 @@ private:
   void solve ();
   void cgSolve(vectorType &x, const vectorType &b);
   void output_results (const unsigned int cycle);
-  void vmult (vectorType &dst, const vectorType &src) const;
   parallel::distributed::Triangulation<dim>      triangulation;
   FESystem<dim>                    fe;
   DoFHandler<dim>                  dof_handler;
@@ -43,11 +42,13 @@ private:
   MatrixFree<dim,double>      data;
   vectorType invM;
   void setup_matrixfree ();
+  void vmult (vectorType &dst, const vectorType &src) const;
   void updateRHS();
   void computeRHS(const MatrixFree<dim,double> &data, 
 		  vectorType &dst, 
 		  const vectorType &src,
 		  const std::pair<unsigned int,unsigned int> &cell_range) const;
+  bool updateRHSValue;
 };
 
 
@@ -88,9 +89,15 @@ void MechanicsProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
       for (unsigned int i=0; i<dim; i++)
 	for (unsigned int j=0; j<dim; j++)
 	  for (unsigned int k=0; k<dim; k++)
-	    for (unsigned int l=0; l<dim; l++)
-	      Cux[1,i][1,j] += CijklV*ux[1,k][1,l];
-      
+	    for (unsigned int l=0; l<dim; l++){
+	      if (updateRHSValue) {	
+		double value= 2.0*(0.5 - (double)(std::rand() % 100 )/100.0);
+		Cux[1,i][1,j] += CijklV*((double) (k==l))*make_vectorized_array(-1.0e-3*value);
+	      }
+	      else{
+		Cux[1,i][1,j] += CijklV*ux[1,k][1,l];
+	      }
+	    }
       //compute residuals
       vals.submit_gradient(Cux,q);
     }
@@ -101,10 +108,19 @@ void MechanicsProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
 
 template <int dim>
 void MechanicsProblem<dim>::updateRHS (){
+  updateRHSValue=true; 
   //initialize residuals to zero
   residualU=0.0;
   //loop over all cells to compute residuals
   data.cell_loop (&MechanicsProblem::computeRHS, this, residualU, U);
+  updateRHSValue=false;
+}
+
+// Matrix free data structure vmult operations.
+template <int dim>
+void MechanicsProblem<dim>::vmult (vectorType &dst, const vectorType &src) const{
+  dst=0.0;
+  data.cell_loop (&MechanicsProblem::computeRHS, this, dst, src);
 }
 
 //setup matrixfree data structures
@@ -166,8 +182,9 @@ void MechanicsProblem<dim>::setup_system ()
   DoFTools::make_hanging_node_constraints (dof_handler, constraints);
   
   //FIXME: Check Dirichlet BC
-  //VectorTools::interpolate_boundary_values (dof_handler, 0, ZeroFunction<dim>(), constraints);
+  VectorTools::interpolate_boundary_values (dof_handler, 0, ZeroFunction<dim>(dim), constraints);
   constraints.close();
+  pcout << "num of constraints:" << constraints.n_constraints() << "\n";
   setup_time += time.wall_time();
   pcout << "Distribute DoFs & B.C.      "
 	<<  time.wall_time() << "s" << std::endl;
@@ -193,18 +210,12 @@ void MechanicsProblem<dim>::setup_system ()
 	<< time.wall_time() << "s" << std::endl;
 }
 
-// Matrix free data structure vmult operations.
-template <int dim>
-void MechanicsProblem<dim>::vmult (vectorType &dst, const vectorType &src) const
-{
-}
-
 template <int dim>
 void MechanicsProblem<dim>::cgSolve(vectorType &x, const vectorType &b){
   char buffer[250];
   Timer time; double t=0, t1;
   double rtol=1.0e-13, rtolAbs=1.0e-15, utol=1.0e-6;
-  unsigned int maxIterations=1000, iterations=0;
+  unsigned int maxIterations=100, iterations=0;
   double res, res0, resOld;
   if (!x.all_zero()){
     //R=Ax-b
@@ -252,7 +263,7 @@ void MechanicsProblem<dim>::solve ()
   Timer time; 
   //compute U^(n+1)
   updateRHS(); 
-  cgSolve(U,residualU); 
+  //cgSolve(U,residualU); 
   pcout << "solve wall time: " << time.wall_time() << "s\n";
 }
   
@@ -263,7 +274,12 @@ void MechanicsProblem<dim>::output_results (const unsigned int cycle)
   constraints.distribute (U);
   DataOut<dim> data_out;
   data_out.attach_dof_handler (dof_handler);
-  data_out.add_data_vector (U, "u"); 
+  data_out.add_data_vector (U, "u");
+  std::vector<std::string> solution_names (dim, "U");
+  std::vector<DataComponentInterpretation::DataComponentInterpretation> dataType(dim, DataComponentInterpretation::component_is_part_of_vector);
+  data_out.add_data_vector (U, solution_names,
+                            DataOut<dim>::type_dof_data,
+                            dataType); 
   data_out.build_patches ();
   
   //write to results file

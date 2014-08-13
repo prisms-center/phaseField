@@ -7,7 +7,7 @@
 #define spanZ 100.0
 
 //define mesh parameters
-#define refineFactor 6
+#define refineFactor 10
 #define finiteElementDegree 1
 
 //define time step parameters
@@ -15,7 +15,7 @@
 #define numIncrements 10
 
 //define results output parameters
-#define writeOutput true
+#define writeOutput false
 #define skipOutputSteps 1
 
 //define material properties
