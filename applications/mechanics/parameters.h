@@ -7,15 +7,14 @@
 #define spanZ 100.0
 
 //define mesh parameters
-#define refineFactor 10
-#define finiteElementDegree 1
+#define refineFactor 6
+#define finiteElementDegree 2
 
 //define time step parameters
-#define dt 1.0e-2
-#define numIncrements 10
+#define numIncrements 1
 
 //define results output parameters
-#define writeOutput false
+#define writeOutput true
 #define skipOutputSteps 1
 
 //define material properties
@@ -24,6 +23,5 @@
 #define muV (Ev/(2*(1+nuV)))
 #define lambdaV (nuV*Ev/((1+nuV)*(1-2*nuV))) 
 #define CijklV (muV*((i==k)*(j==l)+(i==l)*(j==k))+lambdaV*(i==j)*(k==l))
-//define required residuals
-#define ruxV  (ux)
+
 

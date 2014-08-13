@@ -214,8 +214,8 @@ template <int dim>
 void MechanicsProblem<dim>::cgSolve(vectorType &x, const vectorType &b){
   char buffer[250];
   Timer time; double t=0, t1;
-  double rtol=1.0e-13, rtolAbs=1.0e-15, utol=1.0e-6;
-  unsigned int maxIterations=100, iterations=0;
+  double rtol=1.0e-10, rtolAbs=1.0e-15, utol=1.0e-6;
+  unsigned int maxIterations=1000, iterations=0;
   double res, res0, resOld;
   if (!x.all_zero()){
     //R=Ax-b
@@ -261,9 +261,8 @@ template <int dim>
 void MechanicsProblem<dim>::solve ()
 {
   Timer time; 
-  //compute U^(n+1)
   updateRHS(); 
-  //cgSolve(U,residualU); 
+  cgSolve(U,residualU); 
   pcout << "solve wall time: " << time.wall_time() << "s\n";
 }
   
@@ -322,7 +321,7 @@ void MechanicsProblem<dim>::run ()
   //Loop over time steps
   for (increment=1; increment<=numIncrements; ++increment)
     {
-      pcout << "\nTime increment:" << increment << " T: " << dt*increment << ", Wall time: " << time.wall_time() << "s\n";
+      pcout << "\nTime increment:" << increment  << ", Wall time: " << time.wall_time() << "s\n";
       //call solve method
       solve ();
       //write results to file
