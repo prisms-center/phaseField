@@ -5,6 +5,12 @@
 
 //Code specific initializations.  
 typedef dealii::parallel::distributed::Vector<double> vectorType;
+#if problemDIM==1
+typedef dealii::VectorizedArray<double> gradType;
+#else 
+typedef dealii::Tensor<1, problemDIM, dealii::VectorizedArray<double> > gradType;
+#endif 
+
 using namespace dealii;
 
 //
@@ -19,13 +25,16 @@ public:
 private:
   void setup_system ();
   void solve ();
+  void cgSolve(vectorType &x, const vectorType &b);
   void output_results (const unsigned int cycle);
+  void vmult (vectorType &dst, const vectorType &src) const;
   parallel::distributed::Triangulation<dim>      triangulation;
-  FE_Q<dim>                        fe;
+  FESystem<dim>                    fe;
   DoFHandler<dim>                  dof_handler;
   ConstraintMatrix                 constraints;
   IndexSet                         locally_relevant_dofs;
   vectorType                       U, residualU;
+  vectorType                       R, H, P;
   double                           setup_time;
   unsigned int                     increment;
   ConditionalOStream               pcout;
@@ -48,7 +57,7 @@ MechanicsProblem<dim>::MechanicsProblem ()
   :
   Subscriptor(),
   triangulation (MPI_COMM_WORLD),
-  fe (QGaussLobatto<1>(finiteElementDegree+1)),
+  fe (FE_Q<dim>(QGaussLobatto<1>(finiteElementDegree+1)),dim),
   dof_handler (triangulation),
   pcout (std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0)
 {}
@@ -61,7 +70,7 @@ void MechanicsProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
 					  const std::pair<unsigned int,unsigned int> &cell_range) const
 {
   //initialize vals vectors
-  FEEvaluation<dim,finiteElementDegree> vals(data);
+  FEEvaluation<dim,finiteElementDegree,finiteElementDegree+1,dim,double> vals(data);
   
   //loop over all "cells"
   for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
@@ -73,10 +82,17 @@ void MechanicsProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
     
     //loop over quadrature points
     for (unsigned int q=0; q<vals.n_q_points; ++q){
-      Tensor<1, dim, VectorizedArray<double> >  ux = vals.get_gradient(q);
+      Tensor<1, dim, gradType> ux = vals.get_gradient(q);
+      Tensor<1, dim, gradType> Cux;
+      //compute C_(ijkl)*u_(k,l). Using minor symmetry of C tensor, C_(ijkl)=C_(ijlk).
+      for (unsigned int i=0; i<dim; i++)
+	for (unsigned int j=0; j<dim; j++)
+	  for (unsigned int k=0; k<dim; k++)
+	    for (unsigned int l=0; l<dim; l++)
+	      Cux[1,i][1,j] += CijklV*ux[1,k][1,l];
       
       //compute residuals
-      vals.submit_gradient(ruxV,q);
+      vals.submit_gradient(Cux,q);
     }
     vals.integrate(false, true); 
     vals.distribute_local_to_global(dst);
@@ -103,11 +119,17 @@ void MechanicsProblem<dim>::setup_matrixfree (){
   data.reinit (dof_handler, constraints, quadrature, additional_data);
 
   //compute  invM
-  data.initialize_dof_vector (invM); 
-  VectorizedArray<double> one = make_vectorized_array (1.0);
-  
+  data.initialize_dof_vector (invM);
+  gradType one;
+#if problemDIM==1
+  one = make_vectorized_array (1.0);
+#else
+  for (unsigned int i=0; i<dim; i++)
+    one[1,i]=make_vectorized_array (1.0);
+#endif
+
   //select gauss lobatto quad points which are suboptimal but give diogonal M 
-  FEEvaluationGL<dim,finiteElementDegree,1,double> fe_eval(data);
+  FEEvaluationGL<dim,finiteElementDegree,dim,double> fe_eval(data);
   const unsigned int            n_q_points = fe_eval.n_q_points;
   for (unsigned int cell=0; cell<data.n_macro_cells(); ++cell)
     {
@@ -157,7 +179,11 @@ void MechanicsProblem<dim>::setup_system ()
   //data structures
   data.initialize_dof_vector(U);
   residualU.reinit(U); 
+  R.reinit(U); 
+  P.reinit(U);
+  H.reinit(U);  
 
+  pcout << "size:" << U.size() << "/n";
   //initial Condition
   U=0.0;
   
@@ -167,6 +193,58 @@ void MechanicsProblem<dim>::setup_system ()
 	<< time.wall_time() << "s" << std::endl;
 }
 
+// Matrix free data structure vmult operations.
+template <int dim>
+void MechanicsProblem<dim>::vmult (vectorType &dst, const vectorType &src) const
+{
+}
+
+template <int dim>
+void MechanicsProblem<dim>::cgSolve(vectorType &x, const vectorType &b){
+  char buffer[250];
+  Timer time; double t=0, t1;
+  double rtol=1.0e-13, rtolAbs=1.0e-15, utol=1.0e-6;
+  unsigned int maxIterations=1000, iterations=0;
+  double res, res0, resOld;
+  if (!x.all_zero()){
+    //R=Ax-b
+    t1=time.wall_time();
+    vmult(R,x);
+    t+=time.wall_time()-t1;
+    R.add(-1.,b);
+  }
+  else
+    R.equ(-1.,b); //R=-b
+  P.equ(-1.,R); //P=-R=b-Ax
+  res0 = res = R.l2_norm();
+  //check convergence of res
+  //sprintf(buffer,"InitialRes:%12.6e\n", res); pcout<<buffer;
+  if (res<rtolAbs){sprintf(buffer,"Converged in absolute tolerance: initialRes:%12.6e, res:%12.6e, absTolCriterion:%12.6e, incs:%u\n", res, res, rtolAbs, 0); pcout<<buffer; return;}
+  double alpha, beta;
+  while(iterations<maxIterations){
+    //compute alpha
+    t1=time.wall_time();
+    vmult(H,P);
+    t+=time.wall_time()-t1;
+    alpha=P*H;
+    alpha=(res*res)/alpha;
+    //compute R_(k+1), X_(k+1)
+    R.add(alpha,H); //R=R+alpha*A*P
+    x.add(alpha,P); //X=X+alpha*P
+    resOld=res;
+    res = R.l2_norm();
+    //sprintf(buffer, "%12.6e ", alpha*P.linfty_norm()); pcout<<buffer;
+    if (res<=rtolAbs){sprintf(buffer, "Converged in absolute R tolerance: initialRes:%12.6e, currentRes:%12.6e, absTolCriterion:%12.6e, incs:%u\n", res, res, rtolAbs, iterations); pcout<<buffer; sprintf(buffer, "time in mat-mult:%12.6e\n", t); pcout<<buffer; return;}
+    else if ((res/res0)<=rtol){printf("Converged in relative R tolerance: initialRes:%12.6e, currentRes:%12.6e, relTol:%12.6e, relTolCriterion:%12.6e, dU:%12.6e, incs:%u\n", res0, res, res/res0, rtol, alpha*P.linfty_norm(), iterations); printf("time in mat-mult:%12.6e\n", t); return;}
+    else if ((alpha*P.linfty_norm())<rtol){sprintf(buffer, "Converged in dU tolerance: initialRes:%12.6e, currentRes:%12.6e, relTol:%12.6e, relTolCriterion:%12.6e, dU:%12.6e, incs:%u\n", res0, res, res/res0, rtol, alpha*P.linfty_norm(), iterations); pcout<<buffer; sprintf(buffer, "time in mat-mult: %12.6es\n", t); pcout<<buffer; return;}
+    //compute beta
+    beta = (res*res)/(resOld*resOld);
+    P.sadd(beta,-1.0,R);
+    iterations++;
+  }
+  sprintf(buffer,"Res:%12.6e, incs:%u\n", res, iterations); pcout<<buffer;
+}
+
 //solve
 template <int dim>
 void MechanicsProblem<dim>::solve ()
@@ -174,6 +252,7 @@ void MechanicsProblem<dim>::solve ()
   Timer time; 
   //compute U^(n+1)
   updateRHS(); 
+  cgSolve(U,residualU); 
   pcout << "solve wall time: " << time.wall_time() << "s\n";
 }
   

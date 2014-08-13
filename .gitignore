@@ -33,3 +33,5 @@
 CMakeCache.txt
 CMakeFiles/
 Makefile
+main
+*#main*
