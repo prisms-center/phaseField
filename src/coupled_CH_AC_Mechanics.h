@@ -66,7 +66,7 @@ private:
   ConditionalOStream               pcout;
 
   //matrix free objects
-  MatrixFree<dim,double>      data, dataU;
+  MatrixFree<dim,double>      data;
   vectorType invM;
   void setup_matrixfree ();
   void vmult (vectorType &dst, const vectorType &src) const;
@@ -75,7 +75,7 @@ private:
 		  std::vector<vectorType*> &dst, 
 		  const std::vector<vectorType*> &src,
 		  const std::pair<unsigned int,unsigned int> &cell_range) const;
-  void computeAx(const MatrixFree<dim,double> &dataU, 
+  void computeAx(const MatrixFree<dim,double> &data, 
 		 vectorType &dst, 
 		 const vectorType &src,
 		 const std::pair<unsigned int,unsigned int> &cell_range) const;
@@ -115,15 +115,16 @@ void PrecipitateProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
   //initialize vals vectors for C, N
   std::vector<FEEvaluation<dim,finiteElementDegree,finiteElementDegree+1,1,double>*> vals;
   for (unsigned int i=0; i<numStructuralOrderParameters+1; i++){
-    vals.push_back(new FEEvaluation<dim,finiteElementDegree,finiteElementDegree+1,1,double>(data));
+    vals.push_back(new FEEvaluation<dim,finiteElementDegree,finiteElementDegree+1,1,double>(data,0));
   }
   //initialize vals vectors for U 
-  FEEvaluation<dim,finiteElementDegree,finiteElementDegree+1,dim,double> valU(dataU);
+  FEEvaluation<dim,finiteElementDegree,finiteElementDegree+1,dim,double> valU(data,1);
   
   //initialize constants
   VectorizedArray<double> constCx, constN, constNx;
   constCx=-Mc; constN=-Mn[0]; constNx=-Mn[0]*Kn[0];
-  
+  double sfStrain[3][3]=sfStrainV;
+
   //loop over all "cells"
   for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
     //read C, N values for this cell
@@ -147,26 +148,27 @@ void PrecipitateProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
 	nx[i]=vals[i+1]->get_gradient(q);
       }
       //fill u values
-      Tensor<1, dim, gradType> ux = valU.get_gradient(q);
-      //submit c, n values
-      for (unsigned int i=0; i<numStructuralOrderParameters+1; i++){
-	if (i==0) vals[i]->submit_gradient(constCx*rcxV,q);
-	else{
-	  vals[i]->submit_value(constN*rnV,q);
-	  vals[i]->submit_gradient(constNx*rnxV,q);
-	}
-      }       
+      Tensor<1, dim, gradType> ux = valU.get_gradient(q);     
       //submit u values
       Tensor<1, dim, gradType> Cux;
       //compute C_(ijkl)*u_(k,l). Using minor symmetry of C tensor, C_(ijkl)=C_(ijlk).
+      VectorizedArray<double> CEE=make_vectorized_array(0.0);
       for (unsigned int i=0; i<dim; i++)
 	for (unsigned int j=0; j<dim; j++)
 	  for (unsigned int k=0; k<dim; k++)
 	    for (unsigned int l=0; l<dim; l++){
-	      double value= 2.0*(0.5 - (double)(std::rand() % 100 )/100.0);
-	      Cux[1,i][1,j] += CijklV*((double) (k==l))*make_vectorized_array(-1.0e-3*value);
+	      Cux[1,i][1,j] += CijklV*sfStrain[k][l]*hV;
+	      CEE+=CijklV*ux[1,i][1,j]*sfStrain[k][l];
 	    }
       valU.submit_gradient(Cux,q);
+      //submit c, n values
+      for (unsigned int i=0; i<numStructuralOrderParameters+1; i++){
+	if (i==0) vals[i]->submit_gradient(constCx*rcxV,q);
+	else{
+	  vals[i]->submit_value(constN*(rnV-CEE*hnV),q);
+	  vals[i]->submit_gradient(constNx*rnxV,q);
+	}
+      }  
     }
     //integrate c, n values
     for (unsigned int i=0; i<numStructuralOrderParameters+1; i++){
@@ -186,17 +188,16 @@ void PrecipitateProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
 
 //Matrix-vector product for mechanics problem
 template <int dim>
-void PrecipitateProblem<dim>::computeAx (const MatrixFree<dim,double>  &dataU,
+void PrecipitateProblem<dim>::computeAx (const MatrixFree<dim,double>  &data,
 					 vectorType &dst, 
 					 const vectorType &src,
 					 const std::pair<unsigned int,unsigned int> &cell_range) const
 {
   //initialize vals vectors
-  FEEvaluation<dim,finiteElementDegree,finiteElementDegree+1,dim,double> vals(dataU);
+  FEEvaluation<dim,finiteElementDegree,finiteElementDegree+1,dim,double> vals(data,1);
   
   //loop over all "cells"
   for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
-    
     //read U values for this cell
     vals.reinit (cell); 
     vals.read_dof_values(src); 
@@ -225,7 +226,7 @@ void PrecipitateProblem<dim>::computeAx (const MatrixFree<dim,double>  &dataU,
 template <int dim>
 void PrecipitateProblem<dim>::vmult (vectorType &dst, const vectorType &src) const{
   dst=0.0;
-  dataU.cell_loop (&PrecipitateProblem::computeAx, this, dst, src);
+  data.cell_loop (&PrecipitateProblem::computeAx, this, dst, src);
 }
 
 template <int dim>
@@ -238,26 +239,29 @@ void PrecipitateProblem<dim>::updateRHS (){
 //setup matrixfree data structures
 template <int dim>
 void PrecipitateProblem<dim>::setup_matrixfree (){
-  //setup the matrix free object for C, N
+  //setup the matrix free object
   typename MatrixFree<dim,double>::AdditionalData additional_data;
   additional_data.mpi_communicator = MPI_COMM_WORLD;
   additional_data.tasks_parallel_scheme = MatrixFree<dim,double>::AdditionalData::partition_partition;
   additional_data.mapping_update_flags = (update_gradients | update_JxW_values);
   QGaussLobatto<1> quadrature (finiteElementDegree+1);
-  data.reinit (dof_handler, constraints, quadrature, additional_data);
-  //setup the matrix free object for U
-  typename MatrixFree<dim,double>::AdditionalData additional_dataU;
-  additional_dataU.mpi_communicator = MPI_COMM_WORLD;
-  additional_dataU.tasks_parallel_scheme = MatrixFree<dim,double>::AdditionalData::partition_partition;
-  additional_dataU.mapping_update_flags = (update_gradients | update_JxW_values);
-  dataU.reinit (dof_handlerU, constraintsU, quadrature, additional_dataU);
+  //
+  std::vector<const DoFHandler<dim>*> dof_handler_vector;
+  dof_handler_vector.push_back(&dof_handler);
+  dof_handler_vector.push_back(&dof_handlerU);
+  //
+  std::vector<const ConstraintMatrix*> constraint_vector;
+  constraint_vector.push_back(&constraints);
+  constraint_vector.push_back(&constraintsU);
+  //
+  data.reinit (dof_handler_vector, constraint_vector, quadrature, additional_data);
 
   //compute  invM
-  data.initialize_dof_vector (invM); 
+  data.initialize_dof_vector (invM, 0); 
   VectorizedArray<double> one = make_vectorized_array (1.0);
   
   //select gauss lobatto quad points which are suboptimal but give diogonal M 
-  FEEvaluationGL<dim,finiteElementDegree,1,double> fe_eval(data);
+  FEEvaluationGL<dim,finiteElementDegree,1,double> fe_eval(data,0);
   const unsigned int            n_q_points = fe_eval.n_q_points;
   for (unsigned int cell=0; cell<data.n_macro_cells(); ++cell)
     {
@@ -310,13 +314,13 @@ void PrecipitateProblem<dim>::setup_system ()
   setup_matrixfree();
 
   //data structures
-  data.initialize_dof_vector(C);
+  data.initialize_dof_vector(C,0);
   residualC.reinit(C);
   for (unsigned int i=0; i<numStructuralOrderParameters; i++){
     N[i].reinit(C); residualN[i].reinit(C);
   }
   //data structures for U 
-  dataU.initialize_dof_vector(U);
+  data.initialize_dof_vector(U,1);
   residualU.reinit(U); 
   R.reinit(U); 
   P.reinit(U);
@@ -397,7 +401,7 @@ void PrecipitateProblem<dim>::solve ()
     for (unsigned int j=0; j<N[i].local_size(); ++j)
       N[i].local_element(j)+=invM.local_element(j)*dt*residualN[i].local_element(j);
   //compute u
-  cgSolve(U,residualU); 
+  if (increment%100==0) cgSolve(U,residualU); 
   pcout << "solve wall time: " << time.wall_time() << "s\n";
 }
   

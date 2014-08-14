@@ -7,16 +7,16 @@
 #define spanZ 100.0
 
 //define mesh parameters
-#define refineFactor 8
+#define refineFactor 7
 #define finiteElementDegree 1
 
 //define time step parameters
 #define dt 5.0e-3
-#define numIncrements 10
+#define numIncrements 100000
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 1
+#define skipOutputSteps 1000
 
 //define general physics parameters
 #define numStructuralOrderParameters 1
@@ -34,6 +34,7 @@
 #define muV (Ev/(2*(1+nuV)))
 #define lambdaV (nuV*Ev/((1+nuV)*(1-2*nuV))) 
 #define CijklV (muV*((i==k)*(j==l)+(i==l)*(j==k))+lambdaV*(i==j)*(k==l))
+#define sfStrainV {0.0299,0,0,0,0.0183,0,0,0,-0.00273}
 
 //define free energy expressions
 #define faV (-1.6704-4.776*c+5.1622*c*c-2.7375*c*c*c+1.3687*c*c*c*c)

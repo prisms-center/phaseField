@@ -12,8 +12,8 @@ template <int dim>
 double InitialConditionC<dim>::value (const Point<dim> &p, const unsigned int /* component */) const
 {
   //set result equal to the concentration initial condition 
-  //return 0.03 + 1.0e-3*(2*(0.5 - (double)(std::rand() % 100 )/100.0));
-  double dx=spanX/std::pow(2.0,refineFactor);
+  return 0.03 + 1.0e-3*(2*(0.5 - (double)(std::rand() % 100 )/100.0));
+  /*double dx=spanX/std::pow(2.0,refineFactor);
   double r=0.0;
 #if problemDIM==1
   r=p[0];
@@ -25,6 +25,7 @@ double InitialConditionC<dim>::value (const Point<dim> &p, const unsigned int /*
   r=p.distance(Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
   return 0.005+0.5*(0.125-0.005)*(1-std::tanh((r-spanX/8.0)/(3*dx)));
 #endif
+  */
 }
 
 //structural order parameter initial conditions
