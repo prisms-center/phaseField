@@ -1,4 +1,4 @@
-//Matrix Free implementation of Precipitate evolution (Coupled CH+AC) equations
+//Matrix Free implementation of the coupled CH+AC equations
 //general headers
 #include <fstream>
 #include <sstream>
@@ -32,13 +32,13 @@ public:
 };
 
 //
-//Precipitate evolution Class
+//CH+AC class
 //
 template <int dim>
-class PrecipitateProblem:  public Subscriptor
+class CoupledCHACProblem:  public Subscriptor
 {
 public:
-  PrecipitateProblem ();
+  CoupledCHACProblem ();
   void run ();
 private:
   void setup_system ();
@@ -70,7 +70,7 @@ private:
 
 //constructor
 template <int dim>
-PrecipitateProblem<dim>::PrecipitateProblem ()
+CoupledCHACProblem<dim>::CoupledCHACProblem ()
   :
   Subscriptor(),
   triangulation (MPI_COMM_WORLD),
@@ -88,7 +88,7 @@ PrecipitateProblem<dim>::PrecipitateProblem ()
 
 //right hand side vector computation for explicit time stepping
 template <int dim>
-void PrecipitateProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
+void CoupledCHACProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
 					  std::vector<vectorType*> &dst, 
 					  const std::vector<vectorType*> &src,
 					  const std::pair<unsigned int,unsigned int> &cell_range) const
@@ -137,15 +137,15 @@ void PrecipitateProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
 }
 
 template <int dim>
-void PrecipitateProblem<dim>::updateRHS (){
+void CoupledCHACProblem<dim>::updateRHS (){
   for (unsigned int i=0; i<residuals.size(); i++)
     (*residuals[i])=0.0;
-  data.cell_loop (&PrecipitateProblem::computeRHS, this, residuals, solutions);
+  data.cell_loop (&CoupledCHACProblem::computeRHS, this, residuals, solutions);
 }
 
 //setup matrixfree data structures
 template <int dim>
-void PrecipitateProblem<dim>::setup_matrixfree (){
+void CoupledCHACProblem<dim>::setup_matrixfree (){
   //setup the matrix free object
   typename MatrixFree<dim,double>::AdditionalData additional_data;
   additional_data.mpi_communicator = MPI_COMM_WORLD;
@@ -181,7 +181,7 @@ void PrecipitateProblem<dim>::setup_matrixfree (){
 
 //setup
 template <int dim>
-void PrecipitateProblem<dim>::setup_system ()
+void CoupledCHACProblem<dim>::setup_system ()
 {
   Timer time;
   time.start ();
@@ -227,7 +227,7 @@ void PrecipitateProblem<dim>::setup_system ()
 
 //solve
 template <int dim>
-void PrecipitateProblem<dim>::solve ()
+void CoupledCHACProblem<dim>::solve ()
 {
   Timer time; 
   //compute n0-mobility*dt*f'(n0)
@@ -242,7 +242,7 @@ void PrecipitateProblem<dim>::solve ()
   
 //output 
 template <int dim>
-void PrecipitateProblem<dim>::output_results (const unsigned int cycle)
+void CoupledCHACProblem<dim>::output_results (const unsigned int cycle)
 {
   constraints.distribute (C);
   for (unsigned int i=0; i<numStructuralOrderParameters; i++)
@@ -278,7 +278,7 @@ void PrecipitateProblem<dim>::output_results (const unsigned int cycle)
 
 //run
 template <int dim>
-void PrecipitateProblem<dim>::run ()
+void CoupledCHACProblem<dim>::run ()
 {
   Timer time;
 #if problemDIM==3
