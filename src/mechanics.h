@@ -63,7 +63,7 @@ MechanicsProblem<dim>::MechanicsProblem ()
   pcout (std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0)
 {}
 
-//right hand side vector computation for explicit time stepping
+//RHS and Matrix-vector product computation
 template <int dim>
 void MechanicsProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
 					  vectorType &dst, 
@@ -273,7 +273,7 @@ void MechanicsProblem<dim>::output_results (const unsigned int cycle)
   constraints.distribute (U);
   DataOut<dim> data_out;
   data_out.attach_dof_handler (dof_handler);
-  data_out.add_data_vector (U, "u");
+  //data_out.add_data_vector (U, "u");
   std::vector<std::string> solution_names (dim, "U");
   std::vector<DataComponentInterpretation::DataComponentInterpretation> dataType(dim, DataComponentInterpretation::component_is_part_of_vector);
   data_out.add_data_vector (U, solution_names,
