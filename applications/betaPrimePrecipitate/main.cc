@@ -12,20 +12,7 @@ template <int dim>
 double InitialConditionC<dim>::value (const Point<dim> &p, const unsigned int /* component */) const
 {
   //set result equal to the concentration initial condition 
-  return 0.03 + 1.0e-3*(2*(0.5 - (double)(std::rand() % 100 )/100.0));
-  /*double dx=spanX/std::pow(2.0,refineFactor);
-  double r=0.0;
-#if problemDIM==1
-  r=p[0];
-  return 0.005+0.5*(0.125-0.005)*(1-std::tanh((r-spanX/2.0)/(3*dx)));
-#elif problemDIM==2
-  r=p.distance(Point<dim>(spanX/2.0,spanY/2.0));
-  return 0.005+0.5*(0.125-0.005)*(1-std::tanh((r-spanX/8.0)/(3*dx)));
-#elif problemDIM==3
-  r=p.distance(Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
-  return 0.005+0.5*(0.125-0.005)*(1-std::tanh((r-spanX/8.0)/(3*dx)));
-#endif
-  */
+  return 0.02 + 1.0e-3*(2*(0.5 - (double)(std::rand() % 100 )/100.0));
 }
 
 //structural order parameter initial conditions
@@ -39,13 +26,20 @@ double InitialConditionN<dim>::value (const Point<dim> &p, const unsigned int /*
   r=p[0];
   return 0.5*(1.0-std::tanh((r-spanX/2.0)/(6.2*dx)));
 #elif problemDIM==2
-  //  double r1=p.distance(Point<dim>(spanX/4.0,spanY/4.0));
-  //  double r2=p.distance(Point<dim>(3*spanX/4.0,spanY/4.0));
-  //  double r3=p.distance(Point<dim>(spanX/4.0,3*spanY/4.0));
-  //  double r4=p.distance(Point<dim>(3*spanX/4.0,3*spanY/4.0));
-  //  r=std::min(std::min(r1,r2),std::min(r3,r4));
-  r=p.distance(Point<dim>(spanX/2.0,spanY/2.0));
-  return 0.5*(1.0-std::tanh((r-spanX/8.0)/(3*dx)));
+  if (index==0){
+    double r1=p.distance(Point<dim>(spanX/4.0,spanY/4.0));
+    double r2=p.distance(Point<dim>(3*spanX/4.0,3*spanY/4.0));
+    r=std::min(r1,r2);
+  }
+  else if (index==1){
+    double r1=p.distance(Point<dim>(3*spanX/4.0,spanY/4.0));
+    double r2=p.distance(Point<dim>(spanX/2.0,spanY/2.0));
+    r=std::min(r1,r2);
+  }
+  else if (index==2){
+    r=p.distance(Point<dim>(spanX/4.0,3*spanY/4.0));
+  }
+  return 0.5*(1.0-std::tanh((r-spanX/16.0)/(3*dx)));
 #elif problemDIM==3
   r=p.distance(Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
   return 0.5*(1.0-std::tanh((r-spanX/8.0)/(3*dx)));

@@ -30,7 +30,8 @@ template <int dim>
 class InitialConditionN : public Function<dim>
 {
 public:
-  InitialConditionN (const unsigned int component) : Function<dim>(1) 
+  unsigned int index;
+  InitialConditionN (const unsigned int _index) : Function<dim>(1), index(_index) 
   {
     std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
   }
@@ -111,8 +112,9 @@ void PrecipitateProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
 					  const std::pair<unsigned int,unsigned int> &cell_range) const
 {
   double Mn[numStructuralOrderParameters]=MnVals;
-  //double Kn[numStructuralOrderParameters]=KnVals;
-  double Kn[3][3]=KnTensor;
+  double Kn0[3][3]=Kn0Tensor;
+  double Kn1[3][3]=Kn1Tensor;
+  double Kn2[3][3]=Kn2Tensor;
 
   //initialize vals vectors for C, N
   std::vector<FEEvaluation<dim,finiteElementDegree,finiteElementDegree+1,1,double>*> vals;
@@ -125,7 +127,9 @@ void PrecipitateProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
   //initialize constants
   VectorizedArray<double> constCx, constN, constNx;
   constCx=-Mc; constN=-Mn[0]; constNx=-Mn[0];
-  double sfStrain[3][3]=sfStrainV;
+  double sf0Strain[3][3]=sf0StrainV;
+  double sf1Strain[3][3]=sf1StrainV;
+  double sf2Strain[3][3]=sf2StrainV;
 
   //loop over all "cells"
   for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
@@ -154,13 +158,17 @@ void PrecipitateProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
       //submit u values
       Tensor<1, dim, gradType> Cux;
       //compute C_(ijkl)*u_(k,l). Using minor symmetry of C tensor, C_(ijkl)=C_(ijlk).
-      VectorizedArray<double> CEE=make_vectorized_array(0.0);
+      VectorizedArray<double> CEE0=make_vectorized_array(0.0);
+      VectorizedArray<double> CEE1=make_vectorized_array(0.0);
+      VectorizedArray<double> CEE2=make_vectorized_array(0.0);
       for (unsigned int i=0; i<dim; i++)
 	for (unsigned int j=0; j<dim; j++)
 	  for (unsigned int k=0; k<dim; k++)
 	    for (unsigned int l=0; l<dim; l++){
-	      Cux[1,i][1,j] += CijklV*sfStrain[k][l]*hV;
-	      CEE+=CijklV*ux[1,i][1,j]*sfStrain[k][l];
+	      Cux[1,i][1,j] += CijklV*(sf0Strain[k][l]*h0V+sf1Strain[k][l]*h1V+sf2Strain[k][l]*h2V);
+	      CEE0+=CijklV*ux[1,i][1,j]*sf0Strain[k][l];
+	      CEE1+=CijklV*ux[1,i][1,j]*sf1Strain[k][l];
+	      CEE2+=CijklV*ux[1,i][1,j]*sf2Strain[k][l];
 	    }
       valU.submit_gradient(Cux,q);
       //submit c, n values
@@ -171,9 +179,13 @@ void PrecipitateProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
 	  for (unsigned int a=0; a<dim; a++) {
 	    rnx[1,a]=make_vectorized_array(0.0);
 	    for (unsigned int b=0; b<dim; b++)
-	      rnx[1,a]+=Kn[a][b]*rnxV[1,b];
+	      if (i==1) rnx[1,a]+=Kn0[a][b]*rn0xV[1,b];
+	      else if (i==2) rnx[1,a]+=Kn1[a][b]*rn1xV[1,b];
+	      else if (i==3) rnx[1,a]+=Kn2[a][b]*rn2xV[1,b];
 	  }
-	  vals[i]->submit_value(constN*(rnV-CEE*hnV),q);
+	  if (i==1) vals[i]->submit_value(constN*(rn0V-CEE0*h0nV),q);
+	  else if (i==2) vals[i]->submit_value(constN*(rn1V-CEE1*h1nV),q);
+	  else if (i==3) vals[i]->submit_value(constN*(rn2V-CEE2*h2nV),q);
 	  vals[i]->submit_gradient(constNx*rnx,q);
 	}
       }  
@@ -429,7 +441,7 @@ void PrecipitateProblem<dim>::output_results (const unsigned int cycle)
   data_out.add_data_vector (dof_handler, C, "c", dataType);
   for (unsigned int i=0; i<numStructuralOrderParameters; i++){
     const std::string fieldname = "eta" + Utilities::int_to_string (i+1, 1);
-    data_out.add_data_vector (dof_handler, N[i], fieldname.c_str());
+    data_out.add_data_vector (dof_handler, N[i], fieldname.c_str(), dataType);
   }
   std::vector<std::string> solution_names (dim, "u");
   std::vector<DataComponentInterpretation::DataComponentInterpretation> dataTypeU(dim, DataComponentInterpretation::component_is_part_of_vector);
