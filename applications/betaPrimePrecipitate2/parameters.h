@@ -7,16 +7,16 @@
 #define spanZ 100.0
 
 //define mesh parameters
-#define refineFactor 7
+#define refineFactor 8
 #define finiteElementDegree 1
 
 //define time step parameters
 #define dt 5.0e-3
-#define numIncrements 100000
+#define numIncrements 200000
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 1000
+#define skipOutputSteps 10000
 
 //define general physics parameters
 #define numStructuralOrderParameters 1
@@ -25,8 +25,9 @@
 #define Mc 1.0
 
 //define Allen-Cahn parameters
-#define MnVals {0.1}
-#define KnVals {4.0}
+#define MnVals {1.0}
+//#define KnTensor {21.27,0,0,0,0.35,0,0,0,1.0}
+#define KnTensor {4.0,0,0,0,1.0,0,0,0,1.0}
 
 //define Mechanical properties
 #define Ev 1.0

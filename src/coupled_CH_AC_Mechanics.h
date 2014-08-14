@@ -111,7 +111,9 @@ void PrecipitateProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
 					  const std::pair<unsigned int,unsigned int> &cell_range) const
 {
   double Mn[numStructuralOrderParameters]=MnVals;
-  double Kn[numStructuralOrderParameters]=KnVals;
+  //double Kn[numStructuralOrderParameters]=KnVals;
+  double Kn[3][3]=KnTensor;
+
   //initialize vals vectors for C, N
   std::vector<FEEvaluation<dim,finiteElementDegree,finiteElementDegree+1,1,double>*> vals;
   for (unsigned int i=0; i<numStructuralOrderParameters+1; i++){
@@ -122,7 +124,7 @@ void PrecipitateProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
   
   //initialize constants
   VectorizedArray<double> constCx, constN, constNx;
-  constCx=-Mc; constN=-Mn[0]; constNx=-Mn[0]*Kn[0];
+  constCx=-Mc; constN=-Mn[0]; constNx=-Mn[0];
   double sfStrain[3][3]=sfStrainV;
 
   //loop over all "cells"
@@ -165,8 +167,14 @@ void PrecipitateProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
       for (unsigned int i=0; i<numStructuralOrderParameters+1; i++){
 	if (i==0) vals[i]->submit_gradient(constCx*rcxV,q);
 	else{
+	  gradType rnx;
+	  for (unsigned int a=0; a<dim; a++) {
+	    rnx[1,a]=make_vectorized_array(0.0);
+	    for (unsigned int b=0; b<dim; b++)
+	      rnx[1,a]+=Kn[a][b]*rnxV[1,b];
+	  }
 	  vals[i]->submit_value(constN*(rnV-CEE*hnV),q);
-	  vals[i]->submit_gradient(constNx*rnxV,q);
+	  vals[i]->submit_gradient(constNx*rnx,q);
 	}
       }  
     }
@@ -344,7 +352,7 @@ template <int dim>
 void PrecipitateProblem<dim>::cgSolve(vectorType &x, const vectorType &b){
   char buffer[250];
   Timer time; double t=0, t1;
-  double rtol=1.0e-10, rtolAbs=1.0e-15, utol=1.0e-6;
+  double rtol=1.0e-10, rtolAbs=1.0e-15, utol=1.0e-10;
   unsigned int maxIterations=1000, iterations=0;
   double res, res0, resOld;
   if (!x.all_zero()){
