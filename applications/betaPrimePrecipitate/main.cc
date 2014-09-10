@@ -41,8 +41,17 @@ double InitialConditionN<dim>::value (const Point<dim> &p, const unsigned int /*
   }
   return 0.5*(1.0-std::tanh((r-spanX/16.0)/(3*dx)));
 #elif problemDIM==3
+  if (index==0){
   r=p.distance(Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
   return 0.5*(1.0-std::tanh((r-spanX/8.0)/(3*dx)));
+  }
+  else if (index==1){
+	return 0.0;  
+  }
+  else if (index==2){
+	return 0.0;  
+  }
+  
 #endif
 }
 
