@@ -1,1 +1,25 @@
-Installation Guide
+Installation and Use:
+
+  1) Configure, compile and install the deal.II library. No additional libraries are
+     required besides the installation of deal.ii with the following configuration flags:
+     -DDEAL_II_WITH_MPI=ON
+     -DDEAL_II_WITH_P4EST=ON
+     -DDEAL_II_WITH_LAPACK=ON
+
+     Download: http://www.dealii.org/download.html
+     Detailed instructions: http://www.dealii.org/8.1.0/readme.html
+
+  2) Running phaseField applications, for example cahnHilliard
+  $ cd applications/cahnHilliard
+  $ cmake CMakeLists.txt
+  $ make
+  For serial runs:
+  $ make run
+  For parallel runs:
+  $ mpiexec -np nprocs ./main
+
+
+Getting started:
+
+  The applications are located under /applications and each application has a detailed
+  README with instructions and related documentation.
