@@ -1,0 +1,59 @@
+What is phaseField@PRISMS?
+
+  phaseField@PRISMS is a C++ code implementing various phase field and mechanics models
+  and its applications to some physical problems (spinodal decomposition,
+  precipitate growth, coupled transport+mechanics, etc)
+
+  It targeted at the computational solution of related partial differential equations
+  using the finite element method, and is build on top of the deal.II finite element 
+  library (http://www.dealii.org) 
+  
+  This code is developed by the PRedictive Integrated Structural Materials Science (PRISMS) 
+  Center at University of Michigan which is supported by the U.S. Department of Energy, 
+  Office of Basic Energy Sciences, Division of Materials Sciences and Engineering under 
+  Award #DE-SC0008637
+
+Installation and Use:
+
+  1) Configure, compile and install the deal.II library. No additional libraries are 
+     required besides the installation of deal.ii with the following configuration flags:
+     -DDEAL_II_WITH_MPI=ON  
+     -DDEAL_II_WITH_P4EST=ON 
+     -DDEAL_II_WITH_LAPACK=ON
+
+     Download: http://www.dealii.org/download.html
+     Detailed instructions: http://www.dealii.org/8.1.0/readme.html
+      
+  2) Running phaseField applications, for example cahnHilliard 
+  $ cd applications/cahnHilliard
+  $ cmake CMakeLists.txt
+  $ make
+  For serial runs:
+  $ make run
+  For parallel runs:
+  $ mpiexec -np nprocs ./main
+
+
+Getting started:
+
+  The applications are located under /applications and each application has a detailed 
+  README with instructions and related documentation. 
+
+
+License:
+
+  Please see the file LICENSE for details
+
+
+Mailing List:
+
+  phaseField_PRISMS@umich.edu  
+
+
+Further information:
+
+  For further information have a look at *****
+  OR contact the phaseField mailing list at phaseField_PRISMS@umich.edu  
+
+
+
