@@ -1,7 +1,7 @@
 //Parameters list for the coupled CH+AC problem
 
 //define problem dimensions
-#define problemDIM 1
+#define problemDIM 2
 #define spanX 512.0
 #define spanY 100.0
 #define spanZ 100.0

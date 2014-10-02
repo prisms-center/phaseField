@@ -1,7 +1,7 @@
 ##
 #  CMake script for the phaseField applications:
 ##
-
+ 
 # Set the name of the project and target:
 SET(TARGET "main")
 
