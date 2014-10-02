@@ -12,7 +12,12 @@
 
 //define time step parameters
 #define dt 1.0e-3
-#define numIncrements 200000
+#define numIncrements 20000
+
+//define solver tolerances
+#define relativeResTol 1.0e-10
+#define absoluteResTol 1.0e-14
+#define dUTol 1.0e-10
 
 //define results output parameters
 #define writeOutput true
@@ -39,6 +44,7 @@
 #define sf0StrainV {0.0345,0,0,0,0.0185,0,0,0,-0.00270}
 #define sf1StrainV {0.0225,-0.0069,0,-0.0069,0.0305,0,0,0,-0.00270}
 #define sf2StrainV {0.0225, 0.0069,0, 0.0069,0.0305,0,0,0,-0.00270}
+#define skipElasticitySteps 100
 
 //define free energy expressions
 #define faV (-1.6704-4.776*c+5.1622*c*c-2.7375*c*c*c+1.3687*c*c*c*c)
@@ -62,3 +68,4 @@
 #define rn0xV nx[0]
 #define rn1xV nx[1]
 #define rn2xV nx[2]
+
