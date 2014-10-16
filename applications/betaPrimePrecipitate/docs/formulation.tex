@@ -1,0 +1,212 @@
+\input{../../../include/header.tex}
+\input{../../../include/mathSymbols.tex}
+
+\makenomenclature 
+\makeindex 
+
+\title{betaPrimePrecipitate formulation}
+\date{Updated \today} 
+\begin{document}
+\maketitle
+\nomenclature[a]{$c$}{Concentration (Cahn-Hilliard order parameter)}
+\nomenclature[b]{$\eta$}{Structural order parameter (Allen-Cahn order parameter)}
+\nomenclature[c]{$\bE$}{Lagrange strain tensor (Mechanics order parameter)}
+\nomenclature[d]{$\Pi$}{Total free energy of the system}
+\nomenclature[e]{$F$}{Local free energy density}
+\nomenclature[f]{$\mathcal{J}$}{Concentration flux}
+\nomenclature[g]{$\mu$}{Chemical potential}
+\nomenclature[h]{$\kappa^c$}{Cahn-Hilliard gradient coefficient}
+\nomenclature[i]{$\kappa^{\eta}$}{Allen-Cahn gradient coefficient}
+\nomenclature[j]{$L^{c}$}{Concentration mobility}
+\nomenclature[k]{$L^{\eta}$}{Structural order parameter mobility}
+\nomenclature[l]{$\omega$}{Variations over primal field}
+\nomenclature[m]{$\mathcal{M}$}{Boundary chemical potential like term}
+\nomenclature[n]{$\bn$}{Nomal vector in the current configuration}
+\nomenclature[o]{$(\theta,~\phi)$}{Polar angles of the interface normal, $\bn$}
+\printnomenclature[1cm]
+\vspace{.5in}
+
+\section{Outline}
+The weak formulations corresponding to the generic coupled phase field problem are derived, including the effects of interface energy anisotropy, but assuming isotropic mobility. Also, for now, the change in the normal direction due to mechanical deformation has not been included. The formulation will soon be extended to include variations of $\bn$ and anisotropic tensorial mobility.   
+ 
+\section{Variational formulation}
+The total free energy of the system (neglecting boundary terms) is of the form,
+\begin{equation}
+\Pi(c, \eta, \bE) = \int_{\Omega_0} F(c, \eta, \bE) ~J~dV 
+\end{equation}
+where $dV$ represents a volume element in the reference configuration, $J= \text{det} \bF$ is the local volume change ratio and the free energy density is given by
+\begin{equation}
+ F(c, \eta, \bE) = J \left(  f(c, \eta, \bE) + \frac{1}{2} \nabla  c  \cdot ~\Bkappa^c(\bn) ~\nabla  c + \frac{1}{2} \nabla  \eta  \cdot ~\Bkappa^{\eta}(\bn) ~\nabla  \eta \right)
+\end{equation}
+To account for anisotropic interfacial energy, $\Bkappa^c$ and $\Bkappa^{\eta}$ are assumed to be function of the interface orientation, given by the interface normal, $\bn$. Subsequently, $\Bkappa^c(\bn)$ and $\Bkappa^{\eta}(\bn)$ can be reparametrized as $\Bkappa^c(\theta, \phi)$ and $\Bkappa^{\eta}(\theta, \phi)$, where $(\theta, \phi)$ are the spherical coordinate angles. Also to begin with a simplified form of the orientation dependence is assumed:
+\begin{equation}
+ \kappa^c_{ij} (\bn) = \kappa^c(\bn) \delta_{ij} \qquad  \kappa^{\eta}_{ij} (\bn) = \kappa^{\eta}(\bn) \delta_{ij}
+\end{equation}
+
+\noindent Switching to the indicial notation and dropping explicit mentioning of the parametric dependence:
+\begin{equation}
+ F =  \left( f + \frac{1}{2} \kappa^c_{ij}~c_{,i}~c_{,j} + \frac{1}{2} \kappa^{\eta}_{ij} ~\eta_{,i} ~\eta_{,j} \right) 
+\end{equation}
+
+\noindent Now we proceed to derive the governing equations in the weak form.
+
+\section{Chemical dynamics (Cahn-Hilliard)}
+Considering variations of the form $c_{\epsilon} = c + \epsilon \omega$, the first variation of the free energy with respect to the concentration is given by:
+\begin{align}
+\delta_{c}\Pi &= \frac{d \Pi(c + \epsilon \omega, \eta, \bE)}{d\epsilon} \bigg|_{\epsilon=0} \notag  \nonumber \\
+  &= ~\int_{\Omega_0}  \frac{\partial f}{\partial c}~\omega ~J dV  \nonumber \\
+  &+ ~\int_{\Omega_0}  ~\kappa^c~c_{,i}~\omega_{,i} ~J dV  \nonumber \\
+  &+ ~\int_{\Omega_0}  \left[ ~\frac{\partial \kappa^c}{\partial \theta}  ~\frac{\partial \theta}{\partial n_i} +  ~\frac{\partial \kappa^c}{\partial \phi} ~\frac{\partial \phi}{\partial n_i} ~\right] ~\omega_{,j} ~\frac{|\nabla c|}{2} ~J dV 
+\end{align}
+Integration by parts gives:
+\begin{align}
+\delta_{c}\Pi &= ~\int_{\Omega_0}  \frac{\partial f}{\partial c}~\omega ~J dV  \nonumber \\
+  &- ~\int_{\Omega_0}  \left(~\kappa^c~c_{,i}~\right)_{,i} ~\omega ~J dV + ~\int_{\Gamma_0} ~\kappa^c~c_{,i} ~n_{i} ~\omega ~J dS  \nonumber \\
+  &- ~\int_{\Omega_0}  \left[ \left( ~\frac{\partial \kappa^c}{\partial \theta} ~\frac{\partial \theta}{\partial n_i} +  ~\frac{\partial \kappa^c}{\partial \phi} ~\frac{\partial \phi}{\partial n_i} ~\right) ~\frac{|\nabla c|}{2} ~\right]_{,i} ~\omega ~J dV  \nonumber \\
+  &+ ~\int_{\Gamma_0}  \left[ \left( ~\frac{\partial \kappa^c}{\partial \theta} ~\frac{\partial \theta}{\partial n_i} +  ~\frac{\partial \kappa^c}{\partial \phi} ~\frac{\partial \phi}{\partial n_i} ~\right) ~\frac{|\nabla c|}{2} ~\right] ~n_{i} ~\omega ~J dS 
+\end{align}
+Collecting terms:
+\begin{align}
+\delta_{c}\Pi &= ~\int_{\Omega_0}  ~\omega \left[\frac{\partial f}{\partial c} - \left(~\kappa^c~c_{,i}~\right)_{,i} - \left( ~\left(~\frac{\partial \kappa^c}{\partial \theta} ~\frac{\partial \theta}{\partial n_i} +  ~\frac{\partial \kappa^c}{\partial \phi} ~\frac{\partial \phi}{\partial n_i} ~\right) ~\frac{|\nabla c|}{2} \right)_{,i}  \right] ~J dV  \nonumber \\
+  &+ ~\int_{\Gamma_0} ~\omega \left[ ~\kappa^c~c_{,i}  + \left( ~\frac{\partial \kappa^c}{\partial \theta} ~\frac{\partial \theta}{\partial n_i} +  ~\frac{\partial \kappa^c}{\partial \phi} ~\frac{\partial \phi}{\partial n_i} ~\right) ~\frac{|\nabla c|}{2}  \right] ~n_{i} ~J dS
+\end{align}
+From non-equilibrium thermodynamics we know that the volume integrand represents the chemical potential, 
+\begin{align}
+\mu &= \frac{\partial f}{\partial c} - \mu^{grad}  \label{eqMU}\\
+\text{where} \quad \mu^{grad} &= (\chi_i)_{,i} \quad \text{and} \quad \chi_i = \kappa^c~c_{,i} + ~\left(~\frac{\partial \kappa^c}{\partial \theta} ~\frac{\partial \theta}{\partial n_i} +  ~\frac{\partial \kappa^c}{\partial \phi} ~\frac{\partial \phi}{\partial n_i} ~\right) ~\frac{|\nabla c|}{2} \nonumber
+\end{align}
+if either $w|_{\Gamma_0}=0$, that is no variation in the concentration field is allowed at the boundary, or if the surface integrand is asssumed to vanish:
+\begin{align}
+\left[ ~\kappa^c~c_{,i}  + \left( ~\frac{\partial \kappa^c}{\partial \theta} ~\frac{\partial \theta}{\partial n_i} +  ~\frac{\partial \kappa^c}{\partial \phi} ~\frac{\partial \phi}{\partial n_i} ~\right) ~\frac{|\nabla c|}{2}  \right] ~n_{i} &= 0 \nonumber \\
+\Rightarrow \chi_i ~ n_{i} &= 0 
+\label{eqSurfaceCondition}
+\end{align}
+
+\subsection{Governing equation}
+\noindent Now the statement of conservation of mass is given by:
+\begin{align}
+ \frac{\partial c }{\partial t} + (-L^{c} \mu_{,j})_{,j} = 0 
+ \label{eqConsOfMass}
+\end{align}  
+Again to begin with, the mobility is assumed to be a constant scalar. Since the finite element implementation is based on the weak formulation, we construct the weak form of Equation (\ref{eqConsOfMass}):
+\begin{align}
+\int_{\Omega_0}  \omega ~\left[  \frac{\partial  c }{\partial t} + \left(-L^c \mu_{,j} \right)_{,j} \right] ~J dV &= 0 \nonumber \\
+\Rightarrow \int_{\Omega_0}  \omega ~\left[  \frac{\partial  c }{\partial t} + \left(-L^c ~\left( \frac{\partial f}{\partial c} - \mu^{grad} \right)_{,j} \right)_{,j} \right] ~J dV &= 0
+\label{eqWeakC1}
+\end{align}
+Integration by parts twice gives the following formulation for chemical dynamics:
+\begin{align}
+\Rightarrow &\int_{\Omega_0}  \omega \frac{\partial  c }{\partial t} + \int_{\Omega_0}  \omega_{,j} ~L^c \left(\frac{\partial f}{\partial c}\right)_{,j} ~J dV -\int_{\Gamma_0}  \omega ~L^c \left(\frac{\partial f}{\partial c}\right)_{,j} ~n_{j} ~J dS  \nonumber \\
+- &\int_{\Omega_0}  \omega_{,j} ~L^c ~\mu^{grad}_{,j} ~J dV + \int_{\Gamma_0}  \omega ~L^c ~\mu^{grad}_{,j} ~n_{j} ~J dS = 0 \\
+\Rightarrow &\int_{\Omega_0}  \omega \frac{\partial  c }{\partial t} + \int_{\Omega_0}  \omega_{,j} ~L^c \left(\frac{\partial f}{\partial c}\right)_{,j} ~J dV -\int_{\Gamma_0}  \omega ~L^c ~\left[ \left(\frac{\partial f}{\partial c}\right)_{,j} - ~\mu^{grad}_{,j} \right] ~n_{j} ~J dS  \nonumber \\
++ &\int_{\Omega_0}  \omega_{,jj} ~L^c ~\mu^{grad} ~J dV - \int_{\Gamma_0}  \omega_{,j}  ~n_{j} ~L^c ~\mu^{grad} ~J dS  = 0
+\label{eqWeakC2}
+\end{align}
+One can note that this equation involves only upto second order gradients of the concentration, with the second order gradients being part of the $\mu^{grad}$ term. However this is not the full weak form, because if we try to obtain the strong form starting with Equation (\ref{eqWeakC2}) we simply revert to Equation (\ref{eqWeakC1}) which only has the PDE without information about the boundary conditions. So with the knowledge of the boundary condition terms from Equation (\ref{eqWeakC2}), we obtain the consistent weak formulation by adding two additional surface integral terms to Equation (\ref{eqWeakC2}),
+\begin{align}
+\Rightarrow &\int_{\Omega_0}  \omega \frac{\partial  c }{\partial t} + \int_{\Omega_0}  \omega_{,j} ~L^c \left(\frac{\partial f}{\partial c}\right)_{,j} ~J dV -\int_{\Gamma_0}  \omega ~L^c ~\left[ \left(\frac{\partial f}{\partial c}\right)_{,j} - ~\mu^{grad}_{,j} \right] ~n_{j} ~J dS  \nonumber \\
++ &\int_{\Omega_0}  \omega_{,jj} ~L^c ~\mu^{grad} ~J dV - \int_{\Gamma_0}  \omega_{,j}  ~n_{j} ~L^c ~\mu^{grad} ~J dS  \nonumber \\
++ &\int_{\Gamma_0}  \omega \left(  ~L^c ~\left[ \left(\frac{\partial f}{\partial c}\right)_{,j} - ~\mu^{grad}_{,j} \right] ~n_{j} -\mathcal{J} \right)~J dS + \int_{\Gamma_0} \omega_{,j}  ~n_{j}   ~L^c \left(~\mu^{grad}  - \mathcal{M} \right) ~J dS = 0
+\label{eqWeakC3}
+\end{align}
+where $\mathcal{J}$ and $\mathcal{M}$ are the flux term and a chemical potential like term, respectively. The resulting consistent weak formulation is given by:
+\begin{equation}
+\Rightarrow \int_{\Omega_0}  \omega \frac{\partial  c }{\partial t} + \int_{\Omega_0}  \omega_{,j} ~L^c \left(\frac{\partial f}{\partial c}\right)_{,j} ~J dV + \int_{\Omega_0}  \omega_{,jj} ~L^c ~\mu^{grad} ~J dV
+- \int_{\Gamma_0}  \omega \mathcal{J} ~J dS - \int_{\Gamma_0} \omega_{,j}  ~n_{j} ~L^c ~\mathcal{M} ~J dS = 0
+\label{eqWeakC}
+\end{equation}
+\underline{\emph{Remark}}: The last term in the above equation vaninshes for the special case of isotropic interfacial energy, as than Equation (\ref{eqSurfaceCondition}) reduces to a higher order dirichlet condition $c_j~n_j=0$, which implies $w_j~n_j=0$. 
+
+\subsection{Mixed formulation}
+Instead of the weak form given by Equation (\ref{eqWeakC}), we develop the weak forms of Equations  (\ref{eqMU}, \ref{eqWeakC1}). In addition to the concentration, we treat the chemical potential also as a primal field and the resulting two-field formulation is given below:
+\begin{align}
+\int_{\Omega_0}  \omega (\mu - \frac{\partial f}{\partial c}  + \mu^{grad}) ~J dV &=0 \\
+\int_{\Omega_0}  \omega ~\left(  \frac{\partial  c }{\partial t} + \left(-L^c \mu_{,j} \right)_{,j} \right) ~J dV &= 0
+\end{align}
+Using $\mu^{grad} = (\chi_i)_{,i}$ and integration by parts results in:
+\begin{align}
+\int_{\Omega_0}  \omega \mu ~J dV - ~\int_{\Omega_0}  \omega \frac{\partial f}{\partial c} ~J dV  - \int_{\Omega_0}  \omega_{,i} \chi_i ~J dV +  \int_{\Gamma_0}  \omega \chi_i ~n_i ~J dS &=0 \\
+\int_{\Omega_0}  \omega \frac{\partial c }{\partial t} ~J dV  + \int_{\Omega_0} \omega_{,j} L^{c} \mu_{,j} ~J dV - \int_{\Gamma_0}  \omega L^{c} \mu_{,j} n_j ~J dS &=0
+\end{align}
+Thus Equation (\ref{eqWeakC}) involving second order gradients of the primal field has been reduced to two equations involving first order gradients of the primal fields. However, in general mixed formulations increase the degrees of freedom of the system, may throw up non-physical boundary conditions, and result in decreased numerical stability (LBB conditions). 
+
+\section{Structural order parameter dynamics (Allen-Cahn)}
+Considering variations of the form $\eta_{\epsilon} = \eta + \epsilon \omega$, the first variation of the free energy with respect to the order parameter is given by:
+\begin{align}
+\delta_{\eta}\Pi &= \frac{d \Pi(c, \eta + \epsilon \omega, \bE)}{d\epsilon} \bigg|_{\epsilon=0} \notag  \nonumber \\
+  &= ~\int_{\Omega_0}  \frac{\partial f}{\partial \eta}~\omega ~J dV  \nonumber \\
+  &+ ~\int_{\Omega_0}  ~\kappa^\eta~\eta_{,i}~\omega_{,i} ~J dV  \nonumber \\
+  &+ ~\int_{\Omega_0}  \left[ ~\frac{\partial \kappa^\eta}{\partial \theta}  ~\frac{\partial \theta}{\partial n_i} +  ~\frac{\partial \kappa^\eta}{\partial \phi} ~\frac{\partial \phi}{\partial n_i} ~\right] ~\omega_{,j} ~\frac{|\nabla \eta|}{2} ~J dV 
+\end{align}
+Integration by parts gives:
+\begin{align}
+\delta_{\eta}\Pi &= ~\int_{\Omega_0}  \frac{\partial f}{\partial \eta}~\omega ~J dV  \nonumber \\
+  &- ~\int_{\Omega_0}  \left(~\kappa^\eta~\eta_{,i}~\right)_{,i} ~\omega ~J dV + ~\int_{\Gamma_0} ~\kappa^\eta~\eta_{,i} ~n_{i} ~\omega ~J dS  \nonumber \\
+  &- ~\int_{\Omega_0}  \left[ \left( ~\frac{\partial \kappa^\eta}{\partial \theta} ~\frac{\partial \theta}{\partial n_i} +  ~\frac{\partial \kappa^\eta}{\partial \phi} ~\frac{\partial \phi}{\partial n_i} ~\right) ~\frac{|\nabla \eta|}{2} ~\right]_{,i} ~\omega ~J dV  \nonumber \\
+  &+ ~\int_{\Gamma_0}  \left[ \left( ~\frac{\partial \kappa^\eta}{\partial \theta} ~\frac{\partial \theta}{\partial n_i} +  ~\frac{\partial \kappa^\eta}{\partial \phi} ~\frac{\partial \phi}{\partial n_i} ~\right) ~\frac{|\nabla \eta|}{2} ~\right] ~n_{i} ~\omega ~J dS 
+\end{align}
+Collecting terms:
+\begin{align}
+\delta_{\eta}\Pi &= ~\int_{\Omega_0}  ~\omega \left[\frac{\partial f}{\partial \eta} - \left(~\kappa^\eta~\eta_{,i}~\right)_{,i} - \left( ~\left(~\frac{\partial \kappa^\eta}{\partial \theta} ~\frac{\partial \theta}{\partial n_i} +  ~\frac{\partial \kappa^\eta}{\partial \phi} ~\frac{\partial \phi}{\partial n_i} ~\right) ~\frac{|\nabla \eta|}{2} \right)_{,i}  \right] ~J dV  \nonumber \\
+  &+ ~\int_{\Gamma_0} ~\omega \left[ ~\kappa^\eta~\eta_{,i}  + \left( ~\frac{\partial \kappa^\eta}{\partial \theta} ~\frac{\partial \theta}{\partial n_i} +  ~\frac{\partial \kappa^\eta}{\partial \phi} ~\frac{\partial \phi}{\partial n_i} ~\right) ~\frac{|\nabla \eta|}{2}  \right] ~n_{i} ~J dS
+\end{align}
+Again if we assume that the surface integrand vanishes,
+\begin{equation}
+\left[ ~\kappa^\eta~\eta_{,i}  + \left( ~\frac{\partial \kappa^\eta}{\partial \theta} ~\frac{\partial \theta}{\partial n_i} +  ~\frac{\partial \kappa^\eta}{\partial \phi} ~\frac{\partial \phi}{\partial n_i} ~\right) ~\frac{|\nabla \eta|}{2}  \right] ~n_{i} = 0
+\label{eqACSurfaceCondition}
+\end{equation}
+than the governing equation for the structural order parameter dynamics is derived below. For ease of derivation we introduce the following notation:
+\begin{align}
+\zeta &= \frac{\partial f}{\partial \eta} - \zeta^{grad}\\
+\text{where} \quad \zeta^{grad} &= (\chi^\eta_i)_{,i} \quad \text{and} \quad \chi^\eta_i = \kappa^\eta~\eta_{,i} + ~\left(~\frac{\partial \kappa^\eta}{\partial \theta} ~\frac{\partial \theta}{\partial n_i} +  ~\frac{\partial \kappa^\eta}{\partial \phi} ~\frac{\partial \phi}{\partial n_i} ~\right) ~\frac{|\nabla \eta|}{2} \nonumber
+\end{align}
+
+\subsection{Governing equation}
+\noindent The governing equation for the non-conserved structural order parameter is given by:
+\begin{align}
+ \frac{\partial \eta }{\partial t} + L^{\eta} \zeta = 0 
+\end{align}  
+Again the mobility is assumed to be a constant scalar. Now the corresponding weak form is given by:
+\begin{align}
+\int_{\Omega_0}  \omega ~\left[  \frac{\partial  \eta }{\partial t} + L^\eta \zeta \right] ~J dV &= 0 \nonumber \\
+\Rightarrow \int_{\Omega_0}  \omega ~\left[  \frac{\partial  \eta }{\partial t} + L^\eta ~\left( \frac{\partial f}{\partial \eta} - (\chi^\eta_i)_{,i} \right) \right] ~J dV &= 0
+\label{eqACWeakC1}
+\end{align}
+Integration by parts gives the following formulation for order parameter dynamics:
+\begin{align}
+\Rightarrow &\int_{\Omega_0}  \omega \frac{\partial  \eta }{\partial t}  ~J dV + \int_{\Omega_0}  \omega ~L^\eta \frac{\partial f}{\partial \eta} ~J dV + \int_{\Omega_0}  \omega_{,i} ~L^\eta ~\chi^\eta_i ~J dV - \int_{\Gamma_0}  \omega ~L^\eta ~\chi^\eta_i ~n_{i} ~J dS = 0
+\label{eqACWeakC2}
+\end{align}
+However this is not the full weak form, because if we try to obtain the strong form starting with Equation (\ref{eqACWeakC2}) we simply revert to Equation (\ref{eqACWeakC1}) which only has the PDE without information about the boundary conditions. So with the knowledge of the boundary condition terms from Equation (\ref{eqACWeakC2}), we obtain the consistent weak formulation by adding an additional surface integral term to Equation (\ref{eqACWeakC2}),
+\begin{align}
+\Rightarrow &\int_{\Omega_0}  \omega \frac{\partial  \eta }{\partial t}  ~J dV + \int_{\Omega_0}  \omega ~L^\eta \frac{\partial f}{\partial \eta} ~J dV + \int_{\Omega_0}  \omega_{,i} ~L^\eta ~\chi^\eta_i ~J dV - \int_{\Gamma_0}  \omega ~L^\eta ~\chi^\eta_i ~n_{i} ~J dS \nonumber \\
++ &\int_{\Gamma_0}  \omega ~L^\eta ~\left(\chi^\eta_i ~n_i -\mathcal{J^\eta} \right) ~J dS = 0
+\label{eqACWeakC3}
+\end{align}
+where $\mathcal{J}^\eta$ is the boundary flux term. The resulting consistent weak formulation is given by:
+\begin{equation}
+\Rightarrow \int_{\Omega_0}  \omega \frac{\partial  \eta }{\partial t}  ~J dV  + \int_{\Omega_0}  \omega ~L^\eta \frac{\partial f}{\partial \eta} ~J dV + \int_{\Omega_0}  \omega_{,i} ~L^\eta ~\chi^\eta_i ~J dV - \int_{\Gamma_0}  \omega ~L^\eta \mathcal{J^\eta} ~J dS = 0
+\label{eqACWeakC}
+\end{equation}
+
+\section{Mechanical equilibrium}
+First variation with respect to displacement gives:
+\begin{align}
+\delta_{\bu}\Pi(c , \eta, \bE) &= \frac{d \Pi(c, \eta, \bE(\bu + \epsilon \Bomega^{\bu}))}{d\epsilon} \bigg|_{\epsilon=0} \notag \\
+ &= ~\int_{\Omega_0} \frac{d f(c, \eta, \bE(\bF(\bu + \epsilon \Bomega^{\bu})))}{d \epsilon} \bigg|_{\epsilon=0} ~J dV \notag \\
+ &= ~\int_{\Omega_0} \omega^{\bu}_{i,J} ~\frac{\partial f}{\partial ~F_{iJ}} ~J dV 
+\end{align}	
+Assuming mechanics is quasi-static:
+\begin{align}
+& \delta_{\bu}\Pi(c, \eta, \bE) = 0 \notag \\
+\Rightarrow & \int_{\Omega_0} \omega^{\bu}_{i,J} ~\frac{\partial f}{\partial ~F_{iJ}} ~J dV = 0 
+ \label{governingEquationMechanics}
+\end{align}	
+
+%\vspace{2cm}
+%\textbf{References:}
+%\begin{itemize}
+%\item Coming soon :) 
+%\end{itemize}
+
+\end{document}
