@@ -21,5 +21,7 @@ Installation and Use:
 
 Getting started:
 
-  The applications are located under /applications and each application has a detailed
-  documentation in its respective README.pdf and formulation.pdf
+  The applications are located under ./applications and every complete application has a 
+  detailed documentation in its respective README.pdf and formulation.pdf. The tex files 
+  used to generate the documentation are available in the docs folder of every 
+  application.  
