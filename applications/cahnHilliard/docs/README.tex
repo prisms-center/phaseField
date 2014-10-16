@@ -11,6 +11,7 @@
 \usepackage{fancyhdr} 
 \usepackage[nodayofweek]{datetime}
 \renewcommand{\dateseparator}{\shortdate}
+\usepackage{listings}
 \pagestyle{fancy}
 \renewcommand{\headrulewidth}{0pt} 
 \lhead{}\chead{}\rhead{}
@@ -46,7 +47,7 @@
   tabsize=3
 }
  
-\title{cahnHilliard User Manual}
+\title{cahnHilliard tutorial}
 \date{Updated \today} 
 \begin{document}
 \maketitle
@@ -138,4 +139,23 @@ This example requires that \texttt{problemDIM}=3.  In the actual applications (e
 \paragraph{}
 Boundary conditions are no-flux for the phase field evolution equations.  Implementation of alternate boundary conditions is an objective for future releases.
 
+\section{Usage}
+\paragraph{}
+%\begin{itemize}
+%$ cmake CMakeLists.txt \\
+%$ make \\
+%For serial runs: \\
+%$ make run \\
+%For parallel runs: \\
+%$ mpiexec -np nprocs ./main
+%\end{itemize}
+\noindent
+\begin{lstlisting}[language=bash]
+  $ make CMakeLists.txt
+  $ make
+  For serial runs:
+  $ make run
+  For parallel runs:
+  $ mpiexec -np nprocs ./main
+\end{lstlisting}
 \end{document}

@@ -34,6 +34,8 @@
 % These packages are all incorporated in the memoir class to one degree or another...
 
 %%% HEADERS & FOOTERS
+\usepackage[nodayofweek]{datetime}
+\renewcommand{\dateseparator}{\shortdate}
 \usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
 \pagestyle{fancy} % options: empty , plain , fancy
 \renewcommand{\headrulewidth}{0pt} % customise the layout...
@@ -83,10 +85,7 @@
 %%% The "real" document content comes below...
  
 \title{phaseField User Manual}
-\author{W. Beck Andrews}
-\date{} % Activate to display a given date or no date (if empty),
-         % otherwise the current date is printed 
-
+\date{Updated \today} 
 \begin{document}
 \maketitle
 
