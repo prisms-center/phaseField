@@ -39,6 +39,20 @@ Getting started:
   The applications are located under /applications and each application has a detailed 
   README with instructions and related documentation. 
 
+  Applications are intended to serve as (1) demonstration of the capabilities of this library.
+  and (2) Provide a framework for further development of specialized/advanced applications by 
+  users. Currently the following applications are provided:
+  cahnHilliard
+  allenCahn
+  mechanics	
+  coupledCahnHilliardAllenCahn
+  betaPrimePrecipitate
+
+  Applications under development/testing are preceded by an underscore, such as:
+  _fickianFlux
+  _coupledFickianFluxMechanics
+  _coupledCahnHilliardMechanics
+
 
 License:
 
