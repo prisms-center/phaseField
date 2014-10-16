@@ -1,0 +1,312 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+
+
+
+% This is a simple template for a LaTeX document using the "article" class.
+% See "book", "report", "letter" for other types of document.
+
+\documentclass[11pt]{article} % use larger type; default would be 10pt
+
+\usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
+
+%%% Examples of Article customizations
+% These packages are optional, depending whether you want the features they provide.
+% See the LaTeX Companion or other references for full information.
+
+%%% PAGE DIMENSIONS
+\usepackage{geometry} % to change the page dimensions
+\geometry{a4paper} % or letterpaper (US) or a5paper or....
+% \geometry{margin=2in} % for example, change the margins to 2 inches all round
+% \geometry{landscape} % set up the page for landscape
+%   read geometry.pdf for detailed page layout information
+
+\usepackage{graphicx} % support the \includegraphics command and options
+
+% \usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
+
+%%% PACKAGES
+\usepackage{booktabs} % for much better looking tables
+\usepackage{array} % for better arrays (eg matrices) in maths
+\usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
+\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
+\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
+% These packages are all incorporated in the memoir class to one degree or another...
+
+%%% HEADERS & FOOTERS
+\usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
+\pagestyle{fancy} % options: empty , plain , fancy
+\renewcommand{\headrulewidth}{0pt} % customise the layout...
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+
+%%% SECTION TITLE APPEARANCE
+\usepackage{sectsty}
+\allsectionsfont{\sffamily\mdseries\upshape} % (See the fntguide.pdf for font help)
+% (This matches ConTeXt defaults)
+
+%%% ToC (table of contents) APPEARANCE
+\usepackage[nottoc,notlof,notlot]{tocbibind} % Put the bibliography in the ToC
+\usepackage[titles,subfigure]{tocloft} % Alter the style of the Table of Contents
+\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
+
+
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=C++,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true
+  tabsize=3
+}
+
+
+
+%%% END Article customizations
+
+%%% The "real" document content comes below...
+
+\title{phaseField User Manual}
+\author{W. Beck Andrews}
+\date{} % Activate to display a given date or no date (if empty),
+         % otherwise the current date is printed 
+
+\begin{document}
+\maketitle
+
+\section{Getting Started}
+\paragraph{}
+If the repo has been cloned successfully, you have a directory, \texttt{phaseField}, with the following sub-directories: \\
+\texttt{applications} \\
+\indent{} \texttt{allenCahn} \\
+\indent{} \texttt{cahnHilliard} \\
+\indent{} (other application folders) \\
+\texttt{include} \\
+\indent{} \texttt{dealIIheaders.h} \\
+\texttt{src} \\
+\indent{} \texttt{AC.h} \\
+\indent{} \texttt{CH.h} \\
+\indent{} (header files corresponding to other applications) \\
+\paragraph{}
+Header files in \texttt{src} contain most of the "guts" of the deal.ii implementation of the models, and \texttt{include} contains the required deal.ii headers.  As indicated above, \texttt{applications} has sub-directories for each application, and the app is meant to be made, run, and modified in its directory.  The application directory initially contains three files:
+\begin{center}
+\texttt{CMakeLists.txt}\\
+\texttt{main.cc}\\
+\texttt{parameters.h}
+\end{center}
+Model parameters can be modified in \texttt{parameters.h}, and initial conditions are specified in \texttt{main.cc}.  This document will discuss how to manipulate these files to use the PRISMS applications.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Parameters}
+\paragraph{}
+This section describes the model parameters that the user can access through the \texttt{parameters.h} file in each application folder.  These can be divided between model-specific parameters and those generic to all models, and there are three categories of model-specific parameters: constant coefficients and tensors, bulk free energy functions, and residuals.  In the context of their model, constant coefficients are self-explanatory.  Bulk free energy functions and their derivatives are incorporated as functions of the phase field variables, usually instantiated in the code as \texttt{n} or \texttt{c}.  All of the examples and defaults use polynomial free energies, and their derivatives are found symbolically.  Non-polynomial functions could be implemented, but are not supported at this time.  Residuals are used directly in evolution.  Changing them is not recommended unless the user is comfortable with deal.ii and the PRISMS framework.
+\subsection{Generic Parameters}
+\begin{itemize}
+\item \texttt{problemDIM} \\
+	Dimension of the problem (e.g. 1D, 2D, 3D)
+\item \texttt{spanX} \\
+	Length of system in x-direction
+\item \texttt{spanY} \\
+	Length of system in y-direction.  Not used if \texttt{problemDIM} $< 2$
+\item \texttt{spanZ} \\
+	Length of system in z-direction.  Not used if \texttt{problemDIM} $< 3$
+\item \texttt{refineFactor} \\
+	Defines the refinement of the mesh.  There are $2^{\mathrm{refineFactor}}$ elements in each direction in this implementation, and 						$\left( 2^{\mathrm{refineFactor}} \right)^{\mathrm{problemDIM}}$ elements in total.
+\item \texttt{finiteElementDegree} \\
+	The order of interpolation of the finite element space.  In this case, the order of the Lagrange elements to be used.
+\item \texttt{dt} \\
+	The simulation timestep.
+\item \texttt{numIncrements} \\
+	The number of simulation iterations.  Final time is then \texttt{dt}$\cdot$\texttt{numIncrements}.
+\item \texttt{writeOutput} \\
+	Whether we are writing any output.  Takes a boolean argument, e.g. \texttt{true}.
+\item \texttt{skipOutputSteps} \\
+	Output will be written every \texttt{skipOutputSteps} iterations.  If \texttt{writeOutput} \texttt{true}, the initial conditions will always be written.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{\texttt{allenCahn} Parameters}
+Given the evolution equation:
+\begin{equation}
+\frac{\partial \eta}{\partial t} = -M_\eta \left( f'(\eta) - \epsilon_\eta^2 \nabla^2 \eta \right)
+\end{equation}
+\begin{itemize}
+\item \texttt{Mn} \\
+	Allen-Cahn mobility parameter $M_\eta$ in Eq. 1.
+\item \texttt{Kn} \\
+	Square of the Allen-Cahn gradient energy parameter, $\epsilon_\eta^2$ in Eq. 1.  (tensor form ????)
+\item \texttt{fnV} \\
+	First derivative of the Allen-Cahn bulk free energy $f(\eta)$, where $\eta$ is represented in code by \texttt{n}.  The default for $f(\eta)$ in the code is the 		double well potential:
+	\begin{equation} f(\eta) = \eta^2 (1-\eta)^2 \end{equation}
+	\[ f'(\eta) = 4\eta (\eta -1)(\eta - 1/2) \]
+\item Residuals \\
+	In the context of Eq. 1, we have
+	\[ \texttt{rnV} = \eta - \Delta t \cdot M_\eta f'(\eta) \]
+	\[ \texttt{rnxV} = \nabla \eta \]
+	 where $\Delta t$ is the simulation timestep.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{\texttt{cahnHilliard} Parameters}
+Parameters for Cahn-Hilliard are defined in much the same way as for Allen-Cahn.
+Given the evolution equation:
+\begin{equation}
+\frac{\partial c}{\partial t} = \nabla M_c \cdot \nabla \left( f'(c) - \epsilon_c^2 \nabla^2 c \right) = \nabla M_c \cdot \nabla \mu
+\end{equation}
+\begin{itemize}
+\item \texttt{Mc} \\
+	Cahn-Hilliard mobility parameter $M_c$ in Eq. 1.
+\item \texttt{Kc} \\
+	Square of the Cahn-Hilliard gradient energy parameter, $\epsilon_c^2$ in Eq. 1.  (tensor form ????)
+\item \texttt{fcV} \\
+	First derivative of the Allen-Cahn bulk free energy $f(c)$, where $c$ is represented in code by \texttt{n}.  The default for $f(c)$ is the same double well 			potential (Eq. 2) as in Allen-Cahn, now in $c$.
+	\[ f(c) = c^2 (1-c)^2 \]
+	\[ f'(c) = 4c (c -1)(c - 1/2) \]
+\item Residuals \\
+	In the context of Eq. 3, we have
+	\[ \texttt{rmuV} = f'(c) \]
+	\[ \texttt{rmuxV} = \nabla c \]
+	\[ \texttt{rcV} = c \]
+	\[ \texttt{rcxV} = \nabla \mu \]
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{\texttt{mechanics} Parameters}
+These parameters focus on building the stiffness tensor $C_{ijkl}$ (\texttt{CijklV}), starting from a Young's Modulus (\texttt{Ev}) and Poisson's ratio (\texttt{nuV}).
+\[ \mu = \frac{E}{2(1+\nu)} \]
+\[ \lambda = \frac{\nu E}{(1+\nu)(1-2\nu)} \]
+\[ C_{ijkl} = \mu (\delta_{ik} \delta_{jl}+\delta_{il} \delta_{jk}) + \lambda \delta_{ij} \delta_{kl} \]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{\texttt{coupledCahnHilliardAllenCahn} Parameters}
+This application implements the following set of equations for a conserved order parameter, $c$, and one or more non-conserved (structural) order parameters $\eta$:
+\begin{equation}
+\frac{\partial \eta}{\partial t} = -M_\eta \left( \frac{\partial f(\eta,c)}{\partial \eta} - K_{ij} \nabla_i \nabla_j \eta \right)
+\end{equation}
+\begin{equation}
+\frac{\partial c}{\partial t} = \nabla \cdot M_c \nabla \left( \frac{\partial f(\eta,c)}{\partial c} \right)
+\end{equation}
+Since there is no gradient energy term in $c$, this might also be called a coupled Allen-Cahn/diffusion system.  From a finite element perspective, Eq. 5 is more tractable as
+\begin{equation}
+\frac{\partial c}{\partial t} = \nabla \cdot M_c \left( \frac{\partial^2 f(\eta,c)}{\partial c^2} \nabla c + \frac{\partial^2 f(\eta,c)}{\partial \eta \partial c } \nabla \eta \right)
+\end{equation}
+\begin{itemize}
+\item \texttt{numStructuralOrderParameters}\\
+	Multiple structural/non-conserved order parameters can be used in this model (implemented?????)
+\item \texttt{Mc} \\
+	$M_c$, mobility of the conserved order parameter $c$.
+\item \texttt{MnVals} \\
+	$M_\eta$, mobility of the non-conserved order parameter $\eta$.  This is an array with \texttt{numStructuralOrderParameters} elements, each corresponding to an order parameter.
+\item \texttt{KnVals} \\
+	$K_\eta$, gradient energy coefficients $K$ of the non-conserved order parameter $\eta$.  Again, an array with \texttt{numStructuralOrderParameters} elements, each corresponding to an order parameter.
+\end{itemize}
+\paragraph{}
+The free energy $f(\eta,c)$ is composed of free energies $f_\alpha(c)$ and $f_\beta(c)$ for the phases corresponding to $\eta=1$ and $\eta=0$, and an interpolating function $h(\eta)$.  The default case uses free energies for a Mg-Gd system:
+\begin{equation}
+f_\alpha(c)=-1.6704 -4.776 c+5.1622 c^2 -2.7375 c^3 +1.3687 c^4
+\end{equation}
+\begin{equation}
+f_\beta(c)=-1.5924 -5.9746 c+5.0 c^2
+\end{equation}
+These free energies should be in the form of a polynomial for this application.  An interpolation function for a single order parameter should satisfy $h(0)=1$, $h'(0)=0$, $h(1)=1$, and $h'(1)=0$, for example:
+\begin{equation}
+h(\eta)= \eta^3 (10 - 15 \eta + 6 \eta^2)
+\end{equation}
+The full bulk free energy (for $n$ structural order parameters) is then:
+\begin{equation}
+f(\eta, c)= f_\alpha(c) \sum_{i=1}^n (1-h(\eta_i)) + f_\beta(c) \sum_{i=1}^n h(\eta_i)
+\end{equation}
+Equations (7-9) and their derivatives are included in \texttt{parameters.h} as follows:
+\[ \texttt{faV} = f_\alpha(c) \]
+\[ \texttt{facV}  = f_\alpha'(c) \]
+\[ \texttt{faccV} = f_\alpha''(c) \]
+\[ \texttt{fbV} = f_\beta(c) \]
+\[ \texttt{fbcV} = f_\beta'(c) \]
+\[ \texttt{fbccV}  = f_\beta''(c) \]
+\[ \texttt{hV} = h(\eta) \]
+\[ \texttt{hnV} = h'(\eta) \]
+\paragraph{}
+These free energy variables are incorporated into the residuals in the weak form of equations 4 and 6.
+\[ \texttt{rcxV} = \left( (1-h(\eta)) f_\alpha''(c) + h(\eta) f_\beta''(c) \right) \nabla c + h'(\eta)(f_\beta'(c)+f_\alpha'(c)) \nabla \eta \]
+\[ \texttt{rnV} =( f_\beta(c)-f_\alpha(c)) h'(\eta) \]
+\[ \texttt{rnxV} = \nabla \eta \]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{\texttt{betaPrimePrecipitate} Parameters}
+\paragraph{}
+The \texttt{betaPrimePrecipitate} application combines several features of other applications together to model evolution of coherent precipitates.  In practical terms, this application extends \texttt{coupledCahnHilliardAllenCahn} by incorporating the strain energy of the transformation into the evolution of the structural order parameter.  Following the Landau theory of phase transformations, a stress-free strain tensor (SFST) is defined for each orientation variant (structural order parameter) to be used in the simulation.  The total stress-free strain tensor at a point $\mathbf{r}$, $\epsilon^0_{ij}(\mathbf{r})$, is the sum of each order parameter's SFST times it's interpolation function:
+\begin{equation}
+\epsilon^0_{ij}(\mathbf{r}) = \sum^n_{p=1} \epsilon^0_{ij}(p)h(\eta_i(\mathbf{r}))
+\end{equation}
+Incorporation of this into the evolution equations is left to the corresponding model documentation.
+\paragraph{}
+\begin{itemize}
+\item \texttt{Mc}, \texttt{MnVals}, and \texttt{Kn0Tensor} are inherited as is from \texttt{coupledCahnHilliardAllenCahn}.
+\item \texttt{Ev}, \texttt{nuV}, \texttt{muV}, \texttt{lambdaV}, and \texttt{CijklV} are as in \texttt{mechanics}
+\item \texttt{sf0StrainV} \\
+This the stress-free strain tensor (a 9-element vector or $3 \times 3$ array) associated with order parameter 0.  One SFST is defined for each structural order parameter.
+\item \texttt{skipElasticitySteps} \\
+The elasticity problem is only re-solved after this many time steps of phase field evolution.  To re-solve at every phase field iteration, set this equal to 1.
+\item \texttt{faV}, \texttt{facV}, \texttt{faccV}, \texttt{fbV}, \texttt{fbcV}, and \texttt{fbccV} are bulk free energy polynomials (and their derivatives) as in \texttt{coupledCahnHilliardAllenCahn}.
+\item \texttt{h0V} and \texttt{h0nV} are the interpolation function, $h(\eta)$ and its derivative $h'(\eta)$, as in \texttt{coupledCahnHilliardAllenCahn}, for order parameter 0.  There is an interpolation function defined for each structural order parameter.
+\item Residuals \\
+Residuals are defined as in \texttt{coupledCahnHilliardAllenCahn}, extended for multiple structural order parameters.  More information about the derivation of these can be found in the accompanying Model documentation.
+
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Initial Conditions}
+\paragraph{}
+Initial conditions for the phase field parameters are generated in the functions \\ \texttt{InitialConditionN} or \texttt{InitialConditionC} located in the \texttt{main.cc} file in the application folder.  Two types of initial conditions have been implemented so far: a field of random noise around some mean value, and analytical functions of position.  Random noise is the default for at least one variable in all of the phase field codes.  Here, as an example, $c$ is initialized to random values in the range 0.019-0.021:
+\begin{lstlisting}
+template <int dim>
+double InitialConditionC<dim>::value (const Point<dim> &p, const unsigned int /* component */) const
+{
+	//set result equal to the concentration initial condition
+	return 0.02 + 1.0e-3*(2*(0.5 - (double)(std::rand() % 100 )/100.0));
+}
+\end{lstlisting}
+\paragraph{}
+Analytical functions of position can be generated from the members of the class \texttt{p}, e.g. \texttt{p.distance} or the $x$ and $y$ coordinates, \texttt{p[0]} and \texttt{p[1]}.  In the default cases,  the hyperbolic tangent of the signed distance from a circle or sphere is used.  In the following example, $\eta$ will be initialized into a sphere with radius=spanX/8, where $\eta=0.5$ at the boundary, $\eta \sim 1$ in the interior, and $\eta \sim 0$ outside.
+\begin{lstlisting}
+template <int dim>
+double InitialConditionN<dim>::value (const Point<dim> &p, const unsigned int /* component */) const
+{
+	//set result equal to the structural order paramter initial condition
+	double dx=spanX/std::pow(2.0,refineFactor);
+	double r=0.0;
+	r=p.distance(Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
+	return 0.5*(1.0-std::tanh((r-spanX/8.0)/(3*dx)));
+}
+\end{lstlisting}
+This example requires that \texttt{problemDIM}=3.  In the actual applications (e.g. \\\texttt{coupledCahnHilliardAllenCahn}), a conditional tests  \texttt{problemDIM}, and there are analogous cases for each dimension.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Boundary Conditions}
+\paragraph{}
+Boundary conditions are no-flux for the phase field evolution equations.  Implementation of alternate boundary conditions is an objective for future releases.
+
+\end{document}
