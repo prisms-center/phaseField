@@ -364,7 +364,7 @@ template <int dim>
 void PrecipitateProblem<dim>::cgSolve(vectorType &x, const vectorType &b){
   char buffer[250];
   Timer time; double t=0, t1;
-  double rtol=1.0e-10, rtolAbs=1.0e-15, utol=1.0e-10;
+  double rtol=relativeResTol, rtolAbs=absoluteResTol, utol=dUTol;
   unsigned int maxIterations=1000, iterations=0;
   double res, res0, resOld;
   if (!x.all_zero()){
@@ -395,9 +395,9 @@ void PrecipitateProblem<dim>::cgSolve(vectorType &x, const vectorType &b){
     resOld=res;
     res = R.l2_norm();
     //sprintf(buffer, "%12.6e ", alpha*P.linfty_norm()); pcout<<buffer;
-    if (res<=rtolAbs){sprintf(buffer, "Converged in absolute R tolerance: initialRes:%12.6e, currentRes:%12.6e, absTolCriterion:%12.6e, incs:%u\n", res, res, rtolAbs, iterations); pcout<<buffer; sprintf(buffer, "time in mat-mult:%12.6e\n", t); pcout<<buffer; return;}
-    else if ((res/res0)<=rtol){printf("Converged in relative R tolerance: initialRes:%12.6e, currentRes:%12.6e, relTol:%12.6e, relTolCriterion:%12.6e, dU:%12.6e, incs:%u\n", res0, res, res/res0, rtol, alpha*P.linfty_norm(), iterations); printf("time in mat-mult:%12.6e\n", t); return;}
-    else if ((alpha*P.linfty_norm())<rtol){sprintf(buffer, "Converged in dU tolerance: initialRes:%12.6e, currentRes:%12.6e, relTol:%12.6e, relTolCriterion:%12.6e, dU:%12.6e, incs:%u\n", res0, res, res/res0, rtol, alpha*P.linfty_norm(), iterations); pcout<<buffer; sprintf(buffer, "time in mat-mult: %12.6es\n", t); pcout<<buffer; return;}
+    if (res<=rtolAbs){sprintf(buffer, "Elasticity equations converged in absolute R tolerance: initialRes:%12.6e, currentRes:%12.6e, tol criterion:%12.6e, incs:%u\n", res, res, rtolAbs, iterations); pcout<<buffer; sprintf(buffer, "time in mat-mult:%12.6e\n", t); pcout<<buffer; return;}
+    else if ((res/res0)<=rtol){printf("Elasticity equations converged in relative R tolerance: initialRes:%12.6e, currentRes:%12.6e, relTol:%12.6e, tol criterion:%12.6e, dU:%12.6e, incs:%u\n", res0, res, res/res0, rtol, alpha*P.linfty_norm(), iterations); printf("time in mat-mult:%12.6e\n", t); return;}
+    else if ((alpha*P.linfty_norm())<utol){sprintf(buffer, "Elasticity equations converged in dU tolerance: initialRes:%12.6e, currentRes:%12.6e, relTol:%12.6e, tol criterion:%12.6e, dU:%12.6e, incs:%u\n", res0, res, res/res0, utol, alpha*P.linfty_norm(), iterations); pcout<<buffer; sprintf(buffer, "time in mat-mult: %12.6es\n", t); pcout<<buffer; return;}
     //compute beta
     beta = (res*res)/(resOld*resOld);
     P.sadd(beta,-1.0,R);
@@ -414,14 +414,19 @@ void PrecipitateProblem<dim>::solve ()
   Timer time; 
   updateRHS();
   //compute c=c0-mobility*dt*f'(c0)
-  for (unsigned int j=0; j<C.local_size(); ++j)
+  for (unsigned int j=0; j<C.local_size(); ++j){
     C.local_element(j)+=invM.local_element(j)*dt*residualC.local_element(j);
+  }
   //compute n0-mobility*dt*f'(n0)
-  for (unsigned int i=0; i<numStructuralOrderParameters; i++)
-    for (unsigned int j=0; j<N[i].local_size(); ++j)
+  for (unsigned int i=0; i<numStructuralOrderParameters; i++){
+    for (unsigned int j=0; j<N[i].local_size(); ++j){
       N[i].local_element(j)+=invM.local_element(j)*dt*residualN[i].local_element(j);
+    }
+  }
   //compute u
-  if (increment%100==0) cgSolve(U,residualU); 
+  if (increment%skipElasticitySteps==0) {
+    cgSolve(U,residualU); 
+  }
   pcout << "solve wall time: " << time.wall_time() << "s\n";
 }
   
