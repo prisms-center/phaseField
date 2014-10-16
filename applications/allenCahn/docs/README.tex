@@ -1,0 +1,159 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{a4paper}
+\usepackage{graphicx} 
+\usepackage{booktabs} 
+\usepackage{array} 
+\usepackage{paralist} 
+\usepackage{verbatim} 
+\usepackage{subfig} 
+\usepackage{fancyhdr} 
+\usepackage[nodayofweek]{datetime}
+\renewcommand{\dateseparator}{\shortdate}
+\usepackage{listings}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt} 
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+\usepackage{sectsty}
+\allsectionsfont{\sffamily\mdseries\upshape}
+
+% ToC (table of contents)
+\usepackage[nottoc,notlof,notlot]{tocbibind}
+\usepackage[titles,subfigure]{tocloft} 
+\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape}
+\usepackage{listings}
+\usepackage{color}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=C++,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true
+  tabsize=3
+}
+ 
+\title{allenCahn tutorial}
+\date{Updated \today} 
+\begin{document}
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Parameters}
+\paragraph{}
+This section describes the model parameters that the user can access through the \texttt{parameters.h} file in each application folder.  These can be divided between model-specific parameters and those generic to all models, and there are three categories of model-specific parameters: constant coefficients and tensors, bulk free energy functions, and residuals.  In the context of their model, constant coefficients are self-explanatory.  Bulk free energy functions and their derivatives are incorporated as functions of the phase field variables, usually instantiated in the code as \texttt{n} or \texttt{c}.  All of the examples and defaults use polynomial free energies, and their derivatives are found symbolically.  Non-polynomial functions could be implemented, but are not supported at this time.  Residuals are used directly in evolution.  Changing them is not recommended unless the user is comfortable with deal.ii and the PRISMS framework.
+\subsection{Generic Parameters}
+\begin{itemize}
+\item \texttt{problemDIM} \\
+	Dimension of the problem (e.g. 1D, 2D, 3D)
+\item \texttt{spanX} \\
+	Length of system in x-direction
+\item \texttt{spanY} \\
+	Length of system in y-direction.  Not used if \texttt{problemDIM} $< 2$
+\item \texttt{spanZ} \\
+	Length of system in z-direction.  Not used if \texttt{problemDIM} $< 3$
+\item \texttt{refineFactor} \\
+	Defines the refinement of the mesh.  There are $2^{\mathrm{refineFactor}}$ elements in each direction in this implementation, and 						$\left( 2^{\mathrm{refineFactor}} \right)^{\mathrm{problemDIM}}$ elements in total.
+\item \texttt{finiteElementDegree} \\
+	The order of interpolation of the finite element space.  In this case, the order of the Lagrange elements to be used.
+\item \texttt{dt} \\
+	The simulation timestep.
+\item \texttt{numIncrements} \\
+	The number of simulation iterations.  Final time is then \texttt{dt}$\cdot$\texttt{numIncrements}.
+\item \texttt{writeOutput} \\
+	Whether we are writing any output.  Takes a boolean argument, e.g. \texttt{true}.
+\item \texttt{skipOutputSteps} \\
+	Output will be written every \texttt{skipOutputSteps} iterations.  If \texttt{writeOutput} \texttt{true}, the initial conditions will always be written.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{\texttt{allenCahn} Parameters}
+Given the evolution equation:
+\begin{equation}
+\frac{\partial \eta}{\partial t} = -M_\eta \left( f'(\eta) - \epsilon_\eta^2 \nabla^2 \eta \right)
+\end{equation}
+\begin{itemize}
+\item \texttt{Mn} \\
+	Allen-Cahn mobility parameter $M_\eta$ in Eq. 1.
+\item \texttt{Kn} \\
+	Square of the Allen-Cahn gradient energy parameter, $\epsilon_\eta^2$ in Eq. 1.  (tensor form ????)
+\item \texttt{fnV} \\
+	First derivative of the Allen-Cahn bulk free energy $f(\eta)$, where $\eta$ is represented in code by \texttt{n}.  The default for $f(\eta)$ in the code is the 		double well potential:
+	\begin{equation} f(\eta) = \eta^2 (1-\eta)^2 \end{equation}
+	\[ f'(\eta) = 4\eta (\eta -1)(\eta - 1/2) \]
+\item Residuals \\
+	In the context of Eq. 1, we have
+	\[ \texttt{rnV} = \eta - \Delta t \cdot M_\eta f'(\eta) \]
+	\[ \texttt{rnxV} = \nabla \eta \]
+	 where $\Delta t$ is the simulation timestep.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Initial Conditions}
+\paragraph{}
+Initial conditions for the phase field parameters are generated in the functions \\ \texttt{InitialConditionN} or \texttt{InitialConditionC} located in the \texttt{main.cc} file in the application folder.  Two types of initial conditions have been implemented so far: a field of random noise around some mean value, and analytical functions of position.  Random noise is the default for at least one variable in all of the phase field codes.  Here, as an example, $c$ is initialized to random values in the range 0.019-0.021:
+\begin{lstlisting}
+template <int dim>
+double InitialConditionC<dim>::value (const Point<dim> &p, const unsigned int /* component */) const
+{
+	//set result equal to the concentration initial condition
+	return 0.02 + 1.0e-3*(2*(0.5 - (double)(std::rand() % 100 )/100.0));
+}
+\end{lstlisting}
+\paragraph{}
+Analytical functions of position can be generated from the members of the class \texttt{p}, e.g. \texttt{p.distance} or the $x$ and $y$ coordinates, \texttt{p[0]} and \texttt{p[1]}.  In the default cases,  the hyperbolic tangent of the signed distance from a circle or sphere is used.  In the following example, $\eta$ will be initialized into a sphere with radius=spanX/8, where $\eta=0.5$ at the boundary, $\eta \sim 1$ in the interior, and $\eta \sim 0$ outside.
+\begin{lstlisting}
+template <int dim>
+double InitialConditionN<dim>::value (const Point<dim> &p, const unsigned int /* component */) const
+{
+	//set result equal to the structural order paramter initial condition
+	double dx=spanX/std::pow(2.0,refineFactor);
+	double r=0.0;
+	r=p.distance(Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
+	return 0.5*(1.0-std::tanh((r-spanX/8.0)/(3*dx)));
+}
+\end{lstlisting}
+This example requires that \texttt{problemDIM}=3.  In the actual applications (e.g. \\\texttt{coupledCahnHilliardAllenCahn}), a conditional tests  \texttt{problemDIM}, and there are analogous cases for each dimension.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Boundary Conditions}
+\paragraph{}
+Boundary conditions are no-flux for the phase field evolution equations.  Implementation of alternate boundary conditions is an objective for future releases.
+
+\section{Usage}
+\paragraph{}
+%\begin{itemize}
+%$ cmake CMakeLists.txt \\
+%$ make \\
+%For serial runs: \\
+%$ make run \\
+%For parallel runs: \\
+%$ mpiexec -np nprocs ./main
+%\end{itemize}
+\noindent
+\begin{lstlisting}[language=bash]
+  $ make CMakeLists.txt
+  $ make
+  For serial runs:
+  $ make run
+  For parallel runs:
+  $ mpiexec -np nprocs ./main
+\end{lstlisting}
+\end{document}

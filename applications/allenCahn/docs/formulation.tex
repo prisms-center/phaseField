@@ -1,0 +1,99 @@
+\input{../../../include/header.tex}
+\input{../../../include/mathSymbols.tex}
+
+\makenomenclature 
+\makeindex 
+
+\title{allenCahn formulation}
+\date{Updated \today} 
+\begin{document}
+\maketitle
+\nomenclature[a]{$c$}{Concentration (Cahn-Hilliard order parameter)}
+\nomenclature[b]{$\eta$}{Structural order parameter (Allen-Cahn order parameter)}
+\nomenclature[c]{$\bE$}{Lagrange strain tensor (Mechanics order parameter)}
+\nomenclature[d]{$\Pi$}{Total free energy of the system}
+\nomenclature[e]{$F$}{Local free energy density}
+\nomenclature[f]{$\mathcal{J}$}{Concentration flux}
+\nomenclature[g]{$\mu$}{Chemical potential}
+\nomenclature[h]{$\kappa^c$}{Cahn-Hilliard gradient coefficient}
+\nomenclature[i]{$\kappa^{\eta}$}{Allen-Cahn gradient coefficient}
+\nomenclature[j]{$L^{c}$}{Concentration mobility}
+\nomenclature[k]{$L^{\eta}$}{Structural order parameter mobility}
+\nomenclature[l]{$\omega$}{Variations over primal field}
+\nomenclature[m]{$\mathcal{M}$}{Boundary chemical potential like term}
+\nomenclature[n]{$\bn$}{Nomal vector in the current configuration}
+\nomenclature[o]{$(\theta,~\phi)$}{Polar angles of the interface normal, $\bn$}
+%\centerline{Shiva Rudraraju}
+%\centerline{\today}
+\printnomenclature[1cm]
+\vspace{.5in}
+
+\section{Outline}
+The weak formulations corresponding to the generic coupled phase field problem are derived, including the effects of interface energy anisotropy, but assuming isotropic mobility. Also, for now, the change in the normal direction due to mechanical deformation has not been included. The formulation will soon be extended to include variations of $\bn$ and anisotropic tensorial mobility.   
+ 
+\section{Variational formulation}
+The total free energy of the system (neglecting boundary terms) is of the form,
+\begin{equation}
+\Pi(\eta) = \int_{\Omega_0} F(\eta) ~J dV 
+\end{equation}
+where $dV$ represents a volume element in the reference configuration, $J= \text{det} \bF$ is the local volume change ratio and the free energy density is given by
+\begin{equation}
+ F(\eta) = \left(  f(\eta) + \frac{1}{2} \nabla  \eta  \cdot ~\Bkappa^{\eta} ~\nabla  \eta\right)
+\end{equation}
+
+\noindent Now we proceed to derive the governing equations in the weak form.
+
+\section{Allen-Cahn governing equations}
+Considering variations of the form $\eta_{\epsilon} = \eta + \epsilon \omega$, the first variation of the free energy with respect to the order parameter, $\eta$, is given by:
+\begin{align}
+\delta_{\eta}\Pi &= \frac{d \Pi(\eta + \epsilon \omega)}{d\epsilon} \bigg|_{\epsilon=0} \notag  \nonumber \\
+  &= ~\int_{\Omega_0}  \frac{\partial f}{\partial \eta}~\omega ~J dV  \nonumber \\
+  &+ ~\int_{\Omega_0}  ~\kappa^{\eta}~\eta_{,i}~\omega_{,i} ~J dV  
+\end{align}
+Integration by parts gives:
+\begin{align}
+\delta_{c}\Pi &= ~\int_{\Omega_0}  \frac{\partial f}{\partial \eta}~\omega ~J dV  \nonumber \\
+  &- ~\int_{\Omega_0}  \left(~\kappa^{\eta}~\eta_{,i}~\right)_{,i} ~\omega ~J dV + ~\int_{\Gamma_0} ~\kappa^{\eta}~\eta_{,i} ~n_{i} ~\omega ~J dS  \nonumber \\
+\end{align}
+Collecting terms:
+\begin{align}
+\delta_{c}\Pi &= ~\int_{\Omega_0}  ~\omega \left[\frac{\partial f}{\partial c}  \right] ~J dV  \nonumber \\
+  &+ ~\int_{\Gamma_0} ~\omega  ~\kappa^c~c_{,i}  ~n_{i} ~J dS
+\end{align}
+From non-equilibrium thermodynamics we know that the volume integrand represents the chemical potential, 
+\begin{align}
+\zeta &= \frac{\partial f}{\partial \eta} - \zeta^{grad}\\
+\text{where} \quad \zeta^{grad} &= (\chi^\eta_i)_{,i} \quad \text{and} \quad \chi^\eta_i = \kappa^\eta~\eta_{,i}  \nonumber
+\end{align}
+
+
+\subsection{Governing equation}
+\noindent The governing equation for the non-conserved structural order parameter is given by:
+\begin{align}
+ \frac{\partial \eta }{\partial t} + L^{\eta} \zeta = 0 
+\end{align}  
+Again the mobility is assumed to be a constant scalar. Now the corresponding weak form is given by:
+\begin{align}
+\int_{\Omega_0}  \omega ~\left[  \frac{\partial  \eta }{\partial t} + L^\eta \zeta \right] ~J dV &= 0 \nonumber \\
+\Rightarrow \int_{\Omega_0}  \omega ~\left[  \frac{\partial  \eta }{\partial t} + L^\eta ~\left( \frac{\partial f}{\partial \eta} - (\chi^\eta_i)_{,i} \right) \right] ~J dV &= 0
+\label{eqACWeakC1}
+\end{align}
+Integration by parts gives the following formulation for order parameter dynamics:
+\begin{align}
+\Rightarrow &\int_{\Omega_0}  \omega \frac{\partial  \eta }{\partial t}  ~J dV + \int_{\Omega_0}  \omega ~L^\eta \frac{\partial f}{\partial \eta} ~J dV + \int_{\Omega_0}  \omega_{,i} ~L^\eta ~\chi^\eta_i ~J dV - \int_{\Gamma_0}  \omega ~L^\eta ~\chi^\eta_i ~n_{i} ~J dS = 0
+\label{eqACWeakC2}
+\end{align}
+However this is not the full weak form, because if we try to obtain the strong form starting with Equation (\ref{eqACWeakC2}) we simply revert to Equation (\ref{eqACWeakC1}) which only has the PDE without information about the boundary conditions. So with the knowledge of the boundary condition terms from Equation (\ref{eqACWeakC2}), we obtain the consistent weak formulation by adding an additional surface integral term to Equation (\ref{eqACWeakC2}),
+\begin{align}
+\Rightarrow &\int_{\Omega_0}  \omega \frac{\partial  \eta }{\partial t}  ~J dV + \int_{\Omega_0}  \omega ~L^\eta \frac{\partial f}{\partial \eta} ~J dV + \int_{\Omega_0}  \omega_{,i} ~L^\eta ~\chi^\eta_i ~J dV - \int_{\Gamma_0}  \omega ~L^\eta ~\chi^\eta_i ~n_{i} ~J dS \nonumber \\
++ &\int_{\Gamma_0}  \omega ~L^\eta ~\left(\chi^\eta_i ~n_i -\mathcal{J^\eta} \right) ~J dS = 0
+\label{eqACWeakC3}
+\end{align}
+where $\mathcal{J}^\eta$ is the boundary flux term. The resulting consistent weak formulation is given by:
+\begin{equation}
+\Rightarrow \int_{\Omega_0}  \omega \frac{\partial  \eta }{\partial t}  ~J dV  + \int_{\Omega_0}  \omega ~L^\eta \frac{\partial f}{\partial \eta} ~J dV + \int_{\Omega_0}  \omega_{,i} ~L^\eta ~\chi^\eta_i ~J dV - \int_{\Gamma_0}  \omega ~L^\eta \mathcal{J^\eta} ~J dS = 0
+\label{eqACWeakC}
+\end{equation}
+
+\end{document}
+
