@@ -232,11 +232,20 @@ void CoupledCHACProblem<dim>::solve ()
   Timer time; 
   //compute n0-mobility*dt*f'(n0)
   updateRHS();
-  for (unsigned int j=0; j<C.local_size(); ++j)
+  double rhsCNorm=0.0, rhsNNorm=0.0;
+  for (unsigned int j=0; j<C.local_size(); ++j){
     C.local_element(j)+=invM.local_element(j)*dt*residualC.local_element(j);
-  for (unsigned int i=0; i<numStructuralOrderParameters; i++)
-    for (unsigned int j=0; j<N[i].local_size(); ++j)
+  }
+  rhsCNorm+=residualC.l2_norm();
+  for (unsigned int i=0; i<numStructuralOrderParameters; i++){
+    for (unsigned int j=0; j<N[i].local_size(); ++j){
       N[i].local_element(j)+=invM.local_element(j)*dt*residualN[i].local_element(j);
+    }
+    rhsNNorm+=residualN[i].l2_norm();
+  }
+  char buffer[100];
+  sprintf(buffer,"RHS norms for explicit solve: concentration: %12.6e, order parameters: %12.6e\n", rhsCNorm, rhsNNorm); 
+  pcout<<buffer;
   pcout << "solve wall time: " << time.wall_time() << "s\n";
 }
   
