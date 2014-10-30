@@ -41,6 +41,8 @@ private:
   //matrix free objects
   MatrixFree<dim,double>      data;
   vectorType invM;
+  void mark_boundaries();
+  void  apply_dirichlet_bcs();
   void setup_matrixfree ();
   void vmult (vectorType &dst, const vectorType &src) const;
   void updateRHS();
@@ -78,7 +80,12 @@ void MechanicsProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
     
     //read U values for this cell
     vals.reinit (cell); 
-    vals.read_dof_values(src); 
+    if (updateRHSValue){
+      vals.read_dof_values_plain(src);  
+    }
+    else{
+      vals.read_dof_values(src); 
+    }
     vals.evaluate (false,true,false); 
     
     //loop over quadrature points
@@ -91,8 +98,9 @@ void MechanicsProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
 	  for (unsigned int k=0; k<dim; k++)
 	    for (unsigned int l=0; l<dim; l++){
 	      if (updateRHSValue) {	
-		double value= 2.0*(0.5 - (double)(std::rand() % 100 )/100.0);
-		Cux[1,i][1,j] += CijklV*((double) (k==l))*make_vectorized_array(-1.0e-3*value);
+		//value= 2.0*(0.5 - (double)(std::rand() % 100 )/100.0);		
+		//Cux[1,i][1,j] += CijklV*((double) (k==l))*make_vectorized_array(-1.0e-3*value);
+		Cux[1,i][1,j] += -CijklV*ux[1,k][1,l];
 	      }
 	      else{
 		Cux[1,i][1,j] += CijklV*ux[1,k][1,l];
@@ -121,6 +129,12 @@ template <int dim>
 void MechanicsProblem<dim>::vmult (vectorType &dst, const vectorType &src) const{
   dst=0.0;
   data.cell_loop (&MechanicsProblem::computeRHS, this, dst, src);
+
+  //Account for dirichlet BC's
+  const std::vector<unsigned int> &
+    constrained_dofs = data.get_constrained_dofs();
+  for (unsigned int i=0; i<constrained_dofs.size(); ++i)
+    dst(constrained_dofs[i]) += src(constrained_dofs[i]);
 }
 
 //setup matrixfree data structures
@@ -180,9 +194,9 @@ void MechanicsProblem<dim>::setup_system ()
   constraints.clear();
   constraints.reinit (locally_relevant_dofs);
   DoFTools::make_hanging_node_constraints (dof_handler, constraints);
-  
-  //FIXME: Check Dirichlet BC
-  VectorTools::interpolate_boundary_values (dof_handler, 0, ZeroFunction<dim>(dim), constraints);
+  //apply Dirichlet BC's
+  mark_boundaries();
+  apply_dirichlet_bcs();
   constraints.close();
   pcout << "num of constraints:" << constraints.n_constraints() << "\n";
   setup_time += time.wall_time();
@@ -200,7 +214,6 @@ void MechanicsProblem<dim>::setup_system ()
   P.reinit(U);
   H.reinit(U);  
 
-  pcout << "size:" << U.size() << "/n";
   //initial Condition
   U=0.0;
   
@@ -215,7 +228,7 @@ void MechanicsProblem<dim>::cgSolve(vectorType &x, const vectorType &b){
   char buffer[250];
   Timer time; double t=0, t1;
   double rtol=1.0e-10, rtolAbs=1.0e-15, utol=1.0e-6;
-  unsigned int maxIterations=1000, iterations=0;
+  unsigned int maxIterations=maxCGIterations, iterations=0;
   double res, res0, resOld;
   if (!x.all_zero()){
     //R=Ax-b
@@ -253,6 +266,7 @@ void MechanicsProblem<dim>::cgSolve(vectorType &x, const vectorType &b){
     P.sadd(beta,-1.0,R);
     iterations++;
   }
+  sprintf(buffer,"Exceeded maximum CG iterations: %u. Consider increasing maxCGIterations in parameters.h\n",maxCGIterations); pcout<<buffer;
   sprintf(buffer,"Res:%12.6e, incs:%u\n", res, iterations); pcout<<buffer;
 }
 
@@ -296,7 +310,7 @@ void MechanicsProblem<dim>::output_results (const unsigned int cycle)
       std::ofstream master_output ((filename + ".pvtu").c_str());
       data_out.write_pvtu_record (master_output, filenames);
     }
-  pcout << "Output written to:" << filename.c_str() << "\n\n";
+  pcout << "Output written to:" << filename.c_str() << "\n\n" << std::flush;
 }
 
 
@@ -321,7 +335,7 @@ void MechanicsProblem<dim>::run ()
   //Loop over time steps
   for (increment=1; increment<=numIncrements; ++increment)
     {
-      pcout << "\nTime increment:" << increment  << ", Wall time: " << time.wall_time() << "s\n";
+      pcout << "\nTime increment:" << increment  << ", Wall time: " << time.wall_time() << "s\n" << std::flush;
       //call solve method
       solve ();
       //write results to file

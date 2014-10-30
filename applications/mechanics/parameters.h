@@ -1,14 +1,14 @@
 //Parameter list for Mechanics (infinitesimal strain) problem
 
 //define problem dimensions
-#define problemDIM 2
+#define problemDIM 3
 #define spanX 100.0
 #define spanY 100.0
 #define spanZ 100.0
 
 //define mesh parameters
-#define refineFactor 6
-#define finiteElementDegree 2
+#define refineFactor 4
+#define finiteElementDegree 1
 
 //define time step parameters
 #define numIncrements 1
@@ -16,6 +16,9 @@
 //define results output parameters
 #define writeOutput true
 #define skipOutputSteps 1
+
+//define solver paramters
+#define maxCGIterations 5000
 
 //define material properties
 #define Ev 1.0
