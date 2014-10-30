@@ -435,10 +435,13 @@ template <int dim>
 void PrecipitateProblem<dim>::output_results (const unsigned int cycle)
 {
   //apply constraints
-  constraints.distribute (C);
-  for (unsigned int i=0; i<numStructuralOrderParameters; i++)
+  constraints.distribute (C); C.update_ghost_values();
+  for (unsigned int i=0; i<numStructuralOrderParameters; i++){
     constraints.distribute (N[i]);
+    N[i].update_ghost_values();
+  }
   constraintsU.distribute (U);
+  U.update_ghost_values();
   //Create DataOut object
   DataOut<dim> data_out;
   std::vector<DataComponentInterpretation::DataComponentInterpretation> dataType(1, DataComponentInterpretation::component_is_scalar);

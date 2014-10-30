@@ -285,6 +285,7 @@ template <int dim>
 void MechanicsProblem<dim>::output_results (const unsigned int cycle)
 {
   constraints.distribute (U);
+  U.update_ghost_values();
   DataOut<dim> data_out;
   data_out.attach_dof_handler (dof_handler);
   //data_out.add_data_vector (U, "u");

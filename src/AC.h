@@ -191,7 +191,9 @@ void AllenCahnProblem<dim>::solve ()
   updateRHS(); 
   for (unsigned int j=0; j<N.local_size(); ++j)
     N.local_element(j)=invM.local_element(j)*residualN.local_element(j);
-  
+  char buffer[100];
+  sprintf(buffer,"RHS norm for explicit solve: %12.6e\n", residualN.l2_norm()); 
+  pcout << buffer;
   pcout << "solve wall time: " << time.wall_time() << "s\n";
 }
   
@@ -200,6 +202,7 @@ template <int dim>
 void AllenCahnProblem<dim>::output_results (const unsigned int cycle)
 {
   constraints.distribute (N);
+  N.update_ghost_values();
   DataOut<dim> data_out;
   data_out.attach_dof_handler (dof_handler);
   data_out.add_data_vector (N, "eta");

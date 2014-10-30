@@ -254,8 +254,11 @@ template <int dim>
 void CoupledCHACProblem<dim>::output_results (const unsigned int cycle)
 {
   constraints.distribute (C);
-  for (unsigned int i=0; i<numStructuralOrderParameters; i++)
+  C.update_ghost_values();
+  for (unsigned int i=0; i<numStructuralOrderParameters; i++){
     constraints.distribute (N[i]);
+    N[i].update_ghost_values();
+  }
   DataOut<dim> data_out;
   data_out.attach_dof_handler (dof_handler);
   data_out.add_data_vector (C, "c");
