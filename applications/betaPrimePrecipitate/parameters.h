@@ -12,7 +12,7 @@
 #define finiteElementDegree 1
 
 //define time step parameters
-#define dt 1.0e-3
+#define dt 1.0e-4
 #define numIncrements 20000
 
 //define solver tolerances

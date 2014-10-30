@@ -24,15 +24,26 @@ Installation and Use:
      Download: http://www.dealii.org/download.html
      Detailed instructions: http://www.dealii.org/8.1.0/readme.html
       
-  2) Running phaseField applications, for example cahnHilliard 
+  2) Download phaseField repository from GitHub
+  $ git clone git@github.com:prisms-center/phaseField.git
+    
+  [Note: phaseField is currently a private repository on GitHub and hence you need to 
+  be authorised to access the repository. Contact the developers/Mailing-List for requesting 
+  access.] 
+   
+  3) Running phaseField applications, for example cahnHilliard 
   $ cd applications/cahnHilliard
   $ cmake CMakeLists.txt
-  $ make
-  For serial runs:
+  For debug mode [default mode]:
+  $ make debug
+  For optimized mode:
+  $ make release 
+  Execution (serial runs):
   $ make run
-  For parallel runs:
+  Execution (parallel runs):
   $ mpiexec -np nprocs ./main
-
+  [here nprocs denotes the number of processors]
+  
 
 Getting started:
 
