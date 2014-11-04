@@ -56,7 +56,7 @@
 
 \section{Parameters}
 \paragraph{}
-This section describes the model parameters that the user can access through the \texttt{parameters.h} file in each application folder.  These can be divided between model-specific parameters and those generic to all models, and there are three categories of model-specific parameters: constant coefficients and tensors, bulk free energy functions, and residuals.  In the context of their model, constant coefficients are self-explanatory.  Bulk free energy functions and their derivatives are incorporated as functions of the phase field variables, usually instantiated in the code as \texttt{n} or \texttt{c}.  All of the examples and defaults use polynomial free energies, and their derivatives are found symbolically.  Non-polynomial functions could be implemented, but are not supported at this time.  Residuals are used directly in evolution.  Changing them is not recommended unless the user is comfortable with deal.ii and the PRISMS framework.
+This section describes the model parameters that the user can access through the \texttt{parameters.h} file in each application folder.  These can be divided between model-specific parameters and those generic to all models, and there are three categories of model-specific parameters: constant coefficients and tensors, bulk free energy functions, and residuals.  In the context of their model, constant coefficients are self-explanatory.  Bulk free energy functions and their derivatives are incorporated as functions of the phase field variables, usually instantiated in the code as \texttt{n} or \texttt{c}.  All of the examples and defaults use polynomial free energies, and their derivatives must be supplied by the user.  Non-polynomial functions could be implemented, but are not supported at this time.  Residuals are used directly in evolution.  Changing them is not recommended unless the user is comfortable with deal.ii and the PRISMS framework.
 \subsection{Generic Parameters}
 \begin{itemize}
 \item \texttt{problemDIM} \\
@@ -74,7 +74,7 @@ This section describes the model parameters that the user can access through the
 \item \texttt{dt} \\
 	The simulation timestep.
 \item \texttt{numIncrements} \\
-	The number of simulation iterations.  Final time is then \texttt{dt}$\cdot$\texttt{numIncrements}.
+	The number of simulation time steps.  Final time is then \texttt{dt}$\cdot$\texttt{numIncrements}.
 \item \texttt{writeOutput} \\
 	Whether we are writing any output.  Takes a boolean argument, e.g. \texttt{true}.
 \item \texttt{skipOutputSteps} \\
@@ -87,19 +87,20 @@ This section describes the model parameters that the user can access through the
 Parameters for Cahn-Hilliard are defined as follows:
 Given the evolution equation (Refer to formulation.pdf):
 \begin{equation}
-\frac{\partial c}{\partial t} = \nabla M_c \cdot \nabla \left( f'(c) - \epsilon_c^2 \nabla^2 c \right) = \nabla M_c \cdot \nabla \mu
+\frac{\partial c}{\partial t} = \nabla M_c \cdot \nabla \left( f'(c) - \kappa_c^2 \nabla^2 c \right) = \nabla M_c \cdot \nabla \mu
+\label{eqCahnHilliard}
 \end{equation}
 \begin{itemize}
 \item \texttt{Mc} \\
 	Cahn-Hilliard mobility parameter $M_c$ in Eq. 1.
 \item \texttt{Kc} \\
-	Square of the Cahn-Hilliard gradient energy parameter, $\epsilon_c^2$ in Eq. 1.  (tensor form ????)
+	Square of the Cahn-Hilliard gradient energy parameter, $\kappa_c^2$ in Eq. 1.  (tensor form ????)
 \item \texttt{fcV} \\
-	First derivative of the Allen-Cahn bulk free energy $f(c)$, where $c$ is represented in code by \texttt{n}.  The default for $f(c)$ is the same double well 			potential (Eq. 2) as in Allen-Cahn, now in $c$.
+	First derivative of the Allen-Cahn bulk free energy $f(c)$, where $c$ is represented in code by \texttt{n}.  The default for $f(c)$ is the same double well potential as in Allen-Cahn, now in $c$.
 	\[ f(c) = c^2 (1-c)^2 \]
 	\[ f'(c) = 4c (c -1)(c - 1/2) \]
 \item Residuals \\
-	In the context of Eq. 3, we have
+	In the context of Eq. (\ref{eqCahnHilliard}), we have
 	\[ \texttt{rmuV} = f'(c) \]
 	\[ \texttt{rmuxV} = \nabla c \]
 	\[ \texttt{rcV} = c \]
@@ -119,7 +120,7 @@ double InitialConditionC<dim>::value (const Point<dim> &p, const unsigned int /*
 }
 \end{lstlisting}
 \paragraph{}
-Analytical functions of position can be generated from the members of the class \texttt{p}, e.g. \texttt{p.distance} or the $x$ and $y$ coordinates, \texttt{p[0]} and \texttt{p[1]}.  In the default cases,  the hyperbolic tangent of the signed distance from a circle or sphere is used.  In the following example, $\eta$ will be initialized into a sphere with radius=spanX/8, where $\eta=0.5$ at the boundary, $\eta \sim 1$ in the interior, and $\eta \sim 0$ outside.
+Analytical functions of position can be generated from the members of the class \texttt{Point}, e.g. \texttt{p.distance} or the $x$ and $y$ coordinates, \texttt{p[0]} and \texttt{p[1]} (see deal.ii documentation for more information about the class \texttt{Point}).  In the default cases,  the hyperbolic tangent of the signed distance from a circle or sphere is used.  In the following example, $\eta$ will be initialized into a sphere with radius=spanX/8, where $\eta=0.5$ at the boundary, $\eta \sim 1$ in the interior, and $\eta \sim 0$ outside.
 \begin{lstlisting}
 template <int dim>
 double InitialConditionN<dim>::value (const Point<dim> &p, const unsigned int /* component */) const
@@ -151,7 +152,7 @@ Boundary conditions are no-flux for the phase field evolution equations.  Implem
 %\end{itemize}
 \noindent
 \begin{lstlisting}[language=bash]
-  $ make CMakeLists.txt
+  $ cmake CMakeLists.txt
   $ make
   For serial runs:
   $ make run
