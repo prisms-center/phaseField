@@ -54,7 +54,7 @@
 
 \section{Parameters}
 \paragraph{}
-This section describes the model parameters that the user can access through the \texttt{parameters.h} file in each application folder.  These can be divided between model-specific parameters and those generic to all models, and there are three categories of model-specific parameters: constant coefficients and tensors, bulk free energy functions, and residuals.  In the context of their model, constant coefficients are self-explanatory.  Bulk free energy functions and their derivatives are incorporated as functions of the phase field variables, usually instantiated in the code as \texttt{n} or \texttt{c}.  All of the examples and defaults use polynomial free energies, and their derivatives are found symbolically.  Non-polynomial functions could be implemented, but are not supported at this time.  Residuals are used directly in evolution.  Changing them is not recommended unless the user is comfortable with deal.ii and the PRISMS framework.
+This section describes the model parameters that the user can access through the \texttt{parameters.h} file in each application folder.  These can be divided between model-specific parameters and those generic to all models, and there are three categories of model-specific parameters: constant coefficients and tensors, bulk free energy functions, and residuals.  In the context of their model, constant coefficients are self-explanatory.  Bulk free energy functions and their derivatives are incorporated as functions of the phase field variables, usually instantiated in the code as \texttt{n} or \texttt{c}.  All of the examples and defaults use polynomial free energies, and their derivatives must be supplied by the user.  Non-polynomial functions could be implemented, but are not supported at this time.  Residuals are used directly in evolution.  Changing them is not recommended unless the user is comfortable with deal.ii and the PRISMS framework.
 \subsection{Generic Parameters}
 \begin{itemize}
 \item \texttt{problemDIM} \\
@@ -72,11 +72,11 @@ This section describes the model parameters that the user can access through the
 \item \texttt{dt} \\
 	The simulation timestep.
 \item \texttt{numIncrements} \\
-	The number of simulation iterations.  Final time is then \texttt{dt}$\cdot$\texttt{numIncrements}.
+	The number of simulation time steps.  Final time is then \texttt{dt}$\cdot$\texttt{numIncrements}.
 \item \texttt{writeOutput} \\
 	Whether we are writing any output.  Takes a boolean argument, e.g. \texttt{true}.
 \item \texttt{skipOutputSteps} \\
-	Output will be written every \texttt{skipOutputSteps} iterations.  If \texttt{writeOutput} \texttt{true}, the initial conditions will always be written.
+	Output will be written every \texttt{skipOutputSteps} iterations.  If \texttt{writeOutput} is \texttt{true}, the initial conditions will always be written.
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -84,14 +84,17 @@ This section describes the model parameters that the user can access through the
 \subsection{\texttt{coupledCahnHilliardAllenCahn} Parameters}
 This application implements the following set of equations for a conserved order parameter, $c$, and one or more non-conserved (structural) order parameters $\eta$:
 \begin{equation}
-\frac{\partial \eta}{\partial t} = -M_\eta \left( \frac{\partial f(\eta,c)}{\partial \eta} - K_{ij} \nabla_i \nabla_j \eta \right)
+\frac{\partial \eta}{\partial t} = -M_\eta(p) \left( \frac{\partial f(\eta,c)}{\partial \eta} - \kappa_{ij}(p) \nabla_i \nabla_j \eta_p \right)
+\label{eqAllenCahn}
 \end{equation}
 \begin{equation}
 \frac{\partial c}{\partial t} = \nabla \cdot M_c \nabla \left( \frac{\partial f(\eta,c)}{\partial c} \right)
+\label{eqCahnHilliard}
 \end{equation}
-Since there is no gradient energy term in $c$, this might also be called a coupled Allen-Cahn/diffusion system.  From a finite element perspective, Eq. 5 is more tractable as
+Since there is no gradient energy term in $c$, this might also be called a coupled Allen-Cahn/diffusion system.  From a finite element perspective, Eq.~(\ref{eqCahnHilliard}) is more tractable as
 \begin{equation}
 \frac{\partial c}{\partial t} = \nabla \cdot M_c \left( \frac{\partial^2 f(\eta,c)}{\partial c^2} \nabla c + \frac{\partial^2 f(\eta,c)}{\partial \eta \partial c } \nabla \eta \right)
+\label{eqCahnHilliardFE}
 \end{equation}
 \begin{itemize}
 \item \texttt{numStructuralOrderParameters}\\
@@ -99,27 +102,27 @@ Since there is no gradient energy term in $c$, this might also be called a coupl
 \item \texttt{Mc} \\
 	$M_c$, mobility of the conserved order parameter $c$.
 \item \texttt{MnVals} \\
-	$M_\eta$, mobility of the non-conserved order parameter $\eta$.  This is an array with \texttt{numStructuralOrderParameters} elements, each corresponding to an order parameter.
+	$M_\eta(p)$, mobilities of the non-conserved order parameters $\eta_p$.  This is an array with \texttt{numStructuralOrderParameters} elements, each corresponding to an order parameter.
 \item \texttt{KnVals} \\
-	$K_\eta$, gradient energy coefficients $K$ of the non-conserved order parameter $\eta$.  Again, an array with \texttt{numStructuralOrderParameters} elements, each corresponding to an order parameter.
+	Gradient energy coefficients $\kappa_{ij}(p)$ of the non-conserved order parameters $\eta_p$.  $\kappa{ij}(p)$ is a 9-element array for each order parameter, corresponding to the entries of a second rank tensor.
 \end{itemize}
 \paragraph{}
-The free energy $f(\eta,c)$ is composed of free energies $f_\alpha(c)$ and $f_\beta(c)$ for the phases corresponding to $\eta=1$ and $\eta=0$, and an interpolating function $h(\eta)$.  The default case uses free energies for a Mg-Gd system:
+The free energy $f(\eta,c)$ is composed of free energies $f_\alpha(c)$ and $f_\beta(c)$ for the phases corresponding to $\eta=0$ and $\eta=1$, and an interpolating function $h(\eta)$.  The default case uses free energies for a Mg-Gd system:
 \begin{equation}
 f_\alpha(c)=-1.6704 -4.776 c+5.1622 c^2 -2.7375 c^3 +1.3687 c^4
 \end{equation}
 \begin{equation}
 f_\beta(c)=-1.5924 -5.9746 c+5.0 c^2
 \end{equation}
-These free energies should be in the form of a polynomial for this application.  An interpolation function for a single order parameter should satisfy $h(0)=1$, $h'(0)=0$, $h(1)=1$, and $h'(1)=0$, for example:
+These free energies should be in the form of a polynomial for this application.  An interpolation function for a single order parameter should satisfy $h(0)=0$, $h'(0)=0$, $h(1)=1$, and $h'(1)=0$, for example:
 \begin{equation}
 h(\eta)= \eta^3 (10 - 15 \eta + 6 \eta^2)
 \end{equation}
 The full bulk free energy (for $n$ structural order parameters) is then:
 \begin{equation}
-f(\eta, c)= f_\alpha(c) \sum_{i=1}^n (1-h(\eta_i)) + f_\beta(c) \sum_{i=1}^n h(\eta_i)
+f(\eta, c)= f_\alpha(c) \sum_{p=1}^n (1-h(\eta_p)) + f_\beta(c) \sum_{p=1}^n h(\eta_p)
 \end{equation}
-Equations (7-9) and their derivatives are included in \texttt{parameters.h} as follows:
+Equations (\ref{eqAllenCahn})-(\ref{eqCahnHilliardFE}) and their derivatives are included in \texttt{parameters.h} as follows:
 \[ \texttt{faV} = f_\alpha(c) \]
 \[ \texttt{facV}  = f_\alpha'(c) \]
 \[ \texttt{faccV} = f_\alpha''(c) \]
@@ -129,7 +132,7 @@ Equations (7-9) and their derivatives are included in \texttt{parameters.h} as f
 \[ \texttt{hV} = h(\eta) \]
 \[ \texttt{hnV} = h'(\eta) \]
 \paragraph{}
-These free energy variables are incorporated into the residuals in the weak form of equations 4 and 6.
+These free energy variables are incorporated into the residuals in the weak form of equations (\ref{eqAllenCahn}) and (\ref{eqCahnHilliardFE}).
 \[ \texttt{rcxV} = \left( (1-h(\eta)) f_\alpha''(c) + h(\eta) f_\beta''(c) \right) \nabla c + h'(\eta)(f_\beta'(c)+f_\alpha'(c)) \nabla \eta \]
 \[ \texttt{rnV} =( f_\beta(c)-f_\alpha(c)) h'(\eta) \]
 \[ \texttt{rnxV} = \nabla \eta \]
@@ -148,7 +151,7 @@ double InitialConditionC<dim>::value (const Point<dim> &p, const unsigned int /*
 }
 \end{lstlisting}
 \paragraph{}
-Analytical functions of position can be generated from the members of the class \texttt{p}, e.g. \texttt{p.distance} or the $x$ and $y$ coordinates, \texttt{p[0]} and \texttt{p[1]}.  In the default cases,  the hyperbolic tangent of the signed distance from a circle or sphere is used.  In the following example, $\eta$ will be initialized into a sphere with radius=spanX/8, where $\eta=0.5$ at the boundary, $\eta \sim 1$ in the interior, and $\eta \sim 0$ outside.
+Analytical functions of position can be generated from the members of the class \texttt{Point}, e.g. \texttt{p.distance} or the $x$ and $y$ coordinates, \texttt{p[0]} and \texttt{p[1]} (see deal.ii documentation for more information about the class \texttt{Point}).  In the default cases,  the hyperbolic tangent of the signed distance from a circle or sphere is used.  In the following example, $\eta$ will be initialized into a sphere with radius=spanX/8, where $\eta=0.5$ at the boundary, $\eta \sim 1$ in the interior, and $\eta \sim 0$ outside.
 \begin{lstlisting}
 template <int dim>
 double InitialConditionN<dim>::value (const Point<dim> &p, const unsigned int /* component */) const
@@ -167,5 +170,25 @@ This example requires that \texttt{problemDIM}=3.  In the actual applications (e
 \section{Boundary Conditions}
 \paragraph{}
 Boundary conditions are no-flux for the phase field evolution equations.  Implementation of alternate boundary conditions is an objective for future releases.
+
+\section{Usage}
+\paragraph{}
+%\begin{itemize}
+%$ cmake CMakeLists.txt \\
+%$ make \\
+%For serial runs: \\
+%$ make run \\
+%For parallel runs: \\
+%$ mpiexec -np nprocs ./main
+%\end{itemize}
+\noindent
+\begin{lstlisting}[language=bash]
+  $ cmake CMakeLists.txt
+  $ make
+  For serial runs:
+  $ make run
+  For parallel runs:
+  $ mpiexec -np nprocs ./main
+\end{lstlisting}
 
 \end{document}
