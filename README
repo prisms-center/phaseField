@@ -1,6 +1,6 @@
-What is phaseField@PRISMS?
+What is phaseField_PRISMS?
 
-  phaseField@PRISMS is a C++ code implementing various phase field and mechanics models
+  phaseField_PRISMS is a C++ code implementing various phase field and mechanics models
   and its applications to some physical problems (spinodal decomposition,
   precipitate growth, coupled transport+mechanics, etc)
 
