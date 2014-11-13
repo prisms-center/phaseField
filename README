@@ -24,10 +24,11 @@ Installation and Use:
      Download: http://www.dealii.org/download.html
      Detailed instructions: http://www.dealii.org/8.1.0/readme.html
       
-  2) Download phaseField repository from GitHub
-  $ git clone git@github.com:prisms-center/phaseField.git
+  2) Fork the repo on GitHub (How to fork: https://help.github.com/articles/fork-a-repo/) and 
+  clone the phaseField repository using your GitHub username:
+  $ git clone git@github.com:username/phaseField.git 
   (OR)
-  $ git clone https://github.com/prisms-center/phaseField.git  
+  $ git clone https://github.com/username/phaseField.git  
   [Note: phaseField is currently a private repository on GitHub and hence you need to 
   be authorised to access the repository. Contact the developers/Mailing-List for requesting access] 
    
@@ -69,15 +70,13 @@ License:
 
   Please see the file LICENSE for details
 
-
 Mailing List:
-
-  phaseField_PRISMS@umich.edu  
-
+  
+  PRISMS.phaseField@umich.edu
 
 Further information, questions, issues and bugs:
 
-  Contact the phaseField mailing list at phaseField_PRISMS@umich.edu  
+  Contact the phaseField mailing list at PRISMS.phaseField@umich.edu  
 
 
 
