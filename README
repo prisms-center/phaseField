@@ -24,7 +24,8 @@ Installation and Use:
      Download: http://www.dealii.org/download.html
      Detailed instructions: http://www.dealii.org/8.1.0/readme.html
       
-  2) Fork the repo on GitHub (How to fork: https://help.github.com/articles/fork-a-repo/) and 
+  2) Fork the repo https://github.com/prisms-center/phaseField on GitHub 
+  (How to fork: https://help.github.com/articles/fork-a-repo/) and 
   clone the phaseField repository using your GitHub username:
   $ git clone git@github.com:username/phaseField.git 
   (OR)
@@ -45,6 +46,11 @@ Installation and Use:
   $ mpiexec -np nprocs ./main
   [here nprocs denotes the number of processors]
   
+  4) Updates: Since phaseField code is still under active development, regular code and documentation 
+  updates are pushed to the upstream repo (https://github.com/prisms-center/phaseField) and we strongly 
+  recommend users to synchronize their respective forks at regular intervals or when requested to do so 
+  by the developers through the announcements on the mailing list
+  (How to sync: https://help.github.com/articles/syncing-a-fork/)    
 
 Getting started:
 
