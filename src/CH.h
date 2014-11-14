@@ -1,4 +1,7 @@
 //Matrix Free implementation of Cahn-Hilliard spinodal decomposition mixed (split) formulation 
+#ifndef CH_H
+#define CH_H
+
 //general headers
 #include <fstream>
 #include <sstream>
@@ -289,3 +292,4 @@ void CahnHilliardProblem<dim>::run ()
   pcout << "PerInc time    "  << time.wall_time()/numIncrements << "s" << std::endl; 
 }
 
+#endif

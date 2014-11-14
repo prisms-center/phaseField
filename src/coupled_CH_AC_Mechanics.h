@@ -1,4 +1,7 @@
 //Matrix Free implementation of Precipitate evolution (Coupled CH+AC+Mechanics) equations
+#ifndef COUPLEDCH_AC_MECHANICS_H
+#define COUPLEDCH_AC_MECHANICS_H
+
 //general headers
 #include <fstream>
 #include <sstream>
@@ -505,3 +508,4 @@ void PrecipitateProblem<dim>::run ()
   pcout << "PerInc time    "  << time.wall_time()/numIncrements << "s" << std::endl; 
 }
 
+#endif

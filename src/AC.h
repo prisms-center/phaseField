@@ -1,4 +1,7 @@
 //Matrix Free implementation of Allen-Cahn formulation 
+#ifndef AC_H
+#define AC_H
+
 //general headers
 #include <fstream>
 #include <sstream>
@@ -258,3 +261,4 @@ void AllenCahnProblem<dim>::run ()
   pcout << "PerInc time    "  << time.wall_time()/numIncrements << "s" << std::endl; 
 }
 
+#endif

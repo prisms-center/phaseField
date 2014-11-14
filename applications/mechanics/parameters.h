@@ -21,10 +21,7 @@
 #define maxCGIterations 5000
 
 //define material properties
-#define Ev 1.0
-#define nuV 0.3
-#define muV (Ev/(2*(1+nuV)))
-#define lambdaV (nuV*Ev/((1+nuV)*(1-2*nuV))) 
-#define CijklV (muV*((i==k)*(j==l)+(i==l)*(j==k))+lambdaV*(i==j)*(k==l))
+#define MaterialModelv ISOTROPIC
+#define MaterialConstantsv {1.0,0.3}
 
 

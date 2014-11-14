@@ -1,7 +1,13 @@
 //Matrix Free implementation of infinitesimal strain mechanics
+#ifndef MECHANICS_H
+#define MECHANICS_H
+
 //general headers
 #include <fstream>
 #include <sstream>
+
+//material models
+#include "elasticityModels.h"
 
 //Code specific initializations.  
 typedef dealii::parallel::distributed::Vector<double> vectorType;
@@ -38,6 +44,9 @@ private:
   unsigned int                     increment;
   ConditionalOStream               pcout;
 
+  //elasticity matrix
+  Table<2, double> CIJ;
+
   //matrix free objects
   MatrixFree<dim,double>      data;
   vectorType invM;
@@ -62,8 +71,12 @@ MechanicsProblem<dim>::MechanicsProblem ()
   triangulation (MPI_COMM_WORLD),
   fe (FE_Q<dim>(QGaussLobatto<1>(finiteElementDegree+1)),dim),
   dof_handler (triangulation),
-  pcout (std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0)
-{}
+  pcout (std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0),
+  CIJ(2*dim-1+dim/3,2*dim-1+dim/3)
+{
+  double materialConstants[]=MaterialConstantsv;
+  getCIJMatrix<dim>(MaterialModelv, materialConstants, CIJ, pcout);
+}
 
 //RHS and Matrix-vector product computation
 template <int dim>
@@ -92,20 +105,51 @@ void MechanicsProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
     for (unsigned int q=0; q<vals.n_q_points; ++q){
       Tensor<1, dim, gradType> ux = vals.get_gradient(q);
       Tensor<1, dim, gradType> Cux;
-      //compute C_(ijkl)*u_(k,l). Using minor symmetry of C tensor, C_(ijkl)=C_(ijlk).
-      for (unsigned int i=0; i<dim; i++)
-	for (unsigned int j=0; j<dim; j++)
-	  for (unsigned int k=0; k<dim; k++)
-	    for (unsigned int l=0; l<dim; l++){
-	      if (updateRHSValue) {	
-		//value= 2.0*(0.5 - (double)(std::rand() % 100 )/100.0);		
-		//Cux[1,i][1,j] += CijklV*((double) (k==l))*make_vectorized_array(-1.0e-3*value);
-		Cux[1,i][1,j] += -CijklV*ux[1,k][1,l];
-	      }
-	      else{
-		Cux[1,i][1,j] += CijklV*ux[1,k][1,l];
-	      }
-	    }
+      //compute strain (E), stress (S) and residual (R = S)
+#if problemDIM==3
+      dealii::VectorizedArray<double> S[6], E[6], R[3][3];
+      E[0]=ux[1,0][1,0]; E[1]=ux[1,1][1,1]; E[2]=ux[1,2][1,2];
+      E[3]=ux[1,1][1,2]+ux[1,2][1,1];
+      E[4]=ux[1,0][1,2]+ux[1,2][1,0];
+      E[5]=ux[1,0][1,1]+ux[1,1][1,0];
+      for (unsigned int i=0; i<6; i++){
+	S[i]=0.0;
+	for (unsigned int j=0; j<6; j++){
+	  S[i]+=CIJ(i,j)*E[j];
+	}
+      }
+      R[0][0]=S[0]; R[1][1]=S[1]; R[2][2]=S[2];
+      R[1][2]=S[3]; R[0][2]=S[4]; R[0][1]=S[5];
+      R[2][1]=S[3]; R[2][0]=S[4]; R[1][0]=S[5];     
+#elif problemDIM==2
+      dealii::VectorizedArray<double> S[3], E[3], R[2][2];
+      E[0]=ux[1,0][1,0]; E[1]=ux[1,1][1,1]; 
+      E[2]=ux[1,0][1,1]+ux[1,1][1,0];
+      for (unsigned int i=0; i<3; i++){
+	S[i]=0.0;
+	for (unsigned int j=0; j<3; j++){
+	  S[i]+=CIJ(i,j)*E[j];
+	}
+      }
+      R[0][0]=S[0]; R[1][1]=S[1]; 
+      R[0][1]=S[2]; R[1][0]=S[2]; 
+#elif problemDIM==1
+      dealii::VectorizedArray<double> S[1], E[1], R[1][1];
+      E[0]=ux[1,0]; 
+      S[0]=CIJ(0,0)*E[0];
+      R[0][0]=S[0];
+#endif			       
+      //Fill residual
+      for (unsigned int i=0; i<dim; i++){
+	for (unsigned int j=0; j<dim; j++){
+	  if (updateRHSValue) {	
+	    Cux[1,i][1,j] = -R[i][j];
+	  }
+	  else{
+	    Cux[1,i][1,j] =  R[i][j];
+	  }
+	}
+      }
       //compute residuals
       vals.submit_gradient(Cux,q);
     }
@@ -346,3 +390,4 @@ void MechanicsProblem<dim>::run ()
   pcout << "PerInc time    "  << time.wall_time()/numIncrements << "s" << std::endl; 
 }
 
+#endif

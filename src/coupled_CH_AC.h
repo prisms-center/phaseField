@@ -1,4 +1,7 @@
 //Matrix Free implementation of the coupled CH+AC equations
+#ifndef COUPLEDCH_AC_H
+#define COUPLEDCH_AC_H
+
 //general headers
 #include <fstream>
 #include <sstream>
@@ -318,3 +321,4 @@ void CoupledCHACProblem<dim>::run ()
   pcout << "PerInc time    "  << time.wall_time()/numIncrements << "s" << std::endl; 
 }
 
+#endif
