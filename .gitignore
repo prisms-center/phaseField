@@ -27,6 +27,8 @@
 
 #Temporary files
 *~
+*#
+*.#
 
 #CMAKE files
 *.cmake
