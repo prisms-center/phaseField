@@ -148,10 +148,11 @@ void MechanicsProblem<dim>::vmult (vectorType &dst, const vectorType &src) const
   data.cell_loop (&MechanicsProblem::computeRHS, this, dst, src);
 
   //Account for dirichlet BC's
-  const std::vector<unsigned int> &
-    constrained_dofs = data.get_constrained_dofs();
-  for (unsigned int i=0; i<constrained_dofs.size(); ++i)
-    dst(constrained_dofs[i]) += src(constrained_dofs[i]);
+  const std::vector<unsigned int>& constrained_dofs = data.get_constrained_dofs();
+  for (unsigned int i=0; i<constrained_dofs.size(); ++i){
+    unsigned int index=data.get_vector_partitioner()->local_to_global(constrained_dofs[i]);
+    dst(index) += src(index);
+  }
 }
 
 //setup matrixfree data structures
