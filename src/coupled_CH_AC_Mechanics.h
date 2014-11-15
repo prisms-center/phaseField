@@ -6,9 +6,6 @@
 #include <fstream>
 #include <sstream>
 
-//material models
-#include "elasticityModels.h"
-
 //Code specific initializations.  
 typedef dealii::parallel::distributed::Vector<double> vectorType;
 #if problemDIM==1
@@ -16,6 +13,11 @@ typedef dealii::VectorizedArray<double> gradType;
 #else 
 typedef dealii::Tensor<1, problemDIM, dealii::VectorizedArray<double> > gradType;
 #endif 
+
+//material models
+#include "elasticityModels.h"
+#include "computeStress.h"
+
 
 using namespace dealii;
 
@@ -104,7 +106,8 @@ PrecipitateProblem<dim>::PrecipitateProblem ()
   dof_handlerU (triangulation),
   N(numStructuralOrderParameters), 
   residualN(numStructuralOrderParameters),
-  pcout (std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0)
+  pcout (std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0),
+  CIJ(2*dim-1+dim/3,2*dim-1+dim/3)
 {
   //get elasticity matrix
   double materialConstants[]=MaterialConstantsv;
@@ -156,7 +159,7 @@ void PrecipitateProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
     valU.reinit (cell); 
     valU.read_dof_values(*src[numStructuralOrderParameters+1]); 
     valU.evaluate (false,true,false); 
-   
+    
     //loop over quadrature points
     for (unsigned int q=0; q<vals[0]->n_q_points; ++q){
       //fill c,n values
@@ -170,20 +173,36 @@ void PrecipitateProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
       Tensor<1, dim, gradType> ux = valU.get_gradient(q);     
       //submit u values
       Tensor<1, dim, gradType> Cux;
-      //compute C_(ijkl)*u_(k,l). Using minor symmetry of C tensor, C_(ijkl)=C_(ijlk).
+      
+      //compute stress
+      dealii::VectorizedArray<double> E[dim][dim], R[dim][dim];
+      //compute cumulative stress free strain
+      for (unsigned int i=0; i<dim; i++){
+	for (unsigned int j=0; j<dim; j++){
+	  E[i][j]= sf0Strain[i][j]*h0V+sf1Strain[i][j]*h1V+sf2Strain[i][j]*h2V;
+	}
+      }
+      //compute C*E
+      computeStress<dim>(CIJ, E, R);
+      for (unsigned int i=0; i<dim; i++){
+	for (unsigned int j=0; j<dim; j++){
+	  Cux[1,i][1,j] = R[i][j];
+	}
+      }
+      valU.submit_gradient(Cux,q);
+      //compute C*ux
       VectorizedArray<double> CEE0=make_vectorized_array(0.0);
       VectorizedArray<double> CEE1=make_vectorized_array(0.0);
       VectorizedArray<double> CEE2=make_vectorized_array(0.0);
-      for (unsigned int i=0; i<dim; i++)
-	for (unsigned int j=0; j<dim; j++)
-	  for (unsigned int k=0; k<dim; k++)
-	    for (unsigned int l=0; l<dim; l++){
-	      Cux[1,i][1,j] += CijklV*(sf0Strain[k][l]*h0V+sf1Strain[k][l]*h1V+sf2Strain[k][l]*h2V);
-	      CEE0+=CijklV*ux[1,i][1,j]*sf0Strain[k][l];
-	      CEE1+=CijklV*ux[1,i][1,j]*sf1Strain[k][l];
-	      CEE2+=CijklV*ux[1,i][1,j]*sf2Strain[k][l];
-	    }
-      valU.submit_gradient(Cux,q);
+      computeStress<dim>(CIJ, ux, R);
+      for (unsigned int i=0; i<dim; i++){
+	for (unsigned int j=0; j<dim; j++){
+	  CEE0+=R[i][j]*sf0Strain[i][j];
+	  CEE1+=R[i][j]*sf1Strain[i][j];
+	  CEE2+=R[i][j]*sf2Strain[i][j];	
+	}
+      }
+        
       //submit c, n values
       for (unsigned int i=0; i<numStructuralOrderParameters+1; i++){
 	if (i==0) vals[i]->submit_gradient(constCx*rcxV,q);
@@ -240,13 +259,15 @@ void PrecipitateProblem<dim>::computeAx (const MatrixFree<dim,double>  &data,
     for (unsigned int q=0; q<vals.n_q_points; ++q){
       Tensor<1, dim, gradType> ux = vals.get_gradient(q);
       Tensor<1, dim, gradType> Cux;
-      //compute C_(ijkl)*u_(k,l). Using minor symmetry of C tensor, C_(ijkl)=C_(ijlk).
-      for (unsigned int i=0; i<dim; i++)
-	for (unsigned int j=0; j<dim; j++)
-	  for (unsigned int k=0; k<dim; k++)
-	    for (unsigned int l=0; l<dim; l++){
-	      Cux[1,i][1,j] += CijklV*ux[1,k][1,l];
-	    }
+      //compute stress
+      dealii::VectorizedArray<double> R[dim][dim];
+      computeStress<dim>(CIJ, ux, R);
+      //fill residual
+      for (unsigned int i=0; i<dim; i++){
+	for (unsigned int j=0; j<dim; j++){
+	  Cux[1,i][1,j] = R[i][j];
+	}
+      }
       //compute residuals
       vals.submit_gradient(Cux,q);
     }

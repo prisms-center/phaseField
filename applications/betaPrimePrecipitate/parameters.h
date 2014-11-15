@@ -31,19 +31,16 @@
 
 //define Allen-Cahn parameters
 #define MnVals {1.0,1.0,1.0}
-#define Kn0Tensor {4.0,0,0,0,1.0,0,0,0,1.0}
-#define Kn1Tensor {1.75,-1.299,0,-1.299,3.25,0,0,0,1.0}
-#define Kn2Tensor {1.75, 1.299,0, 1.299,3.25,0,0,0,1.0}
+#define Kn0Tensor {{4.0,0,0},{0,1.0,0},{0,0,1.0}}
+#define Kn1Tensor {{1.75,-1.299,0},{-1.299,3.25,0},{0,0,1.0}}
+#define Kn2Tensor {{1.75, 1.299,0},{1.299,3.25,0},{0,0,1.0}}
 
 //define Mechanical properties
-#define Ev 1.0
-#define nuV 0.3
-#define muV (Ev/(2*(1+nuV)))
-#define lambdaV (nuV*Ev/((1+nuV)*(1-2*nuV))) 
-#define CijklV (muV*((i==k)*(j==l)+(i==l)*(j==k))+lambdaV*(i==j)*(k==l))
-#define sf0StrainV {0.0345,0,0,0,0.0185,0,0,0,-0.00270}
-#define sf1StrainV {0.0225,-0.0069,0,-0.0069,0.0305,0,0,0,-0.00270}
-#define sf2StrainV {0.0225, 0.0069,0, 0.0069,0.0305,0,0,0,-0.00270}
+#define MaterialModelv ISOTROPIC
+#define MaterialConstantsv {1.0,0.3}
+#define sf0StrainV {{0.0345,0,0},{0,0.0185,0},{0,0,-0.00270}}
+#define sf1StrainV {{0.0225,-0.0069,0},{-0.0069,0.0305,0},{0,0,-0.00270}}
+#define sf2StrainV {{0.0225, 0.0069,0},{0.0069,0.0305,0},{0,0,-0.00270}}
 #define skipElasticitySteps 100
 
 //define free energy expressions

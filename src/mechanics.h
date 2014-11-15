@@ -109,7 +109,7 @@ void MechanicsProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
       Tensor<1, dim, gradType> Cux;
       //compute stress
       dealii::VectorizedArray<double> R[dim][dim];
-      computeStress(CIJ, ux, R);
+      computeStress<dim>(CIJ, ux, R);
 
       //fill residual
       for (unsigned int i=0; i<dim; i++){
