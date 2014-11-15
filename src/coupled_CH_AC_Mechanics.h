@@ -6,6 +6,9 @@
 #include <fstream>
 #include <sstream>
 
+//material models
+#include "elasticityModels.h"
+
 //Code specific initializations.  
 typedef dealii::parallel::distributed::Vector<double> vectorType;
 #if problemDIM==1
@@ -69,6 +72,9 @@ private:
   unsigned int                     increment;
   ConditionalOStream               pcout;
 
+  //elasticity matrix
+  Table<2, double> CIJ;
+
   //matrix free objects
   MatrixFree<dim,double>      data;
   vectorType invM;
@@ -100,6 +106,10 @@ PrecipitateProblem<dim>::PrecipitateProblem ()
   residualN(numStructuralOrderParameters),
   pcout (std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0)
 {
+  //get elasticity matrix
+  double materialConstants[]=MaterialConstantsv;
+  getCIJMatrix<dim>(MaterialModelv, materialConstants, CIJ, pcout);
+  //add solution vectors to output array
   solutions.push_back(&C); residuals.push_back(&residualC);
   for (unsigned int i=0; i<numStructuralOrderParameters; i++){
     solutions.push_back(&N[i]); residuals.push_back(&residualN[i]);

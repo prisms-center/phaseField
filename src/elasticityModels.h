@@ -4,7 +4,7 @@
 #include <deal.II/base/conditional_ostream.h>
 
 //Each material model is characterized by the number of independent
-//constants required to characterize its elasticity tensor in the Voight
+//constants required to characterize its elasticity tensor in the Voigt
 //notation
 
 //3D models:

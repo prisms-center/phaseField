@@ -6,16 +6,18 @@
 #include <fstream>
 #include <sstream>
 
-//material models
-#include "elasticityModels.h"
-
 //Code specific initializations.  
 typedef dealii::parallel::distributed::Vector<double> vectorType;
 #if problemDIM==1
 typedef dealii::VectorizedArray<double> gradType;
 #else 
 typedef dealii::Tensor<1, problemDIM, dealii::VectorizedArray<double> > gradType;
-#endif 
+#endif
+
+//material models
+#include "elasticityModels.h"
+#include "computeStress.h"
+ 
 
 using namespace dealii;
 
@@ -105,41 +107,11 @@ void MechanicsProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
     for (unsigned int q=0; q<vals.n_q_points; ++q){
       Tensor<1, dim, gradType> ux = vals.get_gradient(q);
       Tensor<1, dim, gradType> Cux;
-      //compute strain (E), stress (S) and residual (R = S)
-#if problemDIM==3
-      dealii::VectorizedArray<double> S[6], E[6], R[3][3];
-      E[0]=ux[1,0][1,0]; E[1]=ux[1,1][1,1]; E[2]=ux[1,2][1,2];
-      E[3]=ux[1,1][1,2]+ux[1,2][1,1];
-      E[4]=ux[1,0][1,2]+ux[1,2][1,0];
-      E[5]=ux[1,0][1,1]+ux[1,1][1,0];
-      for (unsigned int i=0; i<6; i++){
-	S[i]=0.0;
-	for (unsigned int j=0; j<6; j++){
-	  S[i]+=CIJ(i,j)*E[j];
-	}
-      }
-      R[0][0]=S[0]; R[1][1]=S[1]; R[2][2]=S[2];
-      R[1][2]=S[3]; R[0][2]=S[4]; R[0][1]=S[5];
-      R[2][1]=S[3]; R[2][0]=S[4]; R[1][0]=S[5];     
-#elif problemDIM==2
-      dealii::VectorizedArray<double> S[3], E[3], R[2][2];
-      E[0]=ux[1,0][1,0]; E[1]=ux[1,1][1,1]; 
-      E[2]=ux[1,0][1,1]+ux[1,1][1,0];
-      for (unsigned int i=0; i<3; i++){
-	S[i]=0.0;
-	for (unsigned int j=0; j<3; j++){
-	  S[i]+=CIJ(i,j)*E[j];
-	}
-      }
-      R[0][0]=S[0]; R[1][1]=S[1]; 
-      R[0][1]=S[2]; R[1][0]=S[2]; 
-#elif problemDIM==1
-      dealii::VectorizedArray<double> S[1], E[1], R[1][1];
-      E[0]=ux[1,0]; 
-      S[0]=CIJ(0,0)*E[0];
-      R[0][0]=S[0];
-#endif			       
-      //Fill residual
+      //compute stress
+      dealii::VectorizedArray<double> R[dim][dim];
+      computeStress(CIJ, ux, R);
+
+      //fill residual
       for (unsigned int i=0; i<dim; i++){
 	for (unsigned int j=0; j<dim; j++){
 	  if (updateRHSValue) {	

@@ -5,9 +5,8 @@ What is phaseField_PRISMS?
   (spinodal decomposition, precipitate growth, coupled
   transport+mechanics, etc)
 
-  It targeted at the computational solution of related partial
-  differential equations using the finite element method, and is build
-  on top of the deal.II finite element library (http://www.dealii.org)
+  It is a Finite Element Method (FEM) code and is build on top of the
+  deal.II open source finite element library (http://www.dealii.org)
   
   This code is developed by the PRedictive Integrated Structural
   Materials Science (PRISMS) Center at University of Michigan which is
@@ -93,7 +92,8 @@ Getting started:
 
 License:
 
-  Please see the file LICENSE for details
+  GNU Lesser General Public License (LGPL). Please see the file
+  LICENSE for details.
 
 Mailing List:
   

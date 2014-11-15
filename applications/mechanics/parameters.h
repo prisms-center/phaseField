@@ -20,7 +20,7 @@
 //define solver paramters
 #define maxCGIterations 5000
 
-//define material properties
+//define material properties 
 #define MaterialModelv ISOTROPIC
 #define MaterialConstantsv {1.0,0.3}
 
