@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include <deal.II/lac/solver_cg.h>
+#include <deal.II/lac/solver_gmres.h>
 #include <deal.II/lac/identity_matrix.h>
 
 //Code specific initializations.  
@@ -53,7 +54,6 @@ private:
 
   //matrix free objects
   MatrixFree<dim,double>      data;
-  vectorType invM;
   void mark_boundaries();
   void  apply_dirichlet_bcs();
   void setup_matrixfree ();
@@ -165,36 +165,6 @@ void MechanicsProblem<dim>::setup_matrixfree (){
   additional_data.mapping_update_flags = (update_gradients | update_JxW_values);
   QGaussLobatto<1> quadrature (finiteElementDegree+1);
   data.reinit (dof_handler, constraints, quadrature, additional_data);
-
-  //compute  invM
-  data.initialize_dof_vector (invM);
-  gradType one;
-#if problemDIM==1
-  one = make_vectorized_array (1.0);
-#else
-  for (unsigned int i=0; i<dim; i++)
-    one[1,i]=make_vectorized_array (1.0);
-#endif
-
-  //select gauss lobatto quad points which are suboptimal but give diogonal M 
-  FEEvaluationGL<dim,finiteElementDegree,dim,double> fe_eval(data);
-  const unsigned int            n_q_points = fe_eval.n_q_points;
-  for (unsigned int cell=0; cell<data.n_macro_cells(); ++cell)
-    {
-      fe_eval.reinit(cell);
-      for (unsigned int q=0; q<n_q_points; ++q)
-	fe_eval.submit_value(one,q);
-      fe_eval.integrate (true,false);
-      fe_eval.distribute_local_to_global (invM);
-    }
-  invM.compress(VectorOperation::add);
-  
-  //invert mass matrix diagonal elements
-  for (unsigned int k=0; k<invM.local_size(); ++k)
-    if (std::abs(invM.local_element(k))>1.0e-15)
-      invM.local_element(k) = 1./invM.local_element(k);
-    else
-      invM.local_element(k) = 0;
 }
 
 //setup
@@ -248,13 +218,13 @@ void MechanicsProblem<dim>::solve ()
   Timer time; 
   updateRHS(); 
   //cgSolve(U,residualU); 
-  SolverControl solver_control(2000, 1e-10*residualU.l2_norm());
-  SolverCG<vectorType> cg(solver_control);
+  SolverControl solver_control(maxSolverIterations, relSolverTolerance*residualU.l2_norm());
+  solverType<vectorType> cg(solver_control);
   try{
     cg.solve(*this, U, residualU, IdentityMatrix(U.size()));
   }
   catch (...) {
-    pcout << "\nWarning: solver did not converge as per set tolerances. consider increasing nsteps or changing tolerances.\n";
+    pcout << "\nWarning: solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing relSolverTolerance.\n";
   }
   char buffer[200];
   sprintf(buffer, "initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e\n", solver_control.initial_value(), solver_control.last_value(), solver_control.last_step(), solver_control.tolerance()); 

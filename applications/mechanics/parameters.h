@@ -18,7 +18,9 @@
 #define skipOutputSteps 1
 
 //define solver paramters
-#define maxCGIterations 5000
+#define solverType SolverCG
+#define relSolverTolerance 1.0e-10
+#define maxSolverIterations 1000
 
 //define material properties 
 #define MaterialModelv ISOTROPIC
