@@ -1,30 +1,34 @@
 //fields class 
 #ifndef FIELDS_H
 #define FIELDS_H
+#include <deal.II/base/conditional_ostream.h>
 
-enum fieldType {SCALAR, VECTOR}
-enum PDEType   {ELLIPTIC, PARABOLIC}
+enum fieldType {SCALAR, VECTOR};
+enum PDEType   {ELLIPTIC, PARABOLIC};
 
 template<int dim>
 class Field
 {
  public:
-  Field(fieldType _type, PDEType _pdetype, char[] _name);
+  Field(fieldType _type, PDEType _pdetype, std::string _name);
   fieldType type;
   PDEType   pdetype;
   std::string name;
   unsigned int index;
+  unsigned int numComponents;
+ private:
   static unsigned int fieldCount;
   static unsigned int indexCount;
-}
+
+};
 
 //initialize static variables
-unsigned int Field::fieldCount = 0;
-unsigned int Field::indexCount = 0;
+template <int dim> unsigned int Field<dim>::fieldCount = 0;
+template <int dim> unsigned int Field<dim>::indexCount = 0;
 
 //constructor
 template<int dim>
-void Field::Field(fieldType _type, PDEType _pdetype, char[] _name): type(_type), pdetype(_pdetype), name(_name) 
+Field<dim>::Field(fieldType _type, PDEType _pdetype, std::string _name): type(_type), pdetype(_pdetype), name(_name)
 {
   //increment field count as new field is being created
   fieldCount++; 
@@ -35,12 +39,14 @@ void Field::Field(fieldType _type, PDEType _pdetype, char[] _name): type(_type),
     index= indexCount;
     //increment index count by one
     indexCount+=1;
+    numComponents=1;
     break;
   }
   case VECTOR:{
     index= indexCount;
     //increment index count by dim
     indexCount+=dim;
+    numComponents=dim;
     break;
   }
   default:{
