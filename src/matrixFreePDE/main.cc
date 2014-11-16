@@ -22,6 +22,7 @@ int main (int argc, char **argv)
       problem.fields.push_back(Field<problemDIM>(VECTOR, ELLIPTIC, "u"));
       problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "v"));
       problem.init ();
+      problem.solve();
     }
   catch (std::exception &exc)
     {

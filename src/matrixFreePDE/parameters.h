@@ -11,12 +11,18 @@
 #define finiteElementDegree 1
 
 //define time step parameters
-#define dt 1.0e-2
-#define numIncrements 250000
-
+#define timeStepV 1.0e-2
+#define finalTimeV 1.0
+#define totalIncrementsV 10
+ 
 //define results output parameters
 #define writeOutput true
 #define skipOutputSteps 1000
+
+//define solver paramters
+#define solverType SolverCG
+#define relSolverTolerance 1.0e-10
+#define maxSolverIterations 1000
 
 //define Cahn-Hilliard parameters
 #define Mc 1.0 

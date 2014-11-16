@@ -31,32 +31,37 @@ class MatrixFreePDE:public Subscriptor
  public:
   MatrixFreePDE(); 
   ~MatrixFreePDE(); 
-  void init ();
-  void run ();
+  void init  ();
+  void solve ();
   void vmult (vectorType &dst, const vectorType &src) const;
   std::vector<Field<dim> >                  fields;
  private:
-  void solve ();
-  void output_results ();
+  void solveIncrement ();
+  void outputResults  ();
   parallel::distributed::Triangulation<dim> triangulation;
   std::vector<FESystem<dim>*>          FESet;
   std::vector<const ConstraintMatrix*> constraintsSet;
   std::vector<const DoFHandler<dim>*>  dofHandlersSet;
   std::vector<const IndexSet*>         locally_relevant_dofsSet;
-  std::vector<vectorType*>            solutionSet, residualSet;
+  std::vector<vectorType*>             solutionSet, residualSet;
 
   //matrix free objects
-  MatrixFree<dim,double>  matrixFreeObject;
+  MatrixFree<dim,double>               matrixFreeObject;
+  vectorType                           invM;
   
   //matrix free methods
   void updateRHS();
   void computeRHS(const MatrixFree<dim,double> &data, 
-		  vectorType &dst, 
-		  const vectorType &src,
+		  std::vector<vectorType*> &dst, 
+		  const std::vector<vectorType*> &src,
 		  const std::pair<unsigned int,unsigned int> &cell_range) const;
+  void computeInvM();
   
-  //variables for time dependent problems
-  double timeStep, timeTotal;
+  //variables for time dependent problems 
+  //isTimeDependentBVP flag is used to see if invM, time steppping in
+  //run(), etc are necessary
+  bool isTimeDependentBVP;
+  double timeStep, currentTime, finalTime;
   unsigned int currentIncrement, totalIncrements;
   
   //parallel message stream
@@ -71,6 +76,9 @@ class MatrixFreePDE:public Subscriptor
  :
  Subscriptor(),
    triangulation (MPI_COMM_WORLD),
+   isTimeDependentBVP(false),
+   currentTime(0.0),
+   currentIncrement(0),
    pcout (std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0),
    computing_timer (pcout, TimerOutput::summary, TimerOutput::wall_times)
  {}
@@ -94,7 +102,7 @@ class MatrixFreePDE:public Subscriptor
  template <int dim>
  void MatrixFreePDE<dim>::init(){
  //void MatrixFreePDE<dim>::init(std::vector<Field<dim> >& _fields){
-   computing_timer.enter_section("matrixFreePDE: Initialization"); 
+   computing_timer.enter_section("matrixFreePDE: initialization"); 
 
    //creating mesh
    pcout << "creating problem mesh\n";
@@ -118,6 +126,11 @@ class MatrixFreePDE:public Subscriptor
 	     (it->type==SCALAR ? "SCALAR":"VECTOR"),			\
 	     (it->pdetype==PARABOLIC ? "PARABOLIC":"ELLIPTIC"), it->name.c_str());
      pcout << buffer;
+
+     //check if any time dependent fields present
+     if (it->pdetype==PARABOLIC){
+       isTimeDependentBVP=true;
+     }
 
      //create FESystem
      FESystem<dim>* fe;
@@ -171,17 +184,249 @@ class MatrixFreePDE:public Subscriptor
  
    //setup problem vectors
    pcout << "initializing parallel::distributed residual and solution vectors\n";
-   unsigned int fieldCount=0;
-   for(typename std::vector<Field<dim> >::iterator it = fields.begin(); it != fields.end(); ++it){
+   for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
      vectorType* U=new vectorType;
      vectorType* R=new vectorType;
-     matrixFreeObject.initialize_dof_vector(*U,  fieldCount);
-     matrixFreeObject.initialize_dof_vector(*R,  fieldCount);
+     matrixFreeObject.initialize_dof_vector(*U,  fieldIndex);
+     matrixFreeObject.initialize_dof_vector(*R,  fieldIndex);
      solutionSet.push_back(U);
      residualSet.push_back(R);
-     fieldCount++;
    }
-   computing_timer.exit_section("matrixFreePDE: Initialization");  
+
+   //check if time dependent BVP and compute invM
+   if (isTimeDependentBVP){
+     computeInvM();
+   }
+   computing_timer.exit_section("matrixFreePDE: initialization");  
+}
+
+//compute inverse of the diagonal mass matrix and store in vector invM
+template <int dim>
+void MatrixFreePDE<dim>::computeInvM(){
+  //initialize  invM
+  bool invMInitialized=false;
+  unsigned int parabolicFieldIndex=0;
+  for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
+    if (fields[fieldIndex].pdetype==PARABOLIC){
+      matrixFreeObject.initialize_dof_vector (invM, fieldIndex);
+      parabolicFieldIndex=fieldIndex;
+      invMInitialized=true;
+      break;
+    }
+  }
+  //check if invM initialized
+  if (!invMInitialized){
+    pcout << "matrixFreePDE.h: no PARABOLIC field... hence cannot initialize invM\n";
+    exit(-1);
+  }
+  
+  //compute invM
+  VectorizedArray<double> one = make_vectorized_array (1.0);
+  
+  //select gauss lobatto quad points which are suboptimal but give diogonal M 
+  FEEvaluation<dim,finiteElementDegree>  fe_eval(matrixFreeObject, parabolicFieldIndex);
+  const unsigned int n_q_points = fe_eval.n_q_points;
+  for (unsigned int cell=0; cell<matrixFreeObject.n_macro_cells(); ++cell){
+    fe_eval.reinit(cell);
+    for (unsigned int q=0; q<n_q_points; ++q){
+      fe_eval.submit_value(one,q);
+    }
+    fe_eval.integrate (true,false);
+    fe_eval.distribute_local_to_global (invM);
+  }
+  invM.compress(VectorOperation::add);
+  
+  //invert mass matrix diagonal elements
+  for (unsigned int k=0; k<invM.local_size(); ++k){
+    if (std::abs(invM.local_element(k))>1.0e-15){
+      invM.local_element(k) = 1./invM.local_element(k);
+    }
+    else{
+      invM.local_element(k) = 0;
+    }
+  } 
+  pcout << "computed mass matrix (using FE space for field: " << parabolicFieldIndex << ")\n";
+}
+
+//compute RHS
+template <int dim>
+void  MatrixFreePDE<dim>::computeRHS(const MatrixFree<dim,double> &data, 
+				     std::vector<vectorType*> &dst, 
+				     const std::vector<vectorType*> &src,
+				     const std::pair<unsigned int,unsigned int> &cell_range) const{
+}
+
+//update RHS of each field
+template <int dim>
+void MatrixFreePDE<dim>::updateRHS(){
+  //clear residual vectors before update
+  for (unsigned int i=0; i<residualSet.size(); i++){
+    (*residualSet[i])=0.0;
+  }
+  //assembly 
+  matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::computeRHS, this, residualSet, solutionSet);
+}
+
+//solve each time increment
+template <int dim>
+void MatrixFreePDE<dim>::solveIncrement(){
+  //log time
+  computing_timer.enter_section("matrixFreePDE: solveIncrements");
+  Timer time; 
+
+  //updateRHS
+  updateRHS();
+  
+  //solve for each field
+  for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
+    
+    //Parabolic (first order derivatives in time) fields
+    if (fields[fieldIndex].pdetype==PARABOLIC){
+      //explicit-time step each DOF
+      for (unsigned int dof=0; dof<solutionSet[fieldIndex]->local_size(); ++dof){
+	solutionSet[fieldIndex]->local_element(dof)+=\
+	  invM.local_element(dof)*timeStep*residualSet[fieldIndex]->local_element(dof);
+      }
+      char buffer[200];
+      sprintf(buffer, "field '%s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
+	      fields[fieldIndex].name.c_str(),				\
+	      solutionSet[fieldIndex]->l2_norm(),			\
+	      residualSet[fieldIndex]->l2_norm()); 
+      pcout<<buffer; 
+    }
+    
+    //Elliptic (time-independent) fields
+    else if (fields[fieldIndex].pdetype==ELLIPTIC){
+      //implicit solve
+      SolverControl solver_control(maxSolverIterations, relSolverTolerance*residualSet[fieldIndex]->l2_norm());
+      solverType<vectorType> solver(solver_control);
+      try{
+	//solver.solve(*this, *solutionSet[fieldIndex], *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
+      }
+      catch (...) {
+	pcout << "\nWarning: solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing relSolverTolerance.\n";
+      }
+      char buffer[200];
+      sprintf(buffer, "field '%s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e\n",\
+	      fields[fieldIndex].name.c_str(),				\
+	      solver_control.initial_value(),				\
+	      solver_control.last_value(),				\
+	      solver_control.last_step(), solver_control.tolerance()); 
+      pcout<<buffer; 
+    }
+    
+    //Hyperbolic (second order derivatives in time) fields and general
+    //non-linear PDE types not yet implemented
+    else{
+      pcout << "matrixFreePDE.h: unknown field pdetype\n";
+      exit(-1);
+    }
+  }
+  pcout << "wall time: " << time.wall_time() << "s\n";
+  //log time
+  computing_timer.exit_section("matrixFreePDE: solveIncrements"); 
+}
+
+//output results
+template <int dim>
+void MatrixFreePDE<dim>::outputResults(){
+  //log time
+  computing_timer.enter_section("matrixFreePDE: output");
+  
+  //create DataOut object
+  DataOut<dim> data_out;
+
+  //loop over fields
+  for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
+    //apply constraints
+    constraintsSet[fieldIndex]->distribute (*solutionSet[fieldIndex]);
+    //sync ghost DOF's
+    solutionSet[fieldIndex]->update_ghost_values();
+    //mark field as scalar/vector
+    std::vector<DataComponentInterpretation::DataComponentInterpretation> dataType \
+      (fields[fieldIndex].numComponents,				\
+       (fields[fieldIndex].type==SCALAR ?				\
+	DataComponentInterpretation::component_is_scalar:		\
+	DataComponentInterpretation::component_is_part_of_vector));
+    //add field to data_out
+    data_out.add_data_vector(*dofHandlersSet[fieldIndex], *solutionSet[fieldIndex], fields[fieldIndex].name.c_str(), dataType);  
+  }
+  data_out.build_patches ();
+
+  //write to results file
+  //file name
+  const std::string filename = "solution-" + \
+    Utilities::int_to_string (currentIncrement, std::ceil(std::log10(totalIncrements))+1);
+  //create file stream
+  std::ofstream output ((filename +					\
+			 "." + Utilities::int_to_string (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD), \
+							 std::ceil(std::log10(Utilities::MPI::n_mpi_processes (MPI_COMM_WORLD)))+1) \
+			 + ".vtu").c_str());
+  //write to file
+  pcout << filename.c_str() << std::endl;
+  data_out.write_vtu (output);
+  //create pvtu record
+  if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+    std::vector<std::string> filenames;
+    for (unsigned int i=0;i<Utilities::MPI::n_mpi_processes (MPI_COMM_WORLD); ++i)
+      filenames.push_back ("solution-" +				\
+			   Utilities::int_to_string (currentIncrement, std::ceil(std::log10(totalIncrements))+1) \
+			   + "." +					\
+			   Utilities::int_to_string (i, std::ceil(std::log10(Utilities::MPI::n_mpi_processes (MPI_COMM_WORLD)))+1) \
+			   + ".vtu");
+    std::ofstream master_output ((filename + ".pvtu").c_str());
+    data_out.write_pvtu_record (master_output, filenames);
+  }
+  pcout << "Output written to: " << (filename + ".pvtu").c_str() << "\n\n";
+  
+  //log time
+  computing_timer.exit_section("matrixFreePDE: output"); 
+}
+
+//solve BVP
+template <int dim>
+void MatrixFreePDE<dim>::solve(){
+  //log time
+  computing_timer.enter_section("matrixFreePDE: solve"); 
+  
+  //time dependent BVP
+  if (isTimeDependentBVP){
+    //initialize time step variables
+    timeStep=timeStepV;
+    finalTime=finalTimeV;
+    totalIncrements=totalIncrementsV;    
+    //output initial conditions for time dependent BVP
+    if (writeOutput) outputResults();
+
+    //time step
+    for (currentIncrement=1; currentIncrement<totalIncrements; ++currentIncrement){
+      //increment current time
+      currentTime+=timeStep;
+      pcout << "\ntime increment:" << currentIncrement << "  time: " << currentTime << "\n";
+      if (currentTime>=finalTime){
+	pcout << "\ncurrentTime>=finalTime. Ending time stepping\n";
+	break;
+      }
+      //solve time increment
+      solveIncrement();
+      //output results to file
+      if ((writeOutput) && (currentIncrement%skipOutputSteps==0)){
+	outputResults();
+      }
+    }
+  }
+  //time independent BVP
+  else{
+    //solve
+    solveIncrement();
+    //output results to file
+    if ((writeOutput) && (currentIncrement%skipOutputSteps==0)){
+      outputResults();
+    }
+  }
+
+  //log time
+  computing_timer.exit_section("matrixFreePDE: solve"); 
 }
 
 #endif
