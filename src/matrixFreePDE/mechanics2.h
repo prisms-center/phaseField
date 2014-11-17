@@ -25,6 +25,8 @@ class MechanicsProblem: public MatrixFreePDE<dim>
   void getRHS(std::map<std::string, typeScalar*>  valsScalar, \
 	      std::map<std::string, typeVector*>  valsVector, \
 	      unsigned int q) const;  
+  std::map<std::string,bool> getValue, setValue;
+  std::map<std::string,bool> getGradient, setGradient;
 };
 
 //constructor
@@ -35,6 +37,10 @@ MechanicsProblem<dim>::MechanicsProblem(): MatrixFreePDE<dim>(),
   //initialize elasticity matrix
   double materialConstants[]=MaterialConstantsv;
   getCIJMatrix<dim>(MaterialModelv, materialConstants, CIJ, this->pcout);
+
+  //
+  getValue["u"]=false; getGradient["u"]=true;
+  setValue["u"]=false; setGradient["u"]=true;
 }
 
 
@@ -87,14 +93,18 @@ void  MechanicsProblem<dim>::computeRHS(const MatrixFree<dim,double> &data,
     for(unsigned int fieldIndex=0; fieldIndex<this->fields.size(); fieldIndex++){
       for (std::map<std::string, typeScalar*>::iterator it=valsScalar.begin(); it!=valsScalar.end(); ++it){
 	it->second->reinit(cell);
-	it->second->read_dof_values_plain(*src[valsIndex[it->first]]); 
-	it->second->evaluate(true,true,false);
+	it->second->read_dof_values_plain(*src[valsIndex[it->first]]);
+	it->second->evaluate( getValue.find(it->first)->second,		\
+			      getGradient.find(it->first)->second,	\
+			      false);
 	n_q_points=it->second->n_q_points;
       }
       for (std::map<std::string, typeVector*>::iterator it=valsVector.begin(); it!=valsVector.end(); ++it){
 	it->second->reinit(cell);
 	it->second->read_dof_values_plain(*src[valsIndex[it->first]]); 
-	it->second->evaluate(true,true,false);
+	it->second->evaluate( getValue.find(it->first)->second,		\
+			      getGradient.find(it->first)->second,	\
+			      false);
 	n_q_points=it->second->n_q_points;
       }
     }
@@ -107,11 +117,13 @@ void  MechanicsProblem<dim>::computeRHS(const MatrixFree<dim,double> &data,
     //Integrate and assemble
     for(unsigned int fieldIndex=0; fieldIndex<this->fields.size(); fieldIndex++){
       for (std::map<std::string, typeScalar*>::iterator it=valsScalar.begin(); it!=valsScalar.end(); ++it){
-	it->second->integrate(false, true); 
+	it->second->integrate(setValue.find(it->first)->second,		\
+			      setGradient.find(it->first)->second); 
 	it->second->distribute_local_to_global(*dst[valsIndex[it->first]]); 
       }
       for (std::map<std::string, typeVector*>::iterator it=valsVector.begin(); it!=valsVector.end(); ++it){
-	it->second->integrate(false, true); 
+	it->second->integrate(setValue.find(it->first)->second,		\
+			      setGradient.find(it->first)->second); 
 	it->second->distribute_local_to_global(*dst[valsIndex[it->first]]); 
       }
     }
