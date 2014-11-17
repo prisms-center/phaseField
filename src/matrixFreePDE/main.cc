@@ -4,8 +4,7 @@
 
 //Cahn-Hilliard problem headers
 #include "parameters.h"
-#include "matrixFreePDE.h"
-
+#include "mechanics2.h"
 
 //main
 int main (int argc, char **argv)
@@ -14,14 +13,13 @@ int main (int argc, char **argv)
   try
     {
       deallog.depth_console(0);
-      MatrixFreePDE<problemDIM> problem;
-
+      MechanicsProblem<problemDIM> problem;
       //
-      problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "c"));
-      problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "n"));
-      problem.fields.push_back(Field<problemDIM>(VECTOR, ELLIPTIC, "u"));
-      problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "v"));
-      problem.init ();
+      //problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "c"));
+      //problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "n"));
+      problem.fields.push_back(Field<problemDIM>(VECTOR,  ELLIPTIC, "u"));
+      //problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "v"));
+      problem.init (); 
       problem.solve();
     }
   catch (std::exception &exc)

@@ -90,7 +90,7 @@ void MechanicsProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
 {
   //initialize vals vectors
   FEEvaluation<dim,finiteElementDegree,finiteElementDegree+1,dim,double> vals(data);
-  
+ 
   //loop over all "cells"
   for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
     

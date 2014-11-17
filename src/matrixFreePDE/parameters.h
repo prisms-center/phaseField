@@ -24,16 +24,6 @@
 #define relSolverTolerance 1.0e-10
 #define maxSolverIterations 1000
 
-//define Cahn-Hilliard parameters
-#define Mc 1.0 
-#define Kc 1.0 
-
-//define free energy expressions
-#define fcV (4.0*c*(c-1.0)*(c-0.5))
-
-//define required residuals
-#define rmuV  (fcV)
-#define rmuxV (cx)
-#define rcV   (c)
-#define rcxV  (mux)
-
+//define material properties 
+#define MaterialModelv ISOTROPIC
+#define MaterialConstantsv {1.0,0.3}

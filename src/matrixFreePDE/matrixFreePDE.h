@@ -35,7 +35,8 @@ class MatrixFreePDE:public Subscriptor
   void solve ();
   void vmult (vectorType &dst, const vectorType &src) const;
   std::vector<Field<dim> >                  fields;
- private:
+
+ protected:
   void solveIncrement ();
   void outputResults  ();
   parallel::distributed::Triangulation<dim> triangulation;
@@ -50,12 +51,14 @@ class MatrixFreePDE:public Subscriptor
   vectorType                           invM;
   
   //matrix free methods
+  void computeInvM();
   void updateRHS();
-  void computeRHS(const MatrixFree<dim,double> &data, 
+  //virtual method to be implemented in derived classes
+  virtual void computeRHS(const MatrixFree<dim,double> &data, 
 		  std::vector<vectorType*> &dst, 
 		  const std::vector<vectorType*> &src,
-		  const std::pair<unsigned int,unsigned int> &cell_range) const;
-  void computeInvM();
+		  const std::pair<unsigned int,unsigned int> &cell_range) const = 0;
+
   
   //variables for time dependent problems 
   //isTimeDependentBVP flag is used to see if invM, time steppping in
@@ -189,8 +192,8 @@ class MatrixFreePDE:public Subscriptor
      vectorType* R=new vectorType;
      matrixFreeObject.initialize_dof_vector(*U,  fieldIndex);
      matrixFreeObject.initialize_dof_vector(*R,  fieldIndex);
-     solutionSet.push_back(U);
-     residualSet.push_back(R);
+     *U=0; solutionSet.push_back(U);
+     *R=0; residualSet.push_back(R);
    }
 
    //check if time dependent BVP and compute invM
@@ -246,14 +249,6 @@ void MatrixFreePDE<dim>::computeInvM(){
     }
   } 
   pcout << "computed mass matrix (using FE space for field: " << parabolicFieldIndex << ")\n";
-}
-
-//compute RHS
-template <int dim>
-void  MatrixFreePDE<dim>::computeRHS(const MatrixFree<dim,double> &data, 
-				     std::vector<vectorType*> &dst, 
-				     const std::vector<vectorType*> &src,
-				     const std::pair<unsigned int,unsigned int> &cell_range) const{
 }
 
 //update RHS of each field
@@ -417,6 +412,7 @@ void MatrixFreePDE<dim>::solve(){
   }
   //time independent BVP
   else{
+    totalIncrements=1;  
     //solve
     solveIncrement();
     //output results to file
