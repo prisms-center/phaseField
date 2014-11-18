@@ -27,7 +27,8 @@ void MatrixFreePDE<dim>::outputResults(){
 	DataComponentInterpretation::component_is_scalar:		\
 	DataComponentInterpretation::component_is_part_of_vector));
     //add field to data_out
-    data_out.add_data_vector(*dofHandlersSet[fieldIndex], *solutionSet[fieldIndex], fields[fieldIndex].name.c_str(), dataType);  
+    std::vector<std::string> solutionNames (fields[fieldIndex].numComponents, fields[fieldIndex].name.c_str());
+    data_out.add_data_vector(*dofHandlersSet[fieldIndex], *solutionSet[fieldIndex], solutionNames, dataType);  
   }
   data_out.build_patches ();
 
@@ -41,7 +42,6 @@ void MatrixFreePDE<dim>::outputResults(){
 							 std::ceil(std::log10(Utilities::MPI::n_mpi_processes (MPI_COMM_WORLD)))+1) \
 			 + ".vtu").c_str());
   //write to file
-  pcout << filename.c_str() << std::endl;
   data_out.write_vtu (output);
   //create pvtu record
   if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){

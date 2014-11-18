@@ -11,11 +11,13 @@
 #define finiteElementDegree 1
 
 //define time step parameters
-#define numIncrements 1
-
+#define timeStepV 1.0e-2
+#define finalTimeV 1.0
+#define totalIncrementsV 1
+ 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 1
+#define skipOutputSteps 1000
 
 //define solver paramters
 #define solverType SolverCG
@@ -25,5 +27,3 @@
 //define material properties 
 #define MaterialModelv ISOTROPIC
 #define MaterialConstantsv {1.0,0.3}
-
-

@@ -10,12 +10,12 @@ template <int dim>
 void MatrixFreePDE<dim>::vmult (vectorType &dst, const vectorType &src) const{
   dst=0.0;
   
+   //scalar field
   if (fields[implicitFieldIndex].type==SCALAR){
-    //scalar field
     matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::computeLHS<typeVector>, this, dst, src);
   }
+  //vector field
   else if (fields[implicitFieldIndex].type==VECTOR){
-    //vector field
     matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::computeLHS<typeVector>, this, dst, src);
   }
   

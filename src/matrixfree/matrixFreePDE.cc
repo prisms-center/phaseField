@@ -10,12 +10,14 @@
  MatrixFreePDE<dim>::MatrixFreePDE ()
  :
  Subscriptor(),
-   triangulation (MPI_COMM_WORLD),
-   isTimeDependentBVP(false),
-   currentTime(0.0),
-   currentIncrement(0),
-   pcout (std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0),
-   computing_timer (pcout, TimerOutput::summary, TimerOutput::wall_times)
+ triangulation (MPI_COMM_WORLD),
+ isTimeDependentBVP(false),
+ currentTime(0.0),
+ finalTime(0.0),
+ currentIncrement(0),
+ totalIncrements(1),
+ pcout (std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0),
+ computing_timer (pcout, TimerOutput::summary, TimerOutput::wall_times)
  {}
 
  //destructor

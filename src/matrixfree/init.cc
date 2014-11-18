@@ -27,6 +27,7 @@
    markBoundaries();
 
    //setup system
+   pcout << "initializing matrix free object\n";
    unsigned int totalDOFs=0;
    for(typename std::vector<Field<dim> >::iterator it = fields.begin(); it != fields.end(); ++it){
      //print to std::out
@@ -82,9 +83,11 @@
        applyDirichletBCs();
      }
      constraints->close();  
-     pcout << "num of constraints:" << constraints->n_constraints() << "\n";
+     sprintf(buffer, "field '%s' DOF : %u (Dirichlet DOF : %u)\n", \
+	     it->name.c_str(), dof_handler->n_dofs(), constraints->n_constraints());
+     pcout << buffer;
    }
-   pcout << "number of degrees of freedom: " << totalDOFs << std::endl;
+   pcout << "total DOF : " << totalDOFs << std::endl;
 
    //setup the matrix free object
    typename MatrixFree<dim,double>::AdditionalData additional_data;
@@ -93,7 +96,6 @@
    additional_data.mapping_update_flags = (update_values | update_gradients | update_JxW_values);
    QGaussLobatto<1> quadrature (finiteElementDegree+1);
    matrixFreeObject.reinit (dofHandlersSet, constraintsSet, quadrature, additional_data);
-   pcout << "completed initialization of the matrix free object\n";
  
    //setup problem vectors
    pcout << "initializing parallel::distributed residual and solution vectors\n";
@@ -104,6 +106,9 @@
      matrixFreeObject.initialize_dof_vector(*R,  fieldIndex);
      *U=0; solutionSet.push_back(U);
      *R=0; residualSet.push_back(R);
+     //apply constraints on Dirichlet BC DOF's
+     constraintsSet[fieldIndex]->distribute(*U);
+     U->update_ghost_values();
    }
 
    //check if time dependent BVP and compute invM

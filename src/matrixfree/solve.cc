@@ -10,7 +10,8 @@ template <int dim>
 void MatrixFreePDE<dim>::solve(){
   //log time
   computing_timer.enter_section("matrixFreePDE: solve"); 
-  
+  pcout << "solving...\n\n";
+
   //time dependent BVP
   if (isTimeDependentBVP){
     //initialize time step variables
@@ -19,7 +20,7 @@ void MatrixFreePDE<dim>::solve(){
     totalIncrements=totalIncrementsV;    
     //output initial conditions for time dependent BVP
     if (writeOutput) outputResults();
-
+    
     //time step
     for (currentIncrement=1; currentIncrement<totalIncrements; ++currentIncrement){
       //increment current time
@@ -39,6 +40,9 @@ void MatrixFreePDE<dim>::solve(){
   }
   //time independent BVP
   else{
+    if (totalIncrementsV>1){
+      pcout << "solve.h: this problem has only ELLIPTIC fields, hence neglecting totalIncrementsV>1 \n";
+    }
     totalIncrements=1;  
     //solve
     solveIncrement();
