@@ -1,4 +1,4 @@
-//Cahn-Hilliard spinodal decomposition implementation
+//mechanics problem implementation
 //general headers
 #include <fstream>
 #include <sstream>
@@ -6,7 +6,7 @@
 //dealIIheaders
 #include "../../include/dealIIheaders.h"
 
-//Cahn-Hilliard problem headers
+//mechanics problem headers
 #include "parameters.h"
 #include "../../src/models/mechanics/mechanics.cc"
 
@@ -72,11 +72,7 @@ int main (int argc, char **argv)
     {
       deallog.depth_console(0);
       MechanicsProblem<problemDIM> problem;
-      //
-      //problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "c"));
-      //problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "n"));
       problem.fields.push_back(Field<problemDIM>(VECTOR,  ELLIPTIC, "u"));
-      //problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "v"));
       problem.init (); 
       problem.solve();
     }
