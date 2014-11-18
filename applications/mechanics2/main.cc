@@ -4,7 +4,7 @@
 
 //Cahn-Hilliard problem headers
 #include "parameters.h"
-#include "mechanics2.h"
+#include "../../src/models/mechanics/mechanics.cc"
 
 //main
 int main (int argc, char **argv)
