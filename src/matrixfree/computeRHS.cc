@@ -12,7 +12,8 @@ void MatrixFreePDE<dim>::updateRHS(){
   for (unsigned int i=0; i<residualSet.size(); i++){
     (*residualSet[i])=0.0;
   }
-  //assembly 
+
+  //call to integrate and assemble 
   matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::computeRHS, this, residualSet, solutionSet);
 }
 
@@ -26,11 +27,12 @@ void  MatrixFreePDE<dim>::computeRHS(const MatrixFree<dim,double> &data,
   std::map<std::string, typeScalar*>  valsScalar;
   std::map<std::string, typeVector*>  valsVector;
   std::map<std::string, unsigned int> valsIndex;
+
   for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
     if (fields[fieldIndex].type==SCALAR){
       valsScalar[fields[fieldIndex].name]=new typeScalar(data,fieldIndex);
     }
-    else{
+    else if (fields[fieldIndex].type==VECTOR){
       valsVector[fields[fieldIndex].name]=new typeVector(data,fieldIndex);
     }
     valsIndex[fields[fieldIndex].name]=fieldIndex;
@@ -63,8 +65,8 @@ void  MatrixFreePDE<dim>::computeRHS(const MatrixFree<dim,double> &data,
     for (unsigned int q=0; q<n_q_points; ++q){
       getRHS(valsScalar, valsVector, q);
     }
-
-    //Integrate and assemble
+    
+    //integrate and assemble
     for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
       for (std::map<std::string, typeScalar*>::iterator it=valsScalar.begin(); it!=valsScalar.end(); ++it){
 	it->second->integrate(setValue.find(it->first)->second,		\
@@ -77,6 +79,14 @@ void  MatrixFreePDE<dim>::computeRHS(const MatrixFree<dim,double> &data,
 	it->second->distribute_local_to_global(*dst[valsIndex[it->first]]); 
       }
     }
+  }
+
+  //release memory of vals
+  for (std::map<std::string, typeScalar*>::iterator it=valsScalar.begin(); it!=valsScalar.end(); ++it){
+    delete it->second;
+  }
+  for (std::map<std::string, typeVector*>::iterator it=valsVector.begin(); it!=valsVector.end(); ++it){
+    delete it->second;
   }
 }
 

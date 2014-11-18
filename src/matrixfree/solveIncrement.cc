@@ -38,8 +38,11 @@ void MatrixFreePDE<dim>::solveIncrement(){
       //implicit solve
       SolverControl solver_control(maxSolverIterations, relSolverTolerance*residualSet[fieldIndex]->l2_norm());
       solverType<vectorType> solver(solver_control);
+      //set implicitFieldIndex to mark field which is being implicitly
+      //solved (required in the computeLHS() method)
+      implicitFieldIndex=fieldIndex;
       try{
-	//solver.solve(*this, *solutionSet[fieldIndex], *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
+	solver.solve(*this, *solutionSet[fieldIndex], *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
       }
       catch (...) {
 	pcout << "\nWarning: solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing relSolverTolerance.\n";

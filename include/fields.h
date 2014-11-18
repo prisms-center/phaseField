@@ -15,11 +15,12 @@ class Field
   PDEType   pdetype;
   std::string name;
   unsigned int index;
+  unsigned int startIndex;
   unsigned int numComponents;
+
  private:
   static unsigned int fieldCount;
   static unsigned int indexCount;
-
 };
 
 //initialize static variables
@@ -31,19 +32,19 @@ template<int dim>
 Field<dim>::Field(fieldType _type, PDEType _pdetype, std::string _name): type(_type), pdetype(_pdetype), name(_name)
 {
   //increment field count as new field is being created
+  index=fieldCount;
   fieldCount++; 
+  startIndex= indexCount;
 
   //assign index to this field
   switch (type){
   case SCALAR:{
-    index= indexCount;
     //increment index count by one
     indexCount+=1;
     numComponents=1;
     break;
   }
   case VECTOR:{
-    index= indexCount;
     //increment index count by dim
     indexCount+=dim;
     numComponents=dim;
@@ -57,3 +58,4 @@ Field<dim>::Field(fieldType _type, PDEType _pdetype, std::string _name): type(_t
 }
 
 #endif
+

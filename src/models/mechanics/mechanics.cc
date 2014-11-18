@@ -1,5 +1,4 @@
 //Matrix Free implementation of infinitesimal strain mechanics
-
 #ifndef MECHANICS_MECHANICS_H
 #define MECHANICS_MECHANICS_H
 //this source file is temporarily treated as a header file (hence
@@ -20,9 +19,18 @@ class MechanicsProblem: public MatrixFreePDE<dim>
  private:
   //elasticity matrix
   Table<2, double> CIJ;
+  
+  //RHS implementation for implicit/explicit solve
   void getRHS(std::map<std::string, typeScalar*>  valsScalar, \
 	      std::map<std::string, typeVector*>  valsVector, \
-	      unsigned int q) const;  
+	      unsigned int q) const;
+  
+  //LHS implementation for implicit solve 
+  void getLHS(typeVector& vals, unsigned int q) const;  
+  
+  //methods to apply dirichlet BC's
+  void markBoundaries();
+  void applyDirichletBCs();
 };
 
 //constructor
@@ -39,26 +47,48 @@ MechanicsProblem<dim>::MechanicsProblem(): MatrixFreePDE<dim>(),
   this->setValue["u"]=false; this->setGradient["u"]=true;
 }
 
-
+//implementation of the RHS evaluation 
 template <int dim>
 void  MechanicsProblem<dim>::getRHS(std::map<std::string, typeScalar*>  valsScalar, \
 				    std::map<std::string, typeVector*>  valsVector, \
 				    unsigned int q) const{
   Tensor<1, dim, gradType> ux = valsVector["u"]->get_gradient(q);
-  Tensor<1, dim, gradType> Cux;
+  Tensor<1, dim, gradType> Rux;
   //compute stress
-  dealii::VectorizedArray<double> R[dim][dim];
-  computeStress<dim>(CIJ, ux, R);
+  dealii::VectorizedArray<double> S[dim][dim];
+  computeStress<dim>(CIJ, ux, S);
   
   //fill residual
   for (unsigned int i=0; i<dim; i++){
     for (unsigned int j=0; j<dim; j++){
-      Cux[1,i][1,j] = -R[i][j];
+      Rux[1,i][1,j] = -S[i][j];
     }
   }
   
   //compute residuals
-  valsVector["u"]->submit_gradient(Cux,q);
+  valsVector["u"]->submit_gradient(Rux,q);
+}
+
+template <int dim>
+void  MechanicsProblem<dim>::getLHS(typeVector& vals, unsigned int q) const{
+  //check to ensure we are working on the intended implicit field
+  if (this->fields[this->implicitFieldIndex].name.compare("u")==0){
+    Tensor<1, dim, gradType> ux = vals.get_gradient(q);
+    Tensor<1, dim, gradType> Rux;
+    //compute stress
+    dealii::VectorizedArray<double> S[dim][dim];
+    computeStress<dim>(CIJ, ux, S);
+    
+    //compute residual
+    for (unsigned int i=0; i<dim; i++){
+      for (unsigned int j=0; j<dim; j++){
+	Rux[1,i][1,j] = S[i][j];
+      }
+    }
+    
+    //submit residual value for quadrature integration and assemble
+    vals.submit_gradient(Rux,q);
+  }
 }
 
 #endif

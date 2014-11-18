@@ -23,15 +23,19 @@
    triangulation.refine_global (refineFactor);
    pcout << "number of elements: " << triangulation.n_global_active_cells() << std::endl;
 
+   //mark boundaries for applying Dirichlet boundary conditons
+   markBoundaries();
+
    //setup system
    unsigned int totalDOFs=0;
    for(typename std::vector<Field<dim> >::iterator it = fields.begin(); it != fields.end(); ++it){
      //print to std::out
      char buffer[100];
-     sprintf(buffer,"initializing finite element space P^%u for %6s:%9s field '%s'\n", \
+     sprintf(buffer,"initializing finite element space P^%u for %9s:%6s field '%s'\n", \
 	     finiteElementDegree,					\
+	     (it->pdetype==PARABOLIC ? "PARABOLIC":"ELLIPTIC"),		\
 	     (it->type==SCALAR ? "SCALAR":"VECTOR"),			\
-	     (it->pdetype==PARABOLIC ? "PARABOLIC":"ELLIPTIC"), it->name.c_str());
+	     it->name.c_str());
      pcout << buffer;
 
      //check if any time dependent fields present
@@ -69,14 +73,16 @@
      constraints->clear();
      constraints->reinit(*locally_relevant_dofs);
      DoFTools::make_hanging_node_constraints (*dof_handler, *constraints);
+     constraintsSet.push_back(constraints);
      //apply zero Dirichlet BC's for ELLIPTIC fields. This is just the
      //default and can be changed later in the specific BVP
      //implementation
      if (it->pdetype==ELLIPTIC){
-       VectorTools::interpolate_boundary_values (*dof_handler, 0, ZeroFunction<dim>(it->numComponents), *constraints);
+       implicitFieldIndex=it->index;
+       applyDirichletBCs();
      }
      constraints->close();  
-     constraintsSet.push_back(constraints);
+     pcout << "num of constraints:" << constraints->n_constraints() << "\n";
    }
    pcout << "number of degrees of freedom: " << totalDOFs << std::endl;
 
