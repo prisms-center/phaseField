@@ -10,6 +10,10 @@
 #define refineFactor 4
 #define finiteElementDegree 1
 
+//define number of fields in the problem
+//ux, uy, uz
+#define numFieldsV problemDIM
+
 //define time step parameters
 #define timeStepV 1.0e-2
 #define finalTimeV 1.0

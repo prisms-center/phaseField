@@ -16,11 +16,19 @@
 typedef dealii::parallel::distributed::Vector<double> vectorType;
 typedef dealii::FEEvaluation<problemDIM,finiteElementDegree,finiteElementDegree+1,1,double>           typeScalar;
 typedef dealii::FEEvaluation<problemDIM,finiteElementDegree,finiteElementDegree+1,problemDIM,double>  typeVector;
+
 #if problemDIM==1
+typedef dealii::VectorizedArray<double> valueType;
+typedef dealii::VectorizedArray<double> scalarvalueType;
 typedef dealii::VectorizedArray<double> gradType;
+typedef dealii::VectorizedArray<double> scalargradType;
 #else 
-typedef dealii::Tensor<1, problemDIM, dealii::VectorizedArray<double> > gradType;
+typedef dealii::Tensor<1, numFieldsV, dealii::VectorizedArray<double> > valueType;
+typedef dealii::VectorizedArray<double> scalarvalueType;
+typedef dealii::Tensor<1, numFieldsV, dealii::Tensor<1, problemDIM, dealii::VectorizedArray<double> > > gradType;
+typedef dealii::Tensor<1, problemDIM, dealii::VectorizedArray<double> > scalargradType;
 #endif
+typedef dealii::VectorizedArray<double> scalarType;
 
 using namespace dealii;
 
@@ -77,6 +85,7 @@ class MatrixFreePDE:public Subscriptor
   //methods to apply dirichlet BC's
   virtual void markBoundaries();
   virtual void applyDirichletBCs();
+  virtual void applyInitialConditions();
 
   //utility functions
   //return index of given field name if exists, else throw error
@@ -110,7 +119,9 @@ class MatrixFreePDE:public Subscriptor
 #include "../src/matrixfree/solve.cc"
 #include "../src/matrixfree/solveIncrement.cc"
 #include "../src/matrixfree/outputResults.cc"
+#include "../src/matrixfree/markBoundaries.cc"
 #include "../src/matrixfree/boundaryConditions.cc"
+#include "../src/matrixfree/initialConditions.cc"
 #include "../src/matrixfree/utilities.cc"
 
 #endif

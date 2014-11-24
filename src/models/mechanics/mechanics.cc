@@ -52,8 +52,9 @@ template <int dim>
 void  MechanicsProblem<dim>::getRHS(std::map<std::string, typeScalar*>  valsScalar, \
 				    std::map<std::string, typeVector*>  valsVector, \
 				    unsigned int q) const{
-  Tensor<1, dim, gradType> ux = valsVector["u"]->get_gradient(q);
-  Tensor<1, dim, gradType> Rux;
+  gradType ux = valsVector["u"]->get_gradient(q);
+  gradType Rux;
+
   //compute stress
   dealii::VectorizedArray<double> S[dim][dim];
   computeStress<dim>(CIJ, ux, S);
@@ -73,8 +74,9 @@ template <int dim>
 void  MechanicsProblem<dim>::getLHS(typeVector& vals, unsigned int q) const{
   //check to ensure we are working on the intended implicit field
   if (this->fields[this->implicitFieldIndex].name.compare("u")==0){
-    Tensor<1, dim, gradType> ux = vals.get_gradient(q);
-    Tensor<1, dim, gradType> Rux;
+    gradType ux = vals.get_gradient(q);
+    gradType Rux;
+
     //compute stress
     dealii::VectorizedArray<double> S[dim][dim];
     computeStress<dim>(CIJ, ux, S);

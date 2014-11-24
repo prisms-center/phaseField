@@ -18,6 +18,8 @@ class CahnHilliardProblem: public MatrixFreePDE<dim>
 	      std::map<std::string, typeVector*>  valsVector, \
 	      unsigned int q) const;
   
+  //method to apply initial conditions
+  void applyInitialConditions();
 };
 
 //constructor
@@ -38,16 +40,21 @@ void  CahnHilliardProblem<dim>::getRHS(std::map<std::string, typeScalar*>  valsS
 				       std::map<std::string, typeVector*>  valsVector, \
 				       unsigned int q) const{
   //"c" fields
-  gradType c= valsVector["c"]->get_value(q);
-  Tensor<1, dim,  VectorizedArray<double> > cx = valsVector["c"]->get_gradient(q);
+  scalarvalueType c = valsScalar["c"]->get_value(q);
+  scalargradType cx = valsScalar["c"]->get_gradient(q);
   
   //"mu"fields
-  gradType mu= valsVector["mu"]->get_value(q);
-  Tensor<1, dim,  VectorizedArray<double> > mux = valsVector["mu"]->get_gradient(q);
+  scalarvalueType mu = valsScalar["mu"]->get_value(q);
+  scalargradType mux = valsScalar["mu"]->get_gradient(q);
+
+  //constants
+  scalarType constMux, constCx;
+  scalarType dt=make_vectorized_array(this->timeStep);
+  constMux=KcV; constCx=-McV*dt;
 
   //compute residuals
-  valsVector["c"]->submit_value(rcV,q);   valsVector["c"]->submit_gradient(constCx*rcxV,q);
-  valsVector["mu"]->submit_value(rmuV,q); valsVector["mu"]->submit_gradient(constMux*rmuxV,q);
+  valsScalar["c"]->submit_value(rcV,q);   valsScalar["c"]->submit_gradient(constCx*rcxV,q);
+  valsScalar["mu"]->submit_value(rmuV,q); valsScalar["mu"]->submit_gradient(constMux*rmuxV,q);
 }
 
 #endif

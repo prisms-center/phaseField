@@ -10,6 +10,10 @@
 #define refineFactor 7
 #define finiteElementDegree 1
 
+//define number of fields in the problem
+//c, mu
+#define numFieldsV 2
+
 //define time step parameters
 #define timeStepV 1.0e-2
 #define finalTimeV 1.0
@@ -17,16 +21,11 @@
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 1000
-
-//define solver paramters
-#define solverType SolverCG
-#define relSolverTolerance 1.0e-10
-#define maxSolverIterations 1000
+#define skipOutputSteps 100
 
 //define Cahn-Hilliard parameters
-#define Mc 1.0 
-#define Kc 1.0 
+#define McV 1.0 
+#define KcV 1.0 
 
 //define free energy expressions
 #define fcV (4.0*c*(c-1.0)*(c-0.5))

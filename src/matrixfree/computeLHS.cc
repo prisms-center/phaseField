@@ -8,8 +8,10 @@
 //vmult operation for LHS
 template <int dim>
 void MatrixFreePDE<dim>::vmult (vectorType &dst, const vectorType &src) const{
-  dst=0.0;
-  
+  //log time
+  computing_timer.enter_section("matrixFreePDE: updateLHS (vmult)");
+
+  dst=0.0;  
    //scalar field
   if (fields[implicitFieldIndex].type==SCALAR){
     matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::computeLHS<typeVector>, this, dst, src);
@@ -26,6 +28,8 @@ void MatrixFreePDE<dim>::vmult (vectorType &dst, const vectorType &src) const{
     dst(index) += src(index); //note: check if "+" required
   }
 
+  //end log
+  computing_timer.exit_section("matrixFreePDE: updateLHS (vmult)");
 }
 
 //compute LHS.  addtional template typename "T" is to identify whether

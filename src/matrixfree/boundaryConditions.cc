@@ -7,12 +7,6 @@
 
 //methods to apply dirichlet BC's
 template <int dim>
-void MatrixFreePDE<dim>::markBoundaries(){
-  //default method does nothing, as by default all boundary faces are
-  //marked with flag 0
-}
-
-template <int dim>
 void MatrixFreePDE<dim>::applyDirichletBCs(){
   //default method to apply zero Dirichlet BC's on all components
   //of this field, given by implicitFieldIndex, on all boundary faces

@@ -8,6 +8,9 @@
 //update RHS of each field
 template <int dim>
 void MatrixFreePDE<dim>::updateRHS(){
+  //log time
+  computing_timer.enter_section("matrixFreePDE: updateRHS");
+
   //clear residual vectors before update
   for (unsigned int i=0; i<residualSet.size(); i++){
     (*residualSet[i])=0.0;
@@ -15,6 +18,9 @@ void MatrixFreePDE<dim>::updateRHS(){
 
   //call to integrate and assemble 
   matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::computeRHS, this, residualSet, solutionSet);
+  
+  //end log
+  computing_timer.exit_section("matrixFreePDE: updateRHS");
 }
 
 //compute RHS

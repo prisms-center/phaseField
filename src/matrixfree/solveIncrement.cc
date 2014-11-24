@@ -36,6 +36,7 @@ void MatrixFreePDE<dim>::solveIncrement(){
     //Elliptic (time-independent) fields
     else if (fields[fieldIndex].pdetype==ELLIPTIC){
       //implicit solve
+#ifdef solverType
       SolverControl solver_control(maxSolverIterations, relSolverTolerance*residualSet[fieldIndex]->l2_norm());
       solverType<vectorType> solver(solver_control);
       //set implicitFieldIndex to mark field which is being implicitly
@@ -54,6 +55,10 @@ void MatrixFreePDE<dim>::solveIncrement(){
 	      solver_control.last_value(),				\
 	      solver_control.last_step(), solver_control.tolerance()); 
       pcout<<buffer; 
+#else
+      pcout << "\nError: solverType not defined. This is required for ELLIPTIC fields.\n\n";
+      exit (-1);
+#endif
     }
     
     //Hyperbolic (second order derivatives in time) fields and general

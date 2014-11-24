@@ -10,7 +10,7 @@
 
 //Compute stress with displacement-gradient as input
 template <int dim>
-void computeStress(const dealii::Table<2, double>& CIJ, dealii::Tensor<1, dim, gradType>& ux, dealii::VectorizedArray<double> R[][dim]){
+void computeStress(const dealii::Table<2, double>& CIJ, gradType& ux, dealii::VectorizedArray<double> R[][dim]){
 #if problemDIM==3
   dealii::VectorizedArray<double> S[6], E[6];
   E[0]=ux[1,0][1,0]; E[1]=ux[1,1][1,1]; E[2]=ux[1,2][1,2];

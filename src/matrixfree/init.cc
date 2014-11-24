@@ -106,10 +106,15 @@
      matrixFreeObject.initialize_dof_vector(*R,  fieldIndex);
      *U=0; solutionSet.push_back(U);
      *R=0; residualSet.push_back(R);
-     //apply constraints on Dirichlet BC DOF's
-     constraintsSet[fieldIndex]->distribute(*U);
-     U->update_ghost_values();
    }
+   //apply initial conditions
+   applyInitialConditions();
+   
+   //Ghost the solution vectors
+   for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
+     constraintsSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+     solutionSet[fieldIndex]->update_ghost_values();
+   } 
 
    //check if time dependent BVP and compute invM
    if (isTimeDependentBVP){
