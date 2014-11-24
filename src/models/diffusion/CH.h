@@ -17,7 +17,7 @@ class CahnHilliardProblem: public MatrixFreePDE<dim>
   void getRHS(std::map<std::string, typeScalar*>  valsScalar, \
 	      std::map<std::string, typeVector*>  valsVector, \
 	      unsigned int q) const;
-  
+
   //method to apply initial conditions
   void applyInitialConditions();
 };
@@ -34,7 +34,6 @@ CahnHilliardProblem<dim>::CahnHilliardProblem(): MatrixFreePDE<dim>()
   this->setValue["mu"]=true; this->setGradient["mu"]=true;
 }
 
-//implementation of the RHS evaluation 
 template <int dim>
 void  CahnHilliardProblem<dim>::getRHS(std::map<std::string, typeScalar*>  valsScalar, \
 				       std::map<std::string, typeVector*>  valsVector, \
@@ -51,7 +50,7 @@ void  CahnHilliardProblem<dim>::getRHS(std::map<std::string, typeScalar*>  valsS
   scalarType constMux, constCx;
   scalarType dt=make_vectorized_array(this->timeStep);
   constMux=KcV; constCx=-McV*dt;
-
+  
   //compute residuals
   valsScalar["c"]->submit_value(rcV,q);   valsScalar["c"]->submit_gradient(constCx*rcxV,q);
   valsScalar["mu"]->submit_value(rmuV,q); valsScalar["mu"]->submit_gradient(constMux*rmuxV,q);

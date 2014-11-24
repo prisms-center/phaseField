@@ -215,11 +215,24 @@ void CahnHilliardProblem<dim>::solve ()
   updateMuRHS=false; updateRHS(); 
   for (unsigned int j=0; j<C.local_size(); ++j)
     C.local_element(j)=invM.local_element(j)*residualC.local_element(j);
- 
+
+  char buffer[200];
+  sprintf(buffer, "field '%s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
+	  "c",								\
+	  C.l2_norm(),			\
+	  residualC.l2_norm()); 
+  pcout<<buffer; 
+
   //compute Mu^(n+1)
   updateMuRHS=true; updateRHS(); 
   for (unsigned int j=0; j<Mu.local_size(); ++j)
     Mu.local_element(j)=invM.local_element(j)*residualMu.local_element(j);
+
+  sprintf(buffer, "field '%s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
+	  "mu",								\
+	  Mu.l2_norm(),							\
+	  residualMu.l2_norm()); 
+  pcout<<buffer; 
 
   pcout << "solve wall time: " << time.wall_time() << "s\n";
 }

@@ -4,7 +4,7 @@
 
 //Cahn-Hilliard problem headers
 #include "parameters.h"
-#include "../../src/CH.h"
+#include "../../src/oldFiles/CH.h"
 
 //initial condition functions
 //concentration initial conditions

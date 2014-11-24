@@ -23,6 +23,7 @@ void MatrixFreePDE<dim>::updateRHS(){
   computing_timer.exit_section("matrixFreePDE: updateRHS");
 }
 
+
 //compute RHS
 template <int dim>
 void  MatrixFreePDE<dim>::computeRHS(const MatrixFree<dim,double> &data, 
@@ -48,23 +49,21 @@ void  MatrixFreePDE<dim>::computeRHS(const MatrixFree<dim,double> &data,
   for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
     unsigned int n_q_points=0;
     //read values from corresponding solution vectors
-    for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-      for (std::map<std::string, typeScalar*>::iterator it=valsScalar.begin(); it!=valsScalar.end(); ++it){
-	it->second->reinit(cell);
-	it->second->read_dof_values_plain(*src[valsIndex[it->first]]);
-	it->second->evaluate( getValue.find(it->first)->second,		\
-			      getGradient.find(it->first)->second,	\
-			      false);
-	n_q_points=it->second->n_q_points;
-      }
-      for (std::map<std::string, typeVector*>::iterator it=valsVector.begin(); it!=valsVector.end(); ++it){
-	it->second->reinit(cell);
-	it->second->read_dof_values_plain(*src[valsIndex[it->first]]); 
-	it->second->evaluate( getValue.find(it->first)->second,		\
-			      getGradient.find(it->first)->second,	\
-			      false);
-	n_q_points=it->second->n_q_points;
-      }
+    for (std::map<std::string, typeScalar*>::iterator it=valsScalar.begin(); it!=valsScalar.end(); ++it){
+      it->second->reinit(cell);
+      it->second->read_dof_values_plain(*src[valsIndex[it->first]]);
+      it->second->evaluate( getValue.find(it->first)->second,		\
+			    getGradient.find(it->first)->second,	\
+			    false);
+      n_q_points=it->second->n_q_points;
+    }
+    for (std::map<std::string, typeVector*>::iterator it=valsVector.begin(); it!=valsVector.end(); ++it){
+      it->second->reinit(cell);
+      it->second->read_dof_values_plain(*src[valsIndex[it->first]]); 
+      it->second->evaluate( getValue.find(it->first)->second,		\
+			    getGradient.find(it->first)->second,	\
+			    false);
+      n_q_points=it->second->n_q_points;
     }
     
     //loop over quadrature points
@@ -73,17 +72,15 @@ void  MatrixFreePDE<dim>::computeRHS(const MatrixFree<dim,double> &data,
     }
     
     //integrate and assemble
-    for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-      for (std::map<std::string, typeScalar*>::iterator it=valsScalar.begin(); it!=valsScalar.end(); ++it){
-	it->second->integrate(setValue.find(it->first)->second,		\
-			      setGradient.find(it->first)->second); 
-	it->second->distribute_local_to_global(*dst[valsIndex[it->first]]); 
-      }
-      for (std::map<std::string, typeVector*>::iterator it=valsVector.begin(); it!=valsVector.end(); ++it){
-	it->second->integrate(setValue.find(it->first)->second,		\
-			      setGradient.find(it->first)->second); 
-	it->second->distribute_local_to_global(*dst[valsIndex[it->first]]); 
-      }
+    for (std::map<std::string, typeScalar*>::iterator it=valsScalar.begin(); it!=valsScalar.end(); ++it){
+      it->second->integrate(setValue.find(it->first)->second,		\
+			    setGradient.find(it->first)->second); 
+      it->second->distribute_local_to_global(*dst[valsIndex[it->first]]); 
+    }
+    for (std::map<std::string, typeVector*>::iterator it=valsVector.begin(); it!=valsVector.end(); ++it){
+      it->second->integrate(setValue.find(it->first)->second,		\
+			    setGradient.find(it->first)->second); 
+      it->second->distribute_local_to_global(*dst[valsIndex[it->first]]); 
     }
   }
 
@@ -95,6 +92,7 @@ void  MatrixFreePDE<dim>::computeRHS(const MatrixFree<dim,double> &data,
     delete it->second;
   }
 }
+
 
 #endif
 

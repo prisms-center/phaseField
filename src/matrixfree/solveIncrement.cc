@@ -11,7 +11,6 @@ void MatrixFreePDE<dim>::solveIncrement(){
   //log time
   computing_timer.enter_section("matrixFreePDE: solveIncrements");
   Timer time; 
-
   //updateRHS
   updateRHS();
   
@@ -22,8 +21,8 @@ void MatrixFreePDE<dim>::solveIncrement(){
     if (fields[fieldIndex].pdetype==PARABOLIC){
       //explicit-time step each DOF
       for (unsigned int dof=0; dof<solutionSet[fieldIndex]->local_size(); ++dof){
-	solutionSet[fieldIndex]->local_element(dof)+=\
-	  invM.local_element(dof)*timeStep*residualSet[fieldIndex]->local_element(dof);
+	solutionSet[fieldIndex]->local_element(dof)+=			\
+	  invM.local_element(dof)*residualSet[fieldIndex]->local_element(dof);
       }
       char buffer[200];
       sprintf(buffer, "field '%s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
@@ -35,6 +34,7 @@ void MatrixFreePDE<dim>::solveIncrement(){
     
     //Elliptic (time-independent) fields
     else if (fields[fieldIndex].pdetype==ELLIPTIC){
+
       //implicit solve
 #ifdef solverType
       SolverControl solver_control(maxSolverIterations, relSolverTolerance*residualSet[fieldIndex]->l2_norm());

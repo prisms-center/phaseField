@@ -16,7 +16,7 @@
 
 //define time step parameters
 #define timeStepV 1.0e-2
-#define finalTimeV 1.0
+#define finalTimeV 10.0
 #define totalIncrementsV 25000
 
 //define results output parameters
