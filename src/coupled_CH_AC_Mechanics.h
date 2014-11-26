@@ -399,7 +399,7 @@ void PrecipitateProblem<dim>::cgSolve(vectorType &x, const vectorType &b){
   char buffer[250];
   Timer time; double t=0, t1;
   double rtol=relativeResTol, rtolAbs=absoluteResTol, utol=dUTol;
-  unsigned int maxIterations=1000, iterations=0;
+  unsigned int maxIterations=4000, iterations=0;
   double res, res0, resOld;
   if (!x.all_zero()){
     //R=Ax-b

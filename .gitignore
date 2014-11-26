@@ -29,6 +29,7 @@
 *~
 *#
 *.#
+*.btr
 
 #CMAKE files
 *.cmake
