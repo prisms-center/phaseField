@@ -182,7 +182,7 @@ void PrecipitateProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
 	  E[i][j]= sf0Strain[i][j]*h0V+sf1Strain[i][j]*h1V+sf2Strain[i][j]*h2V;
 	}
       }
-      //compute C*E
+      //compute C*E0
       computeStress<dim>(CIJ, E, R);
       for (unsigned int i=0; i<dim; i++){
 	for (unsigned int j=0; j<dim; j++){
@@ -190,11 +190,21 @@ void PrecipitateProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
 	}
       }
       valU.submit_gradient(Cux,q);
-      //compute C*ux
+      
+      //C*(E-E0)*(sfStrain)
+      //compute E2=E-E0
+      dealii::VectorizedArray<double> E2[dim][dim];
+      for (unsigned int i=0; i<dim; i++){
+	for (unsigned int j=0; j<dim; j++){
+	  E2[i][j]= 0.5*(ux[i][j]+ux[j][i])-(sf0Strain[i][j]*h0V+sf1Strain[i][j]*h1V+sf2Strain[i][j]*h2V);
+	}
+      }
+      //compute R=C*(E-E0)
+      computeStress<dim>(CIJ, E2, R);
       VectorizedArray<double> CEE0=make_vectorized_array(0.0);
       VectorizedArray<double> CEE1=make_vectorized_array(0.0);
       VectorizedArray<double> CEE2=make_vectorized_array(0.0);
-      computeStress<dim>(CIJ, ux, R);
+      //compute R*sfStrain
       for (unsigned int i=0; i<dim; i++){
 	for (unsigned int j=0; j<dim; j++){
 	  CEE0+=R[i][j]*sf0Strain[i][j];
@@ -215,6 +225,7 @@ void PrecipitateProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
 	      else if (i==2) rnx[1,a]+=Kn1[a][b]*rn1xV[1,b];
 	      else if (i==3) rnx[1,a]+=Kn2[a][b]*rn2xV[1,b];
 	  }
+	  //Assemble rnV-C*(E-E0)*(sfStrain)*hnV to value
 	  if (i==1) vals[i]->submit_value(constN*(rn0V-CEE0*h0nV),q);
 	  else if (i==2) vals[i]->submit_value(constN*(rn1V-CEE1*h1nV),q);
 	  else if (i==3) vals[i]->submit_value(constN*(rn2V-CEE2*h2nV),q);
