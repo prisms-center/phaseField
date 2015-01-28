@@ -5,6 +5,9 @@
 //general headers
 #include <fstream>
 #include <sstream>
+#include <deal.II/lac/solver_cg.h>
+#include <deal.II/lac/solver_gmres.h>
+#include <deal.II/lac/identity_matrix.h>
 
 //Code specific initializations.  
 typedef dealii::parallel::distributed::Vector<double> vectorType;
@@ -30,10 +33,10 @@ class MechanicsProblem:  public Subscriptor
 public:
   MechanicsProblem ();
   void run ();
+  void vmult (vectorType &dst, const vectorType &src) const;
 private:
   void setup_system ();
   void solve ();
-  void cgSolve(vectorType &x, const vectorType &b);
   void output_results (const unsigned int cycle);
   parallel::distributed::Triangulation<dim>      triangulation;
   FESystem<dim>                    fe;
@@ -51,11 +54,9 @@ private:
 
   //matrix free objects
   MatrixFree<dim,double>      data;
-  vectorType invM;
   void mark_boundaries();
   void  apply_dirichlet_bcs();
   void setup_matrixfree ();
-  void vmult (vectorType &dst, const vectorType &src) const;
   void updateRHS();
   void computeRHS(const MatrixFree<dim,double> &data, 
 		  vectorType &dst, 
@@ -147,10 +148,11 @@ void MechanicsProblem<dim>::vmult (vectorType &dst, const vectorType &src) const
   data.cell_loop (&MechanicsProblem::computeRHS, this, dst, src);
 
   //Account for dirichlet BC's
-  const std::vector<unsigned int> &
-    constrained_dofs = data.get_constrained_dofs();
-  for (unsigned int i=0; i<constrained_dofs.size(); ++i)
-    dst(constrained_dofs[i]) += src(constrained_dofs[i]);
+  const std::vector<unsigned int>& constrained_dofs = data.get_constrained_dofs();
+  for (unsigned int i=0; i<constrained_dofs.size(); ++i){
+    unsigned int index=data.get_vector_partitioner()->local_to_global(constrained_dofs[i]);
+    dst(index) += src(index);
+  }
 }
 
 //setup matrixfree data structures
@@ -163,36 +165,6 @@ void MechanicsProblem<dim>::setup_matrixfree (){
   additional_data.mapping_update_flags = (update_gradients | update_JxW_values);
   QGaussLobatto<1> quadrature (finiteElementDegree+1);
   data.reinit (dof_handler, constraints, quadrature, additional_data);
-
-  //compute  invM
-  data.initialize_dof_vector (invM);
-  gradType one;
-#if problemDIM==1
-  one = make_vectorized_array (1.0);
-#else
-  for (unsigned int i=0; i<dim; i++)
-    one[1,i]=make_vectorized_array (1.0);
-#endif
-
-  //select gauss lobatto quad points which are suboptimal but give diogonal M 
-  FEEvaluationGL<dim,finiteElementDegree,dim,double> fe_eval(data);
-  const unsigned int            n_q_points = fe_eval.n_q_points;
-  for (unsigned int cell=0; cell<data.n_macro_cells(); ++cell)
-    {
-      fe_eval.reinit(cell);
-      for (unsigned int q=0; q<n_q_points; ++q)
-	fe_eval.submit_value(one,q);
-      fe_eval.integrate (true,false);
-      fe_eval.distribute_local_to_global (invM);
-    }
-  invM.compress(VectorOperation::add);
-  
-  //invert mass matrix diagonal elements
-  for (unsigned int k=0; k<invM.local_size(); ++k)
-    if (std::abs(invM.local_element(k))>1.0e-15)
-      invM.local_element(k) = 1./invM.local_element(k);
-    else
-      invM.local_element(k) = 0;
 }
 
 //setup
@@ -239,61 +211,25 @@ void MechanicsProblem<dim>::setup_system ()
 	<< time.wall_time() << "s" << std::endl;
 }
 
-template <int dim>
-void MechanicsProblem<dim>::cgSolve(vectorType &x, const vectorType &b){
-  char buffer[250];
-  Timer time; double t=0, t1;
-  double rtol=1.0e-10, rtolAbs=1.0e-15, utol=1.0e-6;
-  unsigned int maxIterations=maxCGIterations, iterations=0;
-  double res, res0, resOld;
-  if (!x.all_zero()){
-    //R=Ax-b
-    t1=time.wall_time();
-    vmult(R,x);
-    t+=time.wall_time()-t1;
-    R.add(-1.,b);
-  }
-  else
-    R.equ(-1.,b); //R=-b
-  P.equ(-1.,R); //P=-R=b-Ax
-  res0 = res = R.l2_norm();
-  //check convergence of res
-  //sprintf(buffer,"InitialRes:%12.6e\n", res); pcout<<buffer;
-  if (res<rtolAbs){sprintf(buffer,"Converged in absolute tolerance: initialRes:%12.6e, res:%12.6e, absTolCriterion:%12.6e, incs:%u\n", res, res, rtolAbs, 0); pcout<<buffer; return;}
-  double alpha, beta;
-  while(iterations<maxIterations){
-    //compute alpha
-    t1=time.wall_time();
-    vmult(H,P);
-    t+=time.wall_time()-t1;
-    alpha=P*H;
-    alpha=(res*res)/alpha;
-    //compute R_(k+1), X_(k+1)
-    R.add(alpha,H); //R=R+alpha*A*P
-    x.add(alpha,P); //X=X+alpha*P
-    resOld=res;
-    res = R.l2_norm();
-    //sprintf(buffer, "%12.6e ", alpha*P.linfty_norm()); pcout<<buffer;
-    if (res<=rtolAbs){sprintf(buffer, "Converged in absolute R tolerance: initialRes:%12.6e, currentRes:%12.6e, absTolCriterion:%12.6e, incs:%u\n", res, res, rtolAbs, iterations); pcout<<buffer; sprintf(buffer, "time in mat-mult:%12.6e\n", t); pcout<<buffer; return;}
-    else if ((res/res0)<=rtol){printf("Converged in relative R tolerance: initialRes:%12.6e, currentRes:%12.6e, relTol:%12.6e, relTolCriterion:%12.6e, dU:%12.6e, incs:%u\n", res0, res, res/res0, rtol, alpha*P.linfty_norm(), iterations); printf("time in mat-mult:%12.6e\n", t); return;}
-    else if ((alpha*P.linfty_norm())<rtol){sprintf(buffer, "Converged in dU tolerance: initialRes:%12.6e, currentRes:%12.6e, relTol:%12.6e, relTolCriterion:%12.6e, dU:%12.6e, incs:%u\n", res0, res, res/res0, rtol, alpha*P.linfty_norm(), iterations); pcout<<buffer; sprintf(buffer, "time in mat-mult: %12.6es\n", t); pcout<<buffer; return;}
-    //compute beta
-    beta = (res*res)/(resOld*resOld);
-    P.sadd(beta,-1.0,R);
-    iterations++;
-  }
-  sprintf(buffer,"Exceeded maximum CG iterations: %u. Consider increasing maxCGIterations in parameters.h\n",maxCGIterations); pcout<<buffer;
-  sprintf(buffer,"Res:%12.6e, incs:%u\n", res, iterations); pcout<<buffer;
-}
-
 //solve
 template <int dim>
 void MechanicsProblem<dim>::solve ()
 {
   Timer time; 
   updateRHS(); 
-  cgSolve(U,residualU); 
-  pcout << "solve wall time: " << time.wall_time() << "s\n";
+  //cgSolve(U,residualU); 
+  SolverControl solver_control(maxSolverIterations, relSolverTolerance*residualU.l2_norm());
+  solverType<vectorType> cg(solver_control);
+  try{
+    cg.solve(*this, U, residualU, IdentityMatrix(U.size()));
+  }
+  catch (...) {
+    pcout << "\nWarning: solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing relSolverTolerance.\n";
+  }
+  char buffer[200];
+  sprintf(buffer, "initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e\n", solver_control.initial_value(), solver_control.last_value(), solver_control.last_step(), solver_control.tolerance()); 
+  pcout<<buffer; 
+  pcout << "solve time: " << time.wall_time() << "s\n";
 }
   
 //output 
