@@ -525,12 +525,20 @@ template <int dim>
 void PrecipitateProblem<dim>::run ()
 {
   Timer time;
+  
+  std::vector<unsigned int> n_subdivisions;
+  n_subdivisions.push_back (subdivisionsX);
+  if (problemDIM >= 2)
+    n_subdivisions.push_back (subdivisionsY);
+  if (problemDIM >= 3)
+    n_subdivisions.push_back (subdivisionsZ);
+
 #if problemDIM==3
-  GridGenerator::hyper_rectangle (triangulation, Point<dim>(), Point<dim>(spanX,spanY,spanZ));
+  GridGenerator::subdivided_hyper_rectangle (triangulation, n_subdivisions, Point<dim>(), Point<dim>(spanX,spanY,spanZ));
 #elif problemDIM==2
-  GridGenerator::hyper_rectangle (triangulation, Point<dim>(), Point<dim>(spanX,spanY));
+  GridGenerator::subdivided_hyper_rectangle (triangulation, n_subdivisions, Point<dim>(), Point<dim>(spanX,spanY));
 #elif problemDIM==1
-  GridGenerator::hyper_rectangle (triangulation, Point<dim>(), Point<dim>(spanX));
+  GridGenerator::subdivided_hyper_rectangle (triangulation, n_subdivisions, Point<dim>(), Point<dim>(spanX));
 #endif
   triangulation.refine_global (refineFactor);
   setup_system();
