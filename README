@@ -25,6 +25,12 @@ Installation and Use:
 
      Download: http://www.dealii.org/download.html
      Detailed instructions: http://www.dealii.org/8.1.0/readme.html
+     
+     After installation, the environment variable DEAL_II_DIR must be
+     set so cmake can find your deal.II installation. We recommend users set the
+     environment variable in their .bashrc (or equivalent shell startup)
+     file by adding a line:
+     export DEAL_II_DIR=<your path to Deal II>
       
   2) Fork the repo https://github.com/prisms-center/phaseField on
   GitHub (How to fork: https://help.github.com/articles/fork-a-repo/)
@@ -33,10 +39,20 @@ Installation and Use:
   $ git clone git@github.com:username/phaseField.git 
   (OR)
   $ git clone https://github.com/username/phaseField.git  
+  
+  The default behavior of the Clone URL tool at the right of the repo
+  window is to copy the HTTPS URL to your clipboard. Cloning via HTTPS
+  has greater potential for permissions problems than cloning via SSH.
+  If you experience problems cloning using the HTTPS URL we recommend 
+  you instead clone via SSH (click on SSH under the cloning tool to get the
+  URL, or use git clone git@github.com:username/phaseField.git as above). 
+  However, you will first need to generate a new SSH key on your computer
+  and add it to your Github account using the following instructions:
+  https://help.github.com/articles/generating-ssh-keys/
 
   [Note: phaseField is currently a private repository on GitHub and
   hence you need to be authorised to access the repository. Contact
-  the developers/Mailing-List for requesting access]
+  the developers/Mailing-List to request access.]
    
   3) Running phaseField applications, for example cahnHilliard 
   $ cd applications/cahnHilliard
