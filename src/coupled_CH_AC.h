@@ -271,23 +271,27 @@ void CoupledCHACProblem<dim>::output_results (const unsigned int cycle)
   }
   data_out.build_patches ();
   
- 
+  
   //write to results file
-  const std::string filename = "solution-" + Utilities::int_to_string (cycle, std::ceil(std::log10(numIncrements))+1);
-  std::ofstream output ((filename +
-                         "." + Utilities::int_to_string (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD),std::ceil(std::log10(Utilities::MPI::n_mpi_processes (MPI_COMM_WORLD)))+1) + ".vtu").c_str());
+  std::ostringstream cycleAsString;
+  cycleAsString << std::setw(std::ceil(std::log10(numIncrements))+1) << std::setfill('0') << cycle;
+  char vtuFileName[100], pvtuFileName[100];
+  sprintf(vtuFileName, "solution-%s.%u.vtu", cycleAsString.str().c_str(),Utilities::MPI::this_mpi_process(MPI_COMM_WORLD));
+  sprintf(pvtuFileName, "solution-%s.pvtu", cycleAsString.str().c_str());
+  std::ofstream output (vtuFileName);
   data_out.write_vtu (output);
   if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
     {
       std::vector<std::string> filenames;
-      for (unsigned int i=0;i<Utilities::MPI::n_mpi_processes (MPI_COMM_WORLD); ++i)
-	filenames.push_back ("solution-" +
-			     Utilities::int_to_string (cycle, std::ceil(std::log10(numIncrements))+1) + "." +
-			     Utilities::int_to_string (i, std::ceil(std::log10(Utilities::MPI::n_mpi_processes (MPI_COMM_WORLD)))+1) + ".vtu");
-      std::ofstream master_output ((filename + ".pvtu").c_str());
+      for (unsigned int i=0;i<Utilities::MPI::n_mpi_processes (MPI_COMM_WORLD); ++i) {
+	char vtuProcFileName[100];
+	sprintf(vtuProcFileName, "solution-%s.%u.vtu", cycleAsString.str().c_str(),i);
+	filenames.push_back (vtuProcFileName);
+      }
+      std::ofstream master_output (pvtuFileName);
       data_out.write_pvtu_record (master_output, filenames);
     }
-  pcout << "Output written to:" << filename.c_str() << "\n\n";
+  pcout << "Output written to:" << pvtuFileName << "\n\n";   
 }
 
 

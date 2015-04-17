@@ -12,11 +12,11 @@
 
 //define time step parameters
 #define dt 1.0e-2
-#define numIncrements 250000
+#define numIncrements 1000000
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 1000
+#define skipOutputSteps 100000
 
 //define Cahn-Hilliard parameters
 #define Mc 1.0 
