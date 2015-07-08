@@ -245,7 +245,7 @@ void PrecipitateProblem<dim>::computeRHS (const MatrixFree<dim,double>  &data,
   }
   //release memory
   for (unsigned int i=0; i<numStructuralOrderParameters+1; i++){
-    delete[]  vals[i];
+    delete  vals[i];
   }
 }
 
