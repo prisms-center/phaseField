@@ -73,7 +73,7 @@ void  MechanicsProblem<dim>::getRHS(std::map<std::string, typeScalar*>  valsScal
 template <int dim>
 void  MechanicsProblem<dim>::getLHS(typeVector& vals, unsigned int q) const{
   //check to ensure we are working on the intended implicit field
-  if (this->fields[this->implicitFieldIndex].name.compare("u")==0){
+  if (this->fields[this->currentFieldIndex].name.compare("u")==0){
     gradType ux = vals.get_gradient(q);
     gradType Rux;
 

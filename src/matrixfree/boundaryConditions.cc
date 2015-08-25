@@ -9,10 +9,10 @@
 template <int dim>
 void MatrixFreePDE<dim>::applyDirichletBCs(){
   //default method to apply zero Dirichlet BC's on all components
-  //of this field, given by implicitFieldIndex, on all boundary faces
-  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[implicitFieldIndex], \
-					    0, ZeroFunction<dim>(fields[implicitFieldIndex].numComponents), \
-					    *(ConstraintMatrix*) this->constraintsSet[implicitFieldIndex]);
+  //of this field, given by currentFieldIndex, on all boundary faces
+  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[currentFieldIndex], \
+					    0, ZeroFunction<dim>(fields[currentFieldIndex].numComponents), \
+					    *(ConstraintMatrix*) this->constraintsSet[currentFieldIndex]);
 }
 
 #endif

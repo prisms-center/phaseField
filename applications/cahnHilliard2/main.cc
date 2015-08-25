@@ -44,8 +44,8 @@ int main (int argc, char **argv)
     {
       deallog.depth_console(0);
       CahnHilliardProblem<problemDIM> problem;
-      problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "c"));
       problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "mu"));
+      problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "c"));
       problem.init (); 
       problem.solve();
     }

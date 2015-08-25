@@ -13,16 +13,16 @@ void MatrixFreePDE<dim>::vmult (vectorType &dst, const vectorType &src) const{
 
   dst=0.0;  
    //scalar field
-  if (fields[implicitFieldIndex].type==SCALAR){
-    matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::computeLHS<typeVector>, this, dst, src);
+  if (fields[currentFieldIndex].type==SCALAR){
+    matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::computeLHS<typeScalar>, this, dst, src);
   }
   //vector field
-  else if (fields[implicitFieldIndex].type==VECTOR){
+  else if (fields[currentFieldIndex].type==VECTOR){
     matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::computeLHS<typeVector>, this, dst, src);
   }
   
   //Account for dirichlet BC's (essentially copy dirichlet DOF values present in src to dst)
-  const std::vector<unsigned int>& constrained_dofs = matrixFreeObject.get_constrained_dofs(implicitFieldIndex);
+  const std::vector<unsigned int>& constrained_dofs = matrixFreeObject.get_constrained_dofs(currentFieldIndex);
   for (unsigned int i=0; i<constrained_dofs.size(); ++i){
     unsigned int index = matrixFreeObject.get_vector_partitioner()->local_to_global(constrained_dofs[i]);
     dst(index) += src(index); //note: check if "+" required
@@ -42,15 +42,15 @@ void  MatrixFreePDE<dim>::computeLHS(const MatrixFree<dim,double> &data,
 				     const vectorType &src,
 				     const std::pair<unsigned int,unsigned int> &cell_range) const{
   //initialize vals vectors
-  T  vals(data,implicitFieldIndex);
+  T  vals(data,currentFieldIndex);
 
   //loop over all "cells"
   for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
     //read values from corresponding solution vectors
     vals.reinit(cell);
     vals.read_dof_values(src);
-    vals.evaluate( getValue.find(fields[implicitFieldIndex].name)->second, \
-		   getGradient.find(fields[implicitFieldIndex].name)->second, \
+    vals.evaluate( getValue.find(fields[currentFieldIndex].name)->second, \
+		   getGradient.find(fields[currentFieldIndex].name)->second, \
 		   false);
   
     //loop over quadrature points
@@ -59,8 +59,8 @@ void  MatrixFreePDE<dim>::computeLHS(const MatrixFree<dim,double> &data,
     }
     
     //integrate
-    vals.integrate( setValue.find(fields[implicitFieldIndex].name)->second, \
-		    setGradient.find(fields[implicitFieldIndex].name)->second);
+    vals.integrate( setValue.find(fields[currentFieldIndex].name)->second, \
+		    setGradient.find(fields[currentFieldIndex].name)->second);
     
     //assemble
     vals.distribute_local_to_global(dst); 

@@ -11,18 +11,24 @@ void MatrixFreePDE<dim>::updateRHS(){
   //log time
   computing_timer.enter_section("matrixFreePDE: updateRHS");
 
-  //clear residual vectors before update
-  for (unsigned int i=0; i<residualSet.size(); i++){
-    (*residualSet[i])=0.0;
-  }
+  //clear residual vector of the corresponding fieldIndex before update
+  (*residualSet[currentFieldIndex])=0.0;
 
   //call to integrate and assemble 
   matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::computeRHS, this, residualSet, solutionSet);
-  
+  /* 
+  //scalar field
+  if (fields[currentFieldIndex].type==SCALAR){
+    matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::computeRHS<typeScalar>, this, *residualSet[currentFieldIndex], *solutionSet[currentFieldIndex]);
+  }
+  //vector field
+  else if (fields[currentFieldIndex].type==VECTOR){
+    matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::computeRHS<typeVector>, this, *residualSet[currentFieldIndex], *solutionSet[currentFieldIndex]);
+  }
+  */
   //end log
   computing_timer.exit_section("matrixFreePDE: updateRHS");
 }
-
 
 //compute RHS
 template <int dim>
@@ -72,18 +78,19 @@ void  MatrixFreePDE<dim>::computeRHS(const MatrixFree<dim,double> &data,
     }
     
     //integrate and assemble
-    for (std::map<std::string, typeScalar*>::iterator it=valsScalar.begin(); it!=valsScalar.end(); ++it){
-      it->second->integrate(setValue.find(it->first)->second,		\
-			    setGradient.find(it->first)->second); 
-      it->second->distribute_local_to_global(*dst[valsIndex[it->first]]); 
+    std::string fieldName(fields[currentFieldIndex].name);
+    if (fields[currentFieldIndex].type==SCALAR){
+      valsScalar[fieldName]->integrate(setValue.find(fieldName)->second, \
+				       setGradient.find(fieldName)->second);
+      valsScalar[fieldName]->distribute_local_to_global(*dst[valsIndex[fieldName]]);
     }
-    for (std::map<std::string, typeVector*>::iterator it=valsVector.begin(); it!=valsVector.end(); ++it){
-      it->second->integrate(setValue.find(it->first)->second,		\
-			    setGradient.find(it->first)->second); 
-      it->second->distribute_local_to_global(*dst[valsIndex[it->first]]); 
+    else if (fields[currentFieldIndex].type==VECTOR){
+      valsVector[fieldName]->integrate(setValue.find(fieldName)->second, \
+				       setGradient.find(fieldName)->second);
+      valsVector[fieldName]->distribute_local_to_global(*dst[valsIndex[fieldName]]);
     }
   }
-
+  
   //release memory of vals
   for (std::map<std::string, typeScalar*>::iterator it=valsScalar.begin(); it!=valsScalar.end(); ++it){
     delete it->second;
@@ -92,7 +99,6 @@ void  MatrixFreePDE<dim>::computeRHS(const MatrixFree<dim,double> &data,
     delete it->second;
   }
 }
-
 
 #endif
 

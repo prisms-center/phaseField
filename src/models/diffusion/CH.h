@@ -13,7 +13,7 @@ class CahnHilliardProblem: public MatrixFreePDE<dim>
   CahnHilliardProblem();
 
  private:
-  //RHS implementation for implicit/explicit solve
+  //RHS implementation for explicit solve
   void getRHS(std::map<std::string, typeScalar*>  valsScalar, \
 	      std::map<std::string, typeVector*>  valsVector, \
 	      unsigned int q) const;
@@ -34,26 +34,41 @@ CahnHilliardProblem<dim>::CahnHilliardProblem(): MatrixFreePDE<dim>()
   this->setValue["mu"]=true; this->setGradient["mu"]=true;
 }
 
+
 template <int dim>
 void  CahnHilliardProblem<dim>::getRHS(std::map<std::string, typeScalar*>  valsScalar, \
 				       std::map<std::string, typeVector*>  valsVector, \
 				       unsigned int q) const{
-  //"c" fields
-  scalarvalueType c = valsScalar["c"]->get_value(q);
-  scalargradType cx = valsScalar["c"]->get_gradient(q);
-  
   //"mu"fields
   scalarvalueType mu = valsScalar["mu"]->get_value(q);
   scalargradType mux = valsScalar["mu"]->get_gradient(q);
 
-  //constants
-  scalarType constMux, constCx;
-  scalarType dt=make_vectorized_array(this->timeStep);
-  constMux=KcV; constCx=-McV*dt;
+  //"c" fields
+  scalarvalueType c = valsScalar["c"]->get_value(q);
+  scalargradType cx = valsScalar["c"]->get_gradient(q);
   
-  //compute residuals
-  valsScalar["c"]->submit_value(rcV,q);   valsScalar["c"]->submit_gradient(constCx*rcxV,q);
-  valsScalar["mu"]->submit_value(rmuV,q); valsScalar["mu"]->submit_gradient(constMux*rmuxV,q);
+  //check to ensure we are working on the intended field
+  //chemical potential field
+  if (this->fields[this->currentFieldIndex].name.compare("mu")==0){
+    //constants
+    scalarType constMux;
+    constMux=KcV;
+    
+    //compute residuals
+    valsScalar["mu"]->submit_value(rmuV,q); 
+    valsScalar["mu"]->submit_gradient(constMux*rmuxV,q);
+  }
+  //concentration field
+  else if (this->fields[this->currentFieldIndex].name.compare("c")==0){
+    //constants
+    scalarType dt=make_vectorized_array(this->timeStep);
+    scalarType constCx;
+    constCx=-McV*dt;
+   
+    //compute residuals
+    valsScalar["c"]->submit_value(rcV,q);   
+    valsScalar["c"]->submit_gradient(constCx*rcxV,q);
+  }
 }
 
 #endif

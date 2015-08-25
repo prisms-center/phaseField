@@ -16,12 +16,12 @@
 
 //define time step parameters
 #define timeStepV 1.0e-2
-#define finalTimeV 10.0
-#define totalIncrementsV 25000
+#define finalTimeV 1000.0
+#define totalIncrementsV 1000000
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 100
+#define skipOutputSteps 1000
 
 //define Cahn-Hilliard parameters
 #define McV 1.0 

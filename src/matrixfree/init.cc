@@ -79,7 +79,7 @@
      //default and can be changed later in the specific BVP
      //implementation
      if (it->pdetype==ELLIPTIC){
-       implicitFieldIndex=it->index;
+       currentFieldIndex=it->index;
        applyDirichletBCs();
      }
      constraints->close();  

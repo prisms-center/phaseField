@@ -16,7 +16,7 @@
 typedef dealii::parallel::distributed::Vector<double> vectorType;
 typedef dealii::FEEvaluation<problemDIM,finiteElementDegree,finiteElementDegree+1,1,double>           typeScalar;
 typedef dealii::FEEvaluation<problemDIM,finiteElementDegree,finiteElementDegree+1,problemDIM,double>  typeVector;
-
+//
 #if problemDIM==1
 typedef dealii::VectorizedArray<double> valueType;
 typedef dealii::VectorizedArray<double> scalarvalueType;
@@ -29,9 +29,8 @@ typedef dealii::Tensor<1, numFieldsV, dealii::Tensor<1, problemDIM, dealii::Vect
 typedef dealii::Tensor<1, problemDIM, dealii::VectorizedArray<double> > scalargradType;
 #endif
 typedef dealii::VectorizedArray<double> scalarType;
-
+//
 using namespace dealii;
-
 //
 //base class for matrix free PDE's
 //
@@ -61,24 +60,26 @@ class MatrixFreePDE:public Subscriptor
   vectorType                           invM;
   
   //matrix free methods
-  unsigned int implicitFieldIndex;
+  unsigned int currentFieldIndex;
   void computeInvM();
+  //RHS
   void updateRHS();
   void computeRHS(const MatrixFree<dim,double> &data, 
 		  std::vector<vectorType*> &dst, 
 		  const std::vector<vectorType*> &src,
 		  const std::pair<unsigned int,unsigned int> &cell_range) const;
+  //virtual methods to be implemented in derived classe
+  //methods to calculate RHS (implicit/explicit)
+  virtual void getRHS(std::map<std::string, typeScalar*>  valsScalar,	\
+		      std::map<std::string, typeVector*>  valsVector,	\
+		      unsigned int q) const = 0;  
+  //LHS
   template <typename T>
     void computeLHS(const MatrixFree<dim,double> &data, 
 		    vectorType &dst, 
 		    const vectorType &src,
 		    const std::pair<unsigned int,unsigned int> &cell_range) const;
-  
-  //virtual methods to be implemented in derived classe
-  //methods to calculate RHS (implicit/explicit), LHS(implicit)
-  virtual void getRHS(std::map<std::string, typeScalar*>  valsScalar,	\
-		      std::map<std::string, typeVector*>  valsVector,	\
-		      unsigned int q) const = 0;  
+  //methods to calculate LHS(implicit)
   virtual void getLHS(typeScalar& vals, unsigned int q) const;  
   virtual void getLHS(typeVector& vals, unsigned int q) const;  
   
@@ -105,7 +106,7 @@ class MatrixFreePDE:public Subscriptor
   //parallel message stream
   ConditionalOStream  pcout;  
   //compute time log
-  TimerOutput computing_timer;
+  mutable TimerOutput computing_timer;
 };
 
 //other matrixFree headers 

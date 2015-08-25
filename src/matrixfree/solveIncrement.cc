@@ -11,44 +11,38 @@ void MatrixFreePDE<dim>::solveIncrement(){
   //log time
   computing_timer.enter_section("matrixFreePDE: solveIncrements");
   Timer time; 
-  //updateRHS
-  updateRHS();
-  
+  char buffer[200];
+
   //solve for each field
   for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-    
+    currentFieldIndex=fieldIndex; 
+    //updateRHS
+    updateRHS();
     //Parabolic (first order derivatives in time) fields
     if (fields[fieldIndex].pdetype==PARABOLIC){
       //explicit-time step each DOF
       for (unsigned int dof=0; dof<solutionSet[fieldIndex]->local_size(); ++dof){
-	solutionSet[fieldIndex]->local_element(dof)+=			\
+	solutionSet[fieldIndex]->local_element(dof)=			\
 	  invM.local_element(dof)*residualSet[fieldIndex]->local_element(dof);
       }
-      char buffer[200];
       sprintf(buffer, "field '%s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
 	      fields[fieldIndex].name.c_str(),				\
 	      solutionSet[fieldIndex]->l2_norm(),			\
 	      residualSet[fieldIndex]->l2_norm()); 
       pcout<<buffer; 
     }
-    
     //Elliptic (time-independent) fields
     else if (fields[fieldIndex].pdetype==ELLIPTIC){
-
       //implicit solve
 #ifdef solverType
       SolverControl solver_control(maxSolverIterations, relSolverTolerance*residualSet[fieldIndex]->l2_norm());
       solverType<vectorType> solver(solver_control);
-      //set implicitFieldIndex to mark field which is being implicitly
-      //solved (required in the computeLHS() method)
-      implicitFieldIndex=fieldIndex;
       try{
 	solver.solve(*this, *solutionSet[fieldIndex], *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
       }
       catch (...) {
 	pcout << "\nWarning: solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing relSolverTolerance.\n";
       }
-      char buffer[200];
       sprintf(buffer, "field '%s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e\n",\
 	      fields[fieldIndex].name.c_str(),				\
 	      solver_control.initial_value(),				\
@@ -65,6 +59,14 @@ void MatrixFreePDE<dim>::solveIncrement(){
     //non-linear PDE types not yet implemented
     else{
       pcout << "matrixFreePDE.h: unknown field pdetype\n";
+      exit(-1);
+    }
+    
+    //check if solution is nan
+    if (!numbers::is_finite(solutionSet[fieldIndex]->norm_sqr())){
+      sprintf(buffer, "ERROR: field '%s' solution is NAN. exiting.\n\n",
+	      fields[fieldIndex].name.c_str());
+      pcout<<buffer; 
       exit(-1);
     }
   }
