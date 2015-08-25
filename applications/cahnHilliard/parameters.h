@@ -12,7 +12,7 @@
 
 //define time step parameters
 #define dt 1.0e-2
-#define numIncrements 1000000
+#define numIncrements 100
 
 //define results output parameters
 #define writeOutput true

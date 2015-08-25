@@ -215,12 +215,15 @@ void CahnHilliardProblem<dim>::solve ()
   updateMuRHS=false; updateRHS(); 
   for (unsigned int j=0; j<C.local_size(); ++j)
     C.local_element(j)=invM.local_element(j)*residualC.local_element(j);
- 
+
+  pcout << "cNorm: " << C.l2_norm() << "    rNorm: " << residualC.l2_norm() << "    invM: " << invM.l2_norm() << std::endl;
+
   //compute Mu^(n+1)
   updateMuRHS=true; updateRHS(); 
   for (unsigned int j=0; j<Mu.local_size(); ++j)
     Mu.local_element(j)=invM.local_element(j)*residualMu.local_element(j);
 
+  pcout << "muNorm: " << Mu.l2_norm() << "    rNorm: " << residualMu.l2_norm() << std::endl;
   pcout << "solve wall time: " << time.wall_time() << "s\n";
 }
   
@@ -279,6 +282,9 @@ void CahnHilliardProblem<dim>::run ()
   updateMuRHS=true; updateRHS(); 
   for (unsigned int j=0; j<Mu.local_size(); ++j)
     Mu.local_element(j)=invM.local_element(j)*residualMu.local_element(j);
+
+  pcout << "muNorm: " << Mu.l2_norm() << std::endl;
+  pcout << "cNorm: " << C.l2_norm() << "    rNorm: " << residualC.l2_norm() << "    invM: " << invM.l2_norm() << std::endl;
 
   //write initial conditions to file
   if (writeOutput) output_results(0);
