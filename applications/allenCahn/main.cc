@@ -1,18 +1,37 @@
 //Allen-Cahn order parameter evolution implementation
 //general headers
+//general headers
 #include "../../include/dealIIheaders.h"
 
-//Allen-Cahn problem headers
+//Allen-Hilliard problem headers
 #include "parameters.h"
-#include "../../src/AC.h"
+#include "../../src/models/diffusion/AC.h"
 
-//initial condition functions
-//order parameter initial conditions
+//initial condition function for the order parameter
 template <int dim>
-double InitialConditionN<dim>::value (const Point<dim> &p, const unsigned int /* component */) const
+class InitialConditionN : public Function<dim>
 {
-  //return the value of the initial order parameter field at point p 
-  return  0.5+ 0.2*(0.5 - (double)(std::rand() % 100 )/100.0);
+public:
+  InitialConditionN () : Function<dim>(1) {
+    std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
+  }
+  double value (const Point<dim> &p, const unsigned int component = 0) const
+  {
+    //return the value of the initial concentration field at point p 
+    return  0.5+ 0.2*(0.5 - (double)(std::rand() % 100 )/100.0);
+  }
+};
+
+//apply initial conditions
+template <int dim>
+void AllenCahnProblem<dim>::applyInitialConditions()
+{
+  unsigned int fieldIndex;
+  //call initial condition function for n
+  fieldIndex=this->getFieldIndex("n");
+  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex],		\
+			    InitialConditionN<dim>(),			\
+			    *this->solutionSet[fieldIndex]);
 }
 
 //main
@@ -23,7 +42,9 @@ int main (int argc, char **argv)
     {
       deallog.depth_console(0);
       AllenCahnProblem<problemDIM> problem;
-      problem.run ();
+      problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "n"));
+      problem.init (); 
+      problem.solve();
     }
   catch (std::exception &exc)
     {
@@ -51,3 +72,4 @@ int main (int argc, char **argv)
   
   return 0;
 }
+

@@ -1,39 +1,50 @@
-//Coupled Cahn-Hilliard+Allen-Cahn implementation
+//Coupled Cahn-Hilliard and Allen-Cahn implementation
 //general headers
 #include "../../include/dealIIheaders.h"
 
-//problem headers
+//coupled Cahn-Hilliard and Allen-Cahn problem headers
 #include "parameters.h"
-#include "../../src/coupled_CH_AC.h"
+#include "../../src/models/diffusion/coupledCHAC.h"
  
-//initial condition functions
-//concentration initial conditions
+//initial condition function for concentration
 template <int dim>
-double InitialConditionC<dim>::value (const Point<dim> &p, const unsigned int /* component */) const
+class InitialConditionC : public Function<dim>
 {
-  //set result equal to the concentration initial condition 
-  //return 0.03 + 1.0e-3*(2*(0.5 - (double)(std::rand() % 100 )/100.0));
-  double dx=spanX/std::pow(2.0,refineFactor);
-  double r=0.0;
+public:
+  InitialConditionC () : Function<dim>(1) {
+    std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
+  }
+  double value (const Point<dim> &p, const unsigned int component = 0) const
+  {
+    //return the value of the initial concentration field at point p 
+    double dx=spanX/std::pow(2.0,refineFactor);
+    double r=0.0;
 #if problemDIM==1
-  r=p[0];
-  return 0.005+0.5*(0.125-0.005)*(1-std::tanh((r-spanX/2.0)/(3*dx)));
+    r=p[0];
+    return 0.005+0.5*(0.125-0.005)*(1-std::tanh((r-spanX/2.0)/(3*dx)));
 #elif problemDIM==2
-  r=p.distance(Point<dim>(spanX/2.0,spanY/2.0));
-  return 0.005+0.5*(0.125-0.005)*(1-std::tanh((r-spanX/8.0)/(3*dx)));
+    r=p.distance(Point<dim>(spanX/2.0,spanY/2.0));
+    return 0.005+0.5*(0.125-0.005)*(1-std::tanh((r-spanX/8.0)/(3*dx)));
 #elif problemDIM==3
-  r=p.distance(Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
-  return 0.005+0.5*(0.125-0.005)*(1-std::tanh((r-spanX/8.0)/(3*dx)));
+    r=p.distance(Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
+    return 0.005+0.5*(0.125-0.005)*(1-std::tanh((r-spanX/8.0)/(3*dx)));
 #endif
-}
+  }
+};
 
-//structural order parameter initial conditions
+//initial condition function for order parameter
 template <int dim>
-double InitialConditionN<dim>::value (const Point<dim> &p, const unsigned int /* component */) const
+class InitialConditionN : public Function<dim>
 {
-  //set result equal to the structural order paramter initial condition
-  double dx=spanX/std::pow(2.0,refineFactor);
-  double r=0.0;
+public:
+  InitialConditionN () : Function<dim>(1) {
+    std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
+  }
+  double value (const Point<dim> &p, const unsigned int component = 0) const
+  {
+    //return the value of the initial order parameter field at point p 
+    double dx=spanX/std::pow(2.0,refineFactor);
+    double r=0.0;
 #if problemDIM==1
   r=p[0];
   return 0.5*(1.0-std::tanh((r-spanX/2.0)/(6.2*dx)));
@@ -44,7 +55,26 @@ double InitialConditionN<dim>::value (const Point<dim> &p, const unsigned int /*
   r=p.distance(Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
   return 0.5*(1.0-std::tanh((r-spanX/8.0)/(3*dx)));
 #endif
+  }
+};
+
+//apply initial conditions
+template <int dim>
+void CoupledCHACProblem<dim>::applyInitialConditions()
+{
+  unsigned int fieldIndex;
+  //call initial condition function for c
+  fieldIndex=this->getFieldIndex("c");
+  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex],		\
+			    InitialConditionC<dim>(),			\
+			    *this->solutionSet[fieldIndex]);
+  //call initial condition function for n
+  fieldIndex=this->getFieldIndex("n");
+  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex],		\
+			    InitialConditionN<dim>(),			\
+			    *this->solutionSet[fieldIndex]);
 }
+
 
 //main
 int main (int argc, char **argv)
@@ -54,7 +84,10 @@ int main (int argc, char **argv)
     {
       deallog.depth_console(0);
       CoupledCHACProblem<problemDIM> problem;
-      problem.run ();
+      problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "n"));
+      problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "c"));
+      problem.init (); 
+      problem.solve();
     }
   catch (std::exception &exc)
     {

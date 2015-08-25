@@ -29,6 +29,7 @@
 *~
 *#
 *.#
+*.btr
 
 #CMAKE files
 *.cmake
@@ -67,3 +68,7 @@ main
 *.nav
 *.snm
 *.nlo
+
+html/
+test
+DoxygenWarningLog.txt

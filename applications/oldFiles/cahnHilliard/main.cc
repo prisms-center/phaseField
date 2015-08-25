@@ -4,36 +4,15 @@
 
 //Cahn-Hilliard problem headers
 #include "parameters.h"
-#include "../../src/models/diffusion/CH.h"
+#include "../../src/oldFiles/CH.h"
 
-//initial condition function for concentration
+//initial condition functions
+//concentration initial conditions
 template <int dim>
-class InitialConditionC : public Function<dim>
+double InitialConditionC<dim>::value (const Point<dim> &p, const unsigned int /* component */) const
 {
-public:
-  InitialConditionC () : Function<dim>(1) {
-    std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
-  }
-  double value (const Point<dim> &p, const unsigned int component = 0) const
-  {
-    //return the value of the initial concentration field at point p 
-    return  0.5+ 0.2*(0.5 - (double)(std::rand() % 100 )/100.0);
-  }
-};
-
-//apply initial conditions
-template <int dim>
-void CahnHilliardProblem<dim>::applyInitialConditions()
-{
-  unsigned int fieldIndex;
-  //call initial condition function for c
-  fieldIndex=this->getFieldIndex("c");
-  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex],		\
-			    InitialConditionC<dim>(),			\
-			    *this->solutionSet[fieldIndex]);
-  //set zero intial condition for mu
-  fieldIndex=this->getFieldIndex("mu");
-  *this->solutionSet[fieldIndex]=0.0;
+  //return the value of the initial concentration field at point p 
+  return  0.5+ 0.2*(0.5 - (double)(std::rand() % 100 )/100.0);
 }
 
 //main
@@ -44,10 +23,7 @@ int main (int argc, char **argv)
     {
       deallog.depth_console(0);
       CahnHilliardProblem<problemDIM> problem;
-      problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "mu"));
-      problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "c"));
-      problem.init (); 
-      problem.solve();
+      problem.run ();
     }
   catch (std::exception &exc)
     {

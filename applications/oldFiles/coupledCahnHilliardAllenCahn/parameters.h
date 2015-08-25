@@ -1,4 +1,4 @@
-//Parameters list for the coupled Cahn Hilliard and Allen Cahn problem
+//Parameters list for the coupled CH+AC problem
 
 //define problem dimensions
 #define problemDIM 2
@@ -10,28 +10,23 @@
 #define refineFactor 7
 #define finiteElementDegree 1
 
-//define number of fields in the problem
-//n, c
-#define numFieldsV 2
-
 //define time step parameters
-#define timeStepV 1.0e-5
-#define finalTimeV 1.0
-#define totalIncrementsV 100000
+#define dt 1.0e-5
+#define numIncrements 100000
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 10
+#define skipOutputSteps 1000
 
 //define general physics parameters
 #define numStructuralOrderParameters 1
 
-//define Cahn-Hilliard parameters (No Gradient energy term)
-#define McV 1.0
+//define Cahn-Hilliard parameters (No Gradient energy)
+#define Mc 1.0
 
 //define Allen-Cahn parameters
-#define MnV {1.0}
-#define KnV {1.0}
+#define MnVals {1.0}
+#define KnVals {1.0}
 
 //define free energy expressions
 #define faV (-1.6704-4.776*c+5.1622*c*c-2.7375*c*c*c+1.3687*c*c*c*c)
@@ -40,11 +35,11 @@
 #define fbV (5.0*c*c-5.9746*c-1.5924)
 #define fbcV (10.0*c-5.9746)
 #define fbccV (10.0)
-#define hV (10.0*n*n*n-15.0*n*n*n*n+6.0*n*n*n*n*n)
-#define hnV (30.0*n*n-60.0*n*n*n+30.0*n*n*n*n)
+#define hV (10.0*n[0]*n[0]*n[0]-15.0*n[0]*n[0]*n[0]*n[0]+6.0*n[0]*n[0]*n[0]*n[0]*n[0])
+#define hnV (30.0*n[0]*n[0]-60.0*n[0]*n[0]*n[0]+30.0*n[0]*n[0]*n[0]*n[0])
 
 //define required residuals
-#define rcxV ( cx*((1.0-hV)*faccV+hV*fbccV) + nx*((fbcV-facV)*hnV) )
+#define rcxV ( cx*((1.0-hV)*faccV+hV*fbccV) + nx[0]*((fbcV-facV)*hnV) )
 #define rnV  ( (fbV-faV)*hnV )
-#define rnxV nx
+#define rnxV nx[0]
 
