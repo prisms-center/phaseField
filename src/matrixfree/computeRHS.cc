@@ -16,16 +16,7 @@ void MatrixFreePDE<dim>::updateRHS(){
 
   //call to integrate and assemble 
   matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::computeRHS, this, residualSet, solutionSet);
-  /* 
-  //scalar field
-  if (fields[currentFieldIndex].type==SCALAR){
-    matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::computeRHS<typeScalar>, this, *residualSet[currentFieldIndex], *solutionSet[currentFieldIndex]);
-  }
-  //vector field
-  else if (fields[currentFieldIndex].type==VECTOR){
-    matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::computeRHS<typeVector>, this, *residualSet[currentFieldIndex], *solutionSet[currentFieldIndex]);
-  }
-  */
+
   //end log
   computing_timer.exit_section("matrixFreePDE: updateRHS");
 }
