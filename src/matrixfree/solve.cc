@@ -24,7 +24,7 @@ void MatrixFreePDE<dim>::solve(){
       currentTime+=dtValue;
       pcout << "\ntime increment:" << currentIncrement << "  time: " << currentTime << "\n";
       if (currentTime>=finalTime){
-	pcout << "\ncurrentTime>=finalTime. Ending time stepping\n";
+	pcout << "\ncurrentTime>=timeFinal. Ending time stepping\n";
 	break;
       }
       //solve time increment

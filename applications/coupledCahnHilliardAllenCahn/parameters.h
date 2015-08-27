@@ -12,26 +12,23 @@
 
 //define number of fields in the problem
 //n, c
-#define numFieldsV 2
+#define numFields 2
 
 //define time step parameters
-#define timeStepV 1.0e-5
-#define finalTimeV 1.0
-#define totalIncrementsV 100000
+#define timeStep 1.0e-4
+#define timeFinal 1.0
+#define timeIncrements 100000
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 10
-
-//define general physics parameters
-#define numStructuralOrderParameters 1
+#define skipOutputSteps 100
 
 //define Cahn-Hilliard parameters (No Gradient energy term)
 #define McV 1.0
 
 //define Allen-Cahn parameters
-#define MnV {1.0}
-#define KnV {1.0}
+#define MnV 1.0
+#define KnV 1.0
 
 //define free energy expressions
 #define faV (-1.6704-4.776*c+5.1622*c*c-2.7375*c*c*c+1.3687*c*c*c*c)
@@ -44,7 +41,12 @@
 #define hnV (30.0*n*n-60.0*n*n*n+30.0*n*n*n*n)
 
 //define required residuals
-#define rcxV ( cx*((1.0-hV)*faccV+hV*fbccV) + nx*((fbcV-facV)*hnV) )
-#define rnV  ( (fbV-faV)*hnV )
-#define rnxV nx
+//#define rcxV ( cx*((1.0-hV)*faccV+hV*fbccV) + nx*((fbcV-facV)*hnV) )
+//#define rnV  ( (fbV-faV)*hnV )
+//#define rnxV nx
+#define muxV ( cx*((1.0-hV)*faccV+hV*fbccV) + nx*((fbcV-facV)*hnV) )
+#define rcV   (c)
+#define rcxV  (constV(-McV*timeStep)*muxV)
+#define rnV  (n-constV(timeStep*MnV)*(fbV-faV)*hnV)
+#define rnxV (constV(-timeStep*KnV*MnV)*nx)
 
