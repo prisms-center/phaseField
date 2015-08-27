@@ -12,12 +12,12 @@
 
 //define number of fields in the problem
 //n
-#define numFieldsV 1
+#define numFields 1
 
 //define time step parameters
-#define timeStepV 1.0e-3
-#define finalTimeV 20.0
-#define totalIncrementsV 200000
+#define timeStep 1.0e-3
+#define timeFinal 20.0
+#define timeIncrements 200000
 
 //define results output parameters
 #define writeOutput true
@@ -31,6 +31,6 @@
 #define fnV (4.0*n*(n-1.0)*(n-0.5))
 
 //define required residuals
-#define rnV  (n-(dt*MnV)*fnV)
-#define rnxV (nx)
+#define rnV  (n-constV(timeStep*MnV)*fnV)
+#define rnxV (constV(-timeStep*KnV*MnV)*nx)
 

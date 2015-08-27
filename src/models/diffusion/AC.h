@@ -26,6 +26,17 @@ class AllenCahnProblem: public MatrixFreePDE<dim>
 template <int dim>
 AllenCahnProblem<dim>::AllenCahnProblem(): MatrixFreePDE<dim>()
 {
+  //check if all required parameters correctly specified
+#if numFields!=1
+#error Compile ERROR: numFields!=1. Number of fields in standard Allen-Cahn problem should be equal to 1.
+#endif
+#if !defined(MnV) || !defined(KnV)
+#error Compile ERROR: missing Allen-Cahn parameters. Required parameters are MnV (mobility) and KnV (length scale parameter).
+#endif
+#if !defined(rnV) || !defined(rnxV)
+#error Compile ERROR: missing Allen-Cahn residual expressions. Required expressions are rnV, rnxV.
+#endif
+
   //"n"
   this->getValue["n"]=true; this->getGradient["n"]=true;
   this->setValue["n"]=true; this->setGradient["n"]=true;
@@ -43,14 +54,9 @@ void  AllenCahnProblem<dim>::getRHS(std::map<std::string, typeScalar*>  valsScal
   //check to ensure we are working on the intended field
   //order parameter field
   if (this->fields[this->currentFieldIndex].name.compare("n")==0){
-    //constants
-    scalarType dt=make_vectorized_array(this->timeStep);
-    scalarType constNx;
-    constNx=-KnV*MnV*dt; 
-    
     //compute residuals
     valsScalar["n"]->submit_value(rnV,q); 
-    valsScalar["n"]->submit_gradient(constNx*rnxV,q);
+    valsScalar["n"]->submit_gradient(rnxV,q);
   }
 }
 

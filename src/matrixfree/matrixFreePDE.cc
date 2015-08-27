@@ -12,13 +12,25 @@
  Subscriptor(),
  triangulation (MPI_COMM_WORLD),
  isTimeDependentBVP(false),
+ dtValue(0.0),
  currentTime(0.0),
  finalTime(0.0),
  currentIncrement(0),
  totalIncrements(1),
  pcout (std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0),
  computing_timer (pcout, TimerOutput::summary, TimerOutput::wall_times)
- {}
+ {
+   //initialize time step variables
+#ifdef timeStep
+   dtValue=timeStep;
+#endif
+#ifdef timeFinal
+   finalTime=timeFinal;
+#endif
+#ifdef timeIncrements
+   totalIncrements=timeIncrements;
+#endif
+ }
 
  //destructor
  template <int dim>

@@ -8,6 +8,7 @@
 
 //dealii headers
 #include "dealIIheaders.h"
+#include "defaultValues.h"
 
 //PRISMS headers
 #include "fields.h"
@@ -23,12 +24,16 @@ typedef dealii::VectorizedArray<double> scalarvalueType;
 typedef dealii::VectorizedArray<double> gradType;
 typedef dealii::VectorizedArray<double> scalargradType;
 #else 
-typedef dealii::Tensor<1, numFieldsV, dealii::VectorizedArray<double> > valueType;
+typedef dealii::Tensor<1, numFields, dealii::VectorizedArray<double> > valueType;
 typedef dealii::VectorizedArray<double> scalarvalueType;
-typedef dealii::Tensor<1, numFieldsV, dealii::Tensor<1, problemDIM, dealii::VectorizedArray<double> > > gradType;
+typedef dealii::Tensor<1, numFields, dealii::Tensor<1, problemDIM, dealii::VectorizedArray<double> > > gradType;
 typedef dealii::Tensor<1, problemDIM, dealii::VectorizedArray<double> > scalargradType;
 #endif
 typedef dealii::VectorizedArray<double> scalarType;
+
+//macro for constants
+#define constV(a) make_vectorized_array(a)
+
 //
 using namespace dealii;
 //
@@ -143,9 +148,9 @@ class MatrixFreePDE:public Subscriptor
   //isTimeDependentBVP flag is used to see if invM, time steppping in
   //run(), etc are necessary
   bool isTimeDependentBVP;
-  double timeStep, currentTime, finalTime;
+  double dtValue, currentTime, finalTime;
   unsigned int currentIncrement, totalIncrements;
-  
+
   //parallel message stream
   ConditionalOStream  pcout;  
   //compute time log

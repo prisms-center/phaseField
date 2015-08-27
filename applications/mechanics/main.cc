@@ -8,8 +8,7 @@
 
 //mechanics problem headers
 #include "parameters.h"
-#include "../../src/models/mechanics/mechanics.cc"
-
+#include "../../src/models/mechanics/mechanics.h"
 
 //Mark boundaries for applying Dirichlet BC's
 template <int dim>

@@ -26,6 +26,17 @@ class CahnHilliardProblem: public MatrixFreePDE<dim>
 template <int dim>
 CahnHilliardProblem<dim>::CahnHilliardProblem(): MatrixFreePDE<dim>()
 {
+  //check if all required parameters correctly specified
+#if numFields!=2
+#error Compile ERROR: numFields!=2. Number of fields in Cahn-Hilliard problem should be equal to 2.
+#endif
+#if !defined(McV) || !defined(KcV)
+#error Compile ERROR: missing Cahn-Hilliard parameters. Required parameters are McV (mobility) and KcV (length scale parameter).
+#endif
+#if !defined(rmuV) || !defined(rmuxV) || !defined(rcV) || !defined(rcxV) 
+#error Compile ERROR: missing Cahn-Hilliard residual expressions. Required expressions are rmuV, rmuxV, rcV, rcxV
+#endif
+
   //"c"
   this->getValue["c"]=true; this->getGradient["c"]=true;
   this->setValue["c"]=true; this->setGradient["c"]=true;
@@ -50,24 +61,15 @@ void  CahnHilliardProblem<dim>::getRHS(std::map<std::string, typeScalar*>  valsS
   //check to ensure we are working on the intended field
   //chemical potential field
   if (this->fields[this->currentFieldIndex].name.compare("mu")==0){
-    //constants
-    scalarType constMux;
-    constMux=KcV;
-    
     //compute residuals
     valsScalar["mu"]->submit_value(rmuV,q); 
-    valsScalar["mu"]->submit_gradient(constMux*rmuxV,q);
+    valsScalar["mu"]->submit_gradient(rmuxV,q);
   }
   //concentration field
   else if (this->fields[this->currentFieldIndex].name.compare("c")==0){
-    //constants
-    scalarType dt=make_vectorized_array(this->timeStep);
-    scalarType constCx;
-    constCx=-McV*dt;
-   
     //compute residuals
     valsScalar["c"]->submit_value(rcV,q);   
-    valsScalar["c"]->submit_gradient(constCx*rcxV,q);
+    valsScalar["c"]->submit_gradient(rcxV,q);
   }
 }
 

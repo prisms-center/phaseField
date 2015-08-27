@@ -38,9 +38,22 @@ template <int dim>
 MechanicsProblem<dim>::MechanicsProblem(): MatrixFreePDE<dim>(), 
   CIJ(2*dim-1+dim/3,2*dim-1+dim/3)
 {
+  //check if all required parameters correctly specified
+#if numFields!=problemDIM
+#error Compile ERROR: numFields!=problemDIM. Number of fields in Mechanics problem should be equal to the problem dimension
+#endif
+#ifndef MaterialModelV
+  this->pcout << "\nERROR: missing material property variable: MaterialModelV. exiting...\n\n"; exit(-1);
+#endif
+#ifndef MaterialConstantsV
+  this->pcout << "\nERROR: missing material property variable: MaterialConstantsV. exiting...\n\n"; exit(-1);
+#endif
+
   //initialize elasticity matrix
-  double materialConstants[]=MaterialConstantsv;
-  getCIJMatrix<dim>(MaterialModelv, materialConstants, CIJ, this->pcout);
+#if defined(MaterialModelV) && defined(MaterialConstantsV)
+  double materialConstants[]=MaterialConstantsV;
+  getCIJMatrix<dim>(MaterialModelV, materialConstants, CIJ, this->pcout);
+#endif
 
   //
   this->getValue["u"]=false; this->getGradient["u"]=true;

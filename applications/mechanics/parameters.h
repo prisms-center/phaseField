@@ -12,16 +12,7 @@
 
 //define number of fields in the problem
 //ux, uy, uz
-#define numFieldsV problemDIM
-
-//define time step parameters
-#define timeStepV 1.0e-2
-#define finalTimeV 1.0
-#define totalIncrementsV 1
- 
-//define results output parameters
-#define writeOutput true
-#define skipOutputSteps 1000
+#define numFields 3
 
 //define solver paramters
 #define solverType SolverCG
@@ -29,5 +20,5 @@
 #define maxSolverIterations 1000
 
 //define material properties 
-#define MaterialModelv ISOTROPIC
-#define MaterialConstantsv {1.0,0.3}
+#define MaterialModelV ISOTROPIC
+#define MaterialConstantsV {1.0,0.3}

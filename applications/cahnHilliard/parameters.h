@@ -12,12 +12,12 @@
 
 //define number of fields in the problem
 //c, mu
-#define numFieldsV 2
+#define numFields 2
 
 //define time step parameters
-#define timeStepV 1.0e-2
-#define finalTimeV 100.0
-#define totalIncrementsV 10000
+#define timeStep 1.0e-2
+#define timeFinal 100.0
+#define timeIncrements 10000
 
 //define results output parameters
 #define writeOutput true
@@ -32,7 +32,8 @@
 
 //define required residuals
 #define rmuV  (fcV)
-#define rmuxV (cx)
+#define rmuxV (constV(KcV)*cx)
 #define rcV   (c)
-#define rcxV  (mux)
+#define rcxV  (constV(-McV*timeStep)*mux)
+
 
