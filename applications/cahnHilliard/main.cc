@@ -12,6 +12,7 @@ class InitialConditionC : public Function<dim>
 {
 public:
   InitialConditionC () : Function<dim>(1) {
+    //seeding the random number generator
     std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
   }
   double value (const Point<dim> &p, const unsigned int component = 0) const
@@ -28,7 +29,7 @@ void CahnHilliardProblem<dim>::applyInitialConditions()
   unsigned int fieldIndex;
   //call initial condition function for c
   fieldIndex=this->getFieldIndex("c");
-  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex],		\
+  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex],	\
 			    InitialConditionC<dim>(),			\
 			    *this->solutionSet[fieldIndex]);
   //set zero intial condition for mu

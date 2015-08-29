@@ -21,7 +21,7 @@
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 1000
+#define skipOutputSteps 100
 
 //define Cahn-Hilliard parameters
 #define McV 1.0 
