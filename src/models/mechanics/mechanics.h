@@ -7,8 +7,7 @@
 #include "../../../include/matrixFreePDE.h"
 
 //material models
-#include "anisotropy.cc"
-#include "computeStress.cc"
+#include "computeStress.h"
 
 template <int dim>
 class MechanicsProblem: public MatrixFreePDE<dim>
@@ -65,17 +64,17 @@ template <int dim>
 void  MechanicsProblem<dim>::getRHS(std::map<std::string, typeScalar*>  valsScalar, \
 				    std::map<std::string, typeVector*>  valsVector, \
 				    unsigned int q) const{
-  gradType ux = valsVector["u"]->get_gradient(q);
-  gradType Rux;
+  vectorgradType ux = valsVector["u"]->get_gradient(q);
+  vectorgradType Rux;
 
   //compute stress
-  dealii::VectorizedArray<double> S[dim][dim];
+  vectorgradType S;
   computeStress<dim>(CIJ, ux, S);
   
   //fill residual
   for (unsigned int i=0; i<dim; i++){
     for (unsigned int j=0; j<dim; j++){
-      Rux[1,i][1,j] = -S[i][j];
+      Rux[i,j] = -S[i,j];
     }
   }
   
@@ -87,20 +86,20 @@ template <int dim>
 void  MechanicsProblem<dim>::getLHS(typeVector& vals, unsigned int q) const{
   //check to ensure we are working on the intended implicit field
   if (this->fields[this->currentFieldIndex].name.compare("u")==0){
-    gradType ux = vals.get_gradient(q);
-    gradType Rux;
+    vectorgradType ux = vals.get_gradient(q);
+    vectorgradType Rux;
 
     //compute stress
-    dealii::VectorizedArray<double> S[dim][dim];
+    vectorgradType S;
     computeStress<dim>(CIJ, ux, S);
     
     //compute residual
     for (unsigned int i=0; i<dim; i++){
       for (unsigned int j=0; j<dim; j++){
-	Rux[1,i][1,j] = S[i][j];
+	Rux[i,j] = S[i,j];
       }
     }
-    
+     
     //submit residual value for quadrature integration and assemble
     vals.submit_gradient(Rux,q);
   }

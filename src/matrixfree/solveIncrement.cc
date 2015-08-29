@@ -37,18 +37,23 @@ void MatrixFreePDE<dim>::solveIncrement(){
 #ifdef solverType
       SolverControl solver_control(maxSolverIterations, relSolverTolerance*residualSet[fieldIndex]->l2_norm());
       solverType<vectorType> solver(solver_control);
-      try{
-	solver.solve(*this, *solutionSet[fieldIndex], *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
+      if (currentIncrement%skipImplicitSolves==0){
+	try{
+	  solver.solve(*this, *solutionSet[fieldIndex], *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
+	}
+	catch (...) {
+	  pcout << "\nWarning: solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing relSolverTolerance.\n";
+	}
+	sprintf(buffer, "field '%s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e\n", \
+		fields[fieldIndex].name.c_str(),			\
+		solver_control.initial_value(),				\
+		solver_control.last_value(),				\
+		solver_control.last_step(), solver_control.tolerance()); 
+	pcout<<buffer; 
       }
-      catch (...) {
-	pcout << "\nWarning: solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing relSolverTolerance.\n";
+      else{
+	pcout << "skipping implicit solve as currentIncrement%skipImplicitSolves!=0\n";
       }
-      sprintf(buffer, "field '%s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e\n",\
-	      fields[fieldIndex].name.c_str(),				\
-	      solver_control.initial_value(),				\
-	      solver_control.last_value(),				\
-	      solver_control.last_step(), solver_control.tolerance()); 
-      pcout<<buffer; 
 #else
       pcout << "\nError: solverType not defined. This is required for ELLIPTIC fields.\n\n";
       exit (-1);

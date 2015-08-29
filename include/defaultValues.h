@@ -62,4 +62,9 @@
 #define maxSolverIterations 1000
 #endif
 
+//number of implicit solves to skip. None are skipped if value is 1, which is the default.
+#ifndef skipImplicitSolves
+#define skipImplicitSolves 1
+#endif
+
 #endif

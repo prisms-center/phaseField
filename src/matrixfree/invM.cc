@@ -30,7 +30,7 @@ void MatrixFreePDE<dim>::computeInvM(){
   VectorizedArray<double> one = make_vectorized_array (1.0);
   
   //select gauss lobatto quad points which are suboptimal but give diogonal M 
-  FEEvaluationGL<dim,finiteElementDegree,1,double>  fe_eval(matrixFreeObject, parabolicFieldIndex);
+  FEEvaluation<dim,finiteElementDegree> fe_eval(matrixFreeObject, parabolicFieldIndex);
   const unsigned int n_q_points = fe_eval.n_q_points;
   for (unsigned int cell=0; cell<matrixFreeObject.n_macro_cells(); ++cell){
     fe_eval.reinit(cell);

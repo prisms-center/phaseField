@@ -10,9 +10,9 @@ template <int dim>
 void MatrixFreePDE<dim>::vmult (vectorType &dst, const vectorType &src) const{
   //log time
   computing_timer.enter_section("matrixFreePDE: updateLHS (vmult)");
-
+  
   dst=0.0;  
-   //scalar field
+  //scalar field
   if (fields[currentFieldIndex].type==SCALAR){
     matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::computeLHS<typeScalar>, this, dst, src);
   }
@@ -24,10 +24,10 @@ void MatrixFreePDE<dim>::vmult (vectorType &dst, const vectorType &src) const{
   //Account for dirichlet BC's (essentially copy dirichlet DOF values present in src to dst)
   const std::vector<unsigned int>& constrained_dofs = matrixFreeObject.get_constrained_dofs(currentFieldIndex);
   for (unsigned int i=0; i<constrained_dofs.size(); ++i){
-    unsigned int index = matrixFreeObject.get_vector_partitioner()->local_to_global(constrained_dofs[i]);
-    dst(index) += src(index); //note: check if "+" required
-  }
-
+    unsigned int globalIndex = matrixFreeObject.get_vector_partitioner(currentFieldIndex)->local_to_global(constrained_dofs[i]);
+    dst(globalIndex) += src(globalIndex); //note: check if "+" required
+  } 
+  
   //end log
   computing_timer.exit_section("matrixFreePDE: updateLHS (vmult)");
 }
