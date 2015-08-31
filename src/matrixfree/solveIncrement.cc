@@ -25,7 +25,7 @@ void MatrixFreePDE<dim>::solveIncrement(){
 	solutionSet[fieldIndex]->local_element(dof)=			\
 	  invM.local_element(dof)*residualSet[fieldIndex]->local_element(dof);
       }
-      sprintf(buffer, "field '%s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
+      sprintf(buffer, "field '%2s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
 	      fields[fieldIndex].name.c_str(),				\
 	      solutionSet[fieldIndex]->l2_norm(),			\
 	      residualSet[fieldIndex]->l2_norm()); 
@@ -42,16 +42,20 @@ void MatrixFreePDE<dim>::solveIncrement(){
 	  solver.solve(*this, *solutionSet[fieldIndex], *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
 	}
 	catch (...) {
-	  pcout << "\nWarning: solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing relSolverTolerance.\n";
+	  pcout << "\nWarning: implicit solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing relSolverTolerance.\n";
 	}
-	sprintf(buffer, "field '%s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e\n", \
+	sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e\n", \
 		fields[fieldIndex].name.c_str(),			\
-		solver_control.initial_value(),				\
+		residualSet[fieldIndex]->l2_norm(),			\
 		solver_control.last_value(),				\
 		solver_control.last_step(), solver_control.tolerance()); 
 	pcout<<buffer; 
       }
       else{
+	sprintf(buffer, "field '%2s' [implicit solve]: current residual:%12.6e\n", \
+		fields[fieldIndex].name.c_str(),			\
+		residualSet[fieldIndex]->l2_norm());
+	pcout<<buffer; 
 	pcout << "skipping implicit solve as currentIncrement%skipImplicitSolves!=0\n";
       }
 #else

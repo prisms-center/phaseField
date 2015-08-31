@@ -42,10 +42,10 @@ MechanicsProblem<dim>::MechanicsProblem(): MatrixFreePDE<dim>(),
 #error Compile ERROR: numFields!=problemDIM. Number of fields in Mechanics problem should be equal to the problem dimension
 #endif
 #ifndef MaterialModelV
-  this->pcout << "\nERROR: missing material property variable: MaterialModelV. exiting...\n\n"; exit(-1);
+#error Compile ERROR: missing material property variable: MaterialModelV
 #endif
 #ifndef MaterialConstantsV
-  this->pcout << "\nERROR: missing material property variable: MaterialConstantsV. exiting...\n\n"; exit(-1);
+#error Compile ERROR: missing material property variable: MaterialConstantsV
 #endif
 
   //initialize elasticity matrix
@@ -74,7 +74,7 @@ void  MechanicsProblem<dim>::getRHS(std::map<std::string, typeScalar*>  valsScal
   //fill residual
   for (unsigned int i=0; i<dim; i++){
     for (unsigned int j=0; j<dim; j++){
-      Rux[i,j] = -S[i,j];
+      Rux[i][j] -= S[i][j];
     }
   }
   
@@ -96,7 +96,7 @@ void  MechanicsProblem<dim>::getLHS(typeVector& vals, unsigned int q) const{
     //compute residual
     for (unsigned int i=0; i<dim; i++){
       for (unsigned int j=0; j<dim; j++){
-	Rux[i,j] = S[i,j];
+	Rux[i][j] = S[i][j];
       }
     }
      

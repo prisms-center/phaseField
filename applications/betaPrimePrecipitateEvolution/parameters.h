@@ -21,7 +21,7 @@
 #define timeStep 1.0e-4
 #define timeFinal 10.0
 #define timeIncrements 20000
-#define skipImplicitSolves 10
+#define skipImplicitSolves 1000
 
 //define solver paramters
 #define solverType SolverCG
@@ -30,7 +30,7 @@
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 10
+#define skipOutputSteps 1000
 
 //define Cahn-Hilliard parameters (no gradien energy terms)
 #define McV 1.0 
@@ -44,8 +44,8 @@ double Kn2[3][3]={{1.75,-1.299,0},{-1.299,3.25,0},{0,0,1.0}};
 double Kn3[3][3]={{1.75, 1.299,0},{1.299,3.25,0},{0,0,1.0}};
 
 //define Mechanical properties
-#define MaterialModelv ISOTROPIC
-#define MaterialConstantsv {1.0,0.3}
+#define MaterialModelV ISOTROPIC
+#define MaterialConstantsV {1.0,0.3}
 double sf1Strain[3][3]={{0.0345,0,0},{0,0.0185,0},{0,0,-0.00270}};
 double sf2Strain[3][3]={{0.0225,-0.0069,0},{-0.0069,0.0305,0},{0,0,-0.00270}};
 double sf3Strain[3][3]={{0.0225, 0.0069,0},{0.0069,0.0305,0},{0,0,-0.00270}};

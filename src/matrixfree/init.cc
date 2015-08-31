@@ -86,7 +86,7 @@
        applyDirichletBCs();
      }
      constraints->close();  
-     sprintf(buffer, "field '%s' DOF : %u (Dirichlet DOF : %u)\n", \
+     sprintf(buffer, "field '%2s' DOF : %u (Dirichlet DOF : %u)\n", \
 	     it->name.c_str(), dof_handler->n_dofs(), constraints->n_constraints());
      pcout << buffer;
    }
