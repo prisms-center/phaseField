@@ -109,6 +109,7 @@ class MatrixFreePDE:public Subscriptor
   
   //matrix free methods
   unsigned int currentFieldIndex;
+  unsigned int num_quadrature_points;
   void computeInvM();
   //RHS
   void updateRHS();

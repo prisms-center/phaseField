@@ -43,7 +43,8 @@ void  MatrixFreePDE<dim>::computeLHS(const MatrixFree<dim,double> &data,
 				     const std::pair<unsigned int,unsigned int> &cell_range) const{
   //initialize vals vectors
   T  vals(data,currentFieldIndex);
-
+  Assert((vals.n_q_points) == (num_quadrature_points), ::ExcDimensionMismatch((vals.n_q_points),(num_quadrature_points))); //replace with a better Exception
+  
   //loop over all "cells"
   for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
     //read values from corresponding solution vectors
@@ -54,7 +55,7 @@ void  MatrixFreePDE<dim>::computeLHS(const MatrixFree<dim,double> &data,
 		   false);
   
     //loop over quadrature points
-    for (unsigned int q=0; q<vals.n_q_points; ++q){
+    for (unsigned int q=0; q<num_quadrature_points; ++q){
       getLHS(vals, q);
     }
     

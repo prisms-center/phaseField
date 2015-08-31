@@ -44,7 +44,6 @@ void  MatrixFreePDE<dim>::computeRHS(const MatrixFree<dim,double> &data,
   
   //loop over all "cells"
   for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
-    unsigned int n_q_points=0;
     //read values from corresponding solution vectors
     for (std::map<std::string, typeScalar*>::iterator it=valsScalar.begin(); it!=valsScalar.end(); ++it){
       it->second->reinit(cell);
@@ -52,7 +51,6 @@ void  MatrixFreePDE<dim>::computeRHS(const MatrixFree<dim,double> &data,
       it->second->evaluate( getValue.find(it->first)->second,		\
 			    getGradient.find(it->first)->second,	\
 			    false);
-      n_q_points=it->second->n_q_points;
     }
     for (std::map<std::string, typeVector*>::iterator it=valsVector.begin(); it!=valsVector.end(); ++it){
       it->second->reinit(cell);
@@ -60,11 +58,9 @@ void  MatrixFreePDE<dim>::computeRHS(const MatrixFree<dim,double> &data,
       it->second->evaluate( getValue.find(it->first)->second,		\
 			    getGradient.find(it->first)->second,	\
 			    false);
-      n_q_points=it->second->n_q_points;
     }
-    
     //loop over quadrature points
-    for (unsigned int q=0; q<n_q_points; ++q){
+    for (unsigned int q=0; q<num_quadrature_points; ++q){
       getRHS(valsScalar, valsVector, q);
     }
     

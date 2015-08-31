@@ -98,6 +98,7 @@
    additional_data.tasks_parallel_scheme = MatrixFree<dim,double>::AdditionalData::partition_partition;
    additional_data.mapping_update_flags = (update_values | update_gradients | update_JxW_values | update_quadrature_points);
    QGaussLobatto<1> quadrature (finiteElementDegree+1);
+   num_quadrature_points=std::pow(quadrature.size(),dim);
    matrixFreeObject.reinit (dofHandlersSet, constraintsSet, quadrature, additional_data);
  
    //setup problem vectors
