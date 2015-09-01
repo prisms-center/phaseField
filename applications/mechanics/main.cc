@@ -1,16 +1,22 @@
-//Mechanics (infinitesimal strain) implementation
+//mechanics problem implementation
 //general headers
+#include <fstream>
+#include <sstream>
+
+//dealIIheaders
 #include "../../include/dealIIheaders.h"
 
-//Mechanics problem headers
+//mechanics problem headers
 #include "parameters.h"
-#include "../../src/mechanics.h"
-
+#include "../../src/models/mechanics/mechanics.h"
 
 //Mark boundaries for applying Dirichlet BC's
 template <int dim>
-void MechanicsProblem<dim>::mark_boundaries(){
-  typename DoFHandler<dim>::active_cell_iterator cell = dof_handler.begin_active(), endc = dof_handler.end();
+void MechanicsProblem<dim>::markBoundaries(){
+  typename parallel::distributed::Triangulation<dim>::active_cell_iterator \
+    cell= this->triangulation.begin_active(),					\
+    endc= this->triangulation.end();
+
   //All boundaries are by marked with flag '0' by default. 
   //To pick specific boundaries, one needs to mark them 
   //with integer flags and use those flags in apply_dirichlet_conditons()
@@ -29,7 +35,7 @@ void MechanicsProblem<dim>::mark_boundaries(){
   }
 }
 
-//Set Dirichlet BC values 
+//Class to set Dirichlet BC values 
 template <int dim>
 class BCFunction : public Function<dim>{
   public:
@@ -42,15 +48,20 @@ class BCFunction : public Function<dim>{
 
 //Apply Dirchlet BC function
 template <int dim>
-void MechanicsProblem<dim>::apply_dirichlet_bcs (){
+void MechanicsProblem<dim>::applyDirichletBCs(){
   //Set u=0 at X=0.0
-  VectorTools::interpolate_boundary_values (dof_handler, 1, ZeroFunction<dim>(dim), constraints);
+  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->getFieldIndex("u")],\
+					    1, ZeroFunction<dim>(dim), *(ConstraintMatrix*) \
+					    this->constraintsSet[this->getFieldIndex("u")]);
+  
   //Set u[0]=spanX/100.0 at X=spanX
   std::vector<bool> xyzFlags (dim, false);
-  xyzFlags[0]=true; //to apply dirichlet BC only along ux
-  VectorTools::interpolate_boundary_values (dof_handler, 2, BCFunction<dim>(), constraints, xyzFlags);
+  xyzFlags[0]=true; //to apply dirichlet BC only along dim=0 (ux)
+  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->getFieldIndex("u")],\
+					    2, BCFunction<dim>(), *(ConstraintMatrix*) \
+					    this->constraintsSet[this->getFieldIndex("u")], \
+					    xyzFlags);
 }
-
 
 //main
 int main (int argc, char **argv)
@@ -60,7 +71,9 @@ int main (int argc, char **argv)
     {
       deallog.depth_console(0);
       MechanicsProblem<problemDIM> problem;
-      problem.run ();
+      problem.fields.push_back(Field<problemDIM>(VECTOR,  ELLIPTIC, "u"));
+      problem.init (); 
+      problem.solve();
     }
   catch (std::exception &exc)
     {

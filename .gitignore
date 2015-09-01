@@ -68,3 +68,6 @@ main
 *.nav
 *.snm
 *.nlo
+
+test
+DoxygenWarningLog.txt

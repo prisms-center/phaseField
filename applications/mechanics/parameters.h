@@ -10,12 +10,9 @@
 #define refineFactor 4
 #define finiteElementDegree 1
 
-//define time step parameters
-#define numIncrements 1
-
-//define results output parameters
-#define writeOutput true
-#define skipOutputSteps 1
+//define number of fields in the problem
+//ux, uy, uz
+#define numFields 3
 
 //define solver paramters
 #define solverType SolverCG
@@ -23,7 +20,5 @@
 #define maxSolverIterations 1000
 
 //define material properties 
-#define MaterialModelv ISOTROPIC
-#define MaterialConstantsv {1.0,0.3}
-
-
+#define MaterialModelV ISOTROPIC
+#define MaterialConstantsV {1.0,0.3}
