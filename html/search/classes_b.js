@@ -1,0 +1,21 @@
+var searchData=
+[
+  ['lagrangeequidistant',['LagrangeEquidistant',['http://www.dealii.org/8.2.1/doxygen/deal.II/classPolynomials_1_1LagrangeEquidistant.html',1,'Polynomials']]],
+  ['lapackfullmatrix',['LAPACKFullMatrix',['http://www.dealii.org/8.2.1/doxygen/deal.II/singletonLAPACKFullMatrix.html',1,'']]],
+  ['lastaction',['LastAction',['http://www.dealii.org/8.2.1/doxygen/deal.II/structPETScWrappers_1_1MatrixBase_1_1LastAction.html',1,'PETScWrappers::MatrixBase']]],
+  ['legendre',['Legendre',['http://www.dealii.org/8.2.1/doxygen/deal.II/classPolynomials_1_1Legendre.html',1,'Polynomials']]],
+  ['levelequalto',['LevelEqualTo',['http://www.dealii.org/8.2.1/doxygen/deal.II/classIteratorFilters_1_1LevelEqualTo.html',1,'IteratorFilters']]],
+  ['line',['Line',['http://www.dealii.org/8.2.1/doxygen/deal.II/structCompressedSparsityPattern_1_1Line.html',1,'CompressedSparsityPattern']]],
+  ['line',['Line',['http://www.dealii.org/8.2.1/doxygen/deal.II/structCompressedSetSparsityPattern_1_1Line.html',1,'CompressedSetSparsityPattern']]],
+  ['line',['Line',['http://www.dealii.org/8.2.1/doxygen/deal.II/structCompressedSimpleSparsityPattern_1_1Line.html',1,'CompressedSimpleSparsityPattern']]],
+  ['list',['List',['http://www.dealii.org/8.2.1/doxygen/deal.II/classPatterns_1_1List.html',1,'Patterns']]],
+  ['lobatto',['Lobatto',['http://www.dealii.org/8.2.1/doxygen/deal.II/classPolynomials_1_1Lobatto.html',1,'Polynomials']]],
+  ['localintegrator',['LocalIntegrator',['http://www.dealii.org/8.2.1/doxygen/deal.II/classMeshWorker_1_1LocalIntegrator.html',1,'MeshWorker']]],
+  ['locallyownedcell',['LocallyOwnedCell',['http://www.dealii.org/8.2.1/doxygen/deal.II/classIteratorFilters_1_1LocallyOwnedCell.html',1,'IteratorFilters']]],
+  ['locallyownedlevelcell',['LocallyOwnedLevelCell',['http://www.dealii.org/8.2.1/doxygen/deal.II/classIteratorFilters_1_1LocallyOwnedLevelCell.html',1,'IteratorFilters']]],
+  ['localresults',['LocalResults',['http://www.dealii.org/8.2.1/doxygen/deal.II/classMeshWorker_1_1LocalResults.html',1,'MeshWorker']]],
+  ['logstream',['LogStream',['http://www.dealii.org/8.2.1/doxygen/deal.II/classLogStream.html',1,'']]],
+  ['loopcontrol',['LoopControl',['http://www.dealii.org/8.2.1/doxygen/deal.II/classMeshWorker_1_1LoopControl.html',1,'MeshWorker']]],
+  ['lsingularityfunction',['LSingularityFunction',['http://www.dealii.org/8.2.1/doxygen/deal.II/classFunctions_1_1LSingularityFunction.html',1,'Functions']]],
+  ['lsingularitygradfunction',['LSingularityGradFunction',['http://www.dealii.org/8.2.1/doxygen/deal.II/classFunctions_1_1LSingularityGradFunction.html',1,'Functions']]]
+];
