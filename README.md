@@ -13,7 +13,7 @@
   of Energy (DOE), Office of Basic Energy Sciences, Division of Materials Sciences 
   and Engineering under Award #DE-SC0008637
 
-<B>Installation:</B>
+<B>Installation:</B> 
 
   1) Install deal.II (version 8.2.1 currently supported)<br>
   + Download Binaries (OSX and Linux) or  Virtual Machine (VMI) from https://www.dealii.org/download.html <br>
