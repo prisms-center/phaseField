@@ -1,5 +1,6 @@
-<B>Code repository:</B> https://github.com/prisms-center/phaseField
-
+<B>Code repository:</B> https://github.com/prisms-center/phaseField <br>
+<B>Online documentation:</B> https://htmlpreview.github.io/?https://raw.githubusercontent.com/prisms-center/phaseField/master/html/index.html
+ 
 <B>What is PRISMS PhaseField?</B>
 
   It is a Finite Element Method (FEM) code implementing various phase field 
@@ -25,6 +26,7 @@
      Download: http://www.dealii.org/download.html <br>
      Installation instructions: http://www.dealii.org/8.2.1/readme.html <br>
      Installation instructions for external packages (P4EST, PETSC): https://www.dealii.org/developer/external-libs/
+  + Additional software: CMake [http://www.cmake.org/download/] 
 
   2) Clone the PRISMS PhaseField GitHub repo https://github.com/prisms-center/phaseField<br>
   + $ git clone https://github.com/prisms-center/phaseField.git <br>

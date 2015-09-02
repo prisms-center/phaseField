@@ -1,4 +1,12 @@
 /** \page page1 Formulations 
+* <a href="cahnHillard.pdf" target="_blank"><b>Cahn-Hilliard Dynamics</b></a> <br>
+* <a href="allenCahn.pdf" target="_blank"><b>Allen-Cahn Dynamics</b></a> <br>
+* <a href="mechanics.pdf" target="_blank"><b>Mechanics</b></a> <br>
+* <a href="coupledCHAC.pdf" target="_blank"><b>Coupled Cahn-Hilliard and Allen-Cahn Dynamics</b></a> <br>
+* <a href="coupledCHMechanics.pdf" target="_blank"><b>Coupled Cahn-Hilliard and Mechanics</b></a> <br>
+* <a href="fickianFlux.pdf" target="_blank"><b>Fickian diffusion</b></a> <br>
+* <a href="" target="_blank"><b>Beta Prime Precipitate evolution</b></a> <br>
 */
 /** \page page2 Examples
 */
+
