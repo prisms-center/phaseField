@@ -1107,7 +1107,7 @@ HTML_EXTRA_STYLESHEET  =
 # files will be copied as-is; there are no commands or markers available.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_FILES       = docs/formulations/mechanics.pdf docs/formulations/fickianFlux.pdf docs/formulations/coupledCHMechanics.pdf docs/formulations/coupledCHAC.pdf docs/formulations/cahnHillard.pdf docs/formulations/allenCahn.pdf
+HTML_EXTRA_FILES       = docs/formulations/mechanics.pdf docs/formulations/fickianFlux.pdf docs/formulations/coupledCHMechanics.pdf docs/formulations/coupledCHAC.pdf docs/formulations/cahnHillard.pdf docs/formulations/allenCahn.pdf docs/examples/ExMechanics.pdf docs/examples/ExAllenCahn.pdf docs/examples/ExCahnHilliard.pdf docs/examples/ExCoupledCHMechanics.pdf docs/examples/ExCoupledCHAC.pdf docs/examples/ExFickianDiffusion.pdf docs/examples/ExBetaPrimePrecipitate.pdf
 
 # The HTML_COLORSTYLE_HUE tag controls the color of the HTML output. Doxygen
 # will adjust the colors in the style sheet and background images according to
