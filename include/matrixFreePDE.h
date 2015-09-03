@@ -40,44 +40,16 @@ using namespace dealii;
 //base class for matrix free PDE's
 //
 /**
- * This class collects all the data that is stored for the matrix free
- * implementation. The storage scheme is tailored towards several loops
- * performed with the same data, i.e., typically doing many matrix-vector
- * products or residual computations on the same mesh.
+ * This is the base class for matrix free implementation for Parabolic and Elliptic BVP's.
+ * This class supports MPI, Threads and Vectorization (Hybrid Parallel). 
  */
 template <int dim>
 class MatrixFreePDE:public Subscriptor
 {
  public:
   /**
-   * Collects the options for initialization of the MatrixFree class. The
-   * first parameter specifies the MPI communicator to be used, the second the
-   * parallelization options in shared memory (task-based parallelism, where
-   * one can choose between no parallelism and three schemes that avoid that
-   * cells with access to the same vector entries are accessed
-   * simultaneously), the third with the block size for task parallel
-   * scheduling, the fourth the update flags that should be stored by this
-   * class.
-   *
-   * The fifth parameter specifies the level in the triangulation from which
-   * the indices are to be used. If the level is set to
-   * numbers::invalid_unsigned_int, the active cells are traversed, and
-   * otherwise the cells in the given level. This option has no effect in case
-   * a DoFHandler or hp::DoFHandler is given.
-   *
-   * The parameter @p initialize_plain_indices indicates whether the DoFInfo
-   * class should also allow for access to vectors without resolving
-   * constraints.
-   *
-   * The last two parameters allow the user to disable some of the
-   * initialization processes. For example, if only the scheduling that avoids
-   * touching the same vector/matrix indices simultaneously is to be found,
-   * the mapping needs not be initialized. Likewise, if the mapping has
-   * changed from one iteration to the next but the topology has not (like
-   * when using a deforming mesh with MappingQEulerian), it suffices to
-   * initialize the mapping only.
+   * Class contructor
    */
-
   MatrixFreePDE(); 
   ~MatrixFreePDE(); 
 
