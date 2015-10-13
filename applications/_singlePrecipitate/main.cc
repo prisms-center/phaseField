@@ -25,20 +25,31 @@ public:
 	double r = 0.0;
     //return 0.02 + 1.0e-3*(2*(0.5 - (double)(std::rand() % 100 )/100.0));
 	#if problemDIM==1
-	  r=p[0];
-	  return 0.005+0.5*(0.125-0.005)*(1-std::tanh((r-spanX/2.0)/(3*dx)));
+	  r=p.operator()(0);
+	  return 0.5*(0.12-0.00)*(1-std::tanh((r-spanX/16.0)/(0.1*dx)));
 	#elif problemDIM==2
 	  //r=p.distance(Point<dim>(spanX/2.0,spanY/2.0));
 	  //r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/144.0+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0));
-	  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/20.0
-	  		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/10.0);
-	  return 0.5*(0.125-0.0)*(1.0-std::tanh((r-spanY/16.0)/(2.0*dy))) +0.03;
+	  //r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/20.0
+	  //		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/10.0);
+
+	  // My initial conditions
+	  /*
+	  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/4.0
+	  	  		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/4.0);
+	  return 0.5*(0.12-0.0)*(1.0-std::tanh((r-spanY/16.0)/(0.5*dy))) +0.00;
+	  */
+
+	  // Larry's initial conditions
+	  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0));
+	  return 0.5*(0.12-0.0)*(1.0-std::tanh((r-spanY/8.0)/(2.0*dy))) +0.02;
+
 	#elif problemDIM==3
 	  //r=p.distance(Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
 	  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/4.0
 		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/4.0
 		+(p.operator()(2)-spanZ/2.0)*(p.operator()(2)-spanZ/2.0)/1.0);
-	  return 0.5*(0.12-0.0)*(1.0-std::tanh((r-2.3811)/(1.0*dz))) +0.000;
+	  return 0.5*(0.12-0.0)*(1.0-std::tanh((r-2.3811)/(2.0*dy))) +0.000;
 	#endif
   }
 };
@@ -60,18 +71,27 @@ public:
     double dz=spanZ/std::pow(2.0,refineFactor);
     double r=0.0;
 	#if problemDIM==1
-	  r=p[0];
-	  return 0.5*(1.0-std::tanh((r-spanX/2.0)/(6.2*dx)));
+    r=p.operator()(0);
+	  return 0.5*(1.0-std::tanh((r-spanX/16.0)/(0.1*dx)));
 	#elif problemDIM==2
 	  if (index==1){
 		//double r2=p.distance(Point<dim>(3*spanX/4.0,3*spanY/4.0));
 		//r=std::min(r1,r2);
 		//r=p.distance(Point<dim>(spanX/2.0,spanY/2.0));
 		//r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/144.0+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0));
-		r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/10.0
-			  		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/5.0);
-		return 0.5*(1.0-std::tanh((r-spanY/16.0)/(2.0*dy)));
+		  //r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/20.0
+		  	  //		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/10.0);
 
+		  // My initial conditions
+		  /*
+		  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/4.0
+		  	  	  		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/4.0);
+		  return 0.5*(1.0-std::tanh((r-spanY/16.0)/(0.5*dy)));
+		  */
+
+		// Larry's initial conditions
+		  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0));
+		  return 0.5*(1.0-std::tanh((r-spanY/8.0)/(2.0*dy)));
 	  }
 	  else if (index==2){
 		return 0.0;
