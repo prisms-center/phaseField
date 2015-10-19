@@ -16,7 +16,7 @@
 //define time step parameters
 #define timeStep 4.7e-5 // 1.67e-5
 #define timeFinal 8.35  // This should really be tied to an expression, not directly defined
-#define timeIncrements 500000 //7000000
+#define timeIncrements 5000 //7000000
 #define skipImplicitSolves 100000000
 
 //define solver paramters
@@ -26,7 +26,7 @@
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 50000 //50000 //timeIncrements/10 //5000
+#define skipOutputSteps (timeIncrements/10) //50000 //timeIncrements/10 //5000
 
 #define numFields (4+problemDIM)
 
@@ -81,9 +81,9 @@ double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 //#define rn1V   (n1-constV(-timeStep*Mn1V)*((fbV-faV)*hn1V+W*fbarriernV-CEE1))
 //#define rn2V   (n2-constV(-timeStep*Mn2V)*((fbV-faV)*hn2V+W*fbarriernV-CEE2))
 //#define rn3V   (n3-constV(-timeStep*Mn3V)*((fbV-faV)*hn3V+W*fbarriernV-CEE3))
-#define rn1V   (n1-constV(-timeStep*Mn1V)*((fbV-faV)*hn1V+W*fbarriernV))
-#define rn2V   (n2-constV(-timeStep*Mn2V)*((fbV-faV)*hn2V))
-#define rn3V   (n3-constV(-timeStep*Mn3V)*((fbV-faV)*hn3V))
+#define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V+W*fbarriernV))
+#define rn2V   (n2-constV(timeStep*Mn2V)*((fbV-faV)*hn2V))
+#define rn3V   (n3-constV(timeStep*Mn3V)*((fbV-faV)*hn3V))
 #define rn1xV  (constV(-timeStep*Mn1V)*Knx1)
 #define rn2xV  (constV(-timeStep*Mn2V)*Knx2)
 #define rn3xV  (constV(-timeStep*Mn3V)*Knx3)
