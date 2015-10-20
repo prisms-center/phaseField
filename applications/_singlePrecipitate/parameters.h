@@ -14,15 +14,15 @@
 #define finiteElementDegree 1
 
 //define time step parameters
-#define timeStep 4.7e-5 // 1.67e-5
-#define timeFinal 8.35  // This should really be tied to an expression, not directly defined
+#define timeStep 1.0e-5 // 1.67e-5
 #define timeIncrements 5000 //7000000
-#define skipImplicitSolves 100000000
+#define timeFinal (timeStep*timeIncrements)
+#define skipImplicitSolves 1
 
 //define solver paramters
 #define solverType SolverCG
 #define relSolverTolerance 1.0e-10
-#define maxSolverIterations 1000
+#define maxSolverIterations 10000
 
 //define results output parameters
 #define writeOutput true
@@ -47,11 +47,22 @@ double Kn3[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 #define W -1.0
 
 //define Mechanical properties
-#define MaterialModelV ISOTROPIC
-#define MaterialConstantsV {1.0,0.3}
-double sf1Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sf2Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+//#define MaterialModelV ISOTROPIC
+//#define MaterialConstantsV {1.0,0.3}
+//double sf1Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+//double sf2Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+//double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+//double sf1Strain[3][3]={{0.0345,0,0},{0,0.0185,0},{0,0,-0.00270}};
+//double sf2Strain[3][3]={{0.0225,-0.0069,0},{-0.0069,0.0305,0},{0,0,-0.00270}};
+//double sf3Strain[3][3]={{0.0225, 0.0069,0},{0.0069,0.0305,0},{0,0,-0.00270}};
+
+////define Mechanical properties
+#define MaterialModelV ANISOTROPIC
+////#define MaterialConstantsV {62.6,62.6,64.9,26.0,20.9,20.9} //these are in GPa-need to be non-dimensionalized
+#define MaterialConstantsV {31.3,31.3,32.45,13.0,10.45,10.45} //scaled by E* = 2e9 J/m^3
+double sf1Strain[3][3] = {{0.1305,0,0},{0,-0.0152,0},{0,0,-0.014}}; //Mg-Nd beta-prime
+double sf2Strain[3][3] = {{0.0212,0.0631,0},{0.0631,0.0941,0},{0,0,0}};
+double sf3Strain[3][3] = {{0.0212,-0.0631,0},{-0.0631,0.0941,0},{0,0,0}};
 
 
 //define free energy expressions (Mg-Nd data from CASM)
@@ -82,8 +93,8 @@ double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 //#define rn2V   (n2-constV(-timeStep*Mn2V)*((fbV-faV)*hn2V+W*fbarriernV-CEE2))
 //#define rn3V   (n3-constV(-timeStep*Mn3V)*((fbV-faV)*hn3V+W*fbarriernV-CEE3))
 #define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V+W*fbarriernV))
-#define rn2V   (n2-constV(timeStep*Mn2V)*((fbV-faV)*hn2V))
-#define rn3V   (n3-constV(timeStep*Mn3V)*((fbV-faV)*hn3V))
+#define rn2V   (n2-constV(timeStep*Mn2V)*((fbV-faV)*hn2V+W*fbarriernV))
+#define rn3V   (n3-constV(timeStep*Mn3V)*((fbV-faV)*hn3V+W*fbarriernV))
 #define rn1xV  (constV(-timeStep*Mn1V)*Knx1)
 #define rn2xV  (constV(-timeStep*Mn2V)*Knx2)
 #define rn3xV  (constV(-timeStep*Mn3V)*Knx3)

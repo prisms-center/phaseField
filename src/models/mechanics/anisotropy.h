@@ -70,9 +70,9 @@ void getCIJMatrix(elasticityModel model, double constants[], dealii::Table<2, do
       CIJ[0][0]=constants[0]; //C11
       CIJ[1][1]=constants[1]; //C22
       CIJ[2][2]=constants[2]; //C33
-      CIJ[0][1]=constants[3]; //C12
-      CIJ[0][2]=constants[4]; //C13
-      CIJ[1][2]=constants[5]; //C23
+      CIJ[0][1]=CIJ[1][0]=constants[3]; //C12
+      CIJ[0][2]=CIJ[2][0]=constants[4]; //C13
+      CIJ[1][2]=CIJ[2][1]=constants[5]; //C23
       break;
     }
     default:{
