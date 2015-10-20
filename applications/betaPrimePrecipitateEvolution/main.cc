@@ -88,7 +88,7 @@ void CoupledCHACMechanicsProblem<dim>::applyDirichletBCs(){
 //main
 int main (int argc, char **argv)
 {
-  Utilities::System::MPI_InitFinalize mpi_initialization(argc, argv,numbers::invalid_unsigned_int);
+  Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,numbers::invalid_unsigned_int);
   try
     {
       deallog.depth_console(0);
