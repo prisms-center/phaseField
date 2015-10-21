@@ -28,21 +28,13 @@ public:
 	  r=p.operator()(0);
 	  return 0.5*(0.12-0.00)*(1-std::tanh((r-spanX/16.0)/(0.1*dx)));
 	#elif problemDIM==2
-	  //r=p.distance(Point<dim>(spanX/2.0,spanY/2.0));
-	  //r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/144.0+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0));
-	  //r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/20.0
-	  //		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/10.0);
-
 	  // My initial conditions
-	  /*
-	  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/4.0
-	  	  		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/4.0);
-	  return 0.5*(0.12-0.0)*(1.0-std::tanh((r-spanY/16.0)/(0.5*dy))) +0.00;
-	  */
+	  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
+	  return 0.5*(0.12-0.0)*(1.0-std::tanh((r-spanY/8.0)/(2.0*dy))) +0.02;
 
 	  // Larry's initial conditions
-	  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0));
-	  return 0.5*(0.12-0.0)*(1.0-std::tanh((r-spanY/8.0)/(2.0*dy))) +0.02;
+	  //r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
+	  //return 0.5*(0.12-0.0)*(1.0-std::tanh((r-3.0)/(0.5*dy))) +0.01;
 
 	#elif problemDIM==3
 	  //r=p.distance(Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
@@ -75,23 +67,13 @@ public:
 	  return 0.5*(1.0-std::tanh((r-spanX/16.0)/(0.1*dx)));
 	#elif problemDIM==2
 	  if (index==1){
-		//double r2=p.distance(Point<dim>(3*spanX/4.0,3*spanY/4.0));
-		//r=std::min(r1,r2);
-		//r=p.distance(Point<dim>(spanX/2.0,spanY/2.0));
-		//r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/144.0+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0));
-		  //r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/20.0
-		  	  //		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/10.0);
-
 		  // My initial conditions
-		  /*
-		  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/4.0
-		  	  	  		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/4.0);
-		  return 0.5*(1.0-std::tanh((r-spanY/16.0)/(0.5*dy)));
-		  */
-
-		// Larry's initial conditions
-		  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0));
+		  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
 		  return 0.5*(1.0-std::tanh((r-spanY/8.0)/(2.0*dy)));
+
+		  // Larry's initial conditions
+		  //r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
+		  //return 0.5*(1.0-std::tanh((r-3.0)/(0.5*dy)));
 	  }
 	  else if (index==2){
 		return 0.0;

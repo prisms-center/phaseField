@@ -19,7 +19,7 @@ void MatrixFreePDE<dim>::solve(){
     
     //time stepping
     pcout << "\nTime stepping parameters: timeStep: " << dtValue << "  timeFinal: " << finalTime << "  timeIncrements: " << totalIncrements << "\n";
-    for (currentIncrement=1; currentIncrement<totalIncrements; ++currentIncrement){
+    for (currentIncrement=1; currentIncrement<=totalIncrements; ++currentIncrement){
       //increment current time
       currentTime+=dtValue;
       pcout << "\ntime increment:" << currentIncrement << "  time: " << currentTime << "\n";
