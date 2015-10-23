@@ -45,11 +45,11 @@ void MatrixFreePDE<dim>::solveIncrement(){
 	  pcout << "\nWarning: implicit solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing relSolverTolerance.\n";
 	}
 	*solutionSet[fieldIndex]+=dU;
-	sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e\n", \
+	sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
 		fields[fieldIndex].name.c_str(),			\
 		residualSet[fieldIndex]->l2_norm(),			\
 		solver_control.last_value(),				\
-		solver_control.last_step(), solver_control.tolerance(), solutionSet[fieldIndex]->l2_norm());
+		solver_control.last_step(), solver_control.tolerance(), solutionSet[fieldIndex]->l2_norm(), dU.l2_norm());
 	pcout<<buffer; 
       }
       else{

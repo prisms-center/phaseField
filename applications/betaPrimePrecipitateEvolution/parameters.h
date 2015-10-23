@@ -31,7 +31,7 @@
 
 //define solver paramters
 #define solverType SolverCG
-#define relSolverTolerance 1.0e-10
+#define relSolverTolerance 1.0e-4
 #define maxSolverIterations 1000
 
 //define results output parameters
