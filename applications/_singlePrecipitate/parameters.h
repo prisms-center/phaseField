@@ -2,31 +2,31 @@
 
 //define problem dimensions
 #define problemDIM 2 //3
-#define spanX 32 //16.0
+#define spanX 16 //16.0
 #define spanY 32 //16.0
 #define spanZ 8.0
 
 //define mesh parameters
 #define subdivisionsX 1
-#define subdivisionsY 1
+#define subdivisionsY 2
 #define subdivisionsZ 1
-#define refineFactor 8 //7
+#define refineFactor 7 //7
 #define finiteElementDegree 1
 
 //define time step parameters
 #define timeStep 4.7e-5 // 1.67e-5
-#define timeIncrements 100000 //7000000
+#define timeIncrements 10 //1000000 //7000000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
-#define skipImplicitSolves 10
+#define skipImplicitSolves 1
 
 //define solver paramters
 #define solverType SolverCG
-#define relSolverTolerance 1.0e-10
-#define maxSolverIterations 1000
+#define relSolverTolerance 1.0e-12
+#define maxSolverIterations 10000
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps (timeIncrements/10) //50000 //timeIncrements/10 //5000
+#define skipOutputSteps 1 //1000 //(timeIncrements/10) //50000 //timeIncrements/10 //5000
 
 #define numFields (4+problemDIM)
 
@@ -49,7 +49,7 @@ double Kn3[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 
 //define Mechanical properties
 #define MaterialModelV ANISOTROPIC
-//#define MaterialConstantsV {62.6,62.6,64.9,26.0,20.9,20.9} //these are in GPa-need to be non-dimensionalized
+////#define MaterialConstantsV {62.6,62.6,64.9,26.0,20.9,20.9} //these are in GPa-need to be non-dimensionalized
 #define MaterialConstantsV {31.3,31.3,32.45,13.0,10.45,10.45} //scaled by E* = 2e9 J/m^3
 double sf1Strain[3][3] = {{0.1305,0,0},{0,-0.0152,0},{0,0,-0.014}}; //Mg-Nd beta-prime
 double sf2Strain[3][3] = {{0.0212,0.0631,0},{0.0631,0.0941,0},{0,0,0}};
@@ -99,4 +99,4 @@ double sf3Strain[3][3] = {{0.0212,-0.0631,0},{-0.0631,0.0941,0},{0,0,0}};
 
 // Initial geometry
 #define x_denom 1.0
-#define y_denom 1.0
+#define y_denom 16.0

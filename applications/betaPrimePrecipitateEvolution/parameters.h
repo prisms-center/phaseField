@@ -11,6 +11,9 @@
 #define spanZ 100.0
 
 //define mesh parameters
+#define subdivisionsX 1
+#define subdivisionsY 2
+#define subdivisionsZ 1
 #define refineFactor 7
 #define finiteElementDegree 1
 
@@ -23,8 +26,8 @@
 //define time step parameters
 #define timeStep 1.0e-4
 #define timeFinal 10.0
-#define timeIncrements 20000
-#define skipImplicitSolves 1000
+#define timeIncrements 10//20000
+#define skipImplicitSolves 1 //1000
 
 //define solver paramters
 #define solverType SolverCG
@@ -33,7 +36,7 @@
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 1000
+#define skipOutputSteps 1 //1000
 
 //define Cahn-Hilliard parameters (no gradien energy terms)
 #define McV 1.0 

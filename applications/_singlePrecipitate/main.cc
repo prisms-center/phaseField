@@ -19,9 +19,9 @@ public:
   double value (const Point<dim> &p, const unsigned int component = 0) const
   {
     //return the value of the initial concentration field at point p
-	double dx=spanX/std::pow(2.0,refineFactor);
-	double dy=spanY/std::pow(2.0,refineFactor);
-	double dz=spanZ/std::pow(2.0,refineFactor);
+	double dx=spanX/( (double)subdivisionsX )/std::pow(2.0,refineFactor);
+	double dy=spanY/( (double)subdivisionsY )/std::pow(2.0,refineFactor);
+	double dz=spanZ/( (double)subdivisionsZ )/std::pow(2.0,refineFactor);
 	double r = 0.0;
     //return 0.02 + 1.0e-3*(2*(0.5 - (double)(std::rand() % 100 )/100.0));
 	#if problemDIM==1
@@ -29,12 +29,12 @@ public:
 	  return 0.5*(0.12-0.00)*(1-std::tanh((r-spanX/16.0)/(0.1*dx)));
 	#elif problemDIM==2
 	  // My initial conditions
-	  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
-	  return 0.5*(0.12-0.0)*(1.0-std::tanh((r-spanY/8.0)/(2.0*dy))) +0.02;
+	  //r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
+	  //return 0.5*(0.12-0.0)*(1.0-std::tanh((r-spanY/8.0)/(2.0*dy))) +0.02;
 
 	  // Larry's initial conditions
-	  //r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
-	  //return 0.5*(0.12-0.0)*(1.0-std::tanh((r-3.0)/(0.5*dy))) +0.01;
+	  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
+	  return 0.5*(0.12-0.0)*(1.0-std::tanh((r-3.0)/(0.5*dy))) +0.01;
 
 	#elif problemDIM==3
 	  //r=p.distance(Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
@@ -58,9 +58,9 @@ public:
   double value (const Point<dim> &p, const unsigned int component = 0) const
   {
     //set result equal to the structural order paramter initial condition
-    double dx=spanX/std::pow(2.0,refineFactor);
-	double dy=spanY/std::pow(2.0,refineFactor);
-    double dz=spanZ/std::pow(2.0,refineFactor);
+	  double dx=spanX/( (double)subdivisionsX )/std::pow(2.0,refineFactor);
+	  double dy=spanY/( (double)subdivisionsY )/std::pow(2.0,refineFactor);
+	  double dz=spanZ/( (double)subdivisionsZ )/std::pow(2.0,refineFactor);
     double r=0.0;
 	#if problemDIM==1
     r=p.operator()(0);
@@ -68,12 +68,12 @@ public:
 	#elif problemDIM==2
 	  if (index==1){
 		  // My initial conditions
-		  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
-		  return 0.5*(1.0-std::tanh((r-spanY/8.0)/(2.0*dy)));
+		  //r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
+		  //return 0.5*(1.0-std::tanh((r-spanY/8.0)/(2.0*dy)));
 
 		  // Larry's initial conditions
-		  //r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
-		  //return 0.5*(1.0-std::tanh((r-3.0)/(0.5*dy)));
+		  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
+		  return 0.5*(1.0-std::tanh((r-3.0)/(0.5*dy)));
 	  }
 	  else if (index==2){
 		return 0.0;
