@@ -71,3 +71,6 @@ main
 
 test
 DoxygenWarningLog.txt
+*.project
+*.cproject
+*.DS_Store

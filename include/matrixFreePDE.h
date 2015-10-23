@@ -77,7 +77,7 @@ class MatrixFreePDE:public Subscriptor
 
   //matrix free objects
   MatrixFree<dim,double>               matrixFreeObject;
-  vectorType                           invM;
+  vectorType                           invM, dU;
   
   //matrix free methods
   unsigned int currentFieldIndex;

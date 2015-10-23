@@ -117,6 +117,11 @@
      matrixFreeObject.initialize_dof_vector(*R,  fieldIndex);
      *U=0; solutionSet.push_back(U);
      *R=0; residualSet.push_back(R);
+     //initializing temporary dU vector required for implicit solves of the elliptic equation.
+     //Assuming here that there is only one elliptic field in the problem
+     if (fields[fieldIndex].pdetype==ELLIPTIC){
+    	 matrixFreeObject.initialize_dof_vector(dU,  fieldIndex);
+     }
    }
    //apply initial conditions
    applyInitialConditions();
