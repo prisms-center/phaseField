@@ -17,7 +17,7 @@ public:
   double value (const Point<dim> &p, const unsigned int component = 0) const
   {
     //return the value of the initial concentration field at point p 
-    double dx=spanX/std::pow(2.0,refineFactor);
+    double dx=spanX/((double) subdivisionsX)/std::pow(2.0,refineFactor);
     double r=0.0;
 #if problemDIM==1
     r=p[0];
@@ -43,7 +43,7 @@ public:
   double value (const Point<dim> &p, const unsigned int component = 0) const
   {
     //return the value of the initial order parameter field at point p 
-    double dx=spanX/std::pow(2.0,refineFactor);
+	  double dx=spanX/((double) subdivisionsX)/std::pow(2.0,refineFactor);
     double r=0.0;
 #if problemDIM==1
   r=p[0];
