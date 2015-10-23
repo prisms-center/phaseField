@@ -20,7 +20,6 @@
 		   subdivisions.push_back(subdivisionsZ);
 	   }
    }
-   GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(spanX,spanY));
 
    pcout << "creating problem mesh...\n";
  #if problemDIM==3
