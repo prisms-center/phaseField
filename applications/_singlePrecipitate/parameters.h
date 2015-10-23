@@ -15,18 +15,18 @@
 
 //define time step parameters
 #define timeStep 4.7e-5 // 1.67e-5
-#define timeIncrements 10 //1000000 //7000000
+#define timeIncrements 1000000 //1000000 //7000000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
 #define skipImplicitSolves 1
 
 //define solver paramters
 #define solverType SolverCG
-#define relSolverTolerance 1.0e-12
+#define relSolverTolerance 1.0e-4
 #define maxSolverIterations 10000
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 1 //1000 //(timeIncrements/10) //50000 //timeIncrements/10 //5000
+#define skipOutputSteps 1000 //(timeIncrements/10) //50000 //timeIncrements/10 //5000
 
 #define numFields (4+problemDIM)
 
