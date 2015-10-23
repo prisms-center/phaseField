@@ -33,7 +33,7 @@ public:
   double value (const Point<dim> &p, const unsigned int component = 0) const
   {
     //set result equal to the structural order paramter initial condition
-    double dx=spanX/std::pow(2.0,refineFactor);
+    double dx=spanX/((double) subdivisionsX)/std::pow(2.0,refineFactor);
     double r=0.0;
 #if problemDIM==2
     if (index==1){
