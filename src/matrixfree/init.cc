@@ -12,21 +12,23 @@
    computing_timer.enter_section("matrixFreePDE: initialization"); 
 
    //creating mesh
-   pcout << "creating problem mesh...\n";
- #if problemDIM==3
-   //GridGenerator::hyper_rectangle (triangulation, Point<dim>(), Point<dim>(spanX,spanY,spanZ));
-   GridGenerator::subdivided_hyper_rectangle (triangulation, {subdivisionsX, subdivisionsY, subdivisionsZ}, Point<dim>(), Point<dim>(spanX,spanY,spanZ));
-#elif problemDIM==2
-   //GridGenerator::hyper_rectangle (triangulation, Point<dim>(), Point<dim>(spanX,spanY));
-   //GridGenerator::subdivided_hyper_rectangle (triangulation, {subdivisionsX, subdivisionsY}, Point<dim>(), Point<dim>(spanX,spanY));
    std::vector<unsigned int> subdivisions;
    subdivisions.push_back(subdivisionsX);
-   subdivisions.push_back(subdivisionsY);
+   if (dim>1){
+	   subdivisions.push_back(subdivisionsY);
+	   if (dim>2){
+		   subdivisions.push_back(subdivisionsZ);
+	   }
+   }
+
+   pcout << "creating problem mesh...\n";
+#if problemDIM==3
+   GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(spanX,spanY,spanZ));
+#elif problemDIM==2
    GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(spanX,spanY));
- #elif problemDIM==1
-   //GridGenerator::hyper_rectangle (triangulation, Point<dim>(), Point<dim>(spanX));
-   GridGenerator::subdivided_hyper_rectangle (triangulation, {subdivisionsX}, Point<dim>(), Point<dim>(spanX));
- #endif
+#elif problemDIM==1
+   GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(spanX));
+#endif
    triangulation.refine_global (refineFactor);
    //write out extends
    pcout << "problem dimensions: " << spanX << "x" << spanY << "x" << spanZ << std::endl;
