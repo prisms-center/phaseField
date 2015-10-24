@@ -14,11 +14,18 @@
    //creating mesh
    pcout << "creating problem mesh...\n";
  #if problemDIM==3
-   GridGenerator::hyper_rectangle (triangulation, Point<dim>(), Point<dim>(spanX,spanY,spanZ));
+   //GridGenerator::hyper_rectangle (triangulation, Point<dim>(), Point<dim>(spanX,spanY,spanZ));
+   GridGenerator::subdivided_hyper_rectangle (triangulation, {subdivisionsX, subdivisionsY, subdivisionsZ}, Point<dim>(), Point<dim>(spanX,spanY,spanZ));
 #elif problemDIM==2
-   GridGenerator::hyper_rectangle (triangulation, Point<dim>(), Point<dim>(spanX,spanY));
+   //GridGenerator::hyper_rectangle (triangulation, Point<dim>(), Point<dim>(spanX,spanY));
+   //GridGenerator::subdivided_hyper_rectangle (triangulation, {subdivisionsX, subdivisionsY}, Point<dim>(), Point<dim>(spanX,spanY));
+   std::vector<unsigned int> subdivisions;
+   subdivisions.push_back(subdivisionsX);
+   subdivisions.push_back(subdivisionsY);
+   GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(spanX,spanY));
  #elif problemDIM==1
-   GridGenerator::hyper_rectangle (triangulation, Point<dim>(), Point<dim>(spanX));
+   //GridGenerator::hyper_rectangle (triangulation, Point<dim>(), Point<dim>(spanX));
+   GridGenerator::subdivided_hyper_rectangle (triangulation, {subdivisionsX}, Point<dim>(), Point<dim>(spanX));
  #endif
    triangulation.refine_global (refineFactor);
    //write out extends
@@ -110,6 +117,11 @@
      matrixFreeObject.initialize_dof_vector(*R,  fieldIndex);
      *U=0; solutionSet.push_back(U);
      *R=0; residualSet.push_back(R);
+     //initializing temporary dU vector required for implicit solves of the elliptic equation.
+     //Assuming here that there is only one elliptic field in the problem
+     if (fields[fieldIndex].pdetype==ELLIPTIC){
+    	 matrixFreeObject.initialize_dof_vector(dU,  fieldIndex);
+     }
    }
    //apply initial conditions
    applyInitialConditions();

@@ -1,7 +1,7 @@
-//Parameter list for the Beta Prime precipitate evolution problem 
+//Parameter list for the Beta Prime precipitate evolution problem
 //(Coupled Allen Cahn, Cahn Hilliard and Mechanics formulation)
 //The free energy expressions in this file are from the reference:
-//H. Liu et al, "A simulation study of the shape of beta prime precipitates in Mg–Y and Mg–Gd alloys", 
+//H. Liu et al, "A simulation study of the shape of beta prime precipitates in Mg–Y and Mg–Gd alloys",
 //Acta Materialia, Volume 61, Issue 2, January 2013, Pages 453-466. http://dx.doi.org/10.1016/j.actamat.2012.09.044
 
 //define problem dimensions
@@ -11,35 +11,32 @@
 #define spanZ 100.0
 
 //define mesh parameters
-#define subdivisionsX 1
-#define subdivisionsY 2
-#define subdivisionsZ 1
 #define refineFactor 7
 #define finiteElementDegree 1
 
 //define number of fields in the problem
-//n1, n2, n3, c, u 
-//Cahn Hilliard part has no gradiend term, 
+//n1, n2, n3, c, u
+//Cahn Hilliard part has no gradiend term,
 //hence chemical potential (mu) field not required as mixed formulation is not needed.
 #define numFields (4+problemDIM)
 
 //define time step parameters
 #define timeStep 1.0e-4
 #define timeFinal 10.0
-#define timeIncrements 10//20000
-#define skipImplicitSolves 1 //1000
+#define timeIncrements 1000 //20000
+#define skipImplicitSolves 1000
 
 //define solver paramters
 #define solverType SolverCG
-#define relSolverTolerance 1.0e-4
+#define relSolverTolerance 1.0e-10
 #define maxSolverIterations 1000
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 1 //1000
+#define skipOutputSteps 100 //1000
 
 //define Cahn-Hilliard parameters (no gradien energy terms)
-#define McV 1.0 
+#define McV 1.0
 
 //define Allen-Cahn parameters
 #define Mn1V 1.0
