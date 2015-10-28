@@ -26,7 +26,7 @@
 //define time step parameters
 #define timeStep 1.0e-4
 #define timeFinal 10.0
-#define timeIncrements 10//20000
+#define timeIncrements 20000
 #define skipImplicitSolves 1 //1000
 
 //define solver paramters
@@ -36,7 +36,7 @@
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 1 //1000
+#define skipOutputSteps 1000 //1000
 
 //define Cahn-Hilliard parameters (no gradien energy terms)
 #define McV 1.0 
@@ -75,9 +75,9 @@ double sf3Strain[3][3]={{0.0225, 0.0069,0},{0.0069,0.0305,0},{0,0,-0.00270}};
 #define rcxTemp ( cx*((1.0-h1V-h2V-h3V)*faccV+(h1V+h2V+h3V)*fbccV) + n1x*((fbcV-facV)*hn1V) + n2x*((fbcV-facV)*hn2V) + n3x*((fbcV-facV)*hn3V) )
 #define rcxV  (constV(-timeStep*McV)*rcxTemp)
 //n1
-#define rn1V   (n1-constV(-timeStep*Mn1V)*((fbV-faV)*hn1V-CEE1))
-#define rn2V   (n2-constV(-timeStep*Mn2V)*((fbV-faV)*hn2V-CEE2))
-#define rn3V   (n3-constV(-timeStep*Mn3V)*((fbV-faV)*hn3V-CEE3))
+#define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V-CEE1))
+#define rn2V   (n2-constV(timeStep*Mn2V)*((fbV-faV)*hn2V-CEE2))
+#define rn3V   (n3-constV(timeStep*Mn3V)*((fbV-faV)*hn3V-CEE3))
 #define rn1xV  (constV(-timeStep*Mn1V)*Knx1)
 #define rn2xV  (constV(-timeStep*Mn2V)*Knx2)
 #define rn3xV  (constV(-timeStep*Mn3V)*Knx3)
