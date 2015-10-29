@@ -1,21 +1,21 @@
 //Parameters list for beta prime precipitation evolution problem
 
 //define problem dimensions
-#define problemDIM 2 //3
-#define spanX 32 //16.0
-#define spanY 32 //16.0
+#define problemDIM 3
+#define spanX 16.0
+#define spanY 16.0
 #define spanZ 8.0
 
 //define mesh parameters
 #define subdivisionsX 1
 #define subdivisionsY 1
 #define subdivisionsZ 1
-#define refineFactor 8 //7
+#define refineFactor 7
 #define finiteElementDegree 1
 
 //define time step parameters
-#define timeStep 4.7e-5 // 1.67e-5
-#define timeIncrements 60000 //1000000 //7000000
+#define timeStep 1.67e-5
+#define timeIncrements 7000000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
 #define skipImplicitSolves 100000000
 
@@ -26,7 +26,7 @@
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 6000 //(timeIncrements/10) //50000 //timeIncrements/10 //5000
+#define skipOutputSteps 100000 //(timeIncrements/10) //50000 //timeIncrements/10 //5000
 
 #define numFields (4+problemDIM)
 
@@ -38,9 +38,9 @@
 #define Mn2V 50.0
 #define Mn3V 50.0
 
-//double Kn1[3][3]={{0.0150,0,0},{0,0.0188,0},{0,0,0.00571}};
+double Kn1[3][3]={{0.0150,0,0},{0,0.0188,0},{0,0,0.00571}};
 //double Kn1[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
-double Kn1[3][3]={{0.123,0,0},{0,0.0295,0},{0,0,0.123}};
+//double Kn1[3][3]={{0.123,0,0},{0,0.0295,0},{0,0,0.123}};
 double Kn2[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 double Kn3[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 
@@ -96,5 +96,7 @@ double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 #define rn3xV  (constV(-timeStep*Mn3V)*Knx3)
 
 // Initial geometry
-#define x_denom 1.0
-#define y_denom 1.0
+#define x_denom 4.0
+#define y_denom 4.0
+#define z_denom 1.0
+#define supersaturation 0.005

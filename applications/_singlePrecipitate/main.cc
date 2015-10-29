@@ -42,10 +42,10 @@ public:
 
 	#elif problemDIM==3
 	  //r=p.distance(Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
-	  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/4.0
-		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/4.0
-		+(p.operator()(2)-spanZ/2.0)*(p.operator()(2)-spanZ/2.0)/1.0);
-	  return 0.5*(0.12-0.0)*(1.0-std::tanh((r-2.3811)/(2.0*dy))) +0.000;
+	  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom
+		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom
+		+(p.operator()(2)-spanZ/2.0)*(p.operator()(2)-spanZ/2.0)/z_denom);
+	  return 0.5*(0.12-0.0)*(1.0-std::tanh((r-2.3811)/(1.0*dz))) + supersaturation;
 	#endif
   }
 };
@@ -98,9 +98,9 @@ public:
 	  if (index==1){
 	  //r=p.distance(Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
 	  //return 0.5*(1.0-std::tanh((r-spanX/8.0)/(3*dx)));
-	  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/4.0
-		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/4.0
-		+(p.operator()(2)-spanZ/2.0)*(p.operator()(2)-spanZ/2.0)/1.0);
+		  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom
+		  		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom
+		  		+(p.operator()(2)-spanZ/2.0)*(p.operator()(2)-spanZ/2.0)/z_denom);
 		return 0.5*(1.0-std::tanh((r-2.3811)/(1.0*dz)));
 	  }
 	  else if (index==2){
