@@ -14,7 +14,7 @@
 #define finiteElementDegree 1
 
 //define time step parameters
-#define timeStep 4.77e-5
+#define timeStep 4.7e-5
 #define timeIncrements 1000000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
 #define skipImplicitSolves 1
