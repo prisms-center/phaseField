@@ -12,23 +12,7 @@ template <int dim>
 double InitialConditionC<dim>::value (const Point<dim> &p, const unsigned int /* component */) const
 {
   //set result equal to the concentration initial condition 
-  //return 0.02 + 1.0e-3*(2*(0.5 - (double)(std::rand() % 100 )/100.0));
-  double dy=spanY/( (double)subdivisionsY )/(std::pow(2.0,refineFactor));
-  double r=0.0;
-#if problemDIM==1
-  r=p[0];
-  return 0.005+0.5*(0.125-0.005)*(1-std::tanh((r-spanX/2.0)/(3*dx)));
-#elif problemDIM==2
-  //r=p.distance(Point<dim>(spanX/2.0,spanY/2.0));	
-  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/16.0);
-  return 0.5*(0.12-0.0)*(1.0-std::tanh((r-3.0)/(0.5*dy))) +0.01;
-#elif problemDIM==3
-  //r=p.distance(Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
-  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/144.0
-  	+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/576.0
-  	+(p.operator()(2)-spanZ/2.0)*(p.operator()(2)-spanZ/2.0));
-  return 0.5*(0.125-0.0)*(1.0-std::tanh((r-spanZ/6.0)/(0.5*dz))) +0.03;
-#endif
+  return 0.02 + 1.0e-3*(2*(0.5 - (double)(std::rand() % 100 )/100.0));
 }
 
 //structural order parameter initial conditions
@@ -36,39 +20,30 @@ template <int dim>
 double InitialConditionN<dim>::value (const Point<dim> &p, const unsigned int /* component */) const
 {
   //set result equal to the structural order paramter initial condition
-  double dy=spanY/( (double)subdivisionsY )/(std::pow(2.0,refineFactor));
+  double dx=spanX/std::pow(2.0,refineFactor);
   double r=0.0;
 #if problemDIM==1
   r=p[0];
   return 0.5*(1.0-std::tanh((r-spanX/2.0)/(6.2*dx)));
 #elif problemDIM==2
   if (index==0){
-    //double r2=p.distance(Point<dim>(3*spanX/4.0,3*spanY/4.0));
-    //r=std::min(r1,r2);
-    //r=p.distance(Point<dim>(spanX/2.0,spanY/2.0));
-    r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/16.0);
-	return 0.5*(1.0-std::tanh((r-3.0)/(0.5*dy)));
-
+    double r1=p.distance(Point<dim>(spanX/4.0,spanY/4.0));
+    double r2=p.distance(Point<dim>(3*spanX/4.0,3*spanY/4.0));
+    r=std::min(r1,r2);
   }
   else if (index==1){
-	return 0.0;  
-//     double r1=p.distance(Point<dim>(3*spanX/4.0,spanY/4.0));
-//     double r2=p.distance(Point<dim>(spanX/2.0,spanY/2.0));
-//     r=std::min(r1,r2);
+    double r1=p.distance(Point<dim>(3*spanX/4.0,spanY/4.0));
+    double r2=p.distance(Point<dim>(spanX/2.0,spanY/2.0));
+    r=std::min(r1,r2);
   }
   else if (index==2){
-	return 0.0;  
-//     r=p.distance(Point<dim>(spanX/4.0,3*spanY/4.0));
+    r=p.distance(Point<dim>(spanX/4.0,3*spanY/4.0));
   }
-  //return 0.5*(1.0-std::tanh((r-spanX/16.0)/(3*dx)));
+  return 0.5*(1.0-std::tanh((r-spanX/16.0)/(3*dx)));
 #elif problemDIM==3
   if (index==0){
-  //r=p.distance(Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
-  //return 0.5*(1.0-std::tanh((r-spanX/8.0)/(3*dx)));
-  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/144.0
-  	+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/576.0
-  	+(p.operator()(2)-spanZ/2.0)*(p.operator()(2)-spanZ/2.0));
-	return 0.5*(1.0-std::tanh((r-spanZ/6.0)/(0.5*dz)));
+  r=p.distance(Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
+  return 0.5*(1.0-std::tanh((r-spanX/8.0)/(3*dx)));
   }
   else if (index==1){
 	return 0.0;  
