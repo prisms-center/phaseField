@@ -33,12 +33,12 @@ public:
 	  //return 0.5*(0.12-0.0)*(1.0-std::tanh((r-spanY/8.0)/(2.0*dy))) +0.02;
 
 	  // Larry's initial conditions (150423f)
-	  //r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
-	  //return 0.5*(0.12-0.0)*(1.0-std::tanh((r-3.0)/(0.5*dy))) +0.01;
+	  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
+	  return 0.5*(0.12-0.0)*(1.0-std::tanh((r-3.0)/(0.5*dy))) + supersaturation;
 
 	  // Larry's initial conditions (150422p)
-	  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
-	  return 0.5*(0.12-0.0)*(1.0-std::tanh((r-spanX/8.0)/(2.0*dy))) +0.02;
+	  //r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
+	  //return 0.5*(0.12-0.0)*(1.0-std::tanh((r-spanX/8.0)/(2.0*dy))) +0.02;
 
 	#elif problemDIM==3
 	  //r=p.distance(Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
@@ -76,12 +76,12 @@ public:
 		  //return 0.5*(1.0-std::tanh((r-spanY/8.0)/(2.0*dy)));
 
 		  // Larry's initial conditions (150423f)
-		  //r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
-		  //return 0.5*(1.0-std::tanh((r-3.0)/(0.5*dy)));
+		  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
+		  return 0.5*(1.0-std::tanh((r-3.0)/(0.5*dy)));
 
 		  // Larry's initial conditions (150422p)
-		  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
-		  return 0.5*(1.0-std::tanh((r-spanX/8.0)/(2.0*dy)));
+		  //r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
+		  //return 0.5*(1.0-std::tanh((r-spanX/8.0)/(2.0*dy)));
 	  }
 	  else if (index==2){
 		return 0.0;
