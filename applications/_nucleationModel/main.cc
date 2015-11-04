@@ -124,7 +124,7 @@ void CoupledCHACProblem<dim>::modifySolutionFields()
 	}
       }
     }
-  
+
     //filter nuclei by comparing with other processors
     int numProcs=Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);        
     int thisProc=Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
@@ -155,7 +155,7 @@ void CoupledCHACProblem<dim>::modifySolutionFields()
 	  for (unsigned int j=0; j<dim; j++) tempData[i*(dim+3)+3+j]=thisNuclei->center[j];
 	  i++;
 	}
-	MPI_Send(&tempData[0], i, MPI_DOUBLE, 0, 1, MPI_COMM_WORLD);
+	MPI_Send(&tempData[0], numNuclei*(dim+3), MPI_DOUBLE, 0, 1, MPI_COMM_WORLD);
       }
     }
     else{
@@ -220,8 +220,8 @@ void CoupledCHACProblem<dim>::modifySolutionFields()
 	}
       }
     }
-
     MPI_Barrier(MPI_COMM_WORLD);
+
     //disperse nuclei to all other processors
     int numGlobalNuclei;
     if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0) {numGlobalNuclei=nuclei.size();}
