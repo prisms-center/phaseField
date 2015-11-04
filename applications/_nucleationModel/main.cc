@@ -78,23 +78,14 @@ void CoupledCHACProblem<dim>::modifySolutionFields()
   const double k2 = 1.0;
   const double c0 = 0.300;
   double J = 0.0;
-  //populate nuclei vector
-  unsigned int index=-1;
+  //delete the previous entries in the nuclei vector (old nucleus are still retained in the localNuclei vector)
+  nuclei.clear();
+  
+  //populate localNuclei vector
   if (inc <= timeIncrements-skipOutputSteps){
     nucleus* temp;
-    //first nucleus
-    /*
-      temp = new nucleus;
-    temp->index=++index; 
-    temp->center=dealii::Point<dim>(spanX/2.0,spanY/2.0);
-    temp->radius=spanX/32.0;
-    temp->seededTime=t;
-    temp->seedingTime=this->finalTime/10.0;
-    nuclei.push_back(*temp);
-    */
     //add nuclei based on concentration field values
-    //loop over all points in the domain
-    
+    //loop over all points in the domain    
     for (typename std::map<dealii::types::global_dof_index, dealii::Point<dim> >::iterator it=support_points.begin(); it!=support_points.end(); ++it){
       unsigned int dof=it->first;
       //set only local owned values of the parallel vector
@@ -106,21 +97,21 @@ void CoupledCHACProblem<dim>::modifySolutionFields()
 	rand_val = (rand() % rand_scale)/((double)rand_scale);
 	//std::cout << rand_val<< '\n';
 	//if (cValue>0.0305) {
-	//and (nuclei.size()<maxNumberNuclei)){
+	//and (localNuclei.size()<maxNumberNuclei)){
 	J = k1*exp(-k2/(cValue-c0));
 	//std::cout << J << " " << rand_val << "\n";
 	
 	if (rand_val <= J){
 	  //loop over all existing nuclei to check if they are in the vicinity
 	  bool isClose=false;
-	  for (std::vector<nucleus>::iterator thisNuclei=nuclei.begin(); thisNuclei!=nuclei.end(); ++thisNuclei){
+	  for (std::vector<nucleus>::iterator thisNuclei=localNuclei.begin(); thisNuclei!=localNuclei.end(); ++thisNuclei){
 	    if (thisNuclei->center.distance(nodePoint)<minDistBetwenNuclei){
 	      isClose=true;
 	    }
 	  }
 	  if (!isClose){
 	    temp = new nucleus;
-	    temp->index=++index; 
+	    temp->index=localNuclei.size(); 
 	    temp->center=nodePoint;
 	    temp->radius=spanX/50.0;
 	    //temp->seededTime=t;
@@ -128,13 +119,10 @@ void CoupledCHACProblem<dim>::modifySolutionFields()
 	    temp->seededTime = 0.0;
 	    //temp->seedingTime=this->finalTime;
 	    temp->seedingTime = t + 30.0*timeStep;
-	    nuclei.push_back(*temp);
+	    localNuclei.push_back(*temp);
 	  }
 	}
       }
-    }
-    if (inc % skipOutputSteps == 0){
-      this->pcout << "number of nuclei seeded: " << nuclei.size() << std::endl;
     }
   
     //filter nuclei by comparing with other processors
@@ -193,7 +181,7 @@ void CoupledCHACProblem<dim>::modifySolutionFields()
 	}
       }
     
-      //filter the nuclei
+      //filter the nuclei and add to nuclei vector in processor zero
       for (int proc1=0; proc1<numProcs; proc1++) {
 	for (int i1=0; i1<numNucleiInProcs[proc1]; i1++){
 	  double rad1=(*tempNuceli[proc1])[i1*(dim+3)];
@@ -238,7 +226,7 @@ void CoupledCHACProblem<dim>::modifySolutionFields()
     int numGlobalNuclei;
     if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0) {numGlobalNuclei=nuclei.size();}
     MPI_Bcast(&numGlobalNuclei, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    //std::cout << "number of nuclei seeded in processor " << Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) << ": " << numGlobalNuclei << std::endl;
+    this->pcout << "total number of nuclei currently seeded : "  << numGlobalNuclei << std::endl;
     MPI_Barrier(MPI_COMM_WORLD);
     //
     std::vector<double> temp2(numGlobalNuclei*(dim+3));
