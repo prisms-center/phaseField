@@ -62,7 +62,7 @@ void CoupledCHACProblem<dim>::modifySolutionFields()
   double rand_val;
   int count = 0;
   //nucleation parameters
-  double minDistBetwenNuclei=1.5*spanX/10.0;
+  double minDistBetwenNuclei=1.0*spanX/10.0;
   double nRadius = spanX/50.0;
   unsigned int maxNumberNuclei=5;
   //unsigned int rand_chance = .0000005;
@@ -200,7 +200,7 @@ void CoupledCHACProblem<dim>::modifySolutionFields()
 		double time2=(*tempNuceli[proc2])[i2*(dim+3)+1];
 		dealii::Point<dim> center2;
 		for (unsigned int j2=0; j2<dim; j2++) center2(j2)=(*tempNuceli[proc2])[i2*(dim+3)+3+j2];
-		if ((center1.distance(center2)<=(rad1+rad2)) && (time1>=time2)){
+		if ((center1.distance(center2)<=minDistBetwenNuclei) && (time1>=time2)){
 		  addNuclei=false;
 		  break;
 		}
