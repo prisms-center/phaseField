@@ -20,6 +20,7 @@ class CoupledCHACProblem: public MatrixFreePDE<dim>
 
   //method to apply initial conditions
   void applyInitialConditions();
+  void modifySolutionFields();
 };
 
 //constructor

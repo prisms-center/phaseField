@@ -3,7 +3,7 @@
 #include "../../include/dealIIheaders.h"
 //coupled Cahn-Hilliard and Allen-Cahn problem headers
 #include "parameters.h"
-#include "../../src/models/diffusion/coupledCHAC2.h"
+#include "../../src/models/diffusion/coupledCHAC.h"
 #include <time.h>
 
 
