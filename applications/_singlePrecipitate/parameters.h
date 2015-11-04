@@ -2,20 +2,20 @@
 
 //define problem dimensions
 #define problemDIM 2
-#define spanX 16.0
+#define spanX 32.0
 #define spanY 32.0
 #define spanZ 8.0
 
 //define mesh parameters
 #define subdivisionsX 1
-#define subdivisionsY 2
+#define subdivisionsY 1
 #define subdivisionsZ 1
-#define refineFactor 7
+#define refineFactor 8
 #define finiteElementDegree 1
 
 //define time step parameters
 #define timeStep 4.7e-5
-#define timeIncrements 1000000
+#define timeIncrements 10
 #define timeFinal 100000000 //(timeStep*timeIncrements)
 #define skipImplicitSolves 1
 
@@ -26,7 +26,7 @@
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 1000 //(timeIncrements/10) //50000 //timeIncrements/10 //5000
+#define skipOutputSteps 1 //(timeIncrements/10) //50000 //timeIncrements/10 //5000
 
 #define numFields (4+problemDIM)
 
@@ -34,13 +34,14 @@
 #define McV 1.0
 
 //define Allen-Cahn parameters
-#define Mn1V 50.0
+#define Mn1V 0.0
+//#define Mn1V 50.0
 #define Mn2V 50.0
 #define Mn3V 50.0
 
 //double Kn1[3][3]={{0.0150,0,0},{0,0.0188,0},{0,0,0.00571}};
-double Kn1[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
-//double Kn1[3][3]={{0.123,0,0},{0,0.0295,0},{0,0,0.123}};
+//double Kn1[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
+double Kn1[3][3]={{0.123,0,0},{0,0.0295,0},{0,0,0.123}};
 double Kn2[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 double Kn3[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 
@@ -49,7 +50,7 @@ double Kn3[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 
 //define Mechanical properties
 #define MaterialModelV ANISOTROPIC
-//////#define MaterialConstantsV {62.6,62.6,64.9,26.0,20.9,20.9} //these are in GPa-need to be non-dimensionalized
+////#define MaterialConstantsV {62.6,62.6,64.9,26.0,20.9,20.9} //these are in GPa-need to be non-dimensionalized
 #define MaterialConstantsV {31.3,31.3,32.45,13.0,10.45,10.45} //scaled by E* = 2e9 J/m^3
 double sf1Strain[3][3] = {{0.1305,0,0},{0,-0.0152,0},{0,0,0}}; //Mg-Nd beta-prime
 double sf2Strain[3][3] = {{0.0212,0.0631,0},{0.0631,0.0941,0},{0,0,0}};
@@ -85,8 +86,7 @@ double sf3Strain[3][3] = {{0.0212,-0.0631,0},{-0.0631,0.0941,0},{0,0,0}};
 #define rcxTemp ( cx*((1.0-h1V-h2V-h3V)*faccV+(h1V+h2V+h3V)*fbccV) + n1x*((fbcV-facV)*hn1V) + n2x*((fbcV-facV)*hn2V) + n3x*((fbcV-facV)*hn3V) )
 #define rcxV  (constV(-timeStep*McV)*rcxTemp)
 
-//#define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V+W*fbarriernV-CEE1))
-#define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V+W*fbarriernV))
+#define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V+W*fbarriernV-CEE1))
 #define rn2V   (n2-constV(timeStep*Mn2V)*((fbV-faV)*hn2V))
 #define rn3V   (n3-constV(timeStep*Mn3V)*((fbV-faV)*hn3V))
 #define rn1xV  (constV(-timeStep*Mn1V)*Knx1)
