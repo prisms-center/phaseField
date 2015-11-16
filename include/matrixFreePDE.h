@@ -107,8 +107,11 @@ class MatrixFreePDE:public Subscriptor
   //methods to apply dirichlet BC's
   virtual void markBoundaries();
   virtual void applyDirichletBCs();
-  virtual void applyInitialConditions();
 
+  //methods to apply initial conditions
+  virtual void applyInitialConditions();
+  virtual void modifySolutionFields ();
+ 
   //utility functions
   //return index of given field name if exists, else throw error
   unsigned int getFieldIndex(std::string _name);
@@ -138,6 +141,7 @@ class MatrixFreePDE:public Subscriptor
 #include "../src/matrixfree/invM.cc"
 #include "../src/matrixfree/computeLHS.cc"
 #include "../src/matrixfree/computeRHS.cc"
+#include "../src/matrixfree/modifyFields.cc"
 #include "../src/matrixfree/solve.cc"
 #include "../src/matrixfree/solveIncrement.cc"
 #include "../src/matrixfree/outputResults.cc"

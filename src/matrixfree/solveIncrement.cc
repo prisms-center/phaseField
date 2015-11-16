@@ -13,6 +13,9 @@ void MatrixFreePDE<dim>::solveIncrement(){
   Timer time; 
   char buffer[200];
 
+  //modify fields (rarely used. Used in problems involving nucleation models)
+  modifySolutionFields();
+
   //solve for each field
   for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
     currentFieldIndex=fieldIndex; 
