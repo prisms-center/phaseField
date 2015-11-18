@@ -19,14 +19,14 @@
 
 //define number of fields in the problem
 //n1, n2, n3, c, u 
-//Cahn Hilliard part has no gradiend term, 
+//Cahn Hilliard part has no gradient term,
 //hence chemical potential (mu) field not required as mixed formulation is not needed.
 #define numFields (4+problemDIM)
 
 //define time step parameters
 #define timeStep 1.0e-4
 #define timeFinal 10.0
-#define timeIncrements 20000
+#define timeIncrements 1000 //20000
 #define skipImplicitSolves 1 //1000
 
 //define solver paramters
@@ -36,9 +36,9 @@
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 1000 //1000
+#define skipOutputSteps 100 //1000
 
-//define Cahn-Hilliard parameters (no gradien energy terms)
+//define Cahn-Hilliard parameters (no gradient energy terms)
 #define McV 1.0 
 
 //define Allen-Cahn parameters

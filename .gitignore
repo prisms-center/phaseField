@@ -74,3 +74,4 @@ DoxygenWarningLog.txt
 *.project
 *.cproject
 *.DS_Store
+freeEnergy.txt

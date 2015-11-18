@@ -5,6 +5,7 @@
 //general headers
 #include <fstream>
 #include <sstream>
+#include <iterator> // is this necessary?
 
 //dealii headers
 #include "dealIIheaders.h"
@@ -115,6 +116,9 @@ class MatrixFreePDE:public Subscriptor
   //utility functions
   //return index of given field name if exists, else throw error
   unsigned int getFieldIndex(std::string _name);
+  virtual void computeFreeEnergyValue(std::vector<double>& freeEnergyValues);
+  std::vector<double> freeEnergyValues;
+  void outputFreeEnergy(std::vector<double>& freeEnergyValues);
 
   //residual, matrix-vector computation variables
   std::map<std::string,bool> getValue, setValue;
@@ -149,5 +153,6 @@ class MatrixFreePDE:public Subscriptor
 #include "../src/matrixfree/boundaryConditions.cc"
 #include "../src/matrixfree/initialConditions.cc"
 #include "../src/matrixfree/utilities.cc"
+#include "../src/matrixfree/freeEnergy.cc"
 
 #endif
