@@ -1,10 +1,10 @@
-//Parameters list for beta prime precipitation evolution problem
+//Parameters list for simulating beta prime nucleation and growth
 
 //define problem dimensions
-#define problemDIM 3
+#define problemDIM 2
 #define spanX 16.0
 #define spanY 16.0
-#define spanZ 8.0
+#define spanZ 100.0
 
 //define mesh parameters
 #define subdivisionsX 1
@@ -15,9 +15,9 @@
 
 //define time step parameters
 #define timeStep 1.67e-5
-#define timeIncrements 7000000
-#define timeFinal 100000000 //(timeStep*timeIncrements)
-#define skipImplicitSolves 100000000
+#define timeIncrements 20000
+#define timeFinal (2*timeStep*timeIncrements) // set so that the simulation ends after the prescribed number of increments
+#define skipImplicitSolves 1
 
 //define solver paramters
 #define solverType SolverCG
@@ -26,7 +26,8 @@
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 100000 //(timeIncrements/10) //50000 //timeIncrements/10 //5000
+#define skipOutputSteps (timeIncrements/20) //50000 //timeIncrements/10 //5000
+//#define outputFileDirectory "." // I don't think this does anything, but was in the nucleation parameters file
 
 #define numFields (4+problemDIM)
 
@@ -61,8 +62,6 @@ double sf1Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}}; //Mg-Nd beta-prime
 double sf2Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
-
-
 //define free energy expressions (Mg-Nd data from CASM)
 #define faV (24.7939*c*c - 1.6752*c - 1.9453e-06)
 #define facV (49.5878*c - 1.6752)
@@ -87,16 +86,12 @@ double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 #define rcxTemp ( cx*((1.0-h1V-h2V-h3V)*faccV+(h1V+h2V+h3V)*fbccV) + n1x*((fbcV-facV)*hn1V) + n2x*((fbcV-facV)*hn2V) + n3x*((fbcV-facV)*hn3V) )
 #define rcxV  (constV(-timeStep*McV)*rcxTemp)
 
-//#define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V+W*fbarriernV-CEE1))
-#define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V+W*fbarriernV))
+#define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V+W*fbarriernV-CEE1))
 #define rn2V   (n2-constV(timeStep*Mn2V)*((fbV-faV)*hn2V))
 #define rn3V   (n3-constV(timeStep*Mn3V)*((fbV-faV)*hn3V))
 #define rn1xV  (constV(-timeStep*Mn1V)*Knx1)
 #define rn2xV  (constV(-timeStep*Mn2V)*Knx2)
 #define rn3xV  (constV(-timeStep*Mn3V)*Knx3)
 
-// Initial geometry
-#define x_denom 4.0
-#define y_denom 4.0
-#define z_denom 1.0
-#define supersaturation 0.005
+// Initial conditions
+#define avg_Nd 0.004

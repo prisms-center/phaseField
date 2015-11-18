@@ -32,6 +32,9 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
  
   //methods to apply dirichlet BC's on displacement
   void applyDirichletBCs();
+
+  // method to modify the fields for nucleation
+  void modifySolutionFields();
 };
 
 //constructor
