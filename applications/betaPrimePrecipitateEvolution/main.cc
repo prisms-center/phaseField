@@ -17,7 +17,7 @@ public:
   double value (const Point<dim> &p, const unsigned int component = 0) const
   {
     //return the value of the initial concentration field at point p 
-    return 0.02; //+ 1.0e-3*(2*(0.5 - (double)(std::rand() % 100 )/100.0));
+    return 0.02 + 1.0e-3*(2*(0.5 - (double)(std::rand() % 100 )/100.0));
   }
 };
 
@@ -49,7 +49,7 @@ public:
     else if (index==3){
       r=p.distance(Point<dim>(spanX/4.0,3*spanY/4.0));
     }
-    return 0.0; //0.5*(1.0-std::tanh((r-spanX/16.0)/(3*dx)));
+    return 0.5*(1.0-std::tanh((r-spanX/16.0)/(3*dx)));
 #endif
   }
 };
