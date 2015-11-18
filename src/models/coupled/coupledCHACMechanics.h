@@ -32,6 +32,9 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
  
   //methods to apply dirichlet BC's on displacement
   void applyDirichletBCs();
+
+  // calculate (and output) the total free energy of the system
+  void computeFreeEnergyValue(std::vector<double>& freeEnergyValues);
 };
 
 //constructor
@@ -188,6 +191,75 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(typeVector& vals, unsigned int q)
     //submit residual value for quadrature integration and assemble
     vals.submit_gradient(Rux,q);
   }
+}
+
+//compute integrated free energy value over the domain
+template <int dim>
+void CoupledCHACMechanicsProblem<dim>::computeFreeEnergyValue(std::vector<double>& freeEnergyValues){
+  double value=0.0;
+  QGauss<dim>  quadrature_formula(finiteElementDegree+1);
+  FE_Q<dim> FE (QGaussLobatto<1>(finiteElementDegree+1));
+  FEValues<dim> fe_values (FE, quadrature_formula, update_values | update_gradients | update_JxW_values | update_quadrature_points);
+  const unsigned int   dofs_per_cell = FE.dofs_per_cell;
+  const unsigned int   n_q_points    = quadrature_formula.size();
+  std::vector<double> cVal(n_q_points), n1Val(n_q_points), n2Val(n_q_points), n3Val(n_q_points);
+  std::vector<Tensor<1,dim,double> > cxVal(n_q_points), n1xVal(n_q_points), n2xVal(n_q_points), n3xVal(n_q_points);
+
+  typename DoFHandler<dim>::active_cell_iterator cell= this->dofHandlersSet[0]->begin_active(), endc = this->dofHandlersSet[0]->end();
+
+  for (; cell!=endc; ++cell) {
+	  if (cell->is_locally_owned()){
+    	fe_values.reinit (cell);
+
+    	unsigned int fieldIndex;
+    	fieldIndex=this->getFieldIndex("c");
+    	fe_values.get_function_values(*this->solutionSet[fieldIndex], cVal);
+    	fe_values.get_function_gradients(*this->solutionSet[fieldIndex], cxVal);
+
+    	fieldIndex=this->getFieldIndex("n1");
+    	fe_values.get_function_values(*this->solutionSet[fieldIndex], n1Val);
+    	fe_values.get_function_gradients(*this->solutionSet[fieldIndex], n1xVal);
+
+    	fieldIndex=this->getFieldIndex("n2");
+    	fe_values.get_function_values(*this->solutionSet[fieldIndex], n2Val);
+    	fe_values.get_function_gradients(*this->solutionSet[fieldIndex], n2xVal);
+
+    	fieldIndex=this->getFieldIndex("n3");
+    	fe_values.get_function_values(*this->solutionSet[fieldIndex], n3Val);
+    	fe_values.get_function_gradients(*this->solutionSet[fieldIndex], n3xVal);
+
+    	for (unsigned int q=0; q<n_q_points; ++q){
+    		double c=cVal[q];
+    		double n1 = n1Val[q];
+    		double n2 = n2Val[q];
+    		double n3 = n3Val[q];
+
+
+    		double fgrad = 0;
+    		for (int i=0; i<dim; i++){
+    			for (int j=0; j<dim; j++){
+    				fgrad += Kn1[i][j]*n1xVal[q][i]*n1xVal[q][j];
+    			}
+    		}
+    		for (int i=0; i<dim; i++){
+    			for (int j=0; j<dim; j++){
+    				fgrad += Kn2[i][j]*n2xVal[q][i]*n2xVal[q][j];
+    			}
+    		}
+    		for (int i=0; i<dim; i++){
+    			for (int j=0; j<dim; j++){
+    				fgrad += Kn3[i][j]*n3xVal[q][i]*n3xVal[q][j];
+    			}
+    		}
+    		fgrad = 0.5*fgrad;
+    		double fhomo = (1.0-(h1V+h2V+h3V))*faV + (h1V+h2V+h3V)*fbV;
+    		value+=(fhomo+fgrad)*fe_values.JxW(q);
+    	}
+	  }
+  }
+
+  value=Utilities::MPI::sum(value, MPI_COMM_WORLD);
+  freeEnergyValues.push_back(value);
 }
 
 #endif
