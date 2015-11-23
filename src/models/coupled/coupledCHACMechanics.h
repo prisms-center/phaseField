@@ -90,10 +90,11 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(std::map<std::string, typeScalar*
   //"u"
   //compute E2=(E-E0)
   vectorgradType E2;
-  E2[0][0]=ux[0][0]-(sf1Strain[0][0]*h1V+sf2Strain[0][0]*h2V+sf3Strain[0][0]*h3V);
-  E2[1][1]=ux[1][1]-(sf1Strain[1][1]*h1V+sf2Strain[1][1]*h2V+sf3Strain[1][1]*h3V);
-  E2[0][1]=constV(0.5)*(ux[0][1]+ux[1][0])-(sf1Strain[0][1]*h1V+sf2Strain[0][1]*h2V+sf3Strain[0][1]*h3V); 
-  E2[1][0]=constV(0.5)*(ux[0][1]+ux[1][0])-(sf1Strain[1][0]*h1V+sf2Strain[1][0]*h2V+sf3Strain[1][0]*h3V); 
+  for (unsigned int i=0; i<dim; i++){
+	  for (unsigned int j=0; j<dim; j++){
+	 	  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-(sf1Strain[i][j]*h1V+sf2Strain[i][j]*h2V+sf3Strain[i][j]*h3V);
+	  }
+  }
 
   //compute stress
   //S=C*(E-E0)
