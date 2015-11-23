@@ -2,9 +2,9 @@
 
 //define problem dimensions
 #define problemDIM 3
-#define spanX 16.0
-#define spanY 16.0
-#define spanZ 8.0
+#define spanX 10.0 //14.0
+#define spanY 10.0 //14.0
+#define spanZ 10.0 //14.0
 
 //define mesh parameters
 #define subdivisionsX 1
@@ -14,19 +14,22 @@
 #define finiteElementDegree 1
 
 //define time step parameters
-#define timeStep 1.67e-5
-#define timeIncrements 7000000
+#define timeStep 5e-6 //5e-6 //1.67e-5
+#define timeIncrements 10 //200000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
-#define skipImplicitSolves 100000000
+#define skipImplicitSolves 1
 
-//define solver paramters
+//define solver parameters
 #define solverType SolverCG
-#define relSolverTolerance 1.0e-10
+#define relSolverTolerance 1.0e-4
 #define maxSolverIterations 10000
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 100000 //(timeIncrements/10) //50000 //timeIncrements/10 //5000
+#define skipOutputSteps (timeIncrements/100) //50000 //timeIncrements/10 //5000
+
+// flag to allow or disallow nucleation
+#define nucleation_occurs false
 
 #define numFields (4+problemDIM)
 
@@ -34,9 +37,10 @@
 #define McV 1.0
 
 //define Allen-Cahn parameters
-#define Mn1V 50.0
+#define Mn1V 0.0 // 50.0
 #define Mn2V 50.0
 #define Mn3V 50.0
+
 
 double Kn1[3][3]={{0.0150,0,0},{0,0.0188,0},{0,0,0.00571}};
 //double Kn1[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
@@ -48,20 +52,19 @@ double Kn3[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 #define W -1.0
 
 //define Mechanical properties
-//#define MaterialModelV ANISOTROPIC
-//////#define MaterialConstantsV {62.6,62.6,64.9,26.0,20.9,20.9} //these are in GPa-need to be non-dimensionalized
-//#define MaterialConstantsV {31.3,31.3,32.45,13.0,10.45,10.45} //scaled by E* = 2e9 J/m^3
-//double sf1Strain[3][3] = {{0.1305,0,0},{0,-0.0152,0},{0,0,0}}; //Mg-Nd beta-prime
-//double sf2Strain[3][3] = {{0.0212,0.0631,0},{0.0631,0.0941,0},{0,0,0}};
-//double sf3Strain[3][3] = {{0.0212,-0.0631,0},{-0.0631,0.0941,0},{0,0,0}};
+// 3D order of constants: 11, 22, 33, 44, 55, 66, 12, 13, 14, 15, 16, 23, 24, 25, 26, 34, 35, 36, 45, 46, 56
+#define MaterialModelV ANISOTROPIC
+////#define MaterialConstantsV {62.6,62.6,64.9,13.3,13.3,18.3,26.0,20.9,0,0,0,20.9,0,0,0,0,0,0,0,0,0} //these are in GPa-need to be non-dimensionalized
+#define MaterialConstantsV {31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0} //scaled by E* = 2e9 J/m^3
+double sf1Strain[3][3] = {{0.1305,0,0},{0,-0.0152,0},{0,0,-0.014}}; //Mg-Nd beta-prime
+double sf2Strain[3][3] = {{0.0212,0.0631,0},{0.0631,0.0941,0},{0,0,0}};
+double sf3Strain[3][3] = {{0.0212,-0.0631,0},{-0.0631,0.0941,0},{0,0,0}};
 
-#define MaterialModelV ISOTROPIC
-#define MaterialConstantsV {1.0,0.3}
-double sf1Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}}; //Mg-Nd beta-prime
-double sf2Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-
-
+//#define MaterialModelV ISOTROPIC
+//#define MaterialConstantsV {1.0,0.3}
+//double sf1Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}}; //Mg-Nd beta-prime
+//double sf2Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+//double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
 //define free energy expressions (Mg-Nd data from CASM)
 #define faV (24.7939*c*c - 1.6752*c - 1.9453e-06)
@@ -87,8 +90,7 @@ double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 #define rcxTemp ( cx*((1.0-h1V-h2V-h3V)*faccV+(h1V+h2V+h3V)*fbccV) + n1x*((fbcV-facV)*hn1V) + n2x*((fbcV-facV)*hn2V) + n3x*((fbcV-facV)*hn3V) )
 #define rcxV  (constV(-timeStep*McV)*rcxTemp)
 
-//#define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V+W*fbarriernV-CEE1))
-#define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V+W*fbarriernV))
+#define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V+W*fbarriernV-CEE1))
 #define rn2V   (n2-constV(timeStep*Mn2V)*((fbV-faV)*hn2V))
 #define rn3V   (n3-constV(timeStep*Mn3V)*((fbV-faV)*hn3V))
 #define rn1xV  (constV(-timeStep*Mn1V)*Knx1)
@@ -96,7 +98,9 @@ double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 #define rn3xV  (constV(-timeStep*Mn3V)*Knx3)
 
 // Initial geometry
-#define x_denom 4.0
-#define y_denom 4.0
+#define x_denom 1.0
+#define y_denom 1.0
 #define z_denom 1.0
-#define supersaturation 0.005
+#define initial_interface_coeff 0.215
+#define initial_radius 3.0
+#define avg_Nd 0.004

@@ -15,7 +15,11 @@ void MatrixFreePDE<dim>::solve(){
   //time dependent BVP
   if (isTimeDependentBVP){
     //output initial conditions for time dependent BVP
-    if (writeOutput) {outputResults(); outputFreeEnergy(freeEnergyValues);}
+    if (writeOutput) {
+    	outputResults();
+    	computeFreeEnergyValue(freeEnergyValues);
+    	outputFreeEnergy(freeEnergyValues);
+    }
     
     //time stepping
     pcout << "\nTime stepping parameters: timeStep: " << dtValue << "  timeFinal: " << finalTime << "  timeIncrements: " << totalIncrements << "\n";
