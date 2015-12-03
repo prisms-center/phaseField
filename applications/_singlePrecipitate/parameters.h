@@ -10,7 +10,7 @@
 #define subdivisionsX 1
 #define subdivisionsY 1
 #define subdivisionsZ 1
-#define refineFactor 7
+#define refineFactor 5 //7
 #define finiteElementDegree 1
 
 //define time step parameters
@@ -26,7 +26,7 @@
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps (timeIncrements/100) //50000 //timeIncrements/10 //5000
+#define skipOutputSteps (timeIncrements/10) //50000 //timeIncrements/10 //5000
 
 // flag to allow or disallow nucleation
 #define nucleation_occurs false

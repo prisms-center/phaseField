@@ -210,7 +210,9 @@ void CoupledCHACMechanicsProblem<dim>::computeFreeEnergyValue(std::vector<double
   const unsigned int   n_q_points    = quadrature_formula.size();
   std::vector<double> cVal(n_q_points), n1Val(n_q_points), n2Val(n_q_points), n3Val(n_q_points);
   std::vector<Tensor<1,dim,double> > cxVal(n_q_points), n1xVal(n_q_points), n2xVal(n_q_points), n3xVal(n_q_points);
-  std::vector<Tensor<1,dim,double> > uxVal(n_q_points);
+  std::vector<std::vector<Tensor<1,dim,double> > > uxVal(n_q_points,std::vector<Tensor<1,dim,double> >(dim)); // I would think that this should be a rank 2 tensor, but that doesn't compile
+  //std::vector<std::vector<Tensor<1,dim,double> > > uxVal[n_q_points][dim];
+  //std::vector<vectorgradType> uxVal(n_q_points);
 
   // remove later
   double value_homo = 0, value_grad = 0, value_el = 0;
@@ -239,17 +241,20 @@ void CoupledCHACMechanicsProblem<dim>::computeFreeEnergyValue(std::vector<double
     	fe_values.get_function_gradients(*this->solutionSet[fieldIndex], n3xVal);
 
     	fieldIndex=this->getFieldIndex("u");
-    	fe_values.get_function_gradients(*this->solutionSet[fieldIndex], uxVal);
+    	fe_values.get_function_gradients(*this->solutionSet[fieldIndex], uxVal); // This step doesn't work, uxVal not the right type
 
     	for (unsigned int q=0; q<n_q_points; ++q){
     		double c=cVal[q];
     		double n1 = n1Val[q];
     		double n2 = n2Val[q];
     		double n3 = n3Val[q];
-    		//fieldIndex=this->getFieldIndex("u");
-    		//vectorgradType ux = solutionSet[fieldIndex]->get_gradient(q);
-    		//vectorgradType ux = uxVal[q];
-    		//vectorgradType ux = solutionSet[fieldIndex].getgradient(q);
+
+    		vectorgradType ux;
+    		for (unsigned int i=0; i<dim; i++){
+    			for (unsigned int j=0; j<dim; j++){
+    				ux[i][j] = uxVal[q][i][j];
+    			}
+    		}
 
     		// calculate the interfacial energy
     		double fgrad = 0;
@@ -275,39 +280,49 @@ void CoupledCHACMechanicsProblem<dim>::computeFreeEnergyValue(std::vector<double
 
     		// Calculatate the elastic energy
     		double fel = 0;
-//    		vectorgradType E2;
-//    		E2[0][0]=ux[0][0]-(sf1Strain[0][0]*h1V+sf2Strain[0][0]*h2V+sf3Strain[0][0]*h3V);
-//    		E2[1][1]=ux[1][1]-(sf1Strain[1][1]*h1V+sf2Strain[1][1]*h2V+sf3Strain[1][1]*h3V);
-//    		E2[0][1]=constV(0.5)*(ux[0][1]+ux[1][0])-(sf1Strain[0][1]*h1V+sf2Strain[0][1]*h2V+sf3Strain[0][1]*h3V);
-//    		E2[1][0]=constV(0.5)*(ux[0][1]+ux[1][0])-(sf1Strain[1][0]*h1V+sf2Strain[1][0]*h2V+sf3Strain[1][0]*h3V);
-//
-//			#if problemDIM==3
-//			  dealii::Table<1, dealii::VectorizedArray<double> > E(6);
-//			  E(0)=E2[0][0]; E(1)=E2[1][1]; E(2)=E2[2][2];
-//			  E(3)=E2[1][2]+E2[2][1];
-//			  E(4)=E2[0][2]+E2[2][0];
-//			  E(5)=E2[0][1]+E2[1][0];
-//			  double fel = 0;
-//			  for (unsigned int i=0; i<6; i++){
-//				for (unsigned int j=0; j<6; j++){
-//				  fel+=CIJ(i,j)*E(i)*E(j);
-//				}
-//			  }
-//			#elif problemDIM==2
-//			  dealii::Table<1, dealii::VectorizedArray<double> > E(3);
-//			  E(0)=E2[0][0]; E(1)=E2[1][1];
-//			  E(2)=E2[0][1]+E2[1][0];
-//			  double fel = 0;
-//			  for (unsigned int i=0; i<3; i++){
-//				for (unsigned int j=0; j<3; j++){
-//					fel+=CIJ(i,j)*E(i)*E(j);
-//				}
-//			  }
-//			#elif problemDIM==1
-//			  dealii::Table<1, dealii::VectorizedArray<double> > E(1);
-//			  E(0)=E2[0][0];
-//			  double fel=CIJ(0,0)*E(0);
-//			#endif
+
+//    		VectorizedArray<double> test;
+//    		test = constV(1.5);
+//    		double test_2 = test[0];
+
+/*
+    		vectorgradType E2;
+    		//dealii::Table<2, double> E2;
+    		for (unsigned int i=0; i<dim; i++){
+    			for (unsigned int j=0; j<dim; j++){
+    				E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-(sf1Strain[i][j]*h1V+sf2Strain[i][j]*h2V+sf3Strain[i][j]*h3V);
+    			}
+    		}
+
+			#if problemDIM==3
+    		dealii::Table<1, dealii::VectorizedArray<double> > E(6);
+
+    		E(0)=E2[0][0]; E(1)=E2[1][1]; E(2)=E2[2][2];
+    		E(3)=E2[1][2]+E2[2][1];
+    		E(4)=E2[0][2]+E2[2][0];
+    		E(5)=E2[0][1]+E2[1][0];
+
+    		for (unsigned int i=0; i<6; i++){
+    			for (unsigned int j=0; j<6; j++){
+    				fel+=CIJ(i,j)*E(i)[0]*E(j)[0];
+    			}
+    		}
+			#elif problemDIM==2
+			  dealii::Table<1, dealii::VectorizedArray<double> > E(3);
+			  E(0)=E2[0][0]; E(1)=E2[1][1];
+			  E(2)=E2[0][1]+E2[1][0];
+
+			  for (unsigned int i=0; i<3; i++){
+				for (unsigned int j=0; j<3; j++){
+					fel+=CIJ(i,j)*E(i).operator[](0)*E(j).operator[](0);
+				}
+			  }
+			#elif problemDIM==1
+			  dealii::Table<1, dealii::VectorizedArray<double> > E(1);
+			  E(0)=E2[0][0];
+			  fel=CIJ(0,0)*E(0).operator[](0);
+			#endif
+			*/
 
 
     		// Sum the energies at each integration point
@@ -331,7 +346,7 @@ void CoupledCHACMechanicsProblem<dim>::computeFreeEnergyValue(std::vector<double
 
   std::cout<<"Homogenous Free Energy: "<<value_homo<<std::endl;
   std::cout<<"Interfacial Free Energy: "<<value_grad<<std::endl;
-  std::cout<<"Elastics Free Energy: "<<value_el<<std::endl;
+  std::cout<<"Elastic Free Energy: "<<value_el<<std::endl;
 }
 
 //structure representing each nucleus
@@ -519,7 +534,7 @@ void CoupledCHACMechanicsProblem<dim>::modifySolutionFields()
     MPI_Barrier(MPI_COMM_WORLD);
 
     //disperse nuclei to all other processors
-    int numGlobalNuclei;
+    unsigned int numGlobalNuclei;
     if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0) {numGlobalNuclei=nuclei.size();}
     MPI_Bcast(&numGlobalNuclei, 1, MPI_INT, 0, MPI_COMM_WORLD);
     this->pcout << "total number of nuclei currently seeded : "  << numGlobalNuclei << std::endl;

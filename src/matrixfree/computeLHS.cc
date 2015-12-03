@@ -45,7 +45,7 @@ void  MatrixFreePDE<dim>::computeLHS(const MatrixFree<dim,double> &data,
   T  vals(data,currentFieldIndex);
   Assert((vals.n_q_points) == (num_quadrature_points), ::ExcDimensionMismatch((vals.n_q_points),(num_quadrature_points))); //replace with a better Exception
   
-  //loop over all "cells"
+  //loop over all "cells" (all super-cells) (note: cell_range.second is the last super-cell allocated to this thread)
   for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
     //read values from corresponding solution vectors
     vals.reinit(cell);
