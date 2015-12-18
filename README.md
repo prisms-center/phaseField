@@ -1,7 +1,7 @@
 PRISMS PhaseField
 =================
 <B>Code repository:</B> https://github.com/prisms-center/phaseField <br>
-<B>Code documentation:</B> https://goo.gl/rN5cN6 <br>
+<B>Code documentation:</B> https://goo.gl/76lFHj <br>
 <B>User registration link:</B> http://goo.gl/forms/GXo7Im8p2Y
 
 <B>Version information:</B>
