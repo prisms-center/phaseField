@@ -1,4 +1,9 @@
 <B>Code repository:</B> https://github.com/prisms-center/phaseField <br>
+<B>Code documentation:</B> https://htmlpreview.github.io/?https://raw.githubusercontent.com/prisms-center/phaseField/master/html/index.html <br>
+<B>User registration link:</B> http://goo.gl/forms/GXo7Im8p2Y
+
+<B>Version information:</B>
+This version of the code, version 0.9.1, is a pre-release version with known issues. For a more stable version, please select version 0.8. Unlike version 0.8, version 0.9.1 has the more modular approach planned for future code releases. However, at present version 0.9.1 is slower than version 0.8 and yields slightly different solutions to the time evolution equations (e.g. Allen-Cahn or Cahn-Hilliard) than version 0.8. These issues are currently being investigated and will be addressed as soon as possible. For more details concerning the differences between versions, please consult version_changes.txt.    
  
 <B>What is PRISMS PhaseField?</B>
 
