@@ -240,8 +240,8 @@ void CoupledCHACMechanicsProblem<dim>::computeFreeEnergyValue(std::vector<double
     	fe_values.get_function_values(*this->solutionSet[fieldIndex], n3Val);
     	fe_values.get_function_gradients(*this->solutionSet[fieldIndex], n3xVal);
 
-    	fieldIndex=this->getFieldIndex("u");
-    	fe_values.get_function_gradients(*this->solutionSet[fieldIndex], uxVal); // This step doesn't work, uxVal not the right type
+    	//fieldIndex=this->getFieldIndex("u");
+    	//fe_values.get_function_gradients(*this->solutionSet[fieldIndex], uxVal); // This step doesn't work, uxVal not the right type
 
     	for (unsigned int q=0; q<n_q_points; ++q){
     		double c=cVal[q];
@@ -249,12 +249,12 @@ void CoupledCHACMechanicsProblem<dim>::computeFreeEnergyValue(std::vector<double
     		double n2 = n2Val[q];
     		double n3 = n3Val[q];
 
-    		vectorgradType ux;
-    		for (unsigned int i=0; i<dim; i++){
-    			for (unsigned int j=0; j<dim; j++){
-    				ux[i][j] = uxVal[q][i][j];
-    			}
-    		}
+//    		vectorgradType ux;
+//    		for (unsigned int i=0; i<dim; i++){
+//    			for (unsigned int j=0; j<dim; j++){
+//    				ux[i][j] = uxVal[q][i][j];
+//    			}
+//    		}
 
     		// calculate the interfacial energy
     		double fgrad = 0;
@@ -337,12 +337,14 @@ void CoupledCHACMechanicsProblem<dim>::computeFreeEnergyValue(std::vector<double
   }
 
   value=Utilities::MPI::sum(value, MPI_COMM_WORLD);
-  freeEnergyValues.push_back(value);
+  //freeEnergyValues.push_back(value);
 
   // remove later
   value_homo=Utilities::MPI::sum(value_homo, MPI_COMM_WORLD);
   value_grad=Utilities::MPI::sum(value_grad, MPI_COMM_WORLD);
   value_el=Utilities::MPI::sum(value_el, MPI_COMM_WORLD);
+
+  freeEnergyValues.push_back(value_grad);
 
   std::cout<<"Homogenous Free Energy: "<<value_homo<<std::endl;
   std::cout<<"Interfacial Free Energy: "<<value_grad<<std::endl;

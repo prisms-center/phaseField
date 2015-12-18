@@ -2,22 +2,22 @@
 
 //define problem dimensions
 #define problemDIM 3
-#define spanX 10.0 //14.0
-#define spanY 10.0 //14.0
-#define spanZ 10.0 //14.0
+#define spanX 4.0 //14.0
+#define spanY 0.25 //14.0
+#define spanZ 0.25 //14.0
 
 //define mesh parameters
-#define subdivisionsX 1
+#define subdivisionsX 32
 #define subdivisionsY 1
 #define subdivisionsZ 1
-#define refineFactor 5 //7
+#define refineFactor 1 //7
 #define finiteElementDegree 1
 
 //define time step parameters
-#define timeStep 5e-6 //5e-6 //1.67e-5
-#define timeIncrements 10 //200000
+#define timeStep 1e-5 //5e-6 //1.67e-5
+#define timeIncrements 10000 //200000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
-#define skipImplicitSolves 1
+#define skipImplicitSolves 10000000
 
 //define solver parameters
 #define solverType SolverCG
@@ -37,12 +37,13 @@
 #define McV 1.0
 
 //define Allen-Cahn parameters
-#define Mn1V 0.0 // 50.0
+#define Mn1V 50.0
 #define Mn2V 50.0
 #define Mn3V 50.0
 
 
-double Kn1[3][3]={{0.0150,0,0},{0,0.0188,0},{0,0,0.00571}};
+//double Kn1[3][3]={{0.0150,0,0},{0,0.0188,0},{0,0,0.00571}};
+double Kn1[3][3]={{0.0150,0,0},{0,0.0150,0},{0,0,0.0150}};
 //double Kn1[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 //double Kn1[3][3]={{0.123,0,0},{0,0.0295,0},{0,0,0.123}};
 double Kn2[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
@@ -53,18 +54,18 @@ double Kn3[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 
 //define Mechanical properties
 // 3D order of constants: 11, 22, 33, 44, 55, 66, 12, 13, 14, 15, 16, 23, 24, 25, 26, 34, 35, 36, 45, 46, 56
-#define MaterialModelV ANISOTROPIC
+//#define MaterialModelV ANISOTROPIC
 ////#define MaterialConstantsV {62.6,62.6,64.9,13.3,13.3,18.3,26.0,20.9,0,0,0,20.9,0,0,0,0,0,0,0,0,0} //these are in GPa-need to be non-dimensionalized
-#define MaterialConstantsV {31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0} //scaled by E* = 2e9 J/m^3
-double sf1Strain[3][3] = {{0.1305,0,0},{0,-0.0152,0},{0,0,-0.014}}; //Mg-Nd beta-prime
-double sf2Strain[3][3] = {{0.0212,0.0631,0},{0.0631,0.0941,0},{0,0,0}};
-double sf3Strain[3][3] = {{0.0212,-0.0631,0},{-0.0631,0.0941,0},{0,0,0}};
+//#define MaterialConstantsV {31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0} //scaled by E* = 2e9 J/m^3
+//double sf1Strain[3][3] = {{0.1305,0,0},{0,-0.0152,0},{0,0,-0.014}}; //Mg-Nd beta-prime
+//double sf2Strain[3][3] = {{0.0212,0.0631,0},{0.0631,0.0941,0},{0,0,0}};
+//double sf3Strain[3][3] = {{0.0212,-0.0631,0},{-0.0631,0.0941,0},{0,0,0}};
 
-//#define MaterialModelV ISOTROPIC
-//#define MaterialConstantsV {1.0,0.3}
-//double sf1Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}}; //Mg-Nd beta-prime
-//double sf2Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-//double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+#define MaterialModelV ISOTROPIC
+#define MaterialConstantsV {1.0,0.3}
+double sf1Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}}; //Mg-Nd beta-prime
+double sf2Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
 //define free energy expressions (Mg-Nd data from CASM)
 #define faV (24.7939*c*c - 1.6752*c - 1.9453e-06)
