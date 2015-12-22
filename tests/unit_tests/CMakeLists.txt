@@ -9,7 +9,7 @@ SET(TARGET "main")
 # Declare all source files the target consists of:
 SET(TARGET_SRC
   ${TARGET}.cc
-  test_computeStress.cc
+  #test_computeStress.cc
   # You can specify additional files here!
   )
 
