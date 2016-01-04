@@ -1,26 +1,6 @@
-#include "../../include/dealIIheaders.h"
-#include <iostream>
-
-#define vectorgradType dealii::Tensor<2, dim, dealii::VectorizedArray<double> >
-
-//define data type
-
-template <int dim>
-void computeStress(const dealii::Table<2, double>& CIJ, vectorgradType& ux, vectorgradType& R);
-
-#include "../../src/models/mechanics/computeStress.h"
-
-template <int dim>
-class unitTest
-{
-public:
-	bool test_computeStress();
-};
-
 // Unit test(s) for the method "computeStress"
 template <int dim>
 bool unitTest<dim>::test_computeStress(){
-	//typedef dealii::Tensor<2, dim, dealii::VectorizedArray<double> > vectorgradType;
 
 	bool pass = false;
 	std::cout << "Testing 'computeStress' in " << dim << " dimension(s)...'" << std::endl;
@@ -121,7 +101,7 @@ bool unitTest<dim>::test_computeStress(){
 		if (pass_counter == 9){pass = true;}
 	}
 
-	std::cout << "Test result for computeStress in " << dim << " dimension(s): " << pass << std::endl;
+	std::cout << "Test result for 'computeStress' in " << dim << " dimension(s): " << pass << std::endl;
 
 	return pass;
 }
