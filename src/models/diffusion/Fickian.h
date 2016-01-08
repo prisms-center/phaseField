@@ -14,9 +14,10 @@ class FickianProblem: public MatrixFreePDE<dim>
 
  private:
   //RHS implementation for explicit solve
-  void getRHS(std::map<std::string, typeScalar*>  valsScalar, \
-	      std::map<std::string, typeVector*>  valsVector, \
-	      unsigned int q) const;
+  void getRHS(const MatrixFree<dim,double> &data, 
+	      std::vector<vectorType*> &dst, 
+	      const std::vector<vectorType*> &src,
+	      const std::pair<unsigned int,unsigned int> &cell_range) const;
 
   //method to apply initial conditions
   void applyInitialConditions();
@@ -36,34 +37,43 @@ FickianProblem<dim>::FickianProblem(): MatrixFreePDE<dim>()
 #if !defined(rcV) || !defined(rcxV) 
 #error Compile ERROR: missing Fickian diffusion residual expressions. Required expressions are rcV, rcxV
 #endif
-
-  //"c"
-  this->getValue["c"]=true; this->getGradient["c"]=true;
-  this->setValue["c"]=true; this->setGradient["c"]=true;
 }
 
 
 template <int dim>
-void  FickianProblem<dim>::getRHS(std::map<std::string, typeScalar*>  valsScalar, \
-				       std::map<std::string, typeVector*>  valsVector, \
-				       unsigned int q) const{
-  //geometric data about the quadrature point
-  dealii::Point<dim, dealii::VectorizedArray<double> > point=valsScalar["c"]->quadrature_point(q);
-  double x=point[0][0], y=point[1][0];
+void  FickianProblem<dim>::getRHS(const MatrixFree<dim,double> &data, 
+				  std::vector<vectorType*> &dst, 
+				  const std::vector<vectorType*> &src,
+				  const std::pair<unsigned int,unsigned int> &cell_range) const{
   
+  //initialize fields
+  typeScalar cVals(data, 0);
+
   //time data
   double t=this->currentTime;
 
-  //"c" fields
-  scalarvalueType c = valsScalar["c"]->get_value(q);
-  scalargradType cx = valsScalar["c"]->get_gradient(q);
-  
-  //check to ensure we are working on the intended field
-  //concentration field
-  if (this->fields[this->currentFieldIndex].name.compare("c")==0){
-    //compute residuals
-    valsScalar["c"]->submit_value(rcV,q);   
-    valsScalar["c"]->submit_gradient(rcxV,q);
+  //loop over cells
+  for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
+    //initialize c field
+    cVals.reinit(cell); cVals.read_dof_values_plain(*src[0]); cVals.evaluate(true, true, false);
+
+    //loop over quadrature points
+    for (unsigned int q=0; q<cVals.n_q_points; ++q){
+      //geometric data about the quadrature point
+      dealii::Point<dim, dealii::VectorizedArray<double> > point=cVals.quadrature_point(q);
+      double x=point[0][0], y=point[1][0];
+      
+      //c
+      scalarvalueType c = cVals.get_value(q);
+      scalargradType cx = cVals.get_gradient(q);
+    
+      //submit residual value
+      cVals.submit_value(rcV,q);
+      cVals.submit_gradient(rcxV,q);
+    }
+    
+    //integrate values
+    cVals.integrate(true, true);  cVals.distribute_local_to_global(*dst[0]);
   }
 }
 
