@@ -2,19 +2,19 @@
 
 //define problem dimensions
 #define problemDIM 3
-#define spanX 4.0 //14.0
-#define spanY 0.25 //14.0
-#define spanZ 0.25 //14.0
+#define spanX 32.0 //14.0
+#define spanY 32.0 //14.0
+#define spanZ 32.0 //14.0
 
 //define mesh parameters
-#define subdivisionsX 32
+#define subdivisionsX 1
 #define subdivisionsY 1
 #define subdivisionsZ 1
-#define refineFactor 1 //7
+#define refineFactor 7
 #define finiteElementDegree 1
 
 //define time step parameters
-#define timeStep 1e-5 //5e-6 //1.67e-5
+#define timeStep 4.0e-4 //5e-6 //1.67e-5
 #define timeIncrements 10000 //200000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
 #define skipImplicitSolves 10000000
@@ -43,9 +43,9 @@
 
 
 //double Kn1[3][3]={{0.0150,0,0},{0,0.0188,0},{0,0,0.00571}};
-double Kn1[3][3]={{0.0150,0,0},{0,0.0150,0},{0,0,0.0150}};
+//double Kn1[3][3]={{0.0150,0,0},{0,0.0150,0},{0,0,0.0150}};
 //double Kn1[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
-//double Kn1[3][3]={{0.123,0,0},{0,0.0295,0},{0,0,0.123}};
+double Kn1[3][3]={{0.123,0,0},{0,0.0295,0},{0,0,0.123}};
 double Kn2[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 double Kn3[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 
@@ -103,5 +103,5 @@ double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 #define y_denom 1.0
 #define z_denom 1.0
 #define initial_interface_coeff 0.215
-#define initial_radius 3.0
+#define initial_radius 7.0
 #define avg_Nd 0.004
