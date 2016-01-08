@@ -16,11 +16,11 @@ void MatrixFreePDE<dim>::solveIncrement(){
   //modify fields (rarely used. Used in problems involving nucleation models)
   if (nucleation_occurs == true) modifySolutionFields();
 
+  //compute residual vectors
+  computeRHS();
+
   //solve for each field
   for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-    currentFieldIndex=fieldIndex; 
-    //updateRHS
-    updateRHS();
     //Parabolic (first order derivatives in time) fields
     if (fields[fieldIndex].pdetype==PARABOLIC){
       //explicit-time step each DOF
