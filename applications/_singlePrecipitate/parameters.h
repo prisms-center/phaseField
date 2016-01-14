@@ -14,7 +14,7 @@
 #define finiteElementDegree 1
 
 //define time step parameters
-#define timeStep 4.0e-4 //5e-6 //1.67e-5
+#define timeStep 3.0e-5 //5e-6 //1.67e-5
 #define timeIncrements 10000 //200000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
 #define skipImplicitSolves 10000000
@@ -45,7 +45,8 @@
 //double Kn1[3][3]={{0.0150,0,0},{0,0.0188,0},{0,0,0.00571}};
 //double Kn1[3][3]={{0.0150,0,0},{0,0.0150,0},{0,0,0.0150}};
 //double Kn1[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
-double Kn1[3][3]={{0.123,0,0},{0,0.0295,0},{0,0,0.123}};
+//double Kn1[3][3]={{0.123,0,0},{0,0.0295,0},{0,0,0.123}};
+double Kn1[3][3]={{1.0,0,0},{0,0.5,0},{0,0,1.0}};
 double Kn2[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 double Kn3[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 
@@ -102,6 +103,6 @@ double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 #define x_denom 1.0
 #define y_denom 1.0
 #define z_denom 1.0
-#define initial_interface_coeff 0.215
+#define initial_interface_coeff 1.0 //0.215
 #define initial_radius 7.0
 #define avg_Nd 0.004
