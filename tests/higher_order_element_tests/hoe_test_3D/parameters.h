@@ -1,10 +1,10 @@
 //Parameters list for beta prime precipitation evolution problem
 
 //define problem dimensions
-#define problemDIM 2
-#define spanX 16.0
-#define spanY 16.0
-#define spanZ 16.0
+#define problemDIM 3
+#define spanX 8.0
+#define spanY 8.0
+#define spanZ 8.0
 
 //define mesh parameters
 //#define subdivisionsX 1
@@ -26,7 +26,7 @@
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 10000 //(timeIncrements/10)
+#define skipOutputSteps (timeIncrements/10)
 
 // flag to allow or disallow nucleation
 #define nucleation_occurs false
@@ -91,5 +91,5 @@ double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 #define y_denom 1.0
 #define z_denom 1.0
 #define initial_interface_coeff 1.0
-#define initial_radius 7.0
+#define initial_radius 5.5
 #define avg_Nd 0.004

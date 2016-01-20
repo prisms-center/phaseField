@@ -3,9 +3,9 @@ ScriptVersion = "2.7.0"
 if ScriptVersion != Version():
     print "This script is for VisIt %s. It may not work with version %s" % (ScriptVersion, Version())
 ShowAllWindows()
-OpenDatabase("run_008/solution-100000.pvtu", 0)
+OpenDatabase("reference_solution/solution-1000.pvtu", 0)
 # The UpdateDBPluginInfo RPC is not supported in the VisIt module so it will not be logged.
-DefineScalarExpression("diff", "abs((c-pos_cmfe(<run_009/solution-100000.pvtu:c>, mesh,0))^2)")
+DefineScalarExpression("diff", "(c-pos_cmfe(<run_001/solution-1000.pvtu:c>, mesh,0))")
 AddPlot("Pseudocolor", "diff", 1, 1)
 PseudocolorAtts = PseudocolorAttributes()
 PseudocolorAtts.scaling = PseudocolorAtts.Linear  # Linear, Log, Skew
@@ -54,4 +54,4 @@ PseudocolorAtts.legendFlag = 1
 PseudocolorAtts.lightingFlag = 1
 SetPlotOptions(PseudocolorAtts)
 DrawPlots()
-Query("Weighted Variable Sum", use_actual_data=1)
+Query("MinMax", use_actual_data=1)

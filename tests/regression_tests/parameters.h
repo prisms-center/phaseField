@@ -1,32 +1,32 @@
 //Parameters list for beta prime precipitation evolution problem
 
 //define problem dimensions
-#define problemDIM 2
-#define spanX 16.0
-#define spanY 16.0
-#define spanZ 16.0
+#define problemDIM 3
+#define spanX 8.0
+#define spanY 8.0
+#define spanZ 8.0
 
 //define mesh parameters
-//#define subdivisionsX 1
-//#define subdivisionsY 1
-//#define subdivisionsZ 1
-//#define refineFactor 4
-//#define finiteElementDegree 1
+#define subdivisionsX 1
+#define subdivisionsY 1
+#define subdivisionsZ 1
+#define refineFactor 4
+#define finiteElementDegree 1
 
 //define time step parameters
-#define timeStep 9.0e-6
-#define timeIncrements 100000
+#define timeStep 6.0e-4
+#define timeIncrements 1000
 #define timeFinal 100000000
-#define skipImplicitSolves 10000000
+#define skipImplicitSolves 1
 
 //define solver parameters
 #define solverType SolverCG
-#define relSolverTolerance 1.0e-4
+#define relSolverTolerance 1.0e-8
 #define maxSolverIterations 10000
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 10000 //(timeIncrements/10)
+#define skipOutputSteps 1000 //(timeIncrements/10)
 
 // flag to allow or disallow nucleation
 #define nucleation_occurs false
@@ -49,9 +49,9 @@ double Kn3[3][3]={{1.0,0,0},{0,0.5,0},{0,0,1.0}};
 #define W -1.0
 
 //define Mechanical properties
-#define MaterialModelV ISOTROPIC
-#define MaterialConstantsV {1.0,0.3}
-double sf1Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}}; //Mg-Nd beta-prime
+#define MaterialModelV ANISOTROPIC
+#define MaterialConstantsV {31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0} //scaled by E* = 2e9 J/m^3
+double sf1Strain[3][3] = {{0.1305,0,0},{0,-0.0152,0},{0,0,-0.014}}; //Mg-Nd beta-prime
 double sf2Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
@@ -91,5 +91,5 @@ double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 #define y_denom 1.0
 #define z_denom 1.0
 #define initial_interface_coeff 1.0
-#define initial_radius 7.0
+#define initial_radius 6.0
 #define avg_Nd 0.004

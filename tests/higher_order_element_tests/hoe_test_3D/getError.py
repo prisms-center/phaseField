@@ -3,8 +3,8 @@ import sys
 variable_1 = 'c'
 variable_2 = 'c'
 
-output_num_1 = "100000"
-output_num_2 = "100000"
+output_num_1 = "1000"
+output_num_2 = "1000"
 
 f = open('run_num_1.txt','r')
 run_num_1 = f.read()
