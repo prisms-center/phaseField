@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['back',['back',['http://www.dealii.org/8.2.1/doxygen/deal.II/group__input.html#ggac7e770dd03b7d4228e840625e2f3dfb2a74c3cff2fb7beee5c55c995556b5f2f6',1,'PathSearch::back()'],['http://www.dealii.org/8.2.1/doxygen/deal.II/group__input.html#ggac7e770dd03b7d4228e840625e2f3dfb2a74c3cff2fb7beee5c55c995556b5f2f6',1,'back()(Global Namespace)']]]
+  ['elliptic',['ELLIPTIC',['../fields_8h.html#a12521d5d4cf2d9ed3c05e52b162fad42aaaa43b107f7c59fa66b58b9fd506c074',1,'fields.h']]]
 ];
