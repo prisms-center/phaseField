@@ -1,10 +1,11 @@
 import sys
+import math
 
 variable_1 = 'c'
 variable_2 = 'c'
 
-output_num_1 = "1000"
-output_num_2 = "1000"
+output_num_1 = "100000"
+output_num_2 = "100000"
 
 f = open('run_num_1.txt','r')
 run_num_1 = f.read()
@@ -23,10 +24,12 @@ directory_2 = run_num_2+"/solution-"+output_num_2+".pvtu"
 
 if use_mesh_1 == True: 
 	OpenDatabase(directory_1)
-	DefineScalarExpression("diff","abs(("+variable_1+"-pos_cmfe(<"+directory_2+":"+variable_2+">, mesh,0))^2)")
+	DefineScalarExpression("diff","("+variable_1+"-pos_cmfe(<"+directory_2+":"+variable_2+">, mesh,0))^2")
+	#DefineScalarExpression("diff","abs(("+variable_1+"-pos_cmfe(<"+directory_2+":"+variable_2+">, mesh,0)))")
 else:
 	OpenDatabase(directory_2)
-	DefineScalarExpression("diff","abs(("+variable_2+"-pos_cmfe(<"+directory_1+":"+variable_1+">, mesh,0))^2)")
+	#DefineScalarExpression("diff","("+variable_2+"-pos_cmfe(<"+directory_1+":"+variable_1+">, mesh,0))^2")
+	DefineScalarExpression("diff","abs(("+variable_2+"-pos_cmfe(<"+directory_1+":"+variable_1+">, mesh,0)))")
 
 #AddPlot("Contour","diff")
 AddPlot("Pseudocolor","diff")
@@ -64,11 +67,12 @@ DrawPlots()
 
 # Calculate the L2 error:
 Query("Weighted Variable Sum", use_actual_data=1)
-error = GetQueryOutputValue()
-
+error = math.sqrt(GetQueryOutputValue())
 
 text_file = open("error.txt","w")
 text_file.write(str(error)) 
 text_file.close() 
+
+
 
 sys.exit()
