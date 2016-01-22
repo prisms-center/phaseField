@@ -4,8 +4,13 @@ import math
 variable_1 = 'c'
 variable_2 = 'c'
 
-output_num_1 = "100000"
-output_num_2 = "100000"
+f = open('output_num_1.txt','r')
+output_num_1 = f.read()
+f.close()
+
+f = open('output_num_2.txt','r')
+output_num_2 = f.read()
+f.close()
 
 f = open('run_num_1.txt','r')
 run_num_1 = f.read()

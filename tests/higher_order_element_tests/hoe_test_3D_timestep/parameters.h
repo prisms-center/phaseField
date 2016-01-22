@@ -14,10 +14,10 @@
 //#define finiteElementDegree 1
 
 //define time step parameters
-#define timeStep 8.0e-6
-#define timeIncrements 100000
-#define timeFinal 100000000
-#define skipImplicitSolves 10000000
+//#define timeStep 8.0e-6
+//#define timeIncrements 100000
+//#define timeFinal 100000000
+//#define skipImplicitSolves 10000000
 
 //define solver parameters
 #define solverType SolverCG
