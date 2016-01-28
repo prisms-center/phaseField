@@ -13,10 +13,11 @@ class AllenCahnProblem: public MatrixFreePDE<dim>
   AllenCahnProblem();
 
  private:
-  //RHS implementation for explicit solve
-  void getRHS(std::map<std::string, typeScalar*>  valsScalar, \
-	      std::map<std::string, typeVector*>  valsVector, \
-	      unsigned int q) const;
+ //RHS implementation for explicit solve
+  void getRHS(const MatrixFree<dim,double> &data, 
+	      std::vector<vectorType*> &dst, 
+	      const std::vector<vectorType*> &src,
+	      const std::pair<unsigned int,unsigned int> &cell_range) const;
 
   //method to apply initial conditions
   void applyInitialConditions();
@@ -36,27 +37,35 @@ AllenCahnProblem<dim>::AllenCahnProblem(): MatrixFreePDE<dim>()
 #if !defined(rnV) || !defined(rnxV)
 #error Compile ERROR: missing Allen-Cahn residual expressions. Required expressions are rnV, rnxV.
 #endif
-
-  //"n"
-  this->getValue["n"]=true; this->getGradient["n"]=true;
-  this->setValue["n"]=true; this->setGradient["n"]=true;
 }
 
 
 template <int dim>
-void  AllenCahnProblem<dim>::getRHS(std::map<std::string, typeScalar*>  valsScalar, \
-				    std::map<std::string, typeVector*>  valsVector, \
-				    unsigned int q) const{
-  //"n"fields
-  scalarvalueType n = valsScalar["n"]->get_value(q);
-  scalargradType nx = valsScalar["n"]->get_gradient(q);
+void  AllenCahnProblem<dim>::getRHS(const MatrixFree<dim,double> &data, 
+				    std::vector<vectorType*> &dst, 
+				    const std::vector<vectorType*> &src,
+				    const std::pair<unsigned int,unsigned int> &cell_range) const{
   
-  //check to ensure we are working on the intended field
-  //order parameter field
-  if (this->fields[this->currentFieldIndex].name.compare("n")==0){
-    //compute residuals
-    valsScalar["n"]->submit_value(rnV,q); 
-    valsScalar["n"]->submit_gradient(rnxV,q);
+  //initialize fields
+  typeScalar nVals(data, 0);
+
+  //loop over cells
+  for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
+    //initialize mu field
+    nVals.reinit(cell); nVals.read_dof_values_plain(*src[0]); nVals.evaluate(true, true, false);
+    
+    //loop over quadrature points
+    for (unsigned int q=0; q<nVals.n_q_points; ++q){
+      //mu
+      scalarvalueType n = nVals.get_value(q);
+      scalargradType nx = nVals.get_gradient(q);
+      
+      //submit values
+      nVals.submit_value(rnV,q); nVals.submit_gradient(rnxV,q);
+    }
+    
+    //integrate values
+    nVals.integrate(true, true);  nVals.distribute_local_to_global(*dst[0]);
   }
 }
 

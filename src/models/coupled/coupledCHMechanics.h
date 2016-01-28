@@ -20,13 +20,17 @@ class CoupledCahnHilliardMechanicsProblem: public MatrixFreePDE<dim>
   Table<2, double> CIJ;
 
   //RHS implementation for explicit solve
-  void getRHS(std::map<std::string, typeScalar*>  valsScalar, \
-	      std::map<std::string, typeVector*>  valsVector, \
-	      unsigned int q) const;
-
+  void getRHS(const MatrixFree<dim,double> &data, 
+	      std::vector<vectorType*> &dst, 
+	      const std::vector<vectorType*> &src,
+	      const std::pair<unsigned int,unsigned int> &cell_range) const;
+    
   //LHS implementation for implicit solve 
-  void getLHS(typeVector& vals, unsigned int q) const;  
-
+  void  getLHS(const MatrixFree<dim,double> &data, 
+	       vectorType &dst, 
+	       const vectorType &src,
+	       const std::pair<unsigned int,unsigned int> &cell_range) const;
+  
   //method to apply initial conditions
   void applyInitialConditions();
  
@@ -64,92 +68,122 @@ CoupledCahnHilliardMechanicsProblem<dim>::CoupledCahnHilliardMechanicsProblem():
   double materialConstants[]=MaterialConstantsV;
   getCIJMatrix<dim>(MaterialModelV, materialConstants, CIJ, this->pcout);
 #endif
-
-  //"c"
-  this->getValue["c"]=true; this->getGradient["c"]=true;
-  this->setValue["c"]=true; this->setGradient["c"]=true;
-  //"mu"
-  this->getValue["mu"]=true; this->getGradient["mu"]=true;
-  this->setValue["mu"]=true; this->setGradient["mu"]=true;
-  //"u"
-  this->getValue["u"]=false; this->getGradient["u"]=true;
-  this->setValue["u"]=false; this->setGradient["u"]=true;
 }
 
 
 template <int dim>
-void  CoupledCahnHilliardMechanicsProblem<dim>::getRHS(std::map<std::string, typeScalar*>  valsScalar, \
-						       std::map<std::string, typeVector*>  valsVector, \
-						       unsigned int q) const{
-  //"mu"fields
-  scalarvalueType mu = valsScalar["mu"]->get_value(q);
-  scalargradType mux = valsScalar["mu"]->get_gradient(q);
+void  CoupledCahnHilliardMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &data, 
+						       std::vector<vectorType*> &dst, 
+						       const std::vector<vectorType*> &src,
+						       const std::pair<unsigned int,unsigned int> &cell_range) const{
 
-  //"c" fields
-  scalarvalueType c = valsScalar["c"]->get_value(q);
-  scalargradType cx = valsScalar["c"]->get_gradient(q);
-
-  //"u" fields
-  vectorgradType ux = valsVector["u"]->get_gradient(q);
-  vectorgradType Rux;
+  //initialize fields
+  typeScalar muVals(data, 0), cVals(data,1);
+  typeVector uVals(data, 2);
 
   //define identity tensor
   vectorgradType I; 
   for (unsigned int i=0; i<dim; i++) {I[i][i]+=constV(1.0);}
-
-  //apply chemical strain
-  ux+=chemicalStrainV*I;
-
-  //compute stress
-  vectorgradType S;
-  computeStress<dim>(CIJ, ux, S);
-
-  //fill residual corresponding to mechanics
-  for (unsigned int i=0; i<dim; i++){
-    for (unsigned int j=0; j<dim; j++){
-      Rux[i][j] -= S[i][j];
-    }
-  }
   
-  //check to ensure we are working on the intended field
-  //chemical potential field
-  if (this->fields[this->currentFieldIndex].name.compare("mu")==0){
-    //compute residuals
-    valsScalar["mu"]->submit_value(rmuV,q); 
-    valsScalar["mu"]->submit_gradient(rmuxV,q);
-  }
-  //concentration field
-  else if (this->fields[this->currentFieldIndex].name.compare("c")==0){
-    //compute residuals
-    valsScalar["c"]->submit_value(rcV,q);   
-    valsScalar["c"]->submit_gradient(rcxV,q);
-  }
-  //displacement field
-  else if (this->fields[this->currentFieldIndex].name.compare("u")==0){
-    valsVector["u"]->submit_gradient(Rux,q);
+  //loop over cells
+  for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
+    //initialize mu field
+    muVals.reinit(cell); muVals.read_dof_values_plain(*src[0]); muVals.evaluate(true, true, false);
+
+    //initialize c field
+    cVals.reinit(cell); cVals.read_dof_values_plain(*src[1]); cVals.evaluate(true, true, false);
+
+    //initialize u field 
+    uVals.reinit(cell); uVals.read_dof_values_plain(*src[2]); uVals.evaluate(false, true, false);
+
+    //loop over quadrature points
+    for (unsigned int q=0; q<cVals.n_q_points; ++q){
+      //mu
+      scalarvalueType mu = muVals.get_value(q);
+      scalargradType mux = muVals.get_gradient(q);
+      //c
+      scalarvalueType c = cVals.get_value(q);
+      scalargradType cx = cVals.get_gradient(q);
+      //u
+      vectorgradType ux = uVals.get_gradient(q);
+      vectorgradType Rux;
+      
+      //apply chemical strain
+      ux+=chemicalStrainV*I;
+
+      //compute strain tensor
+      dealii::VectorizedArray<double> E[dim][dim], S[dim][dim];
+      for (unsigned int i=0; i<dim; i++){
+	for (unsigned int j=0; j<dim; j++){
+	  E[i][j]= constV(0.5)*(ux[i][j]+ux[j][i]);
+	}
+      }
+      
+      //compute stress tensor
+      computeStress<dim>(CIJ, E, S);
+
+      //fill residual corresponding to mechanics
+      for (unsigned int i=0; i<dim; i++){
+	for (unsigned int j=0; j<dim; j++){
+	  Rux[i][j] -= S[i][j];
+	}
+      }
+      
+      //submit values
+      muVals.submit_value(rmuV,q); muVals.submit_gradient(rmuxV,q);
+      cVals.submit_value(rcV,q); cVals.submit_gradient(rcxV,q);
+      uVals.submit_gradient(Rux,q);
+    }
+    
+    //integrate values
+    muVals.integrate(true, true);  muVals.distribute_local_to_global(*dst[0]);
+    cVals.integrate(true, true);   cVals.distribute_local_to_global(*dst[1]);
+    uVals.integrate(false, true); uVals.distribute_local_to_global(*dst[2]);
   }
 }
 
 template <int dim>
-void  CoupledCahnHilliardMechanicsProblem<dim>::getLHS(typeVector& vals, unsigned int q) const{
-  //check to ensure we are working on the intended implicit field
-  if (this->fields[this->currentFieldIndex].name.compare("u")==0){
-    vectorgradType ux = vals.get_gradient(q);
-    vectorgradType Rux;
+void  CoupledCahnHilliardMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &data, 
+						       vectorType &dst, 
+						       const vectorType &src,
+						       const std::pair<unsigned int,unsigned int> &cell_range) const{
+  typeVector uVals(data, 2);
+  
+  //loop over cells
+  for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
+    //initialize u field 
+    uVals.reinit(cell); uVals.read_dof_values_plain(src); uVals.evaluate(false, true, false);
     
-    //compute stress
-    vectorgradType S;
-    computeStress<dim>(CIJ, ux, S);
-    
-    //compute residual
-    for (unsigned int i=0; i<dim; i++){
-      for (unsigned int j=0; j<dim; j++){
-	Rux[i][j] = S[i][j];
+    //loop over quadrature points
+    for (unsigned int q=0; q<uVals.n_q_points; ++q){
+      //u
+      vectorgradType ux = uVals.get_gradient(q);
+      vectorgradType Rux;
+
+      //compute strain tensor
+      dealii::VectorizedArray<double> E[dim][dim], S[dim][dim];
+      for (unsigned int i=0; i<dim; i++){
+	for (unsigned int j=0; j<dim; j++){
+	  E[i][j]= constV(0.5)*(ux[i][j]+ux[j][i]);
+	}
       }
+      
+      //compute stress tensor
+      computeStress<dim>(CIJ, E, S);
+      
+      //compute residual
+      for (unsigned int i=0; i<dim; i++){
+	for (unsigned int j=0; j<dim; j++){
+	  Rux[i][j] = S[i][j]; 
+	}
+      }
+      
+      //submit residual value
+      uVals.submit_gradient(Rux,q);
     }
     
-    //submit residual value for quadrature integration and assemble
-    vals.submit_gradient(Rux,q);
+    //integrate
+    uVals.integrate(false, true); uVals.distribute_local_to_global(dst);
   }
 }
 

@@ -24,6 +24,7 @@
 *vtk
 *vtu
 *vts
+*frt
 
 #Temporary files
 *~
@@ -71,3 +72,6 @@ main
 
 test
 DoxygenWarningLog.txt
+*.project
+*.cproject
+*.DS_Store

@@ -1,8 +1,4 @@
 var searchData=
 [
-  ['datacomponentinterpretation',['DataComponentInterpretation',['http://www.dealii.org/8.2.1/doxygen/deal.II/namespaceDataComponentInterpretation.html#a0cd2da3afe902f9004c23a73dbcc8ab0',1,'DataComponentInterpretation']]],
-  ['datavectortype',['DataVectorType',['http://www.dealii.org/8.2.1/doxygen/deal.II/group__output.html#ga062005bfe37e877e1f44e1c3e8e6cb27',1,'DataOut::DataVectorType()'],['http://www.dealii.org/8.2.1/doxygen/deal.II/group__output.html#ga062005bfe37e877e1f44e1c3e8e6cb27',1,'DataOut_DoFData::DataVectorType()'],['http://www.dealii.org/8.2.1/doxygen/deal.II/group__output.html#ga062005bfe37e877e1f44e1c3e8e6cb27',1,'DataOutFaces::DataVectorType()'],['http://www.dealii.org/8.2.1/doxygen/deal.II/group__output.html#ga062005bfe37e877e1f44e1c3e8e6cb27',1,'DataOutRotation::DataVectorType()'],['http://www.dealii.org/8.2.1/doxygen/deal.II/group__output.html#ga062005bfe37e877e1f44e1c3e8e6cb27',1,'DataVectorType()(Global Namespace)']]],
-  ['differenceformula',['DifferenceFormula',['http://www.dealii.org/8.2.1/doxygen/deal.II/group__functions.html#ga8e3a3152c1a97076b961dcb35a3bb36b',1,'AutoDerivativeFunction::DifferenceFormula()'],['http://www.dealii.org/8.2.1/doxygen/deal.II/group__functions.html#ga8e3a3152c1a97076b961dcb35a3bb36b',1,'DifferenceFormula()(Global Namespace)']]],
-  ['direction',['Direction',['http://www.dealii.org/8.2.1/doxygen/deal.II/classTimeDependent.html#a55de3b5182ab608b2fb1f3f132d88f9e',1,'TimeDependent']]],
-  ['domination',['Domination',['http://www.dealii.org/8.2.1/doxygen/deal.II/namespaceFiniteElementDomination.html#a65fdbe0cca5954df89a7af4f36769bf9',1,'FiniteElementDomination']]]
+  ['pdetype',['PDEType',['../fields_8h.html#a12521d5d4cf2d9ed3c05e52b162fad42',1,'fields.h']]]
 ];

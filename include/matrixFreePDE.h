@@ -77,32 +77,25 @@ class MatrixFreePDE:public Subscriptor
 
   //matrix free objects
   MatrixFree<dim,double>               matrixFreeObject;
-  vectorType                           invM;
+  vectorType                           invM, dU;
   
   //matrix free methods
   unsigned int currentFieldIndex;
   unsigned int num_quadrature_points;
   void computeInvM();
-  //RHS
-  void updateRHS();
-  void computeRHS(const MatrixFree<dim,double> &data, 
-		  std::vector<vectorType*> &dst, 
-		  const std::vector<vectorType*> &src,
-		  const std::pair<unsigned int,unsigned int> &cell_range) const;
-  //virtual methods to be implemented in derived classe
-  //methods to calculate RHS (implicit/explicit)
-  virtual void getRHS(std::map<std::string, typeScalar*>  valsScalar,	\
-		      std::map<std::string, typeVector*>  valsVector,	\
-		      unsigned int q) const = 0;  
-  //LHS
-  template <typename T>
-    void computeLHS(const MatrixFree<dim,double> &data, 
-		    vectorType &dst, 
-		    const vectorType &src,
-		    const std::pair<unsigned int,unsigned int> &cell_range) const;
-  //methods to calculate LHS(implicit)
-  virtual void getLHS(typeScalar& vals, unsigned int q) const;  
-  virtual void getLHS(typeVector& vals, unsigned int q) const;  
+  void computeRHS();
+
+  //virtual methods to be implemented in the derived class
+  //method to calculate LHS(implicit)
+  virtual void getLHS(const MatrixFree<dim,double> &data, 
+		      vectorType &dst, 
+		      const vectorType &src,
+		      const std::pair<unsigned int,unsigned int> &cell_range) const;
+  //method to calculate RHS (implicit/explicit) -- abstract method
+  virtual void getRHS (const MatrixFree<dim,double> &data, 
+		       std::vector<vectorType*> &dst, 
+		       const std::vector<vectorType*> &src,
+		       const std::pair<unsigned int,unsigned int> &cell_range) const = 0;
   
   //methods to apply dirichlet BC's
   virtual void markBoundaries();
@@ -112,10 +105,6 @@ class MatrixFreePDE:public Subscriptor
   //utility functions
   //return index of given field name if exists, else throw error
   unsigned int getFieldIndex(std::string _name);
-
-  //residual, matrix-vector computation variables
-  std::map<std::string,bool> getValue, setValue;
-  std::map<std::string,bool> getGradient, setGradient;
 
   //variables for time dependent problems 
   //isTimeDependentBVP flag is used to see if invM, time steppping in

@@ -1,6 +1,10 @@
 var searchData=
 [
-  ['_5fdata',['_data',['http://www.dealii.org/8.2.1/doxygen/deal.II/classAlignedVector.html#a90246f0f7c72bc1cbc5365abb21bcb86',1,'AlignedVector']]],
-  ['_5fend_5fallocated',['_end_allocated',['http://www.dealii.org/8.2.1/doxygen/deal.II/classAlignedVector.html#a5760d82a58229e09985a44ffb5bf9132',1,'AlignedVector']]],
-  ['_5fend_5fdata',['_end_data',['http://www.dealii.org/8.2.1/doxygen/deal.II/classAlignedVector.html#a2d81735d1cc6b56aa9cab3eacc62cade',1,'AlignedVector']]]
+  ['ac_2eh',['AC.h',['../_a_c_8h.html',1,'']]],
+  ['allencahnproblem',['AllenCahnProblem',['../class_allen_cahn_problem.html',1,'AllenCahnProblem&lt; dim &gt;'],['../class_allen_cahn_problem.html#ae22fbde9fdd49c875fd8e30c1158ebbc',1,'AllenCahnProblem::AllenCahnProblem()']]],
+  ['anisotropic',['ANISOTROPIC',['../anisotropy_8h.html#abb3de18236e38998c9ebe938a8791ab3a089b8e5473289e97a7194eeee4c67d96',1,'anisotropy.h']]],
+  ['anisotropic2d',['ANISOTROPIC2D',['../anisotropy_8h.html#abb3de18236e38998c9ebe938a8791ab3a0e3dabaec38f25fa3b2d6e832c361335',1,'anisotropy.h']]],
+  ['anisotropy_2eh',['anisotropy.h',['../anisotropy_8h.html',1,'']]],
+  ['applydirichletbcs',['applyDirichletBCs',['../class_coupled_c_h_a_c_mechanics_problem.html#a90568dce4dabb9258e735f55b7a8722b',1,'CoupledCHACMechanicsProblem::applyDirichletBCs()'],['../class_coupled_cahn_hilliard_mechanics_problem.html#a90568dce4dabb9258e735f55b7a8722b',1,'CoupledCahnHilliardMechanicsProblem::applyDirichletBCs()'],['../class_mechanics_problem.html#a90568dce4dabb9258e735f55b7a8722b',1,'MechanicsProblem::applyDirichletBCs()'],['../class_matrix_free_p_d_e.html#a90568dce4dabb9258e735f55b7a8722b',1,'MatrixFreePDE::applyDirichletBCs()']]],
+  ['applyinitialconditions',['applyInitialConditions',['../class_coupled_c_h_a_c_mechanics_problem.html#a64fbd7dc135ad44c1dd45f57c5e24510',1,'CoupledCHACMechanicsProblem::applyInitialConditions()'],['../class_coupled_cahn_hilliard_mechanics_problem.html#a64fbd7dc135ad44c1dd45f57c5e24510',1,'CoupledCahnHilliardMechanicsProblem::applyInitialConditions()'],['../class_allen_cahn_problem.html#a64fbd7dc135ad44c1dd45f57c5e24510',1,'AllenCahnProblem::applyInitialConditions()'],['../class_cahn_hilliard_problem.html#a64fbd7dc135ad44c1dd45f57c5e24510',1,'CahnHilliardProblem::applyInitialConditions()'],['../class_coupled_c_h_a_c_problem.html#a64fbd7dc135ad44c1dd45f57c5e24510',1,'CoupledCHACProblem::applyInitialConditions()'],['../class_fickian_problem.html#a64fbd7dc135ad44c1dd45f57c5e24510',1,'FickianProblem::applyInitialConditions()'],['../class_matrix_free_p_d_e.html#a64fbd7dc135ad44c1dd45f57c5e24510',1,'MatrixFreePDE::applyInitialConditions()']]]
 ];
