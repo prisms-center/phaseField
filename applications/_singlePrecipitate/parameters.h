@@ -2,26 +2,26 @@
 
 //define problem dimensions
 #define problemDIM 3
-#define spanX 32.0 //14.0
-#define spanY 32.0 //14.0
-#define spanZ 32.0 //14.0
+#define spanX 10.0 //14.0
+#define spanY 10.0 //14.0
+#define spanZ 10.0 //10.0 //14.0
 
 //define mesh parameters
-#define subdivisionsX 1
-#define subdivisionsY 1
-#define subdivisionsZ 1
-#define refineFactor 6
+#define subdivisionsX 50
+#define subdivisionsY 50
+#define subdivisionsZ 50
+#define refineFactor 0
 #define finiteElementDegree 2
 
 //define time step parameters
-#define timeStep 9.0e-5 //5e-6 //1.67e-5
-#define timeIncrements 10000 //200000
+#define timeStep 2.5e-6 //5e-6 //1.67e-5
+#define timeIncrements 100000 //200000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
-#define skipImplicitSolves 10000000
+#define skipImplicitSolves 1
 
 //define solver parameters
 #define solverType SolverCG
-#define relSolverTolerance 1.0e-4
+#define relSolverTolerance 1.0e-2
 #define maxSolverIterations 10000
 
 //define results output parameters
@@ -41,8 +41,8 @@
 #define Mn2V 50.0
 #define Mn3V 50.0
 
-
-double Kn1[3][3]={{0.0150,0,0},{0,0.0188,0},{0,0,0.00571}};
+//double Kn1[3][3]={{0.0150,0,0},{0,0.0188,0},{0,0,0.00571}};
+double Kn1[3][3]={{0.01113,0,0},{0,0.01391,0},{0,0,0.004252}};
 //double Kn1[3][3]={{0.0150,0,0},{0,0.0150,0},{0,0,0.0150}};
 //double Kn1[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 //double Kn1[3][3]={{0.123,0,0},{0,0.0295,0},{0,0,0.123}};
@@ -51,30 +51,41 @@ double Kn2[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 double Kn3[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 
 //define energy barrier coefficient (used to tune the interfacial energy)
-#define W -1.0
+#define W -0.4 //-1.0
 
 //define Mechanical properties
 // 3D order of constants: 11, 22, 33, 44, 55, 66, 12, 13, 14, 15, 16, 23, 24, 25, 26, 34, 35, 36, 45, 46, 56
-//#define MaterialModelV ANISOTROPIC
-////#define MaterialConstantsV {62.6,62.6,64.9,13.3,13.3,18.3,26.0,20.9,0,0,0,20.9,0,0,0,0,0,0,0,0,0} //these are in GPa-need to be non-dimensionalized
+#define MaterialModelV ANISOTROPIC
+//#define MaterialConstantsV {62.6,62.6,64.9,13.3,13.3,18.3,26.0,20.9,0,0,0,20.9,0,0,0,0,0,0,0,0,0} //these are in GPa-need to be non-dimensionalized
 //#define MaterialConstantsV {31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0} //scaled by E* = 2e9 J/m^3
-//double sf1Strain[3][3] = {{0.1305,0,0},{0,-0.0152,0},{0,0,-0.014}}; //Mg-Nd beta-prime
-//double sf2Strain[3][3] = {{0.0212,0.0631,0},{0.0631,0.0941,0},{0,0,0}};
-//double sf3Strain[3][3] = {{0.0212,-0.0631,0},{-0.0631,0.0941,0},{0,0,0}};
+double sf1Strain[3][3] = {{0.1305,0,0},{0,-0.0152,0},{0,0,-0.014}}; //Mg-Nd beta-prime
+double sf2Strain[3][3] = {{0.0212,0.0631,0},{0.0631,0.0941,0},{0,0,0}};
+double sf3Strain[3][3] = {{0.0212,-0.0631,0},{-0.0631,0.0941,0},{0,0,0}};
 
-#define MaterialModelV ISOTROPIC
-#define MaterialConstantsV {1.0,0.3}
-double sf1Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}}; //Mg-Nd beta-prime
-double sf2Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+// 2D order of constants ANISOTROPIC- 6 constants [C11 C22 C33 C12 C13 C23]
+#define MaterialConstantsV {31.3,31.3,6.65,13.0,0.0,0.0} //scaled by E* = 2e9 J/m^3
+
+//#define MaterialModelV ISOTROPIC
+//#define MaterialConstantsV {60.0,0.3}
+//double sf1Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+//double sf2Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+//double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
 //define free energy expressions (Mg-Nd data from CASM)
-#define faV (24.7939*c*c - 1.6752*c - 1.9453e-06)
-#define facV (49.5878*c - 1.6752)
-#define faccV (49.5878)
-#define fbV (37.9316*c*c - 10.7373*c + 0.5401)
-#define fbcV (75.8633*c - 10.7373)
-#define fbccV (75.8633)
+#define faV (44.547*c*c - 1.6954*c + 0.00011001)
+#define facV (89.094*c - 1.6954)
+#define faccV (89.094)
+#define fbV (12.818*c*c - 4.8583*c + 0.19988)
+#define fbcV (25.636*c - 4.8583)
+#define fbccV (25.636)
+
+// Larry's free energies
+//#define faV (24.7939*c*c - 1.6752*c - 1.9453e-06)
+//#define facV (49.5878*c - 1.6752)
+//#define faccV (49.5878)
+//#define fbV (37.9316*c*c - 10.7373*c + 0.5401)
+//#define fbcV (75.8633*c - 10.7373)
+//#define fbccV (75.8633)
 
 #define h1V (3.0*n1*n1-2.0*n1*n1*n1)
 #define h2V (3.0*n2*n2-2.0*n2*n2*n2)
@@ -103,6 +114,7 @@ double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 #define x_denom 1.0
 #define y_denom 1.0
 #define z_denom 1.0
-#define initial_interface_coeff 0.215
-#define initial_radius 7.0
+#define initial_interface_coeff 0.1
+#define initial_radius 2.0
 #define avg_Nd 0.004
+#define c_precip 0.16

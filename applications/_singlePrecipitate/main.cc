@@ -43,22 +43,27 @@ public:
 	  // Constant concentration
 	  //return avg_Nd;
 
+	  // Sphere
+	  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom
+	  		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
+	  return 0.5*(c_precip-avg_Nd)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + avg_Nd;
+
 	  // planar interface
-	  r=(p.operator()(0)-spanX/4.0);
-	  return 0.5*(0.12-0.0)*(1.0-std::tanh((r)/(initial_interface_coeff))) + avg_Nd;
+	  //r=(p.operator()(0)-spanX/4.0);
+	  //return 0.5*(0.12-0.0)*(1.0-std::tanh((r)/(initial_interface_coeff))) + avg_Nd;
 
 	#elif problemDIM==3
-
+	  // Sphere
 	  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom
 		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom
 		+(p.operator()(2)-spanZ/2.0)*(p.operator()(2)-spanZ/2.0)/z_denom);
-	  return 0.5*(0.12-avg_Nd)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + avg_Nd;
+	  return 0.5*(c_precip-avg_Nd)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + avg_Nd;
 
 	  // Constant concentration
 	  //return avg_Nd;
 
 	  // planar interface
-	  //r=sqrt((p.operator()(2)-spanZ/2.0)*(p.operator()(2)-spanZ/2.0));
+	  //r=sqrt((p.operator()(2))*(p.operator()(2)));
 	  //return 0.5*(0.12-avg_Nd)*(1.0-std::tanh((r)/(initial_interface_coeff))) + avg_Nd;
 	  //return  0.5*(0.12-avg_Nd)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + avg_Nd;
 
@@ -99,10 +104,13 @@ public:
 //		  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
 //		  return 0.5*(1.0-std::tanh((r-spanX/8.0)/(2.0*dy)));
 
+		  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom
+		  		  		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
+		  return 0.5*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff)));
 
 		  // planar interface
-		  r=(p.operator()(0)-spanX/4.0);
-		  return 0.5*(1.0-std::tanh((r)/(2.0*dy)));
+		  //r=(p.operator()(0)-spanX/4.0);
+		  //return 0.5*(1.0-std::tanh((r)/(2.0*dy)));
 
 		  // pure matrix phase
 		  //return 0.0;
@@ -123,13 +131,14 @@ public:
 	  //r=p.distance(Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
 	  //return 0.5*(1.0-std::tanh((r-spanX/8.0)/(3*dx)));
 
+		// Sphere
 		r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom
 		  		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom
 		  		+(p.operator()(2)-spanZ/2.0)*(p.operator()(2)-spanZ/2.0)/z_denom);
 		return 0.5*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff)));
 
 		// planar interface
-		//r=sqrt((p.operator()(2)-spanZ/2.0)*(p.operator()(2)-spanZ/2.0));
+		//r=sqrt((p.operator()(2))*(p.operator()(2)));
 		//return 0.5*(1.0-std::tanh((r)/(initial_interface_coeff)));
 		//return 0.5*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff)));
 	  }
