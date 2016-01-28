@@ -1,13 +1,13 @@
-PRISMS PhaseField
+PRISMS-PF
 =================
 <B>Code repository:</B> https://github.com/prisms-center/phaseField <br>
-<B>Code documentation:</B> https://goo.gl/76lFHj <br>
+<B>Code documentation:</B> https://goo.gl/30XwIW <br>
 <B>User registration link:</B> http://goo.gl/forms/GXo7Im8p2Y
 
 <B>Version information:</B>
-This version of the code, version 0.9.1, is a pre-release version with known issues. For a more stable version, please select version 0.8. Unlike version 0.8, version 0.9.1 has the more modular approach planned for future code releases. However, at present version 0.9.1 is slower than version 0.8 and yields slightly different solutions to the time evolution equations (e.g. Allen-Cahn or Cahn-Hilliard) than version 0.8. These issues are currently being investigated and will be addressed as soon as possible. For more details concerning the differences between versions, please consult version_changes.txt.    
- 
-<B>What is PRISMS PhaseField?</B>
+This version of the code, 0.9.2, is a pre-release version of PRISMS-PF. This version provides a number of improvements to version 0.9.1, including a substantial performance increase and the addition of a test suite. The source of the change in the simulation results from version 0.8 to version 0.9.1 has been identified and fixed (the discrepancy was related to when variables were updated each time step). For more details concerning the differences between versions, please consult version_changes.txt.   
+
+<B>What is PRISMS-PF?</B>
 
   It is a Finite Element Method (FEM) code implementing various phase field 
   and coupled mechanics models and its applications to some physical problems
@@ -35,7 +35,7 @@ This version of the code, version 0.9.1, is a pre-release version with known iss
 
   + Additional software: CMake [http://www.cmake.org/download/] 
 
-  2) Clone the PRISMS PhaseField GitHub repo https://github.com/prisms-center/phaseField<br>
+  2) Clone the PRISMS-PF GitHub repo https://github.com/prisms-center/phaseField<br>
   + $ git clone https://github.com/prisms-center/phaseField.git <br>
   (OR) <br>
   + $ git clone git@github.com:prisms-center/phaseField.git <br>
@@ -45,7 +45,7 @@ This version of the code, version 0.9.1, is a pre-release version with known iss
 
 <B>Usage:</B>
 
-  Running phaseField applications, for example Cahn-Hilliard spinodal decomposition problem :<br> 
+  Running PRISMS-PF applications, for example Cahn-Hilliard spinodal decomposition problem :<br> 
   + $ cd applications/cahnHilliard <br>
   For debug mode [default mode, very slow]: <br>
   + $ cmake CMakeLists.txt -DCMAKE_BUILD_TYPE=Debug <br>
@@ -59,7 +59,7 @@ This version of the code, version 0.9.1, is a pre-release version with known iss
   + $ mpirun -np nprocs ./main <br>
   [here nprocs denotes the number of processors]
   
-  Updates: Since phaseField code is still under active development,
+  Updates: Since PRISMS-PF is still under active development,
   regular code and documentation updates are pushed to the upstream
   repo (https://github.com/prisms-center/phaseField) and we strongly
   recommend users to synchronize their respective clones/forks at regular
