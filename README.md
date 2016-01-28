@@ -109,7 +109,7 @@ This version of the code, 0.9.2, is a pre-release version of PRISMS-PF. This ver
   GNU Lesser General Public License (LGPL). Please see the file
   LICENSE for details.
 
-<B>Mailing List:</B>
+<B>Mailing Lists:</B>
   
  + prismsphaseField.users@umich.edu	
  + prismsphaseField.dev@umich.edu  
