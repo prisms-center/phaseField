@@ -17,6 +17,9 @@
 //n
 #define numFields 1
 
+// flag to allow or disallow nucleation
+#define nucleation_occurs false
+
 //define time step parameters
 #define timeStep 1.0e-3
 #define timeFinal 20.0

@@ -1,21 +1,21 @@
 //Parameters list for beta prime precipitation evolution problem
 
 //define problem dimensions
-#define problemDIM 3
-#define spanX 10.0 //14.0
-#define spanY 10.0 //14.0
+#define problemDIM 2
+#define spanX 20.0 //14.0
+#define spanY 20.0 //14.0
 #define spanZ 10.0 //10.0 //14.0
 
 //define mesh parameters
-#define subdivisionsX 50
-#define subdivisionsY 50
+#define subdivisionsX 100
+#define subdivisionsY 100
 #define subdivisionsZ 50
 #define refineFactor 0
 #define finiteElementDegree 2
 
 //define time step parameters
 #define timeStep 2.5e-6 //5e-6 //1.67e-5
-#define timeIncrements 100000 //200000
+#define timeIncrements 1000 //200000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
 #define skipImplicitSolves 1
 
@@ -57,13 +57,13 @@ double Kn3[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 // 3D order of constants: 11, 22, 33, 44, 55, 66, 12, 13, 14, 15, 16, 23, 24, 25, 26, 34, 35, 36, 45, 46, 56
 #define MaterialModelV ANISOTROPIC
 //#define MaterialConstantsV {62.6,62.6,64.9,13.3,13.3,18.3,26.0,20.9,0,0,0,20.9,0,0,0,0,0,0,0,0,0} //these are in GPa-need to be non-dimensionalized
-//#define MaterialConstantsV {31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0} //scaled by E* = 2e9 J/m^3
+#define MaterialConstantsV {31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0} //scaled by E* = 2e9 J/m^3
 double sf1Strain[3][3] = {{0.1305,0,0},{0,-0.0152,0},{0,0,-0.014}}; //Mg-Nd beta-prime
 double sf2Strain[3][3] = {{0.0212,0.0631,0},{0.0631,0.0941,0},{0,0,0}};
 double sf3Strain[3][3] = {{0.0212,-0.0631,0},{-0.0631,0.0941,0},{0,0,0}};
 
 // 2D order of constants ANISOTROPIC- 6 constants [C11 C22 C33 C12 C13 C23]
-#define MaterialConstantsV {31.3,31.3,6.65,13.0,0.0,0.0} //scaled by E* = 2e9 J/m^3
+//#define MaterialConstantsV {31.3,31.3,6.65,13.0,0.0,0.0} //scaled by E* = 2e9 J/m^3
 
 //#define MaterialModelV ISOTROPIC
 //#define MaterialConstantsV {60.0,0.3}
@@ -111,7 +111,7 @@ double sf3Strain[3][3] = {{0.0212,-0.0631,0},{-0.0631,0.0941,0},{0,0,0}};
 #define rn3xV  (constV(-timeStep*Mn3V)*Knx3)
 
 // Initial geometry
-#define x_denom 1.0
+#define x_denom 4.0
 #define y_denom 1.0
 #define z_denom 1.0
 #define initial_interface_coeff 0.1

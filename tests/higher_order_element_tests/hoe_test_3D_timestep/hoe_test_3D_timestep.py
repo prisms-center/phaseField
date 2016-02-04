@@ -30,7 +30,7 @@ def run_simulation(refineFactor,degree,subdivisionsX,subdivisionsY,subdivisionsZ
 
 	subprocess.call(["make", "release"])
 	#subprocess.call(["./main"])
-	subprocess.call(["mpirun", "-n", "6", "main"])
+	subprocess.call(["mpirun", "-n", "4", "main"])
 
 	subprocess.call(["mkdir",run_name])
 	for output_files in glob.glob('*vtu'):
