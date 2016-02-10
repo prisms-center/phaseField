@@ -51,9 +51,20 @@ double Kn3[3][3]={{1.0,0,0},{0,0.5,0},{0,0,1.0}};
 //define Mechanical properties
 #define MaterialModelV ANISOTROPIC
 #define MaterialConstantsV {31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0} //scaled by E* = 2e9 J/m^3
+
+#define c_dependent_misfit true
 double sf1Strain[3][3] = {{0.1305,0,0},{0,-0.0152,0},{0,0,-0.014}}; //Mg-Nd beta-prime
 double sf2Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+
+// Stress-free transformation strains (concentration dependent terms, used if c_dependent_misfit == true, currently assumes linear dependence)
+double sf1Strain_const[3][3] = {{0.1305,0,0},{0,-0.0152,0},{0,0,-0.014}}; //Mg-Nd beta-prime
+double sf2Strain_const[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sf3Strain_const[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+
+double sf1Strain_linear[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sf2Strain_linear[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sf3Strain_linear[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
 //define free energy expressions (Mg-Nd data from CASM)
 #define faV (24.7939*c*c - 1.6752*c - 1.9453e-06)
