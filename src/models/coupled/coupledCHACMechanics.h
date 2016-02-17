@@ -81,7 +81,14 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     n3Vals.reinit(cell); n3Vals.read_dof_values_plain(*src[3]); n3Vals.evaluate(true, true, false);
 
     //initialize u field 
-    uVals.reinit(cell); uVals.read_dof_values_plain(*src[4]); uVals.evaluate(false, true, true);
+    uVals.reinit(cell); uVals.read_dof_values_plain(*src[4]);
+
+    if (c_dependent_misfit == true){
+    	uVals.evaluate(false, true, true);
+    }
+    else{
+    	uVals.evaluate(false, true, false);
+    }
 
     //loop over quadrature points
     for (unsigned int q=0; q<cVals.n_q_points; ++q){
@@ -104,21 +111,34 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       //u
       vectorgradType ux = uVals.get_gradient(q);
       vectorgradType Rux;
-      vectorhessType uxx = uVals.get_hessian(q);
       
+      //if (c_dependent_misfit == true){
+    	  vectorhessType uxx = uVals.get_hessian(q);
+      //}
+
       //compute E2=(E-E0)
       dealii::VectorizedArray<double> E2[dim][dim], S[dim][dim];
-      if (c_dependent_misfit == false){
+
+      // The result changes if I initialize this to constV(0.0) vs c. That shouldn't be true.
+      //double c_effective = 0.125; //c[0];
+      dealii::VectorizedArray<double> c_effective = c;
+
+      double cutoff = 0.01;
+      if (c[0] < cutoff){
+    	  c_effective[0] = cutoff;
+      }
+
+      if (c_dependent_misfit == true){
     	  for (unsigned int i=0; i<dim; i++){
     		  for (unsigned int j=0; j<dim; j++){
-    			  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-(sf1Strain[i][j]*h1V+sf2Strain[i][j]*h2V+sf3Strain[i][j]*h3V);
+    			  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( (sf1Strain_linear[i][j]*c_effective+sf1Strain_const[i][j])*h1V + (sf2Strain_linear[i][j]*c_effective+sf2Strain_const[i][j])*h2V + (sf3Strain_linear[i][j]*c_effective+sf3Strain_const[i][j])*h3V);
     		  }
     	  }
       }
       else{
     	  for (unsigned int i=0; i<dim; i++){
     		  for (unsigned int j=0; j<dim; j++){
-    			  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( (sf1Strain_linear[i][j]*c+sf1Strain_const[i][j])*h1V + (sf2Strain_linear[i][j]*c+sf2Strain_const[i][j])*h2V + (sf3Strain_linear[i][j]*c+sf3Strain_const[i][j])*h3V);
+    			  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-(sf1Strain[i][j]*h1V+sf2Strain[i][j]*h2V+sf3Strain[i][j]*h3V);
     		  }
     	  }
       }
@@ -140,21 +160,21 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       VectorizedArray<double> CEE2=make_vectorized_array(0.0);
       VectorizedArray<double> CEE3=make_vectorized_array(0.0);
       
-      if (c_dependent_misfit == false){
+      if (c_dependent_misfit == true){
 		  for (unsigned int i=0; i<dim; i++){
 			  for (unsigned int j=0; j<dim; j++){
-				  CEE1+=S[i][j]*sf1Strain[i][j];
-				  CEE2+=S[i][j]*sf2Strain[i][j];
-				  CEE3+=S[i][j]*sf3Strain[i][j];
+				  CEE1+=S[i][j]*(sf1Strain_linear[i][j]*c_effective+sf1Strain_const[i][j]);
+				  CEE2+=S[i][j]*(sf2Strain_linear[i][j]*c_effective+sf2Strain_const[i][j]);
+				  CEE3+=S[i][j]*(sf3Strain_linear[i][j]*c_effective+sf3Strain_const[i][j]);
 			  }
 		  }
       }
       else{
     	  for (unsigned int i=0; i<dim; i++){
           	  for (unsigned int j=0; j<dim; j++){
-          		  CEE1+=S[i][j]*(sf1Strain_linear[i][j]*c+sf1Strain_const[i][j]);
-          		  CEE2+=S[i][j]*(sf2Strain_linear[i][j]*c+sf2Strain_const[i][j]);
-          		  CEE3+=S[i][j]*(sf3Strain_linear[i][j]*c+sf3Strain_const[i][j]);
+          		  CEE1+=S[i][j]*sf1Strain[i][j];
+          		  CEE2+=S[i][j]*sf2Strain[i][j];
+          		  CEE3+=S[i][j]*sf3Strain[i][j];
           	  }
             }
       }
@@ -165,26 +185,29 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       // compute the stress term in the concentration chemical potential, CEEcx = [C*(E-E0)*E0c]x, must be a vector with length dim
       dealii::VectorizedArray<double> CEEcx[dim];
 
-      CEEcx[0] = constV(0.0);
-      CEEcx[1] = constV(0.0);
-      CEEcx[2] = constV(0.0);
+      for (unsigned int k=0; k<dim; k++){
+    	  CEEcx[k] = constV(0.0);
+      }
 
+      if (c[0] >= cutoff){
       if (c_dependent_misfit == true){
     	  dealii::VectorizedArray<double> E3[dim][dim], S3[dim][dim];
-    	  for (unsigned int i=0; i<dim; i++){
-    		  for (unsigned int j=0; j<dim; j++){
-    			  E3[i][j] =  (sf1Strain_linear[i][j]*h1V + sf2Strain_linear[i][j]*h2V + sf3Strain_linear[i][j]*h3V);
-    		  }
-    	  }
 
-    	  computeStress<dim>(CIJ, E3, S3);
-    	  for (unsigned int k=0; k<dim; k++){
-    	  for (unsigned int i=0; i<dim; i++){
-    		  for (unsigned int j=0; j<dim; j++){
-    			  CEEcx[k]+=S3[i][j] * (constV(0.5)*(uxx[i][j][k]+uxx[j][i][k]) - (sf1Strain_linear[i][j]*h1V + sf2Strain_linear[i][j]*h2V + sf3Strain_linear[i][j]*h3V)*cx[k]);
+    		  for (unsigned int i=0; i<dim; i++){
+    			  for (unsigned int j=0; j<dim; j++){
+    				  E3[i][j] =  (sf1Strain_linear[i][j]*h1V + sf2Strain_linear[i][j]*h2V + sf3Strain_linear[i][j]*h3V);
+    			  }
     		  }
-    	  }
-    	  }
+
+    		  computeStress<dim>(CIJ, E3, S3);
+    		  for (unsigned int k=0; k<dim; k++){
+    			  for (unsigned int i=0; i<dim; i++){
+    				  for (unsigned int j=0; j<dim; j++){
+    					  CEEcx[k]+=S3[i][j] * (constV(0.5)*(uxx[i][j][k]+uxx[j][i][k]) - (sf1Strain_linear[i][j]*h1V + sf2Strain_linear[i][j]*h2V + sf3Strain_linear[i][j]*h3V)*cx[k]);
+    				  }
+    			  }
+    		  }
+      }
       }
 
       //compute K*nx
