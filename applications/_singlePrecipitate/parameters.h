@@ -2,12 +2,12 @@
 
 //define problem dimensions
 #define problemDIM 2
-#define spanX 15.0 //14.0
+#define spanX 20.0 //14.0
 #define spanY 20.0 //14.0
 #define spanZ 10.0 //10.0 //14.0
 
 //define mesh parameters
-#define subdivisionsX 75
+#define subdivisionsX 100
 #define subdivisionsY 100
 #define subdivisionsZ 50
 #define refineFactor 0
@@ -15,13 +15,14 @@
 
 //define time step parameters
 #define timeStep 1.6e-5 //5e-6 //1.67e-5
-#define timeIncrements 100000 //200000
+#define timeIncrements 10000 //200000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
 #define skipImplicitSolves 1
 
 //define solver parameters
 #define solverType SolverCG
 #define relSolverTolerance 1.0e-2
+#define absSolverTolerance 1.0e-5
 #define maxSolverIterations 10000
 
 //define results output parameters
@@ -74,6 +75,14 @@ double sf1Strain_linear[3][3] = {{-0.2648,0,0},{0,0.6548,0},{0,0,0.1568}}; //Mg-
 double sf2Strain_linear[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double sf3Strain_linear[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
+double sf1Strain_quadratic[3][3] = {{-0.2648,0,0},{0,0.6548,0},{0,0,0.1568}}; //Mg-Nd beta'''
+double sf2Strain_quadratic[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sf3Strain_quadratic[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+
+double sf1Strain_cubic[3][3] = {{-0.2648,0,0},{0,0.6548,0},{0,0,0.1568}}; //Mg-Nd beta'''
+double sf2Strain_cubic[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sf3Strain_cubic[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+
 // 2D order of constants ANISOTROPIC- 6 constants [C11 C22 C33 C12 C13 C23]
 #define MaterialConstantsV {31.3,31.3,6.65,13.0,0.0,0.0} //scaled by E* = 2e9 J/m^3
 
@@ -120,7 +129,7 @@ double sf3Strain_linear[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
 // Residuals
 #define rcV   (c)
-#define rcxTemp ( cx*((1.0-h1V-h2V-h3V)*faccV+(h1V+h2V+h3V)*fbccV) + n1x*((fbcV-facV)*hn1V) + n2x*((fbcV-facV)*hn2V) + n3x*((fbcV-facV)*hn3V) - CEEcx)
+#define rcxTemp ( cx*((1.0-h1V-h2V-h3V)*faccV+(h1V+h2V+h3V)*fbccV) + n1x*((fbcV-facV)*hn1V) + n2x*((fbcV-facV)*hn2V) + n3x*((fbcV-facV)*hn3V) + grad_mu_el)
 #define rcxV  (constV(-timeStep*McV)*rcxTemp)
 
 #define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V+W*fbarriernV-CEE1))
@@ -132,9 +141,9 @@ double sf3Strain_linear[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
 // Initial geometry
 #define x_denom 1.0
-#define y_denom 4.0
+#define y_denom 1.0
 #define z_denom 1.0
-#define initial_interface_coeff 0.1
-#define initial_radius 2.0
+#define initial_interface_coeff 1.0
+#define initial_radius 5.0
 #define avg_Nd 0.004
 #define c_precip 0.16

@@ -121,10 +121,10 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       //dealii::VectorizedArray<double> sfts1_cubic[dim][dim], sfts1_quadratic[dim][dim], sfts1_linear[dim][dim], sfts1_const[dim][dim];
 
       // E33 tanh fit
-//      double a0[dim][dim] = {{0,0},{0, -0.000670244939911}};
-//      double b0[dim][dim] = {{0,0},{0, 0.009256833713427}};
-//      double c0[dim][dim] = {{0,0},{0,-0.166524854132127}};
-//      double d0[dim][dim] = {{0,0},{0,29.599999267454422}};
+      double a0[dim][dim] = {{0,0},{0, -0.000670244939911}};
+      double b0[dim][dim] = {{0,0},{0, 0.009256833713427}};
+      double c0[dim][dim] = {{0,0},{0,-0.166524854132127}};
+      double d0[dim][dim] = {{0,0},{0,29.599999267454422}};
 
       // E22 tanh fit
 //      double a0[dim][dim] = {{0,0},{0, 0.033318286494293}};
@@ -133,10 +133,10 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
 //      double d0[dim][dim] = {{0,0},{0,-21.546549820380850}};
 
       // E33 tanh fit
-      double a0[dim][dim] = {{0,0},{0, 0.083424439488905}};
-      double b0[dim][dim] = {{0,0},{0, -0.014158586416682}};
-      double c0[dim][dim] = {{0,0},{0, -0.185813250310842}};
-      double d0[dim][dim] = {{0,0},{0, 32.907763222708297}};
+//      double a0[dim][dim] = {{0,0},{0, 0.083424439488905}};
+//      double b0[dim][dim] = {{0,0},{0, -0.014158586416682}};
+//      double c0[dim][dim] = {{0,0},{0, -0.185813250310842}};
+//      double d0[dim][dim] = {{0,0},{0, 32.907763222708297}};
 
       // Constant misfit
 //      double a0[dim][dim] = {{0,0},{0, -0.01}};
