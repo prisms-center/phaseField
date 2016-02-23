@@ -121,10 +121,10 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       //dealii::VectorizedArray<double> sfts1_cubic[dim][dim], sfts1_quadratic[dim][dim], sfts1_linear[dim][dim], sfts1_const[dim][dim];
 
       // E33 tanh fit
-      double a0[dim][dim] = {{0,0},{0, -0.000670244939911}};
-      double b0[dim][dim] = {{0,0},{0, 0.009256833713427}};
-      double c0[dim][dim] = {{0,0},{0,-0.166524854132127}};
-      double d0[dim][dim] = {{0,0},{0,29.599999267454422}};
+//      double a0[dim][dim] = {{0,0},{0, -0.000670244939911}};
+//      double b0[dim][dim] = {{0,0},{0, 0.009256833713427}};
+//      double c0[dim][dim] = {{0,0},{0,-0.166524854132127}};
+//      double d0[dim][dim] = {{0,0},{0,29.599999267454422}};
 
       // E22 tanh fit
 //      double a0[dim][dim] = {{0,0},{0, 0.033318286494293}};
@@ -132,14 +132,21 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
 //      double c0[dim][dim] = {{0,0},{0,-0.195464641904604}};
 //      double d0[dim][dim] = {{0,0},{0,-21.546549820380850}};
 
-      // E33 tanh fit
+      // E11 tanh fit
 //      double a0[dim][dim] = {{0,0},{0, 0.083424439488905}};
 //      double b0[dim][dim] = {{0,0},{0, -0.014158586416682}};
 //      double c0[dim][dim] = {{0,0},{0, -0.185813250310842}};
 //      double d0[dim][dim] = {{0,0},{0, 32.907763222708297}};
 
+      // E22 and E33 tanh fit
+      double a0[dim][dim] = {{0.033318286494293,0},{0, -0.000670244939911}};
+      double b0[dim][dim] = {{-0.043447625340652,0},{0, 0.009256833713427}};
+      double c0[dim][dim] = {{-0.195464641904604,0},{0,-0.166524854132127}};
+      double d0[dim][dim] = {{-21.546549820380850,0},{0,29.599999267454422}};
+
+
       // Constant misfit
-//      double a0[dim][dim] = {{0,0},{0, -0.01}};
+//      double a0[dim][dim] = {{-0.01,0},{0,0}};
 //      double b0[dim][dim] = {{0,0},{0,0}};
 //      double c0[dim][dim] = {{0,0},{0,0}};
 //      double d0[dim][dim] = {{0,0},{0,0}};
@@ -406,7 +413,9 @@ void CoupledCHACMechanicsProblem<dim>::computeFreeEnergyValue(std::vector<double
   const unsigned int   n_q_points    = quadrature_formula.size();
   std::vector<double> cVal(n_q_points), n1Val(n_q_points), n2Val(n_q_points), n3Val(n_q_points);
   std::vector<Tensor<1,dim,double> > cxVal(n_q_points), n1xVal(n_q_points), n2xVal(n_q_points), n3xVal(n_q_points);
-  std::vector<std::vector<Tensor<1,dim,double> > > uxVal(n_q_points,std::vector<Tensor<1,dim,double> >(dim)); // I would think that this should be a rank 2 tensor, but that doesn't compile
+  std::vector<std::vector<Tensor<1,dim,double> > > uxVal(n_q_points,std::vector<Tensor<1,dim,double> >(dim));
+  //std::vector<Tensor<2,dim,double> > uxVal(n_q_points);
+  //std::vector<std::vector<Tensor<1,dim,double> > > uxVal(n_q_points,dim);
   //std::vector<std::vector<Tensor<1,dim,double> > > uxVal[n_q_points][dim];
   //std::vector<vectorgradType> uxVal(n_q_points);
 
@@ -436,8 +445,9 @@ void CoupledCHACMechanicsProblem<dim>::computeFreeEnergyValue(std::vector<double
     	fe_values.get_function_values(*this->solutionSet[fieldIndex], n3Val);
     	fe_values.get_function_gradients(*this->solutionSet[fieldIndex], n3xVal);
 
-    	//fieldIndex=this->getFieldIndex("u");
+    	fieldIndex=this->getFieldIndex("u");
     	//fe_values.get_function_gradients(*this->solutionSet[fieldIndex], uxVal); // This step doesn't work, uxVal not the right type
+
 
     	for (unsigned int q=0; q<n_q_points; ++q){
     		double c=cVal[q];
@@ -445,7 +455,20 @@ void CoupledCHACMechanicsProblem<dim>::computeFreeEnergyValue(std::vector<double
     		double n2 = n2Val[q];
     		double n3 = n3Val[q];
 
+//    		Tensor<2,dim> ux;
+//    		for (unsigned int i=0; i<dofs_per_cell; i++){
+//    				ux[i] = fe_values[uxVal].gradient(i,q);
+//    		}
+
+
 //    		vectorgradType ux;
+//    		for (unsigned int i=0; i<dim; i++){
+//    			for (unsigned int j=0; j<dim; j++){
+//    				ux[i][j] = uxVal[q][i][j];
+//    			}
+//    		}
+
+//    		double ux[dim][dim];
 //    		for (unsigned int i=0; i<dim; i++){
 //    			for (unsigned int j=0; j<dim; j++){
 //    				ux[i][j] = uxVal[q][i][j];
@@ -482,11 +505,11 @@ void CoupledCHACMechanicsProblem<dim>::computeFreeEnergyValue(std::vector<double
 //    		double test_2 = test[0];
 
 /*
-    		vectorgradType E2;
-    		//dealii::Table<2, double> E2;
+    		//vectorgradType E2;
+    		dealii::Table<2, double> E2;
     		for (unsigned int i=0; i<dim; i++){
     			for (unsigned int j=0; j<dim; j++){
-    				E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-(sf1Strain[i][j]*h1V+sf2Strain[i][j]*h2V+sf3Strain[i][j]*h3V);
+    				E2[i][j]= ux[i][j]+ux[j][i]; //constV(0.5)*(ux[i][j]+ux[j][i])-(sf1Strain[i][j]*h1V+sf2Strain[i][j]*h2V+sf3Strain[i][j]*h3V);
     			}
     		}
 
@@ -504,13 +527,14 @@ void CoupledCHACMechanicsProblem<dim>::computeFreeEnergyValue(std::vector<double
     			}
     		}
 			#elif problemDIM==2
-			  dealii::Table<1, dealii::VectorizedArray<double> > E(3);
+			  //dealii::Table<1, dealii::VectorizedArray<double> > E(3);
+    		dealii::Table<1,double> E(3);
 			  E(0)=E2[0][0]; E(1)=E2[1][1];
 			  E(2)=E2[0][1]+E2[1][0];
 
 			  for (unsigned int i=0; i<3; i++){
 				for (unsigned int j=0; j<3; j++){
-					fel+=CIJ(i,j)*E(i).operator[](0)*E(j).operator[](0);
+					fel+=CIJ(i,j)*E[i]*E[j];
 				}
 			  }
 			#elif problemDIM==1
@@ -518,7 +542,8 @@ void CoupledCHACMechanicsProblem<dim>::computeFreeEnergyValue(std::vector<double
 			  E(0)=E2[0][0];
 			  fel=CIJ(0,0)*E(0).operator[](0);
 			#endif
-			*/
+
+*/
 
 
     		// Sum the energies at each integration point
