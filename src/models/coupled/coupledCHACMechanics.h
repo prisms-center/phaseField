@@ -112,13 +112,12 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       vectorgradType ux = uVals.get_gradient(q);
       vectorgradType Rux;
       
-      //if (c_dependent_misfit == true){
-    	  vectorhessType uxx = uVals.get_hessian(q);
-      //}
+
+      vectorhessType uxx = uVals.get_hessian(q);
+
 
       // Calculate the stress-free transformation strain and its derivatives at the quadrature point
       dealii::VectorizedArray<double> sfts1[dim][dim], sfts1c[dim][dim], sfts1cc[dim][dim], sfts2[dim][dim], sfts2c[dim][dim], sfts2cc[dim][dim], sfts3[dim][dim], sfts3c[dim][dim], sfts3cc[dim][dim];
-      //dealii::VectorizedArray<double> sfts1_cubic[dim][dim], sfts1_quadratic[dim][dim], sfts1_linear[dim][dim], sfts1_const[dim][dim];
 
       // E33 tanh fit
 //      double a0[dim][dim] = {{0,0},{0, -0.000670244939911}};
@@ -151,67 +150,25 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
 //      double c0[dim][dim] = {{0,0},{0,0}};
 //      double d0[dim][dim] = {{0,0},{0,0}};
 
+		dealii::VectorizedArray<double>	tanh_c_plus_c0_times_d0;
+
       for (unsigned int i=0; i<dim; i++){
     	  for (unsigned int j=0; j<dim; j++){
     		  if (c_dependent_misfit == true){
-    			  //double c_here = c[0];
-    			  //if (c_here > 0.125){
 
-				  // Polynomial fit for the sfts
-				  //sfts1[i][j] = constV(sf1Strain_cubic[i][j])*c*c*c + constV(sf1Strain_quadratic[i][j])*c*c + constV(sf1Strain_linear[i][j])*c + constV(sf1Strain_const[i][j]);
-				  //sfts1c[i][j] = constV(3.0*sf1Strain_cubic[i][j])*c*c + constV(2.0*sf1Strain_quadratic[i][j])*c + constV(sf1Strain_linear[i][j]);
-				  //sfts1cc[i][j] = constV(6.0*sf1Strain_cubic[i][j])*c + constV(2.0*sf1Strain_quadratic[i][j]);
+				  // Polynomial fit for the stress-free transformation strains (orientation variant 1)
+//				  sfts1[i][j] = constV(sf1Strain_cubic[i][j])*c*c*c + constV(sf1Strain_quadratic[i][j])*c*c + constV(sf1Strain_linear[i][j])*c + constV(sf1Strain_const[i][j]);
+//				  sfts1c[i][j] = constV(3.0*sf1Strain_cubic[i][j])*c*c + constV(2.0*sf1Strain_quadratic[i][j])*c + constV(sf1Strain_linear[i][j]);
+//				  sfts1cc[i][j] = constV(6.0*sf1Strain_cubic[i][j])*c + constV(2.0*sf1Strain_quadratic[i][j]);
 
-//    			  }
-//    			  else if (c_here > 0.1){
-//    				  sfts1[i][j] = constV(sf1Strain_cubic2[i][j])*c*c*c + constV(sf1Strain_quadratic2[i][j])*c*c + constV(sf1Strain_linear2[i][j])*c + constV(sf1Strain_const2[i][j]);
-//    				  sfts1c[i][j] = constV(3.0*sf1Strain_cubic2[i][j])*c*c + constV(2.0*sf1Strain_quadratic2[i][j])*c + constV(sf1Strain_linear2[i][j]);
-//    				  sfts1cc[i][j] = constV(6.0*sf1Strain_cubic2[i][j])*c + constV(2.0*sf1Strain_quadratic2[i][j]);
-//    			  }
-//    			  else {
-//    				  sfts1[i][j] = constV(sf1Strain_cubic3[i][j])*c*c*c + constV(sf1Strain_quadratic3[i][j])*c*c + constV(sf1Strain_linear3[i][j])*c + constV(sf1Strain_const3[i][j]);
-//    				  sfts1c[i][j] = constV(3.0*sf1Strain_cubic3[i][j])*c*c + constV(2.0*sf1Strain_quadratic3[i][j])*c + constV(sf1Strain_linear3[i][j]);
-//    				  sfts1cc[i][j] = constV(6.0*sf1Strain_cubic3[i][j])*c + constV(2.0*sf1Strain_quadratic3[i][j]);
-//
-//    			  }
+    			  // Tanh() fit for the stress-free transformation strains (orientation variants 2 and 3), could probably pre-calculate some of this to improve speed
+    		  	  tanh_c_plus_c0_times_d0 = (constV(1.0)-std::exp(constV(-2.0*d0[i][j])*(c+constV(c0[i][j]))))/(constV(1.0)+std::exp(constV(-2.0*d0[i][j])*(c+constV(c0[i][j])))); //
+    		 	  sfts1[i][j] = constV(a0[i][j]) + constV(b0[i][j])*tanh_c_plus_c0_times_d0;
+    		  	  sfts1c[i][j] = constV(-b0[i][j]*d0[i][j])*(tanh_c_plus_c0_times_d0*tanh_c_plus_c0_times_d0 - constV(1.0));
+    		  	  sfts1cc[i][j] = constV(-2.0*b0[i][j]*d0[i][j]*d0[i][j])*tanh_c_plus_c0_times_d0*(tanh_c_plus_c0_times_d0*tanh_c_plus_c0_times_d0 - constV(1.0));
 
 
-
-//    			  sfts1_cubic[i][j] = constV((1.0+tanh((c_here-0.125)/0.0001))/2.0*sf1Strain_cubic[i][j]
-//										+ (-(1.0+tanh((c_here-0.125)/0.0001))/2.0 + (1.0+tanh((c_here-0.1)/0.0001))/2.0)*sf1Strain_cubic2[i][j]
-//										+ (1.0-(1.0+tanh((c_here-0.1)/0.0001))/2.0)*sf1Strain_cubic3[i][j]);
-//    			  sfts1_quadratic[i][j] = constV((1.0+tanh((c_here-0.125)/0.0001))/2.0*sf1Strain_quadratic[i][j]
-//										+ (-(1.0+tanh((c_here-0.125)/0.0001))/2.0 + (1.0+tanh((c_here-0.1)/0.0001))/2.0)*sf1Strain_quadratic2[i][j]
-//										+ (1.0-(1.0+tanh((c_here-0.1)/0.0001))/2.0)*sf1Strain_quadratic3[i][j]);
-//    			  sfts1_linear[i][j] = constV((1.0+tanh((c_here-0.125)/0.0001))/2.0*sf1Strain_linear[i][j]
-//										+ (-(1.0+tanh((c_here-0.125)/0.0001))/2.0 + (1.0+tanh((c_here-0.1)/0.0001))/2.0)*sf1Strain_linear2[i][j]
-//										+ (1.0-(1.0+tanh((c_here-0.1)/0.0001))/2.0)*sf1Strain_linear3[i][j]);
-//    			  sfts1_const[i][j] = constV((1.0+tanh((c_here-0.125)/0.0001))/2.0*sf1Strain_linear[i][j]
-//											+ (-(1.0+tanh((c_here-0.125)/0.0001))/2.0 + (1.0+tanh((c_here-0.1)/0.0001))/2.0)*sf1Strain_const2[i][j]
-//											+ (1.0-(1.0+tanh((c_here-0.1)/0.0001))/2.0)*sf1Strain_const3[i][j]);
-//
-//    			  sfts1[i][j] = sfts1_cubic[i][j]*c*c*c + sfts1_quadratic[i][j]*c*c + sfts1_linear[i][j]*c + sfts1_const[i][j];
-//    			  sfts1c[i][j] = 3.0*sfts1_cubic[i][j]*c*c + 2.0*sfts1_quadratic[i][j]*c + sfts1_linear[i][j];
-//    			  sfts1cc[i][j] = 6.0*sfts1_cubic[i][j]*c + 2.0*sfts1_quadratic[i][j];
-
-
-    			//sfts1[i][j][0] = a0[i][j]+b0[i][j]*tanh((c_here-c0[i][j])*d0[i][j]); // clearly bad
-    			//sfts1[i][j] = constV(a0[i][j]+b0[i][j]*tanh((c_here-c0[i][j])*d0[i][j])); // dispersed artifacts
-    			//sfts1[i][j] = constV(a0[i][j]); // ok
-    			//sfts1[i][j] = constV(c_here); // dispersed artifacts
-    			//sfts1[i][j] = constV(cVals.get_value(q)[0]); // dispersed artifacts
-    			//sfts1[i][j] = constV(cVals.get_value(q).operator[](0)); // dispersed artifacts
-    			//sfts1[i][j] = c; // ok
-    			//sfts1[i][j] = constV(c.operator[](0)); // dispersed artifacts
-
-    		    dealii::VectorizedArray<double>	tanh_c_plus_c0_times_d0;
-    		    tanh_c_plus_c0_times_d0 = (constV(1.0)-std::exp(constV(-2.0*d0[i][j])*(c+constV(c0[i][j]))))/(constV(1.0)+std::exp(constV(-2.0*d0[i][j])*(c+constV(c0[i][j])))); //
-
-    		    sfts1[i][j] = constV(a0[i][j]) + constV(b0[i][j])*tanh_c_plus_c0_times_d0;
-    		    sfts1c[i][j] = constV(-b0[i][j]*d0[i][j])*(tanh_c_plus_c0_times_d0*tanh_c_plus_c0_times_d0 - constV(1.0));
-    		    sfts1cc[i][j] = constV(-2.0*b0[i][j]*d0[i][j]*d0[i][j])*tanh_c_plus_c0_times_d0*(tanh_c_plus_c0_times_d0*tanh_c_plus_c0_times_d0 - constV(1.0));
-
-
+    		  	  // Polynomial fit for the stress-free transformation strains (orientation variants 2 and 3)
     			  sfts2[i][j] = constV(sf2Strain_cubic[i][j])*c*c*c + constV(sf2Strain_quadratic[i][j])*c*c + constV(sf2Strain_linear[i][j])*c + constV(sf2Strain_const[i][j]);
     			  sfts2c[i][j] = constV(3.0*sf2Strain_cubic[i][j])*c*c + constV(2.0*sf2Strain_quadratic[i][j])*c + constV(sf2Strain_linear[i][j]);
     			  sfts2cc[i][j] = constV(6.0*sf2Strain_cubic[i][j])*c + constV(2.0*sf2Strain_quadratic[i][j]);
@@ -261,13 +218,6 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     	  }
       }
       
-            //if ( (c[0] < 0.12) && (c[0] > 0.10)){
-//            if ( (c[0] > 0.12) ){
-//            std::string input = "";
-//            std::cout << c[0] <<" " << sfts1[0][0][0] << " " << h1V[0] << " " << E2[1][1][0] << std::endl;
-//            std::getline(std::cin,input);
-//            std::cout << "you entered: " << input << std::endl;
-//            }
 
       //compute the stress term in the order parameter chemical potential, CEE = C*(E-E0)*(Esf*Hn)
       dealii::VectorizedArray<double> CEE1=make_vectorized_array(0.0);
@@ -304,18 +254,18 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     		  }
 
     		  computeStress<dim>(CIJ, E3, S3);
-    		  for (unsigned int k=0; k<dim; k++){
-    			  for (unsigned int i=0; i<dim; i++){
-    				  for (unsigned int j=0; j<dim; j++){
+    		  for (unsigned int i=0; i<dim; i++){
+    			  for (unsigned int j=0; j<dim; j++){
+    				  for (unsigned int k=0; k<dim; k++){
     					  grad_mu_el[k]+=S3[i][j] * (constV(0.5)*(uxx[i][j][k]+uxx[j][i][k]) - (sfts1c[i][j]*h1V + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V)*cx[k]
 								  - (sfts1[i][j])*hn1V*n1x[k] + (sfts2[i][j])*hn2V*n2x[k] + (sfts3[i][j])*hn3V*n3x[k]);
     				  }
     			  }
     		  }
 
-    		  for (unsigned int k=0; k<dim; k++){
-    			  for (unsigned int i=0; i<dim; i++){
-    				  for (unsigned int j=0; j<dim; j++){
+    		  for (unsigned int i=0; i<dim; i++){
+    			  for (unsigned int j=0; j<dim; j++){
+    				  for (unsigned int k=0; k<dim; k++){
     					  grad_mu_el[k]+= - S[i][j] * (sfts1c[i][j]*hn1V*n1x[k] + sfts2c[i][j]*hn2V*n2x[k] + sfts3c[i][j]*hn3V*n3x[k]
 								  + (sfts1cc[i][j]*h1V + sfts2cc[i][j]*h2V + sfts3cc[i][j]*h3V)*cx[k]);
     				  }

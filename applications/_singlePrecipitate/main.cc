@@ -43,7 +43,7 @@ public:
 	  // Constant concentration
 	  //return avg_Nd;
 
-	  // Sphere
+	  // Ellipsoid
 	  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom
 	  		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
 	  return 0.5*(c_precip-avg_Nd)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + avg_Nd;

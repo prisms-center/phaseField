@@ -15,9 +15,9 @@
 
 //define time step parameters
 #define timeStep (1.1e-5*1.5) //5e-6 //1.67e-5
-#define timeIncrements 500000 //200000
+#define timeIncrements 1000 //200000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
-#define skipImplicitSolves 1
+#define skipImplicitSolves 1000000
 
 //define solver parameters
 #define solverType SolverCG
@@ -66,21 +66,25 @@ double sf3Strain[3][3] = {{0.0212,-0.0631,0},{-0.0631,0.0941,0},{0,0,0}};
 
 // Stress-free transformation strains (concentration dependent terms, used if c_dependent_misfit == true, currently assumes linear dependence)
 //double sf1Strain_const[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sf1Strain_const[3][3] = {{0.1341,0,0},{0,-0.09584,0},{0,0,-0.02756}}; //Mg-Nd beta'''
+//double sf1Strain_const[3][3] = {{0.1341,0,0},{0,-0.09584,0},{0,0,-0.02756}}; //Mg-Nd beta'''
+double sf1Strain_const[3][3] = {{-0.095839,0,0},{0,-0.027557,0},{0,0,-0.027557}}; //Mg-Nd beta''' (modified)
 //double sf1Strain_const[3][3] = {{0.1305,0,0},{0,-0.0152,0},{0,0,-0.014}}; //Mg-Nd beta-prime
 double sf2Strain_const[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double sf3Strain_const[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
 //double sf1Strain_linear[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sf1Strain_linear[3][3] = {{-0.2648,0,0},{0,0.6548,0},{0,0,0.1568}}; //Mg-Nd beta'''
+//double sf1Strain_linear[3][3] = {{-0.2648,0,0},{0,0.6548,0},{0,0,0.1568}}; //Mg-Nd beta'''
+double sf1Strain_linear[3][3] = {{0.65475,0,0},{0,0.15678,0},{0,0,0.15678}}; //Mg-Nd beta''' (modified)
 double sf2Strain_linear[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double sf3Strain_linear[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
-double sf1Strain_quadratic[3][3] = {{-0.2648,0,0},{0,0.6548,0},{0,0,0.1568}}; //Mg-Nd beta'''
+//double sf1Strain_quadratic[3][3] = {{-0.2648,0,0},{0,0.6548,0},{0,0,0.1568}}; //Mg-Nd beta'''
+double sf1Strain_quadratic[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double sf2Strain_quadratic[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double sf3Strain_quadratic[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
-double sf1Strain_cubic[3][3] = {{-0.2648,0,0},{0,0.6548,0},{0,0,0.1568}}; //Mg-Nd beta'''
+//double sf1Strain_cubic[3][3] = {{-0.2648,0,0},{0,0.6548,0},{0,0,0.1568}}; //Mg-Nd beta'''
+double sf1Strain_cubic[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double sf2Strain_cubic[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double sf3Strain_cubic[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
