@@ -62,15 +62,15 @@ public:
 	  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom
 		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom
 		+(p.operator()(2)-spanZ/2.0)*(p.operator()(2)-spanZ/2.0)/z_denom);
-	  return 0.5*(c_precip-avg_Nd)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + avg_Nd;
+	  return 0.5*(c_precip-c_matrix)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + c_matrix + shift;
 
 	  // Constant concentration
-	  //return avg_Nd;
+	  //return c_matrix + shift;
 
 	  // planar interface
 	  //r=sqrt((p.operator()(2))*(p.operator()(2)));
-	  //return 0.5*(0.12-avg_Nd)*(1.0-std::tanh((r)/(initial_interface_coeff))) + avg_Nd;
-	  //return  0.5*(0.12-avg_Nd)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + avg_Nd;
+	  //return 0.5*(0.12-avg_Nd)*(1.0-std::tanh((r)/(initial_interface_coeff))) + c_matrix + shift;
+	  //return  0.5*(0.12-avg_Nd)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + c_matrix + shift;
 
 	#endif
   }
