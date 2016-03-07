@@ -1,23 +1,23 @@
 //Parameters list for beta prime precipitation evolution problem
 
 //define problem dimensions
-#define problemDIM 2
-#define spanX 40.0 //14.0
-#define spanY 40.0 //14.0
-#define spanZ 10.0 //10.0 //14.0
+#define problemDIM 3
+#define spanX 30.0 //14.0
+#define spanY 30.0 //14.0
+#define spanZ 30.0 //10.0 //14.0
 
 //define mesh parameters
-#define subdivisionsX 120
-#define subdivisionsY 120
-#define subdivisionsZ 50
+#define subdivisionsX 90
+#define subdivisionsY 90
+#define subdivisionsZ 90
 #define refineFactor 0
 #define finiteElementDegree 2
 
 //define time step parameters
 #define timeStep (1.1e-5*1.5) //5e-6 //1.67e-5
-#define timeIncrements 1000 //200000
+#define timeIncrements 500000 //200000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
-#define skipImplicitSolves 1000000
+#define skipImplicitSolves 1
 
 //define solver parameters
 #define solverType SolverCG
@@ -57,45 +57,38 @@ double Kn3[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 //#define MaterialConstantsV {62.6,62.6,64.9,13.3,13.3,18.3,26.0,20.9,0,0,0,20.9,0,0,0,0,0,0,0,0,0} //these are in GPa-need to be non-dimensionalized
 //#define MaterialConstantsV {31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0} //scaled by E* = 2e9 J/m^3
 
-#define c_dependent_misfit true
+#define c_dependent_misfit false
 // Stress-free transformation strains (concentration independent, used if c_dependent_misfit == false)
-//double sf1Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}}; //Mg-Nd beta-prime
-double sf1Strain[3][3] = {{0.1305,0,0},{0,-0.0152,0},{0,0,-0.014}}; //Mg-Nd beta-prime
+double sf1Strain[3][3] = {{0.09,0,0},{0,0.01,0},{0,0,0}}; // test
+//double sf1Strain[3][3] = {{0.1305,0,0},{0,-0.0152,0},{0,0,-0.014}}; //Mg-Nd beta-prime
 double sf2Strain[3][3] = {{0.0212,0.0631,0},{0.0631,0.0941,0},{0,0,0}};
 double sf3Strain[3][3] = {{0.0212,-0.0631,0},{-0.0631,0.0941,0},{0,0,0}};
 
 // Stress-free transformation strains (concentration dependent terms, used if c_dependent_misfit == true, currently assumes linear dependence)
-//double sf1Strain_const[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-//double sf1Strain_const[3][3] = {{0.1341,0,0},{0,-0.09584,0},{0,0,-0.02756}}; //Mg-Nd beta'''
-double sf1Strain_const[3][3] = {{-0.095839,0,0},{0,-0.027557,0},{0,0,-0.027557}}; //Mg-Nd beta''' (modified)
-//double sf1Strain_const[3][3] = {{0.1305,0,0},{0,-0.0152,0},{0,0,-0.014}}; //Mg-Nd beta-prime
-double sf2Strain_const[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sf3Strain_const[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+// Coefficents for an expression of the form sfts_p = ap * bp*tanh((c+cp)*dp)
 
-//double sf1Strain_linear[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-//double sf1Strain_linear[3][3] = {{-0.2648,0,0},{0,0.6548,0},{0,0,0.1568}}; //Mg-Nd beta'''
-double sf1Strain_linear[3][3] = {{0.65475,0,0},{0,0.15678,0},{0,0,0.15678}}; //Mg-Nd beta''' (modified)
-double sf2Strain_linear[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sf3Strain_linear[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+// B'''
+double a1[dim][dim] = {{0.083885148560532,0,0},{0,0.033318286494293,0},{0,0,-0.000670244939911}};
+double b1[dim][dim] = {{-0.014176952537795,0,0},{0,-0.043447625340652,0},{0,0, 0.009256833713427}};
+double c1[dim][dim] = {{-0.184191450263601,0,0},{0,-0.195464641904604,0},{0,0,-0.166524854132127}};
+double d1[dim][dim] = {{34.657763222708354,0,0},{0,-21.546549820380850,0},{0,0,29.599999267454422}};
 
-//double sf1Strain_quadratic[3][3] = {{-0.2648,0,0},{0,0.6548,0},{0,0,0.1568}}; //Mg-Nd beta'''
-double sf1Strain_quadratic[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sf2Strain_quadratic[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sf3Strain_quadratic[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double a2[dim][dim] = {{0,0,0},{0,0,0},{0,0,0}};
+double b2[dim][dim] = {{0,0,0},{0,0,0},{0,0,0}};
+double c2[dim][dim] = {{0,0,0},{0,0,0},{0,0,0}};
+double d2[dim][dim] = {{0,0,0},{0,0,0},{0,0,0}};
 
-//double sf1Strain_cubic[3][3] = {{-0.2648,0,0},{0,0.6548,0},{0,0,0.1568}}; //Mg-Nd beta'''
-double sf1Strain_cubic[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sf2Strain_cubic[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sf3Strain_cubic[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double a3[dim][dim] = {{0,0,0},{0,0,0},{0,0,0}};
+double b3[dim][dim] = {{0,0,0},{0,0,0},{0,0,0}};
+double c3[dim][dim] = {{0,0,0},{0,0,0},{0,0,0}};
+double d3[dim][dim] = {{0,0,0},{0,0,0},{0,0,0}};
 
 // 2D order of constants ANISOTROPIC- 6 constants [C11 C22 C33 C12 C13 C23]
 //#define MaterialConstantsV {31.3,31.3,6.65,13.0,0.0,0.0} //scaled by E* = 2e9 J/m^3
 
 #define MaterialModelV ISOTROPIC
-#define MaterialConstantsV {45.0,0.3}
-//double sf1Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-//double sf2Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-//double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+#define MaterialConstantsV {22.5,0.3}
+
 
 //define free energy expressions (Mg-Nd data from CASM) (B''', gen 1)
 #define faV (46.599*c*c - 1.6907*c + 0.00010827)
@@ -145,10 +138,12 @@ double sf3Strain_cubic[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 #define rn3xV  (constV(-timeStep*Mn3V)*Knx3)
 
 // Initial geometry
-#define x_denom 1.0
-#define y_denom 1.0
-#define z_denom 1.0
+#define x_denom 16.0
+#define y_denom 16.0
+#define z_denom 16.0
 #define initial_interface_coeff 0.1
-#define initial_radius 5.0
-#define avg_Nd 0.004
+#define initial_radius 1.0 //3.0
+#define c_matrix 0.004 //0.0
 #define c_precip 0.16
+#define adjust_avg_c false
+#define c_avg 0.004

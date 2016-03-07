@@ -11,7 +11,7 @@ void MatrixFreePDE<dim>::solve(){
   //log time
   computing_timer.enter_section("matrixFreePDE: solve"); 
   pcout << "\nsolving...\n\n";
-  
+
   //time dependent BVP
   if (isTimeDependentBVP){
     //output initial conditions for time dependent BVP

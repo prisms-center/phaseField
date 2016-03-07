@@ -15,6 +15,10 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
  public: 
   CoupledCHACMechanicsProblem();
 
+  //void computeIntegral(double& integratedField);
+  void testFunction();
+  //void shiftConcentration();
+
  private:
   //elasticity matrix
   Table<2, double> CIJ;
@@ -44,6 +48,7 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
   // calculate (and output) the total free energy of the system
   void computeFreeEnergyValue(std::vector<double>& freeEnergyValues);
 
+
 };
 
 //constructor
@@ -66,6 +71,10 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
 					       const std::vector<vectorType*> &src,
 					       const std::pair<unsigned int,unsigned int> &cell_range) const{
   
+
+  //double test = 0.0;
+  //computeIntegral(integratedField);
+
   //initialize fields
   typeScalar cVals(data, 0), n1Vals(data,1), n2Vals(data,2), n3Vals(data,3);
   typeVector uVals(data, 4);
@@ -111,71 +120,32 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       //u
       vectorgradType ux = uVals.get_gradient(q);
       vectorgradType Rux;
-      
-
       vectorhessType uxx = uVals.get_hessian(q);
-
 
       // Calculate the stress-free transformation strain and its derivatives at the quadrature point
       dealii::VectorizedArray<double> sfts1[dim][dim], sfts1c[dim][dim], sfts1cc[dim][dim], sfts2[dim][dim], sfts2c[dim][dim], sfts2cc[dim][dim], sfts3[dim][dim], sfts3c[dim][dim], sfts3cc[dim][dim];
-
-      // E33 tanh fit
-//      double a0[dim][dim] = {{0,0},{0, -0.000670244939911}};
-//      double b0[dim][dim] = {{0,0},{0, 0.009256833713427}};
-//      double c0[dim][dim] = {{0,0},{0,-0.166524854132127}};
-//      double d0[dim][dim] = {{0,0},{0,29.599999267454422}};
-
-      // E22 tanh fit
-//      double a0[dim][dim] = {{0,0},{0, 0.033318286494293}};
-//      double b0[dim][dim] = {{0,0},{0, -0.043447625340652}};
-//      double c0[dim][dim] = {{0,0},{0,-0.195464641904604}};
-//      double d0[dim][dim] = {{0,0},{0,-21.546549820380850}};
-
-      // E11 tanh fit
-//      double a0[dim][dim] = {{0,0},{0, 0.083424439488905}};
-//      double b0[dim][dim] = {{0,0},{0, -0.014158586416682}};
-//      double c0[dim][dim] = {{0,0},{0, -0.185813250310842}};
-//      double d0[dim][dim] = {{0,0},{0, 32.907763222708297}};
-
-      // E22 and E33 tanh fit
-      double a0[dim][dim] = {{0.033318286494293,0},{0, -0.000670244939911}};
-      double b0[dim][dim] = {{-0.043447625340652,0},{0, 0.009256833713427}};
-      double c0[dim][dim] = {{-0.195464641904604,0},{0,-0.166524854132127}};
-      double d0[dim][dim] = {{-21.546549820380850,0},{0,29.599999267454422}};
-
-
-      // Constant misfit
-//      double a0[dim][dim] = {{-0.01,0},{0,0}};
-//      double b0[dim][dim] = {{0,0},{0,0}};
-//      double c0[dim][dim] = {{0,0},{0,0}};
-//      double d0[dim][dim] = {{0,0},{0,0}};
-
-		dealii::VectorizedArray<double>	tanh_c_plus_c0_times_d0;
+      dealii::VectorizedArray<double> tanh_c_plus_cp_times_dp;
 
       for (unsigned int i=0; i<dim; i++){
     	  for (unsigned int j=0; j<dim; j++){
     		  if (c_dependent_misfit == true){
 
-				  // Polynomial fit for the stress-free transformation strains (orientation variant 1)
-//				  sfts1[i][j] = constV(sf1Strain_cubic[i][j])*c*c*c + constV(sf1Strain_quadratic[i][j])*c*c + constV(sf1Strain_linear[i][j])*c + constV(sf1Strain_const[i][j]);
-//				  sfts1c[i][j] = constV(3.0*sf1Strain_cubic[i][j])*c*c + constV(2.0*sf1Strain_quadratic[i][j])*c + constV(sf1Strain_linear[i][j]);
-//				  sfts1cc[i][j] = constV(6.0*sf1Strain_cubic[i][j])*c + constV(2.0*sf1Strain_quadratic[i][j]);
+    			  // Tanh() fit for the stress-free transformation strains, could possibly pre-calculate some of this to improve speed
+    		  	  tanh_c_plus_cp_times_dp = (constV(1.0)-std::exp(constV(-2.0*d1[i][j])*(c+constV(c1[i][j]))))/(constV(1.0)+std::exp(constV(-2.0*d1[i][j])*(c+constV(c1[i][j])))); //
+    		 	  sfts1[i][j] = constV(a1[i][j]) + constV(b1[i][j])*tanh_c_plus_cp_times_dp;
+    		  	  sfts1c[i][j] = constV(-b1[i][j]*d1[i][j])*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
+    		  	  sfts1cc[i][j] = constV(-2.0*b1[i][j]*d1[i][j]*d1[i][j])*tanh_c_plus_cp_times_dp*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
 
-    			  // Tanh() fit for the stress-free transformation strains (orientation variants 2 and 3), could probably pre-calculate some of this to improve speed
-    		  	  tanh_c_plus_c0_times_d0 = (constV(1.0)-std::exp(constV(-2.0*d0[i][j])*(c+constV(c0[i][j]))))/(constV(1.0)+std::exp(constV(-2.0*d0[i][j])*(c+constV(c0[i][j])))); //
-    		 	  sfts1[i][j] = constV(a0[i][j]) + constV(b0[i][j])*tanh_c_plus_c0_times_d0;
-    		  	  sfts1c[i][j] = constV(-b0[i][j]*d0[i][j])*(tanh_c_plus_c0_times_d0*tanh_c_plus_c0_times_d0 - constV(1.0));
-    		  	  sfts1cc[i][j] = constV(-2.0*b0[i][j]*d0[i][j]*d0[i][j])*tanh_c_plus_c0_times_d0*(tanh_c_plus_c0_times_d0*tanh_c_plus_c0_times_d0 - constV(1.0));
+    		  	  tanh_c_plus_cp_times_dp = (constV(1.0)-std::exp(constV(-2.0*d2[i][j])*(c+constV(c2[i][j]))))/(constV(1.0)+std::exp(constV(-2.0*d2[i][j])*(c+constV(c2[i][j])))); //
+    		  	  sfts1[i][j] = constV(a2[i][j]) + constV(b2[i][j])*tanh_c_plus_cp_times_dp;
+    		  	  sfts1c[i][j] = constV(-b2[i][j]*d2[i][j])*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
+    		  	  sfts1cc[i][j] = constV(-2.0*b2[i][j]*d2[i][j]*d2[i][j])*tanh_c_plus_cp_times_dp*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
 
+    		  	  tanh_c_plus_cp_times_dp = (constV(1.0)-std::exp(constV(-2.0*d3[i][j])*(c+constV(c3[i][j]))))/(constV(1.0)+std::exp(constV(-2.0*d3[i][j])*(c+constV(c3[i][j])))); //
+    		  	  sfts1[i][j] = constV(a3[i][j]) + constV(b3[i][j])*tanh_c_plus_cp_times_dp;
+    		  	  sfts1c[i][j] = constV(-b3[i][j]*d3[i][j])*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
+    		  	  sfts1cc[i][j] = constV(-2.0*b3[i][j]*d3[i][j]*d3[i][j])*tanh_c_plus_cp_times_dp*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
 
-    		  	  // Polynomial fit for the stress-free transformation strains (orientation variants 2 and 3)
-    			  sfts2[i][j] = constV(sf2Strain_cubic[i][j])*c*c*c + constV(sf2Strain_quadratic[i][j])*c*c + constV(sf2Strain_linear[i][j])*c + constV(sf2Strain_const[i][j]);
-    			  sfts2c[i][j] = constV(3.0*sf2Strain_cubic[i][j])*c*c + constV(2.0*sf2Strain_quadratic[i][j])*c + constV(sf2Strain_linear[i][j]);
-    			  sfts2cc[i][j] = constV(6.0*sf2Strain_cubic[i][j])*c + constV(2.0*sf2Strain_quadratic[i][j]);
-
-    			  sfts3[i][j] = constV(sf3Strain_cubic[i][j])*c*c*c + constV(sf3Strain_quadratic[i][j])*c*c + constV(sf3Strain_linear[i][j])*c + constV(sf3Strain_const[i][j]);
-    			  sfts3c[i][j] = constV(3.0*sf3Strain_cubic[i][j])*c*c + constV(2.0*sf3Strain_quadratic[i][j])*c + constV(sf3Strain_linear[i][j]);
-    			  sfts3cc[i][j] = constV(6.0*sf3Strain_cubic[i][j])*c + constV(2.0*sf3Strain_quadratic[i][j]);
     		  }
     		  else{
     			  sfts1[i][j] = constV(sf1Strain[i][j]);
@@ -193,11 +163,8 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     	  }
       }
 
-
-
       //compute E2=(E-E0)
       dealii::VectorizedArray<double> E2[dim][dim], S[dim][dim];
-
 
       for (unsigned int i=0; i<dim; i++){
     	  for (unsigned int j=0; j<dim; j++){
@@ -205,7 +172,6 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     	  }
       }
       
-
       //compute stress
       //S=C*(E-E0)
       computeStress<dim>(CIJ, E2, S);
@@ -218,7 +184,6 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     	  }
       }
       
-
       //compute the stress term in the order parameter chemical potential, CEE = C*(E-E0)*(Esf*Hn)
       dealii::VectorizedArray<double> CEE1=make_vectorized_array(0.0);
       dealii::VectorizedArray<double> CEE2=make_vectorized_array(0.0);
@@ -240,9 +205,8 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       dealii::VectorizedArray<double> grad_mu_el[dim];
 
       for (unsigned int k=0; k<dim; k++){
-    	  grad_mu_el[k] = make_vectorized_array(0.0);
+    	  grad_mu_el[k] = constV(0.0);
       }
-
 
       if (c_dependent_misfit == true){
     	  dealii::VectorizedArray<double> E3[dim][dim], S3[dim][dim];
@@ -254,11 +218,12 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     		  }
 
     		  computeStress<dim>(CIJ, E3, S3);
+
     		  for (unsigned int i=0; i<dim; i++){
     			  for (unsigned int j=0; j<dim; j++){
     				  for (unsigned int k=0; k<dim; k++){
     					  grad_mu_el[k]+=S3[i][j] * (constV(0.5)*(uxx[i][j][k]+uxx[j][i][k]) - (sfts1c[i][j]*h1V + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V)*cx[k]
-								  - (sfts1[i][j])*hn1V*n1x[k] + (sfts2[i][j])*hn2V*n2x[k] + (sfts3[i][j])*hn3V*n3x[k]);
+								  - (sfts1[i][j]*hn1V*n1x[k] + sfts2[i][j]*hn2V*n2x[k] + sfts3[i][j]*hn3V*n3x[k]));
     				  }
     			  }
     		  }
@@ -273,7 +238,6 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     		  }
       }
 
-
       //compute K*nx
       scalargradType Knx1, Knx2, Knx3;
       for (unsigned int a=0; a<dim; a++) {
@@ -281,9 +245,9 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     	  Knx2[a]=0.0;
     	  Knx3[a]=0.0;
     	  for (unsigned int b=0; b<dim; b++){
-    		  Knx1[a]+=Kn1[a][b]*n1x[b];
-    		  Knx2[a]+=Kn2[a][b]*n2x[b];
-    		  Knx3[a]+=Kn3[a][b]*n3x[b];
+    		  Knx1[a]+=constV(Kn1[a][b])*n1x[b];
+    		  Knx2[a]+=constV(Kn2[a][b])*n2x[b];
+    		  Knx3[a]+=constV(Kn3[a][b])*n3x[b];
     	  }
       }
   
@@ -293,8 +257,6 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       n2Vals.submit_value(rn2V,q); n2Vals.submit_gradient(rn2xV,q);
       n3Vals.submit_value(rn3V,q); n3Vals.submit_gradient(rn3xV,q);
       uVals.submit_gradient(Rux,q);
-
-
 
     }
     
@@ -517,10 +479,13 @@ void CoupledCHACMechanicsProblem<dim>::computeFreeEnergyValue(std::vector<double
 
   freeEnergyValues.push_back(value_grad);
 
-  std::cout<<"Homogenous Free Energy: "<<value_homo<<std::endl;
-  std::cout<<"Interfacial Free Energy: "<<value_grad<<std::endl;
-  std::cout<<"Elastic Free Energy: "<<value_el<<std::endl;
+  if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+	  std::cout<<"Homogenous Free Energy: "<<value_homo<<std::endl;
+  	  std::cout<<"Interfacial Free Energy: "<<value_grad<<std::endl;
+  	  std::cout<<"Elastic Free Energy: "<<value_el<<std::endl;
+  }
 }
+
 
 //structure representing each nucleus
 struct nucleus{
@@ -584,7 +549,7 @@ void CoupledCHACMechanicsProblem<dim>::modifySolutionFields()
     		  J = 0;
     	  }
 		  else{
-			  J = cValue/avg_Nd * dx*dx/((double)spanX * (double)spanY) * 0.01;
+			  J = cValue/c_matrix * dx*dx/((double)spanX * (double)spanY) * 0.01; // Only true in 2D!
     	  }
 
     	  if (rand_val <= J){
@@ -769,6 +734,53 @@ void CoupledCHACMechanicsProblem<dim>::modifySolutionFields()
 		  }
 	  }
   }
+}
+
+//compute the integral of one of the fields
+template <int dim>
+//void CoupledCHACMechanicsProblem<dim>::computeIntegral(double& integratedField){
+void MatrixFreePDE<dim>::computeIntegral(double& integratedField){
+  QGauss<dim>  quadrature_formula(finiteElementDegree+1);
+  FE_Q<dim> FE (QGaussLobatto<1>(finiteElementDegree+1));
+  FEValues<dim> fe_values (FE, quadrature_formula, update_values | update_JxW_values | update_quadrature_points);
+  const unsigned int   dofs_per_cell = FE.dofs_per_cell;
+  const unsigned int   n_q_points    = quadrature_formula.size();
+  std::vector<double> cVal(n_q_points), n1Val(n_q_points), n2Val(n_q_points), n3Val(n_q_points);
+
+  typename DoFHandler<dim>::active_cell_iterator cell= this->dofHandlersSet[0]->begin_active(), endc = this->dofHandlersSet[0]->end();
+
+  //double integratedField=0.0;
+  double value = 0.0;
+
+  unsigned int fieldIndex;
+  fieldIndex=this->getFieldIndex("c");
+
+  for (; cell!=endc; ++cell) {
+	  if (cell->is_locally_owned()){
+    	fe_values.reinit (cell);
+
+    	fe_values.get_function_values(*this->solutionSet[fieldIndex], cVal);
+
+    	for (unsigned int q=0; q<n_q_points; ++q){
+    		value+=(cVal[q])*fe_values.JxW(q);
+    	}
+	  }
+  }
+
+  value=Utilities::MPI::sum(value, MPI_COMM_WORLD);
+
+  if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+  std::cout<<"Integrated field: "<<value<<std::endl;
+  }
+
+  integratedField = value;
+
+}
+
+template <int dim>
+void CoupledCHACMechanicsProblem<dim>::testFunction(){
+	std::cout<<"test"<<std::endl;
+
 }
 
 #endif

@@ -67,6 +67,8 @@ class MatrixFreePDE:public Subscriptor
   void vmult (vectorType &dst, const vectorType &src) const;
   std::vector<Field<dim> >                  fields;
 
+  void shiftConcentration();
+
  protected:
   void solveIncrement ();
   void outputResults  ();
@@ -110,9 +112,15 @@ class MatrixFreePDE:public Subscriptor
   //utility functions
   //return index of given field name if exists, else throw error
   unsigned int getFieldIndex(std::string _name);
+
   virtual void computeFreeEnergyValue(std::vector<double>& freeEnergyValues);
   std::vector<double> freeEnergyValues;
   void outputFreeEnergy(std::vector<double>& freeEnergyValues);
+
+  //virtual double computeIntegral();
+  void computeIntegral(double& integratedField);
+  //std::vector<double> integratedField;
+
 
   //variables for time dependent problems 
   //isTimeDependentBVP flag is used to see if invM, time steppping in

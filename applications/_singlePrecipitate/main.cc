@@ -13,12 +13,14 @@ template <int dim>
 class InitialConditionC : public Function<dim>
 {
 public:
-  InitialConditionC () : Function<dim>(1) {
+  double shift;
+  InitialConditionC (double _shift) : Function<dim>(1), shift(_shift) {
     std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
   }
   double value (const Point<dim> &p, const unsigned int component = 0) const
   {
-    //return the value of the initial concentration field at point p
+
+	//return the value of the initial concentration field at point p
 	double dx=spanX/( (double)subdivisionsX )/std::pow(2.0,refineFactor);
 	double dy=spanY/( (double)subdivisionsY )/std::pow(2.0,refineFactor);
 	double dz=spanZ/( (double)subdivisionsZ )/std::pow(2.0,refineFactor);
@@ -46,7 +48,10 @@ public:
 	  // Ellipsoid
 	  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom
 	  		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
-	  return 0.5*(c_precip-avg_Nd)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + avg_Nd;
+	  return 0.5*(c_precip-c_matrix)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + c_matrix + shift;
+
+	  //double test;
+	  //computeIntegral(test);
 
 	  // planar interface
 	  //r=(p.operator()(0)-spanX/4.0);
@@ -158,10 +163,12 @@ public:
 template <int dim>
 void CoupledCHACMechanicsProblem<dim>::applyInitialConditions()
 {
+
+
   unsigned int fieldIndex;
   //call initial condition function for c
   fieldIndex=this->getFieldIndex("c");
-  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionC<dim>(), *this->solutionSet[fieldIndex]);
+  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionC<dim>(0.0), *this->solutionSet[fieldIndex]);
   //call initial condition function for structural order parameters
   fieldIndex=this->getFieldIndex("n1");
   VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionN<dim>(1), *this->solutionSet[fieldIndex]);
@@ -172,6 +179,7 @@ void CoupledCHACMechanicsProblem<dim>::applyInitialConditions()
   //set zero intial condition for u
   fieldIndex=this->getFieldIndex("u");
   *this->solutionSet[fieldIndex]=0.0;
+
 }
 
 //apply Dirchlet BC function
@@ -181,6 +189,42 @@ void CoupledCHACMechanicsProblem<dim>::applyDirichletBCs(){
   VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->getFieldIndex("u")],\
 					    0, ZeroFunction<dim>(dim), *(ConstraintMatrix*) \
 					    this->constraintsSet[this->getFieldIndex("u")]);
+}
+
+// Shift the initial concentration so that the average concentration is the desired value
+template <int dim>
+//void CoupledCHACMechanicsProblem<dim>::shiftConcentration()
+void MatrixFreePDE<dim>::shiftConcentration()
+{
+	unsigned int fieldIndex;
+	fieldIndex=this->getFieldIndex("c");
+
+	double integrated_concentration;
+	computeIntegral(integrated_concentration);
+
+
+	double volume = spanX;
+	if (dim > 1) {
+		volume *= spanY;
+		if (dim > 2) {
+			volume *= spanZ;
+		}
+	}
+
+	double shift = c_avg - integrated_concentration/volume;
+
+	try{
+		if (shift < c_matrix) {throw 0;}
+	}
+	catch (int e){
+		Assert (shift > c_matrix, ExcMessage("An exception occurred. Initial concentration was shifted below zero."));
+	}
+
+	solutionSet[fieldIndex]->zero_out_ghosts();
+	VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionC<dim>(shift), *this->solutionSet[fieldIndex]);
+	solutionSet[fieldIndex]->update_ghost_values();
+
+	computeIntegral(integrated_concentration);
 }
 
 //main
@@ -197,6 +241,9 @@ int main (int argc, char **argv)
       problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "n3"));
       problem.fields.push_back(Field<problemDIM>(VECTOR,  ELLIPTIC, "u"));
       problem.init ();
+      if (adjust_avg_c){
+    	  problem.shiftConcentration();
+      }
       problem.solve();
     }
   catch (std::exception &exc)
