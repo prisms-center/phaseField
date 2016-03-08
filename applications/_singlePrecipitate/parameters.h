@@ -21,6 +21,7 @@
 
 //define solver parameters
 #define solverType SolverCG
+#define abs_tol true
 #define relSolverTolerance 1.0e-2
 #define absSolverTolerance 1.0e-5
 #define maxSolverIterations 10000

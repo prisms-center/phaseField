@@ -22,6 +22,8 @@
 //define solver parameters
 #define solverType SolverCG
 #define relSolverTolerance 1.0e-8
+#define absSolverTolerance 1.0e-8
+#define abs_tol false
 #define maxSolverIterations 10000
 
 //define results output parameters
@@ -58,13 +60,23 @@ double sf2Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
 // Stress-free transformation strains (concentration dependent terms, used if c_dependent_misfit == true, currently assumes linear dependence)
-double sf1Strain_const[3][3] = {{0.1305,0,0},{0,-0.0152,0},{0,0,-0.014}}; //Mg-Nd beta-prime
-double sf2Strain_const[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sf3Strain_const[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+// Coefficents for an expression of the form sfts_p = ap * bp*tanh((c+cp)*dp)
 
-double sf1Strain_linear[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sf2Strain_linear[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sf3Strain_linear[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+// B'''
+double a1[3][3] = {{0.1305,0,0},{0,-0.0152,0},{0,0,-0.014}};
+double b1[3][3] = {{0,0,0},{0,0,0},{0,0, 0}};
+double c1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double d1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+
+double a2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double b2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double c2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double d2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+
+double a3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double b3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double c3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double d3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
 //define free energy expressions (Mg-Nd data from CASM)
 #define faV (24.7939*c*c - 1.6752*c - 1.9453e-06)
@@ -104,3 +116,4 @@ double sf3Strain_linear[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 #define initial_interface_coeff 1.0
 #define initial_radius 6.0
 #define avg_Nd 0.004
+#define c_matrix 0.004
