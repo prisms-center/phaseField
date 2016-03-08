@@ -1,7 +1,7 @@
 //Parameters list for beta prime precipitation evolution problem
 
 //define problem dimensions
-#define problemDIM 3
+#define problemDIM 2
 #define spanX 30.0 //14.0
 #define spanY 30.0 //14.0
 #define spanZ 30.0 //10.0 //14.0
@@ -15,7 +15,7 @@
 
 //define time step parameters
 #define timeStep (1.1e-5*1.5) //5e-6 //1.67e-5
-#define timeIncrements 500000 //200000
+#define timeIncrements 100 //200000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
 #define skipImplicitSolves 1
 
@@ -57,7 +57,7 @@ double Kn3[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 //#define MaterialConstantsV {62.6,62.6,64.9,13.3,13.3,18.3,26.0,20.9,0,0,0,20.9,0,0,0,0,0,0,0,0,0} //these are in GPa-need to be non-dimensionalized
 //#define MaterialConstantsV {31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0} //scaled by E* = 2e9 J/m^3
 
-#define c_dependent_misfit false
+#define c_dependent_misfit true
 // Stress-free transformation strains (concentration independent, used if c_dependent_misfit == false)
 double sf1Strain[3][3] = {{0.09,0,0},{0,0.01,0},{0,0,0}}; // test
 //double sf1Strain[3][3] = {{0.1305,0,0},{0,-0.0152,0},{0,0,-0.014}}; //Mg-Nd beta-prime

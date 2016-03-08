@@ -137,14 +137,14 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     		  	  sfts1cc[i][j] = constV(-2.0*b1[i][j]*d1[i][j]*d1[i][j])*tanh_c_plus_cp_times_dp*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
 
     		  	  tanh_c_plus_cp_times_dp = (constV(1.0)-std::exp(constV(-2.0*d2[i][j])*(c+constV(c2[i][j]))))/(constV(1.0)+std::exp(constV(-2.0*d2[i][j])*(c+constV(c2[i][j])))); //
-    		  	  sfts1[i][j] = constV(a2[i][j]) + constV(b2[i][j])*tanh_c_plus_cp_times_dp;
-    		  	  sfts1c[i][j] = constV(-b2[i][j]*d2[i][j])*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
-    		  	  sfts1cc[i][j] = constV(-2.0*b2[i][j]*d2[i][j]*d2[i][j])*tanh_c_plus_cp_times_dp*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
+    		  	  sfts2[i][j] = constV(a2[i][j]) + constV(b2[i][j])*tanh_c_plus_cp_times_dp;
+    		  	  sfts2c[i][j] = constV(-b2[i][j]*d2[i][j])*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
+    		  	  sfts2cc[i][j] = constV(-2.0*b2[i][j]*d2[i][j]*d2[i][j])*tanh_c_plus_cp_times_dp*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
 
     		  	  tanh_c_plus_cp_times_dp = (constV(1.0)-std::exp(constV(-2.0*d3[i][j])*(c+constV(c3[i][j]))))/(constV(1.0)+std::exp(constV(-2.0*d3[i][j])*(c+constV(c3[i][j])))); //
-    		  	  sfts1[i][j] = constV(a3[i][j]) + constV(b3[i][j])*tanh_c_plus_cp_times_dp;
-    		  	  sfts1c[i][j] = constV(-b3[i][j]*d3[i][j])*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
-    		  	  sfts1cc[i][j] = constV(-2.0*b3[i][j]*d3[i][j]*d3[i][j])*tanh_c_plus_cp_times_dp*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
+    		  	  sfts3[i][j] = constV(a3[i][j]) + constV(b3[i][j])*tanh_c_plus_cp_times_dp;
+    		  	  sfts3c[i][j] = constV(-b3[i][j]*d3[i][j])*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
+    		  	  sfts3cc[i][j] = constV(-2.0*b3[i][j]*d3[i][j]*d3[i][j])*tanh_c_plus_cp_times_dp*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
 
     		  }
     		  else{
