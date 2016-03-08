@@ -1,7 +1,7 @@
 //Parameters list for beta prime precipitation evolution problem
 
 //define problem dimensions
-#define problemDIM 2
+#define problemDIM 3
 #define spanX 30.0 //14.0
 #define spanY 30.0 //14.0
 #define spanZ 30.0 //10.0 //14.0
@@ -15,7 +15,7 @@
 
 //define time step parameters
 #define timeStep (1.1e-5*1.5) //5e-6 //1.67e-5
-#define timeIncrements 100 //200000
+#define timeIncrements 500000 //200000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
 #define skipImplicitSolves 1
 
@@ -138,9 +138,9 @@ double d3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 #define rn3xV  (constV(-timeStep*Mn3V)*Knx3)
 
 // Initial geometry
-#define x_denom 16.0
-#define y_denom 16.0
-#define z_denom 16.0
+#define x_denom 25.0
+#define y_denom 25.0
+#define z_denom 25.0
 #define initial_interface_coeff 0.1
 #define initial_radius 1.0 //3.0
 #define c_matrix 0.004 //0.0
