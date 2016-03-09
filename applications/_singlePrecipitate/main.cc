@@ -193,15 +193,13 @@ void CoupledCHACMechanicsProblem<dim>::applyDirichletBCs(){
 
 // Shift the initial concentration so that the average concentration is the desired value
 template <int dim>
-//void CoupledCHACMechanicsProblem<dim>::shiftConcentration()
-void MatrixFreePDE<dim>::shiftConcentration()
+void CoupledCHACMechanicsProblem<dim>::shiftConcentration()
 {
 	unsigned int fieldIndex;
 	fieldIndex=this->getFieldIndex("c");
 
 	double integrated_concentration;
 	computeIntegral(integrated_concentration);
-
 
 	double volume = spanX;
 	if (dim > 1) {
@@ -220,9 +218,9 @@ void MatrixFreePDE<dim>::shiftConcentration()
 		Assert (shift > c_matrix, ExcMessage("An exception occurred. Initial concentration was shifted below zero."));
 	}
 
-	solutionSet[fieldIndex]->zero_out_ghosts();
+	*this->solutionSet[fieldIndex]=0.0;
 	VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionC<dim>(shift), *this->solutionSet[fieldIndex]);
-	solutionSet[fieldIndex]->update_ghost_values();
+	MatrixFreePDE<dim>::solutionSet[fieldIndex]->update_ghost_values();
 
 	computeIntegral(integrated_concentration);
 }

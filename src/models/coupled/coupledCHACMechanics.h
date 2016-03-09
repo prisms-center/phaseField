@@ -15,9 +15,7 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
  public: 
   CoupledCHACMechanicsProblem();
 
-  //void computeIntegral(double& integratedField);
-  void testFunction();
-  //void shiftConcentration();
+  void shiftConcentration();
 
  private:
   //elasticity matrix
@@ -48,6 +46,7 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
   // calculate (and output) the total free energy of the system
   void computeFreeEnergyValue(std::vector<double>& freeEnergyValues);
 
+  void computeIntegral(double& integratedField);
 
 };
 
@@ -738,8 +737,7 @@ void CoupledCHACMechanicsProblem<dim>::modifySolutionFields()
 
 //compute the integral of one of the fields
 template <int dim>
-//void CoupledCHACMechanicsProblem<dim>::computeIntegral(double& integratedField){
-void MatrixFreePDE<dim>::computeIntegral(double& integratedField){
+void CoupledCHACMechanicsProblem<dim>::computeIntegral(double& integratedField){
   QGauss<dim>  quadrature_formula(finiteElementDegree+1);
   FE_Q<dim> FE (QGaussLobatto<1>(finiteElementDegree+1));
   FEValues<dim> fe_values (FE, quadrature_formula, update_values | update_JxW_values | update_quadrature_points);
@@ -749,7 +747,6 @@ void MatrixFreePDE<dim>::computeIntegral(double& integratedField){
 
   typename DoFHandler<dim>::active_cell_iterator cell= this->dofHandlersSet[0]->begin_active(), endc = this->dofHandlersSet[0]->end();
 
-  //double integratedField=0.0;
   double value = 0.0;
 
   unsigned int fieldIndex;
@@ -774,13 +771,6 @@ void MatrixFreePDE<dim>::computeIntegral(double& integratedField){
   }
 
   integratedField = value;
-
-}
-
-template <int dim>
-void CoupledCHACMechanicsProblem<dim>::testFunction(){
-	std::cout<<"test"<<std::endl;
-
 }
 
 #endif
