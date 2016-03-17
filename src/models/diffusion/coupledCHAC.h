@@ -14,9 +14,10 @@ class CoupledCHACProblem: public MatrixFreePDE<dim>
 
  private:
   //RHS implementation for explicit solve
-  void getRHS(std::map<std::string, typeScalar*>  valsScalar, \
-	      std::map<std::string, typeVector*>  valsVector, \
-	      unsigned int q) const;
+  void getRHS(const MatrixFree<dim,double> &data, 
+	      std::vector<vectorType*> &dst, 
+	      const std::vector<vectorType*> &src,
+	      const std::pair<unsigned int,unsigned int> &cell_range) const;
 
   //method to apply initial conditions
   void applyInitialConditions();
@@ -39,40 +40,44 @@ CoupledCHACProblem<dim>::CoupledCHACProblem(): MatrixFreePDE<dim>()
 #if !defined(rnV) || !defined(rnxV) || !defined(rcV) || !defined(rcxV) 
 #error Compile ERROR: missing required residual expressions. Required expressions are rnV, rnxV, rcV, rcxV
 #endif
-
-  //"n"
-  this->getValue["n"]=true; this->getGradient["n"]=true;
-  this->setValue["n"]=true; this->setGradient["n"]=true;
-
-  //"c"
-  this->getValue["c"]=true; this->getGradient["c"]=true;
-  this->setValue["c"]=true; this->setGradient["c"]=true;
 }
 
 
 template <int dim>
-void  CoupledCHACProblem<dim>::getRHS(std::map<std::string, typeScalar*>  valsScalar, \
-				      std::map<std::string, typeVector*>  valsVector, \
-				      unsigned int q) const{
- //"n" fields
-  scalarvalueType n = valsScalar["n"]->get_value(q);
-  scalargradType nx = valsScalar["n"]->get_gradient(q);
-  //"c" fields
-  scalarvalueType c = valsScalar["c"]->get_value(q);
-  scalargradType cx = valsScalar["c"]->get_gradient(q);
+void  CoupledCHACProblem<dim>::getRHS(const MatrixFree<dim,double> &data, 
+				      std::vector<vectorType*> &dst, 
+				      const std::vector<vectorType*> &src,
+				      const std::pair<unsigned int,unsigned int> &cell_range) const{
+  
+  //initialize fields
+  typeScalar nVals(data, 0), cVals(data,1);
 
-  //check to ensure we are working on the intended field
-  //order parameter field
-  if (this->fields[this->currentFieldIndex].name.compare("n")==0){
-    //compute residuals
-    valsScalar["n"]->submit_value(rnV,q);
-    valsScalar["n"]->submit_gradient(rnxV,q);
-  }
-  //concentration field
-  else if (this->fields[this->currentFieldIndex].name.compare("c")==0){
-    //compute residuals
-    valsScalar["c"]->submit_value(rcV,q);
-    valsScalar["c"]->submit_gradient(rcxV,q);
+  //loop over cells
+  for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
+    //initialize mu field
+    nVals.reinit(cell); nVals.read_dof_values_plain(*src[0]); nVals.evaluate(true, true, false);
+    
+    //initialize c field
+    cVals.reinit(cell); cVals.read_dof_values_plain(*src[1]); cVals.evaluate(true, true, false);
+    
+    //loop over quadrature points
+    for (unsigned int q=0; q<cVals.n_q_points; ++q){
+      //n
+      scalarvalueType n = nVals.get_value(q);
+      scalargradType nx = nVals.get_gradient(q);
+      
+      //c
+      scalarvalueType c = cVals.get_value(q);
+      scalargradType cx = cVals.get_gradient(q);
+      
+      //submit values
+      nVals.submit_value(rnV,q); nVals.submit_gradient(rnxV,q);
+      cVals.submit_value(rcV,q); cVals.submit_gradient(rcxV,q);
+    }
+    
+    //integrate values
+    nVals.integrate(true, true);  nVals.distribute_local_to_global(*dst[0]);
+    cVals.integrate(true, true);  cVals.distribute_local_to_global(*dst[1]);
   }
 }
 

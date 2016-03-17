@@ -18,7 +18,7 @@
 #define numFields (2+problemDIM)
 
 //define time step parameters
-#define timeStep 1.0e-2
+#define timeStep 1.0e-3
 #define timeFinal 100.0
 #define timeIncrements 10000
 #define skipImplicitSolves 1000

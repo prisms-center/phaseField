@@ -30,7 +30,7 @@ void MatrixFreePDE<dim>::outputResults(){
     std::vector<std::string> solutionNames (fields[fieldIndex].numComponents, fields[fieldIndex].name.c_str());
     data_out.add_data_vector(*dofHandlersSet[fieldIndex], *solutionSet[fieldIndex], solutionNames, dataType);  
   }
-  data_out.build_patches ();
+  data_out.build_patches (finiteElementDegree);
 
   //write to results file
   //file name

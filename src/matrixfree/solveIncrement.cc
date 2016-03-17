@@ -13,11 +13,10 @@ void MatrixFreePDE<dim>::solveIncrement(){
   Timer time; 
   char buffer[200];
 
+  //compute residual vectors
+  computeRHS();
   //solve for each field
   for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-    currentFieldIndex=fieldIndex; 
-    //updateRHS
-    updateRHS();
     //Parabolic (first order derivatives in time) fields
     if (fields[fieldIndex].pdetype==PARABOLIC){
       //explicit-time step each DOF

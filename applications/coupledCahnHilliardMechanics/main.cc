@@ -31,10 +31,15 @@ void CoupledCahnHilliardMechanicsProblem<dim>::applyInitialConditions()
   VectorTools::interpolate (*this->dofHandlersSet[fieldIndex],		\
 			    InitialConditionC<dim>(),			\
 			    *this->solutionSet[fieldIndex]);
-  //set zero intial condition for mu
+  //set initial condition for mu                                                                                                      
   fieldIndex=this->getFieldIndex("mu");
-  *this->solutionSet[fieldIndex]=0.0;
-  //set zero intial condition for u
+  *(this->residualSet[fieldIndex])=0.0;
+  this->matrixFreeObject.cell_loop (&CoupledCahnHilliardMechanicsProblem<dim>::getRHS, this, this->residualSet, this->solutionSet);
+  //sove for mu from initial condition for c
+  for (unsigned int dof=0; dof<this->solutionSet[fieldIndex]->local_size(); ++dof){
+    this->solutionSet[fieldIndex]->local_element(dof)= this->invM.local_element(dof)*this->residualSet[fieldIndex]->local_element(dof);
+  }
+  //set zero initial condition for u
   fieldIndex=this->getFieldIndex("u");
   *this->solutionSet[fieldIndex]=0.0;
 }
