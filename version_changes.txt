@@ -1,11 +1,28 @@
 ====================
+Version 0.9.2:
+====================
+Patch to version 0.9.1, released in January 2016.
+
+Bug fixes:
+- In versions 0.9 and 0.9.1, unlike version 0.8, the fields in the calculation were updated sequentially, with the updated value being used for other calculations in that time step (e.g. the concentration is updated using the Cahn-Hilliard equation, then that updated value is used when updating the order parameter via the Allen-Cahn equation). In version 0.8, all of the updates to the fields used the value of the fields from the previous time step. This was the source of the different solutions between the versions. We reverted to the approach taken in version 0.8.
+
+Added functionality:
+- A new test suite has been added. The tests can be found in the "tests" directory. Tests include a regression test, testing that the solutions exhibit the expected order of accuracy in both time and space, a comparison against a finite difference code, and tests comparing the accuracy of first, second, and third order elements at a range of element sizes.
+
+Performance improvements:
+- Refactoring of "computeRHS" has led to a substantial performance increase for solving parabolic equations. Most of the improved performance came from no longer storing field metadata in std::map containers.
+
+Known issues:
+- None
+
+====================
 Version 0.9.1:
 ====================
-Patch to version 0.9, release in December 2015. This patch fixes a number of bugs that were introduced between versions 0.8 and 0.9. 
+Patch to version 0.9, released in December 2015. This patch fixes a number of bugs that were introduced between versions 0.8 and 0.9. 
 
-Bug fixes include:
+Bug fixes:
 - Fixed error in strain calculation in getRHS, previously it missed some terms in 3D calculations
-- Fixed formatting for output filenames after the 999,999th outptu
+- Fixed formatting for output filenames after the 999,999th output
 - Fixed a sign error in the residuals in the beta prime precipitate application
 - Fixed symmetry error in generation of the stiffness tensor for 2D anisotropic calculations
 - Fixed error in the mechanics solver where solution was erroneously set to the change in the solution
