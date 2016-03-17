@@ -1,21 +1,21 @@
 //Parameters list for beta prime precipitation evolution problem
 
 //define problem dimensions
-#define problemDIM 3
-#define spanX 30.0 //14.0
-#define spanY 30.0 //14.0
-#define spanZ 30.0 //10.0 //14.0
+#define problemDIM 2
+#define spanX 15.0 //14.0
+#define spanY 15.0 //14.0
+#define spanZ 15.0 //10.0 //14.0
 
 //define mesh parameters
-#define subdivisionsX 90
-#define subdivisionsY 90
-#define subdivisionsZ 90
-#define refineFactor 0
+#define subdivisionsX 3 //90
+#define subdivisionsY 3 //90
+#define subdivisionsZ 3 //90
+#define refineFactor 5 //0
 #define finiteElementDegree 2
 
 //define time step parameters
-#define timeStep (1.1e-5*1.5) //5e-6 //1.67e-5
-#define timeIncrements 500000 //200000
+#define timeStep (1.65e-5*0.25) //5e-6 //1.67e-5
+#define timeIncrements 50000*4 //200000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
 #define skipImplicitSolves 1
 
@@ -60,7 +60,7 @@ double Kn3[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 
 #define c_dependent_misfit true
 // Stress-free transformation strains (concentration independent, used if c_dependent_misfit == false)
-double sf1Strain[3][3] = {{0.09,0,0},{0,0.01,0},{0,0,0}}; // test
+double sf1Strain[3][3] = {{-0.00,0,0},{0,-0.00,0},{0,0,0}}; // test
 //double sf1Strain[3][3] = {{0.1305,0,0},{0,-0.0152,0},{0,0,-0.014}}; //Mg-Nd beta-prime
 double sf2Strain[3][3] = {{0.0212,0.0631,0},{0.0631,0.0941,0},{0,0,0}};
 double sf3Strain[3][3] = {{0.0212,-0.0631,0},{-0.0631,0.0941,0},{0,0,0}};
@@ -69,10 +69,36 @@ double sf3Strain[3][3] = {{0.0212,-0.0631,0},{-0.0631,0.0941,0},{0,0,0}};
 // Coefficents for an expression of the form sfts_p = ap * bp*tanh((c+cp)*dp)
 
 // B'''
-double a1[3][3] = {{0.083885148560532,0,0},{0,0.033318286494293,0},{0,0,-0.000670244939911}};
-double b1[3][3] = {{-0.014176952537795,0,0},{0,-0.043447625340652,0},{0,0, 0.009256833713427}};
-double c1[3][3] = {{-0.184191450263601,0,0},{0,-0.195464641904604,0},{0,0,-0.166524854132127}};
-double d1[3][3] = {{34.657763222708354,0,0},{0,-21.546549820380850,0},{0,0,29.599999267454422}};
+//double a1[3][3] = {{0.083885148560532,0,0},{0,0.033318286494293,0},{0,0,-0.000670244939911}};
+//double b1[3][3] = {{-0.014176952537795,0,0},{0,-0.043447625340652,0},{0,0, 0.009256833713427}};
+//double c1[3][3] = {{-0.184191450263601,0,0},{0,-0.195464641904604,0},{0,0,-0.166524854132127}};
+//double d1[3][3] = {{34.657763222708354,0,0},{0,-21.546549820380850,0},{0,0,29.599999267454422}};
+
+//double a1[3][3] = {{0.07,0,0},{0,0.033318286494293,0},{0,0,-0.000670244939911}};
+//double b1[3][3] = {{-0.03,0,0},{0,-0.043447625340652,0},{0,0, 0.009256833713427}};
+//double c1[3][3] = {{-0.25,0,0},{0,-0.195464641904604,0},{0,0,-0.166524854132127}};
+//double d1[3][3] = {{10.0,0,0},{0,-21.546549820380850,0},{0,0,29.599999267454422}};
+
+//double a1[3][3] = {{0.083885148560532,0,0},{0,0.033318286494293,0},{0,0,0}};
+//double b1[3][3] = {{-0.014176952537795,0,0},{0,-0.043447625340652,0},{0,0,0}};
+//double c1[3][3] = {{-0.184191450263601,0,0},{0,-0.195464641904604,0},{0,0,0}};
+//double d1[3][3] = {{34.657763222708354,0,0},{0,-21.546549820380850,0},{0,0,0}};
+
+//double a1[3][3] = {{-0.000670244939911,0,0},{0,0.033318286494293,0},{0,0,0}};
+//double b1[3][3] = {{0.009256833713427,0,0},{0,-0.043447625340652,0},{0,0,0}};
+//double c1[3][3] = {{-0.166524854132127,0,0},{0,-0.195464641904604,0},{0,0,0}};
+//double d1[3][3] = {{29.599999267454422,0,0},{0,-21.546549820380850,0},{0,0,0}};
+
+// Linear fits for the stress-free transformation strains in for sfts_p = ap * c + bp
+double a1[3][3] = {{0.1568,0,0},{0,0.6548,0},{0,0,0}};
+double b1[3][3] = {{-0.02756,0,0},{0,-0.09584,0},{0,0,0}};
+double c1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double d1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+
+//double a1[3][3] = {{0.0,0,0},{0,-1.0,0},{0,0,0}};
+//double b1[3][3] = {{0.0,0,0},{0,0.1,0},{0,0,0}};
+//double c1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+//double d1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
 double a2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double b2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
@@ -139,9 +165,9 @@ double d3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 #define rn3xV  (constV(-timeStep*Mn3V)*Knx3)
 
 // Initial geometry
-#define x_denom 25.0
-#define y_denom 25.0
-#define z_denom 25.0
+#define x_denom 16.0
+#define y_denom 16.0
+#define z_denom 16.0
 #define initial_interface_coeff 0.1
 #define initial_radius 1.0 //3.0
 #define c_matrix 0.004 //0.0

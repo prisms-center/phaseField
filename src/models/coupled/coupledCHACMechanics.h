@@ -125,25 +125,40 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       dealii::VectorizedArray<double> sfts1[dim][dim], sfts1c[dim][dim], sfts1cc[dim][dim], sfts2[dim][dim], sfts2c[dim][dim], sfts2cc[dim][dim], sfts3[dim][dim], sfts3c[dim][dim], sfts3cc[dim][dim];
       dealii::VectorizedArray<double> tanh_c_plus_cp_times_dp;
 
+      dealii::VectorizedArray<double> H_strain1, H_strain1n;
+//      tanh_c_plus_cp_times_dp = (constV(1.0)-std::exp(constV(-2.0*10.0)*(n1+constV(-0.6))))/(constV(1.0)+std::exp(constV(-2.0*10.0)*(c+constV(-0.6))));
+//      H_strain1 = constV(0.5) + constV(0.5)*tanh_c_plus_cp_times_dp;
+//      H_strain1n = constV(-0.5*10.0)*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
+      //H_strain1 = constV(-6.63)*n1*n1*n1*n1*n1 + constV(10.7)*n1*n1*n1*n1 + constV(6.63*3.0-2.0*10.7-2.0)*n1*n1*n1 + constV(-6.63*2.0+10.7+3.0)*n1*n1;
+      //H_strain1 = H_strain1*H_strain1*H_strain1*H_strain1;
+      //H_strain1n = constV(4.0) * H_strain1*H_strain1*H_strain1 * (constV(-6.63*5.0)*n1*n1*n1*n1 + constV(4.0*10.7)*n1*n1*n1 + constV(3.0*(6.63*3.0-2.0*10.7-2.0))*n1*n1 + constV(2.0*(-6.63*2.0+10.7+3.0))*n1);
+      H_strain1 = h1V*h1V*h1V*h1V*h1V;
+      H_strain1n = 5.0*h1V*h1V*h1V*h1V*hn1V;
+
       for (unsigned int i=0; i<dim; i++){
     	  for (unsigned int j=0; j<dim; j++){
     		  if (c_dependent_misfit == true){
 
     			  // Tanh() fit for the stress-free transformation strains, could possibly pre-calculate some of this to improve speed
-    		  	  tanh_c_plus_cp_times_dp = (constV(1.0)-std::exp(constV(-2.0*d1[i][j])*(c+constV(c1[i][j]))))/(constV(1.0)+std::exp(constV(-2.0*d1[i][j])*(c+constV(c1[i][j])))); //
-    		 	  sfts1[i][j] = constV(a1[i][j]) + constV(b1[i][j])*tanh_c_plus_cp_times_dp;
-    		  	  sfts1c[i][j] = constV(-b1[i][j]*d1[i][j])*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
-    		  	  sfts1cc[i][j] = constV(-2.0*b1[i][j]*d1[i][j]*d1[i][j])*tanh_c_plus_cp_times_dp*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
+//    		  	  tanh_c_plus_cp_times_dp = (constV(1.0)-std::exp(constV(-2.0*d1[i][j])*(c+constV(c1[i][j]))))/(constV(1.0)+std::exp(constV(-2.0*d1[i][j])*(c+constV(c1[i][j])))); //
+//    		 	  sfts1[i][j] = constV(a1[i][j]) + constV(b1[i][j])*tanh_c_plus_cp_times_dp;
+//    		  	  sfts1c[i][j] = constV(-b1[i][j]*d1[i][j])*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
+//    		  	  sfts1cc[i][j] = constV(2.0*b1[i][j]*d1[i][j]*d1[i][j])*tanh_c_plus_cp_times_dp*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
 
     		  	  tanh_c_plus_cp_times_dp = (constV(1.0)-std::exp(constV(-2.0*d2[i][j])*(c+constV(c2[i][j]))))/(constV(1.0)+std::exp(constV(-2.0*d2[i][j])*(c+constV(c2[i][j])))); //
     		  	  sfts2[i][j] = constV(a2[i][j]) + constV(b2[i][j])*tanh_c_plus_cp_times_dp;
     		  	  sfts2c[i][j] = constV(-b2[i][j]*d2[i][j])*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
-    		  	  sfts2cc[i][j] = constV(-2.0*b2[i][j]*d2[i][j]*d2[i][j])*tanh_c_plus_cp_times_dp*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
+    		  	  sfts2cc[i][j] = constV(2.0*b2[i][j]*d2[i][j]*d2[i][j])*tanh_c_plus_cp_times_dp*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
 
     		  	  tanh_c_plus_cp_times_dp = (constV(1.0)-std::exp(constV(-2.0*d3[i][j])*(c+constV(c3[i][j]))))/(constV(1.0)+std::exp(constV(-2.0*d3[i][j])*(c+constV(c3[i][j])))); //
     		  	  sfts3[i][j] = constV(a3[i][j]) + constV(b3[i][j])*tanh_c_plus_cp_times_dp;
     		  	  sfts3c[i][j] = constV(-b3[i][j]*d3[i][j])*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
-    		  	  sfts3cc[i][j] = constV(-2.0*b3[i][j]*d3[i][j]*d3[i][j])*tanh_c_plus_cp_times_dp*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
+    		  	  sfts3cc[i][j] = constV(2.0*b3[i][j]*d3[i][j]*d3[i][j])*tanh_c_plus_cp_times_dp*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
+
+    		  	  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
+    		  	  sfts1[i][j] = constV(a1[i][j])*c + constV(b1[i][j]);
+    		  	  sfts1c[i][j] = constV(a1[i][j]);
+    		  	  sfts1cc[i][j] = constV(0.0);
 
     		  }
     		  else{
@@ -167,7 +182,8 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
 
       for (unsigned int i=0; i<dim; i++){
     	  for (unsigned int j=0; j<dim; j++){
-    		  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1V + sfts2[i][j]*h2V + sfts3[i][j]*h3V);
+    		  //E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1V + sfts2[i][j]*h2V + sfts3[i][j]*h3V);
+    		  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*H_strain1 + sfts2[i][j]*h2V + sfts3[i][j]*h3V);
     	  }
       }
       
@@ -196,7 +212,8 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     	  }
       }
 
-      CEE1*=hn1V;
+      //CEE1*=hn1V;
+      CEE1*=H_strain1n;
       CEE2*=hn2V;
       CEE3*=hn3V;
       
@@ -212,7 +229,8 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
 
     		  for (unsigned int i=0; i<dim; i++){
     			  for (unsigned int j=0; j<dim; j++){
-    				  E3[i][j] =  -( sfts1c[i][j]*h1V + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V);
+    				  //E3[i][j] =  -( sfts1c[i][j]*h1V + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V);
+    				  E3[i][j] =  -( sfts1c[i][j]*H_strain1 + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V);
     			  }
     		  }
 
@@ -221,8 +239,11 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     		  for (unsigned int i=0; i<dim; i++){
     			  for (unsigned int j=0; j<dim; j++){
     				  for (unsigned int k=0; k<dim; k++){
-    					  grad_mu_el[k]+=S3[i][j] * (constV(0.5)*(uxx[i][j][k]+uxx[j][i][k]) - (sfts1c[i][j]*h1V + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V)*cx[k]
-								  - (sfts1[i][j]*hn1V*n1x[k] + sfts2[i][j]*hn2V*n2x[k] + sfts3[i][j]*hn3V*n3x[k]));
+//    					  grad_mu_el[k]+=S3[i][j] * (constV(0.5)*(uxx[i][j][k]+uxx[j][i][k]) - (sfts1c[i][j]*h1V + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V)*cx[k]
+//								  - (sfts1[i][j]*hn1V*n1x[k] + sfts2[i][j]*hn2V*n2x[k] + sfts3[i][j]*hn3V*n3x[k]));
+
+    					  grad_mu_el[k]+=S3[i][j] * (constV(0.5)*(uxx[i][j][k]+uxx[j][i][k]) - (sfts1c[i][j]*H_strain1 + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V)*cx[k]
+    					  								  - (sfts1[i][j]*H_strain1n*n1x[k] + sfts2[i][j]*hn2V*n2x[k] + sfts3[i][j]*hn3V*n3x[k]));
     				  }
     			  }
     		  }
@@ -230,8 +251,11 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     		  for (unsigned int i=0; i<dim; i++){
     			  for (unsigned int j=0; j<dim; j++){
     				  for (unsigned int k=0; k<dim; k++){
-    					  grad_mu_el[k]+= - S[i][j] * (sfts1c[i][j]*hn1V*n1x[k] + sfts2c[i][j]*hn2V*n2x[k] + sfts3c[i][j]*hn3V*n3x[k]
-								  + (sfts1cc[i][j]*h1V + sfts2cc[i][j]*h2V + sfts3cc[i][j]*h3V)*cx[k]);
+//    					  grad_mu_el[k]+= - S[i][j] * (sfts1c[i][j]*hn1V*n1x[k] + sfts2c[i][j]*hn2V*n2x[k] + sfts3c[i][j]*hn3V*n3x[k]
+//								  + (sfts1cc[i][j]*h1V + sfts2cc[i][j]*h2V + sfts3cc[i][j]*h3V)*cx[k]);
+
+    					  grad_mu_el[k]+= - S[i][j] * (sfts1c[i][j]*H_strain1n*n1x[k] + sfts2c[i][j]*hn2V*n2x[k] + sfts3c[i][j]*hn3V*n3x[k]
+								  + (sfts1cc[i][j]*H_strain1 + sfts2cc[i][j]*h2V + sfts3cc[i][j]*h3V)*cx[k]);
     				  }
     			  }
     		  }
