@@ -24,9 +24,11 @@ typedef dealii::VectorizedArray<double> scalarvalueType;
 #if problemDIM==1
 typedef dealii::VectorizedArray<double> scalargradType;
 typedef dealii::VectorizedArray<double> vectorgradType;
+typedef dealii::VectorizedArray<double> vectorhessType;
 #else 
 typedef dealii::Tensor<1, problemDIM, dealii::VectorizedArray<double> > scalargradType;
 typedef dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > vectorgradType;
+typedef dealii::Tensor<3, problemDIM, dealii::VectorizedArray<double> > vectorhessType;
 #endif
 
 //macro for constants
