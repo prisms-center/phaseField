@@ -52,11 +52,27 @@ double Kn3[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 //define energy barrier coefficient (used to tune the interfacial energy)
 #define W 0.0
 
-//define Mechanical properties
-// 3D order of constants: 11, 22, 33, 44, 55, 66, 12, 13, 14, 15, 16, 23, 24, 25, 26, 34, 35, 36, 45, 46, 56
+// Define Mechanical properties
+
+#define n_dependent_stiffness false
+// Mechanical symmetry of the material and stiffness parameters
+// Used throughout system if n_dependent_stiffness == false, used in n=0 phase if n_dependent_stiffness == true
+
+
 //#define MaterialModelV ANISOTROPIC
+// 3D order of constants ANISOTROPIC - 21 constants [11, 22, 33, 44, 55, 66, 12, 13, 14, 15, 16, 23, 24, 25, 26, 34, 35, 36, 45, 46, 56]
 //#define MaterialConstantsV {62.6,62.6,64.9,13.3,13.3,18.3,26.0,20.9,0,0,0,20.9,0,0,0,0,0,0,0,0,0} //these are in GPa-need to be non-dimensionalized
 //#define MaterialConstantsV {31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0} //scaled by E* = 2e9 J/m^3
+
+// 2D order of constants ANISOTROPIC - 6 constants [C11 C22 C33 C12 C13 C23]
+//#define MaterialConstantsV {31.3,31.3,6.65,13.0,0.0,0.0} //scaled by E* = 2e9 J/m^3
+
+#define MaterialModelV ISOTROPIC
+#define MaterialConstantsV {22.5,0.3}
+
+// Used in n=1 phase if n_dependent_stiffness == true
+#define MaterialModelBetaV ISOTROPIC
+#define MaterialConstantsBetaV {22.5,0.3}
 
 #define c_dependent_misfit true
 // Stress-free transformation strains (concentration independent, used if c_dependent_misfit == false)
@@ -66,56 +82,15 @@ double sf2Strain[3][3] = {{0.0212,0.0631,0},{0.0631,0.0941,0},{0,0,0}};
 double sf3Strain[3][3] = {{0.0212,-0.0631,0},{-0.0631,0.0941,0},{0,0,0}};
 
 // Stress-free transformation strains (concentration dependent terms, used if c_dependent_misfit == true, currently assumes linear dependence)
-// Coefficents for an expression of the form sfts_p = ap * bp*tanh((c+cp)*dp)
-
-// B'''
-//double a1[3][3] = {{0.083885148560532,0,0},{0,0.033318286494293,0},{0,0,-0.000670244939911}};
-//double b1[3][3] = {{-0.014176952537795,0,0},{0,-0.043447625340652,0},{0,0, 0.009256833713427}};
-//double c1[3][3] = {{-0.184191450263601,0,0},{0,-0.195464641904604,0},{0,0,-0.166524854132127}};
-//double d1[3][3] = {{34.657763222708354,0,0},{0,-21.546549820380850,0},{0,0,29.599999267454422}};
-
-//double a1[3][3] = {{0.07,0,0},{0,0.033318286494293,0},{0,0,-0.000670244939911}};
-//double b1[3][3] = {{-0.03,0,0},{0,-0.043447625340652,0},{0,0, 0.009256833713427}};
-//double c1[3][3] = {{-0.25,0,0},{0,-0.195464641904604,0},{0,0,-0.166524854132127}};
-//double d1[3][3] = {{10.0,0,0},{0,-21.546549820380850,0},{0,0,29.599999267454422}};
-
-//double a1[3][3] = {{0.083885148560532,0,0},{0,0.033318286494293,0},{0,0,0}};
-//double b1[3][3] = {{-0.014176952537795,0,0},{0,-0.043447625340652,0},{0,0,0}};
-//double c1[3][3] = {{-0.184191450263601,0,0},{0,-0.195464641904604,0},{0,0,0}};
-//double d1[3][3] = {{34.657763222708354,0,0},{0,-21.546549820380850,0},{0,0,0}};
-
-//double a1[3][3] = {{-0.000670244939911,0,0},{0,0.033318286494293,0},{0,0,0}};
-//double b1[3][3] = {{0.009256833713427,0,0},{0,-0.043447625340652,0},{0,0,0}};
-//double c1[3][3] = {{-0.166524854132127,0,0},{0,-0.195464641904604,0},{0,0,0}};
-//double d1[3][3] = {{29.599999267454422,0,0},{0,-21.546549820380850,0},{0,0,0}};
-
 // Linear fits for the stress-free transformation strains in for sfts_p = ap * c + bp
 double a1[3][3] = {{0.1568,0,0},{0,0.6548,0},{0,0,0}};
 double b1[3][3] = {{-0.02756,0,0},{0,-0.09584,0},{0,0,0}};
-double c1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double d1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-
-//double a1[3][3] = {{0.0,0,0},{0,-1.0,0},{0,0,0}};
-//double b1[3][3] = {{0.0,0,0},{0,0.1,0},{0,0,0}};
-//double c1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-//double d1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
 double a2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double b2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double c2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double d2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
 double a3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double b3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double c3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double d3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-
-// 2D order of constants ANISOTROPIC- 6 constants [C11 C22 C33 C12 C13 C23]
-//#define MaterialConstantsV {31.3,31.3,6.65,13.0,0.0,0.0} //scaled by E* = 2e9 J/m^3
-
-#define MaterialModelV ISOTROPIC
-#define MaterialConstantsV {22.5,0.3}
-
 
 //define free energy expressions (Mg-Nd data from CASM) (B''', gen 1)
 #define faV (46.599*c*c - 1.6907*c + 0.00010827)
@@ -157,7 +132,7 @@ double d3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 #define rcxTemp ( cx*((1.0-h1V-h2V-h3V)*faccV+(h1V+h2V+h3V)*fbccV) + n1x*((fbcV-facV)*hn1V) + n2x*((fbcV-facV)*hn2V) + n3x*((fbcV-facV)*hn3V) + grad_mu_el)
 #define rcxV  (constV(-timeStep*McV)*rcxTemp)
 
-#define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V+W*fbarriernV-CEE1))
+#define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V+W*fbarriernV+nDependentMisfitAC1+heterMechAC1))
 #define rn2V   (n2-constV(timeStep*Mn2V)*((fbV-faV)*hn2V))
 #define rn3V   (n3-constV(timeStep*Mn3V)*((fbV-faV)*hn3V))
 #define rn1xV  (constV(-timeStep*Mn1V)*Knx1)
