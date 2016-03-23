@@ -1,13 +1,27 @@
 // Unit test(s) for the method "computeStress"
-template <int dim>
-bool unitTest<dim>::test_computeStress(){
+template <int dim, typename T>
+void unitTest<dim,T>::assignCIJSize(dealii::Table<2, double> &CIJ){
+	dealii::TableIndices<2> new_size;
+	new_size[0] = 2*dim-1+dim/3;
+	new_size[1] = 2*dim-1+dim/3;
+	CIJ.reinit(new_size);
+}
+
+template <int dim, typename T>
+void unitTest<dim,T>::assignCIJSize(dealii::VectorizedArray<double> CIJ[2*dim-1+dim/3][2*dim-1+dim/3]){
+	// The size of the vectorized array is already set
+}
+
+template <int dim, typename T>
+bool unitTest<dim,T>::test_computeStress(){
 
 	bool pass = false;
-	std::cout << "Testing 'computeStress' in " << dim << " dimension(s)...'" << std::endl;
+	std::cout << "Testing 'computeStress' in " << dim << " dimension(s)..." << std::endl;
 
 	// Initialize CIJ
-	dealii::Table<2, double> CIJ(2*dim-1+dim/3,2*dim-1+dim/3);
-	CIJ.fill(1.0);
+	T CIJ;
+
+	this->assignCIJSize(CIJ);
 
 	if (dim == 1) {
 		CIJ[0][0] = 2.5;

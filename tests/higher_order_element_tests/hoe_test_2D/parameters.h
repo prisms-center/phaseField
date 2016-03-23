@@ -55,6 +55,26 @@ double sf1Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}}; //Mg-Nd beta-prime
 double sf2Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
+// --------------------------------------------
+// Unused for these tests
+#define n_dependent_stiffness false
+#define c_dependent_misfit false
+// Used in n=1 phase if n_dependent_stiffness == true
+#define MaterialModelBetaV ISOTROPIC
+#define MaterialConstantsBetaV {2.0,0.3}
+
+// Stress-free transformation strains (concentration dependent terms, used if c_dependent_misfit == true)
+// Linear fits for the stress-free transformation strains in for sfts_p = ap * c + bp
+double a1[3][3] = {{0.1,0,0},{0,0.6,0},{0,0,0}};
+double b1[3][3] = {{-0.01,0,0},{0,-0.1,0},{0,0,0}};
+
+double a2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double b2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+
+double a3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double b3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+// --------------------------------------------
+
 //define free energy expressions (Mg-Nd data from CASM)
 #define faV (24.7939*c*c - 1.6752*c - 1.9453e-06)
 #define facV (49.5878*c - 1.6752)
@@ -79,7 +99,7 @@ double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 #define rcxTemp ( cx*((1.0-h1V-h2V-h3V)*faccV+(h1V+h2V+h3V)*fbccV) + n1x*((fbcV-facV)*hn1V) + n2x*((fbcV-facV)*hn2V) + n3x*((fbcV-facV)*hn3V) )
 #define rcxV  (constV(-timeStep*McV)*rcxTemp)
 
-#define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V+W*fbarriernV-CEE1))
+#define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V+W*fbarriernV+nDependentMisfitAC1))
 #define rn2V   (n2-constV(timeStep*Mn2V)*((fbV-faV)*hn2V))
 #define rn3V   (n3-constV(timeStep*Mn3V)*((fbV-faV)*hn3V))
 #define rn1xV  (constV(-timeStep*Mn1V)*Knx1)

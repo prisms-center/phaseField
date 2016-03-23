@@ -1,8 +1,8 @@
 // Unit test(s) for the method "computeRHS"
 #include "../../include/matrixFreePDE.h"
 
-template <int dim>
-bool unitTest<dim>::test_computeRHS(){
+template <int dim,typename T>
+bool unitTest<dim,T>::test_computeRHS(){
 
 	bool pass = false;
 	std::cout << "Testing 'computeRHS' in " << dim << " dimension(s)...'" << std::endl;
