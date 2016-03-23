@@ -26,7 +26,7 @@
 // Define time step parameters
 #define timeStep 1.0e-4
 #define timeFinal 10.0
-#define timeIncrements 20000
+#define timeIncrements 10000
 #define skipImplicitSolves 1 //1000
 
 // Define solver paramters
@@ -54,11 +54,11 @@ double Kn3[3][3]={{1.75, 1.299,0},{1.299,3.25,0},{0,0,1.0}};
 // Mechanical symmetry of the material and stiffness parameters
 // Used throughout system if n_dependent_stiffness == false, used in n=0 phase if n_dependent_stiffness == true
 #define MaterialModelV ISOTROPIC
-#define MaterialConstantsV {1.0,0.3}
+#define MaterialConstantsV {2.0,0.3}
 
-// Used in n=0 phase if n_dependent_stiffness == true
+// Used in n=1 phase if n_dependent_stiffness == true
 #define MaterialModelBetaV ISOTROPIC
-#define MaterialConstantsBetaV {1.5,0.3}
+#define MaterialConstantsBetaV {2.0,0.3}
 
 #define c_dependent_misfit false
 // Stress-free transformation strains (concentration independent, used if c_dependent_misfit == false)
@@ -93,7 +93,7 @@ double b3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
 // Define required residuals
 #define rcV   (c)
-#define rcxTemp ( cx*((1.0-h1V-h2V-h3V)*faccV+(h1V+h2V+h3V)*fbccV) + n1x*((fbcV-facV)*hn1V) + n2x*((fbcV-facV)*hn2V) + n3x*((fbcV-facV)*hn3V) )
+#define rcxTemp ( cx*((1.0-h1V-h2V-h3V)*faccV+(h1V+h2V+h3V)*fbccV) + n1x*((fbcV-facV)*hn1V) + n2x*((fbcV-facV)*hn2V) + n3x*((fbcV-facV)*hn3V) + grad_mu_el)
 #define rcxV  (constV(-timeStep*McV)*rcxTemp)
 
 #define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V+nDependentMisfitAC1+heterMechAC1))

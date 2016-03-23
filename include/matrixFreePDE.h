@@ -108,6 +108,7 @@ class MatrixFreePDE:public Subscriptor
   //return index of given field name if exists, else throw error
   unsigned int getFieldIndex(std::string _name);
 
+
   //variables for time dependent problems 
   //isTimeDependentBVP flag is used to see if invM, time steppping in
   //run(), etc are necessary
