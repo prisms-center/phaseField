@@ -39,6 +39,8 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
   //methods to apply dirichlet BC's on displacement
   void applyDirichletBCs();
 
+  bool c_dependent_misfit;
+
 };
 
 //constructor
@@ -63,6 +65,15 @@ CoupledCHACMechanicsProblem<dim>::CoupledCHACMechanicsProblem(): MatrixFreePDE<d
 #else
 #error Compile ERROR: missing material property variable: MaterialModelV, MaterialConstantsV
 #endif
+
+	c_dependent_misfit = false;
+	for (unsigned int i=0; i<dim; i++){
+		for (unsigned int j=0; j<dim; j++){
+			if ((std::abs(sfts_linear1[i][j])>1.0e-12)||(std::abs(sfts_linear2[i][j])>1.0e-12)||(std::abs(sfts_linear3[i][j])>1.0e-12)){
+				c_dependent_misfit = true;
+				}
+		}
+	}
 }
 
 template <int dim>
@@ -74,6 +85,8 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
   //initialize fields
   typeScalar cVals(data, 0), n1Vals(data,1), n2Vals(data,2), n3Vals(data,3);
   typeVector uVals(data, 4);
+
+  std::cout<<c_dependent_misfit<<std::endl;
 
   //loop over cells
   for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
@@ -94,6 +107,8 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     else{
     	uVals.evaluate(false, true, false);
     }
+
+
 
     //loop over quadrature points
     for (unsigned int q=0; q<cVals.n_q_points; ++q){
@@ -127,35 +142,20 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
 
       for (unsigned int i=0; i<dim; i++){
     	  for (unsigned int j=0; j<dim; j++){
-    		  if (c_dependent_misfit == true){
-    			  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
-    			  sfts1[i][j] = constV(a1[i][j])*c + constV(b1[i][j]);
-    			  sfts1c[i][j] = constV(a1[i][j]);
-    			  sfts1cc[i][j] = constV(0.0);
+    		  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
+    		  sfts1[i][j] = constV(sfts_linear1[i][j])*c + constV(sfts_const1[i][j]);
+    		  sfts1c[i][j] = constV(sfts_linear1[i][j]);
+    		  sfts1cc[i][j] = constV(0.0);
 
-    			  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
-    			  sfts2[i][j] = constV(a2[i][j])*c + constV(b2[i][j]);
-    			  sfts2c[i][j] = constV(a2[i][j]);
-    			  sfts2cc[i][j] = constV(0.0);
+    		  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
+    		  sfts2[i][j] = constV(sfts_linear2[i][j])*c + constV(sfts_const2[i][j]);
+    		  sfts2c[i][j] = constV(sfts_linear1[i][j]);
+    		  sfts2cc[i][j] = constV(0.0);
 
-    			  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
-    			  sfts3[i][j] = constV(a3[i][j])*c + constV(b3[i][j]);
-    			  sfts3c[i][j] = constV(a3[i][j]);
-    			  sfts3cc[i][j] = constV(0.0);
-    		  }
-    		  else{
-    			  sfts1[i][j] = constV(sf1Strain[i][j]);
-    			  sfts1c[i][j] = constV(0.0);
-    			  sfts1cc[i][j] = constV(0.0);
-
-    			  sfts2[i][j] = constV(sf2Strain[i][j]);
-    			  sfts2c[i][j] = constV(0.0);
-    			  sfts2cc[i][j] = constV(0.0);
-
-    			  sfts3[i][j] = constV(sf3Strain[i][j]);
-    			  sfts3c[i][j] = constV(0.0);
-    			  sfts3cc[i][j] = constV(0.0);
-    		  }
+    		  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
+    		  sfts3[i][j] = constV(sfts_linear3[i][j])*c + constV(sfts_const3[i][j]);
+    		  sfts3c[i][j] = constV(sfts_linear3[i][j]);
+    		  sfts3cc[i][j] = constV(0.0);
     	  }
       }
 
