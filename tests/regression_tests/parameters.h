@@ -50,12 +50,19 @@ double Kn3[3][3]={{1.0,0,0},{0,0.5,0},{0,0,1.0}};
 
 //define Mechanical properties
 #define n_dependent_stiffness false
-#define c_dependent_misfit false
 #define MaterialModelV ANISOTROPIC
 #define MaterialConstantsV {31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0} //scaled by E* = 2e9 J/m^3
-double sf1Strain[3][3] = {{0.1305,0,0},{0,-0.0152,0},{0,0,-0.014}}; //Mg-Nd beta-prime
-double sf2Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+
+// Stress-free transformation strains
+// Linear fits for the stress-free transformation strains in for sfts = sfts_linear * c + sfts_const
+double sfts_linear1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sfts_const1[3][3] = {{0.1305,0,0},{0,-0.0152,0},{0,0,-0.014}}; //Mg-Nd beta-prime
+
+double sfts_linear2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sfts_const2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+
+double sfts_linear3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sfts_const3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
 // Used in n=1 phase if n_dependent_stiffness == true
 #define MaterialModelBetaV ISOTROPIC

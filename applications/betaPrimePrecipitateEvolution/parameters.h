@@ -60,22 +60,16 @@ double Kn3[3][3]={{1.75, 1.299,0},{1.299,3.25,0},{0,0,1.0}};
 #define MaterialModelBetaV ISOTROPIC
 #define MaterialConstantsBetaV {2.0,0.3}
 
-#define c_dependent_misfit false
-// Stress-free transformation strains (concentration independent, used if c_dependent_misfit == false)
-double sf1Strain[3][3]={{0.0345,0,0},{0,0.0185,0},{0,0,-0.00270}};
-double sf2Strain[3][3]={{0.0225,-0.0069,0},{-0.0069,0.0305,0},{0,0,-0.00270}};
-double sf3Strain[3][3]={{0.0225, 0.0069,0},{0.0069,0.0305,0},{0,0,-0.00270}};
+// Stress-free transformation strains
+// Linear fits for the stress-free transformation strains in for sfts = sfts_linear * c + sfts_const
+double sfts_linear1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sfts_const1[3][3] = {{0.0345,0,0},{0,0.0185,0},{0,0,-0.00270}};
 
-// Stress-free transformation strains (concentration dependent terms, used if c_dependent_misfit == true)
-// Linear fits for the stress-free transformation strains in for sfts_p = ap * c + bp
-double a1[3][3] = {{0.1,0,0},{0,0.6,0},{0,0,0}};
-double b1[3][3] = {{-0.01,0,0},{0,-0.1,0},{0,0,0}};
+double sfts_linear2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sfts_const2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
-double a2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double b2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-
-double a3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double b3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sfts_linear3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sfts_const3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
 //define free energy expressions
 #define faV (-1.6704-4.776*c+5.1622*c*c-2.7375*c*c*c+1.3687*c*c*c*c)
