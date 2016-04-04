@@ -150,7 +150,6 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
 
       // Calculate the stress-free transformation strain and its derivatives at the quadrature point
       dealii::VectorizedArray<double> sfts1[dim][dim], sfts1c[dim][dim], sfts1cc[dim][dim], sfts2[dim][dim], sfts2c[dim][dim], sfts2cc[dim][dim], sfts3[dim][dim], sfts3c[dim][dim], sfts3cc[dim][dim];
-      dealii::VectorizedArray<double> tanh_c_plus_cp_times_dp;
 
       dealii::VectorizedArray<double> H_strain1, H_strain1n;
       H_strain1 = h1V*h1V*h1V*h1V*h1V;
