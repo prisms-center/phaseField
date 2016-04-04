@@ -174,6 +174,12 @@ void CoupledCHACMechanicsProblem<dim>::applyDirichletBCs(){
 					    this->constraintsSet[this->getFieldIndex("u")]);
 }
 
+// Shift the initial concentration so that the average concentration is the desired value
+template <int dim>
+void CoupledCHACMechanicsProblem<dim>::shiftConcentration()
+{
+}
+
 //main
 int main (int argc, char **argv)
 {
