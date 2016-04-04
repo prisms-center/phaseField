@@ -86,8 +86,6 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
   typeScalar cVals(data, 0), n1Vals(data,1), n2Vals(data,2), n3Vals(data,3);
   typeVector uVals(data, 4);
 
-  std::cout<<c_dependent_misfit<<std::endl;
-
   //loop over cells
   for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
     //initialize c field

@@ -61,7 +61,6 @@ double Kn3[3][3]={{1.75, 1.299,0},{1.299,3.25,0},{0,0,1.0}};
 #define MaterialConstantsBetaV {2.0,0.3}
 
 // Stress-free transformation strains
-//#define c_dependent_misfit false
 // Linear fits for the stress-free transformation strains in for sfts = sfts_linear * c + sfts_const
 double sfts_linear1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double sfts_const1[3][3] = {{0.0345,0,0},{0,0.0185,0},{0,0,-0.00270}};
