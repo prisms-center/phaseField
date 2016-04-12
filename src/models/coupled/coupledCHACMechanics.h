@@ -98,10 +98,6 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
 					       std::vector<vectorType*> &dst, 
 					       const std::vector<vectorType*> &src,
 					       const std::pair<unsigned int,unsigned int> &cell_range) const{
-  
-
-  //double test = 0.0;
-  //computeIntegral(integratedField);
 
   //initialize fields
   typeScalar cVals(data, 0), n1Vals(data,1), n2Vals(data,2), n3Vals(data,3);
@@ -182,7 +178,6 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     	  }
       }
 
-
       //compute E2=(E-E0)
       dealii::VectorizedArray<double> E2[dim][dim], S[dim][dim];
 
@@ -197,10 +192,13 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       //compute stress
       //S=C*(E-E0)
       dealii::VectorizedArray<double> CIJ_combined[2*dim-1+dim/3][2*dim-1+dim/3];
+
       if (n_dependent_stiffness == true){
+    	  dealii::VectorizedArray<double> sum_hV;
+    	  sum_hV = h1V+h2V+h3V;
     	  for (unsigned int i=0; i<2*dim-1+dim/3; i++){
     		  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-    			  CIJ_combined[i][j] = constV(CIJ_alpha(i,j))*(constV(1.0)-h1V-h2V-h3V) + constV(CIJ_beta(i,j))*(h1V+h2V+h3V);
+    			  CIJ_combined[i][j] = constV(CIJ_alpha(i,j))*(constV(1.0)-sum_hV) + constV(CIJ_beta(i,j))*sum_hV;
     		  }
     	  }
     	  computeStress<dim>(CIJ_combined, E2, S);
@@ -244,7 +242,7 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     	  computeStress<dim>(CIJ_diff, E2, S2);
     	  for (unsigned int i=0; i<dim; i++){
     		  for (unsigned int j=0; j<dim; j++){
-    			  heterMechAC1 += S[i][j]*E2[i][j];
+    			  heterMechAC1 += S2[i][j]*E2[i][j];
     		  }
     	  }
     	  // Aside from HnpV, heterMechAC1, heterMechAC2, and heterMechAC3 are equal
@@ -253,7 +251,6 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
 
     	  heterMechAC1 = 0.5*hn1V*heterMechAC1;
       }
-
 
 		// compute the stress term in the gradient of the concentration chemical potential, grad_mu_el = [C*(E-E0)*E0c]x, must be a vector with length dim
 		dealii::VectorizedArray<double> grad_mu_el[dim];
@@ -282,18 +279,18 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
 			for (unsigned int i=0; i<dim; i++){
 				for (unsigned int j=0; j<dim; j++){
 					for (unsigned int k=0; k<dim; k++){
-//						grad_mu_el[k]+=S3[i][j] * (constV(0.5)*(uxx[i][j][k]+uxx[j][i][k]) - (sfts1c[i][j]*h1V + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V)*cx[k]
+//						grad_mu_el[k]+=S3[i][j] * (constV(0.5)*(uxx[i][j][k]+uxx[j][i][k]) + E3[i][j]*cx[k]
 //										  - (sfts1[i][j]*hn1V*n1x[k] + sfts2[i][j]*hn2V*n2x[k] + sfts3[i][j]*hn3V*n3x[k]));
 //
 //						grad_mu_el[k]+= - S[i][j] * (sfts1c[i][j]*hn1V*n1x[k] + sfts2c[i][j]*hn2V*n2x[k] + sfts3c[i][j]*hn3V*n3x[k]
 //										  + (sfts1cc[i][j]*h1V + sfts2cc[i][j]*h2V + sfts3cc[i][j]*h3V)*cx[k]);
 
-						grad_mu_el[k]+=S3[i][j] * (constV(0.5)*(uxx[i][j][k]+uxx[j][i][k]) - (sfts1c[i][j]*H_strain1 + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V)*cx[k]
+
+						grad_mu_el[k] += S3[i][j] * (constV(0.5)*(uxx[i][j][k]+uxx[j][i][k]) + E3[i][j]*cx[k]
 																  - (sfts1[i][j]*H_strain1n*n1x[k] + sfts2[i][j]*hn2V*n2x[k] + sfts3[i][j]*hn3V*n3x[k]));
 
 						grad_mu_el[k]+= - S[i][j] * (sfts1c[i][j]*H_strain1n*n1x[k] + sfts2c[i][j]*hn2V*n2x[k] + sfts3c[i][j]*hn3V*n3x[k]
 																  + (sfts1cc[i][j]*H_strain1 + sfts2cc[i][j]*h2V + sfts3cc[i][j]*h3V)*cx[k]);
-
 
 						if (n_dependent_stiffness == true){
 							grad_mu_el[k]+= - S2[i][j] * (sfts1c[i][j]*hn1V*n1x[k] + sfts2c[i][j]*hn2V*n2x[k] + sfts3c[i][j]*hn3V*n3x[k]);
@@ -303,7 +300,6 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
 				}
 			}
 		}
-
 
 
       //compute K*nx

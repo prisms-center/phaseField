@@ -17,7 +17,7 @@
 #define timeStep (1.0e-5) //5e-6 //1.67e-5
 #define timeIncrements 10000 //200000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
-#define skipImplicitSolves 1
+#define skipImplicitSolves 10000
 
 //define solver parameters
 #define solverType SolverCG
