@@ -22,6 +22,7 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
   Table<2, double> CIJ;
   Table<2, double> CIJ_alpha;
   Table<2, double> CIJ_beta;
+  Table<2, double> CIJ_diff;
 
   //RHS implementation for explicit solve
   void getRHS(const MatrixFree<dim,double> &data, 
@@ -56,7 +57,7 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
 //constructor
 template <int dim>
 CoupledCHACMechanicsProblem<dim>::CoupledCHACMechanicsProblem(): MatrixFreePDE<dim>(),
-  CIJ(2*dim-1+dim/3,2*dim-1+dim/3), CIJ_alpha(2*dim-1+dim/3,2*dim-1+dim/3), CIJ_beta(2*dim-1+dim/3,2*dim-1+dim/3)
+  CIJ(2*dim-1+dim/3,2*dim-1+dim/3), CIJ_alpha(2*dim-1+dim/3,2*dim-1+dim/3), CIJ_beta(2*dim-1+dim/3,2*dim-1+dim/3), CIJ_diff(2*dim-1+dim/3,2*dim-1+dim/3)
 {
   //initialize elasticity matrix
 #if defined(MaterialModelV) && defined(MaterialConstantsV)
@@ -66,6 +67,12 @@ CoupledCHACMechanicsProblem<dim>::CoupledCHACMechanicsProblem(): MatrixFreePDE<d
 
 		double materialConstantsBeta[]=MaterialConstantsBetaV;
 		getCIJMatrix<dim>(MaterialModelBetaV, materialConstantsBeta, CIJ_beta, this->pcout);
+
+		for (unsigned int i=0; i<2*dim-1+dim/3; i++){
+			for (unsigned int j=0; j<2*dim-1+dim/3; j++){
+				CIJ_diff(i,j) = CIJ_beta(i,j) - CIJ_alpha(i,j);
+			}
+		}
 	}
 	else{
 		double materialConstants[]=MaterialConstantsV;
@@ -234,12 +241,6 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       dealii::VectorizedArray<double> S2[dim][dim];
 
       if (n_dependent_stiffness == true){
-    	  Table<2, double> CIJ_diff(2*dim-1+dim/3,2*dim-1+dim/3);
-    	  for (unsigned int i=0; i<2*dim-1+dim/3; i++){
-    		  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-    			  CIJ_diff(i,j) = CIJ_beta(i,j) - CIJ_alpha(i,j);
-    		  }
-    	  }
     	  computeStress<dim>(CIJ_diff, E2, S2);
     	  for (unsigned int i=0; i<dim; i++){
     		  for (unsigned int j=0; j<dim; j++){
