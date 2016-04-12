@@ -222,7 +222,7 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     	  computeStress<dim>(CIJ_diff, E2, S2);
     	  for (unsigned int i=0; i<dim; i++){
     		  for (unsigned int j=0; j<dim; j++){
-    			  heterMechAC1 += S[i][j]*E2[i][j];
+    			  heterMechAC1 += S2[i][j]*E2[i][j];
     		  }
     	  }
     	  // Aside from HnpV, heterMechAC1, heterMechAC2, and heterMechAC3 are equal
