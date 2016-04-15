@@ -99,9 +99,19 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
 					       const std::vector<vectorType*> &src,
 					       const std::pair<unsigned int,unsigned int> &cell_range) const{
 
+
   //initialize fields
-  typeScalar cVals(data, 0), n1Vals(data,1), n2Vals(data,2), n3Vals(data,3);
-  typeVector uVals(data, 4);
+  typeScalar cVals(data, 0);
+
+  typeScalar n1Vals(data,1);
+  #if num_sop>2
+  typeScalar n3Vals(data,3);
+  #endif
+  #if num_sop>1
+  typeScalar n2Vals(data,2);
+  #endif
+
+  typeVector uVals(data, num_sop+1);
 
   //loop over cells
   for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
@@ -110,11 +120,15 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
 
     //initialize n fields
     n1Vals.reinit(cell); n1Vals.read_dof_values_plain(*src[1]); n1Vals.evaluate(true, true, false);
+	#if num_sop>1
     n2Vals.reinit(cell); n2Vals.read_dof_values_plain(*src[2]); n2Vals.evaluate(true, true, false);
+	#endif
+	#if num_sop>2
     n3Vals.reinit(cell); n3Vals.read_dof_values_plain(*src[3]); n3Vals.evaluate(true, true, false);
+	#endif
 
     //initialize u field 
-    uVals.reinit(cell); uVals.read_dof_values_plain(*src[4]);
+    uVals.reinit(cell); uVals.read_dof_values_plain(*src[num_sop+1]);
 
     if (c_dependent_misfit == true){
     	uVals.evaluate(false, true, true);
@@ -134,13 +148,24 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       scalargradType n1x = n1Vals.get_gradient(q);
 
       //n2
-      scalarvalueType n2 = n2Vals.get_value(q);
-      scalargradType n2x = n2Vals.get_gradient(q);
+      scalarvalueType n2, n3;
+      scalargradType n2x, n3x;
+	  #if num_sop>1
+    	  n2 = n2Vals.get_value(q);
+    	  n2x = n2Vals.get_gradient(q);
+	  #else
+    	  n2 = constV(0.0);
+    	  n2x = constV(0.0);
+	  #endif
 
       //n3 
-      scalarvalueType n3 = n3Vals.get_value(q);
-      scalargradType n3x = n3Vals.get_gradient(q);
-      
+	  #if num_sop>2
+    	  n3 = n3Vals.get_value(q);
+    	  n3x = n3Vals.get_gradient(q);
+	  #else
+    	  n3 = constV(0.0);
+    	  n3x = constV(0.0);
+	  #endif
       //u
       vectorgradType ux = uVals.get_gradient(q);
       vectorgradType Rux;
@@ -155,6 +180,8 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       dealii::VectorizedArray<double> sfts1[dim][dim], sfts1c[dim][dim], sfts1cc[dim][dim], sfts2[dim][dim], sfts2c[dim][dim], sfts2cc[dim][dim], sfts3[dim][dim], sfts3c[dim][dim], sfts3cc[dim][dim];
 
       dealii::VectorizedArray<double> H_strain1, H_strain1n;
+      //H_strain1 = h1V;
+	  //H_strain1n = hn1V;
       H_strain1 = h1V*h1V*h1V*h1V*h1V;
       H_strain1n = 5.0*h1V*h1V*h1V*h1V*hn1V;
 
@@ -318,8 +345,12 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       //submit values
       cVals.submit_value(rcV,q); cVals.submit_gradient(rcxV,q);
       n1Vals.submit_value(rn1V,q); n1Vals.submit_gradient(rn1xV,q);
+	  #if num_sop>1
       n2Vals.submit_value(rn2V,q); n2Vals.submit_gradient(rn2xV,q);
+	  #endif
+	  #if num_sop>2
       n3Vals.submit_value(rn3V,q); n3Vals.submit_gradient(rn3xV,q);
+	  #endif
       uVals.submit_gradient(Rux,q);
 
     }
@@ -327,9 +358,13 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     //integrate values
     cVals.integrate(true, true);  cVals.distribute_local_to_global(*dst[0]);
     n1Vals.integrate(true, true); n1Vals.distribute_local_to_global(*dst[1]);
+	#if num_sop>1
     n2Vals.integrate(true, true); n2Vals.distribute_local_to_global(*dst[2]);
+ 	#endif
+	#if num_sop>2
     n3Vals.integrate(true, true); n3Vals.distribute_local_to_global(*dst[3]);
-    uVals.integrate(false, true); uVals.distribute_local_to_global(*dst[4]);
+	#endif
+    uVals.integrate(false, true); uVals.distribute_local_to_global(*dst[1+num_sop]);
   }
 }
 
@@ -338,8 +373,18 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
 					       vectorType &dst, 
 					       const vectorType &src,
 					       const std::pair<unsigned int,unsigned int> &cell_range) const{
-  typeVector uVals(data, 4);
-  typeScalar n1Vals(data,1), n2Vals(data,2), n3Vals(data,3);
+	  //initialize fields
+	  typeScalar cVals(data, 0);
+
+	  typeScalar n1Vals(data,1);
+	  #if num_sop>2
+	  typeScalar n3Vals(data,3);
+	  #endif
+	  #if num_sop>1
+	  typeScalar n2Vals(data,2);
+	  #endif
+
+	  typeVector uVals(data, num_sop+1);
   
   //loop over cells
   for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
@@ -347,9 +392,13 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
     uVals.reinit(cell); uVals.read_dof_values_plain(src); uVals.evaluate(false, true, false);
 
     //initialize n fields
-    n1Vals.reinit(cell); n1Vals.read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[1]); n1Vals.evaluate(true, false, false);
-    n2Vals.reinit(cell); n2Vals.read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[2]); n2Vals.evaluate(true, false, false);
-    n3Vals.reinit(cell); n3Vals.read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[3]); n3Vals.evaluate(true, false, false);
+    n1Vals.reinit(cell); n1Vals.read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[1]); n1Vals.evaluate(true, true, false);
+   #if num_sop>1
+       n2Vals.reinit(cell); n2Vals.read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[2]); n2Vals.evaluate(true, false, false);
+   #endif
+   #if num_sop>2
+       n3Vals.reinit(cell); n3Vals.read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[3]); n3Vals.evaluate(true, false, false);
+   #endif
 
     //loop over quadrature points
     for (unsigned int q=0; q<uVals.n_q_points; ++q){
@@ -358,9 +407,18 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
       vectorgradType Rux;
 
       // n
-      scalarvalueType n1 = n1Vals.get_value(q);
-      scalarvalueType n2 = n2Vals.get_value(q);
-      scalarvalueType n3 = n3Vals.get_value(q);
+	scalarvalueType n1, n2, n3;
+	n1 = n1Vals.get_value(q);
+	  #if num_sop>1
+		  n2 = n2Vals.get_value(q);
+	  #else
+		  n2 = constV(0.0);
+	  #endif
+	  #if num_sop>2
+		  n3 = n3Vals.get_value(q);
+	  #else
+		  n3 = constV(0.0);
+	  #endif
 
       //compute strain tensor
       dealii::VectorizedArray<double> E[dim][dim], S[dim][dim];
@@ -830,7 +888,7 @@ void CoupledCHACMechanicsProblem<dim>::computeIntegral(double& integratedField){
   FEValues<dim> fe_values (FE, quadrature_formula, update_values | update_JxW_values | update_quadrature_points);
   const unsigned int   dofs_per_cell = FE.dofs_per_cell;
   const unsigned int   n_q_points    = quadrature_formula.size();
-  std::vector<double> cVal(n_q_points), n1Val(n_q_points), n2Val(n_q_points), n3Val(n_q_points);
+  std::vector<double> cVal(n_q_points);
 
   typename DoFHandler<dim>::active_cell_iterator cell= this->dofHandlersSet[0]->begin_active(), endc = this->dofHandlersSet[0]->end();
 

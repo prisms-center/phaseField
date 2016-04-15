@@ -33,7 +33,8 @@
 // flag to allow or disallow nucleation
 #define nucleation_occurs false
 
-#define numFields (4+problemDIM)
+#define num_sop 3
+#define numFields (1+num_sop+problemDIM)
 
 //define Cahn-Hilliard parameters (No Gradient energy)
 #define McV 1.0

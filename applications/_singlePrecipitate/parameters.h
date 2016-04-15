@@ -33,7 +33,8 @@
 // flag to allow or disallow nucleation
 #define nucleation_occurs false
 
-#define numFields (4+problemDIM)
+#define num_sop 1							// for now, must be between 1 and 3
+#define numFields (1+num_sop+problemDIM)
 
 //define Cahn-Hilliard parameters (No Gradient energy)
 #define McV 1.0
@@ -123,7 +124,7 @@ double sfts_const3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
 // Residuals
 #define rcV   (c)
-#define rcxTemp ( cx*((1.0-h1V-h2V-h3V)*faccV+(h1V+h2V+h3V)*fbccV) + n1x*((fbcV-facV)*hn1V) + n2x*((fbcV-facV)*hn2V) + n3x*((fbcV-facV)*hn3V) + grad_mu_el)
+#define rcxTemp ( cx*((1.0-h1V)*faccV+(h1V)*fbccV) + n1x*(fbcV-facV)*hn1V + grad_mu_el)
 #define rcxV  (constV(-timeStep*McV)*rcxTemp)
 
 #define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V+W*fbarriernV+nDependentMisfitAC1+heterMechAC1))
