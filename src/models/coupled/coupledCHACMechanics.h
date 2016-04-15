@@ -158,7 +158,6 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       H_strain1 = h1V*h1V*h1V*h1V*h1V;
       H_strain1n = 5.0*h1V*h1V*h1V*h1V*hn1V;
 
-
       for (unsigned int i=0; i<dim; i++){
     	  for (unsigned int j=0; j<dim; j++){
     		  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
@@ -214,10 +213,11 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
 				Rux[i][j] = - S[i][j];
     	  }
       }
+
       // Compute one of the stress terms in the order parameter chemical potential, nDependentMisfitACp = C*(E-E0)*(E0_p*Hn)
-      dealii::VectorizedArray<double> nDependentMisfitAC1=make_vectorized_array(0.0);
-      dealii::VectorizedArray<double> nDependentMisfitAC2=make_vectorized_array(0.0);
-      dealii::VectorizedArray<double> nDependentMisfitAC3=make_vectorized_array(0.0);
+      dealii::VectorizedArray<double> nDependentMisfitAC1=constV(0.0);
+      dealii::VectorizedArray<double> nDependentMisfitAC2=constV(0.0);
+      dealii::VectorizedArray<double> nDependentMisfitAC3=constV(0.0);
 
       for (unsigned int i=0; i<dim; i++){
     	  for (unsigned int j=0; j<dim; j++){

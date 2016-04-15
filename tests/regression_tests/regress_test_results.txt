@@ -66,3 +66,7 @@ Results of the 3D regression test (2016-04-12 11:40):
 Difference from reference: 3.46944695195e-17
 Result: Pass 
  
+Results of the 3D regression test (2016-04-12 14:20): 
+Difference from reference: 3.46944695195e-17
+Result: Pass 
+ 
