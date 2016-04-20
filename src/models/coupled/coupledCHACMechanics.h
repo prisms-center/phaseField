@@ -22,6 +22,7 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
   Table<2, double> CIJ;
   Table<2, double> CIJ_alpha;
   Table<2, double> CIJ_beta;
+  Table<2, double> CIJ_diff;
 
   //RHS implementation for explicit solve
   void getRHS(const MatrixFree<dim,double> &data, 
@@ -56,7 +57,7 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
 //constructor
 template <int dim>
 CoupledCHACMechanicsProblem<dim>::CoupledCHACMechanicsProblem(): MatrixFreePDE<dim>(),
-  CIJ(2*dim-1+dim/3,2*dim-1+dim/3), CIJ_alpha(2*dim-1+dim/3,2*dim-1+dim/3), CIJ_beta(2*dim-1+dim/3,2*dim-1+dim/3)
+  CIJ(2*dim-1+dim/3,2*dim-1+dim/3), CIJ_alpha(2*dim-1+dim/3,2*dim-1+dim/3), CIJ_beta(2*dim-1+dim/3,2*dim-1+dim/3), CIJ_diff(2*dim-1+dim/3,2*dim-1+dim/3)
 {
   //initialize elasticity matrix
 #if defined(MaterialModelV) && defined(MaterialConstantsV)
@@ -66,6 +67,12 @@ CoupledCHACMechanicsProblem<dim>::CoupledCHACMechanicsProblem(): MatrixFreePDE<d
 
 		double materialConstantsBeta[]=MaterialConstantsBetaV;
 		getCIJMatrix<dim>(MaterialModelBetaV, materialConstantsBeta, CIJ_beta, this->pcout);
+
+		for (unsigned int i=0; i<2*dim-1+dim/3; i++){
+			for (unsigned int j=0; j<2*dim-1+dim/3; j++){
+				CIJ_diff(i,j) = CIJ_beta(i,j) - CIJ_alpha(i,j);
+			}
+		}
 	}
 	else{
 		double materialConstants[]=MaterialConstantsV;
@@ -91,14 +98,20 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
 					       std::vector<vectorType*> &dst, 
 					       const std::vector<vectorType*> &src,
 					       const std::pair<unsigned int,unsigned int> &cell_range) const{
-  
 
-  //double test = 0.0;
-  //computeIntegral(integratedField);
 
   //initialize fields
-  typeScalar cVals(data, 0), n1Vals(data,1), n2Vals(data,2), n3Vals(data,3);
-  typeVector uVals(data, 4);
+  typeScalar cVals(data, 0);
+
+  typeScalar n1Vals(data,1);
+  #if num_sop>2
+  typeScalar n3Vals(data,3);
+  #endif
+  #if num_sop>1
+  typeScalar n2Vals(data,2);
+  #endif
+
+  typeVector uVals(data, num_sop+1);
 
   //loop over cells
   for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
@@ -107,11 +120,15 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
 
     //initialize n fields
     n1Vals.reinit(cell); n1Vals.read_dof_values_plain(*src[1]); n1Vals.evaluate(true, true, false);
+	#if num_sop>1
     n2Vals.reinit(cell); n2Vals.read_dof_values_plain(*src[2]); n2Vals.evaluate(true, true, false);
+	#endif
+	#if num_sop>2
     n3Vals.reinit(cell); n3Vals.read_dof_values_plain(*src[3]); n3Vals.evaluate(true, true, false);
+	#endif
 
     //initialize u field 
-    uVals.reinit(cell); uVals.read_dof_values_plain(*src[4]);
+    uVals.reinit(cell); uVals.read_dof_values_plain(*src[num_sop+1]);
 
     if (c_dependent_misfit == true){
     	uVals.evaluate(false, true, true);
@@ -119,7 +136,6 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     else{
     	uVals.evaluate(false, true, false);
     }
-
 
     //loop over quadrature points
     for (unsigned int q=0; q<cVals.n_q_points; ++q){
@@ -132,13 +148,24 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       scalargradType n1x = n1Vals.get_gradient(q);
 
       //n2
-      scalarvalueType n2 = n2Vals.get_value(q);
-      scalargradType n2x = n2Vals.get_gradient(q);
+      scalarvalueType n2, n3;
+      scalargradType n2x, n3x;
+	  #if num_sop>1
+    	  n2 = n2Vals.get_value(q);
+    	  n2x = n2Vals.get_gradient(q);
+	  #else
+    	  n2 = constV(0.0);
+    	  n2x = constV(0.0)*n1x;
+	  #endif
 
       //n3 
-      scalarvalueType n3 = n3Vals.get_value(q);
-      scalargradType n3x = n3Vals.get_gradient(q);
-      
+	  #if num_sop>2
+    	  n3 = n3Vals.get_value(q);
+    	  n3x = n3Vals.get_gradient(q);
+	  #else
+    	  n3 = constV(0.0);
+    	  n3x = constV(0.0)*n1x;
+	  #endif
       //u
       vectorgradType ux = uVals.get_gradient(q);
       vectorgradType Rux;
@@ -148,11 +175,13 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       if (c_dependent_misfit == true){
     	  uxx = uVals.get_hessian(q);
       }
-      
+
       // Calculate the stress-free transformation strain and its derivatives at the quadrature point
       dealii::VectorizedArray<double> sfts1[dim][dim], sfts1c[dim][dim], sfts1cc[dim][dim], sfts2[dim][dim], sfts2c[dim][dim], sfts2cc[dim][dim], sfts3[dim][dim], sfts3c[dim][dim], sfts3cc[dim][dim];
 
       dealii::VectorizedArray<double> H_strain1, H_strain1n;
+      //H_strain1 = h1V;
+	  //H_strain1n = hn1V;
       H_strain1 = h1V*h1V*h1V*h1V*h1V;
       H_strain1n = 5.0*h1V*h1V*h1V*h1V*hn1V;
 
@@ -175,7 +204,6 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     	  }
       }
 
-
       //compute E2=(E-E0)
       dealii::VectorizedArray<double> E2[dim][dim], S[dim][dim];
 
@@ -190,10 +218,13 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       //compute stress
       //S=C*(E-E0)
       dealii::VectorizedArray<double> CIJ_combined[2*dim-1+dim/3][2*dim-1+dim/3];
+
       if (n_dependent_stiffness == true){
+    	  dealii::VectorizedArray<double> sum_hV;
+    	  sum_hV = h1V+h2V+h3V;
     	  for (unsigned int i=0; i<2*dim-1+dim/3; i++){
     		  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-    			  CIJ_combined[i][j] = constV(CIJ_alpha(i,j))*(constV(1.0)-h1V-h2V-h3V) + constV(CIJ_beta(i,j))*(h1V+h2V+h3V);
+    			  CIJ_combined[i][j] = constV(CIJ_alpha(i,j))*(constV(1.0)-sum_hV) + constV(CIJ_beta(i,j))*sum_hV;
     		  }
     	  }
     	  computeStress<dim>(CIJ_combined, E2, S);
@@ -211,9 +242,9 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       }
       
       // Compute one of the stress terms in the order parameter chemical potential, nDependentMisfitACp = C*(E-E0)*(E0_p*Hn)
-      dealii::VectorizedArray<double> nDependentMisfitAC1=make_vectorized_array(0.0);
-      dealii::VectorizedArray<double> nDependentMisfitAC2=make_vectorized_array(0.0);
-      dealii::VectorizedArray<double> nDependentMisfitAC3=make_vectorized_array(0.0);
+      dealii::VectorizedArray<double> nDependentMisfitAC1=constV(0.0);
+      dealii::VectorizedArray<double> nDependentMisfitAC2=constV(0.0);
+      dealii::VectorizedArray<double> nDependentMisfitAC3=constV(0.0);
 
       for (unsigned int i=0; i<dim; i++){
     	  for (unsigned int j=0; j<dim; j++){
@@ -223,7 +254,8 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     	  }
       }
 
-      nDependentMisfitAC1*=-hn1V;
+      //nDependentMisfitAC1*=-hn1V;
+      nDependentMisfitAC1*=-H_strain1n;
       nDependentMisfitAC2*=-hn2V;
       nDependentMisfitAC3*=-hn3V;
 
@@ -234,12 +266,6 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       dealii::VectorizedArray<double> S2[dim][dim];
 
       if (n_dependent_stiffness == true){
-    	  Table<2, double> CIJ_diff(2*dim-1+dim/3,2*dim-1+dim/3);
-    	  for (unsigned int i=0; i<2*dim-1+dim/3; i++){
-    		  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-    			  CIJ_diff(i,j) = CIJ_beta(i,j) - CIJ_alpha(i,j);
-    		  }
-    	  }
     	  computeStress<dim>(CIJ_diff, E2, S2);
     	  for (unsigned int i=0; i<dim; i++){
     		  for (unsigned int j=0; j<dim; j++){
@@ -253,7 +279,6 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     	  heterMechAC1 = 0.5*hn1V*heterMechAC1;
       }
 
-
 		// compute the stress term in the gradient of the concentration chemical potential, grad_mu_el = [C*(E-E0)*E0c]x, must be a vector with length dim
 		dealii::VectorizedArray<double> grad_mu_el[dim];
 
@@ -266,7 +291,8 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
 
 			for (unsigned int i=0; i<dim; i++){
 				for (unsigned int j=0; j<dim; j++){
-					E3[i][j] =  -( sfts1c[i][j]*h1V + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V);
+					//E3[i][j] =  -( sfts1c[i][j]*h1V + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V);
+					E3[i][j] =  -( sfts1c[i][j]*H_strain1 + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V);
 				}
 			}
 
@@ -280,14 +306,22 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
 			for (unsigned int i=0; i<dim; i++){
 				for (unsigned int j=0; j<dim; j++){
 					for (unsigned int k=0; k<dim; k++){
-						grad_mu_el[k]+=S3[i][j] * (constV(0.5)*(uxx[i][j][k]+uxx[j][i][k]) - (sfts1c[i][j]*h1V + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V)*cx[k]
-										  - (sfts1[i][j]*hn1V*n1x[k] + sfts2[i][j]*hn2V*n2x[k] + sfts3[i][j]*hn3V*n3x[k]));
+//						grad_mu_el[k]+=S3[i][j] * (constV(0.5)*(uxx[i][j][k]+uxx[j][i][k]) + E3[i][j]*cx[k]
+//										  - (sfts1[i][j]*hn1V*n1x[k] + sfts2[i][j]*hn2V*n2x[k] + sfts3[i][j]*hn3V*n3x[k]));
+//
+//						grad_mu_el[k]+= - S[i][j] * (sfts1c[i][j]*hn1V*n1x[k] + sfts2c[i][j]*hn2V*n2x[k] + sfts3c[i][j]*hn3V*n3x[k]
+//										  + (sfts1cc[i][j]*h1V + sfts2cc[i][j]*h2V + sfts3cc[i][j]*h3V)*cx[k]);
 
-						grad_mu_el[k]+= - S[i][j] * (sfts1c[i][j]*hn1V*n1x[k] + sfts2c[i][j]*hn2V*n2x[k] + sfts3c[i][j]*hn3V*n3x[k]
-										  + (sfts1cc[i][j]*h1V + sfts2cc[i][j]*h2V + sfts3cc[i][j]*h3V)*cx[k]);
+
+						grad_mu_el[k] += S3[i][j] * (constV(0.5)*(uxx[i][j][k]+uxx[j][i][k]) + E3[i][j]*cx[k]
+																  - (sfts1[i][j]*H_strain1n*n1x[k] + sfts2[i][j]*hn2V*n2x[k] + sfts3[i][j]*hn3V*n3x[k]));
+
+						grad_mu_el[k]+= - S[i][j] * (sfts1c[i][j]*H_strain1n*n1x[k] + sfts2c[i][j]*hn2V*n2x[k] + sfts3c[i][j]*hn3V*n3x[k]
+																  + (sfts1cc[i][j]*H_strain1 + sfts2cc[i][j]*h2V + sfts3cc[i][j]*h3V)*cx[k]);
 
 						if (n_dependent_stiffness == true){
 							grad_mu_el[k]+= - S2[i][j] * (sfts1c[i][j]*hn1V*n1x[k] + sfts2c[i][j]*hn2V*n2x[k] + sfts3c[i][j]*hn3V*n3x[k]);
+
 						}
 					}
 				}
@@ -311,8 +345,12 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       //submit values
       cVals.submit_value(rcV,q); cVals.submit_gradient(rcxV,q);
       n1Vals.submit_value(rn1V,q); n1Vals.submit_gradient(rn1xV,q);
+	  #if num_sop>1
       n2Vals.submit_value(rn2V,q); n2Vals.submit_gradient(rn2xV,q);
+	  #endif
+	  #if num_sop>2
       n3Vals.submit_value(rn3V,q); n3Vals.submit_gradient(rn3xV,q);
+	  #endif
       uVals.submit_gradient(Rux,q);
 
     }
@@ -320,9 +358,13 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     //integrate values
     cVals.integrate(true, true);  cVals.distribute_local_to_global(*dst[0]);
     n1Vals.integrate(true, true); n1Vals.distribute_local_to_global(*dst[1]);
+	#if num_sop>1
     n2Vals.integrate(true, true); n2Vals.distribute_local_to_global(*dst[2]);
+ 	#endif
+	#if num_sop>2
     n3Vals.integrate(true, true); n3Vals.distribute_local_to_global(*dst[3]);
-    uVals.integrate(false, true); uVals.distribute_local_to_global(*dst[4]);
+	#endif
+    uVals.integrate(false, true); uVals.distribute_local_to_global(*dst[1+num_sop]);
   }
 }
 
@@ -331,8 +373,18 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
 					       vectorType &dst, 
 					       const vectorType &src,
 					       const std::pair<unsigned int,unsigned int> &cell_range) const{
-  typeVector uVals(data, 4);
-  typeScalar n1Vals(data,1), n2Vals(data,2), n3Vals(data,3);
+	  //initialize fields
+	  typeScalar cVals(data, 0);
+
+	  typeScalar n1Vals(data,1);
+	  #if num_sop>2
+	  typeScalar n3Vals(data,3);
+	  #endif
+	  #if num_sop>1
+	  typeScalar n2Vals(data,2);
+	  #endif
+
+	  typeVector uVals(data, num_sop+1);
   
   //loop over cells
   for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
@@ -340,9 +392,13 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
     uVals.reinit(cell); uVals.read_dof_values_plain(src); uVals.evaluate(false, true, false);
 
     //initialize n fields
-    n1Vals.reinit(cell); n1Vals.read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[1]); n1Vals.evaluate(true, false, false);
-    n2Vals.reinit(cell); n2Vals.read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[2]); n2Vals.evaluate(true, false, false);
-    n3Vals.reinit(cell); n3Vals.read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[3]); n3Vals.evaluate(true, false, false);
+    n1Vals.reinit(cell); n1Vals.read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[1]); n1Vals.evaluate(true, true, false);
+   #if num_sop>1
+       n2Vals.reinit(cell); n2Vals.read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[2]); n2Vals.evaluate(true, false, false);
+   #endif
+   #if num_sop>2
+       n3Vals.reinit(cell); n3Vals.read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[3]); n3Vals.evaluate(true, false, false);
+   #endif
 
     //loop over quadrature points
     for (unsigned int q=0; q<uVals.n_q_points; ++q){
@@ -351,9 +407,18 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
       vectorgradType Rux;
 
       // n
-      scalarvalueType n1 = n1Vals.get_value(q);
-      scalarvalueType n2 = n2Vals.get_value(q);
-      scalarvalueType n3 = n3Vals.get_value(q);
+	scalarvalueType n1, n2, n3;
+	n1 = n1Vals.get_value(q);
+	  #if num_sop>1
+		  n2 = n2Vals.get_value(q);
+	  #else
+		  n2 = constV(0.0);
+	  #endif
+	  #if num_sop>2
+		  n3 = n3Vals.get_value(q);
+	  #else
+		  n3 = constV(0.0);
+	  #endif
 
       //compute strain tensor
       dealii::VectorizedArray<double> E[dim][dim], S[dim][dim];
@@ -823,7 +888,7 @@ void CoupledCHACMechanicsProblem<dim>::computeIntegral(double& integratedField){
   FEValues<dim> fe_values (FE, quadrature_formula, update_values | update_JxW_values | update_quadrature_points);
   const unsigned int   dofs_per_cell = FE.dofs_per_cell;
   const unsigned int   n_q_points    = quadrature_formula.size();
-  std::vector<double> cVal(n_q_points), n1Val(n_q_points), n2Val(n_q_points), n3Val(n_q_points);
+  std::vector<double> cVal(n_q_points);
 
   typename DoFHandler<dim>::active_cell_iterator cell= this->dofHandlersSet[0]->begin_active(), endc = this->dofHandlersSet[0]->end();
 

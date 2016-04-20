@@ -33,7 +33,8 @@
 // flag to allow or disallow nucleation
 #define nucleation_occurs false
 
-#define numFields (4+problemDIM)
+#define num_sop 3
+#define numFields (1+num_sop+problemDIM)
 
 //define Cahn-Hilliard parameters (No Gradient energy)
 #define McV 1.0
@@ -69,36 +70,6 @@ double sfts_const3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 // Used in n=1 phase if n_dependent_stiffness == true
 #define MaterialModelBetaV ISOTROPIC
 #define MaterialConstantsBetaV {2.0,0.3}
-
-// Stress-free transformation strains (concentration dependent terms, used if c_dependent_misfit == true)
-// Linear fits for the stress-free transformation strains in for sfts_p = ap * c + bp
-double a1[3][3] = {{0.1,0,0},{0,0.6,0},{0,0,0}};
-double b1[3][3] = {{-0.01,0,0},{0,-0.1,0},{0,0,0}};
-
-double a2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double b2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-
-double a3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double b3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-
-// Stress-free transformation strains (concentration dependent terms, used if c_dependent_misfit == true, currently assumes linear dependence)
-// Coefficents for an expression of the form sfts_p = ap * bp*tanh((c+cp)*dp)
-
-// B'''
-double a1[3][3] = {{0.1305,0,0},{0,-0.0152,0},{0,0,-0.014}};
-double b1[3][3] = {{0,0,0},{0,0,0},{0,0, 0}};
-double c1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double d1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-
-double a2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double b2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double c2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double d2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-
-double a3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double b3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double c3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double d3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
 //define free energy expressions (Mg-Nd data from CASM)
 #define faV (24.7939*c*c - 1.6752*c - 1.9453e-06)

@@ -17,12 +17,15 @@
 #define refineFactor 7
 #define finiteElementDegree 1
 
-
 // Define number of fields in the problem
 // n1, n2, n3, c, u
 // Cahn Hilliard part has no gradient term,
 // hence chemical potential (mu) field not required as mixed formulation is not needed.
-#define numFields (4+problemDIM)
+#define num_sop 3							// for now, must be between 1 and 3
+#define numFields (1+num_sop+problemDIM)
+
+// flag to allow or disallow nucleation
+#define nucleation_occurs false
 
 // Define time step parameters
 #define timeStep 1.0e-4
@@ -95,9 +98,6 @@ double sfts_const3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 #define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V+nDependentMisfitAC1+heterMechAC1))
 #define rn2V   (n2-constV(timeStep*Mn2V)*((fbV-faV)*hn2V+nDependentMisfitAC2+heterMechAC2))
 #define rn3V   (n3-constV(timeStep*Mn3V)*((fbV-faV)*hn3V+nDependentMisfitAC3+heterMechAC3))
-//#define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V-CEE1))
-//#define rn2V   (n2-constV(timeStep*Mn2V)*((fbV-faV)*hn2V-CEE2))
-//#define rn3V   (n3-constV(timeStep*Mn3V)*((fbV-faV)*hn3V-CEE3))
 #define rn1xV  (constV(-timeStep*Mn1V)*Knx1)
 #define rn2xV  (constV(-timeStep*Mn2V)*Knx2)
 #define rn3xV  (constV(-timeStep*Mn3V)*Knx3)
