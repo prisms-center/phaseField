@@ -1,23 +1,23 @@
 //Parameters list for beta prime precipitation evolution problem
 
 //define problem dimensions
-#define problemDIM 2
-#define spanX 30.0 //14.0
-#define spanY 30.0 //14.0
-#define spanZ 30.0 //10.0 //14.0
+#define problemDIM 3
+#define spanX 43.0 //14.0
+#define spanY 43.0 //14.0
+#define spanZ 43.0 //10.0 //14.0
 
 //define mesh parameters
-#define subdivisionsX 1 //90
-#define subdivisionsY 1 //90
-#define subdivisionsZ 1 //90
-#define refineFactor 7 //0
+#define subdivisionsX 7
+#define subdivisionsY 7
+#define subdivisionsZ 9
+#define refineFactor 4
 #define finiteElementDegree 2
 
 //define time step parameters
-#define timeStep (1.0e-5) //5e-6 //1.67e-5
-#define timeIncrements 10000 //200000
+#define timeStep (1.35e-5) //5e-6 //1.67e-5
+#define timeIncrements 300000 //200000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
-#define skipImplicitSolves 10000
+#define skipImplicitSolves 1
 
 //define solver parameters
 #define solverType SolverCG
@@ -62,24 +62,24 @@ double Kn3[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 #define MaterialModelV ANISOTROPIC
 // 3D order of constants ANISOTROPIC - 21 constants [11, 22, 33, 44, 55, 66, 12, 13, 14, 15, 16, 23, 24, 25, 26, 34, 35, 36, 45, 46, 56]
 //#define MaterialConstantsV {62.6,62.6,64.9,13.3,13.3,18.3,26.0,20.9,0,0,0,20.9,0,0,0,0,0,0,0,0,0} //these are in GPa-need to be non-dimensionalized
-//#define MaterialConstantsV {31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0} //scaled by E* = 2e9 J/m^3
+#define MaterialConstantsV {31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0} //scaled by E* = 2e9 J/m^3
 
 // 2D order of constants ANISOTROPIC - 6 constants [C11 C22 C33 C12 C13 C23]
-#define MaterialConstantsV {31.3,31.3,6.65,13.0,0.0,0.0} //scaled by E* = 2e9 J/m^3
+//#define MaterialConstantsV {31.3,31.3,6.65,13.0,0.0,0.0} //scaled by E* = 2e9 J/m^3
 
 // Used in n=1 phase if n_dependent_stiffness == true
 #define MaterialModelBetaV ANISOTROPIC
-//#define MaterialConstantsBetaV {23.35,30.25,36.35,8.2,16.7,14.45,15.35,14.35,0,0,0,7.25,0,0,0,0,0,0,0,0,0} //scaled by E* = 2e9 J/m^3
+#define MaterialConstantsBetaV {23.35,30.25,36.35,8.2,16.7,14.45,15.35,14.35,0,0,0,7.25,0,0,0,0,0,0,0,0,0} //scaled by E* = 2e9 J/m^3
 
 // 2D order of constants ANISOTROPIC - 6 constants [C11 C22 C33 C12 C13 C23]
-#define MaterialConstantsBetaV {23.35,30.25,36.35,15.35,0.0,0.0} //scaled by E* = 2e9 J/m^3
+//#define MaterialConstantsBetaV {23.35,30.25,36.35,15.35,0.0,0.0} //scaled by E* = 2e9 J/m^3
 
 // Stress-free transformation strains
 // Linear fits for the stress-free transformation strains in for sfts = sfts_linear * c + sfts_const
-//double sfts_linear1[3][3] = {{-0.34358,0,0},{0,0.68568,0},{0,0,0.19308}};
-//double sfts_const1[3][3] = {{0.14978,0,0},{0,-0.10254,0},{0,0,-0.034049}};
-double sfts_linear1[3][3] = {{-0.2648,0,0},{0,0.1568,0},{0,0,0.1568}};
-double sfts_const1[3][3] = {{0.1341,0,0},{0,-0.02756,0},{0,0,-0.02756}};
+double sfts_linear1[3][3] = {{-0.34358,0,0},{0,0.68568,0},{0,0,0.19308}};
+double sfts_const1[3][3] = {{0.14978,0,0},{0,-0.10254,0},{0,0,-0.034049}};
+//double sfts_linear1[3][3] = {{-0.2648,0,0},{0,0.1568,0},{0,0,0.1568}};
+//double sfts_const1[3][3] = {{0.1341,0,0},{0,-0.02756,0},{0,0,-0.02756}};
 
 double sfts_linear2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double sfts_const2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
@@ -135,12 +135,12 @@ double sfts_const3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 #define rn3xV  (constV(-timeStep*Mn3V)*Knx3)
 
 // Initial geometry
-#define x_denom 25.0
-#define y_denom 25.0
-#define z_denom 25.0
+#define x_denom 3.0625
+#define y_denom 64.0
+#define z_denom 42.25
 #define initial_interface_coeff 0.1
 #define initial_radius 1.0
 #define c_matrix 0.01
-#define c_precip 0.16
-#define adjust_avg_c false
+#define c_precip 0.15
+#define adjust_avg_c true
 #define c_avg 0.004

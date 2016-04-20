@@ -155,7 +155,7 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     	  n2x = n2Vals.get_gradient(q);
 	  #else
     	  n2 = constV(0.0);
-    	  n2x = constV(0.0);
+    	  n2x = constV(0.0)*n1x;
 	  #endif
 
       //n3 
@@ -164,7 +164,7 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     	  n3x = n3Vals.get_gradient(q);
 	  #else
     	  n3 = constV(0.0);
-    	  n3x = constV(0.0);
+    	  n3x = constV(0.0)*n1x;
 	  #endif
       //u
       vectorgradType ux = uVals.get_gradient(q);

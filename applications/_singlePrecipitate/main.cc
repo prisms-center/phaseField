@@ -216,8 +216,12 @@ void CoupledCHACMechanicsProblem<dim>::shiftConcentration()
 
 	double shift = c_avg - integrated_concentration/volume;
 
+	if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+		std::cout<<"Matrix concentration shifted from " <<c_matrix<<" to " << c_matrix+shift <<std::endl;
+	}
+
 	try{
-		if (shift < c_matrix) {throw 0;}
+		if (shift + c_matrix < 0.0) {throw 0;}
 	}
 	catch (int e){
 		Assert (shift > c_matrix, ExcMessage("An exception occurred. Initial concentration was shifted below zero."));
