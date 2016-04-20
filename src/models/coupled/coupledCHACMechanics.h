@@ -20,6 +20,8 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
  private:
   //elasticity matrix
   Table<2, double> CIJ;
+  Table<2, double> CIJ_alpha;
+  Table<2, double> CIJ_beta;
 
   //RHS implementation for explicit solve
   void getRHS(const MatrixFree<dim,double> &data, 
@@ -39,7 +41,6 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
   //methods to apply dirichlet BC's on displacement
   void applyDirichletBCs();
 
-
   // method to modify the fields for nucleation
   void modifySolutionFields();
 
@@ -48,20 +49,41 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
 
   void computeIntegral(double& integratedField);
 
+  bool c_dependent_misfit;
+
 };
 
 //constructor
 template <int dim>
 CoupledCHACMechanicsProblem<dim>::CoupledCHACMechanicsProblem(): MatrixFreePDE<dim>(),
-  CIJ(2*dim-1+dim/3,2*dim-1+dim/3)
+  CIJ(2*dim-1+dim/3,2*dim-1+dim/3), CIJ_alpha(2*dim-1+dim/3,2*dim-1+dim/3), CIJ_beta(2*dim-1+dim/3,2*dim-1+dim/3)
 {
   //initialize elasticity matrix
 #if defined(MaterialModelV) && defined(MaterialConstantsV)
-  double materialConstants[]=MaterialConstantsV;
-  getCIJMatrix<dim>(MaterialModelV, materialConstants, CIJ, this->pcout);
+	if (n_dependent_stiffness == true){
+		double materialConstants[]=MaterialConstantsV;
+		getCIJMatrix<dim>(MaterialModelV, materialConstants, CIJ_alpha, this->pcout);
+
+		double materialConstantsBeta[]=MaterialConstantsBetaV;
+		getCIJMatrix<dim>(MaterialModelBetaV, materialConstantsBeta, CIJ_beta, this->pcout);
+	}
+	else{
+		double materialConstants[]=MaterialConstantsV;
+		getCIJMatrix<dim>(MaterialModelV, materialConstants, CIJ, this->pcout);
+	}
+
 #else
 #error Compile ERROR: missing material property variable: MaterialModelV, MaterialConstantsV
 #endif
+
+	c_dependent_misfit = false;
+	for (unsigned int i=0; i<dim; i++){
+		for (unsigned int j=0; j<dim; j++){
+			if ((std::abs(sfts_linear1[i][j])>1.0e-12)||(std::abs(sfts_linear2[i][j])>1.0e-12)||(std::abs(sfts_linear3[i][j])>1.0e-12)){
+				c_dependent_misfit = true;
+				}
+		}
+	}
 }
 
 template <int dim>
@@ -98,6 +120,7 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     	uVals.evaluate(false, true, false);
     }
 
+
     //loop over quadrature points
     for (unsigned int q=0; q<cVals.n_q_points; ++q){
       //c
@@ -119,63 +142,39 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       //u
       vectorgradType ux = uVals.get_gradient(q);
       vectorgradType Rux;
-      vectorhessType uxx = uVals.get_hessian(q);
 
+      vectorhessType uxx;
+
+      if (c_dependent_misfit == true){
+    	  uxx = uVals.get_hessian(q);
+      }
+      
       // Calculate the stress-free transformation strain and its derivatives at the quadrature point
       dealii::VectorizedArray<double> sfts1[dim][dim], sfts1c[dim][dim], sfts1cc[dim][dim], sfts2[dim][dim], sfts2c[dim][dim], sfts2cc[dim][dim], sfts3[dim][dim], sfts3c[dim][dim], sfts3cc[dim][dim];
-      dealii::VectorizedArray<double> tanh_c_plus_cp_times_dp;
 
       dealii::VectorizedArray<double> H_strain1, H_strain1n;
-//      tanh_c_plus_cp_times_dp = (constV(1.0)-std::exp(constV(-2.0*10.0)*(n1+constV(-0.6))))/(constV(1.0)+std::exp(constV(-2.0*10.0)*(c+constV(-0.6))));
-//      H_strain1 = constV(0.5) + constV(0.5)*tanh_c_plus_cp_times_dp;
-//      H_strain1n = constV(-0.5*10.0)*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
-      //H_strain1 = constV(-6.63)*n1*n1*n1*n1*n1 + constV(10.7)*n1*n1*n1*n1 + constV(6.63*3.0-2.0*10.7-2.0)*n1*n1*n1 + constV(-6.63*2.0+10.7+3.0)*n1*n1;
-      //H_strain1 = H_strain1*H_strain1*H_strain1*H_strain1;
-      //H_strain1n = constV(4.0) * H_strain1*H_strain1*H_strain1 * (constV(-6.63*5.0)*n1*n1*n1*n1 + constV(4.0*10.7)*n1*n1*n1 + constV(3.0*(6.63*3.0-2.0*10.7-2.0))*n1*n1 + constV(2.0*(-6.63*2.0+10.7+3.0))*n1);
       H_strain1 = h1V*h1V*h1V*h1V*h1V;
       H_strain1n = 5.0*h1V*h1V*h1V*h1V*hn1V;
 
       for (unsigned int i=0; i<dim; i++){
     	  for (unsigned int j=0; j<dim; j++){
-    		  if (c_dependent_misfit == true){
+    		  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
+    		  sfts1[i][j] = constV(sfts_linear1[i][j])*c + constV(sfts_const1[i][j]);
+    		  sfts1c[i][j] = constV(sfts_linear1[i][j]);
+    		  sfts1cc[i][j] = constV(0.0);
 
-    			  // Tanh() fit for the stress-free transformation strains, could possibly pre-calculate some of this to improve speed
-//    		  	  tanh_c_plus_cp_times_dp = (constV(1.0)-std::exp(constV(-2.0*d1[i][j])*(c+constV(c1[i][j]))))/(constV(1.0)+std::exp(constV(-2.0*d1[i][j])*(c+constV(c1[i][j])))); //
-//    		 	  sfts1[i][j] = constV(a1[i][j]) + constV(b1[i][j])*tanh_c_plus_cp_times_dp;
-//    		  	  sfts1c[i][j] = constV(-b1[i][j]*d1[i][j])*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
-//    		  	  sfts1cc[i][j] = constV(2.0*b1[i][j]*d1[i][j]*d1[i][j])*tanh_c_plus_cp_times_dp*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
+    		  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
+    		  sfts2[i][j] = constV(sfts_linear2[i][j])*c + constV(sfts_const2[i][j]);
+    		  sfts2c[i][j] = constV(sfts_linear1[i][j]);
+    		  sfts2cc[i][j] = constV(0.0);
 
-    		  	  tanh_c_plus_cp_times_dp = (constV(1.0)-std::exp(constV(-2.0*d2[i][j])*(c+constV(c2[i][j]))))/(constV(1.0)+std::exp(constV(-2.0*d2[i][j])*(c+constV(c2[i][j])))); //
-    		  	  sfts2[i][j] = constV(a2[i][j]) + constV(b2[i][j])*tanh_c_plus_cp_times_dp;
-    		  	  sfts2c[i][j] = constV(-b2[i][j]*d2[i][j])*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
-    		  	  sfts2cc[i][j] = constV(2.0*b2[i][j]*d2[i][j]*d2[i][j])*tanh_c_plus_cp_times_dp*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
-
-    		  	  tanh_c_plus_cp_times_dp = (constV(1.0)-std::exp(constV(-2.0*d3[i][j])*(c+constV(c3[i][j]))))/(constV(1.0)+std::exp(constV(-2.0*d3[i][j])*(c+constV(c3[i][j])))); //
-    		  	  sfts3[i][j] = constV(a3[i][j]) + constV(b3[i][j])*tanh_c_plus_cp_times_dp;
-    		  	  sfts3c[i][j] = constV(-b3[i][j]*d3[i][j])*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
-    		  	  sfts3cc[i][j] = constV(2.0*b3[i][j]*d3[i][j]*d3[i][j])*tanh_c_plus_cp_times_dp*(tanh_c_plus_cp_times_dp*tanh_c_plus_cp_times_dp - constV(1.0));
-
-    		  	  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
-    		  	  sfts1[i][j] = constV(a1[i][j])*c + constV(b1[i][j]);
-    		  	  sfts1c[i][j] = constV(a1[i][j]);
-    		  	  sfts1cc[i][j] = constV(0.0);
-
-    		  }
-    		  else{
-    			  sfts1[i][j] = constV(sf1Strain[i][j]);
-    			  sfts1c[i][j] = constV(0.0);
-    			  sfts1cc[i][j] = constV(0.0);
-
-    			  sfts2[i][j] = constV(sf2Strain[i][j]);
-    			  sfts2c[i][j] = constV(0.0);
-    			  sfts2cc[i][j] = constV(0.0);
-
-    			  sfts3[i][j] = constV(sf3Strain[i][j]);
-    			  sfts3c[i][j] = constV(0.0);
-    			  sfts3cc[i][j] = constV(0.0);
-    		  }
+    		  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
+    		  sfts3[i][j] = constV(sfts_linear3[i][j])*c + constV(sfts_const3[i][j]);
+    		  sfts3c[i][j] = constV(sfts_linear3[i][j]);
+    		  sfts3cc[i][j] = constV(0.0);
     	  }
       }
+
 
       //compute E2=(E-E0)
       dealii::VectorizedArray<double> E2[dim][dim], S[dim][dim];
@@ -184,12 +183,24 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     	  for (unsigned int j=0; j<dim; j++){
     		  //E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1V + sfts2[i][j]*h2V + sfts3[i][j]*h3V);
     		  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*H_strain1 + sfts2[i][j]*h2V + sfts3[i][j]*h3V);
+
     	  }
       }
       
       //compute stress
       //S=C*(E-E0)
-      computeStress<dim>(CIJ, E2, S);
+      dealii::VectorizedArray<double> CIJ_combined[2*dim-1+dim/3][2*dim-1+dim/3];
+      if (n_dependent_stiffness == true){
+    	  for (unsigned int i=0; i<2*dim-1+dim/3; i++){
+    		  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
+    			  CIJ_combined[i][j] = constV(CIJ_alpha(i,j))*(constV(1.0)-h1V-h2V-h3V) + constV(CIJ_beta(i,j))*(h1V+h2V+h3V);
+    		  }
+    	  }
+    	  computeStress<dim>(CIJ_combined, E2, S);
+      }
+      else{
+    	  computeStress<dim>(CIJ, E2, S);
+      }
       
       //fill residual corresponding to mechanics
       //R=-C*(E-E0)
@@ -199,67 +210,90 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
     	  }
       }
       
-      //compute the stress term in the order parameter chemical potential, CEE = C*(E-E0)*(Esf*Hn)
-      dealii::VectorizedArray<double> CEE1=make_vectorized_array(0.0);
-      dealii::VectorizedArray<double> CEE2=make_vectorized_array(0.0);
-      dealii::VectorizedArray<double> CEE3=make_vectorized_array(0.0);
-      
+      // Compute one of the stress terms in the order parameter chemical potential, nDependentMisfitACp = C*(E-E0)*(E0_p*Hn)
+      dealii::VectorizedArray<double> nDependentMisfitAC1=make_vectorized_array(0.0);
+      dealii::VectorizedArray<double> nDependentMisfitAC2=make_vectorized_array(0.0);
+      dealii::VectorizedArray<double> nDependentMisfitAC3=make_vectorized_array(0.0);
+
       for (unsigned int i=0; i<dim; i++){
     	  for (unsigned int j=0; j<dim; j++){
-    		  CEE1+=S[i][j]*(sfts1[i][j]);
-    		  CEE2+=S[i][j]*(sfts2[i][j]);
-    		  CEE3+=S[i][j]*(sfts3[i][j]);
+    		  nDependentMisfitAC1+=S[i][j]*(sfts1[i][j]);
+    		  nDependentMisfitAC2+=S[i][j]*(sfts2[i][j]);
+    		  nDependentMisfitAC3+=S[i][j]*(sfts3[i][j]);
     	  }
       }
 
-      //CEE1*=hn1V;
-      CEE1*=H_strain1n;
-      CEE2*=hn2V;
-      CEE3*=hn3V;
-      
-      // compute the stress term in the concentration chemical potential, grad_mu_el = [C*(E-E0)*E0c]x, must be a vector with length dim
-      dealii::VectorizedArray<double> grad_mu_el[dim];
+      nDependentMisfitAC1*=-hn1V;
+      nDependentMisfitAC2*=-hn2V;
+      nDependentMisfitAC3*=-hn3V;
 
-      for (unsigned int k=0; k<dim; k++){
-    	  grad_mu_el[k] = constV(0.0);
+      // Compute the other stress term in the order parameter chemical potential, heterMechACp = 0.5*Hn*(C_alpha-C_beta)*(E-E0)*(E-E0)
+      dealii::VectorizedArray<double> heterMechAC1=constV(0.0);
+      dealii::VectorizedArray<double> heterMechAC2=constV(0.0);
+      dealii::VectorizedArray<double> heterMechAC3=constV(0.0);
+      dealii::VectorizedArray<double> S2[dim][dim];
+
+      if (n_dependent_stiffness == true){
+    	  Table<2, double> CIJ_diff(2*dim-1+dim/3,2*dim-1+dim/3);
+    	  for (unsigned int i=0; i<2*dim-1+dim/3; i++){
+    		  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
+    			  CIJ_diff(i,j) = CIJ_beta(i,j) - CIJ_alpha(i,j);
+    		  }
+    	  }
+    	  computeStress<dim>(CIJ_diff, E2, S2);
+    	  for (unsigned int i=0; i<dim; i++){
+    		  for (unsigned int j=0; j<dim; j++){
+    			  heterMechAC1 += S2[i][j]*E2[i][j];
+    		  }
+    	  }
+    	  // Aside from HnpV, heterMechAC1, heterMechAC2, and heterMechAC3 are equal
+    	  heterMechAC2 = 0.5*hn2V*heterMechAC1;
+    	  heterMechAC3 = 0.5*hn3V*heterMechAC1;
+
+    	  heterMechAC1 = 0.5*hn1V*heterMechAC1;
       }
 
-      if (c_dependent_misfit == true){
-    	  dealii::VectorizedArray<double> E3[dim][dim], S3[dim][dim];
 
-    		  for (unsigned int i=0; i<dim; i++){
-    			  for (unsigned int j=0; j<dim; j++){
-    				  //E3[i][j] =  -( sfts1c[i][j]*h1V + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V);
-    				  E3[i][j] =  -( sfts1c[i][j]*H_strain1 + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V);
-    			  }
-    		  }
+		// compute the stress term in the gradient of the concentration chemical potential, grad_mu_el = [C*(E-E0)*E0c]x, must be a vector with length dim
+		dealii::VectorizedArray<double> grad_mu_el[dim];
 
-    		  computeStress<dim>(CIJ, E3, S3);
+		for (unsigned int k=0; k<dim; k++){
+		  grad_mu_el[k] = constV(0.0);
+		}
 
-    		  for (unsigned int i=0; i<dim; i++){
-    			  for (unsigned int j=0; j<dim; j++){
-    				  for (unsigned int k=0; k<dim; k++){
-//    					  grad_mu_el[k]+=S3[i][j] * (constV(0.5)*(uxx[i][j][k]+uxx[j][i][k]) - (sfts1c[i][j]*h1V + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V)*cx[k]
-//								  - (sfts1[i][j]*hn1V*n1x[k] + sfts2[i][j]*hn2V*n2x[k] + sfts3[i][j]*hn3V*n3x[k]));
+		if (c_dependent_misfit == true){
+			dealii::VectorizedArray<double> E3[dim][dim], S3[dim][dim];
 
-    					  grad_mu_el[k]+=S3[i][j] * (constV(0.5)*(uxx[i][j][k]+uxx[j][i][k]) - (sfts1c[i][j]*H_strain1 + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V)*cx[k]
-    					  								  - (sfts1[i][j]*H_strain1n*n1x[k] + sfts2[i][j]*hn2V*n2x[k] + sfts3[i][j]*hn3V*n3x[k]));
-    				  }
-    			  }
-    		  }
+			for (unsigned int i=0; i<dim; i++){
+				for (unsigned int j=0; j<dim; j++){
+					E3[i][j] =  -( sfts1c[i][j]*h1V + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V);
+				}
+			}
 
-    		  for (unsigned int i=0; i<dim; i++){
-    			  for (unsigned int j=0; j<dim; j++){
-    				  for (unsigned int k=0; k<dim; k++){
-//    					  grad_mu_el[k]+= - S[i][j] * (sfts1c[i][j]*hn1V*n1x[k] + sfts2c[i][j]*hn2V*n2x[k] + sfts3c[i][j]*hn3V*n3x[k]
-//								  + (sfts1cc[i][j]*h1V + sfts2cc[i][j]*h2V + sfts3cc[i][j]*h3V)*cx[k]);
+			if (n_dependent_stiffness == true){
+				computeStress<dim>(CIJ_combined, E3, S3);
+			}
+			else{
+				computeStress<dim>(CIJ, E3, S3);
+			}
 
-    					  grad_mu_el[k]+= - S[i][j] * (sfts1c[i][j]*H_strain1n*n1x[k] + sfts2c[i][j]*hn2V*n2x[k] + sfts3c[i][j]*hn3V*n3x[k]
-								  + (sfts1cc[i][j]*H_strain1 + sfts2cc[i][j]*h2V + sfts3cc[i][j]*h3V)*cx[k]);
-    				  }
-    			  }
-    		  }
-      }
+			for (unsigned int i=0; i<dim; i++){
+				for (unsigned int j=0; j<dim; j++){
+					for (unsigned int k=0; k<dim; k++){
+						grad_mu_el[k]+=S3[i][j] * (constV(0.5)*(uxx[i][j][k]+uxx[j][i][k]) - (sfts1c[i][j]*h1V + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V)*cx[k]
+										  - (sfts1[i][j]*hn1V*n1x[k] + sfts2[i][j]*hn2V*n2x[k] + sfts3[i][j]*hn3V*n3x[k]));
+
+						grad_mu_el[k]+= - S[i][j] * (sfts1c[i][j]*hn1V*n1x[k] + sfts2c[i][j]*hn2V*n2x[k] + sfts3c[i][j]*hn3V*n3x[k]
+										  + (sfts1cc[i][j]*h1V + sfts2cc[i][j]*h2V + sfts3cc[i][j]*h3V)*cx[k]);
+
+						if (n_dependent_stiffness == true){
+							grad_mu_el[k]+= - S2[i][j] * (sfts1c[i][j]*hn1V*n1x[k] + sfts2c[i][j]*hn2V*n2x[k] + sfts3c[i][j]*hn3V*n3x[k]);
+						}
+					}
+				}
+			}
+		}
+
 
       //compute K*nx
       scalargradType Knx1, Knx2, Knx3;
@@ -298,11 +332,17 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
 					       const vectorType &src,
 					       const std::pair<unsigned int,unsigned int> &cell_range) const{
   typeVector uVals(data, 4);
+  typeScalar n1Vals(data,1), n2Vals(data,2), n3Vals(data,3);
   
   //loop over cells
   for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
     //initialize u field 
     uVals.reinit(cell); uVals.read_dof_values_plain(src); uVals.evaluate(false, true, false);
+
+    //initialize n fields
+    n1Vals.reinit(cell); n1Vals.read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[1]); n1Vals.evaluate(true, false, false);
+    n2Vals.reinit(cell); n2Vals.read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[2]); n2Vals.evaluate(true, false, false);
+    n3Vals.reinit(cell); n3Vals.read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[3]); n3Vals.evaluate(true, false, false);
 
     //loop over quadrature points
     for (unsigned int q=0; q<uVals.n_q_points; ++q){
@@ -310,17 +350,33 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
       vectorgradType ux = uVals.get_gradient(q);
       vectorgradType Rux;
 
+      // n
+      scalarvalueType n1 = n1Vals.get_value(q);
+      scalarvalueType n2 = n2Vals.get_value(q);
+      scalarvalueType n3 = n3Vals.get_value(q);
+
       //compute strain tensor
       dealii::VectorizedArray<double> E[dim][dim], S[dim][dim];
       for (unsigned int i=0; i<dim; i++){
-	for (unsigned int j=0; j<dim; j++){
-	  E[i][j]= constV(0.5)*(ux[i][j]+ux[j][i]);
-	}
+    	  for (unsigned int j=0; j<dim; j++){
+    		  E[i][j]= constV(0.5)*(ux[i][j]+ux[j][i]);
+    	  }
       }
     
-      //compute stress tensor
-      computeStress<dim>(CIJ, E, S);
-      
+      // Compute stress tensor
+      dealii::VectorizedArray<double> CIJ_combined[2*dim-1+dim/3][2*dim-1+dim/3];
+      if (n_dependent_stiffness == true){
+    	  for (unsigned int i=0; i<2*dim-1+dim/3; i++){
+    		  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
+    			  CIJ_combined[i][j] = constV(CIJ_alpha(i,j))*(constV(1.0)-h1V-h2V-h3V) + constV(CIJ_beta(i,j))*(h1V+h2V+h3V);
+			  }
+		  }
+		  computeStress<dim>(CIJ_combined, E, S);
+		}
+		else{
+		  computeStress<dim>(CIJ, E, S);
+		}
+
       //compute residual
       for (unsigned int i=0; i<dim; i++){
 	for (unsigned int j=0; j<dim; j++){

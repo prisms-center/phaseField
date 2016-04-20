@@ -13,11 +13,13 @@ void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Vectorized
 
 #include "../../src/models/mechanics/computeStress.h"
 
-template <int dim>
+template <int dim, typename T>
 class unitTest
 {
 public:
 	bool test_computeStress();
+	void assignCIJSize(dealii::VectorizedArray<double> CIJ[2*dim-1+dim/3][2*dim-1+dim/3]);
+	void assignCIJSize(dealii::Table<2, double> &CIJ);
 	bool test_getRHS();
 	bool test_computeRHS();
 };

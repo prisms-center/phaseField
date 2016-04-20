@@ -8,6 +8,10 @@
 #include "parameters.h"
 #include "../../src/models/coupled/coupledCHACMechanics.h"
 
+// PLibrary includes
+#include "PLib/PLibrary.hh"
+#include "PLib/PLibrary.cc"
+
 //initial condition for concentration
 template <int dim>
 class InitialConditionC : public Function<dim>
@@ -228,7 +232,14 @@ void CoupledCHACMechanicsProblem<dim>::shiftConcentration()
 //main
 int main (int argc, char **argv)
 {
-  Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,numbers::invalid_unsigned_int);
+
+	// Load variables from the PLibrary
+	PRISMS::PLibrary::checkout(pfunct_faV, pfunc_McV);
+
+
+
+
+	Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,numbers::invalid_unsigned_int);
   try
     {
       deallog.depth_console(0);
