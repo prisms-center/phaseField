@@ -12,13 +12,24 @@ coeff_file = open('fa.txt','r')
 fa_coeffs = coeff_file.read().splitlines()
 coeff_file.close()
 
-# Write PFunctions for the free energy and its first two derivatives 
+CH_mobility_file = open('Mc.txt','r')
+Mc = CH_mobility_file.read()
+CH_mobility_file.close()
 
-f_writer_string = 'fw -n "pfunct_faV" -v "c" -d "concentration" --sym "'+fa_coeffs[0]+'*c^2 +'+fa_coeffs[1]+'*c + '+fa_coeffs[2]+'" --grad --hess -l "/Users/stephendewitt/Documents/workspace/PRISMS_workspace/PLibrary"'
+# Write a PFunction for the free energy and its first two derivatives 
+dir = os.getcwd()
+
+f_writer_string = 'fw -n "pfunct_faV" -v "c" -d "concentration" --sym "'+fa_coeffs[0]+'*c^2 +'+fa_coeffs[1]+'*c + '+fa_coeffs[2]+'" --grad --hess -l '+dir
 
 subprocess.call([f_writer_string],shell=True)
 
-l_writer_string = 'lw -d /Users/stephendewitt/Documents/workspace/PRISMS_workspace/PLibrary -v "std::vector<double>" -l /Users/stephendewitt/Documents/workspace/PRISMS_workspace/PLibrary -c'
+# Write a PFunction for the Cahn-Hilliard Mobility
+f_writer_string = 'fw -n "pfunct_McV"  -v "c" -d "concentration" --sym "'+Mc+'" -l '+dir
+
+subprocess.call([f_writer_string],shell=True)
+
+# Write the PLibrary
+l_writer_string = 'lw -d '+dir+' -v "dealii::VectorizedArray<double>" -l '+dir+' -c'
 
 subprocess.call([l_writer_string],shell=True)
 

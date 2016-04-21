@@ -1,4 +1,4 @@
-// created: 2016-4-20 11:47:45
+// created: 2016-4-21 13:56:30
 // version: master
 // url: https://github.com/prisms-center/IntegrationTools
 // commit: 15edfe1511ccbdb131d055b89133fd543c7c0607
@@ -10,18 +10,20 @@
 #include<stdexcept>
 #include<vector>
 #include "pfunct_faV.hh"
+#include "pfunct_McV.hh"
 #include "PLibrary.hh"
 
 namespace PRISMS
 {
 
-        void PLibrary::checkout( std::string name, PSimpleFunction< std::vector<double>, double > &simplefunc)
+        void PLibrary::checkout( std::string name, PSimpleFunction< dealii::VectorizedArray<double>, double > &simplefunc)
         {
-            typedef PSimpleFunction< std::vector<double>, double > psf;
-            if( name == "pfunct_faV_f") { simplefunc = psf( pfunct_faV_f< std::vector<double> >() ); return;}
-            if( name == "pfunct_faV_grad_0") { simplefunc = psf( pfunct_faV_grad_0< std::vector<double> >() ); return;}
-            if( name == "pfunct_faV_hess_0_0") { simplefunc = psf( pfunct_faV_hess_0_0< std::vector<double> >() ); return;}
-            else throw std::runtime_error( "PSimpleFunction< std::vector<double>, double > " + name + " was not found in the PLibrary");
+            typedef PSimpleFunction< dealii::VectorizedArray<double>, double > psf;
+            if( name == "pfunct_faV_f") { simplefunc = psf( pfunct_faV_f< dealii::VectorizedArray<double> >() ); return;}
+            if( name == "pfunct_faV_grad_0") { simplefunc = psf( pfunct_faV_grad_0< dealii::VectorizedArray<double> >() ); return;}
+            if( name == "pfunct_faV_hess_0_0") { simplefunc = psf( pfunct_faV_hess_0_0< dealii::VectorizedArray<double> >() ); return;}
+            if( name == "pfunct_McV_f") { simplefunc = psf( pfunct_McV_f< dealii::VectorizedArray<double> >() ); return;}
+            else throw std::runtime_error( "PSimpleFunction< dealii::VectorizedArray<double>, double > " + name + " was not found in the PLibrary");
         }
         void PLibrary::checkout( std::string name, PSimpleFunction< double*, double > &simplefunc)
         {
@@ -29,48 +31,55 @@ namespace PRISMS
             if( name == "pfunct_faV_f") { simplefunc = psf( pfunct_faV_f< double* >() ); return;}
             if( name == "pfunct_faV_grad_0") { simplefunc = psf( pfunct_faV_grad_0< double* >() ); return;}
             if( name == "pfunct_faV_hess_0_0") { simplefunc = psf( pfunct_faV_hess_0_0< double* >() ); return;}
+            if( name == "pfunct_McV_f") { simplefunc = psf( pfunct_McV_f< double* >() ); return;}
             else throw std::runtime_error( "PSimpleFunction< double*, double > " + name + " was not found in the PLibrary");
         }
 
-        void PLibrary::checkout( std::string name, PFunction< std::vector<double>, double > &func)
+        void PLibrary::checkout( std::string name, PFunction< dealii::VectorizedArray<double>, double > &func)
         {
-            typedef PFunction< std::vector<double>, double > pf;
-            if( name == "pfunct_faV") { func = pf( pfunct_faV< std::vector<double> >() ); return;}
-            throw std::runtime_error( "PFunction< std::vector<double>, double > " + name + " was not found in the PLibrary");
+            typedef PFunction< dealii::VectorizedArray<double>, double > pf;
+            if( name == "pfunct_faV") { func = pf( pfunct_faV< dealii::VectorizedArray<double> >() ); return;}
+            if( name == "pfunct_McV") { func = pf( pfunct_McV< dealii::VectorizedArray<double> >() ); return;}
+            throw std::runtime_error( "PFunction< dealii::VectorizedArray<double>, double > " + name + " was not found in the PLibrary");
         }
         void PLibrary::checkout( std::string name, PFunction< double*, double > &func)
         {
             typedef PFunction< double*, double > pf;
             if( name == "pfunct_faV") { func = pf( pfunct_faV< double* >() ); return;}
+            if( name == "pfunct_McV") { func = pf( pfunct_McV< double* >() ); return;}
             throw std::runtime_error( "PFunction< double*, double > " + name + " was not found in the PLibrary");
         }
 
 
 
 
-        void PLibrary::checkout( std::string name, PSimpleBase< std::vector<double>, double > *&simplefunc)
+        void PLibrary::checkout( std::string name, PSimpleBase< dealii::VectorizedArray<double>, double > *&simplefunc)
         {
-            if( name == "pfunct_faV_f") { simplefunc = new pfunct_faV_f< std::vector<double> >(); return;}
-            if( name == "pfunct_faV_grad_0") { simplefunc = new pfunct_faV_grad_0< std::vector<double> >(); return;}
-            if( name == "pfunct_faV_hess_0_0") { simplefunc = new pfunct_faV_hess_0_0< std::vector<double> >(); return;}
-            throw std::runtime_error( "PSimpleBase< std::vector<double>, double > " + name + " was not found in the PLibrary");
+            if( name == "pfunct_faV_f") { simplefunc = new pfunct_faV_f< dealii::VectorizedArray<double> >(); return;}
+            if( name == "pfunct_faV_grad_0") { simplefunc = new pfunct_faV_grad_0< dealii::VectorizedArray<double> >(); return;}
+            if( name == "pfunct_faV_hess_0_0") { simplefunc = new pfunct_faV_hess_0_0< dealii::VectorizedArray<double> >(); return;}
+            if( name == "pfunct_McV_f") { simplefunc = new pfunct_McV_f< dealii::VectorizedArray<double> >(); return;}
+            throw std::runtime_error( "PSimpleBase< dealii::VectorizedArray<double>, double > " + name + " was not found in the PLibrary");
         }
         void PLibrary::checkout( std::string name, PSimpleBase< double*, double > *&simplefunc)
         {
             if( name == "pfunct_faV_f") { simplefunc = new pfunct_faV_f< double* >(); return;}
             if( name == "pfunct_faV_grad_0") { simplefunc = new pfunct_faV_grad_0< double* >(); return;}
             if( name == "pfunct_faV_hess_0_0") { simplefunc = new pfunct_faV_hess_0_0< double* >(); return;}
+            if( name == "pfunct_McV_f") { simplefunc = new pfunct_McV_f< double* >(); return;}
             throw std::runtime_error( "PSimpleBase< double*, double > " + name + " was not found in the PLibrary");
         }
 
-        void PLibrary::checkout( std::string name, PFuncBase< std::vector<double>, double > *&func)
+        void PLibrary::checkout( std::string name, PFuncBase< dealii::VectorizedArray<double>, double > *&func)
         {
-            if( name == "pfunct_faV") { func = new pfunct_faV< std::vector<double> >(); return;}
-            throw std::runtime_error( "PFuncBase< std::vector<double>, double > " + name + " was not found in the PLibrary");
+            if( name == "pfunct_faV") { func = new pfunct_faV< dealii::VectorizedArray<double> >(); return;}
+            if( name == "pfunct_McV") { func = new pfunct_McV< dealii::VectorizedArray<double> >(); return;}
+            throw std::runtime_error( "PFuncBase< dealii::VectorizedArray<double>, double > " + name + " was not found in the PLibrary");
         }
         void PLibrary::checkout( std::string name, PFuncBase< double*, double > *&func)
         {
             if( name == "pfunct_faV") { func = new pfunct_faV< double* >(); return;}
+            if( name == "pfunct_McV") { func = new pfunct_McV< double* >(); return;}
             throw std::runtime_error( "PFuncBase< double*, double > " + name + " was not found in the PLibrary");
         }
 

@@ -1,4 +1,4 @@
-// created: 2016-4-20 11:47:45
+// created: 2016-4-21 13:56:30
 // version: master
 // url: https://github.com/bpuchala/IntegrationToolsWriter.git
 // commit: 8a15adf67355fad30bd75ce9ba6b1f8d24b9a537
@@ -17,7 +17,7 @@ namespace PRISMS
     {
         double eval( const VarContainer &var) const
         {
-            return  4.6598999999999997e+01*(var[0]*var[0])+-1.6070000000000000e+00*var[0]+1.0827460000000000e-04;
+            return  -1.6070000000000000e+00*var[0]+4.6598999999999997e+01*(var[0]*var[0])+1.0827460000000000e-04;
         }
 
     public:
@@ -29,17 +29,17 @@ namespace PRISMS
 
         std::string csrc() const
         {
-            return " 4.6598999999999997e+01*(var[0]*var[0])+-1.6070000000000000e+00*var[0]+1.0827460000000000e-04";
+            return " -1.6070000000000000e+00*var[0]+4.6598999999999997e+01*(var[0]*var[0])+1.0827460000000000e-04";
         }
 
         std::string sym() const
         {
-            return "1.082746E-4+(46.599)*c^2-(1.607)*c";
+            return "1.082746E-4-(1.607)*c+(46.599)*c^2";
         }
 
         std::string latex() const
         {
-            return "1.082746E-4-{(1.607)} c+{(46.599)} c^{2}";
+            return "1.082746E-4+{(46.599)} c^{2}-{(1.607)} c";
         }
 
         pfunct_faV_f* clone() const

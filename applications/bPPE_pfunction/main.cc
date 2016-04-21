@@ -5,12 +5,13 @@
 
 //Coupled Cahn-Hilliard+Allen-Cahn+Mechanics problem headers
 //#include "parameters_bPPE.h"
-#include "parameters.h"
-#include "../../src/models/coupled/coupledCHACMechanics.h"
 
 // PLibrary includes
-#include "PLib/PLibrary.hh"
-#include "PLib/PLibrary.cc"
+#include "PLibrary/PLibrary.hh"
+#include "PLibrary/PLibrary.cc"
+
+#include "parameters.h"
+#include "../../src/models/coupled/coupledCHACMechanics.h"
 
 //initial condition for concentration
 template <int dim>
@@ -169,20 +170,25 @@ void CoupledCHACMechanicsProblem<dim>::applyInitialConditions()
 {
 
 
-  unsigned int fieldIndex;
-  //call initial condition function for c
-  fieldIndex=this->getFieldIndex("c");
-  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionC<dim>(0.0), *this->solutionSet[fieldIndex]);
-  //call initial condition function for structural order parameters
-  fieldIndex=this->getFieldIndex("n1");
-  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionN<dim>(1), *this->solutionSet[fieldIndex]);
-  fieldIndex=this->getFieldIndex("n2");
-  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionN<dim>(2), *this->solutionSet[fieldIndex]);
-  fieldIndex=this->getFieldIndex("n3");
-  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionN<dim>(3), *this->solutionSet[fieldIndex]);
-  //set zero intial condition for u
-  fieldIndex=this->getFieldIndex("u");
-  *this->solutionSet[fieldIndex]=0.0;
+	unsigned int fieldIndex;
+	  //call initial condition function for c
+	  fieldIndex=this->getFieldIndex("c");
+	  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionC<dim>(0.0), *this->solutionSet[fieldIndex]);
+	  //call initial condition function for structural order parameters
+	  fieldIndex=this->getFieldIndex("n1");
+	  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionN<dim>(1), *this->solutionSet[fieldIndex]);
+	  if (num_sop > 1){
+		  fieldIndex=this->getFieldIndex("n2");
+		  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionN<dim>(2), *this->solutionSet[fieldIndex]);
+		  if (num_sop > 2){
+			  fieldIndex=this->getFieldIndex("n3");
+			  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionN<dim>(3), *this->solutionSet[fieldIndex]);
+		  }
+	  }
+
+	  //set zero intial condition for u
+	  fieldIndex=this->getFieldIndex("u");
+	  *this->solutionSet[fieldIndex]=0.0;
 
 }
 
@@ -215,12 +221,16 @@ void CoupledCHACMechanicsProblem<dim>::shiftConcentration()
 
 	double shift = c_avg - integrated_concentration/volume;
 
+	if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+			std::cout<<"Matrix concentration shifted from " <<c_matrix<<" to " << c_matrix+shift <<std::endl;
+	}
+
 	try{
-		if (shift < c_matrix) {throw 0;}
-	}
-	catch (int e){
-		Assert (shift > c_matrix, ExcMessage("An exception occurred. Initial concentration was shifted below zero."));
-	}
+			if (shift + c_matrix < 0.0) {throw 0;}
+		}
+		catch (int e){
+			Assert (shift > c_matrix, ExcMessage("An exception occurred. Initial concentration was shifted below zero."));
+		}
 
 	*this->solutionSet[fieldIndex]=0.0;
 	VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionC<dim>(shift), *this->solutionSet[fieldIndex]);
@@ -234,7 +244,10 @@ int main (int argc, char **argv)
 {
 
 	// Load variables from the PLibrary
-	PRISMS::PLibrary::checkout(pfunct_faV, pfunc_McV);
+	std::string homo_free_energy_funcname = "pfunct_faV";
+	std::string mobility_funcname = "pfunct_McV";
+	PRISMS::PLibrary::checkout(homo_free_energy_funcname, pfunct_faV);
+	PRISMS::PLibrary::checkout(mobility_funcname, pfunct_McV);
 
 
 
@@ -242,18 +255,22 @@ int main (int argc, char **argv)
 	Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,numbers::invalid_unsigned_int);
   try
     {
-      deallog.depth_console(0);
-      CoupledCHACMechanicsProblem<problemDIM> problem;
-      problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "c"));
-      problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "n1"));
-      problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "n2"));
-      problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "n3"));
-      problem.fields.push_back(Field<problemDIM>(VECTOR,  ELLIPTIC, "u"));
-      problem.init ();
-      if (adjust_avg_c){
-    	  problem.shiftConcentration();
-      }
-      problem.solve();
+	  deallog.depth_console(0);
+	        CoupledCHACMechanicsProblem<problemDIM> problem;
+	        problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "c"));
+	        problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "n1"));
+	        if (num_sop > 1){
+	      	  problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "n2"));
+	      	  if (num_sop > 2){
+	      		  problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "n3"));
+	      	  }
+	        }
+	        problem.fields.push_back(Field<problemDIM>(VECTOR,  ELLIPTIC, "u"));
+	        problem.init ();
+	        if (adjust_avg_c){
+	      	  problem.shiftConcentration();
+	        }
+	        problem.solve();
     }
   catch (std::exception &exc)
     {

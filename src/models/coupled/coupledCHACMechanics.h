@@ -478,156 +478,156 @@ void CoupledCHACMechanicsProblem<dim>::computeFreeEnergyValue(std::vector<double
   // remove later
   double value_homo = 0, value_grad = 0, value_el = 0;
 
-  typename DoFHandler<dim>::active_cell_iterator cell= this->dofHandlersSet[0]->begin_active(), endc = this->dofHandlersSet[0]->end();
-
-  for (; cell!=endc; ++cell) {
-	  if (cell->is_locally_owned()){
-    	fe_values.reinit (cell);
-
-    	unsigned int fieldIndex;
-    	fieldIndex=this->getFieldIndex("c");
-    	fe_values.get_function_values(*this->solutionSet[fieldIndex], cVal);
-    	fe_values.get_function_gradients(*this->solutionSet[fieldIndex], cxVal);
-
-    	fieldIndex=this->getFieldIndex("n1");
-    	fe_values.get_function_values(*this->solutionSet[fieldIndex], n1Val);
-    	fe_values.get_function_gradients(*this->solutionSet[fieldIndex], n1xVal);
-
-    	fieldIndex=this->getFieldIndex("n2");
-    	fe_values.get_function_values(*this->solutionSet[fieldIndex], n2Val);
-    	fe_values.get_function_gradients(*this->solutionSet[fieldIndex], n2xVal);
-
-    	fieldIndex=this->getFieldIndex("n3");
-    	fe_values.get_function_values(*this->solutionSet[fieldIndex], n3Val);
-    	fe_values.get_function_gradients(*this->solutionSet[fieldIndex], n3xVal);
-
-    	fieldIndex=this->getFieldIndex("u");
-    	//fe_values.get_function_gradients(*this->solutionSet[fieldIndex], uxVal); // This step doesn't work, uxVal not the right type
-
-
-    	for (unsigned int q=0; q<n_q_points; ++q){
-    		double c=cVal[q];
-    		double n1 = n1Val[q];
-    		double n2 = n2Val[q];
-    		double n3 = n3Val[q];
-
-//    		Tensor<2,dim> ux;
-//    		for (unsigned int i=0; i<dofs_per_cell; i++){
-//    				ux[i] = fe_values[uxVal].gradient(i,q);
-//    		}
-
-
-//    		vectorgradType ux;
-//    		for (unsigned int i=0; i<dim; i++){
-//    			for (unsigned int j=0; j<dim; j++){
-//    				ux[i][j] = uxVal[q][i][j];
+//  typename DoFHandler<dim>::active_cell_iterator cell= this->dofHandlersSet[0]->begin_active(), endc = this->dofHandlersSet[0]->end();
+//
+//  for (; cell!=endc; ++cell) {
+//	  if (cell->is_locally_owned()){
+//    	fe_values.reinit (cell);
+//
+//    	unsigned int fieldIndex;
+//    	fieldIndex=this->getFieldIndex("c");
+//    	fe_values.get_function_values(*this->solutionSet[fieldIndex], cVal);
+//    	fe_values.get_function_gradients(*this->solutionSet[fieldIndex], cxVal);
+//
+//    	fieldIndex=this->getFieldIndex("n1");
+//    	fe_values.get_function_values(*this->solutionSet[fieldIndex], n1Val);
+//    	fe_values.get_function_gradients(*this->solutionSet[fieldIndex], n1xVal);
+//
+//    	fieldIndex=this->getFieldIndex("n2");
+//    	fe_values.get_function_values(*this->solutionSet[fieldIndex], n2Val);
+//    	fe_values.get_function_gradients(*this->solutionSet[fieldIndex], n2xVal);
+//
+//    	fieldIndex=this->getFieldIndex("n3");
+//    	fe_values.get_function_values(*this->solutionSet[fieldIndex], n3Val);
+//    	fe_values.get_function_gradients(*this->solutionSet[fieldIndex], n3xVal);
+//
+//    	fieldIndex=this->getFieldIndex("u");
+//    	//fe_values.get_function_gradients(*this->solutionSet[fieldIndex], uxVal); // This step doesn't work, uxVal not the right type
+//
+//
+//    	for (unsigned int q=0; q<n_q_points; ++q){
+//    		double c=cVal[q];
+//    		double n1 = n1Val[q];
+//    		double n2 = n2Val[q];
+//    		double n3 = n3Val[q];
+//
+////    		Tensor<2,dim> ux;
+////    		for (unsigned int i=0; i<dofs_per_cell; i++){
+////    				ux[i] = fe_values[uxVal].gradient(i,q);
+////    		}
+//
+//
+////    		vectorgradType ux;
+////    		for (unsigned int i=0; i<dim; i++){
+////    			for (unsigned int j=0; j<dim; j++){
+////    				ux[i][j] = uxVal[q][i][j];
+////    			}
+////    		}
+//
+////    		double ux[dim][dim];
+////    		for (unsigned int i=0; i<dim; i++){
+////    			for (unsigned int j=0; j<dim; j++){
+////    				ux[i][j] = uxVal[q][i][j];
+////    			}
+////    		}
+//
+//    		// calculate the interfacial energy
+//    		double fgrad = 0;
+//    		for (int i=0; i<dim; i++){
+//    			for (int j=0; j<dim; j++){
+//    				fgrad += Kn1[i][j]*n1xVal[q][i]*n1xVal[q][j];
 //    			}
 //    		}
-
-//    		double ux[dim][dim];
-//    		for (unsigned int i=0; i<dim; i++){
-//    			for (unsigned int j=0; j<dim; j++){
-//    				ux[i][j] = uxVal[q][i][j];
+//    		for (int i=0; i<dim; i++){
+//    			for (int j=0; j<dim; j++){
+//    				fgrad += Kn2[i][j]*n2xVal[q][i]*n2xVal[q][j];
 //    			}
 //    		}
-
-    		// calculate the interfacial energy
-    		double fgrad = 0;
-    		for (int i=0; i<dim; i++){
-    			for (int j=0; j<dim; j++){
-    				fgrad += Kn1[i][j]*n1xVal[q][i]*n1xVal[q][j];
-    			}
-    		}
-    		for (int i=0; i<dim; i++){
-    			for (int j=0; j<dim; j++){
-    				fgrad += Kn2[i][j]*n2xVal[q][i]*n2xVal[q][j];
-    			}
-    		}
-    		for (int i=0; i<dim; i++){
-    			for (int j=0; j<dim; j++){
-    				fgrad += Kn3[i][j]*n3xVal[q][i]*n3xVal[q][j];
-    			}
-    		}
-    		fgrad = 0.5*fgrad + W*fbarrierV; // need to generalize for multiple order parameters
-
-    		// calculate the homogenous chemical energy
-    		double fhomo = (1.0-(h1V+h2V+h3V))*faV + (h1V+h2V+h3V)*fbV;
-
-    		// Calculatate the elastic energy
-    		double fel = 0;
-
-//    		VectorizedArray<double> test;
-//    		test = constV(1.5);
-//    		double test_2 = test[0];
-
-/*
-    		//vectorgradType E2;
-    		dealii::Table<2, double> E2;
-    		for (unsigned int i=0; i<dim; i++){
-    			for (unsigned int j=0; j<dim; j++){
-    				E2[i][j]= ux[i][j]+ux[j][i]; //constV(0.5)*(ux[i][j]+ux[j][i])-(sf1Strain[i][j]*h1V+sf2Strain[i][j]*h2V+sf3Strain[i][j]*h3V);
-    			}
-    		}
-
-			#if problemDIM==3
-    		dealii::Table<1, dealii::VectorizedArray<double> > E(6);
-
-    		E(0)=E2[0][0]; E(1)=E2[1][1]; E(2)=E2[2][2];
-    		E(3)=E2[1][2]+E2[2][1];
-    		E(4)=E2[0][2]+E2[2][0];
-    		E(5)=E2[0][1]+E2[1][0];
-
-    		for (unsigned int i=0; i<6; i++){
-    			for (unsigned int j=0; j<6; j++){
-    				fel+=CIJ(i,j)*E(i)[0]*E(j)[0];
-    			}
-    		}
-			#elif problemDIM==2
-			  //dealii::Table<1, dealii::VectorizedArray<double> > E(3);
-    		dealii::Table<1,double> E(3);
-			  E(0)=E2[0][0]; E(1)=E2[1][1];
-			  E(2)=E2[0][1]+E2[1][0];
-
-			  for (unsigned int i=0; i<3; i++){
-				for (unsigned int j=0; j<3; j++){
-					fel+=CIJ(i,j)*E[i]*E[j];
-				}
-			  }
-			#elif problemDIM==1
-			  dealii::Table<1, dealii::VectorizedArray<double> > E(1);
-			  E(0)=E2[0][0];
-			  fel=CIJ(0,0)*E(0).operator[](0);
-			#endif
-
-*/
-
-
-    		// Sum the energies at each integration point
-    		value+=(fhomo+fgrad+fel)*fe_values.JxW(q);
-
-    		// Remove this later, sum the components of the energies at each integration point
-    		value_homo += fhomo*fe_values.JxW(q);
-    		value_grad += fgrad*fe_values.JxW(q);
-    		value_el += fel*fe_values.JxW(q);
-    	}
-	  }
-  }
-
-  value=Utilities::MPI::sum(value, MPI_COMM_WORLD);
-  //freeEnergyValues.push_back(value);
-
-  // remove later
-  value_homo=Utilities::MPI::sum(value_homo, MPI_COMM_WORLD);
-  value_grad=Utilities::MPI::sum(value_grad, MPI_COMM_WORLD);
-  value_el=Utilities::MPI::sum(value_el, MPI_COMM_WORLD);
-
-  freeEnergyValues.push_back(value_grad);
-
-  if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
-	  std::cout<<"Homogenous Free Energy: "<<value_homo<<std::endl;
-  	  std::cout<<"Interfacial Free Energy: "<<value_grad<<std::endl;
-  	  std::cout<<"Elastic Free Energy: "<<value_el<<std::endl;
-  }
+//    		for (int i=0; i<dim; i++){
+//    			for (int j=0; j<dim; j++){
+//    				fgrad += Kn3[i][j]*n3xVal[q][i]*n3xVal[q][j];
+//    			}
+//    		}
+//    		fgrad = 0.5*fgrad + W*fbarrierV; // need to generalize for multiple order parameters
+//
+//    		// calculate the homogenous chemical energy
+//    		double fhomo = (1.0-(h1V+h2V+h3V))*faV + (h1V+h2V+h3V)*fbV;
+//
+//    		// Calculatate the elastic energy
+//    		double fel = 0;
+//
+////    		VectorizedArray<double> test;
+////    		test = constV(1.5);
+////    		double test_2 = test[0];
+//
+///*
+//    		//vectorgradType E2;
+//    		dealii::Table<2, double> E2;
+//    		for (unsigned int i=0; i<dim; i++){
+//    			for (unsigned int j=0; j<dim; j++){
+//    				E2[i][j]= ux[i][j]+ux[j][i]; //constV(0.5)*(ux[i][j]+ux[j][i])-(sf1Strain[i][j]*h1V+sf2Strain[i][j]*h2V+sf3Strain[i][j]*h3V);
+//    			}
+//    		}
+//
+//			#if problemDIM==3
+//    		dealii::Table<1, dealii::VectorizedArray<double> > E(6);
+//
+//    		E(0)=E2[0][0]; E(1)=E2[1][1]; E(2)=E2[2][2];
+//    		E(3)=E2[1][2]+E2[2][1];
+//    		E(4)=E2[0][2]+E2[2][0];
+//    		E(5)=E2[0][1]+E2[1][0];
+//
+//    		for (unsigned int i=0; i<6; i++){
+//    			for (unsigned int j=0; j<6; j++){
+//    				fel+=CIJ(i,j)*E(i)[0]*E(j)[0];
+//    			}
+//    		}
+//			#elif problemDIM==2
+//			  //dealii::Table<1, dealii::VectorizedArray<double> > E(3);
+//    		dealii::Table<1,double> E(3);
+//			  E(0)=E2[0][0]; E(1)=E2[1][1];
+//			  E(2)=E2[0][1]+E2[1][0];
+//
+//			  for (unsigned int i=0; i<3; i++){
+//				for (unsigned int j=0; j<3; j++){
+//					fel+=CIJ(i,j)*E[i]*E[j];
+//				}
+//			  }
+//			#elif problemDIM==1
+//			  dealii::Table<1, dealii::VectorizedArray<double> > E(1);
+//			  E(0)=E2[0][0];
+//			  fel=CIJ(0,0)*E(0).operator[](0);
+//			#endif
+//
+//*/
+//
+//
+//    		// Sum the energies at each integration point
+//    		value+=(fhomo+fgrad+fel)*fe_values.JxW(q);
+//
+//    		// Remove this later, sum the components of the energies at each integration point
+//    		value_homo += fhomo*fe_values.JxW(q);
+//    		value_grad += fgrad*fe_values.JxW(q);
+//    		value_el += fel*fe_values.JxW(q);
+//    	}
+//	  }
+//  }
+//
+//  value=Utilities::MPI::sum(value, MPI_COMM_WORLD);
+//  //freeEnergyValues.push_back(value);
+//
+//  // remove later
+//  value_homo=Utilities::MPI::sum(value_homo, MPI_COMM_WORLD);
+//  value_grad=Utilities::MPI::sum(value_grad, MPI_COMM_WORLD);
+//  value_el=Utilities::MPI::sum(value_el, MPI_COMM_WORLD);
+//
+//  freeEnergyValues.push_back(value_grad);
+//
+//  if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+//	  std::cout<<"Homogenous Free Energy: "<<value_homo<<std::endl;
+//  	  std::cout<<"Interfacial Free Energy: "<<value_grad<<std::endl;
+//  	  std::cout<<"Elastic Free Energy: "<<value_el<<std::endl;
+//  }
 }
 
 
