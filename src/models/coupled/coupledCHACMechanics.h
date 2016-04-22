@@ -50,6 +50,8 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
 
   void computeIntegral(double& integratedField);
 
+  void markBoundaries();
+
   bool c_dependent_misfit;
 
 };
