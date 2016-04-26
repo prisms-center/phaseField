@@ -197,13 +197,12 @@ void CoupledCHACMechanicsProblem<dim>::markBoundaries(){
 	for (; cell!=endc; ++cell){
 			for (unsigned int face_number=0; face_number<GeometryInfo<dim>::faces_per_cell;++face_number){
 				for (unsigned int i=0; i<dim; i++){
-
 					// Mark both the x/y/z=0 face and the x/y/z=span face
 					//if ((std::fabs(cell->face(face_number)->center()(i) - (0)) < 1e-12)||(std::fabs(cell->face(face_number)->center()(i) - (domain_size[i])) < 1e-12) ){
 
 					// Mark only the x/y/z=0 face
 					if ( std::fabs(cell->face(face_number)->center()(i) - (0)) < 1e-12 ){
-					cell->face(face_number)->set_boundary_id (i+1);
+					cell->face(face_number)->set_boundary_indicator (i+1);
 					}
 				}
 			}

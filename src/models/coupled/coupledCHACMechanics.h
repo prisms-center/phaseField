@@ -261,7 +261,7 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       nDependentMisfitAC2*=-hn2V;
       nDependentMisfitAC3*=-hn3V;
 
-      // Compute the other stress term in the order parameter chemical potential, heterMechACp = 0.5*Hn*(C_alpha-C_beta)*(E-E0)*(E-E0)
+      // Compute the other stress term in the order parameter chemical potential, heterMechACp = 0.5*Hn*(C_beta-C_alpha)*(E-E0)*(E-E0)
       dealii::VectorizedArray<double> heterMechAC1=constV(0.0);
       dealii::VectorizedArray<double> heterMechAC2=constV(0.0);
       dealii::VectorizedArray<double> heterMechAC3=constV(0.0);
