@@ -2,19 +2,19 @@
 
 //define problem dimensions
 #define problemDIM 3
-#define spanX 25.0 //14.0
-#define spanY 25.0 //14.0
-#define spanZ 25.0 //10.0 //14.0
+#define spanX 15.0 //14.0
+#define spanY 15.0 //14.0
+#define spanZ 15.0 //10.0 //14.0
 
 //define mesh parameters
-#define subdivisionsX 9
-#define subdivisionsY 9
-#define subdivisionsZ 12
-#define refineFactor 3
+#define subdivisionsX 1
+#define subdivisionsY 1
+#define subdivisionsZ 1
+#define refineFactor 6
 #define finiteElementDegree 2
 
 //define time step parameters
-#define timeStep (1.35e-5) //5e-6 //1.67e-5
+#define timeStep (1.0e-5) //5e-6 //1.67e-5
 #define timeIncrements 1000000 //200000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
 #define skipImplicitSolves 1
@@ -45,8 +45,8 @@
 #define Mn3V 50.0
 
 // define gradient penalty tensors
-double Kn1[3][3]={{0.0280,0,0},{0,0.0350,0},{0,0,0.0107}};
-//double Kn1[3][3]={{0.0280,0,0},{0,0.0107,0},{0,0,0.0107}};
+//double Kn1[3][3]={{0.0280,0,0},{0,0.0350,0},{0,0,0.0107}}; // Gen 1 B'''
+double Kn1[3][3]={{0.0265,0,0},{0,0.0331,0},{0,0,0.0101}}; // Gen 2 B'''
 double Kn2[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 double Kn3[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 
@@ -98,13 +98,21 @@ double sfts_const2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double sfts_linear3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double sfts_const3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
-//define free energy expressions (Mg-Nd data from CASM) (B''', gen 1)
-#define faV (46.599*c*c - 1.6907*c + 0.00010827)
-#define facV (93.198*c - 1.6907)
-#define faccV (93.198)
+//define free energy expressions (Mg-Nd data from CASM) (B''', gen 2)
+#define faV (64.996*c*c - 1.681*c + 0.00010277)
+#define facV (129.992*c - 1.681)
+#define faccV (129.992)
 #define fbV (2.1479*c*c - 2.1743*c + 0.033684)
 #define fbcV (4.2958*c - 2.1743)
 #define fbccV (4.2958)
+
+////define free energy expressions (Mg-Nd data from CASM) (B''', gen 1)
+//#define faV (46.599*c*c - 1.6907*c + 0.00010827)
+//#define facV (93.198*c - 1.6907)
+//#define faccV (93.198)
+//#define fbV (2.1479*c*c - 2.1743*c + 0.033684)
+//#define fbcV (4.2958*c - 2.1743)
+//#define fbccV (4.2958)
 
 //define free energy expressions (Mg-Nd data from CASM) (B', gen 1)
 //#define faV (44.547*c*c - 1.6954*c + 0.00011001)
@@ -138,9 +146,9 @@ double sfts_const3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 #define rn3xV  (constV(-timeStep*Mn3V)*Knx3)
 
 // Initial geometry
-#define x_denom 3.24
-#define y_denom 100.0
-#define z_denom 65.61
+#define x_denom 2.25
+#define y_denom 49.0
+#define z_denom 49.0
 #define initial_interface_coeff 0.1
 #define initial_radius 1.0
 #define c_matrix 1.0e-8
