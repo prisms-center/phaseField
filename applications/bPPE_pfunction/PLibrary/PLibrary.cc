@@ -1,14 +1,13 @@
-// created: 2016-4-21 13:56:30
-// version: master
+// created: 2016-4-27 10:59:25
+// version: issue-1
 // url: https://github.com/prisms-center/IntegrationTools
-// commit: 15edfe1511ccbdb131d055b89133fd543c7c0607
+// commit: 34f71553d3b1b3cdbbc6a02cfb8be793a16396b5
 
 #ifndef PLIBRARY_CC
 #define PLIBRARY_CC
 
 #include<cstring>
 #include<stdexcept>
-#include<vector>
 #include "pfunct_faV.hh"
 #include "pfunct_McV.hh"
 #include "PLibrary.hh"

@@ -1,7 +1,7 @@
-// created: 2016-4-21 13:56:30
+// created: 2016-4-27 10:59:25
 // version: master
 // url: https://github.com/bpuchala/IntegrationToolsWriter.git
-// commit: 8a15adf67355fad30bd75ce9ba6b1f8d24b9a537
+// commit: 13e063c3ac8e8911a726a243fdbd68f291cc58cc
 
 #ifndef pfunct_faV_HH
 #define pfunct_faV_HH
@@ -34,7 +34,7 @@ namespace PRISMS
 
         std::string sym() const
         {
-            return "1.082746E-4-(1.607)*c+(46.599)*c^2";
+            return "1.082746E-4+(46.599)*c^2-(1.607)*c";
         }
 
         std::string latex() const
