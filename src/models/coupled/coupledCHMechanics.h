@@ -36,6 +36,7 @@ class CoupledCahnHilliardMechanicsProblem: public MatrixFreePDE<dim>
  
   //methods to apply dirichlet BC's on displacement
   void applyDirichletBCs();
+
 };
 
 //constructor
