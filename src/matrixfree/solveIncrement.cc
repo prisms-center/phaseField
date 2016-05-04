@@ -15,6 +15,7 @@ void MatrixFreePDE<dim>::solveIncrement(){
 
   //compute residual vectors
   computeRHS();
+
   //solve for each field
   for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
     //Parabolic (first order derivatives in time) fields
