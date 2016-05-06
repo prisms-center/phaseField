@@ -45,14 +45,17 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
   // method to modify the fields for nucleation
   void modifySolutionFields();
 
-  // calculate (and output) the total free energy of the system
-  void computeFreeEnergyValue(std::vector<double>& freeEnergyValues);
-
   void computeIntegral(double& integratedField);
 
   void markBoundaries();
 
   bool c_dependent_misfit;
+
+  void getEnergy(const MatrixFree<dim,double> &data,
+    				    std::vector<vectorType*> &dst,
+    				    const std::vector<vectorType*> &src,
+    				    const std::pair<unsigned int,unsigned int> &cell_range);
+  Threads::Mutex assembler_lock;
 
 };
 
@@ -460,176 +463,195 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
   }
 }
 
-//compute integrated free energy value over the domain
+// Calculate the free energy
 template <int dim>
-void CoupledCHACMechanicsProblem<dim>::computeFreeEnergyValue(std::vector<double>& freeEnergyValues){
-  double value=0.0;
-  QGauss<dim>  quadrature_formula(finiteElementDegree+1);
-  FE_Q<dim> FE (QGaussLobatto<1>(finiteElementDegree+1));
-  FEValues<dim> fe_values (FE, quadrature_formula, update_values | update_gradients | update_JxW_values | update_quadrature_points);
-  const unsigned int   dofs_per_cell = FE.dofs_per_cell;
-  const unsigned int   n_q_points    = quadrature_formula.size();
-  std::vector<double> cVal(n_q_points), n1Val(n_q_points), n2Val(n_q_points), n3Val(n_q_points);
-  std::vector<Tensor<1,dim,double> > cxVal(n_q_points), n1xVal(n_q_points), n2xVal(n_q_points), n3xVal(n_q_points);
-  std::vector<std::vector<Tensor<1,dim,double> > > uxVal(n_q_points,std::vector<Tensor<1,dim,double> >(dim));
-  //std::vector<Tensor<2,dim,double> > uxVal(n_q_points);
-  //std::vector<std::vector<Tensor<1,dim,double> > > uxVal(n_q_points,dim);
-  //std::vector<std::vector<Tensor<1,dim,double> > > uxVal[n_q_points][dim];
-  //std::vector<vectorgradType> uxVal(n_q_points);
+void  CoupledCHACMechanicsProblem<dim>::getEnergy(const MatrixFree<dim,double> &data,
+				    std::vector<vectorType*> &dst,
+				    const std::vector<vectorType*> &src,
+				    const std::pair<unsigned int,unsigned int> &cell_range) {
 
-  // remove later
-  double value_homo = 0, value_grad = 0, value_el = 0;
+	//initialize fields
+	  typeScalar cVals(data, 0);
 
-//  typename DoFHandler<dim>::active_cell_iterator cell= this->dofHandlersSet[0]->begin_active(), endc = this->dofHandlersSet[0]->end();
-//
-//  for (; cell!=endc; ++cell) {
-//	  if (cell->is_locally_owned()){
-//    	fe_values.reinit (cell);
-//
-//    	unsigned int fieldIndex;
-//    	fieldIndex=this->getFieldIndex("c");
-//    	fe_values.get_function_values(*this->solutionSet[fieldIndex], cVal);
-//    	fe_values.get_function_gradients(*this->solutionSet[fieldIndex], cxVal);
-//
-//    	fieldIndex=this->getFieldIndex("n1");
-//    	fe_values.get_function_values(*this->solutionSet[fieldIndex], n1Val);
-//    	fe_values.get_function_gradients(*this->solutionSet[fieldIndex], n1xVal);
-//
-//    	fieldIndex=this->getFieldIndex("n2");
-//    	fe_values.get_function_values(*this->solutionSet[fieldIndex], n2Val);
-//    	fe_values.get_function_gradients(*this->solutionSet[fieldIndex], n2xVal);
-//
-//    	fieldIndex=this->getFieldIndex("n3");
-//    	fe_values.get_function_values(*this->solutionSet[fieldIndex], n3Val);
-//    	fe_values.get_function_gradients(*this->solutionSet[fieldIndex], n3xVal);
-//
-//    	fieldIndex=this->getFieldIndex("u");
-//    	//fe_values.get_function_gradients(*this->solutionSet[fieldIndex], uxVal); // This step doesn't work, uxVal not the right type
-//
-//
-//    	for (unsigned int q=0; q<n_q_points; ++q){
-//    		double c=cVal[q];
-//    		double n1 = n1Val[q];
-//    		double n2 = n2Val[q];
-//    		double n3 = n3Val[q];
-//
-////    		Tensor<2,dim> ux;
-////    		for (unsigned int i=0; i<dofs_per_cell; i++){
-////    				ux[i] = fe_values[uxVal].gradient(i,q);
-////    		}
-//
-//
-////    		vectorgradType ux;
-////    		for (unsigned int i=0; i<dim; i++){
-////    			for (unsigned int j=0; j<dim; j++){
-////    				ux[i][j] = uxVal[q][i][j];
-////    			}
-////    		}
-//
-////    		double ux[dim][dim];
-////    		for (unsigned int i=0; i<dim; i++){
-////    			for (unsigned int j=0; j<dim; j++){
-////    				ux[i][j] = uxVal[q][i][j];
-////    			}
-////    		}
-//
-//    		// calculate the interfacial energy
-//    		double fgrad = 0;
-//    		for (int i=0; i<dim; i++){
-//    			for (int j=0; j<dim; j++){
-//    				fgrad += Kn1[i][j]*n1xVal[q][i]*n1xVal[q][j];
-//    			}
-//    		}
-//    		for (int i=0; i<dim; i++){
-//    			for (int j=0; j<dim; j++){
-//    				fgrad += Kn2[i][j]*n2xVal[q][i]*n2xVal[q][j];
-//    			}
-//    		}
-//    		for (int i=0; i<dim; i++){
-//    			for (int j=0; j<dim; j++){
-//    				fgrad += Kn3[i][j]*n3xVal[q][i]*n3xVal[q][j];
-//    			}
-//    		}
-//    		fgrad = 0.5*fgrad + W*fbarrierV; // need to generalize for multiple order parameters
-//
-//    		// calculate the homogenous chemical energy
-//    		double fhomo = (1.0-(h1V+h2V+h3V))*faV + (h1V+h2V+h3V)*fbV;
-//
-//    		// Calculatate the elastic energy
-//    		double fel = 0;
-//
-////    		VectorizedArray<double> test;
-////    		test = constV(1.5);
-////    		double test_2 = test[0];
-//
-///*
-//    		//vectorgradType E2;
-//    		dealii::Table<2, double> E2;
-//    		for (unsigned int i=0; i<dim; i++){
-//    			for (unsigned int j=0; j<dim; j++){
-//    				E2[i][j]= ux[i][j]+ux[j][i]; //constV(0.5)*(ux[i][j]+ux[j][i])-(sf1Strain[i][j]*h1V+sf2Strain[i][j]*h2V+sf3Strain[i][j]*h3V);
-//    			}
-//    		}
-//
-//			#if problemDIM==3
-//    		dealii::Table<1, dealii::VectorizedArray<double> > E(6);
-//
-//    		E(0)=E2[0][0]; E(1)=E2[1][1]; E(2)=E2[2][2];
-//    		E(3)=E2[1][2]+E2[2][1];
-//    		E(4)=E2[0][2]+E2[2][0];
-//    		E(5)=E2[0][1]+E2[1][0];
-//
-//    		for (unsigned int i=0; i<6; i++){
-//    			for (unsigned int j=0; j<6; j++){
-//    				fel+=CIJ(i,j)*E(i)[0]*E(j)[0];
-//    			}
-//    		}
-//			#elif problemDIM==2
-//			  //dealii::Table<1, dealii::VectorizedArray<double> > E(3);
-//    		dealii::Table<1,double> E(3);
-//			  E(0)=E2[0][0]; E(1)=E2[1][1];
-//			  E(2)=E2[0][1]+E2[1][0];
-//
-//			  for (unsigned int i=0; i<3; i++){
-//				for (unsigned int j=0; j<3; j++){
-//					fel+=CIJ(i,j)*E[i]*E[j];
-//				}
-//			  }
-//			#elif problemDIM==1
-//			  dealii::Table<1, dealii::VectorizedArray<double> > E(1);
-//			  E(0)=E2[0][0];
-//			  fel=CIJ(0,0)*E(0).operator[](0);
-//			#endif
-//
-//*/
-//
-//
-//    		// Sum the energies at each integration point
-//    		value+=(fhomo+fgrad+fel)*fe_values.JxW(q);
-//
-//    		// Remove this later, sum the components of the energies at each integration point
-//    		value_homo += fhomo*fe_values.JxW(q);
-//    		value_grad += fgrad*fe_values.JxW(q);
-//    		value_el += fel*fe_values.JxW(q);
-//    	}
-//	  }
-//  }
-//
-//  value=Utilities::MPI::sum(value, MPI_COMM_WORLD);
-//  //freeEnergyValues.push_back(value);
-//
-//  // remove later
-//  value_homo=Utilities::MPI::sum(value_homo, MPI_COMM_WORLD);
-//  value_grad=Utilities::MPI::sum(value_grad, MPI_COMM_WORLD);
-//  value_el=Utilities::MPI::sum(value_el, MPI_COMM_WORLD);
-//
-//  freeEnergyValues.push_back(value_grad);
-//
-//  if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
-//	  std::cout<<"Homogenous Free Energy: "<<value_homo<<std::endl;
-//  	  std::cout<<"Interfacial Free Energy: "<<value_grad<<std::endl;
-//  	  std::cout<<"Elastic Free Energy: "<<value_el<<std::endl;
-//  }
+	  typeScalar n1Vals(data,1);
+	  #if num_sop>2
+	  typeScalar n3Vals(data,3);
+	  #endif
+	  #if num_sop>1
+	  typeScalar n2Vals(data,2);
+	  #endif
+
+	  typeVector uVals(data, num_sop+1);
+
+	  //loop over cells
+	  for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
+	    //initialize c field
+	    cVals.reinit(cell); cVals.read_dof_values_plain(*src[0]); cVals.evaluate(true, true, false);
+
+	    //initialize n fields
+	    n1Vals.reinit(cell); n1Vals.read_dof_values_plain(*src[1]); n1Vals.evaluate(true, true, false);
+		#if num_sop>1
+	    n2Vals.reinit(cell); n2Vals.read_dof_values_plain(*src[2]); n2Vals.evaluate(true, true, false);
+		#endif
+		#if num_sop>2
+	    n3Vals.reinit(cell); n3Vals.read_dof_values_plain(*src[3]); n3Vals.evaluate(true, true, false);
+		#endif
+
+	    //initialize u field
+	    uVals.reinit(cell); uVals.read_dof_values_plain(*src[num_sop+1]);
+
+	    if (c_dependent_misfit == true){
+	    	uVals.evaluate(false, true, true);
+	    }
+	    else{
+	    	uVals.evaluate(false, true, false);
+	    }
+
+	    dealii::AlignedVector<dealii::VectorizedArray<double> > JxW(cVals.n_q_points);
+	    cVals.fill_JxW_values(JxW);
+
+	    //loop over quadrature points
+	    for (unsigned int q=0; q<cVals.n_q_points; ++q){
+	      //c
+	      scalarvalueType c = cVals.get_value(q);
+	      scalargradType cx = cVals.get_gradient(q);
+
+	      //n1
+	      scalarvalueType n1 = n1Vals.get_value(q);
+	      scalargradType n1x = n1Vals.get_gradient(q);
+
+	      //n2
+	      scalarvalueType n2, n3;
+	      scalargradType n2x, n3x;
+		  #if num_sop>1
+	    	  n2 = n2Vals.get_value(q);
+	    	  n2x = n2Vals.get_gradient(q);
+		  #else
+	    	  n2 = constV(0.0);
+	    	  n2x = constV(0.0)*n1x;
+		  #endif
+
+	      //n3
+		  #if num_sop>2
+	    	  n3 = n3Vals.get_value(q);
+	    	  n3x = n3Vals.get_gradient(q);
+		  #else
+	    	  n3 = constV(0.0);
+	    	  n3x = constV(0.0)*n1x;
+		  #endif
+	      //u
+	      vectorgradType ux = uVals.get_gradient(q);
+
+	      scalarvalueType total_energy_density = constV(0.0);
+
+	      scalarvalueType f_chem = (constV(1.0)-(h1V+h2V+h3V))*faV + (h1V+h2V+h3V)*fbV;
+
+	      scalarvalueType f_grad = constV(0.0);
+
+	      for (int i=0; i<dim; i++){
+	    	  for (int j=0; j<dim; j++){
+	    		  f_grad += constV(Kn1[i][j])*n1x[i]*n1x[j];
+	    	  }
+	      }
+#if num_sop>1
+	      for (int i=0; i<dim; i++){
+	    	  for (int j=0; j<dim; j++){
+	    		  fgrad += constV(Kn2[i][j])*n2x[i]*n2x[j];
+	    	  }
+	      }
+#endif
+#if num_sop>2
+	      for (int i=0; i<dim; i++){
+	    	  for (int j=0; j<dim; j++){
+	    		  fgrad += constV(Kn3[i][j])*n3x[i]*n3x[j];
+	    	  }
+	      }
+#endif
+
+
+	      // Calculate the stress-free transformation strain and its derivatives at the quadrature point
+	      dealii::VectorizedArray<double> sfts1[dim][dim], sfts1c[dim][dim], sfts1cc[dim][dim], sfts2[dim][dim], sfts2c[dim][dim], sfts2cc[dim][dim], sfts3[dim][dim], sfts3c[dim][dim], sfts3cc[dim][dim];
+
+	      dealii::VectorizedArray<double> H_strain1, H_strain1n;
+	      //H_strain1 = h1V;
+	      //H_strain1n = hn1V;
+	      H_strain1 = h1V*h1V*h1V*h1V*h1V;
+	      H_strain1n = 5.0*h1V*h1V*h1V*h1V*hn1V;
+
+	      for (unsigned int i=0; i<dim; i++){
+	    	  for (unsigned int j=0; j<dim; j++){
+	    		  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
+	    		  sfts1[i][j] = constV(sfts_linear1[i][j])*c + constV(sfts_const1[i][j]);
+	    		  sfts1c[i][j] = constV(sfts_linear1[i][j]);
+	    		  sfts1cc[i][j] = constV(0.0);
+
+	    		  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
+	    		  sfts2[i][j] = constV(sfts_linear2[i][j])*c + constV(sfts_const2[i][j]);
+	    		  sfts2c[i][j] = constV(sfts_linear1[i][j]);
+	    		  sfts2cc[i][j] = constV(0.0);
+
+	    		  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
+	    		  sfts3[i][j] = constV(sfts_linear3[i][j])*c + constV(sfts_const3[i][j]);
+	    		  sfts3c[i][j] = constV(sfts_linear3[i][j]);
+	    		  sfts3cc[i][j] = constV(0.0);
+	    	  }
+	      }
+
+	      //compute E2=(E-E0)
+	      dealii::VectorizedArray<double> E2[dim][dim], S[dim][dim];
+
+	      for (unsigned int i=0; i<dim; i++){
+	    	  for (unsigned int j=0; j<dim; j++){
+	    		  //E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1V + sfts2[i][j]*h2V + sfts3[i][j]*h3V);
+	    		  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*H_strain1 + sfts2[i][j]*h2V + sfts3[i][j]*h3V);
+
+	    	  }
+	      }
+
+	      //compute stress
+	      //S=C*(E-E0)
+	      dealii::VectorizedArray<double> CIJ_combined[2*dim-1+dim/3][2*dim-1+dim/3];
+
+	      if (n_dependent_stiffness == true){
+	    	  dealii::VectorizedArray<double> sum_hV;
+	    	  sum_hV = h1V+h2V+h3V;
+	    	  for (unsigned int i=0; i<2*dim-1+dim/3; i++){
+	    		  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
+	    			  CIJ_combined[i][j] = constV(CIJ_alpha(i,j))*(constV(1.0)-sum_hV) + constV(CIJ_beta(i,j))*sum_hV;
+	    		  }
+	    	  }
+	    	  computeStress<dim>(CIJ_combined, E2, S);
+	      }
+	      else{
+	    	  computeStress<dim>(CIJ, E2, S);
+	      }
+
+	      scalarvalueType f_el = constV(0.0);
+
+	      for (unsigned int i=0; i<dim; i++){
+	    	  for (unsigned int j=0; j<dim; j++){
+	    		  f_el += constV(0.5) * S[i][j]*E2[i][j];
+	    	  }
+	      }
+
+	      total_energy_density = f_chem + f_grad + f_el;
+
+	      assembler_lock.acquire ();
+	      for (unsigned i=0; i<2;i++){
+	    	  //double temp = 1.0e0;
+
+	    	  // For some reason, some of the values in this loop
+	    	  if (c[i] > 1.0e-10){
+	    	  //if (std::abs(c[i]-temp) > 1e-10) std::cout << "?" << c[i] << " " << temp << " " << i << " " << q << " " << cell << std::endl;
+	    		  this->energy+=total_energy_density[i]*JxW[q][i];
+	    		  this->energy_components[0]+= f_chem[i]*JxW[q][i];
+	    		  this->energy_components[1]+= f_grad[i]*JxW[q][i];
+	    		  this->energy_components[2]+= f_el[i]*JxW[q][i];
+	    	  }
+	      }
+	      assembler_lock.release ();
+	    }
+	}
 }
 
 

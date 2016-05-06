@@ -68,8 +68,8 @@ class MatrixFreePDE:public Subscriptor
   void vmult (vectorType &dst, const vectorType &src) const;
   std::vector<Field<dim> >                  fields;
 
-  // Pure virtual function to shift the concentration
-  virtual void shiftConcentration() = 0;
+  // Virtual function to shift the concentration
+  void shiftConcentration();
 
  protected:
   void solveIncrement ();
@@ -121,13 +121,12 @@ class MatrixFreePDE:public Subscriptor
   //return index of given field name if exists, else throw error
   unsigned int getFieldIndex(std::string _name);
 
-  // Virtual method to calculate the total free energy
-  virtual void computeFreeEnergyValue(std::vector<double>& freeEnergyValues);
+
   std::vector<double> freeEnergyValues;
   void outputFreeEnergy(std::vector<double>& freeEnergyValues);
 
-  // Pure virtual method to compute the integral of a field
-  virtual void computeIntegral(double& integratedField) = 0;
+  // Virtual method to compute the integral of a field
+  void computeIntegral(double& integratedField);
 
   //variables for time dependent problems 
   //isTimeDependentBVP flag is used to see if invM, time steppping in
@@ -142,6 +141,7 @@ class MatrixFreePDE:public Subscriptor
   mutable TimerOutput computing_timer;
 
   double energy;
+  std::vector<double> energy_components;
 };
 
 //other matrixFree headers 
@@ -160,10 +160,7 @@ class MatrixFreePDE:public Subscriptor
 #include "../src/matrixfree/boundaryConditions.cc"
 #include "../src/matrixfree/initialConditions.cc"
 #include "../src/matrixfree/utilities.cc"
-<<<<<<< HEAD
-#include "../src/matrixfree/freeEnergy.cc"
-=======
 #include "../src/matrixfree/calcFreeEnergy.cc"
->>>>>>> rearrange_input_files
+#include "../src/matrixfree/integrate_and_shift_field.cc"
 
 #endif

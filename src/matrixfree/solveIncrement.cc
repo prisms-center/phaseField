@@ -14,7 +14,9 @@ void MatrixFreePDE<dim>::solveIncrement(){
   char buffer[200];
 
   //modify fields (rarely used. Typically used in problems involving nucleation)
+#ifdef nucleation_occurs
   if (nucleation_occurs == true) modifySolutionFields();
+#endif
 
   //compute residual vectors
   computeRHS();

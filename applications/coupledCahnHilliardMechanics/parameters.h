@@ -16,15 +16,17 @@
 //define time step parameters
 #define timeStep 1.0e-3
 #define timeFinal 100.0
-#define timeIncrements 10000
-#define skipImplicitSolves 1000
+#define timeIncrements 100
+#define skipImplicitSolves 1
 
 //define solver paramters
 #define solverType SolverCG
-#define relSolverTolerance 1.0e-10
+#define relSolverTolerance 1.0e-5
 #define maxSolverIterations 1000
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 1000
+#define skipOutputSteps 10
+
+#define calc_energy true
 

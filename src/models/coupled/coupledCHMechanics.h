@@ -200,14 +200,19 @@ void  CoupledCahnHilliardMechanicsProblem<dim>::getEnergy(const MatrixFree<dim,d
 				    std::vector<vectorType*> &dst,
 				    const std::vector<vectorType*> &src,
 				    const std::pair<unsigned int,unsigned int> &cell_range) {
-	//this->pcout << "N: " << VectorizedArray<double>::n_array_elements << "\n";
-	//initialize fields
-	typeScalar cVals(data,1);
 
-	//loop over cells
-	for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
+	//initialize fields
+	  typeScalar muVals(data, 0), cVals(data,1);
+	  typeVector uVals(data, 2);
+
+	  //loop over cells
+	  for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
+
 	    //initialize c field
-	    cVals.reinit(cell); cVals.read_dof_values_plain(*src[1]); cVals.evaluate(true, false, false);
+	    cVals.reinit(cell); cVals.read_dof_values_plain(*src[1]); cVals.evaluate(true, true, false);
+
+	    //initialize u field
+	    uVals.reinit(cell); uVals.read_dof_values_plain(*src[2]); uVals.evaluate(false, true, false);
 
 	    dealii::AlignedVector<dealii::VectorizedArray<double> > JxW(cVals.n_q_points);
 	    cVals.fill_JxW_values(JxW);
@@ -216,9 +221,22 @@ void  CoupledCahnHilliardMechanicsProblem<dim>::getEnergy(const MatrixFree<dim,d
 	    for (unsigned int q=0; q<cVals.n_q_points; ++q){
 	      //c
 	      scalarvalueType c = cVals.get_value(q);
+	      scalargradType cx = cVals.get_gradient(q);
+	      //u
+	      vectorgradType ux = uVals.get_gradient(q);
+	      vectorgradType Rux;
+
+	      scalarvalueType total_energy_density = constV(0.0);
+
+	      total_energy_density = c*c*c*c - constV(2.0)*c*c*c + c*c;
+
+	      for (unsigned int i=1; i<dim; i++){
+	    	  total_energy_density += KcV*constV(0.5)*cx[i]*cx[i];
+	      }
+
 	      assembler_lock.acquire ();
 	      for (unsigned i=0; i<2;i++){
-	    	  this->energy+=c[i]*JxW[q][i];
+	    	  this->energy+=total_energy_density[i]*JxW[q][i];
 	      }
 	      assembler_lock.release ();
 	    }
