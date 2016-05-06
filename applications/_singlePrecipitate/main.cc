@@ -19,60 +19,23 @@ public:
   }
   double value (const Point<dim> &p, const unsigned int component = 0) const
   {
+	  //set result equal to the structural order parameter initial condition
+	  double dx=spanX/( (double)subdivisionsX )/std::pow(2.0,refineFactor);
+	  double dy=spanY/( (double)subdivisionsY )/std::pow(2.0,refineFactor);
+	  double dz=spanZ/( (double)subdivisionsZ )/std::pow(2.0,refineFactor);
+	  double r=0.0;
+	  std::vector<double> ellipsoid_denoms;
+	  ellipsoid_denoms.push_back(x_denom);
+	  ellipsoid_denoms.push_back(y_denom);
+	  ellipsoid_denoms.push_back(z_denom);
 
-	//return the value of the initial concentration field at point p
-	double dx=spanX/( (double)subdivisionsX )/std::pow(2.0,refineFactor);
-	double dy=spanY/( (double)subdivisionsY )/std::pow(2.0,refineFactor);
-	double dz=spanZ/( (double)subdivisionsZ )/std::pow(2.0,refineFactor);
-	double r = 0.0;
-    //return 0.02 + 1.0e-3*(2*(0.5 - (double)(std::rand() % 100 )/100.0));
-	#if problemDIM==1
-	  r=p.operator()(0);
-	  return 0.5*(0.12-0.00)*(1-std::tanh((r-spanX/16.0)/(0.1*dx)));
-	#elif problemDIM==2
-	  // My initial conditions
-	  //r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
-	  //return 0.5*(0.12-0.0)*(1.0-std::tanh((r-spanY/8.0)/(2.0*dy))) +0.02;
 
-	  // Larry's initial conditions (150423f)
-	  //r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
-	  //return 0.5*(0.12-0.0)*(1.0-std::tanh((r-3.0)/(0.5*dy))) +0.01;
-
-	  // Larry's initial conditions (150422p)
-	  //r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
-	  //return 0.5*(0.12-0.0)*(1.0-std::tanh((r-spanX/8.0)/(2.0*dy))) +0.02;
-
-	  // Constant concentration
-	  //return avg_Nd;
-
-	  // Ellipsoid
-	  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom
-	  		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
+	  for (unsigned int i=0; i<dim; i++){
+		  r += (p.operator()(i))*(p.operator()(i))/ellipsoid_denoms[i];
+	  }
+	  r = sqrt(r);
 	  return 0.5*(c_precip-c_matrix)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + c_matrix + shift;
 
-	  //double test;
-	  //computeIntegral(test);
-
-	  // planar interface
-	  //r=(p.operator()(0)-spanX/4.0);
-	  //return 0.5*(0.12-0.0)*(1.0-std::tanh((r)/(initial_interface_coeff))) + avg_Nd;
-
-	#elif problemDIM==3
-	  // Sphere
-	  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom
-		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom
-		+(p.operator()(2)-spanZ/2.0)*(p.operator()(2)-spanZ/2.0)/z_denom);
-	  return 0.5*(c_precip-c_matrix)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + c_matrix + shift;
-
-	  // Constant concentration
-	  //return c_matrix + shift;
-
-	  // planar interface
-	  //r=sqrt((p.operator()(2))*(p.operator()(2)));
-	  //return 0.5*(0.12-avg_Nd)*(1.0-std::tanh((r)/(initial_interface_coeff))) + c_matrix + shift;
-	  //return  0.5*(0.12-avg_Nd)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + c_matrix + shift;
-
-	#endif
   }
 };
 
@@ -87,83 +50,39 @@ public:
   }
   double value (const Point<dim> &p, const unsigned int component = 0) const
   {
-    //set result equal to the structural order paramter initial condition
+	  //set result equal to the structural order parameter initial condition
 	  double dx=spanX/( (double)subdivisionsX )/std::pow(2.0,refineFactor);
 	  double dy=spanY/( (double)subdivisionsY )/std::pow(2.0,refineFactor);
 	  double dz=spanZ/( (double)subdivisionsZ )/std::pow(2.0,refineFactor);
-    double r=0.0;
-	#if problemDIM==1
-    r=p.operator()(0);
-	  return 0.5*(1.0-std::tanh((r-spanX/16.0)/(0.1*dx)));
-	#elif problemDIM==2
+	  double r=0.0;
+	  std::vector<double> ellipsoid_denoms;
+	  ellipsoid_denoms.push_back(x_denom);
+	  ellipsoid_denoms.push_back(y_denom);
+	  ellipsoid_denoms.push_back(z_denom);
+
 	  if (index==1){
-		  // My initial conditions
-		  //r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
-		  //return 0.5*(1.0-std::tanh((r-spanY/8.0)/(2.0*dy)));
-
-		  // Larry's initial conditions (150423f)
-		  //r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
-		  //return 0.5*(1.0-std::tanh((r-3.0)/(0.5*dy)));
-
-		  // Larry's initial conditions (150422p)
-//		  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
-//		  return 0.5*(1.0-std::tanh((r-spanX/8.0)/(2.0*dy)));
-
-		  r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom
-		  		  		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom);
+		  for (unsigned int i=0; i<dim; i++){
+			  r += (p.operator()(i))*(p.operator()(i))/ellipsoid_denoms[i];
+		  }
+		  r = sqrt(r);
 		  return 0.5*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff)));
-
-		  // planar interface
-		  //r=(p.operator()(0)-spanX/4.0);
-		  //return 0.5*(1.0-std::tanh((r)/(2.0*dy)));
-
-		  // pure matrix phase
-		  //return 0.0;
 	  }
 	  else if (index==2){
-		return 0.0;
-	//     double r1=p.distance(Point<dim>(3*spanX/4.0,spanY/4.0));
-	//     double r2=p.distance(Point<dim>(spanX/2.0,spanY/2.0));
-	//     r=std::min(r1,r2);
+		  return 0.0;
 	  }
-	  else if (index==3){
-		return 0.0;
-	//     r=p.distance(Point<dim>(spanX/4.0,3*spanY/4.0));
+	  else{
+		  return 0.0;
 	  }
-	  //return 0.5*(1.0-std::tanh((r-spanX/16.0)/(3*dx)));
-	#elif problemDIM==3
-	  if (index==1){
-	  //r=p.distance(Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
-	  //return 0.5*(1.0-std::tanh((r-spanX/8.0)/(3*dx)));
 
-		// Sphere
-		r=sqrt((p.operator()(0)-spanX/2.0)*(p.operator()(0)-spanX/2.0)/x_denom
-		  		+(p.operator()(1)-spanY/2.0)*(p.operator()(1)-spanY/2.0)/y_denom
-		  		+(p.operator()(2)-spanZ/2.0)*(p.operator()(2)-spanZ/2.0)/z_denom);
-		return 0.5*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff)));
-
-		// planar interface
-		//r=sqrt((p.operator()(2))*(p.operator()(2)));
-		//return 0.5*(1.0-std::tanh((r)/(initial_interface_coeff)));
-		//return 0.5*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff)));
-	  }
-	  else if (index==2){
-		return 0.0;
-	  }
-	  else if (index==3){
-		return 0.0;
-	  }
-	#endif
-	return 0.0;
+	  Assert (index <= 3, ExcMessage("An exception occurred. Index for structural order parameter must be 3 or below."));
   }
-};
 
+};
 
 //apply initial conditions
 template <int dim>
 void CoupledCHACMechanicsProblem<dim>::applyInitialConditions()
 {
-
 
   unsigned int fieldIndex;
   //call initial condition function for c
@@ -191,9 +110,37 @@ void CoupledCHACMechanicsProblem<dim>::applyInitialConditions()
 template <int dim>
 void CoupledCHACMechanicsProblem<dim>::applyDirichletBCs(){
   //Set u=0 at all boundaries
-  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->getFieldIndex("u")],\
-					    0, ZeroFunction<dim>(dim), *(ConstraintMatrix*) \
-					    this->constraintsSet[this->getFieldIndex("u")]);
+
+	// Set all components of u to zero at the "external boundaries" (i.e. where none of x, y, or z are zero)
+	VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->getFieldIndex("u")],\
+	  					    0, ZeroFunction<dim>(dim), *(ConstraintMatrix*) \
+	  					    this->constraintsSet[this->getFieldIndex("u")]);
+
+	// Set only the normal component of u to zero at the "internal boundaries" (i.e. where one of x, y, or z are zero)
+	std::vector<bool> component_mask;
+
+	for (unsigned int direction=1; direction<dim+1; direction++){
+		if (direction == 1){ component_mask.push_back(true); }
+		else{ component_mask.push_back(false); }
+
+		if (dim > 1){
+			if (direction == 2){ component_mask.push_back(true); }
+			else{ component_mask.push_back(false); }
+		}
+
+		if (dim > 2){
+			if (direction == 3){ component_mask.push_back(true); }
+			else{ component_mask.push_back(false); }
+		}
+
+		dealii::ComponentMask BC_mask(component_mask);
+
+		VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->getFieldIndex("u")],\
+					direction, ZeroFunction<dim>(dim), *(ConstraintMatrix*) \
+					this->constraintsSet[this->getFieldIndex("u")],BC_mask);
+
+		component_mask.clear();
+	}
 }
 
 // Shift the initial concentration so that the average concentration is the desired value
@@ -232,6 +179,39 @@ void CoupledCHACMechanicsProblem<dim>::shiftConcentration()
 	MatrixFreePDE<dim>::solutionSet[fieldIndex]->update_ghost_values();
 
 	computeIntegral(integrated_concentration);
+}
+
+//methods to mark boundaries
+template <int dim>
+void CoupledCHACMechanicsProblem<dim>::markBoundaries(){
+
+	// Mark the x=0, y=0, and z=0 faces with 1, 2, and 3, respectively. The x=spanX, y=spanY, and z=spanZ faces are left at the default value (0)
+
+	std::vector<double> domain_size;
+	domain_size.push_back(spanX);
+	domain_size.push_back(spanY);
+	domain_size.push_back(spanZ);
+
+	typename Triangulation<dim>::cell_iterator
+	cell = MatrixFreePDE<dim>::triangulation.begin (),
+	endc = MatrixFreePDE<dim>::triangulation.end();
+
+	for (; cell!=endc; ++cell){
+
+		// Mark one or more faces
+		for (unsigned int face_number=0; face_number<GeometryInfo<dim>::faces_per_cell;++face_number){
+			for (unsigned int i=0; i<dim; i++){
+				//Mark both the x/y/z=0 face and the x/y/z=span face
+				//if ((std::fabs(cell->face(face_number)->center()(i) - (0)) < 1e-12)||(std::fabs(cell->face(face_number)->center()(i) - (domain_size[i])) < 1e-12) ){
+
+				//Mark only the x/y/z=0 face
+				if ( std::fabs(cell->face(face_number)->center()(i) - (0)) < 1e-12 ){
+				cell->face(face_number)->set_boundary_indicator (i+1);
+				}
+
+			}
+		}
+	}
 }
 
 //main

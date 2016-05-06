@@ -29,8 +29,12 @@ f_writer_string = 'fw -n "pfunct_McV"  -v "c" -d "concentration" --sym "'+Mc+'" 
 subprocess.call([f_writer_string],shell=True)
 
 # Write the PLibrary
+
 l_writer_string = 'lw -d '+dir+' -v "dealii::VectorizedArray<double>" -l '+dir+' -c --include "<deal.II/base/vectorization.h>"'
 
 subprocess.call([l_writer_string],shell=True)
 
+
+
+# Add a Python interface that builds up "f_writer_string" and "l_writer_string" from more understandable variables
 
