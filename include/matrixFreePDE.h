@@ -111,6 +111,12 @@ class MatrixFreePDE:public Subscriptor
   virtual void applyInitialConditions();
   virtual void modifySolutionFields ();
  
+  void computeEnergy();
+  virtual void getEnergy(const MatrixFree<dim,double> &data,
+		    std::vector<vectorType*> &dst,
+		    const std::vector<vectorType*> &src,
+		    const std::pair<unsigned int,unsigned int> &cell_range);
+
   //utility functions
   //return index of given field name if exists, else throw error
   unsigned int getFieldIndex(std::string _name);
@@ -134,6 +140,8 @@ class MatrixFreePDE:public Subscriptor
   ConditionalOStream  pcout;  
   //compute time log
   mutable TimerOutput computing_timer;
+
+  double energy;
 };
 
 //other matrixFree headers 
@@ -152,6 +160,10 @@ class MatrixFreePDE:public Subscriptor
 #include "../src/matrixfree/boundaryConditions.cc"
 #include "../src/matrixfree/initialConditions.cc"
 #include "../src/matrixfree/utilities.cc"
+<<<<<<< HEAD
 #include "../src/matrixfree/freeEnergy.cc"
+=======
+#include "../src/matrixfree/calcFreeEnergy.cc"
+>>>>>>> rearrange_input_files
 
 #endif

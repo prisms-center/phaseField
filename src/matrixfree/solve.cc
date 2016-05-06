@@ -35,10 +35,13 @@ void MatrixFreePDE<dim>::solve(){
       //solve time increment
       solveIncrement();
 
+      computeEnergy();
+
       //output results to file
       if ((writeOutput) && (currentIncrement%skipOutputSteps==0)){
     	  outputResults();
     	  //computeFreeEnergyValue(freeEnergyValues);
+    	  computeEnergy();
     	  //outputFreeEnergy(freeEnergyValues);
       }
     }
