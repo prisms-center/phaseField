@@ -111,10 +111,12 @@ template <int dim>
 void CoupledCHACMechanicsProblem<dim>::applyDirichletBCs(){
   //Set u=0 at all boundaries
 
+	// Set all components of u to zero at the "external boundaries" (i.e. where none of x, y, or z are zero)
 	VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->getFieldIndex("u")],\
 	  					    0, ZeroFunction<dim>(dim), *(ConstraintMatrix*) \
 	  					    this->constraintsSet[this->getFieldIndex("u")]);
 
+	// Set only the normal component of u to zero at the "internal boundaries" (i.e. where one of x, y, or z are zero)
 	std::vector<bool> component_mask;
 
 	for (unsigned int direction=1; direction<dim+1; direction++){
@@ -195,19 +197,21 @@ void CoupledCHACMechanicsProblem<dim>::markBoundaries(){
 	endc = MatrixFreePDE<dim>::triangulation.end();
 
 	for (; cell!=endc; ++cell){
-			for (unsigned int face_number=0; face_number<GeometryInfo<dim>::faces_per_cell;++face_number){
-				for (unsigned int i=0; i<dim; i++){
-					// Mark both the x/y/z=0 face and the x/y/z=span face
-					//if ((std::fabs(cell->face(face_number)->center()(i) - (0)) < 1e-12)||(std::fabs(cell->face(face_number)->center()(i) - (domain_size[i])) < 1e-12) ){
 
-					// Mark only the x/y/z=0 face
-					if ( std::fabs(cell->face(face_number)->center()(i) - (0)) < 1e-12 ){
-					cell->face(face_number)->set_boundary_indicator (i+1);
-					}
+		// Mark one or more faces
+		for (unsigned int face_number=0; face_number<GeometryInfo<dim>::faces_per_cell;++face_number){
+			for (unsigned int i=0; i<dim; i++){
+				//Mark both the x/y/z=0 face and the x/y/z=span face
+				//if ((std::fabs(cell->face(face_number)->center()(i) - (0)) < 1e-12)||(std::fabs(cell->face(face_number)->center()(i) - (domain_size[i])) < 1e-12) ){
+
+				//Mark only the x/y/z=0 face
+				if ( std::fabs(cell->face(face_number)->center()(i) - (0)) < 1e-12 ){
+				cell->face(face_number)->set_boundary_indicator (i+1);
 				}
+
 			}
 		}
-
+	}
 }
 
 //main

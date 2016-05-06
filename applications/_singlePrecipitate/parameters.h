@@ -15,7 +15,7 @@
 
 //define time step parameters
 #define timeStep (1.0e-5) //5e-6 //1.67e-5
-#define timeIncrements 1000000 //200000
+#define timeIncrements 10 //1000000 //200000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
 #define skipImplicitSolves 1
 
@@ -87,8 +87,12 @@ double Kn3[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 
 // Stress-free transformation strains
 // Linear fits for the stress-free transformation strains in for sfts = sfts_linear * c + sfts_const
+
+// B'''
 double sfts_linear1[3][3] = {{-0.34358,0,0},{0,0.68568,0},{0,0,0.19308}};
 double sfts_const1[3][3] = {{0.14978,0,0},{0,-0.10254,0},{0,0,-0.034049}};
+
+// 2D test values
 //double sfts_linear1[3][3] = {{-0.2648,0,0},{0,0.1568,0},{0,0,0.1568}};
 //double sfts_const1[3][3] = {{0.1341,0,0},{0,-0.02756,0},{0,0,-0.02756}};
 
