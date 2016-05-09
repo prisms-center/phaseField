@@ -556,14 +556,14 @@ void  CoupledCHACMechanicsProblem<dim>::getEnergy(const MatrixFree<dim,double> &
 #if num_sop>1
 	      for (int i=0; i<dim; i++){
 	    	  for (int j=0; j<dim; j++){
-	    		  fgrad += constV(Kn2[i][j])*n2x[i]*n2x[j];
+	    		  f_grad += constV(Kn2[i][j])*n2x[i]*n2x[j];
 	    	  }
 	      }
 #endif
 #if num_sop>2
 	      for (int i=0; i<dim; i++){
 	    	  for (int j=0; j<dim; j++){
-	    		  fgrad += constV(Kn3[i][j])*n3x[i]*n3x[j];
+	    		  f_grad += constV(Kn3[i][j])*n3x[i]*n3x[j];
 	    	  }
 	      }
 #endif
@@ -695,6 +695,10 @@ void CoupledCHACMechanicsProblem<dim>::modifySolutionFields()
   double J = 0.0;
   //delete the previous entries in the nuclei vector (old nucleus are still retained in the localNuclei vector)
   nuclei.clear();
+
+#ifndef c_matrix
+  double c_matrix = 1.0e-6;
+#endif
 
   //populate localNuclei vector
   if (inc <= timeIncrements){

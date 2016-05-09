@@ -6,7 +6,6 @@
 #include "parameters.h"
 #include "residuals.h"
 #include "../../src/models/diffusion/coupledCHAC.h"
-
 #include "ICs_and_BCs.h"
  
 //main
