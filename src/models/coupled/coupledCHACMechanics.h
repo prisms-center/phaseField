@@ -113,11 +113,11 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
   typeScalar cVals(data, 0);
 
   typeScalar n1Vals(data,1);
-  #if num_sop>2
-  typeScalar n3Vals(data,3);
-  #endif
   #if num_sop>1
   typeScalar n2Vals(data,2);
+  #endif
+  #if num_sop>2
+  typeScalar n3Vals(data,3);
   #endif
 
   typeVector uVals(data, num_sop+1);
@@ -186,7 +186,8 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       }
 
       // Calculate the stress-free transformation strain and its derivatives at the quadrature point
-      dealii::VectorizedArray<double> sfts1[dim][dim], sfts1c[dim][dim], sfts1cc[dim][dim], sfts2[dim][dim], sfts2c[dim][dim], sfts2cc[dim][dim], sfts3[dim][dim], sfts3c[dim][dim], sfts3cc[dim][dim];
+      //dealii::VectorizedArray<double> sfts1[dim][dim], sfts1c[dim][dim], sfts1cc[dim][dim], sfts2[dim][dim], sfts2c[dim][dim], sfts2cc[dim][dim], sfts3[dim][dim], sfts3c[dim][dim], sfts3cc[dim][dim];
+      dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > sfts1, sfts1c, sfts1cc, sfts2, sfts2c, sfts2cc, sfts3, sfts3c, sfts3cc;
 
       dealii::VectorizedArray<double> H_strain1, H_strain1n;
       //H_strain1 = h1V;
@@ -226,6 +227,7 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       
       //compute stress
       //S=C*(E-E0)
+      // Compute stress tensor (which is equal to the residual, Rux)
       dealii::VectorizedArray<double> CIJ_combined[2*dim-1+dim/3][2*dim-1+dim/3];
 
       if (n_dependent_stiffness == true){
@@ -241,15 +243,16 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       else{
     	  computeStress<dim>(CIJ, E2, S);
       }
+
+      // Fill residual corresponding to mechanics
+      // R=-C*(E-E0)
       
-      //fill residual corresponding to mechanics
-      //R=-C*(E-E0)
       for (unsigned int i=0; i<dim; i++){
     	  for (unsigned int j=0; j<dim; j++){
     		  Rux[i][j] = - S[i][j];
     	  }
       }
-      
+
       // Compute one of the stress terms in the order parameter chemical potential, nDependentMisfitACp = C*(E-E0)*(E0_p*Hn)
       dealii::VectorizedArray<double> nDependentMisfitAC1=constV(0.0);
       dealii::VectorizedArray<double> nDependentMisfitAC2=constV(0.0);
@@ -289,11 +292,7 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       }
 
 		// compute the stress term in the gradient of the concentration chemical potential, grad_mu_el = [C*(E-E0)*E0c]x, must be a vector with length dim
-		dealii::VectorizedArray<double> grad_mu_el[dim];
-
-		for (unsigned int k=0; k<dim; k++){
-		  grad_mu_el[k] = constV(0.0);
-		}
+      	scalargradType grad_mu_el;
 
 		if (c_dependent_misfit == true){
 			dealii::VectorizedArray<double> E3[dim][dim], S3[dim][dim];
@@ -384,11 +383,11 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
 					       const std::pair<unsigned int,unsigned int> &cell_range) const{
 	  //initialize fields
 	  typeScalar n1Vals(data,1);
-	  #if num_sop>2
-	  typeScalar n3Vals(data,3);
-	  #endif
 	  #if num_sop>1
 	  typeScalar n2Vals(data,2);
+	  #endif
+	  #if num_sop>2
+	  typeScalar n3Vals(data,3);
 	  #endif
 
 	  typeVector uVals(data, num_sop+1);
@@ -414,8 +413,8 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
       vectorgradType Rux;
 
       // n
-	scalarvalueType n1, n2, n3;
-	n1 = n1Vals.get_value(q);
+      scalarvalueType n1, n2, n3;
+      n1 = n1Vals.get_value(q);
 	  #if num_sop>1
 		  n2 = n2Vals.get_value(q);
 	  #else
@@ -428,38 +427,19 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
 	  #endif
 
 		  // Take advantage of E being simply 0.5*(ux + transpose(ux)) and use the dealii "symmetrize" function
-		  dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > E;
+		  dealii::Tensor<2, dim, dealii::VectorizedArray<double> > E;
 		  //E = symmetrize(ux); // Only works for Deal.II v8.3 and later
-		  E = ux + transpose(ux);
-		  E *= constV(0.5);
-
-		  dealii::VectorizedArray<double> S[dim][dim];
-		  //dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > S;
-
-		  //std::cout << S[0][0][0] << " " << S[1][0][0] << "\n";
-		  //int in_num;
-		  //std::cin >> in_num;
+		  E = constV(0.5)*(ux + transpose(ux));
     
-		  // Compute stress tensor
+		  // Compute stress tensor (which is equal to the residual, Rux)
 		  if (n_dependent_stiffness == true){
 			  dealii::Tensor<2, 2*dim-1+dim/3, dealii::VectorizedArray<double> > CIJ_combined;
-			  for (unsigned int i=0; i<2*dim-1+dim/3; i++){
-				  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-					  CIJ_combined[i][j] = CIJ_alpha_tensor[i][j]*(constV(1.0)-h1V-h2V-h3V) + CIJ_beta_tensor[i][j]*(h1V+h2V+h3V);
-				  }
-			  }
+			  CIJ_combined = CIJ_alpha_tensor*(constV(1.0)-h1V-h2V-h3V) + CIJ_beta_tensor*(h1V+h2V+h3V);
 
-			  computeStress<dim>(CIJ_combined, E, S);
+			  computeStress<dim>(CIJ_combined, E, Rux);
 		  }
 		  else{
-			  computeStress<dim>(CIJ, E, S);
-		  }
-
-		  //compute residual
-		  for (unsigned int i=0; i<dim; i++){
-			  for (unsigned int j=0; j<dim; j++){
-				  Rux[i][j] = S[i][j];
-			  }
+			  computeStress<dim>(CIJ, E, Rux);
 		  }
 
 		  //submit residual value

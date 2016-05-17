@@ -55,7 +55,7 @@ if (dim==3){
   R[1][2]=S[3]; R[0][2]=S[4]; R[0][1]=S[5];
   R[2][1]=S[3]; R[2][0]=S[4]; R[1][0]=S[5];
 
-//    Optimized algorithm that skips the zero entries of CIJ and is a few percent faster
+//    Optimized algorithm that skips the zero entries of CIJ for an orthotropic material and is a few percent faster
 //	  dealii::VectorizedArray<double> S[6], E[6];
 //	  E[0]=strain[0][0]; E[1]=strain[1][1]; E[2]=strain[2][2];
 //	  //In Voigt notation: Engineering shear strain=2*strain
@@ -142,181 +142,46 @@ else {
 }
 }
 
-// Overloaded functions where the CIJ and the stress are vectorized arrays and the strain is stored as a tensor
-template <int dim>
-void computeStress(const dealii::VectorizedArray<double> CIJ[2*dim-1+dim/3][2*dim-1+dim/3], const dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > strain, dealii::VectorizedArray<double> R[][dim]){
-if (dim==3){
-  dealii::VectorizedArray<double> S[6], E[6];
-  E[0]=strain[0][0]; E[1]=strain[1][1]; E[2]=strain[2][2];
-  //In Voigt notation: Engineering shear strain=2*strain
-  E[3]=strain[1][2]+strain[2][1];
-  E[4]=strain[0][2]+strain[2][0];
-  E[5]=strain[0][1]+strain[1][0];
-  for (unsigned int i=0; i<6; i++){
-    S[i]=0.0;
-    for (unsigned int j=0; j<6; j++){
-      S[i]+=CIJ[i][j]*E[j];
-    }
-  }
-  R[0][0]=S[0]; R[1][1]=S[1]; R[2][2]=S[2];
-  R[1][2]=S[3]; R[0][2]=S[4]; R[0][1]=S[5];
-  R[2][1]=S[3]; R[2][0]=S[4]; R[1][0]=S[5];
-}
-else if (dim==2){
-  dealii::VectorizedArray<double> S[3], E[3];
-  E[0]=strain[0][0]; E[1]=strain[1][1];
-  //In Voigt notation: Engineering shear strain=2*strain
-  E[2]=strain[0][1]+strain[1][0];
-  for (unsigned int i=0; i<3; i++){
-    S[i]=0.0;
-    for (unsigned int j=0; j<3; j++){
-      S[i]+=CIJ[i][j]*E[j];
-    }
-  }
-  R[0][0]=S[0]; R[1][1]=S[1];
-  R[0][1]=S[2]; R[1][0]=S[2];
-}
-else {
-	dealii::VectorizedArray<double> S[1], E[1];
-	E[0]=strain[0][0];
-	S[0]=CIJ[0][0]*E[0];
-	R[0][0]=S[0];
-
-}
-}
-
-// Overloaded functions where the CIJ is a table, the strain is a tensor, and the stress is a vectorized array
-template <int dim>
-void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > strain, dealii::VectorizedArray<double> R[][dim]){
-if (dim==3){
-  dealii::VectorizedArray<double> S[6], E[6];
-  E[0]=strain[0][0]; E[1]=strain[1][1]; E[2]=strain[2][2];
-  //In Voigt notation: Engineering shear strain=2*strain
-  E[3]=strain[1][2]+strain[2][1];
-  E[4]=strain[0][2]+strain[2][0];
-  E[5]=strain[0][1]+strain[1][0];
-  for (unsigned int i=0; i<6; i++){
-    S[i]=0.0;
-    for (unsigned int j=0; j<6; j++){
-      S[i]+=CIJ(i,j)*E[j];
-    }
-  }
-  R[0][0]=S[0]; R[1][1]=S[1]; R[2][2]=S[2];
-  R[1][2]=S[3]; R[0][2]=S[4]; R[0][1]=S[5];
-  R[2][1]=S[3]; R[2][0]=S[4]; R[1][0]=S[5];
-}
-else if (dim==2){
-  dealii::VectorizedArray<double> S[3], E[3];
-  E[0]=strain[0][0]; E[1]=strain[1][1];
-  //In Voigt notation: Engineering shear strain=2*strain
-  E[2]=strain[0][1]+strain[1][0];
-  for (unsigned int i=0; i<3; i++){
-    S[i]=0.0;
-    for (unsigned int j=0; j<3; j++){
-      S[i]+=CIJ(i,j)*E[j];
-    }
-  }
-  R[0][0]=S[0]; R[1][1]=S[1];
-  R[0][1]=S[2]; R[1][0]=S[2];
-}
-else {
-	dealii::VectorizedArray<double> S[1], E[1];
-	E[0]=strain[0][0];
-	S[0]=CIJ(0,0)*E[0];
-	R[0][0]=S[0];
-
-}
-}
-
-// Overloaded functions where CIJ and the strain are tensors and the stress is a vectorized array
-template <int dim>
-void computeStress(const dealii::Tensor<2, 2*dim-1+dim/3, dealii::VectorizedArray<double> > CIJ, const dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > strain, dealii::VectorizedArray<double> R[][dim]){
-if (dim==3){
-  dealii::VectorizedArray<double> S[6], E[6];
-  E[0]=strain[0][0]; E[1]=strain[1][1]; E[2]=strain[2][2];
-  //In Voigt notation: Engineering shear strain=2*strain
-  E[3]=strain[1][2]+strain[2][1];
-  E[4]=strain[0][2]+strain[2][0];
-  E[5]=strain[0][1]+strain[1][0];
-  for (unsigned int i=0; i<6; i++){
-    S[i]=0.0;
-    for (unsigned int j=0; j<6; j++){
-      S[i]+=CIJ[i][j]*E[j];
-    }
-  }
-  R[0][0]=S[0]; R[1][1]=S[1]; R[2][2]=S[2];
-  R[1][2]=S[3]; R[0][2]=S[4]; R[0][1]=S[5];
-  R[2][1]=S[3]; R[2][0]=S[4]; R[1][0]=S[5];
-}
-else if (dim==2){
-  dealii::VectorizedArray<double> S[3], E[3];
-  E[0]=strain[0][0]; E[1]=strain[1][1];
-  //In Voigt notation: Engineering shear strain=2*strain
-  E[2]=strain[0][1]+strain[1][0];
-  for (unsigned int i=0; i<3; i++){
-    S[i]=0.0;
-    for (unsigned int j=0; j<3; j++){
-      S[i]+=CIJ[i][j]*E[j];
-    }
-  }
-  R[0][0]=S[0]; R[1][1]=S[1];
-  R[0][1]=S[2]; R[1][0]=S[2];
-}
-else {
-	dealii::VectorizedArray<double> S[1], E[1];
-	E[0]=strain[0][0];
-	S[0]=CIJ[0][0]*E[0];
-	R[0][0]=S[0];
-
-}
-}
-
 // Overloaded function where CIJ, the strain, and the stress are all stored as tensors
 template <int dim>
-void computeStress(const dealii::Tensor<2, 2*dim-1+dim/3, dealii::VectorizedArray<double> > CIJ, const dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > strain, dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > R){
+void computeStress(const dealii::Tensor<2, 2*dim-1+dim/3, dealii::VectorizedArray<double> >& CIJ, const dealii::Tensor<2, dim, dealii::VectorizedArray<double> > strain, dealii::Tensor<2, dim, dealii::VectorizedArray<double> >& R){
+
+dealii::Tensor<1, 2*dim-1+dim/3, dealii::VectorizedArray<double> > S, E;
+
 if (dim==3){
-  dealii::VectorizedArray<double> S[6], E[6];
-  E[0]=strain[0][0]; E[1]=strain[1][1]; E[2]=strain[2][2];
-  //In Voigt notation: Engineering shear strain=2*strain
-  E[3]=strain[1][2]+strain[2][1];
-  E[4]=strain[0][2]+strain[2][0];
-  E[5]=strain[0][1]+strain[1][0];
-  for (unsigned int i=0; i<6; i++){
-    S[i]=0.0;
-    for (unsigned int j=0; j<6; j++){
-      S[i]+=CIJ[i][j]*E[j];
-    }
-  }
-  R[0][0]=S[0]; R[1][1]=S[1]; R[2][2]=S[2];
-  R[1][2]=S[3]; R[0][2]=S[4]; R[0][1]=S[5];
-  R[2][1]=S[3]; R[2][0]=S[4]; R[1][0]=S[5];
+	E[0]=strain[0][0]; E[1]=strain[1][1]; E[2]=strain[2][2];
+	//In Voigt notation: Engineering shear strain=2*strain
+	E[3]=strain[1][2]+strain[2][1];
+	E[4]=strain[0][2]+strain[2][0];
+	E[5]=strain[0][1]+strain[1][0];
+
+	// Multiply CIJ and E (in the language of Deal.II this is a tensor contraction) to get S
+	dealii::contract(S,CIJ,E);
+
+	R[0][0]=S[0]; R[1][1]=S[1]; R[2][2]=S[2];
+	R[1][2]=S[3]; R[0][2]=S[4]; R[0][1]=S[5];
+	R[2][1]=S[3]; R[2][0]=S[4]; R[1][0]=S[5];
 }
 else if (dim==2){
-  dealii::VectorizedArray<double> S[3], E[3];
-  E[0]=strain[0][0]; E[1]=strain[1][1];
-  //In Voigt notation: Engineering shear strain=2*strain
-  E[2]=strain[0][1]+strain[1][0];
-  for (unsigned int i=0; i<3; i++){
-    S[i]=0.0;
-    for (unsigned int j=0; j<3; j++){
-      S[i]+=CIJ[i][j]*E[j];
-    }
-  }
-  R[0][0]=S[0]; R[1][1]=S[1];
-  R[0][1]=S[2]; R[1][0]=S[2];
+	E[0]=strain[0][0]; E[1]=strain[1][1];
+	//In Voigt notation: Engineering shear strain=2*strain
+	E[2]=strain[0][1]+strain[1][0];
+
+	// Multiply CIJ and E (in the language of Deal.II this is a tensor contraction) to get S
+	dealii::contract(S,CIJ,E);
+
+	R[0][0]=S[0]; R[1][1]=S[1];
+	R[0][1]=S[2]; R[1][0]=S[2];
+
 }
 else {
-	dealii::VectorizedArray<double> S[1], E[1];
-	E[0]=strain[0][0];
-	S[0]=CIJ[0][0]*E[0];
-	R[0][0]=S[0];
-
+	R[0][0]=CIJ[0][0]*strain[0][0];
 }
 }
 
 // Overloaded function where CIJ is a table and the strain and the stress are stored as tensors
 template <int dim>
-void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > strain, dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > R){
+void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Tensor<2, dim, dealii::VectorizedArray<double> >& strain, dealii::Tensor<2, dim, dealii::VectorizedArray<double> >& R){
 if (dim==3){
   dealii::VectorizedArray<double> S[6], E[6];
   E[0]=strain[0][0]; E[1]=strain[1][1]; E[2]=strain[2][2];
@@ -356,90 +221,5 @@ else {
 
 }
 }
-
-//template <int dim>
-//void computeStress(const dealii::VectorizedArray<double> CIJ[2*dim-1+dim/3][2*dim-1+dim/3], const dealii::VectorizedArray<double> strain[][dim], vectorgradType R){
-//if (dim==3){
-//  dealii::VectorizedArray<double> S[6], E[6];
-//  E[0]=strain[0][0]; E[1]=strain[1][1]; E[2]=strain[2][2];
-//  //In Voigt notation: Engineering shear strain=2*strain
-//  E[3]=strain[1][2]+strain[2][1];
-//  E[4]=strain[0][2]+strain[2][0];
-//  E[5]=strain[0][1]+strain[1][0];
-//  for (unsigned int i=0; i<6; i++){
-//    S[i]=0.0;
-//    for (unsigned int j=0; j<6; j++){
-//      S[i]+=CIJ[i][j]*E[j];
-//    }
-//  }
-//  R[0][0]=S[0]; R[1][1]=S[1]; R[2][2]=S[2];
-//  R[1][2]=S[3]; R[0][2]=S[4]; R[0][1]=S[5];
-//  R[2][1]=S[3]; R[2][0]=S[4]; R[1][0]=S[5];
-//}
-//else if (dim==2){
-//  dealii::VectorizedArray<double> S[3], E[3];
-//  E[0]=strain[0][0]; E[1]=strain[1][1];
-//  //In Voigt notation: Engineering shear strain=2*strain
-//  E[2]=strain[0][1]+strain[1][0];
-//  for (unsigned int i=0; i<3; i++){
-//    S[i]=0.0;
-//    for (unsigned int j=0; j<3; j++){
-//      S[i]+=CIJ[i][j]*E[j];
-//    }
-//  }
-//  R[0][0]=S[0]; R[1][1]=S[1];
-//  R[0][1]=S[2]; R[1][0]=S[2];
-//
-//}
-//else {
-//	dealii::VectorizedArray<double> S[1], E[1];
-//	E[0]=strain[0][0];
-//	S[0]=CIJ[0][0]*E[0];
-//	R[0][0]=S[0];
-//
-//}
-//}
-
-//template <int dim>
-//void computeStress(const dealii::Table<2, double>& CIJ, const dealii::VectorizedArray<double> strain[][dim], vectorgradType R){
-//if (dim==3){
-//  dealii::VectorizedArray<double> S[6], E[6];
-//  E[0]=strain[0][0]; E[1]=strain[1][1]; E[2]=strain[2][2];
-//  //In Voigt notation: Engineering shear strain=2*strain
-//  E[3]=strain[1][2]+strain[2][1];
-//  E[4]=strain[0][2]+strain[2][0];
-//  E[5]=strain[0][1]+strain[1][0];
-//  for (unsigned int i=0; i<6; i++){
-//    S[i]=0.0;
-//    for (unsigned int j=0; j<6; j++){
-//      S[i]+=CIJ(i,j)*E[j];
-//    }
-//  }
-//  R[0][0]=S[0]; R[1][1]=S[1]; R[2][2]=S[2];
-//  R[1][2]=S[3]; R[0][2]=S[4]; R[0][1]=S[5];
-//  R[2][1]=S[3]; R[2][0]=S[4]; R[1][0]=S[5];
-//}
-//else if (dim==2){
-//  dealii::VectorizedArray<double> S[3], E[3];
-//  E[0]=strain[0][0]; E[1]=strain[1][1];
-//  //In Voigt notation: Engineering shear strain=2*strain
-//  E[2]=strain[0][1]+strain[1][0];
-//  for (unsigned int i=0; i<3; i++){
-//    S[i]=0.0;
-//    for (unsigned int j=0; j<3; j++){
-//      S[i]+=CIJ(i,j)*E[j];
-//    }
-//  }
-//  R[0][0]=S[0]; R[1][1]=S[1];
-//  R[0][1]=S[2]; R[1][0]=S[2];
-//}
-//else {
-//	dealii::VectorizedArray<double> S[1], E[1];
-//	E[0]=strain[0][0];
-//	S[0]=CIJ(0,0)*E[0];
-//	R[0][0]=S[0];
-//
-//}
-//}
 
 #endif
