@@ -25,3 +25,4 @@
 #include <deal.II/matrix_free/fe_evaluation.h>
 #include <deal.II/base/config.h>
 #include <deal.II/base/exceptions.h>
+#include <deal.II/distributed/tria.h>

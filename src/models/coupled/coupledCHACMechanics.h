@@ -434,6 +434,11 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
 		  E *= constV(0.5);
 
 		  dealii::VectorizedArray<double> S[dim][dim];
+		  //dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > S;
+
+		  //std::cout << S[0][0][0] << " " << S[1][0][0] << "\n";
+		  //int in_num;
+		  //std::cin >> in_num;
     
 		  // Compute stress tensor
 		  if (n_dependent_stiffness == true){
