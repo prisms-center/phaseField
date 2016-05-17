@@ -24,6 +24,8 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
   Table<2, double> CIJ_beta;
   Table<2, double> CIJ_diff;
 
+  dealii::Tensor<2, 2*dim-1+dim/3, dealii::VectorizedArray<double> > CIJ_alpha_tensor, CIJ_beta_tensor;
+
   //RHS implementation for explicit solve
   void getRHS(const MatrixFree<dim,double> &data, 
 	      std::vector<vectorType*> &dst, 
@@ -75,6 +77,8 @@ CoupledCHACMechanicsProblem<dim>::CoupledCHACMechanicsProblem(): MatrixFreePDE<d
 
 		for (unsigned int i=0; i<2*dim-1+dim/3; i++){
 			for (unsigned int j=0; j<2*dim-1+dim/3; j++){
+				CIJ_beta_tensor[i][j] =  CIJ_beta(i,j);
+				CIJ_alpha_tensor[i][j] =  CIJ_alpha(i,j);
 				CIJ_diff(i,j) = CIJ_beta(i,j) - CIJ_alpha(i,j);
 			}
 		}
@@ -379,8 +383,6 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
 					       const vectorType &src,
 					       const std::pair<unsigned int,unsigned int> &cell_range) const{
 	  //initialize fields
-	  typeScalar cVals(data, 0);
-
 	  typeScalar n1Vals(data,1);
 	  #if num_sop>2
 	  typeScalar n3Vals(data,3);
@@ -397,7 +399,7 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
     uVals.reinit(cell); uVals.read_dof_values_plain(src); uVals.evaluate(false, true, false);
 
     //initialize n fields
-    n1Vals.reinit(cell); n1Vals.read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[1]); n1Vals.evaluate(true, true, false);
+    n1Vals.reinit(cell); n1Vals.read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[1]); n1Vals.evaluate(true, false, false);
    #if num_sop>1
        n2Vals.reinit(cell); n2Vals.read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[2]); n2Vals.evaluate(true, false, false);
    #endif
@@ -425,37 +427,38 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
 		  n3 = constV(0.0);
 	  #endif
 
-      //compute strain tensor
-      dealii::VectorizedArray<double> E[dim][dim], S[dim][dim];
-      for (unsigned int i=0; i<dim; i++){
-    	  for (unsigned int j=0; j<dim; j++){
-    		  E[i][j]= constV(0.5)*(ux[i][j]+ux[j][i]);
-    	  }
-      }
+		  // Take advantage of E being simply 0.5*(ux + transpose(ux)) and use the dealii "symmetrize" function
+		  dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > E;
+		  //E = symmetrize(ux); // Only works for Deal.II v8.3 and later
+		  E = ux + transpose(ux);
+		  E *= constV(0.5);
+
+		  dealii::VectorizedArray<double> S[dim][dim];
     
-      // Compute stress tensor
-      dealii::VectorizedArray<double> CIJ_combined[2*dim-1+dim/3][2*dim-1+dim/3];
-      if (n_dependent_stiffness == true){
-    	  for (unsigned int i=0; i<2*dim-1+dim/3; i++){
-    		  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-    			  CIJ_combined[i][j] = constV(CIJ_alpha(i,j))*(constV(1.0)-h1V-h2V-h3V) + constV(CIJ_beta(i,j))*(h1V+h2V+h3V);
+		  // Compute stress tensor
+		  if (n_dependent_stiffness == true){
+			  dealii::Tensor<2, 2*dim-1+dim/3, dealii::VectorizedArray<double> > CIJ_combined;
+			  for (unsigned int i=0; i<2*dim-1+dim/3; i++){
+				  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
+					  CIJ_combined[i][j] = CIJ_alpha_tensor[i][j]*(constV(1.0)-h1V-h2V-h3V) + CIJ_beta_tensor[i][j]*(h1V+h2V+h3V);
+				  }
+			  }
+
+			  computeStress<dim>(CIJ_combined, E, S);
+		  }
+		  else{
+			  computeStress<dim>(CIJ, E, S);
+		  }
+
+		  //compute residual
+		  for (unsigned int i=0; i<dim; i++){
+			  for (unsigned int j=0; j<dim; j++){
+				  Rux[i][j] = S[i][j];
 			  }
 		  }
-		  computeStress<dim>(CIJ_combined, E, S);
-		}
-		else{
-		  computeStress<dim>(CIJ, E, S);
-		}
 
-      //compute residual
-      for (unsigned int i=0; i<dim; i++){
-	for (unsigned int j=0; j<dim; j++){
-	  Rux[i][j] = S[i][j]; 
-	}
-      }
-      
-      //submit residual value
-      uVals.submit_gradient(Rux,q);
+		  //submit residual value
+		  uVals.submit_gradient(Rux,q);
     }
     
     //integrate

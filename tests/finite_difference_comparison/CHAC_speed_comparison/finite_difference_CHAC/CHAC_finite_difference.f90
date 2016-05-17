@@ -5,34 +5,34 @@ SAVE
 	CHARACTER(LEN=3), PARAMETER :: 	run_num = '064'
 	CHARACTER(LEN=0), PARAMETER :: 	output_path = ''
 	
-	INTEGER, PARAMETER ::			num_outputs = 1
+	INTEGER, PARAMETER ::			num_outputs = 10
 	
 	!! Grid size
 	
 	
-	REAL(KIND=8), PARAMETER :: 	domain_size_x = 64.0d0 				!! nm
-	REAL(KIND=8), PARAMETER :: 	domain_size_y = 64.0d0 				!! nm
-	REAL(KIND=8), PARAMETER :: 	domain_size_z = 64.0d0 					!! nm
+	REAL(KIND=8), PARAMETER :: 	domain_size_x = 64.0d0 				
+	REAL(KIND=8), PARAMETER :: 	domain_size_y = 64.0d0 				
+	REAL(KIND=8), PARAMETER :: 	domain_size_z = 64.0d0 					
 	
-	INTEGER, PARAMETER :: 		xg = 128 !128 !224 !128 !184 !127 !181 !241 !181 !121
-	INTEGER, PARAMETER :: 		yg = 128 !128 !224 !128 !256 !128 !184 !127 !181 !241 !181 !121
-	INTEGER, PARAMETER :: 		zg = 128 !92 !92 !163 !91 !195 !195 !121 !91 !61 
+	INTEGER, PARAMETER :: 		xg = 128 
+	INTEGER, PARAMETER :: 		yg = 128 
+	INTEGER, PARAMETER :: 		zg = 128 
 	
 	INTEGER, PARAMETER :: 		bb = 1
 	
-	REAL(KIND=8), PARAMETER :: 	dz = domain_size_z/DBLE(zg) 						!! Grid spacing (nm)
-	REAL(KIND=8), PARAMETER :: 	dx = domain_size_x/DBLE(xg) 							!! Grid spacing (nm)
-	REAL(KIND=8), PARAMETER :: 	dy = domain_size_y/DBLE(yg)					 							!! Grid spacing (nm)
+	REAL(KIND=8), PARAMETER :: 	dz = domain_size_z/DBLE(zg) 				!! Grid spacing (nm)
+	REAL(KIND=8), PARAMETER :: 	dx = domain_size_x/DBLE(xg) 				!! Grid spacing (nm)
+	REAL(KIND=8), PARAMETER :: 	dy = domain_size_y/DBLE(yg)					!! Grid spacing (nm)
 	
 	!! The number of subdomains in each direction for MPI
-	INTEGER, PARAMETER ::		num_subdomain_x = 8 !8 !8 !8 !8 !8 !4 !8 !6
-	INTEGER, PARAMETER ::		num_subdomain_y = 4 !4 !4 !4 !4 !4 !1 !1
-	INTEGER, PARAMETER ::		num_subdomain_z = 4 !4 !2 !2 !3 !6 !4
+	INTEGER, PARAMETER ::		num_subdomain_x = 2 
+	INTEGER, PARAMETER ::		num_subdomain_y = 2 
+	INTEGER, PARAMETER ::		num_subdomain_z = 1 
 	
 	!! Particle initialization
-	REAL(KIND=8), PARAMETER ::	particle_x = domain_size_x/2.0d0 !75.0d0									!! nm
-	REAL(KIND=8), PARAMETER :: 	particle_y = domain_size_y/2.0d0 !75.0d0									!! nm
-	REAL(KIND=8), PARAMETER ::	particle_z = domain_size_z/2.0d0						!! nm
+	REAL(KIND=8), PARAMETER ::	particle_x = domain_size_x/2.0d0			!! nm
+	REAL(KIND=8), PARAMETER :: 	particle_y = domain_size_y/2.0d0 			!! nm
+	REAL(KIND=8), PARAMETER ::	particle_z = domain_size_z/2.0d0			!! nm
 	REAL(KIND=8), PARAMETER :: 	rad = 1.0d0									!! nm
 	
 	
@@ -40,26 +40,24 @@ SAVE
 	
 	REAL(KIND=8), PARAMETER :: 	A_alpha = 24.7939d0
 	REAL(KIND=8), PARAMETER :: 	B_alpha = -1.6752d0
-	REAL(KIND=8), PARAMETER :: 	C_alpha = 1.9453d-6
+	REAL(KIND=8), PARAMETER :: 	C_alpha = -1.9453d-6
 	REAL(KIND=8), PARAMETER :: 	A_beta = 37.9316d0
 	REAL(KIND=8), PARAMETER :: 	B_beta = -10.7373d0
 	REAL(KIND=8), PARAMETER :: 	C_beta = 0.5401d0
 	
 	REAL(KIND=8), PARAMETER :: 	M = 1.0d0
-	REAL(KIND=8), PARAMETER :: 	L = 50.0d0
-	REAL(KIND=8), PARAMETER :: 	kappa_x = 0.5d0 !0.0150d0
-	REAL(KIND=8), PARAMETER :: 	kappa_y = 0.5d0 !0.0188d0
-	REAL(KIND=8), PARAMETER :: 	kappa_z = 0.5d0 !0.00571d0
-	
-	REAL(KIND=8), PARAMETER :: 	W_barrier = -1.0d0
+	REAL(KIND=8), PARAMETER :: 	L = 5.0d0
+	REAL(KIND=8), PARAMETER :: 	kappa_x = 0.5d0 
+	REAL(KIND=8), PARAMETER :: 	kappa_y = 0.5d0 
+	REAL(KIND=8), PARAMETER :: 	kappa_z = 0.5d0 
 	
 	REAL(KIND=8), PARAMETER :: 	avg_Nd = 0.02d0
-	REAL(KIND=8), PARAMETER :: 	delta = 0.5d0 !0.215d0
+	REAL(KIND=8), PARAMETER :: 	delta = 0.5d0 
 	
 	REAL(KIND=8), PARAMETER :: 	pi = ACOS(-1.0d0)
 	
 	INTEGER, PARAMETER :: 		max_iter = 50000
-	REAL(KIND=8), PARAMETER :: 	dt = 5.0d-4											!! seconds
+	REAL(KIND=8), PARAMETER :: 	dt = 3.0d-4									!! seconds
 	
 	!! Tags for MPI communication
 	INTEGER, PARAMETER :: c1Tag=91,c2Tag=92,c3Tag=93,c4Tag=94, pTag=95
@@ -232,7 +230,7 @@ DO i = Is1-1,Ie1+1
 	
 	!! Distance functions for ellipsoidal particles (squished in z direction)
 	dist_particle = SQRT(DBLE((particle_x-x(i,j,k))**2)/36.0d0 + DBLE((particle_y-y(i,j,k))**2)/36.0d0 &
-								+ DBLE( ((particle_z-z(i,j,k)))**2)/25.0d0 )
+								+ DBLE( ((particle_z-z(i,j,k)))**2)/16.0d0 )
 							
 	!! Flat interface							
 	!dist_particle = SQRT((particle_z-z(i,j,k))**2)
@@ -340,7 +338,7 @@ IMPLICIT NONE
 INCLUDE 'mpif.h'
 INTEGER :: L1, L2, L3, S1, S2, S3, Id1, Id2, Id3, Is1, Is2, Is3, Ie1, Ie2, Ie3
 INTEGER :: left,right,front,back,top,bot, cartcomm 	
-REAL(KIND=8), DIMENSION(S1:S1+L1-1,S2:S2+L2-1,S3:S3+L3-1) :: c, eta, mu, H, dHdeta, landau_term
+REAL(KIND=8), DIMENSION(S1:S1+L1-1,S2:S2+L2-1,S3:S3+L3-1) :: c, eta, mu, H, dHdeta
 REAL(KIND=8), DIMENSION(S1+1:S1+L1-2,S2+1:S2+L2-2,S3+1:S3+L3-2) :: Lap_mu, kappa_Lap_eta
 
 H = 3.0d0*eta*eta - 2.0d0*eta*eta*eta
@@ -363,8 +361,6 @@ Lap_mu(Is1:Ie1,Is2:Ie2,Is3:Ie3) = (mu(Is1+1:Ie1+1,Is2:Ie2,Is3:Ie3) - 2.0d0*mu(Is
 			
 dHdeta = 6.0d0*eta - 6.0d0*eta*eta
 
-landau_term = W_barrier * (2.0d0*eta - 6.0d0*eta*eta + 4.0d0*eta*eta*eta)
-
 kappa_Lap_eta(Is1:Ie1,Is2:Ie2,Is3:Ie3) = kappa_x*(eta(Is1+1:Ie1+1,Is2:Ie2,Is3:Ie3) - 2.0d0*eta(Is1:Ie1,Is2:Ie2,Is3:Ie3) &
 			+ eta(Is1-1:Ie1-1,Is2:Ie2,Is3:Ie3))/dx**2 &
 			+ kappa_y*(eta(Is1:Ie1,Is2+1:Ie2+1,Is3:Ie3) - 2.0d0*eta(Is1:Ie1,Is2:Ie2,Is3:Ie3) &
@@ -375,7 +371,7 @@ kappa_Lap_eta(Is1:Ie1,Is2:Ie2,Is3:Ie3) = kappa_x*(eta(Is1+1:Ie1+1,Is2:Ie2,Is3:Ie
 eta(Is1:Ie1,Is2:Ie2,Is3:Ie3) = eta(Is1:Ie1,Is2:Ie2,Is3:Ie3) &
 			- dt * L * ( ((A_beta*c(Is1:Ie1,Is2:Ie2,Is3:Ie3)**2 + B_beta*c(Is1:Ie1,Is2:Ie2,Is3:Ie3) + C_beta) &
 			- (A_alpha*c(Is1:Ie1,Is2:Ie2,Is3:Ie3)**2 + B_alpha*c(Is1:Ie1,Is2:Ie2,Is3:Ie3) + C_alpha))*dHdeta(Is1:Ie1,Is2:Ie2,Is3:Ie3) &
-			+ landau_term(Is1:Ie1,Is2:Ie2,Is3:Ie3) - kappa_Lap_eta)
+			- kappa_Lap_eta)
 			
 c(Is1:Ie1,Is2:Ie2,Is3:Ie3) = c(Is1:Ie1,Is2:Ie2,Is3:Ie3) &
 											+ dt*M*Lap_mu(Is1:Ie1,Is2:Ie2,Is3:Ie3)
@@ -458,12 +454,10 @@ IMPLICIT NONE
 INCLUDE 'mpif.h'
 INTEGER :: L1, L2, L3, S1, S2, S3, Id1, Id2, Id3, Is1, Is2, Is3, Ie1, Ie2, Ie3
 INTEGER :: left,right,front,back,top,bot, cartcomm 	
-REAL(KIND=8), DIMENSION(S1:S1+L1-1,S2:S2+L2-1,S3:S3+L3-1) :: c, eta, mu, dHdeta, landau_term
+REAL(KIND=8), DIMENSION(S1:S1+L1-1,S2:S2+L2-1,S3:S3+L3-1) :: c, eta, mu, dHdeta
 REAL(KIND=8), DIMENSION(S1+1:S1+L1-2,S2+1:S2+L2-2,S3+1:S3+L3-2) :: kappa_Lap_eta
 
 dHdeta = 6.0d0*eta - 6.0d0*eta*eta
-
-landau_term = W_barrier * (2.0d0*eta - 6.0d0*eta*eta + 4.0d0*eta*eta*eta)
 
 kappa_Lap_eta(Is1:Ie1,Is2:Ie2,Is3:Ie3) = kappa_x*(eta(Is1+1:Ie1+1,Is2:Ie2,Is3:Ie3) - 2.0d0*eta(Is1:Ie1,Is2:Ie2,Is3:Ie3) &
 			+ eta(Is1-1:Ie1-1,Is2:Ie2,Is3:Ie3))/dx**2 &
@@ -475,7 +469,7 @@ kappa_Lap_eta(Is1:Ie1,Is2:Ie2,Is3:Ie3) = kappa_x*(eta(Is1+1:Ie1+1,Is2:Ie2,Is3:Ie
 eta(Is1:Ie1,Is2:Ie2,Is3:Ie3) = eta(Is1:Ie1,Is2:Ie2,Is3:Ie3) &
 			- dt * L * ( ((A_beta*c(Is1:Ie1,Is2:Ie2,Is3:Ie3)**2 + B_beta*c(Is1:Ie1,Is2:Ie2,Is3:Ie3) + C_beta) &
 			- (A_alpha*c(Is1:Ie1,Is2:Ie2,Is3:Ie3)**2 + B_alpha*c(Is1:Ie1,Is2:Ie2,Is3:Ie3) + C_alpha))*dHdeta(Is1:Ie1,Is2:Ie2,Is3:Ie3) &
-			+ landau_term(Is1:Ie1,Is2:Ie2,Is3:Ie3) - kappa_Lap_eta)
+			- kappa_Lap_eta)
 
 call commuBC(Id1,Id2,Id3,L1,L2,L3,S1,S2,S3,eta,left,right,front,back,top,bot,cartcomm)  	  
 CALL external_BCs_Zero_Derivative(eta,.TRUE.,1,Id1,Id2,Id3,L1-2,L2-2,L3-2)
