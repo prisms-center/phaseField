@@ -22,7 +22,7 @@ This version of the code, 0.9.2, is a pre-release version of PRISMS-PF. This ver
 
 <B>Installation:</B> 
 
-  1) Install deal.II (version 8.2.1 currently supported)<br>
+  1) Install deal.II (version 8.4.1 currently supported)<br>
   + Download Binaries (OSX and Linux) or  Virtual Machine (VMI) from https://www.dealii.org/download.html <br>
   (OR) <br>
   + Configure, compile and install the deal.II library with the 
