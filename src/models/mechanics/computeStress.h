@@ -35,6 +35,9 @@
 // S(4) = R[0][2] = R[2][0] = sigma13 = sigma31
 // S(5) = R[0][1] = R[1][0] = sigma12 = sigma21
 
+// Currently there are four overloaded versions of this function. They treat the cases where CIJ can be a table, a vectorized array, or a tensor
+// and where strain and R can be vectorized arrays or tensors. Going forward, there may be a better way to reorganize this with templates.
+
 // Overloaded function where CIJ is a table, and the stress and strain are vectorized arrays
 template <int dim>
 void computeStress(const dealii::Table<2, double>& CIJ, const dealii::VectorizedArray<double> strain[][dim], dealii::VectorizedArray<double> R[][dim]){
