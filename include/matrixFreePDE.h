@@ -58,7 +58,7 @@ class MatrixFreePDE:public Subscriptor
   /**
    * Initializes the data structures
    */
-  void init  ();
+  void init  (unsigned int iter=0);
 
   /**
    * Solve's the system of equations
@@ -75,8 +75,12 @@ class MatrixFreePDE:public Subscriptor
   std::vector<const ConstraintMatrix*> constraintsSet;
   std::vector<const DoFHandler<dim>*>  dofHandlersSet;
   std::vector<const IndexSet*>         locally_relevant_dofsSet;
+  std::vector<ConstraintMatrix*>       constraintsSet2;
+  std::vector<DoFHandler<dim>*>        dofHandlersSet2;
+  std::vector<IndexSet*>               locally_relevant_dofsSet2;
   std::vector<vectorType*>             solutionSet, residualSet;
-
+  std::vector<parallel::distributed::SolutionTransfer<dim, vectorType>*> soltransSet;
+  
   //matrix free objects
   MatrixFree<dim,double>               matrixFreeObject;
   vectorType                           invM, dU;
@@ -86,7 +90,8 @@ class MatrixFreePDE:public Subscriptor
   unsigned int num_quadrature_points;
   void computeInvM();
   void computeRHS();
-
+  void refineGrid();
+  
   //virtual methods to be implemented in the derived class
   //method to calculate LHS(implicit)
   virtual void getLHS(const MatrixFree<dim,double> &data, 

@@ -14,7 +14,7 @@
 #define subdivisionsX 1
 #define subdivisionsY 1
 #define subdivisionsZ 1
-#define refineFactor 7
+#define refineFactor 6
 #define finiteElementDegree 1
 
 //define number of fields in the problem
@@ -22,17 +22,17 @@
 #define numFields 2
 
 //define time step parameters
-#define timeStep 1.0e-3
-#define timeFinal 100.0
-#define timeIncrements 10000
+#define timeStep 1.0e-2
+#define timeFinal 2000.0
+#define timeIncrements 200000
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 100
+#define skipOutputSteps 1000
 
 //define Cahn-Hilliard parameters
 #define McV 1.0 
-#define KcV 1.0 
+#define KcV 4.0 
 
 //define free energy expressions
 #define fcV (4.0*c*(c-1.0)*(c-0.5))
