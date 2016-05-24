@@ -16,10 +16,6 @@ void MatrixFreePDE<dim>::outputResults(){
 
   //loop over fields
   for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-    //apply constraints
-    constraintsSet[fieldIndex]->distribute (*solutionSet[fieldIndex]);
-    //sync ghost DOF's
-    solutionSet[fieldIndex]->update_ghost_values();
     //mark field as scalar/vector
     std::vector<DataComponentInterpretation::DataComponentInterpretation> dataType \
       (fields[fieldIndex].numComponents,				\

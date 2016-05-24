@@ -27,21 +27,13 @@ void MatrixFreePDE<dim>::solve(){
 	pcout << "\ncurrentTime>=timeFinal. Ending time stepping\n";
 	break;
       }
-      
-      //call init
-      if (currentIncrement>25000){
-	if (currentIncrement%5000==0){
-	  init(currentIncrement-1);
-	}
-      }
+
+      //check and perform adaptive mesh refinement
+      adaptiveRefine(currentIncrement);
 
       //solve time increment
       solveIncrement();
       
-      if (currentIncrement==25001){
-	outputResults();
-      }
-	
       //output results to file
       if ((writeOutput) && (currentIncrement%skipOutputSteps==0)){
     	  outputResults();

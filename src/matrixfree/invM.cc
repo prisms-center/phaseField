@@ -27,6 +27,7 @@ void MatrixFreePDE<dim>::computeInvM(){
   
   //compute invM
   matrixFreeObject.initialize_dof_vector (invM, parabolicFieldIndex);
+  invM=0.0;
   VectorizedArray<double> one = make_vectorized_array (1.0);
   
   //select gauss lobatto quad points which are suboptimal but give diogonal M 

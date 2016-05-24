@@ -6,6 +6,15 @@
 #include "parameters.h"
 #include "../../src/models/diffusion/CH.h"
 
+//adaptive refinement criterion
+template <int dim>
+void CahnHilliardProblem<dim>::adaptiveRefine(unsigned int currentIncrement){
+  if ((currentIncrement>250000) && (currentIncrement%10000==0)){
+    this->refineMesh(currentIncrement);
+  }
+}
+
+
 //initial condition function for concentration
 template <int dim>
 class InitialConditionC : public Function<dim>
@@ -18,7 +27,7 @@ public:
   double value (const Point<dim> &p, const unsigned int component = 0) const
   {
     //return the value of the initial concentration field at point p 
-    return  0.5+ 0.2*(0.5 - (double)(std::rand() % 100 )/100.0);
+    return  0.5 + 0.2*(0.5 - (double)(std::rand() % 100 )/100.0);
   }
 };
 

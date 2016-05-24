@@ -155,14 +155,13 @@
      vectorType *U, *R;
      if (iter==0){
        U=new vectorType; R=new vectorType;
-       solutionSet.push_back(U); residualSet.push_back(R);
+       solutionSet.push_back(U); residualSet.push_back(R); 
+       matrixFreeObject.initialize_dof_vector(*R,  fieldIndex); *R=0;
      }
      else{
-       U=solutionSet.at(fieldIndex); R=residualSet.at(fieldIndex);
+       U=solutionSet.at(fieldIndex); 
      }
-     matrixFreeObject.initialize_dof_vector(*U,  fieldIndex);
-     matrixFreeObject.initialize_dof_vector(*R,  fieldIndex);
-     *U=0; *R=0;
+     matrixFreeObject.initialize_dof_vector(*U,  fieldIndex); *U=0;
      
      //initializing temporary dU vector required for implicit solves of the elliptic equation.
      //Assuming here that there is only one elliptic field in the problem
@@ -182,9 +181,13 @@
    }
    else{
      for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
+       //interpolate and clear used solution transfer sets
        soltransSet[fieldIndex]->interpolate(*solutionSet[fieldIndex]);
-       //clear old solution transfer sets
        delete soltransSet[fieldIndex];
+       
+       //reset residual vector
+       vectorType *R=residualSet.at(fieldIndex);
+       matrixFreeObject.initialize_dof_vector(*R,  fieldIndex); *R=0;
      }
    }
 
@@ -201,24 +204,6 @@
    } 
 
    computing_timer.exit_section("matrixFreePDE: initialization");  
-}
-
-template <int dim>
-void MatrixFreePDE<dim>::refineGrid (){
-  Vector<float> estimated_error_per_cell (triangulation.n_active_cells());
-  KellyErrorEstimator<dim>::estimate (*dofHandlersSet2[1],
-				      QGauss<dim-1>(finiteElementDegree+2),
-				      typename FunctionMap<dim>::type(),
-				      *solutionSet[1],
-				      estimated_error_per_cell);
-  parallel::distributed::GridRefinement::refine_and_coarsen_fixed_fraction (triangulation,
-									    estimated_error_per_cell,
-									    0.3, 0.1);
-  triangulation.prepare_coarsening_and_refinement();
-  for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-    soltransSet[fieldIndex]->prepare_for_coarsening_and_refinement(*solutionSet[fieldIndex]);
-  }
-  triangulation.execute_coarsening_and_refinement();
 }
 
 #endif 

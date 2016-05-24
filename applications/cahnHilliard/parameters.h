@@ -17,18 +17,26 @@
 #define refineFactor 6
 #define finiteElementDegree 1
 
+//adaptive refinement parameters
+#define hAdaptivity true
+#define maxRefinementLevel refineFactor+1
+#define refinementDOF 1 //refining using composition field
+#define topRefineFraction 0.8
+#define bottomCoarsenFraction 0.1
+
+
 //define number of fields in the problem
 //c, mu
 #define numFields 2
 
 //define time step parameters
-#define timeStep 1.0e-2
-#define timeFinal 2000.0
-#define timeIncrements 200000
+#define timeStep 1.0e-3
+#define timeFinal 10000
+#define timeIncrements 1000000
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 1000
+#define skipOutputSteps 10000
 
 //define Cahn-Hilliard parameters
 #define McV 1.0 

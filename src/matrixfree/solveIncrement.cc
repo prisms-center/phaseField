@@ -24,6 +24,12 @@ void MatrixFreePDE<dim>::solveIncrement(){
 	solutionSet[fieldIndex]->local_element(dof)=			\
 	  invM.local_element(dof)*residualSet[fieldIndex]->local_element(dof);
       }
+      //
+      //apply constraints
+      constraintsSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+      //sync ghost DOF's
+      solutionSet[fieldIndex]->update_ghost_values();
+      //
       sprintf(buffer, "field '%2s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
 	      fields[fieldIndex].name.c_str(),				\
 	      solutionSet[fieldIndex]->l2_norm(),			\
@@ -44,6 +50,9 @@ void MatrixFreePDE<dim>::solveIncrement(){
 	  pcout << "\nWarning: implicit solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing relSolverTolerance.\n";
 	}
 	*solutionSet[fieldIndex]+=dU;
+	//sync ghost DOF's
+	solutionSet[fieldIndex]->update_ghost_values();
+	//
 	sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
 		fields[fieldIndex].name.c_str(),			\
 		residualSet[fieldIndex]->l2_norm(),			\

@@ -90,7 +90,11 @@ class MatrixFreePDE:public Subscriptor
   unsigned int num_quadrature_points;
   void computeInvM();
   void computeRHS();
+
+  //AMR methods
   void refineGrid();
+  void refineMesh(unsigned int _currentIncrement);
+  virtual void adaptiveRefine(unsigned int _currentIncrement);
   
   //virtual methods to be implemented in the derived class
   //method to calculate LHS(implicit)
@@ -132,6 +136,7 @@ class MatrixFreePDE:public Subscriptor
 //header files till library packaging scheme is finalized)
 #include "../src/matrixfree/matrixFreePDE.cc"
 #include "../src/matrixfree/init.cc"
+#include "../src/matrixfree/refine.cc"
 #include "../src/matrixfree/invM.cc"
 #include "../src/matrixfree/computeLHS.cc"
 #include "../src/matrixfree/computeRHS.cc"
