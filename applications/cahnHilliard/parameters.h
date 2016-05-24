@@ -31,7 +31,7 @@
 
 //define time step parameters
 #define timeStep 1.0e-3
-#define timeFinal 10000
+#define timeFinal 1000
 #define timeIncrements 1000000
 
 //define results output parameters
