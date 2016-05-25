@@ -10,7 +10,7 @@ void MatrixFreePDE<dim>::refineGrid (){
   //estimate cell wise errors for mesh refinement
   Vector<float> estimated_error_per_cell (triangulation.n_active_cells());
   KellyErrorEstimator<dim>::estimate (*dofHandlersSet2[refinementDOF],
-				      QGauss<dim-1>(finiteElementDegree+1),
+				      QGaussLobatto<dim-1>(finiteElementDegree+1),
 				      typename FunctionMap<dim>::type(),
 				      *solutionSet[refinementDOF],
 				      estimated_error_per_cell);
