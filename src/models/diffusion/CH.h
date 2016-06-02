@@ -24,6 +24,7 @@ class CahnHilliardProblem: public MatrixFreePDE<dim>
   
   //AMR method
   void adaptiveRefine(unsigned int currentIncrement);
+  void adaptiveRefineCriterion();
 };
 
 //constructor

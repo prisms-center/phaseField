@@ -95,6 +95,7 @@ class MatrixFreePDE:public Subscriptor
   void refineGrid();
   void refineMesh(unsigned int _currentIncrement);
   virtual void adaptiveRefine(unsigned int _currentIncrement);
+  virtual void adaptiveRefineCriterion();
   
   //virtual methods to be implemented in the derived class
   //method to calculate LHS(implicit)
