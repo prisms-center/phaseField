@@ -19,7 +19,8 @@
 
 //adaptive refinement parameters
 #define hAdaptivity true
-#define maxRefinementLevel (refineFactor+1)
+#define maxRefinementLevel (refineFactor)
+#define minRefinementLevel (0)
 #define refinementDOF 1 //refining using composition field
 #define topRefineFraction 0.99
 #define bottomCoarsenFraction 0.01
@@ -29,13 +30,13 @@
 #define numFields 2
 
 //define time step parameters
-#define timeStep 2.0e-5
+#define timeStep 5.0e-4
 #define timeFinal 1000
 #define timeIncrements 1000000
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 1000
+#define skipOutputSteps 10000
 
 //define Cahn-Hilliard parameters
 #define McV 1.0 

@@ -27,32 +27,23 @@ void CahnHilliardProblem<dim>::adaptiveRefineCriterion(){
       fe_values.reinit (cell);
       std::vector<double> errorOut(num_quad_points);
       fe_values.get_function_values(*this->solutionSet[refinementDOF], errorOut);
+      bool mark_refine = false;
       for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
-	if ((errorOut[q_point]>0.5) && (errorOut[q_point]<0.8)){
-	  cell->set_refine_flag();
-	  break;
-	}
+    	  if ((errorOut[q_point]>0.11) && (errorOut[q_point]<0.99)){
+    		  mark_refine = true;
+    		  break;
+    	  }
+      }
+      if (mark_refine == true){
+    	  cell->set_refine_flag();
+      }
+      else {
+    	  cell->set_coarsen_flag();
       }
     }
   }
 }
 
-
-////initial condition function for concentration
-//template <int dim>
-//class InitialConditionC : public Function<dim>
-//{
-//public:
-//  InitialConditionC () : Function<dim>(1) {
-//    //seeding the random number generator
-//    std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
-//  }
-//  double value (const Point<dim> &p, const unsigned int component = 0) const
-//  {
-//    //return the value of the initial concentration field at point p
-//    return  0.5 + 0.2*(0.5 - (double)(std::rand() % 100 )/100.0);
-//  }
-//};
 
 //initial condition function for concentration
 template <int dim>
@@ -60,26 +51,42 @@ class InitialConditionC : public Function<dim>
 {
 public:
   InitialConditionC () : Function<dim>(1) {
+    //seeding the random number generator
     std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
   }
   double value (const Point<dim> &p, const unsigned int component = 0) const
   {
     //return the value of the initial concentration field at point p
-    double dx=spanX/((double) subdivisionsX)/std::pow(2.0,refineFactor);
-    double r=0.0;
-#if problemDIM==1
-    r=p[0];
-    return 0.005+0.5*(0.125-0.005)*(1-std::tanh((r-spanX/2.0)/(3*dx)));
-#elif problemDIM==2
-    r=p.distance(Point<dim>(spanX/2.0,spanY/2.0));
-    r=std::sqrt( (p[0]-spanX/2.0)*(p[0]-spanX/2.0) + (p[1]-spanY/2.0)*(p[1]-spanY/2.0)/1.5 );
-    return 0.1+0.5*(1-std::tanh((r-spanX/8.0)/(3*dx)));
-#elif problemDIM==3
-    r=p.distance(Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
-    return 0.005+0.5*(0.125-0.005)*(1-std::tanh((r-spanX/8.0)/(3*dx)));
-#endif
+    return  0.5 + 0.2*(0.5 - (double)(std::rand() % 100 )/100.0);
   }
 };
+
+////initial condition function for concentration
+//template <int dim>
+//class InitialConditionC : public Function<dim>
+//{
+//public:
+//  InitialConditionC () : Function<dim>(1) {
+//    std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
+//  }
+//  double value (const Point<dim> &p, const unsigned int component = 0) const
+//  {
+//    //return the value of the initial concentration field at point p
+//    double dx=spanX/((double) subdivisionsX)/std::pow(2.0,refineFactor);
+//    double r=0.0;
+//#if problemDIM==1
+//    r=p[0];
+//    return 0.005+0.5*(0.125-0.005)*(1-std::tanh((r-spanX/2.0)/(3*dx)));
+//#elif problemDIM==2
+//    r=p.distance(Point<dim>(spanX/2.0,spanY/2.0));
+//    r=std::sqrt( (p[0]-spanX/2.0)*(p[0]-spanX/2.0) + (p[1]-spanY/2.0)*(p[1]-spanY/2.0)/1.5 );
+//    return 0.1+0.5*(1-std::tanh((r-spanX/8.0)/(3*dx)));
+//#elif problemDIM==3
+//    r=p.distance(Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
+//    return 0.005+0.5*(0.125-0.005)*(1-std::tanh((r-spanX/8.0)/(3*dx)));
+//#endif
+//  }
+//};
 
 
 //apply initial conditions

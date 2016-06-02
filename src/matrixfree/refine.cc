@@ -40,7 +40,7 @@ void MatrixFreePDE<dim>::refineGrid (){
   
   //limit the maximal refinement depth of the mesh
   pcout << "levels: " << triangulation.n_levels() << "/n";
-  if (triangulation.n_levels() > maxRefinementLevel){
+  if ( (triangulation.n_levels() > maxRefinementLevel) || (triangulation.n_levels() < minRefinementLevel) ){
     for (typename parallel::distributed::Triangulation<dim>::active_cell_iterator cell = triangulation.begin_active(maxRefinementLevel); cell != triangulation.end(); ++cell)
       cell->clear_refine_flag ();
   }
