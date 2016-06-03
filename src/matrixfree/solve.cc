@@ -36,6 +36,12 @@ void MatrixFreePDE<dim>::solve(){
 	pcout << "\ncurrentTime>=timeFinal. Ending time stepping\n";
 	break;
       }
+
+      //check and perform adaptive mesh refinement
+      computing_timer.enter_section("matrixFreePDE: AMR"); 
+      adaptiveRefine(currentIncrement);
+      computing_timer.exit_section("matrixFreePDE: AMR");
+ 
       //solve time increment
       solveIncrement();
 

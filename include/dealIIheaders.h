@@ -26,3 +26,7 @@
 #include <deal.II/base/config.h>
 #include <deal.II/base/exceptions.h>
 #include <deal.II/distributed/tria.h>
+#include <deal.II/distributed/solution_transfer.h>
+#include <deal.II/numerics/error_estimator.h>
+#include <deal.II/distributed/grid_refinement.h>
+
