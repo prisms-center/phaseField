@@ -15,7 +15,7 @@
 
 //define time step parameters
 #define timeStep (0.63e-5) //5e-6 //1.67e-5
-#define timeIncrements 1000 //1000000 //200000
+#define timeIncrements 100 //1000000 //200000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
 #define skipImplicitSolves 1
 
@@ -165,4 +165,12 @@ double sfts_const3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 #define c_avg 0.004
 
 #define calc_energy true
+
+//adaptive refinement parameters
+#define hAdaptivity true
+#define maxRefinementLevel (refineFactor)
+#define minRefinementLevel (0)
+#define refinementDOF 1 //refining using composition field
+#define topRefineFraction 0.99
+#define bottomCoarsenFraction 0.01
 

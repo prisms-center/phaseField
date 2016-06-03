@@ -59,6 +59,10 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
     				    const std::pair<unsigned int,unsigned int> &cell_range);
   Threads::Mutex assembler_lock;
 
+  //AMR method
+  void adaptiveRefine(unsigned int currentIncrement);
+  void adaptiveRefineCriterion();
+
 };
 
 //constructor

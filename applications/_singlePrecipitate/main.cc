@@ -8,6 +8,44 @@
 #include "parameters.h"
 #include "../../src/models/coupled/coupledCHACMechanics.h"
 
+//adaptive refinement control
+template <int dim>
+void CoupledCHACMechanicsProblem<dim>::adaptiveRefine(unsigned int currentIncrement){
+  if ((currentIncrement>0) && (currentIncrement%10==0)){
+    this->refineMesh(currentIncrement);
+  }
+}
+
+//adaptive refinement criterion
+template <int dim>
+void CoupledCHACMechanicsProblem<dim>::adaptiveRefineCriterion(){
+  //Custom defined estimation criterion
+  QGauss<dim>  quadrature(finiteElementDegree+1);
+  FEValues<dim> fe_values (*this->FESet[refinementDOF], quadrature, update_values);
+  const unsigned int   num_quad_points = quadrature.size();
+  typename DoFHandler<dim>::active_cell_iterator cell = this->dofHandlersSet2[refinementDOF]->begin_active(), endc = this->dofHandlersSet2[refinementDOF]->end();
+  for (;cell!=endc; ++cell){
+    if (cell->is_locally_owned()){
+      fe_values.reinit (cell);
+      std::vector<double> errorOut(num_quad_points);
+      fe_values.get_function_values(*this->solutionSet[refinementDOF], errorOut);
+      bool mark_refine = false;
+      for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
+    	  if ((errorOut[q_point]>0.1) && (errorOut[q_point]<0.9999)){
+    		  mark_refine = true;
+    		  break;
+    	  }
+      }
+      if (mark_refine == true){
+    	  cell->set_refine_flag();
+      }
+      else {
+    	  cell->set_coarsen_flag();
+      }
+    }
+  }
+}
+
 //initial condition for concentration
 template <int dim>
 class InitialConditionC : public Function<dim>

@@ -1,6 +1,6 @@
 //define Cahn-Hilliard parameters
 #define McV 1.0
-#define KcV 1.0
+#define KcV 4.0
 
 //define free energy expressions
 #define fcV (4.0*c*(c-1.0)*(c-0.5))
