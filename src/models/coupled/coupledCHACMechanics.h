@@ -186,7 +186,6 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       }
 
       // Calculate the stress-free transformation strain and its derivatives at the quadrature point
-      //dealii::VectorizedArray<double> sfts1[dim][dim], sfts1c[dim][dim], sfts1cc[dim][dim], sfts2[dim][dim], sfts2c[dim][dim], sfts2cc[dim][dim], sfts3[dim][dim], sfts3c[dim][dim], sfts3cc[dim][dim];
       dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > sfts1, sfts1c, sfts1cc, sfts2, sfts2c, sfts2cc, sfts3, sfts3c, sfts3cc;
 
       for (unsigned int i=0; i<dim; i++){
@@ -532,27 +531,27 @@ void  CoupledCHACMechanicsProblem<dim>::getEnergy(const MatrixFree<dim,double> &
 
 	      for (int i=0; i<dim; i++){
 	    	  for (int j=0; j<dim; j++){
-	    		  f_grad += constV(Kn1[i][j])*n1x[i]*n1x[j];
+	    		  f_grad += constV(0.5*Kn1[i][j])*n1x[i]*n1x[j];
 	    	  }
 	      }
 #if num_sop>1
 	      for (int i=0; i<dim; i++){
 	    	  for (int j=0; j<dim; j++){
-	    		  f_grad += constV(Kn2[i][j])*n2x[i]*n2x[j];
+	    		  f_grad += constV(0.5*Kn2[i][j])*n2x[i]*n2x[j];
 	    	  }
 	      }
 #endif
 #if num_sop>2
 	      for (int i=0; i<dim; i++){
 	    	  for (int j=0; j<dim; j++){
-	    		  f_grad += constV(Kn3[i][j])*n3x[i]*n3x[j];
+	    		  f_grad += constV(0.5*Kn3[i][j])*n3x[i]*n3x[j];
 	    	  }
 	      }
 #endif
 
 
 	      // Calculate the stress-free transformation strain and its derivatives at the quadrature point
-	      dealii::VectorizedArray<double> sfts1[dim][dim], sfts1c[dim][dim], sfts1cc[dim][dim], sfts2[dim][dim], sfts2c[dim][dim], sfts2cc[dim][dim], sfts3[dim][dim], sfts3c[dim][dim], sfts3cc[dim][dim];
+	      dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > sfts1, sfts1c, sfts1cc, sfts2, sfts2c, sfts2cc, sfts3, sfts3c, sfts3cc;
 
 	      for (unsigned int i=0; i<dim; i++){
 	    	  for (unsigned int j=0; j<dim; j++){
