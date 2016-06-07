@@ -137,6 +137,13 @@ double sfts_const3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 #define hn2V (6.0*n2-6.0*n2*n2)
 #define hn3V (6.0*n3-6.0*n3*n3)
 
+#define h1strainV (h1V*h1V*h1V*h1V*h1V)
+#define h2strainV (h2V*h2V*h2V*h2V*h2V)
+#define h3strainV (h3V*h3V*h3V*h3V*h3V)
+#define hn1strainV (5.0*h1V*h1V*h1V*h1V*hn1V)
+#define hn2strainV (5.0*h2V*h2V*h2V*h2V*hn2V)
+#define hn3strainV (5.0*h3V*h3V*h3V*h3V*hn3V)
+
 // This double-well function can be used to tune the interfacial energy
 #define fbarrierV (n1*n1-2.0*n1*n1*n1+n1*n1*n1*n1)
 #define fbarriernV (2.0*n1-6.0*n1*n1+4.0*n1*n1*n1)

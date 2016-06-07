@@ -189,12 +189,6 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       //dealii::VectorizedArray<double> sfts1[dim][dim], sfts1c[dim][dim], sfts1cc[dim][dim], sfts2[dim][dim], sfts2c[dim][dim], sfts2cc[dim][dim], sfts3[dim][dim], sfts3c[dim][dim], sfts3cc[dim][dim];
       dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > sfts1, sfts1c, sfts1cc, sfts2, sfts2c, sfts2cc, sfts3, sfts3c, sfts3cc;
 
-      dealii::VectorizedArray<double> H_strain1, H_strain1n;
-      //H_strain1 = h1V;
-	  //H_strain1n = hn1V;
-      H_strain1 = h1V*h1V*h1V*h1V*h1V;
-      H_strain1n = 5.0*h1V*h1V*h1V*h1V*hn1V;
-
       for (unsigned int i=0; i<dim; i++){
     	  for (unsigned int j=0; j<dim; j++){
     		  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
@@ -220,7 +214,7 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       for (unsigned int i=0; i<dim; i++){
     	  for (unsigned int j=0; j<dim; j++){
     		  //E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1V + sfts2[i][j]*h2V + sfts3[i][j]*h3V);
-    		  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*H_strain1 + sfts2[i][j]*h2V + sfts3[i][j]*h3V);
+    		  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1strainV + sfts2[i][j]*h2strainV + sfts3[i][j]*h3strainV);
 
     	  }
       }
@@ -267,9 +261,9 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
       }
 
       //nDependentMisfitAC1*=-hn1V;
-      nDependentMisfitAC1*=-H_strain1n;
-      nDependentMisfitAC2*=-hn2V;
-      nDependentMisfitAC3*=-hn3V;
+      nDependentMisfitAC1*=-hn1strainV;
+      nDependentMisfitAC2*=-hn2strainV;
+      nDependentMisfitAC3*=-hn3strainV;
 
       // Compute the other stress term in the order parameter chemical potential, heterMechACp = 0.5*Hn*(C_beta-C_alpha)*(E-E0)*(E-E0)
       dealii::VectorizedArray<double> heterMechAC1=constV(0.0);
@@ -300,7 +294,7 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
 			for (unsigned int i=0; i<dim; i++){
 				for (unsigned int j=0; j<dim; j++){
 					//E3[i][j] =  -( sfts1c[i][j]*h1V + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V);
-					E3[i][j] =  -( sfts1c[i][j]*H_strain1 + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V);
+					E3[i][j] =  -( sfts1c[i][j]*h1strainV + sfts2c[i][j]*h2strainV + sfts3c[i][j]*h3strainV);
 				}
 			}
 
@@ -322,10 +316,10 @@ void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &dat
 
 
 						grad_mu_el[k] += S3[i][j] * (constV(0.5)*(uxx[i][j][k]+uxx[j][i][k]) + E3[i][j]*cx[k]
-																  - (sfts1[i][j]*H_strain1n*n1x[k] + sfts2[i][j]*hn2V*n2x[k] + sfts3[i][j]*hn3V*n3x[k]));
+																  - (sfts1[i][j]*hn1strainV*n1x[k] + sfts2[i][j]*hn2strainV*n2x[k] + sfts3[i][j]*hn3strainV*n3x[k]));
 
-						grad_mu_el[k]+= - S[i][j] * (sfts1c[i][j]*H_strain1n*n1x[k] + sfts2c[i][j]*hn2V*n2x[k] + sfts3c[i][j]*hn3V*n3x[k]
-																  + (sfts1cc[i][j]*H_strain1 + sfts2cc[i][j]*h2V + sfts3cc[i][j]*h3V)*cx[k]);
+						grad_mu_el[k]+= - S[i][j] * (sfts1c[i][j]*hn1strainV*n1x[k] + sfts2c[i][j]*hn2strainV*n2x[k] + sfts3c[i][j]*hn3strainV*n3x[k]
+																  + (sfts1cc[i][j]*h1strainV + sfts2cc[i][j]*h2strainV + sfts3cc[i][j]*h3strainV)*cx[k]);
 
 						if (n_dependent_stiffness == true){
 							grad_mu_el[k]+= - S2[i][j] * (sfts1c[i][j]*hn1V*n1x[k] + sfts2c[i][j]*hn2V*n2x[k] + sfts3c[i][j]*hn3V*n3x[k]);
@@ -560,12 +554,6 @@ void  CoupledCHACMechanicsProblem<dim>::getEnergy(const MatrixFree<dim,double> &
 	      // Calculate the stress-free transformation strain and its derivatives at the quadrature point
 	      dealii::VectorizedArray<double> sfts1[dim][dim], sfts1c[dim][dim], sfts1cc[dim][dim], sfts2[dim][dim], sfts2c[dim][dim], sfts2cc[dim][dim], sfts3[dim][dim], sfts3c[dim][dim], sfts3cc[dim][dim];
 
-	      dealii::VectorizedArray<double> H_strain1, H_strain1n;
-	      //H_strain1 = h1V;
-	      //H_strain1n = hn1V;
-	      H_strain1 = h1V*h1V*h1V*h1V*h1V;
-	      H_strain1n = 5.0*h1V*h1V*h1V*h1V*hn1V;
-
 	      for (unsigned int i=0; i<dim; i++){
 	    	  for (unsigned int j=0; j<dim; j++){
 	    		  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
@@ -591,7 +579,7 @@ void  CoupledCHACMechanicsProblem<dim>::getEnergy(const MatrixFree<dim,double> &
 	      for (unsigned int i=0; i<dim; i++){
 	    	  for (unsigned int j=0; j<dim; j++){
 	    		  //E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1V + sfts2[i][j]*h2V + sfts3[i][j]*h3V);
-	    		  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*H_strain1 + sfts2[i][j]*h2V + sfts3[i][j]*h3V);
+	    		  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1strainV + sfts2[i][j]*h2strainV + sfts3[i][j]*h3strainV);
 
 	    	  }
 	      }

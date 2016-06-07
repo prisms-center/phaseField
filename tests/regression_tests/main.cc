@@ -169,6 +169,13 @@ void CoupledCHACMechanicsProblem<dim>::applyInitialConditions()
   *this->solutionSet[fieldIndex]=0.0;
 }
 
+//methods to mark boundaries
+template <int dim>
+void CoupledCHACMechanicsProblem<dim>::markBoundaries(){
+
+	// By default, all boundary faces of the domain are marked zero
+}
+
 //apply Dirchlet BC function
 template <int dim>
 void CoupledCHACMechanicsProblem<dim>::applyDirichletBCs(){
