@@ -525,7 +525,7 @@ void  CoupledCHACMechanicsProblem<dim>::getEnergy(const MatrixFree<dim,double> &
 
 	      scalarvalueType total_energy_density = constV(0.0);
 
-	      scalarvalueType f_chem = (constV(1.0)-(h1V+h2V+h3V))*faV + (h1V+h2V+h3V)*fbV;
+	      scalarvalueType f_chem = (constV(1.0)-(h1V+h2V+h3V))*faV + (h1V+h2V+h3V)*fbV + W*fbarrierV;
 
 	      scalarvalueType f_grad = constV(0.0);
 
