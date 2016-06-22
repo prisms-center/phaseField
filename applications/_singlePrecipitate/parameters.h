@@ -14,8 +14,8 @@
 #define finiteElementDegree 2
 
 //define time step parameters
-#define timeStep (0.4e-5) //5e-6 //1.67e-5
-#define timeIncrements 5000 //1000000 //200000
+#define timeStep (2.4e-4) //(1.3e-7) //5e-6 //1.67e-5
+#define timeIncrements 100 //1000000 //200000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
 #define skipImplicitSolves 1
 
@@ -37,10 +37,10 @@
 #define numFields (1+num_sop+problemDIM)
 
 //define Cahn-Hilliard parameters (No Gradient energy)
-#define McV 1.0
+#define M0cV 1.0
 
 //define Allen-Cahn parameters
-#define Mn1V 2500.0
+#define Mn1V 40.0
 #define Mn2V 50.0
 #define Mn3V 50.0
 
@@ -102,6 +102,13 @@ double sfts_const1[3][3] = {{0.14978,0,0},{0,-0.10254,0},{0,0,-0.034049}};
 //double sfts_linear1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 //double sfts_const1[3][3] = {{0.0896535,0,0},{0,0.017454,0},{0,0,-2.6e-4}};
 
+//B''' at the equivalent of x_Nd = 0.15
+//double sfts_linear1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+//double sfts_const1[3][3] = {{0.098243,0,0},{0,3.12e-4,0},{0,0,-0.005087}};
+
+//B''' at the equivalent of x_Nd = 0.125
+//double sfts_linear1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+//double sfts_const1[3][3] = {{0.1068,0,0},{0,-0.01683,0},{0,0,-0.009914}};
 
 // 2D test values
 //double sfts_linear1[3][3] = {{0.1568,0,0},{0,0.1568,0},{0,0,0.1568}};
@@ -155,10 +162,13 @@ double sfts_const3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 #define fbarrierV (n1*n1-2.0*n1*n1*n1+n1*n1*n1*n1)
 #define fbarriernV (2.0*n1-6.0*n1*n1+4.0*n1*n1*n1)
 
+// Calculate the Cahn-Hilliard mobility, which depends on the order parameter
+#define McV (M0cV/((1.0-h1V)*faccV+(h1V)*fbccV))
+
 // Residuals
 #define rcV   (c)
 #define rcxTemp ( cx*((1.0-h1V)*faccV+(h1V)*fbccV) + n1x*(fbcV-facV)*hn1V + grad_mu_el)
-#define rcxV  (constV(-timeStep*McV)*rcxTemp)
+#define rcxV  (constV(-timeStep)*McV*rcxTemp)
 
 #define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V+W*fbarriernV+nDependentMisfitAC1+heterMechAC1))
 #define rn2V   (n2-constV(timeStep*Mn2V)*((fbV-faV)*hn2V))
@@ -168,9 +178,9 @@ double sfts_const3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 #define rn3xV  (constV(-timeStep*Mn3V)*Knx3)
 
 // Initial geometry
-#define x_denom 2.25
-#define y_denom 49.0
-#define z_denom 49.0
+#define x_denom 3.0976
+#define y_denom 68.0625
+#define z_denom 44.2225
 #define initial_interface_coeff 0.01
 #define initial_radius 1.0
 #define c_matrix 1.0e-6

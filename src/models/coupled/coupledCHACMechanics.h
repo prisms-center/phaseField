@@ -612,12 +612,9 @@ void  CoupledCHACMechanicsProblem<dim>::getEnergy(const MatrixFree<dim,double> &
 	      total_energy_density = f_chem + f_grad + f_el;
 
 	      assembler_lock.acquire ();
-	      for (unsigned i=0; i<2;i++){
-	    	  //double temp = 1.0e0;
-
+	      for (unsigned i=0; i<c.n_array_elements;i++){
 	    	  // For some reason, some of the values in this loop
 	    	  if (c[i] > 1.0e-10){
-	    	  //if (std::abs(c[i]-temp) > 1e-10) std::cout << "?" << c[i] << " " << temp << " " << i << " " << q << " " << cell << std::endl;
 	    		  this->energy+=total_energy_density[i]*JxW[q][i];
 	    		  this->energy_components[0]+= f_chem[i]*JxW[q][i];
 	    		  this->energy_components[1]+= f_grad[i]*JxW[q][i];
