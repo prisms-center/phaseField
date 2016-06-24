@@ -3,21 +3,21 @@
 //define problem dimensions
 #define problemDIM 2
 #define spanX 18.0 //14.0
-#define spanY 3.6 //14.0
+#define spanY 18.0 //14.0
 #define spanZ 18.0 //10.0 //14.0
 
 //define mesh parameters
 #define subdivisionsX 5
-#define subdivisionsY 1
+#define subdivisionsY 5
 #define subdivisionsZ 8
 #define refineFactor 4
 #define finiteElementDegree 2
 
 //define time step parameters
-#define timeStep (2.0e-3) //(1.3e-7) //5e-6 //1.67e-5
-#define timeIncrements 100000 //1000000 //200000
+#define timeStep (7.0e-4) //(1.3e-7) //5e-6 //1.67e-5
+#define timeIncrements 10000 //1000000 //200000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
-#define skipImplicitSolves 10000000
+#define skipImplicitSolves 1
 
 //define solver parameters
 #define solverType SolverCG
@@ -37,10 +37,10 @@
 #define numFields (1+num_sop+problemDIM)
 
 //define Cahn-Hilliard parameters (No Gradient energy)
-#define M0cV 1.0
+#define McV 1.0
 
 //define Allen-Cahn parameters
-#define Mn1V 100.0 //40.0
+#define Mn1V 30.0 //40.0
 #define Mn2V 50.0
 #define Mn3V 50.0
 
@@ -48,12 +48,12 @@
 //double Kn1[3][3]={{0.0280,0,0},{0,0.0350,0},{0,0,0.0107}}; // Gen 1 B'''
 //double Kn1[3][3]={{0.0265,0,0},{0,0.0331,0},{0,0,0.0101}}; // Gen 2 B'''
 //double Kn1[3][3]={{0.04036,0,0},{0,0.05042,0},{0,0,0.01535}}; // Gen 3 B'''
-double Kn1[3][3]={{0.00769,0,0},{0,0.00769,0},{0,0,0.00769}}; // test
+double Kn1[3][3]={{0.0153818,0,0},{0,0.0153818,0},{0,0,0.0153818}}; // test
 double Kn2[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 double Kn3[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 
 //define energy barrier coefficient (used to tune the interfacial energy)
-#define W 0.4653 //-0.1
+#define W 0.23265 //-0.1
 
 // Define Mechanical properties
 #define n_dependent_stiffness true
@@ -158,15 +158,12 @@ double B0 = 0.033684;
 #define fbarrierV (n1*n1-2.0*n1*n1*n1+n1*n1*n1*n1)
 #define fbarriernV (2.0*n1-6.0*n1*n1+4.0*n1*n1*n1)
 
-// Calculate the Cahn-Hilliard mobility, which depends on the order parameter
-#define McV M0cV/fbccV //(M0cV/((1.0-h1V)*faccV+(h1V)*fbccV))
-
 // Residuals
 #define rcV   (c)
 #define rcxTemp ( cx + n1x*(c_alpha-c_beta)*hn1V + grad_mu_el/((1.0-h1V)*faccV+(h1V)*fbccV))
 #define rcxV  (constV(-timeStep)*McV*rcxTemp)
 
-#define rn1V   (n1-constV(timeStep*Mn1V)*( (fbV-faV)*hn1V - (c_beta-c_alpha)*facV*hn1V + W*fbarriernV)) // + nDependentMisfitAC1 + heterMechAC1))
+#define rn1V   (n1-constV(timeStep*Mn1V)*( (fbV-faV)*hn1V - (c_beta-c_alpha)*facV*hn1V + W*fbarriernV + nDependentMisfitAC1 + heterMechAC1))
 #define rn2V   (n2-constV(timeStep*Mn2V)*((fbV-faV)*hn2V))
 #define rn3V   (n3-constV(timeStep*Mn3V)*((fbV-faV)*hn3V))
 #define rn1xV  (constV(-timeStep*Mn1V)*Knx1)
@@ -178,7 +175,7 @@ double B0 = 0.033684;
 #define y_denom 68.0625
 #define z_denom 44.2225
 #define initial_interface_coeff 0.2
-#define initial_radius 4.0
+#define initial_radius 1.0
 #define c_matrix 1.0e-3
 #define c_precip 0.125
 #define adjust_avg_c false

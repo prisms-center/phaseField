@@ -6,7 +6,7 @@
 //Coupled Cahn-Hilliard+Allen-Cahn+Mechanics problem headers
 //#include "parameters_bPPE.h"
 #include "parameters.h"
-#include "../../src/models/coupled/coupledCHACMechanicsKKS.h"
+#include "../../src/models/coupled/coupledCHACMechanics.h"
 
 //initial condition for concentration
 template <int dim>
@@ -24,21 +24,21 @@ public:
 	  double dy=spanY/( (double)subdivisionsY )/std::pow(2.0,refineFactor);
 	  double dz=spanZ/( (double)subdivisionsZ )/std::pow(2.0,refineFactor);
 	  double r=0.0;
-//	  std::vector<double> ellipsoid_denoms;
-//	  ellipsoid_denoms.push_back(x_denom);
-//	  ellipsoid_denoms.push_back(y_denom);
-//	  ellipsoid_denoms.push_back(z_denom);
-//
-//
-//	  for (unsigned int i=0; i<dim; i++){
-//		  r += (p.operator()(i))*(p.operator()(i))/ellipsoid_denoms[i];
-//	  }
-//	  r = sqrt(r);
-//	  return 0.5*(c_precip-c_matrix)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + c_matrix + shift;
+	  std::vector<double> ellipsoid_denoms;
+	  ellipsoid_denoms.push_back(x_denom);
+	  ellipsoid_denoms.push_back(y_denom);
+	  ellipsoid_denoms.push_back(z_denom);
 
-	  r = (p.operator()(0));
-	  double n1 = 0.5*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff)));
-	  return c_precip*h1V + c_matrix*(1.0-h1V) + shift;
+
+	  for (unsigned int i=0; i<dim; i++){
+		  r += (p.operator()(i))*(p.operator()(i))/ellipsoid_denoms[i];
+	  }
+	  r = sqrt(r);
+	  return 0.5*(c_precip-c_matrix)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + c_matrix + shift;
+
+//	  r = (p.operator()(0));
+//	  double n1 = 0.5*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff)));
+//	  return c_precip*h1V + c_matrix*(1.0-h1V) + shift;
 
   }
 };
@@ -65,11 +65,11 @@ public:
 	  ellipsoid_denoms.push_back(z_denom);
 
 	  if (index==1){
-//		  for (unsigned int i=0; i<dim; i++){
-//			  r += (p.operator()(i))*(p.operator()(i))/ellipsoid_denoms[i];
-//		  }
-//		  r = sqrt(r);
-		  r = (p.operator()(0));
+		  for (unsigned int i=0; i<dim; i++){
+			  r += (p.operator()(i))*(p.operator()(i))/ellipsoid_denoms[i];
+		  }
+		  r = sqrt(r);
+//		  r = (p.operator()(0));
 		  return 0.5*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff)));
 	  }
 	  else if (index==2){
