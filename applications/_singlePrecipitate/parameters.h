@@ -2,12 +2,12 @@
 
 //define problem dimensions
 #define problemDIM 3
-#define spanX 18.0 //14.0
+#define spanX 7.2 //14.0
 #define spanY 18.0 //14.0
 #define spanZ 18.0 //10.0 //14.0
 
 //define mesh parameters
-#define subdivisionsX 5
+#define subdivisionsX 2
 #define subdivisionsY 5
 #define subdivisionsZ 8
 #define refineFactor 4
@@ -15,7 +15,7 @@
 
 //define time step parameters
 #define timeStep (2.4e-4) //(1.3e-7) //5e-6 //1.67e-5
-#define timeIncrements 100 //1000000 //200000
+#define timeIncrements 10000 //1000000 //200000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
 #define skipImplicitSolves 1
 
@@ -183,9 +183,9 @@ double sfts_const3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 #define z_denom 44.2225
 #define initial_interface_coeff 0.01
 #define initial_radius 1.0
-#define c_matrix 1.0e-6
+#define c_matrix 1.0e-2
 #define c_precip 0.16
-#define adjust_avg_c true
+#define adjust_avg_c false
 #define c_avg 0.004
 
 #define calc_energy true

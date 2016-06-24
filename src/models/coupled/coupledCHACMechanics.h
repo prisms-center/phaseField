@@ -480,13 +480,7 @@ void  CoupledCHACMechanicsProblem<dim>::getEnergy(const MatrixFree<dim,double> &
 
 	    //initialize u field
 	    uVals.reinit(cell); uVals.read_dof_values_plain(*src[num_sop+1]);
-
-	    if (c_dependent_misfit == true){
-	    	uVals.evaluate(false, true, true);
-	    }
-	    else{
-	    	uVals.evaluate(false, true, false);
-	    }
+	    uVals.evaluate(false, true, false);
 
 	    dealii::AlignedVector<dealii::VectorizedArray<double> > JxW(cVals.n_q_points);
 	    cVals.fill_JxW_values(JxW);
