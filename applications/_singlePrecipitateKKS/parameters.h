@@ -1,21 +1,22 @@
 //Parameters list for beta prime precipitation evolution problem
 
 //define problem dimensions
-#define problemDIM 2
-#define spanX 18.0 //14.0
-#define spanY 18.0 //14.0
-#define spanZ 18.0 //10.0 //14.0
+#define problemDIM 3
+#define scaleFactor 1.0
+#define spanX (18.0*scaleFactor) //14.0
+#define spanY (18.0*scaleFactor) //14.0
+#define spanZ (18.0*scaleFactor) //10.0 //14.0
 
 //define mesh parameters
-#define subdivisionsX 5
-#define subdivisionsY 5
-#define subdivisionsZ 8
-#define refineFactor 4
+#define subdivisionsX 1
+#define subdivisionsY 1
+#define subdivisionsZ 1
+#define refineFactor 6
 #define finiteElementDegree 2
 
 //define time step parameters
-#define timeStep (7.0e-4) //(1.3e-7) //5e-6 //1.67e-5
-#define timeIncrements 10000 //1000000 //200000
+#define timeStep (4.0e-4*scaleFactor*scaleFactor) //(1.3e-7) //5e-6 //1.67e-5
+#define timeIncrements 100 //1000000 //200000
 #define timeFinal 100000000 //(timeStep*timeIncrements)
 #define skipImplicitSolves 1
 
@@ -40,7 +41,7 @@
 #define McV 1.0
 
 //define Allen-Cahn parameters
-#define Mn1V 30.0 //40.0
+#define Mn1V (150.0/scaleFactor) //40.0
 #define Mn2V 50.0
 #define Mn3V 50.0
 
@@ -48,12 +49,12 @@
 //double Kn1[3][3]={{0.0280,0,0},{0,0.0350,0},{0,0,0.0107}}; // Gen 1 B'''
 //double Kn1[3][3]={{0.0265,0,0},{0,0.0331,0},{0,0,0.0101}}; // Gen 2 B'''
 //double Kn1[3][3]={{0.04036,0,0},{0,0.05042,0},{0,0,0.01535}}; // Gen 3 B'''
-double Kn1[3][3]={{0.0153818,0,0},{0,0.0153818,0},{0,0,0.0153818}}; // test
+double Kn1[3][3]={{0.02536*scaleFactor,0,0},{0,0.03169*scaleFactor,0},{0,0,0.009614*scaleFactor}}; // Scaled KKS B'''
 double Kn2[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 double Kn3[3][3]={{0.123,0,0},{0,0.123,0},{0,0,0.123}};
 
 //define energy barrier coefficient (used to tune the interfacial energy)
-#define W 0.23265 //-0.1
+#define W (0.3722/scaleFactor) //-0.1
 
 // Define Mechanical properties
 #define n_dependent_stiffness true
@@ -111,10 +112,6 @@ double sfts_const1[3][3] = {{0.14978,0,0},{0,-0.10254,0},{0,0,-0.034049}};
 //double sfts_linear1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 //double sfts_const1[3][3] = {{0.1068,0,0},{0,-0.01683,0},{0,0,-0.009914}};
 
-// 2D test values
-//double sfts_linear1[3][3] = {{0.1568,0,0},{0,0.1568,0},{0,0,0.1568}};
-//double sfts_const1[3][3] = {{-0.02756,0,0},{0,-0.02756,0},{0,0,-0.02756}};
-
 double sfts_linear2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double sfts_const2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
@@ -147,12 +144,12 @@ double B0 = 0.033684;
 #define hn2V (6.0*n2-6.0*n2*n2)
 #define hn3V (6.0*n3-6.0*n3*n3)
 
-#define h1strainV (h1V*h1V*h1V*h1V*h1V)
-#define h2strainV (h2V*h2V*h2V*h2V*h2V)
-#define h3strainV (h3V*h3V*h3V*h3V*h3V)
-#define hn1strainV (5.0*h1V*h1V*h1V*h1V*hn1V)
-#define hn2strainV (5.0*h2V*h2V*h2V*h2V*hn2V)
-#define hn3strainV (5.0*h3V*h3V*h3V*h3V*hn3V)
+#define h1strainV h1V //(h1V*h1V*h1V*h1V*h1V)
+#define h2strainV h2V //(h2V*h2V*h2V*h2V*h2V)
+#define h3strainV h3V //(h3V*h3V*h3V*h3V*h3V)
+#define hn1strainV hn1V //(5.0*h1V*h1V*h1V*h1V*hn1V)
+#define hn2strainV hn2V //(5.0*h2V*h2V*h2V*h2V*hn2V)
+#define hn3strainV hn3V //(5.0*h3V*h3V*h3V*h3V*hn3V)
 
 // This double-well function can be used to tune the interfacial energy
 #define fbarrierV (n1*n1-2.0*n1*n1*n1+n1*n1*n1*n1)
@@ -171,14 +168,14 @@ double B0 = 0.033684;
 #define rn3xV  (constV(-timeStep*Mn3V)*Knx3)
 
 // Initial geometry
-#define x_denom 3.0976
-#define y_denom 68.0625
-#define z_denom 44.2225
-#define initial_interface_coeff 0.2
+#define x_denom (2.7/2.0*scaleFactor)*(2.7/2.0*scaleFactor)
+#define y_denom (18.4/2.0*scaleFactor)*(18.4/2.0*scaleFactor)
+#define z_denom (13.0/2.0*scaleFactor)*(13.0/2.0*scaleFactor)
+#define initial_interface_coeff (0.02*scaleFactor)
 #define initial_radius 1.0
-#define c_matrix 1.0e-3
-#define c_precip 0.125
-#define adjust_avg_c false
+#define c_matrix 1.0e-6
+#define c_precip 0.16
+#define adjust_avg_c true
 #define c_avg 0.004
 
 #define calc_energy true
