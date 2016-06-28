@@ -92,14 +92,43 @@ CoupledCHACMechanicsProblem<dim>::CoupledCHACMechanicsProblem(): MatrixFreePDE<d
 #error Compile ERROR: missing material property variable: MaterialModelV, MaterialConstantsV
 #endif
 
-	c_dependent_misfit = false;
-	for (unsigned int i=0; i<dim; i++){
-		for (unsigned int j=0; j<dim; j++){
-			if ((std::abs(sfts_linear1[i][j])>1.0e-12)||(std::abs(sfts_linear2[i][j])>1.0e-12)||(std::abs(sfts_linear3[i][j])>1.0e-12)){
-				c_dependent_misfit = true;
-				}
+c_dependent_misfit = false;
+for (unsigned int i=0; i<dim; i++){
+	for (unsigned int j=0; j<dim; j++){
+		if ((std::abs(sfts_linear1[i][j])>1.0e-12)||(std::abs(sfts_linear2[i][j])>1.0e-12)||(std::abs(sfts_linear3[i][j])>1.0e-12)){
+			c_dependent_misfit = true;
 		}
 	}
+}
+
+// If interpolation functions for the strain aren't specifically defined, use the general interpolation functions
+#ifndef h1strainV
+	#define h1strainV h1V
+#endif
+#ifndef h2strainV
+	#define h2strainV h2V
+#endif
+#ifndef h3strainV
+	#define h3strainV h3V
+#endif
+
+#ifndef hn1strainV
+	#define hn1strainV hn1V
+#endif
+#ifndef hn2strainV
+	#define hn2strainV hn2V
+#endif
+#ifndef hn3strainV
+	#define hn3strainV hn3V
+#endif
+
+// If the Landau energy terms aren't defined, set them to zero
+#ifndef W
+	#define W 0.0
+#endif
+#ifndef fbarrierV
+	#define fbarrierV 0.0
+#endif
 }
 
 template <int dim>

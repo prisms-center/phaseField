@@ -20,7 +20,7 @@
 //define time step parameters
 #define timeStep 1.0e-3
 #define timeFinal 20.0
-#define timeIncrements 200000
+#define timeIncrements 20000
 
 //define results output parameters
 #define writeOutput true

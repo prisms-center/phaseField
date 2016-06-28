@@ -6,16 +6,16 @@
 
 // Define problem dimensions
 #define problemDIM 2
-#define spanX 100.0
-#define spanY 100.0
-#define spanZ 100.0
+#define spanX 40.0
+#define spanY 40.0
+#define spanZ 40.0
 
 // Define mesh parameters
-#define subdivisionsX 1
-#define subdivisionsY 1
-#define subdivisionsZ 1
-#define refineFactor 7
-#define finiteElementDegree 1
+#define subdivisionsX 3
+#define subdivisionsY 3
+#define subdivisionsZ 3
+#define refineFactor 5
+#define finiteElementDegree 2
 
 // Define number of fields in the problem
 // n1, n2, n3, c, u
@@ -28,19 +28,21 @@
 #define nucleation_occurs false
 
 // Define time step parameters
-#define timeStep 1.0e-4
-#define timeFinal 10.0
-#define timeIncrements 10000
-#define skipImplicitSolves 1 //1000
+#define timeStep 4.0e-4
+#define timeFinal 100.0
+#define timeIncrements 5000
+#define skipImplicitSolves 1
 
 // Define solver paramters
 #define solverType SolverCG
-#define relSolverTolerance 1.0e-4
+#define abs_tol true
+#define relSolverTolerance 1.0e-2
+#define absSolverTolerance 1.0e-4
 #define maxSolverIterations 1000
 
 // Define results output parameters
 #define writeOutput true
-#define skipOutputSteps 1000
+#define skipOutputSteps 100
 
 
 
