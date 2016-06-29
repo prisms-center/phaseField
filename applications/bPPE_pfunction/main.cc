@@ -23,27 +23,24 @@ int main (int argc, char **argv)
 	std::string homo_free_energy_funcname = "pfunct_faV";
 	std::string mobility_funcname = "pfunct_McV";
 	PRISMS::PLibrary::checkout(homo_free_energy_funcname, pfunct_faV);
+	PRISMS::PLibrary::checkout("pfunct_fbV", pfunct_fbV);
 	PRISMS::PLibrary::checkout(mobility_funcname, pfunct_McV);
+	PRISMS::PLibrary::checkout("pfunct_Mn1V", pfunct_Mn1V);
+	PRISMS::PLibrary::checkout("pfunct_Mn2V", pfunct_Mn2V);
+	PRISMS::PLibrary::checkout("pfunct_Mn3V", pfunct_Mn3V);
 
 	Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,numbers::invalid_unsigned_int);
   try
     {
 	  deallog.depth_console(0);
-	        CoupledCHACMechanicsProblem<problemDIM> problem;
-	        problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "c"));
-	        problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "n1"));
-	        if (num_sop > 1){
-	      	  problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "n2"));
-	      	  if (num_sop > 2){
-	      		  problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "n3"));
-	      	  }
-	        }
-	        problem.fields.push_back(Field<problemDIM>(VECTOR,  ELLIPTIC, "u"));
-	        problem.init ();
-	        if (adjust_avg_c){
-	      	  problem.shiftConcentration();
-	        }
-	        problem.solve();
+	  CoupledCHACMechanicsProblem<problemDIM> problem;
+	  problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "c"));
+	  problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "n1"));
+	  problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "n2"));
+	  problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "n3"));
+	  problem.fields.push_back(Field<problemDIM>(VECTOR,  ELLIPTIC, "u"));
+	  problem.init ();
+	  problem.solve();
     }
   catch (std::exception &exc)
     {

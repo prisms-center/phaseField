@@ -131,6 +131,11 @@ for (unsigned int i=0; i<dim; i++){
 #endif
 }
 
+// If nucleation isn't specifically turned on, set nucleation_occurs to false
+#ifndef nucleation_occurs
+	#define nucleation_occurs false
+#endif
+
 template <int dim>
 void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &data, 
 					       std::vector<vectorType*> &dst, 

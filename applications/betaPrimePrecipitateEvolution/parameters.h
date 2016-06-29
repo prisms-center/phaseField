@@ -24,9 +24,6 @@
 #define num_sop 3							// for now, must be between 1 and 3
 #define numFields (1+num_sop+problemDIM)
 
-// flag to allow or disallow nucleation
-#define nucleation_occurs false
-
 // Define time step parameters
 #define timeStep 4.0e-4
 #define timeFinal 100.0
