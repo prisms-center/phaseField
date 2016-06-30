@@ -1,4 +1,4 @@
-// created: 2016-6-29 12:31:46
+// created: 2016-6-29 17:08:13
 // version: master
 // url: https://github.com/bpuchala/IntegrationToolsWriter.git
 // commit: 13e063c3ac8e8911a726a243fdbd68f291cc58cc
@@ -34,12 +34,12 @@ namespace PRISMS
 
         std::string sym() const
         {
-            return "-1.5924+(5.0)*c^2-(5.9746)*c";
+            return "-1.5924-(5.9746)*c+(5.0)*c^2";
         }
 
         std::string latex() const
         {
-            return "-1.5924-{(5.9746)} c+{(5.0)} c^{2}";
+            return "-1.5924+{(5.0)} c^{2}-{(5.9746)} c";
         }
 
         pfunct_fbV_f* clone() const

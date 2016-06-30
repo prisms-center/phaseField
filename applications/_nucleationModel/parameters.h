@@ -45,9 +45,6 @@
 #define hnV (30.0*n*n-60.0*n*n*n+30.0*n*n*n*n)
 
 //define required residuals
-//#define rcxV ( cx*((1.0-hV)*faccV+hV*fbccV) + nx*((fbcV-facV)*hnV) )
-//#define rnV  ( (fbV-faV)*hnV )
-//#define rnxV nx
 #define muxV ( cx*((1.0-hV)*faccV+hV*fbccV) + nx*((fbcV-facV)*hnV) )
 #define rcV   (c)
 #define rcxV  (constV(-McV*timeStep)*muxV)

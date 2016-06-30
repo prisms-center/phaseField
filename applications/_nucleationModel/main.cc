@@ -223,7 +223,7 @@ void CoupledCHACProblem<dim>::modifySolutionFields()
     MPI_Barrier(MPI_COMM_WORLD);
 
     //disperse nuclei to all other processors
-    int numGlobalNuclei;
+    unsigned int numGlobalNuclei;
     if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0) {numGlobalNuclei=nuclei.size();}
     MPI_Bcast(&numGlobalNuclei, 1, MPI_INT, 0, MPI_COMM_WORLD);
     this->pcout << "total number of nuclei currently seeded : "  << numGlobalNuclei << std::endl;
@@ -289,7 +289,7 @@ void CoupledCHACProblem<dim>::modifySolutionFields()
 //main
 int main (int argc, char **argv)
 {
-  Utilities::System::MPI_InitFinalize mpi_initialization(argc, argv,numbers::invalid_unsigned_int);
+  Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,numbers::invalid_unsigned_int);
   try
     {
       deallog.depth_console(0);

@@ -30,7 +30,7 @@ class BCFunction : public Function<dim>{
   BCFunction(): Function<dim> (dim){}
   void vector_value (const Point<dim>   &p, Vector<double>   &values) const{
     Assert (values.size() == dim, ExcDimensionMismatch (values.size(), dim));
-    values[0]=spanX/100.0; // displacement along X-Direction
+    values[0]= spanX/100.0; // displacement along X-Direction
   }
 };
 

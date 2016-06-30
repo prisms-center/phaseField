@@ -16,7 +16,7 @@
 //define time step parameters
 #define timeStep 1.0e-3
 #define timeFinal 100.0
-#define timeIncrements 100
+#define timeIncrements 50000
 #define skipImplicitSolves 1
 
 //define solver paramters
@@ -26,7 +26,7 @@
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 10
+#define skipOutputSteps 500
 
 #define calc_energy true
 

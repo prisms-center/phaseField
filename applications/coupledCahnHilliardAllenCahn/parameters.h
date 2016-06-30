@@ -14,13 +14,13 @@
 #define finiteElementDegree 1
 
 //define time step parameters
-#define timeStep 1.0e-4
-#define timeFinal 1.0
+#define timeStep 1.0e-3
+#define timeFinal 100.0
 #define timeIncrements 100000
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 100
+#define skipOutputSteps 1000
 
 
 

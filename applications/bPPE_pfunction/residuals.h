@@ -3,9 +3,9 @@
 PRISMS::PFunction<dealii::VectorizedArray<double>, double> pfunct_McV;
 
 //define Allen-Cahn parameters
-#define Mn1V 100.0 //pfunct_Mn1V(n1)
-#define Mn2V 100.0 //pfunct_Mn2V(n2)
-#define Mn3V 100.0 //pfunct_Mn3V(n3)
+#define Mn1V pfunct_Mn1V(n1)
+#define Mn2V pfunct_Mn2V(n2)
+#define Mn3V pfunct_Mn3V(n3)
 PRISMS::PFunction<dealii::VectorizedArray<double>, double> pfunct_Mn1V, pfunct_Mn2V, pfunct_Mn3V;
 
 double Kn1[3][3]={{0.03,0,0},{0,0.007,0},{0,0,1.0}};
@@ -44,13 +44,13 @@ PRISMS::PFunction<dealii::VectorizedArray<double>, double> pfunct_faV; // input 
 #define facV (-4.776 + 10.3244*c - 8.2125*c*c + 5.4748*c*c*c)
 #define faccV (10.3244-16.425*c+16.4244*c*c)
 
-#define fbV pfunct_fbV(c)
-#define fbcV pfunct_fbV.grad(c,0)
-#define fbccV pfunct_fbV.hess(c,0,0)
+//#define fbV pfunct_fbV(c)
+//#define fbcV pfunct_fbV.grad(c,0)
+//#define fbccV pfunct_fbV.hess(c,0,0)
 PRISMS::PFunction<dealii::VectorizedArray<double>, double> pfunct_fbV; // input order: c
-//#define fbV (5.0*c*c-5.9746*c-1.5924)
-//#define fbcV (10.0*c-5.9746)
-//#define fbccV (10.0)
+#define fbV (5.0*c*c-5.9746*c-1.5924)
+#define fbcV (10.0*c-5.9746)
+#define fbccV (10.0)
 
 #define h1V (10.0*n1*n1*n1-15.0*n1*n1*n1*n1+6.0*n1*n1*n1*n1*n1)
 #define h2V (10.0*n2*n2*n2-15.0*n2*n2*n2*n2+6.0*n2*n2*n2*n2*n2)

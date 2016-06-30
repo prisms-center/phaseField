@@ -5,8 +5,8 @@
 #define McV 1.0
 
 //define Allen-Cahn parameters
-#define MnV 1.0
-#define KnV 1.0
+#define MnV 150.0
+#define KnV 0.5
 
 //define free energy expressions
 #define faV (-1.6704-4.776*c+5.1622*c*c-2.7375*c*c*c+1.3687*c*c*c*c)

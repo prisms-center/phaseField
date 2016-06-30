@@ -24,11 +24,11 @@
 //define time step parameters
 #define timeStep 1.0e-3
 #define timeFinal 100.0
-#define timeIncrements 10000
+#define timeIncrements 100000
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 100
+#define skipOutputSteps 1000
 
 
 
