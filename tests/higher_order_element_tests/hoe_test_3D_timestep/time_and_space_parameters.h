@@ -6,6 +6,6 @@
 #define finiteElementDegree 2
 // Parameters list for the parameters involved in time stepping 
 #define timeStep 8e-06
-#define timeIncrements 2000000
+#define timeIncrements 100000
 #define timeFinal 100000000
 #define skipImplicitSolves 10000000

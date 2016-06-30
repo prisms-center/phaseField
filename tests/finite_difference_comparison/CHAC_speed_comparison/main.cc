@@ -82,6 +82,12 @@ void CoupledCHACProblem<dim>::applyInitialConditions()
 			    *this->solutionSet[fieldIndex]);
 }
 
+// Empty default implementation, unneeded in this case
+template <int dim>
+void CoupledCHACProblem<dim>::modifySolutionFields()
+{
+}
+
 
 //main
 int main (int argc, char **argv)
