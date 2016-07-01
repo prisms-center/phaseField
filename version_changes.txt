@@ -9,22 +9,28 @@ Bug fixes:
 Added functionality:
 - Support for concentration-dependent stress-free transformation strains for coupled Cahn-Hilliard-Allen-Cahn-Mechanics calculations.
 - Support for heterogeneous mechanics for coupled Cahn-Hilliard-Allen-Cahn-Mechanics calculations.
-- Option to shift the concentration by a constant value to reach a desired average concentration for coupled Cahn-Hilliard-Allen-Cahn-Mechanics calculations.
+- Option to shift the concentration by a constant value to reach a desired average concentration for coupled 
+  Cahn-Hilliard-Allen-Cahn-Mechanics calculations.
 - Free energy integrator for coupled Cahn-Hilliard-Allen-Cahn-Mechanics calculations.
 - Option to use an absolute tolerance for mechanics calculations.
 - New speed comparison test versus a finite difference code for coupled Cahn-Hilliard-Allen-Cahn calculations.
-- New application "bPPE_pfunction" that is a mirror of "betaPrimePrecipitateEvolution", but shows how PFunctions from the PRISMS IntegrationTools can be used to input parameters.
+- New application "bPPE_pfunction" that is a mirror of "betaPrimePrecipitateEvolution", but shows how PFunctions from the PRISMS 
+  IntegrationTools can be used to input parameters.
 
 Performance improvements:
-- Added option for fewer than 3 structural order parameters for coupled Cahn-Hilliard-Allen-Cahn-Mechanics calculations, which can cut run time in half.
-- Refactored mechanics functions for coupled Cahn-Hilliard-Allen-Cahn-Mechanics calculations, making use of built-in Deal.II tensor functions. This improves speed and reduces code.
+- Added option for fewer than 3 structural order parameters for coupled Cahn-Hilliard-Allen-Cahn-Mechanics calculations, which can 
+  cut run time in half.
+- Refactored mechanics functions for coupled Cahn-Hilliard-Allen-Cahn-Mechanics calculations, making use of built-in Deal.II tensor 
+  functions. This improves speed and reduces code.
 
 Other changes:
-- Restructured input files to separate numerical parameters, ICs/BCs, and the residual equations. This is a stepping stone to a more substantial interface overhaul in the next release.
+- Restructured input files to separate numerical parameters, ICs/BCs, and the residual equations. This is a stepping stone to a more 
+  substantial interface overhaul in the next release.
 - Updated/tweaked the example applications to make sure interfaces were well resolved, etc.
 
 Known issues:
-- The PFunctions in the application "bPPE_pfunction" can currently only be used for constants. The PFunctions only return doubles and thus cannot be used for functions like the free energy that must be vectorized arrays. This issue is being actively worked on.
+- The PFunctions in the application "bPPE_pfunction" can currently only be used for constants. The PFunctions only return doubles and 
+  thus cannot be used for functions like the free energy that must be vectorized arrays. This issue is being actively worked on.
 
 ====================
 Version 0.9.2:
@@ -32,13 +38,20 @@ Version 0.9.2:
 Patch to version 0.9.1, released in January 2016.
 
 Bug fixes:
-- In versions 0.9 and 0.9.1, unlike version 0.8, the fields in the calculation were updated sequentially, with the updated value being used for other calculations in that time step (e.g. the concentration is updated using the Cahn-Hilliard equation, then that updated value is used when updating the order parameter via the Allen-Cahn equation). In version 0.8, all of the updates to the fields used the value of the fields from the previous time step. This was the source of the different solutions between the versions. We reverted to the approach taken in version 0.8.
+- In versions 0.9 and 0.9.1, unlike version 0.8, the fields in the calculation were updated sequentially, with the updated value being 
+  used for other calculations in that time step (e.g. the concentration is updated using the Cahn-Hilliard equation, then that updated 
+  value is used when updating the order parameter via the Allen-Cahn equation). In version 0.8, all of the updates to the fields used 
+  the value of the fields from the previous time step. This was the source of the different solutions between the versions. We 
+  reverted to the approach taken in version 0.8.
 
 Added functionality:
-- A new test suite has been added. The tests can be found in the "tests" directory. Tests include a regression test, testing that the solutions exhibit the expected order of accuracy in both time and space, a comparison against a finite difference code, and tests comparing the accuracy of first, second, and third order elements at a range of element sizes.
+- A new test suite has been added. The tests can be found in the "tests" directory. Tests include a regression test, testing that the
+  solutions exhibit the expected order of accuracy in both time and space, a comparison against a finite difference code, and tests 
+  comparing the accuracy of first, second, and third order elements at a range of element sizes.
 
 Performance improvements:
-- Refactoring of "computeRHS" has led to a substantial performance increase for solving parabolic equations. Most of the improved performance came from no longer storing field metadata in std::map containers.
+- Refactoring of "computeRHS" has led to a substantial performance increase for solving parabolic equations. Most of the improved 
+  performance came from no longer storing field metadata in std::map containers.
 
 Known issues:
 - None
@@ -66,7 +79,8 @@ Known issues:
 ====================
 Version 0.9:
 ====================
-Released in September 2015 before the PRISMS Workshop. A large portion of the code was refactored so that much more of the source code is shared between applications. In the previous version, each application was nearly independent. 
+Released in September 2015 before the PRISMS Workshop. A large portion of the code was refactored so that much more of the source code is 
+shared between applications. In the previous version, each application was nearly independent. 
 
 Known issues:
 - Code runs more slowly than version 0.8, possibly due to compiler flags set by Deal.II that are disabling vectorization
