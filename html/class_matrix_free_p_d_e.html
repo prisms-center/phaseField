@@ -102,13 +102,14 @@ Inheritance diagram for MatrixFreePDE&lt; dim &gt;:</div>
  <div class="center">
   <img src="class_matrix_free_p_d_e.png" usemap="#MatrixFreePDE&lt; dim &gt;_map" alt=""/>
   <map id="MatrixFreePDE&lt; dim &gt;_map" name="MatrixFreePDE&lt; dim &gt;_map">
-<area href="class_allen_cahn_problem.html" alt="AllenCahnProblem&lt; dim &gt;" shape="rect" coords="0,112,280,136"/>
-<area href="class_cahn_hilliard_problem.html" alt="CahnHilliardProblem&lt; dim &gt;" shape="rect" coords="290,112,570,136"/>
-<area href="class_coupled_cahn_hilliard_mechanics_problem.html" alt="CoupledCahnHilliardMechanicsProblem&lt; dim &gt;" shape="rect" coords="580,112,860,136"/>
-<area href="class_coupled_c_h_a_c_mechanics_problem.html" alt="CoupledCHACMechanicsProblem&lt; dim &gt;" shape="rect" coords="870,112,1150,136"/>
-<area href="class_coupled_c_h_a_c_problem.html" alt="CoupledCHACProblem&lt; dim &gt;" shape="rect" coords="1160,112,1440,136"/>
-<area href="class_fickian_problem.html" alt="FickianProblem&lt; dim &gt;" shape="rect" coords="1450,112,1730,136"/>
-<area href="class_mechanics_problem.html" alt="MechanicsProblem&lt; dim &gt;" shape="rect" coords="1740,112,2020,136"/>
+<area href="class_allen_cahn_problem.html" alt="AllenCahnProblem&lt; dim &gt;" shape="rect" coords="290,112,570,136"/>
+<area href="class_cahn_hilliard_problem.html" alt="CahnHilliardProblem&lt; dim &gt;" shape="rect" coords="290,168,570,192"/>
+<area href="class_coupled_cahn_hilliard_mechanics_problem.html" alt="CoupledCahnHilliardMechanicsProblem&lt; dim &gt;" shape="rect" coords="290,224,570,248"/>
+<area href="class_coupled_c_h_a_c_mechanics_problem.html" alt="CoupledCHACMechanicsProblem&lt; dim &gt;" shape="rect" coords="290,280,570,304"/>
+<area href="class_coupled_c_h_a_c_problem.html" alt="CoupledCHACProblem&lt; dim &gt;" shape="rect" coords="290,336,570,360"/>
+<area href="class_coupled_c_h_a_c_problem.html" alt="CoupledCHACProblem&lt; dim &gt;" shape="rect" coords="290,392,570,416"/>
+<area href="class_fickian_problem.html" alt="FickianProblem&lt; dim &gt;" shape="rect" coords="290,448,570,472"/>
+<area href="class_mechanics_problem.html" alt="MechanicsProblem&lt; dim &gt;" shape="rect" coords="290,504,570,528"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -124,6 +125,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af7d39f0eac0af0ed5785935ac72a1e7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a344f8f169b475748bc249894177d6a2e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a344f8f169b475748bc249894177d6a2e">vmult</a> (<a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> &amp;dst, const <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> &amp;src) const </td></tr>
 <tr class="separator:a344f8f169b475748bc249894177d6a2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae722ea49faa5bf1953a19f8f1e7cc880"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#ae722ea49faa5bf1953a19f8f1e7cc880">shiftConcentration</a> ()</td></tr>
+<tr class="separator:ae722ea49faa5bf1953a19f8f1e7cc880"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -150,8 +153,18 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a90568dce4dabb9258e735f55b7a8722b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64fbd7dc135ad44c1dd45f57c5e24510"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a64fbd7dc135ad44c1dd45f57c5e24510">applyInitialConditions</a> ()</td></tr>
 <tr class="separator:a64fbd7dc135ad44c1dd45f57c5e24510"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aead3c2b961998040b844fdd933b63e93"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#aead3c2b961998040b844fdd933b63e93">modifySolutionFields</a> ()</td></tr>
+<tr class="separator:aead3c2b961998040b844fdd933b63e93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf9c801949be079ebca6819ead316446"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#abf9c801949be079ebca6819ead316446">computeEnergy</a> ()</td></tr>
+<tr class="separator:abf9c801949be079ebca6819ead316446"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6605a508295c300b612df0266e621256"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a6605a508295c300b612df0266e621256">getEnergy</a> (const MatrixFree&lt; dim, double &gt; &amp;data, std::vector&lt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; &amp;dst, const std::vector&lt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; &amp;src, const std::pair&lt; unsigned int, unsigned int &gt; &amp;cell_range)</td></tr>
+<tr class="separator:a6605a508295c300b612df0266e621256"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91eac767470e5404cf8036dcddb43dd3"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a91eac767470e5404cf8036dcddb43dd3">getFieldIndex</a> (std::string _name)</td></tr>
 <tr class="separator:a91eac767470e5404cf8036dcddb43dd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28f7e9c3570668af74ea9e1414b017d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a28f7e9c3570668af74ea9e1414b017d4">outputFreeEnergy</a> (std::vector&lt; double &gt; &amp;<a class="el" href="class_matrix_free_p_d_e.html#ab548447de8960b216352d8684259919d">freeEnergyValues</a>)</td></tr>
+<tr class="separator:a28f7e9c3570668af74ea9e1414b017d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab044651a749c98ee83dfbb4ecd9a83f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#ab044651a749c98ee83dfbb4ecd9a83f5">computeIntegral</a> (double &amp;integratedField)</td></tr>
+<tr class="separator:ab044651a749c98ee83dfbb4ecd9a83f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -179,6 +192,8 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a6f683b6ccaba2e68e2b31869be990430"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a396ca2caebbe25069fba3d5a8d9efb57"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a396ca2caebbe25069fba3d5a8d9efb57">num_quadrature_points</a></td></tr>
 <tr class="separator:a396ca2caebbe25069fba3d5a8d9efb57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab548447de8960b216352d8684259919d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#ab548447de8960b216352d8684259919d">freeEnergyValues</a></td></tr>
+<tr class="separator:ab548447de8960b216352d8684259919d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab46559b1aad8baf1a926a2e6addaad88"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#ab46559b1aad8baf1a926a2e6addaad88">isTimeDependentBVP</a></td></tr>
 <tr class="separator:ab46559b1aad8baf1a926a2e6addaad88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea98dff0e5974c3c2ba3ffe430dd8e40"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#aea98dff0e5974c3c2ba3ffe430dd8e40">dtValue</a></td></tr>
@@ -195,6 +210,10 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a914f651bc9ca2e223b243695dd37ba53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac33e057e4b59379e5a2806b9f22fec7"><td class="memItemLeft" align="right" valign="top">TimerOutput&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#aac33e057e4b59379e5a2806b9f22fec7">computing_timer</a></td></tr>
 <tr class="separator:aac33e057e4b59379e5a2806b9f22fec7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d26cc49e49afe96406210d6beaf418a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a1d26cc49e49afe96406210d6beaf418a">energy</a></td></tr>
+<tr class="separator:a1d26cc49e49afe96406210d6beaf418a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6de33a05dd04a3e9f8cd0a7487476f8"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#aa6de33a05dd04a3e9f8cd0a7487476f8">energy_components</a></td></tr>
+<tr class="separator:aa6de33a05dd04a3e9f8cd0a7487476f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;int dim&gt;<br />
@@ -280,7 +299,54 @@ class MatrixFreePDE&lt; dim &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="class_coupled_c_h_a_c_mechanics_problem.html#a64fbd7dc135ad44c1dd45f57c5e24510">CoupledCHACMechanicsProblem&lt; dim &gt;</a>, <a class="el" href="class_coupled_cahn_hilliard_mechanics_problem.html#a64fbd7dc135ad44c1dd45f57c5e24510">CoupledCahnHilliardMechanicsProblem&lt; dim &gt;</a>, <a class="el" href="class_allen_cahn_problem.html#a64fbd7dc135ad44c1dd45f57c5e24510">AllenCahnProblem&lt; dim &gt;</a>, <a class="el" href="class_cahn_hilliard_problem.html#a64fbd7dc135ad44c1dd45f57c5e24510">CahnHilliardProblem&lt; dim &gt;</a>, <a class="el" href="class_coupled_c_h_a_c_problem.html#a64fbd7dc135ad44c1dd45f57c5e24510">CoupledCHACProblem&lt; dim &gt;</a>, and <a class="el" href="class_fickian_problem.html#a64fbd7dc135ad44c1dd45f57c5e24510">FickianProblem&lt; dim &gt;</a>.</p>
+<p>Reimplemented in <a class="el" href="class_coupled_c_h_a_c_mechanics_problem.html#a64fbd7dc135ad44c1dd45f57c5e24510">CoupledCHACMechanicsProblem&lt; dim &gt;</a>, <a class="el" href="class_coupled_cahn_hilliard_mechanics_problem.html#a64fbd7dc135ad44c1dd45f57c5e24510">CoupledCahnHilliardMechanicsProblem&lt; dim &gt;</a>, <a class="el" href="class_allen_cahn_problem.html#a64fbd7dc135ad44c1dd45f57c5e24510">AllenCahnProblem&lt; dim &gt;</a>, <a class="el" href="class_cahn_hilliard_problem.html#a64fbd7dc135ad44c1dd45f57c5e24510">CahnHilliardProblem&lt; dim &gt;</a>, <a class="el" href="class_coupled_c_h_a_c_problem.html#a64fbd7dc135ad44c1dd45f57c5e24510">CoupledCHACProblem&lt; dim &gt;</a>, <a class="el" href="class_fickian_problem.html#a64fbd7dc135ad44c1dd45f57c5e24510">FickianProblem&lt; dim &gt;</a>, and <a class="el" href="class_coupled_c_h_a_c_problem.html#a64fbd7dc135ad44c1dd45f57c5e24510">CoupledCHACProblem&lt; dim &gt;</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="abf9c801949be079ebca6819ead316446"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void computeEnergy </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab044651a749c98ee83dfbb4ecd9a83f5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void computeIntegral </td>
+          <td>(</td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>integratedField</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -327,6 +393,54 @@ class MatrixFreePDE&lt; dim &gt;</h3>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a6605a508295c300b612df0266e621256"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void getEnergy </td>
+          <td>(</td>
+          <td class="paramtype">const MatrixFree&lt; dim, double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::pair&lt; unsigned int, unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>cell_range</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="class_coupled_c_h_a_c_mechanics_problem.html#a6605a508295c300b612df0266e621256">CoupledCHACMechanicsProblem&lt; dim &gt;</a>, and <a class="el" href="class_coupled_cahn_hilliard_mechanics_problem.html#a6605a508295c300b612df0266e621256">CoupledCahnHilliardMechanicsProblem&lt; dim &gt;</a>.</p>
 
 </div>
 </div>
@@ -487,7 +601,56 @@ class MatrixFreePDE&lt; dim &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="class_mechanics_problem.html#a95cc26dbdbeed2b8d4657b37c4ec2fa4">MechanicsProblem&lt; dim &gt;</a>.</p>
+<p>Reimplemented in <a class="el" href="class_coupled_c_h_a_c_mechanics_problem.html#a95cc26dbdbeed2b8d4657b37c4ec2fa4">CoupledCHACMechanicsProblem&lt; dim &gt;</a>, and <a class="el" href="class_mechanics_problem.html#a95cc26dbdbeed2b8d4657b37c4ec2fa4">MechanicsProblem&lt; dim &gt;</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aead3c2b961998040b844fdd933b63e93"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void modifySolutionFields </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="class_coupled_c_h_a_c_mechanics_problem.html#aead3c2b961998040b844fdd933b63e93">CoupledCHACMechanicsProblem&lt; dim &gt;</a>, <a class="el" href="class_coupled_c_h_a_c_problem.html#aead3c2b961998040b844fdd933b63e93">CoupledCHACProblem&lt; dim &gt;</a>, and <a class="el" href="class_coupled_c_h_a_c_problem.html#aead3c2b961998040b844fdd933b63e93">CoupledCHACProblem&lt; dim &gt;</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a28f7e9c3570668af74ea9e1414b017d4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void outputFreeEnergy </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>freeEnergyValues</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -510,6 +673,21 @@ class MatrixFreePDE&lt; dim &gt;</h3>
 <span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae722ea49faa5bf1953a19f8f1e7cc880"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void shiftConcentration </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
 </div><div class="memdoc">
 
 </div>
@@ -740,6 +918,46 @@ class MatrixFreePDE&lt; dim &gt;</h3>
 
 </div>
 </div>
+<a class="anchor" id="a1d26cc49e49afe96406210d6beaf418a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double energy</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aa6de33a05dd04a3e9f8cd0a7487476f8"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;double&gt; energy_components</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="aca8b82c562a106e607667fbcabf6ba8d"></a>
 <div class="memitem">
 <div class="memproto">
@@ -781,6 +999,26 @@ class MatrixFreePDE&lt; dim &gt;</h3>
       <table class="memname">
         <tr>
           <td class="memname">double finalTime</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab548447de8960b216352d8684259919d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;double&gt; freeEnergyValues</td>
         </tr>
       </table>
   </td>
@@ -993,19 +1231,22 @@ class MatrixFreePDE&lt; dim &gt;</h3>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>phaseField/include/<a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a></li>
-<li>phaseField/src/matrixfree/<a class="el" href="boundary_conditions_8cc.html">boundaryConditions.cc</a></li>
-<li>phaseField/src/matrixfree/<a class="el" href="compute_l_h_s_8cc.html">computeLHS.cc</a></li>
-<li>phaseField/src/matrixfree/<a class="el" href="compute_r_h_s_8cc.html">computeRHS.cc</a></li>
-<li>phaseField/src/matrixfree/<a class="el" href="init_8cc.html">init.cc</a></li>
-<li>phaseField/src/matrixfree/<a class="el" href="initial_conditions_8cc.html">initialConditions.cc</a></li>
-<li>phaseField/src/matrixfree/<a class="el" href="inv_m_8cc.html">invM.cc</a></li>
-<li>phaseField/src/matrixfree/<a class="el" href="mark_boundaries_8cc.html">markBoundaries.cc</a></li>
-<li>phaseField/src/matrixfree/<a class="el" href="matrix_free_p_d_e_8cc.html">matrixFreePDE.cc</a></li>
-<li>phaseField/src/matrixfree/<a class="el" href="output_results_8cc.html">outputResults.cc</a></li>
-<li>phaseField/src/matrixfree/<a class="el" href="solve_8cc.html">solve.cc</a></li>
-<li>phaseField/src/matrixfree/<a class="el" href="solve_increment_8cc.html">solveIncrement.cc</a></li>
-<li>phaseField/src/matrixfree/<a class="el" href="utilities_8cc.html">utilities.cc</a></li>
+<li>phaseField_dev/include/<a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a></li>
+<li>phaseField_dev/src/matrixfree/<a class="el" href="boundary_conditions_8cc.html">boundaryConditions.cc</a></li>
+<li>phaseField_dev/src/matrixfree/<a class="el" href="calc_free_energy_8cc.html">calcFreeEnergy.cc</a></li>
+<li>phaseField_dev/src/matrixfree/<a class="el" href="compute_l_h_s_8cc.html">computeLHS.cc</a></li>
+<li>phaseField_dev/src/matrixfree/<a class="el" href="compute_r_h_s_8cc.html">computeRHS.cc</a></li>
+<li>phaseField_dev/src/matrixfree/<a class="el" href="init_8cc.html">init.cc</a></li>
+<li>phaseField_dev/src/matrixfree/<a class="el" href="initial_conditions_8cc.html">initialConditions.cc</a></li>
+<li>phaseField_dev/src/matrixfree/<a class="el" href="integrate__and__shift__field_8cc.html">integrate_and_shift_field.cc</a></li>
+<li>phaseField_dev/src/matrixfree/<a class="el" href="inv_m_8cc.html">invM.cc</a></li>
+<li>phaseField_dev/src/matrixfree/<a class="el" href="mark_boundaries_8cc.html">markBoundaries.cc</a></li>
+<li>phaseField_dev/src/matrixfree/<a class="el" href="matrix_free_p_d_e_8cc.html">matrixFreePDE.cc</a></li>
+<li>phaseField_dev/src/matrixfree/<a class="el" href="modify_fields_8cc.html">modifyFields.cc</a></li>
+<li>phaseField_dev/src/matrixfree/<a class="el" href="output_results_8cc.html">outputResults.cc</a></li>
+<li>phaseField_dev/src/matrixfree/<a class="el" href="solve_8cc.html">solve.cc</a></li>
+<li>phaseField_dev/src/matrixfree/<a class="el" href="solve_increment_8cc.html">solveIncrement.cc</a></li>
+<li>phaseField_dev/src/matrixfree/<a class="el" href="utilities_8cc.html">utilities.cc</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -81,14 +81,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><b>Code repository:</b> <a href="https://github.com/prisms-center/phaseField">https://github.com/prisms-center/phaseField</a> <br />
- <b>Code documentation:</b> <a href="https://goo.gl/76lFHj">https://goo.gl/76lFHj</a> <br />
+ <b>Code documentation:</b> <a href="https://goo.gl/30XwIW">https://goo.gl/30XwIW</a> <br />
  <b>User registration link:</b> <a href="http://goo.gl/forms/GXo7Im8p2Y">http://goo.gl/forms/GXo7Im8p2Y</a></p>
-<p><b>Version information:</b> This version of the code, version 0.9.1, is a pre-release version with known issues. For a more stable version, please select version 0.8. Unlike version 0.8, version 0.9.1 has the more modular approach planned for future code releases. However, at present version 0.9.1 is slower than version 0.8 and yields slightly different solutions to the time evolution equations (e.g. Allen-Cahn or Cahn-Hilliard) than version 0.8. These issues are currently being investigated and will be addressed as soon as possible. For more details concerning the differences between versions, please consult version_changes.txt.</p>
-<p><b>What is PRISMS PhaseField?</b></p>
+<p><b>Version information:</b> This version of the code, 0.9.3, is a pre-release version of PRISMS-PF. This version provides a few additions and improvements to version 0.9.2, mostly regarding couple Cahn-Hilliard-Allen-Cahn-Mechanics calculations. For more information concerning the differences between versions, please consult version_changes.txt.</p>
+<p><b>What is PRISMS-PF?</b></p>
 <p>It is a Finite Element Method (FEM) code implementing various phase field and coupled mechanics models and its applications to some physical problems (spinodal decomposition, coupled transport and mechanics, precipitate evolution, etc.). It is build on top of the deal.II open source finite element library [<a href="http://www.dealii.org">http://www.dealii.org</a>]</p>
 <p>This code is developed by the PRedictive Integrated Structural Materials Science (PRISMS) Center [<a href="http://www.prisms-center.org/">http://www.prisms-center.org/</a>] at University of Michigan which is supported by the U.S. Department of Energy (DOE), Office of Basic Energy Sciences, Division of Materials Sciences and Engineering under Award DE-SC0008637</p>
 <p><b>Installation:</b></p>
-<p>1) Install deal.II (version 8.2.1 currently supported)<br />
+<p>1) Install deal.II (version 8.4.1 currently supported)<br />
 </p><ul>
 <li>Download Binaries (OSX and Linux) or Virtual Machine (VMI) from <a href="https://www.dealii.org/download.html">https://www.dealii.org/download.html</a> <br />
  (OR) <br />
@@ -102,7 +102,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>Additional software: CMake [<a href="http://www.cmake.org/download/">http://www.cmake.org/download/</a>]</li>
 </ul>
-<p>2) Clone the PRISMS PhaseField GitHub repo <a href="https://github.com/prisms-center/phaseField">https://github.com/prisms-center/phaseField</a><br />
+<p>2) Clone the PRISMS-PF GitHub repo <a href="https://github.com/prisms-center/phaseField">https://github.com/prisms-center/phaseField</a><br />
 </p><ul>
 <li>$ git clone <a href="https://github.com/prisms-center/phaseField.git">https://github.com/prisms-center/phaseField.git</a> <br />
  (OR) <br />
@@ -116,7 +116,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 </ul>
 <p><b>Usage:</b></p>
-<p>Running phaseField applications, for example Cahn-Hilliard spinodal decomposition problem :<br />
+<p>Running PRISMS-PF applications, for example Cahn-Hilliard spinodal decomposition problem :<br />
 </p><ul>
 <li>$ cd applications/cahnHilliard <br />
  For debug mode [default mode, very slow]: <br />
@@ -137,7 +137,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>$ mpirun -np nprocs ./main <br />
  [here nprocs denotes the number of processors]</li>
 </ul>
-<p>Updates: Since phaseField code is still under active development, regular code and documentation updates are pushed to the upstream repo (<a href="https://github.com/prisms-center/phaseField">https://github.com/prisms-center/phaseField</a>) and we strongly recommend users to synchronize their respective clones/forks at regular intervals or when requested by the developers through the announcements on the mailing list.</p>
+<p>Updates: Since PRISMS-PF is still under active development, regular code and documentation updates are pushed to the upstream repo (<a href="https://github.com/prisms-center/phaseField">https://github.com/prisms-center/phaseField</a>) and we strongly recommend users to synchronize their respective clones/forks at regular intervals or when requested by the developers through the announcements on the mailing list.</p>
 <p><b>Visualization</b></p>
 <p>Output of the primal fields and postprocessed fields is in standard vtk format (parallel:*.pvtu, serial:*.vtu files) which can be visualized with the following open source applications:</p><ol type="1">
 <li>VisIt (<a href="https://wci.llnl.gov/simulation/computer-codes/visit/downloads">https://wci.llnl.gov/simulation/computer-codes/visit/downloads</a>)</li>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>PRISMS PhaseField: phaseField/src/models/mechanics/computeStress.h File Reference</title>
+<title>PRISMS PhaseField: phaseField_dev/src/models/mechanics/computeStress.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -82,7 +82,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_5aaeec85e1349a6200dec577c08e3e8d.html">phaseField</a></li><li class="navelem"><a class="el" href="dir_1bdbbc43a0bf9b6cab5fc86e20392a06.html">src</a></li><li class="navelem"><a class="el" href="dir_af729c6b7a6fd0f7731bb1219dace09b.html">models</a></li><li class="navelem"><a class="el" href="dir_8475a4e1af16a2c9fb4846dd1193b11a.html">mechanics</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68b2c403797434992cf6ff2c2ad45c53.html">phaseField_dev</a></li><li class="navelem"><a class="el" href="dir_da2bc9e5bb0cc4a7e846a35a317e0152.html">src</a></li><li class="navelem"><a class="el" href="dir_724a0bef99066287d15f626a59ee9e0b.html">models</a></li><li class="navelem"><a class="el" href="dir_5fcec8bc6750e48400563eed36160ccb.html">mechanics</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -101,6 +101,15 @@ Functions</h2></td></tr>
 <tr class="memitem:ab938d662f133ebe02cafc8b6716f5f0a"><td class="memTemplParams" colspan="2">template&lt;int dim&gt; </td></tr>
 <tr class="memitem:ab938d662f133ebe02cafc8b6716f5f0a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="compute_stress_8h.html#ab938d662f133ebe02cafc8b6716f5f0a">computeStress</a> (const dealii::Table&lt; 2, double &gt; &amp;CIJ, const dealii::VectorizedArray&lt; double &gt; strain[][dim], dealii::VectorizedArray&lt; double &gt; R[][dim])</td></tr>
 <tr class="separator:ab938d662f133ebe02cafc8b6716f5f0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae655ed004d95469fdbbcd79f3b8d09bb"><td class="memTemplParams" colspan="2">template&lt;int dim&gt; </td></tr>
+<tr class="memitem:ae655ed004d95469fdbbcd79f3b8d09bb"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="compute_stress_8h.html#ae655ed004d95469fdbbcd79f3b8d09bb">computeStress</a> (const dealii::VectorizedArray&lt; double &gt; CIJ[2 *dim-1+dim/3][2 *dim-1+dim/3], const dealii::VectorizedArray&lt; double &gt; strain[][dim], dealii::VectorizedArray&lt; double &gt; R[][dim])</td></tr>
+<tr class="separator:ae655ed004d95469fdbbcd79f3b8d09bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3473592575a430b8dbf2956bc9b0fa6f"><td class="memTemplParams" colspan="2">template&lt;int dim&gt; </td></tr>
+<tr class="memitem:a3473592575a430b8dbf2956bc9b0fa6f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="compute_stress_8h.html#a3473592575a430b8dbf2956bc9b0fa6f">computeStress</a> (const dealii::Tensor&lt; 2, 2 *dim-1+dim/3, dealii::VectorizedArray&lt; double &gt; &gt; &amp;CIJ, const dealii::Tensor&lt; 2, dim, dealii::VectorizedArray&lt; double &gt; &gt; strain, dealii::Tensor&lt; 2, dim, dealii::VectorizedArray&lt; double &gt; &gt; &amp;R)</td></tr>
+<tr class="separator:a3473592575a430b8dbf2956bc9b0fa6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ee312d51916aa6d0be46e5d7cb6a57f"><td class="memTemplParams" colspan="2">template&lt;int dim&gt; </td></tr>
+<tr class="memitem:a8ee312d51916aa6d0be46e5d7cb6a57f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="compute_stress_8h.html#a8ee312d51916aa6d0be46e5d7cb6a57f">computeStress</a> (const dealii::Table&lt; 2, double &gt; &amp;CIJ, const dealii::Tensor&lt; 2, dim, dealii::VectorizedArray&lt; double &gt; &gt; &amp;strain, dealii::Tensor&lt; 2, dim, dealii::VectorizedArray&lt; double &gt; &gt; &amp;R)</td></tr>
+<tr class="separator:a8ee312d51916aa6d0be46e5d7cb6a57f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a class="anchor" id="ab938d662f133ebe02cafc8b6716f5f0a"></a>
@@ -124,6 +133,102 @@ Functions</h2></td></tr>
           <td></td>
           <td class="paramtype">dealii::VectorizedArray&lt; double &gt;&#160;</td>
           <td class="paramname"><em>R</em>[][dim]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae655ed004d95469fdbbcd79f3b8d09bb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void computeStress </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::VectorizedArray&lt; double &gt;&#160;</td>
+          <td class="paramname"><em>CIJ</em>[2 *dim-1+dim/3][2 *dim-1+dim/3], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::VectorizedArray&lt; double &gt;&#160;</td>
+          <td class="paramname"><em>strain</em>[][dim], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dealii::VectorizedArray&lt; double &gt;&#160;</td>
+          <td class="paramname"><em>R</em>[][dim]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a3473592575a430b8dbf2956bc9b0fa6f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void computeStress </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::Tensor&lt; 2, 2 *dim-1+dim/3, dealii::VectorizedArray&lt; double &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>CIJ</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::Tensor&lt; 2, dim, dealii::VectorizedArray&lt; double &gt; &gt;&#160;</td>
+          <td class="paramname"><em>strain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dealii::Tensor&lt; 2, dim, dealii::VectorizedArray&lt; double &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>R</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a8ee312d51916aa6d0be46e5d7cb6a57f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void computeStress </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::Table&lt; 2, double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>CIJ</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::Tensor&lt; 2, dim, dealii::VectorizedArray&lt; double &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>strain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dealii::Tensor&lt; 2, dim, dealii::VectorizedArray&lt; double &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>R</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
