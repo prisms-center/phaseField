@@ -13,6 +13,7 @@ Added functionality:
 - Free energy integrator for coupled Cahn-Hilliard-Allen-Cahn-Mechanics calculations.
 - Option to use an absolute tolerance for mechanics calculations.
 - New speed comparison test versus a finite difference code for coupled Cahn-Hilliard-Allen-Cahn calculations.
+- New application "bPPE_pfunction" that is a mirror of "betaPrimePrecipitateEvolution", but shows how PFunctions from the PRISMS IntegrationTools can be used to input parameters.
 
 Performance improvements:
 - Added option for fewer than 3 structural order parameters for coupled Cahn-Hilliard-Allen-Cahn-Mechanics calculations, which can cut run time in half.
@@ -23,7 +24,7 @@ Other changes:
 - Updated/tweaked the example applications to make sure interfaces were well resolved, etc.
 
 Known issues:
-- None
+- The PFunctions in the application "bPPE_pfunction" can currently only be used for constants. The PFunctions only return doubles and thus cannot be used for functions like the free energy that must be vectorized arrays. This issue is being actively worked on.
 
 ====================
 Version 0.9.2:
