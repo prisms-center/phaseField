@@ -5,7 +5,7 @@ PRISMS-PF
 <B>User registration link:</B> http://goo.gl/forms/GXo7Im8p2Y
 
 <B>Version information:</B>
-This version of the code, 0.9.3, is a pre-release version of PRISMS-PF. This version provides a few additions and improvements to version 0.9.2, mostly regarding couple Cahn-Hilliard-Allen-Cahn-Mechanics calculations. For more information concerning the differences between versions, please consult version_changes.txt.   
+This version of the code, 0.9.3, is a pre-release version of PRISMS-PF. This version provides a few additions and improvements to version 0.9.2, mostly regarding coupled Cahn-Hilliard-Allen-Cahn-Mechanics calculations. For more information concerning the differences between versions, please consult version_changes.txt.   
 
 <B>What is PRISMS-PF?</B>
 
