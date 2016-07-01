@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['name',['name',['../class_field.html#a9b45b3e13bd9167aab02e17e08916231',1,'Field']]],
-  ['num_5fquadrature_5fpoints',['num_quadrature_points',['../class_matrix_free_p_d_e.html#a396ca2caebbe25069fba3d5a8d9efb57',1,'MatrixFreePDE']]],
-  ['numcomponents',['numComponents',['../class_field.html#adec91e5767db3627605a6c0c8bdd6931',1,'Field']]]
+  ['locally_5frelevant_5fdofsset',['locally_relevant_dofsSet',['../class_matrix_free_p_d_e.html#a4e7577cd5db8bd3bc9bd685d88442f0d',1,'MatrixFreePDE']]],
+  ['localnuclei',['localNuclei',['../coupled_c_h_a_c_mechanics_8h.html#ae077181c3a07a8622e7bc3a58e2b6c01',1,'coupledCHACMechanics.h']]]
 ];

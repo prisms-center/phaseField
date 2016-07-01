@@ -105,5 +105,3 @@ print "First order element error:", str(error[0]), "(refine level 3)", str(error
 
 print "Second order element error:", str(error[3]), "(refine level 2)", str(error[4]), "(refine level 3)", \
 	str(error[5]), "(refine level 4)", "\n"
-
-print str(error[6]), str(error[7]), str(error[8])

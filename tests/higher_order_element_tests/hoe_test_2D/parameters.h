@@ -28,10 +28,8 @@
 #define writeOutput true
 #define skipOutputSteps 10000 //(timeIncrements/10)
 
-// flag to allow or disallow nucleation
-#define nucleation_occurs false
-
-#define numFields (4+problemDIM)
+#define num_sop 1
+#define numFields (1+num_sop+problemDIM)
 
 //define Cahn-Hilliard parameters (No Gradient energy)
 #define McV 1.0
@@ -51,9 +49,25 @@ double Kn3[3][3]={{1.0,0,0},{0,0.5,0},{0,0,1.0}};
 //define Mechanical properties
 #define MaterialModelV ISOTROPIC
 #define MaterialConstantsV {1.0,0.3}
-double sf1Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}}; //Mg-Nd beta-prime
-double sf2Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+
+// Stress-free transformation strains
+// Linear fits for the stress-free transformation strains in for sfts = sfts_linear * c + sfts_const
+double sfts_linear1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sfts_const1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+
+double sfts_linear2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sfts_const2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+
+double sfts_linear3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sfts_const3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+
+// --------------------------------------------
+// Unused for these tests
+#define n_dependent_stiffness false
+// Used in n=1 phase if n_dependent_stiffness == true
+#define MaterialModelBetaV ISOTROPIC
+#define MaterialConstantsBetaV {2.0,0.3}
+// --------------------------------------------
 
 //define free energy expressions (Mg-Nd data from CASM)
 #define faV (24.7939*c*c - 1.6752*c - 1.9453e-06)
@@ -79,7 +93,7 @@ double sf3Strain[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 #define rcxTemp ( cx*((1.0-h1V-h2V-h3V)*faccV+(h1V+h2V+h3V)*fbccV) + n1x*((fbcV-facV)*hn1V) + n2x*((fbcV-facV)*hn2V) + n3x*((fbcV-facV)*hn3V) )
 #define rcxV  (constV(-timeStep*McV)*rcxTemp)
 
-#define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V+W*fbarriernV-CEE1))
+#define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V+W*fbarriernV+nDependentMisfitAC1))
 #define rn2V   (n2-constV(timeStep*Mn2V)*((fbV-faV)*hn2V))
 #define rn3V   (n3-constV(timeStep*Mn3V)*((fbV-faV)*hn3V))
 #define rn1xV  (constV(-timeStep*Mn1V)*Knx1)

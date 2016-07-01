@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>PRISMS PhaseField: phaseField/applications/fickianDiffusion/parameters.h Source File</title>
+<title>PRISMS PhaseField: phaseField_dev/applications/fickianDiffusion/parameters.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -82,7 +82,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_5aaeec85e1349a6200dec577c08e3e8d.html">phaseField</a></li><li class="navelem"><a class="el" href="dir_17d30d0c8aaf533b0c21007cb99fe793.html">applications</a></li><li class="navelem"><a class="el" href="dir_f09e630603bf856ae76aaadfc6314c22.html">fickianDiffusion</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68b2c403797434992cf6ff2c2ad45c53.html">phaseField_dev</a></li><li class="navelem"><a class="el" href="dir_e88e8cad8d3a8e4d610d48bf31089907.html">applications</a></li><li class="navelem"><a class="el" href="dir_47202c4d4a477c319f841f0f3e30619c.html">fickianDiffusion</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -118,22 +118,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="fickian_diffusion_2parameters_8h.html#a0e0c9d336389e97f2526f080cf895055">   26</a></span>&#160;<span class="preprocessor">#define writeOutput true</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="fickian_diffusion_2parameters_8h.html#ac8cf4158da8d17bc16eb0b3801f7eedc">   27</a></span>&#160;<span class="preprocessor">#define skipOutputSteps 100</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">//define Fickian diffusion parameters</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="fickian_diffusion_2parameters_8h.html#ad510e59cd74650559919a6e1b9bf6f6e">   30</a></span>&#160;<span class="preprocessor">#define DcV 0.01</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">//define geometric expression</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">//defining a circle centered at (0.0,0.0) with radius spanX/10</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="fickian_diffusion_2parameters_8h.html#ac6c95b6d4acf646efc92989c3e67fd66">   34</a></span>&#160;<span class="preprocessor">#define exp1 (std::sqrt(x*x+y*y)&lt;spanX/10)</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">//define temporal expression</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="fickian_diffusion_2parameters_8h.html#a37de26c77e55b59547d30d53b114b468">   37</a></span>&#160;<span class="preprocessor">#define exp2 (t&lt;timeFinal/4)</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">//define required residuals</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="fickian_diffusion_2parameters_8h.html#a031e490658682f5af3652867cc81c435">   41</a></span>&#160;<span class="preprocessor">#define rcV   (c + timeStep*subdomain(exp1 &amp;&amp; exp2, constV(1.0)) )</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="fickian_diffusion_2parameters_8h.html#a282e86016dd726dccae6085834af9db2">   42</a></span>&#160;<span class="preprocessor">#define rcxV  (constV(-DcV*timeStep)*cx)</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

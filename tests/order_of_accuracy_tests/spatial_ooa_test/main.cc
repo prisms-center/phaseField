@@ -175,6 +175,13 @@ void CoupledCHACMechanicsProblem<dim>::applyDirichletBCs(){
 					    this->constraintsSet[this->getFieldIndex("u")]);
 }
 
+//methods to mark boundaries
+template <int dim>
+void CoupledCHACMechanicsProblem<dim>::markBoundaries(){
+	// All boundaries are marked zero by default
+}
+
+
 //main
 int main (int argc, char **argv)
 {

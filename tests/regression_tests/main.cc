@@ -156,13 +156,24 @@ void CoupledCHACMechanicsProblem<dim>::applyInitialConditions()
   //call initial condition function for structural order parameters
   fieldIndex=this->getFieldIndex("n1");
   VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionN<dim>(1), *this->solutionSet[fieldIndex]);
-  fieldIndex=this->getFieldIndex("n2");
-  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionN<dim>(2), *this->solutionSet[fieldIndex]);
-  fieldIndex=this->getFieldIndex("n3");
-  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionN<dim>(3), *this->solutionSet[fieldIndex]);
+  if (num_sop > 1){
+	  fieldIndex=this->getFieldIndex("n2");
+	  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionN<dim>(2), *this->solutionSet[fieldIndex]);
+	  if (num_sop > 2){
+		  fieldIndex=this->getFieldIndex("n3");
+		  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionN<dim>(3), *this->solutionSet[fieldIndex]);
+	  }
+  }
   //set zero intial condition for u
   fieldIndex=this->getFieldIndex("u");
   *this->solutionSet[fieldIndex]=0.0;
+}
+
+//methods to mark boundaries
+template <int dim>
+void CoupledCHACMechanicsProblem<dim>::markBoundaries(){
+
+	// By default, all boundary faces of the domain are marked zero
 }
 
 //apply Dirchlet BC function
@@ -172,6 +183,12 @@ void CoupledCHACMechanicsProblem<dim>::applyDirichletBCs(){
   VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->getFieldIndex("u")],\
 					    0, ZeroFunction<dim>(dim), *(ConstraintMatrix*) \
 					    this->constraintsSet[this->getFieldIndex("u")]);
+}
+
+// Shift the initial concentration so that the average concentration is the desired value
+template <int dim>
+void CoupledCHACMechanicsProblem<dim>::shiftConcentration()
+{
 }
 
 //main
@@ -184,8 +201,12 @@ int main (int argc, char **argv)
       CoupledCHACMechanicsProblem<problemDIM> problem;
       problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "c"));
       problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "n1"));
-      problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "n2"));
-      problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "n3"));
+      if (num_sop > 1){
+    	  problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "n2"));
+    	  if (num_sop > 2){
+    		  problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "n3"));
+    	  }
+      }
       problem.fields.push_back(Field<problemDIM>(VECTOR,  ELLIPTIC, "u"));
       problem.init ();
       problem.solve();

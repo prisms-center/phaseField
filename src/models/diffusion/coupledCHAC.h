@@ -19,8 +19,11 @@ class CoupledCHACProblem: public MatrixFreePDE<dim>
 	      const std::vector<vectorType*> &src,
 	      const std::pair<unsigned int,unsigned int> &cell_range) const;
 
-  //method to apply initial conditions
+  // Method to apply initial conditions
   void applyInitialConditions();
+
+  // Method to make modification to one of the fields (used for nucleation)
+  void modifySolutionFields();
 };
 
 //constructor
@@ -80,5 +83,6 @@ void  CoupledCHACProblem<dim>::getRHS(const MatrixFree<dim,double> &data,
     cVals.integrate(true, true);  cVals.distribute_local_to_global(*dst[1]);
   }
 }
+
 
 #endif

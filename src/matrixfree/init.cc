@@ -22,6 +22,7 @@
    }
 
    pcout << "creating problem mesh...\n";
+
 #if problemDIM==3
    GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(spanX,spanY,spanZ));
 #elif problemDIM==2
@@ -29,6 +30,7 @@
 #elif problemDIM==1
    GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(spanX));
 #endif
+
    triangulation.refine_global (refineFactor);
    //write out extends
    pcout << "problem dimensions: " << spanX << "x" << spanY << "x" << spanZ << std::endl;

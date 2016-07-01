@@ -120,6 +120,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af7d39f0eac0af0ed5785935ac72a1e7d inherit pub_methods_class_matrix_free_p_d_e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a344f8f169b475748bc249894177d6a2e inherit pub_methods_class_matrix_free_p_d_e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a344f8f169b475748bc249894177d6a2e">vmult</a> (<a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> &amp;dst, const <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> &amp;src) const </td></tr>
 <tr class="separator:a344f8f169b475748bc249894177d6a2e inherit pub_methods_class_matrix_free_p_d_e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae722ea49faa5bf1953a19f8f1e7cc880 inherit pub_methods_class_matrix_free_p_d_e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#ae722ea49faa5bf1953a19f8f1e7cc880">shiftConcentration</a> ()</td></tr>
+<tr class="separator:ae722ea49faa5bf1953a19f8f1e7cc880 inherit pub_methods_class_matrix_free_p_d_e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -131,11 +133,15 @@ Private Member Functions</h2></td></tr>
 <tr class="separator:a64fbd7dc135ad44c1dd45f57c5e24510"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90568dce4dabb9258e735f55b7a8722b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_coupled_cahn_hilliard_mechanics_problem.html#a90568dce4dabb9258e735f55b7a8722b">applyDirichletBCs</a> ()</td></tr>
 <tr class="separator:a90568dce4dabb9258e735f55b7a8722b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6605a508295c300b612df0266e621256"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_coupled_cahn_hilliard_mechanics_problem.html#a6605a508295c300b612df0266e621256">getEnergy</a> (const MatrixFree&lt; dim, double &gt; &amp;data, std::vector&lt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; &amp;dst, const std::vector&lt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; &amp;src, const std::pair&lt; unsigned int, unsigned int &gt; &amp;cell_range)</td></tr>
+<tr class="separator:a6605a508295c300b612df0266e621256"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:aad1ac348f9e1c7ce418ab6cd6993aca0"><td class="memItemLeft" align="right" valign="top">Table&lt; 2, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_coupled_cahn_hilliard_mechanics_problem.html#aad1ac348f9e1c7ce418ab6cd6993aca0">CIJ</a></td></tr>
 <tr class="separator:aad1ac348f9e1c7ce418ab6cd6993aca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbb18fffdd4226876996a14a8f5f8d15"><td class="memItemLeft" align="right" valign="top">Threads::Mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_coupled_cahn_hilliard_mechanics_problem.html#abbb18fffdd4226876996a14a8f5f8d15">assembler_lock</a></td></tr>
+<tr class="separator:abbb18fffdd4226876996a14a8f5f8d15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -153,8 +159,16 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a9e64307c8a79a364e3a11600d058f351 inherit pro_methods_class_matrix_free_p_d_e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95cc26dbdbeed2b8d4657b37c4ec2fa4 inherit pro_methods_class_matrix_free_p_d_e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a95cc26dbdbeed2b8d4657b37c4ec2fa4">markBoundaries</a> ()</td></tr>
 <tr class="separator:a95cc26dbdbeed2b8d4657b37c4ec2fa4 inherit pro_methods_class_matrix_free_p_d_e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aead3c2b961998040b844fdd933b63e93 inherit pro_methods_class_matrix_free_p_d_e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#aead3c2b961998040b844fdd933b63e93">modifySolutionFields</a> ()</td></tr>
+<tr class="separator:aead3c2b961998040b844fdd933b63e93 inherit pro_methods_class_matrix_free_p_d_e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf9c801949be079ebca6819ead316446 inherit pro_methods_class_matrix_free_p_d_e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#abf9c801949be079ebca6819ead316446">computeEnergy</a> ()</td></tr>
+<tr class="separator:abf9c801949be079ebca6819ead316446 inherit pro_methods_class_matrix_free_p_d_e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91eac767470e5404cf8036dcddb43dd3 inherit pro_methods_class_matrix_free_p_d_e"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a91eac767470e5404cf8036dcddb43dd3">getFieldIndex</a> (std::string _name)</td></tr>
 <tr class="separator:a91eac767470e5404cf8036dcddb43dd3 inherit pro_methods_class_matrix_free_p_d_e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28f7e9c3570668af74ea9e1414b017d4 inherit pro_methods_class_matrix_free_p_d_e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a28f7e9c3570668af74ea9e1414b017d4">outputFreeEnergy</a> (std::vector&lt; double &gt; &amp;<a class="el" href="class_matrix_free_p_d_e.html#ab548447de8960b216352d8684259919d">freeEnergyValues</a>)</td></tr>
+<tr class="separator:a28f7e9c3570668af74ea9e1414b017d4 inherit pro_methods_class_matrix_free_p_d_e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab044651a749c98ee83dfbb4ecd9a83f5 inherit pro_methods_class_matrix_free_p_d_e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#ab044651a749c98ee83dfbb4ecd9a83f5">computeIntegral</a> (double &amp;integratedField)</td></tr>
+<tr class="separator:ab044651a749c98ee83dfbb4ecd9a83f5 inherit pro_methods_class_matrix_free_p_d_e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_class_matrix_free_p_d_e"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_matrix_free_p_d_e')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_matrix_free_p_d_e.html">MatrixFreePDE&lt; dim &gt;</a></td></tr>
 <tr class="memitem:ae7b20f637aa79d90bef2db16d9319065 inherit pro_attribs_class_matrix_free_p_d_e"><td class="memItemLeft" align="right" valign="top">parallel::distributed::Triangulation&lt; dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#ae7b20f637aa79d90bef2db16d9319065">triangulation</a></td></tr>
 <tr class="separator:ae7b20f637aa79d90bef2db16d9319065 inherit pro_attribs_class_matrix_free_p_d_e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -180,6 +194,8 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a6f683b6ccaba2e68e2b31869be990430 inherit pro_attribs_class_matrix_free_p_d_e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a396ca2caebbe25069fba3d5a8d9efb57 inherit pro_attribs_class_matrix_free_p_d_e"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a396ca2caebbe25069fba3d5a8d9efb57">num_quadrature_points</a></td></tr>
 <tr class="separator:a396ca2caebbe25069fba3d5a8d9efb57 inherit pro_attribs_class_matrix_free_p_d_e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab548447de8960b216352d8684259919d inherit pro_attribs_class_matrix_free_p_d_e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#ab548447de8960b216352d8684259919d">freeEnergyValues</a></td></tr>
+<tr class="separator:ab548447de8960b216352d8684259919d inherit pro_attribs_class_matrix_free_p_d_e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab46559b1aad8baf1a926a2e6addaad88 inherit pro_attribs_class_matrix_free_p_d_e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#ab46559b1aad8baf1a926a2e6addaad88">isTimeDependentBVP</a></td></tr>
 <tr class="separator:ab46559b1aad8baf1a926a2e6addaad88 inherit pro_attribs_class_matrix_free_p_d_e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea98dff0e5974c3c2ba3ffe430dd8e40 inherit pro_attribs_class_matrix_free_p_d_e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#aea98dff0e5974c3c2ba3ffe430dd8e40">dtValue</a></td></tr>
@@ -196,6 +212,10 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a914f651bc9ca2e223b243695dd37ba53 inherit pro_attribs_class_matrix_free_p_d_e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac33e057e4b59379e5a2806b9f22fec7 inherit pro_attribs_class_matrix_free_p_d_e"><td class="memItemLeft" align="right" valign="top">TimerOutput&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#aac33e057e4b59379e5a2806b9f22fec7">computing_timer</a></td></tr>
 <tr class="separator:aac33e057e4b59379e5a2806b9f22fec7 inherit pro_attribs_class_matrix_free_p_d_e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d26cc49e49afe96406210d6beaf418a inherit pro_attribs_class_matrix_free_p_d_e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a1d26cc49e49afe96406210d6beaf418a">energy</a></td></tr>
+<tr class="separator:a1d26cc49e49afe96406210d6beaf418a inherit pro_attribs_class_matrix_free_p_d_e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6de33a05dd04a3e9f8cd0a7487476f8 inherit pro_attribs_class_matrix_free_p_d_e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#aa6de33a05dd04a3e9f8cd0a7487476f8">energy_components</a></td></tr>
+<tr class="separator:aa6de33a05dd04a3e9f8cd0a7487476f8 inherit pro_attribs_class_matrix_free_p_d_e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a8a0d2205d18cfd4a0000cbb741fe06a9"></a>
@@ -261,6 +281,54 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Reimplemented from <a class="el" href="class_matrix_free_p_d_e.html#a64fbd7dc135ad44c1dd45f57c5e24510">MatrixFreePDE&lt; dim &gt;</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6605a508295c300b612df0266e621256"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void getEnergy </td>
+          <td>(</td>
+          <td class="paramtype">const MatrixFree&lt; dim, double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::pair&lt; unsigned int, unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>cell_range</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="class_matrix_free_p_d_e.html#a6605a508295c300b612df0266e621256">MatrixFreePDE&lt; dim &gt;</a>.</p>
 
 </div>
 </div>
@@ -361,6 +429,26 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="abbb18fffdd4226876996a14a8f5f8d15"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Threads::Mutex assembler_lock</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="aad1ac348f9e1c7ce418ab6cd6993aca0"></a>
 <div class="memitem">
 <div class="memproto">
@@ -381,9 +469,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following files:<ul>
-<li>phaseField/src/models/coupled/<a class="el" href="coupled_c_h_mechanics_8h_source.html">coupledCHMechanics.h</a></li>
-<li>phaseField/applications/coupledCahnHilliardMechanics/<a class="el" href="coupled_cahn_hilliard_mechanics_2main_8cc.html">main.cc</a></li>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>phaseField_dev/src/models/coupled/<a class="el" href="coupled_c_h_mechanics_8h_source.html">coupledCHMechanics.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

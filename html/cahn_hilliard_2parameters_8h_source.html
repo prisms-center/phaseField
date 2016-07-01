@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>PRISMS PhaseField: phaseField/applications/cahnHilliard/parameters.h Source File</title>
+<title>PRISMS PhaseField: phaseField_dev/applications/cahnHilliard/parameters.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -82,7 +82,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_5aaeec85e1349a6200dec577c08e3e8d.html">phaseField</a></li><li class="navelem"><a class="el" href="dir_17d30d0c8aaf533b0c21007cb99fe793.html">applications</a></li><li class="navelem"><a class="el" href="dir_d69126183b11be59a1b4add7363e220b.html">cahnHilliard</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68b2c403797434992cf6ff2c2ad45c53.html">phaseField_dev</a></li><li class="navelem"><a class="el" href="dir_e88e8cad8d3a8e4d610d48bf31089907.html">applications</a></li><li class="navelem"><a class="el" href="dir_f73c1d1c0bd9513378236a52e0a1159e.html">cahnHilliard</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -116,26 +116,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">//define time step parameters</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="cahn_hilliard_2parameters_8h.html#ad22563b012dd3c292e08db4c4b178f69">   25</a></span>&#160;<span class="preprocessor">#define timeStep 1.0e-3</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="cahn_hilliard_2parameters_8h.html#af88b809236daa3e5e2a276bc8adaeff5">   26</a></span>&#160;<span class="preprocessor">#define timeFinal 100.0</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="cahn_hilliard_2parameters_8h.html#aa577dcdb04cedabb1e4eed771df59032">   27</a></span>&#160;<span class="preprocessor">#define timeIncrements 10000</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="cahn_hilliard_2parameters_8h.html#aa577dcdb04cedabb1e4eed771df59032">   27</a></span>&#160;<span class="preprocessor">#define timeIncrements 100000</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">//define results output parameters</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="cahn_hilliard_2parameters_8h.html#a0e0c9d336389e97f2526f080cf895055">   30</a></span>&#160;<span class="preprocessor">#define writeOutput true</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="cahn_hilliard_2parameters_8h.html#ac8cf4158da8d17bc16eb0b3801f7eedc">   31</a></span>&#160;<span class="preprocessor">#define skipOutputSteps 100</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="cahn_hilliard_2parameters_8h.html#ac8cf4158da8d17bc16eb0b3801f7eedc">   31</a></span>&#160;<span class="preprocessor">#define skipOutputSteps 1000</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">//define Cahn-Hilliard parameters</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="cahn_hilliard_2parameters_8h.html#a3bc9ee99c182f3afc331a89c80523101">   34</a></span>&#160;<span class="preprocessor">#define McV 1.0 </span></div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="cahn_hilliard_2parameters_8h.html#a9021e1ce73ed7629243a7db088c96f26">   35</a></span>&#160;<span class="preprocessor">#define KcV 1.0 </span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">//define free energy expressions</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="cahn_hilliard_2parameters_8h.html#aeb4c9361fc3208a277c9b70da7db7aec">   38</a></span>&#160;<span class="preprocessor">#define fcV (4.0*c*(c-1.0)*(c-0.5))</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">//define required residuals</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="cahn_hilliard_2parameters_8h.html#a9ea9b7cb1ce47dec6cc06c5f010d8fa6">   41</a></span>&#160;<span class="preprocessor">#define rmuV  (fcV)</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="cahn_hilliard_2parameters_8h.html#a6ff9dd31f7e099d075354a1d01980d45">   42</a></span>&#160;<span class="preprocessor">#define rmuxV (constV(KcV)*cx)</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="cahn_hilliard_2parameters_8h.html#a031e490658682f5af3652867cc81c435">   43</a></span>&#160;<span class="preprocessor">#define rcV   (c)</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="cahn_hilliard_2parameters_8h.html#a282e86016dd726dccae6085834af9db2">   44</a></span>&#160;<span class="preprocessor">#define rcxV  (constV(-McV*timeStep)*mux)</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -1,11 +1,11 @@
 PRISMS-PF
 =================
 <B>Code repository:</B> https://github.com/prisms-center/phaseField <br>
-<B>Code documentation:</B> https://goo.gl/30XwIW <br>
+<B>Code documentation:</B> https://goo.gl/00y23N <br>
 <B>User registration link:</B> http://goo.gl/forms/GXo7Im8p2Y
 
 <B>Version information:</B>
-This version of the code, 0.9.2, is a pre-release version of PRISMS-PF. This version provides a number of improvements to version 0.9.1, including a substantial performance increase and the addition of a test suite. The source of the change in the simulation results from version 0.8 to version 0.9.1 has been identified and fixed (the discrepancy was related to when variables were updated each time step). For more details concerning the differences between versions, please consult version_changes.txt.   
+This version of the code, 0.9.3, is a pre-release version of PRISMS-PF. This version provides a few additions and improvements to version 0.9.2, mostly regarding coupled Cahn-Hilliard-Allen-Cahn-Mechanics calculations. For more information concerning the differences between versions, please consult version_changes.txt.   
 
 <B>What is PRISMS-PF?</B>
 
@@ -22,7 +22,7 @@ This version of the code, 0.9.2, is a pre-release version of PRISMS-PF. This ver
 
 <B>Installation:</B> 
 
-  1) Install deal.II (version 8.2.1 currently supported)<br>
+  1) Install deal.II (version 8.4.1 currently supported)<br>
   + Download Binaries (OSX and Linux) or  Virtual Machine (VMI) from https://www.dealii.org/download.html <br>
   (OR) <br>
   + Configure, compile and install the deal.II library with the 

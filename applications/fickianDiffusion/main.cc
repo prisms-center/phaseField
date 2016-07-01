@@ -4,17 +4,10 @@
 
 //Fickian diffusion problem headers
 #include "parameters.h"
+#include "residuals.h"
 #include "../../src/models/diffusion/Fickian.h"
+#include "ICs_and_BCs.h"
 
-//apply initial conditions
-template <int dim>
-void FickianProblem<dim>::applyInitialConditions()
-{
-  unsigned int fieldIndex;
-  fieldIndex=this->getFieldIndex("c");
-  //set c=0
-  *this->solutionSet[fieldIndex]=0.0;
-}
 
 //main
 int main (int argc, char **argv)

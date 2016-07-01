@@ -5,6 +5,7 @@
 //general headers
 #include <fstream>
 #include <sstream>
+#include <iterator> // is this necessary?
 
 //dealii headers
 #include "dealIIheaders.h"
@@ -24,9 +25,11 @@ typedef dealii::VectorizedArray<double> scalarvalueType;
 #if problemDIM==1
 typedef dealii::VectorizedArray<double> scalargradType;
 typedef dealii::VectorizedArray<double> vectorgradType;
+typedef dealii::VectorizedArray<double> vectorhessType;
 #else 
 typedef dealii::Tensor<1, problemDIM, dealii::VectorizedArray<double> > scalargradType;
 typedef dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > vectorgradType;
+typedef dealii::Tensor<3, problemDIM, dealii::VectorizedArray<double> > vectorhessType;
 #endif
 
 //macro for constants
@@ -65,6 +68,9 @@ class MatrixFreePDE:public Subscriptor
   void vmult (vectorType &dst, const vectorType &src) const;
   std::vector<Field<dim> >                  fields;
 
+  // Virtual function to shift the concentration
+  void shiftConcentration();
+
  protected:
   void solveIncrement ();
   void outputResults  ();
@@ -100,11 +106,27 @@ class MatrixFreePDE:public Subscriptor
   //methods to apply dirichlet BC's
   virtual void markBoundaries();
   virtual void applyDirichletBCs();
+
+  //methods to apply initial conditions
   virtual void applyInitialConditions();
+  virtual void modifySolutionFields ();
+ 
+  void computeEnergy();
+  virtual void getEnergy(const MatrixFree<dim,double> &data,
+		    std::vector<vectorType*> &dst,
+		    const std::vector<vectorType*> &src,
+		    const std::pair<unsigned int,unsigned int> &cell_range);
 
   //utility functions
   //return index of given field name if exists, else throw error
   unsigned int getFieldIndex(std::string _name);
+
+
+  std::vector<double> freeEnergyValues;
+  void outputFreeEnergy(std::vector<double>& freeEnergyValues);
+
+  // Virtual method to compute the integral of a field
+  void computeIntegral(double& integratedField);
 
   //variables for time dependent problems 
   //isTimeDependentBVP flag is used to see if invM, time steppping in
@@ -117,6 +139,9 @@ class MatrixFreePDE:public Subscriptor
   ConditionalOStream  pcout;  
   //compute time log
   mutable TimerOutput computing_timer;
+
+  double energy;
+  std::vector<double> energy_components;
 };
 
 //other matrixFree headers 
@@ -127,6 +152,7 @@ class MatrixFreePDE:public Subscriptor
 #include "../src/matrixfree/invM.cc"
 #include "../src/matrixfree/computeLHS.cc"
 #include "../src/matrixfree/computeRHS.cc"
+#include "../src/matrixfree/modifyFields.cc"
 #include "../src/matrixfree/solve.cc"
 #include "../src/matrixfree/solveIncrement.cc"
 #include "../src/matrixfree/outputResults.cc"
@@ -134,5 +160,7 @@ class MatrixFreePDE:public Subscriptor
 #include "../src/matrixfree/boundaryConditions.cc"
 #include "../src/matrixfree/initialConditions.cc"
 #include "../src/matrixfree/utilities.cc"
+#include "../src/matrixfree/calcFreeEnergy.cc"
+#include "../src/matrixfree/integrate_and_shift_field.cc"
 
 #endif

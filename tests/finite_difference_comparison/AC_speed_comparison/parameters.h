@@ -10,12 +10,15 @@
 #define subdivisionsX 1
 #define subdivisionsY 1
 #define subdivisionsZ 1
-#define refineFactor 6
+#define refineFactor 7
 #define finiteElementDegree 1
 
 //define number of fields in the problem
 //n
 #define numFields 1
+
+// flag to allow or disallow nucleation
+#define nucleation_occurs false
 
 //define time step parameters
 #define timeStep 1.0e-3

@@ -64,4 +64,3 @@ void MatrixFreePDE<dim>::outputResults(){
 }
 
 #endif
-

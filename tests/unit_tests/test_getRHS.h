@@ -1,8 +1,8 @@
 // Unit test(s) for the method "getRHS"
 #include "../../include/fields.h"
 
-template <int dim>
-bool unitTest<dim>::test_getRHS(){
+template <int dim,typename T>
+bool unitTest<dim,T>::test_getRHS(){
 
 	bool pass = false;
 	std::cout << "Testing 'getRHS' in " << dim << " dimension(s)...'" << std::endl;

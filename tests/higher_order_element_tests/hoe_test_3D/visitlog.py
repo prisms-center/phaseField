@@ -3,7 +3,7 @@ ScriptVersion = "2.7.0"
 if ScriptVersion != Version():
     print "This script is for VisIt %s. It may not work with version %s" % (ScriptVersion, Version())
 ShowAllWindows()
-OpenDatabase("run_010/solution-100000.pvtu", 0)
+OpenDatabase("run_006/solution-100000.pvtu", 0)
 # The UpdateDBPluginInfo RPC is not supported in the VisIt module so it will not be logged.
 DefineScalarExpression("diff", "(c-pos_cmfe(<reference_solution/solution-100000.pvtu:c>, mesh,0))^2")
 AddPlot("Pseudocolor", "diff", 1, 1)

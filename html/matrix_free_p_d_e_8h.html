@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>PRISMS PhaseField: phaseField/include/matrixFreePDE.h File Reference</title>
+<title>PRISMS PhaseField: phaseField_dev/include/matrixFreePDE.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -82,7 +82,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_5aaeec85e1349a6200dec577c08e3e8d.html">phaseField</a></li><li class="navelem"><a class="el" href="dir_3835a71c623dbf7b1cd9b7460572bcec.html">include</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68b2c403797434992cf6ff2c2ad45c53.html">phaseField_dev</a></li><li class="navelem"><a class="el" href="dir_a6c7f896684fc7c002ba1454d2c5fc1e.html">include</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -96,6 +96,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 <div class="textblock"><code>#include &lt;fstream&gt;</code><br />
 <code>#include &lt;sstream&gt;</code><br />
+<code>#include &lt;iterator&gt;</code><br />
 <code>#include &quot;<a class="el" href="deal_i_iheaders_8h_source.html">dealIIheaders.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="default_values_8h_source.html">defaultValues.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="fields_8h_source.html">fields.h</a>&quot;</code><br />
@@ -104,6 +105,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <code>#include &quot;<a class="el" href="inv_m_8cc.html">../src/matrixfree/invM.cc</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="compute_l_h_s_8cc.html">../src/matrixfree/computeLHS.cc</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="compute_r_h_s_8cc.html">../src/matrixfree/computeRHS.cc</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="modify_fields_8cc.html">../src/matrixfree/modifyFields.cc</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="solve_8cc.html">../src/matrixfree/solve.cc</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="solve_increment_8cc.html">../src/matrixfree/solveIncrement.cc</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="output_results_8cc.html">../src/matrixfree/outputResults.cc</a>&quot;</code><br />
@@ -111,6 +113,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <code>#include &quot;<a class="el" href="boundary_conditions_8cc.html">../src/matrixfree/boundaryConditions.cc</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="initial_conditions_8cc.html">../src/matrixfree/initialConditions.cc</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="utilities_8cc.html">../src/matrixfree/utilities.cc</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="calc_free_energy_8cc.html">../src/matrixfree/calcFreeEnergy.cc</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="integrate__and__shift__field_8cc.html">../src/matrixfree/integrate_and_shift_field.cc</a>&quot;</code><br />
 </div>
 <p><a href="matrix_free_p_d_e_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -142,6 +146,8 @@ Typedefs</h2></td></tr>
 <tr class="separator:a275b78678cf79b17d9561360f57b825d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73b53d5db94bf70dfe8f54f1bda87e1a"><td class="memItemLeft" align="right" valign="top">typedef dealii::Tensor&lt; 2, <a class="el" href="mechanics_2parameters_8h.html#a7600d4f3350a4a7972723128e23864f2">problemDIM</a>, dealii::VectorizedArray&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matrix_free_p_d_e_8h.html#a73b53d5db94bf70dfe8f54f1bda87e1a">vectorgradType</a></td></tr>
 <tr class="separator:a73b53d5db94bf70dfe8f54f1bda87e1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31d1ec7420c01361786581df96b2a06e"><td class="memItemLeft" align="right" valign="top">typedef dealii::Tensor&lt; 3, <a class="el" href="mechanics_2parameters_8h.html#a7600d4f3350a4a7972723128e23864f2">problemDIM</a>, dealii::VectorizedArray&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matrix_free_p_d_e_8h.html#a31d1ec7420c01361786581df96b2a06e">vectorhessType</a></td></tr>
+<tr class="separator:a31d1ec7420c01361786581df96b2a06e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a class="anchor" id="af4deabb57f7353cd1981dbbb926455cd"></a>
@@ -253,6 +259,18 @@ Typedefs</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">typedef dealii::Tensor&lt;2, <a class="el" href="mechanics_2parameters_8h.html#a7600d4f3350a4a7972723128e23864f2">problemDIM</a>, dealii::VectorizedArray&lt;double&gt; &gt; <a class="el" href="matrix_free_p_d_e_8h.html#a73b53d5db94bf70dfe8f54f1bda87e1a">vectorgradType</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a31d1ec7420c01361786581df96b2a06e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef dealii::Tensor&lt;3, <a class="el" href="mechanics_2parameters_8h.html#a7600d4f3350a4a7972723128e23864f2">problemDIM</a>, dealii::VectorizedArray&lt;double&gt; &gt; <a class="el" href="matrix_free_p_d_e_8h.html#a31d1ec7420c01361786581df96b2a06e">vectorhessType</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
