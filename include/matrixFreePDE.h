@@ -14,6 +14,7 @@
 //PRISMS headers
 #include "fields.h"
 
+
 //define data types  
 typedef dealii::VectorizedArray<double> scalarType;
 typedef dealii::parallel::distributed::Vector<double> vectorType;
@@ -22,15 +23,19 @@ typedef dealii::FEEvaluation<problemDIM,finiteElementDegree,finiteElementDegree+
 typedef dealii::FEEvaluation<problemDIM,finiteElementDegree,finiteElementDegree+1,problemDIM,double>  typeVector;
 //define data value types
 typedef dealii::VectorizedArray<double> scalarvalueType;
+typedef dealii::Tensor<1, problemDIM, dealii::VectorizedArray<double> > vectorvalueType;
 #if problemDIM==1
 typedef dealii::VectorizedArray<double> scalargradType;
 typedef dealii::VectorizedArray<double> vectorgradType;
 typedef dealii::VectorizedArray<double> vectorhessType;
 #else 
 typedef dealii::Tensor<1, problemDIM, dealii::VectorizedArray<double> > scalargradType;
+typedef dealii::Tensor<2,problemDIM,dealii::VectorizedArray<double> > scalarhessType;
 typedef dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > vectorgradType;
 typedef dealii::Tensor<3, problemDIM, dealii::VectorizedArray<double> > vectorhessType;
 #endif
+
+#include "model_variables.h"
 
 //macro for constants
 #define constV(a) make_vectorized_array(a)

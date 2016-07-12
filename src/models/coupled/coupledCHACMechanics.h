@@ -59,6 +59,9 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
     				    const std::pair<unsigned int,unsigned int> &cell_range);
   Threads::Mutex assembler_lock;
 
+  void residualRHS(const std::vector<modelVariable<dim>> & modelVariablesList,
+		  	  	  	  	  	  	  	  	  	  	  	  	  std::vector<modelResidual<dim>> & modelResidualsList) const;
+
 };
 
 //constructor
@@ -129,277 +132,135 @@ for (unsigned int i=0; i<dim; i++){
 #ifndef fbarrierV
 	#define fbarrierV 0.0
 #endif
-}
 
 // If nucleation isn't specifically turned on, set nucleation_occurs to false
 #ifndef nucleation_occurs
 	#define nucleation_occurs false
 #endif
 
+}
+
 template <int dim>
-void  CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &data, 
+void CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &data,
 					       std::vector<vectorType*> &dst, 
 					       const std::vector<vectorType*> &src,
 					       const std::pair<unsigned int,unsigned int> &cell_range) const{
 
 
-  //initialize fields
-  typeScalar cVals(data, 0);
+  //initialize FEEvaulation objects
+  std::vector<typeScalar> scalar_vars;
+  std::vector<typeVector> vector_vars;
+  std::vector<bool> is_scalar_var;
+  std::vector<unsigned int> scalar_or_vector_index;
+  std::vector<unsigned int> field_index;
+  unsigned int field_number = 0;
 
-  typeScalar n1Vals(data,1);
-  #if num_sop>1
-  typeScalar n2Vals(data,2);
-  #endif
-  #if num_sop>2
-  typeScalar n3Vals(data,3);
-  #endif
+  for (unsigned int i=0; i<num_var; i++){
+	  if (var_type[i] == "SCALAR"){
+		  typeScalar var(data, i);
+		  scalar_vars.push_back(var);
+		  is_scalar_var.push_back(true);
+		  scalar_or_vector_index.push_back(scalar_vars.size()-1);
+		  field_index.push_back(field_number);
+		  field_number++;
+	  }
+	  else {
+		  typeVector var(data, i);
+		  vector_vars.push_back(var);
+		  is_scalar_var.push_back(false);
+		  scalar_or_vector_index.push_back(vector_vars.size()-1);
+		  field_index.push_back(field_number);
+		  field_number+=dim;
+	  }
+  }
 
-  typeVector uVals(data, num_sop+1);
+  std::vector<modelVariable<dim> > modelVariablesList;
+  std::vector<modelResidual<dim> > modelResidualsList;
+  modelVariablesList.reserve(num_var);
+  modelResidualsList.reserve(num_var);
 
   //loop over cells
   for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
-    //initialize c field
-    cVals.reinit(cell); cVals.read_dof_values_plain(*src[0]); cVals.evaluate(true, true, false);
 
-    //initialize n fields
-    n1Vals.reinit(cell); n1Vals.read_dof_values_plain(*src[1]); n1Vals.evaluate(true, true, false);
-	#if num_sop>1
-    n2Vals.reinit(cell); n2Vals.read_dof_values_plain(*src[2]); n2Vals.evaluate(true, true, false);
-	#endif
-	#if num_sop>2
-    n3Vals.reinit(cell); n3Vals.read_dof_values_plain(*src[3]); n3Vals.evaluate(true, true, false);
-	#endif
+	  // Initialize, read DOFs, and set evaulation flags for each variable
+	  for (unsigned int i=0; i<num_var; i++){
+		  if (is_scalar_var[i] == true) {
+			  scalar_vars[scalar_or_vector_index[i]].reinit(cell);
+			  scalar_vars[scalar_or_vector_index[i]].read_dof_values_plain(*src[field_index[i]]);
+			  scalar_vars[scalar_or_vector_index[i]].evaluate(need_value[i], need_gradient[i], need_hessian[i]);
+		  }
+		  else {
+			  vector_vars[scalar_or_vector_index[i]].reinit(cell);
+			  vector_vars[scalar_or_vector_index[i]].read_dof_values_plain(*src[field_index[i]]);
+			  vector_vars[scalar_or_vector_index[i]].evaluate(need_value[i], need_gradient[i], need_hessian[i]);
+		  }
+	  }
 
-    //initialize u field 
-    uVals.reinit(cell); uVals.read_dof_values_plain(*src[num_sop+1]);
+	  unsigned int n_q_points = scalar_vars[0].n_q_points;
 
-    if (c_dependent_misfit == true){
-    	uVals.evaluate(false, true, true);
-    }
-    else{
-    	uVals.evaluate(false, true, false);
-    }
+	  //loop over quadrature points
+	  for (unsigned int q=0; q<n_q_points; ++q){
 
-    //loop over quadrature points
-    for (unsigned int q=0; q<cVals.n_q_points; ++q){
-      //c
-      scalarvalueType c = cVals.get_value(q);
-      scalargradType cx = cVals.get_gradient(q);
+		  for (unsigned int i=0; i<num_var; i++){
+			  if (is_scalar_var[i] == true) {
+				  if (need_value[i] == true){
+					  modelVariablesList[i].scalarValue = scalar_vars[scalar_or_vector_index[i]].get_value(q);
+				  }
+				  if (need_gradient[i] == true){
+					  modelVariablesList[i].scalarGrad = scalar_vars[scalar_or_vector_index[i]].get_gradient(q);
+				  }
+				  if (need_hessian[i] == true){
+					  modelVariablesList[i].scalarHess = scalar_vars[scalar_or_vector_index[i]].get_hessian(q);
+				  }
+			  }
+			  else {
+				  if (need_value[i] == true){
+					  modelVariablesList[i].vectorValue = vector_vars[scalar_or_vector_index[i]].get_value(q);
+				  }
+				  if (need_gradient[i] == true){
+					  modelVariablesList[i].vectorGrad = vector_vars[scalar_or_vector_index[i]].get_gradient(q);
+				  }
+				  if (need_hessian[i] == true){
+					  modelVariablesList[i].vectorHess = vector_vars[scalar_or_vector_index[i]].get_hessian(q);
+				  }
+			  }
+		  }
 
-      //n1
-      scalarvalueType n1 = n1Vals.get_value(q);
-      scalargradType n1x = n1Vals.get_gradient(q);
-
-      //n2
-      scalarvalueType n2, n3;
-      scalargradType n2x, n3x;
-	  #if num_sop>1
-    	  n2 = n2Vals.get_value(q);
-    	  n2x = n2Vals.get_gradient(q);
-	  #else
-    	  n2 = constV(0.0);
-    	  n2x = constV(0.0)*n1x;
-	  #endif
-
-      //n3 
-	  #if num_sop>2
-    	  n3 = n3Vals.get_value(q);
-    	  n3x = n3Vals.get_gradient(q);
-	  #else
-    	  n3 = constV(0.0);
-    	  n3x = constV(0.0)*n1x;
-	  #endif
-      //u
-      vectorgradType ux = uVals.get_gradient(q);
-      vectorgradType Rux;
-
-      vectorhessType uxx;
-
-      if (c_dependent_misfit == true){
-    	  uxx = uVals.get_hessian(q);
-      }
-
-      // Calculate the stress-free transformation strain and its derivatives at the quadrature point
-      dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > sfts1, sfts1c, sfts1cc, sfts2, sfts2c, sfts2cc, sfts3, sfts3c, sfts3cc;
-
-      for (unsigned int i=0; i<dim; i++){
-    	  for (unsigned int j=0; j<dim; j++){
-    		  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
-    		  sfts1[i][j] = constV(sfts_linear1[i][j])*c + constV(sfts_const1[i][j]);
-    		  sfts1c[i][j] = constV(sfts_linear1[i][j]);
-    		  sfts1cc[i][j] = constV(0.0);
-
-    		  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
-    		  sfts2[i][j] = constV(sfts_linear2[i][j])*c + constV(sfts_const2[i][j]);
-    		  sfts2c[i][j] = constV(sfts_linear1[i][j]);
-    		  sfts2cc[i][j] = constV(0.0);
-
-    		  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
-    		  sfts3[i][j] = constV(sfts_linear3[i][j])*c + constV(sfts_const3[i][j]);
-    		  sfts3c[i][j] = constV(sfts_linear3[i][j]);
-    		  sfts3cc[i][j] = constV(0.0);
-    	  }
-      }
-
-      //compute E2=(E-E0)
-      dealii::VectorizedArray<double> E2[dim][dim], S[dim][dim];
-
-      for (unsigned int i=0; i<dim; i++){
-    	  for (unsigned int j=0; j<dim; j++){
-    		  //E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1V + sfts2[i][j]*h2V + sfts3[i][j]*h3V);
-    		  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1strainV + sfts2[i][j]*h2strainV + sfts3[i][j]*h3strainV);
-
-    	  }
-      }
-      
-      //compute stress
-      //S=C*(E-E0)
-      // Compute stress tensor (which is equal to the residual, Rux)
-      dealii::VectorizedArray<double> CIJ_combined[2*dim-1+dim/3][2*dim-1+dim/3];
-
-      if (n_dependent_stiffness == true){
-    	  dealii::VectorizedArray<double> sum_hV;
-    	  sum_hV = h1V+h2V+h3V;
-    	  for (unsigned int i=0; i<2*dim-1+dim/3; i++){
-    		  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-    			  CIJ_combined[i][j] = constV(CIJ_alpha(i,j))*(constV(1.0)-sum_hV) + constV(CIJ_beta(i,j))*sum_hV;
-    		  }
-    	  }
-    	  computeStress<dim>(CIJ_combined, E2, S);
-      }
-      else{
-    	  computeStress<dim>(CIJ, E2, S);
-      }
-
-      // Fill residual corresponding to mechanics
-      // R=-C*(E-E0)
-      
-      for (unsigned int i=0; i<dim; i++){
-    	  for (unsigned int j=0; j<dim; j++){
-    		  Rux[i][j] = - S[i][j];
-    	  }
-      }
-
-      // Compute one of the stress terms in the order parameter chemical potential, nDependentMisfitACp = C*(E-E0)*(E0_p*Hn)
-      dealii::VectorizedArray<double> nDependentMisfitAC1=constV(0.0);
-      dealii::VectorizedArray<double> nDependentMisfitAC2=constV(0.0);
-      dealii::VectorizedArray<double> nDependentMisfitAC3=constV(0.0);
-
-      for (unsigned int i=0; i<dim; i++){
-    	  for (unsigned int j=0; j<dim; j++){
-    		  nDependentMisfitAC1+=S[i][j]*(sfts1[i][j]);
-    		  nDependentMisfitAC2+=S[i][j]*(sfts2[i][j]);
-    		  nDependentMisfitAC3+=S[i][j]*(sfts3[i][j]);
-    	  }
-      }
-
-      //nDependentMisfitAC1*=-hn1V;
-      nDependentMisfitAC1*=-hn1strainV;
-      nDependentMisfitAC2*=-hn2strainV;
-      nDependentMisfitAC3*=-hn3strainV;
-
-      // Compute the other stress term in the order parameter chemical potential, heterMechACp = 0.5*Hn*(C_beta-C_alpha)*(E-E0)*(E-E0)
-      dealii::VectorizedArray<double> heterMechAC1=constV(0.0);
-      dealii::VectorizedArray<double> heterMechAC2=constV(0.0);
-      dealii::VectorizedArray<double> heterMechAC3=constV(0.0);
-      dealii::VectorizedArray<double> S2[dim][dim];
-
-      if (n_dependent_stiffness == true){
-    	  computeStress<dim>(CIJ_diff, E2, S2);
-    	  for (unsigned int i=0; i<dim; i++){
-    		  for (unsigned int j=0; j<dim; j++){
-    			  heterMechAC1 += S2[i][j]*E2[i][j];
-    		  }
-    	  }
-    	  // Aside from HnpV, heterMechAC1, heterMechAC2, and heterMechAC3 are equal
-    	  heterMechAC2 = 0.5*hn2V*heterMechAC1;
-    	  heterMechAC3 = 0.5*hn3V*heterMechAC1;
-
-    	  heterMechAC1 = 0.5*hn1V*heterMechAC1;
-      }
-
-		// compute the stress term in the gradient of the concentration chemical potential, grad_mu_el = [C*(E-E0)*E0c]x, must be a vector with length dim
-      	scalargradType grad_mu_el;
-
-		if (c_dependent_misfit == true){
-			dealii::VectorizedArray<double> E3[dim][dim], S3[dim][dim];
-
-			for (unsigned int i=0; i<dim; i++){
-				for (unsigned int j=0; j<dim; j++){
-					//E3[i][j] =  -( sfts1c[i][j]*h1V + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V);
-					E3[i][j] =  -( sfts1c[i][j]*h1strainV + sfts2c[i][j]*h2strainV + sfts3c[i][j]*h3strainV);
-				}
-			}
-
-			if (n_dependent_stiffness == true){
-				computeStress<dim>(CIJ_combined, E3, S3);
-			}
-			else{
-				computeStress<dim>(CIJ, E3, S3);
-			}
-
-			for (unsigned int i=0; i<dim; i++){
-				for (unsigned int j=0; j<dim; j++){
-					for (unsigned int k=0; k<dim; k++){
-//						grad_mu_el[k]+=S3[i][j] * (constV(0.5)*(uxx[i][j][k]+uxx[j][i][k]) + E3[i][j]*cx[k]
-//										  - (sfts1[i][j]*hn1V*n1x[k] + sfts2[i][j]*hn2V*n2x[k] + sfts3[i][j]*hn3V*n3x[k]));
-//
-//						grad_mu_el[k]+= - S[i][j] * (sfts1c[i][j]*hn1V*n1x[k] + sfts2c[i][j]*hn2V*n2x[k] + sfts3c[i][j]*hn3V*n3x[k]
-//										  + (sfts1cc[i][j]*h1V + sfts2cc[i][j]*h2V + sfts3cc[i][j]*h3V)*cx[k]);
-
-
-						grad_mu_el[k] += S3[i][j] * (constV(0.5)*(uxx[i][j][k]+uxx[j][i][k]) + E3[i][j]*cx[k]
-																  - (sfts1[i][j]*hn1strainV*n1x[k] + sfts2[i][j]*hn2strainV*n2x[k] + sfts3[i][j]*hn3strainV*n3x[k]));
-
-						grad_mu_el[k]+= - S[i][j] * (sfts1c[i][j]*hn1strainV*n1x[k] + sfts2c[i][j]*hn2strainV*n2x[k] + sfts3c[i][j]*hn3strainV*n3x[k]
-																  + (sfts1cc[i][j]*h1strainV + sfts2cc[i][j]*h2strainV + sfts3cc[i][j]*h3strainV)*cx[k]);
-
-						if (n_dependent_stiffness == true){
-							grad_mu_el[k]+= - S2[i][j] * (sfts1c[i][j]*hn1V*n1x[k] + sfts2c[i][j]*hn2V*n2x[k] + sfts3c[i][j]*hn3V*n3x[k]);
-
-						}
-					}
-				}
-			}
-		}
-
-
-      //compute K*nx
-      scalargradType Knx1, Knx2, Knx3;
-      for (unsigned int a=0; a<dim; a++) {
-    	  Knx1[a]=0.0;
-    	  Knx2[a]=0.0;
-    	  Knx3[a]=0.0;
-    	  for (unsigned int b=0; b<dim; b++){
-    		  Knx1[a]+=constV(Kn1[a][b])*n1x[b];
-    		  Knx2[a]+=constV(Kn2[a][b])*n2x[b];
-    		  Knx3[a]+=constV(Kn3[a][b])*n3x[b];
-    	  }
-      }
+		  // Calculate the residuals
+		  residualRHS(modelVariablesList,modelResidualsList);
   
-      //submit values
-      cVals.submit_value(rcV,q); cVals.submit_gradient(rcxV,q);
-      n1Vals.submit_value(rn1V,q); n1Vals.submit_gradient(rn1xV,q);
-	  #if num_sop>1
-      n2Vals.submit_value(rn2V,q); n2Vals.submit_gradient(rn2xV,q);
-	  #endif
-	  #if num_sop>2
-      n3Vals.submit_value(rn3V,q); n3Vals.submit_gradient(rn3xV,q);
-	  #endif
-      uVals.submit_gradient(Rux,q);
+		  // Submit values
+		  for (unsigned int i=0; i<num_var; i++){
+			  if (is_scalar_var[i] == true) {
+				  if (value_residual[i] == true){
+					  scalar_vars[scalar_or_vector_index[i]].submit_value(modelResidualsList[i].scalarValueResidual,q);
+				  }
+      			  if (gradient_residual[i] == true){
+      				  scalar_vars[scalar_or_vector_index[i]].submit_gradient(modelResidualsList[i].scalarGradResidual,q);
+      			  }
+      		  }
+      		  else {
+      			  if (value_residual[i] == true){
+      				  vector_vars[scalar_or_vector_index[i]].submit_value(modelResidualsList[i].vectorValueResidual,q);
+      			  }
+      			  if (gradient_residual[i] == true){
+      				  vector_vars[scalar_or_vector_index[i]].submit_gradient(modelResidualsList[i].vectorGradResidual,q);
+      			  }
+      		  }
+      	  }
 
-    }
-    
-    //integrate values
-    cVals.integrate(true, true);  cVals.distribute_local_to_global(*dst[0]);
-    n1Vals.integrate(true, true); n1Vals.distribute_local_to_global(*dst[1]);
-	#if num_sop>1
-    n2Vals.integrate(true, true); n2Vals.distribute_local_to_global(*dst[2]);
- 	#endif
-	#if num_sop>2
-    n3Vals.integrate(true, true); n3Vals.distribute_local_to_global(*dst[3]);
-	#endif
-    uVals.integrate(false, true); uVals.distribute_local_to_global(*dst[1+num_sop]);
+	  }
+
+	  for (unsigned int i=0; i<num_var; i++){
+		  if (is_scalar_var[i] == true) {
+			  scalar_vars[scalar_or_vector_index[i]].integrate(value_residual[i], gradient_residual[i]);
+			  scalar_vars[scalar_or_vector_index[i]].distribute_local_to_global(*dst[field_index[i]]);
+		  }
+		  else {
+			  vector_vars[scalar_or_vector_index[i]].integrate(value_residual[i], gradient_residual[i]);
+			  vector_vars[scalar_or_vector_index[i]].distribute_local_to_global(*dst[field_index[i]]);
+		  }
+	  }
   }
 }
 
