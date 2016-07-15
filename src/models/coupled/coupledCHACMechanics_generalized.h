@@ -293,13 +293,44 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
 					       const vectorType &src,
 					       const std::pair<unsigned int,unsigned int> &cell_range) const{
 
+	// Attempt to convert to an object-based container (note: previous attempt will have issues reading DOFs when a vector field is not the last variable)
+	unsigned int field_number = 0;
+	std::vector<var_info> varInfoList;
+	varInfoList.reserve(num_var_LHS);
+	for (unsigned int i=0; i<num_var; i++){
+		if (need_value_LHS[i] or need_gradient_LHS[i] or need_hessian_LHS[i]){
+			varInfoList[i].global_var_index = i;
+			varInfoList[i].global_field_index = i;
+			if (var_type[i] == "SCALAR"){
+				//typeScalar var(data,i);
+				//varInfoList[i].varScalar = var; // Doesn't compile. I'm not sure how to assign this.
+				//varInfoList[i].varScalar(data,i); // Doesn't compile either.
+				varInfoList[i].is_scalar = true;
+			}
+			else {
+				varInfoList[i].is_scalar = false;
+			}
+		}
+
+		if (var_type[i] == "SCALAR"){
+			field_number++;
+		}
+		else {
+			field_number+=dim;
+		}
+
+	}
+
+
+
+
 	//initialize FEEvaulation objects
 	std::vector<typeScalar> scalar_vars;
 	std::vector<typeVector> vector_vars;
 	std::vector<bool> is_scalar_var;
 	std::vector<unsigned int> scalar_or_vector_index;
 	std::vector<unsigned int> field_index;
-	unsigned int field_number = 0;
+	//unsigned int field_number = 0;
 
 	for (unsigned int i=0; i<num_var_LHS; i++){
 		if (var_type[LHS_indices[i]] == "SCALAR"){
@@ -346,7 +377,7 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
 					vector_vars[scalar_or_vector_index[i]].read_dof_values_plain(src);
 				}
 				else {
-					vector_vars[scalar_or_vector_index[i]].read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[field_index[i]]);
+					vector_vars[scalar_or_vector_index[i]].read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[LHS_indices[i]]);
 				}
 				vector_vars[scalar_or_vector_index[i]].evaluate(need_value_LHS[LHS_indices[i]], need_gradient_LHS[LHS_indices[i]], need_hessian_LHS[LHS_indices[i]]);
 			}

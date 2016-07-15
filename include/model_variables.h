@@ -41,6 +41,20 @@ modelResidual<dim>::modelResidual()
 
 }
 
+class var_info
+{
+ public:
+	typeScalar varScalar;
+	typeVector varVector;
+	bool is_scalar;
+	unsigned int var_index;
+	unsigned int global_var_index;
+	unsigned int global_field_index;
+
+
+};
+
+
 
 
 
