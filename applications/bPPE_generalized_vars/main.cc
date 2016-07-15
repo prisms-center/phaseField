@@ -4,7 +4,7 @@
 
 //Coupled Cahn-Hilliard+Allen-Cahn+Mechanics problem headers
 #include "parameters.h"
-#include "../../src/models/coupled/coupledCHACMechanics.h"
+#include "../../src/models/coupled/coupledCHACMechanics_generalized.h"
 #include "residuals.h"
 #include "ICs_and_BCs.h"
 
