@@ -301,323 +301,121 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
 	std::vector<unsigned int> field_index;
 	unsigned int field_number = 0;
 
-//	  typeScalar var1(data,1);
-//	  scalar_vars.push_back(var1);
-//	  is_scalar_var.push_back(true);
-//	  scalar_or_vector_index.push_back(0);
-//	  field_index.push_back(1);
-//	  typeScalar var2(data,2);
-//	  scalar_vars.push_back(var2);
-//	  is_scalar_var.push_back(true);
-//	  scalar_or_vector_index.push_back(1);
-//	  field_index.push_back(2);
-//	  typeScalar var3(data,3);
-//	  scalar_vars.push_back(var3);
-//	  is_scalar_var.push_back(true);
-//	  scalar_or_vector_index.push_back(2);
-//	  field_index.push_back(4);
-//	  typeVector var4(data,4);
-//	  vector_vars.push_back(var4);
-//	  is_scalar_var.push_back(true);
-//	  scalar_or_vector_index.push_back(0);
-//	  field_index.push_back(5);
+	for (unsigned int i=0; i<num_var_LHS; i++){
+		if (var_type[LHS_indices[i]] == "SCALAR"){
+			typeScalar var(data, LHS_indices[i]);
+			scalar_vars.push_back(var);
+			is_scalar_var.push_back(true);
+			scalar_or_vector_index.push_back(scalar_vars.size()-1);
+			field_index.push_back(field_number);
+			field_number++;
+		}
+		else {
+			typeVector var(data, LHS_indices[i]);
+			vector_vars.push_back(var);
+			is_scalar_var.push_back(false);
+			scalar_or_vector_index.push_back(vector_vars.size()-1);
+			field_index.push_back(field_number);
+			field_number+=dim;
+		}
+	}
 
-	  for (unsigned int i=0; i<num_var_LHS; i++){
-	  		if (var_type[LHS_indices[i]] == "SCALAR"){
-	  			typeScalar var(data, LHS_indices[i]);
-	  			scalar_vars.push_back(var);
-	  			is_scalar_var.push_back(true);
-	  			scalar_or_vector_index.push_back(scalar_vars.size()-1);
-	  			field_index.push_back(field_number);
-	  			field_number++;
-	  		}
-	  		  else {
-	  			  typeVector var(data, LHS_indices[i]);
-	  			  vector_vars.push_back(var);
-	  			  is_scalar_var.push_back(false);
-	  			  scalar_or_vector_index.push_back(vector_vars.size()-1);
-	  			  field_index.push_back(field_number);
-	  			  field_number+=dim;
-	  		  }
-	  	  }
+	std::vector<modelVariable<dim> > modelVariablesList;
+	std::vector<modelResidual<dim> > modelResidualsList;
+	modelVariablesList.reserve(num_var_LHS);
+	modelResidualsList.reserve(num_res_LHS);
 
-	  std::vector<modelVariable<dim> > modelVariablesList;
-	  std::vector<modelResidual<dim> > modelResidualsList;
-	  modelVariablesList.reserve(num_var_LHS);
-	  modelResidualsList.reserve(num_res_LHS);
+	//loop over cells
+	for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
 
-	  //loop over cells
+		// Initialize, read DOFs, and set evaulation flags for each variable
+		for (unsigned int i=0; i<num_var_LHS; i++){
+			if (is_scalar_var[i] == true) {
+				scalar_vars[scalar_or_vector_index[i]].reinit(cell);
+				if ( (value_residual_LHS[LHS_indices[i]] == true) or (gradient_residual_LHS[LHS_indices[i]] == true) ){
+					scalar_vars[scalar_or_vector_index[i]].read_dof_values_plain(src);  // need to generalize, I think
+				}
+				else{
+					scalar_vars[scalar_or_vector_index[i]].read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[LHS_indices[i]]);
+				}
+				scalar_vars[scalar_or_vector_index[i]].evaluate(need_value_LHS[LHS_indices[i]], need_gradient_LHS[LHS_indices[i]], need_hessian_LHS[LHS_indices[i]]);
+			}
+			else {
+				vector_vars[scalar_or_vector_index[i]].reinit(cell);
+				if ( (value_residual_LHS[LHS_indices[i]] == true) or (gradient_residual_LHS[LHS_indices[i]] == true) ){
+					vector_vars[scalar_or_vector_index[i]].read_dof_values_plain(src);
+				}
+				else {
+					vector_vars[scalar_or_vector_index[i]].read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[field_index[i]]);
+				}
+				vector_vars[scalar_or_vector_index[i]].evaluate(need_value_LHS[LHS_indices[i]], need_gradient_LHS[LHS_indices[i]], need_hessian_LHS[LHS_indices[i]]);
+			}
+		}
 
-		    for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
-
-		  	  // Initialize, read DOFs, and set evaulation flags for each variable
-		  	  for (unsigned int i=0; i<num_var_LHS; i++){
-		  		  if (is_scalar_var[i] == true) {
-		  			  scalar_vars[scalar_or_vector_index[i]].reinit(cell);
-		  			  if ( (value_residual_LHS[LHS_indices[i]] == true) or (gradient_residual_LHS[LHS_indices[i]] == true) ){
-		  				  scalar_vars[scalar_or_vector_index[i]].read_dof_values_plain(src);  // need to generalize, I think
-		  			  }
-		  			  else{
-		  				  scalar_vars[scalar_or_vector_index[i]].read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[LHS_indices[i]]);
-		  			  }
-		  			  scalar_vars[scalar_or_vector_index[i]].evaluate(need_value_LHS[LHS_indices[i]], need_gradient_LHS[LHS_indices[i]], need_hessian_LHS[LHS_indices[i]]);
-		  		  }
-		  		  else {
-		  			  vector_vars[scalar_or_vector_index[i]].reinit(cell);
-		  			  if ( (value_residual_LHS[LHS_indices[i]] == true) or (gradient_residual_LHS[LHS_indices[i]] == true) ){
-		  				  vector_vars[scalar_or_vector_index[i]].read_dof_values_plain(src);
-		  			  }
-		  			  else {
-		  				  vector_vars[scalar_or_vector_index[i]].read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[field_index[i]]);
-		  			  }
-		  			  vector_vars[scalar_or_vector_index[i]].evaluate(need_value_LHS[LHS_indices[i]], need_gradient_LHS[LHS_indices[i]], need_hessian_LHS[LHS_indices[i]]);
-		  		  }
-		  	  }
-
-	    //loop over quadrature points
+		//loop over quadrature points
 	    for (unsigned int q=0; q<scalar_vars[0].n_q_points; ++q){
-//	      //u
-//	      vectorgradType ux = vector_vars[0].get_gradient(q);
-//	      vectorgradType Rux;
-//
-//	      // n
-//	      scalarvalueType n1, n2, n3;
-//	      n1 = scalar_vars[0].get_value(q);
-//		  #if num_sop>1
-//			  n2 = scalar_vars[1].get_value(q);
-//		  #else
-//			  n2 = constV(0.0);
-//		  #endif
-//		  #if num_sop>2
-//			  n3 = scalar_vars[2].get_value(q);
-//		  #else
-//			  n3 = constV(0.0);
-//		  #endif
 
-			  for (unsigned int i=0; i<num_var_LHS; i++){
-				  if (is_scalar_var[i] == true) {
-					  if (need_value_LHS[LHS_indices[i]] == true){
-						  modelVariablesList[i].scalarValue = scalar_vars[scalar_or_vector_index[i]].get_value(q);
-					  }
-					  if (need_gradient_LHS[LHS_indices[i]] == true){
-						  modelVariablesList[i].scalarGrad = scalar_vars[scalar_or_vector_index[i]].get_gradient(q);
-					  }
-					  if (need_hessian_LHS[LHS_indices[i]] == true){
-						  modelVariablesList[i].scalarHess = scalar_vars[scalar_or_vector_index[i]].get_hessian(q);
-					  }
-				  }
-				  else {
-					  if (need_value_LHS[LHS_indices[i]] == true){
-						  modelVariablesList[i].vectorValue = vector_vars[scalar_or_vector_index[i]].get_value(q);
-					  }
-					  if (need_gradient_LHS[LHS_indices[i]] == true){
-						  modelVariablesList[i].vectorGrad = vector_vars[scalar_or_vector_index[i]].get_gradient(q);
-					  }
-					  if (need_hessian_LHS[LHS_indices[i]] == true){
-						  modelVariablesList[i].vectorHess = vector_vars[scalar_or_vector_index[i]].get_hessian(q);
-					  }
-				  }
-			  }
+	    	for (unsigned int i=0; i<num_var_LHS; i++){
+	    		if (is_scalar_var[i] == true) {
+	    			if (need_value_LHS[LHS_indices[i]] == true){
+	    				modelVariablesList[i].scalarValue = scalar_vars[scalar_or_vector_index[i]].get_value(q);
+	    			}
+	    			if (need_gradient_LHS[LHS_indices[i]] == true){
+	    				modelVariablesList[i].scalarGrad = scalar_vars[scalar_or_vector_index[i]].get_gradient(q);
+	    			}
+	    			if (need_hessian_LHS[LHS_indices[i]] == true){
+	    				modelVariablesList[i].scalarHess = scalar_vars[scalar_or_vector_index[i]].get_hessian(q);
+	    			}
+	    		}
+	    		else {
+	    			if (need_value_LHS[LHS_indices[i]] == true){
+	    				modelVariablesList[i].vectorValue = vector_vars[scalar_or_vector_index[i]].get_value(q);
+	    			}
+	    			if (need_gradient_LHS[LHS_indices[i]] == true){
+	    				modelVariablesList[i].vectorGrad = vector_vars[scalar_or_vector_index[i]].get_gradient(q);
+	    			}
+	    			if (need_hessian_LHS[LHS_indices[i]] == true){
+	    				modelVariablesList[i].vectorHess = vector_vars[scalar_or_vector_index[i]].get_hessian(q);
+	    			}
+	    		}
+	    	}
 
-			  //n1
-			  scalarvalueType n1 = modelVariablesList[0].scalarValue;
+	    	// Calculate the residuals
+	    	residualLHS(modelVariablesList,modelResidualsList);
 
-			  //n2
-			  scalarvalueType n2 = modelVariablesList[1].scalarValue;
-
-
-			  //n3
-			  scalarvalueType n3 = modelVariablesList[2].scalarValue;
-
-			  //u
-			  vectorgradType ux = modelVariablesList[3].vectorGrad;
-			  vectorgradType Rux;
-
-			  // Calculate the residuals
-			  residualLHS(modelVariablesList,modelResidualsList);
-
-			  // Submit values
-			  for (unsigned int i=0; i<num_res_LHS; i++){
-				  if (var_type[LHS_res_indices[i]] == "SCALAR"){
-					  if (value_residual[LHS_res_indices[i]] == true){
-						  scalar_vars[scalar_or_vector_index[LHS_var_indices_of_res[i]]].submit_value(modelResidualsList[scalar_or_vector_index[i]].scalarValueResidual,q);
-					  }
-					  if (gradient_residual[LHS_res_indices[i]] == true){
-						  scalar_vars[scalar_or_vector_index[LHS_var_indices_of_res[i]]].submit_gradient(modelResidualsList[scalar_or_vector_index[i]].scalarGradResidual,q);
-					  }
-				  }
-				  else {
-					  if (value_residual[LHS_res_indices[i]] == true){
-						  vector_vars[scalar_or_vector_index[LHS_var_indices_of_res[i]]].submit_value(modelResidualsList[scalar_or_vector_index[i]].vectorValueResidual,q);
-					  }
-					  if (gradient_residual[LHS_res_indices[i]] == true){
-						  vector_vars[scalar_or_vector_index[LHS_var_indices_of_res[i]]].submit_gradient(modelResidualsList[scalar_or_vector_index[i]].vectorGradResidual,q);
-					  }
-				  }
-			  }
+	    	// Submit values
+	    	for (unsigned int i=0; i<num_res_LHS; i++){
+	    		if (var_type[LHS_res_indices[i]] == "SCALAR"){
+	    			if (value_residual[LHS_res_indices[i]] == true){
+	    				scalar_vars[scalar_or_vector_index[LHS_var_indices_of_res[i]]].submit_value(modelResidualsList[scalar_or_vector_index[i]].scalarValueResidual,q);
+	    			}
+	    			if (gradient_residual[LHS_res_indices[i]] == true){
+	    				scalar_vars[scalar_or_vector_index[LHS_var_indices_of_res[i]]].submit_gradient(modelResidualsList[scalar_or_vector_index[i]].scalarGradResidual,q);
+	    			}
+	    		}
+	    		else {
+	    			if (value_residual[LHS_res_indices[i]] == true){
+	    				vector_vars[scalar_or_vector_index[LHS_var_indices_of_res[i]]].submit_value(modelResidualsList[scalar_or_vector_index[i]].vectorValueResidual,q);
+	    			}
+	    			if (gradient_residual[LHS_res_indices[i]] == true){
+	    				vector_vars[scalar_or_vector_index[LHS_var_indices_of_res[i]]].submit_gradient(modelResidualsList[scalar_or_vector_index[i]].vectorGradResidual,q);
+	    			}
+	    		}
+	    	}
 	    }
 
 	    //integrate
-	  for (unsigned int i=0; i<num_res_LHS; i++){
-		  if (var_type[LHS_res_indices[i]] == "SCALAR") {
-			  scalar_vars[scalar_or_vector_index[LHS_var_indices_of_res[i]]].integrate(value_residual[LHS_res_indices[i]], gradient_residual[LHS_res_indices[i]]);
-			  scalar_vars[scalar_or_vector_index[LHS_var_indices_of_res[i]]].distribute_local_to_global(dst);
-		  }
-		  else {
-			  vector_vars[scalar_or_vector_index[LHS_var_indices_of_res[i]]].integrate(value_residual[LHS_res_indices[i]], gradient_residual[LHS_res_indices[i]]);
-			  vector_vars[scalar_or_vector_index[LHS_var_indices_of_res[i]]].distribute_local_to_global(dst);
-		  }
-	  }
-	  }
-
-//	//initialize FEEvaulation objects
-//	std::vector<typeScalar> scalar_vars;
-//	std::vector<typeVector> vector_vars;
-//	std::vector<bool> is_scalar_var;
-//	std::vector<unsigned int> scalar_or_vector_index;
-//	std::vector<unsigned int> field_index;
-//	unsigned int field_number = 0;
-//
-//	for (unsigned int i=0; i<num_var_LHS; i++){
-//		if (var_type[LHS_indices[i]] == "SCALAR"){
-//			typeScalar var(data, LHS_indices[i]);
-//			scalar_vars.push_back(var);
-//			is_scalar_var.push_back(true);
-//			scalar_or_vector_index.push_back(scalar_vars.size()-1);
-//			field_index.push_back(field_number);
-//			field_number++;
-//		}
-//		  else {
-//			  typeVector var(data, LHS_indices[i]);
-//			  vector_vars.push_back(var);
-//			  is_scalar_var.push_back(false);
-//			  scalar_or_vector_index.push_back(vector_vars.size()-1);
-//			  field_index.push_back(field_number);
-//			  field_number+=dim;
-//		  }
-//	  }
-//
-//	  std::vector<modelVariable<dim> > modelVariablesList;
-//	  std::vector<modelResidual<dim> > modelResidualsList;
-//	  modelVariablesList.reserve(num_var_LHS);
-//	  modelResidualsList.reserve(num_res_LHS);
-//
-//	  typeScalar var(data,1);
-//	  scalar_Vars.push_back(var);
-//	  is_scalar_var.push_back(true);
-//	  scalar_or_vector_index.push_back(0);
-//	  field_index.push_back(1);
-//	  typeScalar var(data,2);
-//	  scalar_Vars.push_back(var);
-//	  is_scalar_var.push_back(true);
-//	  scalar_or_vector_index.push_back(1);
-//	  field_index.push_back(2);
-//	  typeScalar var(data,3);
-//	  scalar_Vars.push_back(var);
-//	  is_scalar_var.push_back(true);
-//	  scalar_or_vector_index.push_back(2);
-//	  field_index.push_back(4);
-//	  typeVector var(data,4);
-//	  vector_Vars.push_back(var);
-//	  is_scalar_var.push_back(true);
-//	  scalar_or_vector_index.push_back(0);
-//	  field_index.push_back(5);
-//
-//  //loop over cells
-//  for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
-//
-//	  // Initialize, read DOFs, and set evaulation flags for each variable
-//	  for (unsigned int i=0; i<num_var_LHS; i++){
-//		  if (is_scalar_var[i] == true) {
-//			  scalar_vars[scalar_or_vector_index[i]].reinit(cell);
-//			  if ( (value_residual_LHS[LHS_indices[i]] == true) or (gradient_residual_LHS[LHS_indices[i]] == true) ){
-//				  scalar_vars[scalar_or_vector_index[i]].read_dof_values_plain(src);  // need to generalize, I think
-//			  }
-//			  else{
-//				  scalar_vars[scalar_or_vector_index[i]].read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[LHS_indices[i]]);
-//			  }
-//			  scalar_vars[scalar_or_vector_index[i]].evaluate(need_value_LHS[LHS_indices[i]], need_gradient_LHS[LHS_indices[i]], need_hessian_LHS[LHS_indices[i]]);
-//		  }
-//		  else {
-//			  vector_vars[scalar_or_vector_index[i]].reinit(cell);
-//			  if ( (value_residual_LHS[LHS_indices[i]] == true) or (gradient_residual_LHS[LHS_indices[i]] == true) ){
-//				  vector_vars[scalar_or_vector_index[i]].read_dof_values_plain(src);
-//			  }
-//			  else {
-//				  vector_vars[scalar_or_vector_index[i]].read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[field_index[i]]);
-//			  }
-//			  vector_vars[scalar_or_vector_index[i]].evaluate(need_value_LHS[LHS_indices[i]], need_gradient_LHS[LHS_indices[i]], need_hessian_LHS[LHS_indices[i]]);
-//		  }
-//	  }
-//
-//	  unsigned int n_q_points = scalar_vars[0].n_q_points;
-//
-//
-//	  //loop over quadrature points
-//	  for (unsigned int q=0; q<n_q_points; ++q){
-//		  for (unsigned int i=0; i<num_var_LHS; i++){
-//			  if (is_scalar_var[i] == true) {
-//				  if (need_value_LHS[LHS_indices[i]] == true){
-//					  modelVariablesList[i].scalarValue = scalar_vars[scalar_or_vector_index[i]].get_value(q);
-//				  }
-//				  if (need_gradient_LHS[LHS_indices[i]] == true){
-//					  modelVariablesList[i].scalarGrad = scalar_vars[scalar_or_vector_index[i]].get_gradient(q);
-//				  }
-//				  if (need_hessian_LHS[LHS_indices[i]] == true){
-//					  modelVariablesList[i].scalarHess = scalar_vars[scalar_or_vector_index[i]].get_hessian(q);
-//				  }
-//			  }
-//			  else {
-//				  if (need_value_LHS[LHS_indices[i]] == true){
-//					  modelVariablesList[i].vectorValue = vector_vars[scalar_or_vector_index[i]].get_value(q);
-//				  }
-//				  if (need_gradient_LHS[LHS_indices[i]] == true){
-//					  modelVariablesList[i].vectorGrad = vector_vars[scalar_or_vector_index[i]].get_gradient(q);
-//				  }
-//				  if (need_hessian_LHS[LHS_indices[i]] == true){
-//					  modelVariablesList[i].vectorHess = vector_vars[scalar_or_vector_index[i]].get_hessian(q);
-//				  }
-//			  }
-//		  }
-//
-//		  // Calculate the residuals
-//		  residualLHS(modelVariablesList,modelResidualsList);
-//
-//		  // Submit values
-//		  for (unsigned int i=0; i<num_res_LHS; i++){
-//			  if (var_type[LHS_res_indices[i]] == "SCALAR"){
-//				  if (value_residual[LHS_res_indices[i]] == true){
-//					  scalar_vars[LHS_var_indices_of_res[i]].submit_value(modelResidualsList[LHS_res_indices[i]].scalarValueResidual,q);
-//				  }
-//				  if (gradient_residual[LHS_res_indices[i]] == true){
-//					  scalar_vars[LHS_var_indices_of_res[i]].submit_gradient(modelResidualsList[LHS_res_indices[i]].scalarGradResidual,q);
-//				  }
-//			  }
-//			  else {
-//				  if (value_residual[LHS_res_indices[i]] == true){
-//					  vector_vars[LHS_var_indices_of_res[i]].submit_value(modelResidualsList[LHS_res_indices[i]].vectorValueResidual,q);
-//				  }
-//				  if (gradient_residual[LHS_res_indices[i]] == true){
-//					  vector_vars[LHS_var_indices_of_res[i]].submit_gradient(modelResidualsList[LHS_res_indices[i]].vectorGradResidual,q);
-//				  }
-//			  }
-//		  }
-//
-//	  }
-//
-//	  for (unsigned int i=0; i<num_res_LHS; i++){
-//		  if (var_type[LHS_res_indices[i]] == "SCALAR") {
-//			  scalar_vars[LHS_var_indices_of_res[i]].integrate(value_residual[LHS_res_indices[i]], gradient_residual[LHS_res_indices[i]]);
-//			  scalar_vars[LHS_var_indices_of_res[i]].distribute_local_to_global(dst);
-//		  }
-//		  else {
-//			  std::cout<<LHS_var_indices_of_res[i] << std::endl;
-//			  vector_vars[LHS_var_indices_of_res[i]].integrate(value_residual[LHS_res_indices[i]], gradient_residual[LHS_res_indices[i]]);
-//			  vector_vars[LHS_var_indices_of_res[i]].distribute_local_to_global(dst);
-//		  }
-//	  }
-//
-//  }
+	    for (unsigned int i=0; i<num_res_LHS; i++){
+	    	if (var_type[LHS_res_indices[i]] == "SCALAR") {
+	    		scalar_vars[scalar_or_vector_index[LHS_var_indices_of_res[i]]].integrate(value_residual[LHS_res_indices[i]], gradient_residual[LHS_res_indices[i]]);
+	    		scalar_vars[scalar_or_vector_index[LHS_var_indices_of_res[i]]].distribute_local_to_global(dst);
+	    	}
+	    	else {
+	    		vector_vars[scalar_or_vector_index[LHS_var_indices_of_res[i]]].integrate(value_residual[LHS_res_indices[i]], gradient_residual[LHS_res_indices[i]]);
+	    		vector_vars[scalar_or_vector_index[LHS_var_indices_of_res[i]]].distribute_local_to_global(dst);
+	    	}
+	    }
+	}
 }
 
 // Calculate the free energy
