@@ -16,30 +16,30 @@ template <int dim>
 void CoupledCHACMechanicsProblem<dim>::residualRHS(const std::vector<modelVariable<dim>> & modelVariablesList, std::vector<modelResidual<dim>> & modelResidualsList) const {
 
 //c
-scalarvalueType c = modelVariablesList[0].scalarValue; //scalar_vars[0].get_value(q);
-scalargradType cx = modelVariablesList[0].scalarGrad; //scalar_vars[0].get_gradient(q);
+scalarvalueType c = modelVariablesList[0].scalarValue;
+scalargradType cx = modelVariablesList[0].scalarGrad;
 
 //n1
-scalarvalueType n1 = modelVariablesList[1].scalarValue; //get_value(q);
-scalargradType n1x = modelVariablesList[1].scalarGrad; //get_gradient(q);
+scalarvalueType n1 = modelVariablesList[1].scalarValue;
+scalargradType n1x = modelVariablesList[1].scalarGrad;
 
 //n2
-scalarvalueType n2 = modelVariablesList[2].scalarValue; //scalar_vars[2].get_value(q);
-scalargradType n2x = modelVariablesList[2].scalarGrad; //scalar_vars[2].get_gradient(q);
+scalarvalueType n2 = modelVariablesList[2].scalarValue;
+scalargradType n2x = modelVariablesList[2].scalarGrad;
 
 
 //n3
-scalarvalueType n3 = modelVariablesList[3].scalarValue; //scalar_vars[3].get_value(q);
-scalargradType n3x = modelVariablesList[3].scalarGrad; //scalar_vars[3].get_gradient(q);
+scalarvalueType n3 = modelVariablesList[3].scalarValue;
+scalargradType n3x = modelVariablesList[3].scalarGrad;
 
 //u
-vectorgradType ux = modelVariablesList[4].vectorGrad; //vector_vars[0].get_gradient(q);
+vectorgradType ux = modelVariablesList[4].vectorGrad;
 vectorgradType Rux;
 
 vectorhessType uxx;
 
 if (c_dependent_misfit == true){
-	uxx = modelVariablesList[4].vectorHess;  //vector_vars[0].get_hessian(q);
+	uxx = modelVariablesList[4].vectorHess;
 }
 
 // Calculate the stress-free transformation strain and its derivatives at the quadrature point
@@ -205,6 +205,46 @@ modelResidualsList[3].scalarGradResidual = rn3xV;
 modelResidualsList[4].vectorGradResidual = Rux;
 
 }
+
+template <int dim>
+void CoupledCHACMechanicsProblem<dim>::residualLHS(const std::vector<modelVariable<dim>> & modelVariablesList, std::vector<modelResidual<dim>> & modelResidualsList) const {
+
+//n1
+scalarvalueType n1 = modelVariablesList[0].scalarValue;
+
+//n2
+scalarvalueType n2 = modelVariablesList[1].scalarValue;
+
+
+//n3
+scalarvalueType n3 = modelVariablesList[2].scalarValue;
+
+//u
+vectorgradType ux = modelVariablesList[3].vectorGrad;
+vectorgradType Rux;
+
+
+
+// Take advantage of E being simply 0.5*(ux + transpose(ux)) and use the dealii "symmetrize" function
+dealii::Tensor<2, dim, dealii::VectorizedArray<double> > E;
+//E = symmetrize(ux); // Only works for Deal.II v8.3 and later
+E = constV(0.5)*(ux + transpose(ux));
+
+// Compute stress tensor (which is equal to the residual, Rux)
+if (n_dependent_stiffness == true){
+	dealii::Tensor<2, 2*dim-1+dim/3, dealii::VectorizedArray<double> > CIJ_combined;
+	CIJ_combined = CIJ_alpha_tensor*(constV(1.0)-h1V-h2V-h3V) + CIJ_beta_tensor*(h1V+h2V+h3V);
+
+	computeStress<dim>(CIJ_combined, E, Rux);
+}
+else{
+	computeStress<dim>(CIJ, E, Rux);
+}
+
+modelResidualsList[0].vectorGradResidual = Rux;
+
+}
+
 
 
 

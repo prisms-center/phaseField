@@ -62,6 +62,15 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
   void residualRHS(const std::vector<modelVariable<dim>> & modelVariablesList,
 		  	  	  	  	  	  	  	  	  	  	  	  	  std::vector<modelResidual<dim>> & modelResidualsList) const;
 
+  void residualLHS(const std::vector<modelVariable<dim>> & modelVariablesList,
+  		  	  	  	  	  	  	  	  	  	  	  	  	  std::vector<modelResidual<dim>> & modelResidualsList) const;
+
+  unsigned int num_var_LHS;
+  unsigned int num_res_LHS;
+  std::vector<unsigned int> LHS_indices;
+  std::vector<unsigned int> LHS_res_indices;
+  std::vector<unsigned int> LHS_var_indices_of_res;
+
 };
 
 //constructor
@@ -137,6 +146,20 @@ for (unsigned int i=0; i<dim; i++){
 #ifndef nucleation_occurs
 	#define nucleation_occurs false
 #endif
+
+num_var_LHS = 0;
+num_res_LHS = 0;
+for (unsigned int i=0; i<num_var; i++){
+	if (need_value_LHS[i] or need_gradient_LHS[i] or need_hessian_LHS[i]){
+		num_var_LHS++;
+		LHS_indices.push_back(i);
+	}
+	if (value_residual_LHS[i] or gradient_residual_LHS[i]){
+		num_res_LHS++;
+		LHS_res_indices.push_back(i);
+		LHS_var_indices_of_res.push_back(num_var_LHS);
+	}
+}
 
 }
 
@@ -269,73 +292,133 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
 					       vectorType &dst, 
 					       const vectorType &src,
 					       const std::pair<unsigned int,unsigned int> &cell_range) const{
-	  //initialize fields
-	  typeScalar n1Vals(data,1);
-	  #if num_sop>1
-	  typeScalar n2Vals(data,2);
-	  #endif
-	  #if num_sop>2
-	  typeScalar n3Vals(data,3);
-	  #endif
 
-	  typeVector uVals(data, num_sop+1);
+	//initialize FEEvaulation objects
+	std::vector<typeScalar> scalar_vars;
+	std::vector<typeVector> vector_vars;
+	std::vector<bool> is_scalar_var;
+	std::vector<unsigned int> scalar_or_vector_index;
+	std::vector<unsigned int> field_index;
+	unsigned int field_number = 0;
+
+	for (unsigned int i=0; i<num_var_LHS; i++){
+		if (var_type[LHS_indices[i]] == "SCALAR"){
+			typeScalar var(data, LHS_indices[i]);
+			scalar_vars.push_back(var);
+			is_scalar_var.push_back(true);
+			scalar_or_vector_index.push_back(scalar_vars.size()-1);
+			field_index.push_back(field_number);
+			field_number++;
+		}
+		  else {
+			  typeVector var(data, LHS_indices[i]);
+			  vector_vars.push_back(var);
+			  is_scalar_var.push_back(false);
+			  scalar_or_vector_index.push_back(vector_vars.size()-1);
+			  field_index.push_back(field_number);
+			  field_number+=dim;
+		  }
+	  }
+
+	  std::vector<modelVariable<dim> > modelVariablesList;
+	  std::vector<modelResidual<dim> > modelResidualsList;
+	  modelVariablesList.reserve(num_var_LHS);
+	  modelResidualsList.reserve(num_res_LHS);
   
   //loop over cells
   for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
-    //initialize u field 
-    uVals.reinit(cell); uVals.read_dof_values_plain(src); uVals.evaluate(false, true, false);
 
-    //initialize n fields
-    n1Vals.reinit(cell); n1Vals.read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[1]); n1Vals.evaluate(true, false, false);
-   #if num_sop>1
-       n2Vals.reinit(cell); n2Vals.read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[2]); n2Vals.evaluate(true, false, false);
-   #endif
-   #if num_sop>2
-       n3Vals.reinit(cell); n3Vals.read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[3]); n3Vals.evaluate(true, false, false);
-   #endif
-
-    //loop over quadrature points
-    for (unsigned int q=0; q<uVals.n_q_points; ++q){
-      //u
-      vectorgradType ux = uVals.get_gradient(q);
-      vectorgradType Rux;
-
-      // n
-      scalarvalueType n1, n2, n3;
-      n1 = n1Vals.get_value(q);
-	  #if num_sop>1
-		  n2 = n2Vals.get_value(q);
-	  #else
-		  n2 = constV(0.0);
-	  #endif
-	  #if num_sop>2
-		  n3 = n3Vals.get_value(q);
-	  #else
-		  n3 = constV(0.0);
-	  #endif
-
-		  // Take advantage of E being simply 0.5*(ux + transpose(ux)) and use the dealii "symmetrize" function
-		  dealii::Tensor<2, dim, dealii::VectorizedArray<double> > E;
-		  //E = symmetrize(ux); // Only works for Deal.II v8.3 and later
-		  E = constV(0.5)*(ux + transpose(ux));
-    
-		  // Compute stress tensor (which is equal to the residual, Rux)
-		  if (n_dependent_stiffness == true){
-			  dealii::Tensor<2, 2*dim-1+dim/3, dealii::VectorizedArray<double> > CIJ_combined;
-			  CIJ_combined = CIJ_alpha_tensor*(constV(1.0)-h1V-h2V-h3V) + CIJ_beta_tensor*(h1V+h2V+h3V);
-
-			  computeStress<dim>(CIJ_combined, E, Rux);
+	  // Initialize, read DOFs, and set evaulation flags for each variable
+	  for (unsigned int i=0; i<num_var_LHS; i++){
+		  if (is_scalar_var[i] == true) {
+			  scalar_vars[scalar_or_vector_index[i]].reinit(cell);
+			  if ( (value_residual_LHS[LHS_indices[i]] == true) or (gradient_residual_LHS[LHS_indices[i]] == true) ){
+				  scalar_vars[scalar_or_vector_index[i]].read_dof_values_plain(src);  // need to generalize, I think
+			  }
+			  else{
+				  scalar_vars[scalar_or_vector_index[i]].read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[LHS_indices[i]]);
+			  }
+			  scalar_vars[scalar_or_vector_index[i]].evaluate(need_value_LHS[LHS_indices[i]], need_gradient_LHS[LHS_indices[i]], need_hessian_LHS[LHS_indices[i]]);
 		  }
-		  else{
-			  computeStress<dim>(CIJ, E, Rux);
+		  else {
+			  vector_vars[scalar_or_vector_index[i]].reinit(cell);
+			  if ( (value_residual_LHS[LHS_indices[i]] == true) or (gradient_residual_LHS[LHS_indices[i]] == true) ){
+				  vector_vars[scalar_or_vector_index[i]].read_dof_values_plain(src);
+			  }
+			  else {
+				  vector_vars[scalar_or_vector_index[i]].read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[field_index[i]]);
+			  }
+			  vector_vars[scalar_or_vector_index[i]].evaluate(need_value_LHS[LHS_indices[i]], need_gradient_LHS[LHS_indices[i]], need_hessian_LHS[LHS_indices[i]]);
+		  }
+	  }
+
+	  unsigned int n_q_points = scalar_vars[0].n_q_points;
+
+
+	  //loop over quadrature points
+	  for (unsigned int q=0; q<n_q_points; ++q){
+		  for (unsigned int i=0; i<num_var_LHS; i++){
+			  if (is_scalar_var[i] == true) {
+				  if (need_value_LHS[LHS_indices[i]] == true){
+					  modelVariablesList[i].scalarValue = scalar_vars[scalar_or_vector_index[i]].get_value(q);
+				  }
+				  if (need_gradient_LHS[LHS_indices[i]] == true){
+					  modelVariablesList[i].scalarGrad = scalar_vars[scalar_or_vector_index[i]].get_gradient(q);
+				  }
+				  if (need_hessian_LHS[LHS_indices[i]] == true){
+					  modelVariablesList[i].scalarHess = scalar_vars[scalar_or_vector_index[i]].get_hessian(q);
+				  }
+			  }
+			  else {
+				  if (need_value_LHS[LHS_indices[i]] == true){
+					  modelVariablesList[i].vectorValue = vector_vars[scalar_or_vector_index[i]].get_value(q);
+				  }
+				  if (need_gradient_LHS[LHS_indices[i]] == true){
+					  modelVariablesList[i].vectorGrad = vector_vars[scalar_or_vector_index[i]].get_gradient(q);
+				  }
+				  if (need_hessian_LHS[LHS_indices[i]] == true){
+					  modelVariablesList[i].vectorHess = vector_vars[scalar_or_vector_index[i]].get_hessian(q);
+				  }
+			  }
 		  }
 
-		  //submit residual value
-		  uVals.submit_gradient(Rux,q);
-    }
+		  // Calculate the residuals
+		  residualLHS(modelVariablesList,modelResidualsList);
+
+		  // Submit values
+		  for (unsigned int i=0; i<num_res_LHS; i++){
+			  if (var_type[LHS_res_indices[i]] == "SCALAR"){
+				  if (value_residual[LHS_res_indices[i]] == true){
+					  scalar_vars[LHS_var_indices_of_res[i]].submit_value(modelResidualsList[LHS_res_indices[i]].scalarValueResidual,q);
+				  }
+				  if (gradient_residual[LHS_res_indices[i]] == true){
+					  scalar_vars[LHS_var_indices_of_res[i]].submit_gradient(modelResidualsList[LHS_res_indices[i]].scalarGradResidual,q);
+				  }
+			  }
+			  else {
+				  if (value_residual[LHS_res_indices[i]] == true){
+					  vector_vars[LHS_var_indices_of_res[i]].submit_value(modelResidualsList[LHS_res_indices[i]].vectorValueResidual,q);
+				  }
+				  if (gradient_residual[LHS_res_indices[i]] == true){
+					  vector_vars[LHS_var_indices_of_res[i]].submit_gradient(modelResidualsList[LHS_res_indices[i]].vectorGradResidual,q);
+				  }
+			  }
+		  }
+
+	  }
+
+	  for (unsigned int i=0; i<num_res_LHS; i++){
+		  if (var_type[LHS_res_indices[i]] == "SCALAR") {
+			  scalar_vars[LHS_var_indices_of_res[i]].integrate(value_residual[LHS_res_indices[i]], gradient_residual[LHS_res_indices[i]]);
+			  scalar_vars[LHS_var_indices_of_res[i]].distribute_local_to_global(dst);
+		  }
+		  else {
+			  std::cout<<LHS_var_indices_of_res[i] << std::endl;
+			  vector_vars[LHS_var_indices_of_res[i]].integrate(value_residual[LHS_res_indices[i]], gradient_residual[LHS_res_indices[i]]);
+			  vector_vars[LHS_var_indices_of_res[i]].distribute_local_to_global(dst);
+		  }
+	  }
     
-    //integrate
-    uVals.integrate(false, true); uVals.distribute_local_to_global(dst);
   }
 }
 

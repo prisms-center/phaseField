@@ -52,6 +52,12 @@ bool need_hessian[num_var] = {false, false, false, false, false}; // Currently o
 bool value_residual[num_var] = {true, true, true, true, false};
 bool gradient_residual[num_var] = {true, true, true, true, true};
 
+bool need_value_LHS[num_var] = {false, true, true, true, false};
+bool need_gradient_LHS[num_var] = {false, false, false, false, true};
+bool need_hessian_LHS[num_var] = {false, false, false, false, false};
+bool value_residual_LHS[num_var] = {false, false, false, false, false};
+bool gradient_residual_LHS[num_var] = {false, false, false, false, true};
+
 // Define Cahn-Hilliard parameters (no gradient energy terms)
 #define McV 1.0
 
