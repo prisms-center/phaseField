@@ -42,18 +42,12 @@ modelResidual<dim>::modelResidual()
 }
 
 template<int dim>
-struct var_info
+struct variable_info
 {
- //public:
-	//var_info(MatrixFree<2,double> data, int index);
-	//typeScalar varScalar;
-	//typeVector varVector;
 	bool is_scalar;
 	unsigned int scalar_or_vector_index;
 	unsigned int global_var_index;
 	unsigned int global_field_index;
-
-
 };
 
 

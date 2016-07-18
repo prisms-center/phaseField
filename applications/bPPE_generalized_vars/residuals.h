@@ -207,7 +207,7 @@ modelResidualsList[4].vectorGradResidual = Rux;
 }
 
 template <int dim>
-void CoupledCHACMechanicsProblem<dim>::residualLHS(const std::vector<modelVariable<dim>> & modelVariablesList, std::vector<modelResidual<dim>> & modelResidualsList) const {
+void CoupledCHACMechanicsProblem<dim>::residualLHS(const std::vector<modelVariable<dim>> & modelVariablesList, modelResidual<dim> & modelRes) const {
 
 //n1
 scalarvalueType n1 = modelVariablesList[0].scalarValue;
@@ -241,7 +241,7 @@ else{
 	computeStress<dim>(CIJ, E, Rux);
 }
 
-modelResidualsList[0].vectorGradResidual = Rux;
+modelRes.vectorGradResidual = Rux;
 
 }
 
