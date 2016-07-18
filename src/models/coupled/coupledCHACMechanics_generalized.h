@@ -9,6 +9,18 @@
 //material models
 #include "../mechanics/computeStress.h"
 
+// BC object declaration
+template <int dim>
+class varBCs
+{
+	public:
+	//varBCs();
+	std::string var_max_BC_type;
+	double var_max_BC_val;
+	std::string var_min_BC_type;
+	double var_min_BC_val;
+};
+
 template <int dim>
 class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
 {
@@ -17,7 +29,13 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
 
   void shiftConcentration();
 
+  void setBCs();
+  void inputBCs(int var, int component, std::string min_type, double min_value, std::string max_type, double max_value);
+
  private:
+  // Boundary condition object
+  std::vector<varBCs<dim>> BC_list;
+
   // Elasticity matrix variables
   Table<2, double> CIJ_table;
   Table<2, double> CIJ_alpha_table;
@@ -60,9 +78,7 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
 
   void computeIntegral(double& integratedField);
 
-  void markBoundaries();
-
-
+  void markBoundaries(int field_index);
 
   void getEnergy(const MatrixFree<dim,double> &data,
     				    std::vector<vectorType*> &dst,

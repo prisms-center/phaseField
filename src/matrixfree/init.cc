@@ -38,7 +38,7 @@
    pcout << std::endl;
 
    //mark boundaries for applying Dirichlet boundary conditons
-   markBoundaries();
+   //markBoundaries();
 
    //setup system
    pcout << "initializing matrix free object\n";
@@ -93,8 +93,10 @@
      //default and can be changed later in the specific BVP
      //implementation
      if (it->pdetype==ELLIPTIC){
-       currentFieldIndex=it->index;
-       applyDirichletBCs();
+    	 //mark boundaries for applying Dirichlet boundary conditons
+    	 currentFieldIndex=it->index;
+    	 markBoundaries(currentFieldIndex);
+    	 applyDirichletBCs();
      }
      constraints->close();  
      sprintf(buffer, "field '%2s' DOF : %u (Dirichlet DOF : %u)\n", \

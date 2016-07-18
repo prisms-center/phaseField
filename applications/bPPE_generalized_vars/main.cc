@@ -17,6 +17,8 @@ int main (int argc, char **argv)
 	  deallog.depth_console(0);
       CoupledCHACMechanicsProblem<problemDIM> problem;
 
+      problem.setBCs();
+
       // Build each of the fields in the system
       for (unsigned int i=0; i<num_var; i++){
     	  if (var_type[i] == "SCALAR"){
