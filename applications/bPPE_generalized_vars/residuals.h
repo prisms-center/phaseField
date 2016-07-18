@@ -84,7 +84,8 @@ dealii::VectorizedArray<double> sum_hV;
 sum_hV = h1V+h2V+h3V;
 for (unsigned int i=0; i<2*dim-1+dim/3; i++){
 	  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-		  CIJ_combined[i][j] = constV(CIJ_alpha(i,j))*(constV(1.0)-sum_hV) + constV(CIJ_beta(i,j))*sum_hV;
+//		  CIJ_combined[i][j] = constV(CIJ_alpha(i,j))*(constV(1.0)-sum_hV) + constV(CIJ_beta(i,j))*sum_hV;
+		  CIJ_combined[i][j] = CIJ_alpha[i][j]*(constV(1.0)-sum_hV) + CIJ_beta[i][j]*sum_hV;
 	  }
 }
 computeStress<dim>(CIJ_combined, E2, S);
@@ -223,8 +224,6 @@ scalarvalueType n3 = modelVarList[2].scalarValue;
 vectorgradType ux = modelVarList[3].vectorGrad;
 vectorgradType Rux;
 
-
-
 // Take advantage of E being simply 0.5*(ux + transpose(ux)) and use the dealii "symmetrize" function
 dealii::Tensor<2, dim, dealii::VectorizedArray<double> > E;
 //E = symmetrize(ux); // Only works for Deal.II v8.3 and later
@@ -233,7 +232,7 @@ E = constV(0.5)*(ux + transpose(ux));
 // Compute stress tensor (which is equal to the residual, Rux)
 if (n_dependent_stiffness == true){
 	dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ_combined;
-	CIJ_combined = CIJ_alpha_tensor*(constV(1.0)-h1V-h2V-h3V) + CIJ_beta_tensor*(h1V+h2V+h3V);
+	CIJ_combined = CIJ_alpha*(constV(1.0)-h1V-h2V-h3V) + CIJ_beta*(h1V+h2V+h3V);
 
 	computeStress<dim>(CIJ_combined, E, Rux);
 }

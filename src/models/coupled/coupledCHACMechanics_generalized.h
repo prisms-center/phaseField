@@ -19,12 +19,11 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
 
  private:
   // Elasticity matrix variables
-  Table<2, double> CIJ;
-  Table<2, double> CIJ_alpha;
-  Table<2, double> CIJ_beta;
-  Table<2, double> CIJ_diff;
+  Table<2, double> CIJ_table;
+  Table<2, double> CIJ_alpha_table;
+  Table<2, double> CIJ_beta_table;
   const static unsigned int CIJ_tensor_size = 2*dim-1+dim/3;
-  dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ_alpha_tensor, CIJ_beta_tensor;
+  dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ, CIJ_alpha, CIJ_beta, CIJ_diff;
 
   bool c_dependent_misfit;
 
@@ -82,28 +81,34 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
 //constructor
 template <int dim>
 CoupledCHACMechanicsProblem<dim>::CoupledCHACMechanicsProblem(): MatrixFreePDE<dim>(),
-  CIJ(2*dim-1+dim/3,2*dim-1+dim/3), CIJ_alpha(2*dim-1+dim/3,2*dim-1+dim/3), CIJ_beta(2*dim-1+dim/3,2*dim-1+dim/3), CIJ_diff(2*dim-1+dim/3,2*dim-1+dim/3)
+  CIJ_table(2*dim-1+dim/3,2*dim-1+dim/3), CIJ_alpha_table(2*dim-1+dim/3,2*dim-1+dim/3), CIJ_beta_table(2*dim-1+dim/3,2*dim-1+dim/3)
 {
   //initialize elasticity matrix
 #if defined(MaterialModelV) && defined(MaterialConstantsV)
 	if (n_dependent_stiffness == true){
 		double materialConstants[]=MaterialConstantsV;
-		getCIJMatrix<dim>(MaterialModelV, materialConstants, CIJ_alpha, this->pcout);
+		getCIJMatrix<dim>(MaterialModelV, materialConstants, CIJ_alpha_table, this->pcout);
 
 		double materialConstantsBeta[]=MaterialConstantsBetaV;
-		getCIJMatrix<dim>(MaterialModelBetaV, materialConstantsBeta, CIJ_beta, this->pcout);
+		getCIJMatrix<dim>(MaterialModelBetaV, materialConstantsBeta, CIJ_beta_table, this->pcout);
 
 		for (unsigned int i=0; i<2*dim-1+dim/3; i++){
 			for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-				CIJ_beta_tensor[i][j] =  CIJ_beta(i,j);
-				CIJ_alpha_tensor[i][j] =  CIJ_alpha(i,j);
-				CIJ_diff(i,j) = CIJ_beta(i,j) - CIJ_alpha(i,j);
+				CIJ_beta[i][j] =  CIJ_beta_table(i,j);
+				CIJ_alpha[i][j] =  CIJ_alpha_table(i,j);
+				CIJ_diff[i][j] =  CIJ_beta_table(i,j) - CIJ_alpha_table(i,j);
 			}
 		}
 	}
 	else{
 		double materialConstants[]=MaterialConstantsV;
-		getCIJMatrix<dim>(MaterialModelV, materialConstants, CIJ, this->pcout);
+		getCIJMatrix<dim>(MaterialModelV, materialConstants, CIJ_table, this->pcout);
+
+		for (unsigned int i=0; i<2*dim-1+dim/3; i++){
+			for (unsigned int j=0; j<2*dim-1+dim/3; j++){
+				CIJ[i][j] =  CIJ_table(i,j);
+			}
+		}
 	}
 
 #else
@@ -616,7 +621,7 @@ void  CoupledCHACMechanicsProblem<dim>::getEnergy(const MatrixFree<dim,double> &
 	    	  sum_hV = h1V+h2V+h3V;
 	    	  for (unsigned int i=0; i<2*dim-1+dim/3; i++){
 	    		  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-	    			  CIJ_combined[i][j] = constV(CIJ_alpha(i,j))*(constV(1.0)-sum_hV) + constV(CIJ_beta(i,j))*sum_hV;
+	    			  CIJ_combined[i][j] = CIJ_alpha[i][j]*(constV(1.0)-sum_hV) + CIJ_beta[i][j]*sum_hV;
 	    		  }
 	    	  }
 	    	  computeStress<dim>(CIJ_combined, E2, S);
