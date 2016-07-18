@@ -76,12 +76,14 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
   void residualLHS(const std::vector<modelVariable<dim>> & modelVarList,
   		  	  	  	  	  	  	  	  	  	  	  	  	  modelResidual<dim> & modelRes) const;
 
+  void energyDensity(const std::vector<modelVariable<dim>> & modelVarList, const dealii::VectorizedArray<double> & JxW_value);
+
 };
 
 //constructor
 template <int dim>
 CoupledCHACMechanicsProblem<dim>::CoupledCHACMechanicsProblem(): MatrixFreePDE<dim>(),
-  CIJ_table(2*dim-1+dim/3,2*dim-1+dim/3), CIJ_alpha_table(2*dim-1+dim/3,2*dim-1+dim/3), CIJ_beta_table(2*dim-1+dim/3,2*dim-1+dim/3)
+  CIJ_table(CIJ_tensor_size,CIJ_tensor_size), CIJ_alpha_table(CIJ_tensor_size,CIJ_tensor_size), CIJ_beta_table(CIJ_tensor_size,CIJ_tensor_size)
 {
   //initialize elasticity matrix
 #if defined(MaterialModelV) && defined(MaterialConstantsV)
@@ -92,8 +94,8 @@ CoupledCHACMechanicsProblem<dim>::CoupledCHACMechanicsProblem(): MatrixFreePDE<d
 		double materialConstantsBeta[]=MaterialConstantsBetaV;
 		getCIJMatrix<dim>(MaterialModelBetaV, materialConstantsBeta, CIJ_beta_table, this->pcout);
 
-		for (unsigned int i=0; i<2*dim-1+dim/3; i++){
-			for (unsigned int j=0; j<2*dim-1+dim/3; j++){
+		for (unsigned int i=0; i<CIJ_tensor_size; i++){
+			for (unsigned int j=0; j<CIJ_tensor_size; j++){
 				CIJ_beta[i][j] =  CIJ_beta_table(i,j);
 				CIJ_alpha[i][j] =  CIJ_alpha_table(i,j);
 				CIJ_diff[i][j] =  CIJ_beta_table(i,j) - CIJ_alpha_table(i,j);
@@ -104,8 +106,8 @@ CoupledCHACMechanicsProblem<dim>::CoupledCHACMechanicsProblem(): MatrixFreePDE<d
 		double materialConstants[]=MaterialConstantsV;
 		getCIJMatrix<dim>(MaterialModelV, materialConstants, CIJ_table, this->pcout);
 
-		for (unsigned int i=0; i<2*dim-1+dim/3; i++){
-			for (unsigned int j=0; j<2*dim-1+dim/3; j++){
+		for (unsigned int i=0; i<CIJ_tensor_size; i++){
+			for (unsigned int j=0; j<CIJ_tensor_size; j++){
 				CIJ[i][j] =  CIJ_table(i,j);
 			}
 		}
@@ -280,10 +282,16 @@ void CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &data
 		  }
 	  }
 
-	  unsigned int n_q_points = scalar_vars[0].n_q_points;
+	  unsigned int num_q_points;
+	  if (scalar_vars.size() > 0){
+		  num_q_points = scalar_vars[0].n_q_points;
+	  }
+	  else {
+		  num_q_points = vector_vars[0].n_q_points;
+	  }
 
 	  //loop over quadrature points
-	  for (unsigned int q=0; q<n_q_points; ++q){
+	  for (unsigned int q=0; q<num_q_points; ++q){
 
 		  for (unsigned int i=0; i<num_var; i++){
 			  if (varInfoListRHS[i].is_scalar) {
@@ -486,173 +494,94 @@ void  CoupledCHACMechanicsProblem<dim>::getEnergy(const MatrixFree<dim,double> &
 				    const std::vector<vectorType*> &src,
 				    const std::pair<unsigned int,unsigned int> &cell_range) {
 
-	//initialize fields
-	  typeScalar cVals(data, 0);
+	//initialize FEEvaulation objects
+	  std::vector<typeScalar> scalar_vars;
+	  std::vector<typeVector> vector_vars;
 
-	  typeScalar n1Vals(data,1);
-	  #if num_sop>2
-	  typeScalar n3Vals(data,3);
-	  #endif
-	  #if num_sop>1
-	  typeScalar n2Vals(data,2);
-	  #endif
+	  for (unsigned int i=0; i<num_var; i++){
+		  if (varInfoListRHS[i].is_scalar){
+			  typeScalar var(data, i);
+			  scalar_vars.push_back(var);
+		  }
+		  else {
+			  typeVector var(data, i);
+			  vector_vars.push_back(var);
+		  }
+	  }
 
-	  typeVector uVals(data, num_sop+1);
+	  std::vector<modelVariable<dim> > modelVarList;
+	  std::vector<modelResidual<dim> > modelResidualsList;
+	  modelVarList.reserve(num_var);
+	  modelResidualsList.reserve(num_var);
 
 	  //loop over cells
 	  for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
-	    //initialize c field
-	    cVals.reinit(cell); cVals.read_dof_values_plain(*src[0]); cVals.evaluate(true, true, false);
 
-	    //initialize n fields
-	    n1Vals.reinit(cell); n1Vals.read_dof_values_plain(*src[1]); n1Vals.evaluate(true, true, false);
-		#if num_sop>1
-	    n2Vals.reinit(cell); n2Vals.read_dof_values_plain(*src[2]); n2Vals.evaluate(true, true, false);
-		#endif
-		#if num_sop>2
-	    n3Vals.reinit(cell); n3Vals.read_dof_values_plain(*src[3]); n3Vals.evaluate(true, true, false);
-		#endif
-
-	    //initialize u field
-	    uVals.reinit(cell); uVals.read_dof_values_plain(*src[num_sop+1]);
-	    uVals.evaluate(false, true, false);
-
-	    dealii::AlignedVector<dealii::VectorizedArray<double> > JxW(cVals.n_q_points);
-	    cVals.fill_JxW_values(JxW);
-
-	    //loop over quadrature points
-	    for (unsigned int q=0; q<cVals.n_q_points; ++q){
-	      //c
-	      scalarvalueType c = cVals.get_value(q);
-	      scalargradType cx = cVals.get_gradient(q);
-
-	      //n1
-	      scalarvalueType n1 = n1Vals.get_value(q);
-	      scalargradType n1x = n1Vals.get_gradient(q);
-
-	      //n2
-	      scalarvalueType n2, n3;
-	      scalargradType n2x, n3x;
-		  #if num_sop>1
-	    	  n2 = n2Vals.get_value(q);
-	    	  n2x = n2Vals.get_gradient(q);
-		  #else
-	    	  n2 = constV(0.0);
-	    	  n2x = constV(0.0)*n1x;
-		  #endif
-
-	      //n3
-		  #if num_sop>2
-	    	  n3 = n3Vals.get_value(q);
-	    	  n3x = n3Vals.get_gradient(q);
-		  #else
-	    	  n3 = constV(0.0);
-	    	  n3x = constV(0.0)*n1x;
-		  #endif
-	      //u
-	      vectorgradType ux = uVals.get_gradient(q);
-
-	      scalarvalueType total_energy_density = constV(0.0);
-
-	      scalarvalueType f_chem = (constV(1.0)-(h1V+h2V+h3V))*faV + (h1V+h2V+h3V)*fbV + W*fbarrierV;
-
-	      scalarvalueType f_grad = constV(0.0);
-
-	      for (int i=0; i<dim; i++){
-	    	  for (int j=0; j<dim; j++){
-	    		  f_grad += constV(0.5*Kn1[i][j])*n1x[i]*n1x[j];
-	    	  }
-	      }
-#if num_sop>1
-	      for (int i=0; i<dim; i++){
-	    	  for (int j=0; j<dim; j++){
-	    		  f_grad += constV(0.5*Kn2[i][j])*n2x[i]*n2x[j];
-	    	  }
-	      }
-#endif
-#if num_sop>2
-	      for (int i=0; i<dim; i++){
-	    	  for (int j=0; j<dim; j++){
-	    		  f_grad += constV(0.5*Kn3[i][j])*n3x[i]*n3x[j];
-	    	  }
-	      }
-#endif
+		  // Initialize, read DOFs, and set evaulation flags for each variable
+		  for (unsigned int i=0; i<num_var; i++){
+			  if (varInfoListRHS[i].is_scalar) {
+				  scalar_vars[varInfoListRHS[i].scalar_or_vector_index].reinit(cell);
+				  scalar_vars[varInfoListRHS[i].scalar_or_vector_index].read_dof_values_plain(*src[varInfoListRHS[i].global_field_index]);
+				  scalar_vars[varInfoListRHS[i].scalar_or_vector_index].evaluate(need_value[i], need_gradient[i], need_hessian[i]);
+			  }
+			  else {
+				  vector_vars[varInfoListRHS[i].scalar_or_vector_index].reinit(cell);
+				  vector_vars[varInfoListRHS[i].scalar_or_vector_index].read_dof_values_plain(*src[varInfoListRHS[i].global_field_index]);
+				  vector_vars[varInfoListRHS[i].scalar_or_vector_index].evaluate(need_value[i], need_gradient[i], need_hessian[i]);
+			  }
+		  }
 
 
-	      // Calculate the stress-free transformation strain and its derivatives at the quadrature point
-	      dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > sfts1, sfts1c, sfts1cc, sfts2, sfts2c, sfts2cc, sfts3, sfts3c, sfts3cc;
+		  unsigned int num_q_points;
+		  if (scalar_vars.size() > 0){
+			  num_q_points = scalar_vars[0].n_q_points;
+		  }
+		  else {
+			  num_q_points = vector_vars[0].n_q_points;
+		  }
 
-	      for (unsigned int i=0; i<dim; i++){
-	    	  for (unsigned int j=0; j<dim; j++){
-	    		  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
-	    		  sfts1[i][j] = constV(sfts_linear1[i][j])*c + constV(sfts_const1[i][j]);
-	    		  sfts1c[i][j] = constV(sfts_linear1[i][j]);
-	    		  sfts1cc[i][j] = constV(0.0);
+		  dealii::AlignedVector<dealii::VectorizedArray<double> > JxW(num_q_points);
 
-	    		  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
-	    		  sfts2[i][j] = constV(sfts_linear2[i][j])*c + constV(sfts_const2[i][j]);
-	    		  sfts2c[i][j] = constV(sfts_linear1[i][j]);
-	    		  sfts2cc[i][j] = constV(0.0);
+		  if (scalar_vars.size() > 0){
+			  scalar_vars[0].fill_JxW_values(JxW);
+		  }
+		  else {
+			  vector_vars[0].fill_JxW_values(JxW);
+		  }
 
-	    		  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
-	    		  sfts3[i][j] = constV(sfts_linear3[i][j])*c + constV(sfts_const3[i][j]);
-	    		  sfts3c[i][j] = constV(sfts_linear3[i][j]);
-	    		  sfts3cc[i][j] = constV(0.0);
-	    	  }
-	      }
+		  //loop over quadrature points
+		  for (unsigned int q=0; q<num_q_points; ++q){
 
-	      //compute E2=(E-E0)
-	      dealii::VectorizedArray<double> E2[dim][dim], S[dim][dim];
+			  for (unsigned int i=0; i<num_var; i++){
+				  if (varInfoListRHS[i].is_scalar) {
+					  if (need_value[i]){
+						  modelVarList[i].scalarValue = scalar_vars[varInfoListRHS[i].scalar_or_vector_index].get_value(q);
+					  }
+					  if (need_gradient[i]){
+						  modelVarList[i].scalarGrad = scalar_vars[varInfoListRHS[i].scalar_or_vector_index].get_gradient(q);
+					  }
+					  if (need_hessian[i]){
+						  modelVarList[i].scalarHess = scalar_vars[varInfoListRHS[i].scalar_or_vector_index].get_hessian(q);
+					  }
+				  }
+				  else {
+					  if (need_value[i]){
+						  modelVarList[i].vectorValue = vector_vars[varInfoListRHS[i].scalar_or_vector_index].get_value(q);
+					  }
+					  if (need_gradient[i]){
+						  modelVarList[i].vectorGrad = vector_vars[varInfoListRHS[i].scalar_or_vector_index].get_gradient(q);
+					  }
+					  if (need_hessian[i]){
+						  modelVarList[i].vectorHess = vector_vars[varInfoListRHS[i].scalar_or_vector_index].get_hessian(q);
+					  }
+				  }
+			  }
 
-	      for (unsigned int i=0; i<dim; i++){
-	    	  for (unsigned int j=0; j<dim; j++){
-	    		  //E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1V + sfts2[i][j]*h2V + sfts3[i][j]*h3V);
-	    		  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1strainV + sfts2[i][j]*h2strainV + sfts3[i][j]*h3strainV);
+			  // Calculate the energy density
+			  energyDensity(modelVarList,JxW[q]);
+		  }
+	  }
 
-	    	  }
-	      }
-
-	      //compute stress
-	      //S=C*(E-E0)
-	      dealii::VectorizedArray<double> CIJ_combined[2*dim-1+dim/3][2*dim-1+dim/3];
-
-	      if (n_dependent_stiffness == true){
-	    	  dealii::VectorizedArray<double> sum_hV;
-	    	  sum_hV = h1V+h2V+h3V;
-	    	  for (unsigned int i=0; i<2*dim-1+dim/3; i++){
-	    		  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-	    			  CIJ_combined[i][j] = CIJ_alpha[i][j]*(constV(1.0)-sum_hV) + CIJ_beta[i][j]*sum_hV;
-	    		  }
-	    	  }
-	    	  computeStress<dim>(CIJ_combined, E2, S);
-	      }
-	      else{
-	    	  computeStress<dim>(CIJ, E2, S);
-	      }
-
-	      scalarvalueType f_el = constV(0.0);
-
-	      for (unsigned int i=0; i<dim; i++){
-	    	  for (unsigned int j=0; j<dim; j++){
-	    		  f_el += constV(0.5) * S[i][j]*E2[i][j];
-	    	  }
-	      }
-
-	      total_energy_density = f_chem + f_grad + f_el;
-
-	      assembler_lock.acquire ();
-	      for (unsigned i=0; i<c.n_array_elements;i++){
-	    	  // For some reason, some of the values in this loop
-	    	  if (c[i] > 1.0e-10){
-	    		  this->energy+=total_energy_density[i]*JxW[q][i];
-	    		  this->energy_components[0]+= f_chem[i]*JxW[q][i];
-	    		  this->energy_components[1]+= f_grad[i]*JxW[q][i];
-	    		  this->energy_components[2]+= f_el[i]*JxW[q][i];
-	    	  }
-	      }
-	      assembler_lock.release ();
-	    }
-	}
 }
 
 

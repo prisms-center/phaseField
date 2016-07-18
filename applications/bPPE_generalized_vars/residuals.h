@@ -77,7 +77,7 @@ for (unsigned int j=0; j<dim; j++){
 //compute stress
 //S=C*(E-E0)
 // Compute stress tensor (which is equal to the residual, Rux)
-dealii::VectorizedArray<double> CIJ_combined[2*dim-1+dim/3][2*dim-1+dim/3];
+dealii::VectorizedArray<double> CIJ_combined[CIJ_tensor_size][CIJ_tensor_size];
 
 if (n_dependent_stiffness == true){
 dealii::VectorizedArray<double> sum_hV;
@@ -242,6 +242,129 @@ else{
 
 modelRes.vectorGradResidual = Rux;
 
+}
+
+template <int dim>
+void CoupledCHACMechanicsProblem<dim>::energyDensity(const std::vector<modelVariable<dim>> & modelVarList, const dealii::VectorizedArray<double> & JxW_value) {
+	scalarvalueType total_energy_density = constV(0.0);
+
+//c
+scalarvalueType c = modelVarList[0].scalarValue;
+scalargradType cx = modelVarList[0].scalarGrad;
+
+//n1
+scalarvalueType n1 = modelVarList[1].scalarValue;
+scalargradType n1x = modelVarList[1].scalarGrad;
+
+//n2
+scalarvalueType n2 = modelVarList[2].scalarValue;
+scalargradType n2x = modelVarList[2].scalarGrad;
+
+
+//n3
+scalarvalueType n3 = modelVarList[3].scalarValue;
+scalargradType n3x = modelVarList[3].scalarGrad;
+
+//u
+vectorgradType ux = modelVarList[4].vectorGrad;
+
+scalarvalueType f_chem = (constV(1.0)-(h1V+h2V+h3V))*faV + (h1V+h2V+h3V)*fbV + W*fbarrierV;
+
+scalarvalueType f_grad = constV(0.0);
+
+for (int i=0; i<dim; i++){
+  for (int j=0; j<dim; j++){
+	  f_grad += constV(0.5*Kn1[i][j])*n1x[i]*n1x[j];
+  }
+}
+#if num_sop>1
+for (int i=0; i<dim; i++){
+  for (int j=0; j<dim; j++){
+	  f_grad += constV(0.5*Kn2[i][j])*n2x[i]*n2x[j];
+  }
+}
+#endif
+#if num_sop>2
+for (int i=0; i<dim; i++){
+  for (int j=0; j<dim; j++){
+	  f_grad += constV(0.5*Kn3[i][j])*n3x[i]*n3x[j];
+  }
+}
+#endif
+
+
+// Calculate the stress-free transformation strain and its derivatives at the quadrature point
+dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > sfts1, sfts1c, sfts1cc, sfts2, sfts2c, sfts2cc, sfts3, sfts3c, sfts3cc;
+
+for (unsigned int i=0; i<dim; i++){
+  for (unsigned int j=0; j<dim; j++){
+	  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
+	  sfts1[i][j] = constV(sfts_linear1[i][j])*c + constV(sfts_const1[i][j]);
+	  sfts1c[i][j] = constV(sfts_linear1[i][j]);
+	  sfts1cc[i][j] = constV(0.0);
+
+	  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
+	  sfts2[i][j] = constV(sfts_linear2[i][j])*c + constV(sfts_const2[i][j]);
+	  sfts2c[i][j] = constV(sfts_linear1[i][j]);
+	  sfts2cc[i][j] = constV(0.0);
+
+	  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
+	  sfts3[i][j] = constV(sfts_linear3[i][j])*c + constV(sfts_const3[i][j]);
+	  sfts3c[i][j] = constV(sfts_linear3[i][j]);
+	  sfts3cc[i][j] = constV(0.0);
+  }
+}
+
+//compute E2=(E-E0)
+dealii::VectorizedArray<double> E2[dim][dim], S[dim][dim];
+
+for (unsigned int i=0; i<dim; i++){
+  for (unsigned int j=0; j<dim; j++){
+	  //E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1V + sfts2[i][j]*h2V + sfts3[i][j]*h3V);
+	  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1strainV + sfts2[i][j]*h2strainV + sfts3[i][j]*h3strainV);
+
+  }
+}
+
+//compute stress
+//S=C*(E-E0)
+dealii::VectorizedArray<double> CIJ_combined[2*dim-1+dim/3][2*dim-1+dim/3];
+
+if (n_dependent_stiffness == true){
+  dealii::VectorizedArray<double> sum_hV;
+  sum_hV = h1V+h2V+h3V;
+  for (unsigned int i=0; i<2*dim-1+dim/3; i++){
+	  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
+		  CIJ_combined[i][j] = CIJ_alpha[i][j]*(constV(1.0)-sum_hV) + CIJ_beta[i][j]*sum_hV;
+	  }
+  }
+  computeStress<dim>(CIJ_combined, E2, S);
+}
+else{
+  computeStress<dim>(CIJ, E2, S);
+}
+
+scalarvalueType f_el = constV(0.0);
+
+for (unsigned int i=0; i<dim; i++){
+  for (unsigned int j=0; j<dim; j++){
+	  f_el += constV(0.5) * S[i][j]*E2[i][j];
+  }
+}
+
+total_energy_density = f_chem + f_grad + f_el;
+
+assembler_lock.acquire ();
+for (unsigned i=0; i<c.n_array_elements;i++){
+  // For some reason, some of the values in this loop
+  if (c[i] > 1.0e-10){
+	  this->energy+=total_energy_density[i]*JxW_value[i];
+	  this->energy_components[0]+= f_chem[i]*JxW_value[i];
+	  this->energy_components[1]+= f_grad[i]*JxW_value[i];
+	  this->energy_components[2]+= f_el[i]*JxW_value[i];
+  }
+}
+assembler_lock.release ();
 }
 
 
