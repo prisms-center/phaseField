@@ -65,12 +65,6 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
   void residualLHS(const std::vector<modelVariable<dim>> & modelVariablesList,
   		  	  	  	  	  	  	  	  	  	  	  	  	  std::vector<modelResidual<dim>> & modelResidualsList) const;
 
-  unsigned int num_var_LHS;
-  unsigned int num_res_LHS;
-  std::vector<unsigned int> LHS_indices;
-  std::vector<unsigned int> LHS_res_indices;
-  std::vector<unsigned int> LHS_var_indices_of_res;
-
 };
 
 //constructor
@@ -146,20 +140,6 @@ for (unsigned int i=0; i<dim; i++){
 #ifndef nucleation_occurs
 	#define nucleation_occurs false
 #endif
-
-num_var_LHS = 0;
-num_res_LHS = 0;
-for (unsigned int i=0; i<num_var; i++){
-	if (need_value_LHS[i] or need_gradient_LHS[i] or need_hessian_LHS[i]){
-		num_var_LHS++;
-		LHS_indices.push_back(i);
-	}
-	if (value_residual_LHS[i] or gradient_residual_LHS[i]){
-		num_res_LHS++;
-		LHS_res_indices.push_back(i);
-		LHS_var_indices_of_res.push_back(num_var_LHS-1);
-	}
-}
 
 }
 
@@ -293,23 +273,40 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
 					       const vectorType &src,
 					       const std::pair<unsigned int,unsigned int> &cell_range) const{
 
-	// Attempt to convert to an object-based container (note: previous attempt will have issues reading DOFs when a vector field is not the last variable)
-	unsigned int field_number = 0;
-	std::vector<var_info> varInfoList;
-	varInfoList.reserve(num_var_LHS);
+	unsigned int num_var_LHS;
+	unsigned int num_res_LHS;
+	std::vector<unsigned int> LHS_res_indices;
+	std::vector<unsigned int> LHS_var_indices_of_res;
+
+	num_var_LHS = 0;
+	num_res_LHS = 0;
 	for (unsigned int i=0; i<num_var; i++){
 		if (need_value_LHS[i] or need_gradient_LHS[i] or need_hessian_LHS[i]){
-			varInfoList[i].global_var_index = i;
-			varInfoList[i].global_field_index = i;
+			num_var_LHS++;
+		}
+		if (value_residual_LHS[i] or gradient_residual_LHS[i]){
+			num_res_LHS++;
+			LHS_res_indices.push_back(i);
+			LHS_var_indices_of_res.push_back(num_var_LHS-1);
+		}
+	}
+
+	 // Attempt to convert to an object-based container (note: previous attempt will have issues reading DOFs when a vector field is not the last variable)
+	unsigned int field_number = 0;
+	std::vector<var_info<dim>> varInfoList;
+	varInfoList.reserve(num_var_LHS);
+	for (unsigned int i=0; i<num_var; i++){
+		var_info<dim> varInfo;
+		if (need_value_LHS[i] or need_gradient_LHS[i] or need_hessian_LHS[i]){
+			varInfo.global_var_index = i;
+			varInfo.global_field_index = field_number;
 			if (var_type[i] == "SCALAR"){
-				//typeScalar var(data,i);
-				//varInfoList[i].varScalar = var; // Doesn't compile. I'm not sure how to assign this.
-				//varInfoList[i].varScalar(data,i); // Doesn't compile either.
-				varInfoList[i].is_scalar = true;
+				varInfo.is_scalar = true;
 			}
 			else {
-				varInfoList[i].is_scalar = false;
+				varInfo.is_scalar = false;
 			}
+			varInfoList.push_back(varInfo);
 		}
 
 		if (var_type[i] == "SCALAR"){
@@ -318,36 +315,23 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
 		else {
 			field_number+=dim;
 		}
-
 	}
-
-
 
 
 	//initialize FEEvaulation objects
 	std::vector<typeScalar> scalar_vars;
 	std::vector<typeVector> vector_vars;
-	std::vector<bool> is_scalar_var;
-	std::vector<unsigned int> scalar_or_vector_index;
-	std::vector<unsigned int> field_index;
-	//unsigned int field_number = 0;
 
 	for (unsigned int i=0; i<num_var_LHS; i++){
-		if (var_type[LHS_indices[i]] == "SCALAR"){
-			typeScalar var(data, LHS_indices[i]);
+		if (varInfoList[i].is_scalar == true){
+			typeScalar var(data, varInfoList[i].global_var_index);
 			scalar_vars.push_back(var);
-			is_scalar_var.push_back(true);
-			scalar_or_vector_index.push_back(scalar_vars.size()-1);
-			field_index.push_back(field_number);
-			field_number++;
+			varInfoList[i].scalar_or_vector_index = scalar_vars.size()-1;
 		}
 		else {
-			typeVector var(data, LHS_indices[i]);
+			typeVector var(data, varInfoList[i].global_var_index);
 			vector_vars.push_back(var);
-			is_scalar_var.push_back(false);
-			scalar_or_vector_index.push_back(vector_vars.size()-1);
-			field_index.push_back(field_number);
-			field_number+=dim;
+			varInfoList[i].scalar_or_vector_index = vector_vars.size()-1;
 		}
 	}
 
@@ -361,25 +345,25 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
 
 		// Initialize, read DOFs, and set evaulation flags for each variable
 		for (unsigned int i=0; i<num_var_LHS; i++){
-			if (is_scalar_var[i] == true) {
-				scalar_vars[scalar_or_vector_index[i]].reinit(cell);
-				if ( (value_residual_LHS[LHS_indices[i]] == true) or (gradient_residual_LHS[LHS_indices[i]] == true) ){
-					scalar_vars[scalar_or_vector_index[i]].read_dof_values_plain(src);  // need to generalize, I think
+			if (varInfoList[i].is_scalar == true) {
+				scalar_vars[varInfoList[i].scalar_or_vector_index].reinit(cell);
+				if ( (value_residual_LHS[varInfoList[i].global_var_index] == true) or (gradient_residual_LHS[varInfoList[i].global_var_index] == true) ){
+					scalar_vars[varInfoList[i].scalar_or_vector_index].read_dof_values_plain(src);  // need to generalize, I think
 				}
 				else{
-					scalar_vars[scalar_or_vector_index[i]].read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[LHS_indices[i]]);
+					scalar_vars[varInfoList[i].scalar_or_vector_index].read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[varInfoList[i].global_field_index]);
 				}
-				scalar_vars[scalar_or_vector_index[i]].evaluate(need_value_LHS[LHS_indices[i]], need_gradient_LHS[LHS_indices[i]], need_hessian_LHS[LHS_indices[i]]);
+				scalar_vars[varInfoList[i].scalar_or_vector_index].evaluate(need_value_LHS[varInfoList[i].global_var_index], need_gradient_LHS[varInfoList[i].global_var_index], need_hessian_LHS[varInfoList[i].global_var_index]);
 			}
 			else {
-				vector_vars[scalar_or_vector_index[i]].reinit(cell);
-				if ( (value_residual_LHS[LHS_indices[i]] == true) or (gradient_residual_LHS[LHS_indices[i]] == true) ){
-					vector_vars[scalar_or_vector_index[i]].read_dof_values_plain(src);
+				vector_vars[varInfoList[i].scalar_or_vector_index].reinit(cell);
+				if ( (value_residual_LHS[varInfoList[i].global_var_index] == true) or (gradient_residual_LHS[varInfoList[i].global_var_index] == true) ){
+					vector_vars[varInfoList[i].scalar_or_vector_index].read_dof_values_plain(src);
 				}
 				else {
-					vector_vars[scalar_or_vector_index[i]].read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[LHS_indices[i]]);
+					vector_vars[varInfoList[i].scalar_or_vector_index].read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[varInfoList[i].global_field_index]);
 				}
-				vector_vars[scalar_or_vector_index[i]].evaluate(need_value_LHS[LHS_indices[i]], need_gradient_LHS[LHS_indices[i]], need_hessian_LHS[LHS_indices[i]]);
+				vector_vars[varInfoList[i].scalar_or_vector_index].evaluate(need_value_LHS[varInfoList[i].global_var_index], need_gradient_LHS[varInfoList[i].global_var_index], need_hessian_LHS[varInfoList[i].global_var_index]);
 			}
 		}
 
@@ -387,26 +371,26 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
 	    for (unsigned int q=0; q<scalar_vars[0].n_q_points; ++q){
 
 	    	for (unsigned int i=0; i<num_var_LHS; i++){
-	    		if (is_scalar_var[i] == true) {
-	    			if (need_value_LHS[LHS_indices[i]] == true){
-	    				modelVariablesList[i].scalarValue = scalar_vars[scalar_or_vector_index[i]].get_value(q);
+	    		if (varInfoList[i].is_scalar == true) {
+	    			if (need_value_LHS[varInfoList[i].global_var_index] == true){
+	    				modelVariablesList[i].scalarValue = scalar_vars[varInfoList[i].scalar_or_vector_index].get_value(q);
 	    			}
-	    			if (need_gradient_LHS[LHS_indices[i]] == true){
-	    				modelVariablesList[i].scalarGrad = scalar_vars[scalar_or_vector_index[i]].get_gradient(q);
+	    			if (need_gradient_LHS[varInfoList[i].global_var_index] == true){
+	    				modelVariablesList[i].scalarGrad = scalar_vars[varInfoList[i].scalar_or_vector_index].get_gradient(q);
 	    			}
-	    			if (need_hessian_LHS[LHS_indices[i]] == true){
-	    				modelVariablesList[i].scalarHess = scalar_vars[scalar_or_vector_index[i]].get_hessian(q);
+	    			if (need_hessian_LHS[varInfoList[i].global_var_index] == true){
+	    				modelVariablesList[i].scalarHess = scalar_vars[varInfoList[i].scalar_or_vector_index].get_hessian(q);
 	    			}
 	    		}
 	    		else {
-	    			if (need_value_LHS[LHS_indices[i]] == true){
-	    				modelVariablesList[i].vectorValue = vector_vars[scalar_or_vector_index[i]].get_value(q);
+	    			if (need_value_LHS[varInfoList[i].global_var_index] == true){
+	    				modelVariablesList[i].vectorValue = vector_vars[varInfoList[i].scalar_or_vector_index].get_value(q);
 	    			}
-	    			if (need_gradient_LHS[LHS_indices[i]] == true){
-	    				modelVariablesList[i].vectorGrad = vector_vars[scalar_or_vector_index[i]].get_gradient(q);
+	    			if (need_gradient_LHS[varInfoList[i].global_var_index] == true){
+	    				modelVariablesList[i].vectorGrad = vector_vars[varInfoList[i].scalar_or_vector_index].get_gradient(q);
 	    			}
-	    			if (need_hessian_LHS[LHS_indices[i]] == true){
-	    				modelVariablesList[i].vectorHess = vector_vars[scalar_or_vector_index[i]].get_hessian(q);
+	    			if (need_hessian_LHS[varInfoList[i].global_var_index] == true){
+	    				modelVariablesList[i].vectorHess = vector_vars[varInfoList[i].scalar_or_vector_index].get_hessian(q);
 	    			}
 	    		}
 	    	}
@@ -418,18 +402,18 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
 	    	for (unsigned int i=0; i<num_res_LHS; i++){
 	    		if (var_type[LHS_res_indices[i]] == "SCALAR"){
 	    			if (value_residual[LHS_res_indices[i]] == true){
-	    				scalar_vars[scalar_or_vector_index[LHS_var_indices_of_res[i]]].submit_value(modelResidualsList[scalar_or_vector_index[i]].scalarValueResidual,q);
+	    				scalar_vars[varInfoList[LHS_var_indices_of_res[i]].scalar_or_vector_index].submit_value(modelResidualsList[varInfoList[i].scalar_or_vector_index].scalarValueResidual,q);
 	    			}
 	    			if (gradient_residual[LHS_res_indices[i]] == true){
-	    				scalar_vars[scalar_or_vector_index[LHS_var_indices_of_res[i]]].submit_gradient(modelResidualsList[scalar_or_vector_index[i]].scalarGradResidual,q);
+	    				scalar_vars[varInfoList[LHS_var_indices_of_res[i]].scalar_or_vector_index].submit_gradient(modelResidualsList[varInfoList[i].scalar_or_vector_index].scalarGradResidual,q);
 	    			}
 	    		}
 	    		else {
 	    			if (value_residual[LHS_res_indices[i]] == true){
-	    				vector_vars[scalar_or_vector_index[LHS_var_indices_of_res[i]]].submit_value(modelResidualsList[scalar_or_vector_index[i]].vectorValueResidual,q);
+	    				vector_vars[varInfoList[LHS_var_indices_of_res[i]].scalar_or_vector_index].submit_value(modelResidualsList[varInfoList[i].scalar_or_vector_index].vectorValueResidual,q);
 	    			}
 	    			if (gradient_residual[LHS_res_indices[i]] == true){
-	    				vector_vars[scalar_or_vector_index[LHS_var_indices_of_res[i]]].submit_gradient(modelResidualsList[scalar_or_vector_index[i]].vectorGradResidual,q);
+	    				vector_vars[varInfoList[LHS_var_indices_of_res[i]].scalar_or_vector_index].submit_gradient(modelResidualsList[varInfoList[i].scalar_or_vector_index].vectorGradResidual,q);
 	    			}
 	    		}
 	    	}
@@ -438,12 +422,12 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
 	    //integrate
 	    for (unsigned int i=0; i<num_res_LHS; i++){
 	    	if (var_type[LHS_res_indices[i]] == "SCALAR") {
-	    		scalar_vars[scalar_or_vector_index[LHS_var_indices_of_res[i]]].integrate(value_residual[LHS_res_indices[i]], gradient_residual[LHS_res_indices[i]]);
-	    		scalar_vars[scalar_or_vector_index[LHS_var_indices_of_res[i]]].distribute_local_to_global(dst);
+	    		scalar_vars[varInfoList[LHS_var_indices_of_res[i]].scalar_or_vector_index].integrate(value_residual[LHS_res_indices[i]], gradient_residual[LHS_res_indices[i]]);
+	    		scalar_vars[varInfoList[LHS_var_indices_of_res[i]].scalar_or_vector_index].distribute_local_to_global(dst);
 	    	}
 	    	else {
-	    		vector_vars[scalar_or_vector_index[LHS_var_indices_of_res[i]]].integrate(value_residual[LHS_res_indices[i]], gradient_residual[LHS_res_indices[i]]);
-	    		vector_vars[scalar_or_vector_index[LHS_var_indices_of_res[i]]].distribute_local_to_global(dst);
+	    		vector_vars[varInfoList[LHS_var_indices_of_res[i]].scalar_or_vector_index].integrate(value_residual[LHS_res_indices[i]], gradient_residual[LHS_res_indices[i]]);
+	    		vector_vars[varInfoList[LHS_var_indices_of_res[i]].scalar_or_vector_index].distribute_local_to_global(dst);
 	    	}
 	    }
 	}
