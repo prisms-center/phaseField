@@ -39,7 +39,7 @@
 
 // Define results output parameters
 #define writeOutput true
-#define skipOutputSteps 100
+#define skipOutputSteps 500
 
 // Definition of the variables in the model
 #define num_var 5

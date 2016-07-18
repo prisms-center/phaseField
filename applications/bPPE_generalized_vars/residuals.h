@@ -207,20 +207,20 @@ modelResidualsList[4].vectorGradResidual = Rux;
 }
 
 template <int dim>
-void CoupledCHACMechanicsProblem<dim>::residualLHS(const std::vector<modelVariable<dim>> & modelVariablesList, modelResidual<dim> & modelRes) const {
+void CoupledCHACMechanicsProblem<dim>::residualLHS(const std::vector<modelVariable<dim>> & modelVarList, modelResidual<dim> & modelRes) const {
 
 //n1
-scalarvalueType n1 = modelVariablesList[0].scalarValue;
+scalarvalueType n1 = modelVarList[0].scalarValue;
 
 //n2
-scalarvalueType n2 = modelVariablesList[1].scalarValue;
+scalarvalueType n2 = modelVarList[1].scalarValue;
 
 
 //n3
-scalarvalueType n3 = modelVariablesList[2].scalarValue;
+scalarvalueType n3 = modelVarList[2].scalarValue;
 
 //u
-vectorgradType ux = modelVariablesList[3].vectorGrad;
+vectorgradType ux = modelVarList[3].vectorGrad;
 vectorgradType Rux;
 
 
@@ -232,7 +232,7 @@ E = constV(0.5)*(ux + transpose(ux));
 
 // Compute stress tensor (which is equal to the residual, Rux)
 if (n_dependent_stiffness == true){
-	dealii::Tensor<2, 2*dim-1+dim/3, dealii::VectorizedArray<double> > CIJ_combined;
+	dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ_combined;
 	CIJ_combined = CIJ_alpha_tensor*(constV(1.0)-h1V-h2V-h3V) + CIJ_beta_tensor*(h1V+h2V+h3V);
 
 	computeStress<dim>(CIJ_combined, E, Rux);
