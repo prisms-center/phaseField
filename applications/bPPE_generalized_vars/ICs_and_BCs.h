@@ -65,14 +65,30 @@ void CoupledCHACMechanicsProblem<dim>::applyInitialConditions()
   *this->solutionSet[fieldIndex]=0.0;
 }
 
+template <int dim>
+class vectorBCFunction : public Function<dim>
+{
+public:
+	vectorBCFunction(std::vector<double> BC_values);
+  void vector_value (const Point<dim> &p, Vector<double>   &values) const
+  {
+	  for (unsigned int component=0; component < dim; component++){
+		  values(component) = BC_values[component];
+	  }
+  }
+private:
+  std::vector<double> BC_values;
+};
+
+template <int dim>
+vectorBCFunction<dim>::vectorBCFunction(std::vector<double> input_values){
+	BC_values = input_values;
+}
+
+
 //apply Dirchlet BC function
 template <int dim>
 void CoupledCHACMechanicsProblem<dim>::applyDirichletBCs(){
-  //Set u=0 at all boundaries
-  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->getFieldIndex("u")],\
-					    0, ZeroFunction<dim>(dim), *(ConstraintMatrix*) \
-					    this->constraintsSet[this->getFieldIndex("u")]);
-
   // First, get the variable index of the current field
   unsigned int var_index;
   unsigned int field_number = 0;
@@ -92,58 +108,35 @@ void CoupledCHACMechanicsProblem<dim>::applyDirichletBCs(){
 
   if (var_type[var_index] == "SCALAR"){
 	  for (unsigned int direction = 0; direction < 2*dim; direction++){
-		  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
-				  2*direction, ConstantFunction<dim>(BC_list[this->currentFieldIndex].var_min_BC_val), *(ConstraintMatrix*) \
-				  this->constraintsSet[this->currentFieldIndex]);
-
-		  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
-				  2*direction+1, ConstantFunction<dim>(BC_list[this->currentFieldIndex].var_max_BC_val), *(ConstraintMatrix*) \
-				  this->constraintsSet[this->currentFieldIndex]);
+		  if (BC_list[this->currentFieldIndex].var_BC_type[direction] == "DIRICHLET"){
+			  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
+					  direction, ConstantFunction<dim>(BC_list[this->currentFieldIndex].var_BC_val[direction]), *(ConstraintMatrix*) \
+					  this->constraintsSet[this->currentFieldIndex]);
+		  }
 	  }
   }
   else {
 	  for (unsigned int direction = 0; direction < 2*dim; direction++){
-		  std::vector<double> component_values;
-		  for (unsigned int component = 0; component < dim; component++){
-			  component_values.push_back(BC_list[this->currentFieldIndex].var_min_BC_val);
+
+		  std::vector<double> BC_values;
+		  for (unsigned int component=0; component < dim; component++){
+			  BC_values.push_back(BC_list[this->currentFieldIndex+component].var_BC_val[direction]);
 		  }
 
-//		  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
-//								2*direction, ConstantFunction<dim,double>(component_values), *(ConstraintMatrix*) \
-//								this->constraintsSet[this->currentFieldIndex]);
-//
-//		  component_values.clear();
-//		  for (unsigned int component = 0; component < dim; component++){
-//		  			  component_values.push_back(BC_list[this->currentFieldIndex].var_min_BC_val);
-//		  		  }
-//
-//		  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
-//		  								2*direction+1, ConstantFunction<dim,double>(component_values), *(ConstraintMatrix*) \
-//		  								this->constraintsSet[this->currentFieldIndex]);
 
-		  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
-								2*direction, ZeroFunction<dim>(), *(ConstraintMatrix*) \
-								this->constraintsSet[this->currentFieldIndex]);
-
-		  component_values.clear();
-		  for (unsigned int component = 0; component < dim; component++){
-					  component_values.push_back(BC_list[this->currentFieldIndex].var_min_BC_val);
-				  }
-
-		  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
-										2*direction+1, ZeroFunction<dim>(), *(ConstraintMatrix*) \
-										this->constraintsSet[this->currentFieldIndex]);
+		  if (BC_list[this->currentFieldIndex].var_BC_type[direction] == "DIRICHLET"){
+			  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
+							direction, vectorBCFunction<dim>(BC_values), *(ConstraintMatrix*) \
+							this->constraintsSet[this->currentFieldIndex]);
 		  }
+
+	  }
   }
-
-
 }
 
 //methods to mark boundaries
 template <int dim>
 void CoupledCHACMechanicsProblem<dim>::markBoundaries(int field_index){
-
-	// By default leave all boundaries are marked as zero
 
 	std::vector<double> domain_size;
 	domain_size.push_back(spanX);
@@ -175,31 +168,50 @@ void CoupledCHACMechanicsProblem<dim>::markBoundaries(int field_index){
 template <int dim>
 void CoupledCHACMechanicsProblem<dim>::setBCs(){
 	// Set the BCs for the problem variables in numerical order
-	inputBCs(0,0,"ZERO_DERIVATIVE",0,"ZERO_DERIVATIVE",0);
+	// Four input arguments set the same BC on the entire boundary
+	// Two plus two times the number of dimensions inputs sets separate BCs on each face of the domain
 
-	inputBCs(1,0,"ZERO_DERIVATIVE",0,"ZERO_DERIVATIVE",0);
+	inputBCs(0,0,"ZERO_DERIVATIVE",0);
 
-	inputBCs(2,0,"ZERO_DERIVATIVE",0,"ZERO_DERIVATIVE",0);
+	inputBCs(1,0,"ZERO_DERIVATIVE",0);
 
-	inputBCs(3,0,"ZERO_DERIVATIVE",0,"ZERO_DERIVATIVE",0);
+	inputBCs(2,0,"ZERO_DERIVATIVE",0);
 
-	inputBCs(4,0,"ZERO_DERIVATIVE",0,"ZERO_DERIVATIVE",0);
-	inputBCs(4,1,"ZERO_DERIVATIVE",0,"ZERO_DERIVATIVE",0);
-	inputBCs(4,2,"ZERO_DERIVATIVE",0,"ZERO_DERIVATIVE",0);
+	inputBCs(3,0,"ZERO_DERIVATIVE",0);
+
+	inputBCs(4,0,"DIRICHLET",0.0,"DIRICHLET",0.0,"DIRICHLET",0.0,"DIRICHLET",0.0);
+	inputBCs(4,1,"DIRICHLET",0.0);
+
 }
 
 // Input the boundary conditions
 template <int dim>
-void CoupledCHACMechanicsProblem<dim>::inputBCs(int var, int component, std::string min_type, double min_value,
-		std::string max_type, double max_value){
+void CoupledCHACMechanicsProblem<dim>::inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
+		std::string BC_type_dim1_max, double BC_value_dim1_max, std::string BC_type_dim2_min, double BC_value_dim2_min,
+		std::string BC_type_dim2_max, double BC_value_dim2_max){
 
 	varBCs<dim> newBC;
-	newBC.var_min_BC_type = min_type;
-	newBC.var_max_BC_type = max_type;
-	newBC.var_min_BC_val = min_value;
-	newBC.var_max_BC_val = max_value;
+	newBC.var_BC_type.push_back(BC_type_dim1_min);
+	newBC.var_BC_type.push_back(BC_type_dim1_max);
+	newBC.var_BC_type.push_back(BC_type_dim2_min);
+	newBC.var_BC_type.push_back(BC_type_dim2_max);
+
+	newBC.var_BC_val.push_back(BC_value_dim1_min);
+	newBC.var_BC_val.push_back(BC_value_dim1_max);
+	newBC.var_BC_val.push_back(BC_value_dim2_min);
+	newBC.var_BC_val.push_back(BC_value_dim2_max);
 
 	BC_list.push_back(newBC);
+}
 
-	std::cout << newBC.var_max_BC_type << std::endl;
+template <int dim>
+void CoupledCHACMechanicsProblem<dim>::inputBCs(int var, int component, std::string BC_type, double BC_value){
+
+	varBCs<dim> newBC;
+	for (unsigned int face=0; face<dim*2; face++){
+		newBC.var_BC_type.push_back(BC_type);
+		newBC.var_BC_val.push_back(BC_value);
+	}
+
+	BC_list.push_back(newBC);
 }

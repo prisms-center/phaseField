@@ -15,10 +15,8 @@ class varBCs
 {
 	public:
 	//varBCs();
-	std::string var_max_BC_type;
-	double var_max_BC_val;
-	std::string var_min_BC_type;
-	double var_min_BC_val;
+	std::vector<std::string> var_BC_type;
+	std::vector<double> var_BC_val;
 };
 
 template <int dim>
@@ -30,11 +28,17 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
   void shiftConcentration();
 
   void setBCs();
-  void inputBCs(int var, int component, std::string min_type, double min_value, std::string max_type, double max_value);
+  void inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
+			std::string BC_type_dim1_max, double BC_value_dim1_max, std::string BC_type_dim2_min, double BC_value_dim2_min,
+			std::string BC_type_dim2_max, double BC_value_dim2_max);
+
+  void inputBCs(int var, int component, std::string BC_type, double BC_value);
+
+  // Boundary condition object
+    std::vector<varBCs<dim>> BC_list;
 
  private:
-  // Boundary condition object
-  std::vector<varBCs<dim>> BC_list;
+
 
   // Elasticity matrix variables
   Table<2, double> CIJ_table;
