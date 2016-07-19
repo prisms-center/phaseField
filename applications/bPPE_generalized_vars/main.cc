@@ -5,8 +5,10 @@
 //Coupled Cahn-Hilliard+Allen-Cahn+Mechanics problem headers
 #include "parameters.h"
 #include "../../src/models/coupled/coupledCHACMechanics_generalized.h"
-#include "residuals.h"
 #include "ICs_and_BCs.h"
+#include "../../src/models/coupled/generalized_model_functions.h"
+#include "residuals.h"
+
 
 //main
 int main (int argc, char **argv)
