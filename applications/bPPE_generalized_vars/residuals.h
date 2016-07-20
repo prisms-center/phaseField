@@ -13,7 +13,7 @@
 // ---------------------------------------------
 
 template <int dim>
-void CoupledCHACMechanicsProblem<dim>::residualRHS(const std::vector<modelVariable<dim>> & modelVariablesList, std::vector<modelResidual<dim>> & modelResidualsList) const {
+void generalizedProblem<dim>::residualRHS(const std::vector<modelVariable<dim>> & modelVariablesList, std::vector<modelResidual<dim>> & modelResidualsList) const {
 
 //c
 scalarvalueType c = modelVariablesList[0].scalarValue;
@@ -208,7 +208,7 @@ modelResidualsList[4].vectorGradResidual = Rux;
 }
 
 template <int dim>
-void CoupledCHACMechanicsProblem<dim>::residualLHS(const std::vector<modelVariable<dim>> & modelVarList, modelResidual<dim> & modelRes) const {
+void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim>> & modelVarList, modelResidual<dim> & modelRes) const {
 
 //n1
 scalarvalueType n1 = modelVarList[0].scalarValue;
@@ -245,7 +245,7 @@ modelRes.vectorGradResidual = Rux;
 }
 
 template <int dim>
-void CoupledCHACMechanicsProblem<dim>::energyDensity(const std::vector<modelVariable<dim>> & modelVarList, const dealii::VectorizedArray<double> & JxW_value) {
+void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim>> & modelVarList, const dealii::VectorizedArray<double> & JxW_value) {
 	scalarvalueType total_energy_density = constV(0.0);
 
 //c

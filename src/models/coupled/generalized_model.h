@@ -1,8 +1,6 @@
-//Matrix Free implementation of coupled Cahn-Hilliard, Allen-Cahn and Mechanics formulation 
-#ifndef CHACMECHANICS_H
-#define CHACMECHANICS_H
-//this source file is temporarily treated as a header file (hence
-//#ifndef's) till library packaging scheme is finalized
+//Matrix Free implementation of general system of PDEs
+
+//this source file is temporarily treated as a header file until library packaging scheme is finalized
 
 #include "../../../include/matrixFreePDE.h"
 
@@ -20,10 +18,10 @@ class varBCs
 };
 
 template <int dim>
-class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
+class generalizedProblem: public MatrixFreePDE<dim>
 {
  public: 
-  CoupledCHACMechanicsProblem();
+  generalizedProblem();
 
   void shiftConcentration();
 
@@ -91,7 +89,7 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
 
   void computeIntegral(double& integratedField);
 
-  void markBoundaries(int field_index);
+  void markBoundaries();
 
   void getEnergy(const MatrixFree<dim,double> &data,
     				    std::vector<vectorType*> &dst,
@@ -111,7 +109,7 @@ class CoupledCHACMechanicsProblem: public MatrixFreePDE<dim>
 
 //constructor
 template <int dim>
-CoupledCHACMechanicsProblem<dim>::CoupledCHACMechanicsProblem(): MatrixFreePDE<dim>(),
+generalizedProblem<dim>::generalizedProblem(): MatrixFreePDE<dim>(),
   CIJ_table(CIJ_tensor_size,CIJ_tensor_size), CIJ_alpha_table(CIJ_tensor_size,CIJ_tensor_size), CIJ_beta_table(CIJ_tensor_size,CIJ_tensor_size)
 {
   //initialize elasticity matrix
@@ -266,5 +264,3 @@ for (unsigned int i=0; i<num_var; i++){
 }
 
 }
-
-#endif

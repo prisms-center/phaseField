@@ -109,7 +109,7 @@ class MatrixFreePDE:public Subscriptor
 		       const std::pair<unsigned int,unsigned int> &cell_range) const = 0;
   
   //methods to apply dirichlet BC's
-  virtual void markBoundaries(int field_index);
+  virtual void markBoundaries();
   virtual void applyDirichletBCs();
 
   //methods to apply initial conditions

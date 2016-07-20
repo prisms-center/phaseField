@@ -3,7 +3,7 @@
 // =====================================================================
 
 template <int dim>
-void CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &data,
+void generalizedProblem<dim>::getRHS(const MatrixFree<dim,double> &data,
 					       std::vector<vectorType*> &dst,
 					       const std::vector<vectorType*> &src,
 					       const std::pair<unsigned int,unsigned int> &cell_range) const{
@@ -121,7 +121,7 @@ void CoupledCHACMechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &data
 }
 
 template <int dim>
-void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &data,
+void  generalizedProblem<dim>::getLHS(const MatrixFree<dim,double> &data,
 					       vectorType &dst,
 					       const vectorType &src,
 					       const std::pair<unsigned int,unsigned int> &cell_range) const{
@@ -253,7 +253,7 @@ void  CoupledCHACMechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &dat
 
 // Calculate the free energy
 template <int dim>
-void  CoupledCHACMechanicsProblem<dim>::getEnergy(const MatrixFree<dim,double> &data,
+void  generalizedProblem<dim>::getEnergy(const MatrixFree<dim,double> &data,
 				    std::vector<vectorType*> &dst,
 				    const std::vector<vectorType*> &src,
 				    const std::pair<unsigned int,unsigned int> &cell_range) {
@@ -350,7 +350,7 @@ void  CoupledCHACMechanicsProblem<dim>::getEnergy(const MatrixFree<dim,double> &
 
 //compute the integral of one of the fields
 template <int dim>
-void CoupledCHACMechanicsProblem<dim>::computeIntegral(double& integratedField){
+void generalizedProblem<dim>::computeIntegral(double& integratedField){
   QGauss<dim>  quadrature_formula(finiteElementDegree+1);
   FE_Q<dim> FE (QGaussLobatto<1>(finiteElementDegree+1));
   FEValues<dim> fe_values (FE, quadrature_formula, update_values | update_JxW_values | update_quadrature_points);
@@ -392,7 +392,7 @@ void CoupledCHACMechanicsProblem<dim>::computeIntegral(double& integratedField){
 
 //apply initial conditions
 template <int dim>
-void CoupledCHACMechanicsProblem<dim>::applyInitialConditions()
+void generalizedProblem<dim>::applyInitialConditions()
 {
 
 unsigned int fieldIndex = 0;
@@ -437,7 +437,7 @@ vectorBCFunction<dim>::vectorBCFunction(std::vector<double> input_values){
 
 //apply Dirchlet BC function
 template <int dim>
-void CoupledCHACMechanicsProblem<dim>::applyDirichletBCs(){
+void generalizedProblem<dim>::applyDirichletBCs(){
   // First, get the variable index of the current field
   unsigned int var_index;
   unsigned int field_number = 0;
@@ -485,7 +485,7 @@ void CoupledCHACMechanicsProblem<dim>::applyDirichletBCs(){
 
 //methods to mark boundaries
 template <int dim>
-void CoupledCHACMechanicsProblem<dim>::markBoundaries(int field_index){
+void generalizedProblem<dim>::markBoundaries(){
 
 	std::vector<double> domain_size;
 	domain_size.push_back(spanX);
@@ -515,7 +515,7 @@ void CoupledCHACMechanicsProblem<dim>::markBoundaries(int field_index){
 
 // Input the boundary conditions for each face individually for 3D domains
 template <int dim>
-void CoupledCHACMechanicsProblem<dim>::inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
+void generalizedProblem<dim>::inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
 		std::string BC_type_dim1_max, double BC_value_dim1_max, std::string BC_type_dim2_min, double BC_value_dim2_min,
 		std::string BC_type_dim2_max, double BC_value_dim2_max,std::string BC_type_dim3_min, double BC_value_dim3_min,
 		std::string BC_type_dim3_max, double BC_value_dim3_max){
@@ -540,7 +540,7 @@ void CoupledCHACMechanicsProblem<dim>::inputBCs(int var, int component, std::str
 
 // Input the boundary conditions for each face individually for 2D domains
 template <int dim>
-void CoupledCHACMechanicsProblem<dim>::inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
+void generalizedProblem<dim>::inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
 		std::string BC_type_dim1_max, double BC_value_dim1_max, std::string BC_type_dim2_min, double BC_value_dim2_min,
 		std::string BC_type_dim2_max, double BC_value_dim2_max){
 
@@ -560,7 +560,7 @@ void CoupledCHACMechanicsProblem<dim>::inputBCs(int var, int component, std::str
 
 // Input the boundary conditions for each face individually for 1D domains
 template <int dim>
-void CoupledCHACMechanicsProblem<dim>::inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
+void generalizedProblem<dim>::inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
 		std::string BC_type_dim1_max, double BC_value_dim1_max){
 
 	varBCs<dim> newBC;
@@ -575,7 +575,7 @@ void CoupledCHACMechanicsProblem<dim>::inputBCs(int var, int component, std::str
 
 // Input the boundary conditions when all faces have the same boundary condition
 template <int dim>
-void CoupledCHACMechanicsProblem<dim>::inputBCs(int var, int component, std::string BC_type, double BC_value){
+void generalizedProblem<dim>::inputBCs(int var, int component, std::string BC_type, double BC_value){
 
 	varBCs<dim> newBC;
 	for (unsigned int face=0; face<dim*2; face++){
@@ -602,7 +602,7 @@ std::vector<nucleus> nuclei, localNuclei;
 
 //nucleation model implementation
 template <int dim>
-void CoupledCHACMechanicsProblem<dim>::modifySolutionFields()
+void generalizedProblem<dim>::modifySolutionFields()
 {
   //current time
   double t=this->currentTime;

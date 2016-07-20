@@ -4,7 +4,7 @@
 
 //Coupled Cahn-Hilliard+Allen-Cahn+Mechanics problem headers
 #include "parameters.h"
-#include "../../src/models/coupled/coupledCHACMechanics_generalized.h"
+#include "../../src/models/coupled/generalized_model.h"
 #include "ICs_and_BCs.h"
 #include "../../src/models/coupled/generalized_model_functions.h"
 #include "residuals.h"
@@ -17,7 +17,7 @@ int main (int argc, char **argv)
   try
     {
 	  deallog.depth_console(0);
-      CoupledCHACMechanicsProblem<problemDIM> problem;
+	  generalizedProblem<problemDIM> problem;
 
       problem.setBCs();
 

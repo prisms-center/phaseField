@@ -92,14 +92,11 @@
      constraints->reinit(*locally_relevant_dofs);
      DoFTools::make_hanging_node_constraints (*dof_handler, *constraints);
      constraintsSet.push_back(constraints);
-     //apply zero Dirichlet BC's for ELLIPTIC fields. This is just the
-     //default and can be changed later in the specific BVP
-     //implementation
-     //if (it->pdetype==ELLIPTIC){
-    	 //mark boundaries for applying Dirichlet boundary conditons
-    	 markBoundaries(currentFieldIndex);
-    	 applyDirichletBCs();
-     //}
+
+     // Apply  Dirichlet BC's for all fields
+     markBoundaries();
+     applyDirichletBCs();
+
      constraints->close();  
      sprintf(buffer, "field '%2s' DOF : %u (Dirichlet DOF : %u)\n", \
 	     it->name.c_str(), dof_handler->n_dofs(), constraints->n_constraints());

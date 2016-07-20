@@ -7,7 +7,7 @@
 
 //methods to mark boundaries
 template <int dim>
-void MatrixFreePDE<dim>::markBoundaries(int field_index){
+void MatrixFreePDE<dim>::markBoundaries(){
   //default method does nothing, as by default all boundary faces are
   //marked with flag 0
 }

@@ -85,7 +85,7 @@ public:
 // Face numbering: starts at zero with the minimum of the first direction, one for the maximum of the first direction
 //						two for the minimum of the second direction, etc.
 template <int dim>
-void CoupledCHACMechanicsProblem<dim>::setBCs(){
+void generalizedProblem<dim>::setBCs(){
 
 	// =====================================================================
 	// ENTER THE BOUNDARY CONDITIONS HERE

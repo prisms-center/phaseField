@@ -68,10 +68,12 @@ void CoupledCHACMechanicsProblem<dim>::applyInitialConditions()
 //apply Dirchlet BC function
 template <int dim>
 void CoupledCHACMechanicsProblem<dim>::applyDirichletBCs(){
-  //Set u=0 at all boundaries
-  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->getFieldIndex("u")],\
+	//Set u=0 at all boundaries
+	if (this->currentFieldIndex == this->getFieldIndex("u")){
+		VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
 					    0, ZeroFunction<dim>(dim), *(ConstraintMatrix*) \
-					    this->constraintsSet[this->getFieldIndex("u")]);
+					    this->constraintsSet[this->currentFieldIndex]);
+	}
 }
 
 //methods to mark boundaries
