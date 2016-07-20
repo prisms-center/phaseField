@@ -139,11 +139,10 @@ generalizedProblem<dim>::generalizedProblem(): MatrixFreePDE<dim>(),
 			}
 		}
 	}
-
-#else
-#error Compile ERROR: missing material property variable: MaterialModelV, MaterialConstantsV
 #endif
 
+// I should probably get rid of this or move it, since it is only relevant to the precipitate case
+#if defined(sfts_linear1) && defined(sfts_linear2) && defined(sfts_linear3)
 c_dependent_misfit = false;
 for (unsigned int i=0; i<dim; i++){
 	for (unsigned int j=0; j<dim; j++){
@@ -152,6 +151,7 @@ for (unsigned int i=0; i<dim; i++){
 		}
 	}
 }
+#endif
 
 // If interpolation functions for the strain aren't specifically defined, use the general interpolation functions
 #ifndef h1strainV
