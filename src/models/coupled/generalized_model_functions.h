@@ -394,21 +394,20 @@ void CoupledCHACMechanicsProblem<dim>::computeIntegral(double& integratedField){
 template <int dim>
 void CoupledCHACMechanicsProblem<dim>::applyInitialConditions()
 {
-  unsigned int fieldIndex;
-  //call initial condition function for c
-  fieldIndex=this->getFieldIndex("c");
-  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialCondition<dim>(0), *this->solutionSet[fieldIndex]);
-  //call initial condition function for structural order parameters
-  fieldIndex=this->getFieldIndex("n1");
-  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialCondition<dim>(1), *this->solutionSet[fieldIndex]);
-  fieldIndex=this->getFieldIndex("n2");
-  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialCondition<dim>(2), *this->solutionSet[fieldIndex]);
-  fieldIndex=this->getFieldIndex("n3");
-  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialCondition<dim>(3), *this->solutionSet[fieldIndex]);
-  //set zero initial condition for u
-  fieldIndex=this->getFieldIndex("u");
-  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionVec<dim>(4), *this->solutionSet[fieldIndex]);
-  //*this->solutionSet[fieldIndex]=1.0;
+
+unsigned int fieldIndex = 0;
+
+for (unsigned int var_index=0; var_index < num_var; var_index++){
+
+	  if (var_type[var_index] == "SCALAR"){
+		  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialCondition<dim>(var_index), *this->solutionSet[fieldIndex]);
+		  fieldIndex++;
+	  }
+	  else {
+		  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionVec<dim>(var_index), *this->solutionSet[fieldIndex]);
+		  fieldIndex += dim;
+	  }
+}
 }
 
 // =====================================================================
