@@ -46,6 +46,26 @@ class generalizedProblem: public MatrixFreePDE<dim>
 
  private:
 
+	#ifndef need_val_LHS
+	#define need_val_LHS {}
+	#endif
+	#ifndef need_grad_LHS
+	#define need_grad_LHS {}
+	#endif
+	#ifndef need_hess_LHS
+	#define need_hess_LHS {}
+	#endif
+	#ifndef need_val_residual_LHS
+	#define need_val_residual_LHS {}
+	#endif
+	#ifndef need_grad_residual_LHS
+	#define need_grad_residual_LHS {}
+	#endif
+    bool need_value_LHS[num_var] = need_val_LHS;
+    bool need_gradient_LHS[num_var] = need_grad_LHS;
+    bool need_hessian_LHS[num_var] = need_hess_LHS;
+    bool value_residual_LHS[num_var] = need_val_residual_LHS;
+    bool gradient_residual_LHS[num_var] = need_grad_residual_LHS;
 
   // Elasticity matrix variables
   Table<2, double> CIJ_table;
@@ -112,7 +132,7 @@ template <int dim>
 generalizedProblem<dim>::generalizedProblem(): MatrixFreePDE<dim>(),
   CIJ_table(CIJ_tensor_size,CIJ_tensor_size), CIJ_alpha_table(CIJ_tensor_size,CIJ_tensor_size), CIJ_beta_table(CIJ_tensor_size,CIJ_tensor_size)
 {
-  //initialize elasticity matrix
+	//initialize elasticity matrix
 #if defined(MaterialModelV) && defined(MaterialConstantsV)
 	if (n_dependent_stiffness == true){
 		double materialConstants[]=MaterialConstantsV;
@@ -141,6 +161,8 @@ generalizedProblem<dim>::generalizedProblem(): MatrixFreePDE<dim>(),
 	}
 #endif
 
+// I should probably get rid of this or move it, since it is only relevant to the precipitate case
+#if defined(sfts_linear1) && defined(sfts_linear2) && defined(sfts_linear3)
 c_dependent_misfit = false;
 #if defined(sfts_linear1) && defined(sfts_linear2) && defined(sfts_linear3)
 for (unsigned int i=0; i<dim; i++){
@@ -180,6 +202,8 @@ for (unsigned int i=0; i<dim; i++){
 #ifndef fbarrierV
 	#define fbarrierV 0.0
 #endif
+
+// If the LHS variable attributes aren't defined
 
 // If nucleation isn't specifically turned on, set nucleation_occurs to false
 #ifndef nucleation_occurs
