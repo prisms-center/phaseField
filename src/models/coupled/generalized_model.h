@@ -132,10 +132,12 @@ class generalizedProblem: public MatrixFreePDE<dim>
 
 
   void residualRHS(const std::vector<modelVariable<dim>> & modelVarList,
-		  	  	  	  	  	  	  	  	  	  	  	  	  std::vector<modelResidual<dim>> & modelResidualsList) const;
+		  	  	  	  	  	  	  	  	  	  	  	  	  std::vector<modelResidual<dim>> & modelResidualsList,
+														  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 
   void residualLHS(const std::vector<modelVariable<dim>> & modelVarList,
-  		  	  	  	  	  	  	  	  	  	  	  	  	  modelResidual<dim> & modelRes) const;
+  		  	  	  	  	  	  	  	  	  	  	  	  	  modelResidual<dim> & modelRes,
+														  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 
   void energyDensity(const std::vector<modelVariable<dim>> & modelVarList, const dealii::VectorizedArray<double> & JxW_value);
 
@@ -146,8 +148,17 @@ template <int dim>
 generalizedProblem<dim>::generalizedProblem(): MatrixFreePDE<dim>(),
   CIJ_table(CIJ_tensor_size,CIJ_tensor_size), CIJ_alpha_table(CIJ_tensor_size,CIJ_tensor_size), CIJ_beta_table(CIJ_tensor_size,CIJ_tensor_size)
 {
-	//initialize elasticity matrix
+#ifndef	timeIncrements
+#define timeIncrements 0
+#endif
+#ifndef	timeStep
+#define timeStep 0.0
+#endif
+
+
+//initialize elasticity matrix
 #if defined(MaterialModelV) && defined(MaterialConstantsV)
+#if defined(n_dependent_stiffness)
 	if (n_dependent_stiffness == true){
 		double materialConstants[]=MaterialConstantsV;
 		getCIJMatrix<dim>(MaterialModelV, materialConstants, CIJ_alpha_table, this->pcout);
@@ -173,6 +184,16 @@ generalizedProblem<dim>::generalizedProblem(): MatrixFreePDE<dim>(),
 			}
 		}
 	}
+#elsif
+	double materialConstants[]=MaterialConstantsV;
+	getCIJMatrix<dim>(MaterialModelV, materialConstants, CIJ_table, this->pcout);
+
+	for (unsigned int i=0; i<CIJ_tensor_size; i++){
+		for (unsigned int j=0; j<CIJ_tensor_size; j++){
+			CIJ[i][j] =  CIJ_table(i,j);
+		}
+	}
+#endif
 #endif
 
 // I should probably get rid of this or move it, since it is only relevant to the precipitate case

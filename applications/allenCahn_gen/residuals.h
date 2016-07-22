@@ -13,8 +13,9 @@
 // ---------------------------------------------
 
 template <int dim>
-void generalizedProblem<dim>::residualRHS(const std::vector<modelVariable<dim>> & modelVariablesList, std::vector<modelResidual<dim>> & modelResidualsList) const {
-
+void generalizedProblem<dim>::residualRHS(const std::vector<modelVariable<dim>> & modelVariablesList,
+												std::vector<modelResidual<dim>> & modelResidualsList,
+												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 //n
 scalarvalueType n = modelVariablesList[0].scalarValue;
@@ -28,8 +29,9 @@ modelResidualsList[0].scalarGradResidual = rnxV;
 }
 
 template <int dim>
-void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim>> & modelVarList, modelResidual<dim> & modelRes) const {
-
+void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim>> & modelVarList,
+		modelResidual<dim> & modelRes,
+		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 }
 
 template <int dim>

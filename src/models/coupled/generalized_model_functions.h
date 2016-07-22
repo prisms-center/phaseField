@@ -57,6 +57,14 @@ void generalizedProblem<dim>::getRHS(const MatrixFree<dim,double> &data,
 	  //loop over quadrature points
 	  for (unsigned int q=0; q<num_q_points; ++q){
 
+		  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc;
+		  if (scalar_vars.size() > 0){
+			  q_point_loc = scalar_vars[0].quadrature_point(q);
+		  }
+		  else {
+			  q_point_loc = vector_vars[0].quadrature_point(q);
+		  }
+
 		  for (unsigned int i=0; i<num_var; i++){
 			  if (varInfoListRHS[i].is_scalar) {
 				  if (need_value[i]){
@@ -83,7 +91,7 @@ void generalizedProblem<dim>::getRHS(const MatrixFree<dim,double> &data,
 		  }
 
 		  // Calculate the residuals
-		  residualRHS(modelVarList,modelResidualsList);
+		  residualRHS(modelVarList,modelResidualsList,q_point_loc);
 
 		  // Submit values
 		  for (unsigned int i=0; i<num_var; i++){
@@ -189,6 +197,13 @@ void  generalizedProblem<dim>::getLHS(const MatrixFree<dim,double> &data,
 
 		//loop over quadrature points
 	    for (unsigned int q=0; q<num_q_points; ++q){
+	    	dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc;
+	    	if (scalar_vars.size() > 0){
+	    		q_point_loc = scalar_vars[0].quadrature_point(q);
+	    	}
+	    	else {
+	    		q_point_loc = vector_vars[0].quadrature_point(q);
+	    	}
 
 	    	for (unsigned int i=0; i<num_var_LHS; i++){
 	    		if (varInfoListLHS[i].is_scalar) {
@@ -216,7 +231,7 @@ void  generalizedProblem<dim>::getLHS(const MatrixFree<dim,double> &data,
 	    	}
 
 	    	// Calculate the residuals
-	    	residualLHS(modelVarList,modelRes);
+	    	residualLHS(modelVarList,modelRes,q_point_loc);
 
 	    	// Submit values
 			if (resInfoLHS.is_scalar){
