@@ -6,10 +6,6 @@
 #define spanY 100.0
 #define spanZ 100.0
 
-#define subdivisionsX 1
-#define subdivisionsY 1
-#define subdivisionsZ 1
-
 //define mesh parameters
 #define subdivisionsX 1
 #define subdivisionsY 1

@@ -9,7 +9,7 @@ public:
   double value (const Point<dim> &p, const unsigned int component = 0) const
   {
     //return the value of the initial concentration field at point p
-    return 0.04 + 1.0e-3*(2*(0.5 - (double)(std::rand() % 100 )/100.0));
+    return 0.04; //+ 1.0e-3*(2*(0.5 - (double)(std::rand() % 100 )/100.0));
   }
 };
 
@@ -68,10 +68,12 @@ void CoupledCHACMechanicsProblem<dim>::applyInitialConditions()
 //apply Dirchlet BC function
 template <int dim>
 void CoupledCHACMechanicsProblem<dim>::applyDirichletBCs(){
-  //Set u=0 at all boundaries
-  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->getFieldIndex("u")],\
+	//Set u=0 at all boundaries
+	if (this->currentFieldIndex == this->getFieldIndex("u")){
+		VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
 					    0, ZeroFunction<dim>(dim), *(ConstraintMatrix*) \
-					    this->constraintsSet[this->getFieldIndex("u")]);
+					    this->constraintsSet[this->currentFieldIndex]);
+	}
 }
 
 //methods to mark boundaries

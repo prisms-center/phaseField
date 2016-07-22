@@ -39,7 +39,7 @@
 
 // Define results output parameters
 #define writeOutput true
-#define skipOutputSteps 100
+#define skipOutputSteps 500
 
 
 

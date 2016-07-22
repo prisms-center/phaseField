@@ -38,12 +38,15 @@
    pcout << std::endl;
 
    //mark boundaries for applying Dirichlet boundary conditons
-   markBoundaries();
+   //markBoundaries();
 
    //setup system
    pcout << "initializing matrix free object\n";
    unsigned int totalDOFs=0;
    for(typename std::vector<Field<dim> >::iterator it = fields.begin(); it != fields.end(); ++it){
+	   currentFieldIndex=it->index;
+
+
      //print to std::out
      char buffer[100];
      sprintf(buffer,"initializing finite element space P^%u for %9s:%6s field '%s'\n", \
@@ -89,13 +92,11 @@
      constraints->reinit(*locally_relevant_dofs);
      DoFTools::make_hanging_node_constraints (*dof_handler, *constraints);
      constraintsSet.push_back(constraints);
-     //apply zero Dirichlet BC's for ELLIPTIC fields. This is just the
-     //default and can be changed later in the specific BVP
-     //implementation
-     if (it->pdetype==ELLIPTIC){
-       currentFieldIndex=it->index;
-       applyDirichletBCs();
-     }
+
+     // Apply  Dirichlet BC's for all fields
+     markBoundaries();
+     applyDirichletBCs();
+
      constraints->close();  
      sprintf(buffer, "field '%2s' DOF : %u (Dirichlet DOF : %u)\n", \
 	     it->name.c_str(), dof_handler->n_dofs(), constraints->n_constraints());
