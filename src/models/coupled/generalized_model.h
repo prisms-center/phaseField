@@ -162,7 +162,6 @@ generalizedProblem<dim>::generalizedProblem(): MatrixFreePDE<dim>(),
 #endif
 
 // I should probably get rid of this or move it, since it is only relevant to the precipitate case
-#if defined(sfts_linear1) && defined(sfts_linear2) && defined(sfts_linear3)
 c_dependent_misfit = false;
 #if defined(sfts_linear1) && defined(sfts_linear2) && defined(sfts_linear3)
 for (unsigned int i=0; i<dim; i++){
