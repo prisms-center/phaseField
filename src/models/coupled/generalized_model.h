@@ -139,12 +139,10 @@ generalizedProblem<dim>::generalizedProblem(): MatrixFreePDE<dim>(),
 			}
 		}
 	}
-
-#else
-#error Compile ERROR: missing material property variable: MaterialModelV, MaterialConstantsV
 #endif
 
 c_dependent_misfit = false;
+#if defined(sfts_linear1) && defined(sfts_linear2) && defined(sfts_linear3)
 for (unsigned int i=0; i<dim; i++){
 	for (unsigned int j=0; j<dim; j++){
 		if ((std::abs(sfts_linear1[i][j])>1.0e-12)||(std::abs(sfts_linear2[i][j])>1.0e-12)||(std::abs(sfts_linear3[i][j])>1.0e-12)){
@@ -152,6 +150,7 @@ for (unsigned int i=0; i<dim; i++){
 		}
 	}
 }
+#endif
 
 // If interpolation functions for the strain aren't specifically defined, use the general interpolation functions
 #ifndef h1strainV
