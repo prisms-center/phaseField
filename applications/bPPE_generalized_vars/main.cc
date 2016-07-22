@@ -20,35 +20,7 @@ int main (int argc, char **argv)
 	  generalizedProblem<problemDIM> problem;
 
       problem.setBCs();
-
-      // Build each of the fields in the system
-      for (unsigned int i=0; i<num_var; i++){
-    	  if (var_type[i] == "SCALAR"){
-    		  if (var_eq_type[i] == "ELLIPTIC"){
-    			  problem.fields.push_back(Field<problemDIM>(SCALAR, ELLIPTIC, var_name[i]));
-    		  }
-    		  else if (var_eq_type[i] == "PARABOLIC"){
-    			  problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, var_name[i]));
-    		  }
-    		  else{
-    			  // Need to change to throw an exception
-    			  std::cerr << "Error: Equation type must be ELLIPTIC or PARABOLIC " << std::endl;
-    		  }
-    	  }
-    	  else if (var_type[i] == "VECTOR"){
-    		  if (var_eq_type[i] == "ELLIPTIC"){
-    			  problem.fields.push_back(Field<problemDIM>(VECTOR, ELLIPTIC, var_name[i]));
-    		  }
-    		  else if (var_eq_type[i] == "PARABOLIC"){
-    			  problem.fields.push_back(Field<problemDIM>(VECTOR, PARABOLIC, var_name[i]));
-    		  }
-    		  else{
-    			  // Need to change to throw an exception
-    			  std::cerr << "Error: Variable type must be SCALAR or VECTOR " << std::endl;
-    		  }
-    	  }
-      }
-
+      problem.buildFields();
       problem.init (); 
       problem.solve();
     }

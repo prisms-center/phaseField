@@ -43,20 +43,14 @@
 
 // Definition of the variables in the model
 #define num_var 5
-std::string var_name[num_var] = {"c", "n1", "n2", "n3", "u"};
-std::string var_type[num_var] = {"SCALAR","SCALAR","SCALAR","SCALAR","VECTOR"};
-std::string var_eq_type[num_var] = {"PARABOLIC","PARABOLIC","PARABOLIC","PARABOLIC","ELLIPTIC"};
-bool need_value[num_var] = {true, true, true, true, false};
-bool need_gradient[num_var] = {true, true, true, true, true};
-bool need_hessian[num_var] = {false, false, false, false, false}; // Currently overridden based on value of "n_dependent_stiffness"
-bool value_residual[num_var] = {true, true, true, true, false};
-bool gradient_residual[num_var] = {true, true, true, true, true};
-
-//bool need_value_LHS[num_var] = {false, true, true, true, false};
-//bool need_gradient_LHS[num_var] = {false, false, false, false, true};
-//bool need_hessian_LHS[num_var] = {false, false, false, false, false};
-//bool value_residual_LHS[num_var] = {false, false, false, false, false};
-//bool gradient_residual_LHS[num_var] = {false, false, false, false, true};
+#define variable_name {"c", "n1", "n2", "n3", "u"}
+#define variable_type {"SCALAR","SCALAR","SCALAR","SCALAR","VECTOR"}
+#define variable_eq_type {"PARABOLIC","PARABOLIC","PARABOLIC","PARABOLIC","ELLIPTIC"}
+#define need_val {true, true, true, true, false}
+#define need_grad {true, true, true, true, true}
+#define need_hess {false, false, false, false, false} // Currently overridden based on value of "n_dependent_stiffness"
+#define need_val_residual {true, true, true, true, false}
+#define need_grad_residual {true, true, true, true, true}
 
 #define need_val_LHS {false, true, true, true, false}
 #define need_grad_LHS {false, false, false, false, true}

@@ -27,6 +27,8 @@ class generalizedProblem: public MatrixFreePDE<dim>
 
   void setBCs();
 
+  void buildFields();
+
   void inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
   			std::string BC_type_dim1_max, double BC_value_dim1_max, std::string BC_type_dim2_min, double BC_value_dim2_min,
   			std::string BC_type_dim2_max, double BC_value_dim2_max,std::string BC_type_dim3_min, double BC_value_dim3_min,
@@ -46,6 +48,17 @@ class generalizedProblem: public MatrixFreePDE<dim>
 
  private:
 
+    // Load the input information about the variables into arrays
+    std::string var_name[num_var] = variable_name;
+    std::string var_type[num_var] = variable_type;
+    std::string var_eq_type[num_var] = variable_eq_type;
+
+    bool need_value[num_var] = need_val;
+    bool need_gradient[num_var] = need_grad;
+    bool need_hessian[num_var] = need_hess;
+    bool value_residual[num_var] = need_val_residual;
+    bool gradient_residual[num_var] = need_grad_residual;
+
 	#ifndef need_val_LHS
 	#define need_val_LHS {}
 	#endif
@@ -61,6 +74,7 @@ class generalizedProblem: public MatrixFreePDE<dim>
 	#ifndef need_grad_residual_LHS
 	#define need_grad_residual_LHS {}
 	#endif
+
     bool need_value_LHS[num_var] = need_val_LHS;
     bool need_gradient_LHS[num_var] = need_grad_LHS;
     bool need_hessian_LHS[num_var] = need_hess_LHS;

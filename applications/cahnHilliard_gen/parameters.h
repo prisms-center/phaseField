@@ -35,14 +35,14 @@
 
 // Definition of the variables in the model
 #define num_var 2
-std::string var_name[num_var] = {"c", "mu"};
-std::string var_type[num_var] = {"SCALAR", "SCALAR"};
-std::string var_eq_type[num_var] = {"PARABOLIC", "PARABOLIC"};
-bool need_value[num_var] = {true, true};
-bool need_gradient[num_var] = {true, true};
-bool need_hessian[num_var] = {false, false};
-bool value_residual[num_var] = {true, true};
-bool gradient_residual[num_var] = {true, true};
+#define variable_name {"c", "mu"}
+#define variable_type {"SCALAR", "SCALAR"}
+#define variable_eq_type {"PARABOLIC", "PARABOLIC"}
+#define need_val {true, true}
+#define need_grad {true, true}
+#define need_hess  {false, false}
+#define need_val_residual {true, true}
+#define need_grad_residual {true, true}
 
 
 
