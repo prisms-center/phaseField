@@ -10,7 +10,7 @@ public:
   }
   double value (const Point<dim> &p, const unsigned int component = 0) const
   {
-	  double scalar_IC;
+	  double scalar_IC = 0;
 	  // =====================================================================
 	  // ENTER THE INITIAL CONDITIONS HERE FOR SCALAR FIELDS
 	  // =====================================================================

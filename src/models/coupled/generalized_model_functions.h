@@ -415,23 +415,34 @@ for (unsigned int var_index=0; var_index < num_var; var_index++){
 // =====================================================================
 
 template <int dim>
-class vectorBCFunction : public Function<dim>
+class vectorBCFunction : public Function<dim,double>
 {
 public:
-	vectorBCFunction(std::vector<double> BC_values);
-  void vector_value (const Point<dim> &p, Vector<double>   &values) const
-  {
-	  for (unsigned int component=0; component < dim; component++){
-		  values(component) = BC_values[component];
-	  }
-  }
+	vectorBCFunction(const std::vector<double> BC_values);
+  virtual void vector_value (const Point<dim> &p, Vector<double>   &values) const;
+
+  virtual void vector_value_list (const std::vector<Point<dim>> &points, std::vector<Vector<double>> &value_list) const;
+
 private:
-  std::vector<double> BC_values;
+  const std::vector<double> BC_values;
 };
 
 template <int dim>
-vectorBCFunction<dim>::vectorBCFunction(std::vector<double> input_values){
-	BC_values = input_values;
+vectorBCFunction<dim>::vectorBCFunction(std::vector<double> input_values) : Function<dim>(dim), BC_values (input_values) {}
+
+template <int dim>
+void vectorBCFunction<dim>::vector_value(const Point<dim> &p, Vector<double> &values) const {
+
+	for (unsigned int i=0; i<dim; i++) {
+		values(i) = BC_values[i];
+	}
+}
+
+template <int dim>
+void vectorBCFunction<dim>::vector_value_list (const std::vector<Point<dim>> &points, std::vector<Vector<double>> &value_list) const{
+	const unsigned int n_points = points.size();
+	for (unsigned int p=0; p<n_points; ++p)
+		vectorBCFunction<dim>::vector_value(points[p],value_list[p]);
 }
 
 
@@ -447,7 +458,7 @@ void generalizedProblem<dim>::applyDirichletBCs(){
 		  var_index = i;
 	  }
 
-	  if (var_type[var_index] == "SCALAR"){
+	  if (var_type[i] == "SCALAR"){
 		  field_number++;
 	  }
 	  else {
