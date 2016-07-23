@@ -25,7 +25,7 @@ computeStress<dim>(CIJ, E, S);
 //compute residual
 for (unsigned int i=0; i<dim; i++){
 	for (unsigned int j=0; j<dim; j++){
-		Rux[i][j] -= S[i][j];
+		Rux[i][j] = -S[i][j];
 	}
 }
 

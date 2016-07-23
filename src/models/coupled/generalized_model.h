@@ -149,7 +149,7 @@ generalizedProblem<dim>::generalizedProblem(): MatrixFreePDE<dim>(),
   CIJ_table(CIJ_tensor_size,CIJ_tensor_size), CIJ_alpha_table(CIJ_tensor_size,CIJ_tensor_size), CIJ_beta_table(CIJ_tensor_size,CIJ_tensor_size)
 {
 #ifndef	timeIncrements
-#define timeIncrements 0
+#define timeIncrements 1
 #endif
 #ifndef	timeStep
 #define timeStep 0.0
@@ -157,8 +157,7 @@ generalizedProblem<dim>::generalizedProblem(): MatrixFreePDE<dim>(),
 
 
 //initialize elasticity matrix
-#if defined(MaterialModelV) && defined(MaterialConstantsV)
-#if defined(n_dependent_stiffness)
+#if defined(MaterialModelV) && defined(MaterialConstantsV) && defined(MaterialModelBetaV) && defined(MaterialConstantsBetaV)
 	if (n_dependent_stiffness == true){
 		double materialConstants[]=MaterialConstantsV;
 		getCIJMatrix<dim>(MaterialModelV, materialConstants, CIJ_alpha_table, this->pcout);
@@ -184,7 +183,7 @@ generalizedProblem<dim>::generalizedProblem(): MatrixFreePDE<dim>(),
 			}
 		}
 	}
-#elsif
+#else
 	double materialConstants[]=MaterialConstantsV;
 	getCIJMatrix<dim>(MaterialModelV, materialConstants, CIJ_table, this->pcout);
 
@@ -193,7 +192,6 @@ generalizedProblem<dim>::generalizedProblem(): MatrixFreePDE<dim>(),
 			CIJ[i][j] =  CIJ_table(i,j);
 		}
 	}
-#endif
 #endif
 
 // I should probably get rid of this or move it, since it is only relevant to the precipitate case

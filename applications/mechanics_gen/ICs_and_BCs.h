@@ -71,9 +71,9 @@ void generalizedProblem<dim>::setBCs(){
 	// ENTER THE BOUNDARY CONDITIONS HERE
 	// =====================================================================
 
-	inputBCs(4,0,"DIRICHLET",0.01, "DIRICHLET",0.0, "DIRICHLET",0.0, "DIRICHLET",0.0, "DIRICHLET",0.0, "DIRICHLET",0.0);
-	inputBCs(4,1,"DIRICHLET",0.0);
-	inputBCs(4,2,"DIRICHLET",0.0);
+	inputBCs(4,0,"DIRICHLET",0.01, "DIRICHLET",0.0, "ZERO_DERIVATIVE",0.0, "ZERO_DERIVATIVE",0.0, "ZERO_DERIVATIVE",0.0, "ZERO_DERIVATIVE",0.0);
+	inputBCs(4,1,"ZERO_DERIVATIVE",0.0);
+	inputBCs(4,2,"ZERO_DERIVATIVE",0.0);
 
 	// =====================================================================
 

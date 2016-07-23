@@ -534,11 +534,21 @@ void generalizedProblem<dim>::applyDirichletBCs(){
 			  BC_values.push_back(BC_list[this->currentFieldIndex+component].var_BC_val[direction]);
 		  }
 
+		  std::vector<bool> mask;
+		  for (unsigned int component=0; component < dim; component++){
+			  if (BC_list[this->currentFieldIndex+component].var_BC_type[direction] == "DIRICHLET"){
+				  mask.push_back(true);
+			  }
+			  else {
+				  mask.push_back(false);
+			  }
+		  }
+
 
 		  if (BC_list[this->currentFieldIndex].var_BC_type[direction] == "DIRICHLET"){
 			  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
 							direction, vectorBCFunction<dim>(BC_values), *(ConstraintMatrix*) \
-							this->constraintsSet[this->currentFieldIndex]);
+							this->constraintsSet[this->currentFieldIndex],mask);
 		  }
 
 	  }

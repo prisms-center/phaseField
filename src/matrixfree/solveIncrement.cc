@@ -39,6 +39,7 @@ void MatrixFreePDE<dim>::solveIncrement(){
 	  else if (fields[fieldIndex].pdetype==ELLIPTIC){
 		  //implicit solve
 		  currentFieldIndex = fieldIndex;
+
 #ifdef solverType
 		  #if abs_tol == true
 			  SolverControl solver_control(maxSolverIterations, absSolverTolerance);
