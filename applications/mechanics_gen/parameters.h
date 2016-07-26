@@ -28,29 +28,6 @@
 // Define results output parameters
 #define writeOutput true
 
-// Definition of the variables in the model
-#define num_var 1
-#define variable_name {"u"}
-#define variable_type {"VECTOR"}
-#define variable_eq_type {"ELLIPTIC"}
-#define need_val {false}
-#define need_grad {true}
-#define need_hess {false}
-#define need_val_residual {false}
-#define need_grad_residual {true}
-
-#define need_val_LHS {false}
-#define need_grad_LHS {true}
-#define need_hess_LHS {false}
-#define need_val_residual_LHS {false}
-#define need_grad_residual_LHS {true}
-
-
-// Define Mechanical properties
-// Mechanical symmetry of the material and stiffness parameters
-#define MaterialModelV ISOTROPIC
-#define MaterialConstantsV {2.0,0.3}
-
 
 
 

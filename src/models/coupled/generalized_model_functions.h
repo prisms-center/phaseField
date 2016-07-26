@@ -1,4 +1,198 @@
 // =====================================================================
+// CONSTRUCTOR
+// =====================================================================
+
+template <int dim>
+generalizedProblem<dim>::generalizedProblem(): MatrixFreePDE<dim>(),
+  CIJ_table(CIJ_tensor_size,CIJ_tensor_size), CIJ_alpha_table(CIJ_tensor_size,CIJ_tensor_size), CIJ_beta_table(CIJ_tensor_size,CIJ_tensor_size)
+{
+#ifndef	timeIncrements
+#define timeIncrements 1
+#endif
+#ifndef	timeStep
+#define timeStep 0.0
+#endif
+
+	var_name = variable_name;
+	var_type = variable_type;
+	var_eq_type = variable_eq_type;
+
+	need_value = need_val;
+	need_gradient = need_grad;
+	need_hessian = need_hess;
+	value_residual = need_val_residual;
+	gradient_residual = need_grad_residual;
+
+	#ifdef need_val_LHS
+	need_value_LHS = need_val_LHS;
+	#else
+	for (unsigned int i=0; i<num_var; i++)
+		need_value_LHS.push_back(false);
+	#endif
+	#ifdef need_grad_LHS
+	need_gradient_LHS = need_grad_LHS;
+	#else
+	for (unsigned int i=0; i<num_var; i++)
+		need_gradient_LHS.push_back(false);
+	#endif
+	#ifdef need_hess_LHS
+	need_hessian_LHS = need_hess_LHS;
+	#else
+	for (unsigned int i=0; i<num_var; i++)
+		need_hessian_LHS.push_back(false);
+	#endif
+	#ifdef need_val_residual_LHS
+	value_residual_LHS = need_val_residual_LHS;
+	#else
+	for (unsigned int i=0; i<num_var; i++)
+		value_residual_LHS.push_back(false);
+	#endif
+	#ifdef need_grad_residual_LHS
+	gradient_residual_LHS = need_grad_residual_LHS;
+	#else
+	for (unsigned int i=0; i<num_var; i++)
+		gradient_residual_LHS.push_back(false);
+	#endif
+
+
+//initialize elasticity matrix
+#if defined(MaterialModelV) && defined(MaterialConstantsV) && defined(MaterialModelBetaV) && defined(MaterialConstantsBetaV)
+	if (n_dependent_stiffness == true){
+		double materialConstants[]=MaterialConstantsV;
+		getCIJMatrix<dim>(MaterialModelV, materialConstants, CIJ_alpha_table, this->pcout);
+
+		double materialConstantsBeta[]=MaterialConstantsBetaV;
+		getCIJMatrix<dim>(MaterialModelBetaV, materialConstantsBeta, CIJ_beta_table, this->pcout);
+
+		for (unsigned int i=0; i<CIJ_tensor_size; i++){
+			for (unsigned int j=0; j<CIJ_tensor_size; j++){
+				CIJ_beta[i][j] =  CIJ_beta_table(i,j);
+				CIJ_alpha[i][j] =  CIJ_alpha_table(i,j);
+				CIJ_diff[i][j] =  CIJ_beta_table(i,j) - CIJ_alpha_table(i,j);
+			}
+		}
+	}
+	else{
+		double materialConstants[]=MaterialConstantsV;
+		getCIJMatrix<dim>(MaterialModelV, materialConstants, CIJ_table, this->pcout);
+
+		for (unsigned int i=0; i<CIJ_tensor_size; i++){
+			for (unsigned int j=0; j<CIJ_tensor_size; j++){
+				CIJ[i][j] =  CIJ_table(i,j);
+			}
+		}
+	}
+#elif defined(MaterialModelV) && defined(MaterialConstantsV)
+	double materialConstants[]=MaterialConstantsV;
+	getCIJMatrix<dim>(MaterialModelV, materialConstants, CIJ_table, this->pcout);
+
+	for (unsigned int i=0; i<CIJ_tensor_size; i++){
+		for (unsigned int j=0; j<CIJ_tensor_size; j++){
+			CIJ[i][j] =  CIJ_table(i,j);
+		}
+	}
+#endif
+
+// I should probably get rid of this or move it, since it is only relevant to the precipitate case
+c_dependent_misfit = false;
+#if defined(sfts_linear1) && defined(sfts_linear2) && defined(sfts_linear3)
+for (unsigned int i=0; i<dim; i++){
+	for (unsigned int j=0; j<dim; j++){
+		if ((std::abs(sfts_linear1[i][j])>1.0e-12)||(std::abs(sfts_linear2[i][j])>1.0e-12)||(std::abs(sfts_linear3[i][j])>1.0e-12)){
+			c_dependent_misfit = true;
+		}
+	}
+}
+#endif
+
+
+// If the LHS variable attributes aren't defined
+
+// If nucleation isn't specifically turned on, set nucleation_occurs to false
+#ifndef nucleation_occurs
+	#define nucleation_occurs false
+#endif
+
+// Load variable information for calculating the RHS
+varInfoListRHS.reserve(num_var);
+unsigned int field_number = 0;
+unsigned int scalar_var_index = 0;
+unsigned int vector_var_index = 0;
+for (unsigned int i=0; i<num_var; i++){
+	variable_info<dim> varInfo;
+	if (need_value[i] or need_gradient[i] or need_hessian[i]){
+		varInfo.global_var_index = i;
+		varInfo.global_field_index = field_number;
+		if (var_type[i] == "SCALAR"){
+			varInfo.is_scalar = true;
+			varInfo.scalar_or_vector_index = scalar_var_index;
+			scalar_var_index++;
+		}
+		else {
+			varInfo.is_scalar = false;
+			varInfo.scalar_or_vector_index = vector_var_index;
+			vector_var_index++;
+		}
+		varInfoListRHS.push_back(varInfo);
+	}
+
+	if (var_type[i] == "SCALAR"){
+		field_number++;
+	}
+	else {
+		field_number+=dim;
+	}
+}
+
+variable_info<dim> resInfoLHS;
+	for (unsigned int i=0; i<num_var_LHS; i++){
+		if (MatrixFreePDE<dim>::currentFieldIndex == varInfoListLHS[i].global_field_index){
+			resInfoLHS = varInfoListLHS[i];
+		}
+	}
+
+// Load variable information for calculating the LHS
+num_var_LHS = 0;
+for (unsigned int i=0; i<num_var; i++){
+	if (need_value_LHS[i] or need_gradient_LHS[i] or need_hessian_LHS[i]){
+		num_var_LHS++;
+	}
+}
+
+varInfoListLHS.reserve(num_var_LHS);
+field_number = 0;
+scalar_var_index = 0;
+vector_var_index = 0;
+for (unsigned int i=0; i<num_var; i++){
+	variable_info<dim> varInfo;
+	if (need_value_LHS[i] or need_gradient_LHS[i] or need_hessian_LHS[i]){
+		varInfo.global_var_index = i;
+		varInfo.global_field_index = field_number;
+		if (var_type[i] == "SCALAR"){
+			varInfo.is_scalar = true;
+			varInfo.scalar_or_vector_index = scalar_var_index;
+			scalar_var_index++;
+		}
+		else {
+			varInfo.is_scalar = false;
+			varInfo.scalar_or_vector_index = vector_var_index;
+			vector_var_index++;
+		}
+		varInfoListLHS.push_back(varInfo);
+	}
+
+	if (var_type[i] == "SCALAR"){
+		field_number++;
+	}
+	else {
+		field_number+=dim;
+	}
+}
+
+}
+
+
+// =====================================================================
 // RESIDUAL CONSTRUCTION FUNCTIONS (RHS, LHS, ENERGY DENSITY)
 // =====================================================================
 

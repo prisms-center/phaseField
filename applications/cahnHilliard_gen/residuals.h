@@ -1,4 +1,15 @@
-//define Allen-Cahn parameters
+// Definition of the variables in the model
+#define num_var 2
+#define variable_name {"c", "mu"}
+#define variable_type {"SCALAR", "SCALAR"}
+#define variable_eq_type {"PARABOLIC", "PARABOLIC"}
+#define need_val {true, true}
+#define need_grad {true, true}
+#define need_hess  {false, false}
+#define need_val_residual {true, true}
+#define need_grad_residual {true, true}
+
+//define Cahn-Hilliard parameters
 #define McV 1.0
 #define KcV 1.0
 

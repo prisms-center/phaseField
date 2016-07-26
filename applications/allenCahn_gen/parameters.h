@@ -33,17 +33,6 @@
 #define calc_energy true
 
 
-// Definition of the variables in the model
-#define num_var 1
-#define variable_name {"n"}
-#define variable_type {"SCALAR"}
-#define variable_eq_type {"PARABOLIC"}
-#define need_val {true}
-#define need_grad {true}
-#define need_hess  {false}
-#define need_val_residual {true}
-#define need_grad_residual {true}
-
 
 
 

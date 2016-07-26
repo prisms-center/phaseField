@@ -1,3 +1,68 @@
+// Definition of the variables in the model
+#define num_var 5
+#define variable_name {"c", "n1", "n2", "n3", "u"}
+#define variable_type {"SCALAR","SCALAR","SCALAR","SCALAR","VECTOR"}
+#define variable_eq_type {"PARABOLIC","PARABOLIC","PARABOLIC","PARABOLIC","ELLIPTIC"}
+#define need_val {true, true, true, true, false}
+#define need_grad {true, true, true, true, true}
+#define need_hess {false, false, false, false, false} // Currently overridden based on value of "n_dependent_stiffness"
+#define need_val_residual {true, true, true, true, false}
+#define need_grad_residual {true, true, true, true, true}
+
+#define need_val_LHS {false, true, true, true, false}
+#define need_grad_LHS {false, false, false, false, true}
+#define need_hess_LHS {false, false, false, false, false}
+#define need_val_residual_LHS {false, false, false, false, false}
+#define need_grad_residual_LHS {false, false, false, false, true}
+
+// Define Cahn-Hilliard parameters (no gradient energy terms)
+#define McV 1.0
+
+// Define Allen-Cahn parameters
+#define Mn1V 100.0
+#define Mn2V 100.0
+#define Mn3V 100.0
+
+double Kn1[3][3]={{0.03,0,0},{0,0.007,0},{0,0,1.0}};
+double Kn2[3][3]={{0.01275,-0.009959,0},{-0.009959,0.02425,0},{0,0,1.0}};
+double Kn3[3][3]={{0.01275,0.009959,0},{0.009959,0.02425,0},{0,0,1.0}};
+
+// Define Mechanical properties
+#define n_dependent_stiffness false
+// Mechanical symmetry of the material and stiffness parameters
+// Used throughout system if n_dependent_stiffness == false, used in n=0 phase if n_dependent_stiffness == true
+#define MaterialModelV ISOTROPIC
+#define MaterialConstantsV {2.0,0.3}
+
+// Used in n=1 phase if n_dependent_stiffness == true
+#define MaterialModelBetaV ISOTROPIC
+#define MaterialConstantsBetaV {2.0,0.3}
+
+// Stress-free transformation strains
+// Linear fits for the stress-free transformation strains in for sfts = sfts_linear * c + sfts_const
+double sfts_linear1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sfts_const1[3][3] = {{0.0345,0,0},{0,0.0185,0},{0,0,-0.00270}};
+
+double sfts_linear2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sfts_const2[3][3]={{0.0225,-0.0069,0},{-0.0069,0.0305,0},{0,0,-0.00270}};
+
+double sfts_linear3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sfts_const3[3][3]={{0.0225, 0.0069,0},{0.0069,0.0305,0},{0,0,-0.00270}};
+
+//define free energy expressions
+#define faV (-1.6704-4.776*c+5.1622*c*c-2.7375*c*c*c+1.3687*c*c*c*c)
+#define facV (-4.776 + 10.3244*c - 8.2125*c*c + 5.4748*c*c*c)
+#define faccV (10.3244-16.425*c+16.4244*c*c)
+#define fbV (5.0*c*c-5.9746*c-1.5924)
+#define fbcV (10.0*c-5.9746)
+#define fbccV (10.0)
+#define h1V (10.0*n1*n1*n1-15.0*n1*n1*n1*n1+6.0*n1*n1*n1*n1*n1)
+#define h2V (10.0*n2*n2*n2-15.0*n2*n2*n2*n2+6.0*n2*n2*n2*n2*n2)
+#define h3V (10.0*n3*n3*n3-15.0*n3*n3*n3*n3+6.0*n3*n3*n3*n3*n3)
+#define hn1V (30.0*n1*n1-60.0*n1*n1*n1+30.0*n1*n1*n1*n1)
+#define hn2V (30.0*n2*n2-60.0*n2*n2*n2+30.0*n2*n2*n2*n2)
+#define hn3V (30.0*n3*n3-60.0*n3*n3*n3+30.0*n3*n3*n3*n3)
+
 // Define required residuals
 #define rcV   (c)
 #define rcxTemp ( cx*((1.0-h1V-h2V-h3V)*faccV+(h1V+h2V+h3V)*fbccV) + n1x*((fbcV-facV)*hn1V) + n2x*((fbcV-facV)*hn2V) + n3x*((fbcV-facV)*hn3V) + grad_mu_el)
@@ -70,7 +135,7 @@ dealii::VectorizedArray<double> E2[dim][dim], S[dim][dim];
 
 for (unsigned int i=0; i<dim; i++){
 for (unsigned int j=0; j<dim; j++){
-	  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1strainV + sfts2[i][j]*h2strainV + sfts3[i][j]*h3strainV);
+	  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1V + sfts2[i][j]*h2V + sfts3[i][j]*h3V);
 
 }
 }
@@ -85,7 +150,6 @@ dealii::VectorizedArray<double> sum_hV;
 sum_hV = h1V+h2V+h3V;
 for (unsigned int i=0; i<2*dim-1+dim/3; i++){
 	  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-//		  CIJ_combined[i][j] = constV(CIJ_alpha(i,j))*(constV(1.0)-sum_hV) + constV(CIJ_beta(i,j))*sum_hV;
 		  CIJ_combined[i][j] = CIJ_alpha[i][j]*(constV(1.0)-sum_hV) + CIJ_beta[i][j]*sum_hV;
 	  }
 }
@@ -117,9 +181,9 @@ for (unsigned int j=0; j<dim; j++){
 }
 }
 
-nDependentMisfitAC1*=-hn1strainV;
-nDependentMisfitAC2*=-hn2strainV;
-nDependentMisfitAC3*=-hn3strainV;
+nDependentMisfitAC1*=-hn1V;
+nDependentMisfitAC2*=-hn2V;
+nDependentMisfitAC3*=-hn3V;
 
 // Compute the other stress term in the order parameter chemical potential, heterMechACp = 0.5*Hn*(C_beta-C_alpha)*(E-E0)*(E-E0)
 dealii::VectorizedArray<double> heterMechAC1=constV(0.0);
@@ -149,7 +213,7 @@ if (c_dependent_misfit == true){
 
 	for (unsigned int i=0; i<dim; i++){
 		for (unsigned int j=0; j<dim; j++){
-			E3[i][j] =  -( sfts1c[i][j]*h1strainV + sfts2c[i][j]*h2strainV + sfts3c[i][j]*h3strainV);
+			E3[i][j] =  -( sfts1c[i][j]*h1V + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V);
 		}
 	}
 
@@ -164,10 +228,10 @@ if (c_dependent_misfit == true){
 		for (unsigned int j=0; j<dim; j++){
 			for (unsigned int k=0; k<dim; k++){
 				grad_mu_el[k] += S3[i][j] * (constV(0.5)*(uxx[i][j][k]+uxx[j][i][k]) + E3[i][j]*cx[k]
-														  - (sfts1[i][j]*hn1strainV*n1x[k] + sfts2[i][j]*hn2strainV*n2x[k] + sfts3[i][j]*hn3strainV*n3x[k]));
+														  - (sfts1[i][j]*hn1V*n1x[k] + sfts2[i][j]*hn2V*n2x[k] + sfts3[i][j]*hn3V*n3x[k]));
 
-				grad_mu_el[k]+= - S[i][j] * (sfts1c[i][j]*hn1strainV*n1x[k] + sfts2c[i][j]*hn2strainV*n2x[k] + sfts3c[i][j]*hn3strainV*n3x[k]
-														  + (sfts1cc[i][j]*h1strainV + sfts2cc[i][j]*h2strainV + sfts3cc[i][j]*h3strainV)*cx[k]);
+				grad_mu_el[k]+= - S[i][j] * (sfts1c[i][j]*hn1V*n1x[k] + sfts2c[i][j]*hn2V*n2x[k] + sfts3c[i][j]*hn3V*n3x[k]
+														  + (sfts1cc[i][j]*h1V + sfts2cc[i][j]*h2V + sfts3cc[i][j]*h3V)*cx[k]);
 
 				if (n_dependent_stiffness == true){
 					grad_mu_el[k]+= - S2[i][j] * (sfts1c[i][j]*hn1V*n1x[k] + sfts2c[i][j]*hn2V*n2x[k] + sfts3c[i][j]*hn3V*n3x[k]);
@@ -271,7 +335,7 @@ scalargradType n3x = modelVarList[3].scalarGrad;
 //u
 vectorgradType ux = modelVarList[4].vectorGrad;
 
-scalarvalueType f_chem = (constV(1.0)-(h1V+h2V+h3V))*faV + (h1V+h2V+h3V)*fbV + W*fbarrierV;
+scalarvalueType f_chem = (constV(1.0)-(h1V+h2V+h3V))*faV + (h1V+h2V+h3V)*fbV;
 
 scalarvalueType f_grad = constV(0.0);
 
@@ -324,7 +388,7 @@ dealii::VectorizedArray<double> E2[dim][dim], S[dim][dim];
 for (unsigned int i=0; i<dim; i++){
   for (unsigned int j=0; j<dim; j++){
 	  //E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1V + sfts2[i][j]*h2V + sfts3[i][j]*h3V);
-	  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1strainV + sfts2[i][j]*h2strainV + sfts3[i][j]*h3strainV);
+	  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1V + sfts2[i][j]*h2V + sfts3[i][j]*h3V);
 
   }
 }
