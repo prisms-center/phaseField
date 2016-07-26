@@ -31,15 +31,15 @@ double Kn3[3][3]={{0.01275,0.009959,0},{0.009959,0.02425,0},{0,0,1.0}};
 #define n_dependent_stiffness true
 // Mechanical symmetry of the material and stiffness parameters
 // Used throughout system if n_dependent_stiffness == false, used in n=0 phase if n_dependent_stiffness == true
-#define MaterialModelV ISOTROPIC
-#define MaterialConstantsV {2.0,0.3}
+//#define MaterialModelV ISOTROPIC
+//#define MaterialConstantsV {2.0,0.3}
 
 // Used in n=1 phase if n_dependent_stiffness == true
-#define MaterialModelBetaV ISOTROPIC
-#define MaterialConstantsBetaV {2.5,0.3}
+//#define MaterialModelBetaV ISOTROPIC
+//#define MaterialConstantsBetaV {2.5,0.3}
 
-#define MaterialModelVec {{ISOTROPIC},{ISOTROPIC}}
-#define MaterialConstantsVec {{2.0,0.3},{2.5,0.3}}
+#define MaterialModels {{"ISOTROPIC"},{"ISOTROPIC"}}
+#define MaterialConstants {{2.0,0.3},{2.5,0.3}}
 
 // Stress-free transformation strains
 // Linear fits for the stress-free transformation strains in for sfts = sfts_linear * c + sfts_const
@@ -195,7 +195,8 @@ dealii::VectorizedArray<double> heterMechAC3=constV(0.0);
 dealii::VectorizedArray<double> S2[dim][dim];
 
 if (n_dependent_stiffness == true){
-computeStress<dim>(CIJ_diff, E2, S2);
+//computeStress<dim>(CIJ_diff, E2, S2);
+	computeStress<dim>(CIJ_list[1]-CIJ_list[0], E2, S2);
 for (unsigned int i=0; i<dim; i++){
 	  for (unsigned int j=0; j<dim; j++){
 		  heterMechAC1 += S2[i][j]*E2[i][j];
@@ -224,7 +225,7 @@ if (c_dependent_misfit == true){
 		computeStress<dim>(CIJ_combined, E3, S3);
 	}
 	else{
-		computeStress<dim>(CIJ, E3, S3);
+		computeStress<dim>(CIJ_list[0], E3, S3);
 	}
 
 	for (unsigned int i=0; i<dim; i++){

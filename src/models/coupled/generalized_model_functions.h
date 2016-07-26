@@ -3,8 +3,7 @@
 // =====================================================================
 
 template <int dim>
-generalizedProblem<dim>::generalizedProblem(): MatrixFreePDE<dim>(),
-  CIJ_table(CIJ_tensor_size,CIJ_tensor_size), CIJ_alpha_table(CIJ_tensor_size,CIJ_tensor_size), CIJ_beta_table(CIJ_tensor_size,CIJ_tensor_size)
+generalizedProblem<dim>::generalizedProblem(): MatrixFreePDE<dim>()
 {
 #ifndef	timeIncrements
 #define timeIncrements 1
@@ -56,51 +55,35 @@ generalizedProblem<dim>::generalizedProblem(): MatrixFreePDE<dim>(),
 
 
 // initialize CIJ vector
-	std::vector<std::vector<double> > temp = MaterialConstantsVec;
+#if defined(MaterialModels) && defined(MaterialConstants)
+	std::vector<std::vector<double> > temp_mat_consts = MaterialConstants;
+	std::vector<std::string> temp_mat_models = MaterialModels;
+	elasticityModel mat_model;
+
 	dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ_temp;
-	for (unsigned int mater_num=0; mater_num < temp.size(); mater_num++){
-		getCIJMatrix<dim>(MaterialModelV, temp[mater_num], CIJ_temp, this->pcout);
+	for (unsigned int mater_num=0; mater_num < temp_mat_consts.size(); mater_num++){
+		if (temp_mat_models[mater_num] == "ISOTROPIC"){
+			mat_model = ISOTROPIC;
+		}
+		else if (temp_mat_models[mater_num] == "TRANSVERSE"){
+			mat_model = TRANSVERSE;
+		}
+		else if (temp_mat_models[mater_num] == "ORTHOTROPIC"){
+			mat_model = ORTHOTROPIC;
+		}
+		else if (temp_mat_models[mater_num] == "ANISOTROPIC"){
+			mat_model = ANISOTROPIC;
+		}
+		else {
+			// Should change to an exception
+			std::cout << "Elastic material model is invalid, please use ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC" << std::endl;
+		}
+
+		getCIJMatrix<dim>(mat_model, temp_mat_consts[mater_num], CIJ_temp, this->pcout);
 		CIJ_list.push_back(CIJ_temp);
 	}
-
-
-//initialize elasticity matrix
-#if defined(MaterialModelV) && defined(MaterialConstantsV) && defined(MaterialModelBetaV) && defined(MaterialConstantsBetaV)
-	if (n_dependent_stiffness == true){
-		double materialConstants[]=MaterialConstantsV;
-		getCIJMatrix<dim>(MaterialModelV, materialConstants, CIJ_alpha_table, this->pcout);
-
-		double materialConstantsBeta[]=MaterialConstantsBetaV;
-		getCIJMatrix<dim>(MaterialModelBetaV, materialConstantsBeta, CIJ_beta_table, this->pcout);
-
-		for (unsigned int i=0; i<CIJ_tensor_size; i++){
-			for (unsigned int j=0; j<CIJ_tensor_size; j++){
-				CIJ_beta[i][j] =  CIJ_beta_table(i,j);
-				CIJ_alpha[i][j] =  CIJ_alpha_table(i,j);
-				CIJ_diff[i][j] =  CIJ_beta_table(i,j) - CIJ_alpha_table(i,j);
-			}
-		}
-	}
-	else{
-		double materialConstants[]=MaterialConstantsV;
-		getCIJMatrix<dim>(MaterialModelV, materialConstants, CIJ_table, this->pcout);
-
-		for (unsigned int i=0; i<CIJ_tensor_size; i++){
-			for (unsigned int j=0; j<CIJ_tensor_size; j++){
-				CIJ[i][j] =  CIJ_table(i,j);
-			}
-		}
-	}
-#elif defined(MaterialModelV) && defined(MaterialConstantsV)
-	double materialConstants[]=MaterialConstantsV;
-	getCIJMatrix<dim>(MaterialModelV, materialConstants, CIJ_table, this->pcout);
-
-	for (unsigned int i=0; i<CIJ_tensor_size; i++){
-		for (unsigned int j=0; j<CIJ_tensor_size; j++){
-			CIJ[i][j] =  CIJ_table(i,j);
-		}
-	}
 #endif
+
 
 // I should probably get rid of this or move it, since it is only relevant to the precipitate case
 c_dependent_misfit = false;

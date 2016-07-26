@@ -19,8 +19,8 @@
 
 // Define Mechanical properties
 // Mechanical symmetry of the material and stiffness parameters
-#define MaterialModelV ISOTROPIC
-#define MaterialConstantsV {2.0,0.3}
+#define MaterialModels {"ISOTROPIC"}
+#define MaterialConstants {{2.0,0.3}}
 
 
 // ---------------------------------------------
@@ -43,7 +43,7 @@ for (unsigned int i=0; i<dim; i++){
 }
 
 //compute stress tensor
-computeStress<dim>(CIJ, E, S);
+computeStress<dim>(CIJ_list[0], E, S);
 
 //compute residual
 for (unsigned int i=0; i<dim; i++){
@@ -74,7 +74,7 @@ for (unsigned int i=0; i<dim; i++){
 }
 
 //compute stress tensor
-computeStress<dim>(CIJ, E, S);
+computeStress<dim>(CIJ_list[0], E, S);
 
 //compute residual
 for (unsigned int i=0; i<dim; i++){

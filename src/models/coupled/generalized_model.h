@@ -66,11 +66,7 @@ class generalizedProblem: public MatrixFreePDE<dim>
 	std::vector<bool> gradient_residual_LHS;
 
   // Elasticity matrix variables
-  Table<2, double> CIJ_table;
-  Table<2, double> CIJ_alpha_table;
-  Table<2, double> CIJ_beta_table;
   const static unsigned int CIJ_tensor_size = 2*dim-1+dim/3;
-  dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ, CIJ_alpha, CIJ_beta, CIJ_diff;
   std::vector<dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > > CIJ_list;
 
   bool c_dependent_misfit;
