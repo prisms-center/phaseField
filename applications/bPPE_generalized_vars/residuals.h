@@ -28,7 +28,7 @@ double Kn2[3][3]={{0.01275,-0.009959,0},{-0.009959,0.02425,0},{0,0,1.0}};
 double Kn3[3][3]={{0.01275,0.009959,0},{0.009959,0.02425,0},{0,0,1.0}};
 
 // Define Mechanical properties
-#define n_dependent_stiffness false
+#define n_dependent_stiffness true
 // Mechanical symmetry of the material and stiffness parameters
 // Used throughout system if n_dependent_stiffness == false, used in n=0 phase if n_dependent_stiffness == true
 #define MaterialModelV ISOTROPIC
@@ -36,7 +36,10 @@ double Kn3[3][3]={{0.01275,0.009959,0},{0.009959,0.02425,0},{0,0,1.0}};
 
 // Used in n=1 phase if n_dependent_stiffness == true
 #define MaterialModelBetaV ISOTROPIC
-#define MaterialConstantsBetaV {2.0,0.3}
+#define MaterialConstantsBetaV {2.5,0.3}
+
+#define MaterialModelVec {{ISOTROPIC},{ISOTROPIC}}
+#define MaterialConstantsVec {{2.0,0.3},{2.5,0.3}}
 
 // Stress-free transformation strains
 // Linear fits for the stress-free transformation strains in for sfts = sfts_linear * c + sfts_const
@@ -150,13 +153,13 @@ dealii::VectorizedArray<double> sum_hV;
 sum_hV = h1V+h2V+h3V;
 for (unsigned int i=0; i<2*dim-1+dim/3; i++){
 	  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-		  CIJ_combined[i][j] = CIJ_alpha[i][j]*(constV(1.0)-sum_hV) + CIJ_beta[i][j]*sum_hV;
+		  CIJ_combined[i][j] = CIJ_list[0][i][j]*(constV(1.0)-sum_hV) + CIJ_list[1][i][j]*sum_hV;
 	  }
 }
 computeStress<dim>(CIJ_combined, E2, S);
 }
 else{
-computeStress<dim>(CIJ, E2, S);
+computeStress<dim>(CIJ_list[0], E2, S);
 }
 
 // Fill residual corresponding to mechanics
@@ -299,12 +302,12 @@ E = constV(0.5)*(ux + transpose(ux));
 // Compute stress tensor (which is equal to the residual, Rux)
 if (n_dependent_stiffness == true){
 	dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ_combined;
-	CIJ_combined = CIJ_alpha*(constV(1.0)-h1V-h2V-h3V) + CIJ_beta*(h1V+h2V+h3V);
+	CIJ_combined = CIJ_list[0]*(constV(1.0)-h1V-h2V-h3V) + CIJ_list[1]*(h1V+h2V+h3V);
 
 	computeStress<dim>(CIJ_combined, E, Rux);
 }
 else{
-	computeStress<dim>(CIJ, E, Rux);
+	computeStress<dim>(CIJ_list[0], E, Rux);
 }
 
 modelRes.vectorGradResidual = Rux;
@@ -402,13 +405,13 @@ if (n_dependent_stiffness == true){
   sum_hV = h1V+h2V+h3V;
   for (unsigned int i=0; i<2*dim-1+dim/3; i++){
 	  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-		  CIJ_combined[i][j] = CIJ_alpha[i][j]*(constV(1.0)-sum_hV) + CIJ_beta[i][j]*sum_hV;
+		  CIJ_combined[i][j] = CIJ_list[0][i][j]*(constV(1.0)-sum_hV) + CIJ_list[1][i][j]*sum_hV;
 	  }
   }
   computeStress<dim>(CIJ_combined, E2, S);
 }
 else{
-  computeStress<dim>(CIJ, E2, S);
+  computeStress<dim>(CIJ_list[0], E2, S);
 }
 
 scalarvalueType f_el = constV(0.0);

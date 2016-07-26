@@ -55,6 +55,15 @@ generalizedProblem<dim>::generalizedProblem(): MatrixFreePDE<dim>(),
 	#endif
 
 
+// initialize CIJ vector
+	std::vector<std::vector<double> > temp = MaterialConstantsVec;
+	dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ_temp;
+	for (unsigned int mater_num=0; mater_num < temp.size(); mater_num++){
+		getCIJMatrix<dim>(MaterialModelV, temp[mater_num], CIJ_temp, this->pcout);
+		CIJ_list.push_back(CIJ_temp);
+	}
+
+
 //initialize elasticity matrix
 #if defined(MaterialModelV) && defined(MaterialConstantsV) && defined(MaterialModelBetaV) && defined(MaterialConstantsBetaV)
 	if (n_dependent_stiffness == true){

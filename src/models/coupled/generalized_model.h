@@ -48,39 +48,7 @@ class generalizedProblem: public MatrixFreePDE<dim>
 
  private:
 
-    // Load the input information about the variables into arrays
-//    std::string var_name[num_var] = variable_name;
-//    std::string var_type[num_var] = variable_type;
-//    std::string var_eq_type[num_var] = variable_eq_type;
-//
-//    bool need_value[num_var] = need_val;
-//    bool need_gradient[num_var] = need_grad;
-//    bool need_hessian[num_var] = need_hess;
-//    bool value_residual[num_var] = need_val_residual;
-//    bool gradient_residual[num_var] = need_grad_residual;
-//
-//	#ifndef need_val_LHS
-//	#define need_val_LHS {}
-//	#endif
-//	#ifndef need_grad_LHS
-//	#define need_grad_LHS {}
-//	#endif
-//	#ifndef need_hess_LHS
-//	#define need_hess_LHS {}
-//	#endif
-//	#ifndef need_val_residual_LHS
-//	#define need_val_residual_LHS {}
-//	#endif
-//	#ifndef need_grad_residual_LHS
-//	#define need_grad_residual_LHS {}
-//	#endif
-//
-//    bool need_value_LHS[num_var] = need_val_LHS;
-//    bool need_gradient_LHS[num_var] = need_grad_LHS;
-//    bool need_hessian_LHS[num_var] = need_hess_LHS;
-//    bool value_residual_LHS[num_var] = need_val_residual_LHS;
-//    bool gradient_residual_LHS[num_var] = need_grad_residual_LHS;
-
+    // Declare vectors to put the information about the variables into
     std::vector<std::string> var_name;
     std::vector<std::string> var_type;
     std::vector<std::string> var_eq_type;
@@ -97,28 +65,13 @@ class generalizedProblem: public MatrixFreePDE<dim>
 	std::vector<bool> value_residual_LHS;
 	std::vector<bool> gradient_residual_LHS;
 
-//    std::string var_name[5];
-//	std::string var_type[5];
-//	std::string var_eq_type[5];
-//
-//	bool need_value[5];
-//	bool need_gradient[5];
-//	bool need_hessian[5];
-//	bool value_residual[5];
-//	bool gradient_residual[5];
-//
-//	bool need_value_LHS[5];
-//	bool need_gradient_LHS[5];
-//	bool need_hessian_LHS[5];
-//	bool value_residual_LHS[5];
-//	bool gradient_residual_LHS[5];
-
   // Elasticity matrix variables
   Table<2, double> CIJ_table;
   Table<2, double> CIJ_alpha_table;
   Table<2, double> CIJ_beta_table;
   const static unsigned int CIJ_tensor_size = 2*dim-1+dim/3;
   dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ, CIJ_alpha, CIJ_beta, CIJ_diff;
+  std::vector<dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > > CIJ_list;
 
   bool c_dependent_misfit;
 
