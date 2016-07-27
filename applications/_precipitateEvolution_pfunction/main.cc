@@ -6,13 +6,13 @@
 //Coupled Cahn-Hilliard+Allen-Cahn+Mechanics problem headers
 
 // PLibrary includes
-#include "PLibrary/PLibrary.hh"
-#include "PLibrary/PLibrary.cc"
-
 #include "parameters.h"
-#include "residuals.h"
 #include "../../src/models/coupled/coupledCHACMechanics.h"
-#include "ICs_and_BCs.h"
+#include "../_precipitateEvolution_pfunction/ICs_and_BCs.h"
+#include "../_precipitateEvolution_pfunction/parameters.h"
+#include "../_precipitateEvolution_pfunction/PLibrary/PLibrary.cc"
+#include "../_precipitateEvolution_pfunction/PLibrary/PLibrary.hh"
+#include "../_precipitateEvolution_pfunction/residuals.h"
 
 
 //main

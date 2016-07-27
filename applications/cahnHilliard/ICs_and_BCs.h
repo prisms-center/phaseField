@@ -1,36 +1,99 @@
-//initial condition function for concentration
+//initial condition
 template <int dim>
-class InitialConditionC : public Function<dim>
+class InitialCondition : public Function<dim>
 {
 public:
-  InitialConditionC () : Function<dim>(1) {
-    //seeding the random number generator
+  unsigned int index;
+  Vector<double> values;
+  InitialCondition (const unsigned int _index) : Function<dim>(1), index(_index) {
     std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
   }
   double value (const Point<dim> &p, const unsigned int component = 0) const
   {
-    //return the value of the initial concentration field at point p
-    return  0.5+ 0.2*(0.5 - (double)(std::rand() % 100 )/100.0);
+	  double scalar_IC = 0;
+	  // =====================================================================
+	  // ENTER THE INITIAL CONDITIONS HERE FOR SCALAR FIELDS
+	  // =====================================================================
+	  // Enter the function describing conditions for the fields at point "p".
+	  // Use "if" statements to set the initial condition for each variable
+	  // according to its variable index.
+
+	  //return  0.5+ 0.2*(0.5 - (double)(std::rand() % 100 )/100.0);
+
+	  if (index == 0){
+	  double dx=spanX/((double) subdivisionsX)/std::pow(2.0,refineFactor);
+	  double x_loc[12] = {0.1, 0.8, 0.5, 0.4, 0.3, 0.8, 0.9, 0.0, 0.1, 0.5, 1, 0.7};
+	  double y_loc[12] = {0.3, 0.7, 0.2, 0.4, 0.9, 0.1, 0.5, 0.1, 0.6, 0.6, 1, 0.95};
+	  double rad[12] =   {12, 14, 19, 16, 11, 12, 17, 15, 20, 10, 11, 14};
+	  double dist;
+	  scalar_IC = 0;
+	  for (unsigned int i=0; i<12; i++){
+		  dist = p.distance(Point<dim>(x_loc[i]*spanX,y_loc[i]*spanY));
+		  if (dist < rad[i]){
+			  scalar_IC = 1.0;
+		  }
+	  }
+	  }
+	  else {
+		  scalar_IC = 0.0;
+	  }
+
+	  return scalar_IC;
+
+	  // =====================================================================
+	  return scalar_IC;
   }
 };
 
-//apply initial conditions
+//initial condition
 template <int dim>
-void CahnHilliardProblem<dim>::applyInitialConditions()
+class InitialConditionVec : public Function<dim>
 {
-  unsigned int fieldIndex;
-  //call initial condition function for c
-  fieldIndex=this->getFieldIndex("c");
-  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex],	\
-			    InitialConditionC<dim>(),			\
-			    *this->solutionSet[fieldIndex]);
-  //set initial condition for mu
-  fieldIndex=this->getFieldIndex("mu");
-  *(this->residualSet[fieldIndex])=0.0;
-  this->matrixFreeObject.cell_loop (&CahnHilliardProblem<dim>::getRHS, this, this->residualSet, this->solutionSet);
-  //sove for mu from initial condition for c
-  for (unsigned int dof=0; dof<this->solutionSet[fieldIndex]->local_size(); ++dof){
-    this->solutionSet[fieldIndex]->local_element(dof)= this->invM.local_element(dof)*this->residualSet[fieldIndex]->local_element(dof);
+public:
+  unsigned int index;
+  //Vector<double> values;
+  InitialConditionVec (const unsigned int _index) : Function<dim>(dim), index(_index) {
+    std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
   }
+  void vector_value (const Point<dim> &p,Vector<double> &vector_IC) const
+  {
+	  // =====================================================================
+	  // ENTER THE INITIAL CONDITIONS HERE FOR VECTOR FIELDS
+	  // =====================================================================
+	  // Enter the function describing conditions for the fields at point "p".
+	  // Use "if" statements to set the initial condition for each variable
+	  // according to its variable index.
+
+
+	  // =====================================================================
+  }
+};
+
+// Sets the BCs for the problem variables
+// "inputBCs" should be called for each component of each variable and should be in numerical order
+// Four input arguments set the same BC on the entire boundary
+// Two plus two times the number of dimensions inputs sets separate BCs on each face of the domain
+// Inputs to "inputBCs":
+// First input: variable number
+// Second input: component number
+// Third input: BC type (options are "ZERO_DERIVATIVE" and "DIRICHLET")
+// Fourth input: BC value (ignored unless the BC type is "DIRICHLET")
+// Odd inputs after the third: BC type
+// Even inputs after the third: BC value
+// Face numbering: starts at zero with the minimum of the first direction, one for the maximum of the first direction
+//						two for the minimum of the second direction, etc.
+template <int dim>
+void generalizedProblem<dim>::setBCs(){
+
+	// =====================================================================
+	// ENTER THE BOUNDARY CONDITIONS HERE
+	// =====================================================================
+
+	inputBCs(0,0,"ZERO_DERIVATIVE",0);
+	inputBCs(1,0,"ZERO_DERIVATIVE",0);
+
+	// =====================================================================
+
 }
+
 

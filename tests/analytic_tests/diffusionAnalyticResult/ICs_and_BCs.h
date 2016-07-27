@@ -10,7 +10,7 @@ public:
   }
   double value (const Point<dim> &p, const unsigned int component = 0) const
   {
-	  double scalar_IC = 0;
+	  double scalar_IC;
 	  // =====================================================================
 	  // ENTER THE INITIAL CONDITIONS HERE FOR SCALAR FIELDS
 	  // =====================================================================
@@ -18,21 +18,8 @@ public:
 	  // Use "if" statements to set the initial condition for each variable
 	  // according to its variable index.
 
-	  double dx=spanX/((double) subdivisionsX)/std::pow(2.0,refineFactor);
-	  double r=0.0;
-
-	  if (index == 0){
-		  r=p.distance(Point<dim>(spanX/3.0,spanY/3.0));
-		  scalar_IC = 0.009+0.5*(0.125)*(1.0-std::tanh((r-spanX/5.0)/(3*dx)));
-		  r=p.distance(Point<dim>(3.0*spanX/4.0,3.0*spanY/4.0));
-		  scalar_IC += 0.5*(0.125)*(1.0-std::tanh((r-spanX/12.0)/(3*dx)));
-	  }
-	  else {
-		  r=p.distance(Point<dim>(spanX/3.0,spanY/3.0));
-		  scalar_IC = 0.5*(1.0-std::tanh((r-spanX/5.0)/(3*dx)));
-		  r=p.distance(Point<dim>(3.0*spanX/4.0,3.0*spanY/4.0));
-		  scalar_IC += 0.5*(1.0-std::tanh((r-spanX/12.0)/(3*dx)));
-	  }
+	  double desired_time = 1.0;
+	  scalar_IC = std::erf(p[0]/std::sqrt(4.0*DcV*desired_time));
 
 	  // =====================================================================
 	  return scalar_IC;
@@ -83,8 +70,7 @@ void generalizedProblem<dim>::setBCs(){
 	// ENTER THE BOUNDARY CONDITIONS HERE
 	// =====================================================================
 
-	inputBCs(0,0,"ZERO_DERIVATIVE",0);
-	inputBCs(1,0,"ZERO_DERIVATIVE",0);
+	inputBCs(0,0,"ZERO_DERVIVATIVE",0.0,"ZERO_DERVIVATIVE",0.0,"ZERO_DERVIVATIVE",0,"ZERO_DERVIVATIVE",0);
 
 	// =====================================================================
 

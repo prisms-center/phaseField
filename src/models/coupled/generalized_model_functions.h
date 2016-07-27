@@ -682,7 +682,6 @@ void vectorBCFunction<dim>::vector_value_list (const std::vector<Point<dim>> &po
 		vectorBCFunction<dim>::vector_value(points[p],value_list[p]);
 }
 
-
 //apply Dirchlet BC function
 template <int dim>
 void generalizedProblem<dim>::applyDirichletBCs(){
@@ -707,7 +706,7 @@ void generalizedProblem<dim>::applyDirichletBCs(){
 	  for (unsigned int direction = 0; direction < 2*dim; direction++){
 		  if (BC_list[this->currentFieldIndex].var_BC_type[direction] == "DIRICHLET"){
 			  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
-					  direction, ConstantFunction<dim>(BC_list[this->currentFieldIndex].var_BC_val[direction]), *(ConstraintMatrix*) \
+					  direction, ConstantFunction<dim>(BC_list[this->currentFieldIndex].var_BC_val[direction],1), *(ConstraintMatrix*) \
 					  this->constraintsSet[this->currentFieldIndex]);
 		  }
 	  }

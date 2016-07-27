@@ -6,15 +6,17 @@
 #ifndef PLIBRARY_CC
 #define PLIBRARY_CC
 
+#include "../../_precipitateEvolution_pfunction/PLibrary/PLibrary.hh"
+
 #include<cstring>
 #include<stdexcept>
-#include "pfunct_faV.hh"
-#include "pfunct_fbV.hh"
-#include "pfunct_McV.hh"
-#include "pfunct_Mn1V.hh"
-#include "pfunct_Mn2V.hh"
-#include "pfunct_Mn3V.hh"
-#include "PLibrary.hh"
+
+#include "../../_precipitateEvolution_pfunction/PLibrary/pfunct_faV.hh"
+#include "../../_precipitateEvolution_pfunction/PLibrary/pfunct_fbV.hh"
+#include "../../_precipitateEvolution_pfunction/PLibrary/pfunct_McV.hh"
+#include "../../_precipitateEvolution_pfunction/PLibrary/pfunct_Mn1V.hh"
+#include "../../_precipitateEvolution_pfunction/PLibrary/pfunct_Mn2V.hh"
+#include "../../_precipitateEvolution_pfunction/PLibrary/pfunct_Mn3V.hh"
 
 namespace PRISMS
 {

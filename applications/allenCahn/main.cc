@@ -1,13 +1,15 @@
-//Allen-Cahn order parameter evolution implementation
-//general headers
+//Coupled Cahn-Hilliard, Allen-Cahn and Mechanics problem
 //general headers
 #include "../../include/dealIIheaders.h"
 
-//Allen-Hilliard problem headers
-#include "parameters.h"
-#include "residuals.h"
-#include "../../src/models/diffusion/AC.h"
-#include "ICs_and_BCs.h"
+//Coupled Cahn-Hilliard+Allen-Cahn+Mechanics problem headers
+#include "../../src/models/coupled/generalized_model.h"
+#include "../../src/models/coupled/generalized_model_functions.h"
+#include "../allenCahn/ICs_and_BCs.h"
+#include "../allenCahn/parameters.h"
+#include "../allenCahn/residuals.h"
+
+
 
 //main
 int main (int argc, char **argv)
@@ -15,9 +17,11 @@ int main (int argc, char **argv)
   Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,numbers::invalid_unsigned_int);
   try
     {
-      deallog.depth_console(0);
-      AllenCahnProblem<problemDIM> problem;
-      problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "n"));
+	  deallog.depth_console(0);
+	  generalizedProblem<problemDIM> problem;
+
+      problem.setBCs();
+      problem.buildFields();
       problem.init (); 
       problem.solve();
     }
@@ -47,4 +51,3 @@ int main (int argc, char **argv)
   
   return 0;
 }
-
