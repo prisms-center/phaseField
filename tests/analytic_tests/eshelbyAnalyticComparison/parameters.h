@@ -14,7 +14,7 @@
 #define subdivisionsX 1
 #define subdivisionsY 1
 #define subdivisionsZ 1
-#define refineFactor 4
+#define refineFactor 6
 #define finiteElementDegree 1
 
 //define number of fields in the problem
@@ -27,6 +27,8 @@
 
 // Define results output parameters
 #define writeOutput true
+
+#define calc_energy false
 
 
 

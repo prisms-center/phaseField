@@ -1,16 +1,13 @@
-//mechanics problem implementation
+//Linear elasticity problem
 //general headers
-#include <fstream>
-#include <sstream>
-
-//dealIIheaders
 #include "../../include/dealIIheaders.h"
 
-//mechanics problem headers
-#include "parameters.h"
-#include "../../src/models/mechanics/mechanics.h"
-#include "ICs_and_BCs.h"
-
+//Coupled Cahn-Hilliard+Allen-Cahn+Mechanics problem headers
+#include "../mechanics/parameters.h"
+#include "../../src/models/coupled/generalized_model.h"
+#include "../mechanics/residuals.h"
+#include "../mechanics/ICs_and_BCs.h"
+#include "../../src/models/coupled/generalized_model_functions.h"
 
 //main
 int main (int argc, char **argv)
@@ -18,9 +15,11 @@ int main (int argc, char **argv)
   Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,numbers::invalid_unsigned_int);
   try
     {
-      deallog.depth_console(0);
-      MechanicsProblem<problemDIM> problem;
-      problem.fields.push_back(Field<problemDIM>(VECTOR,  ELLIPTIC, "u"));
+	  deallog.depth_console(0);
+	  generalizedProblem<problemDIM> problem;
+
+      problem.setBCs();
+      problem.buildFields();
       problem.init (); 
       problem.solve();
     }

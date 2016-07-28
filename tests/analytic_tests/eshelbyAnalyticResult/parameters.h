@@ -14,7 +14,7 @@
 #define subdivisionsX 1
 #define subdivisionsY 1
 #define subdivisionsZ 1
-#define refineFactor 4
+#define refineFactor 6
 #define finiteElementDegree 1
 
 //define number of fields in the problem
@@ -25,8 +25,16 @@
 #define relSolverTolerance 1.0e-10
 #define maxSolverIterations 1000
 
+//define time step parameters
+#define timeStep 1.0e-3
+#define timeFinal 10.0
+#define timeIncrements 0
+
 // Define results output parameters
 #define writeOutput true
+#define skipOutputSteps 10
+
+#define calc_energy false
 
 
 

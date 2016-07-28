@@ -1,13 +1,13 @@
-//Cahn-Hilliard spinodal decomposition implementation
+//Coupled Cahn-Hilliard, Allen-Cahn and Mechanics problem
 //general headers
 #include "../../include/dealIIheaders.h"
 
-//Cahn-Hilliard problem headers
+//Coupled Cahn-Hilliard+Allen-Cahn+Mechanics problem headers
 #include "parameters.h"
+#include "../../src/models/coupled/generalized_model.h"
 #include "residuals.h"
-#include "../../src/models/diffusion/CH.h"
 #include "ICs_and_BCs.h"
-
+#include "../../src/models/coupled/generalized_model_functions.h"
 
 //main
 int main (int argc, char **argv)
@@ -15,10 +15,11 @@ int main (int argc, char **argv)
   Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,numbers::invalid_unsigned_int);
   try
     {
-      deallog.depth_console(0);
-      CahnHilliardProblem<problemDIM> problem;
-      problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "mu"));
-      problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "c"));
+	  deallog.depth_console(0);
+	  generalizedProblem<problemDIM> problem;
+
+      problem.setBCs();
+      problem.buildFields();
       problem.init (); 
       problem.solve();
     }

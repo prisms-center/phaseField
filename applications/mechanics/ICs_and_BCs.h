@@ -1,53 +1,82 @@
-//Mark boundaries for applying Dirichlet BC's
+//initial condition
 template <int dim>
-void MechanicsProblem<dim>::markBoundaries(){
-  typename parallel::distributed::Triangulation<dim>::active_cell_iterator \
-    cell= this->triangulation.begin_active(),					\
-    endc= this->triangulation.end();
-
-  //All boundaries are by marked with flag '0' by default.
-  //To pick specific boundaries, one needs to mark them
-  //with integer flags and use those flags in apply_dirichlet_conditons()
-  for (;cell!=endc; ++cell){
-    for (unsigned int f=0; f<GeometryInfo<dim>::faces_per_cell; ++f){
-      if (cell->face(f)->at_boundary()){
-	const Point<dim> face_center = cell->face(f)->center();
-	if (face_center[0]==0.0){
-	  cell->face(f)->set_boundary_indicator (1); //boundary at X=0.0 marked with flag '1'
-	}
-	else if (face_center[0]==spanX){
-	  cell->face(f)->set_boundary_indicator (2); //boundary at X=spanX marked with flag '2'
-	}
-      }
-    }
+class InitialCondition : public Function<dim>
+{
+public:
+  unsigned int index;
+  Vector<double> values;
+  InitialCondition (const unsigned int _index) : Function<dim>(1), index(_index) {
+    std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
   }
-}
+  double value (const Point<dim> &p, const unsigned int component = 0) const
+  {
+	  double scalar_IC = 0;
+	  // =====================================================================
+	  // ENTER THE INITIAL CONDITIONS HERE FOR SCALAR FIELDS
+	  // =====================================================================
+	  // Enter the function describing conditions for the fields at point "p".
+	  // Use "if" statements to set the initial condition for each variable
+	  // according to its variable index.
 
-//Class to set Dirichlet BC values
-template <int dim>
-class BCFunction : public Function<dim>{
-  public:
-  BCFunction(): Function<dim> (dim){}
-  void vector_value (const Point<dim>   &p, Vector<double>   &values) const{
-    Assert (values.size() == dim, ExcDimensionMismatch (values.size(), dim));
-    values[0]= spanX/100.0; // displacement along X-Direction
+
+	  // =====================================================================
+	  return scalar_IC;
   }
 };
 
-//Apply Dirchlet BC function
+//initial condition
 template <int dim>
-void MechanicsProblem<dim>::applyDirichletBCs(){
-  //Set u=0 at X=0.0
-  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->getFieldIndex("u")],\
-					    1, ZeroFunction<dim>(dim), *(ConstraintMatrix*) \
-					    this->constraintsSet[this->getFieldIndex("u")]);
+class InitialConditionVec : public Function<dim>
+{
+public:
+  unsigned int index;
+  //Vector<double> values;
+  InitialConditionVec (const unsigned int _index) : Function<dim>(dim), index(_index) {
+    std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
+  }
+  void vector_value (const Point<dim> &p,Vector<double> &vector_IC) const
+  {
+	  // =====================================================================
+	  // ENTER THE INITIAL CONDITIONS HERE FOR VECTOR FIELDS
+	  // =====================================================================
+	  // Enter the function describing conditions for the fields at point "p".
+	  // Use "if" statements to set the initial condition for each variable
+	  // according to its variable index.
 
-  //Set u[0]=spanX/100.0 at X=spanX
-  std::vector<bool> xyzFlags (dim, false);
-  xyzFlags[0]=true; //to apply dirichlet BC only along dim=0 (ux)
-  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->getFieldIndex("u")],\
-					    2, BCFunction<dim>(), *(ConstraintMatrix*) \
-					    this->constraintsSet[this->getFieldIndex("u")], \
-					    xyzFlags);
+	  vector_IC(0) = 0.0;
+	  vector_IC(1) = 0.0;
+	  vector_IC(2) = 0.0;
+
+	  // =====================================================================
+  }
+};
+
+// Sets the BCs for the problem variables
+// "inputBCs" should be called for each component of each variable and should be in numerical order
+// Four input arguments set the same BC on the entire boundary
+// Two plus two times the number of dimensions inputs sets separate BCs on each face of the domain
+// Inputs to "inputBCs":
+// First input: variable number
+// Second input: component number
+// Third input: BC type (options are "ZERO_DERIVATIVE" and "DIRICHLET")
+// Fourth input: BC value (ignored unless the BC type is "DIRICHLET")
+// Odd inputs after the third: BC type
+// Even inputs after the third: BC value
+// Face numbering: starts at zero with the minimum of the first direction, one for the maximum of the first direction
+//						two for the minimum of the second direction, etc.
+template <int dim>
+void generalizedProblem<dim>::setBCs(){
+
+	// =====================================================================
+	// ENTER THE BOUNDARY CONDITIONS HERE
+	// =====================================================================
+
+	inputBCs(4,0,"DIRICHLET",-0.1, "DIRICHLET",0.0, "ZERO_DERIVATIVE",0.0, "ZERO_DERIVATIVE",0.0, "ZERO_DERIVATIVE",0.0, "ZERO_DERIVATIVE",0.0);
+	inputBCs(4,1,"DIRICHLET",0.0, "DIRICHLET",0.0, "ZERO_DERIVATIVE",0.0, "ZERO_DERIVATIVE",0.0, "ZERO_DERIVATIVE",0.0, "ZERO_DERIVATIVE",0.0);
+	inputBCs(4,2,"DIRICHLET",0.0, "DIRICHLET",0.0, "ZERO_DERIVATIVE",0.0, "ZERO_DERIVATIVE",0.0, "ZERO_DERIVATIVE",0.0, "ZERO_DERIVATIVE",0.0);
+
+	// =====================================================================
+
 }
+
 

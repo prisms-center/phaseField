@@ -1,10 +1,18 @@
-// define the total number of fields
-#define numFields 2
+// Definition of the variables in the model
+#define num_var 2
+#define variable_name {"c", "n"}
+#define variable_type {"SCALAR","SCALAR"}
+#define variable_eq_type {"PARABOLIC","PARABOLIC"}
+#define need_val {true, true}
+#define need_grad {true, true}
+#define need_hess {false, false}
+#define need_val_residual {true, true}
+#define need_grad_residual {true, true}
 
-//define Cahn-Hilliard parameters (No Gradient energy term)
+// Define Cahn-Hilliard parameters (no gradient energy terms)
 #define McV 1.0
 
-//define Allen-Cahn parameters
+// Define Allen-Cahn parameters
 #define MnV 150.0
 #define KnV 0.5
 
@@ -24,3 +32,71 @@
 #define rcxV  (constV(-McV*timeStep)*muxV)
 #define rnV  (n-constV(timeStep*MnV)*(fbV-faV)*hnV)
 #define rnxV (constV(-timeStep*KnV*MnV)*nx)
+
+
+// ---------------------------------------------
+
+template <int dim>
+void generalizedProblem<dim>::residualRHS(const std::vector<modelVariable<dim>> & modelVariablesList,
+												std::vector<modelResidual<dim>> & modelResidualsList,
+												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+
+	//c
+scalarvalueType c = modelVariablesList[0].scalarValue;
+scalargradType cx = modelVariablesList[0].scalarGrad;
+
+//n
+scalarvalueType n = modelVariablesList[1].scalarValue;
+scalargradType nx = modelVariablesList[1].scalarGrad;
+
+modelResidualsList[0].scalarValueResidual = rcV;
+modelResidualsList[0].scalarGradResidual = rcxV;
+
+modelResidualsList[1].scalarValueResidual = rnV;
+modelResidualsList[1].scalarGradResidual = rnxV;
+
+}
+
+template <int dim>
+void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim>> & modelVarList,
+		modelResidual<dim> & modelRes,
+		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+
+}
+
+template <int dim>
+void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim>> & modelVarList,
+											const dealii::VectorizedArray<double> & JxW_value,
+											dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {
+
+scalarvalueType total_energy_density = constV(0.0);
+
+//c
+scalarvalueType c = modelVarList[0].scalarValue;
+scalargradType cx = modelVarList[0].scalarGrad;
+
+//n1
+scalarvalueType n = modelVarList[1].scalarValue;
+scalargradType nx = modelVarList[1].scalarGrad;
+
+scalarvalueType f_chem = (constV(1.0)-hV)*faV + hV*fbV;
+
+scalarvalueType f_grad = constV(0.5*KnV)*nx*nx;
+
+total_energy_density = f_chem + f_grad;
+
+assembler_lock.acquire ();
+for (unsigned i=0; i<c.n_array_elements;i++){
+  // For some reason, some of the values in this loop
+  if (c[i] > 1.0e-10){
+	  this->energy+=total_energy_density[i]*JxW_value[i];
+	  this->energy_components[0]+= f_chem[i]*JxW_value[i];
+	  this->energy_components[1]+= f_grad[i]*JxW_value[i];
+  }
+}
+assembler_lock.release ();
+}
+
+
+
+

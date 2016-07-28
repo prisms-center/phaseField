@@ -1,4 +1,190 @@
 // =====================================================================
+// CONSTRUCTOR
+// =====================================================================
+
+template <int dim>
+generalizedProblem<dim>::generalizedProblem(): MatrixFreePDE<dim>()
+{
+#ifndef	timeIncrements
+#define timeIncrements 1
+#endif
+#ifndef	timeStep
+#define timeStep 0.0
+#endif
+
+	var_name = variable_name;
+	var_type = variable_type;
+	var_eq_type = variable_eq_type;
+
+	need_value = need_val;
+	need_gradient = need_grad;
+	need_hessian = need_hess;
+	value_residual = need_val_residual;
+	gradient_residual = need_grad_residual;
+
+	#ifdef need_val_LHS
+	need_value_LHS = need_val_LHS;
+	#else
+	for (unsigned int i=0; i<num_var; i++)
+		need_value_LHS.push_back(false);
+	#endif
+	#ifdef need_grad_LHS
+	need_gradient_LHS = need_grad_LHS;
+	#else
+	for (unsigned int i=0; i<num_var; i++)
+		need_gradient_LHS.push_back(false);
+	#endif
+	#ifdef need_hess_LHS
+	need_hessian_LHS = need_hess_LHS;
+	#else
+	for (unsigned int i=0; i<num_var; i++)
+		need_hessian_LHS.push_back(false);
+	#endif
+	#ifdef need_val_residual_LHS
+	value_residual_LHS = need_val_residual_LHS;
+	#else
+	for (unsigned int i=0; i<num_var; i++)
+		value_residual_LHS.push_back(false);
+	#endif
+	#ifdef need_grad_residual_LHS
+	gradient_residual_LHS = need_grad_residual_LHS;
+	#else
+	for (unsigned int i=0; i<num_var; i++)
+		gradient_residual_LHS.push_back(false);
+	#endif
+
+
+// initialize CIJ vector
+#if defined(MaterialModels) && defined(MaterialConstants)
+	std::vector<std::vector<double> > temp_mat_consts = MaterialConstants;
+	std::vector<std::string> temp_mat_models = MaterialModels;
+	elasticityModel mat_model;
+
+	dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ_temp;
+	for (unsigned int mater_num=0; mater_num < temp_mat_consts.size(); mater_num++){
+		if (temp_mat_models[mater_num] == "ISOTROPIC"){
+			mat_model = ISOTROPIC;
+		}
+		else if (temp_mat_models[mater_num] == "TRANSVERSE"){
+			mat_model = TRANSVERSE;
+		}
+		else if (temp_mat_models[mater_num] == "ORTHOTROPIC"){
+			mat_model = ORTHOTROPIC;
+		}
+		else if (temp_mat_models[mater_num] == "ANISOTROPIC"){
+			mat_model = ANISOTROPIC;
+		}
+		else {
+			// Should change to an exception
+			std::cout << "Elastic material model is invalid, please use ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC" << std::endl;
+		}
+
+		getCIJMatrix<dim>(mat_model, temp_mat_consts[mater_num], CIJ_temp, this->pcout);
+		CIJ_list.push_back(CIJ_temp);
+	}
+#endif
+
+
+// I should probably get rid of this or move it, since it is only relevant to the precipitate case
+c_dependent_misfit = false;
+#if defined(sfts_linear1) && defined(sfts_linear2) && defined(sfts_linear3)
+for (unsigned int i=0; i<dim; i++){
+	for (unsigned int j=0; j<dim; j++){
+		if ((std::abs(sfts_linear1[i][j])>1.0e-12)||(std::abs(sfts_linear2[i][j])>1.0e-12)||(std::abs(sfts_linear3[i][j])>1.0e-12)){
+			c_dependent_misfit = true;
+		}
+	}
+}
+#endif
+
+
+// If the LHS variable attributes aren't defined
+
+// If nucleation isn't specifically turned on, set nucleation_occurs to false
+#ifndef nucleation_occurs
+	#define nucleation_occurs false
+#endif
+
+// Load variable information for calculating the RHS
+varInfoListRHS.reserve(num_var);
+unsigned int field_number = 0;
+unsigned int scalar_var_index = 0;
+unsigned int vector_var_index = 0;
+for (unsigned int i=0; i<num_var; i++){
+	variable_info<dim> varInfo;
+	if (need_value[i] or need_gradient[i] or need_hessian[i]){
+		varInfo.global_var_index = i;
+		varInfo.global_field_index = field_number;
+		if (var_type[i] == "SCALAR"){
+			varInfo.is_scalar = true;
+			varInfo.scalar_or_vector_index = scalar_var_index;
+			scalar_var_index++;
+		}
+		else {
+			varInfo.is_scalar = false;
+			varInfo.scalar_or_vector_index = vector_var_index;
+			vector_var_index++;
+		}
+		varInfoListRHS.push_back(varInfo);
+	}
+
+	if (var_type[i] == "SCALAR"){
+		field_number++;
+	}
+	else {
+		field_number+=dim;
+	}
+}
+
+variable_info<dim> resInfoLHS;
+	for (unsigned int i=0; i<num_var_LHS; i++){
+		if (MatrixFreePDE<dim>::currentFieldIndex == varInfoListLHS[i].global_field_index){
+			resInfoLHS = varInfoListLHS[i];
+		}
+	}
+
+// Load variable information for calculating the LHS
+num_var_LHS = 0;
+for (unsigned int i=0; i<num_var; i++){
+	if (need_value_LHS[i] or need_gradient_LHS[i] or need_hessian_LHS[i]){
+		num_var_LHS++;
+	}
+}
+
+varInfoListLHS.reserve(num_var_LHS);
+field_number = 0;
+scalar_var_index = 0;
+vector_var_index = 0;
+for (unsigned int i=0; i<num_var; i++){
+	variable_info<dim> varInfo;
+	if (need_value_LHS[i] or need_gradient_LHS[i] or need_hessian_LHS[i]){
+		varInfo.global_var_index = i;
+		varInfo.global_field_index = field_number;
+		if (var_type[i] == "SCALAR"){
+			varInfo.is_scalar = true;
+			varInfo.scalar_or_vector_index = scalar_var_index;
+			scalar_var_index++;
+		}
+		else {
+			varInfo.is_scalar = false;
+			varInfo.scalar_or_vector_index = vector_var_index;
+			vector_var_index++;
+		}
+		varInfoListLHS.push_back(varInfo);
+	}
+
+	if (var_type[i] == "SCALAR"){
+		field_number++;
+	}
+	else {
+		field_number+=dim;
+	}
+}
+
+}
+
+
+// =====================================================================
 // RESIDUAL CONSTRUCTION FUNCTIONS (RHS, LHS, ENERGY DENSITY)
 // =====================================================================
 
@@ -57,6 +243,14 @@ void generalizedProblem<dim>::getRHS(const MatrixFree<dim,double> &data,
 	  //loop over quadrature points
 	  for (unsigned int q=0; q<num_q_points; ++q){
 
+		  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc;
+		  if (scalar_vars.size() > 0){
+			  q_point_loc = scalar_vars[0].quadrature_point(q);
+		  }
+		  else {
+			  q_point_loc = vector_vars[0].quadrature_point(q);
+		  }
+
 		  for (unsigned int i=0; i<num_var; i++){
 			  if (varInfoListRHS[i].is_scalar) {
 				  if (need_value[i]){
@@ -83,7 +277,7 @@ void generalizedProblem<dim>::getRHS(const MatrixFree<dim,double> &data,
 		  }
 
 		  // Calculate the residuals
-		  residualRHS(modelVarList,modelResidualsList);
+		  residualRHS(modelVarList,modelResidualsList,q_point_loc);
 
 		  // Submit values
 		  for (unsigned int i=0; i<num_var; i++){
@@ -189,6 +383,13 @@ void  generalizedProblem<dim>::getLHS(const MatrixFree<dim,double> &data,
 
 		//loop over quadrature points
 	    for (unsigned int q=0; q<num_q_points; ++q){
+	    	dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc;
+	    	if (scalar_vars.size() > 0){
+	    		q_point_loc = scalar_vars[0].quadrature_point(q);
+	    	}
+	    	else {
+	    		q_point_loc = vector_vars[0].quadrature_point(q);
+	    	}
 
 	    	for (unsigned int i=0; i<num_var_LHS; i++){
 	    		if (varInfoListLHS[i].is_scalar) {
@@ -216,7 +417,7 @@ void  generalizedProblem<dim>::getLHS(const MatrixFree<dim,double> &data,
 	    	}
 
 	    	// Calculate the residuals
-	    	residualLHS(modelVarList,modelRes);
+	    	residualLHS(modelVarList,modelRes,q_point_loc);
 
 	    	// Submit values
 			if (resInfoLHS.is_scalar){
@@ -315,6 +516,13 @@ void  generalizedProblem<dim>::getEnergy(const MatrixFree<dim,double> &data,
 
 		  //loop over quadrature points
 		  for (unsigned int q=0; q<num_q_points; ++q){
+			  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc;
+			  if (scalar_vars.size() > 0){
+				  q_point_loc = scalar_vars[0].quadrature_point(q);
+			  }
+			  else {
+				  q_point_loc = vector_vars[0].quadrature_point(q);
+			  }
 
 			  for (unsigned int i=0; i<num_var; i++){
 				  if (varInfoListRHS[i].is_scalar) {
@@ -342,7 +550,7 @@ void  generalizedProblem<dim>::getEnergy(const MatrixFree<dim,double> &data,
 			  }
 
 			  // Calculate the energy density
-			  energyDensity(modelVarList,JxW[q]);
+			  energyDensity(modelVarList,JxW[q],q_point_loc);
 		  }
 	  }
 
@@ -481,7 +689,6 @@ void vectorBCFunction<dim>::vector_value_list (const std::vector<Point<dim>> &po
 		vectorBCFunction<dim>::vector_value(points[p],value_list[p]);
 }
 
-
 //apply Dirchlet BC function
 template <int dim>
 void generalizedProblem<dim>::applyDirichletBCs(){
@@ -506,7 +713,7 @@ void generalizedProblem<dim>::applyDirichletBCs(){
 	  for (unsigned int direction = 0; direction < 2*dim; direction++){
 		  if (BC_list[this->currentFieldIndex].var_BC_type[direction] == "DIRICHLET"){
 			  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
-					  direction, ConstantFunction<dim>(BC_list[this->currentFieldIndex].var_BC_val[direction]), *(ConstraintMatrix*) \
+					  direction, ConstantFunction<dim>(BC_list[this->currentFieldIndex].var_BC_val[direction],1), *(ConstraintMatrix*) \
 					  this->constraintsSet[this->currentFieldIndex]);
 		  }
 	  }
@@ -519,12 +726,21 @@ void generalizedProblem<dim>::applyDirichletBCs(){
 			  BC_values.push_back(BC_list[this->currentFieldIndex+component].var_BC_val[direction]);
 		  }
 
-
-		  if (BC_list[this->currentFieldIndex].var_BC_type[direction] == "DIRICHLET"){
-			  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
-							direction, vectorBCFunction<dim>(BC_values), *(ConstraintMatrix*) \
-							this->constraintsSet[this->currentFieldIndex]);
+		  std::vector<bool> mask;
+		  for (unsigned int component=0; component < dim; component++){
+			  if (BC_list[this->currentFieldIndex+component].var_BC_type[direction] == "DIRICHLET"){
+				  mask.push_back(true);
+			  }
+			  else {
+				  mask.push_back(false);
+			  }
 		  }
+
+
+		  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
+				  direction, vectorBCFunction<dim>(BC_values), *(ConstraintMatrix*) \
+				  this->constraintsSet[this->currentFieldIndex],mask);
+
 
 	  }
   }
@@ -625,7 +841,7 @@ template <int dim>
 void generalizedProblem<dim>::inputBCs(int var, int component, std::string BC_type, double BC_value){
 
 	varBCs<dim> newBC;
-	for (unsigned int face=0; face<dim*2; face++){
+	for (unsigned int face=0; face<(dim*2); face++){
 		newBC.var_BC_type.push_back(BC_type);
 		newBC.var_BC_val.push_back(BC_value);
 	}
