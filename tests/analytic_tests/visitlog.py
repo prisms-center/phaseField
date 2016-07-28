@@ -3,9 +3,9 @@ ScriptVersion = "2.7.0"
 if ScriptVersion != Version():
     print "This script is for VisIt %s. It may not work with version %s" % (ScriptVersion, Version())
 ShowAllWindows()
-OpenDatabase("diffusionAnalyticComparison/solution-10000.pvtu", 0)
+OpenDatabase("eshelbyAnalyticComparison/solution-0.pvtu", 0)
 # The UpdateDBPluginInfo RPC is not supported in the VisIt module so it will not be logged.
-DefineScalarExpression("diff", "(c-pos_cmfe(<diffusionAnalyticResult/solution-0.pvtu:c>, mesh,0))")
+DefineScalarExpression("diff", "(u_magnitude-pos_cmfe(<eshelbyAnalyticResult/solution-0.pvtu:u_magnitude>, mesh,0))")
 AddPlot("Pseudocolor", "diff", 1, 1)
 PseudocolorAtts = PseudocolorAttributes()
 PseudocolorAtts.scaling = PseudocolorAtts.Linear  # Linear, Log, Skew

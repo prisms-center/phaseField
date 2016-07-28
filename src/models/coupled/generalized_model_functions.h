@@ -516,6 +516,13 @@ void  generalizedProblem<dim>::getEnergy(const MatrixFree<dim,double> &data,
 
 		  //loop over quadrature points
 		  for (unsigned int q=0; q<num_q_points; ++q){
+			  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc;
+			  if (scalar_vars.size() > 0){
+				  q_point_loc = scalar_vars[0].quadrature_point(q);
+			  }
+			  else {
+				  q_point_loc = vector_vars[0].quadrature_point(q);
+			  }
 
 			  for (unsigned int i=0; i<num_var; i++){
 				  if (varInfoListRHS[i].is_scalar) {
@@ -543,7 +550,7 @@ void  generalizedProblem<dim>::getEnergy(const MatrixFree<dim,double> &data,
 			  }
 
 			  // Calculate the energy density
-			  energyDensity(modelVarList,JxW[q]);
+			  energyDensity(modelVarList,JxW[q],q_point_loc);
 		  }
 	  }
 
@@ -730,11 +737,10 @@ void generalizedProblem<dim>::applyDirichletBCs(){
 		  }
 
 
-		  if (BC_list[this->currentFieldIndex].var_BC_type[direction] == "DIRICHLET"){
-			  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
-							direction, vectorBCFunction<dim>(BC_values), *(ConstraintMatrix*) \
-							this->constraintsSet[this->currentFieldIndex],mask);
-		  }
+		  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
+				  direction, vectorBCFunction<dim>(BC_values), *(ConstraintMatrix*) \
+				  this->constraintsSet[this->currentFieldIndex],mask);
+
 
 	  }
   }
@@ -835,7 +841,7 @@ template <int dim>
 void generalizedProblem<dim>::inputBCs(int var, int component, std::string BC_type, double BC_value){
 
 	varBCs<dim> newBC;
-	for (unsigned int face=0; face<dim*2; face++){
+	for (unsigned int face=0; face<(dim*2); face++){
 		newBC.var_BC_type.push_back(BC_type);
 		newBC.var_BC_val.push_back(BC_value);
 	}

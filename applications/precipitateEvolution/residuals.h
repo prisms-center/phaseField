@@ -316,8 +316,11 @@ modelRes.vectorGradResidual = Rux;
 }
 
 template <int dim>
-void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim>> & modelVarList, const dealii::VectorizedArray<double> & JxW_value) {
-	scalarvalueType total_energy_density = constV(0.0);
+void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim>> & modelVarList,
+											const dealii::VectorizedArray<double> & JxW_value,
+											dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {
+
+scalarvalueType total_energy_density = constV(0.0);
 
 //c
 scalarvalueType c = modelVarList[0].scalarValue;

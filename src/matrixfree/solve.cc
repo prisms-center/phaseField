@@ -70,6 +70,12 @@ void MatrixFreePDE<dim>::solve(){
     //output results to file
     if ((writeOutput) && (currentIncrement%skipOutputSteps==0)){
     	outputResults();
+		#ifdef calc_energy
+    	if (calc_energy == true){
+    		computeEnergy();
+    		outputFreeEnergy(freeEnergyValues);
+    	}
+		#endif
     }
   }
 

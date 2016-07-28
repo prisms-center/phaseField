@@ -3,12 +3,11 @@
 #include "../../include/dealIIheaders.h"
 
 //Coupled Cahn-Hilliard+Allen-Cahn+Mechanics problem headers
+#include "parameters.h"
 #include "../../src/models/coupled/generalized_model.h"
+#include "residuals.h"
+#include "ICs_and_BCs.h"
 #include "../../src/models/coupled/generalized_model_functions.h"
-#include "../cahnHilliard/ICs_and_BCs.h"
-#include "../cahnHilliard/parameters.h"
-#include "../cahnHilliard/residuals.h"
-
 
 //main
 int main (int argc, char **argv)

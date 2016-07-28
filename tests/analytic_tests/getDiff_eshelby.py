@@ -1,17 +1,17 @@
 import sys
 
-variable_1 = 'c'
-variable_2 = 'c'
+variable_1 = 'u_magnitude'
+variable_2 = 'u_magnitude'
 
-output_num_1 = "10000"
+output_num_1 = "0"
 output_num_2 = "0"
 
 use_mesh_1 = True
 apply_3slice = False
 apply_box_crop = False
 
-directory_1 = "diffusionAnalyticComparison/solution-"+output_num_1+".pvtu"
-directory_2 = "diffusionAnalyticResult/solution-"+output_num_2+".pvtu"
+directory_1 = "eshelbyAnalyticComparison/solution-"+output_num_1+".pvtu"
+directory_2 = "eshelbyAnalyticResult/solution-"+output_num_2+".pvtu"
 
 if use_mesh_1 == True: 
 	OpenDatabase(directory_1)
@@ -54,7 +54,7 @@ Query("MinMax", use_actual_data=1)
 min_max_val = GetQueryOutputValue()
 error = max(abs(min_max_val[0]),abs(min_max_val[1]))
 
-text_file = open("diff.txt","w")
+text_file = open("eshelby_difference.txt","w")
 text_file.write(str(error)) 
 text_file.close() 
 

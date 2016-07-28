@@ -56,7 +56,9 @@ void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim>> 
 }
 
 template <int dim>
-void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim>> & modelVariablesList, const dealii::VectorizedArray<double> & JxW_value) {
+void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim>> & modelVariablesList,
+											const dealii::VectorizedArray<double> & JxW_value,
+											dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {
 	scalarvalueType total_energy_density = constV(0.0);
 
 // c
