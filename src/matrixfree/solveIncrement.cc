@@ -17,7 +17,7 @@ void MatrixFreePDE<dim>::solveIncrement(){
 #ifdef nucleation_occurs
   if (nucleation_occurs == true) modifySolutionFields();
 #endif
-
+	
   //compute residual vectors
   computeRHS();
 
