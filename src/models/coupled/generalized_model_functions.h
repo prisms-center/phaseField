@@ -136,13 +136,6 @@ for (unsigned int i=0; i<num_var; i++){
 	}
 }
 
-variable_info<dim> resInfoLHS;
-	for (unsigned int i=0; i<num_var_LHS; i++){
-		if (MatrixFreePDE<dim>::currentFieldIndex == varInfoListLHS[i].global_field_index){
-			resInfoLHS = varInfoListLHS[i];
-		}
-	}
-
 // Load variable information for calculating the LHS
 num_var_LHS = 0;
 for (unsigned int i=0; i<num_var; i++){
