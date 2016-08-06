@@ -18,7 +18,7 @@
 
 // Define Cahn-Hilliard parameters (no gradient energy terms)
 #define McV 1.0 
-#define KcV 0.1  
+#define KcV 0.5  
 
 // Define Mechanical properties
 #define c_dependent_stiffness true

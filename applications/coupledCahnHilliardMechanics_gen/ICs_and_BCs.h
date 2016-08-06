@@ -19,15 +19,15 @@ public:
 	  // according to its variable index.
 
 	  double dx=spanX/((double) subdivisionsX)/std::pow(2.0,refineFactor);
-	  //double r=0.0;
+	 //  //double r=0.0;
 
 	  if (index==0){
-//         if(p(1)<spanY/4){
-//          	 scalar_IC = 0.5*(1.0+std::tanh(-(p(1)-spanY/4.0)/(dx)));
-// 	    }
-//     	else{
-             scalar_IC = 0.5+ 0.001*(-0.5 + (double)(std::rand() % 100 )/100.0);
-//         }
+         if(p(1)<spanY/4){
+          	 scalar_IC = 0.5*(1.0+std::tanh(-(p(1)-spanY/4.0)/(dx)));
+ 	    }
+     	else{
+             scalar_IC = 0.5+ 0.1*(-0.5 + (double)(std::rand() % 100 )/100.0);
+         }
 	  }
 	  else if(index==1){
          	 scalar_IC = 0.0;
