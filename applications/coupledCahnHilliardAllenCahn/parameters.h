@@ -51,6 +51,7 @@
 
 // Output files are written every skipOutputSteps time steps
 #define skipOutputSteps 1000
+// =================================================================================
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output
