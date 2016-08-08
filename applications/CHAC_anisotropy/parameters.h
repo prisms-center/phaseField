@@ -14,7 +14,7 @@
 //define time step parameters
 #define timeStep 5.0e-2
 #define timeFinal 20000.0
-#define timeIncrements 2000000
+#define timeIncrements 40000
 
 //define results output parameters
 #define writeOutput true
