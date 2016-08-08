@@ -19,3 +19,5 @@
 //define results output parameters
 #define writeOutput true
 #define skipOutputSteps 2000
+
+#define calc_energy true

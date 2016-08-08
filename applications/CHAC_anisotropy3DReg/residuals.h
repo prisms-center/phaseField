@@ -9,10 +9,6 @@
 #define need_val_residual {true, true, false}
 #define need_grad_residual {true, true, true}
 
-//define number of fields in the problem
-//n, c, biharm
-#define numFields 3
-
 //define Cahn-Hilliard parameters (No Gradient energy term)
 #define McV 1.0
 
@@ -133,14 +129,15 @@ scalarvalueType n = modelVarList[1].scalarValue;
 scalargradType nx = modelVarList[1].scalarGrad;
 
 //biharm
-scalarvalueType biharm = modelVarList[1].scalarValue;
+scalarvalueType biharm = modelVarList[2].scalarValue;
 
 scalarvalueType f_chem = (constV(1.0)-hV)*faV + hV*fbV;
 
 scalargradType normal = nx/(std::sqrt(nx.norm_square())+constV(1.0e-16));
-scalarvalueType f_grad = constV(0.5)*gamma*gamma*nx*nx+constV(0.5)*delta2*biharm*biharm;
+scalarvalueType f_grad = constV(0.5)*gamma*gamma*nx*nx;
+scalarvalueType f_reg = constV(0.5)*delta2*biharm*biharm;
 
-total_energy_density = f_chem + f_grad;
+total_energy_density = f_chem + f_grad + f_reg;
 
 assembler_lock.acquire ();
 for (unsigned i=0; i<c.n_array_elements;i++){
@@ -149,6 +146,7 @@ for (unsigned i=0; i<c.n_array_elements;i++){
 	  this->energy+=total_energy_density[i]*JxW_value[i];
 	  this->energy_components[0]+= f_chem[i]*JxW_value[i];
 	  this->energy_components[1]+= f_grad[i]*JxW_value[i];
+	  this->energy_components[2]+= f_reg[i]*JxW_value[i];
   }
 }
 assembler_lock.release ();
