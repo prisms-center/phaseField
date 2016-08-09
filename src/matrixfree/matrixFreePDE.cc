@@ -12,6 +12,7 @@
  Subscriptor(),
  triangulation (MPI_COMM_WORLD),
  isTimeDependentBVP(false),
+ isEllipticBVP(false),
  dtValue(0.0),
  currentTime(0.0),
  finalTime(0.0),
@@ -37,14 +38,19 @@
  MatrixFreePDE<dim>::~MatrixFreePDE ()
  {
    matrixFreeObject.clear();
+   locally_relevant_dofsSet2.clear();
+   constraintsSet2.clear(); constraintsHangingNodesSet2.clear();
+   dofHandlersSet2.clear();
    for(unsigned int iter=0; iter<fields.size(); iter++){
      delete locally_relevant_dofsSet[iter];
      delete constraintsSet[iter];
+     delete constraintsHangingNodesSet[iter];
      delete dofHandlersSet[iter];
      delete FESet[iter];
      delete solutionSet[iter];
      delete residualSet[iter];
-   } 
+   }
+   soltransSet.clear();
  }
 
 #endif

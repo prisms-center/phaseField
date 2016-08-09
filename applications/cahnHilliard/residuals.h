@@ -11,7 +11,7 @@
 
 //define Cahn-Hilliard parameters
 #define McV 1.0
-#define KcV 1.0
+#define KcV 4.0
 
 //define the free energy and its derivative with respect to n
 #define fV (c*c*c*c - 2.0*c*c*c + c*c)

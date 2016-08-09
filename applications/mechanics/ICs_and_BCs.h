@@ -10,17 +10,17 @@ public:
   }
   double value (const Point<dim> &p, const unsigned int component = 0) const
   {
-	  double scalar_IC = 0;
-	  // =====================================================================
-	  // ENTER THE INITIAL CONDITIONS HERE FOR SCALAR FIELDS
-	  // =====================================================================
-	  // Enter the function describing conditions for the fields at point "p".
-	  // Use "if" statements to set the initial condition for each variable
-	  // according to its variable index.
-
-
-	  // =====================================================================
-	  return scalar_IC;
+    double scalar_IC = 0;
+    // =====================================================================
+    // ENTER THE INITIAL CONDITIONS HERE FOR SCALAR FIELDS
+    // =====================================================================
+    // Enter the function describing conditions for the fields at point "p".
+    // Use "if" statements to set the initial condition for each variable
+    // according to its variable index.
+    
+    
+    // =====================================================================
+    return scalar_IC;
   }
 };
 

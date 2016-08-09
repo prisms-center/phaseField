@@ -21,6 +21,10 @@ class CahnHilliardProblem: public MatrixFreePDE<dim>
 
   //method to apply initial conditions
   void applyInitialConditions();
+  
+  //AMR method
+  void adaptiveRefine(unsigned int currentIncrement);
+  void adaptiveRefineCriterion();
 };
 
 //constructor
@@ -76,5 +80,17 @@ void CahnHilliardProblem<dim>::getRHS(const MatrixFree<dim,double> &data,
     cVals.integrate(true, true);  cVals.distribute_local_to_global(*dst[1]);
   }
 }
+
+#ifndef hAdaptivity
+//adaptive refinement control
+template <int dim>
+void CahnHilliardProblem<dim>::adaptiveRefine(unsigned int currentIncrement){
+}
+
+//adaptive refinement criterion
+template <int dim>
+void CahnHilliardProblem<dim>::adaptiveRefineCriterion(){
+}
+#endif
 
 #endif

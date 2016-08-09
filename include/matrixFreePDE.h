@@ -64,7 +64,7 @@ class MatrixFreePDE:public Subscriptor
   /**
    * Initializes the data structures
    */
-  void init  ();
+  void init  (unsigned int iter=0);
 
   /**
    * Solve's the system of equations
@@ -81,11 +81,15 @@ class MatrixFreePDE:public Subscriptor
   void outputResults  ();
   parallel::distributed::Triangulation<dim> triangulation;
   std::vector<FESystem<dim>*>          FESet;
-  std::vector<const ConstraintMatrix*> constraintsSet;
+  std::vector<const ConstraintMatrix*> constraintsSet, constraintsHangingNodesSet;
   std::vector<const DoFHandler<dim>*>  dofHandlersSet;
   std::vector<const IndexSet*>         locally_relevant_dofsSet;
+  std::vector<ConstraintMatrix*>       constraintsSet2, constraintsHangingNodesSet2;
+  std::vector<DoFHandler<dim>*>        dofHandlersSet2;
+  std::vector<IndexSet*>               locally_relevant_dofsSet2;
   std::vector<vectorType*>             solutionSet, residualSet;
-
+  std::vector<parallel::distributed::SolutionTransfer<dim, vectorType>*> soltransSet;
+  
   //matrix free objects
   MatrixFree<dim,double>               matrixFreeObject;
   vectorType                           invM, dU;
@@ -96,6 +100,12 @@ class MatrixFreePDE:public Subscriptor
   void computeInvM();
   void computeRHS();
 
+  //AMR methods
+  void refineGrid();
+  void refineMesh(unsigned int _currentIncrement);
+  virtual void adaptiveRefine(unsigned int _currentIncrement);
+  virtual void adaptiveRefineCriterion();
+  
   //virtual methods to be implemented in the derived class
   //method to calculate LHS(implicit)
   virtual void getLHS(const MatrixFree<dim,double> &data, 
@@ -109,6 +119,7 @@ class MatrixFreePDE:public Subscriptor
 		       const std::pair<unsigned int,unsigned int> &cell_range) const = 0;
   
   //methods to apply dirichlet BC's
+  std::vector<std::map<dealii::types::global_dof_index, double>*> valuesDirichletSet;
   virtual void markBoundaries();
   virtual void applyDirichletBCs();
 
@@ -136,7 +147,8 @@ class MatrixFreePDE:public Subscriptor
   //variables for time dependent problems 
   //isTimeDependentBVP flag is used to see if invM, time steppping in
   //run(), etc are necessary
-  bool isTimeDependentBVP;
+  bool isTimeDependentBVP, isEllipticBVP;
+  unsigned int parabolicFieldIndex, ellipticFieldIndex;
   double dtValue, currentTime, finalTime;
   unsigned int currentIncrement, totalIncrements;
 
@@ -154,6 +166,7 @@ class MatrixFreePDE:public Subscriptor
 //header files till library packaging scheme is finalized)
 #include "../src/matrixfree/matrixFreePDE.cc"
 #include "../src/matrixfree/init.cc"
+#include "../src/matrixfree/refine.cc"
 #include "../src/matrixfree/invM.cc"
 #include "../src/matrixfree/computeLHS.cc"
 #include "../src/matrixfree/computeRHS.cc"

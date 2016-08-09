@@ -2,7 +2,7 @@
 //general headers
 #include "../../include/dealIIheaders.h"
 
-//Coupled Cahn-Hilliard+Allen-Cahn+Mechanics problem headers
+//mechanics problem headers
 #include "../mechanics/parameters.h"
 #include "../../src/models/coupled/generalized_model.h"
 #include "../mechanics/residuals.h"
@@ -15,9 +15,9 @@ int main (int argc, char **argv)
   Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,numbers::invalid_unsigned_int);
   try
     {
-	  deallog.depth_console(0);
-	  generalizedProblem<problemDIM> problem;
-
+      deallog.depth_console(0);
+      generalizedProblem<problemDIM> problem;
+      
       problem.setBCs();
       problem.buildFields();
       problem.init (); 

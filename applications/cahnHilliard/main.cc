@@ -1,4 +1,4 @@
-//Coupled Cahn-Hilliard, Allen-Cahn and Mechanics problem
+//Cahn-Hilliard problem
 //general headers
 #include "../../include/dealIIheaders.h"
 

@@ -14,8 +14,8 @@
 #define subdivisionsX 1
 #define subdivisionsY 1
 #define subdivisionsZ 1
-#define refineFactor 7
-#define finiteElementDegree 1
+#define refineFactor 6
+#define finiteElementDegree 2
 
 //define number of fields in the problem
 // c, mu
@@ -31,12 +31,3 @@
 #define skipOutputSteps 1000
 
 #define calc_energy false
-
-
-
-
-
-
-
-
-
