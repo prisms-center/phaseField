@@ -43,18 +43,17 @@
 // =================================================================================
 // Set the elliptic solver parameters
 // =================================================================================
-// Set the solver type (currently the only recommended option is conjugate gradient)
+// The solver type (currently the only recommended option is conjugate gradient)
 #define solverType SolverCG
 
-// Set the flag that determines whether the tolerance for solver convergence should
-// be an absolute tolerance (abs_tol=true) or a relative tolerance (abs_tol=false)
-#define abs_tol true
+// The flag that determines whether the tolerance for solver convergence should
+// be an absolute tolerance (absTol=true) or a relative tolerance (absTol=false)
+#define absTol true
 
-// Relative and absolute tolerances for convergence (L2 norm of the residual)
-#define relSolverTolerance 1.0e-2
-#define absSolverTolerance 1.0e-4
+// The tolerance for convergence (L2 norm of the residual)
+#define solverTolerance 1.0e-4
 
-// Maximum number of solver iterations per time step
+// The maximum number of solver iterations per time step
 #define maxSolverIterations 1000
 // =================================================================================
 
@@ -71,7 +70,7 @@
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output
 // =================================================================================
-#define calc_energy true
+#define calcEnergy true
 // =================================================================================
 
 

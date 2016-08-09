@@ -45,53 +45,57 @@ void MatrixFreePDE<dim>::solveIncrement(){
     //Elliptic (time-independent) fields
     else if (fields[fieldIndex].pdetype==ELLIPTIC){
       //implicit solve
-#ifdef solverType
-      if (currentIncrement%skipImplicitSolves==0){
-	//apply Dirichlet BC's
-	for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[fieldIndex]->begin(); it!=valuesDirichletSet[fieldIndex]->end(); ++it){
-	  if (residualSet[fieldIndex]->in_local_range(it->first)){
-	    (*residualSet[fieldIndex])(it->first) = it->second; //*jacobianDiagonal(it->first);
-	  }
-	}
+		#ifdef solverType
+		if (currentIncrement%skipImplicitSolves==0){
+			//apply Dirichlet BC's
+			for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[fieldIndex]->begin(); it!=valuesDirichletSet[fieldIndex]->end(); ++it){
+				if (residualSet[fieldIndex]->in_local_range(it->first)){
+					(*residualSet[fieldIndex])(it->first) = it->second; //*jacobianDiagonal(it->first);
+				}
+			}
 	
-	//solver controls
-	SolverControl solver_control(maxSolverIterations, relSolverTolerance*residualSet[fieldIndex]->l2_norm());
-	solverType<vectorType> solver(solver_control);
+			//solver controls
+			#if absTol == true
+			SolverControl solver_control(maxSolverIterations, solverTolerance);
+			#else
+			SolverControl solver_control(maxSolverIterations, solverTolerance*residualSet[fieldIndex]->l2_norm());
+			#endif
+			solverType<vectorType> solver(solver_control);
 	
-	//solve
-	try{
-	  dU=0;
-	  solver.solve(*this, dU, *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
-	}
-	catch (...) {
-	  pcout << "\nWarning: implicit solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing relSolverTolerance.\n";
-	}
-	*solutionSet[fieldIndex]+=dU;
+			//solve
+			try{
+				dU=0;
+				solver.solve(*this, dU, *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
+			}
+			catch (...) {
+				pcout << "\nWarning: implicit solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing relSolverTolerance.\n";
+			}
+			*solutionSet[fieldIndex]+=dU;
 	
-	//apply constraints
-	constraintsHangingNodesSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
-	//sync ghost DOF's
-	solutionSet[fieldIndex]->update_ghost_values();
-	//
-	sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
-		fields[fieldIndex].name.c_str(),			\
-		residualSet[fieldIndex]->l2_norm(),			\
-		solver_control.last_value(),				\
-		solver_control.last_step(), solver_control.tolerance(), solutionSet[fieldIndex]->l2_norm(), dU.l2_norm());
-	pcout<<buffer; 
-      }
-      else{
-	sprintf(buffer, "field '%2s' [implicit solve]: current residual:%12.6e\n", \
-		fields[fieldIndex].name.c_str(),			\
-		residualSet[fieldIndex]->l2_norm());
-	pcout<<buffer; 
-	pcout << "skipping implicit solve as currentIncrement%skipImplicitSolves!=0\n";
-      }
+			//apply constraints
+			constraintsHangingNodesSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+			//sync ghost DOF's
+			solutionSet[fieldIndex]->update_ghost_values();
+			//
+			sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
+					fields[fieldIndex].name.c_str(),			\
+					residualSet[fieldIndex]->l2_norm(),			\
+					solver_control.last_value(),				\
+					solver_control.last_step(), solver_control.tolerance(), solutionSet[fieldIndex]->l2_norm(), dU.l2_norm());
+			pcout<<buffer;
+		}
+		else{
+			sprintf(buffer, "field '%2s' [implicit solve]: current residual:%12.6e\n", \
+					fields[fieldIndex].name.c_str(),			\
+					residualSet[fieldIndex]->l2_norm());
+			pcout<<buffer;
+			pcout << "skipping implicit solve as currentIncrement%skipImplicitSolves!=0\n";
+		}
 
-#else
-		  pcout << "\nError: solverType not defined. This is required for ELLIPTIC fields.\n\n";
-		  exit (-1);
-#endif
+		#else
+		pcout << "\nError: solverType not defined. This is required for ELLIPTIC fields.\n\n";
+		exit (-1);
+		#endif
 	  }
     
 	  //Hyperbolic (second order derivatives in time) fields and general

@@ -16,13 +16,13 @@ void MatrixFreePDE<dim>::solve(){
   if (isTimeDependentBVP){
     //output initial conditions for time dependent BVP
     if (writeOutput) {
-      outputResults();
-#ifdef calc_energy
-      if (calc_energy == true){
-	computeEnergy();
-	outputFreeEnergy(freeEnergyValues);
-      }
-#endif
+    	outputResults();
+    	#ifdef calcEnergy
+    	if (calcEnergy == true){
+    		computeEnergy();
+    		outputFreeEnergy(freeEnergyValues);
+    	}
+		#endif
     }
     
     //time stepping
@@ -50,13 +50,13 @@ void MatrixFreePDE<dim>::solve(){
       //output results to file
       if ((writeOutput) && (currentIncrement%skipOutputSteps==0)){
     	  outputResults();
-#ifdef calc_energy
-	  if (calc_energy == true){
-	    computeEnergy();
-	    outputFreeEnergy(freeEnergyValues);
-	  }
-#endif
-	  
+			#ifdef calcEnergy
+			  if (calcEnergy == true){
+				  computeEnergy();
+				  outputFreeEnergy(freeEnergyValues);
+			  }
+			#endif
+
       }
       if (currentTime>=finalTime){
     	  pcout << "\ncurrentTime>=timeFinal. Ending time stepping\n";
@@ -81,8 +81,8 @@ void MatrixFreePDE<dim>::solve(){
     //output results to file
     if ((writeOutput) && (currentIncrement%skipOutputSteps==0)){
     	outputResults();
-		#ifdef calc_energy
-    	if (calc_energy == true){
+		#ifdef calcEnergy
+    	if (calcEnergy == true){
     		computeEnergy();
     		outputFreeEnergy(freeEnergyValues);
     	}
