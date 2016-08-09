@@ -28,7 +28,7 @@
 // Define results output parameters
 #define writeOutput true
 
-#define calc_energy false
+#define calcEnergy false
 
 
 

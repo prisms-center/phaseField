@@ -41,11 +41,11 @@ void MatrixFreePDE<dim>::solveIncrement(){
 		  currentFieldIndex = fieldIndex;
 
 #ifdef solverType
-		  #if abs_tol == true
-			  SolverControl solver_control(maxSolverIterations, absSolverTolerance);
+		  #if absTol == true
+			  SolverControl solver_control(maxSolverIterations, solverTolerance);
 
 		  #else
-			  SolverControl solver_control(maxSolverIterations, relSolverTolerance*residualSet[fieldIndex]->l2_norm());
+			  SolverControl solver_control(maxSolverIterations, solverTolerance*residualSet[fieldIndex]->l2_norm());
 		  #endif
 		  solverType<vectorType> solver(solver_control);
 		  if (currentIncrement%skipImplicitSolves==0){
