@@ -32,11 +32,7 @@ void MatrixFreePDE<dim>::solve(){
       //increment current time
       currentTime+=dtValue;
       pcout << "\ntime increment:" << currentIncrement << "  time: " << currentTime << "\n";
-      if (currentTime>=finalTime){
-	pcout << "\ncurrentTime>=timeFinal. Ending time stepping\n";
-	break;
-      }
-      
+
       //check and perform adaptive mesh refinement
       computing_timer.enter_section("matrixFreePDE: AMR");
       adaptiveRefine(currentIncrement);

@@ -133,10 +133,13 @@
        parabolicFieldIndex=it->index;
      }
      else if (it->pdetype==ELLIPTIC){
-       isEllipticBVP=true; 
+       isEllipticBVP=true;
        currentFieldIndex=it->index;
        applyDirichletBCs();
      }
+//     currentFieldIndex=it->index;
+//     applyDirichletBCs();
+
      constraints->close();
      constraintsHangingNodes->close();
 
