@@ -111,29 +111,46 @@
      locally_relevant_dofs->clear();
      DoFTools::extract_locally_relevant_dofs (*dof_handler, *locally_relevant_dofs);
 
-
      //create constraints
-     ConstraintMatrix* constraints;
+     ConstraintMatrix *constraints, *constraintsHangingNodes;
      if (iter==0){
-       constraints=new ConstraintMatrix;
-       constraintsSet.push_back(constraints);
-       constraintsSet2.push_back(constraints);   
+       constraints=new ConstraintMatrix; constraintsSet.push_back(constraints);
+       constraintsSet2.push_back(constraints);
+       constraintsHangingNodes=new ConstraintMatrix; constraintsHangingNodesSet.push_back(constraintsHangingNodes);
+       constraintsHangingNodesSet2.push_back(constraintsHangingNodes);
+       valuesDirichletSet.push_back(new std::map<dealii::types::global_dof_index, double>);
      }
      else{
        constraints=constraintsSet2.at(it->index);
+       constraintsHangingNodes=constraintsHangingNodesSet2.at(it->index);
      }
-     constraints->clear();
-     constraints->reinit(*locally_relevant_dofs);
-     DoFTools::make_hanging_node_constraints (*dof_handler, *constraints);
-
-     //apply zero Dirichlet BC's for ELLIPTIC fields. This is just the
-     //default and can be changed later in the specific BVP
-     //implementation
-     if (it->pdetype==ELLIPTIC){
+     constraints->clear(); constraints->reinit(*locally_relevant_dofs);
+     constraintsHangingNodes->clear(); constraintsHangingNodes->reinit(*locally_relevant_dofs);
+     DoFTools::make_hanging_node_constraints (*dof_handler, *constraintsHangingNodes);
+     
+     //apply zero Dirichlet BC's for ELLIPTIC fields.
+     if (it->pdetype==PARABOLIC){
+       parabolicFieldIndex=it->index;
+     }
+     else if (it->pdetype==ELLIPTIC){
+       isEllipticBVP=true; 
        currentFieldIndex=it->index;
        applyDirichletBCs();
      }
-     constraints->close();  
+     constraints->close();
+     constraintsHangingNodes->close();
+
+     //store Dirichlet BC DOF's
+     valuesDirichletSet[it->index]->clear();
+     for (types::global_dof_index i=0; i<dof_handler->n_dofs(); i++){
+       if (locally_relevant_dofs->is_element(i)){
+	 if (constraints->is_constrained(i)){
+	   (*valuesDirichletSet[it->index])[i] = constraints->get_inhomogeneity(i);
+	 }
+       }
+     }
+
+     
      sprintf(buffer, "field '%2s' DOF : %u (Dirichlet DOF : %u)\n", \
 	     it->name.c_str(), dof_handler->n_dofs(), constraints->n_constraints());
      pcout << buffer;
@@ -148,7 +165,7 @@
    QGaussLobatto<1> quadrature (finiteElementDegree+1);
    num_quadrature_points=std::pow(quadrature.size(),dim);
    matrixFreeObject.clear();
-   matrixFreeObject.reinit (dofHandlersSet, constraintsSet, quadrature, additional_data);
+   matrixFreeObject.reinit (dofHandlersSet, constraintsHangingNodesSet, quadrature, additional_data);
  
    //setup problem vectors
    pcout << "initializing parallel::distributed residual and solution vectors\n";
@@ -175,7 +192,7 @@
    if (isTimeDependentBVP){
      computeInvM();
    }
-
+   
    //apply initial conditions if iter=0, else transfer solution from previous refined mesh
    if (iter==0){
      applyInitialConditions();
@@ -192,6 +209,12 @@
      }
    }
 
+   //apply Dirichlet BC's
+   if (isEllipticBVP){
+     constraintsSet[ellipticFieldIndex]->distribute(*solutionSet.at(ellipticFieldIndex));
+     constraintsHangingNodesSet[ellipticFieldIndex]->distribute(*solutionSet.at(ellipticFieldIndex));
+   }
+   
    //create new solution transfer sets
    soltransSet.clear();
    for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){

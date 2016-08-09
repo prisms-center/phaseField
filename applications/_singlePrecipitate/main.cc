@@ -244,7 +244,7 @@ void CoupledCHACMechanicsProblem<dim>::markBoundaries(){
 
 				//Mark only the x/y/z=0 face
 				if ( std::fabs(cell->face(face_number)->center()(i) - (0)) < 1e-12 ){
-				cell->face(face_number)->set_boundary_indicator (i+1);
+				cell->face(face_number)->set_boundary_id (i+1);
 				}
 
 			}

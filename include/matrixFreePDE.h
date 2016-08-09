@@ -76,10 +76,10 @@ class MatrixFreePDE:public Subscriptor
   void outputResults  ();
   parallel::distributed::Triangulation<dim> triangulation;
   std::vector<FESystem<dim>*>          FESet;
-  std::vector<const ConstraintMatrix*> constraintsSet;
+  std::vector<const ConstraintMatrix*> constraintsSet, constraintsHangingNodesSet;
   std::vector<const DoFHandler<dim>*>  dofHandlersSet;
   std::vector<const IndexSet*>         locally_relevant_dofsSet;
-  std::vector<ConstraintMatrix*>       constraintsSet2;
+  std::vector<ConstraintMatrix*>       constraintsSet2, constraintsHangingNodesSet2;
   std::vector<DoFHandler<dim>*>        dofHandlersSet2;
   std::vector<IndexSet*>               locally_relevant_dofsSet2;
   std::vector<vectorType*>             solutionSet, residualSet;
@@ -114,6 +114,7 @@ class MatrixFreePDE:public Subscriptor
 		       const std::pair<unsigned int,unsigned int> &cell_range) const = 0;
   
   //methods to apply dirichlet BC's
+  std::vector<std::map<dealii::types::global_dof_index, double>*> valuesDirichletSet;
   virtual void markBoundaries();
   virtual void applyDirichletBCs();
 
@@ -141,7 +142,8 @@ class MatrixFreePDE:public Subscriptor
   //variables for time dependent problems 
   //isTimeDependentBVP flag is used to see if invM, time steppping in
   //run(), etc are necessary
-  bool isTimeDependentBVP;
+  bool isTimeDependentBVP, isEllipticBVP;
+  unsigned int parabolicFieldIndex, ellipticFieldIndex;
   double dtValue, currentTime, finalTime;
   unsigned int currentIncrement, totalIncrements;
 

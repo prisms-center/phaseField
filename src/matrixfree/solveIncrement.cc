@@ -32,7 +32,7 @@ void MatrixFreePDE<dim>::solveIncrement(){
       }
       //
       //apply constraints
-      constraintsSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+      constraintsHangingNodesSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
       //sync ghost DOF's
       solutionSet[fieldIndex]->update_ghost_values();
       //
@@ -46,16 +46,30 @@ void MatrixFreePDE<dim>::solveIncrement(){
     else if (fields[fieldIndex].pdetype==ELLIPTIC){
       //implicit solve
 #ifdef solverType
-      SolverControl solver_control(maxSolverIterations, relSolverTolerance*residualSet[fieldIndex]->l2_norm());
-      solverType<vectorType> solver(solver_control);
       if (currentIncrement%skipImplicitSolves==0){
+	//apply Dirichlet BC's
+	for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[fieldIndex]->begin(); it!=valuesDirichletSet[fieldIndex]->end(); ++it){
+	  if (residualSet[fieldIndex]->in_local_range(it->first)){
+	    (*residualSet[fieldIndex])(it->first) = it->second; //*jacobianDiagonal(it->first);
+	  }
+	}
+	
+	//solver controls
+	SolverControl solver_control(maxSolverIterations, relSolverTolerance*residualSet[fieldIndex]->l2_norm());
+	solverType<vectorType> solver(solver_control);
+	
+	//solve
 	try{
+	  dU=0;
 	  solver.solve(*this, dU, *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
 	}
 	catch (...) {
 	  pcout << "\nWarning: implicit solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing relSolverTolerance.\n";
 	}
 	*solutionSet[fieldIndex]+=dU;
+	
+	//apply constraints
+	constraintsHangingNodesSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
 	//sync ghost DOF's
 	solutionSet[fieldIndex]->update_ghost_values();
 	//

@@ -12,6 +12,7 @@
  Subscriptor(),
  triangulation (MPI_COMM_WORLD),
  isTimeDependentBVP(false),
+ isEllipticBVP(false),
  dtValue(0.0),
  currentTime(0.0),
  finalTime(0.0),
