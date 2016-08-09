@@ -11,17 +11,6 @@
 #include "../../src/models/mechanics/mechanics.h"
 #include "ICs_and_BCs.h"
 
-
-//adaptive refinement control
-template <int dim>
-void MechanicsProblem<dim>::adaptiveRefine(unsigned int currentIncrement){
-}
-
-//adaptive refinement criterion
-template <int dim>
-void MechanicsProblem<dim>::adaptiveRefineCriterion(){
-}
-
 //main
 int main (int argc, char **argv)
 {

@@ -17,6 +17,14 @@
 #define refineFactor 6
 #define finiteElementDegree 2
 
+//adaptive refinement parameters
+#define hAdaptivity true
+#define maxRefinementLevel (refineFactor)
+#define minRefinementLevel (0)
+#define refinementDOF 1 //refining using composition field
+#define topRefineFraction 0.99
+#define bottomCoarsenFraction 0.01
+
 //define number of fields in the problem
 //c, mu
 #define numFields 2

@@ -81,4 +81,16 @@ void CahnHilliardProblem<dim>::getRHS(const MatrixFree<dim,double> &data,
   }
 }
 
+#ifndef hAdaptivity
+//adaptive refinement control
+template <int dim>
+void CahnHilliardProblem<dim>::adaptiveRefine(unsigned int currentIncrement){
+}
+
+//adaptive refinement criterion
+template <int dim>
+void CahnHilliardProblem<dim>::adaptiveRefineCriterion(){
+}
+#endif
+
 #endif
