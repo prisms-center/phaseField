@@ -34,7 +34,11 @@ class MechanicsProblem: public MatrixFreePDE<dim>
   //methods to apply dirichlet BC's
   void markBoundaries();
   void applyDirichletBCs();
-};
+  
+  //AMR method
+  void adaptiveRefine(unsigned int currentIncrement);
+  void adaptiveRefineCriterion();
+}; 
 
 //constructor
 template <int dim>
@@ -151,5 +155,5 @@ void  MechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &data,
   }
 }
 
-
 #endif
+
