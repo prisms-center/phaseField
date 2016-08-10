@@ -73,6 +73,16 @@
 #define calcEnergy true
 // =================================================================================
 
+//adaptive refinement parameters
+#define hAdaptivity true
+#define maxRefinementLevel (refineFactor)
+#define minRefinementLevel (refineFactor-2)
+#define refineCriterionFields {1,2,3}
+#define refineWindowMax {0.99,0.99,0.99}
+#define refineWindowMin {0.01,0.01,0.01}
+#define skipRemeshingSteps 1000
+
+
 
 
 

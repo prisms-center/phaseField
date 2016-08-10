@@ -44,7 +44,7 @@ void MatrixFreePDE<dim>::solveIncrement(){
     }
     //Elliptic (time-independent) fields
     else if (fields[fieldIndex].pdetype==ELLIPTIC){
-      //implicit solve
+    	//implicit solve
 		#ifdef solverType
 		if (currentIncrement%skipImplicitSolves==0){
 			//apply Dirichlet BC's
@@ -68,7 +68,7 @@ void MatrixFreePDE<dim>::solveIncrement(){
 				solver.solve(*this, dU, *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
 			}
 			catch (...) {
-				pcout << "\nWarning: implicit solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing relSolverTolerance.\n";
+				pcout << "\nWarning: implicit solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing solverTolerance.\n";
 			}
 			*solutionSet[fieldIndex]+=dU;
 	

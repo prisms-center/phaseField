@@ -588,6 +588,81 @@ void generalizedProblem<dim>::computeIntegral(double& integratedField){
 }
 
 // =====================================================================
+// ADAPTIVE MESHING FUNCTIONS
+// =====================================================================
+
+//adaptive refinement control
+template <int dim>
+void generalizedProblem<dim>::adaptiveRefine(unsigned int currentIncrement){
+	if ((currentIncrement>0) && (currentIncrement%skipRemeshingSteps==0)){
+		this->refineMesh(currentIncrement);
+	}
+}
+
+//adaptive refinement criterion
+template <int dim>
+void generalizedProblem<dim>::adaptiveRefineCriterion(){
+	//Custom defined estimation criterion
+	std::vector<int> refine_criterion_fields = refineCriterionFields;
+	std::vector<double> refine_window_max = refineWindowMax;
+	std::vector<double> refine_window_min = refineWindowMin;
+	std::vector<std::vector<double> > errorOutV;
+
+
+	QGauss<dim>  quadrature(finiteElementDegree+1);
+	FEValues<dim> fe_values (*this->FESet[refine_criterion_fields[0]], quadrature, update_values);
+	const unsigned int   num_quad_points = quadrature.size();
+
+	std::vector<double> errorOut(num_quad_points);
+
+	typename DoFHandler<dim>::active_cell_iterator cell = this->dofHandlersSet2[refine_criterion_fields[0]]->begin_active(), endc = this->dofHandlersSet2[refine_criterion_fields[0]]->end();
+
+	for (;cell!=endc; ++cell){
+		if (cell->is_locally_owned()){
+			fe_values.reinit (cell);
+
+			for (unsigned int field_index=0; field_index<refine_criterion_fields.size(); field_index++){
+				fe_values.get_function_values(*this->solutionSet[refine_criterion_fields[field_index]], errorOut);
+				errorOutV.push_back(errorOut);
+			}
+
+			bool mark_refine = false;
+
+			for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
+				for (unsigned int field_index=0; field_index<refine_criterion_fields.size(); field_index++){
+					if ((errorOutV[field_index][q_point]>refine_window_min[field_index]) && (errorOutV[field_index][q_point]<refine_window_max[field_index])){
+						mark_refine = true;
+						break;
+					}
+				}
+			}
+
+			errorOutV.clear();
+
+//			fe_values.get_function_values(*this->solutionSet[refine_criterion_fields[0]], errorOut);
+//
+//			bool mark_refine = false;
+//
+//			for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
+//				if ((errorOut[q_point]>refine_window_min[0]) && (errorOut[q_point]<refine_window_max[0])){
+//					mark_refine = true;
+//					break;
+//				}
+//			}
+
+
+			if ( (mark_refine == true) ){
+				cell->set_refine_flag();
+			}
+			else {
+				cell->set_coarsen_flag();
+			}
+		}
+	}
+}
+
+
+// =====================================================================
 // FUNCTION TO BUILD THE VECTOR OF FIELDS
 // =====================================================================
 

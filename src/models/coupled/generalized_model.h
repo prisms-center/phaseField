@@ -123,5 +123,9 @@ class generalizedProblem: public MatrixFreePDE<dim>
   void energyDensity(const std::vector<modelVariable<dim>> & modelVarList, const dealii::VectorizedArray<double> & JxW_value,
 		  	  	  	  	  	  	  	  	  	  	  	  	  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc);
 
+  //AMR methods
+  void adaptiveRefine(unsigned int currentIncrement);
+  void adaptiveRefineCriterion();
+
 };
 

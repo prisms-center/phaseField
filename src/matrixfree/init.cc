@@ -134,11 +134,10 @@
      }
      else if (it->pdetype==ELLIPTIC){
        isEllipticBVP=true;
-       currentFieldIndex=it->index;
-       applyDirichletBCs();
      }
-//     currentFieldIndex=it->index;
-//     applyDirichletBCs();
+
+     currentFieldIndex=it->index;
+     applyDirichletBCs();
 
      constraints->close();
      constraintsHangingNodes->close();

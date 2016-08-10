@@ -15,6 +15,8 @@ void MatrixFreePDE<dim>::adaptiveRefineCriterion(){
   //Kelly error estimation criterion
   //estimate cell wise errors for mesh refinement
 #if hAdaptivity==true 
+#ifdef adaptivityType
+#if adaptivityType=="KELLY"
   Vector<float> estimated_error_per_cell (this->triangulation.n_locally_owned_active_cells());
   KellyErrorEstimator<dim>::estimate (*this->dofHandlersSet2[refinementDOF],
 				      QGaussLobatto<dim-1>(finiteElementDegree+1),
@@ -31,6 +33,8 @@ void MatrixFreePDE<dim>::adaptiveRefineCriterion(){
 									    topRefineFraction,
 									    bottomCoarsenFraction);
 #endif
+#endif
+#endif
 }
 
 
@@ -42,11 +46,19 @@ void MatrixFreePDE<dim>::refineGrid (){
   adaptiveRefineCriterion();
   
   //limit the maximal refinement depth of the mesh
-  pcout << "Current mesh refinement levels: " << triangulation.n_levels() << "\n";
-  if ( (triangulation.n_levels() > maxRefinementLevel) || (triangulation.n_levels() < minRefinementLevel) ){
+  pcout << "Current mesh refinement level: " << triangulation.n_levels() << "\n";
+  if ( triangulation.n_levels() > maxRefinementLevel ){
     for (typename parallel::distributed::Triangulation<dim>::active_cell_iterator cell = triangulation.begin_active(maxRefinementLevel); cell != triangulation.end(); ++cell)
       cell->clear_refine_flag ();
   }
+
+  //limit the minimal refinement depth of the mesh
+  for (typename parallel::distributed::Triangulation<dim>::active_cell_iterator cell = triangulation.begin_active(minRefinementLevel); cell != triangulation.end(); ++cell){
+      if (cell->level() <= minRefinementLevel ){
+    	  cell->clear_coarsen_flag ();
+      }
+  }
+
 
   //prepare and refine
   triangulation.prepare_coarsening_and_refinement();
