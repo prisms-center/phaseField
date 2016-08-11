@@ -22,16 +22,19 @@ void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Vectorized
 template <int dim, typename T>
 class unitTest
 {
-public:
-	bool test_computeStress();
-	void assignCIJSize(dealii::VectorizedArray<double> CIJ[2*dim-1+dim/3][2*dim-1+dim/3]);
-	void assignCIJSize(dealii::Table<2, double> &CIJ);
-	bool test_computeInvM(int argc, char **argv);
-	bool test_getRHS();
-	bool test_computeRHS();
+ public:
+  bool test_computeInvM(int argc, char **argv);
+  bool test_outputResults(int argc, char **argv);
+  bool test_computeStress();
+  void assignCIJSize(dealii::VectorizedArray<double> CIJ[2*dim-1+dim/3][2*dim-1+dim/3]);
+  void assignCIJSize(dealii::Table<2, double> &CIJ);
+  bool test_getRHS();
+  bool test_computeRHS();
 };
 
-#include "test_computeStress.h"
+
 #include "test_invM.h"
+#include "test_outputResults.h"
+#include "test_computeStress.h"
 #include "test_getRHS.h"
 //#include "test_computeRHS.h"

@@ -99,8 +99,6 @@ class MatrixFreePDE:public Subscriptor
   void solve ();
   void vmult (vectorType &dst, const vectorType &src) const;
   std::vector<Field<dim> >                  fields;
-  //matrix free methods
-  void computeInvM();
   
   // Virtual function to shift the concentration
   void shiftConcentration();
@@ -126,6 +124,7 @@ class MatrixFreePDE:public Subscriptor
   //matrix free methods
   unsigned int currentFieldIndex;
   unsigned int num_quadrature_points;
+  void computeInvM();
   void computeRHS();
 
   //AMR methods

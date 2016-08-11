@@ -1,9 +1,9 @@
 // Unit test(s) for the method "computeInvM"
 template <int dim>
-class testProblem: public MatrixFreePDE<dim>
+class testInvM: public MatrixFreePDE<dim>
 {
  public: 
-  testProblem(){
+  testInvM(){
     //init the MatrixFreePDE class for testing
     this->initForTests();
 
@@ -26,12 +26,9 @@ template <int dim,typename T>
   bool unitTest<dim,T>::test_computeInvM(int argc, char** argv){
   	bool pass = false;
 	std::cout << "\nTesting 'computeInvM' in " << dim << " dimension(s)...'" << std::endl;
-
-	//init MPI
-	Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, numbers::invalid_unsigned_int);
  
 	//create test problem class object
-	testProblem<dim> test;
+	testInvM<dim> test;
 	//check invM norm
 	if ((test.invMNorm - 1700.0) < 1.0e-10) {pass=true;}
 	char buffer[100];
