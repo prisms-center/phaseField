@@ -15,24 +15,50 @@
 #include "fields.h"
 
 
-//define data types  
+//define data types
+#ifndef scalarType
 typedef dealii::VectorizedArray<double> scalarType;
+#endif
+#ifndef vectorType
 typedef dealii::parallel::distributed::Vector<double> vectorType;
+#endif
 //define FE system types
+#ifndef typeScalar
 typedef dealii::FEEvaluation<problemDIM,finiteElementDegree,finiteElementDegree+1,1,double>           typeScalar;
+#endif
+#ifndef typeVector
 typedef dealii::FEEvaluation<problemDIM,finiteElementDegree,finiteElementDegree+1,problemDIM,double>  typeVector;
+#endif
 //define data value types
+#ifndef scalarvalueType
 typedef dealii::VectorizedArray<double> scalarvalueType;
+#endif
+#ifndef vectorvalueType
 typedef dealii::Tensor<1, problemDIM, dealii::VectorizedArray<double> > vectorvalueType;
+#endif
 #if problemDIM==1
+#ifndef scalargradType
 typedef dealii::VectorizedArray<double> scalargradType;
+#endif
+#ifndef vectorgradType
 typedef dealii::VectorizedArray<double> vectorgradType;
+#endif
+#ifndef vectorhessType
 typedef dealii::VectorizedArray<double> vectorhessType;
-#else 
+#endif
+#else
+#ifndef scalargradType
 typedef dealii::Tensor<1, problemDIM, dealii::VectorizedArray<double> > scalargradType;
+#endif
+#ifndef scalarhessType
 typedef dealii::Tensor<2,problemDIM,dealii::VectorizedArray<double> > scalarhessType;
+#endif
+#ifndef vectorgradType
 typedef dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > vectorgradType;
+#endif
+#ifndef vectorhessType
 typedef dealii::Tensor<3, problemDIM, dealii::VectorizedArray<double> > vectorhessType;
+#endif
 #endif
 
 #include "model_variables.h"
@@ -65,6 +91,7 @@ class MatrixFreePDE:public Subscriptor
    * Initializes the data structures
    */
   void init  (unsigned int iter=0);
+  void initForTests();
 
   /**
    * Solve's the system of equations
@@ -72,7 +99,9 @@ class MatrixFreePDE:public Subscriptor
   void solve ();
   void vmult (vectorType &dst, const vectorType &src) const;
   std::vector<Field<dim> >                  fields;
-
+  //matrix free methods
+  void computeInvM();
+  
   // Virtual function to shift the concentration
   void shiftConcentration();
 
@@ -97,7 +126,6 @@ class MatrixFreePDE:public Subscriptor
   //matrix free methods
   unsigned int currentFieldIndex;
   unsigned int num_quadrature_points;
-  void computeInvM();
   void computeRHS();
 
   //AMR methods
@@ -166,6 +194,7 @@ class MatrixFreePDE:public Subscriptor
 //header files till library packaging scheme is finalized)
 #include "../src/matrixfree/matrixFreePDE.cc"
 #include "../src/matrixfree/init.cc"
+#include "../src/matrixfree/initForTests.cc"
 #include "../src/matrixfree/refine.cc"
 #include "../src/matrixfree/invM.cc"
 #include "../src/matrixfree/computeLHS.cc"
