@@ -21,7 +21,6 @@
 // (need_val_residual) and/or the gradient of the test function (need_grad_residual)
 #define need_val_residual {true, true}
 #define need_grad_residual {true, true}
-// =================================================================================
 
 // =================================================================================
 // Define the model parameters and the residual equations
@@ -36,6 +35,8 @@
 
 // Allen-Cahn mobility
 #define MnV 150.0
+
+// Allen-Cahn gradient energy coefficient
 #define KnV 0.5
 
 // Free energy for each phase and they're first and second derivatives
@@ -56,7 +57,6 @@
 #define rcxV  (constV(-McV*timeStep)*muxV)
 #define rnV  (n-constV(timeStep*MnV)*(fbV-faV)*hnV)
 #define rnxV (constV(-timeStep*KnV*MnV)*nx)
-// =================================================================================
 
 // =================================================================================
 // residualRHS
@@ -90,7 +90,6 @@ modelResidualsList[1].scalarValueResidual = rnV;
 modelResidualsList[1].scalarGradResidual = rnxV;
 
 }
-// =================================================================================
 
 // =================================================================================
 // residualLHS (needed only if at least one equation is elliptic)
@@ -113,7 +112,6 @@ void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim>> 
 		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 }
-// =================================================================================
 
 // =================================================================================
 // energyDensity (needed only if calcEnergy == true)

@@ -1,43 +1,64 @@
-// Definition of the variables in the model
+// List of variables and residual equations for the Precipitate Evolution example application
+
+// =================================================================================
+// Define the variables in the model
+// =================================================================================
+// The number of variables
 #define num_var 5
+
+// The names of the variables, whether they are scalars or vectors and whether the
+// governing eqn for the variable is parabolic or elliptic
 #define variable_name {"c", "n1", "n2", "n3", "u"}
 #define variable_type {"SCALAR","SCALAR","SCALAR","SCALAR","VECTOR"}
 #define variable_eq_type {"PARABOLIC","PARABOLIC","PARABOLIC","PARABOLIC","ELLIPTIC"}
+
+// Flags for whether the value, gradient, and Hessian are needed in the residual eqns
 #define need_val {true, true, true, true, false}
 #define need_grad {true, true, true, true, true}
-#define need_hess {false, false, false, false, false} // Currently overridden based on value of "n_dependent_stiffness"
+#define need_hess {false, false, false, false, false}
+
+// Flags for whether the residual equation has a term multiplied by the test function
+// (need_val_residual) and/or the gradient of the test function (need_grad_residual)
 #define need_val_residual {true, true, true, true, false}
 #define need_grad_residual {true, true, true, true, true}
 
+// Flags for whether the value, gradient, and Hessian are needed in the residual eqn
+// for the left-hand-side of the iterative solver for elliptic equations
 #define need_val_LHS {false, true, true, true, false}
 #define need_grad_LHS {false, false, false, false, true}
 #define need_hess_LHS {false, false, false, false, false}
+
+// Flags for whether the residual equation for the left-hand-side of the iterative
+// solver for elliptic equations has a term multiplied by the test function
+// (need_val_residual) and/or the gradient of the test function (need_grad_residual)
 #define need_val_residual_LHS {false, false, false, false, false}
 #define need_grad_residual_LHS {false, false, false, false, true}
 
-// Define Cahn-Hilliard parameters (no gradient energy terms)
+// =================================================================================
+// Define the model parameters and the residual equations
+// =================================================================================
+// Parameters in the residual equations and expressions for the residual equations
+// can be set here. For simple cases, the entire residual equation can be written
+// here. For more complex cases with loops or conditional statements, residual
+// equations (or parts of residual equations) can be written below in "residualRHS".
+
+// Cahn-Hilliard mobility
 #define McV 1.0
 
-// Define Allen-Cahn parameters
+// Allen-Cahn mobilities
 #define Mn1V 100.0
 #define Mn2V 100.0
 #define Mn3V 100.0
 
+// Gradient energy coefficients
 double Kn1[3][3]={{0.03,0,0},{0,0.007,0},{0,0,1.0}};
 double Kn2[3][3]={{0.01275,-0.009959,0},{-0.009959,0.02425,0},{0,0,1.0}};
 double Kn3[3][3]={{0.01275,0.009959,0},{0.009959,0.02425,0},{0,0,1.0}};
 
-// Define Mechanical properties
+// Define mechanical properties
 #define n_dependent_stiffness true
 // Mechanical symmetry of the material and stiffness parameters
-// Used throughout system if n_dependent_stiffness == false, used in n=0 phase if n_dependent_stiffness == true
-//#define MaterialModelV ISOTROPIC
-//#define MaterialConstantsV {2.0,0.3}
-
-// Used in n=1 phase if n_dependent_stiffness == true
-//#define MaterialModelBetaV ISOTROPIC
-//#define MaterialConstantsBetaV {2.5,0.3}
-
+// If n_dependent_stiffness == false the first entry is used for all phases
 #define MaterialModels {{"ISOTROPIC"},{"ISOTROPIC"}}
 #define MaterialConstants {{2.0,0.3},{2.5,0.3}}
 
@@ -52,7 +73,7 @@ double sfts_const2[3][3]={{0.0225,-0.0069,0},{-0.0069,0.0305,0},{0,0,-0.00270}};
 double sfts_linear3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double sfts_const3[3][3]={{0.0225, 0.0069,0},{0.0069,0.0305,0},{0,0,-0.00270}};
 
-//define free energy expressions
+// Free energy expressions
 #define faV (-1.6704-4.776*c+5.1622*c*c-2.7375*c*c*c+1.3687*c*c*c*c)
 #define facV (-4.776 + 10.3244*c - 8.2125*c*c + 5.4748*c*c*c)
 #define faccV (10.3244-16.425*c+16.4244*c*c)
@@ -66,7 +87,7 @@ double sfts_const3[3][3]={{0.0225, 0.0069,0},{0.0069,0.0305,0},{0,0,-0.00270}};
 #define hn2V (30.0*n2*n2-60.0*n2*n2*n2+30.0*n2*n2*n2*n2)
 #define hn3V (30.0*n3*n3-60.0*n3*n3*n3+30.0*n3*n3*n3*n3)
 
-// Define required residuals
+// Residual equations
 #define rcV   (c)
 #define rcxTemp ( cx*((1.0-h1V-h2V-h3V)*faccV+(h1V+h2V+h3V)*fbccV) + n1x*((fbcV-facV)*hn1V) + n2x*((fbcV-facV)*hn2V) + n3x*((fbcV-facV)*hn3V) + grad_mu_el)
 #define rcxV  (constV(-timeStep*McV)*rcxTemp)
@@ -78,30 +99,39 @@ double sfts_const3[3][3]={{0.0225, 0.0069,0},{0.0069,0.0305,0},{0,0,-0.00270}};
 #define rn2xV  (constV(-timeStep*Mn2V)*Knx2)
 #define rn3xV  (constV(-timeStep*Mn3V)*Knx3)
 
-// ---------------------------------------------
-
+// =================================================================================
+// residualRHS
+// =================================================================================
+// This function calculates the residual equations for each variable. It takes
+// "modelVariablesList" as an input, which is a list of the value and derivatives of
+// each of the variables at a specific quadrature point. The (x,y,z) location of
+// that quadrature point is given by "q_point_loc". The function outputs
+// "modelResidualsList", a list of the value and gradient terms of the residual for
+// each residual equation. The index for each variable in these lists corresponds to
+// the order it is defined at the top of this file (starting at 0).
 template <int dim>
 void generalizedProblem<dim>::residualRHS(const std::vector<modelVariable<dim>> & modelVariablesList,
 												std::vector<modelResidual<dim>> & modelResidualsList,
 												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
-//c
+
+// The concentration and its derivatives (names here should match those in the macros above)
 scalarvalueType c = modelVariablesList[0].scalarValue;
 scalargradType cx = modelVariablesList[0].scalarGrad;
 
-//n1
+// The first order parameter and its derivatives (names here should match those in the macros above)
 scalarvalueType n1 = modelVariablesList[1].scalarValue;
 scalargradType n1x = modelVariablesList[1].scalarGrad;
 
-//n2
+// The second order parameter and its derivatives (names here should match those in the macros above)
 scalarvalueType n2 = modelVariablesList[2].scalarValue;
 scalargradType n2x = modelVariablesList[2].scalarGrad;
 
 
-//n3
+// The third order parameter and its derivatives (names here should match those in the macros above)
 scalarvalueType n3 = modelVariablesList[3].scalarValue;
 scalargradType n3x = modelVariablesList[3].scalarGrad;
 
-//u
+// The derivative of the displacement vector (names here should match those in the macros above)
 vectorgradType ux = modelVariablesList[4].vectorGrad;
 vectorgradType Rux;
 
@@ -276,6 +306,21 @@ modelResidualsList[4].vectorGradResidual = Rux;
 
 }
 
+// =================================================================================
+// residualLHS (needed only if at least one equation is elliptic)
+// =================================================================================
+// This function calculates the residual equations for the iterative solver for
+// elliptic equations.for each variable. It takes "modelVariablesList" as an input,
+// which is a list of the value and derivatives of each of the variables at a
+// specific quadrature point. The (x,y,z) location of that quadrature point is given
+// by "q_point_loc". The function outputs "modelRes", the value and gradient terms of
+// for the left-hand-side of the residual equation for the iterative solver. The
+// index for each variable in these lists corresponds to the order it is defined at
+// the top of this file (starting at 0), not counting variables that have
+// "need_val_LHS", "need_grad_LHS", and "need_hess_LHS" all set to "false". If there
+// are multiple elliptic equations, conditional statements should be used to ensure
+// that the correct residual is being submitted. The index of the field being solved
+// can be accessed by "this->currentFieldIndex".
 template <int dim>
 void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim>> & modelVarList,
 		modelResidual<dim> & modelRes,
@@ -315,6 +360,17 @@ modelRes.vectorGradResidual = Rux;
 
 }
 
+// =================================================================================
+// energyDensity (needed only if calcEnergy == true)
+// =================================================================================
+// This function integrates the free energy density across the computational domain.
+// It takes "modelVariablesList" as an input, which is a list of the value and
+// derivatives of each of the variables at a specific quadrature point. It also
+// takes the mapped quadrature weight, "JxW_value", as an input. The (x,y,z) location
+// of the quadrature point is given by "q_point_loc". The weighted value of the
+// energy density is added to "energy" variable and the components of the energy
+// density are added to the "energy_components" variable (index 0: chemical energy,
+// index 1: gradient energy, index 2: elastic energy).
 template <int dim>
 void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim>> & modelVarList,
 											const dealii::VectorizedArray<double> & JxW_value,

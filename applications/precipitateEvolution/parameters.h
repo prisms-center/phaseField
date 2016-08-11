@@ -5,7 +5,6 @@
 // Set the number of dimensions (1, 2, or 3 for a 1D, 2D, or 3D calculation)
 // =================================================================================
 #define problemDIM 2
-// =================================================================================
 
 // =================================================================================
 // Set the length of the domain in all three dimensions
@@ -14,7 +13,6 @@
 #define spanX 40.0
 #define spanY 40.0
 #define spanZ 40.0
-// =================================================================================
 
 // =================================================================================
 // Set the element parameters
@@ -26,10 +24,29 @@
 #define subdivisionsZ 3
 #define refineFactor 5
 
-// Set the polynomial degree of the element
-// Suggested values are either 1 or 2
+// Set the polynomial degree of the element (suggested values: 1 or 2)
 #define finiteElementDegree 2
+
 // =================================================================================
+// Set the adaptive mesh refinement parameters
+// =================================================================================
+// Set the flag determining if adaptive meshing is activated
+#define hAdaptivity true
+
+// Set the maximum and minimum level of refinement
+#define maxRefinementLevel (refineFactor)
+#define minRefinementLevel (refineFactor-2)
+
+// Set the fields used to determine the refinement. Fields determined by the order
+// declared in "equations.h", starting at zero
+#define refineCriterionFields {1,2,3}
+
+// Set the maximum and minimum value of the fields where the mesh should be refined
+#define refineWindowMax {0.99,0.99,0.99}
+#define refineWindowMin {0.01,0.01,0.01}
+
+// Set the number of time steps between remeshing operations
+#define skipRemeshingSteps 1000
 
 // =================================================================================
 // Set the time step parameters
@@ -38,7 +55,6 @@
 #define timeStep 4.0e-4
 #define timeFinal 100.0
 #define timeIncrements 5000
-// =================================================================================
 
 // =================================================================================
 // Set the elliptic solver parameters
@@ -55,7 +71,6 @@
 
 // The maximum number of solver iterations per time step
 #define maxSolverIterations 1000
-// =================================================================================
 
 // =================================================================================
 // Set the output parameters
@@ -65,22 +80,14 @@
 
 // Output files are written every skipOutputSteps time steps
 #define skipOutputSteps 500
-// =================================================================================
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output
 // =================================================================================
 #define calcEnergy true
-// =================================================================================
 
-//adaptive refinement parameters
-#define hAdaptivity true
-#define maxRefinementLevel (refineFactor)
-#define minRefinementLevel (refineFactor-2)
-#define refineCriterionFields {1,2,3}
-#define refineWindowMax {0.99,0.99,0.99}
-#define refineWindowMin {0.01,0.01,0.01}
-#define skipRemeshingSteps 1000
+
+
 
 
 

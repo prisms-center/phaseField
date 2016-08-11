@@ -12,7 +12,6 @@
 //define Cahn-Hilliard parameters (No Gradient energy term)
 #define McV 1.0
 
-
 //define free energy expressions
 #define faV (0.5*c*c/16.0)
 #define facV (0.5*c/8.0)
@@ -72,7 +71,6 @@ scalarvalueType n = modelVariablesList[1].scalarValue;
 scalargradType nx = modelVariablesList[1].scalarGrad;
 
 //biharm
-scalarvalueType biharm = modelVariablesList[2].scalarValue;
 scalargradType biharmx = modelVariablesList[2].scalarGrad;
 
 // anisotropy code
