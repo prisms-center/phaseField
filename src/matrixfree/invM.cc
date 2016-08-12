@@ -21,8 +21,8 @@ void MatrixFreePDE<dim>::computeInvM(){
   }
   //check if invM initialized
   if (!invMInitialized){
-    pcout << "matrixFreePDE.h: no PARABOLIC field... hence cannot initialize invM\n";
-    exit(-1);
+    pcout << "matrixFreePDE.h: no PARABOLIC field... hence setting parabolicFieldIndex to 0 and marching ahead withn invM computation\n";
+    //exit(-1);
   }
   
   //compute invM
