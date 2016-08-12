@@ -2,7 +2,7 @@
 //general headers
 #include "../../include/dealIIheaders.h"
 
-//Coupled Cahn-Hilliard+Allen-Cahn+Mechanics problem headers
+// Generalized problem headers
 #include "parameters.h"
 #include "../../src/models/coupled/generalized_model.h"
 #include "residuals.h"

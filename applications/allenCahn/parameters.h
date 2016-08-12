@@ -5,7 +5,7 @@
 //Acta Materialia, Volume 61, Issue 2, January 2013, Pages 453-466. http://dx.doi.org/10.1016/j.actamat.2012.09.044
 
 // Define problem dimensions
-#define problemDIM 2
+#define problemDIM 3
 #define spanX 100.0
 #define spanY 100.0
 #define spanZ 100.0
@@ -14,7 +14,7 @@
 #define subdivisionsX 1
 #define subdivisionsY 1
 #define subdivisionsZ 1
-#define refineFactor 7
+#define refineFactor 6
 #define finiteElementDegree 1
 
 //define number of fields in the problem

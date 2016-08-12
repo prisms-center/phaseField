@@ -22,20 +22,33 @@ public:
 	  double r=0.0;
 
 	  if (index==0){
-		  scalar_IC = 0.04; //+ 1.0e-3*(2*(0.5 - (double)(std::rand() % 100 )/100.0));
+		  scalar_IC = 0.04;
 	  }
 	  else if (index==1){
+		  #if problemDIM == 2
 		  double r1=p.distance(Point<dim>(spanX/3.0,spanY/3.0));
 		  double r2=p.distance(Point<dim>(2*spanX/3.0,2*spanY/3.0));
+		  #elif problemDIM == 3
+		  double r1=p.distance(Point<dim>(spanX/3.0,spanY/3.0,0.5*spanZ));
+		  double r2=p.distance(Point<dim>(2*spanX/3.0,2*spanY/3.0,0.5*spanZ));
+		  #endif
 		  r=std::min(r1,r2);
 		  scalar_IC = 0.5*(1.0-std::tanh((r-spanX/16.0)/(dx)));
 	  }
 	  else if (index==2){
-	        r=p.distance(Point<dim>(3*spanX/4.0,spanY/4.0));
+		  #if problemDIM == 2
+		  r=p.distance(Point<dim>(3*spanX/4.0,spanY/4.0));
+		  #elif problemDIM == 3
+		  r=p.distance(Point<dim>(3*spanX/4.0,spanY/4.0,0.5*spanZ));
+		  #endif
 	        scalar_IC = 0.5*(1.0-std::tanh((r-spanX/16.0)/(dx)));
 	  }
 	  else if (index==3){
-		  r=p.distance(Point<dim>(spanX/4.0,3*spanY/4.0));
+		  #if problemDIM == 2
+		  r=p.distance(Point<dim>(spanX/4.0,3.0*spanY/4.0));
+		  #elif problemDIM == 3
+		  r=p.distance(Point<dim>(spanX/4.0,3.0*spanY/4.0,0.5*spanZ));
+		  #endif
 		  scalar_IC = 0.5*(1.0-std::tanh((r-spanX/16.0)/(dx)));
 	  }
 
@@ -66,6 +79,9 @@ public:
 	  if (index==4){
 		  vector_IC(0) = 0.0;
 		  vector_IC(1) = 0.0;
+          #if problemDIM == 3
+		  vector_IC(2) = 0.0;
+          #endif
 	  }
 	  // =====================================================================
   }
@@ -100,6 +116,10 @@ void generalizedProblem<dim>::setBCs(){
 
 	inputBCs(4,0,"DIRICHLET",0.0);
 	inputBCs(4,1,"DIRICHLET",0.0);
+    #if problemDIM == 3
+	inputBCs(4,2,"DIRICHLET",0.0);
+    #endif
+
 
 	// =====================================================================
 

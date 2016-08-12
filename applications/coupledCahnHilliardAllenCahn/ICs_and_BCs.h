@@ -22,15 +22,33 @@ public:
 	  double r=0.0;
 
 	  if (index == 0){
+		#if problemDIM == 2
 		  r=p.distance(Point<dim>(spanX/3.0,spanY/3.0));
+		#elif problemDIM == 3
+		  r=p.distance(Point<dim>(spanX/3.0,spanY/3.0,spanZ/3.0));
+		#endif
 		  scalar_IC = 0.009+0.5*(0.125)*(1.0-std::tanh((r-spanX/5.0)/(3*dx)));
+
+		#if problemDIM == 2
 		  r=p.distance(Point<dim>(3.0*spanX/4.0,3.0*spanY/4.0));
+		#elif problemDIM == 3
+		  r=p.distance(Point<dim>(3.0*spanX/4.0,3.0*spanY/4.0,3.0*spanZ/4.0));
+		#endif
 		  scalar_IC += 0.5*(0.125)*(1.0-std::tanh((r-spanX/12.0)/(3*dx)));
 	  }
 	  else {
+		#if problemDIM == 2
 		  r=p.distance(Point<dim>(spanX/3.0,spanY/3.0));
+		#elif problemDIM == 3
+		  r=p.distance(Point<dim>(spanX/3.0,spanY/3.0,spanZ/3.0));
+		#endif
 		  scalar_IC = 0.5*(1.0-std::tanh((r-spanX/5.0)/(3*dx)));
+
+		#if problemDIM == 2
 		  r=p.distance(Point<dim>(3.0*spanX/4.0,3.0*spanY/4.0));
+		#elif problemDIM == 3
+		  r=p.distance(Point<dim>(3.0*spanX/4.0,3.0*spanY/4.0,3.0*spanZ/4.0));
+		#endif
 		  scalar_IC += 0.5*(1.0-std::tanh((r-spanX/12.0)/(3*dx)));
 	  }
 

@@ -26,7 +26,13 @@ public:
 	  double rad[10] =   {6, 7, 9, 8, 5, 6, 4, 3, 8, 5};
 	  double dist;
 	  scalar_IC = 0;
-	  dist = p.distance(Point<dim>(x_loc[index]*spanX,y_loc[index]*spanY));
+
+	  #if problemDIM == 2
+	  	  dist = p.distance(Point<dim>(x_loc[index]*spanX,y_loc[index]*spanY));
+	  #elif problemDIM == 3
+	  	  dist = p.distance(Point<dim>(x_loc[index]*spanX,y_loc[index]*spanY,0.5*spanZ));
+	  #endif
+
 	  if (dist < rad[index]){
 		  scalar_IC = 1.0;
 	  }

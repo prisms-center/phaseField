@@ -28,10 +28,14 @@ public:
       double dist;
       scalar_IC = 0;
       for (unsigned int i=0; i<12; i++){
-	dist = p.distance(Point<dim>(x_loc[i]*spanX,y_loc[i]*spanY));
-	if (dist < rad[i]){
+      #if problemDIM == 2
+    	  dist = p.distance(Point<dim>(x_loc[i]*spanX,y_loc[i]*spanY));
+      #elif problemDIM == 3
+    	  dist = p.distance(Point<dim>(x_loc[i]*spanX,y_loc[i]*spanY,0.5*spanZ));
+      #endif
+    	  if (dist < rad[i]){
 	  scalar_IC = 1.0;
-	}
+    	  }
       }
     }
     else {

@@ -18,22 +18,7 @@ public:
 	  // Use "if" statements to set the initial condition for each variable
 	  // according to its variable index.
 
-	  //return  0.5+ 0.2*(0.5 - (double)(std::rand() % 100 )/100.0);
-
-	  double dx=spanX/((double) subdivisionsX)/std::pow(2.0,refineFactor);
-	  double x_loc[12] = {0.1, 0.8, 0.5, 0.4, 0.3, 0.8, 0.9, 0.0, 0.1, 0.5, 1, 0.7};
-	  double y_loc[12] = {0.3, 0.7, 0.2, 0.4, 0.9, 0.1, 0.5, 0.1, 0.6, 0.6, 1, 0.95};
-	  double rad[12] =   {12, 14, 19, 16, 11, 12, 17, 15, 20, 10, 11, 14};
-	  double dist;
-	  double init_field = 0;
-	  for (unsigned int i=0; i<12; i++){
-		  dist = p.distance(Point<dim>(x_loc[i]*spanX,y_loc[i]*spanY));
-		  if (dist < rad[i]){
-			  init_field = 1.0;
-		  }
-	  };
-
-	  return init_field;
+	  scalar_IC = 0.0;
 
 	  // =====================================================================
 	  return scalar_IC;

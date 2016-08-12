@@ -27,7 +27,11 @@ public:
 	  double dist;
 	  double init_field = 0;
 	  for (unsigned int i=0; i<12; i++){
-		  dist = p.distance(Point<dim>(x_loc[i]*spanX,y_loc[i]*spanY));
+		  #if problemDIM == 2
+		  	  dist = p.distance(Point<dim>(x_loc[i]*spanX,y_loc[i]*spanY));
+		  #elif problemDIM == 3
+		  	  dist = p.distance(Point<dim>(x_loc[i]*spanX,y_loc[i]*spanY,0.5*spanZ));
+          #endif
 		  if (dist < rad[i]){
 			  init_field = 1.0;
 		  }
