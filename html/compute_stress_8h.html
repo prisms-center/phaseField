@@ -104,6 +104,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ae655ed004d95469fdbbcd79f3b8d09bb"><td class="memTemplParams" colspan="2">template&lt;int dim&gt; </td></tr>
 <tr class="memitem:ae655ed004d95469fdbbcd79f3b8d09bb"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="compute_stress_8h.html#ae655ed004d95469fdbbcd79f3b8d09bb">computeStress</a> (const dealii::VectorizedArray&lt; double &gt; CIJ[2 *dim-1+dim/3][2 *dim-1+dim/3], const dealii::VectorizedArray&lt; double &gt; strain[][dim], dealii::VectorizedArray&lt; double &gt; R[][dim])</td></tr>
 <tr class="separator:ae655ed004d95469fdbbcd79f3b8d09bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5321bf7824afa1fb14c73136a3cbe79d"><td class="memTemplParams" colspan="2">template&lt;int dim&gt; </td></tr>
+<tr class="memitem:a5321bf7824afa1fb14c73136a3cbe79d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="compute_stress_8h.html#a5321bf7824afa1fb14c73136a3cbe79d">computeStress</a> (const dealii::Tensor&lt; 2, 2 *dim-1+dim/3, dealii::VectorizedArray&lt; double &gt; &gt; &amp;CIJ, const dealii::VectorizedArray&lt; double &gt; strain[][dim], dealii::VectorizedArray&lt; double &gt; R[][dim])</td></tr>
+<tr class="separator:a5321bf7824afa1fb14c73136a3cbe79d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3473592575a430b8dbf2956bc9b0fa6f"><td class="memTemplParams" colspan="2">template&lt;int dim&gt; </td></tr>
 <tr class="memitem:a3473592575a430b8dbf2956bc9b0fa6f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="compute_stress_8h.html#a3473592575a430b8dbf2956bc9b0fa6f">computeStress</a> (const dealii::Tensor&lt; 2, 2 *dim-1+dim/3, dealii::VectorizedArray&lt; double &gt; &gt; &amp;CIJ, const dealii::Tensor&lt; 2, dim, dealii::VectorizedArray&lt; double &gt; &gt; strain, dealii::Tensor&lt; 2, dim, dealii::VectorizedArray&lt; double &gt; &gt; &amp;R)</td></tr>
 <tr class="separator:a3473592575a430b8dbf2956bc9b0fa6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -153,6 +156,38 @@ Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">const dealii::VectorizedArray&lt; double &gt;&#160;</td>
           <td class="paramname"><em>CIJ</em>[2 *dim-1+dim/3][2 *dim-1+dim/3], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::VectorizedArray&lt; double &gt;&#160;</td>
+          <td class="paramname"><em>strain</em>[][dim], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dealii::VectorizedArray&lt; double &gt;&#160;</td>
+          <td class="paramname"><em>R</em>[][dim]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a5321bf7824afa1fb14c73136a3cbe79d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void computeStress </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::Tensor&lt; 2, 2 *dim-1+dim/3, dealii::VectorizedArray&lt; double &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>CIJ</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

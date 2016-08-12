@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['index',['index',['../structnucleus.html#a589d64202487f78e3cc30dd2e04c5201',1,'nucleus::index()'],['../class_field.html#a589d64202487f78e3cc30dd2e04c5201',1,'Field::index()'],['../class_initial_condition_n.html#a589d64202487f78e3cc30dd2e04c5201',1,'InitialConditionN::index()']]],
-  ['indexcount',['indexCount',['../class_field.html#ade81ccd91403954610becc108098672c',1,'Field']]],
-  ['invm',['invM',['../class_matrix_free_p_d_e.html#aacd83299ae4bca66040bb4abd606d64e',1,'MatrixFreePDE']]],
-  ['istimedependentbvp',['isTimeDependentBVP',['../class_matrix_free_p_d_e.html#ab46559b1aad8baf1a926a2e6addaad88',1,'MatrixFreePDE']]]
+  ['feset',['FESet',['../class_matrix_free_p_d_e.html#aca8b82c562a106e607667fbcabf6ba8d',1,'MatrixFreePDE']]],
+  ['fieldcount',['fieldCount',['../class_field.html#a3503c1e018813fc888c8ed2e130677eb',1,'Field']]],
+  ['fields',['fields',['../class_matrix_free_p_d_e.html#a33510468a6769d344bc61b0f38beb61a',1,'MatrixFreePDE']]],
+  ['finaltime',['finalTime',['../class_matrix_free_p_d_e.html#a0d895639013504f5a7ddb5453fc7e198',1,'MatrixFreePDE']]],
+  ['freeenergyvalues',['freeEnergyValues',['../class_matrix_free_p_d_e.html#ab548447de8960b216352d8684259919d',1,'MatrixFreePDE']]]
 ];
