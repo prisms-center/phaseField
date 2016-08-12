@@ -3,7 +3,7 @@
 #define variable_name {"c", "n","biharm"}
 #define variable_type {"SCALAR","SCALAR","SCALAR"}
 #define variable_eq_type {"PARABOLIC","PARABOLIC","PARABOLIC"}
-#define need_val {true, true, true}
+#define need_val {true, true, false}
 #define need_grad {true, true, true}
 #define need_hess {false, false, false}
 #define need_val_residual {true, true, false}
@@ -31,15 +31,16 @@
 #if problemDIM==1
 #define gamma 1.0
 #elif problemDIM==2
-#define gamma (1.0+epsilonM*(4.0*(std::pow(normal[0],4.0)+std::pow(normal[1],4.0))-3.0))
+//writing out powers instead of using std::pow(double,double) for performance reasons
+#define gamma (1.0+epsilonM*(4.0*(normal[0]*normal[0]*normal[0]*normal[0]+normal[1]*normal[1]*normal[1]*normal[1])-3.0))
 #else
-#define gamma (1.0+epsilonM*(4.0*(std::pow(normal[0],4.0)+std::pow(normal[1],4.0)+std::pow(normal[2],4.0))-3.0))
+#define gamma (1.0+epsilonM*(4.0*(normal[0]*normal[0]*normal[0]*normal[0]+normal[1]*normal[1]*normal[1]*normal[1]+normal[2]*normal[2]*normal[2]*normal[2])-3.0))
 #endif
 
 //derivatives of gamma with respect to the components of the unit normal
-#define gammanx (epsilonM*16.0*std::pow(normal[0],3.0))
-#define gammany (epsilonM*16.0*std::pow(normal[1],3.0))
-#define gammanz (epsilonM*16.0*std::pow(normal[2],3.0))
+#define gammanx (epsilonM*16.0*normal[0]*normal[0]*normal[0])
+#define gammany (epsilonM*16.0*normal[1]*normal[1]*normal[1])
+#define gammanz (epsilonM*16.0*normal[2]*normal[2]*normal[2])
 
 //Allen-Cahn mobility (isotropic)
 #define MnV 0.1
@@ -76,23 +77,24 @@ scalargradType biharmx = modelVariablesList[2].scalarGrad;
 // anisotropy code
 scalarvalueType normgradn = std::sqrt(nx.norm_square());
 scalargradType normal = nx/(normgradn+constV(1.0e-16));
-scalargradType aniso = gamma*gamma*nx;
-#if problemDIM>1
+scalarvalueType gamma_scl = gamma;
+scalargradType aniso;
+#if problemDIM==1
+      aniso = gamma_scl*gamma_scl*nx
+#else
       scalargradType dgammadnorm;
-      // projection matrix
-      vectorgradType proj;
-      for (unsigned int i=0; i<problemDIM; ++i){
-	      for (unsigned int j=0; j<problemDIM; ++j){
-		      proj[i][j] = -normal[i]*normal[j];
-		      if (i==j) proj[i][j]+=constV(1.0);
-	      }
-      }
       dgammadnorm[0]=gammanx;
       dgammadnorm[1]=gammany;
 #if problemDIM>2
       dgammadnorm[2]=gammanz;
 #endif
-      aniso += gamma*normgradn*(proj*dgammadnorm);
+      for (unsigned int i=0; i<problemDIM; ++i){
+	      for (unsigned int j=0; j<problemDIM; ++j){
+		      aniso[i] += -normal[i]*normal[j]*dgammadnorm[j];
+		      if (i==j) aniso[i] +=dgammadnorm[j];
+	      }
+      }
+      aniso = gamma_scl*(aniso*normgradn+gamma_scl*nx);
 #endif
 // end anisotropy code
 
