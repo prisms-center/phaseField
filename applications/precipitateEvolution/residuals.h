@@ -133,7 +133,7 @@ scalargradType n3x = modelVariablesList[3].scalarGrad;
 
 // The derivative of the displacement vector (names here should match those in the macros above)
 vectorgradType ux = modelVariablesList[4].vectorGrad;
-vectorgradType Rux;
+vectorgradType ruxV;
 
 vectorhessType uxx;
 
@@ -197,7 +197,7 @@ computeStress<dim>(CIJ_list[0], E2, S);
 
 for (unsigned int i=0; i<dim; i++){
 for (unsigned int j=0; j<dim; j++){
-	  Rux[i][j] = - S[i][j];
+	  ruxV[i][j] = - S[i][j];
 }
 }
 
@@ -302,7 +302,7 @@ modelResidualsList[2].scalarGradResidual = rn2xV;
 modelResidualsList[3].scalarValueResidual = rn3V;
 modelResidualsList[3].scalarGradResidual = rn3xV;
 
-modelResidualsList[4].vectorGradResidual = Rux;
+modelResidualsList[4].vectorGradResidual = ruxV;
 
 }
 
@@ -322,41 +322,40 @@ modelResidualsList[4].vectorGradResidual = Rux;
 // that the correct residual is being submitted. The index of the field being solved
 // can be accessed by "this->currentFieldIndex".
 template <int dim>
-void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim>> & modelVarList,
+void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim>> & modelVariablesList,
 		modelResidual<dim> & modelRes,
 		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 //n1
-scalarvalueType n1 = modelVarList[0].scalarValue;
+scalarvalueType n1 = modelVariablesList[0].scalarValue;
 
 //n2
-scalarvalueType n2 = modelVarList[1].scalarValue;
+scalarvalueType n2 = modelVariablesList[1].scalarValue;
 
 
 //n3
-scalarvalueType n3 = modelVarList[2].scalarValue;
+scalarvalueType n3 = modelVariablesList[2].scalarValue;
 
 //u
-vectorgradType ux = modelVarList[3].vectorGrad;
-vectorgradType Rux;
+vectorgradType ux = modelVariablesList[3].vectorGrad;
+vectorgradType ruxV;
 
 // Take advantage of E being simply 0.5*(ux + transpose(ux)) and use the dealii "symmetrize" function
 dealii::Tensor<2, dim, dealii::VectorizedArray<double> > E;
-//E = symmetrize(ux); // Only works for Deal.II v8.3 and later
-E = constV(0.5)*(ux + transpose(ux));
+E = symmetrize(ux);
 
 // Compute stress tensor (which is equal to the residual, Rux)
 if (n_dependent_stiffness == true){
 	dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ_combined;
 	CIJ_combined = CIJ_list[0]*(constV(1.0)-h1V-h2V-h3V) + CIJ_list[1]*(h1V+h2V+h3V);
 
-	computeStress<dim>(CIJ_combined, E, Rux);
+	computeStress<dim>(CIJ_combined, E, ruxV);
 }
 else{
-	computeStress<dim>(CIJ_list[0], E, Rux);
+	computeStress<dim>(CIJ_list[0], E, ruxV);
 }
 
-modelRes.vectorGradResidual = Rux;
+modelRes.vectorGradResidual = ruxV;
 
 }
 
