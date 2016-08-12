@@ -594,14 +594,17 @@ void generalizedProblem<dim>::computeIntegral(double& integratedField){
 //adaptive refinement control
 template <int dim>
 void generalizedProblem<dim>::adaptiveRefine(unsigned int currentIncrement){
+	#if hAdaptivity == true
 	if ((currentIncrement>0) && (currentIncrement%skipRemeshingSteps==0)){
 		this->refineMesh(currentIncrement);
 	}
+	#endif
 }
 
 //adaptive refinement criterion
 template <int dim>
 void generalizedProblem<dim>::adaptiveRefineCriterion(){
+#if hAdaptivity == true
 	//Custom defined estimation criterion
 	std::vector<int> refine_criterion_fields = refineCriterionFields;
 	std::vector<double> refine_window_max = refineWindowMax;
@@ -659,6 +662,7 @@ void generalizedProblem<dim>::adaptiveRefineCriterion(){
 			}
 		}
 	}
+#endif
 }
 
 
