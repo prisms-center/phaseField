@@ -1,11 +1,11 @@
 //Cahn-Hilliard spinodal decomposition implementation
 //general headers
-#include "../../include/dealIIheaders.h"
+#include "../../../include/dealIIheaders.h"
 
 //Cahn-Hilliard problem headers
 #include "parameters.h"
 #include "residuals.h"
-#include "../../src/models/diffusion/CH.h"
+#include "../../../src/models/diffusion/CH.h"
 #include "ICs_and_BCs.h"
 
 //adaptive refinement control

@@ -4,11 +4,11 @@
 #include <sstream>
 
 //dealIIheaders
-#include "../../include/dealIIheaders.h"
+#include "../../../include/dealIIheaders.h"
 
 //mechanics problem headers
 #include "parameters.h"
-#include "../../src/models/mechanics/mechanics.h"
+#include "../../../src/models/mechanics/mechanics.h"
 #include "ICs_and_BCs.h"
 
 
