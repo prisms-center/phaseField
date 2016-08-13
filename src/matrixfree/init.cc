@@ -1,5 +1,5 @@
 //init() method for MatrixFreePDE class
-
+ 
 #ifndef INIT_MATRIXFREE_H
 #define INIT_MATRIXFREE_H
 //this source file is temporarily treated as a header file (hence
@@ -61,6 +61,11 @@
        //check if any time dependent fields present
        if (it->pdetype==PARABOLIC){
 	 isTimeDependentBVP=true;
+	 parabolicFieldIndex=it->index;
+       }
+       else if (it->pdetype==ELLIPTIC){
+	 isEllipticBVP=true;
+	 ellipticFieldIndex=it->index;	 
        }
      }
 
@@ -128,14 +133,7 @@
      constraintsHangingNodes->clear(); constraintsHangingNodes->reinit(*locally_relevant_dofs);
      DoFTools::make_hanging_node_constraints (*dof_handler, *constraintsHangingNodes);
      
-     //apply zero Dirichlet BC's for ELLIPTIC fields.
-     if (it->pdetype==PARABOLIC){
-       parabolicFieldIndex=it->index;
-     }
-     else if (it->pdetype==ELLIPTIC){
-       isEllipticBVP=true;
-     }
-
+     //apply Dirichlet BC's
      currentFieldIndex=it->index;
      applyDirichletBCs();
 
