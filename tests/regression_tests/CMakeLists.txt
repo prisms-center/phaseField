@@ -9,7 +9,7 @@ SET(TARGET "main")
 # Declare all source files the target consists of:
 SET(TARGET_SRC
   ${TARGET}.cc
-# You can specify additional files here!
+  # You can specify additional files here!
   )
 
 # Usually, you will not need to modify anything beyond this point...

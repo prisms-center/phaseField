@@ -1,10 +1,10 @@
 ##
-#  CMake script for unit tests
+#  CMake script for the phaseField applications:
 ##
 
 
 # Set the name of the project and target:
-SET(TARGET "test")
+SET(TARGET "main")
 
 # Declare all source files the target consists of:
 SET(TARGET_SRC
