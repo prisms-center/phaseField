@@ -10,7 +10,7 @@ This version of the code, 1.0, is the first release version of PRISMS-PF. This v
 
 <B>What is PRISMS-PF?</B>
 
-  PRISMS-PF is a high-performance Finite Element Method (FEM) code for phase field modeling simulations and related systems of partial differential equations. It has a flexible user interface designed to allow users to easily modify existing applications as well as developing their own. In terms of performance, PRISMS-PF has been shown to be competitive with state-of-the-art finite difference codes. PRISMS-PF has been tested on thousands of processors and has been used in simulations with over one billion degrees of freedom.
+  PRISMS-PF is a high-performance Finite Element Method (FEM) code for phase field modeling simulations and solving related systems of partial differential equations. It has a flexible user interface designed to allow users to easily modify existing applications as well as developing their own. In terms of performance, PRISMS-PF has been shown to be competitive with state-of-the-art finite difference codes. PRISMS-PF has been tested on thousands of processors and has been used in simulations with over one billion degrees of freedom.
   
   This code is developed by the PRedictive Integrated Structural
   Materials Science (PRISMS) Center [http://www.prisms-center.org/]
@@ -20,15 +20,15 @@ This version of the code, 1.0, is the first release version of PRISMS-PF. This v
 
 <B>Quick Start Guide:</B>
 
-For detailed instructions on how to download and use PRISMS-PF, please consult the PRISMS-PF Users Guide (the file prismspf_users_guide.pdf). An abbreviated version of these instructions is given below.
+For detailed instructions on how to download and use PRISMS-PF, please consult the PRISMS-PF Users Guide (the file prismspf_users_guide.pdf). An abbreviated version of the instructions is given below.
 
 <I>Installation:</I> 
 
-  1) Install deal.II (version 8.4.1 recommended)<br>
+1) Install deal.II (version 8.4.1 recommended)<br>
   + Download CMake [http://www.cmake.org/download/] 
   + Download Deal.II Binaries (OSX and Linux) or  Virtual Machine (VMI) from https://www.dealii.org/download.html <br>
 
-  2) Clone the PRISMS-PF GitHub repo https://github.com/prisms-center/phaseField<br>
+2) Clone the PRISMS-PF GitHub repo https://github.com/prisms-center/phaseField<br>
   + $ git clone https://github.com/prisms-center/phaseField.git <br>
   + $ cd phaseField <br>
   + $ git checkout master <br>
@@ -44,7 +44,7 @@ Since PRISMS-PF is still under active development,
 
 <I>Running a Pre-Built Application:</I> 
 
-  Running PRISMS-PF applications, for example Cahn-Hilliard spinodal decomposition example :<br> 
+  Entering the following commands will run one of the pre-built example applications (the Cahn-Hilliard spinodal decomposition application in this case):<br> 
   + $ cd applications/cahnHilliard <br>
   For debug mode [default mode, very slow]: <br>
   + $ cmake CMakeLists.txt -DCMAKE_BUILD_TYPE=Debug <br>
