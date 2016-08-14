@@ -250,7 +250,8 @@ Protected Attributes</h2></td></tr>
 <div class="textblock"><h3>template&lt;int dim&gt;<br />
 class MatrixFreePDE&lt; dim &gt;</h3>
 
-<p>This is the base class for matrix free implementation for Parabolic and Elliptic BVP's. This class supports MPI, Threads and Vectorization (Hybrid Parallel). </p>
+<p>This is the abstract base class for the matrix free implementation of Parabolic and Elliptic BVP's, and supports MPI, Threads and Vectorization (Hybrid Parallel). This class contains the parallel data structures, mesh (referred to as triangulation), parallel degrees of freedom distribution, constraints, and general utility methods.</p>
+<p>All the physical models in this package inherit this base class. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a519b155312293525dc448e096789095a"></a>
 <div class="memitem">
@@ -659,7 +660,7 @@ class MatrixFreePDE&lt; dim &gt;</h3>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Initializes the data structures </p>
+<p>Initializes the mesh, degress of freedom, constraints and data structures using the user provided inputs in the application parameters file. </p>
 
 </div>
 </div>
@@ -675,6 +676,8 @@ class MatrixFreePDE&lt; dim &gt;</h3>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Initializes the data structures for enabling unit tests.</p>
+<p>This method initializes the MatrixFreePDE object with a fixed geometry, discretization and other custom selected options specifically to help with unit tests, and should not be called in any of the physical models. </p>
 
 </div>
 </div>
@@ -834,6 +837,7 @@ class MatrixFreePDE&lt; dim &gt;</h3>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Virtual function to shift the concentration </p>
 
 </div>
 </div>
@@ -849,7 +853,7 @@ class MatrixFreePDE&lt; dim &gt;</h3>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Solve's the system of equations </p>
+<p>This method implements the time stepping algorithm and invokes the solveIncrement() method. </p>
 
 </div>
 </div>
@@ -873,6 +877,7 @@ class MatrixFreePDE&lt; dim &gt;</h3>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Method to solve each time increment of a time-dependent problem. For time-independent problems this method is called only once. This method solves for all the fields in a staggered manner (one after another) and also invokes the corresponding solvers: Explicit solver for Parabolic problems, Implicit (matrix-free) solver for Elliptic problems. </p>
 
 </div>
 </div>
@@ -899,6 +904,7 @@ class MatrixFreePDE&lt; dim &gt;</h3>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>This method essentially converts the MatrixFreePDE object into a matrix object which can be used with matrix free iterative solvers. Provides the A*x functionality for solving the system of equations AX=b. </p>
 
 </div>
 </div>
@@ -1232,6 +1238,7 @@ class MatrixFreePDE&lt; dim &gt;</h3>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Vector of all the physical fields in the problem. Fields are identified by dimentionality (SCALAR/VECTOR), the kind of PDE (ELLIPTIC/PARABOLIC) used to compute them and a character identifier (e.g.: "c" for composition) which is used to write the fields to the output files. </p>
 
 </div>
 </div>

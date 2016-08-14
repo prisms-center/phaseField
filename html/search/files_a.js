@@ -7,6 +7,7 @@ var searchData=
   ['parameters_2eh',['parameters.h',['../mechanics_2parameters_8h.html',1,'']]],
   ['parameters_2eh',['parameters.h',['../grain_growth_2parameters_8h.html',1,'']]],
   ['parameters_2eh',['parameters.h',['../fickian_diffusion_2parameters_8h.html',1,'']]],
+  ['parameters_2eh',['parameters.h',['../eshelby_inclusion_2parameters_8h.html',1,'']]],
   ['parameters_2eh',['parameters.h',['../_c_h_a_c__anisotropy_regularized_2parameters_8h.html',1,'']]],
   ['parameters_2eh',['parameters.h',['../coupled_cahn_hilliard_allen_cahn_2parameters_8h.html',1,'']]],
   ['parameters_2eh',['parameters.h',['../_c_h_a_c__anisotropy_2parameters_8h.html',1,'']]],
