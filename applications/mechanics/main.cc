@@ -1,12 +1,12 @@
-//Linear elasticity problem
-//general headers
+// Linear elasticity example application
+
+// Header files
 #include "../../include/dealIIheaders.h"
 
-//mechanics problem headers
-#include "../mechanics/parameters.h"
+#include "parameters.h"
 #include "../../src/models/coupled/generalized_model.h"
-#include "../mechanics/residuals.h"
-#include "../mechanics/ICs_and_BCs.h"
+#include "equations.h"
+#include "ICs_and_BCs.h"
 #include "../../src/models/coupled/generalized_model_functions.h"
 
 //main

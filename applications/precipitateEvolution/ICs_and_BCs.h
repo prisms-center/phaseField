@@ -107,6 +107,7 @@ void generalizedProblem<dim>::setBCs(){
 	// Even inputs after the third: BC value
 	// Face numbering: starts at zero with the minimum of the first direction, one for the maximum of the first direction
 	//						two for the minimum of the second direction, etc.
+
 	inputBCs(0,0,"ZERO_DERIVATIVE",0);
 
 	inputBCs(1,0,"ZERO_DERIVATIVE",0);
@@ -120,9 +121,6 @@ void generalizedProblem<dim>::setBCs(){
 	if (dim == 3){
 		inputBCs(4,2,"DIRICHLET",0.0);
 	}
-
-
-	// =====================================================================
 
 }
 

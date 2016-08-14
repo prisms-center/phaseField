@@ -1,14 +1,13 @@
-//Coupled Cahn-Hilliard, Allen-Cahn and Mechanics problem
-//general headers
+// Coupled Cahn-Hilliard/Allen-Cahn example application
+
+// Header files
 #include "../../include/dealIIheaders.h"
 
-//Coupled Cahn-Hilliard+Allen-Cahn+Mechanics problem headers
 #include "parameters.h"
 #include "../../src/models/coupled/generalized_model.h"
 #include "equations.h"
 #include "ICs_and_BCs.h"
 #include "../../src/models/coupled/generalized_model_functions.h"
-
 
 //main
 int main (int argc, char **argv)

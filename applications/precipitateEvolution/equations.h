@@ -483,9 +483,10 @@ for (unsigned int i=0; i<dim; i++){
 
 total_energy_density = f_chem + f_grad + f_el;
 
+// Loop to step through each element of the vectorized arrays. Working with deal.ii
+// developers to see if there is a more elegant way to do this.
 assembler_lock.acquire ();
 for (unsigned i=0; i<c.n_array_elements;i++){
-  // For some reason, some of the values in this loop
   if (c[i] > 1.0e-10){
 	  this->energy+=total_energy_density[i]*JxW_value[i];
 	  this->energy_components[0]+= f_chem[i]*JxW_value[i];

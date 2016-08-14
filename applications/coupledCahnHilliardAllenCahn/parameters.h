@@ -5,7 +5,6 @@
 // Set the number of dimensions (1, 2, or 3 for a 1D, 2D, or 3D calculation)
 // =================================================================================
 #define problemDIM 2
-// =================================================================================
 
 // =================================================================================
 // Set the length of the domain in all three dimensions
@@ -14,7 +13,6 @@
 #define spanX 100.0
 #define spanY 100.0
 #define spanZ 100.0
-// =================================================================================
 
 // =================================================================================
 // Set the element parameters
@@ -26,10 +24,8 @@
 #define subdivisionsZ 1
 #define refineFactor 7
 
-// Set the polynomial degree of the element
-// Suggested values are either 1 or 2
+// Set the polynomial degree of the element (suggested values: 1 or 2)
 #define finiteElementDegree 1
-// =================================================================================
 
 // =================================================================================
 // Set the time step parameters
@@ -41,7 +37,6 @@
 // equals timeIncrements
 #define timeFinal 100.0
 #define timeIncrements 100000
-// =================================================================================
 
 // =================================================================================
 // Set the output parameters
@@ -51,13 +46,11 @@
 
 // Output files are written every skipOutputSteps time steps
 #define skipOutputSteps 1000
-// =================================================================================
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output
 // =================================================================================
 #define calcEnergy true
-// =================================================================================
 
 
 

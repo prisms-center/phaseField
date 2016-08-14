@@ -57,7 +57,6 @@ public:
   }
 };
 
-//initial condition
 template <int dim>
 class InitialConditionVec : public Function<dim>
 {
@@ -80,7 +79,6 @@ public:
 	  // =====================================================================
   }
 };
-
 
 template <int dim>
 void generalizedProblem<dim>::setBCs(){
@@ -105,8 +103,6 @@ void generalizedProblem<dim>::setBCs(){
 
 	inputBCs(0,0,"ZERO_DERIVATIVE",0);
 	inputBCs(1,0,"ZERO_DERIVATIVE",0);
-
-	// =====================================================================
 
 }
 

@@ -1,45 +1,80 @@
-//Parameter list for the Beta Prime precipitate evolution problem 
-//(Coupled Allen Cahn, Cahn Hilliard and Mechanics formulation)
-//The free energy expressions in this file are from the reference:
-//H. Liu et al, "A simulation study of the shape of beta prime precipitates in Mg–Y and Mg–Gd alloys", 
-//Acta Materialia, Volume 61, Issue 2, January 2013, Pages 453-466. http://dx.doi.org/10.1016/j.actamat.2012.09.044
+// Parameter list for the Cahn-Hilliard with adaptivity example application
+// All strictly numerical parameters should be set in this file
 
+// =================================================================================
+// Set the number of dimensions (1, 2, or 3 for a 1D, 2D, or 3D calculation)
+// =================================================================================
 // Define problem dimensions
 #define problemDIM 2
+
+// =================================================================================
+// Set the length of the domain in all three dimensions
+// =================================================================================
+// Each axes spans from zero to the specified length
 #define spanX 100.0
 #define spanY 100.0
 #define spanZ 100.0
 
-// Define mesh parameters
+// =================================================================================
+// Set the element parameters
+// =================================================================================
+// The number of elements in each direction is 2^(refineFactor) * subdivisions
+// For optimal performance, use refineFactor primarily to determine the element size
 #define subdivisionsX 1
 #define subdivisionsY 1
 #define subdivisionsZ 1
 #define refineFactor 7
+
+// Set the polynomial degree of the element (suggested values: 1 or 2)
 #define finiteElementDegree 1
 
-//define number of fields in the problem
-// c, mu
-#define numFields 2
+// =================================================================================
+// Set the adaptive mesh refinement parameters
+// =================================================================================
+// Set the flag determining if adaptive meshing is activated
+#define hAdaptivity true
 
-//define time step parameters
+// Set the maximum and minimum level of refinement
+#define maxRefinementLevel (refineFactor)
+#define minRefinementLevel (refineFactor-1)
+
+// Set the fields used to determine the refinement. Fields determined by the order
+// declared in "equations.h", starting at zero
+#define refineCriterionFields {0}
+
+// Set the maximum and minimum value of the fields where the mesh should be refined
+#define refineWindowMax {0.99}
+#define refineWindowMin {0.01}
+
+// Set the number of time steps between remeshing operations
+#define skipRemeshingSteps 2000
+
+// =================================================================================
+// Set the time step parameters
+// =================================================================================
+// The size of the time step
 #define timeStep 1.0e-3
+
+// The simulation ends when either timeFinal is reached or the number of time steps
+// equals timeIncrements
 #define timeFinal 100.0
 #define timeIncrements 100000
 
-//define results output parameters
+// =================================================================================
+// Set the output parameters
+// =================================================================================
+// Each field in the problem will be output is writeOutput is set to "true"
 #define writeOutput true
+
+// Output files are written every skipOutputSteps time steps
 #define skipOutputSteps 1000
 
+// =================================================================================
+// Set the flag determining if the total free energy is calculated for each output
+// =================================================================================
 #define calcEnergy false
 
-//adaptive refinement parameters
-#define hAdaptivity true
-#define maxRefinementLevel (refineFactor)
-#define minRefinementLevel (refineFactor-1)
-#define refineCriterionFields {0}
-#define refineWindowMax {0.99}
-#define refineWindowMin {0.01}
-#define skipRemeshingSteps 2000
+
 
 
 
