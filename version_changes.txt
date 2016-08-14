@@ -1,4 +1,16 @@
 ====================
+Version 1.0:
+===================
+This is the first release version of PRISMS-PF, released in August 2016. The code has been substantially reworked since version 0.9.3.
+
+Major changes include:
+- New user interface
+- New user guide
+- Mesh adaptivity capability
+- Many new applications
+- Improved tests, including tests versus analytical results
+
+====================
 Version 0.9.3:
 ====================
 Patch to version 0.9.2, released in July 2016. Most changes are specific to coupled Cahn-Hilliard-Allen-Cahn-Mechanics calculations.

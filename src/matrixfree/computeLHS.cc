@@ -9,17 +9,32 @@ template <int dim>
 void MatrixFreePDE<dim>::vmult (vectorType &dst, const vectorType &src) const{
   //log time
   computing_timer.enter_section("matrixFreePDE: computeLHS");
+
+  //create temporary copy of src vector as src2, as vector src is marked const and cannot be changed
+  vectorType src2;
+  matrixFreeObject.initialize_dof_vector(src2,  ellipticFieldIndex);
+  src2=src;
   
-  dst=0.0;  
-  matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::getLHS, this, dst, src);
+  //set Dirichlet nodes force to zero in the src
+  for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[currentFieldIndex]->begin(); it!=valuesDirichletSet[currentFieldIndex]->end(); ++it){
+    if (src2.in_local_range(it->first)){
+      src2(it->first) = 0.0; //*jacobianDiagonal(it->first);
+    }
+  }
+  constraintsHangingNodesSet[currentFieldIndex]->distribute(src2);
+
+  //call cell_loop 
+  dst=0.0;
+  matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::getLHS, this, dst, src2);
+  dst.compress(VectorOperation::add);
   
-  //Account for dirichlet BC's (essentially copy dirichlet DOF values present in src to dst)
-  const std::vector<unsigned int>& constrained_dofs = matrixFreeObject.get_constrained_dofs(currentFieldIndex);
-  for (unsigned int i=0; i<constrained_dofs.size(); ++i){
-    unsigned int globalIndex = matrixFreeObject.get_vector_partitioner(currentFieldIndex)->local_to_global(constrained_dofs[i]);
-    dst(globalIndex) += src(globalIndex); //note: check if "+" required
-  } 
-  
+  //Account for Dirichlet BC's (essentially copy dirichlet DOF values present in src to dst)
+  for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[currentFieldIndex]->begin(); it!=valuesDirichletSet[currentFieldIndex]->end(); ++it){
+    if (dst.in_local_range(it->first)){
+      dst(it->first) = src(it->first); //*jacobianDiagonal(it->first);
+    }
+  }
+
   //end log
   computing_timer.exit_section("matrixFreePDE: computeLHS");
 }

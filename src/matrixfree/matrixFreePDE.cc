@@ -12,6 +12,7 @@
  Subscriptor(),
  triangulation (MPI_COMM_WORLD),
  isTimeDependentBVP(false),
+ isEllipticBVP(false),
  dtValue(0.0),
  currentTime(0.0),
  finalTime(0.0),
@@ -38,6 +39,7 @@
  {
    matrixFreeObject.clear();
    for(unsigned int iter=0; iter<fields.size(); iter++){
+     delete soltransSet[iter];
      delete locally_relevant_dofsSet[iter];
      delete constraintsSet[iter];
      delete dofHandlersSet[iter];

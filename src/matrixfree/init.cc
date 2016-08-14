@@ -1,5 +1,5 @@
 //init() method for MatrixFreePDE class
-
+ 
 #ifndef INIT_MATRIXFREE_H
 #define INIT_MATRIXFREE_H
 //this source file is temporarily treated as a header file (hence
@@ -7,96 +7,149 @@
 
  //populate with fields and setup matrix free system
  template <int dim>
- void MatrixFreePDE<dim>::init(){
- //void MatrixFreePDE<dim>::init(std::vector<Field<dim> >& _fields){
+ void MatrixFreePDE<dim>::init(unsigned int iter){
+   //void MatrixFreePDE<dim>::init(std::vector<Field<dim> >& _fields){
    computing_timer.enter_section("matrixFreePDE: initialization"); 
 
-   //creating mesh
-   std::vector<unsigned int> subdivisions;
-   subdivisions.push_back(subdivisionsX);
-   if (dim>1){
-	   subdivisions.push_back(subdivisionsY);
-	   if (dim>2){
-		   subdivisions.push_back(subdivisionsZ);
-	   }
-   }
-
-   pcout << "creating problem mesh...\n";
+   if (iter==0){
+     //creating mesh
+     std::vector<unsigned int> subdivisions;
+     subdivisions.push_back(subdivisionsX);
+     if (dim>1){
+       subdivisions.push_back(subdivisionsY);
+       if (dim>2){
+	 subdivisions.push_back(subdivisionsZ);
+       }
+     }
+     
+     pcout << "creating problem mesh...\n";
 
 #if problemDIM==3
-   GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(spanX,spanY,spanZ));
+     GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(spanX,spanY,spanZ));
 #elif problemDIM==2
-   GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(spanX,spanY));
+     GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(spanX,spanY));
 #elif problemDIM==1
-   GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(spanX));
+     GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(spanX));
 #endif
 
-   triangulation.refine_global (refineFactor);
-   //write out extends
-   pcout << "problem dimensions: " << spanX << "x" << spanY << "x" << spanZ << std::endl;
-   pcout << "number of elements: " << triangulation.n_global_active_cells() << std::endl;
-   pcout << std::endl;
-
-   //mark boundaries for applying Dirichlet boundary conditons
-   markBoundaries();
-
+     triangulation.refine_global (refineFactor);
+     //write out extends
+     pcout << "problem dimensions: " << spanX << "x" << spanY << "x" << spanZ << std::endl;
+     pcout << "number of elements: " << triangulation.n_global_active_cells() << std::endl;
+     pcout << std::endl;
+  
+     //mark boundaries for applying Dirichlet boundary conditons
+     markBoundaries();
+   }
+   else{
+     refineGrid();
+   }
+     
    //setup system
    pcout << "initializing matrix free object\n";
    unsigned int totalDOFs=0;
    for(typename std::vector<Field<dim> >::iterator it = fields.begin(); it != fields.end(); ++it){
-     //print to std::out
      char buffer[100];
-     sprintf(buffer,"initializing finite element space P^%u for %9s:%6s field '%s'\n", \
-	     finiteElementDegree,					\
-	     (it->pdetype==PARABOLIC ? "PARABOLIC":"ELLIPTIC"),		\
-	     (it->type==SCALAR ? "SCALAR":"VECTOR"),			\
-	     it->name.c_str());
-     pcout << buffer;
-
-     //check if any time dependent fields present
-     if (it->pdetype==PARABOLIC){
-       isTimeDependentBVP=true;
+     if (iter==0){
+       //print to std::out
+       sprintf(buffer,"initializing finite element space P^%u for %9s:%6s field '%s'\n", \
+	       finiteElementDegree,					\
+	       (it->pdetype==PARABOLIC ? "PARABOLIC":"ELLIPTIC"),	\
+	       (it->type==SCALAR ? "SCALAR":"VECTOR"),			\
+	       it->name.c_str());
+       pcout << buffer;
+       //check if any time dependent fields present
+       if (it->pdetype==PARABOLIC){
+	 isTimeDependentBVP=true;
+	 parabolicFieldIndex=it->index;
+       }
+       else if (it->pdetype==ELLIPTIC){
+	 isEllipticBVP=true;
+	 ellipticFieldIndex=it->index;	 
+       }
      }
 
+     
      //create FESystem
      FESystem<dim>* fe;
-     if (it->type==SCALAR){
-       fe=new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(finiteElementDegree+1)),1);
-     }
-     else if (it->type==VECTOR){
-       fe=new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(finiteElementDegree+1)),dim);
+     //
+     if (iter==0){
+       if (it->type==SCALAR){
+	 fe=new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(finiteElementDegree+1)),1);
+       }
+       else if (it->type==VECTOR){
+	 fe=new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(finiteElementDegree+1)),dim);
+       }
+       else{
+	 pcout << "\nmatrixFreePDE.h: unknown field type\n";
+	 exit(-1);
+       }
+       FESet.push_back(fe);
      }
      else{
-       pcout << "\nmatrixFreePDE.h: unknown field type\n";
-       exit(-1);
+       fe=FESet.at(it->index);
      }
-     FESet.push_back(fe);
-
+     
      //distribute DOFs
-     DoFHandler<dim>* dof_handler=new DoFHandler<dim>(triangulation);
+     DoFHandler<dim>* dof_handler;
+     if (iter==0){
+       dof_handler=new DoFHandler<dim>(triangulation);
+       dofHandlersSet.push_back(dof_handler);
+       dofHandlersSet2.push_back(dof_handler); 
+     }
+     else{
+       dof_handler=dofHandlersSet2.at(it->index);
+     }
      dof_handler->distribute_dofs (*fe);
-     dofHandlersSet.push_back(dof_handler); 
      totalDOFs+=dof_handler->n_dofs();
 
      //extract locally_relevant_dofs
-     IndexSet* locally_relevant_dofs=new IndexSet;
+     IndexSet* locally_relevant_dofs;
+     if (iter==0){
+       locally_relevant_dofs=new IndexSet;
+       locally_relevant_dofsSet.push_back(locally_relevant_dofs);
+       locally_relevant_dofsSet2.push_back(locally_relevant_dofs);
+     }
+     else{
+       locally_relevant_dofs=locally_relevant_dofsSet2.at(it->index);
+     }
+     locally_relevant_dofs->clear();
      DoFTools::extract_locally_relevant_dofs (*dof_handler, *locally_relevant_dofs);
-     locally_relevant_dofsSet.push_back(locally_relevant_dofs);
 
      //create constraints
-     ConstraintMatrix* constraints=new ConstraintMatrix;
-     constraints->clear();
-     constraints->reinit(*locally_relevant_dofs);
-     DoFTools::make_hanging_node_constraints (*dof_handler, *constraints);
-     constraintsSet.push_back(constraints);
-     //apply zero Dirichlet BC's for ELLIPTIC fields. This is just the
-     //default and can be changed later in the specific BVP
-     //implementation
-     if (it->pdetype==ELLIPTIC){
-       currentFieldIndex=it->index;
-       applyDirichletBCs();
+     ConstraintMatrix *constraints, *constraintsHangingNodes;
+     if (iter==0){
+       constraints=new ConstraintMatrix; constraintsSet.push_back(constraints);
+       constraintsSet2.push_back(constraints);
+       constraintsHangingNodes=new ConstraintMatrix; constraintsHangingNodesSet.push_back(constraintsHangingNodes);
+       constraintsHangingNodesSet2.push_back(constraintsHangingNodes);
+       valuesDirichletSet.push_back(new std::map<dealii::types::global_dof_index, double>);
      }
-     constraints->close();  
+     else{
+       constraints=constraintsSet2.at(it->index);
+       constraintsHangingNodes=constraintsHangingNodesSet2.at(it->index);
+     }
+     constraints->clear(); constraints->reinit(*locally_relevant_dofs);
+     constraintsHangingNodes->clear(); constraintsHangingNodes->reinit(*locally_relevant_dofs);
+     DoFTools::make_hanging_node_constraints (*dof_handler, *constraintsHangingNodes);
+     
+     //apply Dirichlet BC's
+     currentFieldIndex=it->index;
+     applyDirichletBCs();
+
+     constraints->close();
+     constraintsHangingNodes->close();
+
+     //store Dirichlet BC DOF's
+     valuesDirichletSet[it->index]->clear();
+     for (types::global_dof_index i=0; i<dof_handler->n_dofs(); i++){
+       if (locally_relevant_dofs->is_element(i)){
+	 if (constraints->is_constrained(i)){
+	   (*valuesDirichletSet[it->index])[i] = constraints->get_inhomogeneity(i);
+	 }
+       }
+     }
+
      sprintf(buffer, "field '%2s' DOF : %u (Dirichlet DOF : %u)\n", \
 	     it->name.c_str(), dof_handler->n_dofs(), constraints->n_constraints());
      pcout << buffer;
@@ -110,17 +163,23 @@
    additional_data.mapping_update_flags = (update_values | update_gradients | update_JxW_values | update_quadrature_points);
    QGaussLobatto<1> quadrature (finiteElementDegree+1);
    num_quadrature_points=std::pow(quadrature.size(),dim);
-   matrixFreeObject.reinit (dofHandlersSet, constraintsSet, quadrature, additional_data);
+   matrixFreeObject.clear();
+   matrixFreeObject.reinit (dofHandlersSet, constraintsHangingNodesSet, quadrature, additional_data);
  
    //setup problem vectors
    pcout << "initializing parallel::distributed residual and solution vectors\n";
    for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-     vectorType* U=new vectorType;
-     vectorType* R=new vectorType;
-     matrixFreeObject.initialize_dof_vector(*U,  fieldIndex);
-     matrixFreeObject.initialize_dof_vector(*R,  fieldIndex);
-     *U=0; solutionSet.push_back(U);
-     *R=0; residualSet.push_back(R);
+     vectorType *U, *R;
+     if (iter==0){
+       U=new vectorType; R=new vectorType;
+       solutionSet.push_back(U); residualSet.push_back(R); 
+       matrixFreeObject.initialize_dof_vector(*R,  fieldIndex); *R=0;
+     }
+     else{
+       U=solutionSet.at(fieldIndex); 
+     }
+     matrixFreeObject.initialize_dof_vector(*U,  fieldIndex); *U=0;
+     
      //initializing temporary dU vector required for implicit solves of the elliptic equation.
      //Assuming here that there is only one elliptic field in the problem
      if (fields[fieldIndex].pdetype==ELLIPTIC){
@@ -132,10 +191,35 @@
    if (isTimeDependentBVP){
      computeInvM();
    }
+   
+   //apply initial conditions if iter=0, else transfer solution from previous refined mesh
+   if (iter==0){
+     applyInitialConditions();
+   }
+   else{
+     for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
+       //interpolate and clear used solution transfer sets
+       soltransSet[fieldIndex]->interpolate(*solutionSet[fieldIndex]);
+       delete soltransSet[fieldIndex];
+       
+       //reset residual vector
+       vectorType *R=residualSet.at(fieldIndex);
+       matrixFreeObject.initialize_dof_vector(*R,  fieldIndex); *R=0;
+     }
+   }
 
-   //apply initial conditions
-   applyInitialConditions();
-
+   //apply Dirichlet BC's
+   if (isEllipticBVP){
+     constraintsSet[ellipticFieldIndex]->distribute(*solutionSet.at(ellipticFieldIndex));
+     constraintsHangingNodesSet[ellipticFieldIndex]->distribute(*solutionSet.at(ellipticFieldIndex));
+   }
+   
+   //create new solution transfer sets
+   soltransSet.clear();
+   for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
+     soltransSet.push_back(new parallel::distributed::SolutionTransfer<dim, vectorType>(*dofHandlersSet2[fieldIndex]));
+   }
+   
    //Ghost the solution vectors. Also apply the Dirichet BC's (if any) on the solution vectors 
    for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
      constraintsSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
@@ -145,4 +229,4 @@
    computing_timer.exit_section("matrixFreePDE: initialization");  
 }
 
-#endif
+#endif 

@@ -1,16 +1,13 @@
-//mechanics problem implementation
-//general headers
-#include <fstream>
-#include <sstream>
+// Linear elasticity example application
 
-//dealIIheaders
+// Header files
 #include "../../include/dealIIheaders.h"
 
-//mechanics problem headers
 #include "parameters.h"
-#include "../../src/models/mechanics/mechanics.h"
+#include "../../src/models/coupled/generalized_model.h"
+#include "equations.h"
 #include "ICs_and_BCs.h"
-
+#include "../../src/models/coupled/generalized_model_functions.h"
 
 //main
 int main (int argc, char **argv)
@@ -19,8 +16,10 @@ int main (int argc, char **argv)
   try
     {
       deallog.depth_console(0);
-      MechanicsProblem<problemDIM> problem;
-      problem.fields.push_back(Field<problemDIM>(VECTOR,  ELLIPTIC, "u"));
+      generalizedProblem<problemDIM> problem;
+      
+      problem.setBCs();
+      problem.buildFields();
       problem.init (); 
       problem.solve();
     }

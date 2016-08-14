@@ -1,8 +1,23 @@
 var searchData=
 [
-  ['scalarfield2d',['ScalarField2D',['../_p_extern_8cc.html#ae14db95de4ca89527d06a2027c1d8a9a',1,'PExtern.cc']]],
-  ['scalarfield3d',['ScalarField3D',['../_p_extern_8cc.html#aa78593dfafcb96c61be5e3713ebcc0cb',1,'PExtern.cc']]],
-  ['shiftconcentration',['shiftConcentration',['../class_coupled_c_h_a_c_mechanics_problem.html#ae722ea49faa5bf1953a19f8f1e7cc880',1,'CoupledCHACMechanicsProblem::shiftConcentration()'],['../class_matrix_free_p_d_e.html#ae722ea49faa5bf1953a19f8f1e7cc880',1,'MatrixFreePDE::shiftConcentration()']]],
-  ['solve',['solve',['../class_matrix_free_p_d_e.html#af7d39f0eac0af0ed5785935ac72a1e7d',1,'MatrixFreePDE']]],
-  ['solveincrement',['solveIncrement',['../class_matrix_free_p_d_e.html#a09229d9bae84b95a8a1e3a027a03515f',1,'MatrixFreePDE']]]
+  ['pfunction_5fdsd_5fcalc',['PFunction_dsd_calc',['../_p_extern_8cc.html#a71b5331ce46796520f9c7126fb263dcd',1,'PExtern.cc']]],
+  ['pfunction_5fdsd_5fcalc_5fgrad',['PFunction_dsd_calc_grad',['../_p_extern_8cc.html#a33c349325a0ce91007582cbd94030744',1,'PExtern.cc']]],
+  ['pfunction_5fdsd_5fcalc_5fhess',['PFunction_dsd_calc_hess',['../_p_extern_8cc.html#a079af5a6ec308641f4762cb62ab0de37',1,'PExtern.cc']]],
+  ['pfunction_5fdsd_5fdelete',['PFunction_dsd_delete',['../_p_extern_8cc.html#ada80db2fd326f966308b5273da793ac5',1,'PExtern.cc']]],
+  ['pfunction_5fdsd_5feval',['PFunction_dsd_eval',['../_p_extern_8cc.html#ab6255bbc3240f448e76f782379f3a392',1,'PExtern.cc']]],
+  ['pfunction_5fdsd_5feval_5fgrad',['PFunction_dsd_eval_grad',['../_p_extern_8cc.html#a01dc3e16415ebc7532e3430236ffdfb8',1,'PExtern.cc']]],
+  ['pfunction_5fdsd_5feval_5fhess',['PFunction_dsd_eval_hess',['../_p_extern_8cc.html#a68396a579a5bc59c9f5571cb841d31bf',1,'PExtern.cc']]],
+  ['pfunction_5fdsd_5fget',['PFunction_dsd_get',['../_p_extern_8cc.html#ad3131296e5168dde7afc339dc98e9801',1,'PExtern.cc']]],
+  ['pfunction_5fdsd_5fget_5fgrad',['PFunction_dsd_get_grad',['../_p_extern_8cc.html#a6bf6142beeea3656cfb2d851ba971934',1,'PExtern.cc']]],
+  ['pfunction_5fdsd_5fget_5fhess',['PFunction_dsd_get_hess',['../_p_extern_8cc.html#a98898216c578bea960e2ff516deb4a68',1,'PExtern.cc']]],
+  ['pfunction_5fdsd_5fname',['PFunction_dsd_name',['../_p_extern_8cc.html#a3a5f092771e11d2a92e5045cec5c1371',1,'PExtern.cc']]],
+  ['pfunction_5fdsd_5fnew',['PFunction_dsd_new',['../_p_extern_8cc.html#a1c53c42da61874345621e67982a8b864',1,'PExtern.cc']]],
+  ['pfunction_5fdsd_5fsize',['PFunction_dsd_size',['../_p_extern_8cc.html#a2e252d944f3820dd6066160106196b82',1,'PExtern.cc']]],
+  ['pfunction_5fdsd_5fvar_5fdescription',['PFunction_dsd_var_description',['../_p_extern_8cc.html#a8d09e2541a602979ae5e2b0a9345f190',1,'PExtern.cc']]],
+  ['pfunction_5fdsd_5fvar_5fname',['PFunction_dsd_var_name',['../_p_extern_8cc.html#a1151fa71516e98a516fd5641f3cce4a2',1,'PExtern.cc']]],
+  ['psimplefunction_5fdsd_5fcalc',['PSimpleFunction_dsd_calc',['../_p_extern_8cc.html#a00a9d9deebcfdb7796798fde3fc7dcea',1,'PExtern.cc']]],
+  ['psimplefunction_5fdsd_5fdelete',['PSimpleFunction_dsd_delete',['../_p_extern_8cc.html#a878daef20f6d6664a5f9144c71c69229',1,'PExtern.cc']]],
+  ['psimplefunction_5fdsd_5fget',['PSimpleFunction_dsd_get',['../_p_extern_8cc.html#ad04a95eaede7780c20795a94fde520f0',1,'PExtern.cc']]],
+  ['psimplefunction_5fdsd_5fname',['PSimpleFunction_dsd_name',['../_p_extern_8cc.html#a78ae0e7b544c37b6bcaef68f1df59792',1,'PExtern.cc']]],
+  ['psimplefunction_5fdsd_5fnew',['PSimpleFunction_dsd_new',['../_p_extern_8cc.html#a06c00c4e8cbf47364d147fdefee62ddb',1,'PExtern.cc']]]
 ];

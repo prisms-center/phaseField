@@ -53,8 +53,8 @@
 #endif
 
 //relative linear solver tolerance for implicit solves (default value:1.0e-10)
-#ifndef relSolverTolerance
-#define relSolverTolerance 1.0e-10
+#ifndef solverTolerance
+#define solverTolerance 1.0e-10
 #endif
 
 //max number of linear solver iterations for implicit solves (default value:1000)
