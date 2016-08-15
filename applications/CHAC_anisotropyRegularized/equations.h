@@ -87,6 +87,7 @@
 // "modelResidualsList", a list of the value and gradient terms of the residual for
 // each residual equation. The index for each variable in these lists corresponds to
 // the order it is defined at the top of this file (starting at 0).template <int dim>
+template <int dim>
 void generalizedProblem<dim>::residualRHS(const std::vector<modelVariable<dim>> & modelVariablesList, 
      std::vector<modelResidual<dim>> & modelResidualsList, 
      dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
