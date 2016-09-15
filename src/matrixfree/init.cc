@@ -150,7 +150,33 @@
        }
      }
 
-     sprintf(buffer, "field '%2s' DOF : %u (Dirichlet DOF : %u)\n", \
+     // Periodic BCs
+     std::vector<dealii::GridTools::PeriodicFacePair<typename dealii::parallel::distributed::Triangulation<dim>::cell_iterator> > periodicity_vector;
+    // dealii::GridTools::collect_periodic_faces(triangulation, 0, 1, 0,
+      //                                 periodicity_vector, Tensor<1, dim>());
+
+
+//     //periodic BCs from CHiMaD
+//
+//     //make periodic BC's
+//        std::vector<GridTools::PeriodicFacePair<typename parallel::distributed::Triangulation<dim>::cell_iterator> > periodicity_vector;
+//        for (int i=0; i<dim; ++i){
+//          GridTools::collect_periodic_faces(triangulation, /*b_id1*/ 2*i, /*b_id2*/ 2*i+1,
+//     				       /*direction*/ i, periodicity_vector);
+//        }
+//        triangulation.add_periodicity(periodicity_vector);
+//        std::cout << "periodic facepairs: " << periodicity_vector.size() << std::endl;
+//
+
+//	  std::vector<GridTools::PeriodicFacePair<typename DoFHandler<dim>::cell_iterator> > periodicity_vector1;
+//	  for (int i=0; i<dim; ++i){
+//		GridTools::collect_periodic_faces(*dof_handler, /*b_id1*/ 2*i, /*b_id2*/ 2*i+1,
+//					 /*direction*/ i, periodicity_vector1);
+//	  }
+//	  DoFTools::make_periodicity_constraints<DoFHandler<dim> >(periodicity_vector1, *constraints);
+
+
+     sprintf(buffer, "field '%2s' DOF : %u (Constraint DOF : %u)\n", \
 	     it->name.c_str(), dof_handler->n_dofs(), constraints->n_constraints());
      pcout << buffer;
    }
