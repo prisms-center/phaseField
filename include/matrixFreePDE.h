@@ -221,6 +221,10 @@ class MatrixFreePDE:public Subscriptor
   /*Virtual method for applying Dirichlet boundary conditions.  This is usually expected to be provided by the user.*/ 
   virtual void applyDirichletBCs();
 
+  // Methods to apply periodic BCs
+  virtual void setPeriodicity()=0;
+  virtual void setPeriodicityConstraints(ConstraintMatrix *, DoFHandler<dim>*)=0;
+
   //methods to apply initial conditions
   /*Virtual method to apply initial conditions.  This is usually expected to be provided by the user in IBVP (Initial Boundary Value Problems).*/   
   virtual void applyInitialConditions();

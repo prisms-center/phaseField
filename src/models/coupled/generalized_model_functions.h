@@ -855,6 +855,28 @@ void generalizedProblem<dim>::inputBCs(int var, int component, std::string BC_ty
 		std::string BC_type_dim2_max, double BC_value_dim2_max,std::string BC_type_dim3_min, double BC_value_dim3_min,
 		std::string BC_type_dim3_max, double BC_value_dim3_max){
 
+	// Validate input
+	try{
+		if ((BC_type_dim1_min == "PERIODIC") && (BC_type_dim1_max != "PERIODIC")){
+			throw 0;
+		}
+		if ((BC_type_dim2_min == "PERIODIC") && (BC_type_dim2_max != "PERIODIC")){
+			throw 0;
+		}
+		if ((BC_type_dim3_min == "PERIODIC") && (BC_type_dim3_max != "PERIODIC")){
+			throw 0;
+		}
+	}
+	catch (int e){
+		if (e == 0){
+			std::cout << "Error: For periodic BCs, both faces for a given direction must be set as periodic. "
+					"Please check the BCs that are set in ICs_and_BCs.h." << std::endl;
+		}
+		abort();
+	}
+
+
+
 	varBCs<dim> newBC;
 	newBC.var_BC_type.push_back(BC_type_dim1_min);
 	newBC.var_BC_type.push_back(BC_type_dim1_max);
@@ -879,6 +901,23 @@ void generalizedProblem<dim>::inputBCs(int var, int component, std::string BC_ty
 		std::string BC_type_dim1_max, double BC_value_dim1_max, std::string BC_type_dim2_min, double BC_value_dim2_min,
 		std::string BC_type_dim2_max, double BC_value_dim2_max){
 
+	// Validate input
+	try{
+		if ((BC_type_dim1_min == "PERIODIC") && (BC_type_dim1_max != "PERIODIC")){
+			throw 0;
+		}
+		if ((BC_type_dim2_min == "PERIODIC") && (BC_type_dim2_max != "PERIODIC")){
+			throw 0;
+		}
+	}
+	catch (int e){
+		if (e == 0){
+			std::cout << "Error: For periodic BCs, both faces for a given direction must be set as periodic. "
+					"Please check the BCs that are set in ICs_and_BCs.h." << std::endl;
+		}
+		abort();
+	}
+
 	varBCs<dim> newBC;
 	newBC.var_BC_type.push_back(BC_type_dim1_min);
 	newBC.var_BC_type.push_back(BC_type_dim1_max);
@@ -897,6 +936,22 @@ void generalizedProblem<dim>::inputBCs(int var, int component, std::string BC_ty
 template <int dim>
 void generalizedProblem<dim>::inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
 		std::string BC_type_dim1_max, double BC_value_dim1_max){
+
+	// Validate input
+	try{
+		if ((BC_type_dim1_min == "PERIODIC") && (BC_type_dim1_max != "PERIODIC")){
+			throw 0;
+		}
+
+	}
+	catch (int e){
+		if (e == 0){
+			std::cout << "Error: For periodic BCs, both faces for a given direction must be set as periodic. "
+					"Please check the BCs that are set in ICs_and_BCs.h." << std::endl;
+		}
+		abort();
+	}
+
 
 	varBCs<dim> newBC;
 	newBC.var_BC_type.push_back(BC_type_dim1_min);
@@ -919,6 +974,33 @@ void generalizedProblem<dim>::inputBCs(int var, int component, std::string BC_ty
 	}
 
 	BC_list.push_back(newBC);
+}
+
+// Based on the contents of BC_list, mark faces on the triangulation as periodic
+template <int dim>
+void generalizedProblem<dim>::setPeriodicity(){
+	std::vector<GridTools::PeriodicFacePair<typename parallel::distributed::Triangulation<dim>::cell_iterator> > periodicity_vector;
+	for (int i=0; i<dim; ++i){
+		if (BC_list[this->currentFieldIndex].var_BC_type[2*i] == "PERIODIC"){
+			GridTools::collect_periodic_faces(this->triangulation, /*b_id1*/ 2*i, /*b_id2*/ 2*i+1,
+					/*direction*/ i, periodicity_vector);
+		}
+	}
+	this->triangulation.add_periodicity(periodicity_vector);
+	std::cout << "periodic facepairs: " << periodicity_vector.size() << std::endl;
+}
+
+// Set constraints to enforce periodic boundary conditions
+template <int dim>
+void generalizedProblem<dim>::setPeriodicityConstraints(ConstraintMatrix * constraints, DoFHandler<dim>* dof_handler){
+    std::vector<GridTools::PeriodicFacePair<typename DoFHandler<dim>::cell_iterator> > periodicity_vector;
+    for (int i=0; i<dim; ++i){
+    	if (BC_list[this->currentFieldIndex].var_BC_type[2*i] == "PERIODIC"){
+    		GridTools::collect_periodic_faces(*dof_handler, /*b_id1*/ 2*i, /*b_id2*/ 2*i+1,
+    				/*direction*/ i, periodicity_vector);
+    	}
+    }
+    DoFTools::make_periodicity_constraints<DoFHandler<dim> >(periodicity_vector, *constraints);
 }
 
 // =====================================================================

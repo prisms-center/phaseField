@@ -35,15 +35,8 @@
      // Mark boundaries for applying the boundary conditions
      markBoundaries();
 
-     // Define which (if any) faces of the triangulation are periodic
-	 std::vector<GridTools::PeriodicFacePair<typename parallel::distributed::Triangulation<dim>::cell_iterator> > periodicity_vector;
-	 for (int i=0; i<dim; ++i){
-	   GridTools::collect_periodic_faces(triangulation, /*b_id1*/ 2*i, /*b_id2*/ 2*i+1,
-					   /*direction*/ i, periodicity_vector);
-	 }
-	 triangulation.add_periodicity(periodicity_vector);
-	 std::cout << "periodic facepairs: " << periodicity_vector.size() << std::endl;
-
+     // Set which (if any) faces of the triangulation are periodic
+     setPeriodicity();
 
      // Do the initial global refinement
      triangulation.refine_global (refineFactor);
@@ -147,40 +140,12 @@
      constraintsHangingNodes->clear(); constraintsHangingNodes->reinit(*locally_relevant_dofs);
      DoFTools::make_hanging_node_constraints (*dof_handler, *constraintsHangingNodes);
      
-     //apply Dirichlet BC's
+     //apply Dirichlet BCs
      currentFieldIndex=it->index;
      applyDirichletBCs();
 
-     // Periodic BCs
-//	  std::vector<dealii::GridTools::PeriodicFacePair<typename dealii::parallel::distributed::Triangulation<dim>::cell_iterator> >
-//	  periodicity_vector;
-//	  dealii::GridTools::collect_periodic_faces(triangulation, 0, 1, 0,
-//										periodicity_vector, Tensor<1, dim>());
-//
-//	  triangulation.add_periodicity(periodicity_vector);
-//
-//	  VectorTools::interpolate_boundary_values (dofHandlersSet[currentFieldIndex],
-//													dof_handler,
-//													0,
-//													BoundaryValues<dim>(),
-//												   constraintsSet[currentFieldIndex]);
-//
-//	   VectorTools::interpolate_boundary_values (dofHandlersSet[currentFieldIndex],
-//													 dof_handler,
-//													 1,
-//													 BoundaryValues<dim>(),
-//												   constraintsSet[currentFieldIndex]);
-
-     //periodic BCs from CHiMaD
-
-
-
-	  std::vector<GridTools::PeriodicFacePair<typename DoFHandler<dim>::cell_iterator> > periodicity_vector1;
-	  for (int i=0; i<dim; ++i){
-		GridTools::collect_periodic_faces(*dof_handler, /*b_id1*/ 2*i, /*b_id2*/ 2*i+1,
-					 /*direction*/ i, periodicity_vector1);
-	  }
-	  DoFTools::make_periodicity_constraints<DoFHandler<dim> >(periodicity_vector1, *constraints);
+     // Apply periodic BCs
+     setPeriodicityConstraints(constraints,dof_handler);
 
      constraints->close();
      constraintsHangingNodes->close();
