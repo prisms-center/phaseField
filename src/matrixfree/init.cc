@@ -32,25 +32,28 @@
      GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(spanX));
 #endif
 
-     //make periodic BC's
+     // Mark boundaries for applying the boundary conditions
      markBoundaries();
-             std::vector<GridTools::PeriodicFacePair<typename parallel::distributed::Triangulation<dim>::cell_iterator> > periodicity_vector;
-             for (int i=0; i<dim; ++i){
-               GridTools::collect_periodic_faces(triangulation, /*b_id1*/ 2*i, /*b_id2*/ 2*i+1,
-          				       /*direction*/ i, periodicity_vector);
-             }
-             triangulation.add_periodicity(periodicity_vector);
-             std::cout << "periodic facepairs: " << periodicity_vector.size() << std::endl;
+
+     // Define which (if any) faces of the triangulation are periodic
+	 std::vector<GridTools::PeriodicFacePair<typename parallel::distributed::Triangulation<dim>::cell_iterator> > periodicity_vector;
+	 for (int i=0; i<dim; ++i){
+	   GridTools::collect_periodic_faces(triangulation, /*b_id1*/ 2*i, /*b_id2*/ 2*i+1,
+					   /*direction*/ i, periodicity_vector);
+	 }
+	 triangulation.add_periodicity(periodicity_vector);
+	 std::cout << "periodic facepairs: " << periodicity_vector.size() << std::endl;
 
 
+     // Do the initial global refinement
      triangulation.refine_global (refineFactor);
-     //write out extends
+
+     // Write out the size of the computational domain and the total number of elements
      pcout << "problem dimensions: " << spanX << "x" << spanY << "x" << spanZ << std::endl;
      pcout << "number of elements: " << triangulation.n_global_active_cells() << std::endl;
      pcout << std::endl;
   
-     //mark boundaries for applying Dirichlet boundary conditons
-     //markBoundaries();
+
    }
    else{
      refineGrid();
