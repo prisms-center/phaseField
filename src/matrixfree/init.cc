@@ -36,7 +36,7 @@
      markBoundaries();
 
      // Set which (if any) faces of the triangulation are periodic
-     setPeriodicity();
+    setPeriodicity();
 
      // Do the initial global refinement
      triangulation.refine_global (refineFactor);
@@ -56,113 +56,114 @@
    pcout << "initializing matrix free object\n";
    unsigned int totalDOFs=0;
    for(typename std::vector<Field<dim> >::iterator it = fields.begin(); it != fields.end(); ++it){
-     char buffer[100];
-     if (iter==0){
-       //print to std::out
-       sprintf(buffer,"initializing finite element space P^%u for %9s:%6s field '%s'\n", \
-	       finiteElementDegree,					\
-	       (it->pdetype==PARABOLIC ? "PARABOLIC":"ELLIPTIC"),	\
-	       (it->type==SCALAR ? "SCALAR":"VECTOR"),			\
-	       it->name.c_str());
-       pcout << buffer;
-       //check if any time dependent fields present
-       if (it->pdetype==PARABOLIC){
-	 isTimeDependentBVP=true;
-	 parabolicFieldIndex=it->index;
-       }
-       else if (it->pdetype==ELLIPTIC){
-	 isEllipticBVP=true;
-	 ellipticFieldIndex=it->index;	 
-       }
-     }
+	   char buffer[100];
+	   if (iter==0){
+		   //print to std::out
+		   sprintf(buffer,"initializing finite element space P^%u for %9s:%6s field '%s'\n", \
+				   finiteElementDegree,					\
+				   (it->pdetype==PARABOLIC ? "PARABOLIC":"ELLIPTIC"),	\
+				   (it->type==SCALAR ? "SCALAR":"VECTOR"),			\
+				   it->name.c_str());
+		   pcout << buffer;
+		   //check if any time dependent fields present
+		   if (it->pdetype==PARABOLIC){
+			   isTimeDependentBVP=true;
+			   parabolicFieldIndex=it->index;
+		   }
+		   else if (it->pdetype==ELLIPTIC){
+			   isEllipticBVP=true;
+			   ellipticFieldIndex=it->index;
+		   }
+	   }
 
      
-     //create FESystem
-     FESystem<dim>* fe;
-     //
-     if (iter==0){
-       if (it->type==SCALAR){
-	 fe=new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(finiteElementDegree+1)),1);
-       }
-       else if (it->type==VECTOR){
-	 fe=new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(finiteElementDegree+1)),dim);
-       }
-       else{
-	 pcout << "\nmatrixFreePDE.h: unknown field type\n";
-	 exit(-1);
-       }
-       FESet.push_back(fe);
-     }
-     else{
-       fe=FESet.at(it->index);
-     }
+	   //create FESystem
+	   FESystem<dim>* fe;
+	   //
+	   if (iter==0){
+		   if (it->type==SCALAR){
+			   fe=new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(finiteElementDegree+1)),1);
+		   }
+		   else if (it->type==VECTOR){
+			   fe=new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(finiteElementDegree+1)),dim);
+		   }
+		   else{
+			   pcout << "\nmatrixFreePDE.h: unknown field type\n";
+			   exit(-1);
+		   }
+		   FESet.push_back(fe);
+	   }
+	   else{
+		   fe=FESet.at(it->index);
+	   }
      
-     //distribute DOFs
-     DoFHandler<dim>* dof_handler;
-     if (iter==0){
-       dof_handler=new DoFHandler<dim>(triangulation);
-       dofHandlersSet.push_back(dof_handler);
-       dofHandlersSet2.push_back(dof_handler); 
-     }
-     else{
-       dof_handler=dofHandlersSet2.at(it->index);
-     }
-     dof_handler->distribute_dofs (*fe);
-     totalDOFs+=dof_handler->n_dofs();
+	   //distribute DOFs
+	   DoFHandler<dim>* dof_handler;
+	   if (iter==0){
+		   dof_handler=new DoFHandler<dim>(triangulation);
+		   dofHandlersSet.push_back(dof_handler);
+		   dofHandlersSet2.push_back(dof_handler);
+	   }
+	   else{
+		   dof_handler=dofHandlersSet2.at(it->index);
+	   }
+	   dof_handler->distribute_dofs (*fe);
+	   totalDOFs+=dof_handler->n_dofs();
 
-     //extract locally_relevant_dofs
-     IndexSet* locally_relevant_dofs;
-     if (iter==0){
-       locally_relevant_dofs=new IndexSet;
-       locally_relevant_dofsSet.push_back(locally_relevant_dofs);
-       locally_relevant_dofsSet2.push_back(locally_relevant_dofs);
-     }
-     else{
-       locally_relevant_dofs=locally_relevant_dofsSet2.at(it->index);
-     }
-     locally_relevant_dofs->clear();
-     DoFTools::extract_locally_relevant_dofs (*dof_handler, *locally_relevant_dofs);
+	   //extract locally_relevant_dofs
+	   IndexSet* locally_relevant_dofs;
+	   if (iter==0){
+		   locally_relevant_dofs=new IndexSet;
+		   locally_relevant_dofsSet.push_back(locally_relevant_dofs);
+		   locally_relevant_dofsSet2.push_back(locally_relevant_dofs);
+	   }
+	   else{
+		   locally_relevant_dofs=locally_relevant_dofsSet2.at(it->index);
+	   }
+	   locally_relevant_dofs->clear();
+	   DoFTools::extract_locally_relevant_dofs (*dof_handler, *locally_relevant_dofs);
 
-     //create constraints
-     ConstraintMatrix *constraints, *constraintsHangingNodes;
-     if (iter==0){
-       constraints=new ConstraintMatrix; constraintsSet.push_back(constraints);
-       constraintsSet2.push_back(constraints);
-       constraintsHangingNodes=new ConstraintMatrix; constraintsHangingNodesSet.push_back(constraintsHangingNodes);
-       constraintsHangingNodesSet2.push_back(constraintsHangingNodes);
-       valuesDirichletSet.push_back(new std::map<dealii::types::global_dof_index, double>);
-     }
-     else{
-       constraints=constraintsSet2.at(it->index);
-       constraintsHangingNodes=constraintsHangingNodesSet2.at(it->index);
-     }
-     constraints->clear(); constraints->reinit(*locally_relevant_dofs);
-     constraintsHangingNodes->clear(); constraintsHangingNodes->reinit(*locally_relevant_dofs);
-     DoFTools::make_hanging_node_constraints (*dof_handler, *constraintsHangingNodes);
+	   //create constraints
+	   ConstraintMatrix *constraints, *constraintsHangingNodes;
+	   if (iter==0){
+		   constraints=new ConstraintMatrix; constraintsSet.push_back(constraints);
+		   constraintsSet2.push_back(constraints);
+		   constraintsHangingNodes=new ConstraintMatrix; constraintsHangingNodesSet.push_back(constraintsHangingNodes);
+		   constraintsHangingNodesSet2.push_back(constraintsHangingNodes);
+		   valuesDirichletSet.push_back(new std::map<dealii::types::global_dof_index, double>);
+	   }
+	   else{
+		   constraints=constraintsSet2.at(it->index);
+		   constraintsHangingNodes=constraintsHangingNodesSet2.at(it->index);
+	   }
+	   constraints->clear(); constraints->reinit(*locally_relevant_dofs);
+	   constraintsHangingNodes->clear(); constraintsHangingNodes->reinit(*locally_relevant_dofs);
+	   DoFTools::make_hanging_node_constraints (*dof_handler, *constraintsHangingNodes);
      
-     //apply Dirichlet BCs
-     currentFieldIndex=it->index;
-     applyDirichletBCs();
+	   // Apply periodic BCs
+	   setPeriodicityConstraints(constraints,dof_handler);
 
-     // Apply periodic BCs
-     setPeriodicityConstraints(constraints,dof_handler);
+	   //apply Dirichlet BCs
+	   currentFieldIndex=it->index;
+	   applyDirichletBCs();
 
-     constraints->close();
-     constraintsHangingNodes->close();
 
-     //store Dirichlet BC DOF's
-     valuesDirichletSet[it->index]->clear();
-     for (types::global_dof_index i=0; i<dof_handler->n_dofs(); i++){
-       if (locally_relevant_dofs->is_element(i)){
-	 if (constraints->is_constrained(i)){
-	   (*valuesDirichletSet[it->index])[i] = constraints->get_inhomogeneity(i);
-	 }
-       }
-     }
+	   constraints->close();
+	   constraintsHangingNodes->close();
 
-     sprintf(buffer, "field '%2s' DOF : %u (Constraint DOF : %u)\n", \
-	     it->name.c_str(), dof_handler->n_dofs(), constraints->n_constraints());
-     pcout << buffer;
+	   //store Dirichlet BC DOF's
+	   valuesDirichletSet[it->index]->clear();
+	   for (types::global_dof_index i=0; i<dof_handler->n_dofs(); i++){
+		   if (locally_relevant_dofs->is_element(i)){
+			   if (constraints->is_constrained(i)){
+				   (*valuesDirichletSet[it->index])[i] = constraints->get_inhomogeneity(i);
+			   }
+		   }
+	   }
+
+	   sprintf(buffer, "field '%2s' DOF : %u (Constraint DOF : %u)\n", \
+			   it->name.c_str(), dof_handler->n_dofs(), constraints->n_constraints());
+	   pcout << buffer;
    }
    pcout << "total DOF : " << totalDOFs << std::endl;
 

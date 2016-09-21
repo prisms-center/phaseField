@@ -17,10 +17,12 @@ public:
 	  // Use "if" statements to set the initial condition for each variable
 	  // according to its variable index.
 
+	  //return  0.5+ 0.2*(0.5 - (double)(std::rand() % 100 )/100.0);
+
 	  double dx=spanX/((double) subdivisionsX)/std::pow(2.0,refineFactor);
-	  double x_loc[10] = {0.3, 0.9, 0.5, 0.4, 0.3, 0.1, 0.1, 0.6, 0.7, 0.9};
-	  double y_loc[10] = {0.3, 0.7, 0.1, 0.5, 0.9, 0.1, 0.7, 0.6, 0.4, 0.1};
-	  double rad[10] =   {6, 7, 9, 8, 5, 6, 4, 3, 8, 5};
+	  double x_loc[3] = {0.9, 0.1, 0.1};
+	  double y_loc[3] = {0.8, 0.1, 0.5};
+	  double rad[3] =   {8, 8, 8};
 	  double dist;
 	  scalar_IC = 0;
 
@@ -29,6 +31,8 @@ public:
 	  #elif problemDIM == 3
 	  	  dist = p.distance(Point<dim>(x_loc[index]*spanX,y_loc[index]*spanY,0.5*spanZ));
 	  #endif
+
+	  scalar_IC = 0.5*(1.0-std::tanh((dist-rad[index])/(dx)));
 
 	  // =====================================================================
 	  return scalar_IC;
@@ -79,16 +83,10 @@ void generalizedProblem<dim>::setBCs(){
 	// Face numbering: starts at zero with the minimum of the first direction, one for the maximum of the first direction
 	//						two for the minimum of the second direction, etc.
 
-	inputBCs(0,0,"ZERO_DERIVATIVE",0);
-	inputBCs(1,0,"ZERO_DERIVATIVE",0);
-	inputBCs(2,0,"ZERO_DERIVATIVE",0);
-	inputBCs(3,0,"ZERO_DERIVATIVE",0);
-	inputBCs(4,0,"ZERO_DERIVATIVE",0);
-	inputBCs(5,0,"ZERO_DERIVATIVE",0);
-	inputBCs(6,0,"PERIZERO_DERIVATIVEODIC",0);
-	inputBCs(7,0,"ZERO_DERIVATIVE",0);
-	inputBCs(8,0,"ZERO_DERIVATIVE",0);
-	inputBCs(9,0,"ZERO_DERIVATIVE",0);
+	inputBCs(0,0,"PERIODIC",0);
+	inputBCs(1,0,"PERIODIC",0);
+	inputBCs(2,0,"PERIODIC",0);
+
 
 	// =====================================================================
 

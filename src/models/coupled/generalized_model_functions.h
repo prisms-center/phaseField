@@ -875,8 +875,6 @@ void generalizedProblem<dim>::inputBCs(int var, int component, std::string BC_ty
 		abort();
 	}
 
-
-
 	varBCs<dim> newBC;
 	newBC.var_BC_type.push_back(BC_type_dim1_min);
 	newBC.var_BC_type.push_back(BC_type_dim1_max);
@@ -981,10 +979,10 @@ template <int dim>
 void generalizedProblem<dim>::setPeriodicity(){
 	std::vector<GridTools::PeriodicFacePair<typename parallel::distributed::Triangulation<dim>::cell_iterator> > periodicity_vector;
 	for (int i=0; i<dim; ++i){
-		if (BC_list[this->currentFieldIndex].var_BC_type[2*i] == "PERIODIC"){
+		//if (BC_list[this->currentFieldIndex].var_BC_type[2*i] == "PERIODIC"){
 			GridTools::collect_periodic_faces(this->triangulation, /*b_id1*/ 2*i, /*b_id2*/ 2*i+1,
 					/*direction*/ i, periodicity_vector);
-		}
+		//}
 	}
 	this->triangulation.add_periodicity(periodicity_vector);
 	std::cout << "periodic facepairs: " << periodicity_vector.size() << std::endl;
