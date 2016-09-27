@@ -1,10 +1,10 @@
-// created: 2016-6-29 17:08:13
+// created: 2016-9-27 12:21:14
 // version: master
 // url: https://github.com/bpuchala/IntegrationToolsWriter.git
 // commit: 13e063c3ac8e8911a726a243fdbd68f291cc58cc
 
-#ifndef pfunct_faV_HH
-#define pfunct_faV_HH
+#ifndef pfunct_fbV_HH
+#define pfunct_fbV_HH
 
 #include <cmath>
 #include <cstdlib>
@@ -13,115 +13,115 @@
 namespace PRISMS
 {
     template< class VarContainer>
-    class pfunct_faV_f : public PSimpleBase< VarContainer, double>
+    class pfunct_fbV_f : public PSimpleBase< VarContainer, double>
     {
         double eval( const VarContainer &var) const
         {
-            return  1.3687000000000000e+00*((var[0]*var[0])*(var[0]*var[0]))+-4.7759999999999998e+00*var[0]+-2.7374999999999998e+00*(var[0]*var[0]*var[0])+5.1622000000000003e+00*(var[0]*var[0])-1.6704000000000001e+00;
+            return  -5.9745999999999997e+00*var[0]+5.0000000000000000e+00*(var[0]*var[0])-1.5924000000000000e+00;
         }
 
     public:
 
-        pfunct_faV_f()
+        pfunct_fbV_f()
         {
-            this->_name = "pfunct_faV_f";
+            this->_name = "pfunct_fbV_f";
         }
 
         std::string csrc() const
         {
-            return " 1.3687000000000000e+00*((var[0]*var[0])*(var[0]*var[0]))+-4.7759999999999998e+00*var[0]+-2.7374999999999998e+00*(var[0]*var[0]*var[0])+5.1622000000000003e+00*(var[0]*var[0])-1.6704000000000001e+00";
+            return " -5.9745999999999997e+00*var[0]+5.0000000000000000e+00*(var[0]*var[0])-1.5924000000000000e+00";
         }
 
         std::string sym() const
         {
-            return "-1.6704-(2.7375)*c^3-(4.776)*c+(5.1622)*c^2+(1.3687)*c^4";
+            return "-1.5924+(5.0)*c^2-(5.9746)*c";
         }
 
         std::string latex() const
         {
-            return "-1.6704+{(1.3687)} c^{4}-{(4.776)} c+{(5.1622)} c^{2}-{(2.7375)} c^{3}";
+            return "-1.5924+{(5.0)} c^{2}-{(5.9746)} c";
         }
 
-        pfunct_faV_f* clone() const
+        pfunct_fbV_f* clone() const
         {
-            return new pfunct_faV_f(*this);
+            return new pfunct_fbV_f(*this);
         }
     };
 
     template< class VarContainer>
-    class pfunct_faV_grad_0 : public PSimpleBase< VarContainer, double>
+    class pfunct_fbV_grad_0 : public PSimpleBase< VarContainer, double>
     {
         double eval( const VarContainer &var) const
         {
-            return  -8.2125000000000004e+00*(var[0]*var[0])+5.4748000000000001e+00*(var[0]*var[0]*var[0])+1.0324400000000001e+01*var[0]-4.7759999999999998e+00;
+            return  1.0000000000000000e+01*var[0]-5.9745999999999997e+00;
         }
 
     public:
 
-        pfunct_faV_grad_0()
+        pfunct_fbV_grad_0()
         {
-            this->_name = "pfunct_faV_grad_0";
+            this->_name = "pfunct_fbV_grad_0";
         }
 
         std::string csrc() const
         {
-            return " -8.2125000000000004e+00*(var[0]*var[0])+5.4748000000000001e+00*(var[0]*var[0]*var[0])+1.0324400000000001e+01*var[0]-4.7759999999999998e+00";
+            return " 1.0000000000000000e+01*var[0]-5.9745999999999997e+00";
         }
 
         std::string sym() const
         {
-            return "-4.776-(8.2125)*c^2+(5.4748)*c^3+(10.3244)*c";
+            return "-5.9746+(10.0)*c";
         }
 
         std::string latex() const
         {
-            return "-4.776-{(8.2125)} c^{2}+{(5.4748)} c^{3}+{(10.3244)} c";
+            return "-5.9746+{(10.0)} c";
         }
 
-        pfunct_faV_grad_0* clone() const
+        pfunct_fbV_grad_0* clone() const
         {
-            return new pfunct_faV_grad_0(*this);
+            return new pfunct_fbV_grad_0(*this);
         }
     };
 
     template< class VarContainer>
-    class pfunct_faV_hess_0_0 : public PSimpleBase< VarContainer, double>
+    class pfunct_fbV_hess_0_0 : public PSimpleBase< VarContainer, double>
     {
         double eval( const VarContainer &var) const
         {
-            return  1.6424399999999999e+01*(var[0]*var[0])+-1.6425000000000001e+01*var[0]+1.0324400000000001e+01;
+            return 1.0000000000000000e+01;
         }
 
     public:
 
-        pfunct_faV_hess_0_0()
+        pfunct_fbV_hess_0_0()
         {
-            this->_name = "pfunct_faV_hess_0_0";
+            this->_name = "pfunct_fbV_hess_0_0";
         }
 
         std::string csrc() const
         {
-            return " 1.6424399999999999e+01*(var[0]*var[0])+-1.6425000000000001e+01*var[0]+1.0324400000000001e+01";
+            return "1.0000000000000000e+01";
         }
 
         std::string sym() const
         {
-            return "10.3244+(16.4244)*c^2-(16.425)*c";
+            return "10.0";
         }
 
         std::string latex() const
         {
-            return "10.3244+{(16.4244)} c^{2}-{(16.425)} c";
+            return "10.0";
         }
 
-        pfunct_faV_hess_0_0* clone() const
+        pfunct_fbV_hess_0_0* clone() const
         {
-            return new pfunct_faV_hess_0_0(*this);
+            return new pfunct_fbV_hess_0_0(*this);
         }
     };
 
     template<class VarContainer>
-    class pfunct_faV : public PFuncBase< VarContainer, double>
+    class pfunct_fbV : public PFuncBase< VarContainer, double>
     {
     public:
         
@@ -131,12 +131,12 @@ namespace PRISMS
         PSimpleBase< VarContainer, double> **_grad_val;
         PSimpleBase< VarContainer, double> ***_hess_val;
         
-        pfunct_faV()
+        pfunct_fbV()
         {
             construct();
         }
 
-        pfunct_faV(const pfunct_faV &RHS )
+        pfunct_fbV(const pfunct_fbV &RHS )
         {
             construct(false);
             
@@ -146,7 +146,7 @@ namespace PRISMS
             
         }
 
-        pfunct_faV& operator=( pfunct_faV RHS )
+        pfunct_fbV& operator=( pfunct_fbV RHS )
         {
             using std::swap;
             
@@ -157,7 +157,7 @@ namespace PRISMS
             return *this;
         }
 
-        ~pfunct_faV()
+        ~pfunct_fbV()
         {
             delete _val;
 
@@ -169,9 +169,9 @@ namespace PRISMS
             delete [] _hess_val;
         }
 
-        pfunct_faV<VarContainer>* clone() const
+        pfunct_fbV<VarContainer>* clone() const
         {
-            return new pfunct_faV<VarContainer>(*this);
+            return new pfunct_fbV<VarContainer>(*this);
         }
 
         PSimpleFunction< VarContainer, double> simplefunction() const
@@ -237,7 +237,7 @@ namespace PRISMS
     private:
         void construct(bool allocate = true)
         {
-            this->_name = "pfunct_faV";
+            this->_name = "pfunct_fbV";
             this->_var_name.clear();
             this->_var_name.push_back("c");
             this->_var_description.clear();
@@ -250,11 +250,11 @@ namespace PRISMS
             
             if(!allocate) return;
             
-            _val = new pfunct_faV_f<VarContainer>();
+            _val = new pfunct_fbV_f<VarContainer>();
             
-            _grad_val[0] = new pfunct_faV_grad_0<VarContainer>();
+            _grad_val[0] = new pfunct_fbV_grad_0<VarContainer>();
             
-            _hess_val[0][0] = new pfunct_faV_hess_0_0<VarContainer>();
+            _hess_val[0][0] = new pfunct_fbV_hess_0_0<VarContainer>();
         }
 
     };
