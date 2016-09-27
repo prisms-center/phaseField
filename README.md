@@ -94,7 +94,7 @@ Since PRISMS-PF is still under active development,
   GNU Lesser General Public License (LGPL). Please see the file
   LICENSE for details.
 
-<B>Mailing List:</B>
+<B>Mailing Lists:</B>
   
  + prismsphaseField.users@umich.edu	
  + prismsphaseField.dev@umich.edu  
