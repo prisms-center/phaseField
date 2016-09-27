@@ -618,7 +618,7 @@ void generalizedProblem<dim>::adaptiveRefineCriterion(){
 
 	std::vector<double> errorOut(num_quad_points);
 
-	typename DoFHandler<dim>::active_cell_iterator cell = this->dofHandlersSet2[refine_criterion_fields[0]]->begin_active(), endc = this->dofHandlersSet2[refine_criterion_fields[0]]->end();
+	typename DoFHandler<dim>::active_cell_iterator cell = this->dofHandlersSet_nonconst[refine_criterion_fields[0]]->begin_active(), endc = this->dofHandlersSet_nonconst[refine_criterion_fields[0]]->end();
 
 	for (;cell!=endc; ++cell){
 		if (cell->is_locally_owned()){
@@ -786,7 +786,7 @@ void generalizedProblem<dim>::applyDirichletBCs(){
 		  if (BC_list[this->currentFieldIndex].var_BC_type[direction] == "DIRICHLET"){
 			  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
 					  direction, ConstantFunction<dim>(BC_list[this->currentFieldIndex].var_BC_val[direction],1), *(ConstraintMatrix*) \
-					  this->constraintsSet[this->currentFieldIndex]);
+					  this->constraintsDirichletSet[this->currentFieldIndex]);
 		  }
 	  }
   }
@@ -811,7 +811,7 @@ void generalizedProblem<dim>::applyDirichletBCs(){
 
 		  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
 				  direction, vectorBCFunction<dim>(BC_values), *(ConstraintMatrix*) \
-				  this->constraintsSet[this->currentFieldIndex],mask);
+				  this->constraintsDirichletSet[this->currentFieldIndex],mask);
 
 
 	  }
@@ -1000,7 +1000,6 @@ void generalizedProblem<dim>::setPeriodicityConstraints(ConstraintMatrix * const
     	}
     }
     DoFTools::make_periodicity_constraints<DoFHandler<dim> >(periodicity_vector, *constraints);
-    //DoFTools::make_periodicity_constraints<DoFHandler<dim> >(periodicity_vector, *(this->constraintsSet[this->currentFieldIndex]));
 }
 
 // =====================================================================

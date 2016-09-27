@@ -18,7 +18,7 @@ void MatrixFreePDE<dim>::adaptiveRefineCriterion(){
 #ifdef adaptivityType
 #if adaptivityType=="KELLY"
   Vector<float> estimated_error_per_cell (this->triangulation.n_locally_owned_active_cells());
-  KellyErrorEstimator<dim>::estimate (*this->dofHandlersSet2[refinementDOF],
+  KellyErrorEstimator<dim>::estimate (*this->dofHandlersSet_nonconst[refinementDOF],
 				      QGaussLobatto<dim-1>(finiteElementDegree+1),
 				      typename FunctionMap<dim>::type(),
 				      *this->solutionSet[refinementDOF],

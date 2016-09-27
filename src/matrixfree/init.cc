@@ -102,10 +102,10 @@
 	   if (iter==0){
 		   dof_handler=new DoFHandler<dim>(triangulation);
 		   dofHandlersSet.push_back(dof_handler);
-		   dofHandlersSet2.push_back(dof_handler);
+		   dofHandlersSet_nonconst.push_back(dof_handler);
 	   }
 	   else{
-		   dof_handler=dofHandlersSet2.at(it->index);
+		   dof_handler=dofHandlersSet_nonconst.at(it->index);
 	   }
 	   dof_handler->distribute_dofs (*fe);
 	   totalDOFs+=dof_handler->n_dofs();
@@ -115,55 +115,55 @@
 	   if (iter==0){
 		   locally_relevant_dofs=new IndexSet;
 		   locally_relevant_dofsSet.push_back(locally_relevant_dofs);
-		   locally_relevant_dofsSet2.push_back(locally_relevant_dofs);
+		   locally_relevant_dofsSet_nonconst.push_back(locally_relevant_dofs);
 	   }
 	   else{
-		   locally_relevant_dofs=locally_relevant_dofsSet2.at(it->index);
+		   locally_relevant_dofs=locally_relevant_dofsSet_nonconst.at(it->index);
 	   }
 	   locally_relevant_dofs->clear();
 	   DoFTools::extract_locally_relevant_dofs (*dof_handler, *locally_relevant_dofs);
 
 	   //create constraints
-	   ConstraintMatrix *constraints, *constraintsHangingNodes;
+	   ConstraintMatrix *constraintsDirichlet, *constraintsOther;
 
 	   if (iter==0){
-		   constraints=new ConstraintMatrix; constraintsSet.push_back(constraints);
-		   constraintsSet2.push_back(constraints);
-		   constraintsHangingNodes=new ConstraintMatrix; constraintsHangingNodesSet.push_back(constraintsHangingNodes);
-		   constraintsHangingNodesSet2.push_back(constraintsHangingNodes);
+		   constraintsDirichlet=new ConstraintMatrix; constraintsDirichletSet.push_back(constraintsDirichlet);
+		   constraintsDirichletSet_nonconst.push_back(constraintsDirichlet);
+		   constraintsOther=new ConstraintMatrix; constraintsOtherSet.push_back(constraintsOther);
+		   constraintsOtherSet_nonconst.push_back(constraintsOther);
 		   valuesDirichletSet.push_back(new std::map<dealii::types::global_dof_index, double>);
 	   }
 	   else{
-		   constraints=constraintsSet2.at(it->index);
-		   constraintsHangingNodes=constraintsHangingNodesSet2.at(it->index);
+		   constraintsDirichlet=constraintsDirichletSet_nonconst.at(it->index);
+		   constraintsOther=constraintsOtherSet_nonconst.at(it->index);
 	   }
-	   constraints->clear(); constraints->reinit(*locally_relevant_dofs);
-	   constraintsHangingNodes->clear(); constraintsHangingNodes->reinit(*locally_relevant_dofs);
-	   DoFTools::make_hanging_node_constraints (*dof_handler, *constraintsHangingNodes);
+	   constraintsDirichlet->clear(); constraintsDirichlet->reinit(*locally_relevant_dofs);
+	   constraintsOther->clear(); constraintsOther->reinit(*locally_relevant_dofs);
+	   DoFTools::make_hanging_node_constraints (*dof_handler, *constraintsOther);
      
 	   // Apply periodic BCs
 	   currentFieldIndex=it->index;
-	   setPeriodicityConstraints(constraintsHangingNodes,dof_handler);
+	   setPeriodicityConstraints(constraintsOther,dof_handler);
 
 	   // Apply Dirichlet BCs
 	   applyDirichletBCs();
 
 
-	   constraints->close();
-	   constraintsHangingNodes->close();
+	   constraintsDirichlet->close();
+	   constraintsOther->close();
 
 	   //store Dirichlet BC DOF's
 	   valuesDirichletSet[it->index]->clear();
 	   for (types::global_dof_index i=0; i<dof_handler->n_dofs(); i++){
 		   if (locally_relevant_dofs->is_element(i)){
-			   if (constraints->is_constrained(i)){
-				   (*valuesDirichletSet[it->index])[i] = constraints->get_inhomogeneity(i);
+			   if (constraintsDirichlet->is_constrained(i)){
+				   (*valuesDirichletSet[it->index])[i] = constraintsDirichlet->get_inhomogeneity(i);
 			   }
 		   }
 	   }
 
 	   sprintf(buffer, "field '%2s' DOF : %u (Constraint DOF : %u)\n", \
-			   it->name.c_str(), dof_handler->n_dofs(), constraints->n_constraints());
+			   it->name.c_str(), dof_handler->n_dofs(), constraintsDirichlet->n_constraints());
 	   pcout << buffer;
    }
    pcout << "total DOF : " << totalDOFs << std::endl;
@@ -176,7 +176,7 @@
    QGaussLobatto<1> quadrature (finiteElementDegree+1);
    num_quadrature_points=std::pow(quadrature.size(),dim);
    matrixFreeObject.clear();
-   matrixFreeObject.reinit (dofHandlersSet, constraintsHangingNodesSet, quadrature, additional_data);
+   matrixFreeObject.reinit (dofHandlersSet, constraintsOtherSet, quadrature, additional_data);
  
    //setup problem vectors
    pcout << "initializing parallel::distributed residual and solution vectors\n";
@@ -222,19 +222,19 @@
 
    //apply Dirichlet BC's
    if (isEllipticBVP){
-     constraintsSet[ellipticFieldIndex]->distribute(*solutionSet.at(ellipticFieldIndex));
-     constraintsHangingNodesSet[ellipticFieldIndex]->distribute(*solutionSet.at(ellipticFieldIndex));
+     constraintsDirichletSet[ellipticFieldIndex]->distribute(*solutionSet.at(ellipticFieldIndex));
+     constraintsOtherSet[ellipticFieldIndex]->distribute(*solutionSet.at(ellipticFieldIndex));
    }
    
    //create new solution transfer sets
    soltransSet.clear();
    for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-     soltransSet.push_back(new parallel::distributed::SolutionTransfer<dim, vectorType>(*dofHandlersSet2[fieldIndex]));
+     soltransSet.push_back(new parallel::distributed::SolutionTransfer<dim, vectorType>(*dofHandlersSet_nonconst[fieldIndex]));
    }
    
    //Ghost the solution vectors. Also apply the Dirichet BC's (if any) on the solution vectors 
    for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-     constraintsSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+     constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
      solutionSet[fieldIndex]->update_ghost_values();
    } 
 

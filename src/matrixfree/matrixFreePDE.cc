@@ -41,7 +41,7 @@
    for(unsigned int iter=0; iter<fields.size(); iter++){
      delete soltransSet[iter];
      delete locally_relevant_dofsSet[iter];
-     delete constraintsSet[iter];
+     delete constraintsDirichletSet[iter];
      delete dofHandlersSet[iter];
      delete FESet[iter];
      delete solutionSet[iter];
