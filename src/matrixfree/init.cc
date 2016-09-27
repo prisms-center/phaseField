@@ -148,7 +148,6 @@
 	   // Apply Dirichlet BCs
 	   applyDirichletBCs();
 
-
 	   constraintsDirichlet->close();
 	   constraintsOther->close();
 

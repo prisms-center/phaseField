@@ -979,10 +979,8 @@ template <int dim>
 void generalizedProblem<dim>::setPeriodicity(){
 	std::vector<GridTools::PeriodicFacePair<typename parallel::distributed::Triangulation<dim>::cell_iterator> > periodicity_vector;
 	for (int i=0; i<dim; ++i){
-		//if (BC_list[this->currentFieldIndex].var_BC_type[2*i] == "PERIODIC"){
-			GridTools::collect_periodic_faces(this->triangulation, /*b_id1*/ 2*i, /*b_id2*/ 2*i+1,
-					/*direction*/ i, periodicity_vector);
-		//}
+		GridTools::collect_periodic_faces(this->triangulation, /*b_id1*/ 2*i, /*b_id2*/ 2*i+1,
+				/*direction*/ i, periodicity_vector);
 	}
 	this->triangulation.add_periodicity(periodicity_vector);
 	std::cout << "periodic facepairs: " << periodicity_vector.size() << std::endl;
@@ -996,7 +994,6 @@ void generalizedProblem<dim>::setPeriodicityConstraints(ConstraintMatrix * const
     	if (BC_list[this->currentFieldIndex].var_BC_type[2*i] == "PERIODIC"){
     		GridTools::collect_periodic_faces(*dof_handler, /*b_id1*/ 2*i, /*b_id2*/ 2*i+1,
     				/*direction*/ i, periodicity_vector);
-    		std::cout << "periodic direction " << i << std::endl;
     	}
     }
     DoFTools::make_periodicity_constraints<DoFHandler<dim> >(periodicity_vector, *constraints);
