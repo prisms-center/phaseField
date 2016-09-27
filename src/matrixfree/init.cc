@@ -127,7 +127,7 @@
 	   ConstraintMatrix *constraints, *constraintsHangingNodes;
 
 	   if (iter==0){
-		   constraints=new ConstraintMatrix; //constraintsSet.push_back(constraints);
+		   constraints=new ConstraintMatrix; constraintsSet.push_back(constraints);
 		   constraintsSet2.push_back(constraints);
 		   constraintsHangingNodes=new ConstraintMatrix; constraintsHangingNodesSet.push_back(constraintsHangingNodes);
 		   constraintsHangingNodesSet2.push_back(constraintsHangingNodes);
@@ -143,12 +143,9 @@
      
 	   // Apply periodic BCs
 	   currentFieldIndex=it->index;
-	   setPeriodicityConstraints(constraints,dof_handler);
+	   setPeriodicityConstraints(constraintsHangingNodes,dof_handler);
 
-	   constraintsSet.push_back(constraints);
-
-	   //apply Dirichlet BCs
-	   //currentFieldIndex=it->index;
+	   // Apply Dirichlet BCs
 	   applyDirichletBCs();
 
 
