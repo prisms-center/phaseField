@@ -196,7 +196,7 @@ Following standard variational arguments (see Cahn-Hilliard formulation), we obt
   \mu_{c}  &= (f_{\alpha,c}(1-H)+f_{\beta,c}H)  \\
   \mu_{\eta}  &= (f_{\beta,c}-f_{\alpha,c})H_{,\eta} - \grad \cdot \mathbf{m} + \delta^2 \Delta(\Delta \eta)
 \end{align}
-The component of the anisotropic gradient $\mathbf{m}$ are given by
+The components of the anisotropic gradient $\mathbf{m}$ are given by
 \begin{equation}
 m_i = \gamma(\mathbf{n}) \left( \grad \eta + |\grad \eta| (\delta_{ij}-n_i n_j) \frac{\partial \gamma (\mathbf{n})}{n_j} \right),
 \end{equation}
@@ -213,11 +213,11 @@ Now the PDE for Cahn-Hilliard dynamics is given by:
     \frac{\partial \eta}{\partial t} &= -M_\eta \mu_\eta \\
   &=-M_\eta ~ [(f_{\beta,c}-f_{\alpha,c})H_{,\eta} - \grad \cdot \mathbf{m} + \delta^2 \Delta(\Delta \eta)]
 \end{align}
-where $M_c$ and $M_\eta$ are the constant mobilities.  In order that the formulation only includes second order derivatives, an auxiliary field is introduced to break up the biharmonic term:
+where $M_c$ and $M_\eta$ are the constant mobilities.  In order that the formulation only includes second order derivatives, an auxiliary field $\phi$ is introduced to break up the biharmonic term:
 \begin{align}
 \phi = \Delta \eta
 \end{align}
-and PDE for Allen-Cahn dynamics becomes 
+and the PDE for Allen-Cahn dynamics becomes 
 \begin{align}
     \frac{\partial \eta}{\partial t} =-M_\eta ~ ((f_{\beta,c}-f_{\alpha,c})H_{,\eta} - \grad \cdot \mathbf{m}) + \delta^2 \Delta \phi .
 \end{align}
