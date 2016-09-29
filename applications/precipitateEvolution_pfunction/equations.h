@@ -42,6 +42,9 @@
 // here. For more complex cases with loops or conditional statements, residual
 // equations (or parts of residual equations) can be written below in "residualRHS".
 
+// PFunctions
+pFun::pFunction pfunct_faV1("pfunct_faV"), pfunct_fbV1("pfunct_fbV");
+
 // Cahn-Hilliard mobility
 #define McV pfunct_McV(&c[0])
 PRISMS::PFunction<double*, double> pfunct_McV;
@@ -152,14 +155,22 @@ if (c_dependent_misfit == true){
 
 // Assign the free energies using PFunctions
 scalarvalueType faV, facV, faccV, fbV, fbcV, fbccV;
-for (unsigned i=0; i<c.n_array_elements;i++){
-	faV[i] = pfunct_faV(&c[i]);
-	facV[i] = pfunct_faV.grad(&c[i],0);
-	faccV[i] = pfunct_faV.hess(&c[i],0,0);
-	fbV[i] = pfunct_fbV(&c[i]);
-	fbcV[i] = pfunct_fbV.grad(&c[i],0);
-	fbccV[i] = pfunct_fbV.hess(&c[i],0,0);
-}
+//for (unsigned i=0; i<c.n_array_elements;i++){
+	//faV[i] = pfunct_faV(&c[i]);
+	//facV[i] = pfunct_faV.grad(&c[i],0);
+	//faccV[i] = pfunct_faV.hess(&c[i],0,0);
+	//fbV[i] = pfunct_fbV(&c[i]);
+	//fbcV[i] = pfunct_fbV.grad(&c[i],0);
+	//fbccV[i] = pfunct_fbV.hess(&c[i],0,0);
+//}
+
+faV = pfunct_faV1.val(c);
+facV = pfunct_faV1.grad(c,0);
+faccV = pfunct_faV1.hess(c,0,0);
+fbV = pfunct_fbV1.val(c);
+fbcV = pfunct_fbV1.grad(c,0);
+fbccV = pfunct_fbV1.hess(c,0,0);
+
 
 // Calculate the stress-free transformation strain and its derivatives at the quadrature point
 dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > sfts1, sfts1c, sfts1cc, sfts2, sfts2c, sfts2cc, sfts3, sfts3c, sfts3cc;

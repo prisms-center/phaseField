@@ -6,6 +6,7 @@
 #include "../../src/models/coupled/generalized_model.h"
 #include "PLibrary/PLibrary.cc"
 #include "PLibrary/PLibrary.hh"
+#include "pFunctionLibrary.h"
 #include "equations.h"
 #include "ICs_and_BCs.h"
 #include "../../src/models/coupled/generalized_model_functions.h"
