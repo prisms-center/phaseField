@@ -12,7 +12,7 @@ void MatrixFreePDE<dim>::applyDirichletBCs(){
   //of this field, given by currentFieldIndex, on all boundary faces
   VectorTools::interpolate_boundary_values (*this->dofHandlersSet[currentFieldIndex], \
 					    0, ZeroFunction<dim>(fields[currentFieldIndex].numComponents), \
-					    *(ConstraintMatrix*) this->constraintsSet[currentFieldIndex]);
+					    *(ConstraintMatrix*) this->constraintsDirichletSet[currentFieldIndex]);
 }
 
 #endif

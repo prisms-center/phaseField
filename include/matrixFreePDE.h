@@ -151,7 +151,7 @@ class MatrixFreePDE:public Subscriptor
    *of freedom and the corresponding degree of freedom constraints. Currently the type of constraints stored are either
    *Dirichlet boundary conditons or hanging node constraints for adaptive meshes. 
    */
-  std::vector<const ConstraintMatrix*> constraintsSet, constraintsHangingNodesSet;
+  std::vector<const ConstraintMatrix*> constraintsDirichletSet, constraintsOtherSet;
   /*A vector of all the degree of freedom objects is the problem. A degree of freedom object handles the serial/parallel distribution
    *of the degress of freedom for all the primal fields in the problem.*/
   std::vector<const DoFHandler<dim>*>  dofHandlersSet;
@@ -160,11 +160,11 @@ class MatrixFreePDE:public Subscriptor
    */
   std::vector<const IndexSet*>         locally_relevant_dofsSet;
   /*Copies of constraintSet elements, but stored as non-const to enable application of constraints.*/
-  std::vector<ConstraintMatrix*>       constraintsSet2, constraintsHangingNodesSet2;
+  std::vector<ConstraintMatrix*>       constraintsDirichletSet_nonconst, constraintsOtherSet_nonconst;
   /*Copies of dofHandlerSet elements, but stored as non-const.*/
-  std::vector<DoFHandler<dim>*>        dofHandlersSet2;
+  std::vector<DoFHandler<dim>*>        dofHandlersSet_nonconst;
   /*Copies of locally_relevant_dofsSet elements, but stored as non-const.*/  
-  std::vector<IndexSet*>               locally_relevant_dofsSet2;
+  std::vector<IndexSet*>               locally_relevant_dofsSet_nonconst;
   /*Vector all the solution vectors in the problem. In a multi-field problem, each primal field has a solution vector associated with it.*/ 
   std::vector<vectorType*>             solutionSet;
   /*Vector all the residual (RHS) vectors in the problem. In a multi-field problem, each primal field has a residual vector associated with it.*/
@@ -220,6 +220,10 @@ class MatrixFreePDE:public Subscriptor
   virtual void markBoundaries();
   /*Virtual method for applying Dirichlet boundary conditions.  This is usually expected to be provided by the user.*/ 
   virtual void applyDirichletBCs();
+
+  // Methods to apply periodic BCs
+  virtual void setPeriodicity()=0;
+  virtual void setPeriodicityConstraints(ConstraintMatrix *, DoFHandler<dim>*)=0;
 
   //methods to apply initial conditions
   /*Virtual method to apply initial conditions.  This is usually expected to be provided by the user in IBVP (Initial Boundary Value Problems).*/   

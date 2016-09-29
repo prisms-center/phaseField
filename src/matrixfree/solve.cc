@@ -43,7 +43,7 @@ void MatrixFreePDE<dim>::solve(){
 
       //Ghost the solution vectors. Also apply the Dirichet BC's (if any) on the solution vectors
       for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-    	  constraintsSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+    	  constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
     	  solutionSet[fieldIndex]->update_ghost_values();
       }
 

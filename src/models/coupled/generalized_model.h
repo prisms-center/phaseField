@@ -106,6 +106,10 @@ class generalizedProblem: public MatrixFreePDE<dim>
 
   void markBoundaries();
 
+  void setPeriodicity();
+  void setPeriodicityConstraints(ConstraintMatrix*, DoFHandler<dim>*);
+
+
   void getEnergy(const MatrixFree<dim,double> &data,
     				    std::vector<vectorType*> &dst,
     				    const std::vector<vectorType*> &src,
