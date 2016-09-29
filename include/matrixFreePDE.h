@@ -222,8 +222,8 @@ class MatrixFreePDE:public Subscriptor
   virtual void applyDirichletBCs();
 
   // Methods to apply periodic BCs
-  virtual void setPeriodicity()=0;
-  virtual void setPeriodicityConstraints(ConstraintMatrix *, DoFHandler<dim>*)=0;
+  virtual void setPeriodicity();
+  virtual void setPeriodicityConstraints(ConstraintMatrix *, DoFHandler<dim>*);
 
   //methods to apply initial conditions
   /*Virtual method to apply initial conditions.  This is usually expected to be provided by the user in IBVP (Initial Boundary Value Problems).*/   
