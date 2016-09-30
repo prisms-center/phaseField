@@ -1,17 +1,27 @@
-// Interface for PFunctions in PRISMS-PF
-// Used to declare and load PFunctions from a pre-existing PLibrary
+// pFunction: An interface for PFunctions in PRISMS-PF
+// This class is used to declare and load PFunctions from a pre-existing PLibrary
+// that was created using PRISMS IntegrationTools. The class is a wrapper for the
+// PFunctions in IntegrationTools so that they can be used for vectorized arrays.
+// This class also calls the IntegrationTools checkout function in the constructor
+// to reduce the number of steps the user needs to take. Currently this is only
+// implemented for scalar functions. Vector functions can be treated component by
+// component.
 
-namespace pFun{
+namespace PFunctions{
 
 class pFunction
 {
 public:
+	// Constructor, wraps the IntegrationTools checkout function
 	pFunction(std::string function_name);
 
+	// Returns the value of the function for a given input variable
 	scalarvalueType val(scalarvalueType);
 
+	// Returns one of first derivatives of the function for a given input variable
 	scalarvalueType grad(scalarvalueType, unsigned int);
 
+	// Returns one of the second derivatives of the function for a given input variable
 	scalarvalueType hess(scalarvalueType, unsigned int, unsigned int);
 
 private:
