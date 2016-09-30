@@ -45,11 +45,11 @@
    DoFTools::extract_locally_relevant_dofs (*dof_handler, *locally_relevant_dofs);
 
    //create constraints
-   ConstraintMatrix *constraints;
-   constraints=new ConstraintMatrix; constraintsSet.push_back(constraints);
-   constraints->clear(); constraints->reinit(*locally_relevant_dofs);
-   DoFTools::make_hanging_node_constraints (*dof_handler, *constraints);
-   constraints->close();
+   ConstraintMatrix *constraintsOther;
+   constraintsOther=new ConstraintMatrix; constraintsOtherSet.push_back(constraintsOther);
+   constraintsOther->clear(); constraintsOther->reinit(*locally_relevant_dofs);
+   DoFTools::make_hanging_node_constraints (*dof_handler, *constraintsOther);
+   constraintsOther->close();
 
    //setup the matrix free object
    typename MatrixFree<dim,double>::AdditionalData additional_data;
@@ -59,7 +59,7 @@
    QGaussLobatto<1> quadrature (finiteElementDegree+1);
    num_quadrature_points=std::pow(quadrature.size(),dim);
    matrixFreeObject.clear();
-   matrixFreeObject.reinit (dofHandlersSet, constraintsSet, quadrature, additional_data);
+   matrixFreeObject.reinit (dofHandlersSet, constraintsOtherSet, quadrature, additional_data);
  
    //setup problem vectors
    vectorType *U, *R;

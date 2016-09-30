@@ -60,7 +60,7 @@
 
 %%% The "real" document content comes below...
 
-\title{PRISMS-PF Users Guide (v1.0)}
+\title{PRISMS-PF User Guide (v1.0)}
 \author{Stephen DeWitt (prismsphasefield.dev@umich.edu)}
 %\date{} % Activate to display a given date or no date (if empty),
          % otherwise the current date is printed 
@@ -939,7 +939,7 @@ void generalizedProblem<dim>::setBCs(){
 	// Inputs to "inputBCs":
 	// First input: variable number
 	// Second input: component number
-	// Third input: BC type (options are "ZERO_DERIVATIVE" and "DIRICHLET")
+	// Third input: BC type (options are "ZERO_DERIVATIVE", "DIRICHLET", and "PERIODIC")
 	// Fourth input: BC value (ignored unless the BC type is "DIRICHLET")
 	// Odd inputs after the third: BC type
 	// Even inputs after the third: BC value
@@ -965,7 +965,7 @@ The second section is empty for this application because it doesn't have any vec
 
 The third and final section of the file is used to set the boundary conditions. This file should contain a list of \emph{inputBCs} statements, one for each component of each variable. In this example application, there are two scalar variables, so two \emph{inputBCs} statements are needed. The \emph{inputBCs} statement can be used to set all boundaries to the same boundary condition or to set the boundary condition for each boundary seperately. The \emph{inputBCs} statements for each variable should be given in the order that the variables were declared in ``equations.h''. For vector variables, the  \emph{inputBCs} statement for each component should be given consecutively. Currently, PRISMS-PF assumes that users will want to set a uniform boundary condition along each edge/face of the domain. More general cases can be treated using deal.II and could be added to PRISMS-PF if needed.
 
-To set the same boundary condition on all boundaries for a variable, the \emph{inputBCs} statement should have four arguements. The first argument is the variable index (once again determined by the order it is declared in the ``equations.h'' file). The second is the component of that variable (starting at zero). The third arguement is the type of boundary condition. Currently, the two options are ``DIRICHLET'' and ``ZERO\_DERIVATIVE''. Periodic boundary conditions will be added to PRISMS-PF in the near future. Nonzero Neumann boundary conditions need to be applied as part of the residual equations, not through \emph{setBCs}. The fouth arguement is the boundary condition value, which is only used for Dirichlet boundary conditions.
+To set the same boundary condition on all boundaries for a variable, the \emph{inputBCs} statement should have four arguements. The first argument is the variable index (once again determined by the order it is declared in the ``equations.h'' file). The second is the component of that variable (starting at zero). The third arguement is the type of boundary condition. Currently, the three options are and ``ZERO\_DERIVATIVE'', ``PERIODIC'', and ``DIRICHLET''. Nonzero Neumann boundary conditions need to be applied as part of the residual equations, not through \emph{setBCs}. The fouth arguement is the boundary condition value, which is only used for Dirichlet boundary conditions.
 
 For different boundary conditions on each face/edge of the domain, the number of arguements for the \emph{inputBCs} statement should have two plus two times the number of dimensions (4 in 1D, 6 in 2D, 8 in 3D). The first two arguments are still the variable index and component index. The next arguments come in pairs of boundary condition type and boundary condition value, repeated as many times as needed for the number of dimensions. The boundary condition from the first of these type/value pairs will be applied to the face/edge on the minimum of the x axis. The boundary condition for the second will be applied to the  face/edge on the maximimum of the x axis. In 2D/3D, the third and fourth pairs will determine the boundary conditions on the minimum and maximum of the y axis. Similarly, in 3D, the fifth and sixth pairs will determine the boundary conditions on the minimum and maximum of the z axis. Thus in 2D, if one wanted a Dirichlet boundary condition of 1.0 on the x axis minimum, a Dirichlet boundary condition of -1.0 on the x axis maximum and zero derivative boundary conditions on the other two edges, one would enter:
 \tiny
@@ -1022,7 +1022,7 @@ void generalizedProblem<dim>::setBCs(){
 	// Inputs to "inputBCs":
 	// First input: variable number
 	// Second input: component number
-	// Third input: BC type (options are "ZERO_DERIVATIVE" and "DIRICHLET")
+	// Third input: BC type (options are "ZERO_DERIVATIVE", "DIRICHLET", and "PERIODIC")
 	// Fourth input: BC value (ignored unless the BC type is "DIRICHLET")
 	// Odd inputs after the third: BC type
 	// Even inputs after the third: BC value

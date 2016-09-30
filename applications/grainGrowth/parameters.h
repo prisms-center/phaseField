@@ -32,6 +32,27 @@
 #define finiteElementDegree 1
 
 // =================================================================================
+// Set the adaptive mesh refinement parameters
+// =================================================================================
+// Set the flag determining if adaptive meshing is activated
+#define hAdaptivity true
+
+// Set the maximum and minimum level of refinement
+#define maxRefinementLevel (refineFactor)
+#define minRefinementLevel (refineFactor-3)
+
+// Set the fields used to determine the refinement. Fields determined by the order
+// declared in "equations.h", starting at zero
+#define refineCriterionFields {0,1,2,3,4,5,6,7,8,9}
+
+// Set the maximum and minimum value of the fields where the mesh should be refined
+#define refineWindowMax {0.999,0.999,0.999,0.999,0.999,0.999,0.999,0.999,0.999,0.999}
+#define refineWindowMin {0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001}
+
+// Set the number of time steps between remeshing operations
+#define skipRemeshingSteps 1000
+
+// =================================================================================
 // Set the time step parameters
 // =================================================================================
 // The size of the time step
