@@ -140,6 +140,12 @@ class MatrixFreePDE:public Subscriptor
   * skipOutputSteps in the parameters file.
   */
   void outputResults  ();
+
+  /* Method to generate a list of time steps where the method outputResults should be called. It populates outputTimeStepList.
+   */
+  std::vector<int> outputTimestepList;
+  void getOutputTimeSteps();
+
   /*Parallel mesh object which holds information about the FE nodes, elements and parallel domain decomposition
    */
   parallel::distributed::Triangulation<dim> triangulation;
@@ -287,5 +293,6 @@ class MatrixFreePDE:public Subscriptor
 #include "../src/matrixfree/utilities.cc"
 #include "../src/matrixfree/calcFreeEnergy.cc"
 #include "../src/matrixfree/integrate_and_shift_field.cc"
+#include "../src/matrixfree/getOutputTimeSteps.cc"
 
 #endif

@@ -43,9 +43,10 @@
 // =================================================================================
 // Each field in the problem will be output is writeOutput is set to "true"
 #define writeOutput true
+#define outputCondition "N_PER_DECADE"
 
 // Output files are written every skipOutputSteps time steps
-#define skipOutputSteps 1000
+#define numOutputs 10
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output
