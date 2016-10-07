@@ -57,6 +57,12 @@ int main(int argc, char **argv)
   pass = computeStress_tester_3DT.test_computeStress();
   tests_passed += pass;
   
+  // Unit tests for the method "getOutputTimeSteps"
+  total_tests++;
+  unitTest<2,double> getOutputTimeSteps_tester;
+  pass = getOutputTimeSteps_tester.test_getOutputTimeSteps();
+  tests_passed += pass;
+
   // Unit tests for the method "getRHS"
   //unitTest<2,double> getRHS_tester_2D;
   //pass = getRHS_tester_2D.test_getRHS();

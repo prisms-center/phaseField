@@ -43,7 +43,7 @@
 // =================================================================================
 // Each field in the problem will be output is writeOutput is set to "true"
 #define writeOutput true
-#define outputCondition "N_PER_DECADE"
+#define outputCondition "EQUAL_SPACING"
 
 // Output files are written every skipOutputSteps time steps
 #define numOutputs 10
