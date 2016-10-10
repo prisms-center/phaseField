@@ -333,8 +333,12 @@ All of the purely numerical parameters for an application are given in the file 
 // Each field in the problem will be output is writeOutput is set to "true"
 #define writeOutput true
 
-// Output files are written every skipOutputSteps time steps
-#define skipOutputSteps 1000
+// Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", or "N_PER_DECADE")
+#define outputCondition "EQUAL_SPACING"
+
+// Number of times the program outputs the fields (total number for "EQUAL_SPACING"
+// and "LOG_SPACING", number per decade for "N_PER_DECADE")
+#define numOutputs 10
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output
@@ -351,7 +355,11 @@ In the third section of the parameters file, the user sets parameters related to
 
 In the fourth section of the parameters file, the user sets parameters related to time stepping. Currently, PRISMS-PF is set up for forward Euler time stepping. The size of each time step is set by \emph{timeStep} (a floating point number). The simulation finishes when either an amount of simulation time equal to \emph{timeFinal} has passed, or \emph{timeIncrements} time steps have occured.
 
-In the fifth section of the parameters file, the user sets parameters related to the output. The first parameter in this section, \emph{writeOutput}, is a flag that should be ``true'' if you want to output the results of the simulation and ``false'' if not. The second parameter, \emph{skipOutputSteps}, is an integer determining the frequency that the output is written. If \emph{writeOutput} is ``true'', then output will be written every \emph{skipOutputSteps} time increments. The output is written to the current directory.
+In the fifth section of the parameters file, the user sets parameters related to the output. The first parameter in this section, \emph{writeOutput}, is a flag that should be ``true'' if you want to output the results of the simulation and ``false'' if not. The output is written to the current directory. The second parameter, \emph{outputCondition}, determines the type of spacing between outputs. The options are ``EQUAL\_SPACING'', ``LOG\_SPACING'', and ``N\_PER\_DECADE''. The third parameter, \emph{numOutputs}, determines the number of outputs. For any \emph{outputCondition}, the initial conditions are outputted. For ``EQUAL\_SPACING'', the progam will output \emph{numOutputs} times after the initial conditions are output, separated by the total number of increments divded by \emph{numOutputs}. For ``LOG\_SPACING'', the progam will output \emph{numOutputs} times after the initial conditions are output, where the increments where output occurs are given by:
+\begin{equation}
+10^{n/numOutputs \log(totalIncrements)}
+\end{equation}
+rounded to the nearest integer, where \emph{n} is the output number, and \emph{totalIncrements} is the total number of time steps. For ``N\_PER\_DECADE'', the program will output \emph{numOutput} times for each power of 10 after outputting the initial conditions. For example, if \emph{numOutput} is 1, the program will output at every power of 10 (i.e. 1, 10, 100, 1000, ...). If \emph{numOutput} is 10, the program will output ten times for every power of 10 (i.e. 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, ...). 
 
 In the sixth and final section of the parameters file, the user sets a flag determining if the integrated free energy should be calculated whenever the code outputs the results. If \emph{calcEnergy} is ``true'', the total free energy will be written to a file names ``freeEnergy.txt.'' If not given, the default value for \emph{calcEnergy} is ``false''.
 
