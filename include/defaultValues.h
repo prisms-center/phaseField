@@ -67,4 +67,9 @@
 #define skipImplicitSolves 1
 #endif
 
+//number of implicit solves to skip. None are skipped if value is 1, which is the default.
+#ifndef outputCondition
+#define outputCondition "EQUAL_SPACING"
+#endif
+
 #endif

@@ -12,7 +12,6 @@
 #define subdivisionsY 10
 #define subdivisionsZ 10
 
-#define outputCondition "EQUAL_SPACING"
 #define numOutputs 10
 #define timeStep 1.0e-3
 #define timeFinal 20.0
@@ -29,15 +28,15 @@ void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Vectorized
 template <int dim, typename T>
 class unitTest
 {
- public:
-  bool test_computeInvM(int argc, char **argv);
-  bool test_outputResults(int argc, char **argv);
-  bool test_computeStress();
-  void assignCIJSize(dealii::VectorizedArray<double> CIJ[2*dim-1+dim/3][2*dim-1+dim/3]);
-  void assignCIJSize(dealii::Table<2, double> &CIJ);
-  bool test_getRHS();
-  bool test_computeRHS();
-  bool test_getOutputTimeSteps();
+	public:
+	bool test_computeInvM(int argc, char **argv);
+	bool test_outputResults(int argc, char **argv);
+	bool test_computeStress();
+	void assignCIJSize(dealii::VectorizedArray<double> CIJ[2*dim-1+dim/3][2*dim-1+dim/3]);
+	void assignCIJSize(dealii::Table<2, double> &CIJ);
+	bool test_getRHS();
+	bool test_computeRHS();
+	bool test_getOutputTimeSteps(std::string,unsigned int);
 };
 
 

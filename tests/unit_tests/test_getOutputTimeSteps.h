@@ -2,19 +2,19 @@
 template <int dim>
 class getOutputTimeStepsTest: public MatrixFreePDE<dim>
 {
- public: 
-	std::vector<int> outputTimeStepList_public;
+	public:
+	std::vector<unsigned int> outputTimeStepList_public;
 	getOutputTimeStepsTest(){
-    //init the MatrixFreePDE class for testing
-    this->initForTests();
+		//init the MatrixFreePDE class for testing
+		this->initForTests();
+	};
 
-    //call computeInvM()
-    this->getOutputTimeSteps();
+	void getTimeStepList(std::string outputSpacingType, unsigned int numberOfOutputs){
+		this->getOutputTimeSteps(outputSpacingType,numberOfOutputs,this->outputTimeStepList);
+		outputTimeStepList_public = this->outputTimeStepList;
+	};
 
-    outputTimeStepList_public = this->outputTimeStepList;
-  };
 
-  
  private:
 	//RHS implementation for explicit solve
 	  void getRHS(const MatrixFree<dim,double> &data,
@@ -25,17 +25,30 @@ class getOutputTimeStepsTest: public MatrixFreePDE<dim>
 };
 
 template <int dim,typename T>
-  bool unitTest<dim,T>::test_getOutputTimeSteps(){
-  	bool pass = true;
+bool unitTest<dim,T>::test_getOutputTimeSteps(std::string outputSpacingType, unsigned int numberOfOutputs){
+	bool pass = true;
 	std::cout << "\nTesting 'getOutputTimeSteps' in " << dim << " dimension(s)...'" << std::endl;
  
 	//create test problem class object
 	getOutputTimeStepsTest<dim> test;
 
+	test.getTimeStepList(outputSpacingType,numberOfOutputs);
+
 	// Check if calculated value equals expected value
-	std::vector<int> expected_result = {0, 2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000, 18000, 20000};
+	std::vector<unsigned int> expected_result;
+	if (outputSpacingType == "EQUAL_SPACING"){
+		expected_result = {0, 2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000, 18000, 20000};
+	}
+	else if (outputSpacingType == "LOG_SPACING"){
+		expected_result = {0,3,7,20,53,141,381,1025,2759,7429,20000};
+	}
+	else if (outputSpacingType == "N_PER_DECADE"){
+		expected_result = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100,
+				200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000, 3000, 4000, 5000, 6000, 7000,
+				8000, 9000, 10000, 20000};
+	}
+
 	for (unsigned int i=0; i < test.outputTimeStepList_public.size(); i++){
-		std::cout << test.outputTimeStepList_public[i] << " " << expected_result[i] << std::endl;
 		if (test.outputTimeStepList_public[i] != expected_result[i]){
 			pass = false;
 		}

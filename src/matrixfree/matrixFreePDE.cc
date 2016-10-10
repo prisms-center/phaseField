@@ -28,9 +28,14 @@
 #ifdef timeFinal
    finalTime=timeFinal;
 #endif
-#ifdef timeIncrements
-   totalIncrements=timeIncrements;
-#endif
+
+   // Determine the maximum number of time steps
+   	if (std::ceil(timeFinal/timeStep) < timeIncrements){
+   		totalIncrements = std::ceil(timeFinal/timeStep);
+   	}
+   	else {
+   		totalIncrements = timeIncrements;
+   	}
  }
 
  //destructor

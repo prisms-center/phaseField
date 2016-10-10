@@ -3,47 +3,31 @@
 // are read in from the file "parameters.h" via #define macros.
 
 template <int dim>
-void MatrixFreePDE<dim>::getOutputTimeSteps(){
+void MatrixFreePDE<dim>::getOutputTimeSteps(std::string outputSpacingType, unsigned int numberOfOutputs, std::vector<unsigned int> & timeStepList){
 
 	// Determine the maximum number of increments
-	unsigned int maxIncrements;
-	if (std::ceil(timeFinal/timeStep) < timeIncrements){
-		maxIncrements = std::ceil(timeFinal/timeStep);
-	}
-	else {
-		maxIncrements = timeIncrements;
-	}
-
-	if (outputCondition == "EQUAL_SPACING"){
-		for (unsigned int iter = 0; iter <= maxIncrements; iter += maxIncrements/numOutputs){
-			outputTimeStepList.push_back(iter);
-			std::cout << "output iter: " << iter << std::endl;
+	if (outputSpacingType == "EQUAL_SPACING"){
+		for (unsigned int iter = 0; iter <= totalIncrements; iter += totalIncrements/numberOfOutputs){
+			timeStepList.push_back(iter);
 		}
 	}
-	else if (outputCondition == "LOG_SPACING"){
-		outputTimeStepList.push_back(0);
-		for (unsigned int output = 1; output <= numOutputs; output++){
-			outputTimeStepList.push_back(std::round(std::pow(10,double(output)/double(numOutputs)*std::log10(maxIncrements))));
-			std::cout << "output iter: " << std::round(std::pow(10,double(output)/double(numOutputs)*std::log10(maxIncrements))) << std::endl;
-		}
+	else if (outputSpacingType == "LOG_SPACING"){
+		timeStepList.push_back(0);
+		for (unsigned int output = 1; output <= numberOfOutputs; output++){
+			timeStepList.push_back(std::round(std::pow(10,double(output)/double(numberOfOutputs)*std::log10(totalIncrements))));		}
 	}
-	else if (outputCondition == "N_PER_DECADE"){
-		outputTimeStepList.push_back(0);
-		outputTimeStepList.push_back(1);
-		for (unsigned int iter = 2; iter <= maxIncrements; iter++){
+	else if (outputSpacingType == "N_PER_DECADE"){
+		timeStepList.push_back(0);
+		timeStepList.push_back(1);
+		for (unsigned int iter = 2; iter <= totalIncrements; iter++){
 			int decade = std::ceil(std::log10(iter));
-			int step_size = (std::pow(10,decade))/numOutputs;
+			int step_size = (std::pow(10,decade))/numberOfOutputs;
 			if (iter%step_size == 0){
-				outputTimeStepList.push_back(iter);
-				std::cout << "output iter: " << iter << std::endl;
+				timeStepList.push_back(iter);
 			}
 
 		}
 	}
-
-
-
-
 }
 
 

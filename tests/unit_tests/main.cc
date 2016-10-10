@@ -57,10 +57,20 @@ int main(int argc, char **argv)
   pass = computeStress_tester_3DT.test_computeStress();
   tests_passed += pass;
   
-  // Unit tests for the method "getOutputTimeSteps"
+  // Unit tests for the method "getOutputTimeSteps" for all three types of spacing
   total_tests++;
-  unitTest<2,double> getOutputTimeSteps_tester;
-  pass = getOutputTimeSteps_tester.test_getOutputTimeSteps();
+  unitTest<2,double> getOutputTimeSteps_tester_eq;
+  pass = getOutputTimeSteps_tester_eq.test_getOutputTimeSteps("EQUAL_SPACING",10);
+  tests_passed += pass;
+
+  total_tests++;
+  unitTest<2,double> getOutputTimeSteps_tester_log;
+  pass = getOutputTimeSteps_tester_log.test_getOutputTimeSteps("LOG_SPACING",10);
+  tests_passed += pass;
+
+  total_tests++;
+  unitTest<2,double> getOutputTimeSteps_tester_dec;
+  pass = getOutputTimeSteps_tester_dec.test_getOutputTimeSteps("N_PER_DECADE",10);
   tests_passed += pass;
 
   // Unit tests for the method "getRHS"
