@@ -27,5 +27,10 @@ void MatrixFreePDE<dim>::setPeriodicityConstraints(ConstraintMatrix * constraint
 	// Default null implementation
 }
 
+// Set constraints to pin the solution if there are no Dirichlet BCs for a component of a variable
+template <int dim>
+void MatrixFreePDE<dim>::setTranslationPreventionConstraints(ConstraintMatrix * constraints, DoFHandler<dim>* dof_handler){
+	// Default null implementation
+}
 
 #endif

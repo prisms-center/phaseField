@@ -999,6 +999,40 @@ void generalizedProblem<dim>::setPeriodicityConstraints(ConstraintMatrix * const
     DoFTools::make_periodicity_constraints<DoFHandler<dim> >(periodicity_vector, *constraints);
 }
 
+// Set constraints to pin the solution if there are no Dirichlet BCs for a component of a variable
+template <int dim>
+void generalizedProblem<dim>::setTranslationPreventionConstraints(ConstraintMatrix * constraints, DoFHandler<dim>* dof_handler){
+
+	if (this->currentFieldIndex >= 2){
+		dealii::Point<dim> target_point(0,0);
+		unsigned int vertices_per_cell=GeometryInfo<dim>::vertices_per_cell;
+
+		typename DoFHandler<dim>::active_cell_iterator cell= dof_handler->begin_active(), endc = dof_handler->end();
+
+		for (; cell!=endc; ++cell){
+
+			if (cell->is_locally_owned()){
+				for (unsigned int i=0; i<vertices_per_cell; ++i){
+
+
+					if (target_point.distance (cell->vertex(i)) < 1e-2 * cell->diameter()){
+
+						std::cout << cell->vertex(0) << " " << cell->vertex(1) << std::endl;
+
+						unsigned int nodeID=cell->vertex_dof_index(i,0);
+						constraints->add_line(nodeID);
+						constraints->set_inhomogeneity(nodeID,0.0);
+
+						nodeID=cell->vertex_dof_index(i,1);
+						constraints->add_line(nodeID);
+						constraints->set_inhomogeneity(nodeID,0.0);
+				   }
+			   }
+		   }
+	   }
+   }
+}
+
 // =====================================================================
 // NUCLEATION FUNCTIONS
 // =====================================================================

@@ -56,6 +56,8 @@
    pcout << "initializing matrix free object\n";
    unsigned int totalDOFs=0;
    for(typename std::vector<Field<dim> >::iterator it = fields.begin(); it != fields.end(); ++it){
+	   currentFieldIndex=it->index;
+
 	   char buffer[100];
 	   if (iter==0){
 		   //print to std::out
@@ -140,10 +142,13 @@
 	   constraintsDirichlet->clear(); constraintsDirichlet->reinit(*locally_relevant_dofs);
 	   constraintsOther->clear(); constraintsOther->reinit(*locally_relevant_dofs);
 	   DoFTools::make_hanging_node_constraints (*dof_handler, *constraintsOther);
-     
+
+	   // Add a constraint to fix the value at the origin if all BCs are zero-derivative or periodic
+	   setTranslationPreventionConstraints(constraintsOther,dof_handler);
+
 	   // Apply periodic BCs
-	   currentFieldIndex=it->index;
 	   setPeriodicityConstraints(constraintsOther,dof_handler);
+
 
 	   // Apply Dirichlet BCs
 	   applyDirichletBCs();

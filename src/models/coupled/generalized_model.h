@@ -108,6 +108,7 @@ class generalizedProblem: public MatrixFreePDE<dim>
 
   void setPeriodicity();
   void setPeriodicityConstraints(ConstraintMatrix*, DoFHandler<dim>*);
+  void setTranslationPreventionConstraints(ConstraintMatrix*, DoFHandler<dim>*);
 
 
   void getEnergy(const MatrixFree<dim,double> &data,

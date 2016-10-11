@@ -16,7 +16,7 @@
 // Define time step parameters
 #define timeStep 5e-2
 #define timeFinal 5000.0
-#define timeIncrements 100000 //5e6
+#define timeIncrements 100 //5e6
 #define skipImplicitSolves 1
 
 // Define solver parameters
