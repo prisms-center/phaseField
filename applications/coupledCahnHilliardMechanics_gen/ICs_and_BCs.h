@@ -83,12 +83,11 @@ void generalizedProblem<dim>::setBCs(){
 	// =====================================================================
 	// ENTER THE BOUNDARY CONDITIONS HERE
 	// =====================================================================
-	inputBCs(0,0,"ZERO_DERIVATIVE",0.0);
+	inputBCs(0,0,"PERIODIC",0.0,"PERIODIC",0.0,"ZERO_DERIVATIVE",0.0,"ZERO_DERIVATIVE",0.0);
+	inputBCs(1,0,"PERIODIC",0.0,"PERIODIC",0.0,"ZERO_DERIVATIVE",0.0,"ZERO_DERIVATIVE",0.0);
 
-	inputBCs(1,0,"ZERO_DERIVATIVE",0.0);
-
-	inputBCs(2,0,"DIRICHLET",0.0,"DIRICHLET",0.0,"DIRICHLET",0.0,"ZERO_DERIVATIVE",0.0);
-	inputBCs(2,1,"ZERO_DERIVATIVE",0.0,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0,"ZERO_DERIVATIVE",0.0);
+	inputBCs(2,0,"PERIODIC",0.0,"PERIODIC",0.0,"DIRICHLET",0.0,"ZERO_DERIVATIVE",0.0);
+	inputBCs(2,1,"PERIODIC",0.0,"PERIODIC",0.0,"DIRICHLET",0.0,"ZERO_DERIVATIVE",0.0);
 
 	// =====================================================================
 
