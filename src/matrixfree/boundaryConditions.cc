@@ -12,7 +12,20 @@ void MatrixFreePDE<dim>::applyDirichletBCs(){
   //of this field, given by currentFieldIndex, on all boundary faces
   VectorTools::interpolate_boundary_values (*this->dofHandlersSet[currentFieldIndex], \
 					    0, ZeroFunction<dim>(fields[currentFieldIndex].numComponents), \
-					    *(ConstraintMatrix*) this->constraintsSet[currentFieldIndex]);
+					    *(ConstraintMatrix*) this->constraintsDirichletSet[currentFieldIndex]);
 }
+
+// Based on the contents of BC_list, mark faces on the triangulation as periodic
+template <int dim>
+void MatrixFreePDE<dim>::setPeriodicity(){
+	// Default null implementation
+}
+
+// Set constraints to enforce periodic boundary conditions
+template <int dim>
+void MatrixFreePDE<dim>::setPeriodicityConstraints(ConstraintMatrix * constraints, DoFHandler<dim>* dof_handler){
+	// Default null implementation
+}
+
 
 #endif

@@ -24,9 +24,15 @@
 
 //define results output parameters
 #define writeOutput true
-#define skipOutputSteps 1
 
-#define calc_energy false
+// Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", or "N_PER_DECADE")
+#define outputCondition "EQUAL_SPACING"
+
+// Number of times the program outputs the fields (total number for "EQUAL_SPACING"
+// and "LOG_SPACING", number per decade for "N_PER_DECADE")
+#define numOutputs 1
+
+#define calcEnergy false
 
 
 

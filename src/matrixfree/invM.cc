@@ -21,12 +21,13 @@ void MatrixFreePDE<dim>::computeInvM(){
   }
   //check if invM initialized
   if (!invMInitialized){
-    pcout << "matrixFreePDE.h: no PARABOLIC field... hence cannot initialize invM\n";
-    exit(-1);
+    pcout << "matrixFreePDE.h: no PARABOLIC field... hence setting parabolicFieldIndex to 0 and marching ahead withn invM computation\n";
+    //exit(-1);
   }
   
   //compute invM
   matrixFreeObject.initialize_dof_vector (invM, parabolicFieldIndex);
+  invM=0.0;
   VectorizedArray<double> one = make_vectorized_array (1.0);
   
   //select gauss lobatto quad points which are suboptimal but give diogonal M 

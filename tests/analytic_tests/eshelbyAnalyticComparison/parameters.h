@@ -22,13 +22,14 @@
 
 // Define solver paramters
 #define solverType SolverCG
-#define relSolverTolerance 1.0e-10
+#define absTol false
+#define solverTolerance 1.0e-10
 #define maxSolverIterations 1000
 
 // Define results output parameters
 #define writeOutput true
 
-#define calc_energy false
+#define calcEnergy false
 
 
 

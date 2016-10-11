@@ -1,47 +1,98 @@
-//Parameter list for the Beta Prime precipitate evolution problem 
-//(Coupled Allen Cahn, Cahn Hilliard and Mechanics formulation)
-//The free energy expressions in this file are from the reference:
-//H. Liu et al, "A simulation study of the shape of beta prime precipitates in Mg–Y and Mg–Gd alloys", 
-//Acta Materialia, Volume 61, Issue 2, January 2013, Pages 453-466. http://dx.doi.org/10.1016/j.actamat.2012.09.044
+// Parameter list for the precipitate evolution example application
+// All strictly numerical parameters should be set in this file
 
-// Define problem dimensions
+// =================================================================================
+// Set the number of dimensions (1, 2, or 3 for a 1D, 2D, or 3D calculation)
+// =================================================================================
 #define problemDIM 2
+
+// =================================================================================
+// Set the length of the domain in all three dimensions
+// =================================================================================
+// Each axes spans from zero to the specified length
 #define spanX 40.0
 #define spanY 40.0
 #define spanZ 40.0
 
-// Define mesh parameters
+// =================================================================================
+// Set the element parameters
+// =================================================================================
+// The number of elements in each direction is 2^(refineFactor) * subdivisions
+// For optimal performance, use refineFactor primarily to determine the element size
 #define subdivisionsX 3
 #define subdivisionsY 3
 #define subdivisionsZ 3
 #define refineFactor 5
+
+// Set the polynomial degree of the element (suggested values: 1 or 2)
 #define finiteElementDegree 2
 
-// Define number of fields in the problem
-// n1, n2, n3, c, u
-// Cahn Hilliard part has no gradient term,
-// hence chemical potential (mu) field not required as mixed formulation is not needed.
-#define num_sop 3							// for now, must be between 1 and 3
-#define numFields (1+num_sop+problemDIM)
+// =================================================================================
+// Set the adaptive mesh refinement parameters
+// =================================================================================
+// Set the flag determining if adaptive meshing is activated
+#define hAdaptivity true
 
-// Define time step parameters
+// Set the maximum and minimum level of refinement
+#define maxRefinementLevel (refineFactor)
+#define minRefinementLevel (refineFactor-2)
+
+// Set the fields used to determine the refinement. Fields determined by the order
+// declared in "equations.h", starting at zero
+#define refineCriterionFields {1,2,3}
+
+// Set the maximum and minimum value of the fields where the mesh should be refined
+#define refineWindowMax {0.99,0.99,0.99}
+#define refineWindowMin {0.01,0.01,0.01}
+
+// Set the number of time steps between remeshing operations
+#define skipRemeshingSteps 1000
+
+// =================================================================================
+// Set the time step parameters
+// =================================================================================
+// The size of the time step
 #define timeStep 4.0e-4
 #define timeFinal 100.0
 #define timeIncrements 5000
-#define skipImplicitSolves 1
 
-// Define solver paramters
+// =================================================================================
+// Set the elliptic solver parameters
+// =================================================================================
+// The solver type (currently the only recommended option is conjugate gradient)
 #define solverType SolverCG
-#define abs_tol true
-#define relSolverTolerance 1.0e-2
-#define absSolverTolerance 1.0e-4
+
+// The flag that determines whether the tolerance for solver convergence should
+// be an absolute tolerance (absTol=true) or a relative tolerance (absTol=false)
+#define absTol true
+
+// The tolerance for convergence (L2 norm of the residual)
+#define solverTolerance 1.0e-4
+
+// The maximum number of solver iterations per time step
 #define maxSolverIterations 1000
 
-// Define results output parameters
+// =================================================================================
+// Set the output parameters
+// =================================================================================
+// Each field in the problem will be output is writeOutput is set to "true"
 #define writeOutput true
-#define skipOutputSteps 500
 
-#define calc_energy true
+// Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", or "N_PER_DECADE")
+#define outputCondition "EQUAL_SPACING"
+
+// Number of times the program outputs the fields (total number for "EQUAL_SPACING"
+// and "LOG_SPACING", number per decade for "N_PER_DECADE")
+#define numOutputs 10
+
+// =================================================================================
+// Set the flag determining if the total free energy is calculated for each output
+// =================================================================================
+#define calcEnergy true
+
+
+
+
 
 
 

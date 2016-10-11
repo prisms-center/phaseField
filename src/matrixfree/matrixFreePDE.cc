@@ -12,6 +12,7 @@
  Subscriptor(),
  triangulation (MPI_COMM_WORLD),
  isTimeDependentBVP(false),
+ isEllipticBVP(false),
  dtValue(0.0),
  currentTime(0.0),
  finalTime(0.0),
@@ -27,9 +28,14 @@
 #ifdef timeFinal
    finalTime=timeFinal;
 #endif
-#ifdef timeIncrements
-   totalIncrements=timeIncrements;
-#endif
+
+   // Determine the maximum number of time steps
+   	if (std::ceil(timeFinal/timeStep) < timeIncrements){
+   		totalIncrements = std::ceil(timeFinal/timeStep);
+   	}
+   	else {
+   		totalIncrements = timeIncrements;
+   	}
  }
 
  //destructor
@@ -38,8 +44,9 @@
  {
    matrixFreeObject.clear();
    for(unsigned int iter=0; iter<fields.size(); iter++){
+     delete soltransSet[iter];
      delete locally_relevant_dofsSet[iter];
-     delete constraintsSet[iter];
+     delete constraintsDirichletSet[iter];
      delete dofHandlersSet[iter];
      delete FESet[iter];
      delete solutionSet[iter];

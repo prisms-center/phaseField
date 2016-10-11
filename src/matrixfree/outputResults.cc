@@ -10,16 +10,13 @@ template <int dim>
 void MatrixFreePDE<dim>::outputResults(){
   //log time
   computing_timer.enter_section("matrixFreePDE: output");
-  
+
   //create DataOut object
   DataOut<dim> data_out;
-
+  std::cout <<  "fields: " << fields.size() << std::endl;
   //loop over fields
+
   for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-    //apply constraints
-    constraintsSet[fieldIndex]->distribute (*solutionSet[fieldIndex]);
-    //sync ghost DOF's
-    solutionSet[fieldIndex]->update_ghost_values();
     //mark field as scalar/vector
     std::vector<DataComponentInterpretation::DataComponentInterpretation> dataType \
       (fields[fieldIndex].numComponents,				\
@@ -30,8 +27,9 @@ void MatrixFreePDE<dim>::outputResults(){
     std::vector<std::string> solutionNames (fields[fieldIndex].numComponents, fields[fieldIndex].name.c_str());
     data_out.add_data_vector(*dofHandlersSet[fieldIndex], *solutionSet[fieldIndex], solutionNames, dataType);  
   }
+  
   data_out.build_patches (finiteElementDegree);
-
+  
   //write to results file
   //file name
   std::ostringstream cycleAsString;
@@ -58,7 +56,7 @@ void MatrixFreePDE<dim>::outputResults(){
     data_out.write_pvtu_record (master_output, filenames);
   }
   pcout << "Output written to:" << pvtuFileName << "\n\n";
-  
+
   //log time
   computing_timer.exit_section("matrixFreePDE: output"); 
 }

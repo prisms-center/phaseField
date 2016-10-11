@@ -53,8 +53,8 @@
 #endif
 
 //relative linear solver tolerance for implicit solves (default value:1.0e-10)
-#ifndef relSolverTolerance
-#define relSolverTolerance 1.0e-10
+#ifndef solverTolerance
+#define solverTolerance 1.0e-10
 #endif
 
 //max number of linear solver iterations for implicit solves (default value:1000)
@@ -65,6 +65,11 @@
 //number of implicit solves to skip. None are skipped if value is 1, which is the default.
 #ifndef skipImplicitSolves
 #define skipImplicitSolves 1
+#endif
+
+//number of implicit solves to skip. None are skipped if value is 1, which is the default.
+#ifndef outputCondition
+#define outputCondition "EQUAL_SPACING"
 #endif
 
 #endif

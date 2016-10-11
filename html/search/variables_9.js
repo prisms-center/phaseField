@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['name',['name',['../class_field.html#a9b45b3e13bd9167aab02e17e08916231',1,'Field']]],
-  ['nuclei',['nuclei',['../coupled_c_h_a_c_mechanics_8h.html#a9ec4e484df79beb47285a5376d297645',1,'coupledCHACMechanics.h']]],
-  ['num_5fquadrature_5fpoints',['num_quadrature_points',['../class_matrix_free_p_d_e.html#a396ca2caebbe25069fba3d5a8d9efb57',1,'MatrixFreePDE']]],
-  ['numcomponents',['numComponents',['../class_field.html#adec91e5767db3627605a6c0c8bdd6931',1,'Field']]]
+  ['locally_5frelevant_5fdofsset',['locally_relevant_dofsSet',['../class_matrix_free_p_d_e.html#a4e7577cd5db8bd3bc9bd685d88442f0d',1,'MatrixFreePDE']]],
+  ['locally_5frelevant_5fdofsset2',['locally_relevant_dofsSet2',['../class_matrix_free_p_d_e.html#a20d5fc10e58de5142c5f226e74e43e63',1,'MatrixFreePDE']]],
+  ['localnuclei',['localNuclei',['../coupled_c_h_a_c_mechanics_8h.html#ae077181c3a07a8622e7bc3a58e2b6c01',1,'localNuclei():&#160;coupledCHACMechanics.h'],['../generalized__model__functions_8h.html#ae077181c3a07a8622e7bc3a58e2b6c01',1,'localNuclei():&#160;generalized_model_functions.h']]]
 ];
