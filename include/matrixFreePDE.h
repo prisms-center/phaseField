@@ -230,7 +230,8 @@ class MatrixFreePDE:public Subscriptor
   // Methods to apply periodic BCs
   virtual void setPeriodicity();
   virtual void setPeriodicityConstraints(ConstraintMatrix *, DoFHandler<dim>*);
-  virtual void setTranslationPreventionConstraints(ConstraintMatrix *, DoFHandler<dim>*);
+  virtual void getComponentsWithRigidBodyModes(std::vector<int> &);
+  virtual void setRigidBodyModeConstraints( std::vector<int>, ConstraintMatrix *, DoFHandler<dim>*);
 
   //methods to apply initial conditions
   /*Virtual method to apply initial conditions.  This is usually expected to be provided by the user in IBVP (Initial Boundary Value Problems).*/   

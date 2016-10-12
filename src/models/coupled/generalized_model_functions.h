@@ -999,39 +999,76 @@ void generalizedProblem<dim>::setPeriodicityConstraints(ConstraintMatrix * const
     DoFTools::make_periodicity_constraints<DoFHandler<dim> >(periodicity_vector, *constraints);
 }
 
-// Set constraints to pin the solution if there are no Dirichlet BCs for a component of a variable
+// Determine which (if any) components of the current field have rigid body modes (i.e no Dirichlet BCs) if the
+// equation is elliptic
 template <int dim>
-void generalizedProblem<dim>::setTranslationPreventionConstraints(ConstraintMatrix * constraints, DoFHandler<dim>* dof_handler){
+void generalizedProblem<dim>::getComponentsWithRigidBodyModes(std::vector<int> & rigidBodyModeComponents){
 
-	if (this->currentFieldIndex >= 2){
-		dealii::Point<dim> target_point(0,0);
-		unsigned int vertices_per_cell=GeometryInfo<dim>::vertices_per_cell;
+	// Rigid body modes only matter for elliptic equations
+	if (var_eq_type[this->currentFieldIndex] == "ELLIPTIC"){
 
-		typename DoFHandler<dim>::active_cell_iterator cell= dof_handler->begin_active(), endc = dof_handler->end();
+		unsigned int num_components;
+		// Get number of components of the field
+		if (var_type[this->currentFieldIndex] == "SCALAR"){
+			num_components = 1;
+		}
+		else {
+			num_components = dim;
+		}
 
-		for (; cell!=endc; ++cell){
+		// Loop over each component and determine if it has a rigid body mode (i.e. no Dirichlet BCs)
+		for (unsigned int component=0; component < num_components; component++){
+			bool rigidBodyMode = true;
+			for (unsigned int direction = 0; direction < 2*dim; direction++){
 
-			if (cell->is_locally_owned()){
-				for (unsigned int i=0; i<vertices_per_cell; ++i){
+				if (BC_list[this->currentFieldIndex+component].var_BC_type[direction] == "DIRICHLET"){
+					rigidBodyMode = false;
+				}
 
-
-					if (target_point.distance (cell->vertex(i)) < 1e-2 * cell->diameter()){
-
-						std::cout << cell->vertex(0) << " " << cell->vertex(1) << std::endl;
-
-						unsigned int nodeID=cell->vertex_dof_index(i,0);
-						constraints->add_line(nodeID);
-						constraints->set_inhomogeneity(nodeID,0.0);
-
-						nodeID=cell->vertex_dof_index(i,1);
-						constraints->add_line(nodeID);
-						constraints->set_inhomogeneity(nodeID,0.0);
-				   }
-			   }
-		   }
-	   }
-   }
+			}
+			// If the component has a rigid body mode, add it to the list
+			if (rigidBodyMode == true){
+				rigidBodyModeComponents.push_back(component);
+			}
+		}
+	}
 }
+
+// This function was moved to the parent MatrixFreePDE class
+//// Set constraints to pin the solution if there are no Dirichlet BCs for a component of a variable in an elliptic equation
+//template <int dim>
+//void generalizedProblem<dim>::setRigidBodyModeConstraints( std::vector<int> rigidBodyModeComponents, ConstraintMatrix * constraints, DoFHandler<dim>* dof_handler){
+//
+//	std::cout << "num of rigid body modes " << rigidBodyModeComponents.size() << std::endl;
+//	if ( rigidBodyModeComponents.size() > 0 ){
+//
+//		// Choose the point where the constraint will be placed. Must be the coordinates of a vertex.
+//		dealii::Point<dim> target_point(0,0);
+//
+//		unsigned int vertices_per_cell=GeometryInfo<dim>::vertices_per_cell;
+//
+//		// Loop over each locally owned cell
+//		typename DoFHandler<dim>::active_cell_iterator cell= dof_handler->begin_active(), endc = dof_handler->end();
+//
+//		for (; cell!=endc; ++cell){
+//			if (cell->is_locally_owned()){
+//				for (unsigned int i=0; i<vertices_per_cell; ++i){
+//
+//					// Check if the vertex is the target vertex
+//					if (target_point.distance (cell->vertex(i)) < 1e-2 * cell->diameter()){
+//
+//						// Loop through the list of components with rigid body modes and add an inhomogeneous constraint for each
+//						for (unsigned int component_num = 0; component_num < rigidBodyModeComponents.size(); component_num++){
+//							unsigned int nodeID=cell->vertex_dof_index(i,component_num);
+//							constraints->add_line(nodeID);
+//							constraints->set_inhomogeneity(nodeID,0.0);
+//						}
+//				   }
+//			   }
+//		   }
+//	   }
+//   }
+//}
 
 // =====================================================================
 // NUCLEATION FUNCTIONS

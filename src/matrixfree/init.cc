@@ -143,8 +143,10 @@
 	   constraintsOther->clear(); constraintsOther->reinit(*locally_relevant_dofs);
 	   DoFTools::make_hanging_node_constraints (*dof_handler, *constraintsOther);
 
-	   // Add a constraint to fix the value at the origin if all BCs are zero-derivative or periodic
-	   setTranslationPreventionConstraints(constraintsOther,dof_handler);
+	   // Add a constraint to fix the value at the origin to zero if all BCs are zero-derivative or periodic
+	   std::vector<int> rigidBodyModeComponents;
+	   getComponentsWithRigidBodyModes(rigidBodyModeComponents);
+	   setRigidBodyModeConstraints(rigidBodyModeComponents,constraintsOther,dof_handler);
 
 	   // Apply periodic BCs
 	   setPeriodicityConstraints(constraintsOther,dof_handler);

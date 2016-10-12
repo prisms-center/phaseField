@@ -35,18 +35,21 @@
    DoFHandler<dim>* dof_handler;
    dof_handler=new DoFHandler<dim>(triangulation);
    dofHandlersSet.push_back(dof_handler);
+   dofHandlersSet_nonconst.push_back(dof_handler);
    dof_handler->distribute_dofs (*fe);
    
    //extract locally_relevant_dofs
    IndexSet* locally_relevant_dofs;
    locally_relevant_dofs=new IndexSet;
    locally_relevant_dofsSet.push_back(locally_relevant_dofs);
+   locally_relevant_dofsSet_nonconst.push_back(locally_relevant_dofs);
    locally_relevant_dofs->clear();
    DoFTools::extract_locally_relevant_dofs (*dof_handler, *locally_relevant_dofs);
 
    //create constraints
    ConstraintMatrix *constraintsOther;
    constraintsOther=new ConstraintMatrix; constraintsOtherSet.push_back(constraintsOther);
+   constraintsOtherSet_nonconst.push_back(constraintsOther);
    constraintsOther->clear(); constraintsOther->reinit(*locally_relevant_dofs);
    DoFTools::make_hanging_node_constraints (*dof_handler, *constraintsOther);
    constraintsOther->close();

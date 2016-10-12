@@ -73,6 +73,29 @@ int main(int argc, char **argv)
   pass = getOutputTimeSteps_tester_dec.test_getOutputTimeSteps("N_PER_DECADE",10);
   tests_passed += pass;
 
+  // Unit tests for the method "setRigidBodyModeConstraints"
+  total_tests++;
+  unitTest<2,double> setRigidBodyModeConstraints_tester_null;
+  std::vector<int> rigidBodyModeComponents;
+  pass = setRigidBodyModeConstraints_tester_null.test_setRigidBodyModeConstraints(rigidBodyModeComponents);
+  tests_passed += pass;
+
+  total_tests++;
+  unitTest<2,double> setRigidBodyModeConstraints_tester_one;
+  rigidBodyModeComponents.clear();
+  rigidBodyModeComponents.push_back(0);
+  pass = setRigidBodyModeConstraints_tester_one.test_setRigidBodyModeConstraints(rigidBodyModeComponents);
+  tests_passed += pass;
+
+  total_tests++;
+  unitTest<2,double> setRigidBodyModeConstraints_tester_three;
+  rigidBodyModeComponents.clear();
+  rigidBodyModeComponents.push_back(0);
+  rigidBodyModeComponents.push_back(1);
+  rigidBodyModeComponents.push_back(2);
+  pass = setRigidBodyModeConstraints_tester_three.test_setRigidBodyModeConstraints(rigidBodyModeComponents);
+  tests_passed += pass;
+
   // Unit tests for the method "getRHS"
   //unitTest<2,double> getRHS_tester_2D;
   //pass = getRHS_tester_2D.test_getRHS();

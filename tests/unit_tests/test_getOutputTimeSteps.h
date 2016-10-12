@@ -1,4 +1,4 @@
-// Unit test(s) for the method "computeInvM"
+// Unit test(s) for the method "getOutputTimeSteps"
 template <int dim>
 class getOutputTimeStepsTest: public MatrixFreePDE<dim>
 {
