@@ -25,8 +25,10 @@ For detailed instructions on how to download and use PRISMS-PF, please consult t
 <I>Installation:</I> 
 
 1) Install deal.II (version 8.4.1 recommended)<br>
-  + Download CMake [http://www.cmake.org/download/] 
-  + Download Deal.II Binaries (OSX and Linux) or  Virtual Machine (VMI) from https://www.dealii.org/download.html <br>
+  + Download CMake [http://www.cmake.org/download/]
+  + Add CMake to your path (e.g. $ PATH="/path/to/cmake/Contents/bin":"$PATH"), preferably in a shell configuration file 
+  + Download Deal.II binaries (OSX and Linux) or  Virtual Machine (VMI) from https://www.dealii.org/download.html 
+  + If a Deal.II binary is downloaded, open it and follow the instructions in the terminal window <br>
 
 2) Clone the PRISMS-PF GitHub repo https://github.com/prisms-center/phaseField<br>
   + $ git clone https://github.com/prisms-center/phaseField.git <br>

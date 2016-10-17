@@ -83,7 +83,13 @@ PRISMS-PF was developed as part of the PRedictive Integrated Structural Material
 
 \section{Downloading deal.II and PRISMS-PF}
 
-Before downloading PRISMS-PF itself, one should install CMake and deal.II. CMake can be downloaded at: https://cmake.org/download, which has installation instructions. Deal.II can be downloaded at https://www.dealii.org/download.html, which also has instructions. For desktop and laptop use, we recommend downloading a binary package. These packages contain all of the libraries deal.II needs to run. For a computing cluster with optimized libraries already installed, you can download the deal.II source code and compile it yourself.
+Before downloading PRISMS-PF itself, one should install CMake and deal.II. CMake can be downloaded at: https://cmake.org/download, which also has installation instructions. Be sure to add CMake to your path by entering:
+\begin{lstlisting}
+$ $ PATH="/path/to/cmake/Contents/bin":"$PATH"
+\end{lstlisting}
+filling in the path to the installation of CMake (for example, on Mac OS, the default installation path is /Applications/CMake.app/Contents/bin).
+
+Deal.II can be downloaded at https://www.dealii.org/download.html, which also has instructions. For desktop and laptop use, we recommend downloading a binary package. These packages contain all of the libraries deal.II needs to run. After downloading the binary package, open it and follow the instructions. For a computing cluster with optimized libraries already installed, you can download the deal.II source code and compile it yourself.
 
 PRISMS-PF has been tested with Deal.II versions 8.3.0 through 8.4.1. We recommend using deal.II 8.4.1, if possible. We have found that for some older versions of Mac OS are incompatible with deal.II version 8.4.1 (due to the version of the Clang compiler that is installed by default). In those cases we recommend downloading this version 8.3.0 package:
 \\ https://github.com/dealii/dealii/releases/download/v8.3.0/dealii-8.3.0.nocxx14.dmg.
