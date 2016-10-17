@@ -43,7 +43,7 @@ bool unitTest<dim,T>::test_setRigidBodyModeConstraints(std::vector<int> rigidBod
 	}
 
 	char buffer[100];
-	sprintf (buffer, "Test result for 'setRigidBodyModeConstraints' with   %u component(s) needing a constraint: %u\n", rigidBodyModeComponents.size(), pass);
+	sprintf (buffer, "Test result for 'setRigidBodyModeConstraints' with   %lu component(s) needing a constraint: %u\n", rigidBodyModeComponents.size(), pass);
 	std::cout << buffer;
 
 	return pass;

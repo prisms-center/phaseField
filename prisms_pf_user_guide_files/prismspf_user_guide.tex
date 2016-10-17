@@ -339,12 +339,18 @@ All of the purely numerical parameters for an application are given in the file 
 // Each field in the problem will be output is writeOutput is set to "true"
 #define writeOutput true
 
-// Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", or "N_PER_DECADE")
+// Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
+// or "LIST")
 #define outputCondition "EQUAL_SPACING"
 
 // Number of times the program outputs the fields (total number for "EQUAL_SPACING"
-// and "LOG_SPACING", number per decade for "N_PER_DECADE")
+// and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
 #define numOutputs 10
+
+// User-defined list of time steps where the program should output. Only used if
+// outputCondition is "LIST"
+#define outputList {}
+
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output
@@ -361,11 +367,11 @@ In the third section of the parameters file, the user sets parameters related to
 
 In the fourth section of the parameters file, the user sets parameters related to time stepping. Currently, PRISMS-PF is set up for forward Euler time stepping. The size of each time step is set by \emph{timeStep} (a floating point number). The simulation finishes when either an amount of simulation time equal to \emph{timeFinal} has passed, or \emph{timeIncrements} time steps have occured.
 
-In the fifth section of the parameters file, the user sets parameters related to the output. The first parameter in this section, \emph{writeOutput}, is a flag that should be ``true'' if you want to output the results of the simulation and ``false'' if not. The output is written to the current directory. The second parameter, \emph{outputCondition}, determines the type of spacing between outputs. The options are ``EQUAL\_SPACING'', ``LOG\_SPACING'', and ``N\_PER\_DECADE''. The third parameter, \emph{numOutputs}, determines the number of outputs. For any \emph{outputCondition}, the initial conditions are outputted. For ``EQUAL\_SPACING'', the progam will output \emph{numOutputs} times after the initial conditions are output, separated by the total number of increments divded by \emph{numOutputs}. For ``LOG\_SPACING'', the progam will output \emph{numOutputs} times after the initial conditions are output, where the increments where output occurs are given by:
+In the fifth section of the parameters file, the user sets parameters related to the output. The first parameter in this section, \emph{writeOutput}, is a flag that should be ``true'' if you want to output the results of the simulation and ``false'' if not. The output is written to the current directory. The second parameter, \emph{outputCondition}, determines the type of spacing between outputs. The options are ``EQUAL\_SPACING'', ``LOG\_SPACING'',  ``N\_PER\_DECADE'', and ``LIST''. The third parameter, \emph{numOutputs}, determines the number of outputs. For any \emph{outputCondition}, the initial conditions are outputted. For ``EQUAL\_SPACING'', the progam will output \emph{numOutputs} times after the initial conditions are output, separated by the total number of increments divded by \emph{numOutputs}. For ``LOG\_SPACING'', the progam will output \emph{numOutputs} times after the initial conditions are output, where the increments where output occurs are given by:
 \begin{equation}
 10^{n/numOutputs \log(totalIncrements)}
 \end{equation}
-rounded to the nearest integer, where \emph{n} is the output number, and \emph{totalIncrements} is the total number of time steps. For ``N\_PER\_DECADE'', the program will output \emph{numOutput} times for each power of 10 after outputting the initial conditions. For example, if \emph{numOutput} is 1, the program will output at every power of 10 (i.e. 1, 10, 100, 1000, ...). If \emph{numOutput} is 10, the program will output ten times for every power of 10 (i.e. 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, ...). 
+rounded to the nearest integer, where \emph{n} is the output number, and \emph{totalIncrements} is the total number of time steps. For ``N\_PER\_DECADE'', the program will output \emph{numOutput} times for each power of 10 after outputting the initial conditions. For example, if \emph{numOutput} is 1, the program will output at every power of 10 (i.e. 1, 10, 100, 1000, ...). If \emph{numOutput} is 10, the program will output ten times for every power of 10 (i.e. 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, ...). For ``LIST'', the user supplies a list of time steps where the program should output using the parameter \emph{outputList}. \emph{outputList} should be a bracketed, comma-separated list and is ignored for any type of output spacing other than ``LIST''.
 
 In the sixth and final section of the parameters file, the user sets a flag determining if the integrated free energy should be calculated whenever the code outputs the results. If \emph{calcEnergy} is ``true'', the total free energy will be written to a file names ``freeEnergy.txt.'' If not given, the default value for \emph{calcEnergy} is ``false''.
 
@@ -842,13 +848,19 @@ Still in the second section of the file, the residual terms for the Cahn-Hilliar
 
 The third section of the file is the function \emph{residualRHS}. In the code excerpt above, there are several references to the variable \emph{CIJ\_list}. This is a vector of the stiffness matrices generated from the \emph{MaterialModels} and \emph{MaterialConstants} inputs. The first index for \emph{CIJ\_list} denotes the position in the list (i.e. 0 for the first material properties given in \emph{MaterialModels} and \emph{MaterialConstants}, 1 for the second material properties given, etc.). The individual elements of the stiffness matrix are accessed using the second and third indices. Therefore, if you wanted to access the C$_{12}$ element for the first material in the list, you could access it through \emph{CIJ\_list}[0][1][2]. This example application also shows that the residuals can be defined in \emph{residualsRHS} instead of as a macro in the second section of the file. The variable \emph{ruxV} is set to minus the stress on an element-by-element basis. The \emph{ruxV} residual is treated the same as the other residual terms at the end of the function, where they are loaded into \emph{modelResidualsList}.
 
-Unlike the coupled Cahn-Hilliard/Allen-Cahn example application, the Precipitate Evolution example application has calculations inside \emph{residualLHS}.  This function contains the residual on the left-hand-side of equation for the iterative solution of an elliptic equation. For this application this equation is: 
+Unlike the coupled Cahn-Hilliard/Allen-Cahn example application, the Precipitate Evolution example application has calculations inside \emph{residualLHS}.  This function contains the residual on the left-hand-side of equation for the iterative solution of an elliptic equation. For this application this equation at iteration $i$ is: 
 \begin{align}
-insert\ eqn\ here
+R^i + \frac{\partial R}{\partial u} \bigg|_{u^i} \Delta u &= 0 \\
+\Rightarrow \frac{\partial R}{\partial u}\bigg|_{u^i} \Delta u &= -R^i
 \end{align}
-Thus the residual term (\emph{ruxV} once again) is equal to the stress.
+Where $\Delta u = u^{i+1}-u^i$ and $R$ is the residual:
+\begin{align}
+R &=  \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \epsilon - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0 
+\end{align}
 
-Like \emph{residualRHS}, takes \emph{modelVariablesList} and  \emph{q\_point\_loc} as inputs. However, because only one elliptic equation is solved at a time, the output is a single residual variable, \emph{modelRes}. As in \emph{residualRHS}, the model variable values and derivatives are given convienent names at the start of the file. In \emph{residualLHS}, \emph{modelVariablesList} only contains variables where at least one of \emph{need\_val\_LHS}, \emph{need\_grad\_LHS}, or \emph{need\_hess\_LHS} is ``true''. In this example, only the three structural order parameters (n1, n2, and n3) and the displacement field (u) are needed to calculate the LHS residual. Therefore, the indices are shifted from those in \emph{residualRHS}, since the concentration at index 0 isn't needed. Similar to \emph{residualRHS}, the value of \emph{ruxV} is set and then used to update the appropriate member of \emph{modelRes} (in this case \emph{vectorGradResidual}).
+Thus the gradient residual term (\emph{ruxV} once again) is equal to the stress.
+
+Like \emph{residualRHS}, \emph{residualLHS} takes \emph{modelVariablesList} and  \emph{q\_point\_loc} as inputs. However, because only one elliptic equation is solved at a time, the output is a single residual variable, \emph{modelRes}. As in \emph{residualRHS}, the model variable values and derivatives are given convienent names at the start of the file. In \emph{residualLHS}, \emph{modelVariablesList} only contains variables where at least one of \emph{need\_val\_LHS}, \emph{need\_grad\_LHS}, or \emph{need\_hess\_LHS} is ``true''. In this example, only the three structural order parameters (n1, n2, and n3) and the displacement field (u) are needed to calculate the LHS residual. Therefore, the indices are shifted from those in \emph{residualRHS}, since the concentration at index 0 isn't needed. Similar to \emph{residualRHS}, the value of \emph{ruxV} is set and then used to update the appropriate member of \emph{modelRes} (in this case \emph{vectorGradResidual}).
 
 If multiple elliptic equations need to be solved, you will need to use conditional statements to calculate the proper residual depending on the elliptic equation being solved. The index of the field being solved can be accessed using the ``this-$>$currentFieldIndex'' statement. This index refers to the variable's overall order in the declaration, \textbf{not} the index used for \emph{modelVariablesList} in \emph{residualLHS}.
 

@@ -36,7 +36,7 @@ class unitTest
 	void assignCIJSize(dealii::Table<2, double> &CIJ);
 	bool test_getRHS();
 	bool test_computeRHS();
-	bool test_getOutputTimeSteps(std::string,unsigned int);
+	bool test_getOutputTimeSteps(std::string,unsigned int, std::vector<unsigned int>);
 	bool test_setRigidBodyModeConstraints(std::vector<int>);
 };
 

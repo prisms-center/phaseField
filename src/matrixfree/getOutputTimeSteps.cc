@@ -3,7 +3,7 @@
 // are read in from the file "parameters.h" via #define macros.
 
 template <int dim>
-void MatrixFreePDE<dim>::getOutputTimeSteps(std::string outputSpacingType, unsigned int numberOfOutputs, std::vector<unsigned int> & timeStepList){
+void MatrixFreePDE<dim>::getOutputTimeSteps(std::string outputSpacingType, unsigned int numberOfOutputs, std::vector<unsigned int> & userGivenTimeStepList, std::vector<unsigned int> & timeStepList){
 
 	// Determine the maximum number of increments
 	if (outputSpacingType == "EQUAL_SPACING"){
@@ -27,6 +27,9 @@ void MatrixFreePDE<dim>::getOutputTimeSteps(std::string outputSpacingType, unsig
 			}
 
 		}
+	}
+	else if (outputSpacingType == "LIST"){
+		timeStepList = userGivenTimeStepList;
 	}
 }
 

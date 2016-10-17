@@ -9,8 +9,8 @@ class getOutputTimeStepsTest: public MatrixFreePDE<dim>
 		this->initForTests();
 	};
 
-	void getTimeStepList(std::string outputSpacingType, unsigned int numberOfOutputs){
-		this->getOutputTimeSteps(outputSpacingType,numberOfOutputs,this->outputTimeStepList);
+	void getTimeStepList(std::string outputSpacingType, unsigned int numberOfOutputs, std::vector<unsigned int> userGivenTimeStepList){
+		this->getOutputTimeSteps(outputSpacingType,numberOfOutputs,userGivenTimeStepList,this->outputTimeStepList);
 		outputTimeStepList_public = this->outputTimeStepList;
 	};
 
@@ -25,14 +25,14 @@ class getOutputTimeStepsTest: public MatrixFreePDE<dim>
 };
 
 template <int dim,typename T>
-bool unitTest<dim,T>::test_getOutputTimeSteps(std::string outputSpacingType, unsigned int numberOfOutputs){
+bool unitTest<dim,T>::test_getOutputTimeSteps(std::string outputSpacingType, unsigned int numberOfOutputs, std::vector<unsigned int> userGivenTimeStepList){
 	bool pass = true;
-	std::cout << "\nTesting 'getOutputTimeSteps' in " << dim << " dimension(s)...'" << std::endl;
+	std::cout << "\nTesting 'getOutputTimeSteps' for type " << outputSpacingType << " ...'" << std::endl;
  
 	//create test problem class object
 	getOutputTimeStepsTest<dim> test;
 
-	test.getTimeStepList(outputSpacingType,numberOfOutputs);
+	test.getTimeStepList(outputSpacingType,numberOfOutputs,userGivenTimeStepList);
 
 	// Check if calculated value equals expected value
 	std::vector<unsigned int> expected_result;
@@ -47,6 +47,9 @@ bool unitTest<dim,T>::test_getOutputTimeSteps(std::string outputSpacingType, uns
 				200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000, 3000, 4000, 5000, 6000, 7000,
 				8000, 9000, 10000, 20000};
 	}
+	else if (outputSpacingType == "LIST"){
+			expected_result = {0, 3, 55, 61};
+	}
 
 	for (unsigned int i=0; i < test.outputTimeStepList_public.size(); i++){
 		if (test.outputTimeStepList_public[i] != expected_result[i]){
@@ -55,7 +58,8 @@ bool unitTest<dim,T>::test_getOutputTimeSteps(std::string outputSpacingType, uns
 	}
 
 	char buffer[100];
-	sprintf (buffer, "Test result for 'getOutputTimeSteps' in   %u dimension(s): %u\n", dim, pass);
+	//char temp[] = outputSpacingType.c_str();
+	sprintf (buffer, "Test result for 'getOutputTimeSteps' for type %s : %u\n", outputSpacingType.c_str(), pass);
 	std::cout << buffer;
 	
 	return pass;

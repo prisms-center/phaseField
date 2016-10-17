@@ -72,4 +72,8 @@
 #define outputCondition "EQUAL_SPACING"
 #endif
 
+#ifndef outputList
+#define outputList {0}
+#endif
+
 #endif
