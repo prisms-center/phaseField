@@ -41,6 +41,7 @@ void MatrixFreePDE<dim>::outputResults(){
 
   //write to file
   data_out.write_vtu (output);
+  //data_out.write_vtk (output);
 
 
   //create pvtu record

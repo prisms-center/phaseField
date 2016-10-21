@@ -21,6 +21,7 @@ template <int dim>
 class generalizedProblem: public MatrixFreePDE<dim>
 {
  public: 
+
   generalizedProblem();
 
   void shiftConcentration();

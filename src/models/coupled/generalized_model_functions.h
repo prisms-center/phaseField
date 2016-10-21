@@ -5,6 +5,7 @@
 template <int dim>
 generalizedProblem<dim>::generalizedProblem(): MatrixFreePDE<dim>()
 {
+
 #ifndef	timeIncrements
 #define timeIncrements 1
 #endif
@@ -713,16 +714,27 @@ void generalizedProblem<dim>::applyInitialConditions()
 
 unsigned int fieldIndex = 0;
 
+typedef PRISMS::PField<double*, double, 2> ScalarField2D;
+typedef PRISMS::Body<double*, 2> Body2D;
+Body2D body;
+
 for (unsigned int var_index=0; var_index < num_var; var_index++){
 
-	  if (var_type[var_index] == "SCALAR"){
-		  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialCondition<dim>(var_index), *this->solutionSet[fieldIndex]);
-		  fieldIndex++;
-	  }
-	  else {
-		  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionVec<dim>(var_index), *this->solutionSet[fieldIndex]);
-		  fieldIndex += dim;
-	  }
+	// Currently this reads from the same file for all variables, obviously that needs to be changed
+	body.read_vtk("solution-020000.0.vtk");
+	ScalarField2D &conc = body.find_scalar_field("n");
+
+	VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionPField<dim>(var_index,conc), *this->solutionSet[fieldIndex]);
+			  fieldIndex++;
+
+//	  if (var_type[var_index] == "SCALAR"){
+//		  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialCondition<dim>(var_index), *this->solutionSet[fieldIndex]);
+//		  fieldIndex++;
+//	  }
+//	  else {
+//		  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionVec<dim>(var_index), *this->solutionSet[fieldIndex]);
+//		  fieldIndex += dim;
+//	  }
 }
 }
 
