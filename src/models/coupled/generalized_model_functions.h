@@ -718,10 +718,19 @@ typedef PRISMS::PField<double*, double, 2> ScalarField2D;
 typedef PRISMS::Body<double*, 2> Body2D;
 Body2D body;
 
+int proc_num = Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
+
 for (unsigned int var_index=0; var_index < num_var; var_index++){
 
 	// Currently this reads from the same file for all variables, obviously that needs to be changed
-	body.read_vtk("solution-020000.0.vtk");
+	std::string filename = "parallel_input.";
+	std::ostringstream conversion;
+	conversion << proc_num;
+	//filename.push_back(conversion.str());
+	//filename.push_back(".vtk");
+	filename += conversion.str() + ".vtk";
+
+	body.read_vtk(filename);
 	ScalarField2D &conc = body.find_scalar_field("n");
 
 	VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionPField<dim>(var_index,conc), *this->solutionSet[fieldIndex]);
