@@ -76,4 +76,13 @@
 #define outputList {0}
 #endif
 
+#ifndef outputFileType
+#define outputFileType "vtu"
+#endif
+
+#ifndef enablePFields
+#define enablePFields false
+#endif
+
+
 #endif

@@ -1,34 +1,24 @@
-template <int dim>
-class InitialConditionPField : public Function<dim>
-{
-public:
-  unsigned int index;
-  Vector<double> values;
-  typedef PRISMS::PField<double*, double, 2> ScalarField2D;
-  ScalarField2D &conc;
+// Initial conditions and boundary conditions
 
-  InitialConditionPField (const unsigned int _index, ScalarField2D &_conc) : Function<dim>(1), index(_index), conc(_conc) {}
+// =================================================================================
+// Determine what (if any) files to load for the initial conditions
+// =================================================================================
+// Set whether PFields are enables (requires PRISMS IntegrationTools)
+#define enablePFields true
 
-  double value (const Point<dim> &p, const unsigned int component = 0) const
-  {
-	  double scalar_IC;
-	  // =====================================================================
-	  // ENTER THE INITIAL CONDITIONS HERE FOR SCALAR FIELDS
-	  // =====================================================================
-	  // Enter the function describing conditions for the fields at point "p".
-	  // Use "if" statements to set the initial condition for each variable
-	  // according to its variable index.
+// Set whether the initial conditions are loaded from file for each variable
+#define loadICs {true}
 
-	  double coord[2];
-	  coord[0] = p(0);
-	  coord[1] = p(1);
+// Set whether the file is serial or a series of parallel files
+#define loadSerialFile {false}
 
-	  scalar_IC = conc(coord);
+// Set the name of the input files
+#define loadFileName {"parallel_input"}
 
-	  // =====================================================================
-	  return scalar_IC;
-  }
-};
+// Set the field names in the input files
+#define loadFieldName {"n"}
+
+// =================================================================================
 
 template <int dim>
 class InitialCondition : public Function<dim>
