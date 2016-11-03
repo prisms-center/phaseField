@@ -7,6 +7,9 @@ void MatrixFreePDE<dim>::getOutputTimeSteps(std::string outputSpacingType, unsig
 
 	// Determine the maximum number of increments
 	if (outputSpacingType == "EQUAL_SPACING"){
+		if (numberOfOutputs > totalIncrements)
+			numberOfOutputs = totalIncrements;
+
 		for (unsigned int iter = 0; iter <= totalIncrements; iter += totalIncrements/numberOfOutputs){
 			timeStepList.push_back(iter);
 		}
