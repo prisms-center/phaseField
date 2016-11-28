@@ -35,10 +35,6 @@ public:
 #endif
 	  }
 	  else {
-		  r=p.distance(Point<dim>(spanX/3.0,spanY/3.0));
-		  scalar_IC = 0.5*(1.0-std::tanh((r-spanX/5.0)/(3*dx)));
-		  r=p.distance(Point<dim>(3.0*spanX/4.0,3.0*spanY/4.0));
-		  scalar_IC += 0.5*(1.0-std::tanh((r-spanX/12.0)/(3*dx)));
 #if problemDIM==1
                   r=p[0];
                   scalar_IC = 0.5*(1-std::tanh((r-spanX/2.0)/6.0));
