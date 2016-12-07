@@ -8,9 +8,11 @@ PRISMS-PF
 
 This version of the code, 1.0, is the first release version of PRISMS-PF. This version provides many updates to the pre-release versions. For more information concerning the differences between versions, please consult version_changes.txt.   
 
-<B>What is PRISMS-PF?</B>
+<B>What is PRISMS-PF?</B> 
 
-  PRISMS-PF is a high-performance Finite Element Method (FEM) code for phase field modeling simulations and solving related systems of partial differential equations. It has a flexible user interface designed to allow users to easily modify existing applications as well as developing their own. In terms of performance, PRISMS-PF has been shown to be competitive with state-of-the-art finite difference codes. PRISMS-PF has been tested on thousands of processors and has been used in simulations with over one billion degrees of freedom.
+  PRISMS-PF is a powerful, massively parallel finite element code for conducting phase field and other related simulations of microstructural evolution.  The phase field method is commonly used for predicting the evolution if microstructures under a wide range of conditions and material systems. PRISMS-PF provides a simple interface for solving customizable systems of partial differential equations of the type commonly found in phase field models, and has 11 pre-built application modules, including for precipitate evolution, grain growth, and spinodal decomposition. 
+  
+  With PRISMS-PF, you have access to adaptive meshing and parallelization with near-ideal scaling for over a thousand processors. Moreover, the matrix-free framework from the deal.II library allows much larger than simulations than typical finite element programs – PRISMS-PF has been used for simulations with over one billion degrees of freedom. PRISMS-PF also provides performance competitive with or exceeding single-purpose codes. For example, even without enabling the mesh adaptivity features in PRISMS-PF, it has been demonstrated to be 4.5x faster than an equivalent finite difference code. 
   
   This code is developed by the PRedictive Integrated Structural
   Materials Science (PRISMS) Center [http://www.prisms-center.org/]
