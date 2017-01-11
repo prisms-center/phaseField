@@ -1,4 +1,4 @@
-// created: 2016-9-27 12:21:14
+// created: 2017-1-11 12:28:13
 // version: master
 // url: https://github.com/bpuchala/IntegrationToolsWriter.git
 // commit: 13e063c3ac8e8911a726a243fdbd68f291cc58cc
@@ -17,7 +17,7 @@ namespace PRISMS
     {
         double eval( const VarContainer &var) const
         {
-            return  1.3687000000000000e+00*((var[0]*var[0])*(var[0]*var[0]))+-4.7759999999999998e+00*var[0]+-2.7374999999999998e+00*(var[0]*var[0]*var[0])+5.1622000000000003e+00*(var[0]*var[0])-1.6704000000000001e+00;
+            return  5.1622000000000003e+00*(var[0]*var[0])+-2.7374999999999998e+00*(var[0]*var[0]*var[0])+-4.7759999999999998e+00*var[0]+1.3687000000000000e+00*((var[0]*var[0])*(var[0]*var[0]))-1.6704000000000001e+00;
         }
 
     public:
@@ -29,7 +29,7 @@ namespace PRISMS
 
         std::string csrc() const
         {
-            return " 1.3687000000000000e+00*((var[0]*var[0])*(var[0]*var[0]))+-4.7759999999999998e+00*var[0]+-2.7374999999999998e+00*(var[0]*var[0]*var[0])+5.1622000000000003e+00*(var[0]*var[0])-1.6704000000000001e+00";
+            return " 5.1622000000000003e+00*(var[0]*var[0])+-2.7374999999999998e+00*(var[0]*var[0]*var[0])+-4.7759999999999998e+00*var[0]+1.3687000000000000e+00*((var[0]*var[0])*(var[0]*var[0]))-1.6704000000000001e+00";
         }
 
         std::string sym() const
@@ -39,7 +39,7 @@ namespace PRISMS
 
         std::string latex() const
         {
-            return "-1.6704-{(4.776)} c-{(2.7375)} c^{3}+{(5.1622)} c^{2}+{(1.3687)} c^{4}";
+            return "-1.6704+{(5.1622)} c^{2}-{(4.776)} c-{(2.7375)} c^{3}+{(1.3687)} c^{4}";
         }
 
         pfunct_faV_f* clone() const

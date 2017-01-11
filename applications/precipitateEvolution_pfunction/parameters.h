@@ -54,7 +54,7 @@
 // The size of the time step
 #define timeStep 4.0e-4
 #define timeFinal 100.0
-#define timeIncrements 100 //5000
+#define timeIncrements 5000
 
 // =================================================================================
 // Set the elliptic solver parameters
@@ -78,8 +78,17 @@
 // Each field in the problem will be output is writeOutput is set to "true"
 #define writeOutput true
 
-// Output files are written every skipOutputSteps time steps
-#define skipOutputSteps 10 //500
+// Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
+// or "LIST")
+#define outputCondition "EQUAL_SPACING"
+
+// Number of times the program outputs the fields (total number for "EQUAL_SPACING"
+// and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
+#define numOutputs 10
+
+// User-defined list of time steps where the program should output. Only used if
+// outputCondition is "LIST"
+#define outputList {}
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output
