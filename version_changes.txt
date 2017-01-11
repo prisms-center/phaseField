@@ -1,4 +1,37 @@
 ====================
+Version 1.1:
+===================
+Update to v1.0, released in January 2017. 
+
+Added functionality:
+- Periodic boundary conditions are now available. Choose “PERIODIC” as the BC type in the function setBCs() in ICs_and_BCs.h.
+- PRISMS-PF now automatically constrains the solution if only periodic/Neumann BCs are used for a component of a variable by pinning 
+  the value of that variable to zero at the origin.
+- Added more options for controlling the spacing between outputs. Users can now choose between equal spacing, log spacing, and a specified 
+  number of outputs per decade or they can input a list of time steps at which to output.
+
+Changes to the pre-built applications:
+- Added formulation files for the CHAC_anisotropy and CHAC_anisotropyRegularized applications.
+- Boundary conditions for grainGrowth changed to periodic.
+- Moduli changed in precipitateEvolution so that the evolution is dominated by the misfit, not the interfacial energy.
+
+Other changes:
+- Installation instructions updated, both in the README and in the user guide.
+
+Known issues:
+- For some compilers (including the Intel compilers on the Stampede cluster), errors are generated because we initialize some vectors with
+  C-style arrays. This will be fixed in the near future. 
+  
+
+Major changes include:
+- New user interface
+- New user guide
+- Mesh adaptivity capability
+- Many new applications
+- Improved tests, including tests versus analytical results
+
+
+====================
 Version 1.0:
 ===================
 This is the first release version of PRISMS-PF, released in August 2016. The code has been substantially reworked since version 0.9.3.
