@@ -80,9 +80,9 @@
 #define outputFileType "vtu"
 #endif
 
-#ifndef enablePFields
-#define enablePFields false
-#endif
+//#ifndef enablePFields
+//#define enablePFields false
+//#endif
 
 
 #endif

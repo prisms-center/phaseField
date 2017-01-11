@@ -9,6 +9,7 @@ Added functionality:
   the value of that variable to zero at the origin.
 - Added more options for controlling the spacing between outputs. Users can now choose between equal spacing, log spacing, and a specified 
   number of outputs per decade or they can input a list of time steps at which to output.
+- Ability to change the output file format between “.vtu” and “.vtk”. Used in the application allenCahn_pfield.
 
 Changes to the pre-built applications:
 - Added formulation files for the CHAC_anisotropy and CHAC_anisotropyRegularized applications.

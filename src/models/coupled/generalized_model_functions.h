@@ -707,6 +707,7 @@ void generalizedProblem<dim>::buildFields(){
 // INITIAL CONDITION FUNCTIONS
 // =====================================================================
 
+#ifdef enablePFields
 #if enablePFields == true
 template <int dim>
 class InitialConditionPField : public Function<dim>
@@ -734,6 +735,9 @@ public:
   }
 };
 
+#endif
+#else
+#define enablePFields false
 #endif
 
 // =================================================================================
