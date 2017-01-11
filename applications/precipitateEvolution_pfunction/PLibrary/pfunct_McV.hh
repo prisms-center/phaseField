@@ -1,10 +1,10 @@
-// created: 2016-6-29 17:08:13
+// created: 2016-9-27 12:21:14
 // version: master
 // url: https://github.com/bpuchala/IntegrationToolsWriter.git
 // commit: 13e063c3ac8e8911a726a243fdbd68f291cc58cc
 
-#ifndef pfunct_Mn1V_HH
-#define pfunct_Mn1V_HH
+#ifndef pfunct_McV_HH
+#define pfunct_McV_HH
 
 #include <cmath>
 #include <cstdlib>
@@ -13,43 +13,43 @@
 namespace PRISMS
 {
     template< class VarContainer>
-    class pfunct_Mn1V_f : public PSimpleBase< VarContainer, double>
+    class pfunct_McV_f : public PSimpleBase< VarContainer, double>
     {
         double eval( const VarContainer &var) const
         {
-            return 1.0000000000000000e+02;
+            return 1.0000000000000000e+00;
         }
 
     public:
 
-        pfunct_Mn1V_f()
+        pfunct_McV_f()
         {
-            this->_name = "pfunct_Mn1V_f";
+            this->_name = "pfunct_McV_f";
         }
 
         std::string csrc() const
         {
-            return "1.0000000000000000e+02";
+            return "1.0000000000000000e+00";
         }
 
         std::string sym() const
         {
-            return "100.0";
+            return "1.0";
         }
 
         std::string latex() const
         {
-            return "100.0";
+            return "1.0";
         }
 
-        pfunct_Mn1V_f* clone() const
+        pfunct_McV_f* clone() const
         {
-            return new pfunct_Mn1V_f(*this);
+            return new pfunct_McV_f(*this);
         }
     };
 
     template<class VarContainer>
-    class pfunct_Mn1V : public PFuncBase< VarContainer, double>
+    class pfunct_McV : public PFuncBase< VarContainer, double>
     {
     public:
         
@@ -59,12 +59,12 @@ namespace PRISMS
         PSimpleBase< VarContainer, double> **_grad_val;
         PSimpleBase< VarContainer, double> ***_hess_val;
         
-        pfunct_Mn1V()
+        pfunct_McV()
         {
             construct();
         }
 
-        pfunct_Mn1V(const pfunct_Mn1V &RHS )
+        pfunct_McV(const pfunct_McV &RHS )
         {
             construct(false);
             
@@ -72,7 +72,7 @@ namespace PRISMS
             
         }
 
-        pfunct_Mn1V& operator=( pfunct_Mn1V RHS )
+        pfunct_McV& operator=( pfunct_McV RHS )
         {
             using std::swap;
             
@@ -81,15 +81,15 @@ namespace PRISMS
             return *this;
         }
 
-        ~pfunct_Mn1V()
+        ~pfunct_McV()
         {
             delete _val;
 
         }
 
-        pfunct_Mn1V<VarContainer>* clone() const
+        pfunct_McV<VarContainer>* clone() const
         {
-            return new pfunct_Mn1V<VarContainer>(*this);
+            return new pfunct_McV<VarContainer>(*this);
         }
 
         PSimpleFunction< VarContainer, double> simplefunction() const
@@ -115,15 +115,15 @@ namespace PRISMS
     private:
         void construct(bool allocate = true)
         {
-            this->_name = "pfunct_Mn1V";
+            this->_name = "pfunct_McV";
             this->_var_name.clear();
-            this->_var_name.push_back("n1");
+            this->_var_name.push_back("c");
             this->_var_description.clear();
             this->_var_description.push_back("concentration");
             
             if(!allocate) return;
             
-            _val = new pfunct_Mn1V_f<VarContainer>();
+            _val = new pfunct_McV_f<VarContainer>();
         }
 
     };
