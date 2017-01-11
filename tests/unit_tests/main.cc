@@ -33,7 +33,7 @@ int main(int argc, char **argv)
   tests_passed += pass;
   
   total_tests++;
-  unitTest<1,dealii::Table<2, double>> computeStress_tester_1DT;
+  unitTest<1,dealii::Table<2, double> > computeStress_tester_1DT;
   pass = computeStress_tester_1DT.test_computeStress();
   tests_passed += pass;
   
@@ -43,7 +43,7 @@ int main(int argc, char **argv)
   tests_passed += pass;
   
   total_tests++;
-  unitTest<2,dealii::Table<2, double>> computeStress_tester_2DT;
+  unitTest<2,dealii::Table<2, double> > computeStress_tester_2DT;
   pass = computeStress_tester_2DT.test_computeStress();
   tests_passed += pass;
   
@@ -53,7 +53,7 @@ int main(int argc, char **argv)
   tests_passed += pass;
   
   total_tests++;
-  unitTest<3,dealii::Table<2, double>> computeStress_tester_3DT;
+  unitTest<3,dealii::Table<2, double> > computeStress_tester_3DT;
   pass = computeStress_tester_3DT.test_computeStress();
   tests_passed += pass;
   

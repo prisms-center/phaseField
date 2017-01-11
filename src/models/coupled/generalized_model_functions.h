@@ -737,7 +737,7 @@ public:
 	vectorBCFunction(const std::vector<double> BC_values);
   virtual void vector_value (const Point<dim> &p, Vector<double>   &values) const;
 
-  virtual void vector_value_list (const std::vector<Point<dim>> &points, std::vector<Vector<double>> &value_list) const;
+  virtual void vector_value_list (const std::vector<Point<dim> > &points, std::vector<Vector<double> > &value_list) const;
 
 private:
   const std::vector<double> BC_values;
@@ -755,7 +755,7 @@ void vectorBCFunction<dim>::vector_value(const Point<dim> &p, Vector<double> &va
 }
 
 template <int dim>
-void vectorBCFunction<dim>::vector_value_list (const std::vector<Point<dim>> &points, std::vector<Vector<double>> &value_list) const{
+void vectorBCFunction<dim>::vector_value_list (const std::vector<Point<dim> > &points, std::vector<Vector<double> > &value_list) const{
 	const unsigned int n_points = points.size();
 	for (unsigned int p=0; p<n_points; ++p)
 		vectorBCFunction<dim>::vector_value(points[p],value_list[p]);
