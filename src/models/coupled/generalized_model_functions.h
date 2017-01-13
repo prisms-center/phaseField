@@ -13,6 +13,26 @@ generalizedProblem<dim>::generalizedProblem(): MatrixFreePDE<dim>()
 #define timeStep 0.0
 #endif
 
+	  //initialize time step variables
+	#ifdef timeStep
+	this->dtValue=timeStep;
+	#endif
+	#ifdef timeFinal
+	this->finalTime=timeFinal;
+	#else
+	this->finalTime = 0.0;
+	#endif
+
+
+	  // Determine the maximum number of time steps
+	if (std::ceil(this->finalTime/timeStep) < timeIncrements){
+		this->totalIncrements = std::ceil(this->finalTime/timeStep);
+	}
+	else {
+		this->totalIncrements = timeIncrements;
+		}
+
+
 	var_name = variable_name;
 	var_type = variable_type;
 	var_eq_type = variable_eq_type;

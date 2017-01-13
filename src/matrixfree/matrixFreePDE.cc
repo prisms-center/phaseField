@@ -21,21 +21,7 @@
  pcout (std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0),
  computing_timer (pcout, TimerOutput::summary, TimerOutput::wall_times)
  {
-   //initialize time step variables
-#ifdef timeStep
-   dtValue=timeStep;
-#endif
-#ifdef timeFinal
-   finalTime=timeFinal;
-#endif
 
-   // Determine the maximum number of time steps
-   	if (std::ceil(timeFinal/timeStep) < timeIncrements){
-   		totalIncrements = std::ceil(timeFinal/timeStep);
-   	}
-   	else {
-   		totalIncrements = timeIncrements;
-   	}
  }
 
  //destructor
