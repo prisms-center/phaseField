@@ -5,12 +5,33 @@
 template <int dim>
 generalizedProblem<dim>::generalizedProblem(): MatrixFreePDE<dim>()
 {
+
 #ifndef	timeIncrements
 #define timeIncrements 1
 #endif
 #ifndef	timeStep
 #define timeStep 0.0
 #endif
+
+	  //initialize time step variables
+	#ifdef timeStep
+	this->dtValue=timeStep;
+	#endif
+	#ifdef timeFinal
+	this->finalTime=timeFinal;
+	#else
+	this->finalTime = 0.0;
+	#endif
+
+
+	  // Determine the maximum number of time steps
+	if (std::ceil(this->finalTime/timeStep) < timeIncrements){
+		this->totalIncrements = std::ceil(this->finalTime/timeStep);
+	}
+	else {
+		this->totalIncrements = timeIncrements;
+		}
+
 
 	var_name = variable_name;
 	var_type = variable_type;
@@ -595,9 +616,19 @@ void generalizedProblem<dim>::computeIntegral(double& integratedField){
 template <int dim>
 void generalizedProblem<dim>::adaptiveRefine(unsigned int currentIncrement){
 	#if hAdaptivity == true
-	if ((currentIncrement>0) && (currentIncrement%skipRemeshingSteps==0)){
-		this->refineMesh(currentIncrement);
+	//if ((currentIncrement>0) && (currentIncrement%skipRemeshingSteps==0)){
+//	if ( (currentIncrement == 2) || (currentIncrement%skipRemeshingSteps==0) ){
+//		this->refineMesh(currentIncrement);
+//	}
+
+	if ( (currentIncrement == 0) ){
+		for (unsigned int remesh_index=0; remesh_index < (maxRefinementLevel-minRefinementLevel); remesh_index++){
+			this->refineMesh(currentIncrement);
+		}
 	}
+	else if ( (currentIncrement%skipRemeshingSteps==0) ){
+			this->refineMesh(currentIncrement);
+		}
 	#endif
 }
 
@@ -618,7 +649,7 @@ void generalizedProblem<dim>::adaptiveRefineCriterion(){
 
 	std::vector<double> errorOut(num_quad_points);
 
-	typename DoFHandler<dim>::active_cell_iterator cell = this->dofHandlersSet2[refine_criterion_fields[0]]->begin_active(), endc = this->dofHandlersSet2[refine_criterion_fields[0]]->end();
+	typename DoFHandler<dim>::active_cell_iterator cell = this->dofHandlersSet_nonconst[refine_criterion_fields[0]]->begin_active(), endc = this->dofHandlersSet_nonconst[refine_criterion_fields[0]]->end();
 
 	for (;cell!=endc; ++cell){
 		if (cell->is_locally_owned()){
@@ -706,25 +737,148 @@ void generalizedProblem<dim>::buildFields(){
 // INITIAL CONDITION FUNCTIONS
 // =====================================================================
 
+#ifdef enablePFields
+#if enablePFields == true
+template <int dim>
+class InitialConditionPField : public Function<dim>
+{
+public:
+  unsigned int index;
+  Vector<double> values;
+  typedef PRISMS::PField<double*, double, 2> ScalarField2D;
+  ScalarField2D &inputField;
+
+  InitialConditionPField (const unsigned int _index, ScalarField2D &_inputField) : Function<dim>(1), index(_index), inputField(_inputField) {}
+
+  double value (const Point<dim> &p, const unsigned int component = 0) const
+  {
+	  double scalar_IC;
+
+	  double coord[dim];
+	  for (unsigned int i = 0; i < dim; i++){
+		  coord[i] = p(i);
+	  }
+
+	  scalar_IC = inputField(coord);
+
+	  return scalar_IC;
+  }
+};
+
+#endif
+#else
+#define enablePFields false
+#endif
+
+// =================================================================================
+
 //apply initial conditions
 template <int dim>
 void generalizedProblem<dim>::applyInitialConditions()
 {
 
+
+#ifndef loadICs
+#define loadICs {}
+#endif
+
+#ifndef loadSerialFile
+#define loadSerialFile {}
+#endif
+
+#ifndef loadFileName
+#define loadFileName {}
+#endif
+
+#ifndef loadFieldName
+#define loadFieldName {}
+#endif
+
+std::vector<bool> load_ICs = loadICs;
+std::vector<bool> load_serial_file = loadSerialFile;
+std::vector<std::string> load_file_name = loadFileName;
+std::vector<std::string> load_field_name = loadFieldName;
+
+// If load_ICs is empty, it should be set to false for each variable
+if (load_ICs.size() == 0){
+	for (unsigned int i=0; i<num_var; i++){
+		load_ICs.push_back(false);
+	}
+}
+
 unsigned int fieldIndex = 0;
-
 for (unsigned int var_index=0; var_index < num_var; var_index++){
+	if (load_ICs[var_index] == false){
+		if (var_type[var_index] == "SCALAR"){
+			VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialCondition<dim>(var_index), *this->solutionSet[fieldIndex]);
+			fieldIndex++;
+		}
+		else {
+			VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionVec<dim>(var_index), *this->solutionSet[fieldIndex]);
+			fieldIndex += dim;
+		}
+	}
+	else{
+		#if enablePFields == true
+		// Declare the PField types and containers
+		typedef PRISMS::PField<double*, double, 2> ScalarField2D;
+		typedef PRISMS::Body<double*, 2> Body2D;
+		Body2D body;
 
-	  if (var_type[var_index] == "SCALAR"){
-		  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialCondition<dim>(var_index), *this->solutionSet[fieldIndex]);
-		  fieldIndex++;
-	  }
-	  else {
-		  VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionVec<dim>(var_index), *this->solutionSet[fieldIndex]);
-		  fieldIndex += dim;
-	  }
+		// Create the filename of the the file to be loaded
+		std::string filename;
+		if (load_serial_file[var_index] == true){
+			filename = load_file_name[var_index] + ".vtk";
+		}
+		else {
+			int proc_num = Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
+			std::ostringstream conversion;
+			conversion << proc_num;
+			filename = load_file_name[var_index] + "." + conversion.str() + ".vtk";
+		}
+
+		// Load the data from the file using a PField
+		body.read_vtk(filename);
+		ScalarField2D &conc = body.find_scalar_field(load_field_name[var_index]);
+		if (var_type[var_index] == "SCALAR"){
+			VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionPField<dim>(var_index,conc), *this->solutionSet[fieldIndex]);
+			fieldIndex++;
+		}
+		else {
+			std::cout << "PRISMS-PF Error: Cannot load vector fields. Loading initial conditions from file is currently limited to scalar fields" << std::endl;
+		}
+		#else
+		std::cout << "PRISMS-PF Error: The parameter \"enablePFields\" must be set to true to load initial conditions from file." << std::endl;
+		#endif
+	}
 }
 }
+
+// =================================================================================
+
+// I don't think vector fields are implemented in PFields yet
+//template <int dim>
+//class InitialConditionPFieldVec : public Function<dim>
+//{
+//public:
+//  unsigned int index;
+//  Vector<double> values;
+//  typedef PRISMS::PField<double*, double, 2> ScalarField2D;
+//  ScalarField2D &inputField;
+//
+//  InitialConditionPFieldVec (const unsigned int _index, ScalarField2D &_inputField) : Function<dim>(1), index(_index), inputField(_inputField) {}
+//
+//  void vector_value (const Point<dim> &p,Vector<double> &vector_IC) const
+//  {
+//	  double coord[dim];
+//	  for (unsigned int i = 0; i < dim; i++){
+//		  coord[i] = p(i);
+//	  }
+//
+//	  vector_IC = inputField(coord);
+//  }
+//};
+
 
 // =====================================================================
 // BOUNDARY CONDITION FUNCTIONS
@@ -737,7 +891,7 @@ public:
 	vectorBCFunction(const std::vector<double> BC_values);
   virtual void vector_value (const Point<dim> &p, Vector<double>   &values) const;
 
-  virtual void vector_value_list (const std::vector<Point<dim>> &points, std::vector<Vector<double>> &value_list) const;
+  virtual void vector_value_list (const std::vector<Point<dim> > &points, std::vector<Vector<double> > &value_list) const;
 
 private:
   const std::vector<double> BC_values;
@@ -755,7 +909,7 @@ void vectorBCFunction<dim>::vector_value(const Point<dim> &p, Vector<double> &va
 }
 
 template <int dim>
-void vectorBCFunction<dim>::vector_value_list (const std::vector<Point<dim>> &points, std::vector<Vector<double>> &value_list) const{
+void vectorBCFunction<dim>::vector_value_list (const std::vector<Point<dim> > &points, std::vector<Vector<double> > &value_list) const{
 	const unsigned int n_points = points.size();
 	for (unsigned int p=0; p<n_points; ++p)
 		vectorBCFunction<dim>::vector_value(points[p],value_list[p]);
@@ -786,7 +940,7 @@ void generalizedProblem<dim>::applyDirichletBCs(){
 		  if (BC_list[this->currentFieldIndex].var_BC_type[direction] == "DIRICHLET"){
 			  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
 					  direction, ConstantFunction<dim>(BC_list[this->currentFieldIndex].var_BC_val[direction],1), *(ConstraintMatrix*) \
-					  this->constraintsSet[this->currentFieldIndex]);
+					  this->constraintsDirichletSet[this->currentFieldIndex]);
 		  }
 	  }
   }
@@ -811,7 +965,7 @@ void generalizedProblem<dim>::applyDirichletBCs(){
 
 		  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
 				  direction, vectorBCFunction<dim>(BC_values), *(ConstraintMatrix*) \
-				  this->constraintsSet[this->currentFieldIndex],mask);
+				  this->constraintsDirichletSet[this->currentFieldIndex],mask);
 
 
 	  }
@@ -855,6 +1009,26 @@ void generalizedProblem<dim>::inputBCs(int var, int component, std::string BC_ty
 		std::string BC_type_dim2_max, double BC_value_dim2_max,std::string BC_type_dim3_min, double BC_value_dim3_min,
 		std::string BC_type_dim3_max, double BC_value_dim3_max){
 
+	// Validate input
+	try{
+		if ((BC_type_dim1_min == "PERIODIC") && (BC_type_dim1_max != "PERIODIC")){
+			throw 0;
+		}
+		if ((BC_type_dim2_min == "PERIODIC") && (BC_type_dim2_max != "PERIODIC")){
+			throw 0;
+		}
+		if ((BC_type_dim3_min == "PERIODIC") && (BC_type_dim3_max != "PERIODIC")){
+			throw 0;
+		}
+	}
+	catch (int e){
+		if (e == 0){
+			std::cout << "Error: For periodic BCs, both faces for a given direction must be set as periodic. "
+					"Please check the BCs that are set in ICs_and_BCs.h." << std::endl;
+		}
+		abort();
+	}
+
 	varBCs<dim> newBC;
 	newBC.var_BC_type.push_back(BC_type_dim1_min);
 	newBC.var_BC_type.push_back(BC_type_dim1_max);
@@ -879,6 +1053,23 @@ void generalizedProblem<dim>::inputBCs(int var, int component, std::string BC_ty
 		std::string BC_type_dim1_max, double BC_value_dim1_max, std::string BC_type_dim2_min, double BC_value_dim2_min,
 		std::string BC_type_dim2_max, double BC_value_dim2_max){
 
+	// Validate input
+	try{
+		if ((BC_type_dim1_min == "PERIODIC") && (BC_type_dim1_max != "PERIODIC")){
+			throw 0;
+		}
+		if ((BC_type_dim2_min == "PERIODIC") && (BC_type_dim2_max != "PERIODIC")){
+			throw 0;
+		}
+	}
+	catch (int e){
+		if (e == 0){
+			std::cout << "Error: For periodic BCs, both faces for a given direction must be set as periodic. "
+					"Please check the BCs that are set in ICs_and_BCs.h." << std::endl;
+		}
+		abort();
+	}
+
 	varBCs<dim> newBC;
 	newBC.var_BC_type.push_back(BC_type_dim1_min);
 	newBC.var_BC_type.push_back(BC_type_dim1_max);
@@ -897,6 +1088,22 @@ void generalizedProblem<dim>::inputBCs(int var, int component, std::string BC_ty
 template <int dim>
 void generalizedProblem<dim>::inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
 		std::string BC_type_dim1_max, double BC_value_dim1_max){
+
+	// Validate input
+	try{
+		if ((BC_type_dim1_min == "PERIODIC") && (BC_type_dim1_max != "PERIODIC")){
+			throw 0;
+		}
+
+	}
+	catch (int e){
+		if (e == 0){
+			std::cout << "Error: For periodic BCs, both faces for a given direction must be set as periodic. "
+					"Please check the BCs that are set in ICs_and_BCs.h." << std::endl;
+		}
+		abort();
+	}
+
 
 	varBCs<dim> newBC;
 	newBC.var_BC_type.push_back(BC_type_dim1_min);
@@ -920,6 +1127,111 @@ void generalizedProblem<dim>::inputBCs(int var, int component, std::string BC_ty
 
 	BC_list.push_back(newBC);
 }
+
+// Based on the contents of BC_list, mark faces on the triangulation as periodic
+template <int dim>
+void generalizedProblem<dim>::setPeriodicity(){
+	std::vector<GridTools::PeriodicFacePair<typename parallel::distributed::Triangulation<dim>::cell_iterator> > periodicity_vector;
+	for (int i=0; i<dim; ++i){
+		bool periodic_pair = false;
+		for (int field_num=0; field_num < BC_list.size(); field_num++){
+			if (BC_list[field_num].var_BC_type[2*i] == "PERIODIC"){
+				periodic_pair = true;
+			}
+		}
+		if (periodic_pair == true){
+			GridTools::collect_periodic_faces(this->triangulation, /*b_id1*/ 2*i, /*b_id2*/ 2*i+1,
+							/*direction*/ i, periodicity_vector);
+		}
+	}
+
+	this->triangulation.add_periodicity(periodicity_vector);
+	std::cout << "periodic facepairs: " << periodicity_vector.size() << std::endl;
+}
+
+// Set constraints to enforce periodic boundary conditions
+template <int dim>
+void generalizedProblem<dim>::setPeriodicityConstraints(ConstraintMatrix * constraints, DoFHandler<dim>* dof_handler){
+    std::vector<GridTools::PeriodicFacePair<typename DoFHandler<dim>::cell_iterator> > periodicity_vector;
+    for (int i=0; i<dim; ++i){
+    	if (BC_list[this->currentFieldIndex].var_BC_type[2*i] == "PERIODIC"){
+    		GridTools::collect_periodic_faces(*dof_handler, /*b_id1*/ 2*i, /*b_id2*/ 2*i+1,
+    				/*direction*/ i, periodicity_vector);
+    	}
+    }
+    DoFTools::make_periodicity_constraints<DoFHandler<dim> >(periodicity_vector, *constraints);
+}
+
+// Determine which (if any) components of the current field have rigid body modes (i.e no Dirichlet BCs) if the
+// equation is elliptic
+template <int dim>
+void generalizedProblem<dim>::getComponentsWithRigidBodyModes(std::vector<int> & rigidBodyModeComponents){
+
+	// Rigid body modes only matter for elliptic equations
+	if (var_eq_type[this->currentFieldIndex] == "ELLIPTIC"){
+
+		unsigned int num_components;
+		// Get number of components of the field
+		if (var_type[this->currentFieldIndex] == "SCALAR"){
+			num_components = 1;
+		}
+		else {
+			num_components = dim;
+		}
+
+		// Loop over each component and determine if it has a rigid body mode (i.e. no Dirichlet BCs)
+		for (unsigned int component=0; component < num_components; component++){
+			bool rigidBodyMode = true;
+			for (unsigned int direction = 0; direction < 2*dim; direction++){
+
+				if (BC_list[this->currentFieldIndex+component].var_BC_type[direction] == "DIRICHLET"){
+					rigidBodyMode = false;
+				}
+
+			}
+			// If the component has a rigid body mode, add it to the list
+			if (rigidBodyMode == true){
+				rigidBodyModeComponents.push_back(component);
+			}
+		}
+	}
+}
+
+// This function was moved to the parent MatrixFreePDE class
+//// Set constraints to pin the solution if there are no Dirichlet BCs for a component of a variable in an elliptic equation
+//template <int dim>
+//void generalizedProblem<dim>::setRigidBodyModeConstraints( std::vector<int> rigidBodyModeComponents, ConstraintMatrix * constraints, DoFHandler<dim>* dof_handler){
+//
+//	std::cout << "num of rigid body modes " << rigidBodyModeComponents.size() << std::endl;
+//	if ( rigidBodyModeComponents.size() > 0 ){
+//
+//		// Choose the point where the constraint will be placed. Must be the coordinates of a vertex.
+//		dealii::Point<dim> target_point(0,0);
+//
+//		unsigned int vertices_per_cell=GeometryInfo<dim>::vertices_per_cell;
+//
+//		// Loop over each locally owned cell
+//		typename DoFHandler<dim>::active_cell_iterator cell= dof_handler->begin_active(), endc = dof_handler->end();
+//
+//		for (; cell!=endc; ++cell){
+//			if (cell->is_locally_owned()){
+//				for (unsigned int i=0; i<vertices_per_cell; ++i){
+//
+//					// Check if the vertex is the target vertex
+//					if (target_point.distance (cell->vertex(i)) < 1e-2 * cell->diameter()){
+//
+//						// Loop through the list of components with rigid body modes and add an inhomogeneous constraint for each
+//						for (unsigned int component_num = 0; component_num < rigidBodyModeComponents.size(); component_num++){
+//							unsigned int nodeID=cell->vertex_dof_index(i,component_num);
+//							constraints->add_line(nodeID);
+//							constraints->set_inhomogeneity(nodeID,0.0);
+//						}
+//				   }
+//			   }
+//		   }
+//	   }
+//   }
+//}
 
 // =====================================================================
 // NUCLEATION FUNCTIONS

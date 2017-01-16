@@ -67,4 +67,26 @@
 #define skipImplicitSolves 1
 #endif
 
+//number of implicit solves to skip. None are skipped if value is 1, which is the default.
+#ifndef outputCondition
+#define outputCondition "EQUAL_SPACING"
+#endif
+
+#ifndef outputList
+#define outputList {0}
+#endif
+
+#ifndef outputFileType
+#define outputFileType "vtu"
+#endif
+
+#ifndef numOutputs
+#define numOutputs 1
+#endif
+
+//#ifndef enablePFields
+//#define enablePFields false
+//#endif
+
+
 #endif

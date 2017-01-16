@@ -21,6 +21,7 @@ template <int dim>
 class generalizedProblem: public MatrixFreePDE<dim>
 {
  public: 
+
   generalizedProblem();
 
   void shiftConcentration();
@@ -44,7 +45,7 @@ class generalizedProblem: public MatrixFreePDE<dim>
   void inputBCs(int var, int component, std::string BC_type, double BC_value);
 
   // Boundary condition object
-    std::vector<varBCs<dim>> BC_list;
+    std::vector<varBCs<dim> > BC_list;
 
  private:
 
@@ -74,12 +75,12 @@ class generalizedProblem: public MatrixFreePDE<dim>
   Threads::Mutex assembler_lock;
 
   // Variables needed to calculate the LHS
-  std::vector<variable_info<dim>> varInfoListRHS;
-  std::vector<variable_info<dim>> resInfoListRHS;
+  std::vector<variable_info<dim> > varInfoListRHS;
+  std::vector<variable_info<dim> > resInfoListRHS;
 
   // Variables needed to calculate the LHS
   unsigned int num_var_LHS;
-  std::vector<variable_info<dim>> varInfoListLHS;
+  std::vector<variable_info<dim> > varInfoListLHS;
 
   //RHS implementation for explicit solve
   void getRHS(const MatrixFree<dim,double> &data, 
@@ -106,21 +107,27 @@ class generalizedProblem: public MatrixFreePDE<dim>
 
   void markBoundaries();
 
+  void setPeriodicity();
+  void setPeriodicityConstraints(ConstraintMatrix*, DoFHandler<dim>*);
+  void getComponentsWithRigidBodyModes(std::vector<int> &);
+  //void setRigidBodyModeConstraints( std::vector<int>, ConstraintMatrix*, DoFHandler<dim>*);
+
+
   void getEnergy(const MatrixFree<dim,double> &data,
     				    std::vector<vectorType*> &dst,
     				    const std::vector<vectorType*> &src,
     				    const std::pair<unsigned int,unsigned int> &cell_range);
 
 
-  void residualRHS(const std::vector<modelVariable<dim>> & modelVarList,
-		  	  	  	  	  	  	  	  	  	  	  	  	  std::vector<modelResidual<dim>> & modelResidualsList,
+  void residualRHS(const std::vector<modelVariable<dim> > & modelVarList,
+		  	  	  	  	  	  	  	  	  	  	  	  	  std::vector<modelResidual<dim> > & modelResidualsList,
 														  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 
-  void residualLHS(const std::vector<modelVariable<dim>> & modelVarList,
+  void residualLHS(const std::vector<modelVariable<dim> > & modelVarList,
   		  	  	  	  	  	  	  	  	  	  	  	  	  modelResidual<dim> & modelRes,
 														  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 
-  void energyDensity(const std::vector<modelVariable<dim>> & modelVarList, const dealii::VectorizedArray<double> & JxW_value,
+  void energyDensity(const std::vector<modelVariable<dim> > & modelVarList, const dealii::VectorizedArray<double> & JxW_value,
 		  	  	  	  	  	  	  	  	  	  	  	  	  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc);
 
   //AMR methods

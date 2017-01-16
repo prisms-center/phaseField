@@ -44,8 +44,18 @@
 // Each field in the problem will be output is writeOutput is set to "true"
 #define writeOutput true
 
-// Output files are written every skipOutputSteps time steps
-#define skipOutputSteps 2000
+// Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
+// or "LIST")
+#define outputCondition "EQUAL_SPACING"
+
+// Number of times the program outputs the fields (total number for "EQUAL_SPACING"
+// and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
+#define numOutputs 10
+
+// User-defined list of time steps where the program should output. Only used if
+// outputCondition is "LIST"
+#define outputList {}
+
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output

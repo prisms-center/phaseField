@@ -1,5 +1,5 @@
-# Visit 2.7.0 log file
-ScriptVersion = "2.7.0"
+# Visit 2.11.0 log file
+ScriptVersion = "2.11.0"
 if ScriptVersion != Version():
     print "This script is for VisIt %s. It may not work with version %s" % (ScriptVersion, Version())
 ShowAllWindows()
@@ -30,28 +30,34 @@ PseudocolorAtts.pointType = PseudocolorAtts.Point  # Box, Axis, Icosahedron, Oct
 PseudocolorAtts.pointSizeVarEnabled = 0
 PseudocolorAtts.pointSizeVar = "default"
 PseudocolorAtts.pointSizePixels = 2
-PseudocolorAtts.lineType = PseudocolorAtts.Line  # Line, Tube, Ribbon
 PseudocolorAtts.lineStyle = PseudocolorAtts.SOLID  # SOLID, DASH, DOT, DOTDASH
+PseudocolorAtts.lineType = PseudocolorAtts.Line  # Line, Tube, Ribbon
 PseudocolorAtts.lineWidth = 0
-PseudocolorAtts.tubeDisplayDensity = 10
+PseudocolorAtts.tubeResolution = 10
 PseudocolorAtts.tubeRadiusSizeType = PseudocolorAtts.FractionOfBBox  # Absolute, FractionOfBBox
 PseudocolorAtts.tubeRadiusAbsolute = 0.125
 PseudocolorAtts.tubeRadiusBBox = 0.005
-PseudocolorAtts.varyTubeRadius = 0
-PseudocolorAtts.varyTubeRadiusVariable = ""
-PseudocolorAtts.varyTubeRadiusFactor = 10
-PseudocolorAtts.endPointType = PseudocolorAtts.None  # None, Tails, Heads, Both
+PseudocolorAtts.tubeRadiusVarEnabled = 0
+PseudocolorAtts.tubeRadiusVar = ""
+PseudocolorAtts.tubeRadiusVarRatio = 10
+PseudocolorAtts.endPointType = PseudocolorAtts.None  # None, Heads, Tails, Both
 PseudocolorAtts.endPointStyle = PseudocolorAtts.Spheres  # Spheres, Cones
 PseudocolorAtts.endPointRadiusSizeType = PseudocolorAtts.FractionOfBBox  # Absolute, FractionOfBBox
-PseudocolorAtts.endPointRadiusAbsolute = 1
-PseudocolorAtts.endPointRadiusBBox = 0.005
-PseudocolorAtts.endPointRatio = 2
+PseudocolorAtts.endPointRadiusAbsolute = 0.125
+PseudocolorAtts.endPointRadiusBBox = 0.05
+PseudocolorAtts.endPointResolution = 10
+PseudocolorAtts.endPointRatio = 5
+PseudocolorAtts.endPointRadiusVarEnabled = 0
+PseudocolorAtts.endPointRadiusVar = ""
+PseudocolorAtts.endPointRadiusVarRatio = 10
 PseudocolorAtts.renderSurfaces = 1
 PseudocolorAtts.renderWireframe = 0
 PseudocolorAtts.renderPoints = 0
 PseudocolorAtts.smoothingLevel = 0
 PseudocolorAtts.legendFlag = 1
 PseudocolorAtts.lightingFlag = 1
+PseudocolorAtts.wireframeColor = (0, 0, 0, 0)
+PseudocolorAtts.pointColor = (0, 0, 0, 0)
 SetPlotOptions(PseudocolorAtts)
 DrawPlots()
 Query("MinMax", use_actual_data=1)

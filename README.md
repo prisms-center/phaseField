@@ -6,7 +6,8 @@ PRISMS-PF
 
 <B>Version information:</B>
 
-This version of the code, 1.0, is the first release version of PRISMS-PF. This version provides many updates to the pre-release versions. For more information concerning the differences between versions, please consult version_changes.txt.   
+This version of the code, 1.1, is an update the first release version of PRISMS-PF. For:q
+information concerning the differences between versions, please consult version_changes.txt.   
 
 <B>What is PRISMS-PF?</B> 
 
@@ -22,13 +23,17 @@ This version of the code, 1.0, is the first release version of PRISMS-PF. This v
 
 <B>Quick Start Guide:</B>
 
-For detailed instructions on how to download and use PRISMS-PF, please consult the PRISMS-PF Users Guide (the file prismspf_users_guide.pdf). An abbreviated version of the instructions is given below.
+For detailed instructions on how to download and use PRISMS-PF, please consult the PRISMS-PF Users Guide (the file prismspf_users_guide.pdf). A (very) abbreviated version of the instructions is given below.
 
 <I>Installation:</I> 
 
 1) Install deal.II (version 8.4.1 recommended)<br>
-  + Download CMake [http://www.cmake.org/download/] 
-  + Download Deal.II Binaries (OSX and Linux) or  Virtual Machine (VMI) from https://www.dealii.org/download.html <br>
+  + Download CMake [http://www.cmake.org/download/]
+  + Add CMake to your path (e.g. $ PATH="/path/to/cmake/Contents/bin":"$PATH"), preferably in a shell configuration file 
+  + Download and install Deal.II following instructions from from https://www.dealii.org/download.html 
+  + If a Deal.II binary is downloaded, open it and follow the instructions in the terminal window 
+  + If Deal.II is installed from the source, the MPI and p4est libraries must be installed as prerequisites.
+<br>
 
 2) Clone the PRISMS-PF GitHub repo https://github.com/prisms-center/phaseField<br>
   + $ git clone https://github.com/prisms-center/phaseField.git <br>

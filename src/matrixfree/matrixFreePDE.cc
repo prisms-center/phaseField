@@ -21,16 +21,7 @@
  pcout (std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0),
  computing_timer (pcout, TimerOutput::summary, TimerOutput::wall_times)
  {
-   //initialize time step variables
-#ifdef timeStep
-   dtValue=timeStep;
-#endif
-#ifdef timeFinal
-   finalTime=timeFinal;
-#endif
-#ifdef timeIncrements
-   totalIncrements=timeIncrements;
-#endif
+
  }
 
  //destructor
@@ -41,7 +32,7 @@
    for(unsigned int iter=0; iter<fields.size(); iter++){
      delete soltransSet[iter];
      delete locally_relevant_dofsSet[iter];
-     delete constraintsSet[iter];
+     delete constraintsDirichletSet[iter];
      delete dofHandlersSet[iter];
      delete FESet[iter];
      delete solutionSet[iter];

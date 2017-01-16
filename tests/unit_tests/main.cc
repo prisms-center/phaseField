@@ -6,7 +6,7 @@
 
 int main(int argc, char **argv)
 {
-  //init MPI
+	//init MPI
   Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, numbers::invalid_unsigned_int);
 
   std::cout << "Beginning unit tests..." << std::endl;
@@ -33,7 +33,7 @@ int main(int argc, char **argv)
   tests_passed += pass;
   
   total_tests++;
-  unitTest<1,dealii::Table<2, double>> computeStress_tester_1DT;
+  unitTest<1,dealii::Table<2, double> > computeStress_tester_1DT;
   pass = computeStress_tester_1DT.test_computeStress();
   tests_passed += pass;
   
@@ -43,7 +43,7 @@ int main(int argc, char **argv)
   tests_passed += pass;
   
   total_tests++;
-  unitTest<2,dealii::Table<2, double>> computeStress_tester_2DT;
+  unitTest<2,dealii::Table<2, double> > computeStress_tester_2DT;
   pass = computeStress_tester_2DT.test_computeStress();
   tests_passed += pass;
   
@@ -53,10 +53,55 @@ int main(int argc, char **argv)
   tests_passed += pass;
   
   total_tests++;
-  unitTest<3,dealii::Table<2, double>> computeStress_tester_3DT;
+  unitTest<3,dealii::Table<2, double> > computeStress_tester_3DT;
   pass = computeStress_tester_3DT.test_computeStress();
   tests_passed += pass;
   
+  // Unit tests for the method "getOutputTimeSteps" for all four types of spacing
+  total_tests++;
+  unitTest<2,double> getOutputTimeSteps_tester_eq;
+  pass = getOutputTimeSteps_tester_eq.test_getOutputTimeSteps("EQUAL_SPACING",10,{});
+  tests_passed += pass;
+
+  total_tests++;
+  unitTest<2,double> getOutputTimeSteps_tester_log;
+  pass = getOutputTimeSteps_tester_log.test_getOutputTimeSteps("LOG_SPACING",10,{});
+  tests_passed += pass;
+
+  total_tests++;
+  unitTest<2,double> getOutputTimeSteps_tester_dec;
+  pass = getOutputTimeSteps_tester_dec.test_getOutputTimeSteps("N_PER_DECADE",10,{});
+  tests_passed += pass;
+
+  total_tests++;
+  unitTest<2,double> getOutputTimeSteps_tester_list;
+  std::vector<unsigned int> userGivenTimeStepList = {0, 3, 55, 61};
+  pass = getOutputTimeSteps_tester_list.test_getOutputTimeSteps("LIST",0,userGivenTimeStepList);
+  tests_passed += pass;
+
+  // Unit tests for the method "setRigidBodyModeConstraints"
+  total_tests++;
+  unitTest<2,double> setRigidBodyModeConstraints_tester_null;
+  std::vector<int> rigidBodyModeComponents;
+  pass = setRigidBodyModeConstraints_tester_null.test_setRigidBodyModeConstraints(rigidBodyModeComponents);
+  tests_passed += pass;
+
+  total_tests++;
+  unitTest<2,double> setRigidBodyModeConstraints_tester_one;
+  rigidBodyModeComponents.clear();
+  rigidBodyModeComponents.push_back(0);
+  pass = setRigidBodyModeConstraints_tester_one.test_setRigidBodyModeConstraints(rigidBodyModeComponents);
+  tests_passed += pass;
+
+  total_tests++;
+  unitTest<2,double> setRigidBodyModeConstraints_tester_three;
+  rigidBodyModeComponents.clear();
+  rigidBodyModeComponents.push_back(0);
+  rigidBodyModeComponents.push_back(1);
+  rigidBodyModeComponents.push_back(2);
+  pass = setRigidBodyModeConstraints_tester_three.test_setRigidBodyModeConstraints(rigidBodyModeComponents);
+  tests_passed += pass;
+
   // Unit tests for the method "getRHS"
   //unitTest<2,double> getRHS_tester_2D;
   //pass = getRHS_tester_2D.test_getRHS();

@@ -21,7 +21,7 @@ void MatrixFreePDE<dim>::vmult (vectorType &dst, const vectorType &src) const{
       src2(it->first) = 0.0; //*jacobianDiagonal(it->first);
     }
   }
-  constraintsHangingNodesSet[currentFieldIndex]->distribute(src2);
+  constraintsOtherSet[currentFieldIndex]->distribute(src2);
 
   //call cell_loop 
   dst=0.0;

@@ -17,7 +17,7 @@ void MatrixFreePDE<dim>::solveIncrement(){
 #ifdef nucleation_occurs
   if (nucleation_occurs == true) modifySolutionFields();
 #endif
-
+	
   //compute residual vectors
   computeRHS();
 
@@ -32,7 +32,7 @@ void MatrixFreePDE<dim>::solveIncrement(){
       }
       //
       //apply constraints
-      constraintsHangingNodesSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+      constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
       //sync ghost DOF's
       solutionSet[fieldIndex]->update_ghost_values();
       //
@@ -73,7 +73,7 @@ void MatrixFreePDE<dim>::solveIncrement(){
 			*solutionSet[fieldIndex]+=dU;
 	
 			//apply constraints
-			constraintsHangingNodesSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+			constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
 			//sync ghost DOF's
 			solutionSet[fieldIndex]->update_ghost_values();
 			//

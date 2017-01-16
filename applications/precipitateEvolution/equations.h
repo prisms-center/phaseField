@@ -60,7 +60,7 @@ double Kn3[3][3]={{0.01275,0.009959,0},{0.009959,0.02425,0},{0,0,1.0}};
 // Mechanical symmetry of the material and stiffness parameters
 // If n_dependent_stiffness == false the first entry is used for all phases
 #define MaterialModels {{"ISOTROPIC"},{"ISOTROPIC"}}
-#define MaterialConstants {{2.0,0.3},{2.5,0.3}}
+#define MaterialConstants {{40.0,0.3},{50.0,0.3}}
 
 // Stress-free transformation strains
 // Linear fits for the stress-free transformation strains in for sfts = sfts_linear * c + sfts_const
@@ -110,8 +110,8 @@ double sfts_const3[3][3]={{0.0225, 0.0069,0},{0.0069,0.0305,0},{0,0,-0.00270}};
 // each residual equation. The index for each variable in these lists corresponds to
 // the order it is defined at the top of this file (starting at 0).
 template <int dim>
-void generalizedProblem<dim>::residualRHS(const std::vector<modelVariable<dim>> & modelVariablesList,
-												std::vector<modelResidual<dim>> & modelResidualsList,
+void generalizedProblem<dim>::residualRHS(const std::vector<modelVariable<dim> > & modelVariablesList,
+												std::vector<modelResidual<dim> > & modelResidualsList,
 												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 // The concentration and its derivatives (names here should match those in the macros above)
@@ -268,7 +268,7 @@ if (c_dependent_misfit == true){
 														  + (sfts1cc[i][j]*h1V + sfts2cc[i][j]*h2V + sfts3cc[i][j]*h3V)*cx[k]);
 
 				if (n_dependent_stiffness == true){
-					grad_mu_el[k]+= - S2[i][j] * (sfts1c[i][j]*hn1V*n1x[k] + sfts2c[i][j]*hn2V*n2x[k] + sfts3c[i][j]*hn3V*n3x[k]);
+					grad_mu_el[k]+= S2[i][j] * E3[i][j]* (hn1V*n1x[k] + hn2V*n2x[k] + hn3V*n3x[k]);
 
 				}
 			}
@@ -322,7 +322,7 @@ modelResidualsList[4].vectorGradResidual = ruxV;
 // that the correct residual is being submitted. The index of the field being solved
 // can be accessed by "this->currentFieldIndex".
 template <int dim>
-void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim>> & modelVariablesList,
+void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim> > & modelVariablesList,
 		modelResidual<dim> & modelRes,
 		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
@@ -371,7 +371,7 @@ modelRes.vectorGradResidual = ruxV;
 // density are added to the "energy_components" variable (index 0: chemical energy,
 // index 1: gradient energy, index 2: elastic energy).
 template <int dim>
-void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim>> & modelVarList,
+void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim> > & modelVarList,
 											const dealii::VectorizedArray<double> & JxW_value,
 											dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {
 
