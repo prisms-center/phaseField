@@ -37,8 +37,12 @@ bool unitTest<dim,T>::test_setRigidBodyModeConstraints(std::vector<int> rigidBod
 	unsigned int num_constraints;
 	test.call_setRigidBodyModeConstraints(rigidBodyModeComponents,num_constraints);
 
+	// Add up the total number of constraints across all processors
+	int global_num_constraints = rigidBodyModeComponents.size();
+	Utilities::MPI::sum(global_num_constraints,MPI_COMM_WORLD);
+
 	// Check if calculated value equals expected value
-	if (num_constraints == rigidBodyModeComponents.size()){
+	if (global_num_constraints == rigidBodyModeComponents.size()){
 		pass = true;
 	}
 

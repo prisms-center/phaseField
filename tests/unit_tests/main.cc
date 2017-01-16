@@ -6,7 +6,7 @@
 
 int main(int argc, char **argv)
 {
-  //init MPI
+	//init MPI
   Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, numbers::invalid_unsigned_int);
 
   std::cout << "Beginning unit tests..." << std::endl;

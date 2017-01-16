@@ -7,7 +7,9 @@ class getOutputTimeStepsTest: public MatrixFreePDE<dim>
 	getOutputTimeStepsTest(){
 		//init the MatrixFreePDE class for testing
 		this->initForTests();
+		this->totalIncrements = timeIncrements;
 	};
+
 
 	void getTimeStepList(std::string outputSpacingType, unsigned int numberOfOutputs, std::vector<unsigned int> userGivenTimeStepList){
 		this->getOutputTimeSteps(outputSpacingType,numberOfOutputs,userGivenTimeStepList,this->outputTimeStepList);
@@ -28,7 +30,7 @@ template <int dim,typename T>
 bool unitTest<dim,T>::test_getOutputTimeSteps(std::string outputSpacingType, unsigned int numberOfOutputs, std::vector<unsigned int> userGivenTimeStepList){
 	bool pass = true;
 	std::cout << "\nTesting 'getOutputTimeSteps' for type " << outputSpacingType << " ...'" << std::endl;
- 
+
 	//create test problem class object
 	getOutputTimeStepsTest<dim> test;
 
