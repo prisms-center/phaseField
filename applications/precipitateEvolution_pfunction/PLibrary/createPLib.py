@@ -37,7 +37,10 @@ def write_pfunction(f_name, var, var_name, expression, need_grad, need_hess, dir
 # plibrary_dir 	= Directory where the PLibrary should be written
 
 def write_plibrary(data_type, pfunction_dir, plibrary_dir):
-	l_writer_string = 'lw -d ' + pfunction_dir + ' -v "'+ data_type + '" -l '+ plibrary_dir +' -c --include "<deal.II/base/vectorization.h>"'
+	#l_writer_string = 'lw -d ' + pfunction_dir + ' -v "'+ data_type + '" -l '+ plibrary_dir +' -c --include "<deal.II/base/vectorization.h>"'
+	l_writer_string = 'lw -d ' + pfunction_dir + ' -l ' + plibrary_dir
+	
+	
 	
 	print l_writer_string
 	
@@ -80,7 +83,8 @@ write_pfunction("pfunct_Mn2V", "n2", "concentration", Mn[1], False, False, dir)
 write_pfunction("pfunct_Mn3V", "n3", "concentration", Mn[2], False, False, dir)
 
 # Write the PLibrary
-write_plibrary("dealii::VectorizedArray<double>", dir, dir)
+#write_plibrary("dealii::VectorizedArray<double>", dir, dir)
+write_plibrary("double", dir, dir)
 
 
 

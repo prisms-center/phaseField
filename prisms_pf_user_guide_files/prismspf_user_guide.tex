@@ -850,8 +850,8 @@ The third section of the file is the function \emph{residualRHS}. In the code ex
 
 Unlike the coupled Cahn-Hilliard/Allen-Cahn example application, the Precipitate Evolution example application has calculations inside \emph{residualLHS}.  This function contains the residual on the left-hand-side of equation for the iterative solution of an elliptic equation. For this application this equation at iteration $i$ is: 
 \begin{align}
-R^i + \frac{\partial R}{\partial u} \bigg|_{u^i} \Delta u &= 0 \\
-\Rightarrow \frac{\partial R}{\partial u}\bigg|_{u^i} \Delta u &= -R^i
+R^i + \frac{\delta R}{\delta u} \bigg|_{u^i} \Delta u &= 0 \\
+\Rightarrow \frac{\delta R}{\delta u}\bigg|_{u^i} \Delta u &= -R^i
 \end{align}
 Where $\Delta u = u^{i+1}-u^i$ and $R$ is the residual:
 \begin{align}

@@ -35,20 +35,31 @@ void MatrixFreePDE<dim>::outputResults(){
   std::ostringstream cycleAsString;
   cycleAsString << std::setw(std::ceil(std::log10(totalIncrements))+1) << std::setfill('0') << currentIncrement;
   char vtuFileName[100], pvtuFileName[100];
-  sprintf(vtuFileName, "solution-%s.%u.vtu", cycleAsString.str().c_str(),Utilities::MPI::this_mpi_process(MPI_COMM_WORLD));
-  sprintf(pvtuFileName, "solution-%s.pvtu", cycleAsString.str().c_str());
+  sprintf(vtuFileName, "solution-%s.%u.%s", cycleAsString.str().c_str(),Utilities::MPI::this_mpi_process(MPI_COMM_WORLD),outputFileType);
+  sprintf(pvtuFileName, "solution-%s.p%s", cycleAsString.str().c_str(),outputFileType);
   std::ofstream output (vtuFileName);
 
   //write to file
-  data_out.write_vtu (output);
+  if (outputFileType == "vtu"){
+	  data_out.write_vtu (output);
+  }
+  else if (outputFileType == "vtk"){
+	  data_out.write_vtk (output);
+  }
+  else {
+	  std::cout << "PRISMS-PF Error: The parameter 'outputFileType' must be either \"vtu\" or \"vtk\"" << std::endl;
+	  abort();
+  }
 
+  //data_out.write_vtk (output);
+  //data_out.outputFileType(output);
 
   //create pvtu record
   if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
     std::vector<std::string> filenames;
     for (unsigned int i=0;i<Utilities::MPI::n_mpi_processes (MPI_COMM_WORLD); ++i) {
     	char vtuProcFileName[100];
-    	sprintf(vtuProcFileName, "solution-%s.%u.vtu", cycleAsString.str().c_str(),i);
+    	sprintf(vtuProcFileName, "solution-%s.%u.%s", cycleAsString.str().c_str(),i,outputFileType);
     	filenames.push_back (vtuProcFileName);
     }
     std::ofstream master_output (pvtuFileName);

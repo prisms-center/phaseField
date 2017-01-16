@@ -27,17 +27,6 @@ IF(NOT ${deal.II_FOUND})
     )
 ENDIF()
 
-#
-# Are all dependencies fullfilled?
-#
-IF(NOT DEAL_II_WITH_LAPACK)
-  MESSAGE(FATAL_ERROR "
-Error! The deal.II library found at ${DEAL_II_PATH} was not configured with
-    DEAL_II_WITH_LAPACK = ON
-which is required for this tutorial step."
-    )
-ENDIF()
-
 DEAL_II_INITIALIZE_CACHED_VARIABLES()
 PROJECT(${TARGET})
 DEAL_II_INVOKE_AUTOPILOT()
