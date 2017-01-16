@@ -1,4 +1,4 @@
-// List of variables and residual equations for the Cahn-Hilliard with adaptivity example application
+// List of variables and residual equations for the Cahn-Hilliard example application
 
 // =================================================================================
 // Define the variables in the model
@@ -31,20 +31,21 @@
 // equations (or parts of residual equations) can be written below in "residualRHS".
 
 // Mobility
-#define McV 1.0
+#define McV 5.0
 
 // Gradient energy coefficient
 #define KcV 2.0
 
-// Free energy and its derivative
-#define fV (c*c*c*c - 2.0*c*c*c + c*c)
-#define fcV (4.0*c*(c-1.0)*(c-0.5))
+// The free energy and its derivative
+#define fV (5.0*(c-0.3)*(c-0.3)*(c-0.7)*(c-0.7))
+#define fcV (5.0*(2.0*(c-0.3)*(c-0.7)*(c-0.7)+2.0*(c-0.3)*(c-0.3)*(c-0.7)))
 
 // Residual equations
 #define rmuV  (fcV)
 #define rmuxV (constV(KcV)*cx)
 #define rcV   (c)
 #define rcxV  (constV(-McV*timeStep)*mux)
+
 
 // =================================================================================
 // residualRHS
@@ -152,6 +153,7 @@ for (unsigned i=0; i<c.n_array_elements;i++){
 }
 assembler_lock.release ();
 }
+
 
 
 
