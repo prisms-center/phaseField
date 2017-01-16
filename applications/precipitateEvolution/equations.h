@@ -60,7 +60,7 @@ double Kn3[3][3]={{0.01275,0.009959,0},{0.009959,0.02425,0},{0,0,1.0}};
 // Mechanical symmetry of the material and stiffness parameters
 // If n_dependent_stiffness == false the first entry is used for all phases
 #define MaterialModels {{"ISOTROPIC"},{"ISOTROPIC"}}
-#define MaterialConstants {{2.0,0.3},{2.5,0.3}}
+#define MaterialConstants {{40.0,0.3},{50.0,0.3}}
 
 // Stress-free transformation strains
 // Linear fits for the stress-free transformation strains in for sfts = sfts_linear * c + sfts_const
@@ -268,7 +268,7 @@ if (c_dependent_misfit == true){
 														  + (sfts1cc[i][j]*h1V + sfts2cc[i][j]*h2V + sfts3cc[i][j]*h3V)*cx[k]);
 
 				if (n_dependent_stiffness == true){
-					grad_mu_el[k]+= - S2[i][j] * (sfts1c[i][j]*hn1V*n1x[k] + sfts2c[i][j]*hn2V*n2x[k] + sfts3c[i][j]*hn3V*n3x[k]);
+					grad_mu_el[k]+= S2[i][j] * E3[i][j]* (hn1V*n1x[k] + hn2V*n2x[k] + hn3V*n3x[k]);
 
 				}
 			}

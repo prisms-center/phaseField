@@ -262,10 +262,10 @@ R &=  \int_{\Omega}   \grad w :  \bC(\eta_1, \eta_2, \eta_3) : \left( \Bvarepsil
 \end{align}
 We solve for $R=0$ using a gradient scheme which involves the following linearization:
 \begin{align}
-R~|_{u}+ \frac{\partial R}{\partial u} \Delta u &= 0 \\
-\Rightarrow \frac{\partial R}{\partial u} \Delta u &= -R~|_{u}
+R~|_{u}+ \frac{\delta R}{\delta u} \Delta u &= 0 \\
+\Rightarrow \frac{\delta R}{\delta u} \Delta u &= -R~|_{u}
 \end{align}
-This is the linear system $Ax=b$ which we solve implicitly using the Conjugate Gradient scheme. For clarity, here in the left hand side (LHS) $A=\frac{\partial R}{\partial u}$, $x=\Delta u$ and the right hand side (RHS) is $b=-R~|_{u}$.
+This is the linear system $Ax=b$ which we solve implicitly using the Conjugate Gradient scheme. For clarity, here in the left hand side (LHS) $A=\frac{\delta R}{\delta u}$, $x=\Delta u$ and the right hand side (RHS) is $b=-R~|_{u}$.
 
 
 \section{Time discretization}
