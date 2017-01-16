@@ -24,7 +24,7 @@
 #define subdivisionsX 1
 #define subdivisionsY 1
 #define subdivisionsZ 1
-#define refineFactor 4
+#define refineFactor 5
 
 // Set the polynomial degree of the element (suggested values: 1 or 2)
 #define finiteElementDegree 2
@@ -36,8 +36,8 @@
 #define hAdaptivity true
 
 // Set the maximum and minimum level of refinement
-#define maxRefinementLevel (refineFactor+2)
-#define minRefinementLevel (refineFactor-5)
+#define maxRefinementLevel (refineFactor+1)
+#define minRefinementLevel (0)
 
 // Set the fields used to determine the refinement. Fields determined by the order
 // declared in "equations.h", starting at zero
@@ -48,7 +48,7 @@
 #define refineWindowMin {0.001}
 
 // Set the number of time steps between remeshing operations
-#define skipRemeshingSteps 1000
+#define skipRemeshingSteps 100
 
 // =================================================================================
 // Set the time step parameters

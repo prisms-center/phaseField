@@ -616,9 +616,19 @@ void generalizedProblem<dim>::computeIntegral(double& integratedField){
 template <int dim>
 void generalizedProblem<dim>::adaptiveRefine(unsigned int currentIncrement){
 	#if hAdaptivity == true
-	if ((currentIncrement>0) && (currentIncrement%skipRemeshingSteps==0)){
-		this->refineMesh(currentIncrement);
+	//if ((currentIncrement>0) && (currentIncrement%skipRemeshingSteps==0)){
+//	if ( (currentIncrement == 2) || (currentIncrement%skipRemeshingSteps==0) ){
+//		this->refineMesh(currentIncrement);
+//	}
+
+	if ( (currentIncrement == 0) ){
+		for (unsigned int remesh_index=0; remesh_index < (maxRefinementLevel-minRefinementLevel); remesh_index++){
+			this->refineMesh(currentIncrement);
+		}
 	}
+	else if ( (currentIncrement%skipRemeshingSteps==0) ){
+			this->refineMesh(currentIncrement);
+		}
 	#endif
 }
 
@@ -1123,9 +1133,18 @@ template <int dim>
 void generalizedProblem<dim>::setPeriodicity(){
 	std::vector<GridTools::PeriodicFacePair<typename parallel::distributed::Triangulation<dim>::cell_iterator> > periodicity_vector;
 	for (int i=0; i<dim; ++i){
-		GridTools::collect_periodic_faces(this->triangulation, /*b_id1*/ 2*i, /*b_id2*/ 2*i+1,
-				/*direction*/ i, periodicity_vector);
+		bool periodic_pair = false;
+		for (int field_num=0; field_num < BC_list.size(); field_num++){
+			if (BC_list[field_num].var_BC_type[2*i] == "PERIODIC"){
+				periodic_pair = true;
+			}
+		}
+		if (periodic_pair == true){
+			GridTools::collect_periodic_faces(this->triangulation, /*b_id1*/ 2*i, /*b_id2*/ 2*i+1,
+							/*direction*/ i, periodicity_vector);
+		}
 	}
+
 	this->triangulation.add_periodicity(periodicity_vector);
 	std::cout << "periodic facepairs: " << periodicity_vector.size() << std::endl;
 }

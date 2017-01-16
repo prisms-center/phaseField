@@ -212,7 +212,7 @@
    
    //apply initial conditions if iter=0, else transfer solution from previous refined mesh
    if (iter==0){
-     applyInitialConditions();
+	   applyInitialConditions();
    }
    else{
      for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
@@ -238,6 +238,12 @@
      soltransSet.push_back(new parallel::distributed::SolutionTransfer<dim, vectorType>(*dofHandlersSet_nonconst[fieldIndex]));
    }
    
+   //apply initial conditions if iter=0, else transfer solution from previous refined mesh
+   if (iter==0){
+	   adaptiveRefine(0);
+   	   applyInitialConditions();
+      }
+
    //Ghost the solution vectors. Also apply the Dirichet BC's (if any) on the solution vectors 
    for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
      constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
