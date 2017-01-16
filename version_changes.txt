@@ -12,9 +12,17 @@ Added functionality:
 - Ability to change the output file format between “.vtu” and “.vtk”. Used in the application allenCahn_pfield.
 
 Changes to the pre-built applications:
+- New application: singlePrecipitateKKS is a 3D simulation of 1/8 of a precipitate. Governing equations are similar to precipitateEvolution
+  but use the KKS model instead of the WBM model.
+- New application: allenCahn_pfield uses the PField capability of PRISMS IntegrationTools to load the initial condition from .vtk files
+- New application: precipitateEvolution_pfunction uses the PFunction capability of PRISMS IntegrationTools to load parameters (both 
+  and functions) into the code.
 - Added formulation files for the CHAC_anisotropy and CHAC_anisotropyRegularized applications.
 - Boundary conditions for grainGrowth changed to periodic.
 - Moduli changed in precipitateEvolution so that the evolution is dominated by the misfit, not the interfacial energy.
+
+Bug fixes:
+- Removed unnecessary LAPACK check in the CMakeLists.txt files.
 
 Other changes:
 - Installation instructions updated, both in the README and in the user guide.
@@ -23,15 +31,6 @@ Known issues:
 - For some compilers (including the Intel compilers on the Stampede cluster), errors are generated because we initialize some vectors with
   C-style arrays. This will be fixed in the near future. 
   
-
-Major changes include:
-- New user interface
-- New user guide
-- Mesh adaptivity capability
-- Many new applications
-- Improved tests, including tests versus analytical results
-
-
 ====================
 Version 1.0:
 ===================

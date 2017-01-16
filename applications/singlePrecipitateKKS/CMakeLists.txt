@@ -27,11 +27,6 @@ IF(NOT ${deal.II_FOUND})
     )
 ENDIF()
 
-#
-# Are all dependencies fullfilled?
-#
-
-
 DEAL_II_INITIALIZE_CACHED_VARIABLES()
 #set(DEAL_II_CXX_FLAGS_DEBUG "${DEAL_II_CXX_FLAGS_DEBUG} -Wno-maybe-uninitialized -Wno-deprecated-declarations -Wno-comment -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable")
 #set(DEAL_II_CXX_FLAGS_RELEASE "${DEAL_II_CXX_FLAGS_DEBUG} -Wno-maybe-uninitialized -Wno-deprecated-declarations -Wno-comment -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable")
