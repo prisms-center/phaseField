@@ -1,4 +1,4 @@
-// Parameter list for the Cahn-Hilliard example application
+// Parameter list for the Cahn-Hilliard with adaptivity example application
 // All strictly numerical parameters should be set in this file
 
 // =================================================================================
@@ -26,6 +26,27 @@
 
 // Set the polynomial degree of the element (suggested values: 1 or 2)
 #define finiteElementDegree 1
+
+// =================================================================================
+// Set the adaptive mesh refinement parameters
+// =================================================================================
+// Set the flag determining if adaptive meshing is activated
+#define hAdaptivity true
+
+// Set the maximum and minimum level of refinement
+#define maxRefinementLevel (refineFactor)
+#define minRefinementLevel (refineFactor-1)
+
+// Set the fields used to determine the refinement. Fields determined by the order
+// declared in "equations.h", starting at zero
+#define refineCriterionFields {0}
+
+// Set the maximum and minimum value of the fields where the mesh should be refined
+#define refineWindowMax {0.99}
+#define refineWindowMin {0.01}
+
+// Set the number of time steps between remeshing operations
+#define skipRemeshingSteps 4000
 
 // =================================================================================
 // Set the time step parameters
