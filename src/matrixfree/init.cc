@@ -29,12 +29,12 @@
 #endif
 #if t_domain == true
      std::vector< unsigned int > repetitions(2);
-        repetitions[0]=5;//5*refineFactor;
-        repetitions[1]=1;//1*refineFactor;
+        repetitions[0]=15;//5*refineFactor;
+        repetitions[1]=3;//1*refineFactor;
         Triangulation<2> tria1, tria2;
         GridGenerator::subdivided_hyper_rectangle (tria1, repetitions, Point<dim>(-40,100), Point<dim>(60,120));
-        repetitions[0]=1;//*refineFactor;
-        repetitions[1]=5;//*refineFactor;
+        repetitions[0]=3;//*refineFactor;
+        repetitions[1]=15;//*refineFactor;
         GridGenerator::subdivided_hyper_rectangle (tria2, repetitions, Point<dim>(0,0), Point<dim>(20,100));
         GridGenerator::merge_triangulations (tria1, tria2, triangulation);
 #else
