@@ -24,13 +24,28 @@
      
      pcout << "creating problem mesh...\n";
 
-#if problemDIM==3
-     GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(spanX,spanY,spanZ));
-#elif problemDIM==2
-     GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(spanX,spanY));
-#elif problemDIM==1
-     GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(spanX));
+#ifndef t_domain
+#define t_domain false
 #endif
+#if t_domain == true
+     std::vector< unsigned int > repetitions(2);
+        repetitions[0]=15;//5*refineFactor;
+        repetitions[1]=3;//1*refineFactor;
+        Triangulation<2> tria1, tria2;
+        GridGenerator::subdivided_hyper_rectangle (tria1, repetitions, Point<dim>(-40,100), Point<dim>(60,120));
+        repetitions[0]=3;//*refineFactor;
+        repetitions[1]=15;//*refineFactor;
+        GridGenerator::subdivided_hyper_rectangle (tria2, repetitions, Point<dim>(0,0), Point<dim>(20,100));
+        GridGenerator::merge_triangulations (tria1, tria2, triangulation);
+#else
+	#if problemDIM==3
+     GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(spanX,spanY,spanZ));
+	#elif problemDIM==2
+     GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(spanX,spanY));
+	#elif problemDIM==1
+     GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(spanX));
+	#endif
+
 
      // Mark boundaries for applying the boundary conditions
      markBoundaries();
@@ -38,8 +53,11 @@
      // Set which (if any) faces of the triangulation are periodic
     setPeriodicity();
 
+#endif
      // Do the initial global refinement
      triangulation.refine_global (refineFactor);
+
+
 
      // Write out the size of the computational domain and the total number of elements
      pcout << "problem dimensions: " << spanX << "x" << spanY << "x" << spanZ << std::endl;

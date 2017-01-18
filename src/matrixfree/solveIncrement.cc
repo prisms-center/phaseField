@@ -36,11 +36,13 @@ void MatrixFreePDE<dim>::solveIncrement(){
       //sync ghost DOF's
       solutionSet[fieldIndex]->update_ghost_values();
       //
+      if (currentIncrement%skipPrintSteps==0){
       sprintf(buffer, "field '%2s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
 	      fields[fieldIndex].name.c_str(),				\
 	      solutionSet[fieldIndex]->l2_norm(),			\
 	      residualSet[fieldIndex]->l2_norm()); 
       pcout<<buffer; 
+      }
     }
     //Elliptic (time-independent) fields
     else if (fields[fieldIndex].pdetype==ELLIPTIC){
@@ -77,12 +79,14 @@ void MatrixFreePDE<dim>::solveIncrement(){
 			//sync ghost DOF's
 			solutionSet[fieldIndex]->update_ghost_values();
 			//
+			 if (currentIncrement%skipPrintSteps==0){
 			sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
 					fields[fieldIndex].name.c_str(),			\
 					residualSet[fieldIndex]->l2_norm(),			\
 					solver_control.last_value(),				\
 					solver_control.last_step(), solver_control.tolerance(), solutionSet[fieldIndex]->l2_norm(), dU.l2_norm());
 			pcout<<buffer;
+			 }
 		}
 		else{
 			sprintf(buffer, "field '%2s' [implicit solve]: current residual:%12.6e\n", \
@@ -113,7 +117,9 @@ void MatrixFreePDE<dim>::solveIncrement(){
 		  exit(-1);
 	  }
   }
+  if (currentIncrement%skipPrintSteps==0){
   pcout << "wall time: " << time.wall_time() << "s\n";
+  }
   //log time
   computing_timer.exit_section("matrixFreePDE: solveIncrements"); 
 }

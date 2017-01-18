@@ -88,5 +88,9 @@
 //#define enablePFields false
 //#endif
 
+#ifndef skipPrintSteps
+#define skipPrintSteps 1
+#endif
+
 
 #endif

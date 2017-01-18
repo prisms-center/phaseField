@@ -1134,7 +1134,7 @@ void generalizedProblem<dim>::setPeriodicity(){
 	std::vector<GridTools::PeriodicFacePair<typename parallel::distributed::Triangulation<dim>::cell_iterator> > periodicity_vector;
 	for (int i=0; i<dim; ++i){
 		bool periodic_pair = false;
-		for (int field_num=0; field_num < BC_list.size(); field_num++){
+		for (unsigned int field_num=0; field_num < BC_list.size(); field_num++){
 			if (BC_list[field_num].var_BC_type[2*i] == "PERIODIC"){
 				periodic_pair = true;
 			}
