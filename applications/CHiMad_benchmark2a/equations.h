@@ -4,12 +4,12 @@
 // Define the variables in the model
 // =================================================================================
 // The number of variables
-#define num_var 5
+#define num_var 6
 
 // The names of the variables, whether they are scalars or vectors and whether the
 // governing eqn for the variable is parabolic or elliptic
-#define variable_name {"c", "mu","n1", "n2", "n3", "n4"}
-#define variable_type {"SCALAR","SCALAR", "SCALAR","SCALAR","SCALAR","SCALAR"}
+#define variable_name {"c", "mu", "n1", "n2", "n3", "n4"}
+#define variable_type {"SCALAR","SCALAR","SCALAR","SCALAR","SCALAR","SCALAR"}
 #define variable_eq_type {"PARABOLIC","PARABOLIC","PARABOLIC","PARABOLIC","PARABOLIC","PARABOLIC"}
 
 // Flags for whether the value, gradient, and Hessian are needed in the residual eqns
@@ -31,56 +31,67 @@
 // equations (or parts of residual equations) can be written below in "residualRHS".
 
 // Cahn-Hilliard mobility
-#define McV 5.0
+#define McV constV(5.0)
 
 // Allen-Cahn mobility
-#define MnV 5.0
+#define MnV constV(5.0)
 
 // Allen-Cahn gradient energy coefficient
-#define KnV 3.0
+#define KnV constV(3.0)
 
 // Cahn-Hilliard gradient energy coefficient
-#define KcV 3.0
+#define KcV constV(3.0)
 
 //Common coefficient for the double well and structural order parameter interaction terms
-#define w 1.0
+#define wV constV(1.0)
 
 //Coefficient order parameter for the structural interaction term only
-#define alpha 5.0
+#define alpha constV(5.0)
 
 // Free energy for each phase and their first and second derivatives
-#define faV (2.0*(c-0.3)*(c-0.3))
-#define facV (4.0*(c-0.3))
-#define faccV (4.0)
-#define fbV (2.0*(c-0.7)*(c-0.7))
-#define fbcV (4.0*(c-0.3))
-#define fbccV (4.0)
+#define faV (constV(2.0)*(c-constV(0.3))*(c-constV(0.3)))
+#define facV (constV(4.0)*(c-constV(0.3)))
+#define faccV (constV(4.0))
+#define fbV (constV(2.0)*(c-constV(0.7))*(c-constV(0.7)))
+#define fbcV (constV(4.0)*(c-constV(0.7)))
+#define fbccV (constV(4.0))
 
-// Interpolation function and its derivative
-#define hV ( n1*n1*n1*(6.0*n1*n1-15.0*n1+10.0) + n2*n2*n2*(6.0*n2*n2-15.0*n2+10.0) + n3*n3*n3*(6.0*n3*n3-15.0*n3+10.0) + n4*n4*n4*(6.0*n4*n4-15.0*n4+10.0) )
-#define hn1V ( n1*n1*(30.0*n1*n1-60*n1+30.0) )
-#define hn2V ( n2*n2*(30.0*n2*n2-60*n2+30.0) )
-#define hn3V ( n3*n3*(30.0*n3*n3-60*n3+30.0) )
-#define hn4V ( n4*n4*(30.0*n4*n4-60*n4+30.0) )
+// Interpolation function and its derivatives
+#define hV ( n1*n1*n1*(constV(6.0)*n1*n1-constV(15.0)*n1+constV(10.0)) + n2*n2*n2*(constV(6.0)*n2*n2-constV(15.0)*n2+constV(10.0)) + n3*n3*n3*(constV(6.0)*n3*n3-constV(15.0)*n3+constV(10.0)) + n4*n4*n4*(constV(6.0)*n4*n4-constV(15.0)*n4+constV(10.0)) )
+#define hn1V ( n1*n1*(constV(30.0)*n1*n1-constV(60.0)*n1+constV(30.0)) )
+#define hn2V ( n2*n2*(constV(30.0)*n2*n2-constV(60.0)*n2+constV(30.0)) )
+#define hn3V ( n3*n3*(constV(30.0)*n3*n3-constV(60.0)*n3+constV(30.0)) )
+#define hn4V ( n4*n4*(constV(30.0)*n4*n4-constV(60.0)*n4+constV(30.0)) )
 
-//Derivative of combined (function g) double-well and interaction functions
-
-#define gn1 ( 2.0*n1*(1.0-n1)*(1.0-2.0*n1) + 2.0*alpha*n1*(n2*n2+n3*n3+n4*n4) )
-#define gn2 ( 2.0*n2*(1.0-n2)*(1.0-2.0*n2) + 2.0*alpha*n2*(n1*n1+n3*n3+n4*n4) )
-#define gn3 ( 2.0*n3*(1.0-n3)*(1.0-2.0*n3) + 2.0*alpha*n3*(n1*n1+n2*n2+n4*n4) )
-#define gn4 ( 2.0*n4*(1.0-n4)*(1.0-2.0*n4) + 2.0*alpha*n4*(n1*n1+n2*n2+n3*n3) )
+//Combined double-well and interaction functions (function g) and its derivatives
+//Double-well part
+#define gdwV ( n1*n1*(constV(1.0)-n1)*(constV(1.0)-n1) + n2*n2*(constV(1.0)-n2)*(constV(1.0)-n2) +n3*n3*(constV(1.0)-n3)*(constV(1.0)-n3) + n4*n4*(constV(1.0)-n4)*(constV(1.0)-n4) )
+//Interaction part
+#define gintV ( alpha*(n1*n1*n2*n2 + n1*n1*n3*n3+ n1*n1*n4*n4 + n2*n2*n3*n3 + n2*n2*n4*n4 + n3*n3*n4*n4) )
+//Combined function (g)
+#define gV ( gdwV + gintV )
+//Derivatives
+#define dgn1V ( constV(2.0)*n1*(constV(1.0)-n1)*(constV(1.0)-constV(2.0)*n1) + constV(2.0)*alpha*n1*(n2*n2+n3*n3+n4*n4) )
+#define dgn2V ( constV(2.0)*n2*(constV(1.0)-n2)*(constV(1.0)-constV(2.0)*n2) + constV(2.0)*alpha*n2*(n1*n1+n3*n3+n4*n4) )
+#define dgn3V ( constV(2.0)*n3*(constV(1.0)-n3)*(constV(1.0)-constV(2.0)*n3) + constV(2.0)*alpha*n3*(n1*n1+n2*n2+n4*n4) )
+#define dgn4V ( constV(2.0)*n4*(constV(1.0)-n4)*(constV(1.0)-constV(2.0)*n4) + constV(2.0)*alpha*n4*(n1*n1+n2*n2+n3*n3) )
 
 //CHANGES FOR CHAC BENCHMARK PROBLEM UP TO THIS POINT
 
 // Residual equations
-#define rmuV ( hV * (fbcV - facV) )
-#define rmuxV ( constV(KcV) * cx  )
-#define rcV   (c)
-#define rcxV  (constV(-McV*timeStep)*mux)
-#define rn1V  (n1-constV(timeStep*MnV)*(fbV-faV)*hnV)
-#define rn1xV (constV(-timeStep*KnV*MnV)*nx)
-#define rnV  (n-constV(timeStep*MnV)*(fbV-faV)*hnV)
-#define rnxV (constV(-timeStep*KnV*MnV)*nx)
+#define rn1V ( n1 - constV(timeStep)*MnV*((fbV-faV)*hn1V + wV*dgn1V) )
+#define rn2V ( n2 - constV(timeStep)*MnV*((fbV-faV)*hn2V + wV*dgn2V) )
+#define rn3V ( n3 - constV(timeStep)*MnV*((fbV-faV)*hn3V + wV*dgn3V) )
+#define rn4V ( n4 - constV(timeStep)*MnV*((fbV-faV)*hn4V + wV*dgn4V) )
+#define rn1xV ( constV(-timeStep)*KnV*MnV*n1x )
+#define rn2xV ( constV(-timeStep)*KnV*MnV*n2x )
+#define rn3xV ( constV(-timeStep)*KnV*MnV*n3x )
+#define rn4xV ( constV(-timeStep)*KnV*MnV*n4x )
+#define rmuV ( (constV(1.0)-hV)*facV+hV*fbcV )
+#define rmuxV ( KcV*cx )
+#define rcV ( c )
+#define rcxV ( constV(-timeStep)*McV*mux )
+
 
 // =================================================================================
 // residualRHS
@@ -101,17 +112,34 @@ void generalizedProblem<dim>::residualRHS(const std::vector<modelVariable<dim> >
 scalarvalueType c = modelVariablesList[0].scalarValue;
 scalargradType cx = modelVariablesList[0].scalarGrad;
 
-// The order parameter and its derivatives (names here should match those in the macros above)
-scalarvalueType n = modelVariablesList[1].scalarValue;
-scalargradType nx = modelVariablesList[1].scalarGrad;
+// The chemical potential and its derivatives (names here should match those in the macros above)
+scalargradType mux = modelVariablesList[1].scalarGrad;
+
+// The order parameters and their derivatives (names here should match those in the macros above)
+scalarvalueType n1 = modelVariablesList[2].scalarValue;
+scalargradType n1x = modelVariablesList[2].scalarGrad;
+scalarvalueType n2 = modelVariablesList[3].scalarValue;
+scalargradType n2x = modelVariablesList[3].scalarGrad;
+scalarvalueType n3 = modelVariablesList[4].scalarValue;
+scalargradType n3x = modelVariablesList[4].scalarGrad;
+scalarvalueType n4 = modelVariablesList[5].scalarValue;
+scalargradType n4x = modelVariablesList[5].scalarGrad;
 
 // Residuals for the equation to evolve the concentration (names here should match those in the macros above)
 modelResidualsList[0].scalarValueResidual = rcV;
 modelResidualsList[0].scalarGradResidual = rcxV;
+modelResidualsList[1].scalarValueResidual = rmuV;
+modelResidualsList[1].scalarGradResidual = rmuxV;
 
-// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
-modelResidualsList[1].scalarValueResidual = rnV;
-modelResidualsList[1].scalarGradResidual = rnxV;
+// Residuals for the equation to evolve the order parameters (names here should match those in the macros above)
+modelResidualsList[2].scalarValueResidual = rn1V;
+modelResidualsList[2].scalarGradResidual = rn1xV;
+modelResidualsList[3].scalarValueResidual = rn2V;
+modelResidualsList[3].scalarGradResidual = rn2xV;
+modelResidualsList[4].scalarValueResidual = rn3V;
+modelResidualsList[4].scalarGradResidual = rn3xV;
+modelResidualsList[5].scalarValueResidual = rn4V;
+modelResidualsList[5].scalarGradResidual = rn4xV;
 
 }
 
@@ -158,14 +186,20 @@ scalarvalueType c = modelVariablesList[0].scalarValue;
 scalargradType cx = modelVariablesList[0].scalarGrad;
 
 // The order parameter and its derivatives (names here should match those in the macros above)
-scalarvalueType n = modelVariablesList[1].scalarValue;
-scalargradType nx = modelVariablesList[1].scalarGrad;
+scalarvalueType n1 = modelVariablesList[2].scalarValue;
+scalargradType n1x = modelVariablesList[2].scalarGrad;
+scalarvalueType n2 = modelVariablesList[3].scalarValue;
+scalargradType n2x = modelVariablesList[3].scalarGrad;
+scalarvalueType n3 = modelVariablesList[4].scalarValue;
+scalargradType n3x = modelVariablesList[4].scalarGrad;
+scalarvalueType n4 = modelVariablesList[5].scalarValue;
+scalargradType n4x = modelVariablesList[5].scalarGrad;
 
 // The homogenous free energy
-scalarvalueType f_chem = (constV(1.0)-hV)*faV + hV*fbV;
+scalarvalueType f_chem = (constV(1.0)-hV)*faV + hV*fbV + wV*gV;
 
 // The gradient free energy
-scalarvalueType f_grad = constV(0.5*KnV)*nx*nx;
+scalarvalueType f_grad = constV(0.5)*KnV*(n1x*n1x+n2x*n2x+n3x*n3x+n4x*n4x) + constV(0.5)*KcV*cx*cx;
 
 // The total free energy
 scalarvalueType total_energy_density;

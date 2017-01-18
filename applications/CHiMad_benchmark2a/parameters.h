@@ -19,10 +19,10 @@
 // =================================================================================
 // The number of elements in each direction is 2^(refineFactor) * subdivisions
 // For optimal performance, use refineFactor primarily to determine the element size
-#define subdivisionsX 1
-#define subdivisionsY 1
-#define subdivisionsZ 1
-#define refineFactor 7
+#define subdivisionsX 3
+#define subdivisionsY 3
+#define subdivisionsZ 3
+#define refineFactor 6
 
 // Set the polynomial degree of the element (suggested values: 1 or 2)
 #define finiteElementDegree 1
