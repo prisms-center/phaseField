@@ -1,2 +1,2 @@
 language: cpp
-script: python test_ci.py
+script: bash test_ci.sh
