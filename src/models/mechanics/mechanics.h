@@ -19,18 +19,26 @@ class MechanicsProblem: public MatrixFreePDE<dim>
   //elasticity matrix
   Table<2, double> CIJ;
   
-  //RHS implementation for implicit/explicit solve
-  void getRHS(std::map<std::string, typeScalar*>  valsScalar, \
-	      std::map<std::string, typeVector*>  valsVector, \
-	      unsigned int q) const;
-  
+  //RHS implementation for explicit solve
+  void getRHS(const MatrixFree<dim,double> &data, 
+	      std::vector<vectorType*> &dst, 
+	      const std::vector<vectorType*> &src,
+	      const std::pair<unsigned int,unsigned int> &cell_range) const;
+    
   //LHS implementation for implicit solve 
-  void getLHS(typeVector& vals, unsigned int q) const;  
+  void  getLHS(const MatrixFree<dim,double> &data, 
+	       vectorType &dst, 
+	       const vectorType &src,
+	       const std::pair<unsigned int,unsigned int> &cell_range) const;
   
   //methods to apply dirichlet BC's
   void markBoundaries();
   void applyDirichletBCs();
-};
+  
+  //AMR method
+  void adaptiveRefine(unsigned int currentIncrement);
+  void adaptiveRefineCriterion();
+}; 
 
 //constructor
 template <int dim>
@@ -53,56 +61,111 @@ MechanicsProblem<dim>::MechanicsProblem(): MatrixFreePDE<dim>(),
   double materialConstants[]=MaterialConstantsV;
   getCIJMatrix<dim>(MaterialModelV, materialConstants, CIJ, this->pcout);
 #endif
-
-  //
-  this->getValue["u"]=false; this->getGradient["u"]=true;
-  this->setValue["u"]=false; this->setGradient["u"]=true;
 }
 
 //implementation of the RHS evaluation 
 template <int dim>
-void  MechanicsProblem<dim>::getRHS(std::map<std::string, typeScalar*>  valsScalar, \
-				    std::map<std::string, typeVector*>  valsVector, \
-				    unsigned int q) const{
-  vectorgradType ux = valsVector["u"]->get_gradient(q);
-  vectorgradType Rux;
+void  MechanicsProblem<dim>::getRHS(const MatrixFree<dim,double> &data, 
+				    std::vector<vectorType*> &dst, 
+				    const std::vector<vectorType*> &src,
+				    const std::pair<unsigned int,unsigned int> &cell_range) const{
+ 
+  typeVector uVals(data, 0);
+  
+  //loop over cells
+  for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
+    //initialize u field 
+    uVals.reinit(cell); uVals.read_dof_values_plain(*src[0]); uVals.evaluate(false, true, false);
 
-  //compute stress
-  vectorgradType S;
-  computeStress<dim>(CIJ, ux, S);
-  
-  //fill residual
-  for (unsigned int i=0; i<dim; i++){
-    for (unsigned int j=0; j<dim; j++){
-      Rux[i][j] -= S[i][j];
+    //loop over quadrature points
+    for (unsigned int q=0; q<uVals.n_q_points; ++q){
+      //u
+      vectorgradType ux = uVals.get_gradient(q);
+      vectorgradType Rux;
+
+      //compute strain tensor
+      dealii::VectorizedArray<double> E[dim][dim], S[dim][dim];
+      for (unsigned int i=0; i<dim; i++){
+	for (unsigned int j=0; j<dim; j++){
+	  E[i][j]= constV(0.5)*(ux[i][j]+ux[j][i]);
+	}
+      }
+      
+      //compute stress tensor
+      computeStress<dim>(CIJ, E, S);
+
+      //compute residual
+      for (unsigned int i=0; i<dim; i++){
+	for (unsigned int j=0; j<dim; j++){
+	  Rux[i][j] -= S[i][j]; 
+	}
+      }
+      
+      //submit residual value
+      uVals.submit_gradient(Rux,q);
     }
+    
+    //integrate
+    uVals.integrate(false, true); uVals.distribute_local_to_global(*dst[0]);
   }
-  
-  //compute residuals
-  valsVector["u"]->submit_gradient(Rux,q);
 }
 
 template <int dim>
-void  MechanicsProblem<dim>::getLHS(typeVector& vals, unsigned int q) const{
-  //check to ensure we are working on the intended implicit field
-  if (this->fields[this->currentFieldIndex].name.compare("u")==0){
-    vectorgradType ux = vals.get_gradient(q);
-    vectorgradType Rux;
+void  MechanicsProblem<dim>::getLHS(const MatrixFree<dim,double> &data, 
+				    vectorType &dst, 
+				    const vectorType &src,
+				    const std::pair<unsigned int,unsigned int> &cell_range) const{
+  typeVector uVals(data, 0);
+  
+  //loop over cells
+  for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
+    //initialize u field 
+    uVals.reinit(cell); uVals.read_dof_values_plain(src); uVals.evaluate(false, true, false);
 
-    //compute stress
-    vectorgradType S;
-    computeStress<dim>(CIJ, ux, S);
-    
-    //compute residual
-    for (unsigned int i=0; i<dim; i++){
-      for (unsigned int j=0; j<dim; j++){
-	Rux[i][j] = S[i][j];
+    //loop over quadrature points
+    for (unsigned int q=0; q<uVals.n_q_points; ++q){
+      //u
+      vectorgradType ux = uVals.get_gradient(q);
+      vectorgradType Rux;
+
+      //compute strain tensor
+      dealii::VectorizedArray<double> E[dim][dim], S[dim][dim];
+      for (unsigned int i=0; i<dim; i++){
+	for (unsigned int j=0; j<dim; j++){
+	  E[i][j]= constV(0.5)*(ux[i][j]+ux[j][i]);
+	}
       }
+    
+      //compute stress tensor
+      computeStress<dim>(CIJ, E, S);
+      
+      //compute residual
+      for (unsigned int i=0; i<dim; i++){
+	for (unsigned int j=0; j<dim; j++){
+	  Rux[i][j] = S[i][j]; 
+	}
+      }
+      
+      //submit residual value
+      uVals.submit_gradient(Rux,q);
     }
-     
-    //submit residual value for quadrature integration and assemble
-    vals.submit_gradient(Rux,q);
+    
+    //integrate
+    uVals.integrate(false, true); uVals.distribute_local_to_global(dst);
   }
 }
 
+#ifndef hAdaptivity
+//adaptive refinement control
+template <int dim>
+void MechanicsProblem<dim>::adaptiveRefine(unsigned int currentIncrement){
+}
+
+//adaptive refinement criterion
+template <int dim>
+void MechanicsProblem<dim>::adaptiveRefineCriterion(){
+}
 #endif
+
+#endif
+

@@ -12,6 +12,7 @@
  Subscriptor(),
  triangulation (MPI_COMM_WORLD),
  isTimeDependentBVP(false),
+ isEllipticBVP(false),
  dtValue(0.0),
  currentTime(0.0),
  finalTime(0.0),
@@ -20,16 +21,7 @@
  pcout (std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0),
  computing_timer (pcout, TimerOutput::summary, TimerOutput::wall_times)
  {
-   //initialize time step variables
-#ifdef timeStep
-   dtValue=timeStep;
-#endif
-#ifdef timeFinal
-   finalTime=timeFinal;
-#endif
-#ifdef timeIncrements
-   totalIncrements=timeIncrements;
-#endif
+
  }
 
  //destructor
@@ -38,8 +30,9 @@
  {
    matrixFreeObject.clear();
    for(unsigned int iter=0; iter<fields.size(); iter++){
+     delete soltransSet[iter];
      delete locally_relevant_dofsSet[iter];
-     delete constraintsSet[iter];
+     delete constraintsDirichletSet[iter];
      delete dofHandlersSet[iter];
      delete FESet[iter];
      delete solutionSet[iter];

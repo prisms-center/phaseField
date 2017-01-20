@@ -1,5 +1,4 @@
-//computeLHS() method for MatrixFreePDE class temporarily treating
-
+//vmult() and getLHS() method for MatrixFreePDE class 
 #ifndef COMPUTELHS_MATRIXFREE_H
 #define COMPUTELHS_MATRIXFREE_H
 //this source file is temporarily treated as a header file (hence
@@ -9,77 +8,46 @@
 template <int dim>
 void MatrixFreePDE<dim>::vmult (vectorType &dst, const vectorType &src) const{
   //log time
-  computing_timer.enter_section("matrixFreePDE: updateLHS (vmult)");
-  
-  dst=0.0;  
-  //scalar field
-  if (fields[currentFieldIndex].type==SCALAR){
-    matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::computeLHS<typeScalar>, this, dst, src);
-  }
-  //vector field
-  else if (fields[currentFieldIndex].type==VECTOR){
-    matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::computeLHS<typeVector>, this, dst, src);
-  }
-  
-  //Account for dirichlet BC's (essentially copy dirichlet DOF values present in src to dst)
-  const std::vector<unsigned int>& constrained_dofs = matrixFreeObject.get_constrained_dofs(currentFieldIndex);
-  for (unsigned int i=0; i<constrained_dofs.size(); ++i){
-    unsigned int globalIndex = matrixFreeObject.get_vector_partitioner(currentFieldIndex)->local_to_global(constrained_dofs[i]);
-    dst(globalIndex) += src(globalIndex); //note: check if "+" required
-  } 
-  
-  //end log
-  computing_timer.exit_section("matrixFreePDE: updateLHS (vmult)");
-}
+  computing_timer.enter_section("matrixFreePDE: computeLHS");
 
-//compute LHS.  addtional template typename "T" is to identify whether
-//its being called for a scalar or vector field, i.e, to choose
-//typeScalar or typeVector for vals
-template <int dim>
-template <typename T>
-void  MatrixFreePDE<dim>::computeLHS(const MatrixFree<dim,double> &data, 
-				     vectorType &dst, 
-				     const vectorType &src,
-				     const std::pair<unsigned int,unsigned int> &cell_range) const{
-  //initialize vals vectors
-  T  vals(data,currentFieldIndex);
-  Assert((vals.n_q_points) == (num_quadrature_points), ::ExcDimensionMismatch((vals.n_q_points),(num_quadrature_points))); //replace with a better Exception
+  //create temporary copy of src vector as src2, as vector src is marked const and cannot be changed
+  vectorType src2;
+  matrixFreeObject.initialize_dof_vector(src2,  ellipticFieldIndex);
+  src2=src;
   
-  //loop over all "cells"
-  for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
-    //read values from corresponding solution vectors
-    vals.reinit(cell);
-    vals.read_dof_values(src);
-    vals.evaluate( getValue.find(fields[currentFieldIndex].name)->second, \
-		   getGradient.find(fields[currentFieldIndex].name)->second, \
-		   false);
-  
-    //loop over quadrature points
-    for (unsigned int q=0; q<num_quadrature_points; ++q){
-      getLHS(vals, q);
+  //set Dirichlet nodes force to zero in the src
+  for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[currentFieldIndex]->begin(); it!=valuesDirichletSet[currentFieldIndex]->end(); ++it){
+    if (src2.in_local_range(it->first)){
+      src2(it->first) = 0.0; //*jacobianDiagonal(it->first);
     }
-    
-    //integrate
-    vals.integrate( setValue.find(fields[currentFieldIndex].name)->second, \
-		    setGradient.find(fields[currentFieldIndex].name)->second);
-    
-    //assemble
-    vals.distribute_local_to_global(dst); 
   }
-}
+  constraintsOtherSet[currentFieldIndex]->distribute(src2);
 
+  //call cell_loop 
+  dst=0.0;
+  matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::getLHS, this, dst, src2);
+  dst.compress(VectorOperation::add);
+  
+  //Account for Dirichlet BC's (essentially copy dirichlet DOF values present in src to dst)
+  for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[currentFieldIndex]->begin(); it!=valuesDirichletSet[currentFieldIndex]->end(); ++it){
+    if (dst.in_local_range(it->first)){
+      dst(it->first) = src(it->first); //*jacobianDiagonal(it->first);
+    }
+  }
+
+  //end log
+  computing_timer.exit_section("matrixFreePDE: computeLHS");
+}
+  
 template <int dim>
-void  MatrixFreePDE<dim>::getLHS(typeScalar& vals, unsigned int q) const{
-  pcout << "\ncomputeLHS.cc: getLHS(typeScalar& , unsigned int ) not implemented in the derived class, but is called\n";
+void  MatrixFreePDE<dim>::getLHS(const MatrixFree<dim,double> &data, 
+				 vectorType &dst, 
+				 const vectorType &src,
+				 const std::pair<unsigned int,unsigned int> &cell_range) const{
+  pcout << "\n\nError: computeLHS.cc: getLHS(typeScalar& , unsigned int ) not implemented in the derived class, but is called\n";
   exit(-1);
 }
-
-template <int dim>
-void  MatrixFreePDE<dim>::getLHS(typeVector& vals, unsigned int q) const{
-  pcout << "\ncomputeLHS.cc: getLHS(typeVector& , unsigned int ) not implemented in the derived class, but is called\n";
-  exit(-1);
-}
-
 
 #endif
+
 

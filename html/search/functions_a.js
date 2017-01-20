@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['kill_5ffile',['kill_file',['http://www.dealii.org/8.2.1/doxygen/deal.II/classSwappableVector.html#ab7534657f74442edca2275b53e2523ba',1,'SwappableVector']]],
-  ['king_5fordering',['king_ordering',['http://www.dealii.org/8.2.1/doxygen/deal.II/namespaceDoFRenumbering_1_1boost.html#a20feb31685326bf244390dd97ca535c9',1,'DoFRenumbering::boost']]],
-  ['kovasznay',['Kovasznay',['http://www.dealii.org/8.2.1/doxygen/deal.II/classFunctions_1_1Kovasznay.html#a082166be0e076803fed98a61450e05a5',1,'Functions::Kovasznay']]]
+  ['refinegrid',['refineGrid',['../class_matrix_free_p_d_e.html#aced905f83aaed97fde5f712b40828478',1,'MatrixFreePDE']]],
+  ['refinemesh',['refineMesh',['../class_matrix_free_p_d_e.html#aa0e6b87148fea8f5e43117608e04adeb',1,'MatrixFreePDE']]],
+  ['residuallhs',['residualLHS',['../classgeneralized_problem.html#a3988a50e51f4275540101117525dc2dc',1,'generalizedProblem']]],
+  ['residualrhs',['residualRHS',['../classgeneralized_problem.html#ae1a18316f884741b13194c7748db19f4',1,'generalizedProblem']]]
 ];

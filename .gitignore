@@ -24,12 +24,14 @@
 *vtk
 *vtu
 *vts
+*frt
 
 #Temporary files
 *~
 *#
 *.#
 *.btr
+freeEnergy.txt
 
 #CMAKE files
 *.cmake
@@ -71,3 +73,7 @@ main
 
 test
 DoxygenWarningLog.txt
+*.project
+*.cproject
+*.DS_Store
+freeEnergy.txt

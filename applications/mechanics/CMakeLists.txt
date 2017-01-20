@@ -27,17 +27,8 @@ IF(NOT ${deal.II_FOUND})
     )
 ENDIF()
 
-#
-# Are all dependencies fullfilled?
-#
-IF(NOT DEAL_II_WITH_LAPACK)
-  MESSAGE(FATAL_ERROR "
-Error! The deal.II library found at ${DEAL_II_PATH} was not configured with
-    DEAL_II_WITH_LAPACK = ON
-which is required for this tutorial step."
-    )
-ENDIF()
-
 DEAL_II_INITIALIZE_CACHED_VARIABLES()
+#set(DEAL_II_CXX_FLAGS_DEBUG "${DEAL_II_CXX_FLAGS_DEBUG} -Wno-maybe-uninitialized -Wno-deprecated-declarations -Wno-comment -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable")
+#set(DEAL_II_CXX_FLAGS_RELEASE "${DEAL_II_CXX_FLAGS_DEBUG} -Wno-maybe-uninitialized -Wno-deprecated-declarations -Wno-comment -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable")
 PROJECT(${TARGET})
 DEAL_II_INVOKE_AUTOPILOT()

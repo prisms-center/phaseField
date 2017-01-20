@@ -1,20 +1,13 @@
-//Fickian diffusion problem
-//general headers
+// Fickian diffusion example application
+
+// Header files
 #include "../../include/dealIIheaders.h"
 
-//Fickian diffusion problem headers
 #include "parameters.h"
-#include "../../src/models/diffusion/Fickian.h"
-
-//apply initial conditions
-template <int dim>
-void FickianProblem<dim>::applyInitialConditions()
-{
-  unsigned int fieldIndex;
-  fieldIndex=this->getFieldIndex("c");
-  //set c=0
-  *this->solutionSet[fieldIndex]=0.0;
-}
+#include "../../src/models/coupled/generalized_model.h"
+#include "equations.h"
+#include "ICs_and_BCs.h"
+#include "../../src/models/coupled/generalized_model_functions.h"
 
 //main
 int main (int argc, char **argv)
@@ -22,9 +15,11 @@ int main (int argc, char **argv)
   Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,numbers::invalid_unsigned_int);
   try
     {
-      deallog.depth_console(0);
-      FickianProblem<problemDIM> problem;
-      problem.fields.push_back(Field<problemDIM>(SCALAR, PARABOLIC, "c"));
+	  deallog.depth_console(0);
+	  generalizedProblem<problemDIM> problem;
+
+      problem.setBCs();
+      problem.buildFields();
       problem.init (); 
       problem.solve();
     }

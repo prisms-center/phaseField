@@ -1,39 +1,63 @@
-//Parameter list for the Cahn-Hilliard spinodal decomposition problem
+// Parameter list for the Cahn-Hilliard example application
+// All strictly numerical parameters should be set in this file
 
-//define problem dimensions
+// =================================================================================
+// Set the number of dimensions (1, 2, or 3 for a 1D, 2D, or 3D calculation)
+// =================================================================================
 #define problemDIM 2
+
+// =================================================================================
+// Set the length of the domain in all three dimensions
+// =================================================================================
+// Each axes spans from zero to the specified length
 #define spanX 100.0
 #define spanY 100.0
 #define spanZ 100.0
 
-//define mesh parameters
+// =================================================================================
+// Set the element parameters
+// =================================================================================
+// The number of elements in each direction is 2^(refineFactor) * subdivisions
+// For optimal performance, use refineFactor primarily to determine the element size
+#define subdivisionsX 1
+#define subdivisionsY 1
+#define subdivisionsZ 1
 #define refineFactor 7
+
+// Set the polynomial degree of the element (suggested values: 1 or 2)
 #define finiteElementDegree 1
 
-//define number of fields in the problem
-//c, mu
-#define numFields 2
+// =================================================================================
+// Set the time step parameters
+// =================================================================================
+// The size of the time step
+#define timeStep 1.0e-3
 
-//define time step parameters
-#define timeStep 1.0e-2
+// The simulation ends when either timeFinal is reached or the number of time steps
+// equals timeIncrements
 #define timeFinal 100.0
-#define timeIncrements 10000
+#define timeIncrements 100000
 
-//define results output parameters
+// =================================================================================
+// Set the output parameters
+// =================================================================================
+// Each field in the problem will be output is writeOutput is set to "true"
 #define writeOutput true
-#define skipOutputSteps 100
 
-//define Cahn-Hilliard parameters
-#define McV 1.0 
-#define KcV 1.0 
+// Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
+// or "LIST")
+#define outputCondition "EQUAL_SPACING"
 
-//define free energy expressions
-#define fcV (4.0*c*(c-1.0)*(c-0.5))
+// Number of times the program outputs the fields (total number for "EQUAL_SPACING"
+// and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
+#define numOutputs 10
 
-//define required residuals
-#define rmuV  (fcV)
-#define rmuxV (constV(KcV)*cx)
-#define rcV   (c)
-#define rcxV  (constV(-McV*timeStep)*mux)
+// User-defined list of time steps where the program should output. Only used if
+// outputCondition is "LIST"
+#define outputList {}
 
+// =================================================================================
+// Set the flag determining if the total free energy is calculated for each output
+// =================================================================================
+#define calcEnergy false
 

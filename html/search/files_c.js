@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['utilities_2ecc',['utilities.cc',['../utilities_8cc.html',1,'']]]
+  ['solve_2ecc',['solve.cc',['../solve_8cc.html',1,'']]],
+  ['solveincrement_2ecc',['solveIncrement.cc',['../solve_increment_8cc.html',1,'']]]
 ];

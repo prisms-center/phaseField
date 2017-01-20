@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['init_5fmatrixfree_5fh',['INIT_MATRIXFREE_H',['../init_8cc.html#ae0da42d2652aa0e79fee528baf355ebc',1,'init.cc']]],
-  ['initialconditions_5fmatrixfree_5fh',['INITIALCONDITIONS_MATRIXFREE_H',['../initial_conditions_8cc.html#a22dd550b2ed05b9cb167785cc5f5425f',1,'initialConditions.cc']]],
-  ['invm_5fmatrixfree_5fh',['INVM_MATRIXFREE_H',['../inv_m_8cc.html#a117ae52beb98d8bbb8ddde250308c67c',1,'invM.cc']]]
+  ['gamma',['gamma',['../_c_h_a_c__anisotropy_2equations_8h.html#a42e729077189bab1dae844253dd2ad1d',1,'gamma():&#160;equations.h'],['../_c_h_a_c__anisotropy_regularized_2equations_8h.html#a42e729077189bab1dae844253dd2ad1d',1,'gamma():&#160;equations.h']]],
+  ['gammanx',['gammanx',['../_c_h_a_c__anisotropy_2equations_8h.html#ac67bf5a07c14fdae35cb763fbf67bd46',1,'gammanx():&#160;equations.h'],['../_c_h_a_c__anisotropy_regularized_2equations_8h.html#ac67bf5a07c14fdae35cb763fbf67bd46',1,'gammanx():&#160;equations.h']]],
+  ['gammany',['gammany',['../_c_h_a_c__anisotropy_2equations_8h.html#ab5ce163f7b6b531273c71a9b75dc4a83',1,'gammany():&#160;equations.h'],['../_c_h_a_c__anisotropy_regularized_2equations_8h.html#ab5ce163f7b6b531273c71a9b75dc4a83',1,'gammany():&#160;equations.h']]],
+  ['gammanz',['gammanz',['../_c_h_a_c__anisotropy_2equations_8h.html#af0b641b3873ed8fe43a83010126e8dc7',1,'gammanz():&#160;equations.h'],['../_c_h_a_c__anisotropy_regularized_2equations_8h.html#af0b641b3873ed8fe43a83010126e8dc7',1,'gammanz():&#160;equations.h']]]
 ];

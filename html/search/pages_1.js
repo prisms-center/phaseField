@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['examples',['Examples',['../page2.html',1,'']]]
+  ['formulations',['Formulations',['../page1.html',1,'']]]
 ];

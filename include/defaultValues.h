@@ -53,8 +53,8 @@
 #endif
 
 //relative linear solver tolerance for implicit solves (default value:1.0e-10)
-#ifndef relSolverTolerance
-#define relSolverTolerance 1.0e-10
+#ifndef solverTolerance
+#define solverTolerance 1.0e-10
 #endif
 
 //max number of linear solver iterations for implicit solves (default value:1000)
@@ -66,5 +66,31 @@
 #ifndef skipImplicitSolves
 #define skipImplicitSolves 1
 #endif
+
+//number of implicit solves to skip. None are skipped if value is 1, which is the default.
+#ifndef outputCondition
+#define outputCondition "EQUAL_SPACING"
+#endif
+
+#ifndef outputList
+#define outputList {0}
+#endif
+
+#ifndef outputFileType
+#define outputFileType "vtu"
+#endif
+
+#ifndef numOutputs
+#define numOutputs 1
+#endif
+
+//#ifndef enablePFields
+//#define enablePFields false
+//#endif
+
+#ifndef skipPrintSteps
+#define skipPrintSteps 1
+#endif
+
 
 #endif

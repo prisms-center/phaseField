@@ -1,36 +1,69 @@
-//Parameter list for the Allen-Cahn problem
+// Parameter list for the Allen-Cahn example application
+// All strictly numerical parameters should be set in this file
 
-//define problem dimensions
+// =================================================================================
+// Set the number of dimensions (1, 2, or 3 for a 1D, 2D, or 3D calculation)
+// =================================================================================
 #define problemDIM 2
+
+// =================================================================================
+// Set the length of the domain in all three dimensions
+// =================================================================================
+// Each axes spans from zero to the specified length
 #define spanX 100.0
 #define spanY 100.0
 #define spanZ 100.0
 
-//define mesh parameters
+// =================================================================================
+// Set the element parameters
+// =================================================================================
+// The number of elements in each direction is 2^(refineFactor) * subdivisions
+// For optimal performance, use refineFactor primarily to determine the element size
+#define subdivisionsX 1
+#define subdivisionsY 1
+#define subdivisionsZ 1
 #define refineFactor 7
+
+// Set the polynomial degree of the element (suggested values: 1 or 2)
 #define finiteElementDegree 1
 
-//define number of fields in the problem
-//n
-#define numFields 1
-
-//define time step parameters
+// =================================================================================
+// Set the time step parameters
+// =================================================================================
+// The size of the time step
 #define timeStep 1.0e-3
+
+// The simulation ends when either timeFinal is reached or the number of time steps
+// equals timeIncrements
 #define timeFinal 20.0
-#define timeIncrements 200000
+#define timeIncrements 20000
 
-//define results output parameters
+// =================================================================================
+// Set the output parameters
+// =================================================================================
+// Each field in the problem will be output is writeOutput is set to "true"
 #define writeOutput true
-#define skipOutputSteps 1000
 
-//define Allen-Cahn parameters
-#define MnV 1.0 
-#define KnV 4.0 
+// Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
+// or "LIST")
+#define outputCondition "EQUAL_SPACING"
 
-//define free energy expressions
-#define fnV (4.0*n*(n-1.0)*(n-0.5))
+// Number of times the program outputs the fields (total number for "EQUAL_SPACING"
+// and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
+#define numOutputs 10
 
-//define required residuals
-#define rnV  (n-constV(timeStep*MnV)*fnV)
-#define rnxV (constV(-timeStep*KnV*MnV)*nx)
+// User-defined list of time steps where the program should output. Only used if
+// outputCondition is "LIST"
+#define outputList {}
+
+// =================================================================================
+// Set the flag determining if the total free energy is calculated for each output
+// =================================================================================
+#define calcEnergy true
+
+
+
+
+
+
 
