@@ -4,7 +4,7 @@
 #hdiutil attach dealii-8.4.1.dmg
 #./deal.II
 #sudo apt-get install libdeal.ii-dev libdeal.ii-doc g++ cmake 
-apt-get cmake
+
 
 git clone https://github.com/dealii/dealii
 mkdir build
