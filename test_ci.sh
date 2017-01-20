@@ -6,9 +6,9 @@
 #sudo apt-get install libdeal.ii-dev libdeal.ii-doc g++ cmake 
 
 
-git clone https://github.com/dealii/dealii
-mkdir build
-cd build
-cmake -DCMAKE_INSTALL_PREFIX=. ../dealii
-make -j2 install
-make test
+#git clone https://github.com/dealii/dealii
+#mkdir build
+#cd build
+#cmake -DCMAKE_INSTALL_PREFIX=. ../dealii
+#make -j2 install
+#make test
