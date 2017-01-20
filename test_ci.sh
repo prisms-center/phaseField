@@ -10,5 +10,5 @@ git clone https://github.com/dealii/dealii
 mkdir build
 cd build
 cmake -DCMAKE_INSTALL_PREFIX=. ../dealii
-make install
+make -j2 install
 make test
