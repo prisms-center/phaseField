@@ -10,7 +10,7 @@ cache:
 
 before_install:
   - sudo apt-get install libcr-dev mpich2 mpich2-doc
-  - sudo apt-get install libp4est-dev
+  - sudo apt-get install p4est
 #  - test -n $CC  && unset CC
 #  - test -n $CXX && unset CXX
   
