@@ -2,6 +2,12 @@ sudo: required
 dist: trusty
 language: cpp
 
+cache:
+  bundler: true
+  directories:
+    - dealii
+    - build
+
 #before_install:
 #  - test -n $CC  && unset CC
 #  - test -n $CXX && unset CXX
