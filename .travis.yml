@@ -8,7 +8,9 @@ cache:
     - dealii
     - build
 
-#before_install:
+before_install:
+  - sudo apt-get install libcr-dev mpich2 mpich2-doc
+  - sudo apt-get install libp4est-1.1
 #  - test -n $CC  && unset CC
 #  - test -n $CXX && unset CXX
   
