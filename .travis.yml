@@ -2,4 +2,16 @@ sudo: required
 dist: trusty
 language: cpp
 
+#before_install:
+#  - test -n $CC  && unset CC
+#  - test -n $CXX && unset CXX
+  
+#install:
+#  - git clone https://github.com/dealii/dealii
+#  - mkdir build
+#  - cd build
+#  - cmake -DCMAKE_INSTALL_PREFIX=. ../dealii
+#  - make -j2 install
+#  - make test
+
 script: bash test_ci.sh
