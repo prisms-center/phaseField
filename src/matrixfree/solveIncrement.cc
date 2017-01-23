@@ -110,7 +110,7 @@ void MatrixFreePDE<dim>::solveIncrement(){
 	  }
     
 	  //check if solution is nan
-	  if (!numbers::is_finite(solutionSet[fieldIndex]->norm_sqr())){
+	  if (!numbers::is_finite(solutionSet[fieldIndex]->l2_norm())){
 		  sprintf(buffer, "ERROR: field '%s' solution is NAN. exiting.\n\n",
 				  fields[fieldIndex].name.c_str());
 		  pcout<<buffer;
