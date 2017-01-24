@@ -1,19 +1,6 @@
 var searchData=
 [
-  ['value_5fresidual',['value_residual',['../classgeneralized_problem.html#acbf39543fad28184ea1e5647b7bf18d8',1,'generalizedProblem']]],
-  ['value_5fresidual_5flhs',['value_residual_LHS',['../classgeneralized_problem.html#acf2b8397bee6bcf56f8909d90bdedb38',1,'generalizedProblem']]],
-  ['values',['values',['../class_initial_condition.html#abf4052875ab2032713a66df55c59752c',1,'InitialCondition']]],
-  ['valuesdirichletset',['valuesDirichletSet',['../class_matrix_free_p_d_e.html#ab9ab33bb9925f1062ac082d1b495f2c1',1,'MatrixFreePDE']]],
-  ['var_5fbc_5ftype',['var_BC_type',['../classvar_b_cs.html#a93778fab4ee5315f9d00b2e8c1217442',1,'varBCs']]],
-  ['var_5fbc_5fval',['var_BC_val',['../classvar_b_cs.html#a4d89f4b20bed4bd66ef1d9245ef8ab49',1,'varBCs']]],
-  ['var_5feq_5ftype',['var_eq_type',['../classgeneralized_problem.html#a888c571473b486841609e46c05a9fa90',1,'generalizedProblem']]],
-  ['var_5fname',['var_name',['../classgeneralized_problem.html#a77d44a8212929c63efba720ee9078881',1,'generalizedProblem']]],
-  ['var_5ftype',['var_type',['../classgeneralized_problem.html#a139c43ae51b022f2fd5b5175e524063c',1,'generalizedProblem']]],
-  ['varinfolistlhs',['varInfoListLHS',['../classgeneralized_problem.html#ab9fa9ad09e20ba291decf8451e9dc8b2',1,'generalizedProblem']]],
-  ['varinfolistrhs',['varInfoListRHS',['../classgeneralized_problem.html#a62dfc530ff772dbebcc49291e17456aa',1,'generalizedProblem']]],
-  ['vectorgrad',['vectorGrad',['../classmodel_variable.html#ae0523300cedf0e0bcf94331cd57d84f1',1,'modelVariable']]],
-  ['vectorgradresidual',['vectorGradResidual',['../classmodel_residual.html#aa160ac83f8d4dc9583d3acbd6c6567d9',1,'modelResidual']]],
-  ['vectorhess',['vectorHess',['../classmodel_variable.html#aa036cee2cf0538d4f181690ceef75f41',1,'modelVariable']]],
-  ['vectorvalue',['vectorValue',['../classmodel_variable.html#a367680daa2b87dbddd5ed49d87064dde',1,'modelVariable']]],
-  ['vectorvalueresidual',['vectorValueResidual',['../classmodel_residual.html#a14ac651468b6898bbef1ee036e0ec3bf',1,'modelResidual']]]
+  ['totalincrements',['totalIncrements',['../class_matrix_free_p_d_e.html#ad78b45bc2009082d143223d405ec5cbd',1,'MatrixFreePDE']]],
+  ['triangulation',['triangulation',['../class_matrix_free_p_d_e.html#ae7b20f637aa79d90bef2db16d9319065',1,'MatrixFreePDE']]],
+  ['type',['type',['../class_field.html#a3cb597ffaa5711aebc2062073daca25b',1,'Field']]]
 ];

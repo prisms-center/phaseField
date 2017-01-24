@@ -123,8 +123,14 @@ Macros</h2></td></tr>
 <tr class="separator:aa577dcdb04cedabb1e4eed771df59032"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e0c9d336389e97f2526f080cf895055"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cahn_hilliard_2parameters_8h.html#a0e0c9d336389e97f2526f080cf895055">writeOutput</a>&#160;&#160;&#160;true</td></tr>
 <tr class="separator:a0e0c9d336389e97f2526f080cf895055"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8cf4158da8d17bc16eb0b3801f7eedc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cahn_hilliard_2parameters_8h.html#ac8cf4158da8d17bc16eb0b3801f7eedc">skipOutputSteps</a>&#160;&#160;&#160;1000</td></tr>
-<tr class="separator:ac8cf4158da8d17bc16eb0b3801f7eedc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a116ad73fe4a6adafcf1624c050c9769f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cahn_hilliard_2parameters_8h.html#a116ad73fe4a6adafcf1624c050c9769f">outputCondition</a>&#160;&#160;&#160;&quot;EQUAL_SPACING&quot;</td></tr>
+<tr class="separator:a116ad73fe4a6adafcf1624c050c9769f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a536aed0f4d34b51456419990f79e32c1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cahn_hilliard_2parameters_8h.html#a536aed0f4d34b51456419990f79e32c1">numOutputs</a>&#160;&#160;&#160;10</td></tr>
+<tr class="separator:a536aed0f4d34b51456419990f79e32c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca4ac8bcad988e92b7c2ae5d6b3a3107"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cahn_hilliard_2parameters_8h.html#aca4ac8bcad988e92b7c2ae5d6b3a3107">outputList</a>&#160;&#160;&#160;{}</td></tr>
+<tr class="separator:aca4ac8bcad988e92b7c2ae5d6b3a3107"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63477dc9da59481ff2b1d689f2e0f8f6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cahn_hilliard_2parameters_8h.html#a63477dc9da59481ff2b1d689f2e0f8f6">skipPrintSteps</a>&#160;&#160;&#160;10</td></tr>
+<tr class="separator:a63477dc9da59481ff2b1d689f2e0f8f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a446e00dd3b3486b4705599f8b71e02"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cahn_hilliard_2parameters_8h.html#a5a446e00dd3b3486b4705599f8b71e02">calcEnergy</a>&#160;&#160;&#160;false</td></tr>
 <tr class="separator:a5a446e00dd3b3486b4705599f8b71e02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -147,6 +153,42 @@ Macros</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">#define finiteElementDegree&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a536aed0f4d34b51456419990f79e32c1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define numOutputs&#160;&#160;&#160;10</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a116ad73fe4a6adafcf1624c050c9769f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define outputCondition&#160;&#160;&#160;&quot;EQUAL_SPACING&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aca4ac8bcad988e92b7c2ae5d6b3a3107"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define outputList&#160;&#160;&#160;{}</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -177,12 +219,12 @@ Macros</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ac8cf4158da8d17bc16eb0b3801f7eedc"></a>
+<a class="anchor" id="a63477dc9da59481ff2b1d689f2e0f8f6"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define skipOutputSteps&#160;&#160;&#160;1000</td>
+          <td class="memname">#define skipPrintSteps&#160;&#160;&#160;10</td>
         </tr>
       </table>
 </div><div class="memdoc">
