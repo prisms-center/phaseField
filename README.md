@@ -3,6 +3,7 @@ PRISMS-PF
 <B>Code repository:</B> https://github.com/prisms-center/phaseField <br>
 <B>Code documentation:</B> https://goo.gl/00y23N <br>
 <B>User registration link:</B> http://goo.gl/forms/GXo7Im8p2Y
+<B>User discussion group:</B> https://groups.google.com/forum/#!forum/prisms-pf-users
 
 <B>Version information:</B>
 
@@ -100,14 +101,11 @@ Since PRISMS-PF is still under active development,
   GNU Lesser General Public License (LGPL). Please see the file
   LICENSE for details.
 
-<B>Mailing Lists:</B>
-  
- + prismsphaseField.users@umich.edu	
- + prismsphaseField.dev@umich.edu  
-
 <B>Further information, questions, issues and bugs:</B>
+  
+ + prisms-pf-users@googlegroups.com (user forum)
+ + prismsphaseField.dev@umich.edu  (developer email list)
 
-  Contact the developers at prismsphaseField.dev@umich.edu  
 
 
 

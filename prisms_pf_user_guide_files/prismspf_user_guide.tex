@@ -77,7 +77,7 @@ PRISMS-PF is an open-source finite element simulation code with a focus on solvi
 
 This user guide starts with instructions for downloading PRISMS-PF and install the necessary prerequisites. Next are instructions for running the built-in example applications and visualizing the results. A detailed look at the input files follows, and the guide finishes with some instructions on how to create your own PRISMS-PF applications.
 
-If you run into any issues not covered by this guide, or have any questions, please send an email to the PRISMS-PF email list: prismsphaseField.users@umich.edu. If you'd like to contact the PRISMS-PF developers directly, send an email to: prismsphaseField.dev@umich.edu.
+If you run into any issues not covered by this guide, or have any questions, please send an email to the PRISMS-PF email list: prisms-pf-users@googlegroups.com. If you'd like to contact the PRISMS-PF developers directly, send an email to: prismsphaseField.dev@umich.edu.
 
 PRISMS-PF was developed as part of the PRedictive Integrated Structural Materials Science (PRISMS) Center at University of Michigan which is supported by the U.S. Department of Energy (DOE), Office of Basic Energy Sciences, Division of Materials Sciences and Engineering under Award \#DE-SC0008637.
 
@@ -236,7 +236,7 @@ Environment variables are erased when you close your shell. To have this path se
 If CMake cannot successfully detect a C++ compiler, it will generate an error message. The most common cause for this is that the machine runs the Mac OS operating system with an outdated version of the Clang compiler. Upgrading your OS to version 10.11 or newer, updating Xcode, and (re)installing the Xcode command line tools may help. Alternatively, you can install a certain version of the deal.II package that was developed to sidestep this issue:
 \\https://github.com/dealii/dealii/releases/download/v8.3.0/dealii-8.3.0.nocxx14.dmg\\
 
-Most of issues users have had are during the CMake step. If the fixes suggested above don't work for your or you have an issue not covered by this list, please contact the PRISMS-PF users list: prismsphasefield.users@umich.edu. If you are not already on the list, please send an email with ``SUBSCRIBE'' in the subject line to the developers list: prismsphasefield.dev@umich.edu. As users come across new issues, we will add them (and suggested fixes) to this section.
+Most of issues users have had are during the CMake step. If the fixes suggested above don't work for your or you have an issue not covered by this list, please contact the PRISMS-PF users list: prisms-pf-users@googlegroups.com. If you are not already on the list, please submit a join request through Google Groups or send an email with ``SUBSCRIBE'' in the subject line to prismsphasefield.dev@umich.edu. As users come across new issues, we will add them (and suggested fixes) to this section.
 
 \subsection{Visualizing the Results of the Simulation}
 Once you have successfully run a simulation, you will likely want to visualize the results.  PRISMS-PF output files are generated in the popular VTK format, as a series of *.vtu and *.pvtu files. Two common open-soure, multi-platform visualization tools for these types of files are VisIt and ParaView. Instructions for downloading this software can be found at their respective websites:
