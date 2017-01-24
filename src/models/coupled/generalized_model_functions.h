@@ -623,9 +623,7 @@ void generalizedProblem<dim>::adaptiveRefine(unsigned int currentIncrement){
 
 	if ( (currentIncrement == 0) ){
 		for (unsigned int remesh_index=0; remesh_index < (maxRefinementLevel-minRefinementLevel); remesh_index++){
-			  std::cout << "before refine!" << std::endl;
 			this->refineMesh(currentIncrement);
-			std::cout << "after refine!" << std::endl;
 		}
 	}
 	else if ( (currentIncrement%skipRemeshingSteps==0) ){
@@ -1148,7 +1146,7 @@ void generalizedProblem<dim>::setPeriodicity(){
 	}
 
 	this->triangulation.add_periodicity(periodicity_vector);
-	std::cout << "periodic facepairs: " << periodicity_vector.size() << std::endl;
+	this->pcout << "periodic facepairs: " << periodicity_vector.size() << std::endl;
 }
 
 // Set constraints to enforce periodic boundary conditions

@@ -9,7 +9,9 @@ Added functionality:
   the value of that variable to zero at the origin.
 - Added more options for controlling the spacing between outputs. Users can now choose between equal spacing, log spacing, and a specified 
   number of outputs per decade or they can input a list of time steps at which to output.
+- Added the ability to control how often the progress of a run prints to the screen. Set “skipPrintSteps” in parameters.h.
 - Ability to change the output file format between “.vtu” and “.vtk”. Used in the application allenCahn_pfield.
+- When mesh adaptivity is turned on, the mesh will adapt before the first time step. 
 
 Changes to the pre-built applications:
 - New application: singlePrecipitateKKS is a 3D simulation of 1/8 of a precipitate. Governing equations are similar to precipitateEvolution
@@ -22,6 +24,8 @@ Changes to the pre-built applications:
 - Moduli changed in precipitateEvolution so that the evolution is dominated by the misfit, not the interfacial energy.
 
 Bug fixes:
+- Fixed constraint bug for purely elliptic problems. The solution in the domain was correct, but the boundary value for Dirichlet BCs was
+  double what it was supposed to be.
 - Removed unnecessary LAPACK check in the CMakeLists.txt files.
 
 Other changes:
@@ -49,7 +53,7 @@ Version 0.9.3:
 Patch to version 0.9.2, released in July 2016. Most changes are specific to coupled Cahn-Hilliard-Allen-Cahn-Mechanics calculations.
 
 Bug fixes:
-- Made necessary fixes for compatability Deal.II v8.4.
+- Made necessary fixes for compatibility Deal.II v8.4.
 
 Added functionality:
 - Support for concentration-dependent stress-free transformation strains for coupled Cahn-Hilliard-Allen-Cahn-Mechanics calculations.
