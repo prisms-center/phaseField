@@ -35,6 +35,7 @@ Other changes:
 - Installation instructions updated, both in the README and in the user guide.
 - The “init” function was split into an “init” function and a “reinit” function. The latter is used for reinitializing the system for 
   adaptive meshing.
+- Removed call of “norm_sqr”, which no longer exists in deal.II v8.5.
 
 Known issues:
 - For some compilers that lack full C++11 support (including the Intel compilers on the Stampede cluster), errors are generated because 
