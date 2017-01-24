@@ -9,7 +9,9 @@ Added functionality:
   the value of that variable to zero at the origin.
 - Added more options for controlling the spacing between outputs. Users can now choose between equal spacing, log spacing, and a specified 
   number of outputs per decade or they can input a list of time steps at which to output.
+- Added the ability to control how often the progress of a run prints to the screen. Set “skipPrintSteps” in parameters.h.
 - Ability to change the output file format between “.vtu” and “.vtk”. Used in the application allenCahn_pfield.
+- When mesh adaptivity is turned on, the mesh will adapt before the first time step. 
 
 Changes to the pre-built applications:
 - New application: singlePrecipitateKKS is a 3D simulation of 1/8 of a precipitate. Governing equations are similar to precipitateEvolution
@@ -17,19 +19,27 @@ Changes to the pre-built applications:
 - New application: allenCahn_pfield uses the PField capability of PRISMS IntegrationTools to load the initial condition from .vtk files
 - New application: precipitateEvolution_pfunction uses the PFunction capability of PRISMS IntegrationTools to load parameters (both 
   and functions) into the code.
+- New applications: CHiMaD_benchmark1a and CHiMaD_benchmark2a are phase field benchmark problems for spinodal decomposition and Ostwald
+  ripening, respectively. More about the benchmark problems can be found at: https://pages.nist.gov/chimad-phase-field/
 - Added formulation files for the CHAC_anisotropy and CHAC_anisotropyRegularized applications.
 - Boundary conditions for grainGrowth changed to periodic.
+- Boundary condition for the mechanics application changed for higher deformation.
 - Moduli changed in precipitateEvolution so that the evolution is dominated by the misfit, not the interfacial energy.
 
 Bug fixes:
+- Fixed constraint bug for purely elliptic problems. The solution in the domain was correct, but the boundary value for Dirichlet BCs was
+  double what it was supposed to be.
 - Removed unnecessary LAPACK check in the CMakeLists.txt files.
 
 Other changes:
 - Installation instructions updated, both in the README and in the user guide.
+- The “init” function was split into an “init” function and a “reinit” function. The latter is used for reinitializing the system for 
+  adaptive meshing.
+- Removed call of “norm_sqr”, which no longer exists in deal.II v8.5.
 
 Known issues:
-- For some compilers (including the Intel compilers on the Stampede cluster), errors are generated because we initialize some vectors with
-  C-style arrays. This will be fixed in the near future. 
+- For some compilers that lack full C++11 support (including the Intel compilers on the Stampede cluster), errors are generated because 
+  we initialize some vectors with C-style arrays. This will be fixed in the near future. 
   
 ====================
 Version 1.0:
@@ -49,7 +59,7 @@ Version 0.9.3:
 Patch to version 0.9.2, released in July 2016. Most changes are specific to coupled Cahn-Hilliard-Allen-Cahn-Mechanics calculations.
 
 Bug fixes:
-- Made necessary fixes for compatability Deal.II v8.4.
+- Made necessary fixes for compatibility Deal.II v8.4.
 
 Added functionality:
 - Support for concentration-dependent stress-free transformation strains for coupled Cahn-Hilliard-Allen-Cahn-Mechanics calculations.

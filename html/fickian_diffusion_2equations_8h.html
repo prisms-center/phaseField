@@ -117,13 +117,13 @@ Macros</h2></td></tr>
 <tr class="separator:a5ba07955f021b138b3b815b426f9e7e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad510e59cd74650559919a6e1b9bf6f6e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fickian_diffusion_2equations_8h.html#ad510e59cd74650559919a6e1b9bf6f6e">DcV</a>&#160;&#160;&#160;0.01</td></tr>
 <tr class="separator:ad510e59cd74650559919a6e1b9bf6f6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6c95b6d4acf646efc92989c3e67fd66"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fickian_diffusion_2equations_8h.html#ac6c95b6d4acf646efc92989c3e67fd66">exp1</a>&#160;&#160;&#160;(std::sqrt(x*x+y*y)&lt;<a class="el" href="precipitate_evolution_2parameters_8h.html#a5aacbfdd02d16e8bb093059b0b5996fc">spanX</a>/10)</td></tr>
+<tr class="memitem:ac6c95b6d4acf646efc92989c3e67fd66"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fickian_diffusion_2equations_8h.html#ac6c95b6d4acf646efc92989c3e67fd66">exp1</a>&#160;&#160;&#160;(std::sqrt(x*x+y*y)&lt;<a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a5aacbfdd02d16e8bb093059b0b5996fc">spanX</a>/10)</td></tr>
 <tr class="separator:ac6c95b6d4acf646efc92989c3e67fd66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37de26c77e55b59547d30d53b114b468"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fickian_diffusion_2equations_8h.html#a37de26c77e55b59547d30d53b114b468">exp2</a>&#160;&#160;&#160;(t&lt;<a class="el" href="precipitate_evolution_2parameters_8h.html#af88b809236daa3e5e2a276bc8adaeff5">timeFinal</a>/4)</td></tr>
+<tr class="memitem:a37de26c77e55b59547d30d53b114b468"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fickian_diffusion_2equations_8h.html#a37de26c77e55b59547d30d53b114b468">exp2</a>&#160;&#160;&#160;(t&lt;<a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#af88b809236daa3e5e2a276bc8adaeff5">timeFinal</a>/4)</td></tr>
 <tr class="separator:a37de26c77e55b59547d30d53b114b468"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a031e490658682f5af3652867cc81c435"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fickian_diffusion_2equations_8h.html#a031e490658682f5af3652867cc81c435">rcV</a>&#160;&#160;&#160;(c + <a class="el" href="precipitate_evolution_2parameters_8h.html#ad22563b012dd3c292e08db4c4b178f69">timeStep</a>*<a class="el" href="matrix_free_p_d_e_8h.html#a62aa50a3eaa9e014dfdf6ce8c33c95fe">subdomain</a>(<a class="el" href="fickian_diffusion_2equations_8h.html#ac6c95b6d4acf646efc92989c3e67fd66">exp1</a> &amp;&amp; <a class="el" href="fickian_diffusion_2equations_8h.html#a37de26c77e55b59547d30d53b114b468">exp2</a>, <a class="el" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(1.0)) )</td></tr>
+<tr class="memitem:a031e490658682f5af3652867cc81c435"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fickian_diffusion_2equations_8h.html#a031e490658682f5af3652867cc81c435">rcV</a>&#160;&#160;&#160;(c + <a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#ad22563b012dd3c292e08db4c4b178f69">timeStep</a>*<a class="el" href="matrix_free_p_d_e_8h.html#a62aa50a3eaa9e014dfdf6ce8c33c95fe">subdomain</a>(<a class="el" href="fickian_diffusion_2equations_8h.html#ac6c95b6d4acf646efc92989c3e67fd66">exp1</a> &amp;&amp; <a class="el" href="fickian_diffusion_2equations_8h.html#a37de26c77e55b59547d30d53b114b468">exp2</a>, <a class="el" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(1.0)) )</td></tr>
 <tr class="separator:a031e490658682f5af3652867cc81c435"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a282e86016dd726dccae6085834af9db2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fickian_diffusion_2equations_8h.html#a282e86016dd726dccae6085834af9db2">rcxV</a>&#160;&#160;&#160;(<a class="el" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(-<a class="el" href="fickian_diffusion_2equations_8h.html#ad510e59cd74650559919a6e1b9bf6f6e">DcV</a>*<a class="el" href="precipitate_evolution_2parameters_8h.html#ad22563b012dd3c292e08db4c4b178f69">timeStep</a>)*cx)</td></tr>
+<tr class="memitem:a282e86016dd726dccae6085834af9db2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fickian_diffusion_2equations_8h.html#a282e86016dd726dccae6085834af9db2">rcxV</a>&#160;&#160;&#160;(<a class="el" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(-<a class="el" href="fickian_diffusion_2equations_8h.html#ad510e59cd74650559919a6e1b9bf6f6e">DcV</a>*<a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#ad22563b012dd3c292e08db4c4b178f69">timeStep</a>)*cx)</td></tr>
 <tr class="separator:a282e86016dd726dccae6085834af9db2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
@@ -144,7 +144,7 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define exp1&#160;&#160;&#160;(std::sqrt(x*x+y*y)&lt;<a class="el" href="precipitate_evolution_2parameters_8h.html#a5aacbfdd02d16e8bb093059b0b5996fc">spanX</a>/10)</td>
+          <td class="memname">#define exp1&#160;&#160;&#160;(std::sqrt(x*x+y*y)&lt;<a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a5aacbfdd02d16e8bb093059b0b5996fc">spanX</a>/10)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -156,7 +156,7 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define exp2&#160;&#160;&#160;(t&lt;<a class="el" href="precipitate_evolution_2parameters_8h.html#af88b809236daa3e5e2a276bc8adaeff5">timeFinal</a>/4)</td>
+          <td class="memname">#define exp2&#160;&#160;&#160;(t&lt;<a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#af88b809236daa3e5e2a276bc8adaeff5">timeFinal</a>/4)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -240,7 +240,7 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define rcV&#160;&#160;&#160;(c + <a class="el" href="precipitate_evolution_2parameters_8h.html#ad22563b012dd3c292e08db4c4b178f69">timeStep</a>*<a class="el" href="matrix_free_p_d_e_8h.html#a62aa50a3eaa9e014dfdf6ce8c33c95fe">subdomain</a>(<a class="el" href="fickian_diffusion_2equations_8h.html#ac6c95b6d4acf646efc92989c3e67fd66">exp1</a> &amp;&amp; <a class="el" href="fickian_diffusion_2equations_8h.html#a37de26c77e55b59547d30d53b114b468">exp2</a>, <a class="el" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(1.0)) )</td>
+          <td class="memname">#define rcV&#160;&#160;&#160;(c + <a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#ad22563b012dd3c292e08db4c4b178f69">timeStep</a>*<a class="el" href="matrix_free_p_d_e_8h.html#a62aa50a3eaa9e014dfdf6ce8c33c95fe">subdomain</a>(<a class="el" href="fickian_diffusion_2equations_8h.html#ac6c95b6d4acf646efc92989c3e67fd66">exp1</a> &amp;&amp; <a class="el" href="fickian_diffusion_2equations_8h.html#a37de26c77e55b59547d30d53b114b468">exp2</a>, <a class="el" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(1.0)) )</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -252,7 +252,7 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define rcxV&#160;&#160;&#160;(<a class="el" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(-<a class="el" href="fickian_diffusion_2equations_8h.html#ad510e59cd74650559919a6e1b9bf6f6e">DcV</a>*<a class="el" href="precipitate_evolution_2parameters_8h.html#ad22563b012dd3c292e08db4c4b178f69">timeStep</a>)*cx)</td>
+          <td class="memname">#define rcxV&#160;&#160;&#160;(<a class="el" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(-<a class="el" href="fickian_diffusion_2equations_8h.html#ad510e59cd74650559919a6e1b9bf6f6e">DcV</a>*<a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#ad22563b012dd3c292e08db4c4b178f69">timeStep</a>)*cx)</td>
         </tr>
       </table>
 </div><div class="memdoc">

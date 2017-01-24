@@ -95,7 +95,9 @@ $ vi ~/.profile
 Deal.II can be downloaded at https://www.dealii.org/download.html, which also has instructions. The deal.II installation process depends on your operating system. PRISMS-PF has been tested with Deal.II versions 8.3.0 through 8.4.1 (and the version 8.5 pre-release as of 1/16/2017). We recommend using deal.II 8.4.1, if possible.
 
 \subsection{Installing deal.II for Mac OS X}
-A binary package for version 8.4.1 is available at https://www.dealii.org/download.html. If needed, binary packages for other versions are available at https://github.com/dealii/dealii/releases. The binary package includes all the libraries that you need (excluding CMake). To install deal.II open the .dmg file and drag ``deal.II.app'' into your Applications folder. Then, open ``deal.II.app'', which will open a Terminal window and set the necessary environment variables. 
+A binary package for version 8.4.1 is available at https://www.dealii.org/download.html. If needed, binary packages for other versions are available at https://github.com/dealii/dealii/releases. The binary package includes all the libraries that you need (excluding CMake). To install deal.II open the .dmg file and drag ``deal.II.app'' into your Applications folder. Then, open ``deal.II.app'', which will open a Terminal window and set the necessary environment variables. You may need to modify your security settings so that your operating system will let you open the application (in System Preferences, select Security $\&$ Privacy, then under the general tab choose to allow apps downloaded from anywhere; don't click ``Open deal.II.app anyway'', we have found that doing so doesn't actually launch deal.II.app). 
+
+In some cases, deal.II.app will not open, possibly freezing at the ``Verifying...'' stage. If this happens, right click on it and select ``Show Package Contents''. Then go to ``/Contents/Resources/bin/'' and launch ``dealii-terminal''. This should launch the Terminal window that sets the environment variables.
 
 We have found that for some older versions of Mac OS are incompatible with deal.II version 8.4.1 (due to the version of the Clang compiler that is installed by default). In those cases we recommend downloading this version 8.3.0 package:
 \\ https://github.com/dealii/dealii/releases/download/v8.3.0/dealii-8.3.0.nocxx14.dmg.
@@ -106,13 +108,13 @@ Unfortunately, on a Linux machine you will likely have to compile and install de
 Below we list instructions for installing deal.II and its prerequisites both manually and using candi, an automatic deal.II installation script. For now, we recomend the traditional route, because we haven't been able to get candi to consistently work.
 
 \subsubsection{Traditional Installation (Recommended)}
-Before building deal.II, you will need to install two libraries, MPI and p4est. Many computing clusters already have these libraries installed. MPI libraries (such as MPICH2) are often available through package managers (e.g. yum, apt, pkg$\_$add, port, brew), installing it using your package manager of choice is likely the simplest option. If not, you can find binaries and the source code at http://www.mpich.org/downloads/, as well as instructions for installation. The p4est library may also be available through your package manager. If not, you can download the latest release tarball at http://www.p4est.org/. To install, unzip the archive, move to the p4est root directory and enter the following commands at the command line:
+Before building deal.II, you will need to install two libraries, MPI and p4est. Make sure you have both libraries installed before installing deal.II, or else you will have to reinstall deal.II! Many computing clusters already have these libraries installed. MPI libraries (such as MPICH2) are often available through package managers (e.g. yum, apt, pkg$\_$add, port, brew), installing it using your package manager of choice is likely the simplest option. If not, you can find binaries and the source code at http://www.mpich.org/downloads/, as well as instructions for installation. The p4est library may also be available through your package manager. If not, you can download the latest release tarball at http://www.p4est.org/. To install, unzip the archive, move to the p4est root directory and enter the following commands at the command line:
 \begin{lstlisting}
 $ ./configure --enable-mpi; make; make install
 \end{lstlisting}
 Users have found that this approach works better than the setup script ``p4est-setup.sh'' that is on the deal.ii website. More detailed installation instructions can be found in the ``INSTALL'' and ``README'' files in the p4est root directory.
 
-%With MPI and p4est installed, you are ready to install deal.II. Open the archive you downloaded from the deal.II website. From the root deal.II directory enter the following commands:
+With MPI and p4est installed, you are ready to install deal.II. Open the archive you downloaded from the deal.II website. From the root deal.II directory enter the following commands:
 \begin{lstlisting}
 $ mkdir build
 $ cd build
@@ -150,6 +152,8 @@ After deal.II and PRISMS-PF are downloaded, you can run the pre-built PRISMS-PF 
 \item CHAC\_anisotropyRegularized: Like CHAC\_anisotropy, but with a regularization term to permit strongly anisotropic interfacial energy. (2D)
 \item fickianDiffusion: An implementation of the diffusion equation with a time-dependent source term. (2D)
 \item mechanics: An implementation of linear elasticity for a material in uniaxial tension. (3D)
+\item CHiMaD\_benchmark1a: An implementation of the CHiMaD spinodal decomposition benchmark problem. (2D)
+\item CHiMaD\_benchmark2a: An implementation of the CHiMaD Ostwald ripening benchmark problem. (2D)
 \item eshelbyInclusion: An implementation of linear elasticity for a spherical inclusion. (3D)
 \item grainGrowth: An implementation of ten coupled Allen-Cahn equations simulating grain growth in two dimensions. (2D)
 \item precipiateEvolution: An implementation of the coupled Cahn-Hilliard/Allen-Cahn/Linear Elasticity equations often used in phase field simulation of precipitate evolution. (2D)
@@ -392,6 +396,8 @@ All of the purely numerical parameters for an application are given in the file 
 // outputCondition is "LIST"
 #define outputList {}
 
+// Status is printed to the screen every skipPrintSteps
+#define skipPrintSteps 10
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output
@@ -412,7 +418,7 @@ In the fifth section of the parameters file, the user sets parameters related to
 \begin{equation}
 10^{n/numOutputs \log(totalIncrements)}
 \end{equation}
-rounded to the nearest integer, where \emph{n} is the output number, and \emph{totalIncrements} is the total number of time steps. For ``N\_PER\_DECADE'', the program will output \emph{numOutput} times for each power of 10 after outputting the initial conditions. For example, if \emph{numOutput} is 1, the program will output at every power of 10 (i.e. 1, 10, 100, 1000, ...). If \emph{numOutput} is 10, the program will output ten times for every power of 10 (i.e. 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, ...). For ``LIST'', the user supplies a list of time steps where the program should output using the parameter \emph{outputList}. \emph{outputList} should be a bracketed, comma-separated list and is ignored for any type of output spacing other than ``LIST''.
+rounded to the nearest integer, where \emph{n} is the output number, and \emph{totalIncrements} is the total number of time steps. For ``N\_PER\_DECADE'', the program will output \emph{numOutput} times for each power of 10 after outputting the initial conditions. For example, if \emph{numOutput} is 1, the program will output at every power of 10 (i.e. 1, 10, 100, 1000, ...). If \emph{numOutput} is 10, the program will output ten times for every power of 10 (i.e. 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, ...). For ``LIST'', the user supplies a list of time steps where the program should output using the parameter \emph{outputList}. \emph{outputList} should be a bracketed, comma-separated list and is ignored for any type of output spacing other than ``LIST''. The final parameter in this section, \emph{skipPrintSteps}, controls how often the status of the simulation prints to the screen. Setting \emph{skipPrintSteps} to 1 will cause the simulation to print an update every time step; setting it to two will cause the simulation to print out every other time step, at 10 it will print every 10 time steps, etc.
 
 In the sixth and final section of the parameters file, the user sets a flag determining if the integrated free energy should be calculated whenever the code outputs the results. If \emph{calcEnergy} is ``true'', the total free energy will be written to a file names ``freeEnergy.txt.'' If not given, the default value for \emph{calcEnergy} is ``false''.
 

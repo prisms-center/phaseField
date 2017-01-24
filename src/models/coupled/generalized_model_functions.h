@@ -1146,7 +1146,7 @@ void generalizedProblem<dim>::setPeriodicity(){
 	}
 
 	this->triangulation.add_periodicity(periodicity_vector);
-	std::cout << "periodic facepairs: " << periodicity_vector.size() << std::endl;
+	this->pcout << "periodic facepairs: " << periodicity_vector.size() << std::endl;
 }
 
 // Set constraints to enforce periodic boundary conditions

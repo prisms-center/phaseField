@@ -83,9 +83,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="#index_e"><span>e</span></a></li>
       <li><a href="#index_f"><span>f</span></a></li>
       <li><a href="#index_g"><span>g</span></a></li>
+      <li><a href="#index_h"><span>h</span></a></li>
       <li><a href="#index_i"><span>i</span></a></li>
       <li><a href="#index_m"><span>m</span></a></li>
       <li><a href="#index_o"><span>o</span></a></li>
+      <li><a href="#index_p"><span>p</span></a></li>
       <li><a href="#index_r"><span>r</span></a></li>
       <li><a href="#index_s"><span>s</span></a></li>
       <li><a href="#index_v"><span>v</span></a></li>
@@ -190,7 +192,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <h3><a class="anchor" id="index_e"></a>- e -</h3><ul>
 <li>energyDensity()
-: <a class="el" href="classgeneralized_problem.html#ada41b86d9184b78b29db24b8bf8c6b59">generalizedProblem&lt; dim &gt;</a>
+: <a class="el" href="classgeneralized_problem.html#a13dfb29f2b80a5ed12336bd536d96f03">generalizedProblem&lt; dim &gt;</a>
 </li>
 </ul>
 
@@ -209,6 +211,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>generalizedProblem()
 : <a class="el" href="classgeneralized_problem.html#a438dbf6acba689dce8cbc67c4e94c66e">generalizedProblem&lt; dim &gt;</a>
 </li>
+<li>getComponentsWithRigidBodyModes()
+: <a class="el" href="classgeneralized_problem.html#a5e313eb446134ca55e084a67d7bc9f92">generalizedProblem&lt; dim &gt;</a>
+, <a class="el" href="class_matrix_free_p_d_e.html#a5e313eb446134ca55e084a67d7bc9f92">MatrixFreePDE&lt; dim &gt;</a>
+</li>
 <li>getEnergy()
 : <a class="el" href="class_coupled_cahn_hilliard_mechanics_problem.html#a6605a508295c300b612df0266e621256">CoupledCahnHilliardMechanicsProblem&lt; dim &gt;</a>
 , <a class="el" href="class_coupled_c_h_a_c_mechanics_problem.html#a6605a508295c300b612df0266e621256">CoupledCHACMechanicsProblem&lt; dim &gt;</a>
@@ -225,16 +231,29 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="class_matrix_free_p_d_e.html#afcc4fe564772a1331ffd7d603e84fc15">MatrixFreePDE&lt; dim &gt;</a>
 , <a class="el" href="class_mechanics_problem.html#afcc4fe564772a1331ffd7d603e84fc15">MechanicsProblem&lt; dim &gt;</a>
 </li>
+<li>getOutputTimeSteps()
+: <a class="el" href="class_matrix_free_p_d_e.html#a30753e24babdd0b2f4ad8b0ab285b93e">MatrixFreePDE&lt; dim &gt;</a>
+</li>
 <li>getRHS()
 : <a class="el" href="class_allen_cahn_problem.html#a54b3ce066d6b3fa7a6d46c0badbe978b">AllenCahnProblem&lt; dim &gt;</a>
 , <a class="el" href="class_cahn_hilliard_problem.html#a54b3ce066d6b3fa7a6d46c0badbe978b">CahnHilliardProblem&lt; dim &gt;</a>
 , <a class="el" href="class_coupled_cahn_hilliard_mechanics_problem.html#a54b3ce066d6b3fa7a6d46c0badbe978b">CoupledCahnHilliardMechanicsProblem&lt; dim &gt;</a>
 , <a class="el" href="class_coupled_c_h_a_c_mechanics_problem.html#a54b3ce066d6b3fa7a6d46c0badbe978b">CoupledCHACMechanicsProblem&lt; dim &gt;</a>
-, <a class="el" href="class_coupled_c_h_a_c_problem.html#a47f83a217029f7ca8dda85b1f704fef8">CoupledCHACProblem&lt; dim &gt;</a>
+, <a class="el" href="class_coupled_c_h_a_c_problem.html#a54b3ce066d6b3fa7a6d46c0badbe978b">CoupledCHACProblem&lt; dim &gt;</a>
 , <a class="el" href="class_fickian_problem.html#a54b3ce066d6b3fa7a6d46c0badbe978b">FickianProblem&lt; dim &gt;</a>
 , <a class="el" href="classgeneralized_problem.html#a54b3ce066d6b3fa7a6d46c0badbe978b">generalizedProblem&lt; dim &gt;</a>
 , <a class="el" href="class_matrix_free_p_d_e.html#a6ad97869b76fcb6d714cec35ffc325ab">MatrixFreePDE&lt; dim &gt;</a>
 , <a class="el" href="class_mechanics_problem.html#a54b3ce066d6b3fa7a6d46c0badbe978b">MechanicsProblem&lt; dim &gt;</a>
+</li>
+<li>grad()
+: <a class="el" href="class_p_functions_1_1p_function.html#ac338318c19f4b8f31a57492cd66b7361">pFunction</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_h"></a>- h -</h3><ul>
+<li>hess()
+: <a class="el" href="class_p_functions_1_1p_function.html#a929fb192a2a224fd8dd5616c01bfaba3">pFunction</a>
 </li>
 </ul>
 
@@ -252,14 +271,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>InitialConditionC()
 : <a class="el" href="class_initial_condition_c.html#a2fcb6ca3f272e99d991f48181952e14e">InitialConditionC&lt; dim &gt;</a>
 </li>
-<li>InitialConditionN()
-: <a class="el" href="class_initial_condition_n.html#aa05e5b2e39fcf8b2306589c11968cbeb">InitialConditionN&lt; dim &gt;</a>
-</li>
 <li>InitialConditionVec()
 : <a class="el" href="class_initial_condition_vec.html#a49d217bf1f388f9b182ba30c2a337382">InitialConditionVec&lt; dim &gt;</a>
 </li>
 <li>inputBCs()
-: <a class="el" href="classgeneralized_problem.html#a19c934b7c940b07af2594cbd9bddfb34">generalizedProblem&lt; dim &gt;</a>
+: <a class="el" href="classgeneralized_problem.html#af38833983b730f4c5057d45d9a2c9e84">generalizedProblem&lt; dim &gt;</a>
 </li>
 </ul>
 
@@ -302,6 +318,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </ul>
 
 
+<h3><a class="anchor" id="index_p"></a>- p -</h3><ul>
+<li>pFunction()
+: <a class="el" href="class_p_functions_1_1p_function.html#a8270ad32daccad5deab9e79b95942535">pFunction</a>
+</li>
+</ul>
+
+
 <h3><a class="anchor" id="index_r"></a>- r -</h3><ul>
 <li>refineGrid()
 : <a class="el" href="class_matrix_free_p_d_e.html#aced905f83aaed97fde5f712b40828478">MatrixFreePDE&lt; dim &gt;</a>
@@ -309,11 +332,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>refineMesh()
 : <a class="el" href="class_matrix_free_p_d_e.html#aa0e6b87148fea8f5e43117608e04adeb">MatrixFreePDE&lt; dim &gt;</a>
 </li>
+<li>reinit()
+: <a class="el" href="class_matrix_free_p_d_e.html#a4b63dfea85f1cbc41680c0f5797d5640">MatrixFreePDE&lt; dim &gt;</a>
+</li>
 <li>residualLHS()
-: <a class="el" href="classgeneralized_problem.html#a3988a50e51f4275540101117525dc2dc">generalizedProblem&lt; dim &gt;</a>
+: <a class="el" href="classgeneralized_problem.html#ac3be7fef8c1af88cb1c325179e4dd555">generalizedProblem&lt; dim &gt;</a>
 </li>
 <li>residualRHS()
-: <a class="el" href="classgeneralized_problem.html#ae1a18316f884741b13194c7748db19f4">generalizedProblem&lt; dim &gt;</a>
+: <a class="el" href="classgeneralized_problem.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">generalizedProblem&lt; dim &gt;</a>
 </li>
 </ul>
 
@@ -321,6 +347,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h3><a class="anchor" id="index_s"></a>- s -</h3><ul>
 <li>setBCs()
 : <a class="el" href="classgeneralized_problem.html#aaf994c4b3e37676d95e1c920d896efcb">generalizedProblem&lt; dim &gt;</a>
+</li>
+<li>setPeriodicity()
+: <a class="el" href="classgeneralized_problem.html#ae1adb942478d805314e9d831738b4396">generalizedProblem&lt; dim &gt;</a>
+, <a class="el" href="class_matrix_free_p_d_e.html#ae1adb942478d805314e9d831738b4396">MatrixFreePDE&lt; dim &gt;</a>
+</li>
+<li>setPeriodicityConstraints()
+: <a class="el" href="classgeneralized_problem.html#a32776bd77cb8d2ae7a06c630e42b27c8">generalizedProblem&lt; dim &gt;</a>
+, <a class="el" href="class_matrix_free_p_d_e.html#a32776bd77cb8d2ae7a06c630e42b27c8">MatrixFreePDE&lt; dim &gt;</a>
+</li>
+<li>setRigidBodyModeConstraints()
+: <a class="el" href="class_matrix_free_p_d_e.html#ab0b6f7842b72b2d14b980250416696c3">MatrixFreePDE&lt; dim &gt;</a>
 </li>
 <li>shiftConcentration()
 : <a class="el" href="class_coupled_c_h_a_c_mechanics_problem.html#ae722ea49faa5bf1953a19f8f1e7cc880">CoupledCHACMechanicsProblem&lt; dim &gt;</a>
@@ -337,10 +374,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <h3><a class="anchor" id="index_v"></a>- v -</h3><ul>
+<li>val()
+: <a class="el" href="class_p_functions_1_1p_function.html#a7c411007aba0cfd2fe2bf6b0258f508e">pFunction</a>
+</li>
 <li>value()
 : <a class="el" href="class_initial_condition.html#af07c55aae0a37d719b86b6471bd9422f">InitialCondition&lt; dim &gt;</a>
 , <a class="el" href="class_initial_condition_c.html#af07c55aae0a37d719b86b6471bd9422f">InitialConditionC&lt; dim &gt;</a>
-, <a class="el" href="class_initial_condition_n.html#af07c55aae0a37d719b86b6471bd9422f">InitialConditionN&lt; dim &gt;</a>
 </li>
 <li>vector_value()
 : <a class="el" href="class_b_c_function.html#ae2e9e28f0704e62fa54fc7e26dfcd065">BCFunction&lt; dim &gt;</a>
@@ -348,7 +387,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="classvector_b_c_function.html#ae2e9e28f0704e62fa54fc7e26dfcd065">vectorBCFunction&lt; dim &gt;</a>
 </li>
 <li>vector_value_list()
-: <a class="el" href="classvector_b_c_function.html#a373288294d3110b14ecbe019e7b485e0">vectorBCFunction&lt; dim &gt;</a>
+: <a class="el" href="classvector_b_c_function.html#a05af2d6adccb76153e6ec0cec0cff091">vectorBCFunction&lt; dim &gt;</a>
 </li>
 <li>vectorBCFunction()
 : <a class="el" href="classvector_b_c_function.html#a9444ff93e23811b8f8b013b1d547c220">vectorBCFunction&lt; dim &gt;</a>

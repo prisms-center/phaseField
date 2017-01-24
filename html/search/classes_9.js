@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['jobidentifier',['JobIdentifier',['http://www.dealii.org/8.2.1/doxygen/deal.II/classJobIdentifier.html',1,'']]],
-  ['jumpfunction',['JumpFunction',['http://www.dealii.org/8.2.1/doxygen/deal.II/classFunctions_1_1JumpFunction.html',1,'Functions']]]
+  ['varbcs',['varBCs',['../classvar_b_cs.html',1,'']]],
+  ['variable_5finfo',['variable_info',['../structvariable__info.html',1,'']]],
+  ['vectorbcfunction',['vectorBCFunction',['../classvector_b_c_function.html',1,'']]]
 ];

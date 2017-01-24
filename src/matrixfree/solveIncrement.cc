@@ -27,8 +27,8 @@ void MatrixFreePDE<dim>::solveIncrement(){
     if (fields[fieldIndex].pdetype==PARABOLIC){
       //explicit-time step each DOF
       for (unsigned int dof=0; dof<solutionSet[fieldIndex]->local_size(); ++dof){
-	solutionSet[fieldIndex]->local_element(dof)=			\
-	  invM.local_element(dof)*residualSet[fieldIndex]->local_element(dof);
+    	  solutionSet[fieldIndex]->local_element(dof)=			\
+    			  invM.local_element(dof)*residualSet[fieldIndex]->local_element(dof);
       }
       //
       //apply constraints
@@ -66,7 +66,7 @@ void MatrixFreePDE<dim>::solveIncrement(){
 	
 			//solve
 			try{
-				dU=0;
+				dU=0.0;
 				solver.solve(*this, dU, *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
 			}
 			catch (...) {
@@ -74,7 +74,7 @@ void MatrixFreePDE<dim>::solveIncrement(){
 			}
 			*solutionSet[fieldIndex]+=dU;
 	
-			//apply constraints
+			// Apply hanging node and periodic constraints
 			constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
 			//sync ghost DOF's
 			solutionSet[fieldIndex]->update_ghost_values();
@@ -110,7 +110,7 @@ void MatrixFreePDE<dim>::solveIncrement(){
 	  }
     
 	  //check if solution is nan
-	  if (!numbers::is_finite(solutionSet[fieldIndex]->norm_sqr())){
+	  if (!numbers::is_finite(solutionSet[fieldIndex]->l2_norm())){
 		  sprintf(buffer, "ERROR: field '%s' solution is NAN. exiting.\n\n",
 				  fields[fieldIndex].name.c_str());
 		  pcout<<buffer;

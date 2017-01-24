@@ -74,7 +74,7 @@ void MatrixFreePDE<dim>::refineGrid (){
 template <int dim>
 void MatrixFreePDE<dim>::refineMesh(unsigned int _currentIncrement){
 #if hAdaptivity==true 
-  init(_currentIncrement-1);
+  reinit(_currentIncrement-1);
 #endif
 }
 

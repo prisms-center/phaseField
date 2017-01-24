@@ -95,6 +95,7 @@ class MatrixFreePDE:public Subscriptor
    * inputs in the application parameters file. 
    */
   void init  (unsigned int iter=0);
+  void reinit  (unsigned int iter=0);
    /**
    * Initializes the data structures for enabling unit tests.
    * 
@@ -280,6 +281,7 @@ class MatrixFreePDE:public Subscriptor
 //header files till library packaging scheme is finalized)
 #include "../src/matrixfree/matrixFreePDE.cc"
 #include "../src/matrixfree/init.cc"
+#include "../src/matrixfree/reinit.cc"
 #include "../src/matrixfree/initForTests.cc"
 #include "../src/matrixfree/refine.cc"
 #include "../src/matrixfree/invM.cc"
