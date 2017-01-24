@@ -6,8 +6,7 @@ PRISMS-PF
 
 <B>Version information:</B>
 
-This version of the code, 1.1, is an update the first release version of PRISMS-PF. For:q
-information concerning the differences between versions, please consult version_changes.txt.   
+This version of the code, 1.1, is an update the first release version of PRISMS-PF. For information concerning the differences between versions, please consult version_changes.txt.   
 
 <B>What is PRISMS-PF?</B> 
 
