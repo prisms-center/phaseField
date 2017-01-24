@@ -77,7 +77,7 @@ void MatrixFreePDE<dim>::solve(){
 
     //check and perform adaptive mesh refinement
     computing_timer.enter_section("matrixFreePDE: AMR");
-    adaptiveRefine(0);
+    //adaptiveRefine(0);
     computing_timer.exit_section("matrixFreePDE: AMR");
     
     //solve

@@ -20,7 +20,7 @@ int main (int argc, char **argv)
 
       problem.setBCs();
       problem.buildFields();
-      problem.init (); 
+      problem.init ();
       problem.solve();
     }
   catch (std::exception &exc)

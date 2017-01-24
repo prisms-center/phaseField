@@ -623,7 +623,9 @@ void generalizedProblem<dim>::adaptiveRefine(unsigned int currentIncrement){
 
 	if ( (currentIncrement == 0) ){
 		for (unsigned int remesh_index=0; remesh_index < (maxRefinementLevel-minRefinementLevel); remesh_index++){
+			  std::cout << "before refine!" << std::endl;
 			this->refineMesh(currentIncrement);
+			std::cout << "after refine!" << std::endl;
 		}
 	}
 	else if ( (currentIncrement%skipRemeshingSteps==0) ){

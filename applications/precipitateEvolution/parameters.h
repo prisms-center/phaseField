@@ -54,7 +54,7 @@
 // The size of the time step
 #define timeStep 4.0e-4
 #define timeFinal 100.0
-#define timeIncrements 5000
+#define timeIncrements 10 //5000
 
 // =================================================================================
 // Set the elliptic solver parameters

@@ -116,8 +116,10 @@ void generalizedProblem<dim>::setBCs(){
 
 	inputBCs(3,0,"ZERO_DERIVATIVE",0);
 
-	inputBCs(4,0,"DIRICHLET",0.0);
-	inputBCs(4,1,"DIRICHLET",0.0);
+//	inputBCs(4,0,"DIRICHLET",0.0);
+//	inputBCs(4,1,"DIRICHLET",0.0);
+	inputBCs(4,0,"DIRICHLET",0.1,"DIRICHLET",0.0,"ZERO_DERIVATIVE",0.0,"ZERO_DERIVATIVE",0.0);
+	inputBCs(4,1,"ZERO_DERIVATIVE",0.0);
 	if (dim == 3){
 		inputBCs(4,2,"DIRICHLET",0.0);
 	}

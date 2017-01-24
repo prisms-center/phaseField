@@ -92,5 +92,8 @@
 #define skipPrintSteps 1
 #endif
 
+#ifndef hAdaptivity
+#define hAdaptivity false
+#endif
 
 #endif
