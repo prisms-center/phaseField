@@ -56,6 +56,9 @@
 // outputCondition is "LIST"
 #define outputList {0,200,1000,2000,4000,20000,40000,100000,200000,400000,600000,2000000}
 
+// Status is printed to the screen every skipPrintSteps
+#define skipPrintSteps 10
+
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output
 // =================================================================================

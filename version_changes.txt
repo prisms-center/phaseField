@@ -19,8 +19,11 @@ Changes to the pre-built applications:
 - New application: allenCahn_pfield uses the PField capability of PRISMS IntegrationTools to load the initial condition from .vtk files
 - New application: precipitateEvolution_pfunction uses the PFunction capability of PRISMS IntegrationTools to load parameters (both 
   and functions) into the code.
+- New applications: CHiMaD_benchmark1a and CHiMaD_benchmark2a are phase field benchmark problems for spinodal decomposition and Ostwald
+  ripening, respectively. More about the benchmark problems can be found at: https://pages.nist.gov/chimad-phase-field/
 - Added formulation files for the CHAC_anisotropy and CHAC_anisotropyRegularized applications.
 - Boundary conditions for grainGrowth changed to periodic.
+- Boundary condition for the mechanics application changed for higher deformation.
 - Moduli changed in precipitateEvolution so that the evolution is dominated by the misfit, not the interfacial energy.
 
 Bug fixes:
@@ -30,10 +33,12 @@ Bug fixes:
 
 Other changes:
 - Installation instructions updated, both in the README and in the user guide.
+- The “init” function was split into an “init” function and a “reinit” function. The latter is used for reinitializing the system for 
+  adaptive meshing.
 
 Known issues:
-- For some compilers (including the Intel compilers on the Stampede cluster), errors are generated because we initialize some vectors with
-  C-style arrays. This will be fixed in the near future. 
+- For some compilers that lack full C++11 support (including the Intel compilers on the Stampede cluster), errors are generated because 
+  we initialize some vectors with C-style arrays. This will be fixed in the near future. 
   
 ====================
 Version 1.0:
