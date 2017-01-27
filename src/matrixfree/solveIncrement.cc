@@ -24,6 +24,8 @@ void MatrixFreePDE<dim>::solveIncrement(){
 
   //solve for each field
   for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
+	  currentFieldIndex = fieldIndex; // Used in computeLHS()
+
     //Parabolic (first order derivatives in time) fields
     if (fields[fieldIndex].pdetype==PARABOLIC){
 
@@ -52,6 +54,7 @@ void MatrixFreePDE<dim>::solveIncrement(){
     }
     //Elliptic (time-independent) fields
     else if (fields[fieldIndex].pdetype==ELLIPTIC){
+
     	//implicit solve
 		#ifdef solverType
 		if (currentIncrement%skipImplicitSolves==0){
