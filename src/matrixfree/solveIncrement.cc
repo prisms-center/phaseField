@@ -19,18 +19,24 @@ void MatrixFreePDE<dim>::solveIncrement(){
 #endif
 	
   //compute residual vectors
+
   computeRHS();
 
   //solve for each field
   for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
     //Parabolic (first order derivatives in time) fields
     if (fields[fieldIndex].pdetype==PARABOLIC){
-      //explicit-time step each DOF
-      for (unsigned int dof=0; dof<solutionSet[fieldIndex]->local_size(); ++dof){
-    	  solutionSet[fieldIndex]->local_element(dof)=			\
-    			  invM.local_element(dof)*residualSet[fieldIndex]->local_element(dof);
-      }
-      //
+
+    	// Explicit-time step each DOF
+    	// Takes advantage of knowledge that the length of solutionSet and residualSet is an integer multiple of the length of invM for vector variables
+    	unsigned int invM_size = invM.local_size();
+
+    	for (unsigned int dof=0; dof<solutionSet[fieldIndex]->local_size(); ++dof){
+
+    		solutionSet[fieldIndex]->local_element(dof)=			\
+    				invM.local_element(dof%invM_size)*residualSet[fieldIndex]->local_element(dof);
+    	}
+
       //apply constraints
       constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
       //sync ghost DOF's
@@ -50,6 +56,7 @@ void MatrixFreePDE<dim>::solveIncrement(){
 		#ifdef solverType
 		if (currentIncrement%skipImplicitSolves==0){
 			//apply Dirichlet BC's
+			// Loops through all DoF to which ones have Dirichlet BCs applied, replace the ones that do with the Dirichlet value
 			for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[fieldIndex]->begin(); it!=valuesDirichletSet[fieldIndex]->end(); ++it){
 				if (residualSet[fieldIndex]->in_local_range(it->first)){
 					(*residualSet[fieldIndex])(it->first) = it->second; //*jacobianDiagonal(it->first);

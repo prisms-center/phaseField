@@ -19,6 +19,7 @@ void MatrixFreePDE<dim>::computeEnergy(){
   energy_components.push_back(0.0);
 
   matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::getEnergy, this, residualSet, solutionSet);
+
   //add across all processors
   energy=Utilities::MPI::sum(energy, MPI_COMM_WORLD);
   for (unsigned int i=0; i<3; i++){

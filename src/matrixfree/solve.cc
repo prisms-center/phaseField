@@ -20,6 +20,7 @@ void MatrixFreePDE<dim>::solve(){
   if (isTimeDependentBVP){
     //output initial conditions for time dependent BVP
 	  if ((writeOutput) && (outputTimeStepList[currentOutput] == 0)) {
+
 			  outputResults();
 			  #ifdef calcEnergy
 			  if (calcEnergy == true){

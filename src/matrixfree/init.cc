@@ -169,7 +169,7 @@
 		 matrixFreeObject.initialize_dof_vector(*R,  fieldIndex); *R=0;
 
 		 matrixFreeObject.initialize_dof_vector(*U,  fieldIndex); *U=0;
-     
+
 		 // Initializing temporary dU vector required for implicit solves of the elliptic equation.
 		 // Assuming here that there is only one elliptic field in the problem
 		 if (fields[fieldIndex].pdetype==ELLIPTIC){
@@ -186,7 +186,8 @@
 	 // The initial conditions are re-applied below in the "adaptiveRefine" function so that the mesh can
 	 // adapt based on the initial conditions.
 	 applyInitialConditions();
-   
+
+
 	 // Create new solution transfer sets (needed for the "refineGrid" call, might be able to move this elsewhere)
 	 soltransSet.clear();
 	 for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
