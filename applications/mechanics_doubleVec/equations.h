@@ -87,7 +87,7 @@ for (unsigned int i=0; i<dim; i++){
 }
 
 modelResidualsList[0].vectorGradResidual = Rux;
-modelResidualsList[1].vectorGradResidual = Rux;
+modelResidualsList[1].vectorGradResidual = constV(0.0)*Rux;
 
 }
 

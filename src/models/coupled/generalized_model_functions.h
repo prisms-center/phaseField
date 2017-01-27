@@ -896,28 +896,79 @@ void vectorBCFunction<dim>::vector_value_list (const std::vector<Point<dim> > &p
 //apply Dirchlet BC function
 template <int dim>
 void generalizedProblem<dim>::applyDirichletBCs(){
-  // First, get the variable index of the current field
-  unsigned int var_index;
-  unsigned int field_number = 0;
-  for (unsigned int i=0; i<num_var; i++){
+//  // First, get the variable index of the current field
+//  unsigned int var_index;
+//  unsigned int field_number = 0;
+//
+//  for (unsigned int i=0; i<num_var; i++){
+//
+//	  if (field_number == this->currentFieldIndex){
+//		  var_index = i;
+//	  }
+//
+//	  if (var_type[i] == "SCALAR"){
+//		  field_number++;
+//	  }
+//	  else {
+//		  field_number+=dim;
+//	  }
+//  }
+//
+//  if (var_type[var_index] == "SCALAR"){
+//	  for (unsigned int direction = 0; direction < 2*dim; direction++){
+//		  if (BC_list[this->currentFieldIndex].var_BC_type[direction] == "DIRICHLET"){
+//			  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
+//					  direction, ConstantFunction<dim>(BC_list[this->currentFieldIndex].var_BC_val[direction],1), *(ConstraintMatrix*) \
+//					  this->constraintsDirichletSet[this->currentFieldIndex]);
+//		  }
+//	  }
+//  }
+//  else {
+//	  for (unsigned int direction = 0; direction < 2*dim; direction++){
+//
+//		  std::vector<double> BC_values;
+//		  for (unsigned int component=0; component < dim; component++){
+//			  BC_values.push_back(BC_list[this->currentFieldIndex+component].var_BC_val[direction]);
+//		  }
+//
+//		  std::vector<bool> mask;
+//		  for (unsigned int component=0; component < dim; component++){
+//			  if (BC_list[this->currentFieldIndex+component].var_BC_type[direction] == "DIRICHLET"){
+//				  mask.push_back(true);
+//			  }
+//			  else {
+//				  mask.push_back(false);
+//			  }
+//		  }
+//
+//
+//		  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
+//				  direction, vectorBCFunction<dim>(BC_values), *(ConstraintMatrix*) \
+//				  this->constraintsDirichletSet[this->currentFieldIndex],mask);
+//
+//
+//	  }
+//  }
 
-	  if (field_number == this->currentFieldIndex){
-		  var_index = i;
-	  }
+  // Re-write of the function
+  // First, get the variable index of the current field
+  unsigned int starting_BC_list_index = 0;
+
+  for (unsigned int i=0; i<this->currentFieldIndex; i++){
 
 	  if (var_type[i] == "SCALAR"){
-		  field_number++;
+		  starting_BC_list_index++;
 	  }
 	  else {
-		  field_number+=dim;
+		  starting_BC_list_index+=dim;
 	  }
   }
 
-  if (var_type[var_index] == "SCALAR"){
+  if (var_type[this->currentFieldIndex] == "SCALAR"){
 	  for (unsigned int direction = 0; direction < 2*dim; direction++){
-		  if (BC_list[this->currentFieldIndex].var_BC_type[direction] == "DIRICHLET"){
+		  if (BC_list[starting_BC_list_index].var_BC_type[direction] == "DIRICHLET"){
 			  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
-					  direction, ConstantFunction<dim>(BC_list[this->currentFieldIndex].var_BC_val[direction],1), *(ConstraintMatrix*) \
+					  direction, ConstantFunction<dim>(BC_list[starting_BC_list_index].var_BC_val[direction],1), *(ConstraintMatrix*) \
 					  this->constraintsDirichletSet[this->currentFieldIndex]);
 		  }
 	  }
@@ -927,12 +978,12 @@ void generalizedProblem<dim>::applyDirichletBCs(){
 
 		  std::vector<double> BC_values;
 		  for (unsigned int component=0; component < dim; component++){
-			  BC_values.push_back(BC_list[this->currentFieldIndex+component].var_BC_val[direction]);
+			  BC_values.push_back(BC_list[starting_BC_list_index+component].var_BC_val[direction]);
 		  }
 
 		  std::vector<bool> mask;
 		  for (unsigned int component=0; component < dim; component++){
-			  if (BC_list[this->currentFieldIndex+component].var_BC_type[direction] == "DIRICHLET"){
+			  if (BC_list[starting_BC_list_index+component].var_BC_type[direction] == "DIRICHLET"){
 				  mask.push_back(true);
 			  }
 			  else {
