@@ -76,14 +76,24 @@ void MatrixFreePDE<dim>::solveIncrement(){
 	
 			//solve
 			try{
-				dU=0.0;
-				solver.solve(*this, dU, *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
+				if (fields[fieldIndex].type == SCALAR){
+					dU_scalar=0.0;
+					solver.solve(*this, dU_scalar, *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
+				}
+				else {
+					dU_vector=0.0;
+					solver.solve(*this, dU_vector, *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
+				}
 			}
 			catch (...) {
 				pcout << "\nWarning: implicit solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing solverTolerance.\n";
 			}
-
-			*solutionSet[fieldIndex]+=dU;
+			if (fields[fieldIndex].type == SCALAR){
+				*solutionSet[fieldIndex]+=dU_scalar;
+			}
+			else {
+				*solutionSet[fieldIndex]+=dU_vector;
+			}
 
 			// Apply hanging node and periodic constraints
 			constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
@@ -91,11 +101,18 @@ void MatrixFreePDE<dim>::solveIncrement(){
 			solutionSet[fieldIndex]->update_ghost_values();
 			//
 			 if (currentIncrement%skipPrintSteps==0){
+				 double dU_norm;
+				 if (fields[fieldIndex].type == SCALAR){
+					 dU_norm = dU_scalar.l2_norm();
+				 }
+				 else {
+					 dU_norm = dU_vector.l2_norm();
+				 }
 			sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
 					fields[fieldIndex].name.c_str(),			\
 					residualSet[fieldIndex]->l2_norm(),			\
 					solver_control.last_value(),				\
-					solver_control.last_step(), solver_control.tolerance(), solutionSet[fieldIndex]->l2_norm(), dU.l2_norm());
+					solver_control.last_step(), solver_control.tolerance(), solutionSet[fieldIndex]->l2_norm(), dU_norm);
 			pcout<<buffer;
 			 }
 		}

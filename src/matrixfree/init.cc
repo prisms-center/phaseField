@@ -121,25 +121,16 @@
 		 constraintsDirichlet->clear(); constraintsDirichlet->reinit(*locally_relevant_dofs);
 		 constraintsOther->clear(); constraintsOther->reinit(*locally_relevant_dofs);
 
-		 pcout << "before hanging node constraints" << std::endl;
-
 		 // Get hanging node constraints
 		 DoFTools::make_hanging_node_constraints (*dof_handler, *constraintsOther);
 
-		 pcout << "before rigid body constraints" << std::endl;
-
 		 // Add a constraint to fix the value at the origin to zero if all BCs are zero-derivative or periodic
 		 std::vector<int> rigidBodyModeComponents;
-		 pcout << "before get rigid body components" << std::endl;
 		 getComponentsWithRigidBodyModes(rigidBodyModeComponents);
-		 pcout << "before get rigid body constraints " << rigidBodyModeComponents.size() << std::endl;
 		 setRigidBodyModeConstraints(rigidBodyModeComponents,constraintsOther,dof_handler);
 
-		 pcout << "before periodic constraints" << std::endl;
 		 // Get constraints for periodic BCs
 		 setPeriodicityConstraints(constraintsOther,dof_handler);
-
-		 pcout << "before dirichlet constraints" << std::endl;
 
 		 // Get constraints for Dirichlet BCs
 		 applyDirichletBCs();
@@ -171,6 +162,9 @@
 	 QGaussLobatto<1> quadrature (finiteElementDegree+1);
 	 matrixFreeObject.clear();
 	 matrixFreeObject.reinit (dofHandlersSet, constraintsOtherSet, quadrature, additional_data);
+
+	 bool dU_scalar_init = false;
+	 bool dU_vector_init = false;
  
 	 // Setup solution vectors
 	 pcout << "initializing parallel::distributed residual and solution vectors\n";
@@ -186,7 +180,18 @@
 		 // Initializing temporary dU vector required for implicit solves of the elliptic equation.
 		 // Assuming here that there is only one elliptic field in the problem (the main problem is if one is a scalar and the other is a vector, because then dU would need to be different sizes)
 		 if (fields[fieldIndex].pdetype==ELLIPTIC){
-			matrixFreeObject.initialize_dof_vector(dU,  fieldIndex);
+			 if (fields[fieldIndex].type == SCALAR){
+				 if (dU_scalar_init == false){
+					 matrixFreeObject.initialize_dof_vector(dU_scalar,  fieldIndex);
+					 dU_scalar_init = true;
+				 }
+			 }
+			 else {
+				 if (dU_vector_init == false){
+					 matrixFreeObject.initialize_dof_vector(dU_vector,  fieldIndex);
+					 dU_vector_init = true;
+				 }
+			 }
 		 }
 	 }
    
