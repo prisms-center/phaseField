@@ -28,26 +28,36 @@ void MatrixFreePDE<dim>::computeInvM(){
 	//compute invM
 	matrixFreeObject.initialize_dof_vector (invM, parabolicFieldIndex);
 	invM=0.0;
-	VectorizedArray<double> one = make_vectorized_array (1.0);
   
 	//select gauss lobatto quadrature points which are suboptimal but give diagonal M
-	//FEEvaluation<dim,finiteElementDegree> fe_eval(matrixFreeObject, parabolicFieldIndex);
-	FEEvaluation<dim,finiteElementDegree,finiteElementDegree+1,dim> fe_eval(matrixFreeObject, parabolicFieldIndex);
-
-	const unsigned int n_q_points = fe_eval.n_q_points;
-	for (unsigned int cell=0; cell<matrixFreeObject.n_macro_cells(); ++cell){
-		fe_eval.reinit(cell);
-		for (unsigned int q=0; q<n_q_points; ++q){
-			vectorvalueType oneV;
-			oneV[0] = 1.0;
-			oneV[1] = 1.0;
-			oneV[2] = 1.0;
-			fe_eval.submit_value(oneV,q);
-			//fe_eval.submit_value(one,q);
+	if (fields[parabolicFieldIndex].type==SCALAR){
+		VectorizedArray<double> one = make_vectorized_array (1.0);
+		FEEvaluation<dim,finiteElementDegree> fe_eval(matrixFreeObject, parabolicFieldIndex);
+		const unsigned int n_q_points = fe_eval.n_q_points;
+		for (unsigned int cell=0; cell<matrixFreeObject.n_macro_cells(); ++cell){
+			fe_eval.reinit(cell);
+			for (unsigned int q=0; q<n_q_points; ++q){
+				fe_eval.submit_value(one,q);
+			}
+			fe_eval.integrate (true,false);
+			fe_eval.distribute_local_to_global (invM);
 		}
-		fe_eval.integrate (true,false);
-		fe_eval.distribute_local_to_global (invM);
 	}
+	else {
+		vectorvalueType oneV(1.0);
+		FEEvaluation<dim,finiteElementDegree,finiteElementDegree+1,dim> fe_eval(matrixFreeObject, parabolicFieldIndex);
+
+		const unsigned int n_q_points = fe_eval.n_q_points;
+		for (unsigned int cell=0; cell<matrixFreeObject.n_macro_cells(); ++cell){
+			fe_eval.reinit(cell);
+			for (unsigned int q=0; q<n_q_points; ++q){
+				fe_eval.submit_value(oneV,q);
+			}
+			fe_eval.integrate (true,false);
+			fe_eval.distribute_local_to_global (invM);
+		}
+	}
+
 
 	invM.compress(VectorOperation::add);
 	//invert mass matrix diagonal elements
