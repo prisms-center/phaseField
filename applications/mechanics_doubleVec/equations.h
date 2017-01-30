@@ -4,35 +4,35 @@
 // Define the variables in the model
 // =================================================================================
 // The number of variables
-#define num_var 2
+#define num_var 3
 
 // The names of the variables, whether they are scalars or vectors and whether the
 // governing eqn for the variable is parabolic or elliptic
-#define variable_name {"u","u2"}
-#define variable_type {"VECTOR","VECTOR"}
-#define variable_eq_type {"ELLIPTIC","PARABOLIC"}
+#define variable_name {"u","u2","u3"}
+#define variable_type {"VECTOR","VECTOR","VECTOR"}
+#define variable_eq_type {"ELLIPTIC","PARABOLIC","ELLIPTIC"}
 
 // Flags for whether the value, gradient, and Hessian are needed in the residual eqns
-#define need_val {false,false}
-#define need_grad {true,true}
-#define need_hess {false,false}
+#define need_val {false,false,false}
+#define need_grad {true,true,true}
+#define need_hess {false,false,false}
 
 // Flags for whether the residual equation has a term multiplied by the test function
 // (need_val_residual) and/or the gradient of the test function (need_grad_residual)
-#define need_val_residual {false,false}
-#define need_grad_residual {true,true}
+#define need_val_residual {false,false,false}
+#define need_grad_residual {true,true,true}
 
 // Flags for whether the value, gradient, and Hessian are needed in the residual eqn
 // for the left-hand-side of the iterative solver for elliptic equations
-#define need_val_LHS {false,false}
-#define need_grad_LHS {true,true}
-#define need_hess_LHS {false,false}
+#define need_val_LHS {false,false,false}
+#define need_grad_LHS {true,true,true}
+#define need_hess_LHS {false,false,false}
 
 // Flags for whether the residual equation for the left-hand-side of the iterative
 // solver for elliptic equations has a term multiplied by the test function
 // (need_val_residual) and/or the gradient of the test function (need_grad_residual)
-#define need_val_residual_LHS {false,false}
-#define need_grad_residual_LHS {true,false}
+#define need_val_residual_LHS {false,false,false}
+#define need_grad_residual_LHS {true,false,true}
 
 // =================================================================================
 // Define the model parameters and the residual equations
@@ -66,6 +66,7 @@ void generalizedProblem<dim>::residualRHS(const std::vector<modelVariable<dim> >
 //u
 vectorgradType ux = modelVariablesList[0].vectorGrad;
 vectorgradType u2x = modelVariablesList[1].vectorGrad;
+vectorgradType u3x = modelVariablesList[2].vectorGrad;
 vectorgradType Rux;
 
 //compute strain tensor
@@ -88,6 +89,7 @@ for (unsigned int i=0; i<dim; i++){
 
 modelResidualsList[0].vectorGradResidual = Rux;
 modelResidualsList[1].vectorGradResidual = constV(0.0)*Rux;
+modelResidualsList[2].vectorGradResidual = Rux;
 
 }
 
@@ -114,6 +116,7 @@ void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim> >
 //u
 vectorgradType ux = modelVarList[0].vectorGrad;
 vectorgradType u2x = modelVarList[1].vectorGrad;
+vectorgradType u3x = modelVarList[2].vectorGrad;
 vectorgradType Rux;
 
 //compute strain tensor

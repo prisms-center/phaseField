@@ -47,7 +47,7 @@ void MatrixFreePDE<dim>::setRigidBodyModeConstraints( std::vector<int> rigidBody
 	if ( rigidBodyModeComponents.size() > 0 ){
 
 		// Choose the point where the constraint will be placed. Must be the coordinates of a vertex.
-		dealii::Point<dim> target_point(0,0);
+		dealii::Point<dim> target_point; // default constructor places the point at the origin
 
 		unsigned int vertices_per_cell=GeometryInfo<dim>::vertices_per_cell;
 

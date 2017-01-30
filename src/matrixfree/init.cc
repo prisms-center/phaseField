@@ -84,6 +84,8 @@
 		 }
 		 FESet.push_back(fe);
 
+		 pcout << "before distribute DOFs" << std::endl;
+
 		 //distribute DOFs
 		 DoFHandler<dim>* dof_handler;
 
@@ -104,6 +106,8 @@
 		 locally_relevant_dofs->clear();
 		 DoFTools::extract_locally_relevant_dofs (*dof_handler, *locally_relevant_dofs);
 
+		 pcout << "before create constraints" << std::endl;
+
 		 // Create constraints
 		 ConstraintMatrix *constraintsDirichlet, *constraintsOther;
 
@@ -116,17 +120,25 @@
 		 constraintsDirichlet->clear(); constraintsDirichlet->reinit(*locally_relevant_dofs);
 		 constraintsOther->clear(); constraintsOther->reinit(*locally_relevant_dofs);
 
+		 pcout << "before hanging node constraints" << std::endl;
+
 		 // Get hanging node constraints
 		 DoFTools::make_hanging_node_constraints (*dof_handler, *constraintsOther);
 
+		 pcout << "before rigid body constraints" << std::endl;
+
 		 // Add a constraint to fix the value at the origin to zero if all BCs are zero-derivative or periodic
 		 std::vector<int> rigidBodyModeComponents;
+		 pcout << "before get rigid body components" << std::endl;
 		 getComponentsWithRigidBodyModes(rigidBodyModeComponents);
+		 pcout << "before get rigid body constraints " << rigidBodyModeComponents.size() << std::endl;
 		 setRigidBodyModeConstraints(rigidBodyModeComponents,constraintsOther,dof_handler);
 
+		 pcout << "before periodic constraints" << std::endl;
 		 // Get constraints for periodic BCs
 		 setPeriodicityConstraints(constraintsOther,dof_handler);
 
+		 pcout << "before dirichlet constraints" << std::endl;
 
 		 // Get constraints for Dirichlet BCs
 		 applyDirichletBCs();
