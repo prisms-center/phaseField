@@ -85,8 +85,6 @@
 		 }
 		 FESet.push_back(fe);
 
-		 pcout << "before distribute DOFs" << std::endl;
-
 		 //distribute DOFs
 		 DoFHandler<dim>* dof_handler;
 
@@ -106,8 +104,6 @@
 
 		 locally_relevant_dofs->clear();
 		 DoFTools::extract_locally_relevant_dofs (*dof_handler, *locally_relevant_dofs);
-
-		 pcout << "before create constraints" << std::endl;
 
 		 // Create constraints
 		 ConstraintMatrix *constraintsDirichlet, *constraintsOther;

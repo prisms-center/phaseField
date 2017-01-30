@@ -6,7 +6,7 @@
 
 int main(int argc, char **argv)
 {
-	//init MPI
+  //init MPI
   Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, numbers::invalid_unsigned_int);
 
   std::cout << "Beginning unit tests..." << std::endl;
@@ -18,7 +18,6 @@ int main(int argc, char **argv)
   unitTest<2,double> computeInvM_tester_2D;
   pass = computeInvM_tester_2D.test_computeInvM(argc, argv);
   tests_passed += pass;
-  
   
   // Unit tests for the method "outputResults"
   total_tests++;

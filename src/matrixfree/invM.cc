@@ -44,7 +44,11 @@ void MatrixFreePDE<dim>::computeInvM(){
 		}
 	}
 	else {
-		vectorvalueType oneV(1.0);
+		vectorvalueType oneV;
+		for (unsigned int i=0;i<dim;i++){
+			oneV[i] = 1.0;
+		}
+
 		FEEvaluation<dim,finiteElementDegree,finiteElementDegree+1,dim> fe_eval(matrixFreeObject, parabolicFieldIndex);
 
 		const unsigned int n_q_points = fe_eval.n_q_points;
