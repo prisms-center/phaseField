@@ -67,7 +67,8 @@ void generalizedProblem<dim>::residualRHS(const std::vector<modelVariable<dim> >
 vectorgradType ux = modelVariablesList[0].vectorGrad;
 vectorgradType u2x = modelVariablesList[1].vectorGrad;
 vectorgradType u3x = modelVariablesList[2].vectorGrad;
-vectorgradType Rux;
+vectorgradType Rux, Rux2;
+
 
 //compute strain tensor
 dealii::VectorizedArray<double> E[dim][dim], S[dim][dim];
@@ -77,19 +78,32 @@ for (unsigned int i=0; i<dim; i++){
 	}
 }
 
+
+//compute strain tensor
+dealii::VectorizedArray<double> E2[dim][dim], S2[dim][dim];
+for (unsigned int i=0; i<dim; i++){
+	for (unsigned int j=0; j<dim; j++){
+		E2[i][j]= constV(0.5)*(u3x[i][j]+u3x[j][i]);
+	}
+}
+
+
 //compute stress tensor
 computeStress<dim>(CIJ_list[0], E, S);
+
+computeStress<dim>(CIJ_list[0], E2, S2);
 
 //compute residual
 for (unsigned int i=0; i<dim; i++){
 	for (unsigned int j=0; j<dim; j++){
 		Rux[i][j] = -S[i][j];
+		Rux2[i][j] = -S2[i][j];
 	}
 }
 
 modelResidualsList[0].vectorGradResidual = Rux;
 modelResidualsList[1].vectorGradResidual = constV(0.0)*Rux;
-modelResidualsList[2].vectorGradResidual = Rux;
+modelResidualsList[2].vectorGradResidual = Rux2;
 
 }
 
@@ -119,11 +133,21 @@ vectorgradType u2x = modelVarList[1].vectorGrad;
 vectorgradType u3x = modelVarList[2].vectorGrad;
 vectorgradType Rux;
 
-//compute strain tensor
 dealii::VectorizedArray<double> E[dim][dim], S[dim][dim];
-for (unsigned int i=0; i<dim; i++){
-	for (unsigned int j=0; j<dim; j++){
-		E[i][j]= constV(0.5)*(ux[i][j]+ux[j][i]);
+if (this->currentFieldIndex == 0){
+	//compute strain tensor
+	for (unsigned int i=0; i<dim; i++){
+		for (unsigned int j=0; j<dim; j++){
+			E[i][j]= constV(0.5)*(ux[i][j]+ux[j][i]);
+		}
+	}
+}
+else {
+	//compute strain tensor
+	for (unsigned int i=0; i<dim; i++){
+		for (unsigned int j=0; j<dim; j++){
+			E[i][j]= constV(0.5)*(u3x[i][j]+u3x[j][i]);
+		}
 	}
 }
 
@@ -138,7 +162,6 @@ for (unsigned int i=0; i<dim; i++){
 }
 
 modelRes.vectorGradResidual = Rux;
-
 }
 
 // =================================================================================

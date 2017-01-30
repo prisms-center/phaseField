@@ -82,8 +82,9 @@ void MatrixFreePDE<dim>::solveIncrement(){
 			catch (...) {
 				pcout << "\nWarning: implicit solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing solverTolerance.\n";
 			}
+
 			*solutionSet[fieldIndex]+=dU;
-	
+
 			// Apply hanging node and periodic constraints
 			constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
 			//sync ghost DOF's

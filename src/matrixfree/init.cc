@@ -59,7 +59,8 @@
 			   (it->type==SCALAR ? "SCALAR":"VECTOR"),			\
 			   it->name.c_str());
 		 pcout << buffer;
-		 //check if any time dependent fields present
+
+		 // Check if any time dependent fields present (note: I should get rid of parabolicFieldIndex and ellipticFieldIndex, they only work if there is at max one of each)
 		 if (it->pdetype==PARABOLIC){
 			 isTimeDependentBVP=true;
 			 parabolicFieldIndex=it->index;
@@ -183,9 +184,9 @@
 		 matrixFreeObject.initialize_dof_vector(*U,  fieldIndex); *U=0;
 
 		 // Initializing temporary dU vector required for implicit solves of the elliptic equation.
-		 // Assuming here that there is only one elliptic field in the problem
+		 // Assuming here that there is only one elliptic field in the problem (the main problem is if one is a scalar and the other is a vector, because then dU would need to be different sizes)
 		 if (fields[fieldIndex].pdetype==ELLIPTIC){
-			 matrixFreeObject.initialize_dof_vector(dU,  fieldIndex);
+			matrixFreeObject.initialize_dof_vector(dU,  fieldIndex);
 		 }
 	 }
    
