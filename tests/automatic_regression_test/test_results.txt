@@ -1,0 +1,26 @@
+--------------------------------------------------------- 
+Regression test on 2017-01-31 16:19
+--------------------------------------------------------- 
+Application: cahnHilliard 
+Result: New Gold Standard 
+Time: 70.0864751339 
+ 
+Application: allenCahn 
+Result: New Gold Standard 
+Time: 9.45906805992 
+ 
+Tests Passed: 2/2
+--------------------------------------------------------- 
+--------------------------------------------------------- 
+Regression test on 2017-01-31 16:25
+--------------------------------------------------------- 
+Application: cahnHilliard 
+Result: Pass 
+Time: 70.5716431141 
+ 
+Application: allenCahn 
+Result: Pass 
+Time: 9.58352184296 
+ 
+Tests Passed: 2/2
+--------------------------------------------------------- 
