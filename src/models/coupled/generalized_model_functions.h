@@ -128,14 +128,12 @@ for (unsigned int i=0; i<dim; i++){
 
 // Load variable information for calculating the RHS
 varInfoListRHS.reserve(num_var);
-unsigned int field_number = 0;
 unsigned int scalar_var_index = 0;
 unsigned int vector_var_index = 0;
 for (unsigned int i=0; i<num_var; i++){
 	variable_info<dim> varInfo;
 	if (need_value[i] or need_gradient[i] or need_hessian[i]){
 		varInfo.global_var_index = i;
-		varInfo.global_field_index = field_number;
 		if (var_type[i] == "SCALAR"){
 			varInfo.is_scalar = true;
 			varInfo.scalar_or_vector_index = scalar_var_index;
@@ -148,13 +146,6 @@ for (unsigned int i=0; i<num_var; i++){
 		}
 		varInfoListRHS.push_back(varInfo);
 	}
-
-	if (var_type[i] == "SCALAR"){
-		field_number++;
-	}
-	else {
-		field_number+=dim;
-	}
 }
 
 // Load variable information for calculating the LHS
@@ -166,14 +157,12 @@ for (unsigned int i=0; i<num_var; i++){
 }
 
 varInfoListLHS.reserve(num_var_LHS);
-field_number = 0;
 scalar_var_index = 0;
 vector_var_index = 0;
 for (unsigned int i=0; i<num_var; i++){
 	variable_info<dim> varInfo;
 	if (need_value_LHS[i] or need_gradient_LHS[i] or need_hessian_LHS[i]){
 		varInfo.global_var_index = i;
-		varInfo.global_field_index = field_number;
 		if (var_type[i] == "SCALAR"){
 			varInfo.is_scalar = true;
 			varInfo.scalar_or_vector_index = scalar_var_index;
@@ -185,13 +174,6 @@ for (unsigned int i=0; i<num_var; i++){
 			vector_var_index++;
 		}
 		varInfoListLHS.push_back(varInfo);
-	}
-
-	if (var_type[i] == "SCALAR"){
-		field_number++;
-	}
-	else {
-		field_number+=dim;
 	}
 }
 
@@ -236,12 +218,12 @@ void generalizedProblem<dim>::getRHS(const MatrixFree<dim,double> &data,
 	  for (unsigned int i=0; i<num_var; i++){
 		  if (varInfoListRHS[i].is_scalar) {
 			  scalar_vars[varInfoListRHS[i].scalar_or_vector_index].reinit(cell);
-			  scalar_vars[varInfoListRHS[i].scalar_or_vector_index].read_dof_values_plain(*src[varInfoListRHS[i].global_field_index]);
+			  scalar_vars[varInfoListRHS[i].scalar_or_vector_index].read_dof_values_plain(*src[varInfoListRHS[i].global_var_index]);
 			  scalar_vars[varInfoListRHS[i].scalar_or_vector_index].evaluate(need_value[i], need_gradient[i], need_hessian[i]);
 		  }
 		  else {
 			  vector_vars[varInfoListRHS[i].scalar_or_vector_index].reinit(cell);
-			  vector_vars[varInfoListRHS[i].scalar_or_vector_index].read_dof_values_plain(*src[varInfoListRHS[i].global_field_index]);
+			  vector_vars[varInfoListRHS[i].scalar_or_vector_index].read_dof_values_plain(*src[varInfoListRHS[i].global_var_index]);
 			  vector_vars[varInfoListRHS[i].scalar_or_vector_index].evaluate(need_value[i], need_gradient[i], need_hessian[i]);
 		  }
 	  }
@@ -318,11 +300,11 @@ void generalizedProblem<dim>::getRHS(const MatrixFree<dim,double> &data,
 	  for (unsigned int i=0; i<num_var; i++){
 		  if (varInfoListRHS[i].is_scalar) {
 			  scalar_vars[varInfoListRHS[i].scalar_or_vector_index].integrate(value_residual[i], gradient_residual[i]);
-			  scalar_vars[varInfoListRHS[i].scalar_or_vector_index].distribute_local_to_global(*dst[varInfoListRHS[i].global_field_index]);
+			  scalar_vars[varInfoListRHS[i].scalar_or_vector_index].distribute_local_to_global(*dst[varInfoListRHS[i].global_var_index]);
 		  }
 		  else {
 			  vector_vars[varInfoListRHS[i].scalar_or_vector_index].integrate(value_residual[i], gradient_residual[i]);
-			  vector_vars[varInfoListRHS[i].scalar_or_vector_index].distribute_local_to_global(*dst[varInfoListRHS[i].global_field_index]);
+			  vector_vars[varInfoListRHS[i].scalar_or_vector_index].distribute_local_to_global(*dst[varInfoListRHS[i].global_var_index]);
 		  }
 	  }
   }
@@ -336,7 +318,7 @@ void  generalizedProblem<dim>::getLHS(const MatrixFree<dim,double> &data,
 
 	variable_info<dim> resInfoLHS;
 	for (unsigned int i=0; i<num_var_LHS; i++){
-		if (MatrixFreePDE<dim>::currentFieldIndex == varInfoListLHS[i].global_field_index){
+		if (MatrixFreePDE<dim>::currentFieldIndex == varInfoListLHS[i].global_var_index){
 			resInfoLHS = varInfoListLHS[i];
 		}
 	}
@@ -347,11 +329,11 @@ void  generalizedProblem<dim>::getLHS(const MatrixFree<dim,double> &data,
 
 	for (unsigned int i=0; i<num_var_LHS; i++){
 		if (varInfoListLHS[i].is_scalar){
-			typeScalar var(data, varInfoListLHS[i].global_field_index);
+			typeScalar var(data, varInfoListLHS[i].global_var_index);
 			scalar_vars.push_back(var);
 		}
 		else {
-			typeVector var(data, varInfoListLHS[i].global_field_index);
+			typeVector var(data, varInfoListLHS[i].global_var_index);
 			vector_vars.push_back(var);
 		}
 	}
@@ -367,21 +349,21 @@ void  generalizedProblem<dim>::getLHS(const MatrixFree<dim,double> &data,
 		for (unsigned int i=0; i<num_var_LHS; i++){
 			if (varInfoListLHS[i].is_scalar) {
 				scalar_vars[varInfoListLHS[i].scalar_or_vector_index].reinit(cell);
-				if ( varInfoListLHS[i].global_field_index == resInfoLHS.global_field_index ){
+				if ( varInfoListLHS[i].global_var_index == resInfoLHS.global_var_index ){
 					scalar_vars[varInfoListLHS[i].scalar_or_vector_index].read_dof_values_plain(src);
 				}
 				else{
-					scalar_vars[varInfoListLHS[i].scalar_or_vector_index].read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[varInfoListLHS[i].global_field_index]);
+					scalar_vars[varInfoListLHS[i].scalar_or_vector_index].read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[varInfoListLHS[i].global_var_index]);
 				}
 				scalar_vars[varInfoListLHS[i].scalar_or_vector_index].evaluate(need_value_LHS[varInfoListLHS[i].global_var_index], need_gradient_LHS[varInfoListLHS[i].global_var_index], need_hessian_LHS[varInfoListLHS[i].global_var_index]);
 			}
 			else {
 				vector_vars[varInfoListLHS[i].scalar_or_vector_index].reinit(cell);
-				if ( varInfoListLHS[i].global_field_index == resInfoLHS.global_field_index ){
+				if ( varInfoListLHS[i].global_var_index == resInfoLHS.global_var_index ){
 					vector_vars[varInfoListLHS[i].scalar_or_vector_index].read_dof_values_plain(src);
 				}
 				else {
-					vector_vars[varInfoListLHS[i].scalar_or_vector_index].read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[varInfoListLHS[i].global_field_index]);
+					vector_vars[varInfoListLHS[i].scalar_or_vector_index].read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[varInfoListLHS[i].global_var_index]);
 				}
 				vector_vars[varInfoListLHS[i].scalar_or_vector_index].evaluate(need_value_LHS[varInfoListLHS[i].global_var_index], need_gradient_LHS[varInfoListLHS[i].global_var_index], need_hessian_LHS[varInfoListLHS[i].global_var_index]);
 			}
@@ -500,12 +482,12 @@ void  generalizedProblem<dim>::getEnergy(const MatrixFree<dim,double> &data,
 		  for (unsigned int i=0; i<num_var; i++){
 			  if (varInfoListRHS[i].is_scalar) {
 				  scalar_vars[varInfoListRHS[i].scalar_or_vector_index].reinit(cell);
-				  scalar_vars[varInfoListRHS[i].scalar_or_vector_index].read_dof_values_plain(*src[varInfoListRHS[i].global_field_index]);
+				  scalar_vars[varInfoListRHS[i].scalar_or_vector_index].read_dof_values_plain(*src[varInfoListRHS[i].global_var_index]);
 				  scalar_vars[varInfoListRHS[i].scalar_or_vector_index].evaluate(need_value[i], need_gradient[i], need_hessian[i]);
 			  }
 			  else {
 				  vector_vars[varInfoListRHS[i].scalar_or_vector_index].reinit(cell);
-				  vector_vars[varInfoListRHS[i].scalar_or_vector_index].read_dof_values_plain(*src[varInfoListRHS[i].global_field_index]);
+				  vector_vars[varInfoListRHS[i].scalar_or_vector_index].read_dof_values_plain(*src[varInfoListRHS[i].global_var_index]);
 				  vector_vars[varInfoListRHS[i].scalar_or_vector_index].evaluate(need_value[i], need_gradient[i], need_hessian[i]);
 			  }
 		  }
@@ -806,16 +788,13 @@ if (load_ICs.size() == 0){
 	}
 }
 
-unsigned int fieldIndex = 0;
 for (unsigned int var_index=0; var_index < num_var; var_index++){
 	if (load_ICs[var_index] == false){
 		if (var_type[var_index] == "SCALAR"){
-			VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialCondition<dim>(var_index), *this->solutionSet[fieldIndex]);
-			fieldIndex++;
+			VectorTools::interpolate (*this->dofHandlersSet[var_index], InitialCondition<dim>(var_index), *this->solutionSet[var_index]);
 		}
 		else {
-			VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionVec<dim>(var_index), *this->solutionSet[fieldIndex]);
-			fieldIndex += dim;
+			VectorTools::interpolate (*this->dofHandlersSet[var_index], InitialConditionVec<dim>(var_index), *this->solutionSet[var_index]);
 		}
 	}
 	else{
@@ -841,8 +820,7 @@ for (unsigned int var_index=0; var_index < num_var; var_index++){
 		body.read_vtk(filename);
 		ScalarField2D &conc = body.find_scalar_field(load_field_name[var_index]);
 		if (var_type[var_index] == "SCALAR"){
-			VectorTools::interpolate (*this->dofHandlersSet[fieldIndex], InitialConditionPField<dim>(var_index,conc), *this->solutionSet[fieldIndex]);
-			fieldIndex++;
+			VectorTools::interpolate (*this->dofHandlersSet[var_index], InitialConditionPField<dim>(var_index,conc), *this->solutionSet[var_index]);
 		}
 		else {
 			std::cout << "PRISMS-PF Error: Cannot load vector fields. Loading initial conditions from file is currently limited to scalar fields" << std::endl;
@@ -918,28 +896,25 @@ void vectorBCFunction<dim>::vector_value_list (const std::vector<Point<dim> > &p
 //apply Dirchlet BC function
 template <int dim>
 void generalizedProblem<dim>::applyDirichletBCs(){
-  // First, get the variable index of the current field
-  unsigned int var_index;
-  unsigned int field_number = 0;
-  for (unsigned int i=0; i<num_var; i++){
 
-	  if (field_number == this->currentFieldIndex){
-		  var_index = i;
-	  }
+  // First, get the variable index of the current field
+  unsigned int starting_BC_list_index = 0;
+
+  for (unsigned int i=0; i<this->currentFieldIndex; i++){
 
 	  if (var_type[i] == "SCALAR"){
-		  field_number++;
+		  starting_BC_list_index++;
 	  }
 	  else {
-		  field_number+=dim;
+		  starting_BC_list_index+=dim;
 	  }
   }
 
-  if (var_type[var_index] == "SCALAR"){
+  if (var_type[this->currentFieldIndex] == "SCALAR"){
 	  for (unsigned int direction = 0; direction < 2*dim; direction++){
-		  if (BC_list[this->currentFieldIndex].var_BC_type[direction] == "DIRICHLET"){
+		  if (BC_list[starting_BC_list_index].var_BC_type[direction] == "DIRICHLET"){
 			  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
-					  direction, ConstantFunction<dim>(BC_list[this->currentFieldIndex].var_BC_val[direction],1), *(ConstraintMatrix*) \
+					  direction, ConstantFunction<dim>(BC_list[starting_BC_list_index].var_BC_val[direction],1), *(ConstraintMatrix*) \
 					  this->constraintsDirichletSet[this->currentFieldIndex]);
 		  }
 	  }
@@ -949,19 +924,18 @@ void generalizedProblem<dim>::applyDirichletBCs(){
 
 		  std::vector<double> BC_values;
 		  for (unsigned int component=0; component < dim; component++){
-			  BC_values.push_back(BC_list[this->currentFieldIndex+component].var_BC_val[direction]);
+			  BC_values.push_back(BC_list[starting_BC_list_index+component].var_BC_val[direction]);
 		  }
 
 		  std::vector<bool> mask;
 		  for (unsigned int component=0; component < dim; component++){
-			  if (BC_list[this->currentFieldIndex+component].var_BC_type[direction] == "DIRICHLET"){
+			  if (BC_list[starting_BC_list_index+component].var_BC_type[direction] == "DIRICHLET"){
 				  mask.push_back(true);
 			  }
 			  else {
 				  mask.push_back(false);
 			  }
 		  }
-
 
 		  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
 				  direction, vectorBCFunction<dim>(BC_values), *(ConstraintMatrix*) \
@@ -1152,9 +1126,20 @@ void generalizedProblem<dim>::setPeriodicity(){
 // Set constraints to enforce periodic boundary conditions
 template <int dim>
 void generalizedProblem<dim>::setPeriodicityConstraints(ConstraintMatrix * constraints, DoFHandler<dim>* dof_handler){
-    std::vector<GridTools::PeriodicFacePair<typename DoFHandler<dim>::cell_iterator> > periodicity_vector;
+	// First, get the variable index of the current field
+	unsigned int starting_BC_list_index = 0;
+	for (unsigned int i=0; i<this->currentFieldIndex; i++){
+		if (var_type[i] == "SCALAR"){
+			starting_BC_list_index++;
+		}
+		else {
+			starting_BC_list_index+=dim;
+		}
+	}
+
+	std::vector<GridTools::PeriodicFacePair<typename DoFHandler<dim>::cell_iterator> > periodicity_vector;
     for (int i=0; i<dim; ++i){
-    	if (BC_list[this->currentFieldIndex].var_BC_type[2*i] == "PERIODIC"){
+    	if (BC_list[starting_BC_list_index].var_BC_type[2*i] == "PERIODIC"){
     		GridTools::collect_periodic_faces(*dof_handler, /*b_id1*/ 2*i, /*b_id2*/ 2*i+1,
     				/*direction*/ i, periodicity_vector);
     	}
@@ -1170,12 +1155,20 @@ void generalizedProblem<dim>::getComponentsWithRigidBodyModes(std::vector<int> &
 	// Rigid body modes only matter for elliptic equations
 	if (var_eq_type[this->currentFieldIndex] == "ELLIPTIC"){
 
-		unsigned int num_components;
-		// Get number of components of the field
-		if (var_type[this->currentFieldIndex] == "SCALAR"){
-			num_components = 1;
+		// First, get the variable index of the current field
+		unsigned int starting_BC_list_index = 0;
+		for (unsigned int i=0; i<this->currentFieldIndex; i++){
+			if (var_type[i] == "SCALAR"){
+				starting_BC_list_index++;
+			}
+			else {
+				starting_BC_list_index+=dim;
+			}
 		}
-		else {
+
+		// Get number of components of the field
+		unsigned int num_components = 1;
+		if (var_type[this->currentFieldIndex] == "VECTOR"){
 			num_components = dim;
 		}
 
@@ -1184,7 +1177,7 @@ void generalizedProblem<dim>::getComponentsWithRigidBodyModes(std::vector<int> &
 			bool rigidBodyMode = true;
 			for (unsigned int direction = 0; direction < 2*dim; direction++){
 
-				if (BC_list[this->currentFieldIndex+component].var_BC_type[direction] == "DIRICHLET"){
+				if (BC_list[starting_BC_list_index+component].var_BC_type[direction] == "DIRICHLET"){
 					rigidBodyMode = false;
 				}
 
@@ -1196,42 +1189,6 @@ void generalizedProblem<dim>::getComponentsWithRigidBodyModes(std::vector<int> &
 		}
 	}
 }
-
-// This function was moved to the parent MatrixFreePDE class
-//// Set constraints to pin the solution if there are no Dirichlet BCs for a component of a variable in an elliptic equation
-//template <int dim>
-//void generalizedProblem<dim>::setRigidBodyModeConstraints( std::vector<int> rigidBodyModeComponents, ConstraintMatrix * constraints, DoFHandler<dim>* dof_handler){
-//
-//	std::cout << "num of rigid body modes " << rigidBodyModeComponents.size() << std::endl;
-//	if ( rigidBodyModeComponents.size() > 0 ){
-//
-//		// Choose the point where the constraint will be placed. Must be the coordinates of a vertex.
-//		dealii::Point<dim> target_point(0,0);
-//
-//		unsigned int vertices_per_cell=GeometryInfo<dim>::vertices_per_cell;
-//
-//		// Loop over each locally owned cell
-//		typename DoFHandler<dim>::active_cell_iterator cell= dof_handler->begin_active(), endc = dof_handler->end();
-//
-//		for (; cell!=endc; ++cell){
-//			if (cell->is_locally_owned()){
-//				for (unsigned int i=0; i<vertices_per_cell; ++i){
-//
-//					// Check if the vertex is the target vertex
-//					if (target_point.distance (cell->vertex(i)) < 1e-2 * cell->diameter()){
-//
-//						// Loop through the list of components with rigid body modes and add an inhomogeneous constraint for each
-//						for (unsigned int component_num = 0; component_num < rigidBodyModeComponents.size(); component_num++){
-//							unsigned int nodeID=cell->vertex_dof_index(i,component_num);
-//							constraints->add_line(nodeID);
-//							constraints->set_inhomogeneity(nodeID,0.0);
-//						}
-//				   }
-//			   }
-//		   }
-//	   }
-//   }
-//}
 
 // =====================================================================
 // NUCLEATION FUNCTIONS

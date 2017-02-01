@@ -47,7 +47,6 @@ struct variable_info
 	bool is_scalar;
 	unsigned int scalar_or_vector_index;
 	unsigned int global_var_index;
-	unsigned int global_field_index;
 };
 
 

@@ -1,4 +1,21 @@
 ====================
+Version 1.1.1:
+===================
+Patch to v1.1, released in January 2017. This patch fixes a number of related indexing bugs lurking in previous versions of the code. From a user
+perspective, nothing should change (unless you directly hit one of these bugs).
+
+Bug fixes:
+- Fixed indexing bug that caused a seg fault if the elliptic equation variable wasn't given last.
+- Fixed indexing bug that prevented the use of multiple vector variables.
+- Fixed indexing bug that prevented the use of vector variables for parabolic equations.
+- Fixed indexing bug that prevented the solution of multiple elliptic equations.
+
+Known issues:
+- For some compilers that lack full C++11 support (including the Intel compilers on the Stampede cluster), errors are generated because
+  we initialize some vectors with C-style arrays. This will be fixed in the near future.
+
+
+====================
 Version 1.1:
 ===================
 Update to v1.0, released in January 2017. 

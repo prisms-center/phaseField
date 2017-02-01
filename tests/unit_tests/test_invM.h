@@ -4,12 +4,20 @@ class testInvM: public MatrixFreePDE<dim>
 {
  public: 
   testInvM(){
-    //init the MatrixFreePDE class for testing
-    this->initForTests();
 
-    //call computeInvM()
-    this->computeInvM();
-    invMNorm=this->invM.l2_norm();
+	  // Initialize the test field object (needed for computeInvM())
+	  Field<problemDIM> test_field(SCALAR,PARABOLIC,"c");
+	  this->fields.push_back(test_field);
+
+	  //init the MatrixFreePDE class for testing
+	  this->initForTests();
+
+	  //call computeInvM()
+	  this->computeInvM();
+	  invMNorm=this->invM.l2_norm();
+
+	  // Need to clear fields or there's an error in the destructor
+	  this->fields.clear();
   };
   double invMNorm;
   
@@ -34,6 +42,6 @@ template <int dim,typename T>
 	char buffer[100];
 	sprintf (buffer, "Test result for 'computeInvM' in   %u dimension(s): %u\n", dim, pass);
 	std::cout << buffer;
-	
+
 	return pass;
 }
