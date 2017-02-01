@@ -157,6 +157,7 @@ text_file.write("Tests Passed: "+str(tests_passed)+"/"+str(test_counter)+"\n")
 text_file.write("--------------------------------------------------------- \n")
 text_file.close()
 
+# Set exit code (passed to Travis CI)
 if tests_passed < test_counter:
 	sys.exit(1)
 else:
