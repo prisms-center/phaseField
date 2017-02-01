@@ -9,7 +9,9 @@ before_install:
   #- docker pull stvdwtt/prisms_pf
   #- docker run -i -t stvdwtt/prisms_pf
   - if [[ $TRAVIS_EVENT_TYPE=="push" ]]; then export BRANCH=$TRAVIS_PULL_REQUEST_BRANCH; export SLUG=$TRAVIS_PULL_REQUEST_SLUG; else export BRANCH=$TRAVIS_BRANCH; export SLUG=$REPO_SLUG; fi
+  - echo $BRANCH
+  - echo $SLUG
   - docker pull dealii/dealii:v8.4.2-gcc-mpi-fulldepsmanual-debugrelease
-  - docker run dealii/dealii:v8.4.2-gcc-mpi-fulldepsmanual-debugrelease /bin/sh -c "git clone -b $BRANCH  https://github.com/$SLUG; python phaseField/tests/automatic_regression_test/run_auto_regression_tests.py"
+  - docker run dealii/dealii:v8.4.2-gcc-mpi-fulldepsmanual-debugrelease /bin/sh -c "echo $BRANCH; echo $SLUG; git clone -b $BRANCH  https://github.com/$SLUG; python phaseField/tests/automatic_regression_test/run_auto_regression_tests.py"
 
 script: bash test_ci.sh
