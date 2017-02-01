@@ -36,7 +36,7 @@
 // The simulation ends when either timeFinal is reached or the number of time steps
 // equals timeIncrements
 #define timeFinal 20.0
-#define timeIncrements 20000
+#define timeIncrements 20 //20000
 
 // =================================================================================
 // Set the output parameters
