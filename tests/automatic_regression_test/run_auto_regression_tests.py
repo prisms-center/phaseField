@@ -5,6 +5,7 @@ import math
 import os
 import datetime
 import time
+import sys
 
 # ----------------------------------------------------------------------------------------
 # Function tha compiles the PRISMS-PF code and runs the executable.
@@ -153,5 +154,11 @@ text_file = open("test_results.txt","a")
 text_file.write("Tests Passed: "+str(tests_passed)+"/"+str(test_counter)+"\n") 
 text_file.write("--------------------------------------------------------- \n")
 text_file.close()
+
+if tests_passed < test_counter:
+	sys.exit(1)
+else:
+	sys.exit(0)
+	
 
 
