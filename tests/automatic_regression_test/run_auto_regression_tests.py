@@ -10,7 +10,7 @@ import sys
 # ----------------------------------------------------------------------------------------
 # Function tha compiles the PRISMS-PF code and runs the executable.
 # ----------------------------------------------------------------------------------------
-def run_simulation(run_name):
+def run_simulation(run_name,dir_path):
 	# Delete any pre-existing executables or results
 	if os.path.exists(run_name) == True:
 		shutil.rmtree(run_name)
@@ -49,7 +49,7 @@ def run_simulation(run_name):
 # ----------------------------------------------------------------------------------------
 # Function that runs a regression test
 # ----------------------------------------------------------------------------------------
-def run_regression_test(applicationName,getNewGoldStandard):	
+def run_regression_test(applicationName,getNewGoldStandard,dir_path):	
 
 	if (getNewGoldStandard == False):
 		testName = "test_"+applicationName
@@ -61,11 +61,11 @@ def run_regression_test(applicationName,getNewGoldStandard):
 		shutil.rmtree(testName)
 
 	# Move to the application directory
-	r_test_dir = os.getcwd()
+	r_test_dir = dir_path
 	os.chdir("../../applications/"+applicationName)
 
 	# Run the simulation and move the results to the test directory
-	test_time = run_simulation(testName)
+	test_time = run_simulation(testName,dir_path)
 
 	shutil.move(testName,r_test_dir)
 
@@ -124,8 +124,10 @@ def run_regression_test(applicationName,getNewGoldStandard):
 # Initialize
 test_counter = 0
 tests_passed = 0
+dir_path = os.path.dirname(os.path.realpath(__file__))
+os.chdir(dir_path)
 
-text_file = open("test_results.txt","a")
+text_file = open(dir_path+"test_results.txt","a")
 now = datetime.datetime.now()
 text_file.write("--------------------------------------------------------- \n")
 text_file.write("Regression test on " + now.strftime("%Y-%m-%d %H:%M") + "\n") 
@@ -133,24 +135,24 @@ text_file.write("--------------------------------------------------------- \n")
 text_file.close()
 
 # Start the tests
-# applicationName = "cahnHilliard"
-# getNewGoldStandard = False
-# 
-# test_result = run_regression_test(applicationName,getNewGoldStandard)	
-# 
-# test_counter += 1
-# tests_passed += int(test_result[0])
+applicationName = "cahnHilliard"
+getNewGoldStandard = False
+
+test_result = run_regression_test(applicationName,getNewGoldStandard,dir_path)	
+
+test_counter += 1
+tests_passed += int(test_result[0])
 
 applicationName = "allenCahn"
 getNewGoldStandard = False
 
-test_result = run_regression_test(applicationName,getNewGoldStandard)	
+test_result = run_regression_test(applicationName,getNewGoldStandard,dir_path)	
 
 test_counter += 1
 tests_passed += int(test_result[0])
 
 # Output the overall test results
-text_file = open("test_results.txt","a")
+text_file = open(dir_path+"test_results.txt","a")
 text_file.write("Tests Passed: "+str(tests_passed)+"/"+str(test_counter)+"\n") 
 text_file.write("--------------------------------------------------------- \n")
 text_file.close()
