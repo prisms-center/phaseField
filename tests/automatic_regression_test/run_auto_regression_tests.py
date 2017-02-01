@@ -133,13 +133,13 @@ text_file.write("--------------------------------------------------------- \n")
 text_file.close()
 
 # Start the tests
-applicationName = "cahnHilliard"
-getNewGoldStandard = False
-
-test_result = run_regression_test(applicationName,getNewGoldStandard)	
-
-test_counter += 1
-tests_passed += int(test_result[0])
+# applicationName = "cahnHilliard"
+# getNewGoldStandard = False
+# 
+# test_result = run_regression_test(applicationName,getNewGoldStandard)	
+# 
+# test_counter += 1
+# tests_passed += int(test_result[0])
 
 applicationName = "allenCahn"
 getNewGoldStandard = False
