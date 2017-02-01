@@ -8,6 +8,7 @@ services:
 before_install:
   #- docker pull stvdwtt/prisms_pf
   #- docker run -i -t stvdwtt/prisms_pf
+  - if $TRAVIS_EVENT_TYPE = "push"; then echo it was a push; else echo $TRAVIS_EVENT_TYPE; fi
   - docker pull dealii/dealii:v8.4.2-gcc-mpi-fulldepsmanual-debugrelease
   - docker run dealii/dealii:v8.4.2-gcc-mpi-fulldepsmanual-debugrelease /bin/sh -c "git clone -b $TRAVIS_PULL_REQUEST_BRANCH  https://github.com/$TRAVIS_PULL_REQUEST_SLUG; python phaseField/tests/automatic_regression_test/run_auto_regression_tests.py"
 
