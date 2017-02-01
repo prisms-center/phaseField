@@ -127,14 +127,16 @@ tests_passed = 0
 dir_path = os.path.dirname(os.path.realpath(__file__))
 os.chdir(dir_path)
 
-text_file = open(dir_path+"test_results.txt","a")
+text_file = open("test_results.txt","a")
 now = datetime.datetime.now()
 text_file.write("--------------------------------------------------------- \n")
 text_file.write("Regression test on " + now.strftime("%Y-%m-%d %H:%M") + "\n") 
 text_file.write("--------------------------------------------------------- \n")
 text_file.close()
 
+# ------------------------------------
 # Start the tests
+# ------------------------------------
 # applicationName = "cahnHilliard"
 # getNewGoldStandard = False
 # 
@@ -152,11 +154,12 @@ test_counter += 1
 tests_passed += int(test_result[0])
 
 # Output the overall test results
-text_file = open(dir_path+"test_results.txt","a")
+text_file = open("test_results.txt","a")
 text_file.write("Tests Passed: "+str(tests_passed)+"/"+str(test_counter)+"\n") 
 text_file.write("--------------------------------------------------------- \n")
 text_file.close()
 
+# Set exit code (passed to Travis CI)
 if tests_passed < test_counter:
 	sys.exit(1)
 else:
