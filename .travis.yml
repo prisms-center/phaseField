@@ -8,7 +8,7 @@ services:
 before_install:
   #- docker pull stvdwtt/prisms_pf
   #- docker run -i -t stvdwtt/prisms_pf
-  - if [[ $TRAVIS_EVENT_TYPE=="push" ]]; then export BRANCH=$TRAVIS_PULL_REQUEST_BRANCH; export SLUG=$TRAVIS_PULL_REQUEST_SLUG; else export BRANCH=$TRAVIS_BRANCH; export SLUG=$TRAVIS_REPO_SLUG; fi
+  - if [[ $TRAVIS_EVENT_TYPE=="pull_request" ]]; then export BRANCH=$TRAVIS_PULL_REQUEST_BRANCH; export SLUG=$TRAVIS_PULL_REQUEST_SLUG; else export BRANCH=$TRAVIS_BRANCH; export SLUG=$TRAVIS_REPO_SLUG; fi
   - echo $BRANCH
   - echo $SLUG
   - echo $TRAVIS_BRANCH
