@@ -22,10 +22,10 @@
 #define subdivisionsX 1
 #define subdivisionsY 1
 #define subdivisionsZ 1
-#define refineFactor 7
+#define refineFactor 6
 
 // Set the polynomial degree of the element (suggested values: 1 or 2)
-#define finiteElementDegree 1
+#define finiteElementDegree 2
 
 // =================================================================================
 // Set the time step parameters
@@ -57,7 +57,7 @@
 #define outputList {}
 
 // Status is printed to the screen every skipPrintSteps
-#define skipPrintSteps 10
+#define skipPrintSteps 1000
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output

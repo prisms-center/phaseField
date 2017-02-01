@@ -151,6 +151,48 @@ void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim>
 											const dealii::VectorizedArray<double> & JxW_value,
 											dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {
 
+	scalarvalueType total_energy_density = constV(0.0);
+	vectorgradType ux = modelVarList[0].vectorGrad;
+	scalarvalueType f_chem = constV(0.0);
+
+	scalarvalueType f_grad = constV(0.0);
+
+	//compute E2=(E-E0)
+	dealii::VectorizedArray<double> E[dim][dim], S[dim][dim];
+
+	for (unsigned int i=0; i<dim; i++){
+	  for (unsigned int j=0; j<dim; j++){
+		  E[i][j]= constV(0.5)*(ux[i][j]+ux[j][i]);
+
+	  }
+	}
+
+	//compute stress
+	//S=C*(E)
+	computeStress<dim>(CIJ_list[0], E, S);
+
+	scalarvalueType f_el = constV(0.0);
+
+	for (unsigned int i=0; i<dim; i++){
+	  for (unsigned int j=0; j<dim; j++){
+		  f_el += constV(0.5) * S[i][j]*E[i][j];
+	  }
+	}
+
+	total_energy_density = f_chem + f_grad + f_el;
+
+	// Loop to step through each element of the vectorized arrays. Working with deal.ii
+	// developers to see if there is a more elegant way to do this.
+	assembler_lock.acquire ();
+	for (unsigned i=0; i<ux[0][0].n_array_elements;i++){
+	  if (ux[0][0][i] > 1.0e-10){
+		  this->energy+=total_energy_density[i]*JxW_value[i];
+		  this->energy_components[0]+= f_chem[i]*JxW_value[i];
+		  this->energy_components[1]+= f_grad[i]*JxW_value[i];
+		  this->energy_components[2]+= f_el[i]*JxW_value[i];
+	  }
+	}
+	assembler_lock.release ();
 }
 
 

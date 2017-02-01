@@ -32,7 +32,7 @@ def run_simulation(run_name,dir_path):
 	subprocess.call(["cmake", "."],stdout=f,stderr=f)
 	subprocess.call(["make", "release"],stdout=f)
 	start = time.time()
-	subprocess.call(["mpirun", "-n", "4", "main"],stdout=f)
+	subprocess.call(["mpirun", "-n", "2", "main"],stdout=f)
 	end = time.time()
 	f.close()
 
@@ -85,7 +85,8 @@ def run_regression_test(applicationName,getNewGoldStandard,dir_path):
 		test_energy = test_file.readlines()
 		test_file.close()
 	
-		rel_diff = (float(gold_energy[9])-float(test_energy[9]))/float(gold_energy[9])
+		last_energy_index = len(test_energy)-1
+		rel_diff = (float(gold_energy[last_energy_index])-float(test_energy[last_energy_index]))/float(gold_energy[last_energy_index])
 		rel_diff = abs(rel_diff)
 	
 		if (rel_diff < 1.0e-10):
@@ -98,7 +99,15 @@ def run_regression_test(applicationName,getNewGoldStandard,dir_path):
 		
 	# Print the results to the screen
 	print "Test: ", applicationName
-	print "Passed: ", test_passed
+	
+	if test_passed:
+		if getNewGoldStandard == False:
+			print "Result: Pass"
+		else:
+			print "Result: New Gold Standard"
+	else: 
+		print "Result: Fail"
+		
 	print "Time taken:", test_time
 	
 	# Write the results to a file
@@ -117,9 +126,10 @@ def run_regression_test(applicationName,getNewGoldStandard,dir_path):
 	text_file.close()
 	
 	return (test_passed,test_time)
-# ----------------------------------------------------------------------------------------
-# ----------------------------------------------------------------------------------------
 
+# ----------------------------------------------------------------------------------------
+# Test Script
+# ----------------------------------------------------------------------------------------
 
 # Initialize
 test_counter = 0
@@ -137,21 +147,15 @@ text_file.close()
 # ------------------------------------
 # Start the tests
 # ------------------------------------
-# applicationName = "cahnHilliard"
-# getNewGoldStandard = False
-# 
-# test_result = run_regression_test(applicationName,getNewGoldStandard,dir_path)	
-# 
-# test_counter += 1
-# tests_passed += int(test_result[0])
 
-applicationName = "allenCahn"
-getNewGoldStandard = False
+applicationList = ["allenCahn","cahnHilliard","cahnHilliardWithAdaptivity","CHAC_anisotropy","CHAC_anisotropyRegularized","coupledCahnHilliardAllenCahn","mechanics","precipitateEvolution"]
+getNewGoldStandardList = [False, False, False, False, False, False, False, False]
 
-test_result = run_regression_test(applicationName,getNewGoldStandard,dir_path)	
+for applicationName in applicationList:
+	test_result = run_regression_test(applicationName,getNewGoldStandardList[test_counter],dir_path)	
 
-test_counter += 1
-tests_passed += int(test_result[0])
+	test_counter += 1
+	tests_passed += int(test_result[0])
 
 # Output the overall test results
 text_file = open("test_results.txt","a")

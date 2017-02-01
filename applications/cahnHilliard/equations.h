@@ -34,7 +34,7 @@
 #define McV 1.0
 
 // Gradient energy coefficient
-#define KcV 4.0
+#define KcV 1.5
 
 // The free energy and its derivative
 #define fV (c*c*c*c - 2.0*c*c*c + c*c)

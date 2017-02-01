@@ -1,8 +1,17 @@
 ====================
 Version 1.1.1:
 ===================
-Patch to v1.1, released in January 2017. This patch fixes a number of related indexing bugs lurking in previous versions of the code. From a user
+Patch to v1.1, released in February 2017. This patch fixes a number of related indexing bugs lurking in previous versions of the code. From a user
 perspective, nothing should change (unless you directly hit one of these bugs).
+
+Added functionality:
+- New Python script to automatically run regression tests on the pre-built applications.
+- Integration with Travis CI, for continuous integration testing.
+
+Changes to the pre-built applications:
+- Mesh adaptivity was turned on for the CHAC_anisotropy, CHAC_anisotropyRegularlized, and coupledCahnHilliardAllenCahn applications.
+- Gradient coefficients were changed slightly in cahnHilliard and cahnHilliardWithAdaptivity and both applications were moved to 
+  second order elements with one less refinement. Mesh adaptivity parameters in cahnHilliardWithAdaptivity were tweaked.
 
 Bug fixes:
 - Fixed indexing bug that caused a seg fault if the elliptic equation variable wasn't given last.

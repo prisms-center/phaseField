@@ -1,26 +1,75 @@
 --------------------------------------------------------- 
-Regression test on 2017-01-31 16:19
+Regression test on 2017-02-01 16:24
 --------------------------------------------------------- 
-Application: cahnHilliard 
-Result: New Gold Standard 
-Time: 70.0864751339 
- 
 Application: allenCahn 
 Result: New Gold Standard 
-Time: 9.45906805992 
+Time: 12.0617308617 
  
-Tests Passed: 2/2
---------------------------------------------------------- 
---------------------------------------------------------- 
-Regression test on 2017-01-31 16:25
---------------------------------------------------------- 
 Application: cahnHilliard 
-Result: Pass 
-Time: 70.5716431141 
+Result: New Gold Standard 
+Time: 57.8034040928 
  
+Application: cahnHilliardWithAdaptivity 
+Result: New Gold Standard 
+Time: 55.0469281673 
+ 
+Application: CHAC_anisotropy 
+Result: New Gold Standard 
+Time: 29.9147179127 
+ 
+Application: CHAC_anisotropyRegularized 
+Result: New Gold Standard 
+Time: 34.6668479443 
+ 
+Application: coupledCahnHilliardAllenCahn 
+Result: New Gold Standard 
+Time: 70.0741848946 
+ 
+Application: mechanics 
+Result: New Gold Standard 
+Time: 0.632148981094 
+ 
+Application: precipitateEvolution 
+Result: New Gold Standard 
+Time: 166.70690012 
+ 
+Tests Passed: 8/8
+--------------------------------------------------------- 
+ 
+--------------------------------------------------------- 
+Regression test on 2017-02-01 16:54
+--------------------------------------------------------- 
 Application: allenCahn 
 Result: Pass 
-Time: 9.58352184296 
+Time: 12.9594080448 
  
-Tests Passed: 2/2
+Application: cahnHilliard 
+Result: Pass 
+Time: 59.82360816 
+ 
+Application: cahnHilliardWithAdaptivity 
+Result: Pass 
+Time: 56.4235470295 
+ 
+Application: CHAC_anisotropy 
+Result: Pass 
+Time: 30.351585865 
+ 
+Application: CHAC_anisotropyRegularized 
+Result: Pass 
+Time: 34.719974041 
+ 
+Application: coupledCahnHilliardAllenCahn 
+Result: Pass 
+Time: 71.2836551666 
+ 
+Application: mechanics 
+Result: Pass 
+Time: 0.623740911484 
+ 
+Application: precipitateEvolution 
+Result: Pass 
+Time: 165.526592016 
+ 
+Tests Passed: 8/8
 --------------------------------------------------------- 

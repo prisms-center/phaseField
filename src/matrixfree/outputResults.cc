@@ -13,7 +13,7 @@ void MatrixFreePDE<dim>::outputResults(){
 
   //create DataOut object
   DataOut<dim> data_out;
-  std::cout <<  "fields: " << fields.size() << std::endl;
+
   //loop over fields
 
   for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
