@@ -134,7 +134,9 @@ text_file.write("Regression test on " + now.strftime("%Y-%m-%d %H:%M") + "\n")
 text_file.write("--------------------------------------------------------- \n")
 text_file.close()
 
+# ------------------------------------
 # Start the tests
+# ------------------------------------
 # applicationName = "cahnHilliard"
 # getNewGoldStandard = False
 # 
