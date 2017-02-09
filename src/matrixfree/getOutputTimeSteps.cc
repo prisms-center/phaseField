@@ -17,7 +17,7 @@ void MatrixFreePDE<dim>::getOutputTimeSteps(std::string outputSpacingType, unsig
 	else if (outputSpacingType == "LOG_SPACING"){
 		timeStepList.push_back(0);
 		for (unsigned int output = 1; output <= numberOfOutputs; output++){
-			timeStepList.push_back(std::round(std::pow(10,double(output)/double(numberOfOutputs)*std::log10(totalIncrements))));		}
+			timeStepList.push_back(round(std::pow(10,double(output)/double(numberOfOutputs)*std::log10(totalIncrements))));		}
 	}
 	else if (outputSpacingType == "N_PER_DECADE"){
 		timeStepList.push_back(0);

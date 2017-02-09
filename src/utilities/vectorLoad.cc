@@ -17,13 +17,13 @@ void vectorLoad(double in[], int array_size, std::vector<double> & out){
 
 void vectorLoad(int in[], int array_size, std::vector<int> & out){
 
-	std::vector<int> temp ( in, in+array_size / sizeof(double) );
+	std::vector<int> temp ( in, in+array_size / sizeof(int) );
 	out = temp;
 }
 
 void vectorLoad(unsigned int in[], int array_size, std::vector<unsigned int> & out){
 
-	std::vector<unsigned int> temp ( in, in+array_size / sizeof(double) );
+	std::vector<unsigned int> temp ( in, in+array_size / sizeof(unsigned int) );
 	out = temp;
 }
 
