@@ -13,7 +13,7 @@
 #define variable_eq_type {"PARABOLIC", "PARABOLIC"}
 
 // Flags for whether the value, gradient, and Hessian are needed in the residual eqns
-#define need_val {true, true}
+#define need_val {true, false}
 #define need_grad {true, true}
 #define need_hess  {false, false}
 
@@ -66,7 +66,6 @@ scalarvalueType c = modelVariablesList[0].scalarValue;
 scalargradType cx = modelVariablesList[0].scalarGrad;
 
 // The chemical potential and its derivatives (names here should match those in the macros above)
-scalarvalueType mu = modelVariablesList[1].scalarValue;
 scalargradType mux = modelVariablesList[1].scalarGrad;
 
 // Residuals for the equation to evolve the concentration (names here should match those in the macros above)

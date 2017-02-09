@@ -138,6 +138,8 @@ def run_regression_test(applicationName,getNewGoldStandard,dir_path):
 		
 	print "Time taken:", test_time
 	
+	sys.stdout.flush()
+	
 	# Write the results to a file
 	os.chdir(r_test_dir)
 	text_file = open("test_results.txt","a")
