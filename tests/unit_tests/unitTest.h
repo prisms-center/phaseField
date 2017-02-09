@@ -38,6 +38,7 @@ class unitTest
 	bool test_computeRHS();
 	bool test_getOutputTimeSteps(std::string,unsigned int, std::vector<unsigned int>);
 	bool test_setRigidBodyModeConstraints(std::vector<int>);
+	bool test_vectorLoad(T array[], int array_size, int num_array_elements);
 };
 
 
@@ -47,4 +48,5 @@ class unitTest
 #include "test_getRHS.h"
 #include "test_getOutputTimeSteps.h"
 #include "test_setRigidBodyModeConstraints.h"
+#include "test_vectorLoad.h"
 //#include "test_computeRHS.h"

@@ -70,8 +70,6 @@ class generalizedProblem: public MatrixFreePDE<dim>
   const static unsigned int CIJ_tensor_size = 2*dim-1+dim/3;
   std::vector<dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > > CIJ_list;
 
-  bool c_dependent_misfit;
-
   Threads::Mutex assembler_lock;
 
   // Variables needed to calculate the LHS

@@ -137,6 +137,15 @@ vectorgradType ruxV;
 
 vectorhessType uxx;
 
+bool c_dependent_misfit = false;
+for (unsigned int i=0; i<dim; i++){
+	for (unsigned int j=0; j<dim; j++){
+		if (std::abs(sfts_linear1[i][j])>1.0e-12){
+			c_dependent_misfit = true;
+		}
+	}
+}
+
 if (c_dependent_misfit == true){
 	uxx = modelVariablesList[4].vectorHess;
 }

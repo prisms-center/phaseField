@@ -32,43 +32,65 @@ generalizedProblem<dim>::generalizedProblem(): MatrixFreePDE<dim>()
 		this->totalIncrements = timeIncrements;
 		}
 
+	// Load in inputs from equations.h
+	// Somewhat convoluted initialization so as not to rely on C++11 initializer lists (which not all compiler have yet)
+	{std::string temp_string[] = variable_name;
+	vectorLoad(temp_string,sizeof(temp_string),var_name);}
 
-	var_name = variable_name;
-	var_type = variable_type;
-	var_eq_type = variable_eq_type;
+	{std::string temp_string[] = variable_type;
+	vectorLoad(temp_string,sizeof(temp_string),var_type);}
 
-	need_value = need_val;
-	need_gradient = need_grad;
-	need_hessian = need_hess;
-	value_residual = need_val_residual;
-	gradient_residual = need_grad_residual;
+	{std::string temp_string[] = variable_eq_type;
+	vectorLoad(temp_string,sizeof(temp_string),var_eq_type);}
+
+
+	{bool temp[] = need_val;
+	vectorLoad(temp, sizeof(temp), need_value);}
+
+	{bool temp[] = need_grad;
+	vectorLoad(temp, sizeof(temp), need_gradient);}
+
+	{bool temp[] = need_hess;
+	vectorLoad(temp, sizeof(temp), need_hessian);}
+
+	{bool temp[] = need_val_residual;
+	vectorLoad(temp, sizeof(temp), value_residual);}
+
+	{bool temp[] = need_grad_residual;
+	vectorLoad(temp, sizeof(temp), gradient_residual);}
+
 
 	#ifdef need_val_LHS
-	need_value_LHS = need_val_LHS;
+	{bool temp[] = need_val_LHS;
+	vectorLoad(temp, sizeof(temp), need_value_LHS);}
 	#else
 	for (unsigned int i=0; i<num_var; i++)
 		need_value_LHS.push_back(false);
 	#endif
 	#ifdef need_grad_LHS
-	need_gradient_LHS = need_grad_LHS;
+	{bool temp[] = need_grad_LHS;
+	vectorLoad(temp, sizeof(temp), need_gradient_LHS);}
 	#else
 	for (unsigned int i=0; i<num_var; i++)
 		need_gradient_LHS.push_back(false);
 	#endif
 	#ifdef need_hess_LHS
-	need_hessian_LHS = need_hess_LHS;
+	{bool temp[] = need_hess_LHS;
+	vectorLoad(temp, sizeof(temp), need_hessian_LHS);}
 	#else
 	for (unsigned int i=0; i<num_var; i++)
 		need_hessian_LHS.push_back(false);
 	#endif
 	#ifdef need_val_residual_LHS
-	value_residual_LHS = need_val_residual_LHS;
+	{bool temp[] = need_val_residual_LHS;
+	vectorLoad(temp, sizeof(temp), value_residual_LHS);}
 	#else
 	for (unsigned int i=0; i<num_var; i++)
 		value_residual_LHS.push_back(false);
 	#endif
 	#ifdef need_grad_residual_LHS
-	gradient_residual_LHS = need_grad_residual_LHS;
+	{bool temp[] = need_grad_residual_LHS;
+	vectorLoad(temp, sizeof(temp), gradient_residual_LHS);}
 	#else
 	for (unsigned int i=0; i<num_var; i++)
 		gradient_residual_LHS.push_back(false);
@@ -77,8 +99,20 @@ generalizedProblem<dim>::generalizedProblem(): MatrixFreePDE<dim>()
 
 // initialize CIJ vector
 #if defined(MaterialModels) && defined(MaterialConstants)
-	std::vector<std::vector<double> > temp_mat_consts = MaterialConstants;
-	std::vector<std::string> temp_mat_models = MaterialModels;
+
+	// Somewhat convoluted initialization so as not to rely on C++11 initializer lists (which not all compiler have yet)
+	std::vector<std::string> temp_mat_models;
+	{std::string temp_string[] = MaterialModels;
+	vectorLoad(temp_string,sizeof(temp_string),temp_mat_models);}
+
+	std::vector<std::vector<double> > temp_mat_consts;
+	double temp_array[][21] = MaterialConstants; // Largest allowable length is 21, uninitialized slots are set to zero
+	for (unsigned int num_mat=0; num_mat < temp_mat_models.size(); num_mat++){
+		std::vector<double> temp_vec;
+		vectorLoad(temp_array[num_mat], sizeof(temp_array[num_mat]), temp_vec);
+		temp_mat_consts.push_back(temp_vec);
+	}
+
 	elasticityModel mat_model;
 
 	dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ_temp;
@@ -104,20 +138,6 @@ generalizedProblem<dim>::generalizedProblem(): MatrixFreePDE<dim>()
 		CIJ_list.push_back(CIJ_temp);
 	}
 #endif
-
-
-// I should probably get rid of this or move it, since it is only relevant to the precipitate case
-c_dependent_misfit = false;
-#if defined(sfts_linear1) && defined(sfts_linear2) && defined(sfts_linear3)
-for (unsigned int i=0; i<dim; i++){
-	for (unsigned int j=0; j<dim; j++){
-		if ((std::abs(sfts_linear1[i][j])>1.0e-12)||(std::abs(sfts_linear2[i][j])>1.0e-12)||(std::abs(sfts_linear3[i][j])>1.0e-12)){
-			c_dependent_misfit = true;
-		}
-	}
-}
-#endif
-
 
 // If the LHS variable attributes aren't defined
 
@@ -619,9 +639,16 @@ template <int dim>
 void generalizedProblem<dim>::adaptiveRefineCriterion(){
 #if hAdaptivity == true
 	//Custom defined estimation criterion
-	std::vector<int> refine_criterion_fields = refineCriterionFields;
-	std::vector<double> refine_window_max = refineWindowMax;
-	std::vector<double> refine_window_min = refineWindowMin;
+	std::vector<int> refine_criterion_fields;
+	std::vector<double> refine_window_max;
+	std::vector<double> refine_window_min;
+	{int temp[] = refineCriterionFields;
+	vectorLoad(temp, sizeof(temp), refine_criterion_fields);}
+	{double temp[] = refineWindowMax;
+	vectorLoad(temp, sizeof(temp), refine_window_max);}
+	{double temp[] = refineWindowMin;
+	vectorLoad(temp, sizeof(temp), refine_window_min);}
+
 	std::vector<std::vector<double> > errorOutV;
 
 

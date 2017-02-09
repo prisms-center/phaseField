@@ -279,6 +279,8 @@ class MatrixFreePDE:public Subscriptor
 //other matrixFree headers 
 //(these are source files, which will are temporarily treated as
 //header files till library packaging scheme is finalized)
+#include "../src/utilities/vectorLoad.cc"
+
 #include "../src/matrixfree/matrixFreePDE.cc"
 #include "../src/matrixfree/init.cc"
 #include "../src/matrixfree/reinit.cc"
