@@ -126,11 +126,18 @@ int main(int argc, char **argv)
   pass = vectorLoad_tester_double.test_vectorLoad(double_array,double_array_size,double_num_array_elements);
   tests_passed += pass;
   
-  
+  // Print out results
   char buffer[100];
   sprintf(buffer, "\n\nNumber of tests passed: %u/%u \n\n", tests_passed, total_tests);
   std::cout << buffer;
   
+  // Write results to a file
+  std::ofstream result_file ("unit_test_results.txt");
+  result_file << tests_passed << std::endl;
+  result_file << total_tests << std::endl;
+  result_file.close();
+
+
   return 0;
 }
 

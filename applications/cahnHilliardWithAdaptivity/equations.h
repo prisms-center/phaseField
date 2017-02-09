@@ -121,10 +121,6 @@ scalarvalueType total_energy_density = constV(0.0);
 scalarvalueType c = modelVariablesList[0].scalarValue;
 scalargradType cx = modelVariablesList[0].scalarGrad;
 
-// The chemical potential and its derivatives (names here should match those in the macros above)
-scalarvalueType mu = modelVariablesList[1].scalarValue;
-scalargradType mux = modelVariablesList[1].scalarGrad;
-
 // The homogenous free energy
 scalarvalueType f_chem = fV;
 

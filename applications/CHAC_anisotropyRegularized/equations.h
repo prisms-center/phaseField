@@ -177,7 +177,6 @@ scalarvalueType total_energy_density = constV(0.0);
 
 //c
 scalarvalueType c = modelVarList[0].scalarValue;
-scalargradType cx = modelVarList[0].scalarGrad;
 
 //n1
 scalarvalueType n = modelVarList[1].scalarValue;

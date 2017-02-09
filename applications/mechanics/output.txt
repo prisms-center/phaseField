@@ -70,7 +70,7 @@ initializing parallel::distributed residual and solution vectors
 solving...
 
 field ' u' [implicit solve]: initial residual:2.629083e+02, current residual:2.489069e-08, nsteps:128, tolerance criterion:2.629083e-08, solution: 5.125124e+01, dU: 4.194866e+01
-wall time: 0.0819759s
+wall time: 0.083066s
 Output written to:solution-0.pvtu
 
 Energy: 107.231
@@ -78,17 +78,17 @@ Energy Components: 0 0 107.231
 
 
 +---------------------------------------------+------------+------------+
-| Total wallclock time elapsed since start    |     0.374s |            |
+| Total wallclock time elapsed since start    |     0.248s |            |
 |                                             |            |            |
 | Section                         | no. calls |  wall time | % of total |
 +---------------------------------+-----------+------------+------------+
-| matrixFreePDE: AMR              |         1 |  2.86e-06s |   0.00076% |
-| matrixFreePDE: computeEnergy    |         1 |    0.0421s |        11% |
-| matrixFreePDE: computeLHS       |       128 |    0.0642s |        17% |
-| matrixFreePDE: computeRHS       |         1 |  0.000514s |      0.14% |
-| matrixFreePDE: initialization   |         1 |    0.0642s |        17% |
-| matrixFreePDE: output           |         1 |     0.185s |        49% |
-| matrixFreePDE: solve            |         1 |      0.31s |        83% |
-| matrixFreePDE: solveIncrements  |         1 |     0.082s |        22% |
+| matrixFreePDE: AMR              |         1 |  2.86e-06s |    0.0012% |
+| matrixFreePDE: computeEnergy    |         1 |    0.0447s |        18% |
+| matrixFreePDE: computeLHS       |       128 |    0.0648s |        26% |
+| matrixFreePDE: computeRHS       |         1 |  0.000438s |      0.18% |
+| matrixFreePDE: initialization   |         1 |    0.0717s |        29% |
+| matrixFreePDE: output           |         1 |    0.0479s |        19% |
+| matrixFreePDE: solve            |         1 |     0.176s |        71% |
+| matrixFreePDE: solveIncrements  |         1 |    0.0831s |        33% |
 +---------------------------------+-----------+------------+------------+
 

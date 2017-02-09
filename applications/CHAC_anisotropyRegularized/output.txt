@@ -108,7 +108,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.291524e+01, current residual:5.893780e+01
 field ' n' [explicit solve]: current solution: 4.818648e+01, current residual:5.288845e+01
 field 'biharm' [explicit solve]: current solution: 9.875089e-01, current residual:6.028068e-01
-wall time: 0.000921011s
+wall time: 0.000904799s
 
 time increment:2000  time: 100
 Current mesh refinement level: 8
@@ -122,7 +122,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.288248e+01, current residual:5.894394e+01
 field ' n' [explicit solve]: current solution: 4.819489e+01, current residual:5.289058e+01
 field 'biharm' [explicit solve]: current solution: 1.028455e+00, current residual:6.278066e-01
-wall time: 0.000823975s
+wall time: 0.000949144s
 
 time increment:3000  time: 150
 Current mesh refinement level: 8
@@ -136,7 +136,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.260864e+01, current residual:5.930702e+01
 field ' n' [explicit solve]: current solution: 4.799237e+01, current residual:5.324319e+01
 field 'biharm' [explicit solve]: current solution: 1.050079e+00, current residual:6.410415e-01
-wall time: 0.000656843s
+wall time: 0.00086689s
 
 time increment:4000  time: 200
 Current mesh refinement level: 8
@@ -150,7 +150,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.239073e+01, current residual:5.966070e+01
 field ' n' [explicit solve]: current solution: 4.782990e+01, current residual:5.362507e+01
 field 'biharm' [explicit solve]: current solution: 1.067240e+00, current residual:6.514979e-01
-wall time: 0.000834942s
+wall time: 0.00090313s
 Output written to:solution-004000.pvtu
 
 Energy: 13.2162
@@ -168,7 +168,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.192115e+01, current residual:6.552285e+01
 field ' n' [explicit solve]: current solution: 4.740637e+01, current residual:5.948346e+01
 field 'biharm' [explicit solve]: current solution: 1.081330e+00, current residual:6.601129e-01
-wall time: 0.000794172s
+wall time: 0.000739098s
 
 time increment:6000  time: 300
 Current mesh refinement level: 8
@@ -182,7 +182,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.192224e+01, current residual:6.553065e+01
 field ' n' [explicit solve]: current solution: 4.743700e+01, current residual:5.949329e+01
 field 'biharm' [explicit solve]: current solution: 1.092999e+00, current residual:6.672354e-01
-wall time: 0.000905991s
+wall time: 0.000820875s
 
 time increment:7000  time: 350
 Current mesh refinement level: 8
@@ -196,7 +196,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.166871e+01, current residual:6.584086e+01
 field ' n' [explicit solve]: current solution: 4.720826e+01, current residual:5.980150e+01
 field 'biharm' [explicit solve]: current solution: 1.102804e+00, current residual:6.732270e-01
-wall time: 0.000759125s
+wall time: 0.000756979s
 
 time increment:8000  time: 400
 Current mesh refinement level: 8
@@ -210,7 +210,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.141325e+01, current residual:6.614907e+01
 field ' n' [explicit solve]: current solution: 4.697436e+01, current residual:6.009203e+01
 field 'biharm' [explicit solve]: current solution: 1.111151e+00, current residual:6.783413e-01
-wall time: 0.000869989s
+wall time: 0.000652075s
 Output written to:solution-008000.pvtu
 
 Energy: 12.9921
@@ -228,7 +228,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.141716e+01, current residual:6.616004e+01
 field ' n' [explicit solve]: current solution: 4.699213e+01, current residual:6.009725e+01
 field 'biharm' [explicit solve]: current solution: 1.118354e+00, current residual:6.827442e-01
-wall time: 0.000861883s
+wall time: 0.000782967s
 
 time increment:10000  time: 500
 Current mesh refinement level: 8
@@ -242,7 +242,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.116172e+01, current residual:6.647018e+01
 field ' n' [explicit solve]: current solution: 4.675158e+01, current residual:6.039878e+01
 field 'biharm' [explicit solve]: current solution: 1.124683e+00, current residual:6.866190e-01
-wall time: 0.000859022s
+wall time: 0.000789881s
 
 time increment:11000  time: 550
 Current mesh refinement level: 8
@@ -256,7 +256,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.095030e+01, current residual:6.680393e+01
 field ' n' [explicit solve]: current solution: 4.655113e+01, current residual:6.072554e+01
 field 'biharm' [explicit solve]: current solution: 1.130285e+00, current residual:6.900398e-01
-wall time: 0.000804901s
+wall time: 0.000786066s
 
 time increment:12000  time: 600
 Current mesh refinement level: 8
@@ -270,7 +270,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.095718e+01, current residual:6.680858e+01
 field ' n' [explicit solve]: current solution: 4.656358e+01, current residual:6.072890e+01
 field 'biharm' [explicit solve]: current solution: 1.135293e+00, current residual:6.930986e-01
-wall time: 0.000808001s
+wall time: 0.000860929s
 Output written to:solution-012000.pvtu
 
 Energy: 12.8649
@@ -288,7 +288,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.096383e+01, current residual:6.681236e+01
 field ' n' [explicit solve]: current solution: 4.657466e+01, current residual:6.073253e+01
 field 'biharm' [explicit solve]: current solution: 1.139796e+00, current residual:6.958437e-01
-wall time: 0.000797987s
+wall time: 0.00079608s
 
 time increment:14000  time: 700
 Current mesh refinement level: 8
@@ -302,7 +302,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.097015e+01, current residual:6.681602e+01
 field ' n' [explicit solve]: current solution: 4.658484e+01, current residual:6.073598e+01
 field 'biharm' [explicit solve]: current solution: 1.143882e+00, current residual:6.983321e-01
-wall time: 0.000842094s
+wall time: 0.000833988s
 
 time increment:15000  time: 750
 Current mesh refinement level: 8
@@ -316,7 +316,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.097741e+01, current residual:6.680713e+01
 field ' n' [explicit solve]: current solution: 4.659433e+01, current residual:6.073920e+01
 field 'biharm' [explicit solve]: current solution: 1.147618e+00, current residual:7.005838e-01
-wall time: 0.000922918s
+wall time: 0.000822067s
 
 time increment:16000  time: 800
 Current mesh refinement level: 8
@@ -330,7 +330,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.098306e+01, current residual:6.681082e+01
 field ' n' [explicit solve]: current solution: 4.660328e+01, current residual:6.074222e+01
 field 'biharm' [explicit solve]: current solution: 1.150984e+00, current residual:7.026382e-01
-wall time: 0.000725985s
+wall time: 0.000694036s
 Output written to:solution-016000.pvtu
 
 Energy: 12.7869
@@ -348,7 +348,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.072455e+01, current residual:6.731308e+01
 field ' n' [explicit solve]: current solution: 4.635386e+01, current residual:6.103836e+01
 field 'biharm' [explicit solve]: current solution: 1.154086e+00, current residual:7.045462e-01
-wall time: 0.000733852s
+wall time: 0.000772953s
 
 time increment:18000  time: 900
 Current mesh refinement level: 8
@@ -362,7 +362,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.072960e+01, current residual:6.731599e+01
 field ' n' [explicit solve]: current solution: 4.636228e+01, current residual:6.104074e+01
 field 'biharm' [explicit solve]: current solution: 1.156907e+00, current residual:7.062723e-01
-wall time: 0.000825167s
+wall time: 0.00081706s
 
 time increment:19000  time: 950
 Current mesh refinement level: 8
@@ -376,7 +376,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.073448e+01, current residual:6.731804e+01
 field ' n' [explicit solve]: current solution: 4.637020e+01, current residual:6.104320e+01
 field 'biharm' [explicit solve]: current solution: 1.159540e+00, current residual:7.078758e-01
-wall time: 0.000768185s
+wall time: 0.000776052s
 
 time increment:20000  time: 1000
 Current mesh refinement level: 8
@@ -390,7 +390,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.073913e+01, current residual:6.731940e+01
 field ' n' [explicit solve]: current solution: 4.637784e+01, current residual:6.104563e+01
 field 'biharm' [explicit solve]: current solution: 1.161971e+00, current residual:7.093572e-01
-wall time: 0.000743866s
+wall time: 0.000702143s
 Output written to:solution-020000.pvtu
 
 Energy: 12.7387
@@ -408,7 +408,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.074355e+01, current residual:6.732009e+01
 field ' n' [explicit solve]: current solution: 4.638525e+01, current residual:6.104800e+01
 field 'biharm' [explicit solve]: current solution: 1.164217e+00, current residual:7.107261e-01
-wall time: 0.000747919s
+wall time: 0.000867844s
 
 time increment:22000  time: 1100
 Current mesh refinement level: 8
@@ -422,7 +422,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.074708e+01, current residual:6.732090e+01
 field ' n' [explicit solve]: current solution: 4.639247e+01, current residual:6.105029e+01
 field 'biharm' [explicit solve]: current solution: 1.166294e+00, current residual:7.120019e-01
-wall time: 0.00118518s
+wall time: 0.000868082s
 
 time increment:23000  time: 1150
 Current mesh refinement level: 8
@@ -436,7 +436,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.075106e+01, current residual:6.732032e+01
 field ' n' [explicit solve]: current solution: 4.639952e+01, current residual:6.105251e+01
 field 'biharm' [explicit solve]: current solution: 1.168201e+00, current residual:7.131699e-01
-wall time: 0.000669956s
+wall time: 0.000718117s
 
 time increment:24000  time: 1200
 Current mesh refinement level: 8
@@ -468,7 +468,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.075843e+01, current residual:6.731740e+01
 field ' n' [explicit solve]: current solution: 4.641319e+01, current residual:6.105678e+01
 field 'biharm' [explicit solve]: current solution: 1.171657e+00, current residual:7.152761e-01
-wall time: 0.000798941s
+wall time: 0.000866175s
 
 time increment:26000  time: 1300
 Current mesh refinement level: 8
@@ -482,7 +482,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.076184e+01, current residual:6.731512e+01
 field ' n' [explicit solve]: current solution: 4.641984e+01, current residual:6.105884e+01
 field 'biharm' [explicit solve]: current solution: 1.173204e+00, current residual:7.162193e-01
-wall time: 0.000709057s
+wall time: 0.000738859s
 
 time increment:27000  time: 1350
 Current mesh refinement level: 8
@@ -496,7 +496,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.076506e+01, current residual:6.731231e+01
 field ' n' [explicit solve]: current solution: 4.642638e+01, current residual:6.106085e+01
 field 'biharm' [explicit solve]: current solution: 1.174644e+00, current residual:7.170970e-01
-wall time: 0.000718832s
+wall time: 0.000844955s
 
 time increment:28000  time: 1400
 Current mesh refinement level: 8
@@ -510,7 +510,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.076812e+01, current residual:6.730903e+01
 field ' n' [explicit solve]: current solution: 4.643283e+01, current residual:6.106282e+01
 field 'biharm' [explicit solve]: current solution: 1.175985e+00, current residual:7.179146e-01
-wall time: 0.000764847s
+wall time: 0.000684977s
 Output written to:solution-028000.pvtu
 
 Energy: 12.6899
@@ -528,7 +528,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.077102e+01, current residual:6.730528e+01
 field ' n' [explicit solve]: current solution: 4.643918e+01, current residual:6.106475e+01
 field 'biharm' [explicit solve]: current solution: 1.177234e+00, current residual:7.186767e-01
-wall time: 0.000723839s
+wall time: 0.000844002s
 
 time increment:30000  time: 1500
 Current mesh refinement level: 8
@@ -542,7 +542,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.077248e+01, current residual:6.731344e+01
 field ' n' [explicit solve]: current solution: 4.644546e+01, current residual:6.106665e+01
 field 'biharm' [explicit solve]: current solution: 1.178397e+00, current residual:7.193979e-01
-wall time: 0.000797987s
+wall time: 0.000769138s
 
 time increment:31000  time: 1550
 Current mesh refinement level: 8
@@ -556,7 +556,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.077507e+01, current residual:6.730915e+01
 field ' n' [explicit solve]: current solution: 4.645164e+01, current residual:6.106852e+01
 field 'biharm' [explicit solve]: current solution: 1.179460e+00, current residual:7.200528e-01
-wall time: 0.00080204s
+wall time: 0.000806093s
 
 time increment:32000  time: 1600
 Current mesh refinement level: 8
@@ -570,7 +570,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.051497e+01, current residual:6.759819e+01
 field ' n' [explicit solve]: current solution: 4.619893e+01, current residual:6.136212e+01
 field 'biharm' [explicit solve]: current solution: 1.180478e+00, current residual:7.206846e-01
-wall time: 0.00086689s
+wall time: 0.00090003s
 Output written to:solution-032000.pvtu
 
 Energy: 12.6782
@@ -588,7 +588,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.051757e+01, current residual:6.759272e+01
 field ' n' [explicit solve]: current solution: 4.620531e+01, current residual:6.136333e+01
 field 'biharm' [explicit solve]: current solution: 1.181416e+00, current residual:7.212597e-01
-wall time: 0.000791073s
+wall time: 0.000726938s
 
 time increment:34000  time: 1700
 Current mesh refinement level: 8
@@ -602,7 +602,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.051997e+01, current residual:6.758697e+01
 field ' n' [explicit solve]: current solution: 4.621137e+01, current residual:6.136494e+01
 field 'biharm' [explicit solve]: current solution: 1.182313e+00, current residual:7.218065e-01
-wall time: 0.000841141s
+wall time: 0.00082016s
 
 time increment:35000  time: 1750
 Current mesh refinement level: 8
@@ -616,7 +616,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.052225e+01, current residual:6.758095e+01
 field ' n' [explicit solve]: current solution: 4.621732e+01, current residual:6.136665e+01
 field 'biharm' [explicit solve]: current solution: 1.183152e+00, current residual:7.223181e-01
-wall time: 0.000910044s
+wall time: 0.000840902s
 
 time increment:36000  time: 1800
 Current mesh refinement level: 8
@@ -630,7 +630,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.052441e+01, current residual:6.757470e+01
 field ' n' [explicit solve]: current solution: 4.622318e+01, current residual:6.136837e+01
 field 'biharm' [explicit solve]: current solution: 1.183936e+00, current residual:7.227965e-01
-wall time: 0.000799894s
+wall time: 0.000658035s
 Output written to:solution-036000.pvtu
 
 Energy: 12.6707
@@ -648,7 +648,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.052583e+01, current residual:6.756895e+01
 field ' n' [explicit solve]: current solution: 4.622896e+01, current residual:6.137007e+01
 field 'biharm' [explicit solve]: current solution: 1.184667e+00, current residual:7.232547e-01
-wall time: 0.000720978s
+wall time: 0.00078702s
 
 time increment:38000  time: 1900
 Current mesh refinement level: 8
@@ -662,7 +662,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.052779e+01, current residual:6.756230e+01
 field ' n' [explicit solve]: current solution: 4.623467e+01, current residual:6.137174e+01
 field 'biharm' [explicit solve]: current solution: 1.185330e+00, current residual:7.236662e-01
-wall time: 0.000826836s
+wall time: 0.000705957s
 
 time increment:39000  time: 1950
 Current mesh refinement level: 8
@@ -676,7 +676,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.053038e+01, current residual:6.755487e+01
 field ' n' [explicit solve]: current solution: 4.624031e+01, current residual:6.137339e+01
 field 'biharm' [explicit solve]: current solution: 1.185981e+00, current residual:7.240598e-01
-wall time: 0.000919819s
+wall time: 0.000699997s
 
 time increment:40000  time: 2000
 Current mesh refinement level: 8
@@ -690,7 +690,7 @@ computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.053221e+01, current residual:6.754783e+01
 field ' n' [explicit solve]: current solution: 4.624588e+01, current residual:6.137502e+01
 field 'biharm' [explicit solve]: current solution: 1.186588e+00, current residual:7.244348e-01
-wall time: 0.000760078s
+wall time: 0.000735044s
 Output written to:solution-040000.pvtu
 
 Energy: 12.666
@@ -698,17 +698,17 @@ Energy Components: 7.167 5.06924 0.429716
 
 
 +---------------------------------------------+------------+------------+
-| Total wallclock time elapsed since start    |      34.5s |            |
+| Total wallclock time elapsed since start    |        34s |            |
 |                                             |            |            |
 | Section                         | no. calls |  wall time | % of total |
 +---------------------------------+-----------+------------+------------+
-| matrixFreePDE: AMR              |     40000 |      2.81s |       8.1% |
-| matrixFreePDE: computeEnergy    |        11 |     0.435s |       1.3% |
-| matrixFreePDE: computeRHS       |     40000 |      17.2s |        50% |
-| matrixFreePDE: initialization   |         1 |      0.35s |         1% |
-| matrixFreePDE: output           |        11 |      1.52s |       4.4% |
-| matrixFreePDE: reinitialization |        43 |       2.9s |       8.4% |
-| matrixFreePDE: solve            |         1 |      34.1s |        99% |
-| matrixFreePDE: solveIncrements  |     40000 |      27.1s |        78% |
+| matrixFreePDE: AMR              |     40000 |      2.92s |       8.6% |
+| matrixFreePDE: computeEnergy    |        11 |      0.44s |       1.3% |
+| matrixFreePDE: computeRHS       |     40000 |      17.4s |        51% |
+| matrixFreePDE: initialization   |         1 |      0.36s |       1.1% |
+| matrixFreePDE: output           |        11 |     0.471s |       1.4% |
+| matrixFreePDE: reinitialization |        43 |      3.01s |       8.9% |
+| matrixFreePDE: solve            |         1 |      33.6s |        99% |
+| matrixFreePDE: solveIncrements  |     40000 |      27.5s |        81% |
 +---------------------------------+-----------+------------+------------+
 

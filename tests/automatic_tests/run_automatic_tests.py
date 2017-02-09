@@ -8,7 +8,35 @@ import time
 import sys
 
 # ----------------------------------------------------------------------------------------
-# Function tha compiles the PRISMS-PF code and runs the executable.
+# Function that compiles and runs the unit tests.
+# ----------------------------------------------------------------------------------------
+def run_unit_tests():
+	# Open file where output is redirected to
+	if os.path.exists("output.txt") == True:
+		os.remove("output.txt")
+	f = open("output.txt",'w+')	
+	
+	# Remove old files
+	if os.path.exists("main") == True:
+		os.remove("main")
+	if os.path.exists("CMakeCache.txt") == True:
+		os.remove("CMakeCache.txt")
+		
+	# Compile and run
+	subprocess.call(["cmake", "."],stdout=f,stderr=f)
+	subprocess.call(["make", "release"],stdout=f)
+	subprocess.call(["mpirun", "-n", "2", "main"],stdout=f)
+	f.close()
+	
+	result_file = open("unit_test_results.txt","r")
+	test_results = result_file.read().splitlines()
+	result_file.close()
+
+	return test_results
+
+
+# ----------------------------------------------------------------------------------------
+# Function that compiles the PRISMS-PF code and runs the executable.
 # ----------------------------------------------------------------------------------------
 def run_simulation(run_name,dir_path):
 	# Delete any pre-existing executables or results
@@ -98,7 +126,7 @@ def run_regression_test(applicationName,getNewGoldStandard,dir_path):
 		test_passed = True
 		
 	# Print the results to the screen
-	print "Test: ", applicationName
+	print "Regression Test: ", applicationName
 	
 	if test_passed:
 		if getNewGoldStandard == False:
@@ -132,39 +160,65 @@ def run_regression_test(applicationName,getNewGoldStandard,dir_path):
 # ----------------------------------------------------------------------------------------
 
 # Initialize
-test_counter = 0
-tests_passed = 0
 dir_path = os.path.dirname(os.path.realpath(__file__))
 os.chdir(dir_path)
 
 text_file = open("test_results.txt","a")
 now = datetime.datetime.now()
+
+# ------------------------------------
+# Start the unit tests
+# ------------------------------------
+
+
+os.chdir("../unit_tests/")
+unit_test_results = run_unit_tests()
+unit_tests_passed = unit_test_results[0]
+unit_test_counter = unit_test_results[1]
+
+print 	
+print "Unit Tests Passed: "+str(unit_tests_passed)+"/"+str(unit_test_counter)+"\n"
+
+text_file.write("--------------------------------------------------------- \n")
+text_file.write("Unit test on " + now.strftime("%Y-%m-%d %H:%M") + "\n") 
+text_file.write("--------------------------------------------------------- \n")
+text_file.write("Unit Tests Passed: "+str(unit_tests_passed)+"/"+str(unit_test_counter)+"\n") 
+
+os.chdir(dir_path)
+
+# ------------------------------------
+# Start the regression tests
+# ------------------------------------
+
+regression_test_counter = 0
+regression_tests_passed = 0
+
 text_file.write("--------------------------------------------------------- \n")
 text_file.write("Regression test on " + now.strftime("%Y-%m-%d %H:%M") + "\n") 
 text_file.write("--------------------------------------------------------- \n")
 text_file.close()
 
-# ------------------------------------
-# Start the tests
-# ------------------------------------
-
 applicationList = ["allenCahn","cahnHilliard","cahnHilliardWithAdaptivity","CHAC_anisotropy","CHAC_anisotropyRegularized","coupledCahnHilliardAllenCahn","mechanics","precipitateEvolution"]
 getNewGoldStandardList = [False, False, False, False, False, False, False, False]
 
 for applicationName in applicationList:
-	test_result = run_regression_test(applicationName,getNewGoldStandardList[test_counter],dir_path)	
+	test_result = run_regression_test(applicationName,getNewGoldStandardList[regression_test_counter],dir_path)	
 
-	test_counter += 1
-	tests_passed += int(test_result[0])
+	regression_test_counter += 1
+	regression_tests_passed += int(test_result[0])
+
+print 
+print "Regression Tests Passed: "+str(regression_tests_passed)+"/"+str(regression_test_counter)+"\n"
+
 
 # Output the overall test results
 text_file = open("test_results.txt","a")
-text_file.write("Tests Passed: "+str(tests_passed)+"/"+str(test_counter)+"\n") 
+text_file.write("Tests Passed: "+str(regression_tests_passed)+"/"+str(regression_test_counter)+"\n") 
 text_file.write("--------------------------------------------------------- \n")
 text_file.close()
 
 # Set exit code (passed to Travis CI)
-if tests_passed < test_counter:
+if ((regression_tests_passed < regression_test_counter) and (unit_tests_passed < unit_test_counter)):
 	sys.exit(1)
 else:
 	sys.exit(0)
