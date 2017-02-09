@@ -21,8 +21,8 @@
 //C16 C23 C24 C25 C26 C34 C35 C36 C45 C46 C56]
 
 //2D models:
-//ISOTROPIC- (Plane Strain) 2 constants [E, nu]
-//ANISOTROPIC- 6 constants [C11 C22 C33 C12 C13 C23]
+//ISOTROPIC- 2 constants [E, nu] (Plane Strain)
+//ANISOTROPIC- 6 constants [C11 C22 C66 C12 C16 C26] (Plane Strain)
 
 //1D models:
 //ISOTROPIC- 1 constant [E]

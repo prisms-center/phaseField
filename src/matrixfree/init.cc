@@ -7,7 +7,7 @@
 
  //populate with fields and setup matrix free system
  template <int dim>
- void MatrixFreePDE<dim>::init(unsigned int iter){
+ void MatrixFreePDE<dim>::init(){
 	 computing_timer.enter_section("matrixFreePDE: initialization");
 
 	 //creating mesh

@@ -6,8 +6,6 @@ var searchData=
   ['scalarhess',['scalarHess',['../classmodel_variable.html#a75e891895b366e98aad8dd3abeecc026',1,'modelVariable']]],
   ['scalarvalue',['scalarValue',['../classmodel_variable.html#a79dfc6ba55c6edf6cd38d005a424ba06',1,'modelVariable']]],
   ['scalarvalueresidual',['scalarValueResidual',['../classmodel_residual.html#a091ebf3101c5a2385b982eb7523c90c3',1,'modelResidual']]],
-  ['seededtime',['seededTime',['../structnucleus.html#a27864794ac2deed896666c4c3a52a477',1,'nucleus']]],
-  ['seedingtime',['seedingTime',['../structnucleus.html#ad6efa428796d2d509490a0105ca1b3e6',1,'nucleus']]],
   ['sfts_5fconst1',['sfts_const1',['../precipitate_evolution_2equations_8h.html#aae2faadec11f1c911e515a94c11d84fa',1,'sfts_const1():&#160;equations.h'],['../precipitate_evolution__pfunction_2equations_8h.html#aae2faadec11f1c911e515a94c11d84fa',1,'sfts_const1():&#160;equations.h'],['../single_precipitate_k_k_s_2equations_8h.html#aae2faadec11f1c911e515a94c11d84fa',1,'sfts_const1():&#160;equations.h']]],
   ['sfts_5fconst2',['sfts_const2',['../precipitate_evolution_2equations_8h.html#ab2154e99e8900b8a19e6b5a84a747158',1,'sfts_const2():&#160;equations.h'],['../precipitate_evolution__pfunction_2equations_8h.html#ab2154e99e8900b8a19e6b5a84a747158',1,'sfts_const2():&#160;equations.h']]],
   ['sfts_5fconst3',['sfts_const3',['../precipitate_evolution_2equations_8h.html#ae00cee49d1d042e7939e6ccf9191e682',1,'sfts_const3():&#160;equations.h'],['../precipitate_evolution__pfunction_2equations_8h.html#ae00cee49d1d042e7939e6ccf9191e682',1,'sfts_const3():&#160;equations.h']]],

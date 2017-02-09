@@ -94,8 +94,8 @@ class MatrixFreePDE:public Subscriptor
    * Initializes the mesh, degress of freedom, constraints and data structures using the user provided
    * inputs in the application parameters file. 
    */
-  void init  (unsigned int iter=0);
-  void reinit  (unsigned int iter=0);
+  void init  ();
+  void reinit  ();
    /**
    * Initializes the data structures for enabling unit tests.
    * 
@@ -201,8 +201,6 @@ class MatrixFreePDE:public Subscriptor
 
   /*AMR methods*/
   void refineGrid();
-  /*Method to perform adaptive mesh refinement (AMR)*/
-  void refineMesh(unsigned int _currentIncrement);
   /*Virtual method to mark the regions to be adpatively refined. This is expected to be provided by the user.*/
   virtual void adaptiveRefine(unsigned int _currentIncrement);
   /*Virtual method to define AMR refinement criterion. The default implementation uses the Kelly error estimate for estimative the error function. The user can supply a custom implementation to overload the default implementation.*/

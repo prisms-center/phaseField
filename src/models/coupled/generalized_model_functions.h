@@ -618,18 +618,13 @@ void generalizedProblem<dim>::computeIntegral(double& integratedField){
 template <int dim>
 void generalizedProblem<dim>::adaptiveRefine(unsigned int currentIncrement){
 	#if hAdaptivity == true
-	//if ((currentIncrement>0) && (currentIncrement%skipRemeshingSteps==0)){
-//	if ( (currentIncrement == 2) || (currentIncrement%skipRemeshingSteps==0) ){
-//		this->refineMesh(currentIncrement);
-//	}
-
 	if ( (currentIncrement == 0) ){
 		for (unsigned int remesh_index=0; remesh_index < (maxRefinementLevel-minRefinementLevel); remesh_index++){
-			this->refineMesh(currentIncrement);
+			this->reinit();
 		}
 	}
 	else if ( (currentIncrement%skipRemeshingSteps==0) ){
-			this->refineMesh(currentIncrement);
+			this->reinit();
 		}
 	#endif
 }
@@ -1222,6 +1217,7 @@ void generalizedProblem<dim>::getComponentsWithRigidBodyModes(std::vector<int> &
 // =====================================================================
 
 //structure representing each nucleus
+/*
 struct nucleus{
   unsigned int index;
   dealii::Point<problemDIM> center;
@@ -1230,11 +1226,13 @@ struct nucleus{
 };
 //vector of all nucleus seeded in the problem
 std::vector<nucleus> nuclei, localNuclei;
+*/
 
 //nucleation model implementation
 template <int dim>
 void generalizedProblem<dim>::modifySolutionFields()
 {
+	/*
   //current time
   double t=this->currentTime;
   unsigned int inc=this->currentIncrement;
@@ -1472,5 +1470,6 @@ void generalizedProblem<dim>::modifySolutionFields()
 		  }
 	  }
   }
+  */
 }
 

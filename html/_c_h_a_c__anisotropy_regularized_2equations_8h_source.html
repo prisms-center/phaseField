@@ -105,7 +105,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="_c_h_a_c__anisotropy_regularized_2equations_8h.html#a7ead333f197ce31a935e1cd3d870f111">   13</a></span>&#160;<span class="preprocessor">#define variable_eq_type {&quot;PARABOLIC&quot;,&quot;PARABOLIC&quot;,&quot;PARABOLIC&quot;}</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// Flags for whether the value, gradient, and Hessian are needed in the residual eqns</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="_c_h_a_c__anisotropy_regularized_2equations_8h.html#abfda0c56f9bfe63767f1cd71d361202a">   16</a></span>&#160;<span class="preprocessor">#define need_val {true, true, false}</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="_c_h_a_c__anisotropy_regularized_2equations_8h.html#abfda0c56f9bfe63767f1cd71d361202a">   16</a></span>&#160;<span class="preprocessor">#define need_val {true, true, true}</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="_c_h_a_c__anisotropy_regularized_2equations_8h.html#ad394431a0a6bade158caaff189434fc2">   17</a></span>&#160;<span class="preprocessor">#define need_grad {true, true, true}</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="_c_h_a_c__anisotropy_regularized_2equations_8h.html#af81f83f4e6bbdc3e5bf8eef1eecfd426">   18</a></span>&#160;<span class="preprocessor">#define need_hess {false, false, false}</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
@@ -282,22 +282,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<a class="code" href="matrix_free_p_d_e_8h.html#a275b78678cf79b17d9561360f57b825d">scalargradType</a> normal = nx/(std::sqrt(nx.norm_square())+<a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(1.0e-16));</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<a class="code" href="matrix_free_p_d_e_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> f_grad = <a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(0.5)*<a class="code" href="_c_h_a_c__anisotropy_regularized_2equations_8h.html#a42e729077189bab1dae844253dd2ad1d">gamma</a>*<a class="code" href="_c_h_a_c__anisotropy_regularized_2equations_8h.html#a42e729077189bab1dae844253dd2ad1d">gamma</a>*nx*nx;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<a class="code" href="matrix_free_p_d_e_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> f_reg = <a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(0.5)*<a class="code" href="_c_h_a_c__anisotropy_regularized_2equations_8h.html#a127fff1313a394e736b48e2228de7102">delta2</a>*biharm*biharm;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<a class="code" href="matrix_free_p_d_e_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> f_reg = <a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(0.5*<a class="code" href="_c_h_a_c__anisotropy_regularized_2equations_8h.html#a127fff1313a394e736b48e2228de7102">delta2</a>)*biharm*biharm;</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;total_energy_density = f_chem + f_grad + f_reg;</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;</div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;assembler_lock.acquire ();</div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> i=0; i&lt;c.n_array_elements;i++){</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;  <span class="comment">// For some reason, some of the values in this loop</span></div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;  <span class="keywordflow">if</span> (c[i] &gt; 1.0e-10){</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;      this-&gt;energy+=total_energy_density[i]*JxW_value[i];</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;      this-&gt;energy_components[0]+= f_chem[i]*JxW_value[i];</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;      this-&gt;energy_components[1]+= f_grad[i]*JxW_value[i];</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;      this-&gt;energy_components[2]+= f_reg[i]*JxW_value[i];</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;  }</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;}</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;assembler_lock.release ();</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;}</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;  <span class="keywordflow">if</span> (c[i] &gt; 1.0e-10){</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;      this-&gt;energy+=total_energy_density[i]*JxW_value[i];</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;      this-&gt;energy_components[0]+= f_chem[i]*JxW_value[i];</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;      this-&gt;energy_components[1]+= f_grad[i]*JxW_value[i];</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;      this-&gt;energy_components[2]+= f_reg[i]*JxW_value[i];</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;  }</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;}</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;assembler_lock.release ();</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;}</div>
 <div class="ttc" id="classmodel_residual_html"><div class="ttname"><a href="classmodel_residual.html">modelResidual</a></div><div class="ttdef"><b>Definition:</b> model_variables.h:25</div></div>
 <div class="ttc" id="default_values_8h_html_a7600d4f3350a4a7972723128e23864f2"><div class="ttname"><a href="default_values_8h.html#a7600d4f3350a4a7972723128e23864f2">problemDIM</a></div><div class="ttdeci">#define problemDIM</div><div class="ttdef"><b>Definition:</b> defaultValues.h:7</div></div>
 <div class="ttc" id="classgeneralized_problem_html_a8ccfe9cbd0b12d62f2cb6d6f23a57eb4"><div class="ttname"><a href="classgeneralized_problem.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">generalizedProblem::residualRHS</a></div><div class="ttdeci">void residualRHS(const std::vector&lt; modelVariable&lt; dim &gt; &gt; &amp;modelVarList, std::vector&lt; modelResidual&lt; dim &gt; &gt; &amp;modelResidualsList, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc) const </div><div class="ttdef"><b>Definition:</b> equations.h:58</div></div>

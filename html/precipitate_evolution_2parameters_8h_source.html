@@ -127,7 +127,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// Set the maximum and minimum level of refinement</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="precipitate_evolution_2parameters_8h.html#aceca6f3810b77c22614f6c95d5be049f">   37</a></span>&#160;<span class="preprocessor">#define maxRefinementLevel (refineFactor)</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="precipitate_evolution_2parameters_8h.html#aba4954255c6b86a4f11ee18160a1b60c">   38</a></span>&#160;<span class="preprocessor">#define minRefinementLevel (refineFactor-2)</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="precipitate_evolution_2parameters_8h.html#aba4954255c6b86a4f11ee18160a1b60c">   38</a></span>&#160;<span class="preprocessor">#define minRefinementLevel (refineFactor-4)</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">// Set the fields used to determine the refinement. Fields determined by the order</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">// declared in &quot;equations.h&quot;, starting at zero</span></div>
@@ -146,7 +146,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">// The size of the time step</span></div>
 <div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="precipitate_evolution_2parameters_8h.html#ad22563b012dd3c292e08db4c4b178f69">   55</a></span>&#160;<span class="preprocessor">#define timeStep 4.0e-4</span></div>
 <div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="precipitate_evolution_2parameters_8h.html#af88b809236daa3e5e2a276bc8adaeff5">   56</a></span>&#160;<span class="preprocessor">#define timeFinal 100.0</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="precipitate_evolution_2parameters_8h.html#aa577dcdb04cedabb1e4eed771df59032">   57</a></span>&#160;<span class="preprocessor">#define timeIncrements 10 //5000</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="precipitate_evolution_2parameters_8h.html#aa577dcdb04cedabb1e4eed771df59032">   57</a></span>&#160;<span class="preprocessor">#define timeIncrements 5000</span></div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">// =================================================================================</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">// Set the elliptic solver parameters</span></div>
@@ -180,10 +180,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">// User-defined list of time steps where the program should output. Only used if</span></div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">// outputCondition is &quot;LIST&quot;</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="precipitate_evolution_2parameters_8h.html#aca4ac8bcad988e92b7c2ae5d6b3a3107">   91</a></span>&#160;<span class="preprocessor">#define outputList {}</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="precipitate_evolution_2parameters_8h.html#aca4ac8bcad988e92b7c2ae5d6b3a3107">   91</a></span>&#160;<span class="preprocessor">#define outputList {0}</span></div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">// Status is printed to the screen every skipPrintSteps</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="precipitate_evolution_2parameters_8h.html#a63477dc9da59481ff2b1d689f2e0f8f6">   94</a></span>&#160;<span class="preprocessor">#define skipPrintSteps 10</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="precipitate_evolution_2parameters_8h.html#a63477dc9da59481ff2b1d689f2e0f8f6">   94</a></span>&#160;<span class="preprocessor">#define skipPrintSteps 100</span></div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment">// =================================================================================</span></div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">// Set the flag determining if the total free energy is calculated for each output</span></div>

@@ -70,13 +70,5 @@ void MatrixFreePDE<dim>::refineGrid (){
 #endif
 }
 
-//initialize adaptive mesh refinement
-template <int dim>
-void MatrixFreePDE<dim>::refineMesh(unsigned int _currentIncrement){
-#if hAdaptivity==true 
-  reinit(_currentIncrement-1);
-#endif
-}
-
 
 #endif 

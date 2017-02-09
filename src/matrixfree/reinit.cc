@@ -7,7 +7,7 @@
 
  //populate with fields and setup matrix free system
  template <int dim>
- void MatrixFreePDE<dim>::reinit(unsigned int iter){
+ void MatrixFreePDE<dim>::reinit(){
 
 	 computing_timer.enter_section("matrixFreePDE: reinitialization");
 
@@ -96,7 +96,7 @@
  	 // Setup solution vectors
  	 pcout << "initializing parallel::distributed residual and solution vectors\n";
  	 for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
- 		 vectorType *U, *R;
+ 		 vectorType *U;
 
  		 U=solutionSet.at(fieldIndex);
 

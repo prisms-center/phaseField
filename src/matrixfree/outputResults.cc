@@ -40,10 +40,10 @@ void MatrixFreePDE<dim>::outputResults(){
   std::ofstream output (vtuFileName);
 
   //write to file
-  if (outputFileType == "vtu"){
+  if (strcmp(outputFileType,"vtu")){
 	  data_out.write_vtu (output);
   }
-  else if (outputFileType == "vtk"){
+  else if (strcmp(outputFileType,"vtk")){
 	  data_out.write_vtk (output);
   }
   else {
