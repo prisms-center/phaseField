@@ -6,10 +6,10 @@ services:
   - docker
   
 before_install:
-  - if [[ $TRAVIS_EVENT_TYPE=="pull_request" ]]; then export BRANCH=$TRAVIS_PULL_REQUEST_BRANCH; export SLUG=$TRAVIS_PULL_REQUEST_SLUG; fi
+  - if [ "$TRAVIS_EVENT_TYPE" == "pull_request" ]; then export BRANCH=$TRAVIS_PULL_REQUEST_BRANCH; export SLUG=$TRAVIS_PULL_REQUEST_SLUG; fi
   - echo $BRANCH
   - echo $SLUG
-  - if [[ $TRAVIS_EVENT_TYPE=="push" ]]; then export BRANCH=$TRAVIS_BRANCH; export SLUG=$TRAVIS_REPO_SLUG; fi
+  - if [ "$TRAVIS_EVENT_TYPE" == "push" ]; then export BRANCH=$TRAVIS_BRANCH; export SLUG=$TRAVIS_REPO_SLUG; fi
   - echo $BRANCH
   - echo $SLUG
   - docker pull dealii/dealii:v8.4.2-gcc-mpi-fulldepsmanual-debugrelease
