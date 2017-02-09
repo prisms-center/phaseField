@@ -273,3 +273,29 @@ Application: cahnHilliard
 Result: Pass 
 Time: 56.4392199516 
  
+Application: cahnHilliardWithAdaptivity 
+Result: Pass 
+Time: 54.292746067 
+ 
+Application: CHAC_anisotropy 
+Result: Pass 
+Time: 29.1000089645 
+ 
+Application: CHAC_anisotropyRegularized 
+Result: Pass 
+Time: 34.5661101341 
+ 
+Application: coupledCahnHilliardAllenCahn 
+Result: Pass 
+Time: 71.4854559898 
+ 
+Application: mechanics 
+Result: Pass 
+Time: 0.546424150467 
+ 
+Application: precipitateEvolution 
+Result: Pass 
+Time: 164.805184126 
+ 
+Tests Passed: 8/8
+--------------------------------------------------------- 

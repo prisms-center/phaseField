@@ -101,7 +101,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.340336e+01, current residual:5.786171e+01
 field ' n' [explicit solve]: current solution: 4.868664e+01, current residual:5.219213e+01
-wall time: 0.000571966s
+wall time: 0.000684023s
 
 time increment:2000  time: 100
 Current mesh refinement level: 8
@@ -113,7 +113,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.364303e+01, current residual:5.513761e+01
 field ' n' [explicit solve]: current solution: 4.889521e+01, current residual:4.946815e+01
-wall time: 0.000650883s
+wall time: 0.000688791s
 
 time increment:3000  time: 150
 Current mesh refinement level: 8
@@ -125,7 +125,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.412472e+01, current residual:5.442743e+01
 field ' n' [explicit solve]: current solution: 4.937289e+01, current residual:4.875365e+01
-wall time: 0.00170517s
+wall time: 0.000777006s
 
 time increment:4000  time: 200
 Current mesh refinement level: 8
@@ -137,7 +137,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.411756e+01, current residual:5.424391e+01
 field ' n' [explicit solve]: current solution: 4.937200e+01, current residual:4.875219e+01
-wall time: 0.000727177s
+wall time: 0.00065589s
 Output written to:solution-004000.pvtu
 
 Energy: 13.5474
@@ -153,7 +153,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.410977e+01, current residual:5.424195e+01
 field ' n' [explicit solve]: current solution: 4.937385e+01, current residual:4.875256e+01
-wall time: 0.000648022s
+wall time: 0.000638962s
 
 time increment:6000  time: 300
 Current mesh refinement level: 8
@@ -165,7 +165,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.410405e+01, current residual:5.423970e+01
 field ' n' [explicit solve]: current solution: 4.937649e+01, current residual:4.875343e+01
-wall time: 0.000695944s
+wall time: 0.000614882s
 
 time increment:7000  time: 350
 Current mesh refinement level: 8
@@ -177,7 +177,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.409888e+01, current residual:5.423873e+01
 field ' n' [explicit solve]: current solution: 4.937924e+01, current residual:4.875445e+01
-wall time: 0.000724077s
+wall time: 0.000680923s
 
 time increment:8000  time: 400
 Current mesh refinement level: 8
@@ -189,7 +189,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.409462e+01, current residual:5.423794e+01
 field ' n' [explicit solve]: current solution: 4.938191e+01, current residual:4.875548e+01
-wall time: 0.000675917s
+wall time: 0.000666857s
 Output written to:solution-008000.pvtu
 
 Energy: 13.5214
@@ -205,7 +205,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.409111e+01, current residual:5.423722e+01
 field ' n' [explicit solve]: current solution: 4.938443e+01, current residual:4.875646e+01
-wall time: 0.000731945s
+wall time: 0.000645161s
 
 time increment:10000  time: 500
 Current mesh refinement level: 8
@@ -217,7 +217,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.408820e+01, current residual:5.423649e+01
 field ' n' [explicit solve]: current solution: 4.938681e+01, current residual:4.875740e+01
-wall time: 0.000725985s
+wall time: 0.000610828s
 
 time increment:11000  time: 550
 Current mesh refinement level: 8
@@ -229,7 +229,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.408580e+01, current residual:5.423571e+01
 field ' n' [explicit solve]: current solution: 4.938904e+01, current residual:4.875829e+01
-wall time: 0.000607014s
+wall time: 0.00062418s
 
 time increment:12000  time: 600
 Current mesh refinement level: 8
@@ -241,7 +241,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.408380e+01, current residual:5.423486e+01
 field ' n' [explicit solve]: current solution: 4.939115e+01, current residual:4.875912e+01
-wall time: 0.000695944s
+wall time: 0.000614166s
 Output written to:solution-012000.pvtu
 
 Energy: 13.5018
@@ -257,7 +257,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.408215e+01, current residual:5.423394e+01
 field ' n' [explicit solve]: current solution: 4.939315e+01, current residual:4.875991e+01
-wall time: 0.000681877s
+wall time: 0.000700951s
 
 time increment:14000  time: 700
 Current mesh refinement level: 8
@@ -269,7 +269,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.408079e+01, current residual:5.423296e+01
 field ' n' [explicit solve]: current solution: 4.939503e+01, current residual:4.876066e+01
-wall time: 0.000683069s
+wall time: 0.000838995s
 
 time increment:15000  time: 750
 Current mesh refinement level: 8
@@ -281,7 +281,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407966e+01, current residual:5.423192e+01
 field ' n' [explicit solve]: current solution: 4.939683e+01, current residual:4.876137e+01
-wall time: 0.000887871s
+wall time: 0.000728846s
 
 time increment:16000  time: 800
 Current mesh refinement level: 8
@@ -293,7 +293,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407874e+01, current residual:5.423084e+01
 field ' n' [explicit solve]: current solution: 4.939854e+01, current residual:4.876204e+01
-wall time: 0.000638962s
+wall time: 0.00072813s
 Output written to:solution-016000.pvtu
 
 Energy: 13.4864
@@ -309,7 +309,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407797e+01, current residual:5.422973e+01
 field ' n' [explicit solve]: current solution: 4.940016e+01, current residual:4.876268e+01
-wall time: 0.000733852s
+wall time: 0.000673056s
 
 time increment:18000  time: 900
 Current mesh refinement level: 8
@@ -321,7 +321,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407735e+01, current residual:5.422859e+01
 field ' n' [explicit solve]: current solution: 4.940172e+01, current residual:4.876330e+01
-wall time: 0.000667095s
+wall time: 0.000700951s
 
 time increment:19000  time: 950
 Current mesh refinement level: 8
@@ -333,7 +333,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407742e+01, current residual:5.422656e+01
 field ' n' [explicit solve]: current solution: 4.940321e+01, current residual:4.876388e+01
-wall time: 0.000586987s
+wall time: 0.000639915s
 
 time increment:20000  time: 1000
 Current mesh refinement level: 8
@@ -345,7 +345,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407700e+01, current residual:5.422544e+01
 field ' n' [explicit solve]: current solution: 4.940464e+01, current residual:4.876444e+01
-wall time: 0.000708103s
+wall time: 0.000648022s
 Output written to:solution-020000.pvtu
 
 Energy: 13.4745
@@ -361,7 +361,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407664e+01, current residual:5.422431e+01
 field ' n' [explicit solve]: current solution: 4.940602e+01, current residual:4.876499e+01
-wall time: 0.000700951s
+wall time: 0.000689983s
 
 time increment:22000  time: 1100
 Current mesh refinement level: 8
@@ -373,7 +373,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407635e+01, current residual:5.422318e+01
 field ' n' [explicit solve]: current solution: 4.940734e+01, current residual:4.876551e+01
-wall time: 0.000656128s
+wall time: 0.00070405s
 
 time increment:23000  time: 1150
 Current mesh refinement level: 8
@@ -385,7 +385,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407611e+01, current residual:5.422206e+01
 field ' n' [explicit solve]: current solution: 4.940862e+01, current residual:4.876601e+01
-wall time: 0.000760794s
+wall time: 0.000731945s
 
 time increment:24000  time: 1200
 Current mesh refinement level: 8
@@ -397,7 +397,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407591e+01, current residual:5.422095e+01
 field ' n' [explicit solve]: current solution: 4.940986e+01, current residual:4.876649e+01
-wall time: 0.000654221s
+wall time: 0.000771999s
 Output written to:solution-024000.pvtu
 
 Energy: 13.4651
@@ -413,7 +413,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407574e+01, current residual:5.421985e+01
 field ' n' [explicit solve]: current solution: 4.941105e+01, current residual:4.876696e+01
-wall time: 0.000654936s
+wall time: 0.000648022s
 
 time increment:26000  time: 1300
 Current mesh refinement level: 8
@@ -425,7 +425,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407559e+01, current residual:5.421875e+01
 field ' n' [explicit solve]: current solution: 4.941221e+01, current residual:4.876741e+01
-wall time: 0.000636101s
+wall time: 0.000751972s
 
 time increment:27000  time: 1350
 Current mesh refinement level: 8
@@ -437,7 +437,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407546e+01, current residual:5.421767e+01
 field ' n' [explicit solve]: current solution: 4.941333e+01, current residual:4.876784e+01
-wall time: 0.000597s
+wall time: 0.000687122s
 
 time increment:28000  time: 1400
 Current mesh refinement level: 8
@@ -449,7 +449,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407534e+01, current residual:5.421661e+01
 field ' n' [explicit solve]: current solution: 4.941441e+01, current residual:4.876827e+01
-wall time: 0.000637054s
+wall time: 0.000659227s
 Output written to:solution-028000.pvtu
 
 Energy: 13.4579
@@ -465,7 +465,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407522e+01, current residual:5.421555e+01
 field ' n' [explicit solve]: current solution: 4.941547e+01, current residual:4.876868e+01
-wall time: 0.000711918s
+wall time: 0.000613928s
 
 time increment:30000  time: 1500
 Current mesh refinement level: 8
@@ -477,7 +477,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407511e+01, current residual:5.421450e+01
 field ' n' [explicit solve]: current solution: 4.941649e+01, current residual:4.876907e+01
-wall time: 0.000681877s
+wall time: 0.000733852s
 
 time increment:31000  time: 1550
 Current mesh refinement level: 8
@@ -489,7 +489,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407500e+01, current residual:5.421346e+01
 field ' n' [explicit solve]: current solution: 4.941749e+01, current residual:4.876946e+01
-wall time: 0.000676155s
+wall time: 0.000694036s
 
 time increment:32000  time: 1600
 Current mesh refinement level: 8
@@ -501,7 +501,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407489e+01, current residual:5.421242e+01
 field ' n' [explicit solve]: current solution: 4.941846e+01, current residual:4.876984e+01
-wall time: 0.00064683s
+wall time: 0.000671864s
 Output written to:solution-032000.pvtu
 
 Energy: 13.4523
@@ -517,7 +517,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407477e+01, current residual:5.421140e+01
 field ' n' [explicit solve]: current solution: 4.941941e+01, current residual:4.877020e+01
-wall time: 0.000785828s
+wall time: 0.000664949s
 
 time increment:34000  time: 1700
 Current mesh refinement level: 8
@@ -529,7 +529,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407465e+01, current residual:5.421038e+01
 field ' n' [explicit solve]: current solution: 4.942033e+01, current residual:4.877056e+01
-wall time: 0.000660896s
+wall time: 0.000638008s
 
 time increment:35000  time: 1750
 Current mesh refinement level: 8
@@ -541,7 +541,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407452e+01, current residual:5.420936e+01
 field ' n' [explicit solve]: current solution: 4.942123e+01, current residual:4.877091e+01
-wall time: 0.000646114s
+wall time: 0.000622988s
 
 time increment:36000  time: 1800
 Current mesh refinement level: 8
@@ -553,7 +553,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407438e+01, current residual:5.420835e+01
 field ' n' [explicit solve]: current solution: 4.942210e+01, current residual:4.877125e+01
-wall time: 0.000677109s
+wall time: 0.000626087s
 Output written to:solution-036000.pvtu
 
 Energy: 13.448
@@ -569,7 +569,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407424e+01, current residual:5.420734e+01
 field ' n' [explicit solve]: current solution: 4.942296e+01, current residual:4.877158e+01
-wall time: 0.000664949s
+wall time: 0.000674009s
 
 time increment:38000  time: 1900
 Current mesh refinement level: 8
@@ -581,7 +581,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407408e+01, current residual:5.420634e+01
 field ' n' [explicit solve]: current solution: 4.942380e+01, current residual:4.877190e+01
-wall time: 0.000686169s
+wall time: 0.000732899s
 
 time increment:39000  time: 1950
 Current mesh refinement level: 8
@@ -593,7 +593,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407391e+01, current residual:5.420534e+01
 field ' n' [explicit solve]: current solution: 4.942461e+01, current residual:4.877221e+01
-wall time: 0.000735998s
+wall time: 0.000695944s
 
 time increment:40000  time: 2000
 Current mesh refinement level: 8
@@ -605,7 +605,7 @@ initializing parallel::distributed residual and solution vectors
 computed mass matrix (using FE space for field: 0)
 field ' c' [explicit solve]: current solution: 5.407374e+01, current residual:5.420433e+01
 field ' n' [explicit solve]: current solution: 4.942541e+01, current residual:4.877252e+01
-wall time: 0.000648022s
+wall time: 0.00066781s
 Output written to:solution-040000.pvtu
 
 Energy: 13.4447
@@ -617,13 +617,13 @@ Energy Components: 7.20662 6.23812 0
 |                                             |            |            |
 | Section                         | no. calls |  wall time | % of total |
 +---------------------------------+-----------+------------+------------+
-| matrixFreePDE: AMR              |     40000 |      2.72s |       9.5% |
-| matrixFreePDE: computeEnergy    |        11 |     0.518s |       1.8% |
+| matrixFreePDE: AMR              |     40000 |      2.65s |       9.2% |
+| matrixFreePDE: computeEnergy    |        11 |     0.532s |       1.8% |
 | matrixFreePDE: computeRHS       |     40000 |      15.6s |        54% |
-| matrixFreePDE: initialization   |         1 |     0.307s |       1.1% |
-| matrixFreePDE: output           |        11 |     0.447s |       1.6% |
-| matrixFreePDE: reinitialization |        43 |      2.78s |       9.6% |
+| matrixFreePDE: initialization   |         1 |     0.303s |         1% |
+| matrixFreePDE: output           |        11 |     0.453s |       1.6% |
+| matrixFreePDE: reinitialization |        43 |       2.7s |       9.3% |
 | matrixFreePDE: solve            |         1 |      28.5s |        99% |
-| matrixFreePDE: solveIncrements  |     40000 |      22.9s |        80% |
+| matrixFreePDE: solveIncrements  |     40000 |        23s |        80% |
 +---------------------------------+-----------+------------+------------+
 

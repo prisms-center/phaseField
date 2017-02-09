@@ -438,3 +438,190 @@ time increment:69000  time: 69
 field ' c' [explicit solve]: current solution: 9.832199e+01, current residual:6.612395e+01
 field 'mu' [explicit solve]: current solution: 3.029046e+00, current residual:2.036740e+00
 wall time: 0.000466108s
+
+time increment:70000  time: 70
+field ' c' [explicit solve]: current solution: 9.832441e+01, current residual:6.612533e+01
+field 'mu' [explicit solve]: current solution: 3.025223e+00, current residual:2.034197e+00
+wall time: 0.000612974s
+Output written to:solution-070000.pvtu
+
+Energy: 158.073
+Energy Components: 71.6417 86.4315 0 
+
+time increment:71000  time: 71
+field ' c' [explicit solve]: current solution: 9.832686e+01, current residual:6.612673e+01
+field 'mu' [explicit solve]: current solution: 3.021349e+00, current residual:2.031618e+00
+wall time: 0.000560045s
+
+time increment:72000  time: 72
+field ' c' [explicit solve]: current solution: 9.832934e+01, current residual:6.612815e+01
+field 'mu' [explicit solve]: current solution: 3.017422e+00, current residual:2.029000e+00
+wall time: 0.000567913s
+
+time increment:73000  time: 73
+field ' c' [explicit solve]: current solution: 9.833184e+01, current residual:6.612959e+01
+field 'mu' [explicit solve]: current solution: 3.013434e+00, current residual:2.026340e+00
+wall time: 0.00056386s
+
+time increment:74000  time: 74
+field ' c' [explicit solve]: current solution: 9.833437e+01, current residual:6.613105e+01
+field 'mu' [explicit solve]: current solution: 3.009381e+00, current residual:2.023632e+00
+wall time: 0.000550985s
+
+time increment:75000  time: 75
+field ' c' [explicit solve]: current solution: 9.833692e+01, current residual:6.613253e+01
+field 'mu' [explicit solve]: current solution: 3.005255e+00, current residual:2.020874e+00
+wall time: 0.000576019s
+
+time increment:76000  time: 76
+field ' c' [explicit solve]: current solution: 9.833948e+01, current residual:6.613402e+01
+field 'mu' [explicit solve]: current solution: 3.001051e+00, current residual:2.018061e+00
+wall time: 0.000663996s
+
+time increment:77000  time: 77
+field ' c' [explicit solve]: current solution: 9.834207e+01, current residual:6.613553e+01
+field 'mu' [explicit solve]: current solution: 2.996762e+00, current residual:2.015189e+00
+wall time: 0.000615835s
+
+time increment:78000  time: 78
+field ' c' [explicit solve]: current solution: 9.834467e+01, current residual:6.613705e+01
+field 'mu' [explicit solve]: current solution: 2.992386e+00, current residual:2.012256e+00
+wall time: 0.000515938s
+
+time increment:79000  time: 79
+field ' c' [explicit solve]: current solution: 9.834729e+01, current residual:6.613858e+01
+field 'mu' [explicit solve]: current solution: 2.987922e+00, current residual:2.009262e+00
+wall time: 0.000569105s
+
+time increment:80000  time: 80
+field ' c' [explicit solve]: current solution: 9.834993e+01, current residual:6.614013e+01
+field 'mu' [explicit solve]: current solution: 2.983371e+00, current residual:2.006208e+00
+wall time: 0.000554085s
+Output written to:solution-080000.pvtu
+
+Energy: 157.215
+Energy Components: 71.0317 86.1828 0 
+
+time increment:81000  time: 81
+field ' c' [explicit solve]: current solution: 9.835258e+01, current residual:6.614169e+01
+field 'mu' [explicit solve]: current solution: 2.978735e+00, current residual:2.003096e+00
+wall time: 0.000558138s
+
+time increment:82000  time: 82
+field ' c' [explicit solve]: current solution: 9.835524e+01, current residual:6.614326e+01
+field 'mu' [explicit solve]: current solution: 2.974021e+00, current residual:1.999930e+00
+wall time: 0.000546932s
+
+time increment:83000  time: 83
+field ' c' [explicit solve]: current solution: 9.835791e+01, current residual:6.614484e+01
+field 'mu' [explicit solve]: current solution: 2.969236e+00, current residual:1.996714e+00
+wall time: 0.000509024s
+
+time increment:84000  time: 84
+field ' c' [explicit solve]: current solution: 9.836060e+01, current residual:6.614643e+01
+field 'mu' [explicit solve]: current solution: 2.964387e+00, current residual:1.993455e+00
+wall time: 0.00049901s
+
+time increment:85000  time: 85
+field ' c' [explicit solve]: current solution: 9.836329e+01, current residual:6.614803e+01
+field 'mu' [explicit solve]: current solution: 2.959484e+00, current residual:1.990158e+00
+wall time: 0.000581026s
+
+time increment:86000  time: 86
+field ' c' [explicit solve]: current solution: 9.836599e+01, current residual:6.614963e+01
+field 'mu' [explicit solve]: current solution: 2.954538e+00, current residual:1.986832e+00
+wall time: 0.000519037s
+
+time increment:87000  time: 87
+field ' c' [explicit solve]: current solution: 9.836870e+01, current residual:6.615124e+01
+field 'mu' [explicit solve]: current solution: 2.949557e+00, current residual:1.983482e+00
+wall time: 0.000555992s
+
+time increment:88000  time: 88
+field ' c' [explicit solve]: current solution: 9.837141e+01, current residual:6.615286e+01
+field 'mu' [explicit solve]: current solution: 2.944553e+00, current residual:1.980115e+00
+wall time: 0.000556946s
+
+time increment:89000  time: 89
+field ' c' [explicit solve]: current solution: 9.837413e+01, current residual:6.615448e+01
+field 'mu' [explicit solve]: current solution: 2.939533e+00, current residual:1.976737e+00
+wall time: 0.000579834s
+
+time increment:90000  time: 90
+field ' c' [explicit solve]: current solution: 9.837685e+01, current residual:6.615611e+01
+field 'mu' [explicit solve]: current solution: 2.934505e+00, current residual:1.973354e+00
+wall time: 0.000513792s
+Output written to:solution-090000.pvtu
+
+Energy: 156.423
+Energy Components: 70.4823 85.9409 0 
+
+time increment:91000  time: 91
+field ' c' [explicit solve]: current solution: 9.837957e+01, current residual:6.615774e+01
+field 'mu' [explicit solve]: current solution: 2.929477e+00, current residual:1.969971e+00
+wall time: 0.000709057s
+
+time increment:92000  time: 92
+field ' c' [explicit solve]: current solution: 9.838230e+01, current residual:6.615938e+01
+field 'mu' [explicit solve]: current solution: 2.924455e+00, current residual:1.966592e+00
+wall time: 0.000535011s
+
+time increment:93000  time: 93
+field ' c' [explicit solve]: current solution: 9.838503e+01, current residual:6.616102e+01
+field 'mu' [explicit solve]: current solution: 2.919443e+00, current residual:1.963219e+00
+wall time: 0.000545025s
+
+time increment:94000  time: 94
+field ' c' [explicit solve]: current solution: 9.838776e+01, current residual:6.616266e+01
+field 'mu' [explicit solve]: current solution: 2.914445e+00, current residual:1.959855e+00
+wall time: 0.000577927s
+
+time increment:95000  time: 95
+field ' c' [explicit solve]: current solution: 9.839050e+01, current residual:6.616431e+01
+field 'mu' [explicit solve]: current solution: 2.909462e+00, current residual:1.956502e+00
+wall time: 0.000555992s
+
+time increment:96000  time: 96
+field ' c' [explicit solve]: current solution: 9.839323e+01, current residual:6.616596e+01
+field 'mu' [explicit solve]: current solution: 2.904496e+00, current residual:1.953160e+00
+wall time: 0.000629902s
+
+time increment:97000  time: 97
+field ' c' [explicit solve]: current solution: 9.839596e+01, current residual:6.616761e+01
+field 'mu' [explicit solve]: current solution: 2.899546e+00, current residual:1.949830e+00
+wall time: 0.000570059s
+
+time increment:98000  time: 98
+field ' c' [explicit solve]: current solution: 9.839870e+01, current residual:6.616927e+01
+field 'mu' [explicit solve]: current solution: 2.894611e+00, current residual:1.946509e+00
+wall time: 0.000492096s
+
+time increment:99000  time: 99
+field ' c' [explicit solve]: current solution: 9.840143e+01, current residual:6.617092e+01
+field 'mu' [explicit solve]: current solution: 2.889690e+00, current residual:1.943198e+00
+wall time: 0.000518084s
+
+time increment:100000  time: 100
+field ' c' [explicit solve]: current solution: 9.840416e+01, current residual:6.617258e+01
+field 'mu' [explicit solve]: current solution: 2.884781e+00, current residual:1.939894e+00
+wall time: 0.000540972s
+Output written to:solution-100000.pvtu
+
+Energy: 155.695
+Energy Components: 69.9814 85.7141 0 
+
+
++---------------------------------------------+------------+------------+
+| Total wallclock time elapsed since start    |      56.1s |            |
+|                                             |            |            |
+| Section                         | no. calls |  wall time | % of total |
++---------------------------------+-----------+------------+------------+
+| matrixFreePDE: AMR              |    100000 |     0.398s |      0.71% |
+| matrixFreePDE: computeEnergy    |        11 |     0.542s |      0.97% |
+| matrixFreePDE: computeRHS       |    100000 |      28.6s |        51% |
+| matrixFreePDE: initialization   |         1 |    0.0268s |     0.048% |
+| matrixFreePDE: output           |        11 |     0.499s |      0.89% |
+| matrixFreePDE: solve            |         1 |      56.1s |     1e+02% |
+| matrixFreePDE: solveIncrements  |    100000 |      48.5s |        86% |
++---------------------------------+-----------+------------+------------+
+

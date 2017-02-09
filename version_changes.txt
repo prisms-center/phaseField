@@ -1,11 +1,11 @@
 ====================
 Version 1.1.1:
 ===================
-Patch to v1.1, released in February 2017. This patch fixes a number of related indexing bugs lurking in previous versions of the code. From a user
-perspective, nothing should change (unless you directly hit one of these bugs).
+Patch to v1.1, released in February 2017. This patch fixes some indexing bugs lurking in previous versions of the code. From a user
+perspective, nothing should change (unless you had previously hit one of these bugs).
 
 Added functionality:
-- New Python script to automatically run regression tests on the pre-built applications.
+- New Python script to automatically run unit tests and regression tests on the pre-built applications.
 - Integration with Travis CI, for continuous integration testing.
 
 Changes to the pre-built applications:
@@ -18,11 +18,17 @@ Bug fixes:
 - Fixed indexing bug that prevented the use of multiple vector variables.
 - Fixed indexing bug that prevented the use of vector variables for parabolic equations.
 - Fixed indexing bug that prevented the solution of multiple elliptic equations.
+- Changed how input files are read, allowing PRISMS-PF to work on compilers that lack full C++11 support.
+
+Other changes:
+- Removed the model files that are no longer being used.
+- Streamlined the initialization and remeshing functions.
+- CMake now checks to make sure that p4est is installed.
+- Fixed the description of the Cij elements for 2D anisotropic calculations.
+- Updated the tensor contraction syntax for deal.II 8.4.
 
 Known issues:
-- For some compilers that lack full C++11 support (including the Intel compilers on the Stampede cluster), errors are generated because
-  we initialize some vectors with C-style arrays. This will be fixed in the near future.
-
+- None
 
 ====================
 Version 1.1:
