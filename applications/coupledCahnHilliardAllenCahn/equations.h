@@ -131,7 +131,6 @@ void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim>
 
 // The concentration and its derivatives (names here should match those in the macros above)
 scalarvalueType c = modelVariablesList[0].scalarValue;
-scalargradType cx = modelVariablesList[0].scalarGrad;
 
 // The order parameter and its derivatives (names here should match those in the macros above)
 scalarvalueType n = modelVariablesList[1].scalarValue;

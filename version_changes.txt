@@ -1,4 +1,36 @@
 ====================
+Version 1.1.1:
+===================
+Patch to v1.1, released in February 2017. This patch fixes some indexing bugs lurking in previous versions of the code. From a user
+perspective, nothing should change (unless you had previously hit one of these bugs).
+
+Added functionality:
+- New Python script to automatically run unit tests and regression tests on the pre-built applications.
+- Integration with Travis CI, for continuous integration testing.
+
+Changes to the pre-built applications:
+- Mesh adaptivity was turned on for the CHAC_anisotropy, CHAC_anisotropyRegularlized, and coupledCahnHilliardAllenCahn applications.
+- Gradient coefficients were changed slightly in cahnHilliard and cahnHilliardWithAdaptivity and both applications were moved to 
+  second order elements with one less refinement. Mesh adaptivity parameters in cahnHilliardWithAdaptivity were tweaked.
+
+Bug fixes:
+- Fixed indexing bug that caused a seg fault if the elliptic equation variable wasn't given last.
+- Fixed indexing bug that prevented the use of multiple vector variables.
+- Fixed indexing bug that prevented the use of vector variables for parabolic equations.
+- Fixed indexing bug that prevented the solution of multiple elliptic equations.
+- Changed how input files are read, allowing PRISMS-PF to work on compilers that lack full C++11 support.
+
+Other changes:
+- Removed the model files that are no longer being used.
+- Streamlined the initialization and remeshing functions.
+- CMake now checks to make sure that p4est is installed.
+- Fixed the description of the Cij elements for 2D anisotropic calculations.
+- Updated the tensor contraction syntax for deal.II 8.4.
+
+Known issues:
+- None
+
+====================
 Version 1.1:
 ===================
 Update to v1.0, released in January 2017. 

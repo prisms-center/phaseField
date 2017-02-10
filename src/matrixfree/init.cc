@@ -7,7 +7,7 @@
 
  //populate with fields and setup matrix free system
  template <int dim>
- void MatrixFreePDE<dim>::init(unsigned int iter){
+ void MatrixFreePDE<dim>::init(){
 	 computing_timer.enter_section("matrixFreePDE: initialization");
 
 	 //creating mesh
@@ -59,7 +59,8 @@
 			   (it->type==SCALAR ? "SCALAR":"VECTOR"),			\
 			   it->name.c_str());
 		 pcout << buffer;
-		 //check if any time dependent fields present
+
+		 // Check if any time dependent fields present (note: I should get rid of parabolicFieldIndex and ellipticFieldIndex, they only work if there is at max one of each)
 		 if (it->pdetype==PARABOLIC){
 			 isTimeDependentBVP=true;
 			 parabolicFieldIndex=it->index;
@@ -127,7 +128,6 @@
 		 // Get constraints for periodic BCs
 		 setPeriodicityConstraints(constraintsOther,dof_handler);
 
-
 		 // Get constraints for Dirichlet BCs
 		 applyDirichletBCs();
 
@@ -158,6 +158,9 @@
 	 QGaussLobatto<1> quadrature (finiteElementDegree+1);
 	 matrixFreeObject.clear();
 	 matrixFreeObject.reinit (dofHandlersSet, constraintsOtherSet, quadrature, additional_data);
+
+	 bool dU_scalar_init = false;
+	 bool dU_vector_init = false;
  
 	 // Setup solution vectors
 	 pcout << "initializing parallel::distributed residual and solution vectors\n";
@@ -169,11 +172,22 @@
 		 matrixFreeObject.initialize_dof_vector(*R,  fieldIndex); *R=0;
 
 		 matrixFreeObject.initialize_dof_vector(*U,  fieldIndex); *U=0;
-     
+
 		 // Initializing temporary dU vector required for implicit solves of the elliptic equation.
-		 // Assuming here that there is only one elliptic field in the problem
+		 // Assuming here that there is only one elliptic field in the problem (the main problem is if one is a scalar and the other is a vector, because then dU would need to be different sizes)
 		 if (fields[fieldIndex].pdetype==ELLIPTIC){
-			 matrixFreeObject.initialize_dof_vector(dU,  fieldIndex);
+			 if (fields[fieldIndex].type == SCALAR){
+				 if (dU_scalar_init == false){
+					 matrixFreeObject.initialize_dof_vector(dU_scalar,  fieldIndex);
+					 dU_scalar_init = true;
+				 }
+			 }
+			 else {
+				 if (dU_vector_init == false){
+					 matrixFreeObject.initialize_dof_vector(dU_vector,  fieldIndex);
+					 dU_vector_init = true;
+				 }
+			 }
 		 }
 	 }
    
@@ -186,7 +200,8 @@
 	 // The initial conditions are re-applied below in the "adaptiveRefine" function so that the mesh can
 	 // adapt based on the initial conditions.
 	 applyInitialConditions();
-   
+
+
 	 // Create new solution transfer sets (needed for the "refineGrid" call, might be able to move this elsewhere)
 	 soltransSet.clear();
 	 for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){

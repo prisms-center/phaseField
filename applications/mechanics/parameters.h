@@ -45,6 +45,12 @@
 // Each field in the problem will be output is writeOutput is set to "true"
 #define writeOutput true
 
+// =================================================================================
+// Set the flag determining if the total free energy is calculated for each output
+// =================================================================================
+#define calcEnergy true
+
+
 
 
 

@@ -7,7 +7,7 @@
 
  //populate with fields and setup matrix free system
  template <int dim>
- void MatrixFreePDE<dim>::reinit(unsigned int iter){
+ void MatrixFreePDE<dim>::reinit(){
 
 	 computing_timer.enter_section("matrixFreePDE: reinitialization");
 
@@ -89,21 +89,35 @@
  	 QGaussLobatto<1> quadrature (finiteElementDegree+1);
  	 matrixFreeObject.clear();
  	 matrixFreeObject.reinit (dofHandlersSet, constraintsOtherSet, quadrature, additional_data);
+
+ 	bool dU_scalar_init = false;
+ 	bool dU_vector_init = false;
  
  	 // Setup solution vectors
  	 pcout << "initializing parallel::distributed residual and solution vectors\n";
  	 for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
- 		 vectorType *U, *R;
+ 		 vectorType *U;
 
  		 U=solutionSet.at(fieldIndex);
 
  		 matrixFreeObject.initialize_dof_vector(*U,  fieldIndex); *U=0;
      
- 		 //initializing temporary dU vector required for implicit solves of the elliptic equation.
- 		 //Assuming here that there is only one elliptic field in the problem
- 		 if (fields[fieldIndex].pdetype==ELLIPTIC){
- 			 matrixFreeObject.initialize_dof_vector(dU,  fieldIndex);
- 		 }
+ 		// Initializing temporary dU vector required for implicit solves of the elliptic equation.
+ 		// Assuming here that there is only one elliptic field in the problem (the main problem is if one is a scalar and the other is a vector, because then dU would need to be different sizes)
+ 		if (fields[fieldIndex].pdetype==ELLIPTIC){
+ 			if (fields[fieldIndex].type == SCALAR){
+ 				if (dU_scalar_init == false){
+ 					matrixFreeObject.initialize_dof_vector(dU_scalar,  fieldIndex);
+ 					dU_scalar_init = true;
+ 				}
+ 			}
+ 			else {
+ 				if (dU_vector_init == false){
+ 					matrixFreeObject.initialize_dof_vector(dU_vector,  fieldIndex);
+ 					dU_vector_init = true;
+ 				}
+ 			}
+ 		}
  	 }
    
  	 // Compute invM in PDE is a time-dependent BVP

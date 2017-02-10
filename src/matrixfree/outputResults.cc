@@ -13,7 +13,7 @@ void MatrixFreePDE<dim>::outputResults(){
 
   //create DataOut object
   DataOut<dim> data_out;
-  std::cout <<  "fields: " << fields.size() << std::endl;
+
   //loop over fields
 
   for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
@@ -40,10 +40,10 @@ void MatrixFreePDE<dim>::outputResults(){
   std::ofstream output (vtuFileName);
 
   //write to file
-  if (outputFileType == "vtu"){
+  if (strcmp(outputFileType,"vtu")){
 	  data_out.write_vtu (output);
   }
-  else if (outputFileType == "vtk"){
+  else if (strcmp(outputFileType,"vtk")){
 	  data_out.write_vtk (output);
   }
   else {

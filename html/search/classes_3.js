@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['fickianproblem',['FickianProblem',['../class_fickian_problem.html',1,'']]],
-  ['field',['Field',['../class_field.html',1,'']]]
+  ['initialcondition',['InitialCondition',['../class_initial_condition.html',1,'']]],
+  ['initialconditionc',['InitialConditionC',['../class_initial_condition_c.html',1,'']]],
+  ['initialconditionvec',['InitialConditionVec',['../class_initial_condition_vec.html',1,'']]]
 ];

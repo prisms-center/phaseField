@@ -35,7 +35,7 @@
 
 // Set the maximum and minimum level of refinement
 #define maxRefinementLevel (refineFactor)
-#define minRefinementLevel (refineFactor-2)
+#define minRefinementLevel (refineFactor-4)
 
 // Set the fields used to determine the refinement. Fields determined by the order
 // declared in "equations.h", starting at zero
@@ -54,7 +54,7 @@
 // The size of the time step
 #define timeStep 4.0e-4
 #define timeFinal 100.0
-#define timeIncrements 10 //5000
+#define timeIncrements 5000
 
 // =================================================================================
 // Set the elliptic solver parameters
@@ -88,10 +88,10 @@
 
 // User-defined list of time steps where the program should output. Only used if
 // outputCondition is "LIST"
-#define outputList {}
+#define outputList {0}
 
 // Status is printed to the screen every skipPrintSteps
-#define skipPrintSteps 10
+#define skipPrintSteps 100
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output

@@ -13,7 +13,7 @@
 #define variable_eq_type {"PARABOLIC","PARABOLIC","PARABOLIC"}
 
 // Flags for whether the value, gradient, and Hessian are needed in the residual eqns
-#define need_val {true, true, false}
+#define need_val {true, true, true}
 #define need_grad {true, true, true}
 #define need_hess {false, false, false}
 
@@ -177,7 +177,6 @@ scalarvalueType total_energy_density = constV(0.0);
 
 //c
 scalarvalueType c = modelVarList[0].scalarValue;
-scalargradType cx = modelVarList[0].scalarGrad;
 
 //n1
 scalarvalueType n = modelVarList[1].scalarValue;
@@ -190,13 +189,12 @@ scalarvalueType f_chem = (constV(1.0)-hV)*faV + hV*fbV;
 
 scalargradType normal = nx/(std::sqrt(nx.norm_square())+constV(1.0e-16));
 scalarvalueType f_grad = constV(0.5)*gamma*gamma*nx*nx;
-scalarvalueType f_reg = constV(0.5)*delta2*biharm*biharm;
+scalarvalueType f_reg = constV(0.5*delta2)*biharm*biharm;
 
 total_energy_density = f_chem + f_grad + f_reg;
 
 assembler_lock.acquire ();
 for (unsigned i=0; i<c.n_array_elements;i++){
-  // For some reason, some of the values in this loop
   if (c[i] > 1.0e-10){
 	  this->energy+=total_energy_density[i]*JxW_value[i];
 	  this->energy_components[0]+= f_chem[i]*JxW_value[i];

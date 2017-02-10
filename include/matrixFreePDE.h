@@ -94,8 +94,8 @@ class MatrixFreePDE:public Subscriptor
    * Initializes the mesh, degress of freedom, constraints and data structures using the user provided
    * inputs in the application parameters file. 
    */
-  void init  (unsigned int iter=0);
-  void reinit  (unsigned int iter=0);
+  void init  ();
+  void reinit  ();
    /**
    * Initializes the data structures for enabling unit tests.
    * 
@@ -187,7 +187,7 @@ class MatrixFreePDE:public Subscriptor
   /*Vector to store the inverse of the mass matrix diagonal. Due to the choice of spectral elements with Guass-Lobatto quadrature, the mass matrix is diagonal.*/
   vectorType                           invM;
   /*Vector to store the solution increment. This is a temporary vector used during implicit solves of the Elliptic fields.*/
-  vectorType                           dU;
+  vectorType                           dU_vector, dU_scalar;
   
   //matrix free methods
   /*Current field index*/
@@ -201,8 +201,6 @@ class MatrixFreePDE:public Subscriptor
 
   /*AMR methods*/
   void refineGrid();
-  /*Method to perform adaptive mesh refinement (AMR)*/
-  void refineMesh(unsigned int _currentIncrement);
   /*Virtual method to mark the regions to be adpatively refined. This is expected to be provided by the user.*/
   virtual void adaptiveRefine(unsigned int _currentIncrement);
   /*Virtual method to define AMR refinement criterion. The default implementation uses the Kelly error estimate for estimative the error function. The user can supply a custom implementation to overload the default implementation.*/
@@ -279,6 +277,8 @@ class MatrixFreePDE:public Subscriptor
 //other matrixFree headers 
 //(these are source files, which will are temporarily treated as
 //header files till library packaging scheme is finalized)
+#include "../src/utilities/vectorLoad.cc"
+
 #include "../src/matrixfree/matrixFreePDE.cc"
 #include "../src/matrixfree/init.cc"
 #include "../src/matrixfree/reinit.cc"

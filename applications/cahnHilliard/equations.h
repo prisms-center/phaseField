@@ -13,7 +13,7 @@
 #define variable_eq_type {"PARABOLIC", "PARABOLIC"}
 
 // Flags for whether the value, gradient, and Hessian are needed in the residual eqns
-#define need_val {true, true}
+#define need_val {true, false}
 #define need_grad {true, true}
 #define need_hess  {false, false}
 
@@ -34,7 +34,7 @@
 #define McV 1.0
 
 // Gradient energy coefficient
-#define KcV 4.0
+#define KcV 1.5
 
 // The free energy and its derivative
 #define fV (c*c*c*c - 2.0*c*c*c + c*c)
@@ -67,7 +67,6 @@ scalarvalueType c = modelVariablesList[0].scalarValue;
 scalargradType cx = modelVariablesList[0].scalarGrad;
 
 // The chemical potential and its derivatives (names here should match those in the macros above)
-scalarvalueType mu = modelVariablesList[1].scalarValue;
 scalargradType mux = modelVariablesList[1].scalarGrad;
 
 // Residuals for the equation to evolve the concentration (names here should match those in the macros above)
@@ -121,10 +120,6 @@ scalarvalueType total_energy_density = constV(0.0);
 // The concentration and its derivatives (names here should match those in the macros above)
 scalarvalueType c = modelVariablesList[0].scalarValue;
 scalargradType cx = modelVariablesList[0].scalarGrad;
-
-// The chemical potential and its derivatives (names here should match those in the macros above)
-scalarvalueType mu = modelVariablesList[1].scalarValue;
-scalargradType mux = modelVariablesList[1].scalarGrad;
 
 // The homogenous free energy
 scalarvalueType f_chem = fV;

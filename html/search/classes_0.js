@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['allencahnproblem',['AllenCahnProblem',['../class_allen_cahn_problem.html',1,'']]]
+  ['bcfunction',['BCFunction',['../class_b_c_function.html',1,'']]]
 ];

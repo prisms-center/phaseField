@@ -19,18 +19,26 @@ void MatrixFreePDE<dim>::solveIncrement(){
 #endif
 	
   //compute residual vectors
+
   computeRHS();
 
   //solve for each field
   for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
+	  currentFieldIndex = fieldIndex; // Used in computeLHS()
+
     //Parabolic (first order derivatives in time) fields
     if (fields[fieldIndex].pdetype==PARABOLIC){
-      //explicit-time step each DOF
-      for (unsigned int dof=0; dof<solutionSet[fieldIndex]->local_size(); ++dof){
-    	  solutionSet[fieldIndex]->local_element(dof)=			\
-    			  invM.local_element(dof)*residualSet[fieldIndex]->local_element(dof);
-      }
-      //
+
+    	// Explicit-time step each DOF
+    	// Takes advantage of knowledge that the length of solutionSet and residualSet is an integer multiple of the length of invM for vector variables
+    	unsigned int invM_size = invM.local_size();
+
+    	for (unsigned int dof=0; dof<solutionSet[fieldIndex]->local_size(); ++dof){
+
+    		solutionSet[fieldIndex]->local_element(dof)=			\
+    				invM.local_element(dof%invM_size)*residualSet[fieldIndex]->local_element(dof);
+    	}
+
       //apply constraints
       constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
       //sync ghost DOF's
@@ -46,10 +54,12 @@ void MatrixFreePDE<dim>::solveIncrement(){
     }
     //Elliptic (time-independent) fields
     else if (fields[fieldIndex].pdetype==ELLIPTIC){
+
     	//implicit solve
 		#ifdef solverType
 		if (currentIncrement%skipImplicitSolves==0){
 			//apply Dirichlet BC's
+			// Loops through all DoF to which ones have Dirichlet BCs applied, replace the ones that do with the Dirichlet value
 			for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[fieldIndex]->begin(); it!=valuesDirichletSet[fieldIndex]->end(); ++it){
 				if (residualSet[fieldIndex]->in_local_range(it->first)){
 					(*residualSet[fieldIndex])(it->first) = it->second; //*jacobianDiagonal(it->first);
@@ -66,25 +76,43 @@ void MatrixFreePDE<dim>::solveIncrement(){
 	
 			//solve
 			try{
-				dU=0.0;
-				solver.solve(*this, dU, *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
+				if (fields[fieldIndex].type == SCALAR){
+					dU_scalar=0.0;
+					solver.solve(*this, dU_scalar, *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
+				}
+				else {
+					dU_vector=0.0;
+					solver.solve(*this, dU_vector, *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
+				}
 			}
 			catch (...) {
 				pcout << "\nWarning: implicit solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing solverTolerance.\n";
 			}
-			*solutionSet[fieldIndex]+=dU;
-	
+			if (fields[fieldIndex].type == SCALAR){
+				*solutionSet[fieldIndex]+=dU_scalar;
+			}
+			else {
+				*solutionSet[fieldIndex]+=dU_vector;
+			}
+
 			// Apply hanging node and periodic constraints
 			constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
 			//sync ghost DOF's
 			solutionSet[fieldIndex]->update_ghost_values();
 			//
 			 if (currentIncrement%skipPrintSteps==0){
+				 double dU_norm;
+				 if (fields[fieldIndex].type == SCALAR){
+					 dU_norm = dU_scalar.l2_norm();
+				 }
+				 else {
+					 dU_norm = dU_vector.l2_norm();
+				 }
 			sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
 					fields[fieldIndex].name.c_str(),			\
 					residualSet[fieldIndex]->l2_norm(),			\
 					solver_control.last_value(),				\
-					solver_control.last_step(), solver_control.tolerance(), solutionSet[fieldIndex]->l2_norm(), dU.l2_norm());
+					solver_control.last_step(), solver_control.tolerance(), solutionSet[fieldIndex]->l2_norm(), dU_norm);
 			pcout<<buffer;
 			 }
 		}

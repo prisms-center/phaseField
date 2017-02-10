@@ -12,7 +12,7 @@ void MatrixFreePDE<dim>::vmult (vectorType &dst, const vectorType &src) const{
 
   //create temporary copy of src vector as src2, as vector src is marked const and cannot be changed
   vectorType src2;
-  matrixFreeObject.initialize_dof_vector(src2,  ellipticFieldIndex);
+  matrixFreeObject.initialize_dof_vector(src2,  currentFieldIndex);
   src2=src;
   
   //set Dirichlet nodes force to zero in the src

@@ -17,7 +17,6 @@ public:
 	  // Use "if" statements to set the initial condition for each variable
 	  // according to its variable index.
 
-	  double dx=spanX/((double) subdivisionsX)/std::pow(2.0,refineFactor);
 	  double r=0.0;
 
 	  if (index == 0){
