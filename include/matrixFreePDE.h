@@ -13,6 +13,18 @@
 
 //PRISMS headers
 #include "fields.h"
+#include "vectorLoad.h"
+#include "vectorBCFunction.h"
+
+// BC object declaration
+template <int dim>
+class varBCs
+{
+	public:
+	//varBCs();
+	std::vector<std::string> var_BC_type;
+	std::vector<double> var_BC_val;
+};
 
  
 //define data types
@@ -127,7 +139,57 @@ class MatrixFreePDE:public Subscriptor
    */
   void shiftConcentration();
 
+  void setBCs();
+  void buildFields();
+  void inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
+    			std::string BC_type_dim1_max, double BC_value_dim1_max, std::string BC_type_dim2_min, double BC_value_dim2_min,
+    			std::string BC_type_dim2_max, double BC_value_dim2_max,std::string BC_type_dim3_min, double BC_value_dim3_min,
+    			std::string BC_type_dim3_max, double BC_value_dim3_max);
+
+  void inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
+  			std::string BC_type_dim1_max, double BC_value_dim1_max, std::string BC_type_dim2_min, double BC_value_dim2_min,
+  			std::string BC_type_dim2_max, double BC_value_dim2_max);
+
+  void inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
+    			std::string BC_type_dim1_max, double BC_value_dim1_max);
+
+  void inputBCs(int var, int component, std::string BC_type, double BC_value);
+
+  // Boundary condition object
+  std::vector<varBCs<dim> > BC_list;
+
  protected:
+  // Declare vectors to put the information about the variables into
+  std::vector<std::string> var_name;
+  std::vector<std::string> var_type;
+  std::vector<std::string> var_eq_type;
+
+  std::vector<bool> need_value;
+  std::vector<bool> need_gradient;
+  std::vector<bool> need_hessian;
+  std::vector<bool> value_residual;
+  std::vector<bool> gradient_residual;
+
+  std::vector<bool> need_value_LHS;
+  std::vector<bool> need_gradient_LHS;
+  std::vector<bool> need_hessian_LHS;
+  std::vector<bool> value_residual_LHS;
+  std::vector<bool> gradient_residual_LHS;
+
+  // Elasticity matrix variables
+  const static unsigned int CIJ_tensor_size = 2*dim-1+dim/3;
+  std::vector<dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > > CIJ_list;
+
+  Threads::Mutex assembler_lock;
+
+  // Variables needed to calculate the LHS
+  std::vector<variable_info<dim> > varInfoListRHS;
+  std::vector<variable_info<dim> > resInfoListRHS;
+
+  // Variables needed to calculate the LHS
+  unsigned int num_var_LHS;
+  std::vector<variable_info<dim> > varInfoListLHS;
+
   /**
    * Method to solve each time increment of a time-dependent problem. For time-independent problems 
    * this method is called only once. This method solves for all the fields in a staggered manner (one after another)
@@ -196,50 +258,64 @@ class MatrixFreePDE:public Subscriptor
   unsigned int num_quadrature_points;
   /*Method to compute the inverse of the mass matrix*/
   void computeInvM();
-  /*Method to compute the right hand side (RHS) residual vectors*/  
-  void computeRHS();
+
 
   /*AMR methods*/
   void refineGrid();
   /*Virtual method to mark the regions to be adpatively refined. This is expected to be provided by the user.*/
-  virtual void adaptiveRefine(unsigned int _currentIncrement);
+  void adaptiveRefine(unsigned int _currentIncrement);
   /*Virtual method to define AMR refinement criterion. The default implementation uses the Kelly error estimate for estimative the error function. The user can supply a custom implementation to overload the default implementation.*/
-  virtual void adaptiveRefineCriterion();
+  void adaptiveRefineCriterion();
   
+  /*Method to compute the right hand side (RHS) residual vectors*/
+  void computeRHS();
+
   //virtual methods to be implemented in the derived class
   /*Method to calculate LHS(implicit solve)*/
-  virtual void getLHS(const MatrixFree<dim,double> &data, 
+  void getLHS(const MatrixFree<dim,double> &data,
 		      vectorType &dst, 
 		      const vectorType &src,
 		      const std::pair<unsigned int,unsigned int> &cell_range) const;
   /*Method to calculate RHS (implicit/explicit). This is an abstract method, so every model which inherits MatrixFreePDE<dim> has to implement this method.*/
-  virtual void getRHS (const MatrixFree<dim,double> &data, 
+  void getRHS (const MatrixFree<dim,double> &data,
 		       std::vector<vectorType*> &dst, 
 		       const std::vector<vectorType*> &src,
-		       const std::pair<unsigned int,unsigned int> &cell_range) const = 0;
+		       const std::pair<unsigned int,unsigned int> &cell_range) const;
   
+  void residualRHS(const std::vector<modelVariable<dim> > & modelVarList,
+  		  	  	  	  	  	  	  	  	  	  	  	  	  std::vector<modelResidual<dim> > & modelResidualsList,
+  														  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
+
+  void residualLHS(const std::vector<modelVariable<dim> > & modelVarList,
+    		  	  	  	  	  	  	  	  	  	  	  	  	  modelResidual<dim> & modelRes,
+  														  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
+
+  void energyDensity(const std::vector<modelVariable<dim> > & modelVarList, const dealii::VectorizedArray<double> & JxW_value,
+  		  	  	  	  	  	  	  	  	  	  	  	  	  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc);
+
+
   //methods to apply dirichlet BC's
   /*Map of degrees of freedom to the corresponding Dirichlet boundary conditions, is any.*/
   std::vector<std::map<dealii::types::global_dof_index, double>*> valuesDirichletSet;
   /*Virtual method to mark the boundaries for applying Dirichlet boundary conditions.  This is usually expected to be provided by the user.*/  
-  virtual void markBoundaries();
+  void markBoundaries();
   /*Virtual method for applying Dirichlet boundary conditions.  This is usually expected to be provided by the user.*/ 
-  virtual void applyDirichletBCs();
+  void applyDirichletBCs();
 
   // Methods to apply periodic BCs
-  virtual void setPeriodicity();
-  virtual void setPeriodicityConstraints(ConstraintMatrix *, DoFHandler<dim>*);
-  virtual void getComponentsWithRigidBodyModes(std::vector<int> &);
-  virtual void setRigidBodyModeConstraints( std::vector<int>, ConstraintMatrix *, DoFHandler<dim>*);
+  void setPeriodicity();
+  void setPeriodicityConstraints(ConstraintMatrix *, DoFHandler<dim>*);
+  void getComponentsWithRigidBodyModes(std::vector<int> &);
+  void setRigidBodyModeConstraints( std::vector<int>, ConstraintMatrix *, DoFHandler<dim>*);
 
   //methods to apply initial conditions
   /*Virtual method to apply initial conditions.  This is usually expected to be provided by the user in IBVP (Initial Boundary Value Problems).*/   
-  virtual void applyInitialConditions();
-  virtual void modifySolutionFields ();
+  void applyInitialConditions();
+  void modifySolutionFields ();
 
   /*Method to compute energy like quantities.*/
   void computeEnergy();
-  virtual void getEnergy(const MatrixFree<dim,double> &data,
+  void getEnergy(const MatrixFree<dim,double> &data,
 		    std::vector<vectorType*> &dst,
 		    const std::vector<vectorType*> &src,
 		    const std::pair<unsigned int,unsigned int> &cell_range);
@@ -278,25 +354,26 @@ class MatrixFreePDE:public Subscriptor
 //(these are source files, which will are temporarily treated as
 //header files till library packaging scheme is finalized)
 #include "../src/utilities/vectorLoad.cc"
+#include "../src/utilities/vectorBCFunction.cc"
 
-#include "../src/matrixfree/matrixFreePDE.cc"
-#include "../src/matrixfree/init.cc"
-#include "../src/matrixfree/reinit.cc"
-#include "../src/matrixfree/initForTests.cc"
-#include "../src/matrixfree/refine.cc"
-#include "../src/matrixfree/invM.cc"
-#include "../src/matrixfree/computeLHS.cc"
-#include "../src/matrixfree/computeRHS.cc"
-#include "../src/matrixfree/modifyFields.cc"
-#include "../src/matrixfree/solve.cc"
-#include "../src/matrixfree/solveIncrement.cc"
-#include "../src/matrixfree/outputResults.cc"
-#include "../src/matrixfree/markBoundaries.cc"
-#include "../src/matrixfree/boundaryConditions.cc"
-#include "../src/matrixfree/initialConditions.cc"
-#include "../src/matrixfree/utilities.cc"
-#include "../src/matrixfree/calcFreeEnergy.cc"
-#include "../src/matrixfree/integrate_and_shift_field.cc"
-#include "../src/matrixfree/getOutputTimeSteps.cc"
+//#include "../src/matrixfree/matrixFreePDE.cc"
+//#include "../src/matrixfree/init.cc"
+//#include "../src/matrixfree/reinit.cc"
+//#include "../src/matrixfree/initForTests.cc"
+//#include "../src/matrixfree/refine.cc"
+//#include "../src/matrixfree/invM.cc"
+//#include "../src/matrixfree/computeLHS.cc"
+//#include "../src/matrixfree/computeRHS.cc"
+//#include "../src/matrixfree/modifyFields.cc"
+//#include "../src/matrixfree/solve.cc"
+//#include "../src/matrixfree/solveIncrement.cc"
+//#include "../src/matrixfree/outputResults.cc"
+//#include "../src/matrixfree/markBoundaries.cc"
+//#include "../src/matrixfree/boundaryConditions.cc"
+//#include "../src/matrixfree/initialConditions.cc"
+//#include "../src/matrixfree/utilities.cc"
+//#include "../src/matrixfree/calcFreeEnergy.cc"
+//#include "../src/matrixfree/integrate_and_shift_field.cc"
+//#include "../src/matrixfree/getOutputTimeSteps.cc"
 
 #endif

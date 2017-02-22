@@ -7,6 +7,16 @@
 //default implementation of adaptive mesh refinement 
 template <int dim>
 void MatrixFreePDE<dim>::adaptiveRefine(unsigned int currentIncrement){
+#if hAdaptivity == true
+	if ( (currentIncrement == 0) ){
+		for (unsigned int remesh_index=0; remesh_index < (maxRefinementLevel-minRefinementLevel); remesh_index++){
+			this->reinit();
+		}
+	}
+	else if ( (currentIncrement%skipRemeshingSteps==0) ){
+			this->reinit();
+		}
+	#endif
 }
 
 //default implementation of adaptive mesh criterion
@@ -14,26 +24,92 @@ template <int dim>
 void MatrixFreePDE<dim>::adaptiveRefineCriterion(){
   //Kelly error estimation criterion
   //estimate cell wise errors for mesh refinement
-#if hAdaptivity==true 
-#ifdef adaptivityType
-#if adaptivityType=="KELLY"
-  Vector<float> estimated_error_per_cell (this->triangulation.n_locally_owned_active_cells());
-  KellyErrorEstimator<dim>::estimate (*this->dofHandlersSet_nonconst[refinementDOF],
-				      QGaussLobatto<dim-1>(finiteElementDegree+1),
-				      typename FunctionMap<dim>::type(),
-				      *this->solutionSet[refinementDOF],
-				      estimated_error_per_cell,
-				      ComponentMask(),
-				      0,
-				      1,
-				      this->triangulation.locally_owned_subdomain());
-  //flag cells for refinement
-  parallel::distributed::GridRefinement::refine_and_coarsen_fixed_fraction (this->triangulation,
-									    estimated_error_per_cell,
-									    topRefineFraction,
-									    bottomCoarsenFraction);
-#endif
-#endif
+//#if hAdaptivity==true
+//#ifdef adaptivityType
+//#if adaptivityType=="KELLY"
+//  Vector<float> estimated_error_per_cell (this->triangulation.n_locally_owned_active_cells());
+//  KellyErrorEstimator<dim>::estimate (*this->dofHandlersSet_nonconst[refinementDOF],
+//				      QGaussLobatto<dim-1>(finiteElementDegree+1),
+//				      typename FunctionMap<dim>::type(),
+//				      *this->solutionSet[refinementDOF],
+//				      estimated_error_per_cell,
+//				      ComponentMask(),
+//				      0,
+//				      1,
+//				      this->triangulation.locally_owned_subdomain());
+//  //flag cells for refinement
+//  parallel::distributed::GridRefinement::refine_and_coarsen_fixed_fraction (this->triangulation,
+//									    estimated_error_per_cell,
+//									    topRefineFraction,
+//									    bottomCoarsenFraction);
+//#endif
+//#endif
+//#endif
+#if hAdaptivity == true
+	//Custom defined estimation criterion
+	std::vector<int> refine_criterion_fields;
+	std::vector<double> refine_window_max;
+	std::vector<double> refine_window_min;
+	{int temp[] = refineCriterionFields;
+	vectorLoad(temp, sizeof(temp), refine_criterion_fields);}
+	{double temp[] = refineWindowMax;
+	vectorLoad(temp, sizeof(temp), refine_window_max);}
+	{double temp[] = refineWindowMin;
+	vectorLoad(temp, sizeof(temp), refine_window_min);}
+
+	std::vector<std::vector<double> > errorOutV;
+
+
+	QGauss<dim>  quadrature(finiteElementDegree+1);
+	FEValues<dim> fe_values (*this->FESet[refine_criterion_fields[0]], quadrature, update_values);
+	const unsigned int   num_quad_points = quadrature.size();
+
+	std::vector<double> errorOut(num_quad_points);
+
+	typename DoFHandler<dim>::active_cell_iterator cell = this->dofHandlersSet_nonconst[refine_criterion_fields[0]]->begin_active(), endc = this->dofHandlersSet_nonconst[refine_criterion_fields[0]]->end();
+
+	for (;cell!=endc; ++cell){
+		if (cell->is_locally_owned()){
+			fe_values.reinit (cell);
+
+			for (unsigned int field_index=0; field_index<refine_criterion_fields.size(); field_index++){
+				fe_values.get_function_values(*this->solutionSet[refine_criterion_fields[field_index]], errorOut);
+				errorOutV.push_back(errorOut);
+			}
+
+			bool mark_refine = false;
+
+			for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
+				for (unsigned int field_index=0; field_index<refine_criterion_fields.size(); field_index++){
+					if ((errorOutV[field_index][q_point]>refine_window_min[field_index]) && (errorOutV[field_index][q_point]<refine_window_max[field_index])){
+						mark_refine = true;
+						break;
+					}
+				}
+			}
+
+			errorOutV.clear();
+
+//			fe_values.get_function_values(*this->solutionSet[refine_criterion_fields[0]], errorOut);
+//
+//			bool mark_refine = false;
+//
+//			for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
+//				if ((errorOut[q_point]>refine_window_min[0]) && (errorOut[q_point]<refine_window_max[0])){
+//					mark_refine = true;
+//					break;
+//				}
+//			}
+
+
+			if ( (mark_refine == true) ){
+				cell->set_refine_flag();
+			}
+			else {
+				cell->set_coarsen_flag();
+			}
+		}
+	}
 #endif
 }
 

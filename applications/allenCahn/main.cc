@@ -4,10 +4,11 @@
 #include "../../include/dealIIheaders.h"
 
 #include "parameters.h"
-#include "../../src/models/coupled/generalized_model.h"
+#include "../../include/matrixFreePDE.h"
 #include "equations.h"
 #include "ICs_and_BCs.h"
-#include "../../src/models/coupled/generalized_model_functions.h"
+#include "../../src/matrixfree/matrixFreePDE.cc"
+
 
 //main
 int main (int argc, char **argv)
@@ -16,7 +17,7 @@ int main (int argc, char **argv)
   try
     {
 	  deallog.depth_console(0);
-	  generalizedProblem<problemDIM> problem;
+	  MatrixFreePDE<problemDIM> problem;
 
       problem.setBCs();
       problem.buildFields();

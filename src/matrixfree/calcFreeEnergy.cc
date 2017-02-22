@@ -38,10 +38,101 @@ void  MatrixFreePDE<dim>::getEnergy(const MatrixFree<dim,double> &data,
 				    const std::vector<vectorType*> &src,
 				    const std::pair<unsigned int,unsigned int> &cell_range) {
 
-  //Threads::ThreadMutex assembler_lock;
-  //assembler_lock.acquire ();
-  //energy+=cellEnergy;
-  //assembler_lock.release ();
+	//initialize FEEvaulation objects
+		  std::vector<typeScalar> scalar_vars;
+		  std::vector<typeVector> vector_vars;
+
+		  for (unsigned int i=0; i<num_var; i++){
+			  if (varInfoListRHS[i].is_scalar){
+				  typeScalar var(data, i);
+				  scalar_vars.push_back(var);
+			  }
+			  else {
+				  typeVector var(data, i);
+				  vector_vars.push_back(var);
+			  }
+		  }
+
+		  std::vector<modelVariable<dim> > modelVarList;
+		  std::vector<modelResidual<dim> > modelResidualsList;
+		  modelVarList.reserve(num_var);
+		  modelResidualsList.reserve(num_var);
+
+		  //loop over cells
+		  for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
+
+			  // Initialize, read DOFs, and set evaulation flags for each variable
+			  for (unsigned int i=0; i<num_var; i++){
+				  if (varInfoListRHS[i].is_scalar) {
+					  scalar_vars[varInfoListRHS[i].scalar_or_vector_index].reinit(cell);
+					  scalar_vars[varInfoListRHS[i].scalar_or_vector_index].read_dof_values_plain(*src[varInfoListRHS[i].global_var_index]);
+					  scalar_vars[varInfoListRHS[i].scalar_or_vector_index].evaluate(need_value[i], need_gradient[i], need_hessian[i]);
+				  }
+				  else {
+					  vector_vars[varInfoListRHS[i].scalar_or_vector_index].reinit(cell);
+					  vector_vars[varInfoListRHS[i].scalar_or_vector_index].read_dof_values_plain(*src[varInfoListRHS[i].global_var_index]);
+					  vector_vars[varInfoListRHS[i].scalar_or_vector_index].evaluate(need_value[i], need_gradient[i], need_hessian[i]);
+				  }
+			  }
+
+
+			  unsigned int num_q_points;
+			  if (scalar_vars.size() > 0){
+				  num_q_points = scalar_vars[0].n_q_points;
+			  }
+			  else {
+				  num_q_points = vector_vars[0].n_q_points;
+			  }
+
+			  dealii::AlignedVector<dealii::VectorizedArray<double> > JxW(num_q_points);
+
+			  if (scalar_vars.size() > 0){
+				  scalar_vars[0].fill_JxW_values(JxW);
+			  }
+			  else {
+				  vector_vars[0].fill_JxW_values(JxW);
+			  }
+
+			  //loop over quadrature points
+			  for (unsigned int q=0; q<num_q_points; ++q){
+				  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc;
+				  if (scalar_vars.size() > 0){
+					  q_point_loc = scalar_vars[0].quadrature_point(q);
+				  }
+				  else {
+					  q_point_loc = vector_vars[0].quadrature_point(q);
+				  }
+
+				  for (unsigned int i=0; i<num_var; i++){
+					  if (varInfoListRHS[i].is_scalar) {
+						  if (need_value[i]){
+							  modelVarList[i].scalarValue = scalar_vars[varInfoListRHS[i].scalar_or_vector_index].get_value(q);
+						  }
+						  if (need_gradient[i]){
+							  modelVarList[i].scalarGrad = scalar_vars[varInfoListRHS[i].scalar_or_vector_index].get_gradient(q);
+						  }
+						  if (need_hessian[i]){
+							  modelVarList[i].scalarHess = scalar_vars[varInfoListRHS[i].scalar_or_vector_index].get_hessian(q);
+						  }
+					  }
+					  else {
+						  if (need_value[i]){
+							  modelVarList[i].vectorValue = vector_vars[varInfoListRHS[i].scalar_or_vector_index].get_value(q);
+						  }
+						  if (need_gradient[i]){
+							  modelVarList[i].vectorGrad = vector_vars[varInfoListRHS[i].scalar_or_vector_index].get_gradient(q);
+						  }
+						  if (need_hessian[i]){
+							  modelVarList[i].vectorHess = vector_vars[varInfoListRHS[i].scalar_or_vector_index].get_hessian(q);
+						  }
+					  }
+				  }
+
+				  // Calculate the energy density
+				  energyDensity(modelVarList,JxW[q],q_point_loc);
+			  }
+		  }
+
 }
 
 // output the integrated free energies into a text file

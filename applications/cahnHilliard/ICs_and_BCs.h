@@ -68,7 +68,7 @@ public:
 
 
 template <int dim>
-void generalizedProblem<dim>::setBCs(){
+void MatrixFreePDE<dim>::setBCs(){
   
 	// =====================================================================
 	// ENTER THE BOUNDARY CONDITIONS HERE
