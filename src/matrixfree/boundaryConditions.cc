@@ -13,7 +13,7 @@ void MatrixFreePDE<dim>::applyDirichletBCs(){
 
 	  for (unsigned int i=0; i<this->currentFieldIndex; i++){
 
-		  if (var_type[i] == "SCALAR"){
+		  if (userInputs.var_type[i] == "SCALAR"){
 			  starting_BC_list_index++;
 		  }
 		  else {
@@ -21,7 +21,7 @@ void MatrixFreePDE<dim>::applyDirichletBCs(){
 		  }
 	  }
 
-	  if (var_type[this->currentFieldIndex] == "SCALAR"){
+	  if (userInputs.var_type[this->currentFieldIndex] == "SCALAR"){
 		  for (unsigned int direction = 0; direction < 2*dim; direction++){
 			  if (BC_list[starting_BC_list_index].var_BC_type[direction] == "DIRICHLET"){
 				  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
@@ -84,7 +84,7 @@ void MatrixFreePDE<dim>::setPeriodicityConstraints(ConstraintMatrix * constraint
 	// First, get the variable index of the current field
 		unsigned int starting_BC_list_index = 0;
 		for (unsigned int i=0; i<this->currentFieldIndex; i++){
-			if (var_type[i] == "SCALAR"){
+			if (userInputs.var_type[i] == "SCALAR"){
 				starting_BC_list_index++;
 			}
 			else {
@@ -107,12 +107,12 @@ void MatrixFreePDE<dim>::setPeriodicityConstraints(ConstraintMatrix * constraint
 template <int dim>
 void MatrixFreePDE<dim>::getComponentsWithRigidBodyModes( std::vector<int> & rigidBodyModeComponents){
 	// Rigid body modes only matter for elliptic equations
-		if (var_eq_type[this->currentFieldIndex] == "ELLIPTIC"){
+		if (userInputs.var_eq_type[this->currentFieldIndex] == "ELLIPTIC"){
 
 			// First, get the variable index of the current field
 			unsigned int starting_BC_list_index = 0;
 			for (unsigned int i=0; i<this->currentFieldIndex; i++){
-				if (var_type[i] == "SCALAR"){
+				if (userInputs.var_type[i] == "SCALAR"){
 					starting_BC_list_index++;
 				}
 				else {
@@ -122,7 +122,7 @@ void MatrixFreePDE<dim>::getComponentsWithRigidBodyModes( std::vector<int> & rig
 
 			// Get number of components of the field
 			unsigned int num_components = 1;
-			if (var_type[this->currentFieldIndex] == "VECTOR"){
+			if (userInputs.var_type[this->currentFieldIndex] == "VECTOR"){
 				num_components = dim;
 			}
 

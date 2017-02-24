@@ -10,11 +10,6 @@
 template <int dim>
 void MatrixFreePDE<dim>::markBoundaries(){
 
-	std::vector<double> domain_size;
-	domain_size.push_back(spanX);
-	domain_size.push_back(spanY);
-	domain_size.push_back(spanZ);
-
 	typename Triangulation<dim>::cell_iterator
 	cell = MatrixFreePDE<dim>::triangulation.begin (),
 	endc = MatrixFreePDE<dim>::triangulation.end();
@@ -27,7 +22,7 @@ void MatrixFreePDE<dim>::markBoundaries(){
 				if ( std::fabs(cell->face(face_number)->center()(i) - (0)) < 1e-12 ){
 					cell->face(face_number)->set_boundary_id (2*i);
 				}
-				else if (std::fabs(cell->face(face_number)->center()(i) - (domain_size[i])) < 1e-12){
+				else if (std::fabs(cell->face(face_number)->center()(i) - (userInputs.domain_size[i])) < 1e-12){
 					cell->face(face_number)->set_boundary_id (2*i+1);
 				}
 

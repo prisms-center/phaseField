@@ -12,6 +12,8 @@ template <int dim>
 class customPDE: public MatrixFreePDE<dim>
 {
 public:
+	customPDE(userInputParameters _userInputs): MatrixFreePDE<dim>(_userInputs) {};
+
 	void setBCs();
 
 private:

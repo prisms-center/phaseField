@@ -7,22 +7,22 @@ void MatrixFreePDE<dim>::getOutputTimeSteps(std::string outputSpacingType, unsig
 
 	// Determine the maximum number of increments
 	if (outputSpacingType == "EQUAL_SPACING"){
-		if (numberOfOutputs > totalIncrements)
-			numberOfOutputs = totalIncrements;
+		if (numberOfOutputs > userInputs.totalIncrements)
+			numberOfOutputs = userInputs.totalIncrements;
 
-		for (unsigned int iter = 0; iter <= totalIncrements; iter += totalIncrements/numberOfOutputs){
+		for (unsigned int iter = 0; iter <= userInputs.totalIncrements; iter += userInputs.totalIncrements/numberOfOutputs){
 			timeStepList.push_back(iter);
 		}
 	}
 	else if (outputSpacingType == "LOG_SPACING"){
 		timeStepList.push_back(0);
 		for (unsigned int output = 1; output <= numberOfOutputs; output++){
-			timeStepList.push_back(round(std::pow(10,double(output)/double(numberOfOutputs)*std::log10(totalIncrements))));		}
+			timeStepList.push_back(round(std::pow(10,double(output)/double(numberOfOutputs)*std::log10(userInputs.totalIncrements))));		}
 	}
 	else if (outputSpacingType == "N_PER_DECADE"){
 		timeStepList.push_back(0);
 		timeStepList.push_back(1);
-		for (unsigned int iter = 2; iter <= totalIncrements; iter++){
+		for (unsigned int iter = 2; iter <= userInputs.totalIncrements; iter++){
 			int decade = std::ceil(std::log10(iter));
 			int step_size = (std::pow(10,decade))/numberOfOutputs;
 			if (iter%step_size == 0){

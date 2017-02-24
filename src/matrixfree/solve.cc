@@ -12,10 +12,7 @@ void MatrixFreePDE<dim>::solve(){
   computing_timer.enter_section("matrixFreePDE: solve"); 
   pcout << "\nsolving...\n\n";
 
-  std::vector<unsigned int> userGivenTimeStepList;
-  {unsigned int temp[] = outputList;
-  vectorLoad(temp,sizeof(temp),userGivenTimeStepList);}
-  getOutputTimeSteps(outputCondition,numOutputs,userGivenTimeStepList,outputTimeStepList);
+  getOutputTimeSteps(outputCondition,numOutputs,userInputs.user_given_time_step_list,outputTimeStepList);
   int currentOutput = 0;
 
   //time dependent BVP
@@ -24,21 +21,19 @@ void MatrixFreePDE<dim>::solve(){
 	  if ((writeOutput) && (outputTimeStepList[currentOutput] == 0)) {
 
 			  outputResults();
-			  #ifdef calcEnergy
-			  if (calcEnergy == true){
+			  if (userInputs.calc_energy == true){
 				  computeEnergy();
 				  outputFreeEnergy(freeEnergyValues);
 			  }
-			  #endif
 			  currentOutput++;
     }
     
     //time stepping
-    pcout << "\nTime stepping parameters: timeStep: " << dtValue << "  timeFinal: " << finalTime << "  timeIncrements: " << totalIncrements << "\n";
+    pcout << "\nTime stepping parameters: timeStep: " << userInputs.dtValue << "  timeFinal: " << userInputs.finalTime << "  timeIncrements: " << userInputs.totalIncrements << "\n";
     
-    for (currentIncrement=1; currentIncrement<=totalIncrements; ++currentIncrement){
+    for (currentIncrement=1; currentIncrement<=userInputs.totalIncrements; ++currentIncrement){
       //increment current time
-      currentTime+=dtValue;
+      currentTime+=userInputs.dtValue;
       if (currentIncrement%skipPrintSteps==0){
       pcout << "\ntime increment:" << currentIncrement << "  time: " << currentTime << "\n";
       }
@@ -60,12 +55,12 @@ void MatrixFreePDE<dim>::solve(){
       //output results to file
       if ((writeOutput) && (outputTimeStepList[currentOutput] == currentIncrement)) {
     	  outputResults();
-		  #ifdef calcEnergy
-    	  if (calcEnergy == true){
+
+    	  if (userInputs.calc_energy == true){
     		  computeEnergy();
     		  outputFreeEnergy(freeEnergyValues);
     	  }
-		  #endif
+
     	  currentOutput++;
       }
     }
@@ -73,10 +68,10 @@ void MatrixFreePDE<dim>::solve(){
 
   //time independent BVP
   else{
-    if (totalIncrements>1){
+    if (userInputs.totalIncrements>1){
       pcout << "solve.h: this problem has only ELLIPTIC fields, hence neglecting totalIncrementsV>1 \n";
     }
-    totalIncrements=1;
+    userInputs.totalIncrements=1;
 
     //check and perform adaptive mesh refinement
     computing_timer.enter_section("matrixFreePDE: AMR");
@@ -95,12 +90,10 @@ void MatrixFreePDE<dim>::solve(){
     //output results to file
     if (writeOutput){
     	outputResults();
-		#ifdef calcEnergy
-    	if (calcEnergy == true){
+    	if (userInputs.calc_energy == true){
     		computeEnergy();
     		outputFreeEnergy(freeEnergyValues);
     	}
-		#endif
     }
 
   }

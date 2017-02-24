@@ -43,7 +43,6 @@ Scanning dependencies of target release
 -- Build files have been written to: /Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/tests/unit_tests
 Scanning dependencies of target main
 [ 50%] Building CXX object CMakeFiles/main.dir/main.cc.o
-[100%] Linking CXX executable main
 --------------------------------------------------------------------------
 mpirun was unable to find the specified executable file, and therefore
 did not launch the job.  This error was first reported for process

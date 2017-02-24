@@ -8,37 +8,12 @@
 //methods to apply initial conditions
 template <int dim>
 void MatrixFreePDE<dim>::applyInitialConditions(){
-#ifndef loadICs
-#define loadICs {}
-#endif
 
-#ifndef loadSerialFile
-#define loadSerialFile {}
-#endif
 
-#ifndef loadFileName
-#define loadFileName {}
-#endif
 
-#ifndef loadFieldName
-#define loadFieldName {}
-#endif
-
-std::vector<bool> load_ICs = loadICs;
-std::vector<bool> load_serial_file = loadSerialFile;
-std::vector<std::string> load_file_name = loadFileName;
-std::vector<std::string> load_field_name = loadFieldName;
-
-// If load_ICs is empty, it should be set to false for each variable
-if (load_ICs.size() == 0){
-	for (unsigned int i=0; i<num_var; i++){
-		load_ICs.push_back(false);
-	}
-}
-
-for (unsigned int var_index=0; var_index < num_var; var_index++){
-	if (load_ICs[var_index] == false){
-		if (var_type[var_index] == "SCALAR"){
+for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_index++){
+	if (userInputs.load_ICs[var_index] == false){
+		if (userInputs.var_type[var_index] == "SCALAR"){
 			VectorTools::interpolate (*this->dofHandlersSet[var_index], InitialCondition<dim>(var_index), *this->solutionSet[var_index]);
 		}
 		else {
@@ -54,20 +29,20 @@ for (unsigned int var_index=0; var_index < num_var; var_index++){
 
 		// Create the filename of the the file to be loaded
 		std::string filename;
-		if (load_serial_file[var_index] == true){
-			filename = load_file_name[var_index] + ".vtk";
+		if (userInputs.load_serial_file[var_index] == true){
+			filename = userInputs.load_file_name[var_index] + ".vtk";
 		}
 		else {
 			int proc_num = Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
 			std::ostringstream conversion;
 			conversion << proc_num;
-			filename = load_file_name[var_index] + "." + conversion.str() + ".vtk";
+			filename = userInputs.load_file_name[var_index] + "." + conversion.str() + ".vtk";
 		}
 
 		// Load the data from the file using a PField
 		body.read_vtk(filename);
-		ScalarField2D &conc = body.find_scalar_field(load_field_name[var_index]);
-		if (var_type[var_index] == "SCALAR"){
+		ScalarField2D &conc = body.find_scalar_field(userInputs.load_field_name[var_index]);
+		if (userInputs.var_type[var_index] == "SCALAR"){
 			VectorTools::interpolate (*this->dofHandlersSet[var_index], InitialConditionPField<dim>(var_index,conc), *this->solutionSet[var_index]);
 		}
 		else {

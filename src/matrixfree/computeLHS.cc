@@ -46,10 +46,10 @@ void  MatrixFreePDE<dim>::getLHS(const MatrixFree<dim,double> &data,
 				 const std::pair<unsigned int,unsigned int> &cell_range) const{
 
 
-	variable_info<dim> resInfoLHS;
-		for (unsigned int i=0; i<num_var_LHS; i++){
-			if (MatrixFreePDE<dim>::currentFieldIndex == varInfoListLHS[i].global_var_index){
-				resInfoLHS = varInfoListLHS[i];
+	variable_info resInfoLHS;
+		for (unsigned int i=0; i<userInputs.num_var_LHS; i++){
+			if (MatrixFreePDE<dim>::currentFieldIndex == userInputs.varInfoListLHS[i].global_var_index){
+				resInfoLHS = userInputs.varInfoListLHS[i];
 			}
 		}
 
@@ -57,45 +57,45 @@ void  MatrixFreePDE<dim>::getLHS(const MatrixFree<dim,double> &data,
 		std::vector<typeScalar> scalar_vars;
 		std::vector<typeVector> vector_vars;
 
-		for (unsigned int i=0; i<num_var_LHS; i++){
-			if (varInfoListLHS[i].is_scalar){
-				typeScalar var(data, varInfoListLHS[i].global_var_index);
+		for (unsigned int i=0; i<userInputs.num_var_LHS; i++){
+			if (userInputs.varInfoListLHS[i].is_scalar){
+				typeScalar var(data, userInputs.varInfoListLHS[i].global_var_index);
 				scalar_vars.push_back(var);
 			}
 			else {
-				typeVector var(data, varInfoListLHS[i].global_var_index);
+				typeVector var(data, userInputs.varInfoListLHS[i].global_var_index);
 				vector_vars.push_back(var);
 			}
 		}
 
 		std::vector<modelVariable<dim> > modelVarList;
-		modelVarList.reserve(num_var_LHS);
+		modelVarList.reserve(userInputs.num_var_LHS);
 		modelResidual<dim> modelRes;
 
 		//loop over cells
 		for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
 
 			// Initialize, read DOFs, and set evaulation flags for each variable
-			for (unsigned int i=0; i<num_var_LHS; i++){
-				if (varInfoListLHS[i].is_scalar) {
-					scalar_vars[varInfoListLHS[i].scalar_or_vector_index].reinit(cell);
-					if ( varInfoListLHS[i].global_var_index == resInfoLHS.global_var_index ){
-						scalar_vars[varInfoListLHS[i].scalar_or_vector_index].read_dof_values_plain(src);
+			for (unsigned int i=0; i<userInputs.num_var_LHS; i++){
+				if (userInputs.varInfoListLHS[i].is_scalar) {
+					scalar_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].reinit(cell);
+					if ( userInputs.varInfoListLHS[i].global_var_index == resInfoLHS.global_var_index ){
+						scalar_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].read_dof_values_plain(src);
 					}
 					else{
-						scalar_vars[varInfoListLHS[i].scalar_or_vector_index].read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[varInfoListLHS[i].global_var_index]);
+						scalar_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[userInputs.varInfoListLHS[i].global_var_index]);
 					}
-					scalar_vars[varInfoListLHS[i].scalar_or_vector_index].evaluate(need_value_LHS[varInfoListLHS[i].global_var_index], need_gradient_LHS[varInfoListLHS[i].global_var_index], need_hessian_LHS[varInfoListLHS[i].global_var_index]);
+					scalar_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].evaluate(userInputs.need_value_LHS[userInputs.varInfoListLHS[i].global_var_index], userInputs.need_gradient_LHS[userInputs.varInfoListLHS[i].global_var_index], userInputs.need_hessian_LHS[userInputs.varInfoListLHS[i].global_var_index]);
 				}
 				else {
-					vector_vars[varInfoListLHS[i].scalar_or_vector_index].reinit(cell);
-					if ( varInfoListLHS[i].global_var_index == resInfoLHS.global_var_index ){
-						vector_vars[varInfoListLHS[i].scalar_or_vector_index].read_dof_values_plain(src);
+					vector_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].reinit(cell);
+					if ( userInputs.varInfoListLHS[i].global_var_index == resInfoLHS.global_var_index ){
+						vector_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].read_dof_values_plain(src);
 					}
 					else {
-						vector_vars[varInfoListLHS[i].scalar_or_vector_index].read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[varInfoListLHS[i].global_var_index]);
+						vector_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[userInputs.varInfoListLHS[i].global_var_index]);
 					}
-					vector_vars[varInfoListLHS[i].scalar_or_vector_index].evaluate(need_value_LHS[varInfoListLHS[i].global_var_index], need_gradient_LHS[varInfoListLHS[i].global_var_index], need_hessian_LHS[varInfoListLHS[i].global_var_index]);
+					vector_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].evaluate(userInputs.need_value_LHS[userInputs.varInfoListLHS[i].global_var_index], userInputs.need_gradient_LHS[userInputs.varInfoListLHS[i].global_var_index], userInputs.need_hessian_LHS[userInputs.varInfoListLHS[i].global_var_index]);
 				}
 			}
 
@@ -117,27 +117,27 @@ void  MatrixFreePDE<dim>::getLHS(const MatrixFree<dim,double> &data,
 		    		q_point_loc = vector_vars[0].quadrature_point(q);
 		    	}
 
-		    	for (unsigned int i=0; i<num_var_LHS; i++){
-		    		if (varInfoListLHS[i].is_scalar) {
-		    			if (need_value_LHS[varInfoListLHS[i].global_var_index]){
-		    				modelVarList[i].scalarValue = scalar_vars[varInfoListLHS[i].scalar_or_vector_index].get_value(q);
+		    	for (unsigned int i=0; i<userInputs.num_var_LHS; i++){
+		    		if (userInputs.varInfoListLHS[i].is_scalar) {
+		    			if (userInputs.need_value_LHS[userInputs.varInfoListLHS[i].global_var_index]){
+		    				modelVarList[i].scalarValue = scalar_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].get_value(q);
 		    			}
-		    			if (need_gradient_LHS[varInfoListLHS[i].global_var_index]){
-		    				modelVarList[i].scalarGrad = scalar_vars[varInfoListLHS[i].scalar_or_vector_index].get_gradient(q);
+		    			if (userInputs.need_gradient_LHS[userInputs.varInfoListLHS[i].global_var_index]){
+		    				modelVarList[i].scalarGrad = scalar_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].get_gradient(q);
 		    			}
-		    			if (need_hessian_LHS[varInfoListLHS[i].global_var_index]){
-		    				modelVarList[i].scalarHess = scalar_vars[varInfoListLHS[i].scalar_or_vector_index].get_hessian(q);
+		    			if (userInputs.need_hessian_LHS[userInputs.varInfoListLHS[i].global_var_index]){
+		    				modelVarList[i].scalarHess = scalar_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].get_hessian(q);
 		    			}
 		    		}
 		    		else {
-		    			if (need_value_LHS[varInfoListLHS[i].global_var_index]){
-		    				modelVarList[i].vectorValue = vector_vars[varInfoListLHS[i].scalar_or_vector_index].get_value(q);
+		    			if (userInputs.need_value_LHS[userInputs.varInfoListLHS[i].global_var_index]){
+		    				modelVarList[i].vectorValue = vector_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].get_value(q);
 		    			}
-		    			if (need_gradient_LHS[varInfoListLHS[i].global_var_index]){
-		    				modelVarList[i].vectorGrad = vector_vars[varInfoListLHS[i].scalar_or_vector_index].get_gradient(q);
+		    			if (userInputs.need_gradient_LHS[userInputs.varInfoListLHS[i].global_var_index]){
+		    				modelVarList[i].vectorGrad = vector_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].get_gradient(q);
 		    			}
-		    			if (need_hessian_LHS[varInfoListLHS[i].global_var_index]){
-		    				modelVarList[i].vectorHess = vector_vars[varInfoListLHS[i].scalar_or_vector_index].get_hessian(q);
+		    			if (userInputs.need_hessian_LHS[userInputs.varInfoListLHS[i].global_var_index]){
+		    				modelVarList[i].vectorHess = vector_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].get_hessian(q);
 		    			}
 		    		}
 		    	}
@@ -147,18 +147,18 @@ void  MatrixFreePDE<dim>::getLHS(const MatrixFree<dim,double> &data,
 
 		    	// Submit values
 				if (resInfoLHS.is_scalar){
-					if (value_residual[resInfoLHS.global_var_index]){
+					if (userInputs.value_residual[resInfoLHS.global_var_index]){
 						scalar_vars[resInfoLHS.scalar_or_vector_index].submit_value(modelRes.scalarValueResidual,q);
 					}
-					if (gradient_residual[resInfoLHS.global_var_index]){
+					if (userInputs.gradient_residual[resInfoLHS.global_var_index]){
 						scalar_vars[resInfoLHS.scalar_or_vector_index].submit_gradient(modelRes.scalarGradResidual,q);
 					}
 				}
 				else {
-					if (value_residual[resInfoLHS.global_var_index]){
+					if (userInputs.value_residual[resInfoLHS.global_var_index]){
 						vector_vars[resInfoLHS.scalar_or_vector_index].submit_value(modelRes.vectorValueResidual,q);
 					}
-					if (gradient_residual[resInfoLHS.global_var_index]){
+					if (userInputs.gradient_residual[resInfoLHS.global_var_index]){
 						vector_vars[resInfoLHS.scalar_or_vector_index].submit_gradient(modelRes.vectorGradResidual,q);
 					}
 				}
@@ -167,11 +167,11 @@ void  MatrixFreePDE<dim>::getLHS(const MatrixFree<dim,double> &data,
 
 		    //integrate
 			if (resInfoLHS.is_scalar) {
-				scalar_vars[resInfoLHS.scalar_or_vector_index].integrate(value_residual[resInfoLHS.global_var_index], gradient_residual[resInfoLHS.global_var_index]);
+				scalar_vars[resInfoLHS.scalar_or_vector_index].integrate(userInputs.value_residual[resInfoLHS.global_var_index], userInputs.gradient_residual[resInfoLHS.global_var_index]);
 				scalar_vars[resInfoLHS.scalar_or_vector_index].distribute_local_to_global(dst);
 			}
 			else {
-				vector_vars[resInfoLHS.scalar_or_vector_index].integrate(value_residual[resInfoLHS.global_var_index], gradient_residual[resInfoLHS.global_var_index]);
+				vector_vars[resInfoLHS.scalar_or_vector_index].integrate(userInputs.value_residual[resInfoLHS.global_var_index], userInputs.gradient_residual[resInfoLHS.global_var_index]);
 				vector_vars[resInfoLHS.scalar_or_vector_index].distribute_local_to_global(dst);
 			}
 		}

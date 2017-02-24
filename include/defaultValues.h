@@ -37,14 +37,17 @@
 #define numFields 1
 #endif
 
+// Number of time steps and time step size
+#ifndef	timeIncrements
+#define timeIncrements 1
+#endif
+#ifndef	timeStep
+#define timeStep 0.0
+#endif
+
 //write output files (default value:true)
 #ifndef writeOutput 
 #define writeOutput true
-#endif
-
-//output written at every n'th increment for time dependent problems (default value:1)
-#ifndef skipOutputSteps
-#define skipOutputSteps 1
 #endif
 
 //solver type for implcit solves (default value:SolverCG)
@@ -94,6 +97,43 @@
 
 #ifndef hAdaptivity
 #define hAdaptivity false
+#endif
+
+#ifndef loadICs
+#define loadICs {}
+#endif
+
+#ifndef loadSerialFile
+#define loadSerialFile {}
+#endif
+
+#ifndef loadFileName
+#define loadFileName {}
+#endif
+
+#ifndef loadFieldName
+#define loadFieldName {}
+#endif
+
+// Mesh refinement
+#ifndef maxRefinementLevel
+#define maxRefinementLevel refineFactor
+#endif
+
+#ifndef minRefinementLevel
+#define minRefinementLevel refineFactor
+#endif
+
+#ifndef refineCriterionFields
+#define refineCriterionFields {0}
+#endif
+
+#ifndef refineWindowMax
+#define refineWindowMax {0}
+#endif
+
+#ifndef refineWindowMin
+#define refineWindowMin {0}
 #endif
 
 #endif

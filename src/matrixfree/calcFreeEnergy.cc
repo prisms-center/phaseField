@@ -42,8 +42,8 @@ void  MatrixFreePDE<dim>::getEnergy(const MatrixFree<dim,double> &data,
 		  std::vector<typeScalar> scalar_vars;
 		  std::vector<typeVector> vector_vars;
 
-		  for (unsigned int i=0; i<num_var; i++){
-			  if (varInfoListRHS[i].is_scalar){
+		  for (unsigned int i=0; i<userInputs.number_of_variables; i++){
+			  if (userInputs.varInfoListRHS[i].is_scalar){
 				  typeScalar var(data, i);
 				  scalar_vars.push_back(var);
 			  }
@@ -55,23 +55,23 @@ void  MatrixFreePDE<dim>::getEnergy(const MatrixFree<dim,double> &data,
 
 		  std::vector<modelVariable<dim> > modelVarList;
 		  std::vector<modelResidual<dim> > modelResidualsList;
-		  modelVarList.reserve(num_var);
-		  modelResidualsList.reserve(num_var);
+		  modelVarList.reserve(userInputs.number_of_variables);
+		  modelResidualsList.reserve(userInputs.number_of_variables);
 
 		  //loop over cells
 		  for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
 
 			  // Initialize, read DOFs, and set evaulation flags for each variable
-			  for (unsigned int i=0; i<num_var; i++){
-				  if (varInfoListRHS[i].is_scalar) {
-					  scalar_vars[varInfoListRHS[i].scalar_or_vector_index].reinit(cell);
-					  scalar_vars[varInfoListRHS[i].scalar_or_vector_index].read_dof_values_plain(*src[varInfoListRHS[i].global_var_index]);
-					  scalar_vars[varInfoListRHS[i].scalar_or_vector_index].evaluate(need_value[i], need_gradient[i], need_hessian[i]);
+			  for (unsigned int i=0; i<userInputs.number_of_variables; i++){
+				  if (userInputs.varInfoListRHS[i].is_scalar) {
+					  scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].reinit(cell);
+					  scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].read_dof_values_plain(*src[userInputs.varInfoListRHS[i].global_var_index]);
+					  scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].evaluate(userInputs.need_value[i], userInputs.need_gradient[i], userInputs.need_hessian[i]);
 				  }
 				  else {
-					  vector_vars[varInfoListRHS[i].scalar_or_vector_index].reinit(cell);
-					  vector_vars[varInfoListRHS[i].scalar_or_vector_index].read_dof_values_plain(*src[varInfoListRHS[i].global_var_index]);
-					  vector_vars[varInfoListRHS[i].scalar_or_vector_index].evaluate(need_value[i], need_gradient[i], need_hessian[i]);
+					  vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].reinit(cell);
+					  vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].read_dof_values_plain(*src[userInputs.varInfoListRHS[i].global_var_index]);
+					  vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].evaluate(userInputs.need_value[i], userInputs.need_gradient[i], userInputs.need_hessian[i]);
 				  }
 			  }
 
@@ -103,27 +103,27 @@ void  MatrixFreePDE<dim>::getEnergy(const MatrixFree<dim,double> &data,
 					  q_point_loc = vector_vars[0].quadrature_point(q);
 				  }
 
-				  for (unsigned int i=0; i<num_var; i++){
-					  if (varInfoListRHS[i].is_scalar) {
-						  if (need_value[i]){
-							  modelVarList[i].scalarValue = scalar_vars[varInfoListRHS[i].scalar_or_vector_index].get_value(q);
+				  for (unsigned int i=0; i<userInputs.number_of_variables; i++){
+					  if (userInputs.varInfoListRHS[i].is_scalar) {
+						  if (userInputs.need_value[i]){
+							  modelVarList[i].scalarValue = scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_value(q);
 						  }
-						  if (need_gradient[i]){
-							  modelVarList[i].scalarGrad = scalar_vars[varInfoListRHS[i].scalar_or_vector_index].get_gradient(q);
+						  if (userInputs.need_gradient[i]){
+							  modelVarList[i].scalarGrad = scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_gradient(q);
 						  }
-						  if (need_hessian[i]){
-							  modelVarList[i].scalarHess = scalar_vars[varInfoListRHS[i].scalar_or_vector_index].get_hessian(q);
+						  if (userInputs.need_hessian[i]){
+							  modelVarList[i].scalarHess = scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_hessian(q);
 						  }
 					  }
 					  else {
-						  if (need_value[i]){
-							  modelVarList[i].vectorValue = vector_vars[varInfoListRHS[i].scalar_or_vector_index].get_value(q);
+						  if (userInputs.need_value[i]){
+							  modelVarList[i].vectorValue = vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_value(q);
 						  }
-						  if (need_gradient[i]){
-							  modelVarList[i].vectorGrad = vector_vars[varInfoListRHS[i].scalar_or_vector_index].get_gradient(q);
+						  if (userInputs.need_gradient[i]){
+							  modelVarList[i].vectorGrad = vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_gradient(q);
 						  }
-						  if (need_hessian[i]){
-							  modelVarList[i].vectorHess = vector_vars[varInfoListRHS[i].scalar_or_vector_index].get_hessian(q);
+						  if (userInputs.need_hessian[i]){
+							  modelVarList[i].vectorHess = vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_hessian(q);
 						  }
 					  }
 				  }

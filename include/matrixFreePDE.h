@@ -8,7 +8,7 @@
 #include <iterator> // is this necessary?
 
 //dealii headers
-#include "dealIIheaders.h"
+//#include "dealIIheaders.h"
 #include "defaultValues.h"
 
 //PRISMS headers
@@ -27,53 +27,53 @@ class varBCs
 };
 
  
-//define data types
-#ifndef scalarType
-typedef dealii::VectorizedArray<double> scalarType;
-#endif
-#ifndef vectorType
-typedef dealii::parallel::distributed::Vector<double> vectorType;
-#endif
-//define FE system types
-#ifndef typeScalar
-typedef dealii::FEEvaluation<problemDIM,finiteElementDegree,finiteElementDegree+1,1,double>           typeScalar;
-#endif
-#ifndef typeVector
-typedef dealii::FEEvaluation<problemDIM,finiteElementDegree,finiteElementDegree+1,problemDIM,double>  typeVector;
-#endif
-//define data value types
-#ifndef scalarvalueType
-typedef dealii::VectorizedArray<double> scalarvalueType;
-#endif
-#ifndef vectorvalueType
-typedef dealii::Tensor<1, problemDIM, dealii::VectorizedArray<double> > vectorvalueType;
-#endif
-#if problemDIM==1
-#ifndef scalargradType
-typedef dealii::VectorizedArray<double> scalargradType;
-#endif
-#ifndef vectorgradType
-typedef dealii::VectorizedArray<double> vectorgradType;
-#endif
-#ifndef vectorhessType
-typedef dealii::VectorizedArray<double> vectorhessType;
-#endif
-#else
-#ifndef scalargradType
-typedef dealii::Tensor<1, problemDIM, dealii::VectorizedArray<double> > scalargradType;
-#endif
-#ifndef scalarhessType
-typedef dealii::Tensor<2,problemDIM,dealii::VectorizedArray<double> > scalarhessType;
-#endif
-#ifndef vectorgradType
-typedef dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > vectorgradType;
-#endif
-#ifndef vectorhessType
-typedef dealii::Tensor<3, problemDIM, dealii::VectorizedArray<double> > vectorhessType;
-#endif
-#endif
+////define data types
+//#ifndef scalarType
+//typedef dealii::VectorizedArray<double> scalarType;
+//#endif
+//#ifndef vectorType
+//typedef dealii::parallel::distributed::Vector<double> vectorType;
+//#endif
+////define FE system types
+//#ifndef typeScalar
+//typedef dealii::FEEvaluation<problemDIM,finiteElementDegree,finiteElementDegree+1,1,double>           typeScalar;
+//#endif
+//#ifndef typeVector
+//typedef dealii::FEEvaluation<problemDIM,finiteElementDegree,finiteElementDegree+1,problemDIM,double>  typeVector;
+//#endif
+////define data value types
+//#ifndef scalarvalueType
+//typedef dealii::VectorizedArray<double> scalarvalueType;
+//#endif
+//#ifndef vectorvalueType
+//typedef dealii::Tensor<1, problemDIM, dealii::VectorizedArray<double> > vectorvalueType;
+//#endif
+//#if problemDIM==1
+//#ifndef scalargradType
+//typedef dealii::VectorizedArray<double> scalargradType;
+//#endif
+//#ifndef vectorgradType
+//typedef dealii::VectorizedArray<double> vectorgradType;
+//#endif
+//#ifndef vectorhessType
+//typedef dealii::VectorizedArray<double> vectorhessType;
+//#endif
+//#else
+//#ifndef scalargradType
+//typedef dealii::Tensor<1, problemDIM, dealii::VectorizedArray<double> > scalargradType;
+//#endif
+//#ifndef scalarhessType
+//typedef dealii::Tensor<2,problemDIM,dealii::VectorizedArray<double> > scalarhessType;
+//#endif
+//#ifndef vectorgradType
+//typedef dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > vectorgradType;
+//#endif
+//#ifndef vectorhessType
+//typedef dealii::Tensor<3, problemDIM, dealii::VectorizedArray<double> > vectorhessType;
+//#endif
+//#endif
 
-#include "model_variables.h"
+//#include "model_variables.h"
 
 //macro for constants
 #define constV(a) make_vectorized_array(a)
@@ -100,7 +100,7 @@ class MatrixFreePDE:public Subscriptor
   /**
    * Class contructor
    */
-  MatrixFreePDE(); 
+  MatrixFreePDE(userInputParameters);
   ~MatrixFreePDE(); 
   /**
    * Initializes the mesh, degress of freedom, constraints and data structures using the user provided
@@ -137,7 +137,7 @@ class MatrixFreePDE:public Subscriptor
   /**
    * Virtual function to shift the concentration
    */
-  void shiftConcentration();
+  virtual void shiftConcentration();
 
   virtual void setBCs()=0;
   void buildFields();
@@ -159,36 +159,15 @@ class MatrixFreePDE:public Subscriptor
   std::vector<varBCs<dim> > BC_list;
 
  protected:
-  // Declare vectors to put the information about the variables into
-  std::vector<std::string> var_name;
-  std::vector<std::string> var_type;
-  std::vector<std::string> var_eq_type;
+  userInputParameters userInputs;
 
-  std::vector<bool> need_value;
-  std::vector<bool> need_gradient;
-  std::vector<bool> need_hessian;
-  std::vector<bool> value_residual;
-  std::vector<bool> gradient_residual;
 
-  std::vector<bool> need_value_LHS;
-  std::vector<bool> need_gradient_LHS;
-  std::vector<bool> need_hessian_LHS;
-  std::vector<bool> value_residual_LHS;
-  std::vector<bool> gradient_residual_LHS;
+  dealii::Threads::Mutex assembler_lock;
 
   // Elasticity matrix variables
-  const static unsigned int CIJ_tensor_size = 2*dim-1+dim/3;
-  std::vector<dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > > CIJ_list;
+  	const static unsigned int CIJ_tensor_size = 2*dim-1+dim/3;
+  	std::vector<dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > > CIJ_list;
 
-  Threads::Mutex assembler_lock;
-
-  // Variables needed to calculate the LHS
-  std::vector<variable_info<dim> > varInfoListRHS;
-  std::vector<variable_info<dim> > resInfoListRHS;
-
-  // Variables needed to calculate the LHS
-  unsigned int num_var_LHS;
-  std::vector<variable_info<dim> > varInfoListLHS;
 
   /**
    * Method to solve each time increment of a time-dependent problem. For time-independent problems 
@@ -338,8 +317,8 @@ class MatrixFreePDE:public Subscriptor
   bool isEllipticBVP;
   //
   unsigned int parabolicFieldIndex, ellipticFieldIndex;
-  double dtValue, currentTime, finalTime;
-  unsigned int currentIncrement, totalIncrements;
+  double currentTime;
+  unsigned int currentIncrement;
 
   /*parallel message stream*/
   ConditionalOStream  pcout;

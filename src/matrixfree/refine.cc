@@ -9,7 +9,7 @@ template <int dim>
 void MatrixFreePDE<dim>::adaptiveRefine(unsigned int currentIncrement){
 #if hAdaptivity == true
 	if ( (currentIncrement == 0) ){
-		for (unsigned int remesh_index=0; remesh_index < (maxRefinementLevel-minRefinementLevel); remesh_index++){
+		for (unsigned int remesh_index=0; remesh_index < (userInputs.max_refinement_level-userInputs.min_refinement_level); remesh_index++){
 			this->reinit();
 		}
 	}
@@ -47,20 +47,11 @@ void MatrixFreePDE<dim>::adaptiveRefineCriterion(){
 //#endif
 #if hAdaptivity == true
 	//Custom defined estimation criterion
-	std::vector<int> refine_criterion_fields;
-	std::vector<double> refine_window_max;
-	std::vector<double> refine_window_min;
-	{int temp[] = refineCriterionFields;
-	vectorLoad(temp, sizeof(temp), refine_criterion_fields);}
-	{double temp[] = refineWindowMax;
-	vectorLoad(temp, sizeof(temp), refine_window_max);}
-	{double temp[] = refineWindowMin;
-	vectorLoad(temp, sizeof(temp), refine_window_min);}
 
 	std::vector<std::vector<double> > errorOutV;
 
 
-	QGauss<dim>  quadrature(finiteElementDegree+1);
+	QGauss<dim>  quadrature(userInputs.fe_degree+1);
 	FEValues<dim> fe_values (*this->FESet[refine_criterion_fields[0]], quadrature, update_values);
 	const unsigned int   num_quad_points = quadrature.size();
 
@@ -124,13 +115,13 @@ void MatrixFreePDE<dim>::refineGrid (){
   //limit the maximal refinement depth of the mesh
   pcout << "Current mesh refinement level: " << triangulation.n_levels() << "\n";
   if ( triangulation.n_levels() > maxRefinementLevel ){
-    for (typename parallel::distributed::Triangulation<dim>::active_cell_iterator cell = triangulation.begin_active(maxRefinementLevel); cell != triangulation.end(); ++cell)
+    for (typename parallel::distributed::Triangulation<dim>::active_cell_iterator cell = triangulation.begin_active(userInputs.max_refinement_level); cell != triangulation.end(); ++cell)
       cell->clear_refine_flag ();
   }
 
   //limit the minimal refinement depth of the mesh
-  for (typename parallel::distributed::Triangulation<dim>::active_cell_iterator cell = triangulation.begin_active(minRefinementLevel); cell != triangulation.end(); ++cell){
-      if (cell->level() <= minRefinementLevel ){
+  for (typename parallel::distributed::Triangulation<dim>::active_cell_iterator cell = triangulation.begin_active(userInputs.min_refinement_level); cell != triangulation.end(); ++cell){
+      if (cell->level() <= userInputs.min_refinement_level ){
     	  cell->clear_coarsen_flag ();
       }
   }

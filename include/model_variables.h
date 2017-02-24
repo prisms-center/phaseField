@@ -41,7 +41,6 @@ modelResidual<dim>::modelResidual()
 
 }
 
-template<int dim>
 struct variable_info
 {
 	bool is_scalar;

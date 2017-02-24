@@ -70,11 +70,11 @@ Time stepping parameters: timeStep: 0.001  timeFinal: 20  timeIncrements: 20000
 
 time increment:1000  time: 1
 field ' n' [explicit solve]: current solution: 9.707561e+01, current residual:5.867515e+01
-wall time: 0.000386s
+wall time: 0.000442028s
 
 time increment:2000  time: 2
 field ' n' [explicit solve]: current solution: 9.720590e+01, current residual:5.872503e+01
-wall time: 0.000461817s
+wall time: 0.000418901s
 Output written to:solution-002000.pvtu
 
 Energy: 246.134
@@ -82,11 +82,11 @@ Energy Components: 113.318 132.816 0
 
 time increment:3000  time: 3
 field ' n' [explicit solve]: current solution: 9.773348e+01, current residual:5.903110e+01
-wall time: 0.000385046s
+wall time: 0.000433922s
 
 time increment:4000  time: 4
 field ' n' [explicit solve]: current solution: 9.816262e+01, current residual:5.928057e+01
-wall time: 0.000411034s
+wall time: 0.000405073s
 Output written to:solution-004000.pvtu
 
 Energy: 230.703
@@ -94,11 +94,11 @@ Energy Components: 105.732 124.97 0
 
 time increment:5000  time: 5
 field ' n' [explicit solve]: current solution: 9.853410e+01, current residual:5.949457e+01
-wall time: 0.000351906s
+wall time: 0.000503063s
 
 time increment:6000  time: 6
 field ' n' [explicit solve]: current solution: 9.892065e+01, current residual:5.971440e+01
-wall time: 0.000355959s
+wall time: 0.000387907s
 Output written to:solution-006000.pvtu
 
 Energy: 219.201
@@ -106,11 +106,11 @@ Energy Components: 98.903 120.298 0
 
 time increment:7000  time: 7
 field ' n' [explicit solve]: current solution: 9.932047e+01, current residual:5.993840e+01
-wall time: 0.000340939s
+wall time: 0.000368834s
 
 time increment:8000  time: 8
 field ' n' [explicit solve]: current solution: 9.959227e+01, current residual:6.009427e+01
-wall time: 0.000444174s
+wall time: 0.000363111s
 Output written to:solution-008000.pvtu
 
 Energy: 209.139
@@ -118,11 +118,11 @@ Energy Components: 92.264 116.875 0
 
 time increment:9000  time: 9
 field ' n' [explicit solve]: current solution: 9.977191e+01, current residual:6.020084e+01
-wall time: 0.000406981s
+wall time: 0.000400066s
 
 time increment:10000  time: 10
 field ' n' [explicit solve]: current solution: 9.991482e+01, current residual:6.028675e+01
-wall time: 0.000442028s
+wall time: 0.00039506s
 Output written to:solution-010000.pvtu
 
 Energy: 203.464
@@ -130,11 +130,11 @@ Energy Components: 88.6234 114.841 0
 
 time increment:11000  time: 11
 field ' n' [explicit solve]: current solution: 1.000342e+02, current residual:6.035881e+01
-wall time: 0.000468016s
+wall time: 0.000488043s
 
 time increment:12000  time: 12
 field ' n' [explicit solve]: current solution: 1.001351e+02, current residual:6.041979e+01
-wall time: 0.000392914s
+wall time: 0.000383139s
 Output written to:solution-012000.pvtu
 
 Energy: 198.924
@@ -142,11 +142,11 @@ Energy Components: 85.2998 113.624 0
 
 time increment:13000  time: 13
 field ' n' [explicit solve]: current solution: 1.002220e+02, current residual:6.047228e+01
-wall time: 0.000394106s
+wall time: 0.000355959s
 
 time increment:14000  time: 14
 field ' n' [explicit solve]: current solution: 1.002991e+02, current residual:6.051875e+01
-wall time: 0.000421047s
+wall time: 0.000388861s
 Output written to:solution-014000.pvtu
 
 Energy: 194.748
@@ -154,11 +154,11 @@ Energy Components: 82.2327 112.516 0
 
 time increment:15000  time: 15
 field ' n' [explicit solve]: current solution: 1.003694e+02, current residual:6.056115e+01
-wall time: 0.000390768s
+wall time: 0.000401974s
 
 time increment:16000  time: 16
 field ' n' [explicit solve]: current solution: 1.004354e+02, current residual:6.060086e+01
-wall time: 0.000355959s
+wall time: 0.000390053s
 Output written to:solution-016000.pvtu
 
 Energy: 190.606
@@ -166,11 +166,11 @@ Energy Components: 79.5496 111.056 0
 
 time increment:17000  time: 17
 field ' n' [explicit solve]: current solution: 1.004987e+02, current residual:6.063890e+01
-wall time: 0.000391006s
+wall time: 0.000510931s
 
 time increment:18000  time: 18
 field ' n' [explicit solve]: current solution: 1.005604e+02, current residual:6.067597e+01
-wall time: 0.000437021s
+wall time: 0.000406981s
 Output written to:solution-018000.pvtu
 
 Energy: 186.417
@@ -178,11 +178,11 @@ Energy Components: 77.0957 109.321 0
 
 time increment:19000  time: 19
 field ' n' [explicit solve]: current solution: 1.006214e+02, current residual:6.071263e+01
-wall time: 0.000365973s
+wall time: 0.000411034s
 
 time increment:20000  time: 20
 field ' n' [explicit solve]: current solution: 1.006827e+02, current residual:6.074937e+01
-wall time: 0.000566006s
+wall time: 0.000391006s
 Output written to:solution-020000.pvtu
 
 Energy: 182.087
@@ -190,16 +190,16 @@ Energy Components: 74.7191 107.367 0
 
 
 +---------------------------------------------+------------+------------+
-| Total wallclock time elapsed since start    |      11.8s |            |
+| Total wallclock time elapsed since start    |      12.1s |            |
 |                                             |            |            |
 | Section                         | no. calls |  wall time | % of total |
 +---------------------------------+-----------+------------+------------+
-| matrixFreePDE: AMR              |     20000 |    0.0757s |      0.64% |
-| matrixFreePDE: computeEnergy    |        11 |      1.04s |       8.8% |
-| matrixFreePDE: computeRHS       |     20000 |      4.96s |        42% |
-| matrixFreePDE: initialization   |         1 |    0.0769s |      0.65% |
-| matrixFreePDE: output           |        11 |      2.69s |        23% |
-| matrixFreePDE: solve            |         1 |      11.7s |        99% |
-| matrixFreePDE: solveIncrements  |     20000 |      7.23s |        61% |
+| matrixFreePDE: AMR              |     20000 |    0.0766s |      0.63% |
+| matrixFreePDE: computeEnergy    |        11 |      1.02s |       8.5% |
+| matrixFreePDE: computeRHS       |     20000 |      5.34s |        44% |
+| matrixFreePDE: initialization   |         1 |    0.0777s |      0.64% |
+| matrixFreePDE: output           |        11 |      2.66s |        22% |
+| matrixFreePDE: solve            |         1 |        12s |        99% |
+| matrixFreePDE: solveIncrements  |     20000 |      7.56s |        63% |
 +---------------------------------+-----------+------------+------------+
 
