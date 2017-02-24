@@ -139,7 +139,7 @@ class MatrixFreePDE:public Subscriptor
    */
   void shiftConcentration();
 
-  void setBCs();
+  virtual void setBCs()=0;
   void buildFields();
   void inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
     			std::string BC_type_dim1_max, double BC_value_dim1_max, std::string BC_type_dim2_min, double BC_value_dim2_min,
@@ -282,16 +282,16 @@ class MatrixFreePDE:public Subscriptor
 		       const std::vector<vectorType*> &src,
 		       const std::pair<unsigned int,unsigned int> &cell_range) const;
   
-  void residualRHS(const std::vector<modelVariable<dim> > & modelVarList,
+  virtual void residualRHS(const std::vector<modelVariable<dim> > & modelVarList,
   		  	  	  	  	  	  	  	  	  	  	  	  	  std::vector<modelResidual<dim> > & modelResidualsList,
-  														  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
+  														  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
 
-  void residualLHS(const std::vector<modelVariable<dim> > & modelVarList,
+  virtual void residualLHS(const std::vector<modelVariable<dim> > & modelVarList,
     		  	  	  	  	  	  	  	  	  	  	  	  	  modelResidual<dim> & modelRes,
-  														  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
+  														  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
 
-  void energyDensity(const std::vector<modelVariable<dim> > & modelVarList, const dealii::VectorizedArray<double> & JxW_value,
-  		  	  	  	  	  	  	  	  	  	  	  	  	  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc);
+  virtual void energyDensity(const std::vector<modelVariable<dim> > & modelVarList, const dealii::VectorizedArray<double> & JxW_value,
+  		  	  	  	  	  	  	  	  	  	  	  	  	  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc)=0;
 
 
   //methods to apply dirichlet BC's

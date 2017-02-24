@@ -63,7 +63,7 @@ public:
 };
 
 template <int dim>
-void MatrixFreePDE<dim>::setBCs(){
+void customPDE<dim>::setBCs(){
 	// =====================================================================
 	// ENTER THE BOUNDARY CONDITIONS HERE
 	// =====================================================================
@@ -82,7 +82,7 @@ void MatrixFreePDE<dim>::setBCs(){
 	// Face numbering: starts at zero with the minimum of the first direction, one for the maximum of the first direction
 	//						two for the minimum of the second direction, etc.
 
-	inputBCs(0,0,"ZERO_DERIVATIVE",0);
+	this->inputBCs(0,0,"ZERO_DERIVATIVE",0);
 
 	// =====================================================================
 

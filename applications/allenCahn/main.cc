@@ -5,6 +5,7 @@
 
 #include "parameters.h"
 #include "../../include/matrixFreePDE.h"
+#include "customPDE.h"
 #include "equations.h"
 #include "ICs_and_BCs.h"
 #include "../../src/matrixfree/matrixFreePDE.cc"
@@ -17,11 +18,11 @@ int main (int argc, char **argv)
   try
     {
 	  deallog.depth_console(0);
-	  MatrixFreePDE<problemDIM> problem;
+	  customPDE<problemDIM> problem;
 
       problem.setBCs();
       problem.buildFields();
-      problem.init (); 
+      problem.init ();
       problem.solve();
     }
   catch (std::exception &exc)
