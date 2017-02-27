@@ -15,6 +15,8 @@
 #include "fields.h"
 #include "vectorLoad.h"
 #include "vectorBCFunction.h"
+#include "../src/models/mechanics/anisotropy.h"
+#include "../src/models/mechanics/computeStress.h"
 
 // BC object declaration
 template <int dim>
@@ -158,6 +160,8 @@ class MatrixFreePDE:public Subscriptor
   // Boundary condition object
   std::vector<varBCs<dim> > BC_list;
 
+  ConditionalOStream  pcout;
+
  protected:
   userInputParameters userInputs;
 
@@ -166,7 +170,7 @@ class MatrixFreePDE:public Subscriptor
 
   // Elasticity matrix variables
   	const static unsigned int CIJ_tensor_size = 2*dim-1+dim/3;
-  	std::vector<dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > > CIJ_list;
+  	//std::vector<dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > > CIJ_list;
 
 
   /**
@@ -321,7 +325,7 @@ class MatrixFreePDE:public Subscriptor
   unsigned int currentIncrement;
 
   /*parallel message stream*/
-  ConditionalOStream  pcout;
+  //ConditionalOStream  pcout;
   /*Timer and logging object*/
   mutable TimerOutput computing_timer;
 

@@ -1,12 +1,18 @@
 // Precipitate evolution example application
 // Header files
 #include "../../include/dealIIheaders.h"
-
 #include "parameters.h"
-#include "../../src/models/coupled/generalized_model.h"
+#include "../../include/typeDefs.h"
+#include "../../include/model_variables.h"
+
+
+#include "../../include/loadInputs.h"
+#include "../../include/matrixFreePDE.h"
+#include "customPDE.h"
 #include "equations.h"
 #include "ICs_and_BCs.h"
-#include "../../src/models/coupled/generalized_model_functions.h"
+#include "../../src/loadInputs/loadInputs.cc"
+#include "../../src/matrixfree/matrixFreePDE.cc"
 
 //main
 int main (int argc, char **argv)
@@ -15,12 +21,16 @@ int main (int argc, char **argv)
   try
     {
 	  deallog.depth_console(0);
-	  generalizedProblem<problemDIM> problem;
 
-      problem.setBCs();
-      problem.buildFields();
-      problem.init (); 
-      problem.solve();
+	  userInputParameters userInputs;
+	  userInputs.loadUserInput();
+
+	  customPDE<problemDIM> problem(userInputs);
+
+	  problem.setBCs();
+	  problem.buildFields();
+	  problem.init ();
+	  problem.solve();
     }
   catch (std::exception &exc)
     {

@@ -88,7 +88,7 @@ public:
 };
 
 template <int dim>
-void generalizedProblem<dim>::setBCs(){
+void customPDE<dim>::setBCs(){
 
 	// =====================================================================
 	// ENTER THE BOUNDARY CONDITIONS HERE
@@ -108,18 +108,18 @@ void generalizedProblem<dim>::setBCs(){
 	// Face numbering: starts at zero with the minimum of the first direction, one for the maximum of the first direction
 	//						two for the minimum of the second direction, etc.
 
-	inputBCs(0,0,"ZERO_DERIVATIVE",0);
+	this->inputBCs(0,0,"ZERO_DERIVATIVE",0);
 
-	inputBCs(1,0,"ZERO_DERIVATIVE",0);
+	this->inputBCs(1,0,"ZERO_DERIVATIVE",0);
 
-	inputBCs(2,0,"ZERO_DERIVATIVE",0);
+	this->inputBCs(2,0,"ZERO_DERIVATIVE",0);
 
-	inputBCs(3,0,"ZERO_DERIVATIVE",0);
+	this->inputBCs(3,0,"ZERO_DERIVATIVE",0);
 
-	inputBCs(4,0,"DIRICHLET",0.0);
-	inputBCs(4,1,"DIRICHLET",0.0);
+	this->inputBCs(4,0,"DIRICHLET",0.0);
+	this->inputBCs(4,1,"DIRICHLET",0.0);
 	if (dim == 3){
-		inputBCs(4,2,"DIRICHLET",0.0);
+		this->inputBCs(4,2,"DIRICHLET",0.0);
 	}
 
 }

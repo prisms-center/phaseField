@@ -52,27 +52,27 @@ void MatrixFreePDE<dim>::adaptiveRefineCriterion(){
 
 
 	QGauss<dim>  quadrature(userInputs.fe_degree+1);
-	FEValues<dim> fe_values (*this->FESet[refine_criterion_fields[0]], quadrature, update_values);
+	FEValues<dim> fe_values (*this->FESet[userInputs.refine_criterion_fields[0]], quadrature, update_values);
 	const unsigned int   num_quad_points = quadrature.size();
 
 	std::vector<double> errorOut(num_quad_points);
 
-	typename DoFHandler<dim>::active_cell_iterator cell = this->dofHandlersSet_nonconst[refine_criterion_fields[0]]->begin_active(), endc = this->dofHandlersSet_nonconst[refine_criterion_fields[0]]->end();
+	typename DoFHandler<dim>::active_cell_iterator cell = this->dofHandlersSet_nonconst[userInputs.refine_criterion_fields[0]]->begin_active(), endc = this->dofHandlersSet_nonconst[userInputs.refine_criterion_fields[0]]->end();
 
 	for (;cell!=endc; ++cell){
 		if (cell->is_locally_owned()){
 			fe_values.reinit (cell);
 
-			for (unsigned int field_index=0; field_index<refine_criterion_fields.size(); field_index++){
-				fe_values.get_function_values(*this->solutionSet[refine_criterion_fields[field_index]], errorOut);
+			for (unsigned int field_index=0; field_index<userInputs.refine_criterion_fields.size(); field_index++){
+				fe_values.get_function_values(*this->solutionSet[userInputs.refine_criterion_fields[field_index]], errorOut);
 				errorOutV.push_back(errorOut);
 			}
 
 			bool mark_refine = false;
 
 			for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
-				for (unsigned int field_index=0; field_index<refine_criterion_fields.size(); field_index++){
-					if ((errorOutV[field_index][q_point]>refine_window_min[field_index]) && (errorOutV[field_index][q_point]<refine_window_max[field_index])){
+				for (unsigned int field_index=0; field_index<userInputs.refine_criterion_fields.size(); field_index++){
+					if ((errorOutV[field_index][q_point]>userInputs.refine_window_min[field_index]) && (errorOutV[field_index][q_point]<userInputs.refine_window_max[field_index])){
 						mark_refine = true;
 						break;
 					}

@@ -141,7 +141,9 @@ void userInputParameters::loadUserInput(){
 
 	elasticityModel mat_model;
 
-	dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ_temp;
+	dealii::ConditionalOStream pcout(std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0);
+
+	dealii::Tensor<2, 2*dim-1+dim/3, dealii::VectorizedArray<double> > CIJ_temp;
 	for (unsigned int mater_num=0; mater_num < temp_mat_consts.size(); mater_num++){
 		if (temp_mat_models[mater_num] == "ISOTROPIC"){
 			mat_model = ISOTROPIC;
@@ -160,7 +162,7 @@ void userInputParameters::loadUserInput(){
 			std::cout << "Elastic material model is invalid, please use ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC" << std::endl;
 		}
 
-		getCIJMatrix<dim>(mat_model, temp_mat_consts[mater_num], CIJ_temp, this->pcout);
+		getCIJMatrix<dim>(mat_model, temp_mat_consts[mater_num], CIJ_temp, pcout);
 		CIJ_list.push_back(CIJ_temp);
 	}
 	#endif

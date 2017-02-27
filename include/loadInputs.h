@@ -77,6 +77,9 @@ public:
 	std::vector<std::string> load_file_name;
 	std::vector<std::string> load_field_name;
 
+	// Elasticity tensor
+	std::vector<dealii::Tensor<2, 2*dim-1+dim/3, dealii::VectorizedArray<double> > > CIJ_list;
+
 
 protected:
 
