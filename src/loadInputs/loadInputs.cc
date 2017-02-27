@@ -17,7 +17,7 @@ void userInputParameters::loadUserInput(){
 	// Mesh refinement parameters
 	h_adaptivity = hAdaptivity;
 	max_refinement_level = maxRefinementLevel;
-	min_refinement_level = maxRefinementLevel;
+	min_refinement_level = minRefinementLevel;
 	{int temp[] = refineCriterionFields;
 	vectorLoad(temp, sizeof(temp), refine_criterion_fields);}
 	{double temp[] = refineWindowMax;

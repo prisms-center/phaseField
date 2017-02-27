@@ -185,7 +185,7 @@ for (unsigned int j=0; j<dim; j++){
 //compute stress
 //S=C*(E-E0)
 // Compute stress tensor (which is equal to the residual, Rux)
-dealii::VectorizedArray<double> CIJ_combined[2*dim-1+dim/3][2*dim-1+dim/3];
+dealii::VectorizedArray<double> CIJ_combined[CIJ_tensor_size][CIJ_tensor_size];
 
 if (n_dependent_stiffness == true){
 dealii::VectorizedArray<double> sum_hV;
@@ -341,13 +341,12 @@ scalarvalueType n1 = modelVariablesList[0].scalarValue;
 //n2
 scalarvalueType n2 = modelVariablesList[1].scalarValue;
 
-
 //n3
 scalarvalueType n3 = modelVariablesList[2].scalarValue;
 
 //u
 vectorgradType ux = modelVariablesList[3].vectorGrad;
-vectorgradType ruxV;
+vectorgradType rux;
 
 // Take advantage of E being simply 0.5*(ux + transpose(ux)) and use the dealii "symmetrize" function
 dealii::Tensor<2, dim, dealii::VectorizedArray<double> > E;
@@ -355,16 +354,16 @@ E = symmetrize(ux);
 
 // Compute stress tensor (which is equal to the residual, Rux)
 if (n_dependent_stiffness == true){
-	dealii::Tensor<2, 2*dim-1+dim/3, dealii::VectorizedArray<double> > CIJ_combined;
+	dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ_combined;
 	CIJ_combined = this->userInputs.CIJ_list[0]*(constV(1.0)-h1V-h2V-h3V) + this->userInputs.CIJ_list[1]*(h1V+h2V+h3V);
 
-	computeStress<dim>(CIJ_combined, E, ruxV);
+	computeStress<dim>(CIJ_combined, E, rux);
 }
 else{
-	computeStress<dim>(this->userInputs.CIJ_list[0], E, ruxV);
+	computeStress<dim>(this->userInputs.CIJ_list[0], E, rux);
 }
 
-modelRes.vectorGradResidual = ruxV;
+modelRes.vectorGradResidual = rux;
 
 }
 
@@ -464,7 +463,7 @@ for (unsigned int i=0; i<dim; i++){
 
 //compute stress
 //S=C*(E-E0)
-dealii::VectorizedArray<double> CIJ_combined[2*dim-1+dim/3][2*dim-1+dim/3];
+dealii::VectorizedArray<double> CIJ_combined[CIJ_tensor_size][CIJ_tensor_size];
 
 if (n_dependent_stiffness == true){
   dealii::VectorizedArray<double> sum_hV;

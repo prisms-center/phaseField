@@ -18,6 +18,8 @@ public:
 
 private:
 
+	const static unsigned int CIJ_tensor_size =2*dim-1+dim/3;
+
 	void residualRHS(const std::vector<modelVariable<dim> > & modelVarList,
 			  	  	 std::vector<modelResidual<dim> > & modelResidualsList,
 					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
