@@ -10,11 +10,11 @@
 
 #include "../../include/matrixFreePDE.h"
 
-template <int dim>
-class customPDE: public MatrixFreePDE<dim>
+template <int dim, int degree>
+class customPDE: public MatrixFreePDE<dim,degree>
 {
 public:
-	customPDE(userInputParameters _userInputs): MatrixFreePDE<dim>(_userInputs) {};
+	customPDE(userInputParameters _userInputs): MatrixFreePDE<dim,degree>(_userInputs) {};
 
 	void setBCs();
 

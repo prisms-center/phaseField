@@ -1,10 +1,5 @@
 //utility functions for the MatrixFreePDE class
 
-#ifndef UTILITY_MATRIXFREE_H
-#define UTILITY_MATRIXFREE_H
-//this source file is temporarily treated as a header file (hence
-//#ifndef's) till library packaging scheme is finalized
-
 #include "../../include/matrixFreePDE.h"
 
 //return index of given field name if exists, else throw error
@@ -17,10 +12,5 @@ unsigned int MatrixFreePDE<dim,degree>::getFieldIndex(std::string _name) {
    exit(-1);
 }
 
-#ifndef MATRIXFREEPDE_TEMPLATE_INSTANTIATION
-#define MATRIXFREEPDE_TEMPLATE_INSTANTIATION
-template class MatrixFreePDE<2,1>;
-template class MatrixFreePDE<3,1>;
-#endif
+#include "../../include/matrixFreePDE_template_instantiations.h"
 
-#endif

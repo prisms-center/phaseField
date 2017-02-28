@@ -109,8 +109,8 @@ double sfts_const3[3][3]={{0.0225, 0.0069,0},{0.0069,0.0305,0},{0,0,-0.00270}};
 // "modelResidualsList", a list of the value and gradient terms of the residual for
 // each residual equation. The index for each variable in these lists corresponds to
 // the order it is defined at the top of this file (starting at 0).
-template <int dim>
-void customPDE<dim>::residualRHS(const std::vector<modelVariable<dim> > & modelVariablesList,
+template <int dim,int degree>
+void customPDE<dim,degree>::residualRHS(const std::vector<modelVariable<dim> > & modelVariablesList,
 												std::vector<modelResidual<dim> > & modelResidualsList,
 												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
@@ -330,8 +330,8 @@ modelResidualsList[4].vectorGradResidual = ruxV;
 // are multiple elliptic equations, conditional statements should be used to ensure
 // that the correct residual is being submitted. The index of the field being solved
 // can be accessed by "this->currentFieldIndex".
-template <int dim>
-void customPDE<dim>::residualLHS(const std::vector<modelVariable<dim> > & modelVariablesList,
+template <int dim,int degree>
+void customPDE<dim,degree>::residualLHS(const std::vector<modelVariable<dim> > & modelVariablesList,
 		modelResidual<dim> & modelRes,
 		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
@@ -378,8 +378,8 @@ modelRes.vectorGradResidual = rux;
 // energy density is added to "energy" variable and the components of the energy
 // density are added to the "energy_components" variable (index 0: chemical energy,
 // index 1: gradient energy, index 2: elastic energy).
-template <int dim>
-void customPDE<dim>::energyDensity(const std::vector<modelVariable<dim> > & modelVarList,
+template <int dim,int degree>
+void customPDE<dim,degree>::energyDensity(const std::vector<modelVariable<dim> > & modelVarList,
 											const dealii::VectorizedArray<double> & JxW_value,
 											dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {
 

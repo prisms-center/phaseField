@@ -44,6 +44,12 @@ public:
 	double finalTime;
 	unsigned int totalIncrements;
 
+	// Elliptic solver parameters
+	std::string solver_type;
+	bool abs_tol;
+	double solver_tolerance;
+	unsigned int max_solver_iterations;
+
 	// Variable inputs
 	unsigned int number_of_variables;
 

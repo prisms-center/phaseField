@@ -1,9 +1,4 @@
 // init() method for MatrixFreePDE class
- 
-#ifndef INIT_MATRIXFREE_H
-#define INIT_MATRIXFREE_H
-//this source file is temporarily treated as a header file (hence
-//#ifndef's) till library packaging scheme is finalized
 
 #include "../../include/matrixFreePDE.h"
 
@@ -217,10 +212,4 @@ template <int dim, int degree>
 	 computing_timer.exit_section("matrixFreePDE: initialization");
 }
 
-#ifndef MATRIXFREEPDE_TEMPLATE_INSTANTIATION
-#define MATRIXFREEPDE_TEMPLATE_INSTANTIATION
-template class MatrixFreePDE<2,1>;
-template class MatrixFreePDE<3,1>;
-#endif
-
-#endif 
+#include "../../include/matrixFreePDE_template_instantiations.h"

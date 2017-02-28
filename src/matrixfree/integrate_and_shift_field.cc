@@ -44,8 +44,4 @@ void  MatrixFreePDE<dim,degree>::shiftConcentration(){
   //default trivial implementation.
 }
 
-#ifndef MATRIXFREEPDE_TEMPLATE_INSTANTIATION
-#define MATRIXFREEPDE_TEMPLATE_INSTANTIATION
-template class MatrixFreePDE<2,1>;
-template class MatrixFreePDE<3,1>;
-#endif
+#include "../../include/matrixFreePDE_template_instantiations.h"

@@ -48,7 +48,7 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
  template class InitialCondition<2>;
  template class InitialConditionVec<2>;
  template class InitialCondition<3>;
-  template class InitialConditionVec<3>;
+ template class InitialConditionVec<3>;
 
 
 

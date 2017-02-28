@@ -1,8 +1,4 @@
 //vmult() and getLHS() method for MatrixFreePDE class 
-#ifndef COMPUTELHS_MATRIXFREE_H
-#define COMPUTELHS_MATRIXFREE_H
-//this source file is temporarily treated as a header file (hence
-//#ifndef's) till library packaging scheme is finalized
 
 #include "../../include/matrixFreePDE.h"
 
@@ -180,12 +176,6 @@ void  MatrixFreePDE<dim,degree>::getLHS(const MatrixFree<dim,double> &data,
 	}
 }
 
-#ifndef MATRIXFREEPDE_TEMPLATE_INSTANTIATION
-#define MATRIXFREEPDE_TEMPLATE_INSTANTIATION
-template class MatrixFreePDE<2,1>;
-template class MatrixFreePDE<3,1>;
-#endif
-
-#endif
+#include "../../include/matrixFreePDE_template_instantiations.h"
 
 

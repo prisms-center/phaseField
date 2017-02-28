@@ -41,8 +41,17 @@ void userInputParameters::loadUserInput(){
 
 	calc_energy = calcEnergy;
 
-	// Turn on nucleation
+	// Nucleation flag
 	nucleation_occurs = nucleationOccurs;
+
+	// Elliptic solver inputs
+	solver_type = solverType;
+	if (solver_type != "SolverCG"){
+		std::cout << "Currently the only allowed solver is 'SolverCG'" << std::endl;
+	}
+	abs_tol = absTol;
+	solver_tolerance = solverTolerance;
+	max_solver_iterations = maxSolverIterations;
 
 	//initialize time step variables
 	#ifdef timeStep

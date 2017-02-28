@@ -1,10 +1,5 @@
 //solveIncrement() method for MatrixFreePDE class
 
-#ifndef SOLVEINCREMENT_MATRIXFREE_H
-#define SOLVEINCREMENT_MATRIXFREE_H
-//this source file is temporarily treated as a header file (hence
-//#ifndef's) till library packaging scheme is finalized
-
 #include "../../include/matrixFreePDE.h"
 
 //solve each time increment
@@ -68,12 +63,20 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
 			}
 	
 			//solver controls
-			#if absTol == true
-			SolverControl solver_control(maxSolverIterations, solverTolerance);
-			#else
-			SolverControl solver_control(maxSolverIterations, solverTolerance*residualSet[fieldIndex]->l2_norm());
-			#endif
-			solverType<vectorType> solver(solver_control);
+			double tol_value;
+			if (userInputs.abs_tol == true){
+				tol_value = userInputs.solver_tolerance;
+			}
+			else {
+				tol_value = userInputs.solver_tolerance*residualSet[fieldIndex]->l2_norm();
+			}
+
+
+			SolverControl solver_control(userInputs.max_solver_iterations, tol_value);
+
+
+			// Currently the only allowed solver is SolverCG, the SolverType input variable is a dummy
+			SolverCG<vectorType> solver(solver_control);
 	
 			//solve
 			try{
@@ -153,10 +156,4 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
   computing_timer.exit_section("matrixFreePDE: solveIncrements"); 
 }
 
-#ifndef MATRIXFREEPDE_TEMPLATE_INSTANTIATION
-#define MATRIXFREEPDE_TEMPLATE_INSTANTIATION
-template class MatrixFreePDE<2,1>;
-template class MatrixFreePDE<3,1>;
-#endif
-
-#endif
+#include "../../include/matrixFreePDE_template_instantiations.h"

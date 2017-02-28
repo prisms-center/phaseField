@@ -1,10 +1,5 @@
 // reinit() method for MatrixFreePDE class
  
-#ifndef REINIT_MATRIXFREE_H
-#define REINIT_MATRIXFREE_H
-//this source file is temporarily treated as a header file (hence
-//#ifndef's) till library packaging scheme is finalized
-
 #include "../../include/matrixFreePDE.h"
 
  //populate with fields and setup matrix free system
@@ -154,10 +149,4 @@ template <int dim, int degree>
  	 computing_timer.exit_section("matrixFreePDE: reinitialization");
 }
 
-#ifndef MATRIXFREEPDE_TEMPLATE_INSTANTIATION
-#define MATRIXFREEPDE_TEMPLATE_INSTANTIATION
-template class MatrixFreePDE<2,1>;
-template class MatrixFreePDE<3,1>;
-#endif
-
-#endif
+#include "../../include/matrixFreePDE_template_instantiations.h"
