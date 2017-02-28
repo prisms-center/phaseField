@@ -5,6 +5,8 @@
 //this source file is temporarily treated as a header file (hence
 //#ifndef's) till library packaging scheme is finalized
 
+#include "../../include/matrixFreePDE.h"
+
 template <int dim, int degree>
  void MatrixFreePDE<dim,degree>::initForTests(){
    //creating mesh
@@ -74,5 +76,11 @@ template <int dim, int degree>
    matrixFreeObject.initialize_dof_vector(*U,  0); *U=0;
 
 }
+
+#ifndef MATRIXFREEPDE_TEMPLATE_INSTANTIATION
+#define MATRIXFREEPDE_TEMPLATE_INSTANTIATION
+template class MatrixFreePDE<2,1>;
+template class MatrixFreePDE<3,1>;
+#endif
 
 #endif 

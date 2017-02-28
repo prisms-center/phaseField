@@ -1,5 +1,7 @@
 // This method needs to be generalized or removed. It probably belongs elsewhere. Exists historically for singlePrecipitateKKS.
 
+#include "../../include/matrixFreePDE.h"
+
 template <int dim, int degree>
 void  MatrixFreePDE<dim,degree>::computeIntegral(double& integratedField){
 	QGauss<dim>  quadrature_formula(degree+1);
@@ -41,3 +43,9 @@ template <int dim, int degree>
 void  MatrixFreePDE<dim,degree>::shiftConcentration(){
   //default trivial implementation.
 }
+
+#ifndef MATRIXFREEPDE_TEMPLATE_INSTANTIATION
+#define MATRIXFREEPDE_TEMPLATE_INSTANTIATION
+template class MatrixFreePDE<2,1>;
+template class MatrixFreePDE<3,1>;
+#endif

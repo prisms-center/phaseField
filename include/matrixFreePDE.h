@@ -355,4 +355,11 @@ class MatrixFreePDE:public Subscriptor
 //#include "../src/matrixfree/integrate_and_shift_field.cc"
 //#include "../src/matrixfree/getOutputTimeSteps.cc"
 
+//#ifndef MATRIXFREEPDE_TEMPLATE_INSTANTIATION
+//#define MATRIXFREEPDE_TEMPLATE_INSTANTIATION
+//template class MatrixFreePDE<2,1>;
+//template class MatrixFreePDE<3,1>;
+//#endif
+
+
 #endif

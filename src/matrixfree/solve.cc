@@ -5,6 +5,8 @@
 //this source file is temporarily treated as a header file (hence
 //#ifndef's) till library packaging scheme is finalized
 
+#include "../../include/matrixFreePDE.h"
+
 //solve BVP
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::solve(){
@@ -12,7 +14,7 @@ void MatrixFreePDE<dim,degree>::solve(){
   computing_timer.enter_section("matrixFreePDE: solve"); 
   pcout << "\nsolving...\n\n";
 
-  getOutputTimeSteps(outputCondition,numOutputs,userInputs.user_given_time_step_list,outputTimeStepList);
+  getOutputTimeSteps(userInputs.output_condition,userInputs.num_outputs,userInputs.user_given_time_step_list,outputTimeStepList);
   int currentOutput = 0;
 
   //time dependent BVP
@@ -34,7 +36,7 @@ void MatrixFreePDE<dim,degree>::solve(){
     for (currentIncrement=1; currentIncrement<=userInputs.totalIncrements; ++currentIncrement){
       //increment current time
       currentTime+=userInputs.dtValue;
-      if (currentIncrement%skipPrintSteps==0){
+      if (currentIncrement%userInputs.skip_print_steps==0){
       pcout << "\ntime increment:" << currentIncrement << "  time: " << currentTime << "\n";
       }
 
@@ -101,5 +103,11 @@ void MatrixFreePDE<dim,degree>::solve(){
   //log time
   computing_timer.exit_section("matrixFreePDE: solve"); 
 }
+
+#ifndef MATRIXFREEPDE_TEMPLATE_INSTANTIATION
+#define MATRIXFREEPDE_TEMPLATE_INSTANTIATION
+template class MatrixFreePDE<2,1>;
+template class MatrixFreePDE<3,1>;
+#endif
 
 #endif

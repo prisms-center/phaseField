@@ -5,6 +5,7 @@
 //this source file is temporarily treated as a header file (hence
 //#ifndef's) till library packaging scheme is finalized
 
+#include "../../include/matrixFreePDE.h"
 
 //return index of given field name if exists, else throw error
 template <int dim, int degree>
@@ -15,5 +16,11 @@ unsigned int MatrixFreePDE<dim,degree>::getFieldIndex(std::string _name) {
    pcout << "\nutilities.h: field '" << _name.c_str() << "' not initialized\n";
    exit(-1);
 }
+
+#ifndef MATRIXFREEPDE_TEMPLATE_INSTANTIATION
+#define MATRIXFREEPDE_TEMPLATE_INSTANTIATION
+template class MatrixFreePDE<2,1>;
+template class MatrixFreePDE<3,1>;
+#endif
 
 #endif

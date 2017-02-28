@@ -2,6 +2,8 @@
 // This function generates a list of time steps where the program should generate output. The inputs
 // are read in from the file "parameters.h" via #define macros.
 
+#include "../../include/matrixFreePDE.h"
+
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::getOutputTimeSteps(std::string outputSpacingType, unsigned int numberOfOutputs, std::vector<unsigned int> & userGivenTimeStepList, std::vector<unsigned int> & timeStepList){
 
@@ -36,6 +38,12 @@ void MatrixFreePDE<dim,degree>::getOutputTimeSteps(std::string outputSpacingType
 	}
 }
 
+
+#ifndef MATRIXFREEPDE_TEMPLATE_INSTANTIATION
+#define MATRIXFREEPDE_TEMPLATE_INSTANTIATION
+template class MatrixFreePDE<2,1>;
+template class MatrixFreePDE<3,1>;
+#endif
 
 
 

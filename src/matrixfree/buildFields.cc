@@ -10,6 +10,8 @@
 // FUNCTION TO BUILD THE VECTOR OF FIELDS
 // =====================================================================
 
+#include "../../include/matrixFreePDE.h"
+
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::buildFields(){
 	// Build each of the fields in the system
@@ -41,4 +43,10 @@ void MatrixFreePDE<dim,degree>::buildFields(){
 	  }
 
 }
+
+#ifndef MATRIXFREEPDE_TEMPLATE_INSTANTIATION
+#define MATRIXFREEPDE_TEMPLATE_INSTANTIATION
+template class MatrixFreePDE<2,1>;
+template class MatrixFreePDE<3,1>;
+#endif
 

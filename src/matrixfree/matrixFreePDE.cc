@@ -49,28 +49,31 @@ template <int dim, int degree>
  //template class MatrixFreePDE<2>;
  //template class MatrixFreePDE<3>;
 
-#include "init.cc"
-#include "reinit.cc"
-#include "initForTests.cc"
-#include "refine.cc"
-#include "invM.cc"
-#include "computeLHS.cc"
-#include "computeRHS.cc"
-#include "modifyFields.cc"
-#include "solve.cc"
-#include "solveIncrement.cc"
-#include "outputResults.cc"
-#include "markBoundaries.cc"
-#include "boundaryConditions.cc"
-#include "initialConditions.cc"
-#include "utilities.cc"
-#include "calcFreeEnergy.cc"
-#include "integrate_and_shift_field.cc"
-#include "getOutputTimeSteps.cc"
-#include "buildFields.cc"
+//#include "init.cc"
+//#include "reinit.cc"
+//#include "initForTests.cc"
+//#include "refine.cc"
+//#include "invM.cc"
+//#include "computeLHS.cc"
+//#include "computeRHS.cc"
+//#include "modifyFields.cc"
+//#include "solve.cc"
+//#include "solveIncrement.cc"
+//#include "outputResults.cc"
+//#include "markBoundaries.cc"
+//#include "boundaryConditions.cc"
+//#include "initialConditions.cc"
+//#include "utilities.cc"
+//#include "calcFreeEnergy.cc"
+//#include "integrate_and_shift_field.cc"
+//#include "getOutputTimeSteps.cc"
+//#include "buildFields.cc"
 
- template class MatrixFreePDE<2,1>;
- template class MatrixFreePDE<3,1>;
+#ifndef MATRIXFREEPDE_TEMPLATE_INSTANTIATION
+#define MATRIXFREEPDE_TEMPLATE_INSTANTIATION
+template class MatrixFreePDE<2,1>;
+template class MatrixFreePDE<3,1>;
+#endif
 
 
 

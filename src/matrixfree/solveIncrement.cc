@@ -5,6 +5,8 @@
 //this source file is temporarily treated as a header file (hence
 //#ifndef's) till library packaging scheme is finalized
 
+#include "../../include/matrixFreePDE.h"
+
 //solve each time increment
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::solveIncrement(){
@@ -44,7 +46,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
       //sync ghost DOF's
       solutionSet[fieldIndex]->update_ghost_values();
       //
-      if (currentIncrement%skipPrintSteps==0){
+      if (currentIncrement%userInputs.skip_print_steps==0){
       sprintf(buffer, "field '%2s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
 	      fields[fieldIndex].name.c_str(),				\
 	      solutionSet[fieldIndex]->l2_norm(),			\
@@ -100,7 +102,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
 			//sync ghost DOF's
 			solutionSet[fieldIndex]->update_ghost_values();
 			//
-			 if (currentIncrement%skipPrintSteps==0){
+			 if (currentIncrement%userInputs.skip_print_steps==0){
 				 double dU_norm;
 				 if (fields[fieldIndex].type == SCALAR){
 					 dU_norm = dU_scalar.l2_norm();
@@ -145,11 +147,17 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
 		  exit(-1);
 	  }
   }
-  if (currentIncrement%skipPrintSteps==0){
+  if (currentIncrement%userInputs.skip_print_steps==0){
   pcout << "wall time: " << time.wall_time() << "s\n";
   }
   //log time
   computing_timer.exit_section("matrixFreePDE: solveIncrements"); 
 }
+
+#ifndef MATRIXFREEPDE_TEMPLATE_INSTANTIATION
+#define MATRIXFREEPDE_TEMPLATE_INSTANTIATION
+template class MatrixFreePDE<2,1>;
+template class MatrixFreePDE<3,1>;
+#endif
 
 #endif

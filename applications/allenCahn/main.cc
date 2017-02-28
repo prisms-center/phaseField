@@ -1,28 +1,18 @@
 // Allen-Cahn example application
 
 // Header files
-
-#include "../../include/dealIIheaders.h"
 #include "parameters.h"
+#include "../../include/dealIIheaders.h"
 #include "../../include/typeDefs.h"
 #include "../../include/model_variables.h"
 #include "../../include/varBCs.h"
-
-
 #include "../../include/loadInputs.h"
 #include "../../include/initialConditions.h"
 #include "../../include/matrixFreePDE.h"
 #include "customPDE.h"
-//#include "customPDE.cc"
 #include "equations.h"
 #include "ICs_and_BCs.h"
-#include "../../src/loadInputs/loadInputs.cc"
-
-
-
-//#include "../../src/matrixfree/matrixFreePDE.cc"
-
-
+#include "../../src/loadInputs/loadInputs.cc" // Needs to be included because it contains needs access to the define macros in the preceding files
 
 //main
 int main (int argc, char **argv)
