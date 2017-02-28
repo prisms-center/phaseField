@@ -9,7 +9,7 @@
 
 //output results
 template <int dim, int degree>
-void MatrixFreePDE<dim,degree>::outputResults(){
+void MatrixFreePDE<dim,degree>::outputResults() const {
   //log time
   computing_timer.enter_section("matrixFreePDE: output");
 

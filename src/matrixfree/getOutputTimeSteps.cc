@@ -5,7 +5,7 @@
 #include "../../include/matrixFreePDE.h"
 
 template <int dim, int degree>
-void MatrixFreePDE<dim,degree>::getOutputTimeSteps(std::string outputSpacingType, unsigned int numberOfOutputs, std::vector<unsigned int> & userGivenTimeStepList, std::vector<unsigned int> & timeStepList){
+void MatrixFreePDE<dim,degree>::getOutputTimeSteps(const std::string outputSpacingType, unsigned int numberOfOutputs, const std::vector<unsigned int> & userGivenTimeStepList, std::vector<unsigned int> & timeStepList) const {
 
 	// Determine the maximum number of increments
 	if (outputSpacingType == "EQUAL_SPACING"){

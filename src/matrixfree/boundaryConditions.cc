@@ -13,7 +13,7 @@ void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 	// First, get the variable index of the current field
 	  unsigned int starting_BC_list_index = 0;
 
-	  for (unsigned int i=0; i<this->currentFieldIndex; i++){
+	  for (unsigned int i=0; i<currentFieldIndex; i++){
 
 		  if (userInputs.var_type[i] == "SCALAR"){
 			  starting_BC_list_index++;
@@ -23,12 +23,12 @@ void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 		  }
 	  }
 
-	  if (userInputs.var_type[this->currentFieldIndex] == "SCALAR"){
+	  if (userInputs.var_type[currentFieldIndex] == "SCALAR"){
 		  for (unsigned int direction = 0; direction < 2*dim; direction++){
 			  if (BC_list[starting_BC_list_index].var_BC_type[direction] == "DIRICHLET"){
-				  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
+				  VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
 						  direction, ConstantFunction<dim>(BC_list[starting_BC_list_index].var_BC_val[direction],1), *(ConstraintMatrix*) \
-						  this->constraintsDirichletSet[this->currentFieldIndex]);
+						  constraintsDirichletSet[currentFieldIndex]);
 			  }
 		  }
 	  }
@@ -50,9 +50,9 @@ void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 				  }
 			  }
 
-			  VectorTools::interpolate_boundary_values (*this->dofHandlersSet[this->currentFieldIndex],\
+			  VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
 					  direction, vectorBCFunction<dim>(BC_values), *(ConstraintMatrix*) \
-					  this->constraintsDirichletSet[this->currentFieldIndex],mask);
+					  constraintsDirichletSet[currentFieldIndex],mask);
 
 
 		  }
@@ -71,21 +71,21 @@ void MatrixFreePDE<dim,degree>::setPeriodicity(){
 				}
 			}
 			if (periodic_pair == true){
-				GridTools::collect_periodic_faces(this->triangulation, /*b_id1*/ 2*i, /*b_id2*/ 2*i+1,
+				GridTools::collect_periodic_faces(triangulation, /*b_id1*/ 2*i, /*b_id2*/ 2*i+1,
 								/*direction*/ i, periodicity_vector);
 			}
 		}
 
-		this->triangulation.add_periodicity(periodicity_vector);
-		this->pcout << "periodic facepairs: " << periodicity_vector.size() << std::endl;
+		triangulation.add_periodicity(periodicity_vector);
+		pcout << "periodic facepairs: " << periodicity_vector.size() << std::endl;
 }
 
 // Set constraints to enforce periodic boundary conditions
 template <int dim, int degree>
-void MatrixFreePDE<dim,degree>::setPeriodicityConstraints(ConstraintMatrix * constraints, DoFHandler<dim>* dof_handler){
+void MatrixFreePDE<dim,degree>::setPeriodicityConstraints(ConstraintMatrix * constraints, const DoFHandler<dim>* dof_handler) const {
 	// First, get the variable index of the current field
 		unsigned int starting_BC_list_index = 0;
-		for (unsigned int i=0; i<this->currentFieldIndex; i++){
+		for (unsigned int i=0; i<currentFieldIndex; i++){
 			if (userInputs.var_type[i] == "SCALAR"){
 				starting_BC_list_index++;
 			}
@@ -107,13 +107,13 @@ void MatrixFreePDE<dim,degree>::setPeriodicityConstraints(ConstraintMatrix * con
 // Determine which (if any) components of the current field have rigid body modes (i.e no Dirichlet BCs) if the
 // equation is elliptic
 template <int dim, int degree>
-void MatrixFreePDE<dim,degree>::getComponentsWithRigidBodyModes( std::vector<int> & rigidBodyModeComponents){
+void MatrixFreePDE<dim,degree>::getComponentsWithRigidBodyModes( std::vector<int> & rigidBodyModeComponents) const {
 	// Rigid body modes only matter for elliptic equations
-		if (userInputs.var_eq_type[this->currentFieldIndex] == "ELLIPTIC"){
+		if (userInputs.var_eq_type[currentFieldIndex] == "ELLIPTIC"){
 
 			// First, get the variable index of the current field
 			unsigned int starting_BC_list_index = 0;
-			for (unsigned int i=0; i<this->currentFieldIndex; i++){
+			for (unsigned int i=0; i<currentFieldIndex; i++){
 				if (userInputs.var_type[i] == "SCALAR"){
 					starting_BC_list_index++;
 				}
@@ -124,7 +124,7 @@ void MatrixFreePDE<dim,degree>::getComponentsWithRigidBodyModes( std::vector<int
 
 			// Get number of components of the field
 			unsigned int num_components = 1;
-			if (userInputs.var_type[this->currentFieldIndex] == "VECTOR"){
+			if (userInputs.var_type[currentFieldIndex] == "VECTOR"){
 				num_components = dim;
 			}
 
@@ -154,7 +154,7 @@ void MatrixFreePDE<dim,degree>::getComponentsWithRigidBodyModes( std::vector<int
 
 // Set constraints to pin the solution if there are no Dirichlet BCs for a component of a variable in an elliptic equation
 template <int dim, int degree>
-void MatrixFreePDE<dim,degree>::setRigidBodyModeConstraints( std::vector<int> rigidBodyModeComponents, ConstraintMatrix * constraints, DoFHandler<dim>* dof_handler){
+void MatrixFreePDE<dim,degree>::setRigidBodyModeConstraints(const std::vector<int> rigidBodyModeComponents, ConstraintMatrix * constraints, const DoFHandler<dim>* dof_handler) const {
 
 	if ( rigidBodyModeComponents.size() > 0 ){
 

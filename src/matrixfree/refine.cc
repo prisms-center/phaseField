@@ -12,11 +12,11 @@ void MatrixFreePDE<dim,degree>::adaptiveRefine(unsigned int currentIncrement){
 if (userInputs.h_adaptivity == true){
 	if ( (currentIncrement == 0) ){
 		for (unsigned int remesh_index=0; remesh_index < (userInputs.max_refinement_level-userInputs.min_refinement_level); remesh_index++){
-			this->reinit();
+			reinit();
 		}
 	}
 	else if ( (currentIncrement%userInputs.skip_remeshing_steps==0) ){
-		this->reinit();
+		reinit();
 	}
 }
 }
@@ -29,18 +29,18 @@ void MatrixFreePDE<dim,degree>::adaptiveRefineCriterion(){
 //#if hAdaptivity==true
 //#ifdef adaptivityType
 //#if adaptivityType=="KELLY"
-//  Vector<float> estimated_error_per_cell (this->triangulation.n_locally_owned_active_cells());
-//  KellyErrorEstimator<dim>::estimate (*this->dofHandlersSet_nonconst[refinementDOF],
+//  Vector<float> estimated_error_per_cell (triangulation.n_locally_owned_active_cells());
+//  KellyErrorEstimator<dim>::estimate (*dofHandlersSet_nonconst[refinementDOF],
 //				      QGaussLobatto<dim-1>(degree+1),
 //				      typename FunctionMap<dim>::type(),
-//				      *this->solutionSet[refinementDOF],
+//				      *solutionSet[refinementDOF],
 //				      estimated_error_per_cell,
 //				      ComponentMask(),
 //				      0,
 //				      1,
-//				      this->triangulation.locally_owned_subdomain());
+//				      triangulation.locally_owned_subdomain());
 //  //flag cells for refinement
-//  parallel::distributed::GridRefinement::refine_and_coarsen_fixed_fraction (this->triangulation,
+//  parallel::distributed::GridRefinement::refine_and_coarsen_fixed_fraction (triangulation,
 //									    estimated_error_per_cell,
 //									    topRefineFraction,
 //									    bottomCoarsenFraction);
@@ -53,20 +53,20 @@ void MatrixFreePDE<dim,degree>::adaptiveRefineCriterion(){
 std::vector<std::vector<double> > errorOutV;
 
 
-QGauss<dim>  quadrature(userInputs.fe_degree+1);
-FEValues<dim> fe_values (*this->FESet[userInputs.refine_criterion_fields[0]], quadrature, update_values);
+QGauss<dim>  quadrature(degree+1);
+FEValues<dim> fe_values (*FESet[userInputs.refine_criterion_fields[0]], quadrature, update_values);
 const unsigned int   num_quad_points = quadrature.size();
 
 std::vector<double> errorOut(num_quad_points);
 
-typename DoFHandler<dim>::active_cell_iterator cell = this->dofHandlersSet_nonconst[userInputs.refine_criterion_fields[0]]->begin_active(), endc = this->dofHandlersSet_nonconst[userInputs.refine_criterion_fields[0]]->end();
+typename DoFHandler<dim>::active_cell_iterator cell = dofHandlersSet_nonconst[userInputs.refine_criterion_fields[0]]->begin_active(), endc = dofHandlersSet_nonconst[userInputs.refine_criterion_fields[0]]->end();
 
 for (;cell!=endc; ++cell){
 	if (cell->is_locally_owned()){
 		fe_values.reinit (cell);
 
 		for (unsigned int field_index=0; field_index<userInputs.refine_criterion_fields.size(); field_index++){
-			fe_values.get_function_values(*this->solutionSet[userInputs.refine_criterion_fields[field_index]], errorOut);
+			fe_values.get_function_values(*solutionSet[userInputs.refine_criterion_fields[field_index]], errorOut);
 			errorOutV.push_back(errorOut);
 		}
 
@@ -82,18 +82,6 @@ for (;cell!=endc; ++cell){
 		}
 
 		errorOutV.clear();
-
-//			fe_values.get_function_values(*this->solutionSet[refine_criterion_fields[0]], errorOut);
-//
-//			bool mark_refine = false;
-//
-//			for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
-//				if ((errorOut[q_point]>refine_window_min[0]) && (errorOut[q_point]<refine_window_max[0])){
-//					mark_refine = true;
-//					break;
-//				}
-//			}
-
 
 		if ( (mark_refine == true) ){
 			cell->set_refine_flag();

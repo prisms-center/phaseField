@@ -17,7 +17,6 @@ public:
 	std::vector<double> domain_size;
 	std::vector<unsigned int> subdivisions;
 	unsigned int refine_factor;
-	const unsigned int fe_degree = finiteElementDegree;
 
 	// Mesh refinement parameters
 	bool h_adaptivity;
@@ -82,8 +81,8 @@ public:
 	// Elasticity tensor
 	std::vector<dealii::Tensor<2, 2*dim-1+dim/3, dealii::VectorizedArray<double> > > CIJ_list;
 
+	bool nucleation_occurs;
+
 };
-
-
 
 #endif /* INCLUDE_LOADINPUTS_H_ */

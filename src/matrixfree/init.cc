@@ -51,7 +51,7 @@ template <int dim, int degree>
 
 		 //print to std::out
 		 sprintf(buffer,"initializing finite element space P^%u for %9s:%6s field '%s'\n", \
-				 userInputs.fe_degree,					\
+				 degree,					\
 			   (it->pdetype==PARABOLIC ? "PARABOLIC":"ELLIPTIC"),	\
 			   (it->type==SCALAR ? "SCALAR":"VECTOR"),			\
 			   it->name.c_str());
@@ -71,10 +71,10 @@ template <int dim, int degree>
 		 FESystem<dim>* fe;
 
 		 if (it->type==SCALAR){
-			 fe=new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(userInputs.fe_degree+1)),1);
+			 fe=new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(degree+1)),1);
 		 }
 		 else if (it->type==VECTOR){
-			 fe=new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(userInputs.fe_degree+1)),dim);
+			 fe=new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(degree+1)),dim);
 		 }
 		 else{
 			 pcout << "\nmatrixFreePDE.h: unknown field type\n";
@@ -152,7 +152,7 @@ template <int dim, int degree>
 	 additional_data.mpi_communicator = MPI_COMM_WORLD;
 	 additional_data.tasks_parallel_scheme = MatrixFree<dim,double>::AdditionalData::partition_partition;
 	 additional_data.mapping_update_flags = (update_values | update_gradients | update_JxW_values | update_quadrature_points);
-	 QGaussLobatto<1> quadrature (userInputs.fe_degree+1);
+	 QGaussLobatto<1> quadrature (degree+1);
 	 matrixFreeObject.clear();
 	 matrixFreeObject.reinit (dofHandlersSet, constraintsOtherSet, quadrature, additional_data);
 

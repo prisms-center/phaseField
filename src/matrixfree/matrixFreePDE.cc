@@ -13,20 +13,20 @@ template <int dim, int degree>
  MatrixFreePDE<dim,degree>::MatrixFreePDE (userInputParameters _userInputs)
  :
  Subscriptor(),
+ pcout (std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0),
  userInputs(_userInputs),
  triangulation (MPI_COMM_WORLD),
+ currentFieldIndex(0),
  isTimeDependentBVP(false),
  isEllipticBVP(false),
- currentTime(0.0),
- currentIncrement(0),
- pcout (std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0),
- computing_timer (pcout, TimerOutput::summary, TimerOutput::wall_times),
- energy(0.0),
  parabolicFieldIndex(0),
  ellipticFieldIndex(0),
- currentFieldIndex(0),
- num_quadrature_points(1)
- { }
+ currentTime(0.0),
+ currentIncrement(0),
+ computing_timer (pcout, TimerOutput::summary, TimerOutput::wall_times),
+ energy(0.0)
+ {
+ }
 
  //destructor
  template <int dim, int degree>
@@ -44,30 +44,6 @@ template <int dim, int degree>
    } 
  }
 
- // Template instantiation
- //template class MatrixFreePDE<1>; // Issue with the destructor if I include the dim=1 template
- //template class MatrixFreePDE<2>;
- //template class MatrixFreePDE<3>;
-
-//#include "init.cc"
-//#include "reinit.cc"
-//#include "initForTests.cc"
-//#include "refine.cc"
-//#include "invM.cc"
-//#include "computeLHS.cc"
-//#include "computeRHS.cc"
-//#include "modifyFields.cc"
-//#include "solve.cc"
-//#include "solveIncrement.cc"
-//#include "outputResults.cc"
-//#include "markBoundaries.cc"
-//#include "boundaryConditions.cc"
-//#include "initialConditions.cc"
-//#include "utilities.cc"
-//#include "calcFreeEnergy.cc"
-//#include "integrate_and_shift_field.cc"
-//#include "getOutputTimeSteps.cc"
-//#include "buildFields.cc"
 
 #ifndef MATRIXFREEPDE_TEMPLATE_INSTANTIATION
 #define MATRIXFREEPDE_TEMPLATE_INSTANTIATION

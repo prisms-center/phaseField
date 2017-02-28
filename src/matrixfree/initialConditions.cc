@@ -16,10 +16,10 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
 for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_index++){
 	if (userInputs.load_ICs[var_index] == false){
 		if (userInputs.var_type[var_index] == "SCALAR"){
-			VectorTools::interpolate (*this->dofHandlersSet[var_index], InitialCondition<dim>(var_index), *this->solutionSet[var_index]);
+			VectorTools::interpolate (*dofHandlersSet[var_index], InitialCondition<dim>(var_index), *solutionSet[var_index]);
 		}
 		else {
-			VectorTools::interpolate (*this->dofHandlersSet[var_index], InitialConditionVec<dim>(var_index), *this->solutionSet[var_index]);
+			VectorTools::interpolate (*dofHandlersSet[var_index], InitialConditionVec<dim>(var_index), *solutionSet[var_index]);
 		}
 	}
 	else{
@@ -45,7 +45,7 @@ for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_i
 		body.read_vtk(filename);
 		ScalarField2D &conc = body.find_scalar_field(userInputs.load_field_name[var_index]);
 		if (userInputs.var_type[var_index] == "SCALAR"){
-			VectorTools::interpolate (*this->dofHandlersSet[var_index], InitialConditionPField<dim>(var_index,conc), *this->solutionSet[var_index]);
+			VectorTools::interpolate (*dofHandlersSet[var_index], InitialConditionPField<dim>(var_index,conc), *solutionSet[var_index]);
 		}
 		else {
 			std::cout << "PRISMS-PF Error: Cannot load vector fields. Loading initial conditions from file is currently limited to scalar fields" << std::endl;

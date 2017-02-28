@@ -140,4 +140,8 @@
 #define skipRemeshingSteps 1
 #endif
 
+#ifndef nucleationOccurs
+#define nucleationOccurs false
+#endif
+
 #endif

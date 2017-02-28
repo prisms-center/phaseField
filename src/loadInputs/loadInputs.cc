@@ -16,7 +16,6 @@ void userInputParameters::loadUserInput(){
 	}
 
 	refine_factor = refineFactor;
-	//fe_degree = finiteElementDegree;
 
 	// Mesh refinement parameters
 	h_adaptivity = hAdaptivity;
@@ -41,6 +40,9 @@ void userInputParameters::loadUserInput(){
 	output_file_type = outputFileType;
 
 	calc_energy = calcEnergy;
+
+	// Turn on nucleation
+	nucleation_occurs = nucleationOccurs;
 
 	//initialize time step variables
 	#ifdef timeStep

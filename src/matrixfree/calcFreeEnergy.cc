@@ -139,7 +139,7 @@ void  MatrixFreePDE<dim,degree>::getEnergy(const MatrixFree<dim,double> &data,
 
 // output the integrated free energies into a text file
 template <int dim, int degree>
-void MatrixFreePDE<dim,degree>::outputFreeEnergy(std::vector<double>& freeEnergyValues){
+void MatrixFreePDE<dim,degree>::outputFreeEnergy(const std::vector<double>& freeEnergyValues) const{
 
 	  std::ofstream output_file("./freeEnergy.txt");
 	  output_file.precision(10);
