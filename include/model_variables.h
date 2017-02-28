@@ -1,17 +1,20 @@
 // Model Variables Class
 
+#ifndef INCLUDE_MODELVARIABLE_H_
+#define INCLUDE_MODELVARIABLE_H_
+
 template<int dim>
 class modelVariable
 {
  public:
 	modelVariable();
-	scalarvalueType scalarValue;
-	scalargradType scalarGrad;
-	scalarhessType scalarHess;
+	dealii::VectorizedArray<double> scalarValue;
+	dealii::Tensor<1, dim, dealii::VectorizedArray<double> > scalarGrad;
+	dealii::Tensor<2,dim,dealii::VectorizedArray<double> > scalarHess;
 
-	vectorvalueType vectorValue;
-	vectorgradType vectorGrad;
-	vectorhessType vectorHess;
+	dealii::Tensor<1, dim, dealii::VectorizedArray<double> > vectorValue;
+	dealii::Tensor<2, dim, dealii::VectorizedArray<double> > vectorGrad;
+	dealii::Tensor<3, dim, dealii::VectorizedArray<double> > vectorHess;
 };
 
 //constructor
@@ -26,11 +29,11 @@ class modelResidual
 {
  public:
 	modelResidual();
-	scalarvalueType scalarValueResidual;
-	scalargradType scalarGradResidual;
+	dealii::VectorizedArray<double> scalarValueResidual;
+	dealii::Tensor<1, dim, dealii::VectorizedArray<double> > scalarGradResidual;
 
-	vectorvalueType vectorValueResidual;
-	vectorgradType vectorGradResidual;
+	dealii::Tensor<1, dim, dealii::VectorizedArray<double> > vectorValueResidual;
+	dealii::Tensor<2, dim, dealii::VectorizedArray<double> > vectorGradResidual;
 
 };
 
@@ -48,7 +51,7 @@ struct variable_info
 	unsigned int global_var_index;
 };
 
-
+#endif /* INCLUDE_MODELVARIABLE_H_ */
 
 
 

@@ -5,23 +5,23 @@
 //#ifndef's) till library packaging scheme is finalized
 
 //default implementation of adaptive mesh refinement 
-template <int dim>
-void MatrixFreePDE<dim>::adaptiveRefine(unsigned int currentIncrement){
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::adaptiveRefine(unsigned int currentIncrement){
 if (userInputs.h_adaptivity == true){
 	if ( (currentIncrement == 0) ){
 		for (unsigned int remesh_index=0; remesh_index < (userInputs.max_refinement_level-userInputs.min_refinement_level); remesh_index++){
 			this->reinit();
 		}
 	}
-	else if ( (currentIncrement%skipRemeshingSteps==0) ){
+	else if ( (currentIncrement%userInputs.skip_remeshing_steps==0) ){
 		this->reinit();
 	}
 }
 }
 
 //default implementation of adaptive mesh criterion
-template <int dim>
-void MatrixFreePDE<dim>::adaptiveRefineCriterion(){
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::adaptiveRefineCriterion(){
   //Kelly error estimation criterion
   //estimate cell wise errors for mesh refinement
 //#if hAdaptivity==true
@@ -29,7 +29,7 @@ void MatrixFreePDE<dim>::adaptiveRefineCriterion(){
 //#if adaptivityType=="KELLY"
 //  Vector<float> estimated_error_per_cell (this->triangulation.n_locally_owned_active_cells());
 //  KellyErrorEstimator<dim>::estimate (*this->dofHandlersSet_nonconst[refinementDOF],
-//				      QGaussLobatto<dim-1>(finiteElementDegree+1),
+//				      QGaussLobatto<dim-1>(degree+1),
 //				      typename FunctionMap<dim>::type(),
 //				      *this->solutionSet[refinementDOF],
 //				      estimated_error_per_cell,
@@ -106,8 +106,8 @@ for (;cell!=endc; ++cell){
 
 
 //refine grid method
-template <int dim>
-void MatrixFreePDE<dim>::refineGrid (){
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::refineGrid (){
 
 //call refinement criterion for adaptivity
 adaptiveRefineCriterion();

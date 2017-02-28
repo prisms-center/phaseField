@@ -6,8 +6,8 @@
 //#ifndef's) till library packaging scheme is finalized
 
 //solve each time increment
-template <int dim>
-void MatrixFreePDE<dim>::solveIncrement(){
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::solveIncrement(){
   //log time
   computing_timer.enter_section("matrixFreePDE: solveIncrements");
   Timer time; 

@@ -6,8 +6,8 @@
 //#ifndef's) till library packaging scheme is finalized
 
 //update RHS of each field
-template <int dim>
-void MatrixFreePDE<dim>::computeRHS(){
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::computeRHS(){
   //log time
   computing_timer.enter_section("matrixFreePDE: computeRHS");
 
@@ -17,30 +17,30 @@ void MatrixFreePDE<dim>::computeRHS(){
   }
 
   //call to integrate and assemble 
-  matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::getRHS, this, residualSet, solutionSet);
+  matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getRHS, this, residualSet, solutionSet);
 
   //end log
   computing_timer.exit_section("matrixFreePDE: computeRHS");
 }
 
-template <int dim>
-void MatrixFreePDE<dim>::getRHS(const MatrixFree<dim,double> &data,
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::getRHS(const MatrixFree<dim,double> &data,
 					       std::vector<vectorType*> &dst,
 					       const std::vector<vectorType*> &src,
 					       const std::pair<unsigned int,unsigned int> &cell_range) const{
 
 
   //initialize FEEvaulation objects
-  std::vector<typeScalar> scalar_vars;
-  std::vector<typeVector> vector_vars;
+  std::vector<dealii::FEEvaluation<dim,degree,degree+1,1,double>> scalar_vars;
+  std::vector<dealii::FEEvaluation<dim,degree,degree+1,dim,double>> vector_vars;
 
   for (unsigned int i=0; i<userInputs.number_of_variables; i++){
 	  if (userInputs.varInfoListRHS[i].is_scalar){
-		  typeScalar var(data, i);
+		  dealii::FEEvaluation<dim,degree,degree+1,1,double> var(data, i);
 		  scalar_vars.push_back(var);
 	  }
 	  else {
-		  typeVector var(data, i);
+		  dealii::FEEvaluation<dim,degree,degree+1,dim,double> var(data, i);
 		  vector_vars.push_back(var);
 	  }
   }

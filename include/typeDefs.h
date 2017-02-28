@@ -54,6 +54,4 @@ typedef dealii::Tensor<3, problemDIM, dealii::VectorizedArray<double> > vectorhe
 #endif
 #endif
 
-
-
 #endif /* INCLUDE_TYPEDEFS_H_ */

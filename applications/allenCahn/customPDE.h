@@ -8,11 +8,14 @@
 #ifndef APPLICATIONS_ALLENCAHN_CUSTOMPDE_H_
 #define APPLICATIONS_ALLENCAHN_CUSTOMPDE_H_
 
-template <int dim>
-class customPDE: public MatrixFreePDE<dim>
+#include "../../include/matrixFreePDE.h"
+
+template <int dim, int degree>
+class customPDE: public MatrixFreePDE<dim,degree>
 {
 public:
-	customPDE(userInputParameters _userInputs): MatrixFreePDE<dim>(_userInputs) {};
+	customPDE(userInputParameters _userInputs): MatrixFreePDE<dim,degree>(_userInputs) {};
+	//customPDE(userInputParameters _userInputs);
 
 	void setBCs();
 

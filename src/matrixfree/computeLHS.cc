@@ -5,13 +5,13 @@
 //#ifndef's) till library packaging scheme is finalized
 
 //vmult operation for LHS
-template <int dim>
-void MatrixFreePDE<dim>::vmult (vectorType &dst, const vectorType &src) const{
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::vmult (vectorType &dst, const vectorType &src) const{
   //log time
   computing_timer.enter_section("matrixFreePDE: computeLHS");
 
   //create temporary copy of src vector as src2, as vector src is marked const and cannot be changed
-  vectorType src2;
+  dealii::parallel::distributed::Vector<double> src2;
   matrixFreeObject.initialize_dof_vector(src2,  currentFieldIndex);
   src2=src;
   
@@ -25,7 +25,7 @@ void MatrixFreePDE<dim>::vmult (vectorType &dst, const vectorType &src) const{
 
   //call cell_loop 
   dst=0.0;
-  matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::getLHS, this, dst, src2);
+  matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getLHS, this, dst, src2);
   dst.compress(VectorOperation::add);
   
   //Account for Dirichlet BC's (essentially copy dirichlet DOF values present in src to dst)
@@ -39,8 +39,8 @@ void MatrixFreePDE<dim>::vmult (vectorType &dst, const vectorType &src) const{
   computing_timer.exit_section("matrixFreePDE: computeLHS");
 }
   
-template <int dim>
-void  MatrixFreePDE<dim>::getLHS(const MatrixFree<dim,double> &data, 
+template <int dim, int degree>
+void  MatrixFreePDE<dim,degree>::getLHS(const MatrixFree<dim,double> &data,
 				 vectorType &dst, 
 				 const vectorType &src,
 				 const std::pair<unsigned int,unsigned int> &cell_range) const{
@@ -55,16 +55,16 @@ void  MatrixFreePDE<dim>::getLHS(const MatrixFree<dim,double> &data,
 	}
 
 	//initialize FEEvaulation objects
-	std::vector<typeScalar> scalar_vars;
-	std::vector<typeVector> vector_vars;
+	std::vector<dealii::FEEvaluation<dim,degree,degree+1,1,double>> scalar_vars;
+	std::vector<dealii::FEEvaluation<dim,degree,degree+1,dim,double>> vector_vars;
 
 	for (unsigned int i=0; i<userInputs.num_var_LHS; i++){
 		if (userInputs.varInfoListLHS[i].is_scalar){
-			typeScalar var(data, userInputs.varInfoListLHS[i].global_var_index);
+			dealii::FEEvaluation<dim,degree,degree+1,1,double> var(data, userInputs.varInfoListLHS[i].global_var_index);
 			scalar_vars.push_back(var);
 		}
 		else {
-			typeVector var(data, userInputs.varInfoListLHS[i].global_var_index);
+			dealii::FEEvaluation<dim,degree,degree+1,dim,double> var(data, userInputs.varInfoListLHS[i].global_var_index);
 			vector_vars.push_back(var);
 		}
 	}
@@ -84,7 +84,7 @@ void  MatrixFreePDE<dim>::getLHS(const MatrixFree<dim,double> &data,
 					scalar_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].read_dof_values_plain(src);
 				}
 				else{
-					scalar_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[userInputs.varInfoListLHS[i].global_var_index]);
+					scalar_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].read_dof_values_plain(*solutionSet[userInputs.varInfoListLHS[i].global_var_index]);
 				}
 				scalar_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].evaluate(userInputs.need_value_LHS[userInputs.varInfoListLHS[i].global_var_index], userInputs.need_gradient_LHS[userInputs.varInfoListLHS[i].global_var_index], userInputs.need_hessian_LHS[userInputs.varInfoListLHS[i].global_var_index]);
 			}
@@ -94,7 +94,7 @@ void  MatrixFreePDE<dim>::getLHS(const MatrixFree<dim,double> &data,
 					vector_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].read_dof_values_plain(src);
 				}
 				else {
-					vector_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].read_dof_values_plain(*MatrixFreePDE<dim>::solutionSet[userInputs.varInfoListLHS[i].global_var_index]);
+					vector_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].read_dof_values_plain(*solutionSet[userInputs.varInfoListLHS[i].global_var_index]);
 				}
 				vector_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].evaluate(userInputs.need_value_LHS[userInputs.varInfoListLHS[i].global_var_index], userInputs.need_gradient_LHS[userInputs.varInfoListLHS[i].global_var_index], userInputs.need_hessian_LHS[userInputs.varInfoListLHS[i].global_var_index]);
 			}

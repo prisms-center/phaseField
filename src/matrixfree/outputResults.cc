@@ -6,8 +6,8 @@
 //#ifndef's) till library packaging scheme is finalized
 
 //output results
-template <int dim>
-void MatrixFreePDE<dim>::outputResults(){
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::outputResults(){
   //log time
   computing_timer.enter_section("matrixFreePDE: output");
 
@@ -28,7 +28,7 @@ void MatrixFreePDE<dim>::outputResults(){
     data_out.add_data_vector(*dofHandlersSet[fieldIndex], *solutionSet[fieldIndex], solutionNames, dataType);  
   }
   
-  data_out.build_patches (finiteElementDegree);
+  data_out.build_patches (degree);
   
   //write to results file
   //file name

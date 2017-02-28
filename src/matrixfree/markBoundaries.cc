@@ -7,12 +7,12 @@
 
 //methods to mark boundaries
 //methods to mark boundaries
-template <int dim>
-void MatrixFreePDE<dim>::markBoundaries(){
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::markBoundaries(){
 
 	typename Triangulation<dim>::cell_iterator
-	cell = MatrixFreePDE<dim>::triangulation.begin (),
-	endc = MatrixFreePDE<dim>::triangulation.end();
+	cell = triangulation.begin (),
+	endc = triangulation.end();
 
 	for (; cell!=endc; ++cell){
 

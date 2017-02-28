@@ -1,9 +1,9 @@
 // This method needs to be generalized or removed. It probably belongs elsewhere. Exists historically for singlePrecipitateKKS.
 
-template <int dim>
-void  MatrixFreePDE<dim>::computeIntegral(double& integratedField){
-	QGauss<dim>  quadrature_formula(finiteElementDegree+1);
-	FE_Q<dim> FE (QGaussLobatto<1>(finiteElementDegree+1));
+template <int dim, int degree>
+void  MatrixFreePDE<dim,degree>::computeIntegral(double& integratedField){
+	QGauss<dim>  quadrature_formula(degree+1);
+	FE_Q<dim> FE (QGaussLobatto<1>(degree+1));
 	FEValues<dim> fe_values (FE, quadrature_formula, update_values | update_JxW_values | update_quadrature_points);
 	const unsigned int   dofs_per_cell = FE.dofs_per_cell;
 	const unsigned int   n_q_points    = quadrature_formula.size();
@@ -37,7 +37,7 @@ void  MatrixFreePDE<dim>::computeIntegral(double& integratedField){
 	  integratedField = value;
 }
 
-template <int dim>
-void  MatrixFreePDE<dim>::shiftConcentration(){
+template <int dim, int degree>
+void  MatrixFreePDE<dim,degree>::shiftConcentration(){
   //default trivial implementation.
 }

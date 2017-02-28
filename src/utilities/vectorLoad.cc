@@ -3,6 +3,9 @@
 // =====================================================================
 // This could probably be simplified by using templates
 
+#include "../../include/dealIIheaders.h"
+#include "../../include/vectorLoad.h"
+
 void vectorLoad(bool in[], int array_size, std::vector<bool> & out){
 
 	std::vector<bool> temp ( in, in+array_size / sizeof(bool) );

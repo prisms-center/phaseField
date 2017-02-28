@@ -6,8 +6,8 @@
 //#ifndef's) till library packaging scheme is finalized
 
 //compute inverse of the diagonal mass matrix and store in vector invM
-template <int dim>
-void MatrixFreePDE<dim>::computeInvM(){
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::computeInvM(){
 	//initialize  invM
 	bool invMInitialized=false;
 	unsigned int parabolicFieldIndex=0;
@@ -32,7 +32,7 @@ void MatrixFreePDE<dim>::computeInvM(){
 	//select gauss lobatto quadrature points which are suboptimal but give diagonal M
 	if (fields[parabolicFieldIndex].type==SCALAR){
 		VectorizedArray<double> one = make_vectorized_array (1.0);
-		FEEvaluation<dim,finiteElementDegree> fe_eval(matrixFreeObject, parabolicFieldIndex);
+		FEEvaluation<dim,degree> fe_eval(matrixFreeObject, parabolicFieldIndex);
 		const unsigned int n_q_points = fe_eval.n_q_points;
 		for (unsigned int cell=0; cell<matrixFreeObject.n_macro_cells(); ++cell){
 			fe_eval.reinit(cell);
@@ -44,12 +44,12 @@ void MatrixFreePDE<dim>::computeInvM(){
 		}
 	}
 	else {
-		vectorvalueType oneV;
+		dealii::Tensor<1, dim, dealii::VectorizedArray<double> > oneV;
 		for (unsigned int i=0;i<dim;i++){
 			oneV[i] = 1.0;
 		}
 
-		FEEvaluation<dim,finiteElementDegree,finiteElementDegree+1,dim> fe_eval(matrixFreeObject, parabolicFieldIndex);
+		FEEvaluation<dim,degree,degree+1,dim> fe_eval(matrixFreeObject, parabolicFieldIndex);
 
 		const unsigned int n_q_points = fe_eval.n_q_points;
 		for (unsigned int cell=0; cell<matrixFreeObject.n_macro_cells(); ++cell){

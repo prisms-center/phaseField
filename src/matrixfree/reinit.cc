@@ -6,8 +6,8 @@
 //#ifndef's) till library packaging scheme is finalized
 
  //populate with fields and setup matrix free system
- template <int dim>
- void MatrixFreePDE<dim>::reinit(){
+template <int dim, int degree>
+ void MatrixFreePDE<dim,degree>::reinit(){
 
 	 computing_timer.enter_section("matrixFreePDE: reinitialization");
 
@@ -86,7 +86,7 @@
  	 additional_data.mpi_communicator = MPI_COMM_WORLD;
  	 additional_data.tasks_parallel_scheme = MatrixFree<dim,double>::AdditionalData::partition_partition;
  	 additional_data.mapping_update_flags = (update_values | update_gradients | update_JxW_values | update_quadrature_points);
- 	 QGaussLobatto<1> quadrature (finiteElementDegree+1);
+ 	 QGaussLobatto<1> quadrature (degree+1);
  	 matrixFreeObject.clear();
  	 matrixFreeObject.reinit (dofHandlersSet, constraintsOtherSet, quadrature, additional_data);
 

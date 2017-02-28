@@ -6,8 +6,8 @@
 //#ifndef's) till library packaging scheme is finalized
 
 //solve BVP
-template <int dim>
-void MatrixFreePDE<dim>::solve(){
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::solve(){
   //log time
   computing_timer.enter_section("matrixFreePDE: solve"); 
   pcout << "\nsolving...\n\n";

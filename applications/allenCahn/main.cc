@@ -1,32 +1,42 @@
 // Allen-Cahn example application
 
 // Header files
+
 #include "../../include/dealIIheaders.h"
 #include "parameters.h"
 #include "../../include/typeDefs.h"
 #include "../../include/model_variables.h"
+#include "../../include/varBCs.h"
 
 
 #include "../../include/loadInputs.h"
+#include "../../include/initialConditions.h"
 #include "../../include/matrixFreePDE.h"
 #include "customPDE.h"
+//#include "customPDE.cc"
 #include "equations.h"
 #include "ICs_and_BCs.h"
 #include "../../src/loadInputs/loadInputs.cc"
-#include "../../src/matrixfree/matrixFreePDE.cc"
+
+
+
+//#include "../../src/matrixfree/matrixFreePDE.cc"
+
+
 
 //main
 int main (int argc, char **argv)
 {
-  Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,numbers::invalid_unsigned_int);
+  dealii::Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,dealii::numbers::invalid_unsigned_int);
   try
     {
-	  deallog.depth_console(0);
+	  dealii::deallog.depth_console(0);
 
 	  userInputParameters userInputs;
 	  userInputs.loadUserInput();
 
-	  customPDE<problemDIM> problem(userInputs);
+	  customPDE<problemDIM,finiteElementDegree> problem(userInputs);
+
 
       problem.setBCs();
       problem.buildFields();

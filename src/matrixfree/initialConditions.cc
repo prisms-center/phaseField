@@ -6,8 +6,8 @@
 //#ifndef's) till library packaging scheme is finalized
 
 //methods to apply initial conditions
-template <int dim>
-void MatrixFreePDE<dim>::applyInitialConditions(){
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::applyInitialConditions(){
 
 
 

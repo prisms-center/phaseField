@@ -8,11 +8,15 @@ void userInputParameters::loadUserInput(){
 	domain_size.push_back(spanZ);
 
 	subdivisions.push_back(subdivisionsX);
-	subdivisions.push_back(subdivisionsY);
-	subdivisions.push_back(subdivisionsZ);
+	if (dim > 1){
+		subdivisions.push_back(subdivisionsY);
+		if (dim > 2){
+			subdivisions.push_back(subdivisionsZ);
+		}
+	}
 
 	refine_factor = refineFactor;
-	fe_degree = finiteElementDegree;
+	//fe_degree = finiteElementDegree;
 
 	// Mesh refinement parameters
 	h_adaptivity = hAdaptivity;
@@ -24,6 +28,8 @@ void userInputParameters::loadUserInput(){
 	vectorLoad(temp, sizeof(temp), refine_window_max);}
 	{double temp[] = refineWindowMin;
 	vectorLoad(temp, sizeof(temp), refine_window_min);}
+
+	skip_remeshing_steps = skipRemeshingSteps;
 
 	// Output parameters
 	write_output = writeOutput;

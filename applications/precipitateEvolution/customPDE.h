@@ -8,6 +8,8 @@
 #ifndef APPLICATIONS_PRECIPITATEEVOLUTION_CUSTOMPDE_H_
 #define APPLICATIONS_PRECIPITATEEVOLUTION_CUSTOMPDE_H_
 
+#include "../../include/matrixFreePDE.h"
+
 template <int dim>
 class customPDE: public MatrixFreePDE<dim>
 {

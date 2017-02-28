@@ -6,8 +6,8 @@
 //#ifndef's) till library packaging scheme is finalized
 
 //update RHS of each field
-template <int dim>
-void MatrixFreePDE<dim>::computeEnergy(){
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::computeEnergy(){
   //log time
   computing_timer.enter_section("matrixFreePDE: computeEnergy");
 
@@ -18,7 +18,7 @@ void MatrixFreePDE<dim>::computeEnergy(){
   energy_components.push_back(0.0);
   energy_components.push_back(0.0);
 
-  matrixFreeObject.cell_loop (&MatrixFreePDE<dim>::getEnergy, this, residualSet, solutionSet);
+  matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getEnergy, this, residualSet, solutionSet);
 
   //add across all processors
   energy=Utilities::MPI::sum(energy, MPI_COMM_WORLD);
@@ -32,23 +32,23 @@ void MatrixFreePDE<dim>::computeEnergy(){
   computing_timer.exit_section("matrixFreePDE: computeEnergy");
 }
 
-template <int dim>
-void  MatrixFreePDE<dim>::getEnergy(const MatrixFree<dim,double> &data,
+template <int dim, int degree>
+void  MatrixFreePDE<dim,degree>::getEnergy(const MatrixFree<dim,double> &data,
 				    std::vector<vectorType*> &dst,
 				    const std::vector<vectorType*> &src,
 				    const std::pair<unsigned int,unsigned int> &cell_range) {
 
 	//initialize FEEvaulation objects
-		  std::vector<typeScalar> scalar_vars;
-		  std::vector<typeVector> vector_vars;
+		  std::vector<dealii::FEEvaluation<dim,degree,degree+1,1,double>> scalar_vars;
+		  std::vector<dealii::FEEvaluation<dim,degree,degree+1,dim,double>> vector_vars;
 
 		  for (unsigned int i=0; i<userInputs.number_of_variables; i++){
 			  if (userInputs.varInfoListRHS[i].is_scalar){
-				  typeScalar var(data, i);
+				  dealii::FEEvaluation<dim,degree,degree+1,1,double> var(data, i);
 				  scalar_vars.push_back(var);
 			  }
 			  else {
-				  typeVector var(data, i);
+				  dealii::FEEvaluation<dim,degree,degree+1,dim,double> var(data, i);
 				  vector_vars.push_back(var);
 			  }
 		  }
@@ -136,8 +136,8 @@ void  MatrixFreePDE<dim>::getEnergy(const MatrixFree<dim,double> &data,
 }
 
 // output the integrated free energies into a text file
-template <int dim>
-void MatrixFreePDE<dim>::outputFreeEnergy(std::vector<double>& freeEnergyValues){
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::outputFreeEnergy(std::vector<double>& freeEnergyValues){
 
 	  std::ofstream output_file("./freeEnergy.txt");
 	  output_file.precision(10);

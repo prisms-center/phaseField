@@ -6,8 +6,8 @@
 //#ifndef's) till library packaging scheme is finalized
 
 //methods to apply dirichlet BC's
-template <int dim>
-void MatrixFreePDE<dim>::applyDirichletBCs(){
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 	// First, get the variable index of the current field
 	  unsigned int starting_BC_list_index = 0;
 
@@ -58,8 +58,8 @@ void MatrixFreePDE<dim>::applyDirichletBCs(){
 }
 
 // Based on the contents of BC_list, mark faces on the triangulation as periodic
-template <int dim>
-void MatrixFreePDE<dim>::setPeriodicity(){
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::setPeriodicity(){
 	std::vector<GridTools::PeriodicFacePair<typename parallel::distributed::Triangulation<dim>::cell_iterator> > periodicity_vector;
 		for (int i=0; i<dim; ++i){
 			bool periodic_pair = false;
@@ -79,8 +79,8 @@ void MatrixFreePDE<dim>::setPeriodicity(){
 }
 
 // Set constraints to enforce periodic boundary conditions
-template <int dim>
-void MatrixFreePDE<dim>::setPeriodicityConstraints(ConstraintMatrix * constraints, DoFHandler<dim>* dof_handler){
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::setPeriodicityConstraints(ConstraintMatrix * constraints, DoFHandler<dim>* dof_handler){
 	// First, get the variable index of the current field
 		unsigned int starting_BC_list_index = 0;
 		for (unsigned int i=0; i<this->currentFieldIndex; i++){
@@ -104,8 +104,8 @@ void MatrixFreePDE<dim>::setPeriodicityConstraints(ConstraintMatrix * constraint
 
 // Determine which (if any) components of the current field have rigid body modes (i.e no Dirichlet BCs) if the
 // equation is elliptic
-template <int dim>
-void MatrixFreePDE<dim>::getComponentsWithRigidBodyModes( std::vector<int> & rigidBodyModeComponents){
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::getComponentsWithRigidBodyModes( std::vector<int> & rigidBodyModeComponents){
 	// Rigid body modes only matter for elliptic equations
 		if (userInputs.var_eq_type[this->currentFieldIndex] == "ELLIPTIC"){
 
@@ -151,8 +151,8 @@ void MatrixFreePDE<dim>::getComponentsWithRigidBodyModes( std::vector<int> & rig
 //}
 
 // Set constraints to pin the solution if there are no Dirichlet BCs for a component of a variable in an elliptic equation
-template <int dim>
-void MatrixFreePDE<dim>::setRigidBodyModeConstraints( std::vector<int> rigidBodyModeComponents, ConstraintMatrix * constraints, DoFHandler<dim>* dof_handler){
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::setRigidBodyModeConstraints( std::vector<int> rigidBodyModeComponents, ConstraintMatrix * constraints, DoFHandler<dim>* dof_handler){
 
 	if ( rigidBodyModeComponents.size() > 0 ){
 
@@ -185,8 +185,8 @@ void MatrixFreePDE<dim>::setRigidBodyModeConstraints( std::vector<int> rigidBody
 }
 
 // Input the boundary conditions for each face individually for 3D domains
-template <int dim>
-void MatrixFreePDE<dim>::inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
 		std::string BC_type_dim1_max, double BC_value_dim1_max, std::string BC_type_dim2_min, double BC_value_dim2_min,
 		std::string BC_type_dim2_max, double BC_value_dim2_max,std::string BC_type_dim3_min, double BC_value_dim3_min,
 		std::string BC_type_dim3_max, double BC_value_dim3_max){
@@ -230,8 +230,8 @@ void MatrixFreePDE<dim>::inputBCs(int var, int component, std::string BC_type_di
 }
 
 // Input the boundary conditions for each face individually for 2D domains
-template <int dim>
-void MatrixFreePDE<dim>::inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
 		std::string BC_type_dim1_max, double BC_value_dim1_max, std::string BC_type_dim2_min, double BC_value_dim2_min,
 		std::string BC_type_dim2_max, double BC_value_dim2_max){
 
@@ -267,8 +267,8 @@ void MatrixFreePDE<dim>::inputBCs(int var, int component, std::string BC_type_di
 }
 
 // Input the boundary conditions for each face individually for 1D domains
-template <int dim>
-void MatrixFreePDE<dim>::inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
 		std::string BC_type_dim1_max, double BC_value_dim1_max){
 
 	// Validate input
@@ -298,8 +298,8 @@ void MatrixFreePDE<dim>::inputBCs(int var, int component, std::string BC_type_di
 }
 
 // Input the boundary conditions when all faces have the same boundary condition
-template <int dim>
-void MatrixFreePDE<dim>::inputBCs(int var, int component, std::string BC_type, double BC_value){
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::inputBCs(int var, int component, std::string BC_type, double BC_value){
 
 	varBCs<dim> newBC;
 	for (unsigned int face=0; face<(dim*2); face++){

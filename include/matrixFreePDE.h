@@ -8,34 +8,30 @@
 #include <iterator> // is this necessary?
 
 //dealii headers
-//#include "dealIIheaders.h"
+#include "dealIIheaders.h"
 #include "defaultValues.h"
 
 //PRISMS headers
+//#include "typeDefs.h"
+#include "model_variables.h"
+#include "varBCs.h"
+#include "loadInputs.h"
+#include "initialConditions.h"
+
 #include "fields.h"
 #include "vectorLoad.h"
 #include "vectorBCFunction.h"
 #include "../src/models/mechanics/anisotropy.h"
 #include "../src/models/mechanics/computeStress.h"
 
-// BC object declaration
-template <int dim>
-class varBCs
-{
-	public:
-	//varBCs();
-	std::vector<std::string> var_BC_type;
-	std::vector<double> var_BC_val;
-};
 
- 
 ////define data types
-//#ifndef scalarType
-//typedef dealii::VectorizedArray<double> scalarType;
-//#endif
-//#ifndef vectorType
-//typedef dealii::parallel::distributed::Vector<double> vectorType;
-//#endif
+#ifndef scalarType
+typedef dealii::VectorizedArray<double> scalarType;
+#endif
+#ifndef vectorType
+typedef dealii::parallel::distributed::Vector<double> vectorType;
+#endif
 ////define FE system types
 //#ifndef typeScalar
 //typedef dealii::FEEvaluation<problemDIM,finiteElementDegree,finiteElementDegree+1,1,double>           typeScalar;
@@ -95,7 +91,7 @@ using namespace dealii;
  * 
  * All the physical models in this package inherit this base class. 
  */
-template <int dim>
+template <int dim, int degree>
 class MatrixFreePDE:public Subscriptor
 {
  public:
@@ -103,7 +99,7 @@ class MatrixFreePDE:public Subscriptor
    * Class contructor
    */
   MatrixFreePDE(userInputParameters);
-  ~MatrixFreePDE(); 
+  ~MatrixFreePDE();
   /**
    * Initializes the mesh, degress of freedom, constraints and data structures using the user provided
    * inputs in the application parameters file. 
@@ -139,7 +135,7 @@ class MatrixFreePDE:public Subscriptor
   /**
    * Virtual function to shift the concentration
    */
-  virtual void shiftConcentration();
+  void shiftConcentration();
 
   virtual void setBCs()=0;
   void buildFields();
@@ -336,8 +332,8 @@ class MatrixFreePDE:public Subscriptor
 //other matrixFree headers 
 //(these are source files, which will are temporarily treated as
 //header files till library packaging scheme is finalized)
-#include "../src/utilities/vectorLoad.cc"
-#include "../src/utilities/vectorBCFunction.cc"
+//#include "../src/utilities/vectorLoad.cc"
+//#include "../src/utilities/vectorBCFunction.cc"
 
 //#include "../src/matrixfree/matrixFreePDE.cc"
 //#include "../src/matrixfree/init.cc"

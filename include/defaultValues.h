@@ -29,7 +29,7 @@
 
 //FE polynomial order (default value:1)
 #ifndef finiteElementDegree
-#define finiteElementDegree 1
+#define finiteElementDegree 2
 #endif
 
 //number of fields (default value:1)
@@ -134,6 +134,10 @@
 
 #ifndef refineWindowMin
 #define refineWindowMin {0}
+#endif
+
+#ifndef skipRemeshingSteps
+#define skipRemeshingSteps 1
 #endif
 
 #endif
