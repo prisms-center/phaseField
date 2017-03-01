@@ -4,7 +4,8 @@
 double nucProb(double cValue);
 void nucAttempt(std::vector<nucleus> &newnuclei, std::map<dealii::types::global_dof_index, dealii::Point<problemDIM> > support_points, vectorType* c, vectorType* n, double t, unsigned int inc);
 void receiveUpdate (std::vector<nucleus> &newnuclei, int procno);
-void sendUpdate (int procno);
+void sendUpdate (std::vector<nucleus> &newnuclei, int procno);
+void broadcastUpdate (std::vector<nucleus> &newnuclei, int broadcastProc, int thisProc);
 
 // =================================================================================
 // NUCLEATION FUNCTIONS
@@ -18,7 +19,7 @@ double nucProb(double cValue)
     //minimum grid spacing
     double dx=spanX/(std::pow(2.0,refineFactor)*(double)finiteElementDegree);
 	//Nucleation rate
-	double J=k1*exp(-k2/(cValue-calmin));
+	double J=k1*exp(-k2/(cValue-calmin))*10.0;
 	//We need element volume (or area in 2D)
 	double retProb=1.0-exp(-J*timeStep*((double)skipNucleationSteps)*dx*dx);
     return retProb;
@@ -72,7 +73,7 @@ void nucAttempt(std::vector<nucleus> &newnuclei, std::map<dealii::types::global_
                         temp->seededTime=t;
                         temp->seedingTime = t_hold;
                         temp->seedingTimestep = inc;
-                        nuclei.push_back(*temp);
+                        //nuclei.push_back(*temp); I want to save this for later - Steve
                         newnuclei.push_back(*temp);
                     }
                 }
@@ -81,11 +82,12 @@ void nucAttempt(std::vector<nucleus> &newnuclei, std::map<dealii::types::global_
     }
 }
 
-void sendUpdate (int procno)
+void sendUpdate (std::vector<nucleus> &newnuclei, int procno)
 {
-    int currnonucs=nuclei.size();
+    int currnonucs=newnuclei.size();
     //MPI SECTION TO SEND INFORMATION TO THE PROCESSOR procno
     //Sending local no. of nuclei
+    std::cout << "Sending " << currnonucs << " new nuclei from " << procno-1 << " to " << procno << std::endl;
     MPI_Send(&currnonucs, 1, MPI_INT, procno, 0, MPI_COMM_WORLD);
     if (currnonucs > 0){
         //Creating vectors of each quantity in nuclei. Each numbered acording to the tags used for MPI_Send/MPI_Recv
@@ -105,7 +107,7 @@ void sendUpdate (int procno)
         std::vector<unsigned int> s_seedingTimestep;
         
         //Loop to store info of all nuclei into vectors
-        for (std::vector<nucleus>::iterator thisNuclei=nuclei.begin(); thisNuclei!=nuclei.end(); ++thisNuclei){
+        for (std::vector<nucleus>::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
             s_index.push_back(thisNuclei->index);
             dealii::Point<problemDIM> s_center=thisNuclei->center;
             s_center_x.push_back(s_center[0]);
@@ -116,7 +118,7 @@ void sendUpdate (int procno)
             s_seedingTimestep.push_back(thisNuclei->seedingTimestep);
         }
         //Send vectors to next processor
-        MPI_Send(&s_index[0], currnonucs, MPI_UNSIGNED, procno+1, 1, MPI_COMM_WORLD);
+        MPI_Send(&s_index[0], currnonucs, MPI_UNSIGNED, procno, 1, MPI_COMM_WORLD);
         MPI_Send(&s_center_x[0], currnonucs, MPI_DOUBLE, procno, 2, MPI_COMM_WORLD);
         MPI_Send(&s_center_y[0], currnonucs, MPI_DOUBLE, procno, 3, MPI_COMM_WORLD);
         MPI_Send(&s_radius[0], currnonucs, MPI_DOUBLE, procno, 4, MPI_COMM_WORLD);
@@ -131,10 +133,10 @@ void receiveUpdate (std::vector<nucleus> &newnuclei, int procno)
 {
     //MPI PROCEDURE TO RECIEVE INFORMATION FROM ANOTHER PROCESSOR AND UPDATE LOCAL NUCLEI INFORMATION
     int recvnonucs = 0;
-    int currnonucs = nuclei.size();
+    int currnonucs = newnuclei.size();
     MPI_Recv(&recvnonucs, 1, MPI_INT, procno, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-    if (recvnonucs > currnonucs){
-        
+    if (recvnonucs > 0){
+
         //Creating vectors of each quantity in nuclei. Each numbered acording to the tags used for MPI_Send/MPI_Recv
         //1 - index
         std::vector<unsigned int> r_index(recvnonucs,0);
@@ -150,7 +152,7 @@ void receiveUpdate (std::vector<nucleus> &newnuclei, int procno)
         std::vector<double> r_seedingTime(recvnonucs,0.0);
         //7 - seedingTimestep
         std::vector<unsigned int> r_seedingTimestep(recvnonucs,0);
-        
+
         //Recieve vectors from processor procno
         MPI_Recv(&r_index[0], recvnonucs, MPI_UNSIGNED, procno, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         MPI_Recv(&r_center_x[0], recvnonucs, MPI_DOUBLE, procno, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
@@ -159,9 +161,9 @@ void receiveUpdate (std::vector<nucleus> &newnuclei, int procno)
         MPI_Recv(&r_seededTime[0], recvnonucs, MPI_DOUBLE, procno, 5, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         MPI_Recv(&r_seedingTime[0], recvnonucs, MPI_DOUBLE, procno, 6, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         MPI_Recv(&r_seedingTimestep[0], recvnonucs, MPI_UNSIGNED, procno, 7, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-        
+
         //Loop to store info in vectors onto the nuclei structure
-        for (int jnuc=currnonucs; jnuc<=recvnonucs-1; jnuc++){
+        for (int jnuc=0; jnuc<=recvnonucs-1; jnuc++){
             nucleus* temp = new nucleus;
             temp->index=r_index[jnuc];
             dealii::Point<problemDIM> r_center;
@@ -172,7 +174,74 @@ void receiveUpdate (std::vector<nucleus> &newnuclei, int procno)
             temp->seededTime=r_seededTime[jnuc];
             temp->seedingTime = r_seedingTime[jnuc];
             temp->seedingTimestep = r_seedingTimestep[jnuc];
-            nuclei.push_back(*temp);
+            //nuclei.push_back(*temp); // I want to save this for later -Steve
+            std::cout << "Adding a nucleus to  " << procno+1 << " from " << procno << std::endl;
+            newnuclei.push_back(*temp);
+        }
+
+    }
+}
+
+void broadcastUpdate (std::vector<nucleus> &newnuclei, int broadcastProc, int thisProc)
+{
+    //MPI PROCEDURE TO SEND THE LIST OF NEW NUCLEI FROM ONE PROCESSOR TO ALL THE OTHERS
+    int currnonucs = newnuclei.size();
+    MPI_Bcast(&currnonucs, 1, MPI_INT, broadcastProc, MPI_COMM_WORLD);
+    if (currnonucs > 0){
+        
+        //Creating vectors of each quantity in nuclei. Each numbered acording to the tags used for MPI_Send/MPI_Recv
+        //1 - index
+        std::vector<unsigned int> r_index(currnonucs,0);
+        //2 - "x" componenet of center
+        std::vector<double> r_center_x(currnonucs,0.0);
+        //3 - "y" componenet of center
+        std::vector<double> r_center_y(currnonucs,0.0);
+        //4 - radius
+        std::vector<double> r_radius(currnonucs,0.0);
+        //5 - seededTime
+        std::vector<double> r_seededTime(currnonucs,0.0);
+        //6 - seedingTime
+        std::vector<double> r_seedingTime(currnonucs,0.0);
+        //7 - seedingTimestep
+        std::vector<unsigned int> r_seedingTimestep(currnonucs,0);
+        
+        if (thisProc == broadcastProc){
+        	for (std::vector<nucleus>::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
+        		r_index.push_back(thisNuclei->index);
+        		dealii::Point<problemDIM> s_center=thisNuclei->center;
+        		r_center_x.push_back(s_center[0]);
+        		r_center_y.push_back(s_center[1]);
+        		r_radius.push_back(thisNuclei->radius);
+        		r_seededTime.push_back(thisNuclei->seededTime);
+        		r_seedingTime.push_back(thisNuclei->seedingTime);
+        		r_seedingTimestep.push_back(thisNuclei->seedingTimestep);
+        	}
+        }
+
+        //Recieve vectors from processor procno
+        MPI_Bcast(&r_index[0], currnonucs, MPI_UNSIGNED, broadcastProc, MPI_COMM_WORLD);
+        MPI_Bcast(&r_center_x[0], currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
+        MPI_Bcast(&r_center_y[0], currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
+        MPI_Bcast(&r_radius[0], currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
+        MPI_Bcast(&r_seededTime[0], currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
+        MPI_Bcast(&r_seedingTime[0], currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
+        MPI_Bcast(&r_seedingTimestep[0], currnonucs, MPI_UNSIGNED, broadcastProc, MPI_COMM_WORLD);
+        
+        newnuclei.clear();
+
+        //Loop to store info in vectors onto the nuclei structure
+        for (int jnuc=0; jnuc<=currnonucs-1; jnuc++){
+            nucleus* temp = new nucleus;
+            temp->index=r_index[jnuc];
+            dealii::Point<problemDIM> r_center;
+            r_center[0]=r_center_x[jnuc];
+            r_center[1]=r_center_y[jnuc];
+            temp->center=r_center;
+            temp->radius=r_radius[jnuc];
+            temp->seededTime=r_seededTime[jnuc];
+            temp->seedingTime = r_seedingTime[jnuc];
+            temp->seedingTimestep = r_seedingTimestep[jnuc];
+            //nuclei.push_back(*temp); // I want to save this for later -Steve
             newnuclei.push_back(*temp);
         }
         
@@ -185,7 +254,7 @@ void receiveUpdate (std::vector<nucleus> &newnuclei, int procno)
 template <int dim>
 void generalizedProblem<dim>::modifySolutionFields()
 {
-    //current time
+	//current time
     double t=this->currentTime;
     //current time step
     unsigned int inc=this->currentIncrement;
@@ -209,58 +278,33 @@ void generalizedProblem<dim>::modifySolutionFields()
         if (numProcs == 1) {
         	//Serial option
             nucAttempt(newnuclei, support_points, c, n, t, inc);
-        } else {
-        	//Parallel option
-            //All processors except 0 receive updated info from previous processor
-            if (thisProc > 0){
-                //MPI SECTION TO RECIEVE INFORMATION FROM THE PREVIOUS PROCESSOR
-                receiveUpdate(newnuclei, thisProc-1);
-                std::cout << "updated info recieved by next proc." << std::endl;
-            }
-            //Each processor attempts nucleation
-            if (thisProc == 0){
-            	//PLEASE UNCOMMENT THIS LINE WHEN CODE IS FIXED (DM)
-                //std::cout << "nucleation attempt" << std::endl;
-            }
-            nucAttempt(newnuclei, support_points, c, n, t, inc);
-            //All processors (except last) send info to next processor
-            if (thisProc < numProcs-1){
-                //MPI SECTION TO SEND INFORMATION TO THE NEXT PROCESSOR
-                sendUpdate(thisProc+1);
-                std::cout << "updated info sent to next proc." << std::endl;
-            }
-            //Last processor (N-1) sends info to processor 0
-            if (thisProc == numProcs-1){
-                //MPI SECTION TO SEND INFORMATION TO PROCESSOR 0
-                sendUpdate(0);
-                std::cout << "updated info sent to proc. 0" << std::endl;
-            }
-            if (thisProc == 0){
-                //MPI SECTION TO RECIEVE INFORMATION FROM PROCESSOR N-1
-                receiveUpdate(newnuclei, numProcs-1);
-                std::cout << "updated info recieved by to proc. 0" << std::endl;
-            }
-            //Barrier for all processors
-            MPI_Barrier(MPI_COMM_WORLD);
-            std::cout << "Passed 1st MPI barrier" << std::endl;
-            
-            if (thisProc == 0){
-                //MPI SECTION TO BROADCAST INFORMATION FROM PROCESSOR 0 TO ALL OTHER PROCESSORS
-                //Sending local no. of nuclei
-                for (int jproc=1; jproc<=numProcs-1; jproc++){
-                    sendUpdate(jproc);
-                }
-                std::cout << "Broadcast from 0 to all procs" << std::endl;
-            }
-            if (thisProc > 0){
-                //MPI SECTION TO RECIEVE INFORMATION FROM THE PROCESSOR 0
-                receiveUpdate(newnuclei, 0);
-                std::cout << "Local proc. recieves broadcast from 0" << std::endl;
-            }
-            //Barrier for all processor
-            MPI_Barrier(MPI_COMM_WORLD);
-            std::cout << "Passed 2nd MPI barrier" << std::endl;
         }
+        else{
+        	nucAttempt(newnuclei, support_points, c, n, t, inc);
+        	std::cout << "Proc: " << thisProc << " num nuclei: " << newnuclei.size() << std::endl;
+
+        	// Cycle through each processor, sending and receiving, to append the list of new nuclei
+        	for (int proc_index=0; proc_index < numProcs-1; proc_index++){
+        		if (thisProc == proc_index){
+        			sendUpdate(newnuclei, thisProc+1);
+        		}
+        		else if (thisProc == proc_index+1){
+        			receiveUpdate(newnuclei, thisProc-1);
+        		}
+        		MPI_Barrier(MPI_COMM_WORLD);
+        	}
+        	// The final processor now has all of the new nuclei, broadcast it to all the other processors
+        	std::cout << "Proc: " << thisProc << " num nuclei: " << newnuclei.size() << std::endl;
+        	broadcastUpdate(newnuclei, numProcs-1, thisProc);
+
+        	std::cout << "Proc: " << thisProc << " num nuclei: " << newnuclei.size() << std::endl;
+
+        }
+        // Check for conflicts between the new nuclei
+
+        // Add the new nuclei to the list of nuclei
+
+
         //Seeding nucleus section
         //Looping over all nodes
         for (typename std::map<dealii::types::global_dof_index, dealii::Point<dim> >::iterator it=support_points.begin(); it!=support_points.end(); ++it){
