@@ -5,6 +5,10 @@
 #include "unitTest.h"
 #include "../../include/loadInputs.h"
 #include "../../src/loadInputs/loadInputs.cc"
+#include "../../include/vectorBCFunction.h"
+#include "../../src/utilities/vectorBCFunction.cc"
+#include "../../include/initialConditions.h"
+#include "initialConditions.cc"
 
 int main(int argc, char **argv)
 {

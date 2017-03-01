@@ -7,7 +7,6 @@ void  MatrixFreePDE<dim,degree>::computeIntegral(double& integratedField) {
 	QGauss<dim>  quadrature_formula(degree+1);
 	FE_Q<dim> FE (QGaussLobatto<1>(degree+1));
 	FEValues<dim> fe_values (FE, quadrature_formula, update_values | update_JxW_values | update_quadrature_points);
-	const unsigned int   dofs_per_cell = FE.dofs_per_cell;
 	const unsigned int   n_q_points    = quadrature_formula.size();
 	std::vector<double> cVal(n_q_points);
 
