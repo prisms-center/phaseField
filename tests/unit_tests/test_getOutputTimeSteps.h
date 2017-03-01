@@ -1,13 +1,10 @@
 // Unit test(s) for the method "getOutputTimeSteps"
-template <int dim>
-class getOutputTimeStepsTest: public MatrixFreePDE<dim>
+template <int dim, int degree>
+class getOutputTimeStepsTest: public MatrixFreePDE<dim,degree>
 {
 	public:
 	std::vector<unsigned int> outputTimeStepList_public;
-	getOutputTimeStepsTest(){
-		//init the MatrixFreePDE class for testing
-		this->initForTests();
-		this->totalIncrements = timeIncrements;
+	getOutputTimeStepsTest(userInputParameters _userInputs): MatrixFreePDE<dim,degree>(_userInputs){
 	};
 
 
@@ -17,22 +14,35 @@ class getOutputTimeStepsTest: public MatrixFreePDE<dim>
 	};
 
 
- private:
+	void setBCs(){};
+
+	private:
 	//RHS implementation for explicit solve
-	  void getRHS(const MatrixFree<dim,double> &data,
-		      std::vector<vectorType*> &dst,
-		      const std::vector<vectorType*> &src,
-		      const std::pair<unsigned int,unsigned int> &cell_range) const{};
+	void getRHS(const MatrixFree<dim,double> &data,
+			std::vector<vectorType*> &dst,
+			const std::vector<vectorType*> &src,
+			const std::pair<unsigned int,unsigned int> &cell_range) const{};
+
+	void residualRHS(const std::vector<modelVariable<dim> > & modelVarList,
+			std::vector<modelResidual<dim> > & modelResidualsList,
+			dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};
+
+	void residualLHS(const std::vector<modelVariable<dim> > & modelVarList,
+			modelResidual<dim> & modelRes,
+			dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};
+
+	void energyDensity(const std::vector<modelVariable<dim> > & modelVarList, const dealii::VectorizedArray<double> & JxW_value,
+			dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {};
 
 };
 
 template <int dim,typename T>
-bool unitTest<dim,T>::test_getOutputTimeSteps(std::string outputSpacingType, unsigned int numberOfOutputs, std::vector<unsigned int> userGivenTimeStepList){
+bool unitTest<dim,T>::test_getOutputTimeSteps(std::string outputSpacingType, unsigned int numberOfOutputs, std::vector<unsigned int> userGivenTimeStepList, userInputParameters userInputs){
 	bool pass = true;
 	std::cout << "\nTesting 'getOutputTimeSteps' for type " << outputSpacingType << " ...'" << std::endl;
 
 	//create test problem class object
-	getOutputTimeStepsTest<dim> test;
+	getOutputTimeStepsTest<dim,finiteElementDegree> test(userInputs);
 
 	test.getTimeStepList(outputSpacingType,numberOfOutputs,userGivenTimeStepList);
 

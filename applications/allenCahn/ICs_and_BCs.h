@@ -45,8 +45,6 @@ void InitialConditionVec<dim>::vector_value (const dealii::Point<dim> &p, dealii
 	  // =====================================================================
 }
 
-
-
 template <int dim, int degree>
 void customPDE<dim,degree>::setBCs(){
 	// =====================================================================

@@ -3,11 +3,17 @@
 
 #include <iostream>
 #include "unitTest.h"
+#include "../../include/loadInputs.h"
+#include "../../src/loadInputs/loadInputs.cc"
 
 int main(int argc, char **argv)
 {
   //init MPI
   Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, numbers::invalid_unsigned_int);
+
+  // Load input
+  userInputParameters userInputs;
+  userInputs.loadUserInput();
 
   std::cout << "Beginning unit tests..." << std::endl;
   bool pass = false;
@@ -16,80 +22,80 @@ int main(int argc, char **argv)
   // Unit tests for the method "computeInvM"
   total_tests++;
   unitTest<2,double> computeInvM_tester_2D;
-  pass = computeInvM_tester_2D.test_computeInvM(argc, argv);
+  pass = computeInvM_tester_2D.test_computeInvM(argc, argv, userInputs);
   tests_passed += pass;
   
   // Unit tests for the method "outputResults"
   total_tests++;
   unitTest<2,double> outputResults_tester_2D;
-  pass = outputResults_tester_2D.test_outputResults(argc, argv);
+  pass = outputResults_tester_2D.test_outputResults(argc, argv, userInputs);
   tests_passed += pass;
-  
+
   // Unit tests for the method "computeStress"
   total_tests++;
   unitTest<1,dealii::VectorizedArray<double>[1][1]> computeStress_tester_1D;
   pass = computeStress_tester_1D.test_computeStress();
   tests_passed += pass;
-  
+
   total_tests++;
   unitTest<1,dealii::Table<2, double> > computeStress_tester_1DT;
   pass = computeStress_tester_1DT.test_computeStress();
   tests_passed += pass;
-  
+
   total_tests++;
   unitTest<2,dealii::VectorizedArray<double>[3][3]> computeStress_tester_2D;
   pass = computeStress_tester_2D.test_computeStress();
   tests_passed += pass;
-  
+
   total_tests++;
   unitTest<2,dealii::Table<2, double> > computeStress_tester_2DT;
   pass = computeStress_tester_2DT.test_computeStress();
   tests_passed += pass;
-  
+
   total_tests++;
   unitTest<3,dealii::VectorizedArray<double>[6][6]> computeStress_tester_3D;
   pass = computeStress_tester_3D.test_computeStress();
   tests_passed += pass;
-  
+
   total_tests++;
   unitTest<3,dealii::Table<2, double> > computeStress_tester_3DT;
   pass = computeStress_tester_3DT.test_computeStress();
   tests_passed += pass;
-  
+
   // Unit tests for the method "getOutputTimeSteps" for all four types of spacing
   total_tests++;
   unitTest<2,double> getOutputTimeSteps_tester_eq;
-  pass = getOutputTimeSteps_tester_eq.test_getOutputTimeSteps("EQUAL_SPACING",10,{});
+  pass = getOutputTimeSteps_tester_eq.test_getOutputTimeSteps("EQUAL_SPACING",10,{},userInputs);
   tests_passed += pass;
 
   total_tests++;
   unitTest<2,double> getOutputTimeSteps_tester_log;
-  pass = getOutputTimeSteps_tester_log.test_getOutputTimeSteps("LOG_SPACING",10,{});
+  pass = getOutputTimeSteps_tester_log.test_getOutputTimeSteps("LOG_SPACING",10,{}, userInputs);
   tests_passed += pass;
 
   total_tests++;
   unitTest<2,double> getOutputTimeSteps_tester_dec;
-  pass = getOutputTimeSteps_tester_dec.test_getOutputTimeSteps("N_PER_DECADE",10,{});
+  pass = getOutputTimeSteps_tester_dec.test_getOutputTimeSteps("N_PER_DECADE",10,{}, userInputs);
   tests_passed += pass;
 
   total_tests++;
   unitTest<2,double> getOutputTimeSteps_tester_list;
   std::vector<unsigned int> userGivenTimeStepList = {0, 3, 55, 61};
-  pass = getOutputTimeSteps_tester_list.test_getOutputTimeSteps("LIST",0,userGivenTimeStepList);
+  pass = getOutputTimeSteps_tester_list.test_getOutputTimeSteps("LIST",0,userGivenTimeStepList, userInputs);
   tests_passed += pass;
 
   // Unit tests for the method "setRigidBodyModeConstraints"
   total_tests++;
   unitTest<2,double> setRigidBodyModeConstraints_tester_null;
   std::vector<int> rigidBodyModeComponents;
-  pass = setRigidBodyModeConstraints_tester_null.test_setRigidBodyModeConstraints(rigidBodyModeComponents);
+  pass = setRigidBodyModeConstraints_tester_null.test_setRigidBodyModeConstraints(rigidBodyModeComponents, userInputs);
   tests_passed += pass;
 
   total_tests++;
   unitTest<2,double> setRigidBodyModeConstraints_tester_one;
   rigidBodyModeComponents.clear();
   rigidBodyModeComponents.push_back(0);
-  pass = setRigidBodyModeConstraints_tester_one.test_setRigidBodyModeConstraints(rigidBodyModeComponents);
+  pass = setRigidBodyModeConstraints_tester_one.test_setRigidBodyModeConstraints(rigidBodyModeComponents, userInputs);
   tests_passed += pass;
 
   total_tests++;
@@ -98,7 +104,7 @@ int main(int argc, char **argv)
   rigidBodyModeComponents.push_back(0);
   rigidBodyModeComponents.push_back(1);
   rigidBodyModeComponents.push_back(2);
-  pass = setRigidBodyModeConstraints_tester_three.test_setRigidBodyModeConstraints(rigidBodyModeComponents);
+  pass = setRigidBodyModeConstraints_tester_three.test_setRigidBodyModeConstraints(rigidBodyModeComponents, userInputs);
   tests_passed += pass;
 
   // Unit tests for the method "vectorLoad"

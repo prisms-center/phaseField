@@ -58,8 +58,8 @@
 // "modelResidualsList", a list of the value and gradient terms of the residual for
 // each residual equation. The index for each variable in these lists corresponds to
 // the order it is defined at the top of this file (starting at 0).
-template <int dim>
-void generalizedProblem<dim>::residualRHS(const std::vector<modelVariable<dim> > & modelVariablesList,
+template <int dim, int degree>
+void customPDE<dim,degree>::residualRHS(const std::vector<modelVariable<dim> > & modelVariablesList,
 												std::vector<modelResidual<dim> > & modelResidualsList,
 												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
@@ -76,7 +76,7 @@ for (unsigned int i=0; i<dim; i++){
 }
 
 //compute stress tensor
-computeStress<dim>(CIJ_list[0], E, S);
+computeStress<dim>(this->userInputs.CIJ_list[0], E, S);
 
 //compute residual
 for (unsigned int i=0; i<dim; i++){
@@ -104,8 +104,8 @@ modelResidualsList[0].vectorGradResidual = Rux;
 // are multiple elliptic equations, conditional statements should be used to ensure
 // that the correct residual is being submitted. The index of the field being solved
 // can be accessed by "this->currentFieldIndex".
-template <int dim>
-void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim> > & modelVarList,
+template <int dim, int degree>
+void customPDE<dim,degree>::residualLHS(const std::vector<modelVariable<dim> > & modelVarList,
 		modelResidual<dim> & modelRes,
 		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
@@ -122,7 +122,7 @@ for (unsigned int i=0; i<dim; i++){
 }
 
 //compute stress tensor
-computeStress<dim>(CIJ_list[0], E, S);
+computeStress<dim>(this->userInputs.CIJ_list[0], E, S);
 
 //compute residual
 for (unsigned int i=0; i<dim; i++){
@@ -146,8 +146,8 @@ modelRes.vectorGradResidual = Rux;
 // energy density is added to "energy" variable and the components of the energy
 // density are added to the "energy_components" variable (index 0: chemical energy,
 // index 1: gradient energy, index 2: elastic energy).
-template <int dim>
-void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim> > & modelVarList,
+template <int dim, int degree>
+void customPDE<dim,degree>::energyDensity(const std::vector<modelVariable<dim> > & modelVarList,
 											const dealii::VectorizedArray<double> & JxW_value,
 											dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {
 
@@ -169,7 +169,7 @@ void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim>
 
 	//compute stress
 	//S=C*(E)
-	computeStress<dim>(CIJ_list[0], E, S);
+	computeStress<dim>(this->userInputs.CIJ_list[0], E, S);
 
 	scalarvalueType f_el = constV(0.0);
 
@@ -183,7 +183,7 @@ void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim>
 
 	// Loop to step through each element of the vectorized arrays. Working with deal.ii
 	// developers to see if there is a more elegant way to do this.
-	assembler_lock.acquire ();
+	this->assembler_lock.acquire ();
 	for (unsigned i=0; i<ux[0][0].n_array_elements;i++){
 	  if (ux[0][0][i] > 1.0e-10){
 		  this->energy+=total_energy_density[i]*JxW_value[i];
@@ -192,7 +192,7 @@ void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim>
 		  this->energy_components[2]+= f_el[i]*JxW_value[i];
 	  }
 	}
-	assembler_lock.release ();
+	this->assembler_lock.release ();
 }
 
 

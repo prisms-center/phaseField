@@ -52,12 +52,16 @@
 
 //solver type for implcit solves (default value:SolverCG)
 #ifndef solverType
-#define solverType SolverCG
+#define solverType "SolverCG"
 #endif
 
 //relative linear solver tolerance for implicit solves (default value:1.0e-10)
 #ifndef solverTolerance
 #define solverTolerance 1.0e-10
+#endif
+
+#ifndef absTol
+#define absTol false
 #endif
 
 //max number of linear solver iterations for implicit solves (default value:1000)
@@ -142,6 +146,10 @@
 
 #ifndef nucleationOccurs
 #define nucleationOccurs false
+#endif
+
+#ifndef calcEnergy
+#define calcEnergy false
 #endif
 
 #endif

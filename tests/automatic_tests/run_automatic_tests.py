@@ -21,6 +21,8 @@ def run_unit_tests():
 		os.remove("main")
 	if os.path.exists("CMakeCache.txt") == True:
 		os.remove("CMakeCache.txt")
+	if os.path.exists("unit_test_results.txt") == True:
+		os.remove("unit_test_results.txt")
 		
 	# Compile and run
 	subprocess.call(["cmake", "."],stdout=f,stderr=f)

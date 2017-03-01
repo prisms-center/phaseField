@@ -43,16 +43,188 @@ Scanning dependencies of target release
 -- Build files have been written to: /Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/tests/unit_tests
 Scanning dependencies of target main
 [ 50%] Building CXX object CMakeFiles/main.dir/main.cc.o
---------------------------------------------------------------------------
-mpirun was unable to find the specified executable file, and therefore
-did not launch the job.  This error was first reported for process
-rank 0; it may have occurred for other processes as well.
+[100%] Linking CXX executable main
+[100%] Built target main
+Built target release
+Beginning unit tests...
 
-NOTE: A common cause for this error is misspelling a mpirun command
-      line parameter option (remember that mpirun interprets the first
-      unrecognized command line token as the executable).
+Testing 'computeInvM' in 2 dimension(s)...'
+Beginning unit tests...
 
-Node:       vega
-Executable: main
---------------------------------------------------------------------------
-2 total processes failed to start
+Testing 'computeInvM' in 2 dimension(s)...'
+computed mass matrix (using FE space for field: 0)
+Test result for 'computeInvM' in   2 dimension(s): 1
+
+
+Test result for 'computeInvM' in   2 dimension(s): 1
++---------------------------------------------+------------+------------+
+| Total wallclock time elapsed since start    |   0.00434s |            |
+|                                             |            |            |
+| Section                         | no. calls |  wall time | % of total |
++---------------------------------+-----------+------------+------------+
++---------------------------------+-----------+------------+------------+
+
+
+Testing 'outputResults' in 2 dimension(s)...'
+
+Testing 'outputResults' in 2 dimension(s)...'
+Test result for 'outputResults' in 2 dimension(s): 1
+
+
++---------------------------------------------+------------+------------+
+Test result for 'outputResults' in 2 dimension(s): 1
+| Total wallclock time elapsed since start    |     2e-05s |            |
+|                                             |            |            |
+| Section                         | no. calls |  wall time | % of total |
++---------------------------------+-----------+------------+------------+
++---------------------------------+-----------+------------+------------+
+
+Testing 'computeStress' in 1 dimension(s)...
+Test result for 'computeStress' in 1 dimension(s): 1
+Testing 'computeStress' in 1 dimension(s)...
+Test result for 'computeStress' in 1 dimension(s): 1
+Testing 'computeStress' in 2 dimension(s)...
+Testing 'computeStress' in 1 dimension(s)...
+Test result for 'computeStress' in 1 dimension(s): 1
+Testing 'computeStress' in 1 dimension(s)...
+Test result for 'computeStress' in 2 dimension(s): 1
+Testing 'computeStress' in 2 dimension(s)...
+Test result for 'computeStress' in 2 dimension(s): 1
+Testing 'computeStress' in 3 dimension(s)...
+Test result for 'computeStress' in 3 dimension(s): 1
+Testing 'computeStress' in 3 dimension(s)...
+Test result for 'computeStress' in 1 dimension(s): 1
+Testing 'computeStress' in 2 dimension(s)...
+Test result for 'computeStress' in 2 dimension(s): 1
+Testing 'computeStress' in 2 dimension(s)...
+Test result for 'computeStress' in 2 dimension(s): 1
+Test result for 'computeStress' in 3 dimension(s): 1
+
+Testing 'getOutputTimeSteps' for type EQUAL_SPACING ...'
+Testing 'computeStress' in 3 dimension(s)...
+Test result for 'computeStress' in 3 dimension(s): 1
+Testing 'computeStress' in 3 dimension(s)...
+Test result for 'computeStress' in 3 dimension(s): 1
+
+Testing 'getOutputTimeSteps' for type EQUAL_SPACING ...'
+Test result for 'getOutputTimeSteps' for type EQUAL_SPACING : 1
+
+
++---------------------------------------------+------------+------------+
+Test result for 'getOutputTimeSteps' for type EQUAL_SPACING : 1
+| Total wallclock time elapsed since start    |  3.19e-05s |            |
+|                                             |            |            |
+| Section                         | no. calls |  wall time | % of total |
++---------------------------------+-----------+------------+------------+
++---------------------------------+-----------+------------+------------+
+
+
+Testing 'getOutputTimeSteps' for type LOG_SPACING ...'
+
+Testing 'getOutputTimeSteps' for type LOG_SPACING ...'
+Test result for 'getOutputTimeSteps' for type LOG_SPACING : 1
+
+
++---------------------------------------------+------------+------------+
+Test result for 'getOutputTimeSteps' for type LOG_SPACING : 1
+
+| Total wallclock time elapsed since start    |  2.88e-05s |            |
+|                                             |            |            |
+| Section                         | no. calls |  wall time | % of total |
++---------------------------------+-----------+------------+------------+
++---------------------------------+-----------+------------+------------+
+
+Testing 'getOutputTimeSteps' for type N_PER_DECADE ...'
+
+Testing 'getOutputTimeSteps' for type N_PER_DECADE ...'
+Test result for 'getOutputTimeSteps' for type N_PER_DECADE : 1
+Test result for 'getOutputTimeSteps' for type N_PER_DECADE : 1
+
+
++---------------------------------------------+------------+------------+
+| Total wallclock time elapsed since start    |  0.000629s |            |
+|                                             |            |            |
+
+Testing 'getOutputTimeSteps' for type LIST ...'
+| Section                         | no. calls |  wall time | % of total |
++---------------------------------+-----------+------------+------------+
++---------------------------------+-----------+------------+------------+
+
+
+Testing 'getOutputTimeSteps' for type LIST ...'
+Test result for 'getOutputTimeSteps' for type LIST : 1
+
+
++---------------------------------------------+------------+------------+
+Test result for 'getOutputTimeSteps' for type LIST : 1
+| Total wallclock time elapsed since start    |  1.31e-05s |            |
+|                                             |            |            |
+| Section                         | no. calls |  wall time | % of total |
++---------------------------------+-----------+------------+------------+
++---------------------------------+-----------+------------+------------+
+
+
+Testing 'setRigidBodyModeConstraints' with 0 component(s) needing a constraint...'
+
+Testing 'setRigidBodyModeConstraints' with 0 component(s) needing a constraint...'
+Test result for 'setRigidBodyModeConstraints' with   0 component(s) needing a constraint: 1
+
+
+Test result for 'setRigidBodyModeConstraints' with   0 component(s) needing a constraint: 1
++---------------------------------------------+------------+------------+
+| Total wallclock time elapsed since start    |   0.00153s |            |
+|                                             |            |            |
+| Section                         | no. calls |  wall time | % of total |
++---------------------------------+-----------+------------+------------+
++---------------------------------+-----------+------------+------------+
+
+
+Testing 'setRigidBodyModeConstraints' with 1 component(s) needing a constraint...'
+
+Testing 'setRigidBodyModeConstraints' with 1 component(s) needing a constraint...'
+Test result for 'setRigidBodyModeConstraints' with   1 component(s) needing a constraint: 1
+
+
+Test result for 'setRigidBodyModeConstraints' with   1 component(s) needing a constraint: 1
++---------------------------------------------+------------+------------+
+| Total wallclock time elapsed since start    |   0.00172s |            |
+|                                             |            |            |
+| Section                         | no. calls |  wall time | % of total |
++---------------------------------+-----------+------------+------------+
++---------------------------------+-----------+------------+------------+
+
+
+Testing 'setRigidBodyModeConstraints' with 3 component(s) needing a constraint...'
+
+Testing 'setRigidBodyModeConstraints' with 3 component(s) needing a constraint...'
+Test result for 'setRigidBodyModeConstraints' with   3 component(s) needing a constraint: 1
+Test result for 'setRigidBodyModeConstraints' with   3 component(s) needing a constraint: 1
+
+
++---------------------------------------------+------------+------------+
+| Total wallclock time elapsed since start    |   0.00168s |            |
+|                                             |            |            |
+| Section                         | no. calls |  wall time | % of total |
++---------------------------------+-----------+------------+------------+
++---------------------------------+-----------+------------+------------+
+
+Testing 'vectorLoad' for type 'Pb' ... 
+Test result for 'vectorLoad' is 1
+Testing 'vectorLoad' for type 'PNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE' ... 
+Test result for 'vectorLoad' is 1
+Testing 'vectorLoad' for type 'Pd' ... 
+Test result for 'vectorLoad' is 1
+
+
+Number of tests passed: 18/18 
+
+Testing 'vectorLoad' for type 'Pb' ... 
+Test result for 'vectorLoad' is 1
+Testing 'vectorLoad' for type 'PNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE' ... 
+Test result for 'vectorLoad' is 1
+Testing 'vectorLoad' for type 'Pd' ... 
+Test result for 'vectorLoad' is 1
+
+
+Number of tests passed: 18/18 
+
