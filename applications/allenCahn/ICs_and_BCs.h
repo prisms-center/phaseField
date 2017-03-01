@@ -1,6 +1,6 @@
 template <int dim>
 double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned int component) const
- {
+{
   double scalar_IC;
   // =====================================================================
   // ENTER THE INITIAL CONDITIONS HERE FOR SCALAR FIELDS
@@ -28,12 +28,12 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
 
   // =====================================================================
   return scalar_IC;
- }
+}
 
 
- template <int dim>
- void InitialConditionVec<dim>::vector_value (const dealii::Point<dim> &p, dealii::Vector<double> &vector_IC) const
- {
+template <int dim>
+void InitialConditionVec<dim>::vector_value (const dealii::Point<dim> &p, dealii::Vector<double> &vector_IC) const
+{
 	  // =====================================================================
 	  // ENTER THE INITIAL CONDITIONS HERE FOR VECTOR FIELDS
 	  // =====================================================================
@@ -43,16 +43,11 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
 
 
 	  // =====================================================================
- }
-
- template class InitialCondition<2>;
- template class InitialConditionVec<2>;
- template class InitialCondition<3>;
- template class InitialConditionVec<3>;
+}
 
 
 
-  template <int dim, int degree>
+template <int dim, int degree>
 void customPDE<dim,degree>::setBCs(){
 	// =====================================================================
 	// ENTER THE BOUNDARY CONDITIONS HERE
