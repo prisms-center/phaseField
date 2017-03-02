@@ -164,8 +164,34 @@ dealii::VectorizedArray<double> gamma = constV(1.0);
 dealii::VectorizedArray<double> x= q_point_loc[0];
 dealii::VectorizedArray<double> y= q_point_loc[1];
 
+
+
+// The concentration and its derivatives (names here should match those in the macros above)
+scalarvalueType c = modelVariablesList[0].scalarValue;
+scalargradType cx = modelVariablesList[0].scalarGrad;
+
+// The order parameter and its derivatives (names here should match those in the macros above)
+scalarvalueType n = modelVariablesList[1].scalarValue;
+scalargradType nx = modelVariablesList[1].scalarGrad;
+
+dealii::VectorizedArray<double> nucleation_source_term = constV(0.0);
+
 for (std::vector<nucleus>::iterator thisNuclei=nuclei.begin(); thisNuclei!=nuclei.end(); ++thisNuclei){
-    dealii::Point<problemDIM> r=thisNuclei->center;
+    if (thisNuclei->seedingTimestep == this->currentIncrement){
+
+    	dealii::VectorizedArray<double> r = constV(0.0);
+    	for (unsigned int dir = 0; dir < dim; dir++){
+    		r += (q_point_loc[dir]-constV(thisNuclei->center[dir])) * (q_point_loc[dir]-constV(thisNuclei->center[dir]));
+    	}
+    	r = std::sqrt(r);
+    	for (unsigned i=0; i<n.n_array_elements;i++){
+
+    		if (r[i]<=opfreeze_radius){
+    			nucleation_source_term[i] = 0.5*(1.0-std::tanh((r[i]-n_radius)/interface_coeff));
+    		}
+    	}
+    }
+	dealii::Point<problemDIM> r=thisNuclei->center;
     double nucendtime = thisNuclei->seededTime + thisNuclei->seedingTime;
     dealii::VectorizedArray<double> spacearg=(x-constV(r[0]))*(x-constV(r[0]))+(y-constV(r[1]))*(y-constV(r[1]));
     spacearg=std::sqrt(spacearg);
@@ -177,20 +203,12 @@ for (std::vector<nucleus>::iterator thisNuclei=nuclei.begin(); thisNuclei!=nucle
     gamma=gamma*localgamma;
 }
 
-// The concentration and its derivatives (names here should match those in the macros above)
-scalarvalueType c = modelVariablesList[0].scalarValue;
-scalargradType cx = modelVariablesList[0].scalarGrad;
-
-// The order parameter and its derivatives (names here should match those in the macros above)
-scalarvalueType n = modelVariablesList[1].scalarValue;
-scalargradType nx = modelVariablesList[1].scalarGrad;
-
 // Residuals for the equation to evolve the concentration (names here should match those in the macros above)
 modelResidualsList[0].scalarValueResidual = rcV;
 modelResidualsList[0].scalarGradResidual = rcxV;
 
 // Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
-modelResidualsList[1].scalarValueResidual = rnV;
+modelResidualsList[1].scalarValueResidual = rnV + nucleation_source_term;
 modelResidualsList[1].scalarGradResidual = rnxV;
 
 }

@@ -308,11 +308,10 @@ void customPDE<dim,degree>::modifySolutionFields()
         // Attempt to nucleate (each processor independently)
         nucAttempt(newnuclei, support_points, c, n, t, inc);
 
+        //MPI INITIALIZATON
+        int numProcs=Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
+        int thisProc=Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
         if (numProcs > 1) {
-        	//MPI INITIALIZATON
-        	int numProcs=Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
-        	int thisProc=Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
-
         	// Cycle through each processor, sending and receiving, to append the list of new nuclei
         	for (int proc_index=0; proc_index < numProcs-1; proc_index++){
         		if (thisProc == proc_index){
@@ -336,22 +335,5 @@ void customPDE<dim,degree>::modifySolutionFields()
         // Add the new nuclei to the list of nuclei
         nuclei.insert(nuclei.end(),newnuclei.begin(),newnuclei.end());
 
-        //Seeding nucleus section
-        //Looping over all nodes
-        for (typename std::map<dealii::types::global_dof_index, dealii::Point<dim> >::iterator it=support_points.begin(); it!=support_points.end(); ++it){
-            unsigned int dof=it->first;
-            //set only local owned values of the parallel vector
-            if (n->locally_owned_elements().is_element(dof)){
-                dealii::Point<dim> nodePoint=it->second;
-                //Looping over all nuclei seeded in this iteration
-                for (std::vector<nucleus>::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
-                    dealii::Point<dim> center=thisNuclei->center;
-                    double r=nodePoint.distance(center);
-                    if (r<=opfreeze_radius){
-                        (*n)(dof)=0.5*(1.0-std::tanh((r-n_radius)/interface_coeff));
-                    }
-                }
-            }
-        }
     }
 }
