@@ -53,67 +53,9 @@
 #define calcEnergy true
 
 // =================================================================================
-// Set the KKS model parameters
+// Set the flag determining if nucleation is allowed
 // =================================================================================
-
-//Average alloy composition (for initial contitions)
-#define c_avg 0.2
-
-// Cahn-Hilliard mobility
-#define McV 1.0
-
-// Allen-Cahn mobility
-#define MnV 1.0
-
-// Allen-Cahn gradient energy coefficient
-#define KnV 2.0
-
-// Energy barrier coefficient (used to tune the interfacial energy)
-#define W (KnV)
-
-// Interface coefficient
-double interface_coeff=sqrt(2.0*KnV/W);
-
-//Constants for free energy expressions
-double A0 = 0.0;
-double A2 = 1.0;
-double calmin= 0.0;
-double B0 = 0.0;
-double B2 = 4.0;
-double cbtmin = 1.0;
-
-// =================================================================================
-// Set the nucleation parameters
-// =================================================================================
-
-// Flag for nucleation to occur
-#define nucleation_occurs true
-
-// Nucleation radius (order parameter)
-#define n_radius 5.0
-
-// Hold time for order parameter
-#define t_hold 20.0
-
-// Small constant for sign function
-#define epsil 1.0e-7
-
-// Minimum distance between nuclei
-#define minDistBetwenNuclei (4.0*n_radius)
-
-// Number of time steps between nucleation attempts
-#define skipNucleationSteps 30
-
-// radius for order parameter hold
-#define opfreeze_radius (2.0*n_radius)
-
-//Minimum distance from the edges of the system where nucleation can occur
-#define borderreg (2.0*n_radius)
-
-// Constants k1 and k2 for nucleation rate in the bulk
-#define k1 (4.0*498.866)
-#define k2 4.14465
-
+#define nucleationOccurs true
 
 
 

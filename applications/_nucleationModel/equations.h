@@ -30,6 +30,68 @@
 // here. For more complex cases with loops or conditional statements, residual
 // equations (or parts of residual equations) can be written below in "residualRHS".
 
+
+// =================================================================================
+// Set the KKS model parameters
+// =================================================================================
+
+//Average alloy composition (for initial contitions)
+#define c_avg 0.2
+
+// Cahn-Hilliard mobility
+#define McV 1.0
+
+// Allen-Cahn mobility
+#define MnV 1.0
+
+// Allen-Cahn gradient energy coefficient
+#define KnV 2.0
+
+// Energy barrier coefficient (used to tune the interfacial energy)
+#define W_barrier (KnV)
+
+// Interface coefficient
+double interface_coeff=std::sqrt(2.0*KnV/W_barrier);
+
+//Constants for free energy expressions
+double A0 = 0.0;
+double A2 = 1.0;
+double calmin= 0.0;
+double B0 = 0.0;
+double B2 = 4.0;
+double cbtmin = 1.0;
+
+// =================================================================================
+// Set the nucleation parameters
+// =================================================================================
+
+// Nucleation radius (order parameter)
+#define n_radius 5.0
+
+// Hold time for order parameter
+#define t_hold 20.0
+
+// Small constant for sign function
+#define epsil 1.0e-7
+
+// Minimum distance between nuclei
+#define minDistBetwenNuclei (4.0*n_radius)
+
+// Number of time steps between nucleation attempts
+#define skipNucleationSteps 30
+
+// radius for order parameter hold
+#define opfreeze_radius (2.0*n_radius)
+
+//Minimum distance from the edges of the system where nucleation can occur
+#define borderreg (2.0*n_radius)
+
+// Constants k1 and k2 for nucleation rate in the bulk
+#define k1 (4.0*498.866)
+#define k2 4.14465
+
+
+
 // Free energy for each phase and their first and second derivatives
 #define faV (A0+A2*(c_alpha-calmin)*(c_alpha-calmin))
 #define facV (2.0*A2*(c_alpha-calmin))
@@ -56,7 +118,7 @@
 #define rcV   (c)
 #define rcxV  (constV(-McV*timeStep)*term_muxV)
 //For order parameter (gamma is a variable order parameter mobility factor)
-#define rnV   (n-constV(timeStep*MnV)*gamma*((fbV-faV)*hnV - (c_beta-c_alpha)*fbcV*hnV + W*fbarriernV))
+#define rnV   (n-constV(timeStep*MnV)*gamma*((fbV-faV)*hnV - (c_beta-c_alpha)*fbcV*hnV + W_barrier*fbarriernV))
 #define rnxV  (constV(-timeStep*KnV*MnV)*gamma*nx)
 
 
@@ -89,8 +151,8 @@ std::vector<nucleus> nuclei;
 // "modelResidualsList", a list of the value and gradient terms of the residual for
 // each residual equation. The index for each variable in these lists corresponds to
 // the order it is defined at the top of this file (starting at 0).
-template <int dim>
-void generalizedProblem<dim>::residualRHS(const std::vector<modelVariable<dim>> & modelVariablesList,
+template <int dim, int degree>
+void customPDE<dim,degree>::residualRHS(const std::vector<modelVariable<dim>> & modelVariablesList,
 												std::vector<modelResidual<dim>> & modelResidualsList,
 												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
@@ -148,11 +210,10 @@ modelResidualsList[1].scalarGradResidual = rnxV;
 // are multiple elliptic equations, conditional statements should be used to ensure
 // that the correct residual is being submitted. The index of the field being solved
 // can be accessed by "this->currentFieldIndex".
-template <int dim>
-void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim>> & modelVariablesList,
+template <int dim, int degree>
+void customPDE<dim,degree>::residualLHS(const std::vector<modelVariable<dim> > & modelVarList,
 		modelResidual<dim> & modelRes,
 		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
-
 }
 
 // =================================================================================
@@ -166,8 +227,8 @@ void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim>> 
 // energy density is added to "energy" variable and the components of the energy
 // density are added to the "energy_components" variable (index 0: chemical energy,
 // index 1: gradient energy, index 2: elastic energy).
-template <int dim>
-void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim>> & modelVariablesList,
+template <int dim, int degree>
+void customPDE<dim,degree>::energyDensity(const std::vector<modelVariable<dim>> & modelVariablesList,
 											const dealii::VectorizedArray<double> & JxW_value,
 											dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {
 
@@ -191,7 +252,7 @@ total_energy_density = f_chem + f_grad;
 
 // Loop to step through each element of the vectorized arrays. Working with deal.ii
 // developers to see if there is a more elegant way to do this.
-assembler_lock.acquire ();
+this->assembler_lock.acquire ();
 for (unsigned i=0; i<c.n_array_elements;i++){
   if (c[i] > 1.0e-10){
 	  this->energy+=total_energy_density[i]*JxW_value[i];
@@ -199,7 +260,7 @@ for (unsigned i=0; i<c.n_array_elements;i++){
 	  this->energy_components[1]+= f_grad[i]*JxW_value[i];
   }
 }
-assembler_lock.release ();
+this->assembler_lock.release ();
 }
 
 

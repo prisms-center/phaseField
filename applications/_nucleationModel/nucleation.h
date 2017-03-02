@@ -284,8 +284,8 @@ void resolveNucleationConflicts (std::vector<nucleus> &newnuclei){
 // =================================================================================
 // Global nucleation procedure
 // =================================================================================
-template <int dim>
-void generalizedProblem<dim>::modifySolutionFields()
+template <int dim, int degree>
+void customPDE<dim,degree>::modifySolutionFields()
 {
 	//current time step
 	unsigned int inc=this->currentIncrement;
@@ -293,7 +293,6 @@ void generalizedProblem<dim>::modifySolutionFields()
     if ( (inc <= timeIncrements) && (inc % skipNucleationSteps == 0) ){
     	//current time
 		double t=this->currentTime;
-
 
 		//get the list of node points in the domain
 		std::map<dealii::types::global_dof_index, dealii::Point<dim> > support_points;
@@ -306,16 +305,13 @@ void generalizedProblem<dim>::modifySolutionFields()
         //vector of all the NEW nuclei seeded in this time step
         std::vector<nucleus> newnuclei;
         
-        //MPI INITIALIZATON
-        int numProcs=Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
-        int thisProc=Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
-        
-        if (numProcs == 1) {
-        	//Serial option
-            nucAttempt(newnuclei, support_points, c, n, t, inc);
-        }
-        else{
-        	nucAttempt(newnuclei, support_points, c, n, t, inc);
+        // Attempt to nucleate (each processor independently)
+        nucAttempt(newnuclei, support_points, c, n, t, inc);
+
+        if (numProcs > 1) {
+        	//MPI INITIALIZATON
+        	int numProcs=Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
+        	int thisProc=Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
 
         	// Cycle through each processor, sending and receiving, to append the list of new nuclei
         	for (int proc_index=0; proc_index < numProcs-1; proc_index++){

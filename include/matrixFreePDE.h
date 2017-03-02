@@ -245,7 +245,7 @@ class MatrixFreePDE:public Subscriptor
   //methods to apply initial conditions
   /*Virtual method to apply initial conditions.  This is usually expected to be provided by the user in IBVP (Initial Boundary Value Problems).*/   
   void applyInitialConditions();
-  void modifySolutionFields ();
+  virtual void modifySolutionFields ();
 
   /*Method to compute energy like quantities.*/
   void computeEnergy();
