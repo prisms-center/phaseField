@@ -127,7 +127,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// Set the maximum and minimum level of refinement</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="precipitate_evolution_2parameters_8h.html#aceca6f3810b77c22614f6c95d5be049f">   37</a></span>&#160;<span class="preprocessor">#define maxRefinementLevel (refineFactor)</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="precipitate_evolution_2parameters_8h.html#aba4954255c6b86a4f11ee18160a1b60c">   38</a></span>&#160;<span class="preprocessor">#define minRefinementLevel (refineFactor-2)</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="precipitate_evolution_2parameters_8h.html#aba4954255c6b86a4f11ee18160a1b60c">   38</a></span>&#160;<span class="preprocessor">#define minRefinementLevel (refineFactor-4)</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">// Set the fields used to determine the refinement. Fields determined by the order</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">// declared in &quot;equations.h&quot;, starting at zero</span></div>
@@ -170,22 +170,34 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">// Each field in the problem will be output is writeOutput is set to &quot;true&quot;</span></div>
 <div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="precipitate_evolution_2parameters_8h.html#a0e0c9d336389e97f2526f080cf895055">   79</a></span>&#160;<span class="preprocessor">#define writeOutput true</span></div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">// Output files are written every skipOutputSteps time steps</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="precipitate_evolution_2parameters_8h.html#ac8cf4158da8d17bc16eb0b3801f7eedc">   82</a></span>&#160;<span class="preprocessor">#define skipOutputSteps 500</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">// =================================================================================</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">// Set the flag determining if the total free energy is calculated for each output</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">// =================================================================================</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="precipitate_evolution_2parameters_8h.html#a5a446e00dd3b3486b4705599f8b71e02">   87</a></span>&#160;<span class="preprocessor">#define calcEnergy true</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">// Type of spacing between outputs (&quot;EQUAL_SPACING&quot;, &quot;LOG_SPACING&quot;, &quot;N_PER_DECADE&quot;,</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">// or &quot;LIST&quot;)</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="precipitate_evolution_2parameters_8h.html#a116ad73fe4a6adafcf1624c050c9769f">   83</a></span>&#160;<span class="preprocessor">#define outputCondition &quot;EQUAL_SPACING&quot;</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">// Number of times the program outputs the fields (total number for &quot;EQUAL_SPACING&quot;</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">// and &quot;LOG_SPACING&quot;, number per decade for &quot;N_PER_DECADE&quot;, ignored for &quot;LIST&quot;)</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="precipitate_evolution_2parameters_8h.html#a536aed0f4d34b51456419990f79e32c1">   87</a></span>&#160;<span class="preprocessor">#define numOutputs 10</span></div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">// User-defined list of time steps where the program should output. Only used if</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">// outputCondition is &quot;LIST&quot;</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="precipitate_evolution_2parameters_8h.html#aca4ac8bcad988e92b7c2ae5d6b3a3107">   91</a></span>&#160;<span class="preprocessor">#define outputList {0}</span></div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">// Status is printed to the screen every skipPrintSteps</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="precipitate_evolution_2parameters_8h.html#a63477dc9da59481ff2b1d689f2e0f8f6">   94</a></span>&#160;<span class="preprocessor">#define skipPrintSteps 100</span></div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment">// =================================================================================</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">// Set the flag determining if the total free energy is calculated for each output</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">// =================================================================================</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="precipitate_evolution_2parameters_8h.html#a5a446e00dd3b3486b4705599f8b71e02">   99</a></span>&#160;<span class="preprocessor">#define calcEnergy true</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

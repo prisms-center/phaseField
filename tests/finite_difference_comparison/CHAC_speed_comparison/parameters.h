@@ -49,8 +49,12 @@
 // Each field in the problem will be output is writeOutput is set to "true"
 #define writeOutput true
 
-// Output files are written every skipOutputSteps time steps
-#define skipOutputSteps 50000
+// Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", or "N_PER_DECADE")
+#define outputCondition "EQUAL_SPACING"
+
+// Number of times the program outputs the fields (total number for "EQUAL_SPACING"
+// and "LOG_SPACING", number per decade for "N_PER_DECADE")
+#define numOutputs 1
 // =================================================================================
 
 // =================================================================================

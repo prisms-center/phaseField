@@ -35,7 +35,7 @@
 
 // Set the maximum and minimum level of refinement
 #define maxRefinementLevel (refineFactor)
-#define minRefinementLevel (refineFactor-2)
+#define minRefinementLevel (refineFactor-4)
 
 // Set the fields used to determine the refinement. Fields determined by the order
 // declared in "equations.h", starting at zero
@@ -60,7 +60,7 @@
 // Set the elliptic solver parameters
 // =================================================================================
 // The solver type (currently the only recommended option is conjugate gradient)
-#define solverType SolverCG
+#define solverType "SolverCG"
 
 // The flag that determines whether the tolerance for solver convergence should
 // be an absolute tolerance (absTol=true) or a relative tolerance (absTol=false)
@@ -78,8 +78,20 @@
 // Each field in the problem will be output is writeOutput is set to "true"
 #define writeOutput true
 
-// Output files are written every skipOutputSteps time steps
-#define skipOutputSteps 500
+// Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
+// or "LIST")
+#define outputCondition "EQUAL_SPACING"
+
+// Number of times the program outputs the fields (total number for "EQUAL_SPACING"
+// and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
+#define numOutputs 10
+
+// User-defined list of time steps where the program should output. Only used if
+// outputCondition is "LIST"
+#define outputList {0}
+
+// Status is printed to the screen every skipPrintSteps
+#define skipPrintSteps 100
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output

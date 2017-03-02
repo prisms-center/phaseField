@@ -1,19 +1,16 @@
 //outputResults() method for MatrixFreePDE class
 
-#ifndef OUTPUTRESULTS_MATRIXFREE_H
-#define OUTPUTRESULTS_MATRIXFREE_H
-//this source file is temporarily treated as a header file (hence
-//#ifndef's) till library packaging scheme is finalized
+#include "../../include/matrixFreePDE.h"
 
 //output results
-template <int dim>
-void MatrixFreePDE<dim>::outputResults(){
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::outputResults() const {
   //log time
   computing_timer.enter_section("matrixFreePDE: output");
 
   //create DataOut object
   DataOut<dim> data_out;
-  std::cout <<  "fields: " << fields.size() << std::endl;
+
   //loop over fields
 
   for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
@@ -28,27 +25,35 @@ void MatrixFreePDE<dim>::outputResults(){
     data_out.add_data_vector(*dofHandlersSet[fieldIndex], *solutionSet[fieldIndex], solutionNames, dataType);  
   }
   
-  data_out.build_patches (finiteElementDegree);
+  data_out.build_patches (degree);
   
   //write to results file
   //file name
   std::ostringstream cycleAsString;
-  cycleAsString << std::setw(std::ceil(std::log10(totalIncrements))+1) << std::setfill('0') << currentIncrement;
+  cycleAsString << std::setw(std::ceil(std::log10(userInputs.totalIncrements))+1) << std::setfill('0') << currentIncrement;
   char vtuFileName[100], pvtuFileName[100];
-  sprintf(vtuFileName, "solution-%s.%u.vtu", cycleAsString.str().c_str(),Utilities::MPI::this_mpi_process(MPI_COMM_WORLD));
-  sprintf(pvtuFileName, "solution-%s.pvtu", cycleAsString.str().c_str());
+  sprintf(vtuFileName, "solution-%s.%u.%s", cycleAsString.str().c_str(),Utilities::MPI::this_mpi_process(MPI_COMM_WORLD),userInputs.output_file_type.c_str());
+  sprintf(pvtuFileName, "solution-%s.p%s", cycleAsString.str().c_str(),userInputs.output_file_type.c_str());
   std::ofstream output (vtuFileName);
 
   //write to file
-  data_out.write_vtu (output);
-
+  if (userInputs.output_file_type == "vtu"){
+	  data_out.write_vtu (output);
+  }
+  else if (userInputs.output_file_type == "vtk"){
+	  data_out.write_vtk (output);
+  }
+  else {
+	  std::cout << "PRISMS-PF Error: The parameter 'outputFileType' must be either \"vtu\" or \"vtk\"" << std::endl;
+	  abort();
+  }
 
   //create pvtu record
   if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
     std::vector<std::string> filenames;
     for (unsigned int i=0;i<Utilities::MPI::n_mpi_processes (MPI_COMM_WORLD); ++i) {
     	char vtuProcFileName[100];
-    	sprintf(vtuProcFileName, "solution-%s.%u.vtu", cycleAsString.str().c_str(),i);
+    	sprintf(vtuProcFileName, "solution-%s.%u.%s", cycleAsString.str().c_str(),i,userInputs.output_file_type.c_str());
     	filenames.push_back (vtuProcFileName);
     }
     std::ofstream master_output (pvtuFileName);
@@ -61,4 +66,4 @@ void MatrixFreePDE<dim>::outputResults(){
   computing_timer.exit_section("matrixFreePDE: output"); 
 }
 
-#endif
+#include "../../include/matrixFreePDE_template_instantiations.h"

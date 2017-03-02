@@ -1,3 +1,7 @@
+#ifndef DEALIIHEADERS_H
+#define DEALIIHEADERS_H
+
+
 //List of deal.II headers needed for the phase field codes
 #include <deal.II/base/quadrature.h>
 #include <deal.II/base/function.h>
@@ -16,6 +20,7 @@
 #include <deal.II/grid/tria_accessor.h>
 #include <deal.II/grid/tria_iterator.h>
 #include <deal.II/grid/grid_generator.h>
+#include <deal.II/grid/grid_tools.h>
 #include <deal.II/dofs/dof_tools.h>
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/numerics/data_out.h>
@@ -29,4 +34,7 @@
 #include <deal.II/distributed/solution_transfer.h>
 #include <deal.II/numerics/error_estimator.h>
 #include <deal.II/distributed/grid_refinement.h>
+
+
+#endif // DEALIIHEADERS_H
 

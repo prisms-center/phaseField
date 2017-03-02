@@ -202,7 +202,7 @@ if (dim==3){
 	E[5]=strain[0][1]+strain[1][0];
 
 	// Multiply CIJ and E (in the language of Deal.II this is a tensor contraction) to get S
-	dealii::contract(S,CIJ,E);
+	S = CIJ*E;
 
 	R[0][0]=S[0]; R[1][1]=S[1]; R[2][2]=S[2];
 	R[1][2]=S[3]; R[0][2]=S[4]; R[0][1]=S[5];
@@ -214,7 +214,7 @@ else if (dim==2){
 	E[2]=strain[0][1]+strain[1][0];
 
 	// Multiply CIJ and E (in the language of Deal.II this is a tensor contraction) to get S
-	dealii::contract(S,CIJ,E);
+	S = CIJ*E;
 
 	R[0][0]=S[0]; R[1][1]=S[1];
 	R[0][1]=S[2]; R[1][0]=S[2];

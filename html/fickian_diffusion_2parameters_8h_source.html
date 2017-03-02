@@ -136,21 +136,33 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">// Each field in the problem will be output is writeOutput is set to &quot;true&quot;</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="fickian_diffusion_2parameters_8h.html#a0e0c9d336389e97f2526f080cf895055">   45</a></span>&#160;<span class="preprocessor">#define writeOutput true</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">// Output files are written every skipOutputSteps time steps</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="fickian_diffusion_2parameters_8h.html#ac8cf4158da8d17bc16eb0b3801f7eedc">   48</a></span>&#160;<span class="preprocessor">#define skipOutputSteps 100</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// =================================================================================</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">// Set the flag determining if the total free energy is calculated for each output</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">// =================================================================================</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="fickian_diffusion_2parameters_8h.html#a5a446e00dd3b3486b4705599f8b71e02">   53</a></span>&#160;<span class="preprocessor">#define calcEnergy false</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">// Type of spacing between outputs (&quot;EQUAL_SPACING&quot;, &quot;LOG_SPACING&quot;, &quot;N_PER_DECADE&quot;,</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">// or &quot;LIST&quot;)</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="fickian_diffusion_2parameters_8h.html#a116ad73fe4a6adafcf1624c050c9769f">   49</a></span>&#160;<span class="preprocessor">#define outputCondition &quot;EQUAL_SPACING&quot;</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">// Number of times the program outputs the fields (total number for &quot;EQUAL_SPACING&quot;</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">// and &quot;LOG_SPACING&quot;, number per decade for &quot;N_PER_DECADE&quot;, ignored for &quot;LIST&quot;)</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="fickian_diffusion_2parameters_8h.html#a536aed0f4d34b51456419990f79e32c1">   53</a></span>&#160;<span class="preprocessor">#define numOutputs 10</span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// User-defined list of time steps where the program should output. Only used if</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">// outputCondition is &quot;LIST&quot;</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="fickian_diffusion_2parameters_8h.html#aca4ac8bcad988e92b7c2ae5d6b3a3107">   57</a></span>&#160;<span class="preprocessor">#define outputList {0}</span></div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">// Status is printed to the screen every skipPrintSteps</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="fickian_diffusion_2parameters_8h.html#a63477dc9da59481ff2b1d689f2e0f8f6">   60</a></span>&#160;<span class="preprocessor">#define skipPrintSteps 10</span></div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">// =================================================================================</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">// Set the flag determining if the total free energy is calculated for each output</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">// =================================================================================</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="fickian_diffusion_2parameters_8h.html#a5a446e00dd3b3486b4705599f8b71e02">   65</a></span>&#160;<span class="preprocessor">#define calcEnergy false</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

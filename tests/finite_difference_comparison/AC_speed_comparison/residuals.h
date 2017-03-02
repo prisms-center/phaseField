@@ -24,8 +24,8 @@
 // ---------------------------------------------
 
 template <int dim>
-void generalizedProblem<dim>::residualRHS(const std::vector<modelVariable<dim>> & modelVariablesList,
-												std::vector<modelResidual<dim>> & modelResidualsList,
+void generalizedProblem<dim>::residualRHS(const std::vector<modelVariable<dim> > & modelVariablesList,
+												std::vector<modelResidual<dim> > & modelResidualsList,
 												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 //n
@@ -40,13 +40,13 @@ modelResidualsList[0].scalarGradResidual = rnxV;
 }
 
 template <int dim>
-void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim>> & modelVarList,
+void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim> > & modelVarList,
 		modelResidual<dim> & modelRes,
 		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 }
 
 template <int dim>
-void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim>> & modelVarList,
+void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim> > & modelVarList,
 											const dealii::VectorizedArray<double> & JxW_value,
 											dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {
 	scalarvalueType total_energy_density = constV(0.0);

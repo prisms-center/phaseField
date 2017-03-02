@@ -1,14 +1,6 @@
 template <int dim>
-class InitialCondition : public Function<dim>
+double InitialCondition<dim>::value (const Point<dim> &p, const unsigned int component) const
 {
-public:
-  unsigned int index;
-  Vector<double> values;
-  InitialCondition (const unsigned int _index) : Function<dim>(1), index(_index) {
-    std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
-  }
-  double value (const Point<dim> &p, const unsigned int component = 0) const
-  {
 	  double scalar_IC = 0;
 	  // =====================================================================
 	  // ENTER THE INITIAL CONDITIONS HERE FOR SCALAR FIELDS
@@ -17,7 +9,6 @@ public:
 	  // Use "if" statements to set the initial condition for each variable
 	  // according to its variable index.
 
-	  double dx=spanX/((double) subdivisionsX)/std::pow(2.0,refineFactor);
 	  double r=0.0;
 
 	  if (index == 0){
@@ -35,10 +26,6 @@ public:
 #endif
 	  }
 	  if (index == 1) {
-		  r=p.distance(Point<dim>(spanX/3.0,spanY/3.0));
-		  scalar_IC = 0.5*(1.0-std::tanh((r-spanX/5.0)/(3*dx)));
-		  r=p.distance(Point<dim>(3.0*spanX/4.0,3.0*spanY/4.0));
-		  scalar_IC += 0.5*(1.0-std::tanh((r-spanX/12.0)/(3*dx)));
 #if problemDIM==1
                   r=p[0];
                   scalar_IC = 0.5*(1-std::tanh((r-spanX/2.0)/6.0));
@@ -53,20 +40,12 @@ public:
           if (index == 2) scalar_IC = 0.0;
 	  // =====================================================================
 	  return scalar_IC;
-  }
-};
+}
+
 
 template <int dim>
-class InitialConditionVec : public Function<dim>
+void InitialConditionVec<dim>::vector_value (const Point<dim> &p,Vector<double> &vector_IC) const
 {
-public:
-  unsigned int index;
-  //Vector<double> values;
-  InitialConditionVec (const unsigned int _index) : Function<dim>(dim), index(_index) {
-    std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
-  }
-  void vector_value (const Point<dim> &p,Vector<double> &vector_IC) const
-  {
 	  // =====================================================================
 	  // ENTER THE INITIAL CONDITIONS HERE FOR VECTOR FIELDS
 	  // =====================================================================
@@ -76,13 +55,12 @@ public:
 
 
 	  // =====================================================================
-  }
-};
+}
 
 
-template <int dim>
-void generalizedProblem<dim>::setBCs(){
 
+template <int dim, int degree>
+void customPDE<dim,degree>::setBCs(){
 	// =====================================================================
 	// ENTER THE BOUNDARY CONDITIONS HERE
 	// =====================================================================
@@ -94,16 +72,16 @@ void generalizedProblem<dim>::setBCs(){
 	// Inputs to "inputBCs":
 	// First input: variable number
 	// Second input: component number
-	// Third input: BC type (options are "ZERO_DERIVATIVE" and "DIRICHLET")
+	// Third input: BC type (options are "ZERO_DERIVATIVE", "DIRICHLET", and "PERIODIC")
 	// Fourth input: BC value (ignored unless the BC type is "DIRICHLET")
 	// Odd inputs after the third: BC type
 	// Even inputs after the third: BC value
 	// Face numbering: starts at zero with the minimum of the first direction, one for the maximum of the first direction
 	//						two for the minimum of the second direction, etc.
 
-	inputBCs(0,0,"ZERO_DERIVATIVE",0);
-	inputBCs(1,0,"ZERO_DERIVATIVE",0);
-	inputBCs(2,0,"ZERO_DERIVATIVE",0);
+	this->inputBCs(0,0,"ZERO_DERIVATIVE",0);
+	this->inputBCs(1,0,"ZERO_DERIVATIVE",0);
+	this->inputBCs(2,0,"ZERO_DERIVATIVE",0);
 
 }
 

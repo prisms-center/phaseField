@@ -31,7 +31,7 @@
 // Set the elliptic solver parameters
 // =================================================================================
 // The solver type (currently the only recommended option is conjugate gradient)
-#define solverType SolverCG
+#define solverType "SolverCG"
 
 // The tolerance for convergence (L2 norm of the residual)
 #define solverTolerance 1.0e-10
@@ -44,6 +44,12 @@
 // =================================================================================
 // Each field in the problem will be output is writeOutput is set to "true"
 #define writeOutput true
+
+// =================================================================================
+// Set the flag determining if the total free energy is calculated for each output
+// =================================================================================
+#define calcEnergy true
+
 
 
 

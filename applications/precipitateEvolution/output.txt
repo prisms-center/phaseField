@@ -1,0 +1,641 @@
+rm: *vtu: No such file or directory
+-- Using the deal.II-8.4.1 installation found at /Applications/deal.II.app/Contents/Resources
+-- Include macro /Applications/deal.II.app/Contents/Resources/share/deal.II/macros/macro_deal_ii_add_test.cmake
+-- Include macro /Applications/deal.II.app/Contents/Resources/share/deal.II/macros/macro_deal_ii_initialize_cached_variables.cmake
+-- Include macro /Applications/deal.II.app/Contents/Resources/share/deal.II/macros/macro_deal_ii_invoke_autopilot.cmake
+-- Include macro /Applications/deal.II.app/Contents/Resources/share/deal.II/macros/macro_deal_ii_pickup_tests.cmake
+-- Include macro /Applications/deal.II.app/Contents/Resources/share/deal.II/macros/macro_deal_ii_query_git_information.cmake
+-- Include macro /Applications/deal.II.app/Contents/Resources/share/deal.II/macros/macro_deal_ii_setup_target.cmake
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/applications/precipitateEvolution
+Scanning dependencies of target release
+[100%] Switch CMAKE_BUILD_TYPE to Release
+-- Using the deal.II-8.4.1 installation found at /Applications/deal.II.app/Contents/Resources
+-- Include macro /Applications/deal.II.app/Contents/Resources/share/deal.II/macros/macro_deal_ii_add_test.cmake
+-- Include macro /Applications/deal.II.app/Contents/Resources/share/deal.II/macros/macro_deal_ii_initialize_cached_variables.cmake
+-- Include macro /Applications/deal.II.app/Contents/Resources/share/deal.II/macros/macro_deal_ii_invoke_autopilot.cmake
+-- Include macro /Applications/deal.II.app/Contents/Resources/share/deal.II/macros/macro_deal_ii_pickup_tests.cmake
+-- Include macro /Applications/deal.II.app/Contents/Resources/share/deal.II/macros/macro_deal_ii_query_git_information.cmake
+-- Include macro /Applications/deal.II.app/Contents/Resources/share/deal.II/macros/macro_deal_ii_setup_target.cmake
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/applications/precipitateEvolution
+Scanning dependencies of target mylib
+[  4%] Building CXX object CMakeFiles/mylib.dir/Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/src/matrixfree/boundaryConditions.cc.o
+[  8%] Building CXX object CMakeFiles/mylib.dir/Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/src/matrixfree/buildFields.cc.o
+[ 12%] Building CXX object CMakeFiles/mylib.dir/Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/src/matrixfree/calcFreeEnergy.cc.o
+[ 16%] Building CXX object CMakeFiles/mylib.dir/Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/src/matrixfree/computeLHS.cc.o
+[ 20%] Building CXX object CMakeFiles/mylib.dir/Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/src/matrixfree/computeRHS.cc.o
+[ 24%] Building CXX object CMakeFiles/mylib.dir/Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/src/matrixfree/getOutputTimeSteps.cc.o
+[ 28%] Building CXX object CMakeFiles/mylib.dir/Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/src/matrixfree/init.cc.o
+[ 32%] Building CXX object CMakeFiles/mylib.dir/Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/src/matrixfree/initForTests.cc.o
+[ 36%] Building CXX object CMakeFiles/mylib.dir/Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/src/matrixfree/initialConditions.cc.o
+[ 40%] Building CXX object CMakeFiles/mylib.dir/Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/src/matrixfree/integrate_and_shift_field.cc.o
+[ 44%] Building CXX object CMakeFiles/mylib.dir/Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/src/matrixfree/invM.cc.o
+[ 48%] Building CXX object CMakeFiles/mylib.dir/Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/src/matrixfree/markBoundaries.cc.o
+[ 52%] Building CXX object CMakeFiles/mylib.dir/Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/src/matrixfree/matrixFreePDE.cc.o
+[ 56%] Building CXX object CMakeFiles/mylib.dir/Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/src/matrixfree/modifyFields.cc.o
+[ 60%] Building CXX object CMakeFiles/mylib.dir/Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/src/matrixfree/outputResults.cc.o
+[ 64%] Building CXX object CMakeFiles/mylib.dir/Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/src/matrixfree/refine.cc.o
+[ 68%] Building CXX object CMakeFiles/mylib.dir/Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/src/matrixfree/reinit.cc.o
+[ 72%] Building CXX object CMakeFiles/mylib.dir/Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/src/matrixfree/solve.cc.o
+[ 76%] Building CXX object CMakeFiles/mylib.dir/Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/src/matrixfree/solveIncrement.cc.o
+[ 80%] Building CXX object CMakeFiles/mylib.dir/Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/src/matrixfree/utilities.cc.o
+[ 84%] Building CXX object CMakeFiles/mylib.dir/Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/src/utilities/vectorLoad.cc.o
+[ 88%] Building CXX object CMakeFiles/mylib.dir/Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/src/utilities/vectorBCFunction.cc.o
+[ 92%] Linking CXX static library libmylib.a
+[ 92%] Built target mylib
+Scanning dependencies of target main
+[ 96%] Building CXX object CMakeFiles/main.dir/main.cc.o
+[100%] Linking CXX executable main
+[100%] Built target main
+Built target release
+Reading material model: 2D  ISOTROPIC 
+Elasticity matrix (Voigt notation):
+5.385e+01 2.308e+01 0.000e+00 
+2.308e+01 5.385e+01 0.000e+00 
+0.000e+00 0.000e+00 1.538e+01 
+
+Reading material model: 2D  ISOTROPIC 
+Elasticity matrix (Voigt notation):
+6.731e+01 2.885e+01 0.000e+00 
+2.885e+01 6.731e+01 0.000e+00 
+0.000e+00 0.000e+00 1.923e+01 
+
+creating problem mesh...
+periodic facepairs: 0
+problem dimensions: 40x40x0
+number of elements: 9216
+
+initializing matrix free object
+initializing finite element space P^2 for PARABOLIC:SCALAR field 'c'
+field ' c' DOF : 37249 (Constraint DOF : 0)
+initializing finite element space P^2 for PARABOLIC:SCALAR field 'n1'
+field 'n1' DOF : 37249 (Constraint DOF : 0)
+initializing finite element space P^2 for PARABOLIC:SCALAR field 'n2'
+field 'n2' DOF : 37249 (Constraint DOF : 0)
+initializing finite element space P^2 for PARABOLIC:SCALAR field 'n3'
+field 'n3' DOF : 37249 (Constraint DOF : 0)
+initializing finite element space P^2 for  ELLIPTIC:VECTOR field 'u'
+field ' u' DOF : 74498 (Constraint DOF : 714)
+total DOF : 223494
+initializing parallel::distributed residual and solution vectors
+computed mass matrix (using FE space for field: 0)
+Current mesh refinement level: 6
+Reinitializing matrix free object
+field ' c' DOF : 12865 (Constraint DOF : 0)
+field 'n1' DOF : 12865 (Constraint DOF : 0)
+field 'n2' DOF : 12865 (Constraint DOF : 0)
+field 'n3' DOF : 12865 (Constraint DOF : 0)
+field ' u' DOF : 25730 (Constraint DOF : 362)
+total DOF : 77190
+initializing parallel::distributed residual and solution vectors
+computed mass matrix (using FE space for field: 0)
+Current mesh refinement level: 6
+Reinitializing matrix free object
+field ' c' DOF : 7585 (Constraint DOF : 0)
+field 'n1' DOF : 7585 (Constraint DOF : 0)
+field 'n2' DOF : 7585 (Constraint DOF : 0)
+field 'n3' DOF : 7585 (Constraint DOF : 0)
+field ' u' DOF : 15170 (Constraint DOF : 186)
+total DOF : 45510
+initializing parallel::distributed residual and solution vectors
+computed mass matrix (using FE space for field: 0)
+Current mesh refinement level: 6
+Reinitializing matrix free object
+field ' c' DOF : 6705 (Constraint DOF : 0)
+field 'n1' DOF : 6705 (Constraint DOF : 0)
+field 'n2' DOF : 6705 (Constraint DOF : 0)
+field 'n3' DOF : 6705 (Constraint DOF : 0)
+field ' u' DOF : 13410 (Constraint DOF : 98)
+total DOF : 40230
+initializing parallel::distributed residual and solution vectors
+computed mass matrix (using FE space for field: 0)
+Current mesh refinement level: 6
+Reinitializing matrix free object
+field ' c' DOF : 6705 (Constraint DOF : 0)
+field 'n1' DOF : 6705 (Constraint DOF : 0)
+field 'n2' DOF : 6705 (Constraint DOF : 0)
+field 'n3' DOF : 6705 (Constraint DOF : 0)
+field ' u' DOF : 13410 (Constraint DOF : 98)
+total DOF : 40230
+initializing parallel::distributed residual and solution vectors
+computed mass matrix (using FE space for field: 0)
+
+solving...
+
+Output written to:solution-00000.pvtu
+
+Energy: -2957.5
+Energy Components: -2963 0.464743 5.0311 
+
+Time stepping parameters: timeStep: 0.0004  timeFinal: 100  timeIncrements: 5000
+
+time increment:100  time: 0.04
+field ' c' [explicit solve]: current solution: 3.619914e+00, current residual:2.302785e+00
+field 'n1' [explicit solve]: current solution: 2.292857e+01, current residual:1.503157e+00
+field 'n2' [explicit solve]: current solution: 1.619671e+01, current residual:1.062343e+00
+field 'n3' [explicit solve]: current solution: 1.619283e+01, current residual:1.062205e+00
+field ' u' [implicit solve]: initial residual:3.520771e-02, current residual:9.665204e-05, nsteps:137, tolerance criterion:1.000000e-04, solution: 2.273030e+00, dU: 3.691495e-03
+wall time: 0.083267s
+
+time increment:200  time: 0.08
+field ' c' [explicit solve]: current solution: 3.832912e+00, current residual:2.303172e+00
+field 'n1' [explicit solve]: current solution: 2.014609e+01, current residual:1.399820e+00
+field 'n2' [explicit solve]: current solution: 1.421724e+01, current residual:9.888782e-01
+field 'n3' [explicit solve]: current solution: 1.421031e+01, current residual:9.886367e-01
+field ' u' [implicit solve]: initial residual:2.461425e-02, current residual:9.344748e-05, nsteps:130, tolerance criterion:1.000000e-04, solution: 1.976691e+00, dU: 2.718956e-03
+wall time: 0.0785711s
+
+time increment:300  time: 0.12
+field ' c' [explicit solve]: current solution: 3.986199e+00, current residual:2.303222e+00
+field 'n1' [explicit solve]: current solution: 1.811387e+01, current residual:1.316407e+00
+field 'n2' [explicit solve]: current solution: 1.277527e+01, current residual:9.295702e-01
+field 'n3' [explicit solve]: current solution: 1.276614e+01, current residual:9.292394e-01
+field ' u' [implicit solve]: initial residual:1.712804e-02, current residual:9.991943e-05, nsteps:114, tolerance criterion:1.000000e-04, solution: 1.760733e+00, dU: 1.893406e-03
+wall time: 0.0686719s
+
+time increment:400  time: 0.16
+field ' c' [explicit solve]: current solution: 4.095286e+00, current residual:2.302456e+00
+field 'n1' [explicit solve]: current solution: 1.677951e+01, current residual:1.255496e+00
+field 'n2' [explicit solve]: current solution: 1.182742e+01, current residual:8.863502e-01
+field 'n3' [explicit solve]: current solution: 1.181700e+01, current residual:8.859575e-01
+field ' u' [implicit solve]: initial residual:1.127794e-02, current residual:9.903788e-05, nsteps:107, tolerance criterion:1.000000e-04, solution: 1.614822e+00, dU: 1.245852e-03
+wall time: 0.0641711s
+
+time increment:500  time: 0.2
+field ' c' [explicit solve]: current solution: 4.171563e+00, current residual:2.300683e+00
+field 'n1' [explicit solve]: current solution: 1.598073e+01, current residual:1.218809e+00
+field 'n2' [explicit solve]: current solution: 1.125883e+01, current residual:8.602942e-01
+field 'n3' [explicit solve]: current solution: 1.124771e+01, current residual:8.598729e-01
+field ' u' [implicit solve]: initial residual:7.063909e-03, current residual:9.664633e-05, nsteps:73, tolerance criterion:1.000000e-04, solution: 1.523412e+00, dU: 7.368156e-04
+wall time: 0.0502841s
+Output written to:solution-00500.pvtu
+
+Energy: -2965.4
+Energy Components: -2966.22 0.258336 0.561665 
+
+time increment:600  time: 0.24
+field ' c' [explicit solve]: current solution: 4.225984e+00, current residual:2.298041e+00
+field 'n1' [explicit solve]: current solution: 1.553133e+01, current residual:1.200218e+00
+field 'n2' [explicit solve]: current solution: 1.093644e+01, current residual:8.469357e-01
+field 'n3' [explicit solve]: current solution: 1.092486e+01, current residual:8.465035e-01
+field ' u' [implicit solve]: initial residual:4.206870e-03, current residual:9.576661e-05, nsteps:65, tolerance criterion:1.000000e-04, solution: 1.469644e+00, dU: 4.508830e-04
+wall time: 0.040303s
+
+time increment:700  time: 0.28
+field ' c' [explicit solve]: current solution: 4.267546e+00, current residual:2.294786e+00
+field 'n1' [explicit solve]: current solution: 1.529318e+01, current residual:1.191825e+00
+field 'n2' [explicit solve]: current solution: 1.076291e+01, current residual:8.407509e-01
+field 'n3' [explicit solve]: current solution: 1.075092e+01, current residual:8.403107e-01
+field ' u' [implicit solve]: initial residual:2.345389e-03, current residual:9.765130e-05, nsteps:37, tolerance criterion:1.000000e-04, solution: 1.440095e+00, dU: 2.205985e-04
+wall time: 0.023967s
+
+time increment:800  time: 0.32
+field ' c' [explicit solve]: current solution: 4.302119e+00, current residual:2.291157e+00
+field 'n1' [explicit solve]: current solution: 1.518241e+01, current residual:1.188659e+00
+field 'n2' [explicit solve]: current solution: 1.067971e+01, current residual:8.382900e-01
+field 'n3' [explicit solve]: current solution: 1.066728e+01, current residual:8.378402e-01
+field ' u' [implicit solve]: initial residual:1.189963e-03, current residual:9.996472e-05, nsteps:30, tolerance criterion:1.000000e-04, solution: 1.425666e+00, dU: 9.542321e-05
+wall time: 0.019501s
+
+time increment:900  time: 0.36
+field ' c' [explicit solve]: current solution: 4.333020e+00, current residual:2.287329e+00
+field 'n1' [explicit solve]: current solution: 1.515129e+01, current residual:1.188327e+00
+field 'n2' [explicit solve]: current solution: 1.065325e+01, current residual:8.378759e-01
+field 'n3' [explicit solve]: current solution: 1.064036e+01, current residual:8.374141e-01
+field ' u' [implicit solve]: initial residual:6.125775e-04, current residual:9.269583e-05, nsteps:9, tolerance criterion:1.000000e-04, solution: 1.420865e+00, dU: 1.599903e-05
+wall time: 0.00708604s
+
+time increment:1000  time: 0.4
+Current mesh refinement level: 6
+Reinitializing matrix free object
+field ' c' DOF : 8783 (Constraint DOF : 0)
+field 'n1' DOF : 8783 (Constraint DOF : 0)
+field 'n2' DOF : 8783 (Constraint DOF : 0)
+field 'n3' DOF : 8783 (Constraint DOF : 0)
+field ' u' DOF : 17566 (Constraint DOF : 110)
+total DOF : 52698
+initializing parallel::distributed residual and solution vectors
+computed mass matrix (using FE space for field: 0)
+field ' c' [explicit solve]: current solution: 4.919891e+00, current residual:1.959009e+00
+field 'n1' [explicit solve]: current solution: 1.689912e+01, current residual:8.141382e-01
+field 'n2' [explicit solve]: current solution: 1.188878e+01, current residual:5.730185e-01
+field 'n3' [explicit solve]: current solution: 1.187650e+01, current residual:5.724253e-01
+field ' u' [implicit solve]: initial residual:9.719578e-02, current residual:9.408774e-05, nsteps:82, tolerance criterion:1.000000e-04, solution: 1.504410e+00, dU: 1.211636e-03
+wall time: 0.0532131s
+Output written to:solution-01000.pvtu
+
+Energy: -2965.52
+Energy Components: -2966.29 0.259378 0.512379 
+
+time increment:1100  time: 0.44
+field ' c' [explicit solve]: current solution: 4.946746e+00, current residual:1.956356e+00
+field 'n1' [explicit solve]: current solution: 1.695021e+01, current residual:8.169356e-01
+field 'n2' [explicit solve]: current solution: 1.191925e+01, current residual:5.747888e-01
+field 'n3' [explicit solve]: current solution: 1.190647e+01, current residual:5.741731e-01
+field ' u' [implicit solve]: initial residual:7.774697e-04, current residual:9.398791e-05, nsteps:32, tolerance criterion:1.000000e-04, solution: 1.509853e+00, dU: 7.944386e-05
+wall time: 0.021909s
+
+time increment:1200  time: 0.48
+field ' c' [explicit solve]: current solution: 4.972881e+00, current residual:1.953777e+00
+field 'n1' [explicit solve]: current solution: 1.702630e+01, current residual:8.206093e-01
+field 'n2' [explicit solve]: current solution: 1.196789e+01, current residual:5.771414e-01
+field 'n3' [explicit solve]: current solution: 1.195460e+01, current residual:5.765009e-01
+field ' u' [implicit solve]: initial residual:1.016036e-03, current residual:9.056868e-05, nsteps:35, tolerance criterion:1.000000e-04, solution: 1.518734e+00, dU: 1.102377e-04
+wall time: 0.025234s
+
+time increment:1300  time: 0.52
+field ' c' [explicit solve]: current solution: 4.998342e+00, current residual:1.951250e+00
+field 'n1' [explicit solve]: current solution: 1.711958e+01, current residual:8.251107e-01
+field 'n2' [explicit solve]: current solution: 1.202801e+01, current residual:5.800451e-01
+field 'n3' [explicit solve]: current solution: 1.201417e+01, current residual:5.793786e-01
+field ' u' [implicit solve]: initial residual:1.207002e-03, current residual:9.773599e-05, nsteps:36, tolerance criterion:1.000000e-04, solution: 1.530056e+00, dU: 1.309559e-04
+wall time: 0.024075s
+
+time increment:1400  time: 0.56
+field ' c' [explicit solve]: current solution: 5.023437e+00, current residual:1.948780e+00
+field 'n1' [explicit solve]: current solution: 1.722670e+01, current residual:8.302821e-01
+field 'n2' [explicit solve]: current solution: 1.209684e+01, current residual:5.833664e-01
+field 'n3' [explicit solve]: current solution: 1.208244e+01, current residual:5.826729e-01
+field ' u' [implicit solve]: initial residual:1.363401e-03, current residual:9.128267e-05, nsteps:38, tolerance criterion:1.000000e-04, solution: 1.543232e+00, dU: 1.480606e-04
+wall time: 0.02508s
+
+time increment:1500  time: 0.6
+field ' c' [explicit solve]: current solution: 5.048348e+00, current residual:1.946365e+00
+field 'n1' [explicit solve]: current solution: 1.734508e+01, current residual:8.360015e-01
+field 'n2' [explicit solve]: current solution: 1.217234e+01, current residual:5.870078e-01
+field 'n3' [explicit solve]: current solution: 1.215735e+01, current residual:5.862861e-01
+field ' u' [implicit solve]: initial residual:1.498654e-03, current residual:9.957410e-05, nsteps:38, tolerance criterion:1.000000e-04, solution: 1.557859e+00, dU: 1.616764e-04
+wall time: 0.025661s
+Output written to:solution-01500.pvtu
+
+Energy: -2965.56
+Energy Components: -2966.37 0.263582 0.541644 
+
+time increment:1600  time: 0.64
+field ' c' [explicit solve]: current solution: 5.073177e+00, current residual:1.944005e+00
+field 'n1' [explicit solve]: current solution: 1.747269e+01, current residual:8.421735e-01
+field 'n2' [explicit solve]: current solution: 1.225308e+01, current residual:5.908996e-01
+field 'n3' [explicit solve]: current solution: 1.223747e+01, current residual:5.901486e-01
+field ' u' [implicit solve]: initial residual:1.605097e-03, current residual:9.984964e-05, nsteps:39, tolerance criterion:1.000000e-04, solution: 1.573660e+00, dU: 1.729496e-04
+wall time: 0.026597s
+
+time increment:1700  time: 0.68
+field ' c' [explicit solve]: current solution: 5.097971e+00, current residual:1.941696e+00
+field 'n1' [explicit solve]: current solution: 1.760785e+01, current residual:8.487193e-01
+field 'n2' [explicit solve]: current solution: 1.233800e+01, current residual:5.949924e-01
+field 'n3' [explicit solve]: current solution: 1.232176e+01, current residual:5.942107e-01
+field ' u' [implicit solve]: initial residual:1.700222e-03, current residual:9.871365e-05, nsteps:41, tolerance criterion:1.000000e-04, solution: 1.590427e+00, dU: 1.822300e-04
+wall time: 0.0269551s
+
+time increment:1800  time: 0.72
+field ' c' [explicit solve]: current solution: 5.122742e+00, current residual:1.939434e+00
+field 'n1' [explicit solve]: current solution: 1.774905e+01, current residual:8.555678e-01
+field 'n2' [explicit solve]: current solution: 1.242637e+01, current residual:5.992508e-01
+field 'n3' [explicit solve]: current solution: 1.240946e+01, current residual:5.984369e-01
+field ' u' [implicit solve]: initial residual:1.780640e-03, current residual:9.767772e-05, nsteps:42, tolerance criterion:1.000000e-04, solution: 1.607988e+00, dU: 1.898728e-04
+wall time: 0.027663s
+
+time increment:1900  time: 0.76
+field ' c' [explicit solve]: current solution: 5.147477e+00, current residual:1.937214e+00
+field 'n1' [explicit solve]: current solution: 1.789489e+01, current residual:8.626513e-01
+field 'n2' [explicit solve]: current solution: 1.251766e+01, current residual:6.036496e-01
+field 'n3' [explicit solve]: current solution: 1.250005e+01, current residual:6.028019e-01
+field ' u' [implicit solve]: initial residual:1.851173e-03, current residual:9.021259e-05, nsteps:39, tolerance criterion:1.000000e-04, solution: 1.626205e+00, dU: 1.793073e-04
+wall time: 0.0259011s
+
+time increment:2000  time: 0.8
+Current mesh refinement level: 6
+Reinitializing matrix free object
+field ' c' DOF : 8639 (Constraint DOF : 0)
+field 'n1' DOF : 8639 (Constraint DOF : 0)
+field 'n2' DOF : 8639 (Constraint DOF : 0)
+field 'n3' DOF : 8639 (Constraint DOF : 0)
+field ' u' DOF : 17278 (Constraint DOF : 110)
+total DOF : 51834
+initializing parallel::distributed residual and solution vectors
+computed mass matrix (using FE space for field: 0)
+field ' c' [explicit solve]: current solution: 5.156225e+00, current residual:1.935421e+00
+field 'n1' [explicit solve]: current solution: 1.804394e+01, current residual:8.699235e-01
+field 'n2' [explicit solve]: current solution: 1.261145e+01, current residual:6.081760e-01
+field 'n3' [explicit solve]: current solution: 1.259311e+01, current residual:6.072929e-01
+field ' u' [implicit solve]: initial residual:6.285074e-03, current residual:9.883411e-05, nsteps:66, tolerance criterion:1.000000e-04, solution: 1.641377e+00, dU: 2.478901e-04
+wall time: 0.043592s
+Output written to:solution-02000.pvtu
+
+Energy: -2965.6
+Energy Components: -2966.46 0.271852 0.586444 
+
+time increment:2100  time: 0.84
+field ' c' [explicit solve]: current solution: 5.180868e+00, current residual:1.933275e+00
+field 'n1' [explicit solve]: current solution: 1.819512e+01, current residual:8.772848e-01
+field 'n2' [explicit solve]: current solution: 1.270746e+01, current residual:6.128046e-01
+field 'n3' [explicit solve]: current solution: 1.268836e+01, current residual:6.118846e-01
+field ' u' [implicit solve]: initial residual:1.947003e-03, current residual:9.153448e-05, nsteps:65, tolerance criterion:1.000000e-04, solution: 1.660447e+00, dU: 2.439252e-04
+wall time: 0.042892s
+
+time increment:2200  time: 0.88
+field ' c' [explicit solve]: current solution: 5.205386e+00, current residual:1.931160e+00
+field 'n1' [explicit solve]: current solution: 1.834727e+01, current residual:8.847003e-01
+field 'n2' [explicit solve]: current solution: 1.280542e+01, current residual:6.175288e-01
+field 'n3' [explicit solve]: current solution: 1.278555e+01, current residual:6.165709e-01
+field ' u' [implicit solve]: initial residual:1.980976e-03, current residual:9.280771e-05, nsteps:65, tolerance criterion:1.000000e-04, solution: 1.679821e+00, dU: 2.469521e-04
+wall time: 0.0431521s
+
+time increment:2300  time: 0.92
+field ' c' [explicit solve]: current solution: 5.229744e+00, current residual:1.929071e+00
+field 'n1' [explicit solve]: current solution: 1.849951e+01, current residual:8.921245e-01
+field 'n2' [explicit solve]: current solution: 1.290507e+01, current residual:6.223367e-01
+field 'n3' [explicit solve]: current solution: 1.288440e+01, current residual:6.213405e-01
+field ' u' [implicit solve]: initial residual:2.006996e-03, current residual:9.373874e-05, nsteps:65, tolerance criterion:1.000000e-04, solution: 1.699410e+00, dU: 2.492806e-04
+wall time: 0.0426209s
+
+time increment:2400  time: 0.96
+field ' c' [explicit solve]: current solution: 5.253918e+00, current residual:1.927006e+00
+field 'n1' [explicit solve]: current solution: 1.865116e+01, current residual:8.995220e-01
+field 'n2' [explicit solve]: current solution: 1.300612e+01, current residual:6.272155e-01
+field 'n3' [explicit solve]: current solution: 1.298467e+01, current residual:6.261811e-01
+field ' u' [implicit solve]: initial residual:2.027038e-03, current residual:9.497017e-05, nsteps:65, tolerance criterion:1.000000e-04, solution: 1.719138e+00, dU: 2.507085e-04
+wall time: 0.0428162s
+
+time increment:2500  time: 1
+field ' c' [explicit solve]: current solution: 5.277889e+00, current residual:1.924963e+00
+field 'n1' [explicit solve]: current solution: 1.880175e+01, current residual:9.068668e-01
+field 'n2' [explicit solve]: current solution: 1.310829e+01, current residual:6.321516e-01
+field 'n3' [explicit solve]: current solution: 1.308608e+01, current residual:6.310796e-01
+field ' u' [implicit solve]: initial residual:2.042290e-03, current residual:9.501607e-05, nsteps:65, tolerance criterion:1.000000e-04, solution: 1.738943e+00, dU: 2.514632e-04
+wall time: 0.0429311s
+Output written to:solution-02500.pvtu
+
+Energy: -2965.64
+Energy Components: -2966.56 0.282271 0.637635 
+
+time increment:2600  time: 1.04
+field ' c' [explicit solve]: current solution: 5.301646e+00, current residual:1.922939e+00
+field 'n1' [explicit solve]: current solution: 1.895095e+01, current residual:9.141412e-01
+field 'n2' [explicit solve]: current solution: 1.321128e+01, current residual:6.371302e-01
+field 'n3' [explicit solve]: current solution: 1.318833e+01, current residual:6.360218e-01
+field ' u' [implicit solve]: initial residual:2.053397e-03, current residual:9.430058e-05, nsteps:65, tolerance criterion:1.000000e-04, solution: 1.758768e+00, dU: 2.516711e-04
+wall time: 0.042876s
+
+time increment:2700  time: 1.08
+field ' c' [explicit solve]: current solution: 5.325184e+00, current residual:1.920932e+00
+field 'n1' [explicit solve]: current solution: 1.909860e+01, current residual:9.213344e-01
+field 'n2' [explicit solve]: current solution: 1.331480e+01, current residual:6.421369e-01
+field 'n3' [explicit solve]: current solution: 1.329113e+01, current residual:6.409935e-01
+field ' u' [implicit solve]: initial residual:2.061058e-03, current residual:9.376505e-05, nsteps:65, tolerance criterion:1.000000e-04, solution: 1.778570e+00, dU: 2.513998e-04
+wall time: 0.0424221s
+
+time increment:2800  time: 1.12
+field ' c' [explicit solve]: current solution: 5.348508e+00, current residual:1.918941e+00
+field 'n1' [explicit solve]: current solution: 1.924462e+01, current residual:9.284400e-01
+field 'n2' [explicit solve]: current solution: 1.341858e+01, current residual:6.471586e-01
+field 'n3' [explicit solve]: current solution: 1.339421e+01, current residual:6.459812e-01
+field ' u' [implicit solve]: initial residual:2.066078e-03, current residual:9.290476e-05, nsteps:65, tolerance criterion:1.000000e-04, solution: 1.798312e+00, dU: 2.509768e-04
+wall time: 0.0425141s
+
+time increment:2900  time: 1.16
+field ' c' [explicit solve]: current solution: 5.371632e+00, current residual:1.916964e+00
+field 'n1' [explicit solve]: current solution: 1.938899e+01, current residual:9.354556e-01
+field 'n2' [explicit solve]: current solution: 1.352240e+01, current residual:6.521839e-01
+field 'n3' [explicit solve]: current solution: 1.349736e+01, current residual:6.509735e-01
+field ' u' [implicit solve]: initial residual:2.069707e-03, current residual:9.281030e-05, nsteps:65, tolerance criterion:1.000000e-04, solution: 1.817970e+00, dU: 2.500448e-04
+wall time: 0.0422459s
+
+time increment:3000  time: 1.2
+Current mesh refinement level: 6
+Reinitializing matrix free object
+field ' c' DOF : 8735 (Constraint DOF : 0)
+field 'n1' DOF : 8735 (Constraint DOF : 0)
+field 'n2' DOF : 8735 (Constraint DOF : 0)
+field 'n3' DOF : 8735 (Constraint DOF : 0)
+field ' u' DOF : 17470 (Constraint DOF : 110)
+total DOF : 52410
+initializing parallel::distributed residual and solution vectors
+computed mass matrix (using FE space for field: 0)
+field ' c' [explicit solve]: current solution: 5.405428e+00, current residual:1.914719e+00
+field 'n1' [explicit solve]: current solution: 1.953175e+01, current residual:9.423805e-01
+field 'n2' [explicit solve]: current solution: 1.362617e+01, current residual:6.571831e-01
+field 'n3' [explicit solve]: current solution: 1.360046e+01, current residual:6.559399e-01
+field ' u' [implicit solve]: initial residual:7.586740e-03, current residual:9.841734e-05, nsteps:46, tolerance criterion:1.000000e-04, solution: 1.842985e+00, dU: 2.206128e-04
+wall time: 0.0310979s
+Output written to:solution-03000.pvtu
+
+Energy: -2965.68
+Energy Components: -2966.66 0.293138 0.691181 
+
+time increment:3100  time: 1.24
+field ' c' [explicit solve]: current solution: 5.428137e+00, current residual:1.912767e+00
+field 'n1' [explicit solve]: current solution: 1.967293e+01, current residual:9.492152e-01
+field 'n2' [explicit solve]: current solution: 1.372963e+01, current residual:6.621918e-01
+field 'n3' [explicit solve]: current solution: 1.370323e+01, current residual:6.609156e-01
+field ' u' [implicit solve]: initial residual:2.074552e-03, current residual:8.980666e-05, nsteps:40, tolerance criterion:1.000000e-04, solution: 1.862517e+00, dU: 1.890167e-04
+wall time: 0.026741s
+
+time increment:3200  time: 1.28
+field ' c' [explicit solve]: current solution: 5.450704e+00, current residual:1.910828e+00
+field 'n1' [explicit solve]: current solution: 1.981257e+01, current residual:9.559602e-01
+field 'n2' [explicit solve]: current solution: 1.383275e+01, current residual:6.671843e-01
+field 'n3' [explicit solve]: current solution: 1.380565e+01, current residual:6.658745e-01
+field ' u' [implicit solve]: initial residual:2.076381e-03, current residual:9.096017e-05, nsteps:40, tolerance criterion:1.000000e-04, solution: 1.881921e+00, dU: 1.880156e-04
+wall time: 0.0267279s
+
+time increment:3300  time: 1.32
+field ' c' [explicit solve]: current solution: 5.473145e+00, current residual:1.908898e+00
+field 'n1' [explicit solve]: current solution: 1.995067e+01, current residual:9.626163e-01
+field 'n2' [explicit solve]: current solution: 1.393548e+01, current residual:6.721574e-01
+field 'n3' [explicit solve]: current solution: 1.390768e+01, current residual:6.708133e-01
+field ' u' [implicit solve]: initial residual:2.076796e-03, current residual:9.050486e-05, nsteps:40, tolerance criterion:1.000000e-04, solution: 1.901195e+00, dU: 1.868105e-04
+wall time: 0.027055s
+
+time increment:3400  time: 1.36
+field ' c' [explicit solve]: current solution: 5.495470e+00, current residual:1.906979e+00
+field 'n1' [explicit solve]: current solution: 2.008724e+01, current residual:9.691846e-01
+field 'n2' [explicit solve]: current solution: 1.403776e+01, current residual:6.771079e-01
+field 'n3' [explicit solve]: current solution: 1.400924e+01, current residual:6.757291e-01
+field ' u' [implicit solve]: initial residual:2.075665e-03, current residual:9.023922e-05, nsteps:40, tolerance criterion:1.000000e-04, solution: 1.920334e+00, dU: 1.855463e-04
+wall time: 0.0273449s
+
+time increment:3500  time: 1.4
+field ' c' [explicit solve]: current solution: 5.517688e+00, current residual:1.905069e+00
+field 'n1' [explicit solve]: current solution: 2.022228e+01, current residual:9.756674e-01
+field 'n2' [explicit solve]: current solution: 1.413953e+01, current residual:6.820326e-01
+field 'n3' [explicit solve]: current solution: 1.411028e+01, current residual:6.806189e-01
+field ' u' [implicit solve]: initial residual:2.073167e-03, current residual:9.978541e-05, nsteps:44, tolerance criterion:1.000000e-04, solution: 1.939331e+00, dU: 2.029361e-04
+wall time: 0.029388s
+Output written to:solution-03500.pvtu
+
+Energy: -2965.71
+Energy Components: -2966.76 0.303573 0.74473 
+
+time increment:3600  time: 1.44
+field ' c' [explicit solve]: current solution: 5.539800e+00, current residual:1.903167e+00
+field 'n1' [explicit solve]: current solution: 2.035585e+01, current residual:9.820688e-01
+field 'n2' [explicit solve]: current solution: 1.424071e+01, current residual:6.869277e-01
+field 'n3' [explicit solve]: current solution: 1.421075e+01, current residual:6.854795e-01
+field ' u' [implicit solve]: initial residual:2.068078e-03, current residual:9.088573e-05, nsteps:40, tolerance criterion:1.000000e-04, solution: 1.958193e+00, dU: 1.827806e-04
+wall time: 0.0269561s
+
+time increment:3700  time: 1.48
+field ' c' [explicit solve]: current solution: 5.561812e+00, current residual:1.901274e+00
+field 'n1' [explicit solve]: current solution: 2.048802e+01, current residual:9.883960e-01
+field 'n2' [explicit solve]: current solution: 1.434122e+01, current residual:6.917887e-01
+field 'n3' [explicit solve]: current solution: 1.431056e+01, current residual:6.903069e-01
+field ' u' [implicit solve]: initial residual:2.057628e-03, current residual:9.948429e-05, nsteps:64, tolerance criterion:1.000000e-04, solution: 1.976933e+00, dU: 2.416105e-04
+wall time: 0.0414801s
+
+time increment:3800  time: 1.52
+field ' c' [explicit solve]: current solution: 5.583728e+00, current residual:1.899388e+00
+field 'n1' [explicit solve]: current solution: 2.061896e+01, current residual:9.946587e-01
+field 'n2' [explicit solve]: current solution: 1.444095e+01, current residual:6.966109e-01
+field 'n3' [explicit solve]: current solution: 1.440962e+01, current residual:6.950968e-01
+field ' u' [implicit solve]: initial residual:2.051000e-03, current residual:9.970161e-05, nsteps:45, tolerance criterion:1.000000e-04, solution: 1.995485e+00, dU: 1.990053e-04
+wall time: 0.029717s
+
+time increment:3900  time: 1.56
+field ' c' [explicit solve]: current solution: 5.605560e+00, current residual:1.897508e+00
+field 'n1' [explicit solve]: current solution: 2.074890e+01, current residual:1.000870e+00
+field 'n2' [explicit solve]: current solution: 1.453982e+01, current residual:7.013895e-01
+field 'n3' [explicit solve]: current solution: 1.450784e+01, current residual:6.998448e-01
+field ' u' [implicit solve]: initial residual:2.044396e-03, current residual:9.901606e-05, nsteps:45, tolerance criterion:1.000000e-04, solution: 2.013936e+00, dU: 1.978051e-04
+wall time: 0.030309s
+
+time increment:4000  time: 1.6
+Current mesh refinement level: 6
+Reinitializing matrix free object
+field ' c' DOF : 9083 (Constraint DOF : 0)
+field 'n1' DOF : 9083 (Constraint DOF : 0)
+field 'n2' DOF : 9083 (Constraint DOF : 0)
+field 'n3' DOF : 9083 (Constraint DOF : 0)
+field ' u' DOF : 18166 (Constraint DOF : 110)
+total DOF : 54498
+initializing parallel::distributed residual and solution vectors
+computed mass matrix (using FE space for field: 0)
+field ' c' [explicit solve]: current solution: 5.663002e+00, current residual:1.894660e+00
+field 'n1' [explicit solve]: current solution: 2.087841e+01, current residual:1.006974e+00
+field 'n2' [explicit solve]: current solution: 1.463776e+01, current residual:7.061105e-01
+field 'n3' [explicit solve]: current solution: 1.460516e+01, current residual:7.045399e-01
+field ' u' [implicit solve]: initial residual:1.662771e-02, current residual:9.826108e-05, nsteps:49, tolerance criterion:1.000000e-04, solution: 2.050186e+00, dU: 2.667239e-04
+wall time: 0.0337691s
+Output written to:solution-04000.pvtu
+
+Energy: -2965.75
+Energy Components: -2966.86 0.313265 0.797448 
+
+time increment:4100  time: 1.64
+field ' c' [explicit solve]: current solution: 5.684510e+00, current residual:1.892794e+00
+field 'n1' [explicit solve]: current solution: 2.100735e+01, current residual:1.013134e+00
+field 'n2' [explicit solve]: current solution: 1.473467e+01, current residual:7.107906e-01
+field 'n3' [explicit solve]: current solution: 1.470148e+01, current residual:7.091923e-01
+field ' u' [implicit solve]: initial residual:2.034555e-03, current residual:9.811005e-05, nsteps:45, tolerance criterion:1.000000e-04, solution: 2.068679e+00, dU: 1.983967e-04
+wall time: 0.0307891s
+
+time increment:4200  time: 1.68
+field ' c' [explicit solve]: current solution: 5.706012e+00, current residual:1.890934e+00
+field 'n1' [explicit solve]: current solution: 2.113640e+01, current residual:1.019301e+00
+field 'n2' [explicit solve]: current solution: 1.483054e+01, current residual:7.154180e-01
+field 'n3' [explicit solve]: current solution: 1.479677e+01, current residual:7.137930e-01
+field ' u' [implicit solve]: initial residual:2.034193e-03, current residual:9.891797e-05, nsteps:45, tolerance criterion:1.000000e-04, solution: 2.087114e+00, dU: 1.980573e-04
+wall time: 0.0302s
+
+time increment:4300  time: 1.72
+field ' c' [explicit solve]: current solution: 5.727557e+00, current residual:1.889079e+00
+field 'n1' [explicit solve]: current solution: 2.126609e+01, current residual:1.025501e+00
+field 'n2' [explicit solve]: current solution: 1.492539e+01, current residual:7.199932e-01
+field 'n3' [explicit solve]: current solution: 1.489104e+01, current residual:7.183417e-01
+field ' u' [implicit solve]: initial residual:2.043106e-03, current residual:9.805766e-05, nsteps:47, tolerance criterion:1.000000e-04, solution: 2.105535e+00, dU: 2.010639e-04
+wall time: 0.031821s
+
+time increment:4400  time: 1.76
+field ' c' [explicit solve]: current solution: 5.749202e+00, current residual:1.887228e+00
+field 'n1' [explicit solve]: current solution: 2.139699e+01, current residual:1.031764e+00
+field 'n2' [explicit solve]: current solution: 1.501925e+01, current residual:7.245182e-01
+field 'n3' [explicit solve]: current solution: 1.498431e+01, current residual:7.228395e-01
+field ' u' [implicit solve]: initial residual:2.056675e-03, current residual:9.645449e-05, nsteps:47, tolerance criterion:1.000000e-04, solution: 2.123986e+00, dU: 2.009607e-04
+wall time: 0.031533s
+
+time increment:4500  time: 1.8
+field ' c' [explicit solve]: current solution: 5.771003e+00, current residual:1.885382e+00
+field 'n1' [explicit solve]: current solution: 2.152968e+01, current residual:1.038121e+00
+field 'n2' [explicit solve]: current solution: 1.511220e+01, current residual:7.289967e-01
+field 'n3' [explicit solve]: current solution: 1.507664e+01, current residual:7.272897e-01
+field ' u' [implicit solve]: initial residual:2.078109e-03, current residual:9.991776e-05, nsteps:46, tolerance criterion:1.000000e-04, solution: 2.142527e+00, dU: 2.004677e-04
+wall time: 0.0313859s
+Output written to:solution-04500.pvtu
+
+Energy: -2965.78
+Energy Components: -2966.95 0.322498 0.849266 
+
+time increment:4600  time: 1.84
+field ' c' [explicit solve]: current solution: 5.793011e+00, current residual:1.883538e+00
+field 'n1' [explicit solve]: current solution: 2.166467e+01, current residual:1.044598e+00
+field 'n2' [explicit solve]: current solution: 1.520436e+01, current residual:7.334342e-01
+field 'n3' [explicit solve]: current solution: 1.516812e+01, current residual:7.316965e-01
+field ' u' [implicit solve]: initial residual:2.110716e-03, current residual:9.673123e-05, nsteps:47, tolerance criterion:1.000000e-04, solution: 2.161213e+00, dU: 2.036448e-04
+wall time: 0.0314219s
+
+time increment:4700  time: 1.88
+field ' c' [explicit solve]: current solution: 5.815248e+00, current residual:1.881696e+00
+field 'n1' [explicit solve]: current solution: 2.180226e+01, current residual:1.051215e+00
+field 'n2' [explicit solve]: current solution: 1.529586e+01, current residual:7.378376e-01
+field 'n3' [explicit solve]: current solution: 1.525889e+01, current residual:7.360663e-01
+field ' u' [implicit solve]: initial residual:2.145658e-03, current residual:9.734787e-05, nsteps:47, tolerance criterion:1.000000e-04, solution: 2.180088e+00, dU: 2.054239e-04
+wall time: 0.0316069s
+
+time increment:4800  time: 1.92
+field ' c' [explicit solve]: current solution: 5.837698e+00, current residual:1.879855e+00
+field 'n1' [explicit solve]: current solution: 2.194243e+01, current residual:1.057974e+00
+field 'n2' [explicit solve]: current solution: 1.538685e+01, current residual:7.422155e-01
+field 'n3' [explicit solve]: current solution: 1.534907e+01, current residual:7.404062e-01
+field ' u' [implicit solve]: initial residual:2.184314e-03, current residual:9.896224e-05, nsteps:47, tolerance criterion:1.000000e-04, solution: 2.199167e+00, dU: 2.080935e-04
+wall time: 0.0318749s
+
+time increment:4900  time: 1.96
+field ' c' [explicit solve]: current solution: 5.860298e+00, current residual:1.878013e+00
+field 'n1' [explicit solve]: current solution: 2.208469e+01, current residual:1.064854e+00
+field 'n2' [explicit solve]: current solution: 1.547753e+01, current residual:7.465771e-01
+field 'n3' [explicit solve]: current solution: 1.543884e+01, current residual:7.447250e-01
+field ' u' [implicit solve]: initial residual:2.214688e-03, current residual:9.645009e-05, nsteps:68, tolerance criterion:1.000000e-04, solution: 2.218465e+00, dU: 2.521322e-04
+wall time: 0.04457s
+
+time increment:5000  time: 2
+Current mesh refinement level: 6
+Reinitializing matrix free object
+field ' c' DOF : 9359 (Constraint DOF : 0)
+field 'n1' DOF : 9359 (Constraint DOF : 0)
+field 'n2' DOF : 9359 (Constraint DOF : 0)
+field 'n3' DOF : 9359 (Constraint DOF : 0)
+field ' u' DOF : 18718 (Constraint DOF : 110)
+total DOF : 56154
+initializing parallel::distributed residual and solution vectors
+computed mass matrix (using FE space for field: 0)
+field ' c' [explicit solve]: current solution: 5.909775e+00, current residual:1.873205e+00
+field 'n1' [explicit solve]: current solution: 2.222831e+01, current residual:1.071793e+00
+field 'n2' [explicit solve]: current solution: 1.556812e+01, current residual:7.509107e-01
+field 'n3' [explicit solve]: current solution: 1.552843e+01, current residual:7.490068e-01
+field ' u' [implicit solve]: initial residual:2.768198e-02, current residual:9.961372e-05, nsteps:53, tolerance criterion:1.000000e-04, solution: 2.249297e+00, dU: 3.480429e-04
+wall time: 0.0361581s
+Output written to:solution-05000.pvtu
+
+Energy: -2965.82
+Energy Components: -2967.05 0.332882 0.90164 
+
+
++---------------------------------------------+------------+------------+
+| Total wallclock time elapsed since start    |       170s |            |
+|                                             |            |            |
+| Section                         | no. calls |  wall time | % of total |
++---------------------------------+-----------+------------+------------+
+| matrixFreePDE: AMR              |      5000 |     0.255s |      0.15% |
+| matrixFreePDE: computeEnergy    |        11 |     0.235s |      0.14% |
+| matrixFreePDE: computeLHS       |    254987 |       129s |        76% |
+| matrixFreePDE: computeRHS       |      5000 |      4.16s |       2.4% |
+| matrixFreePDE: initialization   |         1 |      0.33s |      0.19% |
+| matrixFreePDE: output           |        11 |      2.98s |       1.8% |
+| matrixFreePDE: reinitialization |         9 |     0.436s |      0.26% |
+| matrixFreePDE: solve            |         1 |       170s |     1e+02% |
+| matrixFreePDE: solveIncrements  |      5000 |       165s |        97% |
++---------------------------------+-----------+------------+------------+
+
