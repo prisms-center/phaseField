@@ -31,7 +31,9 @@ double nucProb(double cValue)
 // =================================================================================
 void nucAttempt(std::vector<nucleus> &newnuclei, std::map<dealii::types::global_dof_index, dealii::Point<problemDIM> > support_points, vectorType* c, vectorType* n, double t, unsigned int inc)
 {
-    double rand_val;
+    int counter = 0;
+
+	double rand_val;
     std::cout << "nucleation attempt" << std::endl;
     //Better random no. generator
     std::random_device rd;
@@ -43,6 +45,7 @@ void nucAttempt(std::vector<nucleus> &newnuclei, std::map<dealii::types::global_
         unsigned int dof=it->first;
         //set only local owned values of the parallel vector
         if (n->locally_owned_elements().is_element(dof)){
+        	counter++;
             dealii::Point<problemDIM> nodePoint=it->second;
             //Safety zone to avoid nucleation near the edges in no-flux BCs
             bool insafetyzone = (nodePoint[0] > borderreg) && (nodePoint[0] < spanX-borderreg) && (nodePoint[1] > borderreg) && (nodePoint[1] < spanY-borderreg);
@@ -80,6 +83,7 @@ void nucAttempt(std::vector<nucleus> &newnuclei, std::map<dealii::types::global_
             }
         }
     }
+    std::cout << "number of points checked (old): " << counter << std::endl;
 }
 
 void sendUpdate (std::vector<nucleus> &newnuclei, int procno)
@@ -294,19 +298,105 @@ void customPDE<dim,degree>::modifySolutionFields()
     	//current time
 		double t=this->currentTime;
 
-		//get the list of node points in the domain
-		std::map<dealii::types::global_dof_index, dealii::Point<dim> > support_points;
-		dealii::DoFTools::map_dofs_to_support_points (dealii::MappingQ1<dim>(), *this->dofHandlersSet[0], support_points);
-		//fields
-		vectorType* n=this->solutionSet[this->getFieldIndex("n")];
-		vectorType* c=this->solutionSet[this->getFieldIndex("c")];
+		//vector of all the NEW nuclei seeded in this time step
+		std::vector<nucleus> newnuclei;
 
 
-        //vector of all the NEW nuclei seeded in this time step
-        std::vector<nucleus> newnuclei;
-        
-        // Attempt to nucleate (each processor independently)
-        nucAttempt(newnuclei, support_points, c, n, t, inc);
+		// ========================================
+		// Attempt at cell-wise nucleation checks
+
+		std::cout << "nucleation attempt for increment " << inc << std::endl;
+
+		QGauss<dim>  quadrature(degree+1);
+		FEValues<dim> fe_values (*(this->FESet[0]), quadrature, update_values|update_quadrature_points);
+		const unsigned int   num_quad_points = quadrature.size();
+		std::vector<double> var_value(num_quad_points);
+		std::vector<dealii::Point<dim> > q_point_list(num_quad_points);
+
+		typename Triangulation<dim>::active_cell_iterator ti  = this->triangulation.begin();
+		typename DoFHandler<dim>::active_cell_iterator   di = this->dofHandlersSet_nonconst[0]->begin();
+
+		int counter = 0;
+
+		while (ti != this->triangulation.end())
+		{
+			if (di->is_locally_owned()){
+
+				fe_values.reinit (di);
+				fe_values.get_function_values(*(this->solutionSet[0]), var_value);
+				q_point_list = fe_values.get_quadrature_points();
+
+				int local_refinement = ti->level();
+
+				// What used to be in nuc_attempt
+			    double rand_val;
+			    //Better random no. generator
+			    std::random_device rd;
+			    std::mt19937 gen(rd());
+			    std::uniform_real_distribution<> distr(0.0,1.0);
+
+			    //add nuclei based on concentration field values
+
+			    // Loop over the quadrature points
+
+			    counter++;
+			    for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
+			    	//counter++;
+			    	bool insafetyzone = (q_point_list[q_point][0] > borderreg) && (q_point_list[q_point][0] < spanX-borderreg) && (q_point_list[q_point][1] > borderreg) && (q_point_list[q_point][1] < spanY-borderreg);
+			    	bool periodic=false;
+			    	if (insafetyzone || periodic){
+			    		//Compute random no. between 0 and 1 (old method)
+			    		rand_val=distr(gen);
+			    		double Prob=nucProb(var_value[q_point]);
+			    		if (rand_val <= Prob){
+			    			//std::cout << "random value " << rand_val << ", probability " << Prob << std::endl;
+			    			//loop over all existing nuclei to check if they are in the vicinity
+			    			bool isClose=false;
+			    			for (std::vector<nucleus>::iterator thisNuclei=nuclei.begin(); thisNuclei!=nuclei.end(); ++thisNuclei){
+			    				if (thisNuclei->center.distance(q_point_list[q_point])<minDistBetwenNuclei){
+			    					isClose=true;
+			    				}
+			    			}
+			    			if (!isClose){
+			    				std::cout << "Nucleation event. Nucleus no. " << nuclei.size()+1 << std::endl;
+			    				std::cout << "nucleus center " << q_point_list[q_point] << std::endl;
+			    				nucleus* temp = new nucleus;
+			    				temp->index=nuclei.size();
+			    				temp->center=q_point_list[q_point];
+			    				temp->radius=n_radius;
+			    				temp->seededTime=t;
+			    				temp->seedingTime = t_hold;
+			    				temp->seedingTimestep = inc;
+			    				newnuclei.push_back(*temp);
+			    			}
+			    		}
+			    	}
+			    }
+
+
+
+			}
+
+			// Increment the cell iterators
+		  ++ti;
+		  ++di;
+		}
+
+		std::cout << "number of points checked (new): " << counter << std::endl;
+
+		 // end of what used to be in nuc_attempt
+
+		// ========================================
+
+//		//get the list of node points in the domain
+//		std::map<dealii::types::global_dof_index, dealii::Point<dim> > support_points;
+//		dealii::DoFTools::map_dofs_to_support_points (dealii::MappingQ1<dim>(), *this->dofHandlersSet[0], support_points);
+//		//fields
+//		vectorType* n=this->solutionSet[this->getFieldIndex("n")];
+//		vectorType* c=this->solutionSet[this->getFieldIndex("c")];
+//
+//        // Attempt to nucleate (each processor independently)
+//        nucAttempt(newnuclei, support_points, c, n, t, inc);
 
         //MPI INITIALIZATON
         int numProcs=Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);

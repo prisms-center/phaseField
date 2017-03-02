@@ -116,8 +116,8 @@ for (typename parallel::distributed::Triangulation<dim>::active_cell_iterator ce
 //prepare and refine
 triangulation.prepare_coarsening_and_refinement();
 for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-(*residualSet[fieldIndex])=(*solutionSet[fieldIndex]);
-soltransSet[fieldIndex]->prepare_for_coarsening_and_refinement(*residualSet[fieldIndex]);
+	(*residualSet[fieldIndex])=(*solutionSet[fieldIndex]);
+	soltransSet[fieldIndex]->prepare_for_coarsening_and_refinement(*residualSet[fieldIndex]);
 }
 triangulation.execute_coarsening_and_refinement();
 
