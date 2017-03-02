@@ -6,6 +6,7 @@ void nucAttempt(std::vector<nucleus> &newnuclei, std::map<dealii::types::global_
 void receiveUpdate (std::vector<nucleus> &newnuclei, int procno);
 void sendUpdate (std::vector<nucleus> &newnuclei, int procno);
 void broadcastUpdate (std::vector<nucleus> &newnuclei, int broadcastProc, int thisProc);
+void resolveNucleationConflicts(std::vector<nucleus> &newnuclei);
 
 // =================================================================================
 // NUCLEATION FUNCTIONS
@@ -73,7 +74,6 @@ void nucAttempt(std::vector<nucleus> &newnuclei, std::map<dealii::types::global_
                         temp->seededTime=t;
                         temp->seedingTime = t_hold;
                         temp->seedingTimestep = inc;
-                        //nuclei.push_back(*temp); I want to save this for later - Steve
                         newnuclei.push_back(*temp);
                     }
                 }
@@ -87,7 +87,6 @@ void sendUpdate (std::vector<nucleus> &newnuclei, int procno)
     int currnonucs=newnuclei.size();
     //MPI SECTION TO SEND INFORMATION TO THE PROCESSOR procno
     //Sending local no. of nuclei
-    std::cout << "Sending " << currnonucs << " new nuclei from " << procno-1 << " to " << procno << std::endl;
     MPI_Send(&currnonucs, 1, MPI_INT, procno, 0, MPI_COMM_WORLD);
     if (currnonucs > 0){
         //Creating vectors of each quantity in nuclei. Each numbered acording to the tags used for MPI_Send/MPI_Recv
@@ -174,8 +173,6 @@ void receiveUpdate (std::vector<nucleus> &newnuclei, int procno)
             temp->seededTime=r_seededTime[jnuc];
             temp->seedingTime = r_seedingTime[jnuc];
             temp->seedingTimestep = r_seedingTimestep[jnuc];
-            //nuclei.push_back(*temp); // I want to save this for later -Steve
-            std::cout << "Adding a nucleus to  " << procno+1 << " from " << procno << std::endl;
             newnuclei.push_back(*temp);
         }
 
@@ -190,20 +187,28 @@ void broadcastUpdate (std::vector<nucleus> &newnuclei, int broadcastProc, int th
     if (currnonucs > 0){
         
         //Creating vectors of each quantity in nuclei. Each numbered acording to the tags used for MPI_Send/MPI_Recv
+    	unsigned int initial_vec_size;
+    	if (thisProc == broadcastProc){
+    		initial_vec_size = 0;
+    	}
+    	else{
+    		initial_vec_size = currnonucs;
+    	}
+
         //1 - index
-        std::vector<unsigned int> r_index(currnonucs,0);
+        std::vector<unsigned int> r_index(initial_vec_size,0);
         //2 - "x" componenet of center
-        std::vector<double> r_center_x(currnonucs,0.0);
+        std::vector<double> r_center_x(initial_vec_size,0.0);
         //3 - "y" componenet of center
-        std::vector<double> r_center_y(currnonucs,0.0);
+        std::vector<double> r_center_y(initial_vec_size,0.0);
         //4 - radius
-        std::vector<double> r_radius(currnonucs,0.0);
+        std::vector<double> r_radius(initial_vec_size,0.0);
         //5 - seededTime
-        std::vector<double> r_seededTime(currnonucs,0.0);
+        std::vector<double> r_seededTime(initial_vec_size,0.0);
         //6 - seedingTime
-        std::vector<double> r_seedingTime(currnonucs,0.0);
+        std::vector<double> r_seedingTime(initial_vec_size,0.0);
         //7 - seedingTimestep
-        std::vector<unsigned int> r_seedingTimestep(currnonucs,0);
+        std::vector<unsigned int> r_seedingTimestep(initial_vec_size,0);
         
         if (thisProc == broadcastProc){
         	for (std::vector<nucleus>::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
@@ -248,26 +253,56 @@ void broadcastUpdate (std::vector<nucleus> &newnuclei, int broadcastProc, int th
     }
 }
 
+void resolveNucleationConflicts (std::vector<nucleus> &newnuclei){
+
+	std::vector<nucleus> newnuclei_cleaned;
+	unsigned int old_num_nuclei = nuclei.size();
+
+	for (unsigned int nuc_index=0; nuc_index<newnuclei.size(); nuc_index++){
+		bool isClose=false;
+
+		for (unsigned int prev_nuc_index=0; prev_nuc_index<nuc_index; prev_nuc_index++){
+
+			// We may want to break this section into a separate function to allow different choices for when
+			// nucleation should be prevented
+			if (newnuclei[nuc_index].center.distance(newnuclei[prev_nuc_index].center) < minDistBetwenNuclei){
+				isClose = true;
+				std::cout << "Conflict between nuclei! Distance is: " << newnuclei[nuc_index].center.distance(newnuclei[prev_nuc_index].center) << std::endl;
+				break;
+			}
+		}
+
+		if (!isClose){
+			newnuclei[nuc_index].index = old_num_nuclei + newnuclei_cleaned.size();
+			newnuclei_cleaned.push_back(newnuclei[nuc_index]);
+		}
+	}
+
+	newnuclei = newnuclei_cleaned;
+}
+
 // =================================================================================
 // Global nucleation procedure
 // =================================================================================
 template <int dim>
 void generalizedProblem<dim>::modifySolutionFields()
 {
-	//current time
-    double t=this->currentTime;
-    //current time step
-    unsigned int inc=this->currentIncrement;
-    
-    //get the list of node points in the domain
-    std::map<dealii::types::global_dof_index, dealii::Point<dim> > support_points;
-    dealii::DoFTools::map_dofs_to_support_points (dealii::MappingQ1<dim>(), *this->dofHandlersSet[0], support_points);
-    //fields
-    vectorType* n=this->solutionSet[this->getFieldIndex("n")];
-    vectorType* c=this->solutionSet[this->getFieldIndex("c")];
-    
+	//current time step
+	unsigned int inc=this->currentIncrement;
+
     if ( (inc <= timeIncrements) && (inc % skipNucleationSteps == 0) ){
-        
+    	//current time
+		double t=this->currentTime;
+
+
+		//get the list of node points in the domain
+		std::map<dealii::types::global_dof_index, dealii::Point<dim> > support_points;
+		dealii::DoFTools::map_dofs_to_support_points (dealii::MappingQ1<dim>(), *this->dofHandlersSet[0], support_points);
+		//fields
+		vectorType* n=this->solutionSet[this->getFieldIndex("n")];
+		vectorType* c=this->solutionSet[this->getFieldIndex("c")];
+
+
         //vector of all the NEW nuclei seeded in this time step
         std::vector<nucleus> newnuclei;
         
@@ -281,7 +316,6 @@ void generalizedProblem<dim>::modifySolutionFields()
         }
         else{
         	nucAttempt(newnuclei, support_points, c, n, t, inc);
-        	std::cout << "Proc: " << thisProc << " num nuclei: " << newnuclei.size() << std::endl;
 
         	// Cycle through each processor, sending and receiving, to append the list of new nuclei
         	for (int proc_index=0; proc_index < numProcs-1; proc_index++){
@@ -293,17 +327,18 @@ void generalizedProblem<dim>::modifySolutionFields()
         		}
         		MPI_Barrier(MPI_COMM_WORLD);
         	}
-        	// The final processor now has all of the new nuclei, broadcast it to all the other processors
-        	std::cout << "Proc: " << thisProc << " num nuclei: " << newnuclei.size() << std::endl;
+        	// The final processor now has all of the new nucleation attempts
+        	// Check for conflicts on the final processor before broadcasting the list
+        	if (thisProc == numProcs-1){
+        		resolveNucleationConflicts(newnuclei);
+        	}
+
+        	// The final processor now has the final list of the new nuclei, broadcast it to all the other processors
         	broadcastUpdate(newnuclei, numProcs-1, thisProc);
-
-        	std::cout << "Proc: " << thisProc << " num nuclei: " << newnuclei.size() << std::endl;
-
         }
-        // Check for conflicts between the new nuclei
 
         // Add the new nuclei to the list of nuclei
-
+        nuclei.insert(nuclei.end(),newnuclei.begin(),newnuclei.end());
 
         //Seeding nucleus section
         //Looping over all nodes
