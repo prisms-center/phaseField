@@ -54,11 +54,11 @@ Beginning unit tests...
 Testing 'computeInvM' in 2 dimension(s)...'
 computed mass matrix (using FE space for field: 0)
 Test result for 'computeInvM' in   2 dimension(s): 1
-
-
 Test result for 'computeInvM' in   2 dimension(s): 1
+
+
 +---------------------------------------------+------------+------------+
-| Total wallclock time elapsed since start    |   0.00434s |            |
+| Total wallclock time elapsed since start    |   0.00263s |            |
 |                                             |            |            |
 | Section                         | no. calls |  wall time | % of total |
 +---------------------------------+-----------+------------+------------+
@@ -73,83 +73,83 @@ Test result for 'outputResults' in 2 dimension(s): 1
 
 +---------------------------------------------+------------+------------+
 Test result for 'outputResults' in 2 dimension(s): 1
+| Total wallclock time elapsed since start    |  1.38e-05s |            |
+|                                             |            |            |
+| Section                         | no. calls |  wall time | % of total |
++---------------------------------+-----------+------------+------------+
++---------------------------------+-----------+------------+------------+
+
+Testing 'computeStress' in 1 dimension(s)...
+Test result for 'computeStress' in 1 dimension(s): 1
+Testing 'computeStress' in 1 dimension(s)...
+Test result for 'computeStress' in 1 dimension(s): 1
+Testing 'computeStress' in 1 dimension(s)...
+Test result for 'computeStress' in 1 dimension(s): 1
+Testing 'computeStress' in 1 dimension(s)...
+Testing 'computeStress' in 2 dimension(s)...
+Test result for 'computeStress' in 2 dimension(s): 1
+Testing 'computeStress' in 2 dimension(s)...
+Test result for 'computeStress' in 2 dimension(s): 1
+Testing 'computeStress' in 3 dimension(s)...
+Test result for 'computeStress' in 3 dimension(s): 1
+Testing 'computeStress' in 3 dimension(s)...
+Test result for 'computeStress' in 1 dimension(s): 1
+Testing 'computeStress' in 2 dimension(s)...
+Test result for 'computeStress' in 2 dimension(s): 1
+Testing 'computeStress' in 2 dimension(s)...
+Test result for 'computeStress' in 2 dimension(s): 1
+Testing 'computeStress' in 3 dimension(s)...
+Test result for 'computeStress' in 3 dimension(s): 1
+
+Testing 'getOutputTimeSteps' for type EQUAL_SPACING ...'
+Test result for 'computeStress' in 3 dimension(s): 1
+Testing 'computeStress' in 3 dimension(s)...
+Test result for 'computeStress' in 3 dimension(s): 1
+
+Testing 'getOutputTimeSteps' for type EQUAL_SPACING ...'
+Test result for 'getOutputTimeSteps' for type EQUAL_SPACING : 1
+
+
++---------------------------------------------+------------+------------+
+Test result for 'getOutputTimeSteps' for type EQUAL_SPACING : 1
+| Total wallclock time elapsed since start    |  1.69e-05s |            |
+|                                             |            |            |
+| Section                         | no. calls |  wall time | % of total |
++---------------------------------+-----------+------------+------------+
++---------------------------------+-----------+------------+------------+
+
+
+Testing 'getOutputTimeSteps' for type LOG_SPACING ...'
+
+Testing 'getOutputTimeSteps' for type LOG_SPACING ...'
+Test result for 'getOutputTimeSteps' for type LOG_SPACING : 1
+
+
++---------------------------------------------+------------+------------+
+Test result for 'getOutputTimeSteps' for type LOG_SPACING : 1
 | Total wallclock time elapsed since start    |     2e-05s |            |
 |                                             |            |            |
 | Section                         | no. calls |  wall time | % of total |
 +---------------------------------+-----------+------------+------------+
 +---------------------------------+-----------+------------+------------+
 
-Testing 'computeStress' in 1 dimension(s)...
-Test result for 'computeStress' in 1 dimension(s): 1
-Testing 'computeStress' in 1 dimension(s)...
-Test result for 'computeStress' in 1 dimension(s): 1
-Testing 'computeStress' in 2 dimension(s)...
-Testing 'computeStress' in 1 dimension(s)...
-Test result for 'computeStress' in 1 dimension(s): 1
-Testing 'computeStress' in 1 dimension(s)...
-Test result for 'computeStress' in 2 dimension(s): 1
-Testing 'computeStress' in 2 dimension(s)...
-Test result for 'computeStress' in 2 dimension(s): 1
-Testing 'computeStress' in 3 dimension(s)...
-Test result for 'computeStress' in 3 dimension(s): 1
-Testing 'computeStress' in 3 dimension(s)...
-Test result for 'computeStress' in 1 dimension(s): 1
-Testing 'computeStress' in 2 dimension(s)...
-Test result for 'computeStress' in 2 dimension(s): 1
-Testing 'computeStress' in 2 dimension(s)...
-Test result for 'computeStress' in 2 dimension(s): 1
-Test result for 'computeStress' in 3 dimension(s): 1
-
-Testing 'getOutputTimeSteps' for type EQUAL_SPACING ...'
-Testing 'computeStress' in 3 dimension(s)...
-Test result for 'computeStress' in 3 dimension(s): 1
-Testing 'computeStress' in 3 dimension(s)...
-Test result for 'computeStress' in 3 dimension(s): 1
-
-Testing 'getOutputTimeSteps' for type EQUAL_SPACING ...'
-Test result for 'getOutputTimeSteps' for type EQUAL_SPACING : 1
-
-
-+---------------------------------------------+------------+------------+
-Test result for 'getOutputTimeSteps' for type EQUAL_SPACING : 1
-| Total wallclock time elapsed since start    |  3.19e-05s |            |
-|                                             |            |            |
-| Section                         | no. calls |  wall time | % of total |
-+---------------------------------+-----------+------------+------------+
-+---------------------------------+-----------+------------+------------+
-
-
-Testing 'getOutputTimeSteps' for type LOG_SPACING ...'
-
-Testing 'getOutputTimeSteps' for type LOG_SPACING ...'
-Test result for 'getOutputTimeSteps' for type LOG_SPACING : 1
-
-
-+---------------------------------------------+------------+------------+
-Test result for 'getOutputTimeSteps' for type LOG_SPACING : 1
-
-| Total wallclock time elapsed since start    |  2.88e-05s |            |
-|                                             |            |            |
-| Section                         | no. calls |  wall time | % of total |
-+---------------------------------+-----------+------------+------------+
-+---------------------------------+-----------+------------+------------+
 
 Testing 'getOutputTimeSteps' for type N_PER_DECADE ...'
 
 Testing 'getOutputTimeSteps' for type N_PER_DECADE ...'
 Test result for 'getOutputTimeSteps' for type N_PER_DECADE : 1
-Test result for 'getOutputTimeSteps' for type N_PER_DECADE : 1
 
 
 +---------------------------------------------+------------+------------+
-| Total wallclock time elapsed since start    |  0.000629s |            |
+Test result for 'getOutputTimeSteps' for type N_PER_DECADE : 1
+| Total wallclock time elapsed since start    |  0.000648s |            |
 |                                             |            |            |
+| Section                         | no. calls |  wall time | % of total |
++---------------------------------+-----------+------------+------------+
++---------------------------------+-----------+------------+------------+
+
 
 Testing 'getOutputTimeSteps' for type LIST ...'
-| Section                         | no. calls |  wall time | % of total |
-+---------------------------------+-----------+------------+------------+
-+---------------------------------+-----------+------------+------------+
-
 
 Testing 'getOutputTimeSteps' for type LIST ...'
 Test result for 'getOutputTimeSteps' for type LIST : 1
@@ -170,9 +170,9 @@ Testing 'setRigidBodyModeConstraints' with 0 component(s) needing a constraint..
 Test result for 'setRigidBodyModeConstraints' with   0 component(s) needing a constraint: 1
 
 
++---------------------------------------------+------------+------------+
 Test result for 'setRigidBodyModeConstraints' with   0 component(s) needing a constraint: 1
-+---------------------------------------------+------------+------------+
-| Total wallclock time elapsed since start    |   0.00153s |            |
+| Total wallclock time elapsed since start    |   0.00143s |            |
 |                                             |            |            |
 | Section                         | no. calls |  wall time | % of total |
 +---------------------------------+-----------+------------+------------+
@@ -185,9 +185,9 @@ Testing 'setRigidBodyModeConstraints' with 1 component(s) needing a constraint..
 Test result for 'setRigidBodyModeConstraints' with   1 component(s) needing a constraint: 1
 
 
-Test result for 'setRigidBodyModeConstraints' with   1 component(s) needing a constraint: 1
 +---------------------------------------------+------------+------------+
-| Total wallclock time elapsed since start    |   0.00172s |            |
+Test result for 'setRigidBodyModeConstraints' with   1 component(s) needing a constraint: 1
+| Total wallclock time elapsed since start    |   0.00166s |            |
 |                                             |            |            |
 | Section                         | no. calls |  wall time | % of total |
 +---------------------------------+-----------+------------+------------+
@@ -202,7 +202,7 @@ Test result for 'setRigidBodyModeConstraints' with   3 component(s) needing a co
 
 
 +---------------------------------------------+------------+------------+
-| Total wallclock time elapsed since start    |   0.00168s |            |
+| Total wallclock time elapsed since start    |   0.00163s |            |
 |                                             |            |            |
 | Section                         | no. calls |  wall time | % of total |
 +---------------------------------+-----------+------------+------------+

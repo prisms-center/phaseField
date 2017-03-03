@@ -123,6 +123,8 @@ class MatrixFreePDE:public Subscriptor
 
   dealii::Threads::Mutex assembler_lock;
 
+  unsigned int totalDOFs;
+
   // Elasticity matrix variables
   const static unsigned int CIJ_tensor_size = 2*dim-1+dim/3;
 

@@ -46,7 +46,7 @@
 #define refineWindowMin {0.01}
 
 // Set the number of time steps between remeshing operations
-#define skipRemeshingSteps 100
+#define skipRemeshingSteps 500
 
 
 // =================================================================================

@@ -7,10 +7,15 @@ template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::adaptiveRefine(unsigned int currentIncrement){
 if (userInputs.h_adaptivity == true){
 	if ( (currentIncrement == 0) ){
+		unsigned int numDoF_preremesh = totalDOFs;
 		for (unsigned int remesh_index=0; remesh_index < (userInputs.max_refinement_level-userInputs.min_refinement_level); remesh_index++){
 			adaptiveRefineCriterion();
 			refineGrid();
 			reinit();
+
+			// If the mesh hasn't changed from the previous cycle, stop remeshing
+			if (totalDOFs == numDoF_preremesh) break;
+			numDoF_preremesh = totalDOFs;
 		}
 	}
 	else if ( (currentIncrement%userInputs.skip_remeshing_steps==0) ){
@@ -107,8 +112,13 @@ void MatrixFreePDE<dim,degree>::refineGrid (){
 //prepare and refine
 triangulation.prepare_coarsening_and_refinement();
 for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-	(*residualSet[fieldIndex])=(*solutionSet[fieldIndex]);
-	soltransSet[fieldIndex]->prepare_for_coarsening_and_refinement(*residualSet[fieldIndex]);
+	// The following lines were from an earlier version.
+	// residualSet is cleared in reinit(), so I don't see the reason for the pointer assignment
+	// Changing to the new version has no impact on the solution.
+	//(*residualSet[fieldIndex])=(*solutionSet[fieldIndex]);
+	//soltransSet[fieldIndex]->prepare_for_coarsening_and_refinement(*residualSet[fieldIndex]);
+
+	soltransSet[fieldIndex]->prepare_for_coarsening_and_refinement(*solutionSet[fieldIndex]);
 }
 triangulation.execute_coarsening_and_refinement();
 

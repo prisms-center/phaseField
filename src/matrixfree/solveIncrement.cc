@@ -11,7 +11,11 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
   char buffer[200];
 
   //modify fields (rarely used. Typically used in problems involving nucleation)
-  if (userInputs.nucleation_occurs) modifySolutionFields();
+  if (userInputs.nucleation_occurs){
+	  computing_timer.enter_section("matrixFreePDE: modifySolutionFields");
+	  modifySolutionFields();
+	  computing_timer.exit_section("matrixFreePDE: modifySolutionFields");
+  }
 
   //compute residual vectors
 

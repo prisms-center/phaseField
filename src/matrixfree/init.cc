@@ -38,7 +38,7 @@ template <int dim, int degree>
   
 	 // Setup system
 	 pcout << "initializing matrix free object\n";
-	 unsigned int totalDOFs=0;
+	 totalDOFs=0;
 	 for(typename std::vector<Field<dim> >::iterator it = fields.begin(); it != fields.end(); ++it){
 		 currentFieldIndex=it->index;
 

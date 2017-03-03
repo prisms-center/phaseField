@@ -76,8 +76,8 @@ double cbtmin = 1.0;
 
 // Minimum distance between nuclei
 #define minDistBetwenNuclei (4.0*n_radius)
-#define maxOrderParameterNucleation 1.0e-9
-#define maxOrderParameterGradNucleation 5.0e-5
+#define maxOrderParameterNucleation 0.01 //1.0e-9
+#define maxOrderParameterGradNucleation 1.0 //5.0e-5
 
 // Number of time steps between nucleation attempts
 #define skipNucleationSteps 30
