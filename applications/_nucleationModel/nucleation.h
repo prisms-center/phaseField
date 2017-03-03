@@ -2,6 +2,7 @@
 //Function prototypes
 // =================================================================================
 double nucProb(double cValue);
+double nucProb(double cValue, double dV);
 void nucAttempt(std::vector<nucleus> &newnuclei, std::map<dealii::types::global_dof_index, dealii::Point<problemDIM> > support_points, vectorType* c, vectorType* n, double t, unsigned int inc);
 void receiveUpdate (std::vector<nucleus> &newnuclei, int procno);
 void sendUpdate (std::vector<nucleus> &newnuclei, int procno);
@@ -23,6 +24,15 @@ double nucProb(double cValue)
 	double J=k1*exp(-k2/(cValue-calmin))*10.0;
 	//We need element volume (or area in 2D)
 	double retProb=1.0-exp(-J*timeStep*((double)skipNucleationSteps)*dx*dx);
+    return retProb;
+}
+
+double nucProb(double cValue, double dV)
+{
+	//Nucleation rate
+	double J=k1*exp(-k2/(cValue-calmin))*10.0;
+	//We need element volume (or area in 2D)
+	double retProb=1.0-exp(-J*timeStep*((double)skipNucleationSteps)*dV);
     return retProb;
 }
 
@@ -305,58 +315,56 @@ void customPDE<dim,degree>::modifySolutionFields()
 		// ========================================
 		// Attempt at cell-wise nucleation checks
 
-		std::cout << "nucleation attempt for increment " << inc << std::endl;
+		std::cout << "Nucleation attempt for increment " << inc << std::endl;
 
 		QGauss<dim>  quadrature(degree+1);
-		FEValues<dim> fe_values (*(this->FESet[0]), quadrature, update_values|update_quadrature_points);
+		FEValues<dim> fe_values (*(this->FESet[0]), quadrature, update_values|update_quadrature_points|update_JxW_values|update_gradients);
 		const unsigned int   num_quad_points = quadrature.size();
 		std::vector<double> var_value(num_quad_points);
+		std::vector<double> var_value2(num_quad_points);
+		std::vector<dealii::Tensor<1,dim,double> > var_grad2(num_quad_points);
 		std::vector<dealii::Point<dim> > q_point_list(num_quad_points);
 
-		typename Triangulation<dim>::active_cell_iterator ti  = this->triangulation.begin();
 		typename DoFHandler<dim>::active_cell_iterator   di = this->dofHandlersSet_nonconst[0]->begin();
 
-		int counter = 0;
+		// What used to be in nuc_attempt
+		double rand_val;
+		//Better random no. generator
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_real_distribution<> distr(0.0,1.0);
 
-		while (ti != this->triangulation.end())
+		while (di != this->dofHandlersSet_nonconst[0]->end())
 		{
 			if (di->is_locally_owned()){
 
 				fe_values.reinit (di);
 				fe_values.get_function_values(*(this->solutionSet[0]), var_value);
+				fe_values.get_function_values(*(this->solutionSet[1]), var_value2);
+				fe_values.get_function_gradients(*(this->solutionSet[1]), var_grad2);
 				q_point_list = fe_values.get_quadrature_points();
 
-				int local_refinement = ti->level();
 
-				// What used to be in nuc_attempt
-			    double rand_val;
-			    //Better random no. generator
-			    std::random_device rd;
-			    std::mt19937 gen(rd());
-			    std::uniform_real_distribution<> distr(0.0,1.0);
-
-			    //add nuclei based on concentration field values
 
 			    // Loop over the quadrature points
-
-			    counter++;
 			    for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
-			    	//counter++;
 			    	bool insafetyzone = (q_point_list[q_point][0] > borderreg) && (q_point_list[q_point][0] < spanX-borderreg) && (q_point_list[q_point][1] > borderreg) && (q_point_list[q_point][1] < spanY-borderreg);
 			    	bool periodic=false;
 			    	if (insafetyzone || periodic){
+			    		if (var_value2[q_point] < maxOrderParameterNucleation && var_grad2[q_point].norm() < maxOrderParameterGradNucleation){
+
 			    		//Compute random no. between 0 and 1 (old method)
 			    		rand_val=distr(gen);
-			    		double Prob=nucProb(var_value[q_point]);
+			    		double Prob=nucProb(var_value[q_point],fe_values.JxW(q_point));
 			    		if (rand_val <= Prob){
 			    			//std::cout << "random value " << rand_val << ", probability " << Prob << std::endl;
 			    			//loop over all existing nuclei to check if they are in the vicinity
 			    			bool isClose=false;
-			    			for (std::vector<nucleus>::iterator thisNuclei=nuclei.begin(); thisNuclei!=nuclei.end(); ++thisNuclei){
-			    				if (thisNuclei->center.distance(q_point_list[q_point])<minDistBetwenNuclei){
-			    					isClose=true;
-			    				}
-			    			}
+//			    			for (std::vector<nucleus>::iterator thisNuclei=nuclei.begin(); thisNuclei!=nuclei.end(); ++thisNuclei){
+//			    				if (thisNuclei->center.distance(q_point_list[q_point])<minDistBetwenNuclei){
+//			    					isClose=true;
+//			    				}
+//			    			}
 			    			if (!isClose){
 			    				std::cout << "Nucleation event. Nucleus no. " << nuclei.size()+1 << std::endl;
 			    				std::cout << "nucleus center " << q_point_list[q_point] << std::endl;
@@ -370,6 +378,7 @@ void customPDE<dim,degree>::modifySolutionFields()
 			    				newnuclei.push_back(*temp);
 			    			}
 			    		}
+			    		}
 			    	}
 			    }
 
@@ -378,11 +387,8 @@ void customPDE<dim,degree>::modifySolutionFields()
 			}
 
 			// Increment the cell iterators
-		  ++ti;
 		  ++di;
 		}
-
-		std::cout << "number of points checked (new): " << counter << std::endl;
 
 		 // end of what used to be in nuc_attempt
 
@@ -421,9 +427,49 @@ void customPDE<dim,degree>::modifySolutionFields()
         	// The final processor now has the final list of the new nuclei, broadcast it to all the other processors
         	broadcastUpdate(newnuclei, numProcs-1, thisProc);
         }
+        else {
+        	// Check for conflicts between nucleation attempts this time step
+        	resolveNucleationConflicts(newnuclei);
+        }
 
         // Add the new nuclei to the list of nuclei
         nuclei.insert(nuclei.end(),newnuclei.begin(),newnuclei.end());
 
+        // Remesh
+        if (newnuclei.size() > 0){
+			for (unsigned int remesh_index=0; remesh_index < (this->userInputs.max_refinement_level-this->userInputs.min_refinement_level); remesh_index++){
+				typename Triangulation<dim>::active_cell_iterator ti  = this->triangulation.begin();
+				di = this->dofHandlersSet_nonconst[0]->begin();
+				while (di != this->dofHandlersSet_nonconst[0]->end())
+				{
+					//std::cout << "a" << di2->is_locally_owned() << std::endl;
+					if (di->is_locally_owned()){
+						//std::cout << "b" << std::endl;
+						bool mark_refine = false;
+
+						fe_values.reinit (di);
+						q_point_list = fe_values.get_quadrature_points();
+
+						for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
+							for (std::vector<nucleus>::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
+								if (thisNuclei->center.distance(q_point_list[q_point])<opfreeze_radius){
+									if ((unsigned int)ti->level() < this->userInputs.max_refinement_level){
+										mark_refine = true;
+										break;
+									}
+								}
+								if (mark_refine) break;
+							}
+							if (mark_refine) break;
+						}
+						if (mark_refine) di->set_refine_flag();
+					}
+					++di;
+					++ti;
+				}
+				this->refineGrid();
+				this->reinit();
+			}
+        }
     }
 }

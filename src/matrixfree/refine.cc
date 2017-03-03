@@ -8,10 +8,14 @@ void MatrixFreePDE<dim,degree>::adaptiveRefine(unsigned int currentIncrement){
 if (userInputs.h_adaptivity == true){
 	if ( (currentIncrement == 0) ){
 		for (unsigned int remesh_index=0; remesh_index < (userInputs.max_refinement_level-userInputs.min_refinement_level); remesh_index++){
+			adaptiveRefineCriterion();
+			refineGrid();
 			reinit();
 		}
 	}
 	else if ( (currentIncrement%userInputs.skip_remeshing_steps==0) ){
+		adaptiveRefineCriterion();
+		refineGrid();
 		reinit();
 	}
 }
@@ -57,6 +61,8 @@ std::vector<double> errorOut(num_quad_points);
 
 typename DoFHandler<dim>::active_cell_iterator cell = dofHandlersSet_nonconst[userInputs.refine_criterion_fields[0]]->begin_active(), endc = dofHandlersSet_nonconst[userInputs.refine_criterion_fields[0]]->end();
 
+typename parallel::distributed::Triangulation<dim>::active_cell_iterator t_cell = triangulation.begin_active();
+
 for (;cell!=endc; ++cell){
 	if (cell->is_locally_owned()){
 		fe_values.reinit (cell);
@@ -79,13 +85,16 @@ for (;cell!=endc; ++cell){
 
 		errorOutV.clear();
 
-		if ( (mark_refine == true) ){
+		//limit the maximal and minimal refinement depth of the mesh
+		unsigned int current_level = t_cell->level();
+		if ( (mark_refine && current_level < userInputs.max_refinement_level) ){
 			cell->set_refine_flag();
 		}
-		else {
+		else if (!mark_refine && current_level > userInputs.min_refinement_level) {
 			cell->set_coarsen_flag();
 		}
 	}
+	++t_cell;
 }
 
 }
@@ -94,24 +103,6 @@ for (;cell!=endc; ++cell){
 //refine grid method
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::refineGrid (){
-
-//call refinement criterion for adaptivity
-adaptiveRefineCriterion();
-
-//limit the maximal refinement depth of the mesh
-pcout << "Current mesh refinement level: " << triangulation.n_levels() << "\n";
-if ( triangulation.n_levels() > maxRefinementLevel ){
-for (typename parallel::distributed::Triangulation<dim>::active_cell_iterator cell = triangulation.begin_active(userInputs.max_refinement_level); cell != triangulation.end(); ++cell)
-  cell->clear_refine_flag ();
-}
-
-//limit the minimal refinement depth of the mesh
-for (typename parallel::distributed::Triangulation<dim>::active_cell_iterator cell = triangulation.begin_active(userInputs.min_refinement_level); cell != triangulation.end(); ++cell){
-  if ((unsigned int)cell->level() <= userInputs.min_refinement_level ){
-	  cell->clear_coarsen_flag ();
-  }
-}
-
 
 //prepare and refine
 triangulation.prepare_coarsening_and_refinement();

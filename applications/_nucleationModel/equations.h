@@ -76,6 +76,8 @@ double cbtmin = 1.0;
 
 // Minimum distance between nuclei
 #define minDistBetwenNuclei (4.0*n_radius)
+#define maxOrderParameterNucleation 1.0e-9
+#define maxOrderParameterGradNucleation 5.0e-5
 
 // Number of time steps between nucleation attempts
 #define skipNucleationSteps 30
@@ -90,7 +92,7 @@ double cbtmin = 1.0;
 #define k1 (4.0*498.866)
 #define k2 4.14465
 
-
+// =================================================================================
 
 // Free energy for each phase and their first and second derivatives
 #define faV (A0+A2*(c_alpha-calmin)*(c_alpha-calmin))

@@ -8,8 +8,6 @@ template <int dim, int degree>
 
 	 computing_timer.enter_section("matrixFreePDE: reinitialization");
 
-	 refineGrid();
-
 	 //setup system
 	 pcout << "Reinitializing matrix free object\n";
 	 unsigned int totalDOFs=0;
