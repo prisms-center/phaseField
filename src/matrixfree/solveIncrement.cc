@@ -10,10 +10,10 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
   Timer time; 
   char buffer[200];
 
-  //modify fields (rarely used. Typically used in problems involving nucleation)
+  // Get the list of new nuclei, if relevant
   if (userInputs.nucleation_occurs){
 	  computing_timer.enter_section("matrixFreePDE: modifySolutionFields");
-	  modifySolutionFields();
+	  getNucleiList();
 	  computing_timer.exit_section("matrixFreePDE: modifySolutionFields");
   }
 

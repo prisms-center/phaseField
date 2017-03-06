@@ -39,7 +39,7 @@ private:
 			  	  	 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc);
 
 	// Virtual method in MatrixFreePDE we choose to override
-	void modifySolutionFields ();
+	void getNucleiList ();
 
 	// ----------------------------------------------------------------
 	// Nucleation methods specific to this subclass

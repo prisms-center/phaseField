@@ -2,7 +2,7 @@
 #include "../../include/matrixFreePDE.h"
 
 template <int dim, int degree>
-void  MatrixFreePDE<dim,degree>::modifySolutionFields(){
+void  MatrixFreePDE<dim,degree>::getNucleiList(){
   //default trivial implementation.
 }
 

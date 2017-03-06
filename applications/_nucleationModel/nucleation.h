@@ -430,7 +430,7 @@ void customPDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus> newnuclei)
 // Global nucleation procedure
 // =================================================================================
 template <int dim, int degree>
-void customPDE<dim,degree>::modifySolutionFields()
+void customPDE<dim,degree>::getNucleiList()
 {
     if ( this->currentIncrement % skipNucleationSteps == 0 ){
 
@@ -448,7 +448,7 @@ void customPDE<dim,degree>::modifySolutionFields()
         nuclei.insert(nuclei.end(),newnuclei.begin(),newnuclei.end());
 
         // Refine mesh near the new nuclei
-        if (newnuclei.size() > 0){
+        if (newnuclei.size() > 0 && this->userInputs.h_adaptivity == true){
         	refineMeshNearNuclei(newnuclei);
         }
     }

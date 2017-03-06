@@ -55,7 +55,7 @@ void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Vectorized
 #include "../../src/matrixfree/invM.cc"
 #include "../../src/matrixfree/computeLHS.cc"
 #include "../../src/matrixfree/computeRHS.cc"
-#include "../../src/matrixfree/modifyFields.cc"
+#include "../../src/matrixfree/getNucleiList.cc"
 #include "../../src/matrixfree/solve.cc"
 #include "../../src/matrixfree/solveIncrement.cc"
 #include "../../src/matrixfree/outputResults.cc"
