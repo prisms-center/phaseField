@@ -123,23 +123,6 @@ double cbtmin = 1.0;
 #define rnV   (n-constV(timeStep*MnV)*gamma*((fbV-faV)*hnV - (c_beta-c_alpha)*fbcV*hnV + W_barrier*fbarriernV))
 #define rnxV  (constV(-timeStep*KnV*MnV)*gamma*nx)
 
-
-// =================================================================================
-// Define the global variable containing the information of every nuclei
-// =================================================================================
-// Definition of global variable nucleus containing the information of every nuclei
-//structure representing each nucleus
-struct nucleus{
-    unsigned int index;
-    dealii::Point<problemDIM> center;
-    double radius;
-    double seededTime, seedingTime;
-    unsigned int seedingTimestep;
-};
-
-//vector of all nucleus seeded in the problem
-std::vector<nucleus> nuclei;
-
 // =================================================================================
 // residualRHS
 // =================================================================================
@@ -178,7 +161,7 @@ scalargradType nx = modelVariablesList[1].scalarGrad;
 
 dealii::VectorizedArray<double> nucleation_source_term = constV(0.0);
 
-for (std::vector<nucleus>::iterator thisNuclei=nuclei.begin(); thisNuclei!=nuclei.end(); ++thisNuclei){
+for (std::vector<nucleus>::const_iterator thisNuclei=nuclei.begin(); thisNuclei!=nuclei.end(); ++thisNuclei){
     if (thisNuclei->seedingTimestep == this->currentIncrement){
 
     	dealii::VectorizedArray<double> r = constV(0.0);

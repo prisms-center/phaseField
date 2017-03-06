@@ -9,6 +9,7 @@
 #define APPLICATIONS_ALLENCAHN_CUSTOMPDE_H_
 
 #include "../../include/matrixFreePDE.h"
+#include "nucleus.h"
 
 template <int dim, int degree>
 class customPDE: public MatrixFreePDE<dim,degree>
@@ -39,6 +40,30 @@ private:
 
 	// Virtual method in MatrixFreePDE we choose to override
 	void modifySolutionFields ();
+
+	// ----------------------------------------------------------------
+	// Nucleation methods specific to this subclass
+	// ----------------------------------------------------------------
+
+	// Function to determine where new nuclei are seeded, varies between applications unless generalized, accesses MatrixFreePDE members
+	void getLocalNucleiList(std::vector<nucleus> &newnuclei) const;
+
+	// Contains nucleation probability that varies between applications, no MatrixFreePDE member access
+	double nucProb(double cValue, double dV) const;
+
+	// Function to refine the mesh near the new nuclei, generic, accesses and modifies MatrixFreePDE members
+	void refineMeshNearNuclei(std::vector<nucleus> newnuclei);
+
+	// Generic functions to pass and modify the vector of new nuclei, no MatrixFreePDE member access
+	void buildGlobalNucleiList(std::vector<nucleus> &newnuclei) const;
+	void broadcastUpdate (std::vector<nucleus> &newnuclei, int broadcastProc, int thisProc) const;
+	void receiveUpdate (std::vector<nucleus> &newnuclei, int procno) const;
+	void sendUpdate (std::vector<nucleus> &newnuclei, int procno) const;
+	void resolveNucleationConflicts (std::vector<nucleus> &newnuclei) const;
+
+
+	// Vector of all the nuclei seeded in the problem
+	std::vector<nucleus> nuclei;
 
 };
 
