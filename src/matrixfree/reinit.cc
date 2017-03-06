@@ -138,6 +138,11 @@ template <int dim, int degree>
  		 soltransSet.push_back(new parallel::distributed::SolutionTransfer<dim, vectorType>(*dofHandlersSet_nonconst[fieldIndex]));
  	 }
 
+ 	 // If remeshing at the zeroth time step, re-apply initial conditions so the starting values are correct on the refined mesh
+ 	 if (currentIncrement == 0){
+ 		 applyInitialConditions();
+ 	 }
+
  	 // Ghost the solution vectors. Also apply the Dirichet BC's (if any) on the solution vectors
  	 for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
 		 constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
