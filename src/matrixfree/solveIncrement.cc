@@ -18,7 +18,6 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
   }
 
   //compute residual vectors
-
   computeRHS();
 
   //solve for each field
@@ -54,29 +53,35 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
     //Elliptic (time-independent) fields
     else if (fields[fieldIndex].pdetype==ELLIPTIC){
 
+    	sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e \n", \
+    			fields[fieldIndex].name.c_str(),			\
+				residualSet[fieldIndex]->l2_norm());
+    	pcout<<buffer;
+
     	//implicit solve
 		#ifdef solverType
 		if (currentIncrement%skipImplicitSolves==0){
 			//apply Dirichlet BC's
 			// Loops through all DoF to which ones have Dirichlet BCs applied, replace the ones that do with the Dirichlet value
+			// Is this needed? Why are we applying BCs to the residualSet?
+			// This clears the residual where we want to apply Dirichlet BCs, otherwise the solver sees a positive residual
 			for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[fieldIndex]->begin(); it!=valuesDirichletSet[fieldIndex]->end(); ++it){
 				if (residualSet[fieldIndex]->in_local_range(it->first)){
-					(*residualSet[fieldIndex])(it->first) = it->second; //*jacobianDiagonal(it->first);
+					(*residualSet[fieldIndex])(it->first) = 0.0; //it->second; //*jacobianDiagonal(it->first);
 				}
 			}
-	
+
 			//solver controls
 			double tol_value;
 			if (userInputs.abs_tol == true){
 				tol_value = userInputs.solver_tolerance;
+				//if (currentIncrement > 1) tol_value = 1000000.0;
 			}
 			else {
 				tol_value = userInputs.solver_tolerance*residualSet[fieldIndex]->l2_norm();
 			}
 
-
 			SolverControl solver_control(userInputs.max_solver_iterations, tol_value);
-
 
 			// Currently the only allowed solver is SolverCG, the SolverType input variable is a dummy
 			SolverCG<vectorType> solver(solver_control);

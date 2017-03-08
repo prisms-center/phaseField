@@ -24,7 +24,7 @@
 #define subdivisionsX 5
 #define subdivisionsY 5
 #define subdivisionsZ 5
-#define refineFactor 3
+#define refineFactor 3 //3
 
 // Set the polynomial degree of the element (suggested values: 1 or 2)
 #define finiteElementDegree 2
@@ -54,8 +54,8 @@
 // Set the time step parameters
 // =================================================================================
 // The size of the time step
-#define timeStep (1.1e-4*scaleFactor*scaleFactor)
-#define timeIncrements 10 //6000000
+#define timeStep (1.0e-15) //(1.1e-4*scaleFactor*scaleFactor)
+#define timeIncrements 100 //6000000
 #define timeFinal (timeStep*timeIncrements)
 
 
@@ -70,7 +70,7 @@
 #define absTol true
 
 // The tolerance for convergence (L2 norm of the residual)
-#define solverTolerance 1.0e-3
+#define solverTolerance 1.0e-8 //1.0e-3
 
 // The maximum number of solver iterations per time step
 #define maxSolverIterations 10000

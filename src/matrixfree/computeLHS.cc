@@ -24,7 +24,9 @@ void MatrixFreePDE<dim,degree>::vmult (vectorType &dst, const vectorType &src) c
   //call cell_loop 
   dst=0.0;
   matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getLHS, this, dst, src2);
-  dst.compress(VectorOperation::add);
+
+  // According to the deal.II documentation, compress doesn't do anything
+  //  dst.compress(VectorOperation::add);
   
   //Account for Dirichlet BC's (essentially copy dirichlet DOF values present in src to dst)
   for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[currentFieldIndex]->begin(); it!=valuesDirichletSet[currentFieldIndex]->end(); ++it){

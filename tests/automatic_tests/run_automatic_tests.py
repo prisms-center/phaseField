@@ -60,7 +60,7 @@ def run_simulation(run_name,dir_path):
 	
 	# Compile and run
 	subprocess.call(["cmake", "."],stdout=f,stderr=f)
-	subprocess.call(["make", "release"],stdout=f)
+	subprocess.call(["make", "release","-j2"],stdout=f)
 	start = time.time()
 	subprocess.call(["mpirun", "-n", "2", "main"],stdout=f)
 	end = time.time()
