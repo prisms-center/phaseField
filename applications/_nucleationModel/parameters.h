@@ -4,7 +4,7 @@
 // =================================================================================
 // Set the number of dimensions (1, 2, or 3 for a 1D, 2D, or 3D calculation)
 // =================================================================================
-#define problemDIM 2
+#define problemDIM 3
 
 // =================================================================================
 // Set the length of the domain in all three dimensions
@@ -53,12 +53,12 @@
 // Set the time step parameters
 // =================================================================================
 // The size of the time step
-#define timeStep 0.044
+#define timeStep 0.022
 
 // The simulation ends when either timeFinal is reached or the number of time steps
 // equals timeIncrements
 #define timeFinal 440.0
-#define timeIncrements 10000
+#define timeIncrements 20000
 
 // =================================================================================
 // Set the output parameters
@@ -72,14 +72,14 @@
 
 // Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 // and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-#define numOutputs 10
+#define numOutputs 20
 
 // User-defined list of time steps where the program should output. Only used if
 // outputCondition is "LIST"
 #define outputList {0}
 
 // Status is printed to the screen every skipPrintSteps
-#define skipPrintSteps 1000
+#define skipPrintSteps 100
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output
