@@ -90,7 +90,7 @@ double cbtmin = 1.0;
 #define borderreg (2.0*n_radius)
 
 // Constants k1 and k2 for nucleation rate in the bulk
-#define k1 7.10216
+#define k1 (4.0*498.866)
 #define k2 4.14465
 
 // =================================================================================
@@ -149,7 +149,10 @@ double dx=spanX/std::pow(2.0,refineFactor);
 dealii::VectorizedArray<double> gamma = constV(1.0);
 dealii::VectorizedArray<double> x= q_point_loc[0];
 dealii::VectorizedArray<double> y= q_point_loc[1];
-dealii::VectorizedArray<double> z= q_point_loc[2];
+dealii::VectorizedArray<double> z;
+
+if (problemDIM ==3)
+    z= q_point_loc[2];
 
 
 // The concentration and its derivatives (names here should match those in the macros above)
@@ -179,7 +182,9 @@ for (std::vector<nucleus>::const_iterator thisNuclei=nuclei.begin(); thisNuclei!
     }
 	dealii::Point<problemDIM> r=thisNuclei->center;
     double nucendtime = thisNuclei->seededTime + thisNuclei->seedingTime;
-    dealii::VectorizedArray<double> spacearg=(x-constV(r[0]))*(x-constV(r[0]))+(y-constV(r[1]))*(y-constV(r[1]))+(z-constV(r[2]))*(z-constV(r[2]));
+    dealii::VectorizedArray<double> spacearg=constV(0.0);
+    for (unsigned int j=0;j<problemDIM;j++)
+    spacearg=spacearg+(q_point_loc[j]-constV(r[j]))*(q_point_loc[j]-constV(r[j]));
     spacearg=std::sqrt(spacearg);
     spacearg=(spacearg - constV(opfreeze_radius))/constV(dx);
     dealii::VectorizedArray<double> timearg=constV(time-nucendtime)/constV(timeStep);

@@ -52,7 +52,8 @@ void customPDE<dim,degree>::sendUpdate (std::vector<nucleus> &newnuclei, int pro
             dealii::Point<problemDIM> s_center=thisNuclei->center;
             s_center_x.push_back(s_center[0]);
             s_center_y.push_back(s_center[1]);
-            s_center_z.push_back(s_center[2]);
+            if (problemDIM ==3)
+            	s_center_z.push_back(s_center[2]);
             s_radius.push_back(thisNuclei->radius);
             s_seededTime.push_back(thisNuclei->seededTime);
             s_seedingTime.push_back(thisNuclei->seedingTime);
@@ -62,7 +63,8 @@ void customPDE<dim,degree>::sendUpdate (std::vector<nucleus> &newnuclei, int pro
         MPI_Send(&s_index[0], currnonucs, MPI_UNSIGNED, procno, 1, MPI_COMM_WORLD);
         MPI_Send(&s_center_x[0], currnonucs, MPI_DOUBLE, procno, 2, MPI_COMM_WORLD);
         MPI_Send(&s_center_y[0], currnonucs, MPI_DOUBLE, procno, 3, MPI_COMM_WORLD);
-        MPI_Send(&s_center_z[0], currnonucs, MPI_DOUBLE, procno, 4, MPI_COMM_WORLD);
+        if (problemDIM ==3)
+        	MPI_Send(&s_center_z[0], currnonucs, MPI_DOUBLE, procno, 4, MPI_COMM_WORLD);
         MPI_Send(&s_radius[0], currnonucs, MPI_DOUBLE, procno, 5, MPI_COMM_WORLD);
         MPI_Send(&s_seededTime[0], currnonucs, MPI_DOUBLE, procno, 6, MPI_COMM_WORLD);
         MPI_Send(&s_seedingTime[0], currnonucs, MPI_DOUBLE, procno, 7, MPI_COMM_WORLD);
@@ -105,7 +107,8 @@ void customPDE<dim,degree>::receiveUpdate (std::vector<nucleus> &newnuclei, int 
         MPI_Recv(&r_index[0], recvnonucs, MPI_UNSIGNED, procno, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         MPI_Recv(&r_center_x[0], recvnonucs, MPI_DOUBLE, procno, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         MPI_Recv(&r_center_y[0], recvnonucs, MPI_DOUBLE, procno, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-        MPI_Recv(&r_center_z[0], recvnonucs, MPI_DOUBLE, procno, 4, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        if (problemDIM ==3)
+        	MPI_Recv(&r_center_z[0], recvnonucs, MPI_DOUBLE, procno, 4, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         MPI_Recv(&r_radius[0], recvnonucs, MPI_DOUBLE, procno, 5, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         MPI_Recv(&r_seededTime[0], recvnonucs, MPI_DOUBLE, procno, 6, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         MPI_Recv(&r_seedingTime[0], recvnonucs, MPI_DOUBLE, procno, 7, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
@@ -118,7 +121,8 @@ void customPDE<dim,degree>::receiveUpdate (std::vector<nucleus> &newnuclei, int 
             dealii::Point<problemDIM> r_center;
             r_center[0]=r_center_x[jnuc];
             r_center[1]=r_center_y[jnuc];
-            r_center[2]=r_center_z[jnuc];
+            if (problemDIM ==3)
+            	r_center[2]=r_center_z[jnuc];
             temp->center=r_center;
             temp->radius=r_radius[jnuc];
             temp->seededTime=r_seededTime[jnuc];
@@ -173,7 +177,8 @@ void customPDE<dim,degree>::broadcastUpdate (std::vector<nucleus> &newnuclei, in
         		dealii::Point<problemDIM> s_center=thisNuclei->center;
         		r_center_x.push_back(s_center[0]);
         		r_center_y.push_back(s_center[1]);
-                r_center_z.push_back(s_center[2]);
+                if (problemDIM ==3)
+                	r_center_z.push_back(s_center[2]);
         		r_radius.push_back(thisNuclei->radius);
         		r_seededTime.push_back(thisNuclei->seededTime);
         		r_seedingTime.push_back(thisNuclei->seedingTime);
@@ -184,7 +189,8 @@ void customPDE<dim,degree>::broadcastUpdate (std::vector<nucleus> &newnuclei, in
         //Recieve vectors from processor procno
         MPI_Bcast(&r_index[0], currnonucs, MPI_UNSIGNED, broadcastProc, MPI_COMM_WORLD);
         MPI_Bcast(&r_center_x[0], currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
-        MPI_Bcast(&r_center_y[0], currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
+        if (problemDIM ==3)
+        	MPI_Bcast(&r_center_y[0], currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
         MPI_Bcast(&r_center_z[0], currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
         MPI_Bcast(&r_radius[0], currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
         MPI_Bcast(&r_seededTime[0], currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
@@ -200,7 +206,8 @@ void customPDE<dim,degree>::broadcastUpdate (std::vector<nucleus> &newnuclei, in
             dealii::Point<problemDIM> r_center;
             r_center[0]=r_center_x[jnuc];
             r_center[1]=r_center_y[jnuc];
-            r_center[2]=r_center_z[jnuc];
+            if (problemDIM ==3)
+            	r_center[2]=r_center_z[jnuc];
             temp->center=r_center;
             temp->radius=r_radius[jnuc];
             temp->seededTime=r_seededTime[jnuc];
@@ -286,9 +293,14 @@ void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus> &newnuclei) 
 
 			// Loop over the quadrature points
 			for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
-				bool insafetyzone = (q_point_list[q_point][0] > borderreg) && (q_point_list[q_point][0] < spanX-borderreg) && (q_point_list[q_point][1] > borderreg) && (q_point_list[q_point][1] < spanY-borderreg) && (q_point_list[q_point][2] > borderreg) && (q_point_list[q_point][2] < spanY-borderreg);
-				bool periodic=false;
-				if (insafetyzone || periodic){
+                bool insafetyzone = true;
+                for (unsigned int j=0;j<problemDIM;j++){
+                    std::string BC_type = this->BC_list[1].var_BC_type[2*j];
+                    bool periodic_j = (BC_type=="PERIODIC");
+                    bool insafetyzone_j = (periodic_j || (q_point_list[q_point][j] > borderreg) && (q_point_list[q_point][j] < spanX-borderreg));
+                	insafetyzone = insafetyzone && insafetyzone_j;
+                }
+				if (insafetyzone){
 					if (var_value2[q_point] < maxOrderParameterNucleation){
 
 						//Compute random no. between 0 and 1 (old method)

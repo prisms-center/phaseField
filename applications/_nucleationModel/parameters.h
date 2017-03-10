@@ -4,7 +4,7 @@
 // =================================================================================
 // Set the number of dimensions (1, 2, or 3 for a 1D, 2D, or 3D calculation)
 // =================================================================================
-#define problemDIM 3
+#define problemDIM 2
 
 // =================================================================================
 // Set the length of the domain in all three dimensions
@@ -53,12 +53,12 @@
 // Set the time step parameters
 // =================================================================================
 // The size of the time step
-#define timeStep 0.022
+#define timeStep 0.044
 
 // The simulation ends when either timeFinal is reached or the number of time steps
 // equals timeIncrements
 #define timeFinal 440.0
-#define timeIncrements 20000
+#define timeIncrements 10000
 
 // =================================================================================
 // Set the output parameters
@@ -72,7 +72,7 @@
 
 // Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 // and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-#define numOutputs 20
+#define numOutputs 10
 
 // User-defined list of time steps where the program should output. Only used if
 // outputCondition is "LIST"
