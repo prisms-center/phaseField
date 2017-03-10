@@ -1,3 +1,4 @@
+
 // List of variables and residual equations for the coupled Allen-Cahn/Cahn-Hilliard example application
 
 // =================================================================================
@@ -148,7 +149,10 @@ double dx=spanX/std::pow(2.0,refineFactor);
 dealii::VectorizedArray<double> gamma = constV(1.0);
 dealii::VectorizedArray<double> x= q_point_loc[0];
 dealii::VectorizedArray<double> y= q_point_loc[1];
+dealii::VectorizedArray<double> z;
 
+if (problemDIM ==3)
+    z= q_point_loc[2];
 
 
 // The concentration and its derivatives (names here should match those in the macros above)
@@ -178,7 +182,9 @@ for (std::vector<nucleus>::const_iterator thisNuclei=nuclei.begin(); thisNuclei!
     }
 	dealii::Point<problemDIM> r=thisNuclei->center;
     double nucendtime = thisNuclei->seededTime + thisNuclei->seedingTime;
-    dealii::VectorizedArray<double> spacearg=(x-constV(r[0]))*(x-constV(r[0]))+(y-constV(r[1]))*(y-constV(r[1]));
+    dealii::VectorizedArray<double> spacearg=constV(0.0);
+    for (unsigned int j=0;j<dim;j++)
+    	spacearg=spacearg+(q_point_loc[j]-constV(r[j]))*(q_point_loc[j]-constV(r[j]));
     spacearg=std::sqrt(spacearg);
     spacearg=(spacearg - constV(opfreeze_radius))/constV(dx);
     dealii::VectorizedArray<double> timearg=constV(time-nucendtime)/constV(timeStep);

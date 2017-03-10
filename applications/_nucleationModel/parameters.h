@@ -79,7 +79,7 @@
 #define outputList {0}
 
 // Status is printed to the screen every skipPrintSteps
-#define skipPrintSteps 1000
+#define skipPrintSteps 100
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output
