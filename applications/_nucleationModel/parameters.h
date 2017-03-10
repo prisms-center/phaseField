@@ -22,7 +22,7 @@
 #define subdivisionsX 1
 #define subdivisionsY 1
 #define subdivisionsZ 1
-#define refineFactor 8
+#define refineFactor 2
 
 // Set the polynomial degree of the element (suggested values: 1 or 2)
 #define finiteElementDegree 2
@@ -34,7 +34,7 @@
 #define hAdaptivity true
 
 // Set the maximum and minimum level of refinement
-#define maxRefinementLevel (refineFactor)
+#define maxRefinementLevel (refineFactor+6)
 #define minRefinementLevel (2)
 
 // Set the fields used to determine the refinement. Fields determined by the order
@@ -53,7 +53,7 @@
 // Set the time step parameters
 // =================================================================================
 // The size of the time step
-#define timeStep 0.044
+#define timeStep (0.044/1.5)
 
 // The simulation ends when either timeFinal is reached or the number of time steps
 // equals timeIncrements

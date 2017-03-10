@@ -67,7 +67,9 @@ double cbtmin = 1.0;
 // =================================================================================
 
 // Nucleation radius (order parameter)
-#define n_radius 5.0
+#define semiaxis_a 12.0
+#define semiaxis_b 4.0
+#define semiaxis_c 5.0
 
 // Hold time for order parameter
 #define t_hold 20.0
@@ -76,7 +78,7 @@ double cbtmin = 1.0;
 #define epsil 1.0e-7
 
 // Minimum distance between nuclei
-#define minDistBetwenNuclei (4.0*n_radius)
+#define minDistBetweenNuclei (4.0*semiaxis_a)
 #define maxOrderParameterNucleation 0.01 //1.0e-9
 #define maxOrderParameterGradNucleation 1.0 //5.0e-5
 
@@ -84,13 +86,13 @@ double cbtmin = 1.0;
 #define skipNucleationSteps 30
 
 // radius for order parameter hold
-#define opfreeze_radius (2.0*n_radius)
+std::vector<double> opfreeze_semiaxes {2.0*semiaxis_a,2.0*semiaxis_b,2.0*semiaxis_c};
 
 //Minimum distance from the edges of the system where nucleation can occur
-#define borderreg (2.0*n_radius)
+#define borderreg (2.0*semiaxis_a)
 
 // Constants k1 and k2 for nucleation rate in the bulk
-#define k1 (4.0*498.866)
+#define k1 (4.0*498.866 )
 #define k2 4.14465
 
 // =================================================================================
@@ -165,28 +167,38 @@ scalargradType nx = modelVariablesList[1].scalarGrad;
 
 dealii::VectorizedArray<double> nucleation_source_term = constV(0.0);
 
-for (std::vector<nucleus>::const_iterator thisNuclei=nuclei.begin(); thisNuclei!=nuclei.end(); ++thisNuclei){
-    if (thisNuclei->seedingTimestep == this->currentIncrement){
+for (typename std::vector<nucleus<dim>>::const_iterator thisNuclei=nuclei.begin(); thisNuclei!=nuclei.end(); ++thisNuclei){
+	dealii::VectorizedArray<double> weighted_dist = constV(0.0);
+	for (unsigned int i=0; i<dim; i++){
+		dealii::VectorizedArray<double> temp = (thisNuclei->center(i) - q_point_loc(i))/opfreeze_semiaxes[i];
+		weighted_dist += temp*temp;
+	}
 
-    	dealii::VectorizedArray<double> r = constV(0.0);
-    	for (unsigned int dir = 0; dir < dim; dir++){
-    		r += (q_point_loc[dir]-constV(thisNuclei->center[dir])) * (q_point_loc[dir]-constV(thisNuclei->center[dir]));
-    	}
-    	r = std::sqrt(r);
+	if (thisNuclei->seedingTimestep == this->currentIncrement){
+
     	for (unsigned i=0; i<n.n_array_elements;i++){
+    		if (weighted_dist[i] < 1.0){
 
-    		if (r[i]<=opfreeze_radius){
-    			nucleation_source_term[i] = 0.5*(1.0-std::tanh((r[i]-n_radius)/interface_coeff));
+    			double r = 0.0;
+    			double avg_semiaxis = 0.0;
+    			for (unsigned int j=0; j<dim; j++){
+    				double temp = (thisNuclei->center(j) - q_point_loc(j)[i])/thisNuclei->semiaxes[j];
+    				r += temp*temp;
+    				avg_semiaxis += thisNuclei->semiaxes[j];
+    			}
+    			r = sqrt(r);
+    			avg_semiaxis /= dim;
+
+    			nucleation_source_term[i] = 0.5*(1.0-std::tanh(avg_semiaxis*(r-1.0)/interface_coeff));
     		}
     	}
     }
 	dealii::Point<problemDIM> r=thisNuclei->center;
+
     double nucendtime = thisNuclei->seededTime + thisNuclei->seedingTime;
-    dealii::VectorizedArray<double> spacearg=constV(0.0);
-    for (unsigned int j=0;j<dim;j++)
-    	spacearg=spacearg+(q_point_loc[j]-constV(r[j]))*(q_point_loc[j]-constV(r[j]));
-    spacearg=std::sqrt(spacearg);
-    spacearg=(spacearg - constV(opfreeze_radius))/constV(dx);
+
+    dealii::VectorizedArray<double> spacearg=(-std::sqrt(weighted_dist))/constV(dx);
+
     dealii::VectorizedArray<double> timearg=constV(time-nucendtime)/constV(timeStep);
     dealii::VectorizedArray<double> spacefactor=constV(0.5)-constV(0.5)*spacearg/(std::abs(spacearg)+epsil);
     dealii::VectorizedArray<double> timefactor=constV(0.5)-constV(0.5)*timearg/(std::abs(timearg)+epsil);

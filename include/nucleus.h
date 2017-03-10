@@ -8,12 +8,15 @@
 #ifndef APPLICATIONS__NUCLEATIONMODEL_NUCLEUS_H_
 #define APPLICATIONS__NUCLEATIONMODEL_NUCLEUS_H_
 
+#include "dealIIheaders.h"
 
 // Structure representing each nucleus
+template<int dim>
 struct nucleus{
     unsigned int index;
-    dealii::Point<problemDIM> center;
+    dealii::Point<dim> center;
     double radius;
+    std::vector<double> semiaxes;
     double seededTime, seedingTime;
     unsigned int seedingTimestep;
 };
