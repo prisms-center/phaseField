@@ -53,11 +53,6 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
     //Elliptic (time-independent) fields
     else if (fields[fieldIndex].pdetype==ELLIPTIC){
 
-    	sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e \n", \
-    			fields[fieldIndex].name.c_str(),			\
-				residualSet[fieldIndex]->l2_norm());
-    	pcout<<buffer;
-
     	//implicit solve
 		#ifdef solverType
 		if (currentIncrement%skipImplicitSolves==0){

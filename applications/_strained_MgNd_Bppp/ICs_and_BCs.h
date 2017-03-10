@@ -18,7 +18,7 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
 	  #define initial_radius 1.0
 	  #define c_matrix 1.0e-6
       #define c_precip 0.14
-	  #define adjust_avg_c false //true
+	  #define adjust_avg_c true
 	  #define c_avg 0.004
 
 	  //set result equal to the structural order parameter initial condition
@@ -40,10 +40,10 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
 
 
 	  if (index==0){
-		  scalar_IC = 0.5*(c_precip-c_matrix)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + c_matrix;
+		  scalar_IC = c_avg; //0.5*(c_precip-c_matrix)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + c_matrix;
 	  }
 	  else if (index==1){
-		  scalar_IC = 0.5*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff)));
+		  scalar_IC = 0.0; //0.5*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff)));
 	  }
 
 	  // =====================================================================
@@ -139,7 +139,7 @@ void customPDE<dim,degree>::setBCs(){
 		this->inputBCs(2,1,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0,"DIRICHLET",0.0,"DIRICHLET",0.0);
 	}
 	else if (dim == 3){
-		this->inputBCs(2,0,"DIRICHLET",0.0,		"DIRICHLET",-5.0,		"ZERO_DERIVATIVE",0.0,	"ZERO_DERIVATIVE",0.0,	"ZERO_DERIVATIVE",0.0,	"ZERO_DERIVATIVE",0.0);
+		this->inputBCs(2,0,"DIRICHLET",0.0,		"DIRICHLET",-0.125,		"ZERO_DERIVATIVE",0.0,	"ZERO_DERIVATIVE",0.0,	"ZERO_DERIVATIVE",0.0,	"ZERO_DERIVATIVE",0.0);
 		this->inputBCs(2,1,"ZERO_DERIVATIVE",0.0,	"ZERO_DERIVATIVE",0.0,	"DIRICHLET",0.0,		"ZERO_DERIVATIVE",0.0,	"ZERO_DERIVATIVE",0.0,	"ZERO_DERIVATIVE",0.0);
 		this->inputBCs(2,2,"ZERO_DERIVATIVE",0.0,	"ZERO_DERIVATIVE",0.0,	"ZERO_DERIVATIVE",0.0,	"ZERO_DERIVATIVE",0.0,	"DIRICHLET",0.0,		"ZERO_DERIVATIVE",0.0);
 	}

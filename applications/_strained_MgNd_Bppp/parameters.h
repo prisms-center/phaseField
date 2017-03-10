@@ -12,9 +12,9 @@
 // Each axes spans from zero to the specified length
 #define scaleFactor 2.0
 
-#define spanX (50.0*scaleFactor) //(80.0*scaleFactor) //(12.5*scaleFactor)
-#define spanY (50.0*scaleFactor) //(80.0*scaleFactor) //(12.5*scaleFactor)
-#define spanZ (50.0*scaleFactor) //(80.0*scaleFactor) //(12.5*scaleFactor)
+#define spanX (12.5*scaleFactor) //(80.0*scaleFactor) //(12.5*scaleFactor)
+#define spanY (12.5*scaleFactor) //(80.0*scaleFactor) //(12.5*scaleFactor)
+#define spanZ (12.5*scaleFactor) //(80.0*scaleFactor) //(12.5*scaleFactor)
 
 // =================================================================================
 // Set the element parameters
@@ -36,7 +36,7 @@
 #define hAdaptivity true
 
 // Set the maximum and minimum level of refinement
-#define maxRefinementLevel (refineFactor+3)
+#define maxRefinementLevel (refineFactor+1)
 #define minRefinementLevel (0)
 
 // Set the fields used to determine the refinement. Fields determined by the order
@@ -54,8 +54,8 @@
 // Set the time step parameters
 // =================================================================================
 // The size of the time step
-#define timeStep (1.0e-15) //(1.1e-4*scaleFactor*scaleFactor)
-#define timeIncrements 100 //6000000
+#define timeStep (1.1e-4*scaleFactor*scaleFactor)
+#define timeIncrements 10 //6000000
 #define timeFinal (timeStep*timeIncrements)
 
 
@@ -70,7 +70,7 @@
 #define absTol true
 
 // The tolerance for convergence (L2 norm of the residual)
-#define solverTolerance 1.0e-8 //1.0e-3
+#define solverTolerance 1.0e-3
 
 // The maximum number of solver iterations per time step
 #define maxSolverIterations 10000

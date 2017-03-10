@@ -236,7 +236,6 @@ else{
 computeStress<dim>(this->userInputs.CIJ_list[0], E2, S);
 }
 
-
 // Fill residual corresponding to mechanics
 // R=-C*(E-E0)
 
