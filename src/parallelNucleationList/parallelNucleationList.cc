@@ -169,12 +169,10 @@ void parallelNucleationList<dim>::receiveUpdate (int procno)
             if (dim ==3)
             	r_center[2]=r_center_z[jnuc];
             temp->center=r_center;
-
             temp->semiaxes.push_back(r_semiaxis_a[jnuc]);
             temp->semiaxes.push_back(r_semiaxis_b[jnuc]);
             if (dim ==3)
             	temp->semiaxes.push_back(r_semiaxis_c[jnuc]);
-
             temp->seededTime=r_seededTime[jnuc];
             temp->seedingTime = r_seedingTime[jnuc];
             temp->seedingTimestep = r_seedingTimestep[jnuc];

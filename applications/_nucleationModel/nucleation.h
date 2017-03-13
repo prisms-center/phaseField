@@ -8,9 +8,8 @@
 template <int dim, int degree>
 double customPDE<dim,degree>::nucProb(double cValue, double dV) const
 {
-	//Nucleation rate
+	// Calculate the nucleation rate
 	double J=k1*exp(-k2/(std::max(cValue-calmin,1.0e-6)));
-	//We need element volume (or area in 2D)
 	double retProb=1.0-exp(-J*timeStep*((double)skipNucleationSteps)*dV);
     return retProb;
 }
@@ -24,7 +23,6 @@ void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
 	// Nickname for current time and time step
 	double t=this->currentTime;
 	unsigned int inc=this->currentIncrement;
-
 
 	QGauss<dim>  quadrature(degree+1);
 	FEValues<dim> fe_values (*(this->FESet[0]), quadrature, update_values|update_quadrature_points|update_JxW_values);
@@ -70,35 +68,37 @@ void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
 						rand_val=distr(gen);
 						double Prob=nucProb(var_value[q_point],fe_values.JxW(q_point));
 						if (rand_val <= Prob){
-							//std::cout << "random value " << rand_val << ", probability " << Prob << std::endl;
-
 							//loop over all existing nuclei to check if they are in the vicinity
 							bool isClose=false;
 
 							// ---------------------------------------------------------------------------------
 							// Check to see if the prospective nucleus would overlap with any other particles
-							// Not necessarily needed, but good to keep around
-	//			    			typename DoFHandler<dim>::active_cell_iterator   di_overlap = this->dofHandlersSet_nonconst[0]->begin_active();
-	//			    			while (di_overlap != this->dofHandlersSet_nonconst[0]->end())
-	//			    			{
-	//			    				if (di_overlap->is_locally_owned()){
-	//			    					fe_values.reinit (di_overlap);
-	//			    					fe_values.get_function_values(*(this->solutionSet[1]), var_value2_overlap);
-	//			    					q_point_list_overlap = fe_values.get_quadrature_points();
-	//			    					for (unsigned int q_point_overlap=0; q_point_overlap<num_quad_points; ++q_point_overlap){
-	//			    						if (q_point_list_overlap[q_point_overlap].distance(q_point_list[q_point])<opfreeze_radius){
-	//			    							if (var_value2_overlap[q_point_overlap] > 0.1){
-	//			    								isClose=true;
-	//			    								std::cout << "Attempted nucleation failed due to overlap w/ existing particle!!!!!!" << q_point_list_overlap[q_point_overlap](0) << " " << q_point_list_overlap[q_point_overlap](1) << " " << q_point_list[q_point](0) << " " << q_point_list[q_point](1) << std::endl;
-	//			    								break;
-	//			    							}
-	//			    						}
-	//			    					}
-	//			    					if (isClose) break;
-	//			    				}
-	//			    				++di_overlap;
-	//			    			}
-	//			    			fe_values.reinit (di);
+				    			typename DoFHandler<dim>::active_cell_iterator   di_overlap = this->dofHandlersSet_nonconst[0]->begin_active();
+				    			while (di_overlap != this->dofHandlersSet_nonconst[0]->end())
+				    			{
+				    				if (di_overlap->is_locally_owned()){
+				    					fe_values.reinit (di_overlap);
+				    					fe_values.get_function_values(*(this->solutionSet[1]), var_value2_overlap);
+				    					q_point_list_overlap = fe_values.get_quadrature_points();
+				    					for (unsigned int q_point_overlap=0; q_point_overlap<num_quad_points; ++q_point_overlap){
+				    						double weighted_dist = 0.0;
+				    						for (unsigned int i=0; i<dim; i++){
+				    							double temp = (q_point_list[q_point](i)-q_point_list_overlap[q_point_overlap](i))/opfreeze_semiaxes[i];
+				    							weighted_dist += temp*temp;
+				    						}
+				    						if (weighted_dist < 1.0){
+				    							if (var_value2_overlap[q_point_overlap] > 0.1){
+				    								isClose=true;
+				    								std::cout << "Attempted nucleation failed due to overlap w/ existing particle!!!!!!" << q_point_list_overlap[q_point_overlap](0) << " " << q_point_list_overlap[q_point_overlap](1) << " " << q_point_list[q_point](0) << " " << q_point_list[q_point](1) << std::endl;
+				    								break;
+				    							}
+				    						}
+				    					}
+				    					if (isClose) break;
+				    				}
+				    				++di_overlap;
+				    			}
+				    			fe_values.reinit (di);
 							// ---------------------------------------------------------------------------------
 
 							if (!isClose){
@@ -109,10 +109,7 @@ void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
 								temp->center=q_point_list[q_point];
 								temp->semiaxes.push_back(semiaxis_a);
 								temp->semiaxes.push_back(semiaxis_b);
-								//temp->semiaxes[0]=semiaxis_a;
-								//temp->semiaxes[1]=semiaxis_b;
 								if (dim == 3){
-									//temp->semiaxes[2]=semiaxis_c;
 									temp->semiaxes.push_back(semiaxis_c);
 								}
 								temp->seededTime=t;
@@ -162,7 +159,7 @@ void customPDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim>> newnu
 					for (typename std::vector<nucleus<dim>>::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
 						double weighted_dist = 0.0;
 						for (unsigned int i=0; i<dim; i++){
-							double temp = (thisNuclei->center(i) - q_point_list[q_point](i))/(thisNuclei->semiaxes[i]*2.0);
+							double temp = (thisNuclei->center(i) - q_point_list[q_point](i))/(opfreeze_semiaxes[i]);
 							weighted_dist += temp*temp;
 						}
 						if (weighted_dist < 1.0){
