@@ -29,7 +29,6 @@ int main (int argc, char **argv)
 
 	  customPDE<problemDIM,finiteElementDegree> problem(userInputs);
 
-
       problem.setBCs();
       problem.buildFields();
       problem.init ();

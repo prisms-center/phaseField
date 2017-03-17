@@ -1,18 +1,8 @@
 //initial condition
 template <int dim>
-class InitialCondition : public Function<dim>
+double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned int component) const
 {
-public:
-  unsigned int index;
-  double shift;
-  Vector<double> values;
-  friend generalizedProblem<dim>;
-  InitialCondition (const unsigned int _index, double _shift) : Function<dim>(1), index(_index), shift(_shift) {
-    std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
-  }
-  double value (const Point<dim> &p, const unsigned int component = 0) const
-  {
-	  double scalar_IC = 0;
+  double scalar_IC=0;
 	  // =====================================================================
 	  // ENTER THE INITIAL CONDITIONS HERE FOR SCALAR FIELDS
 	  // =====================================================================
@@ -50,7 +40,7 @@ public:
 
 
 	  if (index==0){
-		  scalar_IC = 0.5*(c_precip-c_matrix)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + c_matrix + shift;
+		  scalar_IC = 0.5*(c_precip-c_matrix)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + c_matrix;
 	  }
 	  else if (index==1){
 		  scalar_IC = 0.5*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff)));
@@ -58,21 +48,51 @@ public:
 
 	  // =====================================================================
 	  return scalar_IC;
-  }
-};
+}
 
-//initial condition
+template <int dim, int degree>
+void customPDE<dim,degree>::shiftConcentration(unsigned int index){
+#ifdef adjust_avg_c
+
+	double integrated_concentration;
+	this->computeIntegral(integrated_concentration,index);
+
+	double volume = spanX;
+	if (dim > 1) {
+		volume *= spanY;
+		if (dim > 2) {
+			volume *= spanZ;
+		}
+	}
+
+	double shift = c_avg - integrated_concentration/volume;
+
+	if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+		std::cout<<"Matrix concentration shifted from " <<c_matrix<<" to " << c_matrix+shift <<std::endl;
+	}
+
+	try{
+		if (shift + c_matrix < 0.0) {throw 0;}
+	}
+	catch (int e){
+		Assert (shift > c_matrix, ExcMessage("An exception occurred. Initial concentration was shifted below zero."));
+	}
+
+	for (unsigned int dof=0; dof<this->solutionSet[index]->local_size(); ++dof){
+		this->solutionSet[index]->local_element(dof) += shift;
+	}
+
+	this->solutionSet[index]->update_ghost_values();
+
+	this->computeIntegral(integrated_concentration,index);
+
+#endif
+}
+
+
 template <int dim>
-class InitialConditionVec : public Function<dim>
+void InitialConditionVec<dim>::vector_value (const dealii::Point<dim> &p, dealii::Vector<double> &vector_IC) const
 {
-public:
-  unsigned int index;
-  //Vector<double> values;
-  InitialConditionVec (const unsigned int _index) : Function<dim>(dim), index(_index) {
-    std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
-  }
-  void vector_value (const Point<dim> &p,Vector<double> &vector_IC) const
-  {
 	  // =====================================================================
 	  // ENTER THE INITIAL CONDITIONS HERE FOR VECTOR FIELDS
 	  // =====================================================================
@@ -88,12 +108,10 @@ public:
           }
 	  }
 	  // =====================================================================
-  }
-};
+}
 
-template <int dim>
-void generalizedProblem<dim>::setBCs(){
-
+template <int dim, int degree>
+void customPDE<dim,degree>::setBCs(){
 	// =====================================================================
 	// ENTER THE BOUNDARY CONDITIONS HERE
 	// =====================================================================
@@ -112,18 +130,18 @@ void generalizedProblem<dim>::setBCs(){
 	// Face numbering: starts at zero with the minimum of the first direction, one for the maximum of the first direction
 	//						two for the minimum of the second direction, etc.
 
-	inputBCs(0,0,"ZERO_DERIVATIVE",0);
+	this->inputBCs(0,0,"ZERO_DERIVATIVE",0);
 
-	inputBCs(1,0,"ZERO_DERIVATIVE",0);
+	this->inputBCs(1,0,"ZERO_DERIVATIVE",0);
 
 	if (dim == 2){
-		inputBCs(2,0,"DIRICHLET",0.0,"DIRICHLET",0.0,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0);
-		inputBCs(2,1,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0,"DIRICHLET",0.0,"DIRICHLET",0.0);
+		this->inputBCs(2,0,"DIRICHLET",0.0,"DIRICHLET",0.0,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0);
+		this->inputBCs(2,1,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0,"DIRICHLET",0.0,"DIRICHLET",0.0);
 	}
 	else if (dim == 3){
-		inputBCs(2,0,"DIRICHLET",0.0,"DIRICHLET",0.0,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0);
-		inputBCs(2,1,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0,"DIRICHLET",0.0,"DIRICHLET",0.0,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0);
-		inputBCs(2,2,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0,"DIRICHLET",0.0,"DIRICHLET",0.0);
+		this->inputBCs(2,0,"DIRICHLET",0.0,"DIRICHLET",0.0,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0);
+		this->inputBCs(2,1,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0,"DIRICHLET",0.0,"DIRICHLET",0.0,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0);
+		this->inputBCs(2,2,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0,"DIRICHLET",0.0,"DIRICHLET",0.0);
 	}
 
 }

@@ -53,11 +53,6 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
     //Elliptic (time-independent) fields
     else if (fields[fieldIndex].pdetype==ELLIPTIC){
 
-    	sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e \n", \
-    			fields[fieldIndex].name.c_str(),			\
-				residualSet[fieldIndex]->l2_norm());
-    	pcout<<buffer;
-
     	//implicit solve
 		#ifdef solverType
 		if (currentIncrement%skipImplicitSolves==0){
@@ -120,12 +115,12 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
 				 else {
 					 dU_norm = dU_vector.l2_norm();
 				 }
-			sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
-					fields[fieldIndex].name.c_str(),			\
-					residualSet[fieldIndex]->l2_norm(),			\
-					solver_control.last_value(),				\
-					solver_control.last_step(), solver_control.tolerance(), solutionSet[fieldIndex]->l2_norm(), dU_norm);
-			pcout<<buffer;
+				 sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
+						 fields[fieldIndex].name.c_str(),			\
+						 residualSet[fieldIndex]->l2_norm(),			\
+						 solver_control.last_value(),				\
+						 solver_control.last_step(), solver_control.tolerance(), solutionSet[fieldIndex]->l2_norm(), dU_norm);
+				 pcout<<buffer;
 			 }
 		}
 		else{

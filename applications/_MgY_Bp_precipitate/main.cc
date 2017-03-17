@@ -1,33 +1,45 @@
 // Precipitate evolution example application
-// Header files
-#include "../../include/dealIIheaders.h"
 
+// Header files
 #include "parameters.h"
-#include "../../src/models/coupled/generalized_model.h"
+#include "../../include/dealIIheaders.h"
+#include "../../include/typeDefs.h"
+#include "../../include/model_variables.h"
+#include "../../include/varBCs.h"
+#include "../../include/loadInputs.h"
+#include "../../include/initialConditions.h"
+#include "../../include/matrixFreePDE.h"
+#include "customPDE.h"
 #include "equations.h"
 #include "ICs_and_BCs.h"
-#include "../../src/models/coupled/generalized_model_functions.h"
+#include "../../include/initialCondition_template_instantiations.h"
+#include "../../src/loadInputs/loadInputs.cc" // Needs to be included because it contains needs access to the define macros in the preceding files
 
 //main
 int main (int argc, char **argv)
 {
-  Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,numbers::invalid_unsigned_int);
+  dealii::Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,dealii::numbers::invalid_unsigned_int);
   try
-    {
-	  deallog.depth_console(0);
-	  generalizedProblem<problemDIM> problem;
+  {
+	  dealii::deallog.depth_console(0);
+
+	  userInputParameters userInputs;
+	  userInputs.loadUserInput();
+
+	  customPDE<problemDIM,finiteElementDegree> problem(userInputs);
+
 
       problem.setBCs();
       problem.buildFields();
-      problem.init (); 
+      problem.init ();
       if (adjust_avg_c){
           	  problem.shiftConcentration(0);
       }
       problem.solve();
-    }
+  }
   catch (std::exception &exc)
-    {
-      std::cerr << std::endl << std::endl
+  {
+	  std::cerr << std::endl << std::endl
                 << "----------------------------------------------------"
                 << std::endl;
       std::cerr << "Exception on processing: " << std::endl
@@ -36,9 +48,9 @@ int main (int argc, char **argv)
                 << "----------------------------------------------------"
                 << std::endl;
       return 1;
-    }
+  }
   catch (...)
-    {
+  {
       std::cerr << std::endl << std::endl
                 << "----------------------------------------------------"
                 << std::endl;
@@ -47,7 +59,7 @@ int main (int argc, char **argv)
                 << "----------------------------------------------------"
                 << std::endl;
       return 1;
-    }
+  }
   
   return 0;
 }

@@ -37,7 +37,7 @@
 
 // Set the maximum and minimum level of refinement
 #define maxRefinementLevel (refineFactor)
-#define minRefinementLevel (refineFactor-5)
+#define minRefinementLevel (0)
 
 // Set the fields used to determine the refinement. Fields determined by the order
 // declared in "equations.h", starting at zero
@@ -63,7 +63,7 @@
 // Set the elliptic solver parameters
 // =================================================================================
 // The solver type (currently the only recommended option is conjugate gradient)
-#define solverType SolverCG
+#define solverType "SolverCG"
 
 // The flag that determines whether the tolerance for solver convergence should
 // be an absolute tolerance (absTol=true) or a relative tolerance (absTol=false)
@@ -94,7 +94,7 @@
 #define outputList {0}
 
 // Status is printed to the screen every skipPrintSteps
-#define skipPrintSteps 1000
+#define skipPrintSteps 1 //1000
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output

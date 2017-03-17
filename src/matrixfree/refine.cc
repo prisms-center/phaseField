@@ -101,6 +101,7 @@ for (;cell!=endc; ++cell){
 		else if (!mark_refine && current_level > userInputs.min_refinement_level) {
 			cell->set_coarsen_flag();
 		}
+
 	}
 	++t_cell;
 }
