@@ -11,13 +11,13 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
 	  // according to its variable index.
 
 	  // Initial condition parameters
-	  #define x_denom (8.0/2.0*scaleFactor)*(8.0/2.0*scaleFactor)
-	  #define y_denom (8.0/2.0*scaleFactor)*(8.0/2.0*scaleFactor)
-	  #define z_denom (8.0/2.0*scaleFactor)*(8.0/2.0*scaleFactor)
+	  #define x_denom (4.0/2.0*scaleFactor)*(4.0/2.0*scaleFactor)
+	  #define y_denom (4.0/2.0*scaleFactor)*(4.0/2.0*scaleFactor)
+	  #define z_denom (20.0/2.0*scaleFactor)*(20.0/2.0*scaleFactor)
 	  #define initial_interface_coeff (0.02*scaleFactor)
 	  #define initial_radius 1.0
 	  #define c_matrix 1.0e-6
-      #define c_precip 0.14
+      #define c_precip 0.125
 	  #define adjust_avg_c true
 	  #define c_avg 0.004
 

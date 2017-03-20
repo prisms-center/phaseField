@@ -32,7 +32,7 @@ template <int dim, int degree>
 	 triangulation.refine_global (userInputs.refine_factor);
 
 	 // Write out the size of the computational domain and the total number of elements
-	 pcout << "problem dimensions: " << userInputs.domain_size[0] << "x" << userInputs.domain_size[2] << "x" << userInputs.domain_size[3] << std::endl;
+	 pcout << "problem dimensions: " << userInputs.domain_size[0] << "x" << userInputs.domain_size[1] << "x" << userInputs.domain_size[2] << std::endl;
 	 pcout << "number of elements: " << triangulation.n_global_active_cells() << std::endl;
 	 pcout << std::endl;
   
