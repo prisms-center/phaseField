@@ -37,18 +37,18 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
     				invM.local_element(dof%invM_size)*residualSet[fieldIndex]->local_element(dof);
     	}
 
-      //apply constraints
-      constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
-      //sync ghost DOF's
-      solutionSet[fieldIndex]->update_ghost_values();
-      //
-      if (currentIncrement%userInputs.skip_print_steps==0){
-      sprintf(buffer, "field '%2s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
-	      fields[fieldIndex].name.c_str(),				\
-	      solutionSet[fieldIndex]->l2_norm(),			\
-	      residualSet[fieldIndex]->l2_norm()); 
-      pcout<<buffer; 
-      }
+    	//apply constraints
+    	constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+    	//sync ghost DOF's
+    	solutionSet[fieldIndex]->update_ghost_values();
+    	//
+    	if (currentIncrement%userInputs.skip_print_steps==0){
+    		sprintf(buffer, "field '%2s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
+    				fields[fieldIndex].name.c_str(),				\
+					solutionSet[fieldIndex]->l2_norm(),			\
+					residualSet[fieldIndex]->l2_norm());
+    		pcout<<buffer;
+    	}
     }
     //Elliptic (time-independent) fields
     else if (fields[fieldIndex].pdetype==ELLIPTIC){

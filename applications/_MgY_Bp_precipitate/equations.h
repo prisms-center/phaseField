@@ -50,11 +50,11 @@
 
 // Gradient energy coefficients
 //double Kn1[3][3]={{0.01141*scaleFactor,0,0},{0,0.01426*scaleFactor,0},{0,0,0.004326*scaleFactor}}; // Scaled KKS B''' Mg-Nd
-double Kn1[3][3]={{0.0318*scaleFactor,0,0},{0,6.7347e-4*scaleFactor,0},{0,0,0.0269*scaleFactor}}; // Scaled KKS B' Mg-Y
+double Kn1[3][3]={{0.0318*scaleFactor/2.0,0,0},{0,6.7347e-4*scaleFactor/2.0,0},{0,0,0.0269*scaleFactor/2.0}}; // Scaled KKS B' Mg-Y
 //double Kn1[3][3]={{0.01141*scaleFactor,0,0},{0,0.01141*scaleFactor,0},{0,0,0.01141*scaleFactor}}; // Isotropic interfacial energy
 
 //define energy barrier coefficient (used to tune the interfacial energy)
-#define W (0.1288/scaleFactor)
+#define W (0.1288/scaleFactor*2.0)
 
 // Define Mechanical properties
 #define n_dependent_stiffness true
@@ -69,9 +69,9 @@ double Kn1[3][3]={{0.0318*scaleFactor,0,0},{0,6.7347e-4*scaleFactor,0},{0,0,0.02
 
 #elif problemDIM==2
 	// If n_dependent_stiffness == false the first entry is used for all phases
-	// 2D order of constants ANISOTROPIC - 6 constants [C11 C22 C33 C12 C13 C23]
+	// 2D order of constants ANISOTROPIC - 6 constants [C11 C22 C66 C12 C16 C26]
 	#define MaterialModels {{"ANISOTROPIC"},{"ANISOTROPIC"}}
-	#define MaterialConstants {{31.3,31.3,6.65,13.0,0.0,0.0},{23.35,30.25,36.35,15.35,0.0,0.0}} //scaled by E* = 2e9 J/m^3
+	#define MaterialConstants {{31.3,31.3,9.15,13.0,0.0,0.0},{23.35,30.25,14.45,15.35,0.0,0.0}} //scaled by E* = 2e9 J/m^3
 
 #elif problemDIM==3
 // If n_dependent_stiffness == false the first entry is used for all phases
@@ -102,9 +102,13 @@ double Kn1[3][3]={{0.0318*scaleFactor,0,0},{0,6.7347e-4*scaleFactor,0},{0,0,0.02
 //double sfts_const1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
 
-// B's (Mg-Y)
+// B'''s (Mg-Y)
 double sfts_linear1[3][3] = {{0.13383,0,0},{0,0.21273,0},{0,0,0.014832}};
 double sfts_const1[3][3] = {{0.013972,0,0},{0,-0.0057545,0},{0,0,-0.002691}};
+
+// B's (Mg-Y),
+//double sfts_linear1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+//double sfts_const1[3][3] = {{(0.013972+0.13383*0.125),0,0},{0,(-0.0057545+0.21273*0.125),0},{0,0,-0.002691+0.014832*0.125}};
 
 
 // Calculate c_alpha and c_beta from c

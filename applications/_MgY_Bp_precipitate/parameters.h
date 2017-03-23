@@ -4,7 +4,7 @@
 // =================================================================================
 // Set the number of dimensions (1, 2, or 3 for a 1D, 2D, or 3D calculation)
 // =================================================================================
-#define problemDIM 3
+#define problemDIM 2
 
 // =================================================================================
 // Set the length of the domain in all three dimensions
@@ -21,10 +21,10 @@
 // =================================================================================
 // The number of elements in each direction is 2^(refineFactor) * subdivisions
 // For optimal performance, use refineFactor primarily to determine the element size
-#define subdivisionsX 5
-#define subdivisionsY 5
-#define subdivisionsZ 5
-#define refineFactor 4
+#define subdivisionsX 1
+#define subdivisionsY 1
+#define subdivisionsZ 1
+#define refineFactor 7 //4
 
 // Set the polynomial degree of the element (suggested values: 1 or 2)
 #define finiteElementDegree 2
@@ -48,14 +48,14 @@
 #define refineWindowMin {0.001}
 
 // Set the number of time steps between remeshing operations
-#define skipRemeshingSteps 1000
+#define skipRemeshingSteps 2000
 
 // =================================================================================
 // Set the time step parameters
 // =================================================================================
 // The size of the time step
-#define timeStep (0.5e-4*scaleFactor*scaleFactor)
-#define timeIncrements 1000 //6000000
+#define timeStep (1.25e-4*scaleFactor*scaleFactor)
+#define timeIncrements 10000
 #define timeFinal (timeStep*timeIncrements)
 
 
@@ -91,10 +91,10 @@
 
 // User-defined list of time steps where the program should output. Only used if
 // outputCondition is "LIST"
-#define outputList {0}
+#define outputList {50000,50100,50200,50300}
 
 // Status is printed to the screen every skipPrintSteps
-#define skipPrintSteps 1 //1000
+#define skipPrintSteps 1000
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output
