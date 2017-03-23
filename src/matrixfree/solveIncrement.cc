@@ -37,18 +37,18 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
     				invM.local_element(dof%invM_size)*residualSet[fieldIndex]->local_element(dof);
     	}
 
-      //apply constraints
-      constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
-      //sync ghost DOF's
-      solutionSet[fieldIndex]->update_ghost_values();
-      //
-      if (currentIncrement%userInputs.skip_print_steps==0){
-      sprintf(buffer, "field '%2s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
-	      fields[fieldIndex].name.c_str(),				\
-	      solutionSet[fieldIndex]->l2_norm(),			\
-	      residualSet[fieldIndex]->l2_norm()); 
-      pcout<<buffer; 
-      }
+    	//apply constraints
+    	constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+    	//sync ghost DOF's
+    	solutionSet[fieldIndex]->update_ghost_values();
+    	//
+    	if (currentIncrement%userInputs.skip_print_steps==0){
+    		sprintf(buffer, "field '%2s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
+    				fields[fieldIndex].name.c_str(),				\
+					solutionSet[fieldIndex]->l2_norm(),			\
+					residualSet[fieldIndex]->l2_norm());
+    		pcout<<buffer;
+    	}
     }
     //Elliptic (time-independent) fields
     else if (fields[fieldIndex].pdetype==ELLIPTIC){
@@ -115,12 +115,12 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
 				 else {
 					 dU_norm = dU_vector.l2_norm();
 				 }
-			sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
-					fields[fieldIndex].name.c_str(),			\
-					residualSet[fieldIndex]->l2_norm(),			\
-					solver_control.last_value(),				\
-					solver_control.last_step(), solver_control.tolerance(), solutionSet[fieldIndex]->l2_norm(), dU_norm);
-			pcout<<buffer;
+				 sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
+						 fields[fieldIndex].name.c_str(),			\
+						 residualSet[fieldIndex]->l2_norm(),			\
+						 solver_control.last_value(),				\
+						 solver_control.last_step(), solver_control.tolerance(), solutionSet[fieldIndex]->l2_norm(), dU_norm);
+				 pcout<<buffer;
 			 }
 		}
 		else{
