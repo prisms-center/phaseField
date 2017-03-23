@@ -25,6 +25,7 @@ void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
 	unsigned int inc=this->currentIncrement;
 
 	QGauss<dim>  quadrature(degree+1);
+	//QGaussLobatto<dim>  quadrature(degree+1);
 	FEValues<dim> fe_values (*(this->FESet[0]), quadrature, update_values|update_quadrature_points|update_JxW_values);
 	const unsigned int   num_quad_points = quadrature.size();
 	std::vector<double> var_value(num_quad_points);
@@ -136,6 +137,7 @@ template <int dim, int degree>
 void customPDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim>> newnuclei)
 {
 	QGauss<dim>  quadrature(degree+1);
+	//QGaussLobatto<dim>  quadrature(degree+1);
 	FEValues<dim> fe_values (*(this->FESet[0]), quadrature, update_values|update_quadrature_points|update_JxW_values);
 	const unsigned int   num_quad_points = quadrature.size();
 	std::vector<dealii::Point<dim> > q_point_list(num_quad_points);
@@ -150,19 +152,31 @@ void customPDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim>> newnu
 		di = this->dofHandlersSet_nonconst[0]->begin_active();
 		while (di != this->dofHandlersSet_nonconst[0]->end()){
 			if (di->is_locally_owned()){
+
 				bool mark_refine = false;
 
 				fe_values.reinit (di);
 				q_point_list = fe_values.get_quadrature_points();
 
+				// Calculate the distance from the corner of the cell to the middle of the cell
+				double diag_dist = 0.0;
+				for (unsigned int i=0; i<dim; i++){
+					diag_dist += (this->userInputs.domain_size[i]*this->userInputs.domain_size[i])/(this->userInputs.subdivisions[i]*this->userInputs.subdivisions[i]);
+				}
+				diag_dist = sqrt(diag_dist);
+				diag_dist /= 2.0*pow(2.0,ti->level());
+
 				for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
 					for (typename std::vector<nucleus<dim>>::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
+
+						// Calculate the ellipsoidal distance to the center of the nucleus
 						double weighted_dist = 0.0;
 						for (unsigned int i=0; i<dim; i++){
 							double temp = (thisNuclei->center(i) - q_point_list[q_point](i))/(opfreeze_semiaxes[i]);
 							weighted_dist += temp*temp;
 						}
-						if (weighted_dist < 1.0){
+
+						if (weighted_dist < 1.0 || thisNuclei->center.distance(q_point_list[q_point]) < diag_dist){
 							if ((unsigned int)ti->level() < this->userInputs.max_refinement_level){
 								mark_refine = true;
 								break;
@@ -208,6 +222,12 @@ void customPDE<dim,degree>::getNucleiList()
 
         // Add the new nuclei to the list of nuclei
         nuclei.insert(nuclei.end(),newnuclei.begin(),newnuclei.end());
+
+        // Print out a list of the nuclei centers
+//        this->pcout << "list of nuclei centers" << std::endl;
+//        for (unsigned int nuc=0; nuc<nuclei.size(); nuc++){
+//        	this->pcout << nuclei[nuc].center[0] << " " << nuclei[nuc].center[1] << std::endl;
+//        }
 
         // Refine mesh near the new nuclei
         if (newnuclei.size() > 0 && this->userInputs.h_adaptivity == true){

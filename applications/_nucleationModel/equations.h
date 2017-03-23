@@ -67,7 +67,7 @@ double cbtmin = 1.0;
 // =================================================================================
 
 // Nucleation radius (order parameter)
-#define semiaxis_a 12.0
+#define semiaxis_a 6.0
 #define semiaxis_b 4.0
 #define semiaxis_c 5.0
 

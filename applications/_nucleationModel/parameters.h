@@ -72,14 +72,14 @@
 
 // Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 // and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-#define numOutputs 10
+#define numOutputs 100
 
 // User-defined list of time steps where the program should output. Only used if
 // outputCondition is "LIST"
 #define outputList {0}
 
 // Status is printed to the screen every skipPrintSteps
-#define skipPrintSteps 100
+#define skipPrintSteps 1000
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output
