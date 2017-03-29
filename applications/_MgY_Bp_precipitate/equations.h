@@ -46,15 +46,15 @@
 #define McV 1.0
 
 // Allen-Cahn mobilities
-#define Mn1V (300.0/scaleFactor)
+#define Mn1V (300.0/4.0/scaleFactor)
 
 // Gradient energy coefficients
 //double Kn1[3][3]={{0.01141*scaleFactor,0,0},{0,0.01426*scaleFactor,0},{0,0,0.004326*scaleFactor}}; // Scaled KKS B''' Mg-Nd
-double Kn1[3][3]={{0.0318*scaleFactor/2.0,0,0},{0,6.7347e-4*scaleFactor/2.0,0},{0,0,0.0269*scaleFactor/2.0}}; // Scaled KKS B' Mg-Y
+double Kn1[3][3]={{0.0318*scaleFactor/1.5,0,0},{0,6.7347e-4*scaleFactor/1.5,0},{0,0,0.0269*scaleFactor/1.5}}; // Scaled KKS B' Mg-Y
 //double Kn1[3][3]={{0.01141*scaleFactor,0,0},{0,0.01141*scaleFactor,0},{0,0,0.01141*scaleFactor}}; // Isotropic interfacial energy
 
 //define energy barrier coefficient (used to tune the interfacial energy)
-#define W (0.1288/scaleFactor*2.0)
+#define W (0.1288/scaleFactor*1.5)
 
 // Define Mechanical properties
 #define n_dependent_stiffness true

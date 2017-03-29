@@ -4,13 +4,13 @@
 // =================================================================================
 // Set the number of dimensions (1, 2, or 3 for a 1D, 2D, or 3D calculation)
 // =================================================================================
-#define problemDIM 2
+#define problemDIM 3
 
 // =================================================================================
 // Set the length of the domain in all three dimensions
 // =================================================================================
 // Each axes spans from zero to the specified length
-#define scaleFactor 5.0
+#define scaleFactor 2.0
 
 #define spanX (12.5*scaleFactor) //(80.0*scaleFactor) //(12.5*scaleFactor)
 #define spanY (12.5*scaleFactor) //(80.0*scaleFactor) //(12.5*scaleFactor)
@@ -24,7 +24,7 @@
 #define subdivisionsX 1
 #define subdivisionsY 1
 #define subdivisionsZ 1
-#define refineFactor 7 //4
+#define refineFactor 5 //4
 
 // Set the polynomial degree of the element (suggested values: 1 or 2)
 #define finiteElementDegree 2
@@ -36,7 +36,7 @@
 #define hAdaptivity true
 
 // Set the maximum and minimum level of refinement
-#define maxRefinementLevel (refineFactor)
+#define maxRefinementLevel (refineFactor+2)
 #define minRefinementLevel (0)
 
 // Set the fields used to determine the refinement. Fields determined by the order
@@ -44,8 +44,8 @@
 #define refineCriterionFields {1}
 
 // Set the maximum and minimum value of the fields where the mesh should be refined
-#define refineWindowMax {0.99}
-#define refineWindowMin {0.001}
+#define refineWindowMax {0.999}
+#define refineWindowMin {0.0001}
 
 // Set the number of time steps between remeshing operations
 #define skipRemeshingSteps 2000
@@ -54,8 +54,8 @@
 // Set the time step parameters
 // =================================================================================
 // The size of the time step
-#define timeStep (1.25e-4*scaleFactor*scaleFactor)
-#define timeIncrements 10000
+#define timeStep (4.0*0.5e-4*scaleFactor*scaleFactor)
+#define timeIncrements 1000 //1000000
 #define timeFinal (timeStep*timeIncrements)
 
 
@@ -94,7 +94,7 @@
 #define outputList {50000,50100,50200,50300}
 
 // Status is printed to the screen every skipPrintSteps
-#define skipPrintSteps 1000
+#define skipPrintSteps 1 //1000
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output

@@ -14,7 +14,7 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
 	  #define x_denom (5.0/2.0*scaleFactor)*(5.0/2.0*scaleFactor)
 	  #define y_denom (5.0/2.0*scaleFactor)*(5.0/2.0*scaleFactor)
 	  #define z_denom (20.0/2.0*scaleFactor)*(20.0/2.0*scaleFactor)
-	  #define initial_interface_coeff (0.01*scaleFactor)
+	  #define initial_interface_coeff (0.005*scaleFactor)
 	  #define initial_radius 1.0
 	  #define c_matrix 1.0e-6
       #define c_precip 0.125
