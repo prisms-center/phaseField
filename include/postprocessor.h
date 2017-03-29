@@ -11,11 +11,11 @@
 #include "dealIIheaders.h"
 //#include "typeDefs.h"
 #include "matrixFreePDE.h"
+#include "postProcessedFields.h"
 
 template <int dim, int degree>
 class PostProcessor
 {
-	//friend class MatrixFreePDE<dim,degree>;
 	public:
 	PostProcessor(userInputParameters);
 	void computePostProcessedFields(dealii::MatrixFree<dim,double> matrixFreeObject,
@@ -25,9 +25,9 @@ class PostProcessor
 							std::vector<vectorType*> &dst,
 							const std::vector<vectorType*> &src,
 							const std::pair<unsigned int,unsigned int> &cell_range);
-	void postProcessedFields(const std::vector<modelVariable<dim> > & modelVariablesList,
-							std::vector<modelResidual<dim> > & modelResidualsList,
-							const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
+//	void postProcessedFields(const std::vector<modelVariable<dim> > & modelVariablesList,
+//							std::vector<modelResidual<dim> > & modelResidualsList,
+//							const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 	private:
 	userInputParameters userInputs;
 

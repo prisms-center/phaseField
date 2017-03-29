@@ -209,6 +209,44 @@ template <int dim, int degree>
 	 // Check and perform adaptive mesh refinement, which reinitializes the system with the new mesh
 	 adaptiveRefine(0);
 
+	 // Initialize a DoF handler for vectors
+	 //create FESystem
+	 vector_fe=new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(degree+1)),dim);
+
+	 //distribute DOFs
+	 vector_dofHandler=new DoFHandler<dim>(triangulation);
+
+	 vector_dofHandler->distribute_dofs (*vector_fe);
+
+	 // Extract locally_relevant_dofs
+	 IndexSet* vector_locally_relevant_dofs;
+
+	 vector_locally_relevant_dofs=new IndexSet;
+
+
+	 vector_locally_relevant_dofs->clear();
+	 DoFTools::extract_locally_relevant_dofs (*vector_dofHandler, *vector_locally_relevant_dofs);
+
+	 // Create constraints
+	 ConstraintMatrix *vector_constraintsOther;
+
+
+	 vector_constraintsOther=new ConstraintMatrix;
+
+
+	 vector_constraintsOther->clear(); vector_constraintsOther->reinit(*vector_locally_relevant_dofs);
+
+	 // Get hanging node constraints
+	 DoFTools::make_hanging_node_constraints (*vector_dofHandler, *vector_constraintsOther);
+
+	 typename MatrixFree<dim,double>::AdditionalData vector_additional_data;
+	 vector_additional_data.mpi_communicator = MPI_COMM_WORLD;
+	 vector_additional_data.tasks_parallel_scheme = MatrixFree<dim,double>::AdditionalData::partition_partition;
+	 vector_additional_data.mapping_update_flags = (update_values | update_gradients | update_JxW_values | update_quadrature_points);
+	 vector_matrixFreeObject.clear();
+	 vector_matrixFreeObject.reinit (*vector_dofHandler, *vector_constraintsOther, quadrature, vector_additional_data);
+
+
 	 computing_timer.exit_section("matrixFreePDE: initialization");
 }
 

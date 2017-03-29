@@ -165,6 +165,7 @@ class MatrixFreePDE:public Subscriptor
   /*A vector of all the degree of freedom objects is the problem. A degree of freedom object handles the serial/parallel distribution
    *of the degrees of freedom for all the primal fields in the problem.*/
   std::vector<const DoFHandler<dim>*>  dofHandlersSet;
+
   /*A vector of the locally relevant degrees of freedom. Locally relevant degrees of freedom in a parallel implementation is a collection of the
    *degrees of freedom owned by the current processor and the surrounding ghost nodes which are required for the field computations in this processor.
    */
@@ -182,6 +183,11 @@ class MatrixFreePDE:public Subscriptor
   /*Vector of parallel solution transfer objects. This is used only when adaptive meshing is enabled.*/
   std::vector<parallel::distributed::SolutionTransfer<dim, vectorType>*> soltransSet;
   
+  // Objects for vectors
+  DoFHandler<dim>* vector_dofHandler;
+  FESystem<dim>* vector_fe;
+  MatrixFree<dim,double> vector_matrixFreeObject;
+
   //matrix free objects
    /*Object of class MatrixFree<dim>. This is primarily responsible for all the base matrix free functionality of this MatrixFreePDE<dim> class.
    *Refer to deal.ii documentation of MatrixFree<dim> class for details.

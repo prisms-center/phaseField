@@ -89,6 +89,23 @@ public:
 
 	bool nucleation_occurs;
 
+	// Postprocessing parameters
+	unsigned int pp_number_of_variables;
+
+	std::vector<std::string> pp_var_name;
+	std::vector<std::string> pp_var_type;
+	std::vector<std::string> pp_var_eq_type;
+
+	std::vector<bool> pp_need_value;
+	std::vector<bool> pp_need_gradient;
+	std::vector<bool> pp_need_hessian;
+	std::vector<bool> pp_value_residual;
+	std::vector<bool> pp_gradient_residual;
+
+	// Variable and residual info
+	std::vector<variable_info> pp_varInfoList;
+	std::vector<variable_info> pp_resInfoList;
+
 };
 
 #endif /* INCLUDE_LOADINPUTS_H_ */

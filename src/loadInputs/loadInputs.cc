@@ -255,6 +255,55 @@ void userInputParameters::loadUserInput(){
 		}
 	}
 
+	// Postprocessing inputs
+	pp_number_of_variables = pp_num_var;
+
+
+	// Somewhat convoluted initialization so as not to rely on C++11 initializer lists (which not all compiler have yet)
+	{std::string temp_string[] = pp_variable_name;
+	vectorLoad(temp_string,sizeof(temp_string),pp_var_name);}
+
+	{std::string temp_string[] = pp_variable_type;
+	vectorLoad(temp_string,sizeof(temp_string),pp_var_type);}
+
+	{bool temp[] = pp_need_val;
+	vectorLoad(temp, sizeof(temp), pp_need_value);}
+
+	{bool temp[] = pp_need_grad;
+	vectorLoad(temp, sizeof(temp), pp_need_gradient);}
+
+	{bool temp[] = pp_need_hess;
+	vectorLoad(temp, sizeof(temp), pp_need_hessian);}
+
+	{bool temp[] = pp_need_val_residual;
+	vectorLoad(temp, sizeof(temp), pp_value_residual);}
+
+	{bool temp[] = pp_need_grad_residual;
+	vectorLoad(temp, sizeof(temp), pp_gradient_residual);}
+
+
+	// Load variable information for calculating the RHS
+	pp_varInfoList.reserve(num_var);
+	scalar_var_index = 0;
+	vector_var_index = 0;
+	for (unsigned int i=0; i<num_var; i++){
+		variable_info varInfo;
+		if (pp_need_value[i] or pp_need_gradient[i] or pp_need_hessian[i]){
+			varInfo.global_var_index = i;
+			if (pp_var_type[i] == "SCALAR"){
+				varInfo.is_scalar = true;
+				varInfo.scalar_or_vector_index = scalar_var_index;
+				scalar_var_index++;
+			}
+			else {
+				varInfo.is_scalar = false;
+				varInfo.scalar_or_vector_index = vector_var_index;
+				vector_var_index++;
+			}
+			pp_varInfoList.push_back(varInfo);
+		}
+	}
+
 }
 
 

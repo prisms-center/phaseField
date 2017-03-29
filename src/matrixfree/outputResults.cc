@@ -26,29 +26,42 @@ void MatrixFreePDE<dim,degree>::outputResults() const {
   }
   
   // Test section for outputting postprocessed fields
+  // Currently there are hacks in place, using the matrixFreeObject, invM, constraints, and DoFHandler as the primary variables
   PostProcessor<dim,degree> post_processor(userInputs);
   std::vector<vectorType*> postProcessedSet;
   post_processor.computePostProcessedFields(matrixFreeObject,solutionSet,postProcessedSet);
+
+  pcout << postProcessedSet[0]->l2_norm() << std::endl;
+
   unsigned int invM_size = invM.local_size();
-  for(unsigned int fieldIndex=0; fieldIndex<solutionSet.size(); fieldIndex++){
-	  for (unsigned int dof=0; dof<solutionSet[fieldIndex]->local_size(); ++dof){
+  for(unsigned int fieldIndex=0; fieldIndex<postProcessedSet.size(); fieldIndex++){
+	  for (unsigned int dof=0; dof<postProcessedSet[fieldIndex]->local_size(); ++dof){
 		  postProcessedSet[fieldIndex]->local_element(dof)=			\
 				  invM.local_element(dof%invM_size)*postProcessedSet[fieldIndex]->local_element(dof);
 	  }
+	  constraintsOtherSet[0]->distribute(*postProcessedSet[fieldIndex]);
+	  postProcessedSet[fieldIndex]->update_ghost_values();
   }
 
-  std::vector<std::string> pp_fields;
-  pp_fields.push_back("n_pp");
-  for(unsigned int fieldIndex=0; fieldIndex<1; fieldIndex++){
+  // Add the postprocessed fields to data_out
+  for(unsigned int fieldIndex=0; fieldIndex<userInputs.pp_number_of_variables; fieldIndex++){
 	  //mark field as scalar/vector
-	  std::vector<DataComponentInterpretation::DataComponentInterpretation> dataType \
-	  (fields[fieldIndex].numComponents,				\
-			  (fields[fieldIndex].type==SCALAR ?				\
-					  DataComponentInterpretation::component_is_scalar:		\
-					  DataComponentInterpretation::component_is_part_of_vector));
-	  //add field to data_out
-	  std::vector<std::string> solutionNames (fields[fieldIndex].numComponents, pp_fields[fieldIndex].c_str());
-	  data_out.add_data_vector(*dofHandlersSet[fieldIndex], *postProcessedSet[fieldIndex], solutionNames, dataType);
+	  unsigned int components;
+	  if (userInputs.pp_varInfoList[fieldIndex].is_scalar){
+		  components = 1;
+		  std::vector<DataComponentInterpretation::DataComponentInterpretation> dataType(components,DataComponentInterpretation::component_is_scalar);
+		  std::vector<std::string> solutionNames (components, userInputs.pp_var_name[fieldIndex].c_str());
+		  //add field to data_out
+		  data_out.add_data_vector(*dofHandlersSet[0], *postProcessedSet[fieldIndex], solutionNames, dataType);
+	  }
+	  else {
+		  components = dim;
+		  std::vector<DataComponentInterpretation::DataComponentInterpretation> dataType(components,DataComponentInterpretation::component_is_part_of_vector);
+		  std::vector<std::string> solutionNames (components, userInputs.pp_var_name[fieldIndex].c_str());
+		  //add field to data_out
+		  //data_out.add_data_vector(*vector_dofHandler, *postProcessedSet[fieldIndex], solutionNames, dataType);
+		  data_out.add_data_vector(*dofHandlersSet[0], *postProcessedSet[fieldIndex], solutionNames, dataType);
+	  }
   }
 
   data_out.build_patches (degree);
