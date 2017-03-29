@@ -1,12 +1,44 @@
 //methods to apply initial conditions 
 
 #include "../../include/matrixFreePDE.h"
+#include "../../include/IntegrationTools/PField.hh"
+
+#ifdef enablePFields
+#if enablePFields == true
+template <int dim>
+class InitialConditionPField : public Function<dim>
+{
+public:
+  unsigned int index;
+  Vector<double> values;
+  typedef PRISMS::PField<double*, double, 2> ScalarField2D;
+  ScalarField2D &inputField;
+
+  InitialConditionPField (const unsigned int _index, ScalarField2D &_inputField) : Function<dim>(1), index(_index), inputField(_inputField) {}
+
+  double value (const Point<dim> &p, const unsigned int component = 0) const
+  {
+	  double scalar_IC;
+
+	  double coord[dim];
+	  for (unsigned int i = 0; i < dim; i++){
+		  coord[i] = p(i);
+	  }
+
+	  scalar_IC = inputField(coord);
+
+	  return scalar_IC;
+  }
+};
+
+#endif
+#else
+#define enablePFields false
+#endif
 
 //methods to apply initial conditions
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::applyInitialConditions(){
-
-
 
 for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_index++){
 	if (userInputs.load_ICs[var_index] == false){
@@ -53,38 +85,7 @@ for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_i
 }
 
 
-#ifdef enablePFields
-#if enablePFields == true
-template <int dim>
-class InitialConditionPField : public Function<dim>
-{
-public:
-  unsigned int index;
-  Vector<double> values;
-  typedef PRISMS::PField<double*, double, 2> ScalarField2D;
-  ScalarField2D &inputField;
 
-  InitialConditionPField (const unsigned int _index, ScalarField2D &_inputField) : Function<dim>(1), index(_index), inputField(_inputField) {}
-
-  double value (const Point<dim> &p, const unsigned int component = 0) const
-  {
-	  double scalar_IC;
-
-	  double coord[dim];
-	  for (unsigned int i = 0; i < dim; i++){
-		  coord[i] = p(i);
-	  }
-
-	  scalar_IC = inputField(coord);
-
-	  return scalar_IC;
-  }
-};
-
-#endif
-#else
-#define enablePFields false
-#endif
 
 // =================================================================================
 

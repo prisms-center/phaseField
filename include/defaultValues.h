@@ -91,9 +91,9 @@
 #define numOutputs 1
 #endif
 
-//#ifndef enablePFields
-//#define enablePFields false
-//#endif
+#ifndef enablePFields
+#define enablePFields true
+#endif
 
 #ifndef skipPrintSteps
 #define skipPrintSteps 1
@@ -103,21 +103,21 @@
 #define hAdaptivity false
 #endif
 
-#ifndef loadICs
-#define loadICs {}
-#endif
-
-#ifndef loadSerialFile
-#define loadSerialFile {}
-#endif
-
-#ifndef loadFileName
-#define loadFileName {}
-#endif
-
-#ifndef loadFieldName
-#define loadFieldName {}
-#endif
+//#ifndef loadICs
+//#define loadICs {}
+//#endif
+//
+//#ifndef loadSerialFile
+//#define loadSerialFile {}
+//#endif
+//
+//#ifndef loadFileName
+//#define loadFileName {}
+//#endif
+//
+//#ifndef loadFieldName
+//#define loadFieldName {}
+//#endif
 
 // Mesh refinement
 #ifndef maxRefinementLevel

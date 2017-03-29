@@ -19,10 +19,6 @@ void PostProcessor<dim,degree>::computePostProcessedFields(MatrixFree<dim,double
 	  //call to integrate and assemble
 	  matrixFreeObject.cell_loop (&PostProcessor<dim,degree>::getPostProcessedFields, this, postProcessedSet, solutionSet);
 
-	  for(unsigned int fieldIndex=0; fieldIndex<userInputs.pp_number_of_variables; fieldIndex++){
-		  postProcessedSet[fieldIndex]->update_ghost_values();
-	  }
-
 }
 
 template <int dim,int degree>
