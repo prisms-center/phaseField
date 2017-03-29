@@ -29,7 +29,7 @@
 
 //FE polynomial order (default value:1)
 #ifndef finiteElementDegree
-#define finiteElementDegree 2
+#define finiteElementDegree 1
 #endif
 
 //number of fields (default value:1)

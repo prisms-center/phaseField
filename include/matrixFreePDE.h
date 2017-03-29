@@ -17,6 +17,7 @@
 #include "loadInputs.h"
 #include "initialConditions.h"
 
+
 #include "fields.h"
 #include "vectorLoad.h"
 #include "vectorBCFunction.h"
@@ -36,6 +37,8 @@ typedef dealii::parallel::distributed::Vector<double> vectorType;
 #define constV(a) make_vectorized_array(a)
 //macro for defining subdomain specific functions
 #define subdomain(geometricExpression, functionExpression)  ( (geometricExpression) ? (functionExpression) : constV(0.0))
+
+#include "postprocessor.h"
 
 //
 using namespace dealii;
