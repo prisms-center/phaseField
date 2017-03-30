@@ -13,10 +13,10 @@
 #define loadSerialFile {false}
 
 // Set the name of the input files
-#define loadFileName {"visit_ex_db_2"}
+#define loadFileName {"import_test"}
 
 // Set the field names in the input files
-#define loadFieldName {"c"}
+#define loadFieldName {"n"}
 
 // =================================================================================
 

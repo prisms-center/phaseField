@@ -11,10 +11,10 @@ class InitialConditionPField : public Function<dim>
 public:
   unsigned int index;
   Vector<double> values;
-  typedef PRISMS::PField<double*, double, 2> ScalarField2D;
-  ScalarField2D &inputField;
+  typedef PRISMS::PField<double*, double, dim> ScalarField;
+  ScalarField &inputField;
 
-  InitialConditionPField (const unsigned int _index, ScalarField2D &_inputField) : Function<dim>(1), index(_index), inputField(_inputField) {}
+  InitialConditionPField (const unsigned int _index, ScalarField &_inputField) : Function<dim>(1), index(_index), inputField(_inputField) {}
 
   double value (const Point<dim> &p, const unsigned int component = 0) const
   {
@@ -52,9 +52,9 @@ for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_i
 	else{
 		#if enablePFields == true
 		// Declare the PField types and containers
-		typedef PRISMS::PField<double*, double, 2> ScalarField2D;
-		typedef PRISMS::Body<double*, 2> Body2D;
-		Body2D body;
+		typedef PRISMS::PField<double*, double, dim> ScalarField;
+		typedef PRISMS::Body<double*, dim> Body;
+		Body body;
 
 		// Create the filename of the the file to be loaded
 		std::string filename;
@@ -70,7 +70,7 @@ for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_i
 
 		// Load the data from the file using a PField
 		body.read_vtk(filename);
-		ScalarField2D &conc = body.find_scalar_field(userInputs.load_field_name[var_index]);
+		ScalarField3D &conc = body.find_scalar_field(userInputs.load_field_name[var_index]);
 		if (userInputs.var_type[var_index] == "SCALAR"){
 			VectorTools::interpolate (*dofHandlersSet[var_index], InitialConditionPField<dim>(var_index,conc), *solutionSet[var_index]);
 		}
