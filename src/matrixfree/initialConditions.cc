@@ -70,7 +70,7 @@ for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_i
 
 		// Load the data from the file using a PField
 		body.read_vtk(filename);
-		ScalarField3D &conc = body.find_scalar_field(userInputs.load_field_name[var_index]);
+		ScalarField &conc = body.find_scalar_field(userInputs.load_field_name[var_index]);
 		if (userInputs.var_type[var_index] == "SCALAR"){
 			VectorTools::interpolate (*dofHandlersSet[var_index], InitialConditionPField<dim>(var_index,conc), *solutionSet[var_index]);
 		}
