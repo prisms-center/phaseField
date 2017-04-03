@@ -1,7 +1,7 @@
 // Allen-Cahn example application
 
 // Header files
-#include "IntegrationTools/PField.hh"
+#include "../../include/IntegrationTools/PField.hh"
 
 #include "parameters.h"
 #include "../../include/dealIIheaders.h"

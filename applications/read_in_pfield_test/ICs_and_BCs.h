@@ -10,13 +10,13 @@
 #define loadICs {true}
 
 // Set whether the file is serial or a series of parallel files
-#define loadSerialFile {false}
+#define loadSerialFile {true}
 
 // Set the name of the input files
-#define loadFileName {"import_test"}
+#define loadFileName {"export_test"}
 
 // Set the field names in the input files
-#define loadFieldName {"n"}
+#define loadFieldName {"c"}
 
 // =================================================================================
 

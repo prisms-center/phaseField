@@ -560,7 +560,7 @@ namespace PRISMS
             _var[0][2] = coord[2];
             double e;
             
-            for( int i=0; i<2; i++)
+            for( int i=0; i<3; i++)
             {
                 e = _var[3][i]*(_var[0][i] - _var[1][i])/_var[2][i];
                 if( e < 0.0 || e >= 1.0)

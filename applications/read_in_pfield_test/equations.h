@@ -8,7 +8,7 @@
 
 // The names of the variables, whether they are scalars or vectors and whether the
 // governing eqn for the variable is parabolic or elliptic
-#define variable_name {"n"}
+#define variable_name {"c","n1","n2"}
 #define variable_type {"SCALAR"}
 #define variable_eq_type {"PARABOLIC"}
 
