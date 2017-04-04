@@ -10,9 +10,9 @@
 
 #ifndef MATRIXFREEPDE_TEMPLATE_INSTANTIATION
 #define MATRIXFREEPDE_TEMPLATE_INSTANTIATION
-template class MatrixFreePDE<2,1>;
+//template class MatrixFreePDE<2,1>;
 template class MatrixFreePDE<3,1>;
-template class MatrixFreePDE<2,2>;
+//template class MatrixFreePDE<2,2>;
 template class MatrixFreePDE<3,2>;
 #endif
 

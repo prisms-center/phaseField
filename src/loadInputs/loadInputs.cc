@@ -283,25 +283,25 @@ void userInputParameters::loadUserInput(){
 
 
 	// Load variable information for calculating the RHS
-	pp_varInfoList.reserve(num_var);
+	pp_varInfoList.reserve(pp_num_var);
 	scalar_var_index = 0;
 	vector_var_index = 0;
-	for (unsigned int i=0; i<num_var; i++){
+	for (unsigned int i=0; i<pp_num_var; i++){
 		variable_info varInfo;
-		if (pp_need_value[i] or pp_need_gradient[i] or pp_need_hessian[i]){
-			varInfo.global_var_index = i;
-			if (pp_var_type[i] == "SCALAR"){
-				varInfo.is_scalar = true;
-				varInfo.scalar_or_vector_index = scalar_var_index;
-				scalar_var_index++;
-			}
-			else {
-				varInfo.is_scalar = false;
-				varInfo.scalar_or_vector_index = vector_var_index;
-				vector_var_index++;
-			}
-			pp_varInfoList.push_back(varInfo);
+
+		varInfo.global_var_index = i;
+		if (pp_var_type[i] == "SCALAR"){
+			varInfo.is_scalar = true;
+			varInfo.scalar_or_vector_index = scalar_var_index;
+			scalar_var_index++;
 		}
+		else {
+			varInfo.is_scalar = false;
+			varInfo.scalar_or_vector_index = vector_var_index;
+			vector_var_index++;
+		}
+		pp_varInfoList.push_back(varInfo);
+
 	}
 
 }

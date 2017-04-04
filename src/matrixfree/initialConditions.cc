@@ -42,6 +42,7 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
 
 for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_index++){
 	if (userInputs.load_ICs[var_index] == false){
+		pcout << "Applying non-PField initial condition...\n";
 		if (userInputs.var_type[var_index] == "SCALAR"){
 			VectorTools::interpolate (*dofHandlersSet[var_index], InitialCondition<dim>(var_index), *solutionSet[var_index]);
 		}
@@ -72,6 +73,7 @@ for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_i
 		body.read_vtk(filename);
 		ScalarField &conc = body.find_scalar_field(userInputs.load_field_name[var_index]);
 		if (userInputs.var_type[var_index] == "SCALAR"){
+			pcout << "Applying PField initial condition...\n";
 			VectorTools::interpolate (*dofHandlersSet[var_index], InitialConditionPField<dim>(var_index,conc), *solutionSet[var_index]);
 		}
 		else {
@@ -81,6 +83,7 @@ for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_i
 		std::cout << "PRISMS-PF Error: The parameter \"enablePFields\" must be set to true to load initial conditions from file." << std::endl;
 		#endif
 	}
+	pcout << "Application of initial conditions for field number " << var_index << " complete \n";
 }
 }
 
