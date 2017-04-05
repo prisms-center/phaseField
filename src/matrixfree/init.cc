@@ -188,10 +188,45 @@ template <int dim, int degree>
 		 computeInvM();
 	 }
    
+	 // Load in PField initial conditions if relevant
+	 typedef PRISMS::PField<double*, double, dim> ScalarField;
+	 typedef PRISMS::Body<double*, dim> Body;
+	 std::vector<Body> PFieldICs;
+
+//	 for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_index++){
+//	 	if (userInputs.load_ICs[var_index] == true){
+//	 		#if enablePFields == true
+//	 		// Declare the PField types and containers
+//
+//	 		Body body;
+//	 		PFieldICs.push_back(body);
+//
+//	 		// Create the filename of the the file to be loaded
+//	 		std::string filename;
+//	 		if (userInputs.load_serial_file[var_index] == true){
+//	 			filename = userInputs.load_file_name[var_index] + ".vtk";
+//	 		}
+//	 		else {
+//	 			int proc_num = Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
+//	 			std::ostringstream conversion;
+//	 			conversion << proc_num;
+//	 			filename = userInputs.load_file_name[var_index] + "." + conversion.str() + ".vtk";
+//	 		}
+//
+//	 		// Load the data from the file using a PField
+//	 		PFieldICs[PFieldICs.size()-1].read_vtk(filename);
+//	 		//ScalarField &conc = body.find_scalar_field(userInputs.load_field_name[var_index]);
+//
+//
+////	 		PFieldICs.push_back(body);
+//			#endif
+//	 	}
+//	 }
+
 	 // Apply the initial conditions to the solution vectors
 	 // The initial conditions are re-applied below in the "adaptiveRefine" function so that the mesh can
 	 // adapt based on the initial conditions.
-	 applyInitialConditions();
+	 applyInitialConditions(PFieldICs);
 
 
 	 // Create new solution transfer sets (needed for the "refineGrid" call, might be able to move this elsewhere)
@@ -207,7 +242,7 @@ template <int dim, int degree>
 	 }
 
 	 // Check and perform adaptive mesh refinement, which reinitializes the system with the new mesh
-	 adaptiveRefine(0);
+	 adaptiveRefine(0,PFieldICs);
 
 	 computing_timer.exit_section("matrixFreePDE: initialization");
 }

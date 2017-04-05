@@ -4,7 +4,7 @@
 
  //populate with fields and setup matrix free system
 template <int dim, int degree>
- void MatrixFreePDE<dim,degree>::reinit(){
+ void MatrixFreePDE<dim,degree>::reinit(std::vector<Body> & PFieldICs){
 
 	 computing_timer.enter_section("matrixFreePDE: reinitialization");
 
@@ -140,7 +140,7 @@ template <int dim, int degree>
 
  	 // If remeshing at the zeroth time step, re-apply initial conditions so the starting values are correct on the refined mesh
  	 if (currentIncrement == 0){
- 		 applyInitialConditions();
+ 		 applyInitialConditions(PFieldICs);
  	 }
 
  	 // Ghost the solution vectors. Also apply the Dirichet BC's (if any) on the solution vectors

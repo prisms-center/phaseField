@@ -26,6 +26,8 @@ namespace PRISMS
         Interpolator( unsigned long int node, unsigned long int element, PFuncBase<std::vector<PRISMS::Coordinate<DIM> >, double>* bfunc):
         _node(node), _element(element), _bfunc(bfunc)
         {};
+
+        virtual ~Interpolator() {};
         
         unsigned long int node()
         {

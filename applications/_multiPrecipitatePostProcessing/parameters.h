@@ -36,8 +36,8 @@
 #define hAdaptivity true
 
 // Set the maximum and minimum level of refinement
-#define maxRefinementLevel (refineFactor+2) //(refineFactor+3)
-#define minRefinementLevel (5)
+#define maxRefinementLevel (refineFactor+3)
+#define minRefinementLevel (3)
 
 // Set the fields used to determine the refinement. Fields determined by the order
 // declared in "equations.h", starting at zero
