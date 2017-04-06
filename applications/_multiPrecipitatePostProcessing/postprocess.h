@@ -14,12 +14,12 @@
 // Define the variables for postprocessing
 // =================================================================================
 // The number of variables
-#define pp_num_var 1
+#define pp_num_var 2
 
 // The names of the variables, whether they are scalars or vectors and whether the
 // governing eqn for the variable is parabolic or elliptic
-#define pp_variable_name {"pp"}
-#define pp_variable_type {"SCALAR"}
+#define pp_variable_name {"f_el","mu_c"}
+#define pp_variable_type {"SCALAR","SCALAR"}
 
 // Flags for whether the value, gradient, and Hessian are needed in the residual eqns
 #define pp_need_val {true,true,true,true,false}
@@ -28,8 +28,8 @@
 
 // Flags for whether the residual equation has a term multiplied by the test function
 // (need_val_residual) and/or the gradient of the test function (need_grad_residual)
-#define pp_need_val_residual {true}
-#define pp_need_grad_residual {false}
+#define pp_need_val_residual {true,true}
+#define pp_need_grad_residual {false,false}
 
 // =================================================================================
 
@@ -144,8 +144,18 @@ for (unsigned int i=0; i<dim; i++){
   }
 }
 
+scalarvalueType mu_c = constV(0.0);
+mu_c += faV*cbcV * (1.0-sum_hpV) + fbV*cbcV * sum_hpV;
+for (unsigned int i=0; i<dim; i++){
+  for (unsigned int j=0; j<dim; j++){
+	  mu_c -= S[i][j]*( sfts1c[i][j]*h1V + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V );
+  }
+}
+
+
 // Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
 modelResidualsList[0].scalarValueResidual = f_el; //constV(0.0);
+modelResidualsList[1].scalarValueResidual = mu_c; //constV(0.0);
 
 
 }
