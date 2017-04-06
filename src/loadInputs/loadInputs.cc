@@ -242,24 +242,42 @@ void userInputParameters::loadUserInput(){
 		}
 	}
 
-	// Initializing variables for loading in initial conditions
-	load_ICs = loadICs;
-	load_serial_file = loadSerialFile;
-	load_file_name = loadFileName;
-	load_field_name = loadFieldName;
-
-	// If load_ICs is empty, it should be set to false for each variable
-	if (load_ICs.size() == 0){
+	// Initializing variables for loading in initial conditions using PFields
+	#ifdef loadICs
+		load_ICs = loadICs;
+	#else
 		for (unsigned int i=0; i<number_of_variables; i++){
 			load_ICs.push_back(false);
 		}
-	}
+	#endif
+
+	#ifdef loadSerialFile
+		load_serial_file = loadSerialFile;
+	#else
+		for (unsigned int i=0; i<number_of_variables; i++){
+			load_serial_file.push_back(false);
+		}
+	#endif
+	#ifdef loadFileName
+		load_file_name = loadFileName;
+	#else
+		for (unsigned int i=0; i<number_of_variables; i++){
+			load_file_name.push_back("void");
+		}
+	#endif
+	#ifdef loadFieldName
+		load_field_name = loadFieldName;
+	#else
+		for (unsigned int i=0; i<number_of_variables; i++){
+			load_field_name.push_back("void");
+		}
+	#endif
 
 	// Postprocessing inputs
 	pp_number_of_variables = pp_num_var;
 
 
-	// Somewhat convoluted initialization so as not to rely on C++11 initializer lists (which not all compiler have yet)
+	// Somewhat convoluted initialization so as not to rely on C++11 initializer lists (which not all compilers have yet)
 	{std::string temp_string[] = pp_variable_name;
 	vectorLoad(temp_string,sizeof(temp_string),pp_var_name);}
 

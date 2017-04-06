@@ -4,7 +4,7 @@
 // =================================================================================
 // Set the number of dimensions (1, 2, or 3 for a 1D, 2D, or 3D calculation)
 // =================================================================================
-#define problemDIM 2
+#define problemDIM 3
 
 // =================================================================================
 // Set the length of the domain in all three dimensions
@@ -22,7 +22,7 @@
 #define subdivisionsX 1
 #define subdivisionsY 1
 #define subdivisionsZ 1
-#define refineFactor 7
+#define refineFactor 5
 
 // Set the polynomial degree of the element (suggested values: 1 or 2)
 #define finiteElementDegree 1

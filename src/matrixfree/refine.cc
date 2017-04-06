@@ -4,14 +4,14 @@
 
 //default implementation of adaptive mesh refinement 
 template <int dim, int degree>
-void MatrixFreePDE<dim,degree>::adaptiveRefine(unsigned int currentIncrement,std::vector<Body> & PFieldICs){
+void MatrixFreePDE<dim,degree>::adaptiveRefine(unsigned int currentIncrement){
 if (userInputs.h_adaptivity == true){
 	if ( (currentIncrement == 0) ){
 		unsigned int numDoF_preremesh = totalDOFs;
 		for (unsigned int remesh_index=0; remesh_index < (userInputs.max_refinement_level-userInputs.min_refinement_level); remesh_index++){
 			adaptiveRefineCriterion();
 			refineGrid();
-			reinit(PFieldICs);
+			reinit();
 
 			// If the mesh hasn't changed from the previous cycle, stop remeshing
 			if (totalDOFs == numDoF_preremesh) break;
@@ -21,7 +21,7 @@ if (userInputs.h_adaptivity == true){
 	else if ( (currentIncrement%userInputs.skip_remeshing_steps==0) ){
 		adaptiveRefineCriterion();
 		refineGrid();
-		reinit(PFieldICs);
+		reinit();
 	}
 }
 }

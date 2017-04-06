@@ -37,9 +37,7 @@ void MatrixFreePDE<dim,degree>::solve(){
 
       //check and perform adaptive mesh refinement
       computing_timer.enter_section("matrixFreePDE: AMR");
-
-      std::vector<Body> PFieldICs;
-      adaptiveRefine(currentIncrement,PFieldICs);
+      adaptiveRefine(currentIncrement);
       computing_timer.exit_section("matrixFreePDE: AMR");
 
       //solve time increment

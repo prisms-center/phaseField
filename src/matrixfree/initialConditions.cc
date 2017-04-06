@@ -38,9 +38,7 @@ public:
 
 //methods to apply initial conditions
 template <int dim, int degree>
-void MatrixFreePDE<dim,degree>::applyInitialConditions(std::vector<Body> & PFieldICs){
-
-unsigned int PField_index = 0;
+void MatrixFreePDE<dim,degree>::applyInitialConditions(){
 
 for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_index++){
 	if (userInputs.load_ICs[var_index] == false){
@@ -78,10 +76,7 @@ for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_i
 
 		if (userInputs.var_type[var_index] == "SCALAR"){
 			pcout << "Applying PField initial condition...\n";
-			pcout << "PField index: " << PField_index << " Size of PFieldICs: " << PFieldICs.size() << "\n";
-			//ScalarField &conc = PFieldICs[PField_index].find_scalar_field(userInputs.load_field_name[var_index]);
 			VectorTools::interpolate (*dofHandlersSet[var_index], InitialConditionPField<dim>(var_index,conc), *solutionSet[var_index]);
-			PField_index++;
 		}
 		else {
 			std::cout << "PRISMS-PF Error: Cannot load vector fields. Loading initial conditions from file is currently limited to scalar fields" << std::endl;

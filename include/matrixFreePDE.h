@@ -65,13 +65,11 @@ class MatrixFreePDE:public Subscriptor
   MatrixFreePDE(userInputParameters);
   ~MatrixFreePDE();
   /**
-   * Initializes the mesh, degress of freedom, constraints and data structures using the user provided
+   * Initializes the mesh, degrees of freedom, constraints and data structures using the user provided
    * inputs in the application parameters file. 
    */
   void init  ();
-  typedef PRISMS::PField<double*, double, dim> ScalarField;
-  typedef PRISMS::Body<double*, dim> Body;
-  void reinit  (std::vector<Body> & PFieldICs);
+
    /**
    * Initializes the data structures for enabling unit tests.
    * 
@@ -134,6 +132,9 @@ class MatrixFreePDE:public Subscriptor
 
   // Elasticity matrix variables
   const static unsigned int CIJ_tensor_size = 2*dim-1+dim/3;
+
+  // Method to reinitialize the mesh, degrees of freedom, constraints and data structures when the mesh is adapted
+  void reinit  ();
 
   /**
    * Method to solve each time increment of a time-dependent problem. For time-independent problems 
@@ -212,7 +213,7 @@ class MatrixFreePDE:public Subscriptor
   /*AMR methods*/
   void refineGrid();
   /*Virtual method to mark the regions to be adaptively refined. This is expected to be provided by the user.*/
-  void adaptiveRefine(unsigned int _currentIncrement,std::vector<Body> & PFieldICs);
+  void adaptiveRefine(unsigned int _currentIncrement);
   /*Virtual method to define AMR refinement criterion. The default implementation uses the Kelly error estimate for estimative the error function. The user can supply a custom implementation to overload the default implementation.*/
   void adaptiveRefineCriterion();
   
@@ -260,7 +261,7 @@ class MatrixFreePDE:public Subscriptor
   //methods to apply initial conditions
   /*Virtual method to apply initial conditions.  This is usually expected to be provided by the user in IBVP (Initial Boundary Value Problems).*/   
 
-  void applyInitialConditions(std::vector<Body> & PFieldICs);
+  void applyInitialConditions();
   virtual void getNucleiList ();
 
   /*Method to compute energy like quantities.*/
