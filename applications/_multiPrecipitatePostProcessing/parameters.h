@@ -54,8 +54,8 @@
 // Set the time step parameters
 // =================================================================================
 // The size of the time step
-#define timeStep (1e-10*scaleFactor*scaleFactor)
-#define timeIncrements 1 //20000000
+#define timeStep (1.1e-4*scaleFactor*scaleFactor) //1.1e-4*scaleFactor*scaleFactor
+#define timeIncrements 5000000
 #define timeFinal (timeStep*timeIncrements)
 
 
@@ -87,7 +87,7 @@
 
 // Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 // and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-#define numOutputs 1
+#define numOutputs 20
 
 // User-defined list of time steps where the program should output. Only used if
 // outputCondition is "LIST"
