@@ -14,16 +14,16 @@
 //PRISMS headers
 #include "model_variables.h"
 #include "varBCs.h"
-#include "loadInputs.h"
 #include "initialConditions.h"
 
 
 #include "fields.h"
 #include "vectorLoad.h"
 #include "vectorBCFunction.h"
-#include "../src/models/mechanics/anisotropy.h"
+#include "../src/userInputParameters/getCIJMatrix.h"
 #include "../src/models/mechanics/computeStress.h"
 #include "IntegrationTools/PField.hh"
+#include "userInputParameters.h"
 
 
 ////define data types
@@ -96,10 +96,6 @@ class MatrixFreePDE:public Subscriptor
    */
   std::vector<Field<dim> >                  fields;
 
-  /**
-   * Virtual function to shift the concentration
-   */
-  void shiftConcentration();
 
   virtual void setBCs()=0;
   void buildFields();
@@ -282,7 +278,7 @@ class MatrixFreePDE:public Subscriptor
   void computeIntegral(double& integratedField, int index);
 
   //variables for time dependent problems 
-  /*Flag used to see if invM, time steppping in run(), etc are necessary*/
+  /*Flag used to see if invM, time stepping in run(), etc are necessary*/
   bool isTimeDependentBVP;
   /*Flag used to mark problems with Elliptic fields.*/
   bool isEllipticBVP;

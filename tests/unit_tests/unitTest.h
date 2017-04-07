@@ -64,7 +64,7 @@ void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Vectorized
 #include "../../src/matrixfree/initialConditions.cc"
 #include "../../src/matrixfree/utilities.cc"
 #include "../../src/matrixfree/calcFreeEnergy.cc"
-#include "../../src/matrixfree/integrate_and_shift_field.cc"
+#include "../../src/matrixfree/computeIntegral.cc"
 #include "../../src/matrixfree/getOutputTimeSteps.cc"
 
 #include "../../src/models/mechanics/computeStress.h"

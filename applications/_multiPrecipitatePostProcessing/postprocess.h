@@ -13,13 +13,11 @@
 // =================================================================================
 // Define the variables for postprocessing
 // =================================================================================
-// The number of variables
-#define pp_num_var 2
 
 // The names of the variables, whether they are scalars or vectors and whether the
 // governing eqn for the variable is parabolic or elliptic
-#define pp_variable_name {"f_el","mu_c"}
-#define pp_variable_type {"SCALAR","SCALAR"}
+#define pp_variable_name {"f_el","mu_c","mu_n1","mu_n2"}
+#define pp_variable_type {"SCALAR","SCALAR","SCALAR","SCALAR"}
 
 // Flags for whether the value, gradient, and Hessian are needed in the residual eqns
 #define pp_need_val {true,true,true,true,false}
@@ -28,8 +26,8 @@
 
 // Flags for whether the residual equation has a term multiplied by the test function
 // (need_val_residual) and/or the gradient of the test function (need_grad_residual)
-#define pp_need_val_residual {true,true}
-#define pp_need_grad_residual {false,false}
+#define pp_need_val_residual {true,true,true,true}
+#define pp_need_grad_residual {false,false,true,true}
 
 // =================================================================================
 
@@ -68,10 +66,11 @@ dealii::Tensor<2, dim, dealii::VectorizedArray<double> > ux = modelVariablesList
 
 // Calculate the derivatives of c_beta (derivatives of c_alpha aren't needed)
 // Note: this section can be optimized to reduce recalculations
-scalarvalueType cbn1V, cbn2V, cbn3V, cbcV, cbcn1V, cbcn2V, cbcn3V, sum_hpV;
+scalarvalueType cbn1V, cbn2V, cbn3V, cbcV, cbcn1V, cbcn2V, cbcn3V, sum_hpV, cacV;
 sum_hpV = h1V+h2V+h3V;
 
 cbcV = faccV/( (constV(1.0)-sum_hpV)*fbccV + (sum_hpV)*faccV );
+cacV = fbccV/( (constV(1.0)-sum_hpV)*fbccV + (sum_hpV)*faccV );
 
 cbn1V = hn1V * (c_alpha - c_beta) * cbcV;
 cbn2V = hn2V * (c_alpha - c_beta) * cbcV;
@@ -83,7 +82,7 @@ cbcn3V = (faccV * (fbccV-faccV) * hn3V)/( ((1.0-sum_hpV)*fbccV + sum_hpV*faccV)*
 
 
 // Calculate the stress-free transformation strain and its derivatives at the quadrature point
-dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > sfts1, sfts1c, sfts1cc, sfts2, sfts2c, sfts2cc, sfts3, sfts3c, sfts3cc, sfts1n, sfts1cn, sfts2n, sfts2cn, sfts3n, sfts3cn;
+dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > sfts1, sfts1c, sfts1cc, sfts2, sfts2c, sfts2cc, sfts3, sfts3c, sfts3cc;
 
 for (unsigned int i=0; i<dim; i++){
 for (unsigned int j=0; j<dim; j++){
@@ -91,20 +90,14 @@ for (unsigned int j=0; j<dim; j++){
 	sfts1[i][j] = constV(sfts_linear1[i][j])*c_beta + constV(sfts_const1[i][j]);
 	sfts1c[i][j] = constV(sfts_linear1[i][j]) * cbcV;
 	sfts1cc[i][j] = constV(0.0);
-	sfts1n[i][j] = constV(sfts_linear1[i][j]) * cbn1V;
-	sfts1cn[i][j] = constV(sfts_linear1[i][j]) * cbcn1V;
 
 	sfts2[i][j] = constV(sfts_linear2[i][j])*c_beta + constV(sfts_const2[i][j]);
 	sfts2c[i][j] = constV(sfts_linear2[i][j]) * cbcV;
 	sfts2cc[i][j] = constV(0.0);
-	sfts2n[i][j] = constV(sfts_linear2[i][j]) * cbn2V;
-	sfts2cn[i][j] = constV(sfts_linear2[i][j]) * cbcn2V;
 
 	sfts3[i][j] = constV(sfts_linear3[i][j])*c_beta + constV(sfts_const3[i][j]);
 	sfts3c[i][j] = constV(sfts_linear3[i][j]) * cbcV;
 	sfts3cc[i][j] = constV(0.0);
-	sfts3n[i][j] = constV(sfts_linear3[i][j]) * cbn3V;
-	sfts3cn[i][j] = constV(sfts_linear3[i][j]) * cbcn2V;
 
 }
 }
@@ -125,15 +118,15 @@ for (unsigned int i=0; i<dim; i++){
 dealii::VectorizedArray<double> CIJ_combined[2*dim-1+dim/3][2*dim-1+dim/3];
 
 if (n_dependent_stiffness == true){
-  for (unsigned int i=0; i<2*dim-1+dim/3; i++){
+for (unsigned int i=0; i<2*dim-1+dim/3; i++){
 	  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-		  CIJ_combined[i][j] = material_moduli.CIJ_list[0][i][j]*(constV(1.0)-h1strainV-h2strainV-h3strainV) + material_moduli.CIJ_list[1][i][j]*(h1strainV) + material_moduli.CIJ_list[2][i][j]*(h2strainV) + material_moduli.CIJ_list[3][i][j]*(h3strainV);
+		  CIJ_combined[i][j] = material_moduli.CIJ_list[0][i][j]*(constV(1.0)-sum_hpV) + material_moduli.CIJ_list[1][i][j]*(h1V) + material_moduli.CIJ_list[2][i][j]*(h2V) + material_moduli.CIJ_list[3][i][j]*(h3V);
 	  }
-  }
-  computeStress<dim>(CIJ_combined, E2, S);
+}
+computeStress<dim>(CIJ_combined, E2, S);
 }
 else{
-  computeStress<dim>(material_moduli.CIJ_list[0], E2, S);
+computeStress<dim>(material_moduli.CIJ_list[0], E2, S);
 }
 
 scalarvalueType f_el = constV(0.0);
@@ -144,18 +137,78 @@ for (unsigned int i=0; i<dim; i++){
   }
 }
 
+// Calculate the chemical potential for the concentration
 scalarvalueType mu_c = constV(0.0);
-mu_c += faV*cbcV * (1.0-sum_hpV) + fbV*cbcV * sum_hpV;
+mu_c += facV*cacV * (1.0-sum_hpV) + fbcV*cbcV * sum_hpV;
 for (unsigned int i=0; i<dim; i++){
   for (unsigned int j=0; j<dim; j++){
 	  mu_c -= S[i][j]*( sfts1c[i][j]*h1V + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V );
   }
 }
 
+// Calculate the chemical potential for the order parameters
+// Compute one of the stress terms in the order parameter chemical potential, nDependentMisfitACp = -C*(E-E0)*(E0_n)
+dealii::VectorizedArray<double> nDependentMisfitAC1=constV(0.0);
+dealii::VectorizedArray<double> nDependentMisfitAC2=constV(0.0);
+
+dealii::VectorizedArray<double> E4[dim][dim]; // Intermediate variable
+
+for (unsigned int i=0; i<dim; i++){
+for (unsigned int j=0; j<dim; j++){
+	E4[i][j] = constV(sfts_linear1[i][j])*h1V + constV(sfts_linear2[i][j])*h2V + constV(sfts_linear3[i][j])*h3V;
+
+	nDependentMisfitAC1 -= S[i][j]*(cbn1V*E4[i][j] + sfts1[i][j]*hn1V);
+	nDependentMisfitAC2 -= S[i][j]*(cbn2V*E4[i][j] + sfts2[i][j]*hn2V);}
+}
+
+// Compute the other stress term in the order parameter chemical potential, heterMechACp = 0.5*Hn*(C_beta-C_alpha)*(E-E0)*(E-E0)
+dealii::VectorizedArray<double> heterMechAC1=constV(0.0);
+dealii::VectorizedArray<double> heterMechAC2=constV(0.0);
+dealii::VectorizedArray<double> S2[dim][dim];
+
+if (n_dependent_stiffness == true){
+	computeStress<dim>(material_moduli.CIJ_list[1]-material_moduli.CIJ_list[0], E2, S2);
+	for (unsigned int i=0; i<dim; i++){
+		for (unsigned int j=0; j<dim; j++){
+			heterMechAC1 += S2[i][j]*E2[i][j];
+		}
+	}
+	heterMechAC1 *= 0.5*hn1V;
+
+	computeStress<dim>(material_moduli.CIJ_list[2]-material_moduli.CIJ_list[0], E2, S2);
+	for (unsigned int i=0; i<dim; i++){
+		for (unsigned int j=0; j<dim; j++){
+			heterMechAC2 += S2[i][j]*E2[i][j];
+		}
+	}
+	heterMechAC2 *= 0.5*hn2V;
+}
+
+
+scalarvalueType mu_n1, mu_n2;
+mu_n1 = (fbV-faV)*hn1V - (c_beta-c_alpha)*facV*hn1V + W*fbarriern1V + nDependentMisfitAC1 + heterMechAC1;
+mu_n2 = (fbV-faV)*hn2V - (c_beta-c_alpha)*facV*hn2V + W*fbarriern2V + nDependentMisfitAC2 + heterMechAC2;
+
+//compute K*nx
+dealii::Tensor<1, dim, dealii::VectorizedArray<double> > Knx1, Knx2;
+for (unsigned int a=0; a<dim; a++) {
+Knx1[a]=0.0;
+Knx2[a]=0.0;
+for (unsigned int b=0; b<dim; b++){
+	  Knx1[a]+=constV(Kn1[a][b])*n1x[b];
+	  Knx2[a]+=constV(Kn2[a][b])*n2x[b];
+}
+}
+
 
 // Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
 modelResidualsList[0].scalarValueResidual = f_el; //constV(0.0);
 modelResidualsList[1].scalarValueResidual = mu_c; //constV(0.0);
+modelResidualsList[2].scalarValueResidual = mu_n1; //constV(0.0);
+modelResidualsList[3].scalarValueResidual = mu_n2; //constV(0.0);
+
+modelResidualsList[2].scalarGradResidual = Knx1;
+modelResidualsList[3].scalarGradResidual = Knx2;
 
 
 }

@@ -5,7 +5,7 @@
 //this source file is temporarily treated as a header file (hence
 //#ifndef's) till library packaging scheme is finalized
 
-#include "anisotropy.h"
+//#include "anisotropy.h"
 
 // Compute stress with displacement-gradient as input
 

@@ -73,8 +73,6 @@ void userInputParameters::loadUserInput(){
 	}
 
 	// Load in inputs from equations.h
-	number_of_variables = num_var;
-
 
 	// Somewhat convoluted initialization so as not to rely on C++11 initializer lists (which not all compiler have yet)
 	{std::string temp_string[] = variable_name;
@@ -102,40 +100,42 @@ void userInputParameters::loadUserInput(){
 	{bool temp[] = need_grad_residual;
 	vectorLoad(temp, sizeof(temp), gradient_residual);}
 
+	number_of_variables = var_name.size();
+
 
 	#ifdef need_val_LHS
 	{bool temp[] = need_val_LHS;
 	vectorLoad(temp, sizeof(temp), need_value_LHS);}
 	#else
-	for (unsigned int i=0; i<num_var; i++)
+	for (unsigned int i=0; i<number_of_variables; i++)
 		need_value_LHS.push_back(false);
 	#endif
 	#ifdef need_grad_LHS
 	{bool temp[] = need_grad_LHS;
 	vectorLoad(temp, sizeof(temp), need_gradient_LHS);}
 	#else
-	for (unsigned int i=0; i<num_var; i++)
+	for (unsigned int i=0; i<number_of_variables; i++)
 		need_gradient_LHS.push_back(false);
 	#endif
 	#ifdef need_hess_LHS
 	{bool temp[] = need_hess_LHS;
 	vectorLoad(temp, sizeof(temp), need_hessian_LHS);}
 	#else
-	for (unsigned int i=0; i<num_var; i++)
+	for (unsigned int i=0; i<number_of_variables; i++)
 		need_hessian_LHS.push_back(false);
 	#endif
 	#ifdef need_val_residual_LHS
 	{bool temp[] = need_val_residual_LHS;
 	vectorLoad(temp, sizeof(temp), value_residual_LHS);}
 	#else
-	for (unsigned int i=0; i<num_var; i++)
+	for (unsigned int i=0; i<number_of_variables; i++)
 		value_residual_LHS.push_back(false);
 	#endif
 	#ifdef need_grad_residual_LHS
 	{bool temp[] = need_grad_residual_LHS;
 	vectorLoad(temp, sizeof(temp), gradient_residual_LHS);}
 	#else
-	for (unsigned int i=0; i<num_var; i++)
+	for (unsigned int i=0; i<number_of_variables; i++)
 		gradient_residual_LHS.push_back(false);
 	#endif
 
@@ -192,10 +192,10 @@ void userInputParameters::loadUserInput(){
 	#endif
 
 	// Load variable information for calculating the RHS
-	varInfoListRHS.reserve(num_var);
+	varInfoListRHS.reserve(number_of_variables);
 	unsigned int scalar_var_index = 0;
 	unsigned int vector_var_index = 0;
-	for (unsigned int i=0; i<num_var; i++){
+	for (unsigned int i=0; i<number_of_variables; i++){
 		variable_info varInfo;
 		if (need_value[i] or need_gradient[i] or need_hessian[i]){
 			varInfo.global_var_index = i;
@@ -215,7 +215,7 @@ void userInputParameters::loadUserInput(){
 
 	// Load variable information for calculating the LHS
 	num_var_LHS = 0;
-	for (unsigned int i=0; i<num_var; i++){
+	for (unsigned int i=0; i<number_of_variables; i++){
 		if (need_value_LHS[i] or need_gradient_LHS[i] or need_hessian_LHS[i]){
 			num_var_LHS++;
 		}
@@ -224,7 +224,7 @@ void userInputParameters::loadUserInput(){
 	varInfoListLHS.reserve(num_var_LHS);
 	scalar_var_index = 0;
 	vector_var_index = 0;
-	for (unsigned int i=0; i<num_var; i++){
+	for (unsigned int i=0; i<number_of_variables; i++){
 		variable_info varInfo;
 		if (need_value_LHS[i] or need_gradient_LHS[i] or need_hessian_LHS[i]){
 			varInfo.global_var_index = i;
@@ -274,8 +274,6 @@ void userInputParameters::loadUserInput(){
 	#endif
 
 	// Postprocessing inputs
-	pp_number_of_variables = pp_num_var;
-
 
 	// Somewhat convoluted initialization so as not to rely on C++11 initializer lists (which not all compilers have yet)
 	{std::string temp_string[] = pp_variable_name;
@@ -299,12 +297,14 @@ void userInputParameters::loadUserInput(){
 	{bool temp[] = pp_need_grad_residual;
 	vectorLoad(temp, sizeof(temp), pp_gradient_residual);}
 
+	pp_number_of_variables = pp_var_name.size();
+
 
 	// Load variable information for calculating the RHS
-	pp_varInfoList.reserve(pp_num_var);
+	pp_varInfoList.reserve(pp_number_of_variables);
 	scalar_var_index = 0;
 	vector_var_index = 0;
-	for (unsigned int i=0; i<pp_num_var; i++){
+	for (unsigned int i=0; i<pp_number_of_variables; i++){
 		variable_info varInfo;
 
 		varInfo.global_var_index = i;

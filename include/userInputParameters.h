@@ -1,8 +1,8 @@
 // Class to load in the user input from parameters.h and the variable definition
 // part of equations.h
 
-#ifndef INCLUDE_LOADINPUTS_H_
-#define INCLUDE_LOADINPUTS_H_
+#ifndef INCLUDE_USERINPUTPARAMETERS_H_
+#define INCLUDE_USERINPUTPARAMETERS_H_
 
 class userInputParameters
 {
@@ -108,4 +108,4 @@ public:
 
 };
 
-#endif /* INCLUDE_LOADINPUTS_H_ */
+#endif /* INCLUDE_USERINPUTPARAMETERS_H_ */

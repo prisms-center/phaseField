@@ -7,9 +7,9 @@
 #define enablePFields true
 
 // Set whether the initial conditions are loaded from file for each variable
-#define loadICs {true,true,true,false,false}
+//#define loadICs {true,true,true,false,false}
 //#define loadICs {true,true,false,false,false}
-//#define loadICs {false,false,false,false,false}
+#define loadICs {false,false,false,false,false}
 
 // Set whether the file is serial or a series of parallel files
 #define loadSerialFile {true,true,true,true,true}

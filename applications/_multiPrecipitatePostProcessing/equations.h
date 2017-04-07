@@ -1,11 +1,5 @@
 // List of variables and residual equations for the Precipitate Evolution example application
 
-// =================================================================================
-// Define the variables in the model
-// =================================================================================
-// The number of variables
-#define num_var 5
-
 // The names of the variables, whether they are scalars or vectors and whether the
 // governing eqn for the variable is parabolic or elliptic
 #define variable_name {"c", "n1","n2","n3", "u"}
@@ -145,13 +139,6 @@ double B0 = 0.081978;
 #define h3V (3.0*n3*n3-2.0*n3*n3*n3)
 #define hn3V (6.0*n3-6.0*n3*n3)
 
-#define h1strainV h1V //(3.0*phi1*phi1 - 2.0*phi1*phi1*phi1)
-#define hn1strainV hn1V //(6.0*(phi1-phi1*phi1)*phin1)
-#define h2strainV h2V //(3.0*phi2*phi2 - 2.0*phi2*phi2*phi2)
-#define hn2strainV hn2V //(6.0*(phi2-phi2*phi2)*phin2)
-#define h3strainV h3V //(3.0*phi3*phi3 - 2.0*phi3*phi3*phi3)
-#define hn3strainV hn3V //(6.0*(phi3-phi3*phi3)*phin3)
-
 // This double-well function can be used to tune the interfacial energy
 #define fbarrierV (n1*n1-2.0*n1*n1*n1+n1*n1*n1*n1 + n2*n2-2.0*n2*n2*n2+n2*n2*n2*n2 + n3*n3-2.0*n3*n3*n3+n3*n3*n3*n3 + 5.0*(n1*n1*n2*n2 + n1*n1*n3*n3 + n2*n2*n3*n3) + 5.0*n1*n1*n2*n2*n3*n3)
 #define fbarriern1V (2.0*n1-6.0*n1*n1+4.0*n1*n1*n1 + 10.0*n1*(n2*n2+n3*n3) + 10.0*n1*n2*n2*n3*n3)
@@ -241,7 +228,7 @@ cbcn3V = (faccV * (fbccV-faccV) * hn3V)/( ((1.0-sum_hpV)*fbccV + sum_hpV*faccV)*
 
 
 // Calculate the stress-free transformation strain and its derivatives at the quadrature point
-dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > sfts1, sfts1c, sfts1cc, sfts2, sfts2c, sfts2cc, sfts3, sfts3c, sfts3cc, sfts1n, sfts1cn, sfts2n, sfts2cn, sfts3n, sfts3cn;
+dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > sfts1, sfts1c, sfts1cc, sfts2, sfts2c, sfts2cc, sfts3, sfts3c, sfts3cc;
 
 for (unsigned int i=0; i<dim; i++){
 for (unsigned int j=0; j<dim; j++){
@@ -249,20 +236,14 @@ for (unsigned int j=0; j<dim; j++){
 	sfts1[i][j] = constV(sfts_linear1[i][j])*c_beta + constV(sfts_const1[i][j]);
 	sfts1c[i][j] = constV(sfts_linear1[i][j]) * cbcV;
 	sfts1cc[i][j] = constV(0.0);
-	sfts1n[i][j] = constV(sfts_linear1[i][j]) * cbn1V;
-	sfts1cn[i][j] = constV(sfts_linear1[i][j]) * cbcn1V;
 
 	sfts2[i][j] = constV(sfts_linear2[i][j])*c_beta + constV(sfts_const2[i][j]);
 	sfts2c[i][j] = constV(sfts_linear2[i][j]) * cbcV;
 	sfts2cc[i][j] = constV(0.0);
-	sfts2n[i][j] = constV(sfts_linear2[i][j]) * cbn2V;
-	sfts2cn[i][j] = constV(sfts_linear2[i][j]) * cbcn2V;
 
 	sfts3[i][j] = constV(sfts_linear3[i][j])*c_beta + constV(sfts_const3[i][j]);
 	sfts3c[i][j] = constV(sfts_linear3[i][j]) * cbcV;
 	sfts3cc[i][j] = constV(0.0);
-	sfts3n[i][j] = constV(sfts_linear3[i][j]) * cbn3V;
-	sfts3cn[i][j] = constV(sfts_linear3[i][j]) * cbcn2V;
 
 }
 }
@@ -272,7 +253,7 @@ dealii::VectorizedArray<double> E2[dim][dim], S[dim][dim];
 
 for (unsigned int i=0; i<dim; i++){
 for (unsigned int j=0; j<dim; j++){
-	  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1strainV + sfts2[i][j]*h2strainV + sfts3[i][j]*h3strainV );
+	  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1V + sfts2[i][j]*h2V + sfts3[i][j]*h3V );
 
 }
 }
@@ -285,7 +266,7 @@ dealii::VectorizedArray<double> CIJ_combined[CIJ_tensor_size][CIJ_tensor_size];
 if (n_dependent_stiffness == true){
 for (unsigned int i=0; i<2*dim-1+dim/3; i++){
 	  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-		  CIJ_combined[i][j] = this->userInputs.CIJ_list[0][i][j]*(constV(1.0)-h1strainV-h2strainV-h3strainV) + this->userInputs.CIJ_list[1][i][j]*(h1strainV) + this->userInputs.CIJ_list[2][i][j]*(h2strainV) + this->userInputs.CIJ_list[3][i][j]*(h3strainV);
+		  CIJ_combined[i][j] = this->userInputs.CIJ_list[0][i][j]*(constV(1.0)-sum_hpV) + this->userInputs.CIJ_list[1][i][j]*(h1V) + this->userInputs.CIJ_list[2][i][j]*(h2V) + this->userInputs.CIJ_list[3][i][j]*(h3V);
 	  }
 }
 computeStress<dim>(CIJ_combined, E2, S);
@@ -309,11 +290,15 @@ dealii::VectorizedArray<double> nDependentMisfitAC1=constV(0.0);
 dealii::VectorizedArray<double> nDependentMisfitAC2=constV(0.0);
 dealii::VectorizedArray<double> nDependentMisfitAC3=constV(0.0);
 
+dealii::VectorizedArray<double> E4[dim][dim]; // Intermediate variable
+
 for (unsigned int i=0; i<dim; i++){
 for (unsigned int j=0; j<dim; j++){
-	  nDependentMisfitAC1 -= S[i][j]*(sfts1n[i][j]*h1V + sfts2n[i][j]*h2V + sfts3n[i][j]*h3V + sfts1[i][j]*hn1V);
-	  nDependentMisfitAC2 -= S[i][j]*(sfts1n[i][j]*h1V + sfts2n[i][j]*h2V + sfts3n[i][j]*h3V + sfts2[i][j]*hn2V);
-	  nDependentMisfitAC3 -= S[i][j]*(sfts1n[i][j]*h1V + sfts2n[i][j]*h2V + sfts3n[i][j]*h3V + sfts3[i][j]*hn3V);
+	E4[i][j] = constV(sfts_linear1[i][j])*h1V + constV(sfts_linear2[i][j])*h2V + constV(sfts_linear3[i][j])*h3V;
+
+	nDependentMisfitAC1 -= S[i][j]*(cbn1V*E4[i][j] + sfts1[i][j]*hn1V);
+	nDependentMisfitAC2 -= S[i][j]*(cbn2V*E4[i][j] + sfts2[i][j]*hn2V);
+	nDependentMisfitAC3 -= S[i][j]*(cbn3V*E4[i][j] + sfts3[i][j]*hn3V);
 }
 }
 
@@ -330,7 +315,7 @@ if (n_dependent_stiffness == true){
 			heterMechAC1 += S2[i][j]*E2[i][j];
 		}
 	}
-	heterMechAC1 = 0.5*hn1strainV*heterMechAC1;
+	heterMechAC1 *= 0.5*hn1V;
 
 	computeStress<dim>(this->userInputs.CIJ_list[2]-this->userInputs.CIJ_list[0], E2, S2);
 	for (unsigned int i=0; i<dim; i++){
@@ -338,7 +323,7 @@ if (n_dependent_stiffness == true){
 			heterMechAC2 += S2[i][j]*E2[i][j];
 		}
 	}
-	heterMechAC2 = 0.5*hn2strainV*heterMechAC2;
+	heterMechAC2 *= 0.5*hn2V;
 
 	computeStress<dim>(this->userInputs.CIJ_list[3]-this->userInputs.CIJ_list[0], E2, S2);
 	for (unsigned int i=0; i<dim; i++){
@@ -346,18 +331,18 @@ if (n_dependent_stiffness == true){
 			heterMechAC3 += S2[i][j]*E2[i][j];
 		}
 	}
-	heterMechAC3 = 0.5*hn3strainV*heterMechAC3;
+	heterMechAC3 *= 0.5*hn3V;
 }
 
 // compute the stress term in the gradient of the concentration chemical potential, grad_mu_el = [C*(E-E0)*E0c]x, must be a vector with length dim
 scalargradType grad_mu_el;
 
 if (c_dependent_misfit == true){
-	dealii::VectorizedArray<double> E3[dim][dim], S3[dim][dim];
+	dealii::VectorizedArray<double> E3[dim][dim], S3[dim][dim]; // Intermediate variables
 
 	for (unsigned int i=0; i<dim; i++){
 		for (unsigned int j=0; j<dim; j++){
-			E3[i][j] =  -( sfts1c[i][j]*h1strainV + sfts2c[i][j]*h2strainV + sfts3c[i][j]*h3strainV );
+			E3[i][j] =  -( sfts1c[i][j]*h1V + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V );
 		}
 	}
 
@@ -372,21 +357,21 @@ if (c_dependent_misfit == true){
 		for (unsigned int j=0; j<dim; j++){
 			for (unsigned int k=0; k<dim; k++){
 				grad_mu_el[k] += S3[i][j] * (constV(0.5)*(uxx[i][j][k]+uxx[j][i][k]) + E3[i][j]*cx[k]
-										- ( (sfts1[i][j]*hn1strainV+sfts1n[i][j]*h1V)*n1x[k] + (sfts2[i][j]*hn2strainV+sfts2n[i][j]*h2V)*n2x[k]
-										+ (sfts3[i][j]*hn3strainV+sfts3n[i][j]*h3V)*n3x[k]) );
+										- ( (sfts1[i][j]*hn1V + cbn1V*E4[i][j])*n1x[k] + (sfts2[i][j]*hn2V + cbn2V*E4[i][j])*n2x[k]
+										+ (sfts3[i][j]*hn3V + cbn3V*E4[i][j])*n3x[k]) );
 
-				grad_mu_el[k]+= - S[i][j] * ( (sfts1c[i][j]*hn1strainV+ h1V*sfts1cn[i][j])*n1x[k]
-										+ (sfts2c[i][j]*hn2strainV+ h2V*sfts2cn[i][j])*n2x[k]
-										+ (sfts3c[i][j]*hn3strainV+ h3V*sfts3cn[i][j])*n3x[k]
-										+ ( sfts1cc[i][j]*h1strainV + sfts2cc[i][j]*h2strainV + sfts3cc[i][j]*h3strainV )*cx[k]);
+				grad_mu_el[k]+= - S[i][j] * ( (sfts1c[i][j]*hn1V + cbcn1V*E4[i][j])*n1x[k]
+										+ (sfts2c[i][j]*hn2V+ cbcn2V*E4[i][j])*n2x[k]
+										+ (sfts3c[i][j]*hn3V+ cbcn3V*E4[i][j])*n3x[k]
+										+ ( sfts1cc[i][j]*h1V + sfts2cc[i][j]*h2V + sfts3cc[i][j]*h3V )*cx[k]);
 
 				if (n_dependent_stiffness == true){
 					computeStress<dim>(this->userInputs.CIJ_list[1]-this->userInputs.CIJ_list[0], E2, S2);
-					grad_mu_el[k]+= - S2[i][j] * (sfts1c[i][j]*h1V*hn1strainV*n1x[k]);
+					grad_mu_el[k]+= - S2[i][j] * (cbcV*E4[i][j]*hn1V*n1x[k]);
 					computeStress<dim>(this->userInputs.CIJ_list[2]-this->userInputs.CIJ_list[0], E2, S2);
-					grad_mu_el[k]+= - S2[i][j] * (sfts2c[i][j]*h2V*hn2strainV*n2x[k]);
+					grad_mu_el[k]+= - S2[i][j] * (cbcV*E4[i][j]*hn2V*n2x[k]);
 					computeStress<dim>(this->userInputs.CIJ_list[3]-this->userInputs.CIJ_list[0], E2, S2);
-					grad_mu_el[k]+= - S2[i][j] * (sfts3c[i][j]*h3V*hn3strainV*n3x[k]);
+					grad_mu_el[k]+= - S2[i][j] * (cbcV*E4[i][j]*hn3V*n3x[k]);
 
 				}
 			}
@@ -451,26 +436,19 @@ scalarvalueType n2 = modelVariablesList[1].scalarValue;
 //n3
 scalarvalueType n3 = modelVariablesList[2].scalarValue;
 
-//u
-vectorgradType ux = modelVariablesList[3].vectorGrad;
-vectorgradType ruxV;
-
 // Take advantage of E being simply 0.5*(ux + transpose(ux)) and use the dealii "symmetrize" function
-dealii::Tensor<2, dim, dealii::VectorizedArray<double> > E;
-E = symmetrize(ux);
+dealii::Tensor<2, dim, dealii::VectorizedArray<double> > E = symmetrize(modelVariablesList[3].vectorGrad);
 
 // Compute stress tensor (which is equal to the residual, Rux)
 if (n_dependent_stiffness == true){
 	dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ_combined;
-	CIJ_combined = this->userInputs.CIJ_list[0]*(constV(1.0)-h1strainV-h2strainV-h3strainV) + this->userInputs.CIJ_list[1]*(h1strainV) + this->userInputs.CIJ_list[2]*(h2strainV) + this->userInputs.CIJ_list[3]*(h3strainV);
+	CIJ_combined = this->userInputs.CIJ_list[0]*(constV(1.0)-h1V-h2V-h3V) + this->userInputs.CIJ_list[1]*(h1V) + this->userInputs.CIJ_list[2]*(h2V) + this->userInputs.CIJ_list[3]*(h3V);
 
-	computeStress<dim>(CIJ_combined, E, ruxV);
+	computeStress<dim>(CIJ_combined, E, modelRes.vectorGradResidual);
 }
 else{
-	computeStress<dim>(this->userInputs.CIJ_list[0], E, ruxV);
+	computeStress<dim>(this->userInputs.CIJ_list[0], E, modelRes.vectorGradResidual);
 }
-
-modelRes.vectorGradResidual = ruxV;
 
 }
 
@@ -583,7 +561,7 @@ dealii::VectorizedArray<double> CIJ_combined[2*dim-1+dim/3][2*dim-1+dim/3];
 if (n_dependent_stiffness == true){
   for (unsigned int i=0; i<2*dim-1+dim/3; i++){
 	  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-		  CIJ_combined[i][j] = this->userInputs.CIJ_list[0][i][j]*(constV(1.0)-h1strainV-h2strainV-h3strainV) + this->userInputs.CIJ_list[1][i][j]*(h1strainV) + this->userInputs.CIJ_list[2][i][j]*(h2strainV) + this->userInputs.CIJ_list[3][i][j]*(h3strainV);
+		  CIJ_combined[i][j] = this->userInputs.CIJ_list[0][i][j]*(constV(1.0)-h1V-h2V-h3V) + this->userInputs.CIJ_list[1][i][j]*(h1V) + this->userInputs.CIJ_list[2][i][j]*(h2V) + this->userInputs.CIJ_list[3][i][j]*(h3V);
 	  }
   }
   computeStress<dim>(CIJ_combined, E2, S);

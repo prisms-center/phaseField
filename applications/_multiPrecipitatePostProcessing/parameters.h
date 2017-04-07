@@ -37,7 +37,7 @@
 
 // Set the maximum and minimum level of refinement
 #define maxRefinementLevel (refineFactor+3)
-#define minRefinementLevel (3)
+#define minRefinementLevel (2)
 
 // Set the fields used to determine the refinement. Fields determined by the order
 // declared in "equations.h", starting at zero

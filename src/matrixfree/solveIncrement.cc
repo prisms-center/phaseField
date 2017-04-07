@@ -12,9 +12,9 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
 
   // Get the list of new nuclei, if relevant
   if (userInputs.nucleation_occurs){
-	  computing_timer.enter_section("matrixFreePDE: modifySolutionFields");
+	  computing_timer.enter_section("matrixFreePDE: nucleation");
 	  getNucleiList();
-	  computing_timer.exit_section("matrixFreePDE: modifySolutionFields");
+	  computing_timer.exit_section("matrixFreePDE: nucleation");
   }
 
   //compute residual vectors

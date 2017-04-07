@@ -32,11 +32,6 @@
 #define finiteElementDegree 1
 #endif
 
-//number of fields (default value:1)
-#ifndef numFields
-#define numFields 1
-#endif
-
 // Number of time steps and time step size
 #ifndef	timeIncrements
 #define timeIncrements 1
@@ -74,7 +69,7 @@
 #define skipImplicitSolves 1
 #endif
 
-//number of implicit solves to skip. None are skipped if value is 1, which is the default.
+// How the outputs are spaced, equal spacing is the default.
 #ifndef outputCondition
 #define outputCondition "EQUAL_SPACING"
 #endif
@@ -102,22 +97,6 @@
 #ifndef hAdaptivity
 #define hAdaptivity false
 #endif
-
-//#ifndef loadICs
-//#define loadICs {}
-//#endif
-//
-//#ifndef loadSerialFile
-//#define loadSerialFile {}
-//#endif
-//
-//#ifndef loadFileName
-//#define loadFileName {}
-//#endif
-//
-//#ifndef loadFieldName
-//#define loadFieldName {}
-//#endif
 
 // Mesh refinement
 #ifndef maxRefinementLevel
