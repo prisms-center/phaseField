@@ -17,7 +17,7 @@ template <int dim, int degree>
 class PostProcessor
 {
 	public:
-	PostProcessor(userInputParameters);
+	PostProcessor(userInputParameters<dim>);
 	void computePostProcessedFields(dealii::MatrixFree<dim,double> matrixFreeObject,
 							const std::vector<vectorType*> &solutionSet,
 							std::vector<vectorType*> &postProcessedSet);
@@ -29,7 +29,7 @@ class PostProcessor
 //							std::vector<modelResidual<dim> > & modelResidualsList,
 //							const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 	private:
-	userInputParameters userInputs;
+	userInputParameters<dim> userInputs;
 
 };
 

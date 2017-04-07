@@ -62,7 +62,7 @@ class MatrixFreePDE:public Subscriptor
   /**
    * Class contructor
    */
-  MatrixFreePDE(userInputParameters);
+  MatrixFreePDE(userInputParameters<dim>);
   ~MatrixFreePDE();
   /**
    * Initializes the mesh, degrees of freedom, constraints and data structures using the user provided
@@ -120,7 +120,7 @@ class MatrixFreePDE:public Subscriptor
   ConditionalOStream  pcout;
 
  protected:
-  userInputParameters userInputs;
+  userInputParameters<dim> userInputs;
 
   dealii::Threads::Mutex assembler_lock;
 

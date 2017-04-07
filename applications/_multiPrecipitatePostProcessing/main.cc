@@ -25,7 +25,7 @@ int main (int argc, char **argv)
   try
     {
 	  deallog.depth_console(0);
-	  userInputParameters userInputs;
+	  userInputParameters<problemDIM> userInputs;
 	  userInputs.loadUserInput();
 
 	  customPDE<problemDIM,finiteElementDegree> problem(userInputs);

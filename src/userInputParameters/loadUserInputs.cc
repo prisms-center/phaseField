@@ -1,6 +1,7 @@
 // Methods for the userInputParameters class
 
-void userInputParameters::loadUserInput(){
+template <int dim>
+void userInputParameters<dim>::loadUserInput(){
 
 	// Meshing parameters
 	domain_size.push_back(spanX);
@@ -181,6 +182,8 @@ void userInputParameters::loadUserInput(){
 
 		getCIJMatrix<dim>(mat_model, temp_mat_consts[mater_num], CIJ_temp, pcout);
 		CIJ_list.push_back(CIJ_temp);
+
+		material_moduli.CIJ_list = CIJ_list;
 	}
 	#endif
 

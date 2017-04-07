@@ -266,13 +266,13 @@ dealii::VectorizedArray<double> CIJ_combined[CIJ_tensor_size][CIJ_tensor_size];
 if (n_dependent_stiffness == true){
 for (unsigned int i=0; i<2*dim-1+dim/3; i++){
 	  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-		  CIJ_combined[i][j] = this->userInputs.CIJ_list[0][i][j]*(constV(1.0)-sum_hpV) + this->userInputs.CIJ_list[1][i][j]*(h1V) + this->userInputs.CIJ_list[2][i][j]*(h2V) + this->userInputs.CIJ_list[3][i][j]*(h3V);
+		  CIJ_combined[i][j] = this->userInputs.CIJ_list[0][i][j]*(constV(1.0)-sum_hpV) + this->userInputs.material_moduli.CIJ_list[1][i][j]*(h1V) + this->userInputs.material_moduli.CIJ_list[2][i][j]*(h2V) + this->userInputs.material_moduli.CIJ_list[3][i][j]*(h3V);
 	  }
 }
 computeStress<dim>(CIJ_combined, E2, S);
 }
 else{
-computeStress<dim>(this->userInputs.CIJ_list[0], E2, S);
+computeStress<dim>(this->userInputs.material_moduli.CIJ_list[0], E2, S);
 }
 
 
@@ -309,7 +309,7 @@ dealii::VectorizedArray<double> heterMechAC3=constV(0.0);
 dealii::VectorizedArray<double> S2[dim][dim];
 
 if (n_dependent_stiffness == true){
-	computeStress<dim>(this->userInputs.CIJ_list[1]-this->userInputs.CIJ_list[0], E2, S2);
+	computeStress<dim>(this->userInputs.material_moduli.CIJ_list[1]-this->userInputs.material_moduli.CIJ_list[0], E2, S2);
 	for (unsigned int i=0; i<dim; i++){
 		for (unsigned int j=0; j<dim; j++){
 			heterMechAC1 += S2[i][j]*E2[i][j];
@@ -317,7 +317,7 @@ if (n_dependent_stiffness == true){
 	}
 	heterMechAC1 *= 0.5*hn1V;
 
-	computeStress<dim>(this->userInputs.CIJ_list[2]-this->userInputs.CIJ_list[0], E2, S2);
+	computeStress<dim>(this->userInputs.material_moduli.CIJ_list[2]-this->userInputs.material_moduli.CIJ_list[0], E2, S2);
 	for (unsigned int i=0; i<dim; i++){
 		for (unsigned int j=0; j<dim; j++){
 			heterMechAC2 += S2[i][j]*E2[i][j];
@@ -325,7 +325,7 @@ if (n_dependent_stiffness == true){
 	}
 	heterMechAC2 *= 0.5*hn2V;
 
-	computeStress<dim>(this->userInputs.CIJ_list[3]-this->userInputs.CIJ_list[0], E2, S2);
+	computeStress<dim>(this->userInputs.material_moduli.CIJ_list[3]-this->userInputs.material_moduli.CIJ_list[0], E2, S2);
 	for (unsigned int i=0; i<dim; i++){
 		for (unsigned int j=0; j<dim; j++){
 			heterMechAC3 += S2[i][j]*E2[i][j];
@@ -350,7 +350,7 @@ if (c_dependent_misfit == true){
 		computeStress<dim>(CIJ_combined, E3, S3);
 	}
 	else{
-		computeStress<dim>(this->userInputs.CIJ_list[0], E3, S3);
+		computeStress<dim>(this->userInputs.material_moduli.CIJ_list[0], E3, S3);
 	}
 
 	for (unsigned int i=0; i<dim; i++){
@@ -366,11 +366,11 @@ if (c_dependent_misfit == true){
 										+ ( sfts1cc[i][j]*h1V + sfts2cc[i][j]*h2V + sfts3cc[i][j]*h3V )*cx[k]);
 
 				if (n_dependent_stiffness == true){
-					computeStress<dim>(this->userInputs.CIJ_list[1]-this->userInputs.CIJ_list[0], E2, S2);
+					computeStress<dim>(this->userInputs.material_moduli.CIJ_list[1]-this->userInputs.material_moduli.CIJ_list[0], E2, S2);
 					grad_mu_el[k]+= - S2[i][j] * (cbcV*E4[i][j]*hn1V*n1x[k]);
-					computeStress<dim>(this->userInputs.CIJ_list[2]-this->userInputs.CIJ_list[0], E2, S2);
+					computeStress<dim>(this->userInputs.material_moduli.CIJ_list[2]-this->userInputs.material_moduli.CIJ_list[0], E2, S2);
 					grad_mu_el[k]+= - S2[i][j] * (cbcV*E4[i][j]*hn2V*n2x[k]);
-					computeStress<dim>(this->userInputs.CIJ_list[3]-this->userInputs.CIJ_list[0], E2, S2);
+					computeStress<dim>(this->userInputs.material_moduli.CIJ_list[3]-this->userInputs.material_moduli.CIJ_list[0], E2, S2);
 					grad_mu_el[k]+= - S2[i][j] * (cbcV*E4[i][j]*hn3V*n3x[k]);
 
 				}
@@ -442,12 +442,12 @@ dealii::Tensor<2, dim, dealii::VectorizedArray<double> > E = symmetrize(modelVar
 // Compute stress tensor (which is equal to the residual, Rux)
 if (n_dependent_stiffness == true){
 	dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ_combined;
-	CIJ_combined = this->userInputs.CIJ_list[0]*(constV(1.0)-h1V-h2V-h3V) + this->userInputs.CIJ_list[1]*(h1V) + this->userInputs.CIJ_list[2]*(h2V) + this->userInputs.CIJ_list[3]*(h3V);
+	CIJ_combined = this->userInputs.material_moduli.CIJ_list[0]*(constV(1.0)-h1V-h2V-h3V) + this->userInputs.material_moduli.CIJ_list[1]*(h1V) + this->userInputs.material_moduli.CIJ_list[2]*(h2V) + this->userInputs.material_moduli.CIJ_list[3]*(h3V);
 
 	computeStress<dim>(CIJ_combined, E, modelRes.vectorGradResidual);
 }
 else{
-	computeStress<dim>(this->userInputs.CIJ_list[0], E, modelRes.vectorGradResidual);
+	computeStress<dim>(this->userInputs.material_moduli.CIJ_list[0], E, modelRes.vectorGradResidual);
 }
 
 }
@@ -561,13 +561,13 @@ dealii::VectorizedArray<double> CIJ_combined[2*dim-1+dim/3][2*dim-1+dim/3];
 if (n_dependent_stiffness == true){
   for (unsigned int i=0; i<2*dim-1+dim/3; i++){
 	  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-		  CIJ_combined[i][j] = this->userInputs.CIJ_list[0][i][j]*(constV(1.0)-h1V-h2V-h3V) + this->userInputs.CIJ_list[1][i][j]*(h1V) + this->userInputs.CIJ_list[2][i][j]*(h2V) + this->userInputs.CIJ_list[3][i][j]*(h3V);
+		  CIJ_combined[i][j] = this->userInputs.material_moduli.CIJ_list[0][i][j]*(constV(1.0)-h1V-h2V-h3V) + this->userInputs.material_moduli.CIJ_list[1][i][j]*(h1V) + this->userInputs.material_moduli.CIJ_list[2][i][j]*(h2V) + this->userInputs.material_moduli.CIJ_list[3][i][j]*(h3V);
 	  }
   }
   computeStress<dim>(CIJ_combined, E2, S);
 }
 else{
-  computeStress<dim>(this->userInputs.CIJ_list[0], E2, S);
+  computeStress<dim>(this->userInputs.material_moduli.CIJ_list[0], E2, S);
 }
 
 scalarvalueType f_el = constV(0.0);

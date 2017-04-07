@@ -4,6 +4,9 @@
 #ifndef INCLUDE_USERINPUTPARAMETERS_H_
 #define INCLUDE_USERINPUTPARAMETERS_H_
 
+#include "list_of_CIJ.h"
+
+template <int dim>
 class userInputParameters
 {
 public:
@@ -11,7 +14,7 @@ public:
 	void loadUserInput();
 
 	// Input parameters
-	const static unsigned int dim = problemDIM;
+	//const static unsigned int dim = problemDIM;
 
 	// Meshing parameters
 	std::vector<double> domain_size;
@@ -86,6 +89,7 @@ public:
 
 	// Elasticity tensor
 	std::vector<dealii::Tensor<2, 2*dim-1+dim/3, dealii::VectorizedArray<double> > > CIJ_list;
+	list_of_CIJ<dim> material_moduli;
 
 	bool nucleation_occurs;
 

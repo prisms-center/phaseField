@@ -5,7 +5,7 @@
 
  //constructor
 template <int dim, int degree>
- MatrixFreePDE<dim,degree>::MatrixFreePDE (userInputParameters _userInputs)
+ MatrixFreePDE<dim,degree>::MatrixFreePDE (userInputParameters<dim> _userInputs)
  :
  Subscriptor(),
  pcout (std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0),

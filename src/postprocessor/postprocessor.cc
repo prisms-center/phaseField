@@ -2,7 +2,7 @@
 #include "../../include/list_of_CIJ.h"
 
 template <int dim,int degree>
-PostProcessor<dim,degree>::PostProcessor(userInputParameters _userInputs):userInputs(_userInputs){
+PostProcessor<dim,degree>::PostProcessor(userInputParameters<dim> _userInputs):userInputs(_userInputs){
 }
 
 template <int dim,int degree>
@@ -133,9 +133,7 @@ void PostProcessor<dim,degree>::getPostProcessedFields(const MatrixFree<dim,doub
 			}
 
 			// Calculate the residuals
-			list_of_CIJ<dim> material_moduli;
-			material_moduli.CIJ_list = this->userInputs.CIJ_list;
-			postProcessedFields<dim>(modelVarList,modelResidualsList,q_point_loc,material_moduli);
+			postProcessedFields<dim>(modelVarList,modelResidualsList,q_point_loc,this->userInputs.material_moduli);
 
 			// Submit values
 			for (unsigned int i=0; i<userInputs.pp_number_of_variables; i++){
@@ -174,7 +172,7 @@ void PostProcessor<dim,degree>::getPostProcessedFields(const MatrixFree<dim,doub
 
 
 
-//template class PostProcessor<2,1>;
+template class PostProcessor<2,1>;
 template class PostProcessor<3,1>;
-//template class PostProcessor<2,2>;
+template class PostProcessor<2,2>;
 template class PostProcessor<3,2>;

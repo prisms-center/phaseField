@@ -14,7 +14,7 @@ template <int dim, int degree>
 class customPDE: public MatrixFreePDE<dim,degree>
 {
 public:
-	customPDE(userInputParameters _userInputs): MatrixFreePDE<dim,degree>(_userInputs) {};
+	customPDE(userInputParameters<dim> _userInputs): MatrixFreePDE<dim,degree>(_userInputs) {};
 	//customPDE(userInputParameters _userInputs);
 
 	void setBCs();
