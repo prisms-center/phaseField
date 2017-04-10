@@ -147,7 +147,7 @@ double B0 = 0.081978;
 
 // Residuals
 #define rcV   (c)
-#define rcxTemp ( cx + (c_alpha-c_beta)*(hn1V*n1x + hn2V*n2x + hn3V*n3x) + grad_mu_el * (h1V*faccV+(constV(1.0)-h1V-h2V-h3V)*fbccV)/constV(faccV*fbccV))
+#define rcxTemp ( cx + (c_alpha-c_beta)*(hn1V*n1x + hn2V*n2x + hn3V*n3x) + grad_mu_el * ((h1V+h2V+h3V)*faccV+(constV(1.0)-h1V-h2V-h3V)*fbccV)/constV(faccV*fbccV))
 #define rcxV  (constV(-timeStep)*McV*rcxTemp)
 
 #define rn1V   (n1-constV(timeStep*Mn1V)*( (fbV-faV)*hn1V - (c_beta-c_alpha)*facV*hn1V + W*fbarriern1V + nDependentMisfitAC1 + heterMechAC1))
