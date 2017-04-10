@@ -1,18 +1,20 @@
-// Parameter list for the coupled Allen-Cahn/Cahn-Hilliard example application
+// Parameter list for the precipitate evolution example application
 // All strictly numerical parameters should be set in this file
 
 // =================================================================================
 // Set the number of dimensions (1, 2, or 3 for a 1D, 2D, or 3D calculation)
 // =================================================================================
-#define problemDIM 2
+#define problemDIM 3
 
 // =================================================================================
 // Set the length of the domain in all three dimensions
 // =================================================================================
 // Each axes spans from zero to the specified length
-#define spanX 800.0
-#define spanY 800.0
-#define spanZ 800.0
+#define scaleFactor 2.0
+
+#define spanX (12.5*scaleFactor) //(80.0*scaleFactor) //(12.5*scaleFactor)
+#define spanY (12.5*scaleFactor) //(80.0*scaleFactor) //(12.5*scaleFactor)
+#define spanZ (12.5*scaleFactor) //(80.0*scaleFactor) //(12.5*scaleFactor)
 
 // =================================================================================
 // Set the element parameters
@@ -22,7 +24,7 @@
 #define subdivisionsX 1
 #define subdivisionsY 1
 #define subdivisionsZ 1
-#define refineFactor 3
+#define refineFactor 5 //4
 
 // Set the polynomial degree of the element (suggested values: 1 or 2)
 #define finiteElementDegree 2
@@ -34,31 +36,44 @@
 #define hAdaptivity true
 
 // Set the maximum and minimum level of refinement
-#define maxRefinementLevel (refineFactor+6)
-#define minRefinementLevel (2)
+#define maxRefinementLevel (refineFactor+2)
+#define minRefinementLevel (0)
 
 // Set the fields used to determine the refinement. Fields determined by the order
 // declared in "equations.h", starting at zero
 #define refineCriterionFields {1}
 
 // Set the maximum and minimum value of the fields where the mesh should be refined
-#define refineWindowMax {0.99}
-#define refineWindowMin {0.01}
+#define refineWindowMax {0.999}
+#define refineWindowMin {0.0001}
 
 // Set the number of time steps between remeshing operations
-#define skipRemeshingSteps 500
-
+#define skipRemeshingSteps 2000
 
 // =================================================================================
 // Set the time step parameters
 // =================================================================================
 // The size of the time step
-#define timeStep 0.044
+#define timeStep (4.0*0.5e-4*scaleFactor*scaleFactor)
+#define timeIncrements 1000 //1000000
+#define timeFinal (timeStep*timeIncrements)
 
-// The simulation ends when either timeFinal is reached or the number of time steps
-// equals timeIncrements
-#define timeFinal 4400.0
-#define timeIncrements 1000
+
+// =================================================================================
+// Set the elliptic solver parameters
+// =================================================================================
+// The solver type (currently the only recommended option is conjugate gradient)
+#define solverType "SolverCG"
+
+// The flag that determines whether the tolerance for solver convergence should
+// be an absolute tolerance (absTol=true) or a relative tolerance (absTol=false)
+#define absTol true
+
+// The tolerance for convergence (L2 norm of the residual)
+#define solverTolerance 1.0e-3
+
+// The maximum number of solver iterations per time step
+#define maxSolverIterations 10000
 
 // =================================================================================
 // Set the output parameters
@@ -76,20 +91,21 @@
 
 // User-defined list of time steps where the program should output. Only used if
 // outputCondition is "LIST"
-#define outputList {0}
+#define outputList {50000,50100,50200,50300}
 
 // Status is printed to the screen every skipPrintSteps
-#define skipPrintSteps 1000
+#define skipPrintSteps 1 //1000
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output
 // =================================================================================
 #define calcEnergy true
 
-// =================================================================================
-// Set the flag determining if nucleation is allowed
-// =================================================================================
-#define nucleationOccurs true
+
+
+
+
+
 
 
 

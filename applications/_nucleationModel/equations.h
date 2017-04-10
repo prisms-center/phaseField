@@ -67,8 +67,8 @@ double cbtmin = 1.0;
 // =================================================================================
 
 // Nucleation radius (order parameter)
-#define semiaxis_a 6.0
-#define semiaxis_b 4.0
+#define semiaxis_a 5.0
+#define semiaxis_b 5.0
 #define semiaxis_c 5.0
 
 // Hold time for order parameter
@@ -91,7 +91,7 @@ std::vector<double> opfreeze_semiaxes {1.5*semiaxis_a,1.5*semiaxis_b,1.5*semiaxi
 #define borderreg (2.0*semiaxis_a)
 
 // Constants k1 and k2 for nucleation rate in the bulk
-#define k1 (4.0*498.866)
+#define k1 498.866
 #define k2 4.14465
 
 // =================================================================================
