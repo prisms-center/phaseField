@@ -18,7 +18,7 @@ class customPDE: public MatrixFreePDE<dim,degree>
 public:
 
 	// Constructor, which calls the MatrixFreePDE constructor
-	customPDE(userInputParameters _userInputs): MatrixFreePDE<dim,degree>(_userInputs) {};
+	customPDE(userInputParameters<dim> _userInputs): MatrixFreePDE<dim,degree>(_userInputs) {};
 
 	// Pure virtual method in MatrixFreePDE
 	void setBCs();
