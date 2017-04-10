@@ -187,13 +187,6 @@ void userInputParameters<dim>::loadUserInput(){
 	}
 	#endif
 
-	// If the LHS variable attributes aren't defined
-
-	// If nucleation isn't specifically turned on, set nucleation_occurs to false
-	#ifndef nucleation_occurs
-		#define nucleation_occurs false
-	#endif
-
 	// Load variable information for calculating the RHS
 	varInfoListRHS.reserve(number_of_variables);
 	unsigned int scalar_var_index = 0;

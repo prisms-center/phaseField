@@ -1,6 +1,8 @@
-// Coupled Cahn-Hilliard/Allen-Cahn example application with nucleation
-
+// Precipitate evolution example application
 // Header files
+// Header files
+#include "../../include/IntegrationTools/PField.hh"
+
 #include "parameters.h"
 #include "../../include/dealIIheaders.h"
 #include "../../include/typeDefs.h"
@@ -11,35 +13,31 @@
 #include "customPDE.h"
 #include "equations.h"
 #include "ICs_and_BCs.h"
-//#include "postprocess.h"
+#include "postprocess.h"
 #include "../../include/initialCondition_template_instantiations.h"
-#include <random>
-#include <time.h>
-
 #include "../../include/userInputParameters.h"
 #include "../../src/userInputParameters/loadUserInputs.cc" // Needs to be included because it contains needs access to the define macros in the preceding files
+#include <random>
+#include <time.h>
 #include "nucleation.h"
 
 //main
 int main (int argc, char **argv)
 {
-  dealii::Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,dealii::numbers::invalid_unsigned_int);
+  Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,numbers::invalid_unsigned_int);
   try
     {
-	  dealii::deallog.depth_console(0);
-
+	  deallog.depth_console(0);
 	  userInputParameters<problemDIM> userInputs;
 	  userInputs.loadUserInput();
 
 	  customPDE<problemDIM,finiteElementDegree> problem(userInputs);
 
 
-      problem.setBCs();
-      problem.buildFields();
-      problem.init ();
-      problem.solve();
-
-
+	  problem.setBCs();
+	  problem.buildFields();
+	  problem.init ();
+	  problem.solve();
     }
   catch (std::exception &exc)
     {
@@ -67,4 +65,3 @@ int main (int argc, char **argv)
   
   return 0;
 }
-
