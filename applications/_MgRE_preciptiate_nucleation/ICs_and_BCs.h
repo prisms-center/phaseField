@@ -18,15 +18,41 @@ template <int dim>
 
 	  #define adjust_avg_c false
 	  #define c_avg 0.004
-	  #define c_matrix 0.01 //1.0e-6
-	  #define c_precip 0.14
+	  #define c_matrix 0.02 //1.0e-6
+	  #define c_precip 0.125
+	  // Initial condition parameters
+	#define x_denom (2.5)*(2.5)
+	#define y_denom (2.5)*(2.5)
+	#define z_denom (2.5)*(2.5)
+	#define initial_interface_coeff interface_coeff
+	#define initial_radius 1.0
+
+	  //set result equal to the structural order parameter initial condition
+	  double r=0.0;
+	  std::vector<double> ellipsoid_denoms;
+	  ellipsoid_denoms.push_back(x_denom);
+	  ellipsoid_denoms.push_back(y_denom);
+	  ellipsoid_denoms.push_back(z_denom);
+
+	  double precip_center[3] = {spanX/2.0, spanY/2.0, spanZ/2.0};
+
+	  for (unsigned int i=0; i<dim; i++){
+		  r += (p.operator()(i)-precip_center[i])*(p.operator()(i)-precip_center[i])/ellipsoid_denoms[i];
+	  }
+	  r = sqrt(r);
 
 
 
 	if (index==0){
 		scalar_IC = c_matrix;
+		//scalar_IC = 0.5*(c_precip-c_matrix)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + c_matrix;
 	}
-	else if (index==1||index==2||index==3){
+	else if (index == 1){
+		scalar_IC = 0.0;
+		//scalar_IC = 0.5*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff)));
+
+	}
+	else if (index==2||index==3){
 		scalar_IC = 0.0;
 	}
 

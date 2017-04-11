@@ -46,13 +46,13 @@
 
 // Gradient energy coefficients
 //double Kn1[3][3]={{0.01141*scaleFactor,0,0},{0,0.01426*scaleFactor,0},{0,0,0.004326*scaleFactor}}; // Scaled KKS B'''
-double Kn1[3][3]={{0.0318*scaleFactor/5.0,0,0},{0,6.7347e-4*scaleFactor/5.0,0},{0,0,0.0269*scaleFactor/5.0}}; // Scaled KKS B' Mg-Y
+double Kn1[3][3]={{0.0318*scaleFactor/1.5,0,0},{0,6.7347e-4*scaleFactor/1.5,0},{0,0,0.0269*scaleFactor/1.5}}; // Scaled KKS B' Mg-Y
 //double Kn1[3][3]={{0.01141*scaleFactor,0,0},{0,0.01141*scaleFactor,0},{0,0,0.01141*scaleFactor}}; // Isotropic interfacial energy
 
 double Kn2[3][3]={{0.01355*scaleFactor,0.001234*scaleFactor,0},{0.001234*scaleFactor,0.01212*scaleFactor,0},{0,0,0.004326*scaleFactor}}; // Scaled KKS B'''
 double Kn3[3][3]={{0.01355*scaleFactor,-0.001234*scaleFactor,0},{-0.001234*scaleFactor,0.01212*scaleFactor,0},{0,0,0.004326*scaleFactor}}; // Scaled KKS B'''
 //define energy barrier coefficient (used to tune the interfacial energy)
-#define W (0.1288/scaleFactor*5.0)
+#define W (0.1288/scaleFactor*1.5)
 
 // Define Mechanical properties
 #define n_dependent_stiffness false
@@ -101,38 +101,47 @@ double Kn3[3][3]={{0.01355*scaleFactor,-0.001234*scaleFactor,0},{-0.001234*scale
 //double sfts_const3[3][3] = {{-0.03733,0.1064,0},{0.1064,0.08554,0},{0,0,-0.034899}};
 
 // B's (Mg-Y)
-//double sfts_linear1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-//double sfts_const1[3][3] = {{(0.013972+0.13383*0.125),0,0},{0,(-0.0057545+0.21273*0.125),0},{0,0,-0.002691+0.014832*0.125}};
-//double sfts_linear2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-//double sfts_const2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-//double sfts_linear3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-//double sfts_const3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-
-
-// Zero misfit
 double sfts_linear1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sfts_const1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sfts_const1[3][3] = {{(0.013972+0.13383*0.125),0,0},{0,(-0.0057545+0.21273*0.125),0},{0,0,-0.002691+0.014832*0.125}};
 double sfts_linear2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double sfts_const2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double sfts_linear3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double sfts_const3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
+
+// Zero misfit
+//double sfts_linear1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+//double sfts_const1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+//double sfts_linear2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+//double sfts_const2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+//double sfts_linear3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+//double sfts_const3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+
 // Calculate c_alpha and c_beta from c
 #define c_alpha ((B2*c+0.5*(B1-A1)*(h1V+h2V+h3V))/(A2*(h1V+h2V+h3V)+B2*(1.0-h1V-h2V-h3V)))
 #define c_beta ((A2*c+0.5*(A1-B1)*(1.0-h1V-h2V-h3V))/(A2*(h1V+h2V+h3V)+B2*(1.0-h1V-h2V-h3V)))
 
-//define free energy expressions (Mg-Nd data from CASM) (B''', gen 4)
-double A2 = 100.56;
-double A1 = -1.727;
-double A0 = 0.0001138;
-//double B2 = 2.4929;
-//double B1 = -2.2810;
-//double B0 = 0.039048;
+////define free energy expressions (Mg-Nd data from CASM) (B''', gen 4)
+//double A2 = 100.56;
+//double A1 = -1.727;
+//double A0 = 0.0001138;
+////double B2 = 2.4929;
+////double B1 = -2.2810;
+////double B0 = 0.039048;
+//
+//// B''' fits without B''
+//double B2 = 5.2408;
+//double B1 = -2.9679;
+//double B0 = 0.081978;
 
-// B''' fits without B''
+// Stand-in Mg-Y free energies
+//define free energy expressions (Mg-Nd data from CASM) (B''', gen 4)
+double A2 = 10.0;
+double A1 = -0.006;
+double A0 = 9e-7;
 double B2 = 5.2408;
-double B1 = -2.9679;
-double B0 = 0.081978;
+double B1 = -1.3102;
+double B0 = 0.0818875;
 
 #define faV (A2*c_alpha*c_alpha + A1*c_alpha + A0)
 #define facV (2.0*A2*c_alpha +A1)
@@ -173,14 +182,14 @@ double B0 = 0.081978;
 // =================================================================================
 
 // Nucleation radius (order parameter)
-#define semiaxis_a 2.5
-#define semiaxis_b 2.5
+#define semiaxis_a 2.0
+#define semiaxis_b 2.0
 #define semiaxis_c 5.0
 
 #define interface_coeff 0.1
 
 // Hold time for order parameter
-#define t_hold 100.0
+#define t_hold 5.0
 
 // Small constant for sign function
 #define epsil 1.0e-7
@@ -199,8 +208,8 @@ std::vector<double> opfreeze_semiaxes {1.5*semiaxis_a,1.5*semiaxis_b,1.5*semiaxi
 #define borderreg (2.0*semiaxis_a)
 
 // Constants k1 and k2 for nucleation rate in the bulk
-#define k1 50.0
-#define k2 0.16
+#define k1 25.0
+#define k2 0.25
 
 
 
@@ -276,37 +285,52 @@ for (typename std::vector<nucleus<dim>>::const_iterator thisNucleus=nuclei.begin
 	// Calculate the weighted distance function to the order parameter freeze boundary (weighted_dist = 1.0 on that boundary)
 	dealii::VectorizedArray<double> weighted_dist = constV(0.0);
 	for (unsigned int i=0; i<dim; i++){
-		dealii::VectorizedArray<double> temp = (thisNucleus->center(i) - q_point_loc(i))/opfreeze_semiaxes[i];
+        dealii::VectorizedArray<double> temp = (thisNucleus->center(i) - q_point_loc(i));
+        std::string BC_type = this->BC_list[1].var_BC_type[2*i];
+        bool periodic_i = (BC_type=="PERIODIC");
+        if (periodic_i){
+            double domsize_i =this->userInputs.domain_size[i];
+            for (unsigned j=0; j<n1.n_array_elements;j++)
+        		temp[j]=temp[j]-round(temp[j]/domsize_i)*domsize_i;
+        }
+        temp=temp/opfreeze_semiaxes[i];
 		weighted_dist += temp*temp;
 	}
 
 	// Seed a nucleus if it was added to the list of nuclei this time step
 	if (thisNucleus->seedingTimestep == this->currentIncrement){
-		for (unsigned i=0; i<n1.n_array_elements;i++){
-			if (weighted_dist[i] <= 1.0){
-				// Find the weighted distance to the outer edge of the nucleus and use it to calculate the order parameter source term
-				double r = 0.0;
-				double avg_semiaxis = 0.0;
-				for (unsigned int j=0; j<dim; j++){
-					double temp = (thisNucleus->center(j) - q_point_loc(j)[i])/thisNucleus->semiaxes[j];
-					r += temp*temp;
-					avg_semiaxis += thisNucleus->semiaxes[j];
-				}
-				r = sqrt(r);
-				avg_semiaxis /= dim;
-				nucleation_source_term[i] =0.5*(1.0-std::tanh(avg_semiaxis*(r-1.0)/interface_coeff));
-			}
-		}
-	}
+    	for (unsigned i=0; i<n1.n_array_elements;i++){
+    		if (weighted_dist[i] <= 1.0){
+    			// Find the weighted distance to the outer edge of the nucleus and use it to calculate the order parameter source term
+    			double r = 0.0;
+    			double avg_semiaxis = 0.0;
+    			for (unsigned int j=0; j<dim; j++){
+                    double temp = (thisNucleus->center(j) - q_point_loc(j)[i]);
+                    std::string BC_type = this->BC_list[1].var_BC_type[2*j];
+                    bool periodic_j = (BC_type=="PERIODIC");
+                    if (periodic_j){
+                        double domsize_j =this->userInputs.domain_size[j];
+                        temp=temp-round(temp/domsize_j)*domsize_j;
+                    }
+                    temp=temp/thisNucleus->semiaxes[j];
+    				r += temp*temp;
+    				avg_semiaxis += thisNucleus->semiaxes[j];
+    			}
+    			r = sqrt(r);
+    			avg_semiaxis /= dim;
+    			nucleation_source_term[i] =0.5*(1.0-std::tanh(avg_semiaxis*(r-1.0)/interface_coeff));
+    		}
+    	}
+    }
 	dealii::Point<problemDIM> r=thisNucleus->center;
 
-	double nucendtime = thisNucleus->seededTime + thisNucleus->seedingTime;
-	dealii::VectorizedArray<double> spacearg=(std::sqrt(weighted_dist)-constV(1.0))/constV(dx);
-	dealii::VectorizedArray<double> timearg=constV(time-nucendtime)/constV(timeStep);
-	dealii::VectorizedArray<double> spacefactor=constV(0.5)-constV(0.5)*spacearg/(std::abs(spacearg)+epsil);
-	dealii::VectorizedArray<double> timefactor=constV(0.5)-constV(0.5)*timearg/(std::abs(timearg)+epsil);
-	dealii::VectorizedArray<double> localgamma= constV(1.0)-spacefactor*timefactor;
-	gamma=gamma*localgamma;
+    double nucendtime = thisNucleus->seededTime + thisNucleus->seedingTime;
+    dealii::VectorizedArray<double> spacearg=(std::sqrt(weighted_dist)-constV(1.0))/constV(dx);
+    dealii::VectorizedArray<double> timearg=constV(time-nucendtime)/constV(timeStep);
+    dealii::VectorizedArray<double> spacefactor=constV(0.5)-constV(0.5)*spacearg/(std::abs(spacearg)+epsil);
+    dealii::VectorizedArray<double> timefactor=constV(0.5)-constV(0.5)*timearg/(std::abs(timearg)+epsil);
+    dealii::VectorizedArray<double> localgamma= constV(1.0)-spacefactor*timefactor;
+    gamma=gamma*localgamma;
 }
 
 

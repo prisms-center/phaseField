@@ -45,7 +45,7 @@
 
 // Set the maximum and minimum value of the fields where the mesh should be refined
 #define refineWindowMax {0.99,0.99}
-#define refineWindowMin {0.001,0.001}
+#define refineWindowMin {0.0001,0.0001}
 
 // Set the number of time steps between remeshing operations
 #define skipRemeshingSteps 1000

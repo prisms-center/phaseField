@@ -183,69 +183,76 @@ void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
 template <int dim, int degree>
 void customPDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim>> newnuclei)
 {
-    //QGauss<dim>  quadrature(degree+1);
-    QGaussLobatto<dim>  quadrature(degree+1);
-    FEValues<dim> fe_values (*(this->FESet[0]), quadrature, update_values|update_quadrature_points|update_JxW_values);
-    const unsigned int   num_quad_points = quadrature.size();
-    std::vector<dealii::Point<dim> > q_point_list(num_quad_points);
-    
-    typename Triangulation<dim>::active_cell_iterator ti;
-    typename DoFHandler<dim>::active_cell_iterator   di;
-    
-    unsigned int numDoF_preremesh = this->totalDOFs;
-    
-    for (unsigned int remesh_index=0; remesh_index < (this->userInputs.max_refinement_level-this->userInputs.min_refinement_level); remesh_index++){
-        ti  = this->triangulation.begin_active();
-        di = this->dofHandlersSet_nonconst[0]->begin_active();
-        while (di != this->dofHandlersSet_nonconst[0]->end()){
-            if (di->is_locally_owned()){
-                
-                bool mark_refine = false;
-                
-                fe_values.reinit (di);
-                q_point_list = fe_values.get_quadrature_points();
-                
-                // Calculate the distance from the corner of the cell to the middle of the cell
-                double diag_dist = 0.0;
-                for (unsigned int i=0; i<dim; i++){
-                    diag_dist += (this->userInputs.domain_size[i]*this->userInputs.domain_size[i])/(this->userInputs.subdivisions[i]*this->userInputs.subdivisions[i]);
-                }
-                diag_dist = sqrt(diag_dist);
-                diag_dist /= 2.0*pow(2.0,ti->level());
-                
-                for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
-                    for (typename std::vector<nucleus<dim>>::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
-                        
-                        // Calculate the ellipsoidal distance to the center of the nucleus
-                        double weighted_dist = 0.0;
-                        for (unsigned int i=0; i<dim; i++){
-                            double temp = (thisNuclei->center(i) - q_point_list[q_point](i))/(opfreeze_semiaxes[i]);
-                            weighted_dist += temp*temp;
-                        }
-                        
-                        if (weighted_dist < 1.0 || thisNuclei->center.distance(q_point_list[q_point]) < diag_dist){
-                            if ((unsigned int)ti->level() < this->userInputs.max_refinement_level){
-                                mark_refine = true;
-                                break;
-                            }
-                        }
-                        if (mark_refine) break;
-                    }
-                    if (mark_refine) break;
-                }
-                if (mark_refine) di->set_refine_flag();
-            }
-            ++di;
-            ++ti;
-        }
-        // The bulk of all of modifySolutionFields is spent in the following two function calls
-        this->refineGrid();
-        this->reinit();
-        
-        // If the mesh hasn't changed from the previous cycle, stop remeshing
-        if (this->totalDOFs == numDoF_preremesh) break;
-        numDoF_preremesh = this->totalDOFs;
-    }
+	//QGauss<dim>  quadrature(degree+1);
+	QGaussLobatto<dim>  quadrature(degree+1);
+	FEValues<dim> fe_values (*(this->FESet[0]), quadrature, update_values|update_quadrature_points|update_JxW_values);
+	const unsigned int   num_quad_points = quadrature.size();
+	std::vector<dealii::Point<dim> > q_point_list(num_quad_points);
+
+	typename Triangulation<dim>::active_cell_iterator ti;
+	typename DoFHandler<dim>::active_cell_iterator   di;
+
+	unsigned int numDoF_preremesh = this->totalDOFs;
+
+	for (unsigned int remesh_index=0; remesh_index < (this->userInputs.max_refinement_level-this->userInputs.min_refinement_level); remesh_index++){
+		ti  = this->triangulation.begin_active();
+		di = this->dofHandlersSet_nonconst[0]->begin_active();
+		while (di != this->dofHandlersSet_nonconst[0]->end()){
+			if (di->is_locally_owned()){
+
+				bool mark_refine = false;
+
+				fe_values.reinit (di);
+				q_point_list = fe_values.get_quadrature_points();
+
+				// Calculate the distance from the corner of the cell to the middle of the cell
+				double diag_dist = 0.0;
+				for (unsigned int i=0; i<dim; i++){
+					diag_dist += (this->userInputs.domain_size[i]*this->userInputs.domain_size[i])/(this->userInputs.subdivisions[i]*this->userInputs.subdivisions[i]);
+				}
+				diag_dist = sqrt(diag_dist);
+				diag_dist /= 2.0*pow(2.0,ti->level());
+
+				for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
+					for (typename std::vector<nucleus<dim>>::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
+
+						// Calculate the ellipsoidal distance to the center of the nucleus
+						double weighted_dist = 0.0;
+						for (unsigned int i=0; i<dim; i++){
+							double shortest_edist = thisNuclei->center(i) - q_point_list[q_point](i);
+							std::string BC_type = this->BC_list[1].var_BC_type[2*i];
+							bool periodic_i = (BC_type=="PERIODIC");
+							if (periodic_i){
+								double domsize =this->userInputs.domain_size[i];
+								shortest_edist = shortest_edist-round(shortest_edist/domsize)*domsize;
+							}
+							double temp = shortest_edist/(opfreeze_semiaxes[i]);
+							weighted_dist += temp*temp;
+						}
+
+						if (weighted_dist < 1.0 || thisNuclei->center.distance(q_point_list[q_point]) < diag_dist){
+							if ((unsigned int)ti->level() < this->userInputs.max_refinement_level){
+								mark_refine = true;
+								break;
+							}
+						}
+						if (mark_refine) break;
+					}
+					if (mark_refine) break;
+				}
+				if (mark_refine) di->set_refine_flag();
+			}
+			++di;
+			++ti;
+		}
+		// The bulk of all of modifySolutionFields is spent in the following two function calls
+		this->refineGrid();
+		this->reinit();
+
+		// If the mesh hasn't changed from the previous cycle, stop remeshing
+		if (this->totalDOFs == numDoF_preremesh) break;
+		numDoF_preremesh = this->totalDOFs;
+	}
 }
 
 // =================================================================================
