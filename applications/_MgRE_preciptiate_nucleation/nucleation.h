@@ -66,8 +66,6 @@ void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
             rand_val=distr(gen);
             //Nucleation probability
             double Prob=nucProb(ele_av_conc,ele_vol);
-
-            //this->pcout << Prob << " " << rand_val << std::endl;
         
             if (rand_val <= Prob){
  
@@ -142,7 +140,7 @@ void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
                                         if (weighted_dist < 1.0){
                                             if (var_value2_overlap[q_point_overlap] > 0.1){
                                                 isClose=true;
-                                                std::cout << "Attempted nucleation failed due to overlap w/ existing particle!!!!!!"  << std::endl;
+                                                std::cout << "Attempted nucleation failed due to overlap w/ existing particle!!!!!!"  << q_point_list_overlap[q_point_overlap] << std::endl;
                                                 break;
                                             }
                                         }

@@ -19,6 +19,7 @@ struct nucleus{
     std::vector<double> semiaxes;
     double seededTime, seedingTime;
     unsigned int seedingTimestep;
+    unsigned int orderParameterIndex;
 };
 
 

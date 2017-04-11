@@ -316,6 +316,72 @@ void parallelNucleationList<dim>::resolveNucleationConflicts (double min_dist_be
 }
 
 // =================================================================================
+// Remove nuclei from the list of nuclei given a local list of nucleus indices
+// =================================================================================
+template <int dim>
+std::vector<nucleus<dim>> parallelNucleationList<dim>::removeSubsetOfNuclei(std::vector<unsigned int> nuclei_to_remove){
+	// Note: This method is very similar to buildGlobalNucleiList in structure, and uses simplified versions of what is done
+	// in sendUpdate, receiveUpdate, and broadcastUpdate. There is likely a cleaner way to reorganize the methods to reduce
+	// duplication.
+
+	//MPI INITIALIZATON
+	int numProcs=dealii::Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
+	int thisProc=dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
+
+	// Build a global list of nuclei to delete, first sending the length of the vector of indices, then the vector itself
+	if (numProcs > 1) {
+		// Cycle through each processor, sending and receiving, to append the list of new nuclei
+		for (int proc_index=0; proc_index < numProcs-1; proc_index++){
+			if (thisProc == proc_index){
+				int currnonucs= nuclei_to_remove.size();
+				MPI_Send(&currnonucs, 1, MPI_INT, thisProc+1, 0, MPI_COMM_WORLD);
+				MPI_Send(&nuclei_to_remove[0], currnonucs, MPI_UNSIGNED, thisProc+1, 1, MPI_COMM_WORLD);
+			}
+			else if (thisProc == proc_index+1){
+				int recvnonucs = 0;
+				MPI_Recv(&recvnonucs, 1, MPI_INT, thisProc-1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+				std::vector<unsigned int> recieved_nuclei_to_remove(recvnonucs);
+				MPI_Recv(&recieved_nuclei_to_remove[0], recvnonucs, MPI_UNSIGNED, thisProc-1, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+				nuclei_to_remove.insert(nuclei_to_remove.end(), recieved_nuclei_to_remove.begin(), recieved_nuclei_to_remove.end());
+
+			}
+			MPI_Barrier(MPI_COMM_WORLD);
+		}
+
+		// The final processor now has the final list of the new nuclei, broadcast it to all the other processors
+		int currnonucs= nuclei_to_remove.size();
+		MPI_Bcast(&currnonucs, 1, MPI_INT, numProcs-1, MPI_COMM_WORLD);
+		std::vector<unsigned int> recieved_nuclei_to_remove(currnonucs);
+		if (thisProc == numProcs-1){
+			recieved_nuclei_to_remove = nuclei_to_remove;
+		}
+		MPI_Bcast(&recieved_nuclei_to_remove[0], currnonucs, MPI_UNSIGNED, numProcs-1, MPI_COMM_WORLD);
+		nuclei_to_remove = recieved_nuclei_to_remove;
+	}
+
+	for (unsigned int i=0; i<nuclei_to_remove.size(); i++){
+		std::cout << thisProc << ": " << nuclei_to_remove[i] << std::endl;
+	}
+
+	// Remove the nuclei from the list
+	std::vector<nucleus<dim>> pruned_list;
+	for (unsigned int nuc = 0; nuc <  newnuclei.size(); nuc++){
+		bool pruneNucleus = false;
+		for (unsigned int i = 0; i < nuclei_to_remove.size(); i++){
+			if (i == nuc){
+				pruneNucleus = true;
+				break;
+			}
+		}
+		if (!pruneNucleus){
+			pruned_list.push_back(newnuclei[nuc]);
+		}
+	}
+	return pruned_list;
+}
+
+
+// =================================================================================
 // Template instantiations
 // =================================================================================
 template class parallelNucleationList<2>;

@@ -40,19 +40,19 @@
 #define McV 1.0
 
 // Allen-Cahn mobilities
-#define Mn1V (300.0/scaleFactor)
-#define Mn2V (300.0/scaleFactor)
-#define Mn3V (300.0/scaleFactor)
+#define Mn1V (75.0/scaleFactor)
+#define Mn2V (75.0/scaleFactor)
+#define Mn3V (75.0/scaleFactor)
 
 // Gradient energy coefficients
 //double Kn1[3][3]={{0.01141*scaleFactor,0,0},{0,0.01426*scaleFactor,0},{0,0,0.004326*scaleFactor}}; // Scaled KKS B'''
-double Kn1[3][3]={{0.0318*scaleFactor/1.5,0,0},{0,6.7347e-4*scaleFactor/1.5,0},{0,0,0.0269*scaleFactor/1.5}}; // Scaled KKS B' Mg-Y
+double Kn1[3][3]={{0.0318*scaleFactor/5.0,0,0},{0,6.7347e-4*scaleFactor/5.0,0},{0,0,0.0269*scaleFactor/5.0}}; // Scaled KKS B' Mg-Y
 //double Kn1[3][3]={{0.01141*scaleFactor,0,0},{0,0.01141*scaleFactor,0},{0,0,0.01141*scaleFactor}}; // Isotropic interfacial energy
 
 double Kn2[3][3]={{0.01355*scaleFactor,0.001234*scaleFactor,0},{0.001234*scaleFactor,0.01212*scaleFactor,0},{0,0,0.004326*scaleFactor}}; // Scaled KKS B'''
 double Kn3[3][3]={{0.01355*scaleFactor,-0.001234*scaleFactor,0},{-0.001234*scaleFactor,0.01212*scaleFactor,0},{0,0,0.004326*scaleFactor}}; // Scaled KKS B'''
 //define energy barrier coefficient (used to tune the interfacial energy)
-#define W (0.8272/scaleFactor)
+#define W (0.1288/scaleFactor*5.0)
 
 // Define Mechanical properties
 #define n_dependent_stiffness false
@@ -101,21 +101,21 @@ double Kn3[3][3]={{0.01355*scaleFactor,-0.001234*scaleFactor,0},{-0.001234*scale
 //double sfts_const3[3][3] = {{-0.03733,0.1064,0},{0.1064,0.08554,0},{0,0,-0.034899}};
 
 // B's (Mg-Y)
-double sfts_linear1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sfts_const1[3][3] = {{(0.013972+0.13383*0.125),0,0},{0,(-0.0057545+0.21273*0.125),0},{0,0,-0.002691+0.014832*0.125}};
-double sfts_linear2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sfts_const2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sfts_linear3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sfts_const3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-
-
-// Zero misfit
 //double sfts_linear1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-//double sfts_const1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+//double sfts_const1[3][3] = {{(0.013972+0.13383*0.125),0,0},{0,(-0.0057545+0.21273*0.125),0},{0,0,-0.002691+0.014832*0.125}};
 //double sfts_linear2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 //double sfts_const2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 //double sfts_linear3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 //double sfts_const3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+
+
+// Zero misfit
+double sfts_linear1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sfts_const1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sfts_linear2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sfts_const2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sfts_linear3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sfts_const3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
 // Calculate c_alpha and c_beta from c
 #define c_alpha ((B2*c+0.5*(B1-A1)*(h1V+h2V+h3V))/(A2*(h1V+h2V+h3V)+B2*(1.0-h1V-h2V-h3V)))
@@ -173,11 +173,11 @@ double B0 = 0.081978;
 // =================================================================================
 
 // Nucleation radius (order parameter)
-#define semiaxis_a 3.0
-#define semiaxis_b 3.0
+#define semiaxis_a 2.5
+#define semiaxis_b 2.5
 #define semiaxis_c 5.0
 
-#define interface_coeff 0.4
+#define interface_coeff 0.1
 
 // Hold time for order parameter
 #define t_hold 100.0
@@ -199,8 +199,8 @@ std::vector<double> opfreeze_semiaxes {1.5*semiaxis_a,1.5*semiaxis_b,1.5*semiaxi
 #define borderreg (2.0*semiaxis_a)
 
 // Constants k1 and k2 for nucleation rate in the bulk
-#define k1 498.866
-#define k2 4.14465/55.0
+#define k1 50.0
+#define k2 0.16
 
 
 

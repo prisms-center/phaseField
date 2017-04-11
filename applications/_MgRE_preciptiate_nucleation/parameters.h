@@ -10,7 +10,7 @@
 // Set the length of the domain in all three dimensions
 // =================================================================================
 // Each axes spans from zero to the specified length
-#define scaleFactor 2.0
+#define scaleFactor 1.0
 
 #define spanX (80.0*scaleFactor)
 #define spanY (80.0*scaleFactor)
@@ -54,8 +54,8 @@
 // Set the time step parameters
 // =================================================================================
 // The size of the time step
-#define timeStep (1.0e-4*scaleFactor*scaleFactor) //1.1e-4*scaleFactor*scaleFactor
-#define timeIncrements 1000000 //5000000
+#define timeStep (2.0e-4*scaleFactor*scaleFactor) //1.1e-4*scaleFactor*scaleFactor
+#define timeIncrements 1000000 //1000000 //5000000
 #define timeFinal (timeStep*timeIncrements)
 
 
@@ -87,7 +87,7 @@
 
 // Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 // and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-#define numOutputs 20
+#define numOutputs 200
 
 // User-defined list of time steps where the program should output. Only used if
 // outputCondition is "LIST"
