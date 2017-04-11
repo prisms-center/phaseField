@@ -11,7 +11,7 @@
 #include "customPDE.h"
 #include "equations.h"
 #include "ICs_and_BCs.h"
-//#include "postprocess.h"
+#include "postprocess.h"
 #include "../../include/initialCondition_template_instantiations.h"
 #include <random>
 #include <time.h>

@@ -297,6 +297,9 @@ void userInputParameters<dim>::loadUserInput(){
 	vectorLoad(temp, sizeof(temp), pp_gradient_residual);}
 
 	pp_number_of_variables = pp_var_name.size();
+	if (pp_number_of_variables > 0 ){
+		postProcessingRequired = true;
+	}
 
 
 	// Load variable information for calculating the RHS
@@ -320,6 +323,8 @@ void userInputParameters<dim>::loadUserInput(){
 		pp_varInfoList.push_back(varInfo);
 
 	}
+	#else
+	postProcessingRequired = false;
 	#endif
 
 }

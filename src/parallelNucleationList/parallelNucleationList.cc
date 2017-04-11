@@ -380,7 +380,6 @@ std::vector<nucleus<dim>> parallelNucleationList<dim>::removeSubsetOfNuclei(std:
 	return pruned_list;
 }
 
-
 // =================================================================================
 // Template instantiations
 // =================================================================================

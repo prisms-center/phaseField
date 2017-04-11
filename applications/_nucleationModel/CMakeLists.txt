@@ -50,9 +50,9 @@ endif()
 INCLUDE_DIRECTORIES(../../include)
 
 FILE(GLOB headers ${CMAKE_SOURCE_DIR}/../../include/*.h)
-FILE(GLOB matrixfree_sources ${CMAKE_SOURCE_DIR}/../../src/matrixfree/*.cc)
+FILE(GLOB sources ${CMAKE_SOURCE_DIR}/../../src/matrixfree/*.cc)
 
-ADD_LIBRARY(mylib ${matrixfree_sources} ../../src/utilities/vectorLoad.cc ../../src/utilities/vectorBCFunction.cc ../../src/parallelNucleationList/parallelNucleationList.cc)
+ADD_LIBRARY(mylib ${sources} ../../src/postprocessor/postprocessor.cc ../../src/utilities/vectorLoad.cc ../../src/utilities/vectorBCFunction.cc ../../src/parallelNucleationList/parallelNucleationList.cc)
 
 DEAL_II_SETUP_TARGET(mylib)
 
