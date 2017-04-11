@@ -171,7 +171,15 @@ for (typename std::vector<nucleus<dim>>::const_iterator thisNucleus=nuclei.begin
 	// Calculate the weighted distance function to the order parameter freeze boundary (weighted_dist = 1.0 on that boundary)
 	dealii::VectorizedArray<double> weighted_dist = constV(0.0);
 	for (unsigned int i=0; i<dim; i++){
-		dealii::VectorizedArray<double> temp = (thisNucleus->center(i) - q_point_loc(i))/opfreeze_semiaxes[i];
+        dealii::VectorizedArray<double> temp = (thisNucleus->center(i) - q_point_loc(i));
+        std::string BC_type = this->BC_list[1].var_BC_type[2*i];
+        bool periodic_i = (BC_type=="PERIODIC");
+        if (periodic_i){
+            double domsize_i =this->userInputs.domain_size[i];
+            for (unsigned j=0; j<n.n_array_elements;j++)
+        		temp[j]=temp[j]-round(temp[j]/domsize_i)*domsize_i;
+        }
+        temp=temp/opfreeze_semiaxes[i];
 		weighted_dist += temp*temp;
 	}
 
@@ -183,7 +191,14 @@ for (typename std::vector<nucleus<dim>>::const_iterator thisNucleus=nuclei.begin
     			double r = 0.0;
     			double avg_semiaxis = 0.0;
     			for (unsigned int j=0; j<dim; j++){
-    				double temp = (thisNucleus->center(j) - q_point_loc(j)[i])/thisNucleus->semiaxes[j];
+                    double temp = (thisNucleus->center(j) - q_point_loc(j)[i]);
+                    std::string BC_type = this->BC_list[1].var_BC_type[2*j];
+                    bool periodic_j = (BC_type=="PERIODIC");
+                    if (periodic_j){
+                        double domsize_j =this->userInputs.domain_size[j];
+                        temp=temp-round(temp/domsize_j)*domsize_j;
+                    }
+                    temp=temp/thisNucleus->semiaxes[j];
     				r += temp*temp;
     				avg_semiaxis += thisNucleus->semiaxes[j];
     			}
