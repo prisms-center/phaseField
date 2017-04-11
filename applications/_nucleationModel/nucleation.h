@@ -109,65 +109,29 @@ void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
                 if (insafetyzone){
                 
                 	// Check to see if the order parameter anywhere within the element is above the threshold
-                    bool allqp_OK = true;
                     bool anyqp_OK = false;
                     for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
-                        if (var_value2[q_point] > maxOrderParameterNucleation){
-                            allqp_OK = false;
-                        } else {
+                        if (var_value2[q_point] < maxOrderParameterNucleation){
                             anyqp_OK =true;
                         }
                     }
                     
                     if (anyqp_OK){
-                        // Check to see if the prospective nucleus would overlap with any other particles
-                        // Not necessarily needed, but good to keep around
-                        bool isClose=false;
-                        if (!allqp_OK){
-                            typename DoFHandler<dim>::active_cell_iterator   di_overlap = this->dofHandlersSet_nonconst[0]->begin_active();
-                            while (di_overlap != this->dofHandlersSet_nonconst[0]->end())
-                            {
-                                if (di_overlap->is_locally_owned()){
-                                    fe_values.reinit (di_overlap);
-                                    fe_values.get_function_values(*(this->solutionSet[1]), var_value2_overlap);
-                                    q_point_list_overlap = fe_values.get_quadrature_points();
-                                    for (unsigned int q_point_overlap=0; q_point_overlap<num_quad_points; ++q_point_overlap){
-                                        double weighted_dist = 0.0;
-                                        for (unsigned int i=0; i<dim; i++){
-                                            double temp = (nuc_ele_pos[i]-q_point_list_overlap[q_point_overlap](i))/opfreeze_semiaxes[i];
-                                            weighted_dist += temp*temp;
-                                        }
-                                        if (weighted_dist < 1.0){
-                                            if (var_value2_overlap[q_point_overlap] > 0.1){
-                                                isClose=true;
-                                                std::cout << "Attempted nucleation failed due to overlap w/ existing particle!!!!!!"  << std::endl;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    if (isClose) break;
-                                }
-                                ++di_overlap;
-                            }
-                            fe_values.reinit (di);
+                        //Add nucleus to prospective list
+                        std::cout << "Prospective nucleation event. Nucleus no. " << nuclei.size()+1 << std::endl;
+                        std::cout << "nucleus center " << nuc_ele_pos << std::endl;
+                        nucleus<dim>* temp = new nucleus<dim>;
+                        temp->index=nuclei.size();
+                        temp->center=nuc_ele_pos;
+                        temp->semiaxes.push_back(semiaxis_a);
+                        temp->semiaxes.push_back(semiaxis_b);
+                        if (dim == 3){
+                            temp->semiaxes.push_back(semiaxis_c);
                         }
-                        if (!isClose){
-                            //Add nucleus to prospective list
-                            std::cout << "Prospective nucleation event. Nucleus no. " << nuclei.size()+1 << std::endl;
-                            std::cout << "nucleus center " << nuc_ele_pos << std::endl;
-                            nucleus<dim>* temp = new nucleus<dim>;
-                            temp->index=nuclei.size();
-                            temp->center=nuc_ele_pos;
-                            temp->semiaxes.push_back(semiaxis_a);
-                            temp->semiaxes.push_back(semiaxis_b);
-                            if (dim == 3){
-                                temp->semiaxes.push_back(semiaxis_c);
-                            }
-                            temp->seededTime=t;
-                            temp->seedingTime = t_hold;
-                            temp->seedingTimestep = inc;
-                            newnuclei.push_back(*temp);
-                        }
+                        temp->seededTime=t;
+                        temp->seedingTime = t_hold;
+                        temp->seedingTimestep = inc;
+                        newnuclei.push_back(*temp);
                     }
                 }
             }
@@ -175,6 +139,64 @@ void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
     // Increment the cell iterators
     ++di;
 	}
+}
+
+// =======================================================================================================
+//Making sure all new nuclei from complete prospective list do not overlap with existing precipitates
+// =======================================================================================================
+template <int dim, int degree>
+void customPDE<dim,degree>::safetyCheckNewNuclei(std::vector<nucleus<dim>> newnuclei, std::vector<unsigned int> &conflict_inds)
+{
+    //QGauss<dim>  quadrature(degree+1);
+    QGaussLobatto<dim>  quadrature(degree+1);
+    FEValues<dim> fe_values (*(this->FESet[0]), quadrature, update_values|update_quadrature_points|update_JxW_values);
+    const unsigned int   num_quad_points = quadrature.size();
+    std::vector<double> var_value2(num_quad_points);
+    std::vector<dealii::Point<dim> > q_point_list(num_quad_points);
+    
+    //Nucleus cycle
+    for (typename std::vector<nucleus<dim>>::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
+        bool isClose=false;
+        
+        //Element cycle
+	    typename DoFHandler<dim>::active_cell_iterator   di = this->dofHandlersSet_nonconst[0]->begin_active();
+        while (di != this->dofHandlersSet_nonconst[0]->end())
+        {
+            if (di->is_locally_owned()){
+                fe_values.reinit(di);
+                fe_values.get_function_values(*(this->solutionSet[1]), var_value2);
+                q_point_list = fe_values.get_quadrature_points();
+
+                //Quadrature points cycle
+                for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
+                    // Calculate the ellipsoidal distance to the center of the nucleus
+                    double weighted_dist = 0.0;
+                    for (unsigned int i=0; i<dim; i++){
+                        double shortest_edist = thisNuclei->center(i) - q_point_list[q_point](i);
+                        std::string BC_type = this->BC_list[1].var_BC_type[2*i];
+                        bool periodic_i = (BC_type=="PERIODIC");
+                        if (periodic_i){
+                            double domsize =this->userInputs.domain_size[i];
+                            shortest_edist = shortest_edist-round(shortest_edist/domsize)*domsize;
+                        }
+                        double temp = shortest_edist/(opfreeze_semiaxes[i]);
+                        weighted_dist += temp*temp;
+                    }
+                    if (weighted_dist < 1.0){
+                        if (var_value2[q_point] > 0.1){
+                            isClose=true;
+                            std::cout << "Attempted nucleation failed due to overlap w/ existing particle!!!!!!"  << std::endl;
+                            conflict_inds.push_back(thisNuclei->index);
+                            break;
+                        }
+                    }
+                }
+                if (isClose) break;
+            }
+        // Increment the cell iterators
+        ++di;
+        }
+    }
 }
 
 // =================================================================================
@@ -219,7 +241,14 @@ void customPDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim>> newnu
                         // Calculate the ellipsoidal distance to the center of the nucleus
                         double weighted_dist = 0.0;
                         for (unsigned int i=0; i<dim; i++){
-                            double temp = (thisNuclei->center(i) - q_point_list[q_point](i))/(opfreeze_semiaxes[i]);
+                            double shortest_edist = thisNuclei->center(i) - q_point_list[q_point](i);
+                            std::string BC_type = this->BC_list[1].var_BC_type[2*i];
+                            bool periodic_i = (BC_type=="PERIODIC");
+                            if (periodic_i){
+                                double domsize =this->userInputs.domain_size[i];
+                                shortest_edist = shortest_edist-round(shortest_edist/domsize)*domsize;
+                            }
+                            double temp = shortest_edist/(opfreeze_semiaxes[i]);
                             weighted_dist += temp*temp;
                         }
                         
@@ -264,8 +293,12 @@ void customPDE<dim,degree>::getNucleiList()
 		getLocalNucleiList(newnuclei);
 
 		// Generate global list of new nuclei and resolve conflicts between new nuclei
-		parallelNucleationList<dim> new_nuclei_parallel(newnuclei);
+		parallelNucleationList<dim> new_nuclei_parallel(newnuclei, this->BC_list, this->userInputs.domain_size);
 		newnuclei = new_nuclei_parallel.buildGlobalNucleiList(minDistBetweenNuclei, nuclei.size());
+        
+    	// Final check to resolve overlap conflicts with existing precipitates
+        std::vector<unsigned int> conflict_inds;
+ 		safetyCheckNewNuclei(newnuclei, conflict_inds);
 
         // Add the new nuclei to the list of nuclei
         nuclei.insert(nuclei.end(),newnuclei.begin(),newnuclei.end());

@@ -63,15 +63,15 @@ void customPDE<dim,degree>::setBCs(){
 	// Inputs to "inputBCs":
 	// First input: variable number
 	// Second input: component number
-	// Third input: BC type (options are "ZERO_DERIVATIVE" and "DIRICHLET")
+	// Third input: BC type (options are "ZERO_DERIVATIVE", "DIRICHLET", and "PERIODIC")
 	// Fourth input: BC value (ignored unless the BC type is "DIRICHLET")
 	// Odd inputs after the third: BC type
 	// Even inputs after the third: BC value
 	// Face numbering: starts at zero with the minimum of the first direction, one for the maximum of the first direction
 	//						two for the minimum of the second direction, etc.
 
-	this->inputBCs(0,0,"ZERO_DERIVATIVE",0);
-	this->inputBCs(1,0,"ZERO_DERIVATIVE",0);
+	this->inputBCs(0,0,"PERIODIC",0);
+	this->inputBCs(1,0,"PERIODIC",0);
 
 }
 

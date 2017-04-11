@@ -51,6 +51,9 @@ private:
 
 	// Contains nucleation probability that varies between applications, no MatrixFreePDE member access
 	double nucProb(double cValue, double dV) const;
+	
+    //Contains safety check to ensure that no new nuclei from complete prospective list overlap with existing precipitates
+    void safetyCheckNewNuclei(std::vector<nucleus<dim>> newnuclei, std::vector<unsigned int> &conflict_inds);
 
 	// Function to refine the mesh near the new nuclei, generic, accesses and modifies MatrixFreePDE members
 	void refineMeshNearNuclei(std::vector<nucleus<dim>> newnuclei);
