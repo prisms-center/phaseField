@@ -293,12 +293,14 @@ void customPDE<dim,degree>::getNucleiList()
 		getLocalNucleiList(newnuclei);
 
 		// Generate global list of new nuclei and resolve conflicts between new nuclei
-		parallelNucleationList<dim> new_nuclei_parallel(newnuclei, this->BC_list, this->userInputs.domain_size);
+		parallelNucleationList<dim> new_nuclei_parallel(newnuclei);
 		newnuclei = new_nuclei_parallel.buildGlobalNucleiList(minDistBetweenNuclei, nuclei.size());
         
     	// Final check to resolve overlap conflicts with existing precipitates
         std::vector<unsigned int> conflict_inds;
  		safetyCheckNewNuclei(newnuclei, conflict_inds);
+
+ 		newnuclei = new_nuclei_parallel.removeSubsetOfNuclei(conflict_inds);
 
         // Add the new nuclei to the list of nuclei
         nuclei.insert(nuclei.end(),newnuclei.begin(),newnuclei.end());
