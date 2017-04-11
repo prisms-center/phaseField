@@ -144,12 +144,12 @@ namespace PRISMS
         
         ~Mesh()
         {
-            for( int i=0; i<_interp.size(); i++)
+            for( unsigned int i=0; i<_interp.size(); i++)
             {
                 delete _interp[i];
             }
             
-            for( int i=0; i<_bfunc.size(); i++)
+            for( unsigned int i=0; i<_bfunc.size(); i++)
             {
                 delete _bfunc[i];
             }
@@ -197,7 +197,7 @@ namespace PRISMS
                         std::cout << "Read POINTS: " << Npoints << std::endl;
                         _node.reserve(Npoints);
                         std::cout << "  reserve OK" << std::endl;
-                        for( int i=0; i<Npoints; i++)
+                        for( unsigned int i=0; i<Npoints; i++)
                         {
                             if( DIM == 2)
                             {
@@ -224,7 +224,7 @@ namespace PRISMS
                         std::cout << "Determine Body size" << std::endl;
                         for( int j=0; j<DIM; j++)
                         {
-                            for( int i=1; i<hist[j].size(); i++)
+                            for( unsigned int i=1; i<hist[j].size(); i++)
                             {
                                 /*if( hist[j][i] != hist[j][i-1])
                                 {
@@ -299,12 +299,12 @@ namespace PRISMS
                         bfunc_ptr = _bfunc.back();
                         
                         std::cout << "Read CELLS: " << Ncells << std::endl;
-                        for( int i=0; i<Ncells; i++)
+                        for( unsigned int i=0; i<Ncells; i++)
                         {
                             infile >> uli_dummy;
                             
                             cell_node.resize(uli_dummy);
-                            for( int j=0; j<uli_dummy; j++)
+                            for( unsigned int j=0; j<uli_dummy; j++)
                             {
                                 infile >> cell_node[j];
                             }
@@ -327,7 +327,7 @@ namespace PRISMS
                         // bin interpolators
                         std::cout << "Bin interpolating functions" << std::endl;
                         
-                        for( int i=0; i<_interp.size(); i++)
+                        for( unsigned int i=0; i<_interp.size(); i++)
                         {
                             _bin.add_range(_interp[i], _interp[i]->min(), _interp[i]->max());
                         }
@@ -344,7 +344,7 @@ namespace PRISMS
                         //std::cout << "ss.str()" << ss.str() << std::endl;
                         ss >> str >> Ncells;
                         
-                        for( int i=0; i<Ncells; i++)
+                        for( unsigned int i=0; i<Ncells; i++)
                         {
                             infile >> uli_dummy;
                             
@@ -519,7 +519,7 @@ namespace PRISMS
         {
             //std::cout << "begin add_once()" << std::endl;
             
-            for( int i=0; i<list.size(); i++)
+            for( unsigned int i=0; i<list.size(); i++)
             {
                 if( list[i] == val)
                 {

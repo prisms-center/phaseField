@@ -273,6 +273,7 @@ void userInputParameters<dim>::loadUserInput(){
 
 	// Somewhat convoluted initialization so as not to rely on C++11 initializer lists (which not all compilers have yet)
 	#ifdef pp_variable_name
+	postProcessingRequired = true;
 
 	{std::string temp_string[] = pp_variable_name;
 	vectorLoad(temp_string,sizeof(temp_string),pp_var_name);}

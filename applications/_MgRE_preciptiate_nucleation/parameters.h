@@ -21,8 +21,8 @@
 // =================================================================================
 // The number of elements in each direction is 2^(refineFactor) * subdivisions
 // For optimal performance, use refineFactor primarily to determine the element size
-#define subdivisionsX 3 //10
-#define subdivisionsY 3 //10
+#define subdivisionsX 1 //10
+#define subdivisionsY 1 //10
 #define subdivisionsZ 1 //5
 #define refineFactor 5 //6
 
@@ -36,7 +36,7 @@
 #define hAdaptivity true
 
 // Set the maximum and minimum level of refinement
-#define maxRefinementLevel (refineFactor+3)
+#define maxRefinementLevel (refineFactor+4)
 #define minRefinementLevel (2)
 
 // Set the fields used to determine the refinement. Fields determined by the order

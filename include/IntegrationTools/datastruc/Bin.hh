@@ -45,7 +45,7 @@ namespace PRISMS
             _incr = incr;
             _N = N;
             _max = std::vector<double>(_min.size());
-            for( int i=0; i<_min.size(); i++)
+            for( unsigned int i=0; i<_min.size(); i++)
                 _max[i] = _min[i] + _incr[i]*_N[i];
             _indices = _N;
             _item.resize(_N);
@@ -160,7 +160,7 @@ namespace PRISMS
         // maximum size of any bin
         int max_size()
         {
-            int max = 0;
+            unsigned int max = 0;
             for( int i=0; i<_item.volume(); i++)
                 if( _item(i).size() > max)
                     max = _item(i).size();

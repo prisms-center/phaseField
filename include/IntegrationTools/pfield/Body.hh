@@ -84,7 +84,7 @@ namespace PRISMS
                         // read data
                         std::cout << "begin reading data" << std::endl;
                         std::vector<double> data(Npoints);
-                        for( int i=0; i<Npoints; i++)
+                        for( unsigned int i=0; i<Npoints; i++)
                         {
                             infile >> data[i];
                         }
@@ -124,7 +124,7 @@ namespace PRISMS
         
         PField<Coordinate, double, DIM>& find_scalar_field(std::string name)
         {
-            for( int i=0; i<scalar_field.size(); i++)
+            for( unsigned int i=0; i<scalar_field.size(); i++)
             {
                 if( scalar_field[i].name() == name)
                     return scalar_field[i];

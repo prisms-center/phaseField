@@ -110,7 +110,7 @@ namespace PRISMS
         int linear_index( const IndexContainer &term) const
         {
             int lindex = 0;
-            for( int i=0; i<_unroll.size(); i++)
+            for( unsigned int i=0; i<_unroll.size(); i++)
                 lindex += term[i]*_unroll[i];
             return lindex;
         }
@@ -138,7 +138,7 @@ namespace PRISMS
             }
             
             int vol = 1;
-            for( int i=0; i<dim.size(); i++)
+            for( unsigned int i=0; i<dim.size(); i++)
             {
                 vol *= dim[i];
             }

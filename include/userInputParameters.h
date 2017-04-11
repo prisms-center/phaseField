@@ -95,6 +95,7 @@ public:
 
 	// Postprocessing parameters
 	unsigned int pp_number_of_variables;
+	bool postProcessingRequired;
 
 	std::vector<std::string> pp_var_name;
 	std::vector<std::string> pp_var_type;

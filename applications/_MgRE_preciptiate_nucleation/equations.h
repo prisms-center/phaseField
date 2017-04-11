@@ -180,7 +180,7 @@ double B0 = 0.081978;
 #define interface_coeff 0.4
 
 // Hold time for order parameter
-#define t_hold 50.0
+#define t_hold 100.0
 
 // Small constant for sign function
 #define epsil 1.0e-7
