@@ -41,11 +41,11 @@
 
 // Set the fields used to determine the refinement. Fields determined by the order
 // declared in "equations.h", starting at zero
-#define refineCriterionFields {1,2}
+#define refineCriterionFields {1,2,3}
 
 // Set the maximum and minimum value of the fields where the mesh should be refined
-#define refineWindowMax {0.99,0.99}
-#define refineWindowMin {0.0001,0.0001}
+#define refineWindowMax {0.99,0.99,0.99}
+#define refineWindowMin {0.001,0.001,0.001}
 
 // Set the number of time steps between remeshing operations
 #define skipRemeshingSteps 1000

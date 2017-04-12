@@ -74,6 +74,8 @@ void parallelNucleationList<dim>::sendUpdate (int procno) const
         std::vector<double> s_seedingTime;
         //8 - seedingTimestep
         std::vector<unsigned int> s_seedingTimestep;
+        //9 - orderParameterIndex
+        std::vector<unsigned int> s_orderParameterIndex;
 
         //Loop to store info of all nuclei into vectors
         for (typename std::vector<nucleus<dim>>::const_iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
@@ -92,6 +94,7 @@ void parallelNucleationList<dim>::sendUpdate (int procno) const
             s_seededTime.push_back(thisNuclei->seededTime);
             s_seedingTime.push_back(thisNuclei->seedingTime);
             s_seedingTimestep.push_back(thisNuclei->seedingTimestep);
+            s_orderParameterIndex.push_back(thisNuclei->orderParameterIndex);
         }
         //Send vectors to next processor
         MPI_Send(&s_index[0], currnonucs, MPI_UNSIGNED, procno, 1, MPI_COMM_WORLD);
@@ -108,6 +111,7 @@ void parallelNucleationList<dim>::sendUpdate (int procno) const
         MPI_Send(&s_seededTime[0], currnonucs, MPI_DOUBLE, procno, 8, MPI_COMM_WORLD);
         MPI_Send(&s_seedingTime[0], currnonucs, MPI_DOUBLE, procno, 9, MPI_COMM_WORLD);
         MPI_Send(&s_seedingTimestep[0], currnonucs, MPI_UNSIGNED, procno, 10, MPI_COMM_WORLD);
+        MPI_Send(&s_orderParameterIndex[0], currnonucs, MPI_UNSIGNED, procno, 11, MPI_COMM_WORLD);
     }
     //END OF MPI SECTION
 }
@@ -142,6 +146,8 @@ void parallelNucleationList<dim>::receiveUpdate (int procno)
         std::vector<double> r_seedingTime(recvnonucs,0.0);
         //8 - seedingTimestep
         std::vector<unsigned int> r_seedingTimestep(recvnonucs,0);
+        //9 - orderParameterIndex
+        std::vector<unsigned int> r_orderParameterIndex(recvnonucs,0);
 
         //Recieve vectors from processor procno
         MPI_Recv(&r_index[0], recvnonucs, MPI_UNSIGNED, procno, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
@@ -158,6 +164,7 @@ void parallelNucleationList<dim>::receiveUpdate (int procno)
         MPI_Recv(&r_seededTime[0], recvnonucs, MPI_DOUBLE, procno, 8, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         MPI_Recv(&r_seedingTime[0], recvnonucs, MPI_DOUBLE, procno, 9, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         MPI_Recv(&r_seedingTimestep[0], recvnonucs, MPI_UNSIGNED, procno, 10, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Recv(&r_orderParameterIndex[0], recvnonucs, MPI_UNSIGNED, procno, 11, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
         //Loop to store info in vectors onto the nuclei structure
         for (int jnuc=0; jnuc<=recvnonucs-1; jnuc++){
@@ -176,6 +183,7 @@ void parallelNucleationList<dim>::receiveUpdate (int procno)
             temp->seededTime=r_seededTime[jnuc];
             temp->seedingTime = r_seedingTime[jnuc];
             temp->seedingTimestep = r_seedingTimestep[jnuc];
+            temp->orderParameterIndex = r_orderParameterIndex[jnuc];
             newnuclei.push_back(*temp);
         }
 
@@ -220,6 +228,8 @@ void parallelNucleationList<dim>::broadcastUpdate (int broadcastProc, int thisPr
         std::vector<double> r_seedingTime(initial_vec_size,0.0);
         //8 - seedingTimestep
         std::vector<unsigned int> r_seedingTimestep(initial_vec_size,0);
+        //9 - orderParameterIndex
+        std::vector<unsigned int> r_orderParameterIndex(initial_vec_size,0);
 
         if (thisProc == broadcastProc){
         	for (typename std::vector<nucleus<dim>>::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
@@ -238,6 +248,7 @@ void parallelNucleationList<dim>::broadcastUpdate (int broadcastProc, int thisPr
         		r_seededTime.push_back(thisNuclei->seededTime);
         		r_seedingTime.push_back(thisNuclei->seedingTime);
         		r_seedingTimestep.push_back(thisNuclei->seedingTimestep);
+        		r_orderParameterIndex.push_back(thisNuclei->orderParameterIndex);
         	}
         }
 
@@ -256,6 +267,7 @@ void parallelNucleationList<dim>::broadcastUpdate (int broadcastProc, int thisPr
         MPI_Bcast(&r_seededTime[0], currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
         MPI_Bcast(&r_seedingTime[0], currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
         MPI_Bcast(&r_seedingTimestep[0], currnonucs, MPI_UNSIGNED, broadcastProc, MPI_COMM_WORLD);
+        MPI_Bcast(&r_orderParameterIndex[0], currnonucs, MPI_UNSIGNED, broadcastProc, MPI_COMM_WORLD);
 
         newnuclei.clear();
 
@@ -277,6 +289,7 @@ void parallelNucleationList<dim>::broadcastUpdate (int broadcastProc, int thisPr
             temp->seededTime=r_seededTime[jnuc];
             temp->seedingTime = r_seedingTime[jnuc];
             temp->seedingTimestep = r_seedingTimestep[jnuc];
+            temp->orderParameterIndex = r_orderParameterIndex[jnuc];
             newnuclei.push_back(*temp);
         }
 

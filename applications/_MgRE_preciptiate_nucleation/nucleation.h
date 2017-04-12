@@ -18,7 +18,7 @@ double customPDE<dim,degree>::nucProb(double cValue, double dV) const
 // Get list of prospective new nuclei for the local processor
 // =================================================================================
 template <int dim, int degree>
-void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuclei) const
+void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuclei, std::vector<unsigned int> order_parameter_list, std::vector<unsigned int> other_var_list) const
 {
 	// Nickname for current time and time step
 	double t=this->currentTime;
@@ -28,12 +28,11 @@ void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
     QGaussLobatto<dim>  quadrature(degree+1);
     FEValues<dim> fe_values (*(this->FESet[0]), quadrature, update_values|update_quadrature_points|update_JxW_values);
 	const unsigned int   num_quad_points = quadrature.size();
-	std::vector<double> var_value(num_quad_points);
-	std::vector<double> var_value2(num_quad_points);
+	std::vector<std::vector<double> > op_values(order_parameter_list.size(),std::vector<double>(num_quad_points));
+	std::vector<std::vector<double> > other_values(other_var_list.size(),std::vector<double>(num_quad_points));
 	std::vector<dealii::Point<dim> > q_point_list(num_quad_points);
 
 	std::vector<dealii::Point<dim> > q_point_list_overlap(num_quad_points);
-	std::vector<double> var_value2_overlap(num_quad_points);
 
 	typename DoFHandler<dim>::active_cell_iterator   di = this->dofHandlersSet_nonconst[0]->begin_active();
 
@@ -50,14 +49,18 @@ void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
 		if (di->is_locally_owned()){
             //Obtaining average element concentration by averaging over element's quadrature points
             fe_values.reinit(di);
-            fe_values.get_function_values(*(this->solutionSet[0]), var_value);
-            fe_values.get_function_values(*(this->solutionSet[1]), var_value2);
+            for (unsigned int var = 0; var < order_parameter_list.size(); var++){
+            	fe_values.get_function_values(*(this->solutionSet[order_parameter_list[var]]), op_values[var]);
+            }
+            for (unsigned int var = 0; var < other_var_list.size(); var++){
+            	fe_values.get_function_values(*(this->solutionSet[other_var_list[var]]), other_values[var]);
+            }
             q_point_list = fe_values.get_quadrature_points();
             double ele_vol = 0.0;
             double ele_av_conc = 0.0;
         	// Loop over the quadrature points
             for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
-                ele_av_conc = ele_av_conc + var_value[q_point]*fe_values.JxW(q_point);
+                ele_av_conc = ele_av_conc + other_values[0][q_point]*fe_values.JxW(q_point);
                 ele_vol = ele_vol + fe_values.JxW(q_point);
             }
             ele_av_conc = ele_av_conc/ele_vol;
@@ -68,7 +71,7 @@ void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
             double Prob=nucProb(ele_av_conc,ele_vol);
         
             if (rand_val <= Prob){
- 
+
                 //Initializing random vector in "dim" dimensions
                 std::vector<double> randvec(dim,0.0);
                 dealii::Point<dim> nuc_ele_pos;
@@ -100,8 +103,7 @@ void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
                 //Make sure point is in safety zone
                 bool insafetyzone = true;
                 for (unsigned int j=0; j < dim; j++){
-                    std::string BC_type = this->BC_list[1].var_BC_type[2*j];
-                    bool periodic_j = (BC_type=="PERIODIC");
+                    bool periodic_j = (this->BC_list[1].var_BC_type[2*j]==PERIODIC);
                     bool insafetyzone_j = (periodic_j || ((nuc_ele_pos[j] > borderreg) && (nuc_ele_pos[j] < this->userInputs.domain_size[j]-borderreg)));
                     insafetyzone = insafetyzone && insafetyzone_j;
                 }
@@ -109,72 +111,112 @@ void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
                 if (insafetyzone){
                 
                 	// Check to see if the order parameter anywhere within the element is above the threshold
-                    bool allqp_OK = true;
-                    bool anyqp_OK = false;
-                    for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
-                        if (var_value2[q_point] > maxOrderParameterNucleation){
-                            allqp_OK = false;
-                        } else {
-                            anyqp_OK =true;
-                        }
-                    }
+                	bool anyqp_OK = false;
+                	for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
+                		double sum_op = 0.0;
+                		for (unsigned int num_op = 0; num_op < order_parameter_list.size(); num_op++){
+                			sum_op += op_values[num_op][q_point];
+                		}
+                		if (sum_op < maxOrderParameterNucleation){
+                			anyqp_OK =true;
+                		}
+                	}
                     
-                    if (anyqp_OK){
-                        // Check to see if the prospective nucleus would overlap with any other particles
-                        // Not necessarily needed, but good to keep around
-                        bool isClose=false;
-                        if (!allqp_OK){
-                            typename DoFHandler<dim>::active_cell_iterator   di_overlap = this->dofHandlersSet_nonconst[0]->begin_active();
-                            while (di_overlap != this->dofHandlersSet_nonconst[0]->end())
-                            {
-                                if (di_overlap->is_locally_owned()){
-                                    fe_values.reinit (di_overlap);
-                                    fe_values.get_function_values(*(this->solutionSet[1]), var_value2_overlap);
-                                    q_point_list_overlap = fe_values.get_quadrature_points();
-                                    for (unsigned int q_point_overlap=0; q_point_overlap<num_quad_points; ++q_point_overlap){
-                                        double weighted_dist = 0.0;
-                                        for (unsigned int i=0; i<dim; i++){
-                                            double temp = (nuc_ele_pos[i]-q_point_list_overlap[q_point_overlap](i))/opfreeze_semiaxes[i];
-                                            weighted_dist += temp*temp;
-                                        }
-                                        if (weighted_dist < 1.0){
-                                            if (var_value2_overlap[q_point_overlap] > 0.1){
-                                                isClose=true;
-                                                std::cout << "Attempted nucleation failed due to overlap w/ existing particle!!!!!!"  << q_point_list_overlap[q_point_overlap] << std::endl;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    if (isClose) break;
-                                }
-                                ++di_overlap;
-                            }
-                            fe_values.reinit (di);
-                        }
-                        if (!isClose){
-                            //Add nucleus to prospective list
-                            std::cout << "Prospective nucleation event. Nucleus no. " << nuclei.size()+1 << std::endl;
-                            std::cout << "nucleus center " << nuc_ele_pos << std::endl;
-                            nucleus<dim>* temp = new nucleus<dim>;
-                            temp->index=nuclei.size();
-                            temp->center=nuc_ele_pos;
-                            temp->semiaxes.push_back(semiaxis_a);
-                            temp->semiaxes.push_back(semiaxis_b);
-                            if (dim == 3){
-                                temp->semiaxes.push_back(semiaxis_c);
-                            }
-                            temp->seededTime=t;
-                            temp->seedingTime = t_hold;
-                            temp->seedingTimestep = inc;
-                            newnuclei.push_back(*temp);
-                        }
-                    }
+                	if (anyqp_OK){
+                		// Pick the order parameter
+                		std::random_device rd2;
+                		std::mt19937 gen2(rd2());
+                		std::uniform_int_distribution<unsigned int> int_distr(0,order_parameter_list.size()-1);
+                		unsigned int op_for_nucleus = order_parameter_list[int_distr(gen2)];
+                		std::cout << "Nucleation order parameter: " << op_for_nucleus << " " << rand_val << std::endl;
+                		std::cout << "order parameter list: " << order_parameter_list[0] << " " << order_parameter_list[1] << " " << order_parameter_list[2] << std::endl;
+
+                		//Add nucleus to prospective list
+                		std::cout << "Prospective nucleation event. Nucleus no. " << nuclei.size()+1 << std::endl;
+                		std::cout << "nucleus center " << nuc_ele_pos << std::endl;
+                		nucleus<dim>* temp = new nucleus<dim>;
+                		temp->index=nuclei.size();
+                		temp->center=nuc_ele_pos;
+                		temp->semiaxes.push_back(semiaxis_a);
+                		temp->semiaxes.push_back(semiaxis_b);
+                		if (dim == 3){
+                			temp->semiaxes.push_back(semiaxis_c);
+                		}
+                		temp->seededTime=t;
+                		temp->seedingTime = t_hold;
+                		temp->seedingTimestep = inc;
+                		temp->orderParameterIndex = op_for_nucleus;
+                		newnuclei.push_back(*temp);
+                	}
                 }
             }
         }
     // Increment the cell iterators
     ++di;
 	}
+}
+
+// =======================================================================================================
+//Making sure all new nuclei from complete prospective list do not overlap with existing precipitates
+// =======================================================================================================
+template <int dim, int degree>
+void customPDE<dim,degree>::safetyCheckNewNuclei(std::vector<nucleus<dim>> newnuclei, std::vector<unsigned int> order_parameter_list, std::vector<unsigned int> &conflict_inds)
+{
+    //QGauss<dim>  quadrature(degree+1);
+    QGaussLobatto<dim>  quadrature(degree+1);
+    FEValues<dim> fe_values (*(this->FESet[0]), quadrature, update_values|update_quadrature_points|update_JxW_values);
+    const unsigned int   num_quad_points = quadrature.size();
+    std::vector<std::vector<double> > op_values(order_parameter_list.size(),std::vector<double>(num_quad_points));
+    std::vector<dealii::Point<dim> > q_point_list(num_quad_points);
+
+    //Nucleus cycle
+    for (typename std::vector<nucleus<dim>>::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
+        bool isClose=false;
+
+        //Element cycle
+	    typename DoFHandler<dim>::active_cell_iterator   di = this->dofHandlersSet_nonconst[0]->begin_active();
+        while (di != this->dofHandlersSet_nonconst[0]->end())
+        {
+            if (di->is_locally_owned()){
+                fe_values.reinit(di);
+                for (unsigned int var = 0; var < order_parameter_list.size(); var++){
+                	fe_values.get_function_values(*(this->solutionSet[order_parameter_list[var]]), op_values[var]);
+                }
+                q_point_list = fe_values.get_quadrature_points();
+
+                //Quadrature points cycle
+                for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
+                    // Calculate the ellipsoidal distance to the center of the nucleus
+                    double weighted_dist = 0.0;
+                    for (unsigned int i=0; i<dim; i++){
+                        double shortest_edist = thisNuclei->center(i) - q_point_list[q_point](i);
+                        bool periodic_i = (this->BC_list[1].var_BC_type[2*i]==PERIODIC);
+                        if (periodic_i){
+                            double domsize =this->userInputs.domain_size[i];
+                            shortest_edist = shortest_edist-round(shortest_edist/domsize)*domsize;
+                        }
+                        double temp = shortest_edist/(opfreeze_semiaxes[i]);
+                        weighted_dist += temp*temp;
+                    }
+                    if (weighted_dist < 1.0){
+                    	double sum_op = 0.0;
+                    	for (unsigned int num_op = 0; num_op < order_parameter_list.size(); num_op++){
+                    		sum_op += op_values[num_op][q_point];
+                    	}
+                        if (sum_op > 0.1){
+                            isClose=true;
+                            std::cout << "Attempted nucleation failed due to overlap w/ existing particle!!!!!!"  << std::endl;
+                            conflict_inds.push_back(thisNuclei->index);
+                            break;
+                        }
+                    }
+                }
+                if (isClose) break;
+            }
+        // Increment the cell iterators
+        ++di;
+        }
+    }
 }
 
 // =================================================================================
@@ -220,8 +262,7 @@ void customPDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim>> newnu
 						double weighted_dist = 0.0;
 						for (unsigned int i=0; i<dim; i++){
 							double shortest_edist = thisNuclei->center(i) - q_point_list[q_point](i);
-							std::string BC_type = this->BC_list[1].var_BC_type[2*i];
-							bool periodic_i = (BC_type=="PERIODIC");
+							bool periodic_i = (this->BC_list[1].var_BC_type[2*i]==PERIODIC);
 							if (periodic_i){
 								double domsize =this->userInputs.domain_size[i];
 								shortest_edist = shortest_edist-round(shortest_edist/domsize)*domsize;
@@ -268,11 +309,23 @@ void customPDE<dim,degree>::getNucleiList()
 
 		// Get list of prospective new nuclei for the local processor
 		this->pcout << "Nucleation attempt for increment " << this->currentIncrement << std::endl;
-		getLocalNucleiList(newnuclei);
+		std::vector<unsigned int> order_parameter_list;
+		std::vector<unsigned int> other_var_list;
+		other_var_list.push_back(0);
+		order_parameter_list.push_back(1);
+		order_parameter_list.push_back(2);
+		order_parameter_list.push_back(3);
+		getLocalNucleiList(newnuclei,order_parameter_list,other_var_list);
 
 		// Generate global list of new nuclei and resolve conflicts between new nuclei
 		parallelNucleationList<dim> new_nuclei_parallel(newnuclei);
 		newnuclei = new_nuclei_parallel.buildGlobalNucleiList(minDistBetweenNuclei, nuclei.size());
+
+		// Final check to resolve overlap conflicts with existing precipitates
+		std::vector<unsigned int> conflict_inds;
+		safetyCheckNewNuclei(newnuclei, order_parameter_list, conflict_inds);
+
+		newnuclei = new_nuclei_parallel.removeSubsetOfNuclei(conflict_inds);
 
         // Add the new nuclei to the list of nuclei
         nuclei.insert(nuclei.end(),newnuclei.begin(),newnuclei.end());

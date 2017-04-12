@@ -22,7 +22,7 @@ void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 
 	  if (userInputs.var_type[currentFieldIndex] == "SCALAR"){
 		  for (unsigned int direction = 0; direction < 2*dim; direction++){
-			  if (BC_list[starting_BC_list_index].var_BC_type[direction] == "DIRICHLET"){
+			  if (BC_list[starting_BC_list_index].var_BC_type[direction] == DIRICHLET){
 				  VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
 						  direction, ConstantFunction<dim>(BC_list[starting_BC_list_index].var_BC_val[direction],1), *(ConstraintMatrix*) \
 						  constraintsDirichletSet[currentFieldIndex]);
@@ -39,7 +39,7 @@ void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 
 			  std::vector<bool> mask;
 			  for (unsigned int component=0; component < dim; component++){
-				  if (BC_list[starting_BC_list_index+component].var_BC_type[direction] == "DIRICHLET"){
+				  if (BC_list[starting_BC_list_index+component].var_BC_type[direction] == DIRICHLET){
 					  mask.push_back(true);
 				  }
 				  else {
@@ -63,7 +63,7 @@ void MatrixFreePDE<dim,degree>::setPeriodicity(){
 		for (int i=0; i<dim; ++i){
 			bool periodic_pair = false;
 			for (unsigned int field_num=0; field_num < BC_list.size(); field_num++){
-				if (BC_list[field_num].var_BC_type[2*i] == "PERIODIC"){
+				if (BC_list[field_num].var_BC_type[2*i] == PERIODIC){
 					periodic_pair = true;
 				}
 			}
@@ -93,7 +93,7 @@ void MatrixFreePDE<dim,degree>::setPeriodicityConstraints(ConstraintMatrix * con
 
 		std::vector<GridTools::PeriodicFacePair<typename DoFHandler<dim>::cell_iterator> > periodicity_vector;
 	    for (int i=0; i<dim; ++i){
-	    	if (BC_list[starting_BC_list_index].var_BC_type[2*i] == "PERIODIC"){
+	    	if (BC_list[starting_BC_list_index].var_BC_type[2*i] == PERIODIC){
 	    		GridTools::collect_periodic_faces(*dof_handler, /*b_id1*/ 2*i, /*b_id2*/ 2*i+1,
 	    				/*direction*/ i, periodicity_vector);
 	    	}
@@ -130,7 +130,7 @@ void MatrixFreePDE<dim,degree>::getComponentsWithRigidBodyModes( std::vector<int
 				bool rigidBodyMode = true;
 				for (unsigned int direction = 0; direction < 2*dim; direction++){
 
-					if (BC_list[starting_BC_list_index+component].var_BC_type[direction] == "DIRICHLET"){
+					if (BC_list[starting_BC_list_index+component].var_BC_type[direction] == DIRICHLET){
 						rigidBodyMode = false;
 					}
 
@@ -183,6 +183,19 @@ void MatrixFreePDE<dim,degree>::setRigidBodyModeConstraints(const std::vector<in
    }
 }
 
+BC_type convert_BC_string_to_BC_type(std::string string_BC){
+	if (string_BC == "ZERO_DERIVATIVE"){
+		return ZERO_DERIVATIVE;
+	}
+	else if (string_BC == "DIRICHLET"){
+		return DIRICHLET;
+	}
+	else {
+		return PERIODIC;
+	}
+}
+
+
 // Input the boundary conditions for each face individually for 3D domains
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
@@ -211,12 +224,12 @@ void MatrixFreePDE<dim,degree>::inputBCs(int var, int component, std::string BC_
 	}
 
 	varBCs<dim> newBC;
-	newBC.var_BC_type.push_back(BC_type_dim1_min);
-	newBC.var_BC_type.push_back(BC_type_dim1_max);
-	newBC.var_BC_type.push_back(BC_type_dim2_min);
-	newBC.var_BC_type.push_back(BC_type_dim2_max);
-	newBC.var_BC_type.push_back(BC_type_dim3_min);
-	newBC.var_BC_type.push_back(BC_type_dim3_max);
+	newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type_dim1_min));
+	newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type_dim1_max));
+	newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type_dim2_min));
+	newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type_dim2_max));
+	newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type_dim3_min));
+	newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type_dim3_max));
 
 	newBC.var_BC_val.push_back(BC_value_dim1_min);
 	newBC.var_BC_val.push_back(BC_value_dim1_max);
@@ -252,10 +265,10 @@ void MatrixFreePDE<dim,degree>::inputBCs(int var, int component, std::string BC_
 	}
 
 	varBCs<dim> newBC;
-	newBC.var_BC_type.push_back(BC_type_dim1_min);
-	newBC.var_BC_type.push_back(BC_type_dim1_max);
-	newBC.var_BC_type.push_back(BC_type_dim2_min);
-	newBC.var_BC_type.push_back(BC_type_dim2_max);
+	newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type_dim1_min));
+	newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type_dim1_max));
+	newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type_dim2_min));
+	newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type_dim2_max));
 
 	newBC.var_BC_val.push_back(BC_value_dim1_min);
 	newBC.var_BC_val.push_back(BC_value_dim1_max);
@@ -287,8 +300,8 @@ void MatrixFreePDE<dim,degree>::inputBCs(int var, int component, std::string BC_
 
 
 	varBCs<dim> newBC;
-	newBC.var_BC_type.push_back(BC_type_dim1_min);
-	newBC.var_BC_type.push_back(BC_type_dim1_max);
+	newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type_dim1_min));
+	newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type_dim1_max));
 
 	newBC.var_BC_val.push_back(BC_value_dim1_min);
 	newBC.var_BC_val.push_back(BC_value_dim1_max);
@@ -302,7 +315,7 @@ void MatrixFreePDE<dim,degree>::inputBCs(int var, int component, std::string BC_
 
 	varBCs<dim> newBC;
 	for (unsigned int face=0; face<(dim*2); face++){
-		newBC.var_BC_type.push_back(BC_type);
+		newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type));
 		newBC.var_BC_val.push_back(BC_value);
 	}
 

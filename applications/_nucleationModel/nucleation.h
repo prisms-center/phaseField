@@ -100,8 +100,7 @@ void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
                 //Make sure point is in safety zone
                 bool insafetyzone = true;
                 for (unsigned int j=0; j < dim; j++){
-                    std::string BC_type = this->BC_list[1].var_BC_type[2*j];
-                    bool periodic_j = (BC_type=="PERIODIC");
+                    bool periodic_j = (this->BC_list[1].var_BC_type[2*j]==PERIODIC);
                     bool insafetyzone_j = (periodic_j || ((nuc_ele_pos[j] > borderreg) && (nuc_ele_pos[j] < this->userInputs.domain_size[j]-borderreg)));
                     insafetyzone = insafetyzone && insafetyzone_j;
                 }
@@ -173,8 +172,7 @@ void customPDE<dim,degree>::safetyCheckNewNuclei(std::vector<nucleus<dim>> newnu
                     double weighted_dist = 0.0;
                     for (unsigned int i=0; i<dim; i++){
                         double shortest_edist = thisNuclei->center(i) - q_point_list[q_point](i);
-                        std::string BC_type = this->BC_list[1].var_BC_type[2*i];
-                        bool periodic_i = (BC_type=="PERIODIC");
+                        bool periodic_i = (this->BC_list[1].var_BC_type[2*i]==PERIODIC);
                         if (periodic_i){
                             double domsize =this->userInputs.domain_size[i];
                             shortest_edist = shortest_edist-round(shortest_edist/domsize)*domsize;
@@ -242,8 +240,7 @@ void customPDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim>> newnu
                         double weighted_dist = 0.0;
                         for (unsigned int i=0; i<dim; i++){
                             double shortest_edist = thisNuclei->center(i) - q_point_list[q_point](i);
-                            std::string BC_type = this->BC_list[1].var_BC_type[2*i];
-                            bool periodic_i = (BC_type=="PERIODIC");
+                            bool periodic_i = (this->BC_list[1].var_BC_type[2*i]==PERIODIC);
                             if (periodic_i){
                                 double domsize =this->userInputs.domain_size[i];
                                 shortest_edist = shortest_edist-round(shortest_edist/domsize)*domsize;

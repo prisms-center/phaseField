@@ -172,8 +172,7 @@ for (typename std::vector<nucleus<dim>>::const_iterator thisNucleus=nuclei.begin
 	dealii::VectorizedArray<double> weighted_dist = constV(0.0);
 	for (unsigned int i=0; i<dim; i++){
         dealii::VectorizedArray<double> temp = (thisNucleus->center(i) - q_point_loc(i));
-        std::string BC_type = this->BC_list[1].var_BC_type[2*i];
-        bool periodic_i = (BC_type=="PERIODIC");
+        bool periodic_i = (this->BC_list[1].var_BC_type[2*i]==PERIODIC);
         if (periodic_i){
             double domsize_i =this->userInputs.domain_size[i];
             for (unsigned j=0; j<n.n_array_elements;j++)
@@ -192,8 +191,7 @@ for (typename std::vector<nucleus<dim>>::const_iterator thisNucleus=nuclei.begin
     			double avg_semiaxis = 0.0;
     			for (unsigned int j=0; j<dim; j++){
                     double temp = (thisNucleus->center(j) - q_point_loc(j)[i]);
-                    std::string BC_type = this->BC_list[1].var_BC_type[2*j];
-                    bool periodic_j = (BC_type=="PERIODIC");
+                    bool periodic_j = (this->BC_list[1].var_BC_type[2*j]==PERIODIC);
                     if (periodic_j){
                         double domsize_j =this->userInputs.domain_size[j];
                         temp=temp-round(temp/domsize_j)*domsize_j;

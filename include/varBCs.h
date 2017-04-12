@@ -8,13 +8,16 @@
 #ifndef INCLUDE_VARBCS_H_
 #define INCLUDE_VARBCS_H_
 
+// BC type enum
+enum BC_type {ZERO_DERIVATIVE, DIRICHLET, PERIODIC};
+
 // BC object declaration
 template <int dim>
 class varBCs
 {
 	public:
 	//varBCs();
-	std::vector<std::string> var_BC_type;
+	std::vector<BC_type> var_BC_type;
 	std::vector<double> var_BC_val;
 };
 

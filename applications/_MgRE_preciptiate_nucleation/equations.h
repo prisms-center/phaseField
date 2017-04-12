@@ -49,8 +49,8 @@
 double Kn1[3][3]={{0.0318*scaleFactor/1.5,0,0},{0,6.7347e-4*scaleFactor/1.5,0},{0,0,0.0269*scaleFactor/1.5}}; // Scaled KKS B' Mg-Y
 //double Kn1[3][3]={{0.01141*scaleFactor,0,0},{0,0.01141*scaleFactor,0},{0,0,0.01141*scaleFactor}}; // Isotropic interfacial energy
 
-double Kn2[3][3]={{0.01355*scaleFactor,0.001234*scaleFactor,0},{0.001234*scaleFactor,0.01212*scaleFactor,0},{0,0,0.004326*scaleFactor}}; // Scaled KKS B'''
-double Kn3[3][3]={{0.01355*scaleFactor,-0.001234*scaleFactor,0},{-0.001234*scaleFactor,0.01212*scaleFactor,0},{0,0,0.004326*scaleFactor}}; // Scaled KKS B'''
+double Kn2[3][3]={{0.008455*scaleFactor,-0.01348*scaleFactor,0},{-0.01348*scaleFactor,0.02402*scaleFactor,0},{0,0,0.0269*scaleFactor}}; // Scaled KKS B'''
+double Kn3[3][3]={{0.008455*scaleFactor,0.01348*scaleFactor,0},{0.01348*scaleFactor,0.02402*scaleFactor,0},{0,0,0.0269*scaleFactor}}; // Scaled KKS B'''
 //define energy barrier coefficient (used to tune the interfacial energy)
 #define W (0.1288/scaleFactor*1.5)
 
@@ -104,9 +104,9 @@ double Kn3[3][3]={{0.01355*scaleFactor,-0.001234*scaleFactor,0},{-0.001234*scale
 double sfts_linear1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 double sfts_const1[3][3] = {{(0.013972+0.13383*0.125),0,0},{0,(-0.0057545+0.21273*0.125),0},{0,0,-0.002691+0.014832*0.125}};
 double sfts_linear2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sfts_const2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sfts_const2[3][3] = {{0.02330,-0.004271,0},{-0.004271,0.0282,0},{0,0,-0.0008370}};
 double sfts_linear3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sfts_const3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+double sfts_const3[3][3] = {{0.02330,0.004271,0},{0.004271,0.0282,0},{0,0,-0.0008370}};
 
 
 // Zero misfit
@@ -171,11 +171,11 @@ double B0 = 0.0818875;
 #define rn1V   (n1-constV(timeStep*Mn1V)*gamma*( (fbV-faV)*hn1V - (c_beta-c_alpha)*facV*hn1V + W*fbarriern1V + nDependentMisfitAC1 + heterMechAC1))
 #define rn1xV  (constV(-timeStep*Mn1V)*gamma*Knx1)
 
-#define rn2V   (n2-constV(timeStep*Mn2V)*( (fbV-faV)*hn2V - (c_beta-c_alpha)*facV*hn2V + W*fbarriern2V + nDependentMisfitAC2 + heterMechAC2))
-#define rn2xV  (constV(-timeStep*Mn2V)*Knx2)
+#define rn2V   (n2-constV(timeStep*Mn2V)*gamma*( (fbV-faV)*hn2V - (c_beta-c_alpha)*facV*hn2V + W*fbarriern2V + nDependentMisfitAC2 + heterMechAC2))
+#define rn2xV  (constV(-timeStep*Mn2V)*gamma*Knx2)
 
-#define rn3V   (n3-constV(timeStep*Mn3V)*( (fbV-faV)*hn3V - (c_beta-c_alpha)*facV*hn3V + W*fbarriern3V + nDependentMisfitAC3 + heterMechAC3))
-#define rn3xV  (constV(-timeStep*Mn3V)*Knx3)
+#define rn3V   (n3-constV(timeStep*Mn3V)*gamma*( (fbV-faV)*hn3V - (c_beta-c_alpha)*facV*hn3V + W*fbarriern3V + nDependentMisfitAC3 + heterMechAC3))
+#define rn3xV  (constV(-timeStep*Mn3V)*gamma*Knx3)
 
 // =================================================================================
 // Set the nucleation parameters
@@ -186,7 +186,7 @@ double B0 = 0.0818875;
 #define semiaxis_b 2.0
 #define semiaxis_c 5.0
 
-#define interface_coeff 0.1
+#define interface_coeff 0.2
 
 // Hold time for order parameter
 #define t_hold 5.0
@@ -199,7 +199,7 @@ double B0 = 0.0818875;
 #define maxOrderParameterNucleation 0.01
 
 // Number of time steps between nucleation attempts
-#define skipNucleationSteps 500
+#define skipNucleationSteps (500)
 
 // radius for order parameter hold
 std::vector<double> opfreeze_semiaxes {1.5*semiaxis_a,1.5*semiaxis_b,1.5*semiaxis_c};
@@ -208,7 +208,7 @@ std::vector<double> opfreeze_semiaxes {1.5*semiaxis_a,1.5*semiaxis_b,1.5*semiaxi
 #define borderreg (2.0*semiaxis_a)
 
 // Constants k1 and k2 for nucleation rate in the bulk
-#define k1 25.0
+#define k1 (25.0)
 #define k2 0.25
 
 
@@ -278,7 +278,9 @@ dealii::VectorizedArray<double> z;
 if (problemDIM ==3)
 	z= q_point_loc[2];
 
-dealii::VectorizedArray<double> nucleation_source_term = constV(0.0);
+dealii::VectorizedArray<double> nucleation_source_term1 = constV(0.0);
+dealii::VectorizedArray<double> nucleation_source_term2 = constV(0.0);
+dealii::VectorizedArray<double> nucleation_source_term3 = constV(0.0);
 
 for (typename std::vector<nucleus<dim>>::const_iterator thisNucleus=nuclei.begin(); thisNucleus!=nuclei.end(); ++thisNucleus){
 
@@ -286,8 +288,7 @@ for (typename std::vector<nucleus<dim>>::const_iterator thisNucleus=nuclei.begin
 	dealii::VectorizedArray<double> weighted_dist = constV(0.0);
 	for (unsigned int i=0; i<dim; i++){
         dealii::VectorizedArray<double> temp = (thisNucleus->center(i) - q_point_loc(i));
-        std::string BC_type = this->BC_list[1].var_BC_type[2*i];
-        bool periodic_i = (BC_type=="PERIODIC");
+        bool periodic_i = (this->BC_list[1].var_BC_type[2*i]==PERIODIC);
         if (periodic_i){
             double domsize_i =this->userInputs.domain_size[i];
             for (unsigned j=0; j<n1.n_array_elements;j++)
@@ -306,8 +307,7 @@ for (typename std::vector<nucleus<dim>>::const_iterator thisNucleus=nuclei.begin
     			double avg_semiaxis = 0.0;
     			for (unsigned int j=0; j<dim; j++){
                     double temp = (thisNucleus->center(j) - q_point_loc(j)[i]);
-                    std::string BC_type = this->BC_list[1].var_BC_type[2*j];
-                    bool periodic_j = (BC_type=="PERIODIC");
+                    bool periodic_j = (this->BC_list[1].var_BC_type[2*i]==PERIODIC);
                     if (periodic_j){
                         double domsize_j =this->userInputs.domain_size[j];
                         temp=temp-round(temp/domsize_j)*domsize_j;
@@ -318,7 +318,16 @@ for (typename std::vector<nucleus<dim>>::const_iterator thisNucleus=nuclei.begin
     			}
     			r = sqrt(r);
     			avg_semiaxis /= dim;
-    			nucleation_source_term[i] =0.5*(1.0-std::tanh(avg_semiaxis*(r-1.0)/interface_coeff));
+    			//this->pcout << thisNucleus->orderParameterIndex << std::endl;
+    			if (thisNucleus->orderParameterIndex == 1){
+    				nucleation_source_term1[i] =0.5*(1.0-std::tanh(avg_semiaxis*(r-1.0)/interface_coeff));
+    			}
+    			else if (thisNucleus->orderParameterIndex == 2){
+    				nucleation_source_term2[i] =0.5*(1.0-std::tanh(avg_semiaxis*(r-1.0)/interface_coeff));
+    			}
+    			else {
+    				nucleation_source_term3[i] =0.5*(1.0-std::tanh(avg_semiaxis*(r-1.0)/interface_coeff));
+    			}
     		}
     	}
     }
@@ -523,11 +532,11 @@ for (unsigned int b=0; b<dim; b++){
 modelResidualsList[0].scalarValueResidual = rcV;
 modelResidualsList[0].scalarGradResidual = rcxV;
 
-modelResidualsList[1].scalarValueResidual = rn1V + nucleation_source_term;
+modelResidualsList[1].scalarValueResidual = rn1V + nucleation_source_term1;
 modelResidualsList[1].scalarGradResidual = rn1xV;
-modelResidualsList[2].scalarValueResidual = rn2V;
+modelResidualsList[2].scalarValueResidual = rn2V + nucleation_source_term2;
 modelResidualsList[2].scalarGradResidual = rn2xV;
-modelResidualsList[3].scalarValueResidual = rn3V;
+modelResidualsList[3].scalarValueResidual = rn3V + nucleation_source_term3;
 modelResidualsList[3].scalarGradResidual = rn3xV;
 
 modelResidualsList[4].vectorGradResidual = ruxV;
