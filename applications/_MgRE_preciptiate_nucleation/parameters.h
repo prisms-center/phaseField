@@ -4,27 +4,27 @@
 // =================================================================================
 // Set the number of dimensions (1, 2, or 3 for a 1D, 2D, or 3D calculation)
 // =================================================================================
-#define problemDIM 2
+#define problemDIM 3
 
 // =================================================================================
 // Set the length of the domain in all three dimensions
 // =================================================================================
 // Each axes spans from zero to the specified length
-#define scaleFactor 1.0
+#define scaleFactor 2.0
 
-#define spanX (80.0*scaleFactor)
-#define spanY (80.0*scaleFactor)
-#define spanZ (80.0*scaleFactor)
+#define spanX (90.0*scaleFactor)
+#define spanY (90.0*scaleFactor)
+#define spanZ (90.0*scaleFactor)
 
 // =================================================================================
 // Set the element parameters
 // =================================================================================
 // The number of elements in each direction is 2^(refineFactor) * subdivisions
 // For optimal performance, use refineFactor primarily to determine the element size
-#define subdivisionsX 1 //10
-#define subdivisionsY 1 //10
+#define subdivisionsX 4 //10
+#define subdivisionsY 4 //10
 #define subdivisionsZ 1 //5
-#define refineFactor 5 //6
+#define refineFactor 3 //6
 
 // Set the polynomial degree of the element (suggested values: 1 or 2)
 #define finiteElementDegree 2
@@ -55,7 +55,7 @@
 // =================================================================================
 // The size of the time step
 #define timeStep (2.0e-4*scaleFactor*scaleFactor) //1.1e-4*scaleFactor*scaleFactor
-#define timeIncrements 1000000 //1000000 //5000000
+#define timeIncrements 10000000 //1000000 //5000000
 #define timeFinal (timeStep*timeIncrements)
 
 
@@ -87,7 +87,7 @@
 
 // Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 // and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-#define numOutputs 200
+#define numOutputs 100
 
 // User-defined list of time steps where the program should output. Only used if
 // outputCondition is "LIST"
