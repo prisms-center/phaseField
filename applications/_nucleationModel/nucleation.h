@@ -184,6 +184,8 @@ void customPDE<dim,degree>::safetyCheckNewNuclei(std::vector<nucleus<dim>> newnu
                         if (var_value2[q_point] > 0.1){
                             isClose=true;
                             std::cout << "Attempted nucleation failed due to overlap w/ existing particle!!!!!!"  << std::endl;
+                            std::cout << "Nucleus index " << thisNuclei->index << std::endl;
+                            std::cout << "Nucleus center " << thisNuclei->center << std::endl;
                             conflict_inds.push_back(thisNuclei->index);
                             break;
                         }
@@ -281,30 +283,30 @@ template <int dim, int degree>
 void customPDE<dim,degree>::getNucleiList()
 {
     if ( this->currentIncrement % skipNucleationSteps == 0 ){
-
-		// Declare alize vector of all the NEW nuclei seeded in this time step
-		std::vector<nucleus<dim>> newnuclei;
-
-		// Get list of prospective new nuclei for the local processor
-		this->pcout << "Nucleation attempt for increment " << this->currentIncrement << std::endl;
-		getLocalNucleiList(newnuclei);
-
-		// Generate global list of new nuclei and resolve conflicts between new nuclei
-		parallelNucleationList<dim> new_nuclei_parallel(newnuclei);
-		newnuclei = new_nuclei_parallel.buildGlobalNucleiList(minDistBetweenNuclei, nuclei.size());
         
-    	// Final check to resolve overlap conflicts with existing precipitates
+        // Declare alize vector of all the NEW nuclei seeded in this time step
+        std::vector<nucleus<dim>> newnuclei;
+        
+        // Get list of prospective new nuclei for the local processor
+        this->pcout << "Nucleation attempt for increment " << this->currentIncrement << std::endl;
+        getLocalNucleiList(newnuclei);
+        
+        // Generate global list of new nuclei and resolve conflicts between new nuclei
+        parallelNucleationList<dim> new_nuclei_parallel(newnuclei);
+        newnuclei = new_nuclei_parallel.buildGlobalNucleiList(minDistBetweenNuclei, nuclei.size());
+        
+        // Final check to resolve overlap conflicts with existing precipitates
         std::vector<unsigned int> conflict_inds;
- 		safetyCheckNewNuclei(newnuclei, conflict_inds);
-
- 		newnuclei = new_nuclei_parallel.removeSubsetOfNuclei(conflict_inds);
-
+        safetyCheckNewNuclei(newnuclei, conflict_inds);
+        
+        newnuclei = new_nuclei_parallel.removeSubsetOfNuclei(conflict_inds, nuclei.size());
+        
         // Add the new nuclei to the list of nuclei
         nuclei.insert(nuclei.end(),newnuclei.begin(),newnuclei.end());
-
+        
         // Refine mesh near the new nuclei
         if (newnuclei.size() > 0 && this->userInputs.h_adaptivity == true){
-        	refineMeshNearNuclei(newnuclei);
+            refineMeshNearNuclei(newnuclei);
         }
     }
 }

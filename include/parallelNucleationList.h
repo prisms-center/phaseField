@@ -16,7 +16,7 @@ class parallelNucleationList
 public:
 	parallelNucleationList(std::vector<nucleus<dim>> _newnuclei);
 	std::vector<nucleus<dim>> buildGlobalNucleiList(double min_dist_between_nuclei, unsigned int old_num_nuclei);
-	std::vector<nucleus<dim>> removeSubsetOfNuclei(std::vector<unsigned int> nuclei_to_remove);
+	std::vector<nucleus<dim>> removeSubsetOfNuclei(std::vector<unsigned int> nuclei_to_remove, unsigned int nuclei_size);
 
 protected:
 	void sendUpdate (int procno) const;

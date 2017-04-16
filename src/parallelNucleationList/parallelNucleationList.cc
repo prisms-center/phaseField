@@ -332,7 +332,7 @@ void parallelNucleationList<dim>::resolveNucleationConflicts (double min_dist_be
 // Remove nuclei from the list of nuclei given a local list of nucleus indices
 // =================================================================================
 template <int dim>
-std::vector<nucleus<dim>> parallelNucleationList<dim>::removeSubsetOfNuclei(std::vector<unsigned int> nuclei_to_remove){
+std::vector<nucleus<dim>> parallelNucleationList<dim>::removeSubsetOfNuclei(std::vector<unsigned int> nuclei_to_remove, unsigned int nuclei_size){
 	// Note: This method is very similar to buildGlobalNucleiList in structure, and uses simplified versions of what is done
 	// in sendUpdate, receiveUpdate, and broadcastUpdate. There is likely a cleaner way to reorganize the methods to reduce
 	// duplication.
@@ -381,7 +381,7 @@ std::vector<nucleus<dim>> parallelNucleationList<dim>::removeSubsetOfNuclei(std:
 	for (unsigned int nuc = 0; nuc <  newnuclei.size(); nuc++){
 		bool pruneNucleus = false;
 		for (unsigned int i = 0; i < nuclei_to_remove.size(); i++){
-			if (i == nuc){
+			if (nuclei_to_remove[i] == nuclei_size+nuc){
 				pruneNucleus = true;
 				break;
 			}
