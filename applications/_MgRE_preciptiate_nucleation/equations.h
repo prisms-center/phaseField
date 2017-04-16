@@ -182,11 +182,11 @@ double B0 = 0.0818875;
 // =================================================================================
 
 // Nucleation radius (order parameter)
-#define semiaxis_a 2.0
-#define semiaxis_b 2.0
-#define semiaxis_c 5.0
+#define semiaxis_a 2.0*scaleFactor
+#define semiaxis_b 2.0*scaleFactor
+#define semiaxis_c 10.0*scaleFactor
 
-#define interface_coeff 0.2
+#define interface_coeff 0.2*scaleFactor
 
 // Hold time for order parameter
 #define t_hold 5.0
@@ -199,7 +199,7 @@ double B0 = 0.0818875;
 #define maxOrderParameterNucleation 0.01
 
 // Number of time steps between nucleation attempts
-#define skipNucleationSteps (500)
+#define skipNucleationSteps (1000)
 
 // radius for order parameter hold
 std::vector<double> opfreeze_semiaxes {1.5*semiaxis_a,1.5*semiaxis_b,1.5*semiaxis_c};
@@ -208,8 +208,9 @@ std::vector<double> opfreeze_semiaxes {1.5*semiaxis_a,1.5*semiaxis_b,1.5*semiaxi
 #define borderreg (2.0*semiaxis_a)
 
 // Constants k1 and k2 for nucleation rate in the bulk
-#define k1 (25.0)
-#define k2 0.25
+#define k1 (7.7e-14)
+#define k2 4.01e-4
+#define tau 752.0e3
 
 
 
