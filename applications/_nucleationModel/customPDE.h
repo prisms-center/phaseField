@@ -47,19 +47,19 @@ private:
 	// ----------------------------------------------------------------
 
 	// Function to determine where new nuclei are seeded, varies between applications unless generalized, accesses MatrixFreePDE members
-	void getLocalNucleiList(std::vector<nucleus<dim>> &newnuclei) const;
+	void getLocalNucleiList(std::vector<nucleus<dim> > &newnuclei) const;
 
 	// Contains nucleation probability that varies between applications, no MatrixFreePDE member access
 	double nucProb(double cValue, double dV) const;
 	
     //Contains safety check to ensure that no new nuclei from complete prospective list overlap with existing precipitates
-    void safetyCheckNewNuclei(std::vector<nucleus<dim>> newnuclei, std::vector<unsigned int> &conflict_inds);
+    void safetyCheckNewNuclei(std::vector<nucleus<dim> > newnuclei, std::vector<unsigned int> &conflict_inds);
 
 	// Function to refine the mesh near the new nuclei, generic, accesses and modifies MatrixFreePDE members
-	void refineMeshNearNuclei(std::vector<nucleus<dim>> newnuclei);
+	void refineMeshNearNuclei(std::vector<nucleus<dim> > newnuclei);
 
 	// Vector of all the nuclei seeded in the problem
-	std::vector<nucleus<dim>> nuclei;
+	std::vector<nucleus<dim> > nuclei;
 };
 
 #endif /* APPLICATIONS_ALLENCAHN_CUSTOMPDE_H_ */

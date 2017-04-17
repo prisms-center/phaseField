@@ -5,13 +5,13 @@
 // Constructor
 // =================================================================================
 template <int dim>
-parallelNucleationList<dim>::parallelNucleationList (std::vector<nucleus<dim>> _newnuclei): newnuclei(_newnuclei) {}
+parallelNucleationList<dim>::parallelNucleationList (std::vector<nucleus<dim> > _newnuclei): newnuclei(_newnuclei) {}
 
 // =================================================================================
 // Generate global list of new nuclei and resolve conflicts between new nuclei
 // =================================================================================
 template <int dim>
-std::vector<nucleus<dim>> parallelNucleationList<dim>::buildGlobalNucleiList(double min_dist_between_nuclei, unsigned int old_num_nuclei)
+std::vector<nucleus<dim> > parallelNucleationList<dim>::buildGlobalNucleiList(double min_dist_between_nuclei, unsigned int old_num_nuclei)
 {
 	//MPI INITIALIZATON
 	int numProcs=dealii::Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
@@ -78,7 +78,7 @@ void parallelNucleationList<dim>::sendUpdate (int procno) const
         std::vector<unsigned int> s_orderParameterIndex;
 
         //Loop to store info of all nuclei into vectors
-        for (typename std::vector<nucleus<dim>>::const_iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
+        for (typename std::vector<nucleus<dim> >::const_iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
             s_index.push_back(thisNuclei->index);
             dealii::Point<dim> s_center=thisNuclei->center;
             s_center_x.push_back(s_center[0]);
@@ -232,7 +232,7 @@ void parallelNucleationList<dim>::broadcastUpdate (int broadcastProc, int thisPr
         std::vector<unsigned int> r_orderParameterIndex(initial_vec_size,0);
 
         if (thisProc == broadcastProc){
-        	for (typename std::vector<nucleus<dim>>::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
+        	for (typename std::vector<nucleus<dim> >::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
         		r_index.push_back(thisNuclei->index);
         		dealii::Point<dim> s_center=thisNuclei->center;
         		r_center_x.push_back(s_center[0]);
@@ -302,7 +302,7 @@ void parallelNucleationList<dim>::broadcastUpdate (int broadcastProc, int thisPr
 template <int dim>
 void parallelNucleationList<dim>::resolveNucleationConflicts (double min_dist_between_nuclei, unsigned int old_num_nuclei)
 {
-	std::vector<nucleus<dim>> newnuclei_cleaned;
+	std::vector<nucleus<dim> > newnuclei_cleaned;
 
 	for (unsigned int nuc_index=0; nuc_index<newnuclei.size(); nuc_index++){
 		bool isClose=false;
@@ -332,7 +332,7 @@ void parallelNucleationList<dim>::resolveNucleationConflicts (double min_dist_be
 // Remove nuclei from the list of nuclei given a local list of nucleus indices
 // =================================================================================
 template <int dim>
-std::vector<nucleus<dim>> parallelNucleationList<dim>::removeSubsetOfNuclei(std::vector<unsigned int> nuclei_to_remove, unsigned int nuclei_size){
+std::vector<nucleus<dim> > parallelNucleationList<dim>::removeSubsetOfNuclei(std::vector<unsigned int> nuclei_to_remove, unsigned int nuclei_size){
 	// Note: This method is very similar to buildGlobalNucleiList in structure, and uses simplified versions of what is done
 	// in sendUpdate, receiveUpdate, and broadcastUpdate. There is likely a cleaner way to reorganize the methods to reduce
 	// duplication.
@@ -377,7 +377,7 @@ std::vector<nucleus<dim>> parallelNucleationList<dim>::removeSubsetOfNuclei(std:
 	}
 
 	// Remove the nuclei from the list
-	std::vector<nucleus<dim>> pruned_list;
+	std::vector<nucleus<dim> > pruned_list;
 	for (unsigned int nuc = 0; nuc <  newnuclei.size(); nuc++){
 		bool pruneNucleus = false;
 		for (unsigned int i = 0; i < nuclei_to_remove.size(); i++){

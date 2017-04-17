@@ -21,10 +21,10 @@
 // =================================================================================
 // The number of elements in each direction is 2^(refineFactor) * subdivisions
 // For optimal performance, use refineFactor primarily to determine the element size
-#define subdivisionsX 4 //10
-#define subdivisionsY 4 //10
-#define subdivisionsZ 1 //5
-#define refineFactor 3 //6
+#define subdivisionsX 4
+#define subdivisionsY 4
+#define subdivisionsZ 1
+#define refineFactor 3
 
 // Set the polynomial degree of the element (suggested values: 1 or 2)
 #define finiteElementDegree 2
@@ -37,7 +37,7 @@
 
 // Set the maximum and minimum level of refinement
 #define maxRefinementLevel (refineFactor+4)
-#define minRefinementLevel (2)
+#define minRefinementLevel (1)
 
 // Set the fields used to determine the refinement. Fields determined by the order
 // declared in "equations.h", starting at zero
@@ -55,7 +55,7 @@
 // =================================================================================
 // The size of the time step
 #define timeStep (2.0e-4*scaleFactor*scaleFactor) //1.1e-4*scaleFactor*scaleFactor
-#define timeIncrements 10000000 //1000000 //5000000
+#define timeIncrements 55000000
 #define timeFinal (timeStep*timeIncrements)
 
 
