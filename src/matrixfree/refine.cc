@@ -58,7 +58,7 @@ void MatrixFreePDE<dim,degree>::adaptiveRefineCriterion(){
 std::vector<std::vector<double> > errorOutV;
 
 
-QGauss<dim>  quadrature(degree+1);
+QGaussLobatto<dim>  quadrature(degree+1);
 FEValues<dim> fe_values (*FESet[userInputs.refine_criterion_fields[0]], quadrature, update_values);
 const unsigned int   num_quad_points = quadrature.size();
 
