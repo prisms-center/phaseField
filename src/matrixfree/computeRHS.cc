@@ -28,8 +28,8 @@ void MatrixFreePDE<dim,degree>::getRHS(const MatrixFree<dim,double> &data,
 
 
   //initialize FEEvaulation objects
-  std::vector<dealii::FEEvaluation<dim,degree,degree+1,1,double>> scalar_vars;
-  std::vector<dealii::FEEvaluation<dim,degree,degree+1,dim,double>> vector_vars;
+  std::vector<dealii::FEEvaluation<dim,degree,degree+1,1,double> > scalar_vars;
+  std::vector<dealii::FEEvaluation<dim,degree,degree+1,dim,double> > vector_vars;
 
   for (unsigned int i=0; i<userInputs.number_of_variables; i++){
 	  if (userInputs.varInfoListRHS[i].is_scalar){

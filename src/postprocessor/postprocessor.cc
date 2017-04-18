@@ -29,10 +29,10 @@ void PostProcessor<dim,degree>::getPostProcessedFields(const MatrixFree<dim,doub
 		const std::pair<unsigned int,unsigned int> &cell_range){
 
 	//initialize FEEvaulation objects
-	std::vector<dealii::FEEvaluation<dim,degree,degree+1,1,double>> scalar_vars;
-	std::vector<dealii::FEEvaluation<dim,degree,degree+1,dim,double>> vector_vars;
-	std::vector<dealii::FEEvaluation<dim,degree,degree+1,1,double>> pp_scalar_vars;
-	std::vector<dealii::FEEvaluation<dim,degree,degree+1,dim,double>> pp_vector_vars;
+	std::vector<dealii::FEEvaluation<dim,degree,degree+1,1,double> > scalar_vars;
+	std::vector<dealii::FEEvaluation<dim,degree,degree+1,dim,double> > vector_vars;
+	std::vector<dealii::FEEvaluation<dim,degree,degree+1,1,double> > pp_scalar_vars;
+	std::vector<dealii::FEEvaluation<dim,degree,degree+1,dim,double> > pp_vector_vars;
 
 	for (unsigned int i=0; i<userInputs.pp_number_of_variables; i++){
 		if (userInputs.pp_varInfoList[i].is_scalar){
