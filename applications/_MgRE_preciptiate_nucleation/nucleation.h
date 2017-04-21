@@ -305,9 +305,9 @@ void customPDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim> > newn
 template <int dim, int degree>
 void customPDE<dim,degree>::getNucleiList()
 {
-    if ( this->currentIncrement % skipNucleationSteps == 0 ){
+    if ( this->currentIncrement % skipNucleationSteps == 0){
 
-		// Declare alize vector of all the NEW nuclei seeded in this time step
+		// Declare a vector of all the NEW nuclei seeded in this time step
 		std::vector<nucleus<dim> > newnuclei;
 
 		// Get list of prospective new nuclei for the local processor
@@ -319,6 +319,15 @@ void customPDE<dim,degree>::getNucleiList()
 		order_parameter_list.push_back(2);
 		order_parameter_list.push_back(3);
 		getLocalNucleiList(newnuclei,order_parameter_list,other_var_list);
+
+		if (this->currentIncrement == 1){
+			this->pcout << "newnuclei size " << newnuclei.size() << std::endl;
+			while (newnuclei.size() == 0){
+				getLocalNucleiList(newnuclei,order_parameter_list,other_var_list);
+				this->currentTime+=this->userInputs.dtValue*(double)skipNucleationSteps;
+				this->pcout << "nucleation attempt! " << this->currentTime << std::endl;
+			}
+		}
 
 		// Generate global list of new nuclei and resolve conflicts between new nuclei
 		parallelNucleationList<dim> new_nuclei_parallel(newnuclei);
@@ -338,4 +347,53 @@ void customPDE<dim,degree>::getNucleiList()
         	refineMeshNearNuclei(newnuclei);
         }
     }
+    else if (this->currentIncrement == 1){
+    	// Declare a vector of all the NEW nuclei seeded in this time step
+    	std::vector<nucleus<dim> > newnuclei;
+
+    	// Get list of prospective new nuclei for the local processor
+    	this->pcout << "Nucleation attempt for increment " << this->currentIncrement << std::endl;
+    	std::vector<unsigned int> order_parameter_list;
+    	std::vector<unsigned int> other_var_list;
+    	other_var_list.push_back(0);
+    	order_parameter_list.push_back(1);
+    	order_parameter_list.push_back(2);
+    	order_parameter_list.push_back(3);
+
+    	if (this->currentIncrement == 1){
+    		this->pcout << "newnuclei size " << newnuclei.size() << std::endl;
+    		while (newnuclei.size() == 0){
+    			this->currentTime+=this->userInputs.dtValue*(double)skipNucleationSteps;
+    			this->currentIncrement+=skipNucleationSteps;
+
+    			while (this->outputTimeStepList.size() > 0 && this->outputTimeStepList[0] < this->currentIncrement){
+    				this->outputTimeStepList.erase(this->outputTimeStepList.begin());
+    			}
+
+    			getLocalNucleiList(newnuclei,order_parameter_list,other_var_list);
+    			this->pcout << "nucleation attempt! " << this->currentTime << " " << this->currentIncrement << std::endl;
+
+
+    			// Generate global list of new nuclei and resolve conflicts between new nuclei
+    			parallelNucleationList<dim> new_nuclei_parallel(newnuclei);
+    			newnuclei = new_nuclei_parallel.buildGlobalNucleiList(minDistBetweenNuclei, nuclei.size());
+
+    			// Final check to resolve overlap conflicts with existing precipitates
+    			std::vector<unsigned int> conflict_inds;
+    			safetyCheckNewNuclei(newnuclei, order_parameter_list, conflict_inds);
+
+    			newnuclei = new_nuclei_parallel.removeSubsetOfNuclei(conflict_inds, nuclei.size());
+
+    		}
+    	}
+
+    	// Add the new nuclei to the list of nuclei
+    	nuclei.insert(nuclei.end(),newnuclei.begin(),newnuclei.end());
+
+    	// Refine mesh near the new nuclei
+    	if (newnuclei.size() > 0 && this->userInputs.h_adaptivity == true){
+    		refineMeshNearNuclei(newnuclei);
+    	}
+    }
+
 }

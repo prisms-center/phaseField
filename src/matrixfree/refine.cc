@@ -72,12 +72,9 @@ for (;cell!=endc; ++cell){
 	if (cell->is_locally_owned()){
 		fe_values.reinit (cell);
 
-
-
 		for (unsigned int field_index=0; field_index<userInputs.refine_criterion_fields.size(); field_index++){
 			fe_values.get_function_values(*solutionSet[userInputs.refine_criterion_fields[field_index]], errorOut);
 			errorOutV.push_back(errorOut);
-			pcout << errorOut[0] << std::endl;
 		}
 
 		bool mark_refine = false;
@@ -95,8 +92,6 @@ for (;cell!=endc; ++cell){
 
 		//limit the maximal and minimal refinement depth of the mesh
 		unsigned int current_level = t_cell->level();
-
-		pcout << "Mark refine: " << mark_refine << " Current level: " << t_cell->level() << "Max level: " << userInputs.max_refinement_level << " Min level: " <<  userInputs.min_refinement_level <<std::endl;
 
 		if ( (mark_refine && current_level < userInputs.max_refinement_level) ){
 			cell->set_refine_flag();

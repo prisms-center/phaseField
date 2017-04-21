@@ -45,11 +45,11 @@ template <int dim>
 
 	if (index==0){
 		scalar_IC = c_matrix;
-		scalar_IC = 0.5*(c_precip-c_matrix)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + c_matrix;
+		//scalar_IC = 0.5*(c_precip-c_matrix)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + c_matrix;
 	}
 	else if (index == 1){
 		scalar_IC = 0.0;
-		scalar_IC = 0.5*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff)));
+		//scalar_IC = 0.5*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff)));
 
 	}
 	else if (index==2||index==3){

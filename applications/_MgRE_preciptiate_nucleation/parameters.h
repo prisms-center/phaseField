@@ -4,7 +4,7 @@
 // =================================================================================
 // Set the number of dimensions (1, 2, or 3 for a 1D, 2D, or 3D calculation)
 // =================================================================================
-#define problemDIM 3
+#define problemDIM 2
 
 // =================================================================================
 // Set the length of the domain in all three dimensions
@@ -23,7 +23,7 @@
 #define subdivisionsX 4
 #define subdivisionsY 4
 #define subdivisionsZ 1
-#define refineFactor 1
+#define refineFactor 0
 
 // Set the polynomial degree of the element (suggested values: 1 or 2)
 #define finiteElementDegree 2
@@ -36,7 +36,7 @@
 
 // Set the maximum and minimum level of refinement
 #define maxRefinementLevel (refineFactor+7)
-#define minRefinementLevel (1)
+#define minRefinementLevel (0)
 
 // Set the fields used to determine the refinement. Fields determined by the order
 // declared in "equations.h", starting at zero
@@ -47,14 +47,14 @@
 #define refineWindowMin {0.01,0.01,0.01}
 
 // Set the number of time steps between remeshing operations
-#define skipRemeshingSteps 5000
+#define skipRemeshingSteps 2500
 
 // =================================================================================
 // Set the time step parameters
 // =================================================================================
 // The size of the time step
-#define timeStep (9.0e-4*scaleFactor*scaleFactor) //1.1e-4*scaleFactor*scaleFactor
-#define timeIncrements 1000 //4800000 //55000000
+#define timeStep (8.0e-4*scaleFactor*scaleFactor) //1.1e-4*scaleFactor*scaleFactor
+#define timeIncrements 200000 //4800000 //55000000
 #define timeFinal (timeStep*timeIncrements)
 
 
@@ -86,13 +86,13 @@
 
 // Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 // and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-#define numOutputs 10
+#define numOutputs 20
 
 // User-defined list of time steps where the program should output. Only used if
 // outputCondition is "LIST"
 #define outputList {0}
 
-#define skipPrintSteps 1 //1000
+#define skipPrintSteps 1000
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output

@@ -204,7 +204,7 @@ std::vector<double> opfreeze_semiaxes {3.0*semiaxis_a,3.0*semiaxis_b,3.0*semiaxi
 #define borderreg (2.0*semiaxis_a)
 
 // Constants k1 and k2 for nucleation rate in the bulk
-#define k1 (8.39e-11*10.0)
+#define k1 (8.39e-11*1000.0)
 #define k2 4.01e-4
 #define tau (7523.0*0.0)
 
