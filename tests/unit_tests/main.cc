@@ -3,8 +3,8 @@
 
 #include <iostream>
 #include "unitTest.h"
-#include "../../include/loadInputs.h"
-#include "../../src/loadInputs/loadInputs.cc"
+#include "../../include/userInputParameters.h"
+#include "../../src/userInputParameters/loadUserInputs.cc"
 #include "../../include/vectorBCFunction.h"
 #include "../../src/utilities/vectorBCFunction.cc"
 #include "../../include/initialConditions.h"
@@ -16,7 +16,7 @@ int main(int argc, char **argv)
   Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, numbers::invalid_unsigned_int);
 
   // Load input
-  userInputParameters userInputs;
+  userInputParameters<problemDIM> userInputs;
   userInputs.loadUserInput();
 
   std::cout << "Beginning unit tests..." << std::endl;

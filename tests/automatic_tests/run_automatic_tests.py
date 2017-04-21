@@ -60,9 +60,9 @@ def run_simulation(run_name,dir_path):
 	
 	# Compile and run
 	subprocess.call(["cmake", "."],stdout=f,stderr=f)
-	subprocess.call(["make", "release","-j2"],stdout=f)
+	subprocess.call(["make", "release","-j1"],stdout=f)
 	start = time.time()
-	subprocess.call(["mpirun", "-n", "2", "main"],stdout=f)
+	subprocess.call(["mpirun", "-n", "1", "main"],stdout=f)
 	end = time.time()
 	f.close()
 
@@ -202,8 +202,11 @@ text_file.write("Regression test on " + now.strftime("%Y-%m-%d %H:%M") + "\n")
 text_file.write("--------------------------------------------------------- \n")
 text_file.close()
 
-applicationList = ["allenCahn","cahnHilliard","cahnHilliardWithAdaptivity","CHAC_anisotropy","CHAC_anisotropyRegularized","coupledCahnHilliardAllenCahn","mechanics","precipitateEvolution"]
-getNewGoldStandardList = [False, False, False, False, False, False, False, False]
+#applicationList = ["allenCahn","cahnHilliard","cahnHilliardWithAdaptivity","CHAC_anisotropy","CHAC_anisotropyRegularized","coupledCahnHilliardAllenCahn","mechanics","precipitateEvolution"]
+#getNewGoldStandardList = [False, False, False, False, False, False, False, False]
+# Shorter list of applications so that it completes on Travis
+applicationList = ["allenCahn","cahnHilliard","cahnHilliardWithAdaptivity","CHAC_anisotropyRegularized","coupledCahnHilliardAllenCahn","mechanics","precipitateEvolution"]
+getNewGoldStandardList = [False, False, False, False, False, False, False]
 
 for applicationName in applicationList:
 	test_result = run_regression_test(applicationName,getNewGoldStandardList[regression_test_counter],dir_path)	

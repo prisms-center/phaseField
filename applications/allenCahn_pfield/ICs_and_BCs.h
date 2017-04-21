@@ -39,14 +39,12 @@ template <int dim>
 	  for (unsigned int i=0; i<12; i++){
 		  #if problemDIM == 2
 		  	  dist = p.distance(Point<dim>(x_loc[i]*spanX,y_loc[i]*spanY));
-		  #elif problemDIM == 3
+	   	  #elif problemDIM == 3
 		  	  dist = p.distance(Point<dim>(x_loc[i]*spanX,y_loc[i]*spanY,0.5*spanZ));
-          #endif
-		  if (dist < rad[i]){
-			  scalar_IC = 1.0;
-		  }
-
+		  #endif
+		  scalar_IC +=	0.5*(1.0-std::tanh((dist-rad[i])/1.5));
 	  }
+	  if (scalar_IC > 1.0) scalar_IC = 1.0;
 
 	  // =====================================================================
 	  return scalar_IC;

@@ -4,7 +4,7 @@ class getOutputTimeStepsTest: public MatrixFreePDE<dim,degree>
 {
 	public:
 	std::vector<unsigned int> outputTimeStepList_public;
-	getOutputTimeStepsTest(userInputParameters _userInputs): MatrixFreePDE<dim,degree>(_userInputs){
+	getOutputTimeStepsTest(userInputParameters<dim> _userInputs): MatrixFreePDE<dim,degree>(_userInputs){
 	};
 
 
@@ -37,7 +37,7 @@ class getOutputTimeStepsTest: public MatrixFreePDE<dim,degree>
 };
 
 template <int dim,typename T>
-bool unitTest<dim,T>::test_getOutputTimeSteps(std::string outputSpacingType, unsigned int numberOfOutputs, std::vector<unsigned int> userGivenTimeStepList, userInputParameters userInputs){
+bool unitTest<dim,T>::test_getOutputTimeSteps(std::string outputSpacingType, unsigned int numberOfOutputs, std::vector<unsigned int> userGivenTimeStepList, userInputParameters<dim> userInputs){
 	bool pass = true;
 	std::cout << "\nTesting 'getOutputTimeSteps' for type " << outputSpacingType << " ...'" << std::endl;
 

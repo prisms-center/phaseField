@@ -10,11 +10,10 @@
 // Set the length of the domain in all three dimensions
 // =================================================================================
 // Each axes spans from zero to the specified length
-#define scaleFactor 2.0
-
-#define spanX (90.0*scaleFactor)
-#define spanY (90.0*scaleFactor)
-#define spanZ (90.0*scaleFactor)
+#define scaleFactor 1.0
+#define spanX (180.0*scaleFactor)
+#define spanY (180.0*scaleFactor)
+#define spanZ (180.0*scaleFactor)
 
 // =================================================================================
 // Set the element parameters
@@ -24,7 +23,7 @@
 #define subdivisionsX 4
 #define subdivisionsY 4
 #define subdivisionsZ 1
-#define refineFactor 3
+#define refineFactor 1
 
 // Set the polynomial degree of the element (suggested values: 1 or 2)
 #define finiteElementDegree 2
@@ -36,7 +35,7 @@
 #define hAdaptivity true
 
 // Set the maximum and minimum level of refinement
-#define maxRefinementLevel (refineFactor+4)
+#define maxRefinementLevel (refineFactor+7)
 #define minRefinementLevel (1)
 
 // Set the fields used to determine the refinement. Fields determined by the order
@@ -45,17 +44,17 @@
 
 // Set the maximum and minimum value of the fields where the mesh should be refined
 #define refineWindowMax {0.99,0.99,0.99}
-#define refineWindowMin {0.001,0.001,0.001}
+#define refineWindowMin {0.01,0.01,0.01}
 
 // Set the number of time steps between remeshing operations
-#define skipRemeshingSteps 1000
+#define skipRemeshingSteps 5000
 
 // =================================================================================
 // Set the time step parameters
 // =================================================================================
 // The size of the time step
-#define timeStep (2.0e-4*scaleFactor*scaleFactor) //1.1e-4*scaleFactor*scaleFactor
-#define timeIncrements 55000000
+#define timeStep (9.0e-4*scaleFactor*scaleFactor) //1.1e-4*scaleFactor*scaleFactor
+#define timeIncrements 1000 //4800000 //55000000
 #define timeFinal (timeStep*timeIncrements)
 
 
@@ -70,7 +69,7 @@
 #define absTol true
 
 // The tolerance for convergence (L2 norm of the residual)
-#define solverTolerance 1.0e-1
+#define solverTolerance 4.0e-1
 
 // The maximum number of solver iterations per time step
 #define maxSolverIterations 10000
@@ -87,13 +86,13 @@
 
 // Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 // and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-#define numOutputs 100
+#define numOutputs 10
 
 // User-defined list of time steps where the program should output. Only used if
 // outputCondition is "LIST"
 #define outputList {0}
 
-#define skipPrintSteps 1000
+#define skipPrintSteps 1 //1000
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output

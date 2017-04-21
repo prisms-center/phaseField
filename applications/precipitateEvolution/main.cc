@@ -1,4 +1,5 @@
 // Precipitate evolution example application
+
 // Header files
 #include "parameters.h"
 #include "../../include/dealIIheaders.h"
@@ -23,7 +24,7 @@ int main (int argc, char **argv)
     {
 	  deallog.depth_console(0);
 
-	  userInputParameters userInputs;
+	  userInputParameters<problemDIM> userInputs;
 	  userInputs.loadUserInput();
 
 	  customPDE<problemDIM,finiteElementDegree> problem(userInputs);

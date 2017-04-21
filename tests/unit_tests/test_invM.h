@@ -3,7 +3,7 @@ template <int dim, int degree>
 class testInvM: public MatrixFreePDE<dim,degree>
 {
  public: 
-  testInvM(userInputParameters _userInputs): MatrixFreePDE<dim,degree>(_userInputs) {
+  testInvM(userInputParameters<dim> _userInputs): MatrixFreePDE<dim,degree>(_userInputs) {
 
 	  // Initialize the test field object (needed for computeInvM())
 	  Field<problemDIM> test_field(SCALAR,PARABOLIC,"c");
@@ -44,7 +44,7 @@ class testInvM: public MatrixFreePDE<dim,degree>
 };
 
 template <int dim,typename T>
-  bool unitTest<dim,T>::test_computeInvM(int argc, char** argv, userInputParameters userInputs){
+  bool unitTest<dim,T>::test_computeInvM(int argc, char** argv, userInputParameters<dim> userInputs){
   	bool pass = false;
 	std::cout << "\nTesting 'computeInvM' in " << dim << " dimension(s)...'" << std::endl;
  

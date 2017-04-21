@@ -36,11 +36,11 @@ void PostProcessor<dim,degree>::getPostProcessedFields(const MatrixFree<dim,doub
 
 	for (unsigned int i=0; i<userInputs.pp_number_of_variables; i++){
 		if (userInputs.pp_varInfoList[i].is_scalar){
-			dealii::FEEvaluation<dim,degree,degree+1,1,double> var(data, i);
+			dealii::FEEvaluation<dim,degree,degree+1,1,double> var(data, 0);
 			pp_scalar_vars.push_back(var);
 		}
 		else {
-			dealii::FEEvaluation<dim,degree,degree+1,dim,double> var(data, i);
+			dealii::FEEvaluation<dim,degree,degree+1,dim,double> var(data, 0);
 			pp_vector_vars.push_back(var);
 		}
 	}

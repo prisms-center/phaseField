@@ -58,7 +58,7 @@ void MatrixFreePDE<dim,degree>::adaptiveRefineCriterion(){
 std::vector<std::vector<double> > errorOutV;
 
 
-QGauss<dim>  quadrature(degree+1);
+QGaussLobatto<dim>  quadrature(degree+1);
 FEValues<dim> fe_values (*FESet[userInputs.refine_criterion_fields[0]], quadrature, update_values);
 const unsigned int   num_quad_points = quadrature.size();
 
@@ -77,6 +77,7 @@ for (;cell!=endc; ++cell){
 		for (unsigned int field_index=0; field_index<userInputs.refine_criterion_fields.size(); field_index++){
 			fe_values.get_function_values(*solutionSet[userInputs.refine_criterion_fields[field_index]], errorOut);
 			errorOutV.push_back(errorOut);
+			pcout << errorOut[0] << std::endl;
 		}
 
 		bool mark_refine = false;
@@ -94,6 +95,8 @@ for (;cell!=endc; ++cell){
 
 		//limit the maximal and minimal refinement depth of the mesh
 		unsigned int current_level = t_cell->level();
+
+		pcout << "Mark refine: " << mark_refine << " Current level: " << t_cell->level() << "Max level: " << userInputs.max_refinement_level << " Min level: " <<  userInputs.min_refinement_level <<std::endl;
 
 		if ( (mark_refine && current_level < userInputs.max_refinement_level) ){
 			cell->set_refine_flag();

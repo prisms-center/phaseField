@@ -9,7 +9,7 @@
 // Flags for whether the value, gradient, and Hessian are needed in the residual eqns
 #define need_val {true, true, true, true, false}
 #define need_grad {true, true, true, true, true}
-#define need_hess {false, false, false, false, true}
+#define need_hess {false, false, false, false, false}
 
 // Flags for whether the residual equation has a term multiplied by the test function
 // (need_val_residual) and/or the gradient of the test function (need_grad_residual)
@@ -40,17 +40,17 @@
 #define McV 1.0
 
 // Allen-Cahn mobilities
-#define Mn1V (75.0/scaleFactor)
-#define Mn2V (75.0/scaleFactor)
-#define Mn3V (75.0/scaleFactor)
+#define Mn1V (75.0/scaleFactor*1.75)
+#define Mn2V (75.0/scaleFactor*1.75)
+#define Mn3V (75.0/scaleFactor*1.75)
 
 // Gradient energy coefficients
 //double Kn1[3][3]={{0.01141*scaleFactor,0,0},{0,0.01426*scaleFactor,0},{0,0,0.004326*scaleFactor}}; // Scaled KKS B'''
 double Kn1[3][3]={{0.0318*scaleFactor/1.5,0,0},{0,6.7347e-4*scaleFactor/1.5,0},{0,0,0.0269*scaleFactor/1.5}}; // Scaled KKS B' Mg-Y
 //double Kn1[3][3]={{0.01141*scaleFactor,0,0},{0,0.01141*scaleFactor,0},{0,0,0.01141*scaleFactor}}; // Isotropic interfacial energy
 
-double Kn2[3][3]={{0.008455*scaleFactor,-0.01348*scaleFactor,0},{-0.01348*scaleFactor,0.02402*scaleFactor,0},{0,0,0.0269*scaleFactor}}; // Scaled KKS B'''
-double Kn3[3][3]={{0.008455*scaleFactor,0.01348*scaleFactor,0},{0.01348*scaleFactor,0.02402*scaleFactor,0},{0,0,0.0269*scaleFactor}}; // Scaled KKS B'''
+double Kn2[3][3]={{0.008455*scaleFactor/1.5,-0.01348*scaleFactor/1.5,0},{-0.01348*scaleFactor/1.5,0.02402*scaleFactor/1.5,0},{0,0,0.0269*scaleFactor/1.5}}; // Scaled KKS B'''
+double Kn3[3][3]={{0.008455*scaleFactor/1.5,0.01348*scaleFactor/1.5,0},{0.01348*scaleFactor/1.5,0.02402*scaleFactor/1.5,0},{0,0,0.0269*scaleFactor/1.5}}; // Scaled KKS B'''
 //define energy barrier coefficient (used to tune the interfacial energy)
 #define W (0.1288/scaleFactor*1.5)
 
@@ -117,10 +117,6 @@ double sfts_const3[3][3] = {{0.02330,0.004271,0},{0.004271,0.0282,0},{0,0,-0.000
 //double sfts_linear3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 //double sfts_const3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 
-// Calculate c_alpha and c_beta from c
-#define c_alpha ((B2*c+0.5*(B1-A1)*(h1V+h2V+h3V))/(A2*(h1V+h2V+h3V)+B2*(1.0-h1V-h2V-h3V)))
-#define c_beta ((A2*c+0.5*(A1-B1)*(1.0-h1V-h2V-h3V))/(A2*(h1V+h2V+h3V)+B2*(1.0-h1V-h2V-h3V)))
-
 ////define free energy expressions (Mg-Nd data from CASM) (B''', gen 4)
 //double A2 = 100.56;
 //double A1 = -1.727;
@@ -165,7 +161,7 @@ double B0 = 0.0818875;
 
 // Residuals
 #define rcV   (c)
-#define rcxTemp ( cx + (c_alpha-c_beta)*(hn1V*n1x + hn2V*n2x + hn3V*n3x) + grad_mu_el * ((h1V+h2V+h3V)*faccV+(constV(1.0)-h1V-h2V-h3V)*fbccV)/constV(faccV*fbccV))
+#define rcxTemp ( cx + (c_alpha-c_beta)*(hn1V*n1x + hn2V*n2x + hn3V*n3x) + grad_mu_el * ((sum_hpV)*faccV+(constV(1.0)-sum_hpV)*fbccV)/constV(faccV*fbccV))
 #define rcxV  (constV(-timeStep)*McV*rcxTemp)
 
 #define rn1V   (n1-constV(timeStep*Mn1V)*gamma*( (fbV-faV)*hn1V - (c_beta-c_alpha)*facV*hn1V + W*fbarriern1V + nDependentMisfitAC1 + heterMechAC1))
@@ -182,14 +178,14 @@ double B0 = 0.0818875;
 // =================================================================================
 
 // Nucleation radius (order parameter)
-#define semiaxis_a 2.0*scaleFactor
-#define semiaxis_b 2.0*scaleFactor
-#define semiaxis_c 10.0*scaleFactor
+#define semiaxis_a (1.5*scaleFactor)
+#define semiaxis_b (1.5*scaleFactor)
+#define semiaxis_c (7.5*scaleFactor)
 
-#define interface_coeff 0.2*scaleFactor
+#define interface_coeff (0.5*scaleFactor)
 
 // Hold time for order parameter
-#define t_hold 5.0
+#define t_hold 2.5
 
 // Small constant for sign function
 #define epsil 1.0e-7
@@ -199,18 +195,18 @@ double B0 = 0.0818875;
 #define maxOrderParameterNucleation 0.01
 
 // Number of time steps between nucleation attempts
-#define skipNucleationSteps (1000)
+#define skipNucleationSteps (100000)
 
 // radius for order parameter hold
-std::vector<double> opfreeze_semiaxes {1.5*semiaxis_a,1.5*semiaxis_b,1.5*semiaxis_c};
+std::vector<double> opfreeze_semiaxes {3.0*semiaxis_a,3.0*semiaxis_b,3.0*semiaxis_c};
 
 //Minimum distance from the edges of the system where nucleation can occur
 #define borderreg (2.0*semiaxis_a)
 
 // Constants k1 and k2 for nucleation rate in the bulk
-#define k1 (8.39e-11)
+#define k1 (8.39e-11*10.0)
 #define k2 4.01e-4
-#define tau 7523.0
+#define tau (7523.0*0.0)
 
 
 
@@ -268,16 +264,10 @@ if (c_dependent_misfit == true){
 // Nucleation expressions
 // -------------------------------------------------
 double time = this->currentTime;
-double dx=spanX/std::pow(2.0,refineFactor);
+double dx=spanX/(maxRefinementLevel*maxRefinementLevel);
 
 //Calculation of mobility factor, gamma
 dealii::VectorizedArray<double> gamma = constV(1.0);
-dealii::VectorizedArray<double> x= q_point_loc[0];
-dealii::VectorizedArray<double> y= q_point_loc[1];
-dealii::VectorizedArray<double> z;
-
-if (problemDIM ==3)
-	z= q_point_loc[2];
 
 dealii::VectorizedArray<double> nucleation_source_term1 = constV(0.0);
 dealii::VectorizedArray<double> nucleation_source_term2 = constV(0.0);
@@ -332,7 +322,6 @@ for (typename std::vector<nucleus<dim> >::const_iterator thisNucleus=nuclei.begi
     		}
     	}
     }
-	dealii::Point<problemDIM> r=thisNucleus->center;
 
     double nucendtime = thisNucleus->seededTime + thisNucleus->seedingTime;
     dealii::VectorizedArray<double> spacearg=(std::sqrt(weighted_dist)-constV(1.0))/constV(dx);
@@ -346,12 +335,15 @@ for (typename std::vector<nucleus<dim> >::const_iterator thisNucleus=nuclei.begi
 
 // -------------------------------------------------
 
-
+// Calculate c_alpha and c_beta from c
+scalarvalueType sum_hpV = h1V+h2V+h3V;
+scalarvalueType c_alpha = ((B2*c+0.5*(B1-A1)*sum_hpV))/(A2*(sum_hpV)+B2*(1.0-sum_hpV));
+scalarvalueType c_beta  = ((A2*c+0.5*(A1-B1)*(1.0-sum_hpV))/(A2*(sum_hpV)+B2*(1.0-sum_hpV)));
 
 // Calculate the derivatives of c_beta (derivatives of c_alpha aren't needed)
-// Note: this section can be optimized to reduce recalculations
-scalarvalueType cbn1V, cbn2V, cbn3V, cbcV, cbcn1V, cbcn2V, cbcn3V, sum_hpV;
-sum_hpV = h1V+h2V+h3V;
+// Note: this section can be optimized to reduce recalculations (note: that doesn't change the performance)
+scalarvalueType cbn1V, cbn2V, cbn3V, cbcV, cbcn1V, cbcn2V, cbcn3V;
+
 
 cbcV = faccV/( (constV(1.0)-sum_hpV)*fbccV + (sum_hpV)*faccV );
 
@@ -371,16 +363,16 @@ for (unsigned int i=0; i<dim; i++){
 for (unsigned int j=0; j<dim; j++){
 	// Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c_beta + b_p
 	sfts1[i][j] = constV(sfts_linear1[i][j])*c_beta + constV(sfts_const1[i][j]);
-	sfts1c[i][j] = constV(sfts_linear1[i][j]) * cbcV;
-	sfts1cc[i][j] = constV(0.0);
+	//sfts1c[i][j] = constV(sfts_linear1[i][j]) * cbcV;
+	//sfts1cc[i][j] = constV(0.0);
 
 	sfts2[i][j] = constV(sfts_linear2[i][j])*c_beta + constV(sfts_const2[i][j]);
-	sfts2c[i][j] = constV(sfts_linear2[i][j]) * cbcV;
-	sfts2cc[i][j] = constV(0.0);
+	//sfts2c[i][j] = constV(sfts_linear2[i][j]) * cbcV;
+	//sfts2cc[i][j] = constV(0.0);
 
 	sfts3[i][j] = constV(sfts_linear3[i][j])*c_beta + constV(sfts_const3[i][j]);
-	sfts3c[i][j] = constV(sfts_linear3[i][j]) * cbcV;
-	sfts3cc[i][j] = constV(0.0);
+	//sfts3c[i][j] = constV(sfts_linear3[i][j]) * cbcV;
+	//sfts3cc[i][j] = constV(0.0);
 
 }
 }
@@ -626,6 +618,10 @@ scalargradType n3x = modelVariablesList[3].scalarGrad;
 //u
 vectorgradType ux = modelVariablesList[4].vectorGrad;
 
+scalarvalueType sum_hpV = h1V+h2V+h3V;
+scalarvalueType c_alpha = ((B2*c+0.5*(B1-A1)*sum_hpV))/(A2*(sum_hpV)+B2*(1.0-sum_hpV));
+scalarvalueType c_beta  = ((A2*c+0.5*(A1-B1)*(1.0-sum_hpV))/(A2*(sum_hpV)+B2*(1.0-sum_hpV)));
+
 scalarvalueType f_chem = (constV(1.0)-(h1V+h2V+h3V))*faV + (h1V+h2V+h3V)*fbV + W*(fbarrierV);
 
 scalarvalueType f_grad = constV(0.0);
@@ -639,8 +635,7 @@ for (int i=0; i<dim; i++){
 
 // Calculate the derivatives of c_beta (derivatives of c_alpha aren't needed)
 // Note: this section can be optimized to reduce recalculations
-scalarvalueType cbn1V, cbn2V, cbn3V, cbcV, cbcn1V, cbcn2V, cbcn3V, sum_hpV;
-sum_hpV = h1V+h2V+h3V;
+scalarvalueType cbn1V, cbn2V, cbn3V, cbcV, cbcn1V, cbcn2V, cbcn3V;
 
 cbcV = faccV/( (constV(1.0)-sum_hpV)*fbccV + (sum_hpV)*faccV );
 

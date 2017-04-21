@@ -1,11 +1,5 @@
 // List of variables and residual equations for the Cahn-Hilliard example application
 
-// =================================================================================
-// Define the variables in the model
-// =================================================================================
-// The number of variables
-#define num_var 2
-
 // The names of the variables, whether they are scalars or vectors and whether the
 // governing eqn for the variable is parabolic or elliptic
 #define variable_name {"c", "mu"}

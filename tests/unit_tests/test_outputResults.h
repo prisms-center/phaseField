@@ -3,7 +3,7 @@ template <int dim, int degree>
 class testOutputResults: public MatrixFreePDE<dim,degree>
 {
  public: 
-	testOutputResults(userInputParameters _userInputs): MatrixFreePDE<dim,degree>(_userInputs){};
+	testOutputResults(userInputParameters<dim> _userInputs): MatrixFreePDE<dim,degree>(_userInputs){};
   
  private:
 	void setBCs(){};
@@ -28,7 +28,7 @@ class testOutputResults: public MatrixFreePDE<dim,degree>
 };
 
 template <int dim,typename T>
-  bool unitTest<dim,T>::test_outputResults(int argc, char** argv, userInputParameters userInputs){
+  bool unitTest<dim,T>::test_outputResults(int argc, char** argv, userInputParameters<dim> userInputs){
   bool pass = false;
   std::cout << "\nTesting 'outputResults' in " << dim << " dimension(s)...'" << std::endl;
   

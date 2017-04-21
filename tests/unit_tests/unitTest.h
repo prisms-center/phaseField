@@ -74,15 +74,15 @@ template <int dim, typename T>
 class unitTest
 {
 	public:
-	bool test_computeInvM(int argc, char **argv, userInputParameters);
-	bool test_outputResults(int argc, char **argv, userInputParameters userInputs);
+	bool test_computeInvM(int argc, char **argv, userInputParameters<dim>);
+	bool test_outputResults(int argc, char **argv, userInputParameters<dim> userInputs);
 	bool test_computeStress();
 	void assignCIJSize(dealii::VectorizedArray<double> CIJ[2*dim-1+dim/3][2*dim-1+dim/3]);
 	void assignCIJSize(dealii::Table<2, double> &CIJ);
 	//bool test_getRHS(userInputParameters userInputs);
 	//bool test_computeRHS(userInputParameters userInputs);
-	bool test_getOutputTimeSteps(std::string,unsigned int, std::vector<unsigned int>, userInputParameters userInputs);
-	bool test_setRigidBodyModeConstraints(std::vector<int>, userInputParameters userInputs);
+	bool test_getOutputTimeSteps(std::string,unsigned int, std::vector<unsigned int>, userInputParameters<dim> userInputs);
+	bool test_setRigidBodyModeConstraints(std::vector<int>, userInputParameters<dim> userInputs);
 	bool test_vectorLoad(T array[], int array_size, int num_array_elements);
 };
 

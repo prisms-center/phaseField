@@ -3,7 +3,7 @@ template <int dim, int degree>
 class setRigidBodyModeConstraintsTest: public MatrixFreePDE<dim,degree>
 {
 	public:
-	setRigidBodyModeConstraintsTest(userInputParameters _userInputs): MatrixFreePDE<dim,degree>(_userInputs) {
+	setRigidBodyModeConstraintsTest(userInputParameters<dim> _userInputs): MatrixFreePDE<dim,degree>(_userInputs) {
 		//init the MatrixFreePDE class for testing
 		this->initForTests();
 	};
@@ -40,7 +40,7 @@ class setRigidBodyModeConstraintsTest: public MatrixFreePDE<dim,degree>
 };
 
 template <int dim,typename T>
-bool unitTest<dim,T>::test_setRigidBodyModeConstraints(std::vector<int> rigidBodyModeComponents, userInputParameters userInputs){
+bool unitTest<dim,T>::test_setRigidBodyModeConstraints(std::vector<int> rigidBodyModeComponents, userInputParameters<dim> userInputs){
 
 	bool pass = false;
 	std::cout << "\nTesting 'setRigidBodyModeConstraints' with " << rigidBodyModeComponents.size() << " component(s) needing a constraint...'" << std::endl;

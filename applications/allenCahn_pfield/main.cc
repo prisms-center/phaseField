@@ -13,6 +13,7 @@
 #include "customPDE.h"
 #include "equations.h"
 #include "ICs_and_BCs.h"
+#include "postprocess.h"
 #include "../../include/initialCondition_template_instantiations.h"
 #include "../../include/userInputParameters.h"
 #include "../../src/userInputParameters/loadUserInputs.cc" // Needs to be included because it contains needs access to the define macros in the preceding files
@@ -25,7 +26,7 @@ int main (int argc, char **argv)
     {
 
 	  deallog.depth_console(0);
-	  userInputParameters userInputs;
+	  userInputParameters<problemDIM> userInputs;
 	  userInputs.loadUserInput();
 
 	  customPDE<problemDIM,finiteElementDegree> problem(userInputs);
