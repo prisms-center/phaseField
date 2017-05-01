@@ -18,7 +18,7 @@ double customPDE<dim,degree>::nucProb(double cValue, double dV) const
 // Get list of prospective new nuclei for the local processor
 // =================================================================================
 template <int dim, int degree>
-void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim> > &newnuclei) const
+void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuclei) const
 {
 	// Nickname for current time and time step
 	double t=this->currentTime;
@@ -144,7 +144,7 @@ void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim> > &newnu
 //Making sure all new nuclei from complete prospective list do not overlap with existing precipitates
 // =======================================================================================================
 template <int dim, int degree>
-void customPDE<dim,degree>::safetyCheckNewNuclei(std::vector<nucleus<dim> > newnuclei, std::vector<unsigned int> &conflict_inds)
+void customPDE<dim,degree>::safetyCheckNewNuclei(std::vector<nucleus<dim>> newnuclei, std::vector<unsigned int> &conflict_inds)
 {
     //QGauss<dim>  quadrature(degree+1);
     QGaussLobatto<dim>  quadrature(degree+1);
@@ -154,7 +154,7 @@ void customPDE<dim,degree>::safetyCheckNewNuclei(std::vector<nucleus<dim> > newn
     std::vector<dealii::Point<dim> > q_point_list(num_quad_points);
     
     //Nucleus cycle
-    for (typename std::vector<nucleus<dim> >::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
+    for (typename std::vector<nucleus<dim>>::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
         bool isClose=false;
         
         //Element cycle
@@ -203,7 +203,7 @@ void customPDE<dim,degree>::safetyCheckNewNuclei(std::vector<nucleus<dim> > newn
 // Refine mesh near the new nuclei
 // =================================================================================
 template <int dim, int degree>
-void customPDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim> > newnuclei)
+void customPDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim>> newnuclei)
 {
     //QGauss<dim>  quadrature(degree+1);
     QGaussLobatto<dim>  quadrature(degree+1);
@@ -236,7 +236,7 @@ void customPDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim> > newn
                 diag_dist /= 2.0*pow(2.0,ti->level());
                 
                 for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
-                    for (typename std::vector<nucleus<dim> >::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
+                    for (typename std::vector<nucleus<dim>>::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
                         
                         // Calculate the ellipsoidal distance to the center of the nucleus
                         double weighted_dist = 0.0;
@@ -285,7 +285,7 @@ void customPDE<dim,degree>::getNucleiList()
     if ( this->currentIncrement % skipNucleationSteps == 0 ){
         
         // Declare alize vector of all the NEW nuclei seeded in this time step
-        std::vector<nucleus<dim> > newnuclei;
+        std::vector<nucleus<dim>> newnuclei;
         
         // Get list of prospective new nuclei for the local processor
         this->pcout << "Nucleation attempt for increment " << this->currentIncrement << std::endl;

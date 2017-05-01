@@ -139,8 +139,8 @@ std::vector<double> opfreeze_semiaxes {1.5*semiaxis_a,1.5*semiaxis_b,1.5*semiaxi
 // each residual equation. The index for each variable in these lists corresponds to
 // the order it is defined at the top of this file (starting at 0).
 template <int dim, int degree>
-void customPDE<dim,degree>::residualRHS(const std::vector<modelVariable<dim> > & modelVariablesList,
-												std::vector<modelResidual<dim> > & modelResidualsList,
+void customPDE<dim,degree>::residualRHS(const std::vector<modelVariable<dim>> & modelVariablesList,
+												std::vector<modelResidual<dim>> & modelResidualsList,
 												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 double time = this->currentTime;
@@ -166,7 +166,7 @@ scalargradType nx = modelVariablesList[1].scalarGrad;
 
 dealii::VectorizedArray<double> nucleation_source_term = constV(0.0);
 
-for (typename std::vector<nucleus<dim> >::const_iterator thisNucleus=nuclei.begin(); thisNucleus!=nuclei.end(); ++thisNucleus){
+for (typename std::vector<nucleus<dim>>::const_iterator thisNucleus=nuclei.begin(); thisNucleus!=nuclei.end(); ++thisNucleus){
 
 	// Calculate the weighted distance function to the order parameter freeze boundary (weighted_dist = 1.0 on that boundary)
 	dealii::VectorizedArray<double> weighted_dist = constV(0.0);
@@ -260,7 +260,7 @@ void customPDE<dim,degree>::residualLHS(const std::vector<modelVariable<dim> > &
 // density are added to the "energy_components" variable (index 0: chemical energy,
 // index 1: gradient energy, index 2: elastic energy).
 template <int dim, int degree>
-void customPDE<dim,degree>::energyDensity(const std::vector<modelVariable<dim> > & modelVariablesList,
+void customPDE<dim,degree>::energyDensity(const std::vector<modelVariable<dim>> & modelVariablesList,
 											const dealii::VectorizedArray<double> & JxW_value,
 											dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {
 
