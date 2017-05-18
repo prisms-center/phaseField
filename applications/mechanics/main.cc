@@ -6,14 +6,14 @@
 #include "../../include/typeDefs.h"
 #include "../../include/model_variables.h"
 #include "../../include/varBCs.h"
-#include "../../include/loadInputs.h"
 #include "../../include/initialConditions.h"
 #include "../../include/matrixFreePDE.h"
 #include "customPDE.h"
 #include "equations.h"
 #include "ICs_and_BCs.h"
+#include "postprocess.h"
 #include "../../include/initialCondition_template_instantiations.h"
-#include "../../src/loadInputs/loadInputs.cc" // Needs to be included because it contains needs access to the define macros in the preceding files
+#include "../../src/userInputParameters/loadUserInputs.cc" // Needs to be included because it contains needs access to the define macros in the preceding files
 
 //main
 int main (int argc, char **argv)
@@ -23,7 +23,7 @@ int main (int argc, char **argv)
     {
 	  dealii::deallog.depth_console(0);
 
-	  userInputParameters userInputs;
+	  userInputParameters<problemDIM> userInputs;;
 	  userInputs.loadUserInput();
 
 	  customPDE<problemDIM,finiteElementDegree> problem(userInputs);

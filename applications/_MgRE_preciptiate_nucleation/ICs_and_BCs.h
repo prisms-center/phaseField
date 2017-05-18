@@ -21,9 +21,9 @@ template <int dim>
 	  #define c_matrix 0.02 //1.0e-6
 	  #define c_precip 0.125
 	  // Initial condition parameters
-	#define x_denom (2.5)*(2.5)
-	#define y_denom (2.5)*(2.5)
-	#define z_denom (2.5)*(2.5)
+	#define x_denom (1.5)*(1.5)
+	#define y_denom (1.5)*(1.5)
+	#define z_denom (7.5)*(7.5)
 	#define initial_interface_coeff interface_coeff
 	#define initial_radius 1.0
 

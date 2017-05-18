@@ -72,8 +72,6 @@ for (;cell!=endc; ++cell){
 	if (cell->is_locally_owned()){
 		fe_values.reinit (cell);
 
-
-
 		for (unsigned int field_index=0; field_index<userInputs.refine_criterion_fields.size(); field_index++){
 			fe_values.get_function_values(*solutionSet[userInputs.refine_criterion_fields[field_index]], errorOut);
 			errorOutV.push_back(errorOut);
