@@ -99,34 +99,23 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <code>#include &lt;iterator&gt;</code><br />
 <code>#include &quot;<a class="el" href="deal_i_iheaders_8h_source.html">dealIIheaders.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="default_values_8h_source.html">defaultValues.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="fields_8h_source.html">fields.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="model__variables_8h_source.html">model_variables.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="vector_load_8cc.html">../src/utilities/vectorLoad.cc</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="matrix_free_p_d_e_8cc.html">../src/matrixfree/matrixFreePDE.cc</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="init_8cc.html">../src/matrixfree/init.cc</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="reinit_8cc.html">../src/matrixfree/reinit.cc</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="init_for_tests_8cc.html">../src/matrixfree/initForTests.cc</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="refine_8cc.html">../src/matrixfree/refine.cc</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="inv_m_8cc.html">../src/matrixfree/invM.cc</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="compute_l_h_s_8cc.html">../src/matrixfree/computeLHS.cc</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="compute_r_h_s_8cc.html">../src/matrixfree/computeRHS.cc</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="modify_fields_8cc.html">../src/matrixfree/modifyFields.cc</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="solve_8cc.html">../src/matrixfree/solve.cc</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="solve_increment_8cc.html">../src/matrixfree/solveIncrement.cc</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="output_results_8cc.html">../src/matrixfree/outputResults.cc</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="mark_boundaries_8cc.html">../src/matrixfree/markBoundaries.cc</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="boundary_conditions_8cc.html">../src/matrixfree/boundaryConditions.cc</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="initial_conditions_8cc.html">../src/matrixfree/initialConditions.cc</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="utilities_8cc.html">../src/matrixfree/utilities.cc</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="calc_free_energy_8cc.html">../src/matrixfree/calcFreeEnergy.cc</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="integrate__and__shift__field_8cc.html">../src/matrixfree/integrate_and_shift_field.cc</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="get_output_time_steps_8cc.html">../src/matrixfree/getOutputTimeSteps.cc</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="var_b_cs_8h_source.html">varBCs.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="initial_conditions_8h_source.html">initialConditions.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="fields_8h_source.html">fields.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="vector_load_8h_source.html">vectorLoad.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="vector_b_c_function_8h_source.html">vectorBCFunction.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="get_c_i_j_matrix_8h_source.html">../src/userInputParameters/getCIJMatrix.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="compute_stress_8h_source.html">../src/models/mechanics/computeStress.h</a>&quot;</code><br />
+<code>#include &quot;IntegrationTools/PField.hh&quot;</code><br />
+<code>#include &quot;<a class="el" href="user_input_parameters_8h_source.html">userInputParameters.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="postprocessor_8h_source.html">postprocessor.h</a>&quot;</code><br />
 </div>
 <p><a href="matrix_free_p_d_e_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html">MatrixFreePDE&lt; dim &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html">MatrixFreePDE&lt; dim, degree &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
@@ -142,22 +131,6 @@ Typedefs</h2></td></tr>
 <tr class="separator:a0af7e68c8d9f5eaef75b5f5060a5350b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accab0ce4c9641071419bfea1492d190f"><td class="memItemLeft" align="right" valign="top">typedef dealii::parallel::distributed::Vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a></td></tr>
 <tr class="separator:accab0ce4c9641071419bfea1492d190f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abce74f518b933f63ffc2c72b83fcaec6"><td class="memItemLeft" align="right" valign="top">typedef dealii::FEEvaluation&lt; <a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a7600d4f3350a4a7972723128e23864f2">problemDIM</a>, <a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a146b0d885ec1003391aff676132a2913">finiteElementDegree</a>, <a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a146b0d885ec1003391aff676132a2913">finiteElementDegree</a>+1, 1, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matrix_free_p_d_e_8h.html#abce74f518b933f63ffc2c72b83fcaec6">typeScalar</a></td></tr>
-<tr class="separator:abce74f518b933f63ffc2c72b83fcaec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af83c211a767a4b88697fcfd63bfb9824"><td class="memItemLeft" align="right" valign="top">typedef dealii::FEEvaluation&lt; <a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a7600d4f3350a4a7972723128e23864f2">problemDIM</a>, <a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a146b0d885ec1003391aff676132a2913">finiteElementDegree</a>, <a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a146b0d885ec1003391aff676132a2913">finiteElementDegree</a>+1, <a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a7600d4f3350a4a7972723128e23864f2">problemDIM</a>, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matrix_free_p_d_e_8h.html#af83c211a767a4b88697fcfd63bfb9824">typeVector</a></td></tr>
-<tr class="separator:af83c211a767a4b88697fcfd63bfb9824"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac74a2c5a901e3ca87ec3ae9c01623449"><td class="memItemLeft" align="right" valign="top">typedef dealii::VectorizedArray&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matrix_free_p_d_e_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a></td></tr>
-<tr class="separator:ac74a2c5a901e3ca87ec3ae9c01623449"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9096215b701ac161f820e9077b65d825"><td class="memItemLeft" align="right" valign="top">typedef dealii::Tensor&lt; 1, <a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a7600d4f3350a4a7972723128e23864f2">problemDIM</a>, dealii::VectorizedArray&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matrix_free_p_d_e_8h.html#a9096215b701ac161f820e9077b65d825">vectorvalueType</a></td></tr>
-<tr class="separator:a9096215b701ac161f820e9077b65d825"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a275b78678cf79b17d9561360f57b825d"><td class="memItemLeft" align="right" valign="top">typedef dealii::Tensor&lt; 1, <a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a7600d4f3350a4a7972723128e23864f2">problemDIM</a>, dealii::VectorizedArray&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matrix_free_p_d_e_8h.html#a275b78678cf79b17d9561360f57b825d">scalargradType</a></td></tr>
-<tr class="separator:a275b78678cf79b17d9561360f57b825d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7695cb070ca201f71651234ecf576e2"><td class="memItemLeft" align="right" valign="top">typedef dealii::Tensor&lt; 2, <a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a7600d4f3350a4a7972723128e23864f2">problemDIM</a>, dealii::VectorizedArray&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matrix_free_p_d_e_8h.html#ad7695cb070ca201f71651234ecf576e2">scalarhessType</a></td></tr>
-<tr class="separator:ad7695cb070ca201f71651234ecf576e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73b53d5db94bf70dfe8f54f1bda87e1a"><td class="memItemLeft" align="right" valign="top">typedef dealii::Tensor&lt; 2, <a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a7600d4f3350a4a7972723128e23864f2">problemDIM</a>, dealii::VectorizedArray&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matrix_free_p_d_e_8h.html#a73b53d5db94bf70dfe8f54f1bda87e1a">vectorgradType</a></td></tr>
-<tr class="separator:a73b53d5db94bf70dfe8f54f1bda87e1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31d1ec7420c01361786581df96b2a06e"><td class="memItemLeft" align="right" valign="top">typedef dealii::Tensor&lt; 3, <a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a7600d4f3350a4a7972723128e23864f2">problemDIM</a>, dealii::VectorizedArray&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matrix_free_p_d_e_8h.html#a31d1ec7420c01361786581df96b2a06e">vectorhessType</a></td></tr>
-<tr class="separator:a31d1ec7420c01361786581df96b2a06e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a class="anchor" id="af4deabb57f7353cd1981dbbb926455cd"></a>
@@ -203,30 +176,6 @@ Typedefs</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a class="anchor" id="a275b78678cf79b17d9561360f57b825d"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef dealii::Tensor&lt;1, <a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a7600d4f3350a4a7972723128e23864f2">problemDIM</a>, dealii::VectorizedArray&lt;double&gt; &gt; <a class="el" href="matrix_free_p_d_e_8h.html#a275b78678cf79b17d9561360f57b825d">scalargradType</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="ad7695cb070ca201f71651234ecf576e2"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef dealii::Tensor&lt;2,<a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a7600d4f3350a4a7972723128e23864f2">problemDIM</a>,dealii::VectorizedArray&lt;double&gt; &gt; <a class="el" href="matrix_free_p_d_e_8h.html#ad7695cb070ca201f71651234ecf576e2">scalarhessType</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="a0af7e68c8d9f5eaef75b5f5060a5350b"></a>
 <div class="memitem">
 <div class="memproto">
@@ -239,84 +188,12 @@ Typedefs</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ac74a2c5a901e3ca87ec3ae9c01623449"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef dealii::VectorizedArray&lt;double&gt; <a class="el" href="matrix_free_p_d_e_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="abce74f518b933f63ffc2c72b83fcaec6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef dealii::FEEvaluation&lt;<a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a7600d4f3350a4a7972723128e23864f2">problemDIM</a>,<a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a146b0d885ec1003391aff676132a2913">finiteElementDegree</a>,<a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a146b0d885ec1003391aff676132a2913">finiteElementDegree</a>+1,1,double&gt; <a class="el" href="matrix_free_p_d_e_8h.html#abce74f518b933f63ffc2c72b83fcaec6">typeScalar</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="af83c211a767a4b88697fcfd63bfb9824"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef dealii::FEEvaluation&lt;<a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a7600d4f3350a4a7972723128e23864f2">problemDIM</a>,<a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a146b0d885ec1003391aff676132a2913">finiteElementDegree</a>,<a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a146b0d885ec1003391aff676132a2913">finiteElementDegree</a>+1,<a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a7600d4f3350a4a7972723128e23864f2">problemDIM</a>,double&gt; <a class="el" href="matrix_free_p_d_e_8h.html#af83c211a767a4b88697fcfd63bfb9824">typeVector</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a73b53d5db94bf70dfe8f54f1bda87e1a"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef dealii::Tensor&lt;2, <a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a7600d4f3350a4a7972723128e23864f2">problemDIM</a>, dealii::VectorizedArray&lt;double&gt; &gt; <a class="el" href="matrix_free_p_d_e_8h.html#a73b53d5db94bf70dfe8f54f1bda87e1a">vectorgradType</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a31d1ec7420c01361786581df96b2a06e"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef dealii::Tensor&lt;3, <a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a7600d4f3350a4a7972723128e23864f2">problemDIM</a>, dealii::VectorizedArray&lt;double&gt; &gt; <a class="el" href="matrix_free_p_d_e_8h.html#a31d1ec7420c01361786581df96b2a06e">vectorhessType</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="accab0ce4c9641071419bfea1492d190f"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">typedef dealii::parallel::distributed::Vector&lt;double&gt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a9096215b701ac161f820e9077b65d825"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef dealii::Tensor&lt;1, <a class="el" href="single_precipitate_k_k_s_2parameters_8h.html#a7600d4f3350a4a7972723128e23864f2">problemDIM</a>, dealii::VectorizedArray&lt;double&gt; &gt; <a class="el" href="matrix_free_p_d_e_8h.html#a9096215b701ac161f820e9077b65d825">vectorvalueType</a></td>
         </tr>
       </table>
 </div><div class="memdoc">

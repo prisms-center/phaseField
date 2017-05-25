@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['pdetype',['PDEType',['../fields_8h.html#a12521d5d4cf2d9ed3c05e52b162fad42',1,'fields.h']]]
+  ['fieldtype',['fieldType',['../fields_8h.html#ae2c3e99c22ce037f68e9b19bfd9c6de2',1,'fields.h']]]
 ];
