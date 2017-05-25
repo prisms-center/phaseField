@@ -171,10 +171,12 @@ void PostProcessor<dim,degree>::getPostProcessedFields(const MatrixFree<dim,doub
 }
 
 
-
+#ifndef POSTPROCESSOR_TEMPLATES
+#define POSTPROCESSOR_TEMPLATES
 template class PostProcessor<2,1>;
 template class PostProcessor<3,1>;
 template class PostProcessor<2,2>;
 template class PostProcessor<3,2>;
 template class PostProcessor<2,3>;
 template class PostProcessor<3,3>;
+#endif
