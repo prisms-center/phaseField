@@ -8,14 +8,14 @@
 
 // Set whether the initial conditions are loaded from file for each variable
 //#define loadICs {true,true,true,false,false}
-//#define loadICs {true,true,false,false,false}
-#define loadICs {false,false,false,false,false}
+#define loadICs {true,true,false,false,false}
+//#define loadICs {false,false,false,false,false}
 
 // Set whether the file is serial or a series of parallel files
 #define loadSerialFile {true,true,true,true,true}
 
 // Set the name of the input files
-#define loadFileName {"run_424a_c_1","run_424a_n1_1","run_424a_n2_1","export_test","export_test"}
+#define loadFileName {"run_431a_c","run_431a_n1","run_431a_n2","export_test","export_test"}
 //#define loadFileName {"result","result","result","export_test","export_test"}
 
 // Set the field names in the input files

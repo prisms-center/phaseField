@@ -204,9 +204,11 @@ text_file.close()
 
 #applicationList = ["allenCahn","cahnHilliard","cahnHilliardWithAdaptivity","CHAC_anisotropy","CHAC_anisotropyRegularized","coupledCahnHilliardAllenCahn","mechanics","precipitateEvolution"]
 #getNewGoldStandardList = [False, False, False, False, False, False, False, False]
+
 # Shorter list of applications so that it completes on Travis
 applicationList = ["allenCahn","cahnHilliard","cahnHilliardWithAdaptivity","CHAC_anisotropyRegularized","coupledCahnHilliardAllenCahn","mechanics","precipitateEvolution"]
 getNewGoldStandardList = [False, False, False, False, False, False, False]
+
 
 for applicationName in applicationList:
 	test_result = run_regression_test(applicationName,getNewGoldStandardList[regression_test_counter],dir_path)	
