@@ -46,7 +46,7 @@
 
 // Set the output file type from list of available deal.II output formats (common
 // (choices are write_vtu and write_vtk)
-#define outputFileType "vtk"
+#define outputFileType "vtu"
 
 // Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
 // or "LIST")

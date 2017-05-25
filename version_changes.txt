@@ -1,4 +1,37 @@
 ====================
+Version 1.2:
+===================
+Update to v1.1, released in May 2017. The core library was substantially reorganized and nucleation and postprocessing
+capabilities were added. 
+
+Added functionality:
+- Add postprocessing capabilities, which can be accessed in the new "postprocess.h" file in each application folder.
+- New applications "_nucleationModel" and "_preferential_nucleationModel" were added and include new nucleation capabilities.
+
+Changes to the pre-built applications:
+- New applications "_nucleationModel" and "_preferential_nucleationModel" were added and include new nucleation capabilities.
+- Changed the initial conditions for the Allen-Cahn and the Cahn-Hilliard applications to have smooth initial profiles.
+- The elastic constants are now accessed by "userInputs.CIJ_List" instead of just "CIJ_LIST" in the functions in equations.h.
+
+Performance improvements:
+- Updated how Dirichlet contraints are implemented, reducing the number of solver iterations for non-zero Dirichlet BCs.
+
+Bug fixes:
+- Users can now load in ICs with PFields in 3D and with adaptive meshes.
+
+Other changes:
+- Restructured much of the core library. Model files were completely eliminated, pushing many of those functions into MatrixFreePDE. 
+  Each application now has a subclass of MatrixFreePDE called customPDE where member variables and methods can be implemented for 
+  specific applications.
+- A wall was put in place between the define macros in the input files and the core solver code. The inputs are now housed in the 
+  new "userInputParameters" class.
+- The core library is now linked instead of "included" in the apps. This increases the compile time the first time an app is compiled
+  but decreases it substantially afterward.
+
+Known issues:
+- PFields only work for scalar fields and only work when the variable with index zero is a scalar field.
+
+====================
 Version 1.1.1:
 ===================
 Patch to v1.1, released in February 2017. This patch fixes some indexing bugs lurking in previous versions of the code. From a user
