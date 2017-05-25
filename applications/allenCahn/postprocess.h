@@ -16,7 +16,7 @@
 
 // The names of the variables, whether they are scalars or vectors and whether the
 // governing eqn for the variable is parabolic or elliptic
-#define pp_variable_name {"pp"}
+#define pp_variable_name {"mag_grad_n"}
 #define pp_variable_type {"SCALAR"}
 
 // Flags for whether the value, gradient, and Hessian are needed in the residual eqns
@@ -47,7 +47,7 @@ pp_field[1] = nx[1];
 
 
 // Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
-modelResidualsList[0].scalarValueResidual = pp_field[0]; //constV(0.0);
+modelResidualsList[0].scalarValueResidual = std::sqrt(pp_field[0]*pp_field[0]+pp_field[1]*pp_field[1]); //constV(0.0);
 
 
 }

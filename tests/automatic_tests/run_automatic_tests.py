@@ -206,8 +206,8 @@ text_file.close()
 #getNewGoldStandardList = [False, False, False, False, False, False, False, False]
 
 # Shorter list of applications so that it completes on Travis
-applicationList = ["allenCahn","cahnHilliard","cahnHilliardWithAdaptivity","CHAC_anisotropyRegularized","coupledCahnHilliardAllenCahn","mechanics","precipitateEvolution"]
-getNewGoldStandardList = [False, False, False, False, False, False, False]
+applicationList = ["allenCahn","cahnHilliardWithAdaptivity","CHAC_anisotropyRegularized","coupledCahnHilliardAllenCahn","mechanics","precipitateEvolution"]
+getNewGoldStandardList = [False, False, False, False, False, False]
 
 
 for applicationName in applicationList:
