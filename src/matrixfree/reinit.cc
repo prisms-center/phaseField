@@ -1,21 +1,16 @@
 // reinit() method for MatrixFreePDE class
  
-#ifndef REINIT_MATRIXFREE_H
-#define REINIT_MATRIXFREE_H
-//this source file is temporarily treated as a header file (hence
-//#ifndef's) till library packaging scheme is finalized
+#include "../../include/matrixFreePDE.h"
 
  //populate with fields and setup matrix free system
- template <int dim>
- void MatrixFreePDE<dim>::reinit(){
+template <int dim, int degree>
+ void MatrixFreePDE<dim,degree>::reinit(){
 
 	 computing_timer.enter_section("matrixFreePDE: reinitialization");
 
-	 refineGrid();
-
 	 //setup system
 	 pcout << "Reinitializing matrix free object\n";
-	 unsigned int totalDOFs=0;
+	 totalDOFs=0;
 	 for(typename std::vector<Field<dim> >::iterator it = fields.begin(); it != fields.end(); ++it){
 		 currentFieldIndex=it->index;
 
@@ -86,7 +81,7 @@
  	 additional_data.mpi_communicator = MPI_COMM_WORLD;
  	 additional_data.tasks_parallel_scheme = MatrixFree<dim,double>::AdditionalData::partition_partition;
  	 additional_data.mapping_update_flags = (update_values | update_gradients | update_JxW_values | update_quadrature_points);
- 	 QGaussLobatto<1> quadrature (finiteElementDegree+1);
+ 	 QGaussLobatto<1> quadrature (degree+1);
  	 matrixFreeObject.clear();
  	 matrixFreeObject.reinit (dofHandlersSet, constraintsOtherSet, quadrature, additional_data);
 
@@ -143,13 +138,19 @@
  		 soltransSet.push_back(new parallel::distributed::SolutionTransfer<dim, vectorType>(*dofHandlersSet_nonconst[fieldIndex]));
  	 }
 
+ 	 // If remeshing at the zeroth time step, re-apply initial conditions so the starting values are correct on the refined mesh
+ 	 if (currentIncrement == 0){
+ 		 applyInitialConditions();
+ 	 }
+
  	 // Ghost the solution vectors. Also apply the Dirichet BC's (if any) on the solution vectors
  	 for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
 		 constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+		 constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
 		 solutionSet[fieldIndex]->update_ghost_values();
  	 }
 
  	 computing_timer.exit_section("matrixFreePDE: reinitialization");
 }
 
-#endif
+#include "../../include/matrixFreePDE_template_instantiations.h"

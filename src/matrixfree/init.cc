@@ -1,34 +1,26 @@
 // init() method for MatrixFreePDE class
- 
-#ifndef INIT_MATRIXFREE_H
-#define INIT_MATRIXFREE_H
-//this source file is temporarily treated as a header file (hence
-//#ifndef's) till library packaging scheme is finalized
+
+#include "../../include/matrixFreePDE.h"
 
  //populate with fields and setup matrix free system
- template <int dim>
- void MatrixFreePDE<dim>::init(){
+template <int dim, int degree>
+ void MatrixFreePDE<dim,degree>::init(){
 	 computing_timer.enter_section("matrixFreePDE: initialization");
 
 	 //creating mesh
-	 std::vector<unsigned int> subdivisions;
-	 subdivisions.push_back(subdivisionsX);
-	 if (dim>1){
-		 subdivisions.push_back(subdivisionsY);
-		 if (dim>2){
-			 subdivisions.push_back(subdivisionsZ);
-		 }
-	 }
 
 	 pcout << "creating problem mesh...\n";
 
-     #if problemDIM==3
-	 GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(spanX,spanY,spanZ));
-     #elif problemDIM==2
-	 GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(spanX,spanY));
-     #elif problemDIM==1
-	 GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(spanX));
-     #endif
+     if (dim == 3){
+    	 GridGenerator::subdivided_hyper_rectangle (triangulation, userInputs.subdivisions, Point<dim>(), Point<dim>(userInputs.domain_size[0],userInputs.domain_size[1],userInputs.domain_size[2]));
+     }
+     else if (dim == 2){
+    	 GridGenerator::subdivided_hyper_rectangle (triangulation, userInputs.subdivisions, Point<dim>(), Point<dim>(userInputs.domain_size[0],userInputs.domain_size[1]));
+     }
+     else {
+    	 GridGenerator::subdivided_hyper_rectangle (triangulation, userInputs.subdivisions, Point<dim>(), Point<dim>(userInputs.domain_size[0]));
+     }
+
 
 	 // Mark boundaries for applying the boundary conditions
 	 markBoundaries();
@@ -37,16 +29,16 @@
 	 setPeriodicity();
 
 	 // Do the initial global refinement
-	 triangulation.refine_global (refineFactor);
+	 triangulation.refine_global (userInputs.refine_factor);
 
 	 // Write out the size of the computational domain and the total number of elements
-	 pcout << "problem dimensions: " << spanX << "x" << spanY << "x" << spanZ << std::endl;
+	 pcout << "problem dimensions: " << userInputs.domain_size[0] << "x" << userInputs.domain_size[1] << "x" << userInputs.domain_size[2] << std::endl;
 	 pcout << "number of elements: " << triangulation.n_global_active_cells() << std::endl;
 	 pcout << std::endl;
   
 	 // Setup system
 	 pcout << "initializing matrix free object\n";
-	 unsigned int totalDOFs=0;
+	 totalDOFs=0;
 	 for(typename std::vector<Field<dim> >::iterator it = fields.begin(); it != fields.end(); ++it){
 		 currentFieldIndex=it->index;
 
@@ -54,7 +46,7 @@
 
 		 //print to std::out
 		 sprintf(buffer,"initializing finite element space P^%u for %9s:%6s field '%s'\n", \
-			   finiteElementDegree,					\
+				 degree,					\
 			   (it->pdetype==PARABOLIC ? "PARABOLIC":"ELLIPTIC"),	\
 			   (it->type==SCALAR ? "SCALAR":"VECTOR"),			\
 			   it->name.c_str());
@@ -74,10 +66,10 @@
 		 FESystem<dim>* fe;
 
 		 if (it->type==SCALAR){
-			 fe=new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(finiteElementDegree+1)),1);
+			 fe=new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(degree+1)),1);
 		 }
 		 else if (it->type==VECTOR){
-			 fe=new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(finiteElementDegree+1)),dim);
+			 fe=new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(degree+1)),dim);
 		 }
 		 else{
 			 pcout << "\nmatrixFreePDE.h: unknown field type\n";
@@ -155,7 +147,7 @@
 	 additional_data.mpi_communicator = MPI_COMM_WORLD;
 	 additional_data.tasks_parallel_scheme = MatrixFree<dim,double>::AdditionalData::partition_partition;
 	 additional_data.mapping_update_flags = (update_values | update_gradients | update_JxW_values | update_quadrature_points);
-	 QGaussLobatto<1> quadrature (finiteElementDegree+1);
+	 QGaussLobatto<1> quadrature (degree+1);
 	 matrixFreeObject.clear();
 	 matrixFreeObject.reinit (dofHandlersSet, constraintsOtherSet, quadrature, additional_data);
 
@@ -220,4 +212,4 @@
 	 computing_timer.exit_section("matrixFreePDE: initialization");
 }
 
-#endif 
+#include "../../include/matrixFreePDE_template_instantiations.h"

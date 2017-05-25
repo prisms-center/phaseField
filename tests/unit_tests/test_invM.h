@@ -1,9 +1,9 @@
 // Unit test(s) for the method "computeInvM"
-template <int dim>
-class testInvM: public MatrixFreePDE<dim>
+template <int dim, int degree>
+class testInvM: public MatrixFreePDE<dim,degree>
 {
  public: 
-  testInvM(){
+  testInvM(userInputParameters<dim> _userInputs): MatrixFreePDE<dim,degree>(_userInputs) {
 
 	  // Initialize the test field object (needed for computeInvM())
 	  Field<problemDIM> test_field(SCALAR,PARABOLIC,"c");
@@ -21,6 +21,8 @@ class testInvM: public MatrixFreePDE<dim>
   };
   double invMNorm;
   
+  void setBCs(){};
+
  private:
   //RHS implementation for explicit solve
   void getRHS(const MatrixFree<dim,double> &data, 
@@ -28,15 +30,28 @@ class testInvM: public MatrixFreePDE<dim>
 	      const std::vector<vectorType*> &src,
 	      const std::pair<unsigned int,unsigned int> &cell_range) const{};
 
+  void residualRHS(const std::vector<modelVariable<dim> > & modelVarList,
+  			  	  	 std::vector<modelResidual<dim> > & modelResidualsList,
+  					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};
+
+  	void residualLHS(const std::vector<modelVariable<dim> > & modelVarList,
+  	  		  	  	 modelResidual<dim> & modelRes,
+  					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};
+
+  	void energyDensity(const std::vector<modelVariable<dim> > & modelVarList, const dealii::VectorizedArray<double> & JxW_value,
+  			  	  	 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {};
+
 };
 
 template <int dim,typename T>
-  bool unitTest<dim,T>::test_computeInvM(int argc, char** argv){
+  bool unitTest<dim,T>::test_computeInvM(int argc, char** argv, userInputParameters<dim> userInputs){
   	bool pass = false;
 	std::cout << "\nTesting 'computeInvM' in " << dim << " dimension(s)...'" << std::endl;
  
 	//create test problem class object
-	testInvM<dim> test;
+	//userInputParameters userInputs;
+	//userInputs.loadUserInput();
+	testInvM<dim,finiteElementDegree> test(userInputs);
 	//check invM norm
 	if ((test.invMNorm - 1700.0) < 1.0e-10) {pass=true;}
 	char buffer[100];

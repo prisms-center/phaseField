@@ -1,27 +1,41 @@
 // Cahn-Hilliard example application
+// Header files
 
 // Header files
-#include "../../include/dealIIheaders.h"
-
 #include "parameters.h"
-#include "../../src/models/coupled/generalized_model.h"
+#include "../../include/dealIIheaders.h"
+#include "../../include/typeDefs.h"
+#include "../../include/model_variables.h"
+#include "../../include/varBCs.h"
+#include "../../include/initialConditions.h"
+#include "../../include/matrixFreePDE.h"
+#include "customPDE.h"
 #include "equations.h"
 #include "ICs_and_BCs.h"
-#include "../../src/models/coupled/generalized_model_functions.h"
+#include "postprocess.h"
+#include "../../include/initialCondition_template_instantiations.h"
+#include "../../src/userInputParameters/loadUserInputs.cc" // Needs to be included because it contains needs access to the define macros in the preceding files
 
 //main
 int main (int argc, char **argv)
 {
-  Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,numbers::invalid_unsigned_int);
+  dealii::Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,dealii::numbers::invalid_unsigned_int);
   try
     {
-	  deallog.depth_console(0);
-	  generalizedProblem<problemDIM> problem;
+	  dealii::deallog.depth_console(0);
+
+	  userInputParameters<problemDIM> userInputs;
+	  userInputs.loadUserInput();
+
+	  customPDE<problemDIM,finiteElementDegree> problem(userInputs);
+
 
       problem.setBCs();
       problem.buildFields();
-      problem.init (); 
+      problem.init ();
       problem.solve();
+
+
     }
   catch (std::exception &exc)
     {

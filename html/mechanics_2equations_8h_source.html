@@ -150,14 +150,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">// &quot;modelResidualsList&quot;, a list of the value and gradient terms of the residual for</span></div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">// each residual equation. The index for each variable in these lists corresponds to</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">// the order it is defined at the top of this file (starting at 0).</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim&gt;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keywordtype">void</span> <a class="code" href="classgeneralized_problem.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">generalizedProblem&lt;dim&gt;::residualRHS</a>(<span class="keyword">const</span> std::vector&lt;<a class="code" href="classmodel_variable.html">modelVariable&lt;dim&gt;</a> &gt; &amp; modelVariablesList,</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> degree&gt;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keywordtype">void</span> <a class="code" href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">customPDE&lt;dim,degree&gt;::residualRHS</a>(<span class="keyword">const</span> std::vector&lt;<a class="code" href="classmodel_variable.html">modelVariable&lt;dim&gt;</a> &gt; &amp; modelVariablesList,</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                                                std::vector&lt;<a class="code" href="classmodel_residual.html">modelResidual&lt;dim&gt;</a> &gt; &amp; modelResidualsList,</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                                                dealii::Point&lt;dim, dealii::VectorizedArray&lt;double&gt; &gt; q_point_loc)<span class="keyword"> const </span>{</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">//u</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<a class="code" href="matrix_free_p_d_e_8h.html#a73b53d5db94bf70dfe8f54f1bda87e1a">vectorgradType</a> ux = modelVariablesList[0].vectorGrad;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<a class="code" href="matrix_free_p_d_e_8h.html#a73b53d5db94bf70dfe8f54f1bda87e1a">vectorgradType</a> Rux;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<a class="code" href="type_defs_8h.html#a73b53d5db94bf70dfe8f54f1bda87e1a">vectorgradType</a> ux = modelVariablesList[0].vectorGrad;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<a class="code" href="type_defs_8h.html#a73b53d5db94bf70dfe8f54f1bda87e1a">vectorgradType</a> Rux;</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">//compute strain tensor</span></div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;dealii::VectorizedArray&lt;double&gt; E[dim][dim], S[dim][dim];</div>
@@ -168,7 +168,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">//compute stress tensor</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;computeStress&lt;dim&gt;(CIJ_list[0], E, S);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;computeStress&lt;dim&gt;(this-&gt;userInputs.CIJ_list[0], E, S);</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">//compute residual</span></div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i=0; i&lt;dim; i++){</div>
@@ -196,14 +196,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment">// are multiple elliptic equations, conditional statements should be used to ensure</span></div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">// that the correct residual is being submitted. The index of the field being solved</span></div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">// can be accessed by &quot;this-&gt;currentFieldIndex&quot;.</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim&gt;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="keywordtype">void</span> <a class="code" href="classgeneralized_problem.html#ac3be7fef8c1af88cb1c325179e4dd555">generalizedProblem&lt;dim&gt;::residualLHS</a>(<span class="keyword">const</span> std::vector&lt;<a class="code" href="classmodel_variable.html">modelVariable&lt;dim&gt;</a> &gt; &amp; modelVarList,</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> degree&gt;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="keywordtype">void</span> <a class="code" href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">customPDE&lt;dim,degree&gt;::residualLHS</a>(<span class="keyword">const</span> std::vector&lt;<a class="code" href="classmodel_variable.html">modelVariable&lt;dim&gt;</a> &gt; &amp; modelVarList,</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <a class="code" href="classmodel_residual.html">modelResidual&lt;dim&gt;</a> &amp; modelRes,</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        dealii::Point&lt;dim, dealii::VectorizedArray&lt;double&gt; &gt; q_point_loc)<span class="keyword"> const </span>{</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="comment">//u</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<a class="code" href="matrix_free_p_d_e_8h.html#a73b53d5db94bf70dfe8f54f1bda87e1a">vectorgradType</a> ux = modelVarList[0].vectorGrad;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<a class="code" href="matrix_free_p_d_e_8h.html#a73b53d5db94bf70dfe8f54f1bda87e1a">vectorgradType</a> Rux;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<a class="code" href="type_defs_8h.html#a73b53d5db94bf70dfe8f54f1bda87e1a">vectorgradType</a> ux = modelVarList[0].vectorGrad;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<a class="code" href="type_defs_8h.html#a73b53d5db94bf70dfe8f54f1bda87e1a">vectorgradType</a> Rux;</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="comment">//compute strain tensor</span></div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;dealii::VectorizedArray&lt;double&gt; E[dim][dim], S[dim][dim];</div>
@@ -214,7 +214,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;}</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="comment">//compute stress tensor</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;computeStress&lt;dim&gt;(CIJ_list[0], E, S);</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;computeStress&lt;dim&gt;(this-&gt;userInputs.CIJ_list[0], E, S);</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="comment">//compute residual</span></div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i=0; i&lt;dim; i++){</div>
@@ -223,7 +223,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    }</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;}</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;modelRes.<a class="code" href="classmodel_residual.html#aa160ac83f8d4dc9583d3acbd6c6567d9">vectorGradResidual</a> = Rux;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;modelRes.<a class="code" href="classmodel_residual.html#a2c4b1598d8fa7e56a3c89de51116138c">vectorGradResidual</a> = Rux;</div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;}</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
@@ -238,16 +238,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="comment">// energy density is added to &quot;energy&quot; variable and the components of the energy</span></div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="comment">// density are added to the &quot;energy_components&quot; variable (index 0: chemical energy,</span></div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment">// index 1: gradient energy, index 2: elastic energy).</span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim&gt;</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="keywordtype">void</span> <a class="code" href="classgeneralized_problem.html#a13dfb29f2b80a5ed12336bd536d96f03">generalizedProblem&lt;dim&gt;::energyDensity</a>(<span class="keyword">const</span> std::vector&lt;<a class="code" href="classmodel_variable.html">modelVariable&lt;dim&gt;</a> &gt; &amp; modelVarList,</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> degree&gt;</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="keywordtype">void</span> <a class="code" href="classcustom_p_d_e.html#a13dfb29f2b80a5ed12336bd536d96f03">customPDE&lt;dim,degree&gt;::energyDensity</a>(<span class="keyword">const</span> std::vector&lt;<a class="code" href="classmodel_variable.html">modelVariable&lt;dim&gt;</a> &gt; &amp; modelVarList,</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                                            <span class="keyword">const</span> dealii::VectorizedArray&lt;double&gt; &amp; JxW_value,</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                                            dealii::Point&lt;dim, dealii::VectorizedArray&lt;double&gt; &gt; q_point_loc) {</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <a class="code" href="matrix_free_p_d_e_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> total_energy_density = <a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(0.0);</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <a class="code" href="matrix_free_p_d_e_8h.html#a73b53d5db94bf70dfe8f54f1bda87e1a">vectorgradType</a> ux = modelVarList[0].vectorGrad;</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <a class="code" href="matrix_free_p_d_e_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> f_chem = <a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(0.0);</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> total_energy_density = <a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(0.0);</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <a class="code" href="type_defs_8h.html#a73b53d5db94bf70dfe8f54f1bda87e1a">vectorgradType</a> ux = modelVarList[0].vectorGrad;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> f_chem = <a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(0.0);</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <a class="code" href="matrix_free_p_d_e_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> f_grad = <a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(0.0);</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> f_grad = <a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(0.0);</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="comment">//compute E2=(E-E0)</span></div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    dealii::VectorizedArray&lt;double&gt; E[dim][dim], S[dim][dim];</div>
@@ -261,9 +261,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="comment">//compute stress</span></div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="comment">//S=C*(E)</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    computeStress&lt;dim&gt;(CIJ_list[0], E, S);</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    computeStress&lt;dim&gt;(this-&gt;userInputs.CIJ_list[0], E, S);</div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <a class="code" href="matrix_free_p_d_e_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> f_el = <a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(0.0);</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> f_el = <a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(0.0);</div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;</div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i=0; i&lt;dim; i++){</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j=0; j&lt;dim; j++){</div>
@@ -275,7 +275,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="comment">// Loop to step through each element of the vectorized arrays. Working with deal.ii</span></div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="comment">// developers to see if there is a more elegant way to do this.</span></div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    assembler_lock.acquire ();</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    this-&gt;assembler_lock.acquire ();</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> i=0; i&lt;ux[0][0].n_array_elements;i++){</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;      <span class="keywordflow">if</span> (ux[0][0][i] &gt; 1.0e-10){</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;          this-&gt;energy+=total_energy_density[i]*JxW_value[i];</div>
@@ -284,21 +284,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;          this-&gt;energy_components[2]+= f_el[i]*JxW_value[i];</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;      }</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    }</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    assembler_lock.release ();</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    this-&gt;assembler_lock.release ();</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;}</div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;</div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;</div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;</div>
-<div class="ttc" id="classmodel_residual_html"><div class="ttname"><a href="classmodel_residual.html">modelResidual</a></div><div class="ttdef"><b>Definition:</b> model_variables.h:25</div></div>
-<div class="ttc" id="classgeneralized_problem_html_a8ccfe9cbd0b12d62f2cb6d6f23a57eb4"><div class="ttname"><a href="classgeneralized_problem.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">generalizedProblem::residualRHS</a></div><div class="ttdeci">void residualRHS(const std::vector&lt; modelVariable&lt; dim &gt; &gt; &amp;modelVarList, std::vector&lt; modelResidual&lt; dim &gt; &gt; &amp;modelResidualsList, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc) const </div><div class="ttdef"><b>Definition:</b> equations.h:58</div></div>
-<div class="ttc" id="matrix_free_p_d_e_8h_html_af4deabb57f7353cd1981dbbb926455cd"><div class="ttname"><a href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a></div><div class="ttdeci">#define constV(a)</div><div class="ttdef"><b>Definition:</b> matrixFreePDE.h:67</div></div>
-<div class="ttc" id="classmodel_residual_html_aa160ac83f8d4dc9583d3acbd6c6567d9"><div class="ttname"><a href="classmodel_residual.html#aa160ac83f8d4dc9583d3acbd6c6567d9">modelResidual::vectorGradResidual</a></div><div class="ttdeci">vectorgradType vectorGradResidual</div><div class="ttdef"><b>Definition:</b> model_variables.h:33</div></div>
-<div class="ttc" id="classgeneralized_problem_html_ac3be7fef8c1af88cb1c325179e4dd555"><div class="ttname"><a href="classgeneralized_problem.html#ac3be7fef8c1af88cb1c325179e4dd555">generalizedProblem::residualLHS</a></div><div class="ttdeci">void residualLHS(const std::vector&lt; modelVariable&lt; dim &gt; &gt; &amp;modelVarList, modelResidual&lt; dim &gt; &amp;modelRes, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc) const </div><div class="ttdef"><b>Definition:</b> equations.h:89</div></div>
-<div class="ttc" id="classmodel_variable_html"><div class="ttname"><a href="classmodel_variable.html">modelVariable</a></div><div class="ttdef"><b>Definition:</b> model_variables.h:4</div></div>
-<div class="ttc" id="matrix_free_p_d_e_8h_html_a73b53d5db94bf70dfe8f54f1bda87e1a"><div class="ttname"><a href="matrix_free_p_d_e_8h.html#a73b53d5db94bf70dfe8f54f1bda87e1a">vectorgradType</a></div><div class="ttdeci">dealii::Tensor&lt; 2, problemDIM, dealii::VectorizedArray&lt; double &gt; &gt; vectorgradType</div><div class="ttdef"><b>Definition:</b> matrixFreePDE.h:57</div></div>
-<div class="ttc" id="matrix_free_p_d_e_8h_html_ac74a2c5a901e3ca87ec3ae9c01623449"><div class="ttname"><a href="matrix_free_p_d_e_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a></div><div class="ttdeci">dealii::VectorizedArray&lt; double &gt; scalarvalueType</div><div class="ttdef"><b>Definition:</b> matrixFreePDE.h:34</div></div>
-<div class="ttc" id="classgeneralized_problem_html_a13dfb29f2b80a5ed12336bd536d96f03"><div class="ttname"><a href="classgeneralized_problem.html#a13dfb29f2b80a5ed12336bd536d96f03">generalizedProblem::energyDensity</a></div><div class="ttdeci">void energyDensity(const std::vector&lt; modelVariable&lt; dim &gt; &gt; &amp;modelVarList, const dealii::VectorizedArray&lt; double &gt; &amp;JxW_value, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc)</div><div class="ttdef"><b>Definition:</b> equations.h:106</div></div>
+<div class="ttc" id="classmodel_residual_html"><div class="ttname"><a href="classmodel_residual.html">modelResidual</a></div><div class="ttdef"><b>Definition:</b> model_variables.h:22</div></div>
+<div class="ttc" id="type_defs_8h_html_a73b53d5db94bf70dfe8f54f1bda87e1a"><div class="ttname"><a href="type_defs_8h.html#a73b53d5db94bf70dfe8f54f1bda87e1a">vectorgradType</a></div><div class="ttdeci">dealii::Tensor&lt; 2, problemDIM, dealii::VectorizedArray&lt; double &gt; &gt; vectorgradType</div><div class="ttdef"><b>Definition:</b> typeDefs.h:50</div></div>
+<div class="ttc" id="classcustom_p_d_e_html_ac3be7fef8c1af88cb1c325179e4dd555"><div class="ttname"><a href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">customPDE::residualLHS</a></div><div class="ttdeci">void residualLHS(const std::vector&lt; modelVariable&lt; dim &gt; &gt; &amp;modelVarList, modelResidual&lt; dim &gt; &amp;modelRes, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc) const </div><div class="ttdef"><b>Definition:</b> equations.h:249</div></div>
+<div class="ttc" id="classcustom_p_d_e_html_a13dfb29f2b80a5ed12336bd536d96f03"><div class="ttname"><a href="classcustom_p_d_e.html#a13dfb29f2b80a5ed12336bd536d96f03">customPDE::energyDensity</a></div><div class="ttdeci">void energyDensity(const std::vector&lt; modelVariable&lt; dim &gt; &gt; &amp;modelVarList, const dealii::VectorizedArray&lt; double &gt; &amp;JxW_value, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc)</div><div class="ttdef"><b>Definition:</b> equations.h:266</div></div>
+<div class="ttc" id="matrix_free_p_d_e_8h_html_af4deabb57f7353cd1981dbbb926455cd"><div class="ttname"><a href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a></div><div class="ttdeci">#define constV(a)</div><div class="ttdef"><b>Definition:</b> matrixFreePDE.h:38</div></div>
+<div class="ttc" id="classmodel_residual_html_a2c4b1598d8fa7e56a3c89de51116138c"><div class="ttname"><a href="classmodel_residual.html#a2c4b1598d8fa7e56a3c89de51116138c">modelResidual::vectorGradResidual</a></div><div class="ttdeci">dealii::Tensor&lt; 2, dim, dealii::VectorizedArray&lt; double &gt; &gt; vectorGradResidual</div><div class="ttdef"><b>Definition:</b> model_variables.h:29</div></div>
+<div class="ttc" id="classcustom_p_d_e_html_a8ccfe9cbd0b12d62f2cb6d6f23a57eb4"><div class="ttname"><a href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">customPDE::residualRHS</a></div><div class="ttdeci">void residualRHS(const std::vector&lt; modelVariable&lt; dim &gt; &gt; &amp;modelVarList, std::vector&lt; modelResidual&lt; dim &gt; &gt; &amp;modelResidualsList, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc) const </div><div class="ttdef"><b>Definition:</b> equations.h:145</div></div>
+<div class="ttc" id="type_defs_8h_html_ac74a2c5a901e3ca87ec3ae9c01623449"><div class="ttname"><a href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a></div><div class="ttdeci">dealii::VectorizedArray&lt; double &gt; scalarvalueType</div><div class="ttdef"><b>Definition:</b> typeDefs.h:27</div></div>
+<div class="ttc" id="classmodel_variable_html"><div class="ttname"><a href="classmodel_variable.html">modelVariable</a></div><div class="ttdef"><b>Definition:</b> model_variables.h:7</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

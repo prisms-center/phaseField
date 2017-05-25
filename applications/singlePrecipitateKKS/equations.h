@@ -134,9 +134,9 @@ double B0 = 1.5625;
 // "modelResidualsList", a list of the value and gradient terms of the residual for
 // each residual equation. The index for each variable in these lists corresponds to
 // the order it is defined at the top of this file (starting at 0).
-template <int dim>
-void generalizedProblem<dim>::residualRHS(const std::vector<modelVariable<dim>> & modelVariablesList,
-												std::vector<modelResidual<dim>> & modelResidualsList,
+template <int dim, int degree>
+void customPDE<dim,degree>::residualRHS(const std::vector<modelVariable<dim> > & modelVariablesList,
+												std::vector<modelResidual<dim> > & modelResidualsList,
 												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 // The concentration and its derivatives (names here should match those in the macros above)
@@ -213,13 +213,13 @@ dealii::VectorizedArray<double> CIJ_combined[CIJ_tensor_size][CIJ_tensor_size];
 if (n_dependent_stiffness == true){
 for (unsigned int i=0; i<2*dim-1+dim/3; i++){
 	  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-		  CIJ_combined[i][j] = CIJ_list[0][i][j]*(constV(1.0)-h1V) + CIJ_list[1][i][j]*h1V;
+		  CIJ_combined[i][j] = this->userInputs.CIJ_list[0][i][j]*(constV(1.0)-h1V) + this->userInputs.CIJ_list[1][i][j]*h1V;
 	  }
 }
 computeStress<dim>(CIJ_combined, E2, S);
 }
 else{
-computeStress<dim>(CIJ_list[0], E2, S);
+computeStress<dim>(this->userInputs.CIJ_list[0], E2, S);
 }
 
 
@@ -247,7 +247,7 @@ dealii::VectorizedArray<double> heterMechAC1=constV(0.0);
 dealii::VectorizedArray<double> S2[dim][dim];
 
 if (n_dependent_stiffness == true){
-	computeStress<dim>(CIJ_list[1]-CIJ_list[0], E2, S2);
+	computeStress<dim>(this->userInputs.CIJ_list[1]-this->userInputs.CIJ_list[0], E2, S2);
 
 	for (unsigned int i=0; i<dim; i++){
 		for (unsigned int j=0; j<dim; j++){
@@ -273,7 +273,7 @@ if (c_dependent_misfit == true){
 		computeStress<dim>(CIJ_combined, E3, S3);
 	}
 	else{
-		computeStress<dim>(CIJ_list[0], E3, S3);
+		computeStress<dim>(this->userInputs.CIJ_list[0], E3, S3);
 	}
 
 	for (unsigned int i=0; i<dim; i++){
@@ -328,8 +328,8 @@ modelResidualsList[2].vectorGradResidual = ruxV;
 // are multiple elliptic equations, conditional statements should be used to ensure
 // that the correct residual is being submitted. The index of the field being solved
 // can be accessed by "this->currentFieldIndex".
-template <int dim>
-void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim>> & modelVariablesList,
+template <int dim, int degree>
+void customPDE<dim,degree>::residualLHS(const std::vector<modelVariable<dim> > & modelVariablesList,
 		modelResidual<dim> & modelRes,
 		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
@@ -347,13 +347,13 @@ E = symmetrize(ux);
 // Compute stress tensor (which is equal to the residual, Rux)
 if (n_dependent_stiffness == true){
 	dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ_combined;
-	CIJ_combined = CIJ_list[0]*(constV(1.0)-h1V);
-	CIJ_combined += CIJ_list[1]*(h1V);
+	CIJ_combined = this->userInputs.CIJ_list[0]*(constV(1.0)-h1V);
+	CIJ_combined += this->userInputs.CIJ_list[1]*(h1V);
 
 	computeStress<dim>(CIJ_combined, E, ruxV);
 }
 else{
-	computeStress<dim>(CIJ_list[0], E, ruxV);
+	computeStress<dim>(this->userInputs.CIJ_list[0], E, ruxV);
 }
 
 modelRes.vectorGradResidual = ruxV;
@@ -371,8 +371,8 @@ modelRes.vectorGradResidual = ruxV;
 // energy density is added to "energy" variable and the components of the energy
 // density are added to the "energy_components" variable (index 0: chemical energy,
 // index 1: gradient energy, index 2: elastic energy).
-template <int dim>
-void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim>> & modelVarList,
+template <int dim, int degree>
+void customPDE<dim,degree>::energyDensity(const std::vector<modelVariable<dim> > & modelVarList,
 											const dealii::VectorizedArray<double> & JxW_value,
 											dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {
 
@@ -428,13 +428,13 @@ dealii::VectorizedArray<double> CIJ_combined[2*dim-1+dim/3][2*dim-1+dim/3];
 if (n_dependent_stiffness == true){
   for (unsigned int i=0; i<2*dim-1+dim/3; i++){
 	  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-		  CIJ_combined[i][j] = CIJ_list[0][i][j]*(constV(1.0)-h1V) + CIJ_list[1][i][j]*h1V;
+		  CIJ_combined[i][j] = this->userInputs.CIJ_list[0][i][j]*(constV(1.0)-h1V) + this->userInputs.CIJ_list[1][i][j]*h1V;
 	  }
   }
   computeStress<dim>(CIJ_combined, E2, S);
 }
 else{
-  computeStress<dim>(CIJ_list[0], E2, S);
+  computeStress<dim>(this->userInputs.CIJ_list[0], E2, S);
 }
 
 scalarvalueType f_el = constV(0.0);
@@ -449,7 +449,7 @@ total_energy_density = f_chem + f_grad + f_el;
 
 // Loop to step through each element of the vectorized arrays. Working with deal.ii
 // developers to see if there is a more elegant way to do this.
-assembler_lock.acquire ();
+this->assembler_lock.acquire ();
 for (unsigned i=0; i<c.n_array_elements;i++){
   if (c[i] > 1.0e-10){
 	  this->energy+=total_energy_density[i]*JxW_value[i];
@@ -458,7 +458,7 @@ for (unsigned i=0; i<c.n_array_elements;i++){
 	  this->energy_components[2]+= f_el[i]*JxW_value[i];
   }
 }
-assembler_lock.release ();
+this->assembler_lock.release ();
 }
 
 

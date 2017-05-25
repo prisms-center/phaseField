@@ -1,14 +1,10 @@
 //utility functions for the MatrixFreePDE class
 
-#ifndef UTILITY_MATRIXFREE_H
-#define UTILITY_MATRIXFREE_H
-//this source file is temporarily treated as a header file (hence
-//#ifndef's) till library packaging scheme is finalized
-
+#include "../../include/matrixFreePDE.h"
 
 //return index of given field name if exists, else throw error
-template <int dim>
-unsigned int MatrixFreePDE<dim>::getFieldIndex(std::string _name) {
+template <int dim, int degree>
+unsigned int MatrixFreePDE<dim,degree>::getFieldIndex(std::string _name) {
    for(typename std::vector<Field<dim> >::iterator it = fields.begin(); it != fields.end(); ++it){
      if (it->name.compare(_name)==0) return it->index;
    }
@@ -16,4 +12,5 @@ unsigned int MatrixFreePDE<dim>::getFieldIndex(std::string _name) {
    exit(-1);
 }
 
-#endif
+#include "../../include/matrixFreePDE_template_instantiations.h"
+

@@ -1,25 +1,23 @@
 //solveIncrement() method for MatrixFreePDE class
 
-#ifndef SOLVEINCREMENT_MATRIXFREE_H
-#define SOLVEINCREMENT_MATRIXFREE_H
-//this source file is temporarily treated as a header file (hence
-//#ifndef's) till library packaging scheme is finalized
+#include "../../include/matrixFreePDE.h"
 
 //solve each time increment
-template <int dim>
-void MatrixFreePDE<dim>::solveIncrement(){
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::solveIncrement(){
   //log time
   computing_timer.enter_section("matrixFreePDE: solveIncrements");
   Timer time; 
   char buffer[200];
 
-  //modify fields (rarely used. Typically used in problems involving nucleation)
-#ifdef nucleation_occurs
-  if (nucleation_occurs == true) modifySolutionFields();
-#endif
-	
-  //compute residual vectors
+  // Get the list of new nuclei, if relevant
+  if (userInputs.nucleation_occurs){
+	  computing_timer.enter_section("matrixFreePDE: nucleation");
+	  getNucleiList();
+	  computing_timer.exit_section("matrixFreePDE: nucleation");
+  }
 
+  //compute residual vectors
   computeRHS();
 
   //solve for each field
@@ -39,18 +37,18 @@ void MatrixFreePDE<dim>::solveIncrement(){
     				invM.local_element(dof%invM_size)*residualSet[fieldIndex]->local_element(dof);
     	}
 
-      //apply constraints
-      constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
-      //sync ghost DOF's
-      solutionSet[fieldIndex]->update_ghost_values();
-      //
-      if (currentIncrement%skipPrintSteps==0){
-      sprintf(buffer, "field '%2s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
-	      fields[fieldIndex].name.c_str(),				\
-	      solutionSet[fieldIndex]->l2_norm(),			\
-	      residualSet[fieldIndex]->l2_norm()); 
-      pcout<<buffer; 
-      }
+    	//apply constraints
+    	constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+    	//sync ghost DOF's
+    	solutionSet[fieldIndex]->update_ghost_values();
+    	//
+    	if (currentIncrement%userInputs.skip_print_steps==0){
+    		sprintf(buffer, "field '%2s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
+    				fields[fieldIndex].name.c_str(),				\
+					solutionSet[fieldIndex]->l2_norm(),			\
+					residualSet[fieldIndex]->l2_norm());
+    		pcout<<buffer;
+    	}
     }
     //Elliptic (time-independent) fields
     else if (fields[fieldIndex].pdetype==ELLIPTIC){
@@ -60,19 +58,28 @@ void MatrixFreePDE<dim>::solveIncrement(){
 		if (currentIncrement%skipImplicitSolves==0){
 			//apply Dirichlet BC's
 			// Loops through all DoF to which ones have Dirichlet BCs applied, replace the ones that do with the Dirichlet value
+			// Is this needed? Why are we applying BCs to the residualSet?
+			// This clears the residual where we want to apply Dirichlet BCs, otherwise the solver sees a positive residual
 			for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[fieldIndex]->begin(); it!=valuesDirichletSet[fieldIndex]->end(); ++it){
 				if (residualSet[fieldIndex]->in_local_range(it->first)){
-					(*residualSet[fieldIndex])(it->first) = it->second; //*jacobianDiagonal(it->first);
+					(*residualSet[fieldIndex])(it->first) = 0.0; //it->second; //*jacobianDiagonal(it->first);
 				}
 			}
-	
+
 			//solver controls
-			#if absTol == true
-			SolverControl solver_control(maxSolverIterations, solverTolerance);
-			#else
-			SolverControl solver_control(maxSolverIterations, solverTolerance*residualSet[fieldIndex]->l2_norm());
-			#endif
-			solverType<vectorType> solver(solver_control);
+			double tol_value;
+			if (userInputs.abs_tol == true){
+				tol_value = userInputs.solver_tolerance;
+				//if (currentIncrement > 1) tol_value = 1000000.0;
+			}
+			else {
+				tol_value = userInputs.solver_tolerance*residualSet[fieldIndex]->l2_norm();
+			}
+
+			SolverControl solver_control(userInputs.max_solver_iterations, tol_value);
+
+			// Currently the only allowed solver is SolverCG, the SolverType input variable is a dummy
+			SolverCG<vectorType> solver(solver_control);
 	
 			//solve
 			try{
@@ -100,7 +107,7 @@ void MatrixFreePDE<dim>::solveIncrement(){
 			//sync ghost DOF's
 			solutionSet[fieldIndex]->update_ghost_values();
 			//
-			 if (currentIncrement%skipPrintSteps==0){
+			 if (currentIncrement%userInputs.skip_print_steps==0){
 				 double dU_norm;
 				 if (fields[fieldIndex].type == SCALAR){
 					 dU_norm = dU_scalar.l2_norm();
@@ -108,12 +115,12 @@ void MatrixFreePDE<dim>::solveIncrement(){
 				 else {
 					 dU_norm = dU_vector.l2_norm();
 				 }
-			sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
-					fields[fieldIndex].name.c_str(),			\
-					residualSet[fieldIndex]->l2_norm(),			\
-					solver_control.last_value(),				\
-					solver_control.last_step(), solver_control.tolerance(), solutionSet[fieldIndex]->l2_norm(), dU_norm);
-			pcout<<buffer;
+				 sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
+						 fields[fieldIndex].name.c_str(),			\
+						 residualSet[fieldIndex]->l2_norm(),			\
+						 solver_control.last_value(),				\
+						 solver_control.last_step(), solver_control.tolerance(), solutionSet[fieldIndex]->l2_norm(), dU_norm);
+				 pcout<<buffer;
 			 }
 		}
 		else{
@@ -145,11 +152,11 @@ void MatrixFreePDE<dim>::solveIncrement(){
 		  exit(-1);
 	  }
   }
-  if (currentIncrement%skipPrintSteps==0){
+  if (currentIncrement%userInputs.skip_print_steps==0){
   pcout << "wall time: " << time.wall_time() << "s\n";
   }
   //log time
   computing_timer.exit_section("matrixFreePDE: solveIncrements"); 
 }
 
-#endif
+#include "../../include/matrixFreePDE_template_instantiations.h"

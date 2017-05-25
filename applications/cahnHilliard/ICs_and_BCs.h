@@ -1,14 +1,6 @@
 template <int dim>
-class InitialCondition : public Function<dim>
+double InitialCondition<dim>::value (const Point<dim> &p, const unsigned int component) const
 {
-public:
-  unsigned int index;
-  Vector<double> values;
-  InitialCondition (const unsigned int _index) : Function<dim>(1), index(_index) {
-    std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
-  }
-  double value (const Point<dim> &p, const unsigned int component = 0) const
-  {
     double scalar_IC = 0;
     // =====================================================================
     // ENTER THE INITIAL CONDITIONS HERE FOR SCALAR FIELDS
@@ -18,42 +10,33 @@ public:
     // according to its variable index.
     
     if (index == 0){
-      double x_loc[12] = {0.1, 0.8, 0.5, 0.4, 0.3, 0.8, 0.9, 0.0, 0.1, 0.5, 1, 0.7};
-      double y_loc[12] = {0.3, 0.7, 0.2, 0.4, 0.9, 0.1, 0.5, 0.1, 0.6, 0.6, 1, 0.95};
-      double rad[12] =   {12, 14, 19, 16, 11, 12, 17, 15, 20, 10, 11, 14};
-      double dist;
-      scalar_IC = 0;
-      for (unsigned int i=0; i<12; i++){
-      #if problemDIM == 2
-    	  dist = p.distance(Point<dim>(x_loc[i]*spanX,y_loc[i]*spanY));
-      #elif problemDIM == 3
-    	  dist = p.distance(Point<dim>(x_loc[i]*spanX,y_loc[i]*spanY,0.5*spanZ));
-      #endif
-    	  if (dist < rad[i]){
-	  scalar_IC = 1.0;
-    	  }
-      }
+    	double x_loc[12] = {0.1, 0.8, 0.5, 0.4, 0.3, 0.8, 0.9, 0.0, 0.1, 0.5, 1, 0.7};
+    	double y_loc[12] = {0.3, 0.7, 0.2, 0.4, 0.9, 0.1, 0.5, 0.1, 0.6, 0.6, 1, 0.95};
+    	double rad[12] =   {12, 14, 19, 16, 11, 12, 17, 15, 20, 10, 11, 14};
+    	double dist;
+    	scalar_IC = 0;
+    	for (unsigned int i=0; i<12; i++){
+			#if problemDIM == 2
+    			dist = p.distance(Point<dim>(x_loc[i]*spanX,y_loc[i]*spanY));
+			#elif problemDIM == 3
+    			dist = p.distance(Point<dim>(x_loc[i]*spanX,y_loc[i]*spanY,0.5*spanZ));
+			#endif
+    		scalar_IC +=	0.5*(1.0-std::tanh((dist-rad[i])/1.5));
+    	}
+    	if (scalar_IC > 1.0) scalar_IC = 1.0;
     }
     else {
-      scalar_IC = 0.0;
+    	scalar_IC = 0.0;
     }
     
     // =====================================================================
     return scalar_IC;
-  }
-};
+}
+
 
 template <int dim>
-class InitialConditionVec : public Function<dim>
+void InitialConditionVec<dim>::vector_value (const Point<dim> &p,Vector<double> &vector_IC) const
 {
-public:
-  unsigned int index;
-  //Vector<double> values;
-  InitialConditionVec (const unsigned int _index) : Function<dim>(dim), index(_index) {
-    std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
-  }
-  void vector_value (const Point<dim> &p,Vector<double> &vector_IC) const
-  {
     // =====================================================================
     // ENTER THE INITIAL CONDITIONS HERE FOR VECTOR FIELDS
     // =====================================================================
@@ -63,13 +46,10 @@ public:
     
     
     // =====================================================================
-  }
-};
+}
 
-
-template <int dim>
-void generalizedProblem<dim>::setBCs(){
-  
+template <int dim, int degree>
+void customPDE<dim,degree>::setBCs(){
 	// =====================================================================
 	// ENTER THE BOUNDARY CONDITIONS HERE
 	// =====================================================================
@@ -88,7 +68,7 @@ void generalizedProblem<dim>::setBCs(){
 	// Face numbering: starts at zero with the minimum of the first direction, one for the maximum of the first direction
 	//						two for the minimum of the second direction, etc.
   
-  inputBCs(0,0,"ZERO_DERIVATIVE",0);
-  inputBCs(1,0,"ZERO_DERIVATIVE",0);
+  this->inputBCs(0,0,"ZERO_DERIVATIVE",0);
+  this->inputBCs(1,0,"ZERO_DERIVATIVE",0);
   
 }

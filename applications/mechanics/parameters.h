@@ -31,7 +31,7 @@
 // Set the elliptic solver parameters
 // =================================================================================
 // The solver type (currently the only recommended option is conjugate gradient)
-#define solverType SolverCG
+#define solverType "SolverCG"
 
 // The tolerance for convergence (L2 norm of the residual)
 #define solverTolerance 1.0e-10

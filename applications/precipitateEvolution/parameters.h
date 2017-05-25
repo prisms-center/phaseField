@@ -60,7 +60,7 @@
 // Set the elliptic solver parameters
 // =================================================================================
 // The solver type (currently the only recommended option is conjugate gradient)
-#define solverType SolverCG
+#define solverType "SolverCG"
 
 // The flag that determines whether the tolerance for solver convergence should
 // be an absolute tolerance (absTol=true) or a relative tolerance (absTol=false)

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['elliptic',['ELLIPTIC',['../fields_8h.html#a12521d5d4cf2d9ed3c05e52b162fad42aaaa43b107f7c59fa66b58b9fd506c074',1,'fields.h']]]
+  ['dirichlet',['DIRICHLET',['../var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74a1c2adefa6a3b7015b29913c49ee050c7',1,'varBCs.h']]]
 ];

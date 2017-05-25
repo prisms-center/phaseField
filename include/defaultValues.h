@@ -32,9 +32,12 @@
 #define finiteElementDegree 1
 #endif
 
-//number of fields (default value:1)
-#ifndef numFields
-#define numFields 1
+// Number of time steps and time step size
+#ifndef	timeIncrements
+#define timeIncrements 1
+#endif
+#ifndef	timeStep
+#define timeStep 0.0
 #endif
 
 //write output files (default value:true)
@@ -42,19 +45,18 @@
 #define writeOutput true
 #endif
 
-//output written at every n'th increment for time dependent problems (default value:1)
-#ifndef skipOutputSteps
-#define skipOutputSteps 1
-#endif
-
 //solver type for implcit solves (default value:SolverCG)
 #ifndef solverType
-#define solverType SolverCG
+#define solverType "SolverCG"
 #endif
 
 //relative linear solver tolerance for implicit solves (default value:1.0e-10)
 #ifndef solverTolerance
 #define solverTolerance 1.0e-10
+#endif
+
+#ifndef absTol
+#define absTol false
 #endif
 
 //max number of linear solver iterations for implicit solves (default value:1000)
@@ -67,7 +69,7 @@
 #define skipImplicitSolves 1
 #endif
 
-//number of implicit solves to skip. None are skipped if value is 1, which is the default.
+// How the outputs are spaced, equal spacing is the default.
 #ifndef outputCondition
 #define outputCondition "EQUAL_SPACING"
 #endif
@@ -84,9 +86,9 @@
 #define numOutputs 1
 #endif
 
-//#ifndef enablePFields
-//#define enablePFields false
-//#endif
+#ifndef enablePFields
+#define enablePFields true
+#endif
 
 #ifndef skipPrintSteps
 #define skipPrintSteps 1
@@ -94,6 +96,39 @@
 
 #ifndef hAdaptivity
 #define hAdaptivity false
+#endif
+
+// Mesh refinement
+#ifndef maxRefinementLevel
+#define maxRefinementLevel refineFactor
+#endif
+
+#ifndef minRefinementLevel
+#define minRefinementLevel refineFactor
+#endif
+
+#ifndef refineCriterionFields
+#define refineCriterionFields {0}
+#endif
+
+#ifndef refineWindowMax
+#define refineWindowMax {0}
+#endif
+
+#ifndef refineWindowMin
+#define refineWindowMin {0}
+#endif
+
+#ifndef skipRemeshingSteps
+#define skipRemeshingSteps 1
+#endif
+
+#ifndef nucleationOccurs
+#define nucleationOccurs false
+#endif
+
+#ifndef calcEnergy
+#define calcEnergy false
 #endif
 
 #endif

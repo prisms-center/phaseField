@@ -1,9 +1,9 @@
 // Unit test(s) for the method "setRigidBodyModeConstraints"
-template <int dim>
-class setRigidBodyModeConstraintsTest: public MatrixFreePDE<dim>
+template <int dim, int degree>
+class setRigidBodyModeConstraintsTest: public MatrixFreePDE<dim,degree>
 {
 	public:
-	setRigidBodyModeConstraintsTest(){
+	setRigidBodyModeConstraintsTest(userInputParameters<dim> _userInputs): MatrixFreePDE<dim,degree>(_userInputs) {
 		//init the MatrixFreePDE class for testing
 		this->initForTests();
 	};
@@ -17,23 +17,36 @@ class setRigidBodyModeConstraintsTest: public MatrixFreePDE<dim>
 	};
 
 
- private:
+	void setBCs(){};
+
+	private:
 	//RHS implementation for explicit solve
-	  void getRHS(const MatrixFree<dim,double> &data,
-		      std::vector<vectorType*> &dst,
-		      const std::vector<vectorType*> &src,
-		      const std::pair<unsigned int,unsigned int> &cell_range) const{};
+	void getRHS(const MatrixFree<dim,double> &data,
+			std::vector<vectorType*> &dst,
+			const std::vector<vectorType*> &src,
+			const std::pair<unsigned int,unsigned int> &cell_range) const{};
+
+	void residualRHS(const std::vector<modelVariable<dim> > & modelVarList,
+			std::vector<modelResidual<dim> > & modelResidualsList,
+			dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};
+
+	void residualLHS(const std::vector<modelVariable<dim> > & modelVarList,
+			modelResidual<dim> & modelRes,
+			dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};
+
+	void energyDensity(const std::vector<modelVariable<dim> > & modelVarList, const dealii::VectorizedArray<double> & JxW_value,
+			dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {};
 
 };
 
 template <int dim,typename T>
-bool unitTest<dim,T>::test_setRigidBodyModeConstraints(std::vector<int> rigidBodyModeComponents){
+bool unitTest<dim,T>::test_setRigidBodyModeConstraints(std::vector<int> rigidBodyModeComponents, userInputParameters<dim> userInputs){
 
 	bool pass = false;
 	std::cout << "\nTesting 'setRigidBodyModeConstraints' with " << rigidBodyModeComponents.size() << " component(s) needing a constraint...'" << std::endl;
 
 	//create test problem class object
-	setRigidBodyModeConstraintsTest<dim> test;
+	setRigidBodyModeConstraintsTest<dim,finiteElementDegree> test(userInputs);
 	unsigned int num_constraints;
 	test.call_setRigidBodyModeConstraints(rigidBodyModeComponents,num_constraints);
 

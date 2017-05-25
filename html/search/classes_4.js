@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['matrixfreepde',['MatrixFreePDE',['../class_matrix_free_p_d_e.html',1,'']]],
-  ['modelresidual',['modelResidual',['../classmodel_residual.html',1,'']]],
-  ['modelvariable',['modelVariable',['../classmodel_variable.html',1,'']]]
+  ['list_5fof_5fcij',['list_of_CIJ',['../classlist__of___c_i_j.html',1,'']]]
 ];
