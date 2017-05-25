@@ -22,7 +22,7 @@
 #define subdivisionsX 1
 #define subdivisionsY 1
 #define subdivisionsZ 1
-#define refineFactor 3
+#define refineFactor 2
 
 // Set the polynomial degree of the element (suggested values: 1 or 2)
 #define finiteElementDegree 2
@@ -34,7 +34,7 @@
 #define hAdaptivity true
 
 // Set the maximum and minimum level of refinement
-#define maxRefinementLevel (refineFactor+6)
+#define maxRefinementLevel (refineFactor+8)
 #define minRefinementLevel (2)
 
 // Set the fields used to determine the refinement. Fields determined by the order
@@ -53,12 +53,12 @@
 // Set the time step parameters
 // =================================================================================
 // The size of the time step
-#define timeStep 0.044
+#define timeStep 0.011
 
 // The simulation ends when either timeFinal is reached or the number of time steps
 // equals timeIncrements
-#define timeFinal 440.0
-#define timeIncrements 10000
+#define timeFinal 550.0
+#define timeIncrements 50000
 
 // =================================================================================
 // Set the output parameters
@@ -72,7 +72,7 @@
 
 // Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 // and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-#define numOutputs 20
+#define numOutputs 25
 
 // User-defined list of time steps where the program should output. Only used if
 // outputCondition is "LIST"

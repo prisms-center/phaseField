@@ -6,10 +6,14 @@
 // Nucleation probability
 // =================================================================================
 template <int dim, int degree>
-double customPDE<dim,degree>::nucProb(double cValue, double dV) const
+double customPDE<dim,degree>::nucProb(double cValue, double dV, double ct) const
 {
+	//Supersaturation factor
+    double ssf;
+    if (dim ==2) ssf=cValue-calmin;
+    if (dim ==3) ssf=(cValue-calmin)*(cValue-calmin);
 	// Calculate the nucleation rate
-	double J=k1*exp(-k2/(std::max(cValue-calmin,1.0e-6)));
+	double J=k1*exp(-k2/(std::max(ssf,1.0e-6)))*exp(-tau/ct);
 	double retProb=1.0-exp(-J*timeStep*((double)skipNucleationSteps)*dV);
     return retProb;
 }
@@ -65,7 +69,7 @@ void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim> > &newnu
             //Compute random no. between 0 and 1 (new method)
             rand_val=distr(gen);
             //Nucleation probability
-            double Prob=nucProb(ele_av_conc,ele_vol);
+            double Prob=nucProb(ele_av_conc,ele_vol,t);
         
             if (rand_val <= Prob){
  
@@ -308,5 +312,8 @@ void customPDE<dim,degree>::getNucleiList()
         if (newnuclei.size() > 0 && this->userInputs.h_adaptivity == true){
             refineMeshNearNuclei(newnuclei);
         }
+        //Print total no. of nuclei after nucleation attempt
+        this->pcout << "Print total no. of nuclei after nucleation attempt" << std::endl;
+        this->pcout << "Increment: " << this->currentIncrement << " No. nuclei: " <<  nuclei.size() << std::endl;
     }
 }

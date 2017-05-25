@@ -94,6 +94,9 @@ std::vector<double> opfreeze_semiaxes {1.5*semiaxis_a,1.5*semiaxis_b,1.5*semiaxi
 #define k1 498.866
 #define k2 4.14465
 
+// Incubation time constant
+#define tau 500.0
+
 // =================================================================================
 
 // Free energy for each phase and their first and second derivatives
