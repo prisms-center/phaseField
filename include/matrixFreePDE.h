@@ -68,7 +68,7 @@ class MatrixFreePDE:public Subscriptor
    * Initializes the mesh, degrees of freedom, constraints and data structures using the user provided
    * inputs in the application parameters file. 
    */
-  void init  ();
+  virtual void init  ();
 
    /**
    * Initializes the data structures for enabling unit tests.
@@ -77,18 +77,18 @@ class MatrixFreePDE:public Subscriptor
    * other custom selected options specifically to help with unit tests, and should not be called
    * in any of the physical models.
    */  
-  void initForTests();
+  virtual void initForTests();
 
   /**
    * This method implements the time stepping algorithm and invokes the solveIncrement() method.
    */
-  void solve ();
+  virtual void solve ();
   /**
    * This method essentially converts the MatrixFreePDE object into a matrix object which can be 
    * used with matrix free iterative solvers. Provides the A*x functionality for solving the system of 
    * equations AX=b.
    */
-  void vmult (vectorType &dst, const vectorType &src) const;
+  virtual void vmult (vectorType &dst, const vectorType &src) const;
   /**
    * Vector of all the physical fields in the problem. Fields are identified by dimentionality (SCALAR/VECTOR),  
    * the kind of PDE (ELLIPTIC/PARABOLIC) used to compute them and a character identifier  (e.g.: "c" for composition)
@@ -98,20 +98,20 @@ class MatrixFreePDE:public Subscriptor
 
 
   virtual void setBCs()=0;
-  void buildFields();
-  void inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
+  virtual void buildFields();
+  virtual void inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
     			std::string BC_type_dim1_max, double BC_value_dim1_max, std::string BC_type_dim2_min, double BC_value_dim2_min,
     			std::string BC_type_dim2_max, double BC_value_dim2_max,std::string BC_type_dim3_min, double BC_value_dim3_min,
     			std::string BC_type_dim3_max, double BC_value_dim3_max);
 
-  void inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
+  virtual void inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
   			std::string BC_type_dim1_max, double BC_value_dim1_max, std::string BC_type_dim2_min, double BC_value_dim2_min,
   			std::string BC_type_dim2_max, double BC_value_dim2_max);
 
-  void inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
+  virtual void inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
     			std::string BC_type_dim1_max, double BC_value_dim1_max);
 
-  void inputBCs(int var, int component, std::string BC_type, double BC_value);
+  virtual void inputBCs(int var, int component, std::string BC_type, double BC_value);
 
   // Boundary condition object
   std::vector<varBCs<dim> > BC_list;
@@ -130,26 +130,26 @@ class MatrixFreePDE:public Subscriptor
   const static unsigned int CIJ_tensor_size = 2*dim-1+dim/3;
 
   // Method to reinitialize the mesh, degrees of freedom, constraints and data structures when the mesh is adapted
-  void reinit  ();
+  virtual void reinit  ();
 
   /**
    * Method to solve each time increment of a time-dependent problem. For time-independent problems 
    * this method is called only once. This method solves for all the fields in a staggered manner (one after another)
    * and also invokes the corresponding solvers: Explicit solver for Parabolic problems, Implicit (matrix-free) solver for Elliptic problems.
    */  
-  void solveIncrement ();
+  virtual void solveIncrement ();
   /* Method to write solution fields to vtu and pvtu (parallel) files. 
   *
   * This method can be enabled/disabled by setting the flag writeOutput to true/false. Also,
   * the user can select how often the solution files are written by setting the flag
   * skipOutputSteps in the parameters file.
   */
-  void outputResults() const;
+  virtual void outputResults() const;
 
   /* Method to generate a list of time steps where the method outputResults should be called. It populates outputTimeStepList.
    */
   std::vector<unsigned int> outputTimeStepList;
-  void getOutputTimeSteps(const std::string outputSpacingType, unsigned int numberOfOutputs, const std::vector<unsigned int> & userGivenTimeStepList, std::vector<unsigned int> & timeStepList) const;
+  virtual void getOutputTimeSteps(const std::string outputSpacingType, unsigned int numberOfOutputs, const std::vector<unsigned int> & userGivenTimeStepList, std::vector<unsigned int> & timeStepList) const;
 
   /*Parallel mesh object which holds information about the FE nodes, elements and parallel domain decomposition
    */
@@ -203,27 +203,27 @@ class MatrixFreePDE:public Subscriptor
   /*Current field index*/
   unsigned int currentFieldIndex;
   /*Method to compute the inverse of the mass matrix*/
-  void computeInvM();
+  virtual void computeInvM();
 
 
   /*AMR methods*/
-  void refineGrid();
+  virtual void refineGrid();
   /*Virtual method to mark the regions to be adaptively refined. This is expected to be provided by the user.*/
-  void adaptiveRefine(unsigned int _currentIncrement);
+  virtual void adaptiveRefine(unsigned int _currentIncrement);
   /*Virtual method to define AMR refinement criterion. The default implementation uses the Kelly error estimate for estimative the error function. The user can supply a custom implementation to overload the default implementation.*/
   virtual void adaptiveRefineCriterion();
   
   /*Method to compute the right hand side (RHS) residual vectors*/
-  void computeRHS();
+  virtual void computeRHS();
 
   //virtual methods to be implemented in the derived class
   /*Method to calculate LHS(implicit solve)*/
-  void getLHS(const MatrixFree<dim,double> &data,
+  virtual void getLHS(const MatrixFree<dim,double> &data,
 		      vectorType &dst, 
 		      const vectorType &src,
 		      const std::pair<unsigned int,unsigned int> &cell_range) const;
   /*Method to calculate RHS (implicit/explicit). This is an abstract method, so every model which inherits MatrixFreePDE<dim> has to implement this method.*/
-  void getRHS (const MatrixFree<dim,double> &data,
+  virtual void getRHS (const MatrixFree<dim,double> &data,
 		       std::vector<vectorType*> &dst, 
 		       const std::vector<vectorType*> &src,
 		       const std::pair<unsigned int,unsigned int> &cell_range) const;
@@ -244,38 +244,38 @@ class MatrixFreePDE:public Subscriptor
   /*Map of degrees of freedom to the corresponding Dirichlet boundary conditions, if any.*/
   std::vector<std::map<dealii::types::global_dof_index, double>*> valuesDirichletSet;
   /*Virtual method to mark the boundaries for applying Dirichlet boundary conditions.  This is usually expected to be provided by the user.*/  
-  void markBoundaries();
+  virtual void markBoundaries();
   /*Virtual method for applying Dirichlet boundary conditions.  This is usually expected to be provided by the user.*/ 
-  void applyDirichletBCs();
+  virtual void applyDirichletBCs();
 
   // Methods to apply periodic BCs
-  void setPeriodicity();
-  void setPeriodicityConstraints(ConstraintMatrix *, const DoFHandler<dim>*) const;
-  void getComponentsWithRigidBodyModes(std::vector<int> &) const;
-  void setRigidBodyModeConstraints(const std::vector<int>, ConstraintMatrix *, const DoFHandler<dim>*) const;
+  virtual void setPeriodicity();
+  virtual void setPeriodicityConstraints(ConstraintMatrix *, const DoFHandler<dim>*) const;
+  virtual void getComponentsWithRigidBodyModes(std::vector<int> &) const;
+  virtual void setRigidBodyModeConstraints(const std::vector<int>, ConstraintMatrix *, const DoFHandler<dim>*) const;
 
   //methods to apply initial conditions
   /*Virtual method to apply initial conditions.  This is usually expected to be provided by the user in IBVP (Initial Boundary Value Problems).*/   
 
-  void applyInitialConditions();
+  virtual void applyInitialConditions();
   virtual void getNucleiList ();
 
   /*Method to compute energy like quantities.*/
-  void computeEnergy();
-  void getEnergy(const MatrixFree<dim,double> &data,
+  virtual void computeEnergy();
+  virtual void getEnergy(const MatrixFree<dim,double> &data,
 		    std::vector<vectorType*> &dst,
 		    const std::vector<vectorType*> &src,
 		    const std::pair<unsigned int,unsigned int> &cell_range);
 
   //utility functions
   /*Returns index of given field name if exists, else throw error.*/
-  unsigned int getFieldIndex(std::string _name);
+  virtual unsigned int getFieldIndex(std::string _name);
 
   std::vector<double> freeEnergyValues;
-  void outputFreeEnergy(const std::vector<double>& freeEnergyValues) const;
+  virtual void outputFreeEnergy(const std::vector<double>& freeEnergyValues) const;
 
   /*Method to compute the integral of a field.*/
-  void computeIntegral(double& integratedField, int index);
+  virtual void computeIntegral(double& integratedField, int index);
 
   //variables for time dependent problems 
   /*Flag used to see if invM, time stepping in run(), etc are necessary*/

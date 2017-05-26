@@ -161,7 +161,6 @@ namespace PRISMS
             std::istringstream ss;
             std::string line, str, type;
             
-            int i_dummy;
             unsigned long int uli_dummy;
             double d_dummy;
             

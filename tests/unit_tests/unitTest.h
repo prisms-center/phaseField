@@ -72,6 +72,7 @@ void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Vectorized
 #include "../../src/utilities/vectorLoad.cc"
 
 #define POSTPROCESSOR_TEMPLATES
+#include "postprocess.h"
 #include "../../src/postprocessor/postprocessor.cc"
 
 template <int dim, typename T>

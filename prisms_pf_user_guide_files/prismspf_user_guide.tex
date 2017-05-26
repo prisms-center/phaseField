@@ -60,7 +60,7 @@
 
 %%% The "real" document content comes below...
 
-\title{PRISMS-PF User Guide (v1.1)}
+\title{PRISMS-PF User Guide (v1.2)}
 \author{Stephen DeWitt (prismsphasefield.dev@umich.edu)}
 %\date{} % Activate to display a given date or no date (if empty),
          % otherwise the current date is printed 
@@ -320,18 +320,19 @@ $ mpirun -n 4 main
 
 \section{Structure of the Input Files}
 \subsection{Files in the Example Application Directories}
-Each of the example application directories should contain at least five files:
+Each of the example application directories should contain at least eight files:
 \begin{itemize}
 \item parameters.h
 \item equations.h
 \item ICs\_and\_BCs.h
+\item postprocess.h
+\item customPDE.h
 \item main.cc
 \item formulation.pdf
-\item example\_results.pdf
 \item CMakeLists.txt
 \end{itemize}
 
-The following sections will describe the structure and contents of each of these files using the coupled Allen-Cahn/Cahn-Hilliard and Precipitate Evolution applications as an examples.
+The following sections will describe the structure and contents of each of the first three of these files using the coupled Allen-Cahn/Cahn-Hilliard and Precipitate Evolution applications as examples. These three files (parameters.h, equations.h, and ICs\_and\_BCs.h) are the core input files for a beginning user. The next three files are more advanced input files, and are discussed in Secs. \ref{adv_input_sec} and \ref{postprocessing_sec}. The file formulation.pdf describes the mathematical formulation of the problem solved by the application. Finally, the file CMakeLists.txt is used by CMake to generate the makefile. Most users will not have any reason to change CMakeLists.txt.
 
 \subsection{parameters.h} \label{parameters}
 All of the purely numerical parameters for an application are given in the file \emph{parameters.h}. Each parameter is set using the C++ \emph{\#define} command. In C++ parlance, the statements are preprocessor macros. The compiler searches through the source code and replaces the first argument with the second argument. Here is a look at the parameters file for the coupled Allen-Cahn/Cahn-Hilliard example application:
@@ -453,7 +454,7 @@ An examination of \emph{parameters.h} in the Precipitate Evolution example appli
 // Set the elliptic solver parameters
 // =================================================================================
 // The solver type (currently the only recommended option is conjugate gradient)
-#define solverType SolverCG
+#define solverType ``SolverCG''
 
 // The flag that determines whether the tolerance for solver convergence should
 // be an absolute tolerance (absTol=true) or a relative tolerance (absTol=false)
@@ -787,13 +788,14 @@ dealii::VectorizedArray<double> sum_hV;
 sum_hV = h1V+h2V+h3V;
 for (unsigned int i=0; i<2*dim-1+dim/3; i++){
 	  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-		  CIJ_combined[i][j] = CIJ_list[0][i][j]*(constV(1.0)-sum_hV) + CIJ_list[1][i][j]*sum_hV;
+		  CIJ_combined[i][j] = this->userInputs.CIJ_list[0][i][j]*(constV(1.0)-sum_hV) 
+		  					+ this->userInputs.CIJ_list[1][i][j]*sum_hV;
 	  }
 }
 computeStress<dim>(CIJ_combined, E2, S);
 }
 else{
-computeStress<dim>(CIJ_list[0], E2, S);
+computeStress<dim>(this->userInputs.CIJ_list[0], E2, S);
 }
 
 // Fill residual corresponding to mechanics
@@ -864,12 +866,12 @@ E = symmetrize(ux);
 // Compute stress tensor (which is equal to the residual, ruxV)
 if (n_dependent_stiffness == true){
 	dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ_combined;
-	CIJ_combined = CIJ_list[0]*(constV(1.0)-h1V-h2V-h3V) + CIJ_list[1]*(h1V+h2V+h3V);
+	CIJ_combined = this->userInputs.CIJ_list[0]*(constV(1.0)-h1V-h2V-h3V) + this->userInputs.CIJ_list[1]*(h1V+h2V+h3V);
 
 	computeStress<dim>(CIJ_combined, E, ruxV);
 }
 else{
-	computeStress<dim>(CIJ_list[0], E, ruxV);
+	computeStress<dim>(this->userInputs.CIJ_list[0], E, ruxV);
 }
 
 modelRes.vectorGradResidual = ruxV;
@@ -893,7 +895,7 @@ where C$_{ij}$ refers to elements of the stiffness matrix.
 
 Still in the second section of the file, the residual terms for the Cahn-Hilliard equation and three Allen-Cahn equations are set. The residual term for the displacement field isn't set here. It won't be set until the next section, inside \emph{residualRHS}.
 
-The third section of the file is the function \emph{residualRHS}. In the code excerpt above, there are several references to the variable \emph{CIJ\_list}. This is a vector of the stiffness matrices generated from the \emph{MaterialModels} and \emph{MaterialConstants} inputs. The first index for \emph{CIJ\_list} denotes the position in the list (i.e. 0 for the first material properties given in \emph{MaterialModels} and \emph{MaterialConstants}, 1 for the second material properties given, etc.). The individual elements of the stiffness matrix are accessed using the second and third indices. Therefore, if you wanted to access the C$_{12}$ element for the first material in the list, you could access it through \emph{CIJ\_list}[0][1][2]. This example application also shows that the residuals can be defined in \emph{residualsRHS} instead of as a macro in the second section of the file. The variable \emph{ruxV} is set to minus the stress on an element-by-element basis. The \emph{ruxV} residual is treated the same as the other residual terms at the end of the function, where they are loaded into \emph{modelResidualsList}.
+The third section of the file is the function \emph{residualRHS}. In the code excerpt above, there are several references to the variable \emph{this->userInputs.CIJ\_list}. This is a vector of the stiffness matrices generated from the \emph{MaterialModels} and \emph{MaterialConstants} inputs. The first index for \emph{CIJ\_list} denotes the position in the list (i.e. 0 for the first material properties given in \emph{MaterialModels} and \emph{MaterialConstants}, 1 for the second material properties given, etc.). The individual elements of the stiffness matrix are accessed using the second and third indices. Therefore, if you wanted to access the C$_{12}$ element for the first material in the list, you could access it through \emph{CIJ\_list}[0][1][2]. This example application also shows that the residuals can be defined in \emph{residualsRHS} instead of as a macro in the second section of the file. The variable \emph{ruxV} is set to minus the stress on an element-by-element basis. The \emph{ruxV} residual is treated the same as the other residual terms at the end of the function, where they are loaded into \emph{modelResidualsList}.
 
 Unlike the coupled Cahn-Hilliard/Allen-Cahn example application, the Precipitate Evolution example application has calculations inside \emph{residualLHS}.  This function contains the residual on the left-hand-side of equation for the iterative solution of an elliptic equation. For this application this equation at iteration $i$ is: 
 \begin{align}
@@ -1121,6 +1123,99 @@ void generalizedProblem<dim>::setBCs(){
 Vector initial conditions are set much like scalar initial conditions. The initial conditions are set using the variable \emph{vector\_IC}. Each component of \emph{vector\_IC} is accessed using parentheses. As with scalar initial conditions, conditional statements with the variable index are used to set the initial condition for the proper variable.
 
 Vector boundary conditions are set much like scalar initial conditions. Separate boundary conditions are specified for each component of the variable. The boundary conditions for the components should be listed in order (x then y then z). The boundary condition for each component of a vector variable is set exactly like that of a scalar variable.
+
+\section{Advanced Files in the Application Directory} \label{adv_input_sec}
+\subsection{main.cc}
+The file main.cc is generally boilerplate code. Its purpose is to drive the primary flow of the code. The following code snippet is the core of the file:
+\tiny
+\begin{lstlisting} 
+userInputParameters<problemDIM> userInputs;
+userInputs.loadUserInput();
+
+customPDE<problemDIM,finiteElementDegree> problem(userInputs);
+
+ problem.setBCs();
+ problem.buildFields();
+ problem.init ();
+ problem.solve();
+ \end{lstlisting}
+ \normalsize
+ 
+ In this portion of the code there are two main objects (in the C++ sense) of interest: userInputParameters and customPDE. The  userInputParameters object reads and stores the inputs from the input files. These inputs are used in the creation of a customPDE object, which then is used to solve the desired set of equations. After the customPDE object is created, the setBCs, buildFields, init, and solve methods (i.e. functions) are called to prepare the compuational system, solve the equations, and output the solution.
+ 
+ At the top of main.cc is a list of header files to be included and at the bottom is some code to handle errors during execution. It is rare that a user would need to modify these sections. For nearly all of the example applications, the main.cc file is identical. Two sets of exceptions are discussed below.
+ 
+ The applications that include nucleation (\_nucleationModel and \_preferential\_nucleationModel) have three more lines in the list of included headers:
+ \tiny
+\begin{lstlisting} 
+#include <random>
+#include <time.h>
+#include "nucleation.h"
+\end{lstlisting}
+ \normalsize
+ 
+ The allenCahn\_pfield and precipitateEvolution\_pfunction applications have some extra lines in the list of included headers to utilize that functionality.
+ 
+ \subsection{customPDE.h}
+ As seen in main.cc, an application creates a customPDE object. Each application has its own customPDE class that is specified in customPDE.h. For most of the example applications, customPDE.h is the same, just containing a constructor, the setBCs function used in ICs\_and\_BCs.h, and the three functions in equations.h. However, the user is free to define any new variables or methods needed for their application as part of this class. Most importantly, since customPDE is a subclass of MatrixFreePDE, the primary solver class in the core library, methods in customPDE can be written to override the default behavior of the core library (all methods in MatrixFreePDE except for the constructor are virtual). A user may want to do this for functionality that isn't currently present in the core library (i.e. a new condition for mesh adaptivity), for performance (stripping out unneccesary evaluations for that given application), or to use PRISMS-PF in ways that we didn't plan for. In the applications with nucleation, the list of nuclei and the methods for nucleation are members of customPDE.
+
+\section{Postprocessing} \label{postprocessing_sec}
+PRISMS-PF includes a postprocessing suite to help analyze the simulation results. Often, it is easier to perform the postprocessing using PRISMS-PF, rather than a program such as VisIt or ParaView, especially when dealing with spatial derivatives. Postprocessing functionality is set in the postprocess.h file. The structure of this file is much like equations.h. For the remainder of this section, we will walk through the postprocess.h file from the allenCahn application.
+
+The first section is much like the first section of equations.h, where the problem variables are defined. In this case, the postprocessing variables are defined (i.e. the variables other than those listed in equations.h that you would like to output). The first two blocks contain \emph{pp\_num\_var}, the number of postprocessed variables, \emph{pp\_variable\_name}, the name assigned to the variable in the *.vtu file, and \emph{pp\_variable\_type}, whether the variable is a scalar or a vector. Currently only scalar postprocessing variables are allowed. In the next block, the user specifies if the value, gradient or hessian \underline{of the model variables} is needed to calculate the postprocessed variables. In the last block, the user selects whether each postprocessed variable needs a value residual and/or a gradient residual.
+ \tiny
+\begin{lstlisting} 
+// =================================================================================
+// Define the variables for postprocessing
+// =================================================================================
+// The number of variables
+#define pp_num_var 1
+
+// The names of the variables, whether they are scalars or vectors 
+#define pp_variable_name {"mag_grad_n"}
+#define pp_variable_type {"SCALAR"}
+
+// Flags for whether the value, gradient, and Hessian are needed in the residual eqns
+#define pp_need_val {true}
+#define pp_need_grad {true}
+#define pp_need_hess  {false}
+
+// Flags for whether the residual equation has a term multiplied by the test function
+// (need_val_residual) and/or the gradient of the test function (need_grad_residual)
+#define pp_need_val_residual {true}
+#define pp_need_grad_residual {false}
+
+// =================================================================================
+\end{lstlisting} 
+\normalsize
+
+The remainder of the file is the function postProcessedFields:
+ \tiny
+\begin{lstlisting} 
+template <int dim>
+void postProcessedFields(const std::vector<modelVariable<dim> > & modelVariablesList,
+						std::vector<modelResidual<dim> > & modelResidualsList,
+						const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc,
+						const list_of_CIJ<dim> material_moduli) {
+
+// The order parameter and its derivatives (names here should match those in the macros above)
+dealii::VectorizedArray<double> n = modelVariablesList[0].scalarValue;
+dealii::Tensor<1, dim, dealii::VectorizedArray<double> > nx = modelVariablesList[0].scalarGrad;
+
+dealii::Tensor<1, dim, dealii::VectorizedArray<double> > pp_field;
+pp_field[0] = nx[0];
+pp_field[1] = nx[1];
+
+
+// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
+modelResidualsList[0].scalarValueResidual = std::sqrt(pp_field[0]*pp_field[0]+pp_field[1]*pp_field[1]); //constV(0.0);
+
+}
+\end{lstlisting} 
+\normalsize
+
+The structure of this function is identical to that of residualRHS in equations.h.
+
 
 \section{Creating Custom Applications}
 You can create your own PRISMS-PF applications by making simple modifications to the input files described in the previous section. To create a new application, simply create a new folder in the applications directory and copy the files from a related example application. Then, make your desired modifications (changing the initial or boundary conditions, changing the residual equations, etc.) and compile and run your application the same way you would one of the example applications.

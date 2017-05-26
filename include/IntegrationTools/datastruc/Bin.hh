@@ -97,7 +97,7 @@ namespace PRISMS
             
             //std::cout << "min: " << min << " max: " << max << std::endl;
             
-            int i, j;
+            int i;
             std::vector<int> index_min(_item.order());
             std::vector<int> index_max(_item.order());
             indices( min, index_min);
