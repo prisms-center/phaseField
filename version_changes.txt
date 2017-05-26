@@ -17,6 +17,7 @@ Performance improvements:
 - Updated how Dirichlet contraints are implemented, reducing the number of solver iterations for non-zero Dirichlet BCs.
 
 Bug fixes:
+- Dirichlet BCs now work for parabolic pdes.
 - Users can now load in ICs with PFields in 3D and with adaptive meshes.
 
 Other changes:
