@@ -1157,10 +1157,64 @@ customPDE<problemDIM,finiteElementDegree> problem(userInputs);
  The allenCahn\_pfield and precipitateEvolution\_pfunction applications have some extra lines in the list of included headers to utilize that functionality.
  
  \subsection{customPDE.h}
+ As seen in main.cc, an application creates a customPDE object. Each application has its own customPDE class that is specified in customPDE.h. For most of the example applications, customPDE.h is the same, just containing a constructor, the setBCs function used in ICs\_and\_BCs.h, and the three functions in equations.h. However, the user is free to define any new variables or methods needed for their application as part of this class. Most importantly, since customPDE is a subclass of MatrixFreePDE, the primary solver class in the core library, methods in customPDE can be written to override the default behavior of the core library (all methods in MatrixFreePDE except for the constructor are virtual). A user may want to do this for functionality that isn't currently present in the core library (i.e. a new condition for mesh adaptivity), for performance (stripping out unneccesary evaluations for that given application), or to use PRISMS-PF in ways that we didn't plan for. In the applications with nucleation, the list of nuclei and the methods for nucleation are members of customPDE.
 
 \section{Postprocessing} \label{postprocessing_sec}
 PRISMS-PF includes a postprocessing suite to help analyze the simulation results. Often, it is easier to perform the postprocessing using PRISMS-PF, rather than a program such as VisIt or ParaView, especially when dealing with spatial derivatives. Postprocessing functionality is set in the postprocess.h file. The structure of this file is much like equations.h. For the remainder of this section, we will walk through the postprocess.h file from the allenCahn application.
 
+The first section is much like the first section of equations.h, where the problem variables are defined. In this case, the postprocessing variables are defined (i.e. the variables other than those listed in equations.h that you would like to output). The first two blocks contain \emph{pp\_num\_var}, the number of postprocessed variables, \emph{pp\_variable\_name}, the name assigned to the variable in the *.vtu file, and \emph{pp\_variable\_type}, whether the variable is a scalar or a vector. Currently only scalar postprocessing variables are allowed. In the next block, the user specifies if the value, gradient or hessian \underline{of the model variables} is needed to calculate the postprocessed variables. In the last block, the user selects whether each postprocessed variable needs a value residual and/or a gradient residual.
+ \tiny
+\begin{lstlisting} 
+// =================================================================================
+// Define the variables for postprocessing
+// =================================================================================
+// The number of variables
+#define pp_num_var 1
+
+// The names of the variables, whether they are scalars or vectors 
+#define pp_variable_name {"mag_grad_n"}
+#define pp_variable_type {"SCALAR"}
+
+// Flags for whether the value, gradient, and Hessian are needed in the residual eqns
+#define pp_need_val {true}
+#define pp_need_grad {true}
+#define pp_need_hess  {false}
+
+// Flags for whether the residual equation has a term multiplied by the test function
+// (need_val_residual) and/or the gradient of the test function (need_grad_residual)
+#define pp_need_val_residual {true}
+#define pp_need_grad_residual {false}
+
+// =================================================================================
+\end{lstlisting} 
+\normalsize
+
+The remainder of the file is the function postProcessedFields:
+ \tiny
+\begin{lstlisting} 
+template <int dim>
+void postProcessedFields(const std::vector<modelVariable<dim> > & modelVariablesList,
+						std::vector<modelResidual<dim> > & modelResidualsList,
+						const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc,
+						const list_of_CIJ<dim> material_moduli) {
+
+// The order parameter and its derivatives (names here should match those in the macros above)
+dealii::VectorizedArray<double> n = modelVariablesList[0].scalarValue;
+dealii::Tensor<1, dim, dealii::VectorizedArray<double> > nx = modelVariablesList[0].scalarGrad;
+
+dealii::Tensor<1, dim, dealii::VectorizedArray<double> > pp_field;
+pp_field[0] = nx[0];
+pp_field[1] = nx[1];
+
+
+// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
+modelResidualsList[0].scalarValueResidual = std::sqrt(pp_field[0]*pp_field[0]+pp_field[1]*pp_field[1]); //constV(0.0);
+
+}
+\end{lstlisting} 
+\normalsize
+
+The structure of this function is identical to that of residualRHS in equations.h.
 
 
 \section{Creating Custom Applications}
