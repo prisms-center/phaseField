@@ -60,6 +60,7 @@ def run_simulation(run_name,dir_path):
 	
 	# Compile and run
 	subprocess.call(["cmake", "."],stdout=f,stderr=f)
+	print "Compiling complete, running the regression test..."
 	subprocess.call(["make", "release","-j1"],stdout=f)
 	start = time.time()
 	subprocess.call(["mpirun", "-n", "1", "main"],stdout=f)
