@@ -7,7 +7,7 @@ PRISMS-PF
 
 <B>Version information:</B>
 
-This version of the code, 1.1.1, is an update to the first release version of PRISMS-PF. For information concerning the differences between versions, please consult version_changes.txt.   
+This version of the code, 1.2, is an update to the first release version of PRISMS-PF. For information concerning the differences between versions, please consult version_changes.txt.   
 
 <B>What is PRISMS-PF?</B> 
 
@@ -27,7 +27,7 @@ For detailed instructions on how to download and use PRISMS-PF, please consult t
 
 <I>Installation:</I> 
 
-1) Install deal.II (version 8.4.1 recommended)<br>
+1) Install deal.II (version 8.4.2 recommended)<br>
   + Download CMake [http://www.cmake.org/download/]
   + Add CMake to your path (e.g. $ PATH="/path/to/cmake/Contents/bin":"$PATH"), preferably in a shell configuration file 
   + Download and install Deal.II following instructions from from https://www.dealii.org/download.html 
