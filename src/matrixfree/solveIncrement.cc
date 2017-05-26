@@ -39,6 +39,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
 
     	//apply constraints
     	constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+    	constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
     	//sync ghost DOF's
     	solutionSet[fieldIndex]->update_ghost_values();
     	//
