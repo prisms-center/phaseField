@@ -20,7 +20,7 @@
 #define pp_variable_type {"SCALAR"}
 
 // Flags for whether the value, gradient, and Hessian are needed in the residual eqns
-#define pp_need_val {true}
+#define pp_need_val {false}
 #define pp_need_grad {true}
 #define pp_need_hess  {false}
 
@@ -38,7 +38,6 @@ void postProcessedFields(const std::vector<modelVariable<dim> > & modelVariables
 												const list_of_CIJ<dim> material_moduli) {
 
 // The order parameter and its derivatives (names here should match those in the macros above)
-dealii::VectorizedArray<double> n = modelVariablesList[0].scalarValue;
 dealii::Tensor<1, dim, dealii::VectorizedArray<double> > nx = modelVariablesList[0].scalarGrad;
 
 dealii::Tensor<1, dim, dealii::VectorizedArray<double> > pp_field;
