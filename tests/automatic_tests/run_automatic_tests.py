@@ -64,7 +64,7 @@ def run_simulation(run_name,dir_path):
 	sys.stdout.flush()
 	subprocess.call(["make", "release","-j1"],stdout=f)
 	start = time.time()
-	subprocess.call(["mpirun", "-n", "1", "main"],stdout=f)
+	subprocess.call(["mpirun", "-n", "2", "main"],stdout=f)
 	end = time.time()
 	f.close()
 
