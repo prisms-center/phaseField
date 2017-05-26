@@ -61,6 +61,7 @@ def run_simulation(run_name,dir_path):
 	# Compile and run
 	subprocess.call(["cmake", "."],stdout=f,stderr=f)
 	print "Compiling complete, running the regression test..."
+	sys.stdout.flush()
 	subprocess.call(["make", "release","-j1"],stdout=f)
 	start = time.time()
 	subprocess.call(["mpirun", "-n", "1", "main"],stdout=f)
@@ -183,6 +184,8 @@ unit_test_counter = unit_test_results[1]
 
 print 	
 print "Unit Tests Passed: "+str(unit_tests_passed)+"/"+str(unit_test_counter)+"\n"
+
+sys.stdout.flush()
 
 text_file.write("--------------------------------------------------------- \n")
 text_file.write("Unit test on " + now.strftime("%Y-%m-%d %H:%M") + "\n") 
