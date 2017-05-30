@@ -22,7 +22,7 @@
 #define subdivisionsX 1
 #define subdivisionsY 1
 #define subdivisionsZ 1
-#define refineFactor 7
+#define refineFactor 8
 
 // Set the polynomial degree of the element (suggested values: 1 or 2)
 #define finiteElementDegree 1
@@ -31,12 +31,12 @@
 // Set the time step parameters
 // =================================================================================
 // The size of the time step
-#define timeStep 1.0e-3
+#define timeStep 1.0e-2
 
 // The simulation ends when either timeFinal is reached or the number of time steps
 // equals timeIncrements
-#define timeFinal 20.0
-#define timeIncrements 20000
+#define timeFinal 50.0
+#define timeIncrements 5000
 
 // =================================================================================
 // Set the output parameters
@@ -44,33 +44,22 @@
 // Each field in the problem will be output is writeOutput is set to "true"
 #define writeOutput true
 
-// Set the output file type from list of available deal.II output formats (common
-// (choices are write_vtu and write_vtk)
-#define outputFileType "vtu"
-
 // Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
 // or "LIST")
 #define outputCondition "EQUAL_SPACING"
 
 // Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 // and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-#define numOutputs 10
+#define numOutputs 5
 
 // User-defined list of time steps where the program should output. Only used if
 // outputCondition is "LIST"
 #define outputList {0}
 
 // Status is printed to the screen every skipPrintSteps
-#define skipPrintSteps 10
+#define skipPrintSteps 1000
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output
 // =================================================================================
 #define calcEnergy true
-
-
-
-
-
-
-

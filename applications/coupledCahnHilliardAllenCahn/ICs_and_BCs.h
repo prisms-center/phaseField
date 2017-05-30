@@ -16,15 +16,15 @@ double InitialCondition<dim>::value (const Point<dim> &p, const unsigned int com
 	  if (index == 0){
 		  if (dim == 2){
 			  r=p.distance(Point<dim>(spanX/3.0,spanY/3.0));
-			  scalar_IC = 0.009+0.5*(0.125)*(1.0-std::tanh((r-spanX/5.0)/(3*dx)));
+			  scalar_IC = 0.009+0.5*(0.125)*(1.0-std::tanh((r-spanX/5.0)/(1.0)));
 			  r=p.distance(Point<dim>(3.0*spanX/4.0,3.0*spanY/4.0));
-			  scalar_IC += 0.5*(0.125)*(1.0-std::tanh((r-spanX/12.0)/(3*dx)));
+			  scalar_IC += 0.5*(0.125)*(1.0-std::tanh((r-spanX/12.0)/(1.0)));
 		  }
 		  else if (dim == 3) {
 			  r=p.distance(Point<dim>(spanX/3.0,spanY/3.0,spanZ/3.0));
-			  scalar_IC = 0.009+0.5*(0.125)*(1.0-std::tanh((r-spanX/5.0)/(3*dx)));
+			  scalar_IC = 0.009+0.5*(0.125)*(1.0-std::tanh((r-spanX/5.0)/(1.0)));
 			  r=p.distance(Point<dim>(3.0*spanX/4.0,3.0*spanY/4.0,3.0*spanZ/4.0));
-			  scalar_IC += 0.5*(0.125)*(1.0-std::tanh((r-spanX/12.0)/(3*dx)));
+			  scalar_IC += 0.5*(0.125)*(1.0-std::tanh((r-spanX/12.0)/(1.0)));
 		  }
 
 	  }
@@ -32,15 +32,15 @@ double InitialCondition<dim>::value (const Point<dim> &p, const unsigned int com
 	  else {
 		  if (dim == 2){
 			  r=p.distance(Point<dim>(spanX/3.0,spanY/3.0));
-			  scalar_IC = 0.5*(1.0-std::tanh((r-spanX/5.0)/(3*dx)));
+			  scalar_IC = 0.5*(1.0-std::tanh((r-spanX/5.0)/(1.0)));
 			  r=p.distance(Point<dim>(3.0*spanX/4.0,3.0*spanY/4.0));
-			  scalar_IC += 0.5*(1.0-std::tanh((r-spanX/12.0)/(3*dx)));
+			  scalar_IC += 0.5*(1.0-std::tanh((r-spanX/12.0)/(1.0)));
 		  }
 		  else if (dim == 3){
 			  r=p.distance(Point<dim>(spanX/3.0,spanY/3.0,spanZ/3.0));
-			  scalar_IC = 0.5*(1.0-std::tanh((r-spanX/5.0)/(3*dx)));
+			  scalar_IC = 0.5*(1.0-std::tanh((r-spanX/5.0)/(1.0)));
 			  r=p.distance(Point<dim>(3.0*spanX/4.0,3.0*spanY/4.0,3.0*spanZ/4.0));
-			  scalar_IC += 0.5*(1.0-std::tanh((r-spanX/12.0)/(3*dx)));
+			  scalar_IC += 0.5*(1.0-std::tanh((r-spanX/12.0)/(1.0)));
 		  }
 	  }
 

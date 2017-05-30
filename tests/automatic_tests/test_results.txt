@@ -678,3 +678,76 @@ Application: allenCahn
 Result: Pass 
 Time: 18.7386720181 
  
+--------------------------------------------------------- 
+Unit test on 2017-05-26 15:25
+--------------------------------------------------------- 
+Unit Tests Passed: 18/18
+--------------------------------------------------------- 
+Regression test on 2017-05-26 15:25
+--------------------------------------------------------- 
+--------------------------------------------------------- 
+Unit test on 2017-05-26 15:29
+--------------------------------------------------------- 
+Unit Tests Passed: 18/18
+--------------------------------------------------------- 
+Regression test on 2017-05-26 15:29
+--------------------------------------------------------- 
+Application: allenCahn 
+Result: Pass 
+Time: 21.2625999451 
+ 
+Application: cahnHilliardWithAdaptivity 
+Result: Pass 
+Time: 69.2925479412 
+ 
+Application: CHAC_anisotropyRegularized 
+Result: Pass 
+Time: 45.9365179539 
+ 
+Application: coupledCahnHilliardAllenCahn 
+Result: Pass 
+Time: 83.3464260101 
+ 
+Application: mechanics 
+Result: Pass 
+Time: 1.12060213089 
+ 
+Application: precipitateEvolution 
+Result: Fail 
+Time: 61.6301510334 
+ 
+Tests Passed: 5/6
+--------------------------------------------------------- 
+--------------------------------------------------------- 
+Unit test on 2017-05-30 14:33
+--------------------------------------------------------- 
+Unit Tests Passed: 18/18
+--------------------------------------------------------- 
+Regression test on 2017-05-30 14:33
+--------------------------------------------------------- 
+Application: allenCahn 
+Result: New Gold Standard 
+Time: 19.090280056 
+ 
+Application: cahnHilliardWithAdaptivity 
+Result: New Gold Standard 
+Time: 55.7939739227 
+ 
+Application: CHAC_anisotropyRegularized 
+Result: New Gold Standard 
+Time: 34.9564580917 
+ 
+Application: coupledCahnHilliardAllenCahn 
+Result: New Gold Standard 
+Time: 118.039304972 
+ 
+Application: mechanics 
+Result: New Gold Standard 
+Time: 1.03292608261 
+ 
+Application: precipitateEvolution 
+Result: New Gold Standard 
+Time: 76.2547259331 
+ 
+Tests Passed: 6/6
+--------------------------------------------------------- 

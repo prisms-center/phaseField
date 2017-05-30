@@ -62,9 +62,9 @@ def run_simulation(run_name,dir_path):
 	subprocess.call(["cmake", "."],stdout=f,stderr=f)
 	print "Compiling complete, running the regression test..."
 	sys.stdout.flush()
-	subprocess.call(["make", "release","-j1"],stdout=f)
+	subprocess.call(["make", "release","-j9"],stdout=f)
 	start = time.time()
-	subprocess.call(["mpirun", "-n", "1", "main"],stdout=f)
+	subprocess.call(["mpirun", "-n", "2", "main"],stdout=f)
 	end = time.time()
 	f.close()
 
@@ -211,7 +211,8 @@ text_file.close()
 
 # Shorter list of applications so that it completes on Travis
 applicationList = ["allenCahn","cahnHilliardWithAdaptivity","CHAC_anisotropyRegularized","coupledCahnHilliardAllenCahn","mechanics","precipitateEvolution"]
-getNewGoldStandardList = [False, False, False, False, False, False]
+#getNewGoldStandardList = [False, False, False, False, False, False]
+getNewGoldStandardList = [True, True, True, True, True, True]
 
 
 for applicationName in applicationList:

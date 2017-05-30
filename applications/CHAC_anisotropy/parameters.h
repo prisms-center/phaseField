@@ -52,12 +52,12 @@
 // Set the time step parameters
 // =================================================================================
 // The size of the time step
-#define timeStep 5.0e-2
+#define timeStep 1.0e0
 
 // The simulation ends when either timeFinal is reached or the number of time steps
 // equals timeIncrements
-#define timeFinal 20000.0
-#define timeIncrements 40000
+#define timeFinal 10000.0
+#define timeIncrements 10000
 
 // =================================================================================
 // Set the output parameters

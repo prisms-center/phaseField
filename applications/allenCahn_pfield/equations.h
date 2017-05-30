@@ -34,7 +34,7 @@
 #define MnV 1.0
 
 // Gradient energy coefficient
-#define KnV 4.0
+#define KnV 2.0
 
 // Free energy and its derivative
 #define fV (n*n*n*n - 2.0*n*n*n + n*n)
