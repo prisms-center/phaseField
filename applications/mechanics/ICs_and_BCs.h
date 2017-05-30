@@ -42,6 +42,7 @@ void customPDE<dim,degree>::setBCs(){
 	// each variable and should be in numerical order. Four input arguments
 	// set the same BC on the entire boundary. Two plus two times the
 	// number of dimensions inputs sets separate BCs on each face of the domain.
+	//
 	// Inputs to "inputBCs":
 	// First input: variable number
 	// Second input: component number
@@ -50,7 +51,14 @@ void customPDE<dim,degree>::setBCs(){
 	// Odd inputs after the third: BC type
 	// Even inputs after the third: BC value
 	// Face numbering: starts at zero with the minimum of the first direction, one for the maximum of the first direction
-	//						two for the minimum of the second direction, etc.
+	//						two for the minimum of the second direction, etc. (i.e. left-right-bottom-top in 2D).
+	//
+	// Example 1: Periodic BC for all boundaries for variable 2, component 2:
+	// this->inputBCs(2,2,"PERIODIC",0);
+	//
+	// Example 2: Dirichlet BCs with a value of 1.0 on the top and bottom boundaries, zero-derivative on the left and right
+	// for variable 0, component 0:
+	// this->inputBCs(0,0,"DIRICHLET",1.0,"DIRICHLET",1.0,"ZERO_DERIVATIVE",0,"ZERO_DERIVATIVE",0);
 
 	this->inputBCs(4,0,"DIRICHLET",-1.0, "DIRICHLET",0.0, "ZERO_DERIVATIVE",0.0, "ZERO_DERIVATIVE",0.0, "ZERO_DERIVATIVE",0.0, "ZERO_DERIVATIVE",0.0);
 	this->inputBCs(4,1,"DIRICHLET",0.0, "DIRICHLET",0.0, "ZERO_DERIVATIVE",0.0, "ZERO_DERIVATIVE",0.0, "ZERO_DERIVATIVE",0.0, "ZERO_DERIVATIVE",0.0);

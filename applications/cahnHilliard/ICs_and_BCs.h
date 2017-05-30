@@ -10,17 +10,22 @@ double InitialCondition<dim>::value (const Point<dim> &p, const unsigned int com
     // according to its variable index.
     
     if (index == 0){
-    	double x_loc[12] = {0.1, 0.8, 0.5, 0.4, 0.3, 0.8, 0.9, 0.0, 0.1, 0.5, 1, 0.7};
-    	double y_loc[12] = {0.3, 0.7, 0.2, 0.4, 0.9, 0.1, 0.5, 0.1, 0.6, 0.6, 1, 0.95};
-    	double rad[12] =   {12, 14, 19, 16, 11, 12, 17, 15, 20, 10, 11, 14};
+    	// The initial condition is a set of overlapping circles/spheres defined
+    	// by a hyperbolic tangent function. The center of each circle/sphere is
+    	// given by "center" and its radius is given by "rad".
+
+    	double center[12][3] = {{0.1,0.3,0},{0.8,0.7,0},{0.5,0.2,0},{0.4,0.4,0},{0.3,0.9,0},{0.8,0.1,0},{0.9,0.5,0},{0.0,0.1,0},{0.1,0.6,0},{0.5,0.6,0},{1,1,0},{0.7,0.95,0}};
+    	double rad[12] = {12, 14, 19, 16, 11, 12, 17, 15, 20, 10, 11, 14};
+    	double domain_size[3] = {spanX,spanY,spanZ};
     	double dist;
     	scalar_IC = 0;
     	for (unsigned int i=0; i<12; i++){
-			#if problemDIM == 2
-    			dist = p.distance(Point<dim>(x_loc[i]*spanX,y_loc[i]*spanY));
-			#elif problemDIM == 3
-    			dist = p.distance(Point<dim>(x_loc[i]*spanX,y_loc[i]*spanY,0.5*spanZ));
-			#endif
+    		dist = 0.0;
+    		for (unsigned int dir = 0; dir < dim; dir++){
+    			dist += (p[dir]-center[i][dir]*domain_size[dir])*(p[dir]-center[i][dir]*domain_size[dir]);
+    		}
+    		dist = std::sqrt(dist);
+
     		scalar_IC +=	0.5*(1.0-std::tanh((dist-rad[i])/1.5));
     	}
     	if (scalar_IC > 1.0) scalar_IC = 1.0;
@@ -58,6 +63,7 @@ void customPDE<dim,degree>::setBCs(){
 	// each variable and should be in numerical order. Four input arguments
 	// set the same BC on the entire boundary. Two plus two times the
 	// number of dimensions inputs sets separate BCs on each face of the domain.
+	//
 	// Inputs to "inputBCs":
 	// First input: variable number
 	// Second input: component number
@@ -66,7 +72,14 @@ void customPDE<dim,degree>::setBCs(){
 	// Odd inputs after the third: BC type
 	// Even inputs after the third: BC value
 	// Face numbering: starts at zero with the minimum of the first direction, one for the maximum of the first direction
-	//						two for the minimum of the second direction, etc.
+	//						two for the minimum of the second direction, etc. (i.e. left-right-bottom-top in 2D).
+	//
+	// Example 1: Periodic BC for all boundaries for variable 2, component 2:
+	// this->inputBCs(2,2,"PERIODIC",0);
+	//
+	// Example 2: Dirichlet BCs with a value of 1.0 on the top and bottom boundaries, zero-derivative on the left and right
+	// for variable 0, component 0:
+	// this->inputBCs(0,0,"DIRICHLET",1.0,"DIRICHLET",1.0,"ZERO_DERIVATIVE",0,"ZERO_DERIVATIVE",0);
   
   this->inputBCs(0,0,"ZERO_DERIVATIVE",0);
   this->inputBCs(1,0,"ZERO_DERIVATIVE",0);

@@ -16,6 +16,8 @@ Changes to the pre-built applications:
   time step for CHAC_anisotropy to its maximum stable level. Changed the mesh resolution and time step for the coupled 
   Allen-Cahn/Cahn-Hilliard application. Changed the convergence tolerance, time step, and number of iterations for the precipitate
   evolution application.
+- Changed to a simpler way of specifying the initial conditions, calculating the distances by hand instead of using a pre-built,
+  deal.II method.
 
 Performance improvements:
 - Updated how Dirichlet contraints are implemented, reducing the number of solver iterations for non-zero Dirichlet BCs.
@@ -32,6 +34,7 @@ Other changes:
   new "userInputParameters" class.
 - The core library is now linked instead of "included" in the apps. This increases the compile time the first time an app is compiled
   but decreases it substantially afterward.
+- Added more in-app explanation of how to set the BCs (more comments in each ICs_and_BCs.h file)
 
 Known issues:
 - PFields only work for scalar fields and only work when the variable with index zero is a scalar field.
