@@ -9,9 +9,6 @@ double InitialCondition<dim>::value (const Point<dim> &p, const unsigned int com
 	  // Use "if" statements to set the initial condition for each variable
 	  // according to its variable index.
 
-
-	  double r=0.0;
-
 	  // The initial condition is two circles/spheres defined
 	  // by a hyperbolic tangent function. The center of each circle/sphere is
 	  // given by "center" and its radius is given by "rad".
