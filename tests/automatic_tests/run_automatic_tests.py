@@ -64,7 +64,7 @@ def run_simulation(run_name,dir_path):
 	print "Compiling complete, running the regression test..."
 	sys.stdout.flush()
 	start = time.time()
-	subprocess.call(["mpirun", "-n", "2", "main"],stdout=f)
+	subprocess.call(["mpirun", "-n", "1", "main"],stdout=f)
 	end = time.time()
 	f.close()
 
@@ -121,7 +121,7 @@ def run_regression_test(applicationName,getNewGoldStandard,dir_path):
 		rel_diff = (float(gold_energy[last_energy_index])-float(test_energy[last_energy_index]))/float(gold_energy[last_energy_index])
 		rel_diff = abs(rel_diff)
 	
-		if (rel_diff < 1.0e-10):
+		if (rel_diff < 1.0e-9):
 			test_passed = True
 		else:
 			test_passed = False
@@ -231,7 +231,7 @@ text_file.write("--------------------------------------------------------- \n")
 text_file.close()
 
 # Set exit code (passed to Travis CI)
-if ((regression_tests_passed < regression_test_counter) and (unit_tests_passed < unit_test_counter)):
+if ((regression_tests_passed < regression_test_counter) or (unit_tests_passed < unit_test_counter)):
 	sys.exit(1)
 else:
 	sys.exit(0)
