@@ -3,76 +3,6 @@
 template <int dim>
 void userInputParameters<dim>::loadUserInput(){
 
-	// Meshing parameters
-	domain_size.push_back(spanX);
-	domain_size.push_back(spanY);
-	domain_size.push_back(spanZ);
-
-	subdivisions.push_back(subdivisionsX);
-	if (dim > 1){
-		subdivisions.push_back(subdivisionsY);
-		if (dim > 2){
-			subdivisions.push_back(subdivisionsZ);
-		}
-	}
-
-	refine_factor = refineFactor;
-
-	// Mesh refinement parameters
-	h_adaptivity = hAdaptivity;
-	max_refinement_level = maxRefinementLevel;
-	min_refinement_level = minRefinementLevel;
-	{int temp[] = refineCriterionFields;
-	vectorLoad(temp, sizeof(temp), refine_criterion_fields);}
-	{double temp[] = refineWindowMax;
-	vectorLoad(temp, sizeof(temp), refine_window_max);}
-	{double temp[] = refineWindowMin;
-	vectorLoad(temp, sizeof(temp), refine_window_min);}
-
-	skip_remeshing_steps = skipRemeshingSteps;
-
-	// Output parameters
-	write_output = writeOutput;
-	output_condition = outputCondition;
-	num_outputs = numOutputs;
-	{unsigned int temp[] = outputList;
-	vectorLoad(temp,sizeof(temp),user_given_time_step_list);}
-	skip_print_steps = skipPrintSteps;
-	output_file_type = outputFileType;
-
-	calc_energy = calcEnergy;
-
-	// Nucleation flag
-	nucleation_occurs = nucleationOccurs;
-
-	// Elliptic solver inputs
-	solver_type = solverType;
-	if (solver_type != "SolverCG"){
-		std::cout << "Currently the only allowed solver is 'SolverCG'" << std::endl;
-	}
-	abs_tol = absTol;
-	solver_tolerance = solverTolerance;
-	max_solver_iterations = maxSolverIterations;
-
-	//initialize time step variables
-	#ifdef timeStep
-	dtValue=timeStep;
-	#endif
-	#ifdef timeFinal
-	finalTime=timeFinal;
-	#else
-	finalTime = 0.0;
-	#endif
-
-
-	// Determine the maximum number of time steps
-	if (std::ceil(finalTime/timeStep) < timeIncrements){
-		totalIncrements = std::ceil(finalTime/timeStep);
-	}
-	else {
-		totalIncrements = timeIncrements;
-	}
-
 	// Load in inputs from equations.h
 
 	// Somewhat convoluted initialization so as not to rely on C++11 initializer lists (which not all compiler have yet)
@@ -328,7 +258,3 @@ void userInputParameters<dim>::loadUserInput(){
 	#endif
 
 }
-
-
-
-

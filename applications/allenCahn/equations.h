@@ -106,6 +106,7 @@ template <int dim, int degree>
 void customPDE<dim,degree>::energyDensity(const std::vector<modelVariable<dim> > & modelVarList,
 											const dealii::VectorizedArray<double> & JxW_value,
 											dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {
+
 scalarvalueType total_energy_density = constV(0.0);
 
 // The order parameter and its derivatives (names here should match those in the macros above)

@@ -32,10 +32,15 @@ template <int dim, int degree>
 	 triangulation.refine_global (userInputs.refine_factor);
 
 	 // Write out the size of the computational domain and the total number of elements
-	 pcout << "problem dimensions: " << userInputs.domain_size[0] << "x" << userInputs.domain_size[1] << "x" << userInputs.domain_size[2] << std::endl;
+     if (dim < 3){
+         pcout << "problem dimensions: " << userInputs.domain_size[0] << "x" << userInputs.domain_size[1] << std::endl;
+     }
+     else {
+         pcout << "problem dimensions: " << userInputs.domain_size[0] << "x" << userInputs.domain_size[1] << "x" << userInputs.domain_size[2] << std::endl;
+     }
 	 pcout << "number of elements: " << triangulation.n_global_active_cells() << std::endl;
 	 pcout << std::endl;
-  
+
 	 // Setup system
 	 pcout << "initializing matrix free object\n";
 	 totalDOFs=0;
@@ -153,7 +158,7 @@ template <int dim, int degree>
 
 	 bool dU_scalar_init = false;
 	 bool dU_vector_init = false;
- 
+
 	 // Setup solution vectors
 	 pcout << "initializing parallel::distributed residual and solution vectors\n";
 	 for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
@@ -182,12 +187,12 @@ template <int dim, int degree>
 			 }
 		 }
 	 }
-   
+
 	 //check if time dependent BVP and compute invM
 	 if (isTimeDependentBVP){
 		 computeInvM();
 	 }
-   
+
 	 // Apply the initial conditions to the solution vectors
 	 // The initial conditions are re-applied below in the "adaptiveRefine" function so that the mesh can
 	 // adapt based on the initial conditions.
@@ -199,7 +204,7 @@ template <int dim, int degree>
 	 for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
 		 soltransSet.push_back(new parallel::distributed::SolutionTransfer<dim, vectorType>(*dofHandlersSet_nonconst[fieldIndex]));
 	 }
-   
+
 	 // Ghost the solution vectors. Also apply the Dirichet BC's (if any) on the solution vectors
 	 for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
 		 constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);

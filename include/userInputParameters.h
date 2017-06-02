@@ -13,6 +13,9 @@ public:
 	// Method to read user input from parameters.h or equations.h and load it into the class member variables
 	void loadUserInput();
 
+	// Method to read the input parameters from a file and load them into the class member variables
+	void loadInputParameters(dealii::ParameterHandler & parameter_handler);
+
 	// Input parameters
 	//const static unsigned int dim = problemDIM;
 
@@ -20,6 +23,7 @@ public:
 	std::vector<double> domain_size;
 	std::vector<unsigned int> subdivisions;
 	unsigned int refine_factor;
+	unsigned int degree;
 
 	// Mesh refinement parameters
 	bool h_adaptivity;

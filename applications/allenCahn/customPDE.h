@@ -21,6 +21,8 @@ public:
 
 private:
 
+	#include "../../include/typeDefs.h"
+
 	void residualRHS(const std::vector<modelVariable<dim> > & modelVarList,
 			  	  	 std::vector<modelResidual<dim> > & modelResidualsList,
 					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
