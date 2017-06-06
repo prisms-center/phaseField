@@ -10,7 +10,7 @@ class inputFileReader
 {
 public:
 	// Method to declare the parameters to be read from an input file
-	inputFileReader(dealii::ParameterHandler & parameter_handler, std::string input_file_name);
+	inputFileReader(dealii::ParameterHandler & parameter_handler, std::string input_file_name, unsigned int number_of_variables, unsigned int number_of_materials, unsigned int number_of_pp_variables);
 };
 
 #endif /* INCLUDE_INPUTFILEREADER_H_ */

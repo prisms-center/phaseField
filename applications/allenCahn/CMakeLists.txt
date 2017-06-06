@@ -52,7 +52,7 @@ INCLUDE_DIRECTORIES(../../include)
 FILE(GLOB headers ${CMAKE_SOURCE_DIR}/../../include/*.h)
 FILE(GLOB sources ${CMAKE_SOURCE_DIR}/../../src/matrixfree/*.cc)
 
-ADD_LIBRARY(mylib ${sources} ../../src/postprocessor/postprocessor.cc ../../src/utilities/vectorLoad.cc ../../src/utilities/vectorBCFunction.cc ../../src/inputFileReader/inputFileReader.cc)
+ADD_LIBRARY(mylib ${sources} ../../src/postprocessor/postprocessor.cc ../../src/utilities/vectorLoad.cc ../../src/utilities/vectorBCFunction.cc ../../src/inputFileReader/inputFileReader.cc ../../src/userInputParameters/loadInputParameters.cc)
 
 DEAL_II_SETUP_TARGET(mylib)
 

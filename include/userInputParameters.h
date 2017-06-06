@@ -4,20 +4,18 @@
 #ifndef INCLUDE_USERINPUTPARAMETERS_H_
 #define INCLUDE_USERINPUTPARAMETERS_H_
 
+#include "dealIIheaders.h"
 #include "list_of_CIJ.h"
+#include "../src/userInputParameters/getCIJMatrix.h"
+#include "model_variables.h"
 
 template <int dim>
 class userInputParameters
 {
 public:
-	// Method to read user input from parameters.h or equations.h and load it into the class member variables
-	void loadUserInput();
 
 	// Method to read the input parameters from a file and load them into the class member variables
 	void loadInputParameters(dealii::ParameterHandler & parameter_handler);
-
-	// Input parameters
-	//const static unsigned int dim = problemDIM;
 
 	// Meshing parameters
 	std::vector<double> domain_size;

@@ -58,3 +58,63 @@ set Skip print steps = 1000
 
 # Set the flag determining if the total free energy is calculated for each output
 set Calculate the free energy = true
+
+# =================================================================================
+# Set the properties of the governing equations and their variables
+# =================================================================================
+# The number of equations (must match the number specified below)
+set Number of equations = 1
+
+# Equation 0
+subsection Equation 0
+    set Variable name = n
+    set Variable type = SCALAR
+    set Equation type = PARABOLIC
+    set Need variable value = true
+    set Need variable gradient = true
+    set Need variable hessian = false
+    set Need value residual term = true
+    set Need gradient residual term = true
+end
+
+# =================================================================================
+# Set the elastic constants (if needed)
+# =================================================================================
+
+set Number of materials = 2
+
+subsection Material 0
+    set Material symmetry = ISOTROPIC
+    set Elastic constants = 30,0.3
+end
+
+subsection Material 1
+    set Material symmetry = ISOTROPIC
+    set Elastic constants = 35,0.3
+end
+
+# =================================================================================
+# Set the parameters for loading in initial conditions
+# =================================================================================
+
+set Load initial conditions = false
+set Load serial file = true
+set File names = void
+set Variable names in the files = void
+
+# =================================================================================
+# Set the properties of the postprocessing variables
+# =================================================================================
+# The number of postprocessing variables (must match the number specified below)
+set Number of postprocessing variables = 1
+
+# Postprocessing variable 0
+subsection Postprocessing variable 0
+    set Variable name = mag_grad_n
+    set Variable type = SCALAR
+    set Need variable value = true
+    set Need variable gradient = false
+    set Need variable hessian = false
+    set Need value residual term = true
+    set Need gradient residual term = false
+end

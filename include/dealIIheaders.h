@@ -36,5 +36,7 @@
 #include <deal.II/distributed/grid_refinement.h>
 #include <deal.II/base/parameter_handler.h>
 
+#include <boost/algorithm/string/predicate.hpp>
+
 
 #endif // DEALIIHEADERS_H

@@ -1,4 +1,4 @@
-//vmult() and getLHS() method for MatrixFreePDE class 
+//vmult() and getLHS() method for MatrixFreePDE class
 
 #include "../../include/matrixFreePDE.h"
 
@@ -12,7 +12,7 @@ void MatrixFreePDE<dim,degree>::vmult (vectorType &dst, const vectorType &src) c
   dealii::parallel::distributed::Vector<double> src2;
   matrixFreeObject.initialize_dof_vector(src2,  currentFieldIndex);
   src2=src;
-  
+
   //set Dirichlet nodes force to zero in the src
   for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[currentFieldIndex]->begin(); it!=valuesDirichletSet[currentFieldIndex]->end(); ++it){
     if (src2.in_local_range(it->first)){
@@ -21,13 +21,13 @@ void MatrixFreePDE<dim,degree>::vmult (vectorType &dst, const vectorType &src) c
   }
   constraintsOtherSet[currentFieldIndex]->distribute(src2);
 
-  //call cell_loop 
+  //call cell_loop
   dst=0.0;
   matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getLHS, this, dst, src2);
 
   // According to the deal.II documentation, compress doesn't do anything
   //  dst.compress(VectorOperation::add);
-  
+
   //Account for Dirichlet BC's (essentially copy dirichlet DOF values present in src to dst)
   for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[currentFieldIndex]->begin(); it!=valuesDirichletSet[currentFieldIndex]->end(); ++it){
     if (dst.in_local_range(it->first)){
@@ -38,10 +38,10 @@ void MatrixFreePDE<dim,degree>::vmult (vectorType &dst, const vectorType &src) c
   //end log
   computing_timer.exit_section("matrixFreePDE: computeLHS");
 }
-  
+
 template <int dim, int degree>
 void  MatrixFreePDE<dim,degree>::getLHS(const MatrixFree<dim,double> &data,
-				 vectorType &dst, 
+				 vectorType &dst,
 				 const vectorType &src,
 				 const std::pair<unsigned int,unsigned int> &cell_range) const{
 
@@ -179,5 +179,3 @@ void  MatrixFreePDE<dim,degree>::getLHS(const MatrixFree<dim,double> &data,
 }
 
 #include "../../include/matrixFreePDE_template_instantiations.h"
-
-
