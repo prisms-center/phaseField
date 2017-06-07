@@ -5,7 +5,6 @@
 
 #include "dealIIheaders.h"
 
-
 class inputFileReader
 {
 public:

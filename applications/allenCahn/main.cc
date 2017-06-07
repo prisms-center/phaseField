@@ -1,9 +1,6 @@
 // Allen-Cahn example application
 
 // Header files
-#include "../../include/dealIIheaders.h"
-#include "../../include/model_variables.h"
-#include "../../include/varBCs.h"
 #include "../../include/initialConditions.h"
 #include "../../include/matrixFreePDE.h"
 #include "customPDE.h"
@@ -12,7 +9,6 @@
 #include "postprocess.h"
 #include "../../include/initialCondition_template_instantiations.h"
 #include "../../include/inputFileReader.h"
-#include "../../include/userInputParameters.h"
 
 // Before fully parsing the parameter file, we need to know how many field variables there are
 // This function is largely taken from ASPECT (https://github.com/geodynamics/aspect/blob/master/source/main.cc)
@@ -26,7 +22,7 @@ get_last_value_of_parameter(const std::string &parameters,
 
         std::ifstream input_file;
         input_file.open("parameters.in");
-        
+
         std::string line;
         while (std::getline(input_file, line))
         {

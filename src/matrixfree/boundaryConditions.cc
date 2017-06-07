@@ -1,8 +1,9 @@
-//methods to apply boundary conditons 
+//methods to apply boundary conditons
 
 //#ifndef's) till library packaging scheme is finalized
 
 #include "../../include/matrixFreePDE.h"
+#include "../../include/vectorBCFunction.h"
 
 //methods to apply dirichlet BC's
 template <int dim, int degree>
@@ -323,4 +324,3 @@ void MatrixFreePDE<dim,degree>::inputBCs(int var, int component, std::string BC_
 }
 
 #include "../../include/matrixFreePDE_template_instantiations.h"
-

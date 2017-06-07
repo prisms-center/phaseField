@@ -11,17 +11,9 @@
 #include "dealIIheaders.h"
 
 //PRISMS headers
-#include "model_variables.h"
 #include "varBCs.h"
-#include "initialConditions.h"
-
 #include "fields.h"
-#include "vectorBCFunction.h"
-#include "../src/userInputParameters/getCIJMatrix.h"
-#include "../src/models/mechanics/computeStress.h"
-#include "IntegrationTools/PField.hh"
 #include "userInputParameters.h"
-
 
 ////define data types
 #ifndef scalarType
@@ -35,7 +27,6 @@ typedef dealii::parallel::distributed::Vector<double> vectorType;
 #define constV(a) make_vectorized_array(a)
 //macro for defining subdomain specific functions
 #define subdomain(geometricExpression, functionExpression)  ( (geometricExpression) ? (functionExpression) : constV(0.0))
-
 
 #include "postprocessor.h"
 
@@ -92,7 +83,6 @@ class MatrixFreePDE:public Subscriptor
    * which is used to write the fields to the output files.
    */
   std::vector<Field<dim> >                  fields;
-
 
   virtual void setBCs()=0;
   void buildFields();

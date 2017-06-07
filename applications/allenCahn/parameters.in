@@ -118,3 +118,9 @@ subsection Postprocessing variable 0
     set Need value residual term = true
     set Need gradient residual term = false
 end
+
+# =================================================================================
+# Set the boundary conditions
+# =================================================================================
+
+set Boundary condition equation 0 = ZERO_FLUX

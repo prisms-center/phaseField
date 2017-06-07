@@ -1,6 +1,7 @@
 //methods to apply initial conditions
 
 #include "../../include/matrixFreePDE.h"
+#include "../../include/initialConditions.h"
 #include "../../include/IntegrationTools/PField.hh"
 
 #ifdef enablePFields

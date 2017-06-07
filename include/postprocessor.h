@@ -9,8 +9,17 @@
 #define INCLUDE_POSTPROCESSOR_H_
 
 #include "dealIIheaders.h"
-//#include "typeDefs.h"
-#include "matrixFreePDE.h"
+#include "varBCs.h"
+#include "userInputParameters.h"
+
+////define data types
+#ifndef scalarType
+typedef dealii::VectorizedArray<double> scalarType;
+#endif
+#ifndef vectorType
+typedef dealii::parallel::distributed::Vector<double> vectorType;
+#endif
+
 #include "postProcessedFields.h"
 
 template <int dim, int degree>
@@ -25,9 +34,6 @@ class PostProcessor
 							std::vector<vectorType*> &dst,
 							const std::vector<vectorType*> &src,
 							const std::pair<unsigned int,unsigned int> &cell_range);
-//	void postProcessedFields(const std::vector<modelVariable<dim> > & modelVariablesList,
-//							std::vector<modelResidual<dim> > & modelResidualsList,
-//							const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 	private:
 	userInputParameters<dim> userInputs;
 

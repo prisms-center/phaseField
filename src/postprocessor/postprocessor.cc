@@ -6,7 +6,7 @@ PostProcessor<dim,degree>::PostProcessor(userInputParameters<dim> _userInputs):u
 }
 
 template <int dim,int degree>
-void PostProcessor<dim,degree>::computePostProcessedFields(MatrixFree<dim,double> matrixFreeObject, const std::vector<vectorType*> &solutionSet, std::vector<vectorType*> &postProcessedSet){
+void PostProcessor<dim,degree>::computePostProcessedFields(dealii::MatrixFree<dim,double> matrixFreeObject, const std::vector<vectorType*> &solutionSet, std::vector<vectorType*> &postProcessedSet){
 
 
 	// Zero out the postProcessedSet
@@ -23,7 +23,7 @@ void PostProcessor<dim,degree>::computePostProcessedFields(MatrixFree<dim,double
 }
 
 template <int dim,int degree>
-void PostProcessor<dim,degree>::getPostProcessedFields(const MatrixFree<dim,double> &data,
+void PostProcessor<dim,degree>::getPostProcessedFields(const dealii::MatrixFree<dim,double> &data,
 		std::vector<vectorType*> &dst,
 		const std::vector<vectorType*> &src,
 		const std::pair<unsigned int,unsigned int> &cell_range){
