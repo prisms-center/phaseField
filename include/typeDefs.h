@@ -17,10 +17,10 @@ typedef dealii::parallel::distributed::Vector<double> vectorType;
 #endif
 //define FE system types
 #ifndef typeScalar
-typedef dealii::FEEvaluation<problemDIM,finiteElementDegree,finiteElementDegree+1,1,double>           typeScalar;
+typedef dealii::FEEvaluation<dim,degree,degree+1,1,double>           typeScalar;
 #endif
 #ifndef typeVector
-typedef dealii::FEEvaluation<problemDIM,finiteElementDegree,finiteElementDegree+1,dim,double>  typeVector;
+typedef dealii::FEEvaluation<dim,degree,degree+1,dim,double>  typeVector;
 #endif
 //define data value types
 #ifndef scalarvalueType

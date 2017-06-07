@@ -1,7 +1,6 @@
 // Allen-Cahn example application
 
 // Header files
-#include "parameters.h"
 #include "../../include/dealIIheaders.h"
 #include "../../include/model_variables.h"
 #include "../../include/varBCs.h"
@@ -27,7 +26,7 @@ get_last_value_of_parameter(const std::string &parameters,
 
         std::ifstream input_file;
         input_file.open("parameters.in");
-
+        
         std::string line;
         while (std::getline(input_file, line))
         {

@@ -1,26 +1,4 @@
-// List of variables and residual equations for the coupled Allen-Cahn example application
-
-// =================================================================================
-// Define the variables in the model
-// =================================================================================
-// The number of variables
-#define num_var 1
-
-// The names of the variables, whether they are scalars or vectors and whether the
-// governing eqn for the variable is parabolic or elliptic
-#define variable_name {"n"}
-#define variable_type {"SCALAR"}
-#define variable_eq_type {"PARABOLIC"}
-
-// Flags for whether the value, gradient, and Hessian are needed in the residual eqns
-#define need_val {true}
-#define need_grad {true}
-#define need_hess  {false}
-
-// Flags for whether the residual equation has a term multiplied by the test function
-// (need_val_residual) and/or the gradient of the test function (need_grad_residual)
-#define need_val_residual {true}
-#define need_grad_residual {true}
+// List of residual equations for the coupled Allen-Cahn example application
 
 // =================================================================================
 // Define the model parameters and the residual equations
@@ -41,8 +19,8 @@
 #define fnV (4.0*n*(n-1.0)*(n-0.5))
 
 // Residual equations
-#define rnV  (n-constV(timeStep*MnV)*fnV)
-#define rnxV (constV(-timeStep*KnV*MnV)*nx)
+#define rnV  (n-constV(this->userInputs.dtValue*MnV)*fnV)
+#define rnxV (constV(-this->userInputs.dtValue*KnV*MnV)*nx)
 
 // =================================================================================
 // residualRHS

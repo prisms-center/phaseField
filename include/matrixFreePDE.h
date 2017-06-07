@@ -9,16 +9,13 @@
 
 //dealii headers
 #include "dealIIheaders.h"
-#include "defaultValues.h"
 
 //PRISMS headers
 #include "model_variables.h"
 #include "varBCs.h"
 #include "initialConditions.h"
 
-
 #include "fields.h"
-#include "vectorLoad.h"
 #include "vectorBCFunction.h"
 #include "../src/userInputParameters/getCIJMatrix.h"
 #include "../src/models/mechanics/computeStress.h"
@@ -49,11 +46,11 @@ using namespace dealii;
 //
 /**
  * This is the abstract base class for the matrix free implementation of Parabolic and Elliptic BVP's,
- * and supports MPI, Threads and Vectorization (Hybrid Parallel). 
- * This class contains the parallel data structures, mesh (referred to as triangulation), 
+ * and supports MPI, Threads and Vectorization (Hybrid Parallel).
+ * This class contains the parallel data structures, mesh (referred to as triangulation),
  * parallel degrees of freedom distribution,  constraints,  and general utility methods.
- * 
- * All the physical models in this package inherit this base class. 
+ *
+ * All the physical models in this package inherit this base class.
  */
 template <int dim, int degree>
 class MatrixFreePDE:public Subscriptor
@@ -66,17 +63,17 @@ class MatrixFreePDE:public Subscriptor
   ~MatrixFreePDE();
   /**
    * Initializes the mesh, degrees of freedom, constraints and data structures using the user provided
-   * inputs in the application parameters file. 
+   * inputs in the application parameters file.
    */
   void init  ();
 
    /**
    * Initializes the data structures for enabling unit tests.
-   * 
-   * This method initializes the MatrixFreePDE object with a fixed geometry, discretization and 
+   *
+   * This method initializes the MatrixFreePDE object with a fixed geometry, discretization and
    * other custom selected options specifically to help with unit tests, and should not be called
    * in any of the physical models.
-   */  
+   */
   void initForTests();
 
   /**
@@ -84,13 +81,13 @@ class MatrixFreePDE:public Subscriptor
    */
   void solve ();
   /**
-   * This method essentially converts the MatrixFreePDE object into a matrix object which can be 
-   * used with matrix free iterative solvers. Provides the A*x functionality for solving the system of 
+   * This method essentially converts the MatrixFreePDE object into a matrix object which can be
+   * used with matrix free iterative solvers. Provides the A*x functionality for solving the system of
    * equations AX=b.
    */
   void vmult (vectorType &dst, const vectorType &src) const;
   /**
-   * Vector of all the physical fields in the problem. Fields are identified by dimentionality (SCALAR/VECTOR),  
+   * Vector of all the physical fields in the problem. Fields are identified by dimentionality (SCALAR/VECTOR),
    * the kind of PDE (ELLIPTIC/PARABOLIC) used to compute them and a character identifier  (e.g.: "c" for composition)
    * which is used to write the fields to the output files.
    */
@@ -133,12 +130,12 @@ class MatrixFreePDE:public Subscriptor
   void reinit  ();
 
   /**
-   * Method to solve each time increment of a time-dependent problem. For time-independent problems 
+   * Method to solve each time increment of a time-dependent problem. For time-independent problems
    * this method is called only once. This method solves for all the fields in a staggered manner (one after another)
    * and also invokes the corresponding solvers: Explicit solver for Parabolic problems, Implicit (matrix-free) solver for Elliptic problems.
-   */  
+   */
   void solveIncrement ();
-  /* Method to write solution fields to vtu and pvtu (parallel) files. 
+  /* Method to write solution fields to vtu and pvtu (parallel) files.
   *
   * This method can be enabled/disabled by setting the flag writeOutput to true/false. Also,
   * the user can select how often the solution files are written by setting the flag
@@ -175,15 +172,15 @@ class MatrixFreePDE:public Subscriptor
   std::vector<ConstraintMatrix*>       constraintsDirichletSet_nonconst, constraintsOtherSet_nonconst;
   /*Copies of dofHandlerSet elements, but stored as non-const.*/
   std::vector<DoFHandler<dim>*>        dofHandlersSet_nonconst;
-  /*Copies of locally_relevant_dofsSet elements, but stored as non-const.*/  
+  /*Copies of locally_relevant_dofsSet elements, but stored as non-const.*/
   std::vector<IndexSet*>               locally_relevant_dofsSet_nonconst;
-  /*Vector all the solution vectors in the problem. In a multi-field problem, each primal field has a solution vector associated with it.*/ 
+  /*Vector all the solution vectors in the problem. In a multi-field problem, each primal field has a solution vector associated with it.*/
   std::vector<vectorType*>             solutionSet;
   /*Vector all the residual (RHS) vectors in the problem. In a multi-field problem, each primal field has a residual vector associated with it.*/
   std::vector<vectorType*>             residualSet;
   /*Vector of parallel solution transfer objects. This is used only when adaptive meshing is enabled.*/
   std::vector<parallel::distributed::SolutionTransfer<dim, vectorType>*> soltransSet;
-  
+
   // Objects for vectors
   DoFHandler<dim>* vector_dofHandler;
   FESystem<dim>* vector_fe;
@@ -198,7 +195,7 @@ class MatrixFreePDE:public Subscriptor
   vectorType                           invM;
   /*Vector to store the solution increment. This is a temporary vector used during implicit solves of the Elliptic fields.*/
   vectorType                           dU_vector, dU_scalar;
-  
+
   //matrix free methods
   /*Current field index*/
   unsigned int currentFieldIndex;
@@ -212,22 +209,22 @@ class MatrixFreePDE:public Subscriptor
   void adaptiveRefine(unsigned int _currentIncrement);
   /*Virtual method to define AMR refinement criterion. The default implementation uses the Kelly error estimate for estimative the error function. The user can supply a custom implementation to overload the default implementation.*/
   virtual void adaptiveRefineCriterion();
-  
+
   /*Method to compute the right hand side (RHS) residual vectors*/
   void computeRHS();
 
   //virtual methods to be implemented in the derived class
   /*Method to calculate LHS(implicit solve)*/
   void getLHS(const MatrixFree<dim,double> &data,
-		      vectorType &dst, 
+		      vectorType &dst,
 		      const vectorType &src,
 		      const std::pair<unsigned int,unsigned int> &cell_range) const;
   /*Method to calculate RHS (implicit/explicit). This is an abstract method, so every model which inherits MatrixFreePDE<dim> has to implement this method.*/
   void getRHS (const MatrixFree<dim,double> &data,
-		       std::vector<vectorType*> &dst, 
+		       std::vector<vectorType*> &dst,
 		       const std::vector<vectorType*> &src,
 		       const std::pair<unsigned int,unsigned int> &cell_range) const;
-  
+
   virtual void residualRHS(const std::vector<modelVariable<dim> > & modelVarList,
   		  	  	  	  	  	  	  	  	  	  	  	  	  std::vector<modelResidual<dim> > & modelResidualsList,
   														  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
@@ -243,9 +240,9 @@ class MatrixFreePDE:public Subscriptor
   //methods to apply dirichlet BC's
   /*Map of degrees of freedom to the corresponding Dirichlet boundary conditions, if any.*/
   std::vector<std::map<dealii::types::global_dof_index, double>*> valuesDirichletSet;
-  /*Virtual method to mark the boundaries for applying Dirichlet boundary conditions.  This is usually expected to be provided by the user.*/  
+  /*Virtual method to mark the boundaries for applying Dirichlet boundary conditions.  This is usually expected to be provided by the user.*/
   void markBoundaries();
-  /*Virtual method for applying Dirichlet boundary conditions.  This is usually expected to be provided by the user.*/ 
+  /*Virtual method for applying Dirichlet boundary conditions.  This is usually expected to be provided by the user.*/
   void applyDirichletBCs();
 
   // Methods to apply periodic BCs
@@ -255,7 +252,7 @@ class MatrixFreePDE:public Subscriptor
   void setRigidBodyModeConstraints(const std::vector<int>, ConstraintMatrix *, const DoFHandler<dim>*) const;
 
   //methods to apply initial conditions
-  /*Virtual method to apply initial conditions.  This is usually expected to be provided by the user in IBVP (Initial Boundary Value Problems).*/   
+  /*Virtual method to apply initial conditions.  This is usually expected to be provided by the user in IBVP (Initial Boundary Value Problems).*/
 
   void applyInitialConditions();
   virtual void getNucleiList ();
@@ -277,7 +274,7 @@ class MatrixFreePDE:public Subscriptor
   /*Method to compute the integral of a field.*/
   void computeIntegral(double& integratedField, int index);
 
-  //variables for time dependent problems 
+  //variables for time dependent problems
   /*Flag used to see if invM, time stepping in run(), etc are necessary*/
   bool isTimeDependentBVP;
   /*Flag used to mark problems with Elliptic fields.*/

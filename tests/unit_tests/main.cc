@@ -22,13 +22,13 @@ int main(int argc, char **argv)
   std::cout << "Beginning unit tests..." << std::endl;
   bool pass = false;
   int tests_passed = 0, total_tests = 0;
-  
+
   // Unit tests for the method "computeInvM"
   total_tests++;
   unitTest<2,double> computeInvM_tester_2D;
   pass = computeInvM_tester_2D.test_computeInvM(argc, argv, userInputs);
   tests_passed += pass;
-  
+
   // Unit tests for the method "outputResults"
   total_tests++;
   unitTest<2,double> outputResults_tester_2D;
@@ -111,36 +111,11 @@ int main(int argc, char **argv)
   pass = setRigidBodyModeConstraints_tester_three.test_setRigidBodyModeConstraints(rigidBodyModeComponents, userInputs);
   tests_passed += pass;
 
-  // Unit tests for the method "vectorLoad"
-  total_tests++;
-  bool array[] = {false,false,true,false};
-  int array_size = sizeof(array);
-  int num_array_elements = 4;
-  unitTest<2,bool> vectorLoad_tester_bool;
-  pass = vectorLoad_tester_bool.test_vectorLoad(array,array_size,num_array_elements);
-  tests_passed += pass;
-
-  total_tests++;
-  std::string string_array[] = {"abc","d","ef","ghijkl"};
-  int string_array_size = sizeof(string_array);
-  int string_num_array_elements = 4;
-  unitTest<2,std::string> vectorLoad_tester_string;
-  pass = vectorLoad_tester_string.test_vectorLoad(string_array,string_array_size,string_num_array_elements);
-  tests_passed += pass;
-
-  total_tests++;
-  double double_array[] = {1.02, 3.25, 6.0,-9.36};
-  int double_array_size = sizeof(double_array);
-  int double_num_array_elements = 4;
-  unitTest<2,double> vectorLoad_tester_double;
-  pass = vectorLoad_tester_double.test_vectorLoad(double_array,double_array_size,double_num_array_elements);
-  tests_passed += pass;
-  
   // Print out results
   char buffer[100];
   sprintf(buffer, "\n\nNumber of tests passed: %u/%u \n\n", tests_passed, total_tests);
   std::cout << buffer;
-  
+
   // Write results to a file
   std::ofstream result_file ("unit_test_results.txt");
   result_file << tests_passed << std::endl;
@@ -150,8 +125,3 @@ int main(int argc, char **argv)
 
   return 0;
 }
-
-
-
-
-

@@ -2,11 +2,12 @@
 
 #include "../../include/matrixFreePDE.h"
 
-//default implementation of adaptive mesh refinement 
+//default implementation of adaptive mesh refinement
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::adaptiveRefine(unsigned int currentIncrement){
 if (userInputs.h_adaptivity == true){
 	if ( (currentIncrement == 0) ){
+		computing_timer.enter_section("matrixFreePDE: AMR");
 		unsigned int numDoF_preremesh = totalDOFs;
 		for (unsigned int remesh_index=0; remesh_index < (userInputs.max_refinement_level-userInputs.min_refinement_level); remesh_index++){
 			adaptiveRefineCriterion();
@@ -17,11 +18,14 @@ if (userInputs.h_adaptivity == true){
 			if (totalDOFs == numDoF_preremesh) break;
 			numDoF_preremesh = totalDOFs;
 		}
+		computing_timer.exit_section("matrixFreePDE: AMR");
 	}
 	else if ( (currentIncrement%userInputs.skip_remeshing_steps==0) ){
+		computing_timer.enter_section("matrixFreePDE: AMR");
 		adaptiveRefineCriterion();
 		refineGrid();
 		reinit();
+		computing_timer.exit_section("matrixFreePDE: AMR");
 	}
 }
 }
@@ -127,4 +131,3 @@ triangulation.execute_coarsening_and_refinement();
 }
 
 #include "../../include/matrixFreePDE_template_instantiations.h"
-

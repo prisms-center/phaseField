@@ -4,8 +4,8 @@
 
 template <int dim, int degree>
 void  MatrixFreePDE<dim,degree>::computeIntegral(double& integratedField, int index) {
-	 QGauss<dim>  quadrature_formula(finiteElementDegree+1);
-	  FE_Q<dim> FE (QGaussLobatto<1>(finiteElementDegree+1));
+	 QGauss<dim>  quadrature_formula(degree+1);
+	  FE_Q<dim> FE (QGaussLobatto<1>(degree+1));
 	  FEValues<dim> fe_values (FE, quadrature_formula, update_values | update_JxW_values | update_quadrature_points);
 	  const unsigned int   n_q_points    = quadrature_formula.size();
 	  std::vector<double> cVal(n_q_points);

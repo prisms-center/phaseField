@@ -69,7 +69,6 @@ void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Vectorized
 #include "../../src/matrixfree/getOutputTimeSteps.cc"
 
 #include "../../src/models/mechanics/computeStress.h"
-#include "../../src/utilities/vectorLoad.cc"
 
 #define POSTPROCESSOR_TEMPLATES
 #include "postprocess.h"

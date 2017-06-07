@@ -1,4 +1,4 @@
-//methods to apply initial conditions 
+//methods to apply initial conditions
 
 #include "../../include/matrixFreePDE.h"
 #include "../../include/IntegrationTools/PField.hh"
@@ -44,10 +44,10 @@ for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_i
 	if (userInputs.load_ICs[var_index] == false){
 		pcout << "Applying non-PField initial condition...\n";
 		if (userInputs.var_type[var_index] == "SCALAR"){
-			VectorTools::interpolate (*dofHandlersSet[var_index], InitialCondition<dim>(var_index), *solutionSet[var_index]);
+			VectorTools::interpolate (*dofHandlersSet[var_index], InitialCondition<dim>(var_index,userInputs), *solutionSet[var_index]);
 		}
 		else {
-			VectorTools::interpolate (*dofHandlersSet[var_index], InitialConditionVec<dim>(var_index), *solutionSet[var_index]);
+			VectorTools::interpolate (*dofHandlersSet[var_index], InitialConditionVec<dim>(var_index,userInputs), *solutionSet[var_index]);
 		}
 	}
 	else{

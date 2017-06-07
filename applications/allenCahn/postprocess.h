@@ -8,29 +8,6 @@
 #ifndef APPLICATIONS_ALLENCAHN_POSTPROCESS_H_
 #define APPLICATIONS_ALLENCAHN_POSTPROCESS_H_
 
-// =================================================================================
-// Define the variables for postprocessing
-// =================================================================================
-// The number of variables
-#define pp_num_var 1
-
-// The names of the variables, whether they are scalars or vectors and whether the
-// governing eqn for the variable is parabolic or elliptic
-#define pp_variable_name {"mag_grad_n"}
-#define pp_variable_type {"SCALAR"}
-
-// Flags for whether the value, gradient, and Hessian are needed in the residual eqns
-#define pp_need_val {false}
-#define pp_need_grad {true}
-#define pp_need_hess  {false}
-
-// Flags for whether the residual equation has a term multiplied by the test function
-// (need_val_residual) and/or the gradient of the test function (need_grad_residual)
-#define pp_need_val_residual {true}
-#define pp_need_grad_residual {false}
-
-// =================================================================================
-
 template <int dim>
 void postProcessedFields(const std::vector<modelVariable<dim> > & modelVariablesList,
 												std::vector<modelResidual<dim> > & modelResidualsList,
