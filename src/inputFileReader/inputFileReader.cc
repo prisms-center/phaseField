@@ -1,7 +1,200 @@
 // Method for the userInputParameters class
-#include "../include/inputFileReader.h"
+#include "../../include/inputFileReader.h"
 
-inputFileReader::inputFileReader(dealii::ParameterHandler & parameter_handler, std::string input_file_name, unsigned int number_of_variables, unsigned int number_of_materials, unsigned int number_of_pp_variables){
+// Method to parse a single line to find a target key value pair
+bool inputFileReader::parse_line(std::string line, std::string keyword, std::string entry_name,
+                                    std::string & out_string, bool expect_equals_sign){
+
+    // Strip spaces at the front and back
+    while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
+    line.erase(0, 1);
+    while ((line.size() > 0)
+    && (line[line.size() - 1] == ' ' || line[line.size() - 1] == '\t'))
+    line.erase(line.size() - 1, std::string::npos);
+
+    // now see whether the line starts with 'keyword' followed by multiple spaces
+    // if not, try next line (if the entry is "", then zero spaces after the keyword is ok)
+    if (line.size() < keyword.size())
+    return false;
+
+    for (unsigned int i=0; i<keyword.size(); i++){
+        if (line[i] != keyword[i])
+            return false;
+    }
+    if (entry_name.size() > 0){
+        if (!(line[keyword.size()] == ' ' || line[keyword.size()] == '\t'))
+            return false;
+    }
+
+    // delete the "keyword" and then delete more spaces if present
+    line.erase(0, keyword.size());
+    while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
+    line.erase(0, 1);
+    // now see whether the next word is the word we look for
+    if (line.find(entry_name) != 0)
+    return false;
+
+    line.erase(0, entry_name.size());
+    while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
+    line.erase(0, 1);
+
+    // we'd expect an equals size here if expect_equals_sign is true
+    if (expect_equals_sign){
+        if ((line.size() < 1) || (line[0] != '='))
+        return false;
+    }
+
+    // remove comment
+    std::string::size_type pos = line.find('#');
+    if (pos != std::string::npos)
+    line.erase (pos);
+
+    // trim the equals sign at the beginning and possibly following spaces
+    // as well as spaces at the end
+    if (expect_equals_sign)
+        line.erase(0, 1);
+
+    while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
+    line.erase(0, 1);
+
+    while ((line.size() > 0) && (line[line.size()-1] == ' ' || line[line.size()-1] == '\t'))
+    line.erase(line.size()-1, std::string::npos);
+
+    out_string = line;
+    return true;
+}
+
+// Method to parse an input file to get a list of variables from related subsections
+std::vector<std::string> inputFileReader::get_subsection_entry_list(const std::string parameters_file_name,
+                                                                    std::string subsec_name, std::string entry_name, std::string default_entry){
+
+    std::ifstream input_file;
+    input_file.open(parameters_file_name);
+
+    std::string line, entry;
+    bool in_subsection = false;
+    bool found_entry, desired_entry_found;
+    unsigned int subsection_index;
+    std::vector<std::string> entry_list;
+    std::vector<unsigned int> index_list;
+
+    // Loop through each line
+    while (std::getline(input_file, line))
+    {
+        // If the line is the start of a subsection, turn 'in_subsection' to true and store the subsection index
+        if (!in_subsection){
+            found_entry = parse_line(line, "subsection",subsec_name, entry, false);
+            if ( found_entry){
+                in_subsection = true;
+                subsection_index = dealii::Utilities::string_to_int(entry);
+                desired_entry_found = false;
+            }
+        }
+        // If in a subsection, look for the line setting the entry or for the end of the subsection
+        else {
+            found_entry = parse_line(line, "set", entry_name, entry, true);
+            if (found_entry) {
+                entry_list.push_back(entry);
+                index_list.push_back(subsection_index);
+                desired_entry_found = true;
+            }
+            found_entry = parse_line(line, "end", "", entry, false);
+            if (found_entry) {
+                if (!desired_entry_found){
+                    entry_list.push_back(default_entry);
+                    index_list.push_back(subsection_index);
+                }
+                in_subsection = false;
+                desired_entry_found = false;
+            }
+        }
+    }
+
+    // Now sort the entry list vector so that it is in index order
+    std::vector<std::string> sorted_entry_list;
+    for (unsigned int i=0; i<entry_list.size(); i++){
+        for (unsigned int j=0; j<entry_list.size(); j++){
+            if (i == j){
+                sorted_entry_list.push_back(entry_list[index_list[j]]);
+                break;
+            }
+        }
+    }
+    return sorted_entry_list;
+}
+
+// Before fully parsing the parameter file, we need to know how many field variables there are
+// This function is largely taken from ASPECT (https://github.com/geodynamics/aspect/blob/master/source/main.cc)
+std::string inputFileReader::get_last_value_of_parameter(const std::string &parameters, const std::string &parameter_name)
+    {
+        std::string return_value;
+
+        //std::istringstream x_file(parameters);
+
+        std::ifstream input_file;
+        input_file.open(parameters);
+
+        std::string line;
+        while (std::getline(input_file, line))
+        {
+            // get one line and strip spaces at the front and back
+            while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
+            line.erase(0, 1);
+            while ((line.size() > 0)
+            && (line[line.size() - 1] == ' ' || line[line.size() - 1] == '\t'))
+            line.erase(line.size() - 1, std::string::npos);
+            // now see whether the line starts with 'set' followed by multiple spaces
+            // if not, try next line
+            if (line.size() < 4)
+            continue;
+
+            if ((line[0] != 's') || (line[1] != 'e') || (line[2] != 't')
+            || !(line[3] == ' ' || line[3] == '\t'))
+            continue;
+
+            // delete the "set " and then delete more spaces if present
+            line.erase(0, 4);
+            while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
+            line.erase(0, 1);
+            // now see whether the next word is the word we look for
+            if (line.find(parameter_name) != 0)
+            continue;
+
+            line.erase(0, parameter_name.size());
+            while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
+            line.erase(0, 1);
+
+            // we'd expect an equals size here
+            if ((line.size() < 1) || (line[0] != '='))
+            continue;
+
+            // remove comment
+            std::string::size_type pos = line.find('#');
+            if (pos != std::string::npos)
+            line.erase (pos);
+
+            // trim the equals sign at the beginning and possibly following spaces
+            // as well as spaces at the end
+            line.erase(0, 1);
+            while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
+            line.erase(0, 1);
+            while ((line.size() > 0) && (line[line.size()-1] == ' ' || line[line.size()-1] == '\t'))
+            line.erase(line.size()-1, std::string::npos);
+
+            // the rest should now be what we were looking for
+            return_value = line;
+        }
+
+        input_file.close();
+
+        return return_value;
+    }
+
+
+
+void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_handler, std::string input_file_name,
+                                            std::vector<std::string> var_types, unsigned int number_of_materials,
+                                            unsigned int number_of_pp_variables){
 
     // Declare all of the entries
     parameter_handler.declare_entry("Number of dimensions","-1",dealii::Patterns::Integer(),"The number of dimensions for the simulation.");
@@ -43,9 +236,7 @@ inputFileReader::inputFileReader(dealii::ParameterHandler & parameter_handler, s
     parameter_handler.declare_entry("Allow nucleation","false",dealii::Patterns::Bool(),"Whether to enable the explicit nucleation capabilties.");
 
     // Declare entries regarding the governing equations
-    parameter_handler.declare_entry("Number of equations","-1",dealii::Patterns::Integer(),"The number of governing equations being solved.");
-
-    for (unsigned int i=0; i<number_of_variables; i++){
+    for (unsigned int i=0; i<var_types.size(); i++){
         std::string equation_text = "Equation ";
         equation_text.append(dealii::Utilities::int_to_string(i));
 
@@ -73,9 +264,6 @@ inputFileReader::inputFileReader(dealii::ParameterHandler & parameter_handler, s
     }
 
     // Declare entries regarding the elastic constants
-    parameter_handler.declare_entry("Number of materials","0",dealii::Patterns::Integer(),"The number of materials with differing elastic constants.");
-
-
     for (unsigned int i=0; i<number_of_materials; i++){
         std::string material_text = "Material ";
         material_text.append(dealii::Utilities::int_to_string(i));
@@ -95,8 +283,6 @@ inputFileReader::inputFileReader(dealii::ParameterHandler & parameter_handler, s
     parameter_handler.declare_entry("Variable names in the files","void",dealii::Patterns::Anything(),"What each variable is named in the field being loaded.");
 
     // Declare entries for the postprocessing variables
-    parameter_handler.declare_entry("Number of postprocessing variables","-1",dealii::Patterns::Integer(),"The number of governing equations being solved.");
-
     for (unsigned int i=0; i<number_of_pp_variables; i++){
         std::string pp_var_text = "Postprocessing variable ";
         pp_var_text.append(dealii::Utilities::int_to_string(i));
@@ -116,8 +302,30 @@ inputFileReader::inputFileReader(dealii::ParameterHandler & parameter_handler, s
         parameter_handler.leave_subsection();
     }
 
+    // Declare the boundary condition variables
+    for (unsigned int i=0; i<var_types.size(); i++){
+        if (boost::iequals(var_types[i],"SCALAR")){
+            std::string bc_text = "Boundary condition for variable ";
+            bc_text.append(dealii::Utilities::int_to_string(i));
+            parameter_handler.declare_entry(bc_text,"",dealii::Patterns::Anything(),"The boundary conditions for one of the governing equations).");
+        }
+        else {
+            std::string bc_text = "Boundary condition for variable ";
+            bc_text.append(dealii::Utilities::int_to_string(i));
+            bc_text.append(", x component");
+            parameter_handler.declare_entry(bc_text,"",dealii::Patterns::Anything(),"The boundary conditions for one of the governing equations).");
 
-    // Read from the input file
-    parameter_handler.read_input(input_file_name);
+            bc_text = "Boundary condition for variable ";
+            bc_text.append(dealii::Utilities::int_to_string(i));
+            bc_text.append(", y component");
+            parameter_handler.declare_entry(bc_text,"",dealii::Patterns::Anything(),"The boundary conditions for one of the governing equations).");
+
+            bc_text = "Boundary condition for variable ";
+            bc_text.append(dealii::Utilities::int_to_string(i));
+            bc_text.append(", z component");
+            parameter_handler.declare_entry(bc_text,"",dealii::Patterns::Anything(),"The boundary conditions for one of the governing equations).");
+        }
+
+    }
 
 }

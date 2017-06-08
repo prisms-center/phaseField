@@ -1,5 +1,7 @@
 # Parameter list for the Allen-Cahn example application
 
+# Refer to the PRISMS-PF manual for use of these parameters in the source code.
+
 # =================================================================================
 # Set the number of dimensions (1, 2, or 3 for a 1D, 2D, or 3D calculation)
 # =================================================================================
@@ -62,8 +64,6 @@ set Calculate the free energy = true
 # =================================================================================
 # Set the properties of the governing equations and their variables
 # =================================================================================
-# The number of equations (must match the number specified below)
-set Number of equations = 1
 
 # Equation 0
 subsection Equation 0
@@ -80,8 +80,6 @@ end
 # =================================================================================
 # Set the elastic constants (if needed)
 # =================================================================================
-
-set Number of materials = 2
 
 subsection Material 0
     set Material symmetry = ISOTROPIC
@@ -106,7 +104,6 @@ set Variable names in the files = void
 # Set the properties of the postprocessing variables
 # =================================================================================
 # The number of postprocessing variables (must match the number specified below)
-set Number of postprocessing variables = 1
 
 # Postprocessing variable 0
 subsection Postprocessing variable 0
@@ -123,4 +120,6 @@ end
 # Set the boundary conditions
 # =================================================================================
 
-set Boundary condition equation 0 = ZERO_FLUX
+set Boundary condition for variable 0 = PERIODIC
+#set Boundary condition for variable 1, x component = DIRICHLET: 1.0
+#set Boundary condition for variable 1, y component = DIRICHLET: 1.0

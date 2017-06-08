@@ -84,24 +84,7 @@ class MatrixFreePDE:public Subscriptor
    */
   std::vector<Field<dim> >                  fields;
 
-  virtual void setBCs()=0;
   void buildFields();
-  void inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
-    			std::string BC_type_dim1_max, double BC_value_dim1_max, std::string BC_type_dim2_min, double BC_value_dim2_min,
-    			std::string BC_type_dim2_max, double BC_value_dim2_max,std::string BC_type_dim3_min, double BC_value_dim3_min,
-    			std::string BC_type_dim3_max, double BC_value_dim3_max);
-
-  void inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
-  			std::string BC_type_dim1_max, double BC_value_dim1_max, std::string BC_type_dim2_min, double BC_value_dim2_min,
-  			std::string BC_type_dim2_max, double BC_value_dim2_max);
-
-  void inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
-    			std::string BC_type_dim1_max, double BC_value_dim1_max);
-
-  void inputBCs(int var, int component, std::string BC_type, double BC_value);
-
-  // Boundary condition object
-  std::vector<varBCs<dim> > BC_list;
 
   // Parallel message stream
   ConditionalOStream  pcout;

@@ -4,11 +4,13 @@
 #include <iostream>
 #include "unitTest.h"
 #include "../../include/userInputParameters.h"
-#include "../../src/userInputParameters/loadUserInputs.cc"
+#include "../../src/userInputParameters/loadInputParameters.cc"
 #include "../../include/vectorBCFunction.h"
 #include "../../src/utilities/vectorBCFunction.cc"
 #include "../../include/initialConditions.h"
 #include "initialConditions.cc"
+#include "../../include/list_of_CIJ.h"
+#include "unit_test_inputs.cc"
 
 int main(int argc, char **argv)
 {
@@ -16,12 +18,31 @@ int main(int argc, char **argv)
   Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, numbers::invalid_unsigned_int);
 
   // Load input
+  dealii::ParameterHandler parameter_handler;
   userInputParameters<problemDIM> userInputs;
-  userInputs.loadUserInput();
+  load_unit_test_inputs(userInputs);
 
   std::cout << "Beginning unit tests..." << std::endl;
   bool pass = false;
   int tests_passed = 0, total_tests = 0;
+
+  // Unit tests for the method "parse_line" in "inputFileReader"
+  total_tests++;
+  unitTest<2,double> parse_line_tester;
+  pass = parse_line_tester.test_parse_line();
+  tests_passed += pass;
+
+  // Unit tests for the method "get_subsection_entry_list" in "inputFileReader"
+  total_tests++;
+  unitTest<2,double> get_subsection_entry_list_tester;
+  pass = get_subsection_entry_list_tester.test_get_subsection_entry_list();
+  tests_passed += pass;
+
+  // Unit tests for the method "load_BC_list" in "userInputParameters"
+  total_tests++;
+  unitTest<2,double> load_BC_list_tester;
+  pass = load_BC_list_tester.test_load_BC_list();
+  tests_passed += pass;
 
   // Unit tests for the method "computeInvM"
   total_tests++;
@@ -29,7 +50,7 @@ int main(int argc, char **argv)
   pass = computeInvM_tester_2D.test_computeInvM(argc, argv, userInputs);
   tests_passed += pass;
 
-  // Unit tests for the method "outputResults"
+  // Unit tests for the method "outputResults" (revisit, it isn't clear what this one does)
   total_tests++;
   unitTest<2,double> outputResults_tester_2D;
   pass = outputResults_tester_2D.test_outputResults(argc, argv, userInputs);

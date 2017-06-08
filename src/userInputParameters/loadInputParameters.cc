@@ -1,8 +1,9 @@
 // Methods for the userInputParameters class
-#include "userInputParameters.h"
+#include "../../include/userInputParameters.h"
 
 template <int dim>
-void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & parameter_handler){
+void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & parameter_handler,
+                                                    unsigned int _number_of_variables, unsigned int _number_of_materials, unsigned int _number_of_pp_variables){
 
     // Load the inputs into the class member variables
 
@@ -89,7 +90,7 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
     nucleation_occurs = parameter_handler.get_bool("Allow nucleation");
 
     // Field variable definitions
-    number_of_variables = parameter_handler.get_integer("Number of equations");
+    number_of_variables = _number_of_variables;
 
     for (unsigned int i=0; i<number_of_variables; i++){
         std::string equation_text = "Equation ";
@@ -117,7 +118,7 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
     }
 
     // Elastic constants
-    unsigned int number_of_materials = parameter_handler.get_integer("Number of materials");
+    unsigned int number_of_materials = _number_of_materials;
 
     std::vector<std::vector<double> > temp_mat_consts;
     std::vector<std::string> temp_mat_models;
@@ -196,7 +197,9 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
     std::vector<std::string> load_field_name = dealii::Utilities::split_string_list(parameter_handler.get("Variable names in the files"));
 
     // Parameters for postprocessing
-    pp_number_of_variables = parameter_handler.get_integer("Number of postprocessing variables");
+    pp_number_of_variables = _number_of_pp_variables;
+
+
     if (pp_number_of_variables > 0){
         postProcessingRequired = true;
     }
@@ -222,6 +225,7 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
         parameter_handler.leave_subsection();
     }
 
+
     // Load variable information for calculating the RHS
 	pp_varInfoList.reserve(pp_number_of_variables);
 	unsigned int scalar_var_index = 0;
@@ -244,6 +248,34 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
 
 	}
 
+    // Load the boundary condition variables into list of BCs (where each element of the vector is one component of one variable)
+    std::vector<std::string> list_of_BCs;
+    for (unsigned int i=0; i<number_of_variables; i++){
+        if (boost::iequals(var_type[i],"SCALAR")){
+            std::string bc_text = "Boundary condition for variable ";
+            bc_text.append(dealii::Utilities::int_to_string(i));
+            list_of_BCs.push_back(parameter_handler.get(bc_text));
+        }
+        else {
+            std::string bc_text = "Boundary condition for variable ";
+            bc_text.append(dealii::Utilities::int_to_string(i));
+            bc_text.append(", x component");
+            list_of_BCs.push_back(parameter_handler.get(bc_text));
+
+            bc_text = "Boundary condition for variable ";
+            bc_text.append(dealii::Utilities::int_to_string(i));
+            bc_text.append(", y component");
+            list_of_BCs.push_back(parameter_handler.get(bc_text));
+
+            bc_text = "Boundary condition for variable ";
+            bc_text.append(dealii::Utilities::int_to_string(i));
+            bc_text.append(", z component");
+            list_of_BCs.push_back(parameter_handler.get(bc_text));
+        }
+    }
+
+    // Load the BC information from the strings into a varBCs object
+    load_BC_list(list_of_BCs, BC_list);
 
     // --------------------------------------------------------------------------------------------------------
     // Build the varInfoList objects using the parameters loaded from the input file
@@ -299,6 +331,71 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
 			varInfoListLHS.push_back(varInfo);
 		}
 	}
+
+}
+
+template <int dim>
+void userInputParameters<dim>::load_BC_list(std::vector<std::string> list_of_BCs, std::vector<varBCs<dim> > & BC_list){
+    // Load the BC information from the strings into a varBCs object
+    // Move this to a new method and write a unit test for it!!!!
+
+    std::vector<std::string> temp;
+
+    for (unsigned int i=0; i<list_of_BCs.size(); i++){
+        varBCs<dim> newBC;
+        temp = dealii::Utilities::split_string_list(list_of_BCs[i]);
+
+        // If there is only one BC listed, make another dim*2-1 copies of it so that the same BC is applied for all boundaries
+        if (temp.size() == 1){
+            for (unsigned int boundary=0; boundary<(dim*2-1); boundary++){
+                temp.push_back(temp[0]);
+            }
+        }
+
+        // Load the BC for each boundary into 'newBC'
+        for (unsigned int i=0; i<(2*dim); i++){
+            if (boost::iequals(temp[i],"ZERO_DERIVATIVE")){
+                newBC.var_BC_type.push_back(ZERO_DERIVATIVE);
+                newBC.var_BC_val.push_back(0.0);
+            }
+            else if (boost::iequals(temp[i],"PERIODIC")){
+                newBC.var_BC_type.push_back(PERIODIC);
+                newBC.var_BC_val.push_back(0.0);
+            }
+            else if (boost::iequals(temp[i].substr(0,9),"DIRICHLET")){
+                newBC.var_BC_type.push_back(DIRICHLET);
+                std::string dirichlet_val = temp[i].substr(10,temp[i].size());
+                dirichlet_val = dealii::Utilities::trim(dirichlet_val);
+                newBC.var_BC_val.push_back(dealii::Utilities::string_to_double(dirichlet_val));
+            }
+            else {
+                std::cout << temp[i].substr(0,8) << std::endl;
+                std::cout << "Error: Boundary conditions specified improperly." << std::endl;
+                abort();
+            }
+        }
+        BC_list.push_back(newBC);
+
+            // Validate input using something like this:
+            // try{
+            //     if ((BC_type_dim1_min == "PERIODIC") && (BC_type_dim1_max != "PERIODIC")){
+            //         throw 0;
+            //     }
+            //     if ((BC_type_dim2_min == "PERIODIC") && (BC_type_dim2_max != "PERIODIC")){
+            //         throw 0;
+            //     }
+            //     if ((BC_type_dim3_min == "PERIODIC") && (BC_type_dim3_max != "PERIODIC")){
+            //         throw 0;
+            //     }
+            // }
+            // catch (int e){
+            //     if (e == 0){
+            //         std::cout << "Error: For periodic BCs, both faces for a given direction must be set as periodic. "
+            //                 "Please check the BCs that are set in ICs_and_BCs.h." << std::endl;
+            //     }
+            //     abort();
+            // }
+    }
 
 }
 

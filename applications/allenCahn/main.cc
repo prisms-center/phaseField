@@ -10,77 +10,6 @@
 #include "../../include/initialCondition_template_instantiations.h"
 #include "../../include/inputFileReader.h"
 
-// Before fully parsing the parameter file, we need to know how many field variables there are
-// This function is largely taken from ASPECT (https://github.com/geodynamics/aspect/blob/master/source/main.cc)
-std::string
-get_last_value_of_parameter(const std::string &parameters,
-    const std::string &parameter_name)
-    {
-        std::string return_value;
-
-        //std::istringstream x_file(parameters);
-
-        std::ifstream input_file;
-        input_file.open("parameters.in");
-
-        std::string line;
-        while (std::getline(input_file, line))
-        {
-            // get one line and strip spaces at the front and back
-            while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
-            line.erase(0, 1);
-            while ((line.size() > 0)
-            && (line[line.size() - 1] == ' ' || line[line.size() - 1] == '\t'))
-            line.erase(line.size() - 1, std::string::npos);
-            // now see whether the line starts with 'set' followed by multiple spaces
-            // if not, try next line
-            if (line.size() < 4)
-            continue;
-
-            if ((line[0] != 's') || (line[1] != 'e') || (line[2] != 't')
-            || !(line[3] == ' ' || line[3] == '\t'))
-            continue;
-
-            // delete the "set " and then delete more spaces if present
-            line.erase(0, 4);
-            while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
-            line.erase(0, 1);
-            // now see whether the next word is the word we look for
-            if (line.find(parameter_name) != 0)
-            continue;
-
-            line.erase(0, parameter_name.size());
-            while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
-            line.erase(0, 1);
-
-            // we'd expect an equals size here
-            if ((line.size() < 1) || (line[0] != '='))
-            continue;
-
-            // remove comment
-            std::string::size_type pos = line.find('#');
-            if (pos != std::string::npos)
-            line.erase (pos);
-
-            // trim the equals sign at the beginning and possibly following spaces
-            // as well as spaces at the end
-            line.erase(0, 1);
-            while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
-            line.erase(0, 1);
-            while ((line.size() > 0) && (line[line.size()-1] == ' ' || line[line.size()-1] == '\t'))
-            line.erase(line.size()-1, std::string::npos);
-
-            // the rest should now be what we were looking for
-            return_value = line;
-        }
-
-        input_file.close();
-
-        return return_value;
-    }
-
-
-
 //main
 int main (int argc, char **argv)
 {
@@ -89,32 +18,31 @@ int main (int argc, char **argv)
     {
         dealii::deallog.depth_console(0);
 
-        // Before fully parsing the parameter file, we need to know how many field variables there are, how many
-        // postprocessing variables there are, and how many sets of elastic constants there are.
-        const std::string numVar = get_last_value_of_parameter("parameters.in", "Number of equations");
-        const std::string numMat = get_last_value_of_parameter("parameters.in", "Number of materials");
-        const std::string numVar_pp = get_last_value_of_parameter("parameters.in", "Number of postprocessing variables");
+        // Before fully parsing the parameter file, we need to know how many field variables there are and whether they
+        // are scalars or vectors, how many postprocessing variables there are, and how many sets of elastic constants there are.
+        inputFileReader input_file_reader;
+        const std::vector<std::string> var_types = input_file_reader.get_subsection_entry_list("parameters.in","Equation","Variable type","SCALAR");
+        const std::vector<std::string> material_types = input_file_reader.get_subsection_entry_list("parameters.in","Material","Material symmetry","ISOTROPIC");
+        const std::vector<std::string> pp_var_types = input_file_reader.get_subsection_entry_list("parameters.in","Postprocessing variable","Variable type","SCALAR");
 
-        // Read in the parameters
+        // Read in all of the parameters now
         dealii::ParameterHandler parameter_handler;
-        inputFileReader input_file_reader(parameter_handler,"parameters.in",dealii::Utilities::string_to_int(numVar),
-                                            dealii::Utilities::string_to_int(numMat),dealii::Utilities::string_to_int(numVar_pp));
+        input_file_reader.declare_parameters(parameter_handler,"parameters.in",var_types,
+                                             material_types.size(),pp_var_types.size());
+        parameter_handler.read_input("parameters.in");
 
-        const unsigned int dimension = parameter_handler.get_integer("Number of dimensions");
-
-        switch (dimension)
+        // Continue based on the number of dimensions and degree of the elements specified in the input file
+        switch (parameter_handler.get_integer("Number of dimensions"))
         {
             case 2:
             {
                 userInputParameters<2> userInputs;
-                userInputs.loadInputParameters(parameter_handler);
-
+                userInputs.loadInputParameters(parameter_handler,var_types.size(),material_types.size(),pp_var_types.size());
                 switch (userInputs.degree)
                 {
                     case(1):
                     {
                         customPDE<2,1> problem(userInputs);
-                        problem.setBCs();
                         problem.buildFields();
                         problem.init ();
                         problem.solve();
@@ -123,7 +51,6 @@ int main (int argc, char **argv)
                     case(2):
                     {
                         customPDE<2,2> problem(userInputs);
-                        problem.setBCs();
                         problem.buildFields();
                         problem.init ();
                         problem.solve();
@@ -132,7 +59,6 @@ int main (int argc, char **argv)
                     case(3):
                     {
                         customPDE<2,3> problem(userInputs);
-                        problem.setBCs();
                         problem.buildFields();
                         problem.init ();
                         problem.solve();
@@ -144,14 +70,12 @@ int main (int argc, char **argv)
             case 3:
             {
                 userInputParameters<3> userInputs;
-                userInputs.loadInputParameters(parameter_handler);
-
+                userInputs.loadInputParameters(parameter_handler,var_types.size(),material_types.size(),pp_var_types.size());
                 switch (userInputs.degree)
                 {
                     case(1):
                     {
                         customPDE<3,1> problem(userInputs);
-                        problem.setBCs();
                         problem.buildFields();
                         problem.init ();
                         problem.solve();
@@ -160,7 +84,6 @@ int main (int argc, char **argv)
                     case(2):
                     {
                         customPDE<3,2> problem(userInputs);
-                        problem.setBCs();
                         problem.buildFields();
                         problem.init ();
                         problem.solve();
@@ -169,7 +92,6 @@ int main (int argc, char **argv)
                     case(3):
                     {
                         customPDE<3,3> problem(userInputs);
-                        problem.setBCs();
                         problem.buildFields();
                         problem.init ();
                         problem.solve();

@@ -16,7 +16,6 @@ template <int dim>
 class varBCs
 {
 	public:
-	//varBCs();
 	std::vector<BC_type> var_BC_type;
 	std::vector<double> var_BC_val;
 };

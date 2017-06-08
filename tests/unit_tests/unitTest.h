@@ -68,6 +68,8 @@ void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Vectorized
 #include "../../src/matrixfree/computeIntegral.cc"
 #include "../../src/matrixfree/getOutputTimeSteps.cc"
 
+#include "../../src/inputFileReader/inputFileReader.cc"
+
 #include "../../src/models/mechanics/computeStress.h"
 
 #define POSTPROCESSOR_TEMPLATES
@@ -88,6 +90,9 @@ class unitTest
 	bool test_getOutputTimeSteps(std::string,unsigned int, std::vector<unsigned int>, userInputParameters<dim> userInputs);
 	bool test_setRigidBodyModeConstraints(std::vector<int>, userInputParameters<dim> userInputs);
 	bool test_vectorLoad(T array[], int array_size, int num_array_elements);
+	bool test_parse_line();
+	bool test_get_subsection_entry_list();
+	bool test_load_BC_list();
 };
 
 
@@ -97,5 +102,7 @@ class unitTest
 //#include "test_getRHS.h"
 #include "test_getOutputTimeSteps.h"
 #include "test_setRigidBodyModeConstraints.h"
-#include "test_vectorLoad.h"
+#include "test_parse_line.h"
+#include "test_get_subsection_entry_list.h"
+#include "test_load_BC_list.h"
 //#include "test_computeRHS.h"

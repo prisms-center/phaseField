@@ -17,8 +17,6 @@ public:
 	customPDE(userInputParameters<dim> _userInputs): MatrixFreePDE<dim,degree>(_userInputs) {};
 	//customPDE(userInputParameters _userInputs);
 
-	void setBCs();
-
 private:
 
 	#include "../../include/typeDefs.h"
