@@ -45,7 +45,6 @@ scalargradType nx = modelVariablesList[0].scalarGrad;
 
 // Parameters in the residual equations and expressions for the residual equations
 // can be set here.
-
 scalarvalueType fnV = (4.0*n*(n-1.0)*(n-0.5));
 scalarvalueType rnV = (n-constV(this->userInputs.dtValue*MnV)*fnV);
 scalargradType rnxV = (constV(-this->userInputs.dtValue*KnV*MnV)*nx);

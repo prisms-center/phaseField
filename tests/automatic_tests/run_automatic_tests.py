@@ -14,8 +14,8 @@ def run_unit_tests():
 	# Open file where output is redirected to
 	if os.path.exists("output.txt") == True:
 		os.remove("output.txt")
-	f = open("output.txt",'w+')	
-	
+	f = open("output.txt",'w+')
+
 	# Remove old files
 	if os.path.exists("main") == True:
 		os.remove("main")
@@ -23,13 +23,13 @@ def run_unit_tests():
 		os.remove("CMakeCache.txt")
 	if os.path.exists("unit_test_results.txt") == True:
 		os.remove("unit_test_results.txt")
-		
+
 	# Compile and run
 	subprocess.call(["cmake", "."],stdout=f,stderr=f)
 	subprocess.call(["make", "release"],stdout=f)
 	subprocess.call(["mpirun", "-n", "2", "main"],stdout=f)
 	f.close()
-	
+
 	result_file = open("unit_test_results.txt","r")
 	test_results = result_file.read().splitlines()
 	result_file.close()
@@ -44,20 +44,20 @@ def run_simulation(run_name,dir_path):
 	# Delete any pre-existing executables or results
 	if os.path.exists(run_name) == True:
 		shutil.rmtree(run_name)
-	
+
 	# Open file where output is redirected to
 	if os.path.exists("output.txt") == True:
 		os.remove("output.txt")
-	f = open("output.txt",'w+')	
-	
+	f = open("output.txt",'w+')
+
 	# Remove old files
 	if os.path.exists("main") == True:
 		os.remove("main")
 	if os.path.exists("CMakeCache.txt") == True:
 		os.remove("CMakeCache.txt")
-		
+
 	subprocess.call(["rm", "*vtu"],stdout=f,stderr=f)
-	
+
 	# Compile and run
 	subprocess.call(["cmake", "."],stdout=f,stderr=f)
 	subprocess.call(["make", "release","-j9"],stdout=f)
@@ -74,18 +74,18 @@ def run_simulation(run_name,dir_path):
 		shutil.move(output_files,run_name)
 	if os.path.exists("freeEnergy.txt") == True:
 		shutil.move("freeEnergy.txt",run_name)
-	
+
 	test_time = end-start
 	return test_time
 
 # ----------------------------------------------------------------------------------------
 # Function that runs a regression test
 # ----------------------------------------------------------------------------------------
-def run_regression_test(applicationName,getNewGoldStandard,dir_path):	
+def run_regression_test(applicationName,getNewGoldStandard,dir_path):
 
 	if (getNewGoldStandard == False):
 		testName = "test_"+applicationName
-	
+
 	else:
 		testName = "gold_"+applicationName
 
@@ -110,55 +110,55 @@ def run_regression_test(applicationName,getNewGoldStandard,dir_path):
 		gold_standard_file = open("freeEnergy.txt","r")
 		gold_energy = gold_standard_file.readlines()
 		gold_standard_file.close()
-	
+
 		# Read the test free energies
 		os.chdir("../"+testName)
 		test_file = open("freeEnergy.txt","r")
 		test_energy = test_file.readlines()
 		test_file.close()
-	
+
 		last_energy_index = len(test_energy)-1
 		rel_diff = (float(gold_energy[last_energy_index])-float(test_energy[last_energy_index]))/float(gold_energy[last_energy_index])
 		rel_diff = abs(rel_diff)
-	
+
 		if (rel_diff < 1.0e-9):
 			test_passed = True
 		else:
 			test_passed = False
-		
+
 	else:
 		test_passed = True
-		
+
 	# Print the results to the screen
 	print "Regression Test: ", applicationName
-	
+
 	if test_passed:
 		if getNewGoldStandard == False:
 			print "Result: Pass"
 		else:
 			print "Result: New Gold Standard"
-	else: 
+	else:
 		print "Result: Fail"
-		
+
 	print "Time taken:", test_time
-	
+
 	sys.stdout.flush()
-	
+
 	# Write the results to a file
 	os.chdir(r_test_dir)
 	text_file = open("test_results.txt","a")
 	now = datetime.datetime.now()
-	text_file.write("Application: " + applicationName +" \n") 
+	text_file.write("Application: " + applicationName +" \n")
 	if test_passed:
 		if getNewGoldStandard == False:
-			text_file.write("Result: Pass \n") 
+			text_file.write("Result: Pass \n")
 		else:
-			text_file.write("Result: New Gold Standard \n") 
-	else: 
-		text_file.write("Result: Fail \n") 
-	text_file.write("Time: "+str(test_time)+" \n \n") 
+			text_file.write("Result: New Gold Standard \n")
+	else:
+		text_file.write("Result: Fail \n")
+	text_file.write("Time: "+str(test_time)+" \n \n")
 	text_file.close()
-	
+
 	return (test_passed,test_time)
 
 # ----------------------------------------------------------------------------------------
@@ -182,15 +182,15 @@ unit_test_results = run_unit_tests()
 unit_tests_passed = unit_test_results[0]
 unit_test_counter = unit_test_results[1]
 
-print 	
+print
 print "Unit Tests Passed: "+str(unit_tests_passed)+"/"+str(unit_test_counter)+"\n"
 
 sys.stdout.flush()
 
 text_file.write("--------------------------------------------------------- \n")
-text_file.write("Unit test on " + now.strftime("%Y-%m-%d %H:%M") + "\n") 
+text_file.write("Unit test on " + now.strftime("%Y-%m-%d %H:%M") + "\n")
 text_file.write("--------------------------------------------------------- \n")
-text_file.write("Unit Tests Passed: "+str(unit_tests_passed)+"/"+str(unit_test_counter)+"\n") 
+text_file.write("Unit Tests Passed: "+str(unit_tests_passed)+"/"+str(unit_test_counter)+"\n")
 
 os.chdir(dir_path)
 
@@ -202,7 +202,7 @@ regression_test_counter = 0
 regression_tests_passed = 0
 
 text_file.write("--------------------------------------------------------- \n")
-text_file.write("Regression test on " + now.strftime("%Y-%m-%d %H:%M") + "\n") 
+text_file.write("Regression test on " + now.strftime("%Y-%m-%d %H:%M") + "\n")
 text_file.write("--------------------------------------------------------- \n")
 text_file.close()
 
@@ -210,23 +210,26 @@ text_file.close()
 #getNewGoldStandardList = [False, False, False, False, False, False, False, False]
 
 # Shorter list of applications so that it completes on Travis
-applicationList = ["allenCahn","cahnHilliardWithAdaptivity","CHAC_anisotropyRegularized","coupledCahnHilliardAllenCahn","mechanics","precipitateEvolution"]
-getNewGoldStandardList = [False, False, False, False, False, False]
+#applicationList = ["allenCahn","cahnHilliardWithAdaptivity","CHAC_anisotropyRegularized","coupledCahnHilliardAllenCahn","mechanics","precipitateEvolution"]
+#getNewGoldStandardList = [False, False, False, False, False, False]
+applicationList = ["allenCahn"]
+getNewGoldStandardList = [False]
+
 
 
 for applicationName in applicationList:
-	test_result = run_regression_test(applicationName,getNewGoldStandardList[regression_test_counter],dir_path)	
+	test_result = run_regression_test(applicationName,getNewGoldStandardList[regression_test_counter],dir_path)
 
 	regression_test_counter += 1
 	regression_tests_passed += int(test_result[0])
 
-print 
+print
 print "Regression Tests Passed: "+str(regression_tests_passed)+"/"+str(regression_test_counter)+"\n"
 
 
 # Output the overall test results
 text_file = open("test_results.txt","a")
-text_file.write("Tests Passed: "+str(regression_tests_passed)+"/"+str(regression_test_counter)+"\n") 
+text_file.write("Tests Passed: "+str(regression_tests_passed)+"/"+str(regression_test_counter)+"\n")
 text_file.write("--------------------------------------------------------- \n")
 text_file.close()
 
@@ -235,6 +238,3 @@ if ((regression_tests_passed < regression_test_counter) or (unit_tests_passed < 
 	sys.exit(1)
 else:
 	sys.exit(0)
-	
-
-
