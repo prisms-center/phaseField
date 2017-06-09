@@ -56,7 +56,6 @@ void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Vectorized
 #include "../../src/matrixfree/invM.cc"
 #include "../../src/matrixfree/computeLHS.cc"
 #include "../../src/matrixfree/computeRHS.cc"
-#include "../../src/matrixfree/getNucleiList.cc"
 #include "../../src/matrixfree/solve.cc"
 #include "../../src/matrixfree/solveIncrement.cc"
 #include "../../src/matrixfree/outputResults.cc"
@@ -85,11 +84,8 @@ class unitTest
 	bool test_computeStress();
 	void assignCIJSize(dealii::VectorizedArray<double> CIJ[2*dim-1+dim/3][2*dim-1+dim/3]);
 	void assignCIJSize(dealii::Table<2, double> &CIJ);
-	//bool test_getRHS(userInputParameters userInputs);
-	//bool test_computeRHS(userInputParameters userInputs);
 	bool test_getOutputTimeSteps(std::string,unsigned int, std::vector<unsigned int>, userInputParameters<dim> userInputs);
 	bool test_setRigidBodyModeConstraints(std::vector<int>, userInputParameters<dim> userInputs);
-	bool test_vectorLoad(T array[], int array_size, int num_array_elements);
 	bool test_parse_line();
 	bool test_get_subsection_entry_list();
 	bool test_load_BC_list();
@@ -99,10 +95,8 @@ class unitTest
 #include "test_invM.h"
 #include "test_outputResults.h"
 #include "test_computeStress.h"
-//#include "test_getRHS.h"
 #include "test_getOutputTimeSteps.h"
 #include "test_setRigidBodyModeConstraints.h"
 #include "test_parse_line.h"
 #include "test_get_subsection_entry_list.h"
 #include "test_load_BC_list.h"
-//#include "test_computeRHS.h"

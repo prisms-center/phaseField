@@ -144,12 +144,6 @@ void MatrixFreePDE<dim,degree>::getComponentsWithRigidBodyModes( std::vector<int
 		}
 }
 
-//// Set constraints to pin the solution if there are no Dirichlet BCs for a component of a variable
-//template <int dim>
-//void MatrixFreePDE<dim>::setRigidBodyModeConstraints(std::vector<int> rigidBodyModeComponents, ConstraintMatrix * constraints, DoFHandler<dim>* dof_handler){
-//	// Default null implementation
-//}
-
 // Set constraints to pin the solution if there are no Dirichlet BCs for a component of a variable in an elliptic equation
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::setRigidBodyModeConstraints(const std::vector<int> rigidBodyModeComponents, ConstraintMatrix * constraints, const DoFHandler<dim>* dof_handler) const {
@@ -182,18 +176,6 @@ void MatrixFreePDE<dim,degree>::setRigidBodyModeConstraints(const std::vector<in
 		   }
 	   }
    }
-}
-
-BC_type convert_BC_string_to_BC_type(std::string string_BC){
-	if (string_BC == "ZERO_DERIVATIVE"){
-		return ZERO_DERIVATIVE;
-	}
-	else if (string_BC == "DIRICHLET"){
-		return DIRICHLET;
-	}
-	else {
-		return PERIODIC;
-	}
 }
 
 #include "../../include/matrixFreePDE_template_instantiations.h"

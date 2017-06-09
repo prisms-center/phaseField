@@ -4,8 +4,7 @@
 #include "../../include/initialConditions.h"
 #include "../../include/IntegrationTools/PField.hh"
 
-#ifdef enablePFields
-#if enablePFields == true
+
 template <int dim>
 class InitialConditionPField : public Function<dim>
 {
@@ -32,10 +31,6 @@ public:
   }
 };
 
-#endif
-#else
-#define enablePFields false
-#endif
 
 //methods to apply initial conditions
 template <int dim, int degree>
