@@ -37,6 +37,8 @@
 #include <deal.II/base/parameter_handler.h>
 
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/variant.hpp>
+#include <tuple>
 
 
 #endif // DEALIIHEADERS_H

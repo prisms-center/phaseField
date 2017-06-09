@@ -65,7 +65,7 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
     }
     else {
         // Should change to an exception
-        std::cout << "Invalid selections for the final time and the number of increments. At least one should be given in the input file and should be positive." << std::endl;
+        std::cerr << "Invalid selections for the final time and the number of increments. At least one should be given in the input file and should be positive." << std::endl;
         abort();
     }
 
@@ -159,7 +159,7 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
 		}
 		else {
 			// Should change to an exception
-			std::cout << "Elastic material model is invalid, please use ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC" << std::endl;
+			std::cerr << "Elastic material model is invalid, please use ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC" << std::endl;
 		}
 
 		getCIJMatrix<dim>(mat_model, temp_mat_consts[mater_num], CIJ_temp, pcout);
@@ -283,7 +283,28 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
     for (unsigned int i=0; i<_number_of_constants; i++){
         std::string constants_text = "Model constant ";
         constants_text.append(dealii::Utilities::int_to_string(i));
-        model_constants.push_back(parameter_handler.get_double(constants_text));
+        std::vector<std::string> model_constants_strings = dealii::Utilities::split_string_list(parameter_handler.get(constants_text));
+        if (boost::iequals(model_constants_strings.at(1),"double")){
+            model_constants.push_back(dealii::Utilities::string_to_double(model_constants_strings.at(0)));
+
+        }
+        else if (boost::iequals(model_constants_strings.at(1),"int")){
+            model_constants.push_back(dealii::Utilities::string_to_int(model_constants_strings.at(0)));
+        }
+        else if (boost::iequals(model_constants_strings.at(1),"bool")){
+            bool temp;
+            if (boost::iequals(model_constants_strings.at(0),"true")){
+                temp = true;
+            }
+            else {
+                temp = false;
+            }
+            model_constants.push_back(temp);
+        }
+        else {
+            std::cerr << "PRISMS-PF ERROR: The type for user-defined variables must be 'double', 'int', or 'bool'." << std::endl;
+            abort();
+        }
     }
 
     // --------------------------------------------------------------------------------------------------------

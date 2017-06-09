@@ -122,7 +122,7 @@ public:
 	std::vector<varBCs<dim> > BC_list;
 
 	// List of user-defined constants
-	std::vector<double> model_constants;
+	std::vector<boost::variant<double,int,bool> > model_constants;
 
 };
 

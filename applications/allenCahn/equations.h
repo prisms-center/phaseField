@@ -9,18 +9,20 @@
 // equations (or parts of residual equations) can be written below in "residualRHS".
 
 // Mobility
-#define MnV this->userInputs.model_constants[0]
+//#define MnV std::get<0>(this->userInputs.model_constants)
+//#define boost::get<double>(this->userInputs.model_constants[0])
 
 // Gradient energy coefficient
-#define KnV this->userInputs.model_constants[1]
+//#define KnV std::get<1>(this->userInputs.model_constants)
+//#define boost::get<double>(this->userInputs.model_constants[1])
 
 // Free energy and its derivative
-#define fV (n*n*n*n - 2.0*n*n*n + n*n)
-#define fnV (4.0*n*(n-1.0)*(n-0.5))
+//#define fV (n*n*n*n - 2.0*n*n*n + n*n)
+//#define fnV (4.0*n*(n-1.0)*(n-0.5))
 
 // Residual equations
-#define rnV  (n-constV(this->userInputs.dtValue*MnV)*fnV)
-#define rnxV (constV(-this->userInputs.dtValue*KnV*MnV)*nx)
+//#define rnV  (n-constV(this->userInputs.dtValue*MnV)*fnV)
+//#define rnxV (constV(-this->userInputs.dtValue*KnV*MnV)*nx)
 
 // =================================================================================
 // residualRHS
@@ -41,6 +43,12 @@ void customPDE<dim,degree>::residualRHS(const std::vector<modelVariable<dim> > &
 scalarvalueType n = modelVariablesList[0].scalarValue;
 scalargradType nx = modelVariablesList[0].scalarGrad;
 
+// Parameters in the residual equations and expressions for the residual equations
+// can be set here.
+
+scalarvalueType fnV = (4.0*n*(n-1.0)*(n-0.5));
+scalarvalueType rnV = (n-constV(this->userInputs.dtValue*MnV)*fnV);
+scalargradType rnxV = (constV(-this->userInputs.dtValue*KnV*MnV)*nx);
 
 // Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
 modelResidualsList[0].scalarValueResidual = rnV;
@@ -92,7 +100,7 @@ scalarvalueType n = modelVarList[0].scalarValue;
 scalargradType nx = modelVarList[0].scalarGrad;
 
 // The homogenous free energy
-scalarvalueType f_chem = fV;
+scalarvalueType f_chem = (n*n*n*n - 2.0*n*n*n + n*n);
 
 // The gradient free energy
 scalarvalueType f_grad = constV(0.0);

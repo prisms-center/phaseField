@@ -130,9 +130,10 @@ set Boundary condition for variable 0 = ZERO_DERIVATIVE
 # =================================================================================
 # Set the model constants
 # =================================================================================
+# Type options currently are double, int, and bool
 
 # The mobility, MnV in equations.h
-set Model constant 0 = 1.0
+set Model constant 0 = 1.0, double
 
 # The gradient energy coefficient, KnV in equations.h
-set Model constant 1 = 2.0
+set Model constant 1 = 2.0, double

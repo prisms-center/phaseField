@@ -19,12 +19,12 @@ int main (int argc, char **argv)
         dealii::deallog.depth_console(0);
 
         // Before fully parsing the parameter file, we need to know how many field variables there are and whether they
-        // are scalars or vectors, how many postprocessing variables there are, and how many sets of elastic constants there are.
+        // are scalars or vectors, how many postprocessing variables there are, how many sets of elastic constants there are,
+        // and how many user-defined constants there are.
         inputFileReader input_file_reader;
         const std::vector<std::string> var_types = input_file_reader.get_subsection_entry_list("parameters.in","Equation","Variable type","SCALAR");
         const unsigned int num_materials = input_file_reader.get_number_of_entries("parameters.in","subsection","Material");
         const unsigned int num_pp_vars = input_file_reader.get_number_of_entries("parameters.in","subsection","Postprocessing variable");
-
         const unsigned int num_constants = input_file_reader.get_number_of_entries("parameters.in","set","Model constant");
 
         std::cout << "Number of constants: " << num_constants << std::endl;
