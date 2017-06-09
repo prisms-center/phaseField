@@ -2,6 +2,8 @@
 
 # Refer to the PRISMS-PF manual for use of these parameters in the source code.
 
+# CHANGE EQUATION FRAMING TO VARIABLE FRAMING!
+
 # =================================================================================
 # Set the number of dimensions (1, 2, or 3 for a 1D, 2D, or 3D calculation)
 # =================================================================================
@@ -28,8 +30,6 @@ set Refine factor = 8
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
 set Element degree = 1
-
-set List of time steps to output = 0,2,3
 
 # =================================================================================
 # Set the time step parameters
@@ -91,6 +91,11 @@ subsection Material 1
     set Elastic constants = 35,0.3
 end
 
+subsection Material 2
+    set Material symmetry = ISOTROPIC
+    set Elastic constants = 35,0.3
+end
+
 # =================================================================================
 # Set the parameters for loading in initial conditions
 # =================================================================================
@@ -120,6 +125,14 @@ end
 # Set the boundary conditions
 # =================================================================================
 
-set Boundary condition for variable 0 = PERIODIC
-#set Boundary condition for variable 1, x component = DIRICHLET: 1.0
-#set Boundary condition for variable 1, y component = DIRICHLET: 1.0
+set Boundary condition for variable 0 = ZERO_DERIVATIVE
+
+# =================================================================================
+# Set the model constants
+# =================================================================================
+
+# The mobility, MnV in equations.h
+set Model constant 0 = 1.0
+
+# The gradient energy coefficient, KnV in equations.h
+set Model constant 1 = 2.0

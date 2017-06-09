@@ -15,7 +15,9 @@ class userInputParameters
 {
 public:
 	// Method to read the input parameters from a file and load them into the class member variables
-	void loadInputParameters(dealii::ParameterHandler & parameter_handler, unsigned int _number_of_variables, unsigned int _number_of_materials, unsigned int _number_of_pp_variables);
+	void loadInputParameters(dealii::ParameterHandler & parameter_handler, unsigned int _number_of_variables,
+								unsigned int _number_of_materials, unsigned int _number_of_pp_variables,
+								unsigned int _number_of_constants);
 
 	void load_BC_list(std::vector<std::string> list_of_BCs, std::vector<varBCs<dim> > & BC_list);
 
@@ -43,6 +45,7 @@ public:
 	std::vector<unsigned int> user_given_time_step_list;
 	unsigned int skip_print_steps;
 	std::string output_file_type;
+	std::string output_file_name;
 
 	bool calc_energy;
 
@@ -117,6 +120,9 @@ public:
 
 	// List of boundary conditions
 	std::vector<varBCs<dim> > BC_list;
+
+	// List of user-defined constants
+	std::vector<double> model_constants;
 
 };
 

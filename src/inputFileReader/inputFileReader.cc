@@ -123,6 +123,29 @@ std::vector<std::string> inputFileReader::get_subsection_entry_list(const std::s
     return sorted_entry_list;
 }
 
+// Method to parse an input file to get a list of variables from related subsections
+unsigned int inputFileReader::get_number_of_entries(const std::string parameters_file_name,
+                                                                    std::string keyword, std::string entry_name){
+
+    std::ifstream input_file;
+    input_file.open(parameters_file_name);
+
+    std::string line, entry;
+    bool found_entry;
+
+    unsigned int count = 0;
+
+    // Loop through each line
+    while (std::getline(input_file, line))
+    {
+
+        found_entry = parse_line(line, keyword, entry_name, entry, false);
+        if (found_entry)
+            count++;
+    }
+    return count;
+}
+
 // Before fully parsing the parameter file, we need to know how many field variables there are
 // This function is largely taken from ASPECT (https://github.com/geodynamics/aspect/blob/master/source/main.cc)
 std::string inputFileReader::get_last_value_of_parameter(const std::string &parameters, const std::string &parameter_name)
@@ -194,7 +217,7 @@ std::string inputFileReader::get_last_value_of_parameter(const std::string &para
 
 void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_handler, std::string input_file_name,
                                             std::vector<std::string> var_types, unsigned int number_of_materials,
-                                            unsigned int number_of_pp_variables){
+                                            unsigned int number_of_pp_variables, unsigned int num_of_constants){
 
     // Declare all of the entries
     parameter_handler.declare_entry("Number of dimensions","-1",dealii::Patterns::Integer(),"The number of dimensions for the simulation.");
@@ -226,6 +249,7 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
     parameter_handler.declare_entry("Maximum allowed solver iterations","10000",dealii::Patterns::Integer(),"The maximum allowed number of iterations the linear solver is given to converge before being forced to exit.");
 
     parameter_handler.declare_entry("Write output","true",dealii::Patterns::Bool(),"Whether or not to write output files for the simulation.");
+    parameter_handler.declare_entry("Output file name (base)","solution",dealii::Patterns::Anything(),"The name for the output file, before the time step and processor info are added.");
     parameter_handler.declare_entry("Output file type","vtu",dealii::Patterns::Anything(),"The output file type (either vtu or vtk).");
     parameter_handler.declare_entry("Output condition","EQUAL_SPACING",dealii::Patterns::Anything(),"The time step size for the simulation.");
     parameter_handler.declare_entry("List of time steps to output","0",dealii::Patterns::Anything(),"The list of time steps to output, used for the LIST type.");
@@ -327,5 +351,14 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
         }
 
     }
+
+    // Declare the user-defined constants (for now, assumed to be a double)
+    for (unsigned int i=0; i<num_of_constants; i++){
+        std::string constants_text = "Model constant ";
+        constants_text.append(dealii::Utilities::int_to_string(i));
+        parameter_handler.declare_entry(constants_text,"0",dealii::Patterns::Double(),"The value of a user-defined constant.");
+    }
+
+
 
 }

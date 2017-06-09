@@ -22,13 +22,17 @@ int main (int argc, char **argv)
         // are scalars or vectors, how many postprocessing variables there are, and how many sets of elastic constants there are.
         inputFileReader input_file_reader;
         const std::vector<std::string> var_types = input_file_reader.get_subsection_entry_list("parameters.in","Equation","Variable type","SCALAR");
-        const std::vector<std::string> material_types = input_file_reader.get_subsection_entry_list("parameters.in","Material","Material symmetry","ISOTROPIC");
-        const std::vector<std::string> pp_var_types = input_file_reader.get_subsection_entry_list("parameters.in","Postprocessing variable","Variable type","SCALAR");
+        const unsigned int num_materials = input_file_reader.get_number_of_entries("parameters.in","subsection","Material");
+        const unsigned int num_pp_vars = input_file_reader.get_number_of_entries("parameters.in","subsection","Postprocessing variable");
+
+        const unsigned int num_constants = input_file_reader.get_number_of_entries("parameters.in","set","Model constant");
+
+        std::cout << "Number of constants: " << num_constants << std::endl;
 
         // Read in all of the parameters now
         dealii::ParameterHandler parameter_handler;
         input_file_reader.declare_parameters(parameter_handler,"parameters.in",var_types,
-                                             material_types.size(),pp_var_types.size());
+                                             num_materials,num_pp_vars,num_constants);
         parameter_handler.read_input("parameters.in");
 
         // Continue based on the number of dimensions and degree of the elements specified in the input file
@@ -37,7 +41,7 @@ int main (int argc, char **argv)
             case 2:
             {
                 userInputParameters<2> userInputs;
-                userInputs.loadInputParameters(parameter_handler,var_types.size(),material_types.size(),pp_var_types.size());
+                userInputs.loadInputParameters(parameter_handler,var_types.size(),num_materials,num_pp_vars,num_constants);
                 switch (userInputs.degree)
                 {
                     case(1):
@@ -70,7 +74,7 @@ int main (int argc, char **argv)
             case 3:
             {
                 userInputParameters<3> userInputs;
-                userInputs.loadInputParameters(parameter_handler,var_types.size(),material_types.size(),pp_var_types.size());
+                userInputs.loadInputParameters(parameter_handler,var_types.size(),num_materials,num_pp_vars,num_constants);
                 switch (userInputs.degree)
                 {
                     case(1):

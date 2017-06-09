@@ -9,10 +9,10 @@
 // equations (or parts of residual equations) can be written below in "residualRHS".
 
 // Mobility
-#define MnV 1.0
+#define MnV this->userInputs.model_constants[0]
 
 // Gradient energy coefficient
-#define KnV 2.0
+#define KnV this->userInputs.model_constants[1]
 
 // Free energy and its derivative
 #define fV (n*n*n*n - 2.0*n*n*n + n*n)

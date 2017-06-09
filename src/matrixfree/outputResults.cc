@@ -22,9 +22,9 @@ void MatrixFreePDE<dim,degree>::outputResults() const {
 	DataComponentInterpretation::component_is_part_of_vector));
     //add field to data_out
     std::vector<std::string> solutionNames (fields[fieldIndex].numComponents, fields[fieldIndex].name.c_str());
-    data_out.add_data_vector(*dofHandlersSet[fieldIndex], *solutionSet[fieldIndex], solutionNames, dataType);  
+    data_out.add_data_vector(*dofHandlersSet[fieldIndex], *solutionSet[fieldIndex], solutionNames, dataType);
   }
-  
+
   // Test section for outputting postprocessed fields
   // Currently there are hacks in place, using the matrixFreeObject, invM, constraints, and DoFHandler as the primary variables
   if (userInputs.postProcessingRequired){
@@ -67,14 +67,14 @@ void MatrixFreePDE<dim,degree>::outputResults() const {
   }
 
   data_out.build_patches (degree);
-  
+
   //write to results file
   //file name
   std::ostringstream cycleAsString;
   cycleAsString << std::setw(std::ceil(std::log10(userInputs.totalIncrements))+1) << std::setfill('0') << currentIncrement;
   char vtuFileName[100], pvtuFileName[100];
-  sprintf(vtuFileName, "solution-%s.%u.%s", cycleAsString.str().c_str(),Utilities::MPI::this_mpi_process(MPI_COMM_WORLD),userInputs.output_file_type.c_str());
-  sprintf(pvtuFileName, "solution-%s.p%s", cycleAsString.str().c_str(),userInputs.output_file_type.c_str());
+  sprintf(vtuFileName, "%s-%s.%u.%s", userInputs.output_file_name.c_str(), cycleAsString.str().c_str(),Utilities::MPI::this_mpi_process(MPI_COMM_WORLD),userInputs.output_file_type.c_str());
+  sprintf(pvtuFileName, "%s-%s.p%s", userInputs.output_file_name.c_str(), cycleAsString.str().c_str(),userInputs.output_file_type.c_str());
   std::ofstream output (vtuFileName);
 
   //write to file
@@ -94,7 +94,7 @@ void MatrixFreePDE<dim,degree>::outputResults() const {
     std::vector<std::string> filenames;
     for (unsigned int i=0;i<Utilities::MPI::n_mpi_processes (MPI_COMM_WORLD); ++i) {
     	char vtuProcFileName[100];
-    	sprintf(vtuProcFileName, "solution-%s.%u.%s", cycleAsString.str().c_str(),i,userInputs.output_file_type.c_str());
+    	sprintf(vtuProcFileName, "%s-%s.%u.%s", userInputs.output_file_name.c_str(),cycleAsString.str().c_str(),i,userInputs.output_file_type.c_str());
     	filenames.push_back (vtuProcFileName);
     }
     std::ofstream master_output (pvtuFileName);
@@ -104,7 +104,7 @@ void MatrixFreePDE<dim,degree>::outputResults() const {
   pcout << "Output written to:" << pvtuFileName << "\n\n";
 
   //log time
-  computing_timer.exit_section("matrixFreePDE: output"); 
+  computing_timer.exit_section("matrixFreePDE: output");
 }
 
 #include "../../include/matrixFreePDE_template_instantiations.h"

@@ -3,7 +3,8 @@
 
 template <int dim>
 void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & parameter_handler,
-                                                    unsigned int _number_of_variables, unsigned int _number_of_materials, unsigned int _number_of_pp_variables){
+                                                    unsigned int _number_of_variables, unsigned int _number_of_materials,
+                                                    unsigned int _number_of_pp_variables, unsigned int _number_of_constants){
 
     // Load the inputs into the class member variables
 
@@ -84,6 +85,7 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
 
     skip_print_steps = parameter_handler.get_integer("Skip print steps");
     output_file_type = parameter_handler.get("Output file type");
+    output_file_name = parameter_handler.get("Output file name (base)");
     calc_energy = parameter_handler.get_bool("Calculate the free energy");
 
     // Nucleation parameters
@@ -276,6 +278,13 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
 
     // Load the BC information from the strings into a varBCs object
     load_BC_list(list_of_BCs, BC_list);
+
+    // Load the user-defined constants
+    for (unsigned int i=0; i<_number_of_constants; i++){
+        std::string constants_text = "Model constant ";
+        constants_text.append(dealii::Utilities::int_to_string(i));
+        model_constants.push_back(parameter_handler.get_double(constants_text));
+    }
 
     // --------------------------------------------------------------------------------------------------------
     // Build the varInfoList objects using the parameters loaded from the input file
