@@ -14,7 +14,7 @@ double InitialCondition<dim>::value (const Point<dim> &p, const unsigned int com
 	  // given by "center" and its radius is given by "rad".
 
 	  double center[1][3] = {{1.0/2.0,1.0/2.0,1.0/2.0}};
-	  double rad[1] = {2.0};
+	  double rad[1] = {5.0};
 	  double domain_size[3] = {spanX,spanY,spanZ};
 	  double dist;
 	  scalar_IC = 0;
@@ -33,7 +33,7 @@ double InitialCondition<dim>::value (const Point<dim> &p, const unsigned int com
 			  }
 			  dist = std::sqrt(dist);
 
-			  scalar_IC += (-std::tanh((dist-rad[i])/(0.1)));
+			  scalar_IC += (-std::tanh((dist-rad[i])/(0.5)));
 		  }
 	  }
 
@@ -87,5 +87,3 @@ void customPDE<dim,degree>::setBCs(){
 	this->inputBCs(2,0,"ZERO_DERIVATIVE",0);
 
 }
-
-

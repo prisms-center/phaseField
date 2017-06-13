@@ -180,56 +180,79 @@
 \centerline{\Large{\bf dendriticSolidification}}
 \bigskip
 
-This example application implements a simple model of dendritic solidification 
+This example application implements a simple model of dendritic solidification based on the CHiMaD Benchmark Problem 3, itself based on the model given in the following article: \\
+``Multiscale Finite-Difference-Diffusion-Monte-Carlo Method for Simulating Dendritic Solidification'' by M. Plapp and A. Karma, \emph{Journal of Computational Physics}, 165, 592-619 (2000)
 
-Consider a free energy expression of the form:
+\section{Governing Equations}
+
+Consider a free energy density given by:
 \begin{equation}
-  \Pi(c, \eta, \grad  \eta) = \int_{\Omega}    \left( f_{\alpha}(1-H) + f_{\beta}H \right)  + \frac{\kappa}{2} \grad  \eta  \cdot \grad  \eta    ~dV 
+  \Pi = \int_{\Omega}   \left[ \frac{1}{2} W^2(\hat{n})|\nabla \phi|^2+f(\phi,u) \right]   ~dV 
 \end{equation}
-where $f_{\alpha}$ and $f_{\beta}$ are the free energy densities corresponding to $\alpha$ and $\beta$ phases, respectively, and are functions of composition $c$. $H$ is a function of the structural order parameter $\eta$. Note that we don't have the gradient terms for the composition, i.e, $\grad c$ terms, unlike classical Cahn-Hillard formulation.
+where $\phi$ is an order parameter for the solid phase and $u$ is the dimensionaless temperature:
+\begin{equation}
+u = \frac{T - T_m}{L/c_p}
+\end{equation}
+for temperature $T$, melting temperature $T_m$, latent heat $L$, and specific heat $c_p$. The free energy density, $f(\phi,u)$ is given by a double-well potential:
+\begin{equation}
+f(\phi,u) = -\frac{1}{2}\phi^2 + \frac{1}{4}\phi^4 + \lambda u \phi \left(1-\frac{2}{3} \phi^2+\frac{1}{5}\phi^4 \right)
+\end{equation}
+where $\lambda$ is a dimensionless coupling constant. The gradient energy coefficient, $W$, is given by 
+\begin{equation}
+W = W_0 [1+\epsilon_m \cos[m(\theta-\theta_0)]]
+\end{equation}
+where, $W_0$, $\epsilon_m$, and $\theta_0$ are constants and $\theta$ is the in-plane azimuthal angle, where $\tan(\theta) = \frac{n_y}{n_x}$, where $n_y$ and $n_x$ are components of the normal vector $\hat{n} = \frac{\nabla \phi}{|\nabla \phi|}$.
 
-\section{Variational treatment}
-Following standard variational arguments (see Cahn-Hilliard formulation), we obtain the chemical potentials:
-\begin{align}
-  \mu_{c}  &= (f_{\alpha,c}(1-H)+f_{\beta,c}H)  \\
-  \mu_{\eta}  &= (f_{\beta,c}-f_{\alpha,c})H_{,\eta} - \kappa \Delta \eta 
-\end{align}
+The evolution equations are:
+\begin{gather}
+\frac{\partial u}{\partial t} = - \frac{\delta \Pi}{\delta \phi} = D \nabla^2 u + \frac{1}{2} \tau(\hat{n}) \frac{\partial \phi}{\partial t} \\
+\tau(\hat{n}) \frac{\partial \phi}{\partial t} = \frac{\partial f}{\partial \phi} + \frac{\partial}{\partial x} \left[ |\nabla \phi|^2 W(\hat{n}) \frac{\partial W(\hat{n})}{\partial \left( \frac{\partial \phi}{\partial x} \right)} \right] \hat{x} + \frac{\partial}{\partial y} \left[ |\nabla \phi|^2 W(\hat{n}) \frac{\partial W(\hat{n})}{\partial \left( \frac{\partial \phi}{\partial y} \right)} \right] \hat{y} 
+\end{gather}
+where
+\begin{gather}
+\tau(\hat{n}) = \tau_0 [1+\epsilon_m \cos[m(\theta-\theta_0)]] \\
+D = \frac{0.6267 \lambda W_0^2}{\tau_0}
+\end{gather}
 
-\section{Kinetics}
-Now the PDE for Cahn-Hilliard dynamics is given by:
-\begin{align}
-  \frac{\partial c}{\partial t} &= -~\grad \cdot (-M_c\grad \mu_c)\\
-  &=M_c~\grad \cdot (\grad (f_{\alpha,c}(1-H)+f_{\beta,c}H)) 
-  \end{align}
-  and the PDE for Allen-Cahn dynamics is given by:
-  \begin{align}
-    \frac{\partial \eta}{\partial t} &= -M_\eta \mu_\eta \\
-  &=-M_\eta ~ ((f_{\beta,c}-f_{\alpha,c})H_{,\eta} - \kappa \Delta \eta) 
-\end{align}
-where $M_c$ and $M_\eta$ are the constant mobilities. 
+The governing equations can be written more compactly using the variable $\mu$, the driving force for the phase transformation:
+\begin{gather}
+\frac{\partial u}{\partial t} = D \nabla^2 u - \frac{\mu}{\tau} \\
+\tau(\hat{n}) \frac{\partial \phi}{\partial t} = \mu \\
+\mu = \left(\frac{\partial f}{\partial \phi}\right) - \nabla \cdot \left[\left(W^2 \frac{\partial \phi}{\partial x} - W \frac{\partial W}{\partial u} \frac{\partial \phi}{\partial y}\right)\hat{x}  + \left(W^2 \frac{\partial \phi}{\partial y} + W \frac{\partial W}{\partial u} \frac{\partial \phi}{\partial x}\right) \hat{y} \right]
+\end{gather}
 
-\section{Time discretization}
+\section{Model Constants}
+$W_0$: Controls the interfacial thickness, default value of 1.0. \\
+$\tau_0$: Controls the phase transformation kinetics, default value of 1.0. \\
+$\epsilon_m$: T the strength of the anisotropy, default value of 0.05. \\
+$D$: The thermal diffusion constant, default value of 1.0. \\
+$\Delta = \frac{T_m-T_0}{L/c_p}$: The level of undercooling, default value of 0.75. \\
+$\theta_0$ = The rotation angle of the anisotropy, default value of 0.125 ($\sim$7.16$^\circ$).
+
+\section{Time Discretization}
 Considering forward Euler explicit time stepping, we have the time discretized kinetics equation:
-\begin{align}
- \eta^{n+1} &= \eta^{n}  - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n - \kappa \Delta \eta^n) \\
-c^{n+1} &= c^{n}  + \Delta t M_{\eta}~\grad \cdot (\grad (f_{\alpha,c}^n(1-H^{n})+f_{\beta,c}^n H^{n}))
-\end{align}
+\begin{gather}
+u^{n+1} = \left(u^{n} - \frac{\mu^n \Delta t}{\tau}\right) + D \Delta t \nabla^2 u^n \\
+\phi^{n+1} = \left(\phi^n - \frac{\Delta t \mu^n}{\tau}\right) \\
+ \mu^{n+1} = \left(\frac{\partial f^n}{\partial \phi}\right) - \nabla \cdot \left[\left(W^2 \frac{\partial \phi^n}{\partial x} - W \frac{\partial W}{\partial u^n} \frac{\partial \phi^n}{\partial y}\right)\hat{x}  + \left(W^2 \frac{\partial \phi^n}{\partial y} + W \frac{\partial W}{\partial u} \frac{\partial \phi^n}{\partial x}\right) \hat{y} \right]
+\end{gather}
 
-\section{Weak formulation}
-In the weak formulation, considering an arbitrary variation $w$, the above equations can be expressed as residual equations:
-\begin{align}
-  \int_{\Omega}   w  \eta^{n+1}  ~dV &= \int_{\Omega}   w \eta^{n} -   w    \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n - \kappa \Delta \eta^n)  ~dV\\
-  &=\int_{\Omega}  w  \left( \underbrace{\eta^{n} - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n)}_{r_{\eta}} \right)+ \grad w \cdot \underbrace{(- \Delta t M_{\eta}\kappa) \grad \eta^{n}}_{r_{\eta x}} ~dV 
-\end{align}
-and 
-\begin{align}
-  \int_{\Omega}   w  c^{n+1}  ~dV &= \int_{\Omega}   w c^{n} + w    \Delta t M_{c}~ \grad \cdot (\grad (f_{\alpha,c}^n(1-H^{n})+f_{\beta,c}^n H^{n}))  ~dV\\
-    &= \int_{\Omega}   w \underbrace{c^{n}}_{r_c} +  \grad w   \underbrace{(-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n})+f_{\beta,cc}^n H^{n}) \grad c + ~((f_{\beta,c}^n-f_{\alpha,c}^n)H^{n}_{,\eta} \grad \eta) ] }_{r_{cx}} ~dV
-\end{align}
+\section{Weak Formulation}
+
+\begin{gather}
+\int_{\Omega}   w  u^{n+1}  ~dV = \int_{\Omega}   w \underbrace{\left(u^{n} - \frac{\mu^n \Delta t}{\tau}\right)}_{r_u} + \nabla w \underbrace{(-D \Delta t \nabla u^n)}_{r_{ux}} ~dV \\
+\int_{\Omega}   w  \phi^{n+1}  ~dV = \int_{\Omega}   w \underbrace{\left(\phi^n - \frac{\Delta t \mu^n}{\tau}\right)}_{r_{\phi}} ~dV \\
+\int_{\Omega}   w  \mu^{n+1}  ~dV = \int_{\Omega}   w \underbrace{\left(\frac{\partial f^n}{\partial \phi}\right)}_{r_{\mu}} + \nabla w \cdot \underbrace{\left[\left(W^2 \frac{\partial \phi^n}{\partial x} - W \frac{\partial W}{\partial u^n} \frac{\partial \phi^n}{\partial y}\right)\hat{x}  + \left(W^2 \frac{\partial \phi^n}{\partial y} + W \frac{\partial W}{\partial u} \frac{\partial \phi^n}{\partial x}\right) \hat{y} \right]}_{r_{\phi x}}  ~dV 
+\end{gather}
+
+
+
+
+
 
 \vskip 0.25in
-The above values of $r_{\eta}$, $r_{\eta x}$, $r_{c}$ and $r_{cx}$ are used to define the residuals in the following parameters file: \\
-\textit{applications/coupledCahnHilliardAllenCahn/parameters.h}
+The above values of $r_{u}$, $r_{ux}$, $r_{\phi}$, and $r_{\phi x}$ and $r_{\mu}$ are used to define the residuals in the following parameters file: \\
+\textit{applications/dendriticSolification/parameters.h}
 
 
 \end{document} 
