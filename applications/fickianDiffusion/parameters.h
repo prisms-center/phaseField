@@ -35,8 +35,8 @@
 
 // The simulation ends when either timeFinal is reached or the number of time steps
 // equals timeIncrements
-#define timeFinal 10.0
-#define timeIncrements 10000
+#define timeFinal 15.0
+#define timeIncrements 15000
 
 // =================================================================================
 // Set the output parameters
@@ -57,17 +57,9 @@
 #define outputList {0}
 
 // Status is printed to the screen every skipPrintSteps
-#define skipPrintSteps 10
+#define skipPrintSteps 100
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output
 // =================================================================================
 #define calcEnergy false
-
-
-
-
-
-
-
-

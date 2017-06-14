@@ -175,40 +175,48 @@
 %*********************************
 %Start main paper
 %*********************************
-\centerline{\Large{\bf PRISMS-PF Application Formulation}}
+\centerline{\Large{\bf PRISMS-PF Application Formulation:}}
 \smallskip
-\centerline{\Large{\bf fickianDiffusion}}
+\centerline{\Large{\bf grainGrowth}}
 \bigskip
 
-In this example application, we implement a Fick's Law for a single component. Two time-dependent Gaussian source terms add concentration over the course of the simulation.
+This example application implements a simple set of governing equations for isotropic grain growth. The model is a simplified version of the one in the following publication:\\
+ Simulating recrystallization in titanium using the phase field method, S.P. Gentry and K. Thornton, \emph{IOP Conf. Series: Materials Science and Engineering} 89 (2015) 012024.
+\\
+\\
+Consider a free energy expression of the form:
+\begin{equation}
+  \Pi(\eta_i, \grad  \eta_i) = \int_{\Omega} \left[\sum_{i=1}^N \left(-\frac{1}{2}\eta_i^2+ \frac{1}{4}\eta_i^4 \right) + \alpha \sum_{i=1}^N \sum_{j>i}^N \eta_i^2 \eta_j^2 +\frac{1}{4} \right] +  \frac{\kappa}{2} \sum_{i=1}^N |\nabla \eta_i|^2    ~dV 
+\end{equation}
+where $\eta_i$ is one of $N$ structural order parameters, $\alpha$ is the grain interaction coefficient, and $\kappa$ is the gradient energy coefficient.
+	
+\section{Variational treatment}
+The driving force for grain evolution is determined by the variational derivative of the total energy with respect to each order parameter:
+\begin{equation}
+\mu = \frac{\delta \Pi}{\delta \eta_i} = \left( -\eta_i + \eta_i^3 + 2 \alpha \eta_i \sum_{j \ne i}^N \eta_j^2 - \kappa \nabla^2 \eta_i \right)
+\end{equation}
 
 \section{Kinetics}
-The Parabolic PDE for diffusion is given by:
-\begin{align}
-  \frac{\partial c}{\partial t} &= -\grad \cdot (-D~\grad c) + f
-\end{align}
-where $D$ is the diffusion constant and $f$ is a source term. In this example, $f$ is given by a pair of Gaussian expressions:
-\begin{multline}
-f = A_1 \exp\left(-\left(\frac{t-t_1}{\tau_1}\right)^2\right)\exp\left(-\left(\frac{x-x_1}{L_1}\right)^2-\left(\frac{y-y_1}{L_1}\right)^2\right) \\+ A_2 \exp\left(-\left(\frac{t-t_2}{\tau_2}\right)^2\right)\exp\left(-\left(\frac{x-x_2}{L_2}\right)^2-\left(\frac{y-y_2}{L_2}\right)^2\right)
- \end{multline}
- where  $A_1$, $_2$, $t_1$, $t_2$, $\tau_1$, $\tau_2$, $x_1$, $x_2$, $y_1$, $y_2$, $L_1$, and $L_2$ are constants.
+The order parameter for each grain is unconserved, and thus their evolution can be described by Allen-Cahn equations:
+\begin{equation}
+\frac{\partial \eta_i}{\partial t} = -L \mu = \left( -\eta_i + \eta_i^3 + 2 \alpha \eta_i \sum_{j \ne i}^N \eta_j^2 - \kappa \nabla^2 \eta_i \right)
+\end{equation}
+where $L$ is the constant mobility. 
 \section{Time discretization}
 Considering forward Euler explicit time stepping, we have the time discretized kinetics equation:
 \begin{align}
- c^{n+1} &= c^{n} + (\Delta t D)~\Delta c^n + \Delta t f^n
+ \eta_i^{n+1} &= \eta_i^{n} - \Delta t L~\left( -\eta_i^n + (\eta_i^n)^3 + 2 \alpha \eta_i^n \sum_{j \ne i}^N (\eta^n_j)^2 - \kappa \nabla^2 \eta^n_i \right)
 \end{align}
  
 \section{Weak formulation}
 In the weak formulation, considering an arbitrary variation $w$, the above equation can be expressed as a residual equation:
 \begin{align}
-\int_{\Omega}   w c^{n+1} ~dV &= \int_{\Omega}   w c^{n} + w (\Delta t D) \Delta c^n + w \Delta t f^n ~dV \\
-&= \int_{\Omega}   w (c^{n} + \Delta t f^n) - \grad w  \cdot (\Delta t D) \grad c^n ~dV + \int_{\partial \Omega}   w  (\Delta t D) \grad c^n \cdot n ~dS\\
-&= \int_{\Omega}   w (c^{n} + \Delta t f^n) - \grad w  \cdot (\Delta t D) \grad c^n ~dV + \int_{\partial \Omega}   w  (\Delta t D) j^n  ~dS\\
-&= \int_{\Omega}   w (\underbrace{c^{n}+\Delta t f^n}_{r_c}) + \grad w  \cdot \underbrace{(-\Delta t D) \grad c^n}_{r_{cx}} ~dV \quad [\text {assuming flux}~j=0 ]
-\end{align} 
+\int_{\Omega}   w \eta_i^{n+1} ~dV&= \int_{\Omega}   w \eta_i^{n} - w \Delta t L~\left( -\eta_i^n + (\eta_i^n)^3 + 2 \alpha \eta_i^n \sum_{j \ne i}^N (\eta^n_j)^2 - \kappa \nabla^2 \eta^n_i \right) ~dV \\
+&= \int_{\Omega}   w ( \underbrace{ \eta^{n} - \Delta t L~\left( -\eta_i^n + (\eta_i^n)^3 + 2 \alpha \eta_i^n \sum_{j \ne i}^N (\eta^n_j)^2\right) }_{r_{\eta_i}} + \grad w \underbrace{ (-\Delta t L \kappa)~ \cdot (\grad \eta_i^{n})}_{r_{\eta_i x}} ~dV \quad [\kappa \grad \eta_i \cdot n = 0 ~ \text{on} ~ \partial \Omega]
+\end{align}
 \vskip 0.25in
-The above values of  $r_{c}$ and $r_{c x}$ are used to define the residuals in the following parameters file: \\
-\textit{applications/fickianFlux/parameters.h}
+The above values of  $r_{\eta_i}$ and $r_{\eta_i x}$ are used to define the residuals in the following parameters file: \\
+\textit{applications/grainGrowth/equations.h}
 
 
 \end{document} 

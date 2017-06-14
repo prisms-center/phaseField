@@ -25,8 +25,6 @@ typedef dealii::parallel::distributed::Vector<double> vectorType;
 
 //macro for constants
 #define constV(a) make_vectorized_array(a)
-//macro for defining subdomain specific functions
-#define subdomain(geometricExpression, functionExpression)  ( (geometricExpression) ? (functionExpression) : constV(0.0))
 
 #include "postprocessor.h"
 

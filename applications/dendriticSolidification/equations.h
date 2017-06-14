@@ -31,30 +31,30 @@
 // equations (or parts of residual equations) can be written below in "residualRHS".
 
 // Heat diffusion constant
-#define DV 10.0
+double DV = 1.0;
+
+// Isotropic gradient energy coefficient
+double W0 = 1.0;
 
 // Free energy expression (or rather, its derivative)
-#define lambdaV (DV/0.6267)
+double lambdaV = (DV/0.6267/W0/W0);
 #define fnV (-(n-constV(lambdaV)*T*(constV(1.0)-n*n))*(constV(1.0)-n*n))
 
 // Undercooling
-#define deltaV (0.05*8.0)
+double deltaV = (0.75);
 
 // Anisotropy paramter
-#define epsilonM (0.025*5.0)
+double epsilonM = (0.05);
 
 // Rotation angle
-#define theta0 0.0
+double theta0 = 0.125; //0.5;
 
 // Symmetry factor
-#define mult 4.0
-
-// Isotropic gradient energy coefficient
-#define W0 0.1
+double mult = 4.0;
 
 // Anisotropic gradient energy coefficient, its derivative and square
-#define WV (constV(W0)*(constV(1.0)+constV(epsilonM)*std::cos(constV(mult)*theta-constV(theta0))))
-#define WTV (constV(W0)*(-constV(epsilonM)*constV(mult)*std::sin(constV(mult)*theta-constV(theta0))))
+#define WV (constV(W0)*(constV(1.0)+constV(epsilonM)*std::cos(constV(mult)*(theta-constV(theta0)))))
+#define WTV (constV(W0)*(-constV(epsilonM)*constV(mult)*std::sin(constV(mult)*(theta-constV(theta0)))))
 #define tauV (WV*WV)
 
 // Define required residuals (theta and aniso defined in residualRHS)
@@ -156,7 +156,3 @@ void customPDE<dim,degree>::energyDensity(const std::vector<modelVariable<dim> >
 
 
 }
-
-
-
-

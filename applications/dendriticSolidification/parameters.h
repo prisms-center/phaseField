@@ -10,9 +10,9 @@
 // Set the length of the domain in all three dimensions
 // =================================================================================
 // Each axes spans from zero to the specified length
-#define spanX 40.0
-#define spanY 40.0
-#define spanZ 40.0
+#define spanX 500.0
+#define spanY 500.0
+#define spanZ 500.0
 
 // =================================================================================
 // Set the element parameters
@@ -22,7 +22,7 @@
 #define subdivisionsX 3
 #define subdivisionsY 3
 #define subdivisionsZ 3
-#define refineFactor 7
+#define refineFactor 6
 
 // Set the polynomial degree of the element (suggested values: 1 or 2)
 #define finiteElementDegree 3
@@ -42,22 +42,22 @@
 #define refineCriterionFields {1}
 
 // Set the maximum and minimum value of the fields where the mesh should be refined
-#define refineWindowMax {0.99999}
-#define refineWindowMin {-0.99999}
+#define refineWindowMax {0.9999}
+#define refineWindowMin {-0.9999}
 
 // Set the number of time steps between remeshing operations
-#define skipRemeshingSteps 500
+#define skipRemeshingSteps 250
 
 
 // =================================================================================
 // Set the time step parameters
 // =================================================================================
 // The size of the time step
-#define timeStep (0.1e-4)
+#define timeStep (0.04)
 
 // The simulation ends when either timeFinal is reached or the number of time steps
 // equals timeIncrements
-#define timeFinal 2.0
+#define timeFinal 1000.0 //2.0
 #define timeIncrements 10000000
 
 // =================================================================================
@@ -85,8 +85,3 @@
 // Set the flag determining if the total free energy is calculated for each output
 // =================================================================================
 #define calcEnergy false
-
-
-
-
-

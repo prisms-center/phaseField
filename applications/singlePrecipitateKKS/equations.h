@@ -178,14 +178,6 @@ dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > sfts1, sfts1c, s
 
 for (unsigned int i=0; i<dim; i++){
 for (unsigned int j=0; j<dim; j++){
-
-	// Old SFTS formulation
-	// Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
-    //sfts1[i][j] = constV(sfts_linear1[i][j])*c + constV(sfts_const1[i][j]);
-	//sfts1c[i][j] = constV(sfts_linear1[i][j]);
-	//sfts1cc[i][j] = constV(0.0);
-
-	// New SFTS formulation
 	// Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c_beta + b_p
 	sfts1[i][j] = constV(sfts_linear1[i][j])*c_beta + constV(sfts_const1[i][j]);
 	sfts1c[i][j] = constV(sfts_linear1[i][j]) * cbcV;
@@ -201,7 +193,6 @@ dealii::VectorizedArray<double> E2[dim][dim], S[dim][dim];
 for (unsigned int i=0; i<dim; i++){
 for (unsigned int j=0; j<dim; j++){
 	  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1V );
-
 }
 }
 
@@ -460,7 +451,3 @@ for (unsigned i=0; i<c.n_array_elements;i++){
 }
 this->assembler_lock.release ();
 }
-
-
-
-

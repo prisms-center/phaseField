@@ -30,19 +30,11 @@
 // here. For more complex cases with loops or conditional statements, residual
 // equations (or parts of residual equations) can be written below in "residualRHS".
 
-
 // Diffusion constant
 #define DcV 0.01
 
-//define geometric expression for the source term
-//defining a circle centered at (0.0,0.0) with radius spanX/10
-#define exp1 (std::sqrt(x*x+y*y)<spanX/10)
-
-//define temporal expression for the source term
-#define exp2 (t<timeFinal/4)
-
 // Residual equations
-#define rcV   (c + timeStep*subdomain(exp1 && exp2, constV(1.0)) )
+#define rcV   (c + timeStep*(source_term1 + source_term2) )
 #define rcxV  (constV(-DcV*timeStep)*cx)
 
 // =================================================================================
@@ -65,8 +57,28 @@ void customPDE<dim,degree>::residualRHS(const std::vector<modelVariable<dim> > &
 scalarvalueType c = modelVariablesList[0].scalarValue;
 scalargradType cx = modelVariablesList[0].scalarGrad;
 
-double x=q_point_loc[0][0], y=q_point_loc[1][0];
+scalarvalueType x=q_point_loc[0], y=q_point_loc[1];
 double t=this->currentTime;
+double T = this->userInputs.finalTime;
+
+double t_1 = 0.2*T;
+double tau_1 = 0.2*T;
+scalarvalueType x_1 = constV(0.6*spanX);
+scalarvalueType y_1 = constV(0.2*spanY);
+scalarvalueType L_1 = constV(0.01*(spanX+spanY));
+
+double t_2 = 0.6*T;
+double tau_2 = 0.2*T;
+scalarvalueType x_2 = constV(0.3*spanX);
+scalarvalueType y_2 = constV(0.7*spanY);
+scalarvalueType L_2 = constV(0.01*(spanX+spanY));
+
+scalarvalueType source_term1 = 100.0*std::exp( - (t-t_1)/tau_1 * (t-t_1)/tau_1 )
+								*std::exp( -((x-x_1)*(x-x_1)+(y-y_1)*(y-y_1))/(L_1*L_1) );
+
+scalarvalueType source_term2 = 100.0*std::exp( - (t-t_2)/tau_2 * (t-t_2)/tau_2 )
+								*std::exp( -((x-x_2)*(x-x_2)+(y-y_2)*(y-y_2))/(L_2*L_2) );
+
 
 modelResidualsList[0].scalarValueResidual = rcV;
 modelResidualsList[0].scalarGradResidual = rcxV;
@@ -112,7 +124,3 @@ void customPDE<dim,degree>::energyDensity(const std::vector<modelVariable<dim> >
 
 
 }
-
-
-
-
