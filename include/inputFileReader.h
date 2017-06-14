@@ -20,7 +20,7 @@ public:
 	std::string get_last_value_of_parameter(const std::string &parameters, const std::string &parameter_name);
 
 	// Method to declare the parameters to be read from an input file
-	void declare_parameters(dealii::ParameterHandler & parameter_handler, std::string input_file_name,
+	void declare_parameters(dealii::ParameterHandler & parameter_handler, 
 							std::vector<std::string> var_types, unsigned int number_of_materials, unsigned int number_of_pp_variables,
 							unsigned int num_of_constants);
 

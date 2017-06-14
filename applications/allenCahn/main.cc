@@ -22,7 +22,7 @@ int main (int argc, char **argv)
         // are scalars or vectors, how many postprocessing variables there are, how many sets of elastic constants there are,
         // and how many user-defined constants there are.
         inputFileReader input_file_reader;
-        const std::vector<std::string> var_types = input_file_reader.get_subsection_entry_list("parameters.in","Equation","Variable type","SCALAR");
+        const std::vector<std::string> var_types = input_file_reader.get_subsection_entry_list("parameters.in","Variable","Variable type","SCALAR");
         const unsigned int num_materials = input_file_reader.get_number_of_entries("parameters.in","subsection","Material");
         const unsigned int num_pp_vars = input_file_reader.get_number_of_entries("parameters.in","subsection","Postprocessing variable");
         const unsigned int num_constants = input_file_reader.get_number_of_entries("parameters.in","set","Model constant");
@@ -31,7 +31,7 @@ int main (int argc, char **argv)
 
         // Read in all of the parameters now
         dealii::ParameterHandler parameter_handler;
-        input_file_reader.declare_parameters(parameter_handler,"parameters.in",var_types,
+        input_file_reader.declare_parameters(parameter_handler,var_types,
                                              num_materials,num_pp_vars,num_constants);
         parameter_handler.read_input("parameters.in");
 

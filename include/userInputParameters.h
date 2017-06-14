@@ -13,13 +13,21 @@
 template <int dim>
 class userInputParameters
 {
+private:
+	// Method to create the list of time steps where the results should be output (called from loadInputParameters)
+	std::vector<unsigned int> setOutputTimeSteps(const std::string outputSpacingType, unsigned int numberOfOutputs,
+													const std::vector<unsigned int> & userGivenTimeStepList);
+
 public:
 	// Method to read the input parameters from a file and load them into the class member variables
 	void loadInputParameters(dealii::ParameterHandler & parameter_handler, unsigned int _number_of_variables,
 								unsigned int _number_of_materials, unsigned int _number_of_pp_variables,
 								unsigned int _number_of_constants);
 
+	// Method to create the list of BCs from the user input strings (called from loadInputParameters)
 	void load_BC_list(std::vector<std::string> list_of_BCs, std::vector<varBCs<dim> > & BC_list);
+
+
 
 	// Meshing parameters
 	std::vector<double> domain_size;
@@ -38,14 +46,11 @@ public:
 
 	unsigned int skip_remeshing_steps;
 
-	// Output parameters
-	bool write_output;
-	std::string output_condition;
-	unsigned int num_outputs;
-	std::vector<unsigned int> user_given_time_step_list;
+	// Output parameters (delete all but the last)
 	unsigned int skip_print_steps;
 	std::string output_file_type;
 	std::string output_file_name;
+	std::vector<unsigned int> outputTimeStepList;
 
 	bool calc_energy;
 

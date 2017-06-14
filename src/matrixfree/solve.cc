@@ -9,13 +9,12 @@ void MatrixFreePDE<dim,degree>::solve(){
   computing_timer.enter_section("matrixFreePDE: solve");
   pcout << "\nsolving...\n\n";
 
-  getOutputTimeSteps(userInputs.output_condition,userInputs.num_outputs,userInputs.user_given_time_step_list,outputTimeStepList);
   int currentOutput = 0;
 
   //time dependent BVP
   if (isTimeDependentBVP){
     //output initial conditions for time dependent BVP
-	  if ((userInputs.write_output) && (outputTimeStepList[currentOutput] == 0)) {
+	  if (userInputs.outputTimeStepList[currentOutput] == 0) {
 
 			  outputResults();
 			  if (userInputs.calc_energy == true){
@@ -42,7 +41,7 @@ void MatrixFreePDE<dim,degree>::solve(){
       solveIncrement();
 
       //output results to file
-      if ((userInputs.write_output) && (outputTimeStepList[currentOutput] == currentIncrement)) {
+      if (userInputs.outputTimeStepList[currentOutput] == currentIncrement) {
     	  outputResults();
 
     	  if (userInputs.calc_energy == true){
@@ -57,28 +56,20 @@ void MatrixFreePDE<dim,degree>::solve(){
 
   //time independent BVP
   else{
-    if (userInputs.totalIncrements>1){
-      pcout << "solve.h: this problem has only ELLIPTIC fields, hence neglecting totalIncrementsV>1 \n";
-    }
-    userInputs.totalIncrements=1;
+      if (userInputs.totalIncrements>1){
+          pcout << "solve.h: this problem has only ELLIPTIC fields, hence neglecting totalIncrementsV>1 \n";
+      }
+      userInputs.totalIncrements=1;
+ 
+      //solve
+      solveIncrement();
 
-    //check and perform adaptive mesh refinement
-    //computing_timer.enter_section("matrixFreePDE: AMR");
-    //adaptiveRefine(0);
-    //computing_timer.exit_section("matrixFreePDE: AMR");
-
-    //solve
-    solveIncrement();
-
-    //output results to file
-    if (userInputs.write_output){
-    	outputResults();
-    	if (userInputs.calc_energy == true){
-    		computeEnergy();
-    		outputFreeEnergy(freeEnergyValues);
-    	}
-    }
-
+      //output results to file
+      outputResults();
+      if (userInputs.calc_energy == true){
+          computeEnergy();
+          outputFreeEnergy(freeEnergyValues);
+      }
   }
 
   //log time

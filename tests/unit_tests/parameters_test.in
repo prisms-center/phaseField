@@ -39,7 +39,7 @@ set Time step = 1.0e-2
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 5000
+set Number of time steps = 20000
 
 # =================================================================================
 # Set the output parameters
@@ -50,7 +50,9 @@ set Output condition = EQUAL_SPACING
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of outputs = 5
+set Number of outputs = 10
+
+set List of time steps to output = 0, 3, 55, 61
 
 # The number of time steps between updates being printed to the screen
 set Skip print steps = 1000
@@ -74,24 +76,7 @@ subsection Variable 0
     set Need gradient residual term = true
 end
 
-# =================================================================================
-# Set the elastic constants (if needed)
-# =================================================================================
 
-subsection Material 0
-    set Material symmetry = ISOTROPIC
-    set Elastic constants = 30,0.3
-end
-
-subsection Material 1
-    set Material symmetry = ISOTROPIC
-    set Elastic constants = 35,0.3
-end
-
-subsection Material 2
-    set Material symmetry = ISOTROPIC
-    set Elastic constants = 35,0.3
-end
 
 # =================================================================================
 # Set the parameters for loading in initial conditions
@@ -102,35 +87,10 @@ set Load serial file = true
 set File names = void
 set Variable names in the files = void
 
-# =================================================================================
-# Set the properties of the postprocessing variables
-# =================================================================================
-# The number of postprocessing variables (must match the number specified below)
 
-# Postprocessing variable 0
-subsection Postprocessing variable 0
-    set Variable name = mag_grad_n
-    set Variable type = SCALAR
-    set Need variable value = true
-    set Need variable gradient = false
-    set Need variable hessian = false
-    set Need value residual term = true
-    set Need gradient residual term = false
-end
 
 # =================================================================================
 # Set the boundary conditions
 # =================================================================================
 
 set Boundary condition for variable 0 = ZERO_DERIVATIVE
-
-# =================================================================================
-# Set the model constants
-# =================================================================================
-# Type options currently are double, int, and bool
-
-# The mobility, MnV in equations.h
-set Model constant 0 = 1.0, double
-
-# The gradient energy coefficient, KnV in equations.h
-set Model constant 1 = 2.0, double

@@ -114,11 +114,6 @@ class MatrixFreePDE:public Subscriptor
   */
   void outputResults() const;
 
-  /* Method to generate a list of time steps where the method outputResults should be called. It populates outputTimeStepList.
-   */
-  std::vector<unsigned int> outputTimeStepList;
-  void getOutputTimeSteps(const std::string outputSpacingType, unsigned int numberOfOutputs, const std::vector<unsigned int> & userGivenTimeStepList, std::vector<unsigned int> & timeStepList) const;
-
   /*Parallel mesh object which holds information about the FE nodes, elements and parallel domain decomposition
    */
   parallel::distributed::Triangulation<dim> triangulation;

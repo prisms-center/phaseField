@@ -23,10 +23,6 @@ void load_unit_test_inputs(userInputParameters<problemDIM> & userInputs){
     userInputs.abs_tol = false;
     userInputs.solver_tolerance = 1.0e-10;
     userInputs.max_solver_iterations = 1000;
-    userInputs.write_output = true;
-    userInputs.output_condition = "EQUAL_SPACING";
-    userInputs.num_outputs = 10;
-    userInputs.user_given_time_step_list.push_back(0);
     userInputs.skip_print_steps = 1;
     userInputs.output_file_type = "vtu";
     userInputs.calc_energy = false;

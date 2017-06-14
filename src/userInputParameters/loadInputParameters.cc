@@ -66,6 +66,7 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
     else {
         // Should change to an exception
         std::cerr << "Invalid selections for the final time and the number of increments. At least one should be given in the input file and should be positive." << std::endl;
+        std::cout << finalTime << " " << totalIncrements_temp << std::endl;
         abort();
     }
 
@@ -76,12 +77,14 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
     max_solver_iterations = parameter_handler.get_integer("Maximum allowed solver iterations");
 
     // Output parameters
-    write_output = parameter_handler.get_bool("Write output");
-    output_condition = parameter_handler.get("Output condition");
-    num_outputs = parameter_handler.get_integer("Number of outputs");
-
+    std::string output_condition = parameter_handler.get("Output condition");
+    unsigned int num_outputs = parameter_handler.get_integer("Number of outputs");
     std::vector<int> user_given_time_step_list_temp = dealii::Utilities::string_to_int(dealii::Utilities::split_string_list(parameter_handler.get("List of time steps to output")));
+    std::vector<unsigned int> user_given_time_step_list;
     for (unsigned int i=0; i<user_given_time_step_list_temp.size(); i++) user_given_time_step_list.push_back(user_given_time_step_list_temp[i]);
+
+    // Use these inputs to create a list of time steps where the code should output, stored in the member
+    outputTimeStepList = setOutputTimeSteps(output_condition, num_outputs,user_given_time_step_list);
 
     skip_print_steps = parameter_handler.get_integer("Skip print steps");
     output_file_type = parameter_handler.get("Output file type");
@@ -95,7 +98,7 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
     number_of_variables = _number_of_variables;
 
     for (unsigned int i=0; i<number_of_variables; i++){
-        std::string equation_text = "Equation ";
+        std::string equation_text = "Variable ";
         equation_text.append(dealii::Utilities::int_to_string(i));
 
         parameter_handler.enter_subsection(equation_text);
@@ -427,6 +430,50 @@ void userInputParameters<dim>::load_BC_list(std::vector<std::string> list_of_BCs
             // }
     }
 
+}
+
+template <int dim>
+std::vector<unsigned int> userInputParameters<dim>::setOutputTimeSteps(const std::string outputSpacingType, unsigned int numberOfOutputs,
+                    const std::vector<unsigned int> & userGivenTimeStepList)
+{
+    std::vector<unsigned int> timeStepList;
+
+    if (numberOfOutputs > 0) {
+        if (outputSpacingType == "EQUAL_SPACING"){
+            if (numberOfOutputs > totalIncrements)
+            numberOfOutputs = totalIncrements;
+
+            for (unsigned int iter = 0; iter <= totalIncrements; iter += totalIncrements/numberOfOutputs){
+                timeStepList.push_back(iter);
+            }
+        }
+        else if (outputSpacingType == "LOG_SPACING"){
+            timeStepList.push_back(0);
+            for (unsigned int output = 1; output <= numberOfOutputs; output++){
+                timeStepList.push_back(round(std::pow(10,double(output)/double(numberOfOutputs)*std::log10(totalIncrements))));
+            }
+        }
+        else if (outputSpacingType == "N_PER_DECADE"){
+            timeStepList.push_back(0);
+            timeStepList.push_back(1);
+            for (unsigned int iter = 2; iter <= totalIncrements; iter++){
+                int decade = std::ceil(std::log10(iter));
+                int step_size = (std::pow(10,decade))/numberOfOutputs;
+                if (iter%step_size == 0){
+                    timeStepList.push_back(iter);
+                }
+
+            }
+        }
+        else if (outputSpacingType == "LIST"){
+            timeStepList = userGivenTimeStepList;
+        }
+    }
+    else {
+        timeStepList.push_back(totalIncrements+1);
+    }
+
+    return timeStepList;
 }
 
 // Template instantiations

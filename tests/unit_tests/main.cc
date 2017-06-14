@@ -44,6 +44,12 @@ int main(int argc, char **argv)
   pass = load_BC_list_tester.test_load_BC_list();
   tests_passed += pass;
 
+  // Unit tests for the method "setOutputTimeSteps" for all four types of spacing, indirectly through "loadInputParameters"
+  total_tests++;
+  unitTest<2,double> setOutputTimeSteps_tester_eq;
+  pass = setOutputTimeSteps_tester_eq.test_setOutputTimeSteps();
+  tests_passed += pass;
+
   // Unit tests for the method "computeInvM"
   total_tests++;
   unitTest<2,double> computeInvM_tester_2D;
@@ -85,28 +91,6 @@ int main(int argc, char **argv)
   total_tests++;
   unitTest<3,dealii::Table<2, double> > computeStress_tester_3DT;
   pass = computeStress_tester_3DT.test_computeStress();
-  tests_passed += pass;
-
-  // Unit tests for the method "getOutputTimeSteps" for all four types of spacing
-  total_tests++;
-  unitTest<2,double> getOutputTimeSteps_tester_eq;
-  pass = getOutputTimeSteps_tester_eq.test_getOutputTimeSteps("EQUAL_SPACING",10,{},userInputs);
-  tests_passed += pass;
-
-  total_tests++;
-  unitTest<2,double> getOutputTimeSteps_tester_log;
-  pass = getOutputTimeSteps_tester_log.test_getOutputTimeSteps("LOG_SPACING",10,{}, userInputs);
-  tests_passed += pass;
-
-  total_tests++;
-  unitTest<2,double> getOutputTimeSteps_tester_dec;
-  pass = getOutputTimeSteps_tester_dec.test_getOutputTimeSteps("N_PER_DECADE",10,{}, userInputs);
-  tests_passed += pass;
-
-  total_tests++;
-  unitTest<2,double> getOutputTimeSteps_tester_list;
-  std::vector<unsigned int> userGivenTimeStepList = {0, 3, 55, 61};
-  pass = getOutputTimeSteps_tester_list.test_getOutputTimeSteps("LIST",0,userGivenTimeStepList, userInputs);
   tests_passed += pass;
 
   // Unit tests for the method "setRigidBodyModeConstraints"

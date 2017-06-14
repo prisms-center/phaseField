@@ -84,18 +84,18 @@ class unitTest
 	bool test_computeStress();
 	void assignCIJSize(dealii::VectorizedArray<double> CIJ[2*dim-1+dim/3][2*dim-1+dim/3]);
 	void assignCIJSize(dealii::Table<2, double> &CIJ);
-	bool test_getOutputTimeSteps(std::string,unsigned int, std::vector<unsigned int>, userInputParameters<dim> userInputs);
 	bool test_setRigidBodyModeConstraints(std::vector<int>, userInputParameters<dim> userInputs);
 	bool test_parse_line();
 	bool test_get_subsection_entry_list();
 	bool test_load_BC_list();
+	bool test_setOutputTimeSteps();
 };
 
 
 #include "test_invM.h"
 #include "test_outputResults.h"
 #include "test_computeStress.h"
-#include "test_getOutputTimeSteps.h"
+#include "test_setOutputTimeSteps.h"
 #include "test_setRigidBodyModeConstraints.h"
 #include "test_parse_line.h"
 #include "test_get_subsection_entry_list.h"

@@ -215,7 +215,7 @@ std::string inputFileReader::get_last_value_of_parameter(const std::string &para
 
 
 
-void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_handler, std::string input_file_name,
+void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_handler,
                                             std::vector<std::string> var_types, unsigned int number_of_materials,
                                             unsigned int number_of_pp_variables, unsigned int num_of_constants){
 
@@ -248,7 +248,6 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
     parameter_handler.declare_entry("Solver tolerance value","1.0e-3",dealii::Patterns::Double(),"The tolerance for the linear solver (either absolute or relative).");
     parameter_handler.declare_entry("Maximum allowed solver iterations","10000",dealii::Patterns::Integer(),"The maximum allowed number of iterations the linear solver is given to converge before being forced to exit.");
 
-    parameter_handler.declare_entry("Write output","true",dealii::Patterns::Bool(),"Whether or not to write output files for the simulation.");
     parameter_handler.declare_entry("Output file name (base)","solution",dealii::Patterns::Anything(),"The name for the output file, before the time step and processor info are added.");
     parameter_handler.declare_entry("Output file type","vtu",dealii::Patterns::Anything(),"The output file type (either vtu or vtk).");
     parameter_handler.declare_entry("Output condition","EQUAL_SPACING",dealii::Patterns::Anything(),"The time step size for the simulation.");
@@ -261,7 +260,7 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
 
     // Declare entries regarding the governing equations
     for (unsigned int i=0; i<var_types.size(); i++){
-        std::string equation_text = "Equation ";
+        std::string equation_text = "Variable ";
         equation_text.append(dealii::Utilities::int_to_string(i));
 
         parameter_handler.enter_subsection(equation_text);
