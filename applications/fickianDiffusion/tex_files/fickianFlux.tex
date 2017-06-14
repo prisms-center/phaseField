@@ -175,17 +175,23 @@
 %*********************************
 %Start main paper
 %*********************************
-\centerline{\Large{\bf PRISMS PhaseField}}
+\centerline{\Large{\bf PRISMS-PF Application Formulation}}
 \smallskip
-\centerline{\Large{\bf Classical Diffusion: Fick's law}}
+\centerline{\Large{\bf fickianDiffusion}}
 \bigskip
+
+In this example application, we implement a Fick's Law for a single component. Two time-dependent Gaussian source terms add concentration over the course of the simulation.
 
 \section{Kinetics}
 The Parabolic PDE for diffusion is given by:
 \begin{align}
   \frac{\partial c}{\partial t} &= -\grad \cdot (-D~\grad c) + f
 \end{align}
-where $D$ is the diffusion constant and $f$ is a source term 
+where $D$ is the diffusion constant and $f$ is a source term. In this example, $f$ is given by a pair of Gaussian expressions:
+\begin{multline}
+f = A_1 \exp\left(-\left(\frac{t-t_1}{\tau_1}\right)^2\right)\exp\left(-\left(\frac{x-x_1}{L_1}\right)^2-\left(\frac{y-y_1}{L_1}\right)^2\right) \\+ A_2 \exp\left(-\left(\frac{t-t_2}{\tau_2}\right)^2\right)\exp\left(-\left(\frac{x-x_2}{L_2}\right)^2-\left(\frac{y-y_2}{L_2}\right)^2\right)
+ \end{multline}
+ where  $A_1$, $_2$, $t_1$, $t_2$, $\tau_1$, $\tau_2$, $x_1$, $x_2$, $y_1$, $y_2$, $L_1$, and $L_2$ are constants.
 \section{Time discretization}
 Considering forward Euler explicit time stepping, we have the time discretized kinetics equation:
 \begin{align}
