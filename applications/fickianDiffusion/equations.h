@@ -30,16 +30,8 @@
 // here. For more complex cases with loops or conditional statements, residual
 // equations (or parts of residual equations) can be written below in "residualRHS".
 
-
 // Diffusion constant
 #define DcV 0.01
-
-//define geometric expression for the source term
-//defining a circle centered at (0.0,0.0) with radius spanX/10
-#define exp1 (std::sqrt(x*x+y*y)<spanX/10)
-
-//define temporal expression for the source term
-#define exp2 (t<timeFinal/4)
 
 // Residual equations
 #define rcV   (c + timeStep*(source_term1 + source_term2) )
