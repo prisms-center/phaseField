@@ -175,25 +175,32 @@
 %*********************************
 %Start main paper
 %*********************************
-\centerline{\Large{\bf PRISMS-PF}}
+\centerline{\Large{\bf PRISMS-PF Application Formulation:}}
 \smallskip
-\centerline{\Large{\bf Mechanics (Infinitesimal Strain)}}
+\centerline{\Large{\bf eshelbyInclusion}}
 \bigskip
+
+This example application implements a simple 3D calculation of the displacement field near a homogenous inclusion. 
+\\
 Consider a strain energy expression of the form:
 \begin{equation}
-  \Pi(\varepsilon) = \int_{\Omega}  \frac{1}{2} \varepsilon:C:\varepsilon   ~dV 
+  \Pi(\varepsilon) = \int_{\Omega}  \frac{1}{2} (\epsilon-\epsilon^0):C: (\epsilon-\epsilon^0)   ~dV 
 \end{equation}
 where $\varepsilon$ is the infinitesimal strain tensor, $C_{ijkl}=\lambda \delta_{ij} \delta_{kl}+\mu ( \delta_{ik} \delta_{jl}+ \delta_{il} \delta_{jk} )$  is the fourth order elasticity tensor and ($\lambda$, $mu$) are the Lame parameters.
 
-\section{Governing equation}
+\section{Governing equations}
 Considering variations on the displacement $u$ of the from $u+\alpha w$, we have
 \begin{align}
-\delta \Pi &=  \left. \frac{d}{d\alpha} \int_{\Omega}    \frac{1}{2}\epsilon(u+\alpha w)  : C : \epsilon(u+\alpha w) ~dV \right\vert_{\alpha=0} \\
-&=  -\int_{\Omega}   \grad w : C :  \epsilon  ~dV +  \int_{\partial \Omega}   w \cdot [C :  \epsilon\cdot n]  ~dS\\
+\delta \Pi &=  \left. \frac{d}{d\alpha} \int_{\Omega}    \frac{1}{2} [\epsilon(u+\alpha w) - \epsilon^0] : C : [\epsilon(u+\alpha w) - \epsilon^0] ~dV \right\vert_{\alpha=0} \\
+&=  -\int_{\Omega}   \grad w : C :  (\epsilon-\epsilon^0)  ~dV +  \int_{\partial \Omega}   w \cdot [C :  (\epsilon-\epsilon^0) \cdot n]  ~dS\\
 &=  -\int_{\Omega}   \grad w : \sigma  ~dV +  \int_{\partial \Omega}   w \cdot (\sigma \cdot n)  ~dS\\
 &=  -\int_{\Omega}   \grad w : \sigma  ~dV +  \int_{\partial \Omega}   w \cdot t  ~dS
 \end{align}
-where $\sigma = C :  \varepsilon$ is the stress tensor and $t=\sigma \cdot n$ is the surface traction.\\
+where $\sigma = C : (\epsilon-\epsilon^0)$ is the stress tensor, $\epsilon^0$ is the misfit strain (eigenstrain), and $t=\sigma \cdot n$ is the surface traction. In this case, we assume that the diagonal elements of $\epsilon^0$ take the form:
+\begin{equation}
+\epsilon^0_{ii} = m \left(\frac{1}{2} + \frac{1}{2} \tanh(l(r-a)) \right)
+\end{equation}
+where $m$ is the magnitide of the misfit strain inside the inclusion, $l$ determines the thickness of the ``interface'' between the inclusion and the matrix, $r$ is the distance from the origin, and $a$ is the radius of the inclusion. The off-diagonal elements of $\epsilon^0$ are zero.
 
 The minimization of the variation, $\delta \Pi=0$, gives the weak formulation of the governing equation of mechanics:
 
@@ -217,9 +224,9 @@ where $\Delta u = u - u_0$. Then, applying the discretization that $u = \sum_i w
 \end{equation}
 The discretized form of this equation can be written as a matrix inversion problem. However, in PRISMS-PF, we only care about the product $\frac{\delta R(u)}{\delta u} \Delta U$. Taking the variational derivative of $R(u)$ yields:
 \begin{align}
-\frac{\delta R(u)}{\delta u} &= \frac{d}{d\alpha} \int_{\Omega}   \nabla w :C: \epsilon (u+\alpha w) ~dV  \bigg{|}_{\alpha=0} \\
-&=  \int_{\Omega}   \nabla w :C: \frac{1}{2}\frac{d}{d\alpha}\left[ \nabla(u+\alpha w) + \nabla(u+\alpha w)^T \right] ~dV \bigg{|}_{\alpha=0}\\
-&= \int_{\Omega}   \nabla w :C: \frac{d}{d\alpha}\nabla(u+\alpha w)  ~dV \bigg{|}_{\alpha=0} \quad (due ~to ~the ~symmetry ~of ~C) \\
+\frac{\delta R(u)}{\delta u} &= \frac{d}{d\alpha} \int_{\Omega}   \nabla w :C: \left[ \epsilon (u+\alpha w) - \epsilon^0 \right] ~dV  \bigg{|}_{\alpha=0} \\
+&=  \int_{\Omega}   \nabla w :C: \frac{1}{2}\frac{d}{d\alpha}\left[ \nabla(u+\alpha w) + \nabla(u+\alpha w)^T  - \epsilon^0\right] ~dV \bigg{|}_{\alpha=0}\\
+&= \int_{\Omega}   \nabla w :C: \frac{d}{d\alpha} \left[ \nabla(u+\alpha w) - \epsilon^0 \right]  ~dV \bigg{|}_{\alpha=0} \quad (due ~to ~the ~symmetry ~of ~C) \\
 &= \int_{\Omega}   \nabla w :C: \nabla w  ~dV 
 \end{align}
 In its discretized form $\frac{\delta R(u)}{\delta u} \Delta U$ is:
@@ -235,8 +242,6 @@ Thus, the full equation relating $u_0$ and $\Delta u$ is:
 \int_{\Omega} \nabla w : \underbrace{C : \nabla (\Delta u)}_{r_{ux}^{LHS}} dV = -\int_{\Omega}   \grad w : \underbrace{\sigma}_{r_{ux}} ~dV
 \end{equation}
 The above values of $r_{ux}^{LHS}$ and $r_{ux}$ are used to define the residuals in the following input file: \\
-$applications/mechanics/equations.h$
-
-
+$applications/eschelbyInclusion/equations.h$
 
 \end{document} 
