@@ -11,9 +11,9 @@ set Number of dimensions = 2
 # Set the length of the domain in all three dimensions
 # =================================================================================
 # Each axes spans from zero to the specified length
-set Domain size X = 100
-set Domain size Y = 100
-set Domain size Z = 100
+set Domain size X = 800
+set Domain size Y = 800
+set Domain size Z = 800
 
 # =================================================================================
 # Set the element parameters
@@ -24,20 +24,40 @@ set Subdivisions X = 1
 set Subdivisions Y = 1
 set Subdivisions Z = 1
 
-set Refine factor = 8
+set Refine factor = 2
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
-set Element degree = 1
+set Element degree = 2
+
+# =================================================================================
+# Set the adaptive mesh refinement parameters
+# =================================================================================
+# Set the flag determining if adaptive meshing is activated
+set Mesh adaptivity = true
+
+# Set the maximum and minimum level of refinement
+set Max refinement level = 10
+set Min refinement level = 2
+
+# Set the fields used to determine the refinement using their index.
+set Refinement criteria fields  = 1
+
+# Set the maximum and minimum value of the fields where the mesh should be refined
+set Refinement window max = 0.99
+set Refinement window min = 0.01
+
+# Set the number of time steps between remeshing operations
+set Steps between remeshing operations = 500
 
 # =================================================================================
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 1.0e-2
+set Time step = 0.011
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 5000
+set Number of time steps = 50000
 
 # =================================================================================
 # Set the output parameters
@@ -48,13 +68,18 @@ set Output condition = EQUAL_SPACING
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of outputs = 5
+set Number of outputs = 25
 
 # The number of time steps between updates being printed to the screen
-set Skip print steps = 1000
+set Skip print steps = 100
 
 # The flag determining if the total free energy is calculated for each output
 set Calculate the free energy = true
+
+# =================================================================================
+# Set whether nucleation is allowed to occur
+# =================================================================================
+set Allow nucleation = true
 
 # =================================================================================
 # Set the properties of the variables and their governing equations
@@ -62,6 +87,18 @@ set Calculate the free energy = true
 
 # Variable 0
 subsection Variable 0
+    set Variable name = c
+    set Variable type = SCALAR
+    set Equation type = PARABOLIC
+    set Need variable value = true
+    set Need variable gradient = true
+    set Need variable hessian = false
+    set Need value residual term = true
+    set Need gradient residual term = true
+end
+
+# Variable 1
+subsection Variable 1
     set Variable name = n
     set Variable type = SCALAR
     set Equation type = PARABOLIC
@@ -73,62 +110,46 @@ subsection Variable 0
 end
 
 # =================================================================================
-# Set the elastic constants (if needed)
-# =================================================================================
-
-subsection Material 0
-    set Material symmetry = ISOTROPIC
-    set Elastic constants = 30,0.3
-end
-
-subsection Material 1
-    set Material symmetry = ISOTROPIC
-    set Elastic constants = 35,0.3
-end
-
-subsection Material 2
-    set Material symmetry = ISOTROPIC
-    set Elastic constants = 35,0.3
-end
-
-# =================================================================================
-# Set the parameters for loading in initial conditions
-# =================================================================================
-
-set Load initial conditions = false
-set Load serial file = true
-set File names = void
-set Variable names in the files = void
-
-# =================================================================================
-# Set the properties of the postprocessing variables
-# =================================================================================
-# The number of postprocessing variables (must match the number specified below)
-
-# Postprocessing variable 0
-subsection Postprocessing variable 0
-    set Variable name = mag_grad_n
-    set Variable type = SCALAR
-    set Need variable value = true
-    set Need variable gradient = false
-    set Need variable hessian = false
-    set Need value residual term = true
-    set Need gradient residual term = false
-end
-
-# =================================================================================
 # Set the boundary conditions
 # =================================================================================
 
-set Boundary condition for variable 0 = ZERO_DERIVATIVE
+set Boundary condition for variable 0 = PERIODIC
+set Boundary condition for variable 1 = PERIODIC
 
 # =================================================================================
 # Set the model constants
 # =================================================================================
 # Type options currently are double, int, and bool
 
-# The mobility, MnV in equations.h
+# The mobility, McV
 set Model constant 0 = 1.0, double
 
-# The gradient energy coefficient, KnV in equations.h
-set Model constant 1 = 2.0, double
+# The mobility, MnV
+set Model constant 1 = 1.0, double
+
+# The gradient energy coefficient, KnV
+set Model constant 2 = 2.0, double
+
+# Average alloy composition (for initial contitions), c_avg
+set Model constant 3 = 0.2, double
+
+# Energy barrier coefficient (used to tune the interfacial energy), W_barrier
+set Model constant 4 = 2.0, double
+
+# Free energy constant A0
+set Model constant 5 = 0.0, double
+
+# Free energy constant A2
+set Model constant 6 = 1.0, double
+
+# Free energy constant calmin
+set Model constant 7 = 0.0, double
+
+# Free energy constant B0
+set Model constant 8 = 0.0, double
+
+# Free energy constant B2
+set Model constant 9 = 4.0, double
+
+# Free energy constant cbtmin
+set Model constant 10 = 1.0, double

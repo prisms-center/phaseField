@@ -14,7 +14,7 @@ double customPDE<dim,degree>::nucProb(double cValue, double dV, double ct) const
     if (dim ==3) ssf=(cValue-calmin)*(cValue-calmin);
 	// Calculate the nucleation rate
 	double J=k1*exp(-k2/(std::max(ssf,1.0e-6)))*exp(-tau/ct);
-	double retProb=1.0-exp(-J*timeStep*((double)skipNucleationSteps)*dV);
+	double retProb=1.0-exp(-J*this->userInputs.dtValue*((double)skipNucleationSteps)*dV);
     return retProb;
 }
 
@@ -104,7 +104,7 @@ void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim> > &newnu
                 //Make sure point is in safety zone
                 bool insafetyzone = true;
                 for (unsigned int j=0; j < dim; j++){
-                    bool periodic_j = (this->BC_list[1].var_BC_type[2*j]==PERIODIC);
+                    bool periodic_j = (this->userInputs.BC_list[1].var_BC_type[2*j]==PERIODIC);
                     bool insafetyzone_j = (periodic_j || ((nuc_ele_pos[j] > borderreg) && (nuc_ele_pos[j] < this->userInputs.domain_size[j]-borderreg)));
                     insafetyzone = insafetyzone && insafetyzone_j;
                 }
@@ -176,7 +176,7 @@ void customPDE<dim,degree>::safetyCheckNewNuclei(std::vector<nucleus<dim> > newn
                     double weighted_dist = 0.0;
                     for (unsigned int i=0; i<dim; i++){
                         double shortest_edist = thisNuclei->center(i) - q_point_list[q_point](i);
-                        bool periodic_i = (this->BC_list[1].var_BC_type[2*i]==PERIODIC);
+                        bool periodic_i = (this->userInputs.BC_list[1].var_BC_type[2*i]==PERIODIC);
                         if (periodic_i){
                             double domsize =this->userInputs.domain_size[i];
                             shortest_edist = shortest_edist-round(shortest_edist/domsize)*domsize;
@@ -246,7 +246,7 @@ void customPDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim> > newn
                         double weighted_dist = 0.0;
                         for (unsigned int i=0; i<dim; i++){
                             double shortest_edist = thisNuclei->center(i) - q_point_list[q_point](i);
-                            bool periodic_i = (this->BC_list[1].var_BC_type[2*i]==PERIODIC);
+                            bool periodic_i = (this->userInputs.BC_list[1].var_BC_type[2*i]==PERIODIC);
                             if (periodic_i){
                                 double domsize =this->userInputs.domain_size[i];
                                 shortest_edist = shortest_edist-round(shortest_edist/domsize)*domsize;

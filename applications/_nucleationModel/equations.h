@@ -1,27 +1,6 @@
 
 // List of variables and residual equations for the coupled Allen-Cahn/Cahn-Hilliard example application
 
-// =================================================================================
-// Define the variables in the model
-// =================================================================================
-// The number of variables
-#define num_var 2
-
-// The names of the variables, whether they are scalars or vectors and whether the
-// governing eqn for the variable is parabolic or elliptic
-#define variable_name {"c", "n"}
-#define variable_type {"SCALAR","SCALAR"}
-#define variable_eq_type {"PARABOLIC","PARABOLIC"}
-
-// Flags for whether the value, gradient, and Hessian are needed in the residual eqns
-#define need_val {true, true}
-#define need_grad {true, true}
-#define need_hess {false, false}
-
-// Flags for whether the residual equation has a term multiplied by the test function
-// (need_val_residual) and/or the gradient of the test function (need_grad_residual)
-#define need_val_residual {true, true}
-#define need_grad_residual {true, true}
 
 // =================================================================================
 // Define the Model and residual equations
@@ -30,37 +9,6 @@
 // can be set here. For simple cases, the entire residual equation can be written
 // here. For more complex cases with loops or conditional statements, residual
 // equations (or parts of residual equations) can be written below in "residualRHS".
-
-
-// =================================================================================
-// Set the KKS model parameters
-// =================================================================================
-
-//Average alloy composition (for initial contitions)
-#define c_avg 0.2
-
-// Cahn-Hilliard mobility
-#define McV 1.0
-
-// Allen-Cahn mobility
-#define MnV 1.0
-
-// Allen-Cahn gradient energy coefficient
-#define KnV 2.0
-
-// Energy barrier coefficient (used to tune the interfacial energy)
-#define W_barrier (KnV)
-
-// Interface coefficient
-double interface_coeff=std::sqrt(2.0*KnV/W_barrier);
-
-//Constants for free energy expressions
-double A0 = 0.0;
-double A2 = 1.0;
-double calmin= 0.0;
-double B0 = 0.0;
-double B2 = 4.0;
-double cbtmin = 1.0;
 
 // =================================================================================
 // Set the nucleation parameters
@@ -123,10 +71,10 @@ std::vector<double> opfreeze_semiaxes {1.5*semiaxis_a,1.5*semiaxis_b,1.5*semiaxi
 // For concentration
 #define term_muxV (cx + (c_alpha - c_beta)*hnV*nx)
 #define rcV   (c)
-#define rcxV  (constV(-McV*timeStep)*term_muxV)
+#define rcxV  (constV(-McV*this->userInputs.dtValue)*term_muxV)
 //For order parameter (gamma is a variable order parameter mobility factor)
-#define rnV   (n-constV(timeStep*MnV)*gamma*((fbV-faV)*hnV - (c_beta-c_alpha)*fbcV*hnV + W_barrier*fbarriernV))
-#define rnxV  (constV(-timeStep*KnV*MnV)*gamma*nx)
+#define rnV   (n-constV(this->userInputs.dtValue*MnV)*gamma*((fbV-faV)*hnV - (c_beta-c_alpha)*fbcV*hnV + W_barrier*fbarriernV))
+#define rnxV  (constV(-this->userInputs.dtValue*KnV*MnV)*gamma*nx)
 
 // =================================================================================
 // residualRHS
@@ -147,7 +95,7 @@ void customPDE<dim,degree>::residualRHS(const std::vector<modelVariable<dim> > &
 												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 double time = this->currentTime;
-double dx=spanX/std::pow(2.0,refineFactor);
+double dx=this->userInputs.domain_size[0]/std::pow(2.0,this->userInputs.refine_factor);
 
 //Calculation of mobility factor, gamma
 dealii::VectorizedArray<double> gamma = constV(1.0);
@@ -155,7 +103,7 @@ dealii::VectorizedArray<double> x= q_point_loc[0];
 dealii::VectorizedArray<double> y= q_point_loc[1];
 dealii::VectorizedArray<double> z;
 
-if (problemDIM ==3)
+if (dim ==3)
     z= q_point_loc[2];
 
 
@@ -175,7 +123,7 @@ for (typename std::vector<nucleus<dim> >::const_iterator thisNucleus=nuclei.begi
 	dealii::VectorizedArray<double> weighted_dist = constV(0.0);
 	for (unsigned int i=0; i<dim; i++){
         dealii::VectorizedArray<double> temp = (thisNucleus->center(i) - q_point_loc(i));
-        bool periodic_i = (this->BC_list[1].var_BC_type[2*i]==PERIODIC);
+        bool periodic_i = (this->userInputs.BC_list[1].var_BC_type[2*i]==PERIODIC);
         if (periodic_i){
             double domsize_i =this->userInputs.domain_size[i];
             for (unsigned j=0; j<n.n_array_elements;j++)
@@ -194,7 +142,7 @@ for (typename std::vector<nucleus<dim> >::const_iterator thisNucleus=nuclei.begi
     			double avg_semiaxis = 0.0;
     			for (unsigned int j=0; j<dim; j++){
                     double temp = (thisNucleus->center(j) - q_point_loc(j)[i]);
-                    bool periodic_j = (this->BC_list[1].var_BC_type[2*j]==PERIODIC);
+                    bool periodic_j = (this->userInputs.BC_list[1].var_BC_type[2*j]==PERIODIC);
                     if (periodic_j){
                         double domsize_j =this->userInputs.domain_size[j];
                         temp=temp-round(temp/domsize_j)*domsize_j;
@@ -209,11 +157,11 @@ for (typename std::vector<nucleus<dim> >::const_iterator thisNucleus=nuclei.begi
     		}
     	}
     }
-	dealii::Point<problemDIM> r=thisNucleus->center;
+	dealii::Point<dim> r=thisNucleus->center;
 
     double nucendtime = thisNucleus->seededTime + thisNucleus->seedingTime;
     dealii::VectorizedArray<double> spacearg=(std::sqrt(weighted_dist)-constV(1.0))/constV(dx);
-    dealii::VectorizedArray<double> timearg=constV(time-nucendtime)/constV(timeStep);
+    dealii::VectorizedArray<double> timearg=constV(time-nucendtime)/constV(this->userInputs.dtValue);
     dealii::VectorizedArray<double> spacefactor=constV(0.5)-constV(0.5)*spacearg/(std::abs(spacearg)+epsil);
     dealii::VectorizedArray<double> timefactor=constV(0.5)-constV(0.5)*timearg/(std::abs(timearg)+epsil);
     dealii::VectorizedArray<double> localgamma= constV(1.0)-spacefactor*timefactor;
@@ -297,7 +245,3 @@ for (unsigned i=0; i<c.n_array_elements;i++){
 }
 this->assembler_lock.release ();
 }
-
-
-
-

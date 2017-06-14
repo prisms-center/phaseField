@@ -20,10 +20,8 @@ public:
 	// Constructor, which calls the MatrixFreePDE constructor
 	customPDE(userInputParameters<dim> _userInputs): MatrixFreePDE<dim,degree>(_userInputs) {};
 
-	// Pure virtual method in MatrixFreePDE
-	void setBCs();
-
 private:
+	#include "../../include/typeDefs.h"
 
 	// Pure virtual method in MatrixFreePDE
 	void residualRHS(const std::vector<modelVariable<dim> > & modelVarList,
@@ -42,6 +40,26 @@ private:
 	// Virtual method in MatrixFreePDE we choose to override
 	void getNucleiList ();
 
+	// ================================================================
+	// Model constants
+	// ================================================================
+
+	double McV = boost::get<double>(this->userInputs.model_constants[0]);
+	double MnV = boost::get<double>(this->userInputs.model_constants[1]);
+	double KnV = boost::get<double>(this->userInputs.model_constants[2]);
+	double c_avg = boost::get<double>(this->userInputs.model_constants[3]);
+	double W_barrier = boost::get<double>(this->userInputs.model_constants[4]);
+	double A0 = boost::get<double>(this->userInputs.model_constants[5]);
+	double A2 = boost::get<double>(this->userInputs.model_constants[6]);
+	double calmin = boost::get<double>(this->userInputs.model_constants[7]);
+	double B0 = boost::get<double>(this->userInputs.model_constants[8]);
+	double B2 = boost::get<double>(this->userInputs.model_constants[9]);
+	double cbtmin = boost::get<double>(this->userInputs.model_constants[10]);
+
+	double interface_coeff=std::sqrt(2.0*KnV/W_barrier);
+
+	// ================================================================
+
 	// ----------------------------------------------------------------
 	// Nucleation methods specific to this subclass
 	// ----------------------------------------------------------------
@@ -51,7 +69,7 @@ private:
 
 	// Contains nucleation probability that varies between applications, no MatrixFreePDE member access
 	double nucProb(double cValue, double dV, double ct) const;
-	
+
     //Contains safety check to ensure that no new nuclei from complete prospective list overlap with existing precipitates
     void safetyCheckNewNuclei(std::vector<nucleus<dim> > newnuclei, std::vector<unsigned int> &conflict_inds);
 
