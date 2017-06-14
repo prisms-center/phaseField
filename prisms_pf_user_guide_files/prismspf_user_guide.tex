@@ -92,22 +92,22 @@ filling in the path to the installation of CMake (for example, on Mac OS, the de
 $ vi ~/.profile
 \end{lstlisting}
 
-Deal.II can be downloaded at https://www.dealii.org/download.html, which also has instructions. The deal.II installation process depends on your operating system. PRISMS-PF has been tested with Deal.II versions 8.3.0 through 8.4.1 (and the version 8.5 pre-release as of 1/16/2017). We recommend using deal.II 8.4.1, if possible.
+Deal.II can be downloaded at https://www.dealii.org/download.html, which also has instructions. The deal.II installation process depends on your operating system. PRISMS-PF has been tested with Deal.II versions 8.3.0 through 8.4.2 (and the version 8.5 pre-release as of 1/16/2017). We recommend using deal.II 8.4.2, if possible.
 
 \subsection{Installing deal.II for Mac OS X}
-A binary package for version 8.4.1 is available at https://www.dealii.org/download.html. If needed, binary packages for other versions are available at https://github.com/dealii/dealii/releases. The binary package includes all the libraries that you need (excluding CMake). To install deal.II open the .dmg file and drag ``deal.II.app'' into your Applications folder. Then, open ``deal.II.app'', which will open a Terminal window and set the necessary environment variables. You may need to modify your security settings so that your operating system will let you open the application (in System Preferences, select Security $\&$ Privacy, then under the general tab choose to allow apps downloaded from anywhere; don't click ``Open deal.II.app anyway'', we have found that doing so doesn't actually launch deal.II.app). 
+A binary package for version 8.4.2 (and other versions) is available at https://github.com/dealii/dealii/releases. The binary package includes all the libraries that you need (excluding CMake). To install deal.II open the .dmg file and drag ``deal.II.app'' into your Applications folder. Then, open ``deal.II.app'', which will open a Terminal window and set the necessary environment variables. You may need to modify your security settings so that your operating system will let you open the application (in System Preferences, select Security $\&$ Privacy, then under the general tab choose to allow apps downloaded from anywhere; don't click ``Open deal.II.app anyway'', we have found that doing so doesn't actually launch deal.II.app). 
 
 In some cases, deal.II.app will not open, possibly freezing at the ``Verifying...'' stage. If this happens, right click on it and select ``Show Package Contents''. Then go to ``/Contents/Resources/bin/'' and launch ``dealii-terminal''. This should launch the Terminal window that sets the environment variables.
 
-We have found that for some older versions of Mac OS are incompatible with deal.II version 8.4.1 (due to the version of the Clang compiler that is installed by default). In those cases we recommend downloading this version 8.3.0 package:
+We have found that for some older versions of Mac OS are incompatible with deal.II version 8.4.2 (due to the version of the Clang compiler that is installed by default). In those cases we recommend downloading this version 8.3.0 package:
 \\ https://github.com/dealii/dealii/releases/download/v8.3.0/dealii-8.3.0.nocxx14.dmg.
 
 \subsection{Installing deal.II for Linux}
-Unfortunately, on a Linux machine you will likely have to compile and install deal.II from the source. The source code for version 8.4.1 can be downloaded at https://www.dealii.org/download.html. Detailed installation directions can be found at https://www.dealii.org/8.4.1/readme.html.
+Unfortunately, on a Linux machine you will likely have to compile and install deal.II from the source. The source code for version 8.4.2 can be downloaded at https://github.com/dealii/dealii/releases. Detailed installation directions can be found at https://www.dealii.org/8.5.0/readme.html. For some versions of Linux, packages are available (Gentoo, Debian testing (stretch), and Ubuntu 16.10+). See https://www.dealii.org/download.html for details.
 
-Below we list instructions for installing deal.II and its prerequisites both manually and using candi, an automatic deal.II installation script. For now, we recomend the traditional route, because we haven't been able to get candi to consistently work.
+Below we list instructions for installing deal.II and its prerequisites both manually and using candi, an automatic deal.II installation script. For now, we recomend the traditional route, because we haven't been able to get candi to consistently work. Recently, deal.II has been made available on Linuxbrew. We have not tried this yet, but it may be a good option. Details can be found at https://github.com/dealii/dealii/wiki/deal.II-on-Homebrew---Linuxbrew.
 
-\subsubsection{Traditional Installation (Recommended)}
+\subsubsection{Traditional Installation (Recommended assuming no package is available)}
 Before building deal.II, you will need to install two libraries, MPI and p4est. Make sure you have both libraries installed before installing deal.II, or else you will have to reinstall deal.II! Many computing clusters already have these libraries installed. MPI libraries (such as MPICH2) are often available through package managers (e.g. yum, apt, pkg$\_$add, port, brew), installing it using your package manager of choice is likely the simplest option. If not, you can find binaries and the source code at http://www.mpich.org/downloads/, as well as instructions for installation. The p4est library may also be available through your package manager. If not, you can download the latest release tarball at http://www.p4est.org/. To install, unzip the archive, move to the p4est root directory and enter the following commands at the command line:
 \begin{lstlisting}
 $ ./configure --enable-mpi; make; make install
@@ -122,7 +122,7 @@ $ cmake -DP4EST_DIR=/path/to/installation/dir -DDEAL_II_WITH_P4EST=ON
 -DDEAL_II_WITH_MPI=ON -DCMAKE_INSTALL_PREFIX=/path/to/install/dir
 $ make install
 \end{lstlisting}
-where ``/path/to/install/dir'' is the path to where you want to install deal.II. After installation is complete (which can take take up to an hour), open the file ``summary.log''. The second section of the log file lists the configured features. Ensure that DEAL$\_$II$\_$WITH$\_$MPI and DEAL$\_$II$\_$WITH$\_$P4EST say either ``set up with bundled packages'' or ``set up with external dependences''. If either is listed as ``OFF'', then deal.II was unable to find MPI or p4est. If this is the case, double check that MPI and p4est were installed correctly. Version 8.4.1 is known to have some issues with the certain versions of p4est, so if you cannot successfully link p4est with deal.II, try downloading version 8.4.2 from the deal.II GitHub site.
+where ``/path/to/install/dir'' is the path to where you want to install deal.II. After installation is complete (which can take take up to an hour), open the file ``summary.log''. The second section of the log file lists the configured features. Ensure that DEAL$\_$II$\_$WITH$\_$MPI and DEAL$\_$II$\_$WITH$\_$P4EST say either ``set up with bundled packages'' or ``set up with external dependences''. If either is listed as ``OFF'', then deal.II was unable to find MPI or p4est. If this is the case, double check that MPI and p4est were installed correctly. 
 
 \subsubsection{Using candi}
 An alternative route is to use the following candi (compile and install) script to install deal.II and its prerequisites: \\
