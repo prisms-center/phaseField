@@ -10,7 +10,8 @@ double InitialCondition<dim>::value (const Point<dim> &p, const unsigned int com
 	  // according to its variable index.
 
 	  double dx=userInputs.domain_size[0]/((double) userInputs.subdivisions[0])/std::pow(2.0,userInputs.refine_factor);
-	  double c_avg = boost::get<double>(userInputs.model_constants[3]);
+	  double c_avg = userInputs.get_model_constant_double(3);
+
 	  double r=0.0;
 
 	  // Initial condition for the concentration field

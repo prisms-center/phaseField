@@ -14,7 +14,7 @@ double customPDE<dim,degree>::nucProb(double cValue, double dV, double ct) const
     if (dim ==3) ssf=(cValue-calmin)*(cValue-calmin);
 	// Calculate the nucleation rate
 	double J=k1*exp(-k2/(std::max(ssf,1.0e-6)))*exp(-tau/ct);
-	double retProb=1.0-exp(-J*this->userInputs.dtValue*((double)skipNucleationSteps)*dV);
+	double retProb=1.0-exp(-J*userInputs.dtValue*((double)skipNucleationSteps)*dV);
     return retProb;
 }
 
@@ -104,8 +104,8 @@ void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim> > &newnu
                 //Make sure point is in safety zone
                 bool insafetyzone = true;
                 for (unsigned int j=0; j < dim; j++){
-                    bool periodic_j = (this->userInputs.BC_list[1].var_BC_type[2*j]==PERIODIC);
-                    bool insafetyzone_j = (periodic_j || ((nuc_ele_pos[j] > borderreg) && (nuc_ele_pos[j] < this->userInputs.domain_size[j]-borderreg)));
+                    bool periodic_j = (userInputs.BC_list[1].var_BC_type[2*j]==PERIODIC);
+                    bool insafetyzone_j = (periodic_j || ((nuc_ele_pos[j] > borderreg) && (nuc_ele_pos[j] < userInputs.domain_size[j]-borderreg)));
                     insafetyzone = insafetyzone && insafetyzone_j;
                 }
 
@@ -176,9 +176,9 @@ void customPDE<dim,degree>::safetyCheckNewNuclei(std::vector<nucleus<dim> > newn
                     double weighted_dist = 0.0;
                     for (unsigned int i=0; i<dim; i++){
                         double shortest_edist = thisNuclei->center(i) - q_point_list[q_point](i);
-                        bool periodic_i = (this->userInputs.BC_list[1].var_BC_type[2*i]==PERIODIC);
+                        bool periodic_i = (userInputs.BC_list[1].var_BC_type[2*i]==PERIODIC);
                         if (periodic_i){
-                            double domsize =this->userInputs.domain_size[i];
+                            double domsize =userInputs.domain_size[i];
                             shortest_edist = shortest_edist-round(shortest_edist/domsize)*domsize;
                         }
                         double temp = shortest_edist/(opfreeze_semiaxes[i]);
@@ -220,7 +220,7 @@ void customPDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim> > newn
 
     unsigned int numDoF_preremesh = this->totalDOFs;
 
-    for (unsigned int remesh_index=0; remesh_index < (this->userInputs.max_refinement_level-this->userInputs.min_refinement_level); remesh_index++){
+    for (unsigned int remesh_index=0; remesh_index < (userInputs.max_refinement_level-userInputs.min_refinement_level); remesh_index++){
         ti  = this->triangulation.begin_active();
         di = this->dofHandlersSet_nonconst[0]->begin_active();
         while (di != this->dofHandlersSet_nonconst[0]->end()){
@@ -234,7 +234,7 @@ void customPDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim> > newn
                 // Calculate the distance from the corner of the cell to the middle of the cell
                 double diag_dist = 0.0;
                 for (unsigned int i=0; i<dim; i++){
-                    diag_dist += (this->userInputs.domain_size[i]*this->userInputs.domain_size[i])/(this->userInputs.subdivisions[i]*this->userInputs.subdivisions[i]);
+                    diag_dist += (userInputs.domain_size[i]*userInputs.domain_size[i])/(userInputs.subdivisions[i]*userInputs.subdivisions[i]);
                 }
                 diag_dist = sqrt(diag_dist);
                 diag_dist /= 2.0*pow(2.0,ti->level());
@@ -246,9 +246,9 @@ void customPDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim> > newn
                         double weighted_dist = 0.0;
                         for (unsigned int i=0; i<dim; i++){
                             double shortest_edist = thisNuclei->center(i) - q_point_list[q_point](i);
-                            bool periodic_i = (this->userInputs.BC_list[1].var_BC_type[2*i]==PERIODIC);
+                            bool periodic_i = (userInputs.BC_list[1].var_BC_type[2*i]==PERIODIC);
                             if (periodic_i){
-                                double domsize =this->userInputs.domain_size[i];
+                                double domsize =userInputs.domain_size[i];
                                 shortest_edist = shortest_edist-round(shortest_edist/domsize)*domsize;
                             }
                             double temp = shortest_edist/(opfreeze_semiaxes[i]);
@@ -256,7 +256,7 @@ void customPDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim> > newn
                         }
 
                         if (weighted_dist < 1.0 || thisNuclei->center.distance(q_point_list[q_point]) < diag_dist){
-                            if ((unsigned int)ti->level() < this->userInputs.max_refinement_level){
+                            if ((unsigned int)ti->level() < userInputs.max_refinement_level){
                                 mark_refine = true;
                                 break;
                             }
@@ -309,7 +309,7 @@ void customPDE<dim,degree>::getNucleiList()
         nuclei.insert(nuclei.end(),newnuclei.begin(),newnuclei.end());
 
         // Refine mesh near the new nuclei
-        if (newnuclei.size() > 0 && this->userInputs.h_adaptivity == true){
+        if (newnuclei.size() > 0 && userInputs.h_adaptivity == true){
             refineMeshNearNuclei(newnuclei);
         }
         //Print total no. of nuclei after nucleation attempt

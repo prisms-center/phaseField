@@ -32,8 +32,6 @@ void MatrixFreePDE<dim,degree>::outputResults() const {
 	  std::vector<vectorType*> postProcessedSet;
 	  post_processor.computePostProcessedFields(matrixFreeObject,solutionSet,postProcessedSet);
 
-	  pcout << postProcessedSet[0]->l2_norm() << std::endl;
-
 	  unsigned int invM_size = invM.local_size();
 	  for(unsigned int fieldIndex=0; fieldIndex<postProcessedSet.size(); fieldIndex++){
 		  for (unsigned int dof=0; dof<postProcessedSet[fieldIndex]->local_size(); ++dof){
@@ -85,7 +83,7 @@ void MatrixFreePDE<dim,degree>::outputResults() const {
 	  data_out.write_vtk (output);
   }
   else {
-	  std::cout << "PRISMS-PF Error: The parameter 'outputFileType' must be either \"vtu\" or \"vtk\"" << std::endl;
+	  std::cerr << "PRISMS-PF Error: The parameter 'outputFileType' must be either \"vtu\" or \"vtk\"" << std::endl;
 	  abort();
   }
 

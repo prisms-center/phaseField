@@ -71,10 +71,10 @@ std::vector<double> opfreeze_semiaxes {1.5*semiaxis_a,1.5*semiaxis_b,1.5*semiaxi
 // For concentration
 #define term_muxV (cx + (c_alpha - c_beta)*hnV*nx)
 #define rcV   (c)
-#define rcxV  (constV(-McV*this->userInputs.dtValue)*term_muxV)
+#define rcxV  (constV(-McV*userInputs.dtValue)*term_muxV)
 //For order parameter (gamma is a variable order parameter mobility factor)
-#define rnV   (n-constV(this->userInputs.dtValue*MnV)*gamma*((fbV-faV)*hnV - (c_beta-c_alpha)*fbcV*hnV + W_barrier*fbarriernV))
-#define rnxV  (constV(-this->userInputs.dtValue*KnV*MnV)*gamma*nx)
+#define rnV   (n-constV(userInputs.dtValue*MnV)*gamma*((fbV-faV)*hnV - (c_beta-c_alpha)*fbcV*hnV + W_barrier*fbarriernV))
+#define rnxV  (constV(-userInputs.dtValue*KnV*MnV)*gamma*nx)
 
 // =================================================================================
 // residualRHS
@@ -95,7 +95,7 @@ void customPDE<dim,degree>::residualRHS(const std::vector<modelVariable<dim> > &
 												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 double time = this->currentTime;
-double dx=this->userInputs.domain_size[0]/std::pow(2.0,this->userInputs.refine_factor);
+double dx=userInputs.domain_size[0]/std::pow(2.0,userInputs.refine_factor);
 
 //Calculation of mobility factor, gamma
 dealii::VectorizedArray<double> gamma = constV(1.0);
@@ -123,9 +123,9 @@ for (typename std::vector<nucleus<dim> >::const_iterator thisNucleus=nuclei.begi
 	dealii::VectorizedArray<double> weighted_dist = constV(0.0);
 	for (unsigned int i=0; i<dim; i++){
         dealii::VectorizedArray<double> temp = (thisNucleus->center(i) - q_point_loc(i));
-        bool periodic_i = (this->userInputs.BC_list[1].var_BC_type[2*i]==PERIODIC);
+        bool periodic_i = (userInputs.BC_list[1].var_BC_type[2*i]==PERIODIC);
         if (periodic_i){
-            double domsize_i =this->userInputs.domain_size[i];
+            double domsize_i =userInputs.domain_size[i];
             for (unsigned j=0; j<n.n_array_elements;j++)
         		temp[j]=temp[j]-round(temp[j]/domsize_i)*domsize_i;
         }
@@ -142,9 +142,9 @@ for (typename std::vector<nucleus<dim> >::const_iterator thisNucleus=nuclei.begi
     			double avg_semiaxis = 0.0;
     			for (unsigned int j=0; j<dim; j++){
                     double temp = (thisNucleus->center(j) - q_point_loc(j)[i]);
-                    bool periodic_j = (this->userInputs.BC_list[1].var_BC_type[2*j]==PERIODIC);
+                    bool periodic_j = (userInputs.BC_list[1].var_BC_type[2*j]==PERIODIC);
                     if (periodic_j){
-                        double domsize_j =this->userInputs.domain_size[j];
+                        double domsize_j =userInputs.domain_size[j];
                         temp=temp-round(temp/domsize_j)*domsize_j;
                     }
                     temp=temp/thisNucleus->semiaxes[j];
@@ -161,7 +161,7 @@ for (typename std::vector<nucleus<dim> >::const_iterator thisNucleus=nuclei.begi
 
     double nucendtime = thisNucleus->seededTime + thisNucleus->seedingTime;
     dealii::VectorizedArray<double> spacearg=(std::sqrt(weighted_dist)-constV(1.0))/constV(dx);
-    dealii::VectorizedArray<double> timearg=constV(time-nucendtime)/constV(this->userInputs.dtValue);
+    dealii::VectorizedArray<double> timearg=constV(time-nucendtime)/constV(userInputs.dtValue);
     dealii::VectorizedArray<double> spacefactor=constV(0.5)-constV(0.5)*spacearg/(std::abs(spacearg)+epsil);
     dealii::VectorizedArray<double> timefactor=constV(0.5)-constV(0.5)*timearg/(std::abs(timearg)+epsil);
     dealii::VectorizedArray<double> localgamma= constV(1.0)-spacefactor*timefactor;

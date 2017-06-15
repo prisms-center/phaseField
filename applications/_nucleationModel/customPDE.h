@@ -18,7 +18,7 @@ class customPDE: public MatrixFreePDE<dim,degree>
 public:
 
 	// Constructor, which calls the MatrixFreePDE constructor
-	customPDE(userInputParameters<dim> _userInputs): MatrixFreePDE<dim,degree>(_userInputs) {};
+	customPDE(userInputParameters<dim> _userInputs): MatrixFreePDE<dim,degree>(_userInputs), userInputs(_userInputs) {};
 
 private:
 	#include "../../include/typeDefs.h"
@@ -40,21 +40,23 @@ private:
 	// Virtual method in MatrixFreePDE we choose to override
 	void getNucleiList ();
 
+	const userInputParameters<dim> userInputs;
+
 	// ================================================================
 	// Model constants
 	// ================================================================
 
-	double McV = boost::get<double>(this->userInputs.model_constants[0]);
-	double MnV = boost::get<double>(this->userInputs.model_constants[1]);
-	double KnV = boost::get<double>(this->userInputs.model_constants[2]);
-	double c_avg = boost::get<double>(this->userInputs.model_constants[3]);
-	double W_barrier = boost::get<double>(this->userInputs.model_constants[4]);
-	double A0 = boost::get<double>(this->userInputs.model_constants[5]);
-	double A2 = boost::get<double>(this->userInputs.model_constants[6]);
-	double calmin = boost::get<double>(this->userInputs.model_constants[7]);
-	double B0 = boost::get<double>(this->userInputs.model_constants[8]);
-	double B2 = boost::get<double>(this->userInputs.model_constants[9]);
-	double cbtmin = boost::get<double>(this->userInputs.model_constants[10]);
+	double McV = userInputs.get_model_constant_double(0);
+	double MnV = userInputs.get_model_constant_double(1);
+	double KnV = userInputs.get_model_constant_double(2);
+	double c_avg = userInputs.get_model_constant_double(3);
+	double W_barrier = userInputs.get_model_constant_double(4);
+	double A0 = userInputs.get_model_constant_double(5);
+	double A2 = userInputs.get_model_constant_double(6);
+	double calmin = userInputs.get_model_constant_double(7);
+	double B0 = userInputs.get_model_constant_double(8);
+	double B2 = userInputs.get_model_constant_double(9);
+	double cbtmin = userInputs.get_model_constant_double(10);
 
 	double interface_coeff=std::sqrt(2.0*KnV/W_barrier);
 

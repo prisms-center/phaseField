@@ -27,7 +27,11 @@ public:
 	// Method to create the list of BCs from the user input strings (called from loadInputParameters)
 	void load_BC_list(std::vector<std::string> list_of_BCs, std::vector<varBCs<dim> > & BC_list);
 
-
+	// Methods to access members of 'model_constant', one for each type (since one can't template based on return values)
+	// These are really just wrappers for Boost's 'get' function
+	double get_model_constant_double(unsigned int index) const {return boost::get<double>(model_constants[index]);};
+	double get_model_constant_int(unsigned int index) const {return boost::get<int>(model_constants[index]);};
+	double get_model_constant_bool(unsigned int index) const {return boost::get<bool>(model_constants[index]);};
 
 	// Meshing parameters
 	std::vector<double> domain_size;
