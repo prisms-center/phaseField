@@ -21,12 +21,9 @@ scalargradType nx = modelVariablesList[0].scalarGrad;
 
 // Parameters in the residual equations and expressions for the residual equations
 // can be set here.
-
-double MnV = 1.0;
-double KnV = 2.0;
 scalarvalueType fnV = (4.0*n*(n-1.0)*(n-0.5));
 scalarvalueType rnV = (n-constV(this->userInputs.dtValue*MnV)*fnV);
-scalargradType rnxV = (constV(this->userInputs.dtValue*KnV*MnV)*nx);
+scalargradType rnxV = (-constV(this->userInputs.dtValue*KnV*MnV)*nx);
 
 // Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
 modelResidualsList[0].scalarValueResidual = rnV;
@@ -76,9 +73,6 @@ scalarvalueType total_energy_density = constV(0.0);
 // The order parameter and its derivatives (names here should match those in the macros above)
 scalarvalueType n = modelVarList[0].scalarValue;
 scalargradType nx = modelVarList[0].scalarGrad;
-
-double MnV = 1.0;
-double KnV = 2.0;
 
 // The homogenous free energy
 scalarvalueType f_chem = (n*n*n*n - 2.0*n*n*n + n*n);
