@@ -14,6 +14,7 @@
 #include "varBCs.h"
 #include "fields.h"
 #include "userInputParameters.h"
+#include "nucleus.h"
 
 ////define data types
 #ifndef scalarType
@@ -221,7 +222,13 @@ class MatrixFreePDE:public Subscriptor
   /*Virtual method to apply initial conditions.  This is usually expected to be provided by the user in IBVP (Initial Boundary Value Problems).*/
 
   void applyInitialConditions();
-  virtual void getNucleiList (){};
+
+
+  // Vector of all the nuclei seeded in the problem
+  std::vector<nucleus<dim> > nuclei;
+
+  // Method to get a list of new nuclei to be seeded
+  void updateNucleiList();
 
   /*Method to compute energy like quantities.*/
   void computeEnergy();

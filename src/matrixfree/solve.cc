@@ -37,6 +37,9 @@ void MatrixFreePDE<dim,degree>::solve(){
       //check and perform adaptive mesh refinement
       adaptiveRefine(currentIncrement);
 
+      // Update the list of nuclei (if relevant)
+      updateNucleiList();
+
       //solve time increment
       solveIncrement();
 

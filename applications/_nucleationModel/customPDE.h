@@ -78,8 +78,8 @@ private:
 	// Function to refine the mesh near the new nuclei, generic, accesses and modifies MatrixFreePDE members
 	void refineMeshNearNuclei(std::vector<nucleus<dim> > newnuclei);
 
-	// Vector of all the nuclei seeded in the problem
-	std::vector<nucleus<dim> > nuclei;
+	// // Vector of all the nuclei seeded in the problem
+	// std::vector<nucleus<dim> > nuclei;
 };
 
 #endif /* APPLICATIONS_ALLENCAHN_CUSTOMPDE_H_ */
