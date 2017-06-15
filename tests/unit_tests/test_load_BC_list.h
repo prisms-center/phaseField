@@ -18,7 +18,7 @@ template <int dim,typename T>
     list_of_BCs.push_back("PERIODIC,PERIODIC,ZERO_DERIVATIVE,ZERO_DERIVATIVE");
     list_of_BCs.push_back("DIRICHLET: 2.5,DIRICHLET: 1.5,ZERO_DERIVATIVE,ZERO_DERIVATIVE");
 
-    userInputs.load_BC_list(list_of_BCs, userInputs.BC_list);
+    userInputs.load_BC_list(list_of_BCs);
 
     bool pass1;
     pass1 = userInputs.BC_list.size() == 3;
@@ -54,7 +54,7 @@ template <int dim,typename T>
     list_of_BCs.push_back("DIRICHLET: 2.5");
     list_of_BCs.push_back("PERIODIC,PERIODIC,ZERO_DERIVATIVE,ZERO_DERIVATIVE,PERIODIC,PERIODIC");
 
-    userInputs_3D.load_BC_list(list_of_BCs, userInputs_3D.BC_list);
+    userInputs_3D.load_BC_list(list_of_BCs);
     bool pass4;
     pass4 = userInputs_3D.BC_list.size() == 2;
     pass4 = pass4 && (userInputs_3D.BC_list[0].var_BC_type.size() == 6);

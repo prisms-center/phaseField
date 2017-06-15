@@ -2,8 +2,9 @@
 #include "../../include/inputFileReader.h"
 
 // Method to parse a single line to find a target key value pair
-bool inputFileReader::parse_line(std::string line, std::string keyword, std::string entry_name,
-                                    std::string & out_string, bool expect_equals_sign){
+bool inputFileReader::parse_line(std::string line, const std::string keyword, const std::string entry_name,
+                                    std::string & out_string, const bool expect_equals_sign) const
+    {
 
     // Strip spaces at the front and back
     while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
@@ -66,7 +67,8 @@ bool inputFileReader::parse_line(std::string line, std::string keyword, std::str
 
 // Method to parse an input file to get a list of variables from related subsections
 std::vector<std::string> inputFileReader::get_subsection_entry_list(const std::string parameters_file_name,
-                                                                    std::string subsec_name, std::string entry_name, std::string default_entry){
+                                                                    const std::string subsec_name, const std::string entry_name, const std::string default_entry) const
+    {
 
     std::ifstream input_file;
     input_file.open(parameters_file_name);
@@ -125,7 +127,8 @@ std::vector<std::string> inputFileReader::get_subsection_entry_list(const std::s
 
 // Method to parse an input file to get a list of variables from related subsections
 unsigned int inputFileReader::get_number_of_entries(const std::string parameters_file_name,
-                                                                    std::string keyword, std::string entry_name){
+                                                                    const std::string keyword, const std::string entry_name) const
+    {
 
     std::ifstream input_file;
     input_file.open(parameters_file_name);
@@ -148,7 +151,7 @@ unsigned int inputFileReader::get_number_of_entries(const std::string parameters
 
 // Before fully parsing the parameter file, we need to know how many field variables there are
 // This function is largely taken from ASPECT (https://github.com/geodynamics/aspect/blob/master/source/main.cc)
-std::string inputFileReader::get_last_value_of_parameter(const std::string &parameters, const std::string &parameter_name)
+std::string inputFileReader::get_last_value_of_parameter(const std::string &parameters, const std::string &parameter_name) const
     {
         std::string return_value;
 
@@ -216,8 +219,8 @@ std::string inputFileReader::get_last_value_of_parameter(const std::string &para
 
 
 void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_handler,
-                                            std::vector<std::string> var_types, unsigned int number_of_materials,
-                                            unsigned int number_of_pp_variables, unsigned int num_of_constants){
+                                            const std::vector<std::string> var_types, const unsigned int number_of_materials,
+                                            const unsigned int number_of_pp_variables, const unsigned int num_of_constants) const {
 
     // Declare all of the entries
     parameter_handler.declare_entry("Number of dimensions","-1",dealii::Patterns::Integer(),"The number of dimensions for the simulation.");

@@ -88,7 +88,7 @@ class MatrixFreePDE:public Subscriptor
   ConditionalOStream  pcout;
 
  protected:
-  userInputParameters<dim> userInputs;
+  const userInputParameters<dim> userInputs;
 
   dealii::Threads::Mutex assembler_lock;
 

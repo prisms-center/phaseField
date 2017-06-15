@@ -56,10 +56,6 @@ void MatrixFreePDE<dim,degree>::solve(){
 
   //time independent BVP
   else{
-      if (userInputs.totalIncrements>1){
-          pcout << "solve.h: this problem has only ELLIPTIC fields, hence neglecting totalIncrementsV>1 \n";
-      }
-      userInputs.totalIncrements=1;
 
       //solve
       solveIncrement();

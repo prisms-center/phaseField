@@ -3,8 +3,8 @@
 
 template <int dim>
 void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & parameter_handler,
-                                                    unsigned int _number_of_variables, unsigned int _number_of_materials,
-                                                    unsigned int _number_of_pp_variables, unsigned int _number_of_constants){
+                                                    const unsigned int _number_of_variables, const unsigned int _number_of_materials,
+                                                    const unsigned int _number_of_pp_variables, const unsigned int _number_of_constants){
 
     // Load the inputs into the class member variables
 
@@ -46,30 +46,6 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
     int totalIncrements_temp = parameter_handler.get_integer("Number of time steps");
     finalTime = parameter_handler.get_double("Simulation end time");
 
-    // Determine the maximum number of time steps
-    if ((totalIncrements_temp >= 0) && (finalTime >= 0.0)) {
-        if (std::ceil(finalTime/dtValue) > totalIncrements_temp) {
-            totalIncrements = totalIncrements_temp;
-            finalTime = totalIncrements*dtValue;
-        }
-        else {
-            totalIncrements = std::ceil(finalTime/dtValue);
-        }
-    }
-    else if ((totalIncrements_temp >= 0) && (finalTime < 0.0)) {
-        totalIncrements = totalIncrements_temp;
-        finalTime = totalIncrements*dtValue;
-    }
-    else if ((totalIncrements_temp < 0) && (finalTime >= 0.0)) {
-        totalIncrements = std::ceil(finalTime/dtValue);
-    }
-    else {
-        // Should change to an exception
-        std::cerr << "Invalid selections for the final time and the number of increments. At least one should be given in the input file and should be positive." << std::endl;
-        std::cout << finalTime << " " << totalIncrements_temp << std::endl;
-        abort();
-    }
-
     // Elliptic solver parameters
     solver_type = parameter_handler.get("Linear solver");
     abs_tol = parameter_handler.get_bool("Use absolute convergence tolerance");
@@ -82,9 +58,6 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
     std::vector<int> user_given_time_step_list_temp = dealii::Utilities::string_to_int(dealii::Utilities::split_string_list(parameter_handler.get("List of time steps to output")));
     std::vector<unsigned int> user_given_time_step_list;
     for (unsigned int i=0; i<user_given_time_step_list_temp.size(); i++) user_given_time_step_list.push_back(user_given_time_step_list_temp[i]);
-
-    // Use these inputs to create a list of time steps where the code should output, stored in the member
-    outputTimeStepList = setOutputTimeSteps(output_condition, num_outputs,user_given_time_step_list);
 
     skip_print_steps = parameter_handler.get_integer("Skip print steps");
     output_file_type = parameter_handler.get("Output file type");
@@ -121,6 +94,48 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
         }
         parameter_handler.leave_subsection();
     }
+
+    // If all of the variables are ELLIPTIC, then totalIncrements should be 1 and finalTime should be 0
+    bool only_elliptic_pdes = true;
+    for (unsigned int i=0; i<var_eq_type.size(); i++){
+        if (var_eq_type.at(i) == "PARABOLIC"){
+            only_elliptic_pdes = false;
+            break;
+        }
+    }
+
+    // Determine the maximum number of time steps
+    if (only_elliptic_pdes){
+        totalIncrements = 1;
+        finalTime = 0.0;
+    }
+    else {
+        if ((totalIncrements_temp >= 0) && (finalTime >= 0.0)) {
+            if (std::ceil(finalTime/dtValue) > totalIncrements_temp) {
+                totalIncrements = totalIncrements_temp;
+                finalTime = totalIncrements*dtValue;
+            }
+            else {
+                totalIncrements = std::ceil(finalTime/dtValue);
+            }
+        }
+        else if ((totalIncrements_temp >= 0) && (finalTime < 0.0)) {
+            totalIncrements = totalIncrements_temp;
+            finalTime = totalIncrements*dtValue;
+        }
+        else if ((totalIncrements_temp < 0) && (finalTime >= 0.0)) {
+            totalIncrements = std::ceil(finalTime/dtValue);
+        }
+        else {
+            // Should change to an exception
+            std::cerr << "Invalid selections for the final time and the number of increments. At least one should be given in the input file and should be positive." << std::endl;
+            std::cout << finalTime << " " << totalIncrements_temp << std::endl;
+            abort();
+        }
+    }
+
+    // Use these inputs to create a list of time steps where the code should output, stored in the member
+    outputTimeStepList = setOutputTimeSteps(output_condition, num_outputs,user_given_time_step_list);
 
     // Elastic constants
     unsigned int number_of_materials = _number_of_materials;
@@ -280,7 +295,7 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
     }
 
     // Load the BC information from the strings into a varBCs object
-    load_BC_list(list_of_BCs, BC_list);
+    load_BC_list(list_of_BCs);
 
     // Load the user-defined constants
     for (unsigned int i=0; i<_number_of_constants; i++){
@@ -368,7 +383,7 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
 }
 
 template <int dim>
-void userInputParameters<dim>::load_BC_list(std::vector<std::string> list_of_BCs, std::vector<varBCs<dim> > & BC_list){
+void userInputParameters<dim>::load_BC_list(std::vector<std::string> list_of_BCs){
     // Load the BC information from the strings into a varBCs object
     // Move this to a new method and write a unit test for it!!!!
 
