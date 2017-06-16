@@ -20,11 +20,13 @@ if (userInputs.h_adaptivity == true){
 	}
 	else if ( (currentIncrement%userInputs.skip_remeshing_steps==0) ){
 
+		// Apply constraints before remeshing
 		for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-   		 constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
-   		 constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
-   		 solutionSet[fieldIndex]->update_ghost_values();
-    	 }
+			constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+			constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+			solutionSet[fieldIndex]->update_ghost_values();
+		}
+
 		adaptiveRefineCriterion();
 		refineGrid();
 		reinit();

@@ -13,20 +13,9 @@ void MatrixFreePDE<dim,degree>::vmult (vectorType &dst, const vectorType &src) c
   matrixFreeObject.initialize_dof_vector(src2,  currentFieldIndex);
   src2=src;
 
-  //set Dirichlet nodes force to zero in the src
-  // for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[currentFieldIndex]->begin(); it!=valuesDirichletSet[currentFieldIndex]->end(); ++it){
-  //   if (src2.in_local_range(it->first)){
-  //     src2(it->first) = 0.0; //*jacobianDiagonal(it->first);
-  //   }
-  // }
-  //constraintsOtherSet[currentFieldIndex]->distribute(src2);
-  
   //call cell_loop
   dst=0.0;
   matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getLHS, this, dst, src2);
-
-  // According to the deal.II documentation, compress doesn't do anything
-  //  dst.compress(VectorOperation::add);
 
   //Account for Dirichlet BC's (essentially copy dirichlet DOF values present in src to dst)
   for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[currentFieldIndex]->begin(); it!=valuesDirichletSet[currentFieldIndex]->end(); ++it){

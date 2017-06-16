@@ -68,12 +68,12 @@ void PostProcessor<dim,degree>::getPostProcessedFields(const MatrixFree<dim,doub
 		for (unsigned int i=0; i<userInputs.number_of_variables; i++){
 			if (userInputs.varInfoListRHS[i].is_scalar) {
 				scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].reinit(cell);
-				scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].read_dof_values_plain(*src[userInputs.varInfoListRHS[i].global_var_index]);
+				scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].read_dof_values(*src[userInputs.varInfoListRHS[i].global_var_index]);
 				scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].evaluate(userInputs.need_value[i], userInputs.need_gradient[i], userInputs.need_hessian[i]);
 			}
 			else {
 				vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].reinit(cell);
-				vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].read_dof_values_plain(*src[userInputs.varInfoListRHS[i].global_var_index]);
+				vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].read_dof_values(*src[userInputs.varInfoListRHS[i].global_var_index]);
 				vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].evaluate(userInputs.need_value[i], userInputs.need_gradient[i], userInputs.need_hessian[i]);
 			}
 		}
