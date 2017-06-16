@@ -6,7 +6,7 @@
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::solve(){
   //log time
-  computing_timer.enter_section("matrixFreePDE: solve"); 
+  computing_timer.enter_section("matrixFreePDE: solve");
   pcout << "\nsolving...\n\n";
 
   getOutputTimeSteps(userInputs.output_condition,userInputs.num_outputs,userInputs.user_given_time_step_list,outputTimeStepList);
@@ -24,10 +24,10 @@ void MatrixFreePDE<dim,degree>::solve(){
 			  }
 			  currentOutput++;
     }
-    
+
     //time stepping
     pcout << "\nTime stepping parameters: timeStep: " << userInputs.dtValue << "  timeFinal: " << userInputs.finalTime << "  timeIncrements: " << userInputs.totalIncrements << "\n";
-    
+
     for (currentIncrement=1; currentIncrement<=userInputs.totalIncrements; ++currentIncrement){
       //increment current time
       currentTime+=userInputs.dtValue;
@@ -45,7 +45,12 @@ void MatrixFreePDE<dim,degree>::solve(){
 
       //output results to file
       if ((writeOutput) && (outputTimeStepList[currentOutput] == currentIncrement)) {
-    	  outputResults();
+          for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
+     		 constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+     		 constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+     		 solutionSet[fieldIndex]->update_ghost_values();
+      	 }
+          outputResults();
 
     	  if (userInputs.calc_energy == true){
     		  computeEnergy();
@@ -68,7 +73,7 @@ void MatrixFreePDE<dim,degree>::solve(){
     //computing_timer.enter_section("matrixFreePDE: AMR");
     //adaptiveRefine(0);
     //computing_timer.exit_section("matrixFreePDE: AMR");
-    
+
     //solve
     solveIncrement();
 
@@ -84,7 +89,7 @@ void MatrixFreePDE<dim,degree>::solve(){
   }
 
   //log time
-  computing_timer.exit_section("matrixFreePDE: solve"); 
+  computing_timer.exit_section("matrixFreePDE: solve");
 }
 
 #include "../../include/matrixFreePDE_template_instantiations.h"

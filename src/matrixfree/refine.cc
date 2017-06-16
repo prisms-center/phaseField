@@ -2,7 +2,7 @@
 
 #include "../../include/matrixFreePDE.h"
 
-//default implementation of adaptive mesh refinement 
+//default implementation of adaptive mesh refinement
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::adaptiveRefine(unsigned int currentIncrement){
 if (userInputs.h_adaptivity == true){
@@ -19,6 +19,12 @@ if (userInputs.h_adaptivity == true){
 		}
 	}
 	else if ( (currentIncrement%userInputs.skip_remeshing_steps==0) ){
+
+		for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
+   		 constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+   		 constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+   		 solutionSet[fieldIndex]->update_ghost_values();
+    	 }
 		adaptiveRefineCriterion();
 		refineGrid();
 		reinit();
@@ -127,4 +133,3 @@ triangulation.execute_coarsening_and_refinement();
 }
 
 #include "../../include/matrixFreePDE_template_instantiations.h"
-
