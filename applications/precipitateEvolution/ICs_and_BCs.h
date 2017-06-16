@@ -104,5 +104,3 @@ void customPDE<dim,degree>::setBCs(){
 	}
 
 }
-
-
