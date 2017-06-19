@@ -63,7 +63,7 @@ private:
 	double epsilon = userInputs.get_model_constant_double(14);
 
 	double interface_coeff=std::sqrt(2.0*KnV/W_barrier);
-
+	
 	// ================================================================
 
 	// ----------------------------------------------------------------
