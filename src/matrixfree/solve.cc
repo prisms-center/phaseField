@@ -64,31 +64,6 @@ void MatrixFreePDE<dim,degree>::solve(){
 
   //time independent BVP
   else{
-<<<<<<< HEAD
-=======
-    if (userInputs.totalIncrements>1){
-      pcout << "solve.h: this problem has only ELLIPTIC fields, hence neglecting totalIncrementsV>1 \n";
-    }
-    userInputs.totalIncrements=1;
-
-    //check and perform adaptive mesh refinement
-    //computing_timer.enter_section("matrixFreePDE: AMR");
-    //adaptiveRefine(0);
-    //computing_timer.exit_section("matrixFreePDE: AMR");
-
-    //solve
-    solveIncrement();
-
-    //output results to file
-    if (writeOutput){
-    	outputResults();
-    	if (userInputs.calc_energy == true){
-    		computeEnergy();
-    		outputFreeEnergy(freeEnergyValues);
-    	}
-    }
->>>>>>> fixed_constraints
-
       //solve
       solveIncrement();
 
