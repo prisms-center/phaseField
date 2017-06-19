@@ -6,10 +6,10 @@ capabilities were added.
 
 Added functionality:
 - Add postprocessing capabilities, which can be accessed in the new "postprocess.h" file in each application folder.
-- New applications "_nucleationModel" and "_preferential_nucleationModel" were added and include new nucleation capabilities.
+- New applications "nucleationModel" and "_preferential_nucleationModel" were added and include new nucleation capabilities.
 
 Changes to the pre-built applications:
-- New applications "_nucleationModel" and "_preferential_nucleationModel" were added and include new nucleation capabilities.
+- New applications "nucleationModel" and "_preferential_nucleationModel" were added and include new nucleation capabilities.
 - Changed the initial conditions for the Allen-Cahn and the Cahn-Hilliard applications to have smooth initial profiles.
 - The elastic constants are now accessed by "userInputs.CIJ_List" instead of just "CIJ_List" in the functions in equations.h.
 - Updated the gradient energy coefficient, the time step, and the mesh resolution of the Allen-Cahn application. Increased the
@@ -21,7 +21,8 @@ Changes to the pre-built applications:
   deal.II method.
 
 Performance improvements:
-- Updated how Dirichlet contraints are implemented, reducing the number of solver iterations for non-zero Dirichlet BCs.
+- Removed unnecessary applications of constraints, improving run times by up to 30%.
+- Updated how Dirichlet constraints are implemented, reducing the number of solver iterations for non-zero Dirichlet BCs.
 
 Bug fixes:
 - Dirichlet BCs now work for parabolic PDEs.
@@ -39,6 +40,7 @@ Other changes:
 
 Known issues:
 - PFields only work for scalar fields and only work when the variable with index zero is a scalar field.
+
 
 ====================
 Version 1.1.1:
