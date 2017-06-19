@@ -1,5 +1,5 @@
-#include "../include/parallelNucleationList.h"
-#include "../include/nucleus.h"
+#include "../../include/parallelNucleationList.h"
+#include "../../include/nucleus.h"
 
 // =================================================================================
 // Constructor
