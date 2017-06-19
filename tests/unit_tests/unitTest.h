@@ -47,6 +47,7 @@ void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Vectorized
 
 #include "../../include/matrixFreePDE.h"
 #include "../../include/postprocessor.h"
+#include "../../include/parallelNucleationList.h"
 
 #include "../../src/matrixfree/matrixFreePDE.cc"
 #include "../../src/matrixfree/init.cc"
@@ -68,6 +69,7 @@ void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Vectorized
 #include "../../src/matrixfree/nucleation.cc"
 
 #include "../../src/inputFileReader/inputFileReader.cc"
+#include "../../src/parallelNucleationList/parallelNucleationList.cc"
 
 #include "../../src/models/mechanics/computeStress.h"
 
