@@ -108,11 +108,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">// The names of the variables, whether they are scalars or vectors and whether the</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// governing eqn for the variable is parabolic or elliptic</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="allen_cahn_2postprocess_8h.html#a4847db05e58c372a2cf307c0b7b6948a">   19</a></span>&#160;<span class="preprocessor">#define pp_variable_name {&quot;pp&quot;}</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="allen_cahn_2postprocess_8h.html#a4847db05e58c372a2cf307c0b7b6948a">   19</a></span>&#160;<span class="preprocessor">#define pp_variable_name {&quot;mag_grad_n&quot;}</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="allen_cahn_2postprocess_8h.html#adde71368ceb09d5cd394578f1c61ff71">   20</a></span>&#160;<span class="preprocessor">#define pp_variable_type {&quot;SCALAR&quot;}</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">// Flags for whether the value, gradient, and Hessian are needed in the residual eqns</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="allen_cahn_2postprocess_8h.html#a2eb50afb77288da4d1c2b764fef043a7">   23</a></span>&#160;<span class="preprocessor">#define pp_need_val {true}</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="allen_cahn_2postprocess_8h.html#a2eb50afb77288da4d1c2b764fef043a7">   23</a></span>&#160;<span class="preprocessor">#define pp_need_val {false}</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="allen_cahn_2postprocess_8h.html#a774681d86698bb88f03a2ce07d1083e9">   24</a></span>&#160;<span class="preprocessor">#define pp_need_grad {true}</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="allen_cahn_2postprocess_8h.html#aad8ac4a306807f9dacafffd37c5dd6f1">   25</a></span>&#160;<span class="preprocessor">#define pp_need_hess  {false}</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
@@ -130,34 +130,33 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                                                <span class="keyword">const</span> <a class="code" href="classlist__of___c_i_j.html">list_of_CIJ&lt;dim&gt;</a> material_moduli) {</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">// The order parameter and its derivatives (names here should match those in the macros above)</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;dealii::VectorizedArray&lt;double&gt; n = modelVariablesList[0].scalarValue;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;dealii::Tensor&lt;1, dim, dealii::VectorizedArray&lt;double&gt; &gt; nx = modelVariablesList[0].scalarGrad;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;dealii::Tensor&lt;1, dim, dealii::VectorizedArray&lt;double&gt; &gt; pp_field;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;pp_field[0] = nx[0];</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;pp_field[1] = nx[1];</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;dealii::Tensor&lt;1, dim, dealii::VectorizedArray&lt;double&gt; &gt; nx = modelVariablesList[0].scalarGrad;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;dealii::Tensor&lt;1, dim, dealii::VectorizedArray&lt;double&gt; &gt; pp_field;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;pp_field[0] = nx[0];</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;pp_field[1] = nx[1];</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;modelResidualsList[0].scalarValueResidual = pp_field[0]; <span class="comment">//constV(0.0);</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;modelResidualsList[0].scalarValueResidual = std::sqrt(pp_field[0]*pp_field[0]+pp_field[1]*pp_field[1]); <span class="comment">//constV(0.0);</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// =================================================================================</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">// Template instantiations</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">template</span> <span class="keywordtype">void</span> <a class="code" href="__nucleation_model_2postprocess_8h.html#a0d9bd5cc0ed4110f93a7161e4f4c3f63">postProcessedFields&lt;2&gt;</a>(<span class="keyword">const</span> std::vector&lt;modelVariable&lt;2&gt; &gt; &amp; modelVariablesList,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        std::vector&lt;modelResidual&lt;2&gt; &gt; &amp; modelResidualsList,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keyword">const</span> dealii::Point&lt;2, dealii::VectorizedArray&lt;double&gt; &gt; q_point_loc,</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keyword">const</span> <a class="code" href="classlist__of___c_i_j.html">list_of_CIJ&lt;2&gt;</a> material_moduli);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">template</span> <span class="keywordtype">void</span> <a class="code" href="__nucleation_model_2postprocess_8h.html#a5aa041d7c15e5088c33d83f643cc736c">postProcessedFields&lt;3&gt;</a>(<span class="keyword">const</span> std::vector&lt;modelVariable&lt;3&gt; &gt; &amp; modelVariablesList,</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        std::vector&lt;modelResidual&lt;3&gt; &gt; &amp; modelResidualsList,</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keyword">const</span> dealii::Point&lt;3, dealii::VectorizedArray&lt;double&gt; &gt; q_point_loc,</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keyword">const</span> <a class="code" href="classlist__of___c_i_j.html">list_of_CIJ&lt;3&gt;</a> material_moduli);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* APPLICATIONS_ALLENCAHN_POSTPROCESS_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">// =================================================================================</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">// Template instantiations</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">template</span> <span class="keywordtype">void</span> <a class="code" href="__nucleation_model_2postprocess_8h.html#a0d9bd5cc0ed4110f93a7161e4f4c3f63">postProcessedFields&lt;2&gt;</a>(<span class="keyword">const</span> std::vector&lt;modelVariable&lt;2&gt; &gt; &amp; modelVariablesList,</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        std::vector&lt;modelResidual&lt;2&gt; &gt; &amp; modelResidualsList,</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keyword">const</span> dealii::Point&lt;2, dealii::VectorizedArray&lt;double&gt; &gt; q_point_loc,</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keyword">const</span> <a class="code" href="classlist__of___c_i_j.html">list_of_CIJ&lt;2&gt;</a> material_moduli);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">template</span> <span class="keywordtype">void</span> <a class="code" href="__nucleation_model_2postprocess_8h.html#a5aa041d7c15e5088c33d83f643cc736c">postProcessedFields&lt;3&gt;</a>(<span class="keyword">const</span> std::vector&lt;modelVariable&lt;3&gt; &gt; &amp; modelVariablesList,</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        std::vector&lt;modelResidual&lt;3&gt; &gt; &amp; modelResidualsList,</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keyword">const</span> dealii::Point&lt;3, dealii::VectorizedArray&lt;double&gt; &gt; q_point_loc,</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keyword">const</span> <a class="code" href="classlist__of___c_i_j.html">list_of_CIJ&lt;3&gt;</a> material_moduli);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* APPLICATIONS_ALLENCAHN_POSTPROCESS_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="classmodel_residual_html"><div class="ttname"><a href="classmodel_residual.html">modelResidual</a></div><div class="ttdef"><b>Definition:</b> model_variables.h:22</div></div>
 <div class="ttc" id="__nucleation_model_2postprocess_8h_html_a5aa041d7c15e5088c33d83f643cc736c"><div class="ttname"><a href="__nucleation_model_2postprocess_8h.html#a5aa041d7c15e5088c33d83f643cc736c">postProcessedFields&lt; 3 &gt;</a></div><div class="ttdeci">template void postProcessedFields&lt; 3 &gt;(const std::vector&lt; modelVariable&lt; 3 &gt; &gt; &amp;modelVariablesList, std::vector&lt; modelResidual&lt; 3 &gt; &gt; &amp;modelResidualsList, const dealii::Point&lt; 3, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc, const list_of_CIJ&lt; 3 &gt; material_moduli)</div></div>
 <div class="ttc" id="classlist__of___c_i_j_html"><div class="ttname"><a href="classlist__of___c_i_j.html">list_of_CIJ</a></div><div class="ttdef"><b>Definition:</b> list_of_CIJ.h:7</div></div>

@@ -4,6 +4,7 @@ var searchData=
   ['dealiiheaders_2eh',['dealIIheaders.h',['../deal_i_iheaders_8h.html',1,'']]],
   ['defaultvalues_2eh',['defaultValues.h',['../default_values_8h.html',1,'']]],
   ['delta2',['delta2',['../_c_h_a_c__anisotropy_regularized_2equations_8h.html#a127fff1313a394e736b48e2228de7102',1,'equations.h']]],
+  ['deltav',['deltaV',['../dendritic_solidification_2equations_8h.html#aa5818c847e6dd000541cd7027971b4a7',1,'equations.h']]],
   ['dgn1v',['dgn1V',['../_c_hi_ma_d__benchmark2a_2equations_8h.html#a10ab9362dcecd458a44598d1f2b66db7',1,'equations.h']]],
   ['dgn2v',['dgn2V',['../_c_hi_ma_d__benchmark2a_2equations_8h.html#a4eff2e7e1023e3bd712ac82f04d5335b',1,'equations.h']]],
   ['dgn3v',['dgn3V',['../_c_hi_ma_d__benchmark2a_2equations_8h.html#a9820dca9567449a0d25666b15e44ef58',1,'equations.h']]],
@@ -14,5 +15,6 @@ var searchData=
   ['domain_5fsize',['domain_size',['../classuser_input_parameters.html#a9148a8928b80dfeb1d12dff6d06e5434',1,'userInputParameters']]],
   ['dtvalue',['dtValue',['../classuser_input_parameters.html#aea98dff0e5974c3c2ba3ffe430dd8e40',1,'userInputParameters']]],
   ['du_5fscalar',['dU_scalar',['../class_matrix_free_p_d_e.html#aa6081073b220a4776e9a53ee5fe67e16',1,'MatrixFreePDE']]],
-  ['du_5fvector',['dU_vector',['../class_matrix_free_p_d_e.html#a97c3221ab9a3a39cc0bd7c4d9275f88c',1,'MatrixFreePDE']]]
+  ['du_5fvector',['dU_vector',['../class_matrix_free_p_d_e.html#a97c3221ab9a3a39cc0bd7c4d9275f88c',1,'MatrixFreePDE']]],
+  ['dv',['DV',['../dendritic_solidification_2equations_8h.html#a3c766b6031160948ad8852471192f6c1',1,'equations.h']]]
 ];

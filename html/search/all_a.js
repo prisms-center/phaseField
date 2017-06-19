@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['lambdav',['lambdaV',['../dendritic_solidification_2equations_8h.html#a63a44662a1b59b77aacf0dc5c2bb6e2b',1,'equations.h']]],
   ['list_5fof_5fcij',['list_of_CIJ',['../classlist__of___c_i_j.html',1,'']]],
   ['list_5fof_5fcij_2eh',['list_of_CIJ.h',['../list__of___c_i_j_8h.html',1,'']]],
   ['load_5ffield_5fname',['load_field_name',['../classuser_input_parameters.html#a75fb1688ae68e024df301f30b4a98a8d',1,'userInputParameters']]],

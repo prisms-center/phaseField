@@ -102,6 +102,7 @@ Inheritance diagram for customPDE&lt; dim, degree &gt;:</div>
  <div class="center">
   <img src="classcustom_p_d_e.png" usemap="#customPDE&lt; dim, degree &gt;_map" alt=""/>
   <map id="customPDE&lt; dim, degree &gt;_map" name="customPDE&lt; dim, degree &gt;_map">
+<area href="class_matrix_free_p_d_e.html" alt="MatrixFreePDE&lt; dim, degree &gt;" shape="rect" coords="201,1008,392,1032"/>
 <area href="class_matrix_free_p_d_e.html" alt="MatrixFreePDE&lt; dim, degree &gt;" shape="rect" coords="201,952,392,976"/>
 <area href="class_matrix_free_p_d_e.html" alt="MatrixFreePDE&lt; dim, degree &gt;" shape="rect" coords="201,896,392,920"/>
 <area href="class_matrix_free_p_d_e.html" alt="MatrixFreePDE&lt; dim, degree &gt;" shape="rect" coords="201,840,392,864"/>
@@ -125,6 +126,10 @@ Inheritance diagram for customPDE&lt; dim, degree &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a96c34e12bcd40ddcb10e80b1a5bb46b6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcustom_p_d_e.html#a96c34e12bcd40ddcb10e80b1a5bb46b6">customPDE</a> (<a class="el" href="classuser_input_parameters.html">userInputParameters</a>&lt; dim &gt; _userInputs)</td></tr>
+<tr class="separator:a96c34e12bcd40ddcb10e80b1a5bb46b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf994c4b3e37676d95e1c920d896efcb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcustom_p_d_e.html#aaf994c4b3e37676d95e1c920d896efcb">setBCs</a> ()</td></tr>
+<tr class="separator:aaf994c4b3e37676d95e1c920d896efcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96c34e12bcd40ddcb10e80b1a5bb46b6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcustom_p_d_e.html#a96c34e12bcd40ddcb10e80b1a5bb46b6">customPDE</a> (<a class="el" href="classuser_input_parameters.html">userInputParameters</a>&lt; dim &gt; _userInputs)</td></tr>
 <tr class="separator:a96c34e12bcd40ddcb10e80b1a5bb46b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf994c4b3e37676d95e1c920d896efcb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcustom_p_d_e.html#aaf994c4b3e37676d95e1c920d896efcb">setBCs</a> ()</td></tr>
@@ -257,6 +262,12 @@ Private Member Functions</h2></td></tr>
 <tr class="separator:acbaac8b3ea2ae7cff1bab76be383522f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add5d3caaa759b5286f76db4fda4d0d11"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcustom_p_d_e.html#add5d3caaa759b5286f76db4fda4d0d11">adaptiveRefineCriterion</a> ()</td></tr>
 <tr class="separator:add5d3caaa759b5286f76db4fda4d0d11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ccfe9cbd0b12d62f2cb6d6f23a57eb4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">residualRHS</a> (const std::vector&lt; <a class="el" href="classmodel_variable.html">modelVariable</a>&lt; dim &gt; &gt; &amp;modelVarList, std::vector&lt; <a class="el" href="classmodel_residual.html">modelResidual</a>&lt; dim &gt; &gt; &amp;modelResidualsList, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc) const </td></tr>
+<tr class="separator:a8ccfe9cbd0b12d62f2cb6d6f23a57eb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3be7fef8c1af88cb1c325179e4dd555"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">residualLHS</a> (const std::vector&lt; <a class="el" href="classmodel_variable.html">modelVariable</a>&lt; dim &gt; &gt; &amp;modelVarList, <a class="el" href="classmodel_residual.html">modelResidual</a>&lt; dim &gt; &amp;modelRes, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc) const </td></tr>
+<tr class="separator:ac3be7fef8c1af88cb1c325179e4dd555"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13dfb29f2b80a5ed12336bd536d96f03"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcustom_p_d_e.html#a13dfb29f2b80a5ed12336bd536d96f03">energyDensity</a> (const std::vector&lt; <a class="el" href="classmodel_variable.html">modelVariable</a>&lt; dim &gt; &gt; &amp;modelVarList, const dealii::VectorizedArray&lt; double &gt; &amp;JxW_value, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc)</td></tr>
+<tr class="separator:a13dfb29f2b80a5ed12336bd536d96f03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ccfe9cbd0b12d62f2cb6d6f23a57eb4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">residualRHS</a> (const std::vector&lt; <a class="el" href="classmodel_variable.html">modelVariable</a>&lt; dim &gt; &gt; &amp;modelVarList, std::vector&lt; <a class="el" href="classmodel_residual.html">modelResidual</a>&lt; dim &gt; &gt; &amp;modelResidualsList, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc) const </td></tr>
 <tr class="separator:a8ccfe9cbd0b12d62f2cb6d6f23a57eb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3be7fef8c1af88cb1c325179e4dd555"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">residualLHS</a> (const std::vector&lt; <a class="el" href="classmodel_variable.html">modelVariable</a>&lt; dim &gt; &gt; &amp;modelVarList, <a class="el" href="classmodel_residual.html">modelResidual</a>&lt; dim &gt; &amp;modelRes, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc) const </td></tr>
@@ -928,6 +939,30 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a96c34e12bcd40ddcb10e80b1a5bb46b6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classcustom_p_d_e.html">customPDE</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classuser_input_parameters.html">userInputParameters</a>&lt; dim &gt;&#160;</td>
+          <td class="paramname"><em>_userInputs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="add5d3caaa759b5286f76db4fda4d0d11"></a>
 <div class="memitem">
@@ -951,6 +986,48 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Reimplemented from <a class="el" href="class_matrix_free_p_d_e.html#add5d3caaa759b5286f76db4fda4d0d11">MatrixFreePDE&lt; dim, degree &gt;</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a13dfb29f2b80a5ed12336bd536d96f03"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void energyDensity </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classmodel_variable.html">modelVariable</a>&lt; dim &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>modelVarList</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::VectorizedArray&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>JxW_value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt;&#160;</td>
+          <td class="paramname"><em>q_point_loc</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="class_matrix_free_p_d_e.html#a4f6b77b1c406ecf6d25ff47d04c5780f">MatrixFreePDE&lt; dim, degree &gt;</a>.</p>
 
 </div>
 </div>
@@ -2698,6 +2775,48 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ac3be7fef8c1af88cb1c325179e4dd555"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void residualLHS </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classmodel_variable.html">modelVariable</a>&lt; dim &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>modelVarList</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmodel_residual.html">modelResidual</a>&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>modelRes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt;&#160;</td>
+          <td class="paramname"><em>q_point_loc</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="class_matrix_free_p_d_e.html#a3d0efe983ffed0fdc58d89cdc61ddd7c">MatrixFreePDE&lt; dim, degree &gt;</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a8ccfe9cbd0b12d62f2cb6d6f23a57eb4"></a>
 <div class="memitem">
 <div class="memproto">
@@ -3451,6 +3570,82 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="class_matrix_free_p_d_e.html#a1408545a1a5c628d9ade860a6a0490ef">MatrixFreePDE&lt; dim, degree &gt;</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8ccfe9cbd0b12d62f2cb6d6f23a57eb4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void residualRHS </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classmodel_variable.html">modelVariable</a>&lt; dim &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>modelVarList</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classmodel_residual.html">modelResidual</a>&lt; dim &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>modelResidualsList</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt;&#160;</td>
+          <td class="paramname"><em>q_point_loc</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="class_matrix_free_p_d_e.html#a1408545a1a5c628d9ade860a6a0490ef">MatrixFreePDE&lt; dim, degree &gt;</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aab237e2e894e361e0c1e8e62a37cce8a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void safetyCheckNewNuclei </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="structnucleus.html">nucleus</a>&lt; dim &gt; &gt;&#160;</td>
+          <td class="paramname"><em>newnuclei</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>conflict_inds</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -3488,7 +3683,7 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aab237e2e894e361e0c1e8e62a37cce8a"></a>
+<a class="anchor" id="aaf994c4b3e37676d95e1c920d896efcb"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -3496,29 +3691,20 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void safetyCheckNewNuclei </td>
+          <td class="memname">void setBCs </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="structnucleus.html">nucleus</a>&lt; dim &gt; &gt;&#160;</td>
-          <td class="paramname"><em>newnuclei</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">std::vector&lt; unsigned int &gt; &amp;&#160;</td>
-          <td class="paramname"><em>conflict_inds</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Implements <a class="el" href="class_matrix_free_p_d_e.html#a3c1d5a859d769005133d2b6b165176e2">MatrixFreePDE&lt; dim, degree &gt;</a>.</p>
 
 </div>
 </div>

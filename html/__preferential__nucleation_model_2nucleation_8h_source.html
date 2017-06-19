@@ -158,7 +158,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                ele_vol = ele_vol + fe_values.JxW(q_point);</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            }</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            ele_av_conc = ele_av_conc/ele_vol;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="comment">//Compute random no. between 0 and 1 (new method)</span></div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            rand_val=distr(gen);</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
@@ -172,9 +172,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                <span class="comment">//Bulk</span></div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                Prob=nucProb(ele_av_conc,ele_vol,<a class="code" href="__nucleation_model_2equations_8h.html#aa786777ce0a77f3d766d53dfa93da3d7">k1</a>,<a class="code" href="__preferential__nucleation_model_2equations_8h.html#a519c4cc550eb360cbb837c1c20283cd9">k2_b</a>);</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            }</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keywordflow">if</span> (rand_val &lt;= Prob){</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                <span class="comment">//Initializing random vector in &quot;dim&quot; dimensions</span></div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                std::vector&lt;double&gt; randvec(dim,0.0);</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                dealii::Point&lt;dim&gt; nuc_ele_pos;</div>
@@ -196,7 +196,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                        }</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                    }</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                }</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                <span class="comment">//Find a random point within the element</span></div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i=0; i&lt;dim; i++){</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                    randvec[i]=distr(gen);</div>
@@ -210,9 +210,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                    <span class="keywordtype">bool</span> insafetyzone_j = (periodic_j || ((nuc_ele_pos[j] &gt; <a class="code" href="__nucleation_model_2equations_8h.html#a76779f45a3732c90fea441762f6a8b25">borderreg</a>) &amp;&amp; (nuc_ele_pos[j] &lt; this-&gt;userInputs.domain_size[j]-<a class="code" href="__nucleation_model_2equations_8h.html#a76779f45a3732c90fea441762f6a8b25">borderreg</a>)));</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                    insafetyzone = insafetyzone &amp;&amp; insafetyzone_j;</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                }</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                <span class="keywordflow">if</span> (insafetyzone){</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                </div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                    <span class="comment">// Check to see if the order parameter anywhere within the element is above the threshold</span></div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                    <span class="keywordtype">bool</span> anyqp_OK = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> q_point=0; q_point&lt;num_quad_points; ++q_point){</div>
@@ -220,7 +220,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                            anyqp_OK =<span class="keyword">true</span>;</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;                        }</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                    }</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                    </div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;                    <span class="keywordflow">if</span> (anyqp_OK){</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                        <span class="comment">//Add nucleus to prospective list</span></div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;                        std::cout &lt;&lt; <span class="stringliteral">&quot;Prospective nucleation event. Nucleus no. &quot;</span> &lt;&lt; nuclei.size()+1 &lt;&lt; std::endl;</div>
@@ -258,11 +258,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>   num_quad_points = quadrature.size();</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    std::vector&lt;double&gt; var_value2(num_quad_points);</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    std::vector&lt;dealii::Point&lt;dim&gt; &gt; q_point_list(num_quad_points);</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    </div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="comment">//Nucleus cycle</span></div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">typename</span> std::vector&lt;<a class="code" href="structnucleus.html">nucleus&lt;dim&gt;</a>&gt;::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){</div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        <span class="keywordtype">bool</span> isClose=<span class="keyword">false</span>;</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        </div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        <span class="comment">//Element cycle</span></div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        <span class="keyword">typename</span> DoFHandler&lt;dim&gt;::active_cell_iterator   di = this-&gt;dofHandlersSet_nonconst[0]-&gt;begin_active();</div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        <span class="keywordflow">while</span> (di != this-&gt;dofHandlersSet_nonconst[0]-&gt;end())</div>
@@ -316,23 +316,23 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    FEValues&lt;dim&gt; fe_values (*(this-&gt;FESet[0]), quadrature, update_values|update_quadrature_points|update_JxW_values);</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>   num_quad_points = quadrature.size();</div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    std::vector&lt;dealii::Point&lt;dim&gt; &gt; q_point_list(num_quad_points);</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    </div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="keyword">typename</span> Triangulation&lt;dim&gt;::active_cell_iterator ti;</div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <span class="keyword">typename</span> DoFHandler&lt;dim&gt;::active_cell_iterator   di;</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    </div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;</div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numDoF_preremesh = this-&gt;totalDOFs;</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    </div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;</div>
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> remesh_index=0; remesh_index &lt; (this-&gt;userInputs.max_refinement_level-this-&gt;userInputs.min_refinement_level); remesh_index++){</div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        ti  = this-&gt;triangulation.begin_active();</div>
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        di = this-&gt;dofHandlersSet_nonconst[0]-&gt;begin_active();</div>
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        <span class="keywordflow">while</span> (di != this-&gt;dofHandlersSet_nonconst[0]-&gt;end()){</div>
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;            <span class="keywordflow">if</span> (di-&gt;is_locally_owned()){</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;                </div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;</div>
 <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;                <span class="keywordtype">bool</span> mark_refine = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;                </div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;</div>
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;                fe_values.reinit (di);</div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;                q_point_list = fe_values.get_quadrature_points();</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;                </div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;</div>
 <div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;                <span class="comment">// Calculate the distance from the corner of the cell to the middle of the cell</span></div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;                <span class="keywordtype">double</span> diag_dist = 0.0;</div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i=0; i&lt;dim; i++){</div>
@@ -340,10 +340,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;                }</div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;                diag_dist = sqrt(diag_dist);</div>
 <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;                diag_dist /= 2.0*pow(2.0,ti-&gt;level());</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                </div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;</div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> q_point=0; q_point&lt;num_quad_points; ++q_point){</div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;                    <span class="keywordflow">for</span> (<span class="keyword">typename</span> std::vector&lt;<a class="code" href="structnucleus.html">nucleus&lt;dim&gt;</a>&gt;::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;                        </div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;</div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;                        <span class="comment">// Calculate the ellipsoidal distance to the center of the nucleus</span></div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                        <span class="keywordtype">double</span> weighted_dist = 0.0;</div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                        <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i=0; i&lt;dim; i++){</div>
@@ -356,7 +356,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                            <span class="keywordtype">double</span> temp = shortest_edist/(<a class="code" href="__nucleation_model_2equations_8h.html#aeebcb48697ed2da204665d451070544e">opfreeze_semiaxes</a>[i]);</div>
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;                            weighted_dist += temp*temp;</div>
 <div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;                        }</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                        </div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;</div>
 <div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                        <span class="keywordflow">if</span> (weighted_dist &lt; 1.0 || thisNuclei-&gt;center.distance(q_point_list[q_point]) &lt; diag_dist){</div>
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;                            <span class="keywordflow">if</span> ((<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>)ti-&gt;level() &lt; this-&gt;userInputs.max_refinement_level){</div>
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;                                mark_refine = <span class="keyword">true</span>;</div>
@@ -375,7 +375,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        <span class="comment">// The bulk of all of modifySolutionFields is spent in the following two function calls</span></div>
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        this-&gt;refineGrid();</div>
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        this-&gt;reinit();</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        </div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;</div>
 <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        <span class="comment">// If the mesh hasn&#39;t changed from the previous cycle, stop remeshing</span></div>
 <div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        <span class="keywordflow">if</span> (this-&gt;totalDOFs == numDoF_preremesh) <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        numDoF_preremesh = this-&gt;totalDOFs;</div>
@@ -389,30 +389,30 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00297"></a><span class="lineno"><a class="line" href="classcustom_p_d_e.html#add5d3caaa759b5286f76db4fda4d0d11">  297</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classcustom_p_d_e.html#add5d3caaa759b5286f76db4fda4d0d11">customPDE&lt;dim,degree&gt;::adaptiveRefineCriterion</a>()</div>
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;{</div>
 <div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    std::vector&lt;std::vector&lt;double&gt; &gt; errorOutV;</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    </div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;</div>
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    QGaussLobatto&lt;dim&gt;  quadrature(degree+1);</div>
 <div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    FEValues&lt;dim&gt; fe_values (*(this-&gt;FESet[this-&gt;userInputs.refine_criterion_fields[0]]), quadrature, update_values|update_quadrature_points);</div>
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>   num_quad_points = quadrature.size();</div>
 <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    std::vector&lt;dealii::Point&lt;dim&gt; &gt; q_point_list(num_quad_points);</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    </div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;</div>
 <div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    std::vector&lt;double&gt; errorOut(num_quad_points);</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    </div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;</div>
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    <span class="keyword">typename</span> DoFHandler&lt;dim&gt;::active_cell_iterator cell = this-&gt;dofHandlersSet_nonconst[this-&gt;userInputs.refine_criterion_fields[0]]-&gt;begin_active(), endc = this-&gt;dofHandlersSet_nonconst[this-&gt;userInputs.refine_criterion_fields[0]]-&gt;end();</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    </div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;</div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    <span class="keyword">typename</span> parallel::distributed::Triangulation&lt;dim&gt;::active_cell_iterator t_cell = this-&gt;triangulation.begin_active();</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    </div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;</div>
 <div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    <span class="keywordflow">for</span> (;cell!=endc; ++cell){</div>
 <div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        <span class="keywordflow">if</span> (cell-&gt;is_locally_owned()){</div>
 <div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;            fe_values.reinit (cell);</div>
 <div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;            q_point_list = fe_values.get_quadrature_points();</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;            </div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;</div>
 <div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> field_index=0; field_index&lt;this-&gt;userInputs.refine_criterion_fields.size(); field_index++){</div>
 <div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;                fe_values.get_function_values(*(this-&gt;solutionSet[this-&gt;userInputs.refine_criterion_fields[field_index]]), errorOut);</div>
 <div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;                errorOutV.push_back(errorOut);</div>
 <div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;            }</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;            </div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;</div>
 <div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;            <span class="keywordtype">bool</span> mark_refine = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;            </div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;</div>
 <div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> q_point=0; q_point&lt;num_quad_points; ++q_point){</div>
 <div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> field_index=0; field_index&lt;this-&gt;userInputs.refine_criterion_fields.size(); field_index++){</div>
 <div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;                    <span class="keywordtype">bool</span> cond_1 = (errorOutV[field_index][q_point]&gt;this-&gt;userInputs.refine_window_min[field_index]) &amp;&amp; (errorOutV[field_index][q_point]&lt;this-&gt;userInputs.refine_window_max[field_index]);</div>
@@ -423,19 +423,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;                    }</div>
 <div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;                }</div>
 <div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;            }</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;            </div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;</div>
 <div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;            errorOutV.clear();</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;            </div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;</div>
 <div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;            <span class="comment">//limit the maximal and minimal refinement depth of the mesh</span></div>
 <div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> current_level = t_cell-&gt;level();</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;            </div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;</div>
 <div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;            <span class="keywordflow">if</span> ( (mark_refine &amp;&amp; current_level &lt; this-&gt;userInputs.max_refinement_level) ){</div>
 <div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;                cell-&gt;set_refine_flag();</div>
 <div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;            }</div>
 <div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!mark_refine &amp;&amp; current_level &gt; this-&gt;userInputs.min_refinement_level) {</div>
 <div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;                cell-&gt;set_coarsen_flag();</div>
 <div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;            }</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;            </div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;</div>
 <div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;        }</div>
 <div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;        ++t_cell;</div>
 <div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    }</div>
@@ -448,33 +448,39 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;<span class="keywordtype">void</span> <a class="code" href="classcustom_p_d_e.html#a85018b345ff85b4438c5fad9d85e9980">customPDE&lt;dim,degree&gt;::getNucleiList</a>()</div>
 <div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;{</div>
 <div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;    <span class="keywordflow">if</span> ( this-&gt;currentIncrement % <a class="code" href="__nucleation_model_2equations_8h.html#ac8046a05e900bfe50992f7161222c76a">skipNucleationSteps</a> == 0 ){</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;        </div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;        <span class="comment">// Declare alize vector of all the NEW nuclei seeded in this time step</span></div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;        std::vector&lt;nucleus&lt;dim&gt;&gt; newnuclei;</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;        </div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;        <span class="comment">// Get list of prospective new nuclei for the local processor</span></div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        this-&gt;pcout &lt;&lt; <span class="stringliteral">&quot;Nucleation attempt for increment &quot;</span> &lt;&lt; this-&gt;currentIncrement &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;        getLocalNucleiList(newnuclei);</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;        </div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;        <span class="comment">// Generate global list of new nuclei and resolve conflicts between new nuclei</span></div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        <a class="code" href="classparallel_nucleation_list.html">parallelNucleationList&lt;dim&gt;</a> new_nuclei_parallel(newnuclei);</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;        newnuclei = new_nuclei_parallel.buildGlobalNucleiList(<a class="code" href="__nucleation_model_2equations_8h.html#a355c1b2fc04efc7f24f3e30045b7430d">minDistBetweenNuclei</a>, nuclei.size());</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;        </div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;        <span class="comment">// Final check to resolve overlap conflicts with existing precipitates</span></div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;        std::vector&lt;unsigned int&gt; conflict_inds;</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;        safetyCheckNewNuclei(newnuclei, conflict_inds);</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        </div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        newnuclei = new_nuclei_parallel.removeSubsetOfNuclei(conflict_inds, nuclei.size());</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;        </div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;        <span class="comment">// Add the new nuclei to the list of nuclei</span></div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        nuclei.insert(nuclei.end(),newnuclei.begin(),newnuclei.end());</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;        </div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        <span class="comment">// Refine mesh near the new nuclei</span></div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        <span class="keywordflow">if</span> (newnuclei.size() &gt; 0 &amp;&amp; this-&gt;userInputs.h_adaptivity == <span class="keyword">true</span>){</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;            refineMeshNearNuclei(newnuclei);</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;        }</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    }</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;}</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;        <span class="keywordflow">for</span>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> fieldIndex=0; fieldIndex&lt;this-&gt;fields.size(); fieldIndex++){</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;            this-&gt;constraintsDirichletSet[fieldIndex]-&gt;distribute(*this-&gt;solutionSet[fieldIndex]);</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;            this-&gt;constraintsOtherSet[fieldIndex]-&gt;distribute(*this-&gt;solutionSet[fieldIndex]);</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;            this-&gt;solutionSet[fieldIndex]-&gt;update_ghost_values();</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        }</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;        <span class="comment">// Declare alize vector of all the NEW nuclei seeded in this time step</span></div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;        std::vector&lt;nucleus&lt;dim&gt;&gt; newnuclei;</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;        <span class="comment">// Get list of prospective new nuclei for the local processor</span></div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;        this-&gt;pcout &lt;&lt; <span class="stringliteral">&quot;Nucleation attempt for increment &quot;</span> &lt;&lt; this-&gt;currentIncrement &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;        getLocalNucleiList(newnuclei);</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;        <span class="comment">// Generate global list of new nuclei and resolve conflicts between new nuclei</span></div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        <a class="code" href="classparallel_nucleation_list.html">parallelNucleationList&lt;dim&gt;</a> new_nuclei_parallel(newnuclei);</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        newnuclei = new_nuclei_parallel.buildGlobalNucleiList(<a class="code" href="__nucleation_model_2equations_8h.html#a355c1b2fc04efc7f24f3e30045b7430d">minDistBetweenNuclei</a>, nuclei.size());</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;        <span class="comment">// Final check to resolve overlap conflicts with existing precipitates</span></div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        std::vector&lt;unsigned int&gt; conflict_inds;</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;        safetyCheckNewNuclei(newnuclei, conflict_inds);</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        newnuclei = new_nuclei_parallel.removeSubsetOfNuclei(conflict_inds, nuclei.size());</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;        <span class="comment">// Add the new nuclei to the list of nuclei</span></div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        nuclei.insert(nuclei.end(),newnuclei.begin(),newnuclei.end());</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;        <span class="comment">// Refine mesh near the new nuclei</span></div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;        <span class="keywordflow">if</span> (newnuclei.size() &gt; 0 &amp;&amp; this-&gt;userInputs.h_adaptivity == <span class="keyword">true</span>){</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;            refineMeshNearNuclei(newnuclei);</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;        }</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    }</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;}</div>
 <div class="ttc" id="classcustom_p_d_e_html_a85018b345ff85b4438c5fad9d85e9980"><div class="ttname"><a href="classcustom_p_d_e.html#a85018b345ff85b4438c5fad9d85e9980">customPDE::getNucleiList</a></div><div class="ttdeci">void getNucleiList()</div><div class="ttdef"><b>Definition:</b> nucleation.h:287</div></div>
 <div class="ttc" id="default_values_8h_html_ad22563b012dd3c292e08db4c4b178f69"><div class="ttname"><a href="default_values_8h.html#ad22563b012dd3c292e08db4c4b178f69">timeStep</a></div><div class="ttdeci">#define timeStep</div><div class="ttdef"><b>Definition:</b> defaultValues.h:40</div></div>
 <div class="ttc" id="structnucleus_html_a27864794ac2deed896666c4c3a52a477"><div class="ttname"><a href="structnucleus.html#a27864794ac2deed896666c4c3a52a477">nucleus::seededTime</a></div><div class="ttdeci">double seededTime</div><div class="ttdef"><b>Definition:</b> nucleus.h:20</div></div>
