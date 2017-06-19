@@ -65,14 +65,14 @@ void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim> > &newnu
                 ele_vol = ele_vol + fe_values.JxW(q_point);
             }
             ele_av_conc = ele_av_conc/ele_vol;
-            
+
             //Compute random no. between 0 and 1 (new method)
             rand_val=distr(gen);
             //Nucleation probability
             double Prob=nucProb(ele_av_conc,ele_vol,t);
-        
+
             if (rand_val <= Prob){
- 
+
                 //Initializing random vector in "dim" dimensions
                 std::vector<double> randvec(dim,0.0);
                 dealii::Point<dim> nuc_ele_pos;
@@ -94,7 +94,7 @@ void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim> > &newnu
                         }
                     }
                 }
-				
+
                 //Find a random point within the element
                 for (unsigned int i=0; i<dim; i++){
                 	randvec[i]=distr(gen);
@@ -108,9 +108,9 @@ void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim> > &newnu
                     bool insafetyzone_j = (periodic_j || ((nuc_ele_pos[j] > borderreg) && (nuc_ele_pos[j] < this->userInputs.domain_size[j]-borderreg)));
                     insafetyzone = insafetyzone && insafetyzone_j;
                 }
-                
+
                 if (insafetyzone){
-                
+
                 	// Check to see if the order parameter anywhere within the element is above the threshold
                     bool anyqp_OK = false;
                     for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
@@ -118,7 +118,7 @@ void customPDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim> > &newnu
                             anyqp_OK =true;
                         }
                     }
-                    
+
                     if (anyqp_OK){
                         //Add nucleus to prospective list
                         std::cout << "Prospective nucleation event. Nucleus no. " << nuclei.size()+1 << std::endl;
@@ -156,11 +156,11 @@ void customPDE<dim,degree>::safetyCheckNewNuclei(std::vector<nucleus<dim> > newn
     const unsigned int   num_quad_points = quadrature.size();
     std::vector<double> var_value2(num_quad_points);
     std::vector<dealii::Point<dim> > q_point_list(num_quad_points);
-    
+
     //Nucleus cycle
     for (typename std::vector<nucleus<dim> >::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
         bool isClose=false;
-        
+
         //Element cycle
 	    typename DoFHandler<dim>::active_cell_iterator   di = this->dofHandlersSet_nonconst[0]->begin_active();
         while (di != this->dofHandlersSet_nonconst[0]->end())
@@ -214,23 +214,23 @@ void customPDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim> > newn
     FEValues<dim> fe_values (*(this->FESet[0]), quadrature, update_values|update_quadrature_points|update_JxW_values);
     const unsigned int   num_quad_points = quadrature.size();
     std::vector<dealii::Point<dim> > q_point_list(num_quad_points);
-    
+
     typename Triangulation<dim>::active_cell_iterator ti;
     typename DoFHandler<dim>::active_cell_iterator   di;
-    
+
     unsigned int numDoF_preremesh = this->totalDOFs;
-    
+
     for (unsigned int remesh_index=0; remesh_index < (this->userInputs.max_refinement_level-this->userInputs.min_refinement_level); remesh_index++){
         ti  = this->triangulation.begin_active();
         di = this->dofHandlersSet_nonconst[0]->begin_active();
         while (di != this->dofHandlersSet_nonconst[0]->end()){
             if (di->is_locally_owned()){
-                
+
                 bool mark_refine = false;
-                
+
                 fe_values.reinit (di);
                 q_point_list = fe_values.get_quadrature_points();
-                
+
                 // Calculate the distance from the corner of the cell to the middle of the cell
                 double diag_dist = 0.0;
                 for (unsigned int i=0; i<dim; i++){
@@ -238,10 +238,10 @@ void customPDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim> > newn
                 }
                 diag_dist = sqrt(diag_dist);
                 diag_dist /= 2.0*pow(2.0,ti->level());
-                
+
                 for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
                     for (typename std::vector<nucleus<dim> >::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
-                        
+
                         // Calculate the ellipsoidal distance to the center of the nucleus
                         double weighted_dist = 0.0;
                         for (unsigned int i=0; i<dim; i++){
@@ -254,7 +254,7 @@ void customPDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim> > newn
                             double temp = shortest_edist/(opfreeze_semiaxes[i]);
                             weighted_dist += temp*temp;
                         }
-                        
+
                         if (weighted_dist < 1.0 || thisNuclei->center.distance(q_point_list[q_point]) < diag_dist){
                             if ((unsigned int)ti->level() < this->userInputs.max_refinement_level){
                                 mark_refine = true;
@@ -273,7 +273,7 @@ void customPDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim> > newn
         // The bulk of all of modifySolutionFields is spent in the following two function calls
         this->refineGrid();
         this->reinit();
-        
+
         // If the mesh hasn't changed from the previous cycle, stop remeshing
         if (this->totalDOFs == numDoF_preremesh) break;
         numDoF_preremesh = this->totalDOFs;
@@ -287,27 +287,33 @@ template <int dim, int degree>
 void customPDE<dim,degree>::getNucleiList()
 {
     if ( this->currentIncrement % skipNucleationSteps == 0 ){
-        
+
+        for(unsigned int fieldIndex=0; fieldIndex<this->fields.size(); fieldIndex++){
+            this->constraintsDirichletSet[fieldIndex]->distribute(*this->solutionSet[fieldIndex]);
+            this->constraintsOtherSet[fieldIndex]->distribute(*this->solutionSet[fieldIndex]);
+            this->solutionSet[fieldIndex]->update_ghost_values();
+        }
+
         // Declare alize vector of all the NEW nuclei seeded in this time step
         std::vector<nucleus<dim> > newnuclei;
-        
+
         // Get list of prospective new nuclei for the local processor
         this->pcout << "Nucleation attempt for increment " << this->currentIncrement << std::endl;
         getLocalNucleiList(newnuclei);
-        
+
         // Generate global list of new nuclei and resolve conflicts between new nuclei
         parallelNucleationList<dim> new_nuclei_parallel(newnuclei);
         newnuclei = new_nuclei_parallel.buildGlobalNucleiList(minDistBetweenNuclei, nuclei.size());
-        
+
         // Final check to resolve overlap conflicts with existing precipitates
         std::vector<unsigned int> conflict_inds;
         safetyCheckNewNuclei(newnuclei, conflict_inds);
-        
+
         newnuclei = new_nuclei_parallel.removeSubsetOfNuclei(conflict_inds, nuclei.size());
-        
+
         // Add the new nuclei to the list of nuclei
         nuclei.insert(nuclei.end(),newnuclei.begin(),newnuclei.end());
-        
+
         // Refine mesh near the new nuclei
         if (newnuclei.size() > 0 && this->userInputs.h_adaptivity == true){
             refineMeshNearNuclei(newnuclei);
