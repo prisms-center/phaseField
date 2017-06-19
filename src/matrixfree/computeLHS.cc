@@ -13,20 +13,9 @@ void MatrixFreePDE<dim,degree>::vmult (vectorType &dst, const vectorType &src) c
   matrixFreeObject.initialize_dof_vector(src2,  currentFieldIndex);
   src2=src;
 
-  //set Dirichlet nodes force to zero in the src
-  for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[currentFieldIndex]->begin(); it!=valuesDirichletSet[currentFieldIndex]->end(); ++it){
-    if (src2.in_local_range(it->first)){
-      src2(it->first) = 0.0; //*jacobianDiagonal(it->first);
-    }
-  }
-  constraintsOtherSet[currentFieldIndex]->distribute(src2);
-
   //call cell_loop
   dst=0.0;
   matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getLHS, this, dst, src2);
-
-  // According to the deal.II documentation, compress doesn't do anything
-  //  dst.compress(VectorOperation::add);
 
   //Account for Dirichlet BC's (essentially copy dirichlet DOF values present in src to dst)
   for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[currentFieldIndex]->begin(); it!=valuesDirichletSet[currentFieldIndex]->end(); ++it){
@@ -81,20 +70,20 @@ void  MatrixFreePDE<dim,degree>::getLHS(const MatrixFree<dim,double> &data,
 			if (userInputs.varInfoListLHS[i].is_scalar) {
 				scalar_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].reinit(cell);
 				if ( userInputs.varInfoListLHS[i].global_var_index == resInfoLHS.global_var_index ){
-					scalar_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].read_dof_values_plain(src);
+					scalar_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].read_dof_values(src);
 				}
 				else{
-					scalar_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].read_dof_values_plain(*solutionSet[userInputs.varInfoListLHS[i].global_var_index]);
+					scalar_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].read_dof_values(*solutionSet[userInputs.varInfoListLHS[i].global_var_index]);
 				}
 				scalar_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].evaluate(userInputs.need_value_LHS[userInputs.varInfoListLHS[i].global_var_index], userInputs.need_gradient_LHS[userInputs.varInfoListLHS[i].global_var_index], userInputs.need_hessian_LHS[userInputs.varInfoListLHS[i].global_var_index]);
 			}
 			else {
 				vector_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].reinit(cell);
 				if ( userInputs.varInfoListLHS[i].global_var_index == resInfoLHS.global_var_index ){
-					vector_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].read_dof_values_plain(src);
+					vector_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].read_dof_values(src);
 				}
 				else {
-					vector_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].read_dof_values_plain(*solutionSet[userInputs.varInfoListLHS[i].global_var_index]);
+					vector_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].read_dof_values(*solutionSet[userInputs.varInfoListLHS[i].global_var_index]);
 				}
 				vector_vars[userInputs.varInfoListLHS[i].scalar_or_vector_index].evaluate(userInputs.need_value_LHS[userInputs.varInfoListLHS[i].global_var_index], userInputs.need_gradient_LHS[userInputs.varInfoListLHS[i].global_var_index], userInputs.need_hessian_LHS[userInputs.varInfoListLHS[i].global_var_index]);
 			}

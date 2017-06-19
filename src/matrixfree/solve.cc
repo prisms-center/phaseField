@@ -45,20 +45,49 @@ void MatrixFreePDE<dim,degree>::solve(){
 
       //output results to file
       if (userInputs.outputTimeStepList[currentOutput] == currentIncrement) {
-    	  outputResults();
+          for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
+              constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+              constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+              solutionSet[fieldIndex]->update_ghost_values();
+          }
+          outputResults();
 
-    	  if (userInputs.calc_energy == true){
-    		  computeEnergy();
-    		  outputFreeEnergy(freeEnergyValues);
-    	  }
+          if (userInputs.calc_energy == true){
+              computeEnergy();
+              outputFreeEnergy(freeEnergyValues);
+          }
 
-    	  currentOutput++;
+          currentOutput++;
       }
-    }
   }
+}
 
   //time independent BVP
   else{
+<<<<<<< HEAD
+=======
+    if (userInputs.totalIncrements>1){
+      pcout << "solve.h: this problem has only ELLIPTIC fields, hence neglecting totalIncrementsV>1 \n";
+    }
+    userInputs.totalIncrements=1;
+
+    //check and perform adaptive mesh refinement
+    //computing_timer.enter_section("matrixFreePDE: AMR");
+    //adaptiveRefine(0);
+    //computing_timer.exit_section("matrixFreePDE: AMR");
+
+    //solve
+    solveIncrement();
+
+    //output results to file
+    if (writeOutput){
+    	outputResults();
+    	if (userInputs.calc_energy == true){
+    		computeEnergy();
+    		outputFreeEnergy(freeEnergyValues);
+    	}
+    }
+>>>>>>> fixed_constraints
 
       //solve
       solveIncrement();

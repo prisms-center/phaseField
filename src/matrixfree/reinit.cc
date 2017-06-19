@@ -1,5 +1,5 @@
 // reinit() method for MatrixFreePDE class
- 
+
 #include "../../include/matrixFreePDE.h"
 
  //populate with fields and setup matrix free system
@@ -80,6 +80,7 @@ template <int dim, int degree>
  	 typename MatrixFree<dim,double>::AdditionalData additional_data;
  	 additional_data.mpi_communicator = MPI_COMM_WORLD;
  	 additional_data.tasks_parallel_scheme = MatrixFree<dim,double>::AdditionalData::partition_partition;
+     //additional_data.tasks_block_size = 1; // This improves performance for small runs, not sure about larger runs
  	 additional_data.mapping_update_flags = (update_values | update_gradients | update_JxW_values | update_quadrature_points);
  	 QGaussLobatto<1> quadrature (degree+1);
  	 matrixFreeObject.clear();
@@ -87,7 +88,7 @@ template <int dim, int degree>
 
  	bool dU_scalar_init = false;
  	bool dU_vector_init = false;
- 
+
  	 // Setup solution vectors
  	 pcout << "initializing parallel::distributed residual and solution vectors\n";
  	 for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
@@ -96,7 +97,7 @@ template <int dim, int degree>
  		 U=solutionSet.at(fieldIndex);
 
  		 matrixFreeObject.initialize_dof_vector(*U,  fieldIndex); *U=0;
-     
+
  		// Initializing temporary dU vector required for implicit solves of the elliptic equation.
  		// Assuming here that there is only one elliptic field in the problem (the main problem is if one is a scalar and the other is a vector, because then dU would need to be different sizes)
  		if (fields[fieldIndex].pdetype==ELLIPTIC){
@@ -114,7 +115,7 @@ template <int dim, int degree>
  			}
  		}
  	 }
-   
+
  	 // Compute invM in PDE is a time-dependent BVP
  	 if (isTimeDependentBVP){
  		 computeInvM();
@@ -131,7 +132,7 @@ template <int dim, int degree>
  		 vectorType *R=residualSet.at(fieldIndex);
  		 matrixFreeObject.initialize_dof_vector(*R,  fieldIndex); *R=0;
  	 }
-   
+
  	 // Create new solution transfer sets
  	 soltransSet.clear();
  	 for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
