@@ -10,43 +10,6 @@
 // here. For more complex cases with loops or conditional statements, residual
 // equations (or parts of residual equations) can be written below in "residualRHS".
 
-// =================================================================================
-// Set the nucleation parameters
-// =================================================================================
-
-// Nucleation radius (order parameter)
-#define semiaxis_a 5.0
-#define semiaxis_b 5.0
-#define semiaxis_c 5.0
-
-// Hold time for order parameter
-#define t_hold 20.0
-
-// Small constant for sign function
-#define epsil 1.0e-7
-
-// Minimum distance between nuclei
-#define minDistBetweenNuclei (4.0*semiaxis_a)
-#define maxOrderParameterNucleation 0.01
-
-// Number of time steps between nucleation attempts
-#define skipNucleationSteps 30
-
-// radius for order parameter hold
-std::vector<double> opfreeze_semiaxes {1.5*semiaxis_a,1.5*semiaxis_b,1.5*semiaxis_c};
-
-//Minimum distance from the edges of the system where nucleation can occur
-#define borderreg (2.0*semiaxis_a)
-
-// Constants k1 and k2 for nucleation rate in the bulk
-#define k1 498.866
-#define k2 4.14465
-
-// Incubation time constant
-#define tau 500.0
-
-// =================================================================================
-
 // Free energy for each phase and their first and second derivatives
 #define faV (A0+A2*(c_alpha-calmin)*(c_alpha-calmin))
 #define facV (2.0*A2*(c_alpha-calmin))
@@ -117,7 +80,7 @@ scalargradType nx = modelVariablesList[1].scalarGrad;
 
 dealii::VectorizedArray<double> nucleation_source_term = constV(0.0);
 
-for (typename std::vector<nucleus<dim> >::const_iterator thisNucleus=nuclei.begin(); thisNucleus!=nuclei.end(); ++thisNucleus){
+for (typename std::vector<nucleus<dim> >::const_iterator thisNucleus=this->nuclei.begin(); thisNucleus!=this->nuclei.end(); ++thisNucleus){
 
 	// Calculate the weighted distance function to the order parameter freeze boundary (weighted_dist = 1.0 on that boundary)
 	dealii::VectorizedArray<double> weighted_dist = constV(0.0);
@@ -129,7 +92,7 @@ for (typename std::vector<nucleus<dim> >::const_iterator thisNucleus=nuclei.begi
             for (unsigned j=0; j<n.n_array_elements;j++)
         		temp[j]=temp[j]-round(temp[j]/domsize_i)*domsize_i;
         }
-        temp=temp/opfreeze_semiaxes[i];
+        temp=temp/userInputs.order_parameter_freeze_semiaxes[i];
 		weighted_dist += temp*temp;
 	}
 
@@ -162,8 +125,8 @@ for (typename std::vector<nucleus<dim> >::const_iterator thisNucleus=nuclei.begi
     double nucendtime = thisNucleus->seededTime + thisNucleus->seedingTime;
     dealii::VectorizedArray<double> spacearg=(std::sqrt(weighted_dist)-constV(1.0))/constV(dx);
     dealii::VectorizedArray<double> timearg=constV(time-nucendtime)/constV(userInputs.dtValue);
-    dealii::VectorizedArray<double> spacefactor=constV(0.5)-constV(0.5)*spacearg/(std::abs(spacearg)+epsil);
-    dealii::VectorizedArray<double> timefactor=constV(0.5)-constV(0.5)*timearg/(std::abs(timearg)+epsil);
+    dealii::VectorizedArray<double> spacefactor=constV(0.5)-constV(0.5)*spacearg/(std::abs(spacearg)+epsilon);
+    dealii::VectorizedArray<double> timefactor=constV(0.5)-constV(0.5)*timearg/(std::abs(timearg)+epsilon);
     dealii::VectorizedArray<double> localgamma= constV(1.0)-spacefactor*timefactor;
     gamma=gamma*localgamma;
 }

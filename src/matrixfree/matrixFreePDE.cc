@@ -18,6 +18,7 @@ template <int dim, int degree>
  ellipticFieldIndex(0),
  currentTime(0.0),
  currentIncrement(0),
+ currentOutput(0),
  computing_timer (pcout, TimerOutput::summary, TimerOutput::wall_times),
  energy(0.0)
  {
@@ -36,7 +37,7 @@ template <int dim, int degree>
      delete FESet[iter];
      delete solutionSet[iter];
      delete residualSet[iter];
-   } 
+   }
  }
 
 

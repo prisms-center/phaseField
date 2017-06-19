@@ -133,6 +133,20 @@ public:
 	// List of user-defined constants
 	std::vector<boost::variant<double,int,bool> > model_constants;
 
+	// Nucleation parameters
+	std::vector<unsigned int> nucleating_variable_indices;
+	std::vector<unsigned int> nucleation_need_value;
+	std::vector<double> nucleus_semiaxes;
+	std::vector<double> order_parameter_freeze_semiaxes;
+	double no_nucleation_border_thickness;
+	double nucleus_hold_time;
+	double min_distance_between_nuclei; // Only enforced for nuclei placed during the same time step
+	double nucleation_order_parameter_cutoff;
+	unsigned int steps_between_nucleation_attempts;
+
+
+
+
 };
 
 #endif /* INCLUDE_USERINPUTPARAMETERS_H_ */

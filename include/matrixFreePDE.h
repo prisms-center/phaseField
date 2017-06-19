@@ -15,6 +15,8 @@
 #include "fields.h"
 #include "userInputParameters.h"
 #include "nucleus.h"
+#include "variableValueContainer.h"
+
 
 ////define data types
 #ifndef scalarType
@@ -223,12 +225,21 @@ class MatrixFreePDE:public Subscriptor
 
   void applyInitialConditions();
 
-
+  // --------------------------------------------------------------------------
+  // Nucleation methods and variables
+  // --------------------------------------------------------------------------
   // Vector of all the nuclei seeded in the problem
   std::vector<nucleus<dim> > nuclei;
 
   // Method to get a list of new nuclei to be seeded
   void updateNucleiList();
+  std::vector<nucleus<dim> > getNewNuclei();
+  void getLocalNucleiList(std::vector<nucleus<dim> > & newnuclei) const;
+  void safetyCheckNewNuclei(std::vector<nucleus<dim> > newnuclei, std::vector<unsigned int> & conflict_ids);
+  void refineMeshNearNuclei(std::vector<nucleus<dim> > newnuclei);
+
+  // Method to obtain the nucleation probability for an element, nontrival case must be implemented in the subsclass
+  virtual double getNucleationProbability(variableValueContainer, double)const {return 0.0;};
 
   /*Method to compute energy like quantities.*/
   void computeEnergy();
@@ -255,7 +266,7 @@ class MatrixFreePDE:public Subscriptor
   //
   unsigned int parabolicFieldIndex, ellipticFieldIndex;
   double currentTime;
-  unsigned int currentIncrement;
+  unsigned int currentIncrement, currentOutput;
 
   /*Timer and logging object*/
   mutable TimerOutput computing_timer;

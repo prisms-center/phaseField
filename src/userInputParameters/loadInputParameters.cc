@@ -64,10 +64,12 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
     output_file_name = parameter_handler.get("Output file name (base)");
     calc_energy = parameter_handler.get_bool("Calculate the free energy");
 
-    // Nucleation parameters
-    nucleation_occurs = parameter_handler.get_bool("Allow nucleation");
+
 
     // Field variable definitions
+    std::vector<bool> nucleating_variable;
+    std::vector<bool> need_value_nucleation;
+
     number_of_variables = _number_of_variables;
 
     for (unsigned int i=0; i<number_of_variables; i++){
@@ -91,6 +93,9 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
             need_hessian_LHS.push_back(parameter_handler.get_bool("Need variable hessian (LHS)"));
             value_residual_LHS.push_back(parameter_handler.get_bool("Need value residual term (LHS)"));
             gradient_residual_LHS.push_back(parameter_handler.get_bool("Need gradient residual term (LHS)"));
+
+            nucleating_variable.push_back(parameter_handler.get_bool("Nucleating variable"));
+            need_value_nucleation.push_back(parameter_handler.get_bool("Need variable value (nucleation)"));
         }
         parameter_handler.leave_subsection();
     }
@@ -245,6 +250,37 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
         parameter_handler.leave_subsection();
     }
 
+    // Parameters for nucleation
+
+    for (unsigned int i=0; i<number_of_variables; i++){
+        if (nucleating_variable.at(i)==true){
+            nucleating_variable_indices.push_back(i);
+        }
+        if (need_value_nucleation.at(i) || nucleating_variable.at(i)){
+            nucleation_need_value.push_back(i);
+        }
+    }
+
+    if (nucleating_variable_indices.size() > 0){
+        nucleation_occurs = true;
+    }
+    else {
+        nucleation_occurs = false;
+    }
+
+    nucleus_semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Nucleus semiaxes (x, y ,z)")));
+    order_parameter_freeze_semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Freeze zone semiaxes (x, y ,z)")));
+    nucleus_hold_time = parameter_handler.get_double("Freeze time following nucleation");
+    no_nucleation_border_thickness = parameter_handler.get_double("Nucleation-free border thickness");
+
+    if (parameter_handler.get("Minimum allowed distance between nuclei") != ""){
+        min_distance_between_nuclei = parameter_handler.get_double("Minimum allowed distance between nuclei");
+    }
+    else {
+        min_distance_between_nuclei = 2.0 * (*(max_element(nucleus_semiaxes.begin(),nucleus_semiaxes.end())));
+    }
+    nucleation_order_parameter_cutoff = parameter_handler.get_double("Order parameter cutoff value");
+    steps_between_nucleation_attempts = parameter_handler.get_integer("Time steps between nucleation attempts");
 
     // Load variable information for calculating the RHS
 	pp_varInfoList.reserve(pp_number_of_variables);

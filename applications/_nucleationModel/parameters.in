@@ -77,9 +77,15 @@ set Skip print steps = 100
 set Calculate the free energy = true
 
 # =================================================================================
-# Set whether nucleation is allowed to occur
+# Set the nucleation parameters
 # =================================================================================
-set Allow nucleation = true
+set Nucleus semiaxes (x, y ,z) = 5.0, 5.0, 5.0
+set Freeze zone semiaxes (x, y ,z) = 7.5, 7.5, 7.5
+set Freeze time following nucleation = 20.0
+set Nucleation-free border thickness = 10.0
+set Minimum allowed distance between nuclei = 20.0
+set Order parameter cutoff value = 0.01
+set Time steps between nucleation attempts = 30
 
 # =================================================================================
 # Set the properties of the variables and their governing equations
@@ -95,6 +101,7 @@ subsection Variable 0
     set Need variable hessian = false
     set Need value residual term = true
     set Need gradient residual term = true
+    set Need variable value (nucleation) = true
 end
 
 # Variable 1
@@ -107,6 +114,7 @@ subsection Variable 1
     set Need variable hessian = false
     set Need value residual term = true
     set Need gradient residual term = true
+    set Nucleating variable = true
 end
 
 # =================================================================================
@@ -153,3 +161,15 @@ set Model constant 9 = 4.0, double
 
 # Free energy constant cbtmin
 set Model constant 10 = 1.0, double
+
+# Nucleation constant k1
+set Model constant 11 = 498.866, double
+
+# Nucleation constant k2
+set Model constant 12 = 4.14465, double
+
+# Nucleation constant tau
+set Model constant 13 = 500.0, double
+
+# Nucleation constant epsilon
+set Model constant 14 = 1.0e-7, double

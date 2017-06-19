@@ -263,10 +263,10 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
 
     // Declare entries regarding the governing equations
     for (unsigned int i=0; i<var_types.size(); i++){
-        std::string equation_text = "Variable ";
-        equation_text.append(dealii::Utilities::int_to_string(i));
+        std::string var_text = "Variable ";
+        var_text.append(dealii::Utilities::int_to_string(i));
 
-        parameter_handler.enter_subsection(equation_text);
+        parameter_handler.enter_subsection(var_text);
         {
             parameter_handler.declare_entry("Variable name","var",dealii::Patterns::Anything(),"The name of the field variable.");
             parameter_handler.declare_entry("Variable type","SCALAR",dealii::Patterns::Anything(),"Whether the variable is a SCALAR or a VECTOR.");
@@ -285,6 +285,10 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
 
             parameter_handler.declare_entry("Need value residual term (LHS)","false",dealii::Patterns::Bool(),"Whether the LHS residual equation has a term proportional to the value of the test function.");
             parameter_handler.declare_entry("Need gradient residual term (LHS)","false",dealii::Patterns::Bool(),"Whether the LHS residual equation has a term proportional to the gradient of the test function.");
+
+            parameter_handler.declare_entry("Nucleating variable","false",dealii::Patterns::Bool(),"Whether the variable is an order parameter that is allowed to nucleation.");
+            parameter_handler.declare_entry("Need variable value (nucleation)","false",dealii::Patterns::Bool(),"Whether the value of the variable is needed for nucleation calculations (assumed to be true if the variable is a nucleating order parameter).");
+
         }
         parameter_handler.leave_subsection();
     }
@@ -354,7 +358,16 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
 
     }
 
-    // Declare the user-defined constants (for now, assumed to be a double)
+    // Declare the nucleation parameters
+    parameter_handler.declare_entry("Nucleus semiaxes (x, y ,z)","",dealii::Patterns::List(dealii::Patterns::Double()),"The semiaxes for nuclei placed with the explicit nucleation algorithm).");
+    parameter_handler.declare_entry("Freeze zone semiaxes (x, y ,z)","",dealii::Patterns::List(dealii::Patterns::Double()),"The semiaxes for region where the order parameter is frozen for a period of time after placement.");
+    parameter_handler.declare_entry("Freeze time following nucleation","0.0",dealii::Patterns::Double(),"Duration that the order parameter is frozen after placement.");
+    parameter_handler.declare_entry("Nucleation-free border thickness","0.0",dealii::Patterns::Double(),"The thickness of the nucleation-free region near the domain boundaries (ignored for periodic BCs).");
+    parameter_handler.declare_entry("Minimum allowed distance between nuclei","-1.0",dealii::Patterns::Double(),"The minimum allowed distance between nuclei placed during the same time step.");
+    parameter_handler.declare_entry("Order parameter cutoff value","0.01",dealii::Patterns::Double(),"Order parameter cutoff value for nucleation (when the sum of all order parameters is above this value, no nucleation is attempted).");
+    parameter_handler.declare_entry("Time steps between nucleation attempts","100",dealii::Patterns::Integer(),"The number of time steps between nucleation attempts.");
+
+    // Declare the user-defined constants
     for (unsigned int i=0; i<num_of_constants; i++){
         std::string constants_text = "Model constant ";
         constants_text.append(dealii::Utilities::int_to_string(i));

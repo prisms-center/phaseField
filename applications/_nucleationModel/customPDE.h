@@ -57,6 +57,10 @@ private:
 	double B0 = userInputs.get_model_constant_double(8);
 	double B2 = userInputs.get_model_constant_double(9);
 	double cbtmin = userInputs.get_model_constant_double(10);
+	double k1 = userInputs.get_model_constant_double(11);
+	double k2 = userInputs.get_model_constant_double(12);
+	double tau = userInputs.get_model_constant_double(13);
+	double epsilon = userInputs.get_model_constant_double(14);
 
 	double interface_coeff=std::sqrt(2.0*KnV/W_barrier);
 
@@ -66,20 +70,10 @@ private:
 	// Nucleation methods specific to this subclass
 	// ----------------------------------------------------------------
 
-	// Function to determine where new nuclei are seeded, varies between applications unless generalized, accesses MatrixFreePDE members
-	void getLocalNucleiList(std::vector<nucleus<dim> > &newnuclei) const;
-
 	// Contains nucleation probability that varies between applications, no MatrixFreePDE member access
-	double nucProb(double cValue, double dV, double ct) const;
+	double getNucleationProbability(variableValueContainer variable_value, double dV) const;
 
-    //Contains safety check to ensure that no new nuclei from complete prospective list overlap with existing precipitates
-    void safetyCheckNewNuclei(std::vector<nucleus<dim> > newnuclei, std::vector<unsigned int> &conflict_inds);
 
-	// Function to refine the mesh near the new nuclei, generic, accesses and modifies MatrixFreePDE members
-	void refineMeshNearNuclei(std::vector<nucleus<dim> > newnuclei);
-
-	// // Vector of all the nuclei seeded in the problem
-	// std::vector<nucleus<dim> > nuclei;
 };
 
 #endif /* APPLICATIONS_ALLENCAHN_CUSTOMPDE_H_ */
