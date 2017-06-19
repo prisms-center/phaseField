@@ -16,18 +16,18 @@
 
 // The names of the variables, whether they are scalars or vectors and whether the
 // governing eqn for the variable is parabolic or elliptic
-#define pp_variable_name {"f_el","mu_c","mu_n1","mu_n2"}
-#define pp_variable_type {"SCALAR","SCALAR","SCALAR","SCALAR"}
+#define pp_variable_name {"f_el","mu_c","mu_n1","mu_n2","dcdt_chem","dcdt_el","dn1dt_chem","dn1dt_el"}
+#define pp_variable_type {"SCALAR","SCALAR","SCALAR","SCALAR","SCALAR","SCALAR","SCALAR","SCALAR"}
 
 // Flags for whether the value, gradient, and Hessian are needed in the residual eqns
-#define pp_need_val {true,true,true,true,false}
+#define pp_need_val {true,true,true,true,true}
 #define pp_need_grad {true,true,true,true,true}
-#define pp_need_hess  {false,false,false,false,false}
+#define pp_need_hess  {false,false,false,false,true}
 
 // Flags for whether the residual equation has a term multiplied by the test function
 // (need_val_residual) and/or the gradient of the test function (need_grad_residual)
-#define pp_need_val_residual {true,true,true,true}
-#define pp_need_grad_residual {false,false,true,true}
+#define pp_need_val_residual {true,true,true,true,false,false,true,true}
+#define pp_need_grad_residual {false,false,true,true,true,true,true,false}
 
 // =================================================================================
 
@@ -62,6 +62,22 @@ dealii::Tensor<1, dim, dealii::VectorizedArray<double> > n3x = modelVariablesLis
 
 //u
 dealii::Tensor<2, dim, dealii::VectorizedArray<double> > ux = modelVariablesList[4].vectorGrad;
+
+dealii::Tensor<3, dim, dealii::VectorizedArray<double> > uxx;
+
+bool c_dependent_misfit = false;
+for (unsigned int i=0; i<dim; i++){
+	for (unsigned int j=0; j<dim; j++){
+		if (std::abs(sfts_linear1[i][j])>1.0e-12){
+			c_dependent_misfit = true;
+		}
+	}
+}
+
+if (c_dependent_misfit == true){
+	uxx = modelVariablesList[4].vectorHess;
+}
+
 
 
 // Calculate the derivatives of c_beta (derivatives of c_alpha aren't needed)
@@ -200,6 +216,51 @@ for (unsigned int b=0; b<dim; b++){
 }
 }
 
+// compute the stress term in the gradient of the concentration chemical potential, grad_mu_el = [C*(E-E0)*E0c]x, must be a vector with length dim
+dealii::Tensor<1, dim, dealii::VectorizedArray<double> > grad_mu_el;
+
+if (c_dependent_misfit == true){
+	dealii::VectorizedArray<double> E3[dim][dim], S3[dim][dim]; // Intermediate variables
+
+	for (unsigned int i=0; i<dim; i++){
+		for (unsigned int j=0; j<dim; j++){
+			E3[i][j] =  -( sfts1c[i][j]*h1V + sfts2c[i][j]*h2V + sfts3c[i][j]*h3V );
+		}
+	}
+
+	if (n_dependent_stiffness == true){
+		computeStress<dim>(CIJ_combined, E3, S3);
+	}
+	else{
+		computeStress<dim>(material_moduli.CIJ_list[0], E3, S3);
+	}
+
+	for (unsigned int i=0; i<dim; i++){
+		for (unsigned int j=0; j<dim; j++){
+			for (unsigned int k=0; k<dim; k++){
+				grad_mu_el[k] += S3[i][j] * (constV(0.5)*(uxx[i][j][k]+uxx[j][i][k]) + E3[i][j]*cx[k]
+										- ( (sfts1[i][j]*hn1V + cbn1V*E4[i][j])*n1x[k] + (sfts2[i][j]*hn2V + cbn2V*E4[i][j])*n2x[k]
+										+ (sfts3[i][j]*hn3V + cbn3V*E4[i][j])*n3x[k]) );
+
+				grad_mu_el[k]+= - S[i][j] * ( (sfts1c[i][j]*hn1V + cbcn1V*E4[i][j])*n1x[k]
+										+ (sfts2c[i][j]*hn2V+ cbcn2V*E4[i][j])*n2x[k]
+										+ (sfts3c[i][j]*hn3V+ cbcn3V*E4[i][j])*n3x[k]
+										+ ( sfts1cc[i][j]*h1V + sfts2cc[i][j]*h2V + sfts3cc[i][j]*h3V )*cx[k]);
+
+				if (n_dependent_stiffness == true){
+					computeStress<dim>(material_moduli.CIJ_list[1]-material_moduli.CIJ_list[0], E2, S2);
+					grad_mu_el[k]+= - S2[i][j] * (cbcV*E4[i][j]*hn1V*n1x[k]);
+					computeStress<dim>(material_moduli.CIJ_list[2]-material_moduli.CIJ_list[0], E2, S2);
+					grad_mu_el[k]+= - S2[i][j] * (cbcV*E4[i][j]*hn2V*n2x[k]);
+					computeStress<dim>(material_moduli.CIJ_list[3]-material_moduli.CIJ_list[0], E2, S2);
+					grad_mu_el[k]+= - S2[i][j] * (cbcV*E4[i][j]*hn3V*n3x[k]);
+
+				}
+			}
+		}
+	}
+}
+
 
 // Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
 modelResidualsList[0].scalarValueResidual = f_el; //constV(0.0);
@@ -210,7 +271,13 @@ modelResidualsList[3].scalarValueResidual = mu_n2; //constV(0.0);
 modelResidualsList[2].scalarGradResidual = Knx1;
 modelResidualsList[3].scalarGradResidual = Knx2;
 
+modelResidualsList[4].scalarGradResidual = cx + (c_alpha-c_beta)*(hn1V*n1x + hn2V*n2x + hn3V*n3x); //constV(0.0);
+modelResidualsList[5].scalarGradResidual = grad_mu_el * ((h1V+h2V+h3V)*faccV+(constV(1.0)-h1V-h2V-h3V)*fbccV)/constV(faccV*fbccV); //constV(0.0);
 
+modelResidualsList[6].scalarValueResidual = (fbV-faV)*hn1V - (c_beta-c_alpha)*facV*hn1V + W*fbarriern1V;
+modelResidualsList[6].scalarGradResidual = Knx1;
+
+modelResidualsList[7].scalarValueResidual = nDependentMisfitAC1 + heterMechAC1;
 }
 //};
 

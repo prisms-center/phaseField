@@ -580,3 +580,90 @@ Application: allenCahn
 Result: Pass 
 Time: 21.7806179523 
  
+--------------------------------------------------------- 
+Unit test on 2017-04-21 15:11
+--------------------------------------------------------- 
+Unit Tests Passed: 18/18
+--------------------------------------------------------- 
+Regression test on 2017-04-21 15:11
+--------------------------------------------------------- 
+Application: allenCahn 
+Result: Pass 
+Time: 24.8069190979 
+ 
+Application: cahnHilliard 
+Result: Pass 
+Time: 83.9974520206 
+ 
+Application: cahnHilliardWithAdaptivity 
+Result: Fail 
+Time: 71.0440838337 
+ 
+Application: CHAC_anisotropyRegularized 
+Result: Pass 
+Time: 72.7325870991 
+ 
+Application: coupledCahnHilliardAllenCahn 
+Result: Pass 
+Time: 98.7881729603 
+ 
+Application: mechanics 
+Result: Pass 
+Time: 0.93358707428 
+ 
+Application: precipitateEvolution 
+Result: Pass 
+Time: 206.515496969 
+ 
+Tests Passed: 6/7
+--------------------------------------------------------- 
+--------------------------------------------------------- 
+Unit test on 2017-04-21 16:10
+--------------------------------------------------------- 
+Unit Tests Passed: 18/18
+--------------------------------------------------------- 
+Regression test on 2017-04-21 16:10
+--------------------------------------------------------- 
+Application: cahnHilliardWithAdaptivity 
+Result: New Gold Standard 
+Time: 71.309828043 
+ 
+Tests Passed: 1/1
+--------------------------------------------------------- 
+--------------------------------------------------------- 
+Unit test on 2017-04-21 16:16
+--------------------------------------------------------- 
+Unit Tests Passed: 18/18
+--------------------------------------------------------- 
+Regression test on 2017-04-21 16:16
+--------------------------------------------------------- 
+Application: allenCahn 
+Result: Pass 
+Time: 25.1353681087 
+ 
+Application: cahnHilliard 
+Result: Pass 
+Time: 83.3485431671 
+ 
+Application: cahnHilliardWithAdaptivity 
+Result: Pass 
+Time: 71.6049928665 
+ 
+Application: CHAC_anisotropyRegularized 
+Result: Pass 
+Time: 51.1013000011 
+ 
+Application: coupledCahnHilliardAllenCahn 
+Result: Pass 
+Time: 99.30925107 
+ 
+Application: mechanics 
+Result: Pass 
+Time: 0.887884140015 
+ 
+Application: precipitateEvolution 
+Result: Pass 
+Time: 203.251946211 
+ 
+Tests Passed: 7/7
+--------------------------------------------------------- 

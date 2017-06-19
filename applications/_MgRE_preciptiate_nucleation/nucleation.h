@@ -320,15 +320,6 @@ void customPDE<dim,degree>::getNucleiList()
 		order_parameter_list.push_back(3);
 		getLocalNucleiList(newnuclei,order_parameter_list,other_var_list);
 
-		if (this->currentIncrement == 1){
-			this->pcout << "newnuclei size " << newnuclei.size() << std::endl;
-			while (newnuclei.size() == 0){
-				getLocalNucleiList(newnuclei,order_parameter_list,other_var_list);
-				this->currentTime+=this->userInputs.dtValue*(double)skipNucleationSteps;
-				this->pcout << "nucleation attempt! " << this->currentTime << std::endl;
-			}
-		}
-
 		// Generate global list of new nuclei and resolve conflicts between new nuclei
 		parallelNucleationList<dim> new_nuclei_parallel(newnuclei);
 		newnuclei = new_nuclei_parallel.buildGlobalNucleiList(minDistBetweenNuclei, nuclei.size());
