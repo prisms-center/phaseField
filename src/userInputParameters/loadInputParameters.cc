@@ -64,8 +64,6 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
     output_file_name = parameter_handler.get("Output file name (base)");
     calc_energy = parameter_handler.get_bool("Calculate the free energy");
 
-
-
     // Field variable definitions
     std::vector<bool> nucleating_variable;
     std::vector<bool> need_value_nucleation;
@@ -141,7 +139,7 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
 
     // Use these inputs to create a list of time steps where the code should output, stored in the member
     outputTimeStepList = setOutputTimeSteps(output_condition, num_outputs,user_given_time_step_list);
-
+    
     // Elastic constants
     unsigned int number_of_materials = _number_of_materials;
 
