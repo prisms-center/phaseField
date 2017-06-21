@@ -38,6 +38,14 @@ ADD_CUSTOM_TARGET(run COMMAND main
 
 PROJECT(myproject)
 
+# Check if postprocess.h and nucleation.h exist and set preprocessor variables
+if (EXISTS "postprocess.h")
+	add_definitions(-DPOSTPROCESS_FILE_EXISTS)
+endif()
+if (EXISTS "nucleation.h")
+	add_definitions(-DNUCLEATION_FILE_EXISTS)
+endif()
+
 # Append extra flags for the GNU compiler to suppress some warnings
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
         set(DEAL_II_CXX_FLAGS_DEBUG "${DEAL_II_CXX_FLAGS_DEBUG} -Wno-maybe-uninitialized -Wno-unused-parameter -Wno-extra")
@@ -52,12 +60,12 @@ INCLUDE_DIRECTORIES(../../include)
 FILE(GLOB headers ${CMAKE_SOURCE_DIR}/../../include/*.h)
 FILE(GLOB sources ${CMAKE_SOURCE_DIR}/../../src/matrixfree/*.cc)
 
-ADD_LIBRARY(mylib ${sources} ../../src/utilities/vectorBCFunction.cc ../../src/inputFileReader/inputFileReader.cc ../../src/userInputParameters/loadInputParameters.cc ../../src/parallelNucleationList/parallelNucleationList.cc)
+ADD_LIBRARY(prisms_pf ${sources} ../../src/utilities/vectorBCFunction.cc ../../src/inputFileReader/inputFileReader.cc ../../src/userInputParameters/loadInputParameters.cc ../../src/parallelNucleationList/parallelNucleationList.cc)
 
-DEAL_II_SETUP_TARGET(mylib)
+DEAL_II_SETUP_TARGET(prisms_pf)
 
 ADD_EXECUTABLE(main main.cc )
 
 DEAL_II_SETUP_TARGET(main)
 
-TARGET_LINK_LIBRARIES(main mylib)
+TARGET_LINK_LIBRARIES(main prisms_pf)

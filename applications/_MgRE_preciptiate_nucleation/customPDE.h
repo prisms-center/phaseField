@@ -1,16 +1,4 @@
-/*
- * customPDE.h
- *
- *  Created on: Feb 24, 2017
- *      Author: stephendewitt
- */
-
-#ifndef APPLICATIONS_ALLENCAHN_CUSTOMPDE_H_
-#define APPLICATIONS_ALLENCAHN_CUSTOMPDE_H_
-
 #include "../../include/matrixFreePDE.h"
-#include "../../include/parallelNucleationList.h"
-#include "../../include/nucleus.h"
 
 template <int dim, int degree>
 class customPDE: public MatrixFreePDE<dim,degree>
@@ -22,6 +10,8 @@ public:
 
 private:
 	#include "../../include/typeDefs.h"
+
+	const userInputParameters<dim> userInputs;
 
 	const static unsigned int CIJ_tensor_size =2*dim-1+dim/3;
 
@@ -44,10 +34,20 @@ private:
 				 	std::vector<modelResidual<dim> > & modelResidualsList,
 				 	const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 
-	const userInputParameters<dim> userInputs;
+	// Virtual method in MatrixFreePDE that we override
+	double getNucleationProbability(variableValueContainer variable_value, double dV) const;
 
 	// ================================================================
-	// Model constants
+	// Methods specific to this subclass
+	// ================================================================
+
+	// Method to place the nucleus and calculate the mobility modifier in residualRHS
+	void seedNucleus(const dealii::Point<dim, dealii::VectorizedArray<double> > & q_point_loc,
+						std::vector<dealii::VectorizedArray<double> > & source_terms,
+						dealii::VectorizedArray<double> & gamma) const;
+
+	// ================================================================
+	// Model constants specific to this subclass
 	// ================================================================
 
 	double McV = userInputs.get_model_constant_double(0);
@@ -74,17 +74,4 @@ private:
 
 	// ================================================================
 
-	// ----------------------------------------------------------------
-	// Nucleation methods specific to this subclass
-	// ----------------------------------------------------------------
-
-	// Contains nucleation probability that varies between applications, no MatrixFreePDE member access
-	double getNucleationProbability(variableValueContainer variable_value, double dV) const;
-
-	void seedNucleus(const dealii::Point<dim, dealii::VectorizedArray<double> > & q_point_loc,
-						std::vector<dealii::VectorizedArray<double> > & source_terms,
-						dealii::VectorizedArray<double> & gamma) const;
-
 };
-
-#endif /* APPLICATIONS_ALLENCAHN_CUSTOMPDE_H_ */

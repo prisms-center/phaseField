@@ -2,20 +2,25 @@
 
 // Header files
 #include "../../include/initialConditions.h"
+#include "../../include/initialCondition_template_instantiations.h"
 #include "../../include/matrixFreePDE.h"
 #include "../../src/models/mechanics/computeStress.h"
+#include "../../include/inputFileReader.h"
 #include "customPDE.h"
 #include "equations.h"
 #include "ICs_and_BCs.h"
-#include "postprocess.h"
-#include "../../include/initialCondition_template_instantiations.h"
-#include "../../include/inputFileReader.h"
 
-// Header files for nucleation
+// Header file for postprocessing that may or may not exist
+#ifdef POSTPROCESS_FILE_EXISTS
+#include "postprocess.h"
+#endif
+
+// Header files for nucleation that may or may not exist
+#ifdef NUCLEATION_FILE_EXISTS
 #include <random>
 #include <time.h>
 #include "nucleation.h"
-
+#endif
 
 //main
 int main (int argc, char **argv)
@@ -34,7 +39,7 @@ int main (int argc, char **argv)
         const unsigned int num_pp_vars = input_file_reader.get_number_of_entries("parameters.in","subsection","Postprocessing variable");
         const unsigned int num_constants = input_file_reader.get_number_of_entries("parameters.in","set","Model constant");
 
-        std::cout << "Number of constants: " << num_constants << std::endl;
+        std::cout << "Number of model constants: " << num_constants << std::endl;
 
         // Read in all of the parameters now
         dealii::ParameterHandler parameter_handler;
