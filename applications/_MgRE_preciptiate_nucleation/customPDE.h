@@ -39,8 +39,10 @@ private:
 	void energyDensity(const std::vector<modelVariable<dim> > & modelVarList, const dealii::VectorizedArray<double> & JxW_value,
 			  	  	 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc);
 
-	// Virtual method in MatrixFreePDE we choose to override
-	//void getNucleiList ();
+	// Virtual method in MatrixFreePDE that we override
+	void postProcessedFields(const std::vector<modelVariable<dim> > & modelVariablesList,
+				 	std::vector<modelResidual<dim> > & modelResidualsList,
+				 	const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 
 	const userInputParameters<dim> userInputs;
 
@@ -48,23 +50,27 @@ private:
 	// Model constants
 	// ================================================================
 
-	// double McV = userInputs.get_model_constant_double(0);
-	// double MnV = userInputs.get_model_constant_double(1);
-	// double KnV = userInputs.get_model_constant_double(2);
-	// double c_avg = userInputs.get_model_constant_double(3);
-	// double W_barrier = userInputs.get_model_constant_double(4);
-	// double A0 = userInputs.get_model_constant_double(5);
-	// double A2 = userInputs.get_model_constant_double(6);
-	// double calmin = userInputs.get_model_constant_double(7);
-	// double B0 = userInputs.get_model_constant_double(8);
-	// double B2 = userInputs.get_model_constant_double(9);
-	// double cbtmin = userInputs.get_model_constant_double(10);
-	// double k1 = userInputs.get_model_constant_double(11);
-	// double k2 = userInputs.get_model_constant_double(12);
-	// double tau = userInputs.get_model_constant_double(13);
-	// double epsilon = userInputs.get_model_constant_double(14);
-	//
-	// double interface_coeff=std::sqrt(2.0*KnV/W_barrier);
+	double McV = userInputs.get_model_constant_double(0);
+	double Mn1V = userInputs.get_model_constant_double(1);
+	double Mn2V = userInputs.get_model_constant_double(2);
+	double Mn3V = userInputs.get_model_constant_double(3);
+	dealii::Tensor<2,dim> Kn1 = userInputs.get_model_constant_rank_2_tensor(4);
+	dealii::Tensor<2,dim> Kn2 = userInputs.get_model_constant_rank_2_tensor(5);
+	dealii::Tensor<2,dim> Kn3 = userInputs.get_model_constant_rank_2_tensor(6);
+	double W = userInputs.get_model_constant_double(7);
+	bool n_dependent_stiffness = userInputs.get_model_constant_bool(8);
+	dealii::Tensor<2,dim> sfts_linear1 = userInputs.get_model_constant_rank_2_tensor(9);
+	dealii::Tensor<2,dim> sfts_const1 = userInputs.get_model_constant_rank_2_tensor(10);
+	dealii::Tensor<2,dim> sfts_linear2 = userInputs.get_model_constant_rank_2_tensor(11);
+	dealii::Tensor<2,dim> sfts_const2 = userInputs.get_model_constant_rank_2_tensor(12);
+	dealii::Tensor<2,dim> sfts_linear3 = userInputs.get_model_constant_rank_2_tensor(13);
+	dealii::Tensor<2,dim> sfts_const3 = userInputs.get_model_constant_rank_2_tensor(14);
+	double A2 = userInputs.get_model_constant_double(15);
+	double A1 = userInputs.get_model_constant_double(16);
+	double A0 = userInputs.get_model_constant_double(17);
+	double B2 = userInputs.get_model_constant_double(18);
+	double B1 = userInputs.get_model_constant_double(19);
+	double B0 = userInputs.get_model_constant_double(20);
 
 	// ================================================================
 

@@ -28,9 +28,10 @@ void MatrixFreePDE<dim,degree>::outputResults() const {
   // Test section for outputting postprocessed fields
   // Currently there are hacks in place, using the matrixFreeObject, invM, constraints, and DoFHandler as the primary variables
   if (userInputs.postProcessingRequired){
-	  PostProcessor<dim,degree> post_processor(userInputs);
+	  //PostProcessor<dim,degree> post_processor(userInputs);
 	  std::vector<vectorType*> postProcessedSet;
-	  post_processor.computePostProcessedFields(matrixFreeObject,solutionSet,postProcessedSet);
+	  //post_processor.computePostProcessedFields(matrixFreeObject,solutionSet,postProcessedSet);
+      computePostProcessedFields(postProcessedSet);
 
 	  unsigned int invM_size = invM.local_size();
 	  for(unsigned int fieldIndex=0; fieldIndex<postProcessedSet.size(); fieldIndex++){

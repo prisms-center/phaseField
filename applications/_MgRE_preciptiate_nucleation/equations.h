@@ -8,82 +8,82 @@
 // here. For more complex cases with loops or conditional statements, residual
 // equations (or parts of residual equations) can be written below in "residualRHS".
 
-// Cahn-Hilliard mobility
-#define McV 1.0
-
-// Allen-Cahn mobilities
-#define Mn1V (100.0)
-#define Mn2V (100.0)
-#define Mn3V (100.0)
-
-// Gradient energy coefficients
-//double Kn1[3][3]={{0.01141*scaleFactor,0,0},{0,0.01426*scaleFactor,0},{0,0,0.004326*scaleFactor}}; // Scaled KKS B'''
-double Kn1[3][3]={{0.0318/1.5,0,0},{0,(6.7347e-4)/1.5,0},{0,0,0.0269/1.5}}; // Scaled KKS B' Mg-Y
-//double Kn1[3][3]={{0.01141*scaleFactor,0,0},{0,0.01141*scaleFactor,0},{0,0,0.01141*scaleFactor}}; // Isotropic interfacial energy
-
-double Kn2[3][3]={{0.008455/1.5,-0.01348/1.5,0},{-0.01348/1.5,0.02402/1.5,0},{0,0,0.0269/1.5}}; // Scaled KKS B'''
-double Kn3[3][3]={{0.008455/1.5,0.01348/1.5,0},{0.01348/1.5,0.02402/1.5,0},{0,0,0.0269/1.5}}; // Scaled KKS B'''
-//define energy barrier coefficient (used to tune the interfacial energy)
-#define W (0.1288*1.5)
-
-// Define Mechanical properties
-#define n_dependent_stiffness false
-
-// Stress-free transformation strains
-// Linear fits for the stress-free transformation strains in for sfts = sfts_linear * c + sfts_const
-
-// B''' (gen 2)
-//double sfts_linear1[3][3] = {{-0.34358,0,0},{0,0.68568,0},{0,0,0.19308}};
-//double sfts_const1[3][3] = {{0.14978,0,0},{0,-0.10254,0},{0,0,-0.034049}};
-
-// B''' (gen 4)
-//double sfts_linear1[3][3] = {{-0.32067,0,0},{0,0.66232,0},{0,0,0.19462}};
-//double sfts_const1[3][3] = {{0.14698,0,0},{0,-0.09877,0},{0,0,-0.034899}};
+// // Cahn-Hilliard mobility
+// #define McV 1.0
 //
-//double sfts_linear2[3][3] = {{0.4166,0.4256,0},{0.4256,-0.07495,0},{0,0,0.19462}};
-//double sfts_const2[3][3] = {{-0.03733,-0.1064,0},{-0.1064,0.08554,0},{0,0,-0.034899}};
+// // Allen-Cahn mobilities
+// #define Mn1V (100.0)
+// #define Mn2V (100.0)
+// #define Mn3V (100.0)
 //
-//double sfts_linear3[3][3] = {{0.4166,-0.4256,0},{-0.4256,-0.07495,0},{0,0,0.19462}};
-//double sfts_const3[3][3] = {{-0.03733,0.1064,0},{0.1064,0.08554,0},{0,0,-0.034899}};
-
-// B's (Mg-Y)
-double sfts_linear1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sfts_const1[3][3] = {{(0.013972+0.13383*0.125),0,0},{0,(-0.0057545+0.21273*0.125),0},{0,0,-0.002691+0.014832*0.125}};
-double sfts_linear2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sfts_const2[3][3] = {{0.02330,-0.004271,0},{-0.004271,0.0282,0},{0,0,-0.0008370}};
-double sfts_linear3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sfts_const3[3][3] = {{0.02330,0.004271,0},{0.004271,0.0282,0},{0,0,-0.0008370}};
-
-
-// Zero misfit
-//double sfts_linear1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-//double sfts_const1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-//double sfts_linear2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-//double sfts_const2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-//double sfts_linear3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-//double sfts_const3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-
-////define free energy expressions (Mg-Nd data from CASM) (B''', gen 4)
-//double A2 = 100.56;
-//double A1 = -1.727;
-//double A0 = 0.0001138;
-////double B2 = 2.4929;
-////double B1 = -2.2810;
-////double B0 = 0.039048;
+// // Gradient energy coefficients
+// //double Kn1[3][3]={{0.01141*scaleFactor,0,0},{0,0.01426*scaleFactor,0},{0,0,0.004326*scaleFactor}}; // Scaled KKS B'''
+// double Kn1[3][3]={{0.0318/1.5,0,0},{0,(6.7347e-4)/1.5,0},{0,0,0.0269/1.5}}; // Scaled KKS B' Mg-Y
+// //double Kn1[3][3]={{0.01141*scaleFactor,0,0},{0,0.01141*scaleFactor,0},{0,0,0.01141*scaleFactor}}; // Isotropic interfacial energy
 //
-//// B''' fits without B''
-//double B2 = 5.2408;
-//double B1 = -2.9679;
-//double B0 = 0.081978;
-
-// Stand-in Mg-Y free energies
-//define free energy expressions (Mg-Nd data from CASM) (B''', gen 4)
-double A2 = 7.5096;
-double A1 = -0.0078096;
-double A0 = 2.0305e-6;
-double B2 = 2.8557;
-double B1 = -0.71393;
-double B0 = 0.04462;
+// double Kn2[3][3]={{0.008455/1.5,-0.01348/1.5,0},{-0.01348/1.5,0.02402/1.5,0},{0,0,0.0269/1.5}}; // Scaled KKS B'''
+// double Kn3[3][3]={{0.008455/1.5,0.01348/1.5,0},{0.01348/1.5,0.02402/1.5,0},{0,0,0.0269/1.5}}; // Scaled KKS B'''
+// //define energy barrier coefficient (used to tune the interfacial energy)
+// #define W (0.1288*1.5)
+//
+// // Define Mechanical properties
+// #define n_dependent_stiffness false
+//
+// // Stress-free transformation strains
+// // Linear fits for the stress-free transformation strains in for sfts = sfts_linear * c + sfts_const
+//
+// // B''' (gen 2)
+// //double sfts_linear1[3][3] = {{-0.34358,0,0},{0,0.68568,0},{0,0,0.19308}};
+// //double sfts_const1[3][3] = {{0.14978,0,0},{0,-0.10254,0},{0,0,-0.034049}};
+//
+// // B''' (gen 4)
+// //double sfts_linear1[3][3] = {{-0.32067,0,0},{0,0.66232,0},{0,0,0.19462}};
+// //double sfts_const1[3][3] = {{0.14698,0,0},{0,-0.09877,0},{0,0,-0.034899}};
+// //
+// //double sfts_linear2[3][3] = {{0.4166,0.4256,0},{0.4256,-0.07495,0},{0,0,0.19462}};
+// //double sfts_const2[3][3] = {{-0.03733,-0.1064,0},{-0.1064,0.08554,0},{0,0,-0.034899}};
+// //
+// //double sfts_linear3[3][3] = {{0.4166,-0.4256,0},{-0.4256,-0.07495,0},{0,0,0.19462}};
+// //double sfts_const3[3][3] = {{-0.03733,0.1064,0},{0.1064,0.08554,0},{0,0,-0.034899}};
+//
+// // B's (Mg-Y)
+// double sfts_linear1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+// double sfts_const1[3][3] = {{(0.013972+0.13383*0.125),0,0},{0,(-0.0057545+0.21273*0.125),0},{0,0,-0.002691+0.014832*0.125}};
+// double sfts_linear2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+// double sfts_const2[3][3] = {{0.02330,-0.004271,0},{-0.004271,0.0282,0},{0,0,-0.0008370}};
+// double sfts_linear3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+// double sfts_const3[3][3] = {{0.02330,0.004271,0},{0.004271,0.0282,0},{0,0,-0.0008370}};
+//
+//
+// // Zero misfit
+// //double sfts_linear1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+// //double sfts_const1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+// //double sfts_linear2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+// //double sfts_const2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+// //double sfts_linear3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+// //double sfts_const3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+//
+// ////define free energy expressions (Mg-Nd data from CASM) (B''', gen 4)
+// //double A2 = 100.56;
+// //double A1 = -1.727;
+// //double A0 = 0.0001138;
+// ////double B2 = 2.4929;
+// ////double B1 = -2.2810;
+// ////double B0 = 0.039048;
+// //
+// //// B''' fits without B''
+// //double B2 = 5.2408;
+// //double B1 = -2.9679;
+// //double B0 = 0.081978;
+//
+// // Stand-in Mg-Y free energies
+// //define free energy expressions (Mg-Nd data from CASM) (B''', gen 4)
+// double A2 = 7.5096;
+// double A1 = -0.0078096;
+// double A0 = 2.0305e-6;
+// double B2 = 2.8557;
+// double B1 = -0.71393;
+// double B0 = 0.04462;
 
 #define faV (A2*c_alpha*c_alpha + A1*c_alpha + A0)
 #define facV (2.0*A2*c_alpha +A1)

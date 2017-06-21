@@ -29,8 +29,6 @@ typedef dealii::parallel::distributed::Vector<double> vectorType;
 //macro for constants
 #define constV(a) make_vectorized_array(a)
 
-#include "postprocessor.h"
-
 //
 using namespace dealii;
 //
@@ -205,6 +203,15 @@ class MatrixFreePDE:public Subscriptor
   virtual void energyDensity(const std::vector<modelVariable<dim> > & modelVarList, const dealii::VectorizedArray<double> & JxW_value,
   		  	  	  	  	  	  	  	  	  	  	  	  	  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc)=0;
 
+
+ virtual void postProcessedFields(const std::vector<modelVariable<dim> > & modelVariablesList,
+                                                              std::vector<modelResidual<dim> > & modelResidualsList,
+                                                              const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const =0;
+ void computePostProcessedFields(std::vector<vectorType*> &postProcessedSet) const;
+void getPostProcessedFields(const dealii::MatrixFree<dim,double> &data,
+                                                                                      std::vector<vectorType*> &dst,
+                                                                                      const std::vector<vectorType*> &src,
+                                                                                      const std::pair<unsigned int,unsigned int> &cell_range) const;
 
   //methods to apply dirichlet BC's
   /*Map of degrees of freedom to the corresponding Dirichlet boundary conditions, if any.*/

@@ -1,27 +1,9 @@
-/*
- * postprocess.h
- *
- *  Created on: Mar 29, 2017
- *      Author: stephendewitt
- */
 
-#ifndef APPLICATIONS_ALLENCAHN_POSTPROCESS_H_
-#define APPLICATIONS_ALLENCAHN_POSTPROCESS_H_
 
-#include "../../include/list_of_CIJ.h"
-
-// =================================================================================
-
-//template <int dim, int degree>
-//class customPostProcessor: public PostProcessor<dim,degree>
-//{
-//private:
-
-template <int dim>
-void postProcessedFields(const std::vector<modelVariable<dim> > & modelVariablesList,
+template <int dim,int degree>
+void customPDE<dim,degree>::postProcessedFields(const std::vector<modelVariable<dim> > & modelVariablesList,
 												std::vector<modelResidual<dim> > & modelResidualsList,
-												const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc,
-												const list_of_CIJ<dim> material_moduli) {
+												const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 // The order parameter and its derivatives (names here should match those in the macros above)
 
@@ -103,13 +85,13 @@ dealii::VectorizedArray<double> CIJ_combined[2*dim-1+dim/3][2*dim-1+dim/3];
 if (n_dependent_stiffness == true){
 for (unsigned int i=0; i<2*dim-1+dim/3; i++){
 	  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-		  CIJ_combined[i][j] = material_moduli.CIJ_list[0][i][j]*(constV(1.0)-sum_hpV) + material_moduli.CIJ_list[1][i][j]*(h1V) + material_moduli.CIJ_list[2][i][j]*(h2V) + material_moduli.CIJ_list[3][i][j]*(h3V);
+		  CIJ_combined[i][j] = userInputs.CIJ_list[0][i][j]*(constV(1.0)-sum_hpV) + userInputs.CIJ_list[1][i][j]*(h1V) + userInputs.CIJ_list[2][i][j]*(h2V) + userInputs.CIJ_list[3][i][j]*(h3V);
 	  }
 }
 computeStress<dim>(CIJ_combined, E2, S);
 }
 else{
-computeStress<dim>(material_moduli.CIJ_list[0], E2, S);
+computeStress<dim>(userInputs.CIJ_list[0], E2, S);
 }
 
 dealii::VectorizedArray<double> f_el = constV(0.0);
@@ -139,19 +121,3 @@ modelResidualsList[1].scalarValueResidual = vm_stress;
 
 
 }
-//};
-
-// =================================================================================
-
-// Template instantiations
-template void postProcessedFields<2>(const std::vector<modelVariable<2> > & modelVariablesList,
-		std::vector<modelResidual<2> > & modelResidualsList,
-		const dealii::Point<2, dealii::VectorizedArray<double> > q_point_loc,
-		const list_of_CIJ<2> material_moduli);
-
-template void postProcessedFields<3>(const std::vector<modelVariable<3> > & modelVariablesList,
-		std::vector<modelResidual<3> > & modelResidualsList,
-		const dealii::Point<3, dealii::VectorizedArray<double> > q_point_loc,
-		const list_of_CIJ<3> material_moduli);
-
-#endif /* APPLICATIONS_ALLENCAHN_POSTPROCESS_H_ */

@@ -259,3 +259,47 @@ set Boundary condition for variable 4, z component = PERIODIC
 # Set the model constants
 # =================================================================================
 # Type options currently are double, int, bool, and tensor
+
+# McV, the Cahn-Hilliard mobility
+set Model constant 0 = 1.0, double
+
+# Mn1V, Mn2V, and Mn3V, the Allen-Cahn mobilities
+set Model constant 1 = 100.0, double
+set Model constant 2 = 100.0, double
+set Model constant 3 = 100.0, double
+
+# Kn1, Kn2, and Kn3, the gradient energy coefficients
+set Model constant 4 = ((0.0212,0,0),(0,4.4898e-4,0),(0,0,0.01793)), tensor
+set Model constant 5 = ((0.005637,-0.008987,0),(-0.008987,0.01601,0),(0,0,0.01793)), tensor
+set Model constant 6 = ((0.005637,0.008987,0),(0.008987,0.01601,0),(0,0,0.01793)), tensor
+
+# W, the energy barrier coefficient
+set Model constant 7 = 0.1932, double
+
+# n_dependent_stiffness
+set Model constant 8 = false, bool
+
+# sfts_linear1
+set Model constant 9 = ((0,0,0),(0,0,0),(0,0,0)), tensor
+# sfts_const1
+set Model constant 10 = ((0.03070,0,0),(0,0.02084,0),(0,0,-8.3700e-4)), tensor
+
+# sfts_linear2
+set Model constant 11 = ((0,0,0),(0,0,0),(0,0,0)), tensor
+# sfts_const2
+set Model constant 12 = ((0.02330,-0.004271,0),(-0.004271,0.0282,0),(0,0,-0.0008370)), tensor
+
+# sfts_linear3
+set Model constant 13 = ((0,0,0),(0,0,0),(0,0,0)), tensor
+# sfts_const3
+set Model constant 14 = ((0.02330,0.004271,0),(0.004271,0.0282,0),(0,0,-0.0008370)), tensor
+
+# A2, A1, and A0 Mg-Y matrix free energy parameters
+set Model constant 15 = 7.5096, double
+set Model constant 16 = -0.0078096, double
+set Model constant 17 = 2.0305e-6, double
+
+# B2, B1, and B0 Mg-Y matrix free energy parameters
+set Model constant 18 = 2.8557, double
+set Model constant 19 = -0.71393, double
+set Model constant 20 = 0.04462, double
