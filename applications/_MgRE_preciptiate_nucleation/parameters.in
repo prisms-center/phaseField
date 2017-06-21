@@ -258,4 +258,4 @@ set Boundary condition for variable 4, z component = PERIODIC
 # =================================================================================
 # Set the model constants
 # =================================================================================
-# Type options currently are double, int, and bool
+# Type options currently are double, int, bool, and tensor
