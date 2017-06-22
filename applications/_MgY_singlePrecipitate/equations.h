@@ -64,14 +64,14 @@ vectorgradType ruxV;
 
 vectorhessType uxx;
 
-bool c_dependent_misfit = false;
-for (unsigned int i=0; i<dim; i++){
-	for (unsigned int j=0; j<dim; j++){
-		if (std::abs(sfts_linear1[i][j])>1.0e-12){
-			c_dependent_misfit = true;
-		}
-	}
-}
+// bool c_dependent_misfit = false;
+// for (unsigned int i=0; i<dim; i++){
+// 	for (unsigned int j=0; j<dim; j++){
+// 		if (std::abs(sfts_linear1[i][j])>1.0e-12){
+// 			c_dependent_misfit = true;
+// 		}
+// 	}
+// }
 
 if (c_dependent_misfit == true){
 	uxx = modelVariablesList[2].vectorHess;
@@ -235,30 +235,24 @@ void customPDE<dim,degree>::residualLHS(const std::vector<modelVariable<dim> > &
 		modelResidual<dim> & modelRes,
 		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-//n1
-scalarvalueType n1 = modelVariablesList[0].scalarValue;
+	//n1
+	scalarvalueType n1 = modelVariablesList[0].scalarValue;
 
-//u
-vectorgradType ux = modelVariablesList[1].vectorGrad;
-vectorgradType ruxV;
+	// Take advantage of E being simply 0.5*(ux + transpose(ux)) and use the dealii "symmetrize" function
+	dealii::Tensor<2, dim, dealii::VectorizedArray<double> > E;
+	E = symmetrize(modelVariablesList[1].vectorGrad);
 
-// Take advantage of E being simply 0.5*(ux + transpose(ux)) and use the dealii "symmetrize" function
-dealii::Tensor<2, dim, dealii::VectorizedArray<double> > E;
-E = symmetrize(ux);
+	// Compute stress tensor (which is equal to the residual, Rux)
+	if (n_dependent_stiffness == true){
+		dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ_combined;
+		CIJ_combined = userInputs.CIJ_list[0]*(constV(1.0)-h1V);
+		CIJ_combined += userInputs.CIJ_list[1]*(h1V);
 
-// Compute stress tensor (which is equal to the residual, Rux)
-if (n_dependent_stiffness == true){
-	dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ_combined;
-	CIJ_combined = userInputs.CIJ_list[0]*(constV(1.0)-h1V);
-	CIJ_combined += userInputs.CIJ_list[1]*(h1V);
-
-	computeStress<dim>(CIJ_combined, E, ruxV);
-}
-else{
-	computeStress<dim>(userInputs.CIJ_list[0], E, ruxV);
-}
-
-modelRes.vectorGradResidual = ruxV;
+		computeStress<dim>(CIJ_combined, E, modelRes.vectorGradResidual);
+	}
+	else{
+		computeStress<dim>(userInputs.CIJ_list[0], E, modelRes.vectorGradResidual);
+	}
 
 }
 

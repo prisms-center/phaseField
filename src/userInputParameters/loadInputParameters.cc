@@ -9,11 +9,11 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
     // Load the inputs into the class member variables
 
     // Meshing parameters
-    domain_size.push_back(parameter_handler.get_integer("Domain size X"));
+    domain_size.push_back(parameter_handler.get_double("Domain size X"));
     if (dim > 1){
-	       domain_size.push_back(parameter_handler.get_integer("Domain size Y"));
+	       domain_size.push_back(parameter_handler.get_double("Domain size Y"));
            if (dim > 2){
-               domain_size.push_back(parameter_handler.get_integer("Domain size Z"));
+               domain_size.push_back(parameter_handler.get_double("Domain size Z"));
            }
     }
 

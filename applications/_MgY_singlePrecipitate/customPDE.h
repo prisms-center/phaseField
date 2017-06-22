@@ -4,7 +4,16 @@ template <int dim, int degree>
 class customPDE: public MatrixFreePDE<dim,degree>
 {
 public:
-	customPDE(userInputParameters<dim> _userInputs): MatrixFreePDE<dim,degree>(_userInputs) , userInputs(_userInputs) {};
+	customPDE(userInputParameters<dim> _userInputs): MatrixFreePDE<dim,degree>(_userInputs) , userInputs(_userInputs) {
+		c_dependent_misfit = false;
+		for (unsigned int i=0; i<dim; i++){
+			for (unsigned int j=0; j<dim; j++){
+				if (std::abs(sfts_linear1[i][j])>1.0e-12){
+					c_dependent_misfit = true;
+				}
+			}
+		}
+	};
 
 private:
 	#include "../../include/typeDefs.h"
@@ -61,6 +70,8 @@ private:
 	double B0 = userInputs.get_model_constant_double(12);
 
 	const static unsigned int CIJ_tensor_size =2*dim-1+dim/3;
+
+	bool c_dependent_misfit;
 
 	// ================================================================
 

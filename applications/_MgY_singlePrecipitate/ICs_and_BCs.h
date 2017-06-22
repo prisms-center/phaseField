@@ -11,15 +11,15 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
 	  // according to its variable index.
 
 	  // Initial condition parameters
-	  #define x_denom (2.0)*(2.0)
-	  #define y_denom (16.0)*(16.0)
-	  #define z_denom (16.0)*(16.0)
-	  #define initial_interface_coeff (0.04)
-	  #define initial_radius 1.0
-	  #define c_matrix 1.0e-6
-      #define c_precip 0.125
+	  double x_denom = (6.0)*(6.0);
+	  double y_denom = (6.0)*(6.0);
+	  double z_denom = (18.0)*(18.0);
+	  double initial_interface_coeff = (0.04);
+	  double initial_radius = 1.0;
+	  double c_matrix = 0.002;
+      double c_precip = 0.125;
 
-	  //set result equal to the structural order parameter initial condition   
+	  //set result equal to the structural order parameter initial condition
 	  double r=0.0;
 	  std::vector<double> ellipsoid_denoms;
 	  ellipsoid_denoms.push_back(x_denom);
@@ -28,7 +28,7 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
 
 
 	  for (unsigned int i=0; i<dim; i++){
-		  r += (p.operator()(i))*(p.operator()(i))/ellipsoid_denoms[i];
+		  r += (p(i))*(p(i))/ellipsoid_denoms[i];
 	  }
 	  r = sqrt(r);
 
