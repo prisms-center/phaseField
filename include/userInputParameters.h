@@ -32,6 +32,8 @@ public:
 	double get_model_constant_double(const unsigned int index) const {return boost::get<double>(model_constants[index]);};
 	double get_model_constant_int(const unsigned int index) const {return boost::get<int>(model_constants[index]);};
 	double get_model_constant_bool(const unsigned int index) const {return boost::get<bool>(model_constants[index]);};
+	dealii::Tensor<1,dim> get_model_constant_rank_1_tensor(const unsigned int index) const {return boost::get<dealii::Tensor<1,dim> >(model_constants[index]);};
+	dealii::Tensor<2,dim> get_model_constant_rank_2_tensor(const unsigned int index) const {return boost::get<dealii::Tensor<2,dim> >(model_constants[index]);};
 
 	// Meshing parameters
 	std::vector<double> domain_size;
@@ -131,7 +133,7 @@ public:
 	std::vector<varBCs<dim> > BC_list;
 
 	// List of user-defined constants
-	std::vector<boost::variant<double,int,bool> > model_constants;
+	std::vector<boost::variant<double,int,bool,dealii::Tensor<1,dim>,dealii::Tensor<2,dim> > > model_constants;
 
 	// Nucleation parameters
 	std::vector<unsigned int> nucleating_variable_indices;

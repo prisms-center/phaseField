@@ -1,12 +1,9 @@
-#include "../../include/postprocessor.h"
+//#include "../../include/postprocessor.h"
+#include "../../include/matrixFreePDE.h"
 #include "../../include/list_of_CIJ.h"
 
 template <int dim,int degree>
-PostProcessor<dim,degree>::PostProcessor(userInputParameters<dim> _userInputs):userInputs(_userInputs){
-}
-
-template <int dim,int degree>
-void PostProcessor<dim,degree>::computePostProcessedFields(dealii::MatrixFree<dim,double> matrixFreeObject, const std::vector<vectorType*> &solutionSet, std::vector<vectorType*> &postProcessedSet){
+void MatrixFreePDE<dim,degree>::computePostProcessedFields(std::vector<vectorType*> &postProcessedSet) const {
 
 
 	// Zero out the postProcessedSet
@@ -17,16 +14,16 @@ void PostProcessor<dim,degree>::computePostProcessedFields(dealii::MatrixFree<di
 		matrixFreeObject.initialize_dof_vector(*U,  0); *U=0;
 	}
 
-	  //call to integrate and assemble
-	  matrixFreeObject.cell_loop (&PostProcessor<dim,degree>::getPostProcessedFields, this, postProcessedSet, solutionSet);
+	//call to integrate and assemble
+	matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getPostProcessedFields, this, postProcessedSet, solutionSet);
 
 }
 
 template <int dim,int degree>
-void PostProcessor<dim,degree>::getPostProcessedFields(const dealii::MatrixFree<dim,double> &data,
+void MatrixFreePDE<dim,degree>::getPostProcessedFields(const dealii::MatrixFree<dim,double> &data,
 		std::vector<vectorType*> &dst,
 		const std::vector<vectorType*> &src,
-		const std::pair<unsigned int,unsigned int> &cell_range){
+		const std::pair<unsigned int,unsigned int> &cell_range) const {
 
 	//initialize FEEvaulation objects
 	std::vector<dealii::FEEvaluation<dim,degree,degree+1,1,double> > scalar_vars;
@@ -133,7 +130,7 @@ void PostProcessor<dim,degree>::getPostProcessedFields(const dealii::MatrixFree<
 			}
 
 			// Calculate the residuals
-			postProcessedFields<dim>(modelVarList,modelResidualsList,q_point_loc,this->userInputs.material_moduli);
+			postProcessedFields(modelVarList,modelResidualsList,q_point_loc);
 
 			// Submit values
 			for (unsigned int i=0; i<userInputs.pp_number_of_variables; i++){
@@ -170,13 +167,4 @@ void PostProcessor<dim,degree>::getPostProcessedFields(const dealii::MatrixFree<
 	}
 }
 
-
-#ifndef POSTPROCESSOR_TEMPLATES
-#define POSTPROCESSOR_TEMPLATES
-template class PostProcessor<2,1>;
-template class PostProcessor<3,1>;
-template class PostProcessor<2,2>;
-template class PostProcessor<3,2>;
-template class PostProcessor<2,3>;
-template class PostProcessor<3,3>;
-#endif
+#include "../../include/matrixFreePDE_template_instantiations.h"

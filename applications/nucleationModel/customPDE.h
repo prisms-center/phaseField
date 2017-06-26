@@ -1,16 +1,4 @@
-/*
- * customPDE.h
- *
- *  Created on: Feb 24, 2017
- *      Author: stephendewitt
- */
-
-#ifndef APPLICATIONS_ALLENCAHN_CUSTOMPDE_H_
-#define APPLICATIONS_ALLENCAHN_CUSTOMPDE_H_
-
 #include "../../include/matrixFreePDE.h"
-#include "../../include/parallelNucleationList.h"
-#include "../../include/nucleus.h"
 
 template <int dim, int degree>
 class customPDE: public MatrixFreePDE<dim,degree>
@@ -22,6 +10,8 @@ public:
 
 private:
 	#include "../../include/typeDefs.h"
+
+	const userInputParameters<dim> userInputs;
 
 	// Pure virtual method in MatrixFreePDE
 	void residualRHS(const std::vector<modelVariable<dim> > & modelVarList,
@@ -37,13 +27,25 @@ private:
 	void energyDensity(const std::vector<modelVariable<dim> > & modelVarList, const dealii::VectorizedArray<double> & JxW_value,
 			  	  	 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc);
 
-	// Virtual method in MatrixFreePDE we choose to override
-	void getNucleiList ();
+	// Virtual method in MatrixFreePDE that we override if we need postprocessing (and a postprocess.h file exists)
+	#ifdef POSTPROCESS_FILE_EXISTS
+	void postProcessedFields(const std::vector<modelVariable<dim> > & modelVariablesList,
+				 	std::vector<modelResidual<dim> > & modelResidualsList,
+				 	const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
+	#endif
 
-	const userInputParameters<dim> userInputs;
+	// Virtual method in MatrixFreePDE that we override if we need nucleation (and a nucleation.h file exists)
+	#ifdef NUCLEATION_FILE_EXISTS
+	double getNucleationProbability(variableValueContainer variable_value, double dV) const;
+	#endif
 
 	// ================================================================
-	// Model constants
+	// Methods specific to this subclass
+	// ================================================================
+
+
+	// ================================================================
+	// Model constants specific to this subclass
 	// ================================================================
 
 	double McV = userInputs.get_model_constant_double(0);
@@ -63,17 +65,7 @@ private:
 	double epsilon = userInputs.get_model_constant_double(14);
 
 	double interface_coeff=std::sqrt(2.0*KnV/W_barrier);
-	
+
 	// ================================================================
 
-	// ----------------------------------------------------------------
-	// Nucleation methods specific to this subclass
-	// ----------------------------------------------------------------
-
-	// Contains nucleation probability that varies between applications, no MatrixFreePDE member access
-	double getNucleationProbability(variableValueContainer variable_value, double dV) const;
-
-
 };
-
-#endif /* APPLICATIONS_ALLENCAHN_CUSTOMPDE_H_ */

@@ -73,25 +73,6 @@ subsection Variable 0
 end
 
 # =================================================================================
-# Set the elastic constants (if needed)
-# =================================================================================
-
-subsection Material 0
-    set Material symmetry = ISOTROPIC
-    set Elastic constants = 30,0.3
-end
-
-subsection Material 1
-    set Material symmetry = ISOTROPIC
-    set Elastic constants = 35,0.3
-end
-
-subsection Material 2
-    set Material symmetry = ISOTROPIC
-    set Elastic constants = 35,0.3
-end
-
-# =================================================================================
 # Set the parameters for loading in initial conditions
 # =================================================================================
 
