@@ -14,7 +14,7 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
 	  double x_denom = (6.0)*(6.0);
 	  double y_denom = (6.0)*(6.0);
 	  double z_denom = (18.0)*(18.0);
-	  double initial_interface_coeff = (0.04);
+	  double initial_interface_coeff = (0.12);
 	  double initial_radius = 1.0;
 	  double c_matrix = 0.002;
       double c_precip = 0.125;
