@@ -1,6 +1,6 @@
 // This class permits the access of a subset of indexed fields and gives an error if any non-allowed fields are requested
-#ifndef VARIBLEVALUECONTAINER_H
-#define VARIBLEVALUECONTAINER_H
+#ifndef VARIBLECONTAINER_H
+#define VARIBLECONTAINER_H
 
 #include "userInputParameters.h"
 
@@ -17,12 +17,12 @@ public:
     void set_vector_gradient(unsigned int global_variable_index, dealii::Tensor<2, dim, T > grad);
     void set_vector_hessian(unsigned int global_variable_index, dealii::Tensor<3, dim, T > hess);
 
-    T get_scalar_value(unsigned int global_variable_index);
-    dealii::Tensor<1, dim, T > get_scalar_gradient(unsigned int global_variable_index);
-    dealii::Tensor<2, dim, T > get_scalar_hessian(unsigned int global_variable_index);
-    dealii::Tensor<1, dim, T > get_vector_value(unsigned int global_variable_index);
-    dealii::Tensor<2, dim, T > get_vector_gradient(unsigned int global_variable_index);
-    dealii::Tensor<3, dim, T > get_vector_hessian(unsigned int global_variable_index);
+    T get_scalar_value(unsigned int global_variable_index) const;
+    dealii::Tensor<1, dim, T > get_scalar_gradient(unsigned int global_variable_index) const;
+    dealii::Tensor<2, dim, T > get_scalar_hessian(unsigned int global_variable_index) const;
+    dealii::Tensor<1, dim, T > get_vector_value(unsigned int global_variable_index) const;
+    dealii::Tensor<2, dim, T > get_vector_gradient(unsigned int global_variable_index) const;
+    dealii::Tensor<3, dim, T > get_vector_hessian(unsigned int global_variable_index) const;
 
 private:
     // These vectors of indices convert from the global index to the index of each of the value/gradient/hessian vectors.
@@ -114,61 +114,102 @@ variableContainer<dim,T>::variableContainer(std::vector<bool> need_value, std::v
 }
 
 template <int dim, typename T>
-void variableContainer<dim,T>::void set_scalar_value(unsigned int global_variable_index, T val){
-    scalar_value[scalar_value_index[global_variable_index] = val;
+void variableContainer<dim,T>::set_scalar_value(unsigned int global_variable_index, T val){
+    scalar_value[scalar_value_index[global_variable_index]] = val;
 }
 
 template <int dim, typename T>
-variableContainer<dim,T>::set_scalar_gradient(unsigned int global_variable_index, dealii::Tensor<1, dim, T > grad){
-    scalar_gradient[scalar_gradient_index[global_variable_index] = grad;
+void variableContainer<dim,T>::set_scalar_gradient(unsigned int global_variable_index, dealii::Tensor<1, dim, T > grad){
+    scalar_gradient[scalar_gradient_index[global_variable_index]] = grad;
 }
 template <int dim, typename T>
-variableContainer<dim,T>::set_scalar_hessian(unsigned int global_variable_index, dealii::Tensor<2, dim, T > hess){
-    scalar_hessian[scalar_hessian_index[global_variable_index] = hess;
+void variableContainer<dim,T>::set_scalar_hessian(unsigned int global_variable_index, dealii::Tensor<2, dim, T > hess){
+    scalar_hessian[scalar_hessian_index[global_variable_index]] = hess;
 }
 template <int dim, typename T>
-variableContainer<dim,T>::set_vector_value(unsigned int global_variable_index, dealii::Tensor<1, dim, T > val){
-    vector_value[vector_value_index[global_variable_index] = val;
+void variableContainer<dim,T>::set_vector_value(unsigned int global_variable_index, dealii::Tensor<1, dim, T > val){
+    vector_value[vector_value_index[global_variable_index]] = val;
 }
 template <int dim, typename T>
-variableContainer<dim,T>::set_vector_gradient(unsigned int global_variable_index, dealii::Tensor<2, dim, T > grad){
-    vector_gradient[vector_gradient_index[global_variable_index] = grad;
+void variableContainer<dim,T>::set_vector_gradient(unsigned int global_variable_index, dealii::Tensor<2, dim, T > grad){
+    vector_gradient[vector_gradient_index[global_variable_index]] = grad;
 }
 template <int dim, typename T>
-variableContainer<dim,T>::set_vector_hessian(unsigned int global_variable_index, dealii::Tensor<3, dim, T > hess){
-    vector_hessian[vector_hessian_index[global_variable_index] = hess;
+void variableContainer<dim,T>::set_vector_hessian(unsigned int global_variable_index, dealii::Tensor<3, dim, T > hess){
+    vector_hessian[vector_hessian_index[global_variable_index]] = hess;
 }
 
 // Need to add index checking to these functions so that an error is thrown if the index wasn't set
 template <int dim, typename T>
-T get_scalar_value(unsigned int global_variable_index){
-    return scalar_value[scalar_value_index[global_variable_index]];
-}
-
-template <int dim, typename T>
-dealii::Tensor<1, dim, T > get_scalar_gradient(unsigned int global_variable_index)
+T variableContainer<dim,T>::get_scalar_value(unsigned int global_variable_index) const
 {
-    return scalar_gradient[scalar_gradient_index[global_variable_index]];
+    if (scalar_value_index[global_variable_index] != -1){
+        return scalar_value[scalar_value_index[global_variable_index]];
+    }
+    else {
+        std::cerr << "PRISMS-PF Error: Attempted access of a variable value that was not marked as needed in 'parameters.in'. Double-check the indices in user functions where a variable value is requested." << std::endl;
+        abort();
+    }
 }
 
 template <int dim, typename T>
-dealii::Tensor<2, dim, T > get_scalar_hessian(unsigned int global_variable_index){
-    return scalar_hessian[scalar_hessian_index[global_variable_index]];
+dealii::Tensor<1, dim, T > variableContainer<dim,T>::get_scalar_gradient(unsigned int global_variable_index) const
+{
+    if (scalar_gradient_index[global_variable_index] != -1){
+        return scalar_gradient[scalar_gradient_index[global_variable_index]];
+    }
+    else {
+        std::cerr << "PRISMS-PF Error: Attempted access of a variable value that was not marked as needed in 'parameters.in'. Double-check the indices in user functions where a variable value is requested." << std::endl;
+        abort();
+    }
 }
 
 template <int dim, typename T>
-dealii::Tensor<1, dim, T > get_vector_value(unsigned int global_variable_index){
-    return vector_value[vector_value_index[global_variable_index]];
+dealii::Tensor<2, dim, T > variableContainer<dim,T>::get_scalar_hessian(unsigned int global_variable_index) const
+{
+    if (scalar_hessian_index[global_variable_index] != -1){
+        return scalar_hessian[scalar_hessian_index[global_variable_index]];
+    }
+    else {
+        std::cerr << "PRISMS-PF Error: Attempted access of a variable value that was not marked as needed in 'parameters.in'. Double-check the indices in user functions where a variable value is requested." << std::endl;
+        abort();
+    }
 }
 
 template <int dim, typename T>
-dealii::Tensor<2, dim, T > get_vector_gradient(unsigned int global_variable_index){
-    return vector_gradient[vector_gradient_index[global_variable_index]];
+dealii::Tensor<1, dim, T > variableContainer<dim,T>::get_vector_value(unsigned int global_variable_index) const
+{
+    if (vector_value_index[global_variable_index] != -1){
+        return vector_value[vector_value_index[global_variable_index]];
+    }
+    else {
+        std::cerr << "PRISMS-PF Error: Attempted access of a variable value that was not marked as needed in 'parameters.in'. Double-check the indices in user functions where a variable value is requested." << std::endl;
+        abort();
+    }
 }
 
 template <int dim, typename T>
-dealii::Tensor<3, dim, T > get_vector_hessian(unsigned int global_variable_index){
-    return vector_hessian[vector_hessian_index[global_variable_index]];
+dealii::Tensor<2, dim, T > variableContainer<dim,T>::get_vector_gradient(unsigned int global_variable_index) const
+{
+    if (vector_gradient_index[global_variable_index] != -1){
+        return vector_gradient[vector_gradient_index[global_variable_index]];
+    }
+    else {
+        std::cerr << "PRISMS-PF Error: Attempted access of a variable value that was not marked as needed in 'parameters.in'. Double-check the indices in user functions where a variable value is requested." << std::endl;
+        abort();
+    }
+}
+
+template <int dim, typename T>
+dealii::Tensor<3, dim, T > variableContainer<dim,T>::get_vector_hessian(unsigned int global_variable_index) const
+{
+    if (vector_hessian_index[global_variable_index] != -1){
+        return vector_hessian[vector_hessian_index[global_variable_index]];
+    }
+    else {
+        std::cerr << "PRISMS-PF Error: Attempted access of a variable value that was not marked as needed in 'parameters.in'. Double-check the indices in user functions where a variable value is requested." << std::endl;
+        abort();
+    }
 }
 
 #endif

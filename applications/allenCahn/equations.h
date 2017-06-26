@@ -11,13 +11,16 @@
 // each residual equation. The index for each variable in these lists corresponds to
 // the order it is defined at the top of this file (starting at 0).
 template <int dim, int degree>
-void customPDE<dim,degree>::residualRHS(const std::vector<modelVariable<dim> > & modelVariablesList,
+// void customPDE<dim,degree>::residualRHS(const std::vector<modelVariable<dim> > & modelVariablesList,
+// 												std::vector<modelResidual<dim> > & modelResidualsList,
+// 												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+void customPDE<dim,degree>::residualRHS(const variableContainer<dim,dealii::VectorizedArray<double> > & variable_list,
 												std::vector<modelResidual<dim> > & modelResidualsList,
 												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 // The order parameter and its derivatives (names here should match those in the macros above)
-scalarvalueType n = modelVariablesList[0].scalarValue;
-scalargradType nx = modelVariablesList[0].scalarGrad;
+scalarvalueType n = variable_list.get_scalar_value(0); //modelVariablesList[0].scalarValue;
+scalargradType nx = variable_list.get_scalar_gradient(0); //modelVariablesList[0].scalarGrad;
 
 // Parameters in the residual equations and expressions for the residual equations
 // can be set here.

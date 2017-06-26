@@ -16,6 +16,7 @@
 #include "userInputParameters.h"
 #include "nucleus.h"
 #include "variableValueContainer.h"
+#include "variableContainer.h"
 
 
 ////define data types
@@ -192,7 +193,10 @@ class MatrixFreePDE:public Subscriptor
 		       const std::vector<vectorType*> &src,
 		       const std::pair<unsigned int,unsigned int> &cell_range) const;
 
-  virtual void residualRHS(const std::vector<modelVariable<dim> > & modelVarList,
+  // virtual void residualRHS(const std::vector<modelVariable<dim> > & modelVarList,
+  // 		  	  	  	  	  	  	  	  	  	  	  	  	  std::vector<modelResidual<dim> > & modelResidualsList,
+  // 														  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
+  virtual void residualRHS(const variableContainer<dim,dealii::VectorizedArray<double> > & variable_list,
   		  	  	  	  	  	  	  	  	  	  	  	  	  std::vector<modelResidual<dim> > & modelResidualsList,
   														  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
 

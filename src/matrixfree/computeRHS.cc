@@ -43,10 +43,12 @@ void MatrixFreePDE<dim,degree>::getRHS(const MatrixFree<dim,double> &data,
 	  }
   }
 
-  std::vector<modelVariable<dim> > modelVarList;
+  //std::vector<modelVariable<dim> > modelVarList;
   std::vector<modelResidual<dim> > modelResidualsList;
-  modelVarList.reserve(userInputs.number_of_variables);
+  //modelVarList.reserve(userInputs.number_of_variables);
   modelResidualsList.reserve(userInputs.number_of_variables);
+
+  variableContainer<dim,dealii::VectorizedArray<double> > variable_list(userInputs.need_value, userInputs.need_gradient, userInputs.need_hessian, userInputs.var_type);
 
   //loop over cells
   for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
@@ -87,30 +89,37 @@ void MatrixFreePDE<dim,degree>::getRHS(const MatrixFree<dim,double> &data,
 		  for (unsigned int i=0; i<userInputs.number_of_variables; i++){
 			  if (userInputs.varInfoListRHS[i].is_scalar) {
 				  if (userInputs.need_value[i]){
-					  modelVarList[i].scalarValue = scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_value(q);
+					  //modelVarList[i].scalarValue = scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_value(q);
+                      variable_list.set_scalar_value(i,scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_value(q));
 				  }
 				  if (userInputs.need_gradient[i]){
-					  modelVarList[i].scalarGrad = scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_gradient(q);
+					  //modelVarList[i].scalarGrad = scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_gradient(q);
+                      variable_list.set_scalar_gradient(i,scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_gradient(q));
 				  }
 				  if (userInputs.need_hessian[i]){
-					  modelVarList[i].scalarHess = scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_hessian(q);
+					  //modelVarList[i].scalarHess = scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_hessian(q);
+                      variable_list.set_scalar_hessian(i,scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_hessian(q));
 				  }
 			  }
 			  else {
 				  if (userInputs.need_value[i]){
-					  modelVarList[i].vectorValue = vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_value(q);
+					  //modelVarList[i].vectorValue = vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_value(q);
+                      variable_list.set_vector_value(i,vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_value(q));
 				  }
 				  if (userInputs.need_gradient[i]){
-					  modelVarList[i].vectorGrad = vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_gradient(q);
+					  //modelVarList[i].vectorGrad = vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_gradient(q);
+                      variable_list.set_vector_gradient(i,vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_gradient(q));
 				  }
 				  if (userInputs.need_hessian[i]){
-					  modelVarList[i].vectorHess = vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_hessian(q);
+					  //modelVarList[i].vectorHess = vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_hessian(q);
+                      variable_list.set_vector_hessian(i,vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_hessian(q));
 				  }
 			  }
 		  }
 
 		  // Calculate the residuals
-		  residualRHS(modelVarList,modelResidualsList,q_point_loc);
+		//   residualRHS(modelVarList,modelResidualsList,q_point_loc);
+        residualRHS(variable_list,modelResidualsList,q_point_loc);
 
 		  // Submit values
 		  for (unsigned int i=0; i<userInputs.number_of_variables; i++){
