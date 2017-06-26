@@ -161,23 +161,31 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="comment">// each variable and should be in numerical order. Four input arguments</span></div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="comment">// set the same BC on the entire boundary. Two plus two times the</span></div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="comment">// number of dimensions inputs sets separate BCs on each face of the domain.</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="comment">// Inputs to &quot;inputBCs&quot;:</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="comment">// First input: variable number</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="comment">// Second input: component number</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="comment">// Third input: BC type (options are &quot;ZERO_DERIVATIVE&quot;, &quot;DIRICHLET&quot;, and &quot;PERIODIC&quot;)</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="comment">// Fourth input: BC value (ignored unless the BC type is &quot;DIRICHLET&quot;)</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="comment">// Odd inputs after the third: BC type</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">// Even inputs after the third: BC value</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="comment">// Face numbering: starts at zero with the minimum of the first direction, one for the maximum of the first direction</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="comment">//                      two for the minimum of the second direction, etc.</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    this-&gt;inputBCs(0,0,<span class="stringliteral">&quot;ZERO_DERIVATIVE&quot;</span>,0);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    this-&gt;inputBCs(1,0,<span class="stringliteral">&quot;ZERO_DERIVATIVE&quot;</span>,0);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    this-&gt;inputBCs(2,0,<span class="stringliteral">&quot;ZERO_DERIVATIVE&quot;</span>,0);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="comment">// Inputs to &quot;inputBCs&quot;:</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="comment">// First input: variable number</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="comment">// Second input: component number</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="comment">// Third input: BC type (options are &quot;ZERO_DERIVATIVE&quot;, &quot;DIRICHLET&quot;, and &quot;PERIODIC&quot;)</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="comment">// Fourth input: BC value (ignored unless the BC type is &quot;DIRICHLET&quot;)</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">// Odd inputs after the third: BC type</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="comment">// Even inputs after the third: BC value</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="comment">// Face numbering: starts at zero with the minimum of the first direction, one for the maximum of the first direction</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="comment">//                      two for the minimum of the second direction, etc. (i.e. left-right-bottom-top in 2D).</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="comment">// Example 1: Periodic BC for all boundaries for variable 2, component 2:</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="comment">// this-&gt;inputBCs(2,2,&quot;PERIODIC&quot;,0);</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="comment">// Example 2: Dirichlet BCs with a value of 1.0 on the top and bottom boundaries, zero-derivative on the left and right</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="comment">// for variable 0, component 0:</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="comment">// this-&gt;inputBCs(0,0,&quot;DIRICHLET&quot;,1.0,&quot;DIRICHLET&quot;,1.0,&quot;ZERO_DERIVATIVE&quot;,0,&quot;ZERO_DERIVATIVE&quot;,0);</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    this-&gt;inputBCs(0,0,<span class="stringliteral">&quot;ZERO_DERIVATIVE&quot;</span>,0);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    this-&gt;inputBCs(1,0,<span class="stringliteral">&quot;ZERO_DERIVATIVE&quot;</span>,0);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    this-&gt;inputBCs(2,0,<span class="stringliteral">&quot;ZERO_DERIVATIVE&quot;</span>,0);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;}</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
 <div class="ttc" id="default_values_8h_html_a5aacbfdd02d16e8bb093059b0b5996fc"><div class="ttname"><a href="default_values_8h.html#a5aacbfdd02d16e8bb093059b0b5996fc">spanX</a></div><div class="ttdeci">#define spanX</div><div class="ttdef"><b>Definition:</b> defaultValues.h:12</div></div>
 <div class="ttc" id="default_values_8h_html_a2b252486b943a1d94e3257ea48a14a3d"><div class="ttname"><a href="default_values_8h.html#a2b252486b943a1d94e3257ea48a14a3d">spanY</a></div><div class="ttdeci">#define spanY</div><div class="ttdef"><b>Definition:</b> defaultValues.h:17</div></div>
 <div class="ttc" id="class_initial_condition_html_a6a1fceabbc7b046cd7c0934159009195"><div class="ttname"><a href="class_initial_condition.html#a6a1fceabbc7b046cd7c0934159009195">InitialCondition::value</a></div><div class="ttdeci">double value(const dealii::Point&lt; dim &gt; &amp;p, const unsigned int component=0) const </div><div class="ttdef"><b>Definition:</b> ICs_and_BCs.h:2</div></div>

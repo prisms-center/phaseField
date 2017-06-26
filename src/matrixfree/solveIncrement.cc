@@ -5,17 +5,11 @@
 //solve each time increment
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::solveIncrement(){
+
     //log time
     computing_timer.enter_section("matrixFreePDE: solveIncrements");
     Timer time;
     char buffer[200];
-
-    // Get the list of new nuclei, if relevant
-    // if (userInputs.nucleation_occurs){
-    //  computing_timer.enter_section("matrixFreePDE: nucleation");
-    //  getNucleiList();
-    //  computing_timer.exit_section("matrixFreePDE: nucleation");
-    // }
 
     //compute residual vectors
     computeRHS();

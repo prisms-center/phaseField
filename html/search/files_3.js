@@ -8,6 +8,7 @@ var searchData=
   ['equations_2eh',['equations.h',['../grain_growth_2equations_8h.html',1,'']]],
   ['equations_2eh',['equations.h',['../fickian_diffusion_2equations_8h.html',1,'']]],
   ['equations_2eh',['equations.h',['../eshelby_inclusion_2equations_8h.html',1,'']]],
+  ['equations_2eh',['equations.h',['../dendritic_solidification_2equations_8h.html',1,'']]],
   ['equations_2eh',['equations.h',['../coupled_cahn_hilliard_allen_cahn_2equations_8h.html',1,'']]],
   ['equations_2eh',['equations.h',['../_c_hi_ma_d__benchmark2a_2equations_8h.html',1,'']]],
   ['equations_2eh',['equations.h',['../_c_hi_ma_d__benchmark1a_2equations_8h.html',1,'']]],
