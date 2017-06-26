@@ -77,8 +77,30 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
         parameter_handler.enter_subsection(equation_text);
         {
             var_name.push_back(parameter_handler.get("Variable name"));
-            var_type.push_back(parameter_handler.get("Variable type"));
-            var_eq_type.push_back(parameter_handler.get("Equation type"));
+
+            std::string var_type_temp = parameter_handler.get("Variable type");
+            if (var_type_temp == "SCALAR"){
+                var_type.push_back(SCALAR);
+            }
+            else if (var_type_temp == "VECTOR"){
+                var_type_temp.push_back(VECTOR);
+            }
+            else {
+                std::cerr << "PRISMS-PF Error: Variable type must be 'SCALAR' or 'VECTOR'." << std::endl;
+                abort();
+            }
+
+            std::string var_eq_type_temp = parameter_handler.get("Equation type");
+            if (var_eq_type_temp == "PARABOLIC"){
+                var_eq_type.push_back(PARABOLIC);
+            }
+            else if (var_eq_type_temp == "ELLIPTIC"){
+                var_eq_type.push_back(ELLIPTIC);
+            }
+            else {
+                std::cerr << "PRISMS-PF Error: Variable equation type must be 'PARABOLIC' or 'ELLIPTIC'." << std::endl;
+                abort();
+            }
 
             need_value.push_back(parameter_handler.get_bool("Need variable value"));
             need_gradient.push_back(parameter_handler.get_bool("Need variable gradient"));
@@ -101,7 +123,7 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
     // If all of the variables are ELLIPTIC, then totalIncrements should be 1 and finalTime should be 0
     bool only_elliptic_pdes = true;
     for (unsigned int i=0; i<var_eq_type.size(); i++){
-        if (var_eq_type.at(i) == "PARABOLIC"){
+        if (var_eq_type.at(i) == PARABOLIC){
             only_elliptic_pdes = false;
             break;
         }
@@ -237,7 +259,18 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
         parameter_handler.enter_subsection(pp_var_text);
         {
             pp_var_name.push_back(parameter_handler.get("Variable name"));
-            pp_var_type.push_back(parameter_handler.get("Variable type"));
+
+            std::string pp_var_type_temp = parameter_handler.get("Variable type");
+            if (pp_var_type_temp == "SCALAR"){
+                pp_var_type.push_back(SCALAR);
+            }
+            else if (pp_var_type_temp == "VECTOR"){
+                pp_var_type_temp.push_back(VECTOR);
+            }
+            else {
+                std::cerr << "PRISMS-PF Error: Variable type must be 'SCALAR' or 'VECTOR'." << std::endl;
+                abort();
+            }
 
             pp_need_value.push_back(parameter_handler.get_bool("Need variable value"));
             pp_need_gradient.push_back(parameter_handler.get_bool("Need variable gradient"));
@@ -288,7 +321,7 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
 		variable_info varInfo;
 
 		varInfo.global_var_index = i;
-		if (pp_var_type[i] == "SCALAR"){
+		if (pp_var_type[i] == SCALAR){
 			varInfo.is_scalar = true;
 			varInfo.scalar_or_vector_index = scalar_var_index;
 			scalar_var_index++;
@@ -305,7 +338,7 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
     // Load the boundary condition variables into list of BCs (where each element of the vector is one component of one variable)
     std::vector<std::string> list_of_BCs;
     for (unsigned int i=0; i<number_of_variables; i++){
-        if (boost::iequals(var_type[i],"SCALAR")){
+        if (var_type[i] == SCALAR){
             std::string bc_text = "Boundary condition for variable ";
             bc_text.append(dealii::Utilities::int_to_string(i));
             list_of_BCs.push_back(parameter_handler.get(bc_text));
@@ -452,7 +485,7 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
 		variable_info varInfo;
 		if (need_value[i] or need_gradient[i] or need_hessian[i]){
 			varInfo.global_var_index = i;
-			if (var_type[i] == "SCALAR"){
+			if (var_type[i] == SCALAR){
 				varInfo.is_scalar = true;
 				varInfo.scalar_or_vector_index = scalar_var_index;
 				scalar_var_index++;
@@ -481,7 +514,7 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
 		variable_info varInfo;
 		if (need_value_LHS[i] or need_gradient_LHS[i] or need_hessian_LHS[i]){
 			varInfo.global_var_index = i;
-			if (var_type[i] == "SCALAR"){
+			if (var_type[i] == SCALAR){
 				varInfo.is_scalar = true;
 				varInfo.scalar_or_vector_index = scalar_var_index;
 				scalar_var_index++;

@@ -1,6 +1,7 @@
 //computeRHS() method for MatrixFreePDE class
 
 #include "../../include/matrixFreePDE.h"
+#include "../../include/variableContainer.h"
 
 //update RHS of each field
 template <int dim, int degree>

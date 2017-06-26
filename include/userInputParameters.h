@@ -10,6 +10,9 @@
 #include "model_variables.h"
 #include "varBCs.h"
 
+enum fieldType {SCALAR, VECTOR};
+enum PDEType {PARABOLIC, ELLIPTIC};
+
 template <int dim>
 class userInputParameters
 {
@@ -75,8 +78,8 @@ public:
 	unsigned int number_of_variables;
 
 	std::vector<std::string> var_name;
-	std::vector<std::string> var_type;
-	std::vector<std::string> var_eq_type;
+	std::vector<fieldType> var_type;
+	std::vector<PDEType> var_eq_type;
 
 	std::vector<bool> need_value;
 	std::vector<bool> need_gradient;
@@ -116,8 +119,8 @@ public:
 	bool postProcessingRequired;
 
 	std::vector<std::string> pp_var_name;
-	std::vector<std::string> pp_var_type;
-	std::vector<std::string> pp_var_eq_type;
+	std::vector<fieldType> pp_var_type;
+	std::vector<PDEType> pp_var_eq_type;
 
 	std::vector<bool> pp_need_value;
 	std::vector<bool> pp_need_gradient;

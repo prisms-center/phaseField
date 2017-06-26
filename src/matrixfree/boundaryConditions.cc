@@ -13,7 +13,7 @@ void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 
 	  for (unsigned int i=0; i<currentFieldIndex; i++){
 
-		  if (userInputs.var_type[i] == "SCALAR"){
+		  if (userInputs.var_type[i] == SCALAR){
 			  starting_BC_list_index++;
 		  }
 		  else {
@@ -21,7 +21,7 @@ void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 		  }
 	  }
 
-	  if (userInputs.var_type[currentFieldIndex] == "SCALAR"){
+	  if (userInputs.var_type[currentFieldIndex] == SCALAR){
 		  for (unsigned int direction = 0; direction < 2*dim; direction++){
 			  if (userInputs.BC_list[starting_BC_list_index].var_BC_type[direction] == DIRICHLET){
 				  VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
@@ -84,7 +84,7 @@ void MatrixFreePDE<dim,degree>::setPeriodicityConstraints(ConstraintMatrix * con
 	// First, get the variable index of the current field
 		unsigned int starting_BC_list_index = 0;
 		for (unsigned int i=0; i<currentFieldIndex; i++){
-			if (userInputs.var_type[i] == "SCALAR"){
+			if (userInputs.var_type[i] == SCALAR){
 				starting_BC_list_index++;
 			}
 			else {
@@ -107,12 +107,12 @@ void MatrixFreePDE<dim,degree>::setPeriodicityConstraints(ConstraintMatrix * con
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::getComponentsWithRigidBodyModes( std::vector<int> & rigidBodyModeComponents) const {
 	// Rigid body modes only matter for elliptic equations
-		if (userInputs.var_eq_type[currentFieldIndex] == "ELLIPTIC"){
+		if (userInputs.var_eq_type[currentFieldIndex] == ELLIPTIC){
 
 			// First, get the variable index of the current field
 			unsigned int starting_BC_list_index = 0;
 			for (unsigned int i=0; i<currentFieldIndex; i++){
-				if (userInputs.var_type[i] == "SCALAR"){
+				if (userInputs.var_type[i] == SCALAR){
 					starting_BC_list_index++;
 				}
 				else {
@@ -122,7 +122,7 @@ void MatrixFreePDE<dim,degree>::getComponentsWithRigidBodyModes( std::vector<int
 
 			// Get number of components of the field
 			unsigned int num_components = 1;
-			if (userInputs.var_type[currentFieldIndex] == "VECTOR"){
+			if (userInputs.var_type[currentFieldIndex] == VECTOR){
 				num_components = dim;
 			}
 
