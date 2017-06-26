@@ -46,7 +46,6 @@ template <int dim>
 void computeStress(const dealii::Table<2, double>& CIJ, const dealii::VectorizedArray<double> ux[][dim], const dealii::VectorizedArray<double> R[][dim]);
 
 #include "../../include/matrixFreePDE.h"
-#include "../../include/postprocessor.h"
 #include "../../include/parallelNucleationList.h"
 
 #include "../../src/matrixfree/matrixFreePDE.cc"
@@ -72,10 +71,7 @@ void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Vectorized
 #include "../../src/parallelNucleationList/parallelNucleationList.cc"
 
 #include "../../src/models/mechanics/computeStress.h"
-
-#define POSTPROCESSOR_TEMPLATES
-#include "postprocess.h"
-#include "../../src/postprocessor/postprocessor.cc"
+#include "../../src/matrixfree/postprocessor.cc"
 
 template <int dim, typename T>
 class unitTest
