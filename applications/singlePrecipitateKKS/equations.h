@@ -280,22 +280,22 @@ variable_list.set_vector_gradient_residual(2,ruxV);
 // density are added to the "energy_components" variable (index 0: chemical energy,
 // index 1: gradient energy, index 2: elastic energy).
 template <int dim, int degree>
-void customPDE<dim,degree>::energyDensity(const std::vector<modelVariable<dim> > & modelVarList,
+void customPDE<dim,degree>::energyDensity(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 											const dealii::VectorizedArray<double> & JxW_value,
 											dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {
 
 scalarvalueType total_energy_density = constV(0.0);
 
-//c
-scalarvalueType c = modelVarList[0].scalarValue;
-scalargradType cx = modelVarList[0].scalarGrad;
+// The concentration and its derivatives (names here should match those in the macros above)
+scalarvalueType c = variable_list.get_scalar_value(0);
+scalargradType cx = variable_list.get_scalar_gradient(0);
 
-//n1
-scalarvalueType n1 = modelVarList[1].scalarValue;
-scalargradType n1x = modelVarList[1].scalarGrad;
+// The first order parameter and its derivatives (names here should match those in the macros above)
+scalarvalueType n1 = variable_list.get_scalar_value(1);
+scalargradType n1x = variable_list.get_scalar_gradient(1);
 
-//u
-vectorgradType ux = modelVarList[2].vectorGrad;
+// The derivative of the displacement vector (names here should match those in the macros above)
+vectorgradType ux = variable_list.get_vector_gradient(2);
 
 scalarvalueType f_chem = (constV(1.0)-(h1V))*faV + (h1V)*fbV;
 

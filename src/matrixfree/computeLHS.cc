@@ -55,17 +55,9 @@ void  MatrixFreePDE<dim,degree>::getLHS(const MatrixFree<dim,double> &data,
 
 		}
 
+        // Integrate the residuals and distribute from local to global
         variable_list.integrate_and_distribute_LHS(dst,currentFieldIndex);
 
-		// //integrate
-		// if (resInfoLHS.is_scalar) {
-		// 	scalar_vars[resInfoLHS.scalar_or_vector_index].integrate(userInputs.value_residual[resInfoLHS.global_var_index], userInputs.gradient_residual[resInfoLHS.global_var_index]);
-		// 	scalar_vars[resInfoLHS.scalar_or_vector_index].distribute_local_to_global(dst);
-		// }
-		// else {
-		// 	vector_vars[resInfoLHS.scalar_or_vector_index].integrate(userInputs.value_residual[resInfoLHS.global_var_index], userInputs.gradient_residual[resInfoLHS.global_var_index]);
-		// 	vector_vars[resInfoLHS.scalar_or_vector_index].distribute_local_to_global(dst);
-		// }
 	}
 }
 
