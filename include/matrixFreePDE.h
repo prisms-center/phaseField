@@ -17,8 +17,6 @@
 #include "nucleus.h"
 #include "variableValueContainer.h"
 #include "variableContainer.h"
-#include "residualContainer.h"
-
 
 ////define data types
 #ifndef scalarType
@@ -197,9 +195,8 @@ class MatrixFreePDE:public Subscriptor
   // virtual void residualRHS(const std::vector<modelVariable<dim> > & modelVarList,
   // 		  	  	  	  	  	  	  	  	  	  	  	  	  std::vector<modelResidual<dim> > & modelResidualsList,
   // 														  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
-  virtual void residualRHS(const variableContainer<dim,dealii::VectorizedArray<double> > & variable_list,
-  		  	  	  	  	  	  	  	  	  	  	  	  	  residualContainer<dim,dealii::VectorizedArray<double> > & residual_list,
-  														  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
+  virtual void residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+  		  	  	  	  	  	  	  	  	  	  	  	  	  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
 
   virtual void residualLHS(const std::vector<modelVariable<dim> > & modelVarList,
     		  	  	  	  	  	  	  	  	  	  	  	  	  modelResidual<dim> & modelRes,

@@ -46,8 +46,7 @@
 // each residual equation. The index for each variable in these lists corresponds to
 // the order it is defined at the top of this file (starting at 0).
 template <int dim, int degree>
-void customPDE<dim,degree>::residualRHS(const variableContainer<dim,dealii::VectorizedArray<double> > & variable_list,
-												residualContainer<dim,dealii::VectorizedArray<double> > & residual_list,
+void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 // The concentration and its derivatives (names here should match those in the macros above)
@@ -205,13 +204,13 @@ for (unsigned int b=0; b<dim; b++){
 }
 }
 
-residual_list.set_scalar_value(0,rcV);
-residual_list.set_scalar_gradient(0,rcxV);
+variable_list.set_scalar_value_residual(0,rcV);
+variable_list.set_scalar_gradient_residual(0,rcxV);
 
-residual_list.set_scalar_value(1,rn1V);
-residual_list.set_scalar_gradient(1,rn1xV);
+variable_list.set_scalar_value_residual(1,rn1V);
+variable_list.set_scalar_gradient_residual(1,rn1xV);
 
-residual_list.set_vector_gradient(2,ruxV);
+variable_list.set_vector_gradient_residual(2,ruxV);
 
 // modelResidualsList[0].scalarValueResidual = rcV;
 // modelResidualsList[0].scalarGradResidual = rcxV;

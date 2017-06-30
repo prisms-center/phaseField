@@ -23,7 +23,7 @@ if (userInputs.h_adaptivity == true){
 	else if ( (currentIncrement%userInputs.skip_remeshing_steps==0) ){
 
 		computing_timer.enter_section("matrixFreePDE: AMR");
-		
+
 		// Apply constraints before remeshing
 		for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
 			constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
@@ -72,7 +72,7 @@ std::vector<std::vector<double> > errorOutV;
 
 QGaussLobatto<dim>  quadrature(degree+1);
 FEValues<dim> fe_values (*FESet[userInputs.refine_criterion_fields[0]], quadrature, update_values);
-const unsigned int   num_quad_points = quadrature.size();
+const unsigned int num_quad_points = quadrature.size();
 
 std::vector<double> errorOut(num_quad_points);
 

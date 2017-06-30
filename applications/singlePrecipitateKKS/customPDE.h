@@ -15,8 +15,7 @@ private:
 	// void residualRHS(const std::vector<modelVariable<dim> > & modelVarList,
 	// 				 std::vector<modelResidual<dim> > & modelResidualsList,
 	// 				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
-	void residualRHS(const variableContainer<dim,dealii::VectorizedArray<double> > & variable_list,
-					 residualContainer<dim,dealii::VectorizedArray<double> > & residual_list,
+	void residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 
 	// Pure virtual method in MatrixFreePDE
