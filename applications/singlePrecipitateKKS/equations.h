@@ -46,20 +46,20 @@
 // each residual equation. The index for each variable in these lists corresponds to
 // the order it is defined at the top of this file (starting at 0).
 template <int dim, int degree>
-void customPDE<dim,degree>::residualRHS(const std::vector<modelVariable<dim> > & modelVariablesList,
-												std::vector<modelResidual<dim> > & modelResidualsList,
+void customPDE<dim,degree>::residualRHS(const variableContainer<dim,dealii::VectorizedArray<double> > & variable_list,
+												residualContainer<dim,dealii::VectorizedArray<double> > & residual_list,
 												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 // The concentration and its derivatives (names here should match those in the macros above)
-scalarvalueType c = modelVariablesList[0].scalarValue;
-scalargradType cx = modelVariablesList[0].scalarGrad;
+scalarvalueType c = variable_list.get_scalar_value(0);
+scalargradType cx = variable_list.get_scalar_gradient(0);
 
 // The first order parameter and its derivatives (names here should match those in the macros above)
-scalarvalueType n1 = modelVariablesList[1].scalarValue;
-scalargradType n1x = modelVariablesList[1].scalarGrad;
+scalarvalueType n1 = variable_list.get_scalar_value(1);
+scalargradType n1x = variable_list.get_scalar_gradient(1);
 
 // The derivative of the displacement vector (names here should match those in the macros above)
-vectorgradType ux = modelVariablesList[2].vectorGrad;
+vectorgradType ux = variable_list.get_vector_gradient(2);
 vectorgradType ruxV;
 
 vectorhessType uxx;
@@ -74,7 +74,7 @@ for (unsigned int i=0; i<dim; i++){
 }
 
 if (c_dependent_misfit == true){
-	uxx = modelVariablesList[2].vectorHess;
+	uxx = variable_list.get_vector_hessian(2);
 }
 
 // Calculate the derivatives of c_beta (derivatives of c_alpha aren't needed)
@@ -205,13 +205,21 @@ for (unsigned int b=0; b<dim; b++){
 }
 }
 
-modelResidualsList[0].scalarValueResidual = rcV;
-modelResidualsList[0].scalarGradResidual = rcxV;
+residual_list.set_scalar_value(0,rcV);
+residual_list.set_scalar_gradient(0,rcxV);
 
-modelResidualsList[1].scalarValueResidual = rn1V;
-modelResidualsList[1].scalarGradResidual = rn1xV;
+residual_list.set_scalar_value(1,rn1V);
+residual_list.set_scalar_gradient(1,rn1xV);
 
-modelResidualsList[2].vectorGradResidual = ruxV;
+residual_list.set_vector_gradient(2,ruxV);
+
+// modelResidualsList[0].scalarValueResidual = rcV;
+// modelResidualsList[0].scalarGradResidual = rcxV;
+//
+// modelResidualsList[1].scalarValueResidual = rn1V;
+// modelResidualsList[1].scalarGradResidual = rn1xV;
+//
+// modelResidualsList[2].vectorGradResidual = ruxV;
 
 }
 

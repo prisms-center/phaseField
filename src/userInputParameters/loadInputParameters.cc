@@ -83,7 +83,7 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
                 var_type.push_back(SCALAR);
             }
             else if (var_type_temp == "VECTOR"){
-                var_type_temp.push_back(VECTOR);
+                var_type.push_back(VECTOR);
             }
             else {
                 std::cerr << "PRISMS-PF Error: Variable type must be 'SCALAR' or 'VECTOR'." << std::endl;

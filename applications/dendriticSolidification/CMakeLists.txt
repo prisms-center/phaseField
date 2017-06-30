@@ -7,7 +7,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8.8)
 # Find deal.II installation
 FIND_PACKAGE(deal.II 8.3.0 REQUIRED
 	HINTS ${DEAL_II_DIR} ../ ../../ $ENV{DEAL_II_DIR})
-	
+
 # Check to make sure deal.II is configured with p4est
 IF(NOT ${DEAL_II_WITH_P4EST})
   MESSAGE(FATAL_ERROR "\n"
@@ -31,12 +31,20 @@ ADD_CUSTOM_TARGET(release
   COMMAND +env ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target all
   COMMENT "Switch CMAKE_BUILD_TYPE to Release"
   )
-  
+
 ADD_CUSTOM_TARGET(run COMMAND main
   COMMENT "Run with ${CMAKE_BUILD_TYPE} configuration"
   )
-  
+
 PROJECT(myproject)
+
+# Check if postprocess.h and nucleation.h exist and set preprocessor variables
+if (EXISTS "postprocess.h")
+	add_definitions(-DPOSTPROCESS_FILE_EXISTS)
+endif()
+if (EXISTS "nucleation.h")
+	add_definitions(-DNUCLEATION_FILE_EXISTS)
+endif()
 
 # Append extra flags for the GNU compiler to suppress some warnings
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
@@ -52,12 +60,12 @@ INCLUDE_DIRECTORIES(../../include)
 FILE(GLOB headers ${CMAKE_SOURCE_DIR}/../../include/*.h)
 FILE(GLOB sources ${CMAKE_SOURCE_DIR}/../../src/matrixfree/*.cc)
 
-ADD_LIBRARY(mylib ${sources} ../../src/postprocessor/postprocessor.cc ../../src/utilities/vectorLoad.cc ../../src/utilities/vectorBCFunction.cc)
+ADD_LIBRARY(prisms_pf ${sources} ../../src/utilities/vectorBCFunction.cc ../../src/inputFileReader/inputFileReader.cc ../../src/userInputParameters/loadInputParameters.cc ../../src/parallelNucleationList/parallelNucleationList.cc)
 
-DEAL_II_SETUP_TARGET(mylib)
+DEAL_II_SETUP_TARGET(prisms_pf)
 
 ADD_EXECUTABLE(main main.cc )
 
 DEAL_II_SETUP_TARGET(main)
 
-TARGET_LINK_LIBRARIES(main mylib)
+TARGET_LINK_LIBRARIES(main prisms_pf)

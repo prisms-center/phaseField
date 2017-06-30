@@ -30,7 +30,7 @@ void MatrixFreePDE<dim,degree>::getRHS(const MatrixFree<dim,double> &data,
 
   //initialize FEEvaulation objects
   std::vector<dealii::FEEvaluation<dim,degree,degree+1,1,double> > scalar_vars;
-  std::vector<dealii::FEEvaluation<dim,degree,degree+1,dim,double> > vector_vars;
+  std::vector<dealii::FEEvaluation<dim,degree,degree+1,dim,double> > vector_vars; 
 
   for (unsigned int i=0; i<userInputs.number_of_variables; i++){
 	  if (userInputs.varInfoListRHS[i].is_scalar){
@@ -44,11 +44,12 @@ void MatrixFreePDE<dim,degree>::getRHS(const MatrixFree<dim,double> &data,
   }
 
   //std::vector<modelVariable<dim> > modelVarList;
-  std::vector<modelResidual<dim> > modelResidualsList;
+  //std::vector<modelResidual<dim> > modelResidualsList;
   //modelVarList.reserve(userInputs.number_of_variables);
-  modelResidualsList.reserve(userInputs.number_of_variables);
+  //modelResidualsList.reserve(userInputs.number_of_variables);
 
   variableContainer<dim,dealii::VectorizedArray<double> > variable_list(userInputs.need_value, userInputs.need_gradient, userInputs.need_hessian, userInputs.var_type);
+  residualContainer<dim,dealii::VectorizedArray<double> > residual_list(userInputs.value_residual, userInputs.gradient_residual, userInputs.var_type);
 
   //loop over cells
   for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
@@ -119,24 +120,28 @@ void MatrixFreePDE<dim,degree>::getRHS(const MatrixFree<dim,double> &data,
 
 		  // Calculate the residuals
 		//   residualRHS(modelVarList,modelResidualsList,q_point_loc);
-        residualRHS(variable_list,modelResidualsList,q_point_loc);
+        residualRHS(variable_list,residual_list,q_point_loc);
 
 		  // Submit values
 		  for (unsigned int i=0; i<userInputs.number_of_variables; i++){
 			  if (userInputs.varInfoListRHS[i].is_scalar) {
 				  if (userInputs.value_residual[i] == true){
-					  scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].submit_value(modelResidualsList[i].scalarValueResidual,q);
+					//   scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].submit_value(modelResidualsList[i].scalarValueResidual,q);
+                    scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].submit_value(residual_list.get_scalar_value(i),q);
 				  }
       			  if (userInputs.gradient_residual[i] == true){
-      				  scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].submit_gradient(modelResidualsList[i].scalarGradResidual,q);
+      				  //scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].submit_gradient(modelResidualsList[i].scalarGradResidual,q);
+                      scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].submit_gradient(residual_list.get_scalar_gradient(i),q);
       			  }
       		  }
       		  else {
       			  if (userInputs.value_residual[i] == true){
-      				  vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].submit_value(modelResidualsList[i].vectorValueResidual,q);
+      				  //vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].submit_value(modelResidualsList[i].vectorValueResidual,q);
+                      vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].submit_value(residual_list.get_vector_value(i),q);
       			  }
       			  if (userInputs.gradient_residual[i] == true){
-      				  vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].submit_gradient(modelResidualsList[i].vectorGradResidual,q);
+      				  //vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].submit_gradient(modelResidualsList[i].vectorGradResidual,q);
+                      vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].submit_gradient(residual_list.get_vector_gradient(i),q);
       			  }
       		  }
       	  }

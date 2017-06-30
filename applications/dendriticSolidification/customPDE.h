@@ -19,6 +19,7 @@ public:
 	void setBCs();
 
 private:
+	#include "../../include/typeDefs.h"
 
 	void residualRHS(const std::vector<modelVariable<dim> > & modelVarList,
 			  	  	 std::vector<modelResidual<dim> > & modelResidualsList,

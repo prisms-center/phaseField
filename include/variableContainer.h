@@ -41,19 +41,17 @@ private:
     std::vector<dealii::Tensor<2, dim, T > > vector_gradient;
     std::vector<dealii::Tensor<3, dim, T > > vector_hessian;
 
-
-    unsigned int num_entries;
 };
 
 template <int dim, typename T>
 variableContainer<dim,T>::variableContainer(std::vector<bool> need_value, std::vector<bool> need_gradient, std::vector<bool> need_hessian, std::vector<fieldType> var_type)
 {
-    unsigned int num_scalar_values = 0;
-    unsigned int num_scalar_gradients = 0;
-    unsigned int num_scalar_hessians = 0;
-    unsigned int num_vector_values = 0;
-    unsigned int num_vector_gradients = 0;
-    unsigned int num_vector_hessians = 0;
+    int num_scalar_values = 0;
+    int num_scalar_gradients = 0;
+    int num_scalar_hessians = 0;
+    int num_vector_values = 0;
+    int num_vector_gradients = 0;
+    int num_vector_hessians = 0;
 
     for (unsigned int var=0; var < need_value.size(); var++){
         if (var_type[var] == SCALAR){
@@ -78,6 +76,9 @@ variableContainer<dim,T>::variableContainer(std::vector<bool> need_value, std::v
             else {
                 scalar_hessian_index.push_back(-1);
             }
+            vector_value_index.push_back(-1);
+            vector_gradient_index.push_back(-1);
+            vector_hessian_index.push_back(-1);
         }
         else {
             if (need_value[var]){
@@ -101,6 +102,9 @@ variableContainer<dim,T>::variableContainer(std::vector<bool> need_value, std::v
             else {
                 vector_hessian_index.push_back(-1);
             }
+            scalar_value_index.push_back(-1);
+            scalar_gradient_index.push_back(-1);
+            scalar_hessian_index.push_back(-1);
         }
     }
 
