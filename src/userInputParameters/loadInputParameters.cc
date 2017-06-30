@@ -68,6 +68,12 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
     std::vector<bool> nucleating_variable;
     std::vector<bool> need_value_nucleation;
 
+    // std::vector<bool> need_value;
+	// std::vector<bool> need_gradient;
+	// std::vector<bool> need_hessian;
+	// std::vector<bool> value_residual;
+	// std::vector<bool> gradient_residual;
+
     number_of_variables = _number_of_variables;
 
     for (unsigned int i=0; i<number_of_variables; i++){
@@ -483,6 +489,13 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
 	vector_var_index = 0;
 	for (unsigned int i=0; i<number_of_variables; i++){
 		variable_info varInfo;
+
+        varInfo.need_value = need_value[i];
+        varInfo.need_gradient = need_gradient[i];
+        varInfo.need_hessian = need_hessian[i];
+        varInfo.value_residual = value_residual[i];
+        varInfo.gradient_residual = gradient_residual[i];
+
 		if (need_value[i] or need_gradient[i] or need_hessian[i]){
 			varInfo.global_var_index = i;
 			if (var_type[i] == SCALAR){

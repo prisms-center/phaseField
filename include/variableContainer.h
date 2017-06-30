@@ -26,36 +26,22 @@ public:
 
     unsigned int q_point;
 
-    void reinit_and_eval(const std::vector<vectorType*> &src, unsigned int cell, std::vector<bool> need_value, std::vector<bool> need_gradient, std::vector<bool> need_hessian);
+    void reinit_and_eval(const std::vector<vectorType*> &src, unsigned int cell);
 
-    void integrate_and_distribute(std::vector<vectorType*> &dst, std::vector<bool> value_residual, std::vector<bool> gradient_residual);
+    void integrate_and_distribute(std::vector<vectorType*> &dst);
 
     unsigned int get_num_q_points();
+
+    unsigned int num_var;
 
     dealii::Point<dim,T> get_q_point_location();
 
 private:
-    // These vectors of indices convert from the global index to the index of each of the value/gradient/hessian vectors.
-    std::vector<int> scalar_value_index;
-    std::vector<int> scalar_gradient_index;
-    std::vector<int> scalar_hessian_index;
-    std::vector<int> vector_value_index;
-    std::vector<int> vector_gradient_index;
-    std::vector<int> vector_hessian_index;
-
-    std::vector<T> scalar_value;
-    std::vector<dealii::Tensor<1, dim, T > > scalar_gradient;
-    std::vector<dealii::Tensor<2, dim, T > > scalar_hessian;
-
-    std::vector<dealii::Tensor<1, dim, T > > vector_value;
-    std::vector<dealii::Tensor<2, dim, T > > vector_gradient;
-    std::vector<dealii::Tensor<3, dim, T > > vector_hessian;
 
     std::vector<dealii::FEEvaluation<dim,degree,degree+1,1,double> > scalar_vars;
     std::vector<dealii::FEEvaluation<dim,degree,degree+1,dim,double> > vector_vars;
 
     std::vector<variable_info> varInfoList;
-
 };
 
 template <int dim, int degree, typename T>
@@ -83,7 +69,9 @@ variableContainer<dim,degree,T>::variableContainer(const dealii::MatrixFree<dim,
 {
     varInfoList = _varInfoList;
 
-    for (unsigned int i=0; i < varInfoList.size(); i++){
+    num_var = varInfoList.size();
+
+    for (unsigned int i=0; i < num_var; i++){
   	  if (varInfoList[i].is_scalar){
   		  dealii::FEEvaluation<dim,degree,degree+1,1,double> var(data, i);
   		  scalar_vars.push_back(var);
@@ -97,33 +85,33 @@ variableContainer<dim,degree,T>::variableContainer(const dealii::MatrixFree<dim,
 }
 
 template <int dim, int degree, typename T>
-void variableContainer<dim,degree,T>::reinit_and_eval(const std::vector<vectorType*> &src, unsigned int cell, std::vector<bool> need_value, std::vector<bool> need_gradient, std::vector<bool> need_hessian){
+void variableContainer<dim,degree,T>::reinit_and_eval(const std::vector<vectorType*> &src, unsigned int cell){
 
-    for (unsigned int i=0; i<varInfoList.size(); i++){
+    for (unsigned int i=0; i<num_var; i++){
         if (varInfoList[i].is_scalar) {
             scalar_vars[varInfoList[i].scalar_or_vector_index].reinit(cell);
             scalar_vars[varInfoList[i].scalar_or_vector_index].read_dof_values(*src[varInfoList[i].global_var_index]);
-            scalar_vars[varInfoList[i].scalar_or_vector_index].evaluate(need_value[i], need_gradient[i], need_hessian[i]);
+            scalar_vars[varInfoList[i].scalar_or_vector_index].evaluate(varInfoList[i].need_value, varInfoList[i].need_gradient, varInfoList[i].need_hessian);
         }
         else {
             vector_vars[varInfoList[i].scalar_or_vector_index].reinit(cell);
             vector_vars[varInfoList[i].scalar_or_vector_index].read_dof_values(*src[varInfoList[i].global_var_index]);
-            vector_vars[varInfoList[i].scalar_or_vector_index].evaluate(need_value[i], need_gradient[i], need_hessian[i]);
+            vector_vars[varInfoList[i].scalar_or_vector_index].evaluate(varInfoList[i].need_value, varInfoList[i].need_gradient, varInfoList[i].need_hessian);
         }
     }
 
 }
 
 template <int dim, int degree, typename T>
-void variableContainer<dim,degree,T>::integrate_and_distribute(std::vector<vectorType*> &dst, std::vector<bool> value_residual, std::vector<bool> gradient_residual){
+void variableContainer<dim,degree,T>::integrate_and_distribute(std::vector<vectorType*> &dst){
 
-    for (unsigned int i=0; i<varInfoList.size(); i++){
+    for (unsigned int i=0; i<num_var; i++){
         if (varInfoList[i].is_scalar) {
-            scalar_vars[varInfoList[i].scalar_or_vector_index].integrate(value_residual[i], gradient_residual[i]);
+            scalar_vars[varInfoList[i].scalar_or_vector_index].integrate(varInfoList[i].value_residual, varInfoList[i].gradient_residual);
             scalar_vars[varInfoList[i].scalar_or_vector_index].distribute_local_to_global(*dst[varInfoList[i].global_var_index]);
         }
         else {
-            vector_vars[varInfoList[i].scalar_or_vector_index].integrate(value_residual[i], gradient_residual[i]);
+            vector_vars[varInfoList[i].scalar_or_vector_index].integrate(varInfoList[i].value_residual, varInfoList[i].gradient_residual);
             vector_vars[varInfoList[i].scalar_or_vector_index].distribute_local_to_global(*dst[varInfoList[i].global_var_index]);
         }
     }
@@ -134,80 +122,73 @@ void variableContainer<dim,degree,T>::integrate_and_distribute(std::vector<vecto
 template <int dim, int degree, typename T>
 T variableContainer<dim,degree,T>::get_scalar_value(unsigned int global_variable_index) const
 {
-    // if (scalar_value_index[global_variable_index] != -1){
-    //     return scalar_value[scalar_value_index[global_variable_index]];
-    // }
-    // else {
-    //     std::cerr << "PRISMS-PF Error: Attempted access of a variable value that was not marked as needed in 'parameters.in'. Double-check the indices in user functions where a variable value is requested." << std::endl;
-    //     abort();
-    // }
-    return scalar_vars[varInfoList[global_variable_index].scalar_or_vector_index].get_value(q_point);
+    if (varInfoList[global_variable_index].need_value){
+        return scalar_vars[varInfoList[global_variable_index].scalar_or_vector_index].get_value(q_point);
+    }
+    else {
+        std::cerr << "PRISMS-PF Error: Attempted access of a variable value that was not marked as needed in 'parameters.in'. Double-check the indices in user functions where a variable value is requested." << std::endl;
+        abort();
+    }
 }
 
 template <int dim, int degree, typename T>
 dealii::Tensor<1, dim, T > variableContainer<dim,degree,T>::get_scalar_gradient(unsigned int global_variable_index) const
 {
-    // if (scalar_gradient_index[global_variable_index] != -1){
-    //     return scalar_gradient[scalar_gradient_index[global_variable_index]];
-    // }
-    // else {
-    //     std::cerr << "PRISMS-PF Error: Attempted access of a variable value that was not marked as needed in 'parameters.in'. Double-check the indices in user functions where a variable value is requested." << std::endl;
-    //     abort();
-    // }
-    return scalar_vars[varInfoList[global_variable_index].scalar_or_vector_index].get_gradient(q_point);
-
+    if (varInfoList[global_variable_index].need_gradient){
+        return scalar_vars[varInfoList[global_variable_index].scalar_or_vector_index].get_gradient(q_point);
+    }
+    else {
+        std::cerr << "PRISMS-PF Error: Attempted access of a variable value that was not marked as needed in 'parameters.in'. Double-check the indices in user functions where a variable value is requested." << std::endl;
+        abort();
+    }
 }
 
 template <int dim, int degree, typename T>
 dealii::Tensor<2, dim, T > variableContainer<dim,degree,T>::get_scalar_hessian(unsigned int global_variable_index) const
 {
-    // if (scalar_hessian_index[global_variable_index] != -1){
-    //     return scalar_hessian[scalar_hessian_index[global_variable_index]];
-    // }
-    // else {
-    //     std::cerr << "PRISMS-PF Error: Attempted access of a variable value that was not marked as needed in 'parameters.in'. Double-check the indices in user functions where a variable value is requested." << std::endl;
-    //     abort();
-    // }
-    return scalar_vars[varInfoList[global_variable_index].scalar_or_vector_index].get_hessian(q_point);
+    if (varInfoList[global_variable_index].need_hessian){
+        return scalar_vars[varInfoList[global_variable_index].scalar_or_vector_index].get_hessian(q_point);
+    }
+    else {
+        std::cerr << "PRISMS-PF Error: Attempted access of a variable value that was not marked as needed in 'parameters.in'. Double-check the indices in user functions where a variable value is requested." << std::endl;
+        abort();
+    }
 }
 
 template <int dim, int degree, typename T>
 dealii::Tensor<1, dim, T > variableContainer<dim,degree,T>::get_vector_value(unsigned int global_variable_index) const
 {
-    // if (vector_value_index[global_variable_index] != -1){
-    //     return vector_value[vector_value_index[global_variable_index]];
-    // }
-    // else {
-    //     std::cerr << "PRISMS-PF Error: Attempted access of a variable value that was not marked as needed in 'parameters.in'. Double-check the indices in user functions where a variable value is requested." << std::endl;
-    //     abort();
-    // }
-    return vector_vars[varInfoList[global_variable_index].scalar_or_vector_index].get_value(q_point);
+    if (varInfoList[global_variable_index].need_value){
+        return vector_vars[varInfoList[global_variable_index].scalar_or_vector_index].get_value(q_point);
+    }
+    else {
+        std::cerr << "PRISMS-PF Error: Attempted access of a variable value that was not marked as needed in 'parameters.in'. Double-check the indices in user functions where a variable value is requested." << std::endl;
+        abort();
+    }
 }
 
 template <int dim, int degree, typename T>
 dealii::Tensor<2, dim, T > variableContainer<dim,degree,T>::get_vector_gradient(unsigned int global_variable_index) const
 {
-    // if (vector_gradient_index[global_variable_index] != -1){
-    //     return vector_gradient[vector_gradient_index[global_variable_index]];
-    // }
-    // else {
-    //     std::cerr << "PRISMS-PF Error: Attempted access of a variable value that was not marked as needed in 'parameters.in'. Double-check the indices in user functions where a variable value is requested." << std::endl;
-    //     abort();
-    // }
-    return vector_vars[varInfoList[global_variable_index].scalar_or_vector_index].get_gradient(q_point);
+    if (varInfoList[global_variable_index].need_gradient){
+        return vector_vars[varInfoList[global_variable_index].scalar_or_vector_index].get_gradient(q_point);
+    }
+    else {
+        std::cerr << "PRISMS-PF Error: Attempted access of a variable value that was not marked as needed in 'parameters.in'. Double-check the indices in user functions where a variable value is requested." << std::endl;
+        abort();
+    }
 }
 
 template <int dim, int degree, typename T>
 dealii::Tensor<3, dim, T > variableContainer<dim,degree,T>::get_vector_hessian(unsigned int global_variable_index) const
 {
-    // if (vector_hessian_index[global_variable_index] != -1){
-    //     return vector_hessian[vector_hessian_index[global_variable_index]];
-    // }
-    // else {
-    //     std::cerr << "PRISMS-PF Error: Attempted access of a variable value that was not marked as needed in 'parameters.in'. Double-check the indices in user functions where a variable value is requested." << std::endl;
-    //     abort();
-    // }
-    return vector_vars[varInfoList[global_variable_index].scalar_or_vector_index].get_hessian(q_point);
+    if (varInfoList[global_variable_index].need_hessian){
+        return vector_vars[varInfoList[global_variable_index].scalar_or_vector_index].get_hessian(q_point);
+    }
+    else {
+        std::cerr << "PRISMS-PF Error: Attempted access of a variable value that was not marked as needed in 'parameters.in'. Double-check the indices in user functions where a variable value is requested." << std::endl;
+        abort();
+    }
 }
 
 template <int dim, int degree, typename T>

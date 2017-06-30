@@ -33,7 +33,7 @@ void MatrixFreePDE<dim,degree>::getRHS(const MatrixFree<dim,double> &data,
     for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
 
         // Initialize, read DOFs, and set evaulation flags for each variable
-        variable_list.reinit_and_eval(src, cell, userInputs.need_value, userInputs.need_gradient, userInputs.need_hessian);
+        variable_list.reinit_and_eval(src, cell);
 
         unsigned int num_q_points = variable_list.get_num_q_points();
 
@@ -48,7 +48,7 @@ void MatrixFreePDE<dim,degree>::getRHS(const MatrixFree<dim,double> &data,
 
         }
 
-        variable_list.integrate_and_distribute(dst, userInputs.value_residual, userInputs.gradient_residual);
+        variable_list.integrate_and_distribute(dst);
     }
 }
 
