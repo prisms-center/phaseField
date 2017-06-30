@@ -198,8 +198,7 @@ class MatrixFreePDE:public Subscriptor
   virtual void residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
   		  	  	  	  	  	  	  	  	  	  	  	  	  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
 
-  virtual void residualLHS(const std::vector<modelVariable<dim> > & modelVarList,
-    		  	  	  	  	  	  	  	  	  	  	  	  	  modelResidual<dim> & modelRes,
+  virtual void residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
   														  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
 
   virtual void energyDensity(const std::vector<modelVariable<dim> > & modelVarList, const dealii::VectorizedArray<double> & JxW_value,

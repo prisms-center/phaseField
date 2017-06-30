@@ -19,8 +19,7 @@ private:
 					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 
 	// Pure virtual method in MatrixFreePDE
-	void residualLHS(const std::vector<modelVariable<dim> > & modelVarList,
-					 modelResidual<dim> & modelRes,
+	void residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 
 	// Pure virtual method in MatrixFreePDE

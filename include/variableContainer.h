@@ -28,7 +28,11 @@ public:
 
     void reinit_and_eval(const std::vector<vectorType*> &src, unsigned int cell);
 
+    void reinit_and_eval_LHS(const vectorType &src, const std::vector<vectorType*> solutionSet, unsigned int cell, unsigned int var_being_solved);
+
     void integrate_and_distribute(std::vector<vectorType*> &dst);
+
+    void integrate_and_distribute_LHS(vectorType &dst, unsigned int var_being_solved);
 
     unsigned int get_num_q_points();
 
@@ -72,14 +76,16 @@ variableContainer<dim,degree,T>::variableContainer(const dealii::MatrixFree<dim,
     num_var = varInfoList.size();
 
     for (unsigned int i=0; i < num_var; i++){
-  	  if (varInfoList[i].is_scalar){
-  		  dealii::FEEvaluation<dim,degree,degree+1,1,double> var(data, i);
-  		  scalar_vars.push_back(var);
-  	  }
-  	  else {
-  		  dealii::FEEvaluation<dim,degree,degree+1,dim,double> var(data, i);
-  		  vector_vars.push_back(var);
-  	  }
+        if (varInfoList[i].var_needed){
+            if (varInfoList[i].is_scalar){
+                dealii::FEEvaluation<dim,degree,degree+1,1,double> var(data, i);
+                scalar_vars.push_back(var);
+            }
+            else {
+                dealii::FEEvaluation<dim,degree,degree+1,dim,double> var(data, i);
+                vector_vars.push_back(var);
+            }
+        }
     }
 
 }
@@ -88,15 +94,46 @@ template <int dim, int degree, typename T>
 void variableContainer<dim,degree,T>::reinit_and_eval(const std::vector<vectorType*> &src, unsigned int cell){
 
     for (unsigned int i=0; i<num_var; i++){
-        if (varInfoList[i].is_scalar) {
-            scalar_vars[varInfoList[i].scalar_or_vector_index].reinit(cell);
-            scalar_vars[varInfoList[i].scalar_or_vector_index].read_dof_values(*src[varInfoList[i].global_var_index]);
-            scalar_vars[varInfoList[i].scalar_or_vector_index].evaluate(varInfoList[i].need_value, varInfoList[i].need_gradient, varInfoList[i].need_hessian);
+        if (varInfoList[i].var_needed){
+            if (varInfoList[i].is_scalar) {
+                scalar_vars[varInfoList[i].scalar_or_vector_index].reinit(cell);
+                scalar_vars[varInfoList[i].scalar_or_vector_index].read_dof_values(*src[varInfoList[i].global_var_index]);
+                scalar_vars[varInfoList[i].scalar_or_vector_index].evaluate(varInfoList[i].need_value, varInfoList[i].need_gradient, varInfoList[i].need_hessian);
+            }
+            else {
+                vector_vars[varInfoList[i].scalar_or_vector_index].reinit(cell);
+                vector_vars[varInfoList[i].scalar_or_vector_index].read_dof_values(*src[varInfoList[i].global_var_index]);
+                vector_vars[varInfoList[i].scalar_or_vector_index].evaluate(varInfoList[i].need_value, varInfoList[i].need_gradient, varInfoList[i].need_hessian);
+            }
         }
-        else {
-            vector_vars[varInfoList[i].scalar_or_vector_index].reinit(cell);
-            vector_vars[varInfoList[i].scalar_or_vector_index].read_dof_values(*src[varInfoList[i].global_var_index]);
-            vector_vars[varInfoList[i].scalar_or_vector_index].evaluate(varInfoList[i].need_value, varInfoList[i].need_gradient, varInfoList[i].need_hessian);
+    }
+}
+
+template <int dim, int degree, typename T>
+void variableContainer<dim,degree,T>::reinit_and_eval_LHS(const vectorType &src, const std::vector<vectorType*> solutionSet, unsigned int cell, unsigned int var_being_solved){
+
+    for (unsigned int i=0; i<num_var; i++){
+        if (varInfoList[i].var_needed){
+            if (varInfoList[i].is_scalar) {
+                scalar_vars[varInfoList[i].scalar_or_vector_index].reinit(cell);
+                if (i == var_being_solved ){
+                    scalar_vars[varInfoList[i].scalar_or_vector_index].read_dof_values(src);
+                }
+                else{
+                    scalar_vars[varInfoList[i].scalar_or_vector_index].read_dof_values(*solutionSet[i]);
+                }
+                scalar_vars[varInfoList[i].scalar_or_vector_index].evaluate(varInfoList[i].need_value, varInfoList[i].need_gradient, varInfoList[i].need_hessian);
+            }
+            else {
+                vector_vars[varInfoList[i].scalar_or_vector_index].reinit(cell);
+                if (i == var_being_solved){
+                    vector_vars[varInfoList[i].scalar_or_vector_index].read_dof_values(src);
+                }
+                else {
+                    vector_vars[varInfoList[i].scalar_or_vector_index].read_dof_values(*solutionSet[i]);
+                }
+                vector_vars[varInfoList[i].scalar_or_vector_index].evaluate(varInfoList[i].need_value, varInfoList[i].need_gradient, varInfoList[i].need_hessian);
+            }
         }
     }
 
@@ -114,6 +151,21 @@ void variableContainer<dim,degree,T>::integrate_and_distribute(std::vector<vecto
             vector_vars[varInfoList[i].scalar_or_vector_index].integrate(varInfoList[i].value_residual, varInfoList[i].gradient_residual);
             vector_vars[varInfoList[i].scalar_or_vector_index].distribute_local_to_global(*dst[varInfoList[i].global_var_index]);
         }
+    }
+
+}
+
+template <int dim, int degree, typename T>
+void variableContainer<dim,degree,T>::integrate_and_distribute_LHS(vectorType &dst, unsigned int var_being_solved){
+
+    //integrate
+    if (varInfoList[var_being_solved].is_scalar) {
+    	scalar_vars[varInfoList[var_being_solved].scalar_or_vector_index].integrate(varInfoList[var_being_solved].value_residual, varInfoList[var_being_solved].gradient_residual);
+    	scalar_vars[varInfoList[var_being_solved].scalar_or_vector_index].distribute_local_to_global(dst);
+    }
+    else {
+    	vector_vars[varInfoList[var_being_solved].scalar_or_vector_index].integrate(varInfoList[var_being_solved].value_residual, varInfoList[var_being_solved].gradient_residual);
+    	vector_vars[varInfoList[var_being_solved].scalar_or_vector_index].distribute_local_to_global(dst);
     }
 
 }

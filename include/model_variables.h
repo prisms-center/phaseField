@@ -39,6 +39,7 @@ struct variable_info
     bool need_hessian;
     bool value_residual;
     bool gradient_residual;
+    bool var_needed;
 };
 
 #endif /* INCLUDE_MODELVARIABLE_H_ */

@@ -496,20 +496,31 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
         varInfo.value_residual = value_residual[i];
         varInfo.gradient_residual = gradient_residual[i];
 
+        varInfo.global_var_index = i;
+
 		if (need_value[i] or need_gradient[i] or need_hessian[i]){
-			varInfo.global_var_index = i;
-			if (var_type[i] == SCALAR){
-				varInfo.is_scalar = true;
-				varInfo.scalar_or_vector_index = scalar_var_index;
-				scalar_var_index++;
-			}
-			else {
-				varInfo.is_scalar = false;
-				varInfo.scalar_or_vector_index = vector_var_index;
-				vector_var_index++;
-			}
-			varInfoListRHS.push_back(varInfo);
+            varInfo.var_needed = true;
 		}
+        else {
+            varInfo.var_needed = false;
+        }
+
+        if (var_type[i] == SCALAR){
+            varInfo.is_scalar = true;
+            if (varInfo.var_needed){
+                varInfo.scalar_or_vector_index = scalar_var_index;
+                scalar_var_index++;
+            }
+        }
+        else {
+            varInfo.is_scalar = false;
+            if (varInfo.var_needed){
+                varInfo.scalar_or_vector_index = vector_var_index;
+                vector_var_index++;
+            }
+        }
+
+        varInfoListRHS.push_back(varInfo);
 	}
 
 	// Load variable information for calculating the LHS
@@ -525,20 +536,39 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
 	vector_var_index = 0;
 	for (unsigned int i=0; i<number_of_variables; i++){
 		variable_info varInfo;
+
+        varInfo.need_value = need_value_LHS[i];
+        varInfo.need_gradient = need_gradient_LHS[i];
+        varInfo.need_hessian = need_hessian_LHS[i];
+        varInfo.value_residual = value_residual_LHS[i];
+        varInfo.gradient_residual = gradient_residual_LHS[i];
+
+        varInfo.global_var_index = i;
+
+
 		if (need_value_LHS[i] or need_gradient_LHS[i] or need_hessian_LHS[i]){
-			varInfo.global_var_index = i;
-			if (var_type[i] == SCALAR){
-				varInfo.is_scalar = true;
-				varInfo.scalar_or_vector_index = scalar_var_index;
-				scalar_var_index++;
-			}
-			else {
-				varInfo.is_scalar = false;
-				varInfo.scalar_or_vector_index = vector_var_index;
-				vector_var_index++;
-			}
-			varInfoListLHS.push_back(varInfo);
+            varInfo.var_needed = true;
 		}
+        else {
+            varInfo.var_needed = false;
+		}
+
+        if (var_type[i] == SCALAR){
+            varInfo.is_scalar = true;
+            if (varInfo.var_needed){
+                varInfo.scalar_or_vector_index = scalar_var_index;
+                scalar_var_index++;
+            }
+        }
+        else {
+            varInfo.is_scalar = false;
+            if (varInfo.var_needed){
+                varInfo.scalar_or_vector_index = vector_var_index;
+                vector_var_index++;
+            }
+        }
+
+        varInfoListLHS.push_back(varInfo);
 	}
 
 }

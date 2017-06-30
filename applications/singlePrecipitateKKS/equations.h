@@ -238,15 +238,14 @@ variable_list.set_vector_gradient_residual(2,ruxV);
 // that the correct residual is being submitted. The index of the field being solved
 // can be accessed by "this->currentFieldIndex".
 template <int dim, int degree>
-void customPDE<dim,degree>::residualLHS(const std::vector<modelVariable<dim> > & modelVariablesList,
-		modelResidual<dim> & modelRes,
+void customPDE<dim,degree>::residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-//n1
-scalarvalueType n1 = modelVariablesList[0].scalarValue;
+// The first order parameter and its derivatives (names here should match those in the macros above)
+scalarvalueType n1 = variable_list.get_scalar_value(1);
 
-//u
-vectorgradType ux = modelVariablesList[1].vectorGrad;
+// The derivative of the displacement vector (names here should match those in the macros above)
+vectorgradType ux = variable_list.get_vector_gradient(2);
 vectorgradType ruxV;
 
 // Take advantage of E being simply 0.5*(ux + transpose(ux)) and use the dealii "symmetrize" function
@@ -265,7 +264,7 @@ else{
 	computeStress<dim>(userInputs.CIJ_list[0], E, ruxV);
 }
 
-modelRes.vectorGradResidual = ruxV;
+variable_list.set_vector_gradient_residual(2,ruxV);
 
 }
 
