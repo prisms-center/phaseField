@@ -9,6 +9,7 @@ if (userInputs.h_adaptivity == true){
 	if ( (currentIncrement == 0) ){
 		unsigned int numDoF_preremesh = totalDOFs;
 		for (unsigned int remesh_index=0; remesh_index < (userInputs.max_refinement_level-userInputs.min_refinement_level); remesh_index++){
+
 			adaptiveRefineCriterion();
 			refineGrid();
 			reinit();
