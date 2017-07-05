@@ -48,8 +48,8 @@ void InitialConditionVec<dim>::vector_value (const Point<dim> &p,Vector<double> 
     // Enter the function describing conditions for the fields at point "p".
     // Use "if" statements to set the initial condition for each variable
     // according to its variable index.
-    
-    
+
+
     // =====================================================================
 }
 
@@ -80,8 +80,8 @@ void customPDE<dim,degree>::setBCs(){
 	// Example 2: Dirichlet BCs with a value of 1.0 on the top and bottom boundaries, zero-derivative on the left and right
 	// for variable 0, component 0:
 	// this->inputBCs(0,0,"DIRICHLET",1.0,"DIRICHLET",1.0,"ZERO_DERIVATIVE",0,"ZERO_DERIVATIVE",0);
-  
+
 	this->inputBCs(0,0,"ZERO_DERIVATIVE",0);
 	this->inputBCs(1,0,"ZERO_DERIVATIVE",0);
-  
+
 }
