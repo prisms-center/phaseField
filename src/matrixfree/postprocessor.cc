@@ -26,7 +26,7 @@ void MatrixFreePDE<dim,degree>::getPostProcessedFields(const dealii::MatrixFree<
 		const std::pair<unsigned int,unsigned int> &cell_range) const {
 
 	//initialize FEEvaulation objects
-	variableContainer<dim,degree,dealii::VectorizedArray<double> > variable_list(data,userInputs.varInfoListRHS);
+	variableContainer<dim,degree,dealii::VectorizedArray<double> > variable_list(data,userInputs.pp_baseVarInfoList);
 	variableContainer<dim,degree,dealii::VectorizedArray<double> > pp_variable_list(data,userInputs.pp_varInfoList);
 
 	//loop over cells
@@ -42,7 +42,7 @@ void MatrixFreePDE<dim,degree>::getPostProcessedFields(const dealii::MatrixFree<
 		for (unsigned int q=0; q<num_q_points; ++q){
 			variable_list.q_point = q;
 			pp_variable_list.q_point = q;
-			
+
 			dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc = variable_list.get_q_point_location();
 
 			// Calculate the residuals

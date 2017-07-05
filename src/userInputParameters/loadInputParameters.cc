@@ -68,11 +68,21 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
     std::vector<bool> nucleating_variable;
     std::vector<bool> need_value_nucleation;
 
-    // std::vector<bool> need_value;
-	// std::vector<bool> need_gradient;
-	// std::vector<bool> need_hessian;
-	// std::vector<bool> value_residual;
-	// std::vector<bool> gradient_residual;
+    std::vector<bool> need_value;
+	std::vector<bool> need_gradient;
+	std::vector<bool> need_hessian;
+	std::vector<bool> value_residual;
+	std::vector<bool> gradient_residual;
+
+    std::vector<bool> need_value_LHS;
+	std::vector<bool> need_gradient_LHS;
+	std::vector<bool> need_hessian_LHS;
+	std::vector<bool> value_residual_LHS;
+	std::vector<bool> gradient_residual_LHS;
+
+    std::vector<bool> need_value_pp;
+	std::vector<bool> need_gradient_pp;
+	std::vector<bool> need_hessian_pp;
 
     number_of_variables = _number_of_variables;
 
@@ -119,6 +129,10 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
             need_hessian_LHS.push_back(parameter_handler.get_bool("Need variable hessian (LHS)"));
             value_residual_LHS.push_back(parameter_handler.get_bool("Need value residual term (LHS)"));
             gradient_residual_LHS.push_back(parameter_handler.get_bool("Need gradient residual term (LHS)"));
+
+            need_value_pp.push_back(parameter_handler.get_bool("Need variable value (post-processing)"));
+            need_gradient_pp.push_back(parameter_handler.get_bool("Need variable gradient (post-processing)"));
+            need_hessian_pp.push_back(parameter_handler.get_bool("Need variable hessian (post-processing)"));
 
             nucleating_variable.push_back(parameter_handler.get_bool("Nucleating variable"));
             need_value_nucleation.push_back(parameter_handler.get_bool("Need variable value (nucleation)"));
@@ -250,6 +264,9 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
     // Parameters for postprocessing
     pp_number_of_variables = _number_of_pp_variables;
 
+    std::vector<bool> pp_value_residual;
+	std::vector<bool> pp_gradient_residual;
+
 
     if (pp_number_of_variables > 0){
         postProcessingRequired = true;
@@ -278,17 +295,77 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
                 abort();
             }
 
-            pp_need_value.push_back(parameter_handler.get_bool("Need variable value"));
-            pp_need_gradient.push_back(parameter_handler.get_bool("Need variable gradient"));
-            pp_need_hessian.push_back(parameter_handler.get_bool("Need variable hessian"));
             pp_value_residual.push_back(parameter_handler.get_bool("Need value residual term"));
             pp_gradient_residual.push_back(parameter_handler.get_bool("Need gradient residual term"));
         }
         parameter_handler.leave_subsection();
     }
 
-    // Parameters for nucleation
+    // Load variable information for postprocessing
+    // First, the info list for the base field variables
+	pp_baseVarInfoList.reserve(number_of_variables);
+	unsigned int scalar_var_index = 0;
+	unsigned int vector_var_index = 0;
+	for (unsigned int i=0; i<number_of_variables; i++){
+		variable_info varInfo;
 
+        varInfo.need_value = need_value_pp[i];
+        varInfo.need_gradient = need_gradient_pp[i];
+        varInfo.need_hessian = need_hessian_pp[i];
+
+        varInfo.global_var_index = i;
+
+		if (need_value_pp[i] or need_gradient_pp[i] or need_hessian_pp[i]){
+            varInfo.var_needed = true;
+		}
+        else {
+            varInfo.var_needed = false;
+        }
+
+        if (var_type[i] == SCALAR){
+            varInfo.is_scalar = true;
+            if (varInfo.var_needed){
+                varInfo.scalar_or_vector_index = scalar_var_index;
+                scalar_var_index++;
+            }
+        }
+        else {
+            varInfo.is_scalar = false;
+            if (varInfo.var_needed){
+                varInfo.scalar_or_vector_index = vector_var_index;
+                vector_var_index++;
+            }
+        }
+
+        pp_baseVarInfoList.push_back(varInfo);
+	}
+
+    // Second, the info list for the postprocessing field variables
+	pp_varInfoList.reserve(pp_number_of_variables);
+	scalar_var_index = 0;
+	vector_var_index = 0;
+	for (unsigned int i=0; i<pp_number_of_variables; i++){
+		variable_info varInfo;
+        varInfo.var_needed = true;
+
+        varInfo.value_residual = pp_value_residual[i];
+        varInfo.gradient_residual = pp_gradient_residual[i];
+
+		varInfo.global_var_index = i;
+		if (pp_var_type[i] == SCALAR){
+			varInfo.is_scalar = true;
+			varInfo.scalar_or_vector_index = scalar_var_index;
+			scalar_var_index++;
+		}
+		else {
+			varInfo.is_scalar = false;
+			varInfo.scalar_or_vector_index = vector_var_index;
+			vector_var_index++;
+		}
+		pp_varInfoList.push_back(varInfo);
+    }
+
+    // Parameters for nucleation
     for (unsigned int i=0; i<number_of_variables; i++){
         if (nucleating_variable.at(i)==true){
             nucleating_variable_indices.push_back(i);
@@ -319,31 +396,6 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
     nucleation_order_parameter_cutoff = parameter_handler.get_double("Order parameter cutoff value");
     steps_between_nucleation_attempts = parameter_handler.get_integer("Time steps between nucleation attempts");
 
-    // Load variable information for calculating the RHS
-	pp_varInfoList.reserve(pp_number_of_variables);
-	unsigned int scalar_var_index = 0;
-	unsigned int vector_var_index = 0;
-	for (unsigned int i=0; i<pp_number_of_variables; i++){
-		variable_info varInfo;
-        varInfo.var_needed = true;
-
-        varInfo.value_residual = pp_value_residual[i];
-        varInfo.gradient_residual = pp_gradient_residual[i];
-
-		varInfo.global_var_index = i;
-		if (pp_var_type[i] == SCALAR){
-			varInfo.is_scalar = true;
-			varInfo.scalar_or_vector_index = scalar_var_index;
-			scalar_var_index++;
-		}
-		else {
-			varInfo.is_scalar = false;
-			varInfo.scalar_or_vector_index = vector_var_index;
-			vector_var_index++;
-		}
-		pp_varInfoList.push_back(varInfo);
-
-	}
 
     // Load the boundary condition variables into list of BCs (where each element of the vector is one component of one variable)
     std::vector<std::string> list_of_BCs;

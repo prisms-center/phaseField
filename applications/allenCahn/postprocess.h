@@ -5,7 +5,6 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 												const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 // The order parameter and its derivatives (names here should match those in the macros above)
-//dealii::Tensor<1, dim, dealii::VectorizedArray<double> > nx = modelVariablesList[0].scalarGrad;
 scalargradType nx = variable_list.get_scalar_gradient(0);
 
 scalargradType pp_field;

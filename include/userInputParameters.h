@@ -55,7 +55,7 @@ public:
 
 	unsigned int skip_remeshing_steps;
 
-	// Output parameters (delete all but the last)
+	// Output parameters
 	unsigned int skip_print_steps;
 	std::string output_file_type;
 	std::string output_file_name;
@@ -67,7 +67,7 @@ public:
 	double dtValue;
 	double finalTime;
 	unsigned int totalIncrements;
-	
+
 	// Elliptic solver parameters
 	std::string solver_type;
 	bool abs_tol;
@@ -81,22 +81,8 @@ public:
 	std::vector<fieldType> var_type;
 	std::vector<PDEType> var_eq_type;
 
-	std::vector<bool> need_value;
-	std::vector<bool> need_gradient;
-	std::vector<bool> need_hessian;
-	std::vector<bool> value_residual;
-	std::vector<bool> gradient_residual;
-
-	std::vector<bool> need_value_LHS;
-	std::vector<bool> need_gradient_LHS;
-	std::vector<bool> need_hessian_LHS;
-	std::vector<bool> value_residual_LHS;
-	std::vector<bool> gradient_residual_LHS;
-
-
 	// Variables needed to calculate the LHS
 	std::vector<variable_info> varInfoListRHS;
-	std::vector<variable_info> resInfoListRHS;
 
 	// Variables needed to calculate the LHS
 	unsigned int num_var_LHS;
@@ -112,25 +98,16 @@ public:
 	std::vector<dealii::Tensor<2, 2*dim-1+dim/3, dealii::VectorizedArray<double> > > CIJ_list;
 	list_of_CIJ<dim> material_moduli;
 
-	bool nucleation_occurs;
-
 	// Postprocessing parameters
 	unsigned int pp_number_of_variables;
 	bool postProcessingRequired;
 
 	std::vector<std::string> pp_var_name;
 	std::vector<fieldType> pp_var_type;
-	std::vector<PDEType> pp_var_eq_type;
-
-	std::vector<bool> pp_need_value;
-	std::vector<bool> pp_need_gradient;
-	std::vector<bool> pp_need_hessian;
-	std::vector<bool> pp_value_residual;
-	std::vector<bool> pp_gradient_residual;
 
 	// Variable and residual info
 	std::vector<variable_info> pp_varInfoList;
-	std::vector<variable_info> pp_resInfoList;
+	std::vector<variable_info> pp_baseVarInfoList;
 
 	// List of boundary conditions
 	std::vector<varBCs<dim> > BC_list;
@@ -139,6 +116,7 @@ public:
 	std::vector<boost::variant<double,int,bool,dealii::Tensor<1,dim>,dealii::Tensor<2,dim> > > model_constants;
 
 	// Nucleation parameters
+	bool nucleation_occurs;
 	std::vector<unsigned int> nucleating_variable_indices;
 	std::vector<unsigned int> nucleation_need_value;
 	std::vector<double> nucleus_semiaxes;
@@ -148,9 +126,6 @@ public:
 	double min_distance_between_nuclei; // Only enforced for nuclei placed during the same time step
 	double nucleation_order_parameter_cutoff;
 	unsigned int steps_between_nucleation_attempts;
-
-
-
 
 };
 

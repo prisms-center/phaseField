@@ -12,9 +12,6 @@ private:
 	const userInputParameters<dim> userInputs;
 
 	// Pure virtual method in MatrixFreePDE
-	// void residualRHS(const std::vector<modelVariable<dim> > & modelVarList,
-	// 				 std::vector<modelResidual<dim> > & modelResidualsList,
-	// 				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 	void residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 

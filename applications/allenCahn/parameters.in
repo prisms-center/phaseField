@@ -65,11 +65,16 @@ subsection Variable 0
     set Variable name = n
     set Variable type = SCALAR
     set Equation type = PARABOLIC
+
     set Need variable value = true
     set Need variable gradient = true
     set Need variable hessian = false
     set Need value residual term = true
     set Need gradient residual term = true
+
+    set Need variable value (post-processing) = false
+    set Need variable gradient (post-processing) = true
+    set Need variable hessian (post-processing) = false
 end
 
 # =================================================================================
@@ -90,9 +95,6 @@ set Variable names in the files = void
 subsection Postprocessing variable 0
     set Variable name = mag_grad_n
     set Variable type = SCALAR
-    set Need variable value = true
-    set Need variable gradient = false
-    set Need variable hessian = false
     set Need value residual term = true
     set Need gradient residual term = false
 end

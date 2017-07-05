@@ -286,6 +286,10 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
             parameter_handler.declare_entry("Need value residual term (LHS)","false",dealii::Patterns::Bool(),"Whether the LHS residual equation has a term proportional to the value of the test function.");
             parameter_handler.declare_entry("Need gradient residual term (LHS)","false",dealii::Patterns::Bool(),"Whether the LHS residual equation has a term proportional to the gradient of the test function.");
 
+            parameter_handler.declare_entry("Need variable value (post-processing)","false",dealii::Patterns::Bool(),"Whether the value of the variable is needed for any of the post-processing residual equations.");
+            parameter_handler.declare_entry("Need variable gradient (post-processing)","false",dealii::Patterns::Bool(),"Whether the gradient of the variable is needed for any of the post-processing residual equations.");
+            parameter_handler.declare_entry("Need variable hessian (post-processing)","false",dealii::Patterns::Bool(),"Whether the hessian of the variable is needed for any of the post-processing residual equations.");
+
             parameter_handler.declare_entry("Nucleating variable","false",dealii::Patterns::Bool(),"Whether the variable is an order parameter that is allowed to nucleation.");
             parameter_handler.declare_entry("Need variable value (nucleation)","false",dealii::Patterns::Bool(),"Whether the value of the variable is needed for nucleation calculations (assumed to be true if the variable is a nucleating order parameter).");
 
@@ -321,10 +325,6 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
         {
             parameter_handler.declare_entry("Variable name","var",dealii::Patterns::Anything(),"The name of the field variable.");
             parameter_handler.declare_entry("Variable type","SCALAR",dealii::Patterns::Anything(),"Whether the variable is a SCALAR or a VECTOR.");
-
-            parameter_handler.declare_entry("Need variable value","true",dealii::Patterns::Bool(),"Whether the value of the variable is needed for any of the residual equations.");
-            parameter_handler.declare_entry("Need variable gradient","true",dealii::Patterns::Bool(),"Whether the gradient of the variable is needed for any of the residual equations.");
-            parameter_handler.declare_entry("Need variable hessian","false",dealii::Patterns::Bool(),"Whether the hessian of the variable is needed for any of the residual equations.");
 
             parameter_handler.declare_entry("Need value residual term","true",dealii::Patterns::Bool(),"Whether the residual equation has a term proportional to the value of the test function.");
             parameter_handler.declare_entry("Need gradient residual term","true",dealii::Patterns::Bool(),"Whether the residual equation has a term proportional to the gradient of the test function.");
