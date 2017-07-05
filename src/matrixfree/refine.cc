@@ -10,6 +10,7 @@ if (userInputs.h_adaptivity == true){
 		computing_timer.enter_section("matrixFreePDE: AMR");
 		unsigned int numDoF_preremesh = totalDOFs;
 		for (unsigned int remesh_index=0; remesh_index < (userInputs.max_refinement_level-userInputs.min_refinement_level); remesh_index++){
+
 			adaptiveRefineCriterion();
 			refineGrid();
 			reinit();

@@ -14,12 +14,17 @@ void MatrixFreePDE<dim,degree>::solve(){
     //output initial conditions for time dependent BVP
 	  if (userInputs.outputTimeStepList[currentOutput] == 0) {
 
-			  outputResults();
-			  if (userInputs.calc_energy == true){
-				  computeEnergy();
-				  outputFreeEnergy(freeEnergyValues);
-			  }
-			  currentOutput++;
+          for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
+              constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+              constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+              solutionSet[fieldIndex]->update_ghost_values();
+          }
+          outputResults();
+          if (userInputs.calc_energy == true){
+              computeEnergy();
+              outputFreeEnergy(freeEnergyValues);
+          }
+          currentOutput++;
     }
 
     //time stepping
@@ -54,7 +59,7 @@ void MatrixFreePDE<dim,degree>::solve(){
               computeEnergy();
               outputFreeEnergy(freeEnergyValues);
           }
-
+          
           currentOutput++;
       }
   }

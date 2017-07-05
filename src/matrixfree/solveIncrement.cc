@@ -29,6 +29,9 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
                 invM.local_element(dof%invM_size)*residualSet[fieldIndex]->local_element(dof);
             }
 
+            // Set the Dirichelet values (hanging node constraints don't need to be distributed every time step, only at output)
+            constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+
             // Print update to screen
             if (currentIncrement%userInputs.skip_print_steps==0){
                 sprintf(buffer, "field '%2s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
@@ -125,6 +128,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
     }
     //log time
     computing_timer.exit_section("matrixFreePDE: solveIncrements");
+    
 }
 
 #include "../../include/matrixFreePDE_template_instantiations.h"
