@@ -1,19 +1,20 @@
 
 template <int dim,int degree>
-void customPDE<dim,degree>::postProcessedFields(const std::vector<modelVariable<dim> > & modelVariablesList,
-												std::vector<modelResidual<dim> > & modelResidualsList,
+void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+				variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
 												const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 // The order parameter and its derivatives (names here should match those in the macros above)
-dealii::Tensor<1, dim, dealii::VectorizedArray<double> > nx = modelVariablesList[0].scalarGrad;
+//dealii::Tensor<1, dim, dealii::VectorizedArray<double> > nx = modelVariablesList[0].scalarGrad;
+scalargradType nx = variable_list.get_scalar_gradient(0);
 
-dealii::Tensor<1, dim, dealii::VectorizedArray<double> > pp_field;
+scalargradType pp_field;
 pp_field[0] = nx[0];
 pp_field[1] = nx[1];
 
 
 // Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
-modelResidualsList[0].scalarValueResidual = std::sqrt(pp_field[0]*pp_field[0]+pp_field[1]*pp_field[1]);
+pp_variable_list.set_scalar_value_residual(0, std::sqrt(pp_field[0]*pp_field[0]+pp_field[1]*pp_field[1]));
 
 
 }

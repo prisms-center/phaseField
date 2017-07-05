@@ -205,8 +205,8 @@ class MatrixFreePDE:public Subscriptor
   		  	  	  	  	  	  	  	  	  	  	  	  	  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc)=0;
 
 
-  virtual void postProcessedFields(const std::vector<modelVariable<dim> > & modelVariablesList,
-                                                              std::vector<modelResidual<dim> > & modelResidualsList,
+  virtual void postProcessedFields(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+                                                              variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
                                                               const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};
   void computePostProcessedFields(std::vector<vectorType*> &postProcessedSet) const;
 

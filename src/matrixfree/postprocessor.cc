@@ -26,144 +26,31 @@ void MatrixFreePDE<dim,degree>::getPostProcessedFields(const dealii::MatrixFree<
 		const std::pair<unsigned int,unsigned int> &cell_range) const {
 
 	//initialize FEEvaulation objects
-	std::vector<dealii::FEEvaluation<dim,degree,degree+1,1,double> > scalar_vars;
-	std::vector<dealii::FEEvaluation<dim,degree,degree+1,dim,double> > vector_vars;
-	std::vector<dealii::FEEvaluation<dim,degree,degree+1,1,double> > pp_scalar_vars;
-	std::vector<dealii::FEEvaluation<dim,degree,degree+1,dim,double> > pp_vector_vars;
-
-	for (unsigned int i=0; i<userInputs.pp_number_of_variables; i++){
-		if (userInputs.pp_varInfoList[i].is_scalar){
-			dealii::FEEvaluation<dim,degree,degree+1,1,double> var(data, 0);
-			pp_scalar_vars.push_back(var);
-		}
-		else {
-			dealii::FEEvaluation<dim,degree,degree+1,dim,double> var(data, 0);
-			pp_vector_vars.push_back(var);
-		}
-	}
-
-	for (unsigned int i=0; i<userInputs.number_of_variables; i++){
-		if (userInputs.varInfoListRHS[i].is_scalar){
-			dealii::FEEvaluation<dim,degree,degree+1,1,double> var(data, i);
-			scalar_vars.push_back(var);
-		}
-		else {
-			dealii::FEEvaluation<dim,degree,degree+1,dim,double> var(data, i);
-			vector_vars.push_back(var);
-		}
-	}
-
-	std::vector<modelVariable<dim> > modelVarList;
-	std::vector<modelResidual<dim> > modelResidualsList;
-	modelVarList.reserve(userInputs.number_of_variables);
-	modelResidualsList.reserve(userInputs.pp_number_of_variables);
+	variableContainer<dim,degree,dealii::VectorizedArray<double> > variable_list(data,userInputs.varInfoListRHS);
+	variableContainer<dim,degree,dealii::VectorizedArray<double> > pp_variable_list(data,userInputs.pp_varInfoList);
 
 	//loop over cells
 	for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
 
 		// Initialize, read DOFs, and set evaulation flags for each variable
-		for (unsigned int i=0; i<userInputs.number_of_variables; i++){
-			if (userInputs.varInfoListRHS[i].is_scalar) {
-				scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].reinit(cell);
-				scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].read_dof_values(*src[userInputs.varInfoListRHS[i].global_var_index]);
-				scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].evaluate(userInputs.need_value[i], userInputs.need_gradient[i], userInputs.need_hessian[i]);
-			}
-			else {
-				vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].reinit(cell);
-				vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].read_dof_values(*src[userInputs.varInfoListRHS[i].global_var_index]);
-				vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].evaluate(userInputs.need_value[i], userInputs.need_gradient[i], userInputs.need_hessian[i]);
-			}
-		}
+		variable_list.reinit_and_eval(src, cell);
+		pp_variable_list.reinit(cell);
 
-		// Initialize, read DOFs, and set evaulation flags for each variable
-		for (unsigned int i=0; i<userInputs.pp_number_of_variables; i++){
-			if (userInputs.pp_varInfoList[i].is_scalar) {
-				pp_scalar_vars[userInputs.pp_varInfoList[i].scalar_or_vector_index].reinit(cell);
-			}
-			else {
-				pp_vector_vars[userInputs.pp_varInfoList[i].scalar_or_vector_index].reinit(cell);
-			}
-		}
-
-		unsigned int num_q_points;
-		if (scalar_vars.size() > 0){
-			num_q_points = scalar_vars[0].n_q_points;
-		}
-		else {
-			num_q_points = vector_vars[0].n_q_points;
-		}
+		unsigned int num_q_points = variable_list.get_num_q_points();
 
 		//loop over quadrature points
 		for (unsigned int q=0; q<num_q_points; ++q){
-
-			dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc;
-			if (scalar_vars.size() > 0){
-				q_point_loc = scalar_vars[0].quadrature_point(q);
-			}
-			else {
-				q_point_loc = vector_vars[0].quadrature_point(q);
-			}
-
-			for (unsigned int i=0; i<userInputs.number_of_variables; i++){
-				if (userInputs.varInfoListRHS[i].is_scalar) {
-					if (userInputs.need_value[i]){
-						modelVarList[i].scalarValue = scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_value(q);
-					}
-					if (userInputs.need_gradient[i]){
-						modelVarList[i].scalarGrad = scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_gradient(q);
-					}
-					if (userInputs.need_hessian[i]){
-						modelVarList[i].scalarHess = scalar_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_hessian(q);
-					}
-				}
-				else {
-					if (userInputs.need_value[i]){
-						modelVarList[i].vectorValue = vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_value(q);
-					}
-					if (userInputs.need_gradient[i]){
-						modelVarList[i].vectorGrad = vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_gradient(q);
-					}
-					if (userInputs.need_hessian[i]){
-						modelVarList[i].vectorHess = vector_vars[userInputs.varInfoListRHS[i].scalar_or_vector_index].get_hessian(q);
-					}
-				}
-			}
+			variable_list.q_point = q;
+			pp_variable_list.q_point = q;
+			
+			dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc = variable_list.get_q_point_location();
 
 			// Calculate the residuals
-			postProcessedFields(modelVarList,modelResidualsList,q_point_loc);
-
-			// Submit values
-			for (unsigned int i=0; i<userInputs.pp_number_of_variables; i++){
-				if (userInputs.pp_varInfoList[i].is_scalar) {
-					if (userInputs.pp_value_residual[i] == true){
-						pp_scalar_vars[userInputs.pp_varInfoList[i].scalar_or_vector_index].submit_value(modelResidualsList[i].scalarValueResidual,q);
-					}
-					if (userInputs.pp_gradient_residual[i] == true){
-						pp_scalar_vars[userInputs.pp_varInfoList[i].scalar_or_vector_index].submit_gradient(modelResidualsList[i].scalarGradResidual,q);
-					}
-				}
-				else {
-					if (userInputs.pp_value_residual[i] == true){
-						pp_vector_vars[userInputs.pp_varInfoList[i].scalar_or_vector_index].submit_value(modelResidualsList[i].vectorValueResidual,q);
-					}
-					if (userInputs.pp_gradient_residual[i] == true){
-						pp_vector_vars[userInputs.pp_varInfoList[i].scalar_or_vector_index].submit_gradient(modelResidualsList[i].vectorGradResidual,q);
-					}
-				}
-			}
+			postProcessedFields(variable_list,pp_variable_list,q_point_loc);
 
 		}
 
-		for (unsigned int i=0; i<userInputs.pp_number_of_variables; i++){
-			if (userInputs.pp_varInfoList[i].is_scalar) {
-				pp_scalar_vars[userInputs.pp_varInfoList[i].scalar_or_vector_index].integrate(userInputs.pp_value_residual[i], userInputs.pp_gradient_residual[i]);
-				pp_scalar_vars[userInputs.pp_varInfoList[i].scalar_or_vector_index].distribute_local_to_global(*dst[userInputs.pp_varInfoList[i].global_var_index]);
-			}
-			else {
-				pp_vector_vars[userInputs.pp_varInfoList[i].scalar_or_vector_index].integrate(userInputs.pp_value_residual[i], userInputs.pp_gradient_residual[i]);
-				pp_vector_vars[userInputs.pp_varInfoList[i].scalar_or_vector_index].distribute_local_to_global(*dst[userInputs.pp_varInfoList[i].global_var_index]);
-			}
-		}
+		pp_variable_list.integrate_and_distribute(dst);
 	}
 }
 

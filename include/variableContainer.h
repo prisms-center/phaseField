@@ -31,6 +31,9 @@ public:
     void reinit_and_eval(const std::vector<vectorType*> &src, unsigned int cell);
     void reinit_and_eval_LHS(const vectorType &src, const std::vector<vectorType*> solutionSet, unsigned int cell, unsigned int var_being_solved);
 
+    // Only initialize the FEEvaluation object for each variable
+    void reinit(unsigned int cell);
+
     // Integrate the residuals and distribute from local to global
     void integrate_and_distribute(std::vector<vectorType*> &dst);
     void integrate_and_distribute_LHS(vectorType &dst, unsigned int var_being_solved);
@@ -155,6 +158,22 @@ void variableContainer<dim,degree,T>::reinit_and_eval_LHS(const vectorType &src,
     }
 
 }
+
+template <int dim, int degree, typename T>
+void variableContainer<dim,degree,T>::reinit(unsigned int cell){
+
+    for (unsigned int i=0; i<num_var; i++){
+        if (varInfoList[i].var_needed){
+            if (varInfoList[i].is_scalar) {
+                scalar_vars[varInfoList[i].scalar_or_vector_index].reinit(cell);
+            }
+            else {
+                vector_vars[varInfoList[i].scalar_or_vector_index].reinit(cell);
+            }
+        }
+    }
+}
+
 
 template <int dim, int degree, typename T>
 void variableContainer<dim,degree,T>::integrate_and_distribute(std::vector<vectorType*> &dst){

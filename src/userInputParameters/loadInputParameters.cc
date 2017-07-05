@@ -325,6 +325,10 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
 	unsigned int vector_var_index = 0;
 	for (unsigned int i=0; i<pp_number_of_variables; i++){
 		variable_info varInfo;
+        varInfo.var_needed = true;
+
+        varInfo.value_residual = pp_value_residual[i];
+        varInfo.gradient_residual = pp_gradient_residual[i];
 
 		varInfo.global_var_index = i;
 		if (pp_var_type[i] == SCALAR){

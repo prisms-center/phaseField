@@ -14,9 +14,8 @@ template <int dim, int degree>
 // void customPDE<dim,degree>::residualRHS(const std::vector<modelVariable<dim> > & modelVariablesList,
 // 												std::vector<modelResidual<dim> > & modelResidualsList,
 // 												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
-void customPDE<dim,degree>::residualRHS(const variableContainer<dim,dealii::VectorizedArray<double> > & variable_list,
-												std::vector<modelResidual<dim> > & modelResidualsList,
-												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 // The order parameter and its derivatives (names here should match those in the macros above)
 scalarvalueType n = variable_list.get_scalar_value(0); //modelVariablesList[0].scalarValue;
@@ -29,8 +28,8 @@ scalarvalueType rnV = (n-constV(userInputs.dtValue*MnV)*fnV);
 scalargradType rnxV = (-constV(userInputs.dtValue*KnV*MnV)*nx);
 
 // Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
-modelResidualsList[0].scalarValueResidual = rnV;
-modelResidualsList[0].scalarGradResidual = rnxV;
+variable_list.set_scalar_value_residual(0,rnV);
+variable_list.set_scalar_gradient_residual(0,rnxV);
 
 }
 
@@ -50,8 +49,7 @@ modelResidualsList[0].scalarGradResidual = rnxV;
 // that the correct residual is being submitted. The index of the field being solved
 // can be accessed by "this->currentFieldIndex".
 template <int dim, int degree>
-void customPDE<dim,degree>::residualLHS(const std::vector<modelVariable<dim> > & modelVarList,
-		modelResidual<dim> & modelRes,
+void customPDE<dim,degree>::residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 }
 
@@ -67,15 +65,14 @@ void customPDE<dim,degree>::residualLHS(const std::vector<modelVariable<dim> > &
 // density are added to the "energy_components" variable (index 0: chemical energy,
 // index 1: gradient energy, index 2: elastic energy).
 template <int dim, int degree>
-void customPDE<dim,degree>::energyDensity(const std::vector<modelVariable<dim> > & modelVarList,
-											const dealii::VectorizedArray<double> & JxW_value,
-											dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {
+void customPDE<dim,degree>::energyDensity(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list, const dealii::VectorizedArray<double> & JxW_value,
+				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {
 
 scalarvalueType total_energy_density = constV(0.0);
 
 // The order parameter and its derivatives (names here should match those in the macros above)
-scalarvalueType n = modelVarList[0].scalarValue;
-scalargradType nx = modelVarList[0].scalarGrad;
+scalarvalueType n = variable_list.get_scalar_value(0);
+scalargradType nx = variable_list.get_scalar_gradient(0);
 
 // The homogenous free energy
 scalarvalueType f_chem = (n*n*n*n - 2.0*n*n*n + n*n);
