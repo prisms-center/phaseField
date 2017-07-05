@@ -17,7 +17,7 @@ IF(NOT ${DEAL_II_WITH_P4EST})
     )
 ENDIF()
 
-DEAL_II_INITIALIZE_CACHED_VARIABLES()
+#DEAL_II_INITIALIZE_CACHED_VARIABLES()
 
 # Set up the debug, release, and run targets
 ADD_CUSTOM_TARGET(debug
@@ -36,7 +36,7 @@ ADD_CUSTOM_TARGET(run COMMAND main
   COMMENT "Run with ${CMAKE_BUILD_TYPE} configuration"
   )
 
-PROJECT(myproject)
+PROJECT(myapp)
 
 # Check if postprocess.h and nucleation.h exist and set preprocessor variables
 if (EXISTS "postprocess.h")
@@ -54,18 +54,32 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
         #set(DEAL_II_CXX_FLAGS_RELEASE "${DEAL_II_CXX_FLAGS_RELEASE} -Wno-maybe-uninitialized -Wno-deprecated-declarations -Wno-comment -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable")
 endif()
 
-# Set up the paths to the library files
-INCLUDE_DIRECTORIES(../../include)
-
-FILE(GLOB headers ${CMAKE_SOURCE_DIR}/../../include/*.h)
-FILE(GLOB sources ${CMAKE_SOURCE_DIR}/../../src/matrixfree/*.cc)
-
-ADD_LIBRARY(prisms_pf ${sources} ../../src/utilities/vectorBCFunction.cc ../../src/inputFileReader/inputFileReader.cc ../../src/userInputParameters/loadInputParameters.cc ../../src/parallelNucleationList/parallelNucleationList.cc ../../src/variableContainer/variableContainer.cc)
-
-DEAL_II_SETUP_TARGET(prisms_pf)
-
 ADD_EXECUTABLE(main main.cc )
 
 DEAL_II_SETUP_TARGET(main)
 
-TARGET_LINK_LIBRARIES(main prisms_pf)
+set(cmd "cmake")
+set(arg "CMakeLists.txt")
+set(dir ${PROJECT_SOURCE_DIR}/../..)
+EXECUTE_PROCESS(COMMAND ${cmd} ${arg}
+		WORKING_DIRECTORY ${dir})
+
+
+
+set(cmd "make")
+MESSAGE(ERROR ${arg} ${CMAKE_BUILD_TYPE})
+
+EXECUTE_PROCESS(COMMAND ${cmd}
+		WORKING_DIRECTORY ${dir})
+
+if (DEFINED ${CMAKE_BUILD_TYPE})
+	if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
+		TARGET_LINK_LIBRARIES(main ${CMAKE_SOURCE_DIR}/../../libprisms_pf.a)
+	elseif(${CMAKE_BUILD_TYPE} STREQUAL "DebugRelease")
+		TARGET_LINK_LIBRARIES(main ${CMAKE_SOURCE_DIR}/../../libprisms_pf.a)
+	else()
+		TARGET_LINK_LIBRARIES(main ${CMAKE_SOURCE_DIR}/../../libprisms_pf_debug.a)
+	endif()
+else()
+	TARGET_LINK_LIBRARIES(main ${CMAKE_SOURCE_DIR}/../../libprisms_pf_debug.a)
+endif()

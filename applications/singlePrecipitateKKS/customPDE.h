@@ -12,9 +12,6 @@ private:
 	const userInputParameters<dim> userInputs;
 
 	// Pure virtual method in MatrixFreePDE
-	// void residualRHS(const std::vector<modelVariable<dim> > & modelVarList,
-	// 				 std::vector<modelResidual<dim> > & modelResidualsList,
-	// 				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 	void residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 
@@ -28,8 +25,8 @@ private:
 
 	// Virtual method in MatrixFreePDE that we override if we need postprocessing
 	#ifdef POSTPROCESS_FILE_EXISTS
-	void postProcessedFields(const std::vector<modelVariable<dim> > & modelVariablesList,
-					std::vector<modelResidual<dim> > & modelResidualsList,
+	void postProcessedFields(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+					variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
 					const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 	#endif
 

@@ -8,15 +8,6 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8.8)
 FIND_PACKAGE(deal.II 8.3.0 REQUIRED
 	HINTS ${DEAL_II_DIR} ../ ../../ $ENV{DEAL_II_DIR})
 
-# Check to make sure deal.II is configured with p4est
-IF(NOT ${DEAL_II_WITH_P4EST})
-  MESSAGE(FATAL_ERROR "\n"
-    "*** deal.II was not installed with p4est. ***\n\n"
-    “The p4est library is a mandatory prerequisite for PRISMS-PF. Please consult the \n”
-    “user guide to confirm that deal.II and p4est were installed and configured correctly.”
-    )
-ENDIF()
-
 DEAL_II_INITIALIZE_CACHED_VARIABLES()
 
 # Set up the debug, release, and run targets
@@ -36,15 +27,6 @@ ADD_CUSTOM_TARGET(run COMMAND main
   COMMENT "Run with ${CMAKE_BUILD_TYPE} configuration"
   )
 
-PROJECT(myproject)
-
-# Check if postprocess.h and nucleation.h exist and set preprocessor variables
-if (EXISTS "postprocess.h")
-	add_definitions(-DPOSTPROCESS_FILE_EXISTS)
-endif()
-if (EXISTS "nucleation.h")
-	add_definitions(-DNUCLEATION_FILE_EXISTS)
-endif()
 
 # Append extra flags for the GNU compiler to suppress some warnings
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
@@ -57,16 +39,14 @@ endif()
 # Set up the paths to the library files
 INCLUDE_DIRECTORIES(../../include)
 
-FILE(GLOB headers ${CMAKE_SOURCE_DIR}/../../include/*.h)
-FILE(GLOB sources ${CMAKE_SOURCE_DIR}/../../src/matrixfree/*.cc)
+FILE(GLOB headers include/*.h)
+FILE(GLOB sources src/matrixfree/*.cc)
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY  ../../)
-ADD_LIBRARY(prisms_pf ${sources} ../../src/utilities/vectorBCFunction.cc ../../src/inputFileReader/inputFileReader.cc ../../src/userInputParameters/loadInputParameters.cc ../../src/parallelNucleationList/parallelNucleationList.cc ../../src/variableContainer/variableContainer.cc)
 
-DEAL_II_SETUP_TARGET(prisms_pf)
+PROJECT(prisms_pf)
+add_library(${PROJECT_NAME} ${sources} src/utilities/vectorBCFunction.cc src/inputFileReader/inputFileReader.cc src/userInputParameters/loadInputParameters.cc src/parallelNucleationList/parallelNucleationList.cc src/variableContainer/variableContainer.cc)
+DEAL_II_SETUP_TARGET(${PROJECT_NAME})
 
-ADD_EXECUTABLE(main main.cc )
-
-DEAL_II_SETUP_TARGET(main)
-
-TARGET_LINK_LIBRARIES(main prisms_pf)
+PROJECT(prisms_pf_debug)
+add_library(${PROJECT_NAME} ${sources} src/utilities/vectorBCFunction.cc src/inputFileReader/inputFileReader.cc src/userInputParameters/loadInputParameters.cc src/parallelNucleationList/parallelNucleationList.cc src/variableContainer/variableContainer.cc)
+DEAL_II_SETUP_TARGET(${PROJECT_NAME})
