@@ -31,6 +31,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
 
             // Set the Dirichelet values (hanging node constraints don't need to be distributed every time step, only at output)
             constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+            solutionSet[fieldIndex]->update_ghost_values();
 
             // Print update to screen
             if (currentIncrement%userInputs.skip_print_steps==0){
@@ -128,7 +129,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
     }
     //log time
     computing_timer.exit_section("matrixFreePDE: solveIncrements");
-    
+
 }
 
 #include "../../include/matrixFreePDE_template_instantiations.h"

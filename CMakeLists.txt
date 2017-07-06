@@ -37,16 +37,18 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 endif()
 
 # Set up the paths to the library files
-INCLUDE_DIRECTORIES(../../include)
+INCLUDE_DIRECTORIES(include)
 
 FILE(GLOB headers include/*.h)
 FILE(GLOB sources src/matrixfree/*.cc)
 
 
 PROJECT(prisms_pf)
-add_library(${PROJECT_NAME} ${sources} src/utilities/vectorBCFunction.cc src/inputFileReader/inputFileReader.cc src/userInputParameters/loadInputParameters.cc src/parallelNucleationList/parallelNucleationList.cc src/variableContainer/variableContainer.cc)
+SET(CMAKE_BUILD_TYPE Release)
+ADD_LIBRARY(${PROJECT_NAME} ${sources} src/utilities/vectorBCFunction.cc src/inputFileReader/inputFileReader.cc src/userInputParameters/loadInputParameters.cc src/parallelNucleationList/parallelNucleationList.cc src/variableContainer/variableContainer.cc)
 DEAL_II_SETUP_TARGET(${PROJECT_NAME})
 
 PROJECT(prisms_pf_debug)
-add_library(${PROJECT_NAME} ${sources} src/utilities/vectorBCFunction.cc src/inputFileReader/inputFileReader.cc src/userInputParameters/loadInputParameters.cc src/parallelNucleationList/parallelNucleationList.cc src/variableContainer/variableContainer.cc)
+SET(CMAKE_BUILD_TYPE Debug)
+ADD_LIBRARY(${PROJECT_NAME} ${sources} src/utilities/vectorBCFunction.cc src/inputFileReader/inputFileReader.cc src/userInputParameters/loadInputParameters.cc src/parallelNucleationList/parallelNucleationList.cc src/variableContainer/variableContainer.cc)
 DEAL_II_SETUP_TARGET(${PROJECT_NAME})

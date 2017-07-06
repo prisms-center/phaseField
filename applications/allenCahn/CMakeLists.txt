@@ -17,7 +17,7 @@ IF(NOT ${DEAL_II_WITH_P4EST})
     )
 ENDIF()
 
-#DEAL_II_INITIALIZE_CACHED_VARIABLES()
+DEAL_II_INITIALIZE_CACHED_VARIABLES()
 
 # Set up the debug, release, and run targets
 ADD_CUSTOM_TARGET(debug
@@ -37,6 +37,9 @@ ADD_CUSTOM_TARGET(run COMMAND main
   )
 
 PROJECT(myapp)
+if (${CMAKE_BUILD_TYPE} MATCHES DebugRelease)
+	SET(CMAKE_BUILD_TYPE Debug)
+endif()
 
 # Check if postprocess.h and nucleation.h exist and set preprocessor variables
 if (EXISTS "postprocess.h")
@@ -64,22 +67,15 @@ set(dir ${PROJECT_SOURCE_DIR}/../..)
 EXECUTE_PROCESS(COMMAND ${cmd} ${arg}
 		WORKING_DIRECTORY ${dir})
 
-
-
 set(cmd "make")
-MESSAGE(ERROR ${arg} ${CMAKE_BUILD_TYPE})
 
 EXECUTE_PROCESS(COMMAND ${cmd}
 		WORKING_DIRECTORY ${dir})
 
-if (DEFINED ${CMAKE_BUILD_TYPE})
-	if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
-		TARGET_LINK_LIBRARIES(main ${CMAKE_SOURCE_DIR}/../../libprisms_pf.a)
-	elseif(${CMAKE_BUILD_TYPE} STREQUAL "DebugRelease")
-		TARGET_LINK_LIBRARIES(main ${CMAKE_SOURCE_DIR}/../../libprisms_pf.a)
-	else()
-		TARGET_LINK_LIBRARIES(main ${CMAKE_SOURCE_DIR}/../../libprisms_pf_debug.a)
-	endif()
+if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
+	TARGET_LINK_LIBRARIES(main ${CMAKE_SOURCE_DIR}/../../libprisms_pf.a)
+elseif(${CMAKE_BUILD_TYPE} STREQUAL "DebugRelease")
+	TARGET_LINK_LIBRARIES(main ${CMAKE_SOURCE_DIR}/../../libprisms_pf.a)
 else()
 	TARGET_LINK_LIBRARIES(main ${CMAKE_SOURCE_DIR}/../../libprisms_pf_debug.a)
 endif()
