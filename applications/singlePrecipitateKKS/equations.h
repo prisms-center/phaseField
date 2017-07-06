@@ -212,14 +212,6 @@ variable_list.set_scalar_gradient_residual(1,rn1xV);
 
 variable_list.set_vector_gradient_residual(2,ruxV);
 
-// modelResidualsList[0].scalarValueResidual = rcV;
-// modelResidualsList[0].scalarGradResidual = rcxV;
-//
-// modelResidualsList[1].scalarValueResidual = rn1V;
-// modelResidualsList[1].scalarGradResidual = rn1xV;
-//
-// modelResidualsList[2].vectorGradResidual = ruxV;
-
 }
 
 // =================================================================================
