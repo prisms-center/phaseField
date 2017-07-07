@@ -91,8 +91,6 @@ class MatrixFreePDE:public Subscriptor
  protected:
   const userInputParameters<dim> userInputs;
 
-  dealii::Threads::Mutex assembler_lock;
-
   unsigned int totalDOFs;
 
   // Elasticity matrix variables
@@ -198,10 +196,6 @@ class MatrixFreePDE:public Subscriptor
   virtual void residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
   														  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
 
-  virtual void energyDensity(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list, const dealii::VectorizedArray<double> & JxW_value,
-  		  	  	  	  	  	  	  	  	  	  	  	  	  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc)=0;
-
-
   virtual void postProcessedFields(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
                                                               variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
                                                               const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};
@@ -247,13 +241,6 @@ class MatrixFreePDE:public Subscriptor
   // Method to obtain the nucleation probability for an element, nontrival case must be implemented in the subsclass
   virtual double getNucleationProbability(variableValueContainer, double)const {return 0.0;};
 
-  /*Method to compute energy like quantities.*/
-  void computeEnergy();
-  void getEnergy(const MatrixFree<dim,double> &data,
-		    std::vector<vectorType*> &dst,
-		    const std::vector<vectorType*> &src,
-		    const std::pair<unsigned int,unsigned int> &cell_range);
-
   //utility functions
   /*Returns index of given field name if exists, else throw error.*/
   unsigned int getFieldIndex(std::string _name);
@@ -277,8 +264,6 @@ class MatrixFreePDE:public Subscriptor
   /*Timer and logging object*/
   mutable TimerOutput computing_timer;
 
-  double energy;
-  std::vector<double> energy_components;
   std::vector<double> integrated_postprocessed_fields;
 
   bool first_integrated_var_output_complete;

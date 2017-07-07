@@ -10,7 +10,9 @@ inputFileReader::inputFileReader(std::string input_file_name){
 
     model_constant_names = get_entry_name_ending_list("parameters.in","set", "Model constant");
 
-    std::cout << "Number of constants: " << num_constants << std::endl;
+    if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+        std::cout << "Number of constants: " << num_constants << std::endl;
+    }
 
     // Read in all of the parameters now
     declare_parameters(parameter_handler,var_types,
