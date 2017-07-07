@@ -48,8 +48,8 @@ scalarvalueType rnV = (n-constV(userInputs.dtValue*MnV)*fnV);
 scalargradType rnxV = (-constV(userInputs.dtValue*KnV*MnV)*nx);
 
 // Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
-variable_list.set_scalar_value_residual(0,rnV);
-variable_list.set_scalar_gradient_residual(0,rnxV);
+variable_list.set_scalar_value_residual_term(0,rnV);
+variable_list.set_scalar_gradient_residual_term(0,rnxV);
 
 }
 

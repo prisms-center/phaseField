@@ -81,7 +81,7 @@ set Calculate the free energy = true
 # =================================================================================
 # ADD MORE COMMENTS
 set Load initial conditions = false
-set Load serial file = true
+set Load parallel file = true
 set File names = void
 set Variable names in the files = void
 

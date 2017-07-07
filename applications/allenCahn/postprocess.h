@@ -13,7 +13,7 @@ pp_field[1] = nx[1];
 
 
 // Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
-pp_variable_list.set_scalar_value_residual(0, std::sqrt(pp_field[0]*pp_field[0]+pp_field[1]*pp_field[1]));
+pp_variable_list.set_scalar_value_residual_term(0, std::sqrt(pp_field[0]*pp_field[0]+pp_field[1]*pp_field[1]));
 
 
 }

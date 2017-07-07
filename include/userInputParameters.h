@@ -29,7 +29,7 @@ public:
 	// Method to create the list of BCs from the user input strings (called from loadInputParameters)
 	void load_BC_list(const std::vector<std::string> list_of_BCs);
 
-	// The model variable names
+	// Map linking the model constant name to its index
 	std::unordered_map<std::string,unsigned int> model_constant_name_map;
 
 	// Methods to access members of 'model_constant', one for each type (since one can't template based on return values)
@@ -39,8 +39,6 @@ public:
 	bool get_model_constant_bool(const std::string constant_name) const {return boost::get<bool>(model_constants[model_constant_name_map.at(constant_name)]);};
 	dealii::Tensor<1,dim> get_model_constant_rank_1_tensor(const std::string constant_name) const {return boost::get<dealii::Tensor<1,dim> >(model_constants[model_constant_name_map.at(constant_name)]);};
 	dealii::Tensor<2,dim> get_model_constant_rank_2_tensor(const std::string constant_name) const {return boost::get<dealii::Tensor<2,dim> >(model_constants[model_constant_name_map.at(constant_name)]);};
-
-
 
 
 	// Meshing parameters

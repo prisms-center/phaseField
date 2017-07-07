@@ -239,7 +239,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
 
     // Variables for loading in PField ICs
     std::vector<std::string> load_ICs_temp = dealii::Utilities::split_string_list(parameter_handler.get("Load initial conditions"));
-    std::vector<std::string> load_serial_file_temp = dealii::Utilities::split_string_list(parameter_handler.get("Load serial file"));
+    std::vector<std::string> load_serial_file_temp = dealii::Utilities::split_string_list(parameter_handler.get("Load parallel file"));
 
     if (boost::iequals(load_ICs_temp.at(0),"void")){
         for (unsigned int var=0; var<number_of_variables; var++){

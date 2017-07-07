@@ -22,11 +22,11 @@ public:
     dealii::Tensor<3, dim, T > get_vector_hessian(unsigned int global_variable_index) const;
 
     // Methods to set the value residual and the gradient residual (this is how the user sets these values in equations.h)
-    void set_scalar_value_residual(unsigned int global_variable_index, T val);
-    void set_scalar_gradient_residual(unsigned int global_variable_index, dealii::Tensor<1, dim, T > grad);
-    void set_vector_value_residual(unsigned int global_variable_index, dealii::Tensor<1, dim, T > val);
-    void set_vector_gradient_residual(unsigned int global_variable_index, dealii::Tensor<2, dim, T > grad);
-
+    void set_scalar_value_residual_term(unsigned int global_variable_index, T val);
+    void set_scalar_gradient_residual_term(unsigned int global_variable_index, dealii::Tensor<1, dim, T > grad);
+    void set_vector_value_residual_term(unsigned int global_variable_index, dealii::Tensor<1, dim, T > val);
+    void set_vector_gradient_residual_term(unsigned int global_variable_index, dealii::Tensor<2, dim, T > grad);
+    
     // Initialize, read DOFs, and set evaulation flags for each variable
     void reinit_and_eval(const std::vector<vectorType*> &src, unsigned int cell);
     void reinit_and_eval_LHS(const vectorType &src, const std::vector<vectorType*> solutionSet, unsigned int cell, unsigned int var_being_solved);
