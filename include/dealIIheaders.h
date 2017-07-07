@@ -38,7 +38,9 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/variant.hpp>
-#include <tuple>
+//#include <tuple>
+
+#include <unordered_map>
 
 
 #endif // DEALIIHEADERS_H

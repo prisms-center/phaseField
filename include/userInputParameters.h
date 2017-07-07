@@ -25,17 +25,23 @@ private:
 public:
 	// Method to read the input parameters from a file and load them into the class member variables
 	userInputParameters(inputFileReader & input_file_reader, dealii::ParameterHandler & parameter_handler);
-		
+
 	// Method to create the list of BCs from the user input strings (called from loadInputParameters)
 	void load_BC_list(const std::vector<std::string> list_of_BCs);
 
+	// The model variable names
+	std::unordered_map<std::string,unsigned int> model_constant_name_map;
+
 	// Methods to access members of 'model_constant', one for each type (since one can't template based on return values)
 	// These are really just wrappers for Boost's 'get' function
-	double get_model_constant_double(const unsigned int index) const {return boost::get<double>(model_constants[index]);};
-	double get_model_constant_int(const unsigned int index) const {return boost::get<int>(model_constants[index]);};
-	double get_model_constant_bool(const unsigned int index) const {return boost::get<bool>(model_constants[index]);};
-	dealii::Tensor<1,dim> get_model_constant_rank_1_tensor(const unsigned int index) const {return boost::get<dealii::Tensor<1,dim> >(model_constants[index]);};
-	dealii::Tensor<2,dim> get_model_constant_rank_2_tensor(const unsigned int index) const {return boost::get<dealii::Tensor<2,dim> >(model_constants[index]);};
+	double get_model_constant_double(const std::string constant_name) const {return boost::get<double>(model_constants[model_constant_name_map.at(constant_name)]);};
+	int get_model_constant_int(const std::string constant_name) const {return boost::get<int>(model_constants[model_constant_name_map.at(constant_name)]);};
+	bool get_model_constant_bool(const std::string constant_name) const {return boost::get<bool>(model_constants[model_constant_name_map.at(constant_name)]);};
+	dealii::Tensor<1,dim> get_model_constant_rank_1_tensor(const std::string constant_name) const {return boost::get<dealii::Tensor<1,dim> >(model_constants[model_constant_name_map.at(constant_name)]);};
+	dealii::Tensor<2,dim> get_model_constant_rank_2_tensor(const std::string constant_name) const {return boost::get<dealii::Tensor<2,dim> >(model_constants[model_constant_name_map.at(constant_name)]);};
+
+
+
 
 	// Meshing parameters
 	std::vector<double> domain_size;

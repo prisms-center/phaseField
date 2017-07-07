@@ -8,6 +8,9 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     unsigned int _number_of_pp_variables = input_file_reader.num_pp_vars;
     unsigned int _number_of_constants = input_file_reader.num_constants;
 
+    for (unsigned int i=0; i<input_file_reader.model_constant_names.size(); i++){
+        model_constant_name_map[input_file_reader.model_constant_names[i]] = i;
+    }
 
     // Load the inputs into the class member variables
 
@@ -432,7 +435,8 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     // Load the user-defined constants
     for (unsigned int i=0; i<_number_of_constants; i++){
         std::string constants_text = "Model constant ";
-        constants_text.append(dealii::Utilities::int_to_string(i));
+        //constants_text.append(dealii::Utilities::int_to_string(i));
+        constants_text.append(input_file_reader.model_constant_names[i]);
         std::vector<std::string> model_constants_strings = dealii::Utilities::split_string_list(parameter_handler.get(constants_text));
         if (model_constants_strings.size() == 2){
             if (boost::iequals(model_constants_strings.at(1),"double")){
@@ -740,6 +744,7 @@ std::vector<unsigned int> userInputParameters<dim>::setOutputTimeSteps(const std
 
     return timeStepList;
 }
+
 
 // Template instantiations
 template class userInputParameters<2>;

@@ -434,7 +434,8 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
     // Declare the user-defined constants
     for (unsigned int i=0; i<num_of_constants; i++){
         std::string constants_text = "Model constant ";
-        constants_text.append(dealii::Utilities::int_to_string(i));
+        //constants_text.append(dealii::Utilities::int_to_string(i));
+        constants_text.append(model_constant_names[i]);
         parameter_handler.declare_entry(constants_text,"0",dealii::Patterns::Anything(),"The value of a user-defined constant.");
     }
 
