@@ -102,7 +102,7 @@ subsection Variable 0
     set Need value residual term = true
     set Need gradient residual term = true
 
-    set Need variable value (post-processing) = false
+    set Need variable value (post-processing) = true
     set Need variable gradient (post-processing) = true
     set Need variable hessian (post-processing) = false
 end
@@ -118,4 +118,14 @@ subsection Postprocessing variable 0
     set Variable type = SCALAR
     set Need value residual term = true
     set Need gradient residual term = false
+    set Output integral of the variable = true
+end
+
+# Postprocessing variable 1
+subsection Postprocessing variable 1
+    set Variable name = f_tot
+    set Variable type = SCALAR
+    set Need value residual term = true
+    set Need gradient residual term = false
+    set Output integral of the variable = true
 end

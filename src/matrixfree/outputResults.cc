@@ -4,7 +4,7 @@
 
 //output results
 template <int dim, int degree>
-void MatrixFreePDE<dim,degree>::outputResults() const {
+void MatrixFreePDE<dim,degree>::outputResults() {
   //log time
   computing_timer.enter_section("matrixFreePDE: output");
 
@@ -28,9 +28,7 @@ void MatrixFreePDE<dim,degree>::outputResults() const {
   // Test section for outputting postprocessed fields
   // Currently there are hacks in place, using the matrixFreeObject, invM, constraints, and DoFHandler as the primary variables
   if (userInputs.postProcessingRequired){
-	  //PostProcessor<dim,degree> post_processor(userInputs);
 	  std::vector<vectorType*> postProcessedSet;
-	  //post_processor.computePostProcessedFields(matrixFreeObject,solutionSet,postProcessedSet);
       computePostProcessedFields(postProcessedSet);
 
 	  unsigned int invM_size = invM.local_size();
@@ -42,6 +40,39 @@ void MatrixFreePDE<dim,degree>::outputResults() const {
 		  constraintsOtherSet[0]->distribute(*postProcessedSet[fieldIndex]);
 		  postProcessedSet[fieldIndex]->update_ghost_values();
 	  }
+
+      // Integrate over selected post-processed fields and output them to the screen and a text file
+      std::ofstream output_file;
+
+      if (userInputs.num_integrated_fields > 0){
+          if (first_integrated_var_output_complete){
+              output_file.open("integratedFields.txt", std::ios::app);
+          }
+          else {
+              output_file.open("integratedFields.txt", std::ios::out);
+          }
+          output_file.precision(10);
+
+          if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+              output_file << currentTime;
+          }
+
+          for (unsigned int i=0; i<userInputs.pp_number_of_variables; i++){
+              if (userInputs.pp_calc_integral[i]){
+                  double integrated_field;
+                  computeIntegral(integrated_field,i,postProcessedSet);
+                  pcout << "Integrated value of " << userInputs.pp_var_name[userInputs.integrated_field_indices[i]] << ": " << integrated_field << std::endl;
+                  if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+                      output_file << "\t" << userInputs.pp_var_name[userInputs.integrated_field_indices[i]] << "\t" << integrated_field;
+                  }
+              }
+          }
+          if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+              output_file << std::endl;
+          }
+          output_file.close();
+          first_integrated_var_output_complete = true;
+      }
 
 	  // Add the postprocessed fields to data_out
 	  for(unsigned int fieldIndex=0; fieldIndex<userInputs.pp_number_of_variables; fieldIndex++){

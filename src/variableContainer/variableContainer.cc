@@ -23,6 +23,29 @@ variableContainer<dim,degree,T>::variableContainer(const dealii::MatrixFree<dim,
 
 }
 
+// Variant of the constructor where it reads from a fixed index of "data", used for post-processing
+template <int dim, int degree, typename T>
+variableContainer<dim,degree,T>::variableContainer(const dealii::MatrixFree<dim,double> &data, std::vector<variable_info> _varInfoList, unsigned int fixed_index)
+{
+    varInfoList = _varInfoList;
+
+    num_var = varInfoList.size();
+
+    for (unsigned int i=0; i < num_var; i++){
+        if (varInfoList[i].var_needed){
+            if (varInfoList[i].is_scalar){
+                dealii::FEEvaluation<dim,degree,degree+1,1,double> var(data, fixed_index);
+                scalar_vars.push_back(var);
+            }
+            else {
+                dealii::FEEvaluation<dim,degree,degree+1,dim,double> var(data, fixed_index);
+                vector_vars.push_back(var);
+            }
+        }
+    }
+
+}
+
 template <int dim, int degree, typename T>
 void variableContainer<dim,degree,T>::get_JxW(dealii::AlignedVector<T> & JxW){
     if (scalar_vars.size() > 0){

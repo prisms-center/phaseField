@@ -20,7 +20,7 @@ template <int dim, int degree>
  currentIncrement(0),
  currentOutput(0),
  computing_timer (pcout, TimerOutput::summary, TimerOutput::wall_times),
- energy(0.0)
+ first_integrated_var_output_complete(false)
  {
  }
 

@@ -273,7 +273,6 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     std::vector<bool> pp_value_residual;
 	std::vector<bool> pp_gradient_residual;
 
-
     if (pp_number_of_variables > 0){
         postProcessingRequired = true;
     }
@@ -303,8 +302,18 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
 
             pp_value_residual.push_back(parameter_handler.get_bool("Need value residual term"));
             pp_gradient_residual.push_back(parameter_handler.get_bool("Need gradient residual term"));
+
+            pp_calc_integral.push_back(parameter_handler.get_bool("Output integral of the variable"));
         }
         parameter_handler.leave_subsection();
+    }
+
+    num_integrated_fields = 0;
+    for (unsigned int i=0; i<pp_number_of_variables; i++){
+        if (pp_calc_integral[i]){
+            num_integrated_fields++;
+            integrated_field_indices.push_back(i);
+        }
     }
 
     // Load variable information for postprocessing

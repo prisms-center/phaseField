@@ -392,6 +392,8 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
 
             parameter_handler.declare_entry("Need value residual term","true",dealii::Patterns::Bool(),"Whether the residual equation has a term proportional to the value of the test function.");
             parameter_handler.declare_entry("Need gradient residual term","true",dealii::Patterns::Bool(),"Whether the residual equation has a term proportional to the gradient of the test function.");
+
+            parameter_handler.declare_entry("Output integral of the variable","false",dealii::Patterns::Bool(),"Whether to output the integral of the post-processed variable.");
         }
         parameter_handler.leave_subsection();
     }
