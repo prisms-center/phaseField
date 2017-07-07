@@ -9,8 +9,8 @@ template <int dim,typename T>
 	std::cout << "\nTesting 'load_BC_list'... " << std::endl;
 
 	//create test problem class object
-    dealii::ParameterHandler parameter_handler;
-    userInputParameters<2> userInputs;
+    inputFileReader input_file_reader("parameters_test.in");
+    userInputParameters<2> userInputs(input_file_reader,input_file_reader.parameter_handler);
 
     // 2D test:
     std::vector<std::string> list_of_BCs;
@@ -50,7 +50,7 @@ template <int dim,typename T>
 
     // 3D test:
     list_of_BCs.clear();
-    userInputParameters<3> userInputs_3D;
+    userInputParameters<3> userInputs_3D(input_file_reader,input_file_reader.parameter_handler);
     list_of_BCs.push_back("DIRICHLET: 2.5");
     list_of_BCs.push_back("PERIODIC,PERIODIC,ZERO_DERIVATIVE,ZERO_DERIVATIVE,PERIODIC,PERIODIC");
 

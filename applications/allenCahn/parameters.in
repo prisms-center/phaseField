@@ -3,12 +3,13 @@
 # Refer to the PRISMS-PF manual for use of these parameters in the source code.
 
 # =================================================================================
-# Set the number of dimensions (1, 2, or 3 for a 1D, 2D, or 3D calculation)
+# Set the number of dimensions (2 or 3 for a 2D or 3D calculation)
 # =================================================================================
 set Number of dimensions = 2
 
 # =================================================================================
 # Set the length of the domain in all three dimensions
+# (Domain size Z ignored in 2D)
 # =================================================================================
 # Each axes spans from zero to the specified length
 set Domain size X = 100
@@ -19,6 +20,7 @@ set Domain size Z = 100
 # Set the element parameters
 # =================================================================================
 # The number of elements in each direction is 2^(refineFactor) * subdivisions
+# Subdivisions Z ignored in 2D
 # For optimal performance, use refineFactor primarily to determine the element size
 set Subdivisions X = 1
 set Subdivisions Y = 1
@@ -40,6 +42,24 @@ set Time step = 1.0e-2
 set Number of time steps = 5000
 
 # =================================================================================
+# Set the boundary conditions
+# =================================================================================
+# ADD MORE COMMENTS
+set Boundary condition for variable 0 = ZERO_DERIVATIVE
+
+# =================================================================================
+# Set the model constants
+# =================================================================================
+# ADD MORE COMMENTS
+# Type options currently are double, int, and bool
+
+# The mobility, MnV in equations.h
+set Model constant 0 = 1.0, double
+
+# The gradient energy coefficient, KnV in equations.h
+set Model constant 1 = 2.0, double
+
+# =================================================================================
 # Set the output parameters
 # =================================================================================
 # Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
@@ -57,7 +77,17 @@ set Skip print steps = 1000
 set Calculate the free energy = true
 
 # =================================================================================
+# Set the parameters for loading in initial conditions (OPTIONAL)
+# =================================================================================
+# ADD MORE COMMENTS
+set Load initial conditions = false
+set Load serial file = true
+set File names = void
+set Variable names in the files = void
+
+# =================================================================================
 # Set the properties of the variables and their governing equations
+# (If the governing equations in equations.h are changed)
 # =================================================================================
 
 # Variable 0
@@ -78,18 +108,9 @@ subsection Variable 0
 end
 
 # =================================================================================
-# Set the parameters for loading in initial conditions
-# =================================================================================
-
-set Load initial conditions = false
-set Load serial file = true
-set File names = void
-set Variable names in the files = void
-
-# =================================================================================
 # Set the properties of the postprocessing variables
+# (If the governing equations in postprocess.h are changed)
 # =================================================================================
-# The number of postprocessing variables (must match the number specified below)
 
 # Postprocessing variable 0
 subsection Postprocessing variable 0
@@ -98,20 +119,3 @@ subsection Postprocessing variable 0
     set Need value residual term = true
     set Need gradient residual term = false
 end
-
-# =================================================================================
-# Set the boundary conditions
-# =================================================================================
-
-set Boundary condition for variable 0 = ZERO_DERIVATIVE
-
-# =================================================================================
-# Set the model constants
-# =================================================================================
-# Type options currently are double, int, and bool
-
-# The mobility, MnV in equations.h
-set Model constant 0 = 1.0, double
-
-# The gradient energy coefficient, KnV in equations.h
-set Model constant 1 = 2.0, double

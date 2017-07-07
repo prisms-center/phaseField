@@ -2,9 +2,12 @@
 #include "../../include/userInputParameters.h"
 
 template <int dim>
-void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & parameter_handler,
-                                                    const unsigned int _number_of_variables, const unsigned int _number_of_materials,
-                                                    const unsigned int _number_of_pp_variables, const unsigned int _number_of_constants){
+userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reader, dealii::ParameterHandler & parameter_handler){
+    unsigned int _number_of_variables = input_file_reader.var_types.size();
+    unsigned int _number_of_materials = input_file_reader.num_materials;
+    unsigned int _number_of_pp_variables = input_file_reader.num_pp_vars;
+    unsigned int _number_of_constants = input_file_reader.num_constants;
+
 
     // Load the inputs into the class member variables
 

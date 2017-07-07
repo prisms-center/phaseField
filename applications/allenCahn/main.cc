@@ -33,27 +33,14 @@ int main (int argc, char **argv)
         // Before fully parsing the parameter file, we need to know how many field variables there are and whether they
         // are scalars or vectors, how many postprocessing variables there are, how many sets of elastic constants there are,
         // and how many user-defined constants there are.
-        inputFileReader input_file_reader;
-        const std::vector<std::string> var_types = input_file_reader.get_subsection_entry_list("parameters.in","Variable","Variable type","SCALAR");
-        const unsigned int num_materials = input_file_reader.get_number_of_entries("parameters.in","subsection","Material");
-        const unsigned int num_pp_vars = input_file_reader.get_number_of_entries("parameters.in","subsection","Postprocessing variable");
-        const unsigned int num_constants = input_file_reader.get_number_of_entries("parameters.in","set","Model constant");
-
-        std::cout << "Number of constants: " << num_constants << std::endl;
-
-        // Read in all of the parameters now
-        dealii::ParameterHandler parameter_handler;
-        input_file_reader.declare_parameters(parameter_handler,var_types,
-                                             num_materials,num_pp_vars,num_constants);
-        parameter_handler.read_input("parameters.in");
+        inputFileReader input_file_reader("parameters.in");
 
         // Continue based on the number of dimensions and degree of the elements specified in the input file
-        switch (parameter_handler.get_integer("Number of dimensions"))
+        switch (input_file_reader.number_of_dimensions)
         {
             case 2:
             {
-                userInputParameters<2> userInputs;
-                userInputs.loadInputParameters(parameter_handler,var_types.size(),num_materials,num_pp_vars,num_constants);
+                userInputParameters<2> userInputs(input_file_reader,input_file_reader.parameter_handler);
                 switch (userInputs.degree)
                 {
                     case(1):
@@ -85,8 +72,7 @@ int main (int argc, char **argv)
             }
             case 3:
             {
-                userInputParameters<3> userInputs;
-                userInputs.loadInputParameters(parameter_handler,var_types.size(),num_materials,num_pp_vars,num_constants);
+                userInputParameters<3> userInputs(input_file_reader,input_file_reader.parameter_handler);
                 switch (userInputs.degree)
                 {
                     case(1):

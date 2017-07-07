@@ -9,6 +9,7 @@
 #include "../src/userInputParameters/getCIJMatrix.h"
 #include "model_variables.h"
 #include "varBCs.h"
+#include "inputFileReader.h"
 
 enum fieldType {SCALAR, VECTOR};
 enum PDEType {PARABOLIC, ELLIPTIC};
@@ -23,10 +24,8 @@ private:
 
 public:
 	// Method to read the input parameters from a file and load them into the class member variables
-	void loadInputParameters(dealii::ParameterHandler & parameter_handler, const unsigned int _number_of_variables,
-								const unsigned int _number_of_materials, const unsigned int _number_of_pp_variables,
-								const unsigned int _number_of_constants);
-
+	userInputParameters(inputFileReader & input_file_reader, dealii::ParameterHandler & parameter_handler);
+		
 	// Method to create the list of BCs from the user input strings (called from loadInputParameters)
 	void load_BC_list(const std::vector<std::string> list_of_BCs);
 

@@ -2,15 +2,14 @@
 
 # Refer to the PRISMS-PF manual for use of these parameters in the source code.
 
-# CHANGE EQUATION FRAMING TO VARIABLE FRAMING!
-
 # =================================================================================
-# Set the number of dimensions (1, 2, or 3 for a 1D, 2D, or 3D calculation)
+# Set the number of dimensions (2 or 3 for a 2D or 3D calculation)
 # =================================================================================
 set Number of dimensions = 2
 
 # =================================================================================
 # Set the length of the domain in all three dimensions
+# (Domain size Z ignored in 2D)
 # =================================================================================
 # Each axes spans from zero to the specified length
 set Domain size X = 100
@@ -21,6 +20,7 @@ set Domain size Z = 100
 # Set the element parameters
 # =================================================================================
 # The number of elements in each direction is 2^(refineFactor) * subdivisions
+# Subdivisions Z ignored in 2D
 # For optimal performance, use refineFactor primarily to determine the element size
 set Subdivisions X = 1
 set Subdivisions Y = 1
@@ -39,7 +39,17 @@ set Time step = 1.0e-2
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 20000
+set Number of time steps = 5000
+
+# =================================================================================
+# Set the boundary conditions
+# =================================================================================
+# ADD MORE COMMENTS
+set Boundary condition for variable 0 = ZERO_DERIVATIVE
+
+# =================================================================================
+# Set the model constants
+# =================================================================================
 
 # =================================================================================
 # Set the output parameters
@@ -50,9 +60,7 @@ set Output condition = EQUAL_SPACING
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of outputs = 10
-
-set List of time steps to output = 0, 3, 55, 61
+set Number of outputs = 5
 
 # The number of time steps between updates being printed to the screen
 set Skip print steps = 1000
@@ -61,7 +69,17 @@ set Skip print steps = 1000
 set Calculate the free energy = true
 
 # =================================================================================
+# Set the parameters for loading in initial conditions (OPTIONAL)
+# =================================================================================
+# ADD MORE COMMENTS
+set Load initial conditions = false
+set Load serial file = true
+set File names = void
+set Variable names in the files = void
+
+# =================================================================================
 # Set the properties of the variables and their governing equations
+# (If the governing equations in equations.h are changed)
 # =================================================================================
 
 # Variable 0
@@ -69,28 +87,27 @@ subsection Variable 0
     set Variable name = n
     set Variable type = SCALAR
     set Equation type = PARABOLIC
+
     set Need variable value = true
     set Need variable gradient = true
     set Need variable hessian = false
     set Need value residual term = true
     set Need gradient residual term = true
+
+    set Need variable value (post-processing) = false
+    set Need variable gradient (post-processing) = true
+    set Need variable hessian (post-processing) = false
 end
 
-
-
 # =================================================================================
-# Set the parameters for loading in initial conditions
-# =================================================================================
-
-set Load initial conditions = false
-set Load serial file = true
-set File names = void
-set Variable names in the files = void
-
-
-
-# =================================================================================
-# Set the boundary conditions
+# Set the properties of the postprocessing variables
+# (If the governing equations in postprocess.h are changed)
 # =================================================================================
 
-set Boundary condition for variable 0 = ZERO_DERIVATIVE
+# Postprocessing variable 0
+subsection Postprocessing variable 0
+    set Variable name = mag_grad_n
+    set Variable type = SCALAR
+    set Need value residual term = true
+    set Need gradient residual term = false
+end

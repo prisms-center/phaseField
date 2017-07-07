@@ -1,5 +1,24 @@
-// Method for the userInputParameters class
+// Methods for the inputFileReader class
 #include "../../include/inputFileReader.h"
+
+// Constructor
+inputFileReader::inputFileReader(std::string input_file_name){
+    var_types = get_subsection_entry_list("parameters.in","Variable","Variable type","SCALAR");
+    num_materials = get_number_of_entries("parameters.in","subsection","Material");
+    num_pp_vars = get_number_of_entries("parameters.in","subsection","Postprocessing variable");
+    num_constants = get_number_of_entries("parameters.in","set","Model constant");
+
+    model_constant_names = get_entry_name_ending_list("parameters.in","set", "Model constant");
+
+    std::cout << "Number of constants: " << num_constants << std::endl;
+
+    // Read in all of the parameters now
+    declare_parameters(parameter_handler,var_types,
+                                         num_materials,num_pp_vars,num_constants);
+    parameter_handler.read_input("parameters.in");
+    number_of_dimensions = parameter_handler.get_integer("Number of dimensions");
+}
+
 
 // Method to parse a single line to find a target key value pair
 bool inputFileReader::parse_line(std::string line, const std::string keyword, const std::string entry_name,
@@ -149,6 +168,51 @@ unsigned int inputFileReader::get_number_of_entries(const std::string parameters
     return count;
 }
 
+// Method to parse an input file to get a list of variables from related subsections
+std::vector<std::string> inputFileReader::get_entry_name_ending_list(const std::string parameters_file_name,
+                                                                    const std::string keyword, const std::string entry_name_begining) const
+    {
+
+    std::ifstream input_file;
+    input_file.open(parameters_file_name);
+
+    std::string line, entry;
+    bool found_entry;
+
+    std::vector<std::string> entry_name_end_list;
+
+    // Loop through each line
+    while (std::getline(input_file, line))
+    {
+
+        found_entry = parse_line(line, keyword, entry_name_begining, entry, false);
+        if (found_entry){
+
+            // Strip whitespace, the equals sign, and everything after the equals sign
+
+            // Strip whitespace at the beginning
+            while ((entry.size() > 0) && (entry[0] == ' ' || entry[0] == '\t'))
+            entry.erase(0, 1);
+
+            // Strip everything up to the equals sign
+            while ((entry.size() > 0) && (entry[entry.size() - 1] != '=' ))
+            entry.erase(entry.size() - 1, std::string::npos);
+
+            //Strip the equals sign
+            entry.erase(entry.size() - 1, std::string::npos);
+
+            // Strip whitespace between the entry name and the equals sign
+            while ((entry.size() > 0) && (entry[entry.size() - 1] == ' ' || entry[entry.size() - 1] == '\t'))
+            entry.erase(entry.size() - 1, std::string::npos);
+
+            // Add it to the list
+            entry_name_end_list.push_back(entry);
+        }
+
+    }
+    return entry_name_end_list;
+}
+
 // Before fully parsing the parameter file, we need to know how many field variables there are
 // This function is largely taken from ASPECT (https://github.com/geodynamics/aspect/blob/master/source/main.cc)
 std::string inputFileReader::get_last_value_of_parameter(const std::string &parameters, const std::string &parameter_name) const
@@ -286,9 +350,9 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
             parameter_handler.declare_entry("Need value residual term (LHS)","false",dealii::Patterns::Bool(),"Whether the LHS residual equation has a term proportional to the value of the test function.");
             parameter_handler.declare_entry("Need gradient residual term (LHS)","false",dealii::Patterns::Bool(),"Whether the LHS residual equation has a term proportional to the gradient of the test function.");
 
-            parameter_handler.declare_entry("Need variable value (post-processing)","false",dealii::Patterns::Bool(),"Whether the value of the variable is needed for any of the post-processing residual equations.");
-            parameter_handler.declare_entry("Need variable gradient (post-processing)","false",dealii::Patterns::Bool(),"Whether the gradient of the variable is needed for any of the post-processing residual equations.");
-            parameter_handler.declare_entry("Need variable hessian (post-processing)","false",dealii::Patterns::Bool(),"Whether the hessian of the variable is needed for any of the post-processing residual equations.");
+            parameter_handler.declare_entry("Need variable value (post-processing)","true",dealii::Patterns::Bool(),"Whether the value of the variable is needed for any of the post-processing residual equations.");
+            parameter_handler.declare_entry("Need variable gradient (post-processing)","true",dealii::Patterns::Bool(),"Whether the gradient of the variable is needed for any of the post-processing residual equations.");
+            parameter_handler.declare_entry("Need variable hessian (post-processing)","true",dealii::Patterns::Bool(),"Whether the hessian of the variable is needed for any of the post-processing residual equations.");
 
             parameter_handler.declare_entry("Nucleating variable","false",dealii::Patterns::Bool(),"Whether the variable is an order parameter that is allowed to nucleation.");
             parameter_handler.declare_entry("Need variable value (nucleation)","false",dealii::Patterns::Bool(),"Whether the value of the variable is needed for nucleation calculations (assumed to be true if the variable is a nucleating order parameter).");

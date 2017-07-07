@@ -18,9 +18,9 @@ int main(int argc, char **argv)
   Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, numbers::invalid_unsigned_int);
 
   // Load input
-  dealii::ParameterHandler parameter_handler;
-  userInputParameters<problemDIM> userInputs;
-  load_unit_test_inputs(userInputs);
+  inputFileReader input_file_reader("parameters_test.in");
+  userInputParameters<2> userInputs(input_file_reader,input_file_reader.parameter_handler);
+  load_unit_test_inputs<2>(userInputs);
 
   std::cout << "Beginning unit tests..." << std::endl;
   bool pass = false;
@@ -36,6 +36,12 @@ int main(int argc, char **argv)
   total_tests++;
   unitTest<2,double> get_subsection_entry_list_tester;
   pass = get_subsection_entry_list_tester.test_get_subsection_entry_list();
+  tests_passed += pass;
+
+  // Unit tests for the method "get_entry_name_ending_list" in "inputFileReader"
+  total_tests++;
+  unitTest<2,double> get_entry_name_ending_list_tester;
+  pass = get_entry_name_ending_list_tester.test_get_entry_name_ending_list();
   tests_passed += pass;
 
   // Unit tests for the method "load_BC_list" in "userInputParameters"

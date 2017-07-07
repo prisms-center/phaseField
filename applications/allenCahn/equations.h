@@ -1,5 +1,28 @@
 // List of residual equations for the coupled Allen-Cahn example application
 
+/*
+// =================================================================================
+// setVariableAttributes
+// =================================================================================
+// [INSERT EXPLANATION HERE]
+template <int dim, int degree>
+void customPDE<dim,degree>::setVariableAttributes(){
+
+// Variable 0
+userInputs.set_variable_name(0,”n”);
+userInputs.set_variable_type(0,SCALAR);
+userInputs.set_variable_equation_type(0,PARABOLIC);
+
+userInputs.need_variable_value(0,true);
+userInputs.need_variable_gradient(0,true);
+userInputs.need_variable_hessian(0,false);
+
+userInputs.need_value_residual_term(0,true);
+userInputs.need_gradient_residual_term(0,true);
+
+}
+*/
+
 // =================================================================================
 // residualRHS
 // =================================================================================
@@ -11,9 +34,6 @@
 // each residual equation. The index for each variable in these lists corresponds to
 // the order it is defined at the top of this file (starting at 0).
 template <int dim, int degree>
-// void customPDE<dim,degree>::residualRHS(const std::vector<modelVariable<dim> > & modelVariablesList,
-// 												std::vector<modelResidual<dim> > & modelResidualsList,
-// 												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
