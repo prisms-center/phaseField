@@ -1,0 +1,326 @@
+% ***********************************************************
+% ******************* PHYSICS HEADER ************************
+% ***********************************************************
+% Version 2
+\documentclass[11pt]{article} 
+\usepackage{amsmath} % AMS Math Package
+\usepackage{amsthm} % Theorem Formatting
+\usepackage{amssymb}	% Math symbols such as \mathbb
+\usepackage{graphicx} % Allows for eps images
+\usepackage{multicol} % Allows for multiple columns
+\usepackage[dvips,letterpaper,margin=0.75in,bottom=0.5in]{geometry}
+ % Sets margins and page size
+\pagestyle{empty} % Removes page numbers
+\makeatletter % Need for anything that contains an @ command 
+\renewcommand{\maketitle} % Redefine maketitle to conserve space
+{ \begingroup \vskip 10pt \begin{center} \large {\bf \@title}
+	\vskip 10pt \end{center}
+  \vskip 10pt \endgroup \setcounter{footnote}{0} }
+\makeatother % End of region containing @ commands
+\renewcommand{\labelenumi}{(\alph{enumi})} % Use letters for enumerate
+% \DeclareMathOperator{\Sample}{Sample}
+\let\vaccent=\v % rename builtin command \v{} to \vaccent{}
+\renewcommand{\v}[1]{\ensuremath{\mathbf{#1}}} % for vectors
+\newcommand{\gv}[1]{\ensuremath{\mbox{\boldmath$ #1 $}}} 
+% for vectors of Greek letters
+\newcommand{\uv}[1]{\ensuremath{\mathbf{\hat{#1}}}} % for unit vector
+\newcommand{\abs}[1]{\left| #1 \right|} % for absolute value
+\newcommand{\avg}[1]{\left< #1 \right>} % for average
+\let\underdot=\d % rename builtin command \d{} to \underdot{}
+\renewcommand{\d}[2]{\frac{d #1}{d #2}} % for derivatives
+\newcommand{\dd}[2]{\frac{d^2 #1}{d #2^2}} % for double derivatives
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}} 
+% for partial derivatives
+\newcommand{\pdd}[2]{\frac{\partial^2 #1}{\partial #2^2}} 
+% for double partial derivatives
+\newcommand{\pdc}[3]{\left( \frac{\partial #1}{\partial #2}
+ \right)_{#3}} % for thermodynamic partial derivatives
+\newcommand{\ket}[1]{\left| #1 \right>} % for Dirac bras
+\newcommand{\bra}[1]{\left< #1 \right|} % for Dirac kets
+\newcommand{\braket}[2]{\left< #1 \vphantom{#2} \right|
+ \left. #2 \vphantom{#1} \right>} % for Dirac brackets
+\newcommand{\matrixel}[3]{\left< #1 \vphantom{#2#3} \right|
+ #2 \left| #3 \vphantom{#1#2} \right>} % for Dirac matrix elements
+\newcommand{\grad}[1]{\gv{\nabla} #1} % for gradient
+\let\divsymb=\div % rename builtin command \div to \divsymb
+\renewcommand{\div}[1]{\gv{\nabla} \cdot #1} % for divergence
+\newcommand{\curl}[1]{\gv{\nabla} \times #1} % for curl
+\let\baraccent=\= % rename builtin command \= to \baraccent
+\renewcommand{\=}[1]{\stackrel{#1}{=}} % for putting numbers above =
+\newtheorem{prop}{Proposition}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}[thm]{Lemma}
+\theoremstyle{definition}
+\newtheorem{dfn}{Definition}
+\theoremstyle{remark}
+\newtheorem*{rmk}{Remark}
+
+% ***********************************************************
+% ********************** END HEADER *************************
+% ***********************************************************
+\usepackage[noprefix]{nomencl} 
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}%---------------------------------------------------------
+%               Bold Face Math Characters:
+%               All In Format: \B***** .
+%---------------------------------------------------------
+\def\BGamma{\mbox{\boldmath$\Gamma$}}
+\def\BDelta{\mbox{\boldmath$\Delta$}}
+\def\BTheta{\mbox{\boldmath$\Theta$}}
+\def\BLambda{\mbox{\boldmath$\Lambda$}}
+\def\BXi{\mbox{\boldmath$\Xi$}}
+\def\BPi{\mbox{\boldmath$\Pi$}}
+\def\BSigma{\mbox{\boldmath$\Sigma$}}
+\def\BUpsilon{\mbox{\boldmath$\Upsilon$}}
+\def\BPhi{\mbox{\boldmath$\Phi$}}
+\def\BPsi{\mbox{\boldmath$\Psi$}}
+\def\BOmega{\mbox{\boldmath$\Omega$}}
+\def\Balpha{\mbox{\boldmath$\alpha$}}
+\def\Bbeta{\mbox{\boldmath$\beta$}}
+\def\Bgamma{\mbox{\boldmath$\gamma$}}
+\def\Bdelta{\mbox{\boldmath$\delta$}}
+\def\Bepsilon{\mbox{\boldmath$\epsilon$}}
+\def\Bzeta{\mbox{\boldmath$\zeta$}}
+\def\Beta{\mbox{\boldmath$\eta$}}
+\def\Btheta{\mbox{\boldmath$\theta$}}
+\def\Biota{\mbox{\boldmath$\iota$}}
+\def\Bkappa{\mbox{\boldmath$\kappa$}}
+\def\Blambda{\mbox{\boldmath$\lambda$}}
+\def\Bmu{\mbox{\boldmath$\mu$}}
+\def\Bnu{\mbox{\boldmath$\nu$}}
+\def\Bxi{\mbox{\boldmath$\xi$}}
+\def\Bpi{\mbox{\boldmath$\pi$}}
+\def\Brho{\mbox{\boldmath$\rho$}}
+\def\Bsigma{\mbox{\boldmath$\sigma$}}
+\def\Btau{\mbox{\boldmath$\tau$}}
+\def\Bupsilon{\mbox{\boldmath$\upsilon$}}
+\def\Bphi{\mbox{\boldmath$\phi$}}
+\def\Bchi{\mbox{\boldmath$\chi$}}
+\def\Bpsi{\mbox{\boldmath$\psi$}}
+\def\Bomega{\mbox{\boldmath$\omega$}}
+\def\Bvarepsilon{\mbox{\boldmath$\varepsilon$}}
+\def\Bvartheta{\mbox{\boldmath$\vartheta$}}
+\def\Bvarpi{\mbox{\boldmath$\varpi$}}
+\def\Bvarrho{\mbox{\boldmath$\varrho$}}
+\def\Bvarsigma{\mbox{\boldmath$\varsigma$}}
+\def\Bvarphi{\mbox{\boldmath$\varphi$}}
+\def\bone{\mbox{\boldmath$1$}}
+\def\bzero{\mbox{\boldmath$0$}}
+%---------------------------------------------------------
+%               Bold Face Math Italic:
+%               All In Format: \b* .
+%---------------------------------------------------------
+\def\bA{\mbox{\boldmath$ A$}}
+\def\bB{\mbox{\boldmath$ B$}}
+\def\bC{\mbox{\boldmath$ C$}}
+\def\bD{\mbox{\boldmath$ D$}}
+\def\bE{\mbox{\boldmath$ E$}}
+\def\bF{\mbox{\boldmath$ F$}}
+\def\bG{\mbox{\boldmath$ G$}}
+\def\bH{\mbox{\boldmath$ H$}}
+\def\bI{\mbox{\boldmath$ I$}}
+\def\bJ{\mbox{\boldmath$ J$}}
+\def\bK{\mbox{\boldmath$ K$}}
+\def\bL{\mbox{\boldmath$ L$}}
+\def\bM{\mbox{\boldmath$ M$}}
+\def\bN{\mbox{\boldmath$ N$}}
+\def\bO{\mbox{\boldmath$ O$}}
+\def\bP{\mbox{\boldmath$ P$}}
+\def\bQ{\mbox{\boldmath$ Q$}}
+\def\bR{\mbox{\boldmath$ R$}}
+\def\bS{\mbox{\boldmath$ S$}}
+\def\bT{\mbox{\boldmath$ T$}}
+\def\bU{\mbox{\boldmath$ U$}}
+\def\bV{\mbox{\boldmath$ V$}}
+\def\bW{\mbox{\boldmath$ W$}}
+\def\bX{\mbox{\boldmath$ X$}}
+\def\bY{\mbox{\boldmath$ Y$}}
+\def\bZ{\mbox{\boldmath$ Z$}}
+\def\ba{\mbox{\boldmath$ a$}}
+\def\bb{\mbox{\boldmath$ b$}}
+\def\bc{\mbox{\boldmath$ c$}}
+\def\bd{\mbox{\boldmath$ d$}}
+\def\be{\mbox{\boldmath$ e$}}
+\def\bff{\mbox{\boldmath$ f$}}
+\def\bg{\mbox{\boldmath$ g$}}
+\def\bh{\mbox{\boldmath$ h$}}
+\def\bi{\mbox{\boldmath$ i$}}
+\def\bj{\mbox{\boldmath$ j$}}
+\def\bk{\mbox{\boldmath$ k$}}
+\def\bl{\mbox{\boldmath$ l$}}
+\def\bm{\mbox{\boldmath$ m$}}
+\def\bn{\mbox{\boldmath$ n$}}
+\def\bo{\mbox{\boldmath$ o$}}
+\def\bp{\mbox{\boldmath$ p$}}
+\def\bq{\mbox{\boldmath$ q$}}
+\def\br{\mbox{\boldmath$ r$}}
+\def\bs{\mbox{\boldmath$ s$}}
+\def\bt{\mbox{\boldmath$ t$}}
+\def\bu{\mbox{\boldmath$ u$}}
+\def\bv{\mbox{\boldmath$ v$}}
+\def\bw{\mbox{\boldmath$ w$}}
+\def\bx{\mbox{\boldmath$ x$}}
+\def\by{\mbox{\boldmath$ y$}}
+\def\bz{\mbox{\boldmath$ z$}}
+
+
+\makenomenclature 
+\makeindex 
+
+\title{KKS Phase Field Model of Precipitate Evolution}
+\begin{document}
+\maketitle
+\nomenclature[a]{$c$}{Concentration (Cahn-Hilliard order parameter)}
+\nomenclature[b]{$\eta$}{Structural order parameter (Allen-Cahn order parameter)}
+\nomenclature[c]{$\bE$}{Lagrange strain tensor (Mechanics order parameter)}
+\nomenclature[d]{$\Pi$}{Total free energy of the system}
+\nomenclature[e]{$F$}{Local free energy density}
+\nomenclature[f]{$\mathcal{J}$}{Concentration flux}
+\nomenclature[g]{$\mu$}{Chemical potential}
+\nomenclature[h]{$\kappa^c$}{Cahn-Hilliard gradient coefficient}
+\nomenclature[i]{$\kappa^{\eta}$}{Allen-Cahn gradient coefficient}
+\nomenclature[j]{$L^{c}$}{Concentration mobility}
+\nomenclature[k]{$L^{\eta}$}{Structural order parameter mobility}
+\nomenclature[l]{$\omega$}{Variations over primal field}
+\nomenclature[m]{$\mathcal{M}$}{Boundary chemical potential like term}
+\nomenclature[n]{$\bn$}{Nomal vector in the current configuration}
+\nomenclature[o]{$(\theta,~\phi)$}{Polar angles of the interface normal, $\bn$}
+\centerline{\today}
+\printnomenclature[1cm]
+\vspace{.5in}
+ 
+\section{Variational formulation}
+The total free energy of the system (neglecting boundary terms) is of the form,
+\begin{equation}
+\Pi(c, \eta_1, \eta_2, \eta_3, \Bepsilon) = \int_{\Omega} f(c, \eta_1, \eta_2, \eta_3, \Bepsilon) ~dV 
+\end{equation}
+where $c$ is the concentration of the $\beta$ phase, $\eta_p$ are the structural order parameters and $\Bvarepsilon$ is the small strain tensor. $f$, the free energy density is given by
+\begin{equation}
+ f(c, \eta_1, \eta_2, \eta_3, \Bepsilon) =   f_{chem}(c, \eta_1, \eta_2, \eta_3) + f_{grad}(\eta_1, \eta_2, \eta_3) + f_{elastic}(c,\eta_1, \eta_2, \eta_3,\Bepsilon)
+\end{equation}
+where
+\begin{gather}
+f_{chem}(c, \eta_1, \eta_2, \eta_3) = f_{\alpha}(c,\eta_1, \eta_2, \eta_3) \left( 1- \sum_{p=1}^3 H(\eta_p)\right) + f_{\beta}(c,\eta_1, \eta_2, \eta_3) \sum_{p=1}^3 H(\eta_p)+ W f_{Landau}(\eta_1, \eta_2, \eta_3) \\
+f_{grad}(\eta_1, \eta_2, \eta_3) = \frac{1}{2} \sum_{p=1}^3 \Bkappa^{\eta_p}_{ij} \eta_{p,i}  \eta_{p,j} \\
+f_{elastic}(c,\eta_1, \eta_2, \eta_3,\Bepsilon) = \frac{1}{2} \bC_{ijkl}(\eta_1, \eta_2, \eta_3)  \left( \Bvarepsilon_{ij} - \Bvarepsilon ^0_{ij}(c, \eta_1, \eta_2, \eta_3) \right)\left( \Bvarepsilon_{kl} - \Bvarepsilon^0_{kl}(c, \eta_1, \eta_2, \eta_3)\right) \\
+\Bvarepsilon^0(c, \eta_1, \eta_2, \eta_3) = H(\eta_1) \Bvarepsilon^0_{\eta_1} (c_{\beta})+ H(\eta_2) \Bvarepsilon^0_{\eta_2} (c_{\beta}) + H(\eta_3) \Bvarepsilon^0_{\eta_3} (c_{\beta}) \\
+\bC(\eta_1, \eta_2, \eta_3) = H(\eta_1) \bC_{\eta_1}+ H(\eta_2) \bC_{\eta_2} + H(\eta_3) \bC_{\eta_3} + \left( 1- H(\eta_1)-H(\eta_2)-H(\eta_3)\right)  \bC_{\alpha}
+\end{gather}
+Here $\Bvarepsilon^0_{\eta_p}$ are the composition dependent stress free strain transformation tensor corresponding to each structural order parameter, which is a function of the $\beta$ phase concentration, $c_{\beta}$, defined below.
+
+In the KKS model (Kim 1999), the interfacial region is modeled as a mixture of the $\alpha$ and $\beta$ phases with concentrations $c_{alpha}$ and $c_{beta}$, respectively. The homogenous free energies for each phase, $f_{\alpha}$ and $f_{\beta}$ in this case, are typically given as functions of $c_{\alpha}$ and $c_{\beta}$, rather than directly as functions of $c$ and $\eta_p$. Thus, $f_{chem}(c, \eta_1, \eta_2, \eta_3)$ can be rewritten as 
+\begin{equation}
+f_{chem}(c, \eta_1, \eta_2, \eta_3) = f_{\alpha}(c_{\alpha}) \left( 1- \sum_{p=1}^3 H(\eta_p)\right) + f_{\beta}(c_{\beta}) \sum_{p=1}^3 H(\eta_p)+ W f_{Landau}(\eta_1, \eta_2, \eta_3) 
+\end{equation}
+
+The concentration in each phase is determined by the following system of equations:
+\begin{gather}
+c =  c_{\alpha} \left( 1- \sum_{p=1}^3 H(\eta_p)\right) + c_{\beta} \sum_{p=1}^3 H(\eta_p) \\
+\frac{\partial f_{\alpha}(c_{\alpha})}{\partial c_{\alpha}} = \frac{\partial f_{\beta}(c_{\beta})}{\partial c_{\beta}}
+\end{gather}
+
+Given the following parabolic functions for the single-phase homogenous free energies:
+\begin{gather}
+f_{\alpha}(c_{\alpha}) = A_{2} c_{\alpha}^2 + A_{1} c_{\alpha} + A_{0} \\
+f_{\beta}(c_{\beta}) = B_{2} c_{\beta}^2 + B_{1} c_{\beta} + B_{0}
+\end{gather}
+the single-phase concentrations are:
+\begin{gather}
+c_{\alpha} = \frac{ B_2 c + \frac{1}{2} (B_1 - A_1) \sum_{p=1}^3 H(\eta_p) }{A_2 \sum_{p=1}^3 H(\eta_p) + B_2 \left( 1- \sum_{p=1}^3 H(\eta_p)\right) } \\
+c_{\beta} =  \frac{ A_2 c + \frac{1}{2} (A_1 - B_1) \left[1-\sum_{p=1}^3 H(\eta_p)\right] }{A_2 \sum_{p=1}^3 H(\eta_p) + B_2 \left[ 1- \sum_{p=1}^3 H(\eta_p)\right] } 
+\end{gather}
+
+\section{Required inputs}
+\begin{itemize}
+\item $f_{\alpha}(c_{\alpha}), f_{\beta}(c_{\beta})$ - Homogeneous chemical free energy of the components of the binary system, example form given above
+\item $f_{Landau}(\eta_1, \eta_2, \eta_3)$ - Landau free energy term that controls the interfacial energy and prevents precipitates with different orientation varients from overlapping, example form given in Appendix I
+\item $W$ - Barrier height for the Landau free energy term, used to control the thickness of the interface 
+\item $H(\eta_p)$ - Interpolation function for connecting the $\alpha$ phase and the $p^{th}$ orientation variant of the $\beta$ phase, example form given in Appendix I
+\item $\Bkappa^{\eta_p}$  - gradient penalty tensor for the $p^{th}$ orientation variant of the $\beta$ phase
+\item $\bC_{\eta_p}$ - fourth order elasticity tensor (or its equivalent second order Voigt representation) for the $p^{th}$ orientation variant of the $\beta$ phase
+\item $\bC_{\alpha}$ - fourth order elasticity tensor (or its equivalent second order Voigt representation) for the $\alpha$ phase
+\item $\Bvarepsilon^0_{\eta_p}$ - stress free strain transformation tensor for the $p^{th}$ orientation variant of the $\beta$ phase
+\end{itemize}
+In addition, to drive the kinetics, we need:
+\begin{itemize}
+\item $M$  - mobility value for the concentration field
+\item $L$  - mobility value for the structural order parameter field
+\end{itemize}
+
+\section{Variational treatment}
+%From the variational derivatives given in Appendix II, we obtain the chemical potentials for the concentration and the structural order parameters:
+We obtain chemical potentials for the chemical potentials for the concentration and the structural order parameters by taking variational derivatives of $\Pi$:
+\begin{align}
+  \mu_{c}  &= f_{\alpha,c} \left( 1- H(\eta_1)-H(\eta_2)-H(\eta_3)\right) +f_{\beta,c} \left(  H(\eta_1)  + H(\eta_2) + H(\eta_3) \right)  + \bC_{ijkl} (- \Bvarepsilon^0_{ij,c}) \left( \Bvarepsilon_{kl} - \Bvarepsilon^0_{kl}\right) \\
+  \mu_{\eta_p}  &= [ f_{\beta}-f_{\alpha} -(c_{\beta}-c_{\alpha}) f_{\beta,c_{\beta}}] H(\eta_p)_{,\eta_p} + W f_{Landau,\eta_p}- \Bkappa^{\eta_p}_{ij} \eta_{p,ij} + \bC_{ijkl} (- \Bvarepsilon^0_{ij,\eta_p}) \left( \Bvarepsilon_{kl} - \Bvarepsilon^0_{kl}\right) + \frac{1}{2} \bC_{ijkl,\eta_p} \left( \Bvarepsilon_{ij} - \Bvarepsilon ^0_{ij} \right) \left( \Bvarepsilon_{kl} - \Bvarepsilon^0_{kl}\right)
+\end{align}
+
+\section{Kinetics}
+Now the PDE for Cahn-Hilliard dynamics is given by:
+\begin{align}
+  \frac{\partial c}{\partial t} &= ~\grad \cdot \left( \frac{1}{f_{,cc}}M \grad \mu_c \right) \label{CH_eqn}
+  \end{align}
+  where $M$ is a constant mobility and the factor of $\frac{1}{f_{,cc}}$ is added to guarentee constant diffusivity in the two phases. The PDE for Allen-Cahn dynamics is given by:
+  \begin{align}
+    \frac{\partial \eta_p}{\partial t} &= - L \mu_{\eta_p} \label{AC_eqn}
+\end{align}
+where  $L$ is a constant mobility. 
+
+\section{Mechanics}
+Considering variations on the displacement $u$ of the from $u+\epsilon w$, we have
+\begin{align}
+\delta_u \Pi &=  \int_{\Omega}   \grad w :  \bC(\eta_1, \eta_2, \eta_3) : \left( \Bvarepsilon - \Bvarepsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0 \\
+\end{align}
+where $\Bsigma = \bC(\eta_1, \eta_2, \eta_3) : \left( \Bvarepsilon - \Bvarepsilon^0(c,\eta_1, \eta_2, \eta_3)\right)$ is the stress tensor. \\
+
+\section{Time discretization}
+Using forward Euler explicit time stepping, equations \ref{CH_eqn} and \ref{AC_eqn} become:
+\begin{align}
+c^{n+1} = c^{n}+\Delta t \left[\nabla \cdot \left(\frac{1}{f_{,cc}} M \nabla \mu_c \right) \right]\\
+\eta_p^{n+1} = \eta_p^n -\Delta t L \mu_{\eta_p}
+\end{align}
+
+\section{Weak formulation}
+Writing equations \ref{CH_eqn} and \ref{AC_eqn} in the weak form, with the arbirary variation given by $w$ yields:
+\begin{align}
+\int_\Omega w c^{n+1} dV &= \int_\Omega wc^{n}+w  \Delta t \left[\nabla \cdot \left(\frac{1}{f_{,cc}}  M \nabla \mu_c \right) \right] dV \label{CH_weak} \\
+%&= \int_\Omega w\underbrace{c^{n}}_{r_c}+\nabla w \cdot (\underbrace{\Delta t  M \nabla \mu_c}_{r_{cx}} ) dV \\
+\int_\Omega w \eta_p^{n+1} dV &= \int_\Omega w \eta_p^{n}-w  \Delta t L \mu_{\eta_p} dV  \label{AC_weak}
+%&= \int_\Omega w\underbrace{c^{n}}_{r_c}+\nabla w \cdot (\underbrace{\Delta t  M \nabla \mu_c}_{r_{cx}} ) dV 
+\end{align}
+
+The expression of $\frac{1}{f_{,cc}} \mu_c$ can be written as:
+\begin{equation}
+\begin{split}
+\frac{1}{f_{,cc}}  \nabla \mu_c = & \nabla c + (c_{\alpha}-c_{\beta}) \sum_{p=1}^3 H(\eta_p)_{,\eta_p} \nabla \eta_p  \\
+&+ \frac{1}{f_{,cc}} \left[ \sum_{p=1}^3 (C_{ijkl}^{\eta_p} - C_{ijkl}^{\alpha} )\nabla \eta_p H(\eta_p)_{,\eta_p} \right](-\epsilon_{ij,c}^0)(\epsilon_{ij} - \epsilon_{ij}^0) \\
+&- \frac{1}{f_{,cc}} C_{ijkl} \left[  \sum_{p=1}^3 \left( H(\eta_p)_{,\eta_p} \epsilon_{ij,c}^{0\eta_p} + \sum_{q=1}^3 \left( H(\eta_p) \epsilon_{ij,c\eta_q}^{0\eta_p} \right) \right) \nabla \eta_p + H(\eta_p) \epsilon_{ij,cc}^{0\eta_p} \nabla c \right](\epsilon_{kl}-\epsilon_{kl}^0)\\
+&+ \frac{1}{f_{,cc}} C_{ijkl} (-\epsilon_{ij,c}^0) \left[ \nabla \epsilon_{kl} -  \left( \sum_{p=1}^3 \left(H(\eta_p)_{,\eta_p} \epsilon_{kl}^{0\eta_p} -\sum_{q=1}^3 \epsilon_{kl,\eta_q}^{\eta_q} H(\eta_q) \right)\nabla \eta_p + H(\eta_p) \epsilon_{kl,c}^{0\eta_p} \nabla c \right) \right]
+\end{split}
+\end{equation}
+
+Applying the divergence theorem to equation \ref{CH_weak}, one can derive the residual terms $r_c$ and $r_{cx}$:
+\begin{equation}
+\int_\Omega w c^{n+1} dV = \int_\Omega w\underbrace{c^{n}}_{r_c}+\nabla w \cdot (\underbrace{-\Delta t  M \frac{1}{f_{,cc}} \nabla \mu_c}_{r_{cx}} ) dV
+\end{equation}
+
+Expanding $\mu_{\eta_p}$ in equation \ref{AC_weak} and applying the divergence theorem yields the residual terms $r_{\eta_p}$ and $r_{\eta_p x}$:
+\begin{equation}
+\begin{split}
+\int_\Omega w \eta_p^{n+1} dV &= \\
+&\int_\Omega w \Bigg\{\underbrace{\eta_p^{n}-\Delta t L \bigg[(f_{\beta}-f_{\alpha})H(\eta_p^n)_{,\eta_p} -(c_{\beta}-c_{\alpha}) f_{\beta,c_{\beta}}H(\eta_p^n)_{,\eta_p} + W f_{Landau,\eta_p}}_{r_{\eta_p}}  \\ 
+&\underbrace{ -C_{ijkl} \left( H(\eta_p)_{,\eta_p} \epsilon_{ij}^{0 \eta_p}\right)\left(\epsilon_{kl} - \epsilon_{kl}^{0} \right) + \frac{1}{2} \left[ (C_{ijkl}^{\eta_p} - C_{ijkl}^{\alpha}) H(\eta_p)_{,\eta_p} \right] \left(\epsilon_{ij} - \epsilon_{ij}^{0} \right) \left(\epsilon_{kl} - \epsilon_{kl}^{0} \right) \bigg] }_{r_{\eta_p}~cont.} \Bigg\} \\
+&+ \nabla w \cdot (\underbrace{-\Delta t  L \Bkappa^{\eta_p}_{ij} \eta_{p,i}^n}_{r_{\eta_p x}} ) dV 
+\end{split}
+\end{equation}
+
+\section{Appendix I: Example functions for $f_{\alpha}$, $f_{\beta}$, $f_{Landau}$, $H(\eta_p)$ }
+\begin{gather}
+f_{\alpha}(c_{\alpha}) = A_{2} c_{\alpha}^2 + A_{1} c_{\alpha} + A_{0} \\
+f_{\beta}(c_{\beta}) = B_{2} c_{\beta}^2 + B_{1} c_{\beta} + B_{0} \\
+f_{Landau}(\eta_1, \eta_2, \eta_3) = (\eta_1^2 + \eta_2^2 + \eta_3^2) - 2(\eta_1^3 + \eta_2^3 + \eta_3^3) +  (\eta_1^4 + \eta_2^4 + \eta_3^4) + 5 (\eta_1^2 \eta_2^2 + \eta_2^2 \eta_3^2 + \eta_1^2 \eta_3^2) +  5(\eta_1^2 \eta_2^2 \eta_3^2) \\
+H(\eta_p) = 3 \eta_p^2 - 2 \eta_p^3
+\end{gather}
+
+\end{document}

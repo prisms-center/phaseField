@@ -104,7 +104,7 @@ class MatrixFreePDE:public Subscriptor
    * this method is called only once. This method solves for all the fields in a staggered manner (one after another)
    * and also invokes the corresponding solvers: Explicit solver for Parabolic problems, Implicit (matrix-free) solver for Elliptic problems.
    */
-  void solveIncrement ();
+  virtual void solveIncrement ();
   /* Method to write solution fields to vtu and pvtu (parallel) files.
   *
   * This method can be enabled/disabled by setting the flag writeOutput to true/false. Also,
@@ -267,6 +267,18 @@ class MatrixFreePDE:public Subscriptor
   std::vector<double> integrated_postprocessed_fields;
 
   bool first_integrated_var_output_complete;
+
+  // Methods and variables for integration
+  double integrated_var;
+  unsigned int integral_index;
+  dealii::Threads::Mutex assembler_lock;
+
+  void computeIntegralMF(double& integratedField, int index, const std::vector<vectorType*> postProcessedSet);
+
+  void getIntegralMF (const MatrixFree<dim,double> &data,
+		       std::vector<vectorType*> &dst,
+		       const std::vector<vectorType*> &src,
+		       const std::pair<unsigned int,unsigned int> &cell_range);
 
 };
 

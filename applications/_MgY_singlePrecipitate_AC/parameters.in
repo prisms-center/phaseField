@@ -5,7 +5,7 @@
 # =================================================================================
 # Set the number of dimensions (1, 2, or 3 for a 1D, 2D, or 3D calculation)
 # =================================================================================
-set Number of dimensions = 2 #3
+set Number of dimensions = 3
 
 # =================================================================================
 # Set the length of the domain in all three dimensions
@@ -57,7 +57,7 @@ set Time step = 8.0e-4
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 5000000 #10000 #10000000
+set Number of time steps = 5000 #10000000
 
 # =================================================================================
 # Set the elliptic solver parameters
@@ -87,7 +87,7 @@ set Output condition =  EQUAL_SPACING
 set Number of outputs = 10
 
 # The number of time steps between updates being printed to the screen
-set Skip print steps = 1000
+set Skip print steps = 1 #1000
 
 # The flag determining if the total free energy is calculated for each output
 set Calculate the free energy = true
@@ -105,7 +105,7 @@ subsection Variable 0
     set Need variable gradient = true
     set Need variable hessian = false
     set Need value residual term = true
-    set Need gradient residual term = true
+    set Need gradient residual term = false
 
     set Need variable value (LHS) = false
     set Need variable gradient (LHS) = false
@@ -151,19 +151,42 @@ subsection Variable 2
 end
 
 # =================================================================================
+# Set the properties of the postprocessing variables
+# (If the governing equations in postprocess.h are changed)
+# =================================================================================
+
+# Postprocessing variable 0
+subsection Postprocessing variable 0
+    set Variable name = f_tot
+    set Variable type = SCALAR
+    set Need value residual term = true
+    set Need gradient residual term = false
+    set Output integral of the variable = true
+end
+
+# Postprocessing variable 1
+subsection Postprocessing variable 1
+    set Variable name = c_1
+    set Variable type = SCALAR
+    set Need value residual term = true
+    set Need gradient residual term = false
+    set Output integral of the variable = true
+end
+
+# =================================================================================
 # Set the elastic constants (if needed)
 # =================================================================================
 
 subsection Material 0
     set Material symmetry = ANISOTROPIC
-    #set Elastic constants = 31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0 # Mg
-    set Elastic constants = 31.3,31.3,9.15,13.0,0.0,0.0 # Mg
+    set Elastic constants = 31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0 # Mg
+    #set Elastic constants = 31.3,31.3,9.15,13.0,0.0,0.0 # Mg
 end
 
 subsection Material 1
     set Material symmetry = ANISOTROPIC
-    #set Elastic constants = 23.35,30.25,36.35,8.2,16.7,14.45,15.35,14.35,0,0,0,7.25,0,0,0,0,0,0,0,0,0 # Mg-Nd
-    set Elastic constants = 31.3,31.3,9.15,13.0,0.0,0.0 # Mg
+set Elastic constants = 23.35,30.25,36.35,8.2,16.7,14.45,15.35,14.35,0,0,0,7.25,0,0,0,0,0,0,0,0,0 # Mg-Nd
+    #set Elastic constants = 31.3,31.3,9.15,13.0,0.0,0.0 # Mg
 end
 
 # =================================================================================
@@ -188,7 +211,7 @@ set Boundary condition for variable 2, z component = ZERO_DERIVATIVE, DIRICHLET:
 # Type options currently are double, int, bool, and tensor
 
 # McV, the Cahn-Hilliard mobility
-set Model constant McV = 1.0, double
+set Model constant McV = 20.0, double
 
 # Mn1V  the Allen-Cahn mobility
 set Model constant Mn1V = 37.5, double
