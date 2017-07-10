@@ -444,8 +444,8 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     // Load the user-defined constants
     for (unsigned int i=0; i<_number_of_constants; i++){
         std::string constants_text = "Model constant ";
-        //constants_text.append(dealii::Utilities::int_to_string(i));
         constants_text.append(input_file_reader.model_constant_names[i]);
+        //std::cout << input_file_reader.model_constant_names[i] << std::endl;
         std::vector<std::string> model_constants_strings = dealii::Utilities::split_string_list(parameter_handler.get(constants_text));
         if (model_constants_strings.size() == 2){
             if (boost::iequals(model_constants_strings.at(1),"double")){
