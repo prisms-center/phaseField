@@ -91,8 +91,6 @@ class MatrixFreePDE:public Subscriptor
  protected:
   const userInputParameters<dim> userInputs;
 
-  dealii::Threads::Mutex assembler_lock;
-
   unsigned int totalDOFs;
 
   // Elasticity matrix variables
@@ -106,14 +104,14 @@ class MatrixFreePDE:public Subscriptor
    * this method is called only once. This method solves for all the fields in a staggered manner (one after another)
    * and also invokes the corresponding solvers: Explicit solver for Parabolic problems, Implicit (matrix-free) solver for Elliptic problems.
    */
-  void solveIncrement ();
+  virtual void solveIncrement ();
   /* Method to write solution fields to vtu and pvtu (parallel) files.
   *
   * This method can be enabled/disabled by setting the flag writeOutput to true/false. Also,
   * the user can select how often the solution files are written by setting the flag
   * skipOutputSteps in the parameters file.
   */
-  void outputResults() const;
+  void outputResults();
 
   /*Parallel mesh object which holds information about the FE nodes, elements and parallel domain decomposition
    */
@@ -192,28 +190,21 @@ class MatrixFreePDE:public Subscriptor
 		       const std::vector<vectorType*> &src,
 		       const std::pair<unsigned int,unsigned int> &cell_range) const;
 
-  // virtual void residualRHS(const std::vector<modelVariable<dim> > & modelVarList,
-  // 		  	  	  	  	  	  	  	  	  	  	  	  	  std::vector<modelResidual<dim> > & modelResidualsList,
-  // 														  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
   virtual void residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
   		  	  	  	  	  	  	  	  	  	  	  	  	  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
 
   virtual void residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
   														  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
 
-  virtual void energyDensity(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list, const dealii::VectorizedArray<double> & JxW_value,
-  		  	  	  	  	  	  	  	  	  	  	  	  	  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc)=0;
-
-
   virtual void postProcessedFields(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
                                                               variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
                                                               const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};
-  void computePostProcessedFields(std::vector<vectorType*> &postProcessedSet) const;
+  void computePostProcessedFields(std::vector<vectorType*> &postProcessedSet);
 
   void getPostProcessedFields(const dealii::MatrixFree<dim,double> &data,
                                                                                       std::vector<vectorType*> &dst,
                                                                                       const std::vector<vectorType*> &src,
-                                                                                      const std::pair<unsigned int,unsigned int> &cell_range) const;
+                                                                                      const std::pair<unsigned int,unsigned int> &cell_range);
 
   //methods to apply dirichlet BC's
   /*Map of degrees of freedom to the corresponding Dirichlet boundary conditions, if any.*/
@@ -250,13 +241,6 @@ class MatrixFreePDE:public Subscriptor
   // Method to obtain the nucleation probability for an element, nontrival case must be implemented in the subsclass
   virtual double getNucleationProbability(variableValueContainer, double)const {return 0.0;};
 
-  /*Method to compute energy like quantities.*/
-  void computeEnergy();
-  void getEnergy(const MatrixFree<dim,double> &data,
-		    std::vector<vectorType*> &dst,
-		    const std::vector<vectorType*> &src,
-		    const std::pair<unsigned int,unsigned int> &cell_range);
-
   //utility functions
   /*Returns index of given field name if exists, else throw error.*/
   unsigned int getFieldIndex(std::string _name);
@@ -265,7 +249,7 @@ class MatrixFreePDE:public Subscriptor
   void outputFreeEnergy(const std::vector<double>& freeEnergyValues) const;
 
   /*Method to compute the integral of a field.*/
-  void computeIntegral(double& integratedField, int index);
+  void computeIntegral(double& integratedField, int index, std::vector<vectorType*> postProcessedSet);
 
   //variables for time dependent problems
   /*Flag used to see if invM, time stepping in run(), etc are necessary*/
@@ -280,8 +264,21 @@ class MatrixFreePDE:public Subscriptor
   /*Timer and logging object*/
   mutable TimerOutput computing_timer;
 
-  double energy;
-  std::vector<double> energy_components;
+  std::vector<double> integrated_postprocessed_fields;
+
+  bool first_integrated_var_output_complete;
+
+  // Methods and variables for integration
+  double integrated_var;
+  unsigned int integral_index;
+  dealii::Threads::Mutex assembler_lock;
+
+  void computeIntegralMF(double& integratedField, int index, const std::vector<vectorType*> postProcessedSet);
+
+  void getIntegralMF (const MatrixFree<dim,double> &data,
+		       std::vector<vectorType*> &dst,
+		       const std::vector<vectorType*> &src,
+		       const std::pair<unsigned int,unsigned int> &cell_range);
 
 };
 

@@ -20,10 +20,6 @@ void MatrixFreePDE<dim,degree>::solve(){
               solutionSet[fieldIndex]->update_ghost_values();
           }
           outputResults();
-          if (userInputs.calc_energy == true){
-              computeEnergy();
-              outputFreeEnergy(freeEnergyValues);
-          }
           currentOutput++;
     }
 
@@ -54,12 +50,6 @@ void MatrixFreePDE<dim,degree>::solve(){
               solutionSet[fieldIndex]->update_ghost_values();
           }
           outputResults();
-
-          if (userInputs.calc_energy == true){
-              computeEnergy();
-              outputFreeEnergy(freeEnergyValues);
-          }
-          
           currentOutput++;
       }
   }
@@ -72,10 +62,6 @@ void MatrixFreePDE<dim,degree>::solve(){
 
       //output results to file
       outputResults();
-      if (userInputs.calc_energy == true){
-          computeEnergy();
-          outputFreeEnergy(freeEnergyValues);
-      }
   }
 
   //log time

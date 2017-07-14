@@ -10,8 +10,12 @@ class variableContainer
 public:
     #include "typeDefs.h"
 
-    // Constructor
+    // Constructors
+
+    // Standard contructor, used for most situations
     variableContainer(const dealii::MatrixFree<dim,double> &data, std::vector<variable_info> _varInfoList);
+    // Nonstandard constructor, used when only one index of "data" should be used, use with care!
+    variableContainer(const dealii::MatrixFree<dim,double> &data, std::vector<variable_info> _varInfoList, unsigned int fixed_index);
 
     // Methods to get the value/grad/hess in the residual method (this is how the user gets these values in equations.h)
     T get_scalar_value(unsigned int global_variable_index) const;
@@ -22,10 +26,10 @@ public:
     dealii::Tensor<3, dim, T > get_vector_hessian(unsigned int global_variable_index) const;
 
     // Methods to set the value residual and the gradient residual (this is how the user sets these values in equations.h)
-    void set_scalar_value_residual(unsigned int global_variable_index, T val);
-    void set_scalar_gradient_residual(unsigned int global_variable_index, dealii::Tensor<1, dim, T > grad);
-    void set_vector_value_residual(unsigned int global_variable_index, dealii::Tensor<1, dim, T > val);
-    void set_vector_gradient_residual(unsigned int global_variable_index, dealii::Tensor<2, dim, T > grad);
+    void set_scalar_value_residual_term(unsigned int global_variable_index, T val);
+    void set_scalar_gradient_residual_term(unsigned int global_variable_index, dealii::Tensor<1, dim, T > grad);
+    void set_vector_value_residual_term(unsigned int global_variable_index, dealii::Tensor<1, dim, T > val);
+    void set_vector_gradient_residual_term(unsigned int global_variable_index, dealii::Tensor<2, dim, T > grad);
 
     // Initialize, read DOFs, and set evaulation flags for each variable
     void reinit_and_eval(const std::vector<vectorType*> &src, unsigned int cell);

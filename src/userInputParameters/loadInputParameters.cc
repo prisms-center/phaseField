@@ -2,9 +2,15 @@
 #include "../../include/userInputParameters.h"
 
 template <int dim>
-void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & parameter_handler,
-                                                    const unsigned int _number_of_variables, const unsigned int _number_of_materials,
-                                                    const unsigned int _number_of_pp_variables, const unsigned int _number_of_constants){
+userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reader, dealii::ParameterHandler & parameter_handler){
+    unsigned int _number_of_variables = input_file_reader.var_types.size();
+    unsigned int _number_of_materials = input_file_reader.num_materials;
+    unsigned int _number_of_pp_variables = input_file_reader.num_pp_vars;
+    unsigned int _number_of_constants = input_file_reader.num_constants;
+
+    for (unsigned int i=0; i<input_file_reader.model_constant_names.size(); i++){
+        model_constant_name_map[input_file_reader.model_constant_names[i]] = i;
+    }
 
     // Load the inputs into the class member variables
 
@@ -233,7 +239,7 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
 
     // Variables for loading in PField ICs
     std::vector<std::string> load_ICs_temp = dealii::Utilities::split_string_list(parameter_handler.get("Load initial conditions"));
-    std::vector<std::string> load_serial_file_temp = dealii::Utilities::split_string_list(parameter_handler.get("Load serial file"));
+    std::vector<std::string> load_serial_file_temp = dealii::Utilities::split_string_list(parameter_handler.get("Load parallel file"));
 
     if (boost::iequals(load_ICs_temp.at(0),"void")){
         for (unsigned int var=0; var<number_of_variables; var++){
@@ -267,7 +273,6 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
     std::vector<bool> pp_value_residual;
 	std::vector<bool> pp_gradient_residual;
 
-
     if (pp_number_of_variables > 0){
         postProcessingRequired = true;
     }
@@ -297,8 +302,18 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
 
             pp_value_residual.push_back(parameter_handler.get_bool("Need value residual term"));
             pp_gradient_residual.push_back(parameter_handler.get_bool("Need gradient residual term"));
+
+            pp_calc_integral.push_back(parameter_handler.get_bool("Output integral of the variable"));
         }
         parameter_handler.leave_subsection();
+    }
+
+    num_integrated_fields = 0;
+    for (unsigned int i=0; i<pp_number_of_variables; i++){
+        if (pp_calc_integral[i]){
+            num_integrated_fields++;
+            integrated_field_indices.push_back(i);
+        }
     }
 
     // Load variable information for postprocessing
@@ -429,7 +444,8 @@ void userInputParameters<dim>::loadInputParameters(dealii::ParameterHandler & pa
     // Load the user-defined constants
     for (unsigned int i=0; i<_number_of_constants; i++){
         std::string constants_text = "Model constant ";
-        constants_text.append(dealii::Utilities::int_to_string(i));
+        constants_text.append(input_file_reader.model_constant_names[i]);
+        //std::cout << input_file_reader.model_constant_names[i] << std::endl;
         std::vector<std::string> model_constants_strings = dealii::Utilities::split_string_list(parameter_handler.get(constants_text));
         if (model_constants_strings.size() == 2){
             if (boost::iequals(model_constants_strings.at(1),"double")){
@@ -737,6 +753,7 @@ std::vector<unsigned int> userInputParameters<dim>::setOutputTimeSteps(const std
 
     return timeStepList;
 }
+
 
 // Template instantiations
 template class userInputParameters<2>;

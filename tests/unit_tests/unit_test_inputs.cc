@@ -1,6 +1,7 @@
 #include "../../include/userInputParameters.h"
 
-void load_unit_test_inputs(userInputParameters<problemDIM> & userInputs){
+template <int dim>
+void load_unit_test_inputs(userInputParameters<dim> & userInputs){
     userInputs.domain_size.push_back(1.0);
     userInputs.domain_size.push_back(1.0);
     userInputs.domain_size.push_back(1.0);
@@ -35,8 +36,8 @@ void load_unit_test_inputs(userInputParameters<problemDIM> & userInputs){
     userInputs.pp_number_of_variables = 1;
     userInputs.postProcessingRequired = false;
 
-    std::vector<dealii::Tensor<2, 2*problemDIM-1+problemDIM/3, dealii::VectorizedArray<double> > > CIJ_list_temp;
-    dealii::Tensor<2, 2*problemDIM-1+problemDIM/3, dealii::VectorizedArray<double> > CIJ_temp;
+    std::vector<dealii::Tensor<2, 2*dim-1+dim/3, dealii::VectorizedArray<double> > > CIJ_list_temp;
+    dealii::Tensor<2, 2*dim-1+dim/3, dealii::VectorizedArray<double> > CIJ_temp;
     CIJ_temp[0][0] = dealii::make_vectorized_array(0.0);
     CIJ_temp[1][0] = dealii::make_vectorized_array(0.0);
     CIJ_temp[2][0] = dealii::make_vectorized_array(0.0);

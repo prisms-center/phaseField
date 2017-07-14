@@ -9,7 +9,7 @@ template <int dim,typename T>
 	std::cout << "\nTesting 'get_subsection_entry_list'... " << std::endl;
 
 	//create test problem class object
-    inputFileReader input_file_reader;
+    inputFileReader input_file_reader("parameters_test.in");
     std::vector<std::string> list_of_entries;
     list_of_entries = input_file_reader.get_subsection_entry_list("input_file_parser_test_file.txt","Equation","Variable type","SCALAR");
 

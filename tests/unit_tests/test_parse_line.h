@@ -19,7 +19,7 @@ template <int dim,typename T>
 	//userInputs.loadUserInput();
 
     dealii::ParameterHandler parameter_handler;
-    inputFileReader input_file_reader;
+    inputFileReader input_file_reader("parameters_test.in");
 
     // Subtest 1
     std::string line = "set Test entry = 3";

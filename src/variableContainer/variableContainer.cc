@@ -23,6 +23,29 @@ variableContainer<dim,degree,T>::variableContainer(const dealii::MatrixFree<dim,
 
 }
 
+// Variant of the constructor where it reads from a fixed index of "data", used for post-processing
+template <int dim, int degree, typename T>
+variableContainer<dim,degree,T>::variableContainer(const dealii::MatrixFree<dim,double> &data, std::vector<variable_info> _varInfoList, unsigned int fixed_index)
+{
+    varInfoList = _varInfoList;
+
+    num_var = varInfoList.size();
+
+    for (unsigned int i=0; i < num_var; i++){
+        if (varInfoList[i].var_needed){
+            if (varInfoList[i].is_scalar){
+                dealii::FEEvaluation<dim,degree,degree+1,1,double> var(data, fixed_index);
+                scalar_vars.push_back(var);
+            }
+            else {
+                dealii::FEEvaluation<dim,degree,degree+1,dim,double> var(data, fixed_index);
+                vector_vars.push_back(var);
+            }
+        }
+    }
+
+}
+
 template <int dim, int degree, typename T>
 void variableContainer<dim,degree,T>::get_JxW(dealii::AlignedVector<T> & JxW){
     if (scalar_vars.size() > 0){
@@ -222,21 +245,21 @@ dealii::Tensor<3, dim, T > variableContainer<dim,degree,T>::get_vector_hessian(u
 }
 
 template <int dim, int degree, typename T>
-void variableContainer<dim,degree,T>::set_scalar_value_residual(unsigned int global_variable_index, T val){
+void variableContainer<dim,degree,T>::set_scalar_value_residual_term(unsigned int global_variable_index, T val){
     scalar_vars[varInfoList[global_variable_index].scalar_or_vector_index].submit_value(val,q_point);
 }
 
 template <int dim, int degree, typename T>
-void variableContainer<dim,degree,T>::set_scalar_gradient_residual(unsigned int global_variable_index, dealii::Tensor<1, dim, T > grad){
+void variableContainer<dim,degree,T>::set_scalar_gradient_residual_term(unsigned int global_variable_index, dealii::Tensor<1, dim, T > grad){
     scalar_vars[varInfoList[global_variable_index].scalar_or_vector_index].submit_gradient(grad,q_point);
 }
 
 template <int dim, int degree, typename T>
-void variableContainer<dim,degree,T>::set_vector_value_residual(unsigned int global_variable_index, dealii::Tensor<1, dim, T > val){
+void variableContainer<dim,degree,T>::set_vector_value_residual_term(unsigned int global_variable_index, dealii::Tensor<1, dim, T > val){
     vector_vars[varInfoList[global_variable_index].scalar_or_vector_index].submit_value(val,q_point);
 }
 template <int dim, int degree, typename T>
-void variableContainer<dim,degree,T>::set_vector_gradient_residual(unsigned int global_variable_index, dealii::Tensor<2, dim, T > grad){
+void variableContainer<dim,degree,T>::set_vector_gradient_residual_term(unsigned int global_variable_index, dealii::Tensor<2, dim, T > grad){
     vector_vars[varInfoList[global_variable_index].scalar_or_vector_index].submit_gradient(grad,q_point);
 }
 

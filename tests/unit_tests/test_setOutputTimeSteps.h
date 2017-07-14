@@ -7,23 +7,29 @@ bool unitTest<dim,T>::test_setOutputTimeSteps(){
 	std::cout << "\nTesting 'setOutputTimeSteps' via the public 'loadInputParameters' method...'" << std::endl;
 
     dealii::ParameterHandler parameter_handler;
-    inputFileReader input_file_reader;
+    inputFileReader input_file_reader("parameters_test.in");
     std::vector<std::string> var_types;
     var_types.push_back("SCALAR");
     input_file_reader.declare_parameters(parameter_handler,var_types,0,0,0);
     parameter_handler.read_input("parameters_test.in");
 
-    userInputParameters<dim> userInputs;
+    //userInputParameters<dim> userInputs;
 
     // Subtest 1 (EQUAL_SPACING)
     parameter_handler.set("Output condition","EQUAL_SPACING");
-    userInputs.loadInputParameters(parameter_handler,var_types.size(),0,0,0);
+	input_file_reader.var_types = var_types;
+	input_file_reader.num_materials = 0;
+	input_file_reader.num_pp_vars = 0;
+	input_file_reader.num_constants = 0;
+
+    //userInputs.loadInputParameters(input_file_reader,parameter_handler,var_types.size(),0,0,0);
+	userInputParameters<dim> userInputs1(input_file_reader,parameter_handler);
 
     std::vector<unsigned int> expected_result = {0, 2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000, 18000, 20000};
 
     bool pass1 = true;
-    for (unsigned int i=0; i < userInputs.outputTimeStepList.size(); i++){
-		if (userInputs.outputTimeStepList[i] != expected_result[i]){
+    for (unsigned int i=0; i < userInputs1.outputTimeStepList.size(); i++){
+		if (userInputs1.outputTimeStepList[i] != expected_result[i]){
 			pass1 = false;
 		}
 	}
@@ -33,13 +39,13 @@ bool unitTest<dim,T>::test_setOutputTimeSteps(){
 
     // Subtest 2 (LOG_SPACING)
     parameter_handler.set("Output condition","LOG_SPACING");
-    userInputs.loadInputParameters(parameter_handler,var_types.size(),0,0,0);
+    userInputParameters<dim> userInputs2(input_file_reader,parameter_handler);
 
     expected_result = {0,3,7,20,53,141,381,1025,2759,7429,20000};
 
     bool pass2 = true;
-    for (unsigned int i=0; i < userInputs.outputTimeStepList.size(); i++){
-		if (userInputs.outputTimeStepList[i] != expected_result[i]){
+    for (unsigned int i=0; i < userInputs2.outputTimeStepList.size(); i++){
+		if (userInputs2.outputTimeStepList[i] != expected_result[i]){
 			pass2 = false;
 		}
 	}
@@ -49,15 +55,15 @@ bool unitTest<dim,T>::test_setOutputTimeSteps(){
 
     // Subtest 3 (N_PER_DECADE)
     parameter_handler.set("Output condition","N_PER_DECADE");
-    userInputs.loadInputParameters(parameter_handler,var_types.size(),0,0,0);
+    userInputParameters<dim> userInputs3(input_file_reader,parameter_handler);
 
     expected_result = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100,
             200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000, 3000, 4000, 5000, 6000, 7000,
             8000, 9000, 10000, 20000};
 
     bool pass3 = true;
-    for (unsigned int i=0; i < userInputs.outputTimeStepList.size(); i++){
-		if (userInputs.outputTimeStepList[i] != expected_result[i]){
+    for (unsigned int i=0; i < userInputs3.outputTimeStepList.size(); i++){
+		if (userInputs3.outputTimeStepList[i] != expected_result[i]){
 			pass3 = false;
 		}
 	}
@@ -67,13 +73,13 @@ bool unitTest<dim,T>::test_setOutputTimeSteps(){
 
     // Subtest 4 (LIST)
     parameter_handler.set("Output condition","LIST");
-    userInputs.loadInputParameters(parameter_handler,var_types.size(),0,0,0);
+    userInputParameters<dim> userInputs4(input_file_reader,parameter_handler);
 
     expected_result = {0, 3, 55, 61};
 
     bool pass4 = true;
-    for (unsigned int i=0; i < userInputs.outputTimeStepList.size(); i++){
-		if (userInputs.outputTimeStepList[i] != expected_result[i]){
+    for (unsigned int i=0; i < userInputs4.outputTimeStepList.size(); i++){
+		if (userInputs4.outputTimeStepList[i] != expected_result[i]){
 			pass4 = false;
 		}
 	}
