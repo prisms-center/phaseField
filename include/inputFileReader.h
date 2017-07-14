@@ -4,14 +4,16 @@
 #define INCLUDE_INPUTFILEREADER_H_
 
 #include "dealIIheaders.h"
+#include "variableAttributeLoader.h"
+//#include "sortIndexEntryPairList.h"
 #include <fstream>
 
 class inputFileReader
 {
 public:
 	// Constructor
-	inputFileReader(std::string input_file_name);
-	
+	inputFileReader(std::string input_file_name, variableAttributeLoader variable_attributes);
+
 	// Method to get a list of entry values from multiple subsections in an input file
 	std::vector<std::string> get_subsection_entry_list(const std::string parameters_file_name, const std::string subsec_name,
 														const std::string entry_name, const std::string default_entry) const;
@@ -27,7 +29,7 @@ public:
 
 	// Method to declare the parameters to be read from an input file
 	void declare_parameters(dealii::ParameterHandler & parameter_handler,
-							const std::vector<std::string> var_types, const unsigned int number_of_materials, const unsigned int number_of_pp_variables,
+							const std::vector<fieldType> var_types, const unsigned int number_of_materials, const unsigned int number_of_pp_variables,
 							const unsigned int num_of_constants) const;
 
 	// Method to check if a line has the desired contents and if so, extract it
@@ -36,7 +38,7 @@ public:
 
 	// Variables
 	dealii::ParameterHandler parameter_handler;
-	std::vector<std::string> var_types;
+	std::vector<fieldType> var_types;
 	unsigned int num_materials;
 	unsigned int num_pp_vars;
 	unsigned int num_constants;

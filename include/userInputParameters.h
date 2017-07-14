@@ -10,9 +10,8 @@
 #include "model_variables.h"
 #include "varBCs.h"
 #include "inputFileReader.h"
-
-enum fieldType {SCALAR, VECTOR};
-enum PDEType {PARABOLIC, ELLIPTIC};
+#include "varTypeEnums.h"
+#include "variableAttributeLoader.h"
 
 template <int dim>
 class userInputParameters
@@ -24,7 +23,7 @@ private:
 
 public:
 	// Method to read the input parameters from a file and load them into the class member variables
-	userInputParameters(inputFileReader & input_file_reader, dealii::ParameterHandler & parameter_handler);
+	userInputParameters(inputFileReader & input_file_reader, dealii::ParameterHandler & parameter_handler, variableAttributeLoader variable_attributes);
 
 	// Method to create the list of BCs from the user input strings (called from loadInputParameters)
 	void load_BC_list(const std::vector<std::string> list_of_BCs);
@@ -40,6 +39,8 @@ public:
 	dealii::Tensor<1,dim> get_model_constant_rank_1_tensor(const std::string constant_name) const {return boost::get<dealii::Tensor<1,dim> >(model_constants[model_constant_name_map.at(constant_name)]);};
 	dealii::Tensor<2,dim> get_model_constant_rank_2_tensor(const std::string constant_name) const {return boost::get<dealii::Tensor<2,dim> >(model_constants[model_constant_name_map.at(constant_name)]);};
 
+	// Method to load in the variable attributes
+	void loadVariableAttributes(variableAttributeLoader variable_attributes);
 
 	// Meshing parameters
 	std::vector<double> domain_size;

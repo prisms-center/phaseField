@@ -1,4 +1,5 @@
 #include "../../include/matrixFreePDE.h"
+//#include "../../include/variableAttributeLoader.h"
 
 template <int dim, int degree>
 class customPDE: public MatrixFreePDE<dim,degree>
@@ -11,7 +12,7 @@ private:
 
 	const userInputParameters<dim> userInputs;
 
-	// Pure virtual method in MatrixFreePDE	
+	// Pure virtual method in MatrixFreePDE
 	void residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 
@@ -44,19 +45,19 @@ private:
 	// Model constants specific to this subclass
 	// ================================================================
 
-	double McV = userInputs.get_model_constant_double(0);
-	double Mn1V = userInputs.get_model_constant_double(1);
-	dealii::Tensor<2,dim> Kn1 = userInputs.get_model_constant_rank_2_tensor(2);
-	double W = userInputs.get_model_constant_double(3);
-	bool n_dependent_stiffness = userInputs.get_model_constant_bool(4);
-	dealii::Tensor<2,dim> sfts_linear1 = userInputs.get_model_constant_rank_2_tensor(5);
-	dealii::Tensor<2,dim> sfts_const1 = userInputs.get_model_constant_rank_2_tensor(6);
-	double A2 = userInputs.get_model_constant_double(7);
-	double A1 = userInputs.get_model_constant_double(8);
-	double A0 = userInputs.get_model_constant_double(9);
-	double B2 = userInputs.get_model_constant_double(10);
-	double B1 = userInputs.get_model_constant_double(11);
-	double B0 = userInputs.get_model_constant_double(12);
+	double McV = userInputs.get_model_constant_double("McV");
+	double Mn1V = userInputs.get_model_constant_double("Mn1V");
+	dealii::Tensor<2,dim> Kn1 = userInputs.get_model_constant_rank_2_tensor("Kn1");
+	double W = userInputs.get_model_constant_double("W");
+	bool n_dependent_stiffness = userInputs.get_model_constant_bool("n_dependent_stiffness");
+	dealii::Tensor<2,dim> sfts_linear1 = userInputs.get_model_constant_rank_2_tensor("sfts_linear1");
+	dealii::Tensor<2,dim> sfts_const1 = userInputs.get_model_constant_rank_2_tensor("sfts_const1");
+	double A2 = userInputs.get_model_constant_double("A2");
+	double A1 = userInputs.get_model_constant_double("A1");
+	double A0 = userInputs.get_model_constant_double("A0");
+	double B2 = userInputs.get_model_constant_double("B2");
+	double B1 = userInputs.get_model_constant_double("B1");
+	double B0 = userInputs.get_model_constant_double("B0");
 
 	const static unsigned int CIJ_tensor_size =2*dim-1+dim/3;
 

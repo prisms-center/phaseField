@@ -1,17 +1,24 @@
 // Methods for the inputFileReader class
 #include "../../include/inputFileReader.h"
+#include "sortIndexEntryPairList.h"
 
 // Constructor
-inputFileReader::inputFileReader(std::string input_file_name){
-    var_types = get_subsection_entry_list("parameters.in","Variable","Variable type","SCALAR");
+inputFileReader::inputFileReader(std::string input_file_name, variableAttributeLoader variable_attributes){
+    // Extract an ordered vector of the variable types from variable_attributes
+    unsigned int number_of_variables = variable_attributes.var_name_list.size();
+    var_types = sortIndexEntryPairList(variable_attributes.var_type_list,number_of_variables,SCALAR);
+
+    
+    num_pp_vars = variable_attributes.var_name_list_PP.size();
+
     num_materials = get_number_of_entries("parameters.in","subsection","Material");
-    num_pp_vars = get_number_of_entries("parameters.in","subsection","Postprocessing variable");
     num_constants = get_number_of_entries("parameters.in","set","Model constant");
 
     model_constant_names = get_entry_name_ending_list("parameters.in","set", "Model constant");
 
     if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
         std::cout << "Number of constants: " << num_constants << std::endl;
+        std::cout << "Number of post-processing variables: " << num_pp_vars << std::endl;
     }
 
     // Read in all of the parameters now
@@ -285,7 +292,7 @@ std::string inputFileReader::get_last_value_of_parameter(const std::string &para
 
 
 void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_handler,
-                                            const std::vector<std::string> var_types, const unsigned int number_of_materials,
+                                            const std::vector<fieldType> var_types, const unsigned int number_of_materials,
                                             const unsigned int number_of_pp_variables, const unsigned int num_of_constants) const {
 
     // Declare all of the entries
@@ -327,42 +334,6 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
 
     parameter_handler.declare_entry("Allow nucleation","false",dealii::Patterns::Bool(),"Whether to enable the explicit nucleation capabilties.");
 
-    // Declare entries regarding the governing equations
-    for (unsigned int i=0; i<var_types.size(); i++){
-        std::string var_text = "Variable ";
-        var_text.append(dealii::Utilities::int_to_string(i));
-
-        parameter_handler.enter_subsection(var_text);
-        {
-            parameter_handler.declare_entry("Variable name","var",dealii::Patterns::Anything(),"The name of the field variable.");
-            parameter_handler.declare_entry("Variable type","SCALAR",dealii::Patterns::Anything(),"Whether the variable is a SCALAR or a VECTOR.");
-            parameter_handler.declare_entry("Equation type","PARABOLIC",dealii::Patterns::Anything(),"Whether the governing equation is PARABOLIC or ELLIPTIC.");
-
-            parameter_handler.declare_entry("Need variable value","true",dealii::Patterns::Bool(),"Whether the value of the variable is needed for any of the residual equations.");
-            parameter_handler.declare_entry("Need variable gradient","true",dealii::Patterns::Bool(),"Whether the gradient of the variable is needed for any of the residual equations.");
-            parameter_handler.declare_entry("Need variable hessian","false",dealii::Patterns::Bool(),"Whether the hessian of the variable is needed for any of the residual equations.");
-
-            parameter_handler.declare_entry("Need value residual term","true",dealii::Patterns::Bool(),"Whether the residual equation has a term proportional to the value of the test function.");
-            parameter_handler.declare_entry("Need gradient residual term","true",dealii::Patterns::Bool(),"Whether the residual equation has a term proportional to the gradient of the test function.");
-
-            parameter_handler.declare_entry("Need variable value (LHS)","false",dealii::Patterns::Bool(),"Whether the value of the variable is needed for any of the LHS residual equations.");
-            parameter_handler.declare_entry("Need variable gradient (LHS)","false",dealii::Patterns::Bool(),"Whether the gradient of the variable is needed for any of the LHS residual equations.");
-            parameter_handler.declare_entry("Need variable hessian (LHS)","false",dealii::Patterns::Bool(),"Whether the hessian of the variable is needed for any of the LHS residual equations.");
-
-            parameter_handler.declare_entry("Need value residual term (LHS)","false",dealii::Patterns::Bool(),"Whether the LHS residual equation has a term proportional to the value of the test function.");
-            parameter_handler.declare_entry("Need gradient residual term (LHS)","false",dealii::Patterns::Bool(),"Whether the LHS residual equation has a term proportional to the gradient of the test function.");
-
-            parameter_handler.declare_entry("Need variable value (post-processing)","true",dealii::Patterns::Bool(),"Whether the value of the variable is needed for any of the post-processing residual equations.");
-            parameter_handler.declare_entry("Need variable gradient (post-processing)","true",dealii::Patterns::Bool(),"Whether the gradient of the variable is needed for any of the post-processing residual equations.");
-            parameter_handler.declare_entry("Need variable hessian (post-processing)","true",dealii::Patterns::Bool(),"Whether the hessian of the variable is needed for any of the post-processing residual equations.");
-
-            parameter_handler.declare_entry("Nucleating variable","false",dealii::Patterns::Bool(),"Whether the variable is an order parameter that is allowed to nucleation.");
-            parameter_handler.declare_entry("Need variable value (nucleation)","false",dealii::Patterns::Bool(),"Whether the value of the variable is needed for nucleation calculations (assumed to be true if the variable is a nucleating order parameter).");
-
-        }
-        parameter_handler.leave_subsection();
-    }
-
     // Declare entries regarding the elastic constants
     for (unsigned int i=0; i<number_of_materials; i++){
         std::string material_text = "Material ";
@@ -402,7 +373,7 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
 
     // Declare the boundary condition variables
     for (unsigned int i=0; i<var_types.size(); i++){
-        if (boost::iequals(var_types[i],"SCALAR")){
+        if (var_types[i] == SCALAR){
             std::string bc_text = "Boundary condition for variable ";
             bc_text.append(dealii::Utilities::int_to_string(i));
             parameter_handler.declare_entry(bc_text,"",dealii::Patterns::Anything(),"The boundary conditions for one of the governing equations).");

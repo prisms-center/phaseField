@@ -93,66 +93,9 @@ set Skip print steps = 1000
 set Calculate the free energy = true
 
 # =================================================================================
-# Set the properties of the variables and their governing equations
-# =================================================================================
-
-# Variable 0
-subsection Variable 0
-    set Variable name = c
-    set Variable type = SCALAR
-    set Equation type = PARABOLIC
-    set Need variable value = true
-    set Need variable gradient = true
-    set Need variable hessian = false
-    set Need value residual term = true
-    set Need gradient residual term = true
-
-    set Need variable value (LHS) = false
-    set Need variable gradient (LHS) = false
-    set Need variable hessian (LHS) = false
-    set Need value residual term (LHS) = false
-    set Need gradient residual term (LHS) = false
-end
-
-# Variable 1
-subsection Variable 1
-    set Variable name = n1
-    set Variable type = SCALAR
-    set Equation type = PARABOLIC
-    set Need variable value = true
-    set Need variable gradient = true
-    set Need variable hessian = false
-    set Need value residual term = true
-    set Need gradient residual term = true
-
-    set Need variable value (LHS) = true
-    set Need variable gradient (LHS) = false
-    set Need variable hessian (LHS) = false
-    set Need value residual term (LHS) = false
-    set Need gradient residual term (LHS) = false
-end
-
-# Variable 2
-subsection Variable 2
-    set Variable name = u
-    set Variable type = VECTOR
-    set Equation type = ELLIPTIC
-    set Need variable value = false
-    set Need variable gradient = true
-    set Need variable hessian = false
-    set Need value residual term = false
-    set Need gradient residual term = true
-
-    set Need variable value (LHS) = false
-    set Need variable gradient (LHS) = true
-    set Need variable hessian (LHS) = false
-    set Need value residual term (LHS) = false
-    set Need gradient residual term (LHS) = true
-end
-
-# =================================================================================
 # Set the nucleation parameters
 # =================================================================================
+
 set Nucleus semiaxes (x, y ,z) = 1.5, 1.5, 7.5
 set Freeze zone semiaxes (x, y ,z) = 4.5, 4.5, 22.5
 set Freeze time following nucleation = 2.5
@@ -177,12 +120,6 @@ subsection Material 1
 end
 
 # =================================================================================
-# Set the properties of the postprocessing variables
-# =================================================================================
-# The number of postprocessing variables (must match the number specified below)
-
-
-# =================================================================================
 # Set the boundary conditions
 # =================================================================================
 
@@ -198,31 +135,31 @@ set Boundary condition for variable 2, z component = ZERO_DERIVATIVE, DIRICHLET:
 # Type options currently are double, int, bool, and tensor
 
 # McV, the Cahn-Hilliard mobility
-set Model constant 0 = 1.0, double
+set Model constant McV = 1.0, double
 
 # Mn1V  the Allen-Cahn mobility
-set Model constant 1 = 150.0, double
+set Model constant Mn1V = 150.0, double
 
 # Kn1 the gradient energy coefficient
-set Model constant 2 = ((0.02,0,0),(0,0.02,0),(0,0,0.01)), tensor
+set Model constant Kn1 = ((0.02,0,0),(0,0.02,0),(0,0,0.01)), tensor
 
 # W, the energy barrier coefficient
-set Model constant 3 = 0.4, double
+set Model constant W = 0.4, double
 
 # n_dependent_stiffness
-set Model constant 4 = true, bool
+set Model constant n_dependent_stiffness = true, bool
 
 # sfts_linear1
-set Model constant 5 = ((0,0,0),(0,0,0),(0,0,0)), tensor
+set Model constant sfts_linear1 = ((0,0,0),(0,0,0),(0,0,0)), tensor
 # sfts_const1
-set Model constant 6 = ((0.1305,0,0),(0,-0.0152,0),(0,0,-0.014)), tensor
+set Model constant sfts_const1 = ((0.1305,0,0),(0,-0.0152,0),(0,0,-0.014)), tensor
 
 # A2, A1, and A0 Mg-Y matrix free energy parameters
-set Model constant 7 = 100.0, double
-set Model constant 8 = 0.0, double
-set Model constant 9 = 0.0, double
+set Model constant A2 = 100.0, double
+set Model constant A1 = 0.0, double
+set Model constant A0 = 0.0, double
 
 # B2, B1, and B0 Mg-Y matrix free energy parameters
-set Model constant 10 = 100.0, double
-set Model constant 11 = -25.0, double
-set Model constant 12 = 1.5625, double
+set Model constant B2 = 100.0, double
+set Model constant B1 = -25.0, double
+set Model constant B0 = 1.5625, double
