@@ -49,6 +49,7 @@ void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::Vec
 
 // The concentration and its derivatives (names here should match those in the macros above)
 scalarvalueType c = variable_list.get_scalar_value(0);
+scalargradType cx = variable_list.get_scalar_gradient(0);
 
 // The first order parameter and its derivatives (names here should match those in the macros above)
 scalarvalueType n1 = variable_list.get_scalar_value(1);
@@ -58,22 +59,31 @@ scalargradType n1x = variable_list.get_scalar_gradient(1);
 vectorgradType ux = variable_list.get_vector_gradient(2);
 vectorgradType ruxV;
 
+vectorhessType uxx;
+
+if (c_dependent_misfit == true){
+	uxx = variable_list.get_vector_hessian(2);
+}
+
 // Calculate the derivatives of c_beta (derivatives of c_alpha aren't needed)
-scalarvalueType cbnV, cbcV, cacV;
+scalarvalueType cbnV, cbcV, cbcnV,cacV;
 
 cbcV = faccV/( (constV(1.0)-h1V)*fbccV + h1V*faccV );
 cacV = fbccV/( (constV(1.0)-h1V)*fbccV + h1V*faccV );
 cbnV = hn1V * (c_alpha - c_beta) * cbcV;
+cbcnV = (faccV * (fbccV-faccV) * hn1V)/( ((1.0-h1V)*fbccV + h1V*faccV)*((1.0-h1V)*fbccV + h1V*faccV) );  // Note: this is only true if faV and fbV are quadratic
 
 // Calculate the stress-free transformation strain and its derivatives at the quadrature point
-dealii::Tensor<2, dim, dealii::VectorizedArray<double> > sfts1, sfts1c, sfts1n;
+dealii::Tensor<2, dim, dealii::VectorizedArray<double> > sfts1, sfts1c, sfts1cc, sfts1n, sfts1cn;
 
 for (unsigned int i=0; i<dim; i++){
 for (unsigned int j=0; j<dim; j++){
 	// Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c_beta + b_p
 	sfts1[i][j] = constV(sfts_linear1[i][j])*c_beta + constV(sfts_const1[i][j]);
 	sfts1c[i][j] = constV(sfts_linear1[i][j]) * cbcV;
+	sfts1cc[i][j] = constV(0.0);
 	sfts1n[i][j] = constV(sfts_linear1[i][j]) * cbnV;
+	sfts1cn[i][j] = constV(sfts_linear1[i][j]) * cbcnV;
 }
 }
 
@@ -122,6 +132,7 @@ for (unsigned int j=0; j<dim; j++){
 }
 }
 
+
 // Compute the other stress term in the order parameter chemical potential, heterMechACp = 0.5*Hn*(C_beta-C_alpha)*(E-E0)*(E-E0)
 dealii::VectorizedArray<double> heterMechAC1=constV(0.0);
 dealii::VectorizedArray<double> S2[dim][dim];
@@ -136,6 +147,43 @@ if (n_dependent_stiffness == true){
 	}
 	heterMechAC1 = 0.5*hn1V*heterMechAC1;
 }
+
+// compute the stress term in the gradient of the concentration chemical potential, grad_mu_el = -[C*(E-E0)*E0c]x, must be a vector with length dim
+scalargradType grad_mu_el;
+
+if (c_dependent_misfit == true){
+	dealii::VectorizedArray<double> E3[dim][dim], S3[dim][dim];
+
+	for (unsigned int i=0; i<dim; i++){
+		for (unsigned int j=0; j<dim; j++){
+			E3[i][j] =  -( sfts1c[i][j]*h1V );
+		}
+	}
+
+	if (n_dependent_stiffness == true){
+		computeStress<dim>(CIJ_combined, E3, S3);
+	}
+	else{
+		computeStress<dim>(userInputs.CIJ_list[0], E3, S3);
+	}
+
+	for (unsigned int i=0; i<dim; i++){
+		for (unsigned int j=0; j<dim; j++){
+			for (unsigned int k=0; k<dim; k++){
+				grad_mu_el[k] += S3[i][j] * (constV(0.5)*(uxx[i][j][k]+uxx[j][i][k]) + E3[i][j]*cx[k]
+														  - ( (sfts1[i][j]*hn1V + sfts1n[i][j]*h1V) *n1x[k]) );
+
+				grad_mu_el[k]+= - S[i][j] * ( (sfts1c[i][j]*hn1V + h1V*sfts1cn[i][j])*n1x[k] + ( sfts1cc[i][j]*h1V )*cx[k]);
+
+				if (n_dependent_stiffness == true){
+					grad_mu_el[k]+= S2[i][j] * (hn1V*n1x[k]) * (E3[i][j]);
+
+				}
+			}
+		}
+	}
+}
+
 
 //compute K*nx
 scalargradType Knx1;

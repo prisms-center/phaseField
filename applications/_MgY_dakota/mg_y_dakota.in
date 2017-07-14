@@ -1,0 +1,42 @@
+# Dakota Input File: rosen_syscall.in
+# Usage:
+# dakota -i rosen_syscall.in -o rosen_syscall.out > rosen_syscall.stdout
+environment
+    tabular_data
+        tabular_data_file = 'mg_y_dakota.dat'
+    top_method_pointer = 'UQ'
+
+method
+    id_method = 'UQ'
+    sampling
+        sample_type lhs
+        samples = 10
+        seed = 98765
+        response_levels = 0.1 0.2 0.6
+                          0.1 0.2 0.6
+                          0.1 0.2 0.6
+        distribution cumulative
+
+variables
+    normal_uncertain = 2
+        means 0.013972 -0.0057545
+        std_deviations 0.01 0.01
+        descriptors "Model constant sfts_const1_11" 'Model constant sfts_const1_22'
+
+interface
+    #analysis_drivers = 'dakota_interface'
+    #analysis_drivers = 'dakota_interface_dummy'
+    analysis_drivers = 'dakota_interface_analysis'
+        fork
+        asynchronous
+            evaluation_concurrency 1
+        allow_existing_results
+        parameters_file = 'params.in'
+        results_file = 'results.out'
+        file_tag
+        file_save
+
+responses
+    response_functions = 3
+    no_gradients
+    no_hessians

@@ -13,6 +13,11 @@ public:
 				}
 			}
 		}
+
+		sfts_const1[0][0] =  sfts_const1_11;
+		sfts_const1[1][1] =  sfts_const1_22;
+		sfts_const1[2][2] =  sfts_const1_33;
+
 	};
 
 private:
@@ -57,13 +62,19 @@ private:
 	double W = userInputs.get_model_constant_double("W");
 	bool n_dependent_stiffness = userInputs.get_model_constant_bool("n_dependent_stiffness");
 	dealii::Tensor<2,dim> sfts_linear1 = userInputs.get_model_constant_rank_2_tensor("sfts_linear1");
-	dealii::Tensor<2,dim> sfts_const1 = userInputs.get_model_constant_rank_2_tensor("sfts_const1");
+	//dealii::Tensor<2,dim> sfts_const1 = userInputs.get_model_constant_rank_2_tensor("sfts_const1");
+	double sfts_const1_11 = userInputs.get_model_constant_double("sfts_const1_11");
+	double sfts_const1_22 = userInputs.get_model_constant_double("sfts_const1_22");
+	double sfts_const1_33 = userInputs.get_model_constant_double("sfts_const1_33");
 	double A2 = userInputs.get_model_constant_double("A2");
 	double A1 = userInputs.get_model_constant_double("A1");
 	double A0 = userInputs.get_model_constant_double("A0");
 	double B2 = userInputs.get_model_constant_double("B2");
 	double B1 = userInputs.get_model_constant_double("B1");
 	double B0 = userInputs.get_model_constant_double("B0");
+
+
+	dealii::Tensor<2,dim> sfts_const1;
 
 	const static unsigned int CIJ_tensor_size =2*dim-1+dim/3;
 
@@ -134,7 +145,7 @@ void customPDE<dim,degree>::solveIncrement(){
 				for (unsigned int dof=0; dof<this->solutionSet[fieldIndex]->local_size(); ++dof){
 	                this->solutionSet[fieldIndex]->local_element(dof) -= (integrated_c_after - integrated_c_before)/(domain_volume);
 	            }
-				this->pcout << "Before, after, shift:" << integrated_c_before << " " << integrated_c_after << " " << (integrated_c_after - integrated_c_before)/(domain_volume) << std::endl;
+				//this->pcout << "Before, after, shift:" << integrated_c_before << " " << integrated_c_after << " " << (integrated_c_after - integrated_c_before)/(domain_volume) << std::endl;
 			}
 
             // Set the Dirichelet values (hanging node constraints don't need to be distributed every time step, only at output)
