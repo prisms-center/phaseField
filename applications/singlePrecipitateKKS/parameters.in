@@ -104,21 +104,6 @@ set Minimum allowed distance between nuclei = 6.0
 set Order parameter cutoff value = 0.01
 set Time steps between nucleation attempts = 1000
 
-
-# =================================================================================
-# Set the elastic constants (if needed)
-# =================================================================================
-
-subsection Material 0
-    set Material symmetry = ANISOTROPIC
-    set Elastic constants = 31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0
-end
-
-subsection Material 1
-    set Material symmetry = ANISOTROPIC
-    set Elastic constants = 23.35,30.25,36.35,8.2,16.7,14.45,15.35,14.35,0,0,0,7.25,0,0,0,0,0,0,0,0,0
-end
-
 # =================================================================================
 # Set the boundary conditions
 # =================================================================================
@@ -163,3 +148,6 @@ set Model constant A0 = 0.0, double
 set Model constant B2 = 100.0, double
 set Model constant B1 = -25.0, double
 set Model constant B0 = 1.5625, double
+
+set Model constant CIJ_Mg = (31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0), anisotropic elastic constants
+set Model constant CIJ_Beta = (23.35,30.25,36.35,8.2,16.7,14.45,15.35,14.35,0,0,0,7.25,0,0,0,0,0,0,0,0,0), anisotropic elastic constants

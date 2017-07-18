@@ -24,13 +24,9 @@ public:
 	// Get the trailing part of the entry name after a specified string (used to extract the model constant names)
 	std::vector<std::string> get_entry_name_ending_list(const std::string parameters_file_name,const std::string keyword, const std::string entry_name_begining) const;
 
-	// Method to extract the value of a single parameter from a deal.II-style input file
-	std::string get_last_value_of_parameter(const std::string &parameters, const std::string &parameter_name) const;
-
 	// Method to declare the parameters to be read from an input file
 	void declare_parameters(dealii::ParameterHandler & parameter_handler,
-							const std::vector<fieldType> var_types, const unsigned int number_of_materials, const unsigned int number_of_pp_variables,
-							const unsigned int num_of_constants) const;
+							const std::vector<fieldType> var_types, const unsigned int num_of_constants) const;
 
 	// Method to check if a line has the desired contents and if so, extract it
 	bool parse_line(std::string line, const std::string keyword, const std:: string entry_name, std::string & out_string, bool expect_equals_sign) const;
@@ -39,7 +35,6 @@ public:
 	// Variables
 	dealii::ParameterHandler parameter_handler;
 	std::vector<fieldType> var_types;
-	unsigned int num_materials;
 	unsigned int num_pp_vars;
 	unsigned int num_constants;
 	std::vector<std::string> model_constant_names;

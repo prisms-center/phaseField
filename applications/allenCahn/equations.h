@@ -1,27 +1,21 @@
 // List of residual equations for the coupled Allen-Cahn example application
 
-/*
 // =================================================================================
-// setVariableAttributes
+// Set the attributes of the primary field variables
 // =================================================================================
-// [INSERT EXPLANATION HERE]
-template <int dim, int degree>
-void customPDE<dim,degree>::setVariableAttributes(){
+void variableAttributeLoader::loadVariableAttributes(){
+	// Variable 0
+	set_variable_name				(0,"n");
+	set_variable_type				(0,SCALAR);
+	set_variable_equation_type		(0,PARABOLIC);
 
-// Variable 0
-userInputs.set_variable_name(0,”n”);
-userInputs.set_variable_type(0,SCALAR);
-userInputs.set_variable_equation_type(0,PARABOLIC);
+	set_need_value					(0,true);
+	set_need_gradient				(0,true);
+	set_need_hessian					(0,false);
 
-userInputs.need_variable_value(0,true);
-userInputs.need_variable_gradient(0,true);
-userInputs.need_variable_hessian(0,false);
-
-userInputs.need_value_residual_term(0,true);
-userInputs.need_gradient_residual_term(0,true);
-
+	set_need_value_residual_term		(0,true);
+	set_need_gradient_residual_term	(0,true);
 }
-*/
 
 // =================================================================================
 // residualRHS

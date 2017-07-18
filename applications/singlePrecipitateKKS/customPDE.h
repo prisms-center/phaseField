@@ -60,6 +60,10 @@ private:
 	double B0 = userInputs.get_model_constant_double("B0");
 
 	const static unsigned int CIJ_tensor_size =2*dim-1+dim/3;
+	dealii::Tensor<2,CIJ_tensor_size> CIJ_Mg = userInputs.get_model_constant_elasticity_tensor("CIJ_Mg");
+	dealii::Tensor<2,CIJ_tensor_size> CIJ_Beta = userInputs.get_model_constant_elasticity_tensor("CIJ_Beta");
+
+
 
 	// ================================================================
 
