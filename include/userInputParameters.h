@@ -5,24 +5,17 @@
 #define INCLUDE_USERINPUTPARAMETERS_H_
 
 #include "dealIIheaders.h"
-#include "../src/userInputParameters/getCIJMatrix.h"
 #include "model_variables.h"
 #include "varBCs.h"
 #include "inputFileReader.h"
 #include "varTypeEnums.h"
 #include "variableAttributeLoader.h"
 
+enum elasticityModel {ISOTROPIC, TRANSVERSE, ORTHOTROPIC, ANISOTROPIC, ANISOTROPIC2D};
+
 template <int dim>
 class userInputParameters
 {
-private:
-	// Method to create the list of time steps where the results should be output (called from loadInputParameters)
-	std::vector<unsigned int> setOutputTimeSteps(const std::string outputSpacingType, unsigned int numberOfOutputs,
-													const std::vector<unsigned int> & userGivenTimeStepList);
-													
-	void load_user_constants(inputFileReader & input_file_reader, dealii::ParameterHandler & parameter_handler);
-
-	dealii::Tensor<2,2*dim-1+dim/3> get_Cij_tensor(std::vector<double> elastic_constants, const std::string elastic_const_symmetry) const;
 
 public:
 	// Method to read the input parameters from a file and load them into the class member variables
@@ -133,6 +126,17 @@ public:
 	double min_distance_between_nuclei; // Only enforced for nuclei placed during the same time step
 	double nucleation_order_parameter_cutoff;
 	unsigned int steps_between_nucleation_attempts;
+
+private:
+	// Method to create the list of time steps where the results should be output (called from loadInputParameters)
+	std::vector<unsigned int> setOutputTimeSteps(const std::string outputSpacingType, unsigned int numberOfOutputs,
+													const std::vector<unsigned int> & userGivenTimeStepList);
+
+	void load_user_constants(inputFileReader & input_file_reader, dealii::ParameterHandler & parameter_handler);
+
+	dealii::Tensor<2,2*dim-1+dim/3> get_Cij_tensor(std::vector<double> elastic_constants, const std::string elastic_const_symmetry) const;
+
+	dealii::Tensor<2,2*dim-1+dim/3> getCIJMatrix(const elasticityModel model, const std::vector<double> constants, dealii::ConditionalOStream & pcout) const;	
 
 };
 
