@@ -9,8 +9,9 @@ template <int dim,typename T>
 	std::cout << "\nTesting 'load_BC_list'... " << std::endl;
 
 	//create test problem class object
-    inputFileReader input_file_reader("parameters_test.in");
-    userInputParameters<2> userInputs(input_file_reader,input_file_reader.parameter_handler);
+    variableAttributeLoader variable_attributes;
+    inputFileReader input_file_reader("parameters_test.in",variable_attributes);
+    userInputParameters<2> userInputs(input_file_reader,input_file_reader.parameter_handler,variable_attributes);
 
     // 2D test:
     std::vector<std::string> list_of_BCs;
@@ -18,6 +19,7 @@ template <int dim,typename T>
     list_of_BCs.push_back("PERIODIC,PERIODIC,ZERO_DERIVATIVE,ZERO_DERIVATIVE");
     list_of_BCs.push_back("DIRICHLET: 2.5,DIRICHLET: 1.5,ZERO_DERIVATIVE,ZERO_DERIVATIVE");
 
+    userInputs.BC_list.clear();
     userInputs.load_BC_list(list_of_BCs);
 
     bool pass1;
@@ -50,10 +52,11 @@ template <int dim,typename T>
 
     // 3D test:
     list_of_BCs.clear();
-    userInputParameters<3> userInputs_3D(input_file_reader,input_file_reader.parameter_handler);
+    userInputParameters<3> userInputs_3D(input_file_reader,input_file_reader.parameter_handler,variable_attributes);
     list_of_BCs.push_back("DIRICHLET: 2.5");
     list_of_BCs.push_back("PERIODIC,PERIODIC,ZERO_DERIVATIVE,ZERO_DERIVATIVE,PERIODIC,PERIODIC");
 
+    userInputs_3D.BC_list.clear();
     userInputs_3D.load_BC_list(list_of_BCs);
     bool pass4;
     pass4 = userInputs_3D.BC_list.size() == 2;

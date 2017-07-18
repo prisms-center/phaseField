@@ -72,6 +72,17 @@ void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Vectorized
 #include "../../src/models/mechanics/computeStress.h"
 #include "../../src/matrixfree/postprocessor.cc"
 
+#include "../../src/utilities/sortIndexEntryPairList.cc"
+
+#include "../../src/variableContainer/variableContainer.cc"
+
+#include "../../src/userInputParameters/load_BC_list.cc"
+#include "../../src/userInputParameters/load_user_constants.cc"
+#include "../../src/userInputParameters/loadVariableAttributes.cc"
+#include "../../src/userInputParameters/setOutputTimeSteps.cc"
+
+#include "../../src/variableAttributeLoader/variableAttributeLoader.cc"
+
 template <int dim, typename T>
 class unitTest
 {
@@ -89,7 +100,7 @@ class unitTest
 	bool test_setOutputTimeSteps();
 };
 
-
+#include "variableAttributeLoader_test.cc"
 #include "test_invM.h"
 #include "test_outputResults.h"
 #include "test_computeStress.h"

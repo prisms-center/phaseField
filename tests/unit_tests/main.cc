@@ -4,12 +4,11 @@
 #include <iostream>
 #include "unitTest.h"
 #include "../../include/userInputParameters.h"
-#include "../../src/userInputParameters/loadInputParameters.cc"
+#include "../../src/userInputParameters/userInputParameters.cc"
 #include "../../include/vectorBCFunction.h"
 #include "../../src/utilities/vectorBCFunction.cc"
 #include "../../include/initialConditions.h"
 #include "initialConditions.cc"
-#include "../../include/list_of_CIJ.h"
 #include "unit_test_inputs.cc"
 
 int main(int argc, char **argv)
@@ -18,8 +17,9 @@ int main(int argc, char **argv)
   Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, numbers::invalid_unsigned_int);
 
   // Load input
-  inputFileReader input_file_reader("parameters_test.in");
-  userInputParameters<2> userInputs(input_file_reader,input_file_reader.parameter_handler);
+  variableAttributeLoader variable_attributes;
+  inputFileReader input_file_reader("parameters_test.in",variable_attributes);
+  userInputParameters<2> userInputs(input_file_reader,input_file_reader.parameter_handler,variable_attributes);
   load_unit_test_inputs<2>(userInputs);
 
   std::cout << "Beginning unit tests..." << std::endl;

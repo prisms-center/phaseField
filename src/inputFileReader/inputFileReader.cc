@@ -1,6 +1,6 @@
 // Methods for the inputFileReader class
 #include "../../include/inputFileReader.h"
-#include "sortIndexEntryPairList.h"
+#include "../../include/sortIndexEntryPairList.h"
 
 // Constructor
 inputFileReader::inputFileReader(std::string input_file_name, variableAttributeLoader variable_attributes){
