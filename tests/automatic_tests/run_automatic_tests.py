@@ -72,8 +72,8 @@ def run_simulation(run_name,dir_path):
 	subprocess.call(["mkdir",run_name])
 	for output_files in glob.glob('*vtu'):
 		shutil.move(output_files,run_name)
-	if os.path.exists("freeEnergy.txt") == True:
-		shutil.move("freeEnergy.txt",run_name)
+	if os.path.exists("integratedFields.txt") == True:
+		shutil.move("integratedFields.txt",run_name)
 
 	test_time = end-start
 	return test_time
@@ -113,12 +113,17 @@ def run_regression_test(applicationName,getNewGoldStandard,dir_path):
 
 		# Read the test free energies
 		os.chdir("../"+testName)
-		test_file = open("freeEnergy.txt","r")
+		test_file = open("integratedFields.txt","r")
 		test_energy = test_file.readlines()
 		test_file.close()
 
 		last_energy_index = len(test_energy)-1
-		rel_diff = (float(gold_energy[last_energy_index])-float(test_energy[last_energy_index]))/float(gold_energy[last_energy_index])
+		split_last_line = test_energy[-1].split()
+		for index, entry in enumerate(split_last_line):
+			if entry == "f_tot":
+				last_energy = split_last_line[index+1]
+
+		rel_diff = (float(gold_energy[last_energy_index])-float(last_energy))/float(gold_energy[last_energy_index])
 		rel_diff = abs(rel_diff)
 
 		if (rel_diff < 1.0e-9):
