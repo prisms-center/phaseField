@@ -7,7 +7,7 @@ inputFileReader::inputFileReader(std::string input_file_name, variableAttributeL
     // Extract an ordered vector of the variable types from variable_attributes
     unsigned int number_of_variables = variable_attributes.var_name_list.size();
     var_types = sortIndexEntryPairList(variable_attributes.var_type_list,number_of_variables,SCALAR);
-
+    var_names = sortIndexEntryPairList(variable_attributes.var_name_list,number_of_variables,"var");
 
     num_pp_vars = variable_attributes.var_name_list_PP.size();
 
@@ -273,22 +273,22 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
     for (unsigned int i=0; i<var_types.size(); i++){
         if (var_types[i] == SCALAR){
             std::string bc_text = "Boundary condition for variable ";
-            bc_text.append(dealii::Utilities::int_to_string(i));
+            bc_text.append(var_names.at(i));
             parameter_handler.declare_entry(bc_text,"",dealii::Patterns::Anything(),"The boundary conditions for one of the governing equations).");
         }
         else {
             std::string bc_text = "Boundary condition for variable ";
-            bc_text.append(dealii::Utilities::int_to_string(i));
+            bc_text.append(var_names.at(i));
             bc_text.append(", x component");
             parameter_handler.declare_entry(bc_text,"",dealii::Patterns::Anything(),"The boundary conditions for one of the governing equations).");
 
             bc_text = "Boundary condition for variable ";
-            bc_text.append(dealii::Utilities::int_to_string(i));
+            bc_text.append(var_names.at(i));
             bc_text.append(", y component");
             parameter_handler.declare_entry(bc_text,"",dealii::Patterns::Anything(),"The boundary conditions for one of the governing equations).");
 
             bc_text = "Boundary condition for variable ";
-            bc_text.append(dealii::Utilities::int_to_string(i));
+            bc_text.append(var_names.at(i));
             bc_text.append(", z component");
             parameter_handler.declare_entry(bc_text,"",dealii::Patterns::Anything(),"The boundary conditions for one of the governing equations).");
         }
@@ -307,7 +307,6 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
     // Declare the user-defined constants
     for (unsigned int i=0; i<num_of_constants; i++){
         std::string constants_text = "Model constant ";
-        //constants_text.append(dealii::Utilities::int_to_string(i));
         constants_text.append(model_constant_names[i]);
         parameter_handler.declare_entry(constants_text,"0",dealii::Patterns::Anything(),"The value of a user-defined constant.");
     }

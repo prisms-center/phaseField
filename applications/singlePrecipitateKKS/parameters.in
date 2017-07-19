@@ -108,11 +108,11 @@ set Time steps between nucleation attempts = 1000
 # Set the boundary conditions
 # =================================================================================
 
-set Boundary condition for variable 0 = ZERO_DERIVATIVE
-set Boundary condition for variable 1 = ZERO_DERIVATIVE
-set Boundary condition for variable 2, x component = DIRICHLET: 0.0, DIRICHLET: 0.0, ZERO_DERIVATIVE, DIRICHLET: 0.0, ZERO_DERIVATIVE, DIRICHLET: 0.0
-set Boundary condition for variable 2, y component = ZERO_DERIVATIVE, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0, ZERO_DERIVATIVE, DIRICHLET: 0.0
-set Boundary condition for variable 2, z component = ZERO_DERIVATIVE, DIRICHLET: 0.0, ZERO_DERIVATIVE, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0
+set Boundary condition for variable c = ZERO_DERIVATIVE
+set Boundary condition for variable n1 = ZERO_DERIVATIVE
+set Boundary condition for variable u, x component = DIRICHLET: 0.0, DIRICHLET: 0.0, ZERO_DERIVATIVE, DIRICHLET: 0.0, ZERO_DERIVATIVE, DIRICHLET: 0.0
+set Boundary condition for variable u, y component = ZERO_DERIVATIVE, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0, ZERO_DERIVATIVE, DIRICHLET: 0.0
+set Boundary condition for variable u, z component = ZERO_DERIVATIVE, DIRICHLET: 0.0, ZERO_DERIVATIVE, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0
 
 # =================================================================================
 # Set the model constants

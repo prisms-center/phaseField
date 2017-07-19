@@ -1,5 +1,4 @@
 # Parameter list for the Allen-Cahn example application
-
 # Refer to the PRISMS-PF manual for use of these parameters in the source code.
 
 # =================================================================================
@@ -44,20 +43,22 @@ set Number of time steps = 5000
 # =================================================================================
 # Set the boundary conditions
 # =================================================================================
-# ADD MORE COMMENTS
-set Boundary condition for variable 0 = ZERO_DERIVATIVE
+# Set the boundary condition for each variable, where each variable is given by
+# its index, as defined at the top of equations.h.
+set Boundary condition for variable n = ZERO_DERIVATIVE
 
 # =================================================================================
 # Set the model constants
 # =================================================================================
 # ADD MORE COMMENTS
-# Type options currently are double, int, and bool
+# Type options currently are DOUBLE, INT, BOOL, TENSOR, and [symmetry] ELASTIC CONSTANTS
+# where [symmetry] is ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC
 
 # The mobility, MnV in equations.h
-set Model constant MnV = 1.0, double
+set Model constant MnV = 1.0, DOUBLE
 
 # The gradient energy coefficient, KnV in equations.h
-set Model constant KnV = 2.0, double
+set Model constant KnV = 2.0, DOUBLE
 
 # =================================================================================
 # Set the output parameters

@@ -37,6 +37,7 @@ public:
 	unsigned int num_pp_vars;
 	unsigned int num_constants;
 	std::vector<std::string> model_constant_names;
+	std::vector<std::string> var_names;
 	unsigned int number_of_dimensions;
 };
 

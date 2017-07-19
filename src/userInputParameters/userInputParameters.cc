@@ -162,22 +162,22 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     for (unsigned int i=0; i<number_of_variables; i++){
         if (var_type[i] == SCALAR){
             std::string bc_text = "Boundary condition for variable ";
-            bc_text.append(dealii::Utilities::int_to_string(i));
+            bc_text.append(var_name.at(i));
             list_of_BCs.push_back(parameter_handler.get(bc_text));
         }
         else {
             std::string bc_text = "Boundary condition for variable ";
-            bc_text.append(dealii::Utilities::int_to_string(i));
+            bc_text.append(var_name.at(i));
             bc_text.append(", x component");
             list_of_BCs.push_back(parameter_handler.get(bc_text));
 
             bc_text = "Boundary condition for variable ";
-            bc_text.append(dealii::Utilities::int_to_string(i));
+            bc_text.append(var_name.at(i));
             bc_text.append(", y component");
             list_of_BCs.push_back(parameter_handler.get(bc_text));
 
             bc_text = "Boundary condition for variable ";
-            bc_text.append(dealii::Utilities::int_to_string(i));
+            bc_text.append(var_name.at(i));
             bc_text.append(", z component");
             list_of_BCs.push_back(parameter_handler.get(bc_text));
         }
