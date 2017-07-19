@@ -11,9 +11,9 @@ set Number of dimensions = 2
 # (Domain size Z ignored in 2D)
 # =================================================================================
 # Each axes spans from zero to the specified length
-set Domain size X = 100
-set Domain size Y = 100
-set Domain size Z = 100
+set Domain size X = 500
+set Domain size Y = 500
+set Domain size Z = 500
 
 # =================================================================================
 # Set the element parameters
@@ -21,24 +21,44 @@ set Domain size Z = 100
 # The number of elements in each direction is 2^(refineFactor) * subdivisions
 # Subdivisions Z ignored in 2D
 # For optimal performance, use refineFactor primarily to determine the element size
-set Subdivisions X = 1
-set Subdivisions Y = 1
-set Subdivisions Z = 1
+set Subdivisions X = 3
+set Subdivisions Y = 3
+set Subdivisions Z = 3
 
-set Refine factor = 8
+set Refine factor = 6
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
-set Element degree = 1
+set Element degree = 3
+
+# =================================================================================
+# Set the adaptive mesh refinement parameters
+# =================================================================================
+# Set the flag determining if adaptive meshing is activated
+set Mesh adaptivity = true
+
+# Set the maximum and minimum level of refinement
+set Max refinement level = 6
+set Min refinement level = 0
+
+# Set the fields used to determine the refinement using their index.
+set Refinement criteria fields = 1
+
+# Set the maximum and minimum value of the fields where the mesh should be refined
+set Refinement window max = 0.9999
+set Refinement window min = -0.9999
+
+# Set the number of time steps between remeshing operations
+set Steps between remeshing operations = 250
 
 # =================================================================================
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 1.0e-2
+set Time step = 0.04
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 5000
+set Number of time steps = 25000
 
 # =================================================================================
 # Set the boundary conditions
@@ -58,7 +78,9 @@ set Number of time steps = 5000
 # 1.5 on the top and bottom for variable 'n' in 2D
 # set Boundary condition for variable n = ZERO_DERIVATIVE, ZERO_DERIVATIVE, DIRCHLET: 1.5, DIRICHLET: 1.5
 
+set Boundary condition for variable T = DIRICHLET: -0.75 # equal to -deltaV
 set Boundary condition for variable n = ZERO_DERIVATIVE
+set Boundary condition for variable mu = ZERO_DERIVATIVE
 
 # =================================================================================
 # Set the model constants
@@ -69,11 +91,23 @@ set Boundary condition for variable n = ZERO_DERIVATIVE
 # options currently are DOUBLE, INT, BOOL, TENSOR, and [symmetry] ELASTIC CONSTANTS
 # where [symmetry] is ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC.
 
-# The mobility, MnV in equations.h
-set Model constant MnV = 1.0, DOUBLE
+# Heat diffusion constant
+set Model constant DV = 1.0, DOUBLE
 
-# The gradient energy coefficient, KnV in equations.h
-set Model constant KnV = 2.0, DOUBLE
+# Isotropic gradient energy coefficient
+set Model constant W0 = 1.0, DOUBLE
+
+# Undercooling
+set Model constant deltaV = 0.75, DOUBLE
+
+# Anisotropy paramter
+set Model constant epsilonM = 0.05, DOUBLE
+
+# Rotation angle
+set Model constant theta0 = 0.125, DOUBLE
+
+# Symmetry factor
+set Model constant mult = 4.0, DOUBLE
 
 # =================================================================================
 # Set the output parameters
@@ -84,30 +118,7 @@ set Output condition = EQUAL_SPACING
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of outputs = 5
+set Number of outputs = 10
 
 # The number of time steps between updates being printed to the screen
 set Skip print steps = 1000
-
-# The flag determining if the total free energy is calculated for each output
-set Calculate the free energy = true
-
-# =================================================================================
-# Set the parameters for loading in initial conditions (OPTIONAL)
-# =================================================================================
-# Specify whether initial conditions should be read in from a *.vtk file, and if
-# so, which files to read in for which variables. Each entry takes a comma-separated
-# list of values for each variable, given in the order of the indices at the top of
-# equations.h.
-
-# Whether to load intial conditions
-set Load initial conditions = false
-
-# Whether each processor should read its own file
-set Load parallel file = true
-
-# Names of the files to be read without the file extension (assumed to be in the app directory)
-set File names = void
-
-# Names of the variables in the file being read (may differ from the model variable names)
-set Variable names in the files = void

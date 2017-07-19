@@ -101,13 +101,13 @@ set Calculate the free energy = true
 # equations.h.
 
 # Whether to load intial conditions
-set Load initial conditions = false
+set Load initial conditions = true
 
 # Whether each processor should read its own file
 set Load parallel file = true
 
 # Names of the files to be read without the file extension (assumed to be in the app directory)
-set File names = void
+set File names = parallel_input
 
 # Names of the variables in the file being read (may differ from the model variable names)
-set Variable names in the files = void
+set Variable names in the files = n

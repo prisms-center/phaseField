@@ -25,20 +25,40 @@ set Subdivisions X = 1
 set Subdivisions Y = 1
 set Subdivisions Z = 1
 
-set Refine factor = 8
+set Refine factor = 7
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
 set Element degree = 1
 
 # =================================================================================
+# Set the adaptive mesh refinement parameters
+# =================================================================================
+# Set the flag determining if adaptive meshing is activated
+set Mesh adaptivity = true
+
+# Set the maximum and minimum level of refinement
+set Max refinement level = 7
+set Min refinement level = 4
+
+# Set the fields used to determine the refinement using their index.
+set Refinement criteria fields = 1
+
+# Set the maximum and minimum value of the fields where the mesh should be refined
+set Refinement window max = 0.999
+set Refinement window min = 0.001
+
+# Set the number of time steps between remeshing operations
+set Steps between remeshing operations = 1000
+
+# =================================================================================
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 1.0e-2
+set Time step = 1.0e0
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 5000
+set Number of time steps = 10000
 
 # =================================================================================
 # Set the boundary conditions
@@ -58,6 +78,7 @@ set Number of time steps = 5000
 # 1.5 on the top and bottom for variable 'n' in 2D
 # set Boundary condition for variable n = ZERO_DERIVATIVE, ZERO_DERIVATIVE, DIRCHLET: 1.5, DIRICHLET: 1.5
 
+set Boundary condition for variable c = ZERO_DERIVATIVE
 set Boundary condition for variable n = ZERO_DERIVATIVE
 
 # =================================================================================
@@ -69,11 +90,14 @@ set Boundary condition for variable n = ZERO_DERIVATIVE
 # options currently are DOUBLE, INT, BOOL, TENSOR, and [symmetry] ELASTIC CONSTANTS
 # where [symmetry] is ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC.
 
-# The mobility, MnV in equations.h
-set Model constant MnV = 1.0, DOUBLE
+# The CH mobility, McV in equations.h
+set Model constant McV = 1.0, DOUBLE
 
-# The gradient energy coefficient, KnV in equations.h
-set Model constant KnV = 2.0, DOUBLE
+# The AC mobility, MnV in equations.h
+set Model constant MnV = 0.1, DOUBLE
+
+# Anisotropy parameter
+set Model constant epsilonM = 0.06, DOUBLE
 
 # =================================================================================
 # Set the output parameters
@@ -84,30 +108,7 @@ set Output condition = EQUAL_SPACING
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of outputs = 5
+set Number of outputs = 10
 
 # The number of time steps between updates being printed to the screen
 set Skip print steps = 1000
-
-# The flag determining if the total free energy is calculated for each output
-set Calculate the free energy = true
-
-# =================================================================================
-# Set the parameters for loading in initial conditions (OPTIONAL)
-# =================================================================================
-# Specify whether initial conditions should be read in from a *.vtk file, and if
-# so, which files to read in for which variables. Each entry takes a comma-separated
-# list of values for each variable, given in the order of the indices at the top of
-# equations.h.
-
-# Whether to load intial conditions
-set Load initial conditions = false
-
-# Whether each processor should read its own file
-set Load parallel file = true
-
-# Names of the files to be read without the file extension (assumed to be in the app directory)
-set File names = void
-
-# Names of the variables in the file being read (may differ from the model variable names)
-set Variable names in the files = void

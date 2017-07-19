@@ -112,12 +112,12 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
 
     // Variables for loading in PField ICs
     std::vector<std::string> load_ICs_temp = dealii::Utilities::split_string_list(parameter_handler.get("Load initial conditions"));
-    std::vector<std::string> load_serial_file_temp = dealii::Utilities::split_string_list(parameter_handler.get("Load parallel file"));
+    std::vector<std::string> load_parallel_file_temp = dealii::Utilities::split_string_list(parameter_handler.get("Load parallel file"));
 
     if (boost::iequals(load_ICs_temp.at(0),"void")){
         for (unsigned int var=0; var<number_of_variables; var++){
             load_ICs.push_back(false);
-            load_serial_file.push_back(false);
+            load_parallel_file.push_back(false);
         }
     }
     else {
@@ -128,11 +128,11 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
             else {
                 load_ICs.push_back(false);
             }
-            if (boost::iequals(load_serial_file_temp.at(var),"true")){
-                load_serial_file.push_back(true);
+            if (boost::iequals(load_parallel_file_temp.at(var),"true")){
+                load_parallel_file.push_back(true);
             }
             else {
-                load_serial_file.push_back(false);
+                load_parallel_file.push_back(false);
             }
         }
     }

@@ -91,7 +91,7 @@ public:
 
 	// Variables for loading in initial conditions
 	std::vector<bool> load_ICs;
-	std::vector<bool> load_serial_file;
+	std::vector<bool> load_parallel_file;
 	std::vector<std::string> load_file_name;
 	std::vector<std::string> load_field_name;
 
@@ -136,7 +136,7 @@ private:
 
 	dealii::Tensor<2,2*dim-1+dim/3> get_Cij_tensor(std::vector<double> elastic_constants, const std::string elastic_const_symmetry) const;
 
-	dealii::Tensor<2,2*dim-1+dim/3> getCIJMatrix(const elasticityModel model, const std::vector<double> constants, dealii::ConditionalOStream & pcout) const;	
+	dealii::Tensor<2,2*dim-1+dim/3> getCIJMatrix(const elasticityModel model, const std::vector<double> constants, dealii::ConditionalOStream & pcout) const;
 
 };
 
