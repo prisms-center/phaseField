@@ -10,9 +10,9 @@
 // Set the length of the domain in all three dimensions
 // =================================================================================
 // Each axes spans from zero to the specified length
-#define spanX 100.0
-#define spanY 100.0
-#define spanZ 100.0
+#define spanX 200.0
+#define spanY 200.0
+#define spanZ 200.0
 
 // =================================================================================
 // Set the element parameters
@@ -22,7 +22,7 @@
 #define subdivisionsX 1
 #define subdivisionsY 1
 #define subdivisionsZ 1
-#define refineFactor 7
+#define refineFactor 9
 
 // Set the polynomial degree of the element (suggested values: 1 or 2)
 #define finiteElementDegree 1
@@ -31,12 +31,12 @@
 // Set the time step parameters
 // =================================================================================
 // The size of the time step
-#define timeStep 1.0e-3
+#define timeStep 1.5625e-05
 
 // The simulation ends when either timeFinal is reached or the number of time steps
 // equals timeIncrements
-#define timeFinal 100.0
-#define timeIncrements 100000
+#define timeFinal 20.0
+#define timeIncrements 1280000
 
 // =================================================================================
 // Set the output parameters
