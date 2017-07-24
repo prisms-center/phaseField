@@ -1,10 +1,9 @@
-//fields class 
+//fields class
 #ifndef FIELDS_H
 #define FIELDS_H
 #include <deal.II/base/conditional_ostream.h>
 
-enum fieldType {SCALAR, VECTOR};
-enum PDEType   {ELLIPTIC, PARABOLIC};
+#include "userInputParameters.h"
 
 template<int dim>
 class Field
@@ -33,7 +32,7 @@ Field<dim>::Field(fieldType _type, PDEType _pdetype, std::string _name): type(_t
 {
   //increment field count as new field is being created
   index=fieldCount;
-  fieldCount++; 
+  fieldCount++;
   startIndex= indexCount;
 
   //assign index to this field
@@ -58,4 +57,3 @@ Field<dim>::Field(fieldType _type, PDEType _pdetype, std::string _name): type(_t
 }
 
 #endif
-

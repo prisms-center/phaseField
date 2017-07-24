@@ -19,24 +19,62 @@
 // =================================================================================
 // The number of elements in each direction is 2^(refineFactor) * subdivisions
 // For optimal performance, use refineFactor primarily to determine the element size
+<<<<<<< HEAD
 #define subdivisionsX 1
 #define subdivisionsY 1
 #define subdivisionsZ 1
 #define refineFactor 9
+=======
+#define subdivisionsX 3
+#define subdivisionsY 3
+#define subdivisionsZ 3
+#define refineFactor 6
+>>>>>>> 0147129c14b77ac7320a8032fc57a37558811c95
 
 // Set the polynomial degree of the element (suggested values: 1 or 2)
 #define finiteElementDegree 1
 
 // =================================================================================
+// Set the adaptive mesh refinement parameters
+// =================================================================================
+// Set the flag determining if adaptive meshing is activated
+#define hAdaptivity true
+
+// Set the maximum and minimum level of refinement
+#define maxRefinementLevel (refineFactor)
+#define minRefinementLevel (refineFactor-3)
+
+// Set the fields used to determine the refinement. Fields determined by the order
+// declared in "equations.h", starting at zero
+#define refineCriterionFields {0,1}
+
+// Set the maximum and minimum value of the fields where the mesh should be refined
+#define refineWindowMax {0.1,0.99}
+#define refineWindowMin {0.02,0.01}
+
+// Set the number of time steps between remeshing operations
+#define skipRemeshingSteps 5000
+
+
+// =================================================================================
 // Set the time step parameters
 // =================================================================================
 // The size of the time step
+<<<<<<< HEAD
 #define timeStep 1.5625e-05
 
 // The simulation ends when either timeFinal is reached or the number of time steps
 // equals timeIncrements
 #define timeFinal 20.0
 #define timeIncrements 1280000
+=======
+#define timeStep (0.8e-3)
+
+// The simulation ends when either timeFinal is reached or the number of time steps
+// equals timeIncrements
+#define timeFinal 120.0
+#define timeIncrements 150000
+>>>>>>> 0147129c14b77ac7320a8032fc57a37558811c95
 
 // =================================================================================
 // Set the output parameters
@@ -54,8 +92,10 @@
 
 // User-defined list of time steps where the program should output. Only used if
 // outputCondition is "LIST"
-#define outputList {}
+#define outputList {0}
 
+// Status is printed to the screen every skipPrintSteps
+#define skipPrintSteps 1000
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output

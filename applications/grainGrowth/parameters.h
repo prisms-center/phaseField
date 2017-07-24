@@ -79,17 +79,12 @@
 
 // User-defined list of time steps where the program should output. Only used if
 // outputCondition is "LIST"
-#define outputList {}
+#define outputList {0}
 
+// Status is printed to the screen every skipPrintSteps
+#define skipPrintSteps 1000
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output
 // =================================================================================
 #define calcEnergy false
-
-
-
-
-
-
-

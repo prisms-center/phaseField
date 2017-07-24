@@ -1,17 +1,8 @@
 //initial condition
 template <int dim>
-
-class InitialCondition : public Function<dim>
+double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned int component) const
 {
-public:
-	unsigned int index;
-	Vector<double> values;
-	InitialCondition (const unsigned int _index) : Function<dim>(1), index(_index) {
-		std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
-	}
-	double value (const Point<dim> &p, const unsigned int component = 0) const
-	{
-		double scalar_IC = 0;
+  double scalar_IC=0;
 	  // =====================================================================
 	  // ENTER THE INITIAL CONDITIONS HERE FOR SCALAR FIELDS
 	  // =====================================================================
@@ -20,18 +11,15 @@ public:
 	  // according to its variable index.
 
 	  // Initial condition parameters
-	  #define x_denom (2.0/2.0*scaleFactor)*(2.0/2.0*scaleFactor)
-	  #define y_denom (16.0/2.0*scaleFactor)*(16.0/2.0*scaleFactor)
-	  #define z_denom (16.0/2.0*scaleFactor)*(16.0/2.0*scaleFactor)
-	  #define initial_interface_coeff (0.02*scaleFactor)
+	  #define x_denom (2.0)*(2.0)
+	  #define y_denom (16.0)*(16.0)
+	  #define z_denom (16.0)*(16.0)
+	  #define initial_interface_coeff (0.04)
 	  #define initial_radius 1.0
 	  #define c_matrix 1.0e-6
       #define c_precip 0.125
 
-	  //set result equal to the structural order parameter initial condition
-	  double dx=spanX/( (double)subdivisionsX )/std::pow(2.0,refineFactor);
-	  double dy=spanY/( (double)subdivisionsY )/std::pow(2.0,refineFactor);
-	  double dz=spanZ/( (double)subdivisionsZ )/std::pow(2.0,refineFactor);
+	  //set result equal to the structural order parameter initial condition   
 	  double r=0.0;
 	  std::vector<double> ellipsoid_denoms;
 	  ellipsoid_denoms.push_back(x_denom);
@@ -54,21 +42,11 @@ public:
 
 	  // =====================================================================
 	  return scalar_IC;
-  }
-};
+}
 
-//initial condition
 template <int dim>
-class InitialConditionVec : public Function<dim>
+void InitialConditionVec<dim>::vector_value (const dealii::Point<dim> &p, dealii::Vector<double> &vector_IC) const
 {
-public:
-  unsigned int index;
-  //Vector<double> values;
-  InitialConditionVec (const unsigned int _index) : Function<dim>(dim), index(_index) {
-    std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
-  }
-  void vector_value (const Point<dim> &p,Vector<double> &vector_IC) const
-  {
 	  // =====================================================================
 	  // ENTER THE INITIAL CONDITIONS HERE FOR VECTOR FIELDS
 	  // =====================================================================
@@ -84,44 +62,4 @@ public:
           }
 	  }
 	  // =====================================================================
-  }
-};
-
-template <int dim>
-void generalizedProblem<dim>::setBCs(){
-
-	// =====================================================================
-	// ENTER THE BOUNDARY CONDITIONS HERE
-	// =====================================================================
-	// This function sets the BCs for the problem variables
-	// The function "inputBCs" should be called for each component of
-	// each variable and should be in numerical order. Four input arguments
-	// set the same BC on the entire boundary. Two plus two times the
-	// number of dimensions inputs sets separate BCs on each face of the domain.
-	// Inputs to "inputBCs":
-	// First input: variable number
-	// Second input: component number
-	// Third input: BC type (options are "ZERO_DERIVATIVE" and "DIRICHLET")
-	// Fourth input: BC value (ignored unless the BC type is "DIRICHLET")
-	// Odd inputs after the third: BC type
-	// Even inputs after the third: BC value
-	// Face numbering: starts at zero with the minimum of the first direction, one for the maximum of the first direction
-	//						two for the minimum of the second direction, etc.
-
-	inputBCs(0,0,"ZERO_DERIVATIVE",0);
-
-	inputBCs(1,0,"ZERO_DERIVATIVE",0);
-
-	if (dim == 2){
-		inputBCs(2,0,"DIRICHLET",0.0,"DIRICHLET",0.0,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0);
-		inputBCs(2,1,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0,"DIRICHLET",0.0,"DIRICHLET",0.0);
-	}
-	else if (dim == 3){
-		inputBCs(2,0,"DIRICHLET",0.0,"DIRICHLET",0.0,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0);
-		inputBCs(2,1,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0,"DIRICHLET",0.0,"DIRICHLET",0.0,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0);
-		inputBCs(2,2,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0,"ZERO_DERIVATIVE",0.0,"DIRICHLET",0.0,"DIRICHLET",0.0,"DIRICHLET",0.0);
-	}
-
 }
-
-

@@ -2,17 +2,18 @@ PRISMS-PF
 =================
 <B>Code repository:</B> https://github.com/prisms-center/phaseField <br>
 <B>Code documentation:</B> https://goo.gl/00y23N <br>
-<B>User registration link:</B> http://goo.gl/forms/GXo7Im8p2Y
+<B>User registration link:</B> http://goo.gl/forms/GXo7Im8p2Y <br>
+<B>User discussion group:</B> https://groups.google.com/forum/#!forum/prisms-pf-users
 
 <B>Version information:</B>
 
-This version of the code, 1.0, is the first release version of PRISMS-PF. This version provides many updates to the pre-release versions. For more information concerning the differences between versions, please consult version_changes.txt.   
+This version of the code, 1.2, is an update to the first release version of PRISMS-PF. For information concerning the differences between versions, please consult version_changes.txt.   
 
 <B>What is PRISMS-PF?</B> 
 
-  PRISMS-PF is a powerful, massively parallel finite element code for conducting phase field and other related simulations of microstructural evolution.  The phase field method is commonly used for predicting the evolution if microstructures under a wide range of conditions and material systems. PRISMS-PF provides a simple interface for solving customizable systems of partial differential equations of the type commonly found in phase field models, and has 11 pre-built application modules, including for precipitate evolution, grain growth, and spinodal decomposition. 
+PRISMS-PF is a powerful, massively parallel finite element code for conducting phase field and other related simulations of microstructural evolution.  The phase field method is commonly used for predicting the evolution if microstructures under a wide range of conditions and material systems. PRISMS-PF provides a simple interface for solving customizable systems of partial differential equations of the type commonly found in phase field models, and has 11 pre-built application modules, including for precipitate evolution, grain growth, and spinodal decomposition. 
   
-  With PRISMS-PF, you have access to adaptive meshing and parallelization with near-ideal scaling for over a thousand processors. Moreover, the matrix-free framework from the deal.II library allows much larger than simulations than typical finite element programs – PRISMS-PF has been used for simulations with over one billion degrees of freedom. PRISMS-PF also provides performance competitive with or exceeding single-purpose codes. For example, even without enabling the mesh adaptivity features in PRISMS-PF, it has been demonstrated to be 4.5x faster than an equivalent finite difference code. 
+With PRISMS-PF, you have access to adaptive meshing and parallelization with near-ideal scaling for over a thousand processors. Moreover, the matrix-free framework from the deal.II library allows much larger than simulations than typical finite element programs – PRISMS-PF has been used for simulations with over one billion degrees of freedom. PRISMS-PF also provides performance competitive with or exceeding single-purpose codes. For example, even without enabling the mesh adaptivity features in PRISMS-PF, it has been demonstrated to be 4.5x faster than an equivalent finite difference code. 
   
   This code is developed by the PRedictive Integrated Structural
   Materials Science (PRISMS) Center [http://www.prisms-center.org/]
@@ -22,15 +23,17 @@ This version of the code, 1.0, is the first release version of PRISMS-PF. This v
 
 <B>Quick Start Guide:</B>
 
-For detailed instructions on how to download and use PRISMS-PF, please consult the PRISMS-PF Users Guide (the file prismspf_users_guide.pdf). An abbreviated version of the instructions is given below.
+For detailed instructions on how to download and use PRISMS-PF, please consult the PRISMS-PF User Guide (the file prismspf_user_guide.pdf). A (very) abbreviated version of the instructions is given below.
 
 <I>Installation:</I> 
 
-1) Install deal.II (version 8.4.1 recommended)<br>
+1) Install deal.II (version 8.4.2 recommended)<br>
   + Download CMake [http://www.cmake.org/download/]
   + Add CMake to your path (e.g. $ PATH="/path/to/cmake/Contents/bin":"$PATH"), preferably in a shell configuration file 
-  + Download Deal.II binaries (OSX and Linux) or  Virtual Machine (VMI) from https://www.dealii.org/download.html 
-  + If a Deal.II binary is downloaded, open it and follow the instructions in the terminal window <br>
+  + Download and install Deal.II following instructions from from https://www.dealii.org/download.html 
+  + If a Deal.II binary is downloaded, open it and follow the instructions in the terminal window 
+  + If Deal.II is installed from the source, the MPI and p4est libraries must be installed as prerequisites.
+<br>
 
 2) Clone the PRISMS-PF GitHub repo https://github.com/prisms-center/phaseField<br>
   + $ git clone https://github.com/prisms-center/phaseField.git <br>
@@ -64,7 +67,7 @@ Since PRISMS-PF is still under active development,
   
 <I>Visualization:</I> 
 
-  Output of the primal fields and postprocessed fields is in standard vtk 
+  Output of the primal fields fields is in standard vtk 
   format (parallel:*.pvtu, serial:*.vtu files) which can be visualized with the 
   following open source applications:
   1. VisIt (https://wci.llnl.gov/simulation/computer-codes/visit/downloads)
@@ -98,14 +101,11 @@ Since PRISMS-PF is still under active development,
   GNU Lesser General Public License (LGPL). Please see the file
   LICENSE for details.
 
-<B>Mailing Lists:</B>
-  
- + prismsphaseField.users@umich.edu	
- + prismsphaseField.dev@umich.edu  
-
 <B>Further information, questions, issues and bugs:</B>
+  
+ + prisms-pf-users@googlegroups.com (user forum)
+ + prismsphaseField.dev@umich.edu  (developer email list)
 
-  Contact the developers at prismsphaseField.dev@umich.edu  
 
 
 

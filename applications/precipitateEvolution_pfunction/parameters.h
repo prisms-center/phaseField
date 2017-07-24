@@ -52,22 +52,22 @@
 // Set the time step parameters
 // =================================================================================
 // The size of the time step
-#define timeStep 4.0e-4
+#define timeStep 7.0e-4
 #define timeFinal 100.0
-#define timeIncrements 5000
+#define timeIncrements 20000
 
 // =================================================================================
 // Set the elliptic solver parameters
 // =================================================================================
 // The solver type (currently the only recommended option is conjugate gradient)
-#define solverType SolverCG
+#define solverType "SolverCG"
 
 // The flag that determines whether the tolerance for solver convergence should
 // be an absolute tolerance (absTol=true) or a relative tolerance (absTol=false)
 #define absTol true
 
 // The tolerance for convergence (L2 norm of the residual)
-#define solverTolerance 1.0e-4
+#define solverTolerance 5.0e-3
 
 // The maximum number of solver iterations per time step
 #define maxSolverIterations 1000
@@ -88,7 +88,10 @@
 
 // User-defined list of time steps where the program should output. Only used if
 // outputCondition is "LIST"
-#define outputList {}
+#define outputList {0}
+
+// Status is printed to the screen every skipPrintSteps
+#define skipPrintSteps 10
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output

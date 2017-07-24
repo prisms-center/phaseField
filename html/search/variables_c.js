@@ -1,12 +1,17 @@
 var searchData=
 [
-  ['parabolicfieldindex',['parabolicFieldIndex',['../class_matrix_free_p_d_e.html#a865006c41fc637fb0260d30299f21a4e',1,'MatrixFreePDE']]],
-  ['pcout',['pcout',['../class_matrix_free_p_d_e.html#a914f651bc9ca2e223b243695dd37ba53',1,'MatrixFreePDE']]],
-  ['pdetype',['pdetype',['../class_field.html#a01f44b182c288ea940870d16606ab345',1,'Field']]],
-  ['pfunct_5ffav',['pfunct_faV',['../__precipitate_evolution__pfunction_2residuals_8h.html#a7aa87eaa86e08d5d63c9eb6a42cff517',1,'residuals.h']]],
-  ['pfunct_5ffbv',['pfunct_fbV',['../__precipitate_evolution__pfunction_2residuals_8h.html#a5886abfe7695bf700877361b15a3a1f6',1,'residuals.h']]],
-  ['pfunct_5fmcv',['pfunct_McV',['../__precipitate_evolution__pfunction_2residuals_8h.html#a1d14195e013a10521111a1be4a0c038e',1,'residuals.h']]],
-  ['pfunct_5fmn1v',['pfunct_Mn1V',['../__precipitate_evolution__pfunction_2residuals_8h.html#a3a3c0e5fafe909bf2e89acbde3b570f0',1,'residuals.h']]],
-  ['pfunct_5fmn2v',['pfunct_Mn2V',['../__precipitate_evolution__pfunction_2residuals_8h.html#a86f0b02d884a24a71a70c1d9f3a711ca',1,'residuals.h']]],
-  ['pfunct_5fmn3v',['pfunct_Mn3V',['../__precipitate_evolution__pfunction_2residuals_8h.html#a5714122cb295de0360a67a3ebead2345',1,'residuals.h']]]
+  ['name',['name',['../class_field.html#a9b45b3e13bd9167aab02e17e08916231',1,'Field']]],
+  ['need_5fgradient',['need_gradient',['../classuser_input_parameters.html#aec921fdbe27b7a7de1725f912fa1e3b6',1,'userInputParameters']]],
+  ['need_5fgradient_5flhs',['need_gradient_LHS',['../classuser_input_parameters.html#ae3cd606215f1fb8d6e49c75ae37ec579',1,'userInputParameters']]],
+  ['need_5fhessian',['need_hessian',['../classuser_input_parameters.html#a8c7e95a8ded73eb5467353e851c35089',1,'userInputParameters']]],
+  ['need_5fhessian_5flhs',['need_hessian_LHS',['../classuser_input_parameters.html#a85c8a624c2d4555fa9ab9d99070b3177',1,'userInputParameters']]],
+  ['need_5fvalue',['need_value',['../classuser_input_parameters.html#ab193b7aba957d83d716bdabff054a468',1,'userInputParameters']]],
+  ['need_5fvalue_5flhs',['need_value_LHS',['../classuser_input_parameters.html#a48d87fdca56b4e416b101e31f5c0394d',1,'userInputParameters']]],
+  ['newnuclei',['newnuclei',['../classparallel_nucleation_list.html#ad343e89b3a978489e45399845838776e',1,'parallelNucleationList']]],
+  ['nucleation_5foccurs',['nucleation_occurs',['../classuser_input_parameters.html#a6894a443a000f3804429ca415a1575cb',1,'userInputParameters']]],
+  ['nuclei',['nuclei',['../classcustom_p_d_e.html#ac37774f2f66e5c81250358548fad1290',1,'customPDE']]],
+  ['num_5foutputs',['num_outputs',['../classuser_input_parameters.html#a1ceb938ebb01722dc0383ddc50f84e1c',1,'userInputParameters']]],
+  ['num_5fvar_5flhs',['num_var_LHS',['../classuser_input_parameters.html#a0eb42077b757102f9c942565ab8b4129',1,'userInputParameters']]],
+  ['number_5fof_5fvariables',['number_of_variables',['../classuser_input_parameters.html#a9eb2912726e40d3f3f480f2f9db11cc7',1,'userInputParameters']]],
+  ['numcomponents',['numComponents',['../class_field.html#adec91e5767db3627605a6c0c8bdd6931',1,'Field']]]
 ];

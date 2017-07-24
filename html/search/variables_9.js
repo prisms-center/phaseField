@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['locally_5frelevant_5fdofsset',['locally_relevant_dofsSet',['../class_matrix_free_p_d_e.html#a4e7577cd5db8bd3bc9bd685d88442f0d',1,'MatrixFreePDE']]],
-  ['locally_5frelevant_5fdofsset2',['locally_relevant_dofsSet2',['../class_matrix_free_p_d_e.html#a20d5fc10e58de5142c5f226e74e43e63',1,'MatrixFreePDE']]],
-  ['localnuclei',['localNuclei',['../coupled_c_h_a_c_mechanics_8h.html#ae077181c3a07a8622e7bc3a58e2b6c01',1,'localNuclei():&#160;coupledCHACMechanics.h'],['../generalized__model__functions_8h.html#ae077181c3a07a8622e7bc3a58e2b6c01',1,'localNuclei():&#160;generalized_model_functions.h']]]
+  ['kn1',['Kn1',['../precipitate_evolution_2equations_8h.html#aef34c92909314e8c81279b24e81bd88d',1,'Kn1():&#160;equations.h'],['../precipitate_evolution__pfunction_2equations_8h.html#aef34c92909314e8c81279b24e81bd88d',1,'Kn1():&#160;equations.h'],['../single_precipitate_k_k_s_2equations_8h.html#aef34c92909314e8c81279b24e81bd88d',1,'Kn1():&#160;equations.h']]],
+  ['kn2',['Kn2',['../precipitate_evolution_2equations_8h.html#acce453ec82a9423969fbd7b42179d8a6',1,'Kn2():&#160;equations.h'],['../precipitate_evolution__pfunction_2equations_8h.html#acce453ec82a9423969fbd7b42179d8a6',1,'Kn2():&#160;equations.h']]],
+  ['kn3',['Kn3',['../precipitate_evolution_2equations_8h.html#a3ab71a6b6ea21d1c44a12c0ceb55603a',1,'Kn3():&#160;equations.h'],['../precipitate_evolution__pfunction_2equations_8h.html#a3ab71a6b6ea21d1c44a12c0ceb55603a',1,'Kn3():&#160;equations.h']]]
 ];

@@ -1,3 +1,7 @@
+#ifndef DEALIIHEADERS_H
+#define DEALIIHEADERS_H
+
+
 //List of deal.II headers needed for the phase field codes
 #include <deal.II/base/quadrature.h>
 #include <deal.II/base/function.h>
@@ -30,4 +34,13 @@
 #include <deal.II/distributed/solution_transfer.h>
 #include <deal.II/numerics/error_estimator.h>
 #include <deal.II/distributed/grid_refinement.h>
+#include <deal.II/base/parameter_handler.h>
 
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/variant.hpp>
+//#include <tuple>
+
+#include <unordered_map>
+
+
+#endif // DEALIIHEADERS_H

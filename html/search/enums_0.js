@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['elasticitymodel',['elasticityModel',['../anisotropy_8h.html#abb3de18236e38998c9ebe938a8791ab3',1,'anisotropy.h']]]
+  ['bc_5ftype',['BC_type',['../var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74',1,'varBCs.h']]]
 ];

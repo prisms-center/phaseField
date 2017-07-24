@@ -1,12 +1,9 @@
 //initForTests() method for MatrixFreePDE class
 
-#ifndef INITFORTESTS_MATRIXFREE_H
-#define INITFORTESTS_MATRIXFREE_H
-//this source file is temporarily treated as a header file (hence
-//#ifndef's) till library packaging scheme is finalized
+#include "../../include/matrixFreePDE.h"
 
- template <int dim>
- void MatrixFreePDE<dim>::initForTests(){
+template <int dim, int degree>
+ void MatrixFreePDE<dim,degree>::initForTests(){
    //creating mesh
    std::vector<unsigned int> subdivisions;
    subdivisions.push_back(10);
@@ -17,18 +14,20 @@
      }
    }
      
-#if problemDIM==3
+   if (dim == 3){
    GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(1,1,1));
-#elif problemDIM==2
+   }
+   else if (dim == 2){
    GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(1,1));
-#elif problemDIM==1
+   }
+   else {
    GridGenerator::subdivided_hyper_rectangle (triangulation, subdivisions, Point<dim>(), Point<dim>(1));
-#endif
+   }
 
    //setup system
    //create FESystem
    FESystem<dim>* fe;
-   fe=new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(finiteElementDegree+1)),1);
+   fe=new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(degree+1)),1);
    FESet.push_back(fe);
 
    //distribute DOFs
@@ -59,8 +58,7 @@
    additional_data.mpi_communicator = MPI_COMM_WORLD;
    additional_data.tasks_parallel_scheme = MatrixFree<dim,double>::AdditionalData::partition_partition;
    additional_data.mapping_update_flags = (update_values | update_gradients | update_JxW_values | update_quadrature_points);
-   QGaussLobatto<1> quadrature (finiteElementDegree+1);
-   num_quadrature_points=std::pow(quadrature.size(),dim);
+   QGaussLobatto<1> quadrature (degree+1);
    matrixFreeObject.clear();
    matrixFreeObject.reinit (dofHandlersSet, constraintsOtherSet, quadrature, additional_data);
  
@@ -73,4 +71,4 @@
 
 }
 
-#endif 
+#include "../../include/matrixFreePDE_template_instantiations.h"

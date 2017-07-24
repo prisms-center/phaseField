@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['refinegrid',['refineGrid',['../class_matrix_free_p_d_e.html#aced905f83aaed97fde5f712b40828478',1,'MatrixFreePDE']]],
-  ['refinemesh',['refineMesh',['../class_matrix_free_p_d_e.html#aa0e6b87148fea8f5e43117608e04adeb',1,'MatrixFreePDE']]],
-  ['residuallhs',['residualLHS',['../classgeneralized_problem.html#a3988a50e51f4275540101117525dc2dc',1,'generalizedProblem']]],
-  ['residualrhs',['residualRHS',['../classgeneralized_problem.html#ae1a18316f884741b13194c7748db19f4',1,'generalizedProblem']]]
+  ['nucprob',['nucProb',['../classcustom_p_d_e.html#a17ffc64124055d41ceb0e634660f82ff',1,'customPDE::nucProb(double cValue, double dV, double ct) const '],['../classcustom_p_d_e.html#a5320de377b7d2121ea9c5bfce8d50f91',1,'customPDE::nucProb(double cValue, double dV, double dk1, double dk2) const ']]]
 ];

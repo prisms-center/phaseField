@@ -1,0 +1,258 @@
+\documentclass[10pt]{article}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{bbm}
+\usepackage{mathrsfs}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{subcaption}
+\usepackage{epsfig}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{wrapfig}
+\usepackage{graphicx}
+\usepackage{psfrag}
+\newcommand{\sun}{\ensuremath{\odot}} % sun symbol is \sun
+\let\vaccent=\v % rename builtin command \v{} to \vaccent{}
+\renewcommand{\v}[1]{\ensuremath{\mathbf{#1}}} % for vectors
+\newcommand{\gv}[1]{\ensuremath{\mbox{\boldmath$ #1 $}}} 
+\newcommand{\grad}[1]{\gv{\nabla} #1}
+\renewcommand{\baselinestretch}{1.2}
+\jot 5mm
+\graphicspath{{./figures/}}
+%text dimensions
+\textwidth 6.5 in
+\oddsidemargin .2 in
+\topmargin -0.2 in
+\textheight 8.5 in
+\headheight 0.2in
+\overfullrule = 0pt
+\pagestyle{plain}
+\def\newpar{\par\vskip 0.5cm}
+\begin{document}
+%
+%----------------------------------------------------------------------
+%        Define symbols
+%----------------------------------------------------------------------
+%
+\def\iso{\mathbbm{1}}
+\def\half{{\textstyle{1 \over 2}}}
+\def\third{{\textstyle{1 \over 3}}}
+\def\fourth{{\textstyle{{1 \over 4}}}}
+\def\twothird{{\textstyle {{2 \over 3}}}}
+\def\ndim{{n_{\rm dim}}}
+\def\nint{n_{\rm int}}
+\def\lint{l_{\rm int}}
+\def\nel{n_{\rm el}}
+\def\nf{n_{\rm f}}
+\def\DIV {\hbox{\af div}}
+\def\GRAD{\hbox{\af Grad}}
+\def\sym{\mathop{\rm sym}\nolimits}
+\def\tr{\mathop{\rm tr}\nolimits}
+\def\dev{\mathop{\rm dev}\nolimits}
+\def\Dev{\mathop{\rm Dev}\nolimits}
+\def\DEV{\mathop {\rm DEV}\nolimits}
+\def\bfb {{\bi b}}
+\def\Bnabla{\nabla}
+\def\bG{{\bi G}}
+\def\jmpdelu{{\lbrack\!\lbrack \Delta u\rbrack\!\rbrack}}
+\def\jmpudot{{\lbrack\!\lbrack\dot u\rbrack\!\rbrack}}
+\def\jmpu{{\lbrack\!\lbrack u\rbrack\!\rbrack}}
+\def\jmphi{{\lbrack\!\lbrack\varphi\rbrack\!\rbrack}}
+\def\ljmp{{\lbrack\!\lbrack}}
+\def\rjmp{{\rbrack\!\rbrack}}
+\def\sign{{\rm sign}}
+\def\nn{{n+1}}
+\def\na{{n+\vartheta}}
+\def\nna{{n+(1-\vartheta)}}
+\def\nt{{n+{1\over 2}}}
+\def\nb{{n+\beta}}
+\def\nbb{{n+(1-\beta)}}
+%---------------------------------------------------------
+%               Bold Face Math Characters:
+%               All In Format: \B***** .
+%---------------------------------------------------------
+\def\bOne{\mbox{\boldmath$1$}}
+\def\BGamma{\mbox{\boldmath$\Gamma$}}
+\def\BDelta{\mbox{\boldmath$\Delta$}}
+\def\BTheta{\mbox{\boldmath$\Theta$}}
+\def\BLambda{\mbox{\boldmath$\Lambda$}}
+\def\BXi{\mbox{\boldmath$\Xi$}}
+\def\BPi{\mbox{\boldmath$\Pi$}}
+\def\BSigma{\mbox{\boldmath$\Sigma$}}
+\def\BUpsilon{\mbox{\boldmath$\Upsilon$}}
+\def\BPhi{\mbox{\boldmath$\Phi$}}
+\def\BPsi{\mbox{\boldmath$\Psi$}}
+\def\BOmega{\mbox{\boldmath$\Omega$}}
+\def\Balpha{\mbox{\boldmath$\alpha$}}
+\def\Bbeta{\mbox{\boldmath$\beta$}}
+\def\Bgamma{\mbox{\boldmath$\gamma$}}
+\def\Bdelta{\mbox{\boldmath$\delta$}}
+\def\Bepsilon{\mbox{\boldmath$\epsilon$}}
+\def\Bzeta{\mbox{\boldmath$\zeta$}}
+\def\Beta{\mbox{\boldmath$\eta$}}
+\def\Btheta{\mbox{\boldmath$\theta$}}
+\def\Biota{\mbox{\boldmath$\iota$}}
+\def\Bkappa{\mbox{\boldmath$\kappa$}}
+\def\Blambda{\mbox{\boldmath$\lambda$}}
+\def\Bmu{\mbox{\boldmath$\mu$}}
+\def\Bnu{\mbox{\boldmath$\nu$}}
+\def\Bxi{\mbox{\boldmath$\xi$}}
+\def\Bpi{\mbox{\boldmath$\pi$}}
+\def\Brho{\mbox{\boldmath$\rho$}}
+\def\Bsigma{\mbox{\boldmath$\sigma$}}
+\def\Btau{\mbox{\boldmath$\tau$}}
+\def\Bupsilon{\mbox{\boldmath$\upsilon$}}
+\def\Bphi{\mbox{\boldmath$\phi$}}
+\def\Bchi{\mbox{\boldmath$\chi$}}
+\def\Bpsi{\mbox{\boldmath$\psi$}}
+\def\Bomega{\mbox{\boldmath$\omega$}}
+\def\Bvarepsilon{\mbox{\boldmath$\varepsilon$}}
+\def\Bvartheta{\mbox{\boldmath$\vartheta$}}
+\def\Bvarpi{\mbox{\boldmath$\varpi$}}
+\def\Bvarrho{\mbox{\boldmath$\varrho$}}
+\def\Bvarsigma{\mbox{\boldmath$\varsigma$}}
+\def\Bvarphi{\mbox{\boldmath$\varphi$}}
+\def\bone{\mathbf{1}}
+\def\bzero{\mathbf{0}}
+%---------------------------------------------------------
+%               Bold Face Math Italic:
+%               All In Format: \b* .
+%---------------------------------------------------------
+\def\bA{\mbox{\boldmath$ A$}}
+\def\bB{\mbox{\boldmath$ B$}}
+\def\bC{\mbox{\boldmath$ C$}}
+\def\bD{\mbox{\boldmath$ D$}}
+\def\bE{\mbox{\boldmath$ E$}}
+\def\bF{\mbox{\boldmath$ F$}}
+\def\bG{\mbox{\boldmath$ G$}}
+\def\bH{\mbox{\boldmath$ H$}}
+\def\bI{\mbox{\boldmath$ I$}}
+\def\bJ{\mbox{\boldmath$ J$}}
+\def\bK{\mbox{\boldmath$ K$}}
+\def\bL{\mbox{\boldmath$ L$}}
+\def\bM{\mbox{\boldmath$ M$}}
+\def\bN{\mbox{\boldmath$ N$}}
+\def\bO{\mbox{\boldmath$ O$}}
+\def\bP{\mbox{\boldmath$ P$}}
+\def\bQ{\mbox{\boldmath$ Q$}}
+\def\bR{\mbox{\boldmath$ R$}}
+\def\bS{\mbox{\boldmath$ S$}}
+\def\bT{\mbox{\boldmath$ T$}}
+\def\bU{\mbox{\boldmath$ U$}}
+\def\bV{\mbox{\boldmath$ V$}}
+\def\bW{\mbox{\boldmath$ W$}}
+\def\bX{\mbox{\boldmath$ X$}}
+\def\bY{\mbox{\boldmath$ Y$}}
+\def\bZ{\mbox{\boldmath$ Z$}}
+\def\ba{\mbox{\boldmath$ a$}}
+\def\bb{\mbox{\boldmath$ b$}}
+\def\bc{\mbox{\boldmath$ c$}}
+\def\bd{\mbox{\boldmath$ d$}}
+\def\be{\mbox{\boldmath$ e$}}
+\def\bff{\mbox{\boldmath$ f$}}
+\def\bg{\mbox{\boldmath$ g$}}
+\def\bh{\mbox{\boldmath$ h$}}
+\def\bi{\mbox{\boldmath$ i$}}
+\def\bj{\mbox{\boldmath$ j$}}
+\def\bk{\mbox{\boldmath$ k$}}
+\def\bl{\mbox{\boldmath$ l$}}
+\def\bm{\mbox{\boldmath$ m$}}
+\def\bn{\mbox{\boldmath$ n$}}
+\def\bo{\mbox{\boldmath$ o$}}
+\def\bp{\mbox{\boldmath$ p$}}
+\def\bq{\mbox{\boldmath$ q$}}
+\def\br{\mbox{\boldmath$ r$}}
+\def\bs{\mbox{\boldmath$ s$}}
+\def\bt{\mbox{\boldmath$ t$}}
+\def\bu{\mbox{\boldmath$ u$}}
+\def\bv{\mbox{\boldmath$ v$}}
+\def\bw{\mbox{\boldmath$ w$}}
+\def\bx{\mbox{\boldmath$ x$}}
+\def\by{\mbox{\boldmath$ y$}}
+\def\bz{\mbox{\boldmath$ z$}}
+%*********************************
+%Start main paper
+%*********************************
+\centerline{\Large{\bf PRISMS-PF Application Formulation:}}
+\smallskip
+\centerline{\Large{\bf dendriticSolidification}}
+\bigskip
+
+This example application implements a simple model of dendritic solidification based on the CHiMaD Benchmark Problem 3, itself based on the model given in the following article: \\
+``Multiscale Finite-Difference-Diffusion-Monte-Carlo Method for Simulating Dendritic Solidification'' by M. Plapp and A. Karma, \emph{Journal of Computational Physics}, 165, 592-619 (2000)
+
+\section{Governing Equations}
+
+Consider a free energy density given by:
+\begin{equation}
+  \Pi = \int_{\Omega}   \left[ \frac{1}{2} W^2(\hat{n})|\nabla \phi|^2+f(\phi,u) \right]   ~dV 
+\end{equation}
+where $\phi$ is an order parameter for the solid phase and $u$ is the dimensionaless temperature:
+\begin{equation}
+u = \frac{T - T_m}{L/c_p}
+\end{equation}
+for temperature $T$, melting temperature $T_m$, latent heat $L$, and specific heat $c_p$. The free energy density, $f(\phi,u)$ is given by a double-well potential:
+\begin{equation}
+f(\phi,u) = -\frac{1}{2}\phi^2 + \frac{1}{4}\phi^4 + \lambda u \phi \left(1-\frac{2}{3} \phi^2+\frac{1}{5}\phi^4 \right)
+\end{equation}
+where $\lambda$ is a dimensionless coupling constant. The gradient energy coefficient, $W$, is given by 
+\begin{equation}
+W = W_0 [1+\epsilon_m \cos[m(\theta-\theta_0)]]
+\end{equation}
+where, $W_0$, $\epsilon_m$, and $\theta_0$ are constants and $\theta$ is the in-plane azimuthal angle, where $\tan(\theta) = \frac{n_y}{n_x}$, where $n_y$ and $n_x$ are components of the normal vector $\hat{n} = \frac{\nabla \phi}{|\nabla \phi|}$.
+
+The evolution equations are:
+\begin{gather}
+\frac{\partial u}{\partial t} = - \frac{\delta \Pi}{\delta \phi} = D \nabla^2 u + \frac{1}{2} \tau(\hat{n}) \frac{\partial \phi}{\partial t} \\
+\tau(\hat{n}) \frac{\partial \phi}{\partial t} = \frac{\partial f}{\partial \phi} + \frac{\partial}{\partial x} \left[ |\nabla \phi|^2 W(\hat{n}) \frac{\partial W(\hat{n})}{\partial \left( \frac{\partial \phi}{\partial x} \right)} \right] \hat{x} + \frac{\partial}{\partial y} \left[ |\nabla \phi|^2 W(\hat{n}) \frac{\partial W(\hat{n})}{\partial \left( \frac{\partial \phi}{\partial y} \right)} \right] \hat{y} 
+\end{gather}
+where
+\begin{gather}
+\tau(\hat{n}) = \tau_0 [1+\epsilon_m \cos[m(\theta-\theta_0)]] \\
+D = \frac{0.6267 \lambda W_0^2}{\tau_0}
+\end{gather}
+
+The governing equations can be written more compactly using the variable $\mu$, the driving force for the phase transformation:
+\begin{gather}
+\frac{\partial u}{\partial t} = D \nabla^2 u - \frac{\mu}{\tau} \\
+\tau(\hat{n}) \frac{\partial \phi}{\partial t} = \mu \\
+\mu = \left(\frac{\partial f}{\partial \phi}\right) - \nabla \cdot \left[\left(W^2 \frac{\partial \phi}{\partial x} - W \frac{\partial W}{\partial u} \frac{\partial \phi}{\partial y}\right)\hat{x}  + \left(W^2 \frac{\partial \phi}{\partial y} + W \frac{\partial W}{\partial u} \frac{\partial \phi}{\partial x}\right) \hat{y} \right]
+\end{gather}
+
+\section{Model Constants}
+$W_0$: Controls the interfacial thickness, default value of 1.0. \\
+$\tau_0$: Controls the phase transformation kinetics, default value of 1.0. \\
+$\epsilon_m$: T the strength of the anisotropy, default value of 0.05. \\
+$D$: The thermal diffusion constant, default value of 1.0. \\
+$\Delta = \frac{T_m-T_0}{L/c_p}$: The level of undercooling, default value of 0.75. \\
+$\theta_0$ = The rotation angle of the anisotropy, default value of 0.125 ($\sim$7.16$^\circ$).
+
+\section{Time Discretization}
+Considering forward Euler explicit time stepping, we have the time discretized kinetics equation:
+\begin{gather}
+u^{n+1} = \left(u^{n} - \frac{\mu^n \Delta t}{\tau}\right) + D \Delta t \nabla^2 u^n \\
+\phi^{n+1} = \left(\phi^n - \frac{\Delta t \mu^n}{\tau}\right) \\
+ \mu^{n+1} = \left(\frac{\partial f^n}{\partial \phi}\right) - \nabla \cdot \left[\left(W^2 \frac{\partial \phi^n}{\partial x} - W \frac{\partial W}{\partial u^n} \frac{\partial \phi^n}{\partial y}\right)\hat{x}  + \left(W^2 \frac{\partial \phi^n}{\partial y} + W \frac{\partial W}{\partial u} \frac{\partial \phi^n}{\partial x}\right) \hat{y} \right]
+\end{gather}
+
+\section{Weak Formulation}
+
+\begin{gather}
+\int_{\Omega}   w  u^{n+1}  ~dV = \int_{\Omega}   w \underbrace{\left(u^{n} - \frac{\mu^n \Delta t}{\tau}\right)}_{r_u} + \nabla w \underbrace{(-D \Delta t \nabla u^n)}_{r_{ux}} ~dV \\
+\int_{\Omega}   w  \phi^{n+1}  ~dV = \int_{\Omega}   w \underbrace{\left(\phi^n - \frac{\Delta t \mu^n}{\tau}\right)}_{r_{\phi}} ~dV \\
+\int_{\Omega}   w  \mu^{n+1}  ~dV = \int_{\Omega}   w \underbrace{\left(\frac{\partial f^n}{\partial \phi}\right)}_{r_{\mu}} + \nabla w \cdot \underbrace{\left[\left(W^2 \frac{\partial \phi^n}{\partial x} - W \frac{\partial W}{\partial u^n} \frac{\partial \phi^n}{\partial y}\right)\hat{x}  + \left(W^2 \frac{\partial \phi^n}{\partial y} + W \frac{\partial W}{\partial u} \frac{\partial \phi^n}{\partial x}\right) \hat{y} \right]}_{r_{\phi x}}  ~dV 
+\end{gather}
+
+
+
+
+
+
+\vskip 0.25in
+The above values of $r_{u}$, $r_{ux}$, $r_{\phi}$, and $r_{\phi x}$ and $r_{\mu}$ are used to define the residuals in the following parameters file: \\
+\textit{applications/dendriticSolification/parameters.h}
+
+
+\end{document} 

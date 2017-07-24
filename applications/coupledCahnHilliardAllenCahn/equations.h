@@ -1,8 +1,9 @@
 // List of variables and residual equations for the coupled Allen-Cahn/Cahn-Hilliard example application
 
 // =================================================================================
-// Define the variables in the model
+// Set the attributes of the primary field variables
 // =================================================================================
+<<<<<<< HEAD
 // The number of variables
 #define num_var 6
 
@@ -21,15 +22,45 @@
 // (need_val_residual) and/or the gradient of the test function (need_grad_residual)
 #define need_val_residual {true, true, true, true, true, true}
 #define need_grad_residual {true, true, true, true, true, true}
+=======
+void variableAttributeLoader::loadVariableAttributes(){
+	// Variable 0
+	set_variable_name				(0,"c");
+	set_variable_type				(0,SCALAR);
+	set_variable_equation_type		(0,PARABOLIC);
+
+	set_need_value					(0,true);
+	set_need_gradient				(0,true);
+	set_need_hessian				(0,false);
+
+	set_need_value_residual_term	(0,true);
+	set_need_gradient_residual_term	(0,true);
+
+    // Variable 1
+	set_variable_name				(1,"n");
+	set_variable_type				(1,SCALAR);
+	set_variable_equation_type		(1,PARABOLIC);
+
+	set_need_value					(1,true);
+	set_need_gradient				(1,true);
+	set_need_hessian				(1,false);
+
+	set_need_value_residual_term	(1,true);
+	set_need_gradient_residual_term	(1,true);
+}
+>>>>>>> 0147129c14b77ac7320a8032fc57a37558811c95
 
 // =================================================================================
-// Define the model parameters and the residual equations
+// residualRHS
 // =================================================================================
-// Parameters in the residual equations and expressions for the residual equations
-// can be set here. For simple cases, the entire residual equation can be written
-// here. For more complex cases with loops or conditional statements, residual
-// equations (or parts of residual equations) can be written below in "residualRHS".
+// This function calculates the residual equations for each variable. It takes
+// "variable_list" as an input, which is a list of the value and derivatives of
+// each of the variables at a specific quadrature point. The (x,y,z) location of
+// that quadrature point is given by "q_point_loc". The function outputs residuals
+// to variable_list. The index for each variable in this list corresponds to
+// the index given at the top of this file.
 
+<<<<<<< HEAD
 // Cahn-Hilliard mobility
 #define McV 5.0
 
@@ -141,6 +172,46 @@ modelResidualsList[4].scalarValueResidual = rn3V;
 modelResidualsList[4].scalarGradResidual = rn3xV;
 modelResidualsList[5].scalarValueResidual = rn4V;
 modelResidualsList[5].scalarGradResidual = rn4xV;
+=======
+template <int dim, int degree>
+void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+
+//c
+scalarvalueType c = variable_list.get_scalar_value(0);
+scalargradType cx = variable_list.get_scalar_gradient(0);
+
+//n
+scalarvalueType n = variable_list.get_scalar_value(1);
+scalargradType nx = variable_list.get_scalar_gradient(1);
+
+// Free energy for each phase and their first and second derivatives
+scalarvalueType faV = (-1.6704-4.776*c+5.1622*c*c-2.7375*c*c*c+1.3687*c*c*c*c);
+scalarvalueType facV = (-4.776 + 10.3244*c - 8.2125*c*c + 5.4748*c*c*c);
+scalarvalueType faccV = (10.3244-16.425*c+16.4244*c*c);
+scalarvalueType fbV = (5.0*c*c-5.9746*c-1.5924);
+scalarvalueType fbcV = (10.0*c-5.9746);
+scalarvalueType fbccV = constV(10.0);
+
+// Interpolation function and its derivative
+scalarvalueType hV = (10.0*n*n*n-15.0*n*n*n*n+6.0*n*n*n*n*n);
+scalarvalueType hnV = (30.0*n*n-60.0*n*n*n+30.0*n*n*n*n);
+
+// Residual equations
+scalargradType muxV = ( cx*((1.0-hV)*faccV+hV*fbccV) + nx*((fbcV-facV)*hnV) );
+scalarvalueType rcV = c;
+scalargradType rcxV = (constV(-McV*userInputs.dtValue)*muxV);
+scalarvalueType rnV = (n-constV(userInputs.dtValue*MnV)*(fbV-faV)*hnV);
+scalargradType rnxV = (constV(-userInputs.dtValue*KnV*MnV)*nx);
+
+// Residuals for the equation to evolve the concentration (names here should match those in the macros above)
+variable_list.set_scalar_value_residual_term(0,rcV);
+variable_list.set_scalar_gradient_residual_term(0,rcxV);
+
+// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
+variable_list.set_scalar_value_residual_term(1,rnV);
+variable_list.set_scalar_gradient_residual_term(1,rnxV);
+>>>>>>> 0147129c14b77ac7320a8032fc57a37558811c95
 
 }
 
@@ -148,21 +219,21 @@ modelResidualsList[5].scalarGradResidual = rn4xV;
 // residualLHS (needed only if at least one equation is elliptic)
 // =================================================================================
 // This function calculates the residual equations for the iterative solver for
-// elliptic equations.for each variable. It takes "modelVariablesList" as an input,
+// elliptic equations.for each variable. It takes "variable_list" as an input,
 // which is a list of the value and derivatives of each of the variables at a
 // specific quadrature point. The (x,y,z) location of that quadrature point is given
-// by "q_point_loc". The function outputs "modelRes", the value and gradient terms of
+// by "q_point_loc". The function outputs residual terms to "variable_list"
 // for the left-hand-side of the residual equation for the iterative solver. The
-// index for each variable in these lists corresponds to the order it is defined at
-// the top of this file (starting at 0), not counting variables that have
-// "need_val_LHS", "need_grad_LHS", and "need_hess_LHS" all set to "false". If there
-// are multiple elliptic equations, conditional statements should be used to ensure
-// that the correct residual is being submitted. The index of the field being solved
-// can be accessed by "this->currentFieldIndex".
-template <int dim>
-void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim> > & modelVariablesList,
-		modelResidual<dim> & modelRes,
+// index for each variable in this list corresponds to
+// the index given at the top of this file. If there are multiple elliptic equations,
+// conditional statements should be used to ensure that the correct residual is
+// being submitted. The index of the field being solved can be accessed by
+// "this->currentFieldIndex".
+
+template <int dim, int degree>
+void customPDE<dim,degree>::residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+<<<<<<< HEAD
 
 }
 
@@ -215,10 +286,6 @@ for (unsigned i=0; i<c.n_array_elements;i++){
 	  this->energy_components[0]+= f_chem[i]*JxW_value[i];
 	  this->energy_components[1]+= f_grad[i]*JxW_value[i];
   }
+=======
+>>>>>>> 0147129c14b77ac7320a8032fc57a37558811c95
 }
-assembler_lock.release ();
-}
-
-
-
-

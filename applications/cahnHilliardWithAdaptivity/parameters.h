@@ -23,10 +23,10 @@
 #define subdivisionsX 1
 #define subdivisionsY 1
 #define subdivisionsZ 1
-#define refineFactor 7
+#define refineFactor 6
 
 // Set the polynomial degree of the element (suggested values: 1 or 2)
-#define finiteElementDegree 1
+#define finiteElementDegree 2
 
 // =================================================================================
 // Set the adaptive mesh refinement parameters
@@ -36,15 +36,15 @@
 
 // Set the maximum and minimum level of refinement
 #define maxRefinementLevel (refineFactor)
-#define minRefinementLevel (refineFactor-1)
+#define minRefinementLevel (refineFactor-3)
 
 // Set the fields used to determine the refinement. Fields determined by the order
 // declared in "equations.h", starting at zero
 #define refineCriterionFields {0}
 
 // Set the maximum and minimum value of the fields where the mesh should be refined
-#define refineWindowMax {0.99}
-#define refineWindowMin {0.01}
+#define refineWindowMax {0.95}
+#define refineWindowMin {0.05}
 
 // Set the number of time steps between remeshing operations
 #define skipRemeshingSteps 2000
@@ -76,15 +76,12 @@
 
 // User-defined list of time steps where the program should output. Only used if
 // outputCondition is "LIST"
-#define outputList {}
+#define outputList {0}
 
+// Status is printed to the screen every skipPrintSteps
+#define skipPrintSteps 1000
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output
 // =================================================================================
-#define calcEnergy false
-
-
-
-
-
+#define calcEnergy true

@@ -28,15 +28,36 @@
 #define finiteElementDegree 1
 
 // =================================================================================
+// Set the adaptive mesh refinement parameters
+// =================================================================================
+// Set the flag determining if adaptive meshing is activated
+#define hAdaptivity true
+
+// Set the maximum and minimum level of refinement
+#define maxRefinementLevel (refineFactor)
+#define minRefinementLevel (refineFactor-3)
+
+// Set the fields used to determine the refinement. Fields determined by the order
+// declared in "equations.h", starting at zero
+#define refineCriterionFields {1}
+
+// Set the maximum and minimum value of the fields where the mesh should be refined
+#define refineWindowMax {0.999}
+#define refineWindowMin {0.001}
+
+// Set the number of time steps between remeshing operations
+#define skipRemeshingSteps 1000
+
+// =================================================================================
 // Set the time step parameters
 // =================================================================================
 // The size of the time step
-#define timeStep 5.0e-2
+#define timeStep 1.0e0
 
 // The simulation ends when either timeFinal is reached or the number of time steps
 // equals timeIncrements
-#define timeFinal 20000.0
-#define timeIncrements 40000
+#define timeFinal 10000.0
+#define timeIncrements 10000
 
 // =================================================================================
 // Set the output parameters
@@ -54,8 +75,10 @@
 
 // User-defined list of time steps where the program should output. Only used if
 // outputCondition is "LIST"
-#define outputList {}
+#define outputList {0}
 
+// Status is printed to the screen every skipPrintSteps
+#define skipPrintSteps 1000
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output

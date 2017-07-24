@@ -1,14 +1,6 @@
 template <int dim>
-class InitialCondition : public Function<dim>
+double InitialCondition<dim>::value (const Point<dim> &p, const unsigned int component) const
 {
-public:
-  unsigned int index;
-  Vector<double> values;
-  InitialCondition (const unsigned int _index) : Function<dim>(1), index(_index) {
-    std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
-  }
-  double value (const Point<dim> &p, const unsigned int component = 0) const
-  {
 	  double scalar_IC = 0;
 	  // =====================================================================
 	  // ENTER THE INITIAL CONDITIONS HERE FOR SCALAR FIELDS
@@ -17,52 +9,37 @@ public:
 	  // Use "if" statements to set the initial condition for each variable
 	  // according to its variable index.
 
-	  double dx=spanX/((double) subdivisionsX)/std::pow(2.0,refineFactor);
 	  double r=0.0;
 
 	  if (index == 0){
-#if problemDIM==1
-                  r=p[0];
-                   scalar_IC = 0.5*(1-std::tanh((r-spanX/2.0)/6.0));
-#elif problemDIM==2
-                  r=p.distance(Point<dim>(spanX/2.0,spanY/2.0));
-                  double n = 0.5*(1.0-std::tanh((r-spanX/4.0)/4.0));
-                  scalar_IC = 0.082*16.0/(spanX/4.0)+(3.0*n*n-2.0*n*n*n);
-#elif problemDIM==3
-                  r=p.distance(Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
-                  double n = 0.5*(1.0-std::tanh((r-spanX/4.0)/4.0));
-                  scalar_IC = 2.0*0.082*16.0/(spanX/4.0)+(3.0*n*n-2.0*n*n*n);
-#endif
+			r = 0.0;
+			for (unsigned int dir = 0; dir < dim; dir++){
+				r += (p[dir]-userInputs.domain_size[dir]/2.0)*(p[dir]-userInputs.domain_size[dir]/2.0);
+			}
+			r = std::sqrt(r);
+			double n = 0.5*(1.0-std::tanh((r-userInputs.domain_size[0]/4.0)/4.0));
+			scalar_IC = 0.082*16.0/(userInputs.domain_size[0]/4.0)+(3.0*n*n-2.0*n*n*n);
+
 	  }
-	  if (index == 1) {
-#if problemDIM==1
-                  r=p[0];
-                  scalar_IC = 0.5*(1-std::tanh((r-spanX/2.0)/6.0));
-#elif problemDIM==2
-                  r=p.distance(Point<dim>(spanX/2.0,spanY/2.0));
-                  scalar_IC = 0.5*(1.0-std::tanh((r-spanX/4.0)/4.0));
-#elif problemDIM==3
-                  r=p.distance(Point<dim>(spanX/2.0,spanY/2.0,spanZ/2.0));
-                  scalar_IC = 0.5*(1.0-std::tanh((r-spanX/4.0)/4.0));
-#endif
+	  else if (index == 1) {
+			r = 0.0;
+			for (unsigned int dir = 0; dir < dim; dir++){
+			  r += (p[dir]-userInputs.domain_size[dir]/2.0)*(p[dir]-userInputs.domain_size[dir]/2.0);
+			}
+			r = std::sqrt(r);
+            scalar_IC = 0.5*(1.0-std::tanh((r-userInputs.domain_size[0]/4.0)/4.0));
 	  }
-          if (index == 2) scalar_IC = 0.0;
+	  else {
+		  scalar_IC = 0.0;
+	  }
+
 	  // =====================================================================
 	  return scalar_IC;
-  }
-};
+}
 
 template <int dim>
-class InitialConditionVec : public Function<dim>
+void InitialConditionVec<dim>::vector_value (const Point<dim> &p,Vector<double> &vector_IC) const
 {
-public:
-  unsigned int index;
-  //Vector<double> values;
-  InitialConditionVec (const unsigned int _index) : Function<dim>(dim), index(_index) {
-    std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
-  }
-  void vector_value (const Point<dim> &p,Vector<double> &vector_IC) const
-  {
 	  // =====================================================================
 	  // ENTER THE INITIAL CONDITIONS HERE FOR VECTOR FIELDS
 	  // =====================================================================
@@ -72,35 +49,4 @@ public:
 
 
 	  // =====================================================================
-  }
-};
-
-
-template <int dim>
-void generalizedProblem<dim>::setBCs(){
-
-	// =====================================================================
-	// ENTER THE BOUNDARY CONDITIONS HERE
-	// =====================================================================
-	// This function sets the BCs for the problem variables
-	// The function "inputBCs" should be called for each component of
-	// each variable and should be in numerical order. Four input arguments
-	// set the same BC on the entire boundary. Two plus two times the
-	// number of dimensions inputs sets separate BCs on each face of the domain.
-	// Inputs to "inputBCs":
-	// First input: variable number
-	// Second input: component number
-	// Third input: BC type (options are "ZERO_DERIVATIVE", "DIRICHLET", and "PERIODIC")
-	// Fourth input: BC value (ignored unless the BC type is "DIRICHLET")
-	// Odd inputs after the third: BC type
-	// Even inputs after the third: BC value
-	// Face numbering: starts at zero with the minimum of the first direction, one for the maximum of the first direction
-	//						two for the minimum of the second direction, etc.
-
-	inputBCs(0,0,"ZERO_DERIVATIVE",0);
-	inputBCs(1,0,"ZERO_DERIVATIVE",0);
-	inputBCs(2,0,"ZERO_DERIVATIVE",0);
-
 }
-
-

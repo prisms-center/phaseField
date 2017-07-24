@@ -60,7 +60,7 @@
 
 %%% The "real" document content comes below...
 
-\title{PRISMS-PF User Guide (v1.0)}
+\title{PRISMS-PF User Guide (v1.2)}
 \author{Stephen DeWitt (prismsphasefield.dev@umich.edu)}
 %\date{} % Activate to display a given date or no date (if empty),
          % otherwise the current date is printed 
@@ -73,11 +73,11 @@
 \clearpage
 
 \section{Overview}
-PRISMS-PF is an open-source finite element simulation code with a focus on solving equations from phase field models. It was developed as part of the PRISMS Center at the University of Michigan. PRISMS-PF is built on top of the popular and powerful deal.II finite element library. PRISMS-PF was developed to high performance phase field simulation capabilities available to the wider scientific community with an easy to use and easy to learn interface. Benchmark tests show that PRISMS-PF is competitive with specialized finite difference codes written in Fortran with MPI parallelization in terms performance,  and in some cases runs several times faster. PRISMS-PF can be used to solve a wide variety of systems of coupled parabolic partial differential equations (e.g. the diffusion equation) and elliptic partial differential equations (e.g. Poisson's equation). With PRISMS-PF, you have access to adaptive meshing and parallelization that has been demonstrated on over a thousand processors. Moreover, the matrix-free framework from deal.II allows much larger than typical finite element programs -- PRISMS-PF has been used for calculations with over one \emph{billion} degrees of freedom.
+PRISMS-PF is an open-source finite element simulation code with a focus on solving equations from phase field models. It is being developed as part of the PRISMS Center at the University of Michigan. PRISMS-PF is built on top of the popular and powerful deal.II finite element library. PRISMS-PF was developed to make high performance phase field simulation capabilities available to the wider scientific community with an easy-to-use and easy-to-learn interface. Benchmark tests show that PRISMS-PF is competitive with specialized finite difference codes written in Fortran with MPI parallelization in terms performance,  and in some cases runs several times faster. PRISMS-PF can be used to solve a wide variety of systems of coupled parabolic partial differential equations (e.g. the diffusion equation) and elliptic partial differential equations (e.g. Poisson's equation). With PRISMS-PF, you have access to adaptive meshing and parallelization that has been demonstrated on over a thousand processors. Moreover, the matrix-free framework from deal.II allows much larger than typical finite element programs -- PRISMS-PF has been used for calculations with over one \emph{billion} degrees of freedom.
 
 This user guide starts with instructions for downloading PRISMS-PF and install the necessary prerequisites. Next are instructions for running the built-in example applications and visualizing the results. A detailed look at the input files follows, and the guide finishes with some instructions on how to create your own PRISMS-PF applications.
 
-If you run into any issues not covered by this guide, or have any questions, please send an email to the PRISMS-PF email list: prismsphaseField.users@umich.edu. If you'd like to contact the PRISMS-PF developers directly, send an email to: prismsphaseField.dev@umich.edu.
+If you run into any issues not covered by this guide, or have any questions, please send an email to the PRISMS-PF email list: prisms-pf-users@googlegroups.com. If you'd like to contact the PRISMS-PF developers directly, send an email to: prismsphaseField.dev@umich.edu.
 
 PRISMS-PF was developed as part of the PRedictive Integrated Structural Materials Science (PRISMS) Center at University of Michigan which is supported by the U.S. Department of Energy (DOE), Office of Basic Energy Sciences, Division of Materials Sciences and Engineering under Award \#DE-SC0008637.
 
@@ -87,14 +87,50 @@ Before downloading PRISMS-PF itself, one should install CMake and deal.II. CMake
 \begin{lstlisting}
 $ $ PATH="/path/to/cmake/Contents/bin":"$PATH"
 \end{lstlisting}
-filling in the path to the installation of CMake (for example, on Mac OS, the default installation path is /Applications/CMake.app/Contents/bin).
+filling in the path to the installation of CMake (for example, on Mac OS, the default installation path is /Applications/CMake.app/Contents/bin). For convience, we recommend adding this line to your bash profile. Your bash profile can be opened via the following terminal command
+\begin{lstlisting}
+$ vi ~/.profile
+\end{lstlisting}
 
-Deal.II can be downloaded at https://www.dealii.org/download.html, which also has instructions. For desktop and laptop use, we recommend downloading a binary package. These packages contain all of the libraries deal.II needs to run. After downloading the binary package, open it and follow the instructions. For a computing cluster with optimized libraries already installed, you can download the deal.II source code and compile it yourself.
+Deal.II can be downloaded at https://www.dealii.org/download.html, which also has instructions. The deal.II installation process depends on your operating system. PRISMS-PF has been tested with Deal.II versions 8.3.0 through 8.4.2 (and the version 8.5 pre-release as of 1/16/2017). We recommend using deal.II 8.4.2, if possible.
 
-PRISMS-PF has been tested with Deal.II versions 8.3.0 through 8.4.1. We recommend using deal.II 8.4.1, if possible. We have found that for some older versions of Mac OS are incompatible with deal.II version 8.4.1 (due to the version of the Clang compiler that is installed by default). In those cases we recommend downloading this version 8.3.0 package:
+\subsection{Installing deal.II for Mac OS X}
+A binary package for version 8.4.2 (and other versions) is available at https://github.com/dealii/dealii/releases. The binary package includes all the libraries that you need (excluding CMake). To install deal.II open the .dmg file and drag ``deal.II.app'' into your Applications folder. Then, open ``deal.II.app'', which will open a Terminal window and set the necessary environment variables. You may need to modify your security settings so that your operating system will let you open the application (in System Preferences, select Security $\&$ Privacy, then under the general tab choose to allow apps downloaded from anywhere; don't click ``Open deal.II.app anyway'', we have found that doing so doesn't actually launch deal.II.app). 
+
+In some cases, deal.II.app will not open, possibly freezing at the ``Verifying...'' stage. If this happens, right click on it and select ``Show Package Contents''. Then go to ``/Contents/Resources/bin/'' and launch ``dealii-terminal''. This should launch the Terminal window that sets the environment variables.
+
+We have found that for some older versions of Mac OS are incompatible with deal.II version 8.4.2 (due to the version of the Clang compiler that is installed by default). In those cases we recommend downloading this version 8.3.0 package:
 \\ https://github.com/dealii/dealii/releases/download/v8.3.0/dealii-8.3.0.nocxx14.dmg.
- \\
 
+\subsection{Installing deal.II for Linux}
+Unfortunately, on a Linux machine you will likely have to compile and install deal.II from the source. The source code for version 8.4.2 can be downloaded at https://github.com/dealii/dealii/releases. Detailed installation directions can be found at https://www.dealii.org/8.5.0/readme.html. For some versions of Linux, packages are available (Gentoo, Debian testing (stretch), and Ubuntu 16.10+). See https://www.dealii.org/download.html for details.
+
+Below we list instructions for installing deal.II and its prerequisites both manually and using candi, an automatic deal.II installation script. For now, we recomend the traditional route, because we haven't been able to get candi to consistently work. Recently, deal.II has been made available on Linuxbrew. We have not tried this yet, but it may be a good option. Details can be found at https://github.com/dealii/dealii/wiki/deal.II-on-Homebrew---Linuxbrew.
+
+\subsubsection{Traditional Installation (Recommended assuming no package is available)}
+Before building deal.II, you will need to install two libraries, MPI and p4est. Make sure you have both libraries installed before installing deal.II, or else you will have to reinstall deal.II! Many computing clusters already have these libraries installed. MPI libraries (such as MPICH2) are often available through package managers (e.g. yum, apt, pkg$\_$add, port, brew), installing it using your package manager of choice is likely the simplest option. If not, you can find binaries and the source code at http://www.mpich.org/downloads/, as well as instructions for installation. The p4est library may also be available through your package manager. If not, you can download the latest release tarball at http://www.p4est.org/. To install, unzip the archive, move to the p4est root directory and enter the following commands at the command line:
+\begin{lstlisting}
+$ ./configure --enable-mpi; make; make install
+\end{lstlisting}
+Users have found that this approach works better than the setup script ``p4est-setup.sh'' that is on the deal.ii website. More detailed installation instructions can be found in the ``INSTALL'' and ``README'' files in the p4est root directory.
+
+With MPI and p4est installed, you are ready to install deal.II. Open the archive you downloaded from the deal.II website. From the root deal.II directory enter the following commands:
+\begin{lstlisting}
+$ mkdir build
+$ cd build
+$ cmake -DP4EST_DIR=/path/to/installation/dir -DDEAL_II_WITH_P4EST=ON 
+-DDEAL_II_WITH_MPI=ON -DCMAKE_INSTALL_PREFIX=/path/to/install/dir
+$ make install
+\end{lstlisting}
+where ``/path/to/install/dir'' is the path to where you want to install deal.II. After installation is complete (which can take take up to an hour), open the file ``summary.log''. The second section of the log file lists the configured features. Ensure that DEAL$\_$II$\_$WITH$\_$MPI and DEAL$\_$II$\_$WITH$\_$P4EST say either ``set up with bundled packages'' or ``set up with external dependences''. If either is listed as ``OFF'', then deal.II was unable to find MPI or p4est. If this is the case, double check that MPI and p4est were installed correctly. 
+
+\subsubsection{Using candi}
+An alternative route is to use the following candi (compile and install) script to install deal.II and its prerequisites: \\
+https://github.com/koecher/candi \\
+
+If it works, it should be much simpler than the traditional route described above. However in limited attempts, we have not been able to successfully install deal.II with candi. After more testing and/or consultation with the developer, we hope to make this a plausible option.
+
+\subsection{Downloading PRISMS-PF}
 PRISMS-PF is available for download at our GitHub site: https://github.com/prisms-center/phaseField. The recommended method for downloading the PRISMS-PF source code is through git. Using a Linux/Unix terminal, go to the directory where you want PRISMS-PF to be located. To clone the repository, type:
 \begin{lstlisting}
 $ git clone https://github.com/prisms-center/phaseField.git
@@ -108,15 +144,24 @@ If you prefer not to use Git, a zip file containing the PRISMS-PF source code ca
 After deal.II and PRISMS-PF are downloaded, you can run the pre-built PRISMS-PF example applications. At this time, the example applications include:
 \begin{itemize}
 \item allenCahn: An implementation of the Allen-Cahn equation for two phases. (2D)
+\item allenCahn\_pfield: Like allenCahn, but loads in initial conditions using PRISMS IntegrationTools. (2D)
 \item cahnHilliard: An implementation of the Cahn-Hilliard equation for two phases. (2D)
+\item cahnHilliardWithAdaptivity: Like cahnHilliard, but with adaptive meshing enabled. (2D)
 \item coupledCahnHilliardAllenCahn: An implementation of the coupled Cahn-Hilliard/Allen-Cahn set of equations. (2D)
+\item CHAC\_anisotropy: Coupled Cahn-Hilliard/Allen-Cahn equations with weakly anisotropic interfacial energy. (2D)
+\item CHAC\_anisotropyRegularized: Like CHAC\_anisotropy, but with a regularization term to permit strongly anisotropic interfacial energy. (2D)
 \item fickianDiffusion: An implementation of the diffusion equation with a time-dependent source term. (2D)
-\item mechanics: An implementation of the linear elasticity equation for a material in uniaxial tension. (3D)
-\item precipiateEvolution: An implementation of the coupled Cahn-Hilliard/Allen-Cahn/Linear Elasticity equations often used in phase field simulation of precipitate evolution. (2D)
+\item mechanics: An implementation of linear elasticity for a material in uniaxial tension. (3D)
+\item CHiMaD\_benchmark1a: An implementation of the CHiMaD spinodal decomposition benchmark problem. (2D)
+\item CHiMaD\_benchmark2a: An implementation of the CHiMaD Ostwald ripening benchmark problem. (2D)
+\item eshelbyInclusion: An implementation of linear elasticity for a spherical inclusion. (3D)
 \item grainGrowth: An implementation of ten coupled Allen-Cahn equations simulating grain growth in two dimensions. (2D)
+\item precipiateEvolution: An implementation of the coupled Cahn-Hilliard/Allen-Cahn/Linear Elasticity equations often used in phase field simulation of precipitate evolution. (2D)
+\item precipiateEvolution\_pfunction: Like precipitateEvolution, but loads inputs using PRISMS IntegrationTools. (2D)
+\item singlePrecipitateKKS: Similar to precipiateEvolution, but uses the KKS model rather than the WBM model for the free energy functional. (3D)
 \end{itemize}
 
-A directory for each of these applications can be found in the applications directory (i.e. phaseField/applications). In addition to the six applications listed above, some application names may be preceded by an underscore. The underscore is used to denote applications that are still under active development.
+A directory for each of these applications can be found in the applications directory (i.e. phaseField/applications). Most of the applications contain a formulation file giving the governing equations. In addition to the six applications listed above, some application names may be preceded by an underscore. The underscore is used to denote applications that are still under active development.
 
 \subsection{Running the Allen-Cahn Example Application} \label{allen_cahn_instructions}
 From the ``phaseField'' directory one can run the Allen-Cahn example application through to following terminal commands:
@@ -191,7 +236,7 @@ Environment variables are erased when you close your shell. To have this path se
 If CMake cannot successfully detect a C++ compiler, it will generate an error message. The most common cause for this is that the machine runs the Mac OS operating system with an outdated version of the Clang compiler. Upgrading your OS to version 10.11 or newer, updating Xcode, and (re)installing the Xcode command line tools may help. Alternatively, you can install a certain version of the deal.II package that was developed to sidestep this issue:
 \\https://github.com/dealii/dealii/releases/download/v8.3.0/dealii-8.3.0.nocxx14.dmg\\
 
-Most of issues users have had are during the CMake step. If the fixes suggested above don't work for your or you have an issue not covered by this list, please contact the PRISMS-PF users list: prismsphasefield.users@umich.edu. If you are not already on the list, please send an email with ``SUBSCRIBE'' in the subject line to the developers list: prismsphasefield.dev@umich.edu. As users come across new issues, we will add them (and suggested fixes) to this section.
+Most of issues users have had are during the CMake step. If the fixes suggested above don't work for your or you have an issue not covered by this list, please contact the PRISMS-PF users list: prisms-pf-users@googlegroups.com. If you are not already on the list, please submit a join request through Google Groups or send an email with ``SUBSCRIBE'' in the subject line to prismsphasefield.dev@umich.edu. As users come across new issues, we will add them (and suggested fixes) to this section.
 
 \subsection{Visualizing the Results of the Simulation}
 Once you have successfully run a simulation, you will likely want to visualize the results.  PRISMS-PF output files are generated in the popular VTK format, as a series of *.vtu and *.pvtu files. Two common open-soure, multi-platform visualization tools for these types of files are VisIt and ParaView. Instructions for downloading this software can be found at their respective websites:
@@ -275,18 +320,19 @@ $ mpirun -n 4 main
 
 \section{Structure of the Input Files}
 \subsection{Files in the Example Application Directories}
-Each of the example application directories should contain at least five files:
+Each of the example application directories should contain at least eight files:
 \begin{itemize}
 \item parameters.h
 \item equations.h
 \item ICs\_and\_BCs.h
+\item postprocess.h
+\item customPDE.h
 \item main.cc
 \item formulation.pdf
-\item example\_results.pdf
 \item CMakeLists.txt
 \end{itemize}
 
-The following sections will describe the structure and contents of each of these files using the coupled Allen-Cahn/Cahn-Hilliard and Precipitate Evolution applications as an examples.
+The following sections will describe the structure and contents of each of the first three of these files using the coupled Allen-Cahn/Cahn-Hilliard and Precipitate Evolution applications as examples. These three files (parameters.h, equations.h, and ICs\_and\_BCs.h) are the core input files for a beginning user. The next three files are more advanced input files, and are discussed in Secs. \ref{adv_input_sec} and \ref{postprocessing_sec}. The file formulation.pdf describes the mathematical formulation of the problem solved by the application. Finally, the file CMakeLists.txt is used by CMake to generate the makefile. Most users will not have any reason to change CMakeLists.txt.
 
 \subsection{parameters.h} \label{parameters}
 All of the purely numerical parameters for an application are given in the file \emph{parameters.h}. Each parameter is set using the C++ \emph{\#define} command. In C++ parlance, the statements are preprocessor macros. The compiler searches through the source code and replaces the first argument with the second argument. Here is a look at the parameters file for the coupled Allen-Cahn/Cahn-Hilliard example application:
@@ -351,6 +397,8 @@ All of the purely numerical parameters for an application are given in the file 
 // outputCondition is "LIST"
 #define outputList {}
 
+// Status is printed to the screen every skipPrintSteps
+#define skipPrintSteps 10
 
 // =================================================================================
 // Set the flag determining if the total free energy is calculated for each output
@@ -371,7 +419,7 @@ In the fifth section of the parameters file, the user sets parameters related to
 \begin{equation}
 10^{n/numOutputs \log(totalIncrements)}
 \end{equation}
-rounded to the nearest integer, where \emph{n} is the output number, and \emph{totalIncrements} is the total number of time steps. For ``N\_PER\_DECADE'', the program will output \emph{numOutput} times for each power of 10 after outputting the initial conditions. For example, if \emph{numOutput} is 1, the program will output at every power of 10 (i.e. 1, 10, 100, 1000, ...). If \emph{numOutput} is 10, the program will output ten times for every power of 10 (i.e. 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, ...). For ``LIST'', the user supplies a list of time steps where the program should output using the parameter \emph{outputList}. \emph{outputList} should be a bracketed, comma-separated list and is ignored for any type of output spacing other than ``LIST''.
+rounded to the nearest integer, where \emph{n} is the output number, and \emph{totalIncrements} is the total number of time steps. For ``N\_PER\_DECADE'', the program will output \emph{numOutput} times for each power of 10 after outputting the initial conditions. For example, if \emph{numOutput} is 1, the program will output at every power of 10 (i.e. 1, 10, 100, 1000, ...). If \emph{numOutput} is 10, the program will output ten times for every power of 10 (i.e. 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, ...). For ``LIST'', the user supplies a list of time steps where the program should output using the parameter \emph{outputList}. \emph{outputList} should be a bracketed, comma-separated list and is ignored for any type of output spacing other than ``LIST''. The final parameter in this section, \emph{skipPrintSteps}, controls how often the status of the simulation prints to the screen. Setting \emph{skipPrintSteps} to 1 will cause the simulation to print an update every time step; setting it to two will cause the simulation to print out every other time step, at 10 it will print every 10 time steps, etc.
 
 In the sixth and final section of the parameters file, the user sets a flag determining if the integrated free energy should be calculated whenever the code outputs the results. If \emph{calcEnergy} is ``true'', the total free energy will be written to a file names ``freeEnergy.txt.'' If not given, the default value for \emph{calcEnergy} is ``false''.
 
@@ -406,7 +454,7 @@ An examination of \emph{parameters.h} in the Precipitate Evolution example appli
 // Set the elliptic solver parameters
 // =================================================================================
 // The solver type (currently the only recommended option is conjugate gradient)
-#define solverType SolverCG
+#define solverType ``SolverCG''
 
 // The flag that determines whether the tolerance for solver convergence should
 // be an absolute tolerance (absTol=true) or a relative tolerance (absTol=false)
@@ -740,13 +788,14 @@ dealii::VectorizedArray<double> sum_hV;
 sum_hV = h1V+h2V+h3V;
 for (unsigned int i=0; i<2*dim-1+dim/3; i++){
 	  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-		  CIJ_combined[i][j] = CIJ_list[0][i][j]*(constV(1.0)-sum_hV) + CIJ_list[1][i][j]*sum_hV;
+		  CIJ_combined[i][j] = this->userInputs.CIJ_list[0][i][j]*(constV(1.0)-sum_hV) 
+		  					+ this->userInputs.CIJ_list[1][i][j]*sum_hV;
 	  }
 }
 computeStress<dim>(CIJ_combined, E2, S);
 }
 else{
-computeStress<dim>(CIJ_list[0], E2, S);
+computeStress<dim>(this->userInputs.CIJ_list[0], E2, S);
 }
 
 // Fill residual corresponding to mechanics
@@ -817,12 +866,12 @@ E = symmetrize(ux);
 // Compute stress tensor (which is equal to the residual, ruxV)
 if (n_dependent_stiffness == true){
 	dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ_combined;
-	CIJ_combined = CIJ_list[0]*(constV(1.0)-h1V-h2V-h3V) + CIJ_list[1]*(h1V+h2V+h3V);
+	CIJ_combined = this->userInputs.CIJ_list[0]*(constV(1.0)-h1V-h2V-h3V) + this->userInputs.CIJ_list[1]*(h1V+h2V+h3V);
 
 	computeStress<dim>(CIJ_combined, E, ruxV);
 }
 else{
-	computeStress<dim>(CIJ_list[0], E, ruxV);
+	computeStress<dim>(this->userInputs.CIJ_list[0], E, ruxV);
 }
 
 modelRes.vectorGradResidual = ruxV;
@@ -840,25 +889,42 @@ Because the system of equations in Precipitate Evolution contains an elliptic eq
 \item TRANSVERSE (3D): 5 constants \{C$_{11}$, C$_{33}$, C$_{44}$, C$_{12}$, C$_{13}$\}
 \item ORTHOTROPIC (3D): 9 constants \{C$_{11}$, C$_{22}$, C$_{33}$, C$_{44}$, C$_{55}$, C$_{66}$, C$_{12}$, C$_{13}$, C$_{23}$\}
 \item ANISOTROPIC (3D): 21 constants \{C$_{11}$, C$_{22}$, C$_{33}$, C$_{44}$, C$_{55}$, C$_{66}$, C$_{12}$, C$_{13}$, C$_{14}$, C$_{15}$, C$_{16}$, C$_{23}$, C$_{24}$, C$_{25}$, C$_{26}$, C$_{34}$, C$_{35}$, C$_{36}$, C$_{45}$, C$_{46}$, C$_{56}$\}
-\item ANISOTROPIC (2D): 6 constants \{C$_{11}$, C$_{22}$, C$_{33}$, C$_{12}$, C$_{13}$, C$_{23}$\}
+\item ANISOTROPIC (2D): 6 constants \{C$_{11}$, C$_{22}$, C$_{66}$, C$_{12}$, C$_{16}$, C$_{26}$\}
 \end{itemize}
 where C$_{ij}$ refers to elements of the stiffness matrix.
 
 Still in the second section of the file, the residual terms for the Cahn-Hilliard equation and three Allen-Cahn equations are set. The residual term for the displacement field isn't set here. It won't be set until the next section, inside \emph{residualRHS}.
 
-The third section of the file is the function \emph{residualRHS}. In the code excerpt above, there are several references to the variable \emph{CIJ\_list}. This is a vector of the stiffness matrices generated from the \emph{MaterialModels} and \emph{MaterialConstants} inputs. The first index for \emph{CIJ\_list} denotes the position in the list (i.e. 0 for the first material properties given in \emph{MaterialModels} and \emph{MaterialConstants}, 1 for the second material properties given, etc.). The individual elements of the stiffness matrix are accessed using the second and third indices. Therefore, if you wanted to access the C$_{12}$ element for the first material in the list, you could access it through \emph{CIJ\_list}[0][1][2]. This example application also shows that the residuals can be defined in \emph{residualsRHS} instead of as a macro in the second section of the file. The variable \emph{ruxV} is set to minus the stress on an element-by-element basis. The \emph{ruxV} residual is treated the same as the other residual terms at the end of the function, where they are loaded into \emph{modelResidualsList}.
+The third section of the file is the function \emph{residualRHS}. In the code excerpt above, there are several references to the variable \emph{this->userInputs.CIJ\_list}. This is a vector of the stiffness matrices generated from the \emph{MaterialModels} and \emph{MaterialConstants} inputs. The first index for \emph{CIJ\_list} denotes the position in the list (i.e. 0 for the first material properties given in \emph{MaterialModels} and \emph{MaterialConstants}, 1 for the second material properties given, etc.). The individual elements of the stiffness matrix are accessed using the second and third indices. Therefore, if you wanted to access the C$_{12}$ element for the first material in the list, you could access it through \emph{CIJ\_list}[0][1][2]. This example application also shows that the residuals can be defined in \emph{residualsRHS} instead of as a macro in the second section of the file. The variable \emph{ruxV} is set to minus the stress on an element-by-element basis. The \emph{ruxV} residual is treated the same as the other residual terms at the end of the function, where they are loaded into \emph{modelResidualsList}.
 
-Unlike the coupled Cahn-Hilliard/Allen-Cahn example application, the Precipitate Evolution example application has calculations inside \emph{residualLHS}.  This function contains the residual on the left-hand-side of equation for the iterative solution of an elliptic equation. For this application this equation at iteration $i$ is: 
+Unlike the coupled Cahn-Hilliard/Allen-Cahn example application, the Precipitate Evolution example application has calculations inside \emph{residualLHS}.  This function contains the residual on the left-hand-side of equation for the iterative solution of an elliptic equation using a conjugate gradient solver. The solution $u$ is found through the following expression, given an initial guess $u_0$: 
+\begin{gather}
+0 = R(u) = R(u_0 + \Delta u)
+\end{gather}
+where $\Delta u = u - u_0$. Then, applying the discretization that $u = \sum_i w^i U^i$, we can write the following linearization:
+\begin{equation}
+\frac{\delta R(u)}{\delta u} \Delta U = -R(u_0) \label{matrix_eqn}
+\end{equation}
+The discretized form of this equation can be written as a matrix inversion problem. However, in PRISMS-PF, we only care about the product $\frac{\delta R(u)}{\delta u} \Delta U$. Taking the variational derivative of $R(u)$ yields:
 \begin{align}
-R^i + \frac{\delta R}{\delta u} \bigg|_{u^i} \Delta u &= 0 \\
-\Rightarrow \frac{\delta R}{\delta u}\bigg|_{u^i} \Delta u &= -R^i
+\frac{\delta R(u)}{\delta u} &= \frac{d}{d\alpha} \int_{\Omega}   \nabla w :C: \left[ \epsilon (u+\alpha w) - \epsilon^0 \right] ~dV  \bigg{|}_{\alpha=0} \\
+&=  \int_{\Omega}   \nabla w :C: \frac{1}{2}\frac{d}{d\alpha}\left[ \nabla(u+\alpha w) + \nabla(u+\alpha w)^T  - \epsilon^0\right] ~dV \bigg{|}_{\alpha=0}\\
+&= \int_{\Omega}   \nabla w :C: \frac{d}{d\alpha} \left[ \nabla(u+\alpha w) - \epsilon^0 \right]  ~dV \bigg{|}_{\alpha=0} \quad (due ~to ~the ~symmetry ~of ~C) \\
+&= \int_{\Omega}   \nabla w :C: \nabla w  ~dV 
 \end{align}
-Where $\Delta u = u^{i+1}-u^i$ and $R$ is the residual:
-\begin{align}
-R &=  \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \epsilon - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0 
-\end{align}
-
-Thus the gradient residual term (\emph{ruxV} once again) is equal to the stress.
+In its discretized form $\frac{\delta R(u)}{\delta u} \Delta U$ is:
+\begin{equation}
+\frac{\delta R(u)}{\delta u} \Delta U = \sum_i \sum_j \int_{\Omega} \nabla N^i : C : \nabla N^j dV ~\Delta U^j
+\end{equation}
+Moving back to the non-discretized form yields:
+\begin{equation}
+\frac{\delta R(u)}{\delta u} \Delta U = \int_{\Omega} \nabla w : C : \nabla (\Delta u) dV
+\end{equation}
+Thus, the full equation relating $u_0$ and $\Delta u$ is:
+\begin{equation}
+\int_{\Omega} \nabla w : \underbrace{C : \nabla (\Delta u)}_{r_{ux}^{LHS}} dV = -\int_{\Omega}   \nabla w : \underbrace{\sigma}_{r_{ux}} ~dV
+\end{equation}
+The above values of $r_{ux}^{LHS}$ and $r_{ux}$ are used to define the residuals in the equations.h file. A similar process can be undertaken for other elliptic problems.
 
 Like \emph{residualRHS}, \emph{residualLHS} takes \emph{modelVariablesList} and  \emph{q\_point\_loc} as inputs. However, because only one elliptic equation is solved at a time, the output is a single residual variable, \emph{modelRes}. As in \emph{residualRHS}, the model variable values and derivatives are given convienent names at the start of the file. In \emph{residualLHS}, \emph{modelVariablesList} only contains variables where at least one of \emph{need\_val\_LHS}, \emph{need\_grad\_LHS}, or \emph{need\_hess\_LHS} is ``true''. In this example, only the three structural order parameters (n1, n2, and n3) and the displacement field (u) are needed to calculate the LHS residual. Therefore, the indices are shifted from those in \emph{residualRHS}, since the concentration at index 0 isn't needed. Similar to \emph{residualRHS}, the value of \emph{ruxV} is set and then used to update the appropriate member of \emph{modelRes} (in this case \emph{vectorGradResidual}).
 
@@ -1075,8 +1141,101 @@ Vector initial conditions are set much like scalar initial conditions. The initi
 
 Vector boundary conditions are set much like scalar initial conditions. Separate boundary conditions are specified for each component of the variable. The boundary conditions for the components should be listed in order (x then y then z). The boundary condition for each component of a vector variable is set exactly like that of a scalar variable.
 
+\section{Advanced Files in the Application Directory} \label{adv_input_sec}
+\subsection{main.cc}
+The file main.cc is generally boilerplate code. Its purpose is to drive the primary flow of the code. The following code snippet is the core of the file:
+\tiny
+\begin{lstlisting} 
+userInputParameters<problemDIM> userInputs;
+userInputs.loadUserInput();
+
+customPDE<problemDIM,finiteElementDegree> problem(userInputs);
+
+ problem.setBCs();
+ problem.buildFields();
+ problem.init ();
+ problem.solve();
+ \end{lstlisting}
+ \normalsize
+ 
+ In this portion of the code there are two main objects (in the C++ sense) of interest: userInputParameters and customPDE. The  userInputParameters object reads and stores the inputs from the input files. These inputs are used in the creation of a customPDE object, which then is used to solve the desired set of equations. After the customPDE object is created, the setBCs, buildFields, init, and solve methods (i.e. functions) are called to prepare the compuational system, solve the equations, and output the solution.
+ 
+ At the top of main.cc is a list of header files to be included and at the bottom is some code to handle errors during execution. It is rare that a user would need to modify these sections. For nearly all of the example applications, the main.cc file is identical. Two sets of exceptions are discussed below.
+ 
+ The applications that include nucleation (\_nucleationModel and \_preferential\_nucleationModel) have three more lines in the list of included headers:
+ \tiny
+\begin{lstlisting} 
+#include <random>
+#include <time.h>
+#include "nucleation.h"
+\end{lstlisting}
+ \normalsize
+ 
+ The allenCahn\_pfield and precipitateEvolution\_pfunction applications have some extra lines in the list of included headers to utilize that functionality.
+ 
+ \subsection{customPDE.h}
+ As seen in main.cc, an application creates a customPDE object. Each application has its own customPDE class that is specified in customPDE.h. For most of the example applications, customPDE.h is the same, just containing a constructor, the setBCs function used in ICs\_and\_BCs.h, and the three functions in equations.h. However, the user is free to define any new variables or methods needed for their application as part of this class. Most importantly, since customPDE is a subclass of MatrixFreePDE, the primary solver class in the core library, methods in customPDE can be written to override the default behavior of the core library (all methods in MatrixFreePDE except for the constructor are virtual). A user may want to do this for functionality that isn't currently present in the core library (i.e. a new condition for mesh adaptivity), for performance (stripping out unneccesary evaluations for that given application), or to use PRISMS-PF in ways that we didn't plan for. In the applications with nucleation, the list of nuclei and the methods for nucleation are members of customPDE.
+
+\section{Postprocessing} \label{postprocessing_sec}
+PRISMS-PF includes a postprocessing suite to help analyze the simulation results. Often, it is easier to perform the postprocessing using PRISMS-PF, rather than a program such as VisIt or ParaView, especially when dealing with spatial derivatives. Postprocessing functionality is set in the postprocess.h file. The structure of this file is much like equations.h. For the remainder of this section, we will walk through the postprocess.h file from the allenCahn application.
+
+The first section is much like the first section of equations.h, where the problem variables are defined. In this case, the postprocessing variables are defined (i.e. the variables other than those listed in equations.h that you would like to output). The first two blocks contain \emph{pp\_num\_var}, the number of postprocessed variables, \emph{pp\_variable\_name}, the name assigned to the variable in the *.vtu file, and \emph{pp\_variable\_type}, whether the variable is a scalar or a vector. Currently only scalar postprocessing variables are allowed. In the next block, the user specifies if the value, gradient or hessian \underline{of the model variables} is needed to calculate the postprocessed variables. In the last block, the user selects whether each postprocessed variable needs a value residual and/or a gradient residual.
+ \tiny
+\begin{lstlisting} 
+// =================================================================================
+// Define the variables for postprocessing
+// =================================================================================
+// The number of variables
+#define pp_num_var 1
+
+// The names of the variables, whether they are scalars or vectors 
+#define pp_variable_name {"mag_grad_n"}
+#define pp_variable_type {"SCALAR"}
+
+// Flags for whether the value, gradient, and Hessian are needed in the residual eqns
+#define pp_need_val {true}
+#define pp_need_grad {true}
+#define pp_need_hess  {false}
+
+// Flags for whether the residual equation has a term multiplied by the test function
+// (need_val_residual) and/or the gradient of the test function (need_grad_residual)
+#define pp_need_val_residual {true}
+#define pp_need_grad_residual {false}
+
+// =================================================================================
+\end{lstlisting} 
+\normalsize
+
+The remainder of the file is the function postProcessedFields:
+ \tiny
+\begin{lstlisting} 
+template <int dim>
+void postProcessedFields(const std::vector<modelVariable<dim> > & modelVariablesList,
+						std::vector<modelResidual<dim> > & modelResidualsList,
+						const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc,
+						const list_of_CIJ<dim> material_moduli) {
+
+// The order parameter and its derivatives (names here should match those in the macros above)
+dealii::VectorizedArray<double> n = modelVariablesList[0].scalarValue;
+dealii::Tensor<1, dim, dealii::VectorizedArray<double> > nx = modelVariablesList[0].scalarGrad;
+
+dealii::Tensor<1, dim, dealii::VectorizedArray<double> > pp_field;
+pp_field[0] = nx[0];
+pp_field[1] = nx[1];
+
+
+// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
+modelResidualsList[0].scalarValueResidual = std::sqrt(pp_field[0]*pp_field[0]+pp_field[1]*pp_field[1]); //constV(0.0);
+
+}
+\end{lstlisting} 
+\normalsize
+
+The structure of this function is identical to that of residualRHS in equations.h.
+
+
 \section{Creating Custom Applications}
-You can create your own PRISMS-PF applications by making simple modifications to the input files described in the previous section. To create a new application, simply create a new folder in the applications directory and copy the files from a related example application. Then, make your desired modifications (changing the initial or boundary conditions, changing the residual equations, etc.) and compile and run your application the same way you would one of the example applications.
+You can create your own PRISMS-PF applications by making simple modifications to the input files described in the previous section. To create a new application, simply create a new folder in the applications directory and copy the files from a related example application. \textbf{If the file ``CMakeCache.txt'' exists, delete it} (this file contains paths to the original application, and if left would cause the compiler to compile the code from the original application). Then, make your desired modifications (changing the initial or boundary conditions, changing the residual equations, etc.) and compile and run your application the same way you would one of the example applications.
 
 Once your have your own applications running, we'd love to help you share them with the community. Please contact us at prismsphasefield.dev@umich.edu if you need help using GitHub to generate a pull request so that we can add your work to the public repository.
 

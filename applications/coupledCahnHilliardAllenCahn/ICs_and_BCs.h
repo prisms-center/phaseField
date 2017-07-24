@@ -1,14 +1,6 @@
 template <int dim>
-class InitialCondition : public Function<dim>
+double InitialCondition<dim>::value (const Point<dim> &p, const unsigned int component) const
 {
-public:
-  unsigned int index;
-  Vector<double> values;
-  InitialCondition (const unsigned int _index) : Function<dim>(1), index(_index) {
-    std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
-  }
-  double value (const Point<dim> &p, const unsigned int component = 0) const
-  {
 	  double scalar_IC = 0;
 
 	  // =====================================================================
@@ -24,12 +16,23 @@ public:
       double epsilon_n = 0.1;
       double psi = 1.5;
 
+<<<<<<< HEAD
 	  double dx=spanX/((double) subdivisionsX)/std::pow(2.0,refineFactor);
       double x=p[0];
       double y=p[1];
+=======
+	  // The initial condition is two circles/spheres defined
+	  // by a hyperbolic tangent function. The center of each circle/sphere is
+	  // given by "center" and its radius is given by "rad".
 
-	  // Initial condition for the concentration field
+	  double center[2][3] = {{1.0/3.0,1.0/3.0,1.0/3.0},{3.0/4.0,3.0/4.0,3.0/4.0}};
+	  double rad[12] = {userInputs.domain_size[0]/5.0, userInputs.domain_size[0]/12.0};
+	  double dist;
+	  scalar_IC = 0;
+>>>>>>> 0147129c14b77ac7320a8032fc57a37558811c95
+
 	  if (index == 0){
+<<<<<<< HEAD
 		  if (dim == 2){
 			  scalar_IC = std::cos(0.105*x)*std::cos(0.11*y);
               scalar_IC += std::cos(0.13*x)*std::cos(0.087*y)*std::cos(0.13*x)*std::cos(0.087*y);
@@ -37,8 +40,19 @@ public:
               scalar_IC = c_0 + epsilon_c*scalar_IC;
 		  }
 		  else if (dim == 3) {
-		  }
+=======
+		  scalar_IC = 0.009;
+	  }
 
+	  for (unsigned int i=0; i<2; i++){
+		  dist = 0.0;
+		  for (unsigned int dir = 0; dir < dim; dir++){
+			  dist += (p[dir]-center[i][dir]*userInputs.domain_size[dir])*(p[dir]-center[i][dir]*userInputs.domain_size[dir]);
+>>>>>>> 0147129c14b77ac7320a8032fc57a37558811c95
+		  }
+		  dist = std::sqrt(dist);
+
+<<<<<<< HEAD
 	  }
 	  // Initial condition for the chemical potential field
       if (index == 1){
@@ -65,22 +79,24 @@ public:
           }
       }
       
+=======
+		  // Initial condition for the concentration field
+		  if (index == 0){
+			  scalar_IC += 0.5*(0.125)*(1.0-std::tanh((dist-rad[i])/(1.0)));
+		  }
+		  else {
+			  scalar_IC += 0.5*(1.0-std::tanh((dist-rad[i])/(1.0)));
+		  }
+	  }
+
+>>>>>>> 0147129c14b77ac7320a8032fc57a37558811c95
 	  // =====================================================================
 	  return scalar_IC;
-  }
-};
+}
 
 template <int dim>
-class InitialConditionVec : public Function<dim>
+void InitialConditionVec<dim>::vector_value (const dealii::Point<dim> &p, dealii::Vector<double> &vector_IC) const
 {
-public:
-  unsigned int index;
-  //Vector<double> values;
-  InitialConditionVec (const unsigned int _index) : Function<dim>(dim), index(_index) {
-    std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
-  }
-  void vector_value (const Point<dim> &p,Vector<double> &vector_IC) const
-  {
 	  // =====================================================================
 	  // ENTER THE INITIAL CONDITIONS HERE FOR VECTOR FIELDS
 	  // =====================================================================
@@ -90,6 +106,7 @@ public:
 
 
 	  // =====================================================================
+<<<<<<< HEAD
   }
 };
 
@@ -120,6 +137,6 @@ void generalizedProblem<dim>::setBCs(){
     inputBCs(3,0,"ZERO_DERIVATIVE",0);
     inputBCs(4,0,"ZERO_DERIVATIVE",0);
     inputBCs(5,0,"ZERO_DERIVATIVE",0);
+=======
+>>>>>>> 0147129c14b77ac7320a8032fc57a37558811c95
 }
-
-
