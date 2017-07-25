@@ -1,103 +1,100 @@
 // List of variables and residual equations for the Precipitate Evolution example application
 
 // =================================================================================
-// Define the variables in the model
+// Set the attributes of the primary field variables
 // =================================================================================
-// The number of variables
-#define num_var 5
+void variableAttributeLoader::loadVariableAttributes(){
+	// Variable 0
+	set_variable_name				(0,"c");
+	set_variable_type				(0,SCALAR);
+	set_variable_equation_type		(0,PARABOLIC);
 
-// The names of the variables, whether they are scalars or vectors and whether the
-// governing eqn for the variable is parabolic or elliptic
-#define variable_name {"c", "n1", "n2", "n3", "u"}
-#define variable_type {"SCALAR","SCALAR","SCALAR","SCALAR","VECTOR"}
-#define variable_eq_type {"PARABOLIC","PARABOLIC","PARABOLIC","PARABOLIC","ELLIPTIC"}
+	set_need_value					(0,true);
+	set_need_gradient				(0,true);
+	set_need_hessian					(0,false);
 
-// Flags for whether the value, gradient, and Hessian are needed in the residual eqns
-#define need_val {true, true, true, true, false}
-#define need_grad {true, true, true, true, true}
-#define need_hess {false, false, false, false, false}
+	set_need_value_residual_term		(0,true);
+	set_need_gradient_residual_term	(0,true);
 
-// Flags for whether the residual equation has a term multiplied by the test function
-// (need_val_residual) and/or the gradient of the test function (need_grad_residual)
-#define need_val_residual {true, true, true, true, false}
-#define need_grad_residual {true, true, true, true, true}
+	set_need_value_LHS				(0,false);
+	set_need_gradient_LHS			(0,false);
+	set_need_hessian_LHS				(0,false);
+	set_need_value_residual_term_LHS		(0,false);
+	set_need_gradient_residual_term_LHS	(0,false);
 
-// Flags for whether the value, gradient, and Hessian are needed in the residual eqn
-// for the left-hand-side of the iterative solver for elliptic equations
-#define need_val_LHS {false, true, true, true, false}
-#define need_grad_LHS {false, false, false, false, true}
-#define need_hess_LHS {false, false, false, false, false}
+	// Variable 1
+	set_variable_name				(1,"n1");
+	set_variable_type				(1,SCALAR);
+	set_variable_equation_type		(1,PARABOLIC);
 
-// Flags for whether the residual equation for the left-hand-side of the iterative
-// solver for elliptic equations has a term multiplied by the test function
-// (need_val_residual) and/or the gradient of the test function (need_grad_residual)
-#define need_val_residual_LHS {false, false, false, false, false}
-#define need_grad_residual_LHS {false, false, false, false, true}
+	set_need_value					(1,true);
+	set_need_gradient				(1,true);
+	set_need_hessian					(1,false);
 
-// =================================================================================
-// Define the model parameters and the residual equations
-// =================================================================================
-// Parameters in the residual equations and expressions for the residual equations
-// can be set here. For simple cases, the entire residual equation can be written
-// here. For more complex cases with loops or conditional statements, residual
-// equations (or parts of residual equations) can be written below in "residualRHS".
+	set_need_value_residual_term		(1,true);
+	set_need_gradient_residual_term	(1,true);
 
-// Cahn-Hilliard mobility
-#define McV 1.0
+	set_need_value_LHS				(1,true);
+	set_need_gradient_LHS			(1,false);
+	set_need_hessian_LHS				(1,false);
+	set_need_value_residual_term_LHS		(1,false);
+	set_need_gradient_residual_term_LHS	(1,false);
 
-// Allen-Cahn mobilities
-#define Mn1V 100.0
-#define Mn2V 100.0
-#define Mn3V 100.0
+	// Variable 2
+	set_variable_name				(2,"n2");
+	set_variable_type				(2,SCALAR);
+	set_variable_equation_type		(2,PARABOLIC);
 
-// Gradient energy coefficients
-double Kn1[3][3]={{0.03,0,0},{0,0.007,0},{0,0,1.0}};
-double Kn2[3][3]={{0.01275,-0.009959,0},{-0.009959,0.02425,0},{0,0,1.0}};
-double Kn3[3][3]={{0.01275,0.009959,0},{0.009959,0.02425,0},{0,0,1.0}};
+	set_need_value					(2,true);
+	set_need_gradient				(2,true);
+	set_need_hessian				(2,false);
 
-// Define mechanical properties
-#define n_dependent_stiffness true
-// Mechanical symmetry of the material and stiffness parameters
-// If n_dependent_stiffness == false the first entry is used for all phases
-#define MaterialModels {{"ISOTROPIC"},{"ISOTROPIC"}}
-#define MaterialConstants {{40.0,0.3},{50.0,0.3}}
+	set_need_value_residual_term	(2,true);
+	set_need_gradient_residual_term	(2,true);
 
-// Stress-free transformation strains
-// Linear fits for the stress-free transformation strains in for sfts = sfts_linear * c + sfts_const
-double sfts_linear1[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sfts_const1[3][3] = {{0.0345,0,0},{0,0.0185,0},{0,0,-0.00270}};
+	set_need_value_LHS				(2,true);
+	set_need_gradient_LHS			(2,false);
+	set_need_hessian_LHS			(2,false);
+	set_need_value_residual_term_LHS	(2,false);
+	set_need_gradient_residual_term_LHS	(2,false);
 
-double sfts_linear2[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sfts_const2[3][3]={{0.0225,-0.0069,0},{-0.0069,0.0305,0},{0,0,-0.00270}};
+	// Variable 3
+	set_variable_name				(3,"n3");
+	set_variable_type				(3,SCALAR);
+	set_variable_equation_type		(3,PARABOLIC);
 
-double sfts_linear3[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-double sfts_const3[3][3]={{0.0225, 0.0069,0},{0.0069,0.0305,0},{0,0,-0.00270}};
+	set_need_value					(3,true);
+	set_need_gradient				(3,true);
+	set_need_hessian				(3,false);
 
-// Free energy expressions
-#define faV (-1.6704-4.776*c+5.1622*c*c-2.7375*c*c*c+1.3687*c*c*c*c)
-#define facV (-4.776 + 10.3244*c - 8.2125*c*c + 5.4748*c*c*c)
-#define faccV (10.3244-16.425*c+16.4244*c*c)
-#define fbV (5.0*c*c-5.9746*c-1.5924)
-#define fbcV (10.0*c-5.9746)
-#define fbccV (10.0)
-#define h1V (10.0*n1*n1*n1-15.0*n1*n1*n1*n1+6.0*n1*n1*n1*n1*n1)
-#define h2V (10.0*n2*n2*n2-15.0*n2*n2*n2*n2+6.0*n2*n2*n2*n2*n2)
-#define h3V (10.0*n3*n3*n3-15.0*n3*n3*n3*n3+6.0*n3*n3*n3*n3*n3)
-#define hn1V (30.0*n1*n1-60.0*n1*n1*n1+30.0*n1*n1*n1*n1)
-#define hn2V (30.0*n2*n2-60.0*n2*n2*n2+30.0*n2*n2*n2*n2)
-#define hn3V (30.0*n3*n3-60.0*n3*n3*n3+30.0*n3*n3*n3*n3)
+	set_need_value_residual_term	(3,true);
+	set_need_gradient_residual_term	(3,true);
 
-// Residual equations
-#define rcV   (c)
-#define rcxTemp ( cx*((1.0-h1V-h2V-h3V)*faccV+(h1V+h2V+h3V)*fbccV) + n1x*((fbcV-facV)*hn1V) + n2x*((fbcV-facV)*hn2V) + n3x*((fbcV-facV)*hn3V) + grad_mu_el)
-#define rcxV  (constV(-timeStep*McV)*rcxTemp)
+	set_need_value_LHS				(3,true);
+	set_need_gradient_LHS			(3,false);
+	set_need_hessian_LHS			(3,false);
+	set_need_value_residual_term_LHS	(3,false);
+	set_need_gradient_residual_term_LHS	(3,false);
 
-#define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V+nDependentMisfitAC1+heterMechAC1))
-#define rn2V   (n2-constV(timeStep*Mn2V)*((fbV-faV)*hn2V+nDependentMisfitAC2+heterMechAC2))
-#define rn3V   (n3-constV(timeStep*Mn3V)*((fbV-faV)*hn3V+nDependentMisfitAC3+heterMechAC3))
-#define rn1xV  (constV(-timeStep*Mn1V)*Knx1)
-#define rn2xV  (constV(-timeStep*Mn2V)*Knx2)
-#define rn3xV  (constV(-timeStep*Mn3V)*Knx3)
+	// Variable 2
+	set_variable_name				(4,"u");
+	set_variable_type				(4,VECTOR);
+	set_variable_equation_type		(4,ELLIPTIC);
+
+	set_need_value					(4,false);
+	set_need_gradient				(4,true);
+	set_need_hessian				(4,false);
+
+	set_need_value_residual_term	(4,false);
+	set_need_gradient_residual_term	(4,true);
+
+	set_need_value_LHS				(4,false);
+	set_need_gradient_LHS			(4,true);
+	set_need_hessian_LHS			(4,false);
+	set_need_value_residual_term_LHS	(4,false);
+	set_need_gradient_residual_term_LHS	(4,true);
+
+}
 
 // =================================================================================
 // residualRHS
@@ -109,30 +106,28 @@ double sfts_const3[3][3]={{0.0225, 0.0069,0},{0.0069,0.0305,0},{0,0,-0.00270}};
 // "modelResidualsList", a list of the value and gradient terms of the residual for
 // each residual equation. The index for each variable in these lists corresponds to
 // the order it is defined at the top of this file (starting at 0).
-template <int dim,int degree>
-void customPDE<dim,degree>::residualRHS(const std::vector<modelVariable<dim> > & modelVariablesList,
-												std::vector<modelResidual<dim> > & modelResidualsList,
+template <int dim, int degree>
+void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 // The concentration and its derivatives (names here should match those in the macros above)
-scalarvalueType c = modelVariablesList[0].scalarValue;
-scalargradType cx = modelVariablesList[0].scalarGrad;
+scalarvalueType c = variable_list.get_scalar_value(0);
+scalargradType cx = variable_list.get_scalar_gradient(0);
 
 // The first order parameter and its derivatives (names here should match those in the macros above)
-scalarvalueType n1 = modelVariablesList[1].scalarValue;
-scalargradType n1x = modelVariablesList[1].scalarGrad;
+scalarvalueType n1 = variable_list.get_scalar_value(1);
+scalargradType n1x = variable_list.get_scalar_gradient(1);
 
 // The second order parameter and its derivatives (names here should match those in the macros above)
-scalarvalueType n2 = modelVariablesList[2].scalarValue;
-scalargradType n2x = modelVariablesList[2].scalarGrad;
-
+scalarvalueType n2 = variable_list.get_scalar_value(2);
+scalargradType n2x = variable_list.get_scalar_gradient(2);
 
 // The third order parameter and its derivatives (names here should match those in the macros above)
-scalarvalueType n3 = modelVariablesList[3].scalarValue;
-scalargradType n3x = modelVariablesList[3].scalarGrad;
+scalarvalueType n3 = variable_list.get_scalar_value(3);
+scalargradType n3x = variable_list.get_scalar_gradient(3);
 
 // The derivative of the displacement vector (names here should match those in the macros above)
-vectorgradType ux = modelVariablesList[4].vectorGrad;
+vectorgradType ux = variable_list.get_vector_gradient(4);
 vectorgradType ruxV;
 
 vectorhessType uxx;
@@ -147,11 +142,26 @@ for (unsigned int i=0; i<dim; i++){
 }
 
 if (c_dependent_misfit == true){
-	uxx = modelVariablesList[4].vectorHess;
+	uxx = variable_list.get_vector_hessian(4);
 }
 
+// Free energy expressions and interpolation functions
+scalarvalueType faV = (A0+A1*c+A2*c*c+A3*c*c*c+A4*c*c*c*c);
+scalarvalueType facV = (A1 + 2.0*A2*c + 3.0*A3*c*c + 4.0*A4*c*c*c);
+scalarvalueType faccV = (2.0*A2 + 6.0*c + 12.0*A4*c*c);
+scalarvalueType fbV = (B2*c*c + B1*c + B0);
+scalarvalueType fbcV = (2.0*B2*c + B1);
+scalarvalueType fbccV = constV(2.0*B2);
+scalarvalueType h1V = (10.0*n1*n1*n1-15.0*n1*n1*n1*n1+6.0*n1*n1*n1*n1*n1);
+scalarvalueType h2V = (10.0*n2*n2*n2-15.0*n2*n2*n2*n2+6.0*n2*n2*n2*n2*n2);
+scalarvalueType h3V = (10.0*n3*n3*n3-15.0*n3*n3*n3*n3+6.0*n3*n3*n3*n3*n3);
+scalarvalueType hn1V = (30.0*n1*n1-60.0*n1*n1*n1+30.0*n1*n1*n1*n1);
+scalarvalueType hn2V = (30.0*n2*n2-60.0*n2*n2*n2+30.0*n2*n2*n2*n2);
+scalarvalueType hn3V = (30.0*n3*n3-60.0*n3*n3*n3+30.0*n3*n3*n3*n3);
+
+
 // Calculate the stress-free transformation strain and its derivatives at the quadrature point
-dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > sfts1, sfts1c, sfts1cc, sfts2, sfts2c, sfts2cc, sfts3, sfts3c, sfts3cc;
+dealii::Tensor<2, dim, dealii::VectorizedArray<double> > sfts1, sfts1c, sfts1cc, sfts2, sfts2c, sfts2cc, sfts3, sfts3c, sfts3cc;
 
 for (unsigned int i=0; i<dim; i++){
 for (unsigned int j=0; j<dim; j++){
@@ -192,13 +202,13 @@ dealii::VectorizedArray<double> sum_hV;
 sum_hV = h1V+h2V+h3V;
 for (unsigned int i=0; i<2*dim-1+dim/3; i++){
 	  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-		  CIJ_combined[i][j] = this->userInputs.CIJ_list[0][i][j]*(constV(1.0)-sum_hV) + this->userInputs.CIJ_list[1][i][j]*sum_hV;
+		  CIJ_combined[i][j] = CIJ_Mg[i][j]*(constV(1.0)-sum_hV) + CIJ_Beta[i][j]*sum_hV;
 	  }
 }
 computeStress<dim>(CIJ_combined, E2, S);
 }
 else{
-computeStress<dim>(this->userInputs.CIJ_list[0], E2, S);
+computeStress<dim>(CIJ_Mg, E2, S);
 }
 
 // Fill residual corresponding to mechanics
@@ -235,7 +245,7 @@ dealii::VectorizedArray<double> S2[dim][dim];
 
 if (n_dependent_stiffness == true){
 //computeStress<dim>(CIJ_diff, E2, S2);
-	computeStress<dim>(this->userInputs.CIJ_list[1]-this->userInputs.CIJ_list[0], E2, S2);
+	computeStress<dim>(CIJ_Beta-CIJ_Mg, E2, S2);
 for (unsigned int i=0; i<dim; i++){
 	  for (unsigned int j=0; j<dim; j++){
 		  heterMechAC1 += S2[i][j]*E2[i][j];
@@ -264,7 +274,7 @@ if (c_dependent_misfit == true){
 		computeStress<dim>(CIJ_combined, E3, S3);
 	}
 	else{
-		computeStress<dim>(this->userInputs.CIJ_list[0], E3, S3);
+		computeStress<dim>(CIJ_Mg, E3, S3);
 	}
 
 	for (unsigned int i=0; i<dim; i++){
@@ -299,19 +309,32 @@ for (unsigned int b=0; b<dim; b++){
 }
 }
 
-modelResidualsList[0].scalarValueResidual = rcV;
-modelResidualsList[0].scalarGradResidual = rcxV;
+// Residual equations
+scalarvalueType rcV = (c);
+scalargradType rcxTemp = ( cx*((1.0-h1V-h2V-h3V)*faccV+(h1V+h2V+h3V)*fbccV) + n1x*((fbcV-facV)*hn1V) + n2x*((fbcV-facV)*hn2V) + n3x*((fbcV-facV)*hn3V) + grad_mu_el);
+scalargradType rcxV = (constV(-userInputs.dtValue*McV)*rcxTemp);
 
-modelResidualsList[1].scalarValueResidual = rn1V;
-modelResidualsList[1].scalarGradResidual = rn1xV;
+scalarvalueType rn1V = (n1-constV(userInputs.dtValue*Mn1V)*((fbV-faV)*hn1V+nDependentMisfitAC1+heterMechAC1));
+scalarvalueType rn2V = (n2-constV(userInputs.dtValue*Mn2V)*((fbV-faV)*hn2V+nDependentMisfitAC2+heterMechAC2));
+scalarvalueType rn3V = (n3-constV(userInputs.dtValue*Mn3V)*((fbV-faV)*hn3V+nDependentMisfitAC3+heterMechAC3));
+scalargradType rn1xV = (constV(-userInputs.dtValue*Mn1V)*Knx1);
+scalargradType rn2xV = (constV(-userInputs.dtValue*Mn2V)*Knx2);
+scalargradType rn3xV = (constV(-userInputs.dtValue*Mn3V)*Knx3);
 
-modelResidualsList[2].scalarValueResidual = rn2V;
-modelResidualsList[2].scalarGradResidual = rn2xV;
+// Set the residuals
+variable_list.set_scalar_value_residual_term(0,rcV);
+variable_list.set_scalar_gradient_residual_term(0,rcxV);
 
-modelResidualsList[3].scalarValueResidual = rn3V;
-modelResidualsList[3].scalarGradResidual = rn3xV;
+variable_list.set_scalar_value_residual_term(1,rn1V);
+variable_list.set_scalar_gradient_residual_term(1,rn1xV);
 
-modelResidualsList[4].vectorGradResidual = ruxV;
+variable_list.set_scalar_value_residual_term(2,rn2V);
+variable_list.set_scalar_gradient_residual_term(2,rn2xV);
+
+variable_list.set_scalar_value_residual_term(3,rn3V);
+variable_list.set_scalar_gradient_residual_term(3,rn3xV);
+
+variable_list.set_vector_gradient_residual_term(4,ruxV);
 
 }
 
@@ -330,23 +353,28 @@ modelResidualsList[4].vectorGradResidual = ruxV;
 // are multiple elliptic equations, conditional statements should be used to ensure
 // that the correct residual is being submitted. The index of the field being solved
 // can be accessed by "this->currentFieldIndex".
-template <int dim,int degree>
-void customPDE<dim,degree>::residualLHS(const std::vector<modelVariable<dim> > & modelVariablesList,
-		modelResidual<dim> & modelRes,
+template <int dim, int degree>
+void customPDE<dim,degree>::residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 //n1
-scalarvalueType n1 = modelVariablesList[0].scalarValue;
+scalarvalueType n1 = variable_list.get_scalar_value(1);
 
 //n2
-scalarvalueType n2 = modelVariablesList[1].scalarValue;
+scalarvalueType n2 = variable_list.get_scalar_value(2);
 
 //n3
-scalarvalueType n3 = modelVariablesList[2].scalarValue;
+scalarvalueType n3 = variable_list.get_scalar_value(3);
 
 //u
-vectorgradType ux = modelVariablesList[3].vectorGrad;
-vectorgradType rux;
+vectorgradType ux = variable_list.get_vector_gradient(4);
+vectorgradType ruxV;
+
+// Interpolation functions
+
+scalarvalueType h1V = (10.0*n1*n1*n1-15.0*n1*n1*n1*n1+6.0*n1*n1*n1*n1*n1);
+scalarvalueType h2V = (10.0*n2*n2*n2-15.0*n2*n2*n2*n2+6.0*n2*n2*n2*n2*n2);
+scalarvalueType h3V = (10.0*n3*n3*n3-15.0*n3*n3*n3*n3+6.0*n3*n3*n3*n3*n3);
 
 // Take advantage of E being simply 0.5*(ux + transpose(ux)) and use the dealii "symmetrize" function
 dealii::Tensor<2, dim, dealii::VectorizedArray<double> > E;
@@ -355,154 +383,14 @@ E = symmetrize(ux);
 // Compute stress tensor (which is equal to the residual, Rux)
 if (n_dependent_stiffness == true){
 	dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ_combined;
-	CIJ_combined = this->userInputs.CIJ_list[0]*(constV(1.0)-h1V-h2V-h3V) + this->userInputs.CIJ_list[1]*(h1V+h2V+h3V);
+	CIJ_combined = CIJ_Mg*(constV(1.0)-h1V-h2V-h3V) + CIJ_Beta*(h1V+h2V+h3V);
 
-	computeStress<dim>(CIJ_combined, E, rux);
+	computeStress<dim>(CIJ_combined, E, ruxV);
 }
 else{
-	computeStress<dim>(this->userInputs.CIJ_list[0], E, rux);
+	computeStress<dim>(CIJ_Mg, E, ruxV);
 }
 
-modelRes.vectorGradResidual = rux;
+variable_list.set_vector_gradient_residual_term(4,ruxV);
 
 }
-
-// =================================================================================
-// energyDensity (needed only if calcEnergy == true)
-// =================================================================================
-// This function integrates the free energy density across the computational domain.
-// It takes "modelVariablesList" as an input, which is a list of the value and
-// derivatives of each of the variables at a specific quadrature point. It also
-// takes the mapped quadrature weight, "JxW_value", as an input. The (x,y,z) location
-// of the quadrature point is given by "q_point_loc". The weighted value of the
-// energy density is added to "energy" variable and the components of the energy
-// density are added to the "energy_components" variable (index 0: chemical energy,
-// index 1: gradient energy, index 2: elastic energy).
-template <int dim,int degree>
-void customPDE<dim,degree>::energyDensity(const std::vector<modelVariable<dim> > & modelVarList,
-											const dealii::VectorizedArray<double> & JxW_value,
-											dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {
-
-scalarvalueType total_energy_density = constV(0.0);
-
-//c
-scalarvalueType c = modelVarList[0].scalarValue;
-
-//n1
-scalarvalueType n1 = modelVarList[1].scalarValue;
-scalargradType n1x = modelVarList[1].scalarGrad;
-
-//n2
-scalarvalueType n2 = modelVarList[2].scalarValue;
-scalargradType n2x = modelVarList[2].scalarGrad;
-
-
-//n3
-scalarvalueType n3 = modelVarList[3].scalarValue;
-scalargradType n3x = modelVarList[3].scalarGrad;
-
-//u
-vectorgradType ux = modelVarList[4].vectorGrad;
-
-scalarvalueType f_chem = (constV(1.0)-(h1V+h2V+h3V))*faV + (h1V+h2V+h3V)*fbV;
-
-scalarvalueType f_grad = constV(0.0);
-
-for (int i=0; i<dim; i++){
-  for (int j=0; j<dim; j++){
-	  f_grad += constV(0.5*Kn1[i][j])*n1x[i]*n1x[j];
-  }
-}
-
-for (int i=0; i<dim; i++){
-  for (int j=0; j<dim; j++){
-	  f_grad += constV(0.5*Kn2[i][j])*n2x[i]*n2x[j];
-  }
-}
-
-for (int i=0; i<dim; i++){
-  for (int j=0; j<dim; j++){
-	  f_grad += constV(0.5*Kn3[i][j])*n3x[i]*n3x[j];
-  }
-}
-
-
-
-// Calculate the stress-free transformation strain and its derivatives at the quadrature point
-dealii::Tensor<2, problemDIM, dealii::VectorizedArray<double> > sfts1, sfts1c, sfts1cc, sfts2, sfts2c, sfts2cc, sfts3, sfts3c, sfts3cc;
-
-for (unsigned int i=0; i<dim; i++){
-  for (unsigned int j=0; j<dim; j++){
-	  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
-	  sfts1[i][j] = constV(sfts_linear1[i][j])*c + constV(sfts_const1[i][j]);
-	  sfts1c[i][j] = constV(sfts_linear1[i][j]);
-	  sfts1cc[i][j] = constV(0.0);
-
-	  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
-	  sfts2[i][j] = constV(sfts_linear2[i][j])*c + constV(sfts_const2[i][j]);
-	  sfts2c[i][j] = constV(sfts_linear1[i][j]);
-	  sfts2cc[i][j] = constV(0.0);
-
-	  // Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c + b_p
-	  sfts3[i][j] = constV(sfts_linear3[i][j])*c + constV(sfts_const3[i][j]);
-	  sfts3c[i][j] = constV(sfts_linear3[i][j]);
-	  sfts3cc[i][j] = constV(0.0);
-  }
-}
-
-//compute E2=(E-E0)
-dealii::VectorizedArray<double> E2[dim][dim], S[dim][dim];
-
-for (unsigned int i=0; i<dim; i++){
-  for (unsigned int j=0; j<dim; j++){
-	  //E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1V + sfts2[i][j]*h2V + sfts3[i][j]*h3V);
-	  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1V + sfts2[i][j]*h2V + sfts3[i][j]*h3V);
-
-  }
-}
-
-//compute stress
-//S=C*(E-E0)
-dealii::VectorizedArray<double> CIJ_combined[CIJ_tensor_size][CIJ_tensor_size];
-
-if (n_dependent_stiffness == true){
-  dealii::VectorizedArray<double> sum_hV;
-  sum_hV = h1V+h2V+h3V;
-  for (unsigned int i=0; i<2*dim-1+dim/3; i++){
-	  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-		  CIJ_combined[i][j] = this->userInputs.CIJ_list[0][i][j]*(constV(1.0)-sum_hV) + this->userInputs.CIJ_list[1][i][j]*sum_hV;
-	  }
-  }
-  computeStress<dim>(CIJ_combined, E2, S);
-}
-else{
-  computeStress<dim>(this->userInputs.CIJ_list[0], E2, S);
-}
-
-scalarvalueType f_el = constV(0.0);
-
-for (unsigned int i=0; i<dim; i++){
-  for (unsigned int j=0; j<dim; j++){
-	  f_el += constV(0.5) * S[i][j]*E2[i][j];
-  }
-}
-
-total_energy_density = f_chem + f_grad + f_el;
-
-// Loop to step through each element of the vectorized arrays. Working with deal.ii
-// developers to see if there is a more elegant way to do this.
-this->assembler_lock.acquire ();
-for (unsigned i=0; i<c.n_array_elements;i++){
-  if (c[i] > 1.0e-10){
-	  this->energy+=total_energy_density[i]*JxW_value[i];
-	  this->energy_components[0]+= f_chem[i]*JxW_value[i];
-	  this->energy_components[1]+= f_grad[i]*JxW_value[i];
-	  this->energy_components[2]+= f_el[i]*JxW_value[i];
-  }
-}
-this->assembler_lock.release ();
-}
-
-
-
-

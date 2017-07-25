@@ -47,11 +47,20 @@ private:
 
 	double McV = userInputs.get_model_constant_double("McV");
 	double Mn1V = userInputs.get_model_constant_double("Mn1V");
+	double Mn2V = userInputs.get_model_constant_double("Mn2V");
+	double Mn3V = userInputs.get_model_constant_double("Mn3V");
 	dealii::Tensor<2,dim> Kn1 = userInputs.get_model_constant_rank_2_tensor("Kn1");
-	double W = userInputs.get_model_constant_double("W");
+	dealii::Tensor<2,dim> Kn2 = userInputs.get_model_constant_rank_2_tensor("Kn2");
+	dealii::Tensor<2,dim> Kn3 = userInputs.get_model_constant_rank_2_tensor("Kn3");
 	bool n_dependent_stiffness = userInputs.get_model_constant_bool("n_dependent_stiffness");
 	dealii::Tensor<2,dim> sfts_linear1 = userInputs.get_model_constant_rank_2_tensor("sfts_linear1");
 	dealii::Tensor<2,dim> sfts_const1 = userInputs.get_model_constant_rank_2_tensor("sfts_const1");
+	dealii::Tensor<2,dim> sfts_linear2 = userInputs.get_model_constant_rank_2_tensor("sfts_linear2");
+	dealii::Tensor<2,dim> sfts_const2 = userInputs.get_model_constant_rank_2_tensor("sfts_const2");
+	dealii::Tensor<2,dim> sfts_linear3 = userInputs.get_model_constant_rank_2_tensor("sfts_linear3");
+	dealii::Tensor<2,dim> sfts_const3 = userInputs.get_model_constant_rank_2_tensor("sfts_const3");
+	double A4 = userInputs.get_model_constant_double("A4");
+	double A3 = userInputs.get_model_constant_double("A3");
 	double A2 = userInputs.get_model_constant_double("A2");
 	double A1 = userInputs.get_model_constant_double("A1");
 	double A0 = userInputs.get_model_constant_double("A0");
