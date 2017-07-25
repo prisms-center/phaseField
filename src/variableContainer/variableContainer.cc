@@ -21,6 +21,56 @@ variableContainer<dim,degree,T>::variableContainer(const dealii::MatrixFree<dim,
         }
     }
 
+    // Generate lists of residual types and indices, and reserve space in the temporary vectors
+    unsigned int num_scalar_values = 0;
+    unsigned int num_scalar_gradients = 0;
+    unsigned int num_vector_values = 0;
+    unsigned int num_vector_gradients = 0;
+
+    for (unsigned int var=0; var < num_var; var++){
+        if (varInfoList[var].is_scalar){
+            if (varInfoList[var].value_residual){
+                scalar_value_index.push_back(num_scalar_values);
+                num_scalar_values++;
+            }
+            else {
+                scalar_value_index.push_back(-1);
+            }
+            if (varInfoList[var].gradient_residual){
+                scalar_gradient_index.push_back(num_scalar_gradients);
+                num_scalar_gradients++;
+            }
+            else {
+                scalar_gradient_index.push_back(-1);
+            }
+            vector_value_index.push_back(-1);
+            vector_gradient_index.push_back(-1);
+        }
+        else {
+            if (varInfoList[var].value_residual){
+                vector_value_index.push_back(num_vector_values);
+                num_vector_values++;
+            }
+            else {
+                vector_value_index.push_back(-1);
+            }
+            if (varInfoList[var].gradient_residual){
+                vector_gradient_index.push_back(num_vector_gradients);
+                num_vector_gradients++;
+            }
+            else {
+                vector_gradient_index.push_back(-1);
+            }
+            scalar_value_index.push_back(-1);
+            scalar_gradient_index.push_back(-1);
+        }
+    }
+
+    scalar_value.reserve(num_scalar_values);
+    scalar_gradient.reserve(num_scalar_gradients);
+    vector_value.reserve(num_vector_values);
+    vector_gradient.reserve(num_vector_gradients);
+
 }
 
 // Variant of the constructor where it reads from a fixed index of "data", used for post-processing
@@ -43,6 +93,56 @@ variableContainer<dim,degree,T>::variableContainer(const dealii::MatrixFree<dim,
             }
         }
     }
+
+    // Generate lists of residual types and indices, and reserve space in the temporary vectors
+    unsigned int num_scalar_values = 0;
+    unsigned int num_scalar_gradients = 0;
+    unsigned int num_vector_values = 0;
+    unsigned int num_vector_gradients = 0;
+
+    for (unsigned int var=0; var < num_var; var++){
+        if (varInfoList[var].is_scalar){
+            if (varInfoList[var].value_residual){
+                scalar_value_index.push_back(num_scalar_values);
+                num_scalar_values++;
+            }
+            else {
+                scalar_value_index.push_back(-1);
+            }
+            if (varInfoList[var].gradient_residual){
+                scalar_gradient_index.push_back(num_scalar_gradients);
+                num_scalar_gradients++;
+            }
+            else {
+                scalar_gradient_index.push_back(-1);
+            }
+            vector_value_index.push_back(-1);
+            vector_gradient_index.push_back(-1);
+        }
+        else {
+            if (varInfoList[var].value_residual){
+                vector_value_index.push_back(num_vector_values);
+                num_vector_values++;
+            }
+            else {
+                vector_value_index.push_back(-1);
+            }
+            if (varInfoList[var].gradient_residual){
+                vector_gradient_index.push_back(num_vector_gradients);
+                num_vector_gradients++;
+            }
+            else {
+                vector_gradient_index.push_back(-1);
+            }
+            scalar_value_index.push_back(-1);
+            scalar_gradient_index.push_back(-1);
+        }
+    }
+
+    scalar_value.reserve(num_scalar_values);
+    scalar_gradient.reserve(num_scalar_gradients);
+    vector_value.reserve(num_vector_values);
+    vector_gradient.reserve(num_vector_gradients);
 
 }
 
@@ -247,21 +347,63 @@ dealii::Tensor<3, dim, T > variableContainer<dim,degree,T>::get_vector_hessian(u
 template <int dim, int degree, typename T>
 void variableContainer<dim,degree,T>::set_scalar_value_residual_term(unsigned int global_variable_index, T val){
     scalar_vars[varInfoList[global_variable_index].scalar_or_vector_index].submit_value(val,q_point);
+
+    // Hold-over from previous version that caches the residual terms instead of over-writing what's in scalar_vars.
+    // This approach was abandoned because it caused a 20% decrease in speed.
+    //scalar_value[scalar_value_index[global_variable_index]] = val;
 }
 
 template <int dim, int degree, typename T>
 void variableContainer<dim,degree,T>::set_scalar_gradient_residual_term(unsigned int global_variable_index, dealii::Tensor<1, dim, T > grad){
     scalar_vars[varInfoList[global_variable_index].scalar_or_vector_index].submit_gradient(grad,q_point);
+
+    // Hold-over from previous version that caches the residual terms instead of over-writing what's in scalar_vars.
+    // This approach was abandoned because it caused a 20% decrease in speed.
+    //scalar_gradient[scalar_gradient_index[global_variable_index]] = grad;
 }
 
 template <int dim, int degree, typename T>
 void variableContainer<dim,degree,T>::set_vector_value_residual_term(unsigned int global_variable_index, dealii::Tensor<1, dim, T > val){
     vector_vars[varInfoList[global_variable_index].scalar_or_vector_index].submit_value(val,q_point);
+
+    // Hold-over from previous version that caches the residual terms instead of over-writing what's in vector_vars.
+    // This approach was abandoned because it caused a 20% decrease in speed.
+    //vector_value[vector_value_index[global_variable_index]] = val;
 }
 template <int dim, int degree, typename T>
 void variableContainer<dim,degree,T>::set_vector_gradient_residual_term(unsigned int global_variable_index, dealii::Tensor<2, dim, T > grad){
     vector_vars[varInfoList[global_variable_index].scalar_or_vector_index].submit_gradient(grad,q_point);
+
+    // Hold-over from previous version that caches the residual terms instead of over-writing what's in vector_vars.
+    // This approach was abandoned because it caused a 20% decrease in speed.
+    //vector_gradient[vector_gradient_index[global_variable_index]] = grad;
 }
+
+
+// Hold-over from previous version that caches the residual terms instead of over-writing what's in vector_vars.
+// This approach was abandoned because it caused a 20% decrease in speed.
+// template <int dim, int degree, typename T>
+// void variableContainer<dim,degree,T>::apply_residuals(){
+//
+//     for (unsigned int i=0; i<num_var; i++){
+//         if (varInfoList[i].is_scalar){
+//             if (varInfoList[i].value_residual){
+//                 scalar_vars[varInfoList[i].scalar_or_vector_index].submit_value(scalar_value[scalar_value_index[i]],q_point);
+//             }
+//             if (varInfoList[i].gradient_residual){
+//                 scalar_vars[varInfoList[i].scalar_or_vector_index].submit_gradient(scalar_gradient[scalar_gradient_index[i]],q_point);
+//             }
+//         }
+//         else {
+//             if (varInfoList[i].value_residual){
+//                 vector_vars[varInfoList[i].scalar_or_vector_index].submit_value(vector_value[vector_value_index[i]],q_point);
+//             }
+//             if (varInfoList[i].gradient_residual){
+//                 vector_vars[varInfoList[i].scalar_or_vector_index].submit_gradient(vector_gradient[vector_gradient_index[i]],q_point);
+//             }
+//         }
+//     }
+// }
 
 template class variableContainer<2,1,dealii::VectorizedArray<double> >;
 template class variableContainer<2,2,dealii::VectorizedArray<double> >;
