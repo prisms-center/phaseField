@@ -64,19 +64,21 @@ set Number of time steps = 50000
 # Set the boundary conditions
 # =================================================================================
 # Set the boundary condition for each variable, where each variable is given by
-# its name, as defined at the top of equations.h. The three boundary condition
-# types are ZERO_DERIVATIVE, DIRICHLET, and PERIODIC. If all of the boundaries have
-# the same boundary condition, only one boundary condition type needs to be given.
-# If multiple boundary condition types are needed, give a comma-separated list of
-# the types. The order is the miniumum of x, maximum of x, minimum of y, maximum
-# of y, minimum of z, maximum of z (i.e left, right, bottom, top in 2D and left,
-# right, bottom, top, front, back in 3D). The value of a Dirichlet BC is specfied
-# in the following way -- DIRCHILET: val -- where 'val' is the desired value.
+# its name, as defined in equations.h. The four boundary condition
+# types are ZERO_DERIVATIVE, DIRICHLET, NON_UNIFORM_DIRICHLET and PERIODIC. If all
+# of the boundaries have the same boundary condition, only one boundary condition
+# type needs to be given. If multiple boundary condition types are needed, give a
+# comma-separated list of the types. The order is the miniumum of x, maximum of x,
+# minimum of y, maximum of y, minimum of z, maximum of z (i.e left, right, bottom,
+# top in 2D and left, right, bottom, top, front, back in 3D). The value of a
+# Dirichlet BC is specfied in the following way -- DIRCHILET: val -- where 'val' is
+# the desired value. If the boundary condition is NON_UNIFORM_DIRICHLET, the
+# boundary condition should be specified in the appropriate function in 'ICs_and_BCs.h'.
 # Example 1: All periodic BCs for variable 'c'
 # set Boundary condition for variable c = PERIODIC
 # Example 2: Zero-derivative BCs on the left and right, Dirichlet BCs with value
 # 1.5 on the top and bottom for variable 'n' in 2D
-# set Boundary condition for variable n = ZERO_DERIVATIVE, ZERO_DERIVATIVE, DIRCHLET: 1.5, DIRICHLET: 1.5
+# set Boundary condition for variable n = ZERO_DERIVATIVE, ZERO_DERIVATIVE, DIRICHLET: 1.5, DIRICHLET: 1.5
 
 set Boundary condition for variable c = PERIODIC
 set Boundary condition for variable n = PERIODIC

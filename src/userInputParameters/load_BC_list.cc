@@ -31,6 +31,10 @@ void userInputParameters<dim>::load_BC_list(std::vector<std::string> list_of_BCs
                 newBC.var_BC_type.push_back(PERIODIC);
                 newBC.var_BC_val.push_back(0.0);
             }
+            else if (boost::iequals(temp[i],"NON_UNIFORM_DIRICHLET")){
+                newBC.var_BC_type.push_back(NON_UNIFORM_DIRICHLET);
+                newBC.var_BC_val.push_back(0.0);
+            }
             else if (boost::iequals(temp[i].substr(0,9),"DIRICHLET")){
                 newBC.var_BC_type.push_back(DIRICHLET);
                 std::string dirichlet_val = temp[i].substr(10,temp[i].size());

@@ -5,6 +5,9 @@
 #include "../../include/matrixFreePDE.h"
 #include "../../include/vectorBCFunction.h"
 
+#include "../../include/nonUniformDirichletBC.h"
+
+
 //methods to apply dirichlet BC's
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
@@ -27,6 +30,12 @@ void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 				  VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
 						  direction, ConstantFunction<dim>(userInputs.BC_list[starting_BC_list_index].var_BC_val[direction],1), *(ConstraintMatrix*) \
 						  constraintsDirichletSet[currentFieldIndex]);
+
+			  }
+			  else if (userInputs.BC_list[starting_BC_list_index].var_BC_type[direction] == NON_UNIFORM_DIRICHLET){
+				  VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
+  						direction, NonUniformDirichletBC<dim>(currentFieldIndex,direction,userInputs), *(ConstraintMatrix*) \
+  						constraintsDirichletSet[currentFieldIndex]);
 			  }
 		  }
 	  }
@@ -51,6 +60,21 @@ void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 			  VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
 					  direction, vectorBCFunction<dim>(BC_values), *(ConstraintMatrix*) \
 					  constraintsDirichletSet[currentFieldIndex],mask);
+
+				// Mask again, this time for non-uniform Dirichlet BCs
+			  mask.clear();
+			  for (unsigned int component=0; component < dim; component++){
+				  if (userInputs.BC_list[starting_BC_list_index+component].var_BC_type[direction] == NON_UNIFORM_DIRICHLET){
+					  mask.push_back(true);
+				  }
+				  else {
+					  mask.push_back(false);
+				  }
+			  }
+
+			  VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
+				  direction, NonUniformDirichletBCVec<dim>(currentFieldIndex,direction,userInputs), *(ConstraintMatrix*) \
+				  constraintsDirichletSet[currentFieldIndex],mask);
 
 
 		  }
