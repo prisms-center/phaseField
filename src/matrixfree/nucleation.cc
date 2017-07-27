@@ -121,9 +121,12 @@ void MatrixFreePDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim> > &n
             // ---------------------------
 
             double element_volume = 0.0;
-        	// Loop over the quadrature points to find the element volume (or area in 2D)
+            dealii::Point<dim> ele_center;
+        	// Loop over the quadrature points to find the element volume (or area in 2D) and the average q point location
             for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
                 element_volume = element_volume + fe_values.JxW(q_point);
+                for (unsigned int i=0; i<dim; i++)
+                    ele_center[i]=ele_center[i]+q_point_list[q_point](i)/((double)num_quad_points);
             }
 
             // Loop over each variable and each quadrature point to get the average variable value for the element
@@ -140,7 +143,7 @@ void MatrixFreePDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim> > &n
             //Compute random no. between 0 and 1 (new method)
             rand_val=distr(gen);
             //Nucleation probability
-            double Prob=getNucleationProbability(variable_values,element_volume);
+            double Prob=getNucleationProbability(variable_values,element_volume,ele_center);
 
             // ----------------------------
 

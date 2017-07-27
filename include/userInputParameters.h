@@ -61,9 +61,7 @@ public:
 	std::string output_file_type;
 	std::string output_file_name;
 	std::vector<unsigned int> outputTimeStepList;
-
-	bool calc_energy;
-
+	
 	// Time step parameters
 	double dtValue;
 	double finalTime;

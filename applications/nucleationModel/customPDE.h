@@ -28,7 +28,7 @@ private:
 
 	// Virtual method in MatrixFreePDE that we override if we need nucleation
 	#ifdef NUCLEATION_FILE_EXISTS
-	double getNucleationProbability(variableValueContainer variable_value, double dV) const;
+	double getNucleationProbability(variableValueContainer variable_value, double dV, dealii::Point<dim> p) const;
 	#endif
 
 	// ================================================================

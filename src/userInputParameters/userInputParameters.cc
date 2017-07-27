@@ -7,7 +7,6 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     loadVariableAttributes(variable_attributes);
 
     unsigned int _number_of_variables = input_file_reader.var_types.size();
-    unsigned int _number_of_pp_variables = input_file_reader.num_pp_vars;
 
     // Load the inputs into the class member variables
 
@@ -65,8 +64,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     skip_print_steps = parameter_handler.get_integer("Skip print steps");
     output_file_type = parameter_handler.get("Output file type");
     output_file_name = parameter_handler.get("Output file name (base)");
-    calc_energy = parameter_handler.get_bool("Calculate the free energy");
-
+    
     // Field variable definitions
 
 
