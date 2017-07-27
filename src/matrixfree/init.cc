@@ -10,10 +10,10 @@ template <int dim, int degree>
 	 //creating mesh
 
 	 pcout << "creating problem mesh...\n";
+     // Create the coarse mesh and mark the boundaries
      makeTriangulation(triangulation);
 
-	 // Mark boundaries for applying the boundary conditions
-	 markBoundaries();
+
 
 	 // Set which (if any) faces of the triangulation are periodic
 	 setPeriodicity();
@@ -219,6 +219,9 @@ template <int dim, int degree>
      else {
     	 GridGenerator::subdivided_hyper_rectangle (tria, userInputs.subdivisions, Point<dim>(), Point<dim>(userInputs.domain_size[0]));
      }
+
+     // Mark boundaries for applying the boundary conditions
+	 markBoundaries(tria);
 
  }
 

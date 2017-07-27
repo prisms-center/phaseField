@@ -60,7 +60,8 @@ set Number of time steps = 50000 #15000
 # 1.5 on the top and bottom for variable 'n' in 2D
 # set Boundary condition for variable n = ZERO_DERIVATIVE, ZERO_DERIVATIVE, DIRICHLET: 1.5, DIRICHLET: 1.5
 
-set Boundary condition for variable c = ZERO_DERIVATIVE
+#set Boundary condition for variable c = ZERO_DERIVATIVE
+set Boundary condition for variable c = DIRICHLET: 1.0, DIRICHLET: 2.0, DIRICHLET: 3.0, DIRICHLET: 4.0, DIRICHLET: 5.0, DIRICHLET: 6.0
 
 # =================================================================================
 # Set the model constants

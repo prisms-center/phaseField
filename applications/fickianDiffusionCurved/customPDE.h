@@ -69,7 +69,7 @@ template <int dim, int degree>
 
 	 GridGenerator::half_hyper_ball (tria_semicircle, Point<dim>(userInputs.domain_size[0],userInputs.domain_size[1]/2.0), userInputs.domain_size[0]/2.0);
 
-	 // Move the vertices at the center of the half hyper ball so that they will align with the edges of the hyper rectangle
+	 // Find the two non-corner vertices on the right side of the rectangular mesh
 	 Point<dim> pt1, pt2;
 	 typename parallel::distributed::Triangulation<dim>::active_cell_iterator
 	 cell3 = tria_box.begin_active(),
@@ -86,7 +86,7 @@ template <int dim, int degree>
 		 }
 	 }
 
-	 // Move the vertices at the center of the half hyper ball so that they will align with the edges of the hyper rectangle
+	 // Move the vertices at the center of the half hyper ball so that they will align with non-corner vertices on the right side of the rectangular mesh
 	 typename parallel::distributed::Triangulation<dim>::active_cell_iterator
 	 cell2 = tria_semicircle.begin_active(),
 	 endc2 = tria_semicircle.end();
@@ -102,13 +102,12 @@ template <int dim, int degree>
 		 }
 	 }
 
+	 // Merge the rectangle and the semicircle
 	 GridGenerator::merge_triangulations(tria_box,tria_semicircle,tria);
 
+	 // Attach a spherical manifold to the semicircular part of the domain so that it gets refined with rounded edges
 	 static const SphericalManifold<dim> boundary(Point<dim>(userInputs.domain_size[0],userInputs.domain_size[1]/2.0));
-
-
 	 tria.set_manifold(8,boundary);
-
 
 	 typename parallel::distributed::Triangulation<dim>::active_cell_iterator
 	 cell = tria.begin_active(),
@@ -116,13 +115,7 @@ template <int dim, int degree>
 	 for (; cell!=endc; ++cell){
 		 for (unsigned int f=0; f < GeometryInfo<dim>::faces_per_cell; ++f){
 			 const Point<dim> face_center = cell->face(f)->center();
-
-				//  if (face_center[0] > userInputs.domain_size[0] + 1.0e-10){
-				// 	 cell->face(f)->set_all_manifold_ids(8);
-				 //
-				//  }
 				if (face_center[0] > userInputs.domain_size[0] + 1.0e-10){
-					//cell->set_all_manifold_ids(8);
 					cell->face(f)->set_all_manifold_ids(8);
 					if (face_center.distance(Point<dim>(userInputs.domain_size[0],userInputs.domain_size[1]/2.0)) > 0.2){
 						cell->set_all_manifold_ids(8);
@@ -132,6 +125,38 @@ template <int dim, int degree>
 
 		 }
 	 }
+
+	// Mark the boundaries
+	typename Triangulation<dim>::cell_iterator
+ 	cell4 = tria.begin (),
+ 	endc4 = tria.end();
+ 	for (; cell4!=endc4; ++cell4){
+ 		// Mark all of the faces
+ 		for (unsigned int face_number=0; face_number<GeometryInfo<dim>::faces_per_cell;++face_number){
+			if (cell4->face(face_number)->at_boundary()){
+	 			for (unsigned int i=0; i<dim; i++){
+					if (i == 0){
+						if ( std::fabs(cell4->face(face_number)->center()(i) - (0)) < 1e-12 ){
+		 					cell4->face(face_number)->set_boundary_id (2*i);
+		 				}
+		 				else if (std::fabs(cell4->face(face_number)->center()(i) > (userInputs.domain_size[i]))){
+		 					cell4->face(face_number)->set_boundary_id (2*i+1);
+		 				}
+					}
+					else {
+						if ( std::fabs(cell4->face(face_number)->center()(i) - (0)) < 1e-12 ){
+		 					cell4->face(face_number)->set_boundary_id (2*i);
+		 				}
+		 				else if (std::fabs(cell4->face(face_number)->center()(i) - (userInputs.domain_size[i])) < 1e-12){
+		 					cell4->face(face_number)->set_boundary_id (2*i+1);
+		 				}
+					}
+
+
+	 			}
+			}
+ 		}
+ 	}
 
 
 }
