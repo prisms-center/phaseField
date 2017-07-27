@@ -9,6 +9,7 @@
 #include "../../src/utilities/vectorBCFunction.cc"
 #include "../../include/initialConditions.h"
 #include "initialConditions.cc"
+#include "boundaryConditions.cc"
 #include "unit_test_inputs.cc"
 
 int main(int argc, char **argv)

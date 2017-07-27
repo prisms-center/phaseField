@@ -45,7 +45,7 @@ set Number of time steps = 5000
 # Set the boundary conditions
 # =================================================================================
 # ADD MORE COMMENTS
-set Boundary condition for variable 0 = ZERO_DERIVATIVE
+set Boundary condition for variable n = ZERO_DERIVATIVE
 
 # =================================================================================
 # Set the model constants

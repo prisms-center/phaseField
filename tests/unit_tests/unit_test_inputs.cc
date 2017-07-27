@@ -30,7 +30,7 @@ void load_unit_test_inputs(userInputParameters<dim> & userInputs){
     userInputs.nucleation_occurs = false;
     userInputs.number_of_variables = 1;
     userInputs.load_ICs.push_back(false);
-    userInputs.load_serial_file.push_back(false);
+    userInputs.load_parallel_file.push_back(false);
     userInputs.load_file_name.push_back("void");
     userInputs.load_field_name.push_back("void");
     userInputs.pp_number_of_variables = 1;

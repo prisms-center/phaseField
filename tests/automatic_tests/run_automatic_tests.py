@@ -107,9 +107,15 @@ def run_regression_test(applicationName,getNewGoldStandard,dir_path):
 	if (getNewGoldStandard == False):
 		# Read the gold standard free energies
 		os.chdir("gold_"+applicationName)
-		gold_standard_file = open("freeEnergy.txt","r")
+		gold_standard_file = open("integratedFields.txt","r")
 		gold_energy = gold_standard_file.readlines()
 		gold_standard_file.close()
+
+		last_energy_index = len(gold_energy)-1
+		split_last_line = gold_energy[-1].split()
+		for index, entry in enumerate(split_last_line):
+			if entry == "f_tot":
+				gold_last_energy = split_last_line[index+1]
 
 		# Read the test free energies
 		os.chdir("../"+testName)
@@ -123,7 +129,7 @@ def run_regression_test(applicationName,getNewGoldStandard,dir_path):
 			if entry == "f_tot":
 				last_energy = split_last_line[index+1]
 
-		rel_diff = (float(gold_energy[last_energy_index])-float(last_energy))/float(gold_energy[last_energy_index])
+		rel_diff = (float(gold_last_energy)-float(last_energy))/float(gold_last_energy)
 		rel_diff = abs(rel_diff)
 
 		if (rel_diff < 1.0e-9):
@@ -215,10 +221,10 @@ text_file.close()
 #getNewGoldStandardList = [False, False, False, False, False, False, False, False]
 
 # Shorter list of applications so that it completes on Travis
-#applicationList = ["allenCahn","cahnHilliardWithAdaptivity","CHAC_anisotropyRegularized","coupledCahnHilliardAllenCahn","mechanics","precipitateEvolution"]
-#getNewGoldStandardList = [False, False, False, False, False, False]
-applicationList = ["allenCahn"]
-getNewGoldStandardList = [False]
+applicationList = ["allenCahn","cahnHilliardWithAdaptivity","CHAC_anisotropyRegularized","coupledCahnHilliardAllenCahn","precipitateEvolution"]
+getNewGoldStandardList = [False, False, False, False, False, False]
+#applicationList = ["allenCahn"]
+#getNewGoldStandardList = [False]
 
 
 
