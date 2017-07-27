@@ -38,7 +38,7 @@ set Time step = 1.0e-3
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 15000
+set Number of time steps = 50000 #15000
 
 # =================================================================================
 # Set the boundary conditions
@@ -60,7 +60,8 @@ set Number of time steps = 15000
 # 1.5 on the top and bottom for variable 'n' in 2D
 # set Boundary condition for variable n = ZERO_DERIVATIVE, ZERO_DERIVATIVE, DIRICHLET: 1.5, DIRICHLET: 1.5
 
-set Boundary condition for variable c = ZERO_DERIVATIVE
+#set Boundary condition for variable c = ZERO_DERIVATIVE
+set Boundary condition for variable c = NEUMANN: 0.001, ZERO_DERIVATIVE, ZERO_DERIVATIVE, ZERO_DERIVATIVE, ZERO_DERIVATIVE, ZERO_DERIVATIVE
 
 # =================================================================================
 # Set the model constants

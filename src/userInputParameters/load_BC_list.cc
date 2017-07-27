@@ -41,6 +41,12 @@ void userInputParameters<dim>::load_BC_list(std::vector<std::string> list_of_BCs
                 dirichlet_val = dealii::Utilities::trim(dirichlet_val);
                 newBC.var_BC_val.push_back(dealii::Utilities::string_to_double(dirichlet_val));
             }
+            else if (boost::iequals(temp[i].substr(0,7),"NEUMANN")){
+                newBC.var_BC_type.push_back(NEUMANN);
+                std::string neumann_val = temp[i].substr(8,temp[i].size());
+                neumann_val = dealii::Utilities::trim(neumann_val);
+                newBC.var_BC_val.push_back(dealii::Utilities::string_to_double(neumann_val));
+            }
             else {
                 std::cout << temp[i].substr(0,8) << std::endl;
                 std::cout << "Error: Boundary conditions specified improperly." << std::endl;

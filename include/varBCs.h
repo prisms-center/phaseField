@@ -9,7 +9,7 @@
 #define INCLUDE_VARBCS_H_
 
 // BC type enum
-enum BC_type {ZERO_DERIVATIVE, DIRICHLET, PERIODIC, NON_UNIFORM_DIRICHLET};
+enum BC_type {ZERO_DERIVATIVE, DIRICHLET, PERIODIC, NON_UNIFORM_DIRICHLET, NEUMANN};
 
 // BC object declaration
 template <int dim>

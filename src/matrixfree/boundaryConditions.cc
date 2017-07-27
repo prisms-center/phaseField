@@ -1,14 +1,76 @@
 //methods to apply boundary conditons
 
-//#ifndef's) till library packaging scheme is finalized
-
 #include "../../include/matrixFreePDE.h"
 #include "../../include/vectorBCFunction.h"
 
 #include "../../include/nonUniformDirichletBC.h"
 
+// =================================================================================
+// Methods to apply non-zero Neumann BCs
+// =================================================================================
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::applyNeumannBCs(){
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// NOTE: Currently this function doesn't work and it's call is commented out in solveIncrement.
+	// The result is off by almost exactly a factor of 100,000. I don't know what the issue is.
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-//methods to apply dirichlet BC's
+	// Check to the BC for the current field
+	unsigned int starting_BC_list_index = 0;
+	for (unsigned int i=0; i<currentFieldIndex; i++){
+		if (userInputs.var_type[i] == SCALAR){
+			starting_BC_list_index++;
+		}
+		else {
+			starting_BC_list_index+=dim;
+		}
+	}
+
+	if (userInputs.var_type[currentFieldIndex] == SCALAR){
+		for (unsigned int direction = 0; direction < 2*dim; direction++){
+			if (userInputs.BC_list[starting_BC_list_index].var_BC_type[direction] == NEUMANN){
+
+				typename DoFHandler<dim>::active_cell_iterator cell = dofHandlersSet[0]->begin_active(), endc = dofHandlersSet[0]->end();
+				FESystem<dim>* fe= FESet[currentFieldIndex];
+				QGaussLobatto<dim-1>  face_quadrature_formula(degree+1);
+				FEFaceValues<dim> fe_face_values (*fe, face_quadrature_formula, update_values | update_JxW_values);
+				const unsigned int n_face_q_points  = face_quadrature_formula.size(), dofs_per_cell=fe->dofs_per_cell;
+				Vector<double> cell_rhs(dofs_per_cell);
+				std::vector<types::global_dof_index> local_dof_indices (dofs_per_cell);
+
+				// Loop over each face on a boundary
+				for (;cell!=endc; ++cell){
+					for (unsigned int f=0; f<GeometryInfo<dim>::faces_per_cell; ++f){
+						if (cell->face(f)->at_boundary()){
+							if (cell->face(f)->boundary_id() == direction){
+								fe_face_values.reinit (cell, f);
+								cell_rhs=0.0;
+								for (unsigned int q_point=0; q_point<n_face_q_points; ++q_point){
+									double neumann_value = userInputs.BC_list[starting_BC_list_index].var_BC_val[direction];
+									for (unsigned int i=0; i<dofs_per_cell; ++i){
+										cell_rhs(i) += (neumann_value * fe_face_values.shape_value(i,q_point) * fe_face_values.JxW(q_point));
+									}
+								}
+								cell->get_dof_indices (local_dof_indices);
+								//assemble
+								for (unsigned int i=0; i<dofs_per_cell; ++i){
+									(*(residualSet[currentFieldIndex]))[local_dof_indices[i]] += cell_rhs(i);
+								}
+							}
+						}
+					}
+				}
+			}
+
+		}
+	}
+
+}
+
+
+// =================================================================================
+// Methods to apply non-zero Dirichlet BCs
+// =================================================================================
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 	// First, get the variable index of the current field

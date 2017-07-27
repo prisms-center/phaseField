@@ -216,8 +216,11 @@ class MatrixFreePDE:public Subscriptor
   std::vector<std::map<dealii::types::global_dof_index, double>*> valuesDirichletSet;
   /*Virtual method to mark the boundaries for applying Dirichlet boundary conditions.  This is usually expected to be provided by the user.*/
   void markBoundaries();
-  /*Virtual method for applying Dirichlet boundary conditions.  This is usually expected to be provided by the user.*/
+  /** Method for applying Dirichlet boundary conditions.*/
   void applyDirichletBCs();
+
+  /** Method for applying Neumann boundary conditions.*/
+  void applyNeumannBCs();
 
   // Methods to apply periodic BCs
   void setPeriodicity();

@@ -18,6 +18,10 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
     for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
         currentFieldIndex = fieldIndex; // Used in computeLHS()
 
+        // Add Neumann BC terms to the residual vector for the current field, if appropriate
+        // Currently commented out because it isn't working yet
+        //applyNeumannBCs();
+
         //Parabolic (first order derivatives in time) fields
         if (fields[fieldIndex].pdetype==PARABOLIC){
 
