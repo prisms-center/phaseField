@@ -217,7 +217,7 @@ class MatrixFreePDE:public Subscriptor
   /*Map of degrees of freedom to the corresponding Dirichlet boundary conditions, if any.*/
   std::vector<std::map<dealii::types::global_dof_index, double>*> valuesDirichletSet;
   /*Virtual method to mark the boundaries for applying Dirichlet boundary conditions.  This is usually expected to be provided by the user.*/
-  void markBoundaries();
+  void markBoundaries(parallel::distributed::Triangulation<dim> &) const;
   /** Method for applying Dirichlet boundary conditions.*/
   void applyDirichletBCs();
 
