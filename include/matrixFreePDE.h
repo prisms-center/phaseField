@@ -55,7 +55,9 @@ class MatrixFreePDE:public Subscriptor
    * Initializes the mesh, degrees of freedom, constraints and data structures using the user provided
    * inputs in the application parameters file.
    */
-  void init  ();
+  virtual void init  ();
+
+  virtual void makeTriangulation(parallel::distributed::Triangulation<dim> &) const;
 
    /**
    * Initializes the data structures for enabling unit tests.

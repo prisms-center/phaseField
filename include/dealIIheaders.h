@@ -36,6 +36,8 @@
 #include <deal.II/distributed/grid_refinement.h>
 #include <deal.II/base/parameter_handler.h>
 
+#include <deal.II/grid/manifold_lib.h>
+
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/variant.hpp>
 //#include <tuple>

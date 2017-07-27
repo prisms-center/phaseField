@@ -21,11 +21,11 @@ set Domain size Z = 1.0
 # The number of elements in each direction is 2^(refineFactor) * subdivisions
 # Subdivisions Z ignored in 2D
 # For optimal performance, use refineFactor primarily to determine the element size
-set Subdivisions X = 1
-set Subdivisions Y = 1
-set Subdivisions Z = 1
+set Subdivisions X = 3
+set Subdivisions Y = 3
+set Subdivisions Z = 3
 
-set Refine factor = 7
+set Refine factor = 4
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
 set Element degree = 1
@@ -34,7 +34,7 @@ set Element degree = 1
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 1.0e-3
+set Time step = 1.0e-4
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
