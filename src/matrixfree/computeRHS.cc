@@ -45,7 +45,6 @@ void MatrixFreePDE<dim,degree>::getRHS(const MatrixFree<dim,double> &data,
 
             // Calculate the residuals
             residualRHS(variable_list,q_point_loc);
-
         }
 
         variable_list.integrate_and_distribute(dst);

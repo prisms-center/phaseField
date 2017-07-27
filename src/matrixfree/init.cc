@@ -10,17 +10,7 @@ template <int dim, int degree>
 	 //creating mesh
 
 	 pcout << "creating problem mesh...\n";
-
-     if (dim == 3){
-    	 GridGenerator::subdivided_hyper_rectangle (triangulation, userInputs.subdivisions, Point<dim>(), Point<dim>(userInputs.domain_size[0],userInputs.domain_size[1],userInputs.domain_size[2]));
-     }
-     else if (dim == 2){
-    	 GridGenerator::subdivided_hyper_rectangle (triangulation, userInputs.subdivisions, Point<dim>(), Point<dim>(userInputs.domain_size[0],userInputs.domain_size[1]));
-     }
-     else {
-    	 GridGenerator::subdivided_hyper_rectangle (triangulation, userInputs.subdivisions, Point<dim>(), Point<dim>(userInputs.domain_size[0]));
-     }
-
+     makeTriangulation(triangulation);
 
 	 // Mark boundaries for applying the boundary conditions
 	 markBoundaries();
@@ -217,5 +207,19 @@ template <int dim, int degree>
 
 	 computing_timer.exit_section("matrixFreePDE: initialization");
 }
+
+template <int dim, int degree>
+ void MatrixFreePDE<dim,degree>::makeTriangulation(parallel::distributed::Triangulation<dim> & tria) const{
+     if (dim == 3){
+    	 GridGenerator::subdivided_hyper_rectangle (tria, userInputs.subdivisions, Point<dim>(), Point<dim>(userInputs.domain_size[0],userInputs.domain_size[1],userInputs.domain_size[2]));
+     }
+     else if (dim == 2){
+    	 GridGenerator::subdivided_hyper_rectangle (tria, userInputs.subdivisions, Point<dim>(), Point<dim>(userInputs.domain_size[0],userInputs.domain_size[1]));
+     }
+     else {
+    	 GridGenerator::subdivided_hyper_rectangle (tria, userInputs.subdivisions, Point<dim>(), Point<dim>(userInputs.domain_size[0]));
+     }
+
+ }
 
 #include "../../include/matrixFreePDE_template_instantiations.h"

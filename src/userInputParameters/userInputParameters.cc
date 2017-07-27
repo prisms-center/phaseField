@@ -83,27 +83,33 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     }
 
     // Determine the maximum number of time steps
-    if ((totalIncrements_temp >= 0) && (finalTime >= 0.0)) {
-        if (std::ceil(finalTime/dtValue) > totalIncrements_temp) {
+    if (only_elliptic_pdes){
+        totalIncrements = 1;
+        finalTime = 0.0;
+    }
+    else{
+        if ((totalIncrements_temp >= 0) && (finalTime >= 0.0)) {
+            if (std::ceil(finalTime/dtValue) > totalIncrements_temp) {
+                totalIncrements = totalIncrements_temp;
+                finalTime = totalIncrements*dtValue;
+            }
+            else {
+                totalIncrements = std::ceil(finalTime/dtValue);
+            }
+        }
+        else if ((totalIncrements_temp >= 0) && (finalTime < 0.0)) {
             totalIncrements = totalIncrements_temp;
             finalTime = totalIncrements*dtValue;
         }
-        else {
+        else if ((totalIncrements_temp < 0) && (finalTime >= 0.0)) {
             totalIncrements = std::ceil(finalTime/dtValue);
         }
-    }
-    else if ((totalIncrements_temp >= 0) && (finalTime < 0.0)) {
-        totalIncrements = totalIncrements_temp;
-        finalTime = totalIncrements*dtValue;
-    }
-    else if ((totalIncrements_temp < 0) && (finalTime >= 0.0)) {
-        totalIncrements = std::ceil(finalTime/dtValue);
-    }
-    else {
-        // Should change to an exception
-        std::cerr << "Invalid selections for the final time and the number of increments. At least one should be given in the input file and should be positive." << std::endl;
-        std::cout << finalTime << " " << totalIncrements_temp << std::endl;
-        abort();
+        else {
+            // Should change to an exception
+            std::cerr << "Invalid selections for the final time and the number of increments. At least one should be given in the input file and should be positive." << std::endl;
+            std::cout << finalTime << " " << totalIncrements_temp << std::endl;
+            abort();
+        }
     }
 
 

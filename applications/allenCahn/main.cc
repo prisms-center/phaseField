@@ -3,6 +3,8 @@
 // Header files
 #include "../../include/initialConditions.h"
 #include "../../include/initialCondition_template_instantiations.h"
+#include "../../include/nonUniformDirichletBC.h"
+#include "../../include/nonUniformDirichletBC_template_instantiations.h"
 #include "../../include/matrixFreePDE.h"
 #include "../../src/models/mechanics/computeStress.h"
 #include "../../include/inputFileReader.h"
@@ -14,7 +16,7 @@
 // Header file for postprocessing that may or may not exist
 #ifdef POSTPROCESS_FILE_EXISTS
 #include "postprocess.h"
-#else
+#elif
 void variableAttributeLoader::loadPostProcessorVariableAttributes(){}
 #endif
 
