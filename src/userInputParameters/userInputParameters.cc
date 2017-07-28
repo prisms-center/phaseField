@@ -64,7 +64,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     skip_print_steps = parameter_handler.get_integer("Skip print steps");
     output_file_type = parameter_handler.get("Output file type");
     output_file_name = parameter_handler.get("Output file name (base)");
-    
+
     // Field variable definitions
 
 
@@ -141,8 +141,8 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
         }
     }
 
-    std::vector<std::string> load_file_name = dealii::Utilities::split_string_list(parameter_handler.get("File names"));
-    std::vector<std::string> load_field_name = dealii::Utilities::split_string_list(parameter_handler.get("Variable names in the files"));
+    load_file_name = dealii::Utilities::split_string_list(parameter_handler.get("File names"));
+    load_field_name = dealii::Utilities::split_string_list(parameter_handler.get("Variable names in the files"));
 
     // Parameters for nucleation
 
@@ -192,7 +192,6 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
 
     // Load the user-defined constants
     load_user_constants(input_file_reader,parameter_handler);
-
 }
 
 

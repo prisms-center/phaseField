@@ -67,9 +67,6 @@ set List of time steps to output = 0, 3, 55, 61
 # The number of time steps between updates being printed to the screen
 set Skip print steps = 1000
 
-# The flag determining if the total free energy is calculated for each output
-set Calculate the free energy = true
-
 # =================================================================================
 # Set the parameters for loading in initial conditions (OPTIONAL)
 # =================================================================================

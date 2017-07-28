@@ -77,9 +77,7 @@ for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_i
 		else {
 			std::cout << "PRISMS-PF Error: Cannot load vector fields. Loading initial conditions from file is currently limited to scalar fields" << std::endl;
 		}
-		//#else
-		//std::cout << "PRISMS-PF Error: The parameter \"enablePFields\" must be set to true to load initial conditions from file." << std::endl;
-		//#endif
+        
 	}
 	pcout << "Application of initial conditions for field number " << var_index << " complete \n";
 }
