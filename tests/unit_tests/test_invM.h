@@ -17,8 +17,14 @@ class testInvM: public MatrixFreePDE<dim,degree>
 	  invMNorm=this->invM.l2_norm();
 
 	  // Need to clear fields or there's an error in the destructor
-	  this->fields.clear();
+      this->fields.clear();
+
   };
+  ~testInvM(){      
+      this->matrixFreeObject.clear();
+      delete this->dofHandlersSet[0];
+  };
+
   double invMNorm;
 
   void setBCs(){};
@@ -49,7 +55,8 @@ template <int dim,typename T>
 	//create test problem class object
 	//userInputParameters userInputs;
 	//userInputs.loadUserInput();
-	testInvM<dim,1> test(userInputs);
+
+    testInvM<dim,1> test(userInputs);
 	//check invM norm
 	if ((test.invMNorm - 1700.0) < 1.0e-10) {pass=true;}
 	char buffer[100];

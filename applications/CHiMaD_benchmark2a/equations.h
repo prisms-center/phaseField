@@ -1,145 +1,171 @@
 // List of variables and residual equations for the coupled Allen-Cahn/Cahn-Hilliard example application
 
 // =================================================================================
-// Define the variables in the model
+// Set the attributes of the primary field variables
 // =================================================================================
-// The number of variables
-#define num_var 6
+void variableAttributeLoader::loadVariableAttributes(){
+	// Variable 0
+	set_variable_name				(0,"c");
+	set_variable_type				(0,SCALAR);
+	set_variable_equation_type		(0,PARABOLIC);
 
-// The names of the variables, whether they are scalars or vectors and whether the
-// governing eqn for the variable is parabolic or elliptic
-#define variable_name {"c", "mu", "n1", "n2", "n3", "n4"}
-#define variable_type {"SCALAR","SCALAR","SCALAR","SCALAR","SCALAR","SCALAR"}
-#define variable_eq_type {"PARABOLIC","PARABOLIC","PARABOLIC","PARABOLIC","PARABOLIC","PARABOLIC"}
+	set_need_value					(0,true);
+	set_need_gradient				(0,true);
+	set_need_hessian				(0,false);
 
-// Flags for whether the value, gradient, and Hessian are needed in the residual eqns
-#define need_val {true, false, true, true, true, true}
-#define need_grad {true, true, true, true, true, true}
-#define need_hess {false, false, false, false, false, false}
+	set_need_value_residual_term	(0,true);
+	set_need_gradient_residual_term	(0,true);
 
-// Flags for whether the residual equation has a term multiplied by the test function
-// (need_val_residual) and/or the gradient of the test function (need_grad_residual)
-#define need_val_residual {true, true, true, true, true, true}
-#define need_grad_residual {true, true, true, true, true, true}
+	// Variable 1
+	set_variable_name				(1,"mu");
+	set_variable_type				(1,SCALAR);
+	set_variable_equation_type		(1,PARABOLIC);
 
-// =================================================================================
-// Define the model parameters and the residual equations
-// =================================================================================
-// Parameters in the residual equations and expressions for the residual equations
-// can be set here. For simple cases, the entire residual equation can be written
-// here. For more complex cases with loops or conditional statements, residual
-// equations (or parts of residual equations) can be written below in "residualRHS".
+	set_need_value					(1,false);
+	set_need_gradient				(1,true);
+	set_need_hessian				(1,false);
 
-// Cahn-Hilliard mobility
-#define McV constV(5.0)
+	set_need_value_residual_term	(1,true);
+	set_need_gradient_residual_term	(1,true);
 
-// Allen-Cahn mobility
-#define MnV constV(5.0)
+	// Variable 2
+	set_variable_name				(2,"n1");
+	set_variable_type				(2,SCALAR);
+	set_variable_equation_type		(2,PARABOLIC);
 
-// Allen-Cahn gradient energy coefficient
-#define KnV constV(3.0)
+	set_need_value					(2,true);
+	set_need_gradient				(2,true);
+	set_need_hessian				(2,false);
 
-// Cahn-Hilliard gradient energy coefficient
-#define KcV constV(3.0)
+	set_need_value_residual_term	(2,true);
+	set_need_gradient_residual_term	(2,true);
 
-//Common coefficient for the double well and structural order parameter interaction terms
-#define wV constV(1.0)
+	// Variable 3
+	set_variable_name				(3,"n2");
+	set_variable_type				(3,SCALAR);
+	set_variable_equation_type		(3,PARABOLIC);
 
-//Coefficient order parameter for the structural interaction term only
-#define alpha constV(5.0)
+	set_need_value					(3,true);
+	set_need_gradient				(3,true);
+	set_need_hessian				(3,false);
 
-// Free energy for each phase and their first and second derivatives
-#define faV (constV(2.0)*(c-constV(0.3))*(c-constV(0.3)))
-#define facV (constV(4.0)*(c-constV(0.3)))
-#define faccV (constV(4.0))
-#define fbV (constV(2.0)*(c-constV(0.7))*(c-constV(0.7)))
-#define fbcV (constV(4.0)*(c-constV(0.7)))
-#define fbccV (constV(4.0))
+	set_need_value_residual_term	(3,true);
+	set_need_gradient_residual_term	(3,true);
 
-// Interpolation function and its derivatives
-#define hV ( n1*n1*n1*(constV(6.0)*n1*n1-constV(15.0)*n1+constV(10.0)) + n2*n2*n2*(constV(6.0)*n2*n2-constV(15.0)*n2+constV(10.0)) + n3*n3*n3*(constV(6.0)*n3*n3-constV(15.0)*n3+constV(10.0)) + n4*n4*n4*(constV(6.0)*n4*n4-constV(15.0)*n4+constV(10.0)) )
-#define hn1V ( n1*n1*(constV(30.0)*n1*n1-constV(60.0)*n1+constV(30.0)) )
-#define hn2V ( n2*n2*(constV(30.0)*n2*n2-constV(60.0)*n2+constV(30.0)) )
-#define hn3V ( n3*n3*(constV(30.0)*n3*n3-constV(60.0)*n3+constV(30.0)) )
-#define hn4V ( n4*n4*(constV(30.0)*n4*n4-constV(60.0)*n4+constV(30.0)) )
+	// Variable 4
+	set_variable_name				(4,"n3");
+	set_variable_type				(4,SCALAR);
+	set_variable_equation_type		(4,PARABOLIC);
 
-//Combined double-well and interaction functions (function g) and its derivatives
-//Double-well part
-#define gdwV ( n1*n1*(constV(1.0)-n1)*(constV(1.0)-n1) + n2*n2*(constV(1.0)-n2)*(constV(1.0)-n2) +n3*n3*(constV(1.0)-n3)*(constV(1.0)-n3) + n4*n4*(constV(1.0)-n4)*(constV(1.0)-n4) )
-//Interaction part
-#define gintV ( alpha*(n1*n1*n2*n2 + n1*n1*n3*n3+ n1*n1*n4*n4 + n2*n2*n3*n3 + n2*n2*n4*n4 + n3*n3*n4*n4) )
-//Combined function (g)
-#define gV ( gdwV + gintV )
-//Derivatives
-#define dgn1V ( constV(2.0)*n1*(constV(1.0)-n1)*(constV(1.0)-constV(2.0)*n1) + constV(2.0)*alpha*n1*(n2*n2+n3*n3+n4*n4) )
-#define dgn2V ( constV(2.0)*n2*(constV(1.0)-n2)*(constV(1.0)-constV(2.0)*n2) + constV(2.0)*alpha*n2*(n1*n1+n3*n3+n4*n4) )
-#define dgn3V ( constV(2.0)*n3*(constV(1.0)-n3)*(constV(1.0)-constV(2.0)*n3) + constV(2.0)*alpha*n3*(n1*n1+n2*n2+n4*n4) )
-#define dgn4V ( constV(2.0)*n4*(constV(1.0)-n4)*(constV(1.0)-constV(2.0)*n4) + constV(2.0)*alpha*n4*(n1*n1+n2*n2+n3*n3) )
+	set_need_value					(4,true);
+	set_need_gradient				(4,true);
+	set_need_hessian				(4,false);
 
-//CHANGES FOR CHAC BENCHMARK PROBLEM UP TO THIS POINT
+	set_need_value_residual_term	(4,true);
+	set_need_gradient_residual_term	(4,true);
 
-// Residual equations
-#define rn1V ( n1 - constV(timeStep)*MnV*((fbV-faV)*hn1V + wV*dgn1V) )
-#define rn2V ( n2 - constV(timeStep)*MnV*((fbV-faV)*hn2V + wV*dgn2V) )
-#define rn3V ( n3 - constV(timeStep)*MnV*((fbV-faV)*hn3V + wV*dgn3V) )
-#define rn4V ( n4 - constV(timeStep)*MnV*((fbV-faV)*hn4V + wV*dgn4V) )
-#define rn1xV ( constV(-timeStep)*KnV*MnV*n1x )
-#define rn2xV ( constV(-timeStep)*KnV*MnV*n2x )
-#define rn3xV ( constV(-timeStep)*KnV*MnV*n3x )
-#define rn4xV ( constV(-timeStep)*KnV*MnV*n4x )
-#define rmuV ( (constV(1.0)-hV)*facV+hV*fbcV )
-#define rmuxV ( KcV*cx )
-#define rcV ( c )
-#define rcxV ( constV(-timeStep)*McV*mux )
+	// Variable 5
+	set_variable_name				(5,"n4");
+	set_variable_type				(5,SCALAR);
+	set_variable_equation_type		(5,PARABOLIC);
 
+	set_need_value					(5,true);
+	set_need_gradient				(5,true);
+	set_need_hessian				(5,false);
+
+	set_need_value_residual_term	(5,true);
+	set_need_gradient_residual_term	(5,true);
+}
 
 // =================================================================================
 // residualRHS
 // =================================================================================
 // This function calculates the residual equations for each variable. It takes
-// "modelVariablesList" as an input, which is a list of the value and derivatives of
+// "variable_list" as an input, which is a list of the value and derivatives of
 // each of the variables at a specific quadrature point. The (x,y,z) location of
-// that quadrature point is given by "q_point_loc". The function outputs
-// "modelResidualsList", a list of the value and gradient terms of the residual for
-// each residual equation. The index for each variable in these lists corresponds to
-// the order it is defined at the top of this file (starting at 0).
+// that quadrature point is given by "q_point_loc". The function outputs residuals
+// to variable_list. The index for each variable in this list corresponds to
+// the index given at the top of this file.
+
 template <int dim, int degree>
-void customPDE<dim,degree>::residualRHS(const std::vector<modelVariable<dim> > & modelVariablesList,
-												std::vector<modelResidual<dim> > & modelResidualsList,
-												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 // The concentration and its derivatives (names here should match those in the macros above)
-scalarvalueType c = modelVariablesList[0].scalarValue;
-scalargradType cx = modelVariablesList[0].scalarGrad;
+scalarvalueType c = variable_list.get_scalar_value(0);
+scalargradType cx = variable_list.get_scalar_gradient(0);
 
 // The chemical potential and its derivatives (names here should match those in the macros above)
-scalargradType mux = modelVariablesList[1].scalarGrad;
+scalargradType mux = variable_list.get_scalar_gradient(1);
 
 // The order parameters and their derivatives (names here should match those in the macros above)
-scalarvalueType n1 = modelVariablesList[2].scalarValue;
-scalargradType n1x = modelVariablesList[2].scalarGrad;
-scalarvalueType n2 = modelVariablesList[3].scalarValue;
-scalargradType n2x = modelVariablesList[3].scalarGrad;
-scalarvalueType n3 = modelVariablesList[4].scalarValue;
-scalargradType n3x = modelVariablesList[4].scalarGrad;
-scalarvalueType n4 = modelVariablesList[5].scalarValue;
-scalargradType n4x = modelVariablesList[5].scalarGrad;
+scalarvalueType n1 = variable_list.get_scalar_value(2);
+scalargradType n1x = variable_list.get_scalar_gradient(2);
+scalarvalueType n2 = variable_list.get_scalar_value(3);
+scalargradType n2x = variable_list.get_scalar_gradient(3);
+scalarvalueType n3 = variable_list.get_scalar_value(4);
+scalargradType n3x = variable_list.get_scalar_gradient(4);
+scalarvalueType n4 = variable_list.get_scalar_value(5);
+scalargradType n4x = variable_list.get_scalar_gradient(5);
+
+// Free energy for each phase and their first and second derivatives
+scalarvalueType faV = (constV(2.0)*(c-constV(0.3))*(c-constV(0.3)));
+scalarvalueType facV = (constV(4.0)*(c-constV(0.3)));
+scalarvalueType faccV = (constV(4.0));
+scalarvalueType fbV = (constV(2.0)*(c-constV(0.7))*(c-constV(0.7)));
+scalarvalueType fbcV = (constV(4.0)*(c-constV(0.7)));
+scalarvalueType fbccV = (constV(4.0));
+
+// Interpolation function and its derivatives
+scalarvalueType hV = ( n1*n1*n1*(constV(6.0)*n1*n1-constV(15.0)*n1+constV(10.0)) + n2*n2*n2*(constV(6.0)*n2*n2-constV(15.0)*n2+constV(10.0)) + n3*n3*n3*(constV(6.0)*n3*n3-constV(15.0)*n3+constV(10.0)) + n4*n4*n4*(constV(6.0)*n4*n4-constV(15.0)*n4+constV(10.0)) );
+scalarvalueType hn1V = ( n1*n1*(constV(30.0)*n1*n1-constV(60.0)*n1+constV(30.0)) );
+scalarvalueType hn2V = ( n2*n2*(constV(30.0)*n2*n2-constV(60.0)*n2+constV(30.0)) );
+scalarvalueType hn3V = ( n3*n3*(constV(30.0)*n3*n3-constV(60.0)*n3+constV(30.0)) );
+scalarvalueType hn4V = ( n4*n4*(constV(30.0)*n4*n4-constV(60.0)*n4+constV(30.0)) );
+
+//Combined double-well and interaction functions (function g) and its derivatives
+//Double-well part
+scalarvalueType gdwV = ( n1*n1*(constV(1.0)-n1)*(constV(1.0)-n1) + n2*n2*(constV(1.0)-n2)*(constV(1.0)-n2) +n3*n3*(constV(1.0)-n3)*(constV(1.0)-n3) + n4*n4*(constV(1.0)-n4)*(constV(1.0)-n4) );
+//Interaction part
+scalarvalueType gintV = ( alpha*(n1*n1*n2*n2 + n1*n1*n3*n3+ n1*n1*n4*n4 + n2*n2*n3*n3 + n2*n2*n4*n4 + n3*n3*n4*n4) );
+//Combined function (g)
+//scalarvalueType gV = ( gdwV + gintV ); // Not actually needed
+
+//Derivatives
+scalarvalueType dgn1V = ( constV(2.0)*n1*(constV(1.0)-n1)*(constV(1.0)-constV(2.0)*n1) + constV(2.0)*alpha*n1*(n2*n2+n3*n3+n4*n4) );
+scalarvalueType dgn2V = ( constV(2.0)*n2*(constV(1.0)-n2)*(constV(1.0)-constV(2.0)*n2) + constV(2.0)*alpha*n2*(n1*n1+n3*n3+n4*n4) );
+scalarvalueType dgn3V = ( constV(2.0)*n3*(constV(1.0)-n3)*(constV(1.0)-constV(2.0)*n3) + constV(2.0)*alpha*n3*(n1*n1+n2*n2+n4*n4) );
+scalarvalueType dgn4V = ( constV(2.0)*n4*(constV(1.0)-n4)*(constV(1.0)-constV(2.0)*n4) + constV(2.0)*alpha*n4*(n1*n1+n2*n2+n3*n3) );
+
+// Residual equations
+scalarvalueType rn1V = ( n1 - constV(userInputs.dtValue)*MnV*((fbV-faV)*hn1V + wV*dgn1V) );
+scalarvalueType rn2V = ( n2 - constV(userInputs.dtValue)*MnV*((fbV-faV)*hn2V + wV*dgn2V) );
+scalarvalueType rn3V = ( n3 - constV(userInputs.dtValue)*MnV*((fbV-faV)*hn3V + wV*dgn3V) );
+scalarvalueType rn4V = ( n4 - constV(userInputs.dtValue)*MnV*((fbV-faV)*hn4V + wV*dgn4V) );
+scalargradType rn1xV = ( constV(-userInputs.dtValue)*KnV*MnV*n1x );
+scalargradType rn2xV = ( constV(-userInputs.dtValue)*KnV*MnV*n2x );
+scalargradType rn3xV = ( constV(-userInputs.dtValue)*KnV*MnV*n3x );
+scalargradType rn4xV = ( constV(-userInputs.dtValue)*KnV*MnV*n4x );
+scalarvalueType rmuV = ( (constV(1.0)-hV)*facV+hV*fbcV );
+scalargradType rmuxV = ( KcV*cx );
+scalarvalueType rcV = ( c );
+scalargradType rcxV = ( constV(-userInputs.dtValue)*McV*mux );
 
 // Residuals for the equation to evolve the concentration (names here should match those in the macros above)
-modelResidualsList[0].scalarValueResidual = rcV;
-modelResidualsList[0].scalarGradResidual = rcxV;
-modelResidualsList[1].scalarValueResidual = rmuV;
-modelResidualsList[1].scalarGradResidual = rmuxV;
+variable_list.set_scalar_value_residual_term(0,rcV);
+variable_list.set_scalar_gradient_residual_term(0,rcxV);
+variable_list.set_scalar_value_residual_term(1,rmuV);
+variable_list.set_scalar_gradient_residual_term(1,rmuxV);
 
 // Residuals for the equation to evolve the order parameters (names here should match those in the macros above)
-modelResidualsList[2].scalarValueResidual = rn1V;
-modelResidualsList[2].scalarGradResidual = rn1xV;
-modelResidualsList[3].scalarValueResidual = rn2V;
-modelResidualsList[3].scalarGradResidual = rn2xV;
-modelResidualsList[4].scalarValueResidual = rn3V;
-modelResidualsList[4].scalarGradResidual = rn3xV;
-modelResidualsList[5].scalarValueResidual = rn4V;
-modelResidualsList[5].scalarGradResidual = rn4xV;
+variable_list.set_scalar_value_residual_term(2,rn1V);
+variable_list.set_scalar_gradient_residual_term(2,rn1xV);
+variable_list.set_scalar_value_residual_term(3,rn2V);
+variable_list.set_scalar_gradient_residual_term(3,rn2xV);
+variable_list.set_scalar_value_residual_term(4,rn3V);
+variable_list.set_scalar_gradient_residual_term(4,rn3xV);
+variable_list.set_scalar_value_residual_term(5,rn4V);
+variable_list.set_scalar_gradient_residual_term(5,rn4xV);
 
 }
 
@@ -147,76 +173,18 @@ modelResidualsList[5].scalarGradResidual = rn4xV;
 // residualLHS (needed only if at least one equation is elliptic)
 // =================================================================================
 // This function calculates the residual equations for the iterative solver for
-// elliptic equations.for each variable. It takes "modelVariablesList" as an input,
+// elliptic equations.for each variable. It takes "variable_list" as an input,
 // which is a list of the value and derivatives of each of the variables at a
 // specific quadrature point. The (x,y,z) location of that quadrature point is given
-// by "q_point_loc". The function outputs "modelRes", the value and gradient terms of
+// by "q_point_loc". The function outputs residual terms to "variable_list"
 // for the left-hand-side of the residual equation for the iterative solver. The
-// index for each variable in these lists corresponds to the order it is defined at
-// the top of this file (starting at 0), not counting variables that have
-// "need_val_LHS", "need_grad_LHS", and "need_hess_LHS" all set to "false". If there
-// are multiple elliptic equations, conditional statements should be used to ensure
-// that the correct residual is being submitted. The index of the field being solved
-// can be accessed by "this->currentFieldIndex".
+// index for each variable in this list corresponds to
+// the index given at the top of this file. If there are multiple elliptic equations,
+// conditional statements should be used to ensure that the correct residual is
+// being submitted. The index of the field being solved can be accessed by
+// "this->currentFieldIndex".
+
 template <int dim, int degree>
-void customPDE<dim,degree>::residualLHS(const std::vector<modelVariable<dim> > & modelVarList,
-		modelResidual<dim> & modelRes,
+void customPDE<dim,degree>::residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 }
-
-// =================================================================================
-// energyDensity (needed only if calcEnergy == true)
-// =================================================================================
-// This function integrates the free energy density across the computational domain.
-// It takes "modelVariablesList" as an input, which is a list of the value and
-// derivatives of each of the variables at a specific quadrature point. It also
-// takes the mapped quadrature weight, "JxW_value", as an input. The (x,y,z) location
-// of the quadrature point is given by "q_point_loc". The weighted value of the
-// energy density is added to "energy" variable and the components of the energy
-// density are added to the "energy_components" variable (index 0: chemical energy,
-// index 1: gradient energy, index 2: elastic energy).
-template <int dim, int degree>
-void customPDE<dim,degree>::energyDensity(const std::vector<modelVariable<dim> > & modelVariablesList,
-											const dealii::VectorizedArray<double> & JxW_value,
-											dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {
-
-// The concentration and its derivatives (names here should match those in the macros above)
-scalarvalueType c = modelVariablesList[0].scalarValue;
-scalargradType cx = modelVariablesList[0].scalarGrad;
-
-// The order parameter and its derivatives (names here should match those in the macros above)
-scalarvalueType n1 = modelVariablesList[2].scalarValue;
-scalargradType n1x = modelVariablesList[2].scalarGrad;
-scalarvalueType n2 = modelVariablesList[3].scalarValue;
-scalargradType n2x = modelVariablesList[3].scalarGrad;
-scalarvalueType n3 = modelVariablesList[4].scalarValue;
-scalargradType n3x = modelVariablesList[4].scalarGrad;
-scalarvalueType n4 = modelVariablesList[5].scalarValue;
-scalargradType n4x = modelVariablesList[5].scalarGrad;
-
-// The homogenous free energy
-scalarvalueType f_chem = (constV(1.0)-hV)*faV + hV*fbV + wV*gV;
-
-// The gradient free energy
-scalarvalueType f_grad = constV(0.5)*KnV*(n1x*n1x+n2x*n2x+n3x*n3x+n4x*n4x) + constV(0.5)*KcV*cx*cx;
-
-// The total free energy
-scalarvalueType total_energy_density;
-total_energy_density = f_chem + f_grad;
-
-// Loop to step through each element of the vectorized arrays. Working with deal.ii
-// developers to see if there is a more elegant way to do this.
-this->assembler_lock.acquire ();
-for (unsigned i=0; i<c.n_array_elements;i++){
-  if (c[i] > 1.0e-10){
-	  this->energy+=total_energy_density[i]*JxW_value[i];
-	  this->energy_components[0]+= f_chem[i]*JxW_value[i];
-	  this->energy_components[1]+= f_grad[i]*JxW_value[i];
-  }
-}
-this->assembler_lock.release ();
-}
-
-
-
-

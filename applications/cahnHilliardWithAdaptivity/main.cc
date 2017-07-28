@@ -16,7 +16,7 @@
 // Header file for postprocessing that may or may not exist
 #ifdef POSTPROCESS_FILE_EXISTS
 #include "postprocess.h"
-#elif
+#else
 void variableAttributeLoader::loadPostProcessorVariableAttributes(){}
 #endif
 

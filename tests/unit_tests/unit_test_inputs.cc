@@ -26,11 +26,10 @@ void load_unit_test_inputs(userInputParameters<dim> & userInputs){
     userInputs.max_solver_iterations = 1000;
     userInputs.skip_print_steps = 1;
     userInputs.output_file_type = "vtu";
-    userInputs.calc_energy = false;
     userInputs.nucleation_occurs = false;
     userInputs.number_of_variables = 1;
     userInputs.load_ICs.push_back(false);
-    userInputs.load_serial_file.push_back(false);
+    userInputs.load_parallel_file.push_back(false);
     userInputs.load_file_name.push_back("void");
     userInputs.load_field_name.push_back("void");
     userInputs.pp_number_of_variables = 1;

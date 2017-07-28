@@ -11,9 +11,9 @@ set Number of dimensions = 2
 # (Domain size Z ignored in 2D)
 # =================================================================================
 # Each axes spans from zero to the specified length
-set Domain size X = 800
-set Domain size Y = 800
-set Domain size Z = 800
+set Domain size X = 200
+set Domain size Y = 200
+set Domain size Z = 200
 
 # =================================================================================
 # Set the element parameters
@@ -21,77 +21,71 @@ set Domain size Z = 800
 # The number of elements in each direction is 2^(refineFactor) * subdivisions
 # Subdivisions Z ignored in 2D
 # For optimal performance, use refineFactor primarily to determine the element size
-set Subdivisions X = 1
-set Subdivisions Y = 1
-set Subdivisions Z = 1
+set Subdivisions X = 3
+set Subdivisions Y = 3
+set Subdivisions Z = 3
 
-set Refine factor = 3
+set Refine factor = 6
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
-set Element degree = 2
+set Element degree = 1
 
 # =================================================================================
 # Set the adaptive mesh refinement parameters
 # =================================================================================
 # Set the flag determining if adaptive meshing is activated
-set Mesh adaptivity = true
+set Mesh adaptivity = false
 
 # Set the maximum and minimum level of refinement
-set Max refinement level = 9
-set Min refinement level = 2
+set Max refinement level = 6
+set Min refinement level = 3
 
 # Set the fields used to determine the refinement using their index.
-set Refinement criteria fields = 1
+set Refinement criteria fields = 0,2,3,4,5
 
 # Set the maximum and minimum value of the fields where the mesh should be refined
-set Refinement window max = 0.99
-set Refinement window min = 0.01
+set Refinement window max = 0.65,0.999,0.999,0.999,0.999
+set Refinement window min = 0.35,0.001,0.001,0.001,0.001
 
 # Set the number of time steps between remeshing operations
-set Steps between remeshing operations = 500
+set Steps between remeshing operations = 100
 
 # =================================================================================
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 0.044
+set Time step = 1.0e-3
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 1000
+set Number of time steps = 20000
 
 # =================================================================================
 # Set the boundary conditions
 # =================================================================================
 # Set the boundary condition for each variable, where each variable is given by
-# its name, as defined at the top of equations.h. The three boundary condition
-# types are ZERO_DERIVATIVE, DIRICHLET, and PERIODIC. If all of the boundaries have
-# the same boundary condition, only one boundary condition type needs to be given.
-# If multiple boundary condition types are needed, give a comma-separated list of
-# the types. The order is the miniumum of x, maximum of x, minimum of y, maximum
-# of y, minimum of z, maximum of z (i.e left, right, bottom, top in 2D and left,
-# right, bottom, top, front, back in 3D). The value of a Dirichlet BC is specfied
-# in the following way -- DIRCHILET: val -- where 'val' is the desired value.
+# its name, as defined in equations.h. The four boundary condition
+# types are ZERO_DERIVATIVE, DIRICHLET, NON_UNIFORM_DIRICHLET and PERIODIC. If all
+# of the boundaries have the same boundary condition, only one boundary condition
+# type needs to be given. If multiple boundary condition types are needed, give a
+# comma-separated list of the types. The order is the miniumum of x, maximum of x,
+# minimum of y, maximum of y, minimum of z, maximum of z (i.e left, right, bottom,
+# top in 2D and left, right, bottom, top, front, back in 3D). The value of a
+# Dirichlet BC is specfied in the following way -- DIRCHILET: val -- where 'val' is
+# the desired value. If the boundary condition is NON_UNIFORM_DIRICHLET, the
+# boundary condition should be specified in the appropriate function in 'ICs_and_BCs.h'.
 # Example 1: All periodic BCs for variable 'c'
 # set Boundary condition for variable c = PERIODIC
 # Example 2: Zero-derivative BCs on the left and right, Dirichlet BCs with value
 # 1.5 on the top and bottom for variable 'n' in 2D
-# set Boundary condition for variable n = ZERO_DERIVATIVE, ZERO_DERIVATIVE, DIRCHLET: 1.5, DIRICHLET: 1.5
+# set Boundary condition for variable n = ZERO_DERIVATIVE, ZERO_DERIVATIVE, DIRICHLET: 1.5, DIRICHLET: 1.5
 
-set Boundary condition for variable c = PERIODIC
-set Boundary condition for variable n = PERIODIC
-
-# =================================================================================
-# Set the nucleation parameters
-# =================================================================================
-
-set Nucleus semiaxes (x, y ,z) = 5, 5, 5
-set Freeze zone semiaxes (x, y ,z) = 7.5, 7.5, 7.5
-set Freeze time following nucleation = 20
-set Nucleation-free border thickness = 10
-set Minimum allowed distance between nuclei = 20.0
-set Order parameter cutoff value = 0.01
-set Time steps between nucleation attempts = 30
+set Boundary condition for variable c = ZERO_DERIVATIVE
+set Boundary condition for variable mu = ZERO_DERIVATIVE
+set Boundary condition for variable n1 = ZERO_DERIVATIVE
+set Boundary condition for variable n2 = ZERO_DERIVATIVE
+set Boundary condition for variable n3 = ZERO_DERIVATIVE
+set Boundary condition for variable n4 = ZERO_DERIVATIVE
 
 # =================================================================================
 # Set the model constants
@@ -102,56 +96,36 @@ set Time steps between nucleation attempts = 30
 # options currently are DOUBLE, INT, BOOL, TENSOR, and [symmetry] ELASTIC CONSTANTS
 # where [symmetry] is ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC.
 
-# Average alloy composition (for initial contitions)
-set Model constant c_avg = 0.2, DOUBLE
+# The CH mobility, McV in equations.h
+set Model constant McV = 5.0, DOUBLE
 
-# Cahn-Hilliard mobility
-set Model constant McV = 1.0, DOUBLE
+# The AC mobility, MnV in equations.h
+set Model constant MnV = 5.0, DOUBLE
 
-# Allen-Cahn mobility
-set Model constant MnV = 1.0, DOUBLE
+# Gradient energy coefficient
+set Model constant KcV = 3.0, DOUBLE
 
-# Allen-Cahn gradient energy coefficient
-set Model constant KnV = 2.0, DOUBLE
+# Gradient energy coefficient
+set Model constant KnV = 3.0, DOUBLE
 
-# Energy barrier coefficient (used to tune the interfacial energy)
-set Model constant W_barrier = 2.0, DOUBLE
+# Common coefficient for the double well and structural order parameter interaction terms
+set Model constant wV = 1.0, DOUBLE
 
-# Constants for free energy expressions
-set Model constant A0 = 0.0, DOUBLE
-set Model constant A2 = 1.0, DOUBLE
-set Model constant calmin = 0.0, DOUBLE
-set Model constant B0 = 0.0, DOUBLE
-set Model constant B2 = 4.0, DOUBLE
-set Model constant cbtmin = 1.0, DOUBLE
-
-# Constants k1 and k2 for nucleation rate in the bulk
-set Model constant k1 = 1527.14, DOUBLE
-set Model constant k2_b = 4.14465, DOUBLE
-# Constants k1 and k2 for nucleation rate in grain boundary
-set Model constant k2_gb = 3.22362, DOUBLE
-
-# Incubation time
-set Model constant tau = 0, DOUBLE
-
-# Width of grain boundary
-set Model constant wgb = 16.0, DOUBLE
-# Grain boundary limits
-# Left limit
-set Model constant gbll = 392, DOUBLE
-# Right limit
-set Model constant gbrl = 408, DOUBLE
+# Coefficient order parameter for the structural interaction term only
+set Model constant alpha = 5.0, DOUBLE
 
 # =================================================================================
 # Set the output parameters
 # =================================================================================
 # Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
 # or "LIST")
-set Output condition = EQUAL_SPACING
+set Output condition = LIST
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of outputs = 20
+#set Number of outputs = 10
+
+set List of time steps to output = 0, 1000, 5000, 10000, 20000
 
 # The number of time steps between updates being printed to the screen
-set Skip print steps = 100
+set Skip print steps = 1000
