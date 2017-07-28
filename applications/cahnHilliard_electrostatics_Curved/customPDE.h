@@ -67,7 +67,7 @@ void customPDE<dim,degree>::makeTriangulation(parallel::distributed::Triangulati
         GridGenerator::subdivided_hyper_rectangle (tria_box, userInputs.subdivisions, Point<dim>(), Point<dim>(userInputs.domain_size[0]));
     }
 
-    GridGenerator::half_hyper_ball (tria_semicircle, Point<dim>(userInputs.domain_size[0],userInputs.domain_size[1]/2.0), userInputs.domain_size[0]/2.0);
+    GridGenerator::half_hyper_ball (tria_semicircle, Point<dim>(userInputs.domain_size[0],userInputs.domain_size[1]/2.0), userInputs.domain_size[1]/2.0);
 
     // Find the two non-corner vertices on the right side of the rectangular mesh
     Point<dim> pt1, pt2;

@@ -11,7 +11,7 @@ set Number of dimensions = 2
 # (Domain size Z ignored in 2D)
 # =================================================================================
 # Each axes spans from zero to the specified length
-set Domain size X = 100
+set Domain size X = 50
 set Domain size Y = 100
 set Domain size Z = 100
 
@@ -21,11 +21,11 @@ set Domain size Z = 100
 # The number of elements in each direction is 2^(refineFactor) * subdivisions
 # Subdivisions Z ignored in 2D
 # For optimal performance, use refineFactor primarily to determine the element size
-set Subdivisions X = 3
+set Subdivisions X = 2
 set Subdivisions Y = 3
 set Subdivisions Z = 3
 
-set Refine factor = 4
+set Refine factor = 3
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
 set Element degree = 2
