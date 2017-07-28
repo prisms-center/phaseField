@@ -56,7 +56,6 @@ private:
 
 template <int dim, int degree>
 void customPDE<dim,degree>::makeTriangulation(parallel::distributed::Triangulation<dim> & tria) const{
-
     dealii::parallel::distributed::Triangulation<dim> tria_box(MPI_COMM_WORLD), tria_semicircle(MPI_COMM_WORLD);
     if (dim == 3){
         GridGenerator::subdivided_hyper_rectangle (tria_box, userInputs.subdivisions, Point<dim>(), Point<dim>(userInputs.domain_size[0],userInputs.domain_size[1],userInputs.domain_size[2]));
@@ -76,7 +75,6 @@ void customPDE<dim,degree>::makeTriangulation(parallel::distributed::Triangulati
     cell3 = tria_box.begin_active(),
     endc3 = tria_box.end();
     for (; cell3!=endc3; ++cell3){
-	if (cell3->is_locally_owned()){
         for (unsigned int i=0; i<GeometryInfo<dim>::vertices_per_cell; ++i){
             Point<dim> &v = cell3->vertex(i);
             if (( std::abs(v(0)-userInputs.domain_size[0]) < 1e-10) && (v(1) > userInputs.domain_size[1]/2.0) && (v(1) < userInputs.domain_size[1]-1.0e-10)){
@@ -86,15 +84,12 @@ void customPDE<dim,degree>::makeTriangulation(parallel::distributed::Triangulati
                 pt2 = v;
             }
         }
-	}
     }
-
     // Move the vertices at the center of the half hyper ball so that they will align with non-corner vertices on the right side of the rectangular mesh
     typename parallel::distributed::Triangulation<dim>::active_cell_iterator
     cell2 = tria_semicircle.begin_active(),
     endc2 = tria_semicircle.end();
     for (; cell2!=endc2; ++cell2){
-	if (cell2->is_locally_owned()){
 	for (unsigned int i=0; i<GeometryInfo<dim>::vertices_per_cell; ++i){
             Point<dim> &v = cell2->vertex(i);
             if (( std::abs(v(0)-userInputs.domain_size[0]) < 1e-10) && (v(1) > userInputs.domain_size[1]/2.0) && (v(1) < userInputs.domain_size[1]-1.0e-10)){
@@ -104,9 +99,7 @@ void customPDE<dim,degree>::makeTriangulation(parallel::distributed::Triangulati
                 v(1) = pt2(1);
             }
         }
-	}
     }
-
     // Merge the rectangle and the semicircle
     GridGenerator::merge_triangulations(tria_box,tria_semicircle,tria);
 
@@ -118,7 +111,6 @@ void customPDE<dim,degree>::makeTriangulation(parallel::distributed::Triangulati
     cell = tria.begin_active(),
     endc = tria.end();
     for (; cell!=endc; ++cell){
-	if (cell->is_locally_owned()){
 	for (unsigned int f=0; f < GeometryInfo<dim>::faces_per_cell; ++f){
             const Point<dim> face_center = cell->face(f)->center();
             if (face_center[0] > userInputs.domain_size[0] + 1.0e-10){
@@ -130,15 +122,14 @@ void customPDE<dim,degree>::makeTriangulation(parallel::distributed::Triangulati
             }
 
         }
-	}
     }
+
 
     // Mark the boundaries
     typename parallel::distributed::Triangulation<dim>::cell_iterator
     cell4 = tria.begin (),
     endc4 = tria.end();
     for (; cell4!=endc4; ++cell4){
-	if (cell4->is_locally_owned()){
 	// Mark all of the faces
         for (unsigned int face_number=0; face_number<GeometryInfo<dim>::faces_per_cell;++face_number){
             if (cell4->face(face_number)->at_boundary()){
@@ -164,7 +155,6 @@ void customPDE<dim,degree>::makeTriangulation(parallel::distributed::Triangulati
                 }
             }
         }
-	}
     }
 
 
