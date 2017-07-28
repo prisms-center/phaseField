@@ -38,7 +38,6 @@ set Time step = 2.0e-4
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-# set Number of time steps = 2000000
 set Number of time steps = 2000000
 
 # =================================================================================
@@ -56,6 +55,7 @@ set Solver tolerance value = 1.0e-5
 
 # The maximum number of solver iterations per time step
 set Maximum allowed solver iterations = 10000
+
 
 # =================================================================================
 # Set the boundary conditions
@@ -75,7 +75,7 @@ set Maximum allowed solver iterations = 10000
 # set Boundary condition for variable c = PERIODIC
 # Example 2: Zero-derivative BCs on the left and right, Dirichlet BCs with value
 # 1.5 on the top and bottom for variable 'n' in 2D
-# set Boundary condition for variable n = ZERO_DERIVATIVE, NON_UNIFORM_DIRICHLET, DIRICHLET: 1.5, DIRICHLET: 1.5
+# set Boundary condition for variable n = ZERO_DERIVATIVE, ZERO_DERIVATIVE, DIRICHLET: 1.5, DIRICHLET: 1.5
 
 set Boundary condition for variable c = ZERO_DERIVATIVE
 set Boundary condition for variable mu = ZERO_DERIVATIVE
@@ -112,8 +112,8 @@ set Model constant epsilon = 90.0, DOUBLE
 # =================================================================================
 # Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
 # or "LIST")
- set Output condition = LIST
- set List of time steps to output = 0, 25000, 50000, 100000, 250000, 500000, 1000000, 2000000
+set Output condition = LIST
+set List of time steps to output = 25000, 50000, 100000, 250000, 500000, 1000000, 2000000
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
