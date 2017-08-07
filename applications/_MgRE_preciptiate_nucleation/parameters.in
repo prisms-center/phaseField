@@ -47,7 +47,7 @@ set Refinement window max = 0.999,0.999,0.999
 set Refinement window min = 0.001,0.001,0.001
 
 # Set the number of time steps between remeshing operations
-set Steps between remeshing operations = 2500
+set Steps between remeshing operations = 1000000 #2500
 
 # =================================================================================
 # Set the time step parameters
@@ -89,111 +89,6 @@ set Number of outputs = 20
 # The number of time steps between updates being printed to the screen
 set Skip print steps = 1000
 
-# The flag determining if the total free energy is calculated for each output
-set Calculate the free energy = true
-
-# =================================================================================
-# Set the properties of the variables and their governing equations
-# =================================================================================
-
-# Variable 0
-subsection Variable 0
-    set Variable name = c
-    set Variable type = SCALAR
-    set Equation type = PARABOLIC
-    set Need variable value = true
-    set Need variable gradient = true
-    set Need variable hessian = false
-    set Need value residual term = true
-    set Need gradient residual term = true
-
-    set Need variable value (LHS) = false
-    set Need variable gradient (LHS) = false
-    set Need variable hessian (LHS) = false
-    set Need value residual term (LHS) = false
-    set Need gradient residual term (LHS) = false
-
-    set Need variable value (nucleation) = true
-end
-
-# Variable 1
-subsection Variable 1
-    set Variable name = n1
-    set Variable type = SCALAR
-    set Equation type = PARABOLIC
-    set Need variable value = true
-    set Need variable gradient = true
-    set Need variable hessian = false
-    set Need value residual term = true
-    set Need gradient residual term = true
-
-    set Need variable value (LHS) = true
-    set Need variable gradient (LHS) = false
-    set Need variable hessian (LHS) = false
-    set Need value residual term (LHS) = false
-    set Need gradient residual term (LHS) = false
-
-    set Nucleating variable = true
-end
-
-# Variable 2
-subsection Variable 2
-    set Variable name = n2
-    set Variable type = SCALAR
-    set Equation type = PARABOLIC
-    set Need variable value = true
-    set Need variable gradient = true
-    set Need variable hessian = false
-    set Need value residual term = true
-    set Need gradient residual term = true
-
-    set Need variable value (LHS) = true
-    set Need variable gradient (LHS) = false
-    set Need variable hessian (LHS) = false
-    set Need value residual term (LHS) = false
-    set Need gradient residual term (LHS) = false
-
-    set Nucleating variable = true
-end
-
-# Variable 3
-subsection Variable 3
-    set Variable name = n3
-    set Variable type = SCALAR
-    set Equation type = PARABOLIC
-    set Need variable value = true
-    set Need variable gradient = true
-    set Need variable hessian = false
-    set Need value residual term = true
-    set Need gradient residual term = true
-
-    set Need variable value (LHS) = true
-    set Need variable gradient (LHS) = false
-    set Need variable hessian (LHS) = false
-    set Need value residual term (LHS) = false
-    set Need gradient residual term (LHS) = false
-
-    set Nucleating variable = true
-end
-
-# Variable 4
-subsection Variable 4
-    set Variable name = u
-    set Variable type = VECTOR
-    set Equation type = ELLIPTIC
-    set Need variable value = false
-    set Need variable gradient = true
-    set Need variable hessian = false
-    set Need value residual term = false
-    set Need gradient residual term = true
-
-    set Need variable value (LHS) = false
-    set Need variable gradient (LHS) = true
-    set Need variable hessian (LHS) = false
-    set Need value residual term (LHS) = false
-    set Need gradient residual term (LHS) = true
-end
-
 # =================================================================================
 # Set the nucleation parameters
 # =================================================================================
@@ -205,55 +100,17 @@ set Minimum allowed distance between nuclei = 6.0
 set Order parameter cutoff value = 0.01
 set Time steps between nucleation attempts = 1000
 
-
-# =================================================================================
-# Set the elastic constants (if needed)
-# =================================================================================
-
-subsection Material 0
-    set Material symmetry = ANISOTROPIC
-    #set Elastic constants = 31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0
-    set Elastic constants = 31.3,31.3,9.15,13.0,0.0,0.0
-end
-
-# =================================================================================
-# Set the properties of the postprocessing variables
-# =================================================================================
-# The number of postprocessing variables (must match the number specified below)
-
-# Postprocessing variable 0
-subsection Postprocessing variable 0
-    set Variable name = f_el
-    set Variable type = SCALAR
-    set Need variable value = true
-    set Need variable gradient = true
-    set Need variable hessian = false
-    set Need value residual term = true
-    set Need gradient residual term = false
-end
-
-# Postprocessing variable 1
-subsection Postprocessing variable 1
-    set Variable name = von_mises_stress
-    set Variable type = SCALAR
-    set Need variable value = true
-    set Need variable gradient = true
-    set Need variable hessian = false
-    set Need value residual term = true
-    set Need gradient residual term = false
-end
-
 # =================================================================================
 # Set the boundary conditions
 # =================================================================================
 
-set Boundary condition for variable 0 = PERIODIC
-set Boundary condition for variable 1 = PERIODIC
-set Boundary condition for variable 2 = PERIODIC
-set Boundary condition for variable 3 = PERIODIC
-set Boundary condition for variable 4, x component = PERIODIC
-set Boundary condition for variable 4, y component = PERIODIC
-set Boundary condition for variable 4, z component = PERIODIC
+set Boundary condition for variable c = PERIODIC
+set Boundary condition for variable n1 = PERIODIC
+set Boundary condition for variable n2 = PERIODIC
+set Boundary condition for variable n3 = PERIODIC
+set Boundary condition for variable u, x component = PERIODIC
+set Boundary condition for variable u, y component = PERIODIC
+set Boundary condition for variable u, z component = PERIODIC
 
 # =================================================================================
 # Set the model constants
@@ -261,45 +118,58 @@ set Boundary condition for variable 4, z component = PERIODIC
 # Type options currently are double, int, bool, and tensor
 
 # McV, the Cahn-Hilliard mobility
-set Model constant 0 = 1.0, double
+set Model constant McV = 1.0, double
 
 # Mn1V, Mn2V, and Mn3V, the Allen-Cahn mobilities
-set Model constant 1 = 100.0, double
-set Model constant 2 = 100.0, double
-set Model constant 3 = 100.0, double
+set Model constant Mn1V = 100.0, double
+set Model constant Mn2V = 100.0, double
+set Model constant Mn3V = 100.0, double
 
 # Kn1, Kn2, and Kn3, the gradient energy coefficients
-set Model constant 4 = ((0.0212,0,0),(0,4.4898e-4,0),(0,0,0.01793)), tensor
-set Model constant 5 = ((0.005637,-0.008987,0),(-0.008987,0.01601,0),(0,0,0.01793)), tensor
-set Model constant 6 = ((0.005637,0.008987,0),(0.008987,0.01601,0),(0,0,0.01793)), tensor
+set Model constant Kn1 = ((0.0212,0,0),(0,4.4898e-4,0),(0,0,0.01793)), tensor
+set Model constant Kn2 = ((0.005637,-0.008987,0),(-0.008987,0.01601,0),(0,0,0.01793)), tensor
+set Model constant Kn3 = ((0.005637,0.008987,0),(0.008987,0.01601,0),(0,0,0.01793)), tensor
 
 # W, the energy barrier coefficient
-set Model constant 7 = 0.1932, double
+set Model constant W = 0.1932, double
 
 # n_dependent_stiffness
-set Model constant 8 = false, bool
+set Model constant n_dependent_stiffness = false, bool
 
 # sfts_linear1
-set Model constant 9 = ((0,0,0),(0,0,0),(0,0,0)), tensor
+set Model constant sfts_linear1 = ((0,0,0),(0,0,0),(0,0,0)), tensor
 # sfts_const1
-set Model constant 10 = ((0.03070,0,0),(0,0.02084,0),(0,0,-8.3700e-4)), tensor
+set Model constant sfts_const1 = ((0.03070,0,0),(0,0.02084,0),(0,0,-8.3700e-4)), tensor
 
 # sfts_linear2
-set Model constant 11 = ((0,0,0),(0,0,0),(0,0,0)), tensor
+set Model constant sfts_linear2 = ((0,0,0),(0,0,0),(0,0,0)), tensor
 # sfts_const2
-set Model constant 12 = ((0.02330,-0.004271,0),(-0.004271,0.0282,0),(0,0,-0.0008370)), tensor
+set Model constant sfts_const2 = ((0.02330,-0.004271,0),(-0.004271,0.0282,0),(0,0,-0.0008370)), tensor
 
 # sfts_linear3
-set Model constant 13 = ((0,0,0),(0,0,0),(0,0,0)), tensor
+set Model constant sfts_linear3 = ((0,0,0),(0,0,0),(0,0,0)), tensor
 # sfts_const3
-set Model constant 14 = ((0.02330,0.004271,0),(0.004271,0.0282,0),(0,0,-0.0008370)), tensor
+set Model constant sfts_const3 = ((0.02330,0.004271,0),(0.004271,0.0282,0),(0,0,-0.0008370)), tensor
 
 # A2, A1, and A0 Mg-Y matrix free energy parameters
-set Model constant 15 = 7.5096, double
-set Model constant 16 = -0.0078096, double
-set Model constant 17 = 2.0305e-6, double
+set Model constant A2 = 7.5096, double
+set Model constant A1 = -0.0078096, double
+set Model constant A0 = 2.0305e-6, double
 
 # B2, B1, and B0 Mg-Y matrix free energy parameters
-set Model constant 18 = 2.8557, double
-set Model constant 19 = -0.71393, double
-set Model constant 20 = 0.04462, double
+set Model constant B2 = 2.8557, double
+set Model constant B1 = -0.71393, double
+set Model constant B0 = 0.04462, double
+
+# Elastic constants
+set Model constant CIJ_Mg = (31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0), anisotropic elastic constants
+set Model constant CIJ_Beta1 = (31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0), anisotropic elastic constants
+set Model constant CIJ_Beta2 = (31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0), anisotropic elastic constants
+set Model constant CIJ_Beta3 = (31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0), anisotropic elastic constants
+
+# Nucleation parameters
+set Model constant interface_coeff = 0.5, double
+set Model constant epsil = 1.0e-7, double
+set Model constant k1 = 8.39e-5, double
+set Model constant k2 = 4.01e-4, double
+set Model constant tau = 0.0, double

@@ -1,0 +1,5 @@
+0	f_tot	92.3295834	f_el	0	von_mises_stress	0
+1	f_tot	92.96689836	f_el	0.1532448959	von_mises_stress	102.299613
+2	f_tot	92.51035057	f_el	0.1532448959	von_mises_stress	102.299613
+3	f_tot	92.46577498	f_el	0.2044880407	von_mises_stress	131.1769821
+4	f_tot	93.0632496	f_el	0.5263875532	von_mises_stress	127.6923942

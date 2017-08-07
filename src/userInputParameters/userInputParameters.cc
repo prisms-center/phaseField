@@ -145,7 +145,6 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     load_field_name = dealii::Utilities::split_string_list(parameter_handler.get("Variable names in the files"));
 
     // Parameters for nucleation
-
     nucleus_semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Nucleus semiaxes (x, y ,z)")));
     order_parameter_freeze_semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Freeze zone semiaxes (x, y ,z)")));
     nucleus_hold_time = parameter_handler.get_double("Freeze time following nucleation");

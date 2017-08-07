@@ -89,113 +89,31 @@ set Number of outputs = 20
 # The number of time steps between updates being printed to the screen
 set Skip print steps = 1000
 
-# The flag determining if the total free energy is calculated for each output
-set Calculate the free energy = true
-
-# =================================================================================
-# Set the properties of the variables and their governing equations
-# =================================================================================
-
-# Variable 0
-subsection Variable 0
-    set Variable name = c
-    set Variable type = SCALAR
-    set Equation type = PARABOLIC
-    set Need variable value = true
-    set Need variable gradient = true
-    set Need variable hessian = false
-    set Need value residual term = true
-    set Need gradient residual term = true
-
-    set Need variable value (LHS) = false
-    set Need variable gradient (LHS) = false
-    set Need variable hessian (LHS) = false
-    set Need value residual term (LHS) = false
-    set Need gradient residual term (LHS) = false
-end
-
-# Variable 1
-subsection Variable 1
-    set Variable name = n1
-    set Variable type = SCALAR
-    set Equation type = PARABOLIC
-    set Need variable value = true
-    set Need variable gradient = true
-    set Need variable hessian = false
-    set Need value residual term = true
-    set Need gradient residual term = true
-
-    set Need variable value (LHS) = true
-    set Need variable gradient (LHS) = false
-    set Need variable hessian (LHS) = false
-    set Need value residual term (LHS) = false
-    set Need gradient residual term (LHS) = false
-end
-
-# Variable 2
-subsection Variable 2
-    set Variable name = u
-    set Variable type = VECTOR
-    set Equation type = ELLIPTIC
-    set Need variable value = false
-    set Need variable gradient = true
-    set Need variable hessian = true      # Only needed if the SFTS is composition dependent
-    set Need value residual term = false
-    set Need gradient residual term = true
-
-    set Need variable value (LHS) = false
-    set Need variable gradient (LHS) = true
-    set Need variable hessian (LHS) = false
-    set Need value residual term (LHS) = false
-    set Need gradient residual term (LHS) = true
-end
-
-# =================================================================================
-# Set the elastic constants (if needed)
-# =================================================================================
-
-subsection Material 0
-    set Material symmetry = ANISOTROPIC
-    #set Elastic constants = 31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0 # Mg
-    set Elastic constants = 31.3,31.3,9.15,13.0,0.0,0.0 # Mg
-end
-
-subsection Material 1
-    set Material symmetry = ANISOTROPIC
-    #set Elastic constants = 23.35,30.25,36.35,8.2,16.7,14.45,15.35,14.35,0,0,0,7.25,0,0,0,0,0,0,0,0,0 # Mg-Nd
-    set Elastic constants = 31.3,31.3,9.15,13.0,0.0,0.0 # Mg
-end
-
-# =================================================================================
-# Set the properties of the postprocessing variables
-# =================================================================================
-# The number of postprocessing variables (must match the number specified below)
-
-subsection Postprocessing variable 0
-    set Variable name = f_tot
-    set Variable type = SCALAR
-    set Need value residual term = true
-    set Need gradient residual term = false
-    set Output integral of the variable = true
-end
-
-subsection Postprocessing variable 1
-    set Variable name = mu_c
-    set Variable type = SCALAR
-    set Need value residual term = true
-    set Need gradient residual term = false
-    set Output integral of the variable = true
-end
-
 # =================================================================================
 # Set the boundary conditions
 # =================================================================================
+# Set the boundary condition for each variable, where each variable is given by
+# its name, as defined in equations.h. The four boundary condition
+# types are ZERO_DERIVATIVE, DIRICHLET, NON_UNIFORM_DIRICHLET and PERIODIC. If all
+# of the boundaries have the same boundary condition, only one boundary condition
+# type needs to be given. If multiple boundary condition types are needed, give a
+# comma-separated list of the types. The order is the miniumum of x, maximum of x,
+# minimum of y, maximum of y, minimum of z, maximum of z (i.e left, right, bottom,
+# top in 2D and left, right, bottom, top, front, back in 3D). The value of a
+# Dirichlet BC is specfied in the following way -- DIRCHILET: val -- where 'val' is
+# the desired value. If the boundary condition is NON_UNIFORM_DIRICHLET, the
+# boundary condition should be specified in the appropriate function in 'ICs_and_BCs.h'.
+# Example 1: All periodic BCs for variable 'c'
+# set Boundary condition for variable c = PERIODIC
+# Example 2: Zero-derivative BCs on the left and right, Dirichlet BCs with value
+# 1.5 on the top and bottom for variable 'n' in 2D
+# set Boundary condition for variable n = ZERO_DERIVATIVE, ZERO_DERIVATIVE, DIRICHLET: 1.5, DIRICHLET: 1.5
 
-set Boundary condition for variable 0 = ZERO_DERIVATIVE
-set Boundary condition for variable 1 = ZERO_DERIVATIVE
-set Boundary condition for variable 2, x component = DIRICHLET: 0.0, DIRICHLET: 0.0, ZERO_DERIVATIVE, DIRICHLET: 0.0, ZERO_DERIVATIVE, DIRICHLET: 0.0
-set Boundary condition for variable 2, y component = ZERO_DERIVATIVE, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0, ZERO_DERIVATIVE, DIRICHLET: 0.0
-set Boundary condition for variable 2, z component = ZERO_DERIVATIVE, DIRICHLET: 0.0, ZERO_DERIVATIVE, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0
+set Boundary condition for variable c = ZERO_DERIVATIVE
+set Boundary condition for variable n1 = ZERO_DERIVATIVE
+set Boundary condition for variable u, x component = DIRICHLET: 0.0, DIRICHLET: 0.0, ZERO_DERIVATIVE, DIRICHLET: 0.0, ZERO_DERIVATIVE, DIRICHLET: 0.0
+set Boundary condition for variable u, y component = ZERO_DERIVATIVE, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0, ZERO_DERIVATIVE, DIRICHLET: 0.0
+set Boundary condition for variable u, z component = ZERO_DERIVATIVE, DIRICHLET: 0.0, ZERO_DERIVATIVE, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0
 
 # =================================================================================
 # Set the model constants
@@ -234,3 +152,7 @@ set Model constant A0 = 1.60851e-5, double
 set Model constant B2 = 2.8557, double
 set Model constant B1 = -0.71393, double
 set Model constant B0 = 0.04462, double
+
+# The elastic constants
+set Model constant CIJ_Mg = (31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0), anisotropic elastic constants
+set Model constant CIJ_Beta = (31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0), anisotropic elastic constants

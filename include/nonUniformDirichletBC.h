@@ -28,7 +28,7 @@ public:
 
    const userInputParameters<dim> userInputs;
 
-   NonUniformDirichletBCVec (const unsigned int _index, const unsigned int _direction, const userInputParameters<dim> _userInputs) : dealii::Function<dim>(1), index(_index), direction(_direction), userInputs(_userInputs) {
+   NonUniformDirichletBCVec (const unsigned int _index, const unsigned int _direction, const userInputParameters<dim> _userInputs) : dealii::Function<dim>(dim), index(_index), direction(_direction), userInputs(_userInputs) {
      std::srand(dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
    }
    void vector_value (const dealii::Point<dim> &p,dealii::Vector<double> &vector_BC) const;

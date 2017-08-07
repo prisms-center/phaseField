@@ -1,3 +1,28 @@
+// =================================================================================
+// Set the attributes of the primary field variables
+// =================================================================================
+void variableAttributeLoader::loadPostProcessorVariableAttributes(){
+	// Variable 0
+	set_variable_name				(0,"f_tot");
+	set_variable_type				(0,SCALAR);
+
+	set_need_value_residual_term	(0,true);
+	set_need_gradient_residual_term	(0,false);
+
+    set_output_integral         	(0,true);
+
+	// Variable 1
+	set_variable_name				(1,"mu_c");
+	set_variable_type				(1,SCALAR);
+
+	set_need_value_residual_term	(1,true);
+	set_need_gradient_residual_term	(1,false);
+
+    set_output_integral         	(1,true);
+
+}
+
+// =================================================================================
 
 template <int dim,int degree>
 void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
@@ -56,13 +81,13 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 		if (n_dependent_stiffness == true){
 			for (unsigned int i=0; i<2*dim-1+dim/3; i++){
 				for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-					CIJ_combined[i][j] = userInputs.CIJ_list[0][i][j]*(constV(1.0)-h1V) + userInputs.CIJ_list[1][i][j]*h1V;
+					CIJ_combined[i][j] = CIJ_Mg[i][j]*(constV(1.0)-h1V) + CIJ_Beta[i][j]*h1V;
 				}
 			}
 			computeStress<dim>(CIJ_combined, E2, S);
 		}
 		else{
-			computeStress<dim>(userInputs.CIJ_list[0], E2, S);
+			computeStress<dim>(CIJ_Mg, E2, S);
 		}
 
 		scalarvalueType f_el = constV(0.0);

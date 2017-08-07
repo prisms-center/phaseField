@@ -1,38 +1,69 @@
+// =================================================================================
+// Set the attributes of the primary field variables
+// =================================================================================
+void variableAttributeLoader::loadPostProcessorVariableAttributes(){
+	// Variable 0
+	set_variable_name				(0,"f_tot");
+	set_variable_type				(0,SCALAR);
 
+	set_need_value_residual_term	(0,true);
+	set_need_gradient_residual_term	(0,false);
+
+    set_output_integral         	(0,true);
+
+	// Variable 1
+	set_variable_name				(1,"f_el");
+	set_variable_type				(1,SCALAR);
+
+	set_need_value_residual_term	(1,true);
+	set_need_gradient_residual_term	(1,false);
+
+    set_output_integral         	(1,true);
+
+	// Variable 2
+	set_variable_name				(2,"von_mises_stress");
+	set_variable_type				(2,SCALAR);
+
+	set_need_value_residual_term	(2,true);
+	set_need_gradient_residual_term	(2,false);
+
+	set_output_integral         	(2,true);
+}
+
+// =================================================================================
 
 template <int dim,int degree>
-void customPDE<dim,degree>::postProcessedFields(const std::vector<modelVariable<dim> > & modelVariablesList,
-												std::vector<modelResidual<dim> > & modelResidualsList,
-												const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+	variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
+	const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 // The order parameter and its derivatives (names here should match those in the macros above)
 
-//c
-dealii::VectorizedArray<double> c = modelVariablesList[0].scalarValue;
-dealii::Tensor<1, dim, dealii::VectorizedArray<double> > cx = modelVariablesList[0].scalarGrad;
+// The concentration and its derivatives (names here should match those in the macros above)
+scalarvalueType c = variable_list.get_scalar_value(0);
 
-//n1
-dealii::VectorizedArray<double> n1 = modelVariablesList[1].scalarValue;
-dealii::Tensor<1, dim, dealii::VectorizedArray<double> > n1x = modelVariablesList[1].scalarGrad;
+// The first order parameter and its derivatives (names here should match those in the macros above)
+scalarvalueType n1 = variable_list.get_scalar_value(1);
+scalargradType n1x = variable_list.get_scalar_gradient(1);
 
 // The second order parameter and its derivatives (names here should match those in the macros above)
-dealii::VectorizedArray<double> n2 = modelVariablesList[2].scalarValue;
-dealii::Tensor<1, dim, dealii::VectorizedArray<double> > n2x = modelVariablesList[2].scalarGrad;
+scalarvalueType n2 = variable_list.get_scalar_value(2);
+scalargradType n2x = variable_list.get_scalar_gradient(2);
 
 // The third order parameter and its derivatives (names here should match those in the macros above)
-dealii::VectorizedArray<double> n3 = modelVariablesList[3].scalarValue;
-dealii::Tensor<1, dim, dealii::VectorizedArray<double> > n3x = modelVariablesList[3].scalarGrad;
+scalarvalueType n3 = variable_list.get_scalar_value(3);
+scalargradType n3x = variable_list.get_scalar_gradient(3);
 
-//u
-dealii::Tensor<2, dim, dealii::VectorizedArray<double> > ux = modelVariablesList[4].vectorGrad;
+// The derivative of the displacement vector (names here should match those in the macros above)
+vectorgradType ux = variable_list.get_vector_gradient(4);
 
-dealii::VectorizedArray<double> sum_hpV = h1V+h2V+h3V;
-dealii::VectorizedArray<double> c_alpha = ((B2*c+0.5*(B1-A1)*sum_hpV))/(A2*(sum_hpV)+B2*(1.0-sum_hpV));
-dealii::VectorizedArray<double> c_beta  = ((A2*c+0.5*(A1-B1)*(1.0-sum_hpV))/(A2*(sum_hpV)+B2*(1.0-sum_hpV)));
+scalarvalueType sum_hpV = h1V+h2V+h3V;
+scalarvalueType c_alpha = ((B2*c+0.5*(B1-A1)*sum_hpV))/(A2*(sum_hpV)+B2*(1.0-sum_hpV));
+scalarvalueType c_beta  = ((A2*c+0.5*(A1-B1)*(1.0-sum_hpV))/(A2*(sum_hpV)+B2*(1.0-sum_hpV)));
 
 // Calculate the derivatives of c_beta (derivatives of c_alpha aren't needed)
 // Note: this section can be optimized to reduce recalculations
-dealii::VectorizedArray<double> cbn1V, cbn2V, cbn3V, cbcV, cbcn1V, cbcn2V, cbcn3V, cacV;
+scalarvalueType cbn1V, cbn2V, cbn3V, cbcV, cbcn1V, cbcn2V, cbcn3V, cacV;
 
 cbcV = faccV/( (constV(1.0)-sum_hpV)*fbccV + (sum_hpV)*faccV );
 cacV = fbccV/( (constV(1.0)-sum_hpV)*fbccV + (sum_hpV)*faccV );
@@ -45,6 +76,16 @@ cbcn1V = (faccV * (fbccV-faccV) * hn1V)/( ((1.0-sum_hpV)*fbccV + sum_hpV*faccV)*
 cbcn2V = (faccV * (fbccV-faccV) * hn2V)/( ((1.0-sum_hpV)*fbccV + sum_hpV*faccV)*((1.0-sum_hpV)*fbccV + sum_hpV*faccV) );  // Note: this is only true if faV and fbV are quadratic
 cbcn3V = (faccV * (fbccV-faccV) * hn3V)/( ((1.0-sum_hpV)*fbccV + sum_hpV*faccV)*((1.0-sum_hpV)*fbccV + sum_hpV*faccV) );  // Note: this is only true if faV and fbV are quadratic
 
+
+scalarvalueType f_chem = (constV(1.0)-(h1V+h2V+h3V))*faV + (h1V+h2V+h3V)*fbV + W*(fbarrierV);
+
+scalarvalueType f_grad = constV(0.0);
+
+for (int i=0; i<dim; i++){
+  for (int j=0; j<dim; j++){
+	  f_grad += constV(0.5*Kn1[i][j])*n1x[i]*n1x[j] + constV(0.5*Kn2[i][j])*n2x[i]*n2x[j] + constV(0.5*Kn3[i][j])*n3x[i]*n3x[j];
+  }
+}
 
 // Calculate the stress-free transformation strain and its derivatives at the quadrature point
 dealii::Tensor<2, dim, dealii::VectorizedArray<double> > sfts1, sfts1c, sfts1cc, sfts2, sfts2c, sfts2cc, sfts3, sfts3c, sfts3cc;
@@ -69,7 +110,7 @@ for (unsigned int j=0; j<dim; j++){
 
 
 //compute E2=(E-E0)
-dealii::VectorizedArray<double> E2[dim][dim], S[dim][dim];
+scalarvalueType E2[dim][dim], S[dim][dim];
 
 for (unsigned int i=0; i<dim; i++){
   for (unsigned int j=0; j<dim; j++){
@@ -80,18 +121,18 @@ for (unsigned int i=0; i<dim; i++){
 
 //compute stress
 //S=C*(E-E0)
-dealii::VectorizedArray<double> CIJ_combined[2*dim-1+dim/3][2*dim-1+dim/3];
+scalarvalueType CIJ_combined[2*dim-1+dim/3][2*dim-1+dim/3];
 
 if (n_dependent_stiffness == true){
 for (unsigned int i=0; i<2*dim-1+dim/3; i++){
 	  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-		  CIJ_combined[i][j] = userInputs.CIJ_list[0][i][j]*(constV(1.0)-sum_hpV) + userInputs.CIJ_list[1][i][j]*(h1V) + userInputs.CIJ_list[2][i][j]*(h2V) + userInputs.CIJ_list[3][i][j]*(h3V);
+		  CIJ_combined[i][j] = CIJ_Mg[i][j]*(constV(1.0)-sum_hpV) + CIJ_Beta1[i][j]*(h1V) + CIJ_Beta2[i][j]*(h2V) + CIJ_Beta3[i][j]*(h3V);
 	  }
 }
 computeStress<dim>(CIJ_combined, E2, S);
 }
 else{
-computeStress<dim>(userInputs.CIJ_list[0], E2, S);
+computeStress<dim>(CIJ_Mg, E2, S);
 }
 
 dealii::VectorizedArray<double> f_el = constV(0.0);
@@ -101,6 +142,9 @@ for (unsigned int i=0; i<dim; i++){
 	  f_el += constV(0.5) * S[i][j]*E2[i][j];
   }
 }
+
+scalarvalueType total_energy_density = f_chem + f_grad + f_el;
+
 
 dealii::VectorizedArray<double> vm_stress;
 if (dim == 3){
@@ -114,10 +158,9 @@ else {
 	vm_stress = std::sqrt(vm_stress);
 }
 
-
 // Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
-modelResidualsList[0].scalarValueResidual = f_el;
-modelResidualsList[1].scalarValueResidual = vm_stress;
-
+pp_variable_list.set_scalar_value_residual_term(0, total_energy_density);
+pp_variable_list.set_scalar_value_residual_term(1, f_el);
+pp_variable_list.set_scalar_value_residual_term(2, vm_stress);
 
 }

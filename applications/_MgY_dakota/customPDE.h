@@ -77,6 +77,9 @@ private:
 	dealii::Tensor<2,dim> sfts_const1;
 
 	const static unsigned int CIJ_tensor_size =2*dim-1+dim/3;
+	dealii::Tensor<2,CIJ_tensor_size> CIJ_Mg = userInputs.get_model_constant_elasticity_tensor("CIJ_Mg");
+	dealii::Tensor<2,CIJ_tensor_size> CIJ_Beta = userInputs.get_model_constant_elasticity_tensor("CIJ_Beta");
+
 
 	bool c_dependent_misfit;
 
