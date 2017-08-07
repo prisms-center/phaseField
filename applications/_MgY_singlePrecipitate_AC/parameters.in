@@ -24,7 +24,7 @@ set Subdivisions X = 1
 set Subdivisions Y = 4
 set Subdivisions Z = 1
 
-set Refine factor = 4
+set Refine factor = 5 
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
 set Element degree = 2
@@ -36,8 +36,9 @@ set Element degree = 2
 set Mesh adaptivity = true
 
 # Set the maximum and minimum level of refinement
-#set Max refinement level = 6 # l* = 1 nm
-set Max refinement level = 7 # l* = 2 nm
+#set Max refinement level = 6 # l* = 1 nm or 3 nm
+#set Max refinement level = 7 # l* = 2 nm
+set Max refinement level = 8 # l* = 4 nm
 set Min refinement level = 0
 
 # Set the fields used to determine the refinement using their index.
@@ -48,18 +49,20 @@ set Refinement window max = 0.99
 set Refinement window min = 0.001
 
 # Set the number of time steps between remeshing operations
-set Steps between remeshing operations = 1000
+set Steps between remeshing operations = 500 #1000
 
 # =================================================================================
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-#set Time step = 8.0e-4 # l* = 1 nm
-set Time step = 2.0e-4 # l* = 2 nm
+#set Time step = 4.0e-4 # l* = 1 nm
+#set Time step = 2.0e-4 # l* = 2 nm
+set Time step = 8.0e-4 # l* = 4 nm
+#set Time step = 1.0e-4
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 1000 #5000000
+set Number of time steps = 500000 #2000000 #5000000
 
 # =================================================================================
 # Set the elliptic solver parameters
@@ -89,7 +92,7 @@ set Output condition =  EQUAL_SPACING
 set Number of outputs = 10
 
 # The number of time steps between updates being printed to the screen
-set Skip print steps = 1 #1000
+set Skip print steps = 100 #1000
 
 # The flag determining if the total free energy is calculated for each output
 set Calculate the free energy = true
@@ -104,7 +107,7 @@ subsection Variable 0
     set Variable type = SCALAR
     set Equation type = PARABOLIC
     set Need variable value = true
-    set Need variable gradient = true
+    set Need variable gradient = false
     set Need variable hessian = false
     set Need value residual term = true
     set Need gradient residual term = false
@@ -166,7 +169,6 @@ end
 # =================================================================================
 # The number of postprocessing variables (must match the number specified below)
 
-# Postprocessing variable 0
 subsection Postprocessing variable 0
     set Variable name = f_tot
     set Variable type = SCALAR
@@ -175,7 +177,6 @@ subsection Postprocessing variable 0
     set Output integral of the variable = true
 end
 
-# Postprocessing variable 1
 subsection Postprocessing variable 1
     set Variable name = mu_c
     set Variable type = SCALAR
@@ -200,17 +201,21 @@ set Boundary condition for variable 2, z component = ZERO_DERIVATIVE, DIRICHLET:
 # Type options currently are double, int, bool, and tensor
 
 # McV, the Cahn-Hilliard mobility
-set Model constant McV = 50.0, double
+set Model constant McV = 20.0, double
 
 # Mn1V  the Allen-Cahn mobility
-#set Model constant 1 = 37.5, double # l* = 1 nm
+#set Model constant Mn1V = 37.5, double # l* = 1 nm
 #set Model constant 1 = 56.25, double # l* = 1.5 nm w/ scaled interfacial thickness
-set Model constant Mn1V = 150.0, double # l* = 2.0 nm w/o scaled interfacial thickness
+#set Model constant Mn1V = 150.0, double # l* = 2.0 nm w/o scaled interfacial thickness
+#set Model constant Mn1V = 337.5, double # l* = 3 nm w/o scaled interfacial thickness
+set Model constant Mn1V = 600.0, double # l* = 4 nm w/o scaled interfacial thickness
 
 # Kn1 the gradient energy coefficient
-#set Model constant 2 = ((0.0424,0,0),(0,8.9796e-4,0),(0,0,0.03587)), tensor # l* = 1 nm
+#set Model constant Kn1 = ((0.0424,0,0),(0,8.9796e-4,0),(0,0,0.03587)), tensor # l* = 1 nm
 #set Model constant 2 = ((0.02827,0,0),(0,0.0005986,0),(0,0,0.02391)), tensor # l* = 1.5 nm w/ scaled interfacial thickness
-set Model constant Kn1 = ((0.0106,0,0),(0,0.0002245,0),(0,0,0.008968)), tensor # l* = 2.0 nm w/o scaled interfacial thickness
+#set Model constant Kn1 = ((0.0106,0,0),(0,0.0002245,0),(0,0,0.008968)), tensor # l* = 2.0 nm w/o scaled interfacial thickness
+#set Model constant Kn1 = ((0.004711,0,0),(0,0.00009977,0),(0,0,0.003986)), tensor # l* = 3.0 nm w/o scaled interfacial thickness
+set Model constant Kn1 = ((0.00265,0,0),(0,0.0000561225,0),(0,0,0.002241875)), tensor # l* = 4.0 nm w/o scaled interfacial thickness
 
 # W, the energy barrier coefficient
 set Model constant W = 0.0966, double # l* = 1 nm
@@ -222,7 +227,11 @@ set Model constant n_dependent_stiffness = false, bool
 # sfts_linear1
 set Model constant sfts_linear1 = ((0.13383,0,0),(0,0.21273,0),(0,0,0.014832)), tensor
 # sfts_const1
-set Model constant sfts_const1 = ((0.013972,0,0),(0,-0.0057545,0),(0,0,-0.002691)), tensor
+#set Model constant sfts_const1 = ((0.013972,0,0),(0,-0.0057545,0),(0,0,-0.002691)), tensor
+set Model constant sfts_const1 = ((0.011472,0,0),(0,-0.0007545,0),(0,0,-0.002691)), tensor
+
+#set Model constant sfts_linear1 = ((0,0,0),(0,0,0),(0,0,0)), tensor
+#set Model constant sfts_const1 = ((0.0,0,0),(0,0.0,0),(0,0,0)), tensor
 
 # A2, A1, and A0 Mg-Y matrix free energy parameters
 set Model constant A2 = 59.4865, double

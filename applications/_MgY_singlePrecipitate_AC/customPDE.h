@@ -134,7 +134,7 @@ void customPDE<dim,degree>::solveIncrement(){
 				for (unsigned int dof=0; dof<this->solutionSet[fieldIndex]->local_size(); ++dof){
 	                this->solutionSet[fieldIndex]->local_element(dof) -= (integrated_c_after - integrated_c_before)/(domain_volume);
 	            }
-				this->pcout << "Before, after, shift:" << integrated_c_before << " " << integrated_c_after << " " << (integrated_c_after - integrated_c_before)/(domain_volume) << std::endl;
+				//this->pcout << "Before, after, shift:" << integrated_c_before << " " << integrated_c_after << " " << (integrated_c_after - integrated_c_before)/(domain_volume) << std::endl;
 			}
 
             // Set the Dirichelet values (hanging node constraints don't need to be distributed every time step, only at output)
