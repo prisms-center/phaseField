@@ -237,13 +237,15 @@ void parallelNucleationList<dim>::broadcastUpdate (int broadcastProc, int thisPr
         		dealii::Point<dim> s_center=thisNuclei->center;
         		r_center_x.push_back(s_center[0]);
         		r_center_y.push_back(s_center[1]);
-                if (dim ==3)
+                if (dim ==3){
                 	r_center_z.push_back(s_center[2]);
+				}
 
                 r_semiaxis_a.push_back(thisNuclei->semiaxes[0]);
                 r_semiaxis_b.push_back(thisNuclei->semiaxes[1]);
-                if (dim ==3)
+                if (dim ==3){
                 	r_semiaxis_c.push_back(thisNuclei->semiaxes[2]);
+				}
 
         		r_seededTime.push_back(thisNuclei->seededTime);
         		r_seedingTime.push_back(thisNuclei->seedingTime);

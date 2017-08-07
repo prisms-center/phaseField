@@ -31,6 +31,11 @@ public:
     void set_vector_value_residual_term(unsigned int global_variable_index, dealii::Tensor<1, dim, T > val);
     void set_vector_gradient_residual_term(unsigned int global_variable_index, dealii::Tensor<2, dim, T > grad);
 
+    // Hold-over from previous version that caches the residual terms instead of over-writing what's in vector_vars.
+    // This approach was abandoned because it caused a 20% decrease in speed.
+    // Method to apply the residuals stored in the temporary vectors to the FEEvaluation objects
+    //void apply_residuals();
+
     // Initialize, read DOFs, and set evaulation flags for each variable
     void reinit_and_eval(const std::vector<vectorType*> &src, unsigned int cell);
     void reinit_and_eval_LHS(const vectorType &src, const std::vector<vectorType*> solutionSet, unsigned int cell, unsigned int var_being_solved);
@@ -60,6 +65,18 @@ private:
 
     // Object containing some information about each variable (indices, whether the val/grad/hess is needed, etc)
     std::vector<variable_info> varInfoList;
+
+    // Vectors to hold the residuals temporarily until they are applied to scalar_vars and vector_vars
+    // These are needed so that the "set" calls don't over-write the values in scalar_vars and vector_vars until after the call to residualRHS/residualLHS/postProcessedFields
+    std::vector<int> scalar_value_index;
+    std::vector<int> scalar_gradient_index;
+    std::vector<int> vector_value_index;
+    std::vector<int> vector_gradient_index;
+
+    std::vector<T> scalar_value;
+    std::vector<dealii::Tensor<1, dim, T > > scalar_gradient;
+    std::vector<dealii::Tensor<1, dim, T > > vector_value;
+    std::vector<dealii::Tensor<2, dim, T > > vector_gradient;
 };
 
 #endif

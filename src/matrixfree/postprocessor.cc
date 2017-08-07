@@ -1,6 +1,5 @@
 //#include "../../include/postprocessor.h"
 #include "../../include/matrixFreePDE.h"
-#include "../../include/list_of_CIJ.h"
 
 template <int dim,int degree>
 void MatrixFreePDE<dim,degree>::computePostProcessedFields(std::vector<vectorType*> &postProcessedSet) {
@@ -21,7 +20,7 @@ void MatrixFreePDE<dim,degree>::computePostProcessedFields(std::vector<vectorTyp
 
 	//call to integrate and assemble
 	matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getPostProcessedFields, this, postProcessedSet, solutionSet);
-	
+
 }
 
 template <int dim,int degree>

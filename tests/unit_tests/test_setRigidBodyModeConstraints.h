@@ -7,6 +7,10 @@ class setRigidBodyModeConstraintsTest: public MatrixFreePDE<dim,degree>
 		//init the MatrixFreePDE class for testing
 		this->initForTests();
 	};
+	~setRigidBodyModeConstraintsTest(){
+        this->matrixFreeObject.clear();
+        delete this->dofHandlersSet[0];
+    };
 
 	void call_setRigidBodyModeConstraints(std::vector<int> rigidBodyModeComponents, unsigned int & num_constraints){
 

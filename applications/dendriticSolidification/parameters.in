@@ -1,0 +1,126 @@
+# Parameter list for the Allen-Cahn example application
+# Refer to the PRISMS-PF manual for use of these parameters in the source code.
+
+# =================================================================================
+# Set the number of dimensions (2 or 3 for a 2D or 3D calculation)
+# =================================================================================
+set Number of dimensions = 2
+
+# =================================================================================
+# Set the length of the domain in all three dimensions
+# (Domain size Z ignored in 2D)
+# =================================================================================
+# Each axes spans from zero to the specified length
+set Domain size X = 500
+set Domain size Y = 500
+set Domain size Z = 500
+
+# =================================================================================
+# Set the element parameters
+# =================================================================================
+# The number of elements in each direction is 2^(refineFactor) * subdivisions
+# Subdivisions Z ignored in 2D
+# For optimal performance, use refineFactor primarily to determine the element size
+set Subdivisions X = 3
+set Subdivisions Y = 3
+set Subdivisions Z = 3
+
+set Refine factor = 6
+
+# Set the polynomial degree of the element (allowed values: 1, 2, or 3)
+set Element degree = 3
+
+# =================================================================================
+# Set the adaptive mesh refinement parameters
+# =================================================================================
+# Set the flag determining if adaptive meshing is activated
+set Mesh adaptivity = true
+
+# Set the maximum and minimum level of refinement
+set Max refinement level = 6
+set Min refinement level = 0
+
+# Set the fields used to determine the refinement using their index.
+set Refinement criteria fields = 1
+
+# Set the maximum and minimum value of the fields where the mesh should be refined
+set Refinement window max = 0.9999
+set Refinement window min = -0.9999
+
+# Set the number of time steps between remeshing operations
+set Steps between remeshing operations = 250
+
+# =================================================================================
+# Set the time step parameters
+# =================================================================================
+# The size of the time step
+set Time step = 0.04
+
+# The simulation ends when either the number of time steps is reached or the
+# simulation time is reached.
+set Number of time steps = 25000
+
+# =================================================================================
+# Set the boundary conditions
+# =================================================================================
+# Set the boundary condition for each variable, where each variable is given by
+# its name, as defined in equations.h. The four boundary condition
+# types are ZERO_DERIVATIVE, DIRICHLET, NON_UNIFORM_DIRICHLET and PERIODIC. If all
+# of the boundaries have the same boundary condition, only one boundary condition
+# type needs to be given. If multiple boundary condition types are needed, give a
+# comma-separated list of the types. The order is the miniumum of x, maximum of x,
+# minimum of y, maximum of y, minimum of z, maximum of z (i.e left, right, bottom,
+# top in 2D and left, right, bottom, top, front, back in 3D). The value of a
+# Dirichlet BC is specfied in the following way -- DIRCHILET: val -- where 'val' is
+# the desired value. If the boundary condition is NON_UNIFORM_DIRICHLET, the
+# boundary condition should be specified in the appropriate function in 'ICs_and_BCs.h'.
+# Example 1: All periodic BCs for variable 'c'
+# set Boundary condition for variable c = PERIODIC
+# Example 2: Zero-derivative BCs on the left and right, Dirichlet BCs with value
+# 1.5 on the top and bottom for variable 'n' in 2D
+# set Boundary condition for variable n = ZERO_DERIVATIVE, ZERO_DERIVATIVE, DIRICHLET: 1.5, DIRICHLET: 1.5
+
+set Boundary condition for variable T = DIRICHLET: -0.75 # equal to -deltaV
+set Boundary condition for variable n = ZERO_DERIVATIVE
+set Boundary condition for variable mu = ZERO_DERIVATIVE
+
+# =================================================================================
+# Set the model constants
+# =================================================================================
+# Set the user-defined model constants, which must have a counter-part given in
+# customPDE.h. These are most often used in the residual equations in equations.h,
+# but may also be used for initial conditions and nucleation calculations. The type
+# options currently are DOUBLE, INT, BOOL, TENSOR, and [symmetry] ELASTIC CONSTANTS
+# where [symmetry] is ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC.
+
+# Heat diffusion constant
+set Model constant DV = 1.0, DOUBLE
+
+# Isotropic gradient energy coefficient
+set Model constant W0 = 1.0, DOUBLE
+
+# Undercooling
+set Model constant deltaV = 0.75, DOUBLE
+
+# Anisotropy paramter
+set Model constant epsilonM = 0.05, DOUBLE
+
+# Rotation angle
+set Model constant theta0 = 0.125, DOUBLE
+
+# Symmetry factor
+set Model constant mult = 4.0, DOUBLE
+
+# =================================================================================
+# Set the output parameters
+# =================================================================================
+# Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
+# or "LIST")
+set Output condition = EQUAL_SPACING
+
+# Number of times the program outputs the fields (total number for "EQUAL_SPACING"
+# and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
+set Number of outputs = 10
+
+# The number of time steps between updates being printed to the screen
+set Skip print steps = 1000

@@ -1,136 +1,83 @@
-# Listing of Parameters
-# ---------------------
-# Whether to enable the explicit nucleation capabilties.
-set Allow nucleation                        = false
+# Parameter list for the Allen-Cahn example application
 
-# Whether to calculate the integrated free energy.
-set Calculate the free energy               = false
+# Refer to the PRISMS-PF manual for use of these parameters in the source code.
 
-# The size of the domain in the x direction.
-set Domain size X                           = -1
+# =================================================================================
+# Set the number of dimensions (2 or 3 for a 2D or 3D calculation)
+# =================================================================================
+set Number of dimensions = 2
 
-# The size of the domain in the y direction.
-set Domain size Y                           = -1
+# =================================================================================
+# Set the length of the domain in all three dimensions
+# (Domain size Z ignored in 2D)
+# =================================================================================
+# Each axes spans from zero to the specified length
+set Domain size X = 100
+set Domain size Y = 100
+set Domain size Z = 100
 
-# The size of the domain in the z direction.
-set Domain size Z                           = -1
+# =================================================================================
+# Set the element parameters
+# =================================================================================
+# The number of elements in each direction is 2^(refineFactor) * subdivisions
+# Subdivisions Z ignored in 2D
+# For optimal performance, use refineFactor primarily to determine the element size
+set Subdivisions X = 1
+set Subdivisions Y = 1
+set Subdivisions Z = 1
 
-# The polynomial order of the finte element.
-set Element degree                          = 1
+set Refine factor = 8
 
-# The file name to load from for each variable.
-set File names                              = void
+# Set the polynomial degree of the element (allowed values: 1, 2, or 3)
+set Element degree = 1
 
-# Duration that the order parameter is frozen after placement.
-set Freeze time following nucleation        = 0.0
+# =================================================================================
+# Set the time step parameters
+# =================================================================================
+# The size of the time step
+set Time step = 1.0e-2
 
-# The semiaxes for region where the order parameter is frozen for a period of
-# time after placement.
-set Freeze zone semiaxes (x, y ,z)          = 
+# The simulation ends when either the number of time steps is reached or the
+# simulation time is reached.
+set Number of time steps = 5000
 
-# The linear solver (currently only SolverCG).
-set Linear solver                           = SolverCG
+# =================================================================================
+# Set the boundary conditions
+# =================================================================================
+# ADD MORE COMMENTS
+set Boundary condition for variable n = ZERO_DERIVATIVE
 
-# The list of time steps to output, used for the LIST type.
-set List of time steps to output            = 0
+# =================================================================================
+# Set the model constants
+# =================================================================================
+# ADD MORE COMMENTS
+# Type options currently are double, int, and bool
 
-# Whether to load the initial conditions for each variable from file.
-set Load initial conditions                 = void
+# The mobility, MnV in equations.h
+set Model constant MnV = 1.0, double
 
-# Whether all processors should read from a single file (versus each reading
-# from separate files).
-set Load serial file                        = void
+# The gradient energy coefficient, KnV in equations.h
+set Model constant KnV = 2.0, double
 
-# The maximum level of refinement.
-set Max refinement level                    = -1
+# =================================================================================
+# Set the output parameters
+# =================================================================================
+# Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
+# or "LIST")
+set Output condition = EQUAL_SPACING
 
-# The maximum allowed number of iterations the linear solver is given to
-# converge before being forced to exit.
-set Maximum allowed solver iterations       = 10000
+# Number of times the program outputs the fields (total number for "EQUAL_SPACING"
+# and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
+set Number of outputs = 5
 
-# Whether to enable mesh adaptivity.
-set Mesh adaptivity                         = false
+# The number of time steps between updates being printed to the screen
+set Skip print steps = 1000
 
-# The minimum level of refinement.
-set Min refinement level                    = -1
-
-# The minimum allowed distance between nuclei placed during the same time
-# step.
-set Minimum allowed distance between nuclei = -1.0
-
-# The thickness of the nucleation-free region near the domain boundaries
-# (ignored for periodic BCs).
-set Nucleation-free border thickness        = 0.0
-
-# The semiaxes for nuclei placed with the explicit nucleation algorithm).
-set Nucleus semiaxes (x, y ,z)              = 
-
-# The number of dimensions for the simulation.
-set Number of dimensions                    = -1
-
-# The number of outputs (or number of outputs per decade for the N_PER_DECADE
-# type).
-set Number of outputs                       = 10
-
-# The time step size for the simulation.
-set Number of time steps                    = -1
-
-# Order parameter cutoff value for nucleation (when the sum of all order
-# parameters is above this value, no nucleation is attempted).
-set Order parameter cutoff value            = 0.01
-
-# The time step size for the simulation.
-set Output condition                        = EQUAL_SPACING
-
-# The name for the output file, before the time step and processor info are
-# added.
-set Output file name (base)                 = solution
-
-# The output file type (either vtu or vtk).
-set Output file type                        = vtu
-
-# The number of initial refinements of the coarse mesh.
-set Refine factor                           = -1
-
-# The list of fields used to determine mesh refinement.
-set Refinement criteria fields              = 0
-
-# The upper limit for refinement for each of the criteria fields.
-set Refinement window max                   = 
-
-# The lower limit for refinement for each of the criteria fields.
-set Refinement window min                   = 
-
-# The value of simulated time where the simulation ends.
-set Simulation end time                     = -0.1
-
-# The number of time steps between updates to the screen.
-set Skip print steps                        = 1
-
-# The tolerance for the linear solver (either absolute or relative).
-set Solver tolerance value                  = 1.0e-3
-
-# The number of time steps between mesh refinement operations.
-set Steps between remeshing operations      = 1
-
-# The number of mesh subdivisions in the x direction.
-set Subdivisions X                          = 1
-
-# The number of mesh subdivisions in the y direction.
-set Subdivisions Y                          = 1
-
-# The number of mesh subdivisions in the z direction.
-set Subdivisions Z                          = 1
-
-# The time step size for the simulation.
-set Time step                               = -0.1
-
-# The number of time steps between nucleation attempts.
-set Time steps between nucleation attempts  = 100
-
-# Whether to use an absolute tolerance for the linear solver (versus a
-# relative tolerance).
-set Use absolute convergence tolerance      = false
-
-# What each variable is named in the field being loaded.
-set Variable names in the files             = void
+# =================================================================================
+# Set the parameters for loading in initial conditions (OPTIONAL)
+# =================================================================================
+# ADD MORE COMMENTS
+set Load initial conditions = false
+set Load parallel file = true
+set File names = void
+set Variable names in the files = void

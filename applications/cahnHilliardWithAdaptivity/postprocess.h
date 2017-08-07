@@ -1,67 +1,48 @@
-/*
- * postprocess.h
- *
- *  Created on: Mar 29, 2017
- *      Author: stephendewitt
- */
-
-#ifndef APPLICATIONS_ALLENCAHN_POSTPROCESS_H_
-#define APPLICATIONS_ALLENCAHN_POSTPROCESS_H_
-
 // =================================================================================
-// Define the variables for postprocessing
+// Set the attributes of the primary field variables
 // =================================================================================
-// The number of variables
-#define pp_num_var 1
+void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 
-// The names of the variables, whether they are scalars or vectors and whether the
-// governing eqn for the variable is parabolic or elliptic
-#define pp_variable_name {"mag_grad_c"}
-#define pp_variable_type {"SCALAR"}
+	// Variable 0
+	set_variable_name				(0,"f_tot");
+	set_variable_type				(0,SCALAR);
 
-// Flags for whether the value, gradient, and Hessian are needed in the residual eqns
-#define pp_need_val {false}
-#define pp_need_grad {true}
-#define pp_need_hess  {false}
+	set_need_value_residual_term	(0,true);
+	set_need_gradient_residual_term	(0,false);
 
-// Flags for whether the residual equation has a term multiplied by the test function
-// (need_val_residual) and/or the gradient of the test function (need_grad_residual)
-#define pp_need_val_residual {true}
-#define pp_need_grad_residual {false}
-
-// =================================================================================
-
-template <int dim>
-void postProcessedFields(const std::vector<modelVariable<dim> > & modelVariablesList,
-												std::vector<modelResidual<dim> > & modelResidualsList,
-												const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc,
-												const list_of_CIJ<dim> material_moduli) {
-
-// The order parameter and its derivatives (names here should match those in the macros above)
-dealii::Tensor<1, dim, dealii::VectorizedArray<double> > cx = modelVariablesList[0].scalarGrad;
-
-dealii::Tensor<1, dim, dealii::VectorizedArray<double> > pp_field;
-pp_field[0] = cx[0];
-pp_field[1] = cx[1];
-
-
-// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
-modelResidualsList[0].scalarValueResidual = std::sqrt(pp_field[0]*pp_field[0]+pp_field[1]*pp_field[1]); //constV(0.0);
-
+    set_output_integral         	(0,true);
 
 }
 
-// =================================================================================
+template <int dim,int degree>
+void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+				variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
+												const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-// Template instantiations
-template void postProcessedFields<2>(const std::vector<modelVariable<2> > & modelVariablesList,
-		std::vector<modelResidual<2> > & modelResidualsList,
-		const dealii::Point<2, dealii::VectorizedArray<double> > q_point_loc,
-		const list_of_CIJ<2> material_moduli);
+	scalarvalueType f_tot = constV(0.0);
 
-template void postProcessedFields<3>(const std::vector<modelVariable<3> > & modelVariablesList,
-		std::vector<modelResidual<3> > & modelResidualsList,
-		const dealii::Point<3, dealii::VectorizedArray<double> > q_point_loc,
-		const list_of_CIJ<3> material_moduli);
+	// The concentration and its derivatives (names here should match those in the macros above)
+	scalarvalueType c = variable_list.get_scalar_value(0);
+	scalargradType cx = variable_list.get_scalar_gradient(0);
 
-#endif /* APPLICATIONS_ALLENCAHN_POSTPROCESS_H_ */
+	// The homogenous free energy
+	scalarvalueType f_chem = c*c*c*c - 2.0*c*c*c + c*c;
+
+	// The gradient free energy
+	scalarvalueType f_grad = constV(0.0);
+
+	for (int i=0; i<dim; i++){
+		for (int j=0; j<dim; j++){
+			f_grad += constV(0.5*KcV)*cx[i]*cx[j];
+		}
+	}
+
+	// The total free energy
+	f_tot = f_chem + f_grad;
+
+
+// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
+pp_variable_list.set_scalar_value_residual_term(0, f_tot);
+
+
+}

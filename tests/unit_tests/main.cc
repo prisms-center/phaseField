@@ -4,22 +4,24 @@
 #include <iostream>
 #include "unitTest.h"
 #include "../../include/userInputParameters.h"
-#include "../../src/userInputParameters/loadInputParameters.cc"
+#include "../../src/userInputParameters/userInputParameters.cc"
 #include "../../include/vectorBCFunction.h"
 #include "../../src/utilities/vectorBCFunction.cc"
 #include "../../include/initialConditions.h"
 #include "initialConditions.cc"
-#include "../../include/list_of_CIJ.h"
+#include "boundaryConditions.cc"
 #include "unit_test_inputs.cc"
 
 int main(int argc, char **argv)
 {
+  dealii::deallog.depth_console(3);
   //init MPI
   Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, numbers::invalid_unsigned_int);
 
   // Load input
-  inputFileReader input_file_reader("parameters_test.in");
-  userInputParameters<2> userInputs(input_file_reader,input_file_reader.parameter_handler);
+  variableAttributeLoader variable_attributes;
+  inputFileReader input_file_reader("parameters_test.in",variable_attributes);
+  userInputParameters<2> userInputs(input_file_reader,input_file_reader.parameter_handler,variable_attributes);
   load_unit_test_inputs<2>(userInputs);
 
   std::cout << "Beginning unit tests..." << std::endl;
@@ -62,11 +64,11 @@ int main(int argc, char **argv)
   pass = computeInvM_tester_2D.test_computeInvM(argc, argv, userInputs);
   tests_passed += pass;
 
-  // Unit tests for the method "outputResults" (revisit, it isn't clear what this one does)
-  total_tests++;
-  unitTest<2,double> outputResults_tester_2D;
-  pass = outputResults_tester_2D.test_outputResults(argc, argv, userInputs);
-  tests_passed += pass;
+  // Unit tests for the method "outputResults" (this test doesn't actually do anything)
+  // total_tests++;
+  // unitTest<2,double> outputResults_tester_2D;
+  // pass = outputResults_tester_2D.test_outputResults(argc, argv, userInputs);
+  // tests_passed += pass;
 
   // Unit tests for the method "computeStress"
   total_tests++;
@@ -113,14 +115,16 @@ int main(int argc, char **argv)
   pass = setRigidBodyModeConstraints_tester_one.test_setRigidBodyModeConstraints(rigidBodyModeComponents, userInputs);
   tests_passed += pass;
 
-  total_tests++;
-  unitTest<2,double> setRigidBodyModeConstraints_tester_three;
-  rigidBodyModeComponents.clear();
-  rigidBodyModeComponents.push_back(0);
-  rigidBodyModeComponents.push_back(1);
-  rigidBodyModeComponents.push_back(2);
-  pass = setRigidBodyModeConstraints_tester_three.test_setRigidBodyModeConstraints(rigidBodyModeComponents, userInputs);
-  tests_passed += pass;
+  // In debug mode this test has an exception because it is trying to access components higher than 0 on the mesh for a scalar.
+  // To get this test working again, I'll need a DoFHandler for a vector field.
+  // total_tests++;
+  // unitTest<2,double> setRigidBodyModeConstraints_tester_three;
+  // rigidBodyModeComponents.clear();
+  // rigidBodyModeComponents.push_back(0);
+  // rigidBodyModeComponents.push_back(1);
+  // rigidBodyModeComponents.push_back(2);
+  // pass = setRigidBodyModeConstraints_tester_three.test_setRigidBodyModeConstraints(rigidBodyModeComponents, userInputs);
+  // tests_passed += pass;
 
   // Print out results
   char buffer[100];

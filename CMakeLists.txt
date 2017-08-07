@@ -40,15 +40,17 @@ endif()
 INCLUDE_DIRECTORIES(include)
 
 FILE(GLOB headers include/*.h)
-FILE(GLOB sources src/matrixfree/*.cc)
+FILE(GLOB matrixfree_sources src/matrixfree/*.cc)
+
+FILE(GLOB userinputparameters_sources src/userInputParameters/*.cc)
 
 
 PROJECT(prisms_pf)
 SET(CMAKE_BUILD_TYPE Release)
-ADD_LIBRARY(${PROJECT_NAME} ${sources} src/utilities/vectorBCFunction.cc src/inputFileReader/inputFileReader.cc src/userInputParameters/loadInputParameters.cc src/parallelNucleationList/parallelNucleationList.cc src/variableContainer/variableContainer.cc)
+ADD_LIBRARY(${PROJECT_NAME} ${matrixfree_sources} ${userinputparameters_sources} src/utilities/sortIndexEntryPairList.cc src/variableAttributeLoader/variableAttributeLoader.cc src/utilities/vectorBCFunction.cc src/inputFileReader/inputFileReader.cc src/parallelNucleationList/parallelNucleationList.cc src/variableContainer/variableContainer.cc)
 DEAL_II_SETUP_TARGET(${PROJECT_NAME})
 
 PROJECT(prisms_pf_debug)
 SET(CMAKE_BUILD_TYPE Debug)
-ADD_LIBRARY(${PROJECT_NAME} ${sources} src/utilities/vectorBCFunction.cc src/inputFileReader/inputFileReader.cc src/userInputParameters/loadInputParameters.cc src/parallelNucleationList/parallelNucleationList.cc src/variableContainer/variableContainer.cc)
+ADD_LIBRARY(${PROJECT_NAME} ${matrixfree_sources} ${userinputparameters_sources} src/utilities/sortIndexEntryPairList.cc src/variableAttributeLoader/variableAttributeLoader.cc src/utilities/vectorBCFunction.cc src/inputFileReader/inputFileReader.cc src/parallelNucleationList/parallelNucleationList.cc src/variableContainer/variableContainer.cc)
 DEAL_II_SETUP_TARGET(${PROJECT_NAME})

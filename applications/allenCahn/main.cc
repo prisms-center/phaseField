@@ -3,16 +3,21 @@
 // Header files
 #include "../../include/initialConditions.h"
 #include "../../include/initialCondition_template_instantiations.h"
+#include "../../include/nonUniformDirichletBC.h"
+#include "../../include/nonUniformDirichletBC_template_instantiations.h"
 #include "../../include/matrixFreePDE.h"
 #include "../../src/models/mechanics/computeStress.h"
 #include "../../include/inputFileReader.h"
 #include "customPDE.h"
 #include "equations.h"
 #include "ICs_and_BCs.h"
+#include "../../src/variableAttributeLoader/variableAttributeLoader.cc"
 
 // Header file for postprocessing that may or may not exist
 #ifdef POSTPROCESS_FILE_EXISTS
 #include "postprocess.h"
+#else
+void variableAttributeLoader::loadPostProcessorVariableAttributes(){}
 #endif
 
 // Header files for nucleation that may or may not exist
@@ -33,14 +38,16 @@ int main (int argc, char **argv)
         // Before fully parsing the parameter file, we need to know how many field variables there are and whether they
         // are scalars or vectors, how many postprocessing variables there are, how many sets of elastic constants there are,
         // and how many user-defined constants there are.
-        inputFileReader input_file_reader("parameters.in");
+        variableAttributeLoader variable_attributes;
+
+        inputFileReader input_file_reader("parameters.in",variable_attributes);
 
         // Continue based on the number of dimensions and degree of the elements specified in the input file
         switch (input_file_reader.number_of_dimensions)
         {
             case 2:
             {
-                userInputParameters<2> userInputs(input_file_reader,input_file_reader.parameter_handler);
+                userInputParameters<2> userInputs(input_file_reader,input_file_reader.parameter_handler,variable_attributes);
                 switch (userInputs.degree)
                 {
                     case(1):
@@ -72,7 +79,7 @@ int main (int argc, char **argv)
             }
             case 3:
             {
-                userInputParameters<3> userInputs(input_file_reader,input_file_reader.parameter_handler);
+                userInputParameters<3> userInputs(input_file_reader,input_file_reader.parameter_handler,variable_attributes);
                 switch (userInputs.degree)
                 {
                     case(1):

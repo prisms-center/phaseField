@@ -47,7 +47,7 @@ for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_i
 		}
 	}
 	else{
-		#if enablePFields == true
+		//#if enablePFields == true
 
 		// Declare the PField types and containers
 		typedef PRISMS::PField<double*, double, dim> ScalarField;
@@ -56,7 +56,7 @@ for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_i
 
 		// Create the filename of the the file to be loaded
 		std::string filename;
-		if (userInputs.load_serial_file[var_index] == true){
+		if (userInputs.load_parallel_file[var_index] == false){
 			filename = userInputs.load_file_name[var_index] + ".vtk";
 		}
 		else {
@@ -77,9 +77,7 @@ for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_i
 		else {
 			std::cout << "PRISMS-PF Error: Cannot load vector fields. Loading initial conditions from file is currently limited to scalar fields" << std::endl;
 		}
-		#else
-		std::cout << "PRISMS-PF Error: The parameter \"enablePFields\" must be set to true to load initial conditions from file." << std::endl;
-		#endif
+        
 	}
 	pcout << "Application of initial conditions for field number " << var_index << " complete \n";
 }

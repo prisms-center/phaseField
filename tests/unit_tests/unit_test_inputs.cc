@@ -26,29 +26,15 @@ void load_unit_test_inputs(userInputParameters<dim> & userInputs){
     userInputs.max_solver_iterations = 1000;
     userInputs.skip_print_steps = 1;
     userInputs.output_file_type = "vtu";
-    userInputs.calc_energy = false;
     userInputs.nucleation_occurs = false;
     userInputs.number_of_variables = 1;
     userInputs.load_ICs.push_back(false);
-    userInputs.load_serial_file.push_back(false);
+    userInputs.load_parallel_file.push_back(false);
     userInputs.load_file_name.push_back("void");
     userInputs.load_field_name.push_back("void");
     userInputs.pp_number_of_variables = 1;
     userInputs.postProcessingRequired = false;
 
-    std::vector<dealii::Tensor<2, 2*dim-1+dim/3, dealii::VectorizedArray<double> > > CIJ_list_temp;
-    dealii::Tensor<2, 2*dim-1+dim/3, dealii::VectorizedArray<double> > CIJ_temp;
-    CIJ_temp[0][0] = dealii::make_vectorized_array(0.0);
-    CIJ_temp[1][0] = dealii::make_vectorized_array(0.0);
-    CIJ_temp[2][0] = dealii::make_vectorized_array(0.0);
-    CIJ_temp[0][1] = dealii::make_vectorized_array(0.0);
-    CIJ_temp[1][1] = dealii::make_vectorized_array(0.0);
-    CIJ_temp[2][1] = dealii::make_vectorized_array(0.0);
-    CIJ_temp[0][2] = dealii::make_vectorized_array(0.0);
-    CIJ_temp[1][2] = dealii::make_vectorized_array(0.0);
-    CIJ_temp[2][2] = dealii::make_vectorized_array(0.0);
-    CIJ_list_temp.push_back(CIJ_temp);
-    userInputs.material_moduli.CIJ_list = CIJ_list_temp;
 
 
 }

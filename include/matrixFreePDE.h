@@ -55,7 +55,9 @@ class MatrixFreePDE:public Subscriptor
    * Initializes the mesh, degrees of freedom, constraints and data structures using the user provided
    * inputs in the application parameters file.
    */
-  void init  ();
+  virtual void init  ();
+
+  virtual void makeTriangulation(parallel::distributed::Triangulation<dim> &) const;
 
    /**
    * Initializes the data structures for enabling unit tests.
@@ -89,9 +91,14 @@ class MatrixFreePDE:public Subscriptor
   ConditionalOStream  pcout;
 
  protected:
-  const userInputParameters<dim> userInputs;
+  userInputParameters<dim> userInputs;
 
   unsigned int totalDOFs;
+
+  // Virtual methods to set the attributes of the primary field variables and the postprocessing field variables
+  //virtual void setVariableAttriubutes() = 0;
+  //virtual void setPostProcessingVariableAttriubutes(){};
+  variableAttributeLoader var_attributes;
 
   // Elasticity matrix variables
   const static unsigned int CIJ_tensor_size = 2*dim-1+dim/3;
@@ -210,9 +217,12 @@ class MatrixFreePDE:public Subscriptor
   /*Map of degrees of freedom to the corresponding Dirichlet boundary conditions, if any.*/
   std::vector<std::map<dealii::types::global_dof_index, double>*> valuesDirichletSet;
   /*Virtual method to mark the boundaries for applying Dirichlet boundary conditions.  This is usually expected to be provided by the user.*/
-  void markBoundaries();
-  /*Virtual method for applying Dirichlet boundary conditions.  This is usually expected to be provided by the user.*/
+  void markBoundaries(parallel::distributed::Triangulation<dim> &) const;
+  /** Method for applying Dirichlet boundary conditions.*/
   void applyDirichletBCs();
+
+  /** Method for applying Neumann boundary conditions.*/
+  void applyNeumannBCs();
 
   // Methods to apply periodic BCs
   void setPeriodicity();
@@ -239,7 +249,7 @@ class MatrixFreePDE:public Subscriptor
   void refineMeshNearNuclei(std::vector<nucleus<dim> > newnuclei);
 
   // Method to obtain the nucleation probability for an element, nontrival case must be implemented in the subsclass
-  virtual double getNucleationProbability(variableValueContainer, double)const {return 0.0;};
+  virtual double getNucleationProbability(variableValueContainer, double, dealii::Point<dim>)const {return 0.0;};
 
   //utility functions
   /*Returns index of given field name if exists, else throw error.*/

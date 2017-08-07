@@ -30,7 +30,7 @@ template <int dim, int degree>
  {
    matrixFreeObject.clear();
    for(unsigned int iter=0; iter<fields.size(); iter++){
-     delete soltransSet[iter];
+     //delete soltransSet[iter];
      delete locally_relevant_dofsSet[iter];
      delete constraintsDirichletSet[iter];
      delete dofHandlersSet[iter];
