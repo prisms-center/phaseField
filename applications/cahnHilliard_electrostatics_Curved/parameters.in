@@ -25,7 +25,7 @@ set Subdivisions X = 2
 set Subdivisions Y = 3
 set Subdivisions Z = 3
 
-set Refine factor = 3
+set Refine factor = 4
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
 set Element degree = 2
@@ -34,11 +34,11 @@ set Element degree = 2
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 2.0e-5
+set Time step = 0.2e-4
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 10000 #20000000
+set Number of time steps = 20000000
 
 # =================================================================================
 # Set the elliptic solver parameters
@@ -112,8 +112,8 @@ set Model constant epsilon = 90.0, DOUBLE
 # =================================================================================
 # Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
 # or "LIST")
-set Output condition = EQUAL_SPACING #LIST
-set List of time steps to output = 0, 25000, 50000, 100000, 250000, 500000, 1000000, 2000000
+set Output condition = LIST
+set List of time steps to output = 0, 250000, 500000, 1000000, 2500000, 5000000, 10000000, 20000000
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
