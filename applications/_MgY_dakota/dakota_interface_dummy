@@ -1,0 +1,3 @@
+#!/bin/bash
+
+python dakota_interface_dummy.py
