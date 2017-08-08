@@ -43,15 +43,15 @@ template <int dim, int degree>
 void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-//c
+// Concentration
 scalarvalueType c = variable_list.get_scalar_value(0);
 scalargradType cx = variable_list.get_scalar_gradient(0);
 
-//n
+// Order parameter
 scalarvalueType n = variable_list.get_scalar_value(1);
 scalargradType nx = variable_list.get_scalar_gradient(1);
 
-// anisotropy code
+// Bulk terms
 scalarvalueType faV = 0.5*c*c/16.0;
 scalarvalueType facV = 0.5*c/8.0;
 scalarvalueType faccV = constV(0.5/8.0);
@@ -61,9 +61,11 @@ scalarvalueType fbccV = constV(0.5/8.0);
 scalarvalueType hV = 3.0*n*n-2.0*n*n*n;
 scalarvalueType hnV = 6.0*n-6.0*n*n;
 
+// Calculation of interface normal vector
 scalarvalueType normgradn = std::sqrt(nx.norm_square());
 scalargradType normal = nx/(normgradn+constV(1.0e-16));
 
+// Calculation of anisotropy gamma
 scalarvalueType gamma;
 if (dim == 2){
     gamma = 1.0+epsilonM*(4.0*(normal[0]*normal[0]*normal[0]*normal[0]+normal[1]*normal[1]*normal[1]*normal[1])-3.0);
@@ -72,42 +74,34 @@ else {
     gamma = 1.0+epsilonM*(4.0*(normal[0]*normal[0]*normal[0]*normal[0]+normal[1]*normal[1]*normal[1]*normal[1]+normal[2]*normal[2]*normal[2]*normal[2])-3.0);
 }
 
-//derivatives of gamma with respect to the components of the unit normal
-scalarvalueType gammanx = (epsilonM*16.0*normal[0]*normal[0]*normal[0]);
-scalarvalueType gammany = (epsilonM*16.0*normal[1]*normal[1]*normal[1]);
-scalarvalueType gammanz;
-if (dim == 3){
-    gammanz = (epsilonM*16.0*normal[2]*normal[2]*normal[2]);
-}
-
-scalarvalueType gamma_scl = gamma;
-scalargradType aniso;
-
+// Derivatives of gamma with respect to the components of the unit normal
 scalargradType dgammadnorm;
-dgammadnorm[0]=gammanx;
-dgammadnorm[1]=gammany;
-if (dim > 2){
-      dgammadnorm[2]=gammanz;
+dgammadnorm[0] = (epsilonM*16.0*normal[0]*normal[0]*normal[0]);
+dgammadnorm[1] = (epsilonM*16.0*normal[1]*normal[1]*normal[1]);
+if (dim == 3){
+    dgammadnorm[2] = (epsilonM*16.0*normal[2]*normal[2]*normal[2]);
 }
+
+// Product of projection matrix and dgammadnorm vector
+scalargradType aniso;
 for (unsigned int i=0; i<dim; ++i){
   for (unsigned int j=0; j<dim; ++j){
       aniso[i] += -normal[i]*normal[j]*dgammadnorm[j];
       if (i==j) aniso[i] +=dgammadnorm[j];
   }
 }
-aniso = gamma_scl*(aniso*normgradn+gamma_scl*nx);
+// Anisotropic gradient term (see derivation)
+aniso = gamma*(aniso*normgradn+gamma*nx);
 
-
+// Residual expressions
 scalarvalueType rcV = c;
 scalargradType rcxV = constV(-McV*userInputs.dtValue)*(cx*((1.0-hV)*faccV+hV*fbccV)+nx*hnV*(fbcV-facV));
 scalarvalueType rnV = n-constV(userInputs.dtValue*MnV)*(fbV-faV)*hnV;
 scalargradType rnxV = constV(userInputs.dtValue*MnV)*(-aniso);
 
-// end anisotropy code
-
+// Submission of residuals
 variable_list.set_scalar_value_residual_term(0,rcV);
 variable_list.set_scalar_gradient_residual_term(0,rcxV);
-
 variable_list.set_scalar_value_residual_term(1,rnV);
 variable_list.set_scalar_gradient_residual_term(1,rnxV);
 
