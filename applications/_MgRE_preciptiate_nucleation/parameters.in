@@ -11,9 +11,9 @@ set Number of dimensions = 2
 # Set the length of the domain in all three dimensions
 # =================================================================================
 # Each axes spans from zero to the specified length
-set Domain size X = 180
-set Domain size Y = 180
-set Domain size Z = 180
+set Domain size X = 112.5
+set Domain size Y = 112.5
+set Domain size Z = 112.5
 
 # =================================================================================
 # Set the element parameters
@@ -36,7 +36,7 @@ set Element degree = 2
 set Mesh adaptivity = true
 
 # Set the maximum and minimum level of refinement
-set Max refinement level = 8
+set Max refinement level = 7
 set Min refinement level = 2
 
 # Set the fields used to determine the refinement using their index.
@@ -44,10 +44,10 @@ set Refinement criteria fields  = 1,2,3
 
 # Set the maximum and minimum value of the fields where the mesh should be refined
 set Refinement window max = 0.999,0.999,0.999
-set Refinement window min = 0.001,0.001,0.001
+set Refinement window min = 0.0001,0.0001,0.0001
 
 # Set the number of time steps between remeshing operations
-set Steps between remeshing operations = 1000000 #2500
+set Steps between remeshing operations = 2500
 
 # =================================================================================
 # Set the time step parameters
@@ -57,7 +57,7 @@ set Time step = 8.0e-4
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 25000
+set Number of time steps = 100000
 
 # =================================================================================
 # Set the elliptic solver parameters
@@ -92,11 +92,11 @@ set Skip print steps = 1000
 # =================================================================================
 # Set the nucleation parameters
 # =================================================================================
-set Nucleus semiaxes (x, y ,z) = 1.5, 1.5, 7.5
-set Freeze zone semiaxes (x, y ,z) = 4.5, 4.5, 22.5
-set Freeze time following nucleation = 2.5
+set Nucleus semiaxes (x, y ,z) = 2.0, 2.0, 20.0
+set Freeze zone semiaxes (x, y ,z) = 12.0, 12.0, 30.0
+set Freeze time following nucleation = 10.0
 set Nucleation-free border thickness = 3.0
-set Minimum allowed distance between nuclei = 6.0
+set Minimum allowed distance between nuclei = 30.0
 set Order parameter cutoff value = 0.01
 set Time steps between nucleation attempts = 1000
 
@@ -121,17 +121,17 @@ set Boundary condition for variable u, z component = PERIODIC
 set Model constant McV = 1.0, double
 
 # Mn1V, Mn2V, and Mn3V, the Allen-Cahn mobilities
-set Model constant Mn1V = 100.0, double
-set Model constant Mn2V = 100.0, double
-set Model constant Mn3V = 100.0, double
+set Model constant Mn1V = 37.5, double
+set Model constant Mn2V = 37.5, double
+set Model constant Mn3V = 37.5, double
 
 # Kn1, Kn2, and Kn3, the gradient energy coefficients
-set Model constant Kn1 = ((0.0212,0,0),(0,4.4898e-4,0),(0,0,0.01793)), tensor
-set Model constant Kn2 = ((0.005637,-0.008987,0),(-0.008987,0.01601,0),(0,0,0.01793)), tensor
-set Model constant Kn3 = ((0.005637,0.008987,0),(0.008987,0.01601,0),(0,0,0.01793)), tensor
+set Model constant Kn1 = ((0.0424,0,0),(0,8.9796e-4,0),(0,0,0.03587)), tensor # l* = 1 nm
+set Model constant Kn2 = ((0.0113,-0.0180,0),(-0.0180,0.03202,0),(0,0,0.03587)), tensor
+set Model constant Kn3 = ((0.0113,0.0180,0),(0.0180,0.03202,0),(0,0,0.03587)), tensor
 
 # W, the energy barrier coefficient
-set Model constant W = 0.1932, double
+set Model constant W = 0.0966, double # l* = 1 nm
 
 # n_dependent_stiffness
 set Model constant n_dependent_stiffness = false, bool
@@ -139,22 +139,42 @@ set Model constant n_dependent_stiffness = false, bool
 # sfts_linear1
 set Model constant sfts_linear1 = ((0,0,0),(0,0,0),(0,0,0)), tensor
 # sfts_const1
-set Model constant sfts_const1 = ((0.03070,0,0),(0,0.02084,0),(0,0,-8.3700e-4)), tensor
+#set Model constant sfts_const1 = ((0.03070,0,0),(0,0.02084,0),(0,0,-8.3700e-4)), tensor # nominal
+set Model constant sfts_const1 = ((0.03070,0,0),(0,0.02834,0),(0,0,-8.3700e-4)), tensor # sfts22 shifted
 
 # sfts_linear2
 set Model constant sfts_linear2 = ((0,0,0),(0,0,0),(0,0,0)), tensor
 # sfts_const2
-set Model constant sfts_const2 = ((0.02330,-0.004271,0),(-0.004271,0.0282,0),(0,0,-0.0008370)), tensor
+#set Model constant sfts_const2 = ((0.02330,-0.004271,0),(-0.004271,0.0282,0),(0,0,-0.0008370)), tensor # nominal
+set Model constant sfts_const2 = ((0.02893,-0.001024,0),(-0.001024,0.03011,0),(0,0,-0.0008370)), tensor # sfts22 shifted
 
 # sfts_linear3
 set Model constant sfts_linear3 = ((0,0,0),(0,0,0),(0,0,0)), tensor
 # sfts_const3
-set Model constant sfts_const3 = ((0.02330,0.004271,0),(0.004271,0.0282,0),(0,0,-0.0008370)), tensor
+#set Model constant sfts_const3 = ((0.02330,0.004271,0),(0.004271,0.0282,0),(0,0,-0.0008370)), tensor # nominal
+set Model constant sfts_const3 = ((0.02893,0.001024,0),(0.001024,0.03011,0),(0,0,-0.0008370)), tensor # sfts22 shifted
+
 
 # A2, A1, and A0 Mg-Y matrix free energy parameters
-set Model constant A2 = 7.5096, double
-set Model constant A1 = -0.0078096, double
-set Model constant A0 = 2.0305e-6, double
+#set Model constant A2 = 7.5096, double
+#set Model constant A1 = -0.0078096, double
+#set Model constant A0 = 2.0305e-6, double
+
+# Fit at 0.05
+set Model constant A2 = 5.7218, double
+set Model constant A1 = -0.0059507, double
+set Model constant A0 = 1.5472e-06, double
+
+# Fit at 0.03
+#set Model constant A2 = 8.2924, double
+#set Model constant A1 = -0.0086241, double
+#set Model constant A0 = 2.2423e-06, double
+
+# Fit at 0.04
+#set Model constant A2 = 6.74, double
+#set Model constant A1 = -0.0070096, double
+#set Model constant A0 = 1.8225e-06, double
+
 
 # B2, B1, and B0 Mg-Y matrix free energy parameters
 set Model constant B2 = 2.8557, double
@@ -170,6 +190,6 @@ set Model constant CIJ_Beta3 = (31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,
 # Nucleation parameters
 set Model constant interface_coeff = 0.5, double
 set Model constant epsil = 1.0e-7, double
-set Model constant k1 = 8.39e-5, double
+set Model constant k1 = 0.2e-5, double
 set Model constant k2 = 4.01e-4, double
 set Model constant tau = 0.0, double

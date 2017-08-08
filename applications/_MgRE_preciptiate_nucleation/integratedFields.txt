@@ -1,5 +1,9 @@
-0	f_tot	92.3295834	f_el	0	von_mises_stress	0
-1	f_tot	92.96689836	f_el	0.1532448959	von_mises_stress	102.299613
-2	f_tot	92.51035057	f_el	0.1532448959	von_mises_stress	102.299613
-3	f_tot	92.46577498	f_el	0.2044880407	von_mises_stress	131.1769821
-4	f_tot	93.0632496	f_el	0.5263875532	von_mises_stress	127.6923942
+0	f_tot	32.37001102	f_el	0	von_mises_stress	0
+36	f_tot	32.52452329	f_el	0.1226849162	von_mises_stress	65.44092087
+40	f_tot	32.33721572	f_el	0.1226858503	von_mises_stress	65.40927293
+44	f_tot	32.2778671	f_el	0.12269123	von_mises_stress	65.41359782
+48	f_tot	32.21151124	f_el	0.1153375718	von_mises_stress	66.03749667
+52	f_tot	32.18032192	f_el	0.133597324	von_mises_stress	72.39280594
+56	f_tot	32.15045735	f_el	0.1522338904	von_mises_stress	78.9925336
+60	f_tot	32.10516353	f_el	0.1733172874	von_mises_stress	92.20034836
+64	f_tot	32.02718215	f_el	0.2050979482	von_mises_stress	115.0336684
