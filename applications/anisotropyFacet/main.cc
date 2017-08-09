@@ -1,5 +1,3 @@
-// Allen-Cahn example application
-
 // Header files
 #include "../../include/initialConditions.h"
 #include "../../include/initialCondition_template_instantiations.h"
@@ -9,8 +7,8 @@
 #include "../../src/models/mechanics/computeStress.h"
 #include "../../include/inputFileReader.h"
 #include "customPDE.h"
-#include "anisotropy_facet.h"
 #include "equations.h"
+#include "anisotropy_facet.h"
 #include "ICs_and_BCs.h"
 #include "../../src/variableAttributeLoader/variableAttributeLoader.cc"
 

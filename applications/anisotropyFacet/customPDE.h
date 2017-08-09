@@ -36,7 +36,7 @@ private:
 	// Methods specific to this subclass
 	// ================================================================
 
-	scalarvalueType anisotropy(scalargradType nx) const;
+	dealii::Tensor<1, dim, dealii::VectorizedArray<double> > anisotropy(dealii::Tensor<1, dim, dealii::VectorizedArray<double> > nx) const;
 
 	// ================================================================
 	// Model constants specific to this subclass

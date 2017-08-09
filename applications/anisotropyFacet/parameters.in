@@ -58,7 +58,7 @@ set Time step = 1.6
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 1000000
+set Number of time steps = 2000000
 
 # =================================================================================
 # Set the boundary conditions

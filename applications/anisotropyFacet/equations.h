@@ -76,39 +76,8 @@ scalarvalueType fbccV = constV(0.5/8.0);
 scalarvalueType hV = 3.0*n*n-2.0*n*n*n;
 scalarvalueType hnV = 6.0*n-6.0*n*n;
 
-// Calculation of interface normal vector
-scalarvalueType normgradn = std::sqrt(nx.norm_square());
-scalargradType normal = nx/(normgradn+constV(1.0e-16));
-
-
-// facet anisotropy model code
-// macro defines dot product m*n for each orientation
-scalarvalueType hs[n_orients] = heaviside_macro;
-// evaluation of Heaviside function hs
-for (unsigned int i=0; i<n_orients; ++i){
-    for (unsigned int j=0; j<hs[i].n_array_elements; ++j){
-        if (hs[i][j] < 0.0) hs[i][j] = 0.0;
-    }
-}
-
-// Calculation of anisotropy gamma
-scalarvalueType gamma = gamma_mac;
-
-// Derivatives of gamma with respect to the components of the unit normal
-scalargradType dgammadnorm;
-dgammadnorm[0] = gammanx;
-dgammadnorm[1] = gammany;
-
 // Product of projection matrix and dgammadnorm vector
-scalargradType aniso;
-for (unsigned int i=0; i<dim; ++i){
-  for (unsigned int j=0; j<dim; ++j){
-      aniso[i] += -normal[i]*normal[j]*dgammadnorm[j];
-      if (i==j) aniso[i] +=dgammadnorm[j];
-  }
-}
-// Anisotropic gradient term (see derivation)
-aniso = gamma*(aniso*normgradn+gamma*nx);
+scalargradType aniso = anisotropy(nx);
 
 // Residual expressions
 scalarvalueType rcV = c;
