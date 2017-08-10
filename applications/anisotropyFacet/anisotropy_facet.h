@@ -1,31 +1,43 @@
+// Number of orientation vectors used to generate anisotropy
 #define n_orients 3
-#define gamma_mac (1.0-(0.6*std::pow((-0.866025403784*normal[0]+-0.5*normal[1]),50.)*hs[0]+0.6*std::pow((0.866025403784*normal[0]+-0.5*normal[1]),50.)*hs[1]+0.6*std::pow((0.0*normal[0]+1.0*normal[1]),50.)*hs[2]))
-#define gammanx (-(0.6*50.*-0.866025403784*std::pow((-0.866025403784*normal[0]+-0.5*normal[1]),49.)*hs[0]+0.6*50.*0.866025403784*std::pow((0.866025403784*normal[0]+-0.5*normal[1]),49.)*hs[1]+0.6*50.*0.0*std::pow((0.0*normal[0]+1.0*normal[1]),49.)*hs[2]))
-#define gammany (-(0.6*50.*-0.5*std::pow((-0.866025403784*normal[0]+-0.5*normal[1]),49.)*hs[0]+0.6*50.*-0.5*std::pow((0.866025403784*normal[0]+-0.5*normal[1]),49.)*hs[1]+0.6*50.*1.0*std::pow((0.0*normal[0]+1.0*normal[1]),49.)*hs[2]))
-#define heaviside_macro {(-0.866025403784*normal[0]+-0.5*normal[1]),(0.866025403784*normal[0]+-0.5*normal[1]),(0.0*normal[0]+1.0*normal[1])}
-
-//#include "../../include/typeDefs.h"
-//typedef dealii::VectorizedArray<double> scalarvalueType;
-//typedef dealii::Tensor<1, dim, dealii::VectorizedArray<double> > scalargradType;
 
 template <int dim,int degree>
 dealii::Tensor<1, dim, dealii::VectorizedArray<double> > customPDE<dim,degree>::anisotropy(dealii::Tensor<1, dim, dealii::VectorizedArray<double> > nx) const {
 
+// Orientations
+// Defining orientations in a static array greatly improves performance, but requires
+// specification of n_orients by a macro (as is done here) or by hand
+double orient[n_orients][dim] = {{-0.866025403784,-0.5},{0.866025403784,-0.5},{0.0,1.0}};
+// Orientation parameters
+double w[n_orients] = {50.0,50.0,50.0};
+double alpha[n_orients] = {0.6,0.6,0.6};
+// Calculation of normal vector
 scalarvalueType normgradn = std::sqrt(nx.norm_square());
 scalargradType  normal = nx/(normgradn+constV(1.0e-16));
-scalarvalueType hs[n_orients] = heaviside_macro;
+
+scalarvalueType gamma = constV(1.0);
+scalargradType dgammadnormal; // this is automatically initialized to (0.0,0.0,0.0)
 
 for (unsigned int i=0; i<n_orients; ++i){
-    for (unsigned int j=0; j<hs[i].n_array_elements; ++j){
-        if (hs[i][j] < 0.0) hs[i][j] = 0.0;
+// mn is the dot product of the normal and the orientation vector
+    scalarvalueType mn = constV(0.0);
+    for (unsigned int j=0; j<dim; ++j){
+        mn += orient[i][j]*normal[j];
+    }
+// Application of the heaviside function
+// Vectorized array mn must be unrolled to evaluate conditional
+    for (unsigned int j=0; j<mn.n_array_elements; ++j){
+        if (mn[j] < 0.0) mn[j] = 0.0;
+    }
+// Subtracting terms corresponding to the ith orientation from gamma and the
+// components of dgamma/dn
+    gamma -= alpha[i]*std::pow(mn,w[i]);
+    for (unsigned int j=0; j<dim; ++j){
+        dgammadnormal[j] -= alpha[i]*w[i]*orient[i][j]*std::pow(mn,w[i]-1.0);
     }
 }
 
-scalarvalueType gamma = gamma_mac;
-scalargradType dgammadnormal;
-dgammadnormal[0] = gammanx;
-dgammadnormal[1] = gammany;
-
+// Calculation of anisotropic gradient, exactly as in CHAC_anisotropy
 scalargradType aniso;
 for (unsigned int i=0; i<dim; ++i){
   for (unsigned int j=0; j<dim; ++j){

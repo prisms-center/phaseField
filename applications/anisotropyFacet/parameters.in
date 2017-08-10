@@ -11,9 +11,9 @@ set Number of dimensions = 2
 # (Domain size Z ignored in 2D)
 # =================================================================================
 # Each axes spans from zero to the specified length
-set Domain size X = 100
-set Domain size Y = 100
-set Domain size Z = 100
+set Domain size X = 50
+set Domain size Y = 50
+set Domain size Z = 50
 
 # =================================================================================
 # Set the element parameters
@@ -25,7 +25,7 @@ set Subdivisions X = 1
 set Subdivisions Y = 1
 set Subdivisions Z = 1
 
-set Refine factor = 7
+set Refine factor = 6
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
 set Element degree = 1
@@ -37,7 +37,7 @@ set Element degree = 1
 set Mesh adaptivity = true
 
 # Set the maximum and minimum level of refinement
-set Max refinement level = 7
+set Max refinement level = 6
 set Min refinement level = 4
 
 # Set the fields used to determine the refinement using their index.
@@ -58,7 +58,7 @@ set Time step = 1.6
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 2000000
+set Number of time steps = 200000
 
 # =================================================================================
 # Set the boundary conditions
@@ -114,7 +114,7 @@ set Output condition = EQUAL_SPACING
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of outputs = 400
+set Number of outputs = 20
 
 # The number of time steps between updates being printed to the screen
 set Skip print steps = 1000

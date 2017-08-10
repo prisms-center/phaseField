@@ -7,8 +7,8 @@
 #include "../../src/models/mechanics/computeStress.h"
 #include "../../include/inputFileReader.h"
 #include "customPDE.h"
-#include "equations.h"
 #include "anisotropy_facet.h"
+#include "equations.h"
 #include "ICs_and_BCs.h"
 #include "../../src/variableAttributeLoader/variableAttributeLoader.cc"
 
