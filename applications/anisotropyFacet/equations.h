@@ -76,8 +76,24 @@ scalarvalueType fbccV = constV(0.5/8.0);
 scalarvalueType hV = 3.0*n*n-2.0*n*n*n;
 scalarvalueType hnV = 6.0*n-6.0*n*n;
 
+scalarvalueType normgradn = std::sqrt(nx.norm_square());
+scalargradType  normal = nx/(normgradn+constV(1.0e-16));
+
+scalarvalueType gamma;
+scalargradType dgammadnormal;
+// Anisotropy function calculates gamma and dgamma/dn
+anisotropy(normal, gamma, dgammadnormal);
+
 // Product of projection matrix and dgammadnorm vector
-scalargradType aniso = anisotropy(nx);
+scalargradType aniso;
+for (unsigned int i=0; i<dim; ++i){
+    for (unsigned int j=0; j<dim; ++j){
+        aniso[i] += -normal[i]*normal[j]*dgammadnormal[j];
+        if (i==j) aniso[i] +=dgammadnormal[j];
+    }
+}
+// Anisotropic gradient term
+aniso = gamma*(aniso*normgradn+gamma*nx);
 
 // Residual expressions
 scalarvalueType rcV = c;

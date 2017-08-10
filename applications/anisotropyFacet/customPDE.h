@@ -36,7 +36,9 @@ private:
 	// Methods specific to this subclass
 	// ================================================================
 
-	dealii::Tensor<1, dim, dealii::VectorizedArray<double> > anisotropy(dealii::Tensor<1, dim, dealii::VectorizedArray<double> > nx) const;
+	void anisotropy(const dealii::Tensor<1, dim, dealii::VectorizedArray<double> > & normal,
+			 dealii::VectorizedArray<double> & gamma,
+			 dealii::Tensor<1, dim, dealii::VectorizedArray<double> > & dgammadnormal) const;
 
 	// ================================================================
 	// Model constants specific to this subclass
