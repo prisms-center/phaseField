@@ -37,7 +37,22 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     min_refinement_level = parameter_handler.get_integer("Min refinement level");
 
     // Use built-in deal.II utilities to split up a string and convert it to a vector of doubles or ints
-    refine_criterion_fields = dealii::Utilities::string_to_int(dealii::Utilities::split_string_list(parameter_handler.get("Refinement criteria fields")));
+    std::vector<std::string> refine_criterion_fields_str = dealii::Utilities::split_string_list(parameter_handler.get("Refinement criteria fields"));
+    for (unsigned int ref_field=0; ref_field<refine_criterion_fields_str.size(); ref_field++){
+        bool field_found = false;
+        for (unsigned int i=0; i<_number_of_variables; i++ ){
+            if (boost::iequals(refine_criterion_fields_str[ref_field], variable_attributes.var_name_list[i].second)){
+                refine_criterion_fields.push_back(variable_attributes.var_name_list[i].first);
+                field_found = true;
+                break;
+            }
+        }
+        if (field_found == false){
+            std::cerr << "PRISMS-PF Error: Entries in the list of fields used for refinement must match the variable names in equations.h." << std::endl;
+            std::cerr << refine_criterion_fields_str[ref_field] << std::endl;
+            abort();
+        }
+    }
     refine_window_max = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Refinement window max")));
     refine_window_min = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Refinement window min")));
 

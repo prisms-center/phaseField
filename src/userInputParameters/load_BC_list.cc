@@ -23,8 +23,8 @@ void userInputParameters<dim>::load_BC_list(std::vector<std::string> list_of_BCs
 
         // Load the BC for each boundary into 'newBC'
         for (unsigned int i=0; i<(2*dim); i++){
-            if (boost::iequals(temp[i],"ZERO_DERIVATIVE")){
-                newBC.var_BC_type.push_back(ZERO_DERIVATIVE);
+            if (boost::iequals(temp[i],"NATURAL")){
+                newBC.var_BC_type.push_back(NATURAL);
                 newBC.var_BC_val.push_back(0.0);
             }
             else if (boost::iequals(temp[i],"PERIODIC")){

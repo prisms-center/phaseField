@@ -41,7 +41,7 @@ set Max refinement level = 10
 set Min refinement level = 2
 
 # Set the fields used to determine the refinement using their index.
-set Refinement criteria fields = 1
+set Refinement criteria fields = n
 
 # Set the maximum and minimum value of the fields where the mesh should be refined
 set Refinement window max = 0.99
@@ -65,7 +65,7 @@ set Number of time steps = 50000
 # =================================================================================
 # Set the boundary condition for each variable, where each variable is given by
 # its name, as defined in equations.h. The four boundary condition
-# types are ZERO_DERIVATIVE, DIRICHLET, NON_UNIFORM_DIRICHLET and PERIODIC. If all
+# types are NATURAL, DIRICHLET, NON_UNIFORM_DIRICHLET and PERIODIC. If all
 # of the boundaries have the same boundary condition, only one boundary condition
 # type needs to be given. If multiple boundary condition types are needed, give a
 # comma-separated list of the types. The order is the miniumum of x, maximum of x,
@@ -78,7 +78,7 @@ set Number of time steps = 50000
 # set Boundary condition for variable c = PERIODIC
 # Example 2: Zero-derivative BCs on the left and right, Dirichlet BCs with value
 # 1.5 on the top and bottom for variable 'n' in 2D
-# set Boundary condition for variable n = ZERO_DERIVATIVE, ZERO_DERIVATIVE, DIRICHLET: 1.5, DIRICHLET: 1.5
+# set Boundary condition for variable n = NATURAL, NATURAL, DIRICHLET: 1.5, DIRICHLET: 1.5
 
 set Boundary condition for variable c = PERIODIC
 set Boundary condition for variable n = PERIODIC

@@ -49,6 +49,8 @@
 \renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
 \renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
 
+ \usepackage{multirow}
+
 %%% END Article customizations
 
 \usepackage{listings}
@@ -60,7 +62,7 @@
 
 %%% The "real" document content comes below...
 
-\title{PRISMS-PF User Guide (v1.2)}
+\title{PRISMS-PF User Guide (v2.0)}
 \author{Stephen DeWitt (prismsphasefield.dev@umich.edu)}
 %\date{} % Activate to display a given date or no date (if empty),
          % otherwise the current date is printed 
@@ -73,7 +75,7 @@
 \clearpage
 
 \section{Overview}
-PRISMS-PF is an open-source finite element simulation code with a focus on solving equations from phase field models. It is being developed as part of the PRISMS Center at the University of Michigan. PRISMS-PF is built on top of the popular and powerful deal.II finite element library. PRISMS-PF was developed to make high performance phase field simulation capabilities available to the wider scientific community with an easy-to-use and easy-to-learn interface. Benchmark tests show that PRISMS-PF is competitive with specialized finite difference codes written in Fortran with MPI parallelization in terms performance,  and in some cases runs several times faster. PRISMS-PF can be used to solve a wide variety of systems of coupled parabolic partial differential equations (e.g. the diffusion equation) and elliptic partial differential equations (e.g. Poisson's equation). With PRISMS-PF, you have access to adaptive meshing and parallelization that has been demonstrated on over a thousand processors. Moreover, the matrix-free framework from deal.II allows much larger than typical finite element programs -- PRISMS-PF has been used for calculations with over one \emph{billion} degrees of freedom.
+PRISMS-PF is an open-source finite element simulation code with a focus on solving equations from phase field models. It is being developed as part of the PRISMS Center at the University of Michigan. PRISMS-PF is built on top of the popular and powerful deal.II finite element library. PRISMS-PF was developed to make high performance phase field simulation capabilities available to the wider scientific community with an easy-to-use and easy-to-learn interface. Benchmark tests show that even without its adaptive meshing capabilities PRISMS-PF is competitive with specialized finite difference codes written in Fortran with MPI parallelization in terms performance,  and in some cases runs several times faster. PRISMS-PF can be used to solve a wide variety of systems of coupled parabolic partial differential equations (e.g. the diffusion equation) and elliptic partial differential equations (e.g. Poisson's equation). With PRISMS-PF, you have access to adaptive meshing and parallelization that has been demonstrated on over a thousand processors. Moreover, the matrix-free framework from deal.II allows much larger than typical finite element programs -- PRISMS-PF has been used for calculations with over one \emph{billion} degrees of freedom.
 
 This user guide starts with instructions for downloading PRISMS-PF and install the necessary prerequisites. Next are instructions for running the built-in example applications and visualizing the results. A detailed look at the input files follows, and the guide finishes with some instructions on how to create your own PRISMS-PF applications.
 
@@ -92,7 +94,7 @@ filling in the path to the installation of CMake (for example, on Mac OS, the de
 $ vi ~/.profile
 \end{lstlisting}
 
-Deal.II can be downloaded at https://www.dealii.org/download.html, which also has instructions. The deal.II installation process depends on your operating system. PRISMS-PF has been tested with Deal.II versions 8.3.0 through 8.4.2 (and the version 8.5 pre-release as of 1/16/2017). We recommend using deal.II 8.4.2, if possible.
+Deal.II can be downloaded at https://www.dealii.org/download.html, which also has instructions. The deal.II installation process depends on your operating system. PRISMS-PF has been tested with Deal.II versions 8.3.0 through 8.5.0. We recommend using deal.II 8.4.2, if possible. If you use deal.II 8.5.0, expect to recieve a number of warnings during compilation (discussed in Sec. \ref{running_examples}) about functions used in PRISMS-PF that are deprecated in deal.II 8.5.0.
 
 \subsection{Installing deal.II for Mac OS X}
 A binary package for version 8.4.2 (and other versions) is available at https://github.com/dealii/dealii/releases. The binary package includes all the libraries that you need (excluding CMake). To install deal.II open the .dmg file and drag ``deal.II.app'' into your Applications folder. Then, open ``deal.II.app'', which will open a Terminal window and set the necessary environment variables. You may need to modify your security settings so that your operating system will let you open the application (in System Preferences, select Security $\&$ Privacy, then under the general tab choose to allow apps downloaded from anywhere; don't click ``Open deal.II.app anyway'', we have found that doing so doesn't actually launch deal.II.app). 
@@ -139,7 +141,7 @@ Git will then download the PRISMS-PF source code into a directory entitled ``pha
 
 If you prefer not to use Git, a zip file containing the PRISMS-PF source code can be downloaded at: \\https://github.com/prisms-center/phaseField/releases.
 
-\section{Running the Example Applications}
+\section{Running the Example Applications} \label{running_examples}
 \subsection{The Example Applications}
 After deal.II and PRISMS-PF are downloaded, you can run the pre-built PRISMS-PF example applications. At this time, the example applications include:
 \begin{itemize}
@@ -154,14 +156,30 @@ After deal.II and PRISMS-PF are downloaded, you can run the pre-built PRISMS-PF 
 \item mechanics: An implementation of linear elasticity for a material in uniaxial tension. (3D)
 \item CHiMaD\_benchmark1a: An implementation of the CHiMaD spinodal decomposition benchmark problem. (2D)
 \item CHiMaD\_benchmark2a: An implementation of the CHiMaD Ostwald ripening benchmark problem. (2D)
+\item CHiMaD\_benchmark6a: An implementation of the CHiMaD electrochemistry benchmark problem. (2D)
+\item CHiMaD\_benchmark6b: An implementation of the CHiMaD electrochemistry benchmark problem with a curved domain. (2D)
+\item dendriticSolidification: An implementation of a solidification model for a pure material resulting in the growth of a dendrite. (2D)
 \item eshelbyInclusion: An implementation of linear elasticity for a spherical inclusion. (3D)
 \item grainGrowth: An implementation of ten coupled Allen-Cahn equations simulating grain growth in two dimensions. (2D)
 \item precipiateEvolution: An implementation of the coupled Cahn-Hilliard/Allen-Cahn/Linear Elasticity equations often used in phase field simulation of precipitate evolution. (2D)
 \item precipiateEvolution\_pfunction: Like precipitateEvolution, but loads inputs using PRISMS IntegrationTools. (2D)
 \item singlePrecipitateKKS: Similar to precipiateEvolution, but uses the KKS model rather than the WBM model for the free energy functional. (3D)
+\item nucleationModel: KKS precipitation model that makes use of the PRISMS-PF explicit nucleation capabilities. (2D)
+\item preferential\_nucleationModel: Like nucleationModel, but with a zone with an increased nucleation rate to simulate a grain boundary. (2D)
 \end{itemize}
 
-A directory for each of these applications can be found in the applications directory (i.e. phaseField/applications). Most of the applications contain a formulation file giving the governing equations. In addition to the six applications listed above, some application names may be preceded by an underscore. The underscore is used to denote applications that are still under active development.
+A directory for each of these applications can be found in the applications directory (i.e. phaseField/applications). The applications contain a formulation file giving the governing equations. In addition to the 21 applications listed above, some application names may be preceded by an underscore. The underscore is used to denote applications that are still under active development.
+
+\subsection{Compiling the Core PRISMS-PF Library}
+After downloading PRISMS-PF, we recommend that you compile the core library (see note at the end of this section). To do so, enter the root PRISMS-PF directory from the directory where you downloaded it to, run CMake, and then compile the library:
+\begin{lstlisting}
+$ cd phaseField 
+$ cmake .
+$ make -j 8 
+\end{lstlisting}
+In the last command, the number following ``-j'' is the number of threads used during compilation. The general rule of thumb is to pick a number 1.5$\times$ the number of processors available. This process should take a minute or two and will compile both the ``debug'' and ``release'' versions of the core PRISMS-PF library (see \ref{release_multicore}).
+
+Note: This step can be skipped and the core library will be compiled the first time that you compile one of the applications. However, the compilation will be on a single thread and thus will take much longer than if you follow the instructions above and use multiple threads.
 
 \subsection{Running the Allen-Cahn Example Application} \label{allen_cahn_instructions}
 From the ``phaseField'' directory one can run the Allen-Cahn example application through to following terminal commands:
@@ -172,17 +190,17 @@ $ make debug
 $ mpirun -n 1 main 
 \end{lstlisting}
 
-The first command moves from the ``phaseField'' directory to the directory of the Allen-Cahn example. The second command creates a \emph{makefile} using CMake. The third command compiles the executable in ``debug'' mode, which enables a number of exception checks in the code and adds debugging information that can be used by a debugger (e.g. gdb). The fourth command runs the program using a single processor.
+The first command moves from the ``phaseField'' directory to the directory of the Allen-Cahn example. The second command checks that core PRISMS-PF library has been compiled, (re-)compiles it if necessary, and creates a \emph{makefile} using CMake. The third command compiles the executable in ``debug'' mode, which enables a number of exception checks in the code and adds debugging information that can be used by a debugger (e.g. gdb). The fourth command runs the program using a single processor.
 
 As the program runs, information from each time step outputs to the terminal window. After the simulation is complete, a summary the time taken in a few major sections of the code and the total wall time is printed to the terminal window. 
 
 Here is a screenshot of typical output from CMake as you create the \emph{makefile}:
 \begin{figure}[H]
-\vspace{0pt}
+\vspace{-70pt}
 %\centering
 \hspace{-2cm}
-\includegraphics[width=1.3\textwidth,trim={0 0 3cm 0},clip]{cmake_output}
-\vspace{0pt}
+\includegraphics[height=1.3\textwidth,trim={0 0 0cm 0cm},clip,angle=-90]{cmake_output_v2}
+\vspace{-70pt}
 \end{figure}
 Don't worry if the output isn't exactly the same as what you see, the details of some of the messages depend on your operating system and which compilers you have installed. The important part is that the bottom three messages are ``Configuring done'', ``Generating done'', and ``Build files have been written to: ...''. In the future, entering ``\$ cmake .'' will result in a shorter set of messages because CMake caches some variables from the last time it was run. As a result, you can omit the CMake step for future simulations as long as the path name to your current directory is unchanged and your installation of deal.II is unchanged.
 
@@ -194,7 +212,7 @@ Here is a screenshot of typical output from the compiler as you compile the exec
 \includegraphics[width=1.3\textwidth]{compile_output}
 \vspace{0pt}
 \end{figure}
-Depending on your version of deal.II, different warnings may appear as you compile. Common warnings include the use of functions that deal.II has marked as depricated (as in the screenshot above) and unused type definitions. In this case, PRISMS-PF uses these functions for backward compatability with deal.II version 8.2.1. We will switch to the updated functions in the near future.
+Depending on your version of deal.II, different warnings may appear as you compile. Common warnings include the use of functions that deal.II has marked as depricated (as in the screenshot above) and unused type definitions. In this case, PRISMS-PF uses these functions for backward compatability with deal.II version 8.4.x. We will switch to the updated functions in the near future.
 
 Once the simultation is complete, the terminal output at the end of the simulation should look like:
 \begin{figure}[H]
@@ -306,7 +324,7 @@ $ make debug
 $ mpirun -n 1 main 
 \end{lstlisting}
 
-\subsection{Running in Release Mode and with Multple Processors}
+\subsection{Running in Release Mode and with Multple Processors} \label{release_multicore}
 Once you are sure that your code works as expected, you can compile it in ``Release Mode'', which is approximately 10x faster than ``Debug Mode''. However, no exceptions are checked in Release Mode and therefore the code may compile and run even if it contains several errors. Therefore, we strongly recommend that all new code is tested in Debug Mode before switching to Release Mode. To compile in Release mode, replace ``\$ make debug'' with ``\$ make release''.
 
 One of the strengths of PRISMS-PF is that it can be run in parallel with almost no extra effort from the user. To run a simulation in parallel, replace the ``1'' in the ``mpirun'' command with the desired number of processor cores. The deal.II packages on their website already contain the MPI library, so no extra software has to be downloaded to use multiple cores.
@@ -318,11 +336,11 @@ $ make release
 $ mpirun -n 4 main 
 \end{lstlisting}
 
-\section{Structure of the Input Files}
-\subsection{Files in the Example Application Directories}
+\section{Structure of a PRISMS-PF Application}
+\subsection{Files in the Application Directories}
 Each of the example application directories should contain at least eight files:
 \begin{itemize}
-\item parameters.h
+\item parameters.in
 \item equations.h
 \item ICs\_and\_BCs.h
 \item postprocess.h
@@ -332,9 +350,226 @@ Each of the example application directories should contain at least eight files:
 \item CMakeLists.txt
 \end{itemize}
 
-The following sections will describe the structure and contents of each of the first three of these files using the coupled Allen-Cahn/Cahn-Hilliard and Precipitate Evolution applications as examples. These three files (parameters.h, equations.h, and ICs\_and\_BCs.h) are the core input files for a beginning user. The next three files are more advanced input files, and are discussed in Secs. \ref{adv_input_sec} and \ref{postprocessing_sec}. The file formulation.pdf describes the mathematical formulation of the problem solved by the application. Finally, the file CMakeLists.txt is used by CMake to generate the makefile. Most users will not have any reason to change CMakeLists.txt.
+The following section (Sec. \ref{parameters}) will discuss the structure and options for the input file, parameters.h. Users who do not need to change the governing equations or make other fundamental changes to the application will only need to modify this file.
 
-\subsection{parameters.h} \label{parameters}
+Section \ref{app_files} discusses the structure of the files that define an application: equations.h, ICs\_and\_BCs.h, postprocess.h, customPDE.h, and main.cc. Users who want to substantially modify existing PRISMS-PF applications or create their own will find this section useful.
+
+The final two files in each application directory are formulation.pdf and CMakeLists.txt. The file formulation.pdf describes the mathematical formulation of the problem solved by the application. Finally, the file CMakeLists.txt is used by CMake to generate the makefile. Most users will not have any reason to change CMakeLists.txt.
+
+\section{The Input File: parameters.in} \label{parameters}
+Most PRISMS-PF users will spend the majority of their time interacting with the input file, parameters.h. This file allows users to specify the computational domain, the mesh, the time step parameters, the boundary conditions, the output, and model constants (and more). This file is read as a text file, so modifications to it do not require recompilation of the application.
+
+Here is an example of an input file from the allenCahn application:
+\scriptsize
+\begin{lstlisting}
+# Parameter list for the Allen-Cahn example application
+# Refer to the PRISMS-PF manual for use of these parameters in the source code.
+
+# =================================================================================
+# Set the number of dimensions (2 or 3 for a 2D or 3D calculation)
+# =================================================================================
+set Number of dimensions = 2
+
+# =================================================================================
+# Set the length of the domain in all three dimensions
+# (Domain size Z ignored in 2D)
+# =================================================================================
+# Each axes spans from zero to the specified length
+set Domain size X = 100
+set Domain size Y = 100
+set Domain size Z = 100
+
+# =================================================================================
+# Set the element parameters
+# =================================================================================
+# The number of elements in each direction is 2^(refineFactor) * subdivisions
+# Subdivisions Z ignored in 2D
+# For optimal performance, use refineFactor primarily to determine the element size
+set Subdivisions X = 1
+set Subdivisions Y = 1
+set Subdivisions Z = 1
+
+set Refine factor = 8
+
+# Set the polynomial degree of the element (allowed values: 1, 2, or 3)
+set Element degree = 1
+
+# =================================================================================
+# Set the time step parameters
+# =================================================================================
+# The size of the time step
+set Time step = 1.0e-2
+
+# The simulation ends when either the number of time steps is reached or the
+# simulation time is reached.
+set Number of time steps = 5000
+
+# =================================================================================
+# Set the boundary conditions
+# =================================================================================
+# Set the boundary condition for each variable, where each variable is given by
+# its name, as defined in equations.h. The four boundary condition
+# types are NATURAL, DIRICHLET, NON_UNIFORM_DIRICHLET and PERIODIC. If all
+# of the boundaries have the same boundary condition, only one boundary condition
+# type needs to be given. If multiple boundary condition types are needed, give a
+# comma-separated list of the types. The order is the miniumum of x, maximum of x,
+# minimum of y, maximum of y, minimum of z, maximum of z (i.e left, right, bottom,
+# top in 2D and left, right, bottom, top, front, back in 3D). The value of a
+# Dirichlet BC is specfied in the following way -- DIRCHILET: val -- where 'val' is
+# the desired value. If the boundary condition is NON_UNIFORM_DIRICHLET, the
+# boundary condition should be specified in the appropriate function in 'ICs_and_BCs.h'.
+# Example 1: All periodic BCs for variable 'c'
+# set Boundary condition for variable c = PERIODIC
+# Example 2: Zero-derivative BCs on the left and right, Dirichlet BCs with value
+# 1.5 on the top and bottom for variable 'n' in 2D
+# set Boundary condition for variable n = NATURAL, NATURAL, DIRICHLET: 1.5, DIRICHLET: 1.5
+
+set Boundary condition for variable n = NATURAL
+
+# =================================================================================
+# Set the model constants
+# =================================================================================
+# Set the user-defined model constants, which must have a counter-part given in
+# customPDE.h. These are most often used in the residual equations in equations.h,
+# but may also be used for initial conditions and nucleation calculations. The type
+# options currently are DOUBLE, INT, BOOL, TENSOR, and [symmetry] ELASTIC CONSTANTS
+# where [symmetry] is ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC.
+
+# The mobility, MnV in equations.h
+set Model constant MnV = 1.0, DOUBLE
+
+# The gradient energy coefficient, KnV in equations.h
+set Model constant KnV = 2.0, DOUBLE
+
+# =================================================================================
+# Set the output parameters
+# =================================================================================
+# Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
+# or "LIST")
+set Output condition = EQUAL_SPACING
+
+# Number of times the program outputs the fields (total number for "EQUAL_SPACING"
+# and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
+set Number of outputs = 5
+
+# The number of time steps between updates being printed to the screen
+set Skip print steps = 1000
+
+\end{lstlisting}
+\normalsize
+
+The syntax for setting each input parameter is:
+\begin{lstlisting}
+set [parameter name] = [parameter value]
+\end{lstlisting}
+ The pound symbol (\#) is used for comments, and any text after it is ignored by the file parser.
+ 
+ The following table lists all of the input parameters, seperated into the same groupings in the input file above:
+ \footnotesize
+ \renewcommand{\arraystretch}{1.5}
+ \begin{center}
+    \begin{tabular}{ | p{0.2\textwidth} | p{0.17\textwidth} | p{0.08\textwidth} | p{0.1\textwidth} | p{0.3\textwidth} |}
+    \hline
+      \multicolumn{5}{|c|}{\textbf{Dimensionality}} \\
+    \hline
+    \hline
+    \emph{Name} & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
+    Number of dimensions & 2, 3 & yes & n/a & The number of dimensions for the simulation.  \\ \hline
+    \end{tabular}
+\end{center}
+
+\begin{center}
+    \begin{tabular}{ | p{0.2\textwidth} | p{0.17\textwidth} | p{0.08\textwidth} | p{0.1\textwidth} | p{0.3\textwidth} |}
+    \hline
+      \multicolumn{5}{|c|}{\textbf{Compuational Domain}} \\
+    \hline
+    \hline
+    \emph{Name} & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
+    Domain size X & Any positive real number & yes & n/a & The size of the domain in the x direction. \\ \hline
+     Domain size Y & Any positive real number & yes & n/a & The size of the domain in the y direction. \\ \hline
+      Domain size Z & Any positive real number & yes & n/a & The size of the domain in the z direction. \\ \hline
+    \end{tabular}
+\end{center}
+
+\begin{center}
+    \begin{tabular}{ | p{0.2\textwidth} | p{0.17\textwidth} | p{0.08\textwidth} | p{0.1\textwidth} | p{0.3\textwidth} |}
+    \hline
+      \multicolumn{5}{|c|}{\textbf{Element Parameters}} \\
+    \hline
+    \hline
+    \emph{Name} & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
+    Subdivisions X & Any positive integer & no & 1 & The number of mesh subdivisions in the x direction to control the element aspect ratio. The mesh size is 2$^{(Refine Factor)}$ $\times$ Subdivisions in each direction.\\ \hline
+     Subdivisions Y & Any positive integer & no & 1 & The number of mesh subdivisions in the y direction to control the element aspect ratio.The mesh size is 2$^{(Refine Factor)}$ $\times$ Subdivisions in each direction. \\ \hline
+      Subdivisions Z & Any positive integer & no & 1 & The number of mesh subdivisions in the z direction to control the element aspect ratio. The mesh size is 2$^{(Refine Factor)}$ $\times$ Subdivisions in each direction.\\ \hline
+      Refine factor & Any non-negative integer & yes & n/a & The number of initial refinements of the mesh. The mesh size is 2$^{(Refine Factor)}$ $\times$ Subdivisions in each direction. While in principle the mesh could be entirely controlled by the number of subdivisons, computational performance is best when the majority of the refinement is done via the Refine factor. \\ \hline
+       Element degree & 1, 2, 3 & no & 1 & The polynomial order of the elements. The spatial order of accuracy is one plus the degree. \\ \hline
+    \end{tabular}
+\end{center}
+
+\begin{center}
+    \begin{tabular}{ | p{0.2\textwidth} | p{0.17\textwidth} | p{0.08\textwidth} | p{0.1\textwidth} | p{0.3\textwidth} |}
+    \hline
+      \multicolumn{5}{|c|}{\textbf{Mesh Adaptivity}} \\
+    \hline
+    \hline
+    \emph{Name} & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
+    Mesh adaptivity & Boolean & no & false & Controls whether mesh adaptivity is enabled. \\ \hline
+     Max refinement level & Any non-negative integer & no & -1 & The maximum number of local refinements during adaptive meshing. This parameter does not need to be specified if mesh adaptivity is disabled, but the default value will cause an error if mesh adaptivity is enabled. \\ \hline
+      Min refinement level & Any non-negative integer & no & -1 & The minimum number of local refinements during adaptive meshing. This parameter does not need to be specified if mesh adaptivity is disabled, but the default value will cause an error if mesh adaptivity is enabled. \\ \hline
+      Refinement criteria fields & Comma separated list of variable names & no & 0 & The indices of the variables that will determine the mesh refinement. The variable names are determined by the names given in equations.h.  \\ \hline
+      Refinement window max & Comma separated list of real numbers & no &  & The mesh refines where the specified variables are between an upper and lower bound. This specifies the upper bound.  \\ \hline
+        Refinement window min & Comma separated list of real numbers & no &  & The mesh refines where the specified variables are between an upper and lower bound. This specifies the lower bound.  \\ \hline
+               Steps between remeshing operations & Positive integer & no & 1 & The number of time steps between mesh refinement operations. \\ \hline
+    \end{tabular}
+\end{center}
+
+\begin{center}
+    \begin{tabular}{ | p{0.2\textwidth} | p{0.17\textwidth} | p{0.08\textwidth} | p{0.1\textwidth} | p{0.3\textwidth} |}
+    \hline
+      \multicolumn{5}{|c|}{\textbf{Time Stepping}} \\
+    \hline
+    \hline
+    \emph{Name} & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
+    Time step & Any positive real number & yes & n/a & The time step size for the simulation. \\ \hline
+Number of time steps & Any non-negative integer & no & -1 & The number of time steps until the simulation stops. Either this or the simulation end time must be specified. If both are specified, the simulation will end when the first condition is reached. \\ \hline
+      Simulation end time & Any non-negative real number & no & -0.1 & The simulated time when until the simulation stops. Either this or the number of time steps must be specified. If both are specified, the simulation will end when the first condition is reached.  \\ \hline
+    \end{tabular}
+\end{center}
+
+\begin{center}
+    \begin{tabular}{ | p{0.2\textwidth} | p{0.17\textwidth} | p{0.08\textwidth} | p{0.1\textwidth} | p{0.3\textwidth} |}
+    \hline
+      \multicolumn{5}{|c|}{\textbf{Elliptic Solver Parameters}} \\
+    \hline
+    \hline
+    \emph{Name} & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
+    Linear solver & SolverCG & no & SolverCG & Currently the only option is the deal.II conjugate gradient solver. \\ \hline
+     Use absolute convergence tolerance & Boolean & no & false & Sets whether to use an absolute tolerance for the linear solver (versus a relative tolerance). \\ \hline
+Solver tolerance value & Any positive real number & no & 1e-3 & The tolerance for the linear solver. If an absolute tolerance is used, the iterative solver stops when the L2 norm of the residual drops below the tolerance. If a relative tolerance is used, the iterative solver stops when the L2 norm of the residual has dropped by a factor equal to the tolerance. \\ \hline
+Maximum allowed solver iterations & Any positive integer & no & 10000 & The maximum number of iterations for the linear solver, if this number of iterations is reached, the solver stops regardless of the tolerance value. \\ \hline
+    \end{tabular}
+\end{center}
+
+\begin{center}
+    \begin{tabular}{ | p{0.2\textwidth} | p{0.17\textwidth} | p{0.08\textwidth} | p{0.1\textwidth} | p{0.3\textwidth} |}
+    \hline
+      \multicolumn{5}{|c|}{\textbf{Output}} \\
+    \hline
+    \hline
+    \emph{Name} & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
+    Output condition & EQUAL\_SPACING, LOG\_SPACING, N\_PER\_DECADE, LIST & no & EQUAL \_SPACING & This sets the spacing between the times the simulation outputs the model variables. EQUAL\_SPACING spaces them equally, LOG\_SPACING spaces them  $10^{n/(outputs) \log(time steps)}$, N\_PER\_DECADE allows the user to set how many times the simulation outputs per power of ten iterations, and LIST outputs at a user-given list of time step numbers. \\ \hline
+     Domain size Y & Any positive real number & yes & n/a & The size of the domain in the y direction. \\ \hline
+      Domain size Z & Any positive real number & yes & n/a & The size of the domain in the z direction. \\ \hline
+    \end{tabular}
+\end{center}
+
+
+\normalsize
+
+
+\section{The Application Files: equations.h, ICs\_and\_BCs.h, postprocess.h, customPDE.h, and main.cc} \label{app_files}
+
+\subsection{parameters.h} 
 All of the purely numerical parameters for an application are given in the file \emph{parameters.h}. Each parameter is set using the C++ \emph{\#define} command. In C++ parlance, the statements are preprocessor macros. The compiler searches through the source code and replaces the first argument with the second argument. Here is a look at the parameters file for the coupled Allen-Cahn/Cahn-Hilliard example application:
 \tiny
 \begin{lstlisting}
