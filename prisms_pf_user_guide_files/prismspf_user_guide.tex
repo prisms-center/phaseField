@@ -558,8 +558,11 @@ Maximum allowed solver iterations & Any positive integer & no & 10000 & The maxi
     \hline
     \emph{Name} & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
     Output condition & EQUAL\_SPACING, LOG\_SPACING, N\_PER\_DECADE, LIST & no & EQUAL \_SPACING & This sets the spacing between the times the simulation outputs the model variables. EQUAL\_SPACING spaces them equally, LOG\_SPACING spaces them  $10^{n/(outputs) \log(time steps)}$, N\_PER\_DECADE allows the user to set how many times the simulation outputs per power of ten iterations, and LIST outputs at a user-given list of time step numbers. \\ \hline
-     Domain size Y & Any positive real number & yes & n/a & The size of the domain in the y direction. \\ \hline
-      Domain size Z & Any positive real number & yes & n/a & The size of the domain in the z direction. \\ \hline
+     Number of outputs & Any non-negative integer & no & 10 & The number of inputs if the output condition is EQUAL\_SPACING. The number of outputs if the output condition is N\_PER\_DECADE. Ignored for the other output conditions. \\ \hline
+      List of time steps to output & Comma-separated list of non-negative integers & no & 0 & The list of time steps to output, used for the LIST output condition and ignored for the others. \\ \hline
+Output file name (base) & String & no & solution & The name for the output file, before the time step and processor info are added. \\ \hline
+Output file type & vtu, vtk & no & vtu & The output file type (currently limited to either vtu or vtk). \\ \hline
+Skip print steps & Any positive integer & no & 1 & The number of time steps between updates to the terminal window (1 is every time step). \\ \hline
     \end{tabular}
 \end{center}
 
