@@ -53,13 +53,13 @@ Since PRISMS-PF is still under active development,
 
   Entering the following commands will run one of the pre-built example applications (the Cahn-Hilliard spinodal decomposition application in this case):<br>
   + $ cd applications/cahnHilliard <br>
-  + $ cmake CMakeLists.txt <br>
+  + $ cmake CMakeLists.txt <br><br>
   For debug mode [default mode, very slow]: <br>
   + $ make debug <br><br>
   For optimized mode:<br>
    + $ make release <br><br>
   Execution (serial runs): <br>
-  + $ ./main <br>
+  + $ ./main <br><br>
   Execution (parallel runs): <br>
   + $ mpirun -np nprocs main <br>
   [here nprocs denotes the number of processors]
