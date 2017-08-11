@@ -47,7 +47,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
                 break;
             }
         }
-        if (field_found == false){
+        if (field_found == false && h_adaptivity == true){
             std::cerr << "PRISMS-PF Error: Entries in the list of fields used for refinement must match the variable names in equations.h." << std::endl;
             std::cerr << refine_criterion_fields_str[ref_field] << std::endl;
             abort();
