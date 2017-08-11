@@ -59,12 +59,15 @@ def run_simulation(run_name,dir_path):
 	subprocess.call(["rm", "*vtu"],stdout=f,stderr=f)
 
 	# Compile and run
-	subprocess.call(["cmake", "."],stdout=f,stderr=f)
-	subprocess.call(["make", "release","-j9"],stdout=f)
+	#subprocess.call(["cmake", "."],stdout=f,stderr=f)
+	#subprocess.call(["make", "release","-j9"],stdout=f)
+	subprocess.call(["cmake", "."])
+	subprocess.call(["make", "release","-j9"])
 	print "Compiling complete, running the regression test..."
 	sys.stdout.flush()
 	start = time.time()
-	subprocess.call(["mpirun", "-n", "1", "main"],stdout=f)
+	#subprocess.call(["mpirun", "-n", "1", "main"],stdout=f)
+	subprocess.call(["mpirun", "-n", "1", "main"])
 	end = time.time()
 	f.close()
 
