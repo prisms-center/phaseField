@@ -166,10 +166,10 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     nucleus_hold_time = parameter_handler.get_double("Freeze time following nucleation");
     no_nucleation_border_thickness = parameter_handler.get_double("Nucleation-free border thickness");
 
-    if (parameter_handler.get("Minimum allowed distance between nuclei") != ""){
+    if (parameter_handler.get("Minimum allowed distance between nuclei") != "-1"){
         min_distance_between_nuclei = parameter_handler.get_double("Minimum allowed distance between nuclei");
     }
-    else {
+    else if (nucleus_semiaxes.size() > 1) {
         min_distance_between_nuclei = 2.0 * (*(max_element(nucleus_semiaxes.begin(),nucleus_semiaxes.end())));
     }
     nucleation_order_parameter_cutoff = parameter_handler.get_double("Order parameter cutoff value");
