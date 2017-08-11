@@ -48,7 +48,7 @@ for (unsigned int i=0; i<dim; i++){
   }
 }
 
-// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
+// Residuals for the equation to evolve the order parameter 
 pp_variable_list.set_scalar_value_residual_term(0, f_el);
 
 }

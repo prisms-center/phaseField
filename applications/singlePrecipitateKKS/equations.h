@@ -74,15 +74,15 @@ template <int dim, int degree>
 void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-// The concentration and its derivatives (names here should match those in the macros above)
+// The concentration and its derivatives 
 scalarvalueType c = variable_list.get_scalar_value(0);
 scalargradType cx = variable_list.get_scalar_gradient(0);
 
-// The first order parameter and its derivatives (names here should match those in the macros above)
+// The first order parameter and its derivatives 
 scalarvalueType n1 = variable_list.get_scalar_value(1);
 scalargradType n1x = variable_list.get_scalar_gradient(1);
 
-// The derivative of the displacement vector (names here should match those in the macros above)
+// The derivative of the displacement vector 
 vectorgradType ux = variable_list.get_vector_gradient(2);
 vectorgradType ruxV;
 
@@ -288,10 +288,10 @@ template <int dim, int degree>
 void customPDE<dim,degree>::residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-// The first order parameter and its derivatives (names here should match those in the macros above)
+// The first order parameter and its derivatives 
 scalarvalueType n1 = variable_list.get_scalar_value(1);
 
-// The derivative of the displacement vector (names here should match those in the macros above)
+// The derivative of the displacement vector 
 vectorgradType ux = variable_list.get_vector_gradient(2);
 vectorgradType ruxV;
 

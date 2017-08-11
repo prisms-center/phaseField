@@ -108,15 +108,15 @@ void generalizedProblem<dim>::residualRHS(const std::vector<modelVariable<dim> >
 												std::vector<modelResidual<dim> > & modelResidualsList,
 												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-// The concentration and its derivatives (names here should match those in the macros above)
+// The concentration and its derivatives 
 scalarvalueType c = modelVariablesList[0].scalarValue;
 scalargradType cx = modelVariablesList[0].scalarGrad;
 
-// The chemical potential and its derivatives (names here should match those in the macros above)
+// The chemical potential and its derivatives 
 scalarvalueType mu = modelVariablesList[1].scalarValue;
 scalargradType mux = modelVariablesList[1].scalarGrad;
 
-// The order parameters and their derivatives (names here should match those in the macros above)
+// The order parameters and their derivatives 
 scalarvalueType n1 = modelVariablesList[2].scalarValue;
 scalargradType n1x = modelVariablesList[2].scalarGrad;
 scalarvalueType n2 = modelVariablesList[3].scalarValue;
@@ -126,13 +126,13 @@ scalargradType n3x = modelVariablesList[4].scalarGrad;
 scalarvalueType n4 = modelVariablesList[5].scalarValue;
 scalargradType n4x = modelVariablesList[5].scalarGrad;
 
-// Residuals for the equation to evolve the concentration (names here should match those in the macros above)
+// Residuals for the equation to evolve the concentration 
 modelResidualsList[0].scalarValueResidual = rcV;
 modelResidualsList[0].scalarGradResidual = rcxV;
 modelResidualsList[1].scalarValueResidual = rmuV;
 modelResidualsList[1].scalarGradResidual = rmuxV;
 
-// Residuals for the equation to evolve the order parameters (names here should match those in the macros above)
+// Residuals for the equation to evolve the order parameters 
 modelResidualsList[2].scalarValueResidual = rn1V;
 modelResidualsList[2].scalarGradResidual = rn1xV;
 modelResidualsList[3].scalarValueResidual = rn2V;
@@ -182,11 +182,11 @@ void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim>
 											const dealii::VectorizedArray<double> & JxW_value,
 											dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {
 
-// The concentration and its derivatives (names here should match those in the macros above)
+// The concentration and its derivatives 
 scalarvalueType c = modelVariablesList[0].scalarValue;
 scalargradType cx = modelVariablesList[0].scalarGrad;
 
-// The order parameter and its derivatives (names here should match those in the macros above)
+// The order parameter and its derivatives 
 scalarvalueType n1 = modelVariablesList[2].scalarValue;
 scalargradType n1x = modelVariablesList[2].scalarGrad;
 scalarvalueType n2 = modelVariablesList[3].scalarValue;

@@ -1,5 +1,4 @@
 #include "../../include/matrixFreePDE.h"
-//#include "../../include/variableAttributeLoader.h"
 
 template <int dim, int degree>
 class customPDE: public MatrixFreePDE<dim,degree>
@@ -19,10 +18,6 @@ private:
 	// Pure virtual method in MatrixFreePDE
 	void residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
-
-	// Pure virtual method in MatrixFreePDE
-	void energyDensity(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list, const dealii::VectorizedArray<double> & JxW_value,
-					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc);
 
 	// Virtual method in MatrixFreePDE that we override if we need postprocessing
 	#ifdef POSTPROCESS_FILE_EXISTS

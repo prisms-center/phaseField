@@ -25,23 +25,23 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 
 		scalarvalueType f_tot = constV(0.0);
 
-		// The concentration and its derivatives (names here should match those in the macros above)
+		// The concentration and its derivatives 
 		scalarvalueType c = variable_list.get_scalar_value(0);
 		scalargradType cx = variable_list.get_scalar_gradient(0);
 
-		// The first order parameter and its derivatives (names here should match those in the macros above)
+		// The first order parameter and its derivatives 
 		scalarvalueType n1 = variable_list.get_scalar_value(1);
 		scalargradType n1x = variable_list.get_scalar_gradient(1);
 
-		// The second order parameter and its derivatives (names here should match those in the macros above)
+		// The second order parameter and its derivatives 
 		scalarvalueType n2 = variable_list.get_scalar_value(2);
 		scalargradType n2x = variable_list.get_scalar_gradient(2);
 
-		// The third order parameter and its derivatives (names here should match those in the macros above)
+		// The third order parameter and its derivatives 
 		scalarvalueType n3 = variable_list.get_scalar_value(3);
 		scalargradType n3x = variable_list.get_scalar_gradient(3);
 
-		// The derivative of the displacement vector (names here should match those in the macros above)
+		// The derivative of the displacement vector 
 		vectorgradType ux = variable_list.get_vector_gradient(4);
 
 
@@ -136,7 +136,7 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 
 		f_tot = f_chem + f_grad + f_el;
 
-// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
+// Residuals for the equation to evolve the order parameter 
 pp_variable_list.set_scalar_value_residual_term(0, f_tot);
 
 }

@@ -20,7 +20,7 @@ void variableAttributeLoader::loadVariableAttributes(){
 	set_allowed_to_nucleate			(0, false);
 	set_need_value_nucleation		(0, true);
 
-    // Variable 1
+	// Variable 1
 	set_variable_name				(1,"n");
 	set_variable_type				(1,SCALAR);
 	set_variable_equation_type		(1,PARABOLIC);
@@ -108,7 +108,7 @@ variable_list.set_scalar_value_residual_term(0,rcV);
 variable_list.set_scalar_gradient_residual_term(0,rcxV);
 
 // Residuals for the equation to evolve the order parameter
-variable_list.set_scalar_value_residual_term(1,rnV+source_term);
+variable_list.set_scalar_value_residual_term(1,rnV + source_term);
 variable_list.set_scalar_gradient_residual_term(1,rnxV);
 
 }
@@ -168,7 +168,6 @@ void customPDE<dim,degree>::seedNucleus(const dealii::Point<dim, dealii::Vectori
 			}
 		}
 	}
-
 
 // =================================================================================
 // residualLHS (needed only if at least one equation is elliptic)

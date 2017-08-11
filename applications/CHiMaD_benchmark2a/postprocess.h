@@ -19,11 +19,11 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 				variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
 												const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-// The concentration and its derivatives (names here should match those in the macros above)
+// The concentration and its derivatives 
 scalarvalueType c = variable_list.get_scalar_value(0);
 scalargradType cx = variable_list.get_scalar_gradient(0);
 
-// The order parameter and its derivatives (names here should match those in the macros above)
+// The order parameter and its derivatives 
 scalarvalueType n1 = variable_list.get_scalar_value(2);
 scalargradType n1x = variable_list.get_scalar_gradient(2);
 scalarvalueType n2 = variable_list.get_scalar_value(3);
@@ -58,7 +58,7 @@ scalarvalueType f_grad = constV(0.5)*KnV*(n1x*n1x+n2x*n2x+n3x*n3x+n4x*n4x) + con
 scalarvalueType f_tot;
 f_tot = f_chem + f_grad;
 
-// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
+// Residuals for the equation to evolve the order parameter 
 pp_variable_list.set_scalar_value_residual_term(0, f_tot);
 
 

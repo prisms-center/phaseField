@@ -350,9 +350,15 @@ Each of the example application directories should contain at least eight files:
 \item CMakeLists.txt
 \end{itemize}
 
+It may contain two other files:
+\begin{itemize}
+\item postprocess.h
+\item nucleation.h
+\end{itemize}
+
 The following section (Sec. \ref{parameters}) will discuss the structure and options for the input file, parameters.h. Users who do not need to change the governing equations or make other fundamental changes to the application will only need to modify this file.
 
-Section \ref{app_files} discusses the structure of the files that define an application: equations.h, ICs\_and\_BCs.h, postprocess.h, customPDE.h, and main.cc. Users who want to substantially modify existing PRISMS-PF applications or create their own will find this section useful.
+Section \ref{app_files} discusses the structure of the files that define an application: equations.h, ICs\_and\_BCs.h, postprocess.h, nucleation.h, customPDE.h, and main.cc. Users who want to substantially modify existing PRISMS-PF applications or create their own will find this section useful.
 
 The final two files in each application directory are formulation.pdf and CMakeLists.txt. The file formulation.pdf describes the mathematical formulation of the problem solved by the application. Finally, the file CMakeLists.txt is used by CMake to generate the makefile. Most users will not have any reason to change CMakeLists.txt.
 
@@ -509,7 +515,7 @@ set [parameter name] = [parameter value]
 \begin{center}
     \begin{tabular}{ | p{0.2\textwidth} | p{0.17\textwidth} | p{0.08\textwidth} | p{0.1\textwidth} | p{0.3\textwidth} |}
     \hline
-      \multicolumn{5}{|c|}{\textbf{Mesh Adaptivity}} \\
+      \multicolumn{5}{|c|}{\textbf{Mesh Adaptivity (Optional)}} \\
     \hline
     \hline
     \emph{Name} & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
@@ -539,7 +545,7 @@ Number of time steps & Any non-negative integer & no & -1 & The number of time s
 \begin{center}
     \begin{tabular}{ | p{0.2\textwidth} | p{0.17\textwidth} | p{0.08\textwidth} | p{0.1\textwidth} | p{0.3\textwidth} |}
     \hline
-      \multicolumn{5}{|c|}{\textbf{Elliptic Solver Parameters}} \\
+      \multicolumn{5}{|c|}{\textbf{Elliptic Solver Parameters (Optional)}} \\
     \hline
     \hline
     \emph{Name} & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
@@ -566,324 +572,128 @@ Skip print steps & Any positive integer & no & 1 & The number of time steps betw
     \end{tabular}
 \end{center}
 
+\begin{center}
+    \begin{tabular}{ | p{0.2\textwidth} | p{0.17\textwidth} | p{0.08\textwidth} | p{0.1\textwidth} | p{0.3\textwidth} |}
+    \hline
+      \multicolumn{5}{|c|}{\textbf{Boundary Conditions}} \\
+    \hline
+    \hline
+    \emph{Name} & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
+    Boundary condition for variable [variable name] & NATURAL, DIRICHLET, NON\_UNIFORM \_DIRICHLET, PERIODIC & yes & n/a & Sets the boundary condition for each scalar variable, using the variable name from equations.h. One line is required for each scalar  variable. See Note 1 below for details. \\ \hline
+    Boundary condition for variable [variable name], component [direction] & NATURAL, DIRICHLET, NON\_UNIFORM \_DIRICHLET, PERIODIC & yes & n/a & Sets the boundary condition for each vector variable, using the variable name from equations.h. One line is required for each vector variable. See Note 1 below for details. \\ \hline
+    \end{tabular}
+\end{center}
+
+\begin{center}
+    \begin{tabular}{ | p{0.2\textwidth} | p{0.17\textwidth} | p{0.08\textwidth} | p{0.1\textwidth} | p{0.3\textwidth} |}
+    \hline
+      \multicolumn{5}{|c|}{\textbf{Loading Initial Conditions from File (Optional)}} \\
+    \hline
+    \hline
+    \emph{Name} & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
+    Load initial conditions & Comma-separated list of booleans & no & false & One true/false flag for each variable for whether the initial condition should be loaded from a vtk file. Currently, only scalar fields can be read in. SSee Note 2 below for details. \\ \hline
+     Load parallel file & Comma-separated list of booleans & no & false & One true/false flag for each variable for whether each processor should read the initial conditions from a seperate file. See Note 2 below for details.  \\ \hline
+      File names & Comma-separated list of strings & no &  & The name of the vtk file to be read for each variable, ignored for variables where the initial conditions isn't read in from a file. Often, all of the variables will read from the same vtk file. See Note 2 below for details.  \\ \hline
+    \end{tabular}
+\end{center}
+
+\begin{center}
+    \begin{tabular}{ | p{0.2\textwidth} | p{0.17\textwidth} | p{0.08\textwidth} | p{0.1\textwidth} | p{0.3\textwidth} |}
+    \hline
+      \multicolumn{5}{|c|}{\textbf{Nucleation (Optional}} \\
+    \hline
+    \hline
+    \emph{Name} & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
+    Nucleus semiaxes (x, y ,z) & Three positive real numbers & no &  & The semiaxes of the ellipsoidal nuclei to be seeded. See Note 3 below for details. \\ \hline
+     Freeze zone semiaxes (x, y ,z) & Three positive real numbers & no &  & The semiaxes for the ellipsoidal region where the nucleus is frozen after seeding. See Note 3 below for details.  \\ \hline
+      Freeze time following nucleation & Any non-negative real number & no & 0 & The amount of time the nucleus is frozen after seeding. See Note 3 below for details. \\ \hline
+      Nucleation-free border thickness & Any non-negative real number & no & 0 & The size of the buffer region where nucleation is not allowed unless the boundary conditions are periodic. See Note 3 below for details. \\ \hline
+      Minimum allowed distance between nuclei & Any non-negative real number & no & 2$\times$ the largest nucleus semiaxis  & The minimum allowed distance between nuclei centers during a single nucleation attempt. See Note 3 below for details. \\ \hline
+      Minimum allowed distance between nuclei & Any non-negative real number & no & 2$\times$ the largest nucleus semiaxis  & The minimum allowed distance between nuclei centers during a single nucleation attempt. See Note 3 below for details. \\ \hline
+      Order parameter cutoff value & Any non-negative real number & no & 0.01  & The minimum allowed value of the sum of all nucleating variable fields where nucleation is allowed to occur. Implemented to prevent nucleation inside existing particles. See Note 3 below for details. \\ \hline
+      Time steps between nucleation attempts & Any positive integer & no & 100  & The number of time steps between nucleation attempts. See Note 3 below for details. \\ \hline
+    \end{tabular}
+\end{center}
+
+\begin{center}
+    \begin{tabular}{ | p{0.2\textwidth} | p{0.17\textwidth} | p{0.08\textwidth} | p{0.1\textwidth} | p{0.3\textwidth} |}
+    \hline
+      \multicolumn{5}{|c|}{\textbf{Model constants (Optional)}} \\
+    \hline
+    \hline
+    \emph{Name} & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
+    Model constant [constant name] & value followed by a comma then a type & no &  & Sets the value of a constant defined for that particular application. The allowed types are DOUBLE, INT, BOOL, TENSOR, and [symmetry] ELASTIC CONSTANTS where [symmetry] is ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC. See Note 4 below for details. \\ \hline
+    \end{tabular}
+\end{center}
 
 \normalsize
 
+\textbf{Note 1 (Boundary Conditions):} \\
+The boundary condition must be set for each variable, where each variable is given by its name, as defined in equations.h. The four boundary condition types are NATURAL, DIRICHLET, NON\_UNIFORM\_DIRICHLET and PERIODIC. If all of the boundaries have the same boundary condition, only one boundary condition type needs to be given. If multiple boundary condition types are needed, give a comma-separated list of the types. The order is the miniumum of x, maximum of x, minimum of y, maximum of y, minimum of z, maximum of z (i.e left, right, bottom, top in 2D and left, right, bottom, top, front, back in 3D). The value of a Dirichlet BC is specfied in the following way -- DIRCHILET: val -- where 'val' is the desired value. If the boundary condition is NON\_UNIFORM\_DIRICHLET, the boundary condition should be specified in the appropriate function in 'ICs\_and\_BCs.h'. For vector variables, one boundary condition should be specified for each component.
 
-\section{The Application Files: equations.h, ICs\_and\_BCs.h, postprocess.h, customPDE.h, and main.cc} \label{app_files}
-
-\subsection{parameters.h} 
-All of the purely numerical parameters for an application are given in the file \emph{parameters.h}. Each parameter is set using the C++ \emph{\#define} command. In C++ parlance, the statements are preprocessor macros. The compiler searches through the source code and replaces the first argument with the second argument. Here is a look at the parameters file for the coupled Allen-Cahn/Cahn-Hilliard example application:
-\tiny
+Example 1: All periodic BCs for variable 'c'
 \begin{lstlisting}
-// Parameter list for the coupled Allen-Cahn/Cahn-Hilliard example application
-// All strictly numerical parameters should be set in this file
-
-// =================================================================================
-// Set the number of dimensions (1, 2, or 3 for a 1D, 2D, or 3D calculation)
-// =================================================================================
-#define problemDIM 2
-
-// =================================================================================
-// Set the length of the domain in all three dimensions
-// =================================================================================
-// Each axes spans from zero to the specified length
-#define spanX 100.0
-#define spanY 100.0
-#define spanZ 100.0
-
-// =================================================================================
-// Set the element parameters
-// =================================================================================
-// The number of elements in each direction is 2^(refineFactor) * subdivisions
-// For optimal performance, use refineFactor primarily to determine the element size
-#define subdivisionsX 1
-#define subdivisionsY 1
-#define subdivisionsZ 1
-#define refineFactor 7
-
-// Set the polynomial degree of the element
-// Suggested values are either 1 or 2
-#define finiteElementDegree 1
-
-// =================================================================================
-// Set the time step parameters
-// =================================================================================
-// The size of the time step
-#define timeStep 1.0e-3
-
-// The simulation ends when either timeFinal is reached or the number of time steps
-// equals timeIncrements
-#define timeFinal 100.0
-#define timeIncrements 100000
-
-// =================================================================================
-// Set the output parameters
-// =================================================================================
-// Each field in the problem will be output is writeOutput is set to "true"
-#define writeOutput true
-
-// Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
-// or "LIST")
-#define outputCondition "EQUAL_SPACING"
-
-// Number of times the program outputs the fields (total number for "EQUAL_SPACING"
-// and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-#define numOutputs 10
-
-// User-defined list of time steps where the program should output. Only used if
-// outputCondition is "LIST"
-#define outputList {}
-
-// Status is printed to the screen every skipPrintSteps
-#define skipPrintSteps 10
-
-// =================================================================================
-// Set the flag determining if the total free energy is calculated for each output
-// =================================================================================
-#define calcEnergy true
+set Boundary condition for variable c = PERIODIC
 \end{lstlisting}
-\normalsize
 
-In the first section of the parameters file, the user sets the number of dimensions for the simulation, an integer from 1 to 3. Strictly speaking, this is the only change the user needs to make for the calculation to go from a 1D simulation to a 2D simulation, to a 3D simulation. In practice, often the intial conditions and boundary conditions will have to change when the number of dimensions changes (see Section \ref{icsandbcs} for instructions on how to modify initial conditions or boundary conditions).
-
-In the second section of the parameters file, the user sets the size of the computational domain. PRISMS-PF assumes that the domain is a line in 1D, a rectangle in 2D, and a rectangular prism in 3D. The length of the domain along the x, y, and z directions is given by \emph{spanX}, \emph{spanY}, and \emph{spanZ}, respectively (as a floating point number). When \emph{problemDIM} is less than 3, the unneeded values are ignored.
-
-In the third section of the parameters file, the user sets parameters related to the finite elements. The first four parameters determine the number of elements in the simulation. The number of elements in each direction is given by $2^{refineFactor} \times subdivisions$. The three parameters \emph{subdivisionsX}, \emph{subdivisionsY}, and \emph{subdivisionsZ} determine how many times the domain is divided along each dimension (x, y, and z, respectively). The parameter \emph{refineFactor} then determines how many times each of those divisions is bisected in each direction. For example, in 2D, if \emph{subdivisionsX} is 1, \emph{subdivisionsY} is 3, and \emph{refineFactor} is 2, then there will be $2^2 \times 1 =4$ elements in the x direction and $2^2 \times 3 =12$ elements in the y direction. We find that using \emph{refineFactor} to determine the element size results in improved perfomance compared to using subdivisions, particularly for parallel calculations. We recommend doing at least half of the refinement using \emph{refineFactor}. For example, a combination of 5 subdivisions and a \emph{refineFactor} of 3 should perform well, but a combination of 10 subdivsions and a  \emph{refineFactor} of 2 may not. The final parameter in this section is the polynomial degree of the basis functions for the elements (an integer). The order of accuracy (in space) is this number plus 1. For phase field applications, we recommend using values of 1 or 2. Generally speaking, increasing \emph{finiteElementDegree} allows one to increase the element size without increasing the error. However, in a phase field calculation, the element size should be small enough that there is more than one element in the interface -- effectively limiting \emph{finiteElementDegree} to 2.
-
-In the fourth section of the parameters file, the user sets parameters related to time stepping. Currently, PRISMS-PF is set up for forward Euler time stepping. The size of each time step is set by \emph{timeStep} (a floating point number). The simulation finishes when either an amount of simulation time equal to \emph{timeFinal} has passed, or \emph{timeIncrements} time steps have occured.
-
-In the fifth section of the parameters file, the user sets parameters related to the output. The first parameter in this section, \emph{writeOutput}, is a flag that should be ``true'' if you want to output the results of the simulation and ``false'' if not. The output is written to the current directory. The second parameter, \emph{outputCondition}, determines the type of spacing between outputs. The options are ``EQUAL\_SPACING'', ``LOG\_SPACING'',  ``N\_PER\_DECADE'', and ``LIST''. The third parameter, \emph{numOutputs}, determines the number of outputs. For any \emph{outputCondition}, the initial conditions are outputted. For ``EQUAL\_SPACING'', the progam will output \emph{numOutputs} times after the initial conditions are output, separated by the total number of increments divded by \emph{numOutputs}. For ``LOG\_SPACING'', the progam will output \emph{numOutputs} times after the initial conditions are output, where the increments where output occurs are given by:
-\begin{equation}
-10^{n/numOutputs \log(totalIncrements)}
-\end{equation}
-rounded to the nearest integer, where \emph{n} is the output number, and \emph{totalIncrements} is the total number of time steps. For ``N\_PER\_DECADE'', the program will output \emph{numOutput} times for each power of 10 after outputting the initial conditions. For example, if \emph{numOutput} is 1, the program will output at every power of 10 (i.e. 1, 10, 100, 1000, ...). If \emph{numOutput} is 10, the program will output ten times for every power of 10 (i.e. 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, ...). For ``LIST'', the user supplies a list of time steps where the program should output using the parameter \emph{outputList}. \emph{outputList} should be a bracketed, comma-separated list and is ignored for any type of output spacing other than ``LIST''. The final parameter in this section, \emph{skipPrintSteps}, controls how often the status of the simulation prints to the screen. Setting \emph{skipPrintSteps} to 1 will cause the simulation to print an update every time step; setting it to two will cause the simulation to print out every other time step, at 10 it will print every 10 time steps, etc.
-
-In the sixth and final section of the parameters file, the user sets a flag determining if the integrated free energy should be calculated whenever the code outputs the results. If \emph{calcEnergy} is ``true'', the total free energy will be written to a file names ``freeEnergy.txt.'' If not given, the default value for \emph{calcEnergy} is ``false''.
-
-\subsubsection{Parameters for Adaptive Meshing and Elliptic Equations}
-An examination of \emph{parameters.h} in the Precipitate Evolution example application reveals two additional sections not in the parameters file for the coupled Allen-Cahn/Cahn-Hilliard example application:
-\tiny
+Example 2: Zero-derivative BCs on the left and right, Dirichlet BCs with value 1.5 on the top and bottom for variable 'n' in 2D
 \begin{lstlisting}
-// =================================================================================
-// Set the adaptive mesh refinement parameters
-// =================================================================================
-// Set the flag determining if adaptive meshing is activated
-#define hAdaptivity true
-
-// Set the maximum and minimum level of refinement
-#define maxRefinementLevel (refineFactor)
-#define minRefinementLevel (refineFactor-2)
-
-// Set the fields used to determine the refinement. Fields determined by the order
-// declared in "equations.h", starting at zero
-#define refineCriterionFields {1,2,3}
-
-// Set the maximum and minimum value of the fields where the mesh should be refined
-#define refineWindowMax {0.99,0.99,0.99}
-#define refineWindowMin {0.01,0.01,0.01}
-
-// Set the number of time steps between remeshing operations
-#define skipRemeshingSteps 1000
-
-[...]
-
-// =================================================================================
-// Set the elliptic solver parameters
-// =================================================================================
-// The solver type (currently the only recommended option is conjugate gradient)
-#define solverType ``SolverCG''
-
-// The flag that determines whether the tolerance for solver convergence should
-// be an absolute tolerance (absTol=true) or a relative tolerance (absTol=false)
-#define absTol true
-
-// The tolerance for convergence (L2 norm of the residual)
-#define solverTolerance 1.0e-4
-
-// The maximum number of solver iterations per time step
-#define maxSolverIterations 1000
+set Boundary condition for variable n = NATURAL, NATURAL, DIRICHLET: 1.5,
+ DIRICHLET: 1.5
 \end{lstlisting}
-\normalsize
-The parameters in the first section govern adaptive meshing operations. If this section of parameters is omitted, a non-adaptive mesh is used. The first parameter in this section, \emph{hAdaptivity}, is a flag determining if adaptive meshing will be activated. The second and third parameters, \emph{maxRefinementLevel} and \emph{minRefinementLevel}, determine the maximum and minimum  levels of refinement alllowed. These values reflect local changes in the \emph{refineFactor} parameter set earlier in the parameters file. The third parameter, \emph{refineCriterionFields}, is a list of the fields used to determine how the mesh should be adapted. The fields should be in a comma-separated, bracketed list. Each field is referred to by its index, determined by the order it is declared in the ``equations.h'' file (discussed later), starting at zero. The fifth and sixth parameters, \emph{refineWindowMax} and \emph{refineWindowMin}, determine the upper and lower bounds of each field in the \emph{refineCriterionFields} list that should be refined. In the above example, the mesh is refined wherever any of fields 1, 2, or 3 are between 0.01 and 0.99. Finally, the seventh parameter in this section, \emph{skipRemeshingSteps}, sets the number of time steps between remeshing operations.
 
-The parameters in the second section above govern the solution of elliptic PDEs, and are only needed for applications with at least one elliptic equation. In the Precipitate Evolution example application, these parameters are needed to solve for mechanical equilbrium. The first parameter is the type of solver used. Currently, conjugate gradient (\emph{solverType}=SolverCG) is the only solver recommended for use. Other solvers in deal.ii could be used here (e.g. GMRES or MinRes), but will yield worse performance for the type of symmetric, positive-definite matrices encountered in most problems of interest. The second parameter is a flag that determines whether the tolerance for the convergence of the solver should be an absolute tolerance or a relative tolerance. The third parameter in this section is the tolerance for convergence. If \emph{absTol} is ``true'', the iterative solver stops when the L$_2$ norm of the residual is less than \emph{solverTolerance}. If \emph{absTol} is''false'', the iterative solver stops when the L$_2$ norm of the residual has decreased by a factor of \emph{solverTolerance} compared to the initial value of the residual. The fourth and final parameter in this section, \emph{maxSolverIteration}, limits the number of solver iterations per time step. Once this number of iterations is reached, the solver stops, regardless of progress toward convergence.
+Example 3: All periodic BCs for the y component of the vector variable 'u'
+\begin{lstlisting}
+set Boundary condition for variable u, component y = PERIODIC
+\end{lstlisting}
+
+\textbf{Note 2 (Loading Initial Conditions from File):} \\
+Currently, initial conditions can only be read from vtk files (\emph{not} vtu files). Some variables can have initial conditions read from file and others can be specified in ICs\_and\_BCs.h in the same application. For each variable, the user must set whether the file(s) to be read are in serial format, where all processors read from the same file, or parallel format, where all processors read from different files. If parallel format is selected, the desired domain decomposition must between the files and the simulation to be run. For non-adaptive meshes this will be true if the same number of cores is the same between the simulation that generated the vtk files and the simulation reading the vtk files. For adaptive meshes, obtaining the same domain decomposition may be difficult and merging parallel vtk files into a single file is likely the best approach. This process is planned to be cleaner in future versions of PRISMS-PF. An example of loading inital conditions from file can be seen in the `allenCahn\_pfield' application.
+
+\textbf{Note 3 (Nucleation):} \\
+PRISMS-PF includes the capability for explicitly placing nuclei over the course of a simulation using an approach similar to the one described in the following publication: \\
+Jokisaari, Permann, and Thornton, A nucleation algorithm for the coupled conserved-nonconserved phase field model, \emph{Computational Materials Science}, 112, (2016). \\
+A nucleus of an non-conserved order parameter is placed within the computational domain determined by a probability given by the `getNucleationProbability' function in the `nucleation.h' file. The variables that are allowed to nucleate are specified in the `loadVariableAttributes' function in the `equations.h' file, as are the variable values needed to calculate the nucleation probability. The determination of when and where a nucleus should be seeded is determined in the core PRISMS-PF library, but the actual placement of the nucleus by modifying one of the model fields is expected to be performed in the `residualRHS' function in the `equations.h' file. The mobility for the nucleated field should be set to zero in the region surrounding the nucleus (the ``freeze zone'') for a specified amount of time (the ``freeze time''). Examples of nucleating particles can be found in the nucleationModel and preferential\_nucleationModel applications.
+
+\textbf{Note 4 (Model constants):} \\
+Each application specifies its own set of model constants. These are most often used in the residual equations in the `equations.h' file, although they may also be used to specify initial conditions, non-uniform Dirichlet boundary conditions, nucleation probabilties, etc. Currently, five types of model constants are accepted: DOUBLE, INT, BOOL, TENSOR, and ELASTIC CONSTANTS. The use of these different types is as follows:
+\begin{itemize}
+\item DOUBLE: For individual real numbers
+\item INT: For individual integers
+\item BOOL: For individual booleans (true/false)
+\item TENSOR: For either rank 1 tensors (i.e. vectors) or rank 2 tensors (i.e. matrices) with a size of the number of dimensions. These are assumed to be real numbers. Each row should be given by a comma-separated list in parentheses. For example, a 3D vector would be given as ``(2.5, 1.2, 0.1)'' and a 2D matrix would be given as: ``((4.1, 2.0),(1.6, 5.2))''.
+\item {[symmetry]} ELASTIC CONSTANTS: For sets of elastic constants, given as a vector. The symmetry options are ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC. The number of entries for the different symmetries are given below. PRISMS-PF converts these sets of elastic constants into a stiffness matrix.
+\end{itemize}
+
+The number and order of the entries for the elastic constants are (where C$_{ij}$ are entries in the stiffness matrix):
+\begin{itemize}
+\item ISOTROPIC (2D/3D): 2 constants (Young's Modulus, Poisson's Ratio)
+\item TRANSVERSE (3D): 5 constants (C$_{11}$, C$_{33}$, C$_{44}$, C$_{12}$, C$_{13}$)
+\item ORTHOTROPIC (3D): 9 constants (C$_{11}$, C$_{22}$, C$_{33}$, C$_{44}$, C$_{55}$, C$_{66}$, C$_{12}$, C$_{13}$, C$_{23}$)
+\item ANISOTROPIC (2D/3D): 21 constants (C$_{11}$, C$_{22}$, C$_{33}$, C$_{44}$, C$_{55}$, C$_{66}$, C$_{12}$, C$_{13}$, C$_{14}$, C$_{15}$, C$_{16}$, C$_{23}$, C$_{24}$, C$_{25}$, C$_{26}$, C$_{34}$, C$_{35}$, C$_{36}$, C$_{45}$, C$_{46}$, C$_{56}$)
+\end{itemize}
+
+Each model constant in `parameters.in' must have a counterpart in the appropriate section of the `customPDE.h' file. 
+
+
+
+\section{The Application Files: equations.h, ICs\_and\_BCs.h, postprocess.h, nucleation.h, customPDE.h, and main.cc} \label{app_files}
+This section details the files that define each application. The norm is that substantial modifications to these files consistute a new application (in contrast to simply making changes to `parameters.in'. Modifying these files may require some knowledge of C++.
+
+A very brief description of the purpose of each of these files is below, an in-depth discussion can be found in the following subsections:
+\begin{itemize}
+\item equations.h: Specifies the attributes of the model variables and the model's residual equations
+\item ICs\_and\_BCs.h: Specifies the initial conditions for each variable (unless the initial condition is read from file) and non-uniform Dirichlet boundary conditions, if applicable.
+\item postprocess.h: Specifies variable other than the primary model variables to output, as well as the expressions to derive these variables.
+\item nucleation.h: Contains the function that determines the probability density of nucleation.
+\item customPDE.h: Contains the prototypes of the functions for the application, also contains declarations of the model constants given in `parameters.h'.
+\item main.cc: Main C++ function that controls the flow of the simulation. Identical for all the example applications and it is unlikely that users will need to modify it.
+\end{itemize}
 
 \subsection{equations.h} \label{equations}
-The file ``equations.h'' contains a list of the variables in the model equations and the residuals for the model equations. At the top of the file are a series of C++ \emph{\#define} commands. Later in the file are three functions: \emph{residualRHS}, \emph{residualLHS}, and \emph{energyDensity}. Here is a look at the equations file for the coupled Allen-Cahn/Cahn-Hilliard example application:
-\tiny
-\begin{lstlisting}
-// List of variables and residual equations for the coupled Allen-Cahn/Cahn-Hilliard example application
+The file ``equations.h'' contains a list of the variables in the model equations and their attributes as well as the residuals for the model equations. The file contains three functions: \emph{loadVariableAttributes}, \emph{residualRHS}, and \emph{residualLHS}. 
 
-// =================================================================================
-// Define the variables in the model
-// =================================================================================
-// The number of variables
-#define num_var 2
-
-// The names of the variables, whether they are scalars or vectors and whether the
-// governing eqn for the variable is parabolic or elliptic
-#define variable_name {"c", "n"}
-#define variable_type {"SCALAR","SCALAR"}
-#define variable_eq_type {"PARABOLIC","PARABOLIC"}
-
-// Flags for whether the value, gradient, and Hessian are needed in the residual eqns
-#define need_val {true, true}
-#define need_grad {true, true}
-#define need_hess {false, false}
-
-// Flags for whether the residual equation has a term multiplied by the test function
-// (need_val_residual) and/or the gradient of the test function (need_grad_residual)
-#define need_val_residual {true, true}
-#define need_grad_residual {true, true}
-
-// =================================================================================
-// Define the model parameters and the residual equations
-// =================================================================================
-// Parameters in the residual equations and expressions for the residual equations
-// can be set here. For simple cases, the entire residual equation can be written
-// here. For more complex cases with loops or conditional statements, residual
-// equations (or parts of residual equations) can be written below in "residualRHS".
-
-// Cahn-Hilliard mobility
-#define McV 1.0
-
-// Allen-Cahn mobility
-#define MnV 150.0
-
-// Allen-Cahn gradient energy coefficient
-#define KnV 0.5
-
-// Free energy for each phase and they're first and second derivatives
-#define faV (-1.6704-4.776*c+5.1622*c*c-2.7375*c*c*c+1.3687*c*c*c*c)
-#define facV (-4.776 + 10.3244*c - 8.2125*c*c + 5.4748*c*c*c)
-#define faccV (10.3244-16.425*c+16.4244*c*c)
-#define fbV (5.0*c*c-5.9746*c-1.5924)
-#define fbcV (10.0*c-5.9746)
-#define fbccV (10.0)
-
-// Interpolation function and its derivative
-#define hV (10.0*n*n*n-15.0*n*n*n*n+6.0*n*n*n*n*n)
-#define hnV (30.0*n*n-60.0*n*n*n+30.0*n*n*n*n)
-
-// Residual equations
-#define muxV ( cx*((1.0-hV)*faccV+hV*fbccV) + nx*((fbcV-facV)*hnV) )
-#define rcV   (c)
-#define rcxV  (constV(-McV*timeStep)*muxV)
-#define rnV  (n-constV(timeStep*MnV)*(fbV-faV)*hnV)
-#define rnxV (constV(-timeStep*KnV*MnV)*nx)
-
-// =================================================================================
-// residualRHS
-// =================================================================================
-// This function calculates the residual equations for each variable. It takes
-// "modelVariablesList" as an input, which is a list of the value and derivatives of
-// each of the variables at a specific quadrature point. The (x,y,z) location of
-// that quadrature point is given by "q_point_loc". The function outputs
-// "modelResidualsList", a list of the value and gradient terms of the residual for
-// each residual equation. The index for each variable in these lists corresponds to
-// the order it is defined at the top of this file (starting at 0).
-template <int dim>
-void generalizedProblem<dim>::residualRHS(const std::vector<modelVariable<dim>> & modelVariablesList,
-	std::vector<modelResidual<dim>> & modelResidualsList,
-	dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
-
-// The concentration and its derivatives (names here should match those in the macros above)
-scalarvalueType c = modelVariablesList[0].scalarValue;
-scalargradType cx = modelVariablesList[0].scalarGrad;
-
-// The order parameter and its derivatives (names here should match those in the macros above)
-scalarvalueType n = modelVariablesList[1].scalarValue;
-scalargradType nx = modelVariablesList[1].scalarGrad;
-
-// Residuals for the equation to evolve the concentration (names here should match those in the macros above)
-modelResidualsList[0].scalarValueResidual = rcV;
-modelResidualsList[0].scalarGradResidual = rcxV;
-
-// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
-modelResidualsList[1].scalarValueResidual = rnV;
-modelResidualsList[1].scalarGradResidual = rnxV;
-
-}
-
-// =================================================================================
-// residualLHS (needed only if at least one equation is elliptic)
-// =================================================================================
-// This function calculates the residual equations for the iterative solver for
-// elliptic equations.for each variable. It takes "modelVariablesList" as an input,
-// which is a list of the value and derivatives of each of the variables at a
-// specific quadrature point. The (x,y,z) location of that quadrature point is given
-// by "q_point_loc". The function outputs "modelRes", the value and gradient terms of
-// for the left-hand-side of the residual equation for the iterative solver. The
-// index for each variable in these lists corresponds to the order it is defined at
-// the top of this file (starting at 0), not counting variables that have
-// "need_val_LHS", "need_grad_LHS", and "need_hess_LHS" all set to "false". If there
-// are multiple elliptic equations, conditional statements should be used to ensure
-// that the correct residual is being submitted. The index of the field being solved
-// can be accessed by "this->currentFieldIndex".
-template <int dim>
-void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim>> & modelVariablesList,
-	modelResidual<dim> & modelRes,
-	dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
-
-}
-
-// =================================================================================
-// energyDensity (needed only if calcEnergy == true)
-// =================================================================================
-// This function integrates the free energy density across the computational domain.
-// It takes "modelVariablesList" as an input, which is a list of the value and
-// derivatives of each of the variables at a specific quadrature point. It also
-// takes the mapped quadrature weight, "JxW_value", as an input. The (x,y,z) location
-// of the quadrature point is given by "q_point_loc". The weighted value of the
-// energy density is added to "energy" variable and the components of the energy
-// density are added to the "energy_components" variable (index 0: chemical energy,
-// index 1: gradient energy, index 2: elastic energy).
-template <int dim>
-void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim>> & modelVariablesList,
-	const dealii::VectorizedArray<double> & JxW_value,
-	dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {
-
-// The concentration and its derivatives (names here should match those in the macros above)
-scalarvalueType c = modelVariablesList[0].scalarValue;
-scalargradType cx = modelVariablesList[0].scalarGrad;
-
-// The order parameter and its derivatives (names here should match those in the macros above)
-scalarvalueType n = modelVariablesList[1].scalarValue;
-scalargradType nx = modelVariablesList[1].scalarGrad;
-
-// The homogenous free energy
-scalarvalueType f_chem = (constV(1.0)-hV)*faV + hV*fbV;
-
-// The gradient free energy
-scalarvalueType f_grad = constV(0.5*KnV)*nx*nx;
-
-// The total free energy
-scalarvalueType total_energy_density;
-total_energy_density = f_chem + f_grad;
-
-// Loop to step through each element of the vectorized arrays. Working with deal.ii
-// developers to see if there is a more elegant way to do this.
-assembler_lock.acquire ();
-for (unsigned i=0; i<c.n_array_elements;i++){
-  if (c[i] > 1.0e-10){
-	  this->energy+=total_energy_density[i]*JxW_value[i];
-	  this->energy_components[0]+= f_chem[i]*JxW_value[i];
-	  this->energy_components[1]+= f_grad[i]*JxW_value[i];
-  }
-}
-assembler_lock.release ();
-}
-\end{lstlisting}
-\normalsize
-
-This file is a bit longer than the parameters file. Unlike the parameters file, the entries in this file vary substantially from application to application.
-
-In the first section of the equations file, the variables in the model are listed and properties regarding the variables and their governing equations are set. The first input, \emph{num\_var}, sets the number of variables in the model system. The second input in the section, \emph{variable\_name}, sets the name of each of the variables. The names, as well as all of the other varable properties below, should be enclosed in quotes and in a comma-separated, bracketed list. The names are used to label the *vtu output file for the field. The third input in this section is for the type of each variable, either ``SCALAR'' or ``VECTOR''.  The fourth input, \emph{variable\_eq\_type}, if for the type of governing partial differential equation for each of the variables. Currently, the two options are ``PARABOLIC'' and ``ELLIPTIC''. The next three inputs in this section, \emph{need\_val},  \emph{need\_grad},  and \emph{need\_hess}, contain true/false flags for whether the value, gradient, or Hessian of that variable is needed in the residual equation. The final two inputs in this section, \emph{need\_val\_residual} and \emph{need\_grad\_residual}, contain true/false flags for whether the residual has terms proportional to the test function (\emph{need\_val\_residual} = true) and/or the the residual has terms proportional to the gradient of the test function (\emph{need\_grad\_residual} = true).
-
-The second section of the equations file contains the definition of some global model parameters and the residual equations. Because the contents of this section vary substantially between applications, we won't explain it line-by-line, as in the previous sections. In the first few statements, several model parameters are set, including mobilities, the gradient energy coefficient, free energies and their derivatives, and the interpolation function and its derivative. Next, the residual expressions are given. 
-
-In PRISMS-PF, the residual equations are expressed in two terms. The first is the part of the integrand that is multiplied by the test function. The second is the part of the integrand that multipled by the gradient of the test function. For the coupled Cahn-Hilliard/Allen-Cahn system, the residual equations are 
+To modify the functions in this file, one needs to be familar with the weak form of the governing equations (hereafter referred to as the residual equations). In PRISMS-PF, the residual equations are expressed in two terms. The first is the part of the integrand that is multiplied by the test function. The second is the part of the integrand that multipled by the gradient of the test function. For the coupled Cahn-Hilliard/Allen-Cahn system, the residual equations are 
 \begin{align}
   \int_{\Omega}   w  \eta^{n+1}  ~dV &=\int_{\Omega}  w  \left( \underbrace{\eta^{n} - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n)}_{r_{\eta}} \right)+ \nabla w \cdot \underbrace{(- \Delta t M_{\eta}\kappa) \nabla \eta^{n}}_{r_{\eta x}} ~dV 
 \end{align}
@@ -891,255 +701,166 @@ and
 \begin{align}
   \int_{\Omega}   w  c^{n+1}  ~dV = &\int_{\Omega}   w \underbrace{c^{n}}_{r_c} \\&+  \nabla w   \underbrace{(-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n+1})+f_{\beta,cc}^n H^{n+1}) \nabla c + ~((f_{\beta,c}^n-f_{\alpha,c}^n)H^{n+1}_{,\eta} \nabla \eta) ] }_{r_{cx}} ~dV
 \end{align}
-for the Allen-Cahn and Cahn-Hilliard equation, respectively. Each of the residual terms is marked with an underbrace. The $r_\eta$ residual term is given by \emph{rnV} in the equations file. The $r_{\eta x}$ residual term is given by \emph{rnxV} in the equations file. Similarly, the $r_c$ and $r_{cx}$ residual terms are given by \emph{rcV} and \emph{rcxV}, respectively.
+for the Allen-Cahn and Cahn-Hilliard equation, respectively. Each of the residual terms is marked with an underbrace. The terms multiplied by the test function are referred to as the value residual terms and the terms multiplied by the gradient of the test function are referred to as the gradient residual terms.
 
-The next section of the equations file contains a C++ function, named \emph{residualRHS} where the residuals at a particular quadrature point are actually calculated. The inputs to this function are a list of the model variable values and derivatives, \emph{modelVariablesList} and a point giving access to (x,y,z) coordinates, \emph{q\_point\_loc}. The output is a list of the residual terms for each variable, \emph{modelResidualsList}. The first few lines of the function set more convienent names for the variables and their derivatives. By convention, the value of the variable is denoted by the variable name (\emph{c} for the concentration and \emph{n} for the structural order parameter in this case), the list of first derivatives is denoted by the variable name followed by an ``x'', and second derivatives are denoted by the variable name followed by ``xx''. Each variable in \emph{modelVariablesList} can be accessed by its index -- determined by the order it was declared at the top of the file, starting at zero. The variable value and the derivatives can be accessed through the \emph{scalarValue},  \emph{scalarGrad}, and \emph{scalarHess} object members for scalar variables and the  \emph{vectorValue},  \emph{vectorGrad}, and \emph{vectorHess} object members for vector variables. The data type for the value of a scalar variable is \emph{scalarvalueType} (a scalar), the data type for the first derivatives of a scalar variable is \emph{scalargradType} (a vector with a length equal to the number of dimensions), and the data type for the second derivatives of a scalar variable is \emph{scalarhessType} (a matrix with a size equal to the number of dimensions by the number of dimensions). For vector variables, the data types are \emph{vectorvalueType} (a vector with length equal to the number of dimensions), \emph{vectorgradType} (a matrix with a size equal to the number of dimensions by the number of dimensions), and \emph{vectorgradType} (a rank-three tensor with a size in each direction equal to the number of dimensions).
+\subsubsection{loadVariableAttributes}
+Here is the \emph{loadVariableAttributes} function for the coupled Allen-Cahn/Cahn-Hilliard example application:
+\scriptsize
+\begin{lstlisting}
+// =================================================================================
+// Set the attributes of the primary field variables
+// =================================================================================
+void variableAttributeLoader::loadVariableAttributes(){
+	// Variable 0
+	set_variable_name		(0,''c'');
+	set_variable_type		(0,SCALAR);
+	set_variable_equation_type	(0,PARABOLIC);
+
+	set_need_value			(0,true);
+	set_need_gradient		(0,true);
+	set_need_hessian		(0,false);
+
+	set_need_value_residual_term	(0,true);
+	set_need_gradient_residual_term	(0,true);
+
+  	// Variable 1
+	set_variable_name		(1,''n'');
+	set_variable_type		(1,SCALAR);
+	set_variable_equation_type	(1,PARABOLIC);
+
+	set_need_value			(1,true);
+	set_need_gradient		(1,true);
+	set_need_hessian		(1,false);
+
+	set_need_value_residual_term	(1,true);
+	set_need_gradient_residual_term	(1,true);
+}
+\end{lstlisting}
+\normalsize
+
+This function specifies the model variables and their attributes. In this case, the two model variables are the concentration, ``c'', and the order parameter, ``n''. Here, ``c'' is listed as the zeroth variable and ``n'' is listed as the first. For each variable, a series of attributes are set using a series of C++ function calls. The following table lists the functions and a description of the attributes they set:
+
+\footnotesize
+\begin{center}
+    \begin{tabular}{ | p{0.25\textwidth} | p{0.13\textwidth}| p{0.08\textwidth} | p{0.11\textwidth} | p{0.29\textwidth} |}
+    \hline
+    \emph{Function}  & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
+    set\_variable\_name & String & no & var  & Sets the name of the variable. This name is used in `parameters.in' as well as during output. \\ \hline
+    set\_variable\_type & SCALAR, VECTOR & no & SCALAR  & Sets whether the variable is a scalar or a vector. \\ \hline
+    set\_variable\_equation\_type & PARABOLIC, ELLIPTIC & no & PARABOLIC  & Sets whether the govenring equation for the variable is a parabolic or ellpitic PDE. \\ \hline
+    set\_need\_value & Boolean & no & true  & Sets whether the value of the variable is needed in the function \emph{residualRHS} below. \\ \hline
+    set\_need\_gradient & Boolean & no & true & Sets whether the gradient of the variable is needed in the function \emph{residualRHS} below. \\ \hline
+    set\_need\_hessian & Boolean & no & false & Sets whether the hessian of the variable is needed in the function \emph{residualRHS} below. \\ \hline
+    set\_need\_need\_value \_residual\_term & Boolean & no & false & Sets whether the residual equation has a value residual term. \\ \hline
+    set\_need\_need\_gradient \_residual\_term & Boolean & no & false & Sets whether the residual equation has a gradient residual term. \\ \hline
+    set\_need\_value\_LHS & Boolean & no & false  & Sets whether the value of the variable is needed in the function \emph{residualLHS} below. (Only needed for elliptic PDEs). \\ \hline
+    set\_need\_gradient\_LHS & Boolean & no & false & Sets whether the gradient of the variable is needed in the function \emph{residualLHS} below. (Only needed for elliptic PDEs). \\ \hline
+    set\_need\_hessian\_LHS & Boolean & no & false & Sets whether the hessian of the variable is needed in the function \emph{residualLHS} below. (Only needed for elliptic PDEs). \\ \hline
+    set\_need\_need\_value \_residual\_term\_LHS & Boolean & no & false & Sets whether the LHS residual equation has a value residual term. (Only needed for elliptic PDEs). \\ \hline
+    set\_need\_need\_gradient \_residual\_term\_LHS & Boolean & no & false & Sets whether the LHS residual equation has a gradient residual term. (Only needed for elliptic PDEs). \\ \hline
+    set\_allowed\_to\_nucleate & Boolean & no & false & Sets whether the nucleation algorithms should be activated for this variable. (Only needed when nucleation is desired). \\ \hline
+    set\_need\_value\_nucleation & Boolean & no & false & Sets whether the value of the variable is needed to calculate the nucleation probability in the `nucleation.h' file. (Only needed when nucleation is desired). \\ \hline
+    \end{tabular}
+\end{center}
+\normalsize
+
+\footnotesize
+\begin{center}
+    \begin{tabular}{ | p{0.25\textwidth} | p{0.13\textwidth}| p{0.08\textwidth} | p{0.11\textwidth} | p{0.29\textwidth} |}
+    \hline
+    \emph{Function}  & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
+    set\_need\_value\_pp & Boolean & no & true  & Sets whether the value of the variable is needed in the function \emph{postProcessedFields} in `postprocess.h'. \\ \hline
+    set\_need\_gradient\_pp & Boolean & no & true & Sets whether the gradient of the variable is needed in the function \emph{postProcessedFields} in `postprocess.h'. \\ \hline
+    set\_need\_hessian\_pp & Boolean & no & true & Sets whether the hessian of the variable is needed in the function \emph{postProcessedFields} in `postprocess.h'. \\ \hline
+    \end{tabular}
+\end{center}
+\normalsize
+
+Some of these function calls are not present in the `equations.h' file for the coupledCahnHilliardAllenCahn application. Use of the LHS function calls can be found in the preciptiateEvolution application (among others) and use the nucleation function calls can be found the nucleationModel and preferential\_nucleationModel applications.
+
+\subsubsection{residualRHS}
+Here is the \emph{residualRHS} function for the coupled Allen-Cahn/Cahn-Hilliard example application:
+\scriptsize
+\begin{lstlisting}
+// =================================================================================
+// residualRHS
+// =================================================================================
+// This function calculates the residual equations for each variable. It takes
+// "variable_list" as an input, which is a list of the value and derivatives of
+// each of the variables at a specific quadrature point. The (x,y,z) location of
+// that quadrature point is given by "q_point_loc". The function outputs residuals
+// to variable_list. The index for each variable in this list corresponds to
+// the index given at the top of this file.
+template <int dim, int degree>
+void customPDE<dim,degree>::residualRHS(
+		variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+		 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+
+//c
+scalarvalueType c = variable_list.get_scalar_value(0);
+scalargradType cx = variable_list.get_scalar_gradient(0);
+
+//n
+scalarvalueType n = variable_list.get_scalar_value(1);
+scalargradType nx = variable_list.get_scalar_gradient(1);
+
+// Free energy for each phase and their first and second derivatives
+scalarvalueType faV = (-1.6704-4.776*c+5.1622*c*c-2.7375*c*c*c+1.3687*c*c*c*c);
+scalarvalueType facV = (-4.776 + 10.3244*c - 8.2125*c*c + 5.4748*c*c*c);
+scalarvalueType faccV = (10.3244-16.425*c+16.4244*c*c);
+scalarvalueType fbV = (5.0*c*c-5.9746*c-1.5924);
+scalarvalueType fbcV = (10.0*c-5.9746);
+scalarvalueType fbccV = constV(10.0);
+
+// Interpolation function and its derivative
+scalarvalueType hV = (10.0*n*n*n-15.0*n*n*n*n+6.0*n*n*n*n*n);
+scalarvalueType hnV = (30.0*n*n-60.0*n*n*n+30.0*n*n*n*n);
+
+// Residual equations
+scalargradType muxV = ( cx*((1.0-hV)*faccV+hV*fbccV) + nx*((fbcV-facV)*hnV) );
+scalarvalueType rcV = c;
+scalargradType rcxV = (constV(-McV*userInputs.dtValue)*muxV);
+scalarvalueType rnV = (n-constV(userInputs.dtValue*MnV)*(fbV-faV)*hnV);
+scalargradType rnxV = (constV(-userInputs.dtValue*KnV*MnV)*nx);
+
+// Residuals for the equation to evolve the concentration 
+variable_list.set_scalar_value_residual_term(0,rcV);
+variable_list.set_scalar_gradient_residual_term(0,rcxV);
+
+// Residuals for the equation to evolve the order parameter
+variable_list.set_scalar_value_residual_term(1,rnV);
+variable_list.set_scalar_gradient_residual_term(1,rnxV);
+
+}
+\end{lstlisting}
+\normalsize
+
+In this function the residuals at a particular quadrature point are calculated. The inputs to this function are a list of the model variable values and derivatives, \emph{variable\_list} and a point giving access to (x,y,z) coordinates, \emph{q\_point\_loc}. The residual terms are added to \emph{variable\_list} as the output. The first few lines of the function set more convienent names for the variables and their derivatives. By convention, the value of the variable is denoted by the variable name (\emph{c} for the concentration and \emph{n} for the structural order parameter in this case), the list of first derivatives is denoted by the variable name followed by an ``x'', and second derivatives are denoted by the variable name followed by ``xx''. Each variable in \emph{variable} can be accessed by the index it was given in \emph{loadVariableAttributes}. The variable value and the derivatives can be accessed through the \emph{get\_scalar\_value},  \emph{get\_scalar\_gradient}, and \emph{get\_scalar\_hessian} object members for scalar variables and the  \emph{get\_vector\_value},  \emph{get\_vector\_gradient}, and \emph{get\_vector\_hessian} functions. The data type for the value of a scalar variable is \emph{scalarvalueType} (a scalar), the data type for the first derivatives of a scalar variable is \emph{scalargradType} (a vector with a length equal to the number of dimensions), and the data type for the second derivatives of a scalar variable is \emph{scalarhessType} (a matrix with a size equal to the number of dimensions by the number of dimensions). For vector variables, the data types are \emph{vectorvalueType} (a vector with length equal to the number of dimensions), \emph{vectorgradType} (a matrix with a size equal to the number of dimensions by the number of dimensions), and \emph{vectorgradType} (a rank-three tensor with a size in each direction equal to the number of dimensions).
+
+After the nicknames for the field variables are set, the residual terms are calculated (including some intermediate variables, such as the free energies and the interpolation functions in the example above). These use the same six data types discussed in the preceding paragraph. The model variables given in `parameters.h' can be used to define the residual terms.
+
+Finally, the residuals for the governing equations are submitted to \emph{variable\_list}, using the functions \emph{set\_scalar\_value\_residual\_term}, \emph{set\_scalar\_gradient\_residual\_term}, \emph{set\_vector\_value\_residual\_term}, and \emph{set\_vector\_gradient\_residual\_term}, once again referring the variables by their index.
+
+The nickname step can be skipped, if desired, although the code is generally more readable with nicknames (and the performance overhead is minimal). An example without nicknames for the fields can be found in the grainGrowth application, where loops over the ten variables are easier to construct when not declaring all of the variables at once. One word of caution, though: calling \emph{set\_scalar\_value\_residual\_term} and \emph{set\_scalar\_gradient\_residual\_term} overwrites the value and gradient of the variable, respectively (and same for the variants for vectors). Thus, either the residuals need to be cached and then set after all the residuals have been calculated (as is done in the grainGrowth application) or the values and gradients need to be cached before setting the residuals (as is done with the standard nicknaming approach). 
 
 \fbox{
 \parbox{\textwidth}{
 \textbf{A Note on Types:} The deal.II library uses a data structure called a VectorizedArray to store the variable values and their derivatives. This data structured in optimized for modern vectorized processors, giving a substantial speedup in some cases. However, this data structure can complicate things slightly. One complicating factor is that VectorizedArrays can't always be added, subtracted, multiplied, or divided with more standard data types like doubles. For this reason, you will see the ``constV(arguement)'' function scattered throughout the code. This function turns a non-VectorizedArray into a VectorizedArray. To be safe, you can always encase non-VectorizedArrays with ``constV()'' when they share an operation with a VectorizedArray. A second complication is that not all of the standard mathematical operations are available for VectorizedArrays. The basic trigonometric functions are available, as are exponentials and square roots. However, hyperbolic tangents are not. If needed, they must be constructed from exponents. A third complication is that conditional statements involving VectorizedArrays are not allowed. VectorizedArrays contain data from multiple points that the processor operates on at once. Under normal conditions a conditional statement could only be applied to one of the points in the VectorizedArray. There are possible ways to break up the VectorizedArrays and work on the pieces of data individually, but this approach is not recommended for most users. Clever use of ``max'' and ``min'' functions (which do exist for VectorizedArrays) may be able to take the place of a conditional statement. For more details on the deal.II implementation of VectorizedArrays (including a list of mathematical operations that are allowed), please visit: \\
 https://www.dealii.org/8.4.0/doxygen/deal.II/classVectorizedArray.html}}
 
-The names given to the variable values and derivatives in \emph{residualRHS} should match what is used in the residual equations earlier in the file. Looking at the free energies, interpolation function, and the residuals, you see that \emph{c}, \emph{cx}, \emph{n}, and \emph{nx} are used repeatedly. Those usages refer to the variables defined in \emph{residualRHS}.
+\subsubsection{residualLHS}
+In the coupledCahnHilliardAllenCahn, the \emph{residualLHS} function is empty because it is only needed for elliptic PDEs (or more specifically, when a non-trivial matrix inversion needs to be performed). Here is the \emph{residualLHS} function from the precipitateEvolution application, where the equation for mechanical equilibrium is elliptic.
 
-After the names for the variable values and derivatives are set, you can add any terms that are too complicated to write as a macro up at the top of the file. Such terms would be terms with loops or conditional statements, or terms that warrant intermediate variables. The coupled Allen-Cahn/Cahn-Hilliard application is simple enough that it doesn't contain any such terms. Later in this section you will see that the Precipitate Evolution application does.
+From the formulation file in the precipitateEvolution application, the residual equation for the mechanical displacement is:
+\begin{gather}
+R =  \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \epsilon - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0 
+\end{gather}
 
-In the final part of this section, the residuals that were defined earlier in the file are used to set the residual terms in \emph{modelResidualsList}. Like \emph{modelVariablesList}, each residual is accessed by the index of the corresponding variable. The parts of the residual multipled by the test function and the gradient of the test function are accessed through the \emph{scalarValueResidual} and  \emph{scalarGradResidual} members for scalar variables and the \emph{vectorValueResidual} and  \emph{vectorGradResidual} members for vector variables.
-
-The next section is the function \emph{residualLHS}. This function is only needed for systems of equations with at least one elliptic equation. The coupled Cahn-Hilliard/Allen-Cahn system doesn't have an elliptic equation, so it is left blank. You'll see \emph{residualLHS} in action below in the Precipitate Evolution application.
-
-The final section of the equations file is a function that calculates the total free energy of the system. This function is set up very similarly to \emph{residualRHS}, starting with assigning convenient names to the variable names and derivatives in \emph{modelVariablesList}. The difference is that instead of building up the residual equations, in this function one constructs the free energy density. In the code above, the homogenous free energy and gradient free energy are summed to get the total free energy density. At the bottom of the function is a loop to multiply the free energy density at a quadrature point by the mapped quadrature weight (given by \emph{JxW\_value}) and add that to the global energy. This portion of the code is a bit dirty -- we're working with the deal.ii developers to find a better way to integrate the free energy density to get the free energy.
-
-
-\subsubsection{Systems with Elliptic Equations and Mechanical Properties}
-The equations file for the Precipitate Evolution example application is considerably more complex than the one for the  coupled Cahn-Hilliard/Allen-Cahn example application. Three important differences is that the system of equations contains an elliptic equation, it needs mechanical properties defined, and it constructs some of the terms in the residual in \emph{residualRHS}. Here are some excerpts of the equations file from the Precipitate Evolution example application:
-\tiny
-\begin{lstlisting}
-// List of variables and residual equations for the Precipitate Evolution example application
-
-// =================================================================================
-// Define the variables in the model
-// =================================================================================
-// The number of variables
-#define num_var 5
-
-// The names of the variables, whether they are scalars or vectors and whether the
-// governing eqn for the variable is parabolic or elliptic
-#define variable_name {"c", "n1", "n2", "n3", "u"}
-#define variable_type {"SCALAR","SCALAR","SCALAR","SCALAR","VECTOR"}
-#define variable_eq_type {"PARABOLIC","PARABOLIC","PARABOLIC","PARABOLIC","ELLIPTIC"}
-
-// Flags for whether the value, gradient, and Hessian are needed in the residual eqns
-#define need_val {true, true, true, true, false}
-#define need_grad {true, true, true, true, true}
-#define need_hess {false, false, false, false, false}
-
-// Flags for whether the residual equation has a term multiplied by the test function
-// (need_val_residual) and/or the gradient of the test function (need_grad_residual)
-#define need_val_residual {true, true, true, true, false}
-#define need_grad_residual {true, true, true, true, true}
-
-// Flags for whether the value, gradient, and Hessian are needed in the residual eqn
-// for the left-hand-side of the iterative solver for elliptic equations
-#define need_val_LHS {false, true, true, true, false}
-#define need_grad_LHS {false, false, false, false, true}
-#define need_hess_LHS {false, false, false, false, false}
-
-// Flags for whether the residual equation for the left-hand-side of the iterative
-// solver for elliptic equations has a term multiplied by the test function
-// (need_val_residual) and/or the gradient of the test function (need_grad_residual)
-#define need_val_residual_LHS {false, false, false, false, false}
-#define need_grad_residual_LHS {false, false, false, false, true}
-
-// =================================================================================
-// Define the model parameters and the residual equations
-// =================================================================================
-// Parameters in the residual equations and expressions for the residual equations
-// can be set here. For simple cases, the entire residual equation can be written
-// here. For more complex cases with loops or conditional statements, residual
-// equations (or parts of residual equations) can be written below in "residualRHS".
-
-[...]
-
-// Define mechanical properties
-#define n_dependent_stiffness true
-// Mechanical symmetry of the material and stiffness parameters
-// If n_dependent_stiffness == false the first entry is used for all phases
-#define MaterialModels {{"ISOTROPIC"},{"ISOTROPIC"}}
-#define MaterialConstants {{2.0,0.3},{2.5,0.3}}
-
-[...]
-
-// Residual equations
-#define rcV   (c)
-#define rcxTemp ( cx*((1.0-h1V-h2V-h3V)*faccV+(h1V+h2V+h3V)*fbccV) 
-			+ n1x*((fbcV-facV)*hn1V) + n2x*((fbcV-facV)*hn2V) + n3x*((fbcV-facV)*hn3V) + grad_mu_el)
-#define rcxV  (constV(-timeStep*McV)*rcxTemp)
-
-#define rn1V   (n1-constV(timeStep*Mn1V)*((fbV-faV)*hn1V+nDependentMisfitAC1+heterMechAC1))
-#define rn2V   (n2-constV(timeStep*Mn2V)*((fbV-faV)*hn2V+nDependentMisfitAC2+heterMechAC2))
-#define rn3V   (n3-constV(timeStep*Mn3V)*((fbV-faV)*hn3V+nDependentMisfitAC3+heterMechAC3))
-#define rn1xV  (constV(-timeStep*Mn1V)*Knx1)
-#define rn2xV  (constV(-timeStep*Mn2V)*Knx2)
-#define rn3xV  (constV(-timeStep*Mn3V)*Knx3)
-
-// =================================================================================
-// residualRHS
-// =================================================================================
-// This function calculates the residual equations for each variable. It takes
-// "modelVariablesList" as an input, which is a list of the value and derivatives of
-// each of the variables at a specific quadrature point. The (x,y,z) location of
-// that quadrature point is given by "q_point_loc". The function outputs
-// "modelResidualsList", a list of the value and gradient terms of the residual for
-// each residual equation. The index for each variable in these lists corresponds to
-// the order it is defined at the top of this file (starting at 0).
-template <int dim>
-void generalizedProblem<dim>::residualRHS(const std::vector<modelVariable<dim>> & modelVariablesList,
-			std::vector<modelResidual<dim>> & modelResidualsList,
-			dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
-
-// The concentration and its derivatives (names here should match those in the macros above)
-scalarvalueType c = modelVariablesList[0].scalarValue;
-scalargradType cx = modelVariablesList[0].scalarGrad;
-
-// The first order parameter and its derivatives (names here should match those in the macros above)
-scalarvalueType n1 = modelVariablesList[1].scalarValue;
-scalargradType n1x = modelVariablesList[1].scalarGrad;
-
-// The second order parameter and its derivatives (names here should match those in the macros above)
-scalarvalueType n2 = modelVariablesList[2].scalarValue;
-scalargradType n2x = modelVariablesList[2].scalarGrad;
-
-
-// The third order parameter and its derivatives (names here should match those in the macros above)
-scalarvalueType n3 = modelVariablesList[3].scalarValue;
-scalargradType n3x = modelVariablesList[3].scalarGrad;
-
-// The derivative of the displacement vector (names here should match those in the macros above)
-vectorgradType ux = modelVariablesList[4].vectorGrad;
-vectorgradType ruxV;
-
-[...]
-
-if (n_dependent_stiffness == true){
-dealii::VectorizedArray<double> sum_hV;
-sum_hV = h1V+h2V+h3V;
-for (unsigned int i=0; i<2*dim-1+dim/3; i++){
-	  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-		  CIJ_combined[i][j] = this->userInputs.CIJ_list[0][i][j]*(constV(1.0)-sum_hV) 
-		  					+ this->userInputs.CIJ_list[1][i][j]*sum_hV;
-	  }
-}
-computeStress<dim>(CIJ_combined, E2, S);
-}
-else{
-computeStress<dim>(this->userInputs.CIJ_list[0], E2, S);
-}
-
-// Fill residual corresponding to mechanics
-// R=-C*(E-E0)
-
-for (unsigned int i=0; i<dim; i++){
-for (unsigned int j=0; j<dim; j++){
-	  ruxV[i][j] = - S[i][j];
-}
-}
-
-[...]
-
-modelResidualsList[0].scalarValueResidual = rcV;
-modelResidualsList[0].scalarGradResidual = rcxV;
-
-modelResidualsList[1].scalarValueResidual = rn1V;
-modelResidualsList[1].scalarGradResidual = rn1xV;
-
-modelResidualsList[2].scalarValueResidual = rn2V;
-modelResidualsList[2].scalarGradResidual = rn2xV;
-
-modelResidualsList[3].scalarValueResidual = rn3V;
-modelResidualsList[3].scalarGradResidual = rn3xV;
-
-modelResidualsList[4].vectorGradResidual = ruxV;
-
-}
-
-// =================================================================================
-// residualLHS (needed only if at least one equation is elliptic)
-// =================================================================================
-// This function calculates the residual equations for the iterative solver for
-// elliptic equations.for each variable. It takes "modelVariablesList" as an input,
-// which is a list of the value and derivatives of each of the variables at a
-// specific quadrature point. The (x,y,z) location of that quadrature point is given
-// by "q_point_loc". The function outputs "modelRes", the value and gradient terms of
-// for the left-hand-side of the residual equation for the iterative solver. The
-// index for each variable in these lists corresponds to the order it is defined at
-// the top of this file (starting at 0), not counting variables that have
-// "need_val_LHS", "need_grad_LHS", and "need_hess_LHS" all set to "false". If there
-// are multiple elliptic equations, conditional statements should be used to ensure
-// that the correct residual is being submitted. The index of the field being solved
-// can be accessed by "this->currentFieldIndex".
-template <int dim>
-void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim>> & modelVariablesList,
-		modelResidual<dim> & modelRes,
-		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
-
-//n1
-scalarvalueType n1 = modelVariablesList[0].scalarValue;
-
-//n2
-scalarvalueType n2 = modelVariablesList[1].scalarValue;
-
-
-//n3
-scalarvalueType n3 = modelVariablesList[2].scalarValue;
-
-//u
-vectorgradType ux = modelVariablesList[3].vectorGrad;
-vectorgradType ruxV;
-
-// Take advantage of E being simply 0.5*(ux + transpose(ux)) and use the dealii "symmetrize" function
-dealii::Tensor<2, dim, dealii::VectorizedArray<double> > E;
-E = symmetrize(ux); 
-
-// Compute stress tensor (which is equal to the residual, ruxV)
-if (n_dependent_stiffness == true){
-	dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ_combined;
-	CIJ_combined = this->userInputs.CIJ_list[0]*(constV(1.0)-h1V-h2V-h3V) + this->userInputs.CIJ_list[1]*(h1V+h2V+h3V);
-
-	computeStress<dim>(CIJ_combined, E, ruxV);
-}
-else{
-	computeStress<dim>(this->userInputs.CIJ_list[0], E, ruxV);
-}
-
-modelRes.vectorGradResidual = ruxV;
-
-}
-
-[...]
-\end{lstlisting} \normalsize
-
-Because the system of equations in Precipitate Evolution contains an elliptic equation, new sections of the code are needed. In the declaration of the variables in the system of equations at the top of the file, five new variables are needed: \emph{need\_val\_LHS}, \emph{need\_grad\_LHS}, \emph{need\_hess\_LHS}, \emph{need\_val\_residual\_LHS}, and \emph{need\_grad\_residual\_LHS}. Like the flags for \emph{residualRHS}, these flags are set based on the need for the value, first derivatives, second derivatives of the variables and whether each of the two types of residual terms are needed, this time for the residual equations for the left-hand-side of the iterative solver for the elliptic equation(s). Here you also see an example of the declaration of a vector model variable (the displacement field in this case).
-
- In the second section of the file, two variables related to the mechanical properties of the materials are set: \emph{MaterialModels} and \emph{MaterialConstants}. The variable \emph{MaterialModels} contains a list of the symmetry of the stiffness tensor for all of the materials in the system. The options are: ``ISOTROPIC'', ``TRANSVERSE'', ``ORTHOTROPIC'', and ``ANISOTROPIC''. The symmetry for each material should be an upper-case string encased in quotes and brackets. The list is then put into a comma-separated, bracketed list. The variable \emph{MaterialConstants} must give enough information to build the full stiffness matrix for the material. The number of constants and their meaning is different for different symmetry types:
- \begin{itemize}
-\item ISOTROPIC (2D/3D): 2 constants \{Young's Modulus, Poisson's Ratio\}
-\item TRANSVERSE (3D): 5 constants \{C$_{11}$, C$_{33}$, C$_{44}$, C$_{12}$, C$_{13}$\}
-\item ORTHOTROPIC (3D): 9 constants \{C$_{11}$, C$_{22}$, C$_{33}$, C$_{44}$, C$_{55}$, C$_{66}$, C$_{12}$, C$_{13}$, C$_{23}$\}
-\item ANISOTROPIC (3D): 21 constants \{C$_{11}$, C$_{22}$, C$_{33}$, C$_{44}$, C$_{55}$, C$_{66}$, C$_{12}$, C$_{13}$, C$_{14}$, C$_{15}$, C$_{16}$, C$_{23}$, C$_{24}$, C$_{25}$, C$_{26}$, C$_{34}$, C$_{35}$, C$_{36}$, C$_{45}$, C$_{46}$, C$_{56}$\}
-\item ANISOTROPIC (2D): 6 constants \{C$_{11}$, C$_{22}$, C$_{66}$, C$_{12}$, C$_{16}$, C$_{26}$\}
-\end{itemize}
-where C$_{ij}$ refers to elements of the stiffness matrix.
-
-Still in the second section of the file, the residual terms for the Cahn-Hilliard equation and three Allen-Cahn equations are set. The residual term for the displacement field isn't set here. It won't be set until the next section, inside \emph{residualRHS}.
-
-The third section of the file is the function \emph{residualRHS}. In the code excerpt above, there are several references to the variable \emph{this->userInputs.CIJ\_list}. This is a vector of the stiffness matrices generated from the \emph{MaterialModels} and \emph{MaterialConstants} inputs. The first index for \emph{CIJ\_list} denotes the position in the list (i.e. 0 for the first material properties given in \emph{MaterialModels} and \emph{MaterialConstants}, 1 for the second material properties given, etc.). The individual elements of the stiffness matrix are accessed using the second and third indices. Therefore, if you wanted to access the C$_{12}$ element for the first material in the list, you could access it through \emph{CIJ\_list}[0][1][2]. This example application also shows that the residuals can be defined in \emph{residualsRHS} instead of as a macro in the second section of the file. The variable \emph{ruxV} is set to minus the stress on an element-by-element basis. The \emph{ruxV} residual is treated the same as the other residual terms at the end of the function, where they are loaded into \emph{modelResidualsList}.
-
-Unlike the coupled Cahn-Hilliard/Allen-Cahn example application, the Precipitate Evolution example application has calculations inside \emph{residualLHS}.  This function contains the residual on the left-hand-side of equation for the iterative solution of an elliptic equation using a conjugate gradient solver. The solution $u$ is found through the following expression, given an initial guess $u_0$: 
+To turn this equation into a matrix inversion problem, we can linearize it with Newton's method. (It can also be directly written as a matrix inversion problem. For historical purposes we do the linearization and for some mundane reasons, non-zero Dirichlet boundary conditions do not currently work with that approach. Therefore, for the meantime, we recommend the approach below.) The solution $u$ is found through the following expression, given an initial guess $u_0$: 
 \begin{gather}
 0 = R(u) = R(u_0 + \Delta u)
 \end{gather}
-where $\Delta u = u - u_0$. Then, applying the discretization that $u = \sum_i w^i U^i$, we can write the following linearization:
+where $\Delta u = u - u_0$. Then, applying the discretization that $u = \sum_i N^i U^i$, where $N^i$ is the i$^{th}$ shape function, we can write the following linearization:
 \begin{equation}
 \frac{\delta R(u)}{\delta u} \Delta U = -R(u_0) \label{matrix_eqn}
 \end{equation}
@@ -1160,169 +881,152 @@ Moving back to the non-discretized form yields:
 \end{equation}
 Thus, the full equation relating $u_0$ and $\Delta u$ is:
 \begin{equation}
-\int_{\Omega} \nabla w : \underbrace{C : \nabla (\Delta u)}_{r_{ux}^{LHS}} dV = -\int_{\Omega}   \nabla w : \underbrace{\sigma}_{r_{ux}} ~dV
+\int_{\Omega} \nabla w : \underbrace{C : \nabla (\Delta u)}_{r_{ux}^{LHS}} dV = -\int_{\Omega}   \nabla w : \underbrace{(\epsilon-\epsilon^0)}_{r_{ux}} ~dV
 \end{equation}
 The above values of $r_{ux}^{LHS}$ and $r_{ux}$ are used to define the residuals in the equations.h file. A similar process can be undertaken for other elliptic problems.
 
-Like \emph{residualRHS}, \emph{residualLHS} takes \emph{modelVariablesList} and  \emph{q\_point\_loc} as inputs. However, because only one elliptic equation is solved at a time, the output is a single residual variable, \emph{modelRes}. As in \emph{residualRHS}, the model variable values and derivatives are given convienent names at the start of the file. In \emph{residualLHS}, \emph{modelVariablesList} only contains variables where at least one of \emph{need\_val\_LHS}, \emph{need\_grad\_LHS}, or \emph{need\_hess\_LHS} is ``true''. In this example, only the three structural order parameters (n1, n2, and n3) and the displacement field (u) are needed to calculate the LHS residual. Therefore, the indices are shifted from those in \emph{residualRHS}, since the concentration at index 0 isn't needed. Similar to \emph{residualRHS}, the value of \emph{ruxV} is set and then used to update the appropriate member of \emph{modelRes} (in this case \emph{vectorGradResidual}).
+The \emph{residualLHS} function from the preciptiateEvolution application is:
+\scriptsize
+\begin{lstlisting}
+// =================================================================================
+// residualLHS (needed only if at least one equation is elliptic)
+// =================================================================================
+// This function calculates the residual equations for the iterative solver for
+// elliptic equations.for each variable. It takes "modelVariablesList" as an input,
+// which is a list of the value and derivatives of each of the variables at a
+// specific quadrature point. The (x,y,z) location of that quadrature point is given
+// by "q_point_loc". The function outputs "modelRes", the value and gradient terms of
+// for the left-hand-side of the residual equation for the iterative solver. The
+// index for each variable in these lists corresponds to the order it is defined at
+// the top of this file (starting at 0), not counting variables that have
+// "need_val_LHS", "need_grad_LHS", and "need_hess_LHS" all set to "false". If there
+// are multiple elliptic equations, conditional statements should be used to ensure
+// that the correct residual is being submitted. The index of the field being solved
+// can be accessed by "this->currentFieldIndex".
+template <int dim, int degree>
+void customPDE<dim,degree>::residualLHS(
+	variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+	dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-If multiple elliptic equations need to be solved, you will need to use conditional statements to calculate the proper residual depending on the elliptic equation being solved. The index of the field being solved can be accessed using the ``this-$>$currentFieldIndex'' statement. This index refers to the variable's overall order in the declaration, \textbf{not} the index used for \emph{modelVariablesList} in \emph{residualLHS}.
+//n1
+scalarvalueType n1 = variable_list.get_scalar_value(1);
 
-\subsection{ICs\_and\_BCs.h} \label{icsandbcs}
-The final file that most users will interact with is the initial conditions and boundary conditions file, ``ICs\_and\_BCs.h''. The first two functions in the file, \emph{InitialCondition} and \emph{InitialConditionVec} are used to set the initial conditions for scalar and vector variables, respectively. The third function, \emph{setBCs}, sets the boundary conditions for all of the model variables. Here's a look at ``ICs\_and\_BCs.h'' for the coupled Allen-Cahn/Cahn-Hilliard example application:
-\tiny
+//n2
+scalarvalueType n2 = variable_list.get_scalar_value(2);
+
+//n3
+scalarvalueType n3 = variable_list.get_scalar_value(3);
+
+//u
+vectorgradType ux = variable_list.get_vector_gradient(4);
+vectorgradType ruxV;
+
+// Interpolation functions
+
+scalarvalueType h1V = (10.0*n1*n1*n1-15.0*n1*n1*n1*n1+6.0*n1*n1*n1*n1*n1);
+scalarvalueType h2V = (10.0*n2*n2*n2-15.0*n2*n2*n2*n2+6.0*n2*n2*n2*n2*n2);
+scalarvalueType h3V = (10.0*n3*n3*n3-15.0*n3*n3*n3*n3+6.0*n3*n3*n3*n3*n3);
+
+// Take advantage of E being simply 0.5*(ux + transpose(ux)) and use the dealii "symmetrize" function
+dealii::Tensor<2, dim, dealii::VectorizedArray<double> > E;
+E = symmetrize(ux);
+
+// Compute stress tensor (which is equal to the residual, Rux)
+if (n_dependent_stiffness == true){
+	dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ_combined;
+	CIJ_combined = CIJ_Mg*(constV(1.0)-h1V-h2V-h3V) + CIJ_Beta*(h1V+h2V+h3V);
+
+	computeStress<dim>(CIJ_combined, E, ruxV);
+}
+else{
+	computeStress<dim>(CIJ_Mg, E, ruxV);
+}
+
+variable_list.set_vector_gradient_residual_term(4,ruxV);
+
+}
+
+\end{lstlisting}
+\normalsize
+
+Like \emph{residualRHS}, \emph{residualLHS} takes \emph{variables\_list} and  \emph{q\_point\_loc} as inputs. However, because only one elliptic equation is solved at a time, the output are the residual terms for a single residual. As in \emph{residualRHS}, the model variable values and derivatives are given convienent names at the start of the file. Similar to \emph{residualRHS}, the value of \emph{ruxV} is set and then used to set the appropriate residual for \emph{variables\_list} (in this case the vector residual term for the fourth variable).
+
+If multiple elliptic equations need to be solved, you will need to use conditional statements to calculate the proper residual depending on the elliptic equation being solved. The index of the field being solved can be accessed using the ``this-$>$currentFieldIndex'' statement. 
+
+\subsection{IC\_and\_BCs.h}
+The `ICs\_and\_BCs.h' file contains four functions: \emph{InitialCondition}, \emph{InitialConditionVec}, \emph{NonUniformDirichletBC}, and \emph{NonUniformDirichletBCVec}. The first two functions in the file are used to set the initial conditions for scalar and vector variables, respectively, while the third and fourth functions set non-uniform Dirichlet boundary conditions for scalar and vector variables, respectively. For all of these functions, most users should only need to modify the sections between the lines.  
+
+\subsubsection{InitialCondition and InitialConditionVec}
+Here's a look at the \emph{InitialCondition} function for the coupled Allen-Cahn/Cahn-Hilliard example application:
+\scriptsize
 \begin{lstlisting}
 template <int dim>
-class InitialCondition : public Function<dim>
+double InitialCondition<dim>::value (const Point<dim> &p, const unsigned int component) const
 {
-public:
-  unsigned int index;
-  Vector<double> values;
-  InitialCondition (const unsigned int _index) : Function<dim>(1), index(_index) {
-    std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
-  }
-  double value (const Point<dim> &p, const unsigned int component = 0) const
-  {
 	  double scalar_IC = 0;
-	  // =====================================================================
+	  // --------------------------------------------------------------------------
 	  // ENTER THE INITIAL CONDITIONS HERE FOR SCALAR FIELDS
-	  // =====================================================================
+	  // --------------------------------------------------------------------------
 	  // Enter the function describing conditions for the fields at point "p".
 	  // Use "if" statements to set the initial condition for each variable
 	  // according to its variable index.
 
-	  double dx=spanX/((double) subdivisionsX)/std::pow(2.0,refineFactor);
-	  double r=0.0;
+	  // The initial condition is two circles/spheres defined
+	  // by a hyperbolic tangent function. The center of each circle/sphere is
+	  // given by "center" and its radius is given by "rad".
 
-	  // Initial condition for the concentration field
+	  double center[2][3] = {{1.0/3.0,1.0/3.0,1.0/3.0},{3.0/4.0,3.0/4.0,3.0/4.0}};
+	  double rad[12] = {userInputs.domain_size[0]/5.0, userInputs.domain_size[0]/12.0};
+	  double dist;
+	  scalar_IC = 0;
+
 	  if (index == 0){
-		  if (dim == 2){
-			  r=p.distance(Point<dim>(spanX/3.0,spanY/3.0));
-			  scalar_IC = 0.009+0.5*(0.125)*(1.0-std::tanh((r-spanX/5.0)/(3*dx)));
-			  r=p.distance(Point<dim>(3.0*spanX/4.0,3.0*spanY/4.0));
-			  scalar_IC += 0.5*(0.125)*(1.0-std::tanh((r-spanX/12.0)/(3*dx)));
-		  }
-		  else if (dim == 3) {
-			  r=p.distance(Point<dim>(spanX/3.0,spanY/3.0,spanZ/3.0));
-			  scalar_IC = 0.009+0.5*(0.125)*(1.0-std::tanh((r-spanX/5.0)/(3*dx)));
-			  r=p.distance(Point<dim>(3.0*spanX/4.0,3.0*spanY/4.0,3.0*spanZ/4.0));
-			  scalar_IC += 0.5*(0.125)*(1.0-std::tanh((r-spanX/12.0)/(3*dx)));
-		  }
-
+		  scalar_IC = 0.009;
 	  }
-	  // Initial condition for the structural order parameter field
-	  else {
-		  if (dim == 2){
-			  r=p.distance(Point<dim>(spanX/3.0,spanY/3.0));
-			  scalar_IC = 0.5*(1.0-std::tanh((r-spanX/5.0)/(3*dx)));
-			  r=p.distance(Point<dim>(3.0*spanX/4.0,3.0*spanY/4.0));
-			  scalar_IC += 0.5*(1.0-std::tanh((r-spanX/12.0)/(3*dx)));
+
+	  for (unsigned int i=0; i<2; i++){
+		  dist = 0.0;
+		  for (unsigned int dir = 0; dir < dim; dir++){
+			  dist += (p[dir]-center[i][dir]*userInputs.domain_size[dir])
+			  		*(p[dir]-center[i][dir]*userInputs.domain_size[dir]);
 		  }
-		  else if (dim == 3){
-			  r=p.distance(Point<dim>(spanX/3.0,spanY/3.0,spanZ/3.0));
-			  scalar_IC = 0.5*(1.0-std::tanh((r-spanX/5.0)/(3*dx)));
-			  r=p.distance(Point<dim>(3.0*spanX/4.0,3.0*spanY/4.0,3.0*spanZ/4.0));
-			  scalar_IC += 0.5*(1.0-std::tanh((r-spanX/12.0)/(3*dx)));
+		  dist = std::sqrt(dist);
+
+		  // Initial condition for the concentration field
+		  if (index == 0){
+			  scalar_IC += 0.5*(0.125)*(1.0-std::tanh((dist-rad[i])/(1.0)));
+		  }
+		  else {
+			  scalar_IC += 0.5*(1.0-std::tanh((dist-rad[i])/(1.0)));
 		  }
 	  }
 
-	  // =====================================================================
+	  // --------------------------------------------------------------------------
 	  return scalar_IC;
-  }
-};
-
-//initial condition
-template <int dim>
-class InitialConditionVec : public Function<dim>
-{
-public:
-  unsigned int index;
-  //Vector<double> values;
-  InitialConditionVec (const unsigned int _index) : Function<dim>(dim), index(_index) {
-    std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
-  }
-  void vector_value (const Point<dim> &p,Vector<double> &vector_IC) const
-  {
-	  // =====================================================================
-	  // ENTER THE INITIAL CONDITIONS HERE FOR VECTOR FIELDS
-	  // =====================================================================
-	  // Enter the function describing conditions for the fields at point "p".
-	  // Use "if" statements to set the initial condition for each variable
-	  // according to its variable index.
-
-
-	  // =====================================================================
-  }
-};
-
-template <int dim>
-void generalizedProblem<dim>::setBCs(){
-
-	// =====================================================================
-	// ENTER THE BOUNDARY CONDITIONS HERE
-	// =====================================================================
-	// This function sets the BCs for the problem variables
-	// The function "inputBCs" should be called for each component of
-	// each variable and should be in numerical order. Four input arguments
-	// set the same BC on the entire boundary. Two plus two times the
-	// number of dimensions inputs sets separate BCs on each face of the domain.
-	// Inputs to "inputBCs":
-	// First input: variable number
-	// Second input: component number
-	// Third input: BC type (options are "ZERO_DERIVATIVE", "DIRICHLET", and "PERIODIC")
-	// Fourth input: BC value (ignored unless the BC type is "DIRICHLET")
-	// Odd inputs after the third: BC type
-	// Even inputs after the third: BC value
-	// Face numbering: starts at zero with the minimum of the first direction, one for the 
-	//			maximum of the first direction two for the minimum of the second 
-	//			direction, etc.
-
-	inputBCs(0,0,"ZERO_DERIVATIVE",0);
-	inputBCs(1,0,"ZERO_DERIVATIVE",0);
-
 }
 \end{lstlisting}
 \normalsize
 
-Most users should only need to modify the sections between the lines. The first section sets initial conditions for scalar fields. The variable \emph{scalarIC} should be set to the desired intitial condition. The (x,y,z) coordinates can be accessed by the \emph{p} variable, with indices zero through 2. For example, if you wanted to initialize a field to $5xy$, you would enter:
+In this function, the variable \emph{scalarIC} should be set to the desired intitial condition. The (x,y,z) coordinates can be accessed by the \emph{p} variable, with indices zero through 2. For example, if you wanted to initialize a field to $5xy$, you would enter:
 \tiny
 \begin{lstlisting} 
 scalarIC = 5.0 * p[0] * p[1];
 \end{lstlisting} \normalsize
-The initial conditions given above are a bit more complicated. They set the initial conditions for two circular (spherical in 3D) particles. The initial condition for different variables is set using conditional statements and the \emph{index} variable. The \emph{index} variable refers to the order that the variable is declared in ``equations.h''. In this file, the deal.II function \emph{distance} is used to find the distance between the point \emph{p} and a specified point (the center of the circle/sphere). This example uses conditional statements to set the initial conditions differently for the concentration (\emph{index}==0) and the structural order parameter  (\emph{index}==0) .
+The initial conditions given above are a bit more complicated. They set the initial conditions for two circular (spherical in 3D) particles. The initial condition for different variables is set using conditional statements and the \emph{index} variable. The \emph{index} variable refers to the variable index from the top of the ``equations.h''. This example uses conditional statements to set the initial conditions differently for the concentration (\emph{index}==0) and the structural order parameter  (\emph{index}==0). The initial conditions for both fields are calculated using hyperbolic tangent functions that make use of the distance between the centers of the particles and the point \emph{p}.
 
-The second section is empty for this application because it doesn't have any vector variables.
+The model constants defined in `parameters.in' can be used in the intial condition or boundary condition functions. However, the syntax is the same as in `customPDE.h', not as in the residual functions. That is, they have to be extracted from the \emph{userInputs} object. An example of this is in the dendriticSolidification application, where \emph{deltaV} is set using one of the model constants.
 
-The third and final section of the file is used to set the boundary conditions. This file should contain a list of \emph{inputBCs} statements, one for each component of each variable. In this example application, there are two scalar variables, so two \emph{inputBCs} statements are needed. The \emph{inputBCs} statement can be used to set all boundaries to the same boundary condition or to set the boundary condition for each boundary seperately. The \emph{inputBCs} statements for each variable should be given in the order that the variables were declared in ``equations.h''. For vector variables, the  \emph{inputBCs} statement for each component should be given consecutively. Currently, PRISMS-PF assumes that users will want to set a uniform boundary condition along each edge/face of the domain. More general cases can be treated using deal.II and could be added to PRISMS-PF if needed.
-
-To set the same boundary condition on all boundaries for a variable, the \emph{inputBCs} statement should have four arguements. The first argument is the variable index (once again determined by the order it is declared in the ``equations.h'' file). The second is the component of that variable (starting at zero). The third arguement is the type of boundary condition. Currently, the three options are and ``ZERO\_DERIVATIVE'', ``PERIODIC'', and ``DIRICHLET''. Nonzero Neumann boundary conditions need to be applied as part of the residual equations, not through \emph{setBCs}. The fouth arguement is the boundary condition value, which is only used for Dirichlet boundary conditions.
-
-For different boundary conditions on each face/edge of the domain, the number of arguements for the \emph{inputBCs} statement should have two plus two times the number of dimensions (4 in 1D, 6 in 2D, 8 in 3D). The first two arguments are still the variable index and component index. The next arguments come in pairs of boundary condition type and boundary condition value, repeated as many times as needed for the number of dimensions. The boundary condition from the first of these type/value pairs will be applied to the face/edge on the minimum of the x axis. The boundary condition for the second will be applied to the  face/edge on the maximimum of the x axis. In 2D/3D, the third and fourth pairs will determine the boundary conditions on the minimum and maximum of the y axis. Similarly, in 3D, the fifth and sixth pairs will determine the boundary conditions on the minimum and maximum of the z axis. Thus in 2D, if one wanted a Dirichlet boundary condition of 1.0 on the x axis minimum, a Dirichlet boundary condition of -1.0 on the x axis maximum and zero derivative boundary conditions on the other two edges, one would enter:
-\tiny
-\begin{lstlisting} 
-inputBCs(0,0,"DIRICHLET",1.0"DIRICHLET",-1.0,"ZERO_DERIVATIVE",0,"ZERO_DERIVATIVE",0);
-\end{lstlisting} \normalsize
-
-\subsubsection{Initial Conditions and Boundary Conditions for Vector Variables}
-The main difference between ``ICs\_and\_BCs.h'' for the coupled Allen-Cahn/Cahn-Hilliard application and the Precipitate Evolution application is the existence of vector variables in the Precipitate Evolution application. Here are the last two functions from ``ICs\_and\_BCs.h'' in the Precipitate Evolution application: 
-\tiny
-\begin{lstlisting} 
-[...]
-//initial condition
+Similarly, the initial conditions for vector fields are set in \emph{InitialConditionsVec}. Here is the (somewhat trivial) \emph{InitialConditionVec} function for the precipitateEvolution example application:
+\scriptsize
+\begin{lstlisting}
 template <int dim>
-class InitialConditionVec : public Function<dim>
+void InitialConditionVec<dim>::vector_value (
+	const dealii::Point<dim> &p,
+	dealii::Vector<double> &vector_IC) const
 {
-public:
-  unsigned int index;
-  //Vector<double> values;
-  InitialConditionVec (const unsigned int _index) : Function<dim>(dim), index(_index) {
-    std::srand(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
-  }
-  void vector_value (const Point<dim> &p,Vector<double> &vector_IC) const
-  {
-	  // =====================================================================
+	  // --------------------------------------------------------------------------
 	  // ENTER THE INITIAL CONDITIONS HERE FOR VECTOR FIELDS
-	  // =====================================================================
+	  // --------------------------------------------------------------------------
 	  // Enter the function describing conditions for the fields at point "p".
 	  // Use "if" statements to set the initial condition for each variable
 	  // according to its variable index.
@@ -1330,147 +1034,273 @@ public:
 	  if (index==4){
 		  vector_IC(0) = 0.0;
 		  vector_IC(1) = 0.0;
-            	  if (dim == 3){
-        	            	vector_IC(2) = 0.0;
-            	  }
+          if (dim == 3){
+        	  vector_IC(2) = 0.0;
+          }
 	  }
-	  // =====================================================================
-  }
+	  // --------------------------------------------------------------------------
+}
+\end{lstlisting}
+\normalsize
+The initial condition for each component is set using the \emph{vector\_IC} variable, where parentheses are used to select the x, y, or z component.
+
+\subsubsection{NonUniformDirichletBC and NonUniformDirichletBCVec}
+These functions are needed when one or more boundaries are set to NON\_UNIFORM\_DIRICHLET. These functions are very similar to the initial condition functions above, the user sets an expression for \emph{scalar\_BC} or \emph{vector\_BC} at point \emph{p}. Once again, the variable \emph{index} is used to differentiate between variables based on their index from the top of the `equations.h' file. For Dirichlet boundary conditions that vary in time, the current time can be accessed via the variable \emph{time}.
+
+Currently, the one of the only two applications that use a non-uniform Dirichlet boundary condition is CHiMaD\_benchmark6a (the other is CHiMaD\_benchmark6b). Here is the \emph{NonUniformDirichletBC} function from CHiMaD\_benchmark6a:
+\scriptsize
+\begin{lstlisting}
+template <int dim>
+double NonUniformDirichletBC<dim>::value (
+	const dealii::Point<dim> &p, 
+	const unsigned int component) const
+{
+    double scalar_BC=0;
+    // --------------------------------------------------------------------------
+    // ENTER THE NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS HERE FOR SCALAR FIELDS
+    // --------------------------------------------------------------------------
+    // Enter the function describing conditions for the fields at point "p".
+    // Use "if" statements to set the boundary condition for each variable
+    // according to its variable index. This function can be left blank if there
+    // are no non-uniform Dirichlet boundary conditions.
+    
+    if (index == 2){
+        if (direction == 1){
+            double x=p[0];
+            double y=p[1];
+            scalar_BC=std::sin(y/7.0);
+        }
+    }
+    // -------------------------------------------------------------------------
+    return scalar_BC;
+}
+\end{lstlisting}
+\normalsize
+
+\subsection{postprocess.h}
+Unlike the files discussed so far in this section, the `postprocess.h' file is optional. This file allows users to specify fields other than the primary model variable to output. It also includes an option to integrate over a field variable (e.g. to check conservation of a field). In the example problems, this file is often used to calculate the total free energy of the system, which should be monotonically decreasing for most phase field problems. It also is convienent for calculating somewhat complicated expressions such as chemical potentials, stresses, and strains.
+
+Note: Two restrictions are currently in place for the postprocessor. First, postprocessing variables can only be scalars, not vectors. Second, the postprocessor won't work if the primary model variable with index zero is a vector. (This is because postprocessor uses the mesh of the zeroth primary variable to calculate and output the postprocessed field.) These restrictions will be lifted in future versions of PRISMS-PF.
+
+\subsubsection{loadPostProcessorVariableAttributes}
+Similar to the `equations.h' file, `postprocess.h' begins with a function called \emph{loadPostProcessorVariableAttributes}, which sets the attributes of the postprocessing variables. Here is the \emph{loadPostProcessorVariableAttributes} function from the coupledCahnHilliardAllenCahn application, where the postprocessed field is ``f\_tot'', the total free energy:
+\scriptsize
+\begin{lstlisting}
+void variableAttributeLoader::loadPostProcessorVariableAttributes(){
+
+	// Variable 0
+	set_variable_name		(0,"f_tot");
+	set_variable_type		(0,SCALAR);
+
+	set_need_value_residual_term	(0,true);
+	set_need_gradient_residual_term	(0,false);
+
+    	set_output_integral         	(0,true);
+
+}
+\end{lstlisting}
+\normalsize
+
+As in `equations.h', a series of attributes for each variable are set using a series of C++ function calls. The following table lists the functions and a description of the attributes they set:
+\footnotesize
+\begin{center}
+    \begin{tabular}{ | p{0.25\textwidth} | p{0.13\textwidth}| p{0.08\textwidth} | p{0.11\textwidth} | p{0.29\textwidth} |}
+    \hline
+    \emph{Function}  & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
+    set\_variable\_name & String & no & var  & Sets the name of the variable. \\ \hline
+    set\_variable\_type & SCALAR, VECTOR & no & SCALAR  & Sets whether the variable is a scalar or a vector (Currently only scalar fields are allowed). \\ \hline
+    set\_need\_need\_value \_residual\_term & Boolean & no & false & Sets whether the expression for the postprocessed field has a value residual term. \\ \hline
+    set\_need\_need\_gradient \_residual\_term & Boolean & no & false & Sets whether the expression for the postprocessed field has a gradient residual term. \\ \hline
+    set\_output\_integral & Boolean & no & false & Sets whether the integrated value of the postprocessed field is calculated. The integrated value is output to the file `integratedFields.txt'. \\ \hline
+    \end{tabular}
+\end{center}
+\normalsize
+
+\subsubsection{postProcessedFields}
+The second function in the `postprocess.h' file is similar to the residual functions in `equations.h'. The primary difference is that, while the primary model fields are read in from \emph{variable\_list}, the residuals are submitted to \emph{pp\_variable\_list}. Otherwise, the structure is similar and expressions can be copied from one function to another.
+
+Here is the \emph{postProcessedFields} from the coupledCahnHilliardAllenCahn application:
+\scriptsize
+\begin{lstlisting}
+template <int dim,int degree>
+void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+				variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
+												const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+
+//c
+scalarvalueType c = variable_list.get_scalar_value(0);
+
+//n
+scalarvalueType n = variable_list.get_scalar_value(1);
+scalargradType nx = variable_list.get_scalar_gradient(1);
+
+// Free energy for each phase
+scalarvalueType faV = (-1.6704-4.776*c+5.1622*c*c-2.7375*c*c*c+1.3687*c*c*c*c);
+scalarvalueType fbV = (5.0*c*c-5.9746*c-1.5924);
+
+// Interpolation function
+scalarvalueType hV = (10.0*n*n*n-15.0*n*n*n*n+6.0*n*n*n*n*n);
+
+// The homogenous free energy
+scalarvalueType f_chem = (constV(1.0)-hV)*faV + hV*fbV;
+
+// The gradient free energy
+scalarvalueType f_grad = constV(0.5*KnV)*nx*nx;
+
+// The total free energy
+scalarvalueType f_tot;
+f_tot = f_chem + f_grad;
+
+// Residuals for the equation to evolve the order parameter 
+pp_variable_list.set_scalar_value_residual_term(0, f_tot);
+
+
+}
+\end{lstlisting}
+\normalsize
+
+\subsection{nucleation.h}
+The `nucleation.h' file is also an optional file that is only needed when explcit nucleation is needed for the application. It contains the function \emph{getNucleationProbability}, which calculates the probability of nucleation in a given volume element \emph{dV} at a particular point in space \emph{p} at time \emph{this-$>$currentTime}. Please refer to Note 3 in Sec. \ref{parameters} for a description of the nucleation model in PRISMS-PF.
+
+The values of the primary field variables can be accessed through the \emph{variable\_value} input, using the variable index from `equations.h'. Only variables where \emph{set\_need\_value\_nucleation} was set to true the \emph{loadVariableAttributes} function in `equations.h' can be accessed.
+
+Here is \emph{getNucleationProbability} from the nucleationModel application:
+\scriptsize
+\begin{lstlisting}
+template <int dim, int degree>
+double customPDE<dim,degree>::getNucleationProbability(variableValueContainer variable_value, double dV, dealii::Point<dim> p) const
+{
+//Supersaturation factor
+double ssf;
+if (dim ==2) ssf=variable_value(0)-calmin;
+if (dim ==3) ssf=(variable_value(0)-calmin)*(variable_value(0)-calmin);
+	
+// Calculate the nucleation rate
+double J=k1*exp(-k2/(std::max(ssf,1.0e-6)))*exp(-tau/(this->currentTime));
+double retProb=1.0-exp(-J*userInputs.dtValue*((double)userInputs.steps_between_nucleation_attempts)*dV);
+   	
+return retProb;
+}
+\end{lstlisting}
+\normalsize
+
+\subsection{customPDE.h}
+The final header file in each application folder is `customPDE.h'. This file contains the declarations for all of the functions and variables specific to the application. In C++ terminology, it is the declaration for the customPDE class, which is a subclass of MatrixFreePDE. For most users, the relevant section is labeled as ``Model constants specific to this subclass'', which is where the model constants from `parameters.in' are extracted from the \emph{userInputs} object. There is a separate function to extract constants of each type. These are:
+\begin{itemize}
+\item get\_model\_constant\_double
+\item get\_model\_constant\_int
+\item get\_model\_constant\_bool
+\item get\_model\_constant\_rank\_1\_tensor
+\item get\_model\_constant\_rank\_2\_tensor
+\item get\_model\_constant\_elasticity\_tensor
+\end{itemize}
+
+Each of these take the variable name from `parameters.in' as an input and output the appropriate type.
+
+Here is `customPDE.h' from the preciptiateEvolution application, where all of the different types of constants are used:
+\scriptsize
+\begin{lstlisting}
+#include "../../include/matrixFreePDE.h"
+
+template <int dim, int degree>
+class customPDE: public MatrixFreePDE<dim,degree>
+{
+public:
+	customPDE(userInputParameters<dim> _userInputs): 
+		MatrixFreePDE<dim,degree>(_userInputs) , userInputs(_userInputs) {};
+
+private:
+	#include "../../include/typeDefs.h"
+
+	const userInputParameters<dim> userInputs;
+
+	// Pure virtual method in MatrixFreePDE
+	void residualRHS(
+		variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
+
+	// Pure virtual method in MatrixFreePDE
+	void residualLHS(
+		variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
+
+	// Virtual method in MatrixFreePDE that we override if we need postprocessing
+	#ifdef POSTPROCESS_FILE_EXISTS
+	void postProcessedFields(
+		const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+		variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
+		const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
+	#endif
+
+	// Virtual method in MatrixFreePDE that we override if we need nucleation
+	#ifdef NUCLEATION_FILE_EXISTS
+	double getNucleationProbability(variableValueContainer variable_value, double dV) const;
+	#endif
+
+	// ================================================================
+	// Methods specific to this subclass
+	// ================================================================
+
+
+	// ================================================================
+	// Model constants specific to this subclass
+	// ================================================================
+
+	double McV = userInputs.get_model_constant_double("McV");
+	double Mn1V = userInputs.get_model_constant_double("Mn1V");
+	double Mn2V = userInputs.get_model_constant_double("Mn2V");
+	double Mn3V = userInputs.get_model_constant_double("Mn3V");
+	dealii::Tensor<2,dim> Kn1 = userInputs.get_model_constant_rank_2_tensor("Kn1");
+	dealii::Tensor<2,dim> Kn2 = userInputs.get_model_constant_rank_2_tensor("Kn2");
+	dealii::Tensor<2,dim> Kn3 = userInputs.get_model_constant_rank_2_tensor("Kn3");
+	bool n_dependent_stiffness = userInputs.get_model_constant_bool("n_dependent_stiffness");
+	dealii::Tensor<2,dim> sfts_linear1 = userInputs.get_model_constant_rank_2_tensor("sfts_linear1");
+	dealii::Tensor<2,dim> sfts_const1 = userInputs.get_model_constant_rank_2_tensor("sfts_const1");
+	dealii::Tensor<2,dim> sfts_linear2 = userInputs.get_model_constant_rank_2_tensor("sfts_linear2");
+	dealii::Tensor<2,dim> sfts_const2 = userInputs.get_model_constant_rank_2_tensor("sfts_const2");
+	dealii::Tensor<2,dim> sfts_linear3 = userInputs.get_model_constant_rank_2_tensor("sfts_linear3");
+	dealii::Tensor<2,dim> sfts_const3 = userInputs.get_model_constant_rank_2_tensor("sfts_const3");
+	double A4 = userInputs.get_model_constant_double("A4");
+	double A3 = userInputs.get_model_constant_double("A3");
+	double A2 = userInputs.get_model_constant_double("A2");
+	double A1 = userInputs.get_model_constant_double("A1");
+	double A0 = userInputs.get_model_constant_double("A0");
+	double B2 = userInputs.get_model_constant_double("B2");
+	double B1 = userInputs.get_model_constant_double("B1");
+	double B0 = userInputs.get_model_constant_double("B0");
+
+	const static unsigned int CIJ_tensor_size =2*dim-1+dim/3;
+	dealii::Tensor<2,CIJ_tensor_size> CIJ_Mg = 
+		userInputs.get_model_constant_elasticity_tensor("CIJ_Mg");
+	dealii::Tensor<2,CIJ_tensor_size> CIJ_Beta = 
+		userInputs.get_model_constant_elasticity_tensor("CIJ_Beta");
+
+
+
+	// ================================================================
+
 };
 
-template <int dim>
-void generalizedProblem<dim>::setBCs(){
-
-	// =====================================================================
-	// ENTER THE BOUNDARY CONDITIONS HERE
-	// =====================================================================
-	// This function sets the BCs for the problem variables
-	// The function "inputBCs" should be called for each component of
-	// each variable and should be in numerical order. Four input arguments
-	// set the same BC on the entire boundary. Two plus two times the
-	// number of dimensions inputs sets separate BCs on each face of the domain.
-	// Inputs to "inputBCs":
-	// First input: variable number
-	// Second input: component number
-	// Third input: BC type (options are "ZERO_DERIVATIVE", "DIRICHLET", and "PERIODIC")
-	// Fourth input: BC value (ignored unless the BC type is "DIRICHLET")
-	// Odd inputs after the third: BC type
-	// Even inputs after the third: BC value
-	// Face numbering: starts at zero with the minimum of the first direction, one for the maximum of the first direction
-	//						two for the minimum of the second direction, etc.
-	inputBCs(0,0,"ZERO_DERIVATIVE",0);
-
-	inputBCs(1,0,"ZERO_DERIVATIVE",0);
-
-	inputBCs(2,0,"ZERO_DERIVATIVE",0);
-
-	inputBCs(3,0,"ZERO_DERIVATIVE",0);
-
-	inputBCs(4,0,"DIRICHLET",0.0);
-	inputBCs(4,1,"DIRICHLET",0.0);
-   `	if (dim == 3){
-		inputBCs(4,2,"DIRICHLET",0.0);
-	}
-
-}
-\end{lstlisting} \normalsize
-
-Vector initial conditions are set much like scalar initial conditions. The initial conditions are set using the variable \emph{vector\_IC}. Each component of \emph{vector\_IC} is accessed using parentheses. As with scalar initial conditions, conditional statements with the variable index are used to set the initial condition for the proper variable.
-
-Vector boundary conditions are set much like scalar initial conditions. Separate boundary conditions are specified for each component of the variable. The boundary conditions for the components should be listed in order (x then y then z). The boundary condition for each component of a vector variable is set exactly like that of a scalar variable.
-
-\section{Advanced Files in the Application Directory} \label{adv_input_sec}
-\subsection{main.cc}
-The file main.cc is generally boilerplate code. Its purpose is to drive the primary flow of the code. The following code snippet is the core of the file:
-\tiny
-\begin{lstlisting} 
-userInputParameters<problemDIM> userInputs;
-userInputs.loadUserInput();
-
-customPDE<problemDIM,finiteElementDegree> problem(userInputs);
-
- problem.setBCs();
- problem.buildFields();
- problem.init ();
- problem.solve();
- \end{lstlisting}
- \normalsize
- 
- In this portion of the code there are two main objects (in the C++ sense) of interest: userInputParameters and customPDE. The  userInputParameters object reads and stores the inputs from the input files. These inputs are used in the creation of a customPDE object, which then is used to solve the desired set of equations. After the customPDE object is created, the setBCs, buildFields, init, and solve methods (i.e. functions) are called to prepare the compuational system, solve the equations, and output the solution.
- 
- At the top of main.cc is a list of header files to be included and at the bottom is some code to handle errors during execution. It is rare that a user would need to modify these sections. For nearly all of the example applications, the main.cc file is identical. Two sets of exceptions are discussed below.
- 
- The applications that include nucleation (\_nucleationModel and \_preferential\_nucleationModel) have three more lines in the list of included headers:
- \tiny
-\begin{lstlisting} 
-#include <random>
-#include <time.h>
-#include "nucleation.h"
 \end{lstlisting}
- \normalsize
- 
- The allenCahn\_pfield and precipitateEvolution\_pfunction applications have some extra lines in the list of included headers to utilize that functionality.
- 
- \subsection{customPDE.h}
- As seen in main.cc, an application creates a customPDE object. Each application has its own customPDE class that is specified in customPDE.h. For most of the example applications, customPDE.h is the same, just containing a constructor, the setBCs function used in ICs\_and\_BCs.h, and the three functions in equations.h. However, the user is free to define any new variables or methods needed for their application as part of this class. Most importantly, since customPDE is a subclass of MatrixFreePDE, the primary solver class in the core library, methods in customPDE can be written to override the default behavior of the core library (all methods in MatrixFreePDE except for the constructor are virtual). A user may want to do this for functionality that isn't currently present in the core library (i.e. a new condition for mesh adaptivity), for performance (stripping out unneccesary evaluations for that given application), or to use PRISMS-PF in ways that we didn't plan for. In the applications with nucleation, the list of nuclei and the methods for nucleation are members of customPDE.
-
-\section{Postprocessing} \label{postprocessing_sec}
-PRISMS-PF includes a postprocessing suite to help analyze the simulation results. Often, it is easier to perform the postprocessing using PRISMS-PF, rather than a program such as VisIt or ParaView, especially when dealing with spatial derivatives. Postprocessing functionality is set in the postprocess.h file. The structure of this file is much like equations.h. For the remainder of this section, we will walk through the postprocess.h file from the allenCahn application.
-
-The first section is much like the first section of equations.h, where the problem variables are defined. In this case, the postprocessing variables are defined (i.e. the variables other than those listed in equations.h that you would like to output). The first two blocks contain \emph{pp\_num\_var}, the number of postprocessed variables, \emph{pp\_variable\_name}, the name assigned to the variable in the *.vtu file, and \emph{pp\_variable\_type}, whether the variable is a scalar or a vector. Currently only scalar postprocessing variables are allowed. In the next block, the user specifies if the value, gradient or hessian \underline{of the model variables} is needed to calculate the postprocessed variables. In the last block, the user selects whether each postprocessed variable needs a value residual and/or a gradient residual.
- \tiny
-\begin{lstlisting} 
-// =================================================================================
-// Define the variables for postprocessing
-// =================================================================================
-// The number of variables
-#define pp_num_var 1
-
-// The names of the variables, whether they are scalars or vectors 
-#define pp_variable_name {"mag_grad_n"}
-#define pp_variable_type {"SCALAR"}
-
-// Flags for whether the value, gradient, and Hessian are needed in the residual eqns
-#define pp_need_val {true}
-#define pp_need_grad {true}
-#define pp_need_hess  {false}
-
-// Flags for whether the residual equation has a term multiplied by the test function
-// (need_val_residual) and/or the gradient of the test function (need_grad_residual)
-#define pp_need_val_residual {true}
-#define pp_need_grad_residual {false}
-
-// =================================================================================
-\end{lstlisting} 
 \normalsize
 
-The remainder of the file is the function postProcessedFields:
- \tiny
-\begin{lstlisting} 
-template <int dim>
-void postProcessedFields(const std::vector<modelVariable<dim> > & modelVariablesList,
-						std::vector<modelResidual<dim> > & modelResidualsList,
-						const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc,
-						const list_of_CIJ<dim> material_moduli) {
+This file can also be used to declare new member functions for the application. One example of this is the \emph{seedNucleus} function in the nucleationModel application.
 
-// The order parameter and its derivatives (names here should match those in the macros above)
-dealii::VectorizedArray<double> n = modelVariablesList[0].scalarValue;
-dealii::Tensor<1, dim, dealii::VectorizedArray<double> > nx = modelVariablesList[0].scalarGrad;
+Furthermore, for advanced users, the customPDE class can be used to override MatrixFreePDE functions from the core PRISMS-PF library. One example of this is in the CHiMaD\_benchmark6b application, where the \emph{makeTriangulation} function is overridden to create a non-square mesh.
 
-dealii::Tensor<1, dim, dealii::VectorizedArray<double> > pp_field;
-pp_field[0] = nx[0];
-pp_field[1] = nx[1];
+\subsection{main.cc}
+The final file in the application directory is the C++ `main.cc' file. This file controls the overall flow of the code and is unlikely to be modified by most users. For all of the example applications, `main.cc' is identical. One situation where a user may want to modify `main.cc' is if they wanted to run several simulations with different parameter sets for one execution of the code.
 
+\section{Tests}
+The `tests' folder in the root directory contains some tests to ensure that PRISMS-PF is working properly. A battery of automated tests can be found in the `automated\_tests' directory. These can be run by running the python script `run\_automatic\_tests.py'. This will run a series of unit and regression tests, printing a summary of the results to the screen and writing to the file `test\_results.txt'. This python file can also be used as an example of automating PRISMS-PF simulations.
 
-// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
-modelResidualsList[0].scalarValueResidual = std::sqrt(pp_field[0]*pp_field[0]+pp_field[1]*pp_field[1]); //constV(0.0);
-
-}
-\end{lstlisting} 
-\normalsize
-
-The structure of this function is identical to that of residualRHS in equations.h.
-
+The `unit\_tests' directory contains a driver for a series of unit tests. To run them enter:
+\begin{lstlisting}
+$ cmake . 
+$ make debug 
+$ mpirun -n 1 main 
+\end{lstlisting}
+A summary of the tests will print to the screen.
 
 \section{Creating Custom Applications}
 You can create your own PRISMS-PF applications by making simple modifications to the input files described in the previous section. To create a new application, simply create a new folder in the applications directory and copy the files from a related example application. \textbf{If the file ``CMakeCache.txt'' exists, delete it} (this file contains paths to the original application, and if left would cause the compiler to compile the code from the original application). Then, make your desired modifications (changing the initial or boundary conditions, changing the residual equations, etc.) and compile and run your application the same way you would one of the example applications.

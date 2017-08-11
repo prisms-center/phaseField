@@ -27,7 +27,7 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 				variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
 												const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-// The order parameter and its derivatives (names here should match those in the macros above)
+// The order parameter and its derivatives 
 scalarvalueType n = variable_list.get_scalar_value(0);
 scalargradType nx = variable_list.get_scalar_gradient(0);
 
@@ -53,7 +53,7 @@ for (int i=0; i<dim; i++){
 f_tot = f_chem + f_grad;
 
 
-// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
+// Residuals for the equation to evolve the order parameter 
 pp_variable_list.set_scalar_value_residual_term(0, std::sqrt(pp_field[0]*pp_field[0]+pp_field[1]*pp_field[1]));
 
 pp_variable_list.set_scalar_value_residual_term(1, f_tot);

@@ -31,7 +31,7 @@ template <int dim, int degree>
 void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-// The order parameter and its derivatives (names here should match those in the macros above)
+// The order parameter and its derivatives 
 scalarvalueType n = variable_list.get_scalar_value(0);
 scalargradType nx = variable_list.get_scalar_gradient(0);
 
@@ -41,7 +41,7 @@ scalarvalueType fnV = (4.0*n*(n-1.0)*(n-0.5));
 scalarvalueType rnV = (n-constV(userInputs.dtValue*MnV)*fnV);
 scalargradType rnxV = (-constV(userInputs.dtValue*KnV*MnV)*nx);
 
-// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
+// Residuals for the equation to evolve the order parameter 
 variable_list.set_scalar_value_residual_term(0,rnV);
 variable_list.set_scalar_gradient_residual_term(0,rnxV);
 
