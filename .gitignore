@@ -32,6 +32,7 @@
 *.#
 *.btr
 freeEnergy.txt
+integratedFields.txt
 
 #CMAKE files
 *.cmake
