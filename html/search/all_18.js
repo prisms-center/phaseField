@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['_7ematrixfreepde',['~MatrixFreePDE',['../class_matrix_free_p_d_e.html#a416b2bc1560114fe826f98b2eb75453f',1,'MatrixFreePDE']]]
+  ['z_5fdenom',['z_denom',['../single_precipitate_k_k_s_2_i_cs__and___b_cs_8h.html#a7d2924cf40a8f424ede120b833ce9f47',1,'ICs_and_BCs.h']]]
 ];

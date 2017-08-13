@@ -1,16 +1,20 @@
 var searchData=
 [
-  ['a0',['A0',['../__nucleation_model_2equations_8h.html#ac397499fd221806aee050572fbe2655d',1,'A0():&#160;equations.h'],['../__preferential__nucleation_model_2equations_8h.html#ac397499fd221806aee050572fbe2655d',1,'A0():&#160;equations.h'],['../single_precipitate_k_k_s_2equations_8h.html#ac397499fd221806aee050572fbe2655d',1,'A0():&#160;equations.h']]],
-  ['a1',['A1',['../single_precipitate_k_k_s_2equations_8h.html#ab3267589130edb50222a7442fca5b5d1',1,'equations.h']]],
-  ['a2',['A2',['../__nucleation_model_2equations_8h.html#afa3a186973380d1ac2ac6de73f840418',1,'A2():&#160;equations.h'],['../__preferential__nucleation_model_2equations_8h.html#afa3a186973380d1ac2ac6de73f840418',1,'A2():&#160;equations.h'],['../single_precipitate_k_k_s_2equations_8h.html#afa3a186973380d1ac2ac6de73f840418',1,'A2():&#160;equations.h']]],
+  ['a0',['A0',['../classcustom_p_d_e.html#ac397499fd221806aee050572fbe2655d',1,'customPDE']]],
+  ['a1',['A1',['../classcustom_p_d_e.html#ab3267589130edb50222a7442fca5b5d1',1,'customPDE']]],
+  ['a2',['A2',['../classcustom_p_d_e.html#afa3a186973380d1ac2ac6de73f840418',1,'customPDE']]],
+  ['a3',['A3',['../classcustom_p_d_e.html#ac7c3dc4c92096ac523a41a57ce76b113',1,'customPDE']]],
+  ['a4',['A4',['../classcustom_p_d_e.html#a599423d25d66cdecd8261b5b180e3b57',1,'customPDE']]],
   ['abs_5ftol',['abs_tol',['../classuser_input_parameters.html#aaa1d216d643dc23449bbdb76559d9b7a',1,'userInputParameters']]],
-  ['abstol',['absTol',['../default_values_8h.html#a8f0e1067c57da8f656bca903cb2ea963',1,'absTol():&#160;defaultValues.h'],['../eshelby_inclusion_2parameters_8h.html#a8f0e1067c57da8f656bca903cb2ea963',1,'absTol():&#160;parameters.h'],['../precipitate_evolution_2parameters_8h.html#a8f0e1067c57da8f656bca903cb2ea963',1,'absTol():&#160;parameters.h'],['../precipitate_evolution__pfunction_2parameters_8h.html#a8f0e1067c57da8f656bca903cb2ea963',1,'absTol():&#160;parameters.h'],['../single_precipitate_k_k_s_2parameters_8h.html#a8f0e1067c57da8f656bca903cb2ea963',1,'absTol():&#160;parameters.h']]],
   ['adaptiverefine',['adaptiveRefine',['../class_matrix_free_p_d_e.html#a85ecead813fa420589176afebc1c3152',1,'MatrixFreePDE']]],
-  ['adaptiverefinecriterion',['adaptiveRefineCriterion',['../class_matrix_free_p_d_e.html#add5d3caaa759b5286f76db4fda4d0d11',1,'MatrixFreePDE::adaptiveRefineCriterion()'],['../classcustom_p_d_e.html#add5d3caaa759b5286f76db4fda4d0d11',1,'customPDE::adaptiveRefineCriterion()']]],
-  ['alpha',['alpha',['../_c_hi_ma_d__benchmark2a_2equations_8h.html#aa816ab3cd347f9fb8805f6296052c9c3',1,'alpha():&#160;equations.h'],['../grain_growth_2equations_8h.html#aa816ab3cd347f9fb8805f6296052c9c3',1,'alpha():&#160;equations.h']]],
-  ['anisotropic',['ANISOTROPIC',['../get_c_i_j_matrix_8h.html#abb3de18236e38998c9ebe938a8791ab3a089b8e5473289e97a7194eeee4c67d96',1,'getCIJMatrix.h']]],
-  ['anisotropic2d',['ANISOTROPIC2D',['../get_c_i_j_matrix_8h.html#abb3de18236e38998c9ebe938a8791ab3a0e3dabaec38f25fa3b2d6e832c361335',1,'getCIJMatrix.h']]],
+  ['adaptiverefinecriterion',['adaptiveRefineCriterion',['../class_matrix_free_p_d_e.html#add5d3caaa759b5286f76db4fda4d0d11',1,'MatrixFreePDE']]],
+  ['alpha',['alpha',['../classcustom_p_d_e.html#a20f4c4490bc8ecbdd1ffcb79acce6035',1,'customPDE']]],
+  ['anisotropic',['ANISOTROPIC',['../user_input_parameters_8h.html#abb3de18236e38998c9ebe938a8791ab3a089b8e5473289e97a7194eeee4c67d96',1,'userInputParameters.h']]],
+  ['anisotropic2d',['ANISOTROPIC2D',['../user_input_parameters_8h.html#abb3de18236e38998c9ebe938a8791ab3a0e3dabaec38f25fa3b2d6e832c361335',1,'userInputParameters.h']]],
+  ['anisotropy',['anisotropy',['../classcustom_p_d_e.html#a1dc0d5934b7c9e9d4593d1d5b254f848',1,'customPDE']]],
+  ['anisotropy_5ffacet_2eh',['anisotropy_facet.h',['../anisotropy__facet_8h.html',1,'']]],
   ['applydirichletbcs',['applyDirichletBCs',['../class_matrix_free_p_d_e.html#a90568dce4dabb9258e735f55b7a8722b',1,'MatrixFreePDE']]],
   ['applyinitialconditions',['applyInitialConditions',['../class_matrix_free_p_d_e.html#a64fbd7dc135ad44c1dd45f57c5e24510',1,'MatrixFreePDE']]],
+  ['applyneumannbcs',['applyNeumannBCs',['../class_matrix_free_p_d_e.html#a247247ad46d4df30ac4fbc99cc202952',1,'MatrixFreePDE']]],
   ['assembler_5flock',['assembler_lock',['../class_matrix_free_p_d_e.html#abdeea3478d8f3c0d40d369174eae62e4',1,'MatrixFreePDE']]]
 ];

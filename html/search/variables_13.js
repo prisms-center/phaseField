@@ -1,22 +1,4 @@
 var searchData=
 [
-  ['value_5fresidual',['value_residual',['../classuser_input_parameters.html#acbf39543fad28184ea1e5647b7bf18d8',1,'userInputParameters']]],
-  ['value_5fresidual_5flhs',['value_residual_LHS',['../classuser_input_parameters.html#acf2b8397bee6bcf56f8909d90bdedb38',1,'userInputParameters']]],
-  ['values',['values',['../class_initial_condition_p_field.html#af4f7ff418a27e4086bea198d6d991b0a',1,'InitialConditionPField::values()'],['../class_initial_condition.html#a407a445f9d0e4f15b159fa66058bef9d',1,'InitialCondition::values()']]],
-  ['valuesdirichletset',['valuesDirichletSet',['../class_matrix_free_p_d_e.html#ab9ab33bb9925f1062ac082d1b495f2c1',1,'MatrixFreePDE']]],
-  ['var_5fbc_5ftype',['var_BC_type',['../classvar_b_cs.html#a3c2d6901a70977c11f13fa82f7f2c86d',1,'varBCs']]],
-  ['var_5fbc_5fval',['var_BC_val',['../classvar_b_cs.html#a4d89f4b20bed4bd66ef1d9245ef8ab49',1,'varBCs']]],
-  ['var_5feq_5ftype',['var_eq_type',['../classuser_input_parameters.html#a888c571473b486841609e46c05a9fa90',1,'userInputParameters']]],
-  ['var_5fname',['var_name',['../classuser_input_parameters.html#a77d44a8212929c63efba720ee9078881',1,'userInputParameters']]],
-  ['var_5ftype',['var_type',['../classuser_input_parameters.html#a139c43ae51b022f2fd5b5175e524063c',1,'userInputParameters']]],
-  ['varinfolistlhs',['varInfoListLHS',['../classuser_input_parameters.html#a6c867422611074fa3d62895ededc31cc',1,'userInputParameters']]],
-  ['varinfolistrhs',['varInfoListRHS',['../classuser_input_parameters.html#a368671c9e1989b06cd7caf77cdc3321d',1,'userInputParameters']]],
-  ['vector_5fdofhandler',['vector_dofHandler',['../class_matrix_free_p_d_e.html#a77443cfd920902aa1f1c076d7c6870ad',1,'MatrixFreePDE']]],
-  ['vector_5ffe',['vector_fe',['../class_matrix_free_p_d_e.html#af2b18fe93c2284ab7819a79ef0869ab7',1,'MatrixFreePDE']]],
-  ['vector_5fmatrixfreeobject',['vector_matrixFreeObject',['../class_matrix_free_p_d_e.html#aaf3b5e41c4d7b8a0c6cb4233b6f635bf',1,'MatrixFreePDE']]],
-  ['vectorgrad',['vectorGrad',['../classmodel_variable.html#a74052f74a494bde26c317126f9659fb3',1,'modelVariable']]],
-  ['vectorgradresidual',['vectorGradResidual',['../classmodel_residual.html#a2c4b1598d8fa7e56a3c89de51116138c',1,'modelResidual']]],
-  ['vectorhess',['vectorHess',['../classmodel_variable.html#ac235d5e468974960ad63414f34497edd',1,'modelVariable']]],
-  ['vectorvalue',['vectorValue',['../classmodel_variable.html#af722e1a3bcc4c93099b5828375d4423a',1,'modelVariable']]],
-  ['vectorvalueresidual',['vectorValueResidual',['../classmodel_residual.html#afa0d1b980f63e6b85a17e8f2af061bfe',1,'modelResidual']]]
+  ['userinputs',['userInputs',['../class_initial_condition.html#a679378dc93ff06d974a1ead4213456cc',1,'InitialCondition::userInputs()'],['../class_initial_condition_vec.html#a679378dc93ff06d974a1ead4213456cc',1,'InitialConditionVec::userInputs()'],['../class_matrix_free_p_d_e.html#a44af08e86ea6bacc41dacd1add99616e',1,'MatrixFreePDE::userInputs()'],['../class_non_uniform_dirichlet_b_c.html#a679378dc93ff06d974a1ead4213456cc',1,'NonUniformDirichletBC::userInputs()'],['../class_non_uniform_dirichlet_b_c_vec.html#a679378dc93ff06d974a1ead4213456cc',1,'NonUniformDirichletBCVec::userInputs()'],['../classcustom_p_d_e.html#a7b2cb3b82b9adcd0acafb84a795dcbda',1,'customPDE::userInputs()']]]
 ];

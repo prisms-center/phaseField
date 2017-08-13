@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['outputfreeenergy',['outputFreeEnergy',['../class_matrix_free_p_d_e.html#abac2cb853f6cd1030278df57182c2000',1,'MatrixFreePDE']]],
-  ['outputresults',['outputResults',['../class_matrix_free_p_d_e.html#a3826cb6cb8bc6a6ac713354f819c0e35',1,'MatrixFreePDE']]]
+  ['nonuniformdirichletbc',['NonUniformDirichletBC',['../class_non_uniform_dirichlet_b_c.html#a158f2dd666f3e057b7b059767d7ceb0e',1,'NonUniformDirichletBC']]],
+  ['nonuniformdirichletbcvec',['NonUniformDirichletBCVec',['../class_non_uniform_dirichlet_b_c_vec.html#a6a75956fac04d90d10775bbd119224e2',1,'NonUniformDirichletBCVec']]]
 ];
