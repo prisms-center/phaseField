@@ -1,0 +1,63 @@
+s et Fake = don't load this
+
+set Not real = 3
+
+# Equation 0
+subsection Equation 0
+    set Variable name = n
+    set Variable type = SCALAR
+    set Equation type = PARABOLIC
+    set Need variable value = true
+    set Need variable gradient = true
+    set Need variable hessian = false
+    set Need value residual term = true
+    set Need gradient residual term = true
+end
+
+# Decoy 0
+subsection Decoy 0
+    set Variable name = n
+    set Variable type = SCALAR
+    set Equation type = PARABOLIC
+    set Need variable value = true
+    set Need variable gradient = true
+    set Need variable hessian = false
+    set Need value residual term = true
+    set Need gradient residual term = true
+end
+
+# Equation 2
+subsection Equation 2
+    set Variable name = c
+    set Variable type = SCALAR
+    set Equation type = PARABOLIC
+    set Need variable value = true
+    set Need variable gradient = true
+    set Need variable hessian = false
+    set Need value residual term = true
+    set Need gradient residual term = true
+end
+
+# Decoy 1
+subsection Decoy 1
+    set Variable name = n
+    set Variable type = SCALAR
+    set Equation type = PARABOLIC
+    set Need variable value = true
+    set Need variable gradient = true
+    set Need variable hessian = false
+    set Need value residual term = true
+    set Need gradient residual term = true
+end
+
+# Equation 1
+subsection Equation 1
+    set Variable name = u
+    set Variable type = VECTOR
+    set Equation type = PARABOLIC
+    set Need variable value = true
+    set Need variable gradient = true
+    set Need variable hessian = false
+    set Need value residual term = true
+    set Need gradient residual term = true
+end

@@ -1,7 +1,11 @@
 var searchData=
 [
-  ['loadfieldname',['loadFieldName',['../allen_cahn__pfield_2_i_cs__and___b_cs_8h.html#a9f5ce03d0aabc9dc17c1aa24c0d9cfb0',1,'ICs_and_BCs.h']]],
-  ['loadfilename',['loadFileName',['../allen_cahn__pfield_2_i_cs__and___b_cs_8h.html#a2162edbcc652c998a7c4cf0c84416e1a',1,'ICs_and_BCs.h']]],
-  ['loadics',['loadICs',['../allen_cahn__pfield_2_i_cs__and___b_cs_8h.html#a42b28eda4d581da8b131cbcfa2652ef0',1,'ICs_and_BCs.h']]],
-  ['loadserialfile',['loadSerialFile',['../allen_cahn__pfield_2_i_cs__and___b_cs_8h.html#a1fb0375ecb958a763ad4d82077b0efa9',1,'ICs_and_BCs.h']]]
+  ['skipoutputsteps',['skipOutputSteps',['../__cahn_hilliard_with_adaptivity_2parameters_8h.html#ac8cf4158da8d17bc16eb0b3801f7eedc',1,'parameters.h']]],
+  ['solvertype',['solverType',['../__mechanics_with_adaptivity_2parameters_8h.html#a596093a5475947ba370681b431397fcc',1,'parameters.h']]],
+  ['spanx',['spanX',['../__cahn_hilliard_with_adaptivity_2parameters_8h.html#a5aacbfdd02d16e8bb093059b0b5996fc',1,'spanX():&#160;parameters.h'],['../__mechanics_with_adaptivity_2parameters_8h.html#a5aacbfdd02d16e8bb093059b0b5996fc',1,'spanX():&#160;parameters.h']]],
+  ['spany',['spanY',['../__cahn_hilliard_with_adaptivity_2parameters_8h.html#a2b252486b943a1d94e3257ea48a14a3d',1,'spanY():&#160;parameters.h'],['../__mechanics_with_adaptivity_2parameters_8h.html#a2b252486b943a1d94e3257ea48a14a3d',1,'spanY():&#160;parameters.h']]],
+  ['spanz',['spanZ',['../__cahn_hilliard_with_adaptivity_2parameters_8h.html#a349323cafd287850a2a7daf80d563f9f',1,'spanZ():&#160;parameters.h'],['../__mechanics_with_adaptivity_2parameters_8h.html#a349323cafd287850a2a7daf80d563f9f',1,'spanZ():&#160;parameters.h']]],
+  ['subdivisionsx',['subdivisionsX',['../__cahn_hilliard_with_adaptivity_2parameters_8h.html#a1f6673d11e02673eaf552b872f5e3186',1,'subdivisionsX():&#160;parameters.h'],['../__cahn_hilliard_with_adaptivity_2parameters_8h.html#a1f6673d11e02673eaf552b872f5e3186',1,'subdivisionsX():&#160;parameters.h'],['../__mechanics_with_adaptivity_2parameters_8h.html#a1f6673d11e02673eaf552b872f5e3186',1,'subdivisionsX():&#160;parameters.h']]],
+  ['subdivisionsy',['subdivisionsY',['../__cahn_hilliard_with_adaptivity_2parameters_8h.html#a1bb732213987a1da0f4ebf3da9f1a90a',1,'subdivisionsY():&#160;parameters.h'],['../__cahn_hilliard_with_adaptivity_2parameters_8h.html#a1bb732213987a1da0f4ebf3da9f1a90a',1,'subdivisionsY():&#160;parameters.h'],['../__mechanics_with_adaptivity_2parameters_8h.html#a1bb732213987a1da0f4ebf3da9f1a90a',1,'subdivisionsY():&#160;parameters.h']]],
+  ['subdivisionsz',['subdivisionsZ',['../__cahn_hilliard_with_adaptivity_2parameters_8h.html#acc1c523f35cb86dacfe2606b1fd355ae',1,'subdivisionsZ():&#160;parameters.h'],['../__cahn_hilliard_with_adaptivity_2parameters_8h.html#acc1c523f35cb86dacfe2606b1fd355ae',1,'subdivisionsZ():&#160;parameters.h'],['../__mechanics_with_adaptivity_2parameters_8h.html#acc1c523f35cb86dacfe2606b1fd355ae',1,'subdivisionsZ():&#160;parameters.h']]]
 ];

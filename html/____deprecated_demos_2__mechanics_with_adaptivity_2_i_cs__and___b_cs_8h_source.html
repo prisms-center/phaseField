@@ -107,7 +107,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keywordflow">if</span> (face_center[0]==0.0){</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;      cell-&gt;face(f)-&gt;set_boundary_id (1); <span class="comment">//boundary at X=0.0 marked with flag &#39;1&#39;</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    }</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (face_center[0]==<a class="code" href="default_values_8h.html#a5aacbfdd02d16e8bb093059b0b5996fc">spanX</a>){</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (face_center[0]==<a class="code" href="__cahn_hilliard_with_adaptivity_2parameters_8h.html#a5aacbfdd02d16e8bb093059b0b5996fc">spanX</a>){</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;      cell-&gt;face(f)-&gt;set_boundary_id (2); <span class="comment">//boundary at X=spanX marked with flag &#39;2&#39;</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    }</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;      }</div>
@@ -122,7 +122,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="class_b_c_function.html#a87f7ab4f9b5eca8713905f2227cb52a0">   30</a></span>&#160;  <a class="code" href="class_b_c_function.html#a87f7ab4f9b5eca8713905f2227cb52a0">BCFunction</a>(): Function&lt;dim&gt; (dim){}</div>
 <div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="class_b_c_function.html#ae2e9e28f0704e62fa54fc7e26dfcd065">   31</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_b_c_function.html#ae2e9e28f0704e62fa54fc7e26dfcd065">vector_value</a> (<span class="keyword">const</span> Point&lt;dim&gt;   &amp;p, Vector&lt;double&gt;   &amp;values)<span class="keyword"> const</span>{</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    Assert (values.size() == dim, ExcDimensionMismatch (values.size(), dim));</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    values[0]=<a class="code" href="default_values_8h.html#a5aacbfdd02d16e8bb093059b0b5996fc">spanX</a>/100.0; <span class="comment">// displacement along X-Direction</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    values[0]=<a class="code" href="__cahn_hilliard_with_adaptivity_2parameters_8h.html#a5aacbfdd02d16e8bb093059b0b5996fc">spanX</a>/100.0; <span class="comment">// displacement along X-Direction</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  }</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;};</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
@@ -143,9 +143,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                        xyzFlags);</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="ttc" id="default_values_8h_html_a5aacbfdd02d16e8bb093059b0b5996fc"><div class="ttname"><a href="default_values_8h.html#a5aacbfdd02d16e8bb093059b0b5996fc">spanX</a></div><div class="ttdeci">#define spanX</div><div class="ttdef"><b>Definition:</b> defaultValues.h:12</div></div>
 <div class="ttc" id="class_b_c_function_html_ae2e9e28f0704e62fa54fc7e26dfcd065"><div class="ttname"><a href="class_b_c_function.html#ae2e9e28f0704e62fa54fc7e26dfcd065">BCFunction::vector_value</a></div><div class="ttdeci">void vector_value(const Point&lt; dim &gt; &amp;p, Vector&lt; double &gt; &amp;values) const </div><div class="ttdef"><b>Definition:</b> ICs_and_BCs.h:31</div></div>
 <div class="ttc" id="class_b_c_function_html_a87f7ab4f9b5eca8713905f2227cb52a0"><div class="ttname"><a href="class_b_c_function.html#a87f7ab4f9b5eca8713905f2227cb52a0">BCFunction::BCFunction</a></div><div class="ttdeci">BCFunction()</div><div class="ttdef"><b>Definition:</b> ICs_and_BCs.h:30</div></div>
+<div class="ttc" id="__cahn_hilliard_with_adaptivity_2parameters_8h_html_a5aacbfdd02d16e8bb093059b0b5996fc"><div class="ttname"><a href="__cahn_hilliard_with_adaptivity_2parameters_8h.html#a5aacbfdd02d16e8bb093059b0b5996fc">spanX</a></div><div class="ttdeci">#define spanX</div><div class="ttdef"><b>Definition:</b> parameters.h:5</div></div>
 <div class="ttc" id="class_b_c_function_html"><div class="ttname"><a href="class_b_c_function.html">BCFunction</a></div><div class="ttdef"><b>Definition:</b> ICs_and_BCs.h:28</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

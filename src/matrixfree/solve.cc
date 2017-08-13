@@ -9,13 +9,10 @@ void MatrixFreePDE<dim,degree>::solve(){
   computing_timer.enter_section("matrixFreePDE: solve");
   pcout << "\nsolving...\n\n";
 
-  getOutputTimeSteps(userInputs.output_condition,userInputs.num_outputs,userInputs.user_given_time_step_list,outputTimeStepList);
-  int currentOutput = 0;
-
   //time dependent BVP
   if (isTimeDependentBVP){
     //output initial conditions for time dependent BVP
-	  if ((writeOutput) && (outputTimeStepList[currentOutput] == 0)) {
+	  if (userInputs.outputTimeStepList[currentOutput] == 0) {
 
           for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
               constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
@@ -23,10 +20,6 @@ void MatrixFreePDE<dim,degree>::solve(){
               solutionSet[fieldIndex]->update_ghost_values();
           }
           outputResults();
-          if (userInputs.calc_energy == true){
-              computeEnergy();
-              outputFreeEnergy(freeEnergyValues);
-          }
           currentOutput++;
     }
 
@@ -41,27 +34,22 @@ void MatrixFreePDE<dim,degree>::solve(){
       }
 
       //check and perform adaptive mesh refinement
-      computing_timer.enter_section("matrixFreePDE: AMR");
       adaptiveRefine(currentIncrement);
-      computing_timer.exit_section("matrixFreePDE: AMR");
+
+      // Update the list of nuclei (if relevant)
+      updateNucleiList();
 
       //solve time increment
       solveIncrement();
 
       //output results to file
-      if ((writeOutput) && (outputTimeStepList[currentOutput] == currentIncrement)) {
+      if (userInputs.outputTimeStepList[currentOutput] == currentIncrement) {
           for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
               constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
               constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
               solutionSet[fieldIndex]->update_ghost_values();
           }
           outputResults();
-
-          if (userInputs.calc_energy == true){
-              computeEnergy();
-              outputFreeEnergy(freeEnergyValues);
-          }
-          
           currentOutput++;
       }
   }
@@ -69,28 +57,11 @@ void MatrixFreePDE<dim,degree>::solve(){
 
   //time independent BVP
   else{
-    if (userInputs.totalIncrements>1){
-      pcout << "solve.h: this problem has only ELLIPTIC fields, hence neglecting totalIncrementsV>1 \n";
-    }
-    userInputs.totalIncrements=1;
+      //solve
+      solveIncrement();
 
-    //check and perform adaptive mesh refinement
-    //computing_timer.enter_section("matrixFreePDE: AMR");
-    //adaptiveRefine(0);
-    //computing_timer.exit_section("matrixFreePDE: AMR");
-
-    //solve
-    solveIncrement();
-
-    //output results to file
-    if (writeOutput){
-    	outputResults();
-    	if (userInputs.calc_energy == true){
-    		computeEnergy();
-    		outputFreeEnergy(freeEnergyValues);
-    	}
-    }
-
+      //output results to file
+      outputResults();
   }
 
   //log time

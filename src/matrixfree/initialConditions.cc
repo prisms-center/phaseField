@@ -1,10 +1,10 @@
-//methods to apply initial conditions 
+//methods to apply initial conditions
 
 #include "../../include/matrixFreePDE.h"
+#include "../../include/initialConditions.h"
 #include "../../include/IntegrationTools/PField.hh"
 
-#ifdef enablePFields
-#if enablePFields == true
+
 template <int dim>
 class InitialConditionPField : public Function<dim>
 {
@@ -31,10 +31,6 @@ public:
   }
 };
 
-#endif
-#else
-#define enablePFields false
-#endif
 
 //methods to apply initial conditions
 template <int dim, int degree>
@@ -43,15 +39,15 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
 for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_index++){
 	if (userInputs.load_ICs[var_index] == false){
 		pcout << "Applying non-PField initial condition...\n";
-		if (userInputs.var_type[var_index] == "SCALAR"){
-			VectorTools::interpolate (*dofHandlersSet[var_index], InitialCondition<dim>(var_index), *solutionSet[var_index]);
+		if (userInputs.var_type[var_index] == SCALAR){
+			VectorTools::interpolate (*dofHandlersSet[var_index], InitialCondition<dim>(var_index,userInputs), *solutionSet[var_index]);
 		}
 		else {
-			VectorTools::interpolate (*dofHandlersSet[var_index], InitialConditionVec<dim>(var_index), *solutionSet[var_index]);
+			VectorTools::interpolate (*dofHandlersSet[var_index], InitialConditionVec<dim>(var_index,userInputs), *solutionSet[var_index]);
 		}
 	}
 	else{
-		#if enablePFields == true
+		//#if enablePFields == true
 
 		// Declare the PField types and containers
 		typedef PRISMS::PField<double*, double, dim> ScalarField;
@@ -60,7 +56,7 @@ for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_i
 
 		// Create the filename of the the file to be loaded
 		std::string filename;
-		if (userInputs.load_serial_file[var_index] == true){
+		if (userInputs.load_parallel_file[var_index] == false){
 			filename = userInputs.load_file_name[var_index] + ".vtk";
 		}
 		else {
@@ -74,16 +70,14 @@ for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_i
 		body.read_vtk(filename);
 		ScalarField &conc = body.find_scalar_field(userInputs.load_field_name[var_index]);
 
-		if (userInputs.var_type[var_index] == "SCALAR"){
+		if (userInputs.var_type[var_index] == SCALAR){
 			pcout << "Applying PField initial condition...\n";
 			VectorTools::interpolate (*dofHandlersSet[var_index], InitialConditionPField<dim>(var_index,conc), *solutionSet[var_index]);
 		}
 		else {
 			std::cout << "PRISMS-PF Error: Cannot load vector fields. Loading initial conditions from file is currently limited to scalar fields" << std::endl;
 		}
-		#else
-		std::cout << "PRISMS-PF Error: The parameter \"enablePFields\" must be set to true to load initial conditions from file." << std::endl;
-		#endif
+        
 	}
 	pcout << "Application of initial conditions for field number " << var_index << " complete \n";
 }

@@ -1,0 +1,157 @@
+# Parameter list for the Allen-Cahn example application
+# Refer to the PRISMS-PF manual for use of these parameters in the source code.
+
+# =================================================================================
+# Set the number of dimensions (2 or 3 for a 2D or 3D calculation)
+# =================================================================================
+set Number of dimensions = 2
+
+# =================================================================================
+# Set the length of the domain in all three dimensions
+# (Domain size Z ignored in 2D)
+# =================================================================================
+# Each axes spans from zero to the specified length
+set Domain size X = 800
+set Domain size Y = 800
+set Domain size Z = 800
+
+# =================================================================================
+# Set the element parameters
+# =================================================================================
+# The number of elements in each direction is 2^(refineFactor) * subdivisions
+# Subdivisions Z ignored in 2D
+# For optimal performance, use refineFactor primarily to determine the element size
+set Subdivisions X = 1
+set Subdivisions Y = 1
+set Subdivisions Z = 1
+
+set Refine factor = 3
+
+# Set the polynomial degree of the element (allowed values: 1, 2, or 3)
+set Element degree = 2
+
+# =================================================================================
+# Set the adaptive mesh refinement parameters
+# =================================================================================
+# Set the flag determining if adaptive meshing is activated
+set Mesh adaptivity = true
+
+# Set the maximum and minimum level of refinement
+set Max refinement level = 9
+set Min refinement level = 2
+
+# Set the fields used to determine the refinement using their index.
+set Refinement criteria fields = n
+
+# Set the maximum and minimum value of the fields where the mesh should be refined
+set Refinement window max = 0.99
+set Refinement window min = 0.01
+
+# Set the number of time steps between remeshing operations
+set Steps between remeshing operations = 500
+
+# =================================================================================
+# Set the time step parameters
+# =================================================================================
+# The size of the time step
+set Time step = 0.044
+
+# The simulation ends when either the number of time steps is reached or the
+# simulation time is reached.
+set Number of time steps = 1000
+
+# =================================================================================
+# Set the boundary conditions
+# =================================================================================
+# Set the boundary condition for each variable, where each variable is given by
+# its name, as defined at the top of equations.h. The three boundary condition
+# types are NATURAL, DIRICHLET, and PERIODIC. If all of the boundaries have
+# the same boundary condition, only one boundary condition type needs to be given.
+# If multiple boundary condition types are needed, give a comma-separated list of
+# the types. The order is the miniumum of x, maximum of x, minimum of y, maximum
+# of y, minimum of z, maximum of z (i.e left, right, bottom, top in 2D and left,
+# right, bottom, top, front, back in 3D). The value of a Dirichlet BC is specfied
+# in the following way -- DIRCHILET: val -- where 'val' is the desired value.
+# Example 1: All periodic BCs for variable 'c'
+# set Boundary condition for variable c = PERIODIC
+# Example 2: Zero-derivative BCs on the left and right, Dirichlet BCs with value
+# 1.5 on the top and bottom for variable 'n' in 2D
+# set Boundary condition for variable n = NATURAL, NATURAL, DIRCHLET: 1.5, DIRICHLET: 1.5
+
+set Boundary condition for variable c = PERIODIC
+set Boundary condition for variable n = PERIODIC
+
+# =================================================================================
+# Set the nucleation parameters
+# =================================================================================
+
+set Nucleus semiaxes (x, y ,z) = 5, 5, 5
+set Freeze zone semiaxes (x, y ,z) = 7.5, 7.5, 7.5
+set Freeze time following nucleation = 20
+set Nucleation-free border thickness = 10
+set Minimum allowed distance between nuclei = 20.0
+set Order parameter cutoff value = 0.01
+set Time steps between nucleation attempts = 30
+
+# =================================================================================
+# Set the model constants
+# =================================================================================
+# Set the user-defined model constants, which must have a counter-part given in
+# customPDE.h. These are most often used in the residual equations in equations.h,
+# but may also be used for initial conditions and nucleation calculations. The type
+# options currently are DOUBLE, INT, BOOL, TENSOR, and [symmetry] ELASTIC CONSTANTS
+# where [symmetry] is ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC.
+
+# Average alloy composition (for initial contitions)
+set Model constant c_avg = 0.2, DOUBLE
+
+# Cahn-Hilliard mobility
+set Model constant McV = 1.0, DOUBLE
+
+# Allen-Cahn mobility
+set Model constant MnV = 1.0, DOUBLE
+
+# Allen-Cahn gradient energy coefficient
+set Model constant KnV = 2.0, DOUBLE
+
+# Energy barrier coefficient (used to tune the interfacial energy)
+set Model constant W_barrier = 2.0, DOUBLE
+
+# Constants for free energy expressions
+set Model constant A0 = 0.0, DOUBLE
+set Model constant A2 = 1.0, DOUBLE
+set Model constant calmin = 0.0, DOUBLE
+set Model constant B0 = 0.0, DOUBLE
+set Model constant B2 = 4.0, DOUBLE
+set Model constant cbtmin = 1.0, DOUBLE
+
+# Constants k1 and k2 for nucleation rate in the bulk
+set Model constant k1 = 1527.14, DOUBLE
+set Model constant k2_b = 4.14465, DOUBLE
+# Constants k1 and k2 for nucleation rate in grain boundary
+set Model constant k2_gb = 3.22362, DOUBLE
+
+# Incubation time
+set Model constant tau = 0, DOUBLE
+
+# Width of grain boundary
+set Model constant wgb = 16.0, DOUBLE
+# Grain boundary limits
+# Left limit
+set Model constant gbll = 392, DOUBLE
+# Right limit
+set Model constant gbrl = 408, DOUBLE
+
+# =================================================================================
+# Set the output parameters
+# =================================================================================
+# Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
+# or "LIST")
+set Output condition = EQUAL_SPACING
+
+# Number of times the program outputs the fields (total number for "EQUAL_SPACING"
+# and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
+set Number of outputs = 20
+
+# The number of time steps between updates being printed to the screen
+set Skip print steps = 100

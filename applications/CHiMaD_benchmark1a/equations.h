@@ -1,82 +1,72 @@
 // List of variables and residual equations for the Cahn-Hilliard example application
 
 // =================================================================================
-// Define the variables in the model
+// Set the attributes of the primary field variables
 // =================================================================================
-// The number of variables
-#define num_var 2
+void variableAttributeLoader::loadVariableAttributes(){
+	// Variable 0
+	set_variable_name				(0,"c");
+	set_variable_type				(0,SCALAR);
+	set_variable_equation_type		(0,PARABOLIC);
 
-// The names of the variables, whether they are scalars or vectors and whether the
-// governing eqn for the variable is parabolic or elliptic
-#define variable_name {"c", "mu"}
-#define variable_type {"SCALAR", "SCALAR"}
-#define variable_eq_type {"PARABOLIC", "PARABOLIC"}
+	set_need_value					(0,true);
+	set_need_gradient				(0,true);
+	set_need_hessian				(0,false);
 
-// Flags for whether the value, gradient, and Hessian are needed in the residual eqns
-#define need_val {true, true}
-#define need_grad {true, true}
-#define need_hess  {false, false}
+	set_need_value_residual_term	(0,true);
+	set_need_gradient_residual_term	(0,true);
 
-// Flags for whether the residual equation has a term multiplied by the test function
-// (need_val_residual) and/or the gradient of the test function (need_grad_residual)
-#define need_val_residual {true, true}
-#define need_grad_residual {true, true}
+	// Variable 1
+	set_variable_name				(1,"mu");
+	set_variable_type				(1,SCALAR);
+	set_variable_equation_type		(1,PARABOLIC);
 
-// =================================================================================
-// Define the model parameters and the residual equations
-// =================================================================================
-// Parameters in the residual equations and expressions for the residual equations
-// can be set here. For simple cases, the entire residual equation can be written
-// here. For more complex cases with loops or conditional statements, residual
-// equations (or parts of residual equations) can be written below in "residualRHS".
+	set_need_value					(1,false);
+	set_need_gradient				(1,true);
+	set_need_hessian				(1,false);
 
-// Mobility
-#define McV 5.0
-
-// Gradient energy coefficient
-#define KcV 2.0
-
-// The free energy and its derivative
-#define fV (5.0*(c-0.3)*(c-0.3)*(c-0.7)*(c-0.7))
-#define fcV (5.0*(2.0*(c-0.3)*(c-0.7)*(c-0.7)+2.0*(c-0.3)*(c-0.3)*(c-0.7)))
-
-// Residual equations
-#define rmuV  (fcV)
-#define rmuxV (constV(KcV)*cx)
-#define rcV   (c)
-#define rcxV  (constV(-McV*timeStep)*mux)
-
+	set_need_value_residual_term	(1,true);
+	set_need_gradient_residual_term	(1,true);
+}
 
 // =================================================================================
 // residualRHS
 // =================================================================================
 // This function calculates the residual equations for each variable. It takes
-// "modelVariablesList" as an input, which is a list of the value and derivatives of
+// "variable_list" as an input, which is a list of the value and derivatives of
 // each of the variables at a specific quadrature point. The (x,y,z) location of
-// that quadrature point is given by "q_point_loc". The function outputs
-// "modelResidualsList", a list of the value and gradient terms of the residual for
-// each residual equation. The index for each variable in these lists corresponds to
-// the order it is defined at the top of this file (starting at 0).
+// that quadrature point is given by "q_point_loc". The function outputs residuals
+// to variable_list. The index for each variable in this list corresponds to
+// the index given at the top of this file.
+
 template <int dim, int degree>
-void customPDE<dim,degree>::residualRHS(const std::vector<modelVariable<dim> > & modelVariablesList,
-												std::vector<modelResidual<dim> > & modelResidualsList,
-												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-// The concentration and its derivatives (names here should match those in the macros above)
-scalarvalueType c = modelVariablesList[0].scalarValue;
-scalargradType cx = modelVariablesList[0].scalarGrad;
+// The concentration and its derivatives 
+scalarvalueType c = variable_list.get_scalar_value(0);
+scalargradType cx = variable_list.get_scalar_gradient(0);
 
-// The chemical potential and its derivatives (names here should match those in the macros above)
-scalarvalueType mu = modelVariablesList[1].scalarValue;
-scalargradType mux = modelVariablesList[1].scalarGrad;
+// The chemical potential and its derivatives 
+scalargradType mux = variable_list.get_scalar_gradient(1);
 
-// Residuals for the equation to evolve the concentration (names here should match those in the macros above)
-modelResidualsList[0].scalarValueResidual = rcV;
-modelResidualsList[0].scalarGradResidual = rcxV;
+// The free energy and its derivative
+//scalarvalueType fV = (5.0*(c-0.3)*(c-0.3)*(c-0.7)*(c-0.7)); // Not actually needed
+scalarvalueType fcV = (5.0*(2.0*(c-0.3)*(c-0.7)*(c-0.7)+2.0*(c-0.3)*(c-0.3)*(c-0.7)));
 
-// Residuals for the equation to evolve the chemical potential (names here should match those in the macros above)
-modelResidualsList[1].scalarValueResidual = rmuV;
-modelResidualsList[1].scalarGradResidual = rmuxV;
+// Residual equations
+scalarvalueType rmuV = (fcV);
+scalargradType rmuxV = (constV(KcV)*cx);
+scalarvalueType rcV = (c);
+scalargradType rcxV = (constV(-McV*userInputs.dtValue)*mux);
+
+// Residuals for the equation to evolve the concentration 
+variable_list.set_scalar_value_residual_term(0,rcV);
+variable_list.set_scalar_gradient_residual_term(0,rcxV);
+
+// Residuals for the equation to evolve the chemical potential 
+variable_list.set_scalar_value_residual_term(1,rmuV);
+variable_list.set_scalar_gradient_residual_term(1,rmuxV);
 
 }
 
@@ -84,76 +74,18 @@ modelResidualsList[1].scalarGradResidual = rmuxV;
 // residualLHS (needed only if at least one equation is elliptic)
 // =================================================================================
 // This function calculates the residual equations for the iterative solver for
-// elliptic equations.for each variable. It takes "modelVariablesList" as an input,
+// elliptic equations.for each variable. It takes "variable_list" as an input,
 // which is a list of the value and derivatives of each of the variables at a
 // specific quadrature point. The (x,y,z) location of that quadrature point is given
-// by "q_point_loc". The function outputs "modelRes", the value and gradient terms of
+// by "q_point_loc". The function outputs residual terms to "variable_list"
 // for the left-hand-side of the residual equation for the iterative solver. The
-// index for each variable in these lists corresponds to the order it is defined at
-// the top of this file (starting at 0), not counting variables that have
-// "need_val_LHS", "need_grad_LHS", and "need_hess_LHS" all set to "false". If there
-// are multiple elliptic equations, conditional statements should be used to ensure
-// that the correct residual is being submitted. The index of the field being solved
-// can be accessed by "this->currentFieldIndex".
+// index for each variable in this list corresponds to
+// the index given at the top of this file. If there are multiple elliptic equations,
+// conditional statements should be used to ensure that the correct residual is
+// being submitted. The index of the field being solved can be accessed by
+// "this->currentFieldIndex".
+
 template <int dim, int degree>
-void customPDE<dim,degree>::residualLHS(const std::vector<modelVariable<dim> > & modelVarList,
-		modelResidual<dim> & modelRes,
+void customPDE<dim,degree>::residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 }
-
-// =================================================================================
-// energyDensity (needed only if calcEnergy == true)
-// =================================================================================
-// This function integrates the free energy density across the computational domain.
-// It takes "modelVariablesList" as an input, which is a list of the value and
-// derivatives of each of the variables at a specific quadrature point. It also
-// takes the mapped quadrature weight, "JxW_value", as an input. The (x,y,z) location
-// of the quadrature point is given by "q_point_loc". The weighted value of the
-// energy density is added to "energy" variable and the components of the energy
-// density are added to the "energy_components" variable (index 0: chemical energy,
-// index 1: gradient energy, index 2: elastic energy).
-template <int dim, int degree>
-void customPDE<dim,degree>::energyDensity(const std::vector<modelVariable<dim> > & modelVariablesList,
-											const dealii::VectorizedArray<double> & JxW_value,
-											dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {
-scalarvalueType total_energy_density = constV(0.0);
-
-// The concentration and its derivatives (names here should match those in the macros above)
-scalarvalueType c = modelVariablesList[0].scalarValue;
-scalargradType cx = modelVariablesList[0].scalarGrad;
-
-// The chemical potential and its derivatives (names here should match those in the macros above)
-scalarvalueType mu = modelVariablesList[1].scalarValue;
-scalargradType mux = modelVariablesList[1].scalarGrad;
-
-// The homogenous free energy
-scalarvalueType f_chem = fV;
-
-// The gradient free energy
-scalarvalueType f_grad = constV(0.0);
-
-for (int i=0; i<dim; i++){
-  for (int j=0; j<dim; j++){
-	  f_grad += constV(0.5*KcV)*cx[i]*cx[j];
-  }
-}
-
-// The total free energy
-total_energy_density = f_chem + f_grad;
-
-// Loop to step through each element of the vectorized arrays. Working with deal.ii
-// developers to see if there is a more elegant way to do this.
-this->assembler_lock.acquire ();
-for (unsigned i=0; i<c.n_array_elements;i++){
-  if (c[i] > 1.0e-10){
-	  this->energy+=total_energy_density[i]*JxW_value[i];
-	  this->energy_components[0]+= f_chem[i]*JxW_value[i];
-	  this->energy_components[1]+= f_grad[i]*JxW_value[i];
-  }
-}
-this->assembler_lock.release ();
-}
-
-
-
-

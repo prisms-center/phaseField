@@ -4,7 +4,7 @@
 
 //output results
 template <int dim, int degree>
-void MatrixFreePDE<dim,degree>::outputResults() const {
+void MatrixFreePDE<dim,degree>::outputResults() {
   //log time
   computing_timer.enter_section("matrixFreePDE: output");
 
@@ -22,17 +22,14 @@ void MatrixFreePDE<dim,degree>::outputResults() const {
 	DataComponentInterpretation::component_is_part_of_vector));
     //add field to data_out
     std::vector<std::string> solutionNames (fields[fieldIndex].numComponents, fields[fieldIndex].name.c_str());
-    data_out.add_data_vector(*dofHandlersSet[fieldIndex], *solutionSet[fieldIndex], solutionNames, dataType);  
+    data_out.add_data_vector(*dofHandlersSet[fieldIndex], *solutionSet[fieldIndex], solutionNames, dataType);
   }
-  
+
   // Test section for outputting postprocessed fields
   // Currently there are hacks in place, using the matrixFreeObject, invM, constraints, and DoFHandler as the primary variables
   if (userInputs.postProcessingRequired){
-	  PostProcessor<dim,degree> post_processor(userInputs);
 	  std::vector<vectorType*> postProcessedSet;
-	  post_processor.computePostProcessedFields(matrixFreeObject,solutionSet,postProcessedSet);
-
-	  pcout << postProcessedSet[0]->l2_norm() << std::endl;
+      computePostProcessedFields(postProcessedSet);
 
 	  unsigned int invM_size = invM.local_size();
 	  for(unsigned int fieldIndex=0; fieldIndex<postProcessedSet.size(); fieldIndex++){
@@ -43,6 +40,39 @@ void MatrixFreePDE<dim,degree>::outputResults() const {
 		  constraintsOtherSet[0]->distribute(*postProcessedSet[fieldIndex]);
 		  postProcessedSet[fieldIndex]->update_ghost_values();
 	  }
+
+      // Integrate over selected post-processed fields and output them to the screen and a text file
+      std::ofstream output_file;
+
+      if (userInputs.num_integrated_fields > 0){
+          if (first_integrated_var_output_complete){
+              output_file.open("integratedFields.txt", std::ios::app);
+          }
+          else {
+              output_file.open("integratedFields.txt", std::ios::out);
+          }
+          output_file.precision(10);
+
+          if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+              output_file << currentTime;
+          }
+
+          for (unsigned int i=0; i<userInputs.pp_number_of_variables; i++){
+              if (userInputs.pp_calc_integral[i]){
+                  double integrated_field;
+                  computeIntegral(integrated_field,i,postProcessedSet);
+                  pcout << "Integrated value of " << userInputs.pp_var_name[userInputs.integrated_field_indices[i]] << ": " << integrated_field << std::endl;
+                  if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+                      output_file << "\t" << userInputs.pp_var_name[userInputs.integrated_field_indices[i]] << "\t" << integrated_field;
+                  }
+              }
+          }
+          if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+              output_file << std::endl;
+          }
+          output_file.close();
+          first_integrated_var_output_complete = true;
+      }
 
 	  // Add the postprocessed fields to data_out
 	  for(unsigned int fieldIndex=0; fieldIndex<userInputs.pp_number_of_variables; fieldIndex++){
@@ -67,14 +97,14 @@ void MatrixFreePDE<dim,degree>::outputResults() const {
   }
 
   data_out.build_patches (degree);
-  
+
   //write to results file
   //file name
   std::ostringstream cycleAsString;
   cycleAsString << std::setw(std::ceil(std::log10(userInputs.totalIncrements))+1) << std::setfill('0') << currentIncrement;
   char vtuFileName[100], pvtuFileName[100];
-  sprintf(vtuFileName, "solution-%s.%u.%s", cycleAsString.str().c_str(),Utilities::MPI::this_mpi_process(MPI_COMM_WORLD),userInputs.output_file_type.c_str());
-  sprintf(pvtuFileName, "solution-%s.p%s", cycleAsString.str().c_str(),userInputs.output_file_type.c_str());
+  sprintf(vtuFileName, "%s-%s.%u.%s", userInputs.output_file_name.c_str(), cycleAsString.str().c_str(),Utilities::MPI::this_mpi_process(MPI_COMM_WORLD),userInputs.output_file_type.c_str());
+  sprintf(pvtuFileName, "%s-%s.p%s", userInputs.output_file_name.c_str(), cycleAsString.str().c_str(),userInputs.output_file_type.c_str());
   std::ofstream output (vtuFileName);
 
   //write to file
@@ -85,7 +115,7 @@ void MatrixFreePDE<dim,degree>::outputResults() const {
 	  data_out.write_vtk (output);
   }
   else {
-	  std::cout << "PRISMS-PF Error: The parameter 'outputFileType' must be either \"vtu\" or \"vtk\"" << std::endl;
+	  std::cerr << "PRISMS-PF Error: The parameter 'outputFileType' must be either \"vtu\" or \"vtk\"" << std::endl;
 	  abort();
   }
 
@@ -94,7 +124,7 @@ void MatrixFreePDE<dim,degree>::outputResults() const {
     std::vector<std::string> filenames;
     for (unsigned int i=0;i<Utilities::MPI::n_mpi_processes (MPI_COMM_WORLD); ++i) {
     	char vtuProcFileName[100];
-    	sprintf(vtuProcFileName, "solution-%s.%u.%s", cycleAsString.str().c_str(),i,userInputs.output_file_type.c_str());
+    	sprintf(vtuProcFileName, "%s-%s.%u.%s", userInputs.output_file_name.c_str(),cycleAsString.str().c_str(),i,userInputs.output_file_type.c_str());
     	filenames.push_back (vtuProcFileName);
     }
     std::ofstream master_output (pvtuFileName);
@@ -104,7 +134,7 @@ void MatrixFreePDE<dim,degree>::outputResults() const {
   pcout << "Output written to:" << pvtuFileName << "\n\n";
 
   //log time
-  computing_timer.exit_section("matrixFreePDE: output"); 
+  computing_timer.exit_section("matrixFreePDE: output");
 }
 
 #include "../../include/matrixFreePDE_template_instantiations.h"

@@ -1,0 +1,7 @@
+#ifndef INCLUDE_VARTYPEENUMS_H_
+#define INCLUDE_VARTYPEENUMS_H_
+
+enum fieldType {SCALAR, VECTOR};
+enum PDEType {PARABOLIC, ELLIPTIC};
+
+#endif

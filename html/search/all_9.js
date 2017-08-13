@@ -1,12 +1,13 @@
 var searchData=
 [
-  ['k1',['k1',['../__nucleation_model_2equations_8h.html#aa786777ce0a77f3d766d53dfa93da3d7',1,'k1():&#160;equations.h'],['../__preferential__nucleation_model_2equations_8h.html#aa786777ce0a77f3d766d53dfa93da3d7',1,'k1():&#160;equations.h']]],
-  ['k2',['k2',['../__nucleation_model_2equations_8h.html#a6d1b20b7746f8fe1eb340b8b6bf08a9e',1,'equations.h']]],
-  ['k2_5fb',['k2_b',['../__preferential__nucleation_model_2equations_8h.html#a519c4cc550eb360cbb837c1c20283cd9',1,'equations.h']]],
-  ['k2_5fgb',['k2_gb',['../__preferential__nucleation_model_2equations_8h.html#a8c60e78f67fafd042fe665f73b402472',1,'equations.h']]],
-  ['kcv',['KcV',['../residuals_8h.html#a9021e1ce73ed7629243a7db088c96f26',1,'KcV():&#160;residuals.h'],['../cahn_hilliard_2equations_8h.html#a9021e1ce73ed7629243a7db088c96f26',1,'KcV():&#160;equations.h'],['../cahn_hilliard_with_adaptivity_2equations_8h.html#a9021e1ce73ed7629243a7db088c96f26',1,'KcV():&#160;equations.h'],['../_c_hi_ma_d__benchmark1a_2equations_8h.html#a9021e1ce73ed7629243a7db088c96f26',1,'KcV():&#160;equations.h'],['../_c_hi_ma_d__benchmark2a_2equations_8h.html#a9021e1ce73ed7629243a7db088c96f26',1,'KcV():&#160;equations.h']]],
-  ['kn1',['Kn1',['../precipitate_evolution_2equations_8h.html#aef34c92909314e8c81279b24e81bd88d',1,'Kn1():&#160;equations.h'],['../precipitate_evolution__pfunction_2equations_8h.html#aef34c92909314e8c81279b24e81bd88d',1,'Kn1():&#160;equations.h'],['../single_precipitate_k_k_s_2equations_8h.html#aef34c92909314e8c81279b24e81bd88d',1,'Kn1():&#160;equations.h']]],
-  ['kn2',['Kn2',['../precipitate_evolution_2equations_8h.html#acce453ec82a9423969fbd7b42179d8a6',1,'Kn2():&#160;equations.h'],['../precipitate_evolution__pfunction_2equations_8h.html#acce453ec82a9423969fbd7b42179d8a6',1,'Kn2():&#160;equations.h']]],
-  ['kn3',['Kn3',['../precipitate_evolution_2equations_8h.html#a3ab71a6b6ea21d1c44a12c0ceb55603a',1,'Kn3():&#160;equations.h'],['../precipitate_evolution__pfunction_2equations_8h.html#a3ab71a6b6ea21d1c44a12c0ceb55603a',1,'Kn3():&#160;equations.h']]],
-  ['knv',['KnV',['../__nucleation_model_2equations_8h.html#aa4fd412828f9062720bd4a6e31e2d8ed',1,'KnV():&#160;equations.h'],['../__preferential__nucleation_model_2equations_8h.html#aa4fd412828f9062720bd4a6e31e2d8ed',1,'KnV():&#160;equations.h'],['../allen_cahn_2equations_8h.html#aa4fd412828f9062720bd4a6e31e2d8ed',1,'KnV():&#160;equations.h'],['../allen_cahn__pfield_2equations_8h.html#aa4fd412828f9062720bd4a6e31e2d8ed',1,'KnV():&#160;equations.h'],['../_c_hi_ma_d__benchmark2a_2equations_8h.html#aa4fd412828f9062720bd4a6e31e2d8ed',1,'KnV():&#160;equations.h'],['../coupled_cahn_hilliard_allen_cahn_2equations_8h.html#aa4fd412828f9062720bd4a6e31e2d8ed',1,'KnV():&#160;equations.h'],['../grain_growth_2equations_8h.html#aa4fd412828f9062720bd4a6e31e2d8ed',1,'KnV():&#160;equations.h']]]
+  ['k',['k',['../classcustom_p_d_e.html#ac8a270bda1a0784095b5ec578129c28a',1,'customPDE']]],
+  ['k1',['k1',['../classcustom_p_d_e.html#a830ffdbe06791ff8f55f8070464e5023',1,'customPDE']]],
+  ['k2',['k2',['../classcustom_p_d_e.html#a5fa2323820f58decc76532df11cd3ab8',1,'customPDE']]],
+  ['k2_5fb',['k2_b',['../classcustom_p_d_e.html#a60a56757c1451093e25d505443b00ae3',1,'customPDE']]],
+  ['k2_5fgb',['k2_gb',['../classcustom_p_d_e.html#a7f98c9ff3c9aa620cb35a5186f049367',1,'customPDE']]],
+  ['kcv',['KcV',['../classcustom_p_d_e.html#a827002a90e7c797189d3b04db1677723',1,'customPDE::KcV()'],['../residuals_8h.html#a9021e1ce73ed7629243a7db088c96f26',1,'KcV():&#160;residuals.h']]],
+  ['kn1',['Kn1',['../classcustom_p_d_e.html#a92bfb6c2021fb91b6bd6d52ac4bd2ee7',1,'customPDE']]],
+  ['kn2',['Kn2',['../classcustom_p_d_e.html#a9b88097b0e6e98960fb1c4b7d5f9ff57',1,'customPDE']]],
+  ['kn3',['Kn3',['../classcustom_p_d_e.html#a7397e5526cd779fcf94e3997937fb077',1,'customPDE']]],
+  ['knv',['KnV',['../classcustom_p_d_e.html#a316ddb6d260810f8c9eaa9dc826655df',1,'customPDE']]]
 ];

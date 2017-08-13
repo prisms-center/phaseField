@@ -9,22 +9,14 @@
 
 //dealii headers
 #include "dealIIheaders.h"
-#include "defaultValues.h"
 
 //PRISMS headers
-#include "model_variables.h"
 #include "varBCs.h"
-#include "initialConditions.h"
-
-
 #include "fields.h"
-#include "vectorLoad.h"
-#include "vectorBCFunction.h"
-#include "../src/userInputParameters/getCIJMatrix.h"
-#include "../src/models/mechanics/computeStress.h"
-#include "IntegrationTools/PField.hh"
 #include "userInputParameters.h"
-
+#include "nucleus.h"
+#include "variableValueContainer.h"
+#include "variableContainer.h"
 
 ////define data types
 #ifndef scalarType
@@ -36,8 +28,6 @@ typedef dealii::parallel::distributed::Vector<double> vectorType;
 
 //macro for constants
 #define constV(a) make_vectorized_array(a)
-
-#include "postprocessor.h"
 
 //
 using namespace dealii;
@@ -65,7 +55,9 @@ class MatrixFreePDE:public Subscriptor
    * Initializes the mesh, degrees of freedom, constraints and data structures using the user provided
    * inputs in the application parameters file.
    */
-  void init  ();
+  virtual void init  ();
+
+  virtual void makeTriangulation(parallel::distributed::Triangulation<dim> &) const;
 
    /**
    * Initializes the data structures for enabling unit tests.
@@ -93,25 +85,7 @@ class MatrixFreePDE:public Subscriptor
    */
   std::vector<Field<dim> >                  fields;
 
-
-  virtual void setBCs()=0;
   void buildFields();
-  void inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
-    			std::string BC_type_dim1_max, double BC_value_dim1_max, std::string BC_type_dim2_min, double BC_value_dim2_min,
-    			std::string BC_type_dim2_max, double BC_value_dim2_max,std::string BC_type_dim3_min, double BC_value_dim3_min,
-    			std::string BC_type_dim3_max, double BC_value_dim3_max);
-
-  void inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
-  			std::string BC_type_dim1_max, double BC_value_dim1_max, std::string BC_type_dim2_min, double BC_value_dim2_min,
-  			std::string BC_type_dim2_max, double BC_value_dim2_max);
-
-  void inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
-    			std::string BC_type_dim1_max, double BC_value_dim1_max);
-
-  void inputBCs(int var, int component, std::string BC_type, double BC_value);
-
-  // Boundary condition object
-  std::vector<varBCs<dim> > BC_list;
 
   // Parallel message stream
   ConditionalOStream  pcout;
@@ -119,9 +93,12 @@ class MatrixFreePDE:public Subscriptor
  protected:
   userInputParameters<dim> userInputs;
 
-  dealii::Threads::Mutex assembler_lock;
-
   unsigned int totalDOFs;
+
+  // Virtual methods to set the attributes of the primary field variables and the postprocessing field variables
+  //virtual void setVariableAttriubutes() = 0;
+  //virtual void setPostProcessingVariableAttriubutes(){};
+  variableAttributeLoader var_attributes;
 
   // Elasticity matrix variables
   const static unsigned int CIJ_tensor_size = 2*dim-1+dim/3;
@@ -134,19 +111,14 @@ class MatrixFreePDE:public Subscriptor
    * this method is called only once. This method solves for all the fields in a staggered manner (one after another)
    * and also invokes the corresponding solvers: Explicit solver for Parabolic problems, Implicit (matrix-free) solver for Elliptic problems.
    */
-  void solveIncrement ();
+  virtual void solveIncrement ();
   /* Method to write solution fields to vtu and pvtu (parallel) files.
   *
   * This method can be enabled/disabled by setting the flag writeOutput to true/false. Also,
   * the user can select how often the solution files are written by setting the flag
   * skipOutputSteps in the parameters file.
   */
-  void outputResults() const;
-
-  /* Method to generate a list of time steps where the method outputResults should be called. It populates outputTimeStepList.
-   */
-  std::vector<unsigned int> outputTimeStepList;
-  void getOutputTimeSteps(const std::string outputSpacingType, unsigned int numberOfOutputs, const std::vector<unsigned int> & userGivenTimeStepList, std::vector<unsigned int> & timeStepList) const;
+  void outputResults();
 
   /*Parallel mesh object which holds information about the FE nodes, elements and parallel domain decomposition
    */
@@ -225,25 +197,32 @@ class MatrixFreePDE:public Subscriptor
 		       const std::vector<vectorType*> &src,
 		       const std::pair<unsigned int,unsigned int> &cell_range) const;
 
-  virtual void residualRHS(const std::vector<modelVariable<dim> > & modelVarList,
-  		  	  	  	  	  	  	  	  	  	  	  	  	  std::vector<modelResidual<dim> > & modelResidualsList,
+  virtual void residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+  		  	  	  	  	  	  	  	  	  	  	  	  	  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
+
+  virtual void residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
   														  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
 
-  virtual void residualLHS(const std::vector<modelVariable<dim> > & modelVarList,
-    		  	  	  	  	  	  	  	  	  	  	  	  	  modelResidual<dim> & modelRes,
-  														  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
+  virtual void postProcessedFields(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+                                                              variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
+                                                              const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};
+  void computePostProcessedFields(std::vector<vectorType*> &postProcessedSet);
 
-  virtual void energyDensity(const std::vector<modelVariable<dim> > & modelVarList, const dealii::VectorizedArray<double> & JxW_value,
-  		  	  	  	  	  	  	  	  	  	  	  	  	  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc)=0;
-
+  void getPostProcessedFields(const dealii::MatrixFree<dim,double> &data,
+                                                                                      std::vector<vectorType*> &dst,
+                                                                                      const std::vector<vectorType*> &src,
+                                                                                      const std::pair<unsigned int,unsigned int> &cell_range);
 
   //methods to apply dirichlet BC's
   /*Map of degrees of freedom to the corresponding Dirichlet boundary conditions, if any.*/
   std::vector<std::map<dealii::types::global_dof_index, double>*> valuesDirichletSet;
   /*Virtual method to mark the boundaries for applying Dirichlet boundary conditions.  This is usually expected to be provided by the user.*/
-  void markBoundaries();
-  /*Virtual method for applying Dirichlet boundary conditions.  This is usually expected to be provided by the user.*/
+  void markBoundaries(parallel::distributed::Triangulation<dim> &) const;
+  /** Method for applying Dirichlet boundary conditions.*/
   void applyDirichletBCs();
+
+  /** Method for applying Neumann boundary conditions.*/
+  void applyNeumannBCs();
 
   // Methods to apply periodic BCs
   void setPeriodicity();
@@ -255,14 +234,22 @@ class MatrixFreePDE:public Subscriptor
   /*Virtual method to apply initial conditions.  This is usually expected to be provided by the user in IBVP (Initial Boundary Value Problems).*/
 
   void applyInitialConditions();
-  virtual void getNucleiList ();
 
-  /*Method to compute energy like quantities.*/
-  void computeEnergy();
-  void getEnergy(const MatrixFree<dim,double> &data,
-		    std::vector<vectorType*> &dst,
-		    const std::vector<vectorType*> &src,
-		    const std::pair<unsigned int,unsigned int> &cell_range);
+  // --------------------------------------------------------------------------
+  // Nucleation methods and variables
+  // --------------------------------------------------------------------------
+  // Vector of all the nuclei seeded in the problem
+  std::vector<nucleus<dim> > nuclei;
+
+  // Method to get a list of new nuclei to be seeded
+  void updateNucleiList();
+  std::vector<nucleus<dim> > getNewNuclei();
+  void getLocalNucleiList(std::vector<nucleus<dim> > & newnuclei) const;
+  void safetyCheckNewNuclei(std::vector<nucleus<dim> > newnuclei, std::vector<unsigned int> & conflict_ids);
+  void refineMeshNearNuclei(std::vector<nucleus<dim> > newnuclei);
+
+  // Method to obtain the nucleation probability for an element, nontrival case must be implemented in the subsclass
+  virtual double getNucleationProbability(variableValueContainer, double, dealii::Point<dim>)const {return 0.0;};
 
   //utility functions
   /*Returns index of given field name if exists, else throw error.*/
@@ -272,7 +259,7 @@ class MatrixFreePDE:public Subscriptor
   void outputFreeEnergy(const std::vector<double>& freeEnergyValues) const;
 
   /*Method to compute the integral of a field.*/
-  void computeIntegral(double& integratedField, int index);
+  void computeIntegral(double& integratedField, int index, std::vector<vectorType*> postProcessedSet);
 
   //variables for time dependent problems
   /*Flag used to see if invM, time stepping in run(), etc are necessary*/
@@ -282,13 +269,26 @@ class MatrixFreePDE:public Subscriptor
   //
   unsigned int parabolicFieldIndex, ellipticFieldIndex;
   double currentTime;
-  unsigned int currentIncrement;
+  unsigned int currentIncrement, currentOutput;
 
   /*Timer and logging object*/
   mutable TimerOutput computing_timer;
 
-  double energy;
-  std::vector<double> energy_components;
+  std::vector<double> integrated_postprocessed_fields;
+
+  bool first_integrated_var_output_complete;
+
+  // Methods and variables for integration
+  double integrated_var;
+  unsigned int integral_index;
+  dealii::Threads::Mutex assembler_lock;
+
+  void computeIntegralMF(double& integratedField, int index, const std::vector<vectorType*> postProcessedSet);
+
+  void getIntegralMF (const MatrixFree<dim,double> &data,
+		       std::vector<vectorType*> &dst,
+		       const std::vector<vectorType*> &src,
+		       const std::pair<unsigned int,unsigned int> &cell_range);
 
 };
 

@@ -1,15 +1,16 @@
-//methods to mark boundaries 
+//methods to mark boundaries
 
 #include "../../include/matrixFreePDE.h"
+#include "../../include/initialConditions.h"
 
 //methods to mark boundaries
 //methods to mark boundaries
 template <int dim, int degree>
-void MatrixFreePDE<dim,degree>::markBoundaries(){
+void MatrixFreePDE<dim,degree>::markBoundaries(parallel::distributed::Triangulation<dim> & tria) const{
 
 	typename Triangulation<dim>::cell_iterator
-	cell = triangulation.begin (),
-	endc = triangulation.end();
+	cell = tria.begin (),
+	endc = tria.end();
 
 	for (; cell!=endc; ++cell){
 
@@ -29,4 +30,3 @@ void MatrixFreePDE<dim,degree>::markBoundaries(){
 }
 
 #include "../../include/matrixFreePDE_template_instantiations.h"
-

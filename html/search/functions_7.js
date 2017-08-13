@@ -1,10 +1,4 @@
 var searchData=
 [
-  ['init',['init',['../class_matrix_free_p_d_e.html#a02fd73d861ef2e4aabb38c0c9ff82947',1,'MatrixFreePDE']]],
-  ['initfortests',['initForTests',['../class_matrix_free_p_d_e.html#a08849e3690a503c85f7c7e1734cda157',1,'MatrixFreePDE']]],
-  ['initialcondition',['InitialCondition',['../class_initial_condition.html#ab5711c3ffa66b55c9ae22fd339b0fc22',1,'InitialCondition']]],
-  ['initialconditionc',['InitialConditionC',['../class_initial_condition_c.html#a2fcb6ca3f272e99d991f48181952e14e',1,'InitialConditionC']]],
-  ['initialconditionpfield',['InitialConditionPField',['../class_initial_condition_p_field.html#a4db053c2ae5c22d699b73057c538ff7e',1,'InitialConditionPField']]],
-  ['initialconditionvec',['InitialConditionVec',['../class_initial_condition_vec.html#a49d217bf1f388f9b182ba30c2a337382',1,'InitialConditionVec']]],
-  ['inputbcs',['inputBCs',['../class_matrix_free_p_d_e.html#ac58c0270e163ebeb180715735aaace7e',1,'MatrixFreePDE::inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min, std::string BC_type_dim1_max, double BC_value_dim1_max, std::string BC_type_dim2_min, double BC_value_dim2_min, std::string BC_type_dim2_max, double BC_value_dim2_max, std::string BC_type_dim3_min, double BC_value_dim3_min, std::string BC_type_dim3_max, double BC_value_dim3_max)'],['../class_matrix_free_p_d_e.html#a98239f916a3baaa6dd86908e894ef8da',1,'MatrixFreePDE::inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min, std::string BC_type_dim1_max, double BC_value_dim1_max, std::string BC_type_dim2_min, double BC_value_dim2_min, std::string BC_type_dim2_max, double BC_value_dim2_max)'],['../class_matrix_free_p_d_e.html#a19c934b7c940b07af2594cbd9bddfb34',1,'MatrixFreePDE::inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min, std::string BC_type_dim1_max, double BC_value_dim1_max)'],['../class_matrix_free_p_d_e.html#af38833983b730f4c5057d45d9a2c9e84',1,'MatrixFreePDE::inputBCs(int var, int component, std::string BC_type, double BC_value)']]]
+  ['hess',['hess',['../class_p_functions_1_1p_function.html#a929fb192a2a224fd8dd5616c01bfaba3',1,'PFunctions::pFunction']]]
 ];

@@ -2,11 +2,11 @@
 template <int dim, int degree>
 class testInvM: public MatrixFreePDE<dim,degree>
 {
- public: 
+ public:
   testInvM(userInputParameters<dim> _userInputs): MatrixFreePDE<dim,degree>(_userInputs) {
 
 	  // Initialize the test field object (needed for computeInvM())
-	  Field<problemDIM> test_field(SCALAR,PARABOLIC,"c");
+	  Field<dim> test_field(SCALAR,PARABOLIC,"c");
 	  this->fields.push_back(test_field);
 
 	  //init the MatrixFreePDE class for testing
@@ -17,28 +17,32 @@ class testInvM: public MatrixFreePDE<dim,degree>
 	  invMNorm=this->invM.l2_norm();
 
 	  // Need to clear fields or there's an error in the destructor
-	  this->fields.clear();
+      this->fields.clear();
+
   };
+  ~testInvM(){      
+      this->matrixFreeObject.clear();
+      delete this->dofHandlersSet[0];
+  };
+
   double invMNorm;
-  
+
   void setBCs(){};
 
  private:
   //RHS implementation for explicit solve
-  void getRHS(const MatrixFree<dim,double> &data, 
-	      std::vector<vectorType*> &dst, 
+  void getRHS(const MatrixFree<dim,double> &data,
+	      std::vector<vectorType*> &dst,
 	      const std::vector<vectorType*> &src,
 	      const std::pair<unsigned int,unsigned int> &cell_range) const{};
 
-  void residualRHS(const std::vector<modelVariable<dim> > & modelVarList,
-  			  	  	 std::vector<modelResidual<dim> > & modelResidualsList,
+  void residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
   					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};
 
-  	void residualLHS(const std::vector<modelVariable<dim> > & modelVarList,
-  	  		  	  	 modelResidual<dim> & modelRes,
+  void residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
   					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};
 
-  	void energyDensity(const std::vector<modelVariable<dim> > & modelVarList, const dealii::VectorizedArray<double> & JxW_value,
+  void energyDensity(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list, const dealii::VectorizedArray<double> & JxW_value,
   			  	  	 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {};
 
 };
@@ -47,11 +51,12 @@ template <int dim,typename T>
   bool unitTest<dim,T>::test_computeInvM(int argc, char** argv, userInputParameters<dim> userInputs){
   	bool pass = false;
 	std::cout << "\nTesting 'computeInvM' in " << dim << " dimension(s)...'" << std::endl;
- 
+
 	//create test problem class object
 	//userInputParameters userInputs;
 	//userInputs.loadUserInput();
-	testInvM<dim,finiteElementDegree> test(userInputs);
+
+    testInvM<dim,1> test(userInputs);
 	//check invM norm
 	if ((test.invMNorm - 1700.0) < 1.0e-10) {pass=true;}
 	char buffer[100];

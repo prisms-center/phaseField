@@ -1,5 +1,8 @@
 var searchData=
 [
-  ['borderreg',['borderreg',['../__nucleation_model_2equations_8h.html#a76779f45a3732c90fea441762f6a8b25',1,'borderreg():&#160;equations.h'],['../__preferential__nucleation_model_2equations_8h.html#a76779f45a3732c90fea441762f6a8b25',1,'borderreg():&#160;equations.h']]],
-  ['bottomcoarsenfraction',['bottomCoarsenFraction',['../____deprecated_demos_2__cahn_hilliard_with_adaptivity_2parameters_8h.html#aa99b4c88e33de709a46cc38a8ade881b',1,'bottomCoarsenFraction():&#160;parameters.h'],['../____deprecated_demos_2__mechanics_with_adaptivity_2parameters_8h.html#aa99b4c88e33de709a46cc38a8ade881b',1,'bottomCoarsenFraction():&#160;parameters.h']]]
+  ['c_5falpha',['c_alpha',['../nucleation_model_2equations_8h.html#a559f832ef2646e9073948037f56ed29d',1,'c_alpha():&#160;equations.h'],['../preferential__nucleation_model_2equations_8h.html#a559f832ef2646e9073948037f56ed29d',1,'c_alpha():&#160;equations.h']]],
+  ['c_5fbeta',['c_beta',['../nucleation_model_2equations_8h.html#ac604a25e56e75dbdb3beddf8d3976dba',1,'c_beta():&#160;equations.h'],['../preferential__nucleation_model_2equations_8h.html#ac604a25e56e75dbdb3beddf8d3976dba',1,'c_beta():&#160;equations.h']]],
+  ['c_5fmatrix',['c_matrix',['../single_precipitate_k_k_s_2_i_cs__and___b_cs_8h.html#af2e82720e7058c0023629c39903cdac8',1,'ICs_and_BCs.h']]],
+  ['c_5fprecip',['c_precip',['../single_precipitate_k_k_s_2_i_cs__and___b_cs_8h.html#a23611ab24ae8ab80751f481a232e2d27',1,'ICs_and_BCs.h']]],
+  ['constv',['constV',['../matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd',1,'matrixFreePDE.h']]]
 ];

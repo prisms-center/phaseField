@@ -34,7 +34,15 @@
 #include <deal.II/distributed/solution_transfer.h>
 #include <deal.II/numerics/error_estimator.h>
 #include <deal.II/distributed/grid_refinement.h>
+#include <deal.II/base/parameter_handler.h>
+
+#include <deal.II/grid/manifold_lib.h>
+
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/variant.hpp>
+//#include <tuple>
+
+#include <unordered_map>
 
 
 #endif // DEALIIHEADERS_H
-

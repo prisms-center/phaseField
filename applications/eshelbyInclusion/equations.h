@@ -1,69 +1,46 @@
 // List of variables and residual equations for the Eshelby inclusion example application
 
 // =================================================================================
-// Define the variables in the model
+// Set the attributes of the primary field variables
 // =================================================================================
-// The number of variables
-#define num_var 1
+void variableAttributeLoader::loadVariableAttributes(){
+	// Variable 0
+	set_variable_name				(0,"u");
+	set_variable_type				(0,VECTOR);
+	set_variable_equation_type		(0,ELLIPTIC);
 
-// The names of the variables, whether they are scalars or vectors and whether the
-// governing eqn for the variable is parabolic or elliptic
-#define variable_name {"u"}
-#define variable_type {"VECTOR"}
-#define variable_eq_type {"ELLIPTIC"}
+	set_need_value					(0,false);
+	set_need_gradient				(0,true);
+	set_need_hessian				(0,false);
 
-// Flags for whether the value, gradient, and Hessian are needed in the residual eqns
-#define need_val {false}
-#define need_grad {true}
-#define need_hess {false}
+	set_need_value_residual_term	(0,false);
+	set_need_gradient_residual_term	(0,true);
 
-// Flags for whether the residual equation has a term multiplied by the test function
-// (need_val_residual) and/or the gradient of the test function (need_grad_residual)
-#define need_val_residual {false}
-#define need_grad_residual {true}
+	set_need_value_LHS				(0,false);
+	set_need_gradient_LHS			(0,true);
+	set_need_hessian_LHS			(0,false);
 
-// Flags for whether the value, gradient, and Hessian are needed in the residual eqn
-// for the left-hand-side of the iterative solver for elliptic equations
-#define need_val_LHS {false}
-#define need_grad_LHS {true}
-#define need_hess_LHS {false}
+	set_need_value_residual_term_LHS(0,false);
+	set_need_gradient_residual_term_LHS	(0,true);
 
-// Flags for whether the residual equation for the left-hand-side of the iterative
-// solver for elliptic equations has a term multiplied by the test function
-// (need_val_residual) and/or the gradient of the test function (need_grad_residual)
-#define need_val_residual_LHS {false}
-#define need_grad_residual_LHS {true}
-
-// =================================================================================
-// Define the model parameters and the residual equations
-// =================================================================================
-// Parameters in the residual equations and expressions for the residual equations
-// can be set here. For simple cases, the entire residual equation can be written
-// here. For more complex cases with loops or conditional statements, residual
-// equations (or parts of residual equations) can be written below in "residualRHS".
-
-// Define Mechanical properties
-// Mechanical symmetry of the material and stiffness parameters
-#define MaterialModels {"ISOTROPIC"}
-#define MaterialConstants {{22.5,0.3}}
+}
 
 // =================================================================================
 // residualRHS
 // =================================================================================
 // This function calculates the residual equations for each variable. It takes
-// "modelVariablesList" as an input, which is a list of the value and derivatives of
+// "variable_list" as an input, which is a list of the value and derivatives of
 // each of the variables at a specific quadrature point. The (x,y,z) location of
-// that quadrature point is given by "q_point_loc". The function outputs
-// "modelResidualsList", a list of the value and gradient terms of the residual for
-// each residual equation. The index for each variable in these lists corresponds to
-// the order it is defined at the top of this file (starting at 0).
+// that quadrature point is given by "q_point_loc". The function outputs residuals
+// to variable_list. The index for each variable in this list corresponds to
+// the index given at the top of this file.
+
 template <int dim, int degree>
-void customPDE<dim,degree>::residualRHS(const std::vector<modelVariable<dim> > & modelVariablesList,
-												std::vector<modelResidual<dim> > & modelResidualsList,
-												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 //u
-vectorgradType ux = modelVariablesList[0].vectorGrad;
+vectorgradType ux = variable_list.get_vector_gradient(0);
 vectorgradType Rux;
 
 dealii::VectorizedArray<double> sfts[dim][dim];
@@ -102,7 +79,7 @@ for (unsigned int i=0; i<dim; i++){
 }
 
 //compute stress tensor
-computeStress<dim>(this->userInputs.CIJ_list[0], E, S);
+computeStress<dim>(CIJ, E, S);
 
 //compute residual
 for (unsigned int i=0; i<dim; i++){
@@ -111,7 +88,7 @@ for (unsigned int i=0; i<dim; i++){
 	}
 }
 
-modelResidualsList[0].vectorGradResidual = Rux;
+variable_list.set_vector_gradient_residual_term(0,Rux);
 
 }
 
@@ -131,12 +108,11 @@ modelResidualsList[0].vectorGradResidual = Rux;
 // that the correct residual is being submitted. The index of the field being solved
 // can be accessed by "this->currentFieldIndex".
 template <int dim, int degree>
-void customPDE<dim,degree>::residualLHS(const std::vector<modelVariable<dim> > & modelVarList,
-		modelResidual<dim> & modelRes,
+void customPDE<dim,degree>::residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 //u
-vectorgradType ux = modelVarList[0].vectorGrad;
+vectorgradType ux = variable_list.get_vector_gradient(0);
 vectorgradType Rux;
 
 //compute strain tensor
@@ -148,7 +124,7 @@ for (unsigned int i=0; i<dim; i++){
 }
 
 //compute stress tensor
-computeStress<dim>(this->userInputs.CIJ_list[0], E, S);
+computeStress<dim>(CIJ, E, S);
 
 //compute residual
 for (unsigned int i=0; i<dim; i++){
@@ -157,82 +133,6 @@ for (unsigned int i=0; i<dim; i++){
 	}
 }
 
-modelRes.vectorGradResidual = Rux;
+variable_list.set_vector_gradient_residual_term(0,Rux);
 
 }
-
-// =================================================================================
-// energyDensity (needed only if calcEnergy == true)
-// =================================================================================
-// This function integrates the free energy density across the computational domain.
-// It takes "modelVariablesList" as an input, which is a list of the value and
-// derivatives of each of the variables at a specific quadrature point. It also
-// takes the mapped quadrature weight, "JxW_value", as an input. The (x,y,z) location
-// of the quadrature point is given by "q_point_loc". The weighted value of the
-// energy density is added to "energy" variable and the components of the energy
-// density are added to the "energy_components" variable (index 0: chemical energy,
-// index 1: gradient energy, index 2: elastic energy).
-template <int dim, int degree>
-void customPDE<dim,degree>::energyDensity(const std::vector<modelVariable<dim> > & modelVarList, const dealii::VectorizedArray<double> & JxW_value, dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {
-
-	//u
-	vectorgradType ux = modelVarList[0].vectorGrad;
-
-	dealii::VectorizedArray<double> sfts[dim][dim];
-
-	dealii::VectorizedArray<double> dist;
-
-	dist = std::sqrt((q_point_loc[0]-constV(0.0))*(q_point_loc[0]-constV(0.0))
-						+(q_point_loc[1]-constV(0.0))*(q_point_loc[1]-constV(0.0))
-						+(q_point_loc[2]-constV(0.0))*(q_point_loc[2]-constV(0.0)));
-
-	for (unsigned int i=0; i<dim; i++){
-		for (unsigned int j=0; j<dim; j++){
-			if (i == j){
-
-				sfts[i][j] = 0.01 * (0.5+ 0.5*( constV(1.0) - std::exp(-20.0*(dist-constV(10.0))))/ (constV(1.0)+std::exp(-20.0*(dist-constV(10.0)))));
-
-			}
-			else {
-				sfts[i][j] = 0.0;
-			}
-		}
-	}
-
-
-	//compute strain tensor
-	dealii::VectorizedArray<double> E[dim][dim], S[dim][dim];
-	for (unsigned int i=0; i<dim; i++){
-		for (unsigned int j=0; j<dim; j++){
-			E[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-sfts[i][j];
-		}
-	}
-
-	//compute stress tensor
-	computeStress<dim>(this->userInputs.CIJ_list[0], E, S);
-
-	scalarvalueType f_el = constV(0.0);
-
-	for (unsigned int i=0; i<dim; i++){
-	  for (unsigned int j=0; j<dim; j++){
-		  f_el += constV(0.5) * S[i][j]*E[i][j];
-	  }
-	}
-
-	// Loop to step through each element of the vectorized arrays. Working with deal.ii
-	// developers to see if there is a more elegant way to do this.
-	this->assembler_lock.acquire ();
-	for (unsigned i=0; i<f_el.n_array_elements;i++){
-	  // For some reason, some of the values in this loop
-	  if (f_el[i] > 1.0e-10){
-		  this->energy+=f_el[i]*JxW_value[i];
-	  }
-	}
-	this->assembler_lock.release ();
-
-
-}
-
-
-
-

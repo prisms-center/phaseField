@@ -7,6 +7,7 @@ template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::adaptiveRefine(unsigned int currentIncrement){
 if (userInputs.h_adaptivity == true){
 	if ( (currentIncrement == 0) ){
+		computing_timer.enter_section("matrixFreePDE: AMR");
 		unsigned int numDoF_preremesh = totalDOFs;
 		for (unsigned int remesh_index=0; remesh_index < (userInputs.max_refinement_level-userInputs.min_refinement_level); remesh_index++){
 
@@ -18,8 +19,11 @@ if (userInputs.h_adaptivity == true){
 			if (totalDOFs == numDoF_preremesh) break;
 			numDoF_preremesh = totalDOFs;
 		}
+		computing_timer.exit_section("matrixFreePDE: AMR");
 	}
 	else if ( (currentIncrement%userInputs.skip_remeshing_steps==0) ){
+
+		computing_timer.enter_section("matrixFreePDE: AMR");
 
 		// Apply constraints before remeshing
 		for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
@@ -27,10 +31,10 @@ if (userInputs.h_adaptivity == true){
 			constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
 			solutionSet[fieldIndex]->update_ghost_values();
 		}
-
 		adaptiveRefineCriterion();
 		refineGrid();
 		reinit();
+		computing_timer.exit_section("matrixFreePDE: AMR");
 	}
 }
 }
@@ -69,7 +73,7 @@ std::vector<std::vector<double> > errorOutV;
 
 QGaussLobatto<dim>  quadrature(degree+1);
 FEValues<dim> fe_values (*FESet[userInputs.refine_criterion_fields[0]], quadrature, update_values);
-const unsigned int   num_quad_points = quadrature.size();
+const unsigned int num_quad_points = quadrature.size();
 
 std::vector<double> errorOut(num_quad_points);
 

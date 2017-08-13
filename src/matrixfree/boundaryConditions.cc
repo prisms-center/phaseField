@@ -1,10 +1,76 @@
-//methods to apply boundary conditons 
-
-//#ifndef's) till library packaging scheme is finalized
+//methods to apply boundary conditons
 
 #include "../../include/matrixFreePDE.h"
+#include "../../include/vectorBCFunction.h"
 
-//methods to apply dirichlet BC's
+#include "../../include/nonUniformDirichletBC.h"
+
+// =================================================================================
+// Methods to apply non-zero Neumann BCs
+// =================================================================================
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::applyNeumannBCs(){
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// NOTE: Currently this function doesn't work and it's call is commented out in solveIncrement.
+	// The result is off by almost exactly a factor of 100,000. I don't know what the issue is.
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+	// Check to the BC for the current field
+	unsigned int starting_BC_list_index = 0;
+	for (unsigned int i=0; i<currentFieldIndex; i++){
+		if (userInputs.var_type[i] == SCALAR){
+			starting_BC_list_index++;
+		}
+		else {
+			starting_BC_list_index+=dim;
+		}
+	}
+
+	if (userInputs.var_type[currentFieldIndex] == SCALAR){
+		for (unsigned int direction = 0; direction < 2*dim; direction++){
+			if (userInputs.BC_list[starting_BC_list_index].var_BC_type[direction] == NEUMANN){
+
+				typename DoFHandler<dim>::active_cell_iterator cell = dofHandlersSet[0]->begin_active(), endc = dofHandlersSet[0]->end();
+				FESystem<dim>* fe= FESet[currentFieldIndex];
+				QGaussLobatto<dim-1>  face_quadrature_formula(degree+1);
+				FEFaceValues<dim> fe_face_values (*fe, face_quadrature_formula, update_values | update_JxW_values);
+				const unsigned int n_face_q_points  = face_quadrature_formula.size(), dofs_per_cell=fe->dofs_per_cell;
+				Vector<double> cell_rhs(dofs_per_cell);
+				std::vector<types::global_dof_index> local_dof_indices (dofs_per_cell);
+
+				// Loop over each face on a boundary
+				for (;cell!=endc; ++cell){
+					for (unsigned int f=0; f<GeometryInfo<dim>::faces_per_cell; ++f){
+						if (cell->face(f)->at_boundary()){
+							if (cell->face(f)->boundary_id() == direction){
+								fe_face_values.reinit (cell, f);
+								cell_rhs=0.0;
+								for (unsigned int q_point=0; q_point<n_face_q_points; ++q_point){
+									double neumann_value = userInputs.BC_list[starting_BC_list_index].var_BC_val[direction];
+									for (unsigned int i=0; i<dofs_per_cell; ++i){
+										cell_rhs(i) += (neumann_value * fe_face_values.shape_value(i,q_point) * fe_face_values.JxW(q_point));
+									}
+								}
+								cell->get_dof_indices (local_dof_indices);
+								//assemble
+								for (unsigned int i=0; i<dofs_per_cell; ++i){
+									(*(residualSet[currentFieldIndex]))[local_dof_indices[i]] += cell_rhs(i);
+								}
+							}
+						}
+					}
+				}
+			}
+
+		}
+	}
+
+}
+
+
+// =================================================================================
+// Methods to apply non-zero Dirichlet BCs
+// =================================================================================
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 	// First, get the variable index of the current field
@@ -12,7 +78,7 @@ void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 
 	  for (unsigned int i=0; i<currentFieldIndex; i++){
 
-		  if (userInputs.var_type[i] == "SCALAR"){
+		  if (userInputs.var_type[i] == SCALAR){
 			  starting_BC_list_index++;
 		  }
 		  else {
@@ -20,12 +86,18 @@ void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 		  }
 	  }
 
-	  if (userInputs.var_type[currentFieldIndex] == "SCALAR"){
+	  if (userInputs.var_type[currentFieldIndex] == SCALAR){
 		  for (unsigned int direction = 0; direction < 2*dim; direction++){
-			  if (BC_list[starting_BC_list_index].var_BC_type[direction] == DIRICHLET){
+			  if (userInputs.BC_list[starting_BC_list_index].var_BC_type[direction] == DIRICHLET){
 				  VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
-						  direction, ConstantFunction<dim>(BC_list[starting_BC_list_index].var_BC_val[direction],1), *(ConstraintMatrix*) \
+						  direction, ConstantFunction<dim>(userInputs.BC_list[starting_BC_list_index].var_BC_val[direction],1), *(ConstraintMatrix*) \
 						  constraintsDirichletSet[currentFieldIndex]);
+
+			  }
+			  else if (userInputs.BC_list[starting_BC_list_index].var_BC_type[direction] == NON_UNIFORM_DIRICHLET){
+				  VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
+  						direction, NonUniformDirichletBC<dim>(currentFieldIndex,direction,currentTime,userInputs), *(ConstraintMatrix*) \
+  						constraintsDirichletSet[currentFieldIndex]);
 			  }
 		  }
 	  }
@@ -34,12 +106,12 @@ void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 
 			  std::vector<double> BC_values;
 			  for (unsigned int component=0; component < dim; component++){
-				  BC_values.push_back(BC_list[starting_BC_list_index+component].var_BC_val[direction]);
+				  BC_values.push_back(userInputs.BC_list[starting_BC_list_index+component].var_BC_val[direction]);
 			  }
 
 			  std::vector<bool> mask;
 			  for (unsigned int component=0; component < dim; component++){
-				  if (BC_list[starting_BC_list_index+component].var_BC_type[direction] == DIRICHLET){
+				  if (userInputs.BC_list[starting_BC_list_index+component].var_BC_type[direction] == DIRICHLET){
 					  mask.push_back(true);
 				  }
 				  else {
@@ -50,6 +122,21 @@ void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 			  VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
 					  direction, vectorBCFunction<dim>(BC_values), *(ConstraintMatrix*) \
 					  constraintsDirichletSet[currentFieldIndex],mask);
+
+				// Mask again, this time for non-uniform Dirichlet BCs
+			  mask.clear();
+			  for (unsigned int component=0; component < dim; component++){
+				  if (userInputs.BC_list[starting_BC_list_index+component].var_BC_type[direction] == NON_UNIFORM_DIRICHLET){
+					  mask.push_back(true);
+				  }
+				  else {
+					  mask.push_back(false);
+				  }
+			  }
+
+			  VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
+				  direction, NonUniformDirichletBCVec<dim>(currentFieldIndex,direction,currentTime,userInputs), *(ConstraintMatrix*) \
+				  constraintsDirichletSet[currentFieldIndex],mask);
 
 
 		  }
@@ -62,8 +149,8 @@ void MatrixFreePDE<dim,degree>::setPeriodicity(){
 	std::vector<GridTools::PeriodicFacePair<typename parallel::distributed::Triangulation<dim>::cell_iterator> > periodicity_vector;
 		for (int i=0; i<dim; ++i){
 			bool periodic_pair = false;
-			for (unsigned int field_num=0; field_num < BC_list.size(); field_num++){
-				if (BC_list[field_num].var_BC_type[2*i] == PERIODIC){
+			for (unsigned int field_num=0; field_num < userInputs.BC_list.size(); field_num++){
+				if (userInputs.BC_list[field_num].var_BC_type[2*i] == PERIODIC){
 					periodic_pair = true;
 				}
 			}
@@ -83,7 +170,7 @@ void MatrixFreePDE<dim,degree>::setPeriodicityConstraints(ConstraintMatrix * con
 	// First, get the variable index of the current field
 		unsigned int starting_BC_list_index = 0;
 		for (unsigned int i=0; i<currentFieldIndex; i++){
-			if (userInputs.var_type[i] == "SCALAR"){
+			if (userInputs.var_type[i] == SCALAR){
 				starting_BC_list_index++;
 			}
 			else {
@@ -93,7 +180,7 @@ void MatrixFreePDE<dim,degree>::setPeriodicityConstraints(ConstraintMatrix * con
 
 		std::vector<GridTools::PeriodicFacePair<typename DoFHandler<dim>::cell_iterator> > periodicity_vector;
 	    for (int i=0; i<dim; ++i){
-	    	if (BC_list[starting_BC_list_index].var_BC_type[2*i] == PERIODIC){
+	    	if (userInputs.BC_list[starting_BC_list_index].var_BC_type[2*i] == PERIODIC){
 	    		GridTools::collect_periodic_faces(*dof_handler, /*b_id1*/ 2*i, /*b_id2*/ 2*i+1,
 	    				/*direction*/ i, periodicity_vector);
 	    	}
@@ -106,12 +193,12 @@ void MatrixFreePDE<dim,degree>::setPeriodicityConstraints(ConstraintMatrix * con
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::getComponentsWithRigidBodyModes( std::vector<int> & rigidBodyModeComponents) const {
 	// Rigid body modes only matter for elliptic equations
-		if (userInputs.var_eq_type[currentFieldIndex] == "ELLIPTIC"){
+		if (userInputs.var_eq_type[currentFieldIndex] == ELLIPTIC){
 
 			// First, get the variable index of the current field
 			unsigned int starting_BC_list_index = 0;
 			for (unsigned int i=0; i<currentFieldIndex; i++){
-				if (userInputs.var_type[i] == "SCALAR"){
+				if (userInputs.var_type[i] == SCALAR){
 					starting_BC_list_index++;
 				}
 				else {
@@ -121,7 +208,7 @@ void MatrixFreePDE<dim,degree>::getComponentsWithRigidBodyModes( std::vector<int
 
 			// Get number of components of the field
 			unsigned int num_components = 1;
-			if (userInputs.var_type[currentFieldIndex] == "VECTOR"){
+			if (userInputs.var_type[currentFieldIndex] == VECTOR){
 				num_components = dim;
 			}
 
@@ -130,7 +217,7 @@ void MatrixFreePDE<dim,degree>::getComponentsWithRigidBodyModes( std::vector<int
 				bool rigidBodyMode = true;
 				for (unsigned int direction = 0; direction < 2*dim; direction++){
 
-					if (BC_list[starting_BC_list_index+component].var_BC_type[direction] == DIRICHLET){
+					if (userInputs.BC_list[starting_BC_list_index+component].var_BC_type[direction] == DIRICHLET){
 						rigidBodyMode = false;
 					}
 
@@ -142,12 +229,6 @@ void MatrixFreePDE<dim,degree>::getComponentsWithRigidBodyModes( std::vector<int
 			}
 		}
 }
-
-//// Set constraints to pin the solution if there are no Dirichlet BCs for a component of a variable
-//template <int dim>
-//void MatrixFreePDE<dim>::setRigidBodyModeConstraints(std::vector<int> rigidBodyModeComponents, ConstraintMatrix * constraints, DoFHandler<dim>* dof_handler){
-//	// Default null implementation
-//}
 
 // Set constraints to pin the solution if there are no Dirichlet BCs for a component of a variable in an elliptic equation
 template <int dim, int degree>
@@ -183,144 +264,4 @@ void MatrixFreePDE<dim,degree>::setRigidBodyModeConstraints(const std::vector<in
    }
 }
 
-BC_type convert_BC_string_to_BC_type(std::string string_BC){
-	if (string_BC == "ZERO_DERIVATIVE"){
-		return ZERO_DERIVATIVE;
-	}
-	else if (string_BC == "DIRICHLET"){
-		return DIRICHLET;
-	}
-	else {
-		return PERIODIC;
-	}
-}
-
-
-// Input the boundary conditions for each face individually for 3D domains
-template <int dim, int degree>
-void MatrixFreePDE<dim,degree>::inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
-		std::string BC_type_dim1_max, double BC_value_dim1_max, std::string BC_type_dim2_min, double BC_value_dim2_min,
-		std::string BC_type_dim2_max, double BC_value_dim2_max,std::string BC_type_dim3_min, double BC_value_dim3_min,
-		std::string BC_type_dim3_max, double BC_value_dim3_max){
-
-	// Validate input
-	try{
-		if ((BC_type_dim1_min == "PERIODIC") && (BC_type_dim1_max != "PERIODIC")){
-			throw 0;
-		}
-		if ((BC_type_dim2_min == "PERIODIC") && (BC_type_dim2_max != "PERIODIC")){
-			throw 0;
-		}
-		if ((BC_type_dim3_min == "PERIODIC") && (BC_type_dim3_max != "PERIODIC")){
-			throw 0;
-		}
-	}
-	catch (int e){
-		if (e == 0){
-			std::cout << "Error: For periodic BCs, both faces for a given direction must be set as periodic. "
-					"Please check the BCs that are set in ICs_and_BCs.h." << std::endl;
-		}
-		abort();
-	}
-
-	varBCs<dim> newBC;
-	newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type_dim1_min));
-	newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type_dim1_max));
-	newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type_dim2_min));
-	newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type_dim2_max));
-	newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type_dim3_min));
-	newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type_dim3_max));
-
-	newBC.var_BC_val.push_back(BC_value_dim1_min);
-	newBC.var_BC_val.push_back(BC_value_dim1_max);
-	newBC.var_BC_val.push_back(BC_value_dim2_min);
-	newBC.var_BC_val.push_back(BC_value_dim2_max);
-	newBC.var_BC_val.push_back(BC_value_dim3_min);
-	newBC.var_BC_val.push_back(BC_value_dim3_max);
-
-	BC_list.push_back(newBC);
-}
-
-// Input the boundary conditions for each face individually for 2D domains
-template <int dim, int degree>
-void MatrixFreePDE<dim,degree>::inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
-		std::string BC_type_dim1_max, double BC_value_dim1_max, std::string BC_type_dim2_min, double BC_value_dim2_min,
-		std::string BC_type_dim2_max, double BC_value_dim2_max){
-
-	// Validate input
-	try{
-		if ((BC_type_dim1_min == "PERIODIC") && (BC_type_dim1_max != "PERIODIC")){
-			throw 0;
-		}
-		if ((BC_type_dim2_min == "PERIODIC") && (BC_type_dim2_max != "PERIODIC")){
-			throw 0;
-		}
-	}
-	catch (int e){
-		if (e == 0){
-			std::cout << "Error: For periodic BCs, both faces for a given direction must be set as periodic. "
-					"Please check the BCs that are set in ICs_and_BCs.h." << std::endl;
-		}
-		abort();
-	}
-
-	varBCs<dim> newBC;
-	newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type_dim1_min));
-	newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type_dim1_max));
-	newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type_dim2_min));
-	newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type_dim2_max));
-
-	newBC.var_BC_val.push_back(BC_value_dim1_min);
-	newBC.var_BC_val.push_back(BC_value_dim1_max);
-	newBC.var_BC_val.push_back(BC_value_dim2_min);
-	newBC.var_BC_val.push_back(BC_value_dim2_max);
-
-	BC_list.push_back(newBC);
-}
-
-// Input the boundary conditions for each face individually for 1D domains
-template <int dim, int degree>
-void MatrixFreePDE<dim,degree>::inputBCs(int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min,
-		std::string BC_type_dim1_max, double BC_value_dim1_max){
-
-	// Validate input
-	try{
-		if ((BC_type_dim1_min == "PERIODIC") && (BC_type_dim1_max != "PERIODIC")){
-			throw 0;
-		}
-
-	}
-	catch (int e){
-		if (e == 0){
-			std::cout << "Error: For periodic BCs, both faces for a given direction must be set as periodic. "
-					"Please check the BCs that are set in ICs_and_BCs.h." << std::endl;
-		}
-		abort();
-	}
-
-
-	varBCs<dim> newBC;
-	newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type_dim1_min));
-	newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type_dim1_max));
-
-	newBC.var_BC_val.push_back(BC_value_dim1_min);
-	newBC.var_BC_val.push_back(BC_value_dim1_max);
-
-	BC_list.push_back(newBC);
-}
-
-// Input the boundary conditions when all faces have the same boundary condition
-template <int dim, int degree>
-void MatrixFreePDE<dim,degree>::inputBCs(int var, int component, std::string BC_type, double BC_value){
-
-	varBCs<dim> newBC;
-	for (unsigned int face=0; face<(dim*2); face++){
-		newBC.var_BC_type.push_back(convert_BC_string_to_BC_type(BC_type));
-		newBC.var_BC_val.push_back(BC_value);
-	}
-
-	BC_list.push_back(newBC);
-}
-
 #include "../../include/matrixFreePDE_template_instantiations.h"
-

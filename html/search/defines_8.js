@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['initial_5finterface_5fcoeff',['initial_interface_coeff',['../single_precipitate_k_k_s_2_i_cs__and___b_cs_8h.html#a6b4d4c7d07103d09efd552a84e2e3eb1',1,'ICs_and_BCs.h']]],
-  ['initial_5fradius',['initial_radius',['../single_precipitate_k_k_s_2_i_cs__and___b_cs_8h.html#a5ecc8280baa69640041bdac79ea3c4df',1,'ICs_and_BCs.h']]]
+  ['plibrary_5fcc',['PLIBRARY_CC',['../_p_library_8cc.html#af3d7c7d1fd1ac16fde2ea2f8faf4d2c3',1,'PLibrary.cc']]],
+  ['problemdim',['problemDIM',['../__cahn_hilliard_with_adaptivity_2parameters_8h.html#a7600d4f3350a4a7972723128e23864f2',1,'problemDIM():&#160;parameters.h'],['../__mechanics_with_adaptivity_2parameters_8h.html#a7600d4f3350a4a7972723128e23864f2',1,'problemDIM():&#160;parameters.h']]]
 ];
