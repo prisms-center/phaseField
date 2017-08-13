@@ -18,7 +18,7 @@ double InitialCondition<dim>::value (const Point<dim> &p, const unsigned int com
 	  // given by "center" and its radius is given by "rad".
 
 	  double center[2][3] = {{1.0/3.0,1.0/3.0,1.0/3.0},{3.0/4.0,3.0/4.0,3.0/4.0}};
-	  double rad[12] = {userInputs.domain_size[0]/5.0, userInputs.domain_size[0]/12.0};
+	  double rad[2] = {userInputs.domain_size[0]/5.0, userInputs.domain_size[0]/12.0};
 	  double dist;
 	  scalar_IC = 0;
 
