@@ -17,7 +17,12 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
   // by a hyperbolic tangent function. The center of each circle/sphere is
   // given by "center" and its radius is given by "radius".
 
-  scalar_IC = 0.5*(1.0-std::tanh((p(0)-0.5) * 50.0));
+  double KnV = userInputs.get_model_constant_double("KnV");
+  double r0 = userInputs.get_model_constant_double("r0");
+  double delta = 1.0/std::sqrt(KnV*2.0);
+
+
+  scalar_IC = 0.5*(1.0-std::tanh((p(0)-r0) * delta));
 
   // ---------------------------------------------------------------------
   return scalar_IC;

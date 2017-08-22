@@ -21,11 +21,11 @@ set Domain size Z = 1
 # The number of elements in each direction is 2^(refineFactor) * subdivisions
 # Subdivisions Z ignored in 2D
 # For optimal performance, use refineFactor primarily to determine the element size
-set Subdivisions X = 3
-set Subdivisions Y = 3
-set Subdivisions Z = 3
+set Subdivisions X = 1
+set Subdivisions Y = 1
+set Subdivisions Z = 1
 
-set Refine factor = 6
+set Refine factor = 8
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
 set Element degree = 2
@@ -37,7 +37,7 @@ set Element degree = 2
 set Mesh adaptivity = true
 
 # Set the maximum and minimum level of refinement
-set Max refinement level = 6
+set Max refinement level = 8
 set Min refinement level = 3
 
 # Set the fields used to determine the refinement using their index.
@@ -48,17 +48,17 @@ set Refinement window max = 0.9999
 set Refinement window min = 0.0001
 
 # Set the number of time steps between remeshing operations
-set Steps between remeshing operations = 2000
+set Steps between remeshing operations = 25
 
 # =================================================================================
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 8.0e-6
+set Time step = 6.25e-3
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 100000
+set Simulation end time = 2.0
 
 # =================================================================================
 # Set the output parameters
@@ -106,7 +106,15 @@ set Boundary condition for variable n = DIRICHLET: 1, DIRICHLET: 0, PERIODIC, PE
 # where [symmetry] is ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC.
 
 # The mobility, MnV in equations.h
-set Model constant MnV = 0.1, DOUBLE
+set Model constant MnV = 1.0, DOUBLE
 
 # The gradient energy coefficient, KnV in equations.h
-set Model constant KnV = 1.0, DOUBLE
+set Model constant KnV = 0.0001, DOUBLE
+
+set Model constant A1 = 20.0, double
+set Model constant B1 = 4.0, double
+
+set Model constant A2 = 80.0, double
+set Model constant B2 = 10.0, double
+
+set Model constant r0 = 0.5, double

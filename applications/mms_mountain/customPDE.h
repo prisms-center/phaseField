@@ -43,6 +43,16 @@ private:
 	double MnV = userInputs.get_model_constant_double("MnV");
 	double KnV = userInputs.get_model_constant_double("KnV");
 
+	double A1 = userInputs.get_model_constant_double("A1");
+	double B1 = userInputs.get_model_constant_double("B1");
+	double A2 = userInputs.get_model_constant_double("A2");
+	double B2 = userInputs.get_model_constant_double("B2");
+
+	double r0 = userInputs.get_model_constant_double("r0");
+
+	double delta = 1.0/std::sqrt(KnV*2.0);
+
+
 	// ================================================================
 
 };

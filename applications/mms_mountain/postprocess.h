@@ -76,15 +76,22 @@ scalarvalueType n_sol;
 double pi = 2.0*std::acos(0.0);
 
 for (unsigned i=0; i<n.n_array_elements;i++){
-	double arg1 = 25.0-50.0*q_point_loc(0)[i]+2.5*this->currentTime * std::sin(2.0*pi*q_point_loc(1)[i]);
-	source_term[i] = 1.0/dealii::Utilities::fixed_power<2>(std::cosh(arg1))
-			* ((1.25+49.348 * MnV * this->currentTime)*std::sin(2.0*pi*q_point_loc(1)[i])
-			+ MnV*(2500 + 246.74*this->currentTime*this->currentTime*dealii::Utilities::fixed_power<2>(std::cos(2.0*pi*q_point_loc(1)[i])))* std::tanh(arg1))
-			+ MnV * std::tanh(arg1)*(-0.5+0.5 * dealii::Utilities::fixed_power<2>(std::tanh(arg1)));
+	
+	double t = this->currentTime;
+	source_term[i] = 1.0/(A1*A1*A2*A2*dealii::Utilities::fixed_power<2>(std::cosh(delta * (-r0 + q_point_loc(0)[i] - t * std::sin(B1*pi*q_point_loc(1)[i])/A1 - t*t * std::sin(B2*pi*q_point_loc(1)[i])/A2 ))))
+				* (
+					A1*A2*delta * (A2*(0.5+4.9348*B1*B1*KnV*MnV*t)*std::sin(B1*pi*q_point_loc(1)[i]) + A1*t*(1.0+4.9348*B2*B2*KnV*MnV*t)*std::sin(B2*pi*q_point_loc(1)[i]))
+					+ MnV * (
+						A1*A1*A2*A2*(0.5-delta*delta*KnV) + delta*delta*KnV*t*t * (-9.8696*A2*A2*B1*B1*dealii::Utilities::fixed_power<2>(std::cos(B1*pi*q_point_loc(1)[i]))
+						- 19.7392*A1*A2*B1*B2*t*std::cos(B1*pi*q_point_loc(1)[i])*std::cos(B2*pi*q_point_loc(1)[i])
+						- 9.8696*A1*A1*B2*B2*t*t*dealii::Utilities::fixed_power<2>(std::cos(B2*pi*q_point_loc(1)[i])))
+					)
+					* std::tanh(delta * (-r0 + q_point_loc(0)[i] - t * std::sin(B1*pi*q_point_loc(1)[i])/A1 - t*t * std::sin(B2*pi*q_point_loc(1)[i])/A2))
+				);
 
 
-	double perturb = 0.5 + this->currentTime/20.0 * std::sin(2.0*pi*q_point_loc(1)[i]);
-	n_sol[i] = 0.5 * (1.0-std::tanh((q_point_loc(0)[i]-perturb)*50.0));
+	double perturb = r0 + t/A1 * std::sin(B1*pi*q_point_loc(1)[i]) + t*t/A2 * std::sin(B2*pi*q_point_loc(1)[i]);
+	n_sol[i] = 0.5 * (1.0-std::tanh((q_point_loc(0)[i]-perturb)*delta));
 }
 
 // Residuals for the equation to evolve the order parameter
