@@ -113,6 +113,7 @@ set Model constant KnV = 0.0001, DOUBLE
 
 set Model constant A1 = 20.0, double
 set Model constant B1 = 4.0, double
+set Model constant C1 = 0.06, double
 
 set Model constant A2 = 80.0, double
 set Model constant B2 = 10.0, double

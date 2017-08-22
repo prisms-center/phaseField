@@ -45,6 +45,7 @@ private:
 
 	double A1 = userInputs.get_model_constant_double("A1");
 	double B1 = userInputs.get_model_constant_double("B1");
+	double C1 = userInputs.get_model_constant_double("C1");
 	double A2 = userInputs.get_model_constant_double("A2");
 	double B2 = userInputs.get_model_constant_double("B2");
 
