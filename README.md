@@ -1,9 +1,13 @@
 PRISMS-PF
 =================
-<B>Code repository:</B> https://github.com/prisms-center/phaseField <br>
-<B>Code documentation:</B> https://goo.gl/00y23N <br>
-<B>User registration link:</B> http://goo.gl/forms/GXo7Im8p2Y <br>
-<B>User discussion group:</B> https://groups.google.com/forum/#!forum/prisms-pf-users
+<B> Useful Links:</B>
+
+[Code repository](https://github.com/prisms-center/phaseField) <br>
+[Doxygen Code documentation](https://goo.gl/00y23N) <br>
+[User registration link](http://goo.gl/forms/GXo7Im8p2Y) <br>
+[User forum](https://groups.google.com/forum/#!forum/prisms-pf-users) <br>
+[Training slides/exercises](https://goo.gl/BBTkJ8)
+
 
 <B>Version information:</B>
 
