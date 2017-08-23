@@ -18,11 +18,11 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
       double y=p[1];
       double c0=0.5;
       double c1=0.04;
-      
+
       double t1=std::cos(0.2*x)*std::cos(0.11*y);
       double t2=std::cos(0.13*x)*std::cos(0.087*y)*std::cos(0.13*x)*std::cos(0.087*y);
       double t3=std::cos(0.025*x-0.15*y)*std::cos(0.07*x-0.02*y);
-      
+
       scalar_IC = c0 + c1*(t1+t2+t3);
   }
   else {
@@ -62,8 +62,12 @@ double NonUniformDirichletBC<dim>::value (const dealii::Point<dim> &p, const uns
     // Enter the function describing conditions for the fields at point "p".
     // Use "if" statements to set the boundary condition for each variable
     // according to its variable index. This function can be left blank if there
-    // are no non-uniform Dirichlet boundary conditions.
-    
+    // are no non-uniform Dirichlet boundary conditions. For BCs that change in
+    // time, you can access the current time through the variable "time". The
+    // boundary index can be accessed via the variable "direction", which starts
+    // at zero and uses the same order as the BC specification in parameters.in
+    // (i.e. left = 0, right = 1, bottom = 2, top = 3, front = 4, back = 5).
+
     if (index == 2){
         if (direction == 1){
             double x=p[0];
@@ -78,16 +82,20 @@ double NonUniformDirichletBC<dim>::value (const dealii::Point<dim> &p, const uns
 template <int dim>
 void NonUniformDirichletBCVec<dim>::vector_value (const dealii::Point<dim> &p, dealii::Vector<double> &vector_BC) const
 {
-    
+
     // --------------------------------------------------------------------------
     // ENTER THE NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS HERE FOR VECTOR FIELDS
     // --------------------------------------------------------------------------
     // Enter the function describing conditions for the fields at point "p".
     // Use "if" statements to set the boundary condition for each variable
     // according to its variable index. This function can be left blank if there
-    // are no non-uniform Dirichlet boundary conditions.
-    
-    
+    // are no non-uniform Dirichlet boundary conditions. For BCs that change in
+    // time, you can access the current time through the variable "time". The
+    // boundary index can be accessed via the variable "direction", which starts
+    // at zero and uses the same order as the BC specification in parameters.in
+    // (i.e. left = 0, right = 1, bottom = 2, top = 3, front = 4, back = 5).
+
+
     // -------------------------------------------------------------------------
-    
+
 }
