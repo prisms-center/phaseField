@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['nonuniformdirichletbc',['NonUniformDirichletBC',['../class_non_uniform_dirichlet_b_c.html',1,'']]],
-  ['nonuniformdirichletbcvec',['NonUniformDirichletBCVec',['../class_non_uniform_dirichlet_b_c_vec.html',1,'']]],
-  ['nucleus',['nucleus',['../structnucleus.html',1,'']]]
+  ['parallelnucleationlist',['parallelNucleationList',['../classparallel_nucleation_list.html',1,'']]],
+  ['pfunction',['pFunction',['../class_p_functions_1_1p_function.html',1,'PFunctions']]]
 ];

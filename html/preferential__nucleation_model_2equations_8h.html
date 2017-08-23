@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>PRISMS PhaseField: phaseField_dev/applications/preferential_nucleationModel/equations.h File Reference</title>
+<title>PRISMS-PF: phaseField_dev/applications/preferential_nucleationModel/equations.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,8 +23,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">PRISMS PhaseField
-   &#160;<span id="projectnumber">1.0</span>
+   <div id="projectname">PRISMS-PF
+   &#160;<span id="projectnumber">2.0</span>
    </div>
   </td>
  </tr>
@@ -39,7 +39,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -125,7 +124,7 @@ Macros</h2></td></tr>
 <tr class="separator:a647e6ecdd89b29a5f44f9c4d8fbb6c1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a031e490658682f5af3652867cc81c435"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="preferential__nucleation_model_2equations_8h.html#a031e490658682f5af3652867cc81c435">rcV</a>&#160;&#160;&#160;(c)</td></tr>
 <tr class="separator:a031e490658682f5af3652867cc81c435"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a282e86016dd726dccae6085834af9db2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="preferential__nucleation_model_2equations_8h.html#a282e86016dd726dccae6085834af9db2">rcxV</a>&#160;&#160;&#160;(<a class="el" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(-<a class="el" href="residuals_8h.html#a3bc9ee99c182f3afc331a89c80523101">McV</a>*userInputs.dtValue)*<a class="el" href="preferential__nucleation_model_2equations_8h.html#a647e6ecdd89b29a5f44f9c4d8fbb6c1b">term_muxV</a>)</td></tr>
+<tr class="memitem:a282e86016dd726dccae6085834af9db2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="preferential__nucleation_model_2equations_8h.html#a282e86016dd726dccae6085834af9db2">rcxV</a>&#160;&#160;&#160;(<a class="el" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(-McV*userInputs.dtValue)*<a class="el" href="preferential__nucleation_model_2equations_8h.html#a647e6ecdd89b29a5f44f9c4d8fbb6c1b">term_muxV</a>)</td></tr>
 <tr class="separator:a282e86016dd726dccae6085834af9db2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d2287de1a4a5016da51abbb8a44ef16"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="preferential__nucleation_model_2equations_8h.html#a8d2287de1a4a5016da51abbb8a44ef16">rnV</a>&#160;&#160;&#160;(n-<a class="el" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(userInputs.dtValue*MnV)*gamma*((<a class="el" href="preferential__nucleation_model_2equations_8h.html#ad7c10639685861655a3b95a154f64b88">fbV</a>-<a class="el" href="preferential__nucleation_model_2equations_8h.html#a979b7822767c8354c24b75d11b9584d7">faV</a>)*<a class="el" href="preferential__nucleation_model_2equations_8h.html#a555966e41b12870829c6a134e1436ed2">hnV</a> - (<a class="el" href="preferential__nucleation_model_2equations_8h.html#ac604a25e56e75dbdb3beddf8d3976dba">c_beta</a>-<a class="el" href="preferential__nucleation_model_2equations_8h.html#a559f832ef2646e9073948037f56ed29d">c_alpha</a>)*<a class="el" href="preferential__nucleation_model_2equations_8h.html#ae4ac174dbc87779476a8225dc7c4485b">fbcV</a>*<a class="el" href="preferential__nucleation_model_2equations_8h.html#a555966e41b12870829c6a134e1436ed2">hnV</a> + W_barrier*<a class="el" href="preferential__nucleation_model_2equations_8h.html#afe60bf788175d761d098c337eca8a17d">fbarriernV</a>))</td></tr>
 <tr class="separator:a8d2287de1a4a5016da51abbb8a44ef16"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -294,7 +293,7 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define rcxV&#160;&#160;&#160;(<a class="el" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(-<a class="el" href="residuals_8h.html#a3bc9ee99c182f3afc331a89c80523101">McV</a>*userInputs.dtValue)*<a class="el" href="preferential__nucleation_model_2equations_8h.html#a647e6ecdd89b29a5f44f9c4d8fbb6c1b">term_muxV</a>)</td>
+          <td class="memname">#define rcxV&#160;&#160;&#160;(<a class="el" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(-McV*userInputs.dtValue)*<a class="el" href="preferential__nucleation_model_2equations_8h.html#a647e6ecdd89b29a5f44f9c4d8fbb6c1b">term_muxV</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">

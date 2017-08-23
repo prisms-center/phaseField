@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['plibrary_5fcc',['PLIBRARY_CC',['../_p_library_8cc.html#af3d7c7d1fd1ac16fde2ea2f8faf4d2c3',1,'PLibrary.cc']]],
-  ['problemdim',['problemDIM',['../__cahn_hilliard_with_adaptivity_2parameters_8h.html#a7600d4f3350a4a7972723128e23864f2',1,'problemDIM():&#160;parameters.h'],['../__mechanics_with_adaptivity_2parameters_8h.html#a7600d4f3350a4a7972723128e23864f2',1,'problemDIM():&#160;parameters.h']]]
+  ['term_5fmuxv',['term_muxV',['../nucleation_model_2equations_8h.html#a647e6ecdd89b29a5f44f9c4d8fbb6c1b',1,'term_muxV():&#160;equations.h'],['../preferential__nucleation_model_2equations_8h.html#a647e6ecdd89b29a5f44f9c4d8fbb6c1b',1,'term_muxV():&#160;equations.h']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bcfunction',['BCFunction',['../class_b_c_function.html',1,'']]]
+  ['custompde',['customPDE',['../classcustom_p_d_e.html',1,'']]]
 ];

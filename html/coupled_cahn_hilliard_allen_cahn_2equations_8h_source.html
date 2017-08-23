@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>PRISMS PhaseField: phaseField_dev/applications/coupledCahnHilliardAllenCahn/equations.h Source File</title>
+<title>PRISMS-PF: phaseField_dev/applications/coupledCahnHilliardAllenCahn/equations.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,8 +23,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">PRISMS PhaseField
-   &#160;<span id="projectnumber">1.0</span>
+   <div id="projectname">PRISMS-PF
+   &#160;<span id="projectnumber">2.0</span>
    </div>
   </td>
  </tr>
@@ -39,7 +39,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -157,7 +156,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">// Residual equations</span></div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<a class="code" href="type_defs_8h.html#a35b1b83d6d194e7417b515cc381ee577">scalargradType</a> muxV = ( cx*((1.0-<a class="code" href="nucleation_model_2equations_8h.html#a0749fe35b75eaf1a745083bc8450ff24">hV</a>)*faccV+hV*fbccV) + nx*((<a class="code" href="nucleation_model_2equations_8h.html#ae4ac174dbc87779476a8225dc7c4485b">fbcV</a>-<a class="code" href="nucleation_model_2equations_8h.html#ab5dbbad304fcf256ab4de67a2d103673">facV</a>)*<a class="code" href="nucleation_model_2equations_8h.html#a555966e41b12870829c6a134e1436ed2">hnV</a>) );</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> <a class="code" href="nucleation_model_2equations_8h.html#a031e490658682f5af3652867cc81c435">rcV</a> = c;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<a class="code" href="type_defs_8h.html#a35b1b83d6d194e7417b515cc381ee577">scalargradType</a> <a class="code" href="nucleation_model_2equations_8h.html#a282e86016dd726dccae6085834af9db2">rcxV</a> = (<a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(-<a class="code" href="residuals_8h.html#a3bc9ee99c182f3afc331a89c80523101">McV</a>*userInputs.dtValue)*muxV);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<a class="code" href="type_defs_8h.html#a35b1b83d6d194e7417b515cc381ee577">scalargradType</a> <a class="code" href="nucleation_model_2equations_8h.html#a282e86016dd726dccae6085834af9db2">rcxV</a> = (<a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(-McV*userInputs.dtValue)*muxV);</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> <a class="code" href="nucleation_model_2equations_8h.html#a8d2287de1a4a5016da51abbb8a44ef16">rnV</a> = (n-<a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(userInputs.dtValue*MnV)*(<a class="code" href="nucleation_model_2equations_8h.html#ad7c10639685861655a3b95a154f64b88">fbV</a>-<a class="code" href="nucleation_model_2equations_8h.html#a979b7822767c8354c24b75d11b9584d7">faV</a>)*<a class="code" href="nucleation_model_2equations_8h.html#a555966e41b12870829c6a134e1436ed2">hnV</a>);</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<a class="code" href="type_defs_8h.html#a35b1b83d6d194e7417b515cc381ee577">scalargradType</a> <a class="code" href="nucleation_model_2equations_8h.html#a3c538b3720a9efb7c514253019959e3a">rnxV</a> = (<a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(-userInputs.dtValue*KnV*MnV)*nx);</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
@@ -191,7 +190,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        dealii::Point&lt;dim, dealii::VectorizedArray&lt;double&gt; &gt; q_point_loc)<span class="keyword"> const </span>{</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;}</div>
-<div class="ttc" id="residuals_8h_html_a3bc9ee99c182f3afc331a89c80523101"><div class="ttname"><a href="residuals_8h.html#a3bc9ee99c182f3afc331a89c80523101">McV</a></div><div class="ttdeci">#define McV</div><div class="ttdef"><b>Definition:</b> residuals.h:2</div></div>
 <div class="ttc" id="classvariable_attribute_loader_html_aa2663a595f5755a4d54e872def3d557a"><div class="ttname"><a href="classvariable_attribute_loader.html#aa2663a595f5755a4d54e872def3d557a">variableAttributeLoader::set_variable_name</a></div><div class="ttdeci">void set_variable_name(unsigned int index, std::string name)</div><div class="ttdef"><b>Definition:</b> variableAttributeLoader.cc:13</div></div>
 <div class="ttc" id="classvariable_attribute_loader_html_a99a876ff4ff467bdfe6ad9b6e5894ff4"><div class="ttname"><a href="classvariable_attribute_loader.html#a99a876ff4ff467bdfe6ad9b6e5894ff4">variableAttributeLoader::loadVariableAttributes</a></div><div class="ttdeci">void loadVariableAttributes()</div><div class="ttdef"><b>Definition:</b> equations.h:6</div></div>
 <div class="ttc" id="classcustom_p_d_e_html_a4c5cecf654f57452af3951822493532b"><div class="ttname"><a href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE::residualLHS</a></div><div class="ttdeci">void residualLHS(variableContainer&lt; dim, degree, dealii::VectorizedArray&lt; double &gt; &gt; &amp;variable_list, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc) const </div><div class="ttdef"><b>Definition:</b> equations.h:66</div></div>

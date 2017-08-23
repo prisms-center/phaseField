@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>PRISMS PhaseField: phaseField_dev/applications/precipitateEvolution_pfunction/equations.h Source File</title>
+<title>PRISMS-PF: phaseField_dev/applications/precipitateEvolution_pfunction/equations.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,8 +23,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">PRISMS PhaseField
-   &#160;<span id="projectnumber">1.0</span>
+   <div id="projectname">PRISMS-PF
+   &#160;<span id="projectnumber">2.0</span>
    </div>
   </td>
  </tr>
@@ -39,7 +39,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -238,7 +237,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;}</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment">// Cahn-Hilliard mobility</span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> <a class="code" href="residuals_8h.html#a3bc9ee99c182f3afc331a89c80523101">McV</a> = <a class="code" href="precipitate_evolution__pfunction_2custom_p_d_e_8h.html#a47c6c56e80425b57c24e70e4339e7b95">pfunct_McV</a>.<a class="code" href="class_p_functions_1_1p_function.html#a7c411007aba0cfd2fe2bf6b0258f508e">val</a>(c);</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> McV = <a class="code" href="precipitate_evolution__pfunction_2custom_p_d_e_8h.html#a47c6c56e80425b57c24e70e4339e7b95">pfunct_McV</a>.<a class="code" href="class_p_functions_1_1p_function.html#a7c411007aba0cfd2fe2bf6b0258f508e">val</a>(c);</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment">// Allen-Cahn mobilities</span></div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> Mn1V = <a class="code" href="precipitate_evolution__pfunction_2custom_p_d_e_8h.html#af545c885f2183b360e20549810221ff0">pfunct_Mn1V</a>.<a class="code" href="class_p_functions_1_1p_function.html#a7c411007aba0cfd2fe2bf6b0258f508e">val</a>(c);</div>
@@ -496,7 +495,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;variable_list.set_vector_gradient_residual_term(4,ruxV);</div>
 <div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;</div>
 <div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;}</div>
-<div class="ttc" id="residuals_8h_html_a3bc9ee99c182f3afc331a89c80523101"><div class="ttname"><a href="residuals_8h.html#a3bc9ee99c182f3afc331a89c80523101">McV</a></div><div class="ttdeci">#define McV</div><div class="ttdef"><b>Definition:</b> residuals.h:2</div></div>
 <div class="ttc" id="classvariable_attribute_loader_html_aa2663a595f5755a4d54e872def3d557a"><div class="ttname"><a href="classvariable_attribute_loader.html#aa2663a595f5755a4d54e872def3d557a">variableAttributeLoader::set_variable_name</a></div><div class="ttdeci">void set_variable_name(unsigned int index, std::string name)</div><div class="ttdef"><b>Definition:</b> variableAttributeLoader.cc:13</div></div>
 <div class="ttc" id="classvariable_attribute_loader_html_a99a876ff4ff467bdfe6ad9b6e5894ff4"><div class="ttname"><a href="classvariable_attribute_loader.html#a99a876ff4ff467bdfe6ad9b6e5894ff4">variableAttributeLoader::loadVariableAttributes</a></div><div class="ttdeci">void loadVariableAttributes()</div><div class="ttdef"><b>Definition:</b> equations.h:6</div></div>
 <div class="ttc" id="classcustom_p_d_e_html_a4c5cecf654f57452af3951822493532b"><div class="ttname"><a href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE::residualLHS</a></div><div class="ttdeci">void residualLHS(variableContainer&lt; dim, degree, dealii::VectorizedArray&lt; double &gt; &gt; &amp;variable_list, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc) const </div><div class="ttdef"><b>Definition:</b> equations.h:66</div></div>

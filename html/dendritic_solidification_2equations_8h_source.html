@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>PRISMS PhaseField: phaseField_dev/applications/dendriticSolidification/equations.h Source File</title>
+<title>PRISMS-PF: phaseField_dev/applications/dendriticSolidification/equations.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,8 +23,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">PRISMS PhaseField
-   &#160;<span id="projectnumber">1.0</span>
+   <div id="projectname">PRISMS-PF
+   &#160;<span id="projectnumber">2.0</span>
    </div>
   </td>
  </tr>
@@ -39,7 +39,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -197,8 +196,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> rTV = (T-<a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(0.5)*mu*<a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(userInputs.dtValue)/tauV);</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<a class="code" href="type_defs_8h.html#a35b1b83d6d194e7417b515cc381ee577">scalargradType</a> rTxV = (<a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(-DV*userInputs.dtValue)*Tx);</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> <a class="code" href="nucleation_model_2equations_8h.html#a8d2287de1a4a5016da51abbb8a44ef16">rnV</a> = (n-<a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(userInputs.dtValue)*mu/tauV);</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> <a class="code" href="residuals_8h.html#a9ea9b7cb1ce47dec6cc06c5f010d8fa6">rmuV</a> = (fnV);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<a class="code" href="type_defs_8h.html#a35b1b83d6d194e7417b515cc381ee577">scalargradType</a> <a class="code" href="residuals_8h.html#a6ff9dd31f7e099d075354a1d01980d45">rmuxV</a> = (-aniso);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> rmuV = (fnV);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<a class="code" href="type_defs_8h.html#a35b1b83d6d194e7417b515cc381ee577">scalargradType</a> rmuxV = (-aniso);</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="comment">// Residuals for the equation to evolve the concentration </span></div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;variable_list.set_scalar_value_residual_term(0,rTV);</div>
@@ -235,10 +234,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="ttc" id="classvariable_attribute_loader_html_aa2663a595f5755a4d54e872def3d557a"><div class="ttname"><a href="classvariable_attribute_loader.html#aa2663a595f5755a4d54e872def3d557a">variableAttributeLoader::set_variable_name</a></div><div class="ttdeci">void set_variable_name(unsigned int index, std::string name)</div><div class="ttdef"><b>Definition:</b> variableAttributeLoader.cc:13</div></div>
 <div class="ttc" id="classvariable_attribute_loader_html_a99a876ff4ff467bdfe6ad9b6e5894ff4"><div class="ttname"><a href="classvariable_attribute_loader.html#a99a876ff4ff467bdfe6ad9b6e5894ff4">variableAttributeLoader::loadVariableAttributes</a></div><div class="ttdeci">void loadVariableAttributes()</div><div class="ttdef"><b>Definition:</b> equations.h:6</div></div>
 <div class="ttc" id="classcustom_p_d_e_html_a4c5cecf654f57452af3951822493532b"><div class="ttname"><a href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE::residualLHS</a></div><div class="ttdeci">void residualLHS(variableContainer&lt; dim, degree, dealii::VectorizedArray&lt; double &gt; &gt; &amp;variable_list, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc) const </div><div class="ttdef"><b>Definition:</b> equations.h:66</div></div>
-<div class="ttc" id="residuals_8h_html_a9ea9b7cb1ce47dec6cc06c5f010d8fa6"><div class="ttname"><a href="residuals_8h.html#a9ea9b7cb1ce47dec6cc06c5f010d8fa6">rmuV</a></div><div class="ttdeci">#define rmuV</div><div class="ttdef"><b>Definition:</b> residuals.h:9</div></div>
 <div class="ttc" id="classvariable_attribute_loader_html_af3a256c0970c3e55ee07b1b1ee2b88a0"><div class="ttname"><a href="classvariable_attribute_loader.html#af3a256c0970c3e55ee07b1b1ee2b88a0">variableAttributeLoader::set_need_hessian</a></div><div class="ttdeci">void set_need_hessian(unsigned int index, bool)</div><div class="ttdef"><b>Definition:</b> variableAttributeLoader.cc:55</div></div>
 <div class="ttc" id="var_type_enums_8h_html_a12521d5d4cf2d9ed3c05e52b162fad42a6aaa4cbf733e3a4c6556b1f2ff8840a9"><div class="ttname"><a href="var_type_enums_8h.html#a12521d5d4cf2d9ed3c05e52b162fad42a6aaa4cbf733e3a4c6556b1f2ff8840a9">PARABOLIC</a></div><div class="ttdef"><b>Definition:</b> varTypeEnums.h:5</div></div>
-<div class="ttc" id="residuals_8h_html_a6ff9dd31f7e099d075354a1d01980d45"><div class="ttname"><a href="residuals_8h.html#a6ff9dd31f7e099d075354a1d01980d45">rmuxV</a></div><div class="ttdeci">#define rmuxV</div><div class="ttdef"><b>Definition:</b> residuals.h:10</div></div>
 <div class="ttc" id="matrix_free_p_d_e_8h_html_af4deabb57f7353cd1981dbbb926455cd"><div class="ttname"><a href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a></div><div class="ttdeci">#define constV(a)</div><div class="ttdef"><b>Definition:</b> matrixFreePDE.h:30</div></div>
 <div class="ttc" id="classvariable_attribute_loader_html_a33fcec2802ca3ae2bbd9a550e1f15508"><div class="ttname"><a href="classvariable_attribute_loader.html#a33fcec2802ca3ae2bbd9a550e1f15508">variableAttributeLoader::set_variable_type</a></div><div class="ttdeci">void set_variable_type(unsigned int index, fieldType)</div><div class="ttdef"><b>Definition:</b> variableAttributeLoader.cc:25</div></div>
 <div class="ttc" id="classvariable_attribute_loader_html_a4208493abe59856516e5c0634fe3fa53"><div class="ttname"><a href="classvariable_attribute_loader.html#a4208493abe59856516e5c0634fe3fa53">variableAttributeLoader::set_need_gradient_residual_term</a></div><div class="ttdeci">void set_need_gradient_residual_term(unsigned int index, bool)</div><div class="ttdef"><b>Definition:</b> variableAttributeLoader.cc:73</div></div>

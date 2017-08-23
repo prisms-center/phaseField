@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['hadaptivity',['hAdaptivity',['../__cahn_hilliard_with_adaptivity_2parameters_8h.html#a88d3a1fd120b95a91c299d13b8116ae6',1,'hAdaptivity():&#160;parameters.h'],['../__mechanics_with_adaptivity_2parameters_8h.html#a88d3a1fd120b95a91c299d13b8116ae6',1,'hAdaptivity():&#160;parameters.h']]],
-  ['hnv',['hnV',['../nucleation_model_2equations_8h.html#a555966e41b12870829c6a134e1436ed2',1,'hnV():&#160;equations.h'],['../preferential__nucleation_model_2equations_8h.html#a555966e41b12870829c6a134e1436ed2',1,'hnV():&#160;equations.h']]],
-  ['hv',['hV',['../nucleation_model_2equations_8h.html#a0749fe35b75eaf1a745083bc8450ff24',1,'hV():&#160;equations.h'],['../preferential__nucleation_model_2equations_8h.html#a0749fe35b75eaf1a745083bc8450ff24',1,'hV():&#160;equations.h']]]
+  ['initial_5finterface_5fcoeff',['initial_interface_coeff',['../single_precipitate_k_k_s_2_i_cs__and___b_cs_8h.html#a6b4d4c7d07103d09efd552a84e2e3eb1',1,'ICs_and_BCs.h']]],
+  ['initial_5fradius',['initial_radius',['../single_precipitate_k_k_s_2_i_cs__and___b_cs_8h.html#a5ecc8280baa69640041bdac79ea3c4df',1,'ICs_and_BCs.h']]]
 ];
