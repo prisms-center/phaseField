@@ -7,6 +7,7 @@ Added functionality:
 - Non-rectangular meshes (implemented in the new application CHiMaD_benchmark6b)
 
 Changes to the example applications:
+- New application: dendriticSolidification, solidification of a pure material, accounting for temperature evolution
 - New application: anisotropyFacet, demonstrates a simple way to specify facets for strong interfacial energy anisotropy
 - New applications: CHiMaD_benchmark6a and CHiMaD_benchmark6b, the new CHiMaD electrochemistry benchmark problems, with a coupled Cahn-Hilliard-Poisson system of equations
 
