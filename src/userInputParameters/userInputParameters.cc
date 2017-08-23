@@ -36,6 +36,13 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     max_refinement_level = parameter_handler.get_integer("Max refinement level");
     min_refinement_level = parameter_handler.get_integer("Min refinement level");
 
+    // Enforce that the initial refinement level must be between the max and min level
+    if (h_adaptivity && ((refine_factor < min_refinement_level) || (refine_factor > max_refinement_level))){
+        std::cerr << "PRISMS-PF Error: The initial refinement factor must be between the maximum and minimum refinement levels when adaptive meshing is enabled." << std::endl;
+        std::cerr << "Initial refinement level: " << refine_factor << " Maximum and minimum refinement levels: " << max_refinement_level << ", " << min_refinement_level << std::endl;
+        abort();
+    }
+
     // Use built-in deal.II utilities to split up a string and convert it to a vector of doubles or ints
     std::vector<std::string> refine_criterion_fields_str = dealii::Utilities::split_string_list(parameter_handler.get("Refinement criteria fields"));
     for (unsigned int ref_field=0; ref_field<refine_criterion_fields_str.size(); ref_field++){
