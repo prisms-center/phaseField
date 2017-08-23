@@ -7,7 +7,7 @@ PRISMS-PF
 
 <B>Version information:</B>
 
-This version of the code, 2.0, contains substantial changes in the user interface from version 1.x. For information concerning the differences between versions, please consult version_changes.txt.   
+This version of the code, 2.0, contains substantial changes in the user interface from version 1.x. For information concerning the differences between versions, please consult version_changes.md.   
 
 <B>What is PRISMS-PF?</B>
 
@@ -31,7 +31,7 @@ For detailed instructions on how to download and use PRISMS-PF, please consult t
   + Download CMake [http://www.cmake.org/download/]
   + Add CMake to your path (e.g. $ PATH="/path/to/cmake/Contents/bin":"$PATH"), preferably in a shell configuration file
   + Download and install Deal.II following instructions from from https://www.dealii.org/download.html
-  + If a Deal.II binary is downloaded, open it and follow the instructions in the terminal window 
+  + If a Deal.II binary is downloaded, open it and follow the instructions in the terminal window
   + If Deal.II is installed from the source, the MPI and p4est libraries must be installed as prerequisites.
 <br>
 
