@@ -22,7 +22,7 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
   double delta = 1.0/std::sqrt(KnV*2.0);
 
 
-  scalar_IC = 0.5*(1.0-std::tanh((p(0)-r0) * delta));
+  scalar_IC = 0.5*(1.0-std::tanh((p(1)-r0) * delta));
 
   // ---------------------------------------------------------------------
   return scalar_IC;

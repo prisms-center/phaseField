@@ -94,7 +94,7 @@ set Skip print steps = 1
 # 1.5 on the top and bottom for variable 'n' in 2D
 # set Boundary condition for variable n = NATURAL, NATURAL, DIRICHLET: 1.5, DIRICHLET: 1.5
 
-set Boundary condition for variable n = DIRICHLET: 1, DIRICHLET: 0, PERIODIC, PERIODIC
+set Boundary condition for variable n = PERIODIC, PERIODIC, DIRICHLET: 1, DIRICHLET: 0
 
 # =================================================================================
 # Set the model constants
@@ -115,7 +115,8 @@ set Model constant A1 = 20.0, double
 set Model constant B1 = 4.0, double
 set Model constant C1 = 0.06, double
 
-set Model constant A2 = 80.0, double
+set Model constant A2 = 20.0, double
 set Model constant B2 = 10.0, double
+set Model constant D2 = 0.25, double
 
 set Model constant r0 = 0.5, double

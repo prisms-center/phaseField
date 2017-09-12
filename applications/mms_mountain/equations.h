@@ -47,15 +47,13 @@ double pi = 2.0*std::acos(0.0);
 for (unsigned i=0; i<n.n_array_elements;i++){
 
 	double t = this->currentTime;
-	source_term[i] = 1.0/(A1*A1*A2*A2*dealii::Utilities::fixed_power<2>(std::cosh(delta * (-r0 + q_point_loc(0)[i] - t * std::sin(B1*pi*(q_point_loc(1)[i] + C1))/A1 - t*t * std::sin(B2*pi*q_point_loc(1)[i])/A2 ))))
+
+	source_term[i] = 1.0/(2.0*A1*A1*A2*A2*dealii::Utilities::fixed_power<2>(std::cosh(delta * (-r0 + q_point_loc(1)[i] - t * std::sin(B1*pi*(q_point_loc(0)[i] + C1))/A1 - std::sin(D2*pi*t) * std::sin(B2*pi*q_point_loc(0)[i])/A2 ))))
 				* (
-					A1*A2*delta * (A2*(0.5+4.9348*B1*B1*KnV*MnV*t)*std::sin(B1*pi*(q_point_loc(1)[i] + C1)) + A1*t*(1.0+4.9348*B2*B2*KnV*MnV*t)*std::sin(B2*pi*q_point_loc(1)[i]))
-					+ MnV * (
-						A1*A1*A2*A2*(0.5-delta*delta*KnV) + delta*delta*KnV*t*t * (-9.8696*A2*A2*B1*B1*dealii::Utilities::fixed_power<2>(std::cos(B1*pi*(q_point_loc(1)[i] + C1)))
-						- 19.7392*A1*A2*B1*B2*t*std::cos(B1*pi*(q_point_loc(1)[i] + C1))*std::cos(B2*pi*q_point_loc(1)[i])
-						- 9.8696*A1*A1*B2*B2*t*t*dealii::Utilities::fixed_power<2>(std::cos(B2*pi*q_point_loc(1)[i])))
-					)
-					* std::tanh(delta * (-r0 + q_point_loc(0)[i] - t * std::sin(B1*pi*(q_point_loc(1)[i] + C1))/A1 - t*t * std::sin(B2*pi*q_point_loc(1)[i])/A2))
+					A1*A2*delta * (A1*pi*(D2*std::cos(D2*pi*t)+B2*B2*KnV*MnV*pi*std::sin(D2*pi*t)) * std::sin(B2*pi*q_point_loc(0)[i]) + A2*(1.0+B1*B1*KnV*MnV*pi*pi*t)*std::sin(B1*pi*(q_point_loc(0)[i]+C1)))
+					+ MnV*(A1*A1*A2*A2*(1.0-2.0*delta*delta*KnV)+delta*delta*KnV*(-19.7392*A2*A2*B1*B1*t*t*dealii::Utilities::fixed_power<2>(std::cos(B1*pi*(q_point_loc(0)[i]+C1)))-39.4784*A1*A2*B1*B2*t*std::cos(B2*pi*q_point_loc(0)[i])*std::cos(B1*pi*(q_point_loc(0)[i]+C1))*std::sin(D2*pi*t)
+					- 19.7392*A1*A1*B2*B2*dealii::Utilities::fixed_power<2>(std::cos(B2*pi*q_point_loc(0)[i]))  * dealii::Utilities::fixed_power<2>(std::sin(D2*pi*t))) )
+					* std::tanh(delta * (-r0 + q_point_loc(1)[i] - t * std::sin(B1*pi*(q_point_loc(0)[i] + C1))/A1 - std::sin(D2*pi*t) * std::sin(B2*pi*q_point_loc(0)[i])/A2))
 				);
 
 }
