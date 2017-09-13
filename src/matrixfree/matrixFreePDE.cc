@@ -30,9 +30,10 @@ template <int dim, int degree>
  {
    matrixFreeObject.clear();
    for(unsigned int iter=0; iter<fields.size(); iter++){
-     //delete soltransSet[iter];
      delete locally_relevant_dofsSet[iter];
      delete constraintsDirichletSet[iter];
+     dealii::deallog.depth_console(4);
+     delete soltransSet[iter];
      delete dofHandlersSet[iter];
      delete FESet[iter];
      delete solutionSet[iter];
