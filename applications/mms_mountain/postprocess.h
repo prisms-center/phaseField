@@ -86,7 +86,7 @@ for (unsigned i=0; i<n.n_array_elements;i++){
 					* std::tanh(delta * (-r0 + q_point_loc(1)[i] - t * std::sin(B1*pi*(q_point_loc(0)[i] + C1))/A1 - std::sin(D2*pi*t) * std::sin(B2*pi*q_point_loc(0)[i])/A2))
 				);
 
-	double perturb = r0 + t/A1 * std::sin(B1*pi*(q_point_loc(0)[i] + C1)) + std::sin(pi*t*0.25)/A2 * std::sin(B2*pi*q_point_loc(0)[i]);
+	double perturb = r0 + t/A1 * std::sin(B1*pi*(q_point_loc(0)[i] + C1)) + std::sin(pi*t*D2)/A2 * std::sin(B2*pi*q_point_loc(0)[i]);
 	n_sol[i] = 0.5 * (1.0-std::tanh((q_point_loc(1)[i]-perturb)*delta));
 }
 
