@@ -8,7 +8,6 @@ var searchData=
   ['fbccv',['fbccV',['../nucleation_model_2equations_8h.html#a9b0d57ba36d85392e9f14bbf70386b85',1,'fbccV():&#160;equations.h'],['../preferential__nucleation_model_2equations_8h.html#a9b0d57ba36d85392e9f14bbf70386b85',1,'fbccV():&#160;equations.h']]],
   ['fbcv',['fbcV',['../nucleation_model_2equations_8h.html#ae4ac174dbc87779476a8225dc7c4485b',1,'fbcV():&#160;equations.h'],['../preferential__nucleation_model_2equations_8h.html#ae4ac174dbc87779476a8225dc7c4485b',1,'fbcV():&#160;equations.h']]],
   ['fbv',['fbV',['../nucleation_model_2equations_8h.html#ad7c10639685861655a3b95a154f64b88',1,'fbV():&#160;equations.h'],['../preferential__nucleation_model_2equations_8h.html#ad7c10639685861655a3b95a154f64b88',1,'fbV():&#160;equations.h']]],
-  ['fcv',['fcV',['../residuals_8h.html#aeb4c9361fc3208a277c9b70da7db7aec',1,'residuals.h']]],
   ['feset',['FESet',['../class_matrix_free_p_d_e.html#aca8b82c562a106e607667fbcabf6ba8d',1,'MatrixFreePDE']]],
   ['field',['Field',['../class_field.html',1,'Field&lt; dim &gt;'],['../class_field.html#a449fa66c36ad3aff701a8b2ca177a646',1,'Field::Field()']]],
   ['fieldcount',['fieldCount',['../class_field.html#a3503c1e018813fc888c8ed2e130677eb',1,'Field']]],
@@ -16,9 +15,7 @@ var searchData=
   ['fields_2eh',['fields.h',['../fields_8h.html',1,'']]],
   ['fieldtype',['fieldType',['../var_type_enums_8h.html#ae2c3e99c22ce037f68e9b19bfd9c6de2',1,'varTypeEnums.h']]],
   ['finaltime',['finalTime',['../classuser_input_parameters.html#a0d895639013504f5a7ddb5453fc7e198',1,'userInputParameters']]],
-  ['finiteelementdegree',['finiteElementDegree',['../__cahn_hilliard_with_adaptivity_2parameters_8h.html#a146b0d885ec1003391aff676132a2913',1,'finiteElementDegree():&#160;parameters.h'],['../__mechanics_with_adaptivity_2parameters_8h.html#a146b0d885ec1003391aff676132a2913',1,'finiteElementDegree():&#160;parameters.h']]],
   ['first_5fintegrated_5fvar_5foutput_5fcomplete',['first_integrated_var_output_complete',['../class_matrix_free_p_d_e.html#a30bec675c00f082804f1fd7aec6f31b3',1,'MatrixFreePDE']]],
   ['freeenergyvalues',['freeEnergyValues',['../class_matrix_free_p_d_e.html#ab548447de8960b216352d8684259919d',1,'MatrixFreePDE']]],
-  ['fun',['fun',['../class_p_functions_1_1p_function.html#a5ebd2fc9546549ec83d7e98b123e5c3d',1,'PFunctions::pFunction']]],
-  ['formulations',['Formulations',['../page1.html',1,'']]]
+  ['fun',['fun',['../class_p_functions_1_1p_function.html#a5ebd2fc9546549ec83d7e98b123e5c3d',1,'PFunctions::pFunction']]]
 ];

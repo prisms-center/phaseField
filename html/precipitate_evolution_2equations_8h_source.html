@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>PRISMS PhaseField: phaseField_dev/applications/precipitateEvolution/equations.h Source File</title>
+<title>PRISMS-PF: phaseField_dev/applications/precipitateEvolution/equations.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,8 +23,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">PRISMS PhaseField
-   &#160;<span id="projectnumber">1.0</span>
+   <div id="projectname">PRISMS-PF
+   &#160;<span id="projectnumber">2.0</span>
    </div>
   </td>
  </tr>
@@ -39,7 +39,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -404,7 +403,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<span class="comment">// Residual equations</span></div>
 <div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;<a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> <a class="code" href="nucleation_model_2equations_8h.html#a031e490658682f5af3652867cc81c435">rcV</a> = (c);</div>
 <div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;<a class="code" href="type_defs_8h.html#a35b1b83d6d194e7417b515cc381ee577">scalargradType</a> rcxTemp = ( cx*((1.0-h1V-h2V-h3V)*faccV+(h1V+h2V+h3V)*<a class="code" href="nucleation_model_2equations_8h.html#a9b0d57ba36d85392e9f14bbf70386b85">fbccV</a>) + n1x*((fbcV-facV)*hn1V) + n2x*((fbcV-facV)*hn2V) + n3x*((fbcV-facV)*hn3V) + grad_mu_el);</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;<a class="code" href="type_defs_8h.html#a35b1b83d6d194e7417b515cc381ee577">scalargradType</a> <a class="code" href="nucleation_model_2equations_8h.html#a282e86016dd726dccae6085834af9db2">rcxV</a> = (<a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(-userInputs.dtValue*<a class="code" href="residuals_8h.html#a3bc9ee99c182f3afc331a89c80523101">McV</a>)*rcxTemp);</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;<a class="code" href="type_defs_8h.html#a35b1b83d6d194e7417b515cc381ee577">scalargradType</a> <a class="code" href="nucleation_model_2equations_8h.html#a282e86016dd726dccae6085834af9db2">rcxV</a> = (<a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(-userInputs.dtValue*McV)*rcxTemp);</div>
 <div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;</div>
 <div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;<a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> rn1V = (n1-<a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(userInputs.dtValue*Mn1V)*((fbV-<a class="code" href="nucleation_model_2equations_8h.html#a979b7822767c8354c24b75d11b9584d7">faV</a>)*hn1V+nDependentMisfitAC1+heterMechAC1));</div>
 <div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;<a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> rn2V = (n2-<a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(userInputs.dtValue*Mn2V)*((fbV-<a class="code" href="nucleation_model_2equations_8h.html#a979b7822767c8354c24b75d11b9584d7">faV</a>)*hn2V+nDependentMisfitAC2+heterMechAC2));</div>
@@ -486,7 +485,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;variable_list.set_vector_gradient_residual_term(4,ruxV);</div>
 <div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;</div>
 <div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;}</div>
-<div class="ttc" id="residuals_8h_html_a3bc9ee99c182f3afc331a89c80523101"><div class="ttname"><a href="residuals_8h.html#a3bc9ee99c182f3afc331a89c80523101">McV</a></div><div class="ttdeci">#define McV</div><div class="ttdef"><b>Definition:</b> residuals.h:2</div></div>
 <div class="ttc" id="classvariable_attribute_loader_html_aa2663a595f5755a4d54e872def3d557a"><div class="ttname"><a href="classvariable_attribute_loader.html#aa2663a595f5755a4d54e872def3d557a">variableAttributeLoader::set_variable_name</a></div><div class="ttdeci">void set_variable_name(unsigned int index, std::string name)</div><div class="ttdef"><b>Definition:</b> variableAttributeLoader.cc:13</div></div>
 <div class="ttc" id="classvariable_attribute_loader_html_a99a876ff4ff467bdfe6ad9b6e5894ff4"><div class="ttname"><a href="classvariable_attribute_loader.html#a99a876ff4ff467bdfe6ad9b6e5894ff4">variableAttributeLoader::loadVariableAttributes</a></div><div class="ttdeci">void loadVariableAttributes()</div><div class="ttdef"><b>Definition:</b> equations.h:6</div></div>
 <div class="ttc" id="classcustom_p_d_e_html_a4c5cecf654f57452af3951822493532b"><div class="ttname"><a href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE::residualLHS</a></div><div class="ttdeci">void residualLHS(variableContainer&lt; dim, degree, dealii::VectorizedArray&lt; double &gt; &gt; &amp;variable_list, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc) const </div><div class="ttdef"><b>Definition:</b> equations.h:66</div></div>

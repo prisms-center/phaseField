@@ -267,7 +267,7 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
     parameter_handler.declare_entry("Load initial conditions","void",dealii::Patterns::Anything(),"Whether to load the initial conditions for each variable from file.");
     parameter_handler.declare_entry("Load parallel file","void",dealii::Patterns::Anything(),"Whether all processors should read from a single file (versus each reading from separate files).");
     parameter_handler.declare_entry("File names","void",dealii::Patterns::Anything(),"The file name to load from for each variable.");
-    parameter_handler.declare_entry("Variable names in the files","void",dealii::Patterns::Anything(),"What each variable is named in the field being loaded.");
+    parameter_handler.declare_entry("Variable names in the files","void",dealii::Patterns::Anything(),"What each variable is named in the file being loaded.");
 
     // Declare the boundary condition variables
     for (unsigned int i=0; i<var_types.size(); i++){

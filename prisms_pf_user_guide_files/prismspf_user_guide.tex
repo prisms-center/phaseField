@@ -152,6 +152,7 @@ After deal.II and PRISMS-PF are downloaded, you can run the pre-built PRISMS-PF 
 \item coupledCahnHilliardAllenCahn: An implementation of the coupled Cahn-Hilliard/Allen-Cahn set of equations. (2D)
 \item CHAC\_anisotropy: Coupled Cahn-Hilliard/Allen-Cahn equations with weakly anisotropic interfacial energy. (2D)
 \item CHAC\_anisotropyRegularized: Like CHAC\_anisotropy, but with a regularization term to permit strongly anisotropic interfacial energy. (2D)
+\item anisotropyFacet: A different strong anisotropy formation than in CHAC\_anisotropyRegularized that is easier to specify particular facets in the Wulff shape. (2D)
 \item fickianDiffusion: An implementation of the diffusion equation with a time-dependent source term. (2D)
 \item mechanics: An implementation of linear elasticity for a material in uniaxial tension. (3D)
 \item CHiMaD\_benchmark1a: An implementation of the CHiMaD spinodal decomposition benchmark problem. (2D)
@@ -594,6 +595,7 @@ Skip print steps & Any positive integer & no & 1 & The number of time steps betw
     Load initial conditions & Comma-separated list of booleans & no & false & One true/false flag for each variable for whether the initial condition should be loaded from a vtk file. Currently, only scalar fields can be read in. SSee Note 2 below for details. \\ \hline
      Load parallel file & Comma-separated list of booleans & no & false & One true/false flag for each variable for whether each processor should read the initial conditions from a seperate file. See Note 2 below for details.  \\ \hline
       File names & Comma-separated list of strings & no &  & The name of the vtk file to be read for each variable, ignored for variables where the initial conditions isn't read in from a file. Often, all of the variables will read from the same vtk file. See Note 2 below for details.  \\ \hline
+      Variable names in the files & Comma-separated list of strings & no &  & What each variable is named in the file being loaded. See Note 2 below for details.  \\ \hline
     \end{tabular}
 \end{center}
 
@@ -608,7 +610,6 @@ Skip print steps & Any positive integer & no & 1 & The number of time steps betw
      Freeze zone semiaxes (x, y ,z) & Three positive real numbers & no &  & The semiaxes for the ellipsoidal region where the nucleus is frozen after seeding. See Note 3 below for details.  \\ \hline
       Freeze time following nucleation & Any non-negative real number & no & 0 & The amount of time the nucleus is frozen after seeding. See Note 3 below for details. \\ \hline
       Nucleation-free border thickness & Any non-negative real number & no & 0 & The size of the buffer region where nucleation is not allowed unless the boundary conditions are periodic. See Note 3 below for details. \\ \hline
-      Minimum allowed distance between nuclei & Any non-negative real number & no & 2$\times$ the largest nucleus semiaxis  & The minimum allowed distance between nuclei centers during a single nucleation attempt. See Note 3 below for details. \\ \hline
       Minimum allowed distance between nuclei & Any non-negative real number & no & 2$\times$ the largest nucleus semiaxis  & The minimum allowed distance between nuclei centers during a single nucleation attempt. See Note 3 below for details. \\ \hline
       Order parameter cutoff value & Any non-negative real number & no & 0.01  & The minimum allowed value of the sum of all nucleating variable fields where nucleation is allowed to occur. Implemented to prevent nucleation inside existing particles. See Note 3 below for details. \\ \hline
       Time steps between nucleation attempts & Any positive integer & no & 100  & The number of time steps between nucleation attempts. See Note 3 below for details. \\ \hline
@@ -689,6 +690,8 @@ A very brief description of the purpose of each of these files is below, an in-d
 \item customPDE.h: Contains the prototypes of the functions for the application, also contains declarations of the model constants given in `parameters.h'.
 \item main.cc: Main C++ function that controls the flow of the simulation. Identical for all the example applications and it is unlikely that users will need to modify it.
 \end{itemize}
+
+In all of these files, the user can access user inputs from parameters.in via the ``userInputs'' object (e.g. the domain size, the time step size). See Appendix I for a table of variable names inside ``userInputs''.
 
 \subsection{equations.h} \label{equations}
 The file ``equations.h'' contains a list of the variables in the model equations and their attributes as well as the residuals for the model equations. The file contains three functions: \emph{loadVariableAttributes}, \emph{residualRHS}, and \emph{residualLHS}. 
@@ -1306,5 +1309,89 @@ A summary of the tests will print to the screen.
 You can create your own PRISMS-PF applications by making simple modifications to the input files described in the previous section. To create a new application, simply create a new folder in the applications directory and copy the files from a related example application. \textbf{If the file ``CMakeCache.txt'' exists, delete it} (this file contains paths to the original application, and if left would cause the compiler to compile the code from the original application). Then, make your desired modifications (changing the initial or boundary conditions, changing the residual equations, etc.) and compile and run your application the same way you would one of the example applications.
 
 Once your have your own applications running, we'd love to help you share them with the community. Please contact us at prismsphasefield.dev@umich.edu if you need help using GitHub to generate a pull request so that we can add your work to the public repository.
+
+\section{Appendix I: The userInputs Object}
+In all of the application files, the user has access to an object called ``userInputs''. This object contains all of the input parameters from parameters.in and the variable attributes from the top of equations.h and postprocess.h. The following table lists the member variable names to access these parameters (excluding a few that are only useful in the core code). Using standard C++ syntax, all of these can be accessed using the following syntax: userInputs.exampleVariable, where ``exampleVariable'' is the member variable name.
+
+
+\begin{center}
+    \begin{tabular}{ | p{0.25\textwidth} | p{0.22\textwidth} |p{0.23\textwidth} | p{0.3\textwidth} |}
+    \hline
+      \multicolumn{4}{|c|}{\textbf{userInputs Member Variables}} \\
+    \hline
+    \hline
+    \emph{Variable Name} & \emph{Type} & \emph{parameters.in Text} & \emph{Description} \\ \hline
+      domain\_size & std::vector$<$double$>$ & Domain size X, Domain size Y, Domain size Z & A vector containing the dimensions of the domain. \\ \hline
+      subdivisions & std::vector$<$unsigned int$>$ & Subdivisions X, Subdivisions Y, Subdivisions Z & A vector containing the number of subdivisions of the domain. \\ \hline
+       refine\_factor & unsigned int & Refine factor & Directly from parameters.in. \\ \hline
+       degree & unsigned int & Element degree & Directly from parameters.in. \\ \hline
+        h\_adaptivity & bool & Mesh adaptivity & Directly from parameters.in. \\ \hline
+        max\_refinement\_level & unsigned int & Max refinement level & Directly from parameters.in. \\ \hline
+        min\_refinement\_level & unsigned int & Min refinement level & Directly from parameters.in. \\ \hline
+        refine\_criterion\_fields & std::vector$<$unsigned int$>$ & Refinement criteria fields & Converts variable names to their variable index. \\ \hline
+        refine\_window\_max & std::vector$<$double$>$ & Refinement window max & Directly from parameters.in. \\ \hline
+        refine\_window\_min & std::vector$<$double$>$ & Refinement window min & Directly from parameters.in. \\ \hline
+       skip\_remeshing\_steps & unsigned int & Steps between remeshing operations & Directly from parameters.in. \\ \hline
+          dtValue & double & Time step & Directly from parameters.in. \\ \hline
+          finalTime & double & Simulation end time, Number of time steps & End time for the simulation, set based whichever will happen first, the specified time or number of time steps. \\ \hline
+         totalIncrements & double & Simulation end time, Number of time steps & Number of time steps for the simulation, set based whichever will happen first, the specified time or number of time steps. \\ \hline
+          output\_file\_type & std::string & Output file type & Directly from parameters.in. \\ \hline
+          output\_file\_name & std::string & Output file name & Directly from parameters.in. \\ \hline
+          outputTimeStepList & std::vector$<$unsigned int$>$ & List of time steps to output & Holds the list of time steps to output for all output conditions, not just LIST. \\ \hline
+          skip\_print\_steps & unsigned int & Skip print steps & Directly from parameters.in. \\ \hline
+         
+    \end{tabular}
+\end{center}
+
+\begin{center}
+    \begin{tabular}{ | p{0.25\textwidth} | p{0.25\textwidth} |p{0.2\textwidth} | p{0.3\textwidth} |}
+    \hline
+      \multicolumn{4}{|c|}{\textbf{userInputs Member Variables}} \\
+    \hline
+    \hline
+    \emph{Variable Name} & \emph{Type} & \emph{parameters.in Text} & \emph{Description} \\ \hline
+           solverType & std::string & Linear solver & Directly from parameters.in. \\ \hline
+           abs\_tol & bool & Use absolute convergence tolerance & Directly from parameters.in. \\ \hline
+           solver\_tolerance & double & Solver tolerance value & Directly from parameters.in. \\ \hline
+           max\_solver\_iterations & unsigned int & Maximum allowed solver iterations & Directly from parameters.in. \\ \hline
+            load\_ICs & std::vector$<$bool$>$ & Load intial conditions & Directly from parameters.in. \\ \hline
+             load\_parallel\_file & std::vector$<$bool$>$ & Load parallel file & Directly from parameters.in. \\ \hline
+              load\_file\_name & std::vector$<$std::string$>$ & File names & Directly from parameters.in. \\ \hline
+              load\_field\_name & std::vector$<$std::string$>$ & Variable names in the files & Directly from parameters.in. \\ \hline
+          BC\_list & std::vector$<$ varBCs$<$dim$>>$ &  Boundary conditions for variable [variable name] & Vector of one object per component of each variable that stores the BCs. \\ \hline
+          nucleus\_semiaxes & std::vector$<$double$>$ & Nucleus semiaxes (x,y,z) & Directly from parameters.in. \\ \hline
+          order\_parameter \_freeze\_semiaxes & std::vector$<$double$>$ & Freeze zone semiaxes (x,y,z) & Directly from parameters.in. \\ \hline
+          no\_nucleation \_border\_thickness & double & Nucleation-free border thickness & Directly from parameters.in. \\ \hline
+          nucleus\_hold \_time & double & Freeze time following nucleation & Directly from parameters.in. \\ \hline
+           min\_distance\_between \_nuclei & double & Minimum allowed distance between nuclei & Directly from parameters.in. \\ \hline
+           nucleation\_order \_parameter\_cutoff & double & Order parameter cutoff value & Directly from parameters.in. \\ \hline
+            steps\_between \_nucleation\_attempts & double & Time steps between nucleation attempts & Directly from parameters.in. \\ \hline
+               \end{tabular}
+\end{center}
+
+   
+\begin{center}
+    \begin{tabular}{ | p{0.25\textwidth} | p{0.25\textwidth} |p{0.15\textwidth} | p{0.35\textwidth} |}
+    \hline
+      \multicolumn{4}{|c|}{\textbf{userInputs Member Variables}} \\
+    \hline
+    \hline
+    \emph{Variable Name} & \emph{Type} & \emph{parameters.in Text} & \emph{Description} \\ \hline
+ number\_of\_variables & unsigned int &  & Counts the number of variables in loadVariableAttributes in equations.h. \\ \hline
+           var\_name & std::vector$<$std::string$>$ &  & Vector of the variable names from loadVariableAttributes in equations.h. \\ \hline
+           var\_type & std::vector$<$fieldType$>$ &  & Vector of the variable types from loadVariableAttributes in equations.h. \\ \hline
+           var\_eq\_type & std::vector$<$PDEType$>$ &  & Vector of the variable equation types from loadVariableAttributes in equations.h. \\ \hline
+           nucleation\_occurs & bool &  & Set true if any variables are set to nucleate in loadVariableAttributes in equations.h. \\ \hline
+          nucleating \_variable\_indices & std::vector$<$unsigned int$>$ &  & Vector of the variable indices for variables that are set to nucleate in loadVariableAttributes in equations.h. \\ \hline
+          nucleation \_need\_value & std::vector$<$unsigned int$>$ &  & Vector of the variable indices for variables that are set to be needed in the nucleation calculation in loadVariableAttributes in equations.h. \\ \hline
+           pp\_number\_of\_variables & unsigned int &  & Counts the number of variables in loadPostProcessorVariableAttributes in postprocess.h. \\ \hline
+              num\_integrated\_fields & unsigned int &  & Counts the number of variables marked to be integrated in loadPostProcessorVariableAttributes in postprocess.h. \\ \hline
+              pp\_var\_name & std::vector$<$std::string$>$ &  & Vector of the variable names from loadPostProcessorVariableAttributes in postprocess.h. \\ \hline
+           pp\_var\_type & std::vector$<$fieldType$>$ &  & Vector of the variable types from loadPostProcessorVariableAttributes in postprocess.h. \\ \hline
+           
+            \end{tabular}
+\end{center}
+
+
 
 \end{document}

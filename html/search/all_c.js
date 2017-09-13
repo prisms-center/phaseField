@@ -52,6 +52,5 @@ var searchData=
   ['num_5fvar_5flhs',['num_var_LHS',['../classuser_input_parameters.html#a0eb42077b757102f9c942565ab8b4129',1,'userInputParameters']]],
   ['number_5fof_5fdimensions',['number_of_dimensions',['../classinput_file_reader.html#ae6fd40cc36c2ed24b6f3cc279888044b',1,'inputFileReader']]],
   ['number_5fof_5fvariables',['number_of_variables',['../classuser_input_parameters.html#a9eb2912726e40d3f3f480f2f9db11cc7',1,'userInputParameters']]],
-  ['numcomponents',['numComponents',['../class_field.html#adec91e5767db3627605a6c0c8bdd6931',1,'Field']]],
-  ['numfields',['numFields',['../__cahn_hilliard_with_adaptivity_2parameters_8h.html#aac8194d5f51de1370211d2fb5035ea34',1,'numFields():&#160;parameters.h'],['../__mechanics_with_adaptivity_2parameters_8h.html#aac8194d5f51de1370211d2fb5035ea34',1,'numFields():&#160;parameters.h']]]
+  ['numcomponents',['numComponents',['../class_field.html#adec91e5767db3627605a6c0c8bdd6931',1,'Field']]]
 ];

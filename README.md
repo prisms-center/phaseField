@@ -1,13 +1,17 @@
 PRISMS-PF
 =================
-<B>Code repository:</B> https://github.com/prisms-center/phaseField <br>
-<B>Code documentation:</B> https://goo.gl/00y23N <br>
-<B>User registration link:</B> http://goo.gl/forms/GXo7Im8p2Y <br>
-<B>User discussion group:</B> https://groups.google.com/forum/#!forum/prisms-pf-users
+<B> Useful Links:</B>
+
+[Code repository](https://github.com/prisms-center/phaseField) <br>
+[Doxygen Code documentation](https://goo.gl/00y23N) <br>
+[User registration link](http://goo.gl/forms/GXo7Im8p2Y) <br>
+[User forum](https://groups.google.com/forum/#!forum/prisms-pf-users) <br>
+[Training slides/exercises](https://goo.gl/BBTkJ8)
+
 
 <B>Version information:</B>
 
-This version of the code, 2.0, contains substantial changes in the user interface from version 1.x. For information concerning the differences between versions, please consult version_changes.txt.   
+This version of the code, 2.0.1pre, contains some minor ongoing changes from v2.0.
 
 <B>What is PRISMS-PF?</B>
 
@@ -31,7 +35,7 @@ For detailed instructions on how to download and use PRISMS-PF, please consult t
   + Download CMake [http://www.cmake.org/download/]
   + Add CMake to your path (e.g. $ PATH="/path/to/cmake/Contents/bin":"$PATH"), preferably in a shell configuration file
   + Download and install Deal.II following instructions from from https://www.dealii.org/download.html
-  + If a Deal.II binary is downloaded, open it and follow the instructions in the terminal window 
+  + If a Deal.II binary is downloaded, open it and follow the instructions in the terminal window
   + If Deal.II is installed from the source, the MPI and p4est libraries must be installed as prerequisites.
 <br>
 

@@ -1,6 +1,38 @@
-====================
-Version 1.2:
-===================
+# Version 2.0:
+Major update to PRISMS-PF, released in August 2017. The core library is very similar to v1.2, but the user interface is substantially changed. Most importantly, input parameters are now read from a text file, instead of via #define statements. All of the individual interface changes are not listed here, see the User Guide for the new file structure and syntax.
+
+Added functionality:
+- New option for non-uniform Dirichlet BCs (either non-uniform in space or time)
+- The integral of any postprocessed field can be calculated
+- Non-rectangular meshes (implemented in the new application CHiMaD_benchmark6b)
+
+Changes to the example applications:
+- New application: dendriticSolidification, solidification of a pure material, accounting for temperature evolution
+- New application: anisotropyFacet, demonstrates a simple way to specify facets for strong interfacial energy anisotropy
+- New applications: CHiMaD_benchmark6a and CHiMaD_benchmark6b, the new CHiMaD electrochemistry benchmark problems, with a coupled Cahn-Hilliard-Poisson system of equations
+
+Performance improvements:
+- New containers for getting variables into and residuals out of the equations.h functions yields ~15% speedup
+
+Bug fixes:
+- Unit tests now run in debug mode
+- The variables that can be accessed in postprocess.h are now unrelated to those for residualRHS in equations.h
+
+Other changes:
+- Changed the syntax for accessing variables and submitting residuals in equations.h, indices are now error-checked
+- To be more accurate mathematically, renamed the "ZERO_DERIVATIVE" to "NATURAL"
+- User guide overhauled to use tables instead of long blocks of text, when possible
+- Free energies are now treated as just another postprocessing variable
+- The postprocessing.h and nucleation.h files are now optional
+- Updated the README, including a link to a repository for training materials
+- Version changes file changed from a general text file to markdown
+
+Known issues:
+- PFields only work for scalar fields and only work when the variable with index zero is a scalar field.
+- Postprocessing only works for scalar fields and only when the variable with index zero is a scalar field.
+- The formulation file for the dendriticSolidifiation application may have errors.
+
+# Version 1.2:
 Update to v1.1, released in June 2017. The core library was substantially reorganized and nucleation and postprocessing
 capabilities were added.
 
@@ -42,9 +74,8 @@ Known issues:
 - PFields only work for scalar fields and only work when the variable with index zero is a scalar field.
 
 
-====================
-Version 1.1.1:
-===================
+# Version 1.1.1:
+
 Patch to v1.1, released in February 2017. This patch fixes some indexing bugs lurking in previous versions of the code. From a user
 perspective, nothing should change (unless you had previously hit one of these bugs).
 
@@ -74,9 +105,9 @@ Other changes:
 Known issues:
 - None
 
-====================
-Version 1.1:
-===================
+
+# Version 1.1:
+
 Update to v1.0, released in January 2017.
 
 Added functionality:
@@ -117,9 +148,8 @@ Known issues:
 - For some compilers that lack full C++11 support (including the Intel compilers on the Stampede cluster), errors are generated because
   we initialize some vectors with C-style arrays. This will be fixed in the near future.
 
-====================
-Version 1.0:
-===================
+# Version 1.0:
+
 This is the first release version of PRISMS-PF, released in August 2016. The code has been substantially reworked since version 0.9.3.
 
 Major changes include:
@@ -129,9 +159,9 @@ Major changes include:
 - Many new applications
 - Improved tests, including tests versus analytical results
 
-====================
-Version 0.9.3:
-====================
+
+# Version 0.9.3:
+
 Patch to version 0.9.2, released in July 2016. Most changes are specific to coupled Cahn-Hilliard-Allen-Cahn-Mechanics calculations.
 
 Bug fixes:
@@ -163,9 +193,9 @@ Known issues:
 - The PFunctions in the application "bPPE_pfunction" can currently only be used for constants. The PFunctions only return doubles and
   thus cannot be used for functions like the free energy that must be vectorized arrays. This issue is being actively worked on.
 
-====================
-Version 0.9.2:
-====================
+
+# Version 0.9.2:
+
 Patch to version 0.9.1, released in January 2016.
 
 Bug fixes:
@@ -187,9 +217,9 @@ Performance improvements:
 Known issues:
 - None
 
-====================
-Version 0.9.1:
-====================
+
+# Version 0.9.1:
+
 Patch to version 0.9, released in December 2015. This patch fixes a number of bugs that were introduced between versions 0.8 and 0.9.
 
 Bug fixes:
@@ -207,9 +237,9 @@ Known issues:
 - Code runs more slowly than version 0.8, possibly due to compiler flags set by Deal.II that are disabling vectorization
 - Yields different solutions for time evolution equations than version 0.8
 
-====================
-Version 0.9:
-====================
+
+# Version 0.9:
+
 Released in September 2015 before the PRISMS Workshop. A large portion of the code was refactored so that much more of the source code is
 shared between applications. In the previous version, each application was nearly independent.
 
@@ -217,7 +247,7 @@ Known issues:
 - Code runs more slowly than version 0.8, possibly due to compiler flags set by Deal.II that are disabling vectorization
 - Yields different solutions for time evolution equations than version 0.8
 
-====================
-Version 0.8:
-====================
+
+# Version 0.8:
+
 First public release of the code.

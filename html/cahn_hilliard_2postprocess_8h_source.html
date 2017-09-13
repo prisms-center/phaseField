@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>PRISMS PhaseField: phaseField_dev/applications/cahnHilliard/postprocess.h Source File</title>
+<title>PRISMS-PF: phaseField_dev/applications/cahnHilliard/postprocess.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,8 +23,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">PRISMS PhaseField
-   &#160;<span id="projectnumber">1.0</span>
+   <div id="projectname">PRISMS-PF
+   &#160;<span id="projectnumber">2.0</span>
    </div>
   </td>
  </tr>
@@ -39,7 +39,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -125,7 +124,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=0; i&lt;dim; i++){</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j=0; j&lt;dim; j++){</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            f_grad += <a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(0.5*<a class="code" href="residuals_8h.html#a9021e1ce73ed7629243a7db088c96f26">KcV</a>)*cx[i]*cx[j];</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            f_grad += <a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(0.5*KcV)*cx[i]*cx[j];</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        }</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    }</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
@@ -148,7 +147,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="ttc" id="type_defs_8h_html_ac74a2c5a901e3ca87ec3ae9c01623449"><div class="ttname"><a href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a></div><div class="ttdeci">dealii::VectorizedArray&lt; double &gt; scalarvalueType</div><div class="ttdef"><b>Definition:</b> typeDefs.h:27</div></div>
 <div class="ttc" id="type_defs_8h_html_a35b1b83d6d194e7417b515cc381ee577"><div class="ttname"><a href="type_defs_8h.html#a35b1b83d6d194e7417b515cc381ee577">scalargradType</a></div><div class="ttdeci">dealii::Tensor&lt; 1, dim, dealii::VectorizedArray&lt; double &gt; &gt; scalargradType</div><div class="ttdef"><b>Definition:</b> typeDefs.h:44</div></div>
 <div class="ttc" id="classvariable_container_html"><div class="ttname"><a href="classvariable_container.html">variableContainer</a></div><div class="ttdef"><b>Definition:</b> variableContainer.h:8</div></div>
-<div class="ttc" id="residuals_8h_html_a9021e1ce73ed7629243a7db088c96f26"><div class="ttname"><a href="residuals_8h.html#a9021e1ce73ed7629243a7db088c96f26">KcV</a></div><div class="ttdeci">#define KcV</div><div class="ttdef"><b>Definition:</b> residuals.h:3</div></div>
 <div class="ttc" id="classvariable_attribute_loader_html_ae8e85fe05f924959e14bfff7054ffd3a"><div class="ttname"><a href="classvariable_attribute_loader.html#ae8e85fe05f924959e14bfff7054ffd3a">variableAttributeLoader::loadPostProcessorVariableAttributes</a></div><div class="ttdeci">void loadPostProcessorVariableAttributes()</div><div class="ttdef"><b>Definition:</b> main.cc:20</div></div>
 <div class="ttc" id="var_type_enums_8h_html_ae2c3e99c22ce037f68e9b19bfd9c6de2a7efbb6cac96595e63e8fa171bde1eb68"><div class="ttname"><a href="var_type_enums_8h.html#ae2c3e99c22ce037f68e9b19bfd9c6de2a7efbb6cac96595e63e8fa171bde1eb68">SCALAR</a></div><div class="ttdef"><b>Definition:</b> varTypeEnums.h:4</div></div>
 </div><!-- fragment --></div><!-- contents -->

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['kcv',['KcV',['../residuals_8h.html#a9021e1ce73ed7629243a7db088c96f26',1,'residuals.h']]]
+  ['n_5forients',['n_orients',['../anisotropy__facet_8h.html#a6252fa8ea295564d31b05c3e57bc55dc',1,'anisotropy_facet.h']]]
 ];
