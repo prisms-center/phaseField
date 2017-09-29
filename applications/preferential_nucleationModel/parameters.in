@@ -134,8 +134,9 @@ set Model constant k2_b = 4.14465, DOUBLE
 # Constants k1 and k2 for nucleation rate in grain boundary
 set Model constant k2_gb = 3.22362, DOUBLE
 
-# Incubation time
-set Model constant tau = 0, DOUBLE
+# Incubation times for bulk and grain boundary
+set Model constant tau_b = 500, DOUBLE
+set Model constant tau_gb = 0, DOUBLE
 
 # Width of grain boundary
 set Model constant wgb = 16.0, DOUBLE
