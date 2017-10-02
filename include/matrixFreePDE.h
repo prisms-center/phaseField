@@ -236,6 +236,16 @@ class MatrixFreePDE:public Subscriptor
   void applyInitialConditions();
 
   // --------------------------------------------------------------------------
+  // Methods for saving and loading checkpoints
+  // --------------------------------------------------------------------------
+
+  void save_checkpoint();
+
+  void load_checkpoint();
+
+  int move_file(const std::string, const std::string);
+
+  // --------------------------------------------------------------------------
   // Nucleation methods and variables
   // --------------------------------------------------------------------------
   // Vector of all the nuclei seeded in the problem

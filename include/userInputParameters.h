@@ -61,7 +61,7 @@ public:
 	std::string output_file_type;
 	std::string output_file_name;
 	std::vector<unsigned int> outputTimeStepList;
-	
+
 	// Time step parameters
 	double dtValue;
 	double finalTime;
@@ -92,6 +92,9 @@ public:
 	std::vector<bool> load_parallel_file;
 	std::vector<std::string> load_file_name;
 	std::vector<std::string> load_field_name;
+
+	// Variables for saving/loading checkpoints
+	bool resume_from_checkpoint = false;
 
 	// Postprocessing parameters
 	unsigned int pp_number_of_variables;
