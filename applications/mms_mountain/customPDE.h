@@ -40,8 +40,7 @@ private:
 	// Model constants specific to this subclass
 	// ================================================================
 
-	double MnV = userInputs.get_model_constant_double("MnV");
-	double KnV = userInputs.get_model_constant_double("KnV");
+	double kappa = userInputs.get_model_constant_double("kappa");
 
 	double A1 = userInputs.get_model_constant_double("A1");
 	double B1 = userInputs.get_model_constant_double("B1");
@@ -49,9 +48,7 @@ private:
 	double A2 = userInputs.get_model_constant_double("A2");
 	double B2 = userInputs.get_model_constant_double("B2");
 	double D2 = userInputs.get_model_constant_double("D2");
-
-	double r0 = userInputs.get_model_constant_double("r0");
-
+	
 	// ================================================================
 
 };

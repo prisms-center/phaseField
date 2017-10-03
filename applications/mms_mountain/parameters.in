@@ -105,11 +105,8 @@ set Boundary condition for variable n = PERIODIC, PERIODIC, DIRICHLET: 1, DIRICH
 # options currently are DOUBLE, INT, BOOL, TENSOR, and [symmetry] ELASTIC CONSTANTS
 # where [symmetry] is ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC.
 
-# The mobility, MnV in equations.h
-set Model constant MnV = 1.0, DOUBLE
-
 # The gradient energy coefficient, KnV in equations.h
-set Model constant KnV = 0.0001, DOUBLE
+set Model constant kappa = 0.0001, DOUBLE
 
 set Model constant A1 = 0.05, double
 set Model constant B1 = 4.0, double
@@ -118,5 +115,3 @@ set Model constant C1 = 0.06, double
 set Model constant A2 = 0.05, double
 set Model constant B2 = 10.0, double
 set Model constant D2 = 0.25, double
-
-set Model constant r0 = 0.5, double
