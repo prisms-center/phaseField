@@ -3,7 +3,7 @@
 // =================================================================================
 void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 	// Variable 0
-	set_variable_name				(0,"mg_n");
+	set_variable_name				(0,"error");
 	set_variable_type				(0,SCALAR);
 
 	set_need_value_residual_term	(0,true);
@@ -50,10 +50,6 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 scalarvalueType n = variable_list.get_scalar_value(0);
 scalargradType nx = variable_list.get_scalar_gradient(0);
 
-scalargradType pp_field;
-pp_field[0] = nx[0];
-pp_field[1] = nx[1];
-
 scalarvalueType f_tot = constV(0.0);
 
 // The homogenous free energy
@@ -78,20 +74,24 @@ double pi = 2.0*std::acos(0.0);
 for (unsigned i=0; i<n.n_array_elements;i++){
 
 	double t = this->currentTime;
-	source_term[i] = 1.0/(2.0*A1*A1*A2*A2*dealii::Utilities::fixed_power<2>(std::cosh(delta * (-r0 + q_point_loc(1)[i] - t * std::sin(B1*pi*(q_point_loc(0)[i] + C1))/A1 - std::sin(D2*pi*t) * std::sin(B2*pi*q_point_loc(0)[i])/A2 ))))
+
+	source_term[i] = A1*A1*A2*A2/(2.0*dealii::Utilities::fixed_power<2>(std::cosh((-r0 + q_point_loc(1)[i] - t * std::sin(B1*pi*(q_point_loc(0)[i] + C1))*A1 - std::sin(D2*pi*t) * std::sin(B2*pi*q_point_loc(0)[i])*A2 )/std::sqrt(2.0*KnV))))
 				* (
-					A1*A2*delta * (A1*pi*(D2*std::cos(D2*pi*t)+B2*B2*KnV*MnV*pi*std::sin(D2*pi*t)) * std::sin(B2*pi*q_point_loc(0)[i]) + A2*(1.0+B1*B1*KnV*MnV*pi*pi*t)*std::sin(B1*pi*(q_point_loc(0)[i]+C1)))
-					+ MnV*(A1*A1*A2*A2*(1.0-2.0*delta*delta*KnV)+delta*delta*KnV*(-19.7392*A2*A2*B1*B1*t*t*dealii::Utilities::fixed_power<2>(std::cos(B1*pi*(q_point_loc(0)[i]+C1)))-39.4784*A1*A2*B1*B2*t*std::cos(B2*pi*q_point_loc(0)[i])*std::cos(B1*pi*(q_point_loc(0)[i]+C1))*std::sin(D2*pi*t)
-					- 19.7392*A1*A1*B2*B2*dealii::Utilities::fixed_power<2>(std::cos(B2*pi*q_point_loc(0)[i]))  * dealii::Utilities::fixed_power<2>(std::sin(D2*pi*t))) )
-					* std::tanh(delta * (-r0 + q_point_loc(1)[i] - t * std::sin(B1*pi*(q_point_loc(0)[i] + C1))/A1 - std::sin(D2*pi*t) * std::sin(B2*pi*q_point_loc(0)[i])/A2))
+					(pi/A1*(D2*std::cos(D2*pi*t)+B2*B2*KnV*MnV*pi*std::sin(D2*pi*t)) * std::sin(B2*pi*q_point_loc(0)[i]) + (1.0+B1*B1*KnV*MnV*pi*pi*t)/A2*std::sin(B1*pi*(q_point_loc(0)[i]+C1))) / (std::sqrt(2.0*KnV) * A1*A2)
+					+ MnV/2.0*( (-2.0*pi*pi*B1*B1*t*t/(A2*A2)*dealii::Utilities::fixed_power<2>(std::cos(B1*pi*(q_point_loc(0)[i]+C1)))-4.0*pi*pi*B1*B2*t/(A1*A2)*std::cos(B2*pi*q_point_loc(0)[i])*std::cos(B1*pi*(q_point_loc(0)[i]+C1))*std::sin(D2*pi*t)
+					- 2.0*pi*pi*B2*B2/(A1*A1)*dealii::Utilities::fixed_power<2>(std::cos(B2*pi*q_point_loc(0)[i]))  * dealii::Utilities::fixed_power<2>(std::sin(D2*pi*t))) )
+					* std::tanh((-r0 + q_point_loc(1)[i] - t * std::sin(B1*pi*(q_point_loc(0)[i] + C1))*A1 - std::sin(D2*pi*t) * std::sin(B2*pi*q_point_loc(0)[i])*A2)/std::sqrt(2.0*KnV))
 				);
 
-	double perturb = r0 + t/A1 * std::sin(B1*pi*(q_point_loc(0)[i] + C1)) + std::sin(pi*t*D2)/A2 * std::sin(B2*pi*q_point_loc(0)[i]);
-	n_sol[i] = 0.5 * (1.0-std::tanh((q_point_loc(1)[i]-perturb)*delta));
+
+	double perturb = r0 + t*A1 * std::sin(B1*pi*(q_point_loc(0)[i] + C1)) + std::sin(pi*t*D2)*A2 * std::sin(B2*pi*q_point_loc(0)[i]);
+	n_sol[i] = 0.5 * (1.0-std::tanh((q_point_loc(1)[i]-perturb)/std::sqrt(2.0*KnV)));
 }
 
+scalarvalueType error = std::abs(n_sol - n);
+
 // Residuals for the equation to evolve the order parameter
-pp_variable_list.set_scalar_value_residual_term(0, std::sqrt(pp_field[0]*pp_field[0]+pp_field[1]*pp_field[1]));
+pp_variable_list.set_scalar_value_residual_term(0, error);
 
 pp_variable_list.set_scalar_value_residual_term(1, f_tot);
 

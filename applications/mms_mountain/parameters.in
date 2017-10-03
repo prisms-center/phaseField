@@ -111,11 +111,11 @@ set Model constant MnV = 1.0, DOUBLE
 # The gradient energy coefficient, KnV in equations.h
 set Model constant KnV = 0.0001, DOUBLE
 
-set Model constant A1 = 20.0, double
+set Model constant A1 = 0.05, double
 set Model constant B1 = 4.0, double
 set Model constant C1 = 0.06, double
 
-set Model constant A2 = 20.0, double
+set Model constant A2 = 0.05, double
 set Model constant B2 = 10.0, double
 set Model constant D2 = 0.25, double
 

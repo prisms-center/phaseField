@@ -52,9 +52,6 @@ private:
 
 	double r0 = userInputs.get_model_constant_double("r0");
 
-	double delta = 1.0/std::sqrt(KnV*2.0);
-
-
 	// ================================================================
 
 };
