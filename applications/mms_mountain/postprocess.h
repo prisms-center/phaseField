@@ -3,7 +3,7 @@
 // =================================================================================
 void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 	// Variable 0
-	set_variable_name				(0,"error");
+	set_variable_name				(0,"error_squared");
 	set_variable_type				(0,SCALAR);
 
 	set_need_value_residual_term	(0,true);
@@ -75,20 +75,20 @@ for (unsigned i=0; i<n.n_array_elements;i++){
 
 	double t = this->currentTime;
 
-	source_term[i] = A1*A1*A2*A2/(2.0*dealii::Utilities::fixed_power<2>(std::cosh((-0.5 + q_point_loc(1)[i] - t * std::sin(B1*pi*(q_point_loc(0)[i] + C1))*A1 - std::sin(D2*pi*t) * std::sin(B2*pi*q_point_loc(0)[i])*A2 )/std::sqrt(2.0*kappa))))
+	source_term[i] = A1*A1*A2*A2/(2.0*dealii::Utilities::fixed_power<2>(std::cosh((-0.25 + q_point_loc(1)[i] - t * std::sin(B1*pi*(q_point_loc(0)[i] + C1))*A1 - std::sin(D2*pi*t) * std::sin(B2*pi*q_point_loc(0)[i])*A2 )/std::sqrt(2.0*kappa))))
 				* (
 					(pi/A1*(D2*std::cos(D2*pi*t)+B2*B2*kappa*pi*std::sin(D2*pi*t)) * std::sin(B2*pi*q_point_loc(0)[i]) + (1.0+B1*B1*kappa*pi*pi*t)/A2*std::sin(B1*pi*(q_point_loc(0)[i]+C1))) / (std::sqrt(2.0*kappa) * A1*A2)
 					+ ( (-2.0*pi*pi*B1*B1*t*t/(A2*A2)*dealii::Utilities::fixed_power<2>(std::cos(B1*pi*(q_point_loc(0)[i]+C1)))-4.0*pi*pi*B1*B2*t/(A1*A2)*std::cos(B2*pi*q_point_loc(0)[i])*std::cos(B1*pi*(q_point_loc(0)[i]+C1))*std::sin(D2*pi*t)
 					- 2.0*pi*pi*B2*B2/(A1*A1)*dealii::Utilities::fixed_power<2>(std::cos(B2*pi*q_point_loc(0)[i]))  * dealii::Utilities::fixed_power<2>(std::sin(D2*pi*t))) )/2.0
-					* std::tanh((-0.5 + q_point_loc(1)[i] - t * std::sin(B1*pi*(q_point_loc(0)[i] + C1))*A1 - std::sin(D2*pi*t) * std::sin(B2*pi*q_point_loc(0)[i])*A2)/std::sqrt(2.0*kappa))
+					* std::tanh((-0.25 + q_point_loc(1)[i] - t * std::sin(B1*pi*(q_point_loc(0)[i] + C1))*A1 - std::sin(D2*pi*t) * std::sin(B2*pi*q_point_loc(0)[i])*A2)/std::sqrt(2.0*kappa))
 				);
 
 
-	double perturb = 0.5 + t*A1 * std::sin(B1*pi*(q_point_loc(0)[i] + C1)) + std::sin(pi*t*D2)*A2 * std::sin(B2*pi*q_point_loc(0)[i]);
+	double perturb = 0.25 + t*A1 * std::sin(B1*pi*(q_point_loc(0)[i] + C1)) + std::sin(pi*t*D2)*A2 * std::sin(B2*pi*q_point_loc(0)[i]);
 	n_sol[i] = 0.5 * (1.0-std::tanh((q_point_loc(1)[i]-perturb)/std::sqrt(2.0*kappa)));
 }
 
-scalarvalueType error = std::abs(n_sol - n);
+scalarvalueType error = (n_sol - n)*(n_sol - n);
 
 // Residuals for the equation to evolve the order parameter
 pp_variable_list.set_scalar_value_residual_term(0, error);

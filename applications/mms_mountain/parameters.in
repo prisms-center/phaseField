@@ -12,7 +12,7 @@ set Number of dimensions = 2
 # =================================================================================
 # Each axes spans from zero to the specified length
 set Domain size X = 1
-set Domain size Y = 1
+set Domain size Y = 0.5
 set Domain size Z = 1
 
 # =================================================================================
@@ -21,11 +21,11 @@ set Domain size Z = 1
 # The number of elements in each direction is 2^(refineFactor) * subdivisions
 # Subdivisions Z ignored in 2D
 # For optimal performance, use refineFactor primarily to determine the element size
-set Subdivisions X = 1
+set Subdivisions X = 2
 set Subdivisions Y = 1
 set Subdivisions Z = 1
 
-set Refine factor = 8
+set Refine factor = 7 #8
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
 set Element degree = 2
@@ -37,7 +37,7 @@ set Element degree = 2
 set Mesh adaptivity = true
 
 # Set the maximum and minimum level of refinement
-set Max refinement level = 8
+set Max refinement level = 10 #8
 set Min refinement level = 3
 
 # Set the fields used to determine the refinement using their index.
@@ -48,17 +48,17 @@ set Refinement window max = 0.9999
 set Refinement window min = 0.0001
 
 # Set the number of time steps between remeshing operations
-set Steps between remeshing operations = 25
+set Steps between remeshing operations = 50 #25
 
 # =================================================================================
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 6.25e-3
+set Time step = 2.0e-3 #0.0015625 #6.25e-3
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Simulation end time = 2.0
+set Simulation end time = 8
 
 # =================================================================================
 # Set the output parameters
@@ -106,12 +106,14 @@ set Boundary condition for variable n = PERIODIC, PERIODIC, DIRICHLET: 1, DIRICH
 # where [symmetry] is ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC.
 
 # The gradient energy coefficient, KnV in equations.h
-set Model constant kappa = 0.0001, DOUBLE
+#set Model constant kappa = 0.0002, DOUBLE
+set Model constant kappa = 1.5625e-6, DOUBLE
 
-set Model constant A1 = 0.05, double
-set Model constant B1 = 4.0, double
+
+set Model constant A1 = 0.0075, double
+set Model constant B1 = 8.0, double
 set Model constant C1 = 0.06, double
 
-set Model constant A2 = 0.05, double
-set Model constant B2 = 10.0, double
-set Model constant D2 = 0.25, double
+set Model constant A2 = 0.03, double
+set Model constant B2 = 22.0, double
+set Model constant D2 = 0.1875, double #1.03125, double #1.0, double #0.03125, double
