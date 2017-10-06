@@ -62,24 +62,14 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
 
             //solver controls
             double tol_value;
-            unsigned int allowed_solver_iterations;
-            double residual_norm = residualSet[fieldIndex]->l2_norm();
             if (userInputs.abs_tol == true){
-                if (residual_norm > userInputs.solver_tolerance){
-                    tol_value = userInputs.solver_tolerance;
-                    allowed_solver_iterations = userInputs.max_solver_iterations;
-                }
-                else {
-                    tol_value = 0.0;
-                    allowed_solver_iterations = 1;
-                }
+                tol_value = userInputs.solver_tolerance;
             }
             else {
-                tol_value = userInputs.solver_tolerance*residual_norm;
-                allowed_solver_iterations = userInputs.max_solver_iterations;
+                tol_value = userInputs.solver_tolerance*residualSet[fieldIndex]->l2_norm();
             }
 
-            IterationNumberControl solver_control(allowed_solver_iterations, tol_value);
+            IterationNumberControl solver_control(userInputs.max_solver_iterations, tol_value);
 
             // Currently the only allowed solver is SolverCG, the SolverType input variable is a dummy
             SolverCG<vectorType> solver(solver_control);
@@ -116,7 +106,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
                 }
                 sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
                 fields[fieldIndex].name.c_str(),			\
-                residual_norm,			\
+                residualSet[fieldIndex]->l2_norm(),			\
                 solver_control.last_value(),				\
                 solver_control.last_step(), solver_control.tolerance(), solutionSet[fieldIndex]->l2_norm(), dU_norm);
                 pcout<<buffer;
