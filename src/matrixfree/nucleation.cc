@@ -146,7 +146,7 @@ void MatrixFreePDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim> > &n
             double Prob=getNucleationProbability(variable_values,element_volume,ele_center);
 
             // ----------------------------
-
+	//pcout << "Probability: " << Prob << " Random value: " << rand_val << std::endl;
             if (rand_val <= Prob){
 
                 //Initializing random vector in "dim" dimensions

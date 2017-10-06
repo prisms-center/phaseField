@@ -11,18 +11,18 @@ set Number of dimensions = 3
 # Set the length of the domain in all three dimensions
 # =================================================================================
 # Each axes spans from zero to the specified length
-set Domain size X = 100.0
-set Domain size Y = 100.0
-set Domain size Z = 400.0
+set Domain size X = 300.0
+set Domain size Y = 300.0
+set Domain size Z = 600.0
 
 # =================================================================================
 # Set the element parameters
 # =================================================================================
 # The number of elements in each direction is 2^(refineFactor) * subdivisions
 # For optimal performance, use refineFactor primarily to determine the element size
-set Subdivisions X = 1
-set Subdivisions Y = 4
-set Subdivisions Z = 1
+set Subdivisions X = 7
+set Subdivisions Y = 28
+set Subdivisions Z = 14
 
 set Refine factor = 6
 
@@ -36,7 +36,7 @@ set Element degree = 2
 set Mesh adaptivity = true
 
 # Set the maximum and minimum level of refinement
-set Max refinement level = 7
+set Max refinement level = 8
 set Min refinement level = 0
 
 # Set the fields used to determine the refinement using their index.
@@ -44,20 +44,20 @@ set Refinement criteria fields = 1
 
 # Set the maximum and minimum value of the fields where the mesh should be refined
 set Refinement window max = 0.99
-set Refinement window min = 0.001
+set Refinement window min = 0.01
 
 # Set the number of time steps between remeshing operations
-set Steps between remeshing operations = 500
+set Steps between remeshing operations = 1000
 
 # =================================================================================
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 1.6e-3
+set Time step = 5.12e-5
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 5000000 #200000
+set Number of time steps = 3000000
 
 # =================================================================================
 # Set the elliptic solver parameters
@@ -84,7 +84,7 @@ set Output condition =  EQUAL_SPACING
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of outputs = 20
+set Number of outputs = 10
 
 # The number of time steps between updates being printed to the screen
 set Skip print steps = 1000
@@ -127,10 +127,16 @@ set Model constant McV = 1.0, double
 set Model constant Mn1V = 37.5, double
 
 # Kn1 the gradient energy coefficient
-set Model constant Kn1 = ((0.0424,0,0),(0,8.9796e-4,0),(0,0,0.03587)), tensor
+#set Model constant Kn1 = ((0.0424,0,0),(0,8.9796e-4,0),(0,0,0.03587)), tensor # nominal
+#set Model constant Kn1 = ((0.0848,0,0),(0,0.00179592,0),(0,0,0.07174)), tensor # thicker interface (2x nominal)
+#set Model constant Kn1 = ((0.0212,0,0),(0,4.4898e-4,0),(0,0,0.017935)), tensor # thinner interface (1/2 nominal)
+set Model constant Kn1 = ((0.01413333333333,0,0),(0,2.9932e-4,0),(0,0,0.01195666666667)), tensor # thinner interface (1/3 nominal)
 
 # W, the energy barrier coefficient
-set Model constant W = 0.0966, double
+#set Model constant W = 0.0966, double # nominal
+#set Model constant W = 0.0483, double # thicker interface (2x nominal)
+#set Model constant W = 0.1932, double # thinner interface (1/2 nominal)
+set Model constant W = 0.2898, double # thinner interface (1/3 nominal)
 
 # n_dependent_stiffness
 set Model constant n_dependent_stiffness = false, bool
@@ -138,7 +144,10 @@ set Model constant n_dependent_stiffness = false, bool
 # sfts_linear1
 set Model constant sfts_linear1 = ((0.13383,0,0),(0,0.21273,0),(0,0,0.014832)), tensor
 # sfts_const1
-set Model constant sfts_const1 = ((0.013972,0,0),(0,-0.0057545,0),(0,0,-0.002691)), tensor
+#set Model constant sfts_const1 = ((0.013972,0,0),(0,-0.0057545,0),(0,0,-0.002691)), tensor
+set Model constant sfts_const1_11 = 0.013972, double
+set Model constant sfts_const1_22 = -0.0057545, double
+set Model constant sfts_const1_33 = -0.002691, double
 
 #set Model constant sfts_linear1 = ((0,0,0),(0,0,0),(0,0,0)), tensor
 #set Model constant sfts_const1 = ((0.03,0,0),(0,0.02,0),(0,0,0)), tensor
