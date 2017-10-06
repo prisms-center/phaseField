@@ -62,32 +62,45 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
 
             //solver controls
             double tol_value;
+            unsigned int allowed_solver_iterations;
+            double residual_norm = residualSet[fieldIndex]->l2_norm();
             if (userInputs.abs_tol == true){
+
+                if (residual_norm > userInputs.solver_tolerance){
+                    tol_value = userInputs.solver_tolerance;
+                    allowed_solver_iterations = userInputs.max_solver_iterations;
+                }
+                else {
+                    tol_value = 0.0;
+                    allowed_solver_iterations = 1;
+                }
+
                 tol_value = userInputs.solver_tolerance;
             }
             else {
-                tol_value = userInputs.solver_tolerance*residualSet[fieldIndex]->l2_norm();
+                tol_value = userInputs.solver_tolerance*residual_norm;
             }
 
-            SolverControl solver_control(userInputs.max_solver_iterations, tol_value);
+            IterationNumberControl solver_control(allowed_solver_iterations, tol_value);
 
             // Currently the only allowed solver is SolverCG, the SolverType input variable is a dummy
             SolverCG<vectorType> solver(solver_control);
 
             //solve
-            try{
-                if (fields[fieldIndex].type == SCALAR){
-                    dU_scalar=0.0;
-                    solver.solve(*this, dU_scalar, *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
-                }
-                else {
-                    dU_vector=0.0;
-                    solver.solve(*this, dU_vector, *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
-                }
+
+            if (fields[fieldIndex].type == SCALAR){
+                dU_scalar=0.0;
+                solver.solve(*this, dU_scalar, *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
             }
-            catch (...) {
-                pcout << "\nWarning: implicit solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing solverTolerance.\n";
+            else {
+                dU_vector=0.0;
+                solver.solve(*this, dU_vector, *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
             }
+
+            if (solver_control.last_step() == userInputs.max_solver_iterations){
+                pcout << "\nWarning: Implicit solver did not converge as per set tolerances. Consider increasing maxSolverIterations or decreasing solverTolerance. " << solver_control.last_step()<< "steps were taken.\n";
+            }
+
             if (fields[fieldIndex].type == SCALAR){
                 *solutionSet[fieldIndex]+=dU_scalar;
             }
@@ -105,7 +118,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
                 }
                 sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
                 fields[fieldIndex].name.c_str(),			\
-                residualSet[fieldIndex]->l2_norm(),			\
+                residual_norm,			\
                 solver_control.last_value(),				\
                 solver_control.last_step(), solver_control.tolerance(), solutionSet[fieldIndex]->l2_norm(), dU_norm);
                 pcout<<buffer;
