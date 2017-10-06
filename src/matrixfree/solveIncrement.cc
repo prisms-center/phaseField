@@ -65,7 +65,6 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
             unsigned int allowed_solver_iterations;
             double residual_norm = residualSet[fieldIndex]->l2_norm();
             if (userInputs.abs_tol == true){
-
                 if (residual_norm > userInputs.solver_tolerance){
                     tol_value = userInputs.solver_tolerance;
                     allowed_solver_iterations = userInputs.max_solver_iterations;
@@ -74,11 +73,10 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
                     tol_value = 0.0;
                     allowed_solver_iterations = 1;
                 }
-
-                tol_value = userInputs.solver_tolerance;
             }
             else {
                 tol_value = userInputs.solver_tolerance*residual_norm;
+                allowed_solver_iterations = userInputs.max_solver_iterations;
             }
 
             IterationNumberControl solver_control(allowed_solver_iterations, tol_value);
