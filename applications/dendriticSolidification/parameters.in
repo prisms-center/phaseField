@@ -127,3 +127,11 @@ set Number of outputs = 10
 
 # The number of time steps between updates being printed to the screen
 set Skip print steps = 1000
+
+# =================================================================================
+# Set the checkpoint/restart parameters
+# =================================================================================
+
+set Load from a checkpoint = true
+set Checkpoint condition = EQUAL_SPACING
+set Number of checkpoints = 10

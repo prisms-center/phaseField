@@ -31,13 +31,15 @@ void MatrixFreePDE<dim,degree>::save_checkpoint(){
 
     // save Triangulation and Solution vectors:
     {
+        std::vector<const vectorType *> solSet_transfer (userInputs.number_of_variables);
+        for(unsigned int it = 0; it < userInputs.number_of_variables; ++it){
+            solSet_transfer[it] = solutionSet[it];
+        }
 
-    std::vector<vectorType*> solutionSet_for_transfer = solutionSet;
+        parallel::distributed::SolutionTransfer<dim, vectorType> system_trans (*dofHandlersSet[0]);
+        system_trans.prepare_serialization(solSet_transfer);
 
-    parallel::distributed::SolutionTransfer<dim, vectorType> system_trans (*dofHandlersSet[0]);
-    system_trans.prepare_serialization (*solutionSet_for_transfer[0]);
-
-      triangulation.save ("restart.mesh");
+          triangulation.save ("restart.mesh");
     }
 
     // Save information about the current increment and current time
@@ -90,8 +92,10 @@ void MatrixFreePDE<dim,degree>::load_checkpoint_triangulation(){
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::load_checkpoint_fields(){
 
+
     parallel::distributed::SolutionTransfer<dim, vectorType> system_trans (*dofHandlersSet[0]);
-    system_trans.deserialize (*solutionSet[0]);
+    system_trans.deserialize (solutionSet);
+
 
 }
 
