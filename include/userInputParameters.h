@@ -95,6 +95,7 @@ public:
 
 	// Variables for saving/loading checkpoints
 	bool resume_from_checkpoint;
+	std::vector<unsigned int> checkpointTimeStepList;
 
 	// Postprocessing parameters
 	unsigned int pp_number_of_variables;
@@ -130,7 +131,7 @@ public:
 
 private:
 	// Method to create the list of time steps where the results should be output (called from loadInputParameters)
-	std::vector<unsigned int> setOutputTimeSteps(const std::string outputSpacingType, unsigned int numberOfOutputs,
+	std::vector<unsigned int> setTimeStepList(const std::string outputSpacingType, unsigned int numberOfOutputs,
 													const std::vector<unsigned int> & userGivenTimeStepList);
 
 	void load_user_constants(inputFileReader & input_file_reader, dealii::ParameterHandler & parameter_handler);

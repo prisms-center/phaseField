@@ -134,7 +134,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
 
 
     // Use these inputs to create a list of time steps where the code should output, stored in the member
-    outputTimeStepList = setOutputTimeSteps(output_condition, num_outputs,user_given_time_step_list);
+    outputTimeStepList = setTimeStepList(output_condition, num_outputs,user_given_time_step_list);
 
     // Variables for loading in PField ICs
     std::vector<std::string> load_ICs_temp = dealii::Utilities::split_string_list(parameter_handler.get("Load initial conditions"));
@@ -168,7 +168,14 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
 
     // Parameters for checkpoint/restart
     resume_from_checkpoint = parameter_handler.get_bool("Load from a checkpoint");
+    std::string checkpoint_condition = parameter_handler.get("Checkpoint condition");
+    unsigned int num_checkpoints = parameter_handler.get_integer("Number of checkpoints");
 
+    std::vector<int> user_given_checkpoint_time_step_list_temp = dealii::Utilities::string_to_int(dealii::Utilities::split_string_list(parameter_handler.get("List of time steps to save checkpoints")));
+    std::vector<unsigned int> user_given_checkpoint_time_step_list;
+    for (unsigned int i=0; i<user_given_checkpoint_time_step_list_temp.size(); i++) user_given_checkpoint_time_step_list.push_back(user_given_checkpoint_time_step_list_temp[i]);
+
+    checkpointTimeStepList = setTimeStepList(checkpoint_condition, num_checkpoints,user_given_checkpoint_time_step_list);
 
     // Parameters for nucleation
 

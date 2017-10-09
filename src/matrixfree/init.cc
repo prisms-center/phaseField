@@ -217,6 +217,11 @@ template <int dim, int degree>
           adaptiveRefine(0);
       }
 
+      // If resuming from a checkpoint, load the proper starting increment and time
+      if (userInputs.resume_from_checkpoint){
+          load_checkpoint_time_info();
+      }
+
 	 computing_timer.exit_section("matrixFreePDE: initialization");
 }
 

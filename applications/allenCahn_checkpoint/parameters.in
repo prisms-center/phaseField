@@ -61,13 +61,15 @@ set Time step = 1.0e-2
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 500 #5000
+set Number of time steps = 5000
 
 # =================================================================================
 # Set the checkpoint/restart parameters
 # =================================================================================
 
 set Load from a checkpoint = true
+set Checkpoint condition = EQUAL_SPACING
+set Number of checkpoints = 10
 
 # =================================================================================
 # Set the output parameters
@@ -81,7 +83,7 @@ set Output condition = EQUAL_SPACING
 set Number of outputs = 5
 
 # The number of time steps between updates being printed to the screen
-set Skip print steps = 1000
+set Skip print steps = 1
 
 # =================================================================================
 # Set the boundary conditions

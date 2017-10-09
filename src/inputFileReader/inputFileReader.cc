@@ -255,7 +255,7 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
 
     parameter_handler.declare_entry("Output file name (base)","solution",dealii::Patterns::Anything(),"The name for the output file, before the time step and processor info are added.");
     parameter_handler.declare_entry("Output file type","vtu",dealii::Patterns::Anything(),"The output file type (either vtu or vtk).");
-    parameter_handler.declare_entry("Output condition","EQUAL_SPACING",dealii::Patterns::Anything(),"The time step size for the simulation.");
+    parameter_handler.declare_entry("Output condition","EQUAL_SPACING",dealii::Patterns::Anything(),"The spacing type for outputing the solution fields.");
     parameter_handler.declare_entry("List of time steps to output","0",dealii::Patterns::Anything(),"The list of time steps to output, used for the LIST type.");
     parameter_handler.declare_entry("Number of outputs","10",dealii::Patterns::Integer(),"The number of outputs (or number of outputs per decade for the N_PER_DECADE type).");
     parameter_handler.declare_entry("Skip print steps","1",dealii::Patterns::Integer(),"The number of time steps between updates to the screen.");
@@ -271,6 +271,9 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
 
     // Checkpoint/restart
     parameter_handler.declare_entry("Load from a checkpoint","false",dealii::Patterns::Bool(),"Whether to load from a checkpoint created during a previous simulation.");
+    parameter_handler.declare_entry("Checkpoint condition","EQUAL_SPACING",dealii::Patterns::Anything(),"The spacing type for saving checkpoints.");
+    parameter_handler.declare_entry("List of time steps to save checkpoints","0",dealii::Patterns::Anything(),"The list of time steps to save checkpoints, used for the LIST type.");
+    parameter_handler.declare_entry("Number of checkpoints","1",dealii::Patterns::Integer(),"The number of checkpoints (or number of checkpoints per decade for the N_PER_DECADE type).");
 
 
     // Declare the boundary condition variables

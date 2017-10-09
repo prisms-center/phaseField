@@ -1,7 +1,7 @@
 #include "../../include/userInputParameters.h"
 
 template <int dim>
-std::vector<unsigned int> userInputParameters<dim>::setOutputTimeSteps(const std::string outputSpacingType, unsigned int numberOfOutputs,
+std::vector<unsigned int> userInputParameters<dim>::setTimeStepList(const std::string outputSpacingType, unsigned int numberOfOutputs,
                     const std::vector<unsigned int> & userGivenTimeStepList)
 {
     std::vector<unsigned int> timeStepList;
