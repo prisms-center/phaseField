@@ -269,6 +269,10 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
     parameter_handler.declare_entry("File names","void",dealii::Patterns::Anything(),"The file name to load from for each variable.");
     parameter_handler.declare_entry("Variable names in the files","void",dealii::Patterns::Anything(),"What each variable is named in the file being loaded.");
 
+    // Checkpoint/restart
+    parameter_handler.declare_entry("Load from a checkpoint","false",dealii::Patterns::Bool(),"Whether to load from a checkpoint created during a previous simulation.");
+
+
     // Declare the boundary condition variables
     for (unsigned int i=0; i<var_types.size(); i++){
         if (var_types[i] == SCALAR){

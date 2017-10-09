@@ -166,6 +166,10 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     load_file_name = dealii::Utilities::split_string_list(parameter_handler.get("File names"));
     load_field_name = dealii::Utilities::split_string_list(parameter_handler.get("Variable names in the files"));
 
+    // Parameters for checkpoint/restart
+    resume_from_checkpoint = parameter_handler.get_bool("Load from a checkpoint");
+
+
     // Parameters for nucleation
 
     nucleus_semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Nucleus semiaxes (x, y ,z)")));

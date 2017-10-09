@@ -1,10 +1,14 @@
 #include "../../include/matrixFreePDE.h"
 
+#ifdef DEAL_II_WITH_ZLIB
+#  include <zlib.h>
+#endif
+
 // Save a checkpoint
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::save_checkpoint(){
 
-    unsigned int my_id = Utilities::MPI::this_mpi_process (mpi_communicator);
+    unsigned int my_id = Utilities::MPI::this_mpi_process (MPI_COMM_WORLD);
 
     if (my_id == 0)
     {
@@ -17,7 +21,7 @@ void MatrixFreePDE<dim,degree>::save_checkpoint(){
         {
             move_file ("restart.mesh","restart.mesh.old");
             move_file ("restart.mesh.info","restart.mesh.info.old");
-            move_file ("restart.resume.z","restart.resume.z.old");
+            //move_file ("restart.resume.z","restart.resume.z.old");
         }
         // from now on, we know that if we get into this
         // function again that a snapshot has previously
@@ -27,19 +31,23 @@ void MatrixFreePDE<dim,degree>::save_checkpoint(){
 
     // save Triangulation and Solution vectors:
     {
-      std::vector<const LinearAlgebra::BlockVector *> x_system (3);
-      x_system[0] = &solution;
-      x_system[1] = &old_solution;
-      x_system[2] = &old_old_solution;
+    //   std::vector<const LinearAlgebra::BlockVector *> x_system (3);
+    //   x_system[0] = &solution;
+    //   x_system[1] = &old_solution;
+    //   x_system[2] = &old_old_solution;
+      //
 
-      parallel::distributed::SolutionTransfer<dim, LinearAlgebra::BlockVector>
-      system_trans (dof_handler);
+    std::vector<vectorType*> solutionSet_for_transfer = solutionSet;
 
-      system_trans.prepare_serialization (x_system);
+    parallel::distributed::SolutionTransfer<dim, vectorType> system_trans (*dofHandlersSet[0]);
+    system_trans.prepare_serialization (*solutionSet_for_transfer[0]);
+
+      //
+    //   system_trans.prepare_serialization (x_system);
 
       //signals.pre_checkpoint_store_user_data(triangulation);
 
-      triangulation.save (("restart.mesh").c_str());
+      triangulation.save ("restart.mesh");
     }
 
     // save general information This calls the serialization functions on all
@@ -49,7 +57,7 @@ void MatrixFreePDE<dim,degree>::save_checkpoint(){
       std::ostringstream oss;
 
       // serialize into a stringstream
-      boost::archive::binary_iarchive oa (oss);
+      boost::archive::binary_oarchive oa (oss);
       oa << (*this);
 
       // compress with zlib and write to file on the root processor
@@ -74,7 +82,7 @@ void MatrixFreePDE<dim,degree>::save_checkpoint(){
                 (uint32_t)compressed_data_length
               }; /* list of compressed sizes of blocks */
 
-          std::ofstream f (("restart.resume.z").c_str());
+          std::ofstream f ("restart.resume.z");
           f.write((const char *)compression_header, 4 * sizeof(compression_header[0]));
           f.write((char *)&compressed_data[0], compressed_data_length);
         }
@@ -85,7 +93,7 @@ void MatrixFreePDE<dim,degree>::save_checkpoint(){
                                "did not detect its presence when you called `cmake'."));
 #endif
 
-    }
+     }
 
     pcout << "*** Snapshot created!" << std::endl << std::endl;
 
@@ -94,12 +102,97 @@ void MatrixFreePDE<dim,degree>::save_checkpoint(){
 
 // Load from a previously saved checkpoint
 template <int dim, int degree>
-void MatrixFreePDE<dim,degree>::load_checkpoint(){
+void MatrixFreePDE<dim,degree>::load_checkpoint_triangulation(){
+
+    // first check existence of the two restart files
+    {
+      const std::string filename = "restart.mesh";
+      std::ifstream in (filename.c_str());
+      if (!in)
+        AssertThrow (false,
+                     ExcMessage (std::string("You are trying to restart a previous computation, "
+                                             "but the restart file <")
+                                 +
+                                 filename
+                                 +
+                                 "> does not appear to exist!"));
+    }
+    /*{
+      const std::string filename = parameters.output_directory + "restart.resume.z";
+      std::ifstream in (filename.c_str());
+      if (!in)
+        AssertThrow (false,
+                     ExcMessage (std::string("You are trying to restart a previous computation, "
+                                             "but the restart file <")
+                                 +
+                                 filename
+                                 +
+                                 "> does not appear to exist!"));
+    }*/
+
+    pcout << "*** Resuming from snapshot!" << std::endl << std::endl;
+
+    try
+    {
+        triangulation.load ("restart.mesh");
+    }
+    catch (...)
+    {
+        AssertThrow(false, ExcMessage("Cannot open snapshot mesh file or read the triangulation stored there."));
+    }
+
+}
+
+// Load from a previously saved checkpoint
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::load_checkpoint_fields(){
+
+    parallel::distributed::SolutionTransfer<dim, vectorType> system_trans (*dofHandlersSet[0]);
+    system_trans.deserialize (*solutionSet[0]);
+
+    // // first check existence of the two restart files
+    // {
+    //   const std::string filename = "restart.mesh";
+    //   std::ifstream in (filename.c_str());
+    //   if (!in)
+    //     AssertThrow (false,
+    //                  ExcMessage (std::string("You are trying to restart a previous computation, "
+    //                                          "but the restart file <")
+    //                              +
+    //                              filename
+    //                              +
+    //                              "> does not appear to exist!"));
+    // }
+    // /*{
+    //   const std::string filename = parameters.output_directory + "restart.resume.z";
+    //   std::ifstream in (filename.c_str());
+    //   if (!in)
+    //     AssertThrow (false,
+    //                  ExcMessage (std::string("You are trying to restart a previous computation, "
+    //                                          "but the restart file <")
+    //                              +
+    //                              filename
+    //                              +
+    //                              "> does not appear to exist!"));
+    // }*/
+    //
+    // pcout << "*** Resuming from snapshot!" << std::endl << std::endl;
+    //
+    // try
+    // {
+    //     triangulation.load ("restart.mesh");
+    // }
+    // catch (...)
+    // {
+    //     AssertThrow(false, ExcMessage("Cannot open snapshot mesh file or read the triangulation stored there."));
+    // }
+
 
 }
 
 // Move/rename a checkpoint file
-void move_file (const std::string &old_name, const std::string &new_name){
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::move_file (const std::string &old_name, const std::string &new_name){
 
     int error = system (("mv " + old_name + " " + new_name).c_str());
 
@@ -126,3 +219,5 @@ void move_file (const std::string &old_name, const std::string &new_name){
         + dealii::Utilities::to_string(error) + "."));
     }
 }
+
+#include "../../include/matrixFreePDE_template_instantiations.h"

@@ -94,7 +94,7 @@ public:
 	std::vector<std::string> load_field_name;
 
 	// Variables for saving/loading checkpoints
-	bool resume_from_checkpoint = false;
+	bool resume_from_checkpoint;
 
 	// Postprocessing parameters
 	unsigned int pp_number_of_variables;

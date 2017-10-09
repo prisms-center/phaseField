@@ -31,6 +31,29 @@ set Refine factor = 8
 set Element degree = 1
 
 # =================================================================================
+# Set the adaptive mesh refinement parameters
+# =================================================================================
+# Set the flag determining if adaptive meshing is activated
+set Mesh adaptivity = true
+
+# Set the maximum and minimum level of refinement
+# When adaptive meshing is enabled, the refine factor set in the block above is
+# only used to generate the first pass of the mesh as the initial conditions are
+# applied. It should be set somewhere between the max and min levels below.
+set Max refinement level = 8
+set Min refinement level = 3
+
+# Set the fields used to determine the refinement using their index.
+set Refinement criteria fields = n
+
+# Set the maximum and minimum value of the fields where the mesh should be refined
+set Refinement window max = 0.99
+set Refinement window min = 0.01
+
+# Set the number of time steps between remeshing operations
+set Steps between remeshing operations = 50
+
+# =================================================================================
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
@@ -38,7 +61,13 @@ set Time step = 1.0e-2
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 5000
+set Number of time steps = 500 #5000
+
+# =================================================================================
+# Set the checkpoint/restart parameters
+# =================================================================================
+
+set Load from a checkpoint = true
 
 # =================================================================================
 # Set the output parameters

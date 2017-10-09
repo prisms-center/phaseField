@@ -241,9 +241,10 @@ class MatrixFreePDE:public Subscriptor
 
   void save_checkpoint();
 
-  void load_checkpoint();
+  void load_checkpoint_triangulation();
+  void load_checkpoint_fields();
 
-  int move_file(const std::string, const std::string);
+  void move_file(const std::string&, const std::string&);
 
   // --------------------------------------------------------------------------
   // Nucleation methods and variables

@@ -52,6 +52,10 @@ void MatrixFreePDE<dim,degree>::solve(){
           outputResults();
           currentOutput++;
       }
+
+      // Checkpoint test
+      save_checkpoint();
+      //abort();
   }
 }
 
