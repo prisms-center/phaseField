@@ -1,3 +1,21 @@
+# Version 2.0.1 (pre-release)
+Minor update to v2.0, planned to be released in Fall 2017. So far the biggest change is the introduction of a checkpoint/restart system.
+
+Added functionality:
+- A checkpoint/restart system has been added. It allows runs to be restarted if they fail or you want the run to continue for more simulated time.
+- The parser to load in VTK files for initial conditions has been generalized so that it can read files generated from ParaView
+
+Changes to the example applications:
+- Fixed typos in the documentation for the 'coupledCahnHilliardAllenCahn' app.
+
+Bug fixes:
+- Fixed the subscriptor bug that appeared at the end of simulations in debug mode.
+
+Known issues:
+- PFields only work for scalar fields and only work when the variable with index zero is a scalar field.
+- Postprocessing only works for scalar fields and only when the variable with index zero is a scalar field.
+- The formulation file for the dendriticSolidifiation application may have errors.
+
 # Version 2.0:
 Major update to PRISMS-PF, released in August 2017. The core library is very similar to v1.2, but the user interface is substantially changed. Most importantly, input parameters are now read from a text file, instead of via #define statements. All of the individual interface changes are not listed here, see the User Guide for the new file structure and syntax.
 

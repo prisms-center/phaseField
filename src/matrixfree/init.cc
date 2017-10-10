@@ -13,13 +13,18 @@ template <int dim, int degree>
      // Create the coarse mesh and mark the boundaries
      makeTriangulation(triangulation);
 
-
-
 	 // Set which (if any) faces of the triangulation are periodic
 	 setPeriodicity();
 
-	 // Do the initial global refinement
-	 triangulation.refine_global (userInputs.refine_factor);
+     // If resuming from a checkpoint, load the refined triangulation, otherwise refine globally per the parameters.in file
+     if (userInputs.resume_from_checkpoint){
+         load_checkpoint_triangulation();
+     }
+     else {
+         // Do the initial global refinement
+    	 triangulation.refine_global (userInputs.refine_factor);
+     }
+
 
 	 // Write out the size of the computational domain and the total number of elements
      if (dim < 3){
@@ -186,7 +191,12 @@ template <int dim, int degree>
 	 // Apply the initial conditions to the solution vectors
 	 // The initial conditions are re-applied below in the "adaptiveRefine" function so that the mesh can
 	 // adapt based on the initial conditions.
-	 applyInitialConditions();
+     if (userInputs.resume_from_checkpoint){
+         load_checkpoint_fields();
+     }
+     else {
+         applyInitialConditions();
+    }
 
 
 	 // Create new solution transfer sets (needed for the "refineGrid" call, might be able to move this elsewhere)
@@ -202,8 +212,15 @@ template <int dim, int degree>
          solutionSet[fieldIndex]->update_ghost_values();
      }
 
-	 // Check and perform adaptive mesh refinement, which reinitializes the system with the new mesh
-	 adaptiveRefine(0);
+	 // If not resuming from a checkpoint, check and perform adaptive mesh refinement, which reinitializes the system with the new mesh
+      if (!userInputs.resume_from_checkpoint){
+          adaptiveRefine(0);
+      }
+
+      // If resuming from a checkpoint, load the proper starting increment and time
+      if (userInputs.resume_from_checkpoint){
+          load_checkpoint_time_info();
+      }
 
 	 computing_timer.exit_section("matrixFreePDE: initialization");
 }
