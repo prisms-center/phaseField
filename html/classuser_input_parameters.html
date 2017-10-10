@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>PRISMS PhaseField: userInputParameters&lt; dim &gt; Class Template Reference</title>
+<title>PRISMS-PF: userInputParameters&lt; dim &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,8 +23,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">PRISMS PhaseField
-   &#160;<span id="projectnumber">1.0</span>
+   <div id="projectname">PRISMS-PF
+   &#160;<span id="projectnumber">2.0</span>
    </div>
   </td>
  </tr>
@@ -39,7 +39,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -87,6 +86,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="classuser_input_parameters-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">userInputParameters&lt; dim &gt; Class Template Reference</div>  </div>
@@ -97,17 +97,37 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2b869ff3404c76c04d526f64c006da8b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a2b869ff3404c76c04d526f64c006da8b">loadUserInput</a> ()</td></tr>
-<tr class="separator:a2b869ff3404c76c04d526f64c006da8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a120af9fc835e28323db9e07de22131"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a4a120af9fc835e28323db9e07de22131">userInputParameters</a> (<a class="el" href="classinput_file_reader.html">inputFileReader</a> &amp;input_file_reader, dealii::ParameterHandler &amp;parameter_handler, <a class="el" href="classvariable_attribute_loader.html">variableAttributeLoader</a> variable_attributes)</td></tr>
+<tr class="separator:a4a120af9fc835e28323db9e07de22131"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e7cacd7f8d31dc18704f5d5af460eb2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a8e7cacd7f8d31dc18704f5d5af460eb2">load_BC_list</a> (const std::vector&lt; std::string &gt; list_of_BCs)</td></tr>
+<tr class="separator:a8e7cacd7f8d31dc18704f5d5af460eb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97ef3fe9a9708a7665f9d1b97e4a04ea"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a97ef3fe9a9708a7665f9d1b97e4a04ea">get_model_constant_double</a> (const std::string constant_name) const </td></tr>
+<tr class="separator:a97ef3fe9a9708a7665f9d1b97e4a04ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a932b792beb1f1d7e053fd432a9ddbcea"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a932b792beb1f1d7e053fd432a9ddbcea">get_model_constant_int</a> (const std::string constant_name) const </td></tr>
+<tr class="separator:a932b792beb1f1d7e053fd432a9ddbcea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84ae8b445f881440cc49f747524f28b5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a84ae8b445f881440cc49f747524f28b5">get_model_constant_bool</a> (const std::string constant_name) const </td></tr>
+<tr class="separator:a84ae8b445f881440cc49f747524f28b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab72105ec0a54e50940449ee064d1bfb5"><td class="memItemLeft" align="right" valign="top">dealii::Tensor&lt; 1, dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#ab72105ec0a54e50940449ee064d1bfb5">get_model_constant_rank_1_tensor</a> (const std::string constant_name) const </td></tr>
+<tr class="separator:ab72105ec0a54e50940449ee064d1bfb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77585f23a31f641282eea0e1f85db907"><td class="memItemLeft" align="right" valign="top">dealii::Tensor&lt; 2, dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a77585f23a31f641282eea0e1f85db907">get_model_constant_rank_2_tensor</a> (const std::string constant_name) const </td></tr>
+<tr class="separator:a77585f23a31f641282eea0e1f85db907"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3b715fcffbad36c7c82f97024f071f2"><td class="memItemLeft" align="right" valign="top">dealii::Tensor&lt; 2, 2 *dim-1+dim/3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#ab3b715fcffbad36c7c82f97024f071f2">get_model_constant_elasticity_tensor</a> (const std::string constant_name) const </td></tr>
+<tr class="separator:ab3b715fcffbad36c7c82f97024f071f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8b17b1b2017d96fa9da701cc8942a47"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#ae8b17b1b2017d96fa9da701cc8942a47">loadVariableAttributes</a> (<a class="el" href="classvariable_attribute_loader.html">variableAttributeLoader</a> variable_attributes)</td></tr>
+<tr class="separator:ae8b17b1b2017d96fa9da701cc8942a47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:a1ce6bb70065c97d0abf6756d896fc5b3"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a1ce6bb70065c97d0abf6756d896fc5b3">model_constant_name_map</a></td></tr>
+<tr class="separator:a1ce6bb70065c97d0abf6756d896fc5b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9148a8928b80dfeb1d12dff6d06e5434"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a9148a8928b80dfeb1d12dff6d06e5434">domain_size</a></td></tr>
 <tr class="separator:a9148a8928b80dfeb1d12dff6d06e5434"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aefed766ec01e0a5e5787f5cfbb80e36d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#aefed766ec01e0a5e5787f5cfbb80e36d">subdivisions</a></td></tr>
 <tr class="separator:aefed766ec01e0a5e5787f5cfbb80e36d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa12400a8d2169827a3918eee955c231"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#afa12400a8d2169827a3918eee955c231">refine_factor</a></td></tr>
 <tr class="separator:afa12400a8d2169827a3918eee955c231"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94fb130f6b431eca981ab6866faa3e76"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a94fb130f6b431eca981ab6866faa3e76">degree</a></td></tr>
+<tr class="separator:a94fb130f6b431eca981ab6866faa3e76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e3d41b99bd20507805d37d94d9cb949"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a9e3d41b99bd20507805d37d94d9cb949">h_adaptivity</a></td></tr>
 <tr class="separator:a9e3d41b99bd20507805d37d94d9cb949"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9af2085fffbca9507b1e3ee182724c0d"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a9af2085fffbca9507b1e3ee182724c0d">max_refinement_level</a></td></tr>
@@ -122,20 +142,14 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a44c07f00287866eabcc60d8fee31aeba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a401419fea366cf43dfe0cb04b7535736"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a401419fea366cf43dfe0cb04b7535736">skip_remeshing_steps</a></td></tr>
 <tr class="separator:a401419fea366cf43dfe0cb04b7535736"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad45c8b255ff57a92162de5aa24d27362"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#ad45c8b255ff57a92162de5aa24d27362">write_output</a></td></tr>
-<tr class="separator:ad45c8b255ff57a92162de5aa24d27362"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7be84e368ae0a0de32b9211b7e28086e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a7be84e368ae0a0de32b9211b7e28086e">output_condition</a></td></tr>
-<tr class="separator:a7be84e368ae0a0de32b9211b7e28086e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ceb938ebb01722dc0383ddc50f84e1c"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a1ceb938ebb01722dc0383ddc50f84e1c">num_outputs</a></td></tr>
-<tr class="separator:a1ceb938ebb01722dc0383ddc50f84e1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5607f33be3cebf3d24fccce9ad3d7f76"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a5607f33be3cebf3d24fccce9ad3d7f76">user_given_time_step_list</a></td></tr>
-<tr class="separator:a5607f33be3cebf3d24fccce9ad3d7f76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9373a17204ca39ec019a1058f4419086"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a9373a17204ca39ec019a1058f4419086">skip_print_steps</a></td></tr>
 <tr class="separator:a9373a17204ca39ec019a1058f4419086"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29eacc954875c85c1db299bfb6ec7d5c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a29eacc954875c85c1db299bfb6ec7d5c">output_file_type</a></td></tr>
 <tr class="separator:a29eacc954875c85c1db299bfb6ec7d5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2e93fd459a8b0c3ba3b68b8be5dbdde"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#ae2e93fd459a8b0c3ba3b68b8be5dbdde">calc_energy</a></td></tr>
-<tr class="separator:ae2e93fd459a8b0c3ba3b68b8be5dbdde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a6a68d6facb6f661377dfd4ea5b0e56"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a8a6a68d6facb6f661377dfd4ea5b0e56">output_file_name</a></td></tr>
+<tr class="separator:a8a6a68d6facb6f661377dfd4ea5b0e56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b5e9a02e069647ed3319524403b6b96"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a3b5e9a02e069647ed3319524403b6b96">outputTimeStepList</a></td></tr>
+<tr class="separator:a3b5e9a02e069647ed3319524403b6b96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea98dff0e5974c3c2ba3ffe430dd8e40"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#aea98dff0e5974c3c2ba3ffe430dd8e40">dtValue</a></td></tr>
 <tr class="separator:aea98dff0e5974c3c2ba3ffe430dd8e40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d895639013504f5a7ddb5453fc7e198"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a0d895639013504f5a7ddb5453fc7e198">finalTime</a></td></tr>
@@ -154,89 +168,432 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a9eb2912726e40d3f3f480f2f9db11cc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77d44a8212929c63efba720ee9078881"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a77d44a8212929c63efba720ee9078881">var_name</a></td></tr>
 <tr class="separator:a77d44a8212929c63efba720ee9078881"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a139c43ae51b022f2fd5b5175e524063c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a139c43ae51b022f2fd5b5175e524063c">var_type</a></td></tr>
-<tr class="separator:a139c43ae51b022f2fd5b5175e524063c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a888c571473b486841609e46c05a9fa90"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a888c571473b486841609e46c05a9fa90">var_eq_type</a></td></tr>
-<tr class="separator:a888c571473b486841609e46c05a9fa90"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab193b7aba957d83d716bdabff054a468"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#ab193b7aba957d83d716bdabff054a468">need_value</a></td></tr>
-<tr class="separator:ab193b7aba957d83d716bdabff054a468"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec921fdbe27b7a7de1725f912fa1e3b6"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#aec921fdbe27b7a7de1725f912fa1e3b6">need_gradient</a></td></tr>
-<tr class="separator:aec921fdbe27b7a7de1725f912fa1e3b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c7e95a8ded73eb5467353e851c35089"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a8c7e95a8ded73eb5467353e851c35089">need_hessian</a></td></tr>
-<tr class="separator:a8c7e95a8ded73eb5467353e851c35089"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbf39543fad28184ea1e5647b7bf18d8"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#acbf39543fad28184ea1e5647b7bf18d8">value_residual</a></td></tr>
-<tr class="separator:acbf39543fad28184ea1e5647b7bf18d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abde5568e8f81f0cd0472d7ab49883b41"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#abde5568e8f81f0cd0472d7ab49883b41">gradient_residual</a></td></tr>
-<tr class="separator:abde5568e8f81f0cd0472d7ab49883b41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48d87fdca56b4e416b101e31f5c0394d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a48d87fdca56b4e416b101e31f5c0394d">need_value_LHS</a></td></tr>
-<tr class="separator:a48d87fdca56b4e416b101e31f5c0394d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3cd606215f1fb8d6e49c75ae37ec579"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#ae3cd606215f1fb8d6e49c75ae37ec579">need_gradient_LHS</a></td></tr>
-<tr class="separator:ae3cd606215f1fb8d6e49c75ae37ec579"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85c8a624c2d4555fa9ab9d99070b3177"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a85c8a624c2d4555fa9ab9d99070b3177">need_hessian_LHS</a></td></tr>
-<tr class="separator:a85c8a624c2d4555fa9ab9d99070b3177"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf2b8397bee6bcf56f8909d90bdedb38"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#acf2b8397bee6bcf56f8909d90bdedb38">value_residual_LHS</a></td></tr>
-<tr class="separator:acf2b8397bee6bcf56f8909d90bdedb38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43e0cc4b4c8a93f5448bc5090c19ddad"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a43e0cc4b4c8a93f5448bc5090c19ddad">gradient_residual_LHS</a></td></tr>
-<tr class="separator:a43e0cc4b4c8a93f5448bc5090c19ddad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ede91153bb1c766a7135268dd59e775"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="var_type_enums_8h.html#ae2c3e99c22ce037f68e9b19bfd9c6de2">fieldType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a6ede91153bb1c766a7135268dd59e775">var_type</a></td></tr>
+<tr class="separator:a6ede91153bb1c766a7135268dd59e775"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8f9d09f3d9c955945bedc91702092aa"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="var_type_enums_8h.html#a12521d5d4cf2d9ed3c05e52b162fad42">PDEType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#ac8f9d09f3d9c955945bedc91702092aa">var_eq_type</a></td></tr>
+<tr class="separator:ac8f9d09f3d9c955945bedc91702092aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a368671c9e1989b06cd7caf77cdc3321d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structvariable__info.html">variable_info</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a368671c9e1989b06cd7caf77cdc3321d">varInfoListRHS</a></td></tr>
 <tr class="separator:a368671c9e1989b06cd7caf77cdc3321d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1d2a3526db73d92381a4b26d7a7de54"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structvariable__info.html">variable_info</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#ae1d2a3526db73d92381a4b26d7a7de54">resInfoListRHS</a></td></tr>
-<tr class="separator:ae1d2a3526db73d92381a4b26d7a7de54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0eb42077b757102f9c942565ab8b4129"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a0eb42077b757102f9c942565ab8b4129">num_var_LHS</a></td></tr>
 <tr class="separator:a0eb42077b757102f9c942565ab8b4129"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c867422611074fa3d62895ededc31cc"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structvariable__info.html">variable_info</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a6c867422611074fa3d62895ededc31cc">varInfoListLHS</a></td></tr>
 <tr class="separator:a6c867422611074fa3d62895ededc31cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82901b60b159db85ba42c44d5a6af651"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a82901b60b159db85ba42c44d5a6af651">load_ICs</a></td></tr>
 <tr class="separator:a82901b60b159db85ba42c44d5a6af651"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa12ce73d625a9e372041aa5027d83274"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#aa12ce73d625a9e372041aa5027d83274">load_serial_file</a></td></tr>
-<tr class="separator:aa12ce73d625a9e372041aa5027d83274"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ed71b7104043e4e108a24ff26ee0887"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a8ed71b7104043e4e108a24ff26ee0887">load_parallel_file</a></td></tr>
+<tr class="separator:a8ed71b7104043e4e108a24ff26ee0887"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68951d4f2b7173cd0ce45b8e74b0fdea"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a68951d4f2b7173cd0ce45b8e74b0fdea">load_file_name</a></td></tr>
 <tr class="separator:a68951d4f2b7173cd0ce45b8e74b0fdea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75fb1688ae68e024df301f30b4a98a8d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a75fb1688ae68e024df301f30b4a98a8d">load_field_name</a></td></tr>
 <tr class="separator:a75fb1688ae68e024df301f30b4a98a8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1639ff0d9dfe626902919fa0b9d8c30"><td class="memItemLeft" align="right" valign="top">std::vector&lt; dealii::Tensor&lt; 2, 2 *dim-1+dim/3, dealii::VectorizedArray&lt; double &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#ad1639ff0d9dfe626902919fa0b9d8c30">CIJ_list</a></td></tr>
-<tr class="separator:ad1639ff0d9dfe626902919fa0b9d8c30"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7ec22684506f8e6d904b34b34917792"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlist__of___c_i_j.html">list_of_CIJ</a>&lt; dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#aa7ec22684506f8e6d904b34b34917792">material_moduli</a></td></tr>
-<tr class="separator:aa7ec22684506f8e6d904b34b34917792"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6894a443a000f3804429ca415a1575cb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a6894a443a000f3804429ca415a1575cb">nucleation_occurs</a></td></tr>
-<tr class="separator:a6894a443a000f3804429ca415a1575cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad76a2340fbd0771529e11986b2103e01"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#ad76a2340fbd0771529e11986b2103e01">pp_number_of_variables</a></td></tr>
 <tr class="separator:ad76a2340fbd0771529e11986b2103e01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cf33ed4a0ddfd5d6cc64ca69ccaea1e"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a8cf33ed4a0ddfd5d6cc64ca69ccaea1e">num_integrated_fields</a></td></tr>
+<tr class="separator:a8cf33ed4a0ddfd5d6cc64ca69ccaea1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a115b13a4a0c60c2a661a277c956196"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a6a115b13a4a0c60c2a661a277c956196">postProcessingRequired</a></td></tr>
 <tr class="separator:a6a115b13a4a0c60c2a661a277c956196"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa1f1d7f59afd77bd17d4a3131231ac4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#afa1f1d7f59afd77bd17d4a3131231ac4">pp_calc_integral</a></td></tr>
+<tr class="separator:afa1f1d7f59afd77bd17d4a3131231ac4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13ae257f35254e03e91b4c6c5f686baa"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a13ae257f35254e03e91b4c6c5f686baa">integrated_field_indices</a></td></tr>
+<tr class="separator:a13ae257f35254e03e91b4c6c5f686baa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff62f1ffdc71a2f38fad12c5c2044289"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#aff62f1ffdc71a2f38fad12c5c2044289">pp_var_name</a></td></tr>
 <tr class="separator:aff62f1ffdc71a2f38fad12c5c2044289"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3a2e1fd98cb291cfac735c7df185e32"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#ac3a2e1fd98cb291cfac735c7df185e32">pp_var_type</a></td></tr>
-<tr class="separator:ac3a2e1fd98cb291cfac735c7df185e32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97c9ac3feeb930bfa79a55a558e5494c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a97c9ac3feeb930bfa79a55a558e5494c">pp_var_eq_type</a></td></tr>
-<tr class="separator:a97c9ac3feeb930bfa79a55a558e5494c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39a6ac3a607fa436075961220cf1b972"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a39a6ac3a607fa436075961220cf1b972">pp_need_value</a></td></tr>
-<tr class="separator:a39a6ac3a607fa436075961220cf1b972"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2385722f23a100f2752a293aa2ecdeaf"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a2385722f23a100f2752a293aa2ecdeaf">pp_need_gradient</a></td></tr>
-<tr class="separator:a2385722f23a100f2752a293aa2ecdeaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7974975a4a7e81597aef5e961e12b2e1"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a7974975a4a7e81597aef5e961e12b2e1">pp_need_hessian</a></td></tr>
-<tr class="separator:a7974975a4a7e81597aef5e961e12b2e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf8a9c870836f84e24cad1ef4f328c96"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#acf8a9c870836f84e24cad1ef4f328c96">pp_value_residual</a></td></tr>
-<tr class="separator:acf8a9c870836f84e24cad1ef4f328c96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2ede37ec97a1af725e436848ebd4fd2"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#ae2ede37ec97a1af725e436848ebd4fd2">pp_gradient_residual</a></td></tr>
-<tr class="separator:ae2ede37ec97a1af725e436848ebd4fd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9f8dd5ac0868f75dad3b968c7e2b16d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="var_type_enums_8h.html#ae2c3e99c22ce037f68e9b19bfd9c6de2">fieldType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#aa9f8dd5ac0868f75dad3b968c7e2b16d">pp_var_type</a></td></tr>
+<tr class="separator:aa9f8dd5ac0868f75dad3b968c7e2b16d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32490023e7fe11171908f48707bbf67d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structvariable__info.html">variable_info</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a32490023e7fe11171908f48707bbf67d">pp_varInfoList</a></td></tr>
 <tr class="separator:a32490023e7fe11171908f48707bbf67d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ab4224113130453d1def79e2803d44f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structvariable__info.html">variable_info</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a3ab4224113130453d1def79e2803d44f">pp_resInfoList</a></td></tr>
-<tr class="separator:a3ab4224113130453d1def79e2803d44f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af121899ed4a6608cf1722e393b48ff99"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structvariable__info.html">variable_info</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#af121899ed4a6608cf1722e393b48ff99">pp_baseVarInfoList</a></td></tr>
+<tr class="separator:af121899ed4a6608cf1722e393b48ff99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a696a1f455c8f0351da62103276b66e17"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classvar_b_cs.html">varBCs</a>&lt; dim &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a696a1f455c8f0351da62103276b66e17">BC_list</a></td></tr>
+<tr class="separator:a696a1f455c8f0351da62103276b66e17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a783ef719f3eae37d53fc5ced8129cade"><td class="memItemLeft" align="right" valign="top">std::vector&lt; boost::variant&lt; double, int, bool, dealii::Tensor&lt; 1, dim &gt;, dealii::Tensor&lt; 2, dim &gt;, dealii::Tensor&lt; 2, 2 *dim-1+dim/3 &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a783ef719f3eae37d53fc5ced8129cade">model_constants</a></td></tr>
+<tr class="separator:a783ef719f3eae37d53fc5ced8129cade"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6894a443a000f3804429ca415a1575cb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a6894a443a000f3804429ca415a1575cb">nucleation_occurs</a></td></tr>
+<tr class="separator:a6894a443a000f3804429ca415a1575cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ebe55d96a395760388920d377fef5a6"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a8ebe55d96a395760388920d377fef5a6">nucleating_variable_indices</a></td></tr>
+<tr class="separator:a8ebe55d96a395760388920d377fef5a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc27215b3ea51fe959936ff08bb1d242"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#adc27215b3ea51fe959936ff08bb1d242">nucleation_need_value</a></td></tr>
+<tr class="separator:adc27215b3ea51fe959936ff08bb1d242"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11d1e357d3c4f0c39d711a3d4db727e4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a11d1e357d3c4f0c39d711a3d4db727e4">nucleus_semiaxes</a></td></tr>
+<tr class="separator:a11d1e357d3c4f0c39d711a3d4db727e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75cbcf2a980290f42c7f326ead58a4a2"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a75cbcf2a980290f42c7f326ead58a4a2">order_parameter_freeze_semiaxes</a></td></tr>
+<tr class="separator:a75cbcf2a980290f42c7f326ead58a4a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a676995609da8d0045884cbfd36da6210"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a676995609da8d0045884cbfd36da6210">no_nucleation_border_thickness</a></td></tr>
+<tr class="separator:a676995609da8d0045884cbfd36da6210"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade9e4389b71f4a6bf3ed83819607a36b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#ade9e4389b71f4a6bf3ed83819607a36b">nucleus_hold_time</a></td></tr>
+<tr class="separator:ade9e4389b71f4a6bf3ed83819607a36b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b0a17a60a260cb5dbcd0a2120bbc7e7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a4b0a17a60a260cb5dbcd0a2120bbc7e7">min_distance_between_nuclei</a></td></tr>
+<tr class="separator:a4b0a17a60a260cb5dbcd0a2120bbc7e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf7fe1e7d33e07906b4d14644b3439a6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#acf7fe1e7d33e07906b4d14644b3439a6">nucleation_order_parameter_cutoff</a></td></tr>
+<tr class="separator:acf7fe1e7d33e07906b4d14644b3439a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6524a1498a4d516ae97e5c42c90d8e4"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#ae6524a1498a4d516ae97e5c42c90d8e4">steps_between_nucleation_attempts</a></td></tr>
+<tr class="separator:ae6524a1498a4d516ae97e5c42c90d8e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:af7cd684e25af09b1ce9bd76a50a200bd"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#af7cd684e25af09b1ce9bd76a50a200bd">setOutputTimeSteps</a> (const std::string outputSpacingType, unsigned int numberOfOutputs, const std::vector&lt; unsigned int &gt; &amp;userGivenTimeStepList)</td></tr>
+<tr class="separator:af7cd684e25af09b1ce9bd76a50a200bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaec2c3f746e030cbe59b0c28da900ced"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#aaec2c3f746e030cbe59b0c28da900ced">load_user_constants</a> (<a class="el" href="classinput_file_reader.html">inputFileReader</a> &amp;input_file_reader, dealii::ParameterHandler &amp;parameter_handler)</td></tr>
+<tr class="separator:aaec2c3f746e030cbe59b0c28da900ced"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a334d74867bf4b18cc0128851146c903a"><td class="memItemLeft" align="right" valign="top">dealii::Tensor&lt; 2, 2 *dim-1+dim/3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a334d74867bf4b18cc0128851146c903a">get_Cij_tensor</a> (std::vector&lt; double &gt; elastic_constants, const std::string elastic_const_symmetry) const </td></tr>
+<tr class="separator:a334d74867bf4b18cc0128851146c903a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34ed5be92388fa997d2206a17690d6a6"><td class="memItemLeft" align="right" valign="top">dealii::Tensor&lt; 2, 2 *dim-1+dim/3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a34ed5be92388fa997d2206a17690d6a6">getCIJMatrix</a> (const <a class="el" href="user_input_parameters_8h.html#abb3de18236e38998c9ebe938a8791ab3">elasticityModel</a> model, const std::vector&lt; double &gt; constants, dealii::ConditionalOStream &amp;pcout) const </td></tr>
+<tr class="separator:a34ed5be92388fa997d2206a17690d6a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a2b869ff3404c76c04d526f64c006da8b"></a>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a4a120af9fc835e28323db9e07de22131"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void loadUserInput </td>
+          <td class="memname"><a class="el" href="classuser_input_parameters.html">userInputParameters</a> </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classinput_file_reader.html">inputFileReader</a> &amp;&#160;</td>
+          <td class="paramname"><em>input_file_reader</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dealii::ParameterHandler &amp;&#160;</td>
+          <td class="paramname"><em>parameter_handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classvariable_attribute_loader.html">variableAttributeLoader</a>&#160;</td>
+          <td class="paramname"><em>variable_attributes</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a334d74867bf4b18cc0128851146c903a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::Tensor&lt; 2, 2 *dim-1+dim/3 &gt; get_Cij_tensor </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; double &gt;&#160;</td>
+          <td class="paramname"><em>elastic_constants</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>elastic_const_symmetry</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a84ae8b445f881440cc49f747524f28b5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool get_model_constant_bool </td>
+          <td>(</td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>constant_name</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a97ef3fe9a9708a7665f9d1b97e4a04ea"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double get_model_constant_double </td>
+          <td>(</td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>constant_name</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab3b715fcffbad36c7c82f97024f071f2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::Tensor&lt;2,2*dim-1+dim/3&gt; get_model_constant_elasticity_tensor </td>
+          <td>(</td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>constant_name</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a932b792beb1f1d7e053fd432a9ddbcea"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int get_model_constant_int </td>
+          <td>(</td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>constant_name</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab72105ec0a54e50940449ee064d1bfb5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::Tensor&lt;1,dim&gt; get_model_constant_rank_1_tensor </td>
+          <td>(</td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>constant_name</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a77585f23a31f641282eea0e1f85db907"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::Tensor&lt;2,dim&gt; get_model_constant_rank_2_tensor </td>
+          <td>(</td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>constant_name</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a34ed5be92388fa997d2206a17690d6a6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::Tensor&lt; 2, 2 *dim-1+dim/3 &gt; getCIJMatrix </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="user_input_parameters_8h.html#abb3de18236e38998c9ebe938a8791ab3">elasticityModel</a>&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt;&#160;</td>
+          <td class="paramname"><em>constants</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dealii::ConditionalOStream &amp;&#160;</td>
+          <td class="paramname"><em>pcout</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a8e7cacd7f8d31dc18704f5d5af460eb2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void load_BC_list </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::string &gt;&#160;</td>
+          <td class="paramname"><em>list_of_BCs</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aaec2c3f746e030cbe59b0c28da900ced"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void load_user_constants </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classinput_file_reader.html">inputFileReader</a> &amp;&#160;</td>
+          <td class="paramname"><em>input_file_reader</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dealii::ParameterHandler &amp;&#160;</td>
+          <td class="paramname"><em>parameter_handler</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae8b17b1b2017d96fa9da701cc8942a47"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void loadVariableAttributes </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classvariable_attribute_loader.html">variableAttributeLoader</a>&#160;</td>
+          <td class="paramname"><em>variable_attributes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="af7cd684e25af09b1ce9bd76a50a200bd"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; unsigned int &gt; setOutputTimeSteps </td>
+          <td>(</td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>outputSpacingType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>numberOfOutputs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>userGivenTimeStepList</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -254,24 +611,24 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ae2e93fd459a8b0c3ba3b68b8be5dbdde"></a>
+<a class="anchor" id="a696a1f455c8f0351da62103276b66e17"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool calc_energy</td>
+          <td class="memname">std::vector&lt;<a class="el" href="classvar_b_cs.html">varBCs</a>&lt;dim&gt; &gt; BC_list</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a class="anchor" id="ad1639ff0d9dfe626902919fa0b9d8c30"></a>
+<a class="anchor" id="a94fb130f6b431eca981ab6866faa3e76"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;dealii::Tensor&lt;2, 2*dim-1+dim/3, dealii::VectorizedArray&lt;double&gt; &gt; &gt; CIJ_list</td>
+          <td class="memname">unsigned int degree</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -314,36 +671,24 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="abde5568e8f81f0cd0472d7ab49883b41"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;bool&gt; gradient_residual</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a43e0cc4b4c8a93f5448bc5090c19ddad"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;bool&gt; gradient_residual_LHS</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="a9e3d41b99bd20507805d37d94d9cb949"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">bool h_adaptivity</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a13ae257f35254e03e91b4c6c5f686baa"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;unsigned int&gt; integrated_field_indices</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -386,24 +731,12 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aa12ce73d625a9e372041aa5027d83274"></a>
+<a class="anchor" id="a8ed71b7104043e4e108a24ff26ee0887"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;bool&gt; load_serial_file</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="aa7ec22684506f8e6d904b34b34917792"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classlist__of___c_i_j.html">list_of_CIJ</a>&lt;dim&gt; material_moduli</td>
+          <td class="memname">std::vector&lt;bool&gt; load_parallel_file</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -434,6 +767,18 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a4b0a17a60a260cb5dbcd0a2120bbc7e7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double min_distance_between_nuclei</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a1d0e8f55622d4a5b9ed34cd0f748fae8"></a>
 <div class="memitem">
 <div class="memproto">
@@ -446,72 +791,60 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aec921fdbe27b7a7de1725f912fa1e3b6"></a>
+<a class="anchor" id="a1ce6bb70065c97d0abf6756d896fc5b3"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;bool&gt; need_gradient</td>
+          <td class="memname">std::unordered_map&lt;std::string,unsigned int&gt; model_constant_name_map</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a class="anchor" id="ae3cd606215f1fb8d6e49c75ae37ec579"></a>
+<a class="anchor" id="a783ef719f3eae37d53fc5ced8129cade"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;bool&gt; need_gradient_LHS</td>
+          <td class="memname">std::vector&lt;boost::variant&lt;double, int, bool,dealii::Tensor&lt;1,dim&gt;, dealii::Tensor&lt;2,dim&gt;, dealii::Tensor&lt;2,2*dim-1+dim/3&gt; &gt; &gt; model_constants</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a class="anchor" id="a8c7e95a8ded73eb5467353e851c35089"></a>
+<a class="anchor" id="a676995609da8d0045884cbfd36da6210"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;bool&gt; need_hessian</td>
+          <td class="memname">double no_nucleation_border_thickness</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a class="anchor" id="a85c8a624c2d4555fa9ab9d99070b3177"></a>
+<a class="anchor" id="a8ebe55d96a395760388920d377fef5a6"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;bool&gt; need_hessian_LHS</td>
+          <td class="memname">std::vector&lt;unsigned int&gt; nucleating_variable_indices</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a class="anchor" id="ab193b7aba957d83d716bdabff054a468"></a>
+<a class="anchor" id="adc27215b3ea51fe959936ff08bb1d242"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;bool&gt; need_value</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a48d87fdca56b4e416b101e31f5c0394d"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;bool&gt; need_value_LHS</td>
+          <td class="memname">std::vector&lt;unsigned int&gt; nucleation_need_value</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -530,12 +863,48 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a1ceb938ebb01722dc0383ddc50f84e1c"></a>
+<a class="anchor" id="acf7fe1e7d33e07906b4d14644b3439a6"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int num_outputs</td>
+          <td class="memname">double nucleation_order_parameter_cutoff</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ade9e4389b71f4a6bf3ed83819607a36b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double nucleus_hold_time</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a11d1e357d3c4f0c39d711a3d4db727e4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;double&gt; nucleus_semiaxes</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a8cf33ed4a0ddfd5d6cc64ca69ccaea1e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int num_integrated_fields</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -566,12 +935,24 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a7be84e368ae0a0de32b9211b7e28086e"></a>
+<a class="anchor" id="a75cbcf2a980290f42c7f326ead58a4a2"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::string output_condition</td>
+          <td class="memname">std::vector&lt;double&gt; order_parameter_freeze_semiaxes</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a8a6a68d6facb6f661377dfd4ea5b0e56"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string output_file_name</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -590,6 +971,18 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a3b5e9a02e069647ed3319524403b6b96"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;unsigned int&gt; outputTimeStepList</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a6a115b13a4a0c60c2a661a277c956196"></a>
 <div class="memitem">
 <div class="memproto">
@@ -602,48 +995,24 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ae2ede37ec97a1af725e436848ebd4fd2"></a>
+<a class="anchor" id="af121899ed4a6608cf1722e393b48ff99"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;bool&gt; pp_gradient_residual</td>
+          <td class="memname">std::vector&lt;<a class="el" href="structvariable__info.html">variable_info</a>&gt; pp_baseVarInfoList</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a class="anchor" id="a2385722f23a100f2752a293aa2ecdeaf"></a>
+<a class="anchor" id="afa1f1d7f59afd77bd17d4a3131231ac4"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;bool&gt; pp_need_gradient</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a7974975a4a7e81597aef5e961e12b2e1"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;bool&gt; pp_need_hessian</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a39a6ac3a607fa436075961220cf1b972"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;bool&gt; pp_need_value</td>
+          <td class="memname">std::vector&lt;bool&gt; pp_calc_integral</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -662,42 +1031,6 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a3ab4224113130453d1def79e2803d44f"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="structvariable__info.html">variable_info</a>&gt; pp_resInfoList</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="acf8a9c870836f84e24cad1ef4f328c96"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;bool&gt; pp_value_residual</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a97c9ac3feeb930bfa79a55a558e5494c"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;std::string&gt; pp_var_eq_type</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="aff62f1ffdc71a2f38fad12c5c2044289"></a>
 <div class="memitem">
 <div class="memproto">
@@ -710,12 +1043,12 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ac3a2e1fd98cb291cfac735c7df185e32"></a>
+<a class="anchor" id="aa9f8dd5ac0868f75dad3b968c7e2b16d"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;std::string&gt; pp_var_type</td>
+          <td class="memname">std::vector&lt;<a class="el" href="var_type_enums_8h.html#ae2c3e99c22ce037f68e9b19bfd9c6de2">fieldType</a>&gt; pp_var_type</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -782,18 +1115,6 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ae1d2a3526db73d92381a4b26d7a7de54"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="structvariable__info.html">variable_info</a>&gt; resInfoListRHS</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="a9373a17204ca39ec019a1058f4419086"></a>
 <div class="memitem">
 <div class="memproto">
@@ -842,6 +1163,18 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ae6524a1498a4d516ae97e5c42c90d8e4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int steps_between_nucleation_attempts</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="aefed766ec01e0a5e5787f5cfbb80e36d"></a>
 <div class="memitem">
 <div class="memproto">
@@ -866,48 +1199,12 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a5607f33be3cebf3d24fccce9ad3d7f76"></a>
+<a class="anchor" id="ac8f9d09f3d9c955945bedc91702092aa"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;unsigned int&gt; user_given_time_step_list</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="acbf39543fad28184ea1e5647b7bf18d8"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;bool&gt; value_residual</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="acf2b8397bee6bcf56f8909d90bdedb38"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;bool&gt; value_residual_LHS</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a888c571473b486841609e46c05a9fa90"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;std::string&gt; var_eq_type</td>
+          <td class="memname">std::vector&lt;<a class="el" href="var_type_enums_8h.html#a12521d5d4cf2d9ed3c05e52b162fad42">PDEType</a>&gt; var_eq_type</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -926,12 +1223,12 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a139c43ae51b022f2fd5b5175e524063c"></a>
+<a class="anchor" id="a6ede91153bb1c766a7135268dd59e775"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;std::string&gt; var_type</td>
+          <td class="memname">std::vector&lt;<a class="el" href="var_type_enums_8h.html#ae2c3e99c22ce037f68e9b19bfd9c6de2">fieldType</a>&gt; var_type</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -962,21 +1259,13 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ad45c8b255ff57a92162de5aa24d27362"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool write_output</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>phaseField_dev/include/<a class="el" href="user_input_parameters_8h_source.html">userInputParameters.h</a></li>
-<li>phaseField_dev/src/userInputParameters/<a class="el" href="load_user_inputs_8cc.html">loadUserInputs.cc</a></li>
+<li>phaseField_dev/src/userInputParameters/<a class="el" href="load___b_c__list_8cc.html">load_BC_list.cc</a></li>
+<li>phaseField_dev/src/userInputParameters/<a class="el" href="load__user__constants_8cc.html">load_user_constants.cc</a></li>
+<li>phaseField_dev/src/userInputParameters/<a class="el" href="load_variable_attributes_8cc.html">loadVariableAttributes.cc</a></li>
+<li>phaseField_dev/src/userInputParameters/<a class="el" href="set_output_time_steps_8cc.html">setOutputTimeSteps.cc</a></li>
+<li>phaseField_dev/src/userInputParameters/<a class="el" href="user_input_parameters_8cc.html">userInputParameters.cc</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

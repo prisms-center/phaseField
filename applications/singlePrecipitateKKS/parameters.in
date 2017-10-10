@@ -36,11 +36,14 @@ set Element degree = 2
 set Mesh adaptivity = true
 
 # Set the maximum and minimum level of refinement
+# When adaptive meshing is enabled, the refine factor set in the block above is
+# only used to generate the first pass of the mesh as the initial conditions are
+# applied. It should be set somewhere between the max and min levels below.
 set Max refinement level = 6
 set Min refinement level = 0
 
 # Set the fields used to determine the refinement using their index.
-set Refinement criteria fields = 1
+set Refinement criteria fields = n1
 
 # Set the maximum and minimum value of the fields where the mesh should be refined
 set Refinement window max = 0.99
@@ -106,7 +109,7 @@ set Time steps between nucleation attempts = 1000
 # =================================================================================
 # Set the boundary condition for each variable, where each variable is given by
 # its name, as defined in equations.h. The four boundary condition
-# types are ZERO_DERIVATIVE, DIRICHLET, NON_UNIFORM_DIRICHLET and PERIODIC. If all
+# types are NATURAL, DIRICHLET, NON_UNIFORM_DIRICHLET and PERIODIC. If all
 # of the boundaries have the same boundary condition, only one boundary condition
 # type needs to be given. If multiple boundary condition types are needed, give a
 # comma-separated list of the types. The order is the miniumum of x, maximum of x,
@@ -119,13 +122,13 @@ set Time steps between nucleation attempts = 1000
 # set Boundary condition for variable c = PERIODIC
 # Example 2: Zero-derivative BCs on the left and right, Dirichlet BCs with value
 # 1.5 on the top and bottom for variable 'n' in 2D
-# set Boundary condition for variable n = ZERO_DERIVATIVE, ZERO_DERIVATIVE, DIRICHLET: 1.5, DIRICHLET: 1.5
+# set Boundary condition for variable n = NATURAL, NATURAL, DIRICHLET: 1.5, DIRICHLET: 1.5
 
-set Boundary condition for variable c = ZERO_DERIVATIVE
-set Boundary condition for variable n1 = ZERO_DERIVATIVE
-set Boundary condition for variable u, x component = DIRICHLET: 0.0, DIRICHLET: 0.0, ZERO_DERIVATIVE, DIRICHLET: 0.0, ZERO_DERIVATIVE, DIRICHLET: 0.0
-set Boundary condition for variable u, y component = ZERO_DERIVATIVE, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0, ZERO_DERIVATIVE, DIRICHLET: 0.0
-set Boundary condition for variable u, z component = ZERO_DERIVATIVE, DIRICHLET: 0.0, ZERO_DERIVATIVE, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0
+set Boundary condition for variable c = NATURAL
+set Boundary condition for variable n1 = NATURAL
+set Boundary condition for variable u, x component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0
+set Boundary condition for variable u, y component = NATURAL, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0
+set Boundary condition for variable u, z component = NATURAL, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0
 
 # =================================================================================
 # Set the model constants

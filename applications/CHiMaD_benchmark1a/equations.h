@@ -43,11 +43,11 @@ template <int dim, int degree>
 void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-// The concentration and its derivatives (names here should match those in the macros above)
+// The concentration and its derivatives 
 scalarvalueType c = variable_list.get_scalar_value(0);
 scalargradType cx = variable_list.get_scalar_gradient(0);
 
-// The chemical potential and its derivatives (names here should match those in the macros above)
+// The chemical potential and its derivatives 
 scalargradType mux = variable_list.get_scalar_gradient(1);
 
 // The free energy and its derivative
@@ -60,11 +60,11 @@ scalargradType rmuxV = (constV(KcV)*cx);
 scalarvalueType rcV = (c);
 scalargradType rcxV = (constV(-McV*userInputs.dtValue)*mux);
 
-// Residuals for the equation to evolve the concentration (names here should match those in the macros above)
+// Residuals for the equation to evolve the concentration 
 variable_list.set_scalar_value_residual_term(0,rcV);
 variable_list.set_scalar_gradient_residual_term(0,rcxV);
 
-// Residuals for the equation to evolve the chemical potential (names here should match those in the macros above)
+// Residuals for the equation to evolve the chemical potential 
 variable_list.set_scalar_value_residual_term(1,rmuV);
 variable_list.set_scalar_gradient_residual_term(1,rmuxV);
 

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>PRISMS PhaseField: phaseField_dev/include/varBCs.h Source File</title>
+<title>PRISMS-PF: phaseField_dev/include/varBCs.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,8 +23,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">PRISMS PhaseField
-   &#160;<span id="projectnumber">1.0</span>
+   <div id="projectname">PRISMS-PF
+   &#160;<span id="projectnumber">2.0</span>
    </div>
   </td>
  </tr>
@@ -39,7 +39,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -101,28 +100,29 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#define INCLUDE_VARBCS_H_</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// BC type enum</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74ad850ca0b43cb4e4b73d4c0cd2670f819">   12</a></span>&#160;<span class="keyword">enum</span> <a class="code" href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74">BC_type</a> {<a class="code" href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74ad850ca0b43cb4e4b73d4c0cd2670f819">ZERO_DERIVATIVE</a>, <a class="code" href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74a1c2adefa6a3b7015b29913c49ee050c7">DIRICHLET</a>, <a class="code" href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74ae4379d044711537d9ce3b3b58c575c58">PERIODIC</a>};</div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74ae4379d044711537d9ce3b3b58c575c58">   12</a></span>&#160;<span class="keyword">enum</span> <a class="code" href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74">BC_type</a> {<a class="code" href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74a0425aaf673bebee34014367ea7c3deb1">NATURAL</a>, <a class="code" href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74a1c2adefa6a3b7015b29913c49ee050c7">DIRICHLET</a>, <a class="code" href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74ae4379d044711537d9ce3b3b58c575c58">PERIODIC</a>, <a class="code" href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74af4663ddb6e820e210c4d046fbe1e2e1c">NON_UNIFORM_DIRICHLET</a>, <a class="code" href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74ae58d114453737f3084aa5c645eba3412">NEUMANN</a>};</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// BC object declaration</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim&gt;</div>
 <div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="classvar_b_cs.html">   16</a></span>&#160;<span class="keyword">class </span><a class="code" href="classvar_b_cs.html">varBCs</a></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="comment">//varBCs();</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="classvar_b_cs.html#a3c2d6901a70977c11f13fa82f7f2c86d">   20</a></span>&#160;    std::vector&lt;BC_type&gt; <a class="code" href="classvar_b_cs.html#a3c2d6901a70977c11f13fa82f7f2c86d">var_BC_type</a>;</div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="classvar_b_cs.html#a4d89f4b20bed4bd66ef1d9245ef8ab49">   21</a></span>&#160;    std::vector&lt;double&gt; <a class="code" href="classvar_b_cs.html#a4d89f4b20bed4bd66ef1d9245ef8ab49">var_BC_val</a>;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;};</div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="classvar_b_cs.html#a3c2d6901a70977c11f13fa82f7f2c86d">   19</a></span>&#160;    std::vector&lt;BC_type&gt; <a class="code" href="classvar_b_cs.html#a3c2d6901a70977c11f13fa82f7f2c86d">var_BC_type</a>;</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="classvar_b_cs.html#a4d89f4b20bed4bd66ef1d9245ef8ab49">   20</a></span>&#160;    std::vector&lt;double&gt; <a class="code" href="classvar_b_cs.html#a4d89f4b20bed4bd66ef1d9245ef8ab49">var_BC_val</a>;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;};</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INCLUDE_VARBCS_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INCLUDE_VARBCS_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="var_b_cs_8h_html_a1b857ce330597f3389336178f05a6b74a0425aaf673bebee34014367ea7c3deb1"><div class="ttname"><a href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74a0425aaf673bebee34014367ea7c3deb1">NATURAL</a></div><div class="ttdef"><b>Definition:</b> varBCs.h:12</div></div>
 <div class="ttc" id="classvar_b_cs_html"><div class="ttname"><a href="classvar_b_cs.html">varBCs</a></div><div class="ttdef"><b>Definition:</b> varBCs.h:16</div></div>
-<div class="ttc" id="classvar_b_cs_html_a4d89f4b20bed4bd66ef1d9245ef8ab49"><div class="ttname"><a href="classvar_b_cs.html#a4d89f4b20bed4bd66ef1d9245ef8ab49">varBCs::var_BC_val</a></div><div class="ttdeci">std::vector&lt; double &gt; var_BC_val</div><div class="ttdef"><b>Definition:</b> varBCs.h:21</div></div>
-<div class="ttc" id="var_b_cs_8h_html_a1b857ce330597f3389336178f05a6b74ad850ca0b43cb4e4b73d4c0cd2670f819"><div class="ttname"><a href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74ad850ca0b43cb4e4b73d4c0cd2670f819">ZERO_DERIVATIVE</a></div><div class="ttdef"><b>Definition:</b> varBCs.h:12</div></div>
-<div class="ttc" id="classvar_b_cs_html_a3c2d6901a70977c11f13fa82f7f2c86d"><div class="ttname"><a href="classvar_b_cs.html#a3c2d6901a70977c11f13fa82f7f2c86d">varBCs::var_BC_type</a></div><div class="ttdeci">std::vector&lt; BC_type &gt; var_BC_type</div><div class="ttdef"><b>Definition:</b> varBCs.h:20</div></div>
+<div class="ttc" id="classvar_b_cs_html_a4d89f4b20bed4bd66ef1d9245ef8ab49"><div class="ttname"><a href="classvar_b_cs.html#a4d89f4b20bed4bd66ef1d9245ef8ab49">varBCs::var_BC_val</a></div><div class="ttdeci">std::vector&lt; double &gt; var_BC_val</div><div class="ttdef"><b>Definition:</b> varBCs.h:20</div></div>
+<div class="ttc" id="classvar_b_cs_html_a3c2d6901a70977c11f13fa82f7f2c86d"><div class="ttname"><a href="classvar_b_cs.html#a3c2d6901a70977c11f13fa82f7f2c86d">varBCs::var_BC_type</a></div><div class="ttdeci">std::vector&lt; BC_type &gt; var_BC_type</div><div class="ttdef"><b>Definition:</b> varBCs.h:19</div></div>
 <div class="ttc" id="var_b_cs_8h_html_a1b857ce330597f3389336178f05a6b74a1c2adefa6a3b7015b29913c49ee050c7"><div class="ttname"><a href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74a1c2adefa6a3b7015b29913c49ee050c7">DIRICHLET</a></div><div class="ttdef"><b>Definition:</b> varBCs.h:12</div></div>
+<div class="ttc" id="var_b_cs_8h_html_a1b857ce330597f3389336178f05a6b74af4663ddb6e820e210c4d046fbe1e2e1c"><div class="ttname"><a href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74af4663ddb6e820e210c4d046fbe1e2e1c">NON_UNIFORM_DIRICHLET</a></div><div class="ttdef"><b>Definition:</b> varBCs.h:12</div></div>
 <div class="ttc" id="var_b_cs_8h_html_a1b857ce330597f3389336178f05a6b74ae4379d044711537d9ce3b3b58c575c58"><div class="ttname"><a href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74ae4379d044711537d9ce3b3b58c575c58">PERIODIC</a></div><div class="ttdef"><b>Definition:</b> varBCs.h:12</div></div>
 <div class="ttc" id="var_b_cs_8h_html_a1b857ce330597f3389336178f05a6b74"><div class="ttname"><a href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74">BC_type</a></div><div class="ttdeci">BC_type</div><div class="ttdef"><b>Definition:</b> varBCs.h:12</div></div>
+<div class="ttc" id="var_b_cs_8h_html_a1b857ce330597f3389336178f05a6b74ae58d114453737f3084aa5c645eba3412"><div class="ttname"><a href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74ae58d114453737f3084aa5c645eba3412">NEUMANN</a></div><div class="ttdef"><b>Definition:</b> varBCs.h:12</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

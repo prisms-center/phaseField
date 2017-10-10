@@ -16,8 +16,8 @@ template <int dim,typename T>
     // 2D test:
     std::vector<std::string> list_of_BCs;
     list_of_BCs.push_back("DIRICHLET: 2.5");
-    list_of_BCs.push_back("PERIODIC,PERIODIC,ZERO_DERIVATIVE,ZERO_DERIVATIVE");
-    list_of_BCs.push_back("DIRICHLET: 2.5,DIRICHLET: 1.5,ZERO_DERIVATIVE,ZERO_DERIVATIVE");
+    list_of_BCs.push_back("PERIODIC,PERIODIC,NATURAL,NATURAL");
+    list_of_BCs.push_back("DIRICHLET: 2.5,DIRICHLET: 1.5,NATURAL,NATURAL");
 
     userInputs.BC_list.clear();
     userInputs.load_BC_list(list_of_BCs);
@@ -35,8 +35,8 @@ template <int dim,typename T>
     bool pass2;
     pass2 = (userInputs.BC_list[1].var_BC_type[0] == PERIODIC);
     pass2 = pass2 && (userInputs.BC_list[1].var_BC_type[1] == PERIODIC);
-    pass2 = pass2 && (userInputs.BC_list[1].var_BC_type[2] == ZERO_DERIVATIVE);
-    pass2 = pass2 && (userInputs.BC_list[1].var_BC_type[3] == ZERO_DERIVATIVE);
+    pass2 = pass2 && (userInputs.BC_list[1].var_BC_type[2] == NATURAL);
+    pass2 = pass2 && (userInputs.BC_list[1].var_BC_type[3] == NATURAL);
     sprintf (buffer, "Subtest 2 result for 'load_BC_list': %u\n", pass2);
     std::cout << buffer;
 
@@ -45,8 +45,8 @@ template <int dim,typename T>
     pass3 = pass3 && (userInputs.BC_list[2].var_BC_val[0] == 2.5);
     pass3 = pass3 && (userInputs.BC_list[2].var_BC_type[1] == DIRICHLET);
     pass3 = pass3 && (userInputs.BC_list[2].var_BC_val[1] == 1.5);
-    pass3 = pass3 && (userInputs.BC_list[2].var_BC_type[2] == ZERO_DERIVATIVE);
-    pass3 = pass3 && (userInputs.BC_list[2].var_BC_type[3] == ZERO_DERIVATIVE);
+    pass3 = pass3 && (userInputs.BC_list[2].var_BC_type[2] == NATURAL);
+    pass3 = pass3 && (userInputs.BC_list[2].var_BC_type[3] == NATURAL);
     sprintf (buffer, "Subtest 3 result for 'load_BC_list': %u\n", pass3);
     std::cout << buffer;
 
@@ -54,7 +54,7 @@ template <int dim,typename T>
     list_of_BCs.clear();
     userInputParameters<3> userInputs_3D(input_file_reader,input_file_reader.parameter_handler,variable_attributes);
     list_of_BCs.push_back("DIRICHLET: 2.5");
-    list_of_BCs.push_back("PERIODIC,PERIODIC,ZERO_DERIVATIVE,ZERO_DERIVATIVE,PERIODIC,PERIODIC");
+    list_of_BCs.push_back("PERIODIC,PERIODIC,NATURAL,NATURAL,PERIODIC,PERIODIC");
 
     userInputs_3D.BC_list.clear();
     userInputs_3D.load_BC_list(list_of_BCs);
@@ -71,8 +71,8 @@ template <int dim,typename T>
     bool pass5;
     pass5 = (userInputs_3D.BC_list[1].var_BC_type[0] == PERIODIC);
     pass5 = pass5 && (userInputs_3D.BC_list[1].var_BC_type[1] == PERIODIC);
-    pass5 = pass5 && (userInputs_3D.BC_list[1].var_BC_type[2] == ZERO_DERIVATIVE);
-    pass5 = pass5 && (userInputs_3D.BC_list[1].var_BC_type[3] == ZERO_DERIVATIVE);
+    pass5 = pass5 && (userInputs_3D.BC_list[1].var_BC_type[2] == NATURAL);
+    pass5 = pass5 && (userInputs_3D.BC_list[1].var_BC_type[3] == NATURAL);
     pass5 = pass5 && (userInputs_3D.BC_list[1].var_BC_type[4] == PERIODIC);
     pass5 = pass5 && (userInputs_3D.BC_list[1].var_BC_type[5] == PERIODIC);
     sprintf (buffer, "Subtest 5 result for 'load_BC_list': %u\n", pass5);

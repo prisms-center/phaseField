@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>PRISMS PhaseField: phaseField_dev/include/postProcessedFields.h Source File</title>
+<title>PRISMS-PF: phaseField_dev/include/postProcessedFields.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,8 +23,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">PRISMS PhaseField
-   &#160;<span id="projectnumber">1.0</span>
+   <div id="projectname">PRISMS-PF
+   &#160;<span id="projectnumber">2.0</span>
    </div>
   </td>
  </tr>
@@ -39,7 +39,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -100,20 +99,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#ifndef INCLUDE_POSTPROCESSEDFIELDS_H_</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#define INCLUDE_POSTPROCESSEDFIELDS_H_</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="list__of___c_i_j_8h.html">list_of_CIJ.h</a>&quot;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;list_of_CIJ.h&quot;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim&gt;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keywordtype">void</span> <a class="code" href="post_processed_fields_8h.html#a13dd6177d13d0d68b193523dcfca87dd">postProcessedFields</a>(<span class="keyword">const</span> std::vector&lt;<a class="code" href="classmodel_variable.html">modelVariable&lt;dim&gt;</a> &gt; &amp; modelVariablesList,</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;                                                std::vector&lt;<a class="code" href="classmodel_residual.html">modelResidual&lt;dim&gt;</a> &gt; &amp; modelResidualsList,</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;                                                <span class="keyword">const</span> dealii::Point&lt;dim, dealii::VectorizedArray&lt;double&gt; &gt; q_point_loc,</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;                                                <span class="keyword">const</span> <a class="code" href="classlist__of___c_i_j.html">list_of_CIJ&lt;dim&gt;</a> material_moduli);</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;                                                <span class="keyword">const</span> list_of_CIJ&lt;dim&gt; material_moduli);</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INCLUDE_POSTPROCESSEDFIELDS_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="classmodel_residual_html"><div class="ttname"><a href="classmodel_residual.html">modelResidual</a></div><div class="ttdef"><b>Definition:</b> model_variables.h:22</div></div>
-<div class="ttc" id="post_processed_fields_8h_html_a13dd6177d13d0d68b193523dcfca87dd"><div class="ttname"><a href="post_processed_fields_8h.html#a13dd6177d13d0d68b193523dcfca87dd">postProcessedFields</a></div><div class="ttdeci">void postProcessedFields(const std::vector&lt; modelVariable&lt; dim &gt; &gt; &amp;modelVariablesList, std::vector&lt; modelResidual&lt; dim &gt; &gt; &amp;modelResidualsList, const dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc, const list_of_CIJ&lt; dim &gt; material_moduli)</div><div class="ttdef"><b>Definition:</b> postprocess.h:35</div></div>
-<div class="ttc" id="list__of___c_i_j_8h_html"><div class="ttname"><a href="list__of___c_i_j_8h.html">list_of_CIJ.h</a></div></div>
-<div class="ttc" id="classlist__of___c_i_j_html"><div class="ttname"><a href="classlist__of___c_i_j.html">list_of_CIJ</a></div><div class="ttdef"><b>Definition:</b> list_of_CIJ.h:7</div></div>
+<div class="ttc" id="post_processed_fields_8h_html_a13dd6177d13d0d68b193523dcfca87dd"><div class="ttname"><a href="post_processed_fields_8h.html#a13dd6177d13d0d68b193523dcfca87dd">postProcessedFields</a></div><div class="ttdeci">void postProcessedFields(const std::vector&lt; modelVariable&lt; dim &gt; &gt; &amp;modelVariablesList, std::vector&lt; modelResidual&lt; dim &gt; &gt; &amp;modelResidualsList, const dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc, const list_of_CIJ&lt; dim &gt; material_moduli)</div></div>
 <div class="ttc" id="classmodel_variable_html"><div class="ttname"><a href="classmodel_variable.html">modelVariable</a></div><div class="ttdef"><b>Definition:</b> model_variables.h:7</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

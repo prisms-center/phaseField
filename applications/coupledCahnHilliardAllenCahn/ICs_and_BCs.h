@@ -18,7 +18,7 @@ double InitialCondition<dim>::value (const Point<dim> &p, const unsigned int com
 	  // given by "center" and its radius is given by "rad".
 
 	  double center[2][3] = {{1.0/3.0,1.0/3.0,1.0/3.0},{3.0/4.0,3.0/4.0,3.0/4.0}};
-	  double rad[12] = {userInputs.domain_size[0]/5.0, userInputs.domain_size[0]/12.0};
+	  double rad[2] = {userInputs.domain_size[0]/5.0, userInputs.domain_size[0]/12.0};
 	  double dist;
 	  scalar_IC = 0;
 
@@ -71,10 +71,14 @@ double NonUniformDirichletBC<dim>::value (const dealii::Point<dim> &p, const uns
     // --------------------------------------------------------------------------
     // ENTER THE NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS HERE FOR SCALAR FIELDS
     // --------------------------------------------------------------------------
-    // Enter the function describing conditions for the fields at point "p".
+	// Enter the function describing conditions for the fields at point "p".
     // Use "if" statements to set the boundary condition for each variable
     // according to its variable index. This function can be left blank if there
-    // are no non-uniform Dirichlet boundary conditions.
+    // are no non-uniform Dirichlet boundary conditions. For BCs that change in
+    // time, you can access the current time through the variable "time". The
+    // boundary index can be accessed via the variable "direction", which starts
+    // at zero and uses the same order as the BC specification in parameters.in
+    // (i.e. left = 0, right = 1, bottom = 2, top = 3, front = 4, back = 5).
 
 
     // -------------------------------------------------------------------------
@@ -88,10 +92,14 @@ void NonUniformDirichletBCVec<dim>::vector_value (const dealii::Point<dim> &p, d
     // --------------------------------------------------------------------------
     // ENTER THE NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS HERE FOR VECTOR FIELDS
     // --------------------------------------------------------------------------
-    // Enter the function describing conditions for the fields at point "p".
+	// Enter the function describing conditions for the fields at point "p".
     // Use "if" statements to set the boundary condition for each variable
     // according to its variable index. This function can be left blank if there
-    // are no non-uniform Dirichlet boundary conditions.
+    // are no non-uniform Dirichlet boundary conditions. For BCs that change in
+    // time, you can access the current time through the variable "time". The
+    // boundary index can be accessed via the variable "direction", which starts
+    // at zero and uses the same order as the BC specification in parameters.in
+    // (i.e. left = 0, right = 1, bottom = 2, top = 3, front = 4, back = 5).
 
 
     // -------------------------------------------------------------------------

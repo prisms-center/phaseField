@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>PRISMS PhaseField: phaseField_dev/include/typeDefs.h Source File</title>
+<title>PRISMS-PF: phaseField_dev/include/typeDefs.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,8 +23,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">PRISMS PhaseField
-   &#160;<span id="projectnumber">1.0</span>
+   <div id="projectname">PRISMS-PF
+   &#160;<span id="projectnumber">2.0</span>
    </div>
   </td>
  </tr>
@@ -39,7 +39,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -97,8 +96,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *      Author: stephendewitt</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#ifndef INCLUDE_TYPEDEFS_H_</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#define INCLUDE_TYPEDEFS_H_</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//#ifndef INCLUDE_TYPEDEFS_H_</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">//#define INCLUDE_TYPEDEFS_H_</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">//define data types</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#ifndef scalarType</span></div>
@@ -109,54 +108,54 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">//define FE system types</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#ifndef typeScalar</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="type_defs_8h.html#abce74f518b933f63ffc2c72b83fcaec6">   20</a></span>&#160;<span class="keyword">typedef</span> dealii::FEEvaluation&lt;problemDIM,finiteElementDegree,finiteElementDegree+1,1,double&gt;           <a class="code" href="type_defs_8h.html#abce74f518b933f63ffc2c72b83fcaec6">typeScalar</a>;</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="type_defs_8h.html#aa052a27d286446c6ac73855c6eafb9a4">   20</a></span>&#160;<span class="keyword">typedef</span> dealii::FEEvaluation&lt;dim,degree,degree+1,1,double&gt;           <a class="code" href="type_defs_8h.html#aa052a27d286446c6ac73855c6eafb9a4">typeScalar</a>;</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#ifndef typeVector</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="type_defs_8h.html#af83c211a767a4b88697fcfd63bfb9824">   23</a></span>&#160;<span class="keyword">typedef</span> dealii::FEEvaluation&lt;problemDIM,finiteElementDegree,finiteElementDegree+1,problemDIM,double&gt;  <a class="code" href="type_defs_8h.html#af83c211a767a4b88697fcfd63bfb9824">typeVector</a>;</div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="type_defs_8h.html#ab21b18a243589c5255cd4dad43f192e1">   23</a></span>&#160;<span class="keyword">typedef</span> dealii::FEEvaluation&lt;dim,degree,degree+1,dim,double&gt;  <a class="code" href="type_defs_8h.html#ab21b18a243589c5255cd4dad43f192e1">typeVector</a>;</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">//define data value types</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#ifndef scalarvalueType</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">   27</a></span>&#160;<span class="keyword">typedef</span> dealii::VectorizedArray&lt;double&gt; <a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a>;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#ifndef vectorvalueType</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="type_defs_8h.html#a9096215b701ac161f820e9077b65d825">   30</a></span>&#160;<span class="keyword">typedef</span> dealii::Tensor&lt;1, problemDIM, dealii::VectorizedArray&lt;double&gt; &gt; <a class="code" href="type_defs_8h.html#a9096215b701ac161f820e9077b65d825">vectorvalueType</a>;</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="type_defs_8h.html#a67b2dc8754f16b415d85a07e2b2fe856">   30</a></span>&#160;<span class="keyword">typedef</span> dealii::Tensor&lt;1, dim, dealii::VectorizedArray&lt;double&gt; &gt; <a class="code" href="type_defs_8h.html#a67b2dc8754f16b415d85a07e2b2fe856">vectorvalueType</a>;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#if problemDIM==1</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#ifndef scalargradType</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">typedef</span> dealii::VectorizedArray&lt;double&gt; <a class="code" href="type_defs_8h.html#a275b78678cf79b17d9561360f57b825d">scalargradType</a>;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">typedef</span> dealii::VectorizedArray&lt;double&gt; <a class="code" href="type_defs_8h.html#a35b1b83d6d194e7417b515cc381ee577">scalargradType</a>;</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#ifndef vectorgradType</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">typedef</span> dealii::VectorizedArray&lt;double&gt; <a class="code" href="type_defs_8h.html#a73b53d5db94bf70dfe8f54f1bda87e1a">vectorgradType</a>;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">typedef</span> dealii::VectorizedArray&lt;double&gt; <a class="code" href="type_defs_8h.html#a5c5c0fd24a54a16a15ac9f93b48f5fea">vectorgradType</a>;</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#ifndef vectorhessType</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">typedef</span> dealii::VectorizedArray&lt;double&gt; <a class="code" href="type_defs_8h.html#a31d1ec7420c01361786581df96b2a06e">vectorhessType</a>;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">typedef</span> dealii::VectorizedArray&lt;double&gt; <a class="code" href="type_defs_8h.html#ad8666e06a1a43dedeeb94f2062d82f48">vectorhessType</a>;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#else</span></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#ifndef scalargradType</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="type_defs_8h.html#a275b78678cf79b17d9561360f57b825d">   44</a></span>&#160;<span class="keyword">typedef</span> dealii::Tensor&lt;1, problemDIM, dealii::VectorizedArray&lt;double&gt; &gt; <a class="code" href="type_defs_8h.html#a275b78678cf79b17d9561360f57b825d">scalargradType</a>;</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="type_defs_8h.html#a35b1b83d6d194e7417b515cc381ee577">   44</a></span>&#160;<span class="keyword">typedef</span> dealii::Tensor&lt;1, dim, dealii::VectorizedArray&lt;double&gt; &gt; <a class="code" href="type_defs_8h.html#a35b1b83d6d194e7417b515cc381ee577">scalargradType</a>;</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#ifndef scalarhessType</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="type_defs_8h.html#ad7695cb070ca201f71651234ecf576e2">   47</a></span>&#160;<span class="keyword">typedef</span> dealii::Tensor&lt;2,problemDIM,dealii::VectorizedArray&lt;double&gt; &gt; <a class="code" href="type_defs_8h.html#ad7695cb070ca201f71651234ecf576e2">scalarhessType</a>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="type_defs_8h.html#a2eee5b91e58f09e00053c196b4e91f6c">   47</a></span>&#160;<span class="keyword">typedef</span> dealii::Tensor&lt;2,dim,dealii::VectorizedArray&lt;double&gt; &gt; <a class="code" href="type_defs_8h.html#a2eee5b91e58f09e00053c196b4e91f6c">scalarhessType</a>;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#ifndef vectorgradType</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="type_defs_8h.html#a73b53d5db94bf70dfe8f54f1bda87e1a">   50</a></span>&#160;<span class="keyword">typedef</span> dealii::Tensor&lt;2, problemDIM, dealii::VectorizedArray&lt;double&gt; &gt; <a class="code" href="type_defs_8h.html#a73b53d5db94bf70dfe8f54f1bda87e1a">vectorgradType</a>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="type_defs_8h.html#a5c5c0fd24a54a16a15ac9f93b48f5fea">   50</a></span>&#160;<span class="keyword">typedef</span> dealii::Tensor&lt;2, dim, dealii::VectorizedArray&lt;double&gt; &gt; <a class="code" href="type_defs_8h.html#a5c5c0fd24a54a16a15ac9f93b48f5fea">vectorgradType</a>;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#ifndef vectorhessType</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="type_defs_8h.html#a31d1ec7420c01361786581df96b2a06e">   53</a></span>&#160;<span class="keyword">typedef</span> dealii::Tensor&lt;3, problemDIM, dealii::VectorizedArray&lt;double&gt; &gt; <a class="code" href="type_defs_8h.html#a31d1ec7420c01361786581df96b2a06e">vectorhessType</a>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="type_defs_8h.html#ad8666e06a1a43dedeeb94f2062d82f48">   53</a></span>&#160;<span class="keyword">typedef</span> dealii::Tensor&lt;3, dim, dealii::VectorizedArray&lt;double&gt; &gt; <a class="code" href="type_defs_8h.html#ad8666e06a1a43dedeeb94f2062d82f48">vectorhessType</a>;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INCLUDE_TYPEDEFS_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="type_defs_8h_html_a73b53d5db94bf70dfe8f54f1bda87e1a"><div class="ttname"><a href="type_defs_8h.html#a73b53d5db94bf70dfe8f54f1bda87e1a">vectorgradType</a></div><div class="ttdeci">dealii::Tensor&lt; 2, problemDIM, dealii::VectorizedArray&lt; double &gt; &gt; vectorgradType</div><div class="ttdef"><b>Definition:</b> typeDefs.h:50</div></div>
-<div class="ttc" id="type_defs_8h_html_a31d1ec7420c01361786581df96b2a06e"><div class="ttname"><a href="type_defs_8h.html#a31d1ec7420c01361786581df96b2a06e">vectorhessType</a></div><div class="ttdeci">dealii::Tensor&lt; 3, problemDIM, dealii::VectorizedArray&lt; double &gt; &gt; vectorhessType</div><div class="ttdef"><b>Definition:</b> typeDefs.h:53</div></div>
-<div class="ttc" id="type_defs_8h_html_a9096215b701ac161f820e9077b65d825"><div class="ttname"><a href="type_defs_8h.html#a9096215b701ac161f820e9077b65d825">vectorvalueType</a></div><div class="ttdeci">dealii::Tensor&lt; 1, problemDIM, dealii::VectorizedArray&lt; double &gt; &gt; vectorvalueType</div><div class="ttdef"><b>Definition:</b> typeDefs.h:30</div></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">//#endif /* INCLUDE_TYPEDEFS_H_ */</span></div>
 <div class="ttc" id="type_defs_8h_html_a0af7e68c8d9f5eaef75b5f5060a5350b"><div class="ttname"><a href="type_defs_8h.html#a0af7e68c8d9f5eaef75b5f5060a5350b">scalarType</a></div><div class="ttdeci">dealii::VectorizedArray&lt; double &gt; scalarType</div><div class="ttdef"><b>Definition:</b> typeDefs.h:13</div></div>
-<div class="ttc" id="type_defs_8h_html_af83c211a767a4b88697fcfd63bfb9824"><div class="ttname"><a href="type_defs_8h.html#af83c211a767a4b88697fcfd63bfb9824">typeVector</a></div><div class="ttdeci">dealii::FEEvaluation&lt; problemDIM, finiteElementDegree, finiteElementDegree+1, problemDIM, double &gt; typeVector</div><div class="ttdef"><b>Definition:</b> typeDefs.h:23</div></div>
-<div class="ttc" id="type_defs_8h_html_a275b78678cf79b17d9561360f57b825d"><div class="ttname"><a href="type_defs_8h.html#a275b78678cf79b17d9561360f57b825d">scalargradType</a></div><div class="ttdeci">dealii::Tensor&lt; 1, problemDIM, dealii::VectorizedArray&lt; double &gt; &gt; scalargradType</div><div class="ttdef"><b>Definition:</b> typeDefs.h:44</div></div>
-<div class="ttc" id="type_defs_8h_html_ad7695cb070ca201f71651234ecf576e2"><div class="ttname"><a href="type_defs_8h.html#ad7695cb070ca201f71651234ecf576e2">scalarhessType</a></div><div class="ttdeci">dealii::Tensor&lt; 2, problemDIM, dealii::VectorizedArray&lt; double &gt; &gt; scalarhessType</div><div class="ttdef"><b>Definition:</b> typeDefs.h:47</div></div>
+<div class="ttc" id="type_defs_8h_html_a2eee5b91e58f09e00053c196b4e91f6c"><div class="ttname"><a href="type_defs_8h.html#a2eee5b91e58f09e00053c196b4e91f6c">scalarhessType</a></div><div class="ttdeci">dealii::Tensor&lt; 2, dim, dealii::VectorizedArray&lt; double &gt; &gt; scalarhessType</div><div class="ttdef"><b>Definition:</b> typeDefs.h:47</div></div>
+<div class="ttc" id="type_defs_8h_html_aa052a27d286446c6ac73855c6eafb9a4"><div class="ttname"><a href="type_defs_8h.html#aa052a27d286446c6ac73855c6eafb9a4">typeScalar</a></div><div class="ttdeci">dealii::FEEvaluation&lt; dim, degree, degree+1, 1, double &gt; typeScalar</div><div class="ttdef"><b>Definition:</b> typeDefs.h:20</div></div>
+<div class="ttc" id="type_defs_8h_html_a67b2dc8754f16b415d85a07e2b2fe856"><div class="ttname"><a href="type_defs_8h.html#a67b2dc8754f16b415d85a07e2b2fe856">vectorvalueType</a></div><div class="ttdeci">dealii::Tensor&lt; 1, dim, dealii::VectorizedArray&lt; double &gt; &gt; vectorvalueType</div><div class="ttdef"><b>Definition:</b> typeDefs.h:30</div></div>
+<div class="ttc" id="type_defs_8h_html_a5c5c0fd24a54a16a15ac9f93b48f5fea"><div class="ttname"><a href="type_defs_8h.html#a5c5c0fd24a54a16a15ac9f93b48f5fea">vectorgradType</a></div><div class="ttdeci">dealii::Tensor&lt; 2, dim, dealii::VectorizedArray&lt; double &gt; &gt; vectorgradType</div><div class="ttdef"><b>Definition:</b> typeDefs.h:50</div></div>
 <div class="ttc" id="type_defs_8h_html_ac74a2c5a901e3ca87ec3ae9c01623449"><div class="ttname"><a href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a></div><div class="ttdeci">dealii::VectorizedArray&lt; double &gt; scalarvalueType</div><div class="ttdef"><b>Definition:</b> typeDefs.h:27</div></div>
+<div class="ttc" id="type_defs_8h_html_ad8666e06a1a43dedeeb94f2062d82f48"><div class="ttname"><a href="type_defs_8h.html#ad8666e06a1a43dedeeb94f2062d82f48">vectorhessType</a></div><div class="ttdeci">dealii::Tensor&lt; 3, dim, dealii::VectorizedArray&lt; double &gt; &gt; vectorhessType</div><div class="ttdef"><b>Definition:</b> typeDefs.h:53</div></div>
 <div class="ttc" id="type_defs_8h_html_accab0ce4c9641071419bfea1492d190f"><div class="ttname"><a href="type_defs_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a></div><div class="ttdeci">dealii::parallel::distributed::Vector&lt; double &gt; vectorType</div><div class="ttdef"><b>Definition:</b> typeDefs.h:16</div></div>
-<div class="ttc" id="type_defs_8h_html_abce74f518b933f63ffc2c72b83fcaec6"><div class="ttname"><a href="type_defs_8h.html#abce74f518b933f63ffc2c72b83fcaec6">typeScalar</a></div><div class="ttdeci">dealii::FEEvaluation&lt; problemDIM, finiteElementDegree, finiteElementDegree+1, 1, double &gt; typeScalar</div><div class="ttdef"><b>Definition:</b> typeDefs.h:20</div></div>
+<div class="ttc" id="type_defs_8h_html_a35b1b83d6d194e7417b515cc381ee577"><div class="ttname"><a href="type_defs_8h.html#a35b1b83d6d194e7417b515cc381ee577">scalargradType</a></div><div class="ttdeci">dealii::Tensor&lt; 1, dim, dealii::VectorizedArray&lt; double &gt; &gt; scalargradType</div><div class="ttdef"><b>Definition:</b> typeDefs.h:44</div></div>
+<div class="ttc" id="type_defs_8h_html_ab21b18a243589c5255cd4dad43f192e1"><div class="ttname"><a href="type_defs_8h.html#ab21b18a243589c5255cd4dad43f192e1">typeVector</a></div><div class="ttdeci">dealii::FEEvaluation&lt; dim, degree, degree+1, dim, double &gt; typeVector</div><div class="ttdef"><b>Definition:</b> typeDefs.h:23</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

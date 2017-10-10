@@ -96,7 +96,7 @@ void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 			  }
 			  else if (userInputs.BC_list[starting_BC_list_index].var_BC_type[direction] == NON_UNIFORM_DIRICHLET){
 				  VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
-  						direction, NonUniformDirichletBC<dim>(currentFieldIndex,direction,userInputs), *(ConstraintMatrix*) \
+  						direction, NonUniformDirichletBC<dim>(currentFieldIndex,direction,currentTime,userInputs), *(ConstraintMatrix*) \
   						constraintsDirichletSet[currentFieldIndex]);
 			  }
 		  }
@@ -135,7 +135,7 @@ void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 			  }
 
 			  VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
-				  direction, NonUniformDirichletBCVec<dim>(currentFieldIndex,direction,userInputs), *(ConstraintMatrix*) \
+				  direction, NonUniformDirichletBCVec<dim>(currentFieldIndex,direction,currentTime,userInputs), *(ConstraintMatrix*) \
 				  constraintsDirichletSet[currentFieldIndex],mask);
 
 

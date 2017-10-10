@@ -91,14 +91,14 @@ template <int dim, int degree>
 void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-// The concentration and its derivatives (names here should match those in the macros above)
+// The concentration and its derivatives 
 scalarvalueType c = variable_list.get_scalar_value(0);
 scalargradType cx = variable_list.get_scalar_gradient(0);
 
-// The chemical potential and its derivatives (names here should match those in the macros above)
+// The chemical potential and its derivatives 
 scalargradType mux = variable_list.get_scalar_gradient(1);
 
-// The order parameters and their derivatives (names here should match those in the macros above)
+// The order parameters and their derivatives 
 scalarvalueType n1 = variable_list.get_scalar_value(2);
 scalargradType n1x = variable_list.get_scalar_gradient(2);
 scalarvalueType n2 = variable_list.get_scalar_value(3);
@@ -151,13 +151,13 @@ scalargradType rmuxV = ( KcV*cx );
 scalarvalueType rcV = ( c );
 scalargradType rcxV = ( constV(-userInputs.dtValue)*McV*mux );
 
-// Residuals for the equation to evolve the concentration (names here should match those in the macros above)
+// Residuals for the equation to evolve the concentration 
 variable_list.set_scalar_value_residual_term(0,rcV);
 variable_list.set_scalar_gradient_residual_term(0,rcxV);
 variable_list.set_scalar_value_residual_term(1,rmuV);
 variable_list.set_scalar_gradient_residual_term(1,rmuxV);
 
-// Residuals for the equation to evolve the order parameters (names here should match those in the macros above)
+// Residuals for the equation to evolve the order parameters 
 variable_list.set_scalar_value_residual_term(2,rn1V);
 variable_list.set_scalar_gradient_residual_term(2,rn1xV);
 variable_list.set_scalar_value_residual_term(3,rn2V);

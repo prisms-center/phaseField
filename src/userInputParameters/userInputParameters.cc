@@ -36,8 +36,30 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     max_refinement_level = parameter_handler.get_integer("Max refinement level");
     min_refinement_level = parameter_handler.get_integer("Min refinement level");
 
+    // Enforce that the initial refinement level must be between the max and min level
+    if (h_adaptivity && ((refine_factor < min_refinement_level) || (refine_factor > max_refinement_level))){
+        std::cerr << "PRISMS-PF Error: The initial refinement factor must be between the maximum and minimum refinement levels when adaptive meshing is enabled." << std::endl;
+        std::cerr << "Initial refinement level: " << refine_factor << " Maximum and minimum refinement levels: " << max_refinement_level << ", " << min_refinement_level << std::endl;
+        abort();
+    }
+
     // Use built-in deal.II utilities to split up a string and convert it to a vector of doubles or ints
-    refine_criterion_fields = dealii::Utilities::string_to_int(dealii::Utilities::split_string_list(parameter_handler.get("Refinement criteria fields")));
+    std::vector<std::string> refine_criterion_fields_str = dealii::Utilities::split_string_list(parameter_handler.get("Refinement criteria fields"));
+    for (unsigned int ref_field=0; ref_field<refine_criterion_fields_str.size(); ref_field++){
+        bool field_found = false;
+        for (unsigned int i=0; i<_number_of_variables; i++ ){
+            if (boost::iequals(refine_criterion_fields_str[ref_field], variable_attributes.var_name_list[i].second)){
+                refine_criterion_fields.push_back(variable_attributes.var_name_list[i].first);
+                field_found = true;
+                break;
+            }
+        }
+        if (field_found == false && h_adaptivity == true){
+            std::cerr << "PRISMS-PF Error: Entries in the list of fields used for refinement must match the variable names in equations.h." << std::endl;
+            std::cerr << refine_criterion_fields_str[ref_field] << std::endl;
+            abort();
+        }
+    }
     refine_window_max = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Refinement window max")));
     refine_window_min = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Refinement window min")));
 
@@ -66,8 +88,6 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     output_file_name = parameter_handler.get("Output file name (base)");
 
     // Field variable definitions
-
-
     number_of_variables = _number_of_variables;
 
 
@@ -112,7 +132,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
 
 
     // Use these inputs to create a list of time steps where the code should output, stored in the member
-    outputTimeStepList = setOutputTimeSteps(output_condition, num_outputs,user_given_time_step_list);
+    outputTimeStepList = setTimeStepList(output_condition, num_outputs,user_given_time_step_list);
 
     // Variables for loading in PField ICs
     std::vector<std::string> load_ICs_temp = dealii::Utilities::split_string_list(parameter_handler.get("Load initial conditions"));
@@ -144,16 +164,27 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     load_file_name = dealii::Utilities::split_string_list(parameter_handler.get("File names"));
     load_field_name = dealii::Utilities::split_string_list(parameter_handler.get("Variable names in the files"));
 
+    // Parameters for checkpoint/restart
+    resume_from_checkpoint = parameter_handler.get_bool("Load from a checkpoint");
+    std::string checkpoint_condition = parameter_handler.get("Checkpoint condition");
+    unsigned int num_checkpoints = parameter_handler.get_integer("Number of checkpoints");
+
+    std::vector<int> user_given_checkpoint_time_step_list_temp = dealii::Utilities::string_to_int(dealii::Utilities::split_string_list(parameter_handler.get("List of time steps to save checkpoints")));
+    std::vector<unsigned int> user_given_checkpoint_time_step_list;
+    for (unsigned int i=0; i<user_given_checkpoint_time_step_list_temp.size(); i++) user_given_checkpoint_time_step_list.push_back(user_given_checkpoint_time_step_list_temp[i]);
+
+    checkpointTimeStepList = setTimeStepList(checkpoint_condition, num_checkpoints,user_given_checkpoint_time_step_list);
+
     // Parameters for nucleation
     nucleus_semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Nucleus semiaxes (x, y ,z)")));
     order_parameter_freeze_semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Freeze zone semiaxes (x, y ,z)")));
     nucleus_hold_time = parameter_handler.get_double("Freeze time following nucleation");
     no_nucleation_border_thickness = parameter_handler.get_double("Nucleation-free border thickness");
 
-    if (parameter_handler.get("Minimum allowed distance between nuclei") != ""){
+    if (parameter_handler.get("Minimum allowed distance between nuclei") != "-1"){
         min_distance_between_nuclei = parameter_handler.get_double("Minimum allowed distance between nuclei");
     }
-    else {
+    else if (nucleus_semiaxes.size() > 1) {
         min_distance_between_nuclei = 2.0 * (*(max_element(nucleus_semiaxes.begin(),nucleus_semiaxes.end())));
     }
     nucleation_order_parameter_cutoff = parameter_handler.get_double("Order parameter cutoff value");

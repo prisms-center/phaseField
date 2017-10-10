@@ -38,7 +38,7 @@ for (unsigned int i=0; i<userInputs.number_of_variables; i++){
 		pp_variable_list.set_scalar_gradient_residual_term(0, constV(-userInputs.dtValue*KnV*MnV)*nix);
 	}
 }
-// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
+// Residuals for the equation to evolve the order parameter 
 
 
 

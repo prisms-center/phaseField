@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>PRISMS PhaseField: phaseField_dev/applications/cahnHilliardWithAdaptivity/equations.h Source File</title>
+<title>PRISMS-PF: phaseField_dev/applications/cahnHilliardWithAdaptivity/equations.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,8 +23,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">PRISMS PhaseField
-   &#160;<span id="projectnumber">1.0</span>
+   <div id="projectname">PRISMS-PF
+   &#160;<span id="projectnumber">2.0</span>
    </div>
   </td>
  </tr>
@@ -39,7 +39,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -92,166 +91,118 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 <a href="cahn_hilliard_with_adaptivity_2equations_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// List of variables and residual equations for the Cahn-Hilliard example application</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// The names of the variables, whether they are scalars or vectors and whether the</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// governing eqn for the variable is parabolic or elliptic</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="cahn_hilliard_with_adaptivity_2equations_8h.html#aef7841c9c29ac0bf6310e07ba37e1b97">    5</a></span>&#160;<span class="preprocessor">#define variable_name {&quot;c&quot;, &quot;mu&quot;}</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="cahn_hilliard_with_adaptivity_2equations_8h.html#a52585660989cfcc26e44bd8a040c7e48">    6</a></span>&#160;<span class="preprocessor">#define variable_type {&quot;SCALAR&quot;, &quot;SCALAR&quot;}</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="cahn_hilliard_with_adaptivity_2equations_8h.html#a7ead333f197ce31a935e1cd3d870f111">    7</a></span>&#160;<span class="preprocessor">#define variable_eq_type {&quot;PARABOLIC&quot;, &quot;PARABOLIC&quot;}</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// Flags for whether the value, gradient, and Hessian are needed in the residual eqns</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="cahn_hilliard_with_adaptivity_2equations_8h.html#abfda0c56f9bfe63767f1cd71d361202a">   10</a></span>&#160;<span class="preprocessor">#define need_val {true, false}</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="cahn_hilliard_with_adaptivity_2equations_8h.html#ad394431a0a6bade158caaff189434fc2">   11</a></span>&#160;<span class="preprocessor">#define need_grad {true, true}</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="cahn_hilliard_with_adaptivity_2equations_8h.html#af81f83f4e6bbdc3e5bf8eef1eecfd426">   12</a></span>&#160;<span class="preprocessor">#define need_hess  {false, false}</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// List of residual equations for the coupled Allen-Cahn example application</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// =================================================================================</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">// Set the attributes of the primary field variables</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// =================================================================================</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keywordtype">void</span> <a class="code" href="classvariable_attribute_loader.html#a99a876ff4ff467bdfe6ad9b6e5894ff4">variableAttributeLoader::loadVariableAttributes</a>(){</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="comment">// Variable 0</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <a class="code" href="classvariable_attribute_loader.html#aa2663a595f5755a4d54e872def3d557a">set_variable_name</a>               (0,<span class="stringliteral">&quot;c&quot;</span>);</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <a class="code" href="classvariable_attribute_loader.html#a33fcec2802ca3ae2bbd9a550e1f15508">set_variable_type</a>               (0,<a class="code" href="var_type_enums_8h.html#ae2c3e99c22ce037f68e9b19bfd9c6de2a7efbb6cac96595e63e8fa171bde1eb68">SCALAR</a>);</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <a class="code" href="classvariable_attribute_loader.html#ae76cef48f59fb44bf36035fc6c9c704b">set_variable_equation_type</a>      (0,<a class="code" href="var_type_enums_8h.html#a12521d5d4cf2d9ed3c05e52b162fad42a6aaa4cbf733e3a4c6556b1f2ff8840a9">PARABOLIC</a>);</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// Flags for whether the residual equation has a term multiplied by the test function</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// (need_val_residual) and/or the gradient of the test function (need_grad_residual)</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="cahn_hilliard_with_adaptivity_2equations_8h.html#a48d6792e533e5744bfc4d69ee94f8306">   16</a></span>&#160;<span class="preprocessor">#define need_val_residual {true, true}</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="cahn_hilliard_with_adaptivity_2equations_8h.html#a5ba07955f021b138b3b815b426f9e7e2">   17</a></span>&#160;<span class="preprocessor">#define need_grad_residual {true, true}</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// =================================================================================</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// Define the model parameters and the residual equations</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// =================================================================================</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">// Parameters in the residual equations and expressions for the residual equations</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">// can be set here. For simple cases, the entire residual equation can be written</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">// here. For more complex cases with loops or conditional statements, residual</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// equations (or parts of residual equations) can be written below in &quot;residualRHS&quot;.</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// Mobility</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="cahn_hilliard_with_adaptivity_2equations_8h.html#a3bc9ee99c182f3afc331a89c80523101">   28</a></span>&#160;<span class="preprocessor">#define McV 1.0</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <a class="code" href="classvariable_attribute_loader.html#a2a6853cb61b6f60e1b00bddb07c3fee1">set_need_value</a>                  (0,<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <a class="code" href="classvariable_attribute_loader.html#ac6802ba4214afb7e78d3a76b4d881f39">set_need_gradient</a>               (0,<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <a class="code" href="classvariable_attribute_loader.html#af3a256c0970c3e55ee07b1b1ee2b88a0">set_need_hessian</a>                (0,<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <a class="code" href="classvariable_attribute_loader.html#a5dc10543c0ce43a6152e0bcabbe06a86">set_need_value_residual_term</a>    (0,<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <a class="code" href="classvariable_attribute_loader.html#a4208493abe59856516e5c0634fe3fa53">set_need_gradient_residual_term</a> (0,<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="comment">// Variable 1</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <a class="code" href="classvariable_attribute_loader.html#aa2663a595f5755a4d54e872def3d557a">set_variable_name</a>               (1,<span class="stringliteral">&quot;mu&quot;</span>);</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="classvariable_attribute_loader.html#a33fcec2802ca3ae2bbd9a550e1f15508">set_variable_type</a>               (1,<a class="code" href="var_type_enums_8h.html#ae2c3e99c22ce037f68e9b19bfd9c6de2a7efbb6cac96595e63e8fa171bde1eb68">SCALAR</a>);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="classvariable_attribute_loader.html#ae76cef48f59fb44bf36035fc6c9c704b">set_variable_equation_type</a>      (1,<a class="code" href="var_type_enums_8h.html#a12521d5d4cf2d9ed3c05e52b162fad42a6aaa4cbf733e3a4c6556b1f2ff8840a9">PARABOLIC</a>);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <a class="code" href="classvariable_attribute_loader.html#a2a6853cb61b6f60e1b00bddb07c3fee1">set_need_value</a>                  (1,<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <a class="code" href="classvariable_attribute_loader.html#ac6802ba4214afb7e78d3a76b4d881f39">set_need_gradient</a>               (1,<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <a class="code" href="classvariable_attribute_loader.html#af3a256c0970c3e55ee07b1b1ee2b88a0">set_need_hessian</a>                (1,<span class="keyword">false</span>);</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// Gradient energy coefficient</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="cahn_hilliard_with_adaptivity_2equations_8h.html#a9021e1ce73ed7629243a7db088c96f26">   31</a></span>&#160;<span class="preprocessor">#define KcV 1.5</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">// The free energy and its derivative</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="cahn_hilliard_with_adaptivity_2equations_8h.html#a3523d1577c64b888a1c54fc3e2c61f17">   34</a></span>&#160;<span class="preprocessor">#define fV (c*c*c*c - 2.0*c*c*c + c*c)</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="cahn_hilliard_with_adaptivity_2equations_8h.html#aeb4c9361fc3208a277c9b70da7db7aec">   35</a></span>&#160;<span class="preprocessor">#define fcV (4.0*c*(c-1.0)*(c-0.5))</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">// Residual equations</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="cahn_hilliard_with_adaptivity_2equations_8h.html#a9ea9b7cb1ce47dec6cc06c5f010d8fa6">   38</a></span>&#160;<span class="preprocessor">#define rmuV  (fcV)</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="cahn_hilliard_with_adaptivity_2equations_8h.html#a6ff9dd31f7e099d075354a1d01980d45">   39</a></span>&#160;<span class="preprocessor">#define rmuxV (constV(KcV)*cx)</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="cahn_hilliard_with_adaptivity_2equations_8h.html#a031e490658682f5af3652867cc81c435">   40</a></span>&#160;<span class="preprocessor">#define rcV   (c)</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="cahn_hilliard_with_adaptivity_2equations_8h.html#a282e86016dd726dccae6085834af9db2">   41</a></span>&#160;<span class="preprocessor">#define rcxV  (constV(-McV*timeStep)*mux)</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <a class="code" href="classvariable_attribute_loader.html#a5dc10543c0ce43a6152e0bcabbe06a86">set_need_value_residual_term</a>    (1,<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="classvariable_attribute_loader.html#a4208493abe59856516e5c0634fe3fa53">set_need_gradient_residual_term</a> (1,<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;}</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">// =================================================================================</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">// residualRHS</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// =================================================================================</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">// This function calculates the residual equations for each variable. It takes</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">// &quot;variable_list&quot; as an input, which is a list of the value and derivatives of</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">// each of the variables at a specific quadrature point. The (x,y,z) location of</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">// that quadrature point is given by &quot;q_point_loc&quot;. The function outputs residuals</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">// to variable_list. The index for each variable in this list corresponds to</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">// the index given at the top of this file.</span></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">// =================================================================================</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">// residualRHS</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">// =================================================================================</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">// This function calculates the residual equations for each variable. It takes</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">// &quot;modelVariablesList&quot; as an input, which is a list of the value and derivatives of</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">// each of the variables at a specific quadrature point. The (x,y,z) location of</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// that quadrature point is given by &quot;q_point_loc&quot;. The function outputs</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">// &quot;modelResidualsList&quot;, a list of the value and gradient terms of the residual for</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">// each residual equation. The index for each variable in these lists corresponds to</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">// the order it is defined at the top of this file (starting at 0).</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> degree&gt;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keywordtype">void</span> <a class="code" href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">customPDE&lt;dim,degree&gt;::residualRHS</a>(<span class="keyword">const</span> std::vector&lt;<a class="code" href="classmodel_variable.html">modelVariable&lt;dim&gt;</a> &gt; &amp; modelVariablesList,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                                                std::vector&lt;<a class="code" href="classmodel_residual.html">modelResidual&lt;dim&gt;</a> &gt; &amp; modelResidualsList,</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                                                dealii::Point&lt;dim, dealii::VectorizedArray&lt;double&gt; &gt; q_point_loc)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">// The concentration and its derivatives (names here should match those in the macros above)</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> c = modelVariablesList[0].scalarValue;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<a class="code" href="type_defs_8h.html#a275b78678cf79b17d9561360f57b825d">scalargradType</a> cx = modelVariablesList[0].scalarGrad;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">// The chemical potential and its derivatives (names here should match those in the macros above)</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<a class="code" href="type_defs_8h.html#a275b78678cf79b17d9561360f57b825d">scalargradType</a> mux = modelVariablesList[1].scalarGrad;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">// Residuals for the equation to evolve the concentration (names here should match those in the macros above)</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;modelResidualsList[0].scalarValueResidual = <a class="code" href="cahn_hilliard_with_adaptivity_2equations_8h.html#a031e490658682f5af3652867cc81c435">rcV</a>;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;modelResidualsList[0].scalarGradResidual = <a class="code" href="cahn_hilliard_with_adaptivity_2equations_8h.html#a282e86016dd726dccae6085834af9db2">rcxV</a>;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">// Residuals for the equation to evolve the chemical potential (names here should match those in the macros above)</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;modelResidualsList[1].scalarValueResidual = <a class="code" href="cahn_hilliard_with_adaptivity_2equations_8h.html#a9ea9b7cb1ce47dec6cc06c5f010d8fa6">rmuV</a>;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;modelResidualsList[1].scalarGradResidual = <a class="code" href="cahn_hilliard_with_adaptivity_2equations_8h.html#a6ff9dd31f7e099d075354a1d01980d45">rmuxV</a>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">// =================================================================================</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">// residualLHS (needed only if at least one equation is elliptic)</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">// =================================================================================</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">// This function calculates the residual equations for the iterative solver for</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">// elliptic equations.for each variable. It takes &quot;modelVariablesList&quot; as an input,</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">// which is a list of the value and derivatives of each of the variables at a</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">// specific quadrature point. The (x,y,z) location of that quadrature point is given</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">// by &quot;q_point_loc&quot;. The function outputs &quot;modelRes&quot;, the value and gradient terms of</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">// for the left-hand-side of the residual equation for the iterative solver. The</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">// index for each variable in these lists corresponds to the order it is defined at</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">// the top of this file (starting at 0), not counting variables that have</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">// &quot;need_val_LHS&quot;, &quot;need_grad_LHS&quot;, and &quot;need_hess_LHS&quot; all set to &quot;false&quot;. If there</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">// are multiple elliptic equations, conditional statements should be used to ensure</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">// that the correct residual is being submitted. The index of the field being solved</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">// can be accessed by &quot;this-&gt;currentFieldIndex&quot;.</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> degree&gt;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="keywordtype">void</span> <a class="code" href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">customPDE&lt;dim,degree&gt;::residualLHS</a>(<span class="keyword">const</span> std::vector&lt;<a class="code" href="classmodel_variable.html">modelVariable&lt;dim&gt;</a> &gt; &amp; modelVarList,</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <a class="code" href="classmodel_residual.html">modelResidual&lt;dim&gt;</a> &amp; modelRes,</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> degree&gt;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keywordtype">void</span> <a class="code" href="classcustom_p_d_e.html#a12929114dcb8406ca369f40a6b921127">customPDE&lt;dim,degree&gt;::residualRHS</a>(<a class="code" href="classvariable_container.html">variableContainer</a>&lt;dim,degree,dealii::VectorizedArray&lt;double&gt; &gt; &amp; variable_list,</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                 dealii::Point&lt;dim, dealii::VectorizedArray&lt;double&gt; &gt; q_point_loc)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">// The concentration and its derivatives </span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> c = variable_list.get_scalar_value(0);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<a class="code" href="type_defs_8h.html#a35b1b83d6d194e7417b515cc381ee577">scalargradType</a> cx = variable_list.get_scalar_gradient(0);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">// The chemical potential and its derivatives </span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<a class="code" href="type_defs_8h.html#a35b1b83d6d194e7417b515cc381ee577">scalargradType</a> mux = variable_list.get_scalar_gradient(1);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// Parameters in the residual equations and expressions for the residual equations</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">// can be set here.</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">// The derivative of the local free energy</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> fcV = 4.0*c*(c-1.0)*(c-0.5);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">// The residuals</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> <a class="code" href="nucleation_model_2equations_8h.html#a031e490658682f5af3652867cc81c435">rcV</a> = c;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<a class="code" href="type_defs_8h.html#a35b1b83d6d194e7417b515cc381ee577">scalargradType</a> <a class="code" href="nucleation_model_2equations_8h.html#a282e86016dd726dccae6085834af9db2">rcxV</a> = <a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(-McV*userInputs.dtValue)*mux;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> rmuV = fcV;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<a class="code" href="type_defs_8h.html#a35b1b83d6d194e7417b515cc381ee577">scalargradType</a> rmuxV = <a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(KcV)*cx;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">// Residuals for the equation to evolve the concentration </span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;variable_list.set_scalar_value_residual_term(0,rcV);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;variable_list.set_scalar_gradient_residual_term(0,rcxV);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">// Residuals for the equation to evolve the chemical potential </span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;variable_list.set_scalar_value_residual_term(1,rmuV);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;variable_list.set_scalar_gradient_residual_term(1,rmuxV);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;}</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">// =================================================================================</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">// residualLHS (needed only if at least one equation is elliptic)</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">// =================================================================================</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">// This function calculates the residual equations for the iterative solver for</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">// elliptic equations.for each variable. It takes &quot;variable_list&quot; as an input,</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">// which is a list of the value and derivatives of each of the variables at a</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">// specific quadrature point. The (x,y,z) location of that quadrature point is given</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">// by &quot;q_point_loc&quot;. The function outputs residual terms to &quot;variable_list&quot;</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">// for the left-hand-side of the residual equation for the iterative solver. The</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">// index for each variable in this list corresponds to</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">// the index given at the top of this file. If there are multiple elliptic equations,</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">// conditional statements should be used to ensure that the correct residual is</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">// being submitted. The index of the field being solved can be accessed by</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">// &quot;this-&gt;currentFieldIndex&quot;.</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> degree&gt;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="keywordtype">void</span> <a class="code" href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE&lt;dim,degree&gt;::residualLHS</a>(<a class="code" href="classvariable_container.html">variableContainer</a>&lt;dim,degree,dealii::VectorizedArray&lt;double&gt; &gt; &amp; variable_list,</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        dealii::Point&lt;dim, dealii::VectorizedArray&lt;double&gt; &gt; q_point_loc)<span class="keyword"> const </span>{</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;}</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">// =================================================================================</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">// energyDensity (needed only if calcEnergy == true)</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">// =================================================================================</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="comment">// This function integrates the free energy density across the computational domain.</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="comment">// It takes &quot;modelVariablesList&quot; as an input, which is a list of the value and</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">// derivatives of each of the variables at a specific quadrature point. It also</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">// takes the mapped quadrature weight, &quot;JxW_value&quot;, as an input. The (x,y,z) location</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment">// of the quadrature point is given by &quot;q_point_loc&quot;. The weighted value of the</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">// energy density is added to &quot;energy&quot; variable and the components of the energy</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">// density are added to the &quot;energy_components&quot; variable (index 0: chemical energy,</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment">// index 1: gradient energy, index 2: elastic energy).</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> degree&gt;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="keywordtype">void</span> <a class="code" href="classcustom_p_d_e.html#a13dfb29f2b80a5ed12336bd536d96f03">customPDE&lt;dim,degree&gt;::energyDensity</a>(<span class="keyword">const</span> std::vector&lt;<a class="code" href="classmodel_variable.html">modelVariable&lt;dim&gt;</a> &gt; &amp; modelVariablesList,</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                                            <span class="keyword">const</span> dealii::VectorizedArray&lt;double&gt; &amp; JxW_value,</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                                            dealii::Point&lt;dim, dealii::VectorizedArray&lt;double&gt; &gt; q_point_loc) {</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> total_energy_density = <a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(0.0);</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="comment">// The concentration and its derivatives (names here should match those in the macros above)</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> c = modelVariablesList[0].scalarValue;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<a class="code" href="type_defs_8h.html#a275b78678cf79b17d9561360f57b825d">scalargradType</a> cx = modelVariablesList[0].scalarGrad;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="comment">// The homogenous free energy</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> f_chem = <a class="code" href="cahn_hilliard_with_adaptivity_2equations_8h.html#a3523d1577c64b888a1c54fc3e2c61f17">fV</a>;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="comment">// The gradient free energy</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<a class="code" href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a> f_grad = <a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(0.0);</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=0; i&lt;dim; i++){</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j=0; j&lt;dim; j++){</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;      f_grad += <a class="code" href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a>(0.5*<a class="code" href="cahn_hilliard_with_adaptivity_2equations_8h.html#a9021e1ce73ed7629243a7db088c96f26">KcV</a>)*cx[i]*cx[j];</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  }</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;}</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="comment">// The total free energy</span></div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;total_energy_density = f_chem + f_grad;</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="comment">// Loop to step through each element of the vectorized arrays. Working with deal.ii</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="comment">// developers to see if there is a more elegant way to do this.</span></div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;this-&gt;assembler_lock.acquire ();</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> i=0; i&lt;c.n_array_elements;i++){</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  <span class="keywordflow">if</span> (c[i] &gt; 1.0e-10){</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;      this-&gt;energy+=total_energy_density[i]*JxW_value[i];</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;      this-&gt;energy_components[0]+= f_chem[i]*JxW_value[i];</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;      this-&gt;energy_components[1]+= f_grad[i]*JxW_value[i];</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;  }</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;}</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;this-&gt;assembler_lock.release ();</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;}</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
-<div class="ttc" id="classmodel_residual_html"><div class="ttname"><a href="classmodel_residual.html">modelResidual</a></div><div class="ttdef"><b>Definition:</b> model_variables.h:22</div></div>
-<div class="ttc" id="classcustom_p_d_e_html_ac3be7fef8c1af88cb1c325179e4dd555"><div class="ttname"><a href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">customPDE::residualLHS</a></div><div class="ttdeci">void residualLHS(const std::vector&lt; modelVariable&lt; dim &gt; &gt; &amp;modelVarList, modelResidual&lt; dim &gt; &amp;modelRes, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc) const </div><div class="ttdef"><b>Definition:</b> equations.h:249</div></div>
-<div class="ttc" id="classcustom_p_d_e_html_a13dfb29f2b80a5ed12336bd536d96f03"><div class="ttname"><a href="classcustom_p_d_e.html#a13dfb29f2b80a5ed12336bd536d96f03">customPDE::energyDensity</a></div><div class="ttdeci">void energyDensity(const std::vector&lt; modelVariable&lt; dim &gt; &gt; &amp;modelVarList, const dealii::VectorizedArray&lt; double &gt; &amp;JxW_value, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc)</div><div class="ttdef"><b>Definition:</b> equations.h:266</div></div>
-<div class="ttc" id="matrix_free_p_d_e_8h_html_af4deabb57f7353cd1981dbbb926455cd"><div class="ttname"><a href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a></div><div class="ttdeci">#define constV(a)</div><div class="ttdef"><b>Definition:</b> matrixFreePDE.h:38</div></div>
-<div class="ttc" id="cahn_hilliard_with_adaptivity_2equations_8h_html_a3523d1577c64b888a1c54fc3e2c61f17"><div class="ttname"><a href="cahn_hilliard_with_adaptivity_2equations_8h.html#a3523d1577c64b888a1c54fc3e2c61f17">fV</a></div><div class="ttdeci">#define fV</div><div class="ttdef"><b>Definition:</b> equations.h:34</div></div>
-<div class="ttc" id="cahn_hilliard_with_adaptivity_2equations_8h_html_a9ea9b7cb1ce47dec6cc06c5f010d8fa6"><div class="ttname"><a href="cahn_hilliard_with_adaptivity_2equations_8h.html#a9ea9b7cb1ce47dec6cc06c5f010d8fa6">rmuV</a></div><div class="ttdeci">#define rmuV</div><div class="ttdef"><b>Definition:</b> equations.h:38</div></div>
-<div class="ttc" id="classcustom_p_d_e_html_a8ccfe9cbd0b12d62f2cb6d6f23a57eb4"><div class="ttname"><a href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">customPDE::residualRHS</a></div><div class="ttdeci">void residualRHS(const std::vector&lt; modelVariable&lt; dim &gt; &gt; &amp;modelVarList, std::vector&lt; modelResidual&lt; dim &gt; &gt; &amp;modelResidualsList, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc) const </div><div class="ttdef"><b>Definition:</b> equations.h:145</div></div>
-<div class="ttc" id="type_defs_8h_html_a275b78678cf79b17d9561360f57b825d"><div class="ttname"><a href="type_defs_8h.html#a275b78678cf79b17d9561360f57b825d">scalargradType</a></div><div class="ttdeci">dealii::Tensor&lt; 1, problemDIM, dealii::VectorizedArray&lt; double &gt; &gt; scalargradType</div><div class="ttdef"><b>Definition:</b> typeDefs.h:44</div></div>
-<div class="ttc" id="cahn_hilliard_with_adaptivity_2equations_8h_html_a031e490658682f5af3652867cc81c435"><div class="ttname"><a href="cahn_hilliard_with_adaptivity_2equations_8h.html#a031e490658682f5af3652867cc81c435">rcV</a></div><div class="ttdeci">#define rcV</div><div class="ttdef"><b>Definition:</b> equations.h:40</div></div>
-<div class="ttc" id="cahn_hilliard_with_adaptivity_2equations_8h_html_a6ff9dd31f7e099d075354a1d01980d45"><div class="ttname"><a href="cahn_hilliard_with_adaptivity_2equations_8h.html#a6ff9dd31f7e099d075354a1d01980d45">rmuxV</a></div><div class="ttdeci">#define rmuxV</div><div class="ttdef"><b>Definition:</b> equations.h:39</div></div>
+<div class="ttc" id="classvariable_attribute_loader_html_aa2663a595f5755a4d54e872def3d557a"><div class="ttname"><a href="classvariable_attribute_loader.html#aa2663a595f5755a4d54e872def3d557a">variableAttributeLoader::set_variable_name</a></div><div class="ttdeci">void set_variable_name(unsigned int index, std::string name)</div><div class="ttdef"><b>Definition:</b> variableAttributeLoader.cc:13</div></div>
+<div class="ttc" id="classvariable_attribute_loader_html_a99a876ff4ff467bdfe6ad9b6e5894ff4"><div class="ttname"><a href="classvariable_attribute_loader.html#a99a876ff4ff467bdfe6ad9b6e5894ff4">variableAttributeLoader::loadVariableAttributes</a></div><div class="ttdeci">void loadVariableAttributes()</div><div class="ttdef"><b>Definition:</b> equations.h:6</div></div>
+<div class="ttc" id="classcustom_p_d_e_html_a4c5cecf654f57452af3951822493532b"><div class="ttname"><a href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE::residualLHS</a></div><div class="ttdeci">void residualLHS(variableContainer&lt; dim, degree, dealii::VectorizedArray&lt; double &gt; &gt; &amp;variable_list, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc) const </div><div class="ttdef"><b>Definition:</b> equations.h:66</div></div>
+<div class="ttc" id="nucleation_model_2equations_8h_html_a282e86016dd726dccae6085834af9db2"><div class="ttname"><a href="nucleation_model_2equations_8h.html#a282e86016dd726dccae6085834af9db2">rcxV</a></div><div class="ttdeci">#define rcxV</div><div class="ttdef"><b>Definition:</b> equations.h:71</div></div>
+<div class="ttc" id="classvariable_attribute_loader_html_af3a256c0970c3e55ee07b1b1ee2b88a0"><div class="ttname"><a href="classvariable_attribute_loader.html#af3a256c0970c3e55ee07b1b1ee2b88a0">variableAttributeLoader::set_need_hessian</a></div><div class="ttdeci">void set_need_hessian(unsigned int index, bool)</div><div class="ttdef"><b>Definition:</b> variableAttributeLoader.cc:55</div></div>
+<div class="ttc" id="var_type_enums_8h_html_a12521d5d4cf2d9ed3c05e52b162fad42a6aaa4cbf733e3a4c6556b1f2ff8840a9"><div class="ttname"><a href="var_type_enums_8h.html#a12521d5d4cf2d9ed3c05e52b162fad42a6aaa4cbf733e3a4c6556b1f2ff8840a9">PARABOLIC</a></div><div class="ttdef"><b>Definition:</b> varTypeEnums.h:5</div></div>
+<div class="ttc" id="matrix_free_p_d_e_8h_html_af4deabb57f7353cd1981dbbb926455cd"><div class="ttname"><a href="matrix_free_p_d_e_8h.html#af4deabb57f7353cd1981dbbb926455cd">constV</a></div><div class="ttdeci">#define constV(a)</div><div class="ttdef"><b>Definition:</b> matrixFreePDE.h:30</div></div>
+<div class="ttc" id="classvariable_attribute_loader_html_a33fcec2802ca3ae2bbd9a550e1f15508"><div class="ttname"><a href="classvariable_attribute_loader.html#a33fcec2802ca3ae2bbd9a550e1f15508">variableAttributeLoader::set_variable_type</a></div><div class="ttdeci">void set_variable_type(unsigned int index, fieldType)</div><div class="ttdef"><b>Definition:</b> variableAttributeLoader.cc:25</div></div>
+<div class="ttc" id="classvariable_attribute_loader_html_a4208493abe59856516e5c0634fe3fa53"><div class="ttname"><a href="classvariable_attribute_loader.html#a4208493abe59856516e5c0634fe3fa53">variableAttributeLoader::set_need_gradient_residual_term</a></div><div class="ttdeci">void set_need_gradient_residual_term(unsigned int index, bool)</div><div class="ttdef"><b>Definition:</b> variableAttributeLoader.cc:73</div></div>
+<div class="ttc" id="classvariable_attribute_loader_html_a5dc10543c0ce43a6152e0bcabbe06a86"><div class="ttname"><a href="classvariable_attribute_loader.html#a5dc10543c0ce43a6152e0bcabbe06a86">variableAttributeLoader::set_need_value_residual_term</a></div><div class="ttdeci">void set_need_value_residual_term(unsigned int index, bool)</div><div class="ttdef"><b>Definition:</b> variableAttributeLoader.cc:61</div></div>
+<div class="ttc" id="classvariable_attribute_loader_html_a2a6853cb61b6f60e1b00bddb07c3fee1"><div class="ttname"><a href="classvariable_attribute_loader.html#a2a6853cb61b6f60e1b00bddb07c3fee1">variableAttributeLoader::set_need_value</a></div><div class="ttdeci">void set_need_value(unsigned int index, bool)</div><div class="ttdef"><b>Definition:</b> variableAttributeLoader.cc:43</div></div>
 <div class="ttc" id="type_defs_8h_html_ac74a2c5a901e3ca87ec3ae9c01623449"><div class="ttname"><a href="type_defs_8h.html#ac74a2c5a901e3ca87ec3ae9c01623449">scalarvalueType</a></div><div class="ttdeci">dealii::VectorizedArray&lt; double &gt; scalarvalueType</div><div class="ttdef"><b>Definition:</b> typeDefs.h:27</div></div>
-<div class="ttc" id="cahn_hilliard_with_adaptivity_2equations_8h_html_a9021e1ce73ed7629243a7db088c96f26"><div class="ttname"><a href="cahn_hilliard_with_adaptivity_2equations_8h.html#a9021e1ce73ed7629243a7db088c96f26">KcV</a></div><div class="ttdeci">#define KcV</div><div class="ttdef"><b>Definition:</b> equations.h:31</div></div>
-<div class="ttc" id="cahn_hilliard_with_adaptivity_2equations_8h_html_a282e86016dd726dccae6085834af9db2"><div class="ttname"><a href="cahn_hilliard_with_adaptivity_2equations_8h.html#a282e86016dd726dccae6085834af9db2">rcxV</a></div><div class="ttdeci">#define rcxV</div><div class="ttdef"><b>Definition:</b> equations.h:41</div></div>
-<div class="ttc" id="classmodel_variable_html"><div class="ttname"><a href="classmodel_variable.html">modelVariable</a></div><div class="ttdef"><b>Definition:</b> model_variables.h:7</div></div>
+<div class="ttc" id="classvariable_attribute_loader_html_ac6802ba4214afb7e78d3a76b4d881f39"><div class="ttname"><a href="classvariable_attribute_loader.html#ac6802ba4214afb7e78d3a76b4d881f39">variableAttributeLoader::set_need_gradient</a></div><div class="ttdeci">void set_need_gradient(unsigned int index, bool)</div><div class="ttdef"><b>Definition:</b> variableAttributeLoader.cc:49</div></div>
+<div class="ttc" id="nucleation_model_2equations_8h_html_a031e490658682f5af3652867cc81c435"><div class="ttname"><a href="nucleation_model_2equations_8h.html#a031e490658682f5af3652867cc81c435">rcV</a></div><div class="ttdeci">#define rcV</div><div class="ttdef"><b>Definition:</b> equations.h:70</div></div>
+<div class="ttc" id="type_defs_8h_html_a35b1b83d6d194e7417b515cc381ee577"><div class="ttname"><a href="type_defs_8h.html#a35b1b83d6d194e7417b515cc381ee577">scalargradType</a></div><div class="ttdeci">dealii::Tensor&lt; 1, dim, dealii::VectorizedArray&lt; double &gt; &gt; scalargradType</div><div class="ttdef"><b>Definition:</b> typeDefs.h:44</div></div>
+<div class="ttc" id="classvariable_container_html"><div class="ttname"><a href="classvariable_container.html">variableContainer</a></div><div class="ttdef"><b>Definition:</b> variableContainer.h:8</div></div>
+<div class="ttc" id="classvariable_attribute_loader_html_ae76cef48f59fb44bf36035fc6c9c704b"><div class="ttname"><a href="classvariable_attribute_loader.html#ae76cef48f59fb44bf36035fc6c9c704b">variableAttributeLoader::set_variable_equation_type</a></div><div class="ttdeci">void set_variable_equation_type(unsigned int index, PDEType)</div><div class="ttdef"><b>Definition:</b> variableAttributeLoader.cc:37</div></div>
+<div class="ttc" id="classcustom_p_d_e_html_a12929114dcb8406ca369f40a6b921127"><div class="ttname"><a href="classcustom_p_d_e.html#a12929114dcb8406ca369f40a6b921127">customPDE::residualRHS</a></div><div class="ttdeci">void residualRHS(variableContainer&lt; dim, degree, dealii::VectorizedArray&lt; double &gt; &gt; &amp;variable_list, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc) const </div><div class="ttdef"><b>Definition:</b> equations.h:31</div></div>
+<div class="ttc" id="var_type_enums_8h_html_ae2c3e99c22ce037f68e9b19bfd9c6de2a7efbb6cac96595e63e8fa171bde1eb68"><div class="ttname"><a href="var_type_enums_8h.html#ae2c3e99c22ce037f68e9b19bfd9c6de2a7efbb6cac96595e63e8fa171bde1eb68">SCALAR</a></div><div class="ttdef"><b>Definition:</b> varTypeEnums.h:4</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

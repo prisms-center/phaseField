@@ -69,11 +69,11 @@ scalargradType rcxV = (constV(-McV*userInputs.dtValue)*muxV);
 scalarvalueType rnV = (n-constV(userInputs.dtValue*MnV)*(fbV-faV)*hnV);
 scalargradType rnxV = (constV(-userInputs.dtValue*KnV*MnV)*nx);
 
-// Residuals for the equation to evolve the concentration (names here should match those in the macros above)
+// Residuals for the equation to evolve the concentration 
 variable_list.set_scalar_value_residual_term(0,rcV);
 variable_list.set_scalar_gradient_residual_term(0,rcxV);
 
-// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
+// Residuals for the equation to evolve the order parameter
 variable_list.set_scalar_value_residual_term(1,rnV);
 variable_list.set_scalar_gradient_residual_term(1,rnxV);
 
@@ -97,5 +97,5 @@ variable_list.set_scalar_gradient_residual_term(1,rnxV);
 template <int dim, int degree>
 void customPDE<dim,degree>::residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
-			
+
 }

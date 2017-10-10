@@ -45,7 +45,7 @@ set Number of time steps = 100000
 # =================================================================================
 # Set the boundary condition for each variable, where each variable is given by
 # its name, as defined in equations.h. The four boundary condition
-# types are ZERO_DERIVATIVE, DIRICHLET, NON_UNIFORM_DIRICHLET and PERIODIC. If all
+# types are NATURAL, DIRICHLET, NON_UNIFORM_DIRICHLET and PERIODIC. If all
 # of the boundaries have the same boundary condition, only one boundary condition
 # type needs to be given. If multiple boundary condition types are needed, give a
 # comma-separated list of the types. The order is the miniumum of x, maximum of x,
@@ -58,10 +58,10 @@ set Number of time steps = 100000
 # set Boundary condition for variable c = PERIODIC
 # Example 2: Zero-derivative BCs on the left and right, Dirichlet BCs with value
 # 1.5 on the top and bottom for variable 'n' in 2D
-# set Boundary condition for variable n = ZERO_DERIVATIVE, ZERO_DERIVATIVE, DIRICHLET: 1.5, DIRICHLET: 1.5
+# set Boundary condition for variable n = NATURAL, NATURAL, DIRICHLET: 1.5, DIRICHLET: 1.5
 
-set Boundary condition for variable c = ZERO_DERIVATIVE
-set Boundary condition for variable mu = ZERO_DERIVATIVE
+set Boundary condition for variable c = NATURAL
+set Boundary condition for variable mu = NATURAL
 
 # =================================================================================
 # Set the model constants

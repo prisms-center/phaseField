@@ -19,6 +19,7 @@ template <int dim, int degree>
  currentTime(0.0),
  currentIncrement(0),
  currentOutput(0),
+ currentCheckpoint(0),
  computing_timer (pcout, TimerOutput::summary, TimerOutput::wall_times),
  first_integrated_var_output_complete(false)
  {
@@ -30,9 +31,10 @@ template <int dim, int degree>
  {
    matrixFreeObject.clear();
    for(unsigned int iter=0; iter<fields.size(); iter++){
-     //delete soltransSet[iter];
      delete locally_relevant_dofsSet[iter];
      delete constraintsDirichletSet[iter];
+     dealii::deallog.depth_console(4);
+     delete soltransSet[iter];
      delete dofHandlersSet[iter];
      delete FESet[iter];
      delete solutionSet[iter];

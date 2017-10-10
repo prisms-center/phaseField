@@ -81,7 +81,11 @@ double NonUniformDirichletBC<dim>::value (const dealii::Point<dim> &p, const uns
     // Enter the function describing conditions for the fields at point "p".
     // Use "if" statements to set the boundary condition for each variable
     // according to its variable index. This function can be left blank if there
-    // are no non-uniform Dirichlet boundary conditions.
+    // are no non-uniform Dirichlet boundary conditions. For BCs that change in
+    // time, you can access the current time through the variable "time". The
+    // boundary index can be accessed via the variable "direction", which starts
+    // at zero and uses the same order as the BC specification in parameters.in
+    // (i.e. left = 0, right = 1, bottom = 2, top = 3, front = 4, back = 5).
 
 
     // -------------------------------------------------------------------------
@@ -98,7 +102,11 @@ void NonUniformDirichletBCVec<dim>::vector_value (const dealii::Point<dim> &p, d
     // Enter the function describing conditions for the fields at point "p".
     // Use "if" statements to set the boundary condition for each variable
     // according to its variable index. This function can be left blank if there
-    // are no non-uniform Dirichlet boundary conditions.
+    // are no non-uniform Dirichlet boundary conditions. For BCs that change in
+    // time, you can access the current time through the variable "time". The
+    // boundary index can be accessed via the variable "direction", which starts
+    // at zero and uses the same order as the BC specification in parameters.in
+    // (i.e. left = 0, right = 1, bottom = 2, top = 3, front = 4, back = 5).
 
 
     // -------------------------------------------------------------------------

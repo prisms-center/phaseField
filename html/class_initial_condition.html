@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>PRISMS PhaseField: InitialCondition&lt; dim &gt; Class Template Reference</title>
+<title>PRISMS-PF: InitialCondition&lt; dim &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,8 +23,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">PRISMS PhaseField
-   &#160;<span id="projectnumber">1.0</span>
+   <div id="projectname">PRISMS-PF
+   &#160;<span id="projectnumber">2.0</span>
    </div>
   </td>
  </tr>
@@ -39,7 +39,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -105,20 +104,22 @@ Inheritance diagram for InitialCondition&lt; dim &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab5711c3ffa66b55c9ae22fd339b0fc22"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_initial_condition.html#ab5711c3ffa66b55c9ae22fd339b0fc22">InitialCondition</a> (const unsigned int _index)</td></tr>
-<tr class="separator:ab5711c3ffa66b55c9ae22fd339b0fc22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa40354b8b52e76d04daa0a9bc930d63"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_initial_condition.html#aaa40354b8b52e76d04daa0a9bc930d63">InitialCondition</a> (const unsigned int _index, const <a class="el" href="classuser_input_parameters.html">userInputParameters</a>&lt; dim &gt; _userInputs)</td></tr>
+<tr class="separator:aaa40354b8b52e76d04daa0a9bc930d63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a1fceabbc7b046cd7c0934159009195"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_initial_condition.html#a6a1fceabbc7b046cd7c0934159009195">value</a> (const dealii::Point&lt; dim &gt; &amp;p, const unsigned int component=0) const </td></tr>
 <tr class="separator:a6a1fceabbc7b046cd7c0934159009195"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a589d64202487f78e3cc30dd2e04c5201"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_initial_condition.html#a589d64202487f78e3cc30dd2e04c5201">index</a></td></tr>
-<tr class="separator:a589d64202487f78e3cc30dd2e04c5201"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad50032c86051707cc49a8ded34ea39cc"><td class="memItemLeft" align="right" valign="top">const unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_initial_condition.html#ad50032c86051707cc49a8ded34ea39cc">index</a></td></tr>
+<tr class="separator:ad50032c86051707cc49a8ded34ea39cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a679378dc93ff06d974a1ead4213456cc"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classuser_input_parameters.html">userInputParameters</a>&lt; dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_initial_condition.html#a679378dc93ff06d974a1ead4213456cc">userInputs</a></td></tr>
+<tr class="separator:a679378dc93ff06d974a1ead4213456cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a407a445f9d0e4f15b159fa66058bef9d"><td class="memItemLeft" align="right" valign="top">dealii::Vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_initial_condition.html#a407a445f9d0e4f15b159fa66058bef9d">values</a></td></tr>
 <tr class="separator:a407a445f9d0e4f15b159fa66058bef9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="ab5711c3ffa66b55c9ae22fd339b0fc22"></a>
+<a class="anchor" id="aaa40354b8b52e76d04daa0a9bc930d63"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -129,8 +130,18 @@ Public Attributes</h2></td></tr>
           <td class="memname"><a class="el" href="class_initial_condition.html">InitialCondition</a> </td>
           <td>(</td>
           <td class="paramtype">const unsigned int&#160;</td>
-          <td class="paramname"><em>_index</em></td><td>)</td>
+          <td class="paramname"><em>_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const <a class="el" href="classuser_input_parameters.html">userInputParameters</a>&lt; dim &gt;&#160;</td>
+          <td class="paramname"><em>_userInputs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -166,16 +177,29 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<hr/>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a589d64202487f78e3cc30dd2e04c5201"></a>
+<a class="anchor" id="ad50032c86051707cc49a8ded34ea39cc"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int index</td>
+          <td class="memname">const unsigned int index</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a679378dc93ff06d974a1ead4213456cc"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classuser_input_parameters.html">userInputParameters</a>&lt;dim&gt; userInputs</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -196,7 +220,7 @@ Public Attributes</h2></td></tr>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>phaseField_dev/include/<a class="el" href="initial_conditions_8h_source.html">initialConditions.h</a></li>
-<li>phaseField_dev/applications/_nucleationModel/<a class="el" href="__nucleation_model_2_i_cs__and___b_cs_8h_source.html">ICs_and_BCs.h</a></li>
+<li>phaseField_dev/applications/allenCahn/<a class="el" href="allen_cahn_2_i_cs__and___b_cs_8h_source.html">ICs_and_BCs.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

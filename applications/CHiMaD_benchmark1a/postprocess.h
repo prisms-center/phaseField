@@ -21,7 +21,7 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 
 scalarvalueType f_tot = constV(0.0);
 
-// The concentration and its derivatives (names here should match those in the macros above)
+// The concentration and its derivatives 
 scalarvalueType c = variable_list.get_scalar_value(0);
 scalargradType cx = variable_list.get_scalar_gradient(0);
 
@@ -40,7 +40,7 @@ for (int i=0; i<dim; i++){
 // The total free energy
 f_tot = f_chem + f_grad;
 
-// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
+// Residuals for the equation to evolve the order parameter 
 pp_variable_list.set_scalar_value_residual_term(0, f_tot);
 
 

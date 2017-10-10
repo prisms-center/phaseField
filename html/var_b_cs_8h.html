@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>PRISMS PhaseField: phaseField_dev/include/varBCs.h File Reference</title>
+<title>PRISMS-PF: phaseField_dev/include/varBCs.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,8 +23,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">PRISMS PhaseField
-   &#160;<span id="projectnumber">1.0</span>
+   <div id="projectname">PRISMS-PF
+   &#160;<span id="projectnumber">2.0</span>
    </div>
   </td>
  </tr>
@@ -39,7 +39,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -103,9 +102,14 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a1b857ce330597f3389336178f05a6b74"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74">BC_type</a> { <a class="el" href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74ad850ca0b43cb4e4b73d4c0cd2670f819">ZERO_DERIVATIVE</a>, 
+<tr class="memitem:a1b857ce330597f3389336178f05a6b74"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74">BC_type</a> { <br />
+&#160;&#160;<a class="el" href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74a0425aaf673bebee34014367ea7c3deb1">NATURAL</a>, 
 <a class="el" href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74a1c2adefa6a3b7015b29913c49ee050c7">DIRICHLET</a>, 
-<a class="el" href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74ae4379d044711537d9ce3b3b58c575c58">PERIODIC</a>
+<a class="el" href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74ae4379d044711537d9ce3b3b58c575c58">PERIODIC</a>, 
+<a class="el" href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74af4663ddb6e820e210c4d046fbe1e2e1c">NON_UNIFORM_DIRICHLET</a>, 
+<br />
+&#160;&#160;<a class="el" href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74ae58d114453737f3084aa5c645eba3412">NEUMANN</a>
+<br />
  }<tr class="separator:a1b857ce330597f3389336178f05a6b74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </td></tr>
 </table>
@@ -120,11 +124,15 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="a1b857ce330597f3389336178f05a6b74ad850ca0b43cb4e4b73d4c0cd2670f819"></a>ZERO_DERIVATIVE&#160;</td><td class="fielddoc">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="a1b857ce330597f3389336178f05a6b74a0425aaf673bebee34014367ea7c3deb1"></a>NATURAL&#160;</td><td class="fielddoc">
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="a1b857ce330597f3389336178f05a6b74a1c2adefa6a3b7015b29913c49ee050c7"></a>DIRICHLET&#160;</td><td class="fielddoc">
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="a1b857ce330597f3389336178f05a6b74ae4379d044711537d9ce3b3b58c575c58"></a>PERIODIC&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a1b857ce330597f3389336178f05a6b74af4663ddb6e820e210c4d046fbe1e2e1c"></a>NON_UNIFORM_DIRICHLET&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a1b857ce330597f3389336178f05a6b74ae58d114453737f3084aa5c645eba3412"></a>NEUMANN&#160;</td><td class="fielddoc">
 </td></tr>
 </table>
 

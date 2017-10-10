@@ -59,7 +59,7 @@ def run_simulation(run_name,dir_path):
 	subprocess.call(["rm", "*vtu"],stdout=f,stderr=f)
 
 	# Compile and run
-	subprocess.call(["cmake", "."],stdout=f,stderr=f)
+	subprocess.call(["cmake", "."]) # print to the screen to prevent a timeout on Travis
 	subprocess.call(["make", "release","-j9"],stdout=f)
 	print "Compiling complete, running the regression test..."
 	sys.stdout.flush()

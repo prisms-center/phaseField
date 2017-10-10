@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>PRISMS PhaseField: phaseField_dev/applications/singlePrecipitateKKS/ICs_and_BCs.h Source File</title>
+<title>PRISMS-PF: phaseField_dev/applications/singlePrecipitateKKS/ICs_and_BCs.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,8 +23,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">PRISMS PhaseField
-   &#160;<span id="projectnumber">1.0</span>
+   <div id="projectname">PRISMS-PF
+   &#160;<span id="projectnumber">2.0</span>
    </div>
   </td>
  </tr>
@@ -39,7 +39,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -90,31 +89,31 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">ICs_and_BCs.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="single_precipitate_k_k_s_2_i_cs__and___b_cs_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//initial condition</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim&gt;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keywordtype">double</span> <a class="code" href="class_initial_condition.html#a6a1fceabbc7b046cd7c0934159009195">InitialCondition&lt;dim&gt;::value</a> (<span class="keyword">const</span> dealii::Point&lt;dim&gt; &amp;p, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> component)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;  <span class="keywordtype">double</span> scalar_IC=0;</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;      <span class="comment">// =====================================================================</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;      <span class="comment">// ENTER THE INITIAL CONDITIONS HERE FOR SCALAR FIELDS</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;      <span class="comment">// =====================================================================</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;      <span class="comment">// Enter the function describing conditions for the fields at point &quot;p&quot;.</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;      <span class="comment">// Use &quot;if&quot; statements to set the initial condition for each variable</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;      <span class="comment">// according to its variable index.</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;      <span class="comment">// Initial condition parameters</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">      #define x_denom (2.0/2.0*scaleFactor)*(2.0/2.0*scaleFactor)</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">      #define y_denom (16.0/2.0*scaleFactor)*(16.0/2.0*scaleFactor)</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">      #define z_denom (16.0/2.0*scaleFactor)*(16.0/2.0*scaleFactor)</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">      #define initial_interface_coeff (0.02*scaleFactor)</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">      #define initial_radius 1.0</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">      #define c_matrix 1.0e-6</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">      #define c_precip 0.125</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;      <span class="comment">//set result equal to the structural order parameter initial condition</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;      <span class="keywordtype">double</span> dx=<a class="code" href="default_values_8h.html#a5aacbfdd02d16e8bb093059b0b5996fc">spanX</a>/( (double)<a class="code" href="____deprecated_demos_2__cahn_hilliard_with_adaptivity_2parameters_8h.html#a1f6673d11e02673eaf552b872f5e3186">subdivisionsX</a> )/std::pow(2.0,<a class="code" href="default_values_8h.html#a1c2dc29e2b04b35ef8a91b50eac02a95">refineFactor</a>);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;      <span class="keywordtype">double</span> dy=<a class="code" href="default_values_8h.html#a2b252486b943a1d94e3257ea48a14a3d">spanY</a>/( (double)<a class="code" href="____deprecated_demos_2__cahn_hilliard_with_adaptivity_2parameters_8h.html#a1bb732213987a1da0f4ebf3da9f1a90a">subdivisionsY</a> )/std::pow(2.0,<a class="code" href="default_values_8h.html#a1c2dc29e2b04b35ef8a91b50eac02a95">refineFactor</a>);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;      <span class="keywordtype">double</span> dz=<a class="code" href="default_values_8h.html#a349323cafd287850a2a7daf80d563f9f">spanZ</a>/( (double)<a class="code" href="____deprecated_demos_2__cahn_hilliard_with_adaptivity_2parameters_8h.html#acc1c523f35cb86dacfe2606b1fd355ae">subdivisionsZ</a> )/std::pow(2.0,<a class="code" href="default_values_8h.html#a1c2dc29e2b04b35ef8a91b50eac02a95">refineFactor</a>);</div>
+<a href="single_precipitate_k_k_s_2_i_cs__and___b_cs_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// ===========================================================================</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// FUNCTIONS FOR INITIAL CONDITIONS</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// ===========================================================================</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim&gt;</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keywordtype">double</span> <a class="code" href="class_initial_condition.html#a6a1fceabbc7b046cd7c0934159009195">InitialCondition&lt;dim&gt;::value</a> (<span class="keyword">const</span> dealii::Point&lt;dim&gt; &amp;p, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> component)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;  <span class="keywordtype">double</span> scalar_IC=0;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;      <span class="comment">// --------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;      <span class="comment">// ENTER THE INITIAL CONDITIONS HERE FOR SCALAR FIELDS</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;      <span class="comment">// --------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;      <span class="comment">// Enter the function describing conditions for the fields at point &quot;p&quot;.</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;      <span class="comment">// Use &quot;if&quot; statements to set the initial condition for each variable</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;      <span class="comment">// according to its variable index.</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;      <span class="comment">// Initial condition parameters</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">      #define x_denom (2.0)*(2.0)</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">      #define y_denom (16.0)*(16.0)</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">      #define z_denom (16.0)*(16.0)</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">      #define initial_interface_coeff (0.04)</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">      #define initial_radius 1.0</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">      #define c_matrix 1.0e-6</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">      #define c_precip 0.125</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;      <span class="comment">//set result equal to the structural order parameter initial condition</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;      <span class="keywordtype">double</span> r=0.0;</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;      std::vector&lt;double&gt; ellipsoid_denoms;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;      ellipsoid_denoms.push_back(<a class="code" href="single_precipitate_k_k_s_2_i_cs__and___b_cs_8h.html#a11213e73667ac0d13819bb6ac8fd3d12">x_denom</a>);</div>
@@ -135,16 +134,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;          scalar_IC = 0.5*(1.0-std::tanh((r-<a class="code" href="single_precipitate_k_k_s_2_i_cs__and___b_cs_8h.html#a5ecc8280baa69640041bdac79ea3c4df">initial_radius</a>)/(<a class="code" href="single_precipitate_k_k_s_2_i_cs__and___b_cs_8h.html#a6b4d4c7d07103d09efd552a84e2e3eb1">initial_interface_coeff</a>)));</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      }</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      <span class="comment">// =====================================================================</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      <span class="comment">// --------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      <span class="keywordflow">return</span> scalar_IC;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim&gt;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_initial_condition_vec.html#aef3a5257533050ac16a01202b5c913c7">InitialConditionVec&lt;dim&gt;::vector_value</a> (<span class="keyword">const</span> dealii::Point&lt;dim&gt; &amp;p, dealii::Vector&lt;double&gt; &amp;vector_IC)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <span class="comment">// =====================================================================</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <span class="comment">// --------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      <span class="comment">// ENTER THE INITIAL CONDITIONS HERE FOR VECTOR FIELDS</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      <span class="comment">// =====================================================================</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      <span class="comment">// --------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      <span class="comment">// Enter the function describing conditions for the fields at point &quot;p&quot;.</span></div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      <span class="comment">// Use &quot;if&quot; statements to set the initial condition for each variable</span></div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      <span class="comment">// according to its variable index.</span></div>
@@ -156,71 +155,57 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;              vector_IC(2) = 0.0;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;          }</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      }</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      <span class="comment">// =====================================================================</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      <span class="comment">// --------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;}</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> degree&gt;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keywordtype">void</span> <a class="code" href="classcustom_p_d_e.html#aaf994c4b3e37676d95e1c920d896efcb">customPDE&lt;dim,degree&gt;::setBCs</a>(){</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="comment">// =====================================================================</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="comment">// ENTER THE BOUNDARY CONDITIONS HERE</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="comment">// =====================================================================</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="comment">// This function sets the BCs for the problem variables</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="comment">// The function &quot;inputBCs&quot; should be called for each component of</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="comment">// each variable and should be in numerical order. Four input arguments</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">// set the same BC on the entire boundary. Two plus two times the</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="comment">// number of dimensions inputs sets separate BCs on each face of the domain.</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="comment">// Inputs to &quot;inputBCs&quot;:</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">// First input: variable number</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="comment">// Second input: component number</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="comment">// Third input: BC type (options are &quot;ZERO_DERIVATIVE&quot;, &quot;DIRICHLET&quot;, and &quot;PERIODIC&quot;)</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="comment">// Fourth input: BC value (ignored unless the BC type is &quot;DIRICHLET&quot;)</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="comment">// Odd inputs after the third: BC type</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="comment">// Even inputs after the third: BC value</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="comment">// Face numbering: starts at zero with the minimum of the first direction, one for the maximum of the first direction</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="comment">//                      two for the minimum of the second direction, etc. (i.e. left-right-bottom-top in 2D).</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="comment">// Example 1: Periodic BC for all boundaries for variable 2, component 2:</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="comment">// this-&gt;inputBCs(2,2,&quot;PERIODIC&quot;,0);</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="comment">// Example 2: Dirichlet BCs with a value of 1.0 on the top and bottom boundaries, zero-derivative on the left and right</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="comment">// for variable 0, component 0:</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="comment">// this-&gt;inputBCs(0,0,&quot;DIRICHLET&quot;,1.0,&quot;DIRICHLET&quot;,1.0,&quot;ZERO_DERIVATIVE&quot;,0,&quot;ZERO_DERIVATIVE&quot;,0);</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    this-&gt;inputBCs(0,0,<span class="stringliteral">&quot;ZERO_DERIVATIVE&quot;</span>,0);</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    this-&gt;inputBCs(1,0,<span class="stringliteral">&quot;ZERO_DERIVATIVE&quot;</span>,0);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordflow">if</span> (dim == 2){</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        this-&gt;inputBCs(2,0,<span class="stringliteral">&quot;DIRICHLET&quot;</span>,0.0,<span class="stringliteral">&quot;DIRICHLET&quot;</span>,0.0,<span class="stringliteral">&quot;ZERO_DERIVATIVE&quot;</span>,0.0,<span class="stringliteral">&quot;DIRICHLET&quot;</span>,0.0);</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        this-&gt;inputBCs(2,1,<span class="stringliteral">&quot;ZERO_DERIVATIVE&quot;</span>,0.0,<span class="stringliteral">&quot;DIRICHLET&quot;</span>,0.0,<span class="stringliteral">&quot;DIRICHLET&quot;</span>,0.0,<span class="stringliteral">&quot;DIRICHLET&quot;</span>,0.0);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    }</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (dim == 3){</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        this-&gt;inputBCs(2,0,<span class="stringliteral">&quot;DIRICHLET&quot;</span>,0.0,<span class="stringliteral">&quot;DIRICHLET&quot;</span>,0.0,<span class="stringliteral">&quot;ZERO_DERIVATIVE&quot;</span>,0.0,<span class="stringliteral">&quot;DIRICHLET&quot;</span>,0.0,<span class="stringliteral">&quot;ZERO_DERIVATIVE&quot;</span>,0.0,<span class="stringliteral">&quot;DIRICHLET&quot;</span>,0.0);</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        this-&gt;inputBCs(2,1,<span class="stringliteral">&quot;ZERO_DERIVATIVE&quot;</span>,0.0,<span class="stringliteral">&quot;DIRICHLET&quot;</span>,0.0,<span class="stringliteral">&quot;DIRICHLET&quot;</span>,0.0,<span class="stringliteral">&quot;DIRICHLET&quot;</span>,0.0,<span class="stringliteral">&quot;ZERO_DERIVATIVE&quot;</span>,0.0,<span class="stringliteral">&quot;DIRICHLET&quot;</span>,0.0);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        this-&gt;inputBCs(2,2,<span class="stringliteral">&quot;ZERO_DERIVATIVE&quot;</span>,0.0,<span class="stringliteral">&quot;DIRICHLET&quot;</span>,0.0,<span class="stringliteral">&quot;ZERO_DERIVATIVE&quot;</span>,0.0,<span class="stringliteral">&quot;DIRICHLET&quot;</span>,0.0,<span class="stringliteral">&quot;DIRICHLET&quot;</span>,0.0,<span class="stringliteral">&quot;DIRICHLET&quot;</span>,0.0);</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    }</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;}</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">// ===========================================================================</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">// FUNCTIONS FOR NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">// ===========================================================================</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim&gt;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keywordtype">double</span> <a class="code" href="class_non_uniform_dirichlet_b_c.html#a6a1fceabbc7b046cd7c0934159009195">NonUniformDirichletBC&lt;dim&gt;::value</a> (<span class="keyword">const</span> dealii::Point&lt;dim&gt; &amp;p, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> component)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">double</span> scalar_BC=0;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">// --------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="comment">// ENTER THE NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS HERE FOR SCALAR FIELDS</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="comment">// --------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="comment">// Enter the function describing conditions for the fields at point &quot;p&quot;.</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">// Use &quot;if&quot; statements to set the boundary condition for each variable</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="comment">// according to its variable index. This function can be left blank if there</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="comment">// are no non-uniform Dirichlet boundary conditions.</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="comment">// -------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordflow">return</span> scalar_BC;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;}</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim&gt;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_non_uniform_dirichlet_b_c_vec.html#a848098ab895481f43dba7982883f6e1a">NonUniformDirichletBCVec&lt;dim&gt;::vector_value</a> (<span class="keyword">const</span> dealii::Point&lt;dim&gt; &amp;p, dealii::Vector&lt;double&gt; &amp;vector_BC)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="comment">// --------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="comment">// ENTER THE NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS HERE FOR VECTOR FIELDS</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="comment">// --------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="comment">// Enter the function describing conditions for the fields at point &quot;p&quot;.</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="comment">// Use &quot;if&quot; statements to set the boundary condition for each variable</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="comment">// according to its variable index. This function can be left blank if there</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="comment">// are no non-uniform Dirichlet boundary conditions.</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="comment">// -------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;}</div>
+<div class="ttc" id="class_non_uniform_dirichlet_b_c_html_a6a1fceabbc7b046cd7c0934159009195"><div class="ttname"><a href="class_non_uniform_dirichlet_b_c.html#a6a1fceabbc7b046cd7c0934159009195">NonUniformDirichletBC::value</a></div><div class="ttdeci">double value(const dealii::Point&lt; dim &gt; &amp;p, const unsigned int component=0) const </div><div class="ttdef"><b>Definition:</b> ICs_and_BCs.h:58</div></div>
 <div class="ttc" id="single_precipitate_k_k_s_2_i_cs__and___b_cs_8h_html_a11213e73667ac0d13819bb6ac8fd3d12"><div class="ttname"><a href="single_precipitate_k_k_s_2_i_cs__and___b_cs_8h.html#a11213e73667ac0d13819bb6ac8fd3d12">x_denom</a></div><div class="ttdeci">#define x_denom</div></div>
-<div class="ttc" id="default_values_8h_html_a5aacbfdd02d16e8bb093059b0b5996fc"><div class="ttname"><a href="default_values_8h.html#a5aacbfdd02d16e8bb093059b0b5996fc">spanX</a></div><div class="ttdeci">#define spanX</div><div class="ttdef"><b>Definition:</b> defaultValues.h:12</div></div>
 <div class="ttc" id="single_precipitate_k_k_s_2_i_cs__and___b_cs_8h_html_a5ecc8280baa69640041bdac79ea3c4df"><div class="ttname"><a href="single_precipitate_k_k_s_2_i_cs__and___b_cs_8h.html#a5ecc8280baa69640041bdac79ea3c4df">initial_radius</a></div><div class="ttdeci">#define initial_radius</div></div>
 <div class="ttc" id="single_precipitate_k_k_s_2_i_cs__and___b_cs_8h_html_af2e82720e7058c0023629c39903cdac8"><div class="ttname"><a href="single_precipitate_k_k_s_2_i_cs__and___b_cs_8h.html#af2e82720e7058c0023629c39903cdac8">c_matrix</a></div><div class="ttdeci">#define c_matrix</div></div>
-<div class="ttc" id="default_values_8h_html_a2b252486b943a1d94e3257ea48a14a3d"><div class="ttname"><a href="default_values_8h.html#a2b252486b943a1d94e3257ea48a14a3d">spanY</a></div><div class="ttdeci">#define spanY</div><div class="ttdef"><b>Definition:</b> defaultValues.h:17</div></div>
-<div class="ttc" id="class_initial_condition_html_a6a1fceabbc7b046cd7c0934159009195"><div class="ttname"><a href="class_initial_condition.html#a6a1fceabbc7b046cd7c0934159009195">InitialCondition::value</a></div><div class="ttdeci">double value(const dealii::Point&lt; dim &gt; &amp;p, const unsigned int component=0) const </div><div class="ttdef"><b>Definition:</b> ICs_and_BCs.h:2</div></div>
-<div class="ttc" id="____deprecated_demos_2__cahn_hilliard_with_adaptivity_2parameters_8h_html_acc1c523f35cb86dacfe2606b1fd355ae"><div class="ttname"><a href="____deprecated_demos_2__cahn_hilliard_with_adaptivity_2parameters_8h.html#acc1c523f35cb86dacfe2606b1fd355ae">subdivisionsZ</a></div><div class="ttdeci">#define subdivisionsZ</div><div class="ttdef"><b>Definition:</b> parameters.h:16</div></div>
+<div class="ttc" id="class_initial_condition_html_a6a1fceabbc7b046cd7c0934159009195"><div class="ttname"><a href="class_initial_condition.html#a6a1fceabbc7b046cd7c0934159009195">InitialCondition::value</a></div><div class="ttdeci">double value(const dealii::Point&lt; dim &gt; &amp;p, const unsigned int component=0) const </div><div class="ttdef"><b>Definition:</b> ICs_and_BCs.h:6</div></div>
 <div class="ttc" id="single_precipitate_k_k_s_2_i_cs__and___b_cs_8h_html_a7d2924cf40a8f424ede120b833ce9f47"><div class="ttname"><a href="single_precipitate_k_k_s_2_i_cs__and___b_cs_8h.html#a7d2924cf40a8f424ede120b833ce9f47">z_denom</a></div><div class="ttdeci">#define z_denom</div></div>
-<div class="ttc" id="____deprecated_demos_2__cahn_hilliard_with_adaptivity_2parameters_8h_html_a1bb732213987a1da0f4ebf3da9f1a90a"><div class="ttname"><a href="____deprecated_demos_2__cahn_hilliard_with_adaptivity_2parameters_8h.html#a1bb732213987a1da0f4ebf3da9f1a90a">subdivisionsY</a></div><div class="ttdeci">#define subdivisionsY</div><div class="ttdef"><b>Definition:</b> parameters.h:15</div></div>
-<div class="ttc" id="default_values_8h_html_a1c2dc29e2b04b35ef8a91b50eac02a95"><div class="ttname"><a href="default_values_8h.html#a1c2dc29e2b04b35ef8a91b50eac02a95">refineFactor</a></div><div class="ttdeci">#define refineFactor</div><div class="ttdef"><b>Definition:</b> defaultValues.h:27</div></div>
+<div class="ttc" id="class_non_uniform_dirichlet_b_c_vec_html_a848098ab895481f43dba7982883f6e1a"><div class="ttname"><a href="class_non_uniform_dirichlet_b_c_vec.html#a848098ab895481f43dba7982883f6e1a">NonUniformDirichletBCVec::vector_value</a></div><div class="ttdeci">void vector_value(const dealii::Point&lt; dim &gt; &amp;p, dealii::Vector&lt; double &gt; &amp;vector_BC) const </div><div class="ttdef"><b>Definition:</b> ICs_and_BCs.h:75</div></div>
 <div class="ttc" id="single_precipitate_k_k_s_2_i_cs__and___b_cs_8h_html_a23611ab24ae8ab80751f481a232e2d27"><div class="ttname"><a href="single_precipitate_k_k_s_2_i_cs__and___b_cs_8h.html#a23611ab24ae8ab80751f481a232e2d27">c_precip</a></div><div class="ttdeci">#define c_precip</div></div>
 <div class="ttc" id="single_precipitate_k_k_s_2_i_cs__and___b_cs_8h_html_a6b4d4c7d07103d09efd552a84e2e3eb1"><div class="ttname"><a href="single_precipitate_k_k_s_2_i_cs__and___b_cs_8h.html#a6b4d4c7d07103d09efd552a84e2e3eb1">initial_interface_coeff</a></div><div class="ttdeci">#define initial_interface_coeff</div></div>
 <div class="ttc" id="class_initial_condition_vec_html_aef3a5257533050ac16a01202b5c913c7"><div class="ttname"><a href="class_initial_condition_vec.html#aef3a5257533050ac16a01202b5c913c7">InitialConditionVec::vector_value</a></div><div class="ttdeci">void vector_value(const dealii::Point&lt; dim &gt; &amp;p, dealii::Vector&lt; double &gt; &amp;vector_IC) const </div><div class="ttdef"><b>Definition:</b> ICs_and_BCs.h:40</div></div>
-<div class="ttc" id="classcustom_p_d_e_html_aaf994c4b3e37676d95e1c920d896efcb"><div class="ttname"><a href="classcustom_p_d_e.html#aaf994c4b3e37676d95e1c920d896efcb">customPDE::setBCs</a></div><div class="ttdeci">void setBCs()</div><div class="ttdef"><b>Definition:</b> ICs_and_BCs.h:54</div></div>
-<div class="ttc" id="____deprecated_demos_2__cahn_hilliard_with_adaptivity_2parameters_8h_html_a1f6673d11e02673eaf552b872f5e3186"><div class="ttname"><a href="____deprecated_demos_2__cahn_hilliard_with_adaptivity_2parameters_8h.html#a1f6673d11e02673eaf552b872f5e3186">subdivisionsX</a></div><div class="ttdeci">#define subdivisionsX</div><div class="ttdef"><b>Definition:</b> parameters.h:14</div></div>
 <div class="ttc" id="single_precipitate_k_k_s_2_i_cs__and___b_cs_8h_html_a2de43a522e23d35579180bac559dfdea"><div class="ttname"><a href="single_precipitate_k_k_s_2_i_cs__and___b_cs_8h.html#a2de43a522e23d35579180bac559dfdea">y_denom</a></div><div class="ttdeci">#define y_denom</div></div>
-<div class="ttc" id="default_values_8h_html_a349323cafd287850a2a7daf80d563f9f"><div class="ttname"><a href="default_values_8h.html#a349323cafd287850a2a7daf80d563f9f">spanZ</a></div><div class="ttdeci">#define spanZ</div><div class="ttdef"><b>Definition:</b> defaultValues.h:22</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

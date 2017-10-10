@@ -2,6 +2,7 @@ sudo: required
 dist: trusty
 language: cpp
 
+
 services: 
   - docker
   
@@ -9,6 +10,6 @@ before_install:
   - if [ "$TRAVIS_EVENT_TYPE" == "pull_request" ]; then export BRANCH=$TRAVIS_PULL_REQUEST_BRANCH; export SLUG=$TRAVIS_PULL_REQUEST_SLUG; fi
   - if [ "$TRAVIS_EVENT_TYPE" == "push" ]; then export BRANCH=$TRAVIS_BRANCH; export SLUG=$TRAVIS_REPO_SLUG; fi
   - docker pull dealii/dealii:v8.4.2-gcc-mpi-fulldepsmanual-debugrelease
-  - docker run dealii/dealii:v8.4.2-gcc-mpi-fulldepsmanual-debugrelease /bin/sh -c "git clone --depth 5 -b $BRANCH  https://github.com/$SLUG; python phaseField/tests/automatic_tests/run_automatic_tests.py"
+  - docker run dealii/dealii:v8.4.2-gcc-mpi-fulldepsmanual-debugrelease /bin/sh -c "wget https://github.com/$SLUG/archive/$BRANCH.zip; unzip -q $BRANCH.zip; python phaseField-$BRANCH/tests/automatic_tests/run_automatic_tests.py"
 
 script: bash test_ci.sh

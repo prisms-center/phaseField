@@ -87,11 +87,11 @@ template <int dim, int degree>
 void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-// The concentration and its derivatives (names here should match those in the macros above)
+// The concentration and its derivatives
 scalarvalueType c = variable_list.get_scalar_value(0);
 scalargradType cx = variable_list.get_scalar_gradient(0);
 
-// The order parameter and its derivatives (names here should match those in the macros above)
+// The order parameter and its derivatives
 scalarvalueType n = variable_list.get_scalar_value(1);
 scalargradType nx = variable_list.get_scalar_gradient(1);
 
@@ -103,11 +103,11 @@ dealii::VectorizedArray<double> gamma = constV(1.0);
 seedNucleus(q_point_loc,source_term,gamma);
 // -------------------------------------------------
 
-// Residuals for the equation to evolve the concentration (names here should match those in the macros above)
+// Residuals for the equation to evolve the concentration
 variable_list.set_scalar_value_residual_term(0,rcV);
 variable_list.set_scalar_gradient_residual_term(0,rcxV);
 
-// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
+// Residuals for the equation to evolve the order parameter
 variable_list.set_scalar_value_residual_term(1,rnV+source_term);
 variable_list.set_scalar_gradient_residual_term(1,rnxV);
 

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>PRISMS PhaseField: MatrixFreePDE&lt; dim, degree &gt; Class Template Reference</title>
+<title>PRISMS-PF: MatrixFreePDE&lt; dim, degree &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,8 +23,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">PRISMS PhaseField
-   &#160;<span id="projectnumber">1.0</span>
+   <div id="projectname">PRISMS-PF
+   &#160;<span id="projectnumber">2.0</span>
    </div>
   </td>
  </tr>
@@ -39,7 +39,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -122,6 +121,9 @@ Inheritance diagram for MatrixFreePDE&lt; dim, degree &gt;:</div>
 <area href="classcustom_p_d_e.html" alt="customPDE&lt; dim, degree &gt;" shape="rect" coords="201,1008,392,1032"/>
 <area href="classcustom_p_d_e.html" alt="customPDE&lt; dim, degree &gt;" shape="rect" coords="201,1064,392,1088"/>
 <area href="classcustom_p_d_e.html" alt="customPDE&lt; dim, degree &gt;" shape="rect" coords="201,1120,392,1144"/>
+<area href="classcustom_p_d_e.html" alt="customPDE&lt; dim, degree &gt;" shape="rect" coords="201,1176,392,1200"/>
+<area href="classcustom_p_d_e.html" alt="customPDE&lt; dim, degree &gt;" shape="rect" coords="201,1232,392,1256"/>
+<area href="classcustom_p_d_e.html" alt="customPDE&lt; dim, degree &gt;" shape="rect" coords="201,1288,392,1312"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -131,33 +133,23 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2687789df6132f733302b9a1f0b49f8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a416b2bc1560114fe826f98b2eb75453f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a416b2bc1560114fe826f98b2eb75453f">~MatrixFreePDE</a> ()</td></tr>
 <tr class="separator:a416b2bc1560114fe826f98b2eb75453f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02fd73d861ef2e4aabb38c0c9ff82947"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a02fd73d861ef2e4aabb38c0c9ff82947">init</a> ()</td></tr>
+<tr class="memitem:a02fd73d861ef2e4aabb38c0c9ff82947"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a02fd73d861ef2e4aabb38c0c9ff82947">init</a> ()</td></tr>
 <tr class="separator:a02fd73d861ef2e4aabb38c0c9ff82947"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0a35420e2bbbc1269a0cd59471ce0bb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#aa0a35420e2bbbc1269a0cd59471ce0bb">makeTriangulation</a> (parallel::distributed::Triangulation&lt; dim &gt; &amp;) const </td></tr>
+<tr class="separator:aa0a35420e2bbbc1269a0cd59471ce0bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08849e3690a503c85f7c7e1734cda157"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a08849e3690a503c85f7c7e1734cda157">initForTests</a> ()</td></tr>
 <tr class="separator:a08849e3690a503c85f7c7e1734cda157"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7d39f0eac0af0ed5785935ac72a1e7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#af7d39f0eac0af0ed5785935ac72a1e7d">solve</a> ()</td></tr>
 <tr class="separator:af7d39f0eac0af0ed5785935ac72a1e7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a344f8f169b475748bc249894177d6a2e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a344f8f169b475748bc249894177d6a2e">vmult</a> (<a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> &amp;dst, const <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> &amp;src) const </td></tr>
 <tr class="separator:a344f8f169b475748bc249894177d6a2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c1d5a859d769005133d2b6b165176e2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a3c1d5a859d769005133d2b6b165176e2">setBCs</a> ()=0</td></tr>
-<tr class="separator:a3c1d5a859d769005133d2b6b165176e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a715f4fc285eae134d92c8ef07a862a01"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a715f4fc285eae134d92c8ef07a862a01">buildFields</a> ()</td></tr>
 <tr class="separator:a715f4fc285eae134d92c8ef07a862a01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac58c0270e163ebeb180715735aaace7e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#ac58c0270e163ebeb180715735aaace7e">inputBCs</a> (int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min, std::string BC_type_dim1_max, double BC_value_dim1_max, std::string BC_type_dim2_min, double BC_value_dim2_min, std::string BC_type_dim2_max, double BC_value_dim2_max, std::string BC_type_dim3_min, double BC_value_dim3_min, std::string BC_type_dim3_max, double BC_value_dim3_max)</td></tr>
-<tr class="separator:ac58c0270e163ebeb180715735aaace7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98239f916a3baaa6dd86908e894ef8da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a98239f916a3baaa6dd86908e894ef8da">inputBCs</a> (int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min, std::string BC_type_dim1_max, double BC_value_dim1_max, std::string BC_type_dim2_min, double BC_value_dim2_min, std::string BC_type_dim2_max, double BC_value_dim2_max)</td></tr>
-<tr class="separator:a98239f916a3baaa6dd86908e894ef8da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19c934b7c940b07af2594cbd9bddfb34"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a19c934b7c940b07af2594cbd9bddfb34">inputBCs</a> (int var, int component, std::string BC_type_dim1_min, double BC_value_dim1_min, std::string BC_type_dim1_max, double BC_value_dim1_max)</td></tr>
-<tr class="separator:a19c934b7c940b07af2594cbd9bddfb34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af38833983b730f4c5057d45d9a2c9e84"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#af38833983b730f4c5057d45d9a2c9e84">inputBCs</a> (int var, int component, std::string <a class="el" href="var_b_cs_8h.html#a1b857ce330597f3389336178f05a6b74">BC_type</a>, double BC_value)</td></tr>
-<tr class="separator:af38833983b730f4c5057d45d9a2c9e84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a33510468a6769d344bc61b0f38beb61a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_field.html">Field</a>&lt; dim &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a33510468a6769d344bc61b0f38beb61a">fields</a></td></tr>
 <tr class="separator:a33510468a6769d344bc61b0f38beb61a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a696a1f455c8f0351da62103276b66e17"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classvar_b_cs.html">varBCs</a>&lt; dim &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a696a1f455c8f0351da62103276b66e17">BC_list</a></td></tr>
-<tr class="separator:a696a1f455c8f0351da62103276b66e17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a914f651bc9ca2e223b243695dd37ba53"><td class="memItemLeft" align="right" valign="top">ConditionalOStream&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a914f651bc9ca2e223b243695dd37ba53">pcout</a></td></tr>
 <tr class="separator:a914f651bc9ca2e223b243695dd37ba53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -165,12 +157,10 @@ Public Attributes</h2></td></tr>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a8bf592c67d376edd20bf24a0028c9761"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a8bf592c67d376edd20bf24a0028c9761">reinit</a> ()</td></tr>
 <tr class="separator:a8bf592c67d376edd20bf24a0028c9761"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09229d9bae84b95a8a1e3a027a03515f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a09229d9bae84b95a8a1e3a027a03515f">solveIncrement</a> ()</td></tr>
+<tr class="memitem:a09229d9bae84b95a8a1e3a027a03515f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a09229d9bae84b95a8a1e3a027a03515f">solveIncrement</a> ()</td></tr>
 <tr class="separator:a09229d9bae84b95a8a1e3a027a03515f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3826cb6cb8bc6a6ac713354f819c0e35"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a3826cb6cb8bc6a6ac713354f819c0e35">outputResults</a> () const </td></tr>
-<tr class="separator:a3826cb6cb8bc6a6ac713354f819c0e35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6300b332841038b56efa07911485f2fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a6300b332841038b56efa07911485f2fe">getOutputTimeSteps</a> (const std::string outputSpacingType, unsigned int numberOfOutputs, const std::vector&lt; unsigned int &gt; &amp;userGivenTimeStepList, std::vector&lt; unsigned int &gt; &amp;timeStepList) const </td></tr>
-<tr class="separator:a6300b332841038b56efa07911485f2fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada15bd2ddcdcee02193cafbc4e2111d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#ada15bd2ddcdcee02193cafbc4e2111d2">outputResults</a> ()</td></tr>
+<tr class="separator:ada15bd2ddcdcee02193cafbc4e2111d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a338a99198f0bae743299eec600b0936a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a338a99198f0bae743299eec600b0936a">computeInvM</a> ()</td></tr>
 <tr class="separator:a338a99198f0bae743299eec600b0936a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aced905f83aaed97fde5f712b40828478"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#aced905f83aaed97fde5f712b40828478">refineGrid</a> ()</td></tr>
@@ -185,16 +175,22 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:afcc4fe564772a1331ffd7d603e84fc15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54b3ce066d6b3fa7a6d46c0badbe978b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a54b3ce066d6b3fa7a6d46c0badbe978b">getRHS</a> (const MatrixFree&lt; dim, double &gt; &amp;data, std::vector&lt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; &amp;dst, const std::vector&lt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; &amp;src, const std::pair&lt; unsigned int, unsigned int &gt; &amp;cell_range) const </td></tr>
 <tr class="separator:a54b3ce066d6b3fa7a6d46c0badbe978b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1408545a1a5c628d9ade860a6a0490ef"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a1408545a1a5c628d9ade860a6a0490ef">residualRHS</a> (const std::vector&lt; <a class="el" href="classmodel_variable.html">modelVariable</a>&lt; dim &gt; &gt; &amp;modelVarList, std::vector&lt; <a class="el" href="classmodel_residual.html">modelResidual</a>&lt; dim &gt; &gt; &amp;modelResidualsList, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc) const  =0</td></tr>
-<tr class="separator:a1408545a1a5c628d9ade860a6a0490ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d0efe983ffed0fdc58d89cdc61ddd7c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a3d0efe983ffed0fdc58d89cdc61ddd7c">residualLHS</a> (const std::vector&lt; <a class="el" href="classmodel_variable.html">modelVariable</a>&lt; dim &gt; &gt; &amp;modelVarList, <a class="el" href="classmodel_residual.html">modelResidual</a>&lt; dim &gt; &amp;modelRes, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc) const  =0</td></tr>
-<tr class="separator:a3d0efe983ffed0fdc58d89cdc61ddd7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f6b77b1c406ecf6d25ff47d04c5780f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a4f6b77b1c406ecf6d25ff47d04c5780f">energyDensity</a> (const std::vector&lt; <a class="el" href="classmodel_variable.html">modelVariable</a>&lt; dim &gt; &gt; &amp;modelVarList, const dealii::VectorizedArray&lt; double &gt; &amp;JxW_value, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc)=0</td></tr>
-<tr class="separator:a4f6b77b1c406ecf6d25ff47d04c5780f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95cc26dbdbeed2b8d4657b37c4ec2fa4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a95cc26dbdbeed2b8d4657b37c4ec2fa4">markBoundaries</a> ()</td></tr>
-<tr class="separator:a95cc26dbdbeed2b8d4657b37c4ec2fa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c10b843fa88bcd4c9b6cc31a5c41ca8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a9c10b843fa88bcd4c9b6cc31a5c41ca8">residualRHS</a> (<a class="el" href="classvariable_container.html">variableContainer</a>&lt; dim, degree, dealii::VectorizedArray&lt; double &gt; &gt; &amp;variable_list, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc) const  =0</td></tr>
+<tr class="separator:a9c10b843fa88bcd4c9b6cc31a5c41ca8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73f7a86f71003fe04d55f8b9acd58b5e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a73f7a86f71003fe04d55f8b9acd58b5e">residualLHS</a> (<a class="el" href="classvariable_container.html">variableContainer</a>&lt; dim, degree, dealii::VectorizedArray&lt; double &gt; &gt; &amp;variable_list, dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc) const  =0</td></tr>
+<tr class="separator:a73f7a86f71003fe04d55f8b9acd58b5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af48d2ca9f6a56369e960c110fa9c99be"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#af48d2ca9f6a56369e960c110fa9c99be">postProcessedFields</a> (const <a class="el" href="classvariable_container.html">variableContainer</a>&lt; dim, degree, dealii::VectorizedArray&lt; double &gt; &gt; &amp;variable_list, <a class="el" href="classvariable_container.html">variableContainer</a>&lt; dim, degree, dealii::VectorizedArray&lt; double &gt; &gt; &amp;pp_variable_list, const dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc) const </td></tr>
+<tr class="separator:af48d2ca9f6a56369e960c110fa9c99be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa87e0aa8f138ccd811e8844a7bf9eea4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#aa87e0aa8f138ccd811e8844a7bf9eea4">computePostProcessedFields</a> (std::vector&lt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; &amp;postProcessedSet)</td></tr>
+<tr class="separator:aa87e0aa8f138ccd811e8844a7bf9eea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed13062f158cf04fae4a53b967f073c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#aed13062f158cf04fae4a53b967f073c6">getPostProcessedFields</a> (const dealii::MatrixFree&lt; dim, double &gt; &amp;data, std::vector&lt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; &amp;dst, const std::vector&lt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; &amp;src, const std::pair&lt; unsigned int, unsigned int &gt; &amp;cell_range)</td></tr>
+<tr class="separator:aed13062f158cf04fae4a53b967f073c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac00dbfed1b570cdd2c1f88aa1be13376"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#ac00dbfed1b570cdd2c1f88aa1be13376">markBoundaries</a> (parallel::distributed::Triangulation&lt; dim &gt; &amp;) const </td></tr>
+<tr class="separator:ac00dbfed1b570cdd2c1f88aa1be13376"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90568dce4dabb9258e735f55b7a8722b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a90568dce4dabb9258e735f55b7a8722b">applyDirichletBCs</a> ()</td></tr>
 <tr class="separator:a90568dce4dabb9258e735f55b7a8722b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a247247ad46d4df30ac4fbc99cc202952"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a247247ad46d4df30ac4fbc99cc202952">applyNeumannBCs</a> ()</td></tr>
+<tr class="separator:a247247ad46d4df30ac4fbc99cc202952"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1adb942478d805314e9d831738b4396"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#ae1adb942478d805314e9d831738b4396">setPeriodicity</a> ()</td></tr>
 <tr class="separator:ae1adb942478d805314e9d831738b4396"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b3618cecf4fbc94cd1a69aca33c7c49"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a7b3618cecf4fbc94cd1a69aca33c7c49">setPeriodicityConstraints</a> (ConstraintMatrix *, const DoFHandler&lt; dim &gt; *) const </td></tr>
@@ -205,29 +201,37 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a7351c4781287e60646e237594558fb42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64fbd7dc135ad44c1dd45f57c5e24510"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a64fbd7dc135ad44c1dd45f57c5e24510">applyInitialConditions</a> ()</td></tr>
 <tr class="separator:a64fbd7dc135ad44c1dd45f57c5e24510"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85018b345ff85b4438c5fad9d85e9980"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a85018b345ff85b4438c5fad9d85e9980">getNucleiList</a> ()</td></tr>
-<tr class="separator:a85018b345ff85b4438c5fad9d85e9980"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf9c801949be079ebca6819ead316446"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#abf9c801949be079ebca6819ead316446">computeEnergy</a> ()</td></tr>
-<tr class="separator:abf9c801949be079ebca6819ead316446"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6605a508295c300b612df0266e621256"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a6605a508295c300b612df0266e621256">getEnergy</a> (const MatrixFree&lt; dim, double &gt; &amp;data, std::vector&lt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; &amp;dst, const std::vector&lt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; &amp;src, const std::pair&lt; unsigned int, unsigned int &gt; &amp;cell_range)</td></tr>
-<tr class="separator:a6605a508295c300b612df0266e621256"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4780db6679b6ca1978c4ceda3264d422"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a4780db6679b6ca1978c4ceda3264d422">updateNucleiList</a> ()</td></tr>
+<tr class="separator:a4780db6679b6ca1978c4ceda3264d422"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfe40adc0db850abeed80ab89360992a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structnucleus.html">nucleus</a>&lt; dim &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#acfe40adc0db850abeed80ab89360992a">getNewNuclei</a> ()</td></tr>
+<tr class="separator:acfe40adc0db850abeed80ab89360992a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a149f1ae203f514ea0840861fc163cbd1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a149f1ae203f514ea0840861fc163cbd1">getLocalNucleiList</a> (std::vector&lt; <a class="el" href="structnucleus.html">nucleus</a>&lt; dim &gt; &gt; &amp;newnuclei) const </td></tr>
+<tr class="separator:a149f1ae203f514ea0840861fc163cbd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a800cec408070da6380cac78e75ecd822"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a800cec408070da6380cac78e75ecd822">safetyCheckNewNuclei</a> (std::vector&lt; <a class="el" href="structnucleus.html">nucleus</a>&lt; dim &gt; &gt; newnuclei, std::vector&lt; unsigned int &gt; &amp;conflict_ids)</td></tr>
+<tr class="separator:a800cec408070da6380cac78e75ecd822"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a785150d76270c4b9048fe5097c20768a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a785150d76270c4b9048fe5097c20768a">refineMeshNearNuclei</a> (std::vector&lt; <a class="el" href="structnucleus.html">nucleus</a>&lt; dim &gt; &gt; newnuclei)</td></tr>
+<tr class="separator:a785150d76270c4b9048fe5097c20768a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a834d0b92baf3ddea8280f8fdbbca6665"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a834d0b92baf3ddea8280f8fdbbca6665">getNucleationProbability</a> (<a class="el" href="classvariable_value_container.html">variableValueContainer</a>, double, dealii::Point&lt; dim &gt;) const </td></tr>
+<tr class="separator:a834d0b92baf3ddea8280f8fdbbca6665"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91eac767470e5404cf8036dcddb43dd3"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a91eac767470e5404cf8036dcddb43dd3">getFieldIndex</a> (std::string _name)</td></tr>
 <tr class="separator:a91eac767470e5404cf8036dcddb43dd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abac2cb853f6cd1030278df57182c2000"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#abac2cb853f6cd1030278df57182c2000">outputFreeEnergy</a> (const std::vector&lt; double &gt; &amp;<a class="el" href="class_matrix_free_p_d_e.html#ab548447de8960b216352d8684259919d">freeEnergyValues</a>) const </td></tr>
 <tr class="separator:abac2cb853f6cd1030278df57182c2000"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d20d90ba536abcf47cba827711278e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a1d20d90ba536abcf47cba827711278e9">computeIntegral</a> (double &amp;integratedField, int index)</td></tr>
-<tr class="separator:a1d20d90ba536abcf47cba827711278e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0557bad11a8218237259d833346d1b04"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a0557bad11a8218237259d833346d1b04">computeIntegral</a> (double &amp;integratedField, int index, std::vector&lt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; postProcessedSet)</td></tr>
+<tr class="separator:a0557bad11a8218237259d833346d1b04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3592797668adec1f9d2cd862c2794973"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a3592797668adec1f9d2cd862c2794973">computeIntegralMF</a> (double &amp;integratedField, int index, const std::vector&lt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; postProcessedSet)</td></tr>
+<tr class="separator:a3592797668adec1f9d2cd862c2794973"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a536acc7c429acbac1718006fac781037"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a536acc7c429acbac1718006fac781037">getIntegralMF</a> (const MatrixFree&lt; dim, double &gt; &amp;data, std::vector&lt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; &amp;dst, const std::vector&lt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; &amp;src, const std::pair&lt; unsigned int, unsigned int &gt; &amp;cell_range)</td></tr>
+<tr class="separator:a536acc7c429acbac1718006fac781037"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a44af08e86ea6bacc41dacd1add99616e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classuser_input_parameters.html">userInputParameters</a>&lt; dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a44af08e86ea6bacc41dacd1add99616e">userInputs</a></td></tr>
 <tr class="separator:a44af08e86ea6bacc41dacd1add99616e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abdeea3478d8f3c0d40d369174eae62e4"><td class="memItemLeft" align="right" valign="top">dealii::Threads::Mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#abdeea3478d8f3c0d40d369174eae62e4">assembler_lock</a></td></tr>
-<tr class="separator:abdeea3478d8f3c0d40d369174eae62e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae88012fe05a1d6b28699bf6a7fe33821"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#ae88012fe05a1d6b28699bf6a7fe33821">totalDOFs</a></td></tr>
 <tr class="separator:ae88012fe05a1d6b28699bf6a7fe33821"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b5e9a02e069647ed3319524403b6b96"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a3b5e9a02e069647ed3319524403b6b96">outputTimeStepList</a></td></tr>
-<tr class="separator:a3b5e9a02e069647ed3319524403b6b96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1402bb474e64ea32846ec1dca2181d63"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classvariable_attribute_loader.html">variableAttributeLoader</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a1402bb474e64ea32846ec1dca2181d63">var_attributes</a></td></tr>
+<tr class="separator:a1402bb474e64ea32846ec1dca2181d63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7b20f637aa79d90bef2db16d9319065"><td class="memItemLeft" align="right" valign="top">parallel::distributed::Triangulation&lt; dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#ae7b20f637aa79d90bef2db16d9319065">triangulation</a></td></tr>
 <tr class="separator:ae7b20f637aa79d90bef2db16d9319065"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca8b82c562a106e607667fbcabf6ba8d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; FESystem&lt; dim &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#aca8b82c562a106e607667fbcabf6ba8d">FESet</a></td></tr>
@@ -272,6 +276,8 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a6f683b6ccaba2e68e2b31869be990430"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9ab33bb9925f1062ac082d1b495f2c1"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::map&lt; dealii::types::global_dof_index, double &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#ab9ab33bb9925f1062ac082d1b495f2c1">valuesDirichletSet</a></td></tr>
 <tr class="separator:ab9ab33bb9925f1062ac082d1b495f2c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41d57ddc2ac5df6bb9453bdf7a29432e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structnucleus.html">nucleus</a>&lt; dim &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a41d57ddc2ac5df6bb9453bdf7a29432e">nuclei</a></td></tr>
+<tr class="separator:a41d57ddc2ac5df6bb9453bdf7a29432e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab548447de8960b216352d8684259919d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#ab548447de8960b216352d8684259919d">freeEnergyValues</a></td></tr>
 <tr class="separator:ab548447de8960b216352d8684259919d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab46559b1aad8baf1a926a2e6addaad88"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#ab46559b1aad8baf1a926a2e6addaad88">isTimeDependentBVP</a></td></tr>
@@ -286,12 +292,20 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a272038ad264893a568c808f13d818b17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca786276ce09ff562a6d9db37fc57936"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#aca786276ce09ff562a6d9db37fc57936">currentIncrement</a></td></tr>
 <tr class="separator:aca786276ce09ff562a6d9db37fc57936"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5cfe71f859fcb3da6f7a6dbc9ef7827"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#ad5cfe71f859fcb3da6f7a6dbc9ef7827">currentOutput</a></td></tr>
+<tr class="separator:ad5cfe71f859fcb3da6f7a6dbc9ef7827"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac33e057e4b59379e5a2806b9f22fec7"><td class="memItemLeft" align="right" valign="top">TimerOutput&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#aac33e057e4b59379e5a2806b9f22fec7">computing_timer</a></td></tr>
 <tr class="separator:aac33e057e4b59379e5a2806b9f22fec7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d26cc49e49afe96406210d6beaf418a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a1d26cc49e49afe96406210d6beaf418a">energy</a></td></tr>
-<tr class="separator:a1d26cc49e49afe96406210d6beaf418a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6de33a05dd04a3e9f8cd0a7487476f8"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#aa6de33a05dd04a3e9f8cd0a7487476f8">energy_components</a></td></tr>
-<tr class="separator:aa6de33a05dd04a3e9f8cd0a7487476f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78352ba93352172619fc3580fdd678d1"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a78352ba93352172619fc3580fdd678d1">integrated_postprocessed_fields</a></td></tr>
+<tr class="separator:a78352ba93352172619fc3580fdd678d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30bec675c00f082804f1fd7aec6f31b3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a30bec675c00f082804f1fd7aec6f31b3">first_integrated_var_output_complete</a></td></tr>
+<tr class="separator:a30bec675c00f082804f1fd7aec6f31b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a4400131a16e5d71b047825bb9f1758"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a7a4400131a16e5d71b047825bb9f1758">integrated_var</a></td></tr>
+<tr class="separator:a7a4400131a16e5d71b047825bb9f1758"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93a43ebc76134b30ef42614140b46de6"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a93a43ebc76134b30ef42614140b46de6">integral_index</a></td></tr>
+<tr class="separator:a93a43ebc76134b30ef42614140b46de6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdeea3478d8f3c0d40d369174eae62e4"><td class="memItemLeft" align="right" valign="top">dealii::Threads::Mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#abdeea3478d8f3c0d40d369174eae62e4">assembler_lock</a></td></tr>
+<tr class="separator:abdeea3478d8f3c0d40d369174eae62e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
 Static Protected Attributes</h2></td></tr>
@@ -383,8 +397,6 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classcustom_p_d_e.html#add5d3caaa759b5286f76db4fda4d0d11">customPDE&lt; dim, degree &gt;</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a90568dce4dabb9258e735f55b7a8722b"></a>
@@ -407,6 +419,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Method for applying Dirichlet boundary conditions. </p>
 
 </div>
 </div>
@@ -433,6 +446,30 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 
 </div>
 </div>
+<a class="anchor" id="a247247ad46d4df30ac4fbc99cc202952"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void applyNeumannBCs </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Method for applying Neumann boundary conditions. </p>
+
+</div>
+</div>
 <a class="anchor" id="a715f4fc285eae134d92c8ef07a862a01"></a>
 <div class="memitem">
 <div class="memproto">
@@ -448,30 +485,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 
 </div>
 </div>
-<a class="anchor" id="abf9c801949be079ebca6819ead316446"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void computeEnergy </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a1d20d90ba536abcf47cba827711278e9"></a>
+<a class="anchor" id="a0557bad11a8218237259d833346d1b04"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -488,7 +502,53 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>index</em>&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt;&#160;</td>
+          <td class="paramname"><em>postProcessedSet</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a3592797668adec1f9d2cd862c2794973"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void computeIntegralMF </td>
+          <td>(</td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>integratedField</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt;&#160;</td>
+          <td class="paramname"><em>postProcessedSet</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -528,6 +588,30 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 
 </div>
 </div>
+<a class="anchor" id="aa87e0aa8f138ccd811e8844a7bf9eea4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void computePostProcessedFields </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>postProcessedSet</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a9e64307c8a79a364e3a11600d058f351"></a>
 <div class="memitem">
 <div class="memproto">
@@ -548,48 +632,6 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
   </tr>
 </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a4f6b77b1c406ecf6d25ff47d04c5780f"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void energyDensity </td>
-          <td>(</td>
-          <td class="paramtype">const std::vector&lt; <a class="el" href="classmodel_variable.html">modelVariable</a>&lt; dim &gt; &gt; &amp;&#160;</td>
-          <td class="paramname"><em>modelVarList</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const dealii::VectorizedArray&lt; double &gt; &amp;&#160;</td>
-          <td class="paramname"><em>JxW_value</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt;&#160;</td>
-          <td class="paramname"><em>q_point_loc</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Implemented in <a class="el" href="classcustom_p_d_e.html#a13dfb29f2b80a5ed12336bd536d96f03">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a13dfb29f2b80a5ed12336bd536d96f03">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a13dfb29f2b80a5ed12336bd536d96f03">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a13dfb29f2b80a5ed12336bd536d96f03">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a13dfb29f2b80a5ed12336bd536d96f03">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a13dfb29f2b80a5ed12336bd536d96f03">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a13dfb29f2b80a5ed12336bd536d96f03">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a13dfb29f2b80a5ed12336bd536d96f03">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a13dfb29f2b80a5ed12336bd536d96f03">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a13dfb29f2b80a5ed12336bd536d96f03">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a13dfb29f2b80a5ed12336bd536d96f03">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a13dfb29f2b80a5ed12336bd536d96f03">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a13dfb29f2b80a5ed12336bd536d96f03">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a13dfb29f2b80a5ed12336bd536d96f03">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a13dfb29f2b80a5ed12336bd536d96f03">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a13dfb29f2b80a5ed12336bd536d96f03">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a13dfb29f2b80a5ed12336bd536d96f03">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a13dfb29f2b80a5ed12336bd536d96f03">customPDE&lt; dim, degree &gt;</a>, and <a class="el" href="classcustom_p_d_e.html#a13dfb29f2b80a5ed12336bd536d96f03">customPDE&lt; dim, degree &gt;</a>.</p>
 
 </div>
 </div>
@@ -617,7 +659,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 
 </div>
 </div>
-<a class="anchor" id="a6605a508295c300b612df0266e621256"></a>
+<a class="anchor" id="a91eac767470e5404cf8036dcddb43dd3"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -625,7 +667,31 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void getEnergy </td>
+          <td class="memname">unsigned int getFieldIndex </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>_name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a536acc7c429acbac1718006fac781037"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void getIntegralMF </td>
           <td>(</td>
           <td class="paramtype">const MatrixFree&lt; dim, double &gt; &amp;&#160;</td>
           <td class="paramname"><em>data</em>, </td>
@@ -652,30 +718,6 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
           <td></td>
           <td>)</td>
           <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a91eac767470e5404cf8036dcddb43dd3"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">unsigned int getFieldIndex </td>
-          <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>_name</em></td><td>)</td>
-          <td></td>
         </tr>
       </table>
   </td>
@@ -733,7 +775,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 
 </div>
 </div>
-<a class="anchor" id="a85018b345ff85b4438c5fad9d85e9980"></a>
+<a class="anchor" id="a149f1ae203f514ea0840861fc163cbd1"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -741,7 +783,31 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void getNucleiList </td>
+          <td class="memname">void getLocalNucleiList </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="structnucleus.html">nucleus</a>&lt; dim &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>newnuclei</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="acfe40adc0db850abeed80ab89360992a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structnucleus.html">nucleus</a>&lt; dim &gt; &gt; getNewNuclei </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -749,16 +815,14 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classcustom_p_d_e.html#a85018b345ff85b4438c5fad9d85e9980">customPDE&lt; dim, degree &gt;</a>, and <a class="el" href="classcustom_p_d_e.html#a85018b345ff85b4438c5fad9d85e9980">customPDE&lt; dim, degree &gt;</a>.</p>
-
 </div>
 </div>
-<a class="anchor" id="a6300b332841038b56efa07911485f2fe"></a>
+<a class="anchor" id="a834d0b92baf3ddea8280f8fdbbca6665"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -766,33 +830,73 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void getOutputTimeSteps </td>
+          <td class="memname">virtual double getNucleationProbability </td>
           <td>(</td>
-          <td class="paramtype">const std::string&#160;</td>
-          <td class="paramname"><em>outputSpacingType</em>, </td>
+          <td class="paramtype"><a class="el" href="classvariable_value_container.html">variableValueContainer</a>&#160;</td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>numberOfOutputs</em>, </td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::vector&lt; unsigned int &gt; &amp;&#160;</td>
-          <td class="paramname"><em>userGivenTimeStepList</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; unsigned int &gt; &amp;&#160;</td>
-          <td class="paramname"><em>timeStepList</em>&#160;</td>
+          <td class="paramtype">dealii::Point&lt; dim &gt;&#160;</td>
+          <td class="paramname">&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
           <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aed13062f158cf04fae4a53b967f073c6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void getPostProcessedFields </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::MatrixFree&lt; dim, double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="matrix_free_p_d_e_8h.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::pair&lt; unsigned int, unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>cell_range</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -853,6 +957,9 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 <a class="anchor" id="a02fd73d861ef2e4aabb38c0c9ff82947"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void init </td>
@@ -861,6 +968,11 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Initializes the mesh, degrees of freedom, constraints and data structures using the user provided inputs in the application parameters file. </p>
 
@@ -883,267 +995,33 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 
 </div>
 </div>
-<a class="anchor" id="ac58c0270e163ebeb180715735aaace7e"></a>
+<a class="anchor" id="aa0a35420e2bbbc1269a0cd59471ce0bb"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void inputBCs </td>
+          <td class="memname">void makeTriangulation </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>var</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>component</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>BC_type_dim1_min</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>BC_value_dim1_min</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>BC_type_dim1_max</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>BC_value_dim1_max</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>BC_type_dim2_min</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>BC_value_dim2_min</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>BC_type_dim2_max</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>BC_value_dim2_max</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>BC_type_dim3_min</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>BC_value_dim3_min</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>BC_type_dim3_max</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>BC_value_dim3_max</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="paramtype">parallel::distributed::Triangulation&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>tria</em></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="classcustom_p_d_e.html#aa0a35420e2bbbc1269a0cd59471ce0bb">customPDE&lt; dim, degree &gt;</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a98239f916a3baaa6dd86908e894ef8da"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void inputBCs </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>var</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>component</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>BC_type_dim1_min</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>BC_value_dim1_min</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>BC_type_dim1_max</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>BC_value_dim1_max</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>BC_type_dim2_min</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>BC_value_dim2_min</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>BC_type_dim2_max</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>BC_value_dim2_max</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a19c934b7c940b07af2594cbd9bddfb34"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void inputBCs </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>var</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>component</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>BC_type_dim1_min</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>BC_value_dim1_min</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>BC_type_dim1_max</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>BC_value_dim1_max</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="af38833983b730f4c5057d45d9a2c9e84"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void inputBCs </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>var</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>component</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>BC_type</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>BC_value</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a95cc26dbdbeed2b8d4657b37c4ec2fa4"></a>
+<a class="anchor" id="ac00dbfed1b570cdd2c1f88aa1be13376"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1153,8 +1031,9 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
         <tr>
           <td class="memname">void markBoundaries </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td class="paramtype">parallel::distributed::Triangulation&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>tria</em></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -1190,7 +1069,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 
 </div>
 </div>
-<a class="anchor" id="a3826cb6cb8bc6a6ac713354f819c0e35"></a>
+<a class="anchor" id="ada15bd2ddcdcee02193cafbc4e2111d2"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1201,12 +1080,52 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
           <td class="memname">void outputResults </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="af48d2ca9f6a56369e960c110fa9c99be"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void postProcessedFields </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classvariable_container.html">variableContainer</a>&lt; dim, degree, dealii::VectorizedArray&lt; double &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>variable_list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classvariable_container.html">variableContainer</a>&lt; dim, degree, dealii::VectorizedArray&lt; double &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>pp_variable_list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt;&#160;</td>
+          <td class="paramname"><em>q_point_loc</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1224,6 +1143,30 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
           <td class="memname">void refineGrid </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a785150d76270c4b9048fe5097c20768a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void refineMeshNearNuclei </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="structnucleus.html">nucleus</a>&lt; dim &gt; &gt;&#160;</td>
+          <td class="paramname"><em>newnuclei</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1259,7 +1202,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 
 </div>
 </div>
-<a class="anchor" id="a3d0efe983ffed0fdc58d89cdc61ddd7c"></a>
+<a class="anchor" id="a73f7a86f71003fe04d55f8b9acd58b5e"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1269,14 +1212,8 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
         <tr>
           <td class="memname">virtual void residualLHS </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; <a class="el" href="classmodel_variable.html">modelVariable</a>&lt; dim &gt; &gt; &amp;&#160;</td>
-          <td class="paramname"><em>modelVarList</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classmodel_residual.html">modelResidual</a>&lt; dim &gt; &amp;&#160;</td>
-          <td class="paramname"><em>modelRes</em>, </td>
+          <td class="paramtype"><a class="el" href="classvariable_container.html">variableContainer</a>&lt; dim, degree, dealii::VectorizedArray&lt; double &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>variable_list</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1297,11 +1234,11 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">customPDE&lt; dim, degree &gt;</a>, and <a class="el" href="classcustom_p_d_e.html#ac3be7fef8c1af88cb1c325179e4dd555">customPDE&lt; dim, degree &gt;</a>.</p>
+<p>Implemented in <a class="el" href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE&lt; dim, degree &gt;</a>, and <a class="el" href="classcustom_p_d_e.html#a4c5cecf654f57452af3951822493532b">customPDE&lt; dim, degree &gt;</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a1408545a1a5c628d9ade860a6a0490ef"></a>
+<a class="anchor" id="a9c10b843fa88bcd4c9b6cc31a5c41ca8"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1311,14 +1248,8 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
         <tr>
           <td class="memname">virtual void residualRHS </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; <a class="el" href="classmodel_variable.html">modelVariable</a>&lt; dim &gt; &gt; &amp;&#160;</td>
-          <td class="paramname"><em>modelVarList</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="classmodel_residual.html">modelResidual</a>&lt; dim &gt; &gt; &amp;&#160;</td>
-          <td class="paramname"><em>modelResidualsList</em>, </td>
+          <td class="paramtype"><a class="el" href="classvariable_container.html">variableContainer</a>&lt; dim, degree, dealii::VectorizedArray&lt; double &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>variable_list</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1339,11 +1270,11 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">customPDE&lt; dim, degree &gt;</a>, and <a class="el" href="classcustom_p_d_e.html#a8ccfe9cbd0b12d62f2cb6d6f23a57eb4">customPDE&lt; dim, degree &gt;</a>.</p>
+<p>Implemented in <a class="el" href="classcustom_p_d_e.html#a12929114dcb8406ca369f40a6b921127">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a12929114dcb8406ca369f40a6b921127">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a12929114dcb8406ca369f40a6b921127">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a12929114dcb8406ca369f40a6b921127">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a12929114dcb8406ca369f40a6b921127">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a12929114dcb8406ca369f40a6b921127">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a12929114dcb8406ca369f40a6b921127">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a12929114dcb8406ca369f40a6b921127">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a12929114dcb8406ca369f40a6b921127">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a12929114dcb8406ca369f40a6b921127">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a12929114dcb8406ca369f40a6b921127">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a12929114dcb8406ca369f40a6b921127">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a12929114dcb8406ca369f40a6b921127">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a12929114dcb8406ca369f40a6b921127">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a12929114dcb8406ca369f40a6b921127">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a12929114dcb8406ca369f40a6b921127">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a12929114dcb8406ca369f40a6b921127">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a12929114dcb8406ca369f40a6b921127">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a12929114dcb8406ca369f40a6b921127">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a12929114dcb8406ca369f40a6b921127">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#a12929114dcb8406ca369f40a6b921127">customPDE&lt; dim, degree &gt;</a>, and <a class="el" href="classcustom_p_d_e.html#a12929114dcb8406ca369f40a6b921127">customPDE&lt; dim, degree &gt;</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a3c1d5a859d769005133d2b6b165176e2"></a>
+<a class="anchor" id="a800cec408070da6380cac78e75ecd822"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1351,20 +1282,29 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void setBCs </td>
+          <td class="memname">void safetyCheckNewNuclei </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="structnucleus.html">nucleus</a>&lt; dim &gt; &gt;&#160;</td>
+          <td class="paramname"><em>newnuclei</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">std::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>conflict_ids</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Implemented in <a class="el" href="classcustom_p_d_e.html#aaf994c4b3e37676d95e1c920d896efcb">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#aaf994c4b3e37676d95e1c920d896efcb">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#aaf994c4b3e37676d95e1c920d896efcb">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#aaf994c4b3e37676d95e1c920d896efcb">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#aaf994c4b3e37676d95e1c920d896efcb">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#aaf994c4b3e37676d95e1c920d896efcb">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#aaf994c4b3e37676d95e1c920d896efcb">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#aaf994c4b3e37676d95e1c920d896efcb">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#aaf994c4b3e37676d95e1c920d896efcb">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#aaf994c4b3e37676d95e1c920d896efcb">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#aaf994c4b3e37676d95e1c920d896efcb">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#aaf994c4b3e37676d95e1c920d896efcb">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#aaf994c4b3e37676d95e1c920d896efcb">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#aaf994c4b3e37676d95e1c920d896efcb">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#aaf994c4b3e37676d95e1c920d896efcb">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#aaf994c4b3e37676d95e1c920d896efcb">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#aaf994c4b3e37676d95e1c920d896efcb">customPDE&lt; dim, degree &gt;</a>, <a class="el" href="classcustom_p_d_e.html#aaf994c4b3e37676d95e1c920d896efcb">customPDE&lt; dim, degree &gt;</a>, and <a class="el" href="classcustom_p_d_e.html#aaf994c4b3e37676d95e1c920d896efcb">customPDE&lt; dim, degree &gt;</a>.</p>
 
 </div>
 </div>
@@ -1497,11 +1437,34 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <p>Method to solve each time increment of a time-dependent problem. For time-independent problems this method is called only once. This method solves for all the fields in a staggered manner (one after another) and also invokes the corresponding solvers: Explicit solver for Parabolic problems, Implicit (matrix-free) solver for Elliptic problems. </p>
+
+</div>
+</div>
+<a class="anchor" id="a4780db6679b6ca1978c4ceda3264d422"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void updateNucleiList </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -1549,18 +1512,6 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 <span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a696a1f455c8f0351da62103276b66e17"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="classvar_b_cs.html">varBCs</a>&lt;dim&gt; &gt; BC_list</td>
-        </tr>
-      </table>
 </div><div class="memdoc">
 
 </div>
@@ -1725,6 +1676,26 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 
 </div>
 </div>
+<a class="anchor" id="ad5cfe71f859fcb3da6f7a6dbc9ef7827"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int currentOutput</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a272038ad264893a568c808f13d818b17"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1845,46 +1816,6 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 
 </div>
 </div>
-<a class="anchor" id="a1d26cc49e49afe96406210d6beaf418a"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double energy</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="aa6de33a05dd04a3e9f8cd0a7487476f8"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;double&gt; energy_components</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="aca8b82c562a106e607667fbcabf6ba8d"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1918,6 +1849,26 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 
 </div>
 </div>
+<a class="anchor" id="a30bec675c00f082804f1fd7aec6f31b3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool first_integrated_var_output_complete</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="ab548447de8960b216352d8684259919d"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1927,6 +1878,66 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
       <table class="memname">
         <tr>
           <td class="memname">std::vector&lt;double&gt; freeEnergyValues</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a93a43ebc76134b30ef42614140b46de6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int integral_index</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a78352ba93352172619fc3580fdd678d1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;double&gt; integrated_postprocessed_fields</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a7a4400131a16e5d71b047825bb9f1758"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double integrated_var</td>
         </tr>
       </table>
   </td>
@@ -2058,7 +2069,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 
 </div>
 </div>
-<a class="anchor" id="a3b5e9a02e069647ed3319524403b6b96"></a>
+<a class="anchor" id="a41d57ddc2ac5df6bb9453bdf7a29432e"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -2066,7 +2077,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;unsigned int&gt; outputTimeStepList</td>
+          <td class="memname">std::vector&lt;<a class="el" href="structnucleus.html">nucleus</a>&lt;dim&gt; &gt; nuclei</td>
         </tr>
       </table>
   </td>
@@ -2250,6 +2261,26 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 
 </div>
 </div>
+<a class="anchor" id="a1402bb474e64ea32846ec1dca2181d63"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classvariable_attribute_loader.html">variableAttributeLoader</a> var_attributes</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a77443cfd920902aa1f1c076d7c6870ad"></a>
 <div class="memitem">
 <div class="memproto">
@@ -2314,19 +2345,18 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 <li>phaseField_dev/include/<a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a></li>
 <li>phaseField_dev/src/matrixfree/<a class="el" href="boundary_conditions_8cc.html">boundaryConditions.cc</a></li>
 <li>phaseField_dev/src/matrixfree/<a class="el" href="build_fields_8cc.html">buildFields.cc</a></li>
-<li>phaseField_dev/src/matrixfree/<a class="el" href="calc_free_energy_8cc.html">calcFreeEnergy.cc</a></li>
 <li>phaseField_dev/src/matrixfree/<a class="el" href="compute_integral_8cc.html">computeIntegral.cc</a></li>
 <li>phaseField_dev/src/matrixfree/<a class="el" href="compute_l_h_s_8cc.html">computeLHS.cc</a></li>
 <li>phaseField_dev/src/matrixfree/<a class="el" href="compute_r_h_s_8cc.html">computeRHS.cc</a></li>
-<li>phaseField_dev/src/matrixfree/<a class="el" href="get_nuclei_list_8cc.html">getNucleiList.cc</a></li>
-<li>phaseField_dev/src/matrixfree/<a class="el" href="get_output_time_steps_8cc.html">getOutputTimeSteps.cc</a></li>
 <li>phaseField_dev/src/matrixfree/<a class="el" href="init_8cc.html">init.cc</a></li>
 <li>phaseField_dev/src/matrixfree/<a class="el" href="init_for_tests_8cc.html">initForTests.cc</a></li>
 <li>phaseField_dev/src/matrixfree/<a class="el" href="initial_conditions_8cc.html">initialConditions.cc</a></li>
 <li>phaseField_dev/src/matrixfree/<a class="el" href="inv_m_8cc.html">invM.cc</a></li>
 <li>phaseField_dev/src/matrixfree/<a class="el" href="mark_boundaries_8cc.html">markBoundaries.cc</a></li>
 <li>phaseField_dev/src/matrixfree/<a class="el" href="matrix_free_p_d_e_8cc.html">matrixFreePDE.cc</a></li>
+<li>phaseField_dev/src/matrixfree/<a class="el" href="nucleation_8cc.html">nucleation.cc</a></li>
 <li>phaseField_dev/src/matrixfree/<a class="el" href="output_results_8cc.html">outputResults.cc</a></li>
+<li>phaseField_dev/src/matrixfree/<a class="el" href="postprocessor_8cc.html">postprocessor.cc</a></li>
 <li>phaseField_dev/src/matrixfree/<a class="el" href="refine_8cc.html">refine.cc</a></li>
 <li>phaseField_dev/src/matrixfree/<a class="el" href="reinit_8cc.html">reinit.cc</a></li>
 <li>phaseField_dev/src/matrixfree/<a class="el" href="solve_8cc.html">solve.cc</a></li>

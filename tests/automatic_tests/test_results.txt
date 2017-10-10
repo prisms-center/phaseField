@@ -1281,3 +1281,68 @@ Time: 72.7359819412
  
 Tests Passed: 5/5
 --------------------------------------------------------- 
+--------------------------------------------------------- 
+Unit test on 2017-08-11 19:28
+--------------------------------------------------------- 
+Unit Tests Passed: 14/14
+--------------------------------------------------------- 
+Regression test on 2017-08-11 19:28
+--------------------------------------------------------- 
+Application: allenCahn 
+Result: Pass 
+Time: 32.7671849728 
+ 
+Application: cahnHilliardWithAdaptivity 
+Result: Pass 
+Time: 61.9988110065 
+ 
+Application: CHAC_anisotropyRegularized 
+Result: Pass 
+Time: 45.9421269894 
+ 
+Application: coupledCahnHilliardAllenCahn 
+Result: Pass 
+Time: 146.357464075 
+ 
+Application: precipitateEvolution 
+Result: Pass 
+Time: 72.6328668594 
+ 
+Tests Passed: 5/5
+--------------------------------------------------------- 
+--------------------------------------------------------- 
+Unit test on 2017-08-11 19:38
+--------------------------------------------------------- 
+Unit Tests Passed: 14/14
+--------------------------------------------------------- 
+Regression test on 2017-08-11 19:38
+--------------------------------------------------------- 
+--------------------------------------------------------- 
+Unit test on 2017-08-12 22:38
+--------------------------------------------------------- 
+Unit Tests Passed: 14/14
+--------------------------------------------------------- 
+Regression test on 2017-08-12 22:38
+--------------------------------------------------------- 
+Application: allenCahn 
+Result: Pass 
+Time: 33.5571939945 
+ 
+Application: cahnHilliardWithAdaptivity 
+Result: Pass 
+Time: 61.1592578888 
+ 
+Application: CHAC_anisotropyRegularized 
+Result: Pass 
+Time: 45.6205570698 
+ 
+Application: coupledCahnHilliardAllenCahn 
+Result: Pass 
+Time: 143.481995821 
+ 
+Application: precipitateEvolution 
+Result: Pass 
+Time: 72.7267310619 
+ 
+Tests Passed: 5/5
+--------------------------------------------------------- 

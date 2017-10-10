@@ -1,4 +1,8 @@
 var searchData=
 [
-  ['x_5fdenom',['x_denom',['../single_precipitate_k_k_s_2_i_cs__and___b_cs_8h.html#a11213e73667ac0d13819bb6ac8fd3d12',1,'ICs_and_BCs.h']]]
+  ['w',['W',['../classcustom_p_d_e.html#a5ec511930edd29ba1a84430964cf60cd',1,'customPDE']]],
+  ['w0',['W0',['../classcustom_p_d_e.html#a9bdcf744197e65214544d71c98060a99',1,'customPDE']]],
+  ['w_5fbarrier',['W_barrier',['../classcustom_p_d_e.html#a9ae7ebe4423f86ae1cd828d3c09092ec',1,'customPDE']]],
+  ['wgb',['wgb',['../classcustom_p_d_e.html#adadb2d51199ecbae6d245c26ef90d5bd',1,'customPDE']]],
+  ['wv',['wV',['../classcustom_p_d_e.html#a17cf7def79c2276d7618152453698e7d',1,'customPDE']]]
 ];
