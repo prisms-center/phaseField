@@ -88,8 +88,6 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     output_file_name = parameter_handler.get("Output file name (base)");
 
     // Field variable definitions
-
-
     number_of_variables = _number_of_variables;
 
 
