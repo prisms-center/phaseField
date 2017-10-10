@@ -80,7 +80,7 @@ public:
 	std::vector<fieldType> var_type;
 	std::vector<PDEType> var_eq_type;
 
-	// Variables needed to calculate the LHS
+	// Variables needed to calculate the RHS
 	std::vector<variable_info> varInfoListRHS;
 
 	// Variables needed to calculate the LHS

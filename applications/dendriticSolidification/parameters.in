@@ -132,6 +132,6 @@ set Skip print steps = 1000
 # Set the checkpoint/restart parameters
 # =================================================================================
 
-set Load from a checkpoint = true
+set Load from a checkpoint = false
 set Checkpoint condition = EQUAL_SPACING
 set Number of checkpoints = 10
