@@ -59,7 +59,8 @@ private:
 	double k1 = userInputs.get_model_constant_double("k1");
 	double k2_b = userInputs.get_model_constant_double("k2_b");
 	double k2_gb = userInputs.get_model_constant_double("k2_gb");
-	double tau = userInputs.get_model_constant_double("tau");
+	double tau_b = userInputs.get_model_constant_double("tau_b");
+    double tau_gb = userInputs.get_model_constant_double("tau_gb");
 	double wgb = userInputs.get_model_constant_double("wgb");
 	double gbll = userInputs.get_model_constant_double("gbll");
 	double gbrl = userInputs.get_model_constant_double("gbrl");
