@@ -190,7 +190,7 @@ where $f_{\alpha}$ and $f_{\beta}$ are the free energy densities corresponding t
 Following standard variational arguments (see Cahn-Hilliard formulation), we obtain the chemical potentials:
 \begin{align}
   \mu_{c}  &= (f_{\alpha,c}(1-H)+f_{\beta,c}H)  \\
-  \mu_{\eta}  &= (f_{\beta,c}-f_{\alpha,c})H_{,\eta} - \kappa \Delta \eta 
+  \mu_{\eta}  &= (f_{\beta}-f_{\alpha})H_{,\eta} - \kappa \Delta \eta 
 \end{align}
 
 \section{Kinetics}
@@ -202,7 +202,7 @@ Now the PDE for Cahn-Hilliard dynamics is given by:
   and the PDE for Allen-Cahn dynamics is given by:
   \begin{align}
     \frac{\partial \eta}{\partial t} &= -M_\eta \mu_\eta \\
-  &=-M_\eta ~ ((f_{\beta,c}-f_{\alpha,c})H_{,\eta} - \kappa \Delta \eta) 
+  &=-M_\eta ~ ((f_{\beta}-f_{\alpha})H_{,\eta} - \kappa \Delta \eta) 
 \end{align}
 where $M_c$ and $M_\eta$ are the constant mobilities. 
 

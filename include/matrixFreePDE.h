@@ -236,6 +236,18 @@ class MatrixFreePDE:public Subscriptor
   void applyInitialConditions();
 
   // --------------------------------------------------------------------------
+  // Methods for saving and loading checkpoints
+  // --------------------------------------------------------------------------
+
+  void save_checkpoint();
+
+  void load_checkpoint_triangulation();
+  void load_checkpoint_fields();
+  void load_checkpoint_time_info();
+
+  void move_file(const std::string&, const std::string&);
+
+  // --------------------------------------------------------------------------
   // Nucleation methods and variables
   // --------------------------------------------------------------------------
   // Vector of all the nuclei seeded in the problem
@@ -269,7 +281,7 @@ class MatrixFreePDE:public Subscriptor
   //
   unsigned int parabolicFieldIndex, ellipticFieldIndex;
   double currentTime;
-  unsigned int currentIncrement, currentOutput;
+  unsigned int currentIncrement, currentOutput, currentCheckpoint;
 
   /*Timer and logging object*/
   mutable TimerOutput computing_timer;

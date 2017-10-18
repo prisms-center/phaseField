@@ -5,67 +5,92 @@
 //solve BVP
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::solve(){
-  //log time
-  computing_timer.enter_section("matrixFreePDE: solve");
-  pcout << "\nsolving...\n\n";
+    //log time
+    computing_timer.enter_section("matrixFreePDE: solve");
+    pcout << "\nsolving...\n\n";
 
-  //time dependent BVP
-  if (isTimeDependentBVP){
-    //output initial conditions for time dependent BVP
-	  if (userInputs.outputTimeStepList[currentOutput] == 0) {
+    //time dependent BVP
+    if (isTimeDependentBVP){
 
-          for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-              constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
-              constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
-              solutionSet[fieldIndex]->update_ghost_values();
-          }
-          outputResults();
-          currentOutput++;
+        //output initial conditions for time dependent BVP
+        if (userInputs.outputTimeStepList[currentOutput] == currentIncrement) {
+
+            for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
+                constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+                constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+                solutionSet[fieldIndex]->update_ghost_values();
+            }
+            outputResults();
+            currentOutput++;
+        }
+
+        if (userInputs.checkpointTimeStepList[currentCheckpoint] == currentIncrement) {
+            save_checkpoint();
+            currentCheckpoint++;
+        }
+
+        // Increase the current increment from 0 to 1 now that the initial conditions have been output
+        currentIncrement++;
+        
+        //time stepping
+        pcout << "\nTime stepping parameters: timeStep: " << userInputs.dtValue << "  timeFinal: " << userInputs.finalTime << "  timeIncrements: " << userInputs.totalIncrements << "\n";
+
+        // Cycle up to the proper output and checkpoint counters
+        while (userInputs.outputTimeStepList.size() > 0 && userInputs.outputTimeStepList[currentOutput] < currentIncrement){
+            currentOutput++;
+        }
+        while (userInputs.checkpointTimeStepList.size() > 0 && userInputs.checkpointTimeStepList[currentCheckpoint] < currentIncrement){
+            currentCheckpoint++;
+        }
+
+
+        for (; currentIncrement<=userInputs.totalIncrements; ++currentIncrement){
+            //increment current time
+            currentTime+=userInputs.dtValue;
+            if (currentIncrement%userInputs.skip_print_steps==0){
+                pcout << "\ntime increment:" << currentIncrement << "  time: " << currentTime << "\n";
+            }
+
+            //check and perform adaptive mesh refinement
+            adaptiveRefine(currentIncrement);
+
+            // Update the list of nuclei (if relevant)
+            updateNucleiList();
+
+            //solve time increment
+            solveIncrement();
+
+            // Output results to file (on the proper increments)
+            if (userInputs.outputTimeStepList[currentOutput] == currentIncrement) {
+                for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
+                    constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+                    constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+                    solutionSet[fieldIndex]->update_ghost_values();
+                }
+                outputResults();
+                currentOutput++;
+            }
+
+            // Create a checkpoint (on the proper increments)
+            if (userInputs.checkpointTimeStepList[currentCheckpoint] == currentIncrement) {
+                save_checkpoint();
+                currentCheckpoint++;
+            }
+
+        }
     }
 
-    //time stepping
-    pcout << "\nTime stepping parameters: timeStep: " << userInputs.dtValue << "  timeFinal: " << userInputs.finalTime << "  timeIncrements: " << userInputs.totalIncrements << "\n";
+    //time independent BVP
+    else{
+        //solve
+        solveIncrement();
 
-    for (currentIncrement=1; currentIncrement<=userInputs.totalIncrements; ++currentIncrement){
-      //increment current time
-      currentTime+=userInputs.dtValue;
-      if (currentIncrement%userInputs.skip_print_steps==0){
-      pcout << "\ntime increment:" << currentIncrement << "  time: " << currentTime << "\n";
-      }
+        //output results to file
+        outputResults();
+    }
 
-      //check and perform adaptive mesh refinement
-      adaptiveRefine(currentIncrement);
-
-      // Update the list of nuclei (if relevant)
-      updateNucleiList();
-
-      //solve time increment
-      solveIncrement();
-
-      //output results to file
-      if (userInputs.outputTimeStepList[currentOutput] == currentIncrement) {
-          for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-              constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
-              constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
-              solutionSet[fieldIndex]->update_ghost_values();
-          }
-          outputResults();
-          currentOutput++;
-      }
-  }
-}
-
-  //time independent BVP
-  else{
-      //solve
-      solveIncrement();
-
-      //output results to file
-      outputResults();
-  }
-
-  //log time
-  computing_timer.exit_section("matrixFreePDE: solve");
+    //log time
+    computing_timer.exit_section("matrixFreePDE: solve");
 }
 
 #include "../../include/matrixFreePDE_template_instantiations.h"

@@ -79,3 +79,14 @@ DoxygenWarningLog.txt
 *.DS_Store
 freeEnergy.txt
 output.txt
+
+integratedFields.txt
+
+# Checkpoint/restart files
+restart.mesh
+restart.mesh.info
+restart.mesh.info.old
+restart.mesh.old
+restart.resume.z
+restart.time.info
+restart.time.info.old
