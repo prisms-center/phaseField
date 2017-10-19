@@ -37,7 +37,8 @@ set Element degree = 2
 set Mesh adaptivity = true
 
 # Set the maximum and minimum level of refinement
-set Max refinement level = 10 #8
+set Max refinement level = 9
+#set Max refinement level = 10 #8
 set Min refinement level = 3
 
 # Set the fields used to determine the refinement using their index.
@@ -54,7 +55,8 @@ set Steps between remeshing operations = 50 #25
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 2.0e-3 #0.0015625 #6.25e-3
+#set Time step = 2.0e-3
+set Time step = 0.000125
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
@@ -69,7 +71,7 @@ set Output condition = EQUAL_SPACING
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of outputs = 10
+set Number of outputs = 50
 
 # The number of time steps between updates being printed to the screen
 set Skip print steps = 1
@@ -112,8 +114,9 @@ set Model constant kappa = 1.5625e-6, DOUBLE
 
 set Model constant A1 = 0.0075, double
 set Model constant B1 = 8.0, double
-set Model constant C1 = 0.06, double
+set Model constant C1 = 0.0, double #0.06, double
 
 set Model constant A2 = 0.03, double
 set Model constant B2 = 22.0, double
-set Model constant D2 = 0.1875, double #1.03125, double #1.0, double #0.03125, double
+#set Model constant D2 = 0.1875, double #1.03125, double #1.0, double #0.03125, double
+set Model constant D2 = 1.03125, double
