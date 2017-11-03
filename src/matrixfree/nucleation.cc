@@ -334,6 +334,20 @@ void MatrixFreePDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim> > 
 				for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
 					for (typename std::vector<nucleus<dim> >::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
 
+                        // Temporary hard-coded rotation angles
+                        // Get the rotation angle
+        				double theta;
+                        double pi = 2.0*std::acos(0.0);
+        				if (thisNuclei->orderParameterIndex == 1){
+        					theta = -pi/3.0;
+        				}
+        				else if (thisNuclei->orderParameterIndex == 2){
+        					theta = 0.0;
+        				}
+        				else {
+        					theta = pi/3.0;
+        				}
+
 						// Calculate the ellipsoidal distance to the center of the nucleus
 						double weighted_dist = 0.0;
 						for (unsigned int i=0; i<dim; i++){
@@ -343,7 +357,18 @@ void MatrixFreePDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim> > 
 								double domsize = userInputs.domain_size[i];
 								shortest_edist = shortest_edist-round(shortest_edist/domsize)*domsize;
 							}
-							double temp = shortest_edist/(userInputs.order_parameter_freeze_semiaxes[i]);
+
+                            // Temporary hard-coded rotation angles
+                            if (i == 0){
+                                double temp_y = (thisNuclei->center(1) - q_point_list[q_point](1));
+                                shortest_edist = shortest_edist*std::cos(theta)+temp_y*std::sin(theta);
+                            }
+                            else if (i == 1){
+                                double temp_x = (thisNuclei->center(0) - q_point_list[q_point](0));
+                                shortest_edist = -temp_x*std::sin(theta)+shortest_edist*std::cos(theta);
+                            }
+
+                            double temp = shortest_edist/(userInputs.order_parameter_freeze_semiaxes[i]);
 							weighted_dist += temp*temp;
 						}
 
