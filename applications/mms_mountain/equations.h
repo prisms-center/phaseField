@@ -42,19 +42,29 @@ scalarvalueType rnV = (n-constV(userInputs.dtValue)*fnV);
 scalargradType rnxV = (-constV(userInputs.dtValue*kappa)*nx);
 
 scalarvalueType source_term;
-double pi = 2.0*std::acos(0.0);
+
+
+scalarvalueType alpha = 0.25 + A1*this->currentTime*std::sin(B1*q_point_loc(0)) + A2*std::sin(B2*q_point_loc(0)+C2*this->currentTime);
+scalarvalueType alpha_t = A1*std::sin(B1*q_point_loc(0)) + A2*C2*std::cos(B2*q_point_loc(0)+C2*this->currentTime);
+scalarvalueType alpha_y = A1*B1*this->currentTime*std::cos(B1*q_point_loc(0)) + A2*B2*std::cos(B2*q_point_loc(0)+C2*this->currentTime);
+scalarvalueType alpha_yy = -A1*B1*B1*this->currentTime*std::sin(B1*q_point_loc(0)) - A2*B2*B2*std::sin(B2*q_point_loc(0)+C2*this->currentTime);
+
 
 for (unsigned i=0; i<n.n_array_elements;i++){
 
-	double t = this->currentTime;
+	//double t = this->currentTime;
 
-	source_term[i] = A1*A1*A2*A2/(2.0*dealii::Utilities::fixed_power<2>(std::cosh((-0.25 + q_point_loc(1)[i] - t * std::sin(B1*pi*(q_point_loc(0)[i] + C1))*A1 - std::sin(D2*pi*t) * std::sin(B2*pi*q_point_loc(0)[i])*A2 )/std::sqrt(2.0*kappa))))
-				* (
-					(pi/A1*(D2*std::cos(D2*pi*t)+B2*B2*kappa*pi*std::sin(D2*pi*t)) * std::sin(B2*pi*q_point_loc(0)[i]) + (1.0+B1*B1*kappa*pi*pi*t)/A2*std::sin(B1*pi*(q_point_loc(0)[i]+C1))) / (std::sqrt(2.0*kappa) * A1*A2)
-					+ ( (-2.0*pi*pi*B1*B1*t*t/(A2*A2)*dealii::Utilities::fixed_power<2>(std::cos(B1*pi*(q_point_loc(0)[i]+C1)))-4.0*pi*pi*B1*B2*t/(A1*A2)*std::cos(B2*pi*q_point_loc(0)[i])*std::cos(B1*pi*(q_point_loc(0)[i]+C1))*std::sin(D2*pi*t)
-					- 2.0*pi*pi*B2*B2/(A1*A1)*dealii::Utilities::fixed_power<2>(std::cos(B2*pi*q_point_loc(0)[i]))  * dealii::Utilities::fixed_power<2>(std::sin(D2*pi*t))) )/2.0
-					* std::tanh((-0.25 + q_point_loc(1)[i] - t * std::sin(B1*pi*(q_point_loc(0)[i] + C1))*A1 - std::sin(D2*pi*t) * std::sin(B2*pi*q_point_loc(0)[i])*A2)/std::sqrt(2.0*kappa))
-				);
+	// source_term[i] = A1*A1*A2*A2/(2.0*dealii::Utilities::fixed_power<2>(std::cosh((-0.25 + q_point_loc(1)[i] - t * std::sin(B1*pi*(q_point_loc(0)[i] + C1))*A1 - std::sin(D2*pi*t) * std::sin(B2*pi*q_point_loc(0)[i])*A2 )/std::sqrt(2.0*kappa))))
+	// 			* (
+	// 				(pi/A1*(D2*std::cos(D2*pi*t)+B2*B2*kappa*pi*std::sin(D2*pi*t)) * std::sin(B2*pi*q_point_loc(0)[i]) + (1.0+B1*B1*kappa*pi*pi*t)/A2*std::sin(B1*pi*(q_point_loc(0)[i]+C1))) / (std::sqrt(2.0*kappa) * A1*A2)
+	// 				+ ( (-2.0*pi*pi*B1*B1*t*t/(A2*A2)*dealii::Utilities::fixed_power<2>(std::cos(B1*pi*(q_point_loc(0)[i]+C1)))-4.0*pi*pi*B1*B2*t/(A1*A2)*std::cos(B2*pi*q_point_loc(0)[i])*std::cos(B1*pi*(q_point_loc(0)[i]+C1))*std::sin(D2*pi*t)
+	// 				- 2.0*pi*pi*B2*B2/(A1*A1)*dealii::Utilities::fixed_power<2>(std::cos(B2*pi*q_point_loc(0)[i]))  * dealii::Utilities::fixed_power<2>(std::sin(D2*pi*t))) )/2.0
+	// 				* std::tanh((-0.25 + q_point_loc(1)[i] - t * std::sin(B1*pi*(q_point_loc(0)[i] + C1))*A1 - std::sin(D2*pi*t) * std::sin(B2*pi*q_point_loc(0)[i])*A2)/std::sqrt(2.0*kappa))
+	// 			);
+
+	source_term[i] = (-2.0*std::sqrt(kappa)*std::tanh( (q_point_loc(1)[i]-alpha[i])/std::sqrt(2.0*kappa)) * (alpha_y[i]*alpha_y[i])
+					+ std::sqrt(2.0)*(alpha_t[i]-kappa*alpha_yy[i]))
+					/(4.0*std::sqrt(kappa))/dealii::Utilities::fixed_power<2>( std::cosh( (q_point_loc(1)[i]-alpha[i])/std::sqrt(2.0*kappa)));
 
 }
 

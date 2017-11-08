@@ -79,3 +79,5 @@ DoxygenWarningLog.txt
 *.DS_Store
 freeEnergy.txt
 output.txt
+
+restart*

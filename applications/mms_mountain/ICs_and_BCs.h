@@ -18,7 +18,13 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
   // given by "center" and its radius is given by "radius".
 
   double kappa = userInputs.get_model_constant_double("kappa");
-  double r0 = 0.25;
+
+  double pi = 2.0*std::acos(0.0);
+
+  double A2 = userInputs.get_model_constant_double("A2");
+  double B2 = pi * userInputs.get_model_constant_double("B2");
+  
+  double r0 = 0.25 + A2*std::sin(B2*p(0));
   double delta = 1.0/std::sqrt(kappa*2.0);
 
 

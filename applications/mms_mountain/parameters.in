@@ -37,7 +37,7 @@ set Element degree = 2
 set Mesh adaptivity = true
 
 # Set the maximum and minimum level of refinement
-set Max refinement level = 9
+set Max refinement level = 7
 #set Max refinement level = 10 #8
 set Min refinement level = 3
 
@@ -108,9 +108,18 @@ set Boundary condition for variable n = PERIODIC, PERIODIC, DIRICHLET: 1, DIRICH
 # where [symmetry] is ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC.
 
 # The gradient energy coefficient, KnV in equations.h
-#set Model constant kappa = 0.0002, DOUBLE
-set Model constant kappa = 1.5625e-6, DOUBLE
+set Model constant kappa = 0.0002, DOUBLE
+#set Model constant kappa = 1.5625e-6, DOUBLE
 
+
+#set Model constant A1 = 0.0075, double
+#set Model constant B1 = 8.0, double
+#set Model constant C1 = 0.0, double #0.06, double
+
+#set Model constant A2 = 0.03, double
+#set Model constant B2 = 22.0, double
+#set Model constant D2 = 0.1875, double #1.03125, double #1.0, double #0.03125, double
+#set Model constant D2 = 1.03125, double
 
 set Model constant A1 = 0.0075, double
 set Model constant B1 = 8.0, double
@@ -118,5 +127,5 @@ set Model constant C1 = 0.0, double #0.06, double
 
 set Model constant A2 = 0.03, double
 set Model constant B2 = 22.0, double
-#set Model constant D2 = 0.1875, double #1.03125, double #1.0, double #0.03125, double
+set Model constant C2 = 1.00, double
 set Model constant D2 = 1.03125, double
