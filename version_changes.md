@@ -15,7 +15,8 @@ Known issues:
 - PFields only work for scalar fields and only work when the variable with index zero is a scalar field.
 - Postprocessing only works for scalar fields and only when the variable with index zero is a scalar field.
 - The formulation file for the dendriticSolidifiation application may have errors.
-
+- An extraneous error can appear under the following circumstances: in debug mode, with multiple cores, with adaptive meshing, using deal.II v8.4.2 or earlier. The error message includes something similar to: "Called compress(VectorOperation::insert), but the element received from a remote processor, value -2.944283206211677e-10, does not match with the value -2.944283206213795e-10 on the owner processor 60". This is a deal.II issue that they fixed in v8.5 where the tolerance for comparing numbers between processors is too tight and can be triggered by standard round-off error. It doesn't effect simulation results.
+  
 # Version 2.0:
 Major update to PRISMS-PF, released in August 2017. The core library is very similar to v1.2, but the user interface is substantially changed. Most importantly, input parameters are now read from a text file, instead of via #define statements. All of the individual interface changes are not listed here, see the User Guide for the new file structure and syntax.
 
