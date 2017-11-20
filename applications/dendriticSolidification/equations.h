@@ -50,9 +50,6 @@ void variableAttributeLoader::loadVariableAttributes(){
 // equations (or parts of residual equations) can be written below in "residualRHS".
 
 
-// Free energy expression (or rather, its derivative)
-
-
 
 // =================================================================================
 // residualRHS
@@ -68,21 +65,21 @@ template <int dim, int degree>
 void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-// The temperature and its derivatives 
+// The temperature and its derivatives
 scalarvalueType T = variable_list.get_scalar_value(0);
 scalargradType Tx = variable_list.get_scalar_gradient(0);
 
-// The order parameter and its derivatives 
+// The order parameter and its derivatives
 scalarvalueType n = variable_list.get_scalar_value(1);
 scalargradType nx = variable_list.get_scalar_gradient(1);
 
-// The order parameter chemical potential and its derivatives 
+// The order parameter chemical potential and its derivatives
 scalarvalueType mu = variable_list.get_scalar_value(2);
 
 double lambdaV = (DV/0.6267/W0/W0);
 
 // Derivative of the free energy density with respect to n
-scalarvalueType fnV = (-(n-constV(lambdaV)*T*(constV(1.0)-n*n))*(constV(1.0)-n*n));
+scalarvalueType fnV = -(n-constV(lambdaV)*T*(constV(1.0)-n*n))*(constV(1.0)-n*n);
 
 scalarvalueType theta;
 
@@ -93,29 +90,27 @@ for (unsigned i=0; i< n.n_array_elements;i++){
 // Anisotropic gradient energy coefficient, its derivative and square
 scalarvalueType WV = (constV(W0)*(constV(1.0)+constV(epsilonM)*std::cos(constV(mult)*(theta-constV(theta0)))));
 scalarvalueType WTV = (constV(W0)*(-constV(epsilonM)*constV(mult)*std::sin(constV(mult)*(theta-constV(theta0)))));
-scalarvalueType tauV = (WV*WV);
-
-
+scalarvalueType tauV = WV; 
 
 scalargradType aniso;
-aniso[0] = -WV*WV*nx[0]+WV*WTV*nx[1];
-aniso[1] = -WV*WV*nx[1]-WV*WTV*nx[0];
+aniso[0] = WV*WV*nx[0]-WV*WTV*nx[1];
+aniso[1] = WV*WV*nx[1]+WV*WTV*nx[0];
 
 // Define required residuals
-scalarvalueType rTV = (T-constV(0.5)*mu*constV(userInputs.dtValue)/tauV);
+scalarvalueType rTV = (T+constV(0.5)*mu*constV(userInputs.dtValue)/tauV);
 scalargradType rTxV = (constV(-DV*userInputs.dtValue)*Tx);
-scalarvalueType rnV = (n-constV(userInputs.dtValue)*mu/tauV);
-scalarvalueType rmuV = (fnV);
+scalarvalueType rnV = (n+constV(userInputs.dtValue)*mu/tauV);
+scalarvalueType rmuV = (-fnV);
 scalargradType rmuxV = (-aniso);
 
-// Residuals for the equation to evolve the concentration 
+// Residuals for the equation to evolve the concentration
 variable_list.set_scalar_value_residual_term(0,rTV);
 variable_list.set_scalar_gradient_residual_term(0,rTxV);
 
-// Residuals for the equation to evolve the order parameter 
+// Residuals for the equation to evolve the order parameter
 variable_list.set_scalar_value_residual_term(1,rnV);
 
-// Residuals for the equation to evolve the order parameter chemical potential 
+// Residuals for the equation to evolve the order parameter chemical potential
 variable_list.set_scalar_value_residual_term(2,rmuV);
 variable_list.set_scalar_gradient_residual_term(2,rmuxV);
 

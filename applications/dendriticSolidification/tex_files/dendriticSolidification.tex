@@ -199,14 +199,14 @@ f(\phi,u) = -\frac{1}{2}\phi^2 + \frac{1}{4}\phi^4 + \lambda u \phi \left(1-\fra
 \end{equation}
 where $\lambda$ is a dimensionless coupling constant. The gradient energy coefficient, $W$, is given by 
 \begin{equation}
-W = W_0 [1+\epsilon_m \cos[m(\theta-\theta_0)]]
+W(\theta) = W_0 [1+\epsilon_m \cos[m(\theta-\theta_0)]]
 \end{equation}
 where, $W_0$, $\epsilon_m$, and $\theta_0$ are constants and $\theta$ is the in-plane azimuthal angle, where $\tan(\theta) = \frac{n_y}{n_x}$, where $n_y$ and $n_x$ are components of the normal vector $\hat{n} = \frac{\nabla \phi}{|\nabla \phi|}$.
 
 The evolution equations are:
 \begin{gather}
-\frac{\partial u}{\partial t} = - \frac{\delta \Pi}{\delta \phi} = D \nabla^2 u + \frac{1}{2} \tau(\hat{n}) \frac{\partial \phi}{\partial t} \\
-\tau(\hat{n}) \frac{\partial \phi}{\partial t} = \frac{\partial f}{\partial \phi} + \frac{\partial}{\partial x} \left[ |\nabla \phi|^2 W(\hat{n}) \frac{\partial W(\hat{n})}{\partial \left( \frac{\partial \phi}{\partial x} \right)} \right] \hat{x} + \frac{\partial}{\partial y} \left[ |\nabla \phi|^2 W(\hat{n}) \frac{\partial W(\hat{n})}{\partial \left( \frac{\partial \phi}{\partial y} \right)} \right] \hat{y} 
+\frac{\partial u}{\partial t} = D \nabla^2 u + \frac{1}{2}  \frac{\partial \phi}{\partial t} \\
+\tau(\hat{n}) \frac{\partial \phi}{\partial t} = -\frac{\partial f}{\partial \phi} + \nabla \cdot \left[W^2(\theta) \nabla \phi \right]+  \frac{\partial}{\partial x} \left[ |\nabla \phi|^2 W(\theta) \frac{\partial W(\theta)}{\partial \left( \frac{\partial \phi}{\partial x} \right)} \right] + \frac{\partial}{\partial y} \left[ |\nabla \phi|^2 W\theta) \frac{\partial W(\theta)}{\partial \left( \frac{\partial \phi}{\partial y} \right)} \right] 
 \end{gather}
 where
 \begin{gather}
@@ -216,9 +216,9 @@ D = \frac{0.6267 \lambda W_0^2}{\tau_0}
 
 The governing equations can be written more compactly using the variable $\mu$, the driving force for the phase transformation:
 \begin{gather}
-\frac{\partial u}{\partial t} = D \nabla^2 u - \frac{\mu}{\tau} \\
+\frac{\partial u}{\partial t} = D \nabla^2 u + \frac{\mu}{2 \tau} \\
 \tau(\hat{n}) \frac{\partial \phi}{\partial t} = \mu \\
-\mu = \left(\frac{\partial f}{\partial \phi}\right) - \nabla \cdot \left[\left(W^2 \frac{\partial \phi}{\partial x} - W \frac{\partial W}{\partial u} \frac{\partial \phi}{\partial y}\right)\hat{x}  + \left(W^2 \frac{\partial \phi}{\partial y} + W \frac{\partial W}{\partial u} \frac{\partial \phi}{\partial x}\right) \hat{y} \right]
+\mu = -\frac{\partial f}{\partial \phi} + \nabla \cdot \left[\left(W^2 \frac{\partial \phi}{\partial x} - W \frac{\partial W}{\partial u} \frac{\partial \phi}{\partial y}\right)\hat{x}  + \left(W^2 \frac{\partial \phi}{\partial y} + W \frac{\partial W}{\partial u} \frac{\partial \phi}{\partial x}\right) \hat{y} \right]
 \end{gather}
 
 \section{Model Constants}
@@ -232,17 +232,17 @@ $\theta_0$ = The rotation angle of the anisotropy, default value of 0.125 ($\sim
 \section{Time Discretization}
 Considering forward Euler explicit time stepping, we have the time discretized kinetics equation:
 \begin{gather}
-u^{n+1} = \left(u^{n} - \frac{\mu^n \Delta t}{\tau}\right) + D \Delta t \nabla^2 u^n \\
-\phi^{n+1} = \left(\phi^n - \frac{\Delta t \mu^n}{\tau}\right) \\
- \mu^{n+1} = \left(\frac{\partial f^n}{\partial \phi}\right) - \nabla \cdot \left[\left(W^2 \frac{\partial \phi^n}{\partial x} - W \frac{\partial W}{\partial u^n} \frac{\partial \phi^n}{\partial y}\right)\hat{x}  + \left(W^2 \frac{\partial \phi^n}{\partial y} + W \frac{\partial W}{\partial u} \frac{\partial \phi^n}{\partial x}\right) \hat{y} \right]
+u^{n+1} = u^{n} + \Delta t \left( D  \nabla^2 u^n + \frac{\mu^n}{2 \tau} \right) \\
+\phi^{n+1} = \phi^n + \frac{\Delta t \mu^n}{\tau} \\
+ \mu^{n+1} = -\frac{\partial f^n}{\partial \phi} + \nabla \cdot \left[\left(W^2 \frac{\partial \phi^n}{\partial x} - W \frac{\partial W}{\partial \theta} \frac{\partial \phi^n}{\partial y}\right)\hat{x}  + \left(W^2 \frac{\partial \phi^n}{\partial y} + W \frac{\partial W}{\partial \theta} \frac{\partial \phi^n}{\partial x}\right) \hat{y} \right]
 \end{gather}
 
 \section{Weak Formulation}
 
 \begin{gather}
-\int_{\Omega}   w  u^{n+1}  ~dV = \int_{\Omega}   w \underbrace{\left(u^{n} - \frac{\mu^n \Delta t}{\tau}\right)}_{r_u} + \nabla w \underbrace{(-D \Delta t \nabla u^n)}_{r_{ux}} ~dV \\
-\int_{\Omega}   w  \phi^{n+1}  ~dV = \int_{\Omega}   w \underbrace{\left(\phi^n - \frac{\Delta t \mu^n}{\tau}\right)}_{r_{\phi}} ~dV \\
-\int_{\Omega}   w  \mu^{n+1}  ~dV = \int_{\Omega}   w \underbrace{\left(\frac{\partial f^n}{\partial \phi}\right)}_{r_{\mu}} + \nabla w \cdot \underbrace{\left[\left(W^2 \frac{\partial \phi^n}{\partial x} - W \frac{\partial W}{\partial u^n} \frac{\partial \phi^n}{\partial y}\right)\hat{x}  + \left(W^2 \frac{\partial \phi^n}{\partial y} + W \frac{\partial W}{\partial u} \frac{\partial \phi^n}{\partial x}\right) \hat{y} \right]}_{r_{\phi x}}  ~dV 
+\int_{\Omega}   w  u^{n+1}  ~dV = \int_{\Omega}   w \underbrace{\left(u^{n} + \frac{\mu^n \Delta t}{2 \tau}\right)}_{r_u} + \nabla w \cdot \underbrace{(-D \Delta t \nabla u^n)}_{r_{ux}} ~dV \\
+\int_{\Omega}   w  \phi^{n+1}  ~dV = \int_{\Omega}   w \underbrace{\left(\phi^n + \frac{\Delta t \mu^n}{\tau}\right)}_{r_{\phi}} ~dV \\
+\int_{\Omega}   w  \mu^{n+1}  ~dV = \int_{\Omega}   w \underbrace{\left(-\frac{\partial f^n}{\partial \phi}\right)}_{r_{\mu}} + \nabla w \cdot \underbrace{\left[-\left(W^2 \frac{\partial \phi^n}{\partial x} - W \frac{\partial W}{\partial \theta} \frac{\partial \phi^n}{\partial y}\right)\hat{x}  - \left(W^2 \frac{\partial \phi^n}{\partial y} + W \frac{\partial W}{\partial \theta} \frac{\partial \phi^n}{\partial x}\right) \hat{y} \right]}_{r_{\phi x}}  ~dV 
 \end{gather}
 
 
