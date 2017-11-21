@@ -11,7 +11,7 @@ PRISMS-PF
 
 <B>Version information:</B>
 
-This version of the code, 2.0.1pre, contains some minor ongoing changes from v2.0.
+This version of the code, 2.0.1, contains some minor updates to v2.0.
 
 <B>What is PRISMS-PF?</B>
 

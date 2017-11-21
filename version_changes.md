@@ -1,5 +1,5 @@
 # Version 2.0.1
-Minor update to v2.0, planned to be released in Fall 2017. The biggest change is the introduction of a checkpoint/restart system.
+Minor update to v2.0, released in November 2017. The biggest change is the introduction of a checkpoint/restart system.
 
 Added functionality:
 - A checkpoint/restart system has been added. It allows runs to be restarted if they fail or you want the run to continue for more simulated time.
