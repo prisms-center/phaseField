@@ -24,8 +24,8 @@ double InitialCondition<dim>::value (const Point<dim> &p, const unsigned int com
 
 	  // Initial condition for the concentration field
 	  if (index == 0){
-		  double deltaV = userInputs.get_model_constant_double("deltaV");
-		  scalar_IC = -deltaV;
+		  double delta = userInputs.get_model_constant_double("delta");
+		  scalar_IC = -delta;
 	  }
 	  // Initial condition for the order parameter field
 	  else if (index == 1) {
