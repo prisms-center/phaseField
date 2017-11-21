@@ -1,4 +1,4 @@
-# Version 2.0.1 (pre-release)
+# Version 2.0.1
 Minor update to v2.0, planned to be released in Fall 2017. The biggest change is the introduction of a checkpoint/restart system.
 
 Added functionality:
@@ -11,6 +11,9 @@ Changes to the example applications:
 
 Bug fixes:
 - Fixed the subscriptor bug that appeared at the end of simulations in debug mode.
+
+Other changes:
+- Some minor updates to the user guide, including adding a new PRISMS-PF logo.
 
 Known issues:
 - PFields only work for scalar fields and only work when the variable with index zero is a scalar field.
