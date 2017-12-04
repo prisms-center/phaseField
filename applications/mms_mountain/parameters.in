@@ -21,14 +21,14 @@ set Domain size Z = 1
 # The number of elements in each direction is 2^(refineFactor) * subdivisions
 # Subdivisions Z ignored in 2D
 # For optimal performance, use refineFactor primarily to determine the element size
-set Subdivisions X = 2
-set Subdivisions Y = 1
+set Subdivisions X = 6
+set Subdivisions Y = 3
 set Subdivisions Z = 1
 
 set Refine factor = 7 #8
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
-set Element degree = 2
+set Element degree = 1
 
 # =================================================================================
 # Set the adaptive mesh refinement parameters
@@ -37,8 +37,8 @@ set Element degree = 2
 set Mesh adaptivity = true
 
 # Set the maximum and minimum level of refinement
-#set Max refinement level = 7
-set Max refinement level = 10 #8
+set Max refinement level = 10
+#set Max refinement level = 10 #8
 set Min refinement level = 3
 
 # Set the fields used to determine the refinement using their index.
@@ -49,14 +49,16 @@ set Refinement window max = 0.9999
 set Refinement window min = 0.0001
 
 # Set the number of time steps between remeshing operations
-set Steps between remeshing operations = 50 #25
+set Steps between remeshing operations = 50 #50 #25
 
 # =================================================================================
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-#set Time step = 2.0e-3
-set Time step = 0.005 #0.000125
+#set Time step = 0.25e-2
+#set Time step = 1.0e-4
+#set Time step = 0.005 #0.000125
+set Time step = 0.0625e-2
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
@@ -71,10 +73,10 @@ set Output condition = EQUAL_SPACING
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of outputs = 50
+set Number of outputs = 10 #50
 
 # The number of time steps between updates being printed to the screen
-set Skip print steps = 1
+set Skip print steps = 10
 
 # =================================================================================
 # Set the boundary conditions
@@ -108,7 +110,7 @@ set Boundary condition for variable n = PERIODIC, PERIODIC, DIRICHLET: 1, DIRICH
 # where [symmetry] is ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC.
 
 # The gradient energy coefficient, KnV in equations.h
-#set Model constant kappa = 0.0002, DOUBLE
+#set Model constant kappa = 0.0004, DOUBLE
 set Model constant kappa = 1.5625e-6, DOUBLE
 
 
@@ -128,4 +130,5 @@ set Model constant C1 = 0.0, double #0.06, double
 set Model constant A2 = 0.03, double
 set Model constant B2 = 22.0, double
 set Model constant C2 = 0.5, double
+#set Model constant C2 = 0.0625, double
 set Model constant D2 = 1.03125, double
