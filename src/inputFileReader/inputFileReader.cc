@@ -22,7 +22,7 @@ inputFileReader::inputFileReader(std::string input_file_name, variableAttributeL
 
     // Read in all of the parameters now
     declare_parameters(parameter_handler,var_types,num_constants);
-    parameter_handler.read_input("parameters.in");
+    parameter_handler.parse_input("parameters.in");
     number_of_dimensions = parameter_handler.get_integer("Number of dimensions");
 }
 
