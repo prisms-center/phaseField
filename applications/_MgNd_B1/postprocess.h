@@ -2,6 +2,7 @@
 // Set the attributes of the primary field variables
 // =================================================================================
 void variableAttributeLoader::loadPostProcessorVariableAttributes(){
+	/*
 	// Variable 0
 	set_variable_name				(0,"f_tot");
 	set_variable_type				(0,SCALAR);
@@ -28,6 +29,7 @@ void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 	set_need_gradient_residual_term	(2,false);
 
 	set_output_integral         	(2,true);
+	*/
 }
 
 // =================================================================================
@@ -37,6 +39,7 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 	variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
 	const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
+		/*
 // The order parameter and its derivatives (names here should match those in the macros above)
 
 // The concentration and its derivatives (names here should match those in the macros above)
@@ -158,9 +161,10 @@ else {
 	vm_stress = std::sqrt(vm_stress);
 }
 
+
 // Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
 pp_variable_list.set_scalar_value_residual_term(0, total_energy_density);
 pp_variable_list.set_scalar_value_residual_term(1, f_el);
 pp_variable_list.set_scalar_value_residual_term(2, vm_stress);
-
+*/
 }
