@@ -45,7 +45,7 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
 	  if (index==0){
 		  scalar_IC = 0.5*(c_precip-c_matrix)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + c_matrix;
 	  }
-	  else if (index==1){
+	  else if (index==2){
 		  scalar_IC = 0.5*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff)));
 	  }
 

@@ -36,7 +36,7 @@ set Element degree = 2
 set Mesh adaptivity = true
 
 # Set the maximum and minimum level of refinement
-set Max refinement level = 7
+set Max refinement level = 6
 set Min refinement level = 2
 
 # Set the fields used to determine the refinement using their index.
@@ -53,11 +53,11 @@ set Steps between remeshing operations = 5000
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 0.0004
+set Time step = 0.0016
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 100000000 #200000
+set Number of time steps = 1500000
 
 # =================================================================================
 # Set the elliptic solver parameters
@@ -124,13 +124,15 @@ set Boundary condition for variable u, z component = NATURAL, DIRICHLET: 0.0, NA
 set Model constant McV = 1.0, double
 
 # Mn1V  the Allen-Cahn mobility
-set Model constant Mn1V = 60.0, double
+set Model constant Mn1V = 15.0, double
 
 # Kn1 the gradient energy coefficient
-set Model constant Kn1 = ((0.005140909090909,0,0),(0,0.005140909090909,0),(0,0,0.005140909090909)), tensor # l* = 1 nm
+#set Model constant Kn1 = ((0.005140909090909,0,0),(0,0.005140909090909,0),(0,0,0.005140909090909)), tensor # run 000
+set Model constant Kn1 = ((0.010281818181818,0,0),(0,0.010281818181818,0),(0,0,0.010281818181818)), tensor # run 001
 
 # W, the energy barrier coefficient
-set Model constant W = 0.796224, double # l* = 1 nm
+#set Model constant W = 0.796224, double # run 000
+set Model constant W = 0.398112, double # run 001
 
 # n_dependent_stiffness
 set Model constant n_dependent_stiffness = false, bool

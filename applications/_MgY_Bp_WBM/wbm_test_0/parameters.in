@@ -11,20 +11,29 @@ set Number of dimensions = 2
 # Set the length of the domain in all three dimensions
 # =================================================================================
 # Each axes spans from zero to the specified length
-set Domain size X = 40.0
-set Domain size Y = 40.0
-set Domain size Z = 40.0
+#set Domain size X = 300.0
+#set Domain size Y = 300.0
+#set Domain size Z = 600.0
+
+# 2D (Y-Z)
+set Domain size X = 350.0
+set Domain size Y = 350.0
+set Domain size Z = 350.0
 
 # =================================================================================
 # Set the element parameters
 # =================================================================================
 # The number of elements in each direction is 2^(refineFactor) * subdivisions
 # For optimal performance, use refineFactor primarily to determine the element size
-set Subdivisions X = 3
-set Subdivisions Y = 3
-set Subdivisions Z = 3
+#set Subdivisions X = 7
+#set Subdivisions Y = 28
+#set Subdivisions Z = 14
 
-set Refine factor = 5
+set Subdivisions X = 4
+set Subdivisions Y = 1
+set Subdivisions Z = 1
+
+set Refine factor = 7
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
 set Element degree = 2
@@ -36,18 +45,15 @@ set Element degree = 2
 set Mesh adaptivity = true
 
 # Set the maximum and minimum level of refinement
-# When adaptive meshing is enabled, the refine factor set in the block above is
-# only used to generate the first pass of the mesh as the initial conditions are
-# applied. It should be set somewhere between the max and min levels below.
-set Max refinement level = 5
-set Min refinement level = 1
+set Max refinement level = 11
+set Min refinement level = 6
 
 # Set the fields used to determine the refinement using their index.
-set Refinement criteria fields = n1,n2,n3
+set Refinement criteria fields = n1
 
 # Set the maximum and minimum value of the fields where the mesh should be refined
-set Refinement window max = 0.99,0.99,0.99
-set Refinement window min = 0.01,0.01,0.01
+set Refinement window max = 0.99
+set Refinement window min = 0.01
 
 # Set the number of time steps between remeshing operations
 set Steps between remeshing operations = 1000
@@ -56,11 +62,11 @@ set Steps between remeshing operations = 1000
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 6.0e-4
+set Time step = 3.0e-6
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 20000
+set Number of time steps = 100000
 
 # =================================================================================
 # Set the elliptic solver parameters
@@ -73,10 +79,10 @@ set Linear solver = SolverCG
 set Use absolute convergence tolerance = true
 
 # The tolerance for convergence (L2 norm of the residual)
-set Solver tolerance value = 5.0e-3
+set Solver tolerance value = 5.0e-4
 
 # The maximum number of solver iterations per time step
-set Maximum allowed solver iterations = 1000
+set Maximum allowed solver iterations = 10000
 
 # =================================================================================
 # Set the output parameters
@@ -87,25 +93,17 @@ set Output condition =  EQUAL_SPACING
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of outputs = 10
+set Number of outputs = 20
 
 # The number of time steps between updates being printed to the screen
-set Skip print steps = 1000
-
-# =================================================================================
-# Set the checkpoint/restart parameters
-# =================================================================================
-
-set Load from a checkpoint = true
-set Checkpoint condition = EQUAL_SPACING
-set Number of checkpoints = 10
+set Skip print steps = 1
 
 # =================================================================================
 # Set the boundary conditions
 # =================================================================================
 # Set the boundary condition for each variable, where each variable is given by
 # its name, as defined in equations.h. The four boundary condition
-# types are NATURAL, DIRICHLET, NON_UNIFORM_DIRICHLET and PERIODIC. If all
+# types are ZERO_DERIVATIVE, DIRICHLET, NON_UNIFORM_DIRICHLET and PERIODIC. If all
 # of the boundaries have the same boundary condition, only one boundary condition
 # type needs to be given. If multiple boundary condition types are needed, give a
 # comma-separated list of the types. The order is the miniumum of x, maximum of x,
@@ -118,15 +116,18 @@ set Number of checkpoints = 10
 # set Boundary condition for variable c = PERIODIC
 # Example 2: Zero-derivative BCs on the left and right, Dirichlet BCs with value
 # 1.5 on the top and bottom for variable 'n' in 2D
-# set Boundary condition for variable n = NATURAL, NATURAL, DIRICHLET: 1.5, DIRICHLET: 1.5
+# set Boundary condition for variable n = ZERO_DERIVATIVE, ZERO_DERIVATIVE, DIRICHLET: 1.5, DIRICHLET: 1.5
 
 set Boundary condition for variable c = NATURAL
 set Boundary condition for variable n1 = NATURAL
-set Boundary condition for variable n2 = NATURAL
-set Boundary condition for variable n3 = NATURAL
-set Boundary condition for variable u, x component = DIRICHLET: 0.0
-set Boundary condition for variable u, y component = DIRICHLET: 0.0
-set Boundary condition for variable u, z component = DIRICHLET: 0.0
+set Boundary condition for variable mu = NATURAL
+#set Boundary condition for variable u, x component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0
+#set Boundary condition for variable u, y component = NATURAL, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0
+#set Boundary condition for variable u, z component = NATURAL, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0
+set Boundary condition for variable u, x component = DIRICHLET: 0.0, NATURAL, NATURAL, NATURAL, NATURAL, NATURAL
+set Boundary condition for variable u, y component = NATURAL, NATURAL, DIRICHLET: 0.0, NATURAL, NATURAL, NATURAL
+set Boundary condition for variable u, z component = NATURAL, NATURAL, NATURAL, NATURAL, DIRICHLET: 0.0, NATURAL
+
 
 # =================================================================================
 # Set the model constants
@@ -136,38 +137,80 @@ set Boundary condition for variable u, z component = DIRICHLET: 0.0
 # McV, the Cahn-Hilliard mobility
 set Model constant McV = 1.0, double
 
-# The Allen-Cahn mobilities
-set Model constant Mn1V = 100.0, double
-set Model constant Mn2V = 100.0, double
-set Model constant Mn3V = 100.0, double
+# Mn1V  the Allen-Cahn mobility
+set Model constant Mn1V = 5000.0, double
 
-# The gradient energy coefficients
-set Model constant Kn1 = ((0.03,0,0),(0,0.007,0),(0,0,1.0)), tensor
-set Model constant Kn2 = ((0.01275,-0.009959,0),(-0.009959,0.02425,0),(0,0,1.0)), tensor
-set Model constant Kn3 = ((0.01275,0.009959,0),(0.009959,0.02425,0),(0,0,1.0)), tensor
+# Kn1 the gradient energy coefficient
+#set Model constant Kn1 = ((0.0424,0,0),(0,8.9796e-4,0),(0,0,0.03587)), tensor # nominal
+#set Model constant Kn1 = ((0.0848,0,0),(0,0.00179592,0),(0,0,0.07174)), tensor # thicker interface (2x nominal)
+#set Model constant Kn1 = ((0.0212,0,0),(0,4.4898e-4,0),(0,0,0.017935)), tensor # thinner interface (1/2 nominal)
+#set Model constant Kn1 = ((0.01413333333333,0,0),(0,2.9932e-4,0),(0,0,0.01195666666667)), tensor # thinner interface (1/3 nominal)
+
+# 2D (Y-Z)
+#set Model constant Kn1 = ((3.9286e-4,0,0),(0,0.01569,0),(0,0,0)), tensor
+set Model constant Kn1 = ((3.1495e-4 ,0,0),(0,0.01185,0),(0,0,0)), tensor
+
+# W, the energy barrier coefficient
+#set Model constant W = 0.0966, double # nominal
+#set Model constant W = 0.0483, double # thicker interface (2x nominal)
+#set Model constant W = 0.1932, double # thinner interface (1/2 nominal)
+#set Model constant W = 0.2898, double # thinner interface (1/3 nominal)
+
+# 2D (Y-Z)
+set Model constant W = 0.0, double
 
 # n_dependent_stiffness
-set Model constant n_dependent_stiffness = true, bool
+set Model constant n_dependent_stiffness = false, bool
 
-# The linear and constant coefficients of the stress-free transformation strains
+# sfts_linear1
+set Model constant sfts_linear1 = ((0.13383,0,0),(0,0.21273,0),(0,0,0.014832)), tensor
+# sfts_const1
+#set Model constant sfts_const1 = ((0.013972,0,0),(0,-0.0057545,0),(0,0,-0.002691)), tensor
+set Model constant sfts_const1_11 = 0.013972, double
+set Model constant sfts_const1_22 = -0.0057545, double
+set Model constant sfts_const1_33 = -0.002691, double
+
+# 2D (Y-Z)
+#set Model constant sfts_linear1 = ((0.21273,0,0),(0,0.014832,0),(0,0,0)), tensor
+#set Model constant sfts_const1_11 = -0.0057545, double
+#set Model constant sfts_const1_22 = -0.002691, double
+#set Model constant sfts_const1_33 = 0, double
+
 set Model constant sfts_linear1 = ((0,0,0),(0,0,0),(0,0,0)), tensor
-set Model constant sfts_const1 = ((0.0345,0,0),(0,0.0185,0),(0,0,-0.00270)), tensor
-set Model constant sfts_linear2 = ((0,0,0),(0,0,0),(0,0,0)), tensor
-set Model constant sfts_const2 = ((0.0225,-0.0069,0),(-0.0069,0.0305,0),(0,0,-0.00270)), tensor
-set Model constant sfts_linear3 = ((0,0,0),(0,0,0),(0,0,0)), tensor
-set Model constant sfts_const3 = ((0.0225, 0.0069,0),(0.0069,0.0305,0),(0,0,-0.00270)), tensor
+set Model constant sfts_const1_11 = 0.02083675, double
+set Model constant sfts_const1_22 = -8.369999999999999e-04, double
+set Model constant sfts_const1_33 = 0, double
 
-# A4, A3, A2, A1, and A0 Mg-Y matrix free energy parameters
-set Model constant A4 = 1.3687, double
-set Model constant A3 = -2.7375, double
-set Model constant A2 = 5.1622, double
-set Model constant A1 = -4.776, double
-set Model constant A0 = -1.6704, double
+#set Model constant sfts_linear1 = ((0,0,0),(0,0,0),(0,0,0)), tensor
+#set Model constant sfts_const1 = ((0.03,0,0),(0,0.02,0),(0,0,0)), tensor
+
+# A2, A1, and A0 Mg-Y matrix free energy parameters
+# Fit near equilibrium
+#set Model constant A2 = 59.4865, double
+#set Model constant A1 = -0.0618659, double
+#set Model constant A0 = 1.60851e-5, double
+
+# Fit at 0.05
+#set Model constant A2 = 5.7218, double
+#set Model constant A1 = -0.0059507, double
+#set Model constant A0 = 1.5472e-06, double
+
+# Fit at 0.02
+set Model constant A4 = 0.0, double
+set Model constant A3 = 0.0, double
+set Model constant A2 = 11.0151, double
+set Model constant A1 = -0.0114557, double
+set Model constant A0 = 2.97849e-06, double
 
 # B2, B1, and B0 Mg-Y matrix free energy parameters
-set Model constant B2 = 5.0, double
-set Model constant B1 = -5.9746, double
-set Model constant B0 = -1.5924, double
+set Model constant B2 = 2.8557, double
+set Model constant B1 = -0.71393, double
+set Model constant B0 = 0.04462, double
 
-set Model constant CIJ_Mg = (40.0,0.3), isotropic elastic constants
-set Model constant CIJ_Beta = (50.0,0.3), isotropic elastic constants
+# The elastic constants
+#set Model constant CIJ_Mg = (31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0), anisotropic elastic constants
+
+# 2D (Y-Z)
+set Model constant CIJ_Mg = (31.3,32.45,31.3,6.65,9.15,6.65,10.45,13.0,0,0,0,10.45,0,0,0,0,0,0,0,0,0), anisotropic elastic constants
+
+set Model constant CIJ_Beta = (31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0), anisotropic elastic constants

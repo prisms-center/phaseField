@@ -19,11 +19,11 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
 	//   double z_denom = (12.0)*(12.0);
 
     // 2D Y-Z
-    double x_denom = (4.0)*(4.0);
-    double y_denom = (12.0)*(12.0);
+    double x_denom = (2.0)*(2.0);
+    double y_denom = (2.0)*(2.0);
     double z_denom = (4.0)*(4.0);
 
-	  double initial_interface_coeff = 0.02; //(0.5*0.04);
+	  double initial_interface_coeff = 0.04;
 	  double initial_radius = 1.0;
 	  double c_matrix = 0.02; //0.0013;
       double c_precip = 0.125;
@@ -43,9 +43,12 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
 
 
 	  if (index==0){
-		  scalar_IC = 0.5*(c_precip-c_matrix)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + c_matrix;
+		  scalar_IC = c_matrix; //0.5*(c_precip-c_matrix)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + c_matrix;
 	  }
-	  else if (index==1){
+      else if (index==1){
+          scalar_IC = 0.0;
+      }
+	  else if (index==2){
 		  scalar_IC = 0.5*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff)));
 	  }
 
