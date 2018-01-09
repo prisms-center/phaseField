@@ -10,7 +10,7 @@ void variableAttributeLoader::loadVariableAttributes(){
 	set_variable_equation_type		(0,PARABOLIC);
 
 	set_need_value					(0,true);
-	set_need_gradient				(0,false);
+	set_need_gradient				(0,true);
 	set_need_hessian				(0,false);
 
 	set_need_value_residual_term	(0,true);
@@ -32,7 +32,7 @@ void variableAttributeLoader::loadVariableAttributes(){
 	set_need_hessian				(1,false);
 
 	set_need_value_residual_term	(1,true);
-	set_need_gradient_residual_term	(1,false);
+	set_need_gradient_residual_term	(1,true);
 
 	set_need_value_LHS				(1,false);
 	set_need_gradient_LHS			(1,false);
@@ -103,6 +103,7 @@ void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::Vec
 
 		// The concentration and its derivatives
 		scalarvalueType c = variable_list.get_scalar_value(0);
+		scalargradType cx = variable_list.get_scalar_gradient(0);
 
 		scalargradType mux = variable_list.get_scalar_gradient(1);
 
@@ -225,6 +226,7 @@ void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::Vec
 			scalarvalueType rcV = (c);
 			scalargradType rcxV = (constV(-userInputs.dtValue*McV)*mux);
 			scalarvalueType rmuV = ((facV * (1.0-h1V) + fbcV * h1V + mu_c_el ));
+			scalargradType rmuxV = (Kc * cx);
 			scalarvalueType rn1V = (n1-constV(userInputs.dtValue*Mn1V)*((fbV-faV)*hn1V+nDependentMisfitAC1+heterMechAC1 + W*fbarriernV));
 			scalargradType rn1xV = (constV(-userInputs.dtValue*Mn1V)*Knx1);
 
@@ -233,6 +235,7 @@ void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::Vec
 			variable_list.set_scalar_gradient_residual_term(0,rcxV);
 
 			variable_list.set_scalar_value_residual_term(1,rmuV);
+			variable_list.set_scalar_gradient_residual_term(1,rmuxV);
 
 			variable_list.set_scalar_value_residual_term(2,rn1V);
 			variable_list.set_scalar_gradient_residual_term(2,rn1xV);

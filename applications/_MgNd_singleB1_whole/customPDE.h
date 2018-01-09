@@ -13,11 +13,6 @@ public:
 				}
 			}
 		}
-		sfts_const1[0][0] = sfts_const1_11;
-		sfts_const1[1][1] = sfts_const1_22;
-		if (dim == 3){
-			sfts_const1[2][2] = sfts_const1_33;
-		}
 	};
 
 private:
@@ -58,18 +53,10 @@ private:
 	double McV = userInputs.get_model_constant_double("McV");
 	double Mn1V = userInputs.get_model_constant_double("Mn1V");
 	dealii::Tensor<2,dim> Kn1 = userInputs.get_model_constant_rank_2_tensor("Kn1");
-	double Kc = userInputs.get_model_constant_double("Kc");
 	double W = userInputs.get_model_constant_double("W");
 	bool n_dependent_stiffness = userInputs.get_model_constant_bool("n_dependent_stiffness");
 	dealii::Tensor<2,dim> sfts_linear1 = userInputs.get_model_constant_rank_2_tensor("sfts_linear1");
-	//dealii::Tensor<2,dim> sfts_const1 = userInputs.get_model_constant_rank_2_tensor("sfts_const1");
-	double sfts_const1_11 = userInputs.get_model_constant_double("sfts_const1_11");
-	double sfts_const1_22 = userInputs.get_model_constant_double("sfts_const1_22");
-	double sfts_const1_33 = userInputs.get_model_constant_double("sfts_const1_33");
-	dealii::Tensor<2,dim> sfts_const1;
-
-	double A4 = userInputs.get_model_constant_double("A4");
-	double A3 = userInputs.get_model_constant_double("A3");
+	dealii::Tensor<2,dim> sfts_const1 = userInputs.get_model_constant_rank_2_tensor("sfts_const1");
 	double A2 = userInputs.get_model_constant_double("A2");
 	double A1 = userInputs.get_model_constant_double("A1");
 	double A0 = userInputs.get_model_constant_double("A0");

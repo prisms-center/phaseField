@@ -10,7 +10,7 @@ void variableAttributeLoader::loadVariableAttributes(){
 	set_variable_equation_type		(0,PARABOLIC);
 
 	set_need_value					(0,true);
-	set_need_gradient				(0,false);
+	set_need_gradient				(0,true);
 	set_need_hessian				(0,false);
 
 	set_need_value_residual_term	(0,true);
@@ -22,17 +22,17 @@ void variableAttributeLoader::loadVariableAttributes(){
 	set_need_value_residual_term_LHS	(0,false);
 	set_need_gradient_residual_term_LHS	(0,false);
 
-	// Variable 0
-	set_variable_name				(1,"mu");
+	// Variable 1
+	set_variable_name				(1,"n1");
 	set_variable_type				(1,SCALAR);
 	set_variable_equation_type		(1,PARABOLIC);
 
-	set_need_value					(1,false);
+	set_need_value					(1,true);
 	set_need_gradient				(1,true);
 	set_need_hessian				(1,false);
 
 	set_need_value_residual_term	(1,true);
-	set_need_gradient_residual_term	(1,false);
+	set_need_gradient_residual_term	(1,true);
 
 	set_need_value_LHS				(1,false);
 	set_need_gradient_LHS			(1,false);
@@ -40,41 +40,23 @@ void variableAttributeLoader::loadVariableAttributes(){
 	set_need_value_residual_term_LHS	(1,false);
 	set_need_gradient_residual_term_LHS	(1,false);
 
-	// Variable 1
-	set_variable_name				(2,"n1");
-	set_variable_type				(2,SCALAR);
-	set_variable_equation_type		(2,PARABOLIC);
+	// Variable 2
+	set_variable_name				(2,"u");
+	set_variable_type				(2,VECTOR);
+	set_variable_equation_type		(2,ELLIPTIC);
 
-	set_need_value					(2,true);
+	set_need_value					(2,false);
 	set_need_gradient				(2,true);
 	set_need_hessian				(2,false);
 
-	set_need_value_residual_term	(2,true);
+	set_need_value_residual_term	(2,false);
 	set_need_gradient_residual_term	(2,true);
 
-	set_need_value_LHS				(2,true);
-	set_need_gradient_LHS			(2,false);
+	set_need_value_LHS				(2,false);
+	set_need_gradient_LHS			(2,true);
 	set_need_hessian_LHS			(2,false);
 	set_need_value_residual_term_LHS	(2,false);
-	set_need_gradient_residual_term_LHS	(2,false);
-
-	// Variable 2
-	set_variable_name				(3,"u");
-	set_variable_type				(3,VECTOR);
-	set_variable_equation_type		(3,ELLIPTIC);
-
-	set_need_value					(3,false);
-	set_need_gradient				(3,true);
-	set_need_hessian				(3,false);
-
-	set_need_value_residual_term	(3,false);
-	set_need_gradient_residual_term	(3,true);
-
-	set_need_value_LHS				(3,false);
-	set_need_gradient_LHS			(3,true);
-	set_need_hessian_LHS			(3,false);
-	set_need_value_residual_term_LHS	(3,false);
-	set_need_gradient_residual_term_LHS	(3,true);
+	set_need_gradient_residual_term_LHS	(2,true);
 
 }
 
@@ -97,10 +79,10 @@ void variableAttributeLoader::loadVariableAttributes(){
 #define fbcV (2.0*B2*c_beta +B1)
 #define fbccV (2.0*B2)
 
-#define h1V (3.0*n1*n1-2.0*n1*n1*n1)
-#define hn1V (6.0*n1-6.0*n1*n1)
-//#define h1V (n1*n1*n1*(10.0-15.0*n1+6.0*n1*n1))
-//#define hn1V (30.0*(n1-1.0)*(n1-1.0)*n1*n1)
+//#define h1V (3.0*n1*n1-2.0*n1*n1*n1)
+//#define hn1V (6.0*n1-6.0*n1*n1)
+#define h1V (n1*n1*n1*(10.0-15.0*n1+6.0*n1*n1))
+#define hn1V (30.0*(n1-1.0)*(n1-1.0)*n1*n1)
 
 // This double-well function can be used to tune the interfacial energy
 #define fbarrierV (n1*n1-2.0*n1*n1*n1+n1*n1*n1*n1)
@@ -108,10 +90,10 @@ void variableAttributeLoader::loadVariableAttributes(){
 
 // Residuals
 #define rcV   (c)
-#define rcxV  (constV(-userInputs.dtValue)*McV * (h1V*faccV+(constV(1.0)-h1V)*fbccV)/constV(faccV*fbccV) * mux)
-#define rmuV (mu_c)
+#define rcxTemp ( cx + n1x*(c_alpha-c_beta)*hn1V )
+#define rcxV  (constV(-userInputs.dtValue)*McV*rcxTemp)
 
-#define rn1V   (n1-constV(userInputs.dtValue*Mn1V)*( (fbV-faV)*hn1V - (c_beta-c_alpha)*facV*hn1V + W*fbarriernV + nDependentMisfitAC1 + heterMechAC1))
+#define rn1V   (n1-constV(userInputs.dtValue*Mn1V)*( (fbV-faV)*hn1V - (c_beta-c_alpha)*facV*hn1V + W*fbarriernV + nDependentMisfitAC1))
 #define rn1xV  (constV(-userInputs.dtValue*Mn1V)*Knx1)
 
 
@@ -131,51 +113,23 @@ void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::Vec
 
 // The concentration and its derivatives (names here should match those in the macros above)
 scalarvalueType c = variable_list.get_scalar_value(0);
-
-scalargradType mux = variable_list.get_scalar_gradient(1);
+scalargradType cx = variable_list.get_scalar_gradient(0);
 
 // The first order parameter and its derivatives (names here should match those in the macros above)
-scalarvalueType n1 = variable_list.get_scalar_value(2);
-scalargradType n1x = variable_list.get_scalar_gradient(2);
+scalarvalueType n1 = variable_list.get_scalar_value(1);
+scalargradType n1x = variable_list.get_scalar_gradient(1);
 
 // The derivative of the displacement vector (names here should match those in the macros above)
-vectorgradType ux = variable_list.get_vector_gradient(3);
+vectorgradType ux = variable_list.get_vector_gradient(2);
 vectorgradType ruxV;
 
-dealii::VectorizedArray<double> vegard_coeff[dim][dim];
-vegard_coeff[0][0] = 0.0; //0.1105;
-vegard_coeff[1][1] = 0.0; //0.1322;
-vegard_coeff[0][1] = 0.0;
-vegard_coeff[1][0] = 0.0;
-
-
-vegard_coeff[2][2] = 0.0;
-vegard_coeff[0][2] = 0.0;
-vegard_coeff[2][0] = 0.0;
-vegard_coeff[1][2] = 0.0;
-vegard_coeff[2][1] = 0.0;
-
-// Calculate the derivatives of c_beta (derivatives of c_alpha aren't needed)
-scalarvalueType cacV, canV, cbnV, cbcV, cbcnV;
-
-cacV = fbccV/( (constV(1.0)-h1V)*fbccV + h1V*faccV );
-canV = hn1V * (c_alpha - c_beta) * cacV;
-
-cbcV = faccV/( (constV(1.0)-h1V)*fbccV + h1V*faccV );
-cbnV = hn1V * (c_alpha - c_beta) * cbcV;
-cbcnV = (faccV * (fbccV-faccV) * hn1V)/( ((1.0-h1V)*fbccV + h1V*faccV)*((1.0-h1V)*fbccV + h1V*faccV) );  // Note: this is only true if faV and fbV are quadratic
-
 // Calculate the stress-free transformation strain and its derivatives at the quadrature point
-dealii::Tensor<2, dim, dealii::VectorizedArray<double> > sfts1, sfts1c, sfts1cc, sfts1n, sfts1cn;
+dealii::Tensor<2, dim, dealii::VectorizedArray<double> > sfts1;
 
 for (unsigned int i=0; i<dim; i++){
 for (unsigned int j=0; j<dim; j++){
 	// Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c_beta + b_p
-	sfts1[i][j] = constV(sfts_linear1[i][j])*c_beta + constV(sfts_const1[i][j]);
-	sfts1c[i][j] = constV(sfts_linear1[i][j]) * cbcV;
-	sfts1cc[i][j] = constV(0.0);
-	sfts1n[i][j] = constV(sfts_linear1[i][j]) * cbnV;
-	sfts1cn[i][j] = constV(sfts_linear1[i][j]) * cbcnV;
+	sfts1[i][j] = constV(sfts_const1[i][j]);
 }
 }
 
@@ -184,26 +138,16 @@ dealii::VectorizedArray<double> E2[dim][dim], S[dim][dim];
 
 for (unsigned int i=0; i<dim; i++){
 for (unsigned int j=0; j<dim; j++){
-	  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1V + vegard_coeff[i][j]*c_alpha*(1.0-h1V)); // HERE
+	  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1V );
 }
 }
 
 //compute stress
 //S=C*(E-E0)
 // Compute stress tensor (which is equal to the residual, Rux)
-dealii::VectorizedArray<double> CIJ_combined[CIJ_tensor_size][CIJ_tensor_size];
 
-if (n_dependent_stiffness == true){
-for (unsigned int i=0; i<2*dim-1+dim/3; i++){
-	  for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-		  CIJ_combined[i][j] = CIJ_Mg[i][j]*(constV(1.0)-h1V) + CIJ_Beta[i][j]*h1V;
-	  }
-}
-computeStress<dim>(CIJ_combined, E2, S);
-}
-else{
 computeStress<dim>(CIJ_Mg, E2, S);
-}
+
 
 
 // Fill residual corresponding to mechanics
@@ -220,24 +164,8 @@ dealii::VectorizedArray<double> nDependentMisfitAC1=constV(0.0);
 
 for (unsigned int i=0; i<dim; i++){
 for (unsigned int j=0; j<dim; j++){
-	  nDependentMisfitAC1+=-S[i][j]*(sfts1n[i][j]*h1V + sfts1[i][j]*hn1V + vegard_coeff[i][j]*canV*(1.0-h1V) +  vegard_coeff[i][j]*c_alpha*(-hn1V)); // HERE
+	  nDependentMisfitAC1+=-S[i][j]*(sfts1[i][j]*hn1V);
 }
-}
-
-
-// Compute the other stress term in the order parameter chemical potential, heterMechACp = 0.5*Hn*(C_beta-C_alpha)*(E-E0)*(E-E0)
-dealii::VectorizedArray<double> heterMechAC1=constV(0.0);
-dealii::VectorizedArray<double> S2[dim][dim];
-
-if (n_dependent_stiffness == true){
-	computeStress<dim>(CIJ_Beta-CIJ_Mg, E2, S2);
-
-	for (unsigned int i=0; i<dim; i++){
-		for (unsigned int j=0; j<dim; j++){
-			heterMechAC1 += S2[i][j]*E2[i][j];
-		}
-	}
-	heterMechAC1 = 0.5*hn1V*heterMechAC1;
 }
 
 //compute K*nx
@@ -249,23 +177,13 @@ for (unsigned int b=0; b<dim; b++){
 }
 }
 
-scalarvalueType mu_c = constV(0.0);
-mu_c += facV*cacV * (constV(1.0)-h1V) + fbcV*cbcV * h1V;
-for (unsigned int i=0; i<dim; i++){
-	for (unsigned int j=0; j<dim; j++){
-		mu_c -= S[i][j]*( sfts1c[i][j]*h1V +  vegard_coeff[i][j]*cacV*(1.0-h1V)); // HERE
-	}
-}
-
 variable_list.set_scalar_value_residual_term(0,rcV);
 variable_list.set_scalar_gradient_residual_term(0,rcxV);
 
-variable_list.set_scalar_value_residual_term(1,rmuV);
+variable_list.set_scalar_value_residual_term(1,rn1V);
+variable_list.set_scalar_gradient_residual_term(1,rn1xV);
 
-variable_list.set_scalar_value_residual_term(2,rn1V);
-variable_list.set_scalar_gradient_residual_term(2,rn1xV);
-
-variable_list.set_vector_gradient_residual_term(3,ruxV);
+variable_list.set_vector_gradient_residual_term(2,ruxV);
 
 }
 
@@ -288,27 +206,17 @@ template <int dim, int degree>
 void customPDE<dim,degree>::residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-	//n1
-	scalarvalueType n1 = variable_list.get_scalar_value(2);
 
 	vectorgradType ruxV;
 
 	// Take advantage of E being simply 0.5*(ux + transpose(ux)) and use the dealii "symmetrize" function
 	dealii::Tensor<2, dim, dealii::VectorizedArray<double> > E;
-	E = symmetrize(variable_list.get_vector_gradient(3));
+	E = symmetrize(variable_list.get_vector_gradient(2));
 
 	// Compute stress tensor (which is equal to the residual, Rux)
-	if (n_dependent_stiffness == true){
-		dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double> > CIJ_combined;
-		CIJ_combined = CIJ_Mg*(constV(1.0)-h1V);
-		CIJ_combined += CIJ_Beta*(h1V);
+	computeStress<dim>(CIJ_Mg, E, ruxV);
 
-		computeStress<dim>(CIJ_combined, E, ruxV);
-	}
-	else{
-		computeStress<dim>(CIJ_Mg, E, ruxV);
-	}
 
-	variable_list.set_vector_gradient_residual_term(3,ruxV);
+	variable_list.set_vector_gradient_residual_term(2,ruxV);
 
 }

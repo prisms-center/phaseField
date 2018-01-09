@@ -62,11 +62,11 @@ set Steps between remeshing operations = 1000
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 3.0e-6
+set Time step = 5.0e-7
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 100000
+set Number of time steps = 2000000
 
 # =================================================================================
 # Set the elliptic solver parameters
@@ -148,7 +148,11 @@ set Model constant Mn1V = 5000.0, double
 
 # 2D (Y-Z)
 #set Model constant Kn1 = ((3.9286e-4,0,0),(0,0.01569,0),(0,0,0)), tensor
-set Model constant Kn1 = ((3.1495e-4 ,0,0),(0,0.01185,0),(0,0,0)), tensor
+#set Model constant Kn1 = ((3.1495e-4 ,0,0),(0,0.01185,0),(0,0,0)), tensor
+
+set Model constant Kn1 = ((2.8778e-4,0,0),(0,0.01182,0),(0,0,0)), tensor
+
+set Model constant Kc = 0.005, double
 
 # W, the energy barrier coefficient
 #set Model constant W = 0.0966, double # nominal
