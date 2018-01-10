@@ -273,13 +273,15 @@ for (unsigned int j=0; j<dim; j++){
 //compute K*nx
 scalargradType Knx1, Knx2, Knx3;
 for (unsigned int a=0; a<dim; a++) {
-Knx1[a]=0.0;
-Knx2[a]=0.0;
-Knx3[a]=0.0;
-for (unsigned int b=0; b<dim; b++){
-	  Knx1[a]+=constV(Kn1[a][b])*n1x[b];
-	  Knx2[a]+=constV(Kn2[a][b])*n2x[b];
-	  Knx3[a]+=constV(Kn3[a][b])*n3x[b];
+	Knx1[a]=0.0;
+	Knx2[a]=0.0;
+	Knx3[a]=0.0;
+	for (unsigned int b=0; b<dim; b++){
+		Knx1[a]+=constV(Kn1[a][b])*n1x[b];
+		Knx2[a]+=constV(Kn2[a][b])*n2x[b];
+		Knx3[a]+=constV(Kn3[a][b])*n3x[b];
+	}
+}
 
 
 variable_list.set_scalar_value_residual_term(0,rcV);

@@ -25,5 +25,8 @@ double customPDE<dim,degree>::getNucleationProbability(variableValueContainer va
     // Calculate the nucleation rate
     double J=k1*exp(-k2/(std::max(ssf,1.0e-6)))*exp(-tau/(this->currentTime));
     double retProb=1.0-exp(-J*userInputs.dtValue*((double)userInputs.steps_between_nucleation_attempts)*dV);
+
+    std::cout << this->currentTime << " " << J << " " << ssf << " "<< retProb << " " << userInputs.dtValue << " " << userInputs.steps_between_nucleation_attempts << " " << dV << std::endl;
+
     return retProb;
 }

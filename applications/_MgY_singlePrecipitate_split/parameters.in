@@ -191,10 +191,10 @@ set Model constant sfts_const1_33 = -0.002691, double
 #set Model constant sfts_const1_22 = -0.002691, double
 #set Model constant sfts_const1_33 = 0, double
 
-set Model constant sfts_linear1 = ((0,0,0),(0,0,0),(0,0,0)), tensor
-set Model constant sfts_const1_11 = 0.02083675, double
-set Model constant sfts_const1_22 = -8.369999999999999e-04, double
-set Model constant sfts_const1_33 = 0, double
+#set Model constant sfts_linear1 = ((0,0,0),(0,0,0),(0,0,0)), tensor
+#set Model constant sfts_const1_11 = 0.02083675, double
+#set Model constant sfts_const1_22 = -8.369999999999999e-04, double
+#set Model constant sfts_const1_33 = 0, double
 
 #set Model constant sfts_linear1 = ((0,0,0),(0,0,0),(0,0,0)), tensor
 #set Model constant sfts_const1 = ((0.03,0,0),(0,0.02,0),(0,0,0)), tensor
