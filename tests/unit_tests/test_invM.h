@@ -16,13 +16,9 @@ class testInvM: public MatrixFreePDE<dim,degree>
 	  this->computeInvM();
 	  invMNorm=this->invM.l2_norm();
 
-	  // Need to clear fields or there's an error in the destructor
-      this->fields.clear();
-
   };
-  ~testInvM(){      
+  ~testInvM(){
       this->matrixFreeObject.clear();
-      delete this->dofHandlersSet[0];
   };
 
   double invMNorm;

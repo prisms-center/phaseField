@@ -1,20 +1,24 @@
-# Version 2.0.1 (pre-release)
-Minor update to v2.0, planned to be released in Fall 2017. So far the biggest change is the introduction of a checkpoint/restart system.
+# Version 2.0.1
+Minor update to v2.0, released in November 2017. The biggest change is the introduction of a checkpoint/restart system.
 
 Added functionality:
 - A checkpoint/restart system has been added. It allows runs to be restarted if they fail or you want the run to continue for more simulated time.
 - The parser to load in VTK files for initial conditions has been generalized so that it can read files generated from ParaView
 
 Changes to the example applications:
+- Fixed numerous errors in the documentation for the 'dendriticSolidification' app and edited the 'equations.h' file to use the notation from the documentation.
 - Fixed typos in the documentation for the 'coupledCahnHilliardAllenCahn' app.
 
 Bug fixes:
 - Fixed the subscriptor bug that appeared at the end of simulations in debug mode.
 
+Other changes:
+- Some minor updates to the user guide, including adding a new PRISMS-PF logo.
+
 Known issues:
 - PFields only work for scalar fields and only work when the variable with index zero is a scalar field.
 - Postprocessing only works for scalar fields and only when the variable with index zero is a scalar field.
-- The formulation file for the dendriticSolidifiation application may have errors.
+- An extraneous error can appear under the following circumstances: in debug mode, with multiple cores, with adaptive meshing, using deal.II v8.4.2 or earlier. The error message includes something similar to: "Called compress(VectorOperation::insert), but the element received from a remote processor, value -2.944283206211677e-10, does not match with the value -2.944283206213795e-10 on the owner processor 60". This is a deal.II issue that they fixed in v8.5 where the tolerance for comparing numbers between processors is too tight and can be triggered by standard round-off error. It doesn't effect simulation results.
 
 # Version 2.0:
 Major update to PRISMS-PF, released in August 2017. The core library is very similar to v1.2, but the user interface is substantially changed. Most importantly, input parameters are now read from a text file, instead of via #define statements. All of the individual interface changes are not listed here, see the User Guide for the new file structure and syntax.
