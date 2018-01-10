@@ -134,7 +134,7 @@ void customPDE<dim,degree>::seedNucleus(const dealii::Point<dim, dealii::Vectori
 						for (unsigned j=0; j<gamma.n_array_elements;j++)
 						temp[j] -= round(temp[j]/userInputs.domain_size[i])*userInputs.domain_size[i];
 					}
-					temp=temp/userInputs.order_parameter_freeze_semiaxes[i];
+					temp=temp/userInputs.nucleation_parameters_list[0].freeze_semiaxes[i];
 					weighted_dist += temp*temp;
 				}
 

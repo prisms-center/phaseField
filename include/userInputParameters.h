@@ -10,6 +10,7 @@
 #include "inputFileReader.h"
 #include "varTypeEnums.h"
 #include "variableAttributeLoader.h"
+#include "nucleationParameters.h"
 
 enum elasticityModel {ISOTROPIC, TRANSVERSE, ORTHOTROPIC, ANISOTROPIC, ANISOTROPIC2D};
 
@@ -121,6 +122,10 @@ public:
 	bool nucleation_occurs;
 	std::vector<unsigned int> nucleating_variable_indices;
 	std::vector<unsigned int> nucleation_need_value;
+
+	std::vector<nucleationParameters<dim> > nucleation_parameters_list;
+
+	/*
 	std::vector<double> nucleus_semiaxes;
 	std::vector<double> order_parameter_freeze_semiaxes;
 	double no_nucleation_border_thickness;
@@ -128,6 +133,7 @@ public:
 	double min_distance_between_nuclei; // Only enforced for nuclei placed during the same time step
 	double nucleation_order_parameter_cutoff;
 	unsigned int steps_between_nucleation_attempts;
+	*/
 
 private:
 	// Method to create the list of time steps where the results should be output (called from loadInputParameters)

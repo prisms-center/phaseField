@@ -177,19 +177,33 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
 
     // Parameters for nucleation
 
-    nucleus_semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Nucleus semiaxes (x, y ,z)")));
-    order_parameter_freeze_semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Freeze zone semiaxes (x, y ,z)")));
-    nucleus_hold_time = parameter_handler.get_double("Freeze time following nucleation");
-    no_nucleation_border_thickness = parameter_handler.get_double("Nucleation-free border thickness");
+    for (unsigned int i=0; i<input_file_reader.var_types.size(); i++){
+        if (input_file_reader.var_nucleates.at(i)){
+            std::string nucleation_text = "Nucleation parameters: ";
+            nucleation_text.append(input_file_reader.var_names.at(i));
+            nucleationParameters<dim> temp;
+            parameter_handler.enter_subsection(nucleation_text);
+            {
+                temp.semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Nucleus semiaxes (x, y, z)")));
+                temp.freeze_semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Freeze zone semiaxes (x, y, z)")));
+                temp.hold_time = parameter_handler.get_double("Freeze time following nucleation");
+                temp.no_nucleation_border_thickness = parameter_handler.get_double("Nucleation-free border thickness");
 
-    if (parameter_handler.get("Minimum allowed distance between nuclei") != "-1"){
-        min_distance_between_nuclei = parameter_handler.get_double("Minimum allowed distance between nuclei");
+                if (parameter_handler.get("Minimum allowed distance between nuclei") != "-1"){
+                    temp.min_spacing = parameter_handler.get_double("Minimum allowed distance between nuclei");
+                }
+                else if (temp.semiaxes.size() > 1) {
+                    temp.min_spacing = 2.0 * (*(max_element(temp.semiaxes.begin(),temp.semiaxes.end())));
+                }
+                temp.order_parameter_cutoff = parameter_handler.get_double("Order parameter cutoff value");
+                temp.steps_between_attempts = parameter_handler.get_integer("Time steps between nucleation attempts");
+            }
+            parameter_handler.leave_subsection();
+            nucleation_parameters_list.push_back(temp);
+        }
     }
-    else if (nucleus_semiaxes.size() > 1) {
-        min_distance_between_nuclei = 2.0 * (*(max_element(nucleus_semiaxes.begin(),nucleus_semiaxes.end())));
-    }
-    nucleation_order_parameter_cutoff = parameter_handler.get_double("Order parameter cutoff value");
-    steps_between_nucleation_attempts = parameter_handler.get_integer("Time steps between nucleation attempts");
+
+
 
 
     // Load the boundary condition variables into list of BCs (where each element of the vector is one component of one variable)

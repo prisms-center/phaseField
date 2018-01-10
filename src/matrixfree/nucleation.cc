@@ -11,7 +11,9 @@ template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::updateNucleiList() {
 
     if (userInputs.nucleation_occurs){
-        if (currentIncrement % userInputs.steps_between_nucleation_attempts == 0 || currentIncrement == 1){
+
+
+        if (currentIncrement % userInputs.nucleation_parameters_list[0].steps_between_attempts == 0 || currentIncrement == 1){
             computing_timer.enter_section("matrixFreePDE: nucleation");
 
             // Apply constraints
@@ -25,8 +27,8 @@ void MatrixFreePDE<dim,degree>::updateNucleiList() {
 
             if (currentIncrement == 1){
                 while (new_nuclei.size() == 0){
-                    currentTime+=userInputs.dtValue*(double)userInputs.steps_between_nucleation_attempts;
-                    currentIncrement+=userInputs.steps_between_nucleation_attempts;
+                    currentTime+=userInputs.dtValue*(double)userInputs.nucleation_parameters_list[0].steps_between_attempts;
+                    currentIncrement+=userInputs.nucleation_parameters_list[0].steps_between_attempts;
 
                     while (userInputs.outputTimeStepList.size() > 0 && userInputs.outputTimeStepList[currentOutput] < currentIncrement){
                         currentOutput++;
@@ -72,7 +74,7 @@ std::vector<nucleus<dim> > MatrixFreePDE<dim,degree>::getNewNuclei(){
 
     // Generate global list of new nuclei and resolve conflicts between new nuclei
     parallelNucleationList<dim> new_nuclei_parallel(newnuclei);
-    newnuclei = new_nuclei_parallel.buildGlobalNucleiList(userInputs.min_distance_between_nuclei, nuclei.size());
+    newnuclei = new_nuclei_parallel.buildGlobalNucleiList(userInputs.nucleation_parameters_list[0].min_spacing, nuclei.size());
 
     // Final check to resolve overlap conflicts with existing precipitates
     std::vector<unsigned int> conflict_ids;
@@ -185,7 +187,7 @@ void MatrixFreePDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim> > &n
                 bool insafetyzone = true;
                 for (unsigned int j=0; j < dim; j++){
                     bool periodic_j = (userInputs.BC_list[1].var_BC_type[2*j]==PERIODIC);
-                    bool insafetyzone_j = (periodic_j || ((nuc_ele_pos[j] > userInputs.no_nucleation_border_thickness) && (nuc_ele_pos[j] < userInputs.domain_size[j]-userInputs.no_nucleation_border_thickness)));
+                    bool insafetyzone_j = (periodic_j || ((nuc_ele_pos[j] > userInputs.nucleation_parameters_list[0].no_nucleation_border_thickness) && (nuc_ele_pos[j] < userInputs.domain_size[j]-userInputs.nucleation_parameters_list[0].no_nucleation_border_thickness)));
                     insafetyzone = insafetyzone && insafetyzone_j;
                 }
 
@@ -202,7 +204,7 @@ void MatrixFreePDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim> > &n
                                 }
                             }
                 		}
-                		if (sum_op < userInputs.nucleation_order_parameter_cutoff){
+                		if (sum_op < userInputs.nucleation_parameters_list[0].order_parameter_cutoff){
                 			anyqp_OK =true;
                 		}
                 	}
@@ -221,9 +223,9 @@ void MatrixFreePDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim> > &n
                 		nucleus<dim>* temp = new nucleus<dim>;
                 		temp->index=nuclei.size();
                 		temp->center=nuc_ele_pos;
-                		temp->semiaxes = userInputs.nucleus_semiaxes;
+                		temp->semiaxes = userInputs.nucleation_parameters_list[0].semiaxes;
                 		temp->seededTime=t;
-                		temp->seedingTime = userInputs.nucleus_hold_time;
+                		temp->seedingTime = userInputs.nucleation_parameters_list[0].hold_time;
                 		temp->seedingTimestep = inc;
                 		temp->orderParameterIndex = op_for_nucleus;
                 		newnuclei.push_back(*temp);
@@ -275,7 +277,7 @@ void MatrixFreePDE<dim,degree>::safetyCheckNewNuclei(std::vector<nucleus<dim> > 
                             double domsize = userInputs.domain_size[i];
                             shortest_edist = shortest_edist-round(shortest_edist/domsize)*domsize;
                         }
-                        double temp = shortest_edist/(userInputs.order_parameter_freeze_semiaxes[i]);
+                        double temp = shortest_edist/(userInputs.nucleation_parameters_list[0].freeze_semiaxes[i]);
                         weighted_dist += temp*temp;
                     }
                     if (weighted_dist < 1.0){
@@ -347,7 +349,7 @@ void MatrixFreePDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim> > 
 								double domsize = userInputs.domain_size[i];
 								shortest_edist = shortest_edist-round(shortest_edist/domsize)*domsize;
 							}
-							double temp = shortest_edist/(userInputs.order_parameter_freeze_semiaxes[i]);
+							double temp = shortest_edist/(userInputs.nucleation_parameters_list[0].freeze_semiaxes[i]);
 							weighted_dist += temp*temp;
 						}
 

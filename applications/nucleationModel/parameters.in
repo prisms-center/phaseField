@@ -90,13 +90,15 @@ set Boundary condition for variable n = PERIODIC
 # Set the nucleation parameters
 # =================================================================================
 
-set Nucleus semiaxes (x, y ,z) = 5, 5, 5
-set Freeze zone semiaxes (x, y ,z) = 7.5, 7.5, 7.5
-set Freeze time following nucleation = 20
-set Nucleation-free border thickness = 10
-set Minimum allowed distance between nuclei = 20.0
-set Order parameter cutoff value = 0.01
-set Time steps between nucleation attempts = 30
+subsection Nucleation parameters: n
+    set Nucleus semiaxes (x, y, z) = 5, 5, 5
+    set Freeze zone semiaxes (x, y, z) = 7.5, 7.5, 7.5
+    set Freeze time following nucleation = 20
+    set Nucleation-free border thickness = 10
+    set Minimum allowed distance between nuclei = 20.0
+    set Order parameter cutoff value = 0.01
+    set Time steps between nucleation attempts = 30
+end 
 
 # =================================================================================
 # Set the model constants
