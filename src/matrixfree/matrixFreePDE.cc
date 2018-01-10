@@ -30,16 +30,32 @@ template <int dim, int degree>
  MatrixFreePDE<dim,degree>::~MatrixFreePDE ()
  {
    matrixFreeObject.clear();
-   for(unsigned int iter=0; iter<fields.size(); iter++){
-     delete locally_relevant_dofsSet[iter];
-     delete constraintsDirichletSet[iter];
-     dealii::deallog.depth_console(4);
-     delete soltransSet[iter];
-     delete dofHandlersSet[iter];
-     delete FESet[iter];
-     delete solutionSet[iter];
-     delete residualSet[iter];
+
+   // Delete the pointers contained in several member variable vectors
+   // The size of each of these must be checked individually in case an exception is thrown
+   // as they are being initialized.
+   for(unsigned int iter=0; iter<locally_relevant_dofsSet.size(); iter++){
+       delete locally_relevant_dofsSet[iter];
    }
+   for(unsigned int iter=0; iter<constraintsDirichletSet.size(); iter++){
+       delete constraintsDirichletSet[iter];
+   }
+   for(unsigned int iter=0; iter<soltransSet.size(); iter++){
+       delete soltransSet[iter];
+   }
+   for(unsigned int iter=0; iter<dofHandlersSet.size(); iter++){
+       delete dofHandlersSet[iter];
+   }
+   for(unsigned int iter=0; iter<FESet.size(); iter++){
+       delete FESet[iter];
+   }
+   for(unsigned int iter=0; iter<solutionSet.size(); iter++){
+       delete solutionSet[iter];
+   }
+   for(unsigned int iter=0; iter<residualSet.size(); iter++){
+       delete residualSet[iter];
+   }
+
  }
 
 

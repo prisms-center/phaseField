@@ -247,6 +247,8 @@ class MatrixFreePDE:public Subscriptor
 
   void move_file(const std::string&, const std::string&);
 
+  void verify_checkpoint_file_exists(const std::string filename);
+
   // --------------------------------------------------------------------------
   // Nucleation methods and variables
   // --------------------------------------------------------------------------
