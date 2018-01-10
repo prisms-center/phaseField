@@ -263,7 +263,7 @@ class MatrixFreePDE:public Subscriptor
   void refineMeshNearNuclei(std::vector<nucleus<dim> > newnuclei);
 
   // Method to obtain the nucleation probability for an element, nontrival case must be implemented in the subsclass
-  virtual double getNucleationProbability(variableValueContainer, double, dealii::Point<dim>)const {return 0.0;};
+  virtual double getNucleationProbability(variableValueContainer, double, dealii::Point<dim>, unsigned int variable_index) const {return 0.0;};
 
   //utility functions
   /*Returns index of given field name if exists, else throw error.*/

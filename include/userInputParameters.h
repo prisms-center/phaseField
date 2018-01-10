@@ -130,10 +130,11 @@ public:
 	std::vector<double> order_parameter_freeze_semiaxes;
 	double no_nucleation_border_thickness;
 	double nucleus_hold_time;
+	*/
 	double min_distance_between_nuclei; // Only enforced for nuclei placed during the same time step
 	double nucleation_order_parameter_cutoff;
 	unsigned int steps_between_nucleation_attempts;
-	*/
+
 
 private:
 	// Method to create the list of time steps where the results should be output (called from loadInputParameters)

@@ -124,6 +124,12 @@ void customPDE<dim,degree>::seedNucleus(const dealii::Point<dim, dealii::Vectori
 		for (typename std::vector<nucleus<dim> >::const_iterator thisNucleus=this->nuclei.begin(); thisNucleus!=this->nuclei.end(); ++thisNucleus){
 
 			if (thisNucleus->seededTime + thisNucleus->seedingTime > this->currentTime){
+				unsigned int nucleation_parameters_list_index;
+		        for (unsigned int j=0; j<userInputs.nucleation_parameters_list.size(); j++ ){
+		            if (userInputs.nucleation_parameters_list[j].var_index == thisNuclei->orderParameterIndex){
+		                nucleation_parameters_list_index = j;
+		            }
+		        }
 
 				// Calculate the weighted distance function to the order parameter freeze boundary (weighted_dist = 1.0 on that boundary)
 				dealii::VectorizedArray<double> weighted_dist = constV(0.0);
@@ -134,7 +140,7 @@ void customPDE<dim,degree>::seedNucleus(const dealii::Point<dim, dealii::Vectori
 						for (unsigned j=0; j<gamma.n_array_elements;j++)
 						temp[j] -= round(temp[j]/userInputs.domain_size[i])*userInputs.domain_size[i];
 					}
-					temp=temp/userInputs.nucleation_parameters_list[0].freeze_semiaxes[i];
+					temp=temp/userInputs.nucleation_parameters_list[nucleation_parameters_list_index].freeze_semiaxes[i];
 					weighted_dist += temp*temp;
 				}
 
