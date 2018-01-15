@@ -1,5 +1,5 @@
 theme: jekyll-theme-minimal
 title: PRISMS-PF
-description: An open-source, high-performance, general purpose phase field platform
+description: An open-source, general purpose framework for high-performance phase field modeling
 
 BASE_PATH : /phaseField
