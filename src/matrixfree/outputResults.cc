@@ -110,6 +110,13 @@ void MatrixFreePDE<dim,degree>::outputResults() {
   // Write to file in either vtu or vtk format
   if (userInputs.output_file_type == "vtu"){
 
+      // Set flags to output the time and cycle number as part of the vtu file
+      dealii::DataOutBase::VtkFlags flags;
+      flags.time = currentTime;
+      flags.cycle = currentIncrement;
+      flags.print_date_and_time = true;
+      data_out.set_flags(flags);
+
       if (userInputs.output_vtu_per_process){
           // Write the results to separate files for each process
           data_out.write_vtu (output);

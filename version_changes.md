@@ -3,6 +3,7 @@ Minor ongoing updates to v2.0.1, planned to be released in early to mid 2018.
 
 Added functionality:
 - A single vtu file can now be simultaneously written by all MPI processes. This is the new default, but can be changed back to separate output files for each process in the parameters file.
+- The simulated time is now included in the vtu file, and for example is now visible in VisIt.
 
 Bug fixes:
 - Fixed a bug that prevented the checkpoint system from working in simulations with nucleation.
