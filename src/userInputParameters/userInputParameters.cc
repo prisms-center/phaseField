@@ -87,6 +87,12 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     output_file_type = parameter_handler.get("Output file type");
     output_file_name = parameter_handler.get("Output file name (base)");
 
+    output_vtu_per_process = parameter_handler.get_bool("Output separate files per process");
+    if ((output_file_type == "vtk") && (!output_vtu_per_process)){
+        output_vtu_per_process = true;
+        std::cout << "'Output file type' given as 'vtk' and 'Output separate files per process' given as 'false'. Shared output files are not supported for the vtk output format. Separate files per process will be created." << std::endl;
+    }
+
     // Field variable definitions
     number_of_variables = _number_of_variables;
 

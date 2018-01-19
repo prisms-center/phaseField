@@ -66,7 +66,7 @@
 
 %%% The "real" document content comes below...
 
-\title{PRISMS-PF User Guide (v2.0.1)}
+\title{PRISMS-PF User Guide (v2.0.2)}
 \author{Stephen DeWitt (prismsphasefield.dev@umich.edu)}
 %\date{} % Activate to display a given date or no date (if empty),
          % otherwise the current date is printed 
@@ -573,7 +573,7 @@ Maximum allowed solver iterations & Any positive integer & no & 10000 & The maxi
 \begin{center}
     \begin{tabular}{ | p{0.2\textwidth} | p{0.17\textwidth} | p{0.08\textwidth} | p{0.1\textwidth} | p{0.3\textwidth} |}
     \hline
-      \multicolumn{5}{|c|}{\textbf{Output}} \\
+      \multicolumn{5}{|c|}{\textbf{Output (Optional)}} \\
     \hline
     \hline
     \emph{Name} & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
@@ -582,6 +582,7 @@ Maximum allowed solver iterations & Any positive integer & no & 10000 & The maxi
       List of time steps to output & Comma-separated list of non-negative integers & no & 0 & The list of time steps to output, used for the LIST output condition and ignored for the others. \\ \hline
 Output file name (base) & String & no & solution & The name for the output file, before the time step and processor info are added. \\ \hline
 Output file type & vtu, vtk & no & vtu & The output file type (currently limited to either vtu or vtk). \\ \hline
+Output separate files per process & Boolean & no & false & Whether to output separate vtu files for each process in a parallel calculation (automatically set to true for vtk files). Separate files may decrease the time spent outputting results but may increase file tranfer times, as well as cluttering directories. \\ \hline
 Skip print steps & Any positive integer & no & 1 & The number of time steps between updates to the terminal window (1 is every time step). \\ \hline
     \end{tabular}
 \end{center}
