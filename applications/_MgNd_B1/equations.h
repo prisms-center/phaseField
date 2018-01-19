@@ -37,7 +37,7 @@ void variableAttributeLoader::loadVariableAttributes(){
 	set_need_value_residual_term	(1,true);
 	set_need_gradient_residual_term	(1,true);
 
-	set_need_value_LHS				(1,false);
+	set_need_value_LHS				(1,true);
 	set_need_gradient_LHS			(1,false);
 	set_need_hessian_LHS			(1,false);
 	set_need_value_residual_term_LHS	(1,false);
@@ -58,7 +58,7 @@ void variableAttributeLoader::loadVariableAttributes(){
 	set_need_value_residual_term	(2,true);
 	set_need_gradient_residual_term	(2,true);
 
-	set_need_value_LHS				(2,false);
+	set_need_value_LHS				(2,true);
 	set_need_gradient_LHS			(2,false);
 	set_need_hessian_LHS			(2,false);
 	set_need_value_residual_term_LHS	(2,false);
@@ -79,7 +79,7 @@ void variableAttributeLoader::loadVariableAttributes(){
 	set_need_value_residual_term	(3,true);
 	set_need_gradient_residual_term	(3,true);
 
-	set_need_value_LHS				(3,false);
+	set_need_value_LHS				(3,true);
 	set_need_gradient_LHS			(3,false);
 	set_need_hessian_LHS			(3,false);
 	set_need_value_residual_term_LHS	(3,false);
@@ -157,6 +157,7 @@ void variableAttributeLoader::loadVariableAttributes(){
 #define rn3V   (n3-constV(userInputs.dtValue*Mn3V)*gamma*( (fbV-faV)*hn3V - (c_beta-c_alpha)*facV*hn3V + W*fbarriern3V + nDependentMisfitAC3))
 #define rn3xV  (constV(-userInputs.dtValue*Mn3V)*gamma*Knx3)
 
+
 // =================================================================================
 // residualRHS
 // =================================================================================
@@ -170,7 +171,6 @@ void variableAttributeLoader::loadVariableAttributes(){
 template <int dim, int degree>
 void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
-
 
 // The concentration and its derivatives (names here should match those in the macros above)
 scalarvalueType c = variable_list.get_scalar_value(0);
@@ -296,6 +296,7 @@ variable_list.set_scalar_value_residual_term(3,rn3V + source_terms[2]);
 variable_list.set_scalar_gradient_residual_term(3,rn3xV);
 
 variable_list.set_vector_gradient_residual_term(4,ruxV);
+
 
 }
 

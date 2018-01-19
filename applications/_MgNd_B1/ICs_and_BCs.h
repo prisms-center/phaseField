@@ -18,7 +18,7 @@ template <int dim>
 
 	  #define adjust_avg_c false
 	  #define c_avg 0.004
-	  #define c_matrix 0.01 // 0.004 //1.0e-6
+	  #define c_matrix 0.004 //1.0e-6
 	  #define c_precip 0.125
 	  // Initial condition parameters
 	#define x_denom (1.5)*(1.5)

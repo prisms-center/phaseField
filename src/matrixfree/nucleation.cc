@@ -31,7 +31,11 @@ void MatrixFreePDE<dim,degree>::updateNucleiList() {
                     while (userInputs.outputTimeStepList.size() > 0 && userInputs.outputTimeStepList[currentOutput] < currentIncrement){
                         currentOutput++;
                     }
-
+                    
+                    while (userInputs.checkpointTimeStepList.size() > 0 && userInputs.checkpointTimeStepList[currentCheckpoint] < currentIncrement){
+                        currentCheckpoint++;
+                    }		    
+ 
                     new_nuclei = getNewNuclei();
                 }
             }

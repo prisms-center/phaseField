@@ -18,28 +18,28 @@ void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 	set_need_value_residual_term	(1,true);
 	set_need_gradient_residual_term	(1,false);
 
-    set_output_integral         	(1,false);
+    set_output_integral         	(1,true);
 
-
-	// Variable 2
-	set_variable_name				(2,"von_mises_stress");
+	// Variable 1
+	set_variable_name				(2,"mu_n");
 	set_variable_type				(2,SCALAR);
 
 	set_need_value_residual_term	(2,true);
-	set_need_gradient_residual_term	(2,false);
-	set_output_integral         	(2,false);
+	set_need_gradient_residual_term	(2,true);
+
+    set_output_integral         	(2,false);
 
 	// Variable 1
-	set_variable_name				(3,"dn_dt_chem");
+	set_variable_name				(3,"mu_n_mech");
 	set_variable_type				(3,SCALAR);
 
 	set_need_value_residual_term	(3,true);
-	set_need_gradient_residual_term	(3,true);
+	set_need_gradient_residual_term	(3,false);
 
     set_output_integral         	(3,false);
 
 	// Variable 1
-	set_variable_name				(4,"dn_dt_el");
+	set_variable_name				(4,"von_mises_stress");
 	set_variable_type				(4,SCALAR);
 
 	set_need_value_residual_term	(4,true);
@@ -47,24 +47,32 @@ void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 
     set_output_integral         	(4,false);
 
-	// Variable 1
-	set_variable_name				(5,"dn_dt_el_t1");
-	set_variable_type				(5,SCALAR);
+    // Variable 5	
+    set_variable_name				(5,"hydrostatic_stress");
+	set_variable_type			(5,SCALAR);
 
 	set_need_value_residual_term	(5,true);
 	set_need_gradient_residual_term	(5,false);
 
     set_output_integral         	(5,false);
-	// Variable 1
-	set_variable_name				(6,"dn_dt_el_t2");
-	set_variable_type				(6,SCALAR);
+    
+    // Variable 6	
+    set_variable_name				(6,"f_el");
+	set_variable_type			(6,SCALAR);
 
 	set_need_value_residual_term	(6,true);
 	set_need_gradient_residual_term	(6,false);
 
     set_output_integral         	(6,false);
 
+    // Variable 7	
+    set_variable_name				(7,"S_x_sfts");
+	set_variable_type			(7,SCALAR);
 
+	set_need_value_residual_term	(7,true);
+	set_need_gradient_residual_term	(7,false);
+
+    set_output_integral         	(7,false);
 }
 
 // =================================================================================
@@ -78,15 +86,14 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 
 		/// The concentration and its derivatives (names here should match those in the macros above)
 		scalarvalueType c = variable_list.get_scalar_value(0);
-
-		scalargradType mux = variable_list.get_scalar_gradient(1);
+		scalargradType cx = variable_list.get_scalar_gradient(0);
 
 		// The first order parameter and its derivatives (names here should match those in the macros above)
-		scalarvalueType n1 = variable_list.get_scalar_value(2);
-		scalargradType n1x = variable_list.get_scalar_gradient(2);
+		scalarvalueType n1 = variable_list.get_scalar_value(1);
+		scalargradType n1x = variable_list.get_scalar_gradient(1);
 
 		// The derivative of the displacement vector (names here should match those in the macros above)
-		vectorgradType ux = variable_list.get_vector_gradient(3);
+		vectorgradType ux = variable_list.get_vector_gradient(2);
 
 		scalarvalueType f_chem = (constV(1.0)-(h1V))*faV + (h1V)*fbV + constV(W)*fbarrierV;
 
@@ -165,83 +172,61 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 			}
 		}
 
-		scalarvalueType mu_c_el = constV(0.0);
+		// Compute one of the stress terms in the order parameter chemical potential, nDependentMisfitACp = -C*(E-E0)*(E0_n)
+		dealii::VectorizedArray<double> nDependentMisfitAC1=constV(0.0);
+
 		for (unsigned int i=0; i<dim; i++){
-			for (unsigned int j=0; j<dim; j++){
-				mu_c_el -= S[i][j]*( sfts1c[i][j]*h1V);
-			}
-		}
-
-// The Von Mises Stress
-dealii::VectorizedArray<double> vm_stress;
-if (dim == 3){
-    vm_stress = (S[0][0]-S[1][1])*(S[0][0]-S[1][1]) + (S[1][1]-S[2][2])*(S[1][1]-S[2][2]) + (S[2][2]-S[0][0])*(S[2][2]-S[0][0]);
-    vm_stress += constV(6.0)*(S[0][1]*S[0][1] + S[1][2]*S[1][2] + S[2][0]*S[2][0]);
-    vm_stress *= constV(0.5);
-    vm_stress = std::sqrt(vm_stress);
-}
-else {
-    vm_stress = S[0][0]*S[0][0] - S[0][0]*S[1][1] + S[1][1]*S[1][1] + constV(3.0)*S[0][1]*S[0][1];
-    vm_stress = std::sqrt(vm_stress);
-}
-
-scalarvalueType dn_dt_chem, dn_dt_el;
-
-// Compute one of the stress terms in the order parameter chemical potential, nDependentMisfitACp = -C*(E-E0)*(E0_n)
-dealii::VectorizedArray<double> nDependentMisfitAC1=constV(0.0);
-dealii::VectorizedArray<double> nDependentMisfitAC1_t1=constV(0.0);
-dealii::VectorizedArray<double> nDependentMisfitAC1_t2=constV(0.0);
-
-for (unsigned int i=0; i<dim; i++){
-for (unsigned int j=0; j<dim; j++){
-	  nDependentMisfitAC1+=-S[i][j]*(sfts1n[i][j]*h1V + sfts1[i][j]*hn1V);
-	  nDependentMisfitAC1_t1+=-S[i][j]*(sfts1n[i][j]*h1V);
-	  nDependentMisfitAC1_t2+=-S[i][j]*(sfts1[i][j]*hn1V);
-}
-}
-
-
-// Compute the other stress term in the order parameter chemical potential, heterMechACp = 0.5*Hn*(C_beta-C_alpha)*(E-E0)*(E-E0)
-dealii::VectorizedArray<double> heterMechAC1=constV(0.0);
-dealii::VectorizedArray<double> S2[dim][dim];
-
-if (n_dependent_stiffness == true){
-	computeStress<dim>(CIJ_Beta-CIJ_Mg, E2, S2);
-
-	for (unsigned int i=0; i<dim; i++){
 		for (unsigned int j=0; j<dim; j++){
-			heterMechAC1 += S2[i][j]*E2[i][j];
+			  nDependentMisfitAC1+=-S[i][j]*(sfts1n[i][j]*h1V + sfts1[i][j]*hn1V);
 		}
+		}
+
+		//compute K*nx
+		scalargradType Knx1;
+		for (unsigned int a=0; a<dim; a++) {
+		Knx1[a]=0.0;
+		for (unsigned int b=0; b<dim; b++){
+			  Knx1[a]+=constV(Kn1[a][b])*n1x[b];
+		}
+		}
+
+		scalarvalueType mu_n = (fbV-faV)*hn1V - (c_beta-c_alpha)*facV*hn1V + W*fbarriernV + nDependentMisfitAC1;
+
+
+		dealii::VectorizedArray<double> vm_stress;
+		if (dim == 3){
+			vm_stress = (S[0][0]-S[1][1])*(S[0][0]-S[1][1]) + (S[1][1]-S[2][2])*(S[1][1]-S[2][2]) + (S[2][2]-S[0][0])*(S[2][2]-S[0][0]);
+			vm_stress += constV(6.0)*(S[0][1]*S[0][1] + S[1][2]*S[1][2] + S[2][0]*S[2][0]);
+			vm_stress *= constV(0.5);
+			vm_stress = std::sqrt(vm_stress);
+		}
+		else {
+			vm_stress = S[0][0]*S[0][0] - S[0][0]*S[1][1] + S[1][1]*S[1][1] + constV(3.0)*S[0][1]*S[0][1];
+			vm_stress = std::sqrt(vm_stress);
+		}
+
+		dealii::VectorizedArray<double> hy_stress = constV(0.0);
+		for (unsigned int i=0; i<dim; i++){
+                    hy_stress += S[i][i];
+                }
+                hy_stress /= constV((double)dim);
+	
+                dealii::VectorizedArray<double> S_x_sfts1 = constV(0.0);
+                for (unsigned int i=0; i<dim; i++){
+                for (unsigned int j=0; j<dim; j++){
+                          S_x_sfts1+=-S[i][j]*sfts1[i][j];
+                }
+                }
+
+		// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
+		pp_variable_list.set_scalar_value_residual_term(0, total_energy_density);
+		pp_variable_list.set_scalar_value_residual_term(1, mu_c);
+		pp_variable_list.set_scalar_value_residual_term(2, mu_n);
+		pp_variable_list.set_scalar_gradient_residual_term(2, Knx1);
+		pp_variable_list.set_scalar_value_residual_term(3, nDependentMisfitAC1);
+		pp_variable_list.set_scalar_value_residual_term(4, vm_stress);
+		pp_variable_list.set_scalar_value_residual_term(5, hy_stress);
+		pp_variable_list.set_scalar_value_residual_term(6, f_el);
+		pp_variable_list.set_scalar_value_residual_term(7, S_x_sfts1);
+
 	}
-	heterMechAC1 = 0.5*hn1V*heterMechAC1;
-}
-
-// compute K*nx
-scalargradType Knx1;
-for (unsigned int a=0; a<dim; a++) {
-Knx1[a]=0.0;
-for (unsigned int b=0; b<dim; b++){
-	  Knx1[a]+=constV(Kn1[a][b])*n1x[b];
-}
-}
-
-
-dn_dt_chem = -constV(userInputs.dtValue*Mn1V)*( (fbV-faV)*hn1V - (c_beta-c_alpha)*facV*hn1V + W*fbarriernV);
-dn_dt_el = -constV(userInputs.dtValue*Mn1V)*( nDependentMisfitAC1 + heterMechAC1);
-
-scalarvalueType dn_dt_el_t1, dn_dt_el_t2;
-dn_dt_el_t1 = -constV(userInputs.dtValue*Mn1V)*( nDependentMisfitAC1_t1);
-dn_dt_el_t2 = -constV(userInputs.dtValue*Mn1V)*( nDependentMisfitAC1_t2);
-
-
-// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
-pp_variable_list.set_scalar_value_residual_term(0, total_energy_density);
-pp_variable_list.set_scalar_value_residual_term(1, mu_c);
-pp_variable_list.set_scalar_value_residual_term(2, vm_stress);
-pp_variable_list.set_scalar_value_residual_term(3, dn_dt_chem);
-pp_variable_list.set_scalar_gradient_residual_term(3, constV(-userInputs.dtValue*Mn1V)*Knx1);
-pp_variable_list.set_scalar_value_residual_term(4, dn_dt_el);
-pp_variable_list.set_scalar_value_residual_term(5, dn_dt_el_t1);
-pp_variable_list.set_scalar_value_residual_term(6, dn_dt_el_t2);
-
-}
