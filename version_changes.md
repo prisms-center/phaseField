@@ -1,3 +1,16 @@
+# Version 2.0.2pre
+Minor ongoing updates to v2.0.1, planned to be released in early to mid 2018.
+
+Added functionality:
+- A single vtu file can now be simultaneously written by all MPI processes. This is the new default, but can be changed back to separate output files for each process in the parameters file.
+
+Bug fixes:
+- Fixed a bug that prevented the checkpoint system from working in simulations with nucleation.
+- The MatrixFreePDE destructor was fixed so it doesn't fail if an exception is caught while the vectors of pointers are being initialized.
+
+Other changes:
+- A comprehensible error message is now given if a simulation is set to read a checkpoint file but can't find it.
+
 # Version 2.0.1
 Minor update to v2.0, released in November 2017. The biggest change is the introduction of a checkpoint/restart system.
 
