@@ -101,7 +101,7 @@ void MatrixFreePDE<dim,degree>::outputResults() {
   //write to results file
   //file name
   std::ostringstream cycleAsString;
-  cycleAsString << std::setw(std::ceil(std::log10(userInputs.totalIncrements))+1) << std::setfill('0') << currentIncrement;
+  cycleAsString << std::setw(std::floor(std::log10(userInputs.totalIncrements))+1) << std::setfill('0') << currentIncrement;
   char baseFileName[100], vtuFileName[100];
   sprintf(baseFileName, "%s-%s", userInputs.output_file_name.c_str(), cycleAsString.str().c_str());
   sprintf(vtuFileName, "%s.%u.%s", baseFileName,Utilities::MPI::this_mpi_process(MPI_COMM_WORLD),userInputs.output_file_type.c_str());

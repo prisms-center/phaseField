@@ -9,6 +9,7 @@ Bug fixes:
 - The MatrixFreePDE destructor was fixed so it doesn't fail if an exception is caught while the vectors of pointers are being initialized.
 
 Other changes:
+- Changed the file name convention so that when the maximum number of time steps is between powers of 10, it isn't padded by an extra 0 in front (e.g. solution-02000.pvtu becomes solution-2000.pvtu).
 - A comprehensible error message is now given if a simulation is set to read a checkpoint file but can't find it.
 
 # Version 2.0.1
