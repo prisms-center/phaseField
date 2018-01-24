@@ -182,16 +182,16 @@ void MatrixFreePDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim> > &n
                     }
 
                     //Find a random point within the element
-                    for (unsigned int i=0; i<dim; i++){
-                        randvec[i]=distr(gen);
-                        nuc_ele_pos[i]=ele_origin[i] + (ele_max[i]-ele_origin[i])*randvec[i];
+                    for (unsigned int j=0; j<dim; j++){
+                        randvec[j]=distr(gen);
+                        nuc_ele_pos[j]=ele_origin[j] + (ele_max[j]-ele_origin[j])*randvec[j];
                     }
 
                     //Make sure point is in safety zone
                     bool insafetyzone = true;
                     for (unsigned int j=0; j < dim; j++){
                         bool periodic_j = (userInputs.BC_list[1].var_BC_type[2*j]==PERIODIC);
-                        bool insafetyzone_j = (periodic_j || ((nuc_ele_pos[j] > userInputs.nucleation_parameters_list[i].no_nucleation_border_thickness) && (nuc_ele_pos[j] < userInputs.domain_size[j]-userInputs.nucleation_parameters_list[i].no_nucleation_border_thickness)));
+                        bool insafetyzone_j = (periodic_j || ((nuc_ele_pos[j] > userInputs.get_no_nucleation_border_thickness(variable_index)) && (nuc_ele_pos[j] < userInputs.domain_size[j]-userInputs.get_no_nucleation_border_thickness(variable_index))));
                         insafetyzone = insafetyzone && insafetyzone_j;
                     }
 
@@ -230,9 +230,9 @@ void MatrixFreePDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim> > &n
                             nucleus<dim>* temp = new nucleus<dim>;
                             temp->index=nuclei.size();
                             temp->center=nuc_ele_pos;
-                            temp->semiaxes = userInputs.nucleation_parameters_list[i].semiaxes;
+                            temp->semiaxes = userInputs.get_nucleus_semiaxes(variable_index);
                             temp->seededTime=t;
-                            temp->seedingTime = userInputs.nucleation_parameters_list[i].hold_time;
+                            temp->seedingTime = userInputs.get_nucleus_hold_time(variable_index);
                             temp->seedingTimestep = inc;
                             temp->orderParameterIndex = variable_index;
                             newnuclei.push_back(*temp);
@@ -260,15 +260,8 @@ void MatrixFreePDE<dim,degree>::safetyCheckNewNuclei(std::vector<nucleus<dim> > 
     std::vector<dealii::Point<dim> > q_point_list(num_quad_points);
 
     //Nucleus cycle
-    for (typename std::vector<nucleus<dim> >::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
+    for (typename std::vector<nucleus<dim> >::iterator thisNucleus=newnuclei.begin(); thisNucleus!=newnuclei.end(); ++thisNucleus){
         bool isClose=false;
-
-        unsigned int nucleation_parameters_list_index;
-        for (unsigned int j=0; j<userInputs.nucleation_parameters_list.size(); j++ ){
-            if (userInputs.nucleation_parameters_list[j].var_index == thisNuclei->orderParameterIndex){
-                nucleation_parameters_list_index = j;
-            }
-        }
 
         //Element cycle
 	    typename DoFHandler<dim>::active_cell_iterator   di = dofHandlersSet_nonconst[0]->begin_active();
@@ -284,18 +277,8 @@ void MatrixFreePDE<dim,degree>::safetyCheckNewNuclei(std::vector<nucleus<dim> > 
                 //Quadrature points cycle
                 for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
                     // Calculate the ellipsoidal distance to the center of the nucleus
-                    double weighted_dist = 0.0;
-                    for (unsigned int i=0; i<dim; i++){
-                        double shortest_edist = thisNuclei->center(i) - q_point_list[q_point](i);
-                        bool periodic_i = (userInputs.BC_list[1].var_BC_type[2*i]==PERIODIC);
-                        if (periodic_i){
-                            double domsize = userInputs.domain_size[i];
-                            shortest_edist = shortest_edist-round(shortest_edist/domsize)*domsize;
-                        }
+                    double weighted_dist = weightedDistanceFromNucleusCenter(thisNucleus->center, userInputs.get_nucleus_freeze_semiaxes(thisNucleus->orderParameterIndex), q_point_list[q_point], thisNucleus->orderParameterIndex);
 
-                        double temp = shortest_edist/(userInputs.nucleation_parameters_list[nucleation_parameters_list_index].freeze_semiaxes[i]);
-                        weighted_dist += temp*temp;
-                    }
                     if (weighted_dist < 1.0){
                     	double sum_op = 0.0;
                     	for (unsigned int num_op = 0; num_op < userInputs.nucleating_variable_indices.size(); num_op++){
@@ -304,7 +287,7 @@ void MatrixFreePDE<dim,degree>::safetyCheckNewNuclei(std::vector<nucleus<dim> > 
                         if (sum_op > 0.1){
                             isClose=true;
                             std::cout << "Attempted nucleation failed due to overlap w/ existing particle!!!!!!"  << std::endl;
-                            conflict_ids.push_back(thisNuclei->index);
+                            conflict_ids.push_back(thisNucleus->index);
                             break;
                         }
                     }
@@ -354,23 +337,12 @@ void MatrixFreePDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim> > 
 				diag_dist /= 2.0*pow(2.0,ti->level());
 
 				for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
-					for (typename std::vector<nucleus<dim> >::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
+					for (typename std::vector<nucleus<dim> >::iterator thisNucleus=newnuclei.begin(); thisNucleus!=newnuclei.end(); ++thisNucleus){
 
                         // Calculate the ellipsoidal distance to the center of the nucleus
-						double weighted_dist = 0.0;
-                        dealii::Tensor<1,dim,double> shortest_edist_tensor = thisNuclei->center - q_point_list[q_point];
-                        for (unsigned int i=0; i<dim; i++){
-                            if (userInputs.BC_list[thisNuclei->orderParameterIndex].var_BC_type[2*i]==PERIODIC){
-                                shortest_edist_tensor[i] = shortest_edist_tensor[i]-round(shortest_edist_tensor[i]/userInputs.domain_size[i])*userInputs.domain_size[i];
-                            }
-                        }
-                        shortest_edist_tensor = userInputs.nucleation_parameters_list[userInputs.nucleation_parameters_list_index.at(thisNuclei->orderParameterIndex)].rotation_matrix * shortest_edist_tensor;
-                        for (unsigned int i=0; i<dim; i++){
-                            shortest_edist_tensor[i] /= userInputs.nucleation_parameters_list[userInputs.nucleation_parameters_list_index.at(thisNuclei->orderParameterIndex)].freeze_semiaxes[i];
-                        }
-                        weighted_dist = shortest_edist_tensor.norm_square();
+                        double weighted_dist = weightedDistanceFromNucleusCenter(thisNucleus->center, userInputs.get_nucleus_freeze_semiaxes(thisNucleus->orderParameterIndex), q_point_list[q_point], thisNucleus->orderParameterIndex);
 
-						if (weighted_dist < 1.0 || thisNuclei->center.distance(q_point_list[q_point]) < diag_dist){
+						if (weighted_dist < 1.0 || thisNucleus->center.distance(q_point_list[q_point]) < diag_dist){
 							if ((unsigned int)ti->level() < userInputs.max_refinement_level){
 								mark_refine = true;
 								break;
@@ -393,6 +365,61 @@ void MatrixFreePDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim> > 
 		if (totalDOFs == numDoF_preremesh) break;
 		numDoF_preremesh = totalDOFs;
 	}
+}
+
+// First of two versions of this function to calculated the weighted distance from the center of a nucleus_semiaxes
+// This version is for when the points are given as doubles
+template <int dim, int degree>
+double MatrixFreePDE<dim,degree>::weightedDistanceFromNucleusCenter(
+    const dealii::Point<dim,double> center,
+    const std::vector<double> semiaxes,
+    const dealii::Point<dim,double> q_point_loc,
+    const unsigned int var_index) const
+{
+    double weighted_dist = 0.0;
+    dealii::Tensor<1,dim,double> shortest_edist_tensor = center - q_point_loc;
+    for (unsigned int i=0; i<dim; i++){
+        if (userInputs.BC_list[var_index].var_BC_type[2*i]==PERIODIC){
+            shortest_edist_tensor[i] = shortest_edist_tensor[i]-round(shortest_edist_tensor[i]/userInputs.domain_size[i])*userInputs.domain_size[i];
+        }
+    }
+    shortest_edist_tensor = userInputs.get_nucleus_rotation_matrix(var_index) * shortest_edist_tensor;
+    for (unsigned int i=0; i<dim; i++){
+        shortest_edist_tensor[i] /= semiaxes[i];
+    }
+    weighted_dist = shortest_edist_tensor.norm();
+    return weighted_dist;
+}
+
+// Second of two versions of this function to calculated the weighted distance from the center of a nucleus_semiaxes
+// This version is for when the points are given as vectorized arrays
+template <int dim, int degree>
+dealii::VectorizedArray<double> MatrixFreePDE<dim,degree>::weightedDistanceFromNucleusCenter(
+    const dealii::Point<dim,double> center,
+    const std::vector<double> semiaxes,
+    const dealii::Point<dim,dealii::VectorizedArray<double> > q_point_loc,
+    const unsigned int var_index) const
+{
+    dealii::VectorizedArray<double> weighted_dist = constV(0.0);
+    dealii::Tensor<1,dim,dealii::VectorizedArray<double> > shortest_edist_tensor;
+    for (unsigned int j=0; j<dim; j++){
+        shortest_edist_tensor[j] = center(j) - q_point_loc(j); // Can I do this outside the loop?
+
+        if (userInputs.BC_list[var_index].var_BC_type[2*j]==PERIODIC){
+            for (unsigned k=0; k<q_point_loc(0).n_array_elements;k++){
+                shortest_edist_tensor[j][k] = shortest_edist_tensor[j][k]-round(shortest_edist_tensor[j][k]/userInputs.domain_size[j])*userInputs.domain_size[j];
+            }
+        }
+    }
+    shortest_edist_tensor = userInputs.get_nucleus_rotation_matrix(var_index) * shortest_edist_tensor;
+    for (unsigned int j=0; j<dim; j++){
+        shortest_edist_tensor[j] /= constV(semiaxes[j]);
+    }
+    weighted_dist = shortest_edist_tensor.norm_square();
+    for (unsigned k=0; k<q_point_loc(0).n_array_elements;k++){
+        weighted_dist[k] = sqrt(weighted_dist[k]);
+    }
+    return weighted_dist;
 }
 
 // Template instantiations

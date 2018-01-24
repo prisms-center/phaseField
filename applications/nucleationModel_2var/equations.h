@@ -152,28 +152,13 @@ void customPDE<dim,degree>::seedNucleus(const dealii::Point<dim, dealii::Vectori
 	dealii::VectorizedArray<double> & source_term2,
 	dealii::VectorizedArray<double> & gamma) const {
 
+	// Loop through all of the seeded nuclei
 	for (typename std::vector<nucleus<dim> >::const_iterator thisNucleus=this->nuclei.begin(); thisNucleus!=this->nuclei.end(); ++thisNucleus){
 
 		if (thisNucleus->seededTime + thisNucleus->seedingTime > this->currentTime){
 
 			// Calculate the weighted distance function to the order parameter freeze boundary (weighted_dist = 1.0 on that boundary)
-			dealii::VectorizedArray<double> weighted_dist = constV(0.0);
-			dealii::Tensor<1,dim,dealii::VectorizedArray<double> > shortest_edist_tensor;
-			for (unsigned int j=0; j<dim; j++){
-				shortest_edist_tensor[j] = thisNucleus->center(j) - q_point_loc(j);
-
-				if (userInputs.BC_list[userInputs.nucleation_parameters_list_index.at(thisNucleus->orderParameterIndex)].var_BC_type[2*j]==PERIODIC){
-					for (unsigned k=0; k<gamma.n_array_elements;k++){
-						shortest_edist_tensor[j][k] = shortest_edist_tensor[j][k]-round(shortest_edist_tensor[j][k]/userInputs.domain_size[j])*userInputs.domain_size[j];
-					}
-				}
-			}
-			shortest_edist_tensor = userInputs.nucleation_parameters_list[userInputs.nucleation_parameters_list_index.at(thisNucleus->orderParameterIndex)].rotation_matrix * shortest_edist_tensor;
-			for (unsigned int j=0; j<dim; j++){
-				shortest_edist_tensor[j] /= constV(userInputs.nucleation_parameters_list[userInputs.nucleation_parameters_list_index.at(thisNucleus->orderParameterIndex)].freeze_semiaxes[j]);
-			}
-			weighted_dist = shortest_edist_tensor.norm_square();
-
+			dealii::VectorizedArray<double> weighted_dist = this->weightedDistanceFromNucleusCenter(thisNucleus->center, userInputs.get_nucleus_freeze_semiaxes(thisNucleus->orderParameterIndex), q_point_loc, thisNucleus->orderParameterIndex);
 
 			for (unsigned i=0; i<gamma.n_array_elements;i++){
 				if (weighted_dist[i] <= 1.0){
@@ -181,26 +166,20 @@ void customPDE<dim,degree>::seedNucleus(const dealii::Point<dim, dealii::Vectori
 
 					// Seed a nucleus if it was added to the list of nuclei this time step
 					if (thisNucleus->seedingTimestep == this->currentIncrement){
-						// Find the weighted distance to the outer edge of the nucleus and use it to calculate the order parameter source term
-						double r = 0.0;
-						double avg_semiaxis = 0.0;
-						dealii::Tensor<1,dim,double> shortest_edist_tensor;
+						// Find the weighted distance to the outer edge of the nucleus and use it to calculate the order parameter source term (r = 1.0 on that boundary)
+						dealii::Point<dim,double> q_point_loc_element;
 						for (unsigned int j=0; j<dim; j++){
-							shortest_edist_tensor[j] = thisNucleus->center(j) - q_point_loc(j)[i];
+							q_point_loc_element(j) = q_point_loc(j)[i];
+						}
+						double r = this->weightedDistanceFromNucleusCenter(thisNucleus->center, userInputs.get_nucleus_semiaxes(thisNucleus->orderParameterIndex), q_point_loc_element, thisNucleus->orderParameterIndex);
 
-							if (userInputs.BC_list[userInputs.nucleation_parameters_list_index.at(thisNucleus->orderParameterIndex)].var_BC_type[2*j]==PERIODIC){
-								shortest_edist_tensor[j] = shortest_edist_tensor[j]-round(shortest_edist_tensor[j]/userInputs.domain_size[j])*userInputs.domain_size[j];
-							}
+						double avg_semiaxis = 0.0;
+						for (unsigned int j=0; j<dim; j++){
 							avg_semiaxis += thisNucleus->semiaxes[j];
 						}
-						shortest_edist_tensor = userInputs.nucleation_parameters_list[userInputs.nucleation_parameters_list_index.at(thisNucleus->orderParameterIndex)].rotation_matrix * shortest_edist_tensor;
-						for (unsigned int j=0; j<dim; j++){
-							shortest_edist_tensor[j] /= userInputs.nucleation_parameters_list[userInputs.nucleation_parameters_list_index.at(thisNucleus->orderParameterIndex)].semiaxes[j];
-						}
-						r = shortest_edist_tensor.norm();
 						avg_semiaxis /= dim;
 
-						if (userInputs.nucleation_parameters_list_index.at(thisNucleus->orderParameterIndex) == 1){
+						if (thisNucleus->orderParameterIndex == 1){
 							source_term1[i] =0.5*(1.0-std::tanh(avg_semiaxis*(r-1.0)/interface_coeff));
 						}
 						else {

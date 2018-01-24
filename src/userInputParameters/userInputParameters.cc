@@ -191,8 +191,6 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
                 double hold_time = parameter_handler.get_double("Freeze time following nucleation");
                 double no_nucleation_border_thickness = parameter_handler.get_double("Nucleation-free border thickness");
 
-                //temp.set_rotation_matrix();
-
                 nucleationParameters<dim> temp(var_index,semiaxes,freeze_semiaxes,ellipsoid_rotation,hold_time,no_nucleation_border_thickness);
                 nucleation_parameters_list.push_back(temp);
             }

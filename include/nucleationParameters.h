@@ -19,7 +19,7 @@ public:
         std::vector<double> _ellipsoid_rotation,
         double _hold_time,
         double _no_nucleation_border_thickness){
-            
+
         var_index =_var_index;
         semiaxes = _semiaxes;
         freeze_semiaxes = _freeze_semiaxes;
