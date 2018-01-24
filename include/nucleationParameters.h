@@ -13,7 +13,27 @@ public:
 	double hold_time;
     dealii::Tensor<2,dim,double> rotation_matrix;
 
+    nucleationParameters(unsigned int _var_index,
+        std::vector<double> _semiaxes,
+        std::vector<double> _freeze_semiaxes,
+        std::vector<double> _ellipsoid_rotation,
+        double _hold_time,
+        double _no_nucleation_border_thickness){
+            
+        var_index =_var_index;
+        semiaxes = _semiaxes;
+        freeze_semiaxes = _freeze_semiaxes;
+        ellipsoid_rotation = _ellipsoid_rotation;
+        hold_time = _hold_time;
+        no_nucleation_border_thickness = _no_nucleation_border_thickness;
+
+        set_rotation_matrix();
+    };
+
     void set_rotation_matrix(){
+        // Rotation conventions:
+        // Rx refers to rotations about the x axis, Ry refers to rotations about the y axis, and Rz refers to rotations about the z axis.
+        // A positive rotation angle about the z axis corresponds to a clockwise rotation of the particle in a 2D calculation.
 
         double degrees_to_rad = std::acos(0.0)/90.0;
 

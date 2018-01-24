@@ -124,6 +124,7 @@ public:
 	std::vector<unsigned int> nucleation_need_value;
 
 	std::vector<nucleationParameters<dim> > nucleation_parameters_list;
+	std::map<unsigned int, unsigned int> nucleation_parameters_list_index;
 
 	/*
 	std::vector<double> nucleus_semiaxes;

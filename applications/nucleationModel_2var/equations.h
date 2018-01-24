@@ -155,12 +155,6 @@ void customPDE<dim,degree>::seedNucleus(const dealii::Point<dim, dealii::Vectori
 	for (typename std::vector<nucleus<dim> >::const_iterator thisNucleus=this->nuclei.begin(); thisNucleus!=this->nuclei.end(); ++thisNucleus){
 
 		if (thisNucleus->seededTime + thisNucleus->seedingTime > this->currentTime){
-			unsigned int nucleation_parameters_list_index;
-			for (unsigned int j=0; j<userInputs.nucleation_parameters_list.size(); j++ ){
-				if (userInputs.nucleation_parameters_list[j].var_index == thisNucleus->orderParameterIndex){
-					nucleation_parameters_list_index = j;
-				}
-			}
 
 			// Calculate the weighted distance function to the order parameter freeze boundary (weighted_dist = 1.0 on that boundary)
 			dealii::VectorizedArray<double> weighted_dist = constV(0.0);
@@ -168,15 +162,15 @@ void customPDE<dim,degree>::seedNucleus(const dealii::Point<dim, dealii::Vectori
 			for (unsigned int j=0; j<dim; j++){
 				shortest_edist_tensor[j] = thisNucleus->center(j) - q_point_loc(j);
 
-				if (userInputs.BC_list[nucleation_parameters_list_index].var_BC_type[2*j]==PERIODIC){
+				if (userInputs.BC_list[userInputs.nucleation_parameters_list_index.at(thisNucleus->orderParameterIndex)].var_BC_type[2*j]==PERIODIC){
 					for (unsigned k=0; k<gamma.n_array_elements;k++){
 						shortest_edist_tensor[j][k] = shortest_edist_tensor[j][k]-round(shortest_edist_tensor[j][k]/userInputs.domain_size[j])*userInputs.domain_size[j];
 					}
 				}
 			}
-			shortest_edist_tensor = userInputs.nucleation_parameters_list[nucleation_parameters_list_index].rotation_matrix * shortest_edist_tensor;
+			shortest_edist_tensor = userInputs.nucleation_parameters_list[userInputs.nucleation_parameters_list_index.at(thisNucleus->orderParameterIndex)].rotation_matrix * shortest_edist_tensor;
 			for (unsigned int j=0; j<dim; j++){
-				shortest_edist_tensor[j] /= constV(userInputs.nucleation_parameters_list[nucleation_parameters_list_index].freeze_semiaxes[j]);
+				shortest_edist_tensor[j] /= constV(userInputs.nucleation_parameters_list[userInputs.nucleation_parameters_list_index.at(thisNucleus->orderParameterIndex)].freeze_semiaxes[j]);
 			}
 			weighted_dist = shortest_edist_tensor.norm_square();
 
@@ -194,19 +188,19 @@ void customPDE<dim,degree>::seedNucleus(const dealii::Point<dim, dealii::Vectori
 						for (unsigned int j=0; j<dim; j++){
 							shortest_edist_tensor[j] = thisNucleus->center(j) - q_point_loc(j)[i];
 
-							if (userInputs.BC_list[nucleation_parameters_list_index].var_BC_type[2*j]==PERIODIC){
+							if (userInputs.BC_list[userInputs.nucleation_parameters_list_index.at(thisNucleus->orderParameterIndex)].var_BC_type[2*j]==PERIODIC){
 								shortest_edist_tensor[j] = shortest_edist_tensor[j]-round(shortest_edist_tensor[j]/userInputs.domain_size[j])*userInputs.domain_size[j];
 							}
 							avg_semiaxis += thisNucleus->semiaxes[j];
 						}
-						shortest_edist_tensor = userInputs.nucleation_parameters_list[nucleation_parameters_list_index].rotation_matrix * shortest_edist_tensor;
+						shortest_edist_tensor = userInputs.nucleation_parameters_list[userInputs.nucleation_parameters_list_index.at(thisNucleus->orderParameterIndex)].rotation_matrix * shortest_edist_tensor;
 						for (unsigned int j=0; j<dim; j++){
-							shortest_edist_tensor[j] /= userInputs.nucleation_parameters_list[nucleation_parameters_list_index].semiaxes[j];
+							shortest_edist_tensor[j] /= userInputs.nucleation_parameters_list[userInputs.nucleation_parameters_list_index.at(thisNucleus->orderParameterIndex)].semiaxes[j];
 						}
 						r = shortest_edist_tensor.norm();
 						avg_semiaxis /= dim;
 
-						if (nucleation_parameters_list_index == 1){
+						if (userInputs.nucleation_parameters_list_index.at(thisNucleus->orderParameterIndex) == 1){
 							source_term1[i] =0.5*(1.0-std::tanh(avg_semiaxis*(r-1.0)/interface_coeff));
 						}
 						else {

@@ -181,22 +181,29 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
         if (input_file_reader.var_nucleates.at(i)){
             std::string nucleation_text = "Nucleation parameters: ";
             nucleation_text.append(input_file_reader.var_names.at(i));
-            nucleationParameters<dim> temp;
+
             parameter_handler.enter_subsection(nucleation_text);
             {
-                temp.var_index = i;
-                temp.semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Nucleus semiaxes (x, y, z)")));
-                temp.ellipsoid_rotation = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Nucleus rotation in degrees (x, y, z)")));
-                temp.freeze_semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Freeze zone semiaxes (x, y, z)")));
-                temp.hold_time = parameter_handler.get_double("Freeze time following nucleation");
-                temp.no_nucleation_border_thickness = parameter_handler.get_double("Nucleation-free border thickness");
+                unsigned int var_index = i;
+                std::vector<double> semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Nucleus semiaxes (x, y, z)")));
+                std::vector<double> ellipsoid_rotation = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Nucleus rotation in degrees (x, y, z)")));
+                std::vector<double> freeze_semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Freeze zone semiaxes (x, y, z)")));
+                double hold_time = parameter_handler.get_double("Freeze time following nucleation");
+                double no_nucleation_border_thickness = parameter_handler.get_double("Nucleation-free border thickness");
 
-                temp.set_rotation_matrix();
+                //temp.set_rotation_matrix();
+
+                nucleationParameters<dim> temp(var_index,semiaxes,freeze_semiaxes,ellipsoid_rotation,hold_time,no_nucleation_border_thickness);
+                nucleation_parameters_list.push_back(temp);
             }
             parameter_handler.leave_subsection();
-            nucleation_parameters_list.push_back(temp);
+
         }
     }
+    for (unsigned int i=0; i<nucleation_parameters_list.size(); i++){
+        nucleation_parameters_list_index[nucleation_parameters_list.at(i).var_index] = i;
+    }
+
 
     if (parameter_handler.get("Minimum allowed distance between nuclei") != "-1"){
         min_distance_between_nuclei = parameter_handler.get_double("Minimum allowed distance between nuclei");
