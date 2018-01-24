@@ -316,7 +316,8 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
             nucleation_text.append(var_names.at(i));
             parameter_handler.enter_subsection(nucleation_text);
             {
-                parameter_handler.declare_entry("Nucleus semiaxes (x, y, z)","",dealii::Patterns::List(dealii::Patterns::Double()),"The semiaxes for nuclei placed with the explicit nucleation algorithm).");
+                parameter_handler.declare_entry("Nucleus semiaxes (x, y, z)","",dealii::Patterns::List(dealii::Patterns::Double()),"The semiaxes for nuclei placed with the explicit nucleation algorithm.");
+                parameter_handler.declare_entry("Nucleus rotation in degrees (x, y, z)","",dealii::Patterns::List(dealii::Patterns::Double()),"The rotation of the nuclei placed with the explicit nucleation algorithm. The rotations are given with respect to the normal direction using intrinsic Tait-Bryan angles.");
                 parameter_handler.declare_entry("Freeze zone semiaxes (x, y, z)","",dealii::Patterns::List(dealii::Patterns::Double()),"The semiaxes for region where the order parameter is frozen for a period of time after placement.");
                 parameter_handler.declare_entry("Freeze time following nucleation","0.0",dealii::Patterns::Double(),"Duration that the order parameter is frozen after placement.");
                 parameter_handler.declare_entry("Nucleation-free border thickness","0.0",dealii::Patterns::Double(),"The thickness of the nucleation-free region near the domain boundaries (ignored for periodic BCs).");

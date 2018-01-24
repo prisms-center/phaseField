@@ -186,11 +186,12 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
             {
                 temp.var_index = i;
                 temp.semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Nucleus semiaxes (x, y, z)")));
+                temp.ellipsoid_rotation = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Nucleus rotation in degrees (x, y, z)")));
                 temp.freeze_semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Freeze zone semiaxes (x, y, z)")));
                 temp.hold_time = parameter_handler.get_double("Freeze time following nucleation");
                 temp.no_nucleation_border_thickness = parameter_handler.get_double("Nucleation-free border thickness");
 
-
+                temp.set_rotation_matrix();
             }
             parameter_handler.leave_subsection();
             nucleation_parameters_list.push_back(temp);

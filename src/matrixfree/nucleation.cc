@@ -363,18 +363,36 @@ void MatrixFreePDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim> > 
                             }
                         }
 
+                        // ---- BEGIN REWRITE FOR ROTATED ELLIPSOIDAL NUCLEI -----------
+
 						// Calculate the ellipsoidal distance to the center of the nucleus
+						// double weighted_dist = 0.0;
+						// for (unsigned int i=0; i<dim; i++){
+						// 	double shortest_edist = thisNuclei->center(i) - q_point_list[q_point](i);
+						// 	bool periodic_i = (userInputs.BC_list[1].var_BC_type[2*i]==PERIODIC);
+						// 	if (periodic_i){
+						// 		double domsize = userInputs.domain_size[i];
+						// 		shortest_edist = shortest_edist-round(shortest_edist/domsize)*domsize;
+						// 	}
+						// 	double temp = shortest_edist/(userInputs.nucleation_parameters_list[nucleation_parameters_list_index].freeze_semiaxes[i]);
+						// 	weighted_dist += temp*temp;
+						// }
+
+                        // Calculate the ellipsoidal distance to the center of the nucleus
 						double weighted_dist = 0.0;
-						for (unsigned int i=0; i<dim; i++){
-							double shortest_edist = thisNuclei->center(i) - q_point_list[q_point](i);
-							bool periodic_i = (userInputs.BC_list[1].var_BC_type[2*i]==PERIODIC);
-							if (periodic_i){
-								double domsize = userInputs.domain_size[i];
-								shortest_edist = shortest_edist-round(shortest_edist/domsize)*domsize;
-							}
-							double temp = shortest_edist/(userInputs.nucleation_parameters_list[nucleation_parameters_list_index].freeze_semiaxes[i]);
-							weighted_dist += temp*temp;
-						}
+                        dealii::Tensor<1,dim,double> shortest_edist_tensor = thisNuclei->center - q_point_list[q_point];
+                        for (unsigned int i=0; i<dim; i++){
+                            if (userInputs.BC_list[thisNuclei->orderParameterIndex].var_BC_type[2*i]==PERIODIC){
+                                shortest_edist_tensor[i] = shortest_edist_tensor[i]-round(shortest_edist_tensor[i]/userInputs.domain_size[i])*userInputs.domain_size[i];
+                            }
+                        }
+                        shortest_edist_tensor = userInputs.nucleation_parameters_list[nucleation_parameters_list_index].rotation_matrix * shortest_edist_tensor;
+                        for (unsigned int i=0; i<dim; i++){
+                            shortest_edist_tensor[i] /= userInputs.nucleation_parameters_list[nucleation_parameters_list_index].freeze_semiaxes[i];
+                        }
+                        weighted_dist = shortest_edist_tensor.norm_square();
+
+                        // ---- END REWRITE FOR ROTATED ELLIPSOIDAL NUCLEI -----------
 
 						if (weighted_dist < 1.0 || thisNuclei->center.distance(q_point_list[q_point]) < diag_dist){
 							if ((unsigned int)ti->level() < userInputs.max_refinement_level){
