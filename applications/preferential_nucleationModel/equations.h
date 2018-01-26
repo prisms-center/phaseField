@@ -87,11 +87,11 @@ template <int dim, int degree>
 void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-// The concentration and its derivatives 
+// The concentration and its derivatives
 scalarvalueType c = variable_list.get_scalar_value(0);
 scalargradType cx = variable_list.get_scalar_gradient(0);
 
-// The order parameter and its derivatives 
+// The order parameter and its derivatives
 scalarvalueType n = variable_list.get_scalar_value(1);
 scalargradType nx = variable_list.get_scalar_gradient(1);
 
@@ -103,11 +103,11 @@ dealii::VectorizedArray<double> gamma = constV(1.0);
 seedNucleus(q_point_loc,source_term,gamma);
 // -------------------------------------------------
 
-// Residuals for the equation to evolve the concentration 
+// Residuals for the equation to evolve the concentration
 variable_list.set_scalar_value_residual_term(0,rcV);
 variable_list.set_scalar_gradient_residual_term(0,rcxV);
 
-// Residuals for the equation to evolve the order parameter 
+// Residuals for the equation to evolve the order parameter
 variable_list.set_scalar_value_residual_term(1,rnV + source_term);
 variable_list.set_scalar_gradient_residual_term(1,rnxV);
 
@@ -121,22 +121,13 @@ void customPDE<dim,degree>::seedNucleus(const dealii::Point<dim, dealii::Vectori
 	dealii::VectorizedArray<double> & source_term,
 	dealii::VectorizedArray<double> & gamma) const {
 
+		// Loop through all of the seeded nuclei
 		for (typename std::vector<nucleus<dim> >::const_iterator thisNucleus=this->nuclei.begin(); thisNucleus!=this->nuclei.end(); ++thisNucleus){
 
 			if (thisNucleus->seededTime + thisNucleus->seedingTime > this->currentTime){
 
 				// Calculate the weighted distance function to the order parameter freeze boundary (weighted_dist = 1.0 on that boundary)
-				dealii::VectorizedArray<double> weighted_dist = constV(0.0);
-				for (unsigned int i=0; i<dim; i++){
-					dealii::VectorizedArray<double> temp = (thisNucleus->center(i) - q_point_loc(i));
-
-					if (userInputs.BC_list[1].var_BC_type[2*i]==PERIODIC){
-						for (unsigned j=0; j<gamma.n_array_elements;j++)
-						temp[j] -= round(temp[j]/userInputs.domain_size[i])*userInputs.domain_size[i];
-					}
-					temp=temp/userInputs.order_parameter_freeze_semiaxes[i];
-					weighted_dist += temp*temp;
-				}
+				dealii::VectorizedArray<double> weighted_dist = this->weightedDistanceFromNucleusCenter(thisNucleus->center, userInputs.get_nucleus_freeze_semiaxes(thisNucleus->orderParameterIndex), q_point_loc, thisNucleus->orderParameterIndex);
 
 				for (unsigned i=0; i<gamma.n_array_elements;i++){
 					if (weighted_dist[i] <= 1.0){
@@ -144,24 +135,20 @@ void customPDE<dim,degree>::seedNucleus(const dealii::Point<dim, dealii::Vectori
 
 						// Seed a nucleus if it was added to the list of nuclei this time step
 						if (thisNucleus->seedingTimestep == this->currentIncrement){
-							// Find the weighted distance to the outer edge of the nucleus and use it to calculate the order parameter source term
-							double r = 0.0;
+							// Find the weighted distance to the outer edge of the nucleus and use it to calculate the order parameter source term (r = 1.0 on that boundary)
+							dealii::Point<dim,double> q_point_loc_element;
+							for (unsigned int j=0; j<dim; j++){
+								q_point_loc_element(j) = q_point_loc(j)[i];
+							}
+							double r = this->weightedDistanceFromNucleusCenter(thisNucleus->center, userInputs.get_nucleus_semiaxes(thisNucleus->orderParameterIndex), q_point_loc_element, thisNucleus->orderParameterIndex);
+
 							double avg_semiaxis = 0.0;
 							for (unsigned int j=0; j<dim; j++){
-								double temp = (thisNucleus->center(j) - q_point_loc(j)[i]);
-								if (userInputs.BC_list[1].var_BC_type[2*i]==PERIODIC){
-									double domsize_j = userInputs.domain_size[j];
-									temp=temp-round(temp/domsize_j)*domsize_j;
-								}
-								temp=temp/thisNucleus->semiaxes[j];
-								r += temp*temp;
 								avg_semiaxis += thisNucleus->semiaxes[j];
 							}
-							r = sqrt(r);
 							avg_semiaxis /= dim;
 
 							source_term[i] =0.5*(1.0-std::tanh(avg_semiaxis*(r-1.0)/interface_coeff));
-
 						}
 					}
 				}

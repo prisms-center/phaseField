@@ -193,6 +193,20 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
 
                 nucleationParameters<dim> temp(var_index,semiaxes,freeze_semiaxes,ellipsoid_rotation,hold_time,no_nucleation_border_thickness);
                 nucleation_parameters_list.push_back(temp);
+
+                // Validate nucleation input
+                if (semiaxes.size() < dim || semiaxes.size() > 3){
+                    std::cerr << "PRISMS-PF Error: The number of nucleus semiaxes given in the 'parameters.in' file must be at least the number of dimensions and no more than 3." << std::endl;
+                    abort();
+                }
+                if (freeze_semiaxes.size() < dim || freeze_semiaxes.size() > 3){
+                    std::cerr << "PRISMS-PF Error: The number of nucleation freeze zone semiaxes given in the 'parameters.in' file must be at least the number of dimensions and no more than 3." << std::endl;
+                    abort();
+                }
+                if (ellipsoid_rotation.size() != 3){
+                    std::cerr << "PRISMS-PF Error: Exactly three nucleus rotation angles must be given in the 'parameters.in' file." << std::endl;
+                    abort();
+                }
             }
             parameter_handler.leave_subsection();
 
