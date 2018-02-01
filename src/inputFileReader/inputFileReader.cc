@@ -258,6 +258,7 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
 
     parameter_handler.declare_entry("Output file name (base)","solution",dealii::Patterns::Anything(),"The name for the output file, before the time step and processor info are added.");
     parameter_handler.declare_entry("Output file type","vtu",dealii::Patterns::Anything(),"The output file type (either vtu or vtk).");
+    parameter_handler.declare_entry("Output separate files per process","false",dealii::Patterns::Bool(),"Whether to output separate vtu files for each process in a parallel calculation (automatically set to true for vtk files).");
     parameter_handler.declare_entry("Output condition","EQUAL_SPACING",dealii::Patterns::Anything(),"The spacing type for outputing the solution fields.");
     parameter_handler.declare_entry("List of time steps to output","0",dealii::Patterns::Anything(),"The list of time steps to output, used for the LIST type.");
     parameter_handler.declare_entry("Number of outputs","10",dealii::Patterns::Integer(),"The number of outputs (or number of outputs per decade for the N_PER_DECADE type).");

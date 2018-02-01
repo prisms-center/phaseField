@@ -101,37 +101,61 @@ void MatrixFreePDE<dim,degree>::outputResults() {
   //write to results file
   //file name
   std::ostringstream cycleAsString;
-  cycleAsString << std::setw(std::ceil(std::log10(userInputs.totalIncrements))+1) << std::setfill('0') << currentIncrement;
-  char vtuFileName[100], pvtuFileName[100];
-  sprintf(vtuFileName, "%s-%s.%u.%s", userInputs.output_file_name.c_str(), cycleAsString.str().c_str(),Utilities::MPI::this_mpi_process(MPI_COMM_WORLD),userInputs.output_file_type.c_str());
-  sprintf(pvtuFileName, "%s-%s.p%s", userInputs.output_file_name.c_str(), cycleAsString.str().c_str(),userInputs.output_file_type.c_str());
-  std::ofstream output (vtuFileName);
+  cycleAsString << std::setw(std::floor(std::log10(userInputs.totalIncrements))+1) << std::setfill('0') << currentIncrement;
+  char baseFileName[100], vtuFileName[100];
+  sprintf(baseFileName, "%s-%s", userInputs.output_file_name.c_str(), cycleAsString.str().c_str());
+  sprintf(vtuFileName, "%s.%u.%s", baseFileName,Utilities::MPI::this_mpi_process(MPI_COMM_WORLD),userInputs.output_file_type.c_str());
 
-  //write to file
+  // Write to file in either vtu or vtk format
   if (userInputs.output_file_type == "vtu"){
-	  data_out.write_vtu (output);
+
+      // Set flags to output the time and cycle number as part of the vtu file
+      dealii::DataOutBase::VtkFlags flags;
+      flags.time = currentTime;
+      flags.cycle = currentIncrement;
+      flags.print_date_and_time = true;
+      data_out.set_flags(flags);
+
+      if (userInputs.output_vtu_per_process){
+          // Write the results to separate files for each process
+          std::ofstream output (vtuFileName);
+          data_out.write_vtu (output);
+
+          // Create pvtu record that can be used to stitch together the results from all the processes
+          if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+            std::vector<std::string> filenames;
+            for (unsigned int i=0;i<Utilities::MPI::n_mpi_processes (MPI_COMM_WORLD); ++i) {
+            	char vtuProcFileName[100];
+            	sprintf(vtuProcFileName, "%s-%s.%u.%s", userInputs.output_file_name.c_str(),cycleAsString.str().c_str(),i,userInputs.output_file_type.c_str());
+            	filenames.push_back (vtuProcFileName);
+            }
+            char pvtuFileName[100];
+            sprintf(pvtuFileName, "%s.p%s", baseFileName, userInputs.output_file_type.c_str());
+            std::ofstream master_output (pvtuFileName);
+
+            data_out.write_pvtu_record (master_output, filenames);
+            pcout << "Output written to:" << pvtuFileName << "\n\n";
+          }
+
+      }
+      else {
+          // Write the results to a file shared between all processes
+          char svtuFileName[100];
+          sprintf(svtuFileName, "%s.%s", baseFileName ,userInputs.output_file_type.c_str());
+          data_out.write_vtu_in_parallel(svtuFileName, MPI_COMM_WORLD);
+          pcout << "Output written to:" << svtuFileName << "\n\n";
+      }
   }
   else if (userInputs.output_file_type == "vtk"){
+      // Write the results to separate files for each process
+      std::ofstream output (vtuFileName);
 	  data_out.write_vtk (output);
+      pcout << "Output written to:" << vtuFileName << "\n\n";
   }
   else {
 	  std::cerr << "PRISMS-PF Error: The parameter 'outputFileType' must be either \"vtu\" or \"vtk\"" << std::endl;
 	  abort();
   }
-
-  //create pvtu record
-  if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
-    std::vector<std::string> filenames;
-    for (unsigned int i=0;i<Utilities::MPI::n_mpi_processes (MPI_COMM_WORLD); ++i) {
-    	char vtuProcFileName[100];
-    	sprintf(vtuProcFileName, "%s-%s.%u.%s", userInputs.output_file_name.c_str(),cycleAsString.str().c_str(),i,userInputs.output_file_type.c_str());
-    	filenames.push_back (vtuProcFileName);
-    }
-    std::ofstream master_output (pvtuFileName);
-
-    data_out.write_pvtu_record (master_output, filenames);
-  }
-  pcout << "Output written to:" << pvtuFileName << "\n\n";
 
   //log time
   computing_timer.exit_section("matrixFreePDE: output");

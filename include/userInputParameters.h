@@ -68,6 +68,7 @@ public:
 	// Output parameters
 	unsigned int skip_print_steps;
 	std::string output_file_type;
+	bool output_vtu_per_process;
 	std::string output_file_name;
 	std::vector<unsigned int> outputTimeStepList;
 
