@@ -28,9 +28,9 @@ private:
 
 	// Virtual method in MatrixFreePDE that we override if we need nucleation
 	#ifdef NUCLEATION_FILE_EXISTS
-	double getNucleationProbability(variableValueContainer variable_value, double dV, dealii::Point<dim> p) const;
+	double getNucleationProbability(variableValueContainer variable_value, double dV, dealii::Point<dim> p, unsigned int variable_index) const;
 	#endif
-
+	
 	// ================================================================
 	// Methods specific to this subclass
 	// ================================================================
@@ -39,7 +39,7 @@ private:
 	void seedNucleus(const dealii::Point<dim, dealii::VectorizedArray<double> > & q_point_loc,
 						dealii::VectorizedArray<double> & source_term,
 						dealii::VectorizedArray<double> & gamma) const;
-    
+
     // Method to refine the mesh
 	void adaptiveRefineCriterion();
 
@@ -101,36 +101,36 @@ void customPDE<dim,degree>::adaptiveRefineCriterion(){
     //#endif
     //#endif
     //#endif
-    
+
     //Custom defined estimation criterion
-    
+
     std::vector<std::vector<double> > errorOutV;
-    
-    
+
+
     QGaussLobatto<dim>  quadrature(degree+1);
     FEValues<dim> fe_values (*(this->FESet[userInputs.refine_criterion_fields[0]]), quadrature, update_values|update_quadrature_points);
     const unsigned int num_quad_points = quadrature.size();
     std::vector<dealii::Point<dim> > q_point_list(num_quad_points);
-    
+
     std::vector<double> errorOut(num_quad_points);
-    
+
     typename DoFHandler<dim>::active_cell_iterator cell = this->dofHandlersSet_nonconst[userInputs.refine_criterion_fields[0]]->begin_active(), endc = this->dofHandlersSet_nonconst[userInputs.refine_criterion_fields[0]]->end();
-    
+
     typename parallel::distributed::Triangulation<dim>::active_cell_iterator t_cell = this->triangulation.begin_active();
-    
+
     for (;cell!=endc; ++cell){
         if (cell->is_locally_owned()){
             fe_values.reinit (cell);
-            
+
             for (unsigned int field_index=0; field_index<userInputs.refine_criterion_fields.size(); field_index++){
                 fe_values.get_function_values(*(this->solutionSet[userInputs.refine_criterion_fields[field_index]]), errorOut);
                 errorOutV.push_back(errorOut);
             }
-            
+
     		q_point_list = fe_values.get_quadrature_points();
-            
+
             bool mark_refine = false;
-            
+
             for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
                 for (unsigned int field_index=0; field_index<userInputs.refine_criterion_fields.size(); field_index++){
                     bool cond_1 = ((errorOutV[field_index][q_point]>userInputs.refine_window_min[field_index]) && (errorOutV[field_index][q_point]<userInputs.refine_window_max[field_index]));
@@ -141,22 +141,21 @@ void customPDE<dim,degree>::adaptiveRefineCriterion(){
                     }
                 }
             }
-            
+
             errorOutV.clear();
-            
+
             //limit the maximal and minimal refinement depth of the mesh
             unsigned int current_level = t_cell->level();
-            
+
             if ( (mark_refine && current_level < userInputs.max_refinement_level) ){
                 cell->set_refine_flag();
             }
             else if (!mark_refine && current_level > userInputs.min_refinement_level) {
                 cell->set_coarsen_flag();
             }
-            
+
         }
         ++t_cell;
     }
-    
-}
 
+}

@@ -9,6 +9,8 @@ inputFileReader::inputFileReader(std::string input_file_name, variableAttributeL
     var_types = sortIndexEntryPairList(variable_attributes.var_type_list,number_of_variables,SCALAR);
     var_names = sortIndexEntryPairList(variable_attributes.var_name_list,number_of_variables,"var");
 
+    var_nucleates = sortIndexEntryPairList(variable_attributes.nucleating_variable_list,number_of_variables,false);
+
     num_pp_vars = variable_attributes.var_name_list_PP.size();
 
     num_constants = get_number_of_entries("parameters.in","set","Model constant");
@@ -21,7 +23,7 @@ inputFileReader::inputFileReader(std::string input_file_name, variableAttributeL
     }
 
     // Read in all of the parameters now
-    declare_parameters(parameter_handler,var_types,num_constants);
+    declare_parameters(parameter_handler,var_types,num_constants,var_nucleates);
     parameter_handler.read_input("parameters.in");
     number_of_dimensions = parameter_handler.get_integer("Number of dimensions");
 }
@@ -222,7 +224,8 @@ std::vector<std::string> inputFileReader::get_entry_name_ending_list(const std::
 
 void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_handler,
                                             const std::vector<fieldType> var_types,
-                                            const unsigned int num_of_constants) const {
+                                            const unsigned int num_of_constants,
+                                            const std::vector<bool> var_nucleates) const {
 
     // Declare all of the entries
     parameter_handler.declare_entry("Number of dimensions","-1",dealii::Patterns::Integer(),"The number of dimensions for the simulation.");
@@ -304,13 +307,25 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
     }
 
     // Declare the nucleation parameters
-    parameter_handler.declare_entry("Nucleus semiaxes (x, y ,z)","",dealii::Patterns::List(dealii::Patterns::Double()),"The semiaxes for nuclei placed with the explicit nucleation algorithm).");
-    parameter_handler.declare_entry("Freeze zone semiaxes (x, y ,z)","",dealii::Patterns::List(dealii::Patterns::Double()),"The semiaxes for region where the order parameter is frozen for a period of time after placement.");
-    parameter_handler.declare_entry("Freeze time following nucleation","0.0",dealii::Patterns::Double(),"Duration that the order parameter is frozen after placement.");
-    parameter_handler.declare_entry("Nucleation-free border thickness","0.0",dealii::Patterns::Double(),"The thickness of the nucleation-free region near the domain boundaries (ignored for periodic BCs).");
     parameter_handler.declare_entry("Minimum allowed distance between nuclei","-1",dealii::Patterns::Double(),"The minimum allowed distance between nuclei placed during the same time step.");
     parameter_handler.declare_entry("Order parameter cutoff value","0.01",dealii::Patterns::Double(),"Order parameter cutoff value for nucleation (when the sum of all order parameters is above this value, no nucleation is attempted).");
     parameter_handler.declare_entry("Time steps between nucleation attempts","100",dealii::Patterns::Integer(),"The number of time steps between nucleation attempts.");
+
+    for (unsigned int i=0; i<var_types.size(); i++){
+        if (var_nucleates.at(i)){
+            std::string nucleation_text = "Nucleation parameters: ";
+            nucleation_text.append(var_names.at(i));
+            parameter_handler.enter_subsection(nucleation_text);
+            {
+                parameter_handler.declare_entry("Nucleus semiaxes (x, y, z)","0,0,0",dealii::Patterns::List(dealii::Patterns::Double()),"The semiaxes for nuclei placed with the explicit nucleation algorithm.");
+                parameter_handler.declare_entry("Nucleus rotation in degrees (x, y, z)","0,0,0",dealii::Patterns::List(dealii::Patterns::Double()),"The rotation of the nuclei placed with the explicit nucleation algorithm. The rotations are given with respect to the normal direction using intrinsic Tait-Bryan angles.");
+                parameter_handler.declare_entry("Freeze zone semiaxes (x, y, z)","0,0,0",dealii::Patterns::List(dealii::Patterns::Double()),"The semiaxes for region where the order parameter is frozen for a period of time after placement.");
+                parameter_handler.declare_entry("Freeze time following nucleation","0.0",dealii::Patterns::Double(),"Duration that the order parameter is frozen after placement.");
+                parameter_handler.declare_entry("Nucleation-free border thickness","0.0",dealii::Patterns::Double(),"The thickness of the nucleation-free region near the domain boundaries (ignored for periodic BCs).");
+            }
+            parameter_handler.leave_subsection();
+        }
+    }
 
     // Declare the user-defined constants
     for (unsigned int i=0; i<num_of_constants; i++){

@@ -6,7 +6,7 @@
 // Nucleation probability
 // =================================================================================
 template <int dim, int degree>
-double customPDE<dim,degree>::getNucleationProbability(variableValueContainer variable_value, double dV, dealii::Point<dim> p) const
+double customPDE<dim,degree>::getNucleationProbability(variableValueContainer variable_value, double dV, dealii::Point<dim> p, unsigned int variable_index) const
 {
 	//Supersaturation factor
     double ssf;

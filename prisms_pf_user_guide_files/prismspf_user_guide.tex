@@ -630,17 +630,29 @@ Skip print steps & Any positive integer & no & 1 & The number of time steps betw
 \begin{center}
     \begin{tabular}{ | p{0.2\textwidth} | p{0.17\textwidth} | p{0.08\textwidth} | p{0.1\textwidth} | p{0.3\textwidth} |}
     \hline
-      \multicolumn{5}{|c|}{\textbf{Nucleation (Optional)}} \\
+      \multicolumn{5}{|c|}{\textbf{Shared Nucleation Parameters (Optional)}} \\
+    \hline
+    \hline
+    \emph{Name} & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
+    Time steps between nucleation attempts & Any positive integer & no & 100  & The number of time steps between nucleation attempts. This parameter is shared among all nucleating variables. See Note 4 below for details. \\ \hline
+    Minimum allowed distance between nuclei & Any non-negative real number & no & 2$\times$ the largest nucleus semiaxis  & The minimum allowed distance between nuclei centers during a single nucleation attempt. This parameter is shared among all nucleating variables. See Note 4 below for details. \\ \hline
+     Order parameter cutoff value & Any non-negative real number & no & 0.01  & The minimum allowed value of the sum of all nucleating variable fields where nucleation is allowed to occur. Implemented to prevent nucleation inside existing particles. This parameter is shared among all nucleating variables. See Note 4 below for details. \\ \hline
+      & Any positive integer & no & 100  & The number of time steps between nucleation attempts. This parameter is shared among all nucleating variables. See Note 4 below for details. \\ \hline
+    \end{tabular}
+\end{center}
+
+\begin{center}
+    \begin{tabular}{ | p{0.2\textwidth} | p{0.17\textwidth} | p{0.08\textwidth} | p{0.1\textwidth} | p{0.3\textwidth} |}
+    \hline
+      \multicolumn{5}{|c|}{\textbf{Nucleation Parameters for Each Nucleating Variable (Optional)}} \\
     \hline
     \hline
     \emph{Name} & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
     Nucleus semiaxes (x, y ,z) & Three positive real numbers & no &  & The semiaxes of the ellipsoidal nuclei to be seeded. See Note 4 below for details. \\ \hline
-     Freeze zone semiaxes (x, y ,z) & Three positive real numbers & no &  & The semiaxes for the ellipsoidal region where the nucleus is frozen after seeding. See Note 4 below for details.  \\ \hline
-      Freeze time following nucleation & Any non-negative real number & no & 0 & The amount of time the nucleus is frozen after seeding. See Note 4 below for details. \\ \hline
-      Nucleation-free border thickness & Any non-negative real number & no & 0 & The size of the buffer region where nucleation is not allowed unless the boundary conditions are periodic. See Note 4 below for details. \\ \hline
-      Minimum allowed distance between nuclei & Any non-negative real number & no & 2$\times$ the largest nucleus semiaxis  & The minimum allowed distance between nuclei centers during a single nucleation attempt. See Note 4 below for details. \\ \hline
-      Order parameter cutoff value & Any non-negative real number & no & 0.01  & The minimum allowed value of the sum of all nucleating variable fields where nucleation is allowed to occur. Implemented to prevent nucleation inside existing particles. See Note 4 below for details. \\ \hline
-      Time steps between nucleation attempts & Any positive integer & no & 100  & The number of time steps between nucleation attempts. See Note 4 below for details. \\ \hline
+    Nucleus rotation in degrees (x, y, z) & Three real numbers & no & & The rotation of the nuclei placed with the explicit nucleation algorithm. The rotations are given with respect to the normal direction using intrinsic Tait-Bryan angles. Positive rotations correspond to a  counter-clockwise rotation when looking along the positive axis of interest. All three angles must be specified regardless of problem dimension. \\ \hline
+    Freeze zone semiaxes (x, y ,z) & Three positive real numbers & no &  & The semiaxes for the ellipsoidal region where the nucleus is frozen after seeding. See Note 4 below for details.  \\ \hline
+    Freeze time following nucleation & Any non-negative real number & no & 0 & The amount of time the nucleus is frozen after seeding. See Note 4 below for details. \\ \hline
+    Nucleation-free border thickness & Any non-negative real number & no & 0 & The size of the buffer region where nucleation is not allowed unless the boundary conditions are periodic. See Note 4 below for details. \\ \hline
     \end{tabular}
 \end{center}
 
@@ -685,7 +697,37 @@ Currently, initial conditions can only be read from vtk files (\emph{not} vtu fi
 \textbf{Note 4 (Nucleation):} \\
 PRISMS-PF includes the capability for explicitly placing nuclei over the course of a simulation using an approach similar to the one described in the following publication: \\
 Jokisaari, Permann, and Thornton, A nucleation algorithm for the coupled conserved-nonconserved phase field model, \emph{Computational Materials Science}, 112, (2016). \\
-A nucleus of an non-conserved order parameter is placed within the computational domain determined by a probability given by the `getNucleationProbability' function in the `nucleation.h' file. The variables that are allowed to nucleate are specified in the `loadVariableAttributes' function in the `equations.h' file, as are the variable values needed to calculate the nucleation probability. The determination of when and where a nucleus should be seeded is determined in the core PRISMS-PF library, but the actual placement of the nucleus by modifying one of the model fields is expected to be performed in the `residualRHS' function in the `equations.h' file. The mobility for the nucleated field should be set to zero in the region surrounding the nucleus (the ``freeze zone'') for a specified amount of time (the ``freeze time''). Examples of nucleating particles can be found in the nucleationModel and preferential\_nucleationModel applications.
+A nucleus of an non-conserved order parameter is placed within the computational domain determined by a probability given by the `getNucleationProbability' function in the `nucleation.h' file. The variables that are allowed to nucleate are specified in the `loadVariableAttributes' function in the `equations.h' file, as are the variable values needed to calculate the nucleation probability. The determination of when and where a nucleus should be seeded is determined in the core PRISMS-PF library, but the actual placement of the nucleus by modifying one of the model fields is expected to be performed in the `residualRHS' function in the `equations.h' file. The placement of the nucleus is aided by the `weightedDistanceFromNucleusCenter' function in the core library. The mobility for the nucleated field should be set to zero in the region surrounding the nucleus (the ``freeze zone'') for a specified amount of time (the ``freeze time''). Examples of nucleating particles can be found in the nucleationModel and preferential\_nucleationModel applications.
+
+Currently, the nucleation parameters are the only place where the `subsection' command is used in `parameters.in'.  This command is used to set nucleation parameters seperately for each nucleating variable. Each subsection is opened by ``subsection Nucleation parameters:'' followed by the variable name as set in `equations.h'. The end of each subsection block is concluded with the `end' command. For example, if there are two nucleating order parameters \emph{n1} and \emph{n2}, the nucleation parameters section could look as follows:
+\scriptsize
+\begin{lstlisting}
+# =================================================================================
+# Set the nucleation parameters
+# =================================================================================
+
+set Time steps between nucleation attempts = 30
+set Minimum allowed distance between nuclei = 50.0
+set Order parameter cutoff value = 0.01
+
+subsection Nucleation parameters: n1
+    set Nucleus semiaxes (x, y, z) = 10, 5, 5
+    set Nucleus rotation in degrees (x, y, z) = 0, 0, 60
+    set Freeze zone semiaxes (x, y, z) = 15, 7.5, 7.5
+    set Freeze time following nucleation = 20
+    set Nucleation-free border thickness = 15
+end
+
+subsection Nucleation parameters: n2
+    set Nucleus semiaxes (x, y, z) = 20, 10, 10
+    set Nucleus rotation in degrees (x, y, z) = 0, 0, 0
+    set Freeze zone semiaxes (x, y, z) = 30, 15, 15
+    set Freeze time following nucleation = 40
+    set Nucleation-free border thickness = 30
+end
+\end{lstlisting}
+\normalsize
+The first three lines set the shared nucleation parameters. Next comes the subsection block for the variable \emph{n1} and the subsection block for the variable \emph{n2}. 
 
 \textbf{Note 5 (Model constants):} \\
 Each application specifies its own set of model constants. These are most often used in the residual equations in the `equations.h' file, although they may also be used to specify initial conditions, non-uniform Dirichlet boundary conditions, nucleation probabilties, etc. Currently, five types of model constants are accepted: DOUBLE, INT, BOOL, TENSOR, and ELASTIC CONSTANTS. The use of these different types is as follows:

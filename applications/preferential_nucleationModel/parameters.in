@@ -37,7 +37,7 @@ set Element degree = 2
 set Mesh adaptivity = true
 
 # Set the maximum and minimum level of refinement
-set Max refinement level = 8
+set Max refinement level = 7 #8
 set Min refinement level = 2
 
 # Set the fields used to determine the refinement using their index.
@@ -113,13 +113,17 @@ set Boundary condition for variable n = NATURAL
 # Set the nucleation parameters
 # =================================================================================
 
-set Nucleus semiaxes (x, y ,z) = 10, 10, 10
-set Freeze zone semiaxes (x, y ,z) = 15, 15, 15
-set Freeze time following nucleation = 20
-set Nucleation-free border thickness = 10
+set Time steps between nucleation attempts = 30
 set Minimum allowed distance between nuclei = 20.0
 set Order parameter cutoff value = 0.01
-set Time steps between nucleation attempts = 30
+
+subsection Nucleation parameters: n
+    set Nucleus semiaxes (x, y, z) = 10, 10, 10
+    set Freeze zone semiaxes (x, y, z) = 15, 15, 15
+    set Nucleus rotation in degrees (x, y, z) = 0, 0, 0
+    set Freeze time following nucleation = 20
+    set Nucleation-free border thickness = 10
+end
 
 # =================================================================================
 # Set the model constants

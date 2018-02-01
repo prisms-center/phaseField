@@ -183,19 +183,57 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
 
     // Parameters for nucleation
 
-    nucleus_semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Nucleus semiaxes (x, y ,z)")));
-    order_parameter_freeze_semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Freeze zone semiaxes (x, y ,z)")));
-    nucleus_hold_time = parameter_handler.get_double("Freeze time following nucleation");
-    no_nucleation_border_thickness = parameter_handler.get_double("Nucleation-free border thickness");
+    for (unsigned int i=0; i<input_file_reader.var_types.size(); i++){
+        if (input_file_reader.var_nucleates.at(i)){
+            std::string nucleation_text = "Nucleation parameters: ";
+            nucleation_text.append(input_file_reader.var_names.at(i));
+
+            parameter_handler.enter_subsection(nucleation_text);
+            {
+                unsigned int var_index = i;
+                std::vector<double> semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Nucleus semiaxes (x, y, z)")));
+                std::vector<double> ellipsoid_rotation = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Nucleus rotation in degrees (x, y, z)")));
+                std::vector<double> freeze_semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Freeze zone semiaxes (x, y, z)")));
+                double hold_time = parameter_handler.get_double("Freeze time following nucleation");
+                double no_nucleation_border_thickness = parameter_handler.get_double("Nucleation-free border thickness");
+
+                nucleationParameters<dim> temp(var_index,semiaxes,freeze_semiaxes,ellipsoid_rotation,hold_time,no_nucleation_border_thickness);
+                nucleation_parameters_list.push_back(temp);
+
+                // Validate nucleation input
+                if (semiaxes.size() < dim || semiaxes.size() > 3){
+                    std::cerr << "PRISMS-PF Error: The number of nucleus semiaxes given in the 'parameters.in' file must be at least the number of dimensions and no more than 3." << std::endl;
+                    abort();
+                }
+                if (freeze_semiaxes.size() < dim || freeze_semiaxes.size() > 3){
+                    std::cerr << "PRISMS-PF Error: The number of nucleation freeze zone semiaxes given in the 'parameters.in' file must be at least the number of dimensions and no more than 3." << std::endl;
+                    abort();
+                }
+                if (ellipsoid_rotation.size() != 3){
+                    std::cerr << "PRISMS-PF Error: Exactly three nucleus rotation angles must be given in the 'parameters.in' file." << std::endl;
+                    abort();
+                }
+            }
+            parameter_handler.leave_subsection();
+
+        }
+    }
+    for (unsigned int i=0; i<nucleation_parameters_list.size(); i++){
+        nucleation_parameters_list_index[nucleation_parameters_list.at(i).var_index] = i;
+    }
+
 
     if (parameter_handler.get("Minimum allowed distance between nuclei") != "-1"){
         min_distance_between_nuclei = parameter_handler.get_double("Minimum allowed distance between nuclei");
     }
-    else if (nucleus_semiaxes.size() > 1) {
-        min_distance_between_nuclei = 2.0 * (*(max_element(nucleus_semiaxes.begin(),nucleus_semiaxes.end())));
+    else if (nucleation_parameters_list.size() > 1) {
+        min_distance_between_nuclei = 2.0 * (*(max_element(nucleation_parameters_list[0].semiaxes.begin(),nucleation_parameters_list[0].semiaxes.end())));
     }
     nucleation_order_parameter_cutoff = parameter_handler.get_double("Order parameter cutoff value");
     steps_between_nucleation_attempts = parameter_handler.get_integer("Time steps between nucleation attempts");
+
+
+
 
 
     // Load the boundary condition variables into list of BCs (where each element of the vector is one component of one variable)

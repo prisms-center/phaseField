@@ -10,6 +10,7 @@
 #include "inputFileReader.h"
 #include "varTypeEnums.h"
 #include "variableAttributeLoader.h"
+#include "nucleationParameters.h"
 
 enum elasticityModel {ISOTROPIC, TRANSVERSE, ORTHOTROPIC, ANISOTROPIC, ANISOTROPIC2D};
 
@@ -38,6 +39,14 @@ public:
 
 	// Method to load in the variable attributes
 	void loadVariableAttributes(variableAttributeLoader variable_attributes);
+
+	// Nucleation attribute methods
+	std::vector<double> get_nucleus_semiaxes(unsigned int var_index) const { return nucleation_parameters_list[nucleation_parameters_list_index.at(var_index)].semiaxes; };
+	std::vector<double> get_nucleus_freeze_semiaxes(unsigned int var_index) const { return nucleation_parameters_list[nucleation_parameters_list_index.at(var_index)].freeze_semiaxes; };
+	std::vector<double> get_nucleus_rotation(unsigned int var_index) const { return nucleation_parameters_list[nucleation_parameters_list_index.at(var_index)].ellipsoid_rotation; };
+	double get_no_nucleation_border_thickness(unsigned int var_index) const { return nucleation_parameters_list[nucleation_parameters_list_index.at(var_index)].no_nucleation_border_thickness; };
+	double get_nucleus_hold_time(unsigned int var_index) const { return nucleation_parameters_list[nucleation_parameters_list_index.at(var_index)].hold_time; };
+	dealii::Tensor<2,dim,double> get_nucleus_rotation_matrix(unsigned int var_index) const { return nucleation_parameters_list[nucleation_parameters_list_index.at(var_index)].rotation_matrix; };
 
 	// Meshing parameters
 	std::vector<double> domain_size;
@@ -122,13 +131,17 @@ public:
 	bool nucleation_occurs;
 	std::vector<unsigned int> nucleating_variable_indices;
 	std::vector<unsigned int> nucleation_need_value;
+
+	/*
 	std::vector<double> nucleus_semiaxes;
 	std::vector<double> order_parameter_freeze_semiaxes;
 	double no_nucleation_border_thickness;
 	double nucleus_hold_time;
+	*/
 	double min_distance_between_nuclei; // Only enforced for nuclei placed during the same time step
 	double nucleation_order_parameter_cutoff;
 	unsigned int steps_between_nucleation_attempts;
+
 
 private:
 	// Method to create the list of time steps where the results should be output (called from loadInputParameters)
@@ -141,6 +154,9 @@ private:
 
 	dealii::Tensor<2,2*dim-1+dim/3> getCIJMatrix(const elasticityModel model, const std::vector<double> constants, dealii::ConditionalOStream & pcout) const;
 
+	// Private nucleation variables
+	std::vector<nucleationParameters<dim> > nucleation_parameters_list;
+	std::map<unsigned int, unsigned int> nucleation_parameters_list_index;
 };
 
 #endif /* INCLUDE_USERINPUTPARAMETERS_H_ */
