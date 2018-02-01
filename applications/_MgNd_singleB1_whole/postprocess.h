@@ -46,6 +46,33 @@ void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 	set_need_gradient_residual_term	(4,false);
 
     set_output_integral         	(4,false);
+
+    // Variable 5
+    set_variable_name				(5,"hydrostatic_stress");
+	set_variable_type			(5,SCALAR);
+
+	set_need_value_residual_term	(5,true);
+	set_need_gradient_residual_term	(5,false);
+
+    set_output_integral         	(5,false);
+
+    // Variable 6
+    set_variable_name				(6,"f_el");
+	set_variable_type			(6,SCALAR);
+
+	set_need_value_residual_term	(6,true);
+	set_need_gradient_residual_term	(6,false);
+
+    set_output_integral         	(6,false);
+
+    // Variable 7
+    set_variable_name				(7,"S_x_sfts");
+	set_variable_type			(7,SCALAR);
+
+	set_need_value_residual_term	(7,true);
+	set_need_gradient_residual_term	(7,false);
+
+    set_output_integral         	(7,false);
 }
 
 // =================================================================================
@@ -178,6 +205,19 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 			vm_stress = std::sqrt(vm_stress);
 		}
 
+		dealii::VectorizedArray<double> hy_stress = constV(0.0);
+		for (unsigned int i=0; i<dim; i++){
+                    hy_stress += S[i][i];
+                }
+                hy_stress /= constV((double)dim);
+
+                dealii::VectorizedArray<double> S_x_sfts1 = constV(0.0);
+                for (unsigned int i=0; i<dim; i++){
+                for (unsigned int j=0; j<dim; j++){
+                          S_x_sfts1+=-S[i][j]*sfts1[i][j];
+                }
+                }
+
 		// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
 		pp_variable_list.set_scalar_value_residual_term(0, total_energy_density);
 		pp_variable_list.set_scalar_value_residual_term(1, mu_c);
@@ -185,5 +225,8 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 		pp_variable_list.set_scalar_gradient_residual_term(2, Knx1);
 		pp_variable_list.set_scalar_value_residual_term(3, nDependentMisfitAC1);
 		pp_variable_list.set_scalar_value_residual_term(4, vm_stress);
+		pp_variable_list.set_scalar_value_residual_term(5, hy_stress);
+		pp_variable_list.set_scalar_value_residual_term(6, f_el);
+		pp_variable_list.set_scalar_value_residual_term(7, S_x_sfts1);
 
 	}
