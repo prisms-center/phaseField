@@ -19,9 +19,9 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
 	//   double z_denom = (12.0)*(12.0);
 
     // 2D Y-Z
-    double x_denom = (2.0)*(2.0);
-    double y_denom = (2.0)*(2.0);
-    double z_denom = (4.0)*(4.0);
+    double x_denom = (4.0)*(4.0);
+    double y_denom = (4.0)*(4.0);
+    double z_denom = (12.0)*(12.0);
 
 	  double initial_interface_coeff = 0.04;
 	  double initial_radius = 1.0;

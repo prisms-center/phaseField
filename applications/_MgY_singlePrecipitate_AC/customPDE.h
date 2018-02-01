@@ -13,6 +13,7 @@ public:
 				}
 			}
 		}
+                integrated_c_before_set = false;
 	};
 
 private:
@@ -73,6 +74,7 @@ private:
 	bool c_dependent_misfit;
 
 	double integrated_c_before;
+        bool integrated_c_before_set;
 
 	double dt_modifier;
 
@@ -104,15 +106,16 @@ void customPDE<dim,degree>::solveIncrement(){
             // Explicit-time step each DOF
             // Takes advantage of knowledge that the length of solutionSet and residualSet is an integer multiple of the length of invM for vector variables
 			double nominal_dt;
-			if (this->currentIncrement == 1){
+			if (!integrated_c_before_set){
 				dt_modifier = 0.0;
 			}
-			else if (this->currentIncrement == 2){
+			else{
 				dt_modifier = 1.0;
 			}
 
-			if (fieldIndex == 0 && this->currentIncrement == 1){
+			if (fieldIndex == 0 && !integrated_c_before_set){
 				this->computeIntegralMF(integrated_c_before, fieldIndex, this->solutionSet);
+                                integrated_c_before_set = true;
 			}
 
             unsigned int invM_size = this->invM.local_size();
