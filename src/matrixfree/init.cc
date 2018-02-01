@@ -144,7 +144,10 @@ template <int dim, int degree>
 
 	 // Setup the matrix free object
 	 typename MatrixFree<dim,double>::AdditionalData additional_data;
-	 additional_data.mpi_communicator = MPI_COMM_WORLD;
+     // The member "mpi_communicator" was removed in deal.II version 8.5 but is required before it
+     if (DEAL_II_VERSION_MAJOR < 9 && DEAL_II_VERSION_MINOR < 5){
+         additional_data.mpi_communicator = MPI_COMM_WORLD;
+     }
 	 additional_data.tasks_parallel_scheme = MatrixFree<dim,double>::AdditionalData::partition_partition;
 	 additional_data.mapping_update_flags = (update_values | update_gradients | update_JxW_values | update_quadrature_points);
 	 QGaussLobatto<1> quadrature (degree+1);

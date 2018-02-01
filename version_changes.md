@@ -2,14 +2,16 @@
 Minor ongoing updates to v2.0.1, planned to be released in early to mid 2018.
 
 Added functionality:
+- Nucleation parameters can now be set separately for each nucleating variable. Thus, the input for nucleation in parameters.in has changed. A new core library function "weightedDistanceFromNucleusCenter" has been created to streamline the introduction of nuclei in equations.h (as well streamlining some areas of the core library). See the "nucleationModel" app to view the changes.
 - A single vtu file can now be simultaneously written by all MPI processes. This is the new default, but can be changed back to separate output files for each process in the parameters file.
 - The simulated time is now included in the vtu file, and for example is now visible in VisIt.
 
 Bug fixes:
 - Fixed a bug that prevented the checkpoint system from working in simulations with nucleation.
-- The MatrixFreePDE destructor was fixed so it doesn't fail if an exception is caught while the vectors of pointers are being initialized.
+- The MatrixFreePDE destructor was fixed so it doesn't fail if an exception is caught while a vectors of pointers are being initialized.
 
 Other changes:
+- PRISMS-PF is now compatible with deal.II version 9.0 (and still is compatible with version 8.4 and 8.5).
 - Changed the file name convention so that when the maximum number of time steps is between powers of 10, it isn't padded by an extra 0 in front (e.g. solution-02000.pvtu becomes solution-2000.pvtu).
 - A comprehensible error message is now given if a simulation is set to read a checkpoint file but can't find it.
 

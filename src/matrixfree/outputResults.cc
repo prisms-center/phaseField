@@ -105,7 +105,6 @@ void MatrixFreePDE<dim,degree>::outputResults() {
   char baseFileName[100], vtuFileName[100];
   sprintf(baseFileName, "%s-%s", userInputs.output_file_name.c_str(), cycleAsString.str().c_str());
   sprintf(vtuFileName, "%s.%u.%s", baseFileName,Utilities::MPI::this_mpi_process(MPI_COMM_WORLD),userInputs.output_file_type.c_str());
-  std::ofstream output (vtuFileName);
 
   // Write to file in either vtu or vtk format
   if (userInputs.output_file_type == "vtu"){
@@ -119,6 +118,7 @@ void MatrixFreePDE<dim,degree>::outputResults() {
 
       if (userInputs.output_vtu_per_process){
           // Write the results to separate files for each process
+          std::ofstream output (vtuFileName);
           data_out.write_vtu (output);
 
           // Create pvtu record that can be used to stitch together the results from all the processes
@@ -148,6 +148,7 @@ void MatrixFreePDE<dim,degree>::outputResults() {
   }
   else if (userInputs.output_file_type == "vtk"){
       // Write the results to separate files for each process
+      std::ofstream output (vtuFileName);
 	  data_out.write_vtk (output);
       pcout << "Output written to:" << vtuFileName << "\n\n";
   }
