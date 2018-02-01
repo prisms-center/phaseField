@@ -24,7 +24,11 @@ inputFileReader::inputFileReader(std::string input_file_name, variableAttributeL
 
     // Read in all of the parameters now
     declare_parameters(parameter_handler,var_types,num_constants,var_nucleates);
+    #if (DEAL_II_VERSION_MAJOR < 9 && DEAL_II_VERSION_MINOR < 5)
     parameter_handler.read_input("parameters.in");
+    #else
+    parameter_handler.parse_input("parameters.in");
+    #endif
     number_of_dimensions = parameter_handler.get_integer("Number of dimensions");
 }
 
