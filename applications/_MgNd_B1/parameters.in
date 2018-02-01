@@ -97,21 +97,41 @@ set Skip print steps = 1000
 # Set the checkpoint/restart parameters
 # =================================================================================
 
-set Load from a checkpoint = true
+set Load from a checkpoint = false
 set Checkpoint condition = EQUAL_SPACING
 set Number of checkpoints = 1000
-
 
 # =================================================================================
 # Set the nucleation parameters
 # =================================================================================
-set Nucleus semiaxes (x, y ,z) = 10, 2, 10
-set Freeze zone semiaxes (x, y ,z) = 15, 3, 20
-set Freeze time following nucleation = 100.0
-set Nucleation-free border thickness = 3.0
+
+set Time steps between nucleation attempts = 10000
 set Minimum allowed distance between nuclei = 24.0
 set Order parameter cutoff value = 0.01
-set Time steps between nucleation attempts = 10000
+
+subsection Nucleation parameters: n1
+    set Nucleus semiaxes (x, y, z) = 10, 2, 10
+    set Nucleus rotation in degrees (x, y, z) = 0, 0, 60
+    set Freeze zone semiaxes (x, y, z) = 15, 3, 20
+    set Freeze time following nucleation = 100.0
+    set Nucleation-free border thickness = 3.0
+end
+
+subsection Nucleation parameters: n2
+    set Nucleus semiaxes (x, y, z) = 10, 2, 10
+    set Nucleus rotation in degrees (x, y, z) = 0, 0, 0
+    set Freeze zone semiaxes (x, y, z) = 15, 3, 20
+    set Freeze time following nucleation = 100.0
+    set Nucleation-free border thickness = 3.0
+end
+
+subsection Nucleation parameters: n3
+    set Nucleus semiaxes (x, y, z) = 10, 2, 10
+    set Nucleus rotation in degrees (x, y, z) = 0, 0, -60
+    set Freeze zone semiaxes (x, y, z) = 15, 3, 20
+    set Freeze time following nucleation = 100.0
+    set Nucleation-free border thickness = 3.0
+end
 
 # =================================================================================
 # Set the boundary conditions

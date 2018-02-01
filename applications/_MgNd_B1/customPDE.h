@@ -39,7 +39,7 @@ private:
 
 	// Virtual method in MatrixFreePDE that we override if we need nucleation
 	#ifdef NUCLEATION_FILE_EXISTS
-	double getNucleationProbability(variableValueContainer variable_value, double dV, dealii::Point<dim> p) const;
+	double getNucleationProbability(variableValueContainer variable_value, double dV, dealii::Point<dim> p, unsigned int variable_index) const;
 	#endif
 
 	// ================================================================
@@ -49,7 +49,7 @@ private:
 	// Method to place the nucleus and calculate the mobility modifier in residualRHS
 	void seedNucleus(const dealii::Point<dim, dealii::VectorizedArray<double> > & q_point_loc,
 						//std::vector<dealii::VectorizedArray<double> > & source_terms,
-                                                dealii::AlignedVector<dealii::VectorizedArray<double > > & source_terms,						
+                                                dealii::AlignedVector<dealii::VectorizedArray<double > > & source_terms,
                                                 dealii::VectorizedArray<double> & gamma) const;
 
 	// ================================================================

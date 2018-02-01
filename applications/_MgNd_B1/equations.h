@@ -321,41 +321,8 @@ void customPDE<dim,degree>::seedNucleus(const dealii::Point<dim, dealii::Vectori
 
 			if (thisNucleus->seededTime + thisNucleus->seedingTime > this->currentTime){
 
-				// Get the rotation angle
-				double theta;
-				if (thisNucleus->orderParameterIndex == 1){
-					theta = -pi/3.0;
-				}
-				else if (thisNucleus->orderParameterIndex == 2){
-					theta = 0.0;
-				}
-				else {
-					theta = pi/3.0;
-				}
-
 				// Calculate the weighted distance function to the order parameter freeze boundary (weighted_dist = 1.0 on that boundary)
-				// Allow rotation of the ellipsoid in the x-y plane depending on the order parameter (as given by theta)
-				dealii::VectorizedArray<double> weighted_dist = constV(0.0);
-				for (unsigned int i=0; i<dim; i++){
-					dealii::VectorizedArray<double> temp = (thisNucleus->center(i) - q_point_loc(i));
-
-					if (userInputs.BC_list[1].var_BC_type[2*i]==PERIODIC){
-						for (unsigned j=0; j<gamma.n_array_elements;j++)
-						temp[j] -= round(temp[j]/userInputs.domain_size[i])*userInputs.domain_size[i];
-					}
-
-					if (i == 0){
-						dealii::VectorizedArray<double> temp_y = (thisNucleus->center(1) - q_point_loc(1));
-						temp = temp*std::cos(theta)+temp_y*std::sin(theta);
-					}
-					else if (i == 1){
-						dealii::VectorizedArray<double> temp_x = (thisNucleus->center(0) - q_point_loc(0));
-						temp = -temp_x*std::sin(theta)+temp*std::cos(theta);
-					}
-
-					temp=temp/userInputs.order_parameter_freeze_semiaxes[i];
-					weighted_dist += temp*temp;
-				}
+				dealii::VectorizedArray<double> weighted_dist = this->weightedDistanceFromNucleusCenter(thisNucleus->center, userInputs.get_nucleus_freeze_semiaxes(thisNucleus->orderParameterIndex), q_point_loc, thisNucleus->orderParameterIndex);
 
 				for (unsigned i=0; i<gamma.n_array_elements;i++){
 					if (weighted_dist[i] <= 1.0){
@@ -365,32 +332,19 @@ void customPDE<dim,degree>::seedNucleus(const dealii::Point<dim, dealii::Vectori
 						if (thisNucleus->seedingTimestep == this->currentIncrement){
 
 							// Find the weighted distance to the outer edge of the nucleus and use it to calculate the order parameter source term
-							// Allow rotation of the ellipsoid in the x-y plane depending on the order parameter (as given by theta)
-							double r = 0.0;
+							// Find the weighted distance to the outer edge of the nucleus and use it to calculate the order parameter source term (r = 1.0 on that boundary)
+							dealii::Point<dim,double> q_point_loc_element;
+							for (unsigned int j=0; j<dim; j++){
+								q_point_loc_element(j) = q_point_loc(j)[i];
+							}
+							double r = this->weightedDistanceFromNucleusCenter(thisNucleus->center, userInputs.get_nucleus_semiaxes(thisNucleus->orderParameterIndex), q_point_loc_element, thisNucleus->orderParameterIndex);
+
 							double avg_semiaxis = 0.0;
 							for (unsigned int j=0; j<dim; j++){
-								double temp = (thisNucleus->center(j) - q_point_loc(j)[i]);
-								if (userInputs.BC_list[1].var_BC_type[2*i]==PERIODIC){
-									double domsize_j = userInputs.domain_size[j];
-									temp=temp-round(temp/domsize_j)*domsize_j;
-								}
-
-								if (j == 0){
-									double temp_y = (thisNucleus->center(1) - q_point_loc(1)[i]);
-									temp = temp*std::cos(theta)+temp_y*std::sin(theta);
-								}
-								else if (j == 1){
-									double temp_x = (thisNucleus->center(0) - q_point_loc(0)[i]);
-									temp = -temp_x*std::sin(theta)+temp*std::cos(theta);
-								}
-
-								temp=temp/thisNucleus->semiaxes[j];
-								r += temp*temp;
 								avg_semiaxis += thisNucleus->semiaxes[j];
 							}
-
-							r = sqrt(r);
 							avg_semiaxis /= dim;
+
 							if (thisNucleus->orderParameterIndex == 1){
 								source_terms[0][i] =0.5*(1.0-std::tanh(avg_semiaxis*(r-1.0)/interface_coeff));
 							}
