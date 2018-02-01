@@ -82,7 +82,7 @@ set Linear solver = SolverCG
 set Use absolute convergence tolerance = true
 
 # The tolerance for convergence (L2 norm of the residual)
-set Solver tolerance value = 5.0e-3
+set Solver tolerance value = 1.0e-2
 
 # The maximum number of solver iterations per time step
 set Maximum allowed solver iterations = 10000
@@ -113,7 +113,7 @@ set Checkpoint condition = EQUAL_SPACING
 
 # Number of times the creates checkpoints (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of checkpoints = 10
+set Number of checkpoints = 100
 
 # =================================================================================
 # Set the boundary conditions

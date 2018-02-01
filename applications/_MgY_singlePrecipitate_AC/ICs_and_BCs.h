@@ -14,9 +14,9 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
 	  // according to its variable index.
 
 	  // Initial condition parameters
-	  double x_denom = (4.0)*(4.0);
-	  double y_denom = (4.0)*(4.0);
-	  double z_denom = (12.0)*(12.0);
+	  double x_denom = (8.0)*(8.0);
+	  double y_denom = (8.0)*(8.0);
+	  double z_denom = (24.0)*(24.0);
 	  double initial_interface_coeff = (0.04);
 	  double initial_radius = 1.0;
 	  double c_matrix = 0.0013;

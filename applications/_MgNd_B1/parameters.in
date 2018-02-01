@@ -36,7 +36,8 @@ set Element degree = 2
 set Mesh adaptivity = true
 
 # Set the maximum and minimum level of refinement
-set Max refinement level = 12
+#set Max refinement level = 12
+set Max refinement level = 11
 set Min refinement level = 1
 
 # Set the fields used to determine the refinement using their index.
@@ -53,12 +54,14 @@ set Steps between remeshing operations = 5000
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 3.456e-4 
+#set Time step = 3.456e-4 
+set Time step = 0.0013824 
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
 
-set Number of time steps = 390625000
+#set Number of time steps = 390625000
+set Number of time steps = 97656250
 
 # =================================================================================
 # Set the elliptic solver parameters
@@ -94,7 +97,7 @@ set Skip print steps = 1000
 # Set the checkpoint/restart parameters
 # =================================================================================
 
-set Load from a checkpoint = false
+set Load from a checkpoint = true
 set Checkpoint condition = EQUAL_SPACING
 set Number of checkpoints = 1000
 
@@ -131,21 +134,26 @@ set Boundary condition for variable u, z component = PERIODIC
 set Model constant McV = 1.0, double
 
 # Mn1V, Mn2V, and Mn3V, the Allen-Cahn mobilities
-set Model constant Mn1V = 0.1, double
-set Model constant Mn2V = 0.1, double
-set Model constant Mn3V = 0.1, double
+set Model constant Mn1V = 0.0125, double
+set Model constant Mn2V = 0.0125, double
+set Model constant Mn3V = 0.0125, double
 
 # Kn1, Kn2, and Kn3, the gradient energy coefficients
 #set Model constant Kn1 = ((0.003427,0,0),(0,0.003427,0),(0,0,0.003427)), tensor # l* = 1 nm
 #set Model constant Kn2 = ((0.003427,0,0),(0,0.003427,0),(0,0,0.003427)), tensor # l* = 1 nm
 #set Model constant Kn3 = ((0.003427,0,0),(0,0.003427,0),(0,0,0.003427)), tensor # l* = 1 nm
 
-set Model constant Kn1 = ((0.01705,0,0),(0,0.01705,0),(0,0,0.01705)), tensor # l* = 1 nm
-set Model constant Kn2 = ((0.01705,0,0),(0,0.01705,0),(0,0,0.01705)), tensor # l* = 1 nm
-set Model constant Kn3 = ((0.01705,0,0),(0,0.01705,0),(0,0,0.01705)), tensor # l* = 1 nm
+#set Model constant Kn1 = ((0.01705,0,0),(0,0.01705,0),(0,0,0.01705)), tensor # l* = 1 nm
+#set Model constant Kn2 = ((0.01705,0,0),(0,0.01705,0),(0,0,0.01705)), tensor # l* = 1 nm
+#set Model constant Kn3 = ((0.01705,0,0),(0,0.01705,0),(0,0,0.01705)), tensor # l* = 1 nm
+
+set Model constant Kn1 = ((0.0341,0,0),(0,0.0341,0),(0,0,0.0341)), tensor # l* = 1 nm
+set Model constant Kn2 = ((0.0341,0,0),(0,0.0341,0),(0,0,0.0341)), tensor # l* = 1 nm
+set Model constant Kn3 = ((0.0341,0,0),(0,0.0341,0),(0,0,0.0341)), tensor # l* = 1 nm
 
 # W, the energy barrier coefficient
-set Model constant W = 0.66, double # l* = 1 nm
+#set Model constant W = 0.66, double # l* = 1 nm
+set Model constant W = 0.33, double # l* = 1 nm
 
 # n_dependent_stiffness
 set Model constant n_dependent_stiffness = false, bool

@@ -24,7 +24,7 @@ set Subdivisions X = 1
 set Subdivisions Y = 1
 set Subdivisions Z = 1
 
-set Refine factor = 9
+set Refine factor = 8
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
 set Element degree = 2
@@ -36,15 +36,15 @@ set Element degree = 2
 set Mesh adaptivity = true
 
 # Set the maximum and minimum level of refinement
-set Max refinement level = 13
+set Max refinement level = 12
 set Min refinement level = 0
 
 # Set the fields used to determine the refinement using their index.
 set Refinement criteria fields = n1
 
 # Set the maximum and minimum value of the fields where the mesh should be refined
-set Refinement window max = 0.9995
-set Refinement window min = 0.0005
+set Refinement window max = 1.0
+set Refinement window min = 1.0e-15
 
 # Set the number of time steps between remeshing operations
 set Steps between remeshing operations = 5000
@@ -53,11 +53,11 @@ set Steps between remeshing operations = 5000
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 0.0004
+set Time step = 0.0016
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 25000000 #50000000 
+set Number of time steps = 15000000 #50000000 
 
 # =================================================================================
 # Set the elliptic solver parameters
@@ -134,13 +134,15 @@ set Boundary condition for variable u, z component = PERIODIC
 set Model constant McV = 1.0, double
 
 # Mn1V  the Allen-Cahn mobility
-set Model constant Mn1V = 0.8, double
+set Model constant Mn1V = 2.0, double
 
 # Kn1 the gradient energy coefficient
-set Model constant Kn1 = ((0.01705,0,0),(0,0.01705,0),(0,0,0.01705)), tensor # l* = 1 nm
+#set Model constant Kn1 = ((0.01705,0,0),(0,0.01705,0),(0,0,0.01705)), tensor # thinner interface (sw018)
+set Model constant Kn1 = ((0.0341,0,0),(0,0.0341,0),(0,0,0.0341)), tensor # thicker interface (sw019)
 
 # W, the energy barrier coefficient
-set Model constant W = 0.66, double # l* = 1 nm
+#set Model constant W = 0.66, double # thinner interface (sw018)
+set Model constant W = 0.33, double # thicker interface (sw019)
 
 # n_dependent_stiffness
 set Model constant n_dependent_stiffness = false, bool

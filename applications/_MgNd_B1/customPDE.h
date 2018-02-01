@@ -48,8 +48,9 @@ private:
 
 	// Method to place the nucleus and calculate the mobility modifier in residualRHS
 	void seedNucleus(const dealii::Point<dim, dealii::VectorizedArray<double> > & q_point_loc,
-						std::vector<dealii::VectorizedArray<double> > & source_terms,
-						dealii::VectorizedArray<double> & gamma) const;
+						//std::vector<dealii::VectorizedArray<double> > & source_terms,
+                                                dealii::AlignedVector<dealii::VectorizedArray<double > > & source_terms,						
+                                                dealii::VectorizedArray<double> & gamma) const;
 
 	// ================================================================
 	// Model constants specific to this subclass

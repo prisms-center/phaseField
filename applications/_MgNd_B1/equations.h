@@ -196,7 +196,14 @@ vectorgradType ruxV;
 // -------------------------------------------------
 // Nucleation expressions
 // -------------------------------------------------
-std::vector<dealii::VectorizedArray<double> > source_terms(3,constV(0.0));
+//std::vector<dealii::VectorizedArray<double> > source_terms(3,constV(0.0));
+//std::vector<dealii::VectorizedArray<double> > source_terms;
+//dealii::VectorizedArray<double> temp = constV(0.0);
+//source_terms.push_back(temp);
+//source_terms.push_back(temp);
+//source_terms.push_back(temp);
+dealii::AlignedVector<dealii::VectorizedArray<double > > source_terms(3,constV(0.0));
+
 dealii::VectorizedArray<double> gamma = constV(1.0);
 seedNucleus(q_point_loc,source_terms,gamma);
 
@@ -305,7 +312,8 @@ variable_list.set_vector_gradient_residual_term(4,ruxV);
 // =================================================================================
 template <int dim,int degree>
 void customPDE<dim,degree>::seedNucleus(const dealii::Point<dim, dealii::VectorizedArray<double> > & q_point_loc,
-	std::vector<dealii::VectorizedArray<double> > & source_terms,
+	//std::vector<dealii::VectorizedArray<double> > & source_terms,
+        dealii::AlignedVector<dealii::VectorizedArray<double> > & source_terms,
 	dealii::VectorizedArray<double> & gamma) const {
 
 		for (typename std::vector<nucleus<dim> >::const_iterator thisNucleus=this->nuclei.begin(); thisNucleus!=this->nuclei.end(); ++thisNucleus){
