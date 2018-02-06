@@ -17,28 +17,29 @@ double InitialCondition<dim>::value (const Point<dim> &p, const unsigned int com
 	  // by a hyperbolic tangent function. The center of each circle/sphere is
 	  // given by "center" and its radius is given by "rad".
 
-	  double center[2][3] = {{1.0/3.0,1.0/3.0,1.0/3.0},{3.0/4.0,3.0/4.0,3.0/4.0}};
-	  double rad[2] = {userInputs.domain_size[0]/5.0, userInputs.domain_size[0]/12.0};
+	  double center[2][3] = {{0.4,0.4,0.4},{0.7,0.7,0.7}};
+	  double rad[2] = {userInputs.domain_size[0]/4.0, userInputs.domain_size[0]/16.0};
 	  double dist;
-	  scalar_IC = 0;
+	  scalar_IC = 0.0;
 
-	  if (index == 0){
-		  scalar_IC = 0.009;
-	  }
+	  // if (index == 0){
+		//   scalar_IC = 0.009;
+	  // }
 
 	  for (unsigned int i=0; i<2; i++){
+      //unsigned int i = 1;
 		  dist = 0.0;
 		  for (unsigned int dir = 0; dir < dim; dir++){
-			  dist += (p[dir]-center[i][dir]*userInputs.domain_size[dir])*(p[dir]-center[i][dir]*userInputs.domain_size[dir]);
+              dist += (p[dir]-center[i][dir]*userInputs.domain_size[dir])*(p[dir]-center[i][dir]*userInputs.domain_size[dir]);
 		  }
 		  dist = std::sqrt(dist);
 
 		  // Initial condition for the concentration field
 		  if (index == 0){
-			  scalar_IC += 0.5*(0.125)*(1.0-std::tanh((dist-rad[i])/(1.0)));
+			  scalar_IC += 0.5*(1.0-std::tanh((dist-rad[i])/(2.0)));
 		  }
 		  else {
-			  scalar_IC += 0.5*(1.0-std::tanh((dist-rad[i])/(1.0)));
+			  scalar_IC += 0.5*(1.0-std::tanh((dist-rad[i])/(2.0)));
 		  }
 	  }
 
