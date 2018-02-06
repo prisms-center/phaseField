@@ -65,6 +65,7 @@ void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Vectorized
 #include "../../src/matrixfree/utilities.cc"
 #include "../../src/matrixfree/computeIntegral.cc"
 #include "../../src/matrixfree/nucleation.cc"
+#include "../../src/matrixfree/checkpoint.cc"
 
 #include "../../src/inputFileReader/inputFileReader.cc"
 #include "../../src/parallelNucleationList/parallelNucleationList.cc"
@@ -79,7 +80,7 @@ void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Vectorized
 #include "../../src/userInputParameters/load_BC_list.cc"
 #include "../../src/userInputParameters/load_user_constants.cc"
 #include "../../src/userInputParameters/loadVariableAttributes.cc"
-#include "../../src/userInputParameters/setOutputTimeSteps.cc"
+#include "../../src/userInputParameters/setTimeStepList.cc"
 
 #include "../../src/variableAttributeLoader/variableAttributeLoader.cc"
 

@@ -33,6 +33,7 @@
 *.btr
 freeEnergy.txt
 integratedFields.txt
+.*vtu*
 
 #CMAKE files
 *.cmake
@@ -81,3 +82,13 @@ freeEnergy.txt
 output.txt
 
 restart*
+integratedFields.txt
+
+# Checkpoint/restart files
+restart.mesh
+restart.mesh.info
+restart.mesh.info.old
+restart.mesh.old
+restart.resume.z
+restart.time.info
+restart.time.info.old

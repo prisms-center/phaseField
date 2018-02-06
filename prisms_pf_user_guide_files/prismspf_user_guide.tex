@@ -59,23 +59,36 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{titling}
+
+\renewcommand\maketitlehooka{\null\mbox{}}
+\renewcommand\maketitlehookd{\vfill\null}
 
 %%% The "real" document content comes below...
 
-\title{PRISMS-PF User Guide (v2.0)}
+\title{PRISMS-PF User Guide (v2.0.2)}
 \author{Stephen DeWitt (prismsphasefield.dev@umich.edu)}
 %\date{} % Activate to display a given date or no date (if empty),
          % otherwise the current date is printed 
-
+        
 \begin{document}
-\maketitle
 
+\pretitle{%
+  \begin{center}
+  \LARGE
+  \includegraphics[width=0.8\textwidth]{logo}\\[\bigskipamount]
+}
+\posttitle{\end{center}}
+
+\begin{titlingpage}
+\maketitle
+\end{titlingpage}
 \tableofcontents
 
 \clearpage
 
 \section{Overview}
-PRISMS-PF is an open-source finite element simulation code with a focus on solving equations from phase field models. It is being developed as part of the PRISMS Center at the University of Michigan. PRISMS-PF is built on top of the popular and powerful deal.II finite element library. PRISMS-PF was developed to make high performance phase field simulation capabilities available to the wider scientific community with an easy-to-use and easy-to-learn interface. Benchmark tests show that even without its adaptive meshing capabilities PRISMS-PF is competitive with specialized finite difference codes written in Fortran with MPI parallelization in terms performance,  and in some cases runs several times faster. PRISMS-PF can be used to solve a wide variety of systems of coupled parabolic partial differential equations (e.g. the diffusion equation) and elliptic partial differential equations (e.g. Poisson's equation). With PRISMS-PF, you have access to adaptive meshing and parallelization that has been demonstrated on over a thousand processors. Moreover, the matrix-free framework from deal.II allows much larger than typical finite element programs -- PRISMS-PF has been used for calculations with over one \emph{billion} degrees of freedom.
+PRISMS-PF is an open-source finite element simulation framework with a focus on solving equations from phase field models. It is being developed as part of the PRISMS Center at the University of Michigan. PRISMS-PF is built on top of the popular and powerful deal.II finite element library. PRISMS-PF was developed to make high performance phase field simulation capabilities available to the wider scientific community with an easy-to-use and easy-to-learn interface. Benchmark tests show that even without its adaptive meshing capabilities PRISMS-PF is competitive with specialized finite difference codes written in Fortran with MPI parallelization in terms performance,  and in some cases runs several times faster. PRISMS-PF can be used to solve a wide variety of systems of coupled parabolic partial differential equations (e.g. the diffusion equation) and elliptic partial differential equations (e.g. Poisson's equation). With PRISMS-PF, you have access to adaptive meshing and parallelization that has been demonstrated on over a thousand processors. Moreover, the matrix-free framework from deal.II allows much larger than typical finite element programs -- PRISMS-PF has been used for calculations with over one \emph{billion} degrees of freedom.
 
 This user guide starts with instructions for downloading PRISMS-PF and install the necessary prerequisites. Next are instructions for running the built-in example applications and visualizing the results. A detailed look at the input files follows, and the guide finishes with some instructions on how to create your own PRISMS-PF applications.
 
@@ -560,7 +573,7 @@ Maximum allowed solver iterations & Any positive integer & no & 10000 & The maxi
 \begin{center}
     \begin{tabular}{ | p{0.2\textwidth} | p{0.17\textwidth} | p{0.08\textwidth} | p{0.1\textwidth} | p{0.3\textwidth} |}
     \hline
-      \multicolumn{5}{|c|}{\textbf{Output}} \\
+      \multicolumn{5}{|c|}{\textbf{Output (Optional)}} \\
     \hline
     \hline
     \emph{Name} & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
@@ -569,7 +582,22 @@ Maximum allowed solver iterations & Any positive integer & no & 10000 & The maxi
       List of time steps to output & Comma-separated list of non-negative integers & no & 0 & The list of time steps to output, used for the LIST output condition and ignored for the others. \\ \hline
 Output file name (base) & String & no & solution & The name for the output file, before the time step and processor info are added. \\ \hline
 Output file type & vtu, vtk & no & vtu & The output file type (currently limited to either vtu or vtk). \\ \hline
+Output separate files per process & Boolean & no & false & Whether to output separate vtu files for each process in a parallel calculation (automatically set to true for vtk files). Separate files may decrease the time spent outputting results but may increase file tranfer times, as well as cluttering directories. \\ \hline
 Skip print steps & Any positive integer & no & 1 & The number of time steps between updates to the terminal window (1 is every time step). \\ \hline
+    \end{tabular}
+\end{center}
+
+\begin{center}
+    \begin{tabular}{ | p{0.2\textwidth} | p{0.17\textwidth} | p{0.08\textwidth} | p{0.1\textwidth} | p{0.3\textwidth} |}
+    \hline
+      \multicolumn{5}{|c|}{\textbf{Checkpoints (Optional)}} \\
+    \hline
+    \hline
+    \emph{Name} & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
+    Load from a checkpoint & Boolean & no & false & Whether to start the simulation from the checkpoint of another simulation. See Note 2 below for the details of the checkpoint/restart system. \\ \hline
+    Checkpoint condition & EQUAL\_SPACING, LOG\_SPACING, N\_PER\_DECADE, LIST & no & EQUAL \_SPACING & This sets the spacing between the times the simulation outputs the model variables. EQUAL\_SPACING spaces them equally, LOG\_SPACING spaces them  $10^{n/(outputs) \log(time steps)}$, N\_PER\_DECADE allows the user to set how many times the simulation outputs per power of ten iterations, and LIST outputs at a user-given list of time step numbers. \\ \hline
+     Number of checkpoints & Any non-negative integer & no & 1 & The number of inputs if the output condition is EQUAL\_SPACING. The number of outputs if the output condition is N\_PER\_DECADE. Ignored for the other output conditions. \\ \hline
+      List of time steps to save checkpoints & Comma-separated list of non-negative integers & no & 0 & The list of time steps to create checkpoints, used for the LIST output condition and ignored for the others. \\ \hline
     \end{tabular}
 \end{center}
 
@@ -592,27 +620,39 @@ Skip print steps & Any positive integer & no & 1 & The number of time steps betw
     \hline
     \hline
     \emph{Name} & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
-    Load initial conditions & Comma-separated list of booleans & no & false & One true/false flag for each variable for whether the initial condition should be loaded from a vtk file. Currently, only scalar fields can be read in. SSee Note 2 below for details. \\ \hline
-     Load parallel file & Comma-separated list of booleans & no & false & One true/false flag for each variable for whether each processor should read the initial conditions from a seperate file. See Note 2 below for details.  \\ \hline
-      File names & Comma-separated list of strings & no &  & The name of the vtk file to be read for each variable, ignored for variables where the initial conditions isn't read in from a file. Often, all of the variables will read from the same vtk file. See Note 2 below for details.  \\ \hline
-      Variable names in the files & Comma-separated list of strings & no &  & What each variable is named in the file being loaded. See Note 2 below for details.  \\ \hline
+    Load initial conditions & Comma-separated list of booleans & no & false & One true/false flag for each variable for whether the initial condition should be loaded from a vtk file. Currently, only scalar fields can be read in. See Note 3 below for details. \\ \hline
+     Load parallel file & Comma-separated list of booleans & no & false & One true/false flag for each variable for whether each processor should read the initial conditions from a seperate file. See Note 3 below for details.  \\ \hline
+      File names & Comma-separated list of strings & no &  & The name of the vtk file to be read for each variable, ignored for variables where the initial conditions isn't read in from a file. Often, all of the variables will read from the same vtk file. See Note 3 below for details.  \\ \hline
+      Variable names in the files & Comma-separated list of strings & no &  & What each variable is named in the file being loaded. See Note 3 below for details.  \\ \hline
     \end{tabular}
 \end{center}
 
 \begin{center}
     \begin{tabular}{ | p{0.2\textwidth} | p{0.17\textwidth} | p{0.08\textwidth} | p{0.1\textwidth} | p{0.3\textwidth} |}
     \hline
-      \multicolumn{5}{|c|}{\textbf{Nucleation (Optional}} \\
+      \multicolumn{5}{|c|}{\textbf{Shared Nucleation Parameters (Optional)}} \\
     \hline
     \hline
     \emph{Name} & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
-    Nucleus semiaxes (x, y ,z) & Three positive real numbers & no &  & The semiaxes of the ellipsoidal nuclei to be seeded. See Note 3 below for details. \\ \hline
-     Freeze zone semiaxes (x, y ,z) & Three positive real numbers & no &  & The semiaxes for the ellipsoidal region where the nucleus is frozen after seeding. See Note 3 below for details.  \\ \hline
-      Freeze time following nucleation & Any non-negative real number & no & 0 & The amount of time the nucleus is frozen after seeding. See Note 3 below for details. \\ \hline
-      Nucleation-free border thickness & Any non-negative real number & no & 0 & The size of the buffer region where nucleation is not allowed unless the boundary conditions are periodic. See Note 3 below for details. \\ \hline
-      Minimum allowed distance between nuclei & Any non-negative real number & no & 2$\times$ the largest nucleus semiaxis  & The minimum allowed distance between nuclei centers during a single nucleation attempt. See Note 3 below for details. \\ \hline
-      Order parameter cutoff value & Any non-negative real number & no & 0.01  & The minimum allowed value of the sum of all nucleating variable fields where nucleation is allowed to occur. Implemented to prevent nucleation inside existing particles. See Note 3 below for details. \\ \hline
-      Time steps between nucleation attempts & Any positive integer & no & 100  & The number of time steps between nucleation attempts. See Note 3 below for details. \\ \hline
+    Time steps between nucleation attempts & Any positive integer & no & 100  & The number of time steps between nucleation attempts. This parameter is shared among all nucleating variables. See Note 4 below for details. \\ \hline
+    Minimum allowed distance between nuclei & Any non-negative real number & no & 2$\times$ the largest nucleus semiaxis  & The minimum allowed distance between nuclei centers during a single nucleation attempt. This parameter is shared among all nucleating variables. See Note 4 below for details. \\ \hline
+     Order parameter cutoff value & Any non-negative real number & no & 0.01  & The minimum allowed value of the sum of all nucleating variable fields where nucleation is allowed to occur. Implemented to prevent nucleation inside existing particles. This parameter is shared among all nucleating variables. See Note 4 below for details. \\ \hline
+      & Any positive integer & no & 100  & The number of time steps between nucleation attempts. This parameter is shared among all nucleating variables. See Note 4 below for details. \\ \hline
+    \end{tabular}
+\end{center}
+
+\begin{center}
+    \begin{tabular}{ | p{0.2\textwidth} | p{0.17\textwidth} | p{0.08\textwidth} | p{0.1\textwidth} | p{0.3\textwidth} |}
+    \hline
+      \multicolumn{5}{|c|}{\textbf{Nucleation Parameters for Each Nucleating Variable (Optional)}} \\
+    \hline
+    \hline
+    \emph{Name} & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
+    Nucleus semiaxes (x, y ,z) & Three positive real numbers & no &  & The semiaxes of the ellipsoidal nuclei to be seeded. See Note 4 below for details. \\ \hline
+    Nucleus rotation in degrees (x, y, z) & Three real numbers & no & & The rotation of the nuclei placed with the explicit nucleation algorithm. The rotations are given with respect to the normal direction using intrinsic Tait-Bryan angles. Positive rotations correspond to a  counter-clockwise rotation when looking along the positive axis of interest. All three angles must be specified regardless of problem dimension. \\ \hline
+    Freeze zone semiaxes (x, y ,z) & Three positive real numbers & no &  & The semiaxes for the ellipsoidal region where the nucleus is frozen after seeding. See Note 4 below for details.  \\ \hline
+    Freeze time following nucleation & Any non-negative real number & no & 0 & The amount of time the nucleus is frozen after seeding. See Note 4 below for details. \\ \hline
+    Nucleation-free border thickness & Any non-negative real number & no & 0 & The size of the buffer region where nucleation is not allowed unless the boundary conditions are periodic. See Note 4 below for details. \\ \hline
     \end{tabular}
 \end{center}
 
@@ -623,7 +663,7 @@ Skip print steps & Any positive integer & no & 1 & The number of time steps betw
     \hline
     \hline
     \emph{Name} & \emph{Options} & \emph{Required} & \emph{Default} & \emph{Description} \\ \hline
-    Model constant [constant name] & value followed by a comma then a type & no &  & Sets the value of a constant defined for that particular application. The allowed types are DOUBLE, INT, BOOL, TENSOR, and [symmetry] ELASTIC CONSTANTS where [symmetry] is ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC. See Note 4 below for details. \\ \hline
+    Model constant [constant name] & value followed by a comma then a type & no &  & Sets the value of a constant defined for that particular application. The allowed types are DOUBLE, INT, BOOL, TENSOR, and [symmetry] ELASTIC CONSTANTS where [symmetry] is ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC. See Note 5 below for details. \\ \hline
     \end{tabular}
 \end{center}
 
@@ -648,15 +688,48 @@ Example 3: All periodic BCs for the y component of the vector variable 'u'
 set Boundary condition for variable u, component y = PERIODIC
 \end{lstlisting}
 
-\textbf{Note 2 (Loading Initial Conditions from File):} \\
+\textbf{Note 2 (Checkpoint/Restart):} \\
+The checkpoint/restart simulation allows one to continue from a previous simulation by loading the mesh and variable values from that previous simulation. One use of this system is to continue a simulation that stopped part of the way through, due to a hardware failure, running out of the allotted time on a cluster, etc. A second use is to use one simulation as the initial condition for another. Note that the simulated time carries over from the checkpoint. Thus if one ran a simulation to completion but wanted to see further evolution, one could load from the checkpoint created at the end of that simulation, but the desired number of time steps or simulation end time would have to be increased. Currently, the checkpoint system always read from files named ``restart.mesh'', ``restart.mesh.info'', and ``restart.time.info''. When a checkpoint is created, the previous checkpoint files have ``.old'' appended to their file names. To load from these older checkpoint files, the newer ones should be deleted (or moved) and the ``.old'' should be deleted from the names of the older files. An example of using the checkpoint/restart system can be seen in the `dendriticSolidification' application.
+
+\textbf{Note 3 (Loading Initial Conditions from File):} \\
 Currently, initial conditions can only be read from vtk files (\emph{not} vtu files). Some variables can have initial conditions read from file and others can be specified in ICs\_and\_BCs.h in the same application. For each variable, the user must set whether the file(s) to be read are in serial format, where all processors read from the same file, or parallel format, where all processors read from different files. If parallel format is selected, the desired domain decomposition must between the files and the simulation to be run. For non-adaptive meshes this will be true if the same number of cores is the same between the simulation that generated the vtk files and the simulation reading the vtk files. For adaptive meshes, obtaining the same domain decomposition may be difficult and merging parallel vtk files into a single file is likely the best approach. This process is planned to be cleaner in future versions of PRISMS-PF. An example of loading inital conditions from file can be seen in the `allenCahn\_pfield' application.
 
-\textbf{Note 3 (Nucleation):} \\
+\textbf{Note 4 (Nucleation):} \\
 PRISMS-PF includes the capability for explicitly placing nuclei over the course of a simulation using an approach similar to the one described in the following publication: \\
 Jokisaari, Permann, and Thornton, A nucleation algorithm for the coupled conserved-nonconserved phase field model, \emph{Computational Materials Science}, 112, (2016). \\
-A nucleus of an non-conserved order parameter is placed within the computational domain determined by a probability given by the `getNucleationProbability' function in the `nucleation.h' file. The variables that are allowed to nucleate are specified in the `loadVariableAttributes' function in the `equations.h' file, as are the variable values needed to calculate the nucleation probability. The determination of when and where a nucleus should be seeded is determined in the core PRISMS-PF library, but the actual placement of the nucleus by modifying one of the model fields is expected to be performed in the `residualRHS' function in the `equations.h' file. The mobility for the nucleated field should be set to zero in the region surrounding the nucleus (the ``freeze zone'') for a specified amount of time (the ``freeze time''). Examples of nucleating particles can be found in the nucleationModel and preferential\_nucleationModel applications.
+A nucleus of an non-conserved order parameter is placed within the computational domain determined by a probability given by the `getNucleationProbability' function in the `nucleation.h' file. The variables that are allowed to nucleate are specified in the `loadVariableAttributes' function in the `equations.h' file, as are the variable values needed to calculate the nucleation probability. The determination of when and where a nucleus should be seeded is determined in the core PRISMS-PF library, but the actual placement of the nucleus by modifying one of the model fields is expected to be performed in the `residualRHS' function in the `equations.h' file. The placement of the nucleus is aided by the `weightedDistanceFromNucleusCenter' function in the core library. The mobility for the nucleated field should be set to zero in the region surrounding the nucleus (the ``freeze zone'') for a specified amount of time (the ``freeze time''). Examples of nucleating particles can be found in the nucleationModel and preferential\_nucleationModel applications.
 
-\textbf{Note 4 (Model constants):} \\
+Currently, the nucleation parameters are the only place where the `subsection' command is used in `parameters.in'.  This command is used to set nucleation parameters seperately for each nucleating variable. Each subsection is opened by ``subsection Nucleation parameters:'' followed by the variable name as set in `equations.h'. The end of each subsection block is concluded with the `end' command. For example, if there are two nucleating order parameters \emph{n1} and \emph{n2}, the nucleation parameters section could look as follows:
+\scriptsize
+\begin{lstlisting}
+# =================================================================================
+# Set the nucleation parameters
+# =================================================================================
+
+set Time steps between nucleation attempts = 30
+set Minimum allowed distance between nuclei = 50.0
+set Order parameter cutoff value = 0.01
+
+subsection Nucleation parameters: n1
+    set Nucleus semiaxes (x, y, z) = 10, 5, 5
+    set Nucleus rotation in degrees (x, y, z) = 0, 0, 60
+    set Freeze zone semiaxes (x, y, z) = 15, 7.5, 7.5
+    set Freeze time following nucleation = 20
+    set Nucleation-free border thickness = 15
+end
+
+subsection Nucleation parameters: n2
+    set Nucleus semiaxes (x, y, z) = 20, 10, 10
+    set Nucleus rotation in degrees (x, y, z) = 0, 0, 0
+    set Freeze zone semiaxes (x, y, z) = 30, 15, 15
+    set Freeze time following nucleation = 40
+    set Nucleation-free border thickness = 30
+end
+\end{lstlisting}
+\normalsize
+The first three lines set the shared nucleation parameters. Next comes the subsection block for the variable \emph{n1} and the subsection block for the variable \emph{n2}. 
+
+\textbf{Note 5 (Model constants):} \\
 Each application specifies its own set of model constants. These are most often used in the residual equations in the `equations.h' file, although they may also be used to specify initial conditions, non-uniform Dirichlet boundary conditions, nucleation probabilties, etc. Currently, five types of model constants are accepted: DOUBLE, INT, BOOL, TENSOR, and ELASTIC CONSTANTS. The use of these different types is as follows:
 \begin{itemize}
 \item DOUBLE: For individual real numbers
@@ -1306,7 +1379,7 @@ $ mpirun -n 1 main
 A summary of the tests will print to the screen.
 
 \section{Creating Custom Applications}
-You can create your own PRISMS-PF applications by making simple modifications to the input files described in the previous section. To create a new application, simply create a new folder in the applications directory and copy the files from a related example application. \textbf{If the file ``CMakeCache.txt'' exists, delete it} (this file contains paths to the original application, and if left would cause the compiler to compile the code from the original application). Then, make your desired modifications (changing the initial or boundary conditions, changing the residual equations, etc.) and compile and run your application the same way you would one of the example applications.
+You can create your own PRISMS-PF applications by making simple modifications to the input files described in the previous section. To create a new application, simply create a new folder in the applications directory and copy the files from a related example application. Currently, the new application folder must be in the applications directory, otherwise it will not be able to find the required files in the core PRISMS-PF library. \textbf{If the file ``CMakeCache.txt'' exists, delete it} (this file contains paths to the original application, and if left would cause the compiler to compile the code from the original application). Then, make your desired modifications (changing the initial or boundary conditions, changing the residual equations, etc.) and compile and run your application the same way you would one of the example applications.
 
 Once your have your own applications running, we'd love to help you share them with the community. Please contact us at prismsphasefield.dev@umich.edu if you need help using GitHub to generate a pull request so that we can add your work to the public repository.
 

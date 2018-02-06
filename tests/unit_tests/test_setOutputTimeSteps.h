@@ -11,8 +11,14 @@ bool unitTest<dim,T>::test_setOutputTimeSteps(){
     inputFileReader input_file_reader("parameters_test.in",variable_attributes);
     std::vector<fieldType> var_types;
     var_types.push_back(SCALAR);
-    input_file_reader.declare_parameters(parameter_handler,var_types,0);
+	std::vector<bool> var_nucleates;
+	var_nucleates.push_back(false);
+    input_file_reader.declare_parameters(parameter_handler,var_types,0,var_nucleates);
+	#if (DEAL_II_VERSION_MAJOR < 9 && DEAL_II_VERSION_MINOR < 5)
     parameter_handler.read_input("parameters_test.in");
+    #else
+    parameter_handler.parse_input("parameters_test.in");
+    #endif
 
     //userInputParameters<dim> userInputs;
 
@@ -33,7 +39,7 @@ bool unitTest<dim,T>::test_setOutputTimeSteps(){
 			pass1 = false;
 		}
 	}
-	
+
     sprintf (buffer, "Subtest 1 for 'setOutputTimeSteps' (EQUAL_SPACING) result: %u\n", pass1);
 	std::cout << buffer;
 

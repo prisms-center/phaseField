@@ -107,9 +107,6 @@ set Time steps between nucleation attempts = 1000
 # =================================================================================
 # Set the boundary conditions
 # =================================================================================
-# =================================================================================
-# Set the boundary conditions
-# =================================================================================
 # Set the boundary condition for each variable, where each variable is given by
 # its name, as defined in equations.h. The four boundary condition
 # types are NATURAL, DIRICHLET, NON_UNIFORM_DIRICHLET and PERIODIC. If all

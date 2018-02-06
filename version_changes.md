@@ -1,3 +1,42 @@
+# Version 2.0.2pre
+Minor ongoing updates to v2.0.1, planned to be released in early to mid 2018.
+
+Added functionality:
+- Nucleation parameters can now be set separately for each nucleating variable. Thus, the input for nucleation in parameters.in has changed. A new core library function "weightedDistanceFromNucleusCenter" has been created to streamline the introduction of nuclei in equations.h (as well streamlining some areas of the core library). See the "nucleationModel" app to view the changes.
+- A single vtu file can now be simultaneously written by all MPI processes. This is the new default, but can be changed back to separate output files for each process in the parameters file.
+- The simulated time is now included in the vtu file, and for example is now visible in VisIt.
+
+Bug fixes:
+- Fixed a bug that prevented the checkpoint system from working in simulations with nucleation.
+- The MatrixFreePDE destructor was fixed so it doesn't fail if an exception is caught while a vectors of pointers are being initialized.
+
+Other changes:
+- PRISMS-PF is now compatible with deal.II version 9.0 (and still is compatible with version 8.4 and 8.5).
+- Changed the file name convention so that when the maximum number of time steps is between powers of 10, it isn't padded by an extra 0 in front (e.g. solution-02000.pvtu becomes solution-2000.pvtu).
+- A comprehensible error message is now given if a simulation is set to read a checkpoint file but can't find it.
+
+# Version 2.0.1
+Minor update to v2.0, released in November 2017. The biggest change is the introduction of a checkpoint/restart system.
+
+Added functionality:
+- A checkpoint/restart system has been added. It allows runs to be restarted if they fail or you want the run to continue for more simulated time.
+- The parser to load in VTK files for initial conditions has been generalized so that it can read files generated from ParaView
+
+Changes to the example applications:
+- Fixed numerous errors in the documentation for the 'dendriticSolidification' app and edited the 'equations.h' file to use the notation from the documentation.
+- Fixed typos in the documentation for the 'coupledCahnHilliardAllenCahn' app.
+
+Bug fixes:
+- Fixed the subscriptor bug that appeared at the end of simulations in debug mode.
+
+Other changes:
+- Some minor updates to the user guide, including adding a new PRISMS-PF logo.
+
+Known issues:
+- PFields only work for scalar fields and only work when the variable with index zero is a scalar field.
+- Postprocessing only works for scalar fields and only when the variable with index zero is a scalar field.
+- An extraneous error can appear under the following circumstances: in debug mode, with multiple cores, with adaptive meshing, using deal.II v8.4.2 or earlier. The error message includes something similar to: "Called compress(VectorOperation::insert), but the element received from a remote processor, value -2.944283206211677e-10, does not match with the value -2.944283206213795e-10 on the owner processor 60". This is a deal.II issue that they fixed in v8.5 where the tolerance for comparing numbers between processors is too tight and can be triggered by standard round-off error. It doesn't effect simulation results.
+
 # Version 2.0:
 Major update to PRISMS-PF, released in August 2017. The core library is very similar to v1.2, but the user interface is substantially changed. Most importantly, input parameters are now read from a text file, instead of via #define statements. All of the individual interface changes are not listed here, see the User Guide for the new file structure and syntax.
 

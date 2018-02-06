@@ -11,6 +11,8 @@ template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::updateNucleiList() {
 
     if (userInputs.nucleation_occurs){
+
+
         if (currentIncrement % userInputs.steps_between_nucleation_attempts == 0 || currentIncrement == 1){
             computing_timer.enter_section("matrixFreePDE: nucleation");
 
@@ -30,6 +32,10 @@ void MatrixFreePDE<dim,degree>::updateNucleiList() {
 
                     while (userInputs.outputTimeStepList.size() > 0 && userInputs.outputTimeStepList[currentOutput] < currentIncrement){
                         currentOutput++;
+                    }
+
+                    while (userInputs.checkpointTimeStepList.size() > 0 && userInputs.checkpointTimeStepList[currentCheckpoint] < currentIncrement){
+                        currentCheckpoint++;
                     }
 
                     new_nuclei = getNewNuclei();
@@ -85,36 +91,36 @@ std::vector<nucleus<dim> > MatrixFreePDE<dim,degree>::getNewNuclei(){
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim> > &newnuclei) const
 {
-	// Nickname for current time and time step
-	double t=currentTime;
-	unsigned int inc=currentIncrement;
+    // Nickname for current time and time step
+    double t=currentTime;
+    unsigned int inc=currentIncrement;
 
     //QGauss<dim>  quadrature(degree+1);
     QGaussLobatto<dim>  quadrature(degree+1);
     FEValues<dim> fe_values (*(FESet[0]), quadrature, update_values|update_quadrature_points|update_JxW_values);
-	const unsigned int   num_quad_points = quadrature.size();
-	std::vector<std::vector<double> > var_values(userInputs.nucleation_need_value.size(),std::vector<double>(num_quad_points));
-	std::vector<dealii::Point<dim> > q_point_list(num_quad_points);
+    const unsigned int   num_quad_points = quadrature.size();
+    std::vector<std::vector<double> > var_values(userInputs.nucleation_need_value.size(),std::vector<double>(num_quad_points));
+    std::vector<dealii::Point<dim> > q_point_list(num_quad_points);
 
-	std::vector<dealii::Point<dim> > q_point_list_overlap(num_quad_points);
+    std::vector<dealii::Point<dim> > q_point_list_overlap(num_quad_points);
 
-	typename DoFHandler<dim>::active_cell_iterator   di = dofHandlersSet_nonconst[0]->begin_active();
+    typename DoFHandler<dim>::active_cell_iterator   di = dofHandlersSet_nonconst[0]->begin_active();
 
-	// What used to be in nuc_attempt
-	double rand_val;
-	//Better random no. generator
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::uniform_real_distribution<> distr(0.0,1.0);
+    // What used to be in nuc_attempt
+    double rand_val;
+    //Better random no. generator
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<> distr(0.0,1.0);
 
-	//Element cycle
-	while (di != this->dofHandlersSet_nonconst[0]->end())
-	{
-		if (di->is_locally_owned()){
+    //Element cycle
+    while (di != this->dofHandlersSet_nonconst[0]->end())
+    {
+        if (di->is_locally_owned()){
             //Obtaining average element concentration by averaging over element's quadrature points
             fe_values.reinit(di);
             for (unsigned int var = 0; var < userInputs.nucleation_need_value.size(); var++){
-            	fe_values.get_function_values(*(solutionSet[userInputs.nucleation_need_value[var]]), var_values[var]);
+                fe_values.get_function_values(*(solutionSet[userInputs.nucleation_need_value[var]]), var_values[var]);
             }
             q_point_list = fe_values.get_quadrature_points();
 
@@ -122,11 +128,11 @@ void MatrixFreePDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim> > &n
 
             double element_volume = 0.0;
             dealii::Point<dim> ele_center;
-        	// Loop over the quadrature points to find the element volume (or area in 2D) and the average q point location
+            // Loop over the quadrature points to find the element volume (or area in 2D) and the average q point location
             for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
                 element_volume = element_volume + fe_values.JxW(q_point);
                 for (unsigned int i=0; i<dim; i++)
-                    ele_center[i]=ele_center[i]+q_point_list[q_point](i)/((double)num_quad_points);
+                ele_center[i]=ele_center[i]+q_point_list[q_point](i)/((double)num_quad_points);
             }
 
             // Loop over each variable and each quadrature point to get the average variable value for the element
@@ -140,96 +146,104 @@ void MatrixFreePDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim> > &n
                 variable_values.set(userInputs.nucleation_need_value[var],ele_val);
             }
 
-            //Compute random no. between 0 and 1 (new method)
-            rand_val=distr(gen);
-            //Nucleation probability
-            double Prob=getNucleationProbability(variable_values,element_volume,ele_center);
+            // Loop through each nucleating order parameter
+            for (unsigned int i = 0; i < userInputs.nucleating_variable_indices.size(); i++){
+                unsigned int variable_index = userInputs.nucleating_variable_indices.at(i);
 
-            // ----------------------------
+                //Compute random no. between 0 and 1 (new method)
+                rand_val=distr(gen);
+                //Nucleation probability
+                double Prob=getNucleationProbability(variable_values,element_volume,ele_center,variable_index);
 
-            if (rand_val <= Prob){
+                // ----------------------------
 
-                //Initializing random vector in "dim" dimensions
-                std::vector<double> randvec(dim,0.0);
-                dealii::Point<dim> nuc_ele_pos;
+                if (rand_val <= Prob){
 
-                //Finding coordinates of quadrature point closest to and furthest away from the origin
-                std::vector<double> ele_origin(dim);
-                for (unsigned int i=0; i<dim; i++)
+                    //Initializing random vector in "dim" dimensions
+                    std::vector<double> randvec(dim,0.0);
+                    dealii::Point<dim> nuc_ele_pos;
+
+                    //Finding coordinates of quadrature point closest to and furthest away from the origin
+                    std::vector<double> ele_origin(dim);
+                    for (unsigned int i=0; i<dim; i++)
                     ele_origin[i] = q_point_list[0](i);
-                std::vector<double> ele_max(dim);
-                for (unsigned int i=0; i<dim; i++)
+                    std::vector<double> ele_max(dim);
+                    for (unsigned int i=0; i<dim; i++)
                     ele_max[i] = q_point_list[0](i);
-                for (unsigned int i=0; i<dim; i++){
-                    for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
-                        for (unsigned int i=0; i<dim; i++){
-                            if (q_point_list[q_point](i) < ele_origin[i])
+                    for (unsigned int i=0; i<dim; i++){
+                        for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
+                            for (unsigned int i=0; i<dim; i++){
+                                if (q_point_list[q_point](i) < ele_origin[i])
                                 ele_origin[i]=q_point_list[q_point](i);
-                            if (q_point_list[q_point](i) > ele_max[i])
+                                if (q_point_list[q_point](i) > ele_max[i])
                                 ele_max[i]=q_point_list[q_point](i);
+                            }
+                        }
+                    }
+
+                    //Find a random point within the element
+                    for (unsigned int j=0; j<dim; j++){
+                        randvec[j]=distr(gen);
+                        nuc_ele_pos[j]=ele_origin[j] + (ele_max[j]-ele_origin[j])*randvec[j];
+                    }
+
+                    //Make sure point is in safety zone
+                    bool insafetyzone = true;
+                    for (unsigned int j=0; j < dim; j++){
+                        bool periodic_j = (userInputs.BC_list[1].var_BC_type[2*j]==PERIODIC);
+                        bool insafetyzone_j = (periodic_j || ((nuc_ele_pos[j] > userInputs.get_no_nucleation_border_thickness(variable_index)) && (nuc_ele_pos[j] < userInputs.domain_size[j]-userInputs.get_no_nucleation_border_thickness(variable_index))));
+                        insafetyzone = insafetyzone && insafetyzone_j;
+                    }
+
+                    if (insafetyzone){
+
+                        // Check to see if the order parameter anywhere within the element is above the threshold
+                        bool anyqp_OK = false;
+                        for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
+                            double sum_op = 0.0;
+                            for (unsigned int var = 0; var < userInputs.nucleation_need_value.size(); var++){
+                                for (unsigned int op = 0; op < userInputs.nucleating_variable_indices.size(); op++){
+                                    if (userInputs.nucleation_need_value[var] == userInputs.nucleating_variable_indices[op]){
+                                        sum_op += var_values[var][q_point];
+                                    }
+                                }
+                            }
+                            if (sum_op < userInputs.nucleation_order_parameter_cutoff){
+                                anyqp_OK =true;
+                            }
+                        }
+
+                        if (anyqp_OK){
+                            // Pick the order parameter (not needed anymore since the probability is now calculated on a per OP basis)
+                            /*
+                            std::random_device rd2;
+                            std::mt19937 gen2(rd2());
+                            std::uniform_int_distribution<unsigned int> int_distr(0,userInputs.nucleating_variable_indices.size()-1);
+                            unsigned int op_for_nucleus = userInputs.nucleating_variable_indices[int_distr(gen2)];
+                            std::cout << "Nucleation order parameter: " << op_for_nucleus << " " << rand_val << std::endl;
+                            */
+
+                            //Add nucleus to prospective list
+                            std::cout << "Prospective nucleation event. Nucleus no. " << nuclei.size()+1 << std::endl;
+                            std::cout << "Nucleus center: " << nuc_ele_pos << std::endl;
+                            std::cout << "Nucleus order parameter: " << variable_index << std::endl;
+                            nucleus<dim>* temp = new nucleus<dim>;
+                            temp->index=nuclei.size();
+                            temp->center=nuc_ele_pos;
+                            temp->semiaxes = userInputs.get_nucleus_semiaxes(variable_index);
+                            temp->seededTime=t;
+                            temp->seedingTime = userInputs.get_nucleus_hold_time(variable_index);
+                            temp->seedingTimestep = inc;
+                            temp->orderParameterIndex = variable_index;
+                            newnuclei.push_back(*temp);
                         }
                     }
                 }
-
-                //Find a random point within the element
-                for (unsigned int i=0; i<dim; i++){
-                	randvec[i]=distr(gen);
-                    nuc_ele_pos[i]=ele_origin[i] + (ele_max[i]-ele_origin[i])*randvec[i];
-                }
-
-                //Make sure point is in safety zone
-                bool insafetyzone = true;
-                for (unsigned int j=0; j < dim; j++){
-                    bool periodic_j = (userInputs.BC_list[1].var_BC_type[2*j]==PERIODIC);
-                    bool insafetyzone_j = (periodic_j || ((nuc_ele_pos[j] > userInputs.no_nucleation_border_thickness) && (nuc_ele_pos[j] < userInputs.domain_size[j]-userInputs.no_nucleation_border_thickness)));
-                    insafetyzone = insafetyzone && insafetyzone_j;
-                }
-
-                if (insafetyzone){
-
-                	// Check to see if the order parameter anywhere within the element is above the threshold
-                	bool anyqp_OK = false;
-                	for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
-                		double sum_op = 0.0;
-                		for (unsigned int var = 0; var < userInputs.nucleation_need_value.size(); var++){
-                            for (unsigned int op = 0; op < userInputs.nucleating_variable_indices.size(); op++){
-                                if (userInputs.nucleation_need_value[var] == userInputs.nucleating_variable_indices[op]){
-                                    sum_op += var_values[var][q_point];
-                                }
-                            }
-                		}
-                		if (sum_op < userInputs.nucleation_order_parameter_cutoff){
-                			anyqp_OK =true;
-                		}
-                	}
-
-                	if (anyqp_OK){
-                		// Pick the order parameter
-                		std::random_device rd2;
-                		std::mt19937 gen2(rd2());
-                		std::uniform_int_distribution<unsigned int> int_distr(0,userInputs.nucleating_variable_indices.size()-1);
-                		unsigned int op_for_nucleus = userInputs.nucleating_variable_indices[int_distr(gen2)];
-                		std::cout << "Nucleation order parameter: " << op_for_nucleus << " " << rand_val << std::endl;
-
-                		//Add nucleus to prospective list
-                		std::cout << "Prospective nucleation event. Nucleus no. " << nuclei.size()+1 << std::endl;
-                		std::cout << "nucleus center " << nuc_ele_pos << std::endl;
-                		nucleus<dim>* temp = new nucleus<dim>;
-                		temp->index=nuclei.size();
-                		temp->center=nuc_ele_pos;
-                		temp->semiaxes = userInputs.nucleus_semiaxes;
-                		temp->seededTime=t;
-                		temp->seedingTime = userInputs.nucleus_hold_time;
-                		temp->seedingTimestep = inc;
-                		temp->orderParameterIndex = op_for_nucleus;
-                		newnuclei.push_back(*temp);
-                	}
-                }
             }
         }
-    // Increment the cell iterators
-    ++di;
-	}
+        // Increment the cell iterators
+        ++di;
+    }
 }
 
 // =======================================================================================================
@@ -246,7 +260,7 @@ void MatrixFreePDE<dim,degree>::safetyCheckNewNuclei(std::vector<nucleus<dim> > 
     std::vector<dealii::Point<dim> > q_point_list(num_quad_points);
 
     //Nucleus cycle
-    for (typename std::vector<nucleus<dim> >::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
+    for (typename std::vector<nucleus<dim> >::iterator thisNucleus=newnuclei.begin(); thisNucleus!=newnuclei.end(); ++thisNucleus){
         bool isClose=false;
 
         //Element cycle
@@ -263,17 +277,8 @@ void MatrixFreePDE<dim,degree>::safetyCheckNewNuclei(std::vector<nucleus<dim> > 
                 //Quadrature points cycle
                 for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
                     // Calculate the ellipsoidal distance to the center of the nucleus
-                    double weighted_dist = 0.0;
-                    for (unsigned int i=0; i<dim; i++){
-                        double shortest_edist = thisNuclei->center(i) - q_point_list[q_point](i);
-                        bool periodic_i = (userInputs.BC_list[1].var_BC_type[2*i]==PERIODIC);
-                        if (periodic_i){
-                            double domsize = userInputs.domain_size[i];
-                            shortest_edist = shortest_edist-round(shortest_edist/domsize)*domsize;
-                        }
-                        double temp = shortest_edist/(userInputs.order_parameter_freeze_semiaxes[i]);
-                        weighted_dist += temp*temp;
-                    }
+                    double weighted_dist = weightedDistanceFromNucleusCenter(thisNucleus->center, userInputs.get_nucleus_freeze_semiaxes(thisNucleus->orderParameterIndex), q_point_list[q_point], thisNucleus->orderParameterIndex);
+
                     if (weighted_dist < 1.0){
                     	double sum_op = 0.0;
                     	for (unsigned int num_op = 0; num_op < userInputs.nucleating_variable_indices.size(); num_op++){
@@ -282,7 +287,7 @@ void MatrixFreePDE<dim,degree>::safetyCheckNewNuclei(std::vector<nucleus<dim> > 
                         if (sum_op > 0.1){
                             isClose=true;
                             std::cout << "Attempted nucleation failed due to overlap w/ existing particle!!!!!!"  << std::endl;
-                            conflict_ids.push_back(thisNuclei->index);
+                            conflict_ids.push_back(thisNucleus->index);
                             break;
                         }
                     }
@@ -332,22 +337,12 @@ void MatrixFreePDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim> > 
 				diag_dist /= 2.0*pow(2.0,ti->level());
 
 				for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
-					for (typename std::vector<nucleus<dim> >::iterator thisNuclei=newnuclei.begin(); thisNuclei!=newnuclei.end(); ++thisNuclei){
+					for (typename std::vector<nucleus<dim> >::iterator thisNucleus=newnuclei.begin(); thisNucleus!=newnuclei.end(); ++thisNucleus){
 
-						// Calculate the ellipsoidal distance to the center of the nucleus
-						double weighted_dist = 0.0;
-						for (unsigned int i=0; i<dim; i++){
-							double shortest_edist = thisNuclei->center(i) - q_point_list[q_point](i);
-							bool periodic_i = (userInputs.BC_list[1].var_BC_type[2*i]==PERIODIC);
-							if (periodic_i){
-								double domsize = userInputs.domain_size[i];
-								shortest_edist = shortest_edist-round(shortest_edist/domsize)*domsize;
-							}
-							double temp = shortest_edist/(userInputs.order_parameter_freeze_semiaxes[i]);
-							weighted_dist += temp*temp;
-						}
+                        // Calculate the ellipsoidal distance to the center of the nucleus
+                        double weighted_dist = weightedDistanceFromNucleusCenter(thisNucleus->center, userInputs.get_nucleus_freeze_semiaxes(thisNucleus->orderParameterIndex), q_point_list[q_point], thisNucleus->orderParameterIndex);
 
-						if (weighted_dist < 1.0 || thisNuclei->center.distance(q_point_list[q_point]) < diag_dist){
+						if (weighted_dist < 1.0 || thisNucleus->center.distance(q_point_list[q_point]) < diag_dist){
 							if ((unsigned int)ti->level() < userInputs.max_refinement_level){
 								mark_refine = true;
 								break;
@@ -370,6 +365,61 @@ void MatrixFreePDE<dim,degree>::refineMeshNearNuclei(std::vector<nucleus<dim> > 
 		if (totalDOFs == numDoF_preremesh) break;
 		numDoF_preremesh = totalDOFs;
 	}
+}
+
+// First of two versions of this function to calculated the weighted distance from the center of a nucleus_semiaxes
+// This version is for when the points are given as doubles
+template <int dim, int degree>
+double MatrixFreePDE<dim,degree>::weightedDistanceFromNucleusCenter(
+    const dealii::Point<dim,double> center,
+    const std::vector<double> semiaxes,
+    const dealii::Point<dim,double> q_point_loc,
+    const unsigned int var_index) const
+{
+    double weighted_dist = 0.0;
+    dealii::Tensor<1,dim,double> shortest_edist_tensor = center - q_point_loc;
+    for (unsigned int i=0; i<dim; i++){
+        if (userInputs.BC_list[var_index].var_BC_type[2*i]==PERIODIC){
+            shortest_edist_tensor[i] = shortest_edist_tensor[i]-round(shortest_edist_tensor[i]/userInputs.domain_size[i])*userInputs.domain_size[i];
+        }
+    }
+    shortest_edist_tensor = userInputs.get_nucleus_rotation_matrix(var_index) * shortest_edist_tensor;
+    for (unsigned int i=0; i<dim; i++){
+        shortest_edist_tensor[i] /= semiaxes[i];
+    }
+    weighted_dist = shortest_edist_tensor.norm();
+    return weighted_dist;
+}
+
+// Second of two versions of this function to calculated the weighted distance from the center of a nucleus_semiaxes
+// This version is for when the points are given as vectorized arrays
+template <int dim, int degree>
+dealii::VectorizedArray<double> MatrixFreePDE<dim,degree>::weightedDistanceFromNucleusCenter(
+    const dealii::Point<dim,double> center,
+    const std::vector<double> semiaxes,
+    const dealii::Point<dim,dealii::VectorizedArray<double> > q_point_loc,
+    const unsigned int var_index) const
+{
+    dealii::VectorizedArray<double> weighted_dist = constV(0.0);
+    dealii::Tensor<1,dim,dealii::VectorizedArray<double> > shortest_edist_tensor;
+    for (unsigned int j=0; j<dim; j++){
+        shortest_edist_tensor[j] = center(j) - q_point_loc(j); // Can I do this outside the loop?
+
+        if (userInputs.BC_list[var_index].var_BC_type[2*j]==PERIODIC){
+            for (unsigned k=0; k<q_point_loc(0).n_array_elements;k++){
+                shortest_edist_tensor[j][k] = shortest_edist_tensor[j][k]-round(shortest_edist_tensor[j][k]/userInputs.domain_size[j])*userInputs.domain_size[j];
+            }
+        }
+    }
+    shortest_edist_tensor = userInputs.get_nucleus_rotation_matrix(var_index) * shortest_edist_tensor;
+    for (unsigned int j=0; j<dim; j++){
+        shortest_edist_tensor[j] /= constV(semiaxes[j]);
+    }
+    weighted_dist = shortest_edist_tensor.norm_square();
+    for (unsigned k=0; k<q_point_loc(0).n_array_elements;k++){
+        weighted_dist[k] = sqrt(weighted_dist[k]);
+    }
+    return weighted_dist;
 }
 
 // Template instantiations

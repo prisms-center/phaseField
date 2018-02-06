@@ -9,6 +9,8 @@ inputFileReader::inputFileReader(std::string input_file_name, variableAttributeL
     var_types = sortIndexEntryPairList(variable_attributes.var_type_list,number_of_variables,SCALAR);
     var_names = sortIndexEntryPairList(variable_attributes.var_name_list,number_of_variables,"var");
 
+    var_nucleates = sortIndexEntryPairList(variable_attributes.nucleating_variable_list,number_of_variables,false);
+
     num_pp_vars = variable_attributes.var_name_list_PP.size();
 
     num_constants = get_number_of_entries("parameters.in","set","Model constant");
@@ -21,8 +23,12 @@ inputFileReader::inputFileReader(std::string input_file_name, variableAttributeL
     }
 
     // Read in all of the parameters now
-    declare_parameters(parameter_handler,var_types,num_constants);
+    declare_parameters(parameter_handler,var_types,num_constants,var_nucleates);
+    #if (DEAL_II_VERSION_MAJOR < 9 && DEAL_II_VERSION_MINOR < 5)
     parameter_handler.read_input("parameters.in");
+    #else
+    parameter_handler.parse_input("parameters.in");
+    #endif
     number_of_dimensions = parameter_handler.get_integer("Number of dimensions");
 }
 
@@ -222,7 +228,8 @@ std::vector<std::string> inputFileReader::get_entry_name_ending_list(const std::
 
 void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_handler,
                                             const std::vector<fieldType> var_types,
-                                            const unsigned int num_of_constants) const {
+                                            const unsigned int num_of_constants,
+                                            const std::vector<bool> var_nucleates) const {
 
     // Declare all of the entries
     parameter_handler.declare_entry("Number of dimensions","-1",dealii::Patterns::Integer(),"The number of dimensions for the simulation.");
@@ -255,7 +262,8 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
 
     parameter_handler.declare_entry("Output file name (base)","solution",dealii::Patterns::Anything(),"The name for the output file, before the time step and processor info are added.");
     parameter_handler.declare_entry("Output file type","vtu",dealii::Patterns::Anything(),"The output file type (either vtu or vtk).");
-    parameter_handler.declare_entry("Output condition","EQUAL_SPACING",dealii::Patterns::Anything(),"The time step size for the simulation.");
+    parameter_handler.declare_entry("Output separate files per process","false",dealii::Patterns::Bool(),"Whether to output separate vtu files for each process in a parallel calculation (automatically set to true for vtk files).");
+    parameter_handler.declare_entry("Output condition","EQUAL_SPACING",dealii::Patterns::Anything(),"The spacing type for outputing the solution fields.");
     parameter_handler.declare_entry("List of time steps to output","0",dealii::Patterns::Anything(),"The list of time steps to output, used for the LIST type.");
     parameter_handler.declare_entry("Number of outputs","10",dealii::Patterns::Integer(),"The number of outputs (or number of outputs per decade for the N_PER_DECADE type).");
     parameter_handler.declare_entry("Skip print steps","1",dealii::Patterns::Integer(),"The number of time steps between updates to the screen.");
@@ -268,6 +276,13 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
     parameter_handler.declare_entry("Load parallel file","void",dealii::Patterns::Anything(),"Whether all processors should read from a single file (versus each reading from separate files).");
     parameter_handler.declare_entry("File names","void",dealii::Patterns::Anything(),"The file name to load from for each variable.");
     parameter_handler.declare_entry("Variable names in the files","void",dealii::Patterns::Anything(),"What each variable is named in the file being loaded.");
+
+    // Checkpoint/restart
+    parameter_handler.declare_entry("Load from a checkpoint","false",dealii::Patterns::Bool(),"Whether to load from a checkpoint created during a previous simulation.");
+    parameter_handler.declare_entry("Checkpoint condition","EQUAL_SPACING",dealii::Patterns::Anything(),"The spacing type for saving checkpoints.");
+    parameter_handler.declare_entry("List of time steps to save checkpoints","0",dealii::Patterns::Anything(),"The list of time steps to save checkpoints, used for the LIST type.");
+    parameter_handler.declare_entry("Number of checkpoints","1",dealii::Patterns::Integer(),"The number of checkpoints (or number of checkpoints per decade for the N_PER_DECADE type).");
+
 
     // Declare the boundary condition variables
     for (unsigned int i=0; i<var_types.size(); i++){
@@ -296,13 +311,25 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
     }
 
     // Declare the nucleation parameters
-    parameter_handler.declare_entry("Nucleus semiaxes (x, y ,z)","",dealii::Patterns::List(dealii::Patterns::Double()),"The semiaxes for nuclei placed with the explicit nucleation algorithm).");
-    parameter_handler.declare_entry("Freeze zone semiaxes (x, y ,z)","",dealii::Patterns::List(dealii::Patterns::Double()),"The semiaxes for region where the order parameter is frozen for a period of time after placement.");
-    parameter_handler.declare_entry("Freeze time following nucleation","0.0",dealii::Patterns::Double(),"Duration that the order parameter is frozen after placement.");
-    parameter_handler.declare_entry("Nucleation-free border thickness","0.0",dealii::Patterns::Double(),"The thickness of the nucleation-free region near the domain boundaries (ignored for periodic BCs).");
     parameter_handler.declare_entry("Minimum allowed distance between nuclei","-1",dealii::Patterns::Double(),"The minimum allowed distance between nuclei placed during the same time step.");
     parameter_handler.declare_entry("Order parameter cutoff value","0.01",dealii::Patterns::Double(),"Order parameter cutoff value for nucleation (when the sum of all order parameters is above this value, no nucleation is attempted).");
     parameter_handler.declare_entry("Time steps between nucleation attempts","100",dealii::Patterns::Integer(),"The number of time steps between nucleation attempts.");
+
+    for (unsigned int i=0; i<var_types.size(); i++){
+        if (var_nucleates.at(i)){
+            std::string nucleation_text = "Nucleation parameters: ";
+            nucleation_text.append(var_names.at(i));
+            parameter_handler.enter_subsection(nucleation_text);
+            {
+                parameter_handler.declare_entry("Nucleus semiaxes (x, y, z)","0,0,0",dealii::Patterns::List(dealii::Patterns::Double()),"The semiaxes for nuclei placed with the explicit nucleation algorithm.");
+                parameter_handler.declare_entry("Nucleus rotation in degrees (x, y, z)","0,0,0",dealii::Patterns::List(dealii::Patterns::Double()),"The rotation of the nuclei placed with the explicit nucleation algorithm. The rotations are given with respect to the normal direction using intrinsic Tait-Bryan angles.");
+                parameter_handler.declare_entry("Freeze zone semiaxes (x, y, z)","0,0,0",dealii::Patterns::List(dealii::Patterns::Double()),"The semiaxes for region where the order parameter is frozen for a period of time after placement.");
+                parameter_handler.declare_entry("Freeze time following nucleation","0.0",dealii::Patterns::Double(),"Duration that the order parameter is frozen after placement.");
+                parameter_handler.declare_entry("Nucleation-free border thickness","0.0",dealii::Patterns::Double(),"The thickness of the nucleation-free region near the domain boundaries (ignored for periodic BCs).");
+            }
+            parameter_handler.leave_subsection();
+        }
+    }
 
     // Declare the user-defined constants
     for (unsigned int i=0; i<num_of_constants; i++){

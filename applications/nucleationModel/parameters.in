@@ -90,13 +90,17 @@ set Boundary condition for variable n = PERIODIC
 # Set the nucleation parameters
 # =================================================================================
 
-set Nucleus semiaxes (x, y ,z) = 5, 5, 5
-set Freeze zone semiaxes (x, y ,z) = 7.5, 7.5, 7.5
-set Freeze time following nucleation = 20
-set Nucleation-free border thickness = 10
+set Time steps between nucleation attempts = 30
 set Minimum allowed distance between nuclei = 20.0
 set Order parameter cutoff value = 0.01
-set Time steps between nucleation attempts = 30
+
+subsection Nucleation parameters: n
+    set Nucleus semiaxes (x, y, z) = 5, 5, 5
+    set Freeze zone semiaxes (x, y, z) = 7.5, 7.5, 7.5
+    set Nucleus rotation in degrees (x, y, z) = 0, 0, 0
+    set Freeze time following nucleation = 20
+    set Nucleation-free border thickness = 10
+end
 
 # =================================================================================
 # Set the model constants
@@ -152,3 +156,17 @@ set Number of outputs = 20
 
 # The number of time steps between updates being printed to the screen
 set Skip print steps = 1000
+
+# =================================================================================
+# Set the checkpoint/restart parameters
+# =================================================================================
+# Whether to start this simulation from the checkpoint of a previous simulation
+set Load from a checkpoint = false
+
+# Type of spacing between checkpoints ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
+# or "LIST")
+set Checkpoint condition = EQUAL_SPACING
+
+# Number of times the creates checkpoints (total number for "EQUAL_SPACING"
+# and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
+set Number of checkpoints = 2

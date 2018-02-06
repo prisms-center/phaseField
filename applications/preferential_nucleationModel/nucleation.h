@@ -6,7 +6,7 @@
 // Nucleation probability
 // =================================================================================
 template <int dim, int degree>
-double customPDE<dim,degree>::getNucleationProbability(variableValueContainer variable_value, double dV, dealii::Point<dim> p) const
+double customPDE<dim,degree>::getNucleationProbability(variableValueContainer variable_value, double dV, dealii::Point<dim> p, unsigned int variable_index) const
 {
 	//Supersaturation factor
     double ssf;
@@ -14,11 +14,14 @@ double customPDE<dim,degree>::getNucleationProbability(variableValueContainer va
     if (dim ==3) ssf=(variable_value(0)-calmin)*(variable_value(0)-calmin);
 	// Calculate the nucleation rate
 	double k2;
+    double tau;
 	if ((p[0] > gbll) && (p[0] < gbrl)){
 		k2 = k2_gb;
+        tau=tau_gb;
 	}
 	else {
 		k2 = k2_b;
+        tau=tau_b;
 	}
 
 	double J=k1*exp(-k2/(std::max(ssf,1.0e-6)))*exp(-tau/(this->currentTime));

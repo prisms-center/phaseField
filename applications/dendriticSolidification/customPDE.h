@@ -40,9 +40,9 @@ private:
 	// Model constants specific to this subclass
 	// ================================================================
 
-	double DV = userInputs.get_model_constant_double("DV");
+	double D = userInputs.get_model_constant_double("D");
 	double W0 = userInputs.get_model_constant_double("W0");
-	double deltaV = userInputs.get_model_constant_double("deltaV");
+	double delta = userInputs.get_model_constant_double("delta");
 	double epsilonM = userInputs.get_model_constant_double("epsilonM");
 	double theta0 = userInputs.get_model_constant_double("theta0");
 	double mult = userInputs.get_model_constant_double("mult");

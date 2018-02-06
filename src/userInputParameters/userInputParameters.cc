@@ -87,9 +87,13 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     output_file_type = parameter_handler.get("Output file type");
     output_file_name = parameter_handler.get("Output file name (base)");
 
+    output_vtu_per_process = parameter_handler.get_bool("Output separate files per process");
+    if ((output_file_type == "vtk") && (!output_vtu_per_process)){
+        output_vtu_per_process = true;
+        std::cout << "'Output file type' given as 'vtk' and 'Output separate files per process' given as 'false'. Shared output files are not supported for the vtk output format. Separate files per process will be created." << std::endl;
+    }
+
     // Field variable definitions
-
-
     number_of_variables = _number_of_variables;
 
 
@@ -134,7 +138,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
 
 
     // Use these inputs to create a list of time steps where the code should output, stored in the member
-    outputTimeStepList = setOutputTimeSteps(output_condition, num_outputs,user_given_time_step_list);
+    outputTimeStepList = setTimeStepList(output_condition, num_outputs,user_given_time_step_list);
 
     // Variables for loading in PField ICs
     std::vector<std::string> load_ICs_temp = dealii::Utilities::split_string_list(parameter_handler.get("Load initial conditions"));
@@ -166,21 +170,70 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     load_file_name = dealii::Utilities::split_string_list(parameter_handler.get("File names"));
     load_field_name = dealii::Utilities::split_string_list(parameter_handler.get("Variable names in the files"));
 
+    // Parameters for checkpoint/restart
+    resume_from_checkpoint = parameter_handler.get_bool("Load from a checkpoint");
+    std::string checkpoint_condition = parameter_handler.get("Checkpoint condition");
+    unsigned int num_checkpoints = parameter_handler.get_integer("Number of checkpoints");
+
+    std::vector<int> user_given_checkpoint_time_step_list_temp = dealii::Utilities::string_to_int(dealii::Utilities::split_string_list(parameter_handler.get("List of time steps to save checkpoints")));
+    std::vector<unsigned int> user_given_checkpoint_time_step_list;
+    for (unsigned int i=0; i<user_given_checkpoint_time_step_list_temp.size(); i++) user_given_checkpoint_time_step_list.push_back(user_given_checkpoint_time_step_list_temp[i]);
+
+    checkpointTimeStepList = setTimeStepList(checkpoint_condition, num_checkpoints,user_given_checkpoint_time_step_list);
+
     // Parameters for nucleation
 
-    nucleus_semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Nucleus semiaxes (x, y ,z)")));
-    order_parameter_freeze_semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Freeze zone semiaxes (x, y ,z)")));
-    nucleus_hold_time = parameter_handler.get_double("Freeze time following nucleation");
-    no_nucleation_border_thickness = parameter_handler.get_double("Nucleation-free border thickness");
+    for (unsigned int i=0; i<input_file_reader.var_types.size(); i++){
+        if (input_file_reader.var_nucleates.at(i)){
+            std::string nucleation_text = "Nucleation parameters: ";
+            nucleation_text.append(input_file_reader.var_names.at(i));
+
+            parameter_handler.enter_subsection(nucleation_text);
+            {
+                unsigned int var_index = i;
+                std::vector<double> semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Nucleus semiaxes (x, y, z)")));
+                std::vector<double> ellipsoid_rotation = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Nucleus rotation in degrees (x, y, z)")));
+                std::vector<double> freeze_semiaxes = dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(parameter_handler.get("Freeze zone semiaxes (x, y, z)")));
+                double hold_time = parameter_handler.get_double("Freeze time following nucleation");
+                double no_nucleation_border_thickness = parameter_handler.get_double("Nucleation-free border thickness");
+
+                nucleationParameters<dim> temp(var_index,semiaxes,freeze_semiaxes,ellipsoid_rotation,hold_time,no_nucleation_border_thickness);
+                nucleation_parameters_list.push_back(temp);
+
+                // Validate nucleation input
+                if (semiaxes.size() < dim || semiaxes.size() > 3){
+                    std::cerr << "PRISMS-PF Error: The number of nucleus semiaxes given in the 'parameters.in' file must be at least the number of dimensions and no more than 3." << std::endl;
+                    abort();
+                }
+                if (freeze_semiaxes.size() < dim || freeze_semiaxes.size() > 3){
+                    std::cerr << "PRISMS-PF Error: The number of nucleation freeze zone semiaxes given in the 'parameters.in' file must be at least the number of dimensions and no more than 3." << std::endl;
+                    abort();
+                }
+                if (ellipsoid_rotation.size() != 3){
+                    std::cerr << "PRISMS-PF Error: Exactly three nucleus rotation angles must be given in the 'parameters.in' file." << std::endl;
+                    abort();
+                }
+            }
+            parameter_handler.leave_subsection();
+
+        }
+    }
+    for (unsigned int i=0; i<nucleation_parameters_list.size(); i++){
+        nucleation_parameters_list_index[nucleation_parameters_list.at(i).var_index] = i;
+    }
+
 
     if (parameter_handler.get("Minimum allowed distance between nuclei") != "-1"){
         min_distance_between_nuclei = parameter_handler.get_double("Minimum allowed distance between nuclei");
     }
-    else if (nucleus_semiaxes.size() > 1) {
-        min_distance_between_nuclei = 2.0 * (*(max_element(nucleus_semiaxes.begin(),nucleus_semiaxes.end())));
+    else if (nucleation_parameters_list.size() > 1) {
+        min_distance_between_nuclei = 2.0 * (*(max_element(nucleation_parameters_list[0].semiaxes.begin(),nucleation_parameters_list[0].semiaxes.end())));
     }
     nucleation_order_parameter_cutoff = parameter_handler.get_double("Order parameter cutoff value");
     steps_between_nucleation_attempts = parameter_handler.get_integer("Time steps between nucleation attempts");
+
+
+
 
 
     // Load the boundary condition variables into list of BCs (where each element of the vector is one component of one variable)

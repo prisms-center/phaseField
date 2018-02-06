@@ -13,31 +13,28 @@ double InitialCondition<dim>::value (const Point<dim> &p, const unsigned int com
 	  // Use "if" statements to set the initial condition for each variable
 	  // according to its variable index.
 
-	  // The initial condition is two circles/spheres defined
-	  // by a hyperbolic tangent function. The center of each circle/sphere is
-	  // given by "center" and its radius is given by "rad".
+	  double dx=userInputs.domain_size[0]/((double) userInputs.subdivisions[0])/std::pow(2.0,userInputs.refine_factor);
+	  double c_avg = userInputs.get_model_constant_double("c_avg");
 
-	  double center[1][3] = {{1.0/2.0,1.0/2.0,1.0/2.0}};
-	  double rad[1] = {5.0};
-	  double dist;
-	  scalar_IC = 0;
+	  double r=0.0;
 
 	  // Initial condition for the concentration field
 	  if (index == 0){
-		  double delta = userInputs.get_model_constant_double("delta");
-		  scalar_IC = -delta;
-	  }
-	  // Initial condition for the order parameter field
-	  else if (index == 1) {
-		  // Initial condition for the order parameter field
-		  for (unsigned int i=0; i<1; i++){
-			  dist = 0.0;
-			  for (unsigned int dir = 0; dir < dim; dir++){
-				  dist += (p[dir]-center[i][dir]*userInputs.domain_size[dir])*(p[dir]-center[i][dir]*userInputs.domain_size[dir]);
-			  }
-			  dist = std::sqrt(dist);
+		  if (dim == 2){
+              scalar_IC = c_avg;
+		  }
+		  else if (dim == 3) {
+              scalar_IC = c_avg;
+		  }
 
-			  scalar_IC += (-std::tanh((dist-rad[i])/(0.5)));
+	  }
+	  // Initial condition for the structural order parameter field
+	  else {
+		  if (dim == 2){
+              scalar_IC = 0.0;
+		  }
+		  else if (dim == 3){
+              scalar_IC = 0.0;
 		  }
 	  }
 
@@ -78,7 +75,6 @@ double NonUniformDirichletBC<dim>::value (const dealii::Point<dim> &p, const uns
     // boundary index can be accessed via the variable "direction", which starts
     // at zero and uses the same order as the BC specification in parameters.in
     // (i.e. left = 0, right = 1, bottom = 2, top = 3, front = 4, back = 5).
-
 
     // -------------------------------------------------------------------------
     return scalar_BC;

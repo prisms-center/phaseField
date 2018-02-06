@@ -236,6 +236,20 @@ class MatrixFreePDE:public Subscriptor
   void applyInitialConditions();
 
   // --------------------------------------------------------------------------
+  // Methods for saving and loading checkpoints
+  // --------------------------------------------------------------------------
+
+  void save_checkpoint();
+
+  void load_checkpoint_triangulation();
+  void load_checkpoint_fields();
+  void load_checkpoint_time_info();
+
+  void move_file(const std::string&, const std::string&);
+
+  void verify_checkpoint_file_exists(const std::string filename);
+
+  // --------------------------------------------------------------------------
   // Nucleation methods and variables
   // --------------------------------------------------------------------------
   // Vector of all the nuclei seeded in the problem
@@ -247,9 +261,12 @@ class MatrixFreePDE:public Subscriptor
   void getLocalNucleiList(std::vector<nucleus<dim> > & newnuclei) const;
   void safetyCheckNewNuclei(std::vector<nucleus<dim> > newnuclei, std::vector<unsigned int> & conflict_ids);
   void refineMeshNearNuclei(std::vector<nucleus<dim> > newnuclei);
+  double weightedDistanceFromNucleusCenter(const dealii::Point<dim,double> center, const std::vector<double> semiaxes, const dealii::Point<dim,double> q_point_loc, const unsigned int var_index) const;
+  dealii::VectorizedArray<double> weightedDistanceFromNucleusCenter(const dealii::Point<dim,double> center, const std::vector<double> semiaxes, const dealii::Point<dim,dealii::VectorizedArray<double> > q_point_loc, const unsigned int var_index) const;
+
 
   // Method to obtain the nucleation probability for an element, nontrival case must be implemented in the subsclass
-  virtual double getNucleationProbability(variableValueContainer, double, dealii::Point<dim>)const {return 0.0;};
+  virtual double getNucleationProbability(variableValueContainer, double, dealii::Point<dim>, unsigned int variable_index) const {return 0.0;};
 
   //utility functions
   /*Returns index of given field name if exists, else throw error.*/
@@ -269,7 +286,7 @@ class MatrixFreePDE:public Subscriptor
   //
   unsigned int parabolicFieldIndex, ellipticFieldIndex;
   double currentTime;
-  unsigned int currentIncrement, currentOutput;
+  unsigned int currentIncrement, currentOutput, currentCheckpoint;
 
   /*Timer and logging object*/
   mutable TimerOutput computing_timer;

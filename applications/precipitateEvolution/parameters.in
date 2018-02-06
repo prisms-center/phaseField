@@ -93,8 +93,19 @@ set Number of outputs = 10
 set Skip print steps = 1000
 
 # =================================================================================
-# Set the boundary conditions
+# Set the checkpoint/restart parameters
 # =================================================================================
+# Whether to start this simulation from the checkpoint of a previous simulation
+set Load from a checkpoint = false
+
+# Type of spacing between checkpoints ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
+# or "LIST")
+set Checkpoint condition = EQUAL_SPACING
+
+# Number of times the creates checkpoints (total number for "EQUAL_SPACING"
+# and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
+set Number of checkpoints = 2
+
 # =================================================================================
 # Set the boundary conditions
 # =================================================================================
