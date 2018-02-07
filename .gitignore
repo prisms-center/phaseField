@@ -81,6 +81,7 @@ DoxygenWarningLog.txt
 freeEnergy.txt
 output.txt
 
+restart*
 integratedFields.txt
 
 # Checkpoint/restart files
