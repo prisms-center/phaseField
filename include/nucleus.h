@@ -20,6 +20,7 @@ struct nucleus{
     double seededTime, seedingTime;
     unsigned int seedingTimestep;
     unsigned int orderParameterIndex;
+    double random_number; // Can be used to determine the inital orientation of a nucleus with multiple possible orientations
 };
 
 

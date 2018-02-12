@@ -54,14 +54,12 @@ set Steps between remeshing operations = 5000
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-#set Time step = 3.456e-4
-set Time step = 0.0013824
+set Time step = 0.0015625
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
 
-#set Number of time steps = 390625000
-set Number of time steps = 97656250
+set Number of time steps = 38400000
 
 # =================================================================================
 # Set the elliptic solver parameters
@@ -74,7 +72,7 @@ set Linear solver = SolverCG
 set Use absolute convergence tolerance = true
 
 # The tolerance for convergence (L2 norm of the residual)
-set Solver tolerance value = 2.0e-1
+set Solver tolerance value = 5.0e-3
 
 # The maximum number of solver iterations per time step
 set Maximum allowed solver iterations = 10000
@@ -106,13 +104,13 @@ set Number of checkpoints = 1000
 # =================================================================================
 
 set Time steps between nucleation attempts = 10000
-set Minimum allowed distance between nuclei = 24.0
+set Minimum allowed distance between nuclei = 10.0
 set Order parameter cutoff value = 0.01
 
 subsection Nucleation parameters: n1
     set Nucleus semiaxes (x, y, z) = 2, 3, 10
     set Nucleus rotation in degrees (x, y, z) = 0, 0, -5.3
-    set Freeze zone semiaxes (x, y, z) = 4, 6, 20
+    set Freeze zone semiaxes (x, y, z) = 6, 6, 20
     set Freeze time following nucleation = 100.0
     set Nucleation-free border thickness = 3.0
 end
@@ -120,7 +118,7 @@ end
 subsection Nucleation parameters: n2
     set Nucleus semiaxes (x, y, z) = 2, 3, 10
     set Nucleus rotation in degrees (x, y, z) = 0, 0, -65.3
-    set Freeze zone semiaxes (x, y, z) = 4, 6, 20
+    set Freeze zone semiaxes (x, y, z) = 6, 6, 20
     set Freeze time following nucleation = 100.0
     set Nucleation-free border thickness = 3.0
 end
@@ -128,7 +126,7 @@ end
 subsection Nucleation parameters: n3
     set Nucleus semiaxes (x, y, z) = 2, 3, 10
     set Nucleus rotation in degrees (x, y, z) = 0, 0, 54.7
-    set Freeze zone semiaxes (x, y, z) = 4, 6, 20
+    set Freeze zone semiaxes (x, y, z) = 6, 6, 20
     set Freeze time following nucleation = 100.0
     set Nucleation-free border thickness = 3.0
 end
@@ -213,6 +211,6 @@ set Model constant CIJ_Beta3 = (31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,
 # Nucleation parameters
 set Model constant interface_coeff = 0.6, double
 set Model constant epsil = 1.0e-7, double
-set Model constant k1 = 9.9145e-08, double # l*=1 nm
-set Model constant k2 = 0.011434757353020, double
-set Model constant tau = 8.528433964010309e+04, double # l*=1 nm
+set Model constant k1 = 2.1536e-07 , double # l*=1 nm
+set Model constant k2 = 0.012088, double
+set Model constant tau = 3.7907e+04 , double # l*=1 nm

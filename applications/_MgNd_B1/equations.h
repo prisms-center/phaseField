@@ -322,7 +322,11 @@ void customPDE<dim,degree>::seedNucleus(const dealii::Point<dim, dealii::Vectori
 			if (thisNucleus->seededTime + thisNucleus->seedingTime > this->currentTime){
 
 				// Calculate the weighted distance function to the order parameter freeze boundary (weighted_dist = 1.0 on that boundary)
-				dealii::VectorizedArray<double> weighted_dist = this->weightedDistanceFromNucleusCenter(thisNucleus->center, userInputs.get_nucleus_freeze_semiaxes(thisNucleus->orderParameterIndex), q_point_loc, thisNucleus->orderParameterIndex);
+				dealii::VectorizedArray<double> weighted_dist = this->weightedDistanceFromNucleusCenter(thisNucleus->center,
+                    userInputs.get_nucleus_freeze_semiaxes(thisNucleus->orderParameterIndex),
+                    userInputs.get_nucleus_rotation_matrix(thisNucleus->orderParameterIndex),
+                    q_point_loc,
+                    thisNucleus->orderParameterIndex);
 
 				for (unsigned i=0; i<gamma.n_array_elements;i++){
 					if (weighted_dist[i] <= 1.0){
@@ -331,13 +335,38 @@ void customPDE<dim,degree>::seedNucleus(const dealii::Point<dim, dealii::Vectori
 						// Seed a nucleus if it was added to the list of nuclei this time step
 						if (thisNucleus->seedingTimestep == this->currentIncrement){
 
-							// Find the weighted distance to the outer edge of the nucleus and use it to calculate the order parameter source term
+                            // Set the rotation matrix for this nucleus (two possible per order parameter)
+                            dealii::Tensor<2,dim,double> nucleus_rot_matrix;
+                            if (thisNucleus->random_number < 0.5){
+                                //std::cout << "a" << thisNucleus->orderParameterIndex << std::endl;
+                                nucleus_rot_matrix = userInputs.get_nucleus_rotation_matrix(thisNucleus->orderParameterIndex);
+                            }
+                            else {
+                                //std::cout << "b" << thisNucleus->orderParameterIndex << std::endl;
+                                double degrees_to_rad = std::acos(0.0)/90.0;
+
+                                dealii::Tensor<2,dim,double> Rz;
+                                Rz[0][0] = std::cos(-49.4*degrees_to_rad);
+                                Rz[1][0] = std::sin(-49.4*degrees_to_rad);
+                                Rz[0][1] = -std::sin(-49.4*degrees_to_rad);
+                                Rz[1][1] = std::cos(-49.4*degrees_to_rad);
+
+                                if (dim == 3){
+                                    Rz[2][2] = 1.0;
+                                }
+                                nucleus_rot_matrix = userInputs.get_nucleus_rotation_matrix(thisNucleus->orderParameterIndex)*Rz;
+                            }
+
 							// Find the weighted distance to the outer edge of the nucleus and use it to calculate the order parameter source term (r = 1.0 on that boundary)
 							dealii::Point<dim,double> q_point_loc_element;
 							for (unsigned int j=0; j<dim; j++){
 								q_point_loc_element(j) = q_point_loc(j)[i];
 							}
-							double r = this->weightedDistanceFromNucleusCenter(thisNucleus->center, userInputs.get_nucleus_semiaxes(thisNucleus->orderParameterIndex), q_point_loc_element, thisNucleus->orderParameterIndex);
+							double r = this->weightedDistanceFromNucleusCenter(thisNucleus->center,
+                                userInputs.get_nucleus_semiaxes(thisNucleus->orderParameterIndex),
+                                nucleus_rot_matrix,
+                                q_point_loc_element,
+                                thisNucleus->orderParameterIndex);
 
 							double avg_semiaxis = 0.0;
 							for (unsigned int j=0; j<dim; j++){
