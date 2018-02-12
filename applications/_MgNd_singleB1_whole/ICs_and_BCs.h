@@ -14,10 +14,10 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
 	  // according to its variable index.
 
 	  // Initial condition parameters
-	  double x_denom = (10.0)*(10.0);
-	  double y_denom = (2.0)*(2.0);
+	  double x_denom = (2.0)*(2.0);
+	  double y_denom = (3.0)*(3.0);
 	  double z_denom = (12.0)*(12.0);
-	  double initial_interface_coeff = 0.05;
+	  double initial_interface_coeff = 0.6;
 	  double initial_radius = 1.0;
 	  double c_matrix = 0.004;
       double c_precip = 0.25;
@@ -28,19 +28,89 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
 	  ellipsoid_denoms.push_back(x_denom);
 	  ellipsoid_denoms.push_back(y_denom);
 	  ellipsoid_denoms.push_back(z_denom);
+          
+          dealii::Tensor<1,dim> center;
+          center[0] = userInputs.domain_size[0]/2.0 + 1.234567;
+          center[1] = userInputs.domain_size[1]/2.0 + 1.234567;
 
+          if (dim == 3){
+              center[2] = userInputs.domain_size[2]/2.0 + 1.234567;
+          }
+ /*
+          std::vector<double> center_vec, semiaxes;
+          center_vec.push_back(userInputs.domain_size[0]/2.0 + 1.234567);
+          center_vec.push_back(userInputs.domain_size[1]/2.0 + 1.234567);
+          if (dim == 3){
+              center_vec.push_back(userInputs.domain_size[2]/2.0 + 1.234567);
+          }
+          dealii::Point<dim,double> center(center_vec);
+   */
+          std::vector<double> semiaxes;
+          semiaxes.push_back(2.0);
+          semiaxes.push_back(3.0);
+          if (dim == 3){
+              semiaxes.push_back(2.0);
+          }
 
-	  for (unsigned int i=0; i<dim; i++){
-		  r += (p(i)-userInputs.domain_size[i]/2.0 + (double)i * 1.234567)*(p(i)-userInputs.domain_size[i]/2.0 + (double)i * 1.234567)/ellipsoid_denoms[i];
-	  }
-	  r = sqrt(r);
+          std::vector<double> ellipsoid_rotation;
+          ellipsoid_rotation.push_back(0.0);
+          ellipsoid_rotation.push_back(0.0);
+          ellipsoid_rotation.push_back(65.3);
 
+          double degrees_to_rad = std::acos(0.0)/90.0;
+
+          dealii::Tensor<2,dim,double> Rx, Ry, Rz;
+
+          Rx[0][0] = 1.0;
+          Rx[1][1] = std::cos(ellipsoid_rotation.at(0)*degrees_to_rad);
+
+          Ry[0][0] = std::cos(ellipsoid_rotation.at(1)*degrees_to_rad);
+          Ry[1][1] = 1.0;
+
+          Rz[0][0] = std::cos(ellipsoid_rotation.at(2)*degrees_to_rad);
+          Rz[1][0] = std::sin(ellipsoid_rotation.at(2)*degrees_to_rad);
+          Rz[0][1] = -std::sin(ellipsoid_rotation.at(2)*degrees_to_rad);
+          Rz[1][1] = std::cos(ellipsoid_rotation.at(2)*degrees_to_rad);
+
+          if (dim == 3){
+              Rx[1][2] = - std::sin(ellipsoid_rotation.at(0)*degrees_to_rad);
+              Rx[2][1] = std::sin(ellipsoid_rotation.at(0)*degrees_to_rad);
+              Rx[2][2] = std::cos(ellipsoid_rotation.at(0)*degrees_to_rad);
+
+              Ry[0][2] = std::sin(ellipsoid_rotation.at(1)*degrees_to_rad);
+              Ry[2][0] = -std::sin(ellipsoid_rotation.at(1)*degrees_to_rad);
+              Ry[2][2] = std::cos(ellipsoid_rotation.at(1)*degrees_to_rad);
+
+              Rz[2][2] = 1.0;
+          }
+          dealii::Tensor<2,dim,double> rotation_matrix;
+          rotation_matrix = Rx*Ry*Rz; // Note: these are tensor multiplications
+
+          // Calculate the distance function for a rotated ellipsoid
+          double weighted_dist = 0.0;
+          dealii::Tensor<1,dim,double> shortest_edist_tensor = center - p;
+          for (unsigned int i=0; i<dim; i++){
+              if (userInputs.BC_list[index].var_BC_type[2*i]==PERIODIC){
+                  shortest_edist_tensor[i] = shortest_edist_tensor[i]-round(shortest_edist_tensor[i]/userInputs.domain_size[i])*userInputs.domain_size[i];
+              }
+          }
+          shortest_edist_tensor = rotation_matrix * shortest_edist_tensor;
+          for (unsigned int i=0; i<dim; i++){
+             shortest_edist_tensor[i] /= semiaxes[i];
+          }
+          weighted_dist = shortest_edist_tensor.norm();          
+
+          double avg_semiaxis = 0.0;
+          for (unsigned int j=0; j<dim; j++){
+              avg_semiaxis += semiaxes[j];
+          }
+          avg_semiaxis /= dim;
 
 	  if (index==0){
-		  scalar_IC = 0.5*(c_precip-c_matrix)*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff))) + c_matrix;
+	      scalar_IC = 0.5*(c_precip-c_matrix)*(1.0-std::tanh(avg_semiaxis*(weighted_dist-1.0)/initial_interface_coeff)) + c_matrix;	  
 	  }
 	  else if (index==1){
-		  scalar_IC = 0.5*(1.0-std::tanh((r-initial_radius)/(initial_interface_coeff)));
+               scalar_IC = 0.5*(1.0-std::tanh(avg_semiaxis*(weighted_dist-1.0)/initial_interface_coeff));	
 	  }
 
 	  // --------------------------------------------------------------------------

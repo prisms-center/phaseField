@@ -11,8 +11,8 @@ set Number of dimensions = 2
 # Set the length of the domain in all three dimensions
 # =================================================================================
 # Each axes spans from zero to the specified length
-set Domain size X = 1000.0
-set Domain size Y = 1000.0
+set Domain size X = 1600.0
+set Domain size Y = 1600.0
 set Domain size Z = 400.0
 
 # =================================================================================
@@ -20,11 +20,11 @@ set Domain size Z = 400.0
 # =================================================================================
 # The number of elements in each direction is 2^(refineFactor) * subdivisions
 # For optimal performance, use refineFactor primarily to determine the element size
-set Subdivisions X = 9
-set Subdivisions Y = 9
-set Subdivisions Z = 9
+set Subdivisions X = 3
+set Subdivisions Y = 3
+set Subdivisions Z = 3
 
-set Refine factor = 9
+set Refine factor = 8
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
 set Element degree = 2
@@ -53,11 +53,11 @@ set Steps between remeshing operations = 5000
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 0.0001171875
+set Time step = 0.0013824
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 22500000 #5000000 #100000000 #200000
+set Number of time steps = 200000000 #5000000 #100000000 #200000
 
 # =================================================================================
 # Set the elliptic solver parameters
@@ -134,17 +134,20 @@ set Boundary condition for variable u, z component = PERIODIC
 set Model constant McV = 1.0, double
 
 # Mn1V  the Allen-Cahn mobility
-set Model constant Mn1V = 2.0, double
+set Model constant Mn1V = 8.0, double
 
 # Kn1 the gradient energy coefficient
 #set Model constant Kn1 = ((0.010281818181818,0,0),(0,0.010281818181818,0),(0,0,0.010281818181818)), tensor # l* = 1 nm
 #set Model constant Kn1 = ((0.005141,0,0),(0,0.005141,0),(0,0,0.005141)), tensor # l* = 1 nm
-set Model constant Kn1 = ((0.003427,0,0),(0,0.003427,0),(0,0,0.003427)), tensor # l* = 1 nm
+#set Model constant Kn1 = ((0.003427,0,0),(0,0.003427,0),(0,0,0.003427)), tensor # l* = 1 nm
+set Model constant Kn1 = ((0.0341,0,0),(0,0.0341,0),(0,0,0.0341)), tensor # l* = 1 nm
+
 
 # W, the energy barrier coefficient
 #set Model constant W = 0.398112, double # l* = 1 nm
 #set Model constant W = 0.7962, double # l* = 1 nm
-set Model constant W = 1.1943, double # l* = 1 nm
+#set Model constant W = 1.1943, double # l* = 1 nm
+set Model constant W = 0.33, double # l* = 1 nm
 
 # n_dependent_stiffness
 set Model constant n_dependent_stiffness = false, bool

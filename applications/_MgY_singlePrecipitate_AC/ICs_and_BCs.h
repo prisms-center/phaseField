@@ -19,8 +19,8 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
 	  double z_denom = (24.0)*(24.0);
 	  double initial_interface_coeff = (0.04);
 	  double initial_radius = 1.0;
-	  double c_matrix = 0.0013;
-      double c_precip = 0.125;
+	  double c_matrix = 0.00129;
+      double c_precip = 0.1206;
 
 	  //set result equal to the structural order parameter initial condition
 	  double r=0.0;

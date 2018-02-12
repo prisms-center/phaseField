@@ -36,7 +36,9 @@ set Element degree = 2
 set Mesh adaptivity = true
 
 # Set the maximum and minimum level of refinement
-set Max refinement level = 12 # Run 028 thickness
+set Max refinement level = 10 # Run 026 thickness
+#set Max refinement level = 11 # Run 027 thickness
+#set Max refinement level = 12 # Run 028 thickness
 set Min refinement level = 0
 
 # Set the fields used to determine the refinement using their index.
@@ -53,11 +55,13 @@ set Steps between remeshing operations = 4000
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 1.125e-5 # run 028 thickness
+set Time step = 1.8e-4 # Run 026 thickness
+#set Time step = 4.5e-5 # Run 027 thickness
+#set Time step = 1.125e-5 # run 028 thickness
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 4000000
+set Number of time steps = 1000000
 
 # =================================================================================
 # Set the elliptic solver parameters
@@ -94,7 +98,7 @@ set Skip print steps = 1000
 # Set the checkpoint/restart parameters
 # =================================================================================
 
-set Load from a checkpoint = true
+set Load from a checkpoint = false
 set Checkpoint condition = EQUAL_SPACING
 set Number of checkpoints = 100
 
@@ -120,10 +124,14 @@ set Model constant McV = 20.0, double
 set Model constant Mn1V = 600.0, double # 
 
 # Kn1 the gradient energy coefficient
-set Model constant Kn1 = ((0.0046375,0,0),(0,9.8225e-5,0),(0,0,0.0039225)), tensor # run 028 thickness
+set Model constant Kn1 = ((0.01855,0,0),(0,0.0003929,0),(0,0,0.01569)), tensor # run 026 thickness
+#set Model constant Kn1 = ((0.009275,0,0),(0,1.9645e-4,0),(0,0,0.007845)), tensor # run 027 thickness
+#set Model constant Kn1 = ((0.0046375,0,0),(0,9.8225e-5,0),(0,0,0.0039225)), tensor # run 028 thickness
 
 # W, the energy barrier coefficient
-set Model constant W = 0.8822, double # run 028 thickness
+set Model constant W = 0.2208, double # 026 thickness
+#set Model constant W = 0.4416, double # 027 thickness
+#set Model constant W = 0.8822, double # run 028 thickness
 
 # n_dependent_stiffness
 set Model constant n_dependent_stiffness = false, bool
