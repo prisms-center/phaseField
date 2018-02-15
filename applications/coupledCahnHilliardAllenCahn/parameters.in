@@ -28,40 +28,41 @@ set Subdivisions Z = 1
 set Refine factor = 5
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
-set Element degree = 1
+set Element degree = 2
 
 # =================================================================================
 # Set the adaptive mesh refinement parameters
 # =================================================================================
 # Set the flag determining if adaptive meshing is activated
-set Mesh adaptivity = true
+set Mesh adaptivity = false
 
 # Set the maximum and minimum level of refinement
 # When adaptive meshing is enabled, the refine factor set in the block above is
 # only used to generate the first pass of the mesh as the initial conditions are
 # applied. It should be set somewhere between the max and min levels below.
-set Max refinement level = 7
+set Max refinement level = 6
 set Min refinement level = 3
 
 # Set the fields used to determine the refinement using their index.
 set Refinement criteria fields = n
 
 # Set the maximum and minimum value of the fields where the mesh should be refined
-set Refinement window max = 0.99
-set Refinement window min = 0.01
+set Refinement window max = 0.999
+set Refinement window min = 0.001
 
 # Set the number of time steps between remeshing operations
-set Steps between remeshing operations = 5000
+set Steps between remeshing operations = 1000
 
 # =================================================================================
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 1.0e-4
-
+#set Time step = 0.625e-4
+set Time step = 2.5e-4
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 10000 #15000
+#set Number of time steps = 25000 #15000
+set Simulation end time = 10.0
 
 # =================================================================================
 # Set the boundary conditions
