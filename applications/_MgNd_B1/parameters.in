@@ -54,12 +54,12 @@ set Steps between remeshing operations = 5000
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 0.0015625
+set Time step = 0.00125
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
 
-set Number of time steps = 38400000
+set Number of time steps = 48000000 #48000000
 
 # =================================================================================
 # Set the elliptic solver parameters
@@ -86,7 +86,7 @@ set Output condition =  EQUAL_SPACING
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of outputs = 1000
+set Number of outputs = 1000 #60
 
 # The number of time steps between updates being printed to the screen
 set Skip print steps = 1000
@@ -211,6 +211,6 @@ set Model constant CIJ_Beta3 = (31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,
 # Nucleation parameters
 set Model constant interface_coeff = 0.6, double
 set Model constant epsil = 1.0e-7, double
-set Model constant k1 = 2.1536e-07 , double # l*=1 nm
+set Model constant k1 = 7.1787e-8 , double # l*=1 nm
 set Model constant k2 = 0.012088, double
 set Model constant tau = 3.7907e+04 , double # l*=1 nm

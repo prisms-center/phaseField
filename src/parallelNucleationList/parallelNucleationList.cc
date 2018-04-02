@@ -116,7 +116,7 @@ void parallelNucleationList<dim>::sendUpdate (int procno) const
         MPI_Send(&s_seedingTimestep[0], currnonucs, MPI_UNSIGNED, procno, 10, MPI_COMM_WORLD);
         MPI_Send(&s_orderParameterIndex[0], currnonucs, MPI_UNSIGNED, procno, 11, MPI_COMM_WORLD);
 
-        MPI_Send(&s_random_number[0], currnonucs, MPI_UNSIGNED, procno, 12, MPI_COMM_WORLD);
+        MPI_Send(&s_random_number[0], currnonucs, MPI_DOUBLE, procno, 12, MPI_COMM_WORLD);
     }
     //END OF MPI SECTION
 }
@@ -173,7 +173,7 @@ void parallelNucleationList<dim>::receiveUpdate (int procno)
         MPI_Recv(&r_seedingTimestep[0], recvnonucs, MPI_UNSIGNED, procno, 10, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         MPI_Recv(&r_orderParameterIndex[0], recvnonucs, MPI_UNSIGNED, procno, 11, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
-        MPI_Recv(&r_random_number[0], recvnonucs, MPI_UNSIGNED, procno, 12, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Recv(&r_random_number[0], recvnonucs, MPI_DOUBLE, procno, 12, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
         //Loop to store info in vectors onto the nuclei structure
         for (int jnuc=0; jnuc<=recvnonucs-1; jnuc++){
@@ -285,7 +285,7 @@ void parallelNucleationList<dim>::broadcastUpdate (int broadcastProc, int thisPr
         MPI_Bcast(&r_seedingTimestep[0], currnonucs, MPI_UNSIGNED, broadcastProc, MPI_COMM_WORLD);
         MPI_Bcast(&r_orderParameterIndex[0], currnonucs, MPI_UNSIGNED, broadcastProc, MPI_COMM_WORLD);
 
-        MPI_Bcast(&r_random_number[0], currnonucs, MPI_UNSIGNED, broadcastProc, MPI_COMM_WORLD);
+        MPI_Bcast(&r_random_number[0], currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
 
         newnuclei.clear();
 
