@@ -11,6 +11,85 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
     Timer time;
     char buffer[200];
 
+    // START NEW SECTION -------------------------------------------------------
+    /*
+    // First, update the non-explicit variables
+    bool nonlinear_it_converged = false;
+    while (!nonlinear_it_converged){
+
+        solutionSet_old =
+
+        compute_nonexplicit_RHS()
+
+        for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
+            currentFieldIndex = fieldIndex; // Used in computeLHS()
+            if (fields[fieldIndex].pdetype==ELLIPTIC){
+
+                //apply Dirichlet BC's
+                // Loops through all DoF to which ones have Dirichlet BCs applied, replace the ones that do with the Dirichlet value
+                // This clears the residual where we want to apply Dirichlet BCs, otherwise the solver sees a positive residual
+                for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[fieldIndex]->begin(); it!=valuesDirichletSet[fieldIndex]->end(); ++it){
+                    if (residualSet[fieldIndex]->in_local_range(it->first)){
+                        (*residualSet[fieldIndex])(it->first) = 0.0;
+                    }
+                }
+
+                //solver controls
+                double tol_value;
+                if (userInputs.abs_tol == true){
+                    tol_value = userInputs.solver_tolerance;
+                }
+                else {
+                    tol_value = userInputs.solver_tolerance*residualSet[fieldIndex]->l2_norm();
+                }
+
+                SolverControl solver_control(userInputs.max_solver_iterations, tol_value);
+
+                // Currently the only allowed solver is SolverCG, the SolverType input variable is a dummy
+                SolverCG<vectorType> solver(solver_control);
+
+                //solve
+                try{
+                    if (fields[fieldIndex].type == SCALAR){
+                        dU_scalar=0.0;
+                        solver.solve(*this, dU_scalar, *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
+                    }
+                    else {
+                        dU_vector=0.0;
+                        solver.solve(*this, dU_vector, *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
+                    }
+                }
+                catch (...) {
+                    pcout << "\nWarning: implicit solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing solverTolerance.\n";
+                }
+                if (fields[fieldIndex].type == SCALAR){
+                    *solutionSet[fieldIndex]+=dU_scalar;
+                }
+                else {
+                    *solutionSet[fieldIndex]+=dU_vector;
+                }
+
+                if (currentIncrement%userInputs.skip_print_steps==0){
+                    double dU_norm;
+                    if (fields[fieldIndex].type == SCALAR){
+                        dU_norm = dU_scalar.l2_norm();
+                    }
+                    else {
+                        dU_norm = dU_vector.l2_norm();
+                    }
+                    sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
+                    fields[fieldIndex].name.c_str(),			\
+                    residualSet[fieldIndex]->l2_norm(),			\
+                    solver_control.last_value(),				\
+                    solver_control.last_step(), solver_control.tolerance(), solutionSet[fieldIndex]->l2_norm(), dU_norm);
+                    pcout<<buffer;
+                }
+            }
+        }
+    }
+    */
+    // END NEW SECTION  -------------------------------------------------------
+
     //compute residual vectors
     computeRHS();
 
