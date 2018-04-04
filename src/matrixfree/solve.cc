@@ -12,6 +12,12 @@ void MatrixFreePDE<dim,degree>::solve(){
     //time dependent BVP
     if (isTimeDependentBVP){
 
+        //time stepping
+        pcout << "\nTime stepping parameters: timeStep: " << userInputs.dtValue << "  timeFinal: " << userInputs.finalTime << "  timeIncrements: " << userInputs.totalIncrements << "\n";
+
+        // Do an initial solve to set the elliptic fields
+        solveIncrement(true);
+
         //output initial conditions for time dependent BVP
         if (userInputs.outputTimeStepList[currentOutput] == currentIncrement) {
 
@@ -31,9 +37,6 @@ void MatrixFreePDE<dim,degree>::solve(){
 
         // Increase the current increment from 0 to 1 now that the initial conditions have been output
         currentIncrement++;
-        
-        //time stepping
-        pcout << "\nTime stepping parameters: timeStep: " << userInputs.dtValue << "  timeFinal: " << userInputs.finalTime << "  timeIncrements: " << userInputs.totalIncrements << "\n";
 
         // Cycle up to the proper output and checkpoint counters
         while (userInputs.outputTimeStepList.size() > 0 && userInputs.outputTimeStepList[currentOutput] < currentIncrement){
@@ -43,7 +46,7 @@ void MatrixFreePDE<dim,degree>::solve(){
             currentCheckpoint++;
         }
 
-
+        // This is the main time-stepping loop
         for (; currentIncrement<=userInputs.totalIncrements; ++currentIncrement){
             //increment current time
             currentTime+=userInputs.dtValue;
@@ -58,7 +61,7 @@ void MatrixFreePDE<dim,degree>::solve(){
             updateNucleiList();
 
             //solve time increment
-            solveIncrement();
+            solveIncrement(false);
 
             // Output results to file (on the proper increments)
             if (userInputs.outputTimeStepList[currentOutput] == currentIncrement) {
@@ -83,7 +86,7 @@ void MatrixFreePDE<dim,degree>::solve(){
     //time independent BVP
     else{
         //solve
-        solveIncrement();
+        solveIncrement(false);
 
         //output results to file
         outputResults();

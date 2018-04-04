@@ -4,16 +4,62 @@
 
 //solve each time increment
 template <int dim, int degree>
-void MatrixFreePDE<dim,degree>::solveIncrement(){
+void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
 
     //log time
     computing_timer.enter_section("matrixFreePDE: solveIncrements");
     Timer time;
     char buffer[200];
 
-    // START NEW SECTION -------------------------------------------------------
+    // Get the RHS of the equations
+    // Ideally this would be just for the explicit fields, but for now this is all of them
+    computeRHS();
 
-    // First, update the non-explicit variables
+    //solve for each field
+    for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
+        currentFieldIndex = fieldIndex; // Used in computeLHS()
+
+        // Add Neumann BC terms to the residual vector for the current field, if appropriate
+        // Currently commented out because it isn't working yet
+        //applyNeumannBCs();
+
+        //Parabolic (first order derivatives in time) fields
+        if (fields[fieldIndex].pdetype==PARABOLIC && !skip_time_dependent){
+
+            // Explicit-time step each DOF
+            // Takes advantage of knowledge that the length of solutionSet and residualSet is an integer multiple of the length of invM for vector variables
+            unsigned int invM_size = invM.local_size();
+            for (unsigned int dof=0; dof<solutionSet[fieldIndex]->local_size(); ++dof){
+                solutionSet[fieldIndex]->local_element(dof)=			\
+                invM.local_element(dof%invM_size)*residualSet[fieldIndex]->local_element(dof);
+            }
+
+            // Set the Dirichelet values (hanging node constraints don't need to be distributed every time step, only at output)
+            constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+            solutionSet[fieldIndex]->update_ghost_values();
+
+            // Print update to screen
+            if (currentIncrement%userInputs.skip_print_steps==0){
+                sprintf(buffer, "field '%2s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
+                fields[fieldIndex].name.c_str(),				\
+                solutionSet[fieldIndex]->l2_norm(),			\
+                residualSet[fieldIndex]->l2_norm());
+                pcout<<buffer;
+            }
+        }
+
+        //check if solution is nan
+        if (!numbers::is_finite(solutionSet[fieldIndex]->l2_norm())){
+            sprintf(buffer, "ERROR: field '%s' solution is NAN. exiting.\n\n",
+            fields[fieldIndex].name.c_str());
+            pcout<<buffer;
+            exit(-1);
+        }
+    }
+
+
+    // Now, update the non-explicit variables
+    // For the time being, this is just the elliptic equations, but implicit parabolic and auxilary equations should also be here
     double nonlinear_convergence_tolerance = 1.0e-4; // For testing purposes, this is hardcoded
     bool nonlinear_it_converged = false;
     unsigned int nonlinear_it_index = 0;
@@ -112,60 +158,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
         nonlinear_it_index++;
     }
 
-    // END NEW SECTION  -------------------------------------------------------
 
-    //compute residual vectors
-    // Ideally this would be just for the explicit fields, but for now this is all of them
-    computeRHS();
-
-    //solve for each field
-    for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-        currentFieldIndex = fieldIndex; // Used in computeLHS()
-
-        // Add Neumann BC terms to the residual vector for the current field, if appropriate
-        // Currently commented out because it isn't working yet
-        //applyNeumannBCs();
-
-        //Parabolic (first order derivatives in time) fields
-        if (fields[fieldIndex].pdetype==PARABOLIC){
-
-            // Explicit-time step each DOF
-            // Takes advantage of knowledge that the length of solutionSet and residualSet is an integer multiple of the length of invM for vector variables
-            unsigned int invM_size = invM.local_size();
-            for (unsigned int dof=0; dof<solutionSet[fieldIndex]->local_size(); ++dof){
-                solutionSet[fieldIndex]->local_element(dof)=			\
-                invM.local_element(dof%invM_size)*residualSet[fieldIndex]->local_element(dof);
-            }
-
-            // Set the Dirichelet values (hanging node constraints don't need to be distributed every time step, only at output)
-            constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
-            solutionSet[fieldIndex]->update_ghost_values();
-
-            // Print update to screen
-            if (currentIncrement%userInputs.skip_print_steps==0){
-                sprintf(buffer, "field '%2s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
-                fields[fieldIndex].name.c_str(),				\
-                solutionSet[fieldIndex]->l2_norm(),			\
-                residualSet[fieldIndex]->l2_norm());
-                pcout<<buffer;
-            }
-        }
-
-        //Hyperbolic (second order derivatives in time) fields and general
-        //non-linear PDE types not yet implemented
-        else if (fields[fieldIndex].pdetype!=ELLIPTIC) {
-            pcout << "matrixFreePDE.h: unknown field pdetype\n";
-            exit(-1);
-        }
-
-        //check if solution is nan
-        if (!numbers::is_finite(solutionSet[fieldIndex]->l2_norm())){
-            sprintf(buffer, "ERROR: field '%s' solution is NAN. exiting.\n\n",
-            fields[fieldIndex].name.c_str());
-            pcout<<buffer;
-            exit(-1);
-        }
-    }
     if (currentIncrement%userInputs.skip_print_steps==0){
         pcout << "wall time: " << time.wall_time() << "s\n";
     }

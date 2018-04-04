@@ -111,7 +111,7 @@ class MatrixFreePDE:public Subscriptor
    * this method is called only once. This method solves for all the fields in a staggered manner (one after another)
    * and also invokes the corresponding solvers: Explicit solver for Parabolic problems, Implicit (matrix-free) solver for Elliptic problems.
    */
-  virtual void solveIncrement ();
+  virtual void solveIncrement (bool skip_time_dependent);
   /* Method to write solution fields to vtu and pvtu (parallel) files.
   *
   * This method can be enabled/disabled by setting the flag writeOutput to true/false. Also,
