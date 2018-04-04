@@ -12,23 +12,26 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
     char buffer[200];
 
     // START NEW SECTION -------------------------------------------------------
-    /*
+
     // First, update the non-explicit variables
     double nonlinear_convergence_tolerance = 1.0e-4; // For testing purposes, this is hardcoded
     bool nonlinear_it_converged = false;
     unsigned int nonlinear_it_index = 0;
+
     while (!nonlinear_it_converged){
+        nonlinear_it_converged = true; // Set to true here and will be set to false if any variable isn't converged
 
-
-
-        compute_nonexplicit_RHS()
+        // Update residualSet for the non-explicitly updated variables
+        //compute_nonexplicit_RHS()
+        // Ideally, I'd just do this for the non-explicit variables, but for now I'll do all of them
+        // this is a little redundent, but hopefully not too terrible
+        computeRHS();
 
         for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
             currentFieldIndex = fieldIndex; // Used in computeLHS()
 
-            dealii::parallel::distributed::Vector<double> solutionSet_old = *solutionSet[fieldIndex];
-
             if (fields[fieldIndex].pdetype==ELLIPTIC){
+                dealii::parallel::distributed::Vector<double> solution_diff = *solutionSet[fieldIndex];
 
                 //apply Dirichlet BC's
                 // Loops through all DoF to which ones have Dirichlet BCs applied, replace the ones that do with the Dirichlet value
@@ -89,17 +92,30 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
                     solver_control.last_step(), solver_control.tolerance(), solutionSet[fieldIndex]->l2_norm(), dU_norm);
                     pcout<<buffer;
                 }
+
+                // Check to see if this individual variable has converged
+                double diff;
+                if (fields[fieldIndex].type == SCALAR){
+                    diff = dU_scalar.linfty_norm();
+                }
+                else {
+                    diff = dU_vector.linfty_norm();
+                }
+                pcout << "Max difference between nonlinear iterations: " << diff << " " << nonlinear_it_index << " " << currentIncrement << std::endl;
+
+                if (diff > nonlinear_convergence_tolerance){
+                    nonlinear_it_converged = false;
+                }
             }
         }
 
-        pcout << "Max difference between nonlinear iterations: " << (solutionSet - solutionSet_old).linfty_norm() << " " << nonlinear_it_index << " " << currentIncrement << std::endl;
-        if ((solutionSet - solutionSet_old).linfty_norm() < nonlinear_convergence_tolerance)
         nonlinear_it_index++;
     }
-    */
+
     // END NEW SECTION  -------------------------------------------------------
 
     //compute residual vectors
+    // Ideally this would be just for the explicit fields, but for now this is all of them
     computeRHS();
 
     //solve for each field
@@ -134,76 +150,10 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
                 pcout<<buffer;
             }
         }
-        //Elliptic (time-independent) fields
-        else if (fields[fieldIndex].pdetype==ELLIPTIC){
-
-            //implicit solve
-            //apply Dirichlet BC's
-            // Loops through all DoF to which ones have Dirichlet BCs applied, replace the ones that do with the Dirichlet value
-            // Is this needed? Why are we applying BCs to the residualSet?
-            // This clears the residual where we want to apply Dirichlet BCs, otherwise the solver sees a positive residual
-            for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[fieldIndex]->begin(); it!=valuesDirichletSet[fieldIndex]->end(); ++it){
-                if (residualSet[fieldIndex]->in_local_range(it->first)){
-                    (*residualSet[fieldIndex])(it->first) = 0.0; //it->second; //*jacobianDiagonal(it->first);
-                }
-            }
-
-            //solver controls
-            double tol_value;
-            if (userInputs.abs_tol == true){
-                tol_value = userInputs.solver_tolerance;
-            }
-            else {
-                tol_value = userInputs.solver_tolerance*residualSet[fieldIndex]->l2_norm();
-            }
-
-            SolverControl solver_control(userInputs.max_solver_iterations, tol_value);
-
-            // Currently the only allowed solver is SolverCG, the SolverType input variable is a dummy
-            SolverCG<vectorType> solver(solver_control);
-
-            //solve
-            try{
-                if (fields[fieldIndex].type == SCALAR){
-                    dU_scalar=0.0;
-                    solver.solve(*this, dU_scalar, *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
-                }
-                else {
-                    dU_vector=0.0;
-                    solver.solve(*this, dU_vector, *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
-                }
-            }
-            catch (...) {
-                pcout << "\nWarning: implicit solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing solverTolerance.\n";
-            }
-            if (fields[fieldIndex].type == SCALAR){
-                *solutionSet[fieldIndex]+=dU_scalar;
-            }
-            else {
-                *solutionSet[fieldIndex]+=dU_vector;
-            }
-
-            if (currentIncrement%userInputs.skip_print_steps==0){
-                double dU_norm;
-                if (fields[fieldIndex].type == SCALAR){
-                    dU_norm = dU_scalar.l2_norm();
-                }
-                else {
-                    dU_norm = dU_vector.l2_norm();
-                }
-                sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
-                fields[fieldIndex].name.c_str(),			\
-                residualSet[fieldIndex]->l2_norm(),			\
-                solver_control.last_value(),				\
-                solver_control.last_step(), solver_control.tolerance(), solutionSet[fieldIndex]->l2_norm(), dU_norm);
-                pcout<<buffer;
-            }
-
-        }
 
         //Hyperbolic (second order derivatives in time) fields and general
         //non-linear PDE types not yet implemented
-        else{
+        else if (fields[fieldIndex].pdetype!=ELLIPTIC) {
             pcout << "matrixFreePDE.h: unknown field pdetype\n";
             exit(-1);
         }
