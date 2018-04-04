@@ -1,4 +1,17 @@
 # Version 2.0.2pre
+Ongoing updates to v2.0.2, planned to be released in August 2018.
+
+Changes to the example applications:
+- New example functions for the flagship precipitate evolution applications.
+
+Added functionality:
+
+Bug fixes:
+
+Other changes:
+
+
+# Version 2.0.2pre
 Minor ongoing updates to v2.0.1, planned to be released in early to mid 2018.
 
 Added functionality:

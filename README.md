@@ -11,7 +11,7 @@ PRISMS-PF
 
 <B>Version information:</B>
 
-This version of the code, v2.0.2 (pre), contains some ongoing minor pre-release updates to v2.0.1. The formal release of v2.0.2 is planned for early to mid 2018.
+This version of the code, v2.1 (pre), contains some somewhat substantial changes from v2.0.2. The expected release is in August 2018.
 
 <B>What is PRISMS-PF?</B>
 
