@@ -15,6 +15,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
     /*
     // First, update the non-explicit variables
     bool nonlinear_it_converged = false;
+    unsigned int nonlinear_it_index = 0;
     while (!nonlinear_it_converged){
 
 
@@ -89,6 +90,10 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
                 }
             }
         }
+
+        pcout << "Max difference between nonlinear iterations: " << (solutionSet - solutionSet_old).linfty_norm() << " " << nonlinear_it_index << " " << currentIncrement << std::endl;
+        if ()
+        nonlinear_it_index++;
     }
     */
     // END NEW SECTION  -------------------------------------------------------
