@@ -17,12 +17,15 @@ void MatrixFreePDE<dim,degree>::solveIncrement(){
     bool nonlinear_it_converged = false;
     while (!nonlinear_it_converged){
 
-        solutionSet_old =
+
 
         compute_nonexplicit_RHS()
 
         for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
             currentFieldIndex = fieldIndex; // Used in computeLHS()
+
+            dealii::parallel::distributed::Vector<double> solutionSet_old = *solutionSet[fieldIndex];
+
             if (fields[fieldIndex].pdetype==ELLIPTIC){
 
                 //apply Dirichlet BC's
