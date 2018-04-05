@@ -34,13 +34,15 @@ void  MatrixFreePDE<dim,degree>::getLHS(const MatrixFree<dim,double> &data,
 				 const vectorType &src,
 				 const std::pair<unsigned int,unsigned int> &cell_range) const{
 
-    variableContainer<dim,degree,dealii::VectorizedArray<double> > variable_list(data,userInputs.varInfoListLHS);
+    variableContainer<dim,degree,dealii::VectorizedArray<double> > variable_list(data,userInputs.varInfoListLHS,userInputs.varChangeInfoListLHS);
 
 	//loop over cells
 	for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
 
 		// Initialize, read DOFs, and set evaulation flags for each variable
-        variable_list.reinit_and_eval_LHS(src,solutionSet,cell,currentFieldIndex);
+        //variable_list.reinit_and_eval_LHS(src,solutionSet,cell,currentFieldIndex);
+        variable_list.reinit_and_eval(solutionSet,cell);
+        variable_list.reinit_and_eval_change_in_solution(src,cell,currentFieldIndex);
 
 		unsigned int num_q_points = variable_list.get_num_q_points();
 
@@ -56,7 +58,7 @@ void  MatrixFreePDE<dim,degree>::getLHS(const MatrixFree<dim,double> &data,
 		}
 
         // Integrate the residuals and distribute from local to global
-        variable_list.integrate_and_distribute_LHS(dst,currentFieldIndex);
+        variable_list.integrate_and_distribute_change_in_solution_LHS(dst,currentFieldIndex);
 
 	}
 }

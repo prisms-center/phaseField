@@ -96,6 +96,7 @@ public:
 	// Variables needed to calculate the LHS
 	unsigned int num_var_LHS;
 	std::vector<variable_info> varInfoListLHS;
+    std::vector<variable_info> varChangeInfoListLHS;
 
 	// Variables for loading in initial conditions
 	std::vector<bool> load_ICs;

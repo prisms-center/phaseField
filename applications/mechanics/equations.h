@@ -18,9 +18,15 @@ void variableAttributeLoader::loadVariableAttributes(){
 	set_need_gradient_residual_term	(0,true);
 
 	set_need_value_LHS				(0,false);
-	set_need_gradient_LHS			(0,true);
+	set_need_gradient_LHS			(0,false);
 	set_need_hessian_LHS			(0,false);
-	set_need_value_residual_term_LHS	(0,false);
+
+
+    set_need_value_change_LHS		(0,false);
+	set_need_gradient_change_LHS	(0,true);
+	set_need_hessian_change_LHS		(0,false);
+
+    set_need_value_residual_term_LHS	(0,false);
 	set_need_gradient_residual_term_LHS	(0,true);
 
 }
@@ -87,14 +93,14 @@ void customPDE<dim,degree>::residualLHS(variableContainer<dim,degree,dealii::Vec
 
 
 //u
-vectorgradType ux = variable_list.get_vector_gradient(0);
+vectorgradType Dux = variable_list.get_change_in_vector_gradient(0);
 vectorgradType ruxV;
 
 //compute strain tensor
 dealii::VectorizedArray<double> E[dim][dim], S[dim][dim];
 for (unsigned int i=0; i<dim; i++){
 	for (unsigned int j=0; j<dim; j++){
-		E[i][j]= constV(0.5)*(ux[i][j]+ux[j][i]);
+		E[i][j]= constV(0.5)*(Dux[i][j]+Dux[j][i]);
 	}
 }
 
@@ -108,6 +114,6 @@ for (unsigned int i=0; i<dim; i++){
 	}
 }
 
-variable_list.set_vector_gradient_residual_term(0,ruxV);
+variable_list.set_vector_gradient_residual_term_LHS(0,ruxV);
 
 }

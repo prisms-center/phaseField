@@ -25,6 +25,10 @@ void userInputParameters<dim>::loadVariableAttributes(variableAttributeLoader va
 	std::vector<bool> value_residual_LHS = sortIndexEntryPairList(variable_attributes.need_value_residual_list_LHS,number_of_variables,false);
 	std::vector<bool> gradient_residual_LHS = sortIndexEntryPairList(variable_attributes.need_gradient_residual_list_LHS,number_of_variables,false);
 
+    std::vector<bool> need_value_change_LHS = sortIndexEntryPairList(variable_attributes.need_value_change_list_LHS,number_of_variables,false);
+	std::vector<bool> need_gradient_change_LHS = sortIndexEntryPairList(variable_attributes.need_gradient_change_list_LHS,number_of_variables,false);
+	std::vector<bool> need_hessian_change_LHS = sortIndexEntryPairList(variable_attributes.need_hessian_change_list_LHS,number_of_variables,false);
+
     std::vector<bool> need_value_pp = sortIndexEntryPairList(variable_attributes.need_value_list_PP,number_of_variables,true);
 	std::vector<bool> need_gradient_pp = sortIndexEntryPairList(variable_attributes.need_gradient_list_PP,number_of_variables,true);
 	std::vector<bool> need_hessian_pp = sortIndexEntryPairList(variable_attributes.need_hessian_list_PP,number_of_variables,true);
@@ -142,6 +146,47 @@ void userInputParameters<dim>::loadVariableAttributes(variableAttributeLoader va
         }
 
         varInfoListLHS.push_back(varInfo);
+	}
+
+    varChangeInfoListLHS.reserve(num_var_LHS);
+	scalar_var_index = 0;
+	vector_var_index = 0;
+	for (unsigned int i=0; i<number_of_variables; i++){
+		variable_info varInfo;
+
+        varInfo.need_value = need_value_change_LHS[i];
+        varInfo.need_gradient = need_gradient_change_LHS[i];
+        varInfo.need_hessian = need_hessian_change_LHS[i];
+
+        // FOR NOW, TAKING THESE FROM THE VARIABLE ITSELF!!
+        varInfo.value_residual = value_residual_LHS[i];
+        varInfo.gradient_residual = gradient_residual_LHS[i];
+
+        varInfo.global_var_index = i;
+
+		if (varInfo.need_value or varInfo.need_gradient or varInfo.need_hessian){
+            varInfo.var_needed = true;
+		}
+        else {
+            varInfo.var_needed = false;
+		}
+
+        if (var_type[i] == SCALAR){
+            varInfo.is_scalar = true;
+            if (varInfo.var_needed){
+                varInfo.scalar_or_vector_index = scalar_var_index;
+                scalar_var_index++;
+            }
+        }
+        else {
+            varInfo.is_scalar = false;
+            if (varInfo.var_needed){
+                varInfo.scalar_or_vector_index = vector_var_index;
+                vector_var_index++;
+            }
+        }
+
+        varChangeInfoListLHS.push_back(varInfo);
 	}
 
     // Load variable information for postprocessing

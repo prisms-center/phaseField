@@ -30,7 +30,8 @@ void variableAttributeLoader::loadPostProcessorVariableAttributes(){}
 //main
 int main (int argc, char **argv)
 {
-    dealii::Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,dealii::numbers::invalid_unsigned_int);
+    //dealii::Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,dealii::numbers::invalid_unsigned_int);
+    dealii::Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,1);
     try
     {
         dealii::deallog.depth_console(0);

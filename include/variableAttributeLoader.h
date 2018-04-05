@@ -21,19 +21,27 @@ public:
 	void set_variable_name(unsigned int index, std::string name);
 	void set_variable_type(unsigned int index, fieldType);
 	void set_variable_equation_type(unsigned int index, PDEType);
+
 	void set_need_value(unsigned int index, bool);
 	void set_need_gradient(unsigned int index, bool);
 	void set_need_hessian(unsigned int index, bool);
 	void set_need_value_residual_term(unsigned int index, bool);
 	void set_need_gradient_residual_term(unsigned int index, bool);
+
 	void set_need_value_LHS(unsigned int index, bool);
 	void set_need_gradient_LHS(unsigned int index, bool);
 	void set_need_hessian_LHS(unsigned int index, bool);
 	void set_need_value_residual_term_LHS(unsigned int index, bool);
 	void set_need_gradient_residual_term_LHS(unsigned int index, bool);
+
+    void set_need_value_change_LHS(unsigned int index, bool);
+	void set_need_gradient_change_LHS(unsigned int index, bool);
+	void set_need_hessian_change_LHS(unsigned int index, bool);
+
     void set_need_value_PP(unsigned int index, bool);
 	void set_need_gradient_PP(unsigned int index, bool);
 	void set_need_hessian_PP(unsigned int index, bool);
+
     void set_need_value_nucleation(unsigned int index, bool);
     void set_allowed_to_nucleate(unsigned int index, bool);
 
@@ -54,6 +62,10 @@ public:
     std::vector<std::pair<unsigned int, bool> > need_hessian_list_LHS;
     std::vector<std::pair<unsigned int, bool> > need_value_residual_list_LHS;
     std::vector<std::pair<unsigned int, bool> > need_gradient_residual_list_LHS;
+
+    std::vector<std::pair<unsigned int, bool> > need_value_change_list_LHS;
+    std::vector<std::pair<unsigned int, bool> > need_gradient_change_list_LHS;
+    std::vector<std::pair<unsigned int, bool> > need_hessian_change_list_LHS;
 
     std::vector<std::pair<unsigned int, bool> > need_value_list_PP;
     std::vector<std::pair<unsigned int, bool> > need_gradient_list_PP;

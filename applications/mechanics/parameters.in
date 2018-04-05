@@ -37,7 +37,7 @@ set Linear solver = SolverCG
 
 # The flag that determines whether the tolerance for solver convergence should
 # be an absolute tolerance or a relative tolerance
-set Use absolute convergence tolerance = false
+set Use absolute convergence tolerance = true
 
 # The tolerance for convergence (L2 norm of the residual)
 set Solver tolerance value = 1.0e-10

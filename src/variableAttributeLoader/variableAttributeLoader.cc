@@ -112,6 +112,24 @@ void variableAttributeLoader::set_need_gradient_residual_term_LHS(unsigned int i
     var_pair.second = flag;
     need_gradient_residual_list_LHS.push_back(var_pair);
 }
+void variableAttributeLoader::set_need_value_change_LHS(unsigned int index, bool flag){
+    std::pair<unsigned int, bool> var_pair;
+    var_pair.first = index;
+    var_pair.second = flag;
+    need_value_change_list_LHS.push_back(var_pair);
+}
+void variableAttributeLoader::set_need_gradient_change_LHS(unsigned int index, bool flag){
+    std::pair<unsigned int, bool> var_pair;
+    var_pair.first = index;
+    var_pair.second = flag;
+    need_gradient_change_list_LHS.push_back(var_pair);
+}
+void variableAttributeLoader::set_need_hessian_change_LHS(unsigned int index, bool flag){
+    std::pair<unsigned int, bool> var_pair;
+    var_pair.first = index;
+    var_pair.second = flag;
+    need_hessian_change_list_LHS.push_back(var_pair);
+}
 void variableAttributeLoader::set_need_value_PP(unsigned int index, bool flag){
     std::pair<unsigned int, bool> var_pair;
     var_pair.first = index;

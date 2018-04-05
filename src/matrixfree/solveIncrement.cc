@@ -57,107 +57,108 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
         }
     }
 
-
     // Now, update the non-explicit variables
     // For the time being, this is just the elliptic equations, but implicit parabolic and auxilary equations should also be here
-    double nonlinear_convergence_tolerance = 1.0e-4; // For testing purposes, this is hardcoded
-    bool nonlinear_it_converged = false;
-    unsigned int nonlinear_it_index = 0;
+    if (isEllipticBVP){
+        double nonlinear_convergence_tolerance = 1.0e-4; // For testing purposes, this is hardcoded
+        unsigned int max_nonlinear_it = 10;
+        bool nonlinear_it_converged = false;
+        unsigned int nonlinear_it_index = 0;
 
-    while (!nonlinear_it_converged){
-        nonlinear_it_converged = true; // Set to true here and will be set to false if any variable isn't converged
+        while (!nonlinear_it_converged){
+            nonlinear_it_converged = true; // Set to true here and will be set to false if any variable isn't converged
 
-        // Update residualSet for the non-explicitly updated variables
-        //compute_nonexplicit_RHS()
-        // Ideally, I'd just do this for the non-explicit variables, but for now I'll do all of them
-        // this is a little redundent, but hopefully not too terrible
-        computeRHS();
+            // Update residualSet for the non-explicitly updated variables
+            //compute_nonexplicit_RHS()
+            // Ideally, I'd just do this for the non-explicit variables, but for now I'll do all of them
+            // this is a little redundant, but hopefully not too terrible
+            computeRHS();
 
-        for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-            currentFieldIndex = fieldIndex; // Used in computeLHS()
+            for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
+                currentFieldIndex = fieldIndex; // Used in computeLHS()
 
-            if (fields[fieldIndex].pdetype==ELLIPTIC){
-                dealii::parallel::distributed::Vector<double> solution_diff = *solutionSet[fieldIndex];
+                if (fields[fieldIndex].pdetype==ELLIPTIC){
+                    dealii::parallel::distributed::Vector<double> solution_diff = *solutionSet[fieldIndex];
 
-                //apply Dirichlet BC's
-                // Loops through all DoF to which ones have Dirichlet BCs applied, replace the ones that do with the Dirichlet value
-                // This clears the residual where we want to apply Dirichlet BCs, otherwise the solver sees a positive residual
-                for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[fieldIndex]->begin(); it!=valuesDirichletSet[fieldIndex]->end(); ++it){
-                    if (residualSet[fieldIndex]->in_local_range(it->first)){
-                        (*residualSet[fieldIndex])(it->first) = 0.0;
+                    //apply Dirichlet BC's
+                    // Loops through all DoF to which ones have Dirichlet BCs applied, replace the ones that do with the Dirichlet value
+                    // This clears the residual where we want to apply Dirichlet BCs, otherwise the solver sees a positive residual
+                    for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[fieldIndex]->begin(); it!=valuesDirichletSet[fieldIndex]->end(); ++it){
+                        if (residualSet[fieldIndex]->in_local_range(it->first)){
+                            (*residualSet[fieldIndex])(it->first) = 0.0;
+                        }
                     }
-                }
 
-                //solver controls
-                double tol_value;
-                if (userInputs.abs_tol == true){
-                    tol_value = userInputs.solver_tolerance;
-                }
-                else {
-                    tol_value = userInputs.solver_tolerance*residualSet[fieldIndex]->l2_norm();
-                }
-
-                SolverControl solver_control(userInputs.max_solver_iterations, tol_value);
-
-                // Currently the only allowed solver is SolverCG, the SolverType input variable is a dummy
-                SolverCG<vectorType> solver(solver_control);
-
-                //solve
-                try{
-                    if (fields[fieldIndex].type == SCALAR){
-                        dU_scalar=0.0;
-                        solver.solve(*this, dU_scalar, *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
+                    //solver controls
+                    double tol_value;
+                    if (userInputs.abs_tol == true){
+                        tol_value = userInputs.solver_tolerance;
                     }
                     else {
-                        dU_vector=0.0;
-                        solver.solve(*this, dU_vector, *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
+                        tol_value = userInputs.solver_tolerance*residualSet[fieldIndex]->l2_norm();
                     }
-                }
-                catch (...) {
-                    pcout << "\nWarning: implicit solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing solverTolerance.\n";
-                }
-                if (fields[fieldIndex].type == SCALAR){
-                    *solutionSet[fieldIndex]+=dU_scalar;
-                }
-                else {
-                    *solutionSet[fieldIndex]+=dU_vector;
-                }
 
-                if (currentIncrement%userInputs.skip_print_steps==0){
-                    double dU_norm;
+                    SolverControl solver_control(userInputs.max_solver_iterations, tol_value);
+
+                    // Currently the only allowed solver is SolverCG, the SolverType input variable is a dummy
+                    SolverCG<vectorType> solver(solver_control);
+
+                    //solve
+                    try{
+                        if (fields[fieldIndex].type == SCALAR){
+                            dU_scalar=0.0;
+                            solver.solve(*this, dU_scalar, *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
+                        }
+                        else {
+                            dU_vector=0.0;
+                            solver.solve(*this, dU_vector, *residualSet[fieldIndex], IdentityMatrix(solutionSet[fieldIndex]->size()));
+                        }
+                    }
+                    catch (...) {
+                        pcout << "\nWarning: implicit solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing solverTolerance.\n";
+                    }
                     if (fields[fieldIndex].type == SCALAR){
-                        dU_norm = dU_scalar.l2_norm();
+                        *solutionSet[fieldIndex]+=dU_scalar;
                     }
                     else {
-                        dU_norm = dU_vector.l2_norm();
+                        *solutionSet[fieldIndex]+=dU_vector;
                     }
-                    sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
-                    fields[fieldIndex].name.c_str(),			\
-                    residualSet[fieldIndex]->l2_norm(),			\
-                    solver_control.last_value(),				\
-                    solver_control.last_step(), solver_control.tolerance(), solutionSet[fieldIndex]->l2_norm(), dU_norm);
-                    pcout<<buffer;
-                }
 
-                // Check to see if this individual variable has converged
-                double diff;
-                if (fields[fieldIndex].type == SCALAR){
-                    diff = dU_scalar.linfty_norm();
-                }
-                else {
-                    diff = dU_vector.linfty_norm();
-                }
-                pcout << "Max difference between nonlinear iterations: " << diff << " " << nonlinear_it_index << " " << currentIncrement << std::endl;
+                    if (currentIncrement%userInputs.skip_print_steps==0){
+                        double dU_norm;
+                        if (fields[fieldIndex].type == SCALAR){
+                            dU_norm = dU_scalar.l2_norm();
+                        }
+                        else {
+                            dU_norm = dU_vector.l2_norm();
+                        }
+                        sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
+                        fields[fieldIndex].name.c_str(),			\
+                        residualSet[fieldIndex]->l2_norm(),			\
+                        solver_control.last_value(),				\
+                        solver_control.last_step(), solver_control.tolerance(), solutionSet[fieldIndex]->l2_norm(), dU_norm);
+                        pcout<<buffer;
+                    }
 
-                if (diff > nonlinear_convergence_tolerance){
-                    nonlinear_it_converged = false;
+                    // Check to see if this individual variable has converged
+                    double diff;
+                    if (fields[fieldIndex].type == SCALAR){
+                        diff = dU_scalar.linfty_norm();
+                    }
+                    else {
+                        diff = dU_vector.linfty_norm();
+                    }
+                    pcout << "Max difference between nonlinear iterations: " << diff << " " << nonlinear_it_index << " " << currentIncrement << std::endl;
+
+                    if (diff > nonlinear_convergence_tolerance && nonlinear_it_index < max_nonlinear_it){
+                        nonlinear_it_converged = false;
+                    }
                 }
             }
+
+            nonlinear_it_index++;
         }
-
-        nonlinear_it_index++;
     }
-
 
     if (currentIncrement%userInputs.skip_print_steps==0){
         pcout << "wall time: " << time.wall_time() << "s\n";
