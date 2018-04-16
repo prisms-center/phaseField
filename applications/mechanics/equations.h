@@ -29,6 +29,8 @@ void variableAttributeLoader::loadVariableAttributes(){
     set_need_value_residual_term_LHS	(0,false);
 	set_need_gradient_residual_term_LHS	(0,true);
 
+    set_equations_are_nonlinear(false);
+
 }
 
 

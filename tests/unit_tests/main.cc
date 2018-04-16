@@ -126,6 +126,24 @@ int main(int argc, char **argv)
   // pass = setRigidBodyModeConstraints_tester_three.test_setRigidBodyModeConstraints(rigidBodyModeComponents, userInputs);
   // tests_passed += pass;
 
+  // Unit tests for the "LinearSolverParameters" class
+  total_tests++;
+  unitTest<2,double> LinearSolverParameters_tester;
+  pass = LinearSolverParameters_tester.test_LinearSolverParameters();
+  tests_passed += pass;
+
+  // Unit tests for the "NonlinearSolverParameters" class
+  total_tests++;
+  unitTest<2,double> NonlinearSolverParameters_tester;
+  pass = NonlinearSolverParameters_tester.test_NonlinearSolverParameters();
+  tests_passed += pass;
+
+  // Unit tests for the "parseDependences" method in the "UserInputParameters" class
+  total_tests++;
+  unitTest<2,double> parseDependences_tester;
+  pass = parseDependences_tester.test_parseDependencies();
+  tests_passed += pass;
+
   // Print out results
   char buffer[100];
   sprintf(buffer, "\n\nNumber of tests passed: %u/%u \n\n", tests_passed, total_tests);

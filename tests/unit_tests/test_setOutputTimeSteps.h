@@ -11,9 +11,11 @@ bool unitTest<dim,T>::test_setOutputTimeSteps(){
     inputFileReader input_file_reader("parameters_test.in",variable_attributes);
     std::vector<fieldType> var_types;
     var_types.push_back(SCALAR);
+    std::vector<PDEType> var_eq_types;
+    var_eq_types.push_back(ELLIPTIC);
 	std::vector<bool> var_nucleates;
 	var_nucleates.push_back(false);
-    input_file_reader.declare_parameters(parameter_handler,var_types,0,var_nucleates);
+    input_file_reader.declare_parameters(parameter_handler,var_types,var_eq_types,0,var_nucleates);
 	#if (DEAL_II_VERSION_MAJOR < 9 && DEAL_II_VERSION_MINOR < 5)
     parameter_handler.read_input("parameters_test.in");
     #else

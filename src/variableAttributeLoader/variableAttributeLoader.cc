@@ -3,10 +3,14 @@
 
 // Constructor
 variableAttributeLoader::variableAttributeLoader(){
+    equations_are_nonlinear = false;
+
     setting_primary_field_attributes = true;
     loadVariableAttributes();
     setting_primary_field_attributes = false;
     loadPostProcessorVariableAttributes();
+
+
 }
 
 // Methods to set the various variable attributes
@@ -165,4 +169,35 @@ void variableAttributeLoader::set_output_integral(unsigned int index, bool flag)
     var_pair.first = index;
     var_pair.second = flag;
     output_integral_list.push_back(var_pair);
+}
+void variableAttributeLoader::set_equations_are_nonlinear(bool flag){
+    equations_are_nonlinear = flag;
+}
+
+void variableAttributeLoader::set_dependencies_value_RHS(unsigned int index, std::string dependencies){
+    std::pair<unsigned int, std::string> var_pair;
+    var_pair.first = index;
+    var_pair.second = dependencies;
+    var_eq_dependencies_value_RHS.push_back(var_pair);
+}
+
+void variableAttributeLoader::set_dependencies_gradient_RHS(unsigned int index, std::string dependencies){
+    std::pair<unsigned int, std::string> var_pair;
+    var_pair.first = index;
+    var_pair.second = dependencies;
+    var_eq_dependencies_gradient_RHS.push_back(var_pair);
+}
+
+void variableAttributeLoader::set_dependencies_value_LHS(unsigned int index, std::string dependencies){
+    std::pair<unsigned int, std::string> var_pair;
+    var_pair.first = index;
+    var_pair.second = dependencies;
+    var_eq_dependencies_value_LHS.push_back(var_pair);
+}
+
+void variableAttributeLoader::set_dependencies_gradient_LHS(unsigned int index, std::string dependencies){
+    std::pair<unsigned int, std::string> var_pair;
+    var_pair.first = index;
+    var_pair.second = dependencies;
+    var_eq_dependencies_gradient_LHS.push_back(var_pair);
 }

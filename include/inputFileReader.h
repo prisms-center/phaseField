@@ -25,7 +25,7 @@ public:
 
 	// Method to declare the parameters to be read from an input file
 	void declare_parameters(dealii::ParameterHandler & parameter_handler,
-							const std::vector<fieldType> var_types, const unsigned int num_of_constants, const std::vector<bool>) const;
+							const std::vector<fieldType> var_types, const std::vector<PDEType> var_eq_types, const unsigned int num_of_constants, const std::vector<bool>) const;
 
 	// Method to check if a line has the desired contents and if so, extract it
 	bool parse_line(std::string line, const std::string keyword, const std:: string entry_name, std::string & out_string, bool expect_equals_sign) const;
@@ -34,6 +34,7 @@ public:
 	// Variables
 	dealii::ParameterHandler parameter_handler;
 	std::vector<fieldType> var_types;
+    std::vector<PDEType> var_eq_types;
 	unsigned int num_pp_vars;
 	unsigned int num_constants;
 	std::vector<std::string> model_constant_names;

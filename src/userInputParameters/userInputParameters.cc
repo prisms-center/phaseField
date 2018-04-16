@@ -1,12 +1,10 @@
 // Methods for the userInputParameters class
 #include "../../include/userInputParameters.h"
-//#include "../../include/sortIndexEntryPairList.h"
 
 template <int dim>
 userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reader, dealii::ParameterHandler & parameter_handler, variableAttributeLoader variable_attributes){
-    loadVariableAttributes(variable_attributes);
 
-    unsigned int _number_of_variables = input_file_reader.var_types.size();
+    loadVariableAttributes(variable_attributes);
 
     // Load the inputs into the class member variables
 
@@ -47,7 +45,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     std::vector<std::string> refine_criterion_fields_str = dealii::Utilities::split_string_list(parameter_handler.get("Refinement criteria fields"));
     for (unsigned int ref_field=0; ref_field<refine_criterion_fields_str.size(); ref_field++){
         bool field_found = false;
-        for (unsigned int i=0; i<_number_of_variables; i++ ){
+        for (unsigned int i=0; i<number_of_variables; i++ ){
             if (boost::iequals(refine_criterion_fields_str[ref_field], variable_attributes.var_name_list[i].second)){
                 refine_criterion_fields.push_back(variable_attributes.var_name_list[i].first);
                 field_found = true;
@@ -70,11 +68,100 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     int totalIncrements_temp = parameter_handler.get_integer("Number of time steps");
     finalTime = parameter_handler.get_double("Simulation end time");
 
-    // Elliptic solver parameters
-    solver_type = parameter_handler.get("Linear solver");
-    abs_tol = parameter_handler.get_bool("Use absolute convergence tolerance");
-    solver_tolerance = parameter_handler.get_double("Solver tolerance value");
-    max_solver_iterations = parameter_handler.get_integer("Maximum allowed solver iterations");
+    // Linear solver parameters (I should turn this into subsections for each variable)
+    for (unsigned int i=0; i<number_of_variables; i++){
+        if (input_file_reader.var_eq_types.at(i) == ELLIPTIC){
+            std::string subsection_text = "Linear solver parameters: ";
+            subsection_text.append(input_file_reader.var_names.at(i));
+
+            parameter_handler.enter_subsection(subsection_text);
+            {
+                // Set the tolerance type
+                SolverToleranceType temp_type;
+                std::string type_string = parameter_handler.get("Tolerance type");
+                if (boost::iequals(type_string,"ABSOLUTE_RESIDUAL")){
+                    temp_type = ABSOLUTE_RESIDUAL;
+                }
+                else if (boost::iequals(type_string,"RELATIVE_RESIDUAL_CHANGE")){
+                    temp_type = RELATIVE_RESIDUAL_CHANGE;
+                }
+                else if (boost::iequals(type_string,"ABSOLUTE_SOLUTION_CHANGE")){
+                    temp_type = ABSOLUTE_SOLUTION_CHANGE;
+                    std::cerr << "PRISMS-PF Error: Linear solver tolerance type " << type_string << " is not currently implemented, please use either ABSOLUTE_RESIDUAL or RELATIVE_RESIDUAL_CHANGE" << std::endl;
+                    abort();
+                }
+                else {
+                    std::cerr << "PRISMS-PF Error: Linear solver tolerance type " << type_string << " is not one of the allowed values (ABSOLUTE_RESIDUAL, RELATIVE_RESIDUAL_CHANGE, ABSOLUTE_SOLUTION_CHANGE)" << std::endl;
+                    abort();
+                }
+
+                // Set the tolerance value
+                double temp_value = parameter_handler.get_double("Tolerance value");
+
+                // Set the maximum number of iterations
+                unsigned int temp_max_iterations = parameter_handler.get_integer("Maximum linear solver iterations");
+
+                linear_solver_parameters.loadParameters(i,temp_type,temp_value,temp_max_iterations);
+            }
+            parameter_handler.leave_subsection();
+        }
+    }
+
+
+    // Non-linear solver parameters
+    std::vector<bool> var_nonlinear;
+    // for (unsigned int i=0; i<input_file_reader.var_types.size(); i++){
+    //     var_nonlinear.push_back(false);
+    // }
+    var_nonlinear.push_back(false);
+    var_nonlinear.push_back(true);
+
+
+    nonlinear_solver_parameters.setMaxIterations(parameter_handler.get_integer("Maximum nonlinear solver iterations"));
+
+    for (unsigned int i=0; i<var_nonlinear.size(); i++){
+        if (var_nonlinear.at(i)){
+            std::string subsection_text = "Nonlinear solver parameters: ";
+            subsection_text.append(input_file_reader.var_names.at(i));
+
+            parameter_handler.enter_subsection(subsection_text);
+            {
+                // Set the tolerance type
+                SolverToleranceType temp_type;
+                std::string type_string = parameter_handler.get("Tolerance type");
+                if (boost::iequals(type_string,"ABSOLUTE_RESIDUAL")){
+                    temp_type = ABSOLUTE_RESIDUAL;
+                }
+                else if (boost::iequals(type_string,"RELATIVE_RESIDUAL_CHANGE")){
+                    temp_type = RELATIVE_RESIDUAL_CHANGE;
+                }
+                else if (boost::iequals(type_string,"ABSOLUTE_SOLUTION_CHANGE")){
+                    temp_type = ABSOLUTE_SOLUTION_CHANGE;
+                }
+                else {
+                    std::cerr << "PRISMS-PF Error: Nonlinear solver tolerance type " << type_string << " is not one of the allowed values (ABSOLUTE_RESIDUAL, RELATIVE_RESIDUAL_CHANGE, ABSOLUTE_SOLUTION_CHANGE)" << std::endl;
+                    abort();
+                }
+
+                // Set the tolerance value
+                double temp_value = parameter_handler.get_double("Tolerance value");
+
+                // Set the backtrace damping flag
+                bool temp_backtrace_damping = parameter_handler.get_bool("Use backtrace line-search damping");
+
+                // Set the default damping coefficient
+                double temp_damping_coefficient = parameter_handler.get_double("Constant damping value");
+
+                nonlinear_solver_parameters.loadParameters(i,temp_type,temp_value,temp_backtrace_damping,temp_damping_coefficient);
+            }
+            parameter_handler.leave_subsection();
+        }
+    }
+
+    // Set the max number of nonlinear iterations
+    if (!variable_attributes.equations_are_nonlinear){
+        nonlinear_solver_parameters.setMaxIterations(0);
+    }
 
     // Output parameters
     std::string output_condition = parameter_handler.get("Output condition");
@@ -94,8 +181,6 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     }
 
     // Field variable definitions
-    number_of_variables = _number_of_variables;
-
 
     // If all of the variables are ELLIPTIC, then totalIncrements should be 1 and finalTime should be 0
     bool only_elliptic_pdes = true;
@@ -231,10 +316,6 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     }
     nucleation_order_parameter_cutoff = parameter_handler.get_double("Order parameter cutoff value");
     steps_between_nucleation_attempts = parameter_handler.get_integer("Time steps between nucleation attempts");
-
-
-
-
 
     // Load the boundary condition variables into list of BCs (where each element of the vector is one component of one variable)
     std::vector<std::string> list_of_BCs;

@@ -89,10 +89,16 @@ void variableAttributeLoader::loadVariableAttributes(){
 	set_need_gradient_residual_term	(4,true);
 
 	set_need_value_LHS				(4,false);
-	set_need_gradient_LHS			(4,true);
+	set_need_gradient_LHS			(4,false);
 	set_need_hessian_LHS			(4,false);
 	set_need_value_residual_term_LHS	(4,false);
 	set_need_gradient_residual_term_LHS	(4,true);
+
+    set_need_value_change_LHS		(4,false);
+	set_need_gradient_change_LHS	(4,true);
+	set_need_hessian_change_LHS		(4,false);
+
+    set_equations_are_nonlinear(false);
 
 }
 
@@ -110,23 +116,23 @@ template <int dim, int degree>
 void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-// The concentration and its derivatives 
+// The concentration and its derivatives
 scalarvalueType c = variable_list.get_scalar_value(0);
 scalargradType cx = variable_list.get_scalar_gradient(0);
 
-// The first order parameter and its derivatives 
+// The first order parameter and its derivatives
 scalarvalueType n1 = variable_list.get_scalar_value(1);
 scalargradType n1x = variable_list.get_scalar_gradient(1);
 
-// The second order parameter and its derivatives 
+// The second order parameter and its derivatives
 scalarvalueType n2 = variable_list.get_scalar_value(2);
 scalargradType n2x = variable_list.get_scalar_gradient(2);
 
-// The third order parameter and its derivatives 
+// The third order parameter and its derivatives
 scalarvalueType n3 = variable_list.get_scalar_value(3);
 scalargradType n3x = variable_list.get_scalar_gradient(3);
 
-// The derivative of the displacement vector 
+// The derivative of the displacement vector
 vectorgradType ux = variable_list.get_vector_gradient(4);
 vectorgradType ruxV;
 
@@ -367,7 +373,7 @@ scalarvalueType n2 = variable_list.get_scalar_value(2);
 scalarvalueType n3 = variable_list.get_scalar_value(3);
 
 //u
-vectorgradType ux = variable_list.get_vector_gradient(4);
+vectorgradType Dux = variable_list.get_change_in_vector_gradient(4);
 vectorgradType ruxV;
 
 // Interpolation functions
@@ -378,7 +384,7 @@ scalarvalueType h3V = (10.0*n3*n3*n3-15.0*n3*n3*n3*n3+6.0*n3*n3*n3*n3*n3);
 
 // Take advantage of E being simply 0.5*(ux + transpose(ux)) and use the dealii "symmetrize" function
 dealii::Tensor<2, dim, dealii::VectorizedArray<double> > E;
-E = symmetrize(ux);
+E = symmetrize(Dux);
 
 // Compute stress tensor (which is equal to the residual, Rux)
 if (n_dependent_stiffness == true){
@@ -391,6 +397,6 @@ else{
 	computeStress<dim>(CIJ_Mg, E, ruxV);
 }
 
-variable_list.set_vector_gradient_residual_term(4,ruxV);
+variable_list.set_vector_gradient_residual_term_LHS(4,ruxV);
 
 }

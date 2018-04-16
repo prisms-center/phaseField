@@ -47,6 +47,7 @@ public:
 
     void set_output_integral(unsigned int index, bool);
 
+    void set_equations_are_nonlinear(bool);
 
     // Variable inputs (v2.0)
     std::vector<std::pair<unsigned int, std::string> > var_name_list;
@@ -78,6 +79,19 @@ public:
     std::vector<std::pair<unsigned int, bool> > output_integral_list;
     std::vector<std::pair<unsigned int, bool> > need_value_residual_list_PP;
     std::vector<std::pair<unsigned int, bool> > need_gradient_residual_list_PP;
+
+    bool equations_are_nonlinear;
+
+    void set_dependencies_value_RHS(unsigned int index, std::string dependencies);
+    void set_dependencies_gradient_RHS(unsigned int index, std::string dependencies);
+    void set_dependencies_value_LHS(unsigned int index, std::string dependencies);
+    void set_dependencies_gradient_LHS(unsigned int index, std::string dependencies);
+
+    std::vector<std::pair<unsigned int, std::string> > var_eq_dependencies_value_RHS;
+    std::vector<std::pair<unsigned int, std::string> > var_eq_dependencies_gradient_RHS;
+    std::vector<std::pair<unsigned int, std::string> > var_eq_dependencies_value_LHS;
+    std::vector<std::pair<unsigned int, std::string> > var_eq_dependencies_gradient_LHS;
+
 };
 
 

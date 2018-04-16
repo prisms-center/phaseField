@@ -81,6 +81,7 @@ void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Vectorized
 #include "../../src/userInputParameters/load_user_constants.cc"
 #include "../../src/userInputParameters/loadVariableAttributes.cc"
 #include "../../src/userInputParameters/setTimeStepList.cc"
+#include "../../src/userInputParameters/parseDependencies.cc"
 
 #include "../../src/variableAttributeLoader/variableAttributeLoader.cc"
 
@@ -99,6 +100,9 @@ class unitTest
 	bool test_get_entry_name_ending_list();
 	bool test_load_BC_list();
 	bool test_setOutputTimeSteps();
+    bool test_NonlinearSolverParameters();
+    bool test_LinearSolverParameters();
+    bool test_parseDependencies();
 };
 
 #include "variableAttributeLoader_test.cc"
@@ -111,3 +115,12 @@ class unitTest
 #include "test_get_subsection_entry_list.h"
 #include "test_get_entry_name_ending_list.h"
 #include "test_load_BC_list.h"
+
+
+#include "../../include/SolverParameters.h"
+#include "../../src/SolverParameters/SolverParameters.cc"
+
+#include "test_LinearSolverParameters.h"
+#include "test_NonlinearSolverParameters.h"
+
+#include "test_parseDependencies.h"

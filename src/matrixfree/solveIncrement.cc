@@ -60,8 +60,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
     // Now, update the non-explicit variables
     // For the time being, this is just the elliptic equations, but implicit parabolic and auxilary equations should also be here
     if (isEllipticBVP){
-        double nonlinear_convergence_tolerance = 1.0e-4; // For testing purposes, this is hardcoded
-        unsigned int max_nonlinear_it = 10;
+
         bool nonlinear_it_converged = false;
         unsigned int nonlinear_it_index = 0;
 
@@ -77,7 +76,17 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
             for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
                 currentFieldIndex = fieldIndex; // Used in computeLHS()
 
+
                 if (fields[fieldIndex].pdetype==ELLIPTIC){
+
+                    if (currentIncrement%userInputs.skip_print_steps==0){
+                        sprintf(buffer, "field '%2s' [nonlinear solve]: current solution: %12.6e, current residual:%12.6e\n", \
+                        fields[fieldIndex].name.c_str(),				\
+                        solutionSet[fieldIndex]->l2_norm(),			\
+                        residualSet[fieldIndex]->l2_norm());
+                        pcout<<buffer;
+                    }
+
                     dealii::parallel::distributed::Vector<double> solution_diff = *solutionSet[fieldIndex];
 
                     //apply Dirichlet BC's
@@ -91,14 +100,14 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
 
                     //solver controls
                     double tol_value;
-                    if (userInputs.abs_tol == true){
-                        tol_value = userInputs.solver_tolerance;
+                    if (userInputs.linear_solver_parameters.getToleranceType(fieldIndex) == ABSOLUTE_RESIDUAL){
+                        tol_value = userInputs.linear_solver_parameters.getToleranceValue(fieldIndex);
                     }
                     else {
-                        tol_value = userInputs.solver_tolerance*residualSet[fieldIndex]->l2_norm();
+                        tol_value = userInputs.linear_solver_parameters.getToleranceValue(fieldIndex)*residualSet[fieldIndex]->l2_norm();
                     }
 
-                    SolverControl solver_control(userInputs.max_solver_iterations, tol_value);
+                    SolverControl solver_control(userInputs.linear_solver_parameters.getMaxIterations(fieldIndex), tol_value);
 
                     // Currently the only allowed solver is SolverCG, the SolverType input variable is a dummy
                     SolverCG<vectorType> solver(solver_control);
@@ -117,11 +126,15 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
                     catch (...) {
                         pcout << "\nWarning: implicit solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing solverTolerance.\n";
                     }
+
+                    double damping_coefficient = userInputs.nonlinear_solver_parameters.getDefaultDampingCoefficient(fieldIndex);
+
                     if (fields[fieldIndex].type == SCALAR){
-                        *solutionSet[fieldIndex]+=dU_scalar;
+                        //*solutionSet[fieldIndex]+=dU_scalar;
+                        solutionSet[fieldIndex]->sadd(1.0,damping_coefficient,dU_scalar);
                     }
                     else {
-                        *solutionSet[fieldIndex]+=dU_vector;
+                        solutionSet[fieldIndex]->sadd(1.0,damping_coefficient,dU_vector);
                     }
 
                     if (currentIncrement%userInputs.skip_print_steps==0){
@@ -141,17 +154,23 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
                     }
 
                     // Check to see if this individual variable has converged
-                    double diff;
-                    if (fields[fieldIndex].type == SCALAR){
-                        diff = dU_scalar.linfty_norm();
+                    if (userInputs.nonlinear_solver_parameters.getToleranceType(fieldIndex) == ABSOLUTE_SOLUTION_CHANGE){
+                        double diff;
+
+                        if (fields[fieldIndex].type == SCALAR){
+                            diff = dU_scalar.l2_norm();
+                        }
+                        else {
+                            diff = dU_vector.l2_norm();
+                        }
+                        pcout << "Relative difference between nonlinear iterations: " << diff << " " << nonlinear_it_index << " " << currentIncrement << std::endl;
+
+                        if (diff > userInputs.nonlinear_solver_parameters.getToleranceValue(fieldIndex) && nonlinear_it_index < userInputs.nonlinear_solver_parameters.getMaxIterations()){
+                            nonlinear_it_converged = false;
+                        }
                     }
                     else {
-                        diff = dU_vector.linfty_norm();
-                    }
-                    pcout << "Max difference between nonlinear iterations: " << diff << " " << nonlinear_it_index << " " << currentIncrement << std::endl;
-
-                    if (diff > nonlinear_convergence_tolerance && nonlinear_it_index < max_nonlinear_it){
-                        nonlinear_it_converged = false;
+                        std::cerr << "PRISMS-PF Error: Nonlinear solver tolerance types other than ABSOLUTE_CHANGE have yet to be implemented." << std::endl;
                     }
                 }
             }

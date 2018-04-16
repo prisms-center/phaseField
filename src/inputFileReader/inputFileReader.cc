@@ -7,6 +7,7 @@ inputFileReader::inputFileReader(std::string input_file_name, variableAttributeL
     // Extract an ordered vector of the variable types from variable_attributes
     unsigned int number_of_variables = variable_attributes.var_name_list.size();
     var_types = sortIndexEntryPairList(variable_attributes.var_type_list,number_of_variables,SCALAR);
+    var_eq_types = sortIndexEntryPairList(variable_attributes.var_eq_type_list,number_of_variables,PARABOLIC);
     var_names = sortIndexEntryPairList(variable_attributes.var_name_list,number_of_variables,"var");
 
     var_nucleates = sortIndexEntryPairList(variable_attributes.nucleating_variable_list,number_of_variables,false);
@@ -23,7 +24,7 @@ inputFileReader::inputFileReader(std::string input_file_name, variableAttributeL
     }
 
     // Read in all of the parameters now
-    declare_parameters(parameter_handler,var_types,num_constants,var_nucleates);
+    declare_parameters(parameter_handler,var_types,var_eq_types,num_constants,var_nucleates);
     #if (DEAL_II_VERSION_MAJOR < 9 && DEAL_II_VERSION_MINOR < 5)
     parameter_handler.read_input("parameters.in");
     #else
@@ -228,6 +229,7 @@ std::vector<std::string> inputFileReader::get_entry_name_ending_list(const std::
 
 void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_handler,
                                             const std::vector<fieldType> var_types,
+                                            const std::vector<PDEType> var_eq_types,
                                             const unsigned int num_of_constants,
                                             const std::vector<bool> var_nucleates) const {
 
@@ -255,10 +257,44 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
     parameter_handler.declare_entry("Time step","-0.1",dealii::Patterns::Double(),"The time step size for the simulation.");
     parameter_handler.declare_entry("Simulation end time","-0.1",dealii::Patterns::Double(),"The value of simulated time where the simulation ends.");
 
-    parameter_handler.declare_entry("Linear solver","SolverCG",dealii::Patterns::Anything(),"The linear solver (currently only SolverCG).");
-    parameter_handler.declare_entry("Use absolute convergence tolerance","false",dealii::Patterns::Bool(),"Whether to use an absolute tolerance for the linear solver (versus a relative tolerance).");
-    parameter_handler.declare_entry("Solver tolerance value","1.0e-3",dealii::Patterns::Double(),"The tolerance for the linear solver (either absolute or relative).");
-    parameter_handler.declare_entry("Maximum allowed solver iterations","10000",dealii::Patterns::Integer(),"The maximum allowed number of iterations the linear solver is given to converge before being forced to exit.");
+    for (unsigned int i=0; i<var_types.size(); i++){
+        if (var_eq_types.at(i) == ELLIPTIC){
+            std::string subsection_text = "Linear solver parameters: ";
+            subsection_text.append(var_names.at(i));
+            parameter_handler.enter_subsection(subsection_text);
+            {
+                parameter_handler.declare_entry("Tolerance type","RELATIVE_RESIDUAL_CHANGE",dealii::Patterns::Anything(),"The tolerance type for the linear solver.");
+                parameter_handler.declare_entry("Tolerance value","1.0e-10",dealii::Patterns::Double(),"The value of for the linear solver tolerance.");
+                parameter_handler.declare_entry("Maximum linear solver iterations","1000",dealii::Patterns::Integer(),"The maximum number of linear solver iterations before the loop is stopped.");
+            }
+            parameter_handler.leave_subsection();
+        }
+    }
+
+    // Nonlinear solver parameters
+    std::vector<bool> var_nonlinear;
+    // for (unsigned int i=0; i<var_types.size(); i++){
+    //     var_nonlinear.push_back(false);
+    // }
+    var_nonlinear.push_back(false);
+    var_nonlinear.push_back(true);
+
+    parameter_handler.declare_entry("Maximum nonlinear solver iterations","100",dealii::Patterns::Integer(),"The maximum number of nonlinear solver iterations before the loop is stopped.");
+
+    for (unsigned int i=0; i<var_types.size(); i++){
+        if (var_nonlinear.at(i)){
+            std::string subsection_text = "Nonlinear solver parameters: ";
+            subsection_text.append(var_names.at(i));
+            parameter_handler.enter_subsection(subsection_text);
+            {
+                parameter_handler.declare_entry("Tolerance type","ABSOLUTE_CHANGE",dealii::Patterns::Anything(),"The tolerance type for the nonlinear solver.");
+                parameter_handler.declare_entry("Tolerance value","1.0e-10",dealii::Patterns::Double(),"The value of for the nonlinear solver tolerance.");
+                parameter_handler.declare_entry("Use backtrace line-search damping","true",dealii::Patterns::Bool(),"Whether to use a backtrace line-search to find the best choice of the damping coefficient.");
+                parameter_handler.declare_entry("Constant damping value","1.0",dealii::Patterns::Double(),"The constant damping value to be used if the backtrace line-search approach isn't used.");
+            }
+            parameter_handler.leave_subsection();
+        }
+    }
 
     parameter_handler.declare_entry("Output file name (base)","solution",dealii::Patterns::Anything(),"The name for the output file, before the time step and processor info are added.");
     parameter_handler.declare_entry("Output file type","vtu",dealii::Patterns::Anything(),"The output file type (either vtu or vtk).");

@@ -9,6 +9,34 @@ void userInputParameters<dim>::loadVariableAttributes(variableAttributeLoader va
     var_type = sortIndexEntryPairList(variable_attributes.var_type_list,number_of_variables,SCALAR);
     var_eq_type = sortIndexEntryPairList(variable_attributes.var_eq_type_list,number_of_variables,PARABOLIC);
 
+    // New way (v2.1) of determining the dependencies
+    std::vector<std::string> sorted_dependencies_value_RHS = sortIndexEntryPairList(variable_attributes.var_eq_dependencies_value_RHS,number_of_variables,"");
+
+    std::vector<std::string> sorted_dependencies_gradient_RHS = sortIndexEntryPairList(variable_attributes.var_eq_dependencies_gradient_RHS,number_of_variables,"");
+
+    std::vector<std::string> sorted_dependencies_value_LHS = sortIndexEntryPairList(variable_attributes.var_eq_dependencies_value_LHS,number_of_variables,"");
+
+    std::vector<std::string> sorted_dependencies_gradient_LHS = sortIndexEntryPairList(variable_attributes.var_eq_dependencies_gradient_LHS,number_of_variables,"");
+
+    std::vector<bool> need_value_explicit_RHS, need_gradient_explicit_RHS, need_hessian_explicit_RHS, need_value_nonexplicit_RHS, need_gradient_nonexplicit_RHS, need_hessian_nonexplicit_RHS, need_value_nonexplicit_LHS, need_gradient_nonexplicit_LHS, need_hessian_nonexplicit_LHS, need_value_change_nonexplicit_LHS, need_gradient_change_nonexplicit_LHS, need_hessian_change_nonexplicit_LHS;
+
+    parseDependencies(sorted_dependencies_value_RHS,
+        sorted_dependencies_gradient_RHS,
+        sorted_dependencies_value_LHS,
+        sorted_dependencies_gradient_LHS,
+        need_value_explicit_RHS,
+        need_gradient_explicit_RHS,
+        need_hessian_explicit_RHS,
+        need_value_nonexplicit_RHS,
+        need_gradient_nonexplicit_RHS,
+        need_hessian_nonexplicit_RHS,
+        need_value_nonexplicit_LHS,
+        need_gradient_nonexplicit_LHS,
+        need_hessian_nonexplicit_LHS,
+        need_value_change_nonexplicit_LHS,
+        need_gradient_change_nonexplicit_LHS,
+        need_hessian_change_nonexplicit_LHS);
+
     // Sort the variable attributes and load them into individual vectors
     std::vector<bool> nucleating_variable = sortIndexEntryPairList(variable_attributes.nucleating_variable_list,number_of_variables,false);
     std::vector<bool> need_value_nucleation = sortIndexEntryPairList(variable_attributes.need_value_list_nucleation,number_of_variables,false);

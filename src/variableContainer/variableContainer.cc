@@ -32,60 +32,6 @@ variableContainer<dim,degree,T>::variableContainer(const dealii::MatrixFree<dim,
             }
         }
     }
-
-    /*
-    // Generate lists of residual types and indices, and reserve space in the temporary vectors
-    // I'm not sure the best way to handle these for the LHS, where the residuals are for the change in the solution
-    unsigned int num_scalar_values = 0;
-    unsigned int num_scalar_gradients = 0;
-    unsigned int num_vector_values = 0;
-    unsigned int num_vector_gradients = 0;
-
-    for (unsigned int var=0; var < num_var; var++){
-        if (varInfoList[var].is_scalar){
-            if (varInfoList[var].value_residual){
-                scalar_value_index.push_back(num_scalar_values);
-                num_scalar_values++;
-            }
-            else {
-                scalar_value_index.push_back(-1);
-            }
-            if (varInfoList[var].gradient_residual){
-                scalar_gradient_index.push_back(num_scalar_gradients);
-                num_scalar_gradients++;
-            }
-            else {
-                scalar_gradient_index.push_back(-1);
-            }
-            vector_value_index.push_back(-1);
-            vector_gradient_index.push_back(-1);
-        }
-        else {
-            if (varInfoList[var].value_residual){
-                vector_value_index.push_back(num_vector_values);
-                num_vector_values++;
-            }
-            else {
-                vector_value_index.push_back(-1);
-            }
-            if (varInfoList[var].gradient_residual){
-                vector_gradient_index.push_back(num_vector_gradients);
-                num_vector_gradients++;
-            }
-            else {
-                vector_gradient_index.push_back(-1);
-            }
-            scalar_value_index.push_back(-1);
-            scalar_gradient_index.push_back(-1);
-        }
-    }
-
-    scalar_value.reserve(num_scalar_values);
-    scalar_gradient.reserve(num_scalar_gradients);
-    vector_value.reserve(num_vector_values);
-    vector_gradient.reserve(num_vector_gradients);
-    */
-
 }
 
 template <int dim, int degree, typename T>
@@ -107,60 +53,6 @@ variableContainer<dim,degree,T>::variableContainer(const dealii::MatrixFree<dim,
             }
         }
     }
-
-    /*
-    // Generate lists of residual types and indices, and reserve space in the temporary vectors
-    // I'm not sure the best way to handle these for the LHS, where the residuals are for the change in the solution
-    unsigned int num_scalar_values = 0;
-    unsigned int num_scalar_gradients = 0;
-    unsigned int num_vector_values = 0;
-    unsigned int num_vector_gradients = 0;
-
-    for (unsigned int var=0; var < num_var; var++){
-        if (varInfoList[var].is_scalar){
-            if (varInfoList[var].value_residual){
-                scalar_value_index.push_back(num_scalar_values);
-                num_scalar_values++;
-            }
-            else {
-                scalar_value_index.push_back(-1);
-            }
-            if (varInfoList[var].gradient_residual){
-                scalar_gradient_index.push_back(num_scalar_gradients);
-                num_scalar_gradients++;
-            }
-            else {
-                scalar_gradient_index.push_back(-1);
-            }
-            vector_value_index.push_back(-1);
-            vector_gradient_index.push_back(-1);
-        }
-        else {
-            if (varInfoList[var].value_residual){
-                vector_value_index.push_back(num_vector_values);
-                num_vector_values++;
-            }
-            else {
-                vector_value_index.push_back(-1);
-            }
-            if (varInfoList[var].gradient_residual){
-                vector_gradient_index.push_back(num_vector_gradients);
-                num_vector_gradients++;
-            }
-            else {
-                vector_gradient_index.push_back(-1);
-            }
-            scalar_value_index.push_back(-1);
-            scalar_gradient_index.push_back(-1);
-        }
-    }
-
-    scalar_value.reserve(num_scalar_values);
-    scalar_gradient.reserve(num_scalar_gradients);
-    vector_value.reserve(num_vector_values);
-    vector_gradient.reserve(num_vector_gradients);
-    */
-
 }
 
 // Variant of the constructor where it reads from a fixed index of "data", used for post-processing
@@ -183,59 +75,6 @@ variableContainer<dim,degree,T>::variableContainer(const dealii::MatrixFree<dim,
             }
         }
     }
-
-    // Generate lists of residual types and indices, and reserve space in the temporary vectors
-    /*
-    unsigned int num_scalar_values = 0;
-    unsigned int num_scalar_gradients = 0;
-    unsigned int num_vector_values = 0;
-    unsigned int num_vector_gradients = 0;
-
-    for (unsigned int var=0; var < num_var; var++){
-        if (varInfoList[var].is_scalar){
-            if (varInfoList[var].value_residual){
-                scalar_value_index.push_back(num_scalar_values);
-                num_scalar_values++;
-            }
-            else {
-                scalar_value_index.push_back(-1);
-            }
-            if (varInfoList[var].gradient_residual){
-                scalar_gradient_index.push_back(num_scalar_gradients);
-                num_scalar_gradients++;
-            }
-            else {
-                scalar_gradient_index.push_back(-1);
-            }
-            vector_value_index.push_back(-1);
-            vector_gradient_index.push_back(-1);
-        }
-        else {
-            if (varInfoList[var].value_residual){
-                vector_value_index.push_back(num_vector_values);
-                num_vector_values++;
-            }
-            else {
-                vector_value_index.push_back(-1);
-            }
-            if (varInfoList[var].gradient_residual){
-                vector_gradient_index.push_back(num_vector_gradients);
-                num_vector_gradients++;
-            }
-            else {
-                vector_gradient_index.push_back(-1);
-            }
-            scalar_value_index.push_back(-1);
-            scalar_gradient_index.push_back(-1);
-        }
-    }
-
-    scalar_value.reserve(num_scalar_values);
-    scalar_gradient.reserve(num_scalar_gradients);
-    vector_value.reserve(num_vector_values);
-    vector_gradient.reserve(num_vector_gradients);
-    */
-
 }
 
 template <int dim, int degree, typename T>

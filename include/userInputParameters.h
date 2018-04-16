@@ -11,6 +11,7 @@
 #include "varTypeEnums.h"
 #include "variableAttributeLoader.h"
 #include "nucleationParameters.h"
+#include "SolverParameters.h"
 
 enum elasticityModel {ISOTROPIC, TRANSVERSE, ORTHOTROPIC, ANISOTROPIC, ANISOTROPIC2D};
 
@@ -78,10 +79,10 @@ public:
 	unsigned int totalIncrements;
 
 	// Elliptic solver parameters
-	std::string solver_type;
-	bool abs_tol;
-	double solver_tolerance;
-	unsigned int max_solver_iterations;
+    LinearSolverParameters linear_solver_parameters;
+
+    // Nonlinear solver parameters
+    NonlinearSolverParameters nonlinear_solver_parameters;
 
 	// Variable inputs
 	unsigned int number_of_variables;
@@ -158,6 +159,26 @@ private:
 	// Private nucleation variables
 	std::vector<nucleationParameters<dim> > nucleation_parameters_list;
 	std::map<unsigned int, unsigned int> nucleation_parameters_list_index;
+
+    /**
+    * This method takes the dependecies string from the user in VariableAttributeLoader and stores it in a more accessable format for later use
+    */
+    void parseDependencies(std::vector<std::string> sorted_dependencies_value_RHS,
+    std::vector<std::string> sorted_dependencies_gradient_RHS,
+    std::vector<std::string> sorted_dependencies_value_LHS,
+    std::vector<std::string> sorted_dependencies_gradient_LHS,
+    std::vector<bool> need_value_explicit_RHS,
+    std::vector<bool> need_gradient_explicit_RHS,
+    std::vector<bool> need_hessian_explicit_RHS,
+    std::vector<bool> need_value_nonexplicit_RHS,
+    std::vector<bool> need_gradient_nonexplicit_RHS,
+    std::vector<bool> need_hessian_nonexplicit_RHS,
+    std::vector<bool> need_value_nonexplicit_LHS,
+    std::vector<bool> need_gradient_nonexplicit_LHS,
+    std::vector<bool> need_hessian_nonexplicit_LHS,
+    std::vector<bool> need_value_change_nonexplicit_LHS,
+    std::vector<bool> need_gradient_change_nonexplicit_LHS,
+    std::vector<bool> need_hessian_change_nonexplicit_LHS);
 };
 
 #endif /* INCLUDE_USERINPUTPARAMETERS_H_ */

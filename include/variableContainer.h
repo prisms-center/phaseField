@@ -80,19 +80,6 @@ private:
     std::vector<variable_info> varInfoList;
     std::vector<variable_info> varChangeInfoList;
 
-    // Vectors to hold the residuals temporarily until they are applied to scalar_vars and vector_vars
-    // These are needed so that the "set" calls don't over-write the values in scalar_vars and vector_vars until after the call to residualRHS/residualLHS/postProcessedFields
-    /*
-    std::vector<int> scalar_value_index;
-    std::vector<int> scalar_gradient_index;
-    std::vector<int> vector_value_index;
-    std::vector<int> vector_gradient_index;
-
-    std::vector<T> scalar_value;
-    std::vector<dealii::Tensor<1, dim, T > > scalar_gradient;
-    std::vector<dealii::Tensor<1, dim, T > > vector_value;
-    std::vector<dealii::Tensor<2, dim, T > > vector_gradient;
-    */
 };
 
 #endif
