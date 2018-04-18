@@ -160,25 +160,6 @@ private:
 	std::vector<nucleationParameters<dim> > nucleation_parameters_list;
 	std::map<unsigned int, unsigned int> nucleation_parameters_list_index;
 
-    /**
-    * This method takes the dependecies string from the user in VariableAttributeLoader and stores it in a more accessable format for later use
-    */
-    void parseDependencies(std::vector<std::string> sorted_dependencies_value_RHS,
-    std::vector<std::string> sorted_dependencies_gradient_RHS,
-    std::vector<std::string> sorted_dependencies_value_LHS,
-    std::vector<std::string> sorted_dependencies_gradient_LHS,
-    std::vector<bool> need_value_explicit_RHS,
-    std::vector<bool> need_gradient_explicit_RHS,
-    std::vector<bool> need_hessian_explicit_RHS,
-    std::vector<bool> need_value_nonexplicit_RHS,
-    std::vector<bool> need_gradient_nonexplicit_RHS,
-    std::vector<bool> need_hessian_nonexplicit_RHS,
-    std::vector<bool> need_value_nonexplicit_LHS,
-    std::vector<bool> need_gradient_nonexplicit_LHS,
-    std::vector<bool> need_hessian_nonexplicit_LHS,
-    std::vector<bool> need_value_change_nonexplicit_LHS,
-    std::vector<bool> need_gradient_change_nonexplicit_LHS,
-    std::vector<bool> need_hessian_change_nonexplicit_LHS);
 };
 
 #endif /* INCLUDE_USERINPUTPARAMETERS_H_ */

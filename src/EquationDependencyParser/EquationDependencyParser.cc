@@ -1,5 +1,7 @@
-template <int dim>
-void userInputParameters<dim>::parseDependencies(
+#include "../../include/EquationDependencyParser.h"
+
+
+void EquationDependencyParser::parseEquationDependencies(
     std::vector<std::string> sorted_dependencies_value_RHS,
     std::vector<std::string> sorted_dependencies_gradient_RHS,
     std::vector<std::string> sorted_dependencies_value_LHS,
@@ -29,4 +31,9 @@ void userInputParameters<dim>::parseDependencies(
 
 
 
+}
+
+
+SolverToleranceType SolverParametersBase::getToleranceType(unsigned int index){
+    return tolerance_type_list.at(getEquationIndex(index));
 }

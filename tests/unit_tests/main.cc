@@ -140,8 +140,8 @@ int main(int argc, char **argv)
 
   // Unit tests for the "parseDependences" method in the "UserInputParameters" class
   total_tests++;
-  unitTest<2,double> parseDependences_tester;
-  pass = parseDependences_tester.test_parseDependencies();
+  unitTest<2,double> EquationDependencyParser_tester;
+  pass = EquationDependencyParser_tester.test_EquationDependencyParser();
   tests_passed += pass;
 
   // Print out results
