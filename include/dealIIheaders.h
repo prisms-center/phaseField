@@ -42,6 +42,7 @@
 #include <boost/variant.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
+#include <boost/algorithm/string.hpp>
 //#include <tuple>
 
 #include <unordered_map>

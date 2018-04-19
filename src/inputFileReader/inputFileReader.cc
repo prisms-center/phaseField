@@ -273,11 +273,11 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
 
     // Nonlinear solver parameters
     std::vector<bool> var_nonlinear;
-    // for (unsigned int i=0; i<var_types.size(); i++){
-    //     var_nonlinear.push_back(false);
-    // }
-    var_nonlinear.push_back(false);
-    var_nonlinear.push_back(true);
+    for (unsigned int i=0; i<var_types.size(); i++){
+        var_nonlinear.push_back(false);
+    }
+    //var_nonlinear.push_back(false);
+    //var_nonlinear.push_back(true);
 
     parameter_handler.declare_entry("Maximum nonlinear solver iterations","100",dealii::Patterns::Integer(),"The maximum number of nonlinear solver iterations before the loop is stopped.");
 

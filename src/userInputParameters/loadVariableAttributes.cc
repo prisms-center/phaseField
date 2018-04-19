@@ -20,6 +20,7 @@ void userInputParameters<dim>::loadVariableAttributes(variableAttributeLoader va
 
     std::vector<bool> need_value_explicit_RHS, need_gradient_explicit_RHS, need_hessian_explicit_RHS, need_value_nonexplicit_RHS, need_gradient_nonexplicit_RHS, need_hessian_nonexplicit_RHS, need_value_nonexplicit_LHS, need_gradient_nonexplicit_LHS, need_hessian_nonexplicit_LHS, need_value_change_nonexplicit_LHS, need_gradient_change_nonexplicit_LHS, need_hessian_change_nonexplicit_LHS;
 
+    /*
     parseDependencies(sorted_dependencies_value_RHS,
         sorted_dependencies_gradient_RHS,
         sorted_dependencies_value_LHS,
@@ -36,6 +37,7 @@ void userInputParameters<dim>::loadVariableAttributes(variableAttributeLoader va
         need_value_change_nonexplicit_LHS,
         need_gradient_change_nonexplicit_LHS,
         need_hessian_change_nonexplicit_LHS);
+        */
 
     // Sort the variable attributes and load them into individual vectors
     std::vector<bool> nucleating_variable = sortIndexEntryPairList(variable_attributes.nucleating_variable_list,number_of_variables,false);
