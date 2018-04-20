@@ -7,7 +7,8 @@ EquationDependencyParser::EquationDependencyParser(
     std::vector<std::string> sorted_dependencies_value_RHS,
     std::vector<std::string> sorted_dependencies_gradient_RHS,
     std::vector<std::string> sorted_dependencies_value_LHS,
-    std::vector<std::string> sorted_dependencies_gradient_LHS)
+    std::vector<std::string> sorted_dependencies_gradient_LHS,
+    std::vector<bool> & var_nonlinear)
 {
     // Initialize the calculation needed flags to false
     for (unsigned int i=0; i<var_name.size(); i++){
@@ -35,23 +36,61 @@ EquationDependencyParser::EquationDependencyParser(
         // Now check for each variable_eq_type
         if (var_eq_type[i] == PARABOLIC){
 
-            parseDependencyListRHS(var_name, sorted_dependencies_value_RHS.at(i), sorted_dependencies_gradient_RHS.at(i), need_value_explicit_RHS, need_gradient_explicit_RHS, need_hessian_explicit_RHS);
+            bool need_value_residual_entry, need_gradient_residual_entry;
+
+            parseDependencyListRHS(var_name, sorted_dependencies_value_RHS.at(i), sorted_dependencies_gradient_RHS.at(i), need_value_explicit_RHS, need_gradient_explicit_RHS, need_hessian_explicit_RHS, need_value_residual_entry, need_gradient_residual_entry);
+
+            need_value_residual_explicit_RHS.push_back(need_value_residual_entry);
+            need_gradient_residual_explicit_RHS.push_back(need_gradient_residual_entry);
+
+            need_value_residual_nonexplicit_RHS.push_back(false);
+            need_gradient_residual_nonexplicit_RHS.push_back(false);
+            need_value_residual_nonexplicit_LHS.push_back(false);
+            need_gradient_residual_nonexplicit_LHS.push_back(false);
 
         }
         else if (var_eq_type[i] == ELLIPTIC){
 
-            parseDependencyListRHS(var_name, sorted_dependencies_value_RHS.at(i), sorted_dependencies_gradient_RHS.at(i), need_value_nonexplicit_RHS, need_gradient_nonexplicit_RHS, need_hessian_nonexplicit_RHS);
+            bool need_value_residual_entry, need_gradient_residual_entry;
 
-            parseDependencyListLHS(var_name, sorted_dependencies_value_LHS.at(i), sorted_dependencies_gradient_LHS.at(i), need_value_nonexplicit_LHS, need_gradient_nonexplicit_LHS, need_hessian_nonexplicit_LHS, need_value_change_nonexplicit_LHS, need_gradient_change_nonexplicit_LHS, need_hessian_change_nonexplicit_LHS);
+            parseDependencyListRHS(var_name, sorted_dependencies_value_RHS.at(i), sorted_dependencies_gradient_RHS.at(i), need_value_nonexplicit_RHS, need_gradient_nonexplicit_RHS, need_hessian_nonexplicit_RHS, need_value_residual_entry, need_gradient_residual_entry);
+
+            need_value_residual_nonexplicit_RHS.push_back(need_value_residual_entry);
+            need_gradient_residual_nonexplicit_RHS.push_back(need_gradient_residual_entry);
+
+            parseDependencyListLHS(var_name, sorted_dependencies_value_LHS.at(i), sorted_dependencies_gradient_LHS.at(i), need_value_nonexplicit_LHS, need_gradient_nonexplicit_LHS, need_hessian_nonexplicit_LHS, need_value_change_nonexplicit_LHS, need_gradient_change_nonexplicit_LHS, need_hessian_change_nonexplicit_LHS, need_value_residual_entry, need_gradient_residual_entry);
+
+            need_value_residual_nonexplicit_LHS.push_back(need_value_residual_entry);
+            need_gradient_residual_nonexplicit_LHS.push_back(need_gradient_residual_entry);
+
+            need_value_residual_explicit_RHS.push_back(false);
+            need_gradient_residual_explicit_RHS.push_back(false);
 
         }
     }
 }
 
-void EquationDependencyParser::parseDependencyListRHS(std::vector<std::string> var_name, std::string value_dependencies, std::string gradient_dependencies, std::vector<bool> & need_value, std::vector<bool> & need_gradient, std::vector<bool> & need_hessian){
-    std::vector<std::string> split_dependency_list = dealii::Utilities::split_string_list(value_dependencies);
-    std::vector<std::string> temp_list = dealii::Utilities::split_string_list(gradient_dependencies);
-    split_dependency_list.insert(split_dependency_list.end(),temp_list.begin(),temp_list.end());
+void EquationDependencyParser::parseDependencyListRHS(std::vector<std::string> var_name, std::string value_dependencies, std::string gradient_dependencies, std::vector<bool> & need_value, std::vector<bool> & need_gradient, std::vector<bool> & need_hessian, bool & need_value_residual, bool & need_gradient_residual){
+
+    std::vector<std::string> split_value_dependency_list = dealii::Utilities::split_string_list(value_dependencies);
+    std::vector<std::string> split_gradient_dependency_list = dealii::Utilities::split_string_list(gradient_dependencies);
+
+    if (split_value_dependency_list.size() > 0){
+        need_value_residual = true;
+    }
+    else {
+        need_value_residual = false;
+    }
+
+    if (split_gradient_dependency_list.size() > 0){
+        need_gradient_residual = true;
+    }
+    else {
+        need_gradient_residual = false;
+    }
+
+    std::vector<std::string> split_dependency_list = split_value_dependency_list;
+    split_dependency_list.insert(split_dependency_list.end(),split_gradient_dependency_list.begin(),split_gradient_dependency_list.end());
 
     for (unsigned int dep=0; dep<split_dependency_list.size(); dep++){
         bool dependency_entry_assigned = false;
@@ -84,7 +123,8 @@ void EquationDependencyParser::parseDependencyListRHS(std::vector<std::string> v
     }
 }
 
-void EquationDependencyParser::parseDependencyListLHS(std::vector<std::string> var_name, std::string value_dependencies, std::string gradient_dependencies, std::vector<bool> & need_value, std::vector<bool> & need_gradient, std::vector<bool> & need_hessian, std::vector<bool> & need_value_change, std::vector<bool> & need_gradient_change, std::vector<bool> & need_hessian_change){
+void EquationDependencyParser::parseDependencyListLHS(std::vector<std::string> var_name, std::string value_dependencies, std::string gradient_dependencies, std::vector<bool> & need_value, std::vector<bool> & need_gradient, std::vector<bool> & need_hessian, std::vector<bool> & need_value_change, std::vector<bool> & need_gradient_change, std::vector<bool> & need_hessian_change, bool & need_value_residual, bool & need_gradient_residual){
+
     std::vector<std::string> split_dependency_list = dealii::Utilities::split_string_list(value_dependencies);
     std::vector<std::string> temp_list = dealii::Utilities::split_string_list(gradient_dependencies);
     split_dependency_list.insert(split_dependency_list.end(),temp_list.begin(),temp_list.end());

@@ -1,5 +1,6 @@
 #include "../../include/userInputParameters.h"
 #include "../../include/sortIndexEntryPairList.h"
+#include "../../include/EquationDependencyParser.h"
 
 template <int dim>
 void userInputParameters<dim>::loadVariableAttributes(variableAttributeLoader variable_attributes){
@@ -18,31 +19,43 @@ void userInputParameters<dim>::loadVariableAttributes(variableAttributeLoader va
 
     std::vector<std::string> sorted_dependencies_gradient_LHS = sortIndexEntryPairList(variable_attributes.var_eq_dependencies_gradient_LHS,number_of_variables,"");
 
-    std::vector<bool> need_value_explicit_RHS, need_gradient_explicit_RHS, need_hessian_explicit_RHS, need_value_nonexplicit_RHS, need_gradient_nonexplicit_RHS, need_hessian_nonexplicit_RHS, need_value_nonexplicit_LHS, need_gradient_nonexplicit_LHS, need_hessian_nonexplicit_LHS, need_value_change_nonexplicit_LHS, need_gradient_change_nonexplicit_LHS, need_hessian_change_nonexplicit_LHS;
-
-    /*
-    parseDependencies(sorted_dependencies_value_RHS,
+    EquationDependencyParser equation_dependency_parser(
+        var_name,
+        var_eq_type,
+        sorted_dependencies_value_RHS,
         sorted_dependencies_gradient_RHS,
         sorted_dependencies_value_LHS,
-        sorted_dependencies_gradient_LHS,
-        need_value_explicit_RHS,
-        need_gradient_explicit_RHS,
-        need_hessian_explicit_RHS,
-        need_value_nonexplicit_RHS,
-        need_gradient_nonexplicit_RHS,
-        need_hessian_nonexplicit_RHS,
-        need_value_nonexplicit_LHS,
-        need_gradient_nonexplicit_LHS,
-        need_hessian_nonexplicit_LHS,
-        need_value_change_nonexplicit_LHS,
-        need_gradient_change_nonexplicit_LHS,
-        need_hessian_change_nonexplicit_LHS);
-        */
+        sorted_dependencies_gradient_LHS, var_nonlinear);
+
+    // NOTE: THIS NEEDS TO GO INSIDE EquationDependencyParser
+    // Determine which equations are nonlinear
+    // Equations are nonlinear if the LHS has non-change values of the equation's variable or if it is
+    // ellptic and uses variables from other elliptic equations
+    for (unsigned int i=0; i<var_name.size(); i++){
+        var_nonlinear.push_back(false);
+        if (var_eq_type[i] == ELLIPTIC){
+            if (equation_dependency_parser.need_value_nonexplicit_LHS[i] or equation_dependency_parser.need_gradient_nonexplicit_LHS[i] or equation_dependency_parser.need_hessian_nonexplicit_LHS[i]){
+                var_nonlinear.at(i) = true;
+            }
+            else {
+                for (unsigned int j=0; j<var_name.size(); j++){
+                    if (var_eq_type[j] == ELLIPTIC and j != i ){
+                        if (equation_dependency_parser.need_value_nonexplicit_RHS[i] or equation_dependency_parser.need_gradient_nonexplicit_RHS[i] or equation_dependency_parser.need_hessian_nonexplicit_RHS[i] or equation_dependency_parser.need_value_nonexplicit_LHS[i] or equation_dependency_parser.need_gradient_nonexplicit_LHS[i] or equation_dependency_parser.need_hessian_nonexplicit_LHS[i])
+                    }
+                }
+
+
+                var_nonlinear.at(i) = true;
+            }
+        }
+    }
+
 
     // Sort the variable attributes and load them into individual vectors
     std::vector<bool> nucleating_variable = sortIndexEntryPairList(variable_attributes.nucleating_variable_list,number_of_variables,false);
     std::vector<bool> need_value_nucleation = sortIndexEntryPairList(variable_attributes.need_value_list_nucleation,number_of_variables,false);
 
+    /*
     std::vector<bool> need_value = sortIndexEntryPairList(variable_attributes.need_value_list,number_of_variables,true);
 	std::vector<bool> need_gradient = sortIndexEntryPairList(variable_attributes.need_gradient_list,number_of_variables,true);
 	std::vector<bool> need_hessian = sortIndexEntryPairList(variable_attributes.need_hessian_list,number_of_variables,false);
@@ -58,6 +71,7 @@ void userInputParameters<dim>::loadVariableAttributes(variableAttributeLoader va
     std::vector<bool> need_value_change_LHS = sortIndexEntryPairList(variable_attributes.need_value_change_list_LHS,number_of_variables,false);
 	std::vector<bool> need_gradient_change_LHS = sortIndexEntryPairList(variable_attributes.need_gradient_change_list_LHS,number_of_variables,false);
 	std::vector<bool> need_hessian_change_LHS = sortIndexEntryPairList(variable_attributes.need_hessian_change_list_LHS,number_of_variables,false);
+    */
 
     std::vector<bool> need_value_pp = sortIndexEntryPairList(variable_attributes.need_value_list_PP,number_of_variables,true);
 	std::vector<bool> need_gradient_pp = sortIndexEntryPairList(variable_attributes.need_gradient_list_PP,number_of_variables,true);
@@ -91,21 +105,29 @@ void userInputParameters<dim>::loadVariableAttributes(variableAttributeLoader va
 
 
     // Load these attributes into the varInfoList objects
-	varInfoListRHS.reserve(number_of_variables);
+
+    // Load variable information for calculating the RHS for explicit equations
+    num_var_explicit_RHS = 0;
+	for (unsigned int i=0; i<number_of_variables; i++){
+		if (equation_dependency_parser.need_value_explicit_RHS[i] or equation_dependency_parser.need_gradient_explicit_RHS[i] or equation_dependency_parser.need_hessian_explicit_RHS[i]){
+			num_var_explicit_RHS++;
+		}
+	}
+	varInfoListExplicitRHS.reserve(num_var_explicit_RHS);
 	unsigned int scalar_var_index = 0;
 	unsigned int vector_var_index = 0;
 	for (unsigned int i=0; i<number_of_variables; i++){
 		variable_info varInfo;
 
-        varInfo.need_value = need_value[i];
-        varInfo.need_gradient = need_gradient[i];
-        varInfo.need_hessian = need_hessian[i];
-        varInfo.value_residual = value_residual[i];
-        varInfo.gradient_residual = gradient_residual[i];
+        varInfo.need_value = equation_dependency_parser.need_value_explicit_RHS[i];
+        varInfo.need_gradient = equation_dependency_parser.need_gradient_explicit_RHS[i];
+        varInfo.need_hessian = equation_dependency_parser.need_hessian_explicit_RHS[i];
+        varInfo.value_residual = equation_dependency_parser.need_value_residual_explicit_RHS[i];
+        varInfo.gradient_residual = equation_dependency_parser.need_gradient_residual_explicit_RHS[i];
 
         varInfo.global_var_index = i;
 
-		if (need_value[i] or need_gradient[i] or need_hessian[i]){
+		if (varInfo.need_value or varInfo.need_gradient or varInfo.need_hessian){
             varInfo.var_needed = true;
 		}
         else {
@@ -127,13 +149,59 @@ void userInputParameters<dim>::loadVariableAttributes(variableAttributeLoader va
             }
         }
 
-        varInfoListRHS.push_back(varInfo);
+        varInfoListExplicitRHS.push_back(varInfo);
+	}
+
+    // Load variable information for calculating the RHS for nonexplicit equations
+    num_var_nonexplicit_RHS = 0;
+	for (unsigned int i=0; i<number_of_variables; i++){
+		if (equation_dependency_parser.need_value_nonexplicit_RHS[i] or equation_dependency_parser.need_gradient_nonexplicit_RHS[i] or equation_dependency_parser.need_hessian_nonexplicit_RHS[i]){
+			num_var_nonexplicit_RHS++;
+		}
+	}
+	varInfoListNonexplicitRHS.reserve(num_var_nonexplicit_RHS);
+	scalar_var_index = 0;
+	vector_var_index = 0;
+	for (unsigned int i=0; i<number_of_variables; i++){
+		variable_info varInfo;
+
+        varInfo.need_value = equation_dependency_parser.need_value_nonexplicit_RHS[i];
+        varInfo.need_gradient = equation_dependency_parser.need_gradient_nonexplicit_RHS[i];
+        varInfo.need_hessian = equation_dependency_parser.need_hessian_nonexplicit_RHS[i];
+        varInfo.value_residual = equation_dependency_parser.need_value_residual_nonexplicit_RHS[i];
+        varInfo.gradient_residual = equation_dependency_parser.need_gradient_residual_nonexplicit_RHS[i];
+
+        varInfo.global_var_index = i;
+
+		if (varInfo.need_value or varInfo.need_gradient or varInfo.need_hessian){
+            varInfo.var_needed = true;
+		}
+        else {
+            varInfo.var_needed = false;
+        }
+
+        if (var_type[i] == SCALAR){
+            varInfo.is_scalar = true;
+            if (varInfo.var_needed){
+                varInfo.scalar_or_vector_index = scalar_var_index;
+                scalar_var_index++;
+            }
+        }
+        else {
+            varInfo.is_scalar = false;
+            if (varInfo.var_needed){
+                varInfo.scalar_or_vector_index = vector_var_index;
+                vector_var_index++;
+            }
+        }
+
+        varInfoListNonexplicitRHS.push_back(varInfo);
 	}
 
 	// Load variable information for calculating the LHS
 	num_var_LHS = 0;
 	for (unsigned int i=0; i<number_of_variables; i++){
-		if (need_value_LHS[i] or need_gradient_LHS[i] or need_hessian_LHS[i]){
+		if (equation_dependency_parser.need_value_nonexplicit_LHS[i] or equation_dependency_parser.need_gradient_nonexplicit_LHS[i] or equation_dependency_parser.need_hessian_nonexplicit_LHS[i]){
 			num_var_LHS++;
 		}
 	}
@@ -144,16 +212,16 @@ void userInputParameters<dim>::loadVariableAttributes(variableAttributeLoader va
 	for (unsigned int i=0; i<number_of_variables; i++){
 		variable_info varInfo;
 
-        varInfo.need_value = need_value_LHS[i];
-        varInfo.need_gradient = need_gradient_LHS[i];
-        varInfo.need_hessian = need_hessian_LHS[i];
-        varInfo.value_residual = value_residual_LHS[i];
-        varInfo.gradient_residual = gradient_residual_LHS[i];
+        varInfo.need_value = equation_dependency_parser.need_value_nonexplicit_LHS[i];
+        varInfo.need_gradient = equation_dependency_parser.need_gradient_nonexplicit_LHS[i];
+        varInfo.need_hessian = equation_dependency_parser.need_hessian_nonexplicit_LHS[i];
+        varInfo.value_residual = equation_dependency_parser.need_value_residual_nonexplicit_LHS[i];
+        varInfo.gradient_residual = equation_dependency_parser.need_gradient_residual_nonexplicit_LHS[i];
 
         varInfo.global_var_index = i;
 
 
-		if (need_value_LHS[i] or need_gradient_LHS[i] or need_hessian_LHS[i]){
+		if (varInfo.need_value or varInfo.need_gradient or varInfo.need_hessian){
             varInfo.var_needed = true;
 		}
         else {
@@ -184,13 +252,13 @@ void userInputParameters<dim>::loadVariableAttributes(variableAttributeLoader va
 	for (unsigned int i=0; i<number_of_variables; i++){
 		variable_info varInfo;
 
-        varInfo.need_value = need_value_change_LHS[i];
-        varInfo.need_gradient = need_gradient_change_LHS[i];
-        varInfo.need_hessian = need_hessian_change_LHS[i];
+        varInfo.need_value = equation_dependency_parser.need_value_change_nonexplicit_LHS[i];
+        varInfo.need_gradient = equation_dependency_parser.need_gradient_change_nonexplicit_LHS[i];
+        varInfo.need_hessian = equation_dependency_parser.need_hessian_change_nonexplicit_LHS[i];
 
         // FOR NOW, TAKING THESE FROM THE VARIABLE ITSELF!!
-        varInfo.value_residual = value_residual_LHS[i];
-        varInfo.gradient_residual = gradient_residual_LHS[i];
+        varInfo.value_residual = equation_dependency_parser.need_value_residual_nonexplicit_LHS[i];
+        varInfo.gradient_residual = equation_dependency_parser.need_gradient_residual_nonexplicit_LHS[i];
 
         varInfo.global_var_index = i;
 

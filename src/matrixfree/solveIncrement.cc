@@ -13,7 +13,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
 
     // Get the RHS of the equations
     // Ideally this would be just for the explicit fields, but for now this is all of them
-    computeRHS();
+    computeExplicitRHS();
 
     //solve for each field
     for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
@@ -71,7 +71,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
             //compute_nonexplicit_RHS()
             // Ideally, I'd just do this for the non-explicit variables, but for now I'll do all of them
             // this is a little redundant, but hopefully not too terrible
-            computeRHS();
+            computeNonexplicitRHS();
 
             for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
                 currentFieldIndex = fieldIndex; // Used in computeLHS()

@@ -38,6 +38,8 @@ FILE(GLOB userinputparameters_sources src/userInputParameters/*.cc)
 
 FILE(GLOB solverparameters_sources src/SolverParameters/*.cc)
 
+FILE(GLOB equationdependencyparser_sources src/EquationDependencyParser/*.cc)
+
 
 PROJECT(prisms_pf)
 SET(CMAKE_BUILD_TYPE Release)
@@ -51,7 +53,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
         #set(CMAKE_CXX_FLAGS "-Wno-maybe-uninitialized -Wno-deprecated-declarations -Wno-comment -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable")
 endif()
 
-ADD_LIBRARY(${PROJECT_NAME} ${matrixfree_sources} ${userinputparameters_sources} ${solverparameters_sources} src/utilities/sortIndexEntryPairList.cc src/variableAttributeLoader/variableAttributeLoader.cc src/utilities/vectorBCFunction.cc src/inputFileReader/inputFileReader.cc src/parallelNucleationList/parallelNucleationList.cc src/variableContainer/variableContainer.cc)
+ADD_LIBRARY(${PROJECT_NAME} ${matrixfree_sources} ${userinputparameters_sources} ${solverparameters_sources} ${equationdependencyparser_sources} src/utilities/sortIndexEntryPairList.cc src/variableAttributeLoader/variableAttributeLoader.cc src/utilities/vectorBCFunction.cc src/inputFileReader/inputFileReader.cc src/parallelNucleationList/parallelNucleationList.cc src/variableContainer/variableContainer.cc)
 DEAL_II_SETUP_TARGET(${PROJECT_NAME})
 
 PROJECT(prisms_pf_debug)
@@ -66,5 +68,5 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
         #set(CMAKE_CXX_FLAGS "-Wno-maybe-uninitialized -Wno-deprecated-declarations -Wno-comment -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable")
 endif()
 
-ADD_LIBRARY(${PROJECT_NAME} ${matrixfree_sources} ${userinputparameters_sources} ${solverparameters_sources} src/utilities/sortIndexEntryPairList.cc src/variableAttributeLoader/variableAttributeLoader.cc src/utilities/vectorBCFunction.cc src/inputFileReader/inputFileReader.cc src/parallelNucleationList/parallelNucleationList.cc src/variableContainer/variableContainer.cc)
+ADD_LIBRARY(${PROJECT_NAME} ${matrixfree_sources} ${userinputparameters_sources} ${solverparameters_sources} ${equationdependencyparser_sources} src/utilities/sortIndexEntryPairList.cc src/variableAttributeLoader/variableAttributeLoader.cc src/utilities/vectorBCFunction.cc src/inputFileReader/inputFileReader.cc src/parallelNucleationList/parallelNucleationList.cc src/variableContainer/variableContainer.cc)
 DEAL_II_SETUP_TARGET(${PROJECT_NAME})

@@ -12,7 +12,10 @@ private:
 	const userInputParameters<dim> userInputs;
 
 	// Pure virtual method in MatrixFreePDE
-	void residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+	void residualExplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
+
+    void residualNonexplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 
 	// Pure virtual method in MatrixFreePDE

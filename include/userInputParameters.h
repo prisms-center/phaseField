@@ -91,8 +91,11 @@ public:
 	std::vector<fieldType> var_type;
 	std::vector<PDEType> var_eq_type;
 
+    std::vector<bool> var_nonlinear;
+
 	// Variables needed to calculate the RHS
-	std::vector<variable_info> varInfoListRHS;
+    unsigned int num_var_explicit_RHS, num_var_nonexplicit_RHS;
+	std::vector<variable_info> varInfoListExplicitRHS, varInfoListNonexplicitRHS;
 
 	// Variables needed to calculate the LHS
 	unsigned int num_var_LHS;

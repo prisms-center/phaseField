@@ -274,7 +274,7 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
     // Nonlinear solver parameters
     std::vector<bool> var_nonlinear;
     for (unsigned int i=0; i<var_types.size(); i++){
-        var_nonlinear.push_back(false);
+        var_nonlinear.push_back(true);
     }
     //var_nonlinear.push_back(false);
     //var_nonlinear.push_back(true);

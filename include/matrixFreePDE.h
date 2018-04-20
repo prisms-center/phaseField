@@ -17,6 +17,7 @@
 #include "nucleus.h"
 #include "variableValueContainer.h"
 #include "variableContainer.h"
+#include "EquationDependencyParser.h"
 
 ////define data types
 #ifndef scalarType
@@ -183,7 +184,8 @@ class MatrixFreePDE:public Subscriptor
   virtual void adaptiveRefineCriterion();
 
   /*Method to compute the right hand side (RHS) residual vectors*/
-  void computeRHS();
+  void computeExplicitRHS();
+  void computeNonexplicitRHS();
 
   //virtual methods to be implemented in the derived class
   /*Method to calculate LHS(implicit solve)*/
@@ -192,12 +194,20 @@ class MatrixFreePDE:public Subscriptor
 		      const vectorType &src,
 		      const std::pair<unsigned int,unsigned int> &cell_range) const;
   /*Method to calculate RHS (implicit/explicit). This is an abstract method, so every model which inherits MatrixFreePDE<dim> has to implement this method.*/
-  void getRHS (const MatrixFree<dim,double> &data,
+  void getExplicitRHS (const MatrixFree<dim,double> &data,
 		       std::vector<vectorType*> &dst,
 		       const std::vector<vectorType*> &src,
 		       const std::pair<unsigned int,unsigned int> &cell_range) const;
 
-  virtual void residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+  void getNonexplicitRHS (const MatrixFree<dim,double> &data,
+            std::vector<vectorType*> &dst,
+            const std::vector<vectorType*> &src,
+            const std::pair<unsigned int,unsigned int> &cell_range) const;
+
+  virtual void residualExplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+  		  	  	  	  	  	  	  	  	  	  	  	  	  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
+
+  virtual void residualNonexplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
   		  	  	  	  	  	  	  	  	  	  	  	  	  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
 
   virtual void residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,

@@ -34,17 +34,17 @@ set Element degree = 1
 # Set the linear solver parameters
 # =================================================================================
 # The solver type (currently the only recommended option is conjugate gradient)
-set Linear solver = SolverCG
+#set Linear solver = SolverCG
 
 # The flag that determines whether the tolerance for solver convergence should
 # be an absolute tolerance or a relative tolerance
-set Use absolute convergence tolerance = true
+#set Use absolute convergence tolerance = true
 
 # The tolerance for convergence (L2 norm of the residual)
-set Solver tolerance value = 1.0e-10
+#set Solver tolerance value = 1.0e-10
 
 # The maximum number of solver iterations per time step
-set Maximum allowed solver iterations = 1000
+#set Maximum allowed solver iterations = 1000
 
 subsection Linear solver parameters: psi
     # Whether the tolerance value is compared to the residual (ABSOLUTE_RESIDUAL)
