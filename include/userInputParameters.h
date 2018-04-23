@@ -84,7 +84,7 @@ public:
     // Nonlinear solver parameters
     NonlinearSolverParameters nonlinear_solver_parameters;
 
-	// Variable inputs
+	// Variable inputs (I might be able to leave some/all of these in variable_attributes)
 	unsigned int number_of_variables;
 
 	std::vector<std::string> var_name;

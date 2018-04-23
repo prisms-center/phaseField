@@ -101,7 +101,9 @@ class unitTest
 	bool test_setOutputTimeSteps();
     bool test_NonlinearSolverParameters();
     bool test_LinearSolverParameters();
-    bool test_EquationDependencyParser();
+    bool test_EquationDependencyParser_variables_and_residuals_needed();
+    bool test_EquationDependencyParser_nonlinear();
+    bool test_EquationDependencyParser_postprocessing();
 };
 
 #include "variableAttributeLoader_test.cc"

@@ -163,7 +163,9 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
                         else {
                             diff = dU_vector.l2_norm();
                         }
-                        pcout << "Relative difference between nonlinear iterations: " << diff << " " << nonlinear_it_index << " " << currentIncrement << std::endl;
+                        if (currentIncrement%userInputs.skip_print_steps==0){
+                            pcout << "Relative difference between nonlinear iterations: " << diff << " " << nonlinear_it_index << " " << currentIncrement << std::endl;
+                        }
 
                         if (diff > userInputs.nonlinear_solver_parameters.getToleranceValue(fieldIndex) && nonlinear_it_index < userInputs.nonlinear_solver_parameters.getMaxIterations()){
                             nonlinear_it_converged = false;

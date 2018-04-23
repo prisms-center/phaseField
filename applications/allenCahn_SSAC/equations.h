@@ -9,6 +9,10 @@ void variableAttributeLoader::loadVariableAttributes(){
 	set_variable_type				(0,SCALAR);
 	set_variable_equation_type		(0,PARABOLIC);
 
+    set_dependencies_value_residual_term_RHS(0, "n");
+    set_dependencies_gradient_residual_term_RHS(0, "grad(n)");
+
+    /*
 	set_need_value					(0,true);
 	set_need_gradient				(0,true);
 	set_need_hessian				(0,false);
@@ -19,12 +23,18 @@ void variableAttributeLoader::loadVariableAttributes(){
 
 	set_need_value_residual_term	(0,true);
 	set_need_gradient_residual_term	(0,true);
-
+    */
     // Variable 1
 	set_variable_name				(1,"psi");
 	set_variable_type				(1,SCALAR);
 	set_variable_equation_type		(1,ELLIPTIC);
 
+    set_dependencies_value_residual_term_RHS(1, "n, psi");
+    set_dependencies_gradient_residual_term_RHS(1, "grad(psi)");
+    set_dependencies_value_residual_term_LHS(1, "n, psi, change(psi)");
+    set_dependencies_gradient_residual_term_LHS(1, "grad(change(psi))");
+
+    /*
 	set_need_value					(1,true);
 	set_need_gradient				(1,true);
 	set_need_hessian				(1,false);
@@ -44,14 +54,10 @@ void variableAttributeLoader::loadVariableAttributes(){
 	set_need_gradient_residual_term_LHS	(1,true);
 
     set_equations_are_nonlinear(true);
+    */
 
-    set_dependencies_value_RHS(0, "n");
-    set_dependencies_gradient_RHS(0, "grad(n)");
 
-    set_dependencies_value_RHS(1, "n, psi");
-    set_dependencies_gradient_RHS(1, "grad(psi)");
-    set_dependencies_value_LHS(1, "n, psi, change(psi)");
-    set_dependencies_gradient_LHS(1, "grad(change(psi))");
+
 }
 
 // =================================================================================

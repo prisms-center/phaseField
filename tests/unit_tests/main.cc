@@ -140,9 +140,22 @@ int main(int argc, char **argv)
 
   // Unit tests for the "parseDependences" method in the "UserInputParameters" class
   total_tests++;
-  unitTest<2,double> EquationDependencyParser_tester;
-  pass = EquationDependencyParser_tester.test_EquationDependencyParser();
+  unitTest<2,double> EquationDependencyParser_tester1;
+  pass = EquationDependencyParser_tester1.test_EquationDependencyParser_variables_and_residuals_needed();
   tests_passed += pass;
+
+  // Unit tests for the "parseDependences" method in the "UserInputParameters" class
+  total_tests++;
+  unitTest<2,double> EquationDependencyParser_tester2;
+  pass = EquationDependencyParser_tester2.test_EquationDependencyParser_nonlinear();
+  tests_passed += pass;
+
+  // Unit tests for the "parseDependences" method in the "UserInputParameters" class
+  total_tests++;
+  unitTest<2,double> EquationDependencyParser_tester3;
+  pass = EquationDependencyParser_tester3.test_EquationDependencyParser_postprocessing();
+  tests_passed += pass;
+
 
   // Print out results
   char buffer[100];

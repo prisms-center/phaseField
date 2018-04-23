@@ -1,14 +1,17 @@
 // Methods for the inputFileReader class
 #include "../../include/inputFileReader.h"
 #include "../../include/sortIndexEntryPairList.h"
+#include "../../include/EquationDependencyParser.h"
 
 // Constructor
 inputFileReader::inputFileReader(std::string input_file_name, variableAttributeLoader variable_attributes){
     // Extract an ordered vector of the variable types from variable_attributes
     unsigned int number_of_variables = variable_attributes.var_name_list.size();
-    var_types = sortIndexEntryPairList(variable_attributes.var_type_list,number_of_variables,SCALAR);
-    var_eq_types = sortIndexEntryPairList(variable_attributes.var_eq_type_list,number_of_variables,PARABOLIC);
-    var_names = sortIndexEntryPairList(variable_attributes.var_name_list,number_of_variables,"var");
+    var_types = variable_attributes.var_type; //sortIndexEntryPairList(variable_attributes.var_type_list,number_of_variables,SCALAR);
+    var_eq_types = variable_attributes.var_eq_type; //sortIndexEntryPairList(variable_attributes.var_eq_type_list,number_of_variables,PARABOLIC);
+    var_names = variable_attributes.var_name; //sortIndexEntryPairList(variable_attributes.var_name_list,number_of_variables,"var");
+
+    var_nonlinear = variable_attributes.var_nonlinear;
 
     var_nucleates = sortIndexEntryPairList(variable_attributes.nucleating_variable_list,number_of_variables,false);
 
@@ -272,12 +275,14 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
     }
 
     // Nonlinear solver parameters
+    /*
     std::vector<bool> var_nonlinear;
     for (unsigned int i=0; i<var_types.size(); i++){
         var_nonlinear.push_back(true);
     }
     //var_nonlinear.push_back(false);
     //var_nonlinear.push_back(true);
+    */
 
     parameter_handler.declare_entry("Maximum nonlinear solver iterations","100",dealii::Patterns::Integer(),"The maximum number of nonlinear solver iterations before the loop is stopped.");
 

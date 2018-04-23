@@ -32,8 +32,11 @@ class testInvM: public MatrixFreePDE<dim,degree>
 	      const std::vector<vectorType*> &src,
 	      const std::pair<unsigned int,unsigned int> &cell_range) const{};
 
-  void residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+  void residualExplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
   					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};
+
+ void residualNonexplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+                    dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};
 
   void residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
   					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};

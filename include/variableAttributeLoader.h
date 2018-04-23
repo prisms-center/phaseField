@@ -5,6 +5,7 @@
 #include "dealIIheaders.h"
 #include "model_variables.h"
 #include "varTypeEnums.h"
+#include "EquationDependencyParser.h"
 
 class variableAttributeLoader
 {
@@ -22,32 +23,10 @@ public:
 	void set_variable_type(unsigned int index, fieldType);
 	void set_variable_equation_type(unsigned int index, PDEType);
 
-	void set_need_value(unsigned int index, bool);
-	void set_need_gradient(unsigned int index, bool);
-	void set_need_hessian(unsigned int index, bool);
-	void set_need_value_residual_term(unsigned int index, bool);
-	void set_need_gradient_residual_term(unsigned int index, bool);
-
-	void set_need_value_LHS(unsigned int index, bool);
-	void set_need_gradient_LHS(unsigned int index, bool);
-	void set_need_hessian_LHS(unsigned int index, bool);
-	void set_need_value_residual_term_LHS(unsigned int index, bool);
-	void set_need_gradient_residual_term_LHS(unsigned int index, bool);
-
-    void set_need_value_change_LHS(unsigned int index, bool);
-	void set_need_gradient_change_LHS(unsigned int index, bool);
-	void set_need_hessian_change_LHS(unsigned int index, bool);
-
-    void set_need_value_PP(unsigned int index, bool);
-	void set_need_gradient_PP(unsigned int index, bool);
-	void set_need_hessian_PP(unsigned int index, bool);
-
     void set_need_value_nucleation(unsigned int index, bool);
     void set_allowed_to_nucleate(unsigned int index, bool);
 
     void set_output_integral(unsigned int index, bool);
-
-    void set_equations_are_nonlinear(bool);
 
     // Variable inputs (v2.0)
     std::vector<std::pair<unsigned int, std::string> > var_name_list;
@@ -80,17 +59,39 @@ public:
     std::vector<std::pair<unsigned int, bool> > need_value_residual_list_PP;
     std::vector<std::pair<unsigned int, bool> > need_gradient_residual_list_PP;
 
-    bool equations_are_nonlinear;
 
-    void set_dependencies_value_RHS(unsigned int index, std::string dependencies);
-    void set_dependencies_gradient_RHS(unsigned int index, std::string dependencies);
-    void set_dependencies_value_LHS(unsigned int index, std::string dependencies);
-    void set_dependencies_gradient_LHS(unsigned int index, std::string dependencies);
+    void set_dependencies_value_residual_term_RHS(unsigned int index, std::string dependencies);
+    void set_dependencies_gradient_residual_term_RHS(unsigned int index, std::string dependencies);
+    void set_dependencies_value_residual_term_LHS(unsigned int index, std::string dependencies);
+    void set_dependencies_gradient_residual_term_LHS(unsigned int index, std::string dependencies);
 
     std::vector<std::pair<unsigned int, std::string> > var_eq_dependencies_value_RHS;
     std::vector<std::pair<unsigned int, std::string> > var_eq_dependencies_gradient_RHS;
     std::vector<std::pair<unsigned int, std::string> > var_eq_dependencies_value_LHS;
     std::vector<std::pair<unsigned int, std::string> > var_eq_dependencies_gradient_LHS;
+
+    std::vector<std::pair<unsigned int, std::string> > var_eq_dependencies_value_PP;
+    std::vector<std::pair<unsigned int, std::string> > var_eq_dependencies_gradient_PP;
+
+    EquationDependencyParser equation_dependency_parser;
+
+    unsigned int number_of_variables;
+
+	std::vector<std::string> var_name;
+	std::vector<fieldType> var_type;
+	std::vector<PDEType> var_eq_type;
+
+    std::vector<bool> var_nonlinear;
+
+
+    std::vector<bool> nucleating_variable;
+    std::vector<bool> need_value_nucleation;
+
+    unsigned int pp_number_of_variables;
+
+	std::vector<std::string> pp_var_name;
+	std::vector<fieldType> pp_var_type;
+    std::vector<bool> pp_calc_integral;
 
 };
 

@@ -5,20 +5,26 @@ void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 	// Variable 0
 	set_variable_name				(0,"mg_n");
 	set_variable_type				(0,SCALAR);
-
+    /*
 	set_need_value_residual_term	(0,true);
 	set_need_gradient_residual_term	(0,false);
-
+    */
     set_output_integral         	(0,true);
+
+    set_dependencies_value_residual_term_RHS(0, "grad(n)");
+    set_dependencies_gradient_residual_term_RHS(0, "");
 
 	// Variable 1
 	set_variable_name				(1,"f_tot");
 	set_variable_type				(1,SCALAR);
-
+    /*
 	set_need_value_residual_term	(1,true);
 	set_need_gradient_residual_term	(1,false);
-
+    */
     set_output_integral         	(1,true);
+
+    set_dependencies_value_residual_term_RHS(1, "n, grad(n)");
+    set_dependencies_gradient_residual_term_RHS(1, "");
 
 }
 
@@ -27,7 +33,7 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 				variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
 												const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-// The order parameter and its derivatives 
+// The order parameter and its derivatives
 scalarvalueType n = variable_list.get_scalar_value(0);
 scalargradType nx = variable_list.get_scalar_gradient(0);
 
@@ -53,7 +59,7 @@ for (int i=0; i<dim; i++){
 f_tot = f_chem + f_grad;
 
 
-// Residuals for the equation to evolve the order parameter 
+// Residuals for the equation to evolve the order parameter
 pp_variable_list.set_scalar_value_residual_term(0, std::sqrt(pp_field[0]*pp_field[0]+pp_field[1]*pp_field[1]));
 
 pp_variable_list.set_scalar_value_residual_term(1, f_tot);

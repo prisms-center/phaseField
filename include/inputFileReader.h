@@ -41,6 +41,7 @@ public:
 	std::vector<std::string> var_names;
 	unsigned int number_of_dimensions;
 	std::vector<bool> var_nucleates;
+    std::vector<bool> var_nonlinear;
 };
 
 #endif /* INCLUDE_INPUTFILEREADER_H_ */

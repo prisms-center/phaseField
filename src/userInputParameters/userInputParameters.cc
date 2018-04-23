@@ -109,12 +109,14 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
 
 
     // Non-linear solver parameters
-    std::vector<bool> var_nonlinear;
+    std::vector<bool> var_nonlinear = variable_attributes.var_nonlinear;
+    /*
     for (unsigned int i=0; i<input_file_reader.var_types.size(); i++){
         var_nonlinear.push_back(false);
     }
     //var_nonlinear.push_back(false);
     //var_nonlinear.push_back(true);
+    */
 
 
     nonlinear_solver_parameters.setMaxIterations(parameter_handler.get_integer("Maximum nonlinear solver iterations"));
@@ -159,7 +161,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     }
 
     // Set the max number of nonlinear iterations
-    if (!variable_attributes.equations_are_nonlinear){
+    if (var_nonlinear.size() == 0){
         nonlinear_solver_parameters.setMaxIterations(0);
     }
 
