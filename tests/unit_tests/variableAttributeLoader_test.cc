@@ -7,14 +7,7 @@ void variableAttributeLoader::loadVariableAttributes(){
 
     set_dependencies_value_residual_term_RHS(0, "n");
     set_dependencies_gradient_residual_term_RHS(0, "grad(n)");
-    /*
-	set_need_value					(0,true);
-	set_need_gradient				(0,true);
-	set_need_hessian					(0,false);
 
-	set_need_value_residual_term		(0,true);
-	set_need_gradient_residual_term	(0,true);
-    */
 }
 
 void variableAttributeLoader::loadPostProcessorVariableAttributes(){

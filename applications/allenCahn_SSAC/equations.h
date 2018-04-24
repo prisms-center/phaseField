@@ -12,18 +12,6 @@ void variableAttributeLoader::loadVariableAttributes(){
     set_dependencies_value_residual_term_RHS(0, "n");
     set_dependencies_gradient_residual_term_RHS(0, "grad(n)");
 
-    /*
-	set_need_value					(0,true);
-	set_need_gradient				(0,true);
-	set_need_hessian				(0,false);
-
-    set_need_value_LHS				(0,true);
-	set_need_gradient_LHS			(0,false);
-	set_need_hessian_LHS			(0,false);
-
-	set_need_value_residual_term	(0,true);
-	set_need_gradient_residual_term	(0,true);
-    */
     // Variable 1
 	set_variable_name				(1,"psi");
 	set_variable_type				(1,SCALAR);
@@ -33,30 +21,6 @@ void variableAttributeLoader::loadVariableAttributes(){
     set_dependencies_gradient_residual_term_RHS(1, "grad(psi)");
     set_dependencies_value_residual_term_LHS(1, "n, psi, change(psi)");
     set_dependencies_gradient_residual_term_LHS(1, "grad(change(psi))");
-
-    /*
-	set_need_value					(1,true);
-	set_need_gradient				(1,true);
-	set_need_hessian				(1,false);
-
-	set_need_value_residual_term	(1,true);
-	set_need_gradient_residual_term	(1,true);
-
-    set_need_value_LHS				(1,true);
-	set_need_gradient_LHS			(1,false);
-	set_need_hessian_LHS			(1,false);
-
-    set_need_value_change_LHS		(1,true);
-	set_need_gradient_change_LHS	(1,true);
-	set_need_hessian_change_LHS		(1,false);
-
-    set_need_value_residual_term_LHS	(1,true);
-	set_need_gradient_residual_term_LHS	(1,true);
-
-    set_equations_are_nonlinear(true);
-    */
-
-
 
 }
 

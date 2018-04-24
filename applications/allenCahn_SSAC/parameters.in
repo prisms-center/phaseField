@@ -67,7 +67,7 @@ set Maximum nonlinear solver iterations = 1000
 subsection Nonlinear solver parameters: psi
     set Tolerance type = ABSOLUTE_SOLUTION_CHANGE
     set Tolerance value = 1e-5
-    set Use backtrace line-search damping = false
+    set Use backtracking line search damping = false
     set Constant damping value = 0.1
 end
 

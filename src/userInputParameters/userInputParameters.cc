@@ -149,7 +149,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
                 double temp_value = parameter_handler.get_double("Tolerance value");
 
                 // Set the backtrace damping flag
-                bool temp_backtrace_damping = parameter_handler.get_bool("Use backtrace line-search damping");
+                bool temp_backtrace_damping = parameter_handler.get_bool("Use backtracking line search damping");
 
                 // Set the default damping coefficient
                 double temp_damping_coefficient = parameter_handler.get_double("Constant damping value");
