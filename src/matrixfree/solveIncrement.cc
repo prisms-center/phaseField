@@ -127,14 +127,57 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
                         pcout << "\nWarning: implicit solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing solverTolerance.\n";
                     }
 
-                    double damping_coefficient = userInputs.nonlinear_solver_parameters.getDefaultDampingCoefficient(fieldIndex);
 
-                    if (fields[fieldIndex].type == SCALAR){
-                        //*solutionSet[fieldIndex]+=dU_scalar;
-                        solutionSet[fieldIndex]->sadd(1.0,damping_coefficient,dU_scalar);
+                    // Now that we have the calculated change in the solution, we need to select a damping coefficient
+                    double damping_coefficient;
+
+                    if (userInputs.nonlinear_solver_parameters.getBacktrackDampingFlag(fieldIndex)){
+                        vectorType solutionSet_old = *solutionSet[fieldIndex];
+                        double residual_old = residualSet[fieldIndex]->l2_norm();
+
+                        damping_coefficient = 1.0;
+                        bool damping_coefficient_found = false;
+                        while (!damping_coefficient_found){
+                            if (fields[fieldIndex].type == SCALAR){
+                                solutionSet[fieldIndex]->sadd(1.0,damping_coefficient,dU_scalar);
+                            }
+                            else {
+                                solutionSet[fieldIndex]->sadd(1.0,damping_coefficient,dU_vector);
+                            }
+
+                            computeNonexplicitRHS();
+
+                            for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[fieldIndex]->begin(); it!=valuesDirichletSet[fieldIndex]->end(); ++it){
+                                if (residualSet[fieldIndex]->in_local_range(it->first)){
+                                    (*residualSet[fieldIndex])(it->first) = 0.0;
+                                }
+                            }
+
+                            double residual_new = residualSet[fieldIndex]->l2_norm();
+
+                            if (currentIncrement%userInputs.skip_print_steps==0){
+                                pcout << "    Old residual: " << residual_old << " Damping Coeff: " << damping_coefficient << " New Residual: " << residual_new << std::endl;
+                            }
+
+                            // An improved approach would use the Armijo–Goldstein condition to ensure a sufficent decrease in the residual. This way is just scales the residual.
+                            if ( (residual_new < (residual_old*userInputs.nonlinear_solver_parameters.getBacktrackResidualDecreaseCoeff(fieldIndex))) || damping_coefficient < 1.0e-4){
+                                damping_coefficient_found = true;
+                            }
+                            else{
+                                damping_coefficient *= userInputs.nonlinear_solver_parameters.getBacktrackStepModifier(fieldIndex);
+                                *solutionSet[fieldIndex] = solutionSet_old;
+                            }
+                        }
                     }
-                    else {
-                        solutionSet[fieldIndex]->sadd(1.0,damping_coefficient,dU_vector);
+                    else{
+                        damping_coefficient = userInputs.nonlinear_solver_parameters.getDefaultDampingCoefficient(fieldIndex);
+
+                        if (fields[fieldIndex].type == SCALAR){
+                            solutionSet[fieldIndex]->sadd(1.0,damping_coefficient,dU_scalar);
+                        }
+                        else {
+                            solutionSet[fieldIndex]->sadd(1.0,damping_coefficient,dU_vector);
+                        }
                     }
 
                     if (currentIncrement%userInputs.skip_print_steps==0){

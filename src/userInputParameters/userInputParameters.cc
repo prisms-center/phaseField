@@ -149,12 +149,18 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
                 double temp_value = parameter_handler.get_double("Tolerance value");
 
                 // Set the backtrace damping flag
-                bool temp_backtrace_damping = parameter_handler.get_bool("Use backtracking line search damping");
+                bool temp_backtrack_damping = parameter_handler.get_bool("Use backtracking line search damping");
 
-                // Set the default damping coefficient
+                // Set the backtracking step size modifier
+                double temp_step_modifier = parameter_handler.get_double("Backtracking step size modifier");
+
+                // Set the constant that determines how much the residual must decrease to be accepted as sufficient
+                double temp_residual_decrease_coeff = parameter_handler.get_double("Backtracking residual decrease coefficient");
+
+                // Set the default damping coefficient (used if backtracking isn't used)
                 double temp_damping_coefficient = parameter_handler.get_double("Constant damping value");
 
-                nonlinear_solver_parameters.loadParameters(i,temp_type,temp_value,temp_backtrace_damping,temp_damping_coefficient);
+                nonlinear_solver_parameters.loadParameters(i,temp_type,temp_value,temp_backtrack_damping,temp_step_modifier,temp_residual_decrease_coeff,temp_damping_coefficient);
             }
             parameter_handler.leave_subsection();
         }

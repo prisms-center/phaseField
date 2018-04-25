@@ -37,20 +37,32 @@ unsigned int LinearSolverParameters::getMaxIterations(unsigned int index){
 }
 
 void NonlinearSolverParameters::loadParameters(unsigned int _var_index,
-    SolverToleranceType _tolerance_type,
-    double _tolerance_value,
-    bool _backtrace_damping_flag,
-    double _default_dampling_coefficient){
+        SolverToleranceType _tolerance_type,
+        double _tolerance_value,
+        bool _backtrack_damping_flag,
+        double _backtrack_step_modifier,
+        double _backtrack_residual_decrease_coeff,
+        double _default_dampling_coefficient){
 
     var_index_list.push_back(_var_index);
     tolerance_type_list.push_back(_tolerance_type);
     tolerance_value_list.push_back(_tolerance_value);
-    backtrace_damping_flag_list.push_back(_backtrace_damping_flag);
+    backtrack_damping_flag_list.push_back(_backtrack_damping_flag);
+    backtrack_step_modifier_list.push_back(_backtrack_step_modifier);
+    backtrack_residual_decrease_coeff_list.push_back(_backtrack_residual_decrease_coeff);
     default_damping_coefficient_list.push_back(_default_dampling_coefficient);
 }
 
-double NonlinearSolverParameters::getBacktraceDampingFlag(unsigned int index){
-    return backtrace_damping_flag_list.at(getEquationIndex(index));
+bool NonlinearSolverParameters::getBacktrackDampingFlag(unsigned int index){
+    return backtrack_damping_flag_list.at(getEquationIndex(index));
+}
+
+double NonlinearSolverParameters::getBacktrackStepModifier(unsigned int index){
+    return backtrack_step_modifier_list.at(getEquationIndex(index));
+}
+
+double NonlinearSolverParameters::getBacktrackResidualDecreaseCoeff(unsigned int index){
+    return backtrack_residual_decrease_coeff_list.at(getEquationIndex(index));
 }
 
 double NonlinearSolverParameters::getDefaultDampingCoefficient(unsigned int index){
