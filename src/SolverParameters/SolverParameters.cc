@@ -42,7 +42,8 @@ void NonlinearSolverParameters::loadParameters(unsigned int _var_index,
         bool _backtrack_damping_flag,
         double _backtrack_step_modifier,
         double _backtrack_residual_decrease_coeff,
-        double _default_dampling_coefficient){
+        double _default_dampling_coefficient,
+        bool _laplace_for_initial_guess){
 
     var_index_list.push_back(_var_index);
     tolerance_type_list.push_back(_tolerance_type);
@@ -51,6 +52,7 @@ void NonlinearSolverParameters::loadParameters(unsigned int _var_index,
     backtrack_step_modifier_list.push_back(_backtrack_step_modifier);
     backtrack_residual_decrease_coeff_list.push_back(_backtrack_residual_decrease_coeff);
     default_damping_coefficient_list.push_back(_default_dampling_coefficient);
+    laplace_for_initial_guess_list.push_back(_laplace_for_initial_guess);
 }
 
 bool NonlinearSolverParameters::getBacktrackDampingFlag(unsigned int index){
@@ -67,6 +69,10 @@ double NonlinearSolverParameters::getBacktrackResidualDecreaseCoeff(unsigned int
 
 double NonlinearSolverParameters::getDefaultDampingCoefficient(unsigned int index){
     return default_damping_coefficient_list.at(getEquationIndex(index));
+}
+
+bool NonlinearSolverParameters::getLaplaceInitializationFlag(unsigned int index){
+    return laplace_for_initial_guess_list.at(getEquationIndex(index));
 }
 
 void NonlinearSolverParameters::setMaxIterations(unsigned int _max_iterations){

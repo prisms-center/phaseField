@@ -50,15 +50,16 @@ end
 # Set the nonlinear solver parameters
 # =================================================================================
 
-set Maximum nonlinear solver iterations = 50
+set Maximum nonlinear solver iterations = 100
 
 subsection Nonlinear solver parameters: psi
     set Tolerance type = ABSOLUTE_SOLUTION_CHANGE
     set Tolerance value = 1e-5
-    set Use backtracking line search damping = true
+    set Use backtracking line search damping = false
     set Backtracking step size modifier = 0.5
     set Backtracking residual decrease coefficient = 1.0
     set Constant damping value = 1.0
+    set Use Laplace's equation to determine the initial guess = true
 end
 
 # =================================================================================

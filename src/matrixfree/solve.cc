@@ -15,6 +15,11 @@ void MatrixFreePDE<dim,degree>::solve(){
         //time stepping
         pcout << "\nTime stepping parameters: timeStep: " << userInputs.dtValue << "  timeFinal: " << userInputs.finalTime << "  timeIncrements: " << userInputs.totalIncrements << "\n";
 
+        // For any nonlinear equation, set the initial guess as the solution to Laplace's equations
+        generatingInitialGuess = true;
+        setNonlinearEqInitialGuess();
+        generatingInitialGuess = false;
+
         // Do an initial solve to set the elliptic fields
         solveIncrement(true);
 
@@ -85,6 +90,8 @@ void MatrixFreePDE<dim,degree>::solve(){
 
     //time independent BVP
     else{
+        generatingInitialGuess = false;
+
         //solve
         solveIncrement(false);
 

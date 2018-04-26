@@ -18,7 +18,7 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
       return 0.5*(1.0-std::tanh((p[0]-50.0)/1.5));
   }
   else {
-      return p[0]/100.0;
+      return p[0]/200.0;
   }
 
 }

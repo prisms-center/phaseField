@@ -15,7 +15,12 @@ void MatrixFreePDE<dim,degree>::vmult (vectorType &dst, const vectorType &src) c
 
   //call cell_loop
   dst=0.0;
-  matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getLHS, this, dst, src2);
+  if (!generatingInitialGuess){
+      matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getLHS, this, dst, src2);
+  }
+  else {
+      matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getLaplaceLHS, this, dst, src2);
+  }
 
   //Account for Dirichlet BC's (essentially copy dirichlet DOF values present in src to dst, although it is unclear why the constraints can't just be distributed here)
   for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[currentFieldIndex]->begin(); it!=valuesDirichletSet[currentFieldIndex]->end(); ++it){

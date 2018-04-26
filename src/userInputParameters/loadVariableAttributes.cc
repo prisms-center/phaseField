@@ -11,6 +11,8 @@ void userInputParameters<dim>::loadVariableAttributes(variableAttributeLoader va
     var_type = variable_attributes.var_type;
     var_eq_type = variable_attributes.var_eq_type;
 
+    var_nonlinear = variable_attributes.var_nonlinear;
+
     pp_calc_integral = variable_attributes.pp_calc_integral;
 
     pp_number_of_variables = variable_attributes.pp_number_of_variables;

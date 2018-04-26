@@ -95,7 +95,8 @@ public:
                         bool _backtrack_damping_flag,
                         double _backtrack_step_modifier,
                         double _backtrack_residual_decrease_coeff,
-                        double _default_dampling_coefficient);
+                        double _default_dampling_coefficient,
+                        bool _laplace_for_initial_guess);
 
     /**
     * Method to get the backtrack line-search damping flag for one of the governing equations.
@@ -117,6 +118,11 @@ public:
     */
     double getDefaultDampingCoefficient(unsigned int index);
 
+    /**
+    * Method to get the flag determining if the solution to Laplace's equation should be used as the initial guess for one of the governing equations.
+    */
+    bool getLaplaceInitializationFlag(unsigned int index);
+
 private:
     unsigned int max_iterations;
 
@@ -124,6 +130,7 @@ private:
     std::vector<double> backtrack_step_modifier_list;
     std::vector<double> backtrack_residual_decrease_coeff_list;
     std::vector<double> default_damping_coefficient_list;
+    std::vector<bool> laplace_for_initial_guess_list;
 
 };
 

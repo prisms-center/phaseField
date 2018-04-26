@@ -79,6 +79,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
 
                 if (fields[fieldIndex].pdetype==ELLIPTIC){
 
+
                     if (currentIncrement%userInputs.skip_print_steps==0){
                         sprintf(buffer, "field '%2s' [nonlinear solve]: current solution: %12.6e, current residual:%12.6e\n", \
                         fields[fieldIndex].name.c_str(),				\
