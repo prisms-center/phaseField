@@ -1,46 +1,6 @@
 #include "../../include/dealIIheaders.h"
 #include <iostream>
 
-// #define problemDIM 2
-// #define finiteElementDegree 1
-// #define vectorgradType dealii::Tensor<2, dim, dealii::VectorizedArray<double> >
-// #define typeScalar dealii::FEEvaluation<dim,finiteElementDegree,finiteElementDegree+1,1,double>
-// #define typeVector dealii::FEEvaluation<dim,finiteElementDegree,finiteElementDegree+1,dim,double>
-//
-// //define test variables for the tests
-// #define subdivisionsX 10
-// #define subdivisionsY 10
-// #define subdivisionsZ 10
-//
-// #define numOutputs 10
-// #define timeStep 1.0e-3
-// #define timeFinal 20.0
-// #define timeIncrements 20000
-//
-// // =================================================================================
-// // Define the variables in the model
-// // =================================================================================
-// // The number of variables
-// #define num_var 1
-//
-// // The names of the variables, whether they are scalars or vectors and whether the
-// // governing eqn for the variable is parabolic or elliptic
-// #define variable_name {"n"}
-// #define variable_type {"SCALAR"}
-// #define variable_eq_type {"PARABOLIC"}
-//
-// // Flags for whether the value, gradient, and Hessian are needed in the residual eqns
-// #define need_val {true}
-// #define need_grad {true}
-// #define need_hess  {false}
-//
-// // Flags for whether the residual equation has a term multiplied by the test function
-// // (need_val_residual) and/or the gradient of the test function (need_grad_residual)
-// #define need_val_residual {true}
-// #define need_grad_residual {true}
-
-
-
 //define data type
 template <int dim>
 void computeStress(const dealii::Table<2, double>& CIJ, const dealii::VectorizedArray<double> ux[][dim], const dealii::VectorizedArray<double> R[][dim]);
@@ -66,6 +26,8 @@ void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Vectorized
 #include "../../src/matrixfree/computeIntegral.cc"
 #include "../../src/matrixfree/nucleation.cc"
 #include "../../src/matrixfree/checkpoint.cc"
+
+#include "../../src/matrixfree/setNonlinearEqInitialGuess.cc"
 
 #include "../../src/inputFileReader/inputFileReader.cc"
 #include "../../src/parallelNucleationList/parallelNucleationList.cc"

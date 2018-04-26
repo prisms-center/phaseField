@@ -12,8 +12,8 @@ template <int dim,typename T>
     NonlinearSolverParameters test_object;
 
     test_object.setMaxIterations(123);
-    test_object.loadParameters(2,ABSOLUTE_RESIDUAL,1.0e-3,true,1.0);
-    test_object.loadParameters(5,RELATIVE_RESIDUAL_CHANGE,1.0e-4,false,0.5);
+    test_object.loadParameters(2,ABSOLUTE_RESIDUAL,1.0e-3,true,0.5,1.0,1.0,false);
+    test_object.loadParameters(5,RELATIVE_RESIDUAL_CHANGE,1.0e-4,false,0.5,1.0,0.5,false);
 
     // Subtests
     unsigned int subtest_index = 0;
@@ -53,7 +53,7 @@ template <int dim,typename T>
     //Subtest 4
     subtest_index++;
     result = false;
-    if (test_object.getBacktraceDampingFlag(2) == true && test_object.getBacktraceDampingFlag(5) == false){
+    if (test_object.getBacktrackDampingFlag(2) == true && test_object.getBacktrackDampingFlag(5) == false){
         result = true;
     }
     std::cout << "Subtest " << subtest_index << " result for 'getBacktraceDampingFlag': " << result << std::endl;
