@@ -46,6 +46,8 @@ void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Vectorized
 
 #include "../../src/variableAttributeLoader/variableAttributeLoader.cc"
 
+#include "../../src/FloodFiller/FloodFiller.cc"
+
 template <int dim, typename T>
 class unitTest
 {
@@ -66,6 +68,7 @@ class unitTest
     bool test_EquationDependencyParser_variables_and_residuals_needed();
     bool test_EquationDependencyParser_nonlinear();
     bool test_EquationDependencyParser_postprocessing();
+    bool test_FloodFiller();
 };
 
 #include "variableAttributeLoader_test.cc"
@@ -88,3 +91,5 @@ class unitTest
 
 #include "../../src/EquationDependencyParser/EquationDependencyParser.cc"
 #include "test_EquationDependencyParser.h"
+
+#include "test_FloodFiller.h"

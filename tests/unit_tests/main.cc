@@ -156,6 +156,11 @@ int main(int argc, char **argv)
   pass = EquationDependencyParser_tester3.test_EquationDependencyParser_postprocessing();
   tests_passed += pass;
 
+  // Unit tests for the FloodFiller class
+  total_tests++;
+  unitTest<2,double> FloodFiller_tester;
+  pass = FloodFiller_tester.test_FloodFiller();
+  tests_passed += pass;
 
   // Print out results
   char buffer[100];
