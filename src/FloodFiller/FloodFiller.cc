@@ -17,6 +17,7 @@ void FloodFiller<dim, degree>::calcGrainSets(FESystem<dim> & fe, dealii::DoFHand
     grain_sets.push_back(grain_set);
     grain_sets.back().setGrainIndex(grain_index);
 
+    // The flood fill loop
     di = dof_handler.begin_active();
     while (di != dof_handler.end())
     {
@@ -38,6 +39,7 @@ void FloodFiller<dim, degree>::calcGrainSets(FESystem<dim> & fe, dealii::DoFHand
         grain_sets.pop_back();
     }
 
+    // Get a global list of grains from the various local lists
     communicateGrainSets(grain_sets);
 
 }
@@ -74,13 +76,13 @@ void FloodFiller<dim, degree>::recursiveFloodFill(T di, T di_end, vectorType* so
             if (ele_val > threshold){
                 grain_assigned = true;
 
-                //grain_sets.back().setGrainIndex(grain_index);
                 std::vector<dealii::Point<dim>> vertex_list;
                 for (unsigned int v=0; v< dealii::Utilities::fixed_power<dim>(2.0); v++){
                     vertex_list.push_back(di->vertex(v));
                 }
                 grain_sets.back().addVertexList(vertex_list);
 
+                // Call recursiveFloodFill on the element's neighbors
                 for (unsigned int n=0; n<2*dim; n++){
                     recursiveFloodFill<typename DoFHandler<dim>::active_cell_iterator>(di->neighbor(n), di_end, solution_field, threshold,  grain_index, grain_sets, grain_assigned);
                 }
@@ -111,25 +113,15 @@ void FloodFiller<dim, degree>::communicateGrainSets(std::vector<GrainSet<dim>> &
 			MPI_Barrier(MPI_COMM_WORLD);
 		}
 
-
-
 		// The final processor now has all of the grains
 		// Check for grains that are split across processors
 		if (thisProc == numProcs-1){
 			mergeSplitGrains(grain_sets);
 		}
 
-
-
 		// The final processor now has the final list of the grains, broadcast it to all the other processors
 		broadcastUpdate(numProcs-1, thisProc, grain_sets);
-
 	}
-
-    std::cout << "----- final ------" << std::endl;
-    for (unsigned int g=0; g<grain_sets.size(); g++){
-        std::cout << thisProc << " grain: " << g << " num_elements: " << grain_sets[g].getVertexList().size() << std::endl;
-    }
 
 }
 
@@ -144,12 +136,11 @@ void FloodFiller<dim, degree>::sendUpdate (int procno, std::vector<GrainSet<dim>
     //Sending local no. of grains
     MPI_Send(&num_grains, 1, MPI_INT, procno, 0, MPI_COMM_WORLD);
     if (num_grains > 0){
-        //std::vector<unsigned int> s_index;
+
         std::vector<unsigned int> s_num_elements;
         std::vector<double> s_vertices;
 
         for (unsigned int g=0; g<grain_sets.size(); g++){
-            //s_index.push_back(grain_sets[g].getGrainIndex());
 
             std::vector<std::vector<dealii::Point<dim>>> vertex_list = grain_sets[g].getVertexList();
             s_num_elements.push_back(vertex_list.size());
@@ -166,13 +157,6 @@ void FloodFiller<dim, degree>::sendUpdate (int procno, std::vector<GrainSet<dim>
         unsigned int num_vertices = 0;
         for (unsigned int g=0; g<grain_sets.size(); g++){
             num_vertices += s_num_elements[g] * dealii::Utilities::fixed_power<dim>(2.0) * (double)dim;
-        }
-
-        //std::cout << "num grains (send): " << num_grains << std::endl;
-        //std::cout << "num vertices (send): " << num_vertices << std::endl;
-
-        for (unsigned int v=0; v<num_vertices; v++){
-            //std::cout << s_vertices[v] << std::endl;
         }
 
         MPI_Send(&s_num_elements[0], num_grains, MPI_UNSIGNED, procno, 1, MPI_COMM_WORLD);
@@ -199,16 +183,8 @@ void FloodFiller<dim, degree>::receiveUpdate (int procno, std::vector<GrainSet<d
             num_vertices += r_num_elements[g] * dealii::Utilities::fixed_power<dim>(2.0) * (double)dim;
         }
 
-        //std::cout << "num grains (receive): " << num_grains << std::endl;
-        //std::cout << "num elements (receive): " << r_num_elements[0] << std::endl;
-        //std::cout << "num vertices (receive): " << num_vertices << std::endl;
-
         std::vector<double> r_vertices(num_vertices, 0.0);
         MPI_Recv(&r_vertices[0], num_vertices, MPI_DOUBLE, procno, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-
-        for (unsigned int v=0; v<num_vertices; v++){
-            //std::cout << r_vertices[v] << std::endl;
-        }
 
         // Now add these new grains to the local grain list
         for (int g=0; g<num_grains; g++){
@@ -323,7 +299,6 @@ void FloodFiller<dim, degree>::mergeSplitGrains (std::vector<GrainSet<dim>> & gr
         for (unsigned int c = 0; c < vertex_list.size(); c++){
             for (unsigned int v = 0; v < dealii::Utilities::fixed_power<dim>(2.0); v++){
 
-
                 // Now cycle through the other grains to find overlapping elements
                 for (unsigned int g_other=g+1; g_other<grain_sets.size(); g_other++){
                     bool matching_vert = false;
@@ -335,7 +310,6 @@ void FloodFiller<dim, degree>::mergeSplitGrains (std::vector<GrainSet<dim>> & gr
                             // Check if the vertices match
                             if (vertex_list[c][v] == vertex_list_other[c_other][v_other]){
                                 matching_vert = true;
-                                std::cout << "Matching vert found. g: " << g << " g_other: " << g_other << " vert: " << vertex_list_other[c_other][v_other] << std::endl;
                                 break;
                             }
                             if (matching_vert){

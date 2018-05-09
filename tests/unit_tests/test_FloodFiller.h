@@ -21,7 +21,7 @@ public:
           val = 0.0;
       }
 
-      std::cout << p[0] << "\t" << p[1] << "\t" << val << std::endl;
+      //std::cout << p[0] << "\t" << p[1] << "\t" << val << std::endl;
       return val;
   };
 
@@ -209,7 +209,7 @@ template <int dim,typename T>
 
             if (vertex_list0.size() == 9){
                 result0 = compareUnsortedVectors(vertex_list0, expected_vertex_list0, 1.0e-3);
-                std::cout << "Result 0: " << result0 << std::endl;
+                std::cout << "Subtest result for grain 0: " << result0 << std::endl;
             }
             else {
                 result0 = false;
@@ -217,7 +217,7 @@ template <int dim,typename T>
 
             if (vertex_list1.size() == 1){
                 result1 = compareUnsortedVectors(vertex_list1, expected_vertex_list1, 1.0e-3);
-                std::cout << "Result 1: " << result1 << std::endl;
+                std::cout << "Subtest result for grain 1: " << result1 << std::endl;
             }
             else {
                 result1 = false;
