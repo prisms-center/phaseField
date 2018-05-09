@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['matrixfreepde',['MatrixFreePDE',['../class_matrix_free_p_d_e.html',1,'']]],
-  ['modelresidual',['modelResidual',['../classmodel_residual.html',1,'']]],
-  ['modelvariable',['modelVariable',['../classmodel_variable.html',1,'']]]
+  ['nonlinearsolverparameters',['NonlinearSolverParameters',['../class_nonlinear_solver_parameters.html',1,'']]],
+  ['nonuniformdirichletbc',['NonUniformDirichletBC',['../class_non_uniform_dirichlet_b_c.html',1,'']]],
+  ['nonuniformdirichletbcvec',['NonUniformDirichletBCVec',['../class_non_uniform_dirichlet_b_c_vec.html',1,'']]],
+  ['nucleationparameters',['nucleationParameters',['../classnucleation_parameters.html',1,'']]],
+  ['nucleus',['nucleus',['../structnucleus.html',1,'']]]
 ];

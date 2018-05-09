@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['linearsolverparameters',['LinearSolverParameters',['../class_linear_solver_parameters.html',1,'']]]
+  ['matrixfreepde',['MatrixFreePDE',['../class_matrix_free_p_d_e.html',1,'']]],
+  ['modelresidual',['modelResidual',['../classmodel_residual.html',1,'']]],
+  ['modelvariable',['modelVariable',['../classmodel_variable.html',1,'']]]
 ];

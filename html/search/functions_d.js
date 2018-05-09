@@ -1,18 +1,16 @@
 var searchData=
 [
-  ['parallelnucleationlist',['parallelNucleationList',['../classparallel_nucleation_list.html#ae7bfe9e70c49e4dcb2547236e95cf3cc',1,'parallelNucleationList']]],
-  ['parse',['parse',['../class_equation_dependency_parser.html#a3d95380fec4dd2c79253937130c13201',1,'EquationDependencyParser']]],
-  ['parse_5fline',['parse_line',['../classinput_file_reader.html#a4c03a93f2b56f526824df5a675d9d4db',1,'inputFileReader']]],
-  ['parsedependencylistlhs',['parseDependencyListLHS',['../class_equation_dependency_parser.html#aa39ae09a364562c9169cdecd1aad5e8c',1,'EquationDependencyParser']]],
-  ['parsedependencylistpp',['parseDependencyListPP',['../class_equation_dependency_parser.html#a540d30b33d09d6595f4c71689babe106',1,'EquationDependencyParser']]],
-  ['parsedependencylistrhs',['parseDependencyListRHS',['../class_equation_dependency_parser.html#aa45fc0b7ae92a07520456ba68f5e3f1c',1,'EquationDependencyParser']]],
-  ['pfunct_5ffav',['pfunct_faV',['../precipitate_evolution__pfunction_2custom_p_d_e_8h.html#a756b101a07cce6a068bcffa97d613440',1,'customPDE.h']]],
-  ['pfunct_5ffbv',['pfunct_fbV',['../precipitate_evolution__pfunction_2custom_p_d_e_8h.html#a5fdbe0b381dfd3404bf6ecc78e50c97b',1,'customPDE.h']]],
-  ['pfunct_5fmcv',['pfunct_McV',['../precipitate_evolution__pfunction_2custom_p_d_e_8h.html#a47c6c56e80425b57c24e70e4339e7b95',1,'customPDE.h']]],
-  ['pfunct_5fmn1v',['pfunct_Mn1V',['../precipitate_evolution__pfunction_2custom_p_d_e_8h.html#af545c885f2183b360e20549810221ff0',1,'customPDE.h']]],
-  ['pfunct_5fmn2v',['pfunct_Mn2V',['../precipitate_evolution__pfunction_2custom_p_d_e_8h.html#ac91c60e2341a85cdd7f4d2b1afc7953e',1,'customPDE.h']]],
-  ['pfunct_5fmn3v',['pfunct_Mn3V',['../precipitate_evolution__pfunction_2custom_p_d_e_8h.html#a4b06688bcdb7fd037c03684afa72ab8a',1,'customPDE.h']]],
-  ['pfunction',['pFunction',['../class_p_functions_1_1p_function.html#a8270ad32daccad5deab9e79b95942535',1,'PFunctions::pFunction']]],
-  ['postprocessedfields',['postProcessedFields',['../class_matrix_free_p_d_e.html#af48d2ca9f6a56369e960c110fa9c99be',1,'MatrixFreePDE::postProcessedFields()'],['../post_processed_fields_8h.html#a13dd6177d13d0d68b193523dcfca87dd',1,'postProcessedFields():&#160;postProcessedFields.h']]],
-  ['pp_5fparse',['pp_parse',['../class_equation_dependency_parser.html#aa694268f17bd034f0f261918a95dfc80',1,'EquationDependencyParser']]]
+  ['receiveupdate',['receiveUpdate',['../class_flood_filler.html#a294e276260c86a45ae6dc4c70531f261',1,'FloodFiller::receiveUpdate()'],['../classparallel_nucleation_list.html#ad538f2c3b2a68f5cef215801a687a7ff',1,'parallelNucleationList::receiveUpdate()']]],
+  ['recursivefloodfill',['recursiveFloodFill',['../class_flood_filler.html#a93799489b0e0467d86bdd79e4a3fa600',1,'FloodFiller']]],
+  ['refinegrid',['refineGrid',['../class_matrix_free_p_d_e.html#aced905f83aaed97fde5f712b40828478',1,'MatrixFreePDE']]],
+  ['refinemeshnearnuclei',['refineMeshNearNuclei',['../class_matrix_free_p_d_e.html#a785150d76270c4b9048fe5097c20768a',1,'MatrixFreePDE']]],
+  ['reinit',['reinit',['../class_matrix_free_p_d_e.html#a8bf592c67d376edd20bf24a0028c9761',1,'MatrixFreePDE::reinit()'],['../classvariable_container.html#a3fd30e2fee5f3ca55ab76e2ba2b40475',1,'variableContainer::reinit()']]],
+  ['reinit_5fand_5feval',['reinit_and_eval',['../classvariable_container.html#a887142b7bc913325076937811e586dc6',1,'variableContainer']]],
+  ['reinit_5fand_5feval_5fchange_5fin_5fsolution',['reinit_and_eval_change_in_solution',['../classvariable_container.html#a68112d80a50092129d340c9bce24e343',1,'variableContainer']]],
+  ['reinit_5fand_5feval_5flhs',['reinit_and_eval_LHS',['../classvariable_container.html#a458d69462c54bde12d6bfc6c8a2dcb1b',1,'variableContainer']]],
+  ['removesubsetofnuclei',['removeSubsetOfNuclei',['../classparallel_nucleation_list.html#abbd2e2215b5bf8859484cc2dc6112dc7',1,'parallelNucleationList']]],
+  ['residualexplicitrhs',['residualExplicitRHS',['../class_matrix_free_p_d_e.html#a395e1796a24dc0a24be811d49285ebf8',1,'MatrixFreePDE']]],
+  ['residuallhs',['residualLHS',['../class_matrix_free_p_d_e.html#a73f7a86f71003fe04d55f8b9acd58b5e',1,'MatrixFreePDE']]],
+  ['residualnonexplicitrhs',['residualNonexplicitRHS',['../class_matrix_free_p_d_e.html#ae09f9eaaa58c229fd424da165fb9654c',1,'MatrixFreePDE']]],
+  ['resolvenucleationconflicts',['resolveNucleationConflicts',['../classparallel_nucleation_list.html#a2bade43ad9197049f681735d35fbe343',1,'parallelNucleationList']]]
 ];

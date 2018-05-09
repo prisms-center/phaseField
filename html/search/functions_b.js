@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['nonuniformdirichletbc',['NonUniformDirichletBC',['../class_non_uniform_dirichlet_b_c.html#a158f2dd666f3e057b7b059767d7ceb0e',1,'NonUniformDirichletBC']]],
-  ['nonuniformdirichletbcvec',['NonUniformDirichletBCVec',['../class_non_uniform_dirichlet_b_c_vec.html#a6a75956fac04d90d10775bbd119224e2',1,'NonUniformDirichletBCVec']]],
-  ['nucleationparameters',['nucleationParameters',['../classnucleation_parameters.html#a0bb5c075aca84cc0f02efacd17ee3939',1,'nucleationParameters']]]
+  ['operator_28_29',['operator()',['../classvariable_value_container.html#a7bfba0474f1c4d35b4cb39debc3afc99',1,'variableValueContainer']]],
+  ['outputfreeenergy',['outputFreeEnergy',['../class_matrix_free_p_d_e.html#abac2cb853f6cd1030278df57182c2000',1,'MatrixFreePDE']]],
+  ['outputresults',['outputResults',['../class_matrix_free_p_d_e.html#ada15bd2ddcdcee02193cafbc4e2111d2',1,'MatrixFreePDE']]]
 ];

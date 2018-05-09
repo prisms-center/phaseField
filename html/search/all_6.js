@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['gbll',['gbll',['../classcustom_p_d_e.html#a660bbded39da7eff3f85160b1e831113',1,'customPDE']]],
-  ['gbrl',['gbrl',['../classcustom_p_d_e.html#a4dd65534f889192e0a305fc0e4a31895',1,'customPDE']]],
   ['generatinginitialguess',['generatingInitialGuess',['../class_matrix_free_p_d_e.html#a8715cb0955713c67d61930ab34726177',1,'MatrixFreePDE']]],
   ['get_5fchange_5fin_5fscalar_5fgradient',['get_change_in_scalar_gradient',['../classvariable_container.html#a2334c6644986854cf64082e055d463b1',1,'variableContainer']]],
   ['get_5fchange_5fin_5fscalar_5fhessian',['get_change_in_scalar_hessian',['../classvariable_container.html#a558ff58e2fcff8f1b6a70422d612490f',1,'variableContainer']]],

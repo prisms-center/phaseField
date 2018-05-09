@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['solverparametersbase',['SolverParametersBase',['../class_solver_parameters_base.html',1,'']]]
+  ['userinputparameters',['userInputParameters',['../classuser_input_parameters.html',1,'']]]
 ];
