@@ -22,9 +22,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="logo_pic.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PRISMS-PF
-   &#160;<span id="projectnumber">2.0</span>
+   &#160;<span id="projectnumber">v2.1</span>
    </div>
   </td>
  </tr>
@@ -121,6 +122,8 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a77b8d6d1e8671321877e82954a68fcd9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a77b8d6d1e8671321877e82954a68fcd9">variableContainer</a> (const dealii::MatrixFree&lt; dim, double &gt; &amp;data, std::vector&lt; <a class="el" href="structvariable__info.html">variable_info</a> &gt; _varInfoList, std::vector&lt; <a class="el" href="structvariable__info.html">variable_info</a> &gt; _varChangeInfoList)</td></tr>
+<tr class="separator:a77b8d6d1e8671321877e82954a68fcd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90c86bbe456d064ee2fa1148ece64e82"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a90c86bbe456d064ee2fa1148ece64e82">variableContainer</a> (const dealii::MatrixFree&lt; dim, double &gt; &amp;data, std::vector&lt; <a class="el" href="structvariable__info.html">variable_info</a> &gt; _varInfoList)</td></tr>
 <tr class="separator:a90c86bbe456d064ee2fa1148ece64e82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a280e61dec4713ac7990b9b97285e79ce"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a280e61dec4713ac7990b9b97285e79ce">variableContainer</a> (const dealii::MatrixFree&lt; dim, double &gt; &amp;data, std::vector&lt; <a class="el" href="structvariable__info.html">variable_info</a> &gt; _varInfoList, unsigned int fixed_index)</td></tr>
@@ -137,6 +140,18 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa0d9fafbd3a675891c12add704e6780d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b157055aabdf531aa70e279712c53e4"><td class="memItemLeft" align="right" valign="top">dealii::Tensor&lt; 3, dim, T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a7b157055aabdf531aa70e279712c53e4">get_vector_hessian</a> (unsigned int global_variable_index) const </td></tr>
 <tr class="separator:a7b157055aabdf531aa70e279712c53e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae891ca3b3dacd905fbff25478dab600e"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#ae891ca3b3dacd905fbff25478dab600e">get_change_in_scalar_value</a> (unsigned int global_variable_index) const </td></tr>
+<tr class="separator:ae891ca3b3dacd905fbff25478dab600e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2334c6644986854cf64082e055d463b1"><td class="memItemLeft" align="right" valign="top">dealii::Tensor&lt; 1, dim, T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a2334c6644986854cf64082e055d463b1">get_change_in_scalar_gradient</a> (unsigned int global_variable_index) const </td></tr>
+<tr class="separator:a2334c6644986854cf64082e055d463b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a558ff58e2fcff8f1b6a70422d612490f"><td class="memItemLeft" align="right" valign="top">dealii::Tensor&lt; 2, dim, T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a558ff58e2fcff8f1b6a70422d612490f">get_change_in_scalar_hessian</a> (unsigned int global_variable_index) const </td></tr>
+<tr class="separator:a558ff58e2fcff8f1b6a70422d612490f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2e425717a38bf02497af5868d54eccd"><td class="memItemLeft" align="right" valign="top">dealii::Tensor&lt; 1, dim, T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#ab2e425717a38bf02497af5868d54eccd">get_change_in_vector_value</a> (unsigned int global_variable_index) const </td></tr>
+<tr class="separator:ab2e425717a38bf02497af5868d54eccd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a740b44ebe3c44d59b56d2ca26ad3ac31"><td class="memItemLeft" align="right" valign="top">dealii::Tensor&lt; 2, dim, T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a740b44ebe3c44d59b56d2ca26ad3ac31">get_change_in_vector_gradient</a> (unsigned int global_variable_index) const </td></tr>
+<tr class="separator:a740b44ebe3c44d59b56d2ca26ad3ac31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a706d828db19a8011727f6305dfdffd5a"><td class="memItemLeft" align="right" valign="top">dealii::Tensor&lt; 3, dim, T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a706d828db19a8011727f6305dfdffd5a">get_change_in_vector_hessian</a> (unsigned int global_variable_index) const </td></tr>
+<tr class="separator:a706d828db19a8011727f6305dfdffd5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2bacd1fda3217a72ecaf93c94855652"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#ae2bacd1fda3217a72ecaf93c94855652">set_scalar_value_residual_term</a> (unsigned int global_variable_index, T val)</td></tr>
 <tr class="separator:ae2bacd1fda3217a72ecaf93c94855652"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd84985aeedbfe2cb822742730ca0e31"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#acd84985aeedbfe2cb822742730ca0e31">set_scalar_gradient_residual_term</a> (unsigned int global_variable_index, dealii::Tensor&lt; 1, dim, T &gt; grad)</td></tr>
@@ -145,16 +160,26 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a228512517dc354144d2ee97bfa0d1627"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad244ace7b1bfb549dac979fdcd999825"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#ad244ace7b1bfb549dac979fdcd999825">set_vector_gradient_residual_term</a> (unsigned int global_variable_index, dealii::Tensor&lt; 2, dim, T &gt; grad)</td></tr>
 <tr class="separator:ad244ace7b1bfb549dac979fdcd999825"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15b919d4844269efffa1a1ab03daf4b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a15b919d4844269efffa1a1ab03daf4b3">set_scalar_value_residual_term_LHS</a> (unsigned int global_variable_index, T val)</td></tr>
+<tr class="separator:a15b919d4844269efffa1a1ab03daf4b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c988fe92152d808b6b33fd24b36bd4b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a1c988fe92152d808b6b33fd24b36bd4b">set_scalar_gradient_residual_term_LHS</a> (unsigned int global_variable_index, dealii::Tensor&lt; 1, dim, T &gt; grad)</td></tr>
+<tr class="separator:a1c988fe92152d808b6b33fd24b36bd4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af52c94cfef777eac5aab3a1455efeb52"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#af52c94cfef777eac5aab3a1455efeb52">set_vector_value_residual_term_LHS</a> (unsigned int global_variable_index, dealii::Tensor&lt; 1, dim, T &gt; val)</td></tr>
+<tr class="separator:af52c94cfef777eac5aab3a1455efeb52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10ce824240f344ad29fe3e5c140b1112"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a10ce824240f344ad29fe3e5c140b1112">set_vector_gradient_residual_term_LHS</a> (unsigned int global_variable_index, dealii::Tensor&lt; 2, dim, T &gt; grad)</td></tr>
+<tr class="separator:a10ce824240f344ad29fe3e5c140b1112"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a887142b7bc913325076937811e586dc6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a887142b7bc913325076937811e586dc6">reinit_and_eval</a> (const std::vector&lt; <a class="el" href="classvariable_container.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; &amp;src, unsigned int cell)</td></tr>
 <tr class="separator:a887142b7bc913325076937811e586dc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68112d80a50092129d340c9bce24e343"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a68112d80a50092129d340c9bce24e343">reinit_and_eval_change_in_solution</a> (const <a class="el" href="classvariable_container.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> &amp;src, unsigned int cell, unsigned int var_being_solved)</td></tr>
+<tr class="separator:a68112d80a50092129d340c9bce24e343"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a458d69462c54bde12d6bfc6c8a2dcb1b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a458d69462c54bde12d6bfc6c8a2dcb1b">reinit_and_eval_LHS</a> (const <a class="el" href="classvariable_container.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> &amp;src, const std::vector&lt; <a class="el" href="classvariable_container.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; solutionSet, unsigned int cell, unsigned int var_being_solved)</td></tr>
 <tr class="separator:a458d69462c54bde12d6bfc6c8a2dcb1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3fd30e2fee5f3ca55ab76e2ba2b40475"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a3fd30e2fee5f3ca55ab76e2ba2b40475">reinit</a> (unsigned int cell)</td></tr>
 <tr class="separator:a3fd30e2fee5f3ca55ab76e2ba2b40475"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9d853031ce148f125c962571bb18cc3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#aa9d853031ce148f125c962571bb18cc3">integrate_and_distribute</a> (std::vector&lt; <a class="el" href="classvariable_container.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> * &gt; &amp;dst)</td></tr>
 <tr class="separator:aa9d853031ce148f125c962571bb18cc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac16a639429f8c2bef8af0868792a6544"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#ac16a639429f8c2bef8af0868792a6544">integrate_and_distribute_LHS</a> (<a class="el" href="classvariable_container.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> &amp;dst, unsigned int var_being_solved)</td></tr>
-<tr class="separator:ac16a639429f8c2bef8af0868792a6544"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44c703e6244db3351333e500c886fd57"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a44c703e6244db3351333e500c886fd57">integrate_and_distribute_change_in_solution_LHS</a> (<a class="el" href="classvariable_container.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> &amp;dst, const unsigned int var_being_solved)</td></tr>
+<tr class="separator:a44c703e6244db3351333e500c886fd57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8312bf9cdd070d5959f809c37d4a764"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#ab8312bf9cdd070d5959f809c37d4a764">get_num_q_points</a> ()</td></tr>
 <tr class="separator:ab8312bf9cdd070d5959f809c37d4a764"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad40df045334713f23a4137e92d3e2e1e"><td class="memItemLeft" align="right" valign="top">dealii::Point&lt; dim, T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#ad40df045334713f23a4137e92d3e2e1e">get_q_point_location</a> ()</td></tr>
@@ -175,24 +200,14 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a5d192d57554454e65340bc1d39952212"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52d8a2732e2b85bdd3a096c0567b499c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; dealii::FEEvaluation&lt; dim, degree, degree+1, dim, double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a52d8a2732e2b85bdd3a096c0567b499c">vector_vars</a></td></tr>
 <tr class="separator:a52d8a2732e2b85bdd3a096c0567b499c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3136b8d8cf11f7107feb0cb96cf9836b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; dealii::FEEvaluation&lt; dim, degree, degree+1, 1, double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a3136b8d8cf11f7107feb0cb96cf9836b">scalar_change_in_vars</a></td></tr>
+<tr class="separator:a3136b8d8cf11f7107feb0cb96cf9836b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1b8a529167b13a78cfb067c211f6a96"><td class="memItemLeft" align="right" valign="top">std::vector&lt; dealii::FEEvaluation&lt; dim, degree, degree+1, dim, double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#af1b8a529167b13a78cfb067c211f6a96">vector_change_in_vars</a></td></tr>
+<tr class="separator:af1b8a529167b13a78cfb067c211f6a96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14fa415417839c1d36909edf82d047e8"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structvariable__info.html">variable_info</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a14fa415417839c1d36909edf82d047e8">varInfoList</a></td></tr>
 <tr class="separator:a14fa415417839c1d36909edf82d047e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3351ba4417581de4d5c58f69d48c318a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a3351ba4417581de4d5c58f69d48c318a">scalar_value_index</a></td></tr>
-<tr class="separator:a3351ba4417581de4d5c58f69d48c318a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a877e505ed0e8a8fdc3204741941bff8d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a877e505ed0e8a8fdc3204741941bff8d">scalar_gradient_index</a></td></tr>
-<tr class="separator:a877e505ed0e8a8fdc3204741941bff8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad09c9bccf79dc6dc02dd79e05f863bbc"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#ad09c9bccf79dc6dc02dd79e05f863bbc">vector_value_index</a></td></tr>
-<tr class="separator:ad09c9bccf79dc6dc02dd79e05f863bbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a65de7e3416c72d980257a07f246f36"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a2a65de7e3416c72d980257a07f246f36">vector_gradient_index</a></td></tr>
-<tr class="separator:a2a65de7e3416c72d980257a07f246f36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34d8ac1d3f85539a58a504ee12abec87"><td class="memItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a34d8ac1d3f85539a58a504ee12abec87">scalar_value</a></td></tr>
-<tr class="separator:a34d8ac1d3f85539a58a504ee12abec87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80cf2f8880b6ccbf7b8962f25a2ca891"><td class="memItemLeft" align="right" valign="top">std::vector&lt; dealii::Tensor&lt; 1, dim, T &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a80cf2f8880b6ccbf7b8962f25a2ca891">scalar_gradient</a></td></tr>
-<tr class="separator:a80cf2f8880b6ccbf7b8962f25a2ca891"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d16420565d91d9dfcb0ec8a315005ff"><td class="memItemLeft" align="right" valign="top">std::vector&lt; dealii::Tensor&lt; 1, dim, T &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a8d16420565d91d9dfcb0ec8a315005ff">vector_value</a></td></tr>
-<tr class="separator:a8d16420565d91d9dfcb0ec8a315005ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97e4a79fb7fc2be4f8eb5731b72f3a84"><td class="memItemLeft" align="right" valign="top">std::vector&lt; dealii::Tensor&lt; 2, dim, T &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#a97e4a79fb7fc2be4f8eb5731b72f3a84">vector_gradient</a></td></tr>
-<tr class="separator:a97e4a79fb7fc2be4f8eb5731b72f3a84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af88c570a6c5f6d8bc801dc759fc04772"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structvariable__info.html">variable_info</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariable_container.html#af88c570a6c5f6d8bc801dc759fc04772">varChangeInfoList</a></td></tr>
+<tr class="separator:af88c570a6c5f6d8bc801dc759fc04772"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Typedef Documentation</h2>
 <a class="anchor" id="a35b1b83d6d194e7417b515cc381ee577"></a>
@@ -316,6 +331,38 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a77b8d6d1e8671321877e82954a68fcd9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classvariable_container.html">variableContainer</a> </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::MatrixFree&lt; dim, double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="structvariable__info.html">variable_info</a> &gt;&#160;</td>
+          <td class="paramname"><em>_varInfoList</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="structvariable__info.html">variable_info</a> &gt;&#160;</td>
+          <td class="paramname"><em>_varChangeInfoList</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a90c86bbe456d064ee2fa1148ece64e82"></a>
 <div class="memitem">
 <div class="memproto">
@@ -375,6 +422,102 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a2334c6644986854cf64082e055d463b1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::Tensor&lt; 1, dim, T &gt; get_change_in_scalar_gradient </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>global_variable_index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a558ff58e2fcff8f1b6a70422d612490f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::Tensor&lt; 2, dim, T &gt; get_change_in_scalar_hessian </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>global_variable_index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae891ca3b3dacd905fbff25478dab600e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">T get_change_in_scalar_value </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>global_variable_index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a740b44ebe3c44d59b56d2ca26ad3ac31"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::Tensor&lt; 2, dim, T &gt; get_change_in_vector_gradient </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>global_variable_index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a706d828db19a8011727f6305dfdffd5a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::Tensor&lt; 3, dim, T &gt; get_change_in_vector_hessian </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>global_variable_index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab2e425717a38bf02497af5868d54eccd"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::Tensor&lt; 1, dim, T &gt; get_change_in_vector_value </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>global_variable_index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a758db0546942a5b27eb9570d34ea4f45"></a>
 <div class="memitem">
 <div class="memproto">
@@ -533,12 +676,12 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ac16a639429f8c2bef8af0868792a6544"></a>
+<a class="anchor" id="a44c703e6244db3351333e500c886fd57"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void integrate_and_distribute_LHS </td>
+          <td class="memname">void integrate_and_distribute_change_in_solution_LHS </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classvariable_container.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> &amp;&#160;</td>
           <td class="paramname"><em>dst</em>, </td>
@@ -546,7 +689,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramtype">const unsigned int&#160;</td>
           <td class="paramname"><em>var_being_solved</em>&#160;</td>
         </tr>
         <tr>
@@ -598,6 +741,39 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a68112d80a50092129d340c9bce24e343"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void reinit_and_eval_change_in_solution </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classvariable_container.html#accab0ce4c9641071419bfea1492d190f">vectorType</a> &amp;&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>cell</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>var_being_solved</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is specialized for the LHS where there will be only one change in the solution needed. The RHS method takes the src as a vector of vectorTypes. </p>
 
 </div>
 </div>
@@ -665,12 +841,64 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a1c988fe92152d808b6b33fd24b36bd4b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void set_scalar_gradient_residual_term_LHS </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>global_variable_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dealii::Tensor&lt; 1, dim, T &gt;&#160;</td>
+          <td class="paramname"><em>grad</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="ae2bacd1fda3217a72ecaf93c94855652"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void set_scalar_value_residual_term </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>global_variable_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>val</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a15b919d4844269efffa1a1ab03daf4b3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void set_scalar_value_residual_term_LHS </td>
           <td>(</td>
           <td class="paramtype">unsigned int&#160;</td>
           <td class="paramname"><em>global_variable_index</em>, </td>
@@ -717,12 +945,64 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a10ce824240f344ad29fe3e5c140b1112"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void set_vector_gradient_residual_term_LHS </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>global_variable_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dealii::Tensor&lt; 2, dim, T &gt;&#160;</td>
+          <td class="paramname"><em>grad</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a228512517dc354144d2ee97bfa0d1627"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void set_vector_value_residual_term </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>global_variable_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dealii::Tensor&lt; 1, dim, T &gt;&#160;</td>
+          <td class="paramname"><em>val</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="af52c94cfef777eac5aab3a1455efeb52"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void set_vector_value_residual_term_LHS </td>
           <td>(</td>
           <td class="paramtype">unsigned int&#160;</td>
           <td class="paramname"><em>global_variable_index</em>, </td>
@@ -776,7 +1056,7 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a80cf2f8880b6ccbf7b8962f25a2ca891"></a>
+<a class="anchor" id="a3136b8d8cf11f7107feb0cb96cf9836b"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -784,67 +1064,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;dealii::Tensor&lt;1, dim, T &gt; &gt; scalar_gradient</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a877e505ed0e8a8fdc3204741941bff8d"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;int&gt; scalar_gradient_index</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a34d8ac1d3f85539a58a504ee12abec87"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;T&gt; scalar_value</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a3351ba4417581de4d5c58f69d48c318a"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;int&gt; scalar_value_index</td>
+          <td class="memname">std::vector&lt;dealii::FEEvaluation&lt;dim,degree,degree+1,1,double&gt; &gt; scalar_change_in_vars</td>
         </tr>
       </table>
   </td>
@@ -876,6 +1096,26 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="af88c570a6c5f6d8bc801dc759fc04772"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="structvariable__info.html">variable_info</a>&gt; varChangeInfoList</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a14fa415417839c1d36909edf82d047e8"></a>
 <div class="memitem">
 <div class="memproto">
@@ -896,7 +1136,7 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a97e4a79fb7fc2be4f8eb5731b72f3a84"></a>
+<a class="anchor" id="af1b8a529167b13a78cfb067c211f6a96"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -904,67 +1144,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;dealii::Tensor&lt;2, dim, T &gt; &gt; vector_gradient</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a2a65de7e3416c72d980257a07f246f36"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;int&gt; vector_gradient_index</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a8d16420565d91d9dfcb0ec8a315005ff"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;dealii::Tensor&lt;1, dim, T &gt; &gt; vector_value</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="ad09c9bccf79dc6dc02dd79e05f863bbc"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;int&gt; vector_value_index</td>
+          <td class="memname">std::vector&lt;dealii::FEEvaluation&lt;dim,degree,degree+1,dim,double&gt; &gt; vector_change_in_vars</td>
         </tr>
       </table>
   </td>

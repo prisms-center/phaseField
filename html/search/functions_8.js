@@ -7,5 +7,5 @@ var searchData=
   ['initialconditionvec',['InitialConditionVec',['../class_initial_condition_vec.html#a78ec66a3d4cb62bfccf19144f79fba04',1,'InitialConditionVec']]],
   ['inputfilereader',['inputFileReader',['../classinput_file_reader.html#aa0dc67d92566fc8ce74383b7795e411c',1,'inputFileReader']]],
   ['integrate_5fand_5fdistribute',['integrate_and_distribute',['../classvariable_container.html#aa9d853031ce148f125c962571bb18cc3',1,'variableContainer']]],
-  ['integrate_5fand_5fdistribute_5flhs',['integrate_and_distribute_LHS',['../classvariable_container.html#ac16a639429f8c2bef8af0868792a6544',1,'variableContainer']]]
+  ['integrate_5fand_5fdistribute_5fchange_5fin_5fsolution_5flhs',['integrate_and_distribute_change_in_solution_LHS',['../classvariable_container.html#a44c703e6244db3351333e500c886fd57',1,'variableContainer']]]
 ];

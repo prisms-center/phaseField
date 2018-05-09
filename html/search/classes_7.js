@@ -1,9 +1,8 @@
 var searchData=
 [
-  ['varbcs',['varBCs',['../classvar_b_cs.html',1,'']]],
-  ['variable_5finfo',['variable_info',['../structvariable__info.html',1,'']]],
-  ['variableattributeloader',['variableAttributeLoader',['../classvariable_attribute_loader.html',1,'']]],
-  ['variablecontainer',['variableContainer',['../classvariable_container.html',1,'']]],
-  ['variablevaluecontainer',['variableValueContainer',['../classvariable_value_container.html',1,'']]],
-  ['vectorbcfunction',['vectorBCFunction',['../classvector_b_c_function.html',1,'']]]
+  ['nonlinearsolverparameters',['NonlinearSolverParameters',['../class_nonlinear_solver_parameters.html',1,'']]],
+  ['nonuniformdirichletbc',['NonUniformDirichletBC',['../class_non_uniform_dirichlet_b_c.html',1,'']]],
+  ['nonuniformdirichletbcvec',['NonUniformDirichletBCVec',['../class_non_uniform_dirichlet_b_c_vec.html',1,'']]],
+  ['nucleationparameters',['nucleationParameters',['../classnucleation_parameters.html',1,'']]],
+  ['nucleus',['nucleus',['../structnucleus.html',1,'']]]
 ];

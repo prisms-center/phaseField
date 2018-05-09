@@ -22,9 +22,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="logo_pic.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PRISMS-PF
-   &#160;<span id="projectnumber">2.0</span>
+   &#160;<span id="projectnumber">v2.1</span>
    </div>
   </td>
  </tr>
@@ -97,7 +98,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">// Nucleation probability</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// =================================================================================</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> degree&gt;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keywordtype">double</span> <a class="code" href="class_matrix_free_p_d_e.html#a834d0b92baf3ddea8280f8fdbbca6665">customPDE&lt;dim,degree&gt;::getNucleationProbability</a>(<a class="code" href="classvariable_value_container.html">variableValueContainer</a> variable_value, <span class="keywordtype">double</span> dV, dealii::Point&lt;dim&gt; p)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keywordtype">double</span> <a class="code" href="class_matrix_free_p_d_e.html#a596463bba35fe72ea6370acd3e59c58f">customPDE&lt;dim,degree&gt;::getNucleationProbability</a>(<a class="code" href="classvariable_value_container.html">variableValueContainer</a> variable_value, <span class="keywordtype">double</span> dV, dealii::Point&lt;dim&gt; p, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> variable_index)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="comment">//Supersaturation factor</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keywordtype">double</span> ssf;</div>
@@ -105,18 +106,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keywordflow">if</span> (dim ==3) ssf=(variable_value(0)-calmin)*(variable_value(0)-calmin);</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="comment">// Calculate the nucleation rate</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordtype">double</span> k2;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keywordflow">if</span> ((p[0] &gt; gbll) &amp;&amp; (p[0] &lt; gbrl)){</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        k2 = k2_gb;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    }</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        k2 = k2_b;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    }</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordtype">double</span> J=k1*exp(-k2/(std::max(ssf,1.0e-6)))*exp(-tau/(this-&gt;currentTime));</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordtype">double</span> retProb=1.0-exp(-J*userInputs.dtValue*((<span class="keywordtype">double</span>)userInputs.steps_between_nucleation_attempts)*dV);</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keywordflow">return</span> retProb;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;}</div>
-<div class="ttc" id="class_matrix_free_p_d_e_html_a834d0b92baf3ddea8280f8fdbbca6665"><div class="ttname"><a href="class_matrix_free_p_d_e.html#a834d0b92baf3ddea8280f8fdbbca6665">MatrixFreePDE::getNucleationProbability</a></div><div class="ttdeci">virtual double getNucleationProbability(variableValueContainer, double, dealii::Point&lt; dim &gt;) const </div><div class="ttdef"><b>Definition:</b> matrixFreePDE.h:252</div></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keywordtype">double</span> tau;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keywordflow">if</span> ((p[0] &gt; gbll) &amp;&amp; (p[0] &lt; gbrl)){</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        k2 = k2_gb;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        tau=tau_gb;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    }</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        k2 = k2_b;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        tau=tau_b;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    }</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordtype">double</span> J=k1*exp(-k2/(std::max(ssf,1.0e-6)))*exp(-tau/(this-&gt;currentTime));</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordtype">double</span> retProb=1.0-exp(-J*userInputs.dtValue*((<span class="keywordtype">double</span>)userInputs.steps_between_nucleation_attempts)*dV);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordflow">return</span> retProb;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
+<div class="ttc" id="class_matrix_free_p_d_e_html_a596463bba35fe72ea6370acd3e59c58f"><div class="ttname"><a href="class_matrix_free_p_d_e.html#a596463bba35fe72ea6370acd3e59c58f">MatrixFreePDE::getNucleationProbability</a></div><div class="ttdeci">virtual double getNucleationProbability(variableValueContainer, double, dealii::Point&lt; dim &gt;, unsigned int variable_index) const </div><div class="ttdef"><b>Definition:</b> matrixFreePDE.h:296</div></div>
 <div class="ttc" id="classvariable_value_container_html"><div class="ttname"><a href="classvariable_value_container.html">variableValueContainer</a></div><div class="ttdef"><b>Definition:</b> variableValueContainer.h:5</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

@@ -22,9 +22,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="logo_pic.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PRISMS-PF
-   &#160;<span id="projectnumber">2.0</span>
+   &#160;<span id="projectnumber">v2.1</span>
    </div>
   </td>
  </tr>
@@ -90,7 +91,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <p>This is the complete list of members for <a class="el" href="classinput_file_reader.html">inputFileReader</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="classinput_file_reader.html#a5a0f9c21ade62915b4902942c0df14e5">declare_parameters</a>(dealii::ParameterHandler &amp;parameter_handler, const std::vector&lt; fieldType &gt; var_types, const unsigned int num_of_constants) const </td><td class="entry"><a class="el" href="classinput_file_reader.html">inputFileReader</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classinput_file_reader.html#a70afcb4fc4ec111addf19dcbf0edd939">declare_parameters</a>(dealii::ParameterHandler &amp;parameter_handler, const std::vector&lt; fieldType &gt; var_types, const std::vector&lt; PDEType &gt; var_eq_types, const unsigned int num_of_constants, const std::vector&lt; bool &gt;) const </td><td class="entry"><a class="el" href="classinput_file_reader.html">inputFileReader</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classinput_file_reader.html#a74b75996586c2fa374455ec5775f12d6">get_entry_name_ending_list</a>(const std::string parameters_file_name, const std::string keyword, const std::string entry_name_begining) const </td><td class="entry"><a class="el" href="classinput_file_reader.html">inputFileReader</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classinput_file_reader.html#a25a2d3561e2f0c0b5c5a74df5e4370e7">get_number_of_entries</a>(const std::string parameters_file_name, const std::string keyword, const std::string entry_name) const </td><td class="entry"><a class="el" href="classinput_file_reader.html">inputFileReader</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classinput_file_reader.html#ab119808af6e6120f79820c81652534d7">get_subsection_entry_list</a>(const std::string parameters_file_name, const std::string subsec_name, const std::string entry_name, const std::string default_entry) const </td><td class="entry"><a class="el" href="classinput_file_reader.html">inputFileReader</a></td><td class="entry"></td></tr>
@@ -101,8 +102,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <tr class="even"><td class="entry"><a class="el" href="classinput_file_reader.html#ae6fd40cc36c2ed24b6f3cc279888044b">number_of_dimensions</a></td><td class="entry"><a class="el" href="classinput_file_reader.html">inputFileReader</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classinput_file_reader.html#a4e487049e1a956b87b08b36e34f54b9d">parameter_handler</a></td><td class="entry"><a class="el" href="classinput_file_reader.html">inputFileReader</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classinput_file_reader.html#a4c03a93f2b56f526824df5a675d9d4db">parse_line</a>(std::string line, const std::string keyword, const std::string entry_name, std::string &amp;out_string, bool expect_equals_sign) const </td><td class="entry"><a class="el" href="classinput_file_reader.html">inputFileReader</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classinput_file_reader.html#a3d7bb6ec65539355e5bb12b4f54ade66">var_names</a></td><td class="entry"><a class="el" href="classinput_file_reader.html">inputFileReader</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classinput_file_reader.html#a579b58033f54db4dca06d223788ae9e9">var_types</a></td><td class="entry"><a class="el" href="classinput_file_reader.html">inputFileReader</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classinput_file_reader.html#ac357a764cafdd151188ebe36e3b5cc18">var_eq_types</a></td><td class="entry"><a class="el" href="classinput_file_reader.html">inputFileReader</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classinput_file_reader.html#a3d7bb6ec65539355e5bb12b4f54ade66">var_names</a></td><td class="entry"><a class="el" href="classinput_file_reader.html">inputFileReader</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classinput_file_reader.html#a6694949b1702fbffc6b9685bfcfdcdc4">var_nonlinear</a></td><td class="entry"><a class="el" href="classinput_file_reader.html">inputFileReader</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classinput_file_reader.html#a1624de6fa42277714e354c15fc46d92a">var_nucleates</a></td><td class="entry"><a class="el" href="classinput_file_reader.html">inputFileReader</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classinput_file_reader.html#a579b58033f54db4dca06d223788ae9e9">var_types</a></td><td class="entry"><a class="el" href="classinput_file_reader.html">inputFileReader</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

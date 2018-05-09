@@ -6,5 +6,7 @@ var searchData=
   ['refine_5fwindow_5fmax',['refine_window_max',['../classuser_input_parameters.html#a215f3395973adef23a04ffe3d54cdc6c',1,'userInputParameters']]],
   ['refine_5fwindow_5fmin',['refine_window_min',['../classuser_input_parameters.html#a44c07f00287866eabcc60d8fee31aeba',1,'userInputParameters']]],
   ['residualset',['residualSet',['../class_matrix_free_p_d_e.html#ac40587c73496a9fe89e1ba9c5bdd1b14',1,'MatrixFreePDE']]],
-  ['rho',['rho',['../classcustom_p_d_e.html#a3ed57096651b587c2bf716fa78048153',1,'customPDE']]]
+  ['resume_5ffrom_5fcheckpoint',['resume_from_checkpoint',['../classuser_input_parameters.html#a0d35ddea12954c106dac4b8426f61bec',1,'userInputParameters']]],
+  ['rho',['rho',['../classcustom_p_d_e.html#a3ed57096651b587c2bf716fa78048153',1,'customPDE']]],
+  ['rotation_5fmatrix',['rotation_matrix',['../classnucleation_parameters.html#aed1e38514861e3aeffacebeb5f2abbf5',1,'nucleationParameters']]]
 ];

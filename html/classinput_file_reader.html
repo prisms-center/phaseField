@@ -22,9 +22,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="logo_pic.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PRISMS-PF
-   &#160;<span id="projectnumber">2.0</span>
+   &#160;<span id="projectnumber">v2.1</span>
    </div>
   </td>
  </tr>
@@ -104,8 +105,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a25a2d3561e2f0c0b5c5a74df5e4370e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74b75996586c2fa374455ec5775f12d6"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinput_file_reader.html#a74b75996586c2fa374455ec5775f12d6">get_entry_name_ending_list</a> (const std::string parameters_file_name, const std::string keyword, const std::string entry_name_begining) const </td></tr>
 <tr class="separator:a74b75996586c2fa374455ec5775f12d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a0f9c21ade62915b4902942c0df14e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinput_file_reader.html#a5a0f9c21ade62915b4902942c0df14e5">declare_parameters</a> (dealii::ParameterHandler &amp;<a class="el" href="classinput_file_reader.html#a4e487049e1a956b87b08b36e34f54b9d">parameter_handler</a>, const std::vector&lt; <a class="el" href="var_type_enums_8h.html#ae2c3e99c22ce037f68e9b19bfd9c6de2">fieldType</a> &gt; <a class="el" href="classinput_file_reader.html#a579b58033f54db4dca06d223788ae9e9">var_types</a>, const unsigned int num_of_constants) const </td></tr>
-<tr class="separator:a5a0f9c21ade62915b4902942c0df14e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70afcb4fc4ec111addf19dcbf0edd939"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinput_file_reader.html#a70afcb4fc4ec111addf19dcbf0edd939">declare_parameters</a> (dealii::ParameterHandler &amp;<a class="el" href="classinput_file_reader.html#a4e487049e1a956b87b08b36e34f54b9d">parameter_handler</a>, const std::vector&lt; <a class="el" href="var_type_enums_8h.html#ae2c3e99c22ce037f68e9b19bfd9c6de2">fieldType</a> &gt; <a class="el" href="classinput_file_reader.html#a579b58033f54db4dca06d223788ae9e9">var_types</a>, const std::vector&lt; <a class="el" href="var_type_enums_8h.html#a12521d5d4cf2d9ed3c05e52b162fad42">PDEType</a> &gt; <a class="el" href="classinput_file_reader.html#ac357a764cafdd151188ebe36e3b5cc18">var_eq_types</a>, const unsigned int num_of_constants, const std::vector&lt; bool &gt;) const </td></tr>
+<tr class="separator:a70afcb4fc4ec111addf19dcbf0edd939"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4c03a93f2b56f526824df5a675d9d4db"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinput_file_reader.html#a4c03a93f2b56f526824df5a675d9d4db">parse_line</a> (std::string line, const std::string keyword, const std::string entry_name, std::string &amp;out_string, bool expect_equals_sign) const </td></tr>
 <tr class="separator:a4c03a93f2b56f526824df5a675d9d4db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -115,6 +116,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a4e487049e1a956b87b08b36e34f54b9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a579b58033f54db4dca06d223788ae9e9"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="var_type_enums_8h.html#ae2c3e99c22ce037f68e9b19bfd9c6de2">fieldType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinput_file_reader.html#a579b58033f54db4dca06d223788ae9e9">var_types</a></td></tr>
 <tr class="separator:a579b58033f54db4dca06d223788ae9e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac357a764cafdd151188ebe36e3b5cc18"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="var_type_enums_8h.html#a12521d5d4cf2d9ed3c05e52b162fad42">PDEType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinput_file_reader.html#ac357a764cafdd151188ebe36e3b5cc18">var_eq_types</a></td></tr>
+<tr class="separator:ac357a764cafdd151188ebe36e3b5cc18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abab7158c85a25eb531fe1d49a48afb94"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinput_file_reader.html#abab7158c85a25eb531fe1d49a48afb94">num_pp_vars</a></td></tr>
 <tr class="separator:abab7158c85a25eb531fe1d49a48afb94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe991f633f0e4b5af6afdefa66484705"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinput_file_reader.html#afe991f633f0e4b5af6afdefa66484705">num_constants</a></td></tr>
@@ -125,6 +128,10 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a3d7bb6ec65539355e5bb12b4f54ade66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6fd40cc36c2ed24b6f3cc279888044b"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinput_file_reader.html#ae6fd40cc36c2ed24b6f3cc279888044b">number_of_dimensions</a></td></tr>
 <tr class="separator:ae6fd40cc36c2ed24b6f3cc279888044b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1624de6fa42277714e354c15fc46d92a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinput_file_reader.html#a1624de6fa42277714e354c15fc46d92a">var_nucleates</a></td></tr>
+<tr class="separator:a1624de6fa42277714e354c15fc46d92a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6694949b1702fbffc6b9685bfcfdcdc4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinput_file_reader.html#a6694949b1702fbffc6b9685bfcfdcdc4">var_nonlinear</a></td></tr>
+<tr class="separator:a6694949b1702fbffc6b9685bfcfdcdc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="aa0dc67d92566fc8ce74383b7795e411c"></a>
@@ -154,7 +161,7 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a5a0f9c21ade62915b4902942c0df14e5"></a>
+<a class="anchor" id="a70afcb4fc4ec111addf19dcbf0edd939"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -173,8 +180,20 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="var_type_enums_8h.html#a12521d5d4cf2d9ed3c05e52b162fad42">PDEType</a> &gt;&#160;</td>
+          <td class="paramname"><em>var_eq_types</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const unsigned int&#160;</td>
-          <td class="paramname"><em>num_of_constants</em>&#160;</td>
+          <td class="paramname"><em>num_of_constants</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; bool &gt;&#160;</td>
+          <td class="paramname"><em>var_nucleates</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -393,12 +412,48 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ac357a764cafdd151188ebe36e3b5cc18"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="var_type_enums_8h.html#a12521d5d4cf2d9ed3c05e52b162fad42">PDEType</a>&gt; var_eq_types</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a3d7bb6ec65539355e5bb12b4f54ade66"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">std::vector&lt;std::string&gt; var_names</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a6694949b1702fbffc6b9685bfcfdcdc4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;bool&gt; var_nonlinear</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a1624de6fa42277714e354c15fc46d92a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;bool&gt; var_nucleates</td>
         </tr>
       </table>
 </div><div class="memdoc">
