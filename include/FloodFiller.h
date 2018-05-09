@@ -29,17 +29,28 @@ template <int dim, int degree>
 class FloodFiller
 {
 public:
-    FloodFiller(parallel::distributed::Triangulation<dim> & _triangulation, FESystem<dim> & _fe, QGaussLobatto<dim> _quadrature): quadrature(_quadrature), num_quad_points(_quadrature.size()), dofs_per_cell(_fe.dofs_per_cell){
-        triangulation = & _triangulation;
+    FloodFiller(FESystem<dim> & _fe, QGaussLobatto<dim> _quadrature): quadrature(_quadrature), num_quad_points(_quadrature.size()), dofs_per_cell(_fe.dofs_per_cell){
         fe = & _fe;
     };
 
     void calcGrainSets(FESystem<dim> & fe, dealii::DoFHandler<dim> &dof_handler, vectorType* solution_field, double threshold, std::vector<GrainSet<dim>> & grain_sets);
 protected:
-    dealii::parallel::distributed::Triangulation<dim> * triangulation;
 
     template <typename T>
     void recursiveFloodFill(T di, T di_end, vectorType* solution_field, double threshold, unsigned int & grain_index, std::vector<GrainSet<dim>> & grain_sets, bool & grain_assigned);
+
+    void communicateGrainSets(std::vector<GrainSet<dim>> & grain_sets);
+
+    void sendUpdate (int procno, std::vector<GrainSet<dim>> & grain_sets) const;
+
+    void receiveUpdate (int procno, std::vector<GrainSet<dim>> & grain_sets) const;
+
+    void broadcastUpdate (int broadcastProc, int thisProc, std::vector<GrainSet<dim>> & grain_sets) const;
+
+    /**
+    * Checks to see if grains found on different processors are parts of a larger grain. If so, it merges the grain_sets entries.
+    */
+    void mergeSplitGrains (std::vector<GrainSet<dim>> & grain_sets) const;
 
     QGaussLobatto<dim>  quadrature;
     const unsigned int   num_quad_points;

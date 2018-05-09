@@ -9,15 +9,6 @@ public:
     std::srand(dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
   }
   double value (const dealii::Point<dim> &p, const unsigned int component=0) const{
-      /*
-      dealii::Point<2> center(0.4,0.4);
-      if (p.distance(center) < 0.2){
-          return 1.0;
-      }
-      else{
-          return 0.0;
-      }
-      */
 
       double val;
       if (p[1] < 0.6 and p[0] > p[1]+1.0e-10){
@@ -35,6 +26,111 @@ public:
   };
 
 };
+
+template <int dim>
+void setExpectedVertexLists(std::vector<std::vector<dealii::Point<dim>>> & expected_vertex_list0, std::vector<std::vector<dealii::Point<dim>>> & expected_vertex_list1){
+    // expected_vertex_list0
+    {std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
+    {dealii::Point<dim> p(0.0,0.0); vertex_set[0] = p;}
+    {dealii::Point<dim> p(0.25,0.0); vertex_set[1] = p;}
+    {dealii::Point<dim> p(0.0,0.25); vertex_set[2] = p;}
+    {dealii::Point<dim> p(0.25,0.25); vertex_set[3] = p;}
+    expected_vertex_list0.push_back(vertex_set);}
+
+    {std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
+    {dealii::Point<dim> p(0.25,0.0); vertex_set[0] = p;}
+    {dealii::Point<dim> p(0.5,0.0); vertex_set[1] = p;}
+    {dealii::Point<dim> p(0.25,0.25); vertex_set[2] = p;}
+    {dealii::Point<dim> p(0.5,0.25); vertex_set[3] = p;}
+    expected_vertex_list0.push_back(vertex_set);}
+
+    {std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
+    {dealii::Point<dim> p(0.5,0.0); vertex_set[0] = p;}
+    {dealii::Point<dim> p(0.75,0.0); vertex_set[1] = p;}
+    {dealii::Point<dim> p(0.5,0.25); vertex_set[2] = p;}
+    {dealii::Point<dim> p(0.75,0.25); vertex_set[3] = p;}
+    expected_vertex_list0.push_back(vertex_set);}
+
+    {std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
+    {dealii::Point<dim> p(0.75,0.0); vertex_set[0] = p;}
+    {dealii::Point<dim> p(1.0,0.0); vertex_set[1] = p;}
+    {dealii::Point<dim> p(0.75,0.25); vertex_set[2] = p;}
+    {dealii::Point<dim> p(1.0,0.25); vertex_set[3] = p;}
+    expected_vertex_list0.push_back(vertex_set);}
+
+    {std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
+    {dealii::Point<dim> p(0.25,0.25); vertex_set[0] = p;}
+    {dealii::Point<dim> p(0.5,0.25); vertex_set[1] = p;}
+    {dealii::Point<dim> p(0.25,0.5); vertex_set[2] = p;}
+    {dealii::Point<dim> p(0.5,0.5); vertex_set[3] = p;}
+    expected_vertex_list0.push_back(vertex_set);}
+
+    {std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
+    {dealii::Point<dim> p(0.5,0.25); vertex_set[0] = p;}
+    {dealii::Point<dim> p(0.75,0.25); vertex_set[1] = p;}
+    {dealii::Point<dim> p(0.5,0.5); vertex_set[2] = p;}
+    {dealii::Point<dim> p(0.75,0.5); vertex_set[3] = p;}
+    expected_vertex_list0.push_back(vertex_set);}
+
+    {std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
+    {dealii::Point<dim> p(0.75,0.25); vertex_set[0] = p;}
+    {dealii::Point<dim> p(1.0,0.25); vertex_set[1] = p;}
+    {dealii::Point<dim> p(0.75,0.5); vertex_set[2] = p;}
+    {dealii::Point<dim> p(1.0,0.5); vertex_set[3] = p;}
+    expected_vertex_list0.push_back(vertex_set);}
+
+    {std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
+    {dealii::Point<dim> p(0.5,0.5); vertex_set[0] = p;}
+    {dealii::Point<dim> p(0.75,0.5); vertex_set[1] = p;}
+    {dealii::Point<dim> p(0.5,0.75); vertex_set[2] = p;}
+    {dealii::Point<dim> p(0.75,0.75); vertex_set[3] = p;}
+    expected_vertex_list0.push_back(vertex_set);}
+
+    {std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
+    {dealii::Point<dim> p(0.75,0.5); vertex_set[0] = p;}
+    {dealii::Point<dim> p(1.0,0.5); vertex_set[1] = p;}
+    {dealii::Point<dim> p(0.75,0.75); vertex_set[2] = p;}
+    {dealii::Point<dim> p(1.0,0.75); vertex_set[3] = p;}
+    expected_vertex_list0.push_back(vertex_set);}
+
+    // expected_vertex_list1
+    {std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
+    {dealii::Point<dim> p(0.0,0.75); vertex_set[0] = p;}
+    {dealii::Point<dim> p(0.25,0.75); vertex_set[1] = p;}
+    {dealii::Point<dim> p(0.0,1.0); vertex_set[2] = p;}
+    {dealii::Point<dim> p(0.25,1.0); vertex_set[3] = p;}
+
+    expected_vertex_list1.push_back(vertex_set);}
+}
+
+template <int dim>
+bool compareUnsortedVectors(std::vector<std::vector<dealii::Point<dim>>> vec1, std::vector<std::vector<dealii::Point<dim>>> vec2, double tolerance){
+    if (vec1.size() != vec2.size()){
+        return false;
+    }
+
+    for (unsigned int i=0; i<vec1.size(); i++){
+        bool element_found = false;
+        for (unsigned int j=0; j<vec2.size(); j++){
+            bool elements_equal = true;
+            for (unsigned int v=0; v < dealii::Utilities::fixed_power<dim>(2.0); v++){
+                if (vec1[i][v].distance(vec2[j][v]) > tolerance){
+                    elements_equal = false;
+                    break;
+                }
+            }
+            element_found = elements_equal;
+            if (element_found){
+                break;
+            }
+        }
+        if (!element_found){
+            return false;
+        }
+    }
+
+    return true;
+}
 
 template <int dim,typename T>
   bool unitTest<dim,T>::test_FloodFiller(){
@@ -79,48 +175,59 @@ template <int dim,typename T>
     matrixFreeObject.initialize_dof_vector(*solution_field,  0); *solution_field = 0;
 
     // Set the field value
-    //solution_field->print(std::cout);
     VectorTools::interpolate (dof_handler, InitialConditionFloodFill<dim>(), *solution_field);
-    solution_field->print(std::cout);
+
+    solution_field->update_ghost_values();
+
+    //solution_field->print(std::cout);
 
     // Create a FloodFiller object
     QGaussLobatto<dim> quadrature2 (degree+1);
 
-    FloodFiller<dim, degree> test_object(triangulation, fe, quadrature2);
+    FloodFiller<dim, degree> test_object(fe, quadrature2);
     std::vector<GrainSet<dim>> grain_sets;
     GrainSet<dim> test_grain_set;
-    //grain_sets.push_back(test_grain_set);
     test_object.calcGrainSets(fe, dof_handler, solution_field, 0.1, grain_sets);
 
-    /*
-    std::cout << "For grain: " << grain_sets[0].getGrainIndex() << std::endl;
+    std::vector<std::vector<dealii::Point<dim>>> expected_vertex_list0, expected_vertex_list1;
 
-    std::vector<std::vector<dealii::Point<dim>>> vertex_list = grain_sets[0].getVertexList();
+    setExpectedVertexLists(expected_vertex_list0, expected_vertex_list1);
 
-    for (unsigned int c=0; c< vertex_list.size(); c++){
-        for (unsigned int v=0; v< dealii::Utilities::fixed_power<dim>(2.0); v++){
-            std::cout << vertex_list[c][v] << "\t";
-        }
-        std::cout << std::endl;
+
+    bool result = false;
+    bool result0, result1;
+    if (grain_sets.size() == 2){
+
+            std::vector<std::vector<dealii::Point<dim>>> vertex_list0 = grain_sets[0].getVertexList();
+
+            std::vector<std::vector<dealii::Point<dim>>> vertex_list1 = grain_sets[1].getVertexList();
+
+            // Get the order in the canonical order
+            if (vertex_list0.size() == 1){
+                vertex_list0.swap(vertex_list1);
+            }
+
+            if (vertex_list0.size() == 9){
+                result0 = compareUnsortedVectors(vertex_list0, expected_vertex_list0, 1.0e-3);
+                std::cout << "Result 0: " << result0 << std::endl;
+            }
+            else {
+                result0 = false;
+            }
+
+            if (vertex_list1.size() == 1){
+                result1 = compareUnsortedVectors(vertex_list1, expected_vertex_list1, 1.0e-3);
+                std::cout << "Result 1: " << result1 << std::endl;
+            }
+            else {
+                result1 = false;
+            }
+
+
+            result = result0 and result1;
     }
-    */
 
-    /*
-    // Subtests
-    unsigned int subtest_index = 0;
-    bool result;
-    bool pass = true;
-
-    // Subtest 1
-    subtest_index++;
-    result = false;
-    if (test_object.getMaxIterations() == 123){
-        result = true;
-    }
-    std::cout << "Subtest " << subtest_index << " result for 'getMaxIterations': " << result << std::endl;
-
-    pass = pass && result;
-    */
+    pass = result;
 
 	sprintf (buffer, "Test result for 'FloodFiller': %u\n", pass);
 	std::cout << buffer;
