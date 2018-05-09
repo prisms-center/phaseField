@@ -295,7 +295,10 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
                 parameter_handler.declare_entry("Tolerance type","ABSOLUTE_CHANGE",dealii::Patterns::Anything(),"The tolerance type for the nonlinear solver.");
                 parameter_handler.declare_entry("Tolerance value","1.0e-10",dealii::Patterns::Double(),"The value of for the nonlinear solver tolerance.");
                 parameter_handler.declare_entry("Use backtracking line search damping","true",dealii::Patterns::Bool(),"Whether to use a backtracking line-search to find the best choice of the damping coefficient.");
+                parameter_handler.declare_entry("Backtracking step size modifier","0.5",dealii::Patterns::Double(),"The constant that determines how much the step size decreases per backtrack. The 'tau' parameter.");
+                parameter_handler.declare_entry("Backtracking residual decrease coefficient","1.0",dealii::Patterns::Double(),"The constant that determines how much the residual must decrease to be accepted as sufficient. The 'c' parameter.");
                 parameter_handler.declare_entry("Constant damping value","1.0",dealii::Patterns::Double(),"The constant damping value to be used if the backtrace line-search approach isn't used.");
+                parameter_handler.declare_entry("Use Laplace's equation to determine the initial guess","false",dealii::Patterns::Bool(),"Whether to use the solution of Laplace's equation instead of the IC in ICs_and_BCs.h as the initial guess for nonlinear, time independent equations. This guarantees smoothness and compliance with BCs.");
             }
             parameter_handler.leave_subsection();
         }
@@ -308,9 +311,6 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
     parameter_handler.declare_entry("List of time steps to output","0",dealii::Patterns::Anything(),"The list of time steps to output, used for the LIST type.");
     parameter_handler.declare_entry("Number of outputs","10",dealii::Patterns::Integer(),"The number of outputs (or number of outputs per decade for the N_PER_DECADE type).");
     parameter_handler.declare_entry("Skip print steps","1",dealii::Patterns::Integer(),"The number of time steps between updates to the screen.");
-
-    // This is no longer needed and should be deleted (functionality moved to 'variableAttributeLoader')
-    parameter_handler.declare_entry("Allow nucleation","false",dealii::Patterns::Bool(),"Whether to enable the explicit nucleation capabilties.");
 
     // Declare entries for reading initial conditions from file
     parameter_handler.declare_entry("Load initial conditions","void",dealii::Patterns::Anything(),"Whether to load the initial conditions for each variable from file.");

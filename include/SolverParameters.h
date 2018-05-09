@@ -14,9 +14,6 @@ enum SolverToleranceType {ABSOLUTE_RESIDUAL,RELATIVE_RESIDUAL_CHANGE,ABSOLUTE_SO
 class SolverParametersBase
 {
 public:
-
-
-
     /**
     * Method to get the tolerance type for one of the governing equations.
     */
@@ -27,15 +24,12 @@ public:
     */
     double getToleranceValue(unsigned int index);
 
-
 protected:
-
 
     std::vector<unsigned int> var_index_list;
 
     std::vector<SolverToleranceType> tolerance_type_list;
     std::vector<double> tolerance_value_list;
-
 
     /**
     * Method to get the internal nonlinearSolverParameters index from the global variable index.
@@ -98,24 +92,45 @@ public:
     void loadParameters(unsigned int _var_index,
                         SolverToleranceType _tolerance_type,
                         double _tolerance_value,
-                        bool _backtrace_damping_flag,
-                        double _default_dampling_coefficient);
+                        bool _backtrack_damping_flag,
+                        double _backtrack_step_modifier,
+                        double _backtrack_residual_decrease_coeff,
+                        double _default_dampling_coefficient,
+                        bool _laplace_for_initial_guess);
 
     /**
-    * Method to get the backtrace line-search damping flag for one of the governing equations.
+    * Method to get the backtrack line-search damping flag for one of the governing equations.
     */
-    double getBacktraceDampingFlag(unsigned int index);
+    bool getBacktrackDampingFlag(unsigned int index);
+
+    /**
+    * Method to get the backtrack line-search damping step size modifier for one of the governing equations.
+    */
+    double getBacktrackStepModifier(unsigned int index);
+
+    /**
+    * Method to get the backtrack line-search damping residual decrease coefficient for one of the governing equations.
+    */
+    double getBacktrackResidualDecreaseCoeff(unsigned int index);
 
     /**
     * Method to get the default damping coefficient for one of the governing equations.
     */
     double getDefaultDampingCoefficient(unsigned int index);
 
+    /**
+    * Method to get the flag determining if the solution to Laplace's equation should be used as the initial guess for one of the governing equations.
+    */
+    bool getLaplaceInitializationFlag(unsigned int index);
+
 private:
     unsigned int max_iterations;
 
-    std::vector<bool> backtrace_damping_flag_list;
+    std::vector<bool> backtrack_damping_flag_list;
+    std::vector<double> backtrack_step_modifier_list;
+    std::vector<double> backtrack_residual_decrease_coeff_list;
     std::vector<double> default_damping_coefficient_list;
+    std::vector<bool> laplace_for_initial_guess_list;
 
 };
 

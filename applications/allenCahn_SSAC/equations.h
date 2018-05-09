@@ -42,24 +42,12 @@ void customPDE<dim,degree>::residualExplicitRHS(variableContainer<dim,degree,dea
 scalarvalueType n = variable_list.get_scalar_value(0);
 scalargradType nx = variable_list.get_scalar_gradient(0);
 
-//scalarvalueType psi = variable_list.get_scalar_value(1);
-//scalargradType psix = variable_list.get_scalar_gradient(1);
-
-
-scalarvalueType W = constV(1.0);
-scalarvalueType p = constV(1.5);
-scalarvalueType epsilon = constV(2.0);
 
 // Parameters in the residual equations and expressions for the residual equations
 // can be set here.
 scalarvalueType fnV = (4.0*n*(n-1.0)*(n-0.5));
-//scalarvalueType fnV = n*n*n - n;
 scalarvalueType rnV = (n-constV(userInputs.dtValue*MnV)*fnV);
 scalargradType rnxV = (-constV(userInputs.dtValue*KnV*MnV)*nx);
-
-//scalarvalueType rpsi = (W * (-psi*psi*psi + psi -2.0*p*psi*n*n));
-//scalargradType rpsix = (-epsilon*epsilon * psix);
-
 
 // Residuals for the equation to evolve the order parameter
 variable_list.set_scalar_value_residual_term(0,rnV);
@@ -73,7 +61,6 @@ void customPDE<dim,degree>::residualNonexplicitRHS(variableContainer<dim,degree,
 
 // The order parameter and its derivatives
 scalarvalueType n = variable_list.get_scalar_value(0);
-//scalargradType nx = variable_list.get_scalar_gradient(0);
 
 scalarvalueType psi = variable_list.get_scalar_value(1);
 scalargradType psix = variable_list.get_scalar_gradient(1);
@@ -82,13 +69,6 @@ scalargradType psix = variable_list.get_scalar_gradient(1);
 scalarvalueType W = constV(1.0);
 scalarvalueType p = constV(1.5);
 scalarvalueType epsilon = constV(2.0);
-
-// Parameters in the residual equations and expressions for the residual equations
-// can be set here.
-scalarvalueType fnV = (4.0*n*(n-1.0)*(n-0.5));
-//scalarvalueType fnV = n*n*n - n;
-//scalarvalueType rnV = (n-constV(userInputs.dtValue*MnV)*fnV);
-//scalargradType rnxV = (-constV(userInputs.dtValue*KnV*MnV)*nx);
 
 scalarvalueType rpsi = (W * (-psi*psi*psi + psi -2.0*p*psi*n*n));
 scalargradType rpsix = (-epsilon*epsilon * psix);

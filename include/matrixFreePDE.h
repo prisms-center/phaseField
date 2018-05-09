@@ -193,6 +193,23 @@ class MatrixFreePDE:public Subscriptor
 		      vectorType &dst,
 		      const vectorType &src,
 		      const std::pair<unsigned int,unsigned int> &cell_range) const;
+
+
+  bool generatingInitialGuess;
+  void getLaplaceLHS(const MatrixFree<dim,double> &data,
+              vectorType &dst,
+              const vectorType &src,
+              const std::pair<unsigned int,unsigned int> &cell_range) const;
+
+
+  void setNonlinearEqInitialGuess();
+  void computeLaplaceRHS(unsigned int fieldIndex);
+  void getLaplaceRHS (const MatrixFree<dim,double> &data,
+		       vectorType &dst,
+		       const vectorType &src,
+		       const std::pair<unsigned int,unsigned int> &cell_range) const;
+
+
   /*Method to calculate RHS (implicit/explicit). This is an abstract method, so every model which inherits MatrixFreePDE<dim> has to implement this method.*/
   void getExplicitRHS (const MatrixFree<dim,double> &data,
 		       std::vector<vectorType*> &dst,
