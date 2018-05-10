@@ -150,8 +150,35 @@ template <int dim,typename T>
 
     solution_field_1->print(std::cout);
 
+    typename DoFHandler<dim>::active_cell_iterator di = dof_handler.begin_active();
+
+    while (di != dof_handler.end())
+    {
+        if (di->is_locally_owned()){
+            std::vector<types::global_dof_index> dof_indices(4,0);
+            di->get_dof_indices(dof_indices);
+            for (unsigned int i=0; i < dof_indices.size(); i++){
+                    std::cout << "ob " << solution_field_0->local_element(dof_indices.at(i)) << " " << solution_field_1->local_element(dof_indices.at(i)) <<  std::endl;
+                }
+            }
+        ++di;
+    }
+
     OrderParameterRemapper<dim> order_parameter_remapper;
     order_parameter_remapper.remap(simplified_grain_representations, solution_fields, dof_handler);
+
+    di = dof_handler.begin_active();
+    while (di != dof_handler.end())
+    {
+        if (di->is_locally_owned()){
+            std::vector<types::global_dof_index> dof_indices(4,0);
+            di->get_dof_indices(dof_indices);
+            for (unsigned int i=0; i < dof_indices.size(); i++){
+                    std::cout << "oa " << solution_field_0->local_element(dof_indices.at(i)) << " " << solution_field_1->local_element(dof_indices.at(i)) <<  std::endl;
+                }
+            }
+        ++di;
+    }
 
     solution_field_1->print(std::cout);
 

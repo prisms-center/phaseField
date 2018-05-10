@@ -10,7 +10,7 @@ template <int dim>
 class OrderParameterRemapper
 {
 public:
-    void remap(std::vector<SimplifiedGrainRepresentation<dim>> & grain_representations, std::vector<vectorType*> solution_fields, dealii::DoFHandler<dim> &dof_handler);
+    void remap(std::vector<SimplifiedGrainRepresentation<dim>> & grain_representations, std::vector<vectorType*> & solution_fields, dealii::DoFHandler<dim> &dof_handler);
 
 
 protected:
