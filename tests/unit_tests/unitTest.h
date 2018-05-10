@@ -50,6 +50,8 @@ void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Vectorized
 
 #include "../../src/SimplifiedGrainRepresentation/SimplifiedGrainRepresentation.cc"
 
+#include "../../src/OrderParameterRemapper/OrderParameterRemapper.cc"
+
 template <int dim, typename T>
 class unitTest
 {
@@ -74,6 +76,7 @@ class unitTest
     bool test_SimplifiedGrainRepresentation();
     bool test_SimplifiedGrainManipulator_transferGrainIds();
     bool test_SimplifiedGrainManipulator_reassignGrains();
+    bool test_OrderParameterRemapper();
 };
 
 #include "variableAttributeLoader_test.cc"
@@ -100,3 +103,4 @@ class unitTest
 #include "test_FloodFiller.h"
 #include "test_SimplifiedGrainRepresentation.h"
 #include "test_SimplifiedGrainManipulator.h"
+#include "test_OrderParameterRemapper.h"

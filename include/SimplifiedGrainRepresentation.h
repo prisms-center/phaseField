@@ -32,7 +32,7 @@ protected:
 };
 
 /**
-* This class...
+* This class contains methods to make changes to lists of SimplifiedGrainRepresentation objects to aid in order parameter remapping.
 */
 template <int dim>
 class SimplifiedGrainManipulator

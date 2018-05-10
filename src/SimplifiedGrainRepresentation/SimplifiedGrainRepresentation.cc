@@ -81,12 +81,12 @@ void SimplifiedGrainRepresentation<dim>::setOrderParameterId(unsigned int id){
 
 template <int dim>
 unsigned int SimplifiedGrainRepresentation<dim>::getOldOrderParameterId() const {
-    return order_parameter_id;
+    return old_order_parameter_id;
 }
 
 template <int dim>
 void SimplifiedGrainRepresentation<dim>::setOldOrderParameterId(unsigned int id){
-    order_parameter_id = id;
+    old_order_parameter_id = id;
 }
 
 // ============================================================================

@@ -180,6 +180,11 @@ int main(int argc, char **argv)
   pass = SimplifiedGrainManipulator_tester2.test_SimplifiedGrainManipulator_reassignGrains();
   tests_passed += pass;
 
+  // Unit tests for the OrderParameterRemapper class
+  total_tests++;
+  unitTest<2,double> OrderParameterRemapper_tester;
+  pass = OrderParameterRemapper_tester.test_OrderParameterRemapper();
+  tests_passed += pass;
 
   // Print out results
   char buffer[100];

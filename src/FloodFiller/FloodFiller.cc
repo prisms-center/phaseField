@@ -1,7 +1,7 @@
 #include "../../include/FloodFiller.h"
 
 template <int dim, int degree>
-void FloodFiller<dim, degree>::calcGrainSets(FESystem<dim> & fe, dealii::DoFHandler<dim> &dof_handler, vectorType* solution_field, double threshold, std::vector<GrainSet<dim>> & grain_sets){
+void FloodFiller<dim, degree>::calcGrainSets(FESystem<dim> & fe, dealii::DoFHandler<dim> &dof_handler, vectorType* solution_field, double threshold, unsigned int order_parameter_index, std::vector<GrainSet<dim>> & grain_sets){
 
     unsigned int grain_index = 0;
 
@@ -28,8 +28,9 @@ void FloodFiller<dim, degree>::calcGrainSets(FESystem<dim> & fe, dealii::DoFHand
         if (grain_assigned){
             grain_index++;
             GrainSet<dim> grain_set;
+            grain_set.setGrainIndex(grain_index);
+            grain_set.setOrderParameterIndex(order_parameter_index);
             grain_sets.push_back(grain_set);
-            grain_sets.back().setGrainIndex(grain_index);
         }
 
         ++di;
@@ -41,6 +42,11 @@ void FloodFiller<dim, degree>::calcGrainSets(FESystem<dim> & fe, dealii::DoFHand
 
     // Get a global list of grains from the various local lists
     communicateGrainSets(grain_sets);
+
+    for (unsigned int g=0; g<grain_sets.size(); g++){
+        std::cout << "op index: " << order_parameter_index << " " << grain_sets.at(g).getOrderParameterIndex() << std::endl;
+    }
+
 
 }
 

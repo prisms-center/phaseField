@@ -76,7 +76,7 @@ public:
     /**
     * The primary external interface. This method takes in information about the mesh/field and outputs a vector of GrainSet objects.
     */
-    void calcGrainSets(FESystem<dim> & fe, dealii::DoFHandler<dim> &dof_handler, vectorType* solution_field, double threshold, std::vector<GrainSet<dim>> & grain_sets);
+    void calcGrainSets(FESystem<dim> & fe, dealii::DoFHandler<dim> &dof_handler, vectorType* solution_field, double threshold, unsigned int order_parameter_index, std::vector<GrainSet<dim>> & grain_sets);
 protected:
 
     /**
