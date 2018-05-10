@@ -162,6 +162,25 @@ int main(int argc, char **argv)
   pass = FloodFiller_tester.test_FloodFiller();
   tests_passed += pass;
 
+  // Unit tests for the SimplifiedGrainRepresentation class
+  total_tests++;
+  unitTest<2,double> SimplifiedGrainRepresentation_tester;
+  pass = SimplifiedGrainRepresentation_tester.test_SimplifiedGrainRepresentation();
+  tests_passed += pass;
+
+  // Unit tests for the "transferGrainIds" method in the "SimplifiedGrainManipulator" class
+  total_tests++;
+  unitTest<2,double> SimplifiedGrainManipulator_tester1;
+  pass = SimplifiedGrainManipulator_tester1.test_SimplifiedGrainManipulator_transferGrainIds();
+  tests_passed += pass;
+
+  // Unit tests for the "reassignGrains" method in the "SimplifiedGrainManipulator" class
+  total_tests++;
+  unitTest<2,double> SimplifiedGrainManipulator_tester2;
+  pass = SimplifiedGrainManipulator_tester2.test_SimplifiedGrainManipulator_reassignGrains();
+  tests_passed += pass;
+
+
   // Print out results
   char buffer[100];
   sprintf(buffer, "\n\nNumber of tests passed: %u/%u \n\n", tests_passed, total_tests);

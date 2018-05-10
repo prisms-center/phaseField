@@ -18,7 +18,17 @@ public:
     /**
     * Gets the grain index.
     */
-    unsigned int getGrainIndex(){return grain_index;};
+    unsigned int getGrainIndex() const {return grain_index;};
+
+    /**
+    * Sets the order parameter index.
+    */
+    void setOrderParameterIndex(unsigned int _order_parameter_index){order_parameter_index = _order_parameter_index;};
+
+    /**
+    * Gets the order parameter index.
+    */
+    unsigned int getOrderParameterIndex() const {return order_parameter_index;};
 
     /**
     * Adds the vertices of a new element to the list.
@@ -28,13 +38,18 @@ public:
     /**
     * Gets the entire list of elements and the list of vertices per element.
     */
-    std::vector<std::vector<dealii::Point<dim>>> getVertexList(){return list_of_vertices;};
+    std::vector<std::vector<dealii::Point<dim>>> getVertexList() const{return list_of_vertices;};
 
 private:
     /**
     * The grain index.
     */
     unsigned int grain_index;
+
+    /**
+    * The variable index for the order parameter containing this grain.
+    */
+    unsigned int order_parameter_index;
 
     /**
     * A vector of the elements in the grain containing a vector of the vertices for each element.

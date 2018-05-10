@@ -48,6 +48,8 @@ void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Vectorized
 
 #include "../../src/FloodFiller/FloodFiller.cc"
 
+#include "../../src/SimplifiedGrainRepresentation/SimplifiedGrainRepresentation.cc"
+
 template <int dim, typename T>
 class unitTest
 {
@@ -69,6 +71,9 @@ class unitTest
     bool test_EquationDependencyParser_nonlinear();
     bool test_EquationDependencyParser_postprocessing();
     bool test_FloodFiller();
+    bool test_SimplifiedGrainRepresentation();
+    bool test_SimplifiedGrainManipulator_transferGrainIds();
+    bool test_SimplifiedGrainManipulator_reassignGrains();
 };
 
 #include "variableAttributeLoader_test.cc"
@@ -93,3 +98,5 @@ class unitTest
 #include "test_EquationDependencyParser.h"
 
 #include "test_FloodFiller.h"
+#include "test_SimplifiedGrainRepresentation.h"
+#include "test_SimplifiedGrainManipulator.h"
