@@ -148,39 +148,40 @@ template <int dim,typename T>
 
     // ---------- The actual test run of OrderParameterRemapper -----------
 
-    solution_field_1->print(std::cout);
-
-    typename DoFHandler<dim>::active_cell_iterator di = dof_handler.begin_active();
-
-    while (di != dof_handler.end())
-    {
-        if (di->is_locally_owned()){
-            std::vector<types::global_dof_index> dof_indices(4,0);
-            di->get_dof_indices(dof_indices);
-            for (unsigned int i=0; i < dof_indices.size(); i++){
-                    std::cout << "ob " << solution_field_0->local_element(dof_indices.at(i)) << " " << solution_field_1->local_element(dof_indices.at(i)) <<  std::endl;
-                }
-            }
-        ++di;
-    }
-
     OrderParameterRemapper<dim> order_parameter_remapper;
     order_parameter_remapper.remap(simplified_grain_representations, solution_fields, dof_handler, fe.dofs_per_cell);
 
-    di = dof_handler.begin_active();
-    while (di != dof_handler.end())
-    {
-        if (di->is_locally_owned()){
-            std::vector<types::global_dof_index> dof_indices(4,0);
-            di->get_dof_indices(dof_indices);
-            for (unsigned int i=0; i < dof_indices.size(); i++){
-                    std::cout << "oa " << solution_field_0->local_element(dof_indices.at(i)) << " " << solution_field_1->local_element(dof_indices.at(i)) <<  std::endl;
-                }
+    // ---------- Check the result -----------
+    pass = true;
+
+    for (unsigned int dof=0; dof<solution_field_0->size(); ++dof){
+        if (dof < 24){
+            if ( std::abs(solution_field_0->local_element(dof) - 0.0) >  1.0e-10){
+                pass = false;
             }
-        ++di;
+        }
+        else {
+            if ( std::abs(solution_field_0->local_element(dof) - 1.0) >  1.0e-10){
+                pass = false;
+            }
+        }
+        std::cout << solution_field_0->local_element(dof) << std::endl;
     }
 
-    solution_field_1->print(std::cout);
+    for (unsigned int dof=0; dof<solution_field_1->size(); ++dof){
+        if (dof < 4){
+            if ( std::abs(solution_field_1->local_element(dof) - 1.0) >  1.0e-10){
+                pass = false;
+            }
+        }
+        else {
+            if ( std::abs(solution_field_1->local_element(dof) - 0.0) >  1.0e-10){
+                pass = false;
+            }
+        }
+        std::cout << solution_field_1->local_element(dof) << std::endl;
+    }
+
 
 	sprintf (buffer, "Test result for 'OrderParameterRemapper': %u\n", pass);
 	std::cout << buffer;
