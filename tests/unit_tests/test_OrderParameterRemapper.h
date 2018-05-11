@@ -13,7 +13,7 @@ public:
 
       if (index == 0){
           dealii::Point<dim> center0(0.125, 0.125);
-          dealii::Point<dim> center1(0.875, 0.875);
+          dealii::Point<dim> center1(1.0, 1.0);
 
           if (p.distance(center0) < std::sqrt(2.0)*0.15 or p.distance(center1) < std::sqrt(2.0)*0.15){
               val = 1.0;
@@ -165,7 +165,7 @@ template <int dim,typename T>
     }
 
     OrderParameterRemapper<dim> order_parameter_remapper;
-    order_parameter_remapper.remap(simplified_grain_representations, solution_fields, dof_handler);
+    order_parameter_remapper.remap(simplified_grain_representations, solution_fields, dof_handler, fe.dofs_per_cell);
 
     di = dof_handler.begin_active();
     while (di != dof_handler.end())
