@@ -2,6 +2,7 @@
 #define INCLUDE_ORDERPARAMETERREMAPPER_H_
 
 #include "dealIIheaders.h"
+#include "SimplifiedGrainRepresentation.h"
 
 /**
 * This class uses information from the list of SimplifiedGrainRepresentation objects to reassign grains across multiple solution fields. (Currently this class is a one-function stub, it may be reassigned as part of a different class if it stays this way.)

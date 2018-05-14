@@ -12,8 +12,8 @@ void MatrixFreePDE<dim,degree>::solve(){
     //time dependent BVP
     if (isTimeDependentBVP){
 
-        //time stepping
-        pcout << "\nTime stepping parameters: timeStep: " << userInputs.dtValue << "  timeFinal: " << userInputs.finalTime << "  timeIncrements: " << userInputs.totalIncrements << "\n";
+        // If grain reassignment is activated, reassign grains
+        reassignGrains();
 
         // For any nonlinear equation, set the initial guess as the solution to Laplace's equations
         generatingInitialGuess = true;
@@ -50,6 +50,9 @@ void MatrixFreePDE<dim,degree>::solve(){
         while (userInputs.checkpointTimeStepList.size() > 0 && userInputs.checkpointTimeStepList[currentCheckpoint] < currentIncrement){
             currentCheckpoint++;
         }
+
+        //time stepping
+        pcout << "\nTime stepping parameters: timeStep: " << userInputs.dtValue << "  timeFinal: " << userInputs.finalTime << "  timeIncrements: " << userInputs.totalIncrements << "\n";
 
         // This is the main time-stepping loop
         for (; currentIncrement<=userInputs.totalIncrements; ++currentIncrement){

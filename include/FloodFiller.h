@@ -3,6 +3,10 @@
 
 #include "dealIIheaders.h"
 
+#ifndef vectorType
+typedef dealii::parallel::distributed::Vector<double> vectorType;
+#endif
+
 /**
 * This class holds information for a grain, including its index and the list of vertices in that grain.
 */
@@ -69,14 +73,14 @@ public:
     /**
     * Constructor.
     */
-    FloodFiller(FESystem<dim> & _fe, QGaussLobatto<dim> _quadrature): quadrature(_quadrature), num_quad_points(_quadrature.size()), dofs_per_cell(_fe.dofs_per_cell){
+    FloodFiller(dealii::FESystem<dim> & _fe, dealii::QGaussLobatto<dim> _quadrature): quadrature(_quadrature), num_quad_points(_quadrature.size()), dofs_per_cell(_fe.dofs_per_cell){
         fe = & _fe;
     };
 
     /**
     * The primary external interface. This method takes in information about the mesh/field and outputs a vector of GrainSet objects.
     */
-    void calcGrainSets(FESystem<dim> & fe, dealii::DoFHandler<dim> &dof_handler, vectorType* solution_field, double threshold, unsigned int order_parameter_index, std::vector<GrainSet<dim>> & grain_sets);
+    void calcGrainSets(dealii::FESystem<dim> & fe, dealii::DoFHandler<dim> &dof_handler, vectorType* solution_field, double threshold, unsigned int order_parameter_index, std::vector<GrainSet<dim>> & grain_sets);
 protected:
 
     /**
@@ -113,7 +117,7 @@ protected:
     /**
     * The quadrature used to calculate the element-wise value of the solution field.
     */
-    QGaussLobatto<dim>  quadrature;
+    dealii::QGaussLobatto<dim>  quadrature;
 
     /**
     * The number of quadrature points per cell.
@@ -128,7 +132,7 @@ protected:
     /**
     * The deal.II finite element object, set in the constructor.
     */
-    FESystem<dim> * fe;
+    dealii::FESystem<dim> * fe;
 };
 
 #endif

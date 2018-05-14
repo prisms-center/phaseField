@@ -1,6 +1,8 @@
 #ifndef INCLUDE_SIMPLIFIEDGRAINREPRESENTATION_H_
 #define INCLUDE_SIMPLIFIEDGRAINREPRESENTATION_H_
 
+#include "FloodFiller.h"
+
 /**
 * This class converts lists of grains and the vertices inside the grains to a
 * simplified representation (currently spheres, other representations may be

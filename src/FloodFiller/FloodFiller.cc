@@ -1,12 +1,12 @@
 #include "../../include/FloodFiller.h"
 
 template <int dim, int degree>
-void FloodFiller<dim, degree>::calcGrainSets(FESystem<dim> & fe, dealii::DoFHandler<dim> &dof_handler, vectorType* solution_field, double threshold, unsigned int order_parameter_index, std::vector<GrainSet<dim>> & grain_sets){
+void FloodFiller<dim, degree>::calcGrainSets(dealii::FESystem<dim> & fe, dealii::DoFHandler<dim> &dof_handler, vectorType* solution_field, double threshold, unsigned int order_parameter_index, std::vector<GrainSet<dim>> & grain_sets){
 
     unsigned int grain_index = 0;
 
     // Loop through the whole mesh and set the user flags to false (so everything is considered unmarked)
-    typename DoFHandler<dim>::active_cell_iterator di = dof_handler.begin_active();
+    typename dealii::DoFHandler<dim>::active_cell_iterator di = dof_handler.begin_active();
     while (di != dof_handler.end())
     {
         di->clear_user_flag();
@@ -23,7 +23,7 @@ void FloodFiller<dim, degree>::calcGrainSets(FESystem<dim> & fe, dealii::DoFHand
     while (di != dof_handler.end())
     {
         bool grain_assigned = false;
-        recursiveFloodFill<typename DoFHandler<dim>::active_cell_iterator>(di, dof_handler.end(), solution_field, threshold,  grain_index, grain_sets, grain_assigned);
+        recursiveFloodFill<typename dealii::DoFHandler<dim>::active_cell_iterator>(di, dof_handler.end(), solution_field, threshold,  grain_index, grain_sets, grain_assigned);
 
 
         if (grain_assigned){
@@ -59,36 +59,44 @@ void FloodFiller<dim, degree>::recursiveFloodFill(T di, T di_end, vectorType* so
 
         if (!cellMarked){
 
-            di->set_user_flag();
-
-            FEValues<dim> fe_values (*fe, quadrature, update_values);
-            std::vector<double> var_values(num_quad_points);
-            std::vector<dealii::Point<dim> > q_point_list(num_quad_points);
-
-            // Get the average value for the element
-            fe_values.reinit(di);
-            fe_values.get_function_values(*solution_field, var_values);
-
-            double ele_val = 0.0;
-            for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
-                for (unsigned int i=0; i<dofs_per_cell; ++i){
-                    ele_val += fe_values.shape_value (i, q_point)*var_values[q_point]*quadrature.weight(q_point);
+            if (di->has_children()){
+                // Call recursiveFloodFill on the element's children
+                for (unsigned int n=0; n<di->number_of_children(); n++){
+                    recursiveFloodFill<typename dealii::DoFHandler<dim>::active_cell_iterator>(di->child(n), di_end, solution_field, threshold,  grain_index, grain_sets, grain_assigned);
                 }
             }
+            else{
+                di->set_user_flag();
 
+                dealii::FEValues<dim> fe_values (*fe, quadrature, dealii::update_values);
+                std::vector<double> var_values(num_quad_points);
+                std::vector<dealii::Point<dim> > q_point_list(num_quad_points);
 
-            if (ele_val > threshold){
-                grain_assigned = true;
+                // Get the average value for the element
+                fe_values.reinit(di);
+                fe_values.get_function_values(*solution_field, var_values);
 
-                std::vector<dealii::Point<dim>> vertex_list;
-                for (unsigned int v=0; v< dealii::Utilities::fixed_power<dim>(2.0); v++){
-                    vertex_list.push_back(di->vertex(v));
+                double ele_val = 0.0;
+                for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
+                    for (unsigned int i=0; i<dofs_per_cell; ++i){
+                        ele_val += fe_values.shape_value (i, q_point)*var_values[q_point]*quadrature.weight(q_point);
+                    }
                 }
-                grain_sets.back().addVertexList(vertex_list);
 
-                // Call recursiveFloodFill on the element's neighbors
-                for (unsigned int n=0; n<2*dim; n++){
-                    recursiveFloodFill<typename DoFHandler<dim>::active_cell_iterator>(di->neighbor(n), di_end, solution_field, threshold,  grain_index, grain_sets, grain_assigned);
+
+                if (ele_val > threshold){
+                    grain_assigned = true;
+
+                    std::vector<dealii::Point<dim>> vertex_list;
+                    for (unsigned int v=0; v< dealii::Utilities::fixed_power<dim>(2.0); v++){
+                        vertex_list.push_back(di->vertex(v));
+                    }
+                    grain_sets.back().addVertexList(vertex_list);
+
+                    // Call recursiveFloodFill on the element's neighbors
+                    for (unsigned int n=0; n<2*dim; n++){
+                        recursiveFloodFill<typename dealii::DoFHandler<dim>::active_cell_iterator>(di->neighbor(n), di_end, solution_field, threshold,  grain_index, grain_sets, grain_assigned);
+                    }
                 }
             }
         }
@@ -337,3 +345,11 @@ void FloodFiller<dim, degree>::mergeSplitGrains (std::vector<GrainSet<dim>> & gr
         }
     }
 }
+
+// Template instantiations
+template class FloodFiller<2,1>;
+template class FloodFiller<2,2>;
+template class FloodFiller<2,3>;
+template class FloodFiller<3,1>;
+template class FloodFiller<3,2>;
+template class FloodFiller<3,3>;

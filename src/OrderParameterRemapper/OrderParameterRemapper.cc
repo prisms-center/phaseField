@@ -8,7 +8,7 @@ void OrderParameterRemapper<dim>::remap(
     for (unsigned int g=0; g < grain_representations.size(); g++){
         if (grain_representations.at(g).getOrderParameterId() != grain_representations.at(g).getOldOrderParameterId()){
 
-            typename DoFHandler<dim>::active_cell_iterator di = dof_handler.begin_active();
+            typename dealii::DoFHandler<dim>::active_cell_iterator di = dof_handler.begin_active();
 
             // For now I have two loops, one where I copy the values from the old order parameter to the new one
             // and a second where I zero out the old order parameter. This separation prevents writing zero-out
@@ -30,7 +30,7 @@ void OrderParameterRemapper<dim>::remap(
 
                     // If it is, move the values from the old order parameter to the new order parameter
                     if (in_grain){
-                        std::vector<types::global_dof_index> dof_indices(dofs_per_cell,0);
+                        std::vector<dealii::types::global_dof_index> dof_indices(dofs_per_cell,0);
                         di->get_dof_indices(dof_indices);
 
                         for (unsigned int i=0; i < dof_indices.size(); i++){
@@ -60,7 +60,7 @@ void OrderParameterRemapper<dim>::remap(
 
                     // If it is, set the old order parameter to zero
                     if (in_grain){
-                        std::vector<types::global_dof_index> dof_indices(dofs_per_cell,0);
+                        std::vector<dealii::types::global_dof_index> dof_indices(dofs_per_cell,0);
                         di->get_dof_indices(dof_indices);
 
                         for (unsigned int i=0; i < dof_indices.size(); i++){
@@ -75,3 +75,6 @@ void OrderParameterRemapper<dim>::remap(
         }
     }
 }
+
+template class OrderParameterRemapper<2>;
+template class OrderParameterRemapper<3>;

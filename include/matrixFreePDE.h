@@ -108,6 +108,11 @@ class MatrixFreePDE:public Subscriptor
   void reinit  ();
 
   /**
+  * Method to reassign grains when multiple grains are stored in a single order parameter.
+  */
+  void reassignGrains();
+
+  /**
    * Method to solve each time increment of a time-dependent problem. For time-independent problems
    * this method is called only once. This method solves for all the fields in a staggered manner (one after another)
    * and also invokes the corresponding solvers: Explicit solver for Parabolic problems, Implicit (matrix-free) solver for Elliptic problems.

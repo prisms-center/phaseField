@@ -166,3 +166,11 @@ void SimplifiedGrainManipulator<dim>::transferGrainIds(
     }
 
 }
+
+
+// Template instantiations
+template class SimplifiedGrainManipulator<2>;
+template class SimplifiedGrainManipulator<3>;
+
+template class SimplifiedGrainRepresentation<2>;
+template class SimplifiedGrainRepresentation<3>;
