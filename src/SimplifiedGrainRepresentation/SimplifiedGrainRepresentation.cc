@@ -84,11 +84,6 @@ unsigned int SimplifiedGrainRepresentation<dim>::getOldOrderParameterId() const 
     return old_order_parameter_id;
 }
 
-template <int dim>
-void SimplifiedGrainRepresentation<dim>::setOldOrderParameterId(unsigned int id){
-    old_order_parameter_id = id;
-}
-
 // ============================================================================
 // Methods for SimplifiedGrainManipulator
 // ============================================================================
