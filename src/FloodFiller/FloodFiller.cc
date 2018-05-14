@@ -16,6 +16,7 @@ void FloodFiller<dim, degree>::calcGrainSets(FESystem<dim> & fe, dealii::DoFHand
     GrainSet<dim> grain_set;
     grain_sets.push_back(grain_set);
     grain_sets.back().setGrainIndex(grain_index);
+    grain_sets.back().setOrderParameterIndex(order_parameter_index);
 
     // The flood fill loop
     di = dof_handler.begin_active();
@@ -26,27 +27,24 @@ void FloodFiller<dim, degree>::calcGrainSets(FESystem<dim> & fe, dealii::DoFHand
 
 
         if (grain_assigned){
+            // Get the grain set initialized for the next grain to be found
             grain_index++;
-            GrainSet<dim> grain_set;
-            grain_set.setGrainIndex(grain_index);
-            grain_set.setOrderParameterIndex(order_parameter_index);
-            grain_sets.push_back(grain_set);
+            GrainSet<dim> new_grain_set;
+            new_grain_set.setGrainIndex(grain_index);
+            new_grain_set.setOrderParameterIndex(order_parameter_index);
+            grain_sets.push_back(new_grain_set);
         }
 
         ++di;
     }
 
+    // If the last grain was initialized but empty, delete it
     if (grain_sets.back().getVertexList().size() == 0){
         grain_sets.pop_back();
     }
 
     // Get a global list of grains from the various local lists
     communicateGrainSets(grain_sets);
-
-    for (unsigned int g=0; g<grain_sets.size(); g++){
-        std::cout << "op index: " << order_parameter_index << " " << grain_sets.at(g).getOrderParameterIndex() << std::endl;
-    }
-
 
 }
 

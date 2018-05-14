@@ -26,7 +26,7 @@ public:
           val = 0.0;
       }
 
-      std::cout << index << "\t" << p[0] << "\t" << p[1] << "\t" << val << std::endl;
+      //std::cout << index << "\t" << p[0] << "\t" << p[1] << "\t" << val << std::endl;
       return val;
   };
 
@@ -111,28 +111,11 @@ template <int dim,typename T>
     std::vector<GrainSet<dim>> grain_sets = grain_sets_0;
     grain_sets.insert(grain_sets.end(), grain_sets_1.begin(), grain_sets_1.end());
 
-    std::cout << "num grains: " << grain_sets.size() << " from 0: " << grain_sets_0.size() << " from 1: " << grain_sets_1.size() << std::endl;
-
-    for (unsigned int g=0; g<grain_sets_0.size(); g++){
-        std::cout << "g0: " << g << "\t" << grain_sets_0.at(g).getOrderParameterIndex() << std::endl;
-    }
-
-    for (unsigned int g=0; g<grain_sets_1.size(); g++){
-        std::cout << "g1: " << g << "\t" << grain_sets_1.at(g).getOrderParameterIndex() << std::endl;
-    }
-
-    for (unsigned int g=0; g<grain_sets.size(); g++){
-        std::cout << "g: " << g << "\t" << grain_sets.at(g).getOrderParameterIndex() << std::endl;
-    }
 
     std::vector<SimplifiedGrainRepresentation<dim>> simplified_grain_representations;
     for (unsigned int g=0; g<grain_sets.size(); g++){
         SimplifiedGrainRepresentation<dim> simplified_grain_representation(grain_sets.at(g));
         simplified_grain_representations.push_back(simplified_grain_representation);
-    }
-
-    for (unsigned int g=0; g<simplified_grain_representations.size(); g++){
-        std::cout << "Grain: " << g << "\t" << simplified_grain_representations.at(g).getCenter() << "\t" << simplified_grain_representations.at(g).getRadius() << "\t" << simplified_grain_representations.at(g).getGrainId() << "\t" << simplified_grain_representations.at(g).getOrderParameterId() << "\t" << simplified_grain_representations.at(g).getOldOrderParameterId() << "\n";
     }
 
     std::vector<unsigned int> order_parameter_id_list;
@@ -141,10 +124,6 @@ template <int dim,typename T>
 
     SimplifiedGrainManipulator<dim> simplified_grain_manipulator;
     simplified_grain_manipulator.reassignGrains(simplified_grain_representations, 0.6, order_parameter_id_list);
-
-    for (unsigned int g=0; g<simplified_grain_representations.size(); g++){
-        std::cout << "Grain: " << g << "\t" << simplified_grain_representations.at(g).getCenter() << "\t" << simplified_grain_representations.at(g).getRadius() << "\t" << simplified_grain_representations.at(g).getGrainId() << "\t" << simplified_grain_representations.at(g).getOrderParameterId() << "\t" << simplified_grain_representations.at(g).getOldOrderParameterId() << "\n";
-    }
 
     // ---------- The actual test run of OrderParameterRemapper -----------
 
@@ -158,28 +137,30 @@ template <int dim,typename T>
         if (dof < 24){
             if ( std::abs(solution_field_0->local_element(dof) - 0.0) >  1.0e-10){
                 pass = false;
+                std::cout << "Incorrect value for field 0, dof " << dof << ": " << solution_field_0->local_element(dof) << " Expected value is 0" << std::endl;
             }
         }
         else {
             if ( std::abs(solution_field_0->local_element(dof) - 1.0) >  1.0e-10){
                 pass = false;
+                std::cout << "Incorrect value for field 0, dof " << dof << ": " << solution_field_0->local_element(dof) << " Expected value is 1" << std::endl;
             }
         }
-        std::cout << solution_field_0->local_element(dof) << std::endl;
     }
 
     for (unsigned int dof=0; dof<solution_field_1->size(); ++dof){
         if (dof < 4){
             if ( std::abs(solution_field_1->local_element(dof) - 1.0) >  1.0e-10){
                 pass = false;
+                std::cout << "Incorrect value for field 1, dof " << dof << ": " << solution_field_0->local_element(dof) << " Expected value is 1" << std::endl;
             }
         }
         else {
             if ( std::abs(solution_field_1->local_element(dof) - 0.0) >  1.0e-10){
                 pass = false;
+                std::cout << "Incorrect value for field 1, dof " << dof << ": " << solution_field_0->local_element(dof) << " Expected value is 0" << std::endl;
             }
         }
-        std::cout << solution_field_1->local_element(dof) << std::endl;
     }
 
 
