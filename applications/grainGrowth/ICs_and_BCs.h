@@ -5,32 +5,62 @@
 template <int dim>
 double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned int component) const
 {
-  double scalar_IC;
-	  // --------------------------------------------------------------------------
-	  // ENTER THE INITIAL CONDITIONS HERE FOR SCALAR FIELDS
-	  // --------------------------------------------------------------------------
-	  // Enter the function describing conditions for the fields at point "p".
-	  // Use "if" statements to set the initial condition for each variable
-	  // according to its variable index.
+    double scalar_IC;
+    // --------------------------------------------------------------------------
+    // ENTER THE INITIAL CONDITIONS HERE FOR SCALAR FIELDS
+    // --------------------------------------------------------------------------
+    // Enter the function describing conditions for the fields at point "p".
+    // Use "if" statements to set the initial condition for each variable
+    // according to its variable index.
 
-	  // The initial condition is a set of overlapping circles/spheres defined
-	  // by a hyperbolic tangent function. The center of each circle/sphere is
-	  // given by "center" and its radius is given by "radius".
+    // The initial condition is a set of overlapping circles/spheres defined
+    // by a hyperbolic tangent function. The center of each circle/sphere is
+    // given by "center" and its radius is given by "radius".
 
-	  double center[10][3] = {{0.3,0.3,0},{0.7,0.7,0},{0.5,0.1,0},{0.4,0.5,0},{0.3,0.9,0},{0.1,0.1,0},{0.1,0.7,0},{0.6,0.6,0},{0.7,0.4,0},{0.7,0.2,0}};
-	  double rad[12] = {6, 7, 9, 8, 5, 6, 4, 3, 8, 5};
-	  double dist = 0.0;
-	  scalar_IC = 0;
+    std::vector<dealii::Point<dim>> center;
 
-	  for (unsigned int dir = 0; dir < dim; dir++){
-		  dist += (p[dir]-center[index][dir]*userInputs.domain_size[dir])*(p[dir]-center[index][dir]*userInputs.domain_size[dir]);
-	  }
-	  dist = std::sqrt(dist);
+    // The big grains
+    {dealii::Point<dim> p(0.2, 0.15); center.push_back(p);}
+    {dealii::Point<dim> p(0.25, 0.7); center.push_back(p);}
+    {dealii::Point<dim> p(0.5, 0.5); center.push_back(p);}
+    {dealii::Point<dim> p(0.6, 0.85); center.push_back(p);}
+    {dealii::Point<dim> p(0.85, 0.35); center.push_back(p);}
 
-	  scalar_IC +=	0.5*(1.0-std::tanh((dist-rad[index])/0.8));
+    // The medium grains
+    {dealii::Point<dim> p(0.85, 0.85); center.push_back(p);}
+    {dealii::Point<dim> p(0.2, 0.45); center.push_back(p);}
+    {dealii::Point<dim> p(0.08, 0.92); center.push_back(p);}
+    {dealii::Point<dim> p(0.75, 0.1); center.push_back(p);}
+    {dealii::Point<dim> p(0.75, 0.6); center.push_back(p);}
 
-	  // --------------------------------------------------------------------------
-	  return scalar_IC;
+
+    // The small grains
+    {dealii::Point<dim> p(0.9, 0.15); center.push_back(p);}
+    {dealii::Point<dim> p(0.1, 0.35); center.push_back(p);}
+    {dealii::Point<dim> p(0.45, 0.25); center.push_back(p);}
+    {dealii::Point<dim> p(0.55, 0.05); center.push_back(p);}
+    {dealii::Point<dim> p(0.95, 0.65); center.push_back(p);}
+
+
+    //double center[15][3] = {{0.25,0.25,0},{0.25,0.5,0},{0.125,0.625,0},{0.375,0.625,0},{0.125,0.875,0},{0.375,0.875,0},{0.5,0.25,0},{0.5,0.5,0},{0.5,0.75,0},{0.75,0.25,0},{0.625,0.375,0},{0.875,0.375,0},{0.875,0.625,0},{0.875,0.625,0},{0.75,0.75,0}};
+
+    std::vector<double> rad = {0.14, 0.14, 0.14, 0.14, 0.14, 0.08, 0.08, 0.08, 0.08, 0.08, 0.05, 0.05, 0.05, 0.05, 0.05};
+
+    double dist = 0.0;
+    scalar_IC = 0;
+
+    for (unsigned int dir = 0; dir < dim; dir++){
+        dist += (p[dir]-center[index][dir]*userInputs.domain_size[dir])*(p[dir]-center[index][dir]*userInputs.domain_size[dir]);
+    }
+    dist = std::sqrt(dist);
+
+
+    scalar_IC += 0.5*(1.0-std::tanh((dist-rad[index]*userInputs.domain_size[0])/0.8));
+
+
+
+    // --------------------------------------------------------------------------
+    return scalar_IC;
 }
 
 template <int dim>

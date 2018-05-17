@@ -3,8 +3,9 @@
 template <int dim>
 void OrderParameterRemapper<dim>::remap(
     std::vector<SimplifiedGrainRepresentation<dim>> & grain_representations,
-    std::vector<vectorType*> & solution_fields, dealii::DoFHandler<dim> & dof_handler, unsigned int dofs_per_cell)
+    std::vector<vectorType*> & solution_fields, dealii::DoFHandler<dim> & dof_handler, unsigned int dofs_per_cell, double threshold)
 {
+
     for (unsigned int g=0; g < grain_representations.size(); g++){
         if (grain_representations.at(g).getOrderParameterId() != grain_representations.at(g).getOldOrderParameterId()){
 
@@ -22,7 +23,7 @@ void OrderParameterRemapper<dim>::remap(
                     // Check if the cell is within the simplified grain representation
                     bool in_grain = true;
                     for (unsigned int v=0; v< dealii::GeometryInfo<dim>::vertices_per_cell; v++){
-                        if (di->vertex(v).distance(grain_representations.at(g).getCenter()) > grain_representations.at(g).getRadius()){
+                        if (di->vertex(v).distance(grain_representations.at(g).getCenter()) > grain_representations.at(g).getRadius() + threshold/2.0){
                             in_grain = false;
                             break;
                         }
@@ -32,11 +33,11 @@ void OrderParameterRemapper<dim>::remap(
                     if (in_grain){
                         std::vector<dealii::types::global_dof_index> dof_indices(dofs_per_cell,0);
                         di->get_dof_indices(dof_indices);
-
                         for (unsigned int i=0; i < dof_indices.size(); i++){
-                            solution_fields.at(op_new)->local_element(dof_indices.at(i)) = solution_fields.at(op_old)->local_element(dof_indices.at(i));
+                            (*solution_fields.at(op_new))[dof_indices.at(i)] = (*solution_fields.at(op_old))[dof_indices.at(i)];
                         }
                     }
+
                 }
                 ++di;
             }
@@ -52,7 +53,7 @@ void OrderParameterRemapper<dim>::remap(
                     // Check if the cell is within the simplified grain representation
                     bool in_grain = true;
                     for (unsigned int v=0; v< dealii::GeometryInfo<dim>::vertices_per_cell; v++){
-                        if (di->vertex(v).distance(grain_representations.at(g).getCenter()) > grain_representations.at(g).getRadius()){
+                        if (di->vertex(v).distance(grain_representations.at(g).getCenter()) > grain_representations.at(g).getRadius() + threshold/2.0){
                             in_grain = false;
                             break;
                         }
@@ -64,9 +65,7 @@ void OrderParameterRemapper<dim>::remap(
                         di->get_dof_indices(dof_indices);
 
                         for (unsigned int i=0; i < dof_indices.size(); i++){
-
-                            solution_fields.at(op_old)->local_element(dof_indices.at(i)) = 0.0;
-
+                            (*solution_fields.at(op_old))[dof_indices.at(i)] = 0.0;
                         }
                     }
                 }

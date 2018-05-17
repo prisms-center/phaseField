@@ -45,9 +45,10 @@ void FloodFiller<dim, degree>::calcGrainSets(dealii::FESystem<dim> & fe, dealii:
         grain_sets.pop_back();
     }
 
+    int thisProc=dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
+
     // Get a global list of grains from the various local lists
     communicateGrainSets(grain_sets);
-
 }
 
 template <int dim, int degree>
@@ -131,15 +132,14 @@ void FloodFiller<dim, degree>::communicateGrainSets(std::vector<GrainSet<dim>> &
 		}
 
 		// The final processor now has all of the grains
-		// Check for grains that are split across processors
 		if (thisProc == numProcs-1){
 			mergeSplitGrains(grain_sets);
 		}
 
 		// The final processor now has the final list of the grains, broadcast it to all the other processors
 		broadcastUpdate(numProcs-1, thisProc, grain_sets);
-	}
 
+	}
 }
 
 // =================================================================================
@@ -154,10 +154,14 @@ void FloodFiller<dim, degree>::sendUpdate (int procno, std::vector<GrainSet<dim>
     MPI_Send(&num_grains, 1, MPI_INT, procno, 0, MPI_COMM_WORLD);
     if (num_grains > 0){
 
+        std::vector<unsigned int> s_order_parameters;
+        std::vector<unsigned int> s_grain_ids;
         std::vector<unsigned int> s_num_elements;
         std::vector<double> s_vertices;
 
         for (unsigned int g=0; g<grain_sets.size(); g++){
+            s_order_parameters.push_back(grain_sets.at(g).getOrderParameterIndex());
+            s_grain_ids.push_back(grain_sets.at(g).getGrainIndex());
 
             std::vector<std::vector<dealii::Point<dim>>> vertex_list = grain_sets[g].getVertexList();
             s_num_elements.push_back(vertex_list.size());
@@ -176,8 +180,11 @@ void FloodFiller<dim, degree>::sendUpdate (int procno, std::vector<GrainSet<dim>
             num_vertices += s_num_elements[g] * dealii::Utilities::fixed_power<dim>(2.0) * (double)dim;
         }
 
+
         MPI_Send(&s_num_elements[0], num_grains, MPI_UNSIGNED, procno, 1, MPI_COMM_WORLD);
         MPI_Send(&s_vertices[0], num_vertices, MPI_DOUBLE, procno, 2, MPI_COMM_WORLD);
+        MPI_Send(&s_grain_ids[0], num_grains, MPI_UNSIGNED, procno, 3, MPI_COMM_WORLD);
+        MPI_Send(&s_order_parameters[0], num_grains, MPI_UNSIGNED, procno, 4, MPI_COMM_WORLD);
     }
 }
 
@@ -203,6 +210,13 @@ void FloodFiller<dim, degree>::receiveUpdate (int procno, std::vector<GrainSet<d
         std::vector<double> r_vertices(num_vertices, 0.0);
         MPI_Recv(&r_vertices[0], num_vertices, MPI_DOUBLE, procno, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
+        std::vector<unsigned int> r_grain_ids(num_grains, 0);
+        MPI_Recv(&r_grain_ids[0], num_grains, MPI_UNSIGNED, procno, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+        std::vector<unsigned int> r_order_parameters(num_grains, 0);
+        MPI_Recv(&r_order_parameters[0], num_grains, MPI_UNSIGNED, procno, 4, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+
         // Now add these new grains to the local grain list
         for (int g=0; g<num_grains; g++){
             GrainSet<dim> new_grain_set;
@@ -221,6 +235,8 @@ void FloodFiller<dim, degree>::receiveUpdate (int procno, std::vector<GrainSet<d
                 }
                 new_grain_set.addVertexList(verts);
             }
+            new_grain_set.setOrderParameterIndex(r_order_parameters.at(g));
+            new_grain_set.setGrainIndex(r_grain_ids.at(g));
             grain_sets.push_back(new_grain_set);
         }
 
@@ -247,11 +263,16 @@ void FloodFiller<dim, degree>::broadcastUpdate (int broadcastProc, int thisProc,
     		initial_vec_size = num_grains;
     	}
 
+        std::vector<unsigned int> order_parameters(initial_vec_size, 0);
+        std::vector<unsigned int> grain_ids(initial_vec_size, 0);
         std::vector<unsigned int> num_elements(initial_vec_size, 0);
         std::vector<double> vertices;
 
         if (thisProc == broadcastProc){
             for (unsigned int g=0; g<grain_sets.size(); g++){
+
+                order_parameters.push_back(grain_sets.at(g).getOrderParameterIndex());
+                grain_ids.push_back(grain_sets.at(g).getGrainIndex());
 
                 std::vector<std::vector<dealii::Point<dim>>> vertex_list = grain_sets[g].getVertexList();
                 num_elements.push_back(vertex_list.size());
@@ -267,6 +288,8 @@ void FloodFiller<dim, degree>::broadcastUpdate (int broadcastProc, int thisProc,
         }
 
         MPI_Bcast(&num_elements[0], num_grains, MPI_UNSIGNED, broadcastProc, MPI_COMM_WORLD);
+        MPI_Bcast(&order_parameters[0], num_grains, MPI_UNSIGNED, broadcastProc, MPI_COMM_WORLD);
+        MPI_Bcast(&grain_ids[0], num_grains, MPI_UNSIGNED, broadcastProc, MPI_COMM_WORLD);
 
         unsigned int num_vertices = 0;
         for (int g=0; g<num_grains; g++){
@@ -299,28 +322,35 @@ void FloodFiller<dim, degree>::broadcastUpdate (int broadcastProc, int thisProc,
                     }
                     new_grain_set.addVertexList(verts);
                 }
+                new_grain_set.setOrderParameterIndex(order_parameters.at(g));
+                new_grain_set.setGrainIndex(grain_ids.at(g));
                 grain_sets.push_back(new_grain_set);
             }
         }
     }
 }
 
+// =================================================================================
+// Check to see if any grains on different processors share vertices
+// =================================================================================
+
 template <int dim, int degree>
 void FloodFiller<dim, degree>::mergeSplitGrains (std::vector<GrainSet<dim>> & grain_sets) const
 {
+
     // Loop though each vertex in the base grain "g"
     for (unsigned int g=0; g<grain_sets.size(); g++){
 
         std::vector<std::vector<dealii::Point<dim>>> vertex_list = grain_sets[g].getVertexList();
 
-        for (unsigned int c = 0; c < vertex_list.size(); c++){
-            for (unsigned int v = 0; v < dealii::Utilities::fixed_power<dim>(2.0); v++){
+        // Now cycle through the other grains to find overlapping elements
+        for (unsigned int g_other=g+1; g_other<grain_sets.size(); g_other++){
+            bool matching_vert = false;
 
-                // Now cycle through the other grains to find overlapping elements
-                for (unsigned int g_other=g+1; g_other<grain_sets.size(); g_other++){
-                    bool matching_vert = false;
+            std::vector<std::vector<dealii::Point<dim>>> vertex_list_other = grain_sets[g_other].getVertexList();
 
-                    std::vector<std::vector<dealii::Point<dim>>> vertex_list_other = grain_sets[g_other].getVertexList();
+            for (unsigned int c = 0; c < vertex_list.size(); c++){
+                for (unsigned int v = 0; v < dealii::Utilities::fixed_power<dim>(2.0); v++){
 
                     for (unsigned int c_other = 0; c_other < vertex_list_other.size(); c_other++){
                         for (unsigned int v_other = 0; v_other < dealii::Utilities::fixed_power<dim>(2.0); v_other++){
@@ -337,15 +367,23 @@ void FloodFiller<dim, degree>::mergeSplitGrains (std::vector<GrainSet<dim>> & gr
                             break;
                         }
                     }
-
-                    // If this grain has a vertex shared with the base grain, move the vertices to the base grain and delete the other grain
                     if (matching_vert){
-                        for (unsigned int c_other = 0; c_other < vertex_list_other.size(); c_other++){
-                            grain_sets[g].addVertexList(vertex_list_other.at(c_other));
-                        }
-                        grain_sets.erase(grain_sets.begin()+g_other);
+                        break;
                     }
                 }
+                if (matching_vert){
+                    break;
+                }
+            }
+
+            if (matching_vert){
+
+                for (unsigned int c_base = 0; c_base < vertex_list.size(); c_base++){
+                    grain_sets[g_other].addVertexList(vertex_list.at(c_base));
+                }
+                grain_sets.erase(grain_sets.begin()+g);
+                g--;
+                break;
             }
         }
     }

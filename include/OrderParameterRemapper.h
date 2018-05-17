@@ -15,7 +15,7 @@ public:
     /**
     * This method does the core work of the class to reassign grains across solution vectors based on the list of SimplifiedGrainRepresentation objects.
     */
-    void remap(std::vector<SimplifiedGrainRepresentation<dim>> & grain_representations, std::vector<vectorType*> & solution_fields, dealii::DoFHandler<dim> &dof_handler, unsigned int dofs_per_cell);
+    void remap(std::vector<SimplifiedGrainRepresentation<dim>> & grain_representations, std::vector<vectorType*> & solution_fields, dealii::DoFHandler<dim> &dof_handler, unsigned int dofs_per_cell, double threshold);
 
 
 protected:

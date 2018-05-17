@@ -4,18 +4,30 @@
 // Set the attributes of the primary field variables
 // =================================================================================
 void variableAttributeLoader::loadVariableAttributes(){
-	// Variable 0
 
-    for (unsigned int var_index=0; var_index<10; var_index++){
+    // for (unsigned int var_index=0; var_index<15; var_index++){
+    //     std::string var_name = "n";
+    //     var_name.append(std::to_string(var_index));
+    //
+    //     set_variable_name				(var_index,var_name);
+    // 	set_variable_type				(var_index,SCALAR);
+    // 	set_variable_equation_type		(var_index,PARABOLIC);
+    //
+    //     set_dependencies_value_residual_term_RHS(var_index, "n0, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14");
+    //     set_dependencies_gradient_residual_term_RHS(var_index, "grad(n0), grad(n1), grad(n2), grad(n3), grad(n4), grad(n5), grad(n6), grad(n7), grad(n8), grad(n9), grad(n10), grad(n11), grad(n12), grad(n13), grad(n14)");
+    //
+    // }
+
+    for (unsigned int var_index=0; var_index<8; var_index++){
         std::string var_name = "n";
-        var_name.append(std::to_string(var_index+1));
+        var_name.append(std::to_string(var_index));
 
         set_variable_name				(var_index,var_name);
     	set_variable_type				(var_index,SCALAR);
     	set_variable_equation_type		(var_index,PARABOLIC);
 
-        set_dependencies_value_residual_term_RHS(var_index, "n1, n2, n3, n4, n5, n6, n7, n8, n9, n10");
-        set_dependencies_gradient_residual_term_RHS(var_index, "grad(n1), grad(n2), grad(n3), grad(n4), grad(n5), grad(n6), grad(n7), grad(n8), grad(n9), grad(n10)");
+        set_dependencies_value_residual_term_RHS(var_index, "n0, n1, n2, n3, n4, n5, n6, n7");
+        set_dependencies_gradient_residual_term_RHS(var_index, "grad(n0), grad(n1), grad(n2), grad(n3), grad(n4), grad(n5), grad(n6), grad(n7)");
 
     }
 

@@ -38,6 +38,8 @@ private:
 template <int dim,typename T>
   bool unitTest<dim,T>::test_OrderParameterRemapper(){
 
+    int thisProc=dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
+
     char buffer[100];
 
 	std::cout << "\nTesting 'OrderParameterRemapper'... " << std::endl;
@@ -127,42 +129,59 @@ template <int dim,typename T>
 
     // ---------- The actual test run of OrderParameterRemapper -----------
 
+    for (unsigned int g=0; g<simplified_grain_representations.size(); g++){
+        std::cout << simplified_grain_representations.at(g).getGrainId() << " " << simplified_grain_representations.at(g).getRadius() << std::endl;
+    }
+
+    //std::cout << "Field 0, core" << thisProc << std::endl;
+    //solution_fields.at(0)->print(std::cout);
+    std::cout << "Field 1, core" << thisProc << std::endl;
+    solution_fields.at(1)->print(std::cout);
+
     OrderParameterRemapper<dim> order_parameter_remapper;
     order_parameter_remapper.remap(simplified_grain_representations, solution_fields, dof_handler, fe.dofs_per_cell);
+
+    //std::cout << "Field 0, core" << thisProc << std::endl;
+    //solution_fields.at(0)->print(std::cout);
+    std::cout << "Field 1, core" << thisProc << std::endl;
+    solution_fields.at(1)->print(std::cout);
 
     // ---------- Check the result -----------
     pass = true;
 
-    for (unsigned int dof=0; dof<solution_field_0->size(); ++dof){
-        if (dof < 24){
-            if ( std::abs(solution_field_0->local_element(dof) - 0.0) >  1.0e-10){
-                pass = false;
-                std::cout << "Incorrect value for field 0, dof " << dof << ": " << solution_field_0->local_element(dof) << " Expected value is 0" << std::endl;
+    for (unsigned int dof=0; dof<solution_fields.at(0)->size(); ++dof){
+        if (solution_field_0->in_local_range(dof)){
+            if (dof < 24){
+                if ( std::abs((*solution_fields.at(0))[dof] - 0.0) >  1.0e-10){
+                    pass = false;
+                    std::cout << "Incorrect value for field 0, dof " << dof << ": " << (*solution_fields.at(0))[dof] << " Expected value is 0" << std::endl;
+                }
             }
-        }
-        else {
-            if ( std::abs(solution_field_0->local_element(dof) - 1.0) >  1.0e-10){
-                pass = false;
-                std::cout << "Incorrect value for field 0, dof " << dof << ": " << solution_field_0->local_element(dof) << " Expected value is 1" << std::endl;
-            }
-        }
-    }
-
-    for (unsigned int dof=0; dof<solution_field_1->size(); ++dof){
-        if (dof < 4){
-            if ( std::abs(solution_field_1->local_element(dof) - 1.0) >  1.0e-10){
-                pass = false;
-                std::cout << "Incorrect value for field 1, dof " << dof << ": " << solution_field_0->local_element(dof) << " Expected value is 1" << std::endl;
-            }
-        }
-        else {
-            if ( std::abs(solution_field_1->local_element(dof) - 0.0) >  1.0e-10){
-                pass = false;
-                std::cout << "Incorrect value for field 1, dof " << dof << ": " << solution_field_0->local_element(dof) << " Expected value is 0" << std::endl;
+            else {
+                if ( std::abs((*solution_fields.at(0))[dof] - 1.0) >  1.0e-10){
+                    pass = false;
+                    std::cout << "Incorrect value for field 0, dof " << dof << ": " << (*solution_fields.at(0))[dof] << " Expected value is 1" << std::endl;
+                }
             }
         }
     }
 
+    for (unsigned int dof=0; dof<solution_fields.at(1)->size(); ++dof){
+        if (solution_field_1->in_local_range(dof)){
+            if (dof < 4){
+                if ( std::abs((*solution_fields.at(1))[dof] - 1.0) >  1.0e-10){
+                    pass = false;
+                    std::cout << "Incorrect value for field 1, dof " << dof << ": " << (*solution_fields.at(1))[dof] << " Expected value is 1" << std::endl;
+                }
+            }
+            else {
+                if ( std::abs((*solution_fields.at(1))[dof] - 0.0) >  1.0e-10){
+                    pass = false;
+                    std::cout << "Incorrect value for field 1, dof " << dof << ": " << (*solution_fields.at(1))[dof] << " Expected value is 0" << std::endl;
+                }
+            }
+        }
+    }
 
 	sprintf (buffer, "Test result for 'OrderParameterRemapper': %u\n", pass);
 	std::cout << buffer;

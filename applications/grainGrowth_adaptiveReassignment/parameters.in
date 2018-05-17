@@ -21,14 +21,14 @@ set Domain size Z = 100
 # The number of elements in each direction is 2^(refineFactor) * subdivisions
 # Subdivisions Z ignored in 2D
 # For optimal performance, use refineFactor primarily to determine the element size
-set Subdivisions X = 1
-set Subdivisions Y = 1
-set Subdivisions Z = 1
+set Subdivisions X = 3
+set Subdivisions Y = 3
+set Subdivisions Z = 3
 
-set Refine factor = 7
+set Refine factor = 4
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
-set Element degree = 1
+set Element degree = 2
 
 # =================================================================================
 # Set the adaptive mesh refinement parameters
@@ -40,28 +40,28 @@ set Mesh adaptivity = true
 # When adaptive meshing is enabled, the refine factor set in the block above is
 # only used to generate the first pass of the mesh as the initial conditions are
 # applied. It should be set somewhere between the max and min levels below.
-set Max refinement level = 7
+set Max refinement level = 6
 set Min refinement level = 4
 
 # Set the fields used to determine the refinement using their index.
-set Refinement criteria fields = n1,n2,n3,n4,n5,n6,n7,n8,n9,n10
+set Refinement criteria fields = n0,n1,n2,n3,n4,n5,n6,n7 #,n8,n9,n10,n11,n12,n13,n14
 
 # Set the maximum and minimum value of the fields where the mesh should be refined
-set Refinement window max = 0.999,0.999,0.999,0.999,0.999,0.999,0.999,0.999,0.999,0.999
-set Refinement window min = 0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001
+set Refinement window max = 0.999,0.999,0.999,0.999,0.999,0.999,0.999,0.999 #,0.999,0.999,0.999,0.999,0.999,0.999,0.999
+set Refinement window min = 1e-5,1e-5,1e-5,1e-5,1e-5,1e-5,1e-5,1e-5 #,1e-5,1e-5,1e-5,1e-5,1e-5,1e-5,1e-5
 
 # Set the number of time steps between remeshing operations
-set Steps between remeshing operations = 1000
+set Steps between remeshing operations = 20
 
 # =================================================================================
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 1.0e-3
+set Time step = 1.0e-1
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 20000
+set Number of time steps = 400
 
 # =================================================================================
 # Set the boundary conditions
@@ -83,16 +83,21 @@ set Number of time steps = 20000
 # 1.5 on the top and bottom for variable 'n' in 2D
 # set Boundary condition for variable n = NATURAL, NATURAL, DIRICHLET: 1.5, DIRICHLET: 1.5
 
-set Boundary condition for variable n1 = PERIODIC
-set Boundary condition for variable n2 = PERIODIC
-set Boundary condition for variable n3 = PERIODIC
-set Boundary condition for variable n4 = PERIODIC
-set Boundary condition for variable n5 = PERIODIC
-set Boundary condition for variable n6 = PERIODIC
-set Boundary condition for variable n7 = PERIODIC
-set Boundary condition for variable n8 = PERIODIC
-set Boundary condition for variable n9 = PERIODIC
-set Boundary condition for variable n10 = PERIODIC
+set Boundary condition for variable n0 = NATURAL
+set Boundary condition for variable n1 = NATURAL
+set Boundary condition for variable n2 = NATURAL
+set Boundary condition for variable n3 = NATURAL
+set Boundary condition for variable n4 = NATURAL
+set Boundary condition for variable n5 = NATURAL
+set Boundary condition for variable n6 = NATURAL
+set Boundary condition for variable n7 = NATURAL
+#set Boundary condition for variable n8 = NATURAL
+#set Boundary condition for variable n9 = NATURAL
+#set Boundary condition for variable n10 = NATURAL
+#set Boundary condition for variable n11 = NATURAL
+#set Boundary condition for variable n12 = NATURAL
+#set Boundary condition for variable n13 = NATURAL
+#set Boundary condition for variable n14 = NATURAL
 
 # =================================================================================
 # Set the model constants
@@ -107,7 +112,7 @@ set Boundary condition for variable n10 = PERIODIC
 set Model constant MnV = 1.0, DOUBLE
 
 # Gradient energy coefficient
-set Model constant KnV = 0.6, DOUBLE
+set Model constant KnV = 0.1, DOUBLE
 
 # Grain interaction coeffiecient
 set Model constant alpha = 1.5, DOUBLE
@@ -121,7 +126,7 @@ set Output condition = EQUAL_SPACING
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of outputs = 10
+set Number of outputs = 20
 
 # The number of time steps between updates being printed to the screen
-set Skip print steps = 1000
+set Skip print steps = 50

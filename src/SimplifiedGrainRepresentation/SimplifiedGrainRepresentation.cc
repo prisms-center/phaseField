@@ -94,6 +94,8 @@ void SimplifiedGrainManipulator<dim>::reassignGrains(
     double buffer_distance,
     std::vector<unsigned int> order_parameter_id_list)
 {
+    int thisProc=dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
+
     for (unsigned int g_base=0; g_base < grain_representations.size(); g_base++){
         unsigned int order_parameter_base = grain_representations.at(g_base).getOrderParameterId();
 
@@ -106,8 +108,9 @@ void SimplifiedGrainManipulator<dim>::reassignGrains(
                 double sum_radii = grain_representations.at(g_base).getRadius() + grain_representations.at(g_other).getRadius();
 
                 if ( (sum_radii + 2.0*buffer_distance > center_distance) and (order_parameter_other == order_parameter_base) ){
-
-                    // std::cout << "Found overlap between grain " << g_base << " and grain " << g_other << " with order parameter " << order_parameter_base << std::endl;
+                    if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+                        std::cout << "Found overlap between grain " << grain_representations.at(g_base).getGrainId() << " and grain " << grain_representations.at(g_other).getGrainId() << " with order parameter " << order_parameter_base << std::endl;
+                    }
 
 
                     // Another loop over all of the grains to find the order parameter with the largest minimum distance to the base grain
@@ -137,6 +140,10 @@ void SimplifiedGrainManipulator<dim>::reassignGrains(
                         }
                     }
                     grain_representations.at(g_base).setOrderParameterId(new_op_index);
+
+                    if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+                        std::cout << "Reassigning grain " << grain_representations.at(g_base).getGrainId() << " from order parameter " << grain_representations.at(g_base).getOldOrderParameterId() << " to order parameter " << grain_representations.at(g_base).getOrderParameterId() << std::endl << std::endl;
+                    }
                 }
             }
         }

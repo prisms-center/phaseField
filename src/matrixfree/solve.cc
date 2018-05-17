@@ -68,6 +68,9 @@ void MatrixFreePDE<dim,degree>::solve(){
             // Update the list of nuclei (if relevant)
             updateNucleiList();
 
+            // If grain reassignment is activated, reassign grains
+            reassignGrains();
+
             //solve time increment
             solveIncrement(false);
 
