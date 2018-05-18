@@ -27,19 +27,18 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
     {dealii::Point<dim> p(0.85, 0.35); center.push_back(p);}
 
     // The medium grains
-    {dealii::Point<dim> p(0.85, 0.85); center.push_back(p);}
-    {dealii::Point<dim> p(0.2, 0.45); center.push_back(p);}
     {dealii::Point<dim> p(0.08, 0.92); center.push_back(p);}
-    {dealii::Point<dim> p(0.75, 0.1); center.push_back(p);}
     {dealii::Point<dim> p(0.75, 0.6); center.push_back(p);}
-
+    {dealii::Point<dim> p(0.75, 0.1); center.push_back(p);}
+    {dealii::Point<dim> p(0.2, 0.45); center.push_back(p);}
+    {dealii::Point<dim> p(0.85, 0.85); center.push_back(p);}
 
     // The small grains
-    {dealii::Point<dim> p(0.9, 0.15); center.push_back(p);}
-    {dealii::Point<dim> p(0.1, 0.35); center.push_back(p);}
-    {dealii::Point<dim> p(0.45, 0.25); center.push_back(p);}
     {dealii::Point<dim> p(0.55, 0.05); center.push_back(p);}
+    {dealii::Point<dim> p(0.1, 0.35); center.push_back(p);}
     {dealii::Point<dim> p(0.95, 0.65); center.push_back(p);}
+    {dealii::Point<dim> p(0.9, 0.15); center.push_back(p);}
+    {dealii::Point<dim> p(0.45, 0.25); center.push_back(p);}
 
 
     //double center[15][3] = {{0.25,0.25,0},{0.25,0.5,0},{0.125,0.625,0},{0.375,0.625,0},{0.125,0.875,0},{0.375,0.875,0},{0.5,0.25,0},{0.5,0.5,0},{0.5,0.75,0},{0.75,0.25,0},{0.625,0.375,0},{0.875,0.375,0},{0.875,0.625,0},{0.875,0.625,0},{0.75,0.75,0}};
@@ -55,7 +54,7 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
     dist = std::sqrt(dist);
 
 
-    scalar_IC += 0.5*(1.0-std::tanh((dist-rad[index]*userInputs.domain_size[0])/0.8));
+    scalar_IC += 0.5*(1.0-std::tanh((dist-rad[index]*userInputs.domain_size[0])/0.5));
 
 
 

@@ -1,4 +1,5 @@
 #include "../../include/FloodFiller.h"
+#include <numeric>
 
 template <int dim, int degree>
 void FloodFiller<dim, degree>::calcGrainSets(dealii::FESystem<dim> & fe, dealii::DoFHandler<dim> &dof_handler, vectorType* solution_field, double threshold, unsigned int order_parameter_index, std::vector<GrainSet<dim>> & grain_sets){
@@ -15,7 +16,6 @@ void FloodFiller<dim, degree>::calcGrainSets(dealii::FESystem<dim> & fe, dealii:
 
     GrainSet<dim> grain_set;
     grain_sets.push_back(grain_set);
-    grain_sets.back().setGrainIndex(grain_index);
     grain_sets.back().setOrderParameterIndex(order_parameter_index);
 
     // The flood fill loop
@@ -31,7 +31,6 @@ void FloodFiller<dim, degree>::calcGrainSets(dealii::FESystem<dim> & fe, dealii:
                 // Get the grain set initialized for the next grain to be found
                 grain_index++;
                 GrainSet<dim> new_grain_set;
-                new_grain_set.setGrainIndex(grain_index);
                 new_grain_set.setOrderParameterIndex(order_parameter_index);
                 grain_sets.push_back(new_grain_set);
             }
@@ -45,10 +44,15 @@ void FloodFiller<dim, degree>::calcGrainSets(dealii::FESystem<dim> & fe, dealii:
         grain_sets.pop_back();
     }
 
-    int thisProc=dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
+    // Generate global list of the grains, merging grains split between multiple processors
+    if (dealii::Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD) > 1) {
 
-    // Get a global list of grains from the various local lists
-    communicateGrainSets(grain_sets);
+        // Send the grain set info to all processors so everyone has the full list
+        createGlobalGrainSetList(grain_sets);
+
+        // Merge grains that are split across processors
+        mergeSplitGrains(grain_sets);
+	}
 }
 
 template <int dim, int degree>
@@ -110,224 +114,111 @@ void FloodFiller<dim, degree>::recursiveFloodFill(T di, T di_end, vectorType* so
 }
 
 // =================================================================================
-// Generate global list of the grains, merging grains split between multiple processors
+// All-to-all communication of the grain sets
 // =================================================================================
 template <int dim, int degree>
-void FloodFiller<dim, degree>::communicateGrainSets(std::vector<GrainSet<dim>> & grain_sets){
-
-    //MPI INITIALIZATON
-	int numProcs=dealii::Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
+void FloodFiller<dim, degree>::createGlobalGrainSetList (std::vector<GrainSet<dim>> & grain_sets) const
+{
+    int numProcs=dealii::Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
 	int thisProc=dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
 
-	if (numProcs > 1) {
-		// Cycle through each processor, sending and receiving, to append the list of grains
-		for (int proc_index=0; proc_index < numProcs-1; proc_index++){
-			if (thisProc == proc_index){
-				sendUpdate(thisProc+1, grain_sets);
-			}
-			else if (thisProc == proc_index+1){
-				receiveUpdate(thisProc-1, grain_sets);
-			}
-			MPI_Barrier(MPI_COMM_WORLD);
-		}
+    unsigned int num_grains_local = grain_sets.size();
 
-		// The final processor now has all of the grains
-		if (thisProc == numProcs-1){
-			mergeSplitGrains(grain_sets);
-		}
+    // Convert the grain_set object into a group of vectors
+    std::vector<unsigned int> order_parameters;
+    std::vector<unsigned int> num_elements;
+    std::vector<double> vertices;
 
-		// The final processor now has the final list of the grains, broadcast it to all the other processors
-		broadcastUpdate(numProcs-1, thisProc, grain_sets);
+    for (unsigned int g=0; g<grain_sets.size(); g++){
+        order_parameters.push_back(grain_sets.at(g).getOrderParameterIndex());
 
-	}
-}
+        std::vector<std::vector<dealii::Point<dim>>> vertex_list = grain_sets[g].getVertexList();
+        num_elements.push_back(vertex_list.size());
 
-// =================================================================================
-// Sends the list of new nuclei to the next processor
-// =================================================================================
-template <int dim, int degree>
-void FloodFiller<dim, degree>::sendUpdate (int procno, std::vector<GrainSet<dim>> & grain_sets) const
-{
-    int num_grains=grain_sets.size();
-    //MPI SECTION TO SEND INFORMATION TO THE PROCESSOR procno
-    //Sending local no. of grains
-    MPI_Send(&num_grains, 1, MPI_INT, procno, 0, MPI_COMM_WORLD);
-    if (num_grains > 0){
-
-        std::vector<unsigned int> s_order_parameters;
-        std::vector<unsigned int> s_grain_ids;
-        std::vector<unsigned int> s_num_elements;
-        std::vector<double> s_vertices;
-
-        for (unsigned int g=0; g<grain_sets.size(); g++){
-            s_order_parameters.push_back(grain_sets.at(g).getOrderParameterIndex());
-            s_grain_ids.push_back(grain_sets.at(g).getGrainIndex());
-
-            std::vector<std::vector<dealii::Point<dim>>> vertex_list = grain_sets[g].getVertexList();
-            s_num_elements.push_back(vertex_list.size());
-
-            for (unsigned int c=0; c<s_num_elements[g]; c++){
-                for (unsigned int v=0; v<dealii::Utilities::fixed_power<dim>(2.0); v++){
-                    for (unsigned int d=0; d<dim; d++){
-                        s_vertices.push_back(vertex_list[c][v][d]);
-                    }
+        for (unsigned int c=0; c<num_elements[g]; c++){
+            for (unsigned int v=0; v<dealii::Utilities::fixed_power<dim>(2.0); v++){
+                for (unsigned int d=0; d<dim; d++){
+                    vertices.push_back(vertex_list[c][v][d]);
                 }
-            }
-        }
-
-        unsigned int num_vertices = 0;
-        for (unsigned int g=0; g<grain_sets.size(); g++){
-            num_vertices += s_num_elements[g] * dealii::Utilities::fixed_power<dim>(2.0) * (double)dim;
-        }
-
-
-        MPI_Send(&s_num_elements[0], num_grains, MPI_UNSIGNED, procno, 1, MPI_COMM_WORLD);
-        MPI_Send(&s_vertices[0], num_vertices, MPI_DOUBLE, procno, 2, MPI_COMM_WORLD);
-        MPI_Send(&s_grain_ids[0], num_grains, MPI_UNSIGNED, procno, 3, MPI_COMM_WORLD);
-        MPI_Send(&s_order_parameters[0], num_grains, MPI_UNSIGNED, procno, 4, MPI_COMM_WORLD);
-    }
-}
-
-// =================================================================================
-// Recieves the list of new nuclei from the previous processor
-// =================================================================================
-template <int dim, int degree>
-void FloodFiller<dim, degree>::receiveUpdate (int procno, std::vector<GrainSet<dim>> & grain_sets) const
-{
-    //MPI PROCEDURE TO RECIEVE INFORMATION FROM ANOTHER PROCESSOR AND UPDATE LOCAL NUCLEI INFORMATION
-    int num_grains = 0;
-    MPI_Recv(&num_grains, 1, MPI_INT, procno, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-    if (num_grains > 0){
-
-        std::vector<unsigned int> r_num_elements(num_grains, 0);
-        MPI_Recv(&r_num_elements[0], num_grains, MPI_UNSIGNED, procno, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-
-        unsigned int num_vertices = 0;
-        for (int g=0; g<num_grains; g++){
-            num_vertices += r_num_elements[g] * dealii::Utilities::fixed_power<dim>(2.0) * (double)dim;
-        }
-
-        std::vector<double> r_vertices(num_vertices, 0.0);
-        MPI_Recv(&r_vertices[0], num_vertices, MPI_DOUBLE, procno, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-
-        std::vector<unsigned int> r_grain_ids(num_grains, 0);
-        MPI_Recv(&r_grain_ids[0], num_grains, MPI_UNSIGNED, procno, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-
-        std::vector<unsigned int> r_order_parameters(num_grains, 0);
-        MPI_Recv(&r_order_parameters[0], num_grains, MPI_UNSIGNED, procno, 4, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-
-
-        // Now add these new grains to the local grain list
-        for (int g=0; g<num_grains; g++){
-            GrainSet<dim> new_grain_set;
-            new_grain_set.setGrainIndex(grain_sets.size()+1);
-            for (unsigned int c=0; c<r_num_elements.at(g); c++){
-                std::vector<dealii::Point<dim>> verts;
-                for (unsigned int v=0; v < dealii::Utilities::fixed_power<dim>(2.0); v++){
-                    double coords[dim];
-                    for (unsigned int d=0; d<dim; d++){
-                        coords[d] = r_vertices.front();
-                        r_vertices.erase(r_vertices.begin());
-                    }
-                    dealii::Tensor<1,dim> tensor_coords(coords);
-                    dealii::Point<dim> vert(tensor_coords);
-                    verts.push_back(vert);
-                }
-                new_grain_set.addVertexList(verts);
-            }
-            new_grain_set.setOrderParameterIndex(r_order_parameters.at(g));
-            new_grain_set.setGrainIndex(r_grain_ids.at(g));
-            grain_sets.push_back(new_grain_set);
-        }
-
-    }
-}
-
-// =================================================================================
-// Broadcast the final list of new nuclei from the last processor to the rest
-// =================================================================================
-template <int dim, int degree>
-void FloodFiller<dim, degree>::broadcastUpdate (int broadcastProc, int thisProc, std::vector<GrainSet<dim>> & grain_sets) const
-{
-    //MPI PROCEDURE TO SEND THE LIST OF GRAINS FROM ONE PROCESSOR TO ALL THE OTHERS
-    int num_grains=grain_sets.size();
-    MPI_Bcast(&num_grains, 1, MPI_INT, broadcastProc, MPI_COMM_WORLD);
-    if (num_grains > 0){
-
-        //Creating vectors of each quantity in nuclei. Each numbered acording to the tags used for MPI_Send/MPI_Recv
-    	unsigned int initial_vec_size;
-    	if (thisProc == broadcastProc){
-    		initial_vec_size = 0;
-    	}
-    	else{
-    		initial_vec_size = num_grains;
-    	}
-
-        std::vector<unsigned int> order_parameters(initial_vec_size, 0);
-        std::vector<unsigned int> grain_ids(initial_vec_size, 0);
-        std::vector<unsigned int> num_elements(initial_vec_size, 0);
-        std::vector<double> vertices;
-
-        if (thisProc == broadcastProc){
-            for (unsigned int g=0; g<grain_sets.size(); g++){
-
-                order_parameters.push_back(grain_sets.at(g).getOrderParameterIndex());
-                grain_ids.push_back(grain_sets.at(g).getGrainIndex());
-
-                std::vector<std::vector<dealii::Point<dim>>> vertex_list = grain_sets[g].getVertexList();
-                num_elements.push_back(vertex_list.size());
-
-                for (unsigned int c=0; c<num_elements[g]; c++){
-                    for (unsigned int v=0; v<dealii::Utilities::fixed_power<dim>(2.0); v++){
-                        for (unsigned int d=0; d<dim; d++){
-                            vertices.push_back(vertex_list[c][v][d]);
-                        }
-                    }
-                }
-            }
-        }
-
-        MPI_Bcast(&num_elements[0], num_grains, MPI_UNSIGNED, broadcastProc, MPI_COMM_WORLD);
-        MPI_Bcast(&order_parameters[0], num_grains, MPI_UNSIGNED, broadcastProc, MPI_COMM_WORLD);
-        MPI_Bcast(&grain_ids[0], num_grains, MPI_UNSIGNED, broadcastProc, MPI_COMM_WORLD);
-
-        unsigned int num_vertices = 0;
-        for (int g=0; g<num_grains; g++){
-            num_vertices += num_elements[g] * dealii::Utilities::fixed_power<dim>(2.0) * (double)dim;
-        }
-
-        if (thisProc != broadcastProc){
-            vertices.assign(num_vertices,0.0);
-        }
-
-        MPI_Bcast(&vertices[0], num_vertices, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
-
-        // Now add these new grains to the local grain list
-        if (thisProc != broadcastProc){
-            grain_sets.clear();
-            for (int g=0; g<num_grains; g++){
-                GrainSet<dim> new_grain_set;
-                new_grain_set.setGrainIndex(grain_sets.size()+1);
-                for (unsigned int c=0; c<num_elements.at(g); c++){
-                    std::vector<dealii::Point<dim>> verts;
-                    for (unsigned int v=0; v < dealii::Utilities::fixed_power<dim>(2.0); v++){
-                        double coords[dim];
-                        for (unsigned int d=0; d<dim; d++){
-                            coords[d] = vertices.front();
-                            vertices.erase(vertices.begin());
-                        }
-                        dealii::Tensor<1,dim> tensor_coords(coords);
-                        dealii::Point<dim> vert(tensor_coords);
-                        verts.push_back(vert);
-                    }
-                    new_grain_set.addVertexList(verts);
-                }
-                new_grain_set.setOrderParameterIndex(order_parameters.at(g));
-                new_grain_set.setGrainIndex(grain_ids.at(g));
-                grain_sets.push_back(new_grain_set);
             }
         }
     }
+
+    unsigned int num_vertices = 0;
+    for (unsigned int g=0; g<grain_sets.size(); g++){
+        num_vertices += num_elements[g] * dealii::Utilities::fixed_power<dim>(2) * dim;
+    }
+
+    // Communicate how many grains each core has
+    std::vector<int> num_grains_per_core(numProcs,0);
+
+    MPI_Allgather(&num_grains_local, 1, MPI_INT, &num_grains_per_core[0], 1, MPI_INT, MPI_COMM_WORLD);
+
+    int num_grains_global = std::accumulate(num_grains_per_core.begin(), num_grains_per_core.end(), 0);
+
+    // Communicate the order_parameters
+    std::vector<int> offset(numProcs,0);
+    for (int n=1; n<numProcs; n++){
+        offset[n] = offset[n-1] + num_grains_per_core[n-1];
+    }
+
+    std::vector<unsigned int> order_parameters_global(num_grains_global,0);
+
+    MPI_Allgatherv(&order_parameters[0], num_grains_local, MPI_UNSIGNED, &order_parameters_global[0], &num_grains_per_core[0], &offset[0], MPI_UNSIGNED, MPI_COMM_WORLD);
+
+    // Communicate the number of elements
+    std::vector<unsigned int> num_elements_global(num_grains_global,0);
+
+    MPI_Allgatherv(&num_elements[0], num_grains_local, MPI_UNSIGNED, &num_elements_global[0], &num_grains_per_core[0], &offset[0], MPI_UNSIGNED, MPI_COMM_WORLD);
+
+    // Communicate the vertices
+    unsigned int total_elements = std::accumulate(num_elements_global.begin(), num_elements_global.end(), 0);
+    int num_vertices_global = (unsigned int)total_elements * dealii::Utilities::fixed_power<dim>(2) * (unsigned int)dim;
+    std::vector<double> vertices_global(num_vertices_global,0);
+
+    std::vector<int> num_vertices_per_core;
+
+    unsigned int g = 0;
+    for (int i=0; i<numProcs; i++){
+        int num_vert_single_core = 0;
+        for (int j=0; j<num_grains_per_core.at(i); j++){
+            num_vert_single_core += num_elements_global.at(g) * dealii::Utilities::fixed_power<dim>(2) * (unsigned int)dim;
+            g++;
+        }
+        num_vertices_per_core.push_back(num_vert_single_core);
+    }
+
+    offset.at(0) = 0;
+    for (int n=1; n<numProcs; n++){
+        offset[n] = offset[n-1] + num_vertices_per_core[n-1];
+    }
+
+    MPI_Allgatherv(&vertices[0], num_vertices, MPI_DOUBLE, &vertices_global[0], &num_vertices_per_core[0], &offset[0], MPI_DOUBLE, MPI_COMM_WORLD);
+
+    // Put the GrainSet objects back together
+    grain_sets.clear();
+
+    for (int g=0; g<num_grains_global; g++){
+        GrainSet<dim> new_grain_set;
+        for (unsigned int c=0; c<num_elements_global.at(g); c++){
+            std::vector<dealii::Point<dim>> verts;
+            for (unsigned int v=0; v < dealii::Utilities::fixed_power<dim>(2.0); v++){
+                double coords[dim];
+                for (unsigned int d=0; d<dim; d++){
+                    coords[d] = vertices_global.front();
+                    vertices_global.erase(vertices_global.begin());
+                }
+                dealii::Tensor<1,dim> tensor_coords(coords);
+                dealii::Point<dim> vert(tensor_coords);
+                verts.push_back(vert);
+            }
+            new_grain_set.addVertexList(verts);
+        }
+        new_grain_set.setOrderParameterIndex(order_parameters_global.at(g));
+        grain_sets.push_back(new_grain_set);
+    }
+
+
 }
 
 // =================================================================================

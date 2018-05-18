@@ -64,6 +64,7 @@ void MatrixFreePDE<dim,degree>::reassignGrains () {
         //end log
         computing_timer.exit_section("matrixFreePDE: reassignGrains");
     }
+
 }
 
 #include "../../include/matrixFreePDE_template_instantiations.h"

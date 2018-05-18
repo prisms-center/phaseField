@@ -90,24 +90,9 @@ protected:
     void recursiveFloodFill(T di, T di_end, vectorType* solution_field, double threshold, unsigned int & grain_index, std::vector<GrainSet<dim>> & grain_sets, bool & grain_assigned);
 
     /**
-    * Method to communicate and merge the local representations of the grains into a global list.
+    * The method to merge the grain sets from all the processors.
     */
-    void communicateGrainSets(std::vector<GrainSet<dim>> & grain_sets);
-
-    /**
-    * The method to send the grain_sets to the next processor on the list.
-    */
-    void sendUpdate (int procno, std::vector<GrainSet<dim>> & grain_sets) const;
-
-    /**
-    * The method to recieve the grain_sets from the previous processor on the list.
-    */
-    void receiveUpdate (int procno, std::vector<GrainSet<dim>> & grain_sets) const;
-
-    /**
-    * The method to send the global grain_sets to all processors on the list.
-    */
-    void broadcastUpdate (int broadcastProc, int thisProc, std::vector<GrainSet<dim>> & grain_sets) const;
+    void createGlobalGrainSetList(std::vector<GrainSet<dim>> & grain_sets) const;
 
     /**
     * Checks to see if grains found on different processors are parts of a larger grain. If so, it merges the grain_sets entries.
