@@ -20,6 +20,7 @@ template <int dim, int degree>
  currentIncrement(0),
  currentOutput(0),
  currentCheckpoint(0),
+ current_grain_reassignment(0),
  computing_timer (pcout, TimerOutput::summary, TimerOutput::wall_times),
  first_integrated_var_output_complete(false)
  {

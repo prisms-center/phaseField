@@ -328,6 +328,8 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     nucleation_order_parameter_cutoff = parameter_handler.get_double("Order parameter cutoff value");
     steps_between_nucleation_attempts = parameter_handler.get_integer("Time steps between nucleation attempts");
 
+    // Load the grain remapping parameters
+
     // Load the boundary condition variables into list of BCs (where each element of the vector is one component of one variable)
     std::vector<std::string> list_of_BCs;
     for (unsigned int i=0; i<number_of_variables; i++){

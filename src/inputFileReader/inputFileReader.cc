@@ -372,6 +372,18 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
         }
     }
 
+    // Declare the grain remapping constants
+    parameter_handler.declare_entry("Activate grain reassignment","false",dealii::Patterns::Bool(),"Whether to enable the grain reassignment capabilities of PRISMS-PF where multiple grains are packed into a single order parameter.");
+
+    parameter_handler.declare_entry("Time steps between grain reassignments","100",dealii::Patterns::Integer(),"The number of time steps between times when the grain reassignment algorithm is triggered.");
+
+    parameter_handler.declare_entry("Order parameter cutoff for grain identification","1.0e-4",dealii::Patterns::Double(),"The threshold value of the order parameter where the element is considered to be in the grain or out of the grain.");
+
+    parameter_handler.declare_entry("Buffer between grains before reassignment","-1.0",dealii::Patterns::Double(),"The buffer value added to the radius of all grains used to calculation whether grains should be reassigned.");
+
+    parameter_handler.declare_entry("Order parameter fields for grain reassignment","",dealii::Patterns::List(dealii::Patterns::Anything()),"The list of field indices for the shared order parameters for grain reassignment.");
+
+
     // Declare the user-defined constants
     for (unsigned int i=0; i<num_of_constants; i++){
         std::string constants_text = "Model constant ";

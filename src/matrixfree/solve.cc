@@ -13,7 +13,10 @@ void MatrixFreePDE<dim,degree>::solve(){
     if (isTimeDependentBVP){
 
         // If grain reassignment is activated, reassign grains
-        reassignGrains();
+        if (userInputs.grain_remapping_activated and (currentIncrement%userInputs.skip_grain_reassignment_steps == 0 or currentIncrement == 0) ) {
+            reassignGrains();
+            current_grain_reassignment++;
+        }
 
         // For any nonlinear equation, set the initial guess as the solution to Laplace's equations
         generatingInitialGuess = true;
@@ -69,7 +72,9 @@ void MatrixFreePDE<dim,degree>::solve(){
             updateNucleiList();
 
             // If grain reassignment is activated, reassign grains
-            reassignGrains();
+            if (userInputs.grain_remapping_activated and (currentIncrement%userInputs.skip_grain_reassignment_steps == 0 or currentIncrement == 0) ) {
+                reassignGrains();
+            }
 
             //solve time increment
             solveIncrement(false);

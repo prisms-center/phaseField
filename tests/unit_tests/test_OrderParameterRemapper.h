@@ -139,7 +139,7 @@ template <int dim,typename T>
     solution_fields.at(1)->print(std::cout);
 
     OrderParameterRemapper<dim> order_parameter_remapper;
-    order_parameter_remapper.remap(simplified_grain_representations, solution_fields, dof_handler, fe.dofs_per_cell);
+    order_parameter_remapper.remap(simplified_grain_representations, solution_fields, dof_handler, fe.dofs_per_cell, 0.001);
 
     //std::cout << "Field 0, core" << thisProc << std::endl;
     //solution_fields.at(0)->print(std::cout);

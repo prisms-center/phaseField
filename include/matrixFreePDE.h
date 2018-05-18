@@ -112,6 +112,8 @@ class MatrixFreePDE:public Subscriptor
   */
   void reassignGrains();
 
+  std::vector<SimplifiedGrainRepresentation<dim>> simplified_grain_representations;
+
   /**
    * Method to solve each time increment of a time-dependent problem. For time-independent problems
    * this method is called only once. This method solves for all the fields in a staggered manner (one after another)
@@ -318,7 +320,7 @@ class MatrixFreePDE:public Subscriptor
   //
   unsigned int parabolicFieldIndex, ellipticFieldIndex;
   double currentTime;
-  unsigned int currentIncrement, currentOutput, currentCheckpoint;
+  unsigned int currentIncrement, currentOutput, currentCheckpoint; current_grain_reassignment;
 
   /*Timer and logging object*/
   mutable TimerOutput computing_timer;
