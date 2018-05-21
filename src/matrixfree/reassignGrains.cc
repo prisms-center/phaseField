@@ -4,6 +4,7 @@
 #include "../../include/SimplifiedGrainRepresentation.h"
 #include "../../include/OrderParameterRemapper.h"
 
+
 //vmult operation for LHS
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::reassignGrains () {
@@ -16,7 +17,7 @@ void MatrixFreePDE<dim,degree>::reassignGrains () {
     // Get the index of the first scalar field (used to get the FE object and DOFHandler)
     unsigned int scalar_field_index = 0;
     for (unsigned int var=0; var<userInputs.number_of_variables; var++){
-        if (userInputs.var_type == SCALAR){
+        if (userInputs.var_type.at(var) == SCALAR){
             scalar_field_index = var;
             break;
         }
@@ -31,15 +32,17 @@ void MatrixFreePDE<dim,degree>::reassignGrains () {
 
     unsigned int op_list_index = 0;
     for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-        if (fieldIndex == userInputs.variables_for_remapping.at(op_list_index)){
-            op_list_index++;
+        if (op_list_index < userInputs.variables_for_remapping.size()){
+            if (fieldIndex == userInputs.variables_for_remapping.at(op_list_index)){
+                op_list_index++;
 
-            // Eventually there should be a check to see if this is one of the shared order parameter variables
-            std::vector<GrainSet<dim>> single_OP_grain_sets;
-            test_object.calcGrainSets(*FESet.at(scalar_field_index), *dofHandlersSet_nonconst.at(scalar_field_index), solutionSet.at(fieldIndex), order_parameter_threshold, fieldIndex, single_OP_grain_sets);
+                // Eventually there should be a check to see if this is one of the shared order parameter variables
+                std::vector<GrainSet<dim>> single_OP_grain_sets;
+                test_object.calcGrainSets(*FESet.at(scalar_field_index), *dofHandlersSet_nonconst.at(scalar_field_index), solutionSet.at(fieldIndex), userInputs.order_parameter_threshold, fieldIndex, single_OP_grain_sets);
 
-            grain_sets.insert(grain_sets.end(), single_OP_grain_sets.begin(), single_OP_grain_sets.end());
-            single_OP_grain_sets.clear();
+                grain_sets.insert(grain_sets.end(), single_OP_grain_sets.begin(), single_OP_grain_sets.end());
+                single_OP_grain_sets.clear();
+            }
         }
     }
 
@@ -64,7 +67,7 @@ void MatrixFreePDE<dim,degree>::reassignGrains () {
         simplified_grain_manipulator.transferGrainIds(old_grain_representations, simplified_grain_representations);
     }
 
-    simplified_grain_manipulator.reassignGrains(simplified_grain_representations, userInputs.buffer_between_grains, variables_for_remapping);
+    simplified_grain_manipulator.reassignGrains(simplified_grain_representations, userInputs.buffer_between_grains, userInputs.variables_for_remapping);
 
     OrderParameterRemapper<dim> order_parameter_remapper;
     order_parameter_remapper.remap(simplified_grain_representations, solutionSet, *dofHandlersSet_nonconst.at(0), FESet.at(0)->dofs_per_cell, userInputs.buffer_between_grains);

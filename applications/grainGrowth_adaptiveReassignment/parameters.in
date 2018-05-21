@@ -44,11 +44,11 @@ set Max refinement level = 6
 set Min refinement level = 4
 
 # Set the fields used to determine the refinement using their index.
-set Refinement criteria fields = n0,n1,n2,n3,n4,n5,n6,n7 #,n8,n9,n10,n11,n12,n13,n14
+set Refinement criteria fields = n0,n1,n2,n3,n4,n5
 
 # Set the maximum and minimum value of the fields where the mesh should be refined
-set Refinement window max = 0.999,0.999,0.999,0.999,0.999,0.999,0.999,0.999 #,0.999,0.999,0.999,0.999,0.999,0.999,0.999
-set Refinement window min = 1e-5,1e-5,1e-5,1e-5,1e-5,1e-5,1e-5,1e-5 #,1e-5,1e-5,1e-5,1e-5,1e-5,1e-5,1e-5
+set Refinement window max = 0.999,0.999,0.999,0.999,0.999,0.999
+set Refinement window min = 1e-5,1e-5,1e-5,1e-5,1e-5,1e-5
 
 # Set the number of time steps between remeshing operations
 set Steps between remeshing operations = 20
@@ -62,6 +62,31 @@ set Time step = 1.0e-1
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
 set Number of time steps = 400
+
+# =================================================================================
+# Set the output parameters
+# =================================================================================
+# Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
+# or "LIST")
+set Output condition = EQUAL_SPACING
+
+# Number of times the program outputs the fields (total number for "EQUAL_SPACING"
+# and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
+set Number of outputs = 20
+
+# The number of time steps between updates being printed to the screen
+set Skip print steps = 50
+
+# =================================================================================
+# Set the grain reassignment parameters
+# =================================================================================
+
+set Activate grain reassignment = true
+set Order parameter fields for grain reassignment = n0, n1, n2, n3, n4, n5
+set Time steps between grain reassignments = 50
+set Order parameter cutoff for grain identification = 1e-4
+set Buffer between grains before reassignment = 8.0
+
 
 # =================================================================================
 # Set the boundary conditions
@@ -89,15 +114,6 @@ set Boundary condition for variable n2 = NATURAL
 set Boundary condition for variable n3 = NATURAL
 set Boundary condition for variable n4 = NATURAL
 set Boundary condition for variable n5 = NATURAL
-set Boundary condition for variable n6 = NATURAL
-set Boundary condition for variable n7 = NATURAL
-#set Boundary condition for variable n8 = NATURAL
-#set Boundary condition for variable n9 = NATURAL
-#set Boundary condition for variable n10 = NATURAL
-#set Boundary condition for variable n11 = NATURAL
-#set Boundary condition for variable n12 = NATURAL
-#set Boundary condition for variable n13 = NATURAL
-#set Boundary condition for variable n14 = NATURAL
 
 # =================================================================================
 # Set the model constants
@@ -116,17 +132,3 @@ set Model constant KnV = 0.1, DOUBLE
 
 # Grain interaction coeffiecient
 set Model constant alpha = 1.5, DOUBLE
-
-# =================================================================================
-# Set the output parameters
-# =================================================================================
-# Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
-# or "LIST")
-set Output condition = EQUAL_SPACING
-
-# Number of times the program outputs the fields (total number for "EQUAL_SPACING"
-# and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of outputs = 20
-
-# The number of time steps between updates being printed to the screen
-set Skip print steps = 50

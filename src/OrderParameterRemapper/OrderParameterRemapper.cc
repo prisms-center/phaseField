@@ -3,11 +3,13 @@
 template <int dim>
 void OrderParameterRemapper<dim>::remap(
     std::vector<SimplifiedGrainRepresentation<dim>> & grain_representations,
-    std::vector<vectorType*> & solution_fields, dealii::DoFHandler<dim> & dof_handler, unsigned int dofs_per_cell, double threshold)
+    std::vector<vectorType*> & solution_fields, dealii::DoFHandler<dim> & dof_handler, unsigned int dofs_per_cell, double buffer)
 {
 
     for (unsigned int g=0; g < grain_representations.size(); g++){
         if (grain_representations.at(g).getOrderParameterId() != grain_representations.at(g).getOldOrderParameterId()){
+
+            double transfer_buffer = std::max(0.0,grain_representations.at(g).getDistanceToNeighbor()/2.0);
 
             typename dealii::DoFHandler<dim>::active_cell_iterator di = dof_handler.begin_active();
 
@@ -23,7 +25,7 @@ void OrderParameterRemapper<dim>::remap(
                     // Check if the cell is within the simplified grain representation
                     bool in_grain = true;
                     for (unsigned int v=0; v< dealii::GeometryInfo<dim>::vertices_per_cell; v++){
-                        if (di->vertex(v).distance(grain_representations.at(g).getCenter()) > grain_representations.at(g).getRadius() + threshold/2.0){
+                        if (di->vertex(v).distance(grain_representations.at(g).getCenter()) > grain_representations.at(g).getRadius() + transfer_buffer){
                             in_grain = false;
                             break;
                         }
@@ -53,7 +55,7 @@ void OrderParameterRemapper<dim>::remap(
                     // Check if the cell is within the simplified grain representation
                     bool in_grain = true;
                     for (unsigned int v=0; v< dealii::GeometryInfo<dim>::vertices_per_cell; v++){
-                        if (di->vertex(v).distance(grain_representations.at(g).getCenter()) > grain_representations.at(g).getRadius() + threshold/2.0){
+                        if (di->vertex(v).distance(grain_representations.at(g).getCenter()) > grain_representations.at(g).getRadius() + transfer_buffer){
                             in_grain = false;
                             break;
                         }

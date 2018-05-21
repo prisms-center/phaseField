@@ -18,6 +18,7 @@
 #include "variableValueContainer.h"
 #include "variableContainer.h"
 #include "EquationDependencyParser.h"
+#include "SimplifiedGrainRepresentation.h"
 
 ////define data types
 #ifndef scalarType
@@ -320,7 +321,7 @@ class MatrixFreePDE:public Subscriptor
   //
   unsigned int parabolicFieldIndex, ellipticFieldIndex;
   double currentTime;
-  unsigned int currentIncrement, currentOutput, currentCheckpoint; current_grain_reassignment;
+  unsigned int currentIncrement, currentOutput, currentCheckpoint, current_grain_reassignment;
 
   /*Timer and logging object*/
   mutable TimerOutput computing_timer;

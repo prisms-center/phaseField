@@ -145,7 +145,6 @@ public:
     bool grain_remapping_activated;
     std::vector<unsigned int> variables_for_remapping; // Note: this should be a sorted list
     unsigned int skip_grain_reassignment_steps;
-    std::vector<unsigned int> grain_reassignment_time_step_list;
     double order_parameter_threshold;
     double buffer_between_grains;
 

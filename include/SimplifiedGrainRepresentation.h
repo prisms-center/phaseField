@@ -59,6 +59,18 @@ public:
     */
     unsigned int getOldOrderParameterId() const;
 
+    /**
+    * Setter for the distance from this grain to the nearest grain with the same order
+    * parameter.
+    */
+    void setDistanceToNeighbor(double dist);
+
+    /**
+    * Getter for the distance from this grain to the nearest grain with the same order
+    * parameter
+    */
+    double getDistanceToNeighbor() const;
+
 protected:
     /**
     * The center of the circle/sphere that represents the grain.
@@ -86,6 +98,13 @@ protected:
     * reassignment (which is performed outside this class).
     */
     unsigned int old_order_parameter_id;
+
+    /**
+    * The distance from this grain to the nearest grain with the same order
+    * parameter. This value is used to determine the cutoff distance for
+    * tranfering the grain between order parameters.
+    */
+    double distance_to_neighbor_sharing_op;
 };
 
 /**

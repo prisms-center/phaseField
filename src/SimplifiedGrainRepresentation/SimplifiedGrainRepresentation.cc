@@ -9,6 +9,7 @@ SimplifiedGrainRepresentation<dim>::SimplifiedGrainRepresentation(const GrainSet
     grain_id = grain_set.getGrainIndex();
     order_parameter_id = grain_set.getOrderParameterIndex();
     old_order_parameter_id = order_parameter_id;
+    distance_to_neighbor_sharing_op = 0.0;
 
     // Calculate the centroid assuming that the elements are rectangular and with no weighting based on the actual value of the field
     std::vector<std::vector<dealii::Point<dim>>> vertex_list = grain_set.getVertexList();
@@ -84,6 +85,16 @@ unsigned int SimplifiedGrainRepresentation<dim>::getOldOrderParameterId() const 
     return old_order_parameter_id;
 }
 
+template <int dim>
+void SimplifiedGrainRepresentation<dim>::setDistanceToNeighbor(double dist){
+    distance_to_neighbor_sharing_op = dist;
+}
+
+template <int dim>
+double SimplifiedGrainRepresentation<dim>::getDistanceToNeighbor() const {
+    return distance_to_neighbor_sharing_op;
+}
+
 // ============================================================================
 // Methods for SimplifiedGrainManipulator
 // ============================================================================
@@ -112,18 +123,16 @@ void SimplifiedGrainManipulator<dim>::reassignGrains(
                         std::cout << "Found overlap between grain " << grain_representations.at(g_base).getGrainId() << " and grain " << grain_representations.at(g_other).getGrainId() << " with order parameter " << order_parameter_base << std::endl;
                     }
 
+                    grain_representations.at(g_base).setDistanceToNeighbor(center_distance - sum_radii);
 
                     // Another loop over all of the grains to find the order parameter with the largest minimum distance to the base grain
                     std::vector<double> minimum_distance_list(order_parameter_id_list.size(),std::numeric_limits<double>::max());
 
                     for (unsigned int g_spacing_list=0; g_spacing_list < grain_representations.size(); g_spacing_list++){
-                        unsigned int order_parameter_spacing_list = grain_representations.at(g_spacing_list).getOrderParameterId();
+                        if (g_spacing_list != g_base){
+                            unsigned int order_parameter_spacing_list = grain_representations.at(g_spacing_list).getOrderParameterId();
 
-                        if (order_parameter_spacing_list == order_parameter_base ){
-                            minimum_distance_list.at(order_parameter_base) = 0.0;
-                        }
-                        else {
-                            double spacing = grain_representations.at(g_base).getCenter().distance(grain_representations.at(g_spacing_list).getCenter()) - grain_representations.at(g_base).getRadius() + grain_representations.at(g_spacing_list).getRadius() - 2.0*buffer_distance;
+                            double spacing = grain_representations.at(g_base).getCenter().distance(grain_representations.at(g_spacing_list).getCenter()) - grain_representations.at(g_base).getRadius() - grain_representations.at(g_spacing_list).getRadius();
 
                             if ( spacing < minimum_distance_list.at(order_parameter_spacing_list) ){
                                 minimum_distance_list.at(order_parameter_spacing_list) = spacing;
@@ -131,8 +140,9 @@ void SimplifiedGrainManipulator<dim>::reassignGrains(
                         }
                     }
                     // Pick the max value of minimum_distance_list to determine which order parameter to switch the base grain to
-                    double max_distance = 0.0;
+                    double max_distance = -std::numeric_limits<double>::max();
                     unsigned int new_op_index = 0;
+
                     for (unsigned int op=0; op<minimum_distance_list.size(); op++){
                         if (minimum_distance_list.at(op) > max_distance){
                             max_distance = minimum_distance_list.at(op);
