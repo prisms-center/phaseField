@@ -1,27 +1,37 @@
+// List of variables and residual equations for the Cahn-Hilliard example application
+
 // List of residual equations for the coupled Allen-Cahn example application
 
 // =================================================================================
 // Set the attributes of the primary field variables
 // =================================================================================
 void variableAttributeLoader::loadVariableAttributes(){
-	// Variable 0
-	set_variable_name				(0,"n");
-	set_variable_type				(0,SCALAR);
-	set_variable_equation_type		(0,PARABOLIC);
-
-    set_dependencies_value_residual_term_RHS(0, "n");
-    set_dependencies_gradient_residual_term_RHS(0, "grad(n)");
-
+    // Variable 0
+    set_variable_name				(0,"n");
+    set_variable_type				(0,SCALAR);
+    set_variable_equation_type		(0,PARABOLIC);
+    
+    set_dependencies_value_residual_term_RHS(0, "n, grad(psi)");
+    set_dependencies_gradient_residual_term_RHS(0, "grad(mu)");
+    
     // Variable 1
-	set_variable_name				(1,"psi");
-	set_variable_type				(1,SCALAR);
-	set_variable_equation_type		(1,ELLIPTIC);
-
-    set_dependencies_value_residual_term_RHS(1, "n, psi");
-    set_dependencies_gradient_residual_term_RHS(1, "grad(psi)");
-    set_dependencies_value_residual_term_LHS(1, "n, psi, change(psi)");
-    set_dependencies_gradient_residual_term_LHS(1, "grad(change(psi))");
-
+    set_variable_name				(1,"mu");
+    set_variable_type				(1,SCALAR);
+    set_variable_equation_type		(1,PARABOLIC);
+    
+    set_dependencies_value_residual_term_RHS(1, "n,psi");
+    set_dependencies_gradient_residual_term_RHS(1, "grad(n)");
+    
+    // Variable 2
+    set_variable_name				(2,"psi");
+    set_variable_type				(2,SCALAR);
+    set_variable_equation_type		(2,ELLIPTIC);
+    
+    set_dependencies_value_residual_term_RHS(2, "n, psi");
+    set_dependencies_gradient_residual_term_RHS(2, "grad(psi)");
+    set_dependencies_value_residual_term_LHS(2, "n, psi, change(psi)");
+    set_dependencies_gradient_residual_term_LHS(2, "grad(change(psi))");
+    
 }
 
 // =================================================================================
@@ -36,68 +46,71 @@ void variableAttributeLoader::loadVariableAttributes(){
 
 template <int dim, int degree>
 void customPDE<dim,degree>::residualExplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+                dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-// The order parameter and its derivatives
+// The concentration and its derivatives 
 scalarvalueType n = variable_list.get_scalar_value(0);
 scalargradType nx = variable_list.get_scalar_gradient(0);
 
-//scalarvalueType psi = variable_list.get_scalar_value(1);
-//scalargradType psix = variable_list.get_scalar_gradient(1);
+// The chemical potential and its derivatives 
+scalargradType mux = variable_list.get_scalar_gradient(1);
 
-
-scalarvalueType W = constV(1.0);
-scalarvalueType p = constV(1.5);
-scalarvalueType epsilon = constV(2.0);
+// The domain parameter and its derivatives
+scalarvalueType psi = variable_list.get_scalar_value(2);
+scalargradType psix = variable_list.get_scalar_gradient(2);
 
 // Parameters in the residual equations and expressions for the residual equations
 // can be set here.
-scalarvalueType fnV = (4.0*n*(n-1.0)*(n-0.5));
-//scalarvalueType fnV = n*n*n - n;
-scalarvalueType rnV = (n-constV(userInputs.dtValue*MnV)*fnV);
-scalargradType rnxV = (-constV(userInputs.dtValue*KnV*MnV)*nx);
 
-//scalarvalueType rpsi = (W * (-psi*psi*psi + psi -2.0*p*psi*n*n));
-//scalargradType rpsix = (-epsilon*epsilon * psix);
+// The derivative of the local free energy
+scalarvalueType fnV = n*(n*n-constV(1.0)+constV(3.0)*psi*psi);
 
+//Magnitude of the gradient of the order parameter
+scalarvalueType magpsix = constV(0.0);
+for (int i=0; i<dim; i++){
+magpsix = magpsix + psix[i]*psix[i];
+}
+magpsix = std::sqrt(magpsix);
 
-// Residuals for the equation to evolve the order parameter
+// The residuals
+scalarvalueType rnV = n + constV(vV*userInputs.dtValue)*magpsix;
+scalargradType rnxV = constV(-MnV*userInputs.dtValue)*mux;
+scalarvalueType rmuV = fnV;
+scalargradType rmuxV = constV(epssqV)*nx;
+
+// Residuals for the equation to evolve the concentration 
 variable_list.set_scalar_value_residual_term(0,rnV);
 variable_list.set_scalar_gradient_residual_term(0,rnxV);
+
+// Residuals for the equation to evolve the chemical potential 
+variable_list.set_scalar_value_residual_term(1,rmuV);
+variable_list.set_scalar_gradient_residual_term(1,rmuxV);
 
 }
 
 template <int dim, int degree>
 void customPDE<dim,degree>::residualNonexplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
-
-// The order parameter and its derivatives
-scalarvalueType n = variable_list.get_scalar_value(0);
-//scalargradType nx = variable_list.get_scalar_gradient(0);
-
-scalarvalueType psi = variable_list.get_scalar_value(1);
-scalargradType psix = variable_list.get_scalar_gradient(1);
-
-
-scalarvalueType W = constV(1.0);
-scalarvalueType p = constV(1.5);
-scalarvalueType epsilon = constV(2.0);
-
-// Parameters in the residual equations and expressions for the residual equations
-// can be set here.
-scalarvalueType fnV = (4.0*n*(n-1.0)*(n-0.5));
-//scalarvalueType fnV = n*n*n - n;
-//scalarvalueType rnV = (n-constV(userInputs.dtValue*MnV)*fnV);
-//scalargradType rnxV = (-constV(userInputs.dtValue*KnV*MnV)*nx);
-
-scalarvalueType rpsi = (W * (-psi*psi*psi + psi -2.0*p*psi*n*n));
-scalargradType rpsix = (-epsilon*epsilon * psix);
-
-
-// Residuals for the equation to evolve the order parameter
-variable_list.set_scalar_value_residual_term(1,rpsi);
-variable_list.set_scalar_gradient_residual_term(1,rpsix);
-
+                	dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+    
+    // The order parameter and its derivatives
+    scalarvalueType n = variable_list.get_scalar_value(0);
+    
+    // The domain parameter and its derivatives
+    scalarvalueType psi = variable_list.get_scalar_value(2);
+    scalargradType psix = variable_list.get_scalar_gradient(2);
+    
+    scalarvalueType W = constV(1.0);
+    scalarvalueType p = constV(1.5);
+    scalarvalueType epsilonsq = constV(epssqV);
+    
+    scalarvalueType rpsi = (W * (-psi*psi*psi + psi -2.0*p*psi*n*n));
+    scalargradType rpsix = (-epsilonsq*psix);
+    
+    
+    // Residuals for the equation to evolve the order parameter
+    variable_list.set_scalar_value_residual_term(2,rpsi);
+    variable_list.set_scalar_gradient_residual_term(2,rpsix);
+    
 }
 
 
@@ -118,23 +131,23 @@ variable_list.set_scalar_gradient_residual_term(1,rpsix);
 
 template <int dim, int degree>
 void customPDE<dim,degree>::residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
-
-        // The order parameter and its derivatives
-        scalarvalueType n = variable_list.get_scalar_value(0);
-
-        scalarvalueType psi = variable_list.get_scalar_value(1);
-
-        scalarvalueType Dpsi = variable_list.get_change_in_scalar_value(1);
-        scalargradType Dpsix = variable_list.get_change_in_scalar_gradient(1);
-
-
-        scalarvalueType W = constV(1.0);
-        scalarvalueType p = constV(1.5);
-        scalarvalueType epsilon = constV(2.0);
-        scalarvalueType rpsi = (W * (3.0*psi*psi*Dpsi - Dpsi  + 2.0*p*Dpsi*n*n));
-        scalargradType rpsix = (epsilon*epsilon * Dpsix);
-
-        variable_list.set_scalar_value_residual_term_LHS(1,rpsi);
-        variable_list.set_scalar_gradient_residual_term_LHS(1,rpsix);
+    dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+    
+    // The order parameter and its derivatives
+    scalarvalueType n = variable_list.get_scalar_value(0);
+    
+    // The domain parameter and its derivatives
+    scalarvalueType psi = variable_list.get_scalar_value(2);
+    
+    scalarvalueType Dpsi = variable_list.get_change_in_scalar_value(2);
+    scalargradType Dpsix = variable_list.get_change_in_scalar_gradient(2);
+    
+    scalarvalueType W = constV(1.0);
+    scalarvalueType p = constV(1.5);
+    scalarvalueType epsilonsq = constV(epssqV);
+    scalarvalueType rpsi = (W * (3.0*psi*psi*Dpsi - Dpsi  + 2.0*p*Dpsi*n*n));
+    scalargradType rpsix = (epsilonsq*Dpsix);
+    
+    variable_list.set_scalar_value_residual_term_LHS(2,rpsi);
+    variable_list.set_scalar_gradient_residual_term_LHS(2,rpsix);
 }

@@ -11,12 +11,12 @@ private:
 
 	const userInputParameters<dim> userInputs;
 
-	// Pure virtual method in MatrixFreePDE
-	void residualExplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
-
+    // Pure virtual method in MatrixFreePDE
+    void residualExplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+                             dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
+    
     void residualNonexplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
+                                dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 
 	// Pure virtual method in MatrixFreePDE
 	void residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
@@ -43,8 +43,17 @@ private:
 	// Model constants specific to this subclass
 	// ================================================================
 
-	double MnV = userInputs.get_model_constant_double("MnV");
-	double KnV = userInputs.get_model_constant_double("KnV");
+	
+    double irxnV = userInputs.get_model_constant_double("irxnV");
+   	double VMV = userInputs.get_model_constant_double("VMV");
+    double zMV = userInputs.get_model_constant_double("zMV");
+    double epssqV = userInputs.get_model_constant_double("epssqV");
+    
+    double FarC = 96485.33289;
+    double vV = -VMV*irxnV/(zMV*FarC);
+    double MnV = 2.0*(VMV*irxnV/(zMV*FarC))*std::sqrt(2.0*epssqV);
+    double deltaV=std::sqrt(2.0*epssqV);
+
 
 	// ================================================================
 
