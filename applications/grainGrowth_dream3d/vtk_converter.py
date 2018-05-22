@@ -1,6 +1,7 @@
 # Script to convert a rectilinear grid vtk file to an unstructured grid vtk file
 
-rl_grid_filename = 'vtk_rl_8x8.vtk'
+#rl_grid_filename = 'vtk_rl_128x128.vtk'
+rl_grid_filename = 'dist.vtk'
 target_variable = 'FeatureIds'
 
 us_grid_filename = "initial_grain_structure_us.vtk"
@@ -14,6 +15,8 @@ in_z_coords = False
 
 in_data_list = False
 
+skip_line = False
+
 num_x_coords = 0
 num_y_coords = 0
 num_z_coords = 0
@@ -25,57 +28,66 @@ z_coords = []
 data = []
 
 for line in f:
-    # First make sure line isn't a comment or blank line
-    stripped_line = line.strip()
-    if len(stripped_line) < 1 or stripped_line[0] is "#":
-        continue
+    if not skip_line:
 
-    split_line = stripped_line.split()
+        # First make sure line isn't a comment or blank line
+        stripped_line = line.strip()
+        if len(stripped_line) < 1 or stripped_line[0] is "#":
+            continue
 
-    if split_line[0] == "DIMENSIONS":
-        num_x_coords = int(split_line[1])
-        num_y_coords = int(split_line[2])
-        num_z_coords = int(split_line[3])
+        split_line = stripped_line.split()
 
-    if split_line[0] == "X_COORDINATES":
-        in_x_coords = True
-        continue
+        if split_line[0] == "DIMENSIONS":
+            num_x_coords = int(split_line[1])
+            num_y_coords = int(split_line[2])
+            num_z_coords = int(split_line[3])
 
-    if split_line[0] == "Y_COORDINATES":
-        in_y_coords = True
-        continue
+        if split_line[0] == "X_COORDINATES":
+            in_x_coords = True
+            continue
 
-    if split_line[0] == "Z_COORDINATES":
-        in_z_coords = True
-        continue
+        if split_line[0] == "Y_COORDINATES":
+            in_y_coords = True
+            continue
 
-    if split_line[0] == target_variable:
-        in_data_list = True
-        continue
+        if split_line[0] == "Z_COORDINATES":
+            in_z_coords = True
+            continue
 
-    if in_x_coords:
-        if not in_y_coords:
-            x_coords = x_coords + split_line
-        else:
-            in_x_coords = False
+        if split_line[0] == target_variable:
+            in_data_list = True
+            continue
 
-    if in_y_coords:
-        if not in_z_coords:
-            y_coords = y_coords + split_line
-        else:
-            in_y_coords = False
+        if split_line[0] == "SCALARS" and split_line[1] == target_variable:
+            in_data_list = True
+            skip_line = True
+            continue
 
-    if in_z_coords:
-        if split_line[0] != "POINT_DATA":
-            z_coords = z_coords + split_line
-        else:
-            in_z_coords = False
+        if in_x_coords:
+            if not in_y_coords:
+                x_coords = x_coords + split_line
+            else:
+                in_x_coords = False
 
-    if in_data_list:
-        if split_line[0] != "POINT_DATA" and split_line[0] != "CELL_DATA":
-            data = data + split_line
-        else:
-            in_data_list = False
+        if in_y_coords:
+            if not in_z_coords:
+                y_coords = y_coords + split_line
+            else:
+                in_y_coords = False
+
+        if in_z_coords:
+            if split_line[0] != "POINT_DATA":
+                z_coords = z_coords + split_line
+            else:
+                in_z_coords = False
+
+        if in_data_list:
+            if split_line[0] != "POINT_DATA" and split_line[0] != "CELL_DATA":
+                data = data + split_line
+            else:
+                in_data_list = False
+    else:
+        skip_line = False
 
 f.close()
 
@@ -106,8 +118,8 @@ x_counter = 0
 y_counter = 0
 z_counter = 0
 
-for x_counter in range(0, num_x_coords - 1):
-    for y_counter in range(0, num_y_coords - 1):
+for y_counter in range(0, num_y_coords - 1):
+    for x_counter in range(0, num_x_coords - 1):
 
         if (num_z_coords == 1):
             f.write(x_coords[x_counter] + " " + y_coords[y_counter] + " " + z_coords[z_counter] + '\n')
@@ -136,8 +148,8 @@ else:
 
 point_index = 0
 
-for x_counter in range(0, num_x_coords - 1):
-    for y_counter in range(0, num_y_coords - 1):
+for y_counter in range(0, num_y_coords - 1):
+    for x_counter in range(0, num_x_coords - 1):
 
         if (num_z_coords == 1):
             f.write(str(points_per_cell) + " " + str(point_index) + " " + str(point_index + 1) + " " + str(point_index + 3) + " " + str(point_index + 2) + "\n")
@@ -164,12 +176,12 @@ f.write('LOOKUP_TABLE default\n')
 
 print(data)
 
-for x_counter in range(0, num_x_coords - 1):
-    for y_counter in range(0, num_y_coords - 1):
+for y_counter in range(0, num_y_coords - 1):
+    for x_counter in range(0, num_x_coords - 1):
 
-        base_index = x_counter + y_counter * (num_x_coords - 1)
+        base_index = x_counter + y_counter * (num_x_coords)
 
-        f.write(data[base_index] + " " + data[base_index + 1] + " " + data[base_index + (num_x_coords - 1)] + " " + data[base_index + (num_x_coords - 1) + 1] + ' ')
+        f.write(data[base_index] + " " + data[base_index + 1] + " " + data[base_index + (num_x_coords)] + " " + data[base_index + (num_x_coords) + 1] + ' ')
 
 f.write("\n")
 
