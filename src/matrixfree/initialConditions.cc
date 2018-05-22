@@ -27,6 +27,8 @@ public:
 
 	  scalar_IC = inputField(coord);
 
+      std::cout << p << " " << scalar_IC << std::endl;
+
 	  return scalar_IC;
   }
 };
@@ -36,51 +38,91 @@ public:
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::applyInitialConditions(){
 
-for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_index++){
-	if (userInputs.load_ICs[var_index] == false){
-		pcout << "Applying non-PField initial condition...\n";
-		if (userInputs.var_type[var_index] == SCALAR){
-			VectorTools::interpolate (*dofHandlersSet[var_index], InitialCondition<dim>(var_index,userInputs), *solutionSet[var_index]);
-		}
-		else {
-			VectorTools::interpolate (*dofHandlersSet[var_index], InitialConditionVec<dim>(var_index,userInputs), *solutionSet[var_index]);
-		}
-	}
-	else{
-		//#if enablePFields == true
+    bool load_grain_structure = false; // eventually this should be in userInputs
 
-		// Declare the PField types and containers
-		typedef PRISMS::PField<double*, double, dim> ScalarField;
-		typedef PRISMS::Body<double*, dim> Body;
-		Body body;
+    if (load_grain_structure){
+        // Create the dummy field
+        vectorType grain_index_field;
 
-		// Create the filename of the the file to be loaded
-		std::string filename;
-		if (userInputs.load_parallel_file[var_index] == false){
-			filename = userInputs.load_file_name[var_index] + ".vtk";
-		}
-		else {
-			int proc_num = Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
-			std::ostringstream conversion;
-			conversion << proc_num;
-			filename = userInputs.load_file_name[var_index] + "." + conversion.str() + ".vtk";
-		}
+        unsigned int scalar_field_index = 0;
+        for (unsigned int var=0; var<userInputs.number_of_variables; var++){
+            if (userInputs.var_type.at(var) == SCALAR){
+                scalar_field_index = var;
+                break;
+            }
+        }
 
-		// Load the data from the file using a PField
-		body.read_vtk(filename);
-		ScalarField &conc = body.find_scalar_field(userInputs.load_field_name[var_index]);
+        matrixFreeObject.initialize_dof_vector (grain_index_field, scalar_field_index);
 
-		if (userInputs.var_type[var_index] == SCALAR){
-			pcout << "Applying PField initial condition...\n";
-			VectorTools::interpolate (*dofHandlersSet[var_index], InitialConditionPField<dim>(var_index,conc), *solutionSet[var_index]);
-		}
-		else {
-			std::cout << "PRISMS-PF Error: Cannot load vector fields. Loading initial conditions from file is currently limited to scalar fields" << std::endl;
-		}
-        
-	}
-	pcout << "Application of initial conditions for field number " << var_index << " complete \n";
-}
+        // Declare the PField types and containers
+        typedef PRISMS::PField<double*, double, dim> ScalarField;
+        typedef PRISMS::Body<double*, dim> Body;
+        Body body;
+
+        // Create the filename of the the file to be loaded
+        std::string filename;
+
+        filename = "initial_grain_structure7.vtk";
+
+        // Load the data from the file using a PField
+        body.read_vtk(filename);
+        ScalarField &conc = body.find_scalar_field("FeatureIds");
+
+
+        pcout << "Applying PField initial condition...\n";
+
+        VectorTools::interpolate (*dofHandlersSet[scalar_field_index], InitialConditionPField<dim>(0,conc), /*grain_index_field*/ *solutionSet[0]);
+
+        std::cout << "solution Linf norm: " << solutionSet[0]->linfty_norm() << std::endl;
+
+    }
+
+    for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_index++){
+
+        if (userInputs.load_ICs[var_index] == false){
+            pcout << "Applying non-PField initial condition...\n";
+            if (userInputs.var_type[var_index] == SCALAR){
+                VectorTools::interpolate (*dofHandlersSet[var_index], InitialCondition<dim>(var_index,userInputs), *solutionSet[var_index]);
+            }
+            else {
+                VectorTools::interpolate (*dofHandlersSet[var_index], InitialConditionVec<dim>(var_index,userInputs), *solutionSet[var_index]);
+            }
+        }
+
+        else {
+            // Declare the PField types and containers
+            typedef PRISMS::PField<double*, double, dim> ScalarField;
+            typedef PRISMS::Body<double*, dim> Body;
+            Body body;
+
+            // Create the filename of the the file to be loaded
+            std::string filename;
+            if (userInputs.load_parallel_file[var_index] == false){
+                filename = userInputs.load_file_name[var_index] + ".vtk";
+            }
+            else {
+                int proc_num = Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
+                std::ostringstream conversion;
+                conversion << proc_num;
+                filename = userInputs.load_file_name[var_index] + "." + conversion.str() + ".vtk";
+            }
+
+            // Load the data from the file using a PField
+            body.read_vtk(filename);
+            ScalarField &conc = body.find_scalar_field(userInputs.load_field_name[var_index]);
+
+            if (userInputs.var_type[var_index] == SCALAR){
+                pcout << "Applying PField initial condition...\n";
+                VectorTools::interpolate (*dofHandlersSet[var_index], InitialConditionPField<dim>(var_index,conc), *solutionSet[var_index]);
+            }
+            else {
+                std::cout << "PRISMS-PF Error: Cannot load vector fields. Loading initial conditions from file is currently limited to scalar fields" << std::endl;
+            }
+
+        }
+
+        pcout << "Application of initial conditions for field number " << var_index << " complete \n";
+    }
 }
 
 

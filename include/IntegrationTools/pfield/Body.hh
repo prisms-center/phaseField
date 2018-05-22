@@ -44,10 +44,12 @@ namespace PRISMS
 
 
             // read in vtk file here
-            std::ifstream infile(vtkfile.c_str());
+            std::ifstream infile_mesh(vtkfile.c_str());
 
             // read mesh info
-            mesh.read_vtk(infile);
+            mesh.read_vtk(infile_mesh);
+
+            std::ifstream infile(vtkfile.c_str());
 
             // read point data
             std::istringstream ss;
@@ -57,6 +59,7 @@ namespace PRISMS
 
             while(!infile.eof())
             {
+
                 std::getline( infile, line);
 
                 if( line[0] == 'P')
@@ -87,6 +90,7 @@ namespace PRISMS
                         for( unsigned int i=0; i<Npoints; i++)
                         {
                             infile >> data[i];
+                            //std::cout << data[i] << std::endl;
                         }
                         std::cout << "  done" << std::endl;
 
