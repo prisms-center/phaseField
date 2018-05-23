@@ -61,7 +61,7 @@ set Time step = 0.25e-1
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 400
+set Number of time steps = 40000
 
 # =================================================================================
 # Set the output parameters

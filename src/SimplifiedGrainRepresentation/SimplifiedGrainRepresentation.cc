@@ -104,71 +104,72 @@ void SimplifiedGrainManipulator<dim>::reassignGrains(
     std::vector<SimplifiedGrainRepresentation<dim>> & grain_representations,
     double buffer_distance,
     std::vector<unsigned int> order_parameter_id_list)
-{
-    int thisProc=dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
+    {
+        int thisProc=dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
 
-    for (unsigned int g_base=0; g_base < grain_representations.size(); g_base++){
-        unsigned int order_parameter_base = grain_representations.at(g_base).getOrderParameterId();
+        for (unsigned int cycle=order_parameter_id_list.size(); cycle>0; cycle--){
 
-        for (unsigned int g_other=0; g_other < grain_representations.size(); g_other++){
-            if (g_other != g_base){
-                unsigned int order_parameter_other = grain_representations.at(g_other).getOrderParameterId();
+            for (unsigned int g_base=0; g_base < grain_representations.size(); g_base++){
+                unsigned int order_parameter_base = grain_representations.at(g_base).getOrderParameterId();
 
-                // Check for overlap between the base grain and the other grain
-                double center_distance = grain_representations.at(g_base).getCenter().distance(grain_representations.at(g_other).getCenter());
-                double sum_radii = grain_representations.at(g_base).getRadius() + grain_representations.at(g_other).getRadius();
+                for (unsigned int g_other=0; g_other < grain_representations.size(); g_other++){
+                    if (g_other != g_base){
+                        unsigned int order_parameter_other = grain_representations.at(g_other).getOrderParameterId();
 
-                if ( (sum_radii + 2.0*buffer_distance > center_distance) and (order_parameter_other == order_parameter_base) ){
-                    if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
-                        std::cout << "Found overlap between grain " << grain_representations.at(g_base).getGrainId() << " and grain " << grain_representations.at(g_other).getGrainId() << " with order parameter " << order_parameter_base << std::endl;
-                    }
+                        // Check for overlap between the base grain and the other grain
+                        double center_distance = grain_representations.at(g_base).getCenter().distance(grain_representations.at(g_other).getCenter());
+                        double sum_radii = grain_representations.at(g_base).getRadius() + grain_representations.at(g_other).getRadius();
 
-                    grain_representations.at(g_base).setDistanceToNeighbor(center_distance - sum_radii);
-
-                    // Another loop over all of the grains to find the order parameter with the largest minimum distance to the base grain
-                    std::vector<double> minimum_distance_list(order_parameter_id_list.size(),std::numeric_limits<double>::max());
-
-                    for (unsigned int g_spacing_list=0; g_spacing_list < grain_representations.size(); g_spacing_list++){
-                        if (g_spacing_list != g_base){
-                            unsigned int order_parameter_spacing_list = grain_representations.at(g_spacing_list).getOrderParameterId();
-
-                            double spacing = grain_representations.at(g_base).getCenter().distance(grain_representations.at(g_spacing_list).getCenter()) - grain_representations.at(g_base).getRadius() - grain_representations.at(g_spacing_list).getRadius();
-
-                            if ( spacing < minimum_distance_list.at(order_parameter_spacing_list) ){
-                                minimum_distance_list.at(order_parameter_spacing_list) = spacing;
+                        if ( (sum_radii + 2.0*buffer_distance > center_distance) and (order_parameter_other == order_parameter_base) ){
+                            if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+                                std::cout << "Found overlap between grain " << grain_representations.at(g_base).getGrainId() << " and grain " << grain_representations.at(g_other).getGrainId() << " with order parameter " << order_parameter_base << std::endl;
                             }
-                        }
-                    }
-                    // Pick the max value of minimum_distance_list to determine which order parameter to switch the base grain to
-                    double max_distance = -std::numeric_limits<double>::max();
-                    unsigned int new_op_index = 0;
 
-                    for (unsigned int op=0; op<minimum_distance_list.size(); op++){
-                        if (minimum_distance_list.at(op) > max_distance){
-                            max_distance = minimum_distance_list.at(op);
-                            new_op_index = op;
-                        }
-                    }
-                    grain_representations.at(g_base).setOrderParameterId(new_op_index);
-                    order_parameter_base = new_op_index;
+                            grain_representations.at(g_base).setDistanceToNeighbor(center_distance - sum_radii);
 
-                    if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
-                        std::cout << "Reassigning grain " << grain_representations.at(g_base).getGrainId() << " from order parameter " << grain_representations.at(g_base).getOldOrderParameterId() << " to order parameter " << grain_representations.at(g_base).getOrderParameterId() << std::endl << std::endl;
+                            // Another loop over all of the grains to find the order parameter with the largest minimum distance to the base grain
+                            std::vector<double> minimum_distance_list(order_parameter_id_list.size(),std::numeric_limits<double>::max());
 
+                            for (unsigned int g_spacing_list=0; g_spacing_list < grain_representations.size(); g_spacing_list++){
+                                if (g_spacing_list != g_base){
+                                    unsigned int order_parameter_spacing_list = grain_representations.at(g_spacing_list).getOrderParameterId();
 
-                        if (grain_representations.at(g_base).getGrainId() == 246){
-                            std::cout << "Minimum distance list for grain 246: ";
+                                    double spacing = grain_representations.at(g_base).getCenter().distance(grain_representations.at(g_spacing_list).getCenter()) - grain_representations.at(g_base).getRadius() - grain_representations.at(g_spacing_list).getRadius();
+
+                                    if ( spacing < minimum_distance_list.at(order_parameter_spacing_list) ){
+                                        minimum_distance_list.at(order_parameter_spacing_list) = spacing;
+                                    }
+                                }
+                            }
+                            // Pick the max value of minimum_distance_list to determine which order parameter to switch the base grain to
+                            double max_distance = -std::numeric_limits<double>::max();
+                            unsigned int new_op_index = 0;
+                            unsigned int overlap_counter = 0;
                             for (unsigned int op=0; op<minimum_distance_list.size(); op++){
-                                std::cout << minimum_distance_list.at(op) << " ";
+                                if (minimum_distance_list.at(op) > max_distance){
+                                    max_distance = minimum_distance_list.at(op);
+                                    new_op_index = op;
+                                }
+                                if (minimum_distance_list.at(op) < 0){
+                                    overlap_counter++;
+                                }
                             }
-                            std::cout << std::endl;
+
+                            if (overlap_counter >= cycle){
+                                grain_representations.at(g_base).setOrderParameterId(new_op_index);
+                                order_parameter_base = new_op_index;
+
+                                if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+                                    std::cout << "Reassigning grain " << grain_representations.at(g_base).getGrainId() << " from order parameter " << grain_representations.at(g_base).getOldOrderParameterId() << " to order parameter " << grain_representations.at(g_base).getOrderParameterId() << std::endl << std::endl;
+
+                                }
+                            }
                         }
                     }
                 }
             }
         }
     }
-}
 
 template <int dim>
 void SimplifiedGrainManipulator<dim>::transferGrainIds(
