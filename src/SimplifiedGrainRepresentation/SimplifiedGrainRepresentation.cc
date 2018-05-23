@@ -154,6 +154,15 @@ void SimplifiedGrainManipulator<dim>::reassignGrains(
 
                     if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
                         std::cout << "Reassigning grain " << grain_representations.at(g_base).getGrainId() << " from order parameter " << grain_representations.at(g_base).getOldOrderParameterId() << " to order parameter " << grain_representations.at(g_base).getOrderParameterId() << std::endl << std::endl;
+
+
+                        if (grain_representations.at(g_base).getGrainId() == 246){
+                            std::cout << "Minimum distance list for grain 246: ";
+                            for (unsigned int op=0; op<minimum_distance_list.size(); op++){
+                                std::cout << minimum_distance_list.at(op) << " ";
+                            }
+                            std::cout << std::endl;
+                        }
                     }
                 }
             }

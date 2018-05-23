@@ -39,9 +39,7 @@ public:
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::applyInitialConditions(){
 
-    bool load_grain_structure = true; // eventually this should be in userInputs
-
-    if (load_grain_structure){
+    if (userInputs.load_grain_structure){
         // Create the dummy field
         vectorType grain_index_field;
 
@@ -107,7 +105,7 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
         }
 
         // Delete grains with very small radii that correspond to a single interfacial element
-        double min_radius = 1.0; // need a better way to calculate this eventually based on the mesh size
+        double min_radius = 2.0; // need a better way to calculate this eventually based on the mesh size
         for (unsigned int g=0; g<simplified_grain_representations.size(); g++){
             if (simplified_grain_representations.at(g).getRadius() < min_radius){
                 std::cout << "Erase grain " << simplified_grain_representations.at(g).getGrainId() << std::endl;
@@ -128,6 +126,29 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
         pcout << "Placing the grains in their new order parameters...\n";
         OrderParameterRemapper<dim> order_parameter_remapper;
         order_parameter_remapper.remap_from_index_field(simplified_grain_representations, &grain_index_field, solutionSet, *dofHandlersSet_nonconst.at(scalar_field_index), FESet.at(scalar_field_index)->dofs_per_cell, userInputs.buffer_between_grains);
+
+        // Smooth the order parameters
+        unsigned int op_list_index = 0;
+        for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
+            if (op_list_index < userInputs.variables_for_remapping.size()){
+                if ( fieldIndex == userInputs.variables_for_remapping.at(op_list_index)){
+
+                    for (unsigned int cycle=0; cycle<2; cycle++){
+                        computeLaplaceRHS(fieldIndex);
+
+                        unsigned int invM_size = invM.local_size();
+                        for (unsigned int dof=0; dof<solutionSet[fieldIndex]->local_size(); ++dof){
+                            solutionSet[fieldIndex]->local_element(dof)=solutionSet[fieldIndex]->local_element(dof)-
+                            invM.local_element(dof%invM_size)*residualSet[fieldIndex]->local_element(dof)*0.001;
+                        }
+
+                        solutionSet[fieldIndex]->update_ghost_values();
+                    }
+
+                    op_list_index++;
+                }
+            }
+        }
 
 
     }

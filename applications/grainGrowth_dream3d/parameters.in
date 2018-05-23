@@ -61,7 +61,7 @@ set Time step = 0.25e-1
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 4000
+set Number of time steps = 400
 
 # =================================================================================
 # Set the output parameters
@@ -85,7 +85,7 @@ set Activate grain reassignment = true
 set Order parameter fields for grain reassignment = n0, n1, n2, n3, n4, n5, n6, n7
 set Time steps between grain reassignments = 200
 set Order parameter cutoff for grain identification = 1e-2
-set Buffer between grains before reassignment = 5.0
+set Buffer between grains before reassignment = 2.0
 
 
 # =================================================================================

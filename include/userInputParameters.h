@@ -148,6 +148,8 @@ public:
     double order_parameter_threshold;
     double buffer_between_grains;
 
+    bool load_grain_structure = true;
+
 private:
 	// Method to create the list of time steps where the results should be output (called from loadInputParameters)
 	std::vector<unsigned int> setTimeStepList(const std::string outputSpacingType, unsigned int numberOfOutputs,
