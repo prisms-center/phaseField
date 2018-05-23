@@ -2,7 +2,7 @@
 #include <numeric>
 
 template <int dim, int degree>
-void FloodFiller<dim, degree>::calcGrainSets(dealii::FESystem<dim> & fe, dealii::DoFHandler<dim> &dof_handler, vectorType* solution_field, double threshold, unsigned int order_parameter_index, std::vector<GrainSet<dim>> & grain_sets){
+void FloodFiller<dim, degree>::calcGrainSets(dealii::FESystem<dim> & fe, dealii::DoFHandler<dim> &dof_handler, vectorType* solution_field, double threshold_lower, double threshold_upper, unsigned int order_parameter_index, std::vector<GrainSet<dim>> & grain_sets){
 
     unsigned int grain_index = 0;
 
@@ -24,7 +24,7 @@ void FloodFiller<dim, degree>::calcGrainSets(dealii::FESystem<dim> & fe, dealii:
     {
         if (!di->has_children()){
             bool grain_assigned = false;
-            recursiveFloodFill<typename dealii::DoFHandler<dim>::cell_iterator>(di, dof_handler.end(), solution_field, threshold,  grain_index, grain_sets, grain_assigned);
+            recursiveFloodFill<typename dealii::DoFHandler<dim>::cell_iterator>(di, dof_handler.end(), solution_field, threshold_lower, threshold_upper,  grain_index, grain_sets, grain_assigned);
 
 
             if (grain_assigned){
@@ -57,7 +57,7 @@ void FloodFiller<dim, degree>::calcGrainSets(dealii::FESystem<dim> & fe, dealii:
 
 template <int dim, int degree>
 template <typename T>
-void FloodFiller<dim, degree>::recursiveFloodFill(T di, T di_end, vectorType* solution_field, double threshold, unsigned int & grain_index, std::vector<GrainSet<dim>> & grain_sets, bool & grain_assigned){
+void FloodFiller<dim, degree>::recursiveFloodFill(T di, T di_end, vectorType* solution_field, double threshold_lower, double threshold_upper, unsigned int & grain_index, std::vector<GrainSet<dim>> & grain_sets, bool & grain_assigned){
 
     if (di != di_end){
 
@@ -69,7 +69,7 @@ void FloodFiller<dim, degree>::recursiveFloodFill(T di, T di_end, vectorType* so
             if (di->has_children()){
                 // Call recursiveFloodFill on the element's children
                 for (unsigned int n=0; n<di->n_children(); n++){
-                    recursiveFloodFill<T>(di->child(n), di_end, solution_field, threshold,  grain_index, grain_sets, grain_assigned);
+                    recursiveFloodFill<T>(di->child(n), di_end, solution_field, threshold_lower, threshold_upper,  grain_index, grain_sets, grain_assigned);
                 }
             }
             else{
@@ -93,7 +93,7 @@ void FloodFiller<dim, degree>::recursiveFloodFill(T di, T di_end, vectorType* so
                     }
 
 
-                    if (ele_val > threshold){
+                    if (ele_val > threshold_lower && ele_val < threshold_upper){
                         grain_assigned = true;
 
                         std::vector<dealii::Point<dim>> vertex_list;
@@ -104,7 +104,7 @@ void FloodFiller<dim, degree>::recursiveFloodFill(T di, T di_end, vectorType* so
 
                         // Call recursiveFloodFill on the element's neighbors
                         for (unsigned int n=0; n<2*dim; n++){
-                            recursiveFloodFill<T>(di->neighbor(n), di_end, solution_field, threshold,  grain_index, grain_sets, grain_assigned);
+                            recursiveFloodFill<T>(di->neighbor(n), di_end, solution_field, threshold_lower, threshold_upper,  grain_index, grain_sets, grain_assigned);
                         }
                     }
                 }

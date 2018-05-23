@@ -25,7 +25,7 @@ set Subdivisions X = 1
 set Subdivisions Y = 1
 set Subdivisions Z = 1
 
-set Refine factor = 3
+set Refine factor = 8
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
 set Element degree = 1
@@ -82,9 +82,6 @@ set Output condition = EQUAL_SPACING
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
 set Number of outputs = 10
-
-set Output file type = vtk
-set Output separate files per process = true
 
 # The number of time steps between updates being printed to the screen
 set Skip print steps = 1000

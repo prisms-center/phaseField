@@ -10,8 +10,8 @@ void variableAttributeLoader::loadPostProcessorVariableAttributes(){
     // set_dependencies_value_residual_term_RHS(0, "n0, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14");
     // set_dependencies_gradient_residual_term_RHS(0, "grad(n0), grad(n1), grad(n2), grad(n3), grad(n4), grad(n5), grad(n6), grad(n7), grad(n8), grad(n9), grad(n10), grad(n11), grad(n12), grad(n13), grad(n14)");
 
-    set_dependencies_value_residual_term_RHS(0, "n0, n1, n2, n3, n4, n5");
-    set_dependencies_gradient_residual_term_RHS(0, "grad(n0), grad(n1), grad(n2), grad(n3), grad(n4), grad(n5)");
+    set_dependencies_value_residual_term_RHS(0, "n0, n1, n2, n3, n4, n5, n6, n7");
+    set_dependencies_gradient_residual_term_RHS(0, "grad(n0), grad(n1), grad(n2), grad(n3), grad(n4), grad(n5), grad(n6), grad(n7)");
 
     set_output_integral         	(0,true);
 

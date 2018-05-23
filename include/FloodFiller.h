@@ -80,14 +80,14 @@ public:
     /**
     * The primary external interface. This method takes in information about the mesh/field and outputs a vector of GrainSet objects.
     */
-    void calcGrainSets(dealii::FESystem<dim> & fe, dealii::DoFHandler<dim> &dof_handler, vectorType* solution_field, double threshold, unsigned int order_parameter_index, std::vector<GrainSet<dim>> & grain_sets);
+    void calcGrainSets(dealii::FESystem<dim> & fe, dealii::DoFHandler<dim> &dof_handler, vectorType* solution_field, double threshold_lower, double threshold_upper, unsigned int order_parameter_index, std::vector<GrainSet<dim>> & grain_sets);
 protected:
 
     /**
     * The actual recursive flood fill method.
     */
     template <typename T>
-    void recursiveFloodFill(T di, T di_end, vectorType* solution_field, double threshold, unsigned int & grain_index, std::vector<GrainSet<dim>> & grain_sets, bool & grain_assigned);
+    void recursiveFloodFill(T di, T di_end, vectorType* solution_field, double threshold_lower, double threshold_upper, unsigned int & grain_index, std::vector<GrainSet<dim>> & grain_sets, bool & grain_assigned);
 
     /**
     * The method to merge the grain sets from all the processors.

@@ -1,7 +1,11 @@
 # Script to convert a rectilinear grid vtk file to an unstructured grid vtk file
 
+shift_x = 0.25
+shift_y = 0.25
+shift_z = 0
+
 #rl_grid_filename = 'vtk_rl_128x128.vtk'
-rl_grid_filename = 'dist.vtk'
+rl_grid_filename = 'test_microstructure.vtk'
 target_variable = 'FeatureIds'
 
 us_grid_filename = "initial_grain_structure_us.vtk"
@@ -91,6 +95,12 @@ for line in f:
 
 f.close()
 
+# Shift the mesh if necessary
+x_coords = [str(float(coord) + shift_x) for coord in x_coords]
+y_coords = [str(float(coord) + shift_y) for coord in y_coords]
+z_coords = [str(float(coord) + shift_z) for coord in z_coords]
+
+
 # Write the unstructured grid vtk file
 f = open(us_grid_filename, "w")
 f.write('# vtk DataFile Version 2.0\n')
@@ -173,8 +183,6 @@ for cell in range(0, num_cells):
 f.write('\n\nPOINT_DATA ' + str(num_points) + '\n')
 f.write('SCALARS ' + target_variable + ' double 1\n')
 f.write('LOOKUP_TABLE default\n')
-
-print(data)
 
 for y_counter in range(0, num_y_coords - 1):
     for x_counter in range(0, num_x_coords - 1):

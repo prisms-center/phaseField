@@ -119,11 +119,11 @@ namespace PRISMS
         _val = _zero;
         for( int i=0; i<_Nbfunc; i++)
         {
-              std::cout << "i: " << i << "  node: " << _node_index[i] << "  bfunc: " << _bfunc[i] << "  val: " << _field[_node_index[i]] << std::endl;
+              //std::cout << "i: " << i << "  node: " << _node_index[i] << "  bfunc: " << _bfunc[i] << "  val: " << _field[_node_index[i]] << std::endl;
             _val += _bfunc[i]*_field[_node_index[i]];
         }
         //std::cout << "val: " << _val << std::endl << std::endl;
-        std::cout << "_Nbfunc " << _Nbfunc << std::endl;
+        //std::cout << "_Nbfunc " << _Nbfunc << std::endl;
         return _val;
     }
 

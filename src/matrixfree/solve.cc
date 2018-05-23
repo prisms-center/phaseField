@@ -15,7 +15,6 @@ void MatrixFreePDE<dim,degree>::solve(){
         // If grain reassignment is activated, reassign grains
         if (userInputs.grain_remapping_activated and (currentIncrement%userInputs.skip_grain_reassignment_steps == 0 or currentIncrement == 0) ) {
             reassignGrains();
-            current_grain_reassignment++;
         }
 
         // For any nonlinear equation, set the initial guess as the solution to Laplace's equations

@@ -150,6 +150,7 @@ void SimplifiedGrainManipulator<dim>::reassignGrains(
                         }
                     }
                     grain_representations.at(g_base).setOrderParameterId(new_op_index);
+                    order_parameter_base = new_op_index;
 
                     if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
                         std::cout << "Reassigning grain " << grain_representations.at(g_base).getGrainId() << " from order parameter " << grain_representations.at(g_base).getOldOrderParameterId() << " to order parameter " << grain_representations.at(g_base).getOrderParameterId() << std::endl << std::endl;

@@ -25,10 +25,9 @@ void MatrixFreePDE<dim,degree>::reassignGrains () {
 
     // Create the simplified grain representations
     QGaussLobatto<dim> quadrature2 (degree+1);
-    FloodFiller<dim, degree> test_object(*FESet.at(scalar_field_index), quadrature2);
+    FloodFiller<dim, degree> flood_filler(*FESet.at(scalar_field_index), quadrature2);
 
     std::vector<GrainSet<dim>> grain_sets;
-    std::vector<GrainSet<dim>> single_OP_grain_sets;
 
     unsigned int op_list_index = 0;
     for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
@@ -36,12 +35,10 @@ void MatrixFreePDE<dim,degree>::reassignGrains () {
             if (fieldIndex == userInputs.variables_for_remapping.at(op_list_index)){
                 op_list_index++;
 
-                // Eventually there should be a check to see if this is one of the shared order parameter variables
                 std::vector<GrainSet<dim>> single_OP_grain_sets;
-                test_object.calcGrainSets(*FESet.at(scalar_field_index), *dofHandlersSet_nonconst.at(scalar_field_index), solutionSet.at(fieldIndex), userInputs.order_parameter_threshold, fieldIndex, single_OP_grain_sets);
+                flood_filler.calcGrainSets(*FESet.at(scalar_field_index), *dofHandlersSet_nonconst.at(scalar_field_index), solutionSet.at(fieldIndex), userInputs.order_parameter_threshold, 1.0+userInputs.order_parameter_threshold, fieldIndex, single_OP_grain_sets);
 
                 grain_sets.insert(grain_sets.end(), single_OP_grain_sets.begin(), single_OP_grain_sets.end());
-                single_OP_grain_sets.clear();
             }
         }
     }
@@ -70,7 +67,7 @@ void MatrixFreePDE<dim,degree>::reassignGrains () {
     simplified_grain_manipulator.reassignGrains(simplified_grain_representations, userInputs.buffer_between_grains, userInputs.variables_for_remapping);
 
     OrderParameterRemapper<dim> order_parameter_remapper;
-    order_parameter_remapper.remap(simplified_grain_representations, solutionSet, *dofHandlersSet_nonconst.at(0), FESet.at(0)->dofs_per_cell, userInputs.buffer_between_grains);
+    order_parameter_remapper.remap(simplified_grain_representations, solutionSet, *dofHandlersSet_nonconst.at(scalar_field_index), FESet.at(scalar_field_index)->dofs_per_cell, userInputs.buffer_between_grains);
 
     pcout << "Reassigning grains completed." << std::endl << std::endl;
 
