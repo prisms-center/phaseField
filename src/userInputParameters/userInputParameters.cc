@@ -70,7 +70,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
 
     // Linear solver parameters (I should turn this into subsections for each variable)
     for (unsigned int i=0; i<number_of_variables; i++){
-        if (input_file_reader.var_eq_types.at(i) == ELLIPTIC){
+        if (input_file_reader.var_eq_types.at(i) == TIME_INDEPENDENT || input_file_reader.var_eq_types.at(i) == IMPLICIT_TIME_DEPENDENT){
             std::string subsection_text = "Linear solver parameters: ";
             subsection_text.append(input_file_reader.var_names.at(i));
 
@@ -186,16 +186,16 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     // Field variable definitions
 
     // If all of the variables are ELLIPTIC, then totalIncrements should be 1 and finalTime should be 0
-    bool only_elliptic_pdes = true;
+    bool only_time_independent_pdes = true;
     for (unsigned int i=0; i<var_eq_type.size(); i++){
-        if (var_eq_type.at(i) == PARABOLIC){
-            only_elliptic_pdes = false;
+        if (var_eq_type.at(i) == EXPLICIT_TIME_DEPENDENT || var_eq_type.at(i) == IMPLICIT_TIME_DEPENDENT){
+            only_time_independent_pdes = false;
             break;
         }
     }
 
     // Determine the maximum number of time steps
-    if (only_elliptic_pdes){
+    if (only_time_independent_pdes){
         totalIncrements = 1;
         finalTime = 0.0;
     }

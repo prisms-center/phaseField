@@ -7,9 +7,9 @@
 inputFileReader::inputFileReader(std::string input_file_name, variableAttributeLoader variable_attributes){
     // Extract an ordered vector of the variable types from variable_attributes
     unsigned int number_of_variables = variable_attributes.var_name_list.size();
-    var_types = variable_attributes.var_type; //sortIndexEntryPairList(variable_attributes.var_type_list,number_of_variables,SCALAR);
-    var_eq_types = variable_attributes.var_eq_type; //sortIndexEntryPairList(variable_attributes.var_eq_type_list,number_of_variables,PARABOLIC);
-    var_names = variable_attributes.var_name; //sortIndexEntryPairList(variable_attributes.var_name_list,number_of_variables,"var");
+    var_types = variable_attributes.var_type;
+    var_eq_types = variable_attributes.var_eq_type;
+    var_names = variable_attributes.var_name;
 
     var_nonlinear = variable_attributes.var_nonlinear;
 
@@ -261,7 +261,7 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
     parameter_handler.declare_entry("Simulation end time","-0.1",dealii::Patterns::Double(),"The value of simulated time where the simulation ends.");
 
     for (unsigned int i=0; i<var_types.size(); i++){
-        if (var_eq_types.at(i) == ELLIPTIC){
+        if (var_eq_types.at(i) == TIME_INDEPENDENT || var_eq_types.at(i) == IMPLICIT_TIME_DEPENDENT){
             std::string subsection_text = "Linear solver parameters: ";
             subsection_text.append(var_names.at(i));
             parameter_handler.enter_subsection(subsection_text);
@@ -274,15 +274,6 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
         }
     }
 
-    // Nonlinear solver parameters
-    /*
-    std::vector<bool> var_nonlinear;
-    for (unsigned int i=0; i<var_types.size(); i++){
-        var_nonlinear.push_back(true);
-    }
-    //var_nonlinear.push_back(false);
-    //var_nonlinear.push_back(true);
-    */
 
     parameter_handler.declare_entry("Maximum nonlinear solver iterations","100",dealii::Patterns::Integer(),"The maximum number of nonlinear solver iterations before the loop is stopped.");
 

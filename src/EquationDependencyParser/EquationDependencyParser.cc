@@ -33,7 +33,7 @@ void EquationDependencyParser::parse(
             if(sorted_dependencies_value_RHS.at(i)[j] == ' ') sorted_dependencies_value_RHS.at(i).erase(j,1);
         }
         // Now check for each variable_eq_type
-        if (var_eq_type[i] == PARABOLIC){
+        if (var_eq_type[i] == EXPLICIT_TIME_DEPENDENT){
 
             bool need_value_residual_entry, need_gradient_residual_entry, single_var_nonlinear;
 
@@ -52,7 +52,22 @@ void EquationDependencyParser::parse(
             need_gradient_residual_nonexplicit_LHS.push_back(false);
 
         }
-        else if (var_eq_type[i] == ELLIPTIC){
+        else if (var_eq_type[i] == AUXILIARY){
+            bool need_value_residual_entry, need_gradient_residual_entry, single_var_nonlinear;
+
+            parseDependencyListRHS(var_name, var_eq_type, i, sorted_dependencies_value_RHS.at(i), sorted_dependencies_gradient_RHS.at(i), need_value_nonexplicit_RHS, need_gradient_nonexplicit_RHS, need_hessian_nonexplicit_RHS, need_value_residual_entry, need_gradient_residual_entry, single_var_nonlinear);
+
+            var_nonlinear.push_back(single_var_nonlinear);
+
+            need_value_residual_explicit_RHS.push_back(false);
+            need_gradient_residual_explicit_RHS.push_back(false);
+
+            need_value_residual_nonexplicit_RHS.push_back(need_value_residual_entry);
+            need_gradient_residual_nonexplicit_RHS.push_back(need_gradient_residual_entry);
+            need_value_residual_nonexplicit_LHS.push_back(false);
+            need_gradient_residual_nonexplicit_LHS.push_back(false);
+        }
+        else if (var_eq_type[i] == IMPLICIT_TIME_DEPENDENT || var_eq_type[i] == TIME_INDEPENDENT){
 
             bool need_value_residual_entry, need_gradient_residual_entry, single_var_nonlinear_RHS, single_var_nonlinear_LHS;
 
@@ -122,21 +137,21 @@ void EquationDependencyParser::parseDependencyListRHS(std::vector<std::string> v
             if (split_dependency_list.at(dep) == var_name.at(var)){
                 need_value.at(var) = true;
                 dependency_entry_assigned = true;
-                if ( (var_eq_type[var_index] == ELLIPTIC) && (var_index != var) && (var_eq_type[var] == ELLIPTIC)){
+                if ( (var_eq_type[var_index] == IMPLICIT_TIME_DEPENDENT || var_eq_type[var_index] == TIME_INDEPENDENT) && (var_index != var) && (var_eq_type[var] == IMPLICIT_TIME_DEPENDENT || var_eq_type[var_index] == TIME_INDEPENDENT)){
                     is_nonlinear = true;
                 }
             }
             else if (split_dependency_list.at(dep) == grad_var_name){
                 need_gradient.at(var) = true;
                 dependency_entry_assigned = true;
-                if ( (var_eq_type[var_index] == ELLIPTIC) && (var_index != var) && (var_eq_type[var] == ELLIPTIC)){
+                if ( (var_eq_type[var_index] == IMPLICIT_TIME_DEPENDENT || var_eq_type[var_index] == TIME_INDEPENDENT) && (var_index != var) && (var_eq_type[var_index] == IMPLICIT_TIME_DEPENDENT || var_eq_type[var_index] == TIME_INDEPENDENT)){
                     is_nonlinear = true;
                 }
             }
             else if (split_dependency_list.at(dep) == hess_var_name){
                 need_hessian.at(var) = true;
                 dependency_entry_assigned = true;
-                if ( (var_eq_type[var_index] == ELLIPTIC) && (var_index != var) && (var_eq_type[var] == ELLIPTIC)){
+                if ( (var_eq_type[var_index] == IMPLICIT_TIME_DEPENDENT || var_eq_type[var_index] == TIME_INDEPENDENT) && (var_index != var) && (var_eq_type[var_index] == IMPLICIT_TIME_DEPENDENT || var_eq_type[var_index] == TIME_INDEPENDENT)){
                     is_nonlinear = true;
                 }
             }
@@ -197,21 +212,21 @@ void EquationDependencyParser::parseDependencyListLHS(std::vector<std::string> v
             if (split_dependency_list.at(dep) == var_name.at(var)){
                 need_value.at(var) = true;
                 dependency_entry_assigned = true;
-                if ( (var_eq_type[var_index] == ELLIPTIC) && (var_eq_type[var] == ELLIPTIC)){
+                if ( (var_eq_type[var_index] == IMPLICIT_TIME_DEPENDENT || var_eq_type[var_index] == TIME_INDEPENDENT) && (var_eq_type[var_index] == IMPLICIT_TIME_DEPENDENT || var_eq_type[var_index] == TIME_INDEPENDENT)){
                     is_nonlinear = true;
                 }
             }
             else if (split_dependency_list.at(dep) == grad_var_name){
                 need_gradient.at(var) = true;
                 dependency_entry_assigned = true;
-                if ( (var_eq_type[var_index] == ELLIPTIC) && (var_eq_type[var] == ELLIPTIC)){
+                if ( (var_eq_type[var_index] == IMPLICIT_TIME_DEPENDENT || var_eq_type[var_index] == TIME_INDEPENDENT) && (var_eq_type[var_index] == IMPLICIT_TIME_DEPENDENT || var_eq_type[var_index] == TIME_INDEPENDENT)){
                     is_nonlinear = true;
                 }
             }
             else if (split_dependency_list.at(dep) == hess_var_name){
                 need_hessian.at(var) = true;
                 dependency_entry_assigned = true;
-                if ( (var_eq_type[var_index] == ELLIPTIC) && (var_eq_type[var] == ELLIPTIC)){
+                if ( (var_eq_type[var_index] == IMPLICIT_TIME_DEPENDENT || var_eq_type[var_index] == TIME_INDEPENDENT) && (var_eq_type[var_index] == IMPLICIT_TIME_DEPENDENT || var_eq_type[var_index] == TIME_INDEPENDENT)){
                     is_nonlinear = true;
                 }
             }

@@ -45,19 +45,41 @@ template <int dim, int degree>
 		 char buffer[100];
 
 		 //print to std::out
+         std::string var_type;
+         if (it->pdetype == EXPLICIT_TIME_DEPENDENT){
+             var_type = "EXPLICIT_TIME_DEPENDENT";
+         }
+         else if (it->pdetype == IMPLICIT_TIME_DEPENDENT){
+             var_type = "IMPLICIT_TIME_DEPENDENT";
+         }
+         else if (it->pdetype == TIME_INDEPENDENT){
+             var_type = "TIME_INDEPENDENT";
+         }
+         else if (it->pdetype == AUXILIARY){
+             var_type = "AUXILIARY";
+         }
+
 		 sprintf(buffer,"initializing finite element space P^%u for %9s:%6s field '%s'\n", \
 				 degree,					\
-			   (it->pdetype==PARABOLIC ? "PARABOLIC":"ELLIPTIC"),	\
-			   (it->type==SCALAR ? "SCALAR":"VECTOR"),			\
+			   var_type.c_str(), \
+               (it->type==SCALAR ? "SCALAR":"VECTOR"), \
 			   it->name.c_str());
 		 pcout << buffer;
 
 		 // Check if any time dependent fields present (note: I should get rid of parabolicFieldIndex and ellipticFieldIndex, they only work if there is at max one of each)
-		 if (it->pdetype==PARABOLIC){
+		 if (it->pdetype==EXPLICIT_TIME_DEPENDENT){
 			 isTimeDependentBVP=true;
 			 parabolicFieldIndex=it->index;
 		 }
-		 else if (it->pdetype==ELLIPTIC){
+         else if (it->pdetype==IMPLICIT_TIME_DEPENDENT){
+             isTimeDependentBVP=true;
+             ellipticFieldIndex=it->index;
+         }
+         else if (it->pdetype==AUXILIARY){
+             parabolicFieldIndex=it->index;
+             ellipticFieldIndex=it->index;
+         }
+		 else if (it->pdetype==TIME_INDEPENDENT){
 			 isEllipticBVP=true;
 			 ellipticFieldIndex=it->index;
 		 }
@@ -169,8 +191,7 @@ template <int dim, int degree>
 		 matrixFreeObject.initialize_dof_vector(*U,  fieldIndex); *U=0;
 
 		 // Initializing temporary dU vector required for implicit solves of the elliptic equation.
-		 // Assuming here that there is only one elliptic field in the problem (the main problem is if one is a scalar and the other is a vector, because then dU would need to be different sizes)
-		 if (fields[fieldIndex].pdetype==ELLIPTIC){
+		 if (fields[fieldIndex].pdetype==TIME_INDEPENDENT || fields[fieldIndex].pdetype==IMPLICIT_TIME_DEPENDENT){
 			 if (fields[fieldIndex].type == SCALAR){
 				 if (dU_scalar_init == false){
 					 matrixFreeObject.initialize_dof_vector(dU_scalar,  fieldIndex);

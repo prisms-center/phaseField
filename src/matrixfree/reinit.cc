@@ -102,8 +102,7 @@ template <int dim, int degree>
  		 matrixFreeObject.initialize_dof_vector(*U,  fieldIndex); *U=0;
 
  		// Initializing temporary dU vector required for implicit solves of the elliptic equation.
- 		// Assuming here that there is only one elliptic field in the problem (the main problem is if one is a scalar and the other is a vector, because then dU would need to be different sizes)
- 		if (fields[fieldIndex].pdetype==ELLIPTIC){
+ 		if (fields[fieldIndex].pdetype==TIME_INDEPENDENT || fields[fieldIndex].pdetype==IMPLICIT_TIME_DEPENDENT){
  			if (fields[fieldIndex].type == SCALAR){
  				if (dU_scalar_init == false){
  					matrixFreeObject.initialize_dof_vector(dU_scalar,  fieldIndex);

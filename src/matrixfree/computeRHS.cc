@@ -11,7 +11,7 @@ void MatrixFreePDE<dim,degree>::computeExplicitRHS(){
 
   //clear residual vectors before update
   for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-      if (userInputs.var_eq_type[fieldIndex] == PARABOLIC){
+      if (userInputs.var_eq_type[fieldIndex] == EXPLICIT_TIME_DEPENDENT){
           (*residualSet[fieldIndex])=0.0;
       }
   }
@@ -61,7 +61,7 @@ void MatrixFreePDE<dim,degree>::computeNonexplicitRHS(){
 
   //clear residual vectors before update
   for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-      if (userInputs.var_eq_type[fieldIndex] == ELLIPTIC){
+      if (userInputs.var_eq_type[fieldIndex] != EXPLICIT_TIME_DEPENDENT){
           (*residualSet[fieldIndex])=0.0;
       }
   }

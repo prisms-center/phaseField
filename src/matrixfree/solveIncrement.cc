@@ -24,7 +24,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
         //applyNeumannBCs();
 
         //Parabolic (first order derivatives in time) fields
-        if (fields[fieldIndex].pdetype==PARABOLIC && !skip_time_dependent){
+        if (fields[fieldIndex].pdetype==EXPLICIT_TIME_DEPENDENT && !skip_time_dependent){
 
             // Explicit-time step each DOF
             // Takes advantage of knowledge that the length of solutionSet and residualSet is an integer multiple of the length of invM for vector variables
@@ -77,8 +77,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
                 currentFieldIndex = fieldIndex; // Used in computeLHS()
 
 
-                if (fields[fieldIndex].pdetype==ELLIPTIC){
-
+                if (fields[fieldIndex].pdetype == IMPLICIT_TIME_DEPENDENT || fields[fieldIndex].pdetype == TIME_INDEPENDENT){
 
                     if (currentIncrement%userInputs.skip_print_steps==0){
                         sprintf(buffer, "field '%2s' [nonlinear solve]: current solution: %12.6e, current residual:%12.6e\n", \
@@ -219,6 +218,37 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
                         std::cerr << "PRISMS-PF Error: Nonlinear solver tolerance types other than ABSOLUTE_CHANGE have yet to be implemented." << std::endl;
                     }
                 }
+                else if (fields[fieldIndex].pdetype == AUXILIARY){
+                    // Explicit-time step each DOF
+                    // Takes advantage of knowledge that the length of solutionSet and residualSet is an integer multiple of the length of invM for vector variables
+                    unsigned int invM_size = invM.local_size();
+                    for (unsigned int dof=0; dof<solutionSet[fieldIndex]->local_size(); ++dof){
+                        solutionSet[fieldIndex]->local_element(dof)=			\
+                        invM.local_element(dof%invM_size)*residualSet[fieldIndex]->local_element(dof);
+                    }
+
+                    // Set the Dirichelet values (hanging node constraints don't need to be distributed every time step, only at output)
+                    constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+                    solutionSet[fieldIndex]->update_ghost_values();
+
+                    // Print update to screen
+                    if (currentIncrement%userInputs.skip_print_steps==0){
+                        sprintf(buffer, "field '%2s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
+                        fields[fieldIndex].name.c_str(),				\
+                        solutionSet[fieldIndex]->l2_norm(),			\
+                        residualSet[fieldIndex]->l2_norm());
+                        pcout<<buffer;
+                    }
+                }
+
+                //check if solution is nan
+                if (!numbers::is_finite(solutionSet[fieldIndex]->l2_norm())){
+                    sprintf(buffer, "ERROR: field '%s' solution is NAN. exiting.\n\n",
+                    fields[fieldIndex].name.c_str());
+                    pcout<<buffer;
+                    exit(-1);
+                }
+
             }
 
             nonlinear_it_index++;

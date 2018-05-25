@@ -12,7 +12,7 @@ variableAttributeLoader::variableAttributeLoader(){
 
     var_name = sortIndexEntryPairList(var_name_list,number_of_variables,"var");
     var_type = sortIndexEntryPairList(var_type_list,number_of_variables,SCALAR);
-    var_eq_type = sortIndexEntryPairList(var_eq_type_list,number_of_variables,PARABOLIC);
+    var_eq_type = sortIndexEntryPairList(var_eq_type_list,number_of_variables,EXPLICIT_TIME_DEPENDENT);
 
     std::vector<std::string> sorted_dependencies_value_RHS = sortIndexEntryPairList(var_eq_dependencies_value_RHS,number_of_variables,"");
 
