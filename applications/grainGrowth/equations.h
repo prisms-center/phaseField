@@ -4,125 +4,19 @@
 // Set the attributes of the primary field variables
 // =================================================================================
 void variableAttributeLoader::loadVariableAttributes(){
-	// Variable 0
-	set_variable_name				(0,"n1");
-	set_variable_type				(0,SCALAR);
-	set_variable_equation_type		(0,PARABOLIC);
 
-	set_need_value					(0,true);
-	set_need_gradient				(0,true);
-	set_need_hessian				(0,false);
+    for (unsigned int var_index=0; var_index<15; var_index++){
+        std::string var_name = "n";
+        var_name.append(std::to_string(var_index));
 
-	set_need_value_residual_term	(0,true);
-	set_need_gradient_residual_term	(0,true);
+        set_variable_name				(var_index,var_name);
+    	set_variable_type				(var_index,SCALAR);
+    	set_variable_equation_type		(var_index,PARABOLIC);
 
-	// Variable 1
-	set_variable_name				(1,"n2");
-	set_variable_type				(1,SCALAR);
-	set_variable_equation_type		(1,PARABOLIC);
+        set_dependencies_value_residual_term_RHS(var_index, "n0, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14");
+        set_dependencies_gradient_residual_term_RHS(var_index, "grad(n0), grad(n1), grad(n2), grad(n3), grad(n4), grad(n5), grad(n6), grad(n7), grad(n8), grad(n9), grad(n10), grad(n11), grad(n12), grad(n13), grad(n14)");
 
-	set_need_value					(1,true);
-	set_need_gradient				(1,true);
-	set_need_hessian				(1,false);
-
-	set_need_value_residual_term	(1,true);
-	set_need_gradient_residual_term	(1,true);
-
-	// Variable 2
-	set_variable_name				(2,"n3");
-	set_variable_type				(2,SCALAR);
-	set_variable_equation_type		(2,PARABOLIC);
-
-	set_need_value					(2,true);
-	set_need_gradient				(2,true);
-	set_need_hessian				(2,false);
-
-	set_need_value_residual_term	(2,true);
-	set_need_gradient_residual_term	(2,true);
-
-	// Variable 3
-	set_variable_name				(3,"n4");
-	set_variable_type				(3,SCALAR);
-	set_variable_equation_type		(3,PARABOLIC);
-
-	set_need_value					(3,true);
-	set_need_gradient				(3,true);
-	set_need_hessian				(3,false);
-
-	set_need_value_residual_term	(3,true);
-	set_need_gradient_residual_term	(3,true);
-
-	// Variable 4
-	set_variable_name				(4,"n5");
-	set_variable_type				(4,SCALAR);
-	set_variable_equation_type		(4,PARABOLIC);
-
-	set_need_value					(4,true);
-	set_need_gradient				(4,true);
-	set_need_hessian				(4,false);
-
-	set_need_value_residual_term	(4,true);
-	set_need_gradient_residual_term	(4,true);
-
-	// Variable 5
-	set_variable_name				(5,"n6");
-	set_variable_type				(5,SCALAR);
-	set_variable_equation_type		(5,PARABOLIC);
-
-	set_need_value					(5,true);
-	set_need_gradient				(5,true);
-	set_need_hessian				(5,false);
-
-	set_need_value_residual_term	(5,true);
-	set_need_gradient_residual_term	(5,true);
-
-	// Variable 6
-	set_variable_name				(6,"n7");
-	set_variable_type				(6,SCALAR);
-	set_variable_equation_type		(6,PARABOLIC);
-
-	set_need_value					(6,true);
-	set_need_gradient				(6,true);
-	set_need_hessian				(6,false);
-
-	set_need_value_residual_term	(6,true);
-	set_need_gradient_residual_term	(6,true);
-
-	// Variable 6
-	set_variable_name				(7,"n8");
-	set_variable_type				(7,SCALAR);
-	set_variable_equation_type		(7,PARABOLIC);
-
-	set_need_value					(7,true);
-	set_need_gradient				(7,true);
-	set_need_hessian				(7,false);
-
-	set_need_value_residual_term	(7,true);
-	set_need_gradient_residual_term	(7,true);
-
-	// Variable 8
-	set_variable_name				(8,"n9");
-	set_variable_type				(8,SCALAR);
-	set_variable_equation_type		(8,PARABOLIC);
-
-	set_need_value					(8,true);
-	set_need_gradient				(8,true);
-	set_need_hessian				(8,false);
-
-	set_need_value_residual_term	(8,true);
-	set_need_gradient_residual_term	(8,true);
-
-	// Variable 9
-	set_variable_name				(9,"n10");
-	set_variable_type				(9,SCALAR);
-	set_variable_equation_type		(9,PARABOLIC);
-
-	set_need_value					(9,true);
-	set_need_gradient				(9,true);
-	set_need_hessian				(9,false);
-
-	set_need_value_residual_term	(9,true);
-	set_need_gradient_residual_term	(9,true);
+    }
 
 }
 
@@ -137,7 +31,7 @@ void variableAttributeLoader::loadVariableAttributes(){
 // the index given at the top of this file.
 
 template <int dim, int degree>
-void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+void customPDE<dim,degree>::residualExplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 
@@ -177,6 +71,17 @@ for (unsigned int i=0; i<userInputs.number_of_variables; i++){
 }
 
 }
+
+// =================================================================================
+// residualNonexplicitRHS (needed only if at least one equation is elliptic)
+// =================================================================================
+template <int dim, int degree>
+void customPDE<dim,degree>::residualNonexplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+
+
+}
+
 
 // =================================================================================
 // residualLHS (needed only if at least one equation is elliptic)

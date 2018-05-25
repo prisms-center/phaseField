@@ -372,6 +372,28 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
         }
     }
 
+    // Declare the grain remapping constants
+    parameter_handler.declare_entry("Activate grain reassignment","false",dealii::Patterns::Bool(),"Whether to enable the grain reassignment capabilities of PRISMS-PF where multiple grains are packed into a single order parameter.");
+
+    parameter_handler.declare_entry("Time steps between grain reassignments","100",dealii::Patterns::Integer(),"The number of time steps between times when the grain reassignment algorithm is triggered.");
+
+    parameter_handler.declare_entry("Order parameter cutoff for grain identification","1.0e-4",dealii::Patterns::Double(),"The threshold value of the order parameter where the element is considered to be in the grain or out of the grain.");
+
+    parameter_handler.declare_entry("Buffer between grains before reassignment","-1.0",dealii::Patterns::Double(),"The buffer value added to the radius of all grains used to calculation whether grains should be reassigned.");
+
+    parameter_handler.declare_entry("Order parameter fields for grain reassignment","",dealii::Patterns::List(dealii::Patterns::Anything()),"The list of field indices for the shared order parameters for grain reassignment.");
+
+    parameter_handler.declare_entry("Load grain structure","false",dealii::Patterns::Bool(),"Whether to load a grain structure in from file.");
+
+    parameter_handler.declare_entry("Grain structure filename","",dealii::Patterns::Anything(),"The filename (not including the '.vtk' extension) for the file holding the grain structure to be loaded.");
+
+    parameter_handler.declare_entry("Grain structure variable name","",dealii::Patterns::Anything(),"The variable name in the file holding the grain structure to be loaded that contains the grain ids.");
+
+    parameter_handler.declare_entry("Number of smoothing cycles after grain structure loading","10",dealii::Patterns::Integer(),"The number of times a diffusion smoother is run on the order parameters after the grains are loaded from file. The smoothing is necessary for the adaptive mesher to work properly.");
+
+    parameter_handler.declare_entry("Minimum radius for loaded grains","0.0",dealii::Patterns::Double(),"The minimum radius for a body to be considered a grain instead of an artifact from the loading process.");
+
+
     // Declare the user-defined constants
     for (unsigned int i=0; i<num_of_constants; i++){
         std::string constants_text = "Model constant ";

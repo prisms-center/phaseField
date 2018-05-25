@@ -137,16 +137,22 @@ public:
 	std::vector<unsigned int> nucleating_variable_indices;
 	std::vector<unsigned int> nucleation_need_value;
 
-	/*
-	std::vector<double> nucleus_semiaxes;
-	std::vector<double> order_parameter_freeze_semiaxes;
-	double no_nucleation_border_thickness;
-	double nucleus_hold_time;
-	*/
 	double min_distance_between_nuclei; // Only enforced for nuclei placed during the same time step
 	double nucleation_order_parameter_cutoff;
 	unsigned int steps_between_nucleation_attempts;
 
+    // Grain remapping parameters
+    bool grain_remapping_activated;
+    std::vector<unsigned int> variables_for_remapping; // Note: this should be a sorted list
+    unsigned int skip_grain_reassignment_steps;
+    double order_parameter_threshold;
+    double buffer_between_grains;
+
+    bool load_grain_structure;
+    double min_radius_for_loading_grains;
+    std::string grain_structure_filename;
+    std::string grain_structure_variable_name;
+    unsigned int num_grain_smoothing_cycles;
 
 private:
 	// Method to create the list of time steps where the results should be output (called from loadInputParameters)

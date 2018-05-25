@@ -156,6 +156,35 @@ int main(int argc, char **argv)
   pass = EquationDependencyParser_tester3.test_EquationDependencyParser_postprocessing();
   tests_passed += pass;
 
+  // Unit tests for the FloodFiller class
+  total_tests++;
+  unitTest<2,double> FloodFiller_tester;
+  pass = FloodFiller_tester.test_FloodFiller();
+  tests_passed += pass;
+
+  // Unit tests for the SimplifiedGrainRepresentation class
+  total_tests++;
+  unitTest<2,double> SimplifiedGrainRepresentation_tester;
+  pass = SimplifiedGrainRepresentation_tester.test_SimplifiedGrainRepresentation();
+  tests_passed += pass;
+
+  // Unit tests for the "transferGrainIds" method in the "SimplifiedGrainManipulator" class
+  total_tests++;
+  unitTest<2,double> SimplifiedGrainManipulator_tester1;
+  pass = SimplifiedGrainManipulator_tester1.test_SimplifiedGrainManipulator_transferGrainIds();
+  tests_passed += pass;
+
+  // Unit tests for the "reassignGrains" method in the "SimplifiedGrainManipulator" class
+  total_tests++;
+  unitTest<2,double> SimplifiedGrainManipulator_tester2;
+  pass = SimplifiedGrainManipulator_tester2.test_SimplifiedGrainManipulator_reassignGrains();
+  tests_passed += pass;
+
+  // Unit tests for the OrderParameterRemapper class
+  total_tests++;
+  unitTest<2,double> OrderParameterRemapper_tester;
+  pass = OrderParameterRemapper_tester.test_OrderParameterRemapper();
+  tests_passed += pass;
 
   // Print out results
   char buffer[100];

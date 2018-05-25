@@ -110,14 +110,6 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
 
     // Non-linear solver parameters
     std::vector<bool> var_nonlinear = variable_attributes.var_nonlinear;
-    /*
-    for (unsigned int i=0; i<input_file_reader.var_types.size(); i++){
-        var_nonlinear.push_back(false);
-    }
-    //var_nonlinear.push_back(false);
-    //var_nonlinear.push_back(true);
-    */
-
 
     nonlinear_solver_parameters.setMaxIterations(parameter_handler.get_integer("Maximum nonlinear solver iterations"));
 
@@ -327,6 +319,42 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     }
     nucleation_order_parameter_cutoff = parameter_handler.get_double("Order parameter cutoff value");
     steps_between_nucleation_attempts = parameter_handler.get_integer("Time steps between nucleation attempts");
+
+    // Load the grain remapping parameters
+    grain_remapping_activated = parameter_handler.get_bool("Activate grain reassignment");
+
+    skip_grain_reassignment_steps = parameter_handler.get_integer("Time steps between grain reassignments");
+
+    order_parameter_threshold = parameter_handler.get_double("Order parameter cutoff for grain identification");
+
+    buffer_between_grains = parameter_handler.get_double("Buffer between grains before reassignment");
+    if (buffer_between_grains < 0.0 && grain_remapping_activated == true){
+        std::cerr << "PRISMS-PF Error: If grain reassignment is activated, a non-negative buffer distance must be given. See the 'Buffer between grains before reassignment' entry in parameters.in." << std::endl;
+        abort();
+    }
+
+    std::vector<std::string> variables_for_remapping_str = dealii::Utilities::split_string_list(parameter_handler.get("Order parameter fields for grain reassignment"));
+    for (unsigned int field=0; field<variables_for_remapping_str.size(); field++){
+        bool field_found = false;
+        for (unsigned int i=0; i<number_of_variables; i++ ){
+            if (boost::iequals(variables_for_remapping_str[field], variable_attributes.var_name_list[i].second)){
+                variables_for_remapping.push_back(variable_attributes.var_name_list[i].first);
+                field_found = true;
+                break;
+            }
+        }
+        if (field_found == false && grain_remapping_activated == true){
+            std::cerr << "PRISMS-PF Error: Entries in the list of order parameter fields used for grain reassignment must match the variable names in equations.h." << std::endl;
+            std::cerr << variables_for_remapping_str[field] << std::endl;
+            abort();
+        }
+    }
+
+    load_grain_structure = parameter_handler.get_bool("Load grain structure");
+    grain_structure_filename = parameter_handler.get("Grain structure filename");
+    grain_structure_variable_name = parameter_handler.get("Grain structure variable name");
+    num_grain_smoothing_cycles = parameter_handler.get_integer("Number of smoothing cycles after grain structure loading");
+    min_radius_for_loading_grains = parameter_handler.get_double("Minimum radius for loaded grains");
 
     // Load the boundary condition variables into list of BCs (where each element of the vector is one component of one variable)
     std::vector<std::string> list_of_BCs;

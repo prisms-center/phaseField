@@ -1,6 +1,9 @@
 var searchData=
 [
-  ['kellyerrorestimator',['KellyErrorEstimator',['http://www.dealii.org/8.2.1/doxygen/deal.II/classKellyErrorEstimator.html',1,'']]],
-  ['kellyerrorestimator_3c_201_2c_20spacedim_20_3e',['KellyErrorEstimator&lt; 1, spacedim &gt;',['http://www.dealii.org/8.2.1/doxygen/deal.II/classKellyErrorEstimator_3_011_00_01spacedim_01_4.html',1,'']]],
-  ['kovasznay',['Kovasznay',['http://www.dealii.org/8.2.1/doxygen/deal.II/classFunctions_1_1Kovasznay.html',1,'Functions']]]
+  ['varbcs',['varBCs',['../classvar_b_cs.html',1,'']]],
+  ['variable_5finfo',['variable_info',['../structvariable__info.html',1,'']]],
+  ['variableattributeloader',['variableAttributeLoader',['../classvariable_attribute_loader.html',1,'']]],
+  ['variablecontainer',['variableContainer',['../classvariable_container.html',1,'']]],
+  ['variablevaluecontainer',['variableValueContainer',['../classvariable_value_container.html',1,'']]],
+  ['vectorbcfunction',['vectorBCFunction',['../classvector_b_c_function.html',1,'']]]
 ];

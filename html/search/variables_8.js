@@ -7,7 +7,6 @@ var searchData=
   ['integrated_5ffield_5findices',['integrated_field_indices',['../classuser_input_parameters.html#a13ae257f35254e03e91b4c6c5f686baa',1,'userInputParameters']]],
   ['integrated_5fpostprocessed_5ffields',['integrated_postprocessed_fields',['../class_matrix_free_p_d_e.html#a78352ba93352172619fc3580fdd678d1',1,'MatrixFreePDE']]],
   ['integrated_5fvar',['integrated_var',['../class_matrix_free_p_d_e.html#a7a4400131a16e5d71b047825bb9f1758',1,'MatrixFreePDE']]],
-  ['interface_5fcoeff',['interface_coeff',['../classcustom_p_d_e.html#a3a5759d742340ce3f21f574e770473ff',1,'customPDE']]],
   ['invm',['invM',['../class_matrix_free_p_d_e.html#aacd83299ae4bca66040bb4abd606d64e',1,'MatrixFreePDE']]],
   ['is_5fscalar',['is_scalar',['../structvariable__info.html#ac5e4abbb8e7b86030cf9255cfa80d049',1,'variable_info']]],
   ['isellipticbvp',['isEllipticBVP',['../class_matrix_free_p_d_e.html#a7b55ba1c1854a89ea4c36d6e33622140',1,'MatrixFreePDE']]],

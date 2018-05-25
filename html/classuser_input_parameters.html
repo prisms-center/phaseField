@@ -22,9 +22,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="logo_pic.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PRISMS-PF
-   &#160;<span id="projectnumber">2.0</span>
+   &#160;<span id="projectnumber">v2.1</span>
    </div>
   </td>
  </tr>
@@ -87,6 +88,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classuser_input_parameters-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">userInputParameters&lt; dim &gt; Class Template Reference</div>  </div>
@@ -115,6 +117,18 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab3b715fcffbad36c7c82f97024f071f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8b17b1b2017d96fa9da701cc8942a47"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#ae8b17b1b2017d96fa9da701cc8942a47">loadVariableAttributes</a> (<a class="el" href="classvariable_attribute_loader.html">variableAttributeLoader</a> variable_attributes)</td></tr>
 <tr class="separator:ae8b17b1b2017d96fa9da701cc8942a47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25f1b30ac5d82af45caaaddfd1beee9a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a25f1b30ac5d82af45caaaddfd1beee9a">get_nucleus_semiaxes</a> (unsigned int var_index) const </td></tr>
+<tr class="separator:a25f1b30ac5d82af45caaaddfd1beee9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac40f9f639348277b928dcac4d671caa6"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#ac40f9f639348277b928dcac4d671caa6">get_nucleus_freeze_semiaxes</a> (unsigned int var_index) const </td></tr>
+<tr class="separator:ac40f9f639348277b928dcac4d671caa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f942efdd9556014bfa0bd751d588161"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a8f942efdd9556014bfa0bd751d588161">get_nucleus_rotation</a> (unsigned int var_index) const </td></tr>
+<tr class="separator:a8f942efdd9556014bfa0bd751d588161"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbce990272803b4516a245046ef1b313"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#abbce990272803b4516a245046ef1b313">get_no_nucleation_border_thickness</a> (unsigned int var_index) const </td></tr>
+<tr class="separator:abbce990272803b4516a245046ef1b313"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0dc11b1edb393ddd962466dfd755329f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a0dc11b1edb393ddd962466dfd755329f">get_nucleus_hold_time</a> (unsigned int var_index) const </td></tr>
+<tr class="separator:a0dc11b1edb393ddd962466dfd755329f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a676216f6b4aaf4eb9073e0e3349b49cb"><td class="memItemLeft" align="right" valign="top">dealii::Tensor&lt; 2, dim, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a676216f6b4aaf4eb9073e0e3349b49cb">get_nucleus_rotation_matrix</a> (unsigned int var_index) const </td></tr>
+<tr class="separator:a676216f6b4aaf4eb9073e0e3349b49cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -146,6 +160,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a9373a17204ca39ec019a1058f4419086"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29eacc954875c85c1db299bfb6ec7d5c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a29eacc954875c85c1db299bfb6ec7d5c">output_file_type</a></td></tr>
 <tr class="separator:a29eacc954875c85c1db299bfb6ec7d5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9f8888105ebc126becec803ec03ecfb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#ab9f8888105ebc126becec803ec03ecfb">output_vtu_per_process</a></td></tr>
+<tr class="separator:ab9f8888105ebc126becec803ec03ecfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a6a68d6facb6f661377dfd4ea5b0e56"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a8a6a68d6facb6f661377dfd4ea5b0e56">output_file_name</a></td></tr>
 <tr class="separator:a8a6a68d6facb6f661377dfd4ea5b0e56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b5e9a02e069647ed3319524403b6b96"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a3b5e9a02e069647ed3319524403b6b96">outputTimeStepList</a></td></tr>
@@ -156,14 +172,10 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a0d895639013504f5a7ddb5453fc7e198"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad78b45bc2009082d143223d405ec5cbd"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#ad78b45bc2009082d143223d405ec5cbd">totalIncrements</a></td></tr>
 <tr class="separator:ad78b45bc2009082d143223d405ec5cbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5366e249bc92375b363cd56d62a7584a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a5366e249bc92375b363cd56d62a7584a">solver_type</a></td></tr>
-<tr class="separator:a5366e249bc92375b363cd56d62a7584a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa1d216d643dc23449bbdb76559d9b7a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#aaa1d216d643dc23449bbdb76559d9b7a">abs_tol</a></td></tr>
-<tr class="separator:aaa1d216d643dc23449bbdb76559d9b7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b0723557a1f47f3e9eda0b20d51c0d1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a5b0723557a1f47f3e9eda0b20d51c0d1">solver_tolerance</a></td></tr>
-<tr class="separator:a5b0723557a1f47f3e9eda0b20d51c0d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b3b8e6d259fccba257537c0324f008c"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a8b3b8e6d259fccba257537c0324f008c">max_solver_iterations</a></td></tr>
-<tr class="separator:a8b3b8e6d259fccba257537c0324f008c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f902f608843d1cdaaf73833020d5aac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_linear_solver_parameters.html">LinearSolverParameters</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a6f902f608843d1cdaaf73833020d5aac">linear_solver_parameters</a></td></tr>
+<tr class="separator:a6f902f608843d1cdaaf73833020d5aac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ef58bb56baacdaaec6c258d9dbc3a44"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_nonlinear_solver_parameters.html">NonlinearSolverParameters</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a0ef58bb56baacdaaec6c258d9dbc3a44">nonlinear_solver_parameters</a></td></tr>
+<tr class="separator:a0ef58bb56baacdaaec6c258d9dbc3a44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9eb2912726e40d3f3f480f2f9db11cc7"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a9eb2912726e40d3f3f480f2f9db11cc7">number_of_variables</a></td></tr>
 <tr class="separator:a9eb2912726e40d3f3f480f2f9db11cc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77d44a8212929c63efba720ee9078881"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a77d44a8212929c63efba720ee9078881">var_name</a></td></tr>
@@ -172,12 +184,22 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a6ede91153bb1c766a7135268dd59e775"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8f9d09f3d9c955945bedc91702092aa"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="var_type_enums_8h.html#a12521d5d4cf2d9ed3c05e52b162fad42">PDEType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#ac8f9d09f3d9c955945bedc91702092aa">var_eq_type</a></td></tr>
 <tr class="separator:ac8f9d09f3d9c955945bedc91702092aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a368671c9e1989b06cd7caf77cdc3321d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structvariable__info.html">variable_info</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a368671c9e1989b06cd7caf77cdc3321d">varInfoListRHS</a></td></tr>
-<tr class="separator:a368671c9e1989b06cd7caf77cdc3321d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6694949b1702fbffc6b9685bfcfdcdc4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a6694949b1702fbffc6b9685bfcfdcdc4">var_nonlinear</a></td></tr>
+<tr class="separator:a6694949b1702fbffc6b9685bfcfdcdc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a623f627013ab798e4b467868699044cd"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a623f627013ab798e4b467868699044cd">num_var_explicit_RHS</a></td></tr>
+<tr class="separator:a623f627013ab798e4b467868699044cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5751019cd7fbe0cfe0a5d4d23faf958a"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a5751019cd7fbe0cfe0a5d4d23faf958a">num_var_nonexplicit_RHS</a></td></tr>
+<tr class="separator:a5751019cd7fbe0cfe0a5d4d23faf958a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ab18ee88338b5ac82735bb7d09bb172"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structvariable__info.html">variable_info</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a8ab18ee88338b5ac82735bb7d09bb172">varInfoListExplicitRHS</a></td></tr>
+<tr class="separator:a8ab18ee88338b5ac82735bb7d09bb172"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a372eb725b272d2ffef231a7f76c9e3ba"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structvariable__info.html">variable_info</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a372eb725b272d2ffef231a7f76c9e3ba">varInfoListNonexplicitRHS</a></td></tr>
+<tr class="separator:a372eb725b272d2ffef231a7f76c9e3ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0eb42077b757102f9c942565ab8b4129"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a0eb42077b757102f9c942565ab8b4129">num_var_LHS</a></td></tr>
 <tr class="separator:a0eb42077b757102f9c942565ab8b4129"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c867422611074fa3d62895ededc31cc"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structvariable__info.html">variable_info</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a6c867422611074fa3d62895ededc31cc">varInfoListLHS</a></td></tr>
 <tr class="separator:a6c867422611074fa3d62895ededc31cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3865621981041a627f2fbdfdb8113920"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structvariable__info.html">variable_info</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a3865621981041a627f2fbdfdb8113920">varChangeInfoListLHS</a></td></tr>
+<tr class="separator:a3865621981041a627f2fbdfdb8113920"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82901b60b159db85ba42c44d5a6af651"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a82901b60b159db85ba42c44d5a6af651">load_ICs</a></td></tr>
 <tr class="separator:a82901b60b159db85ba42c44d5a6af651"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ed71b7104043e4e108a24ff26ee0887"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a8ed71b7104043e4e108a24ff26ee0887">load_parallel_file</a></td></tr>
@@ -186,6 +208,10 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a68951d4f2b7173cd0ce45b8e74b0fdea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75fb1688ae68e024df301f30b4a98a8d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a75fb1688ae68e024df301f30b4a98a8d">load_field_name</a></td></tr>
 <tr class="separator:a75fb1688ae68e024df301f30b4a98a8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d35ddea12954c106dac4b8426f61bec"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a0d35ddea12954c106dac4b8426f61bec">resume_from_checkpoint</a></td></tr>
+<tr class="separator:a0d35ddea12954c106dac4b8426f61bec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae42b902e287ebfa8b451ae342aa5d9fd"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#ae42b902e287ebfa8b451ae342aa5d9fd">checkpointTimeStepList</a></td></tr>
+<tr class="separator:ae42b902e287ebfa8b451ae342aa5d9fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad76a2340fbd0771529e11986b2103e01"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#ad76a2340fbd0771529e11986b2103e01">pp_number_of_variables</a></td></tr>
 <tr class="separator:ad76a2340fbd0771529e11986b2103e01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cf33ed4a0ddfd5d6cc64ca69ccaea1e"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a8cf33ed4a0ddfd5d6cc64ca69ccaea1e">num_integrated_fields</a></td></tr>
@@ -214,14 +240,6 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a8ebe55d96a395760388920d377fef5a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc27215b3ea51fe959936ff08bb1d242"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#adc27215b3ea51fe959936ff08bb1d242">nucleation_need_value</a></td></tr>
 <tr class="separator:adc27215b3ea51fe959936ff08bb1d242"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11d1e357d3c4f0c39d711a3d4db727e4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a11d1e357d3c4f0c39d711a3d4db727e4">nucleus_semiaxes</a></td></tr>
-<tr class="separator:a11d1e357d3c4f0c39d711a3d4db727e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75cbcf2a980290f42c7f326ead58a4a2"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a75cbcf2a980290f42c7f326ead58a4a2">order_parameter_freeze_semiaxes</a></td></tr>
-<tr class="separator:a75cbcf2a980290f42c7f326ead58a4a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a676995609da8d0045884cbfd36da6210"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a676995609da8d0045884cbfd36da6210">no_nucleation_border_thickness</a></td></tr>
-<tr class="separator:a676995609da8d0045884cbfd36da6210"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade9e4389b71f4a6bf3ed83819607a36b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#ade9e4389b71f4a6bf3ed83819607a36b">nucleus_hold_time</a></td></tr>
-<tr class="separator:ade9e4389b71f4a6bf3ed83819607a36b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b0a17a60a260cb5dbcd0a2120bbc7e7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a4b0a17a60a260cb5dbcd0a2120bbc7e7">min_distance_between_nuclei</a></td></tr>
 <tr class="separator:a4b0a17a60a260cb5dbcd0a2120bbc7e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf7fe1e7d33e07906b4d14644b3439a6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#acf7fe1e7d33e07906b4d14644b3439a6">nucleation_order_parameter_cutoff</a></td></tr>
@@ -231,14 +249,21 @@ Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:af7cd684e25af09b1ce9bd76a50a200bd"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#af7cd684e25af09b1ce9bd76a50a200bd">setOutputTimeSteps</a> (const std::string outputSpacingType, unsigned int numberOfOutputs, const std::vector&lt; unsigned int &gt; &amp;userGivenTimeStepList)</td></tr>
-<tr class="separator:af7cd684e25af09b1ce9bd76a50a200bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb6835c1e108f75a7829dec030610cbe"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#aeb6835c1e108f75a7829dec030610cbe">setTimeStepList</a> (const std::string outputSpacingType, unsigned int numberOfOutputs, const std::vector&lt; unsigned int &gt; &amp;userGivenTimeStepList)</td></tr>
+<tr class="separator:aeb6835c1e108f75a7829dec030610cbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaec2c3f746e030cbe59b0c28da900ced"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#aaec2c3f746e030cbe59b0c28da900ced">load_user_constants</a> (<a class="el" href="classinput_file_reader.html">inputFileReader</a> &amp;input_file_reader, dealii::ParameterHandler &amp;parameter_handler)</td></tr>
 <tr class="separator:aaec2c3f746e030cbe59b0c28da900ced"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a334d74867bf4b18cc0128851146c903a"><td class="memItemLeft" align="right" valign="top">dealii::Tensor&lt; 2, 2 *dim-1+dim/3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a334d74867bf4b18cc0128851146c903a">get_Cij_tensor</a> (std::vector&lt; double &gt; elastic_constants, const std::string elastic_const_symmetry) const </td></tr>
 <tr class="separator:a334d74867bf4b18cc0128851146c903a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34ed5be92388fa997d2206a17690d6a6"><td class="memItemLeft" align="right" valign="top">dealii::Tensor&lt; 2, 2 *dim-1+dim/3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a34ed5be92388fa997d2206a17690d6a6">getCIJMatrix</a> (const <a class="el" href="user_input_parameters_8h.html#abb3de18236e38998c9ebe938a8791ab3">elasticityModel</a> model, const std::vector&lt; double &gt; constants, dealii::ConditionalOStream &amp;pcout) const </td></tr>
 <tr class="separator:a34ed5be92388fa997d2206a17690d6a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a62872d72114d908bb0092ce3bc25aabb"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classnucleation_parameters.html">nucleationParameters</a>&lt; dim &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a62872d72114d908bb0092ce3bc25aabb">nucleation_parameters_list</a></td></tr>
+<tr class="separator:a62872d72114d908bb0092ce3bc25aabb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c429daacaaff05dc0b04419f2e8a776"><td class="memItemLeft" align="right" valign="top">std::map&lt; unsigned int, unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser_input_parameters.html#a1c429daacaaff05dc0b04419f2e8a776">nucleation_parameters_list_index</a></td></tr>
+<tr class="separator:a1c429daacaaff05dc0b04419f2e8a776"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a4a120af9fc835e28323db9e07de22131"></a>
@@ -452,6 +477,150 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="abbce990272803b4516a245046ef1b313"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double get_no_nucleation_border_thickness </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>var_index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ac40f9f639348277b928dcac4d671caa6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;double&gt; get_nucleus_freeze_semiaxes </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>var_index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a0dc11b1edb393ddd962466dfd755329f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double get_nucleus_hold_time </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>var_index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a8f942efdd9556014bfa0bd751d588161"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;double&gt; get_nucleus_rotation </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>var_index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a676216f6b4aaf4eb9073e0e3349b49cb"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::Tensor&lt;2,dim,double&gt; get_nucleus_rotation_matrix </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>var_index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a25f1b30ac5d82af45caaaddfd1beee9a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;double&gt; get_nucleus_semiaxes </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>var_index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a34ed5be92388fa997d2206a17690d6a6"></a>
 <div class="memitem">
 <div class="memproto">
@@ -558,7 +727,7 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="af7cd684e25af09b1ce9bd76a50a200bd"></a>
+<a class="anchor" id="aeb6835c1e108f75a7829dec030610cbe"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -566,7 +735,7 @@ Private Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; unsigned int &gt; setOutputTimeSteps </td>
+          <td class="memname">std::vector&lt; unsigned int &gt; setTimeStepList </td>
           <td>(</td>
           <td class="paramtype">const std::string&#160;</td>
           <td class="paramname"><em>outputSpacingType</em>, </td>
@@ -599,24 +768,24 @@ Private Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="aaa1d216d643dc23449bbdb76559d9b7a"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool abs_tol</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="a696a1f455c8f0351da62103276b66e17"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">std::vector&lt;<a class="el" href="classvar_b_cs.html">varBCs</a>&lt;dim&gt; &gt; BC_list</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae42b902e287ebfa8b451ae342aa5d9fd"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;unsigned int&gt; checkpointTimeStepList</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -695,6 +864,18 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a6f902f608843d1cdaaf73833020d5aac"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_linear_solver_parameters.html">LinearSolverParameters</a> linear_solver_parameters</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a75fb1688ae68e024df301f30b4a98a8d"></a>
 <div class="memitem">
 <div class="memproto">
@@ -755,18 +936,6 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a8b3b8e6d259fccba257537c0324f008c"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">unsigned int max_solver_iterations</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="a4b0a17a60a260cb5dbcd0a2120bbc7e7"></a>
 <div class="memitem">
 <div class="memproto">
@@ -815,12 +984,12 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a676995609da8d0045884cbfd36da6210"></a>
+<a class="anchor" id="a0ef58bb56baacdaaec6c258d9dbc3a44"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double no_nucleation_border_thickness</td>
+          <td class="memname"><a class="el" href="class_nonlinear_solver_parameters.html">NonlinearSolverParameters</a> nonlinear_solver_parameters</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -875,26 +1044,42 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ade9e4389b71f4a6bf3ed83819607a36b"></a>
+<a class="anchor" id="a62872d72114d908bb0092ce3bc25aabb"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double nucleus_hold_time</td>
+          <td class="memname">std::vector&lt;<a class="el" href="classnucleation_parameters.html">nucleationParameters</a>&lt;dim&gt; &gt; nucleation_parameters_list</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a class="anchor" id="a11d1e357d3c4f0c39d711a3d4db727e4"></a>
+<a class="anchor" id="a1c429daacaaff05dc0b04419f2e8a776"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;double&gt; nucleus_semiaxes</td>
+          <td class="memname">std::map&lt;unsigned int, unsigned int&gt; nucleation_parameters_list_index</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -905,6 +1090,18 @@ Private Member Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">unsigned int num_integrated_fields</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a623f627013ab798e4b467868699044cd"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int num_var_explicit_RHS</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -923,24 +1120,24 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a9eb2912726e40d3f3f480f2f9db11cc7"></a>
+<a class="anchor" id="a5751019cd7fbe0cfe0a5d4d23faf958a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int number_of_variables</td>
+          <td class="memname">unsigned int num_var_nonexplicit_RHS</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a class="anchor" id="a75cbcf2a980290f42c7f326ead58a4a2"></a>
+<a class="anchor" id="a9eb2912726e40d3f3f480f2f9db11cc7"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;double&gt; order_parameter_freeze_semiaxes</td>
+          <td class="memname">unsigned int number_of_variables</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -965,6 +1162,18 @@ Private Member Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">std::string output_file_type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab9f8888105ebc126becec803ec03ecfb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool output_vtu_per_process</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1115,6 +1324,18 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a0d35ddea12954c106dac4b8426f61bec"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool resume_from_checkpoint</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a9373a17204ca39ec019a1058f4419086"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1133,30 +1354,6 @@ Private Member Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">unsigned int skip_remeshing_steps</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a5b0723557a1f47f3e9eda0b20d51c0d1"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double solver_tolerance</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a5366e249bc92375b363cd56d62a7584a"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string solver_type</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1223,12 +1420,48 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a6694949b1702fbffc6b9685bfcfdcdc4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;bool&gt; var_nonlinear</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a6ede91153bb1c766a7135268dd59e775"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">std::vector&lt;<a class="el" href="var_type_enums_8h.html#ae2c3e99c22ce037f68e9b19bfd9c6de2">fieldType</a>&gt; var_type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a3865621981041a627f2fbdfdb8113920"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="structvariable__info.html">variable_info</a>&gt; varChangeInfoListLHS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a8ab18ee88338b5ac82735bb7d09bb172"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="structvariable__info.html">variable_info</a>&gt; varInfoListExplicitRHS</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1247,12 +1480,12 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a368671c9e1989b06cd7caf77cdc3321d"></a>
+<a class="anchor" id="a372eb725b272d2ffef231a7f76c9e3ba"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="structvariable__info.html">variable_info</a>&gt; varInfoListRHS</td>
+          <td class="memname">std::vector&lt;<a class="el" href="structvariable__info.html">variable_info</a>&gt; varInfoListNonexplicitRHS</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1264,7 +1497,7 @@ Private Member Functions</h2></td></tr>
 <li>phaseField_dev/src/userInputParameters/<a class="el" href="load___b_c__list_8cc.html">load_BC_list.cc</a></li>
 <li>phaseField_dev/src/userInputParameters/<a class="el" href="load__user__constants_8cc.html">load_user_constants.cc</a></li>
 <li>phaseField_dev/src/userInputParameters/<a class="el" href="load_variable_attributes_8cc.html">loadVariableAttributes.cc</a></li>
-<li>phaseField_dev/src/userInputParameters/<a class="el" href="set_output_time_steps_8cc.html">setOutputTimeSteps.cc</a></li>
+<li>phaseField_dev/src/userInputParameters/<a class="el" href="set_time_step_list_8cc.html">setTimeStepList.cc</a></li>
 <li>phaseField_dev/src/userInputParameters/<a class="el" href="user_input_parameters_8cc.html">userInputParameters.cc</a></li>
 </ul>
 </div><!-- contents -->

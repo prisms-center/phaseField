@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['parallelnucleationlist',['parallelNucleationList',['../classparallel_nucleation_list.html',1,'']]],
-  ['pfunction',['pFunction',['../class_p_functions_1_1p_function.html',1,'PFunctions']]]
+  ['matrixfreepde',['MatrixFreePDE',['../class_matrix_free_p_d_e.html',1,'']]],
+  ['modelresidual',['modelResidual',['../classmodel_residual.html',1,'']]],
+  ['modelvariable',['modelVariable',['../classmodel_variable.html',1,'']]]
 ];
