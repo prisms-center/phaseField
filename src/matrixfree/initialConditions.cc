@@ -28,8 +28,6 @@ public:
 
 	  scalar_IC = inputField(coord);
 
-      //std::cout << p << " " << scalar_IC << std::endl;
-
 	  return scalar_IC;
   }
 };
@@ -59,17 +57,17 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
         Body body;
 
         // Create the filename of the the file to be loaded
-        std::string filename;
-
-        filename = "initial_grain_structure_us.vtk";
 
         // Load the data from the file using a PField
+        std::string filename = userInputs.grain_structure_filename;
+        filename += ".vtk";
+
         body.read_vtk(filename);
-        ScalarField &conc = body.find_scalar_field("FeatureIds");
+        ScalarField &id_field = body.find_scalar_field(userInputs.grain_structure_variable_name);
 
         pcout << "Applying PField initial condition...\n";
 
-        VectorTools::interpolate (*dofHandlersSet[scalar_field_index], InitialConditionPField<dim>(0,conc), grain_index_field);
+        VectorTools::interpolate (*dofHandlersSet[scalar_field_index], InitialConditionPField<dim>(0,id_field), grain_index_field);
 
         grain_index_field.update_ghost_values();
 
@@ -105,10 +103,8 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
         }
 
         // Delete grains with very small radii that correspond to a single interfacial element
-        double min_radius = 2.0; // need a better way to calculate this eventually based on the mesh size
         for (unsigned int g=0; g<simplified_grain_representations.size(); g++){
-            if (simplified_grain_representations.at(g).getRadius() < min_radius){
-                std::cout << "Erase grain " << simplified_grain_representations.at(g).getGrainId() << std::endl;
+            if (simplified_grain_representations.at(g).getRadius() < userInputs.min_radius_for_loading_grains){
                 simplified_grain_representations.erase(simplified_grain_representations.begin()+g);
                 g--;
             }
@@ -128,18 +124,20 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
         order_parameter_remapper.remap_from_index_field(simplified_grain_representations, &grain_index_field, solutionSet, *dofHandlersSet_nonconst.at(scalar_field_index), FESet.at(scalar_field_index)->dofs_per_cell, userInputs.buffer_between_grains);
 
         // Smooth the order parameters
+        double dt_for_smoothing = dealii::GridTools::minimal_cell_diameter(triangulation)/1000.0; // 0.001; // use GridTools::minimal_cell_diameter
+
         unsigned int op_list_index = 0;
         for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
             if (op_list_index < userInputs.variables_for_remapping.size()){
                 if ( fieldIndex == userInputs.variables_for_remapping.at(op_list_index)){
 
-                    for (unsigned int cycle=0; cycle<2; cycle++){
+                    for (unsigned int cycle=0; cycle<userInputs.num_grain_smoothing_cycles; cycle++){
                         computeLaplaceRHS(fieldIndex);
 
                         unsigned int invM_size = invM.local_size();
                         for (unsigned int dof=0; dof<solutionSet[fieldIndex]->local_size(); ++dof){
                             solutionSet[fieldIndex]->local_element(dof)=solutionSet[fieldIndex]->local_element(dof)-
-                            invM.local_element(dof%invM_size)*residualSet[fieldIndex]->local_element(dof)*0.001;
+                            invM.local_element(dof%invM_size)*residualSet[fieldIndex]->local_element(dof)*dt_for_smoothing;
                         }
 
                         solutionSet[fieldIndex]->update_ghost_values();

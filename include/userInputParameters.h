@@ -148,7 +148,11 @@ public:
     double order_parameter_threshold;
     double buffer_between_grains;
 
-    bool load_grain_structure = true;
+    bool load_grain_structure;
+    double min_radius_for_loading_grains;
+    std::string grain_structure_filename;
+    std::string grain_structure_variable_name;
+    unsigned int num_grain_smoothing_cycles;
 
 private:
 	// Method to create the list of time steps where the results should be output (called from loadInputParameters)

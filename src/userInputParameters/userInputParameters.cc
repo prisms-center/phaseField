@@ -350,6 +350,12 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
         }
     }
 
+    load_grain_structure = parameter_handler.get_bool("Load grain structure");
+    grain_structure_filename = parameter_handler.get("Grain structure filename");
+    grain_structure_variable_name = parameter_handler.get("Grain structure variable name");
+    num_grain_smoothing_cycles = parameter_handler.get_integer("Number of smoothing cycles after grain structure loading");
+    min_radius_for_loading_grains = parameter_handler.get_double("Minimum radius for loaded grains");
+
     // Load the boundary condition variables into list of BCs (where each element of the vector is one component of one variable)
     std::vector<std::string> list_of_BCs;
     for (unsigned int i=0; i<number_of_variables; i++){
