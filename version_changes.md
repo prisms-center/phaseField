@@ -1,5 +1,5 @@
 # Version 2.0.2pre
-Minor ongoing updates to v2.0.1, planned to be released in early to mid 2018.
+Minor updates to v2.0.1, released in May 2018.
 
 Added functionality:
 - Nucleation parameters can now be set separately for each nucleating variable. Thus, the input for nucleation in parameters.in has changed. A new core library function "weightedDistanceFromNucleusCenter" has been created to streamline the introduction of nuclei in equations.h (as well streamlining some areas of the core library). See the "nucleationModel" app to view the changes.
@@ -14,6 +14,7 @@ Other changes:
 - PRISMS-PF is now compatible with deal.II version 9.0 (and still is compatible with version 8.4 and 8.5).
 - Changed the file name convention so that when the maximum number of time steps is between powers of 10, it isn't padded by an extra 0 in front (e.g. solution-02000.pvtu becomes solution-2000.pvtu).
 - A comprehensible error message is now given if a simulation is set to read a checkpoint file but can't find it.
+- The description of how to implement time independent equations in the user guide has been improved.
 
 # Version 2.0.1
 Minor update to v2.0, released in November 2017. The biggest change is the introduction of a checkpoint/restart system.
