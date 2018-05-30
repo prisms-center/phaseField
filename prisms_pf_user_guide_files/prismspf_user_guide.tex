@@ -929,10 +929,12 @@ In the coupledCahnHilliardAllenCahn, the \emph{residualLHS} function is empty be
 
 From the formulation file in the precipitateEvolution application, the residual equation for the mechanical displacement is:
 \begin{gather}
-R =  \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \epsilon - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0 
+R =  \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \epsilon - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0 \label{LHS_residual_eqn}
 \end{gather}
 
-To turn this equation into a matrix inversion problem, we can linearize it with Newton's method. (It can also be directly written as a matrix inversion problem. For historical purposes we do the linearization and for some mundane reasons, non-zero Dirichlet boundary conditions do not currently work with that approach. Therefore, for the meantime, we recommend the approach below.) The solution $u$ is found through the following expression, given an initial guess $u_0$: 
+In PRISMS-PF, matrix inversion problems are always written as Newton's method iterations. For linear equations, like the one above, the solution is reached in a single Newton step. The reason for this approach is two-fold. First, it provides an identical user interface for linear and nonlinear problems. Second, it enables the efficient handling of constraints for when inhomogeneous Dirichlet boundary conditions are used.
+
+To write the above equations in terms of a Newton iteration, the solution, $u$, can be written as the sum of an initial guess, $u_0$, and an update, $\Delta u$:
 
 \begin{equation}
 R(u) = R(u_0 + \Delta u) = R(u_0) +  \int_{\Omega} \left. \frac{\delta R(u)}{\delta u}\right|_{u=u_0} \Delta u ~dV = 0  \label{matrix_eqn}
@@ -954,7 +956,6 @@ Therefore,
 
 Inserting this into \ref{matrix_eqn}:
 
-
 \begin{equation}
 R(u_0) +  \int_{\Omega} -\nabla \cdot (\nabla w: C) \Delta u ~dV = 0
 \end{equation}
@@ -966,7 +967,7 @@ Re-applying the divergence theorem and re-arranging yields:
 
 Thus, the full equation relating $u_0$ and $\Delta u$ is:
 \begin{equation}
-\int_{\Omega} \nabla w : \underbrace{C : \nabla (\Delta u)}_{r_{ux}^{LHS}} dV = -\int_{\Omega}   \nabla w : \underbrace{(\epsilon-\epsilon^0)}_{r_{ux}} ~dV
+\int_{\Omega} \nabla w : \underbrace{C : \nabla (\Delta u)}_{r_{ux}^{LHS}} dV = -\int_{\Omega}   \nabla w : C :\underbrace{(\epsilon(u_0)-\epsilon^0)}_{r_{ux}} ~dV
 \end{equation}
 The above values of $r_{ux}^{LHS}$ and $r_{ux}$ are used to define the residuals in the equations.h file. A similar process can be undertaken for other elliptic problems.
 
