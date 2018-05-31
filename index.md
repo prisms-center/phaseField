@@ -5,12 +5,13 @@ layout: default
 
 ***
 ## Overview
-PRISMS-PF is a powerful, massively parallel finite element code for conducting phase field and other related simulations of microstructural evolution. The phase field method is commonly used for predicting the evolution if microstructures under a wide range of conditions and material systems. PRISMS-PF provides a simple interface for solving customizable systems of partial differential equations of the type commonly found in phase field models, and has 11 pre-built application modules, including for precipitate evolution, grain growth, and spinodal decomposition.
+PRISMS-PF is a powerful, massively parallel finite element code for conducting phase field and other related simulations of microstructural evolution. The phase field method is commonly used for predicting the evolution if microstructures under a wide range of conditions and material systems. PRISMS-PF provides a simple interface for solving customizable systems of partial differential equations of the type commonly found in phase field models, and has 24 pre-built application modules, including for precipitate evolution, grain growth, and spinodal decomposition.
 
 This code is developed by the PRedictive Integrated Structural Materials Science (PRISMS) Center at University of Michigan which is supported by the U.S. Department of Energy (DOE), Office of Basic Energy Sciences, Division of Materials Sciences and Engineering under Award #DE-SC0008637
 
 ***
 ## Announcements
+- 5/30/2018: [Version 2.0.2 released.](https://github.com/prisms-center/phaseField/releases/tag/v2.0.2) This is a minor update to v2.0.1. The biggest change is that nucleation parameters can now be set on a per-variable basis.
 - 11/21/2017: [Version 2.0.1 released.](https://github.com/prisms-center/phaseField/releases/tag/v2.0.1) This is a minor update to v2.0. The biggest change is the introduction of a checkpoint/restart system.
 
 ***
@@ -23,7 +24,7 @@ This code is developed by the PRedictive Integrated Structural Materials Science
 ## Getting Started
 [User Guide](https://github.com/prisms-center/phaseField/raw/master/prismspf_user_guide.pdf) <br>
 [Installation Instructions (Coming soon, currently found in the user guide)](pages/installation.html) <br>
-[Tutorials (Coming in March 2018)](pages/tutorial.html) <br>
+[Tutorials (Coming soon)](pages/tutorial.html) <br>
 [Repository of Training Slides and Exercises](https://goo.gl/BBTkJ8)
 
 ***
