@@ -320,7 +320,7 @@ class MatrixFreePDE:public Subscriptor
   bool isEllipticBVP;
 
   bool hasExplicitEquation;
-  bool requiresMatrixInversion;
+  bool hasNonExplicitEquation;
   //
   unsigned int parabolicFieldIndex, ellipticFieldIndex;
   double currentTime;

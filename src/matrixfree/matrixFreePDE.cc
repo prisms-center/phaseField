@@ -15,7 +15,7 @@ template <int dim, int degree>
  isTimeDependentBVP(false),
  isEllipticBVP(false),
  hasExplicitEquation(false),
- requiresMatrixInversion(false),
+ hasNonExplicitEquation(false),
  parabolicFieldIndex(0),
  ellipticFieldIndex(0),
  currentTime(0.0),

@@ -7,8 +7,8 @@ void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 	set_variable_name				(0,"f_tot");
 	set_variable_type				(0,SCALAR);
 
-	set_need_value_residual_term	(0,true);
-	set_need_gradient_residual_term	(0,false);
+    set_dependencies_value_residual_term_RHS(0, "c, grad(c)");
+    set_dependencies_gradient_residual_term_RHS(0, "");
 
     set_output_integral         	(0,true);
 
@@ -21,7 +21,7 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 
 	scalarvalueType f_tot = constV(0.0);
 
-	// The concentration and its derivatives 
+	// The concentration and its derivatives
 	scalarvalueType c = variable_list.get_scalar_value(0);
 	scalargradType cx = variable_list.get_scalar_gradient(0);
 
@@ -41,7 +41,7 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 	f_tot = f_chem + f_grad;
 
 
-// Residuals for the equation to evolve the order parameter 
+// Residuals for the equation to evolve the order parameter
 pp_variable_list.set_scalar_value_residual_term(0, f_tot);
 
 

@@ -9,26 +9,19 @@ void variableAttributeLoader::loadVariableAttributes(){
 	// Variable 0
 	set_variable_name				(0,"c");
 	set_variable_type				(0,SCALAR);
-	set_variable_equation_type		(0,PARABOLIC);
+	set_variable_equation_type		(0,EXPLICIT_TIME_DEPENDENT);
 
-	set_need_value					(0,true);
-	set_need_gradient				(0,true);
-	set_need_hessian				(0,false);
-
-	set_need_value_residual_term	(0,true);
-	set_need_gradient_residual_term	(0,true);
+    set_dependencies_value_residual_term_RHS(0, "c");
+    set_dependencies_gradient_residual_term_RHS(0, "grad(mu)");
 
 	// Variable 1
 	set_variable_name				(1,"mu");
 	set_variable_type				(1,SCALAR);
-	set_variable_equation_type		(1,PARABOLIC);
+	set_variable_equation_type		(1,AUXILIARY);
 
-	set_need_value					(1,false);
-	set_need_gradient				(1,true);
-	set_need_hessian				(1,false);
+    set_dependencies_value_residual_term_RHS(1, "c");
+    set_dependencies_gradient_residual_term_RHS(1, "grad(c)");
 
-	set_need_value_residual_term	(1,true);
-	set_need_gradient_residual_term	(1,true);
 }
 
 // =================================================================================
@@ -42,35 +35,51 @@ void variableAttributeLoader::loadVariableAttributes(){
 // the index given at the top of this file.
 
 template <int dim, int degree>
-void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+void customPDE<dim,degree>::residualExplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-// The concentration and its derivatives 
+// The concentration and its derivatives
 scalarvalueType c = variable_list.get_scalar_value(0);
-scalargradType cx = variable_list.get_scalar_gradient(0);
 
-// The chemical potential and its derivatives 
+// The chemical potential and its derivatives
 scalargradType mux = variable_list.get_scalar_gradient(1);
 
 // Parameters in the residual equations and expressions for the residual equations
 // can be set here.
 
-// The derivative of the local free energy
-scalarvalueType fcV = 4.0*c*(c-1.0)*(c-0.5);
 
 // The residuals
 scalarvalueType rcV = c;
 scalargradType rcxV = constV(-McV*userInputs.dtValue)*mux;
-scalarvalueType rmuV = fcV;
-scalargradType rmuxV = constV(KcV)*cx;
 
-// Residuals for the equation to evolve the concentration 
+// Residuals for the equation to evolve the concentration
 variable_list.set_scalar_value_residual_term(0,rcV);
 variable_list.set_scalar_gradient_residual_term(0,rcxV);
 
-// Residuals for the equation to evolve the chemical potential 
-variable_list.set_scalar_value_residual_term(1,rmuV);
-variable_list.set_scalar_gradient_residual_term(1,rmuxV);
+}
+
+template <int dim, int degree>
+void customPDE<dim,degree>::residualNonexplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+
+ // The concentration and its derivatives
+ scalarvalueType c = variable_list.get_scalar_value(0);
+ scalargradType cx = variable_list.get_scalar_gradient(0);
+
+ // Parameters in the residual equations and expressions for the residual equations
+ // can be set here.
+
+ // The derivative of the local free energy
+ scalarvalueType fcV = 4.0*c*(c-1.0)*(c-0.5);
+
+ // The residuals
+ scalarvalueType rmuV = fcV;
+ scalargradType rmuxV = constV(KcV)*cx;
+
+ // Residuals for the equation to evolve the chemical potential
+ variable_list.set_scalar_value_residual_term(1,rmuV);
+ variable_list.set_scalar_gradient_residual_term(1,rmuxV);
+
 
 }
 

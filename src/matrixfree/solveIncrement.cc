@@ -61,7 +61,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
 
     // Now, update the non-explicit variables
     // For the time being, this is just the elliptic equations, but implicit parabolic and auxilary equations should also be here
-    if (requiresMatrixInversion){
+    if (hasNonExplicitEquation){
 
         bool nonlinear_it_converged = false;
         unsigned int nonlinear_it_index = 0;
@@ -235,7 +235,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
 
                     // Print update to screen
                     if (currentIncrement%userInputs.skip_print_steps==0){
-                        sprintf(buffer, "field '%2s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
+                        sprintf(buffer, "field '%2s' [auxiliary solve]: current solution: %12.6e, current residual:%12.6e\n", \
                         fields[fieldIndex].name.c_str(),				\
                         solutionSet[fieldIndex]->l2_norm(),			\
                         residualSet[fieldIndex]->l2_norm());

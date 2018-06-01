@@ -75,18 +75,19 @@ template <int dim, int degree>
          else if (it->pdetype==IMPLICIT_TIME_DEPENDENT){
              isTimeDependentBVP=true;
              ellipticFieldIndex=it->index;
-             requiresMatrixInversion=true;
+             hasNonExplicitEquation=true;
              std::cerr << "PRISMS-PF Error: IMPLICIT_TIME_DEPENDENT equation types are not currently supported" << std::endl;
              abort();
          }
          else if (it->pdetype==AUXILIARY){
              parabolicFieldIndex=it->index;
              ellipticFieldIndex=it->index;
+             hasNonExplicitEquation=true;
          }
 		 else if (it->pdetype==TIME_INDEPENDENT){
 			 isEllipticBVP=true;
 			 ellipticFieldIndex=it->index;
-             requiresMatrixInversion=true;
+             hasNonExplicitEquation=true;
 		 }
 
 		 //create FESystem
