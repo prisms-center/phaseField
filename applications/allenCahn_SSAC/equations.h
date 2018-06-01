@@ -7,7 +7,7 @@ void variableAttributeLoader::loadVariableAttributes(){
 	// Variable 0
 	set_variable_name				(0,"n");
 	set_variable_type				(0,SCALAR);
-	set_variable_equation_type		(0,PARABOLIC);
+	set_variable_equation_type		(0,EXPLICIT_TIME_DEPENDENT);
 
     set_dependencies_value_residual_term_RHS(0, "n");
     set_dependencies_gradient_residual_term_RHS(0, "grad(n)");
@@ -15,7 +15,7 @@ void variableAttributeLoader::loadVariableAttributes(){
     // Variable 1
 	set_variable_name				(1,"psi");
 	set_variable_type				(1,SCALAR);
-	set_variable_equation_type		(1,ELLIPTIC);
+	set_variable_equation_type		(1,TIME_INDEPENDENT);
 
     set_dependencies_value_residual_term_RHS(1, "n, psi");
     set_dependencies_gradient_residual_term_RHS(1, "grad(psi)");

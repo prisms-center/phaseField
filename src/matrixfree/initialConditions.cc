@@ -154,7 +154,15 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
     unsigned int op_list_index = 0;
     for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_index++){
 
-        if (op_list_index > userInputs.variables_for_remapping.size() || var_index != userInputs.variables_for_remapping.at(op_list_index)){
+        bool is_remapped_op = false;
+        if (op_list_index > userInputs.variables_for_remapping.size()){
+            if (var_index != userInputs.variables_for_remapping.at(op_list_index)){
+                is_remapped_op = true;
+                op_list_index++;
+            }
+        }
+
+        if (!is_remapped_op){
 
             if (userInputs.load_ICs[var_index] == false){
                 pcout << "Applying non-PField initial condition...\n";
@@ -199,9 +207,6 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
             }
 
             pcout << "Application of initial conditions for field number " << var_index << " complete \n";
-        }
-        else {
-            op_list_index++;
         }
     }
 }

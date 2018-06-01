@@ -38,8 +38,8 @@ int main (int argc, char **argv)
         // Before fully parsing the parameter file, we need to know how many field variables there are and whether they
         // are scalars or vectors, how many postprocessing variables there are, how many sets of elastic constants there are,
         // and how many user-defined constants there are.
-        variableAttributeLoader variable_attributes;
 
+        variableAttributeLoader variable_attributes;
         inputFileReader input_file_reader("parameters.in",variable_attributes);
 
         // Continue based on the number of dimensions and degree of the elements specified in the input file

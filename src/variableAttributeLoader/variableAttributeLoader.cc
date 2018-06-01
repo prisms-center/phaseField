@@ -41,9 +41,9 @@ variableAttributeLoader::variableAttributeLoader(){
     pp_var_name = sortIndexEntryPairList(var_name_list_PP,pp_number_of_variables,"var");
     pp_var_type = sortIndexEntryPairList(var_type_list_PP,pp_number_of_variables,SCALAR);
 
-    std::vector<std::string> pp_sorted_dependencies_value = sortIndexEntryPairList(var_eq_dependencies_value_PP,number_of_variables,"");
+    std::vector<std::string> pp_sorted_dependencies_value = sortIndexEntryPairList(var_eq_dependencies_value_PP,pp_number_of_variables,"");
 
-    std::vector<std::string> pp_sorted_dependencies_gradient = sortIndexEntryPairList(var_eq_dependencies_gradient_PP,number_of_variables,"");
+    std::vector<std::string> pp_sorted_dependencies_gradient = sortIndexEntryPairList(var_eq_dependencies_gradient_PP,pp_number_of_variables,"");
 
     pp_calc_integral = sortIndexEntryPairList(output_integral_list,pp_number_of_variables,false);
 

@@ -32,6 +32,9 @@ void EquationDependencyParser::parse(
         for(unsigned int j=0; j<sorted_dependencies_value_RHS.at(i).length(); j++){
             if(sorted_dependencies_value_RHS.at(i)[j] == ' ') sorted_dependencies_value_RHS.at(i).erase(j,1);
         }
+        for(unsigned int j=0; j<sorted_dependencies_gradient_RHS.at(i).length(); j++){
+            if(sorted_dependencies_gradient_RHS.at(i)[j] == ' ') sorted_dependencies_gradient_RHS.at(i).erase(j,1);
+        }
         // Now check for each variable_eq_type
         if (var_eq_type[i] == EXPLICIT_TIME_DEPENDENT){
 
@@ -275,13 +278,23 @@ void EquationDependencyParser::pp_parse(
         pp_need_hessian.push_back(false);
     }
 
+    // Delete whitespace in the dependencies
+    for (unsigned int i=0; i<pp_var_name.size(); i++){
+        if (sorted_dependencies_value.size() > 0){
+            for(unsigned int j=0; j<sorted_dependencies_value.at(i).length(); j++){
+                if(sorted_dependencies_value.at(i)[j] == ' ') sorted_dependencies_value.at(i).erase(j,1);
+            }
+        }
+
+        if (sorted_dependencies_gradient.size() > 0){
+            for(unsigned int j=0; j<sorted_dependencies_gradient.at(i).length(); j++){
+                if(sorted_dependencies_gradient.at(i)[j] == ' ') sorted_dependencies_gradient.at(i).erase(j,1);
+            }
+        }
+    }
+
     // Now parse the dependency strings to set the flags to true where needed
     for (unsigned int i=0; i<pp_var_name.size(); i++){
-
-        // First strip excess whitespace
-        for(unsigned int j=0; j<sorted_dependencies_value.at(i).length(); j++){
-            if(sorted_dependencies_value.at(i)[j] == ' ') sorted_dependencies_value.at(i).erase(j,1);
-        }
 
         bool need_value_residual_entry, need_gradient_residual_entry;
 
@@ -315,8 +328,19 @@ void EquationDependencyParser::parseDependencyListPP(std::vector<std::string> va
     }
 
     // Merge the lists of dependency entries
+    /*
     std::vector<std::string> split_dependency_list = split_value_dependency_list;
     split_dependency_list.insert(split_dependency_list.end(),split_gradient_dependency_list.begin(),split_gradient_dependency_list.end());
+    */
+
+    std::vector<std::string> split_dependency_list;
+    if (need_value_residual){
+        split_dependency_list = split_value_dependency_list;
+        split_dependency_list.insert(split_dependency_list.end(),split_gradient_dependency_list.begin(),split_gradient_dependency_list.end());
+    }
+    else{
+        split_dependency_list = split_gradient_dependency_list;
+    }
 
     // Cycle through each dependency entry
     for (unsigned int dep=0; dep<split_dependency_list.size(); dep++){
