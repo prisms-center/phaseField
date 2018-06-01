@@ -318,6 +318,9 @@ class MatrixFreePDE:public Subscriptor
   bool isTimeDependentBVP;
   /*Flag used to mark problems with Elliptic fields.*/
   bool isEllipticBVP;
+
+  bool hasExplicitEquation;
+  bool requiresMatrixInversion;
   //
   unsigned int parabolicFieldIndex, ellipticFieldIndex;
   double currentTime;

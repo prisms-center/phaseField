@@ -11,9 +11,11 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
     Timer time;
     char buffer[200];
 
-    // Get the RHS of the equations
-    // Ideally this would be just for the explicit fields, but for now this is all of them
-    computeExplicitRHS();
+    // Get the RHS of the explicit equations
+    if (hasExplicitEquation){
+        computeExplicitRHS();
+    }
+
 
     //solve for each field
     for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
@@ -59,7 +61,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
 
     // Now, update the non-explicit variables
     // For the time being, this is just the elliptic equations, but implicit parabolic and auxilary equations should also be here
-    if (isEllipticBVP){
+    if (requiresMatrixInversion){
 
         bool nonlinear_it_converged = false;
         unsigned int nonlinear_it_index = 0;
@@ -77,7 +79,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
                 currentFieldIndex = fieldIndex; // Used in computeLHS()
 
 
-                if (fields[fieldIndex].pdetype == IMPLICIT_TIME_DEPENDENT || fields[fieldIndex].pdetype == TIME_INDEPENDENT){
+                if ( (fields[fieldIndex].pdetype == IMPLICIT_TIME_DEPENDENT && !skip_time_dependent) || fields[fieldIndex].pdetype == TIME_INDEPENDENT){
 
                     if (currentIncrement%userInputs.skip_print_steps==0){
                         sprintf(buffer, "field '%2s' [nonlinear solve]: current solution: %12.6e, current residual:%12.6e\n", \

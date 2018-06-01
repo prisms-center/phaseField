@@ -4,13 +4,16 @@
 // Set the attributes of the primary field variables
 // =================================================================================
 void variableAttributeLoader::loadVariableAttributes(){
-	// Variable 0
-	set_variable_name				(0,"n");
-	set_variable_type				(0,SCALAR);
-	set_variable_equation_type		(0,EXPLICIT_TIME_DEPENDENT);
 
-    set_dependencies_value_residual_term_RHS(0, "n");
-    set_dependencies_gradient_residual_term_RHS(0, "grad(n)");
+    // Variable 1
+	set_variable_name				(0,"psi");
+	set_variable_type				(0,SCALAR);
+	set_variable_equation_type		(0,IMPLICIT_TIME_DEPENDENT);
+
+    set_dependencies_value_residual_term_RHS(0, "psi");
+    set_dependencies_gradient_residual_term_RHS(0, "grad(psi)");
+    set_dependencies_value_residual_term_LHS(0, "psi, change(psi)");
+    set_dependencies_gradient_residual_term_LHS(0, "grad(change(psi))");
 
 }
 
@@ -28,19 +31,6 @@ template <int dim, int degree>
 void customPDE<dim,degree>::residualExplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-// The order parameter and its derivatives
-scalarvalueType n = variable_list.get_scalar_value(0);
-scalargradType nx = variable_list.get_scalar_gradient(0);
-
-// Parameters in the residual equations and expressions for the residual equations
-// can be set here.
-scalarvalueType fnV = (4.0*n*(n-1.0)*(n-0.5));
-scalarvalueType rnV = (n-constV(userInputs.dtValue*MnV)*fnV);
-scalargradType rnxV = (-constV(userInputs.dtValue*KnV*MnV)*nx);
-
-// Residuals for the equation to evolve the order parameter
-variable_list.set_scalar_value_residual_term(0,rnV);
-variable_list.set_scalar_gradient_residual_term(0,rnxV);
 
 }
 
@@ -48,7 +38,26 @@ template <int dim, int degree>
 void customPDE<dim,degree>::residualNonexplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
+// The order parameter and its derivatives
+scalarvalueType psi = variable_list.get_scalar_value(0);
+scalargradType psix = variable_list.get_scalar_gradient(0);
+
+scalarvalueType psi_old = variable_list.get_old_scalar_value(0); // not implemented yet!
+
+// Parameters in the residual equations and expressions for the residual equations
+// can be set here.
+scalarvalueType fnV = (4.0*psi*(psi-1.0)*(psi-0.5));
+
+// Residuals for the equation to evolve the order parameter
+scalarvalueType rpsi = psi_old - psi - (constV(userInputs.dtValue*MnV)*fnV);
+scalargradType rpsix = -(constV(userInputs.dtValue*KnV*MnV)*psix);
+
+// Submit the residuals
+variable_list.set_scalar_value_residual_term(0,rpsi);
+variable_list.set_scalar_gradient_residual_term(0,rpsix);
+
 }
+
 
 // =================================================================================
 // residualLHS (needed only if at least one equation is elliptic)
@@ -68,4 +77,17 @@ void customPDE<dim,degree>::residualNonexplicitRHS(variableContainer<dim,degree,
 template <int dim, int degree>
 void customPDE<dim,degree>::residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+
+        // The order parameter and its derivatives
+
+        scalarvalueType psi = variable_list.get_scalar_value(0);
+
+        scalarvalueType Dpsi = variable_list.get_change_in_scalar_value(0);
+        scalargradType Dpsix = variable_list.get_change_in_scalar_gradient(0);
+
+        scalarvalueType rpsi = Dpsi + constV(userInputs.dtValue*MnV)* (12.0*psi*psi*Dpsi - 12.0*psi*Dpsi + 2.0*Dpsi);
+        scalargradType rpsix = constV(userInputs.dtValue*MnV*KnV)*Dpsix;
+
+        variable_list.set_scalar_value_residual_term_LHS(0,rpsi);
+        variable_list.set_scalar_gradient_residual_term_LHS(0,rpsix);
 }
