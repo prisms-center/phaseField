@@ -7,14 +7,11 @@ void variableAttributeLoader::loadVariableAttributes(){
 	// Variable 0
 	set_variable_name				(0,"n");
 	set_variable_type				(0,SCALAR);
-	set_variable_equation_type		(0,PARABOLIC);
+	set_variable_equation_type		(0,EXPLICIT_TIME_DEPENDENT);
 
-	set_need_value					(0,true);
-	set_need_gradient				(0,true);
-	set_need_hessian				(0,false);
+    set_dependencies_value_residual_term_RHS(0, "n");
+    set_dependencies_gradient_residual_term_RHS(0, "grad(n)");
 
-	set_need_value_residual_term	(0,true);
-	set_need_gradient_residual_term	(0,true);
 }
 
 // =================================================================================
@@ -28,7 +25,7 @@ void variableAttributeLoader::loadVariableAttributes(){
 // the index given at the top of this file.
 
 template <int dim, int degree>
-void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+void customPDE<dim,degree>::residualExplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 // The order parameter and its derivatives
@@ -72,6 +69,12 @@ for (unsigned i=0; i<n.n_array_elements;i++){
 // Residuals for the equation to evolve the order parameter
 variable_list.set_scalar_value_residual_term(0,rnV+userInputs.dtValue*source_term);
 variable_list.set_scalar_gradient_residual_term(0,rnxV);
+
+}
+
+template <int dim, int degree>
+void customPDE<dim,degree>::residualNonexplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 }
 
