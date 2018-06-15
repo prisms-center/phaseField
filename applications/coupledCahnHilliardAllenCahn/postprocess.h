@@ -27,11 +27,11 @@ scalarvalueType n = variable_list.get_scalar_value(1);
 scalargradType nx = variable_list.get_scalar_gradient(1);
 
 // Free energy for each phase
-scalarvalueType faV = (-1.6704-4.776*c+5.1622*c*c-2.7375*c*c*c+1.3687*c*c*c*c);
-scalarvalueType fbV = (5.0*c*c-5.9746*c-1.5924);
+scalarvalueType faV = constV(2.0)*c*c;
+scalarvalueType fbV = constV(2.0)*(c*c - 2.0*c + constV(1.0));
 
 // Interpolation function
-scalarvalueType hV = (10.0*n*n*n-15.0*n*n*n*n+6.0*n*n*n*n*n);
+scalarvalueType hV = (3.0*n*n-2.0*n*n*n);
 
 // The homogenous free energy
 scalarvalueType f_chem = (constV(1.0)-hV)*faV + hV*fbV;
@@ -43,7 +43,7 @@ scalarvalueType f_grad = constV(0.5*KnV)*nx*nx;
 scalarvalueType f_tot;
 f_tot = f_chem + f_grad;
 
-// Residuals for the equation to evolve the order parameter 
+// Residuals for the equation to evolve the order parameter
 pp_variable_list.set_scalar_value_residual_term(0, f_tot);
 
 

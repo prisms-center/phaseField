@@ -51,16 +51,16 @@ scalarvalueType n = variable_list.get_scalar_value(1);
 scalargradType nx = variable_list.get_scalar_gradient(1);
 
 // Free energy for each phase and their first and second derivatives
-scalarvalueType faV = (-1.6704-4.776*c+5.1622*c*c-2.7375*c*c*c+1.3687*c*c*c*c);
-scalarvalueType facV = (-4.776 + 10.3244*c - 8.2125*c*c + 5.4748*c*c*c);
-scalarvalueType faccV = (10.3244-16.425*c+16.4244*c*c);
-scalarvalueType fbV = (5.0*c*c-5.9746*c-1.5924);
-scalarvalueType fbcV = (10.0*c-5.9746);
-scalarvalueType fbccV = constV(10.0);
+scalarvalueType faV = constV(2.0)*c*c;
+scalarvalueType facV = constV(4.0)*c;
+scalarvalueType faccV = constV(4.0);
+scalarvalueType fbV = constV(2.0)*(c*c - 2.0*c + constV(1.0));
+scalarvalueType fbcV = constV(4.0)*(c - 1.0);
+scalarvalueType fbccV = constV(4.0);
 
 // Interpolation function and its derivative
-scalarvalueType hV = (10.0*n*n*n-15.0*n*n*n*n+6.0*n*n*n*n*n);
-scalarvalueType hnV = (30.0*n*n-60.0*n*n*n+30.0*n*n*n*n);
+scalarvalueType hV = (3.0*n*n-2.0*n*n*n);
+scalarvalueType hnV = (6.0*n-6.0*n*n);
 
 // Residual equations
 scalargradType muxV = ( cx*((1.0-hV)*faccV+hV*fbccV) + nx*((fbcV-facV)*hnV) );
@@ -69,7 +69,7 @@ scalargradType rcxV = (constV(-McV*userInputs.dtValue)*muxV);
 scalarvalueType rnV = (n-constV(userInputs.dtValue*MnV)*(fbV-faV)*hnV);
 scalargradType rnxV = (constV(-userInputs.dtValue*KnV*MnV)*nx);
 
-// Residuals for the equation to evolve the concentration 
+// Residuals for the equation to evolve the concentration
 variable_list.set_scalar_value_residual_term(0,rcV);
 variable_list.set_scalar_gradient_residual_term(0,rcxV);
 
