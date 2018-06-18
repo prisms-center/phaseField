@@ -7,8 +7,8 @@ void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 	set_variable_name				(0,"f_tot");
 	set_variable_type				(0,SCALAR);
 
-	set_need_value_residual_term	(0,true);
-	set_need_gradient_residual_term	(0,false);
+    set_dependencies_value_residual_term_RHS(0, "c,n,grad(n)");
+    set_dependencies_gradient_residual_term_RHS(0, "");
 
     set_output_integral         	(0,true);
 
@@ -27,17 +27,17 @@ scalarvalueType n = variable_list.get_scalar_value(1);
 scalargradType nx = variable_list.get_scalar_gradient(1);
 
 // Free energy for each phase
-scalarvalueType faV = constV(2.0)*c*c;
-scalarvalueType fbV = constV(2.0)*(c*c - 2.0*c + constV(1.0));
+scalarvalueType fa = constV(2.0)*c*c;
+scalarvalueType fb = constV(2.0)*(c*c - 2.0*c + constV(1.0));
 
 // Interpolation function
-scalarvalueType hV = (3.0*n*n-2.0*n*n*n);
+scalarvalueType h = (3.0*n*n-2.0*n*n*n);
 
 // The homogenous free energy
-scalarvalueType f_chem = (constV(1.0)-hV)*faV + hV*fbV;
+scalarvalueType f_chem = (constV(1.0)-h)*fa + h*fb;
 
 // The gradient free energy
-scalarvalueType f_grad = constV(0.5*KnV)*nx*nx;
+scalarvalueType f_grad = constV(0.5*Kn)*nx*nx;
 
 // The total free energy
 scalarvalueType f_tot;

@@ -17,31 +17,44 @@ double InitialCondition<dim>::value (const Point<dim> &p, const unsigned int com
 	  // by a hyperbolic tangent function. The center of each circle/sphere is
 	  // given by "center" and its radius is given by "rad".
 
-	  double center[2][3] = {{0.4,0.4,0.4},{0.7,0.7,0.7}};
-	  double rad[2] = {userInputs.domain_size[0]/4.0, userInputs.domain_size[0]/16.0};
+      dealii::Tensor<1,dim> center1 = userInputs.get_model_constant_rank_1_tensor("center1");
+      dealii::Tensor<1,dim> center2 = userInputs.get_model_constant_rank_1_tensor("center2");
+      double radius1 = userInputs.get_model_constant_double("radius1");
+      double radius2 = userInputs.get_model_constant_double("radius2");
+      double matrix_concentration = userInputs.get_model_constant_double("matrix_concentration");
+
+
+
 	  double dist;
 	  scalar_IC = 0.0;
 
-	  // if (index == 0){
-		//   scalar_IC = 0.009;
-	  // }
+      dist = 0.0;
+      for (unsigned int dir = 0; dir < dim; dir++){
+          dist += (p[dir]-center1[dir])*(p[dir]-center1[dir]);
+      }
+      dist = std::sqrt(dist);
 
-	  for (unsigned int i=0; i<2; i++){
-      //unsigned int i = 1;
-		  dist = 0.0;
-		  for (unsigned int dir = 0; dir < dim; dir++){
-              dist += (p[dir]-center[i][dir]*userInputs.domain_size[dir])*(p[dir]-center[i][dir]*userInputs.domain_size[dir]);
-		  }
-		  dist = std::sqrt(dist);
+      // Initial condition for the concentration field
+      if (index == 0){
+          scalar_IC += matrix_concentration + (1.0-matrix_concentration)*0.5*(1.0-std::tanh((dist-radius2)/(1.0)));
+      }
+      else {
+          scalar_IC += 0.5*(1.0-std::tanh((dist-radius1)/(1.0)));
+      }
 
-		  // Initial condition for the concentration field
-		  if (index == 0){
-			  scalar_IC += 0.5*(1.0-std::tanh((dist-rad[i])/(2.0)));
-		  }
-		  else {
-			  scalar_IC += 0.5*(1.0-std::tanh((dist-rad[i])/(2.0)));
-		  }
-	  }
+      dist = 0.0;
+      for (unsigned int dir = 0; dir < dim; dir++){
+          dist += (p[dir]-center2[dir])*(p[dir]-center2[dir]);
+      }
+      dist = std::sqrt(dist);
+
+      // Initial condition for the concentration field
+      if (index == 0){
+          scalar_IC += matrix_concentration + (1.0-matrix_concentration)*0.5*(1.0-std::tanh((dist-radius2)/(1.0)));
+      }
+      else {
+          scalar_IC += 0.5*(1.0-std::tanh((dist-radius1)/(1.0)));
+      }
 
 	  // --------------------------------------------------------------------------
 	  return scalar_IC;

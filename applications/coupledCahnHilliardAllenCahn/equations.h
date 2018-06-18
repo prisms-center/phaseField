@@ -7,26 +7,18 @@ void variableAttributeLoader::loadVariableAttributes(){
 	// Variable 0
 	set_variable_name				(0,"c");
 	set_variable_type				(0,SCALAR);
-	set_variable_equation_type		(0,PARABOLIC);
+	set_variable_equation_type		(0,EXPLICIT_TIME_DEPENDENT);
 
-	set_need_value					(0,true);
-	set_need_gradient				(0,true);
-	set_need_hessian				(0,false);
-
-	set_need_value_residual_term	(0,true);
-	set_need_gradient_residual_term	(0,true);
+    set_dependencies_value_residual_term_RHS(0, "c");
+    set_dependencies_gradient_residual_term_RHS(0, "n,grad(c)");
 
     // Variable 1
 	set_variable_name				(1,"n");
 	set_variable_type				(1,SCALAR);
-	set_variable_equation_type		(1,PARABOLIC);
+	set_variable_equation_type		(1,EXPLICIT_TIME_DEPENDENT);
 
-	set_need_value					(1,true);
-	set_need_gradient				(1,true);
-	set_need_hessian				(1,false);
-
-	set_need_value_residual_term	(1,true);
-	set_need_gradient_residual_term	(1,true);
+    set_dependencies_value_residual_term_RHS(1, "c,n");
+    set_dependencies_gradient_residual_term_RHS(1, "grad(n)");
 }
 
 // =================================================================================
@@ -39,7 +31,7 @@ void variableAttributeLoader::loadVariableAttributes(){
 // to variable_list. The index for each variable in this list corresponds to
 // the index given at the top of this file.
 template <int dim, int degree>
-void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+void customPDE<dim,degree>::residualExplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 //c
@@ -51,31 +43,37 @@ scalarvalueType n = variable_list.get_scalar_value(1);
 scalargradType nx = variable_list.get_scalar_gradient(1);
 
 // Free energy for each phase and their first and second derivatives
-scalarvalueType faV = constV(2.0)*c*c;
-scalarvalueType facV = constV(4.0)*c;
-scalarvalueType faccV = constV(4.0);
-scalarvalueType fbV = constV(2.0)*(c*c - 2.0*c + constV(1.0));
-scalarvalueType fbcV = constV(4.0)*(c - 1.0);
-scalarvalueType fbccV = constV(4.0);
+scalarvalueType fa = constV(2.0)*c*c;
+scalarvalueType fac = constV(4.0)*c;
+scalarvalueType facc = constV(4.0);
+scalarvalueType fb = constV(2.0)*(c*c - 2.0*c + constV(1.0));
+scalarvalueType fbc = constV(4.0)*(c - 1.0);
+scalarvalueType fbcc = constV(4.0);
 
 // Interpolation function and its derivative
-scalarvalueType hV = (3.0*n*n-2.0*n*n*n);
-scalarvalueType hnV = (6.0*n-6.0*n*n);
+scalarvalueType h = (3.0*n*n-2.0*n*n*n);
+scalarvalueType hn = (6.0*n-6.0*n*n);
 
 // Residual equations
-scalargradType muxV = ( cx*((1.0-hV)*faccV+hV*fbccV) + nx*((fbcV-facV)*hnV) );
-scalarvalueType rcV = c;
-scalargradType rcxV = (constV(-McV*userInputs.dtValue)*muxV);
-scalarvalueType rnV = (n-constV(userInputs.dtValue*MnV)*(fbV-faV)*hnV);
-scalargradType rnxV = (constV(-userInputs.dtValue*KnV*MnV)*nx);
+scalargradType mux = ( cx*((1.0-h)*facc+h*fbcc) + nx*((fbc-fac)*hn) );
+scalarvalueType rc = c;
+scalargradType rcx = (constV(-Mc*userInputs.dtValue)*mux);
+scalarvalueType rn = (n-constV(userInputs.dtValue*Mn)*(fb-fa)*hn);
+scalargradType rnx = (constV(-userInputs.dtValue*Kn*Mn)*nx);
 
 // Residuals for the equation to evolve the concentration
-variable_list.set_scalar_value_residual_term(0,rcV);
-variable_list.set_scalar_gradient_residual_term(0,rcxV);
+variable_list.set_scalar_value_residual_term(0,rc);
+variable_list.set_scalar_gradient_residual_term(0,rcx);
 
 // Residuals for the equation to evolve the order parameter
-variable_list.set_scalar_value_residual_term(1,rnV);
-variable_list.set_scalar_gradient_residual_term(1,rnxV);
+variable_list.set_scalar_value_residual_term(1,rn);
+variable_list.set_scalar_gradient_residual_term(1,rnx);
+
+}
+
+template <int dim, int degree>
+void customPDE<dim,degree>::residualNonexplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 }
 
