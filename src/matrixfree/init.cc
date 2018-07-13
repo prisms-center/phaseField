@@ -148,6 +148,17 @@ template <int dim, int degree>
 		 // Get constraints for periodic BCs
 		 setPeriodicityConstraints(constraintsOther,dof_handler);
 
+         // Check if Dirichlet BCs are used
+         has_Dirichlet_BCs = false;
+         for (unsigned int i=0; i<fields.size(); i++){
+             for (unsigned int direction = 0; direction < 2*dim; direction++){
+                 if (userInputs.BC_list[i].var_BC_type[direction] == DIRICHLET){
+                     has_Dirichlet_BCs = true;
+                     break;
+                 }
+             }
+         }
+
 		 // Get constraints for Dirichlet BCs
 		 applyDirichletBCs();
 

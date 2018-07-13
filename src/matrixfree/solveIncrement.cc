@@ -36,7 +36,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
                 invM.local_element(dof%invM_size)*residualSet[fieldIndex]->local_element(dof);
             }
             // Set the Dirichelet values (hanging node constraints don't need to be distributed every time step, only at output)
-            if (constraintsDirichletSet[fieldIndex]->n_constraints() > 0){            
+            if (has_Dirichlet_BCs){
                 constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
             }
             //computing_timer.enter_section("matrixFreePDE: updateExplicitGhosts");
@@ -45,7 +45,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
 
             // Print update to screen and confirm that solution isn't nan
             if (currentIncrement%userInputs.skip_print_steps==0){
-                double solution_L2_norm = solutionSet[fieldIndex]->l2_norm(); 
+                double solution_L2_norm = solutionSet[fieldIndex]->l2_norm();
 
                 sprintf(buffer, "field '%2s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
                 fields[fieldIndex].name.c_str(),				\
