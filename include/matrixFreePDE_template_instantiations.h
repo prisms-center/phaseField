@@ -16,6 +16,8 @@ template class MatrixFreePDE<2,2>;
 template class MatrixFreePDE<3,2>;
 template class MatrixFreePDE<3,3>;
 template class MatrixFreePDE<2,3>;
+template class MatrixFreePDE<3,4>;
+template class MatrixFreePDE<2,4>;
 #endif
 
 #endif /* INCLUDE_MATRIXFREEPDE_TEMPLATE_INSTANTIATIONS_H_ */

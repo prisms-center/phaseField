@@ -431,6 +431,8 @@ void variableContainer<dim,degree,T>::set_vector_gradient_residual_term_LHS(unsi
 template class variableContainer<2,1,dealii::VectorizedArray<double> >;
 template class variableContainer<2,2,dealii::VectorizedArray<double> >;
 template class variableContainer<2,3,dealii::VectorizedArray<double> >;
+template class variableContainer<2,4,dealii::VectorizedArray<double> >;
 template class variableContainer<3,1,dealii::VectorizedArray<double> >;
 template class variableContainer<3,2,dealii::VectorizedArray<double> >;
 template class variableContainer<3,3,dealii::VectorizedArray<double> >;
+template class variableContainer<3,4,dealii::VectorizedArray<double> >;
