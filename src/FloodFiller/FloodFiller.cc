@@ -284,6 +284,8 @@ void FloodFiller<dim, degree>::mergeSplitGrains (std::vector<GrainSet<dim>> & gr
 template class FloodFiller<2,1>;
 template class FloodFiller<2,2>;
 template class FloodFiller<2,3>;
+template class FloodFiller<2,4>;
 template class FloodFiller<3,1>;
 template class FloodFiller<3,2>;
 template class FloodFiller<3,3>;
+template class FloodFiller<3,4>;

@@ -25,22 +25,22 @@ set Subdivisions X = 1
 set Subdivisions Y = 1
 set Subdivisions Z = 1
 
-set Refine factor = 5
+set Refine factor = 8
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
-set Element degree = 2
+set Element degree = 1
 
 # =================================================================================
 # Set the adaptive mesh refinement parameters
 # =================================================================================
 # Set the flag determining if adaptive meshing is activated
-set Mesh adaptivity = true
+set Mesh adaptivity = false
 
 # Set the maximum and minimum level of refinement
 # When adaptive meshing is enabled, the refine factor set in the block above is
 # only used to generate the first pass of the mesh as the initial conditions are
 # applied. It should be set somewhere between the max and min levels below.
-set Max refinement level = 6
+set Max refinement level = 8
 set Min refinement level = 3
 
 # Set the fields used to determine the refinement using their index.
@@ -51,18 +51,23 @@ set Refinement window max = 0.999
 set Refinement window min = 0.001
 
 # Set the number of time steps between remeshing operations
-set Steps between remeshing operations = 1000
+set Steps between remeshing operations = 2000
 
 # =================================================================================
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 0.625e-4
-#set Time step = 2.5e-4
+#set Time step = 2.0e-4
+#set Time step = 8.0e-5
+#set Time step = 5.0e-5
+#set Time step = 1.25e-5
+
+set Time step = 1.0e-4
+
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
 #set Number of time steps = 25000 #15000
-set Simulation end time = 10.0
+set Simulation end time = 5.0
 
 # =================================================================================
 # Set the boundary conditions
@@ -103,18 +108,18 @@ set Model constant Mc = 1.0, DOUBLE
 set Model constant Mn = 100.0, DOUBLE
 
 # Gradient energy coefficient
-set Model constant Kn = 4.0, DOUBLE
+set Model constant Kn = 2.0, DOUBLE
 
 # Centers for points 1 and 2
 set Model constant center1 = (40,40,40), TENSOR
-set Model constant center2 = (70,70,70), TENSOR
+set Model constant center2 = (65,65,65), TENSOR
 
 # Radii for points 1 and 2
 set Model constant radius1 = 20.0, DOUBLE
-set Model constant radius2 = 15.0, DOUBLE
+set Model constant radius2 = 12.0, DOUBLE
 
 # Initial oncentration in the matrix
-set Model constant matrix_concentration = 0.01, DOUBLE
+set Model constant matrix_concentration = 0.4, DOUBLE
 
 # =================================================================================
 # Set the output parameters
@@ -125,7 +130,9 @@ set Output condition = EQUAL_SPACING
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of outputs = 10
+set Number of outputs = 2
+
+set Output separate files per process = true
 
 # The number of time steps between updates being printed to the screen
 set Skip print steps = 1000

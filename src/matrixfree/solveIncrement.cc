@@ -35,28 +35,34 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
                 solutionSet[fieldIndex]->local_element(dof)=			\
                 invM.local_element(dof%invM_size)*residualSet[fieldIndex]->local_element(dof);
             }
-
             // Set the Dirichelet values (hanging node constraints don't need to be distributed every time step, only at output)
-            constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+            if (constraintsDirichletSet[fieldIndex]->n_constraints() > 0){            
+                constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+            }
+            //computing_timer.enter_section("matrixFreePDE: updateExplicitGhosts");
             solutionSet[fieldIndex]->update_ghost_values();
+            //computing_timer.exit_section("matrixFreePDE: updateExplicitGhosts");
 
-            // Print update to screen
+            // Print update to screen and confirm that solution isn't nan
             if (currentIncrement%userInputs.skip_print_steps==0){
+                double solution_L2_norm = solutionSet[fieldIndex]->l2_norm(); 
+
                 sprintf(buffer, "field '%2s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
                 fields[fieldIndex].name.c_str(),				\
-                solutionSet[fieldIndex]->l2_norm(),			\
+                solution_L2_norm,			\
                 residualSet[fieldIndex]->l2_norm());
                 pcout<<buffer;
+
+                if (!numbers::is_finite(solution_L2_norm)){
+                    sprintf(buffer, "ERROR: field '%s' solution is NAN. exiting.\n\n",
+                    fields[fieldIndex].name.c_str());
+                    pcout<<buffer;
+                    exit(-1);
+               }
+
             }
         }
 
-        //check if solution is nan
-        if (!numbers::is_finite(solutionSet[fieldIndex]->l2_norm())){
-            sprintf(buffer, "ERROR: field '%s' solution is NAN. exiting.\n\n",
-            fields[fieldIndex].name.c_str());
-            pcout<<buffer;
-            exit(-1);
-        }
     }
 
     // Now, update the non-explicit variables

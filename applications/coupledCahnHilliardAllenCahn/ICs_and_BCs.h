@@ -36,7 +36,7 @@ double InitialCondition<dim>::value (const Point<dim> &p, const unsigned int com
 
       // Initial condition for the concentration field
       if (index == 0){
-          scalar_IC += matrix_concentration + (1.0-matrix_concentration)*0.5*(1.0-std::tanh((dist-radius2)/(1.0)));
+          scalar_IC += matrix_concentration + (1.0-matrix_concentration)*0.5*(1.0-std::tanh((dist-radius1)/(1.0)));
       }
       else {
           scalar_IC += 0.5*(1.0-std::tanh((dist-radius1)/(1.0)));
@@ -50,10 +50,10 @@ double InitialCondition<dim>::value (const Point<dim> &p, const unsigned int com
 
       // Initial condition for the concentration field
       if (index == 0){
-          scalar_IC += matrix_concentration + (1.0-matrix_concentration)*0.5*(1.0-std::tanh((dist-radius2)/(1.0)));
+          scalar_IC += (1.0-matrix_concentration)*0.5*(1.0-std::tanh((dist-radius2)/(1.0)));
       }
       else {
-          scalar_IC += 0.5*(1.0-std::tanh((dist-radius1)/(1.0)));
+          scalar_IC += 0.5*(1.0-std::tanh((dist-radius2)/(1.0)));
       }
 
 	  // --------------------------------------------------------------------------
