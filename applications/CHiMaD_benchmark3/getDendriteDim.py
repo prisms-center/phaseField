@@ -417,137 +417,59 @@ def arbitraryPick(pick_coords,var):
 
 variable = 'phi'
 
-is_centered = raw_input("Fractional precipitate centered at origin? (y/n) ")
-#output_num = raw_input("Output number: ")
 output_num_list = raw_input("List of output numbers: ").split()
-#variable = raw_input("Variable: ")
 
 directory =  os.path.dirname(os.path.realpath(__file__)) + "/"
-
-if is_centered == "y":
-	centered_fractional_precip = True
-elif is_centered == "n":
-	centered_fractional_precip = False
-else:
-	print "Error, response to 'Fractional precipitate centered at origin?' must be 'y' or 'n'"
 
 
 for output_num in output_num_list:
 
-	filename = directory+"solution-"+output_num+".vtu"
+    filename = directory+"solution-"+output_num+".vtu"
 
-	OpenDatabase(filename)
+    OpenDatabase(filename)
 
-	AddPlot("Volume",variable)
-	DrawPlots()
+    AddPlot("Volume",variable)
+    DrawPlots()
 
-	if centered_fractional_precip == True:
+    if output_num == output_num_list[0]:
+    	Query("SpatialExtents")
+    	span = GetQueryOutputValue()
+    	print "Span: ", span
 
-		if output_num == output_num_list[0]:
-			Query("SpatialExtents")
-			span = GetQueryOutputValue()
-			print "Span: ", span
+    	print "Thickness in each direction, ordered (x,y,z):"
 
-			print "Thickness in each direction, ordered (x,y,z):"
+    dimension = len(span)/2
 
-		dimension = len(span)/2
+    centroid = [0,0,0]
 
-		centroid = [0,0,0]
+    #numDivX = 90
+    #numDivY = 90
+    #numDivZ = 90
 
-		#numDivX = 90
-		#numDivY = 90
-		#numDivZ = 90
+    numDivX = 128*3*3
+    numDivY = 128*3*3
+    numDivZ = 128*3*3
 
-		numDivX = 256*3
-		numDivY = 256*3
-		numDivZ = 256*3
+    h_x = span[1]/numDivX
+    h_y = span[3]/numDivY
 
-		h_x = span[1]/numDivX
-		h_y = span[3]/numDivY
+    if dimension > 2:
+        h_z = span[5]/numDivZ
 
-        if dimension > 2:
-            h_z = span[5]/numDivZ
+    starting_point = []
+    starting_point.append(0)
+    starting_point.append(0)
+    starting_point.append(0)
 
-        starting_point = []
-        starting_point.append(0)
-        starting_point.append(0)
-        starting_point.append(0)
+    intLocX_plus = findInterface2(h_x, 0.0, 0.0)
 
-        intLocX_plus = findInterface2(h_x, 0.0, 0.0)
+    DefineScalarExpression("shifted_var", "(phi+1)/2")
+    ChangeActivePlotsVar("shifted_var")
 
-        if dimension > 1:
-            intLocY_plus = findInterface2(0.0, h_y, 0.0)
+    Query("Weighted Variable Sum")
+    int_var = GetQueryOutputValue()
+    solid_frac = int_var/(span[1]*span[3])
 
-        if dimension > 2:
-            intLocZ_plus = findInterface3(0.0, 0.0, h_z,starting_point,variable)
-
-        if dimension == 1:
-            print intLocX_plus
-        elif dimension == 2:
-            print intLocX_plus, intLocY_plus
-        else:
-            print intLocX_plus, intLocY_plus, intLocZ_plus
-'''
-    else:
-
-		Query("Centroid")
-		centroid = GetQueryOutputValue()
-
-		Query("SpatialExtents")
-		span = GetQueryOutputValue()
-
-		dimension = len(span)/2
-
-		#numDivX = 90
-		#numDivY = 90
-		#numDivZ = 90
-
-		numDivX = 128
-		numDivY = 128
-		numDivZ = 128
-
-
-		h_x = span[1]/numDivX
-		if dimension > 1:
-			h_y = span[3]/numDivY
-		if dimension > 2:
-			h_z = span[5]/numDivZ
-
-		starting_point = []
-		starting_point.append(centroid[0])
-		starting_point.append(centroid[1])
-		starting_point.append(0)
-
-		intLocX_plus = findInterface3(h_x, 0.0, 0.0,starting_point,variable)
-		intLocX_minus = findInterface3(-h_x, 0.0, 0.0,starting_point,variable)
-
-
-		if dimension > 1:
-			intLocY_plus = findInterface3(0.0, h_y, 0.0,starting_point,variable)
-			intLocY_minus = findInterface3(0.0, -h_y, 0.0,starting_point,variable)
-
-		if dimension > 2:
-			intLocZ_plus = findInterface3(0.0, 0.0, h_z,starting_point,variable)
-			#intLocZ_minus = findInterface3(0.0, 0.0, -h_z,starting_point,variable)
-			intLocZ_minus = []
-			intLocZ_minus.append(intLocZ_plus[0])
-			intLocZ_minus.append(intLocZ_plus[1])
-			intLocZ_minus.append(-intLocZ_plus[2])
-
-		thicknessX = math.sqrt( (intLocX_plus[0]-intLocX_minus[0])*(intLocX_plus[0]-intLocX_minus[0]) + (intLocX_plus[1]-intLocX_minus[1])*(intLocX_plus[1]-intLocX_minus[1]) + (intLocX_plus[2]-intLocX_minus[2])*(intLocX_plus[2]-intLocX_minus[2]))
-
-		if dimension > 1:
-			thicknessY = math.sqrt( (intLocY_plus[0]-intLocY_minus[0])*(intLocY_plus[0]-intLocY_minus[0]) + (intLocY_plus[1]-intLocY_minus[1])*(intLocY_plus[1]-intLocY_minus[1]) + (intLocY_plus[2]-intLocY_minus[2])*(intLocY_plus[2]-intLocY_minus[2]))
-
-		if dimension > 2:
-			thicknessZ = math.sqrt( (intLocZ_plus[0]-intLocZ_minus[0])*(intLocZ_plus[0]-intLocZ_minus[0]) + (intLocZ_plus[1]-intLocZ_minus[1])*(intLocZ_plus[1]-intLocZ_minus[1]) + (intLocZ_plus[2]-intLocZ_minus[2])*(intLocZ_plus[2]-intLocZ_minus[2]))
-
-		if dimension == 1:
-			print thicknessX
-		elif dimension == 2:
-			print thicknessX, thicknessY
-		else:
-			print thicknessX, thicknessY, thicknessZ
-    '''
+    print intLocX_plus, solid_frac
 
 sys.exit()

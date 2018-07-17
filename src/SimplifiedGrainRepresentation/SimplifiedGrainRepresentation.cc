@@ -21,9 +21,17 @@ SimplifiedGrainRepresentation<dim>::SimplifiedGrainRepresentation(const GrainSet
         double cell_volume = 1.0;
         dealii::Point<dim> cell_center;
 
+        unsigned int opposite_corner_index;
+        if (dim == 2) {
+            opposite_corner_index = 3;
+        }
+        else {
+            opposite_corner_index = 7;
+        }
+
         for (unsigned int d=0; d<dim; d++){
-            cell_volume *= (vertex_list.at(c)[3][d] - vertex_list.at(c)[0][d]);
-            cell_center(d) = (vertex_list.at(c)[3][d] + vertex_list.at(c)[0][d])/2.0;
+            cell_volume *= (vertex_list.at(c)[opposite_corner_index][d] - vertex_list.at(c)[0][d]);
+            cell_center(d) = (vertex_list.at(c)[opposite_corner_index][d] + vertex_list.at(c)[0][d])/2.0;
         }
 
         for (unsigned int d=0; d<dim; d++){

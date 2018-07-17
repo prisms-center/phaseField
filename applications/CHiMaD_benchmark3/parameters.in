@@ -25,7 +25,7 @@ set Subdivisions X = 3
 set Subdivisions Y = 3
 set Subdivisions Z = 3
 
-set Refine factor = 7
+set Refine factor = 8
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
 set Element degree = 3
@@ -40,7 +40,7 @@ set Mesh adaptivity = true
 # When adaptive meshing is enabled, the refine factor set in the block above is
 # only used to generate the first pass of the mesh as the initial conditions are
 # applied. It should be set somewhere between the max and min levels below.
-set Max refinement level = 7
+set Max refinement level = 8
 set Min refinement level = 0
 
 # Set the fields used to determine the refinement using their index.
@@ -51,13 +51,13 @@ set Refinement window max = 0.9999
 set Refinement window min = -0.9999
 
 # Set the number of time steps between remeshing operations
-set Steps between remeshing operations = 250
+set Steps between remeshing operations = 500
 
 # =================================================================================
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 0.0025
+set Time step = 0.0005
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
@@ -123,10 +123,10 @@ set Output condition = EQUAL_SPACING
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of outputs = 10
+set Number of outputs = 30
 
 # The number of time steps between updates being printed to the screen
-set Skip print steps = 1000
+set Skip print steps = 10000
 
 # =================================================================================
 # Set the checkpoint/restart parameters

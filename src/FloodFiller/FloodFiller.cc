@@ -74,7 +74,6 @@ void FloodFiller<dim, degree>::recursiveFloodFill(T di, T di_end, vectorType* so
             }
             else{
                 if (di->is_locally_owned()){
-
                     di->set_user_flag();
 
                     dealii::FEValues<dim> fe_values (*fe, quadrature, dealii::update_values);
@@ -85,13 +84,13 @@ void FloodFiller<dim, degree>::recursiveFloodFill(T di, T di_end, vectorType* so
                     fe_values.reinit(di);
                     fe_values.get_function_values(*solution_field, var_values);
 
+
                     double ele_val = 0.0;
                     for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
                         for (unsigned int i=0; i<dofs_per_cell; ++i){
                             ele_val += fe_values.shape_value (i, q_point)*var_values[q_point]*quadrature.weight(q_point);
                         }
                     }
-
 
                     if (ele_val > threshold_lower && ele_val < threshold_upper){
                         grain_assigned = true;

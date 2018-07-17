@@ -112,6 +112,7 @@ void OrderParameterRemapper<dim>::remap_from_index_field(
 
                     // If it is, move the values from the old order parameter to the new order parameter
                     if (in_grain){
+
                         std::vector<dealii::types::global_dof_index> dof_indices(dofs_per_cell,0);
                         di->get_dof_indices(dof_indices);
                         for (unsigned int i=0; i < dof_indices.size(); i++){

@@ -82,6 +82,8 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
         pcout << "Locating the grains...\n";
         std::vector<GrainSet<dim>> grain_sets;
         for (unsigned int id=min_id; id<max_id+1; id++){
+            pcout << "Locating grain " << id << "...\n";
+
             std::vector<GrainSet<dim>> grain_sets_single_id;
 
             flood_filler.calcGrainSets(*FESet.at(scalar_field_index), *dofHandlersSet_nonconst.at(scalar_field_index), &grain_index_field, (double)id - userInputs.order_parameter_threshold, (double)id + userInputs.order_parameter_threshold, 0, grain_sets_single_id);
@@ -97,7 +99,12 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
         for (unsigned int g=0; g<grain_sets.size(); g++){
             SimplifiedGrainRepresentation<dim> simplified_grain_representation(grain_sets.at(g));
 
-            pcout << "Grain: " << simplified_grain_representation.getGrainId() << " " << simplified_grain_representation.getOrderParameterId() << " Center: " << simplified_grain_representation.getCenter()(0) << " " << simplified_grain_representation.getCenter()(1) << "  Radius: " << simplified_grain_representation.getRadius() << std::endl;
+            if (dim == 2){
+                pcout << "Grain: " << simplified_grain_representation.getGrainId() << " " << simplified_grain_representation.getOrderParameterId() << " Center: " << simplified_grain_representation.getCenter()(0) << " " << simplified_grain_representation.getCenter()(1) << "  Radius: " << simplified_grain_representation.getRadius() << std::endl;
+            }
+            else {
+                pcout << "Grain: " << simplified_grain_representation.getGrainId() << " " << simplified_grain_representation.getOrderParameterId() << " Center: " << simplified_grain_representation.getCenter()(0) << " " << simplified_grain_representation.getCenter()(1) << " " << simplified_grain_representation.getCenter()(2) << "  Radius: " << simplified_grain_representation.getRadius() << std::endl;
+            }
 
             simplified_grain_representations.push_back(simplified_grain_representation);
         }
@@ -116,7 +123,13 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
 
         pcout << "After reassignment: " << std::endl;
         for (unsigned int g=0; g<simplified_grain_representations.size(); g++){
-            pcout << "Grain: " << simplified_grain_representations.at(g).getGrainId() << " " << simplified_grain_representations.at(g).getOrderParameterId() << " Center: " << simplified_grain_representations.at(g).getCenter()(0) << " " << simplified_grain_representations.at(g).getCenter()(1) << std::endl;
+            if (dim == 2){
+                pcout << "Grain: " << simplified_grain_representations.at(g).getGrainId() << " " << simplified_grain_representations.at(g).getOrderParameterId() << " Center: " << simplified_grain_representations.at(g).getCenter()(0) << " " << simplified_grain_representations.at(g).getCenter()(1) << std::endl;
+            }
+            else {
+                pcout << "Grain: " << simplified_grain_representations.at(g).getGrainId() << " " << simplified_grain_representations.at(g).getOrderParameterId() << " Center: " << simplified_grain_representations.at(g).getCenter()(0) << " " << simplified_grain_representations.at(g).getCenter()(1) << " " << simplified_grain_representations.at(g).getCenter()(2) << std::endl;
+            }
+
         }
 
         pcout << "Placing the grains in their new order parameters...\n";
@@ -148,19 +161,19 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
             }
         }
 
-
     }
 
     unsigned int op_list_index = 0;
     for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_index++){
 
         bool is_remapped_op = false;
-        if (op_list_index > userInputs.variables_for_remapping.size()){
-            if (var_index != userInputs.variables_for_remapping.at(op_list_index)){
+        if (op_list_index < userInputs.variables_for_remapping.size()){
+            if (var_index == userInputs.variables_for_remapping.at(op_list_index)){
                 is_remapped_op = true;
                 op_list_index++;
             }
         }
+
 
         if (!is_remapped_op){
 
