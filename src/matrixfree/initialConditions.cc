@@ -41,6 +41,20 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
         // Create the dummy field
         vectorType grain_index_field;
 
+        // Clear the order parameter fields
+        unsigned int op_list_index = 0;
+        for (unsigned int var_index=0; var_index < userInputs.number_of_variables; var_index++){
+            if (op_list_index < userInputs.variables_for_remapping.size()){
+                if (var_index == userInputs.variables_for_remapping.at(op_list_index)){
+                    *solutionSet[var_index] = 0.0;
+                    op_list_index++;
+                }
+            }
+        }
+
+        simplified_grain_representations.clear();
+
+        // Get the index of one of the scalar fields
         unsigned int scalar_field_index = 0;
         for (unsigned int var=0; var<userInputs.number_of_variables; var++){
             if (userInputs.var_type.at(var) == SCALAR){
@@ -139,7 +153,7 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
         // Smooth the order parameters
         double dt_for_smoothing = dealii::GridTools::minimal_cell_diameter(triangulation)/1000.0; // 0.001; // use GridTools::minimal_cell_diameter
 
-        unsigned int op_list_index = 0;
+        op_list_index = 0;
         for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
             if (op_list_index < userInputs.variables_for_remapping.size()){
                 if ( fieldIndex == userInputs.variables_for_remapping.at(op_list_index)){

@@ -142,7 +142,9 @@ template <int dim, int degree>
  	 }
 
  	 // If remeshing at the zeroth time step, re-apply initial conditions so the starting values are correct on the refined mesh
+     pcout << "before IC apply" << std::endl;
  	 if (currentIncrement == 0 && !userInputs.load_grain_structure){
+        pcout << "reapplying ICs" << std::endl;
  		 applyInitialConditions();
  	 }
 

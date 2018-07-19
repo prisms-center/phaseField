@@ -40,7 +40,7 @@ set Mesh adaptivity = true
 # When adaptive meshing is enabled, the refine factor set in the block above is
 # only used to generate the first pass of the mesh as the initial conditions are
 # applied. It should be set somewhere between the max and min levels below.
-set Max refinement level = 5
+set Max refinement level = 6
 set Min refinement level = 0
 
 # Set the fields used to determine the refinement using their index.

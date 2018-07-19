@@ -49,6 +49,7 @@ void MatrixFreePDE<dim,degree>::reassignGrains () {
     }
 
     std::vector<SimplifiedGrainRepresentation<dim>> old_grain_representations = simplified_grain_representations;
+    std::cout << "Length of old representations " << old_grain_representations.size() << std::endl;
     simplified_grain_representations.clear();
     for (unsigned int g=0; g<grain_sets.size(); g++){
         SimplifiedGrainRepresentation<dim> simplified_grain_representation(grain_sets.at(g));
@@ -60,11 +61,16 @@ void MatrixFreePDE<dim,degree>::reassignGrains () {
 
     SimplifiedGrainManipulator<dim> simplified_grain_manipulator;
 
-    if (currentIncrement > 0){
+    if (currentIncrement > 0 || userInputs.load_grain_structure){
         simplified_grain_manipulator.transferGrainIds(old_grain_representations, simplified_grain_representations);
     }
 
     simplified_grain_manipulator.reassignGrains(simplified_grain_representations, userInputs.buffer_between_grains, userInputs.variables_for_remapping);
+
+    for (unsigned int g=0; g<this->simplified_grain_representations.size(); g++){
+        pcout << "Grain: " << simplified_grain_representations[g].getGrainId() << " " << simplified_grain_representations[g].getOrderParameterId() << " Center: " << simplified_grain_representations[g].getCenter()(0) << " " << simplified_grain_representations[g].getCenter()(1) << std::endl;
+
+    }
 
     OrderParameterRemapper<dim> order_parameter_remapper;
     order_parameter_remapper.remap(simplified_grain_representations, solutionSet, *dofHandlersSet_nonconst.at(scalar_field_index), FESet.at(scalar_field_index)->dofs_per_cell, userInputs.buffer_between_grains);

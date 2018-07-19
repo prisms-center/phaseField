@@ -21,10 +21,10 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 
 scalarvalueType ni;
 
-scalarvalueType max_val = constV(-100.0);
-scalarvalueType max_op = constV(100.0);
+scalarvalueType max_val = constV(-1.0);
+dealii::VectorizedArray<int> max_op = constV(0);
 for (unsigned int i=0; i<userInputs.number_of_variables; i++){
-    ni = variable_list.get_scalar_value(i);
+    ni = variable_list.get_scalar_value(i) ;
 
     for (unsigned int v=0; v<ni.n_array_elements;v++){
         if (ni[v] > max_val[v]){
@@ -34,30 +34,19 @@ for (unsigned int i=0; i<userInputs.number_of_variables; i++){
     }
 }
 
-scalarvalueType feature_ids = constV(-1000.0);
+scalarvalueType feature_ids = constV(-1.0);
 for (unsigned int v=0; v<ni.n_array_elements;v++){
     for (unsigned int g=0; g<this->simplified_grain_representations.size(); g++){
-
-        unsigned int max_op_nonvec = (unsigned int)std::abs(max_op[v]);
-
-        if (this->simplified_grain_representations[g].getOrderParameterId() == max_op_nonvec){
+        if (this->simplified_grain_representations[g].getOldOrderParameterId() == max_op[v]){
             dealii::Point<dim> q_point_loc_nonvec;
             for (unsigned int d=0;d<dim;d++){
                 q_point_loc_nonvec(d) = q_point_loc(d)[v];
             }
 
-            double dist = 0.0;
-            for (unsigned int d=0;d<dim;d++){
-                dist += (q_point_loc_nonvec(d)-this->simplified_grain_representations[g].getCenter()(d))*(q_point_loc_nonvec(d)-this->simplified_grain_representations[g].getCenter()(d));
-            }
-            dist = std::sqrt(dist);
-
-            if ( dist < (this->simplified_grain_representations[g].getRadius() + userInputs.buffer_between_grains/2.0) ){
+            if ( q_point_loc_nonvec.distance(this->simplified_grain_representations[g].getCenter()) < this->simplified_grain_representations[g].getRadius() ){
                 feature_ids[v] = (double)(this->simplified_grain_representations[g].getGrainId());
             }
-
         }
-
     }
 }
 

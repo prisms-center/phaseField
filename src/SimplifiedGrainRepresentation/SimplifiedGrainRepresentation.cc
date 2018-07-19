@@ -184,7 +184,6 @@ void SimplifiedGrainManipulator<dim>::transferGrainIds(
     const std::vector<SimplifiedGrainRepresentation<dim>> & old_grain_representations,
     std::vector<SimplifiedGrainRepresentation<dim>> & new_grain_representations) const
 {
-
     for (unsigned int g_new=0; g_new < new_grain_representations.size(); g_new++){
 
         double min_distance = std::numeric_limits<double>::max();

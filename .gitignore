@@ -34,6 +34,7 @@
 freeEnergy.txt
 integratedFields.txt
 .*vtu*
+visitlog.py
 
 #CMAKE files
 *.cmake
