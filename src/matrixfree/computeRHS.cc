@@ -46,7 +46,7 @@ void MatrixFreePDE<dim,degree>::getExplicitRHS(const MatrixFree<dim,double> &dat
             dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc = variable_list.get_q_point_location();
 
             // Calculate the residuals
-            residualExplicitRHS(variable_list,q_point_loc);
+            explicitEquationRHS(variable_list,q_point_loc);
         }
 
         variable_list.integrate_and_distribute(dst);
@@ -96,7 +96,7 @@ void MatrixFreePDE<dim,degree>::getNonexplicitRHS(const MatrixFree<dim,double> &
             dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc = variable_list.get_q_point_location();
 
             // Calculate the residuals
-            residualNonexplicitRHS(variable_list,q_point_loc);
+            nonExplicitEquationRHS(variable_list,q_point_loc);
         }
 
         variable_list.integrate_and_distribute(dst);

@@ -2,9 +2,6 @@
 
 // Header files
 #include "../../include/ParseCommandLineOpts.h"
-#include "../../include/nonUniformDirichletBC.h"
-#include "../../include/nonUniformDirichletBC_template_instantiations.h"
-#include "../../include/matrixFreePDE.h"
 #include "../../src/models/mechanics/computeStress.h"
 #include "../../include/inputFileReader.h"
 #include "customPDE.h"

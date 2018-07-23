@@ -58,7 +58,7 @@ void  MatrixFreePDE<dim,degree>::getLHS(const MatrixFree<dim,double> &data,
             dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc = variable_list.get_q_point_location();
 
 			// Calculate the residuals
-            residualLHS(variable_list,q_point_loc);
+            equationLHS(variable_list,q_point_loc);
 
 		}
 

@@ -8,20 +8,22 @@ public:
 
     void setInitialCondition(const dealii::Point<dim> &p, const unsigned int index, double & scalar_IC, dealii::Vector<double> & vector_IC);
 
+    void setNonUniformDirichletBCs(const dealii::Point<dim> &p, const unsigned int index, const unsigned int direction, const double time, double scalar_BC, dealii::Vector<double> & vector_BC);
+
 private:
 	#include "../../include/typeDefs.h"
 
 	const userInputParameters<dim> userInputs;
 
 	// Pure virtual method in MatrixFreePDE
-    void residualExplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+    void explicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 
-    void residualNonexplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+    void nonExplicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 
 	// Pure virtual method in MatrixFreePDE
-	void residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+	void equationLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 
 	// Virtual method in MatrixFreePDE that we override if we need postprocessing

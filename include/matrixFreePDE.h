@@ -93,7 +93,10 @@ class MatrixFreePDE:public Subscriptor
   ConditionalOStream  pcout;
 
   // Initial conditions function
-  virtual void setInitialCondition(const dealii::Point<dim> &p, const unsigned int index, double & scalar_IC, dealii::Vector<double> & vector_IC)=0;
+  virtual void setInitialCondition(const dealii::Point<dim> &p, const unsigned int index, double & scalar_IC, dealii::Vector<double> & vector_IC) = 0;
+
+  // Non-uniform boundary conditions function
+  virtual void setNonUniformDirichletBCs(const dealii::Point<dim> &p, const unsigned int index, const unsigned int direction, const double time, double scalar_BC, dealii::Vector<double> & vector_BC) = 0;
 
  protected:
   userInputParameters<dim> userInputs;
@@ -232,13 +235,13 @@ class MatrixFreePDE:public Subscriptor
             const std::vector<vectorType*> &src,
             const std::pair<unsigned int,unsigned int> &cell_range) const;
 
-  virtual void residualExplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+  virtual void explicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
   		  	  	  	  	  	  	  	  	  	  	  	  	  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
 
-  virtual void residualNonexplicitRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+  virtual void nonExplicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
   		  	  	  	  	  	  	  	  	  	  	  	  	  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
 
-  virtual void residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+  virtual void equationLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
   														  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
 
   virtual void postProcessedFields(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,

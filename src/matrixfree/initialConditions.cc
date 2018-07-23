@@ -193,19 +193,7 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
 
             if (userInputs.load_ICs[var_index] == false){
                 pcout << "Applying non-PField initial condition...\n";
-                if (userInputs.var_type[var_index] == SCALAR){
-                    InitialConditionScalar<dim,degree> initial_condition_function(var_index,userInputs,this);
-                    VectorTools::interpolate (*dofHandlersSet[var_index], initial_condition_function, *solutionSet[var_index]);
-                }
-                else {
-                    /*
-                    InitialConditionVector<dim,degree> initial_condition_function(var_index,userInputs,this);
-                    VectorTools::interpolate (*dofHandlersSet[var_index], initial_condition_function, *solutionSet[var_index]);
-                    */
-                    // I think this will also work for a vector field as long as I define the "vector_value" function
-                    InitialConditionScalar<dim,degree> initial_condition_function(var_index,userInputs,this);
-                    VectorTools::interpolate (*dofHandlersSet[var_index], initial_condition_function, *solutionSet[var_index]);
-                }
+                VectorTools::interpolate (*dofHandlersSet[var_index], InitialCondition<dim,degree>(var_index,userInputs,this), *solutionSet[var_index]);
             }
 
             else {
