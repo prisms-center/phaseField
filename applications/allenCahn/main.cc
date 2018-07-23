@@ -38,51 +38,21 @@ int main (int argc, char **argv)
     try
     {
         ParseCommandLineOpts cli_options(argc, argv);
-        if (argc == 3){
-            if (cli_options.cmdOptionExists("-i")){
-                parameters_filename = cli_options.getCmdOption("-i");
-                std::cout << "Using the input parameter file: " << parameters_filename << std::endl;
-            }
-            else {
-                throw(0);
-            }
-        }
-        else if (argc == 2){
-            if (cli_options.cmdOptionExists("-i")){
-                parameters_filename = "parameters.in";
-                std::cout << "Using the input parameter file: " << parameters_filename << std::endl;
-            }
-            else {
-                throw(0);
-            }
-        }
-        else if (argc == 1){
-            parameters_filename = "parameters.in";
-            std::cout << "Using the input parameter file: " << parameters_filename << std::endl;
-        }
-        else {
-            throw(1);
-        }
+        parameters_filename = cli_options.getParametersFilename();
     }
-    catch (int e)
-    {
-        std::string e_mess;
-        if (e == 0){e_mess = "Invalid command line option given. The only argument should be to specify the input file name.";}
-        else if (e == 1){e_mess = "Too many command line arguments were given. The only argument should be to specify the input file name.";}
-        else {e_mess = "Uknown exception.";}
-
+    catch(const char* msg){
         std::cerr << std::endl << std::endl
         << "----------------------------------------------------"
         << std::endl;
         std::cerr << "PRISMS-PF: Exception on processing: " << std::endl
-        << e_mess << std::endl
+        << msg << std::endl
         << "Aborting!" << std::endl
         << "----------------------------------------------------"
         << std::endl;
         return 1;
     }
 
-
+    // Run the main part of the code
     try
     {
         dealii::deallog.depth_console(0);
