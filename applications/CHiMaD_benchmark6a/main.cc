@@ -1,6 +1,7 @@
 // Allen-Cahn example application
 
 // Header files
+#include "../../include/ParseCommandLineOpts.h"
 #include "../../include/initialConditions.h"
 #include "../../include/initialCondition_template_instantiations.h"
 #include "../../include/nonUniformDirichletBC.h"
@@ -16,7 +17,7 @@
 // Header file for postprocessing that may or may not exist
 #ifdef POSTPROCESS_FILE_EXISTS
 #include "postprocess.h"
-#elif
+#else
 void variableAttributeLoader::loadPostProcessorVariableAttributes(){}
 #endif
 
@@ -31,6 +32,27 @@ void variableAttributeLoader::loadPostProcessorVariableAttributes(){}
 int main (int argc, char **argv)
 {
     dealii::Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,dealii::numbers::invalid_unsigned_int);
+
+    // Parse the command line options (if there are any) to get the name of the input file
+    std::string parameters_filename;
+    try
+    {
+        ParseCommandLineOpts cli_options(argc, argv);
+        parameters_filename = cli_options.getParametersFilename();
+    }
+    catch(const char* msg){
+        std::cerr << std::endl << std::endl
+        << "----------------------------------------------------"
+        << std::endl;
+        std::cerr << "PRISMS-PF: Exception on processing: " << std::endl
+        << msg << std::endl
+        << "Aborting!" << std::endl
+        << "----------------------------------------------------"
+        << std::endl;
+        return 1;
+    }
+
+    // Run the main part of the code
     try
     {
         dealii::deallog.depth_console(0);
@@ -38,9 +60,9 @@ int main (int argc, char **argv)
         // Before fully parsing the parameter file, we need to know how many field variables there are and whether they
         // are scalars or vectors, how many postprocessing variables there are, how many sets of elastic constants there are,
         // and how many user-defined constants there are.
-        variableAttributeLoader variable_attributes;
 
-        inputFileReader input_file_reader("parameters.in",variable_attributes);
+        variableAttributeLoader variable_attributes;
+        inputFileReader input_file_reader(parameters_filename,variable_attributes);
 
         // Continue based on the number of dimensions and degree of the elements specified in the input file
         switch (input_file_reader.number_of_dimensions)
@@ -117,7 +139,7 @@ int main (int argc, char **argv)
         std::cerr << std::endl << std::endl
         << "----------------------------------------------------"
         << std::endl;
-        std::cerr << "Exception on processing: " << std::endl
+        std::cerr << "PRISMS-PF: Exception on processing: " << std::endl
         << exc.what() << std::endl
         << "Aborting!" << std::endl
         << "----------------------------------------------------"
