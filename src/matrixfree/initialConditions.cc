@@ -151,7 +151,7 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
         order_parameter_remapper.remap_from_index_field(simplified_grain_representations, &grain_index_field, solutionSet, *dofHandlersSet_nonconst.at(scalar_field_index), FESet.at(scalar_field_index)->dofs_per_cell, userInputs.buffer_between_grains);
 
         // Smooth the order parameters
-        double dt_for_smoothing = dealii::GridTools::minimal_cell_diameter(triangulation)/1000.0; 
+        double dt_for_smoothing = dealii::GridTools::minimal_cell_diameter(triangulation)/1000.0;
 
         op_list_index = 0;
         for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
@@ -194,10 +194,17 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
             if (userInputs.load_ICs[var_index] == false){
                 pcout << "Applying non-PField initial condition...\n";
                 if (userInputs.var_type[var_index] == SCALAR){
-                    VectorTools::interpolate (*dofHandlersSet[var_index], InitialCondition<dim>(var_index,userInputs), *solutionSet[var_index]);
+                    InitialConditionScalar<dim,degree> initial_condition_function(var_index,userInputs,this);
+                    VectorTools::interpolate (*dofHandlersSet[var_index], initial_condition_function, *solutionSet[var_index]);
                 }
                 else {
-                    VectorTools::interpolate (*dofHandlersSet[var_index], InitialConditionVec<dim>(var_index,userInputs), *solutionSet[var_index]);
+                    /*
+                    InitialConditionVector<dim,degree> initial_condition_function(var_index,userInputs,this);
+                    VectorTools::interpolate (*dofHandlersSet[var_index], initial_condition_function, *solutionSet[var_index]);
+                    */
+                    // I think this will also work for a vector field as long as I define the "vector_value" function
+                    InitialConditionScalar<dim,degree> initial_condition_function(var_index,userInputs,this);
+                    VectorTools::interpolate (*dofHandlersSet[var_index], initial_condition_function, *solutionSet[var_index]);
                 }
             }
 

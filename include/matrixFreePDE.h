@@ -92,6 +92,9 @@ class MatrixFreePDE:public Subscriptor
   // Parallel message stream
   ConditionalOStream  pcout;
 
+  // Initial conditions function
+  virtual void setInitialCondition(const dealii::Point<dim> &p, const unsigned int index, double & scalar_IC, dealii::Vector<double> & vector_IC)=0;
+
  protected:
   userInputParameters<dim> userInputs;
 

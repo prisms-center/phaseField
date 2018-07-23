@@ -2,8 +2,6 @@
 
 // Header files
 #include "../../include/ParseCommandLineOpts.h"
-#include "../../include/initialConditions.h"
-#include "../../include/initialCondition_template_instantiations.h"
 #include "../../include/nonUniformDirichletBC.h"
 #include "../../include/nonUniformDirichletBC_template_instantiations.h"
 #include "../../include/matrixFreePDE.h"
