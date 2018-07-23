@@ -17,9 +17,9 @@ inputFileReader::inputFileReader(std::string input_file_name, variableAttributeL
 
     num_pp_vars = variable_attributes.var_name_list_PP.size();
 
-    num_constants = get_number_of_entries("parameters.in","set","Model constant");
+    num_constants = get_number_of_entries(input_file_name,"set","Model constant");
 
-    model_constant_names = get_entry_name_ending_list("parameters.in","set", "Model constant");
+    model_constant_names = get_entry_name_ending_list(input_file_name,"set", "Model constant");
 
     if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
         std::cout << "Number of constants: " << num_constants << std::endl;
@@ -29,9 +29,9 @@ inputFileReader::inputFileReader(std::string input_file_name, variableAttributeL
     // Read in all of the parameters now
     declare_parameters(parameter_handler,var_types,var_eq_types,num_constants,var_nucleates);
     #if (DEAL_II_VERSION_MAJOR < 9 && DEAL_II_VERSION_MINOR < 5)
-    parameter_handler.read_input("parameters.in");
+    parameter_handler.read_input(input_file_name);
     #else
-    parameter_handler.parse_input("parameters.in");
+    parameter_handler.parse_input(input_file_name);
     #endif
     number_of_dimensions = parameter_handler.get_integer("Number of dimensions");
 }
