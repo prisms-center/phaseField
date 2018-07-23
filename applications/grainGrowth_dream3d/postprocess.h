@@ -10,7 +10,16 @@ void variableAttributeLoader::loadPostProcessorVariableAttributes(){
     set_dependencies_value_residual_term_RHS(0, "n0, n1, n2, n3, n4, n5, n6, n7");
     set_dependencies_gradient_residual_term_RHS(0, "");
 
-    set_output_integral         	(0,true);
+    set_output_integral         	(0,false);
+
+    // Variable 1
+    set_variable_name				(1,"op_ids");
+	set_variable_type				(1,SCALAR);
+
+    set_dependencies_value_residual_term_RHS(1, "n0, n1, n2, n3, n4, n5, n6, n7");
+    set_dependencies_gradient_residual_term_RHS(1, "");
+
+    set_output_integral         	(1,false);
 
 }
 
@@ -62,5 +71,6 @@ for (unsigned int v=0; v<ni.n_array_elements;v++){
 }
 
 pp_variable_list.set_scalar_value_residual_term(0, feature_ids);
+pp_variable_list.set_scalar_value_residual_term(1, max_op);
 
 }

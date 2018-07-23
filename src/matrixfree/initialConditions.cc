@@ -151,7 +151,7 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
         order_parameter_remapper.remap_from_index_field(simplified_grain_representations, &grain_index_field, solutionSet, *dofHandlersSet_nonconst.at(scalar_field_index), FESet.at(scalar_field_index)->dofs_per_cell, userInputs.buffer_between_grains);
 
         // Smooth the order parameters
-        double dt_for_smoothing = dealii::GridTools::minimal_cell_diameter(triangulation)/1000.0; // 0.001; // use GridTools::minimal_cell_diameter
+        double dt_for_smoothing = dealii::GridTools::minimal_cell_diameter(triangulation)/1000.0; 
 
         op_list_index = 0;
         for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){

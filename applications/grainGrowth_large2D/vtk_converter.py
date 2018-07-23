@@ -1,14 +1,13 @@
 # Script to convert a rectilinear grid vtk file to an unstructured grid vtk file
 
-shift_x = 0.25
-shift_y = 0.25
+shift_x = 0.125
+shift_y = 0.125
 shift_z = 0
 
-#rl_grid_filename = 'vtk_rl_128x128.vtk'
-rl_grid_filename = 'resampled_2D_1310g.vtk' #'dream3d_test.vtk'
+rl_grid_filename = 'resampled_2048x2048_738g.vtk'
 target_variable = 'FeatureIds'
 
-us_grid_filename = "initial_grain_structure_us.vtk"
+us_grid_filename = "resampled_2048x2048_738g_us.vtk"
 
 # Parse the rectilinear grid vtk file
 f = open(rl_grid_filename)

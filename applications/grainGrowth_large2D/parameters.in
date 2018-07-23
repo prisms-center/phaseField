@@ -25,7 +25,7 @@ set Subdivisions X = 1
 set Subdivisions Y = 1
 set Subdivisions Z = 1
 
-set Refine factor = 7
+set Refine factor = 9
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
 set Element degree = 2
@@ -40,24 +40,24 @@ set Mesh adaptivity = true
 # When adaptive meshing is enabled, the refine factor set in the block above is
 # only used to generate the first pass of the mesh as the initial conditions are
 # applied. It should be set somewhere between the max and min levels below.
-set Max refinement level = 8
+set Max refinement level = 9
 set Min refinement level = 6
 
 # Set the fields used to determine the refinement using their index.
-set Refinement criteria fields = n0,n1,n2,n3,n4,n5,n6
+set Refinement criteria fields = n0,n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11
 
 # Set the maximum and minimum value of the fields where the mesh should be refined
-set Refinement window max = 0.999,0.999,0.999,0.999,0.999,0.999,0.999,0.999
-set Refinement window min = 1e-3,1e-3,1e-3,1e-3,1e-3,1e-3,1e-3,1e-3
+set Refinement window max = 0.999,0.999,0.999,0.999,0.999,0.999,0.999,0.999,0.999,0.999,0.999,0.999
+set Refinement window min = 1e-3,1e-3,1e-3,1e-3,1e-3,1e-3,1e-3,1e-3,1e-3,1e-3,1e-3,1e-3
 
 # Set the number of time steps between remeshing operations
-set Steps between remeshing operations = 20
+set Steps between remeshing operations = 100
 
 # =================================================================================
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 0.25e-1
+set Time step = 0.05
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
@@ -82,16 +82,16 @@ set Skip print steps = 50
 # =================================================================================
 
 set Activate grain reassignment = true
-set Order parameter fields for grain reassignment = n0, n1, n2, n3, n4, n5, n6, n7
-set Time steps between grain reassignments = 2000
+set Order parameter fields for grain reassignment = n0, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11
+set Time steps between grain reassignments = 1000
 set Order parameter cutoff for grain identification = 1e-2
 set Buffer between grains before reassignment = 2.0
 
 set Load grain structure = true
-set Grain structure filename = initial_grain_structure_us
+set Grain structure filename = resampled_1024x1024_738g_us
 set Grain structure variable name = FeatureIds
 set Number of smoothing cycles after grain structure loading = 2
-set Minimum radius for loaded grains = 2.0
+set Minimum radius for loaded grains = 1.0
 
 # =================================================================================
 # Set the boundary conditions
@@ -121,6 +121,10 @@ set Boundary condition for variable n4 = NATURAL
 set Boundary condition for variable n5 = NATURAL
 set Boundary condition for variable n6 = NATURAL
 set Boundary condition for variable n7 = NATURAL
+set Boundary condition for variable n8 = NATURAL
+set Boundary condition for variable n9 = NATURAL
+set Boundary condition for variable n10 = NATURAL
+set Boundary condition for variable n11 = NATURAL
 
 # =================================================================================
 # Set the model constants

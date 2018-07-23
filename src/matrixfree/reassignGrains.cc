@@ -49,7 +49,6 @@ void MatrixFreePDE<dim,degree>::reassignGrains () {
     }
 
     std::vector<SimplifiedGrainRepresentation<dim>> old_grain_representations = simplified_grain_representations;
-    std::cout << "Length of old representations " << old_grain_representations.size() << std::endl;
     simplified_grain_representations.clear();
     for (unsigned int g=0; g<grain_sets.size(); g++){
         SimplifiedGrainRepresentation<dim> simplified_grain_representation(grain_sets.at(g));

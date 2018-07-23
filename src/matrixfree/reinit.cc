@@ -83,6 +83,7 @@ template <int dim, int degree>
          additional_data.mpi_communicator = MPI_COMM_WORLD;
      #endif
  	 additional_data.tasks_parallel_scheme = MatrixFree<dim,double>::AdditionalData::partition_partition;
+     //additional_data.tasks_parallel_scheme = MatrixFree<dim,double>::AdditionalData::none;
      //additional_data.tasks_block_size = 1; // This improves performance for small runs, not sure about larger runs
  	 additional_data.mapping_update_flags = (update_values | update_gradients | update_JxW_values | update_quadrature_points);
  	 QGaussLobatto<1> quadrature (degree+1);
@@ -142,9 +143,7 @@ template <int dim, int degree>
  	 }
 
  	 // If remeshing at the zeroth time step, re-apply initial conditions so the starting values are correct on the refined mesh
-     pcout << "before IC apply" << std::endl;
  	 if (currentIncrement == 0 && !userInputs.load_grain_structure){
-        pcout << "reapplying ICs" << std::endl;
  		 applyInitialConditions();
  	 }
 
