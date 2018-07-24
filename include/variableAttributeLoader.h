@@ -60,10 +60,10 @@ public:
     std::vector<std::pair<unsigned int, bool> > need_gradient_residual_list_PP;
 
 
-    void set_dependencies_value_residual_term_RHS(unsigned int index, std::string dependencies);
-    void set_dependencies_gradient_residual_term_RHS(unsigned int index, std::string dependencies);
-    void set_dependencies_value_residual_term_LHS(unsigned int index, std::string dependencies);
-    void set_dependencies_gradient_residual_term_LHS(unsigned int index, std::string dependencies);
+    void set_dependencies_value_term_RHS(unsigned int index, std::string dependencies);
+    void set_dependencies_gradient_term_RHS(unsigned int index, std::string dependencies);
+    void set_dependencies_value_term_LHS(unsigned int index, std::string dependencies);
+    void set_dependencies_gradient_term_LHS(unsigned int index, std::string dependencies);
 
     std::vector<std::pair<unsigned int, std::string> > var_eq_dependencies_value_RHS;
     std::vector<std::pair<unsigned int, std::string> > var_eq_dependencies_gradient_RHS;

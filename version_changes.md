@@ -1,4 +1,20 @@
-# Version 2.0.2pre
+# Version 2.1
+Moderate-level update to v2.0, released in August 2018. The largest changes involve a restructuring of the functions in equations.h and ICs_and_BCs.h. Grain remapping was also introduced to permit simulations with hundreds/thousands of grains.
+
+Changes to the example applications:
+
+Added functionality:
+- The user can now specify a parameters file other than 'parameters.in'. The syntax is: './main -i other_parameters_file.in'
+
+Bug fixes:
+
+Other changes:
+- Previously, there were separate initial condition functions and non-uniform Dirichlet BC functions for scalar fields and vector fields. These have been merged so that there is one initial condition function and one non-uniform Dirichlet BC function. These functions are now part of customPDE and have direct access to the model parameters declared in customPDE.h
+
+Known issues:
+- The grain remapping algorithm does not currently obey periodic BCs. This will be patched soon.
+
+# Version 2.0.2
 Minor updates to v2.0.1, released in May 2018.
 
 Changes to the example applications:

@@ -34,15 +34,15 @@ public:
     dealii::Tensor<3, dim, T > get_change_in_vector_hessian(unsigned int global_variable_index) const;
 
     // Methods to set the value residual and the gradient residual (this is how the user sets these values in equations.h)
-    void set_scalar_value_residual_term(unsigned int global_variable_index, T val);
-    void set_scalar_gradient_residual_term(unsigned int global_variable_index, dealii::Tensor<1, dim, T > grad);
-    void set_vector_value_residual_term(unsigned int global_variable_index, dealii::Tensor<1, dim, T > val);
-    void set_vector_gradient_residual_term(unsigned int global_variable_index, dealii::Tensor<2, dim, T > grad);
+    void set_scalar_value_term_RHS(unsigned int global_variable_index, T val);
+    void set_scalar_gradient_term_RHS(unsigned int global_variable_index, dealii::Tensor<1, dim, T > grad);
+    void set_vector_value_term_RHS(unsigned int global_variable_index, dealii::Tensor<1, dim, T > val);
+    void set_vector_gradient_term_RHS(unsigned int global_variable_index, dealii::Tensor<2, dim, T > grad);
 
-    void set_scalar_value_residual_term_LHS(unsigned int global_variable_index, T val);
-    void set_scalar_gradient_residual_term_LHS(unsigned int global_variable_index, dealii::Tensor<1, dim, T > grad);
-    void set_vector_value_residual_term_LHS(unsigned int global_variable_index, dealii::Tensor<1, dim, T > val);
-    void set_vector_gradient_residual_term_LHS(unsigned int global_variable_index, dealii::Tensor<2, dim, T > grad);
+    void set_scalar_value_term_LHS(unsigned int global_variable_index, T val);
+    void set_scalar_gradient_term_LHS(unsigned int global_variable_index, dealii::Tensor<1, dim, T > grad);
+    void set_vector_value_term_LHS(unsigned int global_variable_index, dealii::Tensor<1, dim, T > val);
+    void set_vector_gradient_term_LHS(unsigned int global_variable_index, dealii::Tensor<2, dim, T > grad);
 
 
     // Initialize, read DOFs, and set evaulation flags for each variable

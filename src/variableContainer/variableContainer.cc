@@ -391,40 +391,40 @@ dealii::Tensor<3, dim, T > variableContainer<dim,degree,T>::get_change_in_vector
 
 // The methods to set the residual terms
 template <int dim, int degree, typename T>
-void variableContainer<dim,degree,T>::set_scalar_value_residual_term(unsigned int global_variable_index, T val){
+void variableContainer<dim,degree,T>::set_scalar_value_term_RHS(unsigned int global_variable_index, T val){
     scalar_vars[varInfoList[global_variable_index].scalar_or_vector_index].submit_value(val,q_point);
 }
 
 template <int dim, int degree, typename T>
-void variableContainer<dim,degree,T>::set_scalar_gradient_residual_term(unsigned int global_variable_index, dealii::Tensor<1, dim, T > grad){
+void variableContainer<dim,degree,T>::set_scalar_gradient_term_RHS(unsigned int global_variable_index, dealii::Tensor<1, dim, T > grad){
     scalar_vars[varInfoList[global_variable_index].scalar_or_vector_index].submit_gradient(grad,q_point);
 }
 
 template <int dim, int degree, typename T>
-void variableContainer<dim,degree,T>::set_vector_value_residual_term(unsigned int global_variable_index, dealii::Tensor<1, dim, T > val){
+void variableContainer<dim,degree,T>::set_vector_value_term_RHS(unsigned int global_variable_index, dealii::Tensor<1, dim, T > val){
     vector_vars[varInfoList[global_variable_index].scalar_or_vector_index].submit_value(val,q_point);
 }
 template <int dim, int degree, typename T>
-void variableContainer<dim,degree,T>::set_vector_gradient_residual_term(unsigned int global_variable_index, dealii::Tensor<2, dim, T > grad){
+void variableContainer<dim,degree,T>::set_vector_gradient_term_RHS(unsigned int global_variable_index, dealii::Tensor<2, dim, T > grad){
     vector_vars[varInfoList[global_variable_index].scalar_or_vector_index].submit_gradient(grad,q_point);
 }
 
 template <int dim, int degree, typename T>
-void variableContainer<dim,degree,T>::set_scalar_value_residual_term_LHS(unsigned int global_variable_index, T val){
+void variableContainer<dim,degree,T>::set_scalar_value_term_LHS(unsigned int global_variable_index, T val){
     scalar_change_in_vars[varChangeInfoList[global_variable_index].scalar_or_vector_index].submit_value(val,q_point);
 }
 
 template <int dim, int degree, typename T>
-void variableContainer<dim,degree,T>::set_scalar_gradient_residual_term_LHS(unsigned int global_variable_index, dealii::Tensor<1, dim, T > grad){
+void variableContainer<dim,degree,T>::set_scalar_gradient_term_LHS(unsigned int global_variable_index, dealii::Tensor<1, dim, T > grad){
     scalar_change_in_vars[varChangeInfoList[global_variable_index].scalar_or_vector_index].submit_gradient(grad,q_point);
 }
 
 template <int dim, int degree, typename T>
-void variableContainer<dim,degree,T>::set_vector_value_residual_term_LHS(unsigned int global_variable_index, dealii::Tensor<1, dim, T > val){
+void variableContainer<dim,degree,T>::set_vector_value_term_LHS(unsigned int global_variable_index, dealii::Tensor<1, dim, T > val){
     vector_change_in_vars[varChangeInfoList[global_variable_index].scalar_or_vector_index].submit_value(val,q_point);
 }
 template <int dim, int degree, typename T>
-void variableContainer<dim,degree,T>::set_vector_gradient_residual_term_LHS(unsigned int global_variable_index, dealii::Tensor<2, dim, T > grad){
+void variableContainer<dim,degree,T>::set_vector_gradient_term_LHS(unsigned int global_variable_index, dealii::Tensor<2, dim, T > grad){
     vector_change_in_vars[varChangeInfoList[global_variable_index].scalar_or_vector_index].submit_gradient(grad,q_point);
 }
 

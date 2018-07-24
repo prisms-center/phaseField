@@ -106,7 +106,7 @@ void variableAttributeLoader::set_output_integral(unsigned int index, bool flag)
     output_integral_list.push_back(var_pair);
 }
 
-void variableAttributeLoader::set_dependencies_value_residual_term_RHS(unsigned int index, std::string dependencies){
+void variableAttributeLoader::set_dependencies_value_term_RHS(unsigned int index, std::string dependencies){
     std::pair<unsigned int, std::string> var_pair;
     var_pair.first = index;
     var_pair.second = dependencies;
@@ -120,7 +120,7 @@ void variableAttributeLoader::set_dependencies_value_residual_term_RHS(unsigned 
 
 }
 
-void variableAttributeLoader::set_dependencies_gradient_residual_term_RHS(unsigned int index, std::string dependencies){
+void variableAttributeLoader::set_dependencies_gradient_term_RHS(unsigned int index, std::string dependencies){
     std::pair<unsigned int, std::string> var_pair;
     var_pair.first = index;
     var_pair.second = dependencies;
@@ -133,14 +133,14 @@ void variableAttributeLoader::set_dependencies_gradient_residual_term_RHS(unsign
     }
 }
 
-void variableAttributeLoader::set_dependencies_value_residual_term_LHS(unsigned int index, std::string dependencies){
+void variableAttributeLoader::set_dependencies_value_term_LHS(unsigned int index, std::string dependencies){
     std::pair<unsigned int, std::string> var_pair;
     var_pair.first = index;
     var_pair.second = dependencies;
     var_eq_dependencies_value_LHS.push_back(var_pair);
 }
 
-void variableAttributeLoader::set_dependencies_gradient_residual_term_LHS(unsigned int index, std::string dependencies){
+void variableAttributeLoader::set_dependencies_gradient_term_LHS(unsigned int index, std::string dependencies){
     std::pair<unsigned int, std::string> var_pair;
     var_pair.first = index;
     var_pair.second = dependencies;
