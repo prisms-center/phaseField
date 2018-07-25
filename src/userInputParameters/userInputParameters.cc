@@ -68,7 +68,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     int totalIncrements_temp = parameter_handler.get_integer("Number of time steps");
     finalTime = parameter_handler.get_double("Simulation end time");
 
-    // Linear solver parameters (I should turn this into subsections for each variable)
+    // Linear solver parameters
     for (unsigned int i=0; i<number_of_variables; i++){
         if (input_file_reader.var_eq_types.at(i) == TIME_INDEPENDENT || input_file_reader.var_eq_types.at(i) == IMPLICIT_TIME_DEPENDENT){
             std::string subsection_text = "Linear solver parameters: ";
@@ -153,7 +153,16 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
                 double temp_damping_coefficient = parameter_handler.get_double("Constant damping value");
 
                 // Set whether to use the solution of Laplace's equation instead of the IC in ICs_and_BCs.h as the initial guess for nonlinear, time independent equations
-                bool temp_laplace_for_initial_guess = parameter_handler.get_bool("Use Laplace's equation to determine the initial guess");
+                bool temp_laplace_for_initial_guess;
+                if (var_eq_type[i] == TIME_INDEPENDENT){
+                    temp_laplace_for_initial_guess = parameter_handler.get_bool("Use Laplace's equation to determine the initial guess");
+                }
+                else {
+                    temp_laplace_for_initial_guess = false;
+                    if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+                        std::cout << "PRISMS-PF Warning: Laplace's equation is only used to generate the initial guess for time independent equations. The equation for variable " << var_name[i] << " is not a time independent equation. No initial guess is needed for this equation." << std::endl;
+                    }
+                }
 
                 nonlinear_solver_parameters.loadParameters(i,temp_type,temp_value,temp_backtrack_damping,temp_step_modifier,temp_residual_decrease_coeff,temp_damping_coefficient,temp_laplace_for_initial_guess);
             }
@@ -180,7 +189,9 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     output_vtu_per_process = parameter_handler.get_bool("Output separate files per process");
     if ((output_file_type == "vtk") && (!output_vtu_per_process)){
         output_vtu_per_process = true;
-        std::cout << "'Output file type' given as 'vtk' and 'Output separate files per process' given as 'false'. Shared output files are not supported for the vtk output format. Separate files per process will be created." << std::endl;
+        if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+            std::cout << "PRISMS-PF Warning: 'Output file type' given as 'vtk' and 'Output separate files per process' given as 'false'. Shared output files are not supported for the vtk output format. Separate files per process will be created." << std::endl;
+        }
     }
 
     // Field variable definitions

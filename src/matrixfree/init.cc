@@ -209,7 +209,7 @@ template <int dim, int degree>
 		 matrixFreeObject.initialize_dof_vector(*U,  fieldIndex); *U=0;
 
 		 // Initializing temporary dU vector required for implicit solves of the elliptic equation.
-		 if (fields[fieldIndex].pdetype==TIME_INDEPENDENT || fields[fieldIndex].pdetype==IMPLICIT_TIME_DEPENDENT){
+		 if (fields[fieldIndex].pdetype==TIME_INDEPENDENT || fields[fieldIndex].pdetype==IMPLICIT_TIME_DEPENDENT || (fields[fieldIndex].pdetype==AUXILIARY && userInputs.var_nonlinear[fieldIndex])){
 			 if (fields[fieldIndex].type == SCALAR){
 				 if (dU_scalar_init == false){
 					 matrixFreeObject.initialize_dof_vector(dU_scalar,  fieldIndex);

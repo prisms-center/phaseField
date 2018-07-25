@@ -217,16 +217,17 @@ template <int dim, int degree, typename T>
 void variableContainer<dim,degree,T>::integrate_and_distribute(std::vector<vectorType*> &dst){
 
     for (unsigned int i=0; i<num_var; i++){
-        if (varInfoList[i].is_scalar) {
-            scalar_vars[varInfoList[i].scalar_or_vector_index].integrate(varInfoList[i].value_residual, varInfoList[i].gradient_residual);
-            scalar_vars[varInfoList[i].scalar_or_vector_index].distribute_local_to_global(*dst[i]);
-        }
-        else {
-            vector_vars[varInfoList[i].scalar_or_vector_index].integrate(varInfoList[i].value_residual, varInfoList[i].gradient_residual);
-            vector_vars[varInfoList[i].scalar_or_vector_index].distribute_local_to_global(*dst[i]);
+        if (varInfoList[i].value_residual || varInfoList[i].gradient_residual){
+            if (varInfoList[i].is_scalar) {
+                scalar_vars[varInfoList[i].scalar_or_vector_index].integrate(varInfoList[i].value_residual, varInfoList[i].gradient_residual);
+                scalar_vars[varInfoList[i].scalar_or_vector_index].distribute_local_to_global(*dst[i]);
+            }
+            else {
+                vector_vars[varInfoList[i].scalar_or_vector_index].integrate(varInfoList[i].value_residual, varInfoList[i].gradient_residual);
+                vector_vars[varInfoList[i].scalar_or_vector_index].distribute_local_to_global(*dst[i]);
+            }
         }
     }
-
 }
 
 template <int dim, int degree, typename T>

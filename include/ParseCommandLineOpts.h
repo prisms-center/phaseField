@@ -5,6 +5,7 @@
 #include <iterator>
 #include <vector>
 #include <iostream>
+#include <deal.II/base/mpi.h>
 
 class ParseCommandLineOpts{
     public:
@@ -20,7 +21,9 @@ class ParseCommandLineOpts{
             if (argc == 3){
                 if (cmdOptionExists("-i")){
                     parameters_filename = getCmdOption("-i");
-                    std::cout << "Using the input parameter file: " << parameters_filename << std::endl;
+                    if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+                        std::cout << "Using the input parameter file: " << parameters_filename << std::endl;
+                    }
                 }
                 else {
                     throw("Invalid command line option given. The only argument should be to specify the input file name.");
@@ -29,7 +32,9 @@ class ParseCommandLineOpts{
             else if (argc == 2){
                 if (cmdOptionExists("-i")){
                     parameters_filename = "parameters.in";
-                    std::cout << "Using the input parameter file: " << parameters_filename << std::endl;
+                    if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+                        std::cout << "Using the input parameter file: " << parameters_filename << std::endl;
+                    }
                 }
                 else {
                     throw("Invalid command line option given. The only argument should be to specify the input file name.");
@@ -37,7 +42,9 @@ class ParseCommandLineOpts{
             }
             else if (argc == 1){
                 parameters_filename = "parameters.in";
-                std::cout << "Using the input parameter file: " << parameters_filename << std::endl;
+                if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+                    std::cout << "Using the input parameter file: " << parameters_filename << std::endl;
+                }
             }
             else {
                 throw("Too many command line arguments were given. The only argument should be to specify the input file name.");

@@ -62,6 +62,8 @@ void EquationDependencyParser::parse(
 
             var_nonlinear.push_back(single_var_nonlinear);
 
+            //std::cout << "RHS Nonlinear flag for var " << i << " :" << single_var_nonlinear << std::endl;
+
             need_value_residual_explicit_RHS.push_back(false);
             need_gradient_residual_explicit_RHS.push_back(false);
 
@@ -124,6 +126,7 @@ void EquationDependencyParser::parseDependencyListRHS(std::vector<std::string> v
     split_dependency_list.insert(split_dependency_list.end(),split_gradient_dependency_list.begin(),split_gradient_dependency_list.end());
 
     // Cycle through each dependency entry
+    // NOTE: This section is pretty confusing I think it needs refactoring or more comments
     is_nonlinear = false;
     for (unsigned int dep=0; dep<split_dependency_list.size(); dep++){
         bool dependency_entry_assigned = false;
@@ -140,21 +143,22 @@ void EquationDependencyParser::parseDependencyListRHS(std::vector<std::string> v
             if (split_dependency_list.at(dep) == var_name.at(var)){
                 need_value.at(var) = true;
                 dependency_entry_assigned = true;
-                if ( (var_eq_type[var_index] == IMPLICIT_TIME_DEPENDENT || var_eq_type[var_index] == TIME_INDEPENDENT) && (var_index != var) && (var_eq_type[var] == IMPLICIT_TIME_DEPENDENT || var_eq_type[var_index] == TIME_INDEPENDENT)){
+
+                if ( (var_eq_type[var_index] != EXPLICIT_TIME_DEPENDENT) && (var_index != var) && (var_eq_type[var] != EXPLICIT_TIME_DEPENDENT) ){
                     is_nonlinear = true;
                 }
             }
             else if (split_dependency_list.at(dep) == grad_var_name){
                 need_gradient.at(var) = true;
                 dependency_entry_assigned = true;
-                if ( (var_eq_type[var_index] == IMPLICIT_TIME_DEPENDENT || var_eq_type[var_index] == TIME_INDEPENDENT) && (var_index != var) && (var_eq_type[var_index] == IMPLICIT_TIME_DEPENDENT || var_eq_type[var_index] == TIME_INDEPENDENT)){
+                if ( (var_eq_type[var_index] != EXPLICIT_TIME_DEPENDENT) && (var_index != var) && (var_eq_type[var] != EXPLICIT_TIME_DEPENDENT) ){
                     is_nonlinear = true;
                 }
             }
             else if (split_dependency_list.at(dep) == hess_var_name){
                 need_hessian.at(var) = true;
                 dependency_entry_assigned = true;
-                if ( (var_eq_type[var_index] == IMPLICIT_TIME_DEPENDENT || var_eq_type[var_index] == TIME_INDEPENDENT) && (var_index != var) && (var_eq_type[var_index] == IMPLICIT_TIME_DEPENDENT || var_eq_type[var_index] == TIME_INDEPENDENT)){
+                if ( (var_eq_type[var_index] != EXPLICIT_TIME_DEPENDENT) && (var_index != var) && (var_eq_type[var] != EXPLICIT_TIME_DEPENDENT) ){
                     is_nonlinear = true;
                 }
             }
@@ -215,21 +219,21 @@ void EquationDependencyParser::parseDependencyListLHS(std::vector<std::string> v
             if (split_dependency_list.at(dep) == var_name.at(var)){
                 need_value.at(var) = true;
                 dependency_entry_assigned = true;
-                if ( (var_eq_type[var_index] == IMPLICIT_TIME_DEPENDENT || var_eq_type[var_index] == TIME_INDEPENDENT) && (var_eq_type[var_index] == IMPLICIT_TIME_DEPENDENT || var_eq_type[var_index] == TIME_INDEPENDENT)){
+                if ( (var_eq_type[var] != EXPLICIT_TIME_DEPENDENT) ){
                     is_nonlinear = true;
                 }
             }
             else if (split_dependency_list.at(dep) == grad_var_name){
                 need_gradient.at(var) = true;
                 dependency_entry_assigned = true;
-                if ( (var_eq_type[var_index] == IMPLICIT_TIME_DEPENDENT || var_eq_type[var_index] == TIME_INDEPENDENT) && (var_eq_type[var_index] == IMPLICIT_TIME_DEPENDENT || var_eq_type[var_index] == TIME_INDEPENDENT)){
+                if ( (var_eq_type[var] != EXPLICIT_TIME_DEPENDENT) ){
                     is_nonlinear = true;
                 }
             }
             else if (split_dependency_list.at(dep) == hess_var_name){
                 need_hessian.at(var) = true;
                 dependency_entry_assigned = true;
-                if ( (var_eq_type[var_index] == IMPLICIT_TIME_DEPENDENT || var_eq_type[var_index] == TIME_INDEPENDENT) && (var_eq_type[var_index] == IMPLICIT_TIME_DEPENDENT || var_eq_type[var_index] == TIME_INDEPENDENT)){
+                if ( (var_eq_type[var] != EXPLICIT_TIME_DEPENDENT) ){
                     is_nonlinear = true;
                 }
             }

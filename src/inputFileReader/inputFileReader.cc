@@ -283,7 +283,7 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
             subsection_text.append(var_names.at(i));
             parameter_handler.enter_subsection(subsection_text);
             {
-                parameter_handler.declare_entry("Tolerance type","ABSOLUTE_CHANGE",dealii::Patterns::Anything(),"The tolerance type for the nonlinear solver.");
+                parameter_handler.declare_entry("Tolerance type","ABSOLUTE_SOLUTION_CHANGE",dealii::Patterns::Anything(),"The tolerance type for the nonlinear solver.");
                 parameter_handler.declare_entry("Tolerance value","1.0e-10",dealii::Patterns::Double(),"The value of for the nonlinear solver tolerance.");
                 parameter_handler.declare_entry("Use backtracking line search damping","true",dealii::Patterns::Bool(),"Whether to use a backtracking line-search to find the best choice of the damping coefficient.");
                 parameter_handler.declare_entry("Backtracking step size modifier","0.5",dealii::Patterns::Double(),"The constant that determines how much the step size decreases per backtrack. The 'tau' parameter.");

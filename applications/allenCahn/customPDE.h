@@ -11,7 +11,7 @@ public:
     void setInitialCondition(const dealii::Point<dim> &p, const unsigned int index, double & scalar_IC, dealii::Vector<double> & vector_IC);
 
     // Function to set the non-uniform Dirichlet boundary conditions (in ICs_and_BCs.h)
-    void setNonUniformDirichletBCs(const dealii::Point<dim> &p, const unsigned int index, const unsigned int direction, const double time, double scalar_BC, dealii::Vector<double> & vector_BC);
+    void setNonUniformDirichletBCs(const dealii::Point<dim> &p, const unsigned int index, const unsigned int direction, const double time, double & scalar_BC, dealii::Vector<double> & vector_BC);
 
 private:
 	#include "../../include/typeDefs.h"

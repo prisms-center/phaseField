@@ -38,24 +38,49 @@ set Time step = 2.0e-4
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-# set Number of time steps = 2000000
 set Number of time steps = 2000000
 
 # =================================================================================
-# Set the elliptic solver parameters
+# Set the linear solver parameters
 # =================================================================================
-# The solver type (currently the only recommended option is conjugate gradient)
-set Linear solver = SolverCG
 
-# The flag that determines whether the tolerance for solver convergence should
-# be an absolute tolerance or a relative tolerance
-set Use absolute convergence tolerance = true
+subsection Linear solver parameters: phi
+    # Whether the tolerance value is compared to the residual (ABSOLUTE_RESIDUAL)
+    # or the change in the residual (RELATIVE_RESIDUAL_CHANGE)
+    set Tolerance type = ABSOLUTE_RESIDUAL
 
-# The tolerance for convergence (L2 norm of the residual)
-set Solver tolerance value = 1.0e-5
+    # The tolerance for convergence (L2 norm)
+    set Tolerance value = 1e-5
 
-# The maximum number of solver iterations per time step
-set Maximum allowed solver iterations = 10000
+    # The maximum number of linear solver iterations per solve
+    set Maximum linear solver iterations = 10000
+end
+
+# =================================================================================
+# Set the nonlinear solver parameters
+# =================================================================================
+
+#set Maximum nonlinear solver iterations = 100
+
+#subsection Nonlinear solver parameters: phi
+    #set Tolerance type = ABSOLUTE_SOLUTION_CHANGE
+    #set Tolerance value = 1e-5
+    #set Use backtracking line search damping = false
+    #set Backtracking step size modifier = 0.5
+    #set Backtracking residual decrease coefficient = 1.0
+    #set Constant damping value = 1.0
+    #set Use Laplace's equation to determine the initial guess = true
+#end
+
+subsection Nonlinear solver parameters: mu
+    set Tolerance type = ABSOLUTE_SOLUTION_CHANGE
+    set Tolerance value = 1e-5
+    set Use backtracking line search damping = false
+    set Backtracking step size modifier = 0.5
+    set Backtracking residual decrease coefficient = 1.0
+    set Constant damping value = 1.0
+    set Use Laplace's equation to determine the initial guess = true
+end
 
 # =================================================================================
 # Set the boundary conditions

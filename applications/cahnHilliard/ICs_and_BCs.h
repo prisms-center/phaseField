@@ -43,7 +43,7 @@ void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, con
 // ===========================================================================
 
 template <int dim, int degree>
-void customPDE<dim,degree>::setNonUniformDirichletBCs(const dealii::Point<dim> &p, const unsigned int index, const unsigned int direction, const double time, double scalar_BC, dealii::Vector<double> & vector_BC)
+void customPDE<dim,degree>::setNonUniformDirichletBCs(const dealii::Point<dim> &p, const unsigned int index, const unsigned int direction, const double time, double & scalar_BC, dealii::Vector<double> & vector_BC)
 {
     // --------------------------------------------------------------------------
     // ENTER THE NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS HERE

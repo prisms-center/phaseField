@@ -47,23 +47,17 @@ template <int dim, int degree>
 void customPDE<dim,degree>::explicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-// The concentration and its derivatives
+// --- Getting the values and derivatives of the model variables ---
 scalarvalueType c = variable_list.get_scalar_value(0);
-
-// The chemical potential and its derivatives
 scalargradType mux = variable_list.get_scalar_gradient(1);
 
-// Parameters in the residual equations and expressions for the residual equations
-// can be set here.
+// --- Setting the expressions for the terms in the governing equations ---
+scalarvalueType eq_c = c;
+scalargradType eqx_c = constV(-McV*userInputs.dtValue)*mux;
 
-
-// The residuals
-scalarvalueType rcV = c;
-scalargradType rcxV = constV(-McV*userInputs.dtValue)*mux;
-
-// Residuals for the equation to evolve the concentration
-variable_list.set_scalar_value_term_RHS(0,rcV);
-variable_list.set_scalar_gradient_term_RHS(0,rcxV);
+// --- Submitting the terms for the governing equations ---
+variable_list.set_scalar_value_term_RHS(0,eq_c);
+variable_list.set_scalar_gradient_term_RHS(0,eqx_c);
 
 }
 
@@ -83,23 +77,24 @@ template <int dim, int degree>
 void customPDE<dim,degree>::nonExplicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
- // The concentration and its derivatives
+ // --- Getting the values and derivatives of the model variables ---
+
  scalarvalueType c = variable_list.get_scalar_value(0);
  scalargradType cx = variable_list.get_scalar_gradient(0);
 
- // Parameters in the residual equations and expressions for the residual equations
- // can be set here.
+ // --- Setting the expressions for the terms in the governing equations ---
 
  // The derivative of the local free energy
  scalarvalueType fcV = 4.0*c*(c-1.0)*(c-0.5);
 
- // The residuals
- scalarvalueType rmuV = fcV;
- scalargradType rmuxV = constV(KcV)*cx;
+ // The terms for the governing equations
+ scalarvalueType eq_mu = fcV;
+ scalargradType eqx_mu = constV(KcV)*cx;
 
- // Residuals for the equation to evolve the chemical potential
- variable_list.set_scalar_value_term_RHS(1,rmuV);
- variable_list.set_scalar_gradient_term_RHS(1,rmuxV);
+ // --- Submitting the terms for the governing equations ---
+
+ variable_list.set_scalar_value_term_RHS(1,eq_mu);
+ variable_list.set_scalar_gradient_term_RHS(1,eqx_mu);
 
 
 }

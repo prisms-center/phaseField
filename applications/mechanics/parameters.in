@@ -30,7 +30,7 @@ set Refine factor = 4
 set Element degree = 1
 
 # =================================================================================
-# Set the elliptic solver parameters
+# Set the linear solver parameters
 # =================================================================================
 # The solver type (currently the only recommended option is conjugate gradient)
 set Linear solver = SolverCG
@@ -56,9 +56,6 @@ set Output condition =  EQUAL_SPACING
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
 set Number of outputs = 1
 
-# =================================================================================
-# Set the boundary conditions
-# =================================================================================
 # =================================================================================
 # Set the boundary conditions
 # =================================================================================
