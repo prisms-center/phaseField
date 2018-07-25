@@ -2,8 +2,9 @@
 #ifndef INCLUDE_SORTINDEXENTRYPAIRLIST_H_
 #define INCLUDE_SORTINDEXENTRYPAIRLIST_H_
 
-#include "dealIIheaders.h"
 #include "varTypeEnums.h"
+#include <vector>
+#include <string>
 
 std::vector<bool> sortIndexEntryPairList(const std::vector<std::pair<unsigned int,bool> > unsorted_pair_list, unsigned int number_of_variables, bool default_value);
 std::vector<std::string> sortIndexEntryPairList(const std::vector<std::pair<unsigned int,std::string> > unsorted_pair_list, unsigned int number_of_variables, std::string default_value);

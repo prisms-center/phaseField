@@ -1,6 +1,7 @@
 //mesh refinement methods for MatrixFreePDE class
 
 #include "../../include/matrixFreePDE.h"
+#include <deal.II/distributed/grid_refinement.h>
 
 //default implementation of adaptive mesh refinement
 template <int dim, int degree>

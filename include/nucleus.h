@@ -8,7 +8,8 @@
 #ifndef APPLICATIONS__NUCLEATIONMODEL_NUCLEUS_H_
 #define APPLICATIONS__NUCLEATIONMODEL_NUCLEUS_H_
 
-#include "dealIIheaders.h"
+#include <deal.II/base/point.h>
+#include <vector>
 
 // Structure representing each nucleus
 template<int dim>

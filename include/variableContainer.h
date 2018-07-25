@@ -3,6 +3,8 @@
 #define VARIBLECONTAINER_H
 
 #include "userInputParameters.h"
+#include <deal.II/matrix_free/matrix_free.h>
+#include <deal.II/matrix_free/fe_evaluation.h>
 
 template <int dim, int degree, typename T>
 class variableContainer

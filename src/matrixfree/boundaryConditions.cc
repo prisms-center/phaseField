@@ -2,7 +2,7 @@
 
 #include "../../include/matrixFreePDE.h"
 #include "../../include/vectorBCFunction.h"
-
+#include "../../include/varBCs.h"
 #include "../../include/nonUniformDirichletBC.h"
 
 // =================================================================================

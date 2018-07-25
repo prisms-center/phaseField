@@ -1,6 +1,8 @@
 // init() method for MatrixFreePDE class
 
 #include "../../include/matrixFreePDE.h"
+#include "../../include/varBCs.h"
+#include <deal.II/grid/grid_generator.h>
 
  //populate with fields and setup matrix free system
 template <int dim, int degree>

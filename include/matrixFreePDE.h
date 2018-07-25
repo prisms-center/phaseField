@@ -2,25 +2,44 @@
 #ifndef MATRIXFREEPDE_H
 #define MATRIXFREEPDE_H
 
-//general headers
+// general headers
 #include <fstream>
 #include <sstream>
 #include <iterator>
 
-//dealii headers
-#include "dealIIheaders.h"
+// dealii headers
+#include <deal.II/base/quadrature.h>
+#include <deal.II/base/timer.h>
+#include <deal.II/lac/vector.h>
+#include <deal.II/lac/constraint_matrix.h>
+#include <deal.II/fe/fe_system.h>
+#include <deal.II/fe/fe_q.h>
+#include <deal.II/fe/fe_values.h>
+#include <deal.II/grid/tria.h>
+#include <deal.II/grid/tria_accessor.h>
+#include <deal.II/grid/tria_iterator.h>
+#include <deal.II/grid/grid_tools.h>
+#include <deal.II/dofs/dof_tools.h>
+#include <deal.II/dofs/dof_handler.h>
+#include <deal.II/numerics/vector_tools.h>
+#include <deal.II/lac/parallel_vector.h>
+#include <deal.II/matrix_free/matrix_free.h>
+#include <deal.II/matrix_free/fe_evaluation.h>
+#include <deal.II/base/config.h>
+#include <deal.II/base/exceptions.h>
+#include <deal.II/distributed/tria.h>
+#include <deal.II/distributed/solution_transfer.h>
+#include <deal.II/grid/manifold_lib.h>
 
-//PRISMS headers
-#include "varBCs.h"
+// PRISMS headers
 #include "fields.h"
 #include "userInputParameters.h"
 #include "nucleus.h"
 #include "variableValueContainer.h"
 #include "variableContainer.h"
-#include "EquationDependencyParser.h"
 #include "SimplifiedGrainRepresentation.h"
 
-////define data types
+// define data types
 #ifndef scalarType
 typedef dealii::VectorizedArray<double> scalarType;
 #endif

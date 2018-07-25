@@ -1,7 +1,8 @@
 #ifndef INCLUDE_EQUATIONDEPENDECYPARSER_H_
 #define INCLUDE_EQUATIONDEPENDECYPARSER_H_
 
-#include "dealIIheaders.h"
+#include <vector>
+#include <string>
 #include "varTypeEnums.h"
 
 /**

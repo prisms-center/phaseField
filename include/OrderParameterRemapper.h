@@ -1,8 +1,10 @@
 #ifndef INCLUDE_ORDERPARAMETERREMAPPER_H_
 #define INCLUDE_ORDERPARAMETERREMAPPER_H_
 
-#include "dealIIheaders.h"
 #include "SimplifiedGrainRepresentation.h"
+#include <deal.II/lac/parallel_vector.h>
+#include <deal.II/dofs/dof_handler.h>
+#include <vector>
 
 /**
 * This class uses information from the list of SimplifiedGrainRepresentation objects to reassign grains across multiple solution fields.

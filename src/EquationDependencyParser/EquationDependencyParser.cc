@@ -1,4 +1,6 @@
 #include "../../include/EquationDependencyParser.h"
+#include <iostream>
+#include <deal.II/base/utilities.h>
 
 void EquationDependencyParser::parse(
     std::vector<std::string> var_name,

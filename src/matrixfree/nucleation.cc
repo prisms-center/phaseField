@@ -1,6 +1,7 @@
 // Methods in MatrixFreePDE to update the list of nuclei
 #include "../../include/matrixFreePDE.h"
 #include "../../include/parallelNucleationList.h"
+#include "../../include/varBCs.h"
 #include <random>
 #include <time.h>
 

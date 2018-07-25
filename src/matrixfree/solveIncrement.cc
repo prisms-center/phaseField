@@ -1,6 +1,7 @@
 //solveIncrement() method for MatrixFreePDE class
 
 #include "../../include/matrixFreePDE.h"
+#include <deal.II/lac/solver_cg.h>
 
 //solve each time increment
 template <int dim, int degree>

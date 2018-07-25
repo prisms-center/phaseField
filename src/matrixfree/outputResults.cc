@@ -1,6 +1,7 @@
 //outputResults() method for MatrixFreePDE class
 
 #include "../../include/matrixFreePDE.h"
+#include <deal.II/numerics/data_out.h>
 
 //output results
 template <int dim, int degree>

@@ -1,7 +1,8 @@
 #ifndef INCLUDE_NONLINEARSOLVERPARAMETERS_H_
 #define INCLUDE_NONLINEARSOLVERPARAMETERS_H_
 
-#include "dealIIheaders.h"
+#include <vector>
+#include <iostream>
 
 enum SolverToleranceType {ABSOLUTE_RESIDUAL,RELATIVE_RESIDUAL_CHANGE,ABSOLUTE_SOLUTION_CHANGE};
 

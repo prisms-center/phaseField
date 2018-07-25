@@ -1,4 +1,6 @@
 #include "../../include/matrixFreePDE.h"
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
 
 #ifdef DEAL_II_WITH_ZLIB
 #  include <zlib.h>
@@ -89,7 +91,7 @@ void MatrixFreePDE<dim,degree>::save_checkpoint(){
         time_info_file << currentTime << " (currentTime)\n";
         time_info_file.close();
     }
-    
+
     pcout << "*** Checkpoint created! ***" << std::endl << std::endl;
     computing_timer.exit_section("matrixFreePDE: save_checkpoint");
 

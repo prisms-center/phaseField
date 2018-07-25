@@ -4,7 +4,6 @@
 #ifndef INCLUDE_USERINPUTPARAMETERS_H_
 #define INCLUDE_USERINPUTPARAMETERS_H_
 
-#include "dealIIheaders.h"
 #include "model_variables.h"
 #include "varBCs.h"
 #include "inputFileReader.h"
@@ -12,6 +11,13 @@
 #include "variableAttributeLoader.h"
 #include "nucleationParameters.h"
 #include "SolverParameters.h"
+#include <deal.II/base/conditional_ostream.h>
+#include <boost/variant.hpp>
+#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+#include <vector>
+#include <iostream>
+#include <unordered_map>
 
 enum elasticityModel {ISOTROPIC, TRANSVERSE, ORTHOTROPIC, ANISOTROPIC, ANISOTROPIC2D};
 

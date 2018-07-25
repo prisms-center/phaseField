@@ -1,7 +1,15 @@
 #ifndef INCLUDE_FLOODFILLER_H_
 #define INCLUDE_FLOODFILLER_H_
 
-#include "dealIIheaders.h"
+#include <deal.II/base/quadrature.h>
+#include <deal.II/fe/fe_system.h>
+#include <deal.II/fe/fe_q.h>
+#include <deal.II/fe/fe_values.h>
+#include <deal.II/grid/tria_accessor.h>
+#include <deal.II/grid/tria_iterator.h>
+#include <deal.II/dofs/dof_handler.h>
+#include <deal.II/lac/parallel_vector.h>
+#include <deal.II/matrix_free/fe_evaluation.h>
 
 #ifndef vectorType
 typedef dealii::parallel::distributed::Vector<double> vectorType;

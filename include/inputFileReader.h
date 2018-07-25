@@ -3,9 +3,11 @@
 #ifndef INCLUDE_INPUTFILEREADER_H_
 #define INCLUDE_INPUTFILEREADER_H_
 
-#include "dealIIheaders.h"
 #include "variableAttributeLoader.h"
+#include <deal.II/base/parameter_handler.h>
 #include <fstream>
+#include <vector>
+#include <string>
 
 class inputFileReader
 {
