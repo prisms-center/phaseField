@@ -1,85 +1,48 @@
 // ===========================================================================
-// FUNCTIONS FOR INITIAL CONDITIONS
+// FUNCTION FOR INITIAL CONDITIONS
 // ===========================================================================
 
-template <int dim>
-double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned int component) const
-{
-  double scalar_IC;
-  // ---------------------------------------------------------------------
-  // ENTER THE INITIAL CONDITIONS HERE FOR SCALAR FIELDS
-  // ---------------------------------------------------------------------
-  // Enter the function describing conditions for the fields at point "p".
-  // Use "if" statements to set the initial condition for each variable
-  // according to its variable index.
-
-  // The initial condition is a set of overlapping circles/spheres defined
-  // by a hyperbolic tangent function. The center of each circle/sphere is
-  // given by "center" and its radius is given by "radius".
-
-  double kappa = userInputs.get_model_constant_double("kappa");
-
-  double pi = 2.0*std::acos(0.0);
-
-  double A2 = userInputs.get_model_constant_double("A2");
-  double B2 = pi * userInputs.get_model_constant_double("B2");
-  
-  double r0 = 0.25 + A2*std::sin(B2*p(0));
-  double delta = 1.0/std::sqrt(kappa*2.0);
-
-
-  scalar_IC = 0.5*(1.0-std::tanh((p(1)-r0) * delta));
-
-  // ---------------------------------------------------------------------
-  return scalar_IC;
-}
-
-template <int dim>
-void InitialConditionVec<dim>::vector_value (const dealii::Point<dim> &p, dealii::Vector<double> &vector_IC) const
-{
+template <int dim, int degree>
+void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, const unsigned int index, double & scalar_IC, dealii::Vector<double> & vector_IC){
     // ---------------------------------------------------------------------
-    // ENTER THE INITIAL CONDITIONS HERE FOR VECTOR FIELDS
+    // ENTER THE INITIAL CONDITIONS HERE
     // ---------------------------------------------------------------------
     // Enter the function describing conditions for the fields at point "p".
     // Use "if" statements to set the initial condition for each variable
-    // according to its variable index.
+    // according to its variable index
 
+    // The initial condition is a set of overlapping circles/spheres defined
+    // by a hyperbolic tangent function. The center of each circle/sphere is
+    // given by "center" and its radius is given by "radius".
 
-    // ---------------------------------------------------------------------
+    double pi = 2.0*std::acos(0.0);
+
+    double r0 = 0.25 + A2*std::sin(B2*p(0));
+    double delta = 1.0/std::sqrt(kappa*2.0);
+
+    scalar_IC = 0.5*(1.0-std::tanh((p(1)-r0) * delta));
+
+  // ---------------------------------------------------------------------
 }
 
 // ===========================================================================
-// FUNCTIONS FOR NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS
+// FUNCTION FOR NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS
 // ===========================================================================
 
-template <int dim>
-double NonUniformDirichletBC<dim>::value (const dealii::Point<dim> &p, const unsigned int component) const
+template <int dim, int degree>
+void customPDE<dim,degree>::setNonUniformDirichletBCs(const dealii::Point<dim> &p, const unsigned int index, const unsigned int direction, const double time, double & scalar_BC, dealii::Vector<double> & vector_BC)
 {
-    double scalar_BC=0;
     // --------------------------------------------------------------------------
-    // ENTER THE NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS HERE FOR SCALAR FIELDS
+    // ENTER THE NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS HERE
     // --------------------------------------------------------------------------
     // Enter the function describing conditions for the fields at point "p".
     // Use "if" statements to set the boundary condition for each variable
     // according to its variable index. This function can be left blank if there
-    // are no non-uniform Dirichlet boundary conditions.
-
-
-    // -------------------------------------------------------------------------
-    return scalar_BC;
-}
-
-template <int dim>
-void NonUniformDirichletBCVec<dim>::vector_value (const dealii::Point<dim> &p, dealii::Vector<double> &vector_BC) const
-{
-
-    // --------------------------------------------------------------------------
-    // ENTER THE NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS HERE FOR VECTOR FIELDS
-    // --------------------------------------------------------------------------
-    // Enter the function describing conditions for the fields at point "p".
-    // Use "if" statements to set the boundary condition for each variable
-    // according to its variable index. This function can be left blank if there
-    // are no non-uniform Dirichlet boundary conditions.
+    // are no non-uniform Dirichlet boundary conditions. For BCs that change in
+    // time, you can access the current time through the variable "time". The
+    // boundary index can be accessed via the variable "direction", which starts
+    // at zero and uses the same order as the BC specification in parameters.in
+    // (i.e. left = 0, right = 1, bottom = 2, top = 3, front = 4, back = 5).
 
 
     // -------------------------------------------------------------------------

@@ -2,6 +2,8 @@
 Moderate-level update to v2.0, released in August 2018. The largest changes involve a restructuring of the functions in equations.h and ICs_and_BCs.h. Grain remapping was also introduced to permit simulations with hundreds/thousands of grains.
 
 Changes to the example applications:
+- New application: CHAC_performance_test. This app is very similar to 'coupledCahnHilliardAllenCahn', but is 3D and was designed for scaling and performance comparisons to a finite difference code.
+- The grainGrowth app has been overhauled and now uses the grain remapping capabilities.
 
 Added functionality:
 - The user can now specify a parameters file other than 'parameters.in'. The syntax is: './main -i other_parameters_file.in'
@@ -13,6 +15,7 @@ Other changes:
 
 Known issues:
 - The grain remapping algorithm does not currently obey periodic BCs. This will be patched soon.
+- The CHiMaD benchmark problem 6b fails when run with more than 5 MPI processes. This might be due to the size of the coarse mesh (being too small). We're looking into it. There is no problem for benchmark 6a, which is identical except for the domain shape.
 
 # Version 2.0.2
 Minor updates to v2.0.1, released in May 2018.

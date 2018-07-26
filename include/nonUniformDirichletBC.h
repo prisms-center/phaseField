@@ -20,15 +20,15 @@ public:
       dealii::Vector<double> vector_BC(dim);
 
       matrix_free_pde->setNonUniformDirichletBCs(p, index, direction, time, scalar_BC, vector_BC);
-      std::cout << scalar_BC << std::endl;
+
       return scalar_BC;
   };
   // IC for vector values
-  // void vector_value (const dealii::Point<dim> &p,dealii::Vector<double> &vector_BC) const {
-  //     double scalar_BC = 0.0;
-  //
-  //     matrix_free_pde->setNonUniformDirichletBCs(p, index, direction, time, scalar_BC, vector_BC);
-  // };
+  void vector_value (const dealii::Point<dim> &p,dealii::Vector<double> &vector_BC) const {
+      double scalar_BC = 0.0;
+
+      matrix_free_pde->setNonUniformDirichletBCs(p, index, direction, time, scalar_BC, vector_BC);
+  };
 
 private:
     const unsigned int index;

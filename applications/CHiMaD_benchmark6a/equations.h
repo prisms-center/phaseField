@@ -145,11 +145,16 @@ template <int dim, int degree>
 void customPDE<dim,degree>::equationLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
+// --- Getting the values and derivatives of the model variables ---
+
 //grad(delta phi)
 scalargradType Dphix = variable_list.get_change_in_scalar_gradient(2);
 
-// The residuals
+// --- Setting the expressions for the terms in the governing equations ---
+
 scalargradType eqx_Dphi=Dphix;
+
+ // --- Submitting the terms for the governing equations ---
 
 variable_list.set_scalar_gradient_term_LHS(2,eqx_Dphi);
 

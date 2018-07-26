@@ -5,7 +5,7 @@
 template <int dim, int degree>
 void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, const unsigned int index, double & scalar_IC, dealii::Vector<double> & vector_IC){
     // ---------------------------------------------------------------------
-    // ENTER THE INITIAL CONDITIONS HERE FOR SCALAR FIELDS
+    // ENTER THE INITIAL CONDITIONS HERE 
     // ---------------------------------------------------------------------
     // Enter the function describing conditions for the fields at point "p".
     // Use "if" statements to set the initial condition for each variable
@@ -33,6 +33,7 @@ void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, con
 
   // =====================================================================
 }
+
 // ===========================================================================
 // FUNCTION FOR NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS
 // ===========================================================================
@@ -59,8 +60,6 @@ void customPDE<dim,degree>::setNonUniformDirichletBCs(const dealii::Point<dim> &
             scalar_BC=std::sin(y/7.0);
         }
     }
-
-    std::cout << "a " << index << " " << direction << " " << p[1] << " " << scalar_BC;
 
     // -------------------------------------------------------------------------
 

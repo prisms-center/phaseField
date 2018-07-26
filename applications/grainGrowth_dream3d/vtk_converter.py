@@ -1,14 +1,13 @@
 # Script to convert a rectilinear grid vtk file to an unstructured grid vtk file
 
-shift_x = 0.25
-shift_y = 0.25
+shift_x = 0.125
+shift_y = 0.125
 shift_z = 0
 
-#rl_grid_filename = 'vtk_rl_128x128.vtk'
-rl_grid_filename = 'test_microstructure.vtk'
+rl_grid_filename = 'resampled_2048x2048_738g.vtk'
 target_variable = 'FeatureIds'
 
-us_grid_filename = "initial_grain_structure_us.vtk"
+us_grid_filename = "resampled_2048x2048_738g_us.vtk"
 
 # Parse the rectilinear grid vtk file
 f = open(rl_grid_filename)
@@ -80,7 +79,7 @@ for line in f:
                 in_y_coords = False
 
         if in_z_coords:
-            if split_line[0] != "POINT_DATA":
+            if split_line[0] != "POINT_DATA" and split_line[0] != "CELL_DATA":
                 z_coords = z_coords + split_line
             else:
                 in_z_coords = False
@@ -119,7 +118,7 @@ if (num_z_coords is 1):
 else:
     num_points = 8 * num_cells
 
-print('num cells: ', num_cells, 'num points: ', num_points, num_x_coords, num_y_coords)
+print('num cells: ', num_cells, 'num points: ', num_points, num_x_coords, num_y_coords, num_z_coords)
 
 f.write('POINTS ' + str(num_points) + ' double\n')
 
@@ -128,16 +127,18 @@ x_counter = 0
 y_counter = 0
 z_counter = 0
 
-for y_counter in range(0, num_y_coords - 1):
-    for x_counter in range(0, num_x_coords - 1):
+if (num_z_coords == 1):
+    for y_counter in range(0, num_y_coords - 1):
+        for x_counter in range(0, num_x_coords - 1):
+                f.write(x_coords[x_counter] + " " + y_coords[y_counter] + " " + z_coords[z_counter] + '\n')
+                f.write(x_coords[x_counter + 1] + ' ' + y_coords[y_counter] + ' ' + z_coords[z_counter] + '\n')
+                f.write(x_coords[x_counter] + ' ' + y_coords[y_counter + 1] + ' ' + z_coords[z_counter] + '\n')
+                f.write(x_coords[x_counter + 1] + ' ' + y_coords[y_counter + 1] + ' ' + z_coords[z_counter] + '\n')
+else:
+    for z_counter in range(0, num_z_coords - 1):
+        for y_counter in range(0, num_y_coords - 1):
+            for x_counter in range(0, num_x_coords - 1):
 
-        if (num_z_coords == 1):
-            f.write(x_coords[x_counter] + " " + y_coords[y_counter] + " " + z_coords[z_counter] + '\n')
-            f.write(x_coords[x_counter + 1] + ' ' + y_coords[y_counter] + ' ' + z_coords[z_counter] + '\n')
-            f.write(x_coords[x_counter] + ' ' + y_coords[y_counter + 1] + ' ' + z_coords[z_counter] + '\n')
-            f.write(x_coords[x_counter + 1] + ' ' + y_coords[y_counter + 1] + ' ' + z_coords[z_counter] + '\n')
-        else:
-            for z_counter in range(0, num_z_coords - 1):
                 f.write(x_coords[x_counter] + " " + y_coords[y_counter] + " " + z_coords[z_counter] + '\n')
                 f.write(x_coords[x_counter + 1] + ' ' + y_coords[y_counter] + ' ' + z_coords[z_counter] + '\n')
                 f.write(x_coords[x_counter] + ' ' + y_coords[y_counter + 1] + ' ' + z_coords[z_counter] + '\n')
@@ -163,11 +164,12 @@ for y_counter in range(0, num_y_coords - 1):
 
         if (num_z_coords == 1):
             f.write(str(points_per_cell) + " " + str(point_index) + " " + str(point_index + 1) + " " + str(point_index + 3) + " " + str(point_index + 2) + "\n")
+            point_index = point_index + points_per_cell
         else:
             for z_counter in range(0, num_z_coords - 1):
-                f.write(str(points_per_cell) + " " + str(point_index) + " " + str(point_index + 1) + " " + str(point_index + 2) + " " + str(point_index + 3) + " " + str(point_index + 4) + " " + str(point_index + 5) + " " + str(point_index + 6) + " " + str(point_index + 7) + "\n")
+                f.write(str(points_per_cell) + " " + str(point_index) + " " + str(point_index + 1) + " " + str(point_index + 3) + " " + str(point_index + 2) + " " + str(point_index + 4) + " " + str(point_index + 5) + " " + str(point_index + 7) + " " + str(point_index + 6) + "\n")
 
-        point_index = point_index + points_per_cell
+                point_index = point_index + points_per_cell
 
 # Write the cell info
 f.write('\nCELL_TYPES ' + str(num_cells) + '\n')
@@ -184,12 +186,24 @@ f.write('\n\nPOINT_DATA ' + str(num_points) + '\n')
 f.write('SCALARS ' + target_variable + ' double 1\n')
 f.write('LOOKUP_TABLE default\n')
 
-for y_counter in range(0, num_y_coords - 1):
-    for x_counter in range(0, num_x_coords - 1):
+if (num_z_coords == 1):
 
-        base_index = x_counter + y_counter * (num_x_coords)
+    for y_counter in range(0, num_y_coords - 1):
+        for x_counter in range(0, num_x_coords - 1):
 
-        f.write(data[base_index] + " " + data[base_index + 1] + " " + data[base_index + (num_x_coords)] + " " + data[base_index + (num_x_coords) + 1] + ' ')
+            base_index = x_counter + y_counter * (num_x_coords)
+
+            f.write(data[base_index] + " " + data[base_index + 1] + " " + data[base_index + (num_x_coords)] + " " + data[base_index + (num_x_coords) + 1] + " " )
+
+else:
+    for z_counter in range(0, num_z_coords - 1):
+        for y_counter in range(0, num_y_coords - 1):
+            for x_counter in range(0, num_x_coords - 1):
+
+                base_index = x_counter + y_counter * (num_x_coords) + z_counter * (num_x_coords*num_y_coords)
+
+                f.write(data[base_index] + " " + data[base_index + 1] + " " + data[base_index + (num_x_coords)] + " " + data[base_index + (num_x_coords) + 1] + " " + data[base_index + num_x_coords*num_y_coords] + " " + data[base_index + num_x_coords*num_y_coords + 1] + " " + data[base_index + (num_x_coords+ num_x_coords*num_y_coords)] + " " + data[base_index + (num_x_coords) + num_x_coords*num_y_coords + 1] + " ")
+
 
 f.write("\n")
 

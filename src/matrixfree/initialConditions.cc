@@ -189,7 +189,7 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
         }
 
 
-        if (!is_remapped_op){
+        if (!is_remapped_op || !userInputs.load_grain_structure){
 
             if (userInputs.load_ICs[var_index] == false){
                 pcout << "Applying non-PField initial condition...\n";

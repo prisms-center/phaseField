@@ -10,33 +10,41 @@ void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, con
     // Enter the function describing conditions for the fields at point "p".
     // Use "if" statements to set the initial condition for each variable
     // according to its variable index
-
 	  // The initial condition is two circles/spheres defined
 	  // by a hyperbolic tangent function. The center of each circle/sphere is
 	  // given by "center" and its radius is given by "rad".
 
-	  double center[1][3] = {{0.0/2.0,0.0/2.0,0.0/2.0}};
-	  double rad[1] = {8.0};
 	  double dist;
-	  scalar_IC = 0;
+	  scalar_IC = 0.0;
 
-	  // Initial condition for the concentration field
-	  if (index == 0){
-		  scalar_IC = -delta;
-	  }
-	  // Initial condition for the order parameter field
-	  else if (index == 1) {
-		  // Initial condition for the order parameter field
-		  for (unsigned int i=0; i<1; i++){
-			  dist = 0.0;
-			  for (unsigned int dir = 0; dir < dim; dir++){
-				  dist += (p[dir]-center[i][dir]*userInputs.domain_size[dir])*(p[dir]-center[i][dir]*userInputs.domain_size[dir]);
-			  }
-			  dist = std::sqrt(dist);
+      dist = 0.0;
+      for (unsigned int dir = 0; dir < dim; dir++){
+          dist += (p[dir]-center1[dir])*(p[dir]-center1[dir]);
+      }
+      dist = std::sqrt(dist);
 
-			  scalar_IC += (-std::tanh((dist-rad[i])/(0.5)));
-		  }
-	  }
+      // Initial condition for the concentration field
+      if (index == 0){
+          scalar_IC += matrix_concentration + (1.0-matrix_concentration)*0.5*(1.0-std::tanh((dist-radius1)/(1.0)));
+      }
+      else {
+          scalar_IC += 0.5*(1.0-std::tanh((dist-radius1)/(1.0)));
+      }
+
+      dist = 0.0;
+      for (unsigned int dir = 0; dir < dim; dir++){
+          dist += (p[dir]-center2[dir])*(p[dir]-center2[dir]);
+      }
+      dist = std::sqrt(dist);
+
+      // Initial condition for the concentration field
+      if (index == 0){
+          scalar_IC += (1.0-matrix_concentration)*0.5*(1.0-std::tanh((dist-radius2)/(1.0)));
+      }
+      else {
+          scalar_IC += 0.5*(1.0-std::tanh((dist-radius2)/(1.0)));
+      }
+
 
 	  // --------------------------------------------------------------------------
 }

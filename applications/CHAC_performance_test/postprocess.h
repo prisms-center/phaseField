@@ -48,22 +48,12 @@ scalargradType nx = variable_list.get_scalar_gradient(1);
 
 // --- Setting the expressions for the terms in the postprocessing expressions ---
 
-// Free energy for each phase and their first and second derivatives
-scalarvalueType fa = (-1.6704-4.776*c+5.1622*c*c-2.7375*c*c*c+1.3687*c*c*c*c);
-scalarvalueType fb = (5.0*c*c-5.9746*c-1.5924);
-
-
-// Interpolation function and its derivative
-scalarvalueType h = (10.0*n*n*n-15.0*n*n*n*n+6.0*n*n*n*n*n);
-
-/*
 // Free energy for each phase
 scalarvalueType fa = constV(2.0)*c*c;
 scalarvalueType fb = constV(2.0)*(c*c - 2.0*c + constV(1.0));
 
 // Interpolation function
 scalarvalueType h = (3.0*n*n-2.0*n*n*n);
-*/
 
 // The homogenous free energy
 scalarvalueType f_chem = (constV(1.0)-h)*fa + h*fb;

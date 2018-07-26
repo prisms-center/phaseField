@@ -14,20 +14,21 @@
 // rate calculations.
 
 void variableAttributeLoader::loadVariableAttributes(){
+	// Variable 0
+	set_variable_name				(0,"c");
+	set_variable_type				(0,SCALAR);
+	set_variable_equation_type		(0,EXPLICIT_TIME_DEPENDENT);
 
-    for (unsigned int var_index=0; var_index<6; var_index++){
-        std::string var_name = "n";
-        var_name.append(std::to_string(var_index));
+    set_dependencies_value_term_RHS(0, "c");
+    set_dependencies_gradient_term_RHS(0, "n,grad(c)");
 
-        set_variable_name				(var_index,var_name);
-    	set_variable_type				(var_index,SCALAR);
-    	set_variable_equation_type		(var_index,EXPLICIT_TIME_DEPENDENT);
+    // Variable 1
+	set_variable_name				(1,"n");
+	set_variable_type				(1,SCALAR);
+	set_variable_equation_type		(1,EXPLICIT_TIME_DEPENDENT);
 
-        set_dependencies_value_term_RHS(var_index, "n0, n1, n2, n3, n4, n5");
-        set_dependencies_gradient_term_RHS(var_index, "grad(n0), grad(n1), grad(n2), grad(n3), grad(n4), grad(n5)");
-
-    }
-
+    set_dependencies_value_term_RHS(1, "c,n");
+    set_dependencies_gradient_term_RHS(1, "grad(n)");
 }
 
 // =============================================================================================
@@ -47,42 +48,45 @@ void customPDE<dim,degree>::explicitEquationRHS(variableContainer<dim,degree,dea
 
 // --- Getting the values and derivatives of the model variables ---
 
-dealii::VectorizedArray<double> fnV = constV(0.0);
-scalarvalueType ni, nj;
-scalargradType nix;
+//c
+scalarvalueType c = variable_list.get_scalar_value(0);
+scalargradType cx = variable_list.get_scalar_gradient(0);
 
-// In this application, create temporary variables for the residual terms. We cannot
-// call 'set_scalar_value_residual_term' and 'set_scalar_gradient_residual_term'in the
-// for loop below because those functions write over the scalar value and scalar gradient
-// internal variables in 'variable_list' (for performance reasons). Therefore, we wait
-// to set the residual terms until all the residuals have been calculated.
+//n
+scalarvalueType n = variable_list.get_scalar_value(1);
+scalargradType nx = variable_list.get_scalar_gradient(1);
 
-std::vector<scalarvalueType> value_terms;
-value_terms.resize(userInputs.number_of_variables);
-std::vector<scalargradType> gradient_terms;
-gradient_terms.resize(userInputs.number_of_variables);
+// --- Setting the expressions for the terms in the governing equations ---
 
-for (unsigned int i=0; i<userInputs.number_of_variables; i++){
+// Free energy for each phase and their first and second derivatives
+scalarvalueType fa = constV(2.0)*c*c;
+scalarvalueType fac = constV(4.0)*c;
+scalarvalueType facc = constV(4.0);
+scalarvalueType fb = constV(2.0)*(c*c - 2.0*c + constV(1.0));
+scalarvalueType fbc = constV(4.0)*(c - 1.0);
+scalarvalueType fbcc = constV(4.0);
 
-	ni = variable_list.get_scalar_value(i);
-	nix = variable_list.get_scalar_gradient(i);
-	fnV = - ni + ni*ni*ni;
-	for (unsigned int j=0; j<userInputs.number_of_variables; j++){
-		if (i != j){
-			nj = variable_list.get_scalar_value(j);
-			fnV += constV(2.0*alpha) * ni * nj*nj;
-		}
-	}
-	value_terms[i] = ni-constV(userInputs.dtValue*MnV)*fnV;
-	gradient_terms[i] = constV(-userInputs.dtValue*KnV*MnV)*nix;
-}
+// Interpolation function and its derivative
+scalarvalueType h = (3.0*n*n-2.0*n*n*n);
+scalarvalueType hn = (6.0*n-6.0*n*n);
+
+// Residual equations
+scalargradType mux = ( cx*((1.0-h)*facc+h*fbcc) + nx*((fbc-fac)*hn) );
+scalarvalueType eq_c = c;
+scalargradType eqx_c = (constV(-Mc*userInputs.dtValue)*mux);
+scalarvalueType eq_n = (n-constV(userInputs.dtValue*Mn)*(fb-fa)*hn);
+scalargradType eqx_n = (constV(-userInputs.dtValue*Kn*Mn)*nx);
+
 
 // --- Submitting the terms for the governing equations ---
 
-for (unsigned int i=0; i<userInputs.number_of_variables; i++){
-	variable_list.set_scalar_value_term_RHS(i,value_terms[i]);
-	variable_list.set_scalar_gradient_term_RHS(i,gradient_terms[i]);
-}
+// Terms for the equation to evolve the concentration
+variable_list.set_scalar_value_term_RHS(0,eq_c);
+variable_list.set_scalar_gradient_term_RHS(0,eqx_c);
+
+// Terms for the equation to evolve the order parameter
+variable_list.set_scalar_value_term_RHS(1,eq_n);
+variable_list.set_scalar_gradient_term_RHS(1,eqx_n);
 
 }
 

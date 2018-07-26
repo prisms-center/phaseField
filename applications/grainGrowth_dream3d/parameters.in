@@ -1,6 +1,3 @@
-# Parameter list for the Allen-Cahn example application
-# Refer to the PRISMS-PF manual for use of these parameters in the source code.
-
 # =================================================================================
 # Set the number of dimensions (2 or 3 for a 2D or 3D calculation)
 # =================================================================================
@@ -88,7 +85,7 @@ set Order parameter cutoff for grain identification = 1e-2
 set Buffer between grains before reassignment = 2.0
 
 set Load grain structure = true
-set Grain structure filename = initial_grain_structure_us
+set Grain structure filename = initial_grain_structure_small_2D
 set Grain structure variable name = FeatureIds
 set Number of smoothing cycles after grain structure loading = 2
 set Minimum radius for loaded grains = 2.0
