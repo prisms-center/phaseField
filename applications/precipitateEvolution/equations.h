@@ -114,7 +114,7 @@ if (c_dependent_misfit == true){
 // Free energy expressions and interpolation functions
 scalarvalueType faV = (A0+A1*c+A2*c*c+A3*c*c*c+A4*c*c*c*c);
 scalarvalueType facV = (A1 + 2.0*A2*c + 3.0*A3*c*c + 4.0*A4*c*c*c);
-scalarvalueType faccV = (2.0*A2 + 6.0*c + 12.0*A4*c*c);
+scalarvalueType faccV = (2.0*A2 + 6.0*A3*c + 12.0*A4*c*c);
 scalarvalueType fbV = (B2*c*c + B1*c + B0);
 scalarvalueType fbcV = (2.0*B2*c + B1);
 scalarvalueType fbccV = constV(2.0*B2);

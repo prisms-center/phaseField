@@ -1,14 +1,21 @@
+// =============================================================================================
+// loadPostProcessorVariableAttributes: Set the attributes of the postprocessing variables
+// =============================================================================================
+// This function is analogous to 'loadVariableAttributes' in 'equations.h', but for
+// the postprocessing expressions. It sets the attributes for each postprocessing
+// expression, including its name, whether it is a vector or scalar (only scalars are
+// supported at present), its dependencies on other variables and their derivatives,
+// and whether to calculate an integral of the postprocessed quantity over the entire
+// domain. Note: this function is not a member of customPDE.
 
-// =================================================================================
-// Set the attributes of the primary field variables
-// =================================================================================
 void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 	// Variable 0
 	set_variable_name				(0,"f_tot");
 	set_variable_type				(0,SCALAR);
 
-	set_need_value_residual_term	(0,true);
-	set_need_gradient_residual_term	(0,false);
+    set_dependencies_value_term_RHS(0, "c, grad(c), n1, grad(n1), n2, grad(n2), n3, grad(n3), grad(u)");
+    set_dependencies_gradient_term_RHS(0, "");
+
 
     set_output_integral         	(0,true);
 
@@ -23,31 +30,34 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 				variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
 												const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-		scalarvalueType f_tot = constV(0.0);
+        // --- Getting the values and derivatives of the model variables ---
 
-		// The concentration and its derivatives 
+		// The concentration and its derivatives
 		scalarvalueType c = variable_list.get_scalar_value(0);
 		scalargradType cx = variable_list.get_scalar_gradient(0);
 
-		// The first order parameter and its derivatives 
+		// The first order parameter and its derivatives
 		scalarvalueType n1 = variable_list.get_scalar_value(1);
 		scalargradType n1x = variable_list.get_scalar_gradient(1);
 
-		// The second order parameter and its derivatives 
+		// The second order parameter and its derivatives
 		scalarvalueType n2 = variable_list.get_scalar_value(2);
 		scalargradType n2x = variable_list.get_scalar_gradient(2);
 
-		// The third order parameter and its derivatives 
+		// The third order parameter and its derivatives
 		scalarvalueType n3 = variable_list.get_scalar_value(3);
 		scalargradType n3x = variable_list.get_scalar_gradient(3);
 
-		// The derivative of the displacement vector 
+		// The derivative of the displacement vector
 		vectorgradType ux = variable_list.get_vector_gradient(4);
 
+        // --- Setting the expressions for the terms in the postprocessing expressions ---
 
-		// Free energy expressions and interpolation functions
-		scalarvalueType faV = (A0+A1*c+A2*c*c+A3*c*c*c+A4*c*c*c*c);
-		scalarvalueType fbV = (B2*c*c + B1*c + B0);
+        scalarvalueType f_tot = constV(0.0);
+
+        // Free energy expressions and interpolation functions
+        scalarvalueType faV = pfunct_faV.val(c);
+        scalarvalueType fbV = pfunct_fbV.val(c);
 		scalarvalueType h1V = (10.0*n1*n1*n1-15.0*n1*n1*n1*n1+6.0*n1*n1*n1*n1*n1);
 		scalarvalueType h2V = (10.0*n2*n2*n2-15.0*n2*n2*n2*n2+6.0*n2*n2*n2*n2*n2);
 		scalarvalueType h3V = (10.0*n3*n3*n3-15.0*n3*n3*n3*n3+6.0*n3*n3*n3*n3*n3);
@@ -136,7 +146,8 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 
 		f_tot = f_chem + f_grad + f_el;
 
-// Residuals for the equation to evolve the order parameter 
-pp_variable_list.set_scalar_value_residual_term(0, f_tot);
+// --- Submitting the terms for the postprocessing expressions ---
+
+pp_variable_list.set_scalar_value_term_RHS(0, f_tot);
 
 }

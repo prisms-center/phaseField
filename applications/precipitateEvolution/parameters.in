@@ -1,7 +1,3 @@
-# Parameter list for the Mg-RE precipitate nucleation application
-
-# Refer to the PRISMS-PF manual for use of these parameters in the source code.
-
 # =================================================================================
 # Set the number of dimensions (1, 2, or 3 for a 1D, 2D, or 3D calculation)
 # =================================================================================

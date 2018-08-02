@@ -11,14 +11,20 @@ void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, con
     // Use "if" statements to set the initial condition for each variable
     // according to its variable index
 
+	  double dx=userInputs.domain_size[0]/((double) userInputs.subdivisions[0])/std::pow(2.0,userInputs.refine_factor);
 
-  if (index ==0){
-      scalar_IC = 0.5*(1.0-std::tanh((p[0]-50.0)/1.5));
-  }
-  else {
-      scalar_IC = p[0]/200.0;
-  }
+	  double r=0.0;
 
+	  // Initial condition for the concentration field
+	  if (index == 0){
+        scalar_IC = c_avg;
+	  }
+	  // Initial condition for the structural order parameter field
+	  else {
+        scalar_IC = 0.0;
+	  }
+
+	  // --------------------------------------------------------------------------
 }
 
 // ===========================================================================

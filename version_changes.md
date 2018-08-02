@@ -5,6 +5,8 @@ Changes to the example applications:
 - New application: CHAC_performance_test. This app is very similar to 'coupledCahnHilliardAllenCahn', but is 3D and was designed for scaling and performance comparisons to a finite difference code.
 - The grainGrowth app has been overhauled and now uses the grain remapping capabilities.
 - The singlePrecipitateKKS app has been removed in favor of the MgNd_precipitate_single_Bppp app.
+- A typo has been fixed in the expression for 'faccV' in precipitateEvolution
+- Renamed "preferential_nucleationModel" to "nucleationModel_preferential" so that they are next to each other in file listings.
 
 Added functionality:
 - The user can now specify a parameters file other than 'parameters.in'. The syntax is: './main -i other_parameters_file.in'
