@@ -41,11 +41,11 @@ if (${CMAKE_BUILD_TYPE} MATCHES DebugRelease)
 	SET(CMAKE_BUILD_TYPE Debug)
 endif()
 
-# Check if postprocess.h and nucleation.h exist and set preprocessor variables
-if (EXISTS "postprocess.h")
+# Check if postprocess.cc and nucleation.cc exist and set preprocessor variables
+if (EXISTS "postprocess.cc")
 	add_definitions(-DPOSTPROCESS_FILE_EXISTS)
 endif()
-if (EXISTS "nucleation.h")
+if (EXISTS "nucleation.cc")
 	add_definitions(-DNUCLEATION_FILE_EXISTS)
 endif()
 
