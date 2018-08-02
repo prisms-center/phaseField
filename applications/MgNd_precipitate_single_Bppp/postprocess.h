@@ -1,44 +1,51 @@
-// =================================================================================
-// Set the attributes of the primary field variables
-// =================================================================================
+// =============================================================================================
+// loadPostProcessorVariableAttributes: Set the attributes of the postprocessing variables
+// =============================================================================================
+// This function is analogous to 'loadVariableAttributes' in 'equations.h', but for
+// the postprocessing expressions. It sets the attributes for each postprocessing
+// expression, including its name, whether it is a vector or scalar (only scalars are
+// supported at present), its dependencies on other variables and their derivatives,
+// and whether to calculate an integral of the postprocessed quantity over the entire
+// domain. Note: this function is not a member of customPDE.
+
 void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 	// Variable 0
 	set_variable_name				(0,"f_tot");
 	set_variable_type				(0,SCALAR);
 
-	set_need_value_residual_term	(0,true);
-	set_need_gradient_residual_term	(0,false);
+    set_dependencies_value_term_RHS(0, "c, grad(mu), n1, grad(n1), grad(u)");
+    set_dependencies_gradient_term_RHS(0, "");
 
     set_output_integral         	(0,true);
 
 	// Variable 1
-	set_variable_name				(1,"mu_c");
+	set_variable_name				(1,"von_mises_stress");
 	set_variable_type				(1,SCALAR);
 
-	set_need_value_residual_term	(1,true);
-	set_need_gradient_residual_term	(1,false);
+    set_dependencies_value_term_RHS(1, "c, n1, grad(u)");
+    set_dependencies_gradient_term_RHS(1, "");
 
-    set_output_integral         	(1,false);
-
-
-	// Variable 2
-	set_variable_name				(2,"von_mises_stress");
-	set_variable_type				(2,SCALAR);
-
-	set_need_value_residual_term	(2,true);
-	set_need_gradient_residual_term	(2,false);
-	set_output_integral         	(2,false);
+	set_output_integral         	(1,false);
 
 }
 
-// =================================================================================
+// =============================================================================================
+// postProcessedFields: Set the postprocessing expressions
+// =============================================================================================
+// This function is analogous to 'explicitEquationRHS' and 'nonExplicitEquationRHS' in
+// equations.h. It takes in "variable_list" and "q_point_loc" as inputs and outputs two terms in
+// the expression for the postprocessing variable -- one proportional to the test
+// function and one proportional to the gradient of the test function. The index for
+// each variable in this list corresponds to the index given at the top of this file (for
+// submitting the terms) and the index in 'equations.h' for assigning the values/derivatives of
+// the primary variables.
 
 template <int dim,int degree>
 void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-	variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
-	const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+				variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
+												const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-		scalarvalueType total_energy_density = constV(0.0);
+    // --- Getting the values and derivatives of the model variables ---
 
 		/// The concentration and its derivatives (names here should match those in the macros above)
 		scalarvalueType c = variable_list.get_scalar_value(0);
@@ -52,6 +59,29 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 		// The derivative of the displacement vector (names here should match those in the macros above)
 		vectorgradType ux = variable_list.get_vector_gradient(3);
 
+        // --- Setting the expressions for the terms in the postprocessing expressions ---
+
+        scalarvalueType h1V = (3.0*n1*n1-2.0*n1*n1*n1);
+        scalarvalueType hn1V = (6.0*n1-6.0*n1*n1);
+
+        // This double-well function can be used to tune the interfacial energy
+        scalarvalueType fbarrierV = (n1*n1-2.0*n1*n1*n1+n1*n1*n1*n1);
+        scalarvalueType fbarriernV = (2.0*n1-6.0*n1*n1+4.0*n1*n1*n1);
+
+        // Calculate c_alpha and c_beta from c
+        scalarvalueType c_alpha = ((B2*c+0.5*(B1-A1)*h1V)/(A2*h1V+B2*(1.0-h1V)));
+        scalarvalueType c_beta = ((A2*c+0.5*(A1-B1)*(1.0-h1V))/(A2*h1V+B2*(1.0-h1V)));
+
+        scalarvalueType faV = (A2*c_alpha*c_alpha + A1*c_alpha + A0);
+        scalarvalueType facV = (2.0*A2*c_alpha +A1);
+        scalarvalueType faccV = (constV(2.0)*A2);
+        scalarvalueType fbV = (B2*c_beta*c_beta + B1*c_beta + B0);
+        scalarvalueType fbcV = (2.0*B2*c_beta +B1);
+        scalarvalueType fbccV = (constV(2.0)*B2);
+
+        // Start calculating components of the energy density
+        scalarvalueType total_energy_density = constV(0.0);
+
 		scalarvalueType f_chem = (constV(1.0)-(h1V))*faV + (h1V)*fbV + constV(W)*fbarrierV;
 
 		scalarvalueType f_grad = constV(0.0);
@@ -61,6 +91,8 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 				f_grad += constV(0.5*Kn1[i][j])*n1x[i]*n1x[j];
 			}
 		}
+
+
 
 		// Calculate the derivatives of c_beta (derivatives of c_alpha aren't needed)
 		scalarvalueType cbnV, cbcV, cbcnV,cacV;
@@ -189,9 +221,9 @@ for (unsigned int b=0; b<dim; b++){
 }
 }
 
-// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
-pp_variable_list.set_scalar_value_residual_term(0, total_energy_density);
-pp_variable_list.set_scalar_value_residual_term(1, mu_c);
-pp_variable_list.set_scalar_value_residual_term(2, vm_stress);
+// --- Submitting the terms for the postprocessing expressions ---
+
+pp_variable_list.set_scalar_value_term_RHS(0, total_energy_density);
+pp_variable_list.set_scalar_value_term_RHS(1, vm_stress);
 
 }

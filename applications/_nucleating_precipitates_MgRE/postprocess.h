@@ -1,14 +1,21 @@
-// =================================================================================
-// Set the attributes of the primary field variables
-// =================================================================================
+// =============================================================================================
+// loadPostProcessorVariableAttributes: Set the attributes of the postprocessing variables
+// =============================================================================================
+// This function is analogous to 'loadVariableAttributes' in 'equations.h', but for
+// the postprocessing expressions. It sets the attributes for each postprocessing
+// expression, including its name, whether it is a vector or scalar (only scalars are
+// supported at present), its dependencies on other variables and their derivatives,
+// and whether to calculate an integral of the postprocessed quantity over the entire
+// domain. Note: this function is not a member of customPDE.
+
 void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 
 	// Variable 0
 	set_variable_name				(0,"f_tot");
 	set_variable_type				(0,SCALAR);
 
-	set_need_value_residual_term	(0,true);
-	set_need_gradient_residual_term	(0,false);
+    set_dependencies_value_term_RHS(0, "c, n1, grad(n1), n2, grad(n2), n2, grad(n3), grad(u)");
+    set_dependencies_gradient_term_RHS(0, "");
 
     set_output_integral         	(0,true);
 
@@ -16,57 +23,57 @@ void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 	set_variable_name				(1,"f_el");
 	set_variable_type				(1,SCALAR);
 
-	set_need_value_residual_term	(1,true);
-	set_need_gradient_residual_term	(1,false);
+    set_dependencies_value_term_RHS(0, "grad(u)");
+    set_dependencies_gradient_term_RHS(0, "");
 
-    set_output_integral         	(1,true);
+    set_output_integral         	(1,false);
 
 	// Variable 2
 	set_variable_name				(2,"von_mises_stress");
 	set_variable_type				(2,SCALAR);
 
-	set_need_value_residual_term	(2,true);
-	set_need_gradient_residual_term	(2,false);
+    set_dependencies_value_term_RHS(0, "grad(u)");
+    set_dependencies_gradient_term_RHS(0, "");
 
-	set_output_integral         	(2,true);
+	set_output_integral         	(2,false);
 
 }
 
-// =================================================================================
+// =============================================================================================
+// postProcessedFields: Set the postprocessing expressions
+// =============================================================================================
+// This function is analogous to 'explicitEquationRHS' and 'nonExplicitEquationRHS' in
+// equations.h. It takes in "variable_list" and "q_point_loc" as inputs and outputs two terms in
+// the expression for the postprocessing variable -- one proportional to the test
+// function and one proportional to the gradient of the test function. The index for
+// each variable in this list corresponds to the index given at the top of this file (for
+// submitting the terms) and the index in 'equations.h' for assigning the values/derivatives of
+// the primary variables.
 
 template <int dim,int degree>
 void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-	variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
-	const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+				variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
+												const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
+// --- Getting the values and derivatives of the model variables ---
 
-// The order parameter and its derivatives (names here should match those in the macros above)
-
-// The concentration and its derivatives (names here should match those in the macros above)
+// The concentration and its derivatives
 scalarvalueType c = variable_list.get_scalar_value(0);
 
-// The first order parameter and its derivatives (names here should match those in the macros above)
+// The first order parameter and its derivatives
 scalarvalueType n1 = variable_list.get_scalar_value(1);
 scalargradType n1x = variable_list.get_scalar_gradient(1);
 
-// The second order parameter and its derivatives (names here should match those in the macros above)
+// The second order parameter and its derivatives
 scalarvalueType n2 = variable_list.get_scalar_value(2);
 scalargradType n2x = variable_list.get_scalar_gradient(2);
 
-// The third order parameter and its derivatives (names here should match those in the macros above)
+// The third order parameter and its derivatives
 scalarvalueType n3 = variable_list.get_scalar_value(3);
 scalargradType n3x = variable_list.get_scalar_gradient(3);
 
-// The derivative of the displacement vector (names here should match those in the macros above)
+// The derivative of the displacement vector
 vectorgradType ux = variable_list.get_vector_gradient(4);
-
-// The free energy expressions and their derivatives
-scalarvalueType faV = (A2*c_alpha*c_alpha + A1*c_alpha + A0);
-scalarvalueType facV = (2.0*A2*c_alpha +A1);
-scalarvalueType faccV = (2.0*A2);
-scalarvalueType fbV = (B2*c_beta*c_beta + B1*c_beta + B0);
-scalarvalueType fbcV = (2.0*B2*c_beta +B1);
-scalarvalueType fbccV = (2.0*B2);
 
 // The interpolation functions and their derivatives
 scalarvalueType h1V = (n1*n1*n1*(10.0-15.0*n1+6.0*n1*n1));
@@ -76,16 +83,23 @@ scalarvalueType hn2V = (30.0*(n2-1.0)*(n2-1.0)*n2*n2);
 scalarvalueType h3V = (n3*n3*n3*(10.0-15.0*n3+6.0*n3*n3));
 scalarvalueType hn3V = (30.0*(n3-1.0)*(n3-1.0)*n3*n3);
 
+scalarvalueType sum_hpV = h1V+h2V+h3V;
+scalarvalueType c_alpha = ((B2*c+0.5*(B1-A1)*sum_hpV))/(A2*(sum_hpV)+B2*(1.0-sum_hpV));
+scalarvalueType c_beta  = ((A2*c+0.5*(A1-B1)*(1.0-sum_hpV))/(A2*(sum_hpV)+B2*(1.0-sum_hpV)));
+
+// The free energy expressions and their derivatives
+scalarvalueType faV = (A2*c_alpha*c_alpha + A1*c_alpha + A0);
+scalarvalueType facV = (2.0*A2*c_alpha +A1);
+scalarvalueType faccV = (constV(2.0)*A2);
+scalarvalueType fbV = (B2*c_beta*c_beta + B1*c_beta + B0);
+scalarvalueType fbcV = (2.0*B2*c_beta +B1);
+scalarvalueType fbccV = (constV(2.0)*B2);
+
 // This double-well function can be used to tune the interfacial energy and its derivatives
 scalarvalueType fbarrierV = (n1*n1-2.0*n1*n1*n1+n1*n1*n1*n1 + n2*n2-2.0*n2*n2*n2+n2*n2*n2*n2 + n3*n3-2.0*n3*n3*n3+n3*n3*n3*n3 + 5.0*(n1*n1*n2*n2 + n1*n1*n3*n3 + n2*n2*n3*n3) + 5.0*n1*n1*n2*n2*n3*n3);
 scalarvalueType fbarriern1V = (2.0*n1-6.0*n1*n1+4.0*n1*n1*n1 + 10.0*n1*(n2*n2+n3*n3) + 10.0*n1*n2*n2*n3*n3);
 scalarvalueType fbarriern2V = (2.0*n2-6.0*n2*n2+4.0*n2*n2*n2 + 10.0*n2*(n1*n1+n3*n3) + 10.0*n2*n1*n1*n3*n3);
 scalarvalueType fbarriern3V = (2.0*n3-6.0*n3*n3+4.0*n3*n3*n3 + 10.0*n3*(n2*n2+n1*n1) + 10.0*n3*n2*n2*n1*n1);
-
-
-scalarvalueType sum_hpV = h1V+h2V+h3V;
-scalarvalueType c_alpha = ((B2*c+0.5*(B1-A1)*sum_hpV))/(A2*(sum_hpV)+B2*(1.0-sum_hpV));
-scalarvalueType c_beta  = ((A2*c+0.5*(A1-B1)*(1.0-sum_hpV))/(A2*(sum_hpV)+B2*(1.0-sum_hpV)));
 
 // Calculate the derivatives of c_beta (derivatives of c_alpha aren't needed)
 // Note: this section can be optimized to reduce recalculations
@@ -176,9 +190,9 @@ else {
 }
 
 
-// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
-pp_variable_list.set_scalar_value_residual_term(0, total_energy_density);
-pp_variable_list.set_scalar_value_residual_term(1, f_el);
-pp_variable_list.set_scalar_value_residual_term(2, vm_stress);
+// --- Submitting the terms for the postprocessing expressions ---
+pp_variable_list.set_scalar_value_term_RHS(0, total_energy_density);
+pp_variable_list.set_scalar_value_term_RHS(1, f_el);
+pp_variable_list.set_scalar_value_term_RHS(2, vm_stress);
 
 }

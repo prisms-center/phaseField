@@ -134,9 +134,12 @@ void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 				  }
 			  }
 
-			  VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
-				  direction, NonUniformDirichletBC<dim,degree>(currentFieldIndex,direction,currentTime,this), *(ConstraintMatrix*) \
-				  constraintsDirichletSet[currentFieldIndex],mask);
+			  // VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
+				//   direction, NonUniformDirichletBC<dim,degree>(currentFieldIndex,direction,currentTime,this), *(ConstraintMatrix*) \
+				//   constraintsDirichletSet[currentFieldIndex],mask);
+                VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
+                 direction, NonUniformDirichletBCVector<dim,degree>(currentFieldIndex,direction,currentTime,this), *(ConstraintMatrix*) \
+                 constraintsDirichletSet[currentFieldIndex],mask);
 
 
 		  }

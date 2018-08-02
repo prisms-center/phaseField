@@ -11,38 +11,27 @@ void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, con
     // Use "if" statements to set the initial condition for each variable
     // according to its variable index
 
-	  double center[4][3] = {{1.0/3.0,1.0/3.0,0.5},{2.0/3.0,2.0/3.0,0.5},{3.0/4.0,1.0/4.0,0.5},{1.0/4.0,3.0/4,0.5}};
-	  double rad[4] = {userInputs.domain_size[0]/16.0, userInputs.domain_size[0]/16.0, userInputs.domain_size[0]/16.0, userInputs.domain_size[0]/16.0};
-	  double orientation[4] = {1,1,2,3};
-	  double dx=userInputs.domain_size[0]/((double) userInputs.subdivisions[0])/std::pow(2.0,userInputs.refine_factor);
-	  double dist;
-	  scalar_IC = 0;
+      // Initial condition parameters
+      double c_matrix = 0.006;
 
-	  if (index==0){
-		  scalar_IC = 0.04;
-	  }
-
-	  for (unsigned int i=0; i<4; i++){
-		  dist = 0.0;
-		  for (unsigned int dir = 0; dir < dim; dir++){
-			  dist += (p[dir]-center[i][dir]*userInputs.domain_size[dir])*(p[dir]-center[i][dir]*userInputs.domain_size[dir]);
-		  }
-		  dist = std::sqrt(dist);
-
-		  if (index == orientation[i]){
-			  scalar_IC +=	0.5*(1.0-std::tanh((dist-rad[i])/(dx)));
-		  }
-
-	  }
-
-      if (index ==4){
+      if (index==0){
+          scalar_IC = c_matrix;
+      }
+      else if (index == 1){
+          scalar_IC = 0.0;
+      }
+      else if (index==2||index==3){
+          scalar_IC = 0.0;
+      }
+      else {
           for (unsigned int d=0; d<dim; d++){
               vector_IC(d) = 0.0;
           }
       }
 
-	  // --------------------------------------------------------------------------
+      // --------------------------------------------------------------------------
   }
+
 
   // ===========================================================================
   // FUNCTION FOR NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS

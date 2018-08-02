@@ -29,9 +29,26 @@ public:
       matrix_free_pde->setInitialCondition(p, index, scalar_IC, vector_IC);
       return scalar_IC;
   };
+
+private:
+    MatrixFreePDE<dim,degree>* matrix_free_pde;
+};
+
+template <int dim, int degree>
+class InitialConditionVector : public dealii::Function<dim>
+{
+public:
+  const unsigned int index;
+  const userInputParameters<dim> userInputs;
+  dealii::Vector<double> values;
+  InitialConditionVector (const unsigned int _index, const userInputParameters<dim> _userInputs, MatrixFreePDE<dim,degree>* _matrix_free_pde) : dealii::Function<dim>(dim), index(_index), userInputs(_userInputs),matrix_free_pde(_matrix_free_pde) {
+    std::srand(dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)+1);
+  }
+
   // IC for vector values
   void vector_value (const dealii::Point<dim> &p,dealii::Vector<double> &vector_IC) const {
       double scalar_IC = 0.0;
+      vector_IC.reinit(dim);
       matrix_free_pde->setInitialCondition(p, index, scalar_IC, vector_IC);
   };
 

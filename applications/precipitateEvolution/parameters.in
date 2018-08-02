@@ -63,20 +63,20 @@ set Time step = 6.0e-4
 set Number of time steps = 20000
 
 # =================================================================================
-# Set the elliptic solver parameters
+# Set the linear solver parameters
 # =================================================================================
-# The solver type (currently the only recommended option is conjugate gradient)
-set Linear solver = SolverCG
 
-# The flag that determines whether the tolerance for solver convergence should
-# be an absolute tolerance or a relative tolerance
-set Use absolute convergence tolerance = true
+subsection Linear solver parameters: u
+    # Whether the tolerance value is compared to the residual (ABSOLUTE_RESIDUAL)
+    # or the change in the residual (RELATIVE_RESIDUAL_CHANGE)
+    set Tolerance type = ABSOLUTE_RESIDUAL
 
-# The tolerance for convergence (L2 norm of the residual)
-set Solver tolerance value = 5.0e-3
+    # The tolerance for convergence (L2 norm)
+    set Tolerance value = 5e-3
 
-# The maximum number of solver iterations per time step
-set Maximum allowed solver iterations = 1000
+    # The maximum number of linear solver iterations per solve
+    set Maximum linear solver iterations = 1000
+end
 
 # =================================================================================
 # Set the output parameters
@@ -130,13 +130,13 @@ set Boundary condition for variable c = NATURAL
 set Boundary condition for variable n1 = NATURAL
 set Boundary condition for variable n2 = NATURAL
 set Boundary condition for variable n3 = NATURAL
-#set Boundary condition for variable u, x component = DIRICHLET: 0.0
-#set Boundary condition for variable u, y component = DIRICHLET: 0.0
-#set Boundary condition for variable u, z component = DIRICHLET: 0.0
+set Boundary condition for variable u, x component = DIRICHLET: 0.0
+set Boundary condition for variable u, y component = DIRICHLET: 0.0
+set Boundary condition for variable u, z component = DIRICHLET: 0.0
 
-set Boundary condition for variable u, x component = DIRICHLET: 0.0, DIRICHLET: 1.0, NATURAL, NATURAL
-set Boundary condition for variable u, y component = NATURAL
-set Boundary condition for variable u, z component = NATURAL
+#set Boundary condition for variable u, x component = DIRICHLET: 0.0, DIRICHLET: 1.0, NATURAL, NATURAL
+#set Boundary condition for variable u, y component = NATURAL
+#set Boundary condition for variable u, z component = NATURAL
 
 # =================================================================================
 # Set the model constants
