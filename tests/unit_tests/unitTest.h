@@ -48,6 +48,8 @@ void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Vectorized
 #include "../../src/matrixfree/nucleation.cc"
 #include "../../src/matrixfree/checkpoint.cc"
 
+#include "../../src/matrixfree/reassignGrains.cc"
+
 #include "../../src/matrixfree/setNonlinearEqInitialGuess.cc"
 
 #include "../../src/inputFileReader/inputFileReader.cc"
