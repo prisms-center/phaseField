@@ -107,7 +107,9 @@ $(document).ready(function(){initNavTree('tests.html','');});
 <div class="title">Tests </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"></div></div><!-- contents -->
+<div class="textblock"><p>The 'tests' folder in the root directory contains some tests to ensure that PRISMS-PF is working properly. A battery of automated tests can be found in the 'automated_tests' directory. These can be run by running the python script '<a class="el" href="run__automatic__tests_8py.html">run_automatic_tests.py</a>'. This will run a series of unit and regression tests, printing a summary of the results to the screen and writing to the file 'test_results.txt'. This python file can also be used as an example of automating PRISMS-PF simulations.</p>
+<p>The unit_tests' directory contains a driver for a series of unit tests. To run them enter: </p><div class="fragment"><div class="line">$ cmake .</div><div class="line">$ make debug</div><div class="line">$ mpirun -n 1 main</div></div><!-- fragment --><p> A summary of the tests will print to the screen. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
