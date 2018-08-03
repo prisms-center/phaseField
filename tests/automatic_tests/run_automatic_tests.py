@@ -61,7 +61,7 @@ def run_simulation(run_name,dir_path):
 	# Compile and run
 	subprocess.call(["cmake", "."]) # print to the screen to prevent a timeout on Travis
 	subprocess.call(["make", "release","-j9"],stdout=f)
-	print "Compiling complete, running the regression test..."
+	print("Compiling complete, running the regression test...")
 	sys.stdout.flush()
 	start = time.time()
 	subprocess.call(["mpirun", "-n", "1", "main"],stdout=f)
@@ -141,17 +141,17 @@ def run_regression_test(applicationName,getNewGoldStandard,dir_path):
 		test_passed = True
 
 	# Print the results to the screen
-	print "Regression Test: ", applicationName
+	print("Regression Test: ", applicationName)
 
 	if test_passed:
 		if getNewGoldStandard == False:
-			print "Result: Pass"
+			print("Result: Pass")
 		else:
-			print "Result: New Gold Standard"
+			print("Result: New Gold Standard")
 	else:
-		print "Result: Fail"
+		print("Result: Fail")
 
-	print "Time taken:", test_time
+	print("Time taken:", test_time)
 
 	sys.stdout.flush()
 
@@ -193,8 +193,8 @@ unit_test_results = run_unit_tests()
 unit_tests_passed = unit_test_results[0]
 unit_test_counter = unit_test_results[1]
 
-print
-print "Unit Tests Passed: "+str(unit_tests_passed)+"/"+str(unit_test_counter)+"\n"
+print()
+print("Unit Tests Passed: "+str(unit_tests_passed)+"/"+str(unit_test_counter)+"\n")
 
 sys.stdout.flush()
 
@@ -217,12 +217,12 @@ text_file.write("Regression test on " + now.strftime("%Y-%m-%d %H:%M") + "\n")
 text_file.write("--------------------------------------------------------- \n")
 text_file.close()
 
-#applicationList = ["allenCahn","cahnHilliard","cahnHilliardWithAdaptivity","CHAC_anisotropy","CHAC_anisotropyRegularized","coupledCahnHilliardAllenCahn","mechanics","precipitateEvolution"]
+#applicationList = ["allenCahn","cahnHilliard","cahnHilliard","CHAC_anisotropy","CHAC_anisotropyRegularized","coupledCahnHilliardAllenCahn","mechanics","precipitateEvolution"]
 #getNewGoldStandardList = [False, False, False, False, False, False, False, False]
 
 # Shorter list of applications so that it completes on Travis
-applicationList = ["allenCahn","cahnHilliardWithAdaptivity","CHAC_anisotropyRegularized","coupledCahnHilliardAllenCahn","precipitateEvolution"]
-getNewGoldStandardList = [False, False, False, False, False, False]
+applicationList = ["allenCahn","cahnHilliard","CHAC_anisotropyRegularized","coupledCahnHilliardAllenCahn","precipitateEvolution"]
+getNewGoldStandardList = [False, False, False, False, False]
 #applicationList = ["allenCahn"]
 #getNewGoldStandardList = [False]
 
@@ -234,8 +234,8 @@ for applicationName in applicationList:
 	regression_test_counter += 1
 	regression_tests_passed += int(test_result[0])
 
-print
-print "Regression Tests Passed: "+str(regression_tests_passed)+"/"+str(regression_test_counter)+"\n"
+print()
+print("Regression Tests Passed: "+str(regression_tests_passed)+"/"+str(regression_test_counter)+"\n")
 
 
 # Output the overall test results
