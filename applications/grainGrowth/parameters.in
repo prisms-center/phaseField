@@ -85,7 +85,6 @@ set Order parameter cutoff for grain identification = 1e-2
 set Buffer between grains before reassignment = 5.0
 set Load grain structure = false
 
-
 # =================================================================================
 # Set the boundary conditions
 # =================================================================================

@@ -5,6 +5,7 @@
 #include <iterator>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 #include <deal.II/base/mpi.h>
 
 class ParseCommandLineOpts{
