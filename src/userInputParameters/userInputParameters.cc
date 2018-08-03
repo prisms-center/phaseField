@@ -1,5 +1,7 @@
 // Methods for the userInputParameters class
 #include "../../include/userInputParameters.h"
+#include <deal.II/base/mpi.h>
+#include <deal.II/base/utilities.h>
 
 template <int dim>
 userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reader, dealii::ParameterHandler & parameter_handler, variableAttributeLoader variable_attributes){

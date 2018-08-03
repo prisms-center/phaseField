@@ -2,6 +2,8 @@
 #include "../../include/inputFileReader.h"
 #include "../../include/sortIndexEntryPairList.h"
 #include "../../include/EquationDependencyParser.h"
+#include <deal.II/base/mpi.h>
+#include <deal.II/base/utilities.h>
 
 // Constructor
 inputFileReader::inputFileReader(std::string input_file_name, variableAttributeLoader variable_attributes){
