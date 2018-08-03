@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['plibrary_5fcc',['PLIBRARY_CC',['../_p_library_8cc.html#af3d7c7d1fd1ac16fde2ea2f8faf4d2c3',1,'PLibrary.cc']]]
+  ['knv',['KnV',['../finite__difference__comparison_2_a_c__speed__comparison_2residuals_8h.html#aa4fd412828f9062720bd4a6e31e2d8ed',1,'KnV():&#160;residuals.h'],['../finite__difference__comparison_2_c_h_a_c__speed__comparison_2equations_8h.html#aa4fd412828f9062720bd4a6e31e2d8ed',1,'KnV():&#160;equations.h'],['../indexing__tests_2index_test_2equations_8h.html#aa4fd412828f9062720bd4a6e31e2d8ed',1,'KnV():&#160;equations.h']]]
 ];

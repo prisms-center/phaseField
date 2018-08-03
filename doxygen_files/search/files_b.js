@@ -1,27 +1,8 @@
 var searchData=
 [
-  ['parallelnucleationlist_2ecc',['parallelNucleationList.cc',['../parallel_nucleation_list_8cc.html',1,'']]],
-  ['parallelnucleationlist_2eh',['parallelNucleationList.h',['../parallel_nucleation_list_8h.html',1,'']]],
-  ['pfunction_2eh',['pFunction.h',['../p_function_8h.html',1,'']]],
-  ['plibrary_2ecc',['PLibrary.cc',['../_p_library_8cc.html',1,'']]],
-  ['postprocess_2eh',['postprocess.h',['../allen_cahn__pfield_2postprocess_8h.html',1,'']]],
-  ['postprocess_2eh',['postprocess.h',['../_c_hi_ma_d__benchmark6a_2postprocess_8h.html',1,'']]],
-  ['postprocess_2eh',['postprocess.h',['../_c_hi_ma_d__benchmark2a_2postprocess_8h.html',1,'']]],
-  ['postprocess_2eh',['postprocess.h',['../single_precipitate_k_k_s_2postprocess_8h.html',1,'']]],
-  ['postprocess_2eh',['postprocess.h',['../_c_hi_ma_d__benchmark1a_2postprocess_8h.html',1,'']]],
-  ['postprocess_2eh',['postprocess.h',['../precipitate_evolution_2postprocess_8h.html',1,'']]],
-  ['postprocess_2eh',['postprocess.h',['../mechanics_2postprocess_8h.html',1,'']]],
-  ['postprocess_2eh',['postprocess.h',['../grain_growth_2postprocess_8h.html',1,'']]],
-  ['postprocess_2eh',['postprocess.h',['../eshelby_inclusion_2postprocess_8h.html',1,'']]],
-  ['postprocess_2eh',['postprocess.h',['../_c_h_a_c__anisotropy_2postprocess_8h.html',1,'']]],
-  ['postprocess_2eh',['postprocess.h',['../allen_cahn_2postprocess_8h.html',1,'']]],
-  ['postprocess_2eh',['postprocess.h',['../cahn_hilliard_with_adaptivity_2postprocess_8h.html',1,'']]],
-  ['postprocess_2eh',['postprocess.h',['../precipitate_evolution__pfunction_2postprocess_8h.html',1,'']]],
-  ['postprocess_2eh',['postprocess.h',['../cahn_hilliard_2postprocess_8h.html',1,'']]],
-  ['postprocess_2eh',['postprocess.h',['../_c_h_a_c__anisotropy_regularized_2postprocess_8h.html',1,'']]],
-  ['postprocess_2eh',['postprocess.h',['../anisotropy_facet_2postprocess_8h.html',1,'']]],
-  ['postprocess_2eh',['postprocess.h',['../coupled_cahn_hilliard_allen_cahn_2postprocess_8h.html',1,'']]],
-  ['postprocess_2eh',['postprocess.h',['../_c_hi_ma_d__benchmark6b_2postprocess_8h.html',1,'']]],
-  ['postprocessedfields_2eh',['postProcessedFields.h',['../post_processed_fields_8h.html',1,'']]],
-  ['postprocessor_2ecc',['postprocessor.cc',['../postprocessor_8cc.html',1,'']]]
+  ['reassigngrains_2ecc',['reassignGrains.cc',['../reassign_grains_8cc.html',1,'']]],
+  ['refine_2ecc',['refine.cc',['../refine_8cc.html',1,'']]],
+  ['reinit_2ecc',['reinit.cc',['../reinit_8cc.html',1,'']]],
+  ['run_5fautomatic_5ftests_2epy',['run_automatic_tests.py',['../run__automatic__tests_8py.html',1,'']]],
+  ['running_5fapps_2emd',['running_apps.md',['../running__apps_8md.html',1,'']]]
 ];

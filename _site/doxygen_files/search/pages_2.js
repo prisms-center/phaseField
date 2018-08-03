@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['formulations',['Formulations',['../page1.html',1,'']]]
+  ['other_20app_20files',['Other App Files',['../app_files.html',1,'manual']]]
 ];

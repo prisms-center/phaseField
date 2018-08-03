@@ -11,6 +11,7 @@ This code is developed by the PRedictive Integrated Structural Materials Science
 
 ***
 ## Announcements
+- 8/3/2018: The new [online PRISMS-PF user manual](doxygen_files/manual.html) is released. This replaces the PDF user manual previously used.
 - 5/30/2018: [Version 2.0.2 released.](https://github.com/prisms-center/phaseField/releases/tag/v2.0.2) This is a minor update to v2.0.1. The biggest change is that nucleation parameters can now be set on a per-variable basis.
 - 11/21/2017: [Version 2.0.1 released.](https://github.com/prisms-center/phaseField/releases/tag/v2.0.1) This is a minor update to v2.0. The biggest change is the introduction of a checkpoint/restart system.
 
@@ -22,9 +23,8 @@ This code is developed by the PRedictive Integrated Structural Materials Science
 
 ***
 ## Getting Started
-[User Guide](https://github.com/prisms-center/phaseField/raw/master/prismspf_user_guide.pdf) <br>
-[Installation Instructions (Coming soon, currently found in the user guide)](pages/installation.html) <br>
-[Tutorials (Coming soon)](pages/tutorial.html) <br>
+[User Manual](doxygen_files/manual.html) <br>
+[Installation Instructions](doxygen_files/install.html) <br>
 [Repository of Training Slides and Exercises](https://goo.gl/BBTkJ8)
 
 ***

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['scalar',['SCALAR',['../var_type_enums_8h.html#ae2c3e99c22ce037f68e9b19bfd9c6de2a7efbb6cac96595e63e8fa171bde1eb68',1,'varTypeEnums.h']]]
+  ['relative_5fresidual_5fchange',['RELATIVE_RESIDUAL_CHANGE',['../_solver_parameters_8h.html#a97d35dcc408b10c4fb4081fec6edf2d9a23716cd5e391430e0242b141242a59c4',1,'SolverParameters.h']]]
 ];
