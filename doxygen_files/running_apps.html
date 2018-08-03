@@ -143,21 +143,21 @@ $(document).ready(function(){initNavTree('running_apps.html','');});
 </div>
 <p>Don't worry if the output isn't exactly the same as what you see, the details of some of the messages depend on your operating system and which compilers you have installed. The important part is that the bottom three messages are ''Configuring done'', ''Generating done'', and ''Build files have been written to: ...''. In the future, entering ''$ cmake .'' will result in a shorter set of messages because CMake caches some variables from the last time it was run. As a result, you can omit the CMake step for future simulations as long as the path name to your current directory is unchanged and your installation of deal.II is unchanged.</p>
 <p>Here is a screenshot of typical output from the compiler as you compile the executable: </p><div class="image">
-<img src="../user_manual/images/compile_output.png"/>
+<img src="compile_output.png"/>
 </div>
 <p>Depending on your version of deal.II, different warnings may appear as you compile. Common warnings include the use of functions that deal.II has marked as depricated (as in the screenshot above) and unused type definitions. In this case, PRISMS-PF uses these functions for backward compatability with deal.II version 8.4.x. We will switch to the updated functions in the near future.</p>
 <p>Once the simultation is complete, the terminal output at the end of the simulation should look like:</p>
 <div class="image">
-<img src="../user_manual/images/allenCahn_output.png"/>
+<img src="allenCahn_output.png"/>
 </div>
 <h2>What Can Go Wrong</h2>
 <p>If you were able to enter all of the commands in the previous section and get output similar to the screenshots, congratulations! you just ran your first PRISMS-PF simulation. If not, you may be experiencing one of the common issues listed below.</p>
 <p>If CMake gives an error message like this: </p><div class="image">
-<img src="../user_manual/images/cmake_no_period.png"/>
+<img src="cmake_no_period.png"/>
 </div>
 <p>Then you likely forgot the period at the end of the command <code>$ cmake .</code>.</p>
 <p>If CMake gives an error message like this: </p><div class="image">
-<img src="../user_manual/images/cmake_no_dealii.png"/>
+<img src="cmake_no_dealii.png"/>
 </div>
 <p>CMake cannot find your installation of deal.ii. This issue is probably caused by the lack of an environment variable pointing to the directory containing your deal.II library. You can check this with the following command: </p><div class="fragment"><div class="line">$ echo $DEAL_II_DIR</div></div><!-- fragment --><p> The terminal should then output the path to the deal.II library. For example in Mac OS, the deal.II directory may be ''/Applications/deal.II.app/Resources''. If DEAL_II_DIR contains a path, go there to see if deal.II is actually installed there. If DEAL_II_DIR is incorrect or empty, you should set it to the directory of the correct path of your deal.II installation with the following command: </p><div class="fragment"><div class="line">$ export DEAL_II_DIR=/path/to/dealii</div></div><!-- fragment --><p> Environment variables are erased when you close your shell. To have this path set every time you open a shell (i.e. every time you open a new terminal window), you can add the command above to your shell profile (e.g. .bashrc if you use a bash shell). If you are still having problems, there may be an issue with your deal.II installation. Please consult the deal.II website for instructions.</p>
 <p>If CMake cannot successfully detect a C++ compiler, it will generate an error message. The most common cause for this is that the machine runs the Mac OS operating system with an outdated version of the Clang compiler. Upgrading your OS to version 10.11 or newer, updating Xcode, and (re)installing the Xcode command line tools may help. Alternatively, you can install a certain version of the deal.II package that was developed to sidestep this issue: <a href="https://github.com/dealii/dealii/releases/download/v8.3.0/dealii-8.3.0.nocxx14.dmg">https://github.com/dealii/dealii/releases/download/v8.3.0/dealii-8.3.0.nocxx14.dmg</a></p>
@@ -167,25 +167,25 @@ $(document).ready(function(){initNavTree('running_apps.html','');});
 <p>VisIt: <a href="https://wci.llnl.gov/simulation/computer-codes/visit/">https://wci.llnl.gov/simulation/computer-codes/visit/</a> ParaView: <a href="http://www.paraview.org/">http://www.paraview.org/</a></p>
 <p>To get you started, here is a brief tutorial on how to use VisIt to visualize your simulation results. For more detailed instructions, please consult the <a href="https://wci.llnl.gov/simulation/computer-codes/visit/manuals">VisIt manual</a>.</p>
 <p>After launching the VisIt application, click ''Open'' and find the directory for the Allen Cahn example: </p><div class="image">
-<img src="../user_manual/images/visit_open.png"/>
+<img src="visit_open.png"/>
 </div>
 <p>and select ''solution-*.pvtu'': </p><div class="image">
-<img src="../user_manual/images/visit_path.png"/>
+<img src="visit_path.png"/>
 </div>
 <p>Next, click ''Add'', hover over ''Pseudocolor'', and select ''n'': </p><div class="image">
-<img src="../user_manual/images/visit_add.png"/>
+<img src="visit_add.png"/>
 </div>
 <p>Next, click ''Draw'' to make a plot: </p><div class="image">
-<img src="../user_manual/images/visit_pseudocolor.png"/>
+<img src="visit_pseudocolor.png"/>
 </div>
 <p>The VisIt window will now have a plot of the initial condition of the order parameter: </p><div class="image">
-<img src="../user_manual/images/visit_result.png"/>
+<img src="visit_result.png"/>
 </div>
 <p>The result at other time steps can be visualized by dragging the time bar, or using the controls directly below the time bar. Dragging the time bar to the end will display the final result of the simulation: </p><div class="image">
-<img src="../user_manual/images/visit_time_bar.png"/>
+<img src="visit_time_bar.png"/>
 </div>
  <div class="image">
-<img src="../user_manual/images/visit_final_result.png"/>
+<img src="visit_final_result.png"/>
 </div>
 <p>VisIt has a wide variety of capabilities for visualizing 1D, 2D, and 3D data, including postprocessing of output fields (e.g. to obtain the result of mathematical expressions involving one or more output field). VisIt also has a powerful Python interface to provide scripting capabilities. More more instructions on how to use these, and other, features of VisIt, please consult the <a href="https://wci.llnl.gov/simulation/computer-codes/visit/manuals">VisIt manual</a>.</p>
 <h2>Running the Other Example Applications</h2>
