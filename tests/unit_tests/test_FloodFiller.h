@@ -186,7 +186,7 @@ template <int dim,typename T>
 
     FloodFiller<dim, degree> test_object(fe, quadrature2);
     std::vector<GrainSet<dim>> grain_sets;
-    test_object.calcGrainSets(fe, dof_handler, solution_field, 0.1, 0, grain_sets);
+    test_object.calcGrainSets(fe, dof_handler, solution_field, 0.1, 1.1, 0, grain_sets);
 
     std::vector<std::vector<dealii::Point<dim>>> expected_vertex_list0, expected_vertex_list1;
 

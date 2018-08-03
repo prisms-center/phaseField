@@ -12,7 +12,7 @@ bool unitTest<dim,T>::test_setOutputTimeSteps(){
     std::vector<fieldType> var_types;
     var_types.push_back(SCALAR);
     std::vector<PDEType> var_eq_types;
-    var_eq_types.push_back(ELLIPTIC);
+    var_eq_types.push_back(TIME_INDEPENDENT);
 	std::vector<bool> var_nucleates;
 	var_nucleates.push_back(false);
     input_file_reader.declare_parameters(parameter_handler,var_types,var_eq_types,0,var_nucleates);

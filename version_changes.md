@@ -1,5 +1,5 @@
 # Version 2.1
-Moderate-level update to v2.0, released in August 2018. The largest changes involve a restructuring of the functions in equations.h and ICs_and_BCs.h. Grain remapping was also introduced to permit simulations with hundreds/thousands of grains.
+Moderate-level update to v2.0, released in August 2018. The largest changes involve a restructuring of the functions in equations.cc and ICs_and_BCs.cc. Grain remapping was also introduced to permit simulations with hundreds/thousands of grains.
 
 Changes to the example applications:
 - New application: CHAC_performance_test. This app is very similar to 'coupledCahnHilliardAllenCahn', but is 3D and was designed for scaling and performance comparisons to a finite difference code.
@@ -7,6 +7,9 @@ Changes to the example applications:
 - The singlePrecipitateKKS app has been removed in favor of the MgNd_precipitate_single_Bppp app.
 - A typo has been fixed in the expression for 'faccV' in precipitateEvolution
 - Renamed "preferential_nucleationModel" to "nucleationModel_preferential" so that they are next to each other in file listings.
+- The source files in all of the example app directories have been changed to a ".cc" extension instead of ".h" to properly represent their contents.
+- Merged 'allenCahn_pfield' into 'allenCahn', just using a different input file.
+- Merged 'cahnHilliardWithAdaptivity' into 'cahnHilliard', just using a different input file.
 
 Added functionality:
 - The user can now specify a parameters file other than 'parameters.in'. The syntax is: './main -i other_parameters_file.in'

@@ -15,8 +15,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_variables_and_residuals_need
     var_name.push_back("bc");
 
     std::vector<PDEType> var_eq_type;
-    var_eq_type.push_back(PARABOLIC);
-    var_eq_type.push_back(ELLIPTIC);
+    var_eq_type.push_back(EXPLICIT_TIME_DEPENDENT);
+    var_eq_type.push_back(TIME_INDEPENDENT);
 
 
     // Populate the dependency strings
@@ -286,11 +286,11 @@ bool unitTest<dim,T>::test_EquationDependencyParser_nonlinear(){
     var_name.push_back("klmno");
 
     std::vector<PDEType> var_eq_type;
-    var_eq_type.push_back(PARABOLIC); // Not nonlinear by definition
-    var_eq_type.push_back(ELLIPTIC);  // Crafted to be nonlinear due to RHS
-    var_eq_type.push_back(ELLIPTIC);  // Crafted to be nonlinear due to LHS (due to needed non-change version of governing variable)
-    var_eq_type.push_back(ELLIPTIC);  // Crafted to be nonlinear due to LHS (due to needing a non-governing variable)
-    var_eq_type.push_back(ELLIPTIC);  // Crafted to be linear
+    var_eq_type.push_back(EXPLICIT_TIME_DEPENDENT); // Not nonlinear by definition
+    var_eq_type.push_back(TIME_INDEPENDENT);  // Crafted to be nonlinear due to RHS
+    var_eq_type.push_back(TIME_INDEPENDENT);  // Crafted to be nonlinear due to LHS (due to needed non-change version of governing variable)
+    var_eq_type.push_back(TIME_INDEPENDENT);  // Crafted to be nonlinear due to LHS (due to needing a non-governing variable)
+    var_eq_type.push_back(TIME_INDEPENDENT);  // Crafted to be linear
 
 
     // Populate the dependency strings

@@ -115,7 +115,7 @@ void SimplifiedGrainManipulator<dim>::reassignGrains(
     {
         int thisProc=dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
 
-        for (unsigned int cycle=order_parameter_id_list.size(); cycle>0; cycle--){
+        for (int cycle=order_parameter_id_list.size(); cycle>=0; cycle--){
 
             for (unsigned int g_base=0; g_base < grain_representations.size(); g_base++){
                 unsigned int order_parameter_base = grain_representations.at(g_base).getOrderParameterId();
@@ -147,12 +147,14 @@ void SimplifiedGrainManipulator<dim>::reassignGrains(
                                     if ( spacing < minimum_distance_list.at(order_parameter_spacing_list) ){
                                         minimum_distance_list.at(order_parameter_spacing_list) = spacing;
                                     }
+
                                 }
                             }
                             // Pick the max value of minimum_distance_list to determine which order parameter to switch the base grain to
+                            // Reassign the order parameter for the grains with the conflicts with the most other order parameters. In the very last cycle, the grains that only have conflicts in their own order parameter are reassigned. 
                             double max_distance = -std::numeric_limits<double>::max();
                             unsigned int new_op_index = 0;
-                            unsigned int overlap_counter = 0;
+                            int overlap_counter = 0;
                             for (unsigned int op=0; op<minimum_distance_list.size(); op++){
                                 if (minimum_distance_list.at(op) > max_distance){
                                     max_distance = minimum_distance_list.at(op);
@@ -162,7 +164,6 @@ void SimplifiedGrainManipulator<dim>::reassignGrains(
                                     overlap_counter++;
                                 }
                             }
-
                             if (overlap_counter >= cycle){
                                 grain_representations.at(g_base).setOrderParameterId(new_op_index);
                                 order_parameter_base = new_op_index;

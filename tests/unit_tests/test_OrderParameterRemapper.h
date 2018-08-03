@@ -105,14 +105,17 @@ template <int dim,typename T>
 
     FloodFiller<dim, degree> test_object(fe, quadrature2);
     std::vector<GrainSet<dim>> grain_sets_0;
-    test_object.calcGrainSets(fe, dof_handler, solution_field_0, 0.1, 0, grain_sets_0);
+    test_object.calcGrainSets(fe, dof_handler, solution_field_0, 0.1, 1.1, 0, grain_sets_0);
 
     std::vector<GrainSet<dim>> grain_sets_1;
-    test_object.calcGrainSets(fe, dof_handler, solution_field_1, 0.1, 1, grain_sets_1);
+    test_object.calcGrainSets(fe, dof_handler, solution_field_1, 0.1, 1.1, 1, grain_sets_1);
 
     std::vector<GrainSet<dim>> grain_sets = grain_sets_0;
     grain_sets.insert(grain_sets.end(), grain_sets_1.begin(), grain_sets_1.end());
 
+    for (unsigned int g=0; g<grain_sets.size(); g++){
+        grain_sets.at(g).setGrainIndex(g);
+    }
 
     std::vector<SimplifiedGrainRepresentation<dim>> simplified_grain_representations;
     for (unsigned int g=0; g<grain_sets.size(); g++){
@@ -128,23 +131,29 @@ template <int dim,typename T>
     simplified_grain_manipulator.reassignGrains(simplified_grain_representations, 0.6, order_parameter_id_list);
 
     // ---------- The actual test run of OrderParameterRemapper -----------
-
+    /*
     for (unsigned int g=0; g<simplified_grain_representations.size(); g++){
         std::cout << simplified_grain_representations.at(g).getGrainId() << " " << simplified_grain_representations.at(g).getRadius() << std::endl;
     }
-
+    */
     //std::cout << "Field 0, core" << thisProc << std::endl;
     //solution_fields.at(0)->print(std::cout);
-    std::cout << "Field 1, core" << thisProc << std::endl;
-    solution_fields.at(1)->print(std::cout);
+    //std::cout << "Field 1, core" << thisProc << std::endl;
+    //solution_fields.at(1)->print(std::cout);
 
     OrderParameterRemapper<dim> order_parameter_remapper;
     order_parameter_remapper.remap(simplified_grain_representations, solution_fields, dof_handler, fe.dofs_per_cell, 0.001);
 
+    /*
+    for (unsigned int g=0; g<simplified_grain_representations.size(); g++){
+        std::cout << simplified_grain_representations.at(g).getGrainId() << " " << simplified_grain_representations.at(g).getOrderParameterId() << " " << simplified_grain_representations.at(g).getOldOrderParameterId() << std::endl;
+    }
+    */
+
     //std::cout << "Field 0, core" << thisProc << std::endl;
     //solution_fields.at(0)->print(std::cout);
-    std::cout << "Field 1, core" << thisProc << std::endl;
-    solution_fields.at(1)->print(std::cout);
+    //std::cout << "Field 1, core" << thisProc << std::endl;
+    //solution_fields.at(1)->print(std::cout);
 
     // ---------- Check the result -----------
     pass = true;
