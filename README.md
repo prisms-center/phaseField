@@ -1,5 +1,5 @@
-PRISMS-PF
-=================
+![](logo_v2.png)
+
 <B> Useful Links:</B>
 
 [Code repository](https://github.com/prisms-center/phaseField) <br>
@@ -19,15 +19,12 @@ PRISMS-PF is a powerful, massively parallel finite element code for conducting p
 
 With PRISMS-PF, you have access to adaptive meshing and parallelization with near-ideal scaling for over a thousand processors. Moreover, the matrix-free framework from the deal.II library allows much larger than simulations than typical finite element programs – PRISMS-PF has been used for simulations with over one billion degrees of freedom. PRISMS-PF also provides performance competitive with or exceeding single-purpose codes. For example, even without enabling the mesh adaptivity features in PRISMS-PF, it has been demonstrated to be over 6x faster than an equivalent finite difference code.
 
-  This code is developed by the PRedictive Integrated Structural
-  Materials Science (PRISMS) Center [http://www.prisms-center.org/]
-  at University of Michigan which is supported by the U.S. Department
-  of Energy (DOE), Office of Basic Energy Sciences, Division of Materials Sciences
-  and Engineering under Award #DE-SC0008637
+This code is developed by the PRedictive Integrated Structural Materials Science (PRISMS) Center
+at University of Michigan which is supported by the U.S. Department of Energy (DOE), Office of Basic Energy Sciences, Division of Materials Sciences and Engineering under Award #DE-SC0008637.
 
 <B>Quick Start Guide:</B>
 
-For detailed instructions on how to download and use PRISMS-PF, please consult the PRISMS-PF User Guide (the file prismspf_user_guide.pdf). A (very) abbreviated version of the instructions is given below.
+For detailed instructions on how to download and use PRISMS-PF, please consult the [PRISMS-PF User Manual](https://prisms-center.github.io/phaseField/doxygen_files/manual.html). A (very) abbreviated version of the instructions is given below.
 
 <I>Installation:</I>
 
