@@ -2,7 +2,7 @@
 
 ## Useful Links:
 
-[PRISMS-PF Website](https://prisms-center.github.io/phaseField/)
+[PRISMS-PF Website](https://prisms-center.github.io/phaseField/) <br>
 [Code repository](https://github.com/prisms-center/phaseField) <br>
 [User manual (with installation instructions)](https://prisms-center.github.io/phaseField/doxygen_files/manual.html) <br>
 [User registration link](http://goo.gl/forms/GXo7Im8p2Y) <br>
