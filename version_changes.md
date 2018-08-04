@@ -1,23 +1,35 @@
-# Version 2.1
-Moderate-level update to v2.0, released in August 2018. The largest changes involve a restructuring of the functions in equations.cc and ICs_and_BCs.cc. Grain remapping was also introduced to permit simulations with hundreds/thousands of grains.
+# Version 2.1pre
+Moderate-level update to v2.0, to be released in August 2018. The largest changes involve a restructuring of the functions in equations.cc and ICs_and_BCs.cc. Grain remapping was also introduced to permit simulations with hundreds/thousands of grains.
 
 Changes to the example applications:
 - New application: CHAC_performance_test. This app is very similar to 'coupledCahnHilliardAllenCahn', but is 3D and was designed for scaling and performance comparisons to a finite difference code.
-- The grainGrowth app has been overhauled and now uses the grain remapping capabilities.
+- The grainGrowth app has been overhauled and now uses the grain remapping capabilities (see below). A new grainGrowth_dream3D app was added that reads in a microstructure from dream3D.
 - The singlePrecipitateKKS app has been removed in favor of the MgNd_precipitate_single_Bppp app.
-- A typo has been fixed in the expression for 'faccV' in precipitateEvolution
 - Renamed "preferential_nucleationModel" to "nucleationModel_preferential" so that they are next to each other in file listings.
 - The source files in all of the example app directories have been changed to a ".cc" extension instead of ".h" to properly represent their contents.
 - Merged 'allenCahn_pfield' into 'allenCahn', just using a different input file.
 - Merged 'cahnHilliardWithAdaptivity' into 'cahnHilliard', just using a different input file.
+- Added an app for the CHiMaD/PFHub benchmark #3 problem.
+- Added a steady-state Allen-Cahn solver that uses the new nonlinear solver.
+- Changed the naming convention for the terms in the governing equations.
 
 Added functionality:
+- To reflect their generality, the equation type PARABOLIC is now EXPLICIT_TIME_DEPENDENT and the equation type ELLIPTIC is now TIME_INDEPENDENT.
+- A new equation type AUXILIARY has been introduced to handle time independent equations that don't require a (non)linear solve (e.g. the chemical potential for the split form of the Cahn-Hilliard equation).
+- The core solver loop has been overhauled.  AUXILIARY and TIME_INDEPENDENT equations are now updated before the EXPLICIT_TIME_DEPENDENT equations so that the EXPLICIT_TIME_DEPENDENT equations have up-to-date values for the other fields.
+- A nonlinear solver has been added. It uses Newton's method to solve for each equation and Picard's method to handle coupling between equations.
+- A grain remapping algorithm has been added so that arbitrary numbers of grains can be stored on a few order parameters. When grains are close to coming into contact, one is reassigned to a new order parameter. The initial grain structure can be read in from dream3D (or any voxelated dataset of grain ids).
 - The user can now specify a parameters file other than 'parameters.in'. The syntax is: './main -i other_parameters_file.in'
 
 Bug fixes:
+- A typo has been fixed in the expression for 'faccV' in precipitateEvolution
 
 Other changes:
-- Previously, there were separate initial condition functions and non-uniform Dirichlet BC functions for scalar fields and vector fields. These have been merged so that there is one initial condition function and one non-uniform Dirichlet BC function. These functions are now part of customPDE and have direct access to the model parameters declared in customPDE.h
+- Changed how the equation dependencies are input, making them more specific and more intuitive.
+- Previously, there were separate initial condition functions and non-uniform Dirichlet BC functions for scalar fields and vector fields. These have been merged so that there is one initial condition function and one non-uniform Dirichlet BC function. These functions are now part of customPDE and have direct access to the model parameters declared in customPDE.h.
+- Renamed the functions in the equation file, removing references to 'residuals'. Instead, everything is referred to as a term in the governing equation.
+- The source file names in the app folders have been changed to .cc extensions instead of .h extensions.
+- The deal.II headers in the core library have been pruned so there aren't unneeded ones in many of the classes.
 
 Known issues:
 - The grain remapping algorithm does not currently obey periodic BCs. This will be patched soon.

@@ -14,39 +14,6 @@ void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, con
 	  // by a hyperbolic tangent function. The center of each circle/sphere is
 	  // given by "center" and its radius is given by "rad".
 
-      /*
-	  double dist;
-	  scalar_IC = 0.0;
-
-      dist = 0.0;
-      for (unsigned int dir = 0; dir < dim; dir++){
-          dist += (p[dir]-center1[dir])*(p[dir]-center1[dir]);
-      }
-      dist = std::sqrt(dist);
-
-      // Initial condition for the concentration field
-      if (index == 0){
-          scalar_IC += matrix_concentration + (1.0-matrix_concentration)*0.5*(1.0-std::tanh((dist-radius1)/(1.0)));
-      }
-      else {
-          scalar_IC += 0.5*(1.0-std::tanh((dist-radius1)/(1.0)));
-      }
-
-      dist = 0.0;
-      for (unsigned int dir = 0; dir < dim; dir++){
-          dist += (p[dir]-center2[dir])*(p[dir]-center2[dir]);
-      }
-      dist = std::sqrt(dist);
-
-      // Initial condition for the concentration field
-      if (index == 0){
-          scalar_IC += (1.0-matrix_concentration)*0.5*(1.0-std::tanh((dist-radius2)/(1.0)));
-      }
-      else {
-          scalar_IC += 0.5*(1.0-std::tanh((dist-radius2)/(1.0)));
-      }
-      */
-
       double dist;
 	  scalar_IC = 0;
 

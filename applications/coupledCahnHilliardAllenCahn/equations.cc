@@ -57,21 +57,6 @@ scalarvalueType n = variable_list.get_scalar_value(1);
 scalargradType nx = variable_list.get_scalar_gradient(1);
 
 // --- Setting the expressions for the terms in the governing equations ---
- /*
-
-// Free energy for each phase and their first and second derivatives
-scalarvalueType fa = constV(2.0)*c*c;
-scalarvalueType fac = constV(4.0)*c;
-scalarvalueType facc = constV(4.0);
-scalarvalueType fb = constV(2.0)*(c*c - 2.0*c + constV(1.0));
-scalarvalueType fbc = constV(4.0)*(c - 1.0);
-scalarvalueType fbcc = constV(4.0);
-
-// Interpolation function and its derivative
-scalarvalueType h = (3.0*n*n-2.0*n*n*n);
-scalarvalueType hn = (6.0*n-6.0*n*n);
-
-*/
 
 // Free energy for each phase and their first and second derivatives
 scalarvalueType fa = (-1.6704-4.776*c+5.1622*c*c-2.7375*c*c*c+1.3687*c*c*c*c);
