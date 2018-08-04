@@ -63,7 +63,7 @@ for (unsigned int i=0; i<userInputs.number_of_variables; i++){
     }
 }
 
-scalarvalueType feature_ids = constV(-1000.0);
+scalarvalueType feature_ids = constV(-1.0);
 for (unsigned int v=0; v<ni.n_array_elements;v++){
     for (unsigned int g=0; g<this->simplified_grain_representations.size(); g++){
 
