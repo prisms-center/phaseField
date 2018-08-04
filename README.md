@@ -1,6 +1,6 @@
 ![](logo_v2.png)
 
-<B> Useful Links:</B>
+## Useful Links:
 
 [Code repository](https://github.com/prisms-center/phaseField) <br>
 [User manual (with installation instructions)](https://prisms-center.github.io/phaseField/doxygen_files/manual.html) <br>
@@ -9,11 +9,11 @@
 [Training slides/exercises](https://goo.gl/BBTkJ8)
 
 
-<B>Version information:</B>
+## Version information:
 
 This version of the code, v2.1 (pre), contains some somewhat substantial changes from v2.0.2. The expected finalized release is in August 2018. See [version_changes.md](version_changes.md) for details.
 
-<B>What is PRISMS-PF?</B>
+## What is PRISMS-PF?
 
 PRISMS-PF is a powerful, massively parallel finite element code for conducting phase field and other related simulations of microstructural evolution.  The phase field method is commonly used for predicting the evolution if microstructures under a wide range of conditions and material systems. PRISMS-PF provides a simple interface for solving customizable systems of partial differential equations of the type commonly found in phase field models, and has 24 pre-built application modules, including for precipitate evolution, grain growth, and solidification.
 
@@ -22,11 +22,11 @@ With PRISMS-PF, you have access to adaptive meshing and parallelization with nea
 This code is developed by the PRedictive Integrated Structural Materials Science (PRISMS) Center
 at University of Michigan which is supported by the U.S. Department of Energy (DOE), Office of Basic Energy Sciences, Division of Materials Sciences and Engineering under Award #DE-SC0008637.
 
-<B>Quick Start Guide:</B>
+## Quick Start Guide:
 
 For detailed instructions on how to download and use PRISMS-PF, please consult the [PRISMS-PF User Manual](https://prisms-center.github.io/phaseField/doxygen_files/manual.html). A (very) abbreviated version of the instructions is given below.
 
-<I>Installation:</I>
+### Installation:
 
 Please refer to the [installation section of the user manual](https://prisms-center.github.io/phaseField/doxygen_files/install.html) for details.
 
@@ -42,7 +42,7 @@ $ make -j nprocs
   ```
 [here nprocs denotes the number of processors]
 
-<I>Running a Pre-Built Application:</I>
+### Running a Pre-Built Application:
 
   Entering the following commands will run one of the pre-built example applications (the Cahn-Hilliard spinodal decomposition application in this case):<br>
   ```
@@ -67,7 +67,7 @@ $ make -j nprocs
   ```
   [here nprocs denotes the number of processors]
 
-<I>Visualization:</I>
+### Visualization:
 
   Output of the primal fields fields is in standard vtk
   format (parallel:*.pvtu, serial:*.vtu files) which can be visualized with the
@@ -75,7 +75,7 @@ $ make -j nprocs
   1. VisIt (https://wci.llnl.gov/simulation/computer-codes/visit/downloads)
   2. Paraview (http://www.paraview.org/download/)
 
-<I>Getting started:</I>
+### Getting started:
 
   Examples of various phase field models are located under the
   applications directory. The easiest way to get started on the code is to
@@ -89,12 +89,12 @@ $ make -j nprocs
   Apps that are still under development/testing are preceded by an
   underscore.
 
-<B>License:</B>
+## License:
 
   GNU Lesser General Public License (LGPL). Please see the file
   LICENSE for details.
 
-<B>Further information, questions, issues and bugs:</B>
+## Further information, questions, issues and bugs:
 
  + prisms-pf-users@googlegroups.com (user forum)
  + prismsphaseField.dev@umich.edu  (developer email list)
