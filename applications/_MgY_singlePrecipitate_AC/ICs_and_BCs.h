@@ -14,13 +14,13 @@ double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned
 	  // according to its variable index.
 
 	  // Initial condition parameters
-	  double x_denom = (8.0)*(8.0);
-	  double y_denom = (8.0)*(8.0);
-	  double z_denom = (24.0)*(24.0);
+	  double x_denom = (12.0)*(12.0);
+	  double y_denom = (30.0)*(30.0);
+	  double z_denom = (108.0)*(108.0);
 	  double initial_interface_coeff = (0.04);
 	  double initial_radius = 1.0;
-	  double c_matrix = 0.00129;
-      double c_precip = 0.1206;
+	  double c_matrix = 0.0011;
+      double c_precip = 0.12;
 
 	  //set result equal to the structural order parameter initial condition
 	  double r=0.0;

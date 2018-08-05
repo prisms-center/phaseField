@@ -36,7 +36,9 @@ set Element degree = 2
 set Mesh adaptivity = true
 
 # Set the maximum and minimum level of refinement
-set Max refinement level = 10 # Run 026 thickness
+#set Max refinement level = 8 # Run 102 thickness
+set Max refinement level = 9 # Run 100/101 thickness
+#set Max refinement level = 10 # Run 026 thickness
 #set Max refinement level = 11 # Run 027 thickness
 #set Max refinement level = 12 # Run 028 thickness
 set Min refinement level = 0
@@ -45,23 +47,26 @@ set Min refinement level = 0
 set Refinement criteria fields = n1
 
 # Set the maximum and minimum value of the fields where the mesh should be refined
-set Refinement window max = 0.99
-set Refinement window min = 0.01
+set Refinement window max = 0.999
+set Refinement window min = 0.001
 
 # Set the number of time steps between remeshing operations
-set Steps between remeshing operations = 4000
+set Steps between remeshing operations = 500
 
 # =================================================================================
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 1.8e-4 # Run 026 thickness
+set Time step = 5.0e-4 # Run 026 thickness
+#set Time step = 0.0005 # Run 026 thickness
+#set Time step = 7.2e-4 # Run 026 thickness
+#set Time step = 1.8e-4 # Run 026 thickness
 #set Time step = 4.5e-5 # Run 027 thickness
 #set Time step = 1.125e-5 # run 028 thickness
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 1000000
+set Number of time steps = 250000
 
 # =================================================================================
 # Set the elliptic solver parameters
@@ -88,17 +93,17 @@ set Output condition =  EQUAL_SPACING
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of outputs = 10
+set Number of outputs = 20
 
 # The number of time steps between updates being printed to the screen
-set Skip print steps = 1000
+set Skip print steps = 1
 
 
 # =================================================================================
 # Set the checkpoint/restart parameters
 # =================================================================================
 
-set Load from a checkpoint = false
+set Load from a checkpoint = true
 set Checkpoint condition = EQUAL_SPACING
 set Number of checkpoints = 100
 
@@ -121,15 +126,19 @@ set Boundary condition for variable u, z component = NATURAL, DIRICHLET: 0.0, NA
 set Model constant McV = 20.0, double
 
 # Mn1V  the Allen-Cahn mobility
-set Model constant Mn1V = 600.0, double # 
+set Model constant Mn1V = 15.0, double #37.5, double # 
 
 # Kn1 the gradient energy coefficient
-set Model constant Kn1 = ((0.01855,0,0),(0,0.0003929,0),(0,0,0.01569)), tensor # run 026 thickness
+#set Model constant Kn1 = ((0.0742,0,0),(0,0.0015716,0),(0,0,0.06276)), tensor # run 102 thickness
+set Model constant Kn1 = ((0.0371,0,0),(0,7.858e-4,0),(0,0,0.0314)), tensor # run 100/101 thickness
+#set Model constant Kn1 = ((0.01855,0,0),(0,0.0003929,0),(0,0,0.01569)), tensor # run 026 thickness
 #set Model constant Kn1 = ((0.009275,0,0),(0,1.9645e-4,0),(0,0,0.007845)), tensor # run 027 thickness
 #set Model constant Kn1 = ((0.0046375,0,0),(0,9.8225e-5,0),(0,0,0.0039225)), tensor # run 028 thickness
 
 # W, the energy barrier coefficient
-set Model constant W = 0.2208, double # 026 thickness
+#set Model constant W = 0.0552, double # 102 thickness
+set Model constant W = 0.1104, double # 100/101 thickness
+#set Model constant W = 0.2208, double # 026 thickness
 #set Model constant W = 0.4416, double # 027 thickness
 #set Model constant W = 0.8822, double # run 028 thickness
 

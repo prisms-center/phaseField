@@ -11,18 +11,18 @@ set Number of dimensions = 2
 # Set the length of the domain in all three dimensions
 # =================================================================================
 # Each axes spans from zero to the specified length
-set Domain size X = 1600.0
-set Domain size Y = 1600.0
-set Domain size Z = 1600.0
+set Domain size X = 1100.0
+set Domain size Y = 1100.0
+set Domain size Z = 1100.0
 
 # =================================================================================
 # Set the element parameters
 # =================================================================================
 # The number of elements in each direction is 2^(refineFactor) * subdivisions
 # For optimal performance, use refineFactor primarily to determine the element size
-set Subdivisions X = 3
-set Subdivisions Y = 3
-set Subdivisions Z = 3
+set Subdivisions X = 1
+set Subdivisions Y = 1
+set Subdivisions Z = 1
 
 set Refine factor = 1
 
@@ -36,8 +36,7 @@ set Element degree = 2
 set Mesh adaptivity = true
 
 # Set the maximum and minimum level of refinement
-#set Max refinement level = 12
-set Max refinement level = 11
+set Max refinement level = 12
 set Min refinement level = 1
 
 # Set the fields used to determine the refinement using their index.
@@ -54,12 +53,12 @@ set Steps between remeshing operations = 5000
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 0.0015625
+set Time step = 0.00125
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
 
-set Number of time steps = 38400000
+set Number of time steps = 48000000
 
 # =================================================================================
 # Set the elliptic solver parameters
@@ -86,18 +85,18 @@ set Output condition =  EQUAL_SPACING
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of outputs = 1000
+set Number of outputs = 60
 
 # The number of time steps between updates being printed to the screen
-set Skip print steps = 1000
+set Skip print steps = 10000
 
 # =================================================================================
 # Set the checkpoint/restart parameters
 # =================================================================================
 
-set Load from a checkpoint = false
+set Load from a checkpoint = true
 set Checkpoint condition = EQUAL_SPACING
-set Number of checkpoints = 1000
+set Number of checkpoints = 100
 
 # =================================================================================
 # Set the nucleation parameters
@@ -194,8 +193,8 @@ set Model constant sfts_const3 = ((0.1111,-0.0962,0),(-0.0962,0,0),(0,0,0)), ten
 
 # A2, A1, and A0 Mg-Nd matrix free energy parameters
 set Model constant A2 = 160, double #40.0, double
-set Model constant A1 = -0.032, double #-0.008, double
-set Model constant A0 = 16.0e-7, double #40.0e-8, double
+set Model constant A1 = -0.0864, double #-0.008, double
+set Model constant A0 = 1.1664e-5, double #40.0e-8, double
 
 # B2, B1, and B0 Mg-Nd B1 precipitate free energy parameters
 set Model constant B2 = 160.0, double #40.0, double
@@ -211,6 +210,6 @@ set Model constant CIJ_Beta3 = (31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,
 # Nucleation parameters
 set Model constant interface_coeff = 0.6, double
 set Model constant epsil = 1.0e-7, double
-set Model constant k1 = 2.1536e-07 , double # l*=1 nm
-set Model constant k2 = 0.012088, double
-set Model constant tau = 3.7907e+04 , double # l*=1 nm
+set Model constant k1 = 4.308721e-8 , double # l*=1 nm
+set Model constant k2 = 5.890701e-6, double
+set Model constant tau = 9.89615e+04 , double # l*=1 nm
