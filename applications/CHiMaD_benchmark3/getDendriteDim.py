@@ -436,7 +436,7 @@ for output_num in output_num_list:
     	span = GetQueryOutputValue()
     	print "Span: ", span
 
-    	print "Thickness in each direction, ordered (x,y,z):"
+    	print "Dendrite tip position, solid fraction:"
 
     dimension = len(span)/2
 
