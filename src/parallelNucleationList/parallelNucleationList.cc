@@ -2,6 +2,7 @@
 #include "../../include/nucleus.h"
 #include <deal.II/base/mpi.h>
 #include <deal.II/base/utilities.h>
+#include <iostream>
 
 // =================================================================================
 // Constructor
