@@ -14,7 +14,7 @@
 
 ## Version information:
 
-This version of the code, v2.1 (pre), contains some somewhat substantial changes from v2.0.2. The expected finalized release is in August 2018. See [version_changes.md](version_changes.md) for details.
+This version of the code, v2.1, contains some somewhat substantial changes from v2.0.2. It was released in August 2018. See [version_changes.md](version_changes.md) for details.
 
 ## What is PRISMS-PF?
 
