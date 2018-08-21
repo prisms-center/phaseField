@@ -1,5 +1,7 @@
 ![](logo_v2.png)
 
+[![Build Status](https://travis-ci.org/prisms-center/phaseField.svg?branch=master)](https://travis-ci.org/prisms-center/phaseField)
+[![License: LGPL v2.1](https://img.shields.io/badge/License-lgpl-blue.svg)](https://www.gnu.org/licenses/lgpl-2.1)
 ## Useful Links:
 
 [PRISMS-PF Website](https://prisms-center.github.io/phaseField/) <br>
