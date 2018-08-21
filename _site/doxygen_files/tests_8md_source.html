@@ -30,7 +30,7 @@
     extensions: ["tex2jax.js"],
     jax: ["input/TeX","output/HTML-CSS"],
 });
-</script><script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
+</script><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML#http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -107,7 +107,7 @@ $(document).ready(function(){initNavTree('tests_8md.html','');});
 <div class="title">/Users/stephendewitt/Documents/workspace/PRISMS_workspace/prismspf-manual/user_manual/tests/tests.md</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="tests_8md.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;# Tests {#tests}</div></div><!-- fragment --></div><!-- contents -->
+<a href="tests_8md.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;# Tests {#tests}</div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;The &#39;tests&#39; folder in the root directory contains some tests to ensure that PRISMS-PF is working properly. A battery of automated tests can be found in the &#39;automated\_tests&#39; directory. These can be run by running the python script &#39;run_automatic_tests.py&#39;. This will run a series of unit and regression tests, printing a summary of the results to the screen and writing to the file &#39;test_results.txt&#39;. This python file can also be used as an example of automating PRISMS-PF simulations.</div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;The unit_tests&#39; directory contains a driver for a series of unit tests. To run them enter:</div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;```</div><div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;$ cmake .</div><div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;$ make debug</div><div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;$ mpirun -n 1 main</div><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;```</div><div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;A summary of the tests will print to the screen.</div></div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

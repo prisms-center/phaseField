@@ -448,3 +448,25 @@ footer {
     padding: 0.4in;
     font-size: 12pt;
     color: #444; } }
+/*
+defaults:
+.wrapper { width: 860px; margin: 0 auto; }
+header { width: 270px; float: left; position: fixed; -webkit-font-smoothing: subpixel-antialiased; }
+footer { width: 270px; float: left; position: fixed; bottom: 50px; -webkit-font-smoothing: subpixel-antialiased; }
+section { width: 500px; float: right; padding-bottom: 50px; }
+*/
+.wrapper {
+  width: 900px; }
+
+header {
+  width: 200px; }
+
+footer {
+  width: 200px; }
+
+section {
+  width: 650px; }
+
+a:hover, a:focus {
+  color: #069;
+  font-weight: normal; }
