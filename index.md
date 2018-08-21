@@ -7,8 +7,22 @@ layout: default
 ## Overview
 PRISMS-PF is a powerful, massively parallel finite element code for conducting phase field and other related simulations of microstructural evolution. The phase field method is commonly used for predicting the evolution if microstructures under a wide range of conditions and material systems. PRISMS-PF provides a simple interface for solving customizable systems of partial differential equations of the type commonly found in phase field models, and has 22 pre-built application modules, including for precipitate evolution, grain growth, dendritic solidification, and spinodal decomposition.
 
+![PRISMS-PF Example Results](assets/example_bar.png)
+
+### Features and Capabilities
+- Matrix-free finite element framework for improved performance over traditional finite element approaches
+- Parallelization at the inter-node, intra-node, and intra-core levels (MPI, threads, vectorization), with near ideal scaling beyond 1,000 cores
+- Adaptive meshing to greatly reduce problem sizes
+- Support for high order elements, with up to 5th order spatial accuracy
+- Support for explicit nucleus placement to enable simulations that include nucleating phases
+- Grain-remapping algorithm to facilitate simulations of polycrystals with thousands of grains
+- Simple interface to solve an arbitrary number of coupled PDEs
+- Straightforward Docker-based installation
+
+### Acknowledgements
 This code is developed by the PRedictive Integrated Structural Materials Science (PRISMS) Center at University of Michigan which is supported by the U.S. Department of Energy (DOE), Office of Basic Energy Sciences, Division of Materials Sciences and Engineering under Award #DE-SC0008637.
 
+### License
 PRISMS-PF is released under the GNU Lesser General Public License (LGPL).
 
 ***
