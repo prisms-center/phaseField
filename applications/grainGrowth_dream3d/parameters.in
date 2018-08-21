@@ -41,7 +41,7 @@ set Max refinement level = 7
 set Min refinement level = 4
 
 # Set the fields used to determine the refinement using their index.
-set Refinement criteria fields = n0,n1,n2,n3,n4,n5,n6
+set Refinement criteria fields = n0,n1,n2,n3,n4,n5,n6,n7
 
 # Set the maximum and minimum value of the fields where the mesh should be refined
 set Refinement window max = 0.999,0.999,0.999,0.999,0.999,0.999,0.999,0.999
@@ -58,7 +58,7 @@ set Time step = 0.05
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 4000
+set Number of time steps = 10000 #4000
 
 # =================================================================================
 # Set the output parameters

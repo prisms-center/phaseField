@@ -58,7 +58,7 @@ set Time step = 0.05
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 400
+set Number of time steps = 40000
 
 # =================================================================================
 # Set the output parameters
@@ -80,12 +80,12 @@ set Skip print steps = 50
 
 set Activate grain reassignment = true
 set Order parameter fields for grain reassignment = n0, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11
-set Time steps between grain reassignments = 1000
+set Time steps between grain reassignments = 500
 set Order parameter cutoff for grain identification = 1e-2
 set Buffer between grains before reassignment = 2.0
 
 set Load grain structure = true
-set Grain structure filename = initial_grain_structure_large_2D
+set Grain structure filename = resampled_2048x2048_738g_us #initial_grain_structure_large_2D
 set Grain structure variable name = FeatureIds
 set Number of smoothing cycles after grain structure loading = 2
 set Minimum radius for loaded grains = 1.0

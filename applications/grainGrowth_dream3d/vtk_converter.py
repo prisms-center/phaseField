@@ -4,10 +4,10 @@ shift_x = 0.125
 shift_y = 0.125
 shift_z = 0
 
-rl_grid_filename = 'resampled_2048x2048_738g.vtk'
+rl_grid_filename = 'initial_grain_structure_large_2D.vtk'
 target_variable = 'FeatureIds'
 
-us_grid_filename = "resampled_2048x2048_738g_us.vtk"
+us_grid_filename = "initial_grain_structure_large_2D_us.vtk"
 
 # Parse the rectilinear grid vtk file
 f = open(rl_grid_filename)

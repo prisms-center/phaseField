@@ -1,5 +1,5 @@
-# Version 2.1pre
-Moderate-level update to v2.0, to be released in August 2018. The largest changes involve a restructuring of the functions in equations.cc and ICs_and_BCs.cc. Grain remapping was also introduced to permit simulations with hundreds/thousands of grains.
+# Version 2.1
+Moderate-level update to v2.0, released in August 2018. The largest changes involve a restructuring of the functions in equations.cc and ICs_and_BCs.cc. Grain remapping was also introduced to permit simulations with hundreds/thousands of grains.
 
 Changes to the example applications:
 - New application: CHAC_performance_test. This app is very similar to 'coupledCahnHilliardAllenCahn', but is 3D and was designed for scaling and performance comparisons to a finite difference code.
@@ -22,9 +22,10 @@ Added functionality:
 - The user can now specify a parameters file other than 'parameters.in'. The syntax is: './main -i other_parameters_file.in'
 
 Bug fixes:
-- A typo has been fixed in the expression for 'faccV' in precipitateEvolution
+- A typo has been fixed in the expression for 'faccV' in the precipitateEvolution app
 
 Other changes:
+- The pdf user guide has been removed as well as the Doxygen files. A Doxygen-based user guide is now hosted on [a separate site](https://prisms-center.github.io/phaseField/doxygen_files/manual.html) to provide a more interactive experience. The repo for the new user guide can be found [here](https://github.com/prisms-center/prismspf-manual).
 - Changed how the equation dependencies are input, making them more specific and more intuitive.
 - Previously, there were separate initial condition functions and non-uniform Dirichlet BC functions for scalar fields and vector fields. These have been merged so that there is one initial condition function and one non-uniform Dirichlet BC function. These functions are now part of customPDE and have direct access to the model parameters declared in customPDE.h.
 - Renamed the functions in the equation file, removing references to 'residuals'. Instead, everything is referred to as a term in the governing equation.
