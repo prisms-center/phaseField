@@ -32,6 +32,7 @@
 });
 </script><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML#http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="my_navtree.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -370,7 +371,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 <p>This is the abstract base class for the matrix free implementation of Parabolic and Elliptic BVP's, and supports MPI, Threads and Vectorization (Hybrid Parallel). This class contains the parallel data structures, mesh (referred to as triangulation), parallel degrees of freedom distribution, constraints, and general utility methods.</p>
 <p>All the physical models in this package inherit this base class. </p>
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00067">67</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00070">70</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2687789df6132f733302b9a1f0b49f8f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2687789df6132f733302b9a1f0b49f8f">&#9670;&nbsp;</a></span>MatrixFreePDE()</h2>
@@ -1328,7 +1329,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00329">329</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00333">333</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -1737,7 +1738,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00266">266</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00270">270</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2209,7 +2210,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </div><div class="memdoc">
 <p>Method to solve each time increment of a time-dependent problem. For time-independent problems this method is called only once. This method solves for all the fields in a staggered manner (one after another) and also invokes the corresponding solvers: Explicit solver for Parabolic problems, Implicit (matrix-free) solver for Elliptic problems. </p>
 
-<p class="definition">Definition at line <a class="el" href="solve_increment_8cc_source.html#l00008">8</a> of file <a class="el" href="solve_increment_8cc_source.html">solveIncrement.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="solve_increment_8cc_source.html#l00009">9</a> of file <a class="el" href="solve_increment_8cc_source.html">solveIncrement.cc</a>.</p>
 
 </div>
 </div>
@@ -2420,7 +2421,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00365">365</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00369">369</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2444,7 +2445,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00131">131</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00135">135</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2468,7 +2469,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00356">356</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00360">360</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2492,7 +2493,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00168">168</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00172">172</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2516,7 +2517,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00178">178</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00182">182</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2540,7 +2541,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00168">168</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00172">172</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2564,7 +2565,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00178">178</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00182">182</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2588,7 +2589,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00353">353</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00357">357</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2612,7 +2613,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00353">353</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00357">357</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2636,7 +2637,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00207">207</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00211">211</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2660,7 +2661,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00353">353</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00357">357</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2684,7 +2685,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00353">353</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00357">357</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2708,7 +2709,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00352">352</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00356">356</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2732,7 +2733,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00171">171</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00175">175</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2756,7 +2757,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00180">180</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00184">184</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2780,7 +2781,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00203">203</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00207">207</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2804,7 +2805,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00203">203</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00207">207</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2828,7 +2829,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00351">351</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00355">355</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2852,7 +2853,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00163">163</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00167">167</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2869,7 +2870,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </div><div class="memdoc">
 <p>Vector of all the physical fields in the problem. Fields are identified by dimentionality (SCALAR/VECTOR), the kind of PDE (ELLIPTIC/PARABOLIC) used to compute them and a character identifier (e.g.: "c" for composition) which is used to write the fields to the output files. </p>
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00107">107</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00110">110</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2893,7 +2894,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00360">360</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00364">364</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2917,7 +2918,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00335">335</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00339">339</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2941,7 +2942,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00231">231</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00235">235</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2965,7 +2966,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00349">349</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00353">353</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -2989,7 +2990,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00347">347</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00351">351</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3013,7 +3014,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00348">348</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00352">352</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3037,7 +3038,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00364">364</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00368">368</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3061,7 +3062,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00358">358</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00362">362</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3085,7 +3086,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00363">363</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00367">367</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3109,7 +3110,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00201">201</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00205">205</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3133,7 +3134,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00345">345</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00349">349</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3157,7 +3158,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00343">343</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00347">347</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3181,7 +3182,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00176">176</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00180">180</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3205,7 +3206,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00182">182</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00186">186</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3229,7 +3230,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00199">199</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00203">203</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3253,7 +3254,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00316">316</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00320">320</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3277,7 +3278,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00351">351</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00355">355</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3293,7 +3294,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00112">112</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00115">115</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3317,7 +3318,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00186">186</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00190">190</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3341,7 +3342,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00141">141</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00145">145</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3365,7 +3366,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00188">188</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00192">192</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3389,7 +3390,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00184">184</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00188">188</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3413,7 +3414,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00123">123</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00127">127</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3437,7 +3438,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00159">159</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00163">163</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3461,7 +3462,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00121">121</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00125">125</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3485,7 +3486,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00278">278</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00282">282</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3509,7 +3510,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00128">128</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00132">132</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3533,7 +3534,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00191">191</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00195">195</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3557,7 +3558,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00192">192</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00196">196</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
@@ -3581,7 +3582,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00193">193</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_free_p_d_e_8h_source.html#l00197">197</a> of file <a class="el" href="matrix_free_p_d_e_8h_source.html">matrixFreePDE.h</a>.</p>
 
 </div>
 </div>
