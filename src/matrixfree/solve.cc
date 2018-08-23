@@ -12,6 +12,19 @@ void MatrixFreePDE<dim,degree>::solve(){
     //time dependent BVP
     if (isTimeDependentBVP){
 
+        // If grain reassignment is activated, reassign grains
+        if (userInputs.grain_remapping_activated and (currentIncrement%userInputs.skip_grain_reassignment_steps == 0 or currentIncrement == 0) ) {
+            reassignGrains();
+        }
+
+        // For any nonlinear equation, set the initial guess as the solution to Laplace's equations
+        generatingInitialGuess = true;
+        setNonlinearEqInitialGuess();
+        generatingInitialGuess = false;
+
+        // Do an initial solve to set the elliptic fields
+        solveIncrement(true);
+
         //output initial conditions for time dependent BVP
         if (userInputs.outputTimeStepList[currentOutput] == currentIncrement) {
 
@@ -31,9 +44,6 @@ void MatrixFreePDE<dim,degree>::solve(){
 
         // Increase the current increment from 0 to 1 now that the initial conditions have been output
         currentIncrement++;
-        
-        //time stepping
-        pcout << "\nTime stepping parameters: timeStep: " << userInputs.dtValue << "  timeFinal: " << userInputs.finalTime << "  timeIncrements: " << userInputs.totalIncrements << "\n";
 
         // Cycle up to the proper output and checkpoint counters
         while (userInputs.outputTimeStepList.size() > 0 && userInputs.outputTimeStepList[currentOutput] < currentIncrement){
@@ -43,7 +53,10 @@ void MatrixFreePDE<dim,degree>::solve(){
             currentCheckpoint++;
         }
 
+        //time stepping
+        pcout << "\nTime stepping parameters: timeStep: " << userInputs.dtValue << "  timeFinal: " << userInputs.finalTime << "  timeIncrements: " << userInputs.totalIncrements << "\n";
 
+        // This is the main time-stepping loop
         for (; currentIncrement<=userInputs.totalIncrements; ++currentIncrement){
             //increment current time
             currentTime+=userInputs.dtValue;
@@ -57,8 +70,13 @@ void MatrixFreePDE<dim,degree>::solve(){
             // Update the list of nuclei (if relevant)
             updateNucleiList();
 
+            // If grain reassignment is activated, reassign grains
+            if (userInputs.grain_remapping_activated and (currentIncrement%userInputs.skip_grain_reassignment_steps == 0 or currentIncrement == 0) ) {
+                reassignGrains();
+            }
+
             //solve time increment
-            solveIncrement();
+            solveIncrement(false);
 
             // Output results to file (on the proper increments)
             if (userInputs.outputTimeStepList[currentOutput] == currentIncrement) {
@@ -82,8 +100,10 @@ void MatrixFreePDE<dim,degree>::solve(){
 
     //time independent BVP
     else{
+        generatingInitialGuess = false;
+
         //solve
-        solveIncrement();
+        solveIncrement(false);
 
         //output results to file
         outputResults();

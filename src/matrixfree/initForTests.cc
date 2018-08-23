@@ -1,6 +1,7 @@
 //initForTests() method for MatrixFreePDE class
 
 #include "../../include/matrixFreePDE.h"
+#include <deal.II/grid/grid_generator.h>
 
 template <int dim, int degree>
  void MatrixFreePDE<dim,degree>::initForTests(){

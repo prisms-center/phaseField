@@ -3,6 +3,10 @@
 #ifndef INCLUDE_MODELVARIABLE_H_
 #define INCLUDE_MODELVARIABLE_H_
 
+
+#include <deal.II/base/tensor.h>
+#include <deal.II/base/vectorization.h>
+
 template<int dim>
 class modelVariable
 {

@@ -1,49 +1,30 @@
 #include "../../include/userInputParameters.h"
-#include "../../include/sortIndexEntryPairList.h"
+//#include "../../include/sortIndexEntryPairList.h"
+#include "../../include/EquationDependencyParser.h"
 
 template <int dim>
 void userInputParameters<dim>::loadVariableAttributes(variableAttributeLoader variable_attributes){
-    number_of_variables = variable_attributes.var_name_list.size();
 
-    var_name = sortIndexEntryPairList(variable_attributes.var_name_list,number_of_variables,"var");
-    var_type = sortIndexEntryPairList(variable_attributes.var_type_list,number_of_variables,SCALAR);
-    var_eq_type = sortIndexEntryPairList(variable_attributes.var_eq_type_list,number_of_variables,PARABOLIC);
+    // Pull some variable values from variable_attributes
+    number_of_variables = variable_attributes.number_of_variables;
+    var_name = variable_attributes.var_name;
+    var_type = variable_attributes.var_type;
+    var_eq_type = variable_attributes.var_eq_type;
 
-    // Sort the variable attributes and load them into individual vectors
-    std::vector<bool> nucleating_variable = sortIndexEntryPairList(variable_attributes.nucleating_variable_list,number_of_variables,false);
-    std::vector<bool> need_value_nucleation = sortIndexEntryPairList(variable_attributes.need_value_list_nucleation,number_of_variables,false);
+    var_nonlinear = variable_attributes.var_nonlinear;
 
-    std::vector<bool> need_value = sortIndexEntryPairList(variable_attributes.need_value_list,number_of_variables,true);
-	std::vector<bool> need_gradient = sortIndexEntryPairList(variable_attributes.need_gradient_list,number_of_variables,true);
-	std::vector<bool> need_hessian = sortIndexEntryPairList(variable_attributes.need_hessian_list,number_of_variables,false);
-	std::vector<bool> value_residual = sortIndexEntryPairList(variable_attributes.need_value_residual_list,number_of_variables,false);
-	std::vector<bool> gradient_residual = sortIndexEntryPairList(variable_attributes.need_gradient_residual_list,number_of_variables,false);
+    pp_calc_integral = variable_attributes.pp_calc_integral;
 
-    std::vector<bool> need_value_LHS = sortIndexEntryPairList(variable_attributes.need_value_list_LHS,number_of_variables,false);
-	std::vector<bool> need_gradient_LHS = sortIndexEntryPairList(variable_attributes.need_gradient_list_LHS,number_of_variables,false);
-	std::vector<bool> need_hessian_LHS = sortIndexEntryPairList(variable_attributes.need_hessian_list_LHS,number_of_variables,false);
-	std::vector<bool> value_residual_LHS = sortIndexEntryPairList(variable_attributes.need_value_residual_list_LHS,number_of_variables,false);
-	std::vector<bool> gradient_residual_LHS = sortIndexEntryPairList(variable_attributes.need_gradient_residual_list_LHS,number_of_variables,false);
-
-    std::vector<bool> need_value_pp = sortIndexEntryPairList(variable_attributes.need_value_list_PP,number_of_variables,true);
-	std::vector<bool> need_gradient_pp = sortIndexEntryPairList(variable_attributes.need_gradient_list_PP,number_of_variables,true);
-	std::vector<bool> need_hessian_pp = sortIndexEntryPairList(variable_attributes.need_hessian_list_PP,number_of_variables,true);
-
-    // Sort the post-processing variable attributes
-    pp_number_of_variables = variable_attributes.var_name_list_PP.size();
-    pp_var_name = sortIndexEntryPairList(variable_attributes.var_name_list_PP,pp_number_of_variables,"var");
-    pp_var_type = sortIndexEntryPairList(variable_attributes.var_type_list_PP,pp_number_of_variables,SCALAR);
-    std::vector<bool> pp_value_residual = sortIndexEntryPairList(variable_attributes.need_value_residual_list_PP,pp_number_of_variables,false);
-	std::vector<bool> pp_gradient_residual = sortIndexEntryPairList(variable_attributes.need_gradient_residual_list_PP,pp_number_of_variables,false);
-    pp_calc_integral = sortIndexEntryPairList(variable_attributes.output_integral_list,pp_number_of_variables,false);
-
+    pp_number_of_variables = variable_attributes.pp_number_of_variables;
+    pp_var_name = variable_attributes.pp_var_name;
+    pp_var_type = variable_attributes.pp_var_type;
 
     // Load some nucleation parameters
     for (unsigned int i=0; i<number_of_variables; i++){
-        if (nucleating_variable.at(i)==true){
+        if (variable_attributes.nucleating_variable.at(i)==true){
             nucleating_variable_indices.push_back(i);
         }
-        if (need_value_nucleation.at(i) || nucleating_variable.at(i)){
+        if (variable_attributes.need_value_nucleation.at(i) || variable_attributes.nucleating_variable.at(i)){
             nucleation_need_value.push_back(i);
         }
     }
@@ -57,21 +38,29 @@ void userInputParameters<dim>::loadVariableAttributes(variableAttributeLoader va
 
 
     // Load these attributes into the varInfoList objects
-	varInfoListRHS.reserve(number_of_variables);
+
+    // Load variable information for calculating the RHS for explicit equations
+    num_var_explicit_RHS = 0;
+	for (unsigned int i=0; i<number_of_variables; i++){
+		if (variable_attributes.equation_dependency_parser.need_value_explicit_RHS[i] or variable_attributes.equation_dependency_parser.need_gradient_explicit_RHS[i] or variable_attributes.equation_dependency_parser.need_hessian_explicit_RHS[i]){
+			num_var_explicit_RHS++;
+		}
+	}
+	varInfoListExplicitRHS.reserve(num_var_explicit_RHS);
 	unsigned int scalar_var_index = 0;
 	unsigned int vector_var_index = 0;
 	for (unsigned int i=0; i<number_of_variables; i++){
 		variable_info varInfo;
 
-        varInfo.need_value = need_value[i];
-        varInfo.need_gradient = need_gradient[i];
-        varInfo.need_hessian = need_hessian[i];
-        varInfo.value_residual = value_residual[i];
-        varInfo.gradient_residual = gradient_residual[i];
+        varInfo.need_value = variable_attributes.equation_dependency_parser.need_value_explicit_RHS[i];
+        varInfo.need_gradient = variable_attributes.equation_dependency_parser.need_gradient_explicit_RHS[i];
+        varInfo.need_hessian = variable_attributes.equation_dependency_parser.need_hessian_explicit_RHS[i];
+        varInfo.value_residual = variable_attributes.equation_dependency_parser.need_value_residual_explicit_RHS[i];
+        varInfo.gradient_residual = variable_attributes.equation_dependency_parser.need_gradient_residual_explicit_RHS[i];
 
         varInfo.global_var_index = i;
 
-		if (need_value[i] or need_gradient[i] or need_hessian[i]){
+		if (varInfo.need_value or varInfo.need_gradient or varInfo.need_hessian){
             varInfo.var_needed = true;
 		}
         else {
@@ -93,13 +82,59 @@ void userInputParameters<dim>::loadVariableAttributes(variableAttributeLoader va
             }
         }
 
-        varInfoListRHS.push_back(varInfo);
+        varInfoListExplicitRHS.push_back(varInfo);
+	}
+
+    // Load variable information for calculating the RHS for nonexplicit equations
+    num_var_nonexplicit_RHS = 0;
+	for (unsigned int i=0; i<number_of_variables; i++){
+		if (variable_attributes.equation_dependency_parser.need_value_nonexplicit_RHS[i] or variable_attributes.equation_dependency_parser.need_gradient_nonexplicit_RHS[i] or variable_attributes.equation_dependency_parser.need_hessian_nonexplicit_RHS[i]){
+			num_var_nonexplicit_RHS++;
+		}
+	}
+	varInfoListNonexplicitRHS.reserve(num_var_nonexplicit_RHS);
+	scalar_var_index = 0;
+	vector_var_index = 0;
+	for (unsigned int i=0; i<number_of_variables; i++){
+		variable_info varInfo;
+
+        varInfo.need_value = variable_attributes.equation_dependency_parser.need_value_nonexplicit_RHS[i];
+        varInfo.need_gradient = variable_attributes.equation_dependency_parser.need_gradient_nonexplicit_RHS[i];
+        varInfo.need_hessian = variable_attributes.equation_dependency_parser.need_hessian_nonexplicit_RHS[i];
+        varInfo.value_residual = variable_attributes.equation_dependency_parser.need_value_residual_nonexplicit_RHS[i];
+        varInfo.gradient_residual = variable_attributes.equation_dependency_parser.need_gradient_residual_nonexplicit_RHS[i];
+
+        varInfo.global_var_index = i;
+
+		if (varInfo.need_value or varInfo.need_gradient or varInfo.need_hessian){
+            varInfo.var_needed = true;
+		}
+        else {
+            varInfo.var_needed = false;
+        }
+
+        if (var_type[i] == SCALAR){
+            varInfo.is_scalar = true;
+            if (varInfo.var_needed){
+                varInfo.scalar_or_vector_index = scalar_var_index;
+                scalar_var_index++;
+            }
+        }
+        else {
+            varInfo.is_scalar = false;
+            if (varInfo.var_needed){
+                varInfo.scalar_or_vector_index = vector_var_index;
+                vector_var_index++;
+            }
+        }
+
+        varInfoListNonexplicitRHS.push_back(varInfo);
 	}
 
 	// Load variable information for calculating the LHS
 	num_var_LHS = 0;
 	for (unsigned int i=0; i<number_of_variables; i++){
-		if (need_value_LHS[i] or need_gradient_LHS[i] or need_hessian_LHS[i]){
+		if (variable_attributes.equation_dependency_parser.need_value_nonexplicit_LHS[i] or variable_attributes.equation_dependency_parser.need_gradient_nonexplicit_LHS[i] or variable_attributes.equation_dependency_parser.need_hessian_nonexplicit_LHS[i]){
 			num_var_LHS++;
 		}
 	}
@@ -110,16 +145,16 @@ void userInputParameters<dim>::loadVariableAttributes(variableAttributeLoader va
 	for (unsigned int i=0; i<number_of_variables; i++){
 		variable_info varInfo;
 
-        varInfo.need_value = need_value_LHS[i];
-        varInfo.need_gradient = need_gradient_LHS[i];
-        varInfo.need_hessian = need_hessian_LHS[i];
-        varInfo.value_residual = value_residual_LHS[i];
-        varInfo.gradient_residual = gradient_residual_LHS[i];
+        varInfo.need_value = variable_attributes.equation_dependency_parser.need_value_nonexplicit_LHS[i];
+        varInfo.need_gradient = variable_attributes.equation_dependency_parser.need_gradient_nonexplicit_LHS[i];
+        varInfo.need_hessian = variable_attributes.equation_dependency_parser.need_hessian_nonexplicit_LHS[i];
+        varInfo.value_residual = variable_attributes.equation_dependency_parser.need_value_residual_nonexplicit_LHS[i];
+        varInfo.gradient_residual = variable_attributes.equation_dependency_parser.need_gradient_residual_nonexplicit_LHS[i];
 
         varInfo.global_var_index = i;
 
 
-		if (need_value_LHS[i] or need_gradient_LHS[i] or need_hessian_LHS[i]){
+		if (varInfo.need_value or varInfo.need_gradient or varInfo.need_hessian){
             varInfo.var_needed = true;
 		}
         else {
@@ -144,6 +179,47 @@ void userInputParameters<dim>::loadVariableAttributes(variableAttributeLoader va
         varInfoListLHS.push_back(varInfo);
 	}
 
+    varChangeInfoListLHS.reserve(num_var_LHS);
+	scalar_var_index = 0;
+	vector_var_index = 0;
+	for (unsigned int i=0; i<number_of_variables; i++){
+		variable_info varInfo;
+
+        varInfo.need_value = variable_attributes.equation_dependency_parser.need_value_change_nonexplicit_LHS[i];
+        varInfo.need_gradient = variable_attributes.equation_dependency_parser.need_gradient_change_nonexplicit_LHS[i];
+        varInfo.need_hessian = variable_attributes.equation_dependency_parser.need_hessian_change_nonexplicit_LHS[i];
+
+        // FOR NOW, TAKING THESE FROM THE VARIABLE ITSELF!!
+        varInfo.value_residual = variable_attributes.equation_dependency_parser.need_value_residual_nonexplicit_LHS[i];
+        varInfo.gradient_residual = variable_attributes.equation_dependency_parser.need_gradient_residual_nonexplicit_LHS[i];
+
+        varInfo.global_var_index = i;
+
+		if (varInfo.need_value or varInfo.need_gradient or varInfo.need_hessian){
+            varInfo.var_needed = true;
+		}
+        else {
+            varInfo.var_needed = false;
+		}
+
+        if (var_type[i] == SCALAR){
+            varInfo.is_scalar = true;
+            if (varInfo.var_needed){
+                varInfo.scalar_or_vector_index = scalar_var_index;
+                scalar_var_index++;
+            }
+        }
+        else {
+            varInfo.is_scalar = false;
+            if (varInfo.var_needed){
+                varInfo.scalar_or_vector_index = vector_var_index;
+                vector_var_index++;
+            }
+        }
+
+        varChangeInfoListLHS.push_back(varInfo);
+	}
+
     // Load variable information for postprocessing
     // First, the info list for the base field variables
 	pp_baseVarInfoList.reserve(number_of_variables);
@@ -152,13 +228,13 @@ void userInputParameters<dim>::loadVariableAttributes(variableAttributeLoader va
 	for (unsigned int i=0; i<number_of_variables; i++){
 		variable_info varInfo;
 
-        varInfo.need_value = need_value_pp[i];
-        varInfo.need_gradient = need_gradient_pp[i];
-        varInfo.need_hessian = need_hessian_pp[i];
+        varInfo.need_value = variable_attributes.equation_dependency_parser.pp_need_value[i];
+        varInfo.need_gradient = variable_attributes.equation_dependency_parser.pp_need_gradient[i];
+        varInfo.need_hessian = variable_attributes.equation_dependency_parser.pp_need_hessian[i];
 
         varInfo.global_var_index = i;
 
-		if (need_value_pp[i] or need_gradient_pp[i] or need_hessian_pp[i]){
+		if (variable_attributes.equation_dependency_parser.pp_need_value[i] or variable_attributes.equation_dependency_parser.pp_need_gradient[i] or variable_attributes.equation_dependency_parser.pp_need_hessian[i]){
             varInfo.var_needed = true;
 		}
         else {
@@ -208,8 +284,8 @@ void userInputParameters<dim>::loadVariableAttributes(variableAttributeLoader va
 		variable_info varInfo;
         varInfo.var_needed = true;
 
-        varInfo.value_residual = pp_value_residual[i];
-        varInfo.gradient_residual = pp_gradient_residual[i];
+        varInfo.value_residual = variable_attributes.equation_dependency_parser.pp_need_value_residual[i];
+        varInfo.gradient_residual = variable_attributes.equation_dependency_parser.pp_need_gradient_residual[i];
 
 		varInfo.global_var_index = i;
 		if (pp_var_type[i] == SCALAR){

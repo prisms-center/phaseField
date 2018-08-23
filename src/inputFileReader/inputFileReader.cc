@@ -1,21 +1,28 @@
 // Methods for the inputFileReader class
 #include "../../include/inputFileReader.h"
 #include "../../include/sortIndexEntryPairList.h"
+#include "../../include/EquationDependencyParser.h"
+#include <deal.II/base/mpi.h>
+#include <deal.II/base/utilities.h>
+#include <iostream>
 
 // Constructor
 inputFileReader::inputFileReader(std::string input_file_name, variableAttributeLoader variable_attributes){
     // Extract an ordered vector of the variable types from variable_attributes
     unsigned int number_of_variables = variable_attributes.var_name_list.size();
-    var_types = sortIndexEntryPairList(variable_attributes.var_type_list,number_of_variables,SCALAR);
-    var_names = sortIndexEntryPairList(variable_attributes.var_name_list,number_of_variables,"var");
+    var_types = variable_attributes.var_type;
+    var_eq_types = variable_attributes.var_eq_type;
+    var_names = variable_attributes.var_name;
+
+    var_nonlinear = variable_attributes.var_nonlinear;
 
     var_nucleates = sortIndexEntryPairList(variable_attributes.nucleating_variable_list,number_of_variables,false);
 
     num_pp_vars = variable_attributes.var_name_list_PP.size();
 
-    num_constants = get_number_of_entries("parameters.in","set","Model constant");
+    num_constants = get_number_of_entries(input_file_name,"set","Model constant");
 
-    model_constant_names = get_entry_name_ending_list("parameters.in","set", "Model constant");
+    model_constant_names = get_entry_name_ending_list(input_file_name,"set", "Model constant");
 
     if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
         std::cout << "Number of constants: " << num_constants << std::endl;
@@ -23,11 +30,11 @@ inputFileReader::inputFileReader(std::string input_file_name, variableAttributeL
     }
 
     // Read in all of the parameters now
-    declare_parameters(parameter_handler,var_types,num_constants,var_nucleates);
+    declare_parameters(parameter_handler,var_types,var_eq_types,num_constants,var_nucleates);
     #if (DEAL_II_VERSION_MAJOR < 9 && DEAL_II_VERSION_MINOR < 5)
-    parameter_handler.read_input("parameters.in");
+    parameter_handler.read_input(input_file_name);
     #else
-    parameter_handler.parse_input("parameters.in");
+    parameter_handler.parse_input(input_file_name);
     #endif
     number_of_dimensions = parameter_handler.get_integer("Number of dimensions");
 }
@@ -228,6 +235,7 @@ std::vector<std::string> inputFileReader::get_entry_name_ending_list(const std::
 
 void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_handler,
                                             const std::vector<fieldType> var_types,
+                                            const std::vector<PDEType> var_eq_types,
                                             const unsigned int num_of_constants,
                                             const std::vector<bool> var_nucleates) const {
 
@@ -255,10 +263,40 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
     parameter_handler.declare_entry("Time step","-0.1",dealii::Patterns::Double(),"The time step size for the simulation.");
     parameter_handler.declare_entry("Simulation end time","-0.1",dealii::Patterns::Double(),"The value of simulated time where the simulation ends.");
 
-    parameter_handler.declare_entry("Linear solver","SolverCG",dealii::Patterns::Anything(),"The linear solver (currently only SolverCG).");
-    parameter_handler.declare_entry("Use absolute convergence tolerance","false",dealii::Patterns::Bool(),"Whether to use an absolute tolerance for the linear solver (versus a relative tolerance).");
-    parameter_handler.declare_entry("Solver tolerance value","1.0e-3",dealii::Patterns::Double(),"The tolerance for the linear solver (either absolute or relative).");
-    parameter_handler.declare_entry("Maximum allowed solver iterations","10000",dealii::Patterns::Integer(),"The maximum allowed number of iterations the linear solver is given to converge before being forced to exit.");
+    for (unsigned int i=0; i<var_types.size(); i++){
+        if (var_eq_types.at(i) == TIME_INDEPENDENT || var_eq_types.at(i) == IMPLICIT_TIME_DEPENDENT){
+            std::string subsection_text = "Linear solver parameters: ";
+            subsection_text.append(var_names.at(i));
+            parameter_handler.enter_subsection(subsection_text);
+            {
+                parameter_handler.declare_entry("Tolerance type","RELATIVE_RESIDUAL_CHANGE",dealii::Patterns::Anything(),"The tolerance type for the linear solver.");
+                parameter_handler.declare_entry("Tolerance value","1.0e-10",dealii::Patterns::Double(),"The value of for the linear solver tolerance.");
+                parameter_handler.declare_entry("Maximum linear solver iterations","1000",dealii::Patterns::Integer(),"The maximum number of linear solver iterations before the loop is stopped.");
+            }
+            parameter_handler.leave_subsection();
+        }
+    }
+
+
+    parameter_handler.declare_entry("Maximum nonlinear solver iterations","100",dealii::Patterns::Integer(),"The maximum number of nonlinear solver iterations before the loop is stopped.");
+
+    for (unsigned int i=0; i<var_types.size(); i++){
+        if (var_nonlinear.at(i)){
+            std::string subsection_text = "Nonlinear solver parameters: ";
+            subsection_text.append(var_names.at(i));
+            parameter_handler.enter_subsection(subsection_text);
+            {
+                parameter_handler.declare_entry("Tolerance type","ABSOLUTE_SOLUTION_CHANGE",dealii::Patterns::Anything(),"The tolerance type for the nonlinear solver.");
+                parameter_handler.declare_entry("Tolerance value","1.0e-10",dealii::Patterns::Double(),"The value of for the nonlinear solver tolerance.");
+                parameter_handler.declare_entry("Use backtracking line search damping","true",dealii::Patterns::Bool(),"Whether to use a backtracking line-search to find the best choice of the damping coefficient.");
+                parameter_handler.declare_entry("Backtracking step size modifier","0.5",dealii::Patterns::Double(),"The constant that determines how much the step size decreases per backtrack. The 'tau' parameter.");
+                parameter_handler.declare_entry("Backtracking residual decrease coefficient","1.0",dealii::Patterns::Double(),"The constant that determines how much the residual must decrease to be accepted as sufficient. The 'c' parameter.");
+                parameter_handler.declare_entry("Constant damping value","1.0",dealii::Patterns::Double(),"The constant damping value to be used if the backtrace line-search approach isn't used.");
+                parameter_handler.declare_entry("Use Laplace's equation to determine the initial guess","false",dealii::Patterns::Bool(),"Whether to use the solution of Laplace's equation instead of the IC in ICs_and_BCs.h as the initial guess for nonlinear, time independent equations. This guarantees smoothness and compliance with BCs.");
+            }
+            parameter_handler.leave_subsection();
+        }
+    }
 
     parameter_handler.declare_entry("Output file name (base)","solution",dealii::Patterns::Anything(),"The name for the output file, before the time step and processor info are added.");
     parameter_handler.declare_entry("Output file type","vtu",dealii::Patterns::Anything(),"The output file type (either vtu or vtk).");
@@ -267,9 +305,6 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
     parameter_handler.declare_entry("List of time steps to output","0",dealii::Patterns::Anything(),"The list of time steps to output, used for the LIST type.");
     parameter_handler.declare_entry("Number of outputs","10",dealii::Patterns::Integer(),"The number of outputs (or number of outputs per decade for the N_PER_DECADE type).");
     parameter_handler.declare_entry("Skip print steps","1",dealii::Patterns::Integer(),"The number of time steps between updates to the screen.");
-
-    // This is no longer needed and should be deleted (functionality moved to 'variableAttributeLoader')
-    parameter_handler.declare_entry("Allow nucleation","false",dealii::Patterns::Bool(),"Whether to enable the explicit nucleation capabilties.");
 
     // Declare entries for reading initial conditions from file
     parameter_handler.declare_entry("Load initial conditions","void",dealii::Patterns::Anything(),"Whether to load the initial conditions for each variable from file.");
@@ -330,6 +365,28 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
             parameter_handler.leave_subsection();
         }
     }
+
+    // Declare the grain remapping constants
+    parameter_handler.declare_entry("Activate grain reassignment","false",dealii::Patterns::Bool(),"Whether to enable the grain reassignment capabilities of PRISMS-PF where multiple grains are packed into a single order parameter.");
+
+    parameter_handler.declare_entry("Time steps between grain reassignments","100",dealii::Patterns::Integer(),"The number of time steps between times when the grain reassignment algorithm is triggered.");
+
+    parameter_handler.declare_entry("Order parameter cutoff for grain identification","1.0e-4",dealii::Patterns::Double(),"The threshold value of the order parameter where the element is considered to be in the grain or out of the grain.");
+
+    parameter_handler.declare_entry("Buffer between grains before reassignment","-1.0",dealii::Patterns::Double(),"The buffer value added to the radius of all grains used to calculation whether grains should be reassigned.");
+
+    parameter_handler.declare_entry("Order parameter fields for grain reassignment","",dealii::Patterns::List(dealii::Patterns::Anything()),"The list of field indices for the shared order parameters for grain reassignment.");
+
+    parameter_handler.declare_entry("Load grain structure","false",dealii::Patterns::Bool(),"Whether to load a grain structure in from file.");
+
+    parameter_handler.declare_entry("Grain structure filename","",dealii::Patterns::Anything(),"The filename (not including the '.vtk' extension) for the file holding the grain structure to be loaded.");
+
+    parameter_handler.declare_entry("Grain structure variable name","",dealii::Patterns::Anything(),"The variable name in the file holding the grain structure to be loaded that contains the grain ids.");
+
+    parameter_handler.declare_entry("Number of smoothing cycles after grain structure loading","10",dealii::Patterns::Integer(),"The number of times a diffusion smoother is run on the order parameters after the grains are loaded from file. The smoothing is necessary for the adaptive mesher to work properly.");
+
+    parameter_handler.declare_entry("Minimum radius for loaded grains","0.0",dealii::Patterns::Double(),"The minimum radius for a body to be considered a grain instead of an artifact from the loading process.");
+
 
     // Declare the user-defined constants
     for (unsigned int i=0; i<num_of_constants; i++){

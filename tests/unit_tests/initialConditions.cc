@@ -1,3 +1,4 @@
+/*
 //initial condition
 template <int dim>
 double InitialCondition<dim>::value (const dealii::Point<dim> &p, const unsigned int component) const
@@ -27,3 +28,4 @@ void InitialConditionVec<dim>::vector_value (const dealii::Point<dim> &p, dealii
 
 	  // =====================================================================
 }
+*/

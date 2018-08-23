@@ -1,4 +1,6 @@
 #include "../../include/userInputParameters.h"
+#include <deal.II/base/mpi.h>
+#include <deal.II/base/utilities.h>
 
 // ==========================================================================================
 // Method to extract the user-defined model constants

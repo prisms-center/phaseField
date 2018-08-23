@@ -1,12 +1,12 @@
 // Methods for the userInputParameters class
 #include "../../include/userInputParameters.h"
-//#include "../../include/sortIndexEntryPairList.h"
+#include <deal.II/base/mpi.h>
+#include <deal.II/base/utilities.h>
 
 template <int dim>
 userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reader, dealii::ParameterHandler & parameter_handler, variableAttributeLoader variable_attributes){
-    loadVariableAttributes(variable_attributes);
 
-    unsigned int _number_of_variables = input_file_reader.var_types.size();
+    loadVariableAttributes(variable_attributes);
 
     // Load the inputs into the class member variables
 
@@ -47,7 +47,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     std::vector<std::string> refine_criterion_fields_str = dealii::Utilities::split_string_list(parameter_handler.get("Refinement criteria fields"));
     for (unsigned int ref_field=0; ref_field<refine_criterion_fields_str.size(); ref_field++){
         bool field_found = false;
-        for (unsigned int i=0; i<_number_of_variables; i++ ){
+        for (unsigned int i=0; i<number_of_variables; i++ ){
             if (boost::iequals(refine_criterion_fields_str[ref_field], variable_attributes.var_name_list[i].second)){
                 refine_criterion_fields.push_back(variable_attributes.var_name_list[i].first);
                 field_found = true;
@@ -70,11 +70,112 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     int totalIncrements_temp = parameter_handler.get_integer("Number of time steps");
     finalTime = parameter_handler.get_double("Simulation end time");
 
-    // Elliptic solver parameters
-    solver_type = parameter_handler.get("Linear solver");
-    abs_tol = parameter_handler.get_bool("Use absolute convergence tolerance");
-    solver_tolerance = parameter_handler.get_double("Solver tolerance value");
-    max_solver_iterations = parameter_handler.get_integer("Maximum allowed solver iterations");
+    // Linear solver parameters
+    for (unsigned int i=0; i<number_of_variables; i++){
+        if (input_file_reader.var_eq_types.at(i) == TIME_INDEPENDENT || input_file_reader.var_eq_types.at(i) == IMPLICIT_TIME_DEPENDENT){
+            std::string subsection_text = "Linear solver parameters: ";
+            subsection_text.append(input_file_reader.var_names.at(i));
+
+            parameter_handler.enter_subsection(subsection_text);
+            {
+                // Set the tolerance type
+                SolverToleranceType temp_type;
+                std::string type_string = parameter_handler.get("Tolerance type");
+                if (boost::iequals(type_string,"ABSOLUTE_RESIDUAL")){
+                    temp_type = ABSOLUTE_RESIDUAL;
+                }
+                else if (boost::iequals(type_string,"RELATIVE_RESIDUAL_CHANGE")){
+                    temp_type = RELATIVE_RESIDUAL_CHANGE;
+                }
+                else if (boost::iequals(type_string,"ABSOLUTE_SOLUTION_CHANGE")){
+                    temp_type = ABSOLUTE_SOLUTION_CHANGE;
+                    std::cerr << "PRISMS-PF Error: Linear solver tolerance type " << type_string << " is not currently implemented, please use either ABSOLUTE_RESIDUAL or RELATIVE_RESIDUAL_CHANGE" << std::endl;
+                    abort();
+                }
+                else {
+                    std::cerr << "PRISMS-PF Error: Linear solver tolerance type " << type_string << " is not one of the allowed values (ABSOLUTE_RESIDUAL, RELATIVE_RESIDUAL_CHANGE, ABSOLUTE_SOLUTION_CHANGE)" << std::endl;
+                    abort();
+                }
+
+                // Set the tolerance value
+                double temp_value = parameter_handler.get_double("Tolerance value");
+
+                // Set the maximum number of iterations
+                unsigned int temp_max_iterations = parameter_handler.get_integer("Maximum linear solver iterations");
+
+                linear_solver_parameters.loadParameters(i,temp_type,temp_value,temp_max_iterations);
+            }
+            parameter_handler.leave_subsection();
+        }
+    }
+
+
+    // Non-linear solver parameters
+    std::vector<bool> var_nonlinear = variable_attributes.var_nonlinear;
+
+    nonlinear_solver_parameters.setMaxIterations(parameter_handler.get_integer("Maximum nonlinear solver iterations"));
+
+    for (unsigned int i=0; i<var_nonlinear.size(); i++){
+        if (var_nonlinear.at(i)){
+            std::string subsection_text = "Nonlinear solver parameters: ";
+            subsection_text.append(input_file_reader.var_names.at(i));
+
+            parameter_handler.enter_subsection(subsection_text);
+            {
+                // Set the tolerance type
+                SolverToleranceType temp_type;
+                std::string type_string = parameter_handler.get("Tolerance type");
+                if (boost::iequals(type_string,"ABSOLUTE_RESIDUAL")){
+                    temp_type = ABSOLUTE_RESIDUAL;
+                }
+                else if (boost::iequals(type_string,"RELATIVE_RESIDUAL_CHANGE")){
+                    temp_type = RELATIVE_RESIDUAL_CHANGE;
+                }
+                else if (boost::iequals(type_string,"ABSOLUTE_SOLUTION_CHANGE")){
+                    temp_type = ABSOLUTE_SOLUTION_CHANGE;
+                }
+                else {
+                    std::cerr << "PRISMS-PF Error: Nonlinear solver tolerance type " << type_string << " is not one of the allowed values (ABSOLUTE_RESIDUAL, RELATIVE_RESIDUAL_CHANGE, ABSOLUTE_SOLUTION_CHANGE)" << std::endl;
+                    abort();
+                }
+
+                // Set the tolerance value
+                double temp_value = parameter_handler.get_double("Tolerance value");
+
+                // Set the backtrace damping flag
+                bool temp_backtrack_damping = parameter_handler.get_bool("Use backtracking line search damping");
+
+                // Set the backtracking step size modifier
+                double temp_step_modifier = parameter_handler.get_double("Backtracking step size modifier");
+
+                // Set the constant that determines how much the residual must decrease to be accepted as sufficient
+                double temp_residual_decrease_coeff = parameter_handler.get_double("Backtracking residual decrease coefficient");
+
+                // Set the default damping coefficient (used if backtracking isn't used)
+                double temp_damping_coefficient = parameter_handler.get_double("Constant damping value");
+
+                // Set whether to use the solution of Laplace's equation instead of the IC in ICs_and_BCs.h as the initial guess for nonlinear, time independent equations
+                bool temp_laplace_for_initial_guess;
+                if (var_eq_type[i] == TIME_INDEPENDENT){
+                    temp_laplace_for_initial_guess = parameter_handler.get_bool("Use Laplace's equation to determine the initial guess");
+                }
+                else {
+                    temp_laplace_for_initial_guess = false;
+                    if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+                        std::cout << "PRISMS-PF Warning: Laplace's equation is only used to generate the initial guess for time independent equations. The equation for variable " << var_name[i] << " is not a time independent equation. No initial guess is needed for this equation." << std::endl;
+                    }
+                }
+
+                nonlinear_solver_parameters.loadParameters(i,temp_type,temp_value,temp_backtrack_damping,temp_step_modifier,temp_residual_decrease_coeff,temp_damping_coefficient,temp_laplace_for_initial_guess);
+            }
+            parameter_handler.leave_subsection();
+        }
+    }
+
+    // Set the max number of nonlinear iterations
+    if (var_nonlinear.size() == 0){
+        nonlinear_solver_parameters.setMaxIterations(0);
+    }
 
     // Output parameters
     std::string output_condition = parameter_handler.get("Output condition");
@@ -90,24 +191,24 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     output_vtu_per_process = parameter_handler.get_bool("Output separate files per process");
     if ((output_file_type == "vtk") && (!output_vtu_per_process)){
         output_vtu_per_process = true;
-        std::cout << "'Output file type' given as 'vtk' and 'Output separate files per process' given as 'false'. Shared output files are not supported for the vtk output format. Separate files per process will be created." << std::endl;
+        if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
+            std::cout << "PRISMS-PF Warning: 'Output file type' given as 'vtk' and 'Output separate files per process' given as 'false'. Shared output files are not supported for the vtk output format. Separate files per process will be created." << std::endl;
+        }
     }
 
     // Field variable definitions
-    number_of_variables = _number_of_variables;
-
 
     // If all of the variables are ELLIPTIC, then totalIncrements should be 1 and finalTime should be 0
-    bool only_elliptic_pdes = true;
+    bool only_time_independent_pdes = true;
     for (unsigned int i=0; i<var_eq_type.size(); i++){
-        if (var_eq_type.at(i) == PARABOLIC){
-            only_elliptic_pdes = false;
+        if (var_eq_type.at(i) == EXPLICIT_TIME_DEPENDENT || var_eq_type.at(i) == IMPLICIT_TIME_DEPENDENT){
+            only_time_independent_pdes = false;
             break;
         }
     }
 
     // Determine the maximum number of time steps
-    if (only_elliptic_pdes){
+    if (only_time_independent_pdes){
         totalIncrements = 1;
         finalTime = 0.0;
     }
@@ -232,9 +333,41 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     nucleation_order_parameter_cutoff = parameter_handler.get_double("Order parameter cutoff value");
     steps_between_nucleation_attempts = parameter_handler.get_integer("Time steps between nucleation attempts");
 
+    // Load the grain remapping parameters
+    grain_remapping_activated = parameter_handler.get_bool("Activate grain reassignment");
 
+    skip_grain_reassignment_steps = parameter_handler.get_integer("Time steps between grain reassignments");
 
+    order_parameter_threshold = parameter_handler.get_double("Order parameter cutoff for grain identification");
 
+    buffer_between_grains = parameter_handler.get_double("Buffer between grains before reassignment");
+    if (buffer_between_grains < 0.0 && grain_remapping_activated == true){
+        std::cerr << "PRISMS-PF Error: If grain reassignment is activated, a non-negative buffer distance must be given. See the 'Buffer between grains before reassignment' entry in parameters.in." << std::endl;
+        abort();
+    }
+
+    std::vector<std::string> variables_for_remapping_str = dealii::Utilities::split_string_list(parameter_handler.get("Order parameter fields for grain reassignment"));
+    for (unsigned int field=0; field<variables_for_remapping_str.size(); field++){
+        bool field_found = false;
+        for (unsigned int i=0; i<number_of_variables; i++ ){
+            if (boost::iequals(variables_for_remapping_str[field], variable_attributes.var_name_list[i].second)){
+                variables_for_remapping.push_back(variable_attributes.var_name_list[i].first);
+                field_found = true;
+                break;
+            }
+        }
+        if (field_found == false && grain_remapping_activated == true){
+            std::cerr << "PRISMS-PF Error: Entries in the list of order parameter fields used for grain reassignment must match the variable names in equations.h." << std::endl;
+            std::cerr << variables_for_remapping_str[field] << std::endl;
+            abort();
+        }
+    }
+
+    load_grain_structure = parameter_handler.get_bool("Load grain structure");
+    grain_structure_filename = parameter_handler.get("Grain structure filename");
+    grain_structure_variable_name = parameter_handler.get("Grain structure variable name");
+    num_grain_smoothing_cycles = parameter_handler.get_integer("Number of smoothing cycles after grain structure loading");
+    min_radius_for_loading_grains = parameter_handler.get_double("Minimum radius for loaded grains");
 
     // Load the boundary condition variables into list of BCs (where each element of the vector is one component of one variable)
     std::vector<std::string> list_of_BCs;

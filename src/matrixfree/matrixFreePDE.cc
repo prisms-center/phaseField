@@ -14,12 +14,15 @@ template <int dim, int degree>
  currentFieldIndex(0),
  isTimeDependentBVP(false),
  isEllipticBVP(false),
+ hasExplicitEquation(false),
+ hasNonExplicitEquation(false),
  parabolicFieldIndex(0),
  ellipticFieldIndex(0),
  currentTime(0.0),
  currentIncrement(0),
  currentOutput(0),
  currentCheckpoint(0),
+ current_grain_reassignment(0),
  computing_timer (pcout, TimerOutput::summary, TimerOutput::wall_times),
  first_integrated_var_output_complete(false)
  {

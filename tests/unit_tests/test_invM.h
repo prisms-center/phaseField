@@ -6,7 +6,7 @@ class testInvM: public MatrixFreePDE<dim,degree>
   testInvM(userInputParameters<dim> _userInputs): MatrixFreePDE<dim,degree>(_userInputs) {
 
 	  // Initialize the test field object (needed for computeInvM())
-	  Field<dim> test_field(SCALAR,PARABOLIC,"c");
+	  Field<dim> test_field(SCALAR,EXPLICIT_TIME_DEPENDENT,"c");
 	  this->fields.push_back(test_field);
 
 	  //init the MatrixFreePDE class for testing
@@ -25,6 +25,12 @@ class testInvM: public MatrixFreePDE<dim,degree>
 
   void setBCs(){};
 
+  // Function to set the initial conditions (in ICs_and_BCs.h)
+  void setInitialCondition(const dealii::Point<dim> &p, const unsigned int index, double & scalar_IC, dealii::Vector<double> & vector_IC){};
+
+  // Function to set the non-uniform Dirichlet boundary conditions (in ICs_and_BCs.h)
+  void setNonUniformDirichletBCs(const dealii::Point<dim> &p, const unsigned int index, const unsigned int direction, const double time, double & scalar_BC, dealii::Vector<double> & vector_BC){};
+
  private:
   //RHS implementation for explicit solve
   void getRHS(const MatrixFree<dim,double> &data,
@@ -32,14 +38,18 @@ class testInvM: public MatrixFreePDE<dim,degree>
 	      const std::vector<vectorType*> &src,
 	      const std::pair<unsigned int,unsigned int> &cell_range) const{};
 
-  void residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-  					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};
+  // Function to set the RHS of the governing equations for explicit time dependent equations (in equations.h)
+  void explicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+                   dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};
 
-  void residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-  					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};
+  // Function to set the RHS of the governing equations for all other equations (in equations.h)
+  void nonExplicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+                   dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};
 
-  void energyDensity(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list, const dealii::VectorizedArray<double> & JxW_value,
-  			  	  	 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {};
+  // Function to set the LHS of the governing equations (in equations.h)
+  void equationLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+                   dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};
+
 
 };
 

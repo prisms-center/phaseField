@@ -83,6 +83,7 @@ template <int dim, int degree>
          additional_data.mpi_communicator = MPI_COMM_WORLD;
      #endif
  	 additional_data.tasks_parallel_scheme = MatrixFree<dim,double>::AdditionalData::partition_partition;
+     //additional_data.tasks_parallel_scheme = MatrixFree<dim,double>::AdditionalData::none;
      //additional_data.tasks_block_size = 1; // This improves performance for small runs, not sure about larger runs
  	 additional_data.mapping_update_flags = (update_values | update_gradients | update_JxW_values | update_quadrature_points);
  	 QGaussLobatto<1> quadrature (degree+1);
@@ -102,8 +103,7 @@ template <int dim, int degree>
  		 matrixFreeObject.initialize_dof_vector(*U,  fieldIndex); *U=0;
 
  		// Initializing temporary dU vector required for implicit solves of the elliptic equation.
- 		// Assuming here that there is only one elliptic field in the problem (the main problem is if one is a scalar and the other is a vector, because then dU would need to be different sizes)
- 		if (fields[fieldIndex].pdetype==ELLIPTIC){
+ 		if (fields[fieldIndex].pdetype==TIME_INDEPENDENT || fields[fieldIndex].pdetype==IMPLICIT_TIME_DEPENDENT || (fields[fieldIndex].pdetype==AUXILIARY && userInputs.var_nonlinear[fieldIndex])){
  			if (fields[fieldIndex].type == SCALAR){
  				if (dU_scalar_init == false){
  					matrixFreeObject.initialize_dof_vector(dU_scalar,  fieldIndex);
@@ -143,7 +143,7 @@ template <int dim, int degree>
  	 }
 
  	 // If remeshing at the zeroth time step, re-apply initial conditions so the starting values are correct on the refined mesh
- 	 if (currentIncrement == 0){
+ 	 if (currentIncrement == 0 && !userInputs.load_grain_structure){
  		 applyInitialConditions();
  	 }
 

@@ -1346,3 +1346,141 @@ Time: 72.7267310619
  
 Tests Passed: 5/5
 --------------------------------------------------------- 
+--------------------------------------------------------- 
+Unit test on 2018-08-02 21:37
+--------------------------------------------------------- 
+Unit Tests Passed: 24/24
+--------------------------------------------------------- 
+Regression test on 2018-08-02 21:37
+--------------------------------------------------------- 
+Application: allenCahn 
+Result: Pass 
+Time: 32.357943058013916 
+ 
+--------------------------------------------------------- 
+Unit test on 2018-08-02 21:39
+--------------------------------------------------------- 
+Unit Tests Passed: 24/24
+--------------------------------------------------------- 
+Regression test on 2018-08-02 21:39
+--------------------------------------------------------- 
+Application: allenCahn 
+Result: Pass 
+Time: 32.22847294807434 
+ 
+--------------------------------------------------------- 
+Unit test on 2018-08-02 21:58
+--------------------------------------------------------- 
+Unit Tests Passed: 24/24
+--------------------------------------------------------- 
+Regression test on 2018-08-02 21:58
+--------------------------------------------------------- 
+Application: allenCahn 
+Result: Pass 
+Time: 32.27242088317871 
+ 
+Application: cahnHilliard 
+Result: Fail 
+Time: 96.94111108779907 
+ 
+Application: CHAC_anisotropyRegularized 
+Result: Fail 
+Time: 53.03217887878418 
+ 
+Application: coupledCahnHilliardAllenCahn 
+Result: Pass 
+Time: 129.96699023246765 
+ 
+Application: precipitateEvolution 
+Result: Fail 
+Time: 101.17339491844177 
+ 
+Tests Passed: 2/5
+--------------------------------------------------------- 
+--------------------------------------------------------- 
+Unit test on 2018-08-02 22:08
+--------------------------------------------------------- 
+Unit Tests Passed: 24/24
+--------------------------------------------------------- 
+Regression test on 2018-08-02 22:08
+--------------------------------------------------------- 
+Application: allenCahn 
+Result: Pass 
+Time: 32.822624921798706 
+ 
+Application: cahnHilliard 
+Result: New Gold Standard 
+Time: 98.59985494613647 
+ 
+Application: CHAC_anisotropyRegularized 
+Result: New Gold Standard 
+Time: 53.19001889228821 
+ 
+Application: coupledCahnHilliardAllenCahn 
+Result: Pass 
+Time: 130.64238619804382 
+ 
+Application: precipitateEvolution 
+Result: Fail 
+Time: 101.05181503295898 
+ 
+Tests Passed: 4/5
+--------------------------------------------------------- 
+--------------------------------------------------------- 
+Unit test on 2018-08-02 22:22
+--------------------------------------------------------- 
+Unit Tests Passed: 24/24
+--------------------------------------------------------- 
+Regression test on 2018-08-02 22:22
+--------------------------------------------------------- 
+Application: allenCahn 
+Result: Pass 
+Time: 33.074055910110474 
+ 
+Application: cahnHilliard 
+Result: Pass 
+Time: 99.55661797523499 
+ 
+Application: CHAC_anisotropyRegularized 
+Result: Pass 
+Time: 53.454427003860474 
+ 
+Application: coupledCahnHilliardAllenCahn 
+Result: Pass 
+Time: 131.27651405334473 
+ 
+Application: precipitateEvolution 
+Result: New Gold Standard 
+Time: 100.99187588691711 
+ 
+Tests Passed: 5/5
+--------------------------------------------------------- 
+--------------------------------------------------------- 
+Unit test on 2018-08-02 22:40
+--------------------------------------------------------- 
+Unit Tests Passed: 24/24
+--------------------------------------------------------- 
+Regression test on 2018-08-02 22:40
+--------------------------------------------------------- 
+Application: allenCahn 
+Result: Pass 
+Time: 32.30248212814331 
+ 
+Application: cahnHilliard 
+Result: Pass 
+Time: 97.57352590560913 
+ 
+Application: CHAC_anisotropyRegularized 
+Result: Pass 
+Time: 54.690234899520874 
+ 
+Application: coupledCahnHilliardAllenCahn 
+Result: Pass 
+Time: 131.20830583572388 
+ 
+Application: precipitateEvolution 
+Result: Pass 
+Time: 101.46475887298584 
+ 
+Tests Passed: 5/5
+--------------------------------------------------------- 

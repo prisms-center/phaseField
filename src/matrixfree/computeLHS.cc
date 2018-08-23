@@ -10,7 +10,12 @@ void MatrixFreePDE<dim,degree>::vmult (vectorType &dst, const vectorType &src) c
 
   //call cell_loop
   dst=0.0;
-  matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getLHS, this, dst, src);
+  if (!generatingInitialGuess){
+      matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getLHS, this, dst, src);
+  }
+  else {
+      matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getLaplaceLHS, this, dst, src);
+  }
 
   //Account for Dirichlet BC's (essentially copy dirichlet DOF values present in src to dst, although it is unclear why the constraints can't just be distributed here)
   for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[currentFieldIndex]->begin(); it!=valuesDirichletSet[currentFieldIndex]->end(); ++it){
@@ -30,13 +35,15 @@ void  MatrixFreePDE<dim,degree>::getLHS(const MatrixFree<dim,double> &data,
 				 const vectorType &src,
 				 const std::pair<unsigned int,unsigned int> &cell_range) const{
 
-    variableContainer<dim,degree,dealii::VectorizedArray<double> > variable_list(data,userInputs.varInfoListLHS);
+    variableContainer<dim,degree,dealii::VectorizedArray<double> > variable_list(data,userInputs.varInfoListLHS,userInputs.varChangeInfoListLHS);
 
 	//loop over cells
 	for (unsigned int cell=cell_range.first; cell<cell_range.second; ++cell){
 
 		// Initialize, read DOFs, and set evaulation flags for each variable
-        variable_list.reinit_and_eval_LHS(src,solutionSet,cell,currentFieldIndex);
+        //variable_list.reinit_and_eval_LHS(src,solutionSet,cell,currentFieldIndex);
+        variable_list.reinit_and_eval(solutionSet,cell);
+        variable_list.reinit_and_eval_change_in_solution(src,cell,currentFieldIndex);
 
 		unsigned int num_q_points = variable_list.get_num_q_points();
 
@@ -47,12 +54,12 @@ void  MatrixFreePDE<dim,degree>::getLHS(const MatrixFree<dim,double> &data,
             dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc = variable_list.get_q_point_location();
 
 			// Calculate the residuals
-            residualLHS(variable_list,q_point_loc);
+            equationLHS(variable_list,q_point_loc);
 
 		}
 
         // Integrate the residuals and distribute from local to global
-        variable_list.integrate_and_distribute_LHS(dst,currentFieldIndex);
+        variable_list.integrate_and_distribute_change_in_solution_LHS(dst,currentFieldIndex);
 
 	}
 }

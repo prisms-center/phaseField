@@ -1,6 +1,3 @@
-# Parameter list for the Allen-Cahn example application
-# Refer to the PRISMS-PF manual for use of these parameters in the source code.
-
 # =================================================================================
 # Set the number of dimensions (2 or 3 for a 2D or 3D calculation)
 # =================================================================================
@@ -38,7 +35,7 @@ set Time step = 1.0e-3
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 50000 #15000
+set Number of time steps = 50000
 
 # =================================================================================
 # Set the boundary conditions

@@ -1,6 +1,3 @@
-# Parameter list for the Allen-Cahn example application
-# Refer to the PRISMS-PF manual for use of these parameters in the source code.
-
 # =================================================================================
 # Set the number of dimensions (2 or 3 for a 2D or 3D calculation)
 # =================================================================================

@@ -5,7 +5,8 @@
  *      Author: stephendewitt
  */
 
-#include "../../include/dealIIheaders.h"
+#include <deal.II/base/function.h>
+#include <deal.II/lac/parallel_vector.h>
 #include "../../include/vectorBCFunction.h"
 
 template <int dim>

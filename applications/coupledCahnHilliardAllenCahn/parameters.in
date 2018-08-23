@@ -1,6 +1,3 @@
-# Parameter list for the Allen-Cahn example application
-# Refer to the PRISMS-PF manual for use of these parameters in the source code.
-
 # =================================================================================
 # Set the number of dimensions (2 or 3 for a 2D or 3D calculation)
 # =================================================================================
@@ -40,15 +37,16 @@ set Mesh adaptivity = true
 # When adaptive meshing is enabled, the refine factor set in the block above is
 # only used to generate the first pass of the mesh as the initial conditions are
 # applied. It should be set somewhere between the max and min levels below.
+
 set Max refinement level = 6
 set Min refinement level = 3
 
 # Set the fields used to determine the refinement using their index.
-set Refinement criteria fields = c,n
+set Refinement criteria fields = c, n
 
 # Set the maximum and minimum value of the fields where the mesh should be refined
-set Refinement window max = 0.1,0.99
-set Refinement window min = 0.02,0.01
+set Refinement window max = 0.1, 0.99
+set Refinement window min = 0.02, 0.01
 
 # Set the number of time steps between remeshing operations
 set Steps between remeshing operations = 5000
@@ -57,7 +55,7 @@ set Steps between remeshing operations = 5000
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 0.8e-3
+set Time step = 8.0e-4
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
@@ -96,13 +94,24 @@ set Boundary condition for variable n = NATURAL
 # where [symmetry] is ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC.
 
 # The CH mobility, McV in equations.h
-set Model constant McV = 1.0, DOUBLE
+set Model constant Mc = 1.0, DOUBLE
 
 # The AC mobility, MnV in equations.h
-set Model constant MnV = 150.0, DOUBLE
+set Model constant Mn = 150.0, DOUBLE
 
 # Gradient energy coefficient
-set Model constant KnV = 0.3, DOUBLE
+set Model constant Kn = 0.3, DOUBLE
+
+# Centers for points 1 and 2
+set Model constant center1 = (33.3333333333,33.3333333333,33.3333333333), TENSOR
+set Model constant center2 = (75,75,75), TENSOR
+
+# Radii for points 1 and 2
+set Model constant radius1 = 20.0, DOUBLE
+set Model constant radius2 = 8.33333333333, DOUBLE
+
+# Initial oncentration in the matrix
+set Model constant matrix_concentration = 0.009, DOUBLE
 
 # =================================================================================
 # Set the output parameters

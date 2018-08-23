@@ -20,10 +20,6 @@ void load_unit_test_inputs(userInputParameters<dim> & userInputs){
     userInputs.dtValue = 1;
     userInputs.totalIncrements = 20000;
     userInputs.finalTime = 20.0;
-    userInputs.solver_type = "SolverCG";
-    userInputs.abs_tol = false;
-    userInputs.solver_tolerance = 1.0e-10;
-    userInputs.max_solver_iterations = 1000;
     userInputs.skip_print_steps = 1;
     userInputs.output_file_type = "vtu";
     userInputs.nucleation_occurs = false;

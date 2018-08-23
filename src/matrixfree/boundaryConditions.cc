@@ -2,7 +2,7 @@
 
 #include "../../include/matrixFreePDE.h"
 #include "../../include/vectorBCFunction.h"
-
+#include "../../include/varBCs.h"
 #include "../../include/nonUniformDirichletBC.h"
 
 // =================================================================================
@@ -96,7 +96,7 @@ void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 			  }
 			  else if (userInputs.BC_list[starting_BC_list_index].var_BC_type[direction] == NON_UNIFORM_DIRICHLET){
 				  VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
-  						direction, NonUniformDirichletBC<dim>(currentFieldIndex,direction,currentTime,userInputs), *(ConstraintMatrix*) \
+  						direction, NonUniformDirichletBC<dim,degree>(currentFieldIndex,direction,currentTime,this), *(ConstraintMatrix*) \
   						constraintsDirichletSet[currentFieldIndex]);
 			  }
 		  }
@@ -134,9 +134,12 @@ void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 				  }
 			  }
 
-			  VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
-				  direction, NonUniformDirichletBCVec<dim>(currentFieldIndex,direction,currentTime,userInputs), *(ConstraintMatrix*) \
-				  constraintsDirichletSet[currentFieldIndex],mask);
+			  // VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
+				//   direction, NonUniformDirichletBC<dim,degree>(currentFieldIndex,direction,currentTime,this), *(ConstraintMatrix*) \
+				//   constraintsDirichletSet[currentFieldIndex],mask);
+                VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
+                 direction, NonUniformDirichletBCVector<dim,degree>(currentFieldIndex,direction,currentTime,this), *(ConstraintMatrix*) \
+                 constraintsDirichletSet[currentFieldIndex],mask);
 
 
 		  }
@@ -193,7 +196,7 @@ void MatrixFreePDE<dim,degree>::setPeriodicityConstraints(ConstraintMatrix * con
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::getComponentsWithRigidBodyModes( std::vector<int> & rigidBodyModeComponents) const {
 	// Rigid body modes only matter for elliptic equations
-		if (userInputs.var_eq_type[currentFieldIndex] == ELLIPTIC){
+		if (userInputs.var_eq_type[currentFieldIndex] == IMPLICIT_TIME_DEPENDENT || userInputs.var_eq_type[currentFieldIndex] == TIME_INDEPENDENT){
 
 			// First, get the variable index of the current field
 			unsigned int starting_BC_list_index = 0;

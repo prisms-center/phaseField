@@ -22,6 +22,12 @@ class setRigidBodyModeConstraintsTest: public MatrixFreePDE<dim,degree>
 
 	void setBCs(){};
 
+    // Function to set the initial conditions (in ICs_and_BCs.h)
+    void setInitialCondition(const dealii::Point<dim> &p, const unsigned int index, double & scalar_IC, dealii::Vector<double> & vector_IC){};
+
+    // Function to set the non-uniform Dirichlet boundary conditions (in ICs_and_BCs.h)
+    void setNonUniformDirichletBCs(const dealii::Point<dim> &p, const unsigned int index, const unsigned int direction, const double time, double & scalar_BC, dealii::Vector<double> & vector_BC){};
+
 	private:
 	//RHS implementation for explicit solve
 	void getRHS(const MatrixFree<dim,double> &data,
@@ -29,14 +35,17 @@ class setRigidBodyModeConstraintsTest: public MatrixFreePDE<dim,degree>
 			const std::vector<vectorType*> &src,
 			const std::pair<unsigned int,unsigned int> &cell_range) const{};
 
-	void residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-		    					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};
+    // Function to set the RHS of the governing equations for explicit time dependent equations (in equations.h)
+    void explicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+                     dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};
 
-	void residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-		    					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};
+    // Function to set the RHS of the governing equations for all other equations (in equations.h)
+    void nonExplicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+                     dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};
 
-	void energyDensity(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list, const dealii::VectorizedArray<double> & JxW_value,
-		    			  	  	 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {};
+    // Function to set the LHS of the governing equations (in equations.h)
+    void equationLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+                     dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {};
 
 };
 

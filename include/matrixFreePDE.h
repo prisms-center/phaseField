@@ -2,23 +2,44 @@
 #ifndef MATRIXFREEPDE_H
 #define MATRIXFREEPDE_H
 
-//general headers
+// general headers
 #include <fstream>
 #include <sstream>
 #include <iterator>
 
-//dealii headers
-#include "dealIIheaders.h"
+// dealii headers
+#include <deal.II/base/quadrature.h>
+#include <deal.II/base/timer.h>
+#include <deal.II/lac/vector.h>
+#include <deal.II/lac/constraint_matrix.h>
+#include <deal.II/fe/fe_system.h>
+#include <deal.II/fe/fe_q.h>
+#include <deal.II/fe/fe_values.h>
+#include <deal.II/grid/tria.h>
+#include <deal.II/grid/tria_accessor.h>
+#include <deal.II/grid/tria_iterator.h>
+#include <deal.II/grid/grid_tools.h>
+#include <deal.II/dofs/dof_tools.h>
+#include <deal.II/dofs/dof_handler.h>
+#include <deal.II/numerics/vector_tools.h>
+#include <deal.II/lac/parallel_vector.h>
+#include <deal.II/matrix_free/matrix_free.h>
+#include <deal.II/matrix_free/fe_evaluation.h>
+#include <deal.II/base/config.h>
+#include <deal.II/base/exceptions.h>
+#include <deal.II/distributed/tria.h>
+#include <deal.II/distributed/solution_transfer.h>
+#include <deal.II/grid/manifold_lib.h>
 
-//PRISMS headers
-#include "varBCs.h"
+// PRISMS headers
 #include "fields.h"
 #include "userInputParameters.h"
 #include "nucleus.h"
 #include "variableValueContainer.h"
 #include "variableContainer.h"
+#include "SimplifiedGrainRepresentation.h"
 
-////define data types
+// define data types
 #ifndef scalarType
 typedef dealii::VectorizedArray<double> scalarType;
 #endif
@@ -90,6 +111,12 @@ class MatrixFreePDE:public Subscriptor
   // Parallel message stream
   ConditionalOStream  pcout;
 
+  // Initial conditions function
+  virtual void setInitialCondition(const dealii::Point<dim> &p, const unsigned int index, double & scalar_IC, dealii::Vector<double> & vector_IC) = 0;
+
+  // Non-uniform boundary conditions function
+  virtual void setNonUniformDirichletBCs(const dealii::Point<dim> &p, const unsigned int index, const unsigned int direction, const double time, double & scalar_BC, dealii::Vector<double> & vector_BC) = 0;
+
  protected:
   userInputParameters<dim> userInputs;
 
@@ -107,11 +134,18 @@ class MatrixFreePDE:public Subscriptor
   void reinit  ();
 
   /**
+  * Method to reassign grains when multiple grains are stored in a single order parameter.
+  */
+  void reassignGrains();
+
+  std::vector<SimplifiedGrainRepresentation<dim>> simplified_grain_representations;
+
+  /**
    * Method to solve each time increment of a time-dependent problem. For time-independent problems
    * this method is called only once. This method solves for all the fields in a staggered manner (one after another)
    * and also invokes the corresponding solvers: Explicit solver for Parabolic problems, Implicit (matrix-free) solver for Elliptic problems.
    */
-  virtual void solveIncrement ();
+  virtual void solveIncrement (bool skip_time_dependent);
   /* Method to write solution fields to vtu and pvtu (parallel) files.
   *
   * This method can be enabled/disabled by setting the flag writeOutput to true/false. Also,
@@ -183,7 +217,8 @@ class MatrixFreePDE:public Subscriptor
   virtual void adaptiveRefineCriterion();
 
   /*Method to compute the right hand side (RHS) residual vectors*/
-  void computeRHS();
+  void computeExplicitRHS();
+  void computeNonexplicitRHS();
 
   //virtual methods to be implemented in the derived class
   /*Method to calculate LHS(implicit solve)*/
@@ -191,16 +226,41 @@ class MatrixFreePDE:public Subscriptor
 		      vectorType &dst,
 		      const vectorType &src,
 		      const std::pair<unsigned int,unsigned int> &cell_range) const;
+
+
+  bool generatingInitialGuess;
+  void getLaplaceLHS(const MatrixFree<dim,double> &data,
+              vectorType &dst,
+              const vectorType &src,
+              const std::pair<unsigned int,unsigned int> &cell_range) const;
+
+
+  void setNonlinearEqInitialGuess();
+  void computeLaplaceRHS(unsigned int fieldIndex);
+  void getLaplaceRHS (const MatrixFree<dim,double> &data,
+		       vectorType &dst,
+		       const vectorType &src,
+		       const std::pair<unsigned int,unsigned int> &cell_range) const;
+
+
   /*Method to calculate RHS (implicit/explicit). This is an abstract method, so every model which inherits MatrixFreePDE<dim> has to implement this method.*/
-  void getRHS (const MatrixFree<dim,double> &data,
+  void getExplicitRHS (const MatrixFree<dim,double> &data,
 		       std::vector<vectorType*> &dst,
 		       const std::vector<vectorType*> &src,
 		       const std::pair<unsigned int,unsigned int> &cell_range) const;
 
-  virtual void residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+  void getNonexplicitRHS (const MatrixFree<dim,double> &data,
+            std::vector<vectorType*> &dst,
+            const std::vector<vectorType*> &src,
+            const std::pair<unsigned int,unsigned int> &cell_range) const;
+
+  virtual void explicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
   		  	  	  	  	  	  	  	  	  	  	  	  	  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
 
-  virtual void residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+  virtual void nonExplicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+  		  	  	  	  	  	  	  	  	  	  	  	  	  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
+
+  virtual void equationLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
   														  dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const=0;
 
   virtual void postProcessedFields(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
@@ -283,10 +343,14 @@ class MatrixFreePDE:public Subscriptor
   bool isTimeDependentBVP;
   /*Flag used to mark problems with Elliptic fields.*/
   bool isEllipticBVP;
+
+  bool hasExplicitEquation;
+  bool hasNonExplicitEquation;
+  bool has_Dirichlet_BCs;
   //
   unsigned int parabolicFieldIndex, ellipticFieldIndex;
   double currentTime;
-  unsigned int currentIncrement, currentOutput, currentCheckpoint;
+  unsigned int currentIncrement, currentOutput, currentCheckpoint, current_grain_reassignment;
 
   /*Timer and logging object*/
   mutable TimerOutput computing_timer;

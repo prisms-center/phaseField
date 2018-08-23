@@ -1,3 +1,4 @@
+/*
 template <int dim>
 double NonUniformDirichletBC<dim>::value (const dealii::Point<dim> &p, const unsigned int component) const
 {
@@ -31,3 +32,5 @@ void NonUniformDirichletBCVec<dim>::vector_value (const dealii::Point<dim> &p, d
     // -------------------------------------------------------------------------
 
 }
+
+*/

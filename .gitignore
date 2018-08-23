@@ -34,6 +34,7 @@
 freeEnergy.txt
 integratedFields.txt
 .*vtu*
+visitlog.py
 
 #CMAKE files
 *.cmake
@@ -81,6 +82,7 @@ DoxygenWarningLog.txt
 freeEnergy.txt
 output.txt
 
+restart*
 integratedFields.txt
 
 # Checkpoint/restart files

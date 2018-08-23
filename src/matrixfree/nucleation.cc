@@ -1,6 +1,7 @@
 // Methods in MatrixFreePDE to update the list of nuclei
 #include "../../include/matrixFreePDE.h"
 #include "../../include/parallelNucleationList.h"
+#include "../../include/varBCs.h"
 #include <random>
 #include <time.h>
 
@@ -125,6 +126,7 @@ void MatrixFreePDE<dim,degree>::getLocalNucleiList(std::vector<nucleus<dim> > &n
             q_point_list = fe_values.get_quadrature_points();
 
             // ---------------------------
+            // NOTE: This might not be the best way to do this. This is missing the loop of the DoFs from Step-3
 
             double element_volume = 0.0;
             dealii::Point<dim> ele_center;

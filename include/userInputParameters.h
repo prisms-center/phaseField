@@ -4,13 +4,24 @@
 #ifndef INCLUDE_USERINPUTPARAMETERS_H_
 #define INCLUDE_USERINPUTPARAMETERS_H_
 
-#include "dealIIheaders.h"
+
+#include <deal.II/lac/vector.h>
+#include <deal.II/lac/parallel_vector.h>
+
 #include "model_variables.h"
 #include "varBCs.h"
 #include "inputFileReader.h"
 #include "varTypeEnums.h"
 #include "variableAttributeLoader.h"
 #include "nucleationParameters.h"
+#include "SolverParameters.h"
+#include <deal.II/base/conditional_ostream.h>
+#include <boost/variant.hpp>
+#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+#include <vector>
+#include <iostream>
+#include <unordered_map>
 
 enum elasticityModel {ISOTROPIC, TRANSVERSE, ORTHOTROPIC, ANISOTROPIC, ANISOTROPIC2D};
 
@@ -78,24 +89,28 @@ public:
 	unsigned int totalIncrements;
 
 	// Elliptic solver parameters
-	std::string solver_type;
-	bool abs_tol;
-	double solver_tolerance;
-	unsigned int max_solver_iterations;
+    LinearSolverParameters linear_solver_parameters;
 
-	// Variable inputs
+    // Nonlinear solver parameters
+    NonlinearSolverParameters nonlinear_solver_parameters;
+
+	// Variable inputs (I might be able to leave some/all of these in variable_attributes)
 	unsigned int number_of_variables;
 
 	std::vector<std::string> var_name;
 	std::vector<fieldType> var_type;
 	std::vector<PDEType> var_eq_type;
 
+    std::vector<bool> var_nonlinear;
+
 	// Variables needed to calculate the RHS
-	std::vector<variable_info> varInfoListRHS;
+    unsigned int num_var_explicit_RHS, num_var_nonexplicit_RHS;
+	std::vector<variable_info> varInfoListExplicitRHS, varInfoListNonexplicitRHS;
 
 	// Variables needed to calculate the LHS
 	unsigned int num_var_LHS;
 	std::vector<variable_info> varInfoListLHS;
+    std::vector<variable_info> varChangeInfoListLHS;
 
 	// Variables for loading in initial conditions
 	std::vector<bool> load_ICs;
@@ -132,16 +147,22 @@ public:
 	std::vector<unsigned int> nucleating_variable_indices;
 	std::vector<unsigned int> nucleation_need_value;
 
-	/*
-	std::vector<double> nucleus_semiaxes;
-	std::vector<double> order_parameter_freeze_semiaxes;
-	double no_nucleation_border_thickness;
-	double nucleus_hold_time;
-	*/
 	double min_distance_between_nuclei; // Only enforced for nuclei placed during the same time step
 	double nucleation_order_parameter_cutoff;
 	unsigned int steps_between_nucleation_attempts;
 
+    // Grain remapping parameters
+    bool grain_remapping_activated;
+    std::vector<unsigned int> variables_for_remapping; // Note: this should be a sorted list
+    unsigned int skip_grain_reassignment_steps;
+    double order_parameter_threshold;
+    double buffer_between_grains;
+
+    bool load_grain_structure;
+    double min_radius_for_loading_grains;
+    std::string grain_structure_filename;
+    std::string grain_structure_variable_name;
+    unsigned int num_grain_smoothing_cycles;
 
 private:
 	// Method to create the list of time steps where the results should be output (called from loadInputParameters)
@@ -157,6 +178,7 @@ private:
 	// Private nucleation variables
 	std::vector<nucleationParameters<dim> > nucleation_parameters_list;
 	std::map<unsigned int, unsigned int> nucleation_parameters_list_index;
+
 };
 
 #endif /* INCLUDE_USERINPUTPARAMETERS_H_ */
