@@ -4,43 +4,41 @@ template <int dim, int degree>
 class customPDE: public MatrixFreePDE<dim,degree>
 {
 public:
+	customPDE(userInputParameters<dim> _userInputs): MatrixFreePDE<dim,degree>(_userInputs) , userInputs(_userInputs) {};
+    // Function to set the initial conditions (in ICs_and_BCs.h)
+    void setInitialCondition(const dealii::Point<dim> &p, const unsigned int index, double & scalar_IC, dealii::Vector<double> & vector_IC);
 
-	// Constructor, which calls the MatrixFreePDE constructor
-	customPDE(userInputParameters<dim> _userInputs): MatrixFreePDE<dim,degree>(_userInputs) , userInputs(_userInputs) {
-		c_dependent_misfit = false;
-		for (unsigned int i=0; i<dim; i++){
-			for (unsigned int j=0; j<dim; j++){
-				if (std::abs(sfts_linear1[i][j])>1.0e-12){
-					c_dependent_misfit = true;
-				}
-			}
-		}
-	};
+    // Function to set the non-uniform Dirichlet boundary conditions (in ICs_and_BCs.h)
+    void setNonUniformDirichletBCs(const dealii::Point<dim> &p, const unsigned int index, const unsigned int direction, const double time, double & scalar_BC, dealii::Vector<double> & vector_BC);
 
 private:
-	#include "../../include/typeDefs.h"
+    #include "../../include/typeDefs.h"
 
-	const userInputParameters<dim> userInputs;
+    const userInputParameters<dim> userInputs;
 
-	// Pure virtual method in MatrixFreePDE
-	void residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
+    // Function to set the RHS of the governing equations for explicit time dependent equations (in equations.h)
+    void explicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+                     dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 
-	// Pure virtual method in MatrixFreePDE
-	void residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
+    // Function to set the RHS of the governing equations for all other equations (in equations.h)
+    void nonExplicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+                     dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 
-	// Virtual method in MatrixFreePDE that we override if we need postprocessing
-	#ifdef POSTPROCESS_FILE_EXISTS
-	void postProcessedFields(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-					variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
-					const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
-	#endif
+    // Function to set the LHS of the governing equations (in equations.h)
+    void equationLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+                     dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 
-	// Virtual method in MatrixFreePDE that we override if we need nucleation
-	#ifdef NUCLEATION_FILE_EXISTS
-	double getNucleationProbability(variableValueContainer variable_value, double dV, dealii::Point<dim> p, unsigned int variable_index) const;
-	#endif
+    // Function to set postprocessing expressions (in postprocess.h)
+    #ifdef POSTPROCESS_FILE_EXISTS
+    void postProcessedFields(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+                    variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
+                    const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
+    #endif
+
+    // Function to set the nucleation probability (in nucleation.h)
+    #ifdef NUCLEATION_FILE_EXISTS
+    double getNucleationProbability(variableValueContainer variable_value, double dV, dealii::Point<dim> p, unsigned int variable_index) const;
+    #endif
 
 	// ================================================================
 	// Methods specific to this subclass
@@ -48,7 +46,6 @@ private:
 
 	// Method to place the nucleus and calculate the mobility modifier in residualRHS
 	void seedNucleus(const dealii::Point<dim, dealii::VectorizedArray<double> > & q_point_loc,
-						//std::vector<dealii::VectorizedArray<double> > & source_terms,
                                                 dealii::AlignedVector<dealii::VectorizedArray<double > > & source_terms,
                                                 dealii::VectorizedArray<double> & gamma) const;
 
@@ -89,8 +86,6 @@ private:
 	double k1 = userInputs.get_model_constant_double("k1");
 	double k2 = userInputs.get_model_constant_double("k2");
 	double tau = userInputs.get_model_constant_double("tau");
-
-	bool c_dependent_misfit;
 
 	double pi = 2.0*std::acos(0.0);
 

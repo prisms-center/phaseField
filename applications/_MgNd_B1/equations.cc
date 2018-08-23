@@ -7,20 +7,10 @@ void variableAttributeLoader::loadVariableAttributes(){
 	// Variable 0
 	set_variable_name				(0,"c");
 	set_variable_type				(0,SCALAR);
-	set_variable_equation_type		(0,PARABOLIC);
+	set_variable_equation_type		(0,EXPLICIT_TIME_DEPENDENT);
 
-	set_need_value					(0,true);
-	set_need_gradient				(0,true);
-	set_need_hessian				(0,false);
-
-	set_need_value_residual_term	(0,true);
-	set_need_gradient_residual_term	(0,true);
-
-	set_need_value_LHS				(0,false);
-	set_need_gradient_LHS			(0,false);
-	set_need_hessian_LHS			(0,false);
-	set_need_value_residual_term_LHS	(0,false);
-	set_need_gradient_residual_term_LHS	(0,false);
+    set_dependencies_value_term_RHS(0, "c");
+    set_dependencies_gradient_term_RHS(0, "n1, n2, n3, grad(c), grad(n1), grad(n2), grad(n3), grad(u)");
 
 	set_allowed_to_nucleate			(0, false);
 	set_need_value_nucleation		(0, true);
@@ -28,20 +18,10 @@ void variableAttributeLoader::loadVariableAttributes(){
 	// Variable 1
 	set_variable_name				(1,"n1");
 	set_variable_type				(1,SCALAR);
-	set_variable_equation_type		(1,PARABOLIC);
+	set_variable_equation_type		(1,EXPLICIT_TIME_DEPENDENT);
 
-	set_need_value					(1,true);
-	set_need_gradient				(1,true);
-	set_need_hessian				(1,false);
-
-	set_need_value_residual_term	(1,true);
-	set_need_gradient_residual_term	(1,true);
-
-	set_need_value_LHS				(1,true);
-	set_need_gradient_LHS			(1,false);
-	set_need_hessian_LHS			(1,false);
-	set_need_value_residual_term_LHS	(1,false);
-	set_need_gradient_residual_term_LHS	(1,false);
+    set_dependencies_value_term_RHS(1, "c, n1, n2, n3, grad(u)");
+    set_dependencies_gradient_term_RHS(1, "grad(n1)");
 
 	set_allowed_to_nucleate			(1, true);
 	set_need_value_nucleation		(1, true);
@@ -49,20 +29,10 @@ void variableAttributeLoader::loadVariableAttributes(){
 	// Variable 2
 	set_variable_name				(2,"n2");
 	set_variable_type				(2,SCALAR);
-	set_variable_equation_type		(2,PARABOLIC);
+	set_variable_equation_type		(2,EXPLICIT_TIME_DEPENDENT);
 
-	set_need_value					(2,true);
-	set_need_gradient				(2,true);
-	set_need_hessian				(2,false);
-
-	set_need_value_residual_term	(2,true);
-	set_need_gradient_residual_term	(2,true);
-
-	set_need_value_LHS				(2,true);
-	set_need_gradient_LHS			(2,false);
-	set_need_hessian_LHS			(2,false);
-	set_need_value_residual_term_LHS	(2,false);
-	set_need_gradient_residual_term_LHS	(2,false);
+    set_dependencies_value_term_RHS(2, "c, n1, n2, n3, grad(u)");
+    set_dependencies_gradient_term_RHS(2, "grad(n2)");
 
 	set_allowed_to_nucleate			(2, true);
 	set_need_value_nucleation		(2, true);
@@ -70,20 +40,10 @@ void variableAttributeLoader::loadVariableAttributes(){
 	// Variable 3
 	set_variable_name				(3,"n3");
 	set_variable_type				(3,SCALAR);
-	set_variable_equation_type		(3,PARABOLIC);
+	set_variable_equation_type		(3,EXPLICIT_TIME_DEPENDENT);
 
-	set_need_value					(3,true);
-	set_need_gradient				(3,true);
-	set_need_hessian				(3,false);
-
-	set_need_value_residual_term	(3,true);
-	set_need_gradient_residual_term	(3,true);
-
-	set_need_value_LHS				(3,true);
-	set_need_gradient_LHS			(3,false);
-	set_need_hessian_LHS			(3,false);
-	set_need_value_residual_term_LHS	(3,false);
-	set_need_gradient_residual_term_LHS	(3,false);
+    set_dependencies_value_term_RHS(3, "c, n1, n2, n3, grad(u)");
+    set_dependencies_gradient_term_RHS(3, "grad(n3)");
 
 	set_allowed_to_nucleate			(3, true);
 	set_need_value_nucleation		(3, true);
@@ -91,20 +51,12 @@ void variableAttributeLoader::loadVariableAttributes(){
 	// Variable 4
 	set_variable_name				(4,"u");
 	set_variable_type				(4,VECTOR);
-	set_variable_equation_type		(4,ELLIPTIC);
+	set_variable_equation_type		(4,TIME_INDEPENDENT);
 
-	set_need_value					(4,false);
-	set_need_gradient				(4,true);
-	set_need_hessian				(4,false);
-
-	set_need_value_residual_term	(4,false);
-	set_need_gradient_residual_term	(4,true);
-
-	set_need_value_LHS				(4,false);
-	set_need_gradient_LHS			(4,true);
-	set_need_hessian_LHS			(4,false);
-	set_need_value_residual_term_LHS	(4,false);
-	set_need_gradient_residual_term_LHS	(4,true);
+    set_dependencies_value_term_RHS(4, "");
+    set_dependencies_gradient_term_RHS(4, "c, n1, n2, n3, grad(u)");
+    set_dependencies_value_term_LHS(4, "");
+    set_dependencies_gradient_term_LHS(4, "grad(change(u))");
 
 }
 
@@ -158,37 +110,40 @@ void variableAttributeLoader::loadVariableAttributes(){
 #define rn3xV  (constV(-userInputs.dtValue*Mn3V)*gamma*Knx3)
 
 
-// =================================================================================
-// residualRHS
-// =================================================================================
-// This function calculates the residual equations for each variable. It takes
-// "modelVariablesList" as an input, which is a list of the value and derivatives of
-// each of the variables at a specific quadrature point. The (x,y,z) location of
-// that quadrature point is given by "q_point_loc". The function outputs
-// "modelResidualsList", a list of the value and gradient terms of the residual for
-// each residual equation. The index for each variable in these lists corresponds to
-// the order it is defined at the top of this file (starting at 0).
-template <int dim, int degree>
-void customPDE<dim,degree>::residualRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+// =============================================================================================
+// explicitEquationRHS (needed only if one or more equation is explict time dependent)
+// =============================================================================================
+// This function calculates the right-hand-side of the explicit time-dependent
+// equations for each variable. It takes "variable_list" as an input, which is a list
+// of the value and derivatives of each of the variables at a specific quadrature
+// point. The (x,y,z) location of that quadrature point is given by "q_point_loc".
+// The function outputs two terms to variable_list -- one proportional to the test
+// function and one proportional to the gradient of the test function. The index for
+// each variable in this list corresponds to the index given at the top of this file.
 
-// The concentration and its derivatives (names here should match those in the macros above)
+template <int dim, int degree>
+void customPDE<dim,degree>::explicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+
+// --- Getting the values and derivatives of the model variables ---
+
+// The concentration and its derivatives
 scalarvalueType c = variable_list.get_scalar_value(0);
 scalargradType cx = variable_list.get_scalar_gradient(0);
 
-// The first order parameter and its derivatives (names here should match those in the macros above)
+// The first order parameter and its derivatives
 scalarvalueType n1 = variable_list.get_scalar_value(1);
 scalargradType n1x = variable_list.get_scalar_gradient(1);
 
-// The second order parameter and its derivatives (names here should match those in the macros above)
+// The second order parameter and its derivatives
 scalarvalueType n2 = variable_list.get_scalar_value(2);
 scalargradType n2x = variable_list.get_scalar_gradient(2);
 
-// The third order parameter and its derivatives (names here should match those in the macros above)
+// The third order parameter and its derivatives
 scalarvalueType n3 = variable_list.get_scalar_value(3);
 scalargradType n3x = variable_list.get_scalar_gradient(3);
 
-// The derivative of the displacement vector (names here should match those in the macros above)
+// The derivative of the displacement vector
 vectorgradType ux = variable_list.get_vector_gradient(4);
 
 vectorgradType ruxV;
@@ -196,14 +151,7 @@ vectorgradType ruxV;
 // -------------------------------------------------
 // Nucleation expressions
 // -------------------------------------------------
-//std::vector<dealii::VectorizedArray<double> > source_terms(3,constV(0.0));
-//std::vector<dealii::VectorizedArray<double> > source_terms;
-//dealii::VectorizedArray<double> temp = constV(0.0);
-//source_terms.push_back(temp);
-//source_terms.push_back(temp);
-//source_terms.push_back(temp);
 dealii::AlignedVector<dealii::VectorizedArray<double > > source_terms(3,constV(0.0));
-
 dealii::VectorizedArray<double> gamma = constV(1.0);
 seedNucleus(q_point_loc,source_terms,gamma);
 
@@ -291,20 +239,95 @@ for (unsigned int a=0; a<dim; a++) {
 }
 
 
-variable_list.set_scalar_value_residual_term(0,rcV);
-variable_list.set_scalar_gradient_residual_term(0,rcxV);
+variable_list.set_scalar_value_term_RHS(0,rcV);
+variable_list.set_scalar_gradient_term_RHS(0,rcxV);
 
-variable_list.set_scalar_value_residual_term(1,rn1V + source_terms[0]);
-variable_list.set_scalar_gradient_residual_term(1,rn1xV);
+variable_list.set_scalar_value_term_RHS(1,rn1V + source_terms[0]);
+variable_list.set_scalar_gradient_term_RHS(1,rn1xV);
 
-variable_list.set_scalar_value_residual_term(2,rn2V + source_terms[1]);
-variable_list.set_scalar_gradient_residual_term(2,rn2xV);
+variable_list.set_scalar_value_term_RHS(2,rn2V + source_terms[1]);
+variable_list.set_scalar_gradient_term_RHS(2,rn2xV);
 
-variable_list.set_scalar_value_residual_term(3,rn3V + source_terms[2]);
-variable_list.set_scalar_gradient_residual_term(3,rn3xV);
+variable_list.set_scalar_value_term_RHS(3,rn3V + source_terms[2]);
+variable_list.set_scalar_gradient_term_RHS(3,rn3xV);
 
-variable_list.set_vector_gradient_residual_term(4,ruxV);
+}
 
+// =============================================================================================
+// nonExplicitEquationRHS (needed only if one or more equation is time independent or auxiliary)
+// =============================================================================================
+// This function calculates the right-hand-side of all of the equations that are not
+// explicit time-dependent equations. It takes "variable_list" as an input, which is
+// a list of the value and derivatives of each of the variables at a specific
+// quadrature point. The (x,y,z) location of that quadrature point is given by
+// "q_point_loc". The function outputs two terms to variable_list -- one proportional
+// to the test function and one proportional to the gradient of the test function. The
+// index for each variable in this list corresponds to the index given at the top of
+// this file.
+
+template <int dim, int degree>
+void customPDE<dim,degree>::nonExplicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+
+ // --- Getting the values and derivatives of the model variables ---
+
+ // The concentration and its derivatives
+ scalarvalueType c = variable_list.get_scalar_value(0);
+
+ // The first order parameter and its derivatives
+ scalarvalueType n1 = variable_list.get_scalar_value(1);
+
+ // The second order parameter and its derivatives
+ scalarvalueType n2 = variable_list.get_scalar_value(2);
+
+ // The third order parameter and its derivatives
+ scalarvalueType n3 = variable_list.get_scalar_value(3);
+
+ // The derivative of the displacement vector
+ vectorgradType ux = variable_list.get_vector_gradient(4);
+
+ // Calculate c_alpha and c_beta from c
+ scalarvalueType sum_hpV = h1V+h2V+h3V;
+ scalarvalueType c_alpha = ((B2*c+0.5*(B1-A1)*sum_hpV))/(A2*(sum_hpV)+B2*(1.0-sum_hpV));
+ scalarvalueType c_beta  = ((A2*c+0.5*(A1-B1)*(1.0-sum_hpV))/(A2*(sum_hpV)+B2*(1.0-sum_hpV)));
+
+
+ // Calculate the stress-free transformation strain and its derivatives at the quadrature point
+ dealii::Tensor<2, dim, dealii::VectorizedArray<double> > sfts1, sfts2, sfts3;
+
+ for (unsigned int i=0; i<dim; i++){
+ for (unsigned int j=0; j<dim; j++){
+ 	// Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c_beta + b_p
+ 	sfts1[i][j] = constV(sfts_linear1[i][j])*c_beta + constV(sfts_const1[i][j]);
+ 	sfts2[i][j] = constV(sfts_linear2[i][j])*c_beta + constV(sfts_const2[i][j]);
+ 	sfts3[i][j] = constV(sfts_linear3[i][j])*c_beta + constV(sfts_const3[i][j]);
+ }
+ }
+
+ //compute E2=(E-E0)
+ dealii::VectorizedArray<double> E2[dim][dim], S[dim][dim];
+
+ for (unsigned int i=0; i<dim; i++){
+ for (unsigned int j=0; j<dim; j++){
+ 	  E2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1V + sfts2[i][j]*h2V + sfts3[i][j]*h3V );
+ }
+ }
+
+ //compute stress
+ //S=C*(E-E0)
+ // Compute stress tensor (which is equal to the residual, Rux)
+ computeStress<dim>(CIJ_Mg, E2, S);
+
+ // Fill residual corresponding to mechanics
+ // R=-C*(E-E0)
+ vectorgradType ruxV;
+ for (unsigned int i=0; i<dim; i++){
+ for (unsigned int j=0; j<dim; j++){
+ 	  ruxV[i][j] = - S[i][j];
+ }
+ }
+
+ variable_list.set_vector_gradient_term_RHS(4,ruxV);
 
 }
 
@@ -390,33 +413,32 @@ void customPDE<dim,degree>::seedNucleus(const dealii::Point<dim, dealii::Vectori
 		}
 	}
 
-// =================================================================================
-// residualLHS (needed only if at least one equation is elliptic)
-// =================================================================================
-// This function calculates the residual equations for the iterative solver for
-// elliptic equations.for each variable. It takes "modelVariablesList" as an input,
-// which is a list of the value and derivatives of each of the variables at a
-// specific quadrature point. The (x,y,z) location of that quadrature point is given
-// by "q_point_loc". The function outputs "modelRes", the value and gradient terms of
-// for the left-hand-side of the residual equation for the iterative solver. The
-// index for each variable in these lists corresponds to the order it is defined at
-// the top of this file (starting at 0), not counting variables that have
-// "need_val_LHS", "need_grad_LHS", and "need_hess_LHS" all set to "false". If there
-// are multiple elliptic equations, conditional statements should be used to ensure
-// that the correct residual is being submitted. The index of the field being solved
-// can be accessed by "this->currentFieldIndex".
+// =============================================================================================
+// equationLHS (needed only if at least one equation is time independent)
+// =============================================================================================
+// This function calculates the left-hand-side of time-independent equations. It
+// takes "variable_list" as an input, which is a list of the value and derivatives of
+// each of the variables at a specific quadrature point. The (x,y,z) location of that
+// quadrature point is given by "q_point_loc". The function outputs two terms to
+// variable_list -- one proportional to the test function and one proportional to the
+// gradient of the test function -- for the left-hand-side of the equation. The index
+// for each variable in this list corresponds to the index given at the top of this
+// file. If there are multiple elliptic equations, conditional statements should be
+// sed to ensure that the correct residual is being submitted. The index of the field
+// being solved can be accessed by "this->currentFieldIndex".
+
 template <int dim, int degree>
-void customPDE<dim,degree>::residualLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
+void customPDE<dim,degree>::equationLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-vectorgradType ruxV;
+    vectorgradType ruxV;
 
-// Take advantage of E being simply 0.5*(ux + transpose(ux)) and use the dealii "symmetrize" function
-dealii::Tensor<2, dim, dealii::VectorizedArray<double> > E = symmetrize(variable_list.get_vector_gradient(4));
+    // Take advantage of E being simply 0.5*(ux + transpose(ux)) and use the dealii "symmetrize" function
+    dealii::Tensor<2, dim, dealii::VectorizedArray<double> > E = symmetrize(variable_list.get_change_in_vector_gradient(4));
 
-// Compute stress tensor (which is equal to the residual, Rux)
-computeStress<dim>(CIJ_Mg, E,ruxV);
+    // Compute stress tensor (which is equal to the residual, Rux)
+    computeStress<dim>(CIJ_Mg, E,ruxV);
 
-variable_list.set_vector_gradient_residual_term(4,ruxV);
+    variable_list.set_vector_gradient_term_LHS(4,ruxV);
 
 }

@@ -58,23 +58,23 @@ set Time step = 0.00125
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
 
-set Number of time steps = 48000000
+set Number of time steps = 181440000
 
 # =================================================================================
-# Set the elliptic solver parameters
+# Set the linear solver parameters
 # =================================================================================
-# The solver type (currently the only recommended option is conjugate gradient)
-set Linear solver = SolverCG
 
-# The flag that determines whether the tolerance for solver convergence should
-# be an absolute tolerance or a relative tolerance
-set Use absolute convergence tolerance = true
+subsection Linear solver parameters: u
+    # Whether the tolerance value is compared to the residual (ABSOLUTE_RESIDUAL)
+    # or the change in the residual (RELATIVE_RESIDUAL_CHANGE)
+    set Tolerance type = ABSOLUTE_RESIDUAL
 
-# The tolerance for convergence (L2 norm of the residual)
-set Solver tolerance value = 5.0e-3
+    # The tolerance for convergence (L2 norm)
+    set Tolerance value = 5e-3
 
-# The maximum number of solver iterations per time step
-set Maximum allowed solver iterations = 10000
+    # The maximum number of linear solver iterations per solve
+    set Maximum linear solver iterations = 10000
+end
 
 # =================================================================================
 # Set the output parameters
@@ -85,7 +85,7 @@ set Output condition =  EQUAL_SPACING
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of outputs = 60
+set Number of outputs = 6000
 
 # The number of time steps between updates being printed to the screen
 set Skip print steps = 10000
@@ -94,7 +94,7 @@ set Skip print steps = 10000
 # Set the checkpoint/restart parameters
 # =================================================================================
 
-set Load from a checkpoint = true
+set Load from a checkpoint = false
 set Checkpoint condition = EQUAL_SPACING
 set Number of checkpoints = 100
 
@@ -210,6 +210,6 @@ set Model constant CIJ_Beta3 = (31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,
 # Nucleation parameters
 set Model constant interface_coeff = 0.6, double
 set Model constant epsil = 1.0e-7, double
-set Model constant k1 = 4.308721e-8 , double # l*=1 nm
-set Model constant k2 = 5.890701e-6, double
-set Model constant tau = 9.89615e+04 , double # l*=1 nm
+set Model constant k1 = 7.7003047e-10  , double
+set Model constant k2 = 6.865563826100859e-07, double
+set Model constant tau = 1.591793930223723e+05   , double

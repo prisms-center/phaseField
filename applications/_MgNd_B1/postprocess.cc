@@ -2,34 +2,47 @@
 // Set the attributes of the primary field variables
 // =================================================================================
 void variableAttributeLoader::loadPostProcessorVariableAttributes(){
-	/*
+
 	// Variable 0
-	set_variable_name				(0,"f_tot");
+	set_variable_name				(0,"f_el");
 	set_variable_type				(0,SCALAR);
 
-	set_need_value_residual_term	(0,true);
-	set_need_gradient_residual_term	(0,false);
+    set_dependencies_value_term_RHS(0, "c, n1, n2, n3, grad(u)");
+    set_dependencies_gradient_term_RHS(0, "");
 
-    set_output_integral         	(0,true);
+    set_output_integral         	(0,false);
 
 	// Variable 1
-	set_variable_name				(1,"f_el");
+	set_variable_name				(1,"e_11");
 	set_variable_type				(1,SCALAR);
 
-	set_need_value_residual_term	(1,true);
-	set_need_gradient_residual_term	(1,false);
+    set_dependencies_value_term_RHS(1, "c, n1, n2, n3, grad(u)");
+    set_dependencies_gradient_term_RHS(1, "");
 
-    set_output_integral         	(1,true);
+	set_output_integral         	(1,false);
 
-	// Variable 2
-	set_variable_name				(2,"von_mises_stress");
+    // Variable 2
+	set_variable_name				(2,"e_21");
 	set_variable_type				(2,SCALAR);
 
-	set_need_value_residual_term	(2,true);
-	set_need_gradient_residual_term	(2,false);
+    set_dependencies_value_term_RHS(2, "c, n1, n2, n3, grad(u)");
+    set_dependencies_gradient_term_RHS(2, "");
 
-	set_output_integral         	(2,true);
-	*/
+	set_output_integral         	(2,false);
+
+    // Variable 3
+    set_variable_name				(3,"e_22");
+    set_variable_type				(3,SCALAR);
+
+    set_dependencies_value_term_RHS(3, "c, n1, n2, n3, grad(u)");
+    set_dependencies_gradient_term_RHS(3, "");
+
+    set_output_integral         	(3,false);
+
+
+
+
+
 }
 
 // =================================================================================
@@ -39,7 +52,7 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 	variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
 	const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-		/*
+
 // The order parameter and its derivatives (names here should match those in the macros above)
 
 // The concentration and its derivatives (names here should match those in the macros above)
@@ -47,15 +60,12 @@ scalarvalueType c = variable_list.get_scalar_value(0);
 
 // The first order parameter and its derivatives (names here should match those in the macros above)
 scalarvalueType n1 = variable_list.get_scalar_value(1);
-scalargradType n1x = variable_list.get_scalar_gradient(1);
 
 // The second order parameter and its derivatives (names here should match those in the macros above)
 scalarvalueType n2 = variable_list.get_scalar_value(2);
-scalargradType n2x = variable_list.get_scalar_gradient(2);
 
 // The third order parameter and its derivatives (names here should match those in the macros above)
 scalarvalueType n3 = variable_list.get_scalar_value(3);
-scalargradType n3x = variable_list.get_scalar_gradient(3);
 
 // The derivative of the displacement vector (names here should match those in the macros above)
 vectorgradType ux = variable_list.get_vector_gradient(4);
@@ -64,31 +74,6 @@ scalarvalueType sum_hpV = h1V+h2V+h3V;
 scalarvalueType c_alpha = ((B2*c+0.5*(B1-A1)*sum_hpV))/(A2*(sum_hpV)+B2*(1.0-sum_hpV));
 scalarvalueType c_beta  = ((A2*c+0.5*(A1-B1)*(1.0-sum_hpV))/(A2*(sum_hpV)+B2*(1.0-sum_hpV)));
 
-// Calculate the derivatives of c_beta (derivatives of c_alpha aren't needed)
-// Note: this section can be optimized to reduce recalculations
-scalarvalueType cbn1V, cbn2V, cbn3V, cbcV, cbcn1V, cbcn2V, cbcn3V, cacV;
-
-cbcV = faccV/( (constV(1.0)-sum_hpV)*fbccV + (sum_hpV)*faccV );
-cacV = fbccV/( (constV(1.0)-sum_hpV)*fbccV + (sum_hpV)*faccV );
-
-cbn1V = hn1V * (c_alpha - c_beta) * cbcV;
-cbn2V = hn2V * (c_alpha - c_beta) * cbcV;
-cbn3V = hn3V * (c_alpha - c_beta) * cbcV;
-
-cbcn1V = (faccV * (fbccV-faccV) * hn1V)/( ((1.0-sum_hpV)*fbccV + sum_hpV*faccV)*((1.0-sum_hpV)*fbccV + sum_hpV*faccV) );  // Note: this is only true if faV and fbV are quadratic
-cbcn2V = (faccV * (fbccV-faccV) * hn2V)/( ((1.0-sum_hpV)*fbccV + sum_hpV*faccV)*((1.0-sum_hpV)*fbccV + sum_hpV*faccV) );  // Note: this is only true if faV and fbV are quadratic
-cbcn3V = (faccV * (fbccV-faccV) * hn3V)/( ((1.0-sum_hpV)*fbccV + sum_hpV*faccV)*((1.0-sum_hpV)*fbccV + sum_hpV*faccV) );  // Note: this is only true if faV and fbV are quadratic
-
-
-scalarvalueType f_chem = (constV(1.0)-(h1V+h2V+h3V))*faV + (h1V+h2V+h3V)*fbV + W*(fbarrierV);
-
-scalarvalueType f_grad = constV(0.0);
-
-for (int i=0; i<dim; i++){
-  for (int j=0; j<dim; j++){
-	  f_grad += constV(0.5*Kn1[i][j])*n1x[i]*n1x[j] + constV(0.5*Kn2[i][j])*n2x[i]*n2x[j] + constV(0.5*Kn3[i][j])*n3x[i]*n3x[j];
-  }
-}
 
 // Calculate the stress-free transformation strain and its derivatives at the quadrature point
 dealii::Tensor<2, dim, dealii::VectorizedArray<double> > sfts1, sfts1c, sfts1cc, sfts2, sfts2c, sfts2cc, sfts3, sfts3c, sfts3cc;
@@ -97,16 +82,10 @@ for (unsigned int i=0; i<dim; i++){
 for (unsigned int j=0; j<dim; j++){
 	// Polynomial fits for the stress-free transformation strains, of the form: sfts = a_p * c_beta + b_p
 	sfts1[i][j] = constV(sfts_linear1[i][j])*c_beta + constV(sfts_const1[i][j]);
-	sfts1c[i][j] = constV(sfts_linear1[i][j]) * cbcV;
-	sfts1cc[i][j] = constV(0.0);
 
 	sfts2[i][j] = constV(sfts_linear2[i][j])*c_beta + constV(sfts_const2[i][j]);
-	sfts2c[i][j] = constV(sfts_linear2[i][j]) * cbcV;
-	sfts2cc[i][j] = constV(0.0);
 
 	sfts3[i][j] = constV(sfts_linear3[i][j])*c_beta + constV(sfts_const3[i][j]);
-	sfts3c[i][j] = constV(sfts_linear3[i][j]) * cbcV;
-	sfts3cc[i][j] = constV(0.0);
 
 }
 }
@@ -146,25 +125,12 @@ for (unsigned int i=0; i<dim; i++){
   }
 }
 
-scalarvalueType total_energy_density = f_chem + f_grad + f_el;
-
-
-dealii::VectorizedArray<double> vm_stress;
-if (dim == 3){
-	vm_stress = (S[0][0]-S[1][1])*(S[0][0]-S[1][1]) + (S[1][1]-S[2][2])*(S[1][1]-S[2][2]) + (S[2][2]-S[0][0])*(S[2][2]-S[0][0]);
-	vm_stress += constV(6.0)*(S[0][1]*S[0][1] + S[1][2]*S[1][2] + S[2][0]*S[2][0]);
-	vm_stress *= constV(0.5);
-	vm_stress = std::sqrt(vm_stress);
-}
-else {
-	vm_stress = S[0][0]*S[0][0] - S[0][0]*S[1][1] + S[1][1]*S[1][1] + constV(3.0)*S[0][1]*S[0][1];
-	vm_stress = std::sqrt(vm_stress);
-}
-
-
 // Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
-pp_variable_list.set_scalar_value_residual_term(0, total_energy_density);
-pp_variable_list.set_scalar_value_residual_term(1, f_el);
-pp_variable_list.set_scalar_value_residual_term(2, vm_stress);
-*/
+
+pp_variable_list.set_scalar_value_term_RHS(0, f_el);
+pp_variable_list.set_scalar_value_term_RHS(1, E2[0][0]);
+pp_variable_list.set_scalar_value_term_RHS(2, E2[1][0]);
+pp_variable_list.set_scalar_value_term_RHS(3, E2[1][1]);
+
+
 }
