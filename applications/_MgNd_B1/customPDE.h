@@ -68,12 +68,17 @@ private:
 	dealii::Tensor<2,dim> sfts_const2 = userInputs.get_model_constant_rank_2_tensor("sfts_const2");
 	dealii::Tensor<2,dim> sfts_linear3 = userInputs.get_model_constant_rank_2_tensor("sfts_linear3");
 	dealii::Tensor<2,dim> sfts_const3 = userInputs.get_model_constant_rank_2_tensor("sfts_const3");
-	double A2 = userInputs.get_model_constant_double("A2");
-	double A1 = userInputs.get_model_constant_double("A1");
-	double A0 = userInputs.get_model_constant_double("A0");
-	double B2 = userInputs.get_model_constant_double("B2");
-	double B1 = userInputs.get_model_constant_double("B1");
-	double B0 = userInputs.get_model_constant_double("B0");
+
+
+    double A2 = userInputs.get_model_constant_double("A_curvature");
+    double A_minimum = userInputs.get_model_constant_double("A_minimum");
+	double A1 = -2.0 * A2 * A_minimum;
+	double A0 = A2 * A_minimum * A_minimum;
+
+	double B2 = userInputs.get_model_constant_double("B_curvature");
+    double B_minimum = userInputs.get_model_constant_double("B_minimum");
+	double B1 = -2.0 * B2 * B_minimum;
+	double B0 = B2 * B_minimum * B_minimum;
 
 	const static unsigned int CIJ_tensor_size =2*dim-1+dim/3;
 	dealii::Tensor<2,CIJ_tensor_size> CIJ_Mg = userInputs.get_model_constant_elasticity_tensor("CIJ_Mg");

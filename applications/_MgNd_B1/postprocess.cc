@@ -128,9 +128,9 @@ for (unsigned int i=0; i<dim; i++){
 // Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
 
 pp_variable_list.set_scalar_value_term_RHS(0, f_el);
-pp_variable_list.set_scalar_value_term_RHS(1, E2[0][0]);
-pp_variable_list.set_scalar_value_term_RHS(2, E2[1][0]);
-pp_variable_list.set_scalar_value_term_RHS(3, E2[1][1]);
+pp_variable_list.set_scalar_value_term_RHS(1, S[0][0]);
+pp_variable_list.set_scalar_value_term_RHS(2, S[1][0]);
+pp_variable_list.set_scalar_value_term_RHS(3, S[1][1]);
 
 
 }

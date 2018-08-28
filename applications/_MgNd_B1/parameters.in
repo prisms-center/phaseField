@@ -85,7 +85,7 @@ set Output condition =  EQUAL_SPACING
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of outputs = 6000
+set Number of outputs = 60
 
 # The number of time steps between updates being printed to the screen
 set Skip print steps = 10000
@@ -192,14 +192,12 @@ set Model constant sfts_const3 = ((0.1111,-0.0962,0),(-0.0962,0,0),(0,0,0)), ten
 
 
 # A2, A1, and A0 Mg-Nd matrix free energy parameters
-set Model constant A2 = 160, double #40.0, double
-set Model constant A1 = -0.0864, double #-0.008, double
-set Model constant A0 = 1.1664e-5, double #40.0e-8, double
+set Model constant A_curvature = 160, double
+set Model constant A_minimum = 2.898629505326146e-04, double
 
 # B2, B1, and B0 Mg-Nd B1 precipitate free energy parameters
-set Model constant B2 = 160.0, double #40.0, double
-set Model constant B1 = -80.0, double #-20.0, double
-set Model constant B0 = 10.0, double #2.5, double
+set Model constant B_curvature = 160, double
+set Model constant B_minimum = 0.25, double
 
 # Elastic constants
 set Model constant CIJ_Mg = (31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0), anisotropic elastic constants
