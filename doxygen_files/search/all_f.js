@@ -1,6 +1,7 @@
 var searchData=
 [
   ['radius',['radius',['../structnucleus.html#a3f67c53b80389c5f53961936edba04c9',1,'nucleus::radius()'],['../class_simplified_grain_representation.html#a3f67c53b80389c5f53961936edba04c9',1,'SimplifiedGrainRepresentation::radius()']]],
+  ['random_5fnumber',['random_number',['../structnucleus.html#ac7def79a1ec52596446d0555c9322586',1,'nucleus']]],
   ['reassigngrains',['reassignGrains',['../class_matrix_free_p_d_e.html#a2db95086063aabb453a2d1982f86b88c',1,'MatrixFreePDE::reassignGrains()'],['../class_simplified_grain_manipulator.html#a88fdcbb96c67000221da739a4a6d6012',1,'SimplifiedGrainManipulator::reassignGrains()']]],
   ['reassigngrains_2ecc',['reassignGrains.cc',['../reassign_grains_8cc.html',1,'']]],
   ['receiveupdate',['receiveUpdate',['../classparallel_nucleation_list.html#ad538f2c3b2a68f5cef215801a687a7ff',1,'parallelNucleationList']]],

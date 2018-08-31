@@ -1,6 +1,7 @@
 var searchData=
 [
   ['radius',['radius',['../structnucleus.html#a3f67c53b80389c5f53961936edba04c9',1,'nucleus::radius()'],['../class_simplified_grain_representation.html#a3f67c53b80389c5f53961936edba04c9',1,'SimplifiedGrainRepresentation::radius()']]],
+  ['random_5fnumber',['random_number',['../structnucleus.html#ac7def79a1ec52596446d0555c9322586',1,'nucleus']]],
   ['refine_5fcriterion_5ffields',['refine_criterion_fields',['../classuser_input_parameters.html#a9afb60be82b9bda02cf125497fd26485',1,'userInputParameters']]],
   ['refine_5ffactor',['refine_factor',['../classuser_input_parameters.html#afa12400a8d2169827a3918eee955c231',1,'userInputParameters']]],
   ['refine_5fwindow_5fmax',['refine_window_max',['../classuser_input_parameters.html#a215f3395973adef23a04ffe3d54cdc6c',1,'userInputParameters']]],
