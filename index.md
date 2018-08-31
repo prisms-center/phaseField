@@ -40,7 +40,7 @@ PRISMS-PF is released under the GNU Lesser General Public License (LGPL).
 ***
 ## General Links
 - [PRISMS Center homepage](http://www.prisms-center.org/#/home) <br>
-- [Code repository](https://github.com/prisms-center/phaseField) <br>
+- [PRISMS-PF code repository](https://github.com/prisms-center/phaseField) <br>
 - [User registration link](http://goo.gl/forms/GXo7Im8p2Y)
 
 ***

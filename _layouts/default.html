@@ -22,9 +22,19 @@
         <a href="{{ site.github.url }}"> <h1>{{ site.title | default: site.github.repository_name }}</h1> </a>
         <p>{{ site.description | default: site.github.project_tagline }}</p>
 
+        <!--
         {% if site.github.is_project_page %}
           <p class="view"><a href="{{ site.github.repository_url }}">View the Project on GitHub <small>{{ github_name }}</small></a></p>
         {% endif %}
+        -->
+
+        <!-- Custom sidebar links -->
+        <p class="view">
+            <a href="https://github.com/prisms-center/phaseField"> GitHub Repository <small>{{ github_name }}</small></a>
+            <a href="https://prisms-center.github.io/phaseField/doxygen_files/manual.html"> User Manual <small>{{ github_name }}</small></a>
+            <a href="http://goo.gl/forms/GXo7Im8p2Y"> User Registration Link <small>{{ github_name }}</small></a>
+            <a href="https://groups.google.com/forum/#!forum/prisms-pf-users"> PRISMS-PF Forum <small>{{ github_name }}</small></a>
+        </p>
 
         {% if site.github.is_user_page %}
           <p class="view"><a href="{{ site.github.owner_url }}">View My GitHub Profile</a></p>
