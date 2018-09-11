@@ -35,9 +35,7 @@ PRISMS-PF is released under the GNU Lesser General Public License (LGPL).
 
 - 8/3/2018: The new [online PRISMS-PF user manual](doxygen_files/manual.html) is released. This replaces the PDF user manual previously used.
 
-- 5/30/2018: [Version 2.0.2 released.](https://github.com/prisms-center/phaseField/releases/tag/v2.0.2) This is a minor update to v2.0.1. The biggest change is that nucleation parameters can now be set on a per-variable basis.
-
-- 11/21/2017: [Version 2.0.1 released.](https://github.com/prisms-center/phaseField/releases/tag/v2.0.1) This is a minor update to v2.0. The biggest change is the introduction of a checkpoint/restart system.
+([older announcements](pages/announcements.html))
 
 ***
 ## General Links
