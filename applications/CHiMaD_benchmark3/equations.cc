@@ -76,8 +76,7 @@ for (unsigned i=0; i< phi.n_array_elements;i++){
 }
 
 // Anisotropic gradient energy coefficient, its derivative and square
-scalarvalueType W = constV(W0)*(constV(1.0)+constV(epsilonM)*std::cos(constV(mult)*(theta-constV(theta0))));
-scalarvalueType tau = W/constV(W0);
+scalarvalueType tau = (constV(1.0)+constV(epsilonM)*std::cos(constV(mult)*(theta-constV(theta0))));
 
 // Define terms in the equations
 scalarvalueType eq_u = (u+constV(0.5)*mu*constV(userInputs.dtValue)/tau);
@@ -121,9 +120,6 @@ scalargradType phix = variable_list.get_scalar_gradient(1);
 
 // --- Setting the expressions for the terms in the governing equations ---
 
-// The coupling constant, determined from solvability theory
-double lambda = (D/0.6267/W0/W0);
-
 // Derivative of the free energy density with respect to phi
 scalarvalueType f_phi = -(phi-constV(lambda)*u*(constV(1.0)-phi*phi))*(constV(1.0)-phi*phi);
 
@@ -136,7 +132,6 @@ for (unsigned i=0; i< phi.n_array_elements;i++){
 // Anisotropic gradient energy coefficient, its derivative and square
 scalarvalueType W = constV(W0)*(constV(1.0)+constV(epsilonM)*std::cos(constV(mult)*(theta-constV(theta0))));
 scalarvalueType W_theta = constV(-W0)*(constV(epsilonM)*constV(mult)*std::sin(constV(mult)*(theta-constV(theta0))));
-scalarvalueType tau = W/constV(W0);
 
 // The anisotropy term that enters in to the  equation for mu
 scalargradType aniso;

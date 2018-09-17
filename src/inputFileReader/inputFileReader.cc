@@ -292,7 +292,7 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
                 parameter_handler.declare_entry("Backtracking step size modifier","0.5",dealii::Patterns::Double(),"The constant that determines how much the step size decreases per backtrack. The 'tau' parameter.");
                 parameter_handler.declare_entry("Backtracking residual decrease coefficient","1.0",dealii::Patterns::Double(),"The constant that determines how much the residual must decrease to be accepted as sufficient. The 'c' parameter.");
                 parameter_handler.declare_entry("Constant damping value","1.0",dealii::Patterns::Double(),"The constant damping value to be used if the backtrace line-search approach isn't used.");
-                parameter_handler.declare_entry("Use Laplace's equation to determine the initial guess","false",dealii::Patterns::Bool(),"Whether to use the solution of Laplace's equation instead of the IC in ICs_and_BCs.h as the initial guess for nonlinear, time independent equations. This guarantees smoothness and compliance with BCs.");
+                parameter_handler.declare_entry("Use Laplace's equation to determine the initial guess","false",dealii::Patterns::Bool(),"Whether to use the solution of Laplace's equation instead of the IC in ICs_and_BCs.cc as the initial guess for nonlinear, time independent equations. This guarantees smoothness and compliance with BCs.");
             }
             parameter_handler.leave_subsection();
         }
@@ -375,7 +375,7 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
 
     parameter_handler.declare_entry("Buffer between grains before reassignment","-1.0",dealii::Patterns::Double(),"The buffer value added to the radius of all grains used to calculation whether grains should be reassigned.");
 
-    parameter_handler.declare_entry("Order parameter fields for grain reassignment","",dealii::Patterns::List(dealii::Patterns::Anything()),"The list of field indices for the shared order parameters for grain reassignment.");
+    parameter_handler.declare_entry("Order parameter fields for grain reassignment","",dealii::Patterns::List(dealii::Patterns::Anything()),"The list of variable names for the shared order parameters for grain reassignment.");
 
     parameter_handler.declare_entry("Load grain structure","false",dealii::Patterns::Bool(),"Whether to load a grain structure in from file.");
 
