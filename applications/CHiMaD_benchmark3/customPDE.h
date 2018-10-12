@@ -46,7 +46,6 @@ private:
 	// Methods specific to this subclass
 	// ================================================================
 
-
 	// ================================================================
 	// Model constants specific to this subclass
 	// ================================================================
@@ -57,6 +56,9 @@ private:
 	double epsilonM = userInputs.get_model_constant_double("epsilonM");
 	double theta0 = userInputs.get_model_constant_double("theta0");
 	double mult = userInputs.get_model_constant_double("mult");
+
+    // The coupling constant, determined from solvability theory
+    double lambda = (D/0.6267/W0/W0);
 
 	// ================================================================
 

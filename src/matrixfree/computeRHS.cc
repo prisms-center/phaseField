@@ -37,10 +37,8 @@ void MatrixFreePDE<dim,degree>::getExplicitRHS(const MatrixFree<dim,double> &dat
         // Initialize, read DOFs, and set evaulation flags for each variable
         variable_list.reinit_and_eval(src, cell);
 
-        unsigned int num_q_points = variable_list.get_num_q_points();
-
         //loop over quadrature points
-        for (unsigned int q=0; q<num_q_points; ++q){
+        for (unsigned int q=0; q<variable_list.get_num_q_points(); ++q){
             variable_list.q_point = q;
 
             dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc = variable_list.get_q_point_location();
@@ -87,10 +85,8 @@ void MatrixFreePDE<dim,degree>::getNonexplicitRHS(const MatrixFree<dim,double> &
         // Initialize, read DOFs, and set evaulation flags for each variable
         variable_list.reinit_and_eval(src, cell);
 
-        unsigned int num_q_points = variable_list.get_num_q_points();
-
         //loop over quadrature points
-        for (unsigned int q=0; q<num_q_points; ++q){
+        for (unsigned int q=0; q<variable_list.get_num_q_points(); ++q){
             variable_list.q_point = q;
 
             dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc = variable_list.get_q_point_location();

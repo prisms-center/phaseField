@@ -446,9 +446,9 @@ for output_num in output_num_list:
     #numDivY = 90
     #numDivZ = 90
 
-    numDivX = 128*3*3
-    numDivY = 128*3*3
-    numDivZ = 128*3*3
+    numDivX = 512*2
+    numDivY = 512*2
+    numDivZ = 512*2
 
     h_x = span[1]/numDivX
     h_y = span[3]/numDivY

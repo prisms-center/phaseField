@@ -259,7 +259,6 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
                 else if (fields[fieldIndex].pdetype == AUXILIARY){
 
                     if (userInputs.var_nonlinear[fieldIndex] || nonlinear_it_index == 0){
-
                         // If the equation for this field is nonlinear, save the old solution
                         if (userInputs.var_nonlinear[fieldIndex]){
                             if (fields[fieldIndex].type == SCALAR){
@@ -279,7 +278,9 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
                         }
 
                         // Set the Dirichelet values (hanging node constraints don't need to be distributed every time step, only at output)
-                        constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+                        if (has_Dirichlet_BCs){
+                            constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+                        }
                         solutionSet[fieldIndex]->update_ghost_values();
 
                         // Print update to screen

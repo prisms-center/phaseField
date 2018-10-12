@@ -69,15 +69,14 @@ scalarvalueType mu = variable_list.get_scalar_value(2);
 
 // --- Setting the expressions for the terms in the governing equations ---
 
-// The azimuthal angle
-scalarvalueType theta;
+scalarvalueType tau;
 for (unsigned i=0; i< phi.n_array_elements;i++){
-	theta[i] = std::atan2(phix[1][i],phix[0][i]);
-}
+    // The azimuthal angle
+    float theta = std::atan2f(phix[1][i],phix[0][i]);
 
-// Anisotropic gradient energy coefficient, its derivative and square
-scalarvalueType W = constV(W0)*(constV(1.0)+constV(epsilonM)*std::cos(constV(mult)*(theta-constV(theta0))));
-scalarvalueType tau = W/constV(W0);
+    // Anisotropic gradient energy coefficient divided by W0
+    tau[i] = (1.0+epsilonM*std::cosf(mult*(theta-theta0)));
+}
 
 // Define terms in the equations
 scalarvalueType eq_u = (u+constV(0.5)*mu*constV(userInputs.dtValue)/tau);
@@ -121,22 +120,18 @@ scalargradType phix = variable_list.get_scalar_gradient(1);
 
 // --- Setting the expressions for the terms in the governing equations ---
 
-// The coupling constant, determined from solvability theory
-double lambda = (D/0.6267/W0/W0);
-
 // Derivative of the free energy density with respect to phi
 scalarvalueType f_phi = -(phi-constV(lambda)*u*(constV(1.0)-phi*phi))*(constV(1.0)-phi*phi);
 
-// The azimuthal angle
-scalarvalueType theta;
+scalarvalueType W, W_theta;
 for (unsigned i=0; i< phi.n_array_elements;i++){
-	theta[i] = std::atan2(phix[1][i],phix[0][i]);
-}
+    // The azimuthal angle
+    float theta = std::atan2f(phix[1][i],phix[0][i]);
 
-// Anisotropic gradient energy coefficient, its derivative and square
-scalarvalueType W = constV(W0)*(constV(1.0)+constV(epsilonM)*std::cos(constV(mult)*(theta-constV(theta0))));
-scalarvalueType W_theta = constV(-W0)*(constV(epsilonM)*constV(mult)*std::sin(constV(mult)*(theta-constV(theta0))));
-scalarvalueType tau = W/constV(W0);
+    // Anisotropic gradient energy coefficient and its derivative
+    W[i] = W0*(1.0+epsilonM*std::cosf(mult*(theta-theta0)));
+    W_theta[i] = -W0*(epsilonM*mult*std::sinf(mult*(theta-theta0)));
+}
 
 // The anisotropy term that enters in to the  equation for mu
 scalargradType aniso;

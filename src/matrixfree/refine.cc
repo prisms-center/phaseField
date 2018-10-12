@@ -128,12 +128,6 @@ void MatrixFreePDE<dim,degree>::refineGrid (){
 //prepare and refine
 triangulation.prepare_coarsening_and_refinement();
 for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-	// The following lines were from an earlier version.
-	// residualSet is cleared in reinit(), so I don't see the reason for the pointer assignment
-	// Changing to the new version has no impact on the solution.
-	//(*residualSet[fieldIndex])=(*solutionSet[fieldIndex]);
-	//soltransSet[fieldIndex]->prepare_for_coarsening_and_refinement(*residualSet[fieldIndex]);
-
 	soltransSet[fieldIndex]->prepare_for_coarsening_and_refinement(*solutionSet[fieldIndex]);
 }
 triangulation.execute_coarsening_and_refinement();
