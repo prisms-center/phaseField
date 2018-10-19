@@ -49,17 +49,17 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
     scalarvalueType f_tot = constV(0.0);
 
 	// The homogenous chemical free energy
-	scalarvalueType f_chem = rho*(c-c_alpha)*(c-c_alpha)*(c_beta-c)*(c_beta-c);
+	scalarvalueType f_chem = w*(c-c_alpha)*(c-c_alpha)*(c_beta-c)*(c_beta-c);
 
     // The homogenous electrostaric free energy
-    scalarvalueType f_elec = 0.5*k*c*phi;
+    scalarvalueType f_elec = 0.5*k*(c-constV(c0))*phi;
 
 	// The gradient free energy
 	scalarvalueType f_grad = constV(0.0);
 
 	for (int i=0; i<dim; i++){
 		for (int j=0; j<dim; j++){
-			f_grad += constV(0.5*KcV)*cx[i]*cx[j];
+			f_grad += constV(0.5*kappaV)*cx[i]*cx[j];
 		}
 	}
 

@@ -51,13 +51,15 @@ private:
 	// Model constants specific to this subclass
 	// ================================================================
 
-	double McV = userInputs.get_model_constant_double("McV");
-	double KcV = userInputs.get_model_constant_double("KcV");
-    double rho = userInputs.get_model_constant_double("rho");
+	double Mc0V = userInputs.get_model_constant_double("Mc0V");
+	double kappaV = userInputs.get_model_constant_double("kappaV");
+    double w = userInputs.get_model_constant_double("w");
     double c_alpha = userInputs.get_model_constant_double("c_alpha");
     double c_beta= userInputs.get_model_constant_double("c_beta");
     double k = userInputs.get_model_constant_double("k");
     double epsilon = userInputs.get_model_constant_double("epsilon");
+    double c0 = userInputs.get_model_constant_double("c0");
+    double c1 = userInputs.get_model_constant_double("c1");
 
 	// ================================================================
 

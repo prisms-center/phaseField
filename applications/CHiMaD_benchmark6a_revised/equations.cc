@@ -57,24 +57,28 @@ template <int dim, int degree>
 void customPDE<dim,degree>::explicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
-// --- Getting the values and derivatives of the model variables ---
+    // --- Getting the values and derivatives of the model variables ---
 
-// The concentration and its derivatives
-scalarvalueType c = variable_list.get_scalar_value(0);
+    // The concentration and its derivatives
+    scalarvalueType c = variable_list.get_scalar_value(0);
 
-// The chemical potential and its derivatives
-scalargradType mux = variable_list.get_scalar_gradient(1);
+    // The chemical potential and its derivatives
+    scalargradType mux = variable_list.get_scalar_gradient(1);
 
-// --- Setting the expressions for the terms in the governing equations ---
+    // Variable mobility
 
-// The terms in the equations
-scalarvalueType eq_c = c;
-scalargradType eqx_c = constV(-McV*userInputs.dtValue)*mux;
+    scalarvalueType McV = constV(Mc0V)/(1.0+c*c);
 
-// --- Submitting the terms for the governing equations ---
+    // --- Setting the expressions for the terms in the governing equations ---
 
-variable_list.set_scalar_value_term_RHS(0,eq_c);
-variable_list.set_scalar_gradient_term_RHS(0,eqx_c);
+    // The terms in the equations
+    scalarvalueType eq_c = c;
+    scalargradType eqx_c = -constV(userInputs.dtValue)*McV*mux;
+
+    // --- Submitting the terms for the governing equations ---
+
+    variable_list.set_scalar_value_term_RHS(0,eq_c);
+    variable_list.set_scalar_gradient_term_RHS(0,eqx_c);
 
 }
 
@@ -106,16 +110,16 @@ void customPDE<dim,degree>::nonExplicitEquationRHS(variableContainer<dim,degree,
  // --- Setting the expressions for the terms in the governing equations ---
 
  // The derivative of the local chemical free energy
- scalarvalueType fcV = 2.0*rho*(c-c_alpha)*(c_beta-c)*(c_alpha+c_beta-2.0*c);
+ scalarvalueType fcV = 2.0*w*(c-c_alpha)*(c_beta-c)*(c_alpha+c_beta-2.0*c);
 
  // The derivative of the local electrostatic free energy
  scalarvalueType fphiV = k*phi;
 
  scalarvalueType eq_mu = fcV+fphiV;
- scalargradType eqx_mu = constV(KcV)*cx;
- scalarvalueType eq_phi = -constV(-k/epsilon)*c;
+ scalargradType eqx_mu = constV(kappaV)*cx;
+ scalarvalueType eq_phi = constV(k/epsilon)*(c-constV(c0));
  scalargradType eqx_phi = -phix;
-
+ 
  // --- Submitting the terms for the governing equations ---
 
  variable_list.set_scalar_value_term_RHS(1,eq_mu);

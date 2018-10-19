@@ -31,11 +31,11 @@ set Element degree = 2
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 2.0e-4
+ set Time step = 2.0e-4
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 2000000
+ set Number of time steps = 2000000
 
 # =================================================================================
 # Set the linear solver parameters
@@ -89,7 +89,7 @@ end
 
 set Boundary condition for variable c = NATURAL
 set Boundary condition for variable mu = NATURAL
-set Boundary condition for variable phi =  DIRICHLET: 0.0, NON_UNIFORM_DIRICHLET, NATURAL, NATURAL, NATURAL, NATURAL
+set Boundary condition for variable phi = NATURAL
 
 # =================================================================================
 # Set the model constants
@@ -102,9 +102,9 @@ set Boundary condition for variable phi =  DIRICHLET: 0.0, NON_UNIFORM_DIRICHLET
 
 # The mobility constant, Mc0V in equations.cc
 
-set Model constant McV = 10.0, DOUBLE
+set Model constant Mc0V = 10.0, DOUBLE
 
-# The gradient energy coefficient, KcV in equations.cc
+# The gradient energy coefficient, kappaV in equations.cc
 set Model constant kappaV = 2.0, DOUBLE
 
 # Parameters for the chemical and electrostatic components of the free energy
@@ -118,13 +118,17 @@ set Model constant c_beta = 0.7, DOUBLE
 set Model constant k = 0.3, DOUBLE
 set Model constant epsilon = 20.0, DOUBLE
 
+# initial conditions
+set Model constant c0 = 0.5, DOUBLE
+set Model constant c1 = 0.04, DOUBLE
+
 # =================================================================================
 # Set the output parameters
 # =================================================================================
 # Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
 # or "LIST")
- set Output condition = LIST
- set List of time steps to output = 0, 25000, 50000, 100000, 250000, 500000, 1000000, 2000000
+set Output condition = LIST
+set List of time steps to output = 0, 25000, 50000, 100000, 250000, 500000, 1000000, 2000000
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
@@ -132,3 +136,4 @@ set Number of outputs = 10
 
 # The number of time steps between updates being printed to the screen
 set Skip print steps = 1000
+
