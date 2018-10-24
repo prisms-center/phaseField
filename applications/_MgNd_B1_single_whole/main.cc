@@ -24,8 +24,7 @@ void variableAttributeLoader::loadPostProcessorVariableAttributes(){}
 //main
 int main (int argc, char **argv)
 {
-    //dealii::Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,dealii::numbers::invalid_unsigned_int);
-    dealii::Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,1);
+    dealii::Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,dealii::numbers::invalid_unsigned_int);
 
     // Parse the command line options (if there are any) to get the name of the input file
     std::string parameters_filename;
