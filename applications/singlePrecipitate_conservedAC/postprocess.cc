@@ -6,8 +6,8 @@ void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 	set_variable_name				(0,"f_tot");
 	set_variable_type				(0,SCALAR);
 
-	set_need_value_residual_term	(0,true);
-	set_need_gradient_residual_term	(0,false);
+	set_dependencies_value_term_RHS(0, "c, grad(c), n1, grad(n1), grad(u)");
+    set_dependencies_gradient_term_RHS(0, "");
 
     set_output_integral         	(0,true);
 
@@ -15,8 +15,8 @@ void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 	set_variable_name				(1,"mu_c");
 	set_variable_type				(1,SCALAR);
 
-	set_need_value_residual_term	(1,true);
-	set_need_gradient_residual_term	(1,false);
+    set_dependencies_value_term_RHS(1, "c, n1, grad(n1), grad(u)");
+    set_dependencies_gradient_term_RHS(1, "");
 
     set_output_integral         	(1,true);
 
@@ -120,7 +120,7 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 		}
 
 		// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
-		pp_variable_list.set_scalar_value_residual_term(0, total_energy_density);
-		pp_variable_list.set_scalar_value_residual_term(1, mu_c);
+		pp_variable_list.set_scalar_value_term_RHS(0, total_energy_density);
+		pp_variable_list.set_scalar_value_term_RHS(1, mu_c);
 
 	}
