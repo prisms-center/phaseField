@@ -253,7 +253,11 @@ scratch_file.write('\n')
 scratch_file.write(str(num_time_steps))
 scratch_file.close()
 
+#Rappture.Utils.progress(91, "Plotting the contours...")
 subprocess.call(["visit", "-cli", "-nowin", "-s", "saveContour.py"])
+#subprocess.call(["visit", "-cli", "-s", "saveContour.py"])
+
+Rappture.Utils.progress(92, "Determining the precipitate dimensions...")
 
 f = open('contour_ellipse.xyz','r')
 point_list = []
@@ -275,6 +279,8 @@ f.close()
 #result = run_analysis("run_"+str(0), 0, dir_path, num_time_steps)
 
 subprocess.call(["rm", "precipitate_plot_visit0000.png"])
+
+Rappture.Utils.progress(93, "Plotting the precipitates...")
 subprocess.call(["visit", "-cli", "-nowin", "-s", "plotPrecipitate.py"])
 image = 'precipitate_plot_visit0000.png'
 

@@ -58,7 +58,7 @@ set Time step = 4.0e-4
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 100000 #500000
+set Number of time steps = 10000 #500000
 
 # =================================================================================
 # Set the linear solver parameters
@@ -154,7 +154,7 @@ set Model constant B_minimum = 0.125, double
 # Elastic constants
 set Model constant CIJ_Mg = (31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0), anisotropic elastic constants
 set Model constant CIJ_Beta = (31.3,31.3,32.45,6.65,6.65,9.15,13.0,10.45,0,0,0,10.45,0,0,0,0,0,0,0,0,0), anisotropic elastic constants
-set Model constant sfts_const1 = ((0.0,0.0,0),(0.0,0.0,0),(0,0,0)), tensor
+set Model constant sfts_const1 = ((0.1,0.0,0),(0.0,0.0,0),(0,0,0)), tensor
 set Model constant CIJ_Mg = (22.5,0.3), isotropic elastic constants
 set Model constant CIJ_Beta = (22.5,0.3), isotropic elastic constants
-set Model constant interfacial_energy = 20.0, double
+set Model constant interfacial_energy = 15.0, double

@@ -114,7 +114,7 @@ ExportDBAtts = ExportDBAttributes()
 ExportDBAtts.allTimes = 0
 ExportDBAtts.dirname = "/Users/stephendewitt/Documents/workspace/PRISMS_workspace/phaseField_dev/applications/singlePrecipitate_conservedAC"
 ExportDBAtts.filename = "contour_ellipse"
-ExportDBAtts.timeStateFormat = "_%04d"
+#ExportDBAtts.timeStateFormat = "_%04d"
 ExportDBAtts.db_type = "XYZ"
 ExportDBAtts.db_type_fullname = "XYZ_1.0"
 ExportDBAtts.variables = ("default")
@@ -123,6 +123,45 @@ ExportDBAtts.groupSize = 48
 ExportDBAtts.opts.types = ()
 ExportDBAtts.opts.help = ""
 ExportDatabase(ExportDBAtts)
+
+ContourAtts.lineWidth = 0
+ContourAtts.singleColor = (255, 0, 0, 255)
+ContourAtts.SetMultiColor(0, (255, 0, 0, 255))
+ContourAtts.SetMultiColor(1, (0, 255, 0, 255))
+ContourAtts.SetMultiColor(2, (0, 0, 255, 255))
+ContourAtts.SetMultiColor(3, (0, 255, 255, 255))
+ContourAtts.SetMultiColor(4, (255, 0, 255, 255))
+ContourAtts.SetMultiColor(5, (255, 255, 0, 255))
+ContourAtts.SetMultiColor(6, (255, 135, 0, 255))
+ContourAtts.SetMultiColor(7, (255, 0, 135, 255))
+ContourAtts.SetMultiColor(8, (168, 168, 168, 255))
+ContourAtts.SetMultiColor(9, (255, 68, 68, 255))
+ContourAtts.contourNLevels = 10
+ContourAtts.contourValue = (0.5)
+ContourAtts.contourPercent = ()
+ContourAtts.contourMethod = ContourAtts.Value  # Level, Value, Percent
+ContourAtts.minFlag = 0
+ContourAtts.maxFlag = 0
+ContourAtts.min = 0
+ContourAtts.max = 1
+ContourAtts.scaling = ContourAtts.Linear  # Linear, Log
+ContourAtts.wireframe = 0
+SetPlotOptions(ContourAtts)
+DrawPlots()
+ExportDBAtts = ExportDBAttributes()
+ExportDBAtts.allTimes = 0
+ExportDBAtts.dirname = "."
+ExportDBAtts.filename = "contour_ellipse"
+#ExportDBAtts.timeStateFormat = "_%04d"
+ExportDBAtts.db_type = "XYZ"
+ExportDBAtts.db_type_fullname = "XYZ_1.0"
+ExportDBAtts.variables = ()
+ExportDBAtts.writeUsingGroups = 0
+ExportDBAtts.groupSize = 48
+ExportDBAtts.opts.types = ()
+ExportDBAtts.opts.help = ""
+ExportDatabase(ExportDBAtts)
+
 
 
 sys.exit()
