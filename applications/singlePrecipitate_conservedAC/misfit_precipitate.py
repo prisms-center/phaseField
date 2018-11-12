@@ -1,4 +1,5 @@
 import Rappture
+#from Rappture.tools import executeCommand as RapptureExec
 import sys
 from math import *
 
@@ -43,7 +44,7 @@ def create_prismspf_input_file(entry_name, entry_value):
 # ----------------------------------------------------------------------------------------
 # Function that compiles the PRISMS-PF code and runs the executable.
 # ----------------------------------------------------------------------------------------
-def run_simulation(run_name, dir_path):
+def run_simulation(run_name, dir_path, num_time_steps, num_outputs):
 
     # Delete any pre-existing executables or results
     if os.path.exists(run_name) is True:
@@ -54,10 +55,72 @@ def run_simulation(run_name, dir_path):
         os.remove("output.txt")
     f = open("output.txt", 'w+')
 
-    subprocess.call(["rm", "*vtu"], stdout=f, stderr=f)
+    for vtu_file in glob.glob("*.vtu"):
+        os.remove(vtu_file)
 
     # Run the simulation
-    subprocess.call(["mpirun", "-n", "6", "main", "-i","parameters_rappture.in"], stdout=f)
+    #subprocess.call(["mpirun", "-n", "6", "main", "-i","parameters_rappture.in"], stdout=f)
+    p = subprocess.Popen(["mpirun", "-n", "6", "main", "-i","parameters_rappture.in"], stdout=f)
+
+    f = open('debug.txt','w')
+
+    # Print out progress during the simulation
+    solution_file_names = []
+    f.write(str(num_time_steps))
+    f.close()
+
+    for findex in range(1, num_outputs + 1):
+        time_step_number = int(num_time_steps / num_outputs * findex)
+        time_step_number_string = str(time_step_number).rjust(len(str(int(num_time_steps))), '0')
+        name = 'solution-' + time_step_number_string + '.vtu'
+        solution_file_names.append(name)
+        f = open('debug.txt', 'a')
+        f.write(name + '\n')
+        f.close()
+
+    output_index = 0
+    converged = False
+    while True:
+        time.sleep(0.5)
+        f = open('debug.txt', 'a')
+        f.write(solution_file_names[output_index] + '\n')
+        f.close()
+        if os.path.exists(solution_file_names[output_index]):
+            progress = int((85.0 - 5.0) / num_outputs * (output_index + 1) + 5)
+            Rappture.Utils.progress(progress, "Running the phase field simulation...")
+
+            # Check to see if the free energy has converged
+            energy_file = open('integratedFields.txt', 'r')
+            energy_file_contents = energy_file.readlines()
+            current_energy = energy_file_contents[output_index + 1].split()[2]
+            prior_energy = energy_file_contents[output_index].split()[2]
+            f = open('debug.txt', 'a')
+            f.write(str(current_energy)+ ' ' + str(prior_energy) + '\n')
+            f.close()
+            if (abs(float(current_energy) - float(prior_energy)) < 1e-9):
+                f = open('debug.txt', 'a')
+                f.write('killed! \n')
+                f.close()
+
+                converged = True
+                p.kill()
+
+            output_index = output_index + 1
+
+        if (output_index >= num_outputs) or converged:
+            break
+
+    f = open('debug.txt', 'a')
+    f.write('Out of check loop \n')
+    f.close()
+
+    if converged:
+        for findex in range(output_index, num_outputs):
+            shutil.copyfile(solution_file_names[output_index - 1], solution_file_names[findex])
+
+    p.wait()
+
+
 
     # Group the files
     subprocess.call(["mkdir", run_name])
@@ -189,7 +252,8 @@ io = Rappture.library(sys.argv[1])
 #########################################################
 
 # get input value for input.group(misfit_strains).number(misfit11)
-interfacial_energy = float(io.get('input.group(interfacial_energy).number(interfacial_energy).current'))
+interfacial_energy_11 = float(io.get('input.group(interfacial_energy).number(interfacial_energy_11).current'))
+interfacial_energy_22 = float(io.get('input.group(interfacial_energy).number(interfacial_energy_22).current'))
 
 # get input value for input.group(misfit_strains).number(misfit11)
 misfit11 = float(io.get('input.group(misfit_strains).number(misfit11).current'))
@@ -204,16 +268,16 @@ misfit12 = float(io.get('input.group(misfit_strains).number(misfit12).current'))
 misfit21 = float(io.get('input.group(misfit_strains).number(misfit21).current'))
 
 # get input value for input.group(elastic_constants).group(ec_matrix).number(matrix_modulus)
-matrix_modulus = float(io.get('input.group(elastic_constants).group(ec_matrix).number(matrix_modulus).current'))
+matrix_modulus = float(io.get('input.group(ec_matrix).number(matrix_modulus).current'))
 
 # get input value for input.group(elastic_constants).group(ec_matrix).number(matrix_poisson)
-matrix_poisson = float(io.get('input.group(elastic_constants).group(ec_matrix).number(matrix_poisson).current'))
+matrix_poisson = float(io.get('input.group(ec_matrix).number(matrix_poisson).current'))
 
 # get input value for input.group(elastic_constants).group(ec_precip).number(precip_modulus)
-precip_modulus = float(io.get('input.group(elastic_constants).group(ec_precip).number(precip_modulus).current'))
+precip_modulus = float(io.get('input.group(ec_precip).number(precip_modulus).current'))
 
 # get input value for input.group(elastic_constants).group(ec_precip).number(precip_poisson)
-precip_poisson = float(io.get('input.group(elastic_constants).group(ec_precip).number(precip_poisson).current'))
+precip_poisson = float(io.get('input.group(ec_precip).number(precip_poisson).current'))
 
 
 #########################################################
@@ -227,23 +291,31 @@ os.chdir(dir_path)
 # spit out progress messages as you go along...
 Rappture.Utils.progress(0, "Starting...")
 
+#exitStatus,stdOutput,stdError = Rappture.tools.executeCommand('echo here')
+
 misfit_string = '(('+str(misfit11)+','+str(misfit12)+',0),('+str(misfit21)+','+str(misfit22)+',0),(0,0,0)), tensor'
 
 ec_matrix_string = '('+str(matrix_modulus/2.0)+','+str(matrix_poisson)+'), isotropic elastic constants'
 
 ec_beta_string = '('+str(precip_modulus/2.0)+','+str(precip_poisson)+'), isotropic elastic constants'
 
-interfacial_energy_string = str(interfacial_energy)+', double'
+interfacial_energy_string_11 = str(interfacial_energy_11)+', double'
 
-create_prismspf_input_file(['Model constant sfts_const1', 'Model constant CIJ_Mg', 'Model constant CIJ_Beta', 'Model constant interfacial_energy'], (misfit_string, ec_matrix_string, ec_beta_string,interfacial_energy_string))
+interfacial_energy_string_22 = str(interfacial_energy_22)+', double'
+
+create_prismspf_input_file(['Model constant sfts_const1', 'Model constant CIJ_Mg', 'Model constant CIJ_Beta', 'Model constant interfacial_energy_11', 'Model constant interfacial_energy_22'], (misfit_string, ec_matrix_string, ec_beta_string,interfacial_energy_string_11, interfacial_energy_string_22))
 
 
 Rappture.Utils.progress(5, "Running the phase field simulation...")
-run_simulation("run_"+str(0), dir_path)
+
+num_time_steps = parameter_extractor("parameters_rappture.in", "Number of time steps")
+num_outputs = parameter_extractor("parameters_rappture.in", "Number of outputs")
+
+run_simulation("run_"+str(0), dir_path, float(num_time_steps), int(num_outputs))
 
 Rappture.Utils.progress(90, "Simulation complete, beginning analysis...")
 
-num_time_steps = parameter_extractor("parameters_rappture.in", "Number of time steps")
+
 
 # Extract the points along the interface of the precipitate
 

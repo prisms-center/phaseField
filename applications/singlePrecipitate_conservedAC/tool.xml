@@ -519,10 +519,19 @@ YII=</default>
             <about>
                 <label>Interfacial Energy</label>
             </about>
-            <number id="interfacial_energy">
+            <number id="interfacial_energy_11">
                 <about>
-                    <label>Interfacial Energy (mJ/m^2)</label>
-                    <description>The energy of the matrix-precipitate interface.</description>
+                    <label>(1,1) component (mJ/m^2)</label>
+                    <description>The energy of the precipitate/matrix interface along the x axis.</description>
+                </about>
+                <default>15</default>
+                <min>10</min>
+                <max>20</max>
+            </number>
+            <number id="interfacial_energy_22">
+                <about>
+                    <label>(2,2) component (mJ/m^2)</label>
+                    <description>The energy of the precipitate/matrix interface along the y axis.</description>
                 </about>
                 <default>15</default>
                 <min>10</min>
@@ -531,7 +540,7 @@ YII=</default>
         </group>
         <group id="misfit_strains">
             <about>
-                <label>Misfit Strains</label>
+                <label>Misfit Strain</label>
             </about>
             <number id="misfit11">
                 <about>
@@ -568,52 +577,47 @@ YII=</default>
                 <max>0.1</max>
             </number>
         </group>
-        <group id="elastic_constants">
+        <group id="ec_matrix">
             <about>
-                <label>Elastic Constants</label>
+                <label>Elastic Constants (Matrix)</label>
             </about>
-            <group id="ec_matrix">
+            <number id="matrix_modulus">
                 <about>
-                    <label>Elastic Constants (Matrix)</label>
+                    <label>Young's Modulus (GPa)</label>
                 </about>
-                <number id="matrix_modulus">
-                    <about>
-                        <label>Young's Modulus (GPa)</label>
-                    </about>
-                    <default>45</default>
-                    <min>30</min>
-                    <max>50</max>
-                </number>
-                <number id="matrix_poisson">
-                    <about>
-                        <label>Poisson's Ratio</label>
-                    </about>
-                    <default>0.3</default>
-                    <min>0.25</min>
-                    <max>0.35</max>
-                </number>
-            </group>
-            <group id="ec_precip">
+                <default>45</default>
+                <min>30</min>
+                <max>50</max>
+            </number>
+            <number id="matrix_poisson">
                 <about>
-                    <label>Elastic Constants (Precipitate)</label>
+                    <label>Poisson's Ratio</label>
                 </about>
-                <number id="precip_modulus">
-                    <about>
-                        <label>Young's Modulus (GPa)</label>
-                    </about>
-                    <default>45</default>
-                    <min>30</min>
-                    <max>50</max>
-                </number>
-                <number id="precip_poisson">
-                    <about>
-                        <label>Poisson's Ratio</label>
-                    </about>
-                    <default>0.3</default>
-                    <min>0.25</min>
-                    <max>0.35</max>
-                </number>
-            </group>
+                <default>0.3</default>
+                <min>0.25</min>
+                <max>0.35</max>
+            </number>
+        </group>
+        <group id="ec_precip">
+            <about>
+                <label>Elastic Constants (Precipitate)</label>
+            </about>
+            <number id="precip_modulus">
+                <about>
+                    <label>Young's Modulus (GPa)</label>
+                </about>
+                <default>45</default>
+                <min>30</min>
+                <max>50</max>
+            </number>
+            <number id="precip_poisson">
+                <about>
+                    <label>Poisson's Ratio</label>
+                </about>
+                <default>0.3</default>
+                <min>0.25</min>
+                <max>0.35</max>
+            </number>
         </group>
     </input>
     <output>

@@ -20,9 +20,9 @@ set Domain size Z = 200
 # =================================================================================
 # The number of elements in each direction is 2^(refineFactor) * subdivisions
 # For optimal performance, use refineFactor primarily to determine the element size
-set Subdivisions X = 3
-set Subdivisions Y = 3
-set Subdivisions Z = 3
+set Subdivisions X = 1
+set Subdivisions Y = 1
+set Subdivisions Z = 1
 
 set Refine factor = 5
 
@@ -37,7 +37,7 @@ set Mesh adaptivity = true
 
 # Set the maximum and minimum level of refinement
 
-set Max refinement level = 7
+set Max refinement level = 9
 set Min refinement level = 0
 
 # Set the fields used to determine the refinement using their index.
@@ -58,7 +58,7 @@ set Time step = 4.0e-4
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 10000 #500000
+set Number of time steps = 1000000
 
 # =================================================================================
 # Set the linear solver parameters
@@ -126,11 +126,13 @@ set Model constant Mn1V = 15.0, double #37.5, double #
 
 set Model constant interfacial_thickness = 1.0, double # in nm
 
-set Model constant interfacial_energy = 15.0, double # in mJ/m^2, needs to be converted to simulation units
+set Model constant interfacial_energy_11 = 15.0, double # in mJ/m^2, needs to be converted to simulation units
+set Model constant interfacial_energy_22 = 15.0, double # in mJ/m^2, needs to be converted to simulation units
+
 
 # Kn1 the gradient energy coefficient
 #set Model constant Kn1 = ((0.01,0,0),(0,0.01,0),(0,0,0.01)), tensor # run 100/101 thickness
-set Model constant Kn1 = ((1.0,0,0),(0,1.0,0),(0,0,1.0)), tensor
+#set Model constant Kn1 = ((1.0,0,0),(0,1.0,0),(0,0,1.0)), tensor
 
 # W, the energy barrier coefficient
 #set Model constant W = 0.1, double

@@ -13,7 +13,11 @@ public:
 				}
 			}
 		}
-                integrated_c_before_set = false;
+        integrated_c_before_set = false;
+
+        Kn1[0][0] = 18.0 * (interfacial_energy_11/2000.0)*(interfacial_energy_11/2000.0)/W;
+        Kn1[1][1] = 18.0 * (interfacial_energy_22/2000.0)*(interfacial_energy_22/2000.0)/W;
+
 	};
 
     // Function to set the initial conditions (in ICs_and_BCs.h)
@@ -68,13 +72,12 @@ private:
 	//double W = userInputs.get_model_constant_double("W");
 
     double interfacial_thickness = userInputs.get_model_constant_double("interfacial_thickness");
-    double interfacial_energy = userInputs.get_model_constant_double("interfacial_energy");
+    double interfacial_energy_11 = userInputs.get_model_constant_double("interfacial_energy_11");
+    double interfacial_energy_22 = userInputs.get_model_constant_double("interfacial_energy_22");
 
-    double W = 2.2 * 6.0 * interfacial_energy/2000.0 / interfacial_thickness;
-    double kappa_diag = 18.0 * (interfacial_energy/2000.0)*(interfacial_energy/2000.0)/W;
+    double W = 2.2 * 6.0 * interfacial_energy_11/2000.0 / interfacial_thickness;
 
-    dealii::Tensor<2,dim> Kn1 = userInputs.get_model_constant_rank_2_tensor("Kn1")*kappa_diag;
-
+    dealii::Tensor<2,dim> Kn1;
 
 	bool n_dependent_stiffness = userInputs.get_model_constant_bool("n_dependent_stiffness");
 	dealii::Tensor<2,dim> sfts_linear1 = userInputs.get_model_constant_rank_2_tensor("sfts_linear1");
