@@ -245,10 +245,10 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a800cec408070da6380cac78e75ecd822"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a785150d76270c4b9048fe5097c20768a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a785150d76270c4b9048fe5097c20768a">refineMeshNearNuclei</a> (std::vector&lt; <a class="el" href="structnucleus.html">nucleus</a>&lt; dim &gt; &gt; newnuclei)</td></tr>
 <tr class="separator:a785150d76270c4b9048fe5097c20768a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac748c4b702fd66a25c042e91a653913c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#ac748c4b702fd66a25c042e91a653913c">weightedDistanceFromNucleusCenter</a> (const dealii::Point&lt; dim, double &gt; center, const std::vector&lt; double &gt; semiaxes, const dealii::Tensor&lt; 2, dim, double &gt; rotation_matrix, const dealii::Point&lt; dim, double &gt; q_point_loc, const unsigned int var_index) const</td></tr>
-<tr class="separator:ac748c4b702fd66a25c042e91a653913c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab40dee24df25818235fa5271b3d21586"><td class="memItemLeft" align="right" valign="top">dealii::VectorizedArray&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#ab40dee24df25818235fa5271b3d21586">weightedDistanceFromNucleusCenter</a> (const dealii::Point&lt; dim, double &gt; center, const std::vector&lt; double &gt; semiaxes, const dealii::Tensor&lt; 2, dim, double &gt; rotation_matrix, const dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc, const unsigned int var_index) const</td></tr>
-<tr class="separator:ab40dee24df25818235fa5271b3d21586"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a085c6d5a2423f0824496c070b897a689"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a085c6d5a2423f0824496c070b897a689">weightedDistanceFromNucleusCenter</a> (const dealii::Point&lt; dim, double &gt; center, const std::vector&lt; double &gt; semiaxes, const dealii::Point&lt; dim, double &gt; q_point_loc, const unsigned int var_index) const</td></tr>
+<tr class="separator:a085c6d5a2423f0824496c070b897a689"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4124e202b82f453af69bfc76410dc3f"><td class="memItemLeft" align="right" valign="top">dealii::VectorizedArray&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#aa4124e202b82f453af69bfc76410dc3f">weightedDistanceFromNucleusCenter</a> (const dealii::Point&lt; dim, double &gt; center, const std::vector&lt; double &gt; semiaxes, const dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; q_point_loc, const unsigned int var_index) const</td></tr>
+<tr class="separator:aa4124e202b82f453af69bfc76410dc3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26ef19db380f66520e7f770d34f927b2"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a26ef19db380f66520e7f770d34f927b2">getNucleationProbability</a> (<a class="el" href="classvariable_value_container.html">variableValueContainer</a>, double, dealii::Point&lt; dim &gt;, unsigned int variable_index) const</td></tr>
 <tr class="separator:a26ef19db380f66520e7f770d34f927b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91eac767470e5404cf8036dcddb43dd3"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix_free_p_d_e.html#a91eac767470e5404cf8036dcddb43dd3">getFieldIndex</a> (std::string _name)</td></tr>
@@ -1174,7 +1174,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_l_h_s_8cc_source.html#l00033">33</a> of file <a class="el" href="compute_l_h_s_8cc_source.html">computeLHS.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compute_l_h_s_8cc_source.html#l00037">37</a> of file <a class="el" href="compute_l_h_s_8cc_source.html">computeLHS.cc</a>.</p>
 
 </div>
 </div>
@@ -1821,7 +1821,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nucleation_8cc_source.html#l00315">315</a> of file <a class="el" href="nucleation_8cc_source.html">nucleation.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nucleation_8cc_source.html#l00309">309</a> of file <a class="el" href="nucleation_8cc_source.html">nucleation.cc</a>.</p>
 
 </div>
 </div>
@@ -1886,7 +1886,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nucleation_8cc_source.html#l00257">257</a> of file <a class="el" href="nucleation_8cc_source.html">nucleation.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nucleation_8cc_source.html#l00255">255</a> of file <a class="el" href="nucleation_8cc_source.html">nucleation.cc</a>.</p>
 
 </div>
 </div>
@@ -2300,8 +2300,8 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 
 </div>
 </div>
-<a id="ac748c4b702fd66a25c042e91a653913c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac748c4b702fd66a25c042e91a653913c">&#9670;&nbsp;</a></span>weightedDistanceFromNucleusCenter() <span class="overload">[1/2]</span></h2>
+<a id="a085c6d5a2423f0824496c070b897a689"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a085c6d5a2423f0824496c070b897a689">&#9670;&nbsp;</a></span>weightedDistanceFromNucleusCenter() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2320,12 +2320,6 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
           <td></td>
           <td class="paramtype">const std::vector&lt; double &gt;&#160;</td>
           <td class="paramname"><em>semiaxes</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const dealii::Tensor&lt; 2, dim, double &gt;&#160;</td>
-          <td class="paramname"><em>rotation_matrix</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -2352,12 +2346,12 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nucleation_8cc_source.html#l00385">385</a> of file <a class="el" href="nucleation_8cc_source.html">nucleation.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nucleation_8cc_source.html#l00375">375</a> of file <a class="el" href="nucleation_8cc_source.html">nucleation.cc</a>.</p>
 
 </div>
 </div>
-<a id="ab40dee24df25818235fa5271b3d21586"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab40dee24df25818235fa5271b3d21586">&#9670;&nbsp;</a></span>weightedDistanceFromNucleusCenter() <span class="overload">[2/2]</span></h2>
+<a id="aa4124e202b82f453af69bfc76410dc3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4124e202b82f453af69bfc76410dc3f">&#9670;&nbsp;</a></span>weightedDistanceFromNucleusCenter() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2376,12 +2370,6 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
           <td></td>
           <td class="paramtype">const std::vector&lt; double &gt;&#160;</td>
           <td class="paramname"><em>semiaxes</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const dealii::Tensor&lt; 2, dim, double &gt;&#160;</td>
-          <td class="paramname"><em>rotation_matrix</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -2408,7 +2396,7 @@ class MatrixFreePDE&lt; dim, degree &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nucleation_8cc_source.html#l00410">410</a> of file <a class="el" href="nucleation_8cc_source.html">nucleation.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nucleation_8cc_source.html#l00399">399</a> of file <a class="el" href="nucleation_8cc_source.html">nucleation.cc</a>.</p>
 
 </div>
 </div>
