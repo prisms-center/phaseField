@@ -1,0 +1,58 @@
+Using the input parameter file: parameters.in
+Number of constants: 16
+Number of post-processing variables: 0
+creating problem mesh...
+periodic facepairs: 0
+problem dimensions: 0.00015x1.17187e-06
+number of elements: 8192
+
+initializing matrix free object
+initializing finite element space P^1 for EXPLICIT_TIME_DEPENDENT:SCALAR field 'n'
+field ' n' DOF : 9225 (Constraint DOF : 0)
+initializing finite element space P^1 for EXPLICIT_TIME_DEPENDENT:SCALAR field 'mu'
+field 'mu' DOF : 9225 (Constraint DOF : 0)
+initializing finite element space P^1 for EXPLICIT_TIME_DEPENDENT:SCALAR field 'psi'
+field 'psi' DOF : 9225 (Constraint DOF : 0)
+initializing finite element space P^1 for EXPLICIT_TIME_DEPENDENT:SCALAR field 'cM'
+field 'cM' DOF : 9225 (Constraint DOF : 0)
+initializing finite element space P^1 for EXPLICIT_TIME_DEPENDENT:SCALAR field 'cP'
+field 'cP' DOF : 9225 (Constraint DOF : 0)
+initializing finite element space P^1 for TIME_INDEPENDENT:SCALAR field 'Phi'
+field 'Phi' DOF : 9225 (Constraint DOF : 0)
+total DOF : 55350
+initializing parallel::distributed residual and solution vectors
+computed mass matrix (using FE space for field: 0)
+Applying non-PField initial condition...
+Application of initial conditions for field number 0 complete 
+Applying non-PField initial condition...
+Application of initial conditions for field number 1 complete 
+Applying non-PField initial condition...
+Application of initial conditions for field number 2 complete 
+Applying non-PField initial condition...
+Application of initial conditions for field number 3 complete 
+Applying non-PField initial condition...
+Application of initial conditions for field number 4 complete 
+Applying non-PField initial condition...
+Application of initial conditions for field number 5 complete 
+
+solving...
+
+wall time: 1.19209e-05s
+field 'Phi' [nonlinear solve]: current solution: 0.000000e+00, current residual:0.000000e+00
+field 'Phi' [implicit solve]: initial residual:0.000000e+00, current residual:0.000000e+00, nsteps:0, tolerance criterion:1.000000e-08, solution: 0.000000e+00, dU: 0.000000e+00
+Relative difference between nonlinear iterations: 0 0 0
+wall time: 0.00111294s
+Output written to:solution-0000000.vtu
+
+
+Time stepping parameters: timeStep: 5e-06  timeFinal: 6  timeIncrements: 1200000
+ERROR: field 'cP' solution is NAN. exiting.
+
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 0 in communicator MPI_COMM_WORLD 
+with errorcode 1.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
