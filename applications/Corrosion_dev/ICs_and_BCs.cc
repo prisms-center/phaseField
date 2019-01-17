@@ -19,8 +19,11 @@ void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, con
     double epssqV = userInputs.get_model_constant_double("epssqV");
     double deltaV=std::sqrt(2.0*epssqV);
     double posx=p[0];
-    double n0pro = 0.5*(1.0-std::tanh((posx-0.5*userInputs.domain_size[0])/deltaV));
-    double VsV = userInputs.get_model_constant_double("VsV");
+    double posy=p[1];
+    double cx=0.0*userInputs.domain_size[0];
+    double cy=userInputs.domain_size[1];
+    double rad=std::sqrt((posx-cx)*(posx-cx) + (posy-cy)*(posy-cy));
+    double n0pro = 0.5*(1.0-std::tanh((0.1*userInputs.domain_size[0]-rad)/deltaV));
     
     if (index == 0){
         scalar_IC = n0pro;
