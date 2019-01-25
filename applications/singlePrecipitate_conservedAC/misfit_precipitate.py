@@ -61,8 +61,14 @@ def run_simulation(run_name, dir_path, num_time_steps, num_outputs):
     # Run the simulation
     #subprocess.call(["mpirun", "-n", "6", "main", "-i","parameters_rappture.in"], stdout=f)
     #p = subprocess.Popen(["mpirun", "-n", "6", "main", "-i","parameters_rappture.in"], stdout=f)
-    exitStatus,stdOutput,stdError = RapptureExec(["mpirun", "-n", "1", "main", "-i","parameters_rappture.in"])
     
+    exitStatus,stdOutput,stdError = RapptureExec(["mpirun", "-n", "6", "main", "-i","parameters_rappture.in"])
+    
+    #fts = open("run_info.txt",'w')
+    #fts.write(str(int(num_time_steps))+'\n'+str(num_outputs))
+    #fts.close()
+    #exitStatus,stdOutput,stdError = RapptureExec(["python", "run_prismspf_simulation.py"])
+
     if (exitStatus == 0):
         simulationCompleted = True
 
