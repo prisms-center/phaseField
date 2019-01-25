@@ -1,5 +1,5 @@
 import Rappture
-#from Rappture.tools import executeCommand as RapptureExec
+from Rappture.tools import executeCommand as RapptureExec
 import sys
 from math import *
 
@@ -60,10 +60,26 @@ def run_simulation(run_name, dir_path, num_time_steps, num_outputs):
 
     # Run the simulation
     #subprocess.call(["mpirun", "-n", "6", "main", "-i","parameters_rappture.in"], stdout=f)
-    p = subprocess.Popen(["mpirun", "-n", "6", "main", "-i","parameters_rappture.in"], stdout=f)
+    #p = subprocess.Popen(["mpirun", "-n", "6", "main", "-i","parameters_rappture.in"], stdout=f)
+    exitStatus,stdOutput,stdError = RapptureExec(["mpirun", "-n", "1", "main", "-i","parameters_rappture.in"])
+    
+    if (exitStatus == 0):
+        simulationCompleted = True
 
+        # Group the files
+        subprocess.call(["mkdir", run_name])
+        for output_files in glob.glob('*vtu'):
+	    shutil.move(output_files, run_name)
+        if os.path.exists("integratedFields.txt") is True:
+	    shutil.move("integratedFields.txt", run_name)
+    else:
+        simulationCompleted = False
+
+    return simulationCompleted
+   
+    '''
     f = open('debug.txt','w')
-
+    
     # Print out progress during the simulation
     solution_file_names = []
     f.write(str(num_time_steps))
@@ -118,16 +134,10 @@ def run_simulation(run_name, dir_path, num_time_steps, num_outputs):
         for findex in range(output_index, num_outputs):
             shutil.copyfile(solution_file_names[output_index - 1], solution_file_names[findex])
 
-    p.wait()
+    #p.wait()
 
-
-
-    # Group the files
-    subprocess.call(["mkdir", run_name])
-    for output_files in glob.glob('*vtu'):
-        shutil.move(output_files, run_name)
-    if os.path.exists("integratedFields.txt") is True:
-        shutil.move("integratedFields.txt", run_name)
+   '''
+    
 
 # ----------------------------------------------------------------------------------------
 # Function to extract a specific parameter from a PRISMS-PF input file
@@ -311,70 +321,73 @@ Rappture.Utils.progress(5, "Running the phase field simulation...")
 num_time_steps = parameter_extractor("parameters_rappture.in", "Number of time steps")
 num_outputs = parameter_extractor("parameters_rappture.in", "Number of outputs")
 
-run_simulation("run_"+str(0), dir_path, float(num_time_steps), int(num_outputs))
+simulationCompleted = run_simulation("run_"+str(0), dir_path, float(num_time_steps), int(num_outputs))
 
-Rappture.Utils.progress(90, "Simulation complete, beginning analysis...")
+if (simulationCompleted):
 
+    Rappture.Utils.progress(90, "Simulation complete, beginning analysis...")
 
+    # Extract the points along the interface of the precipitate
 
-# Extract the points along the interface of the precipitate
+    scratch_file = open("scratch.txt", 'w')
+    scratch_file.write(str(0))
+    scratch_file.write('\n')
+    scratch_file.write(str(num_time_steps))
+    scratch_file.close()
 
-scratch_file = open("scratch.txt", 'w')
-scratch_file.write(str(0))
-scratch_file.write('\n')
-scratch_file.write(str(num_time_steps))
-scratch_file.close()
+    #Rappture.Utils.progress(91, "Plotting the contours...")
+    subprocess.call(["visit", "-cli", "-nowin", "-s", "saveContour.py"])
+    #subprocess.call(["visit", "-cli", "-s", "saveContour.py"])
 
-#Rappture.Utils.progress(91, "Plotting the contours...")
-subprocess.call(["visit", "-cli", "-nowin", "-s", "saveContour.py"])
-#subprocess.call(["visit", "-cli", "-s", "saveContour.py"])
+    Rappture.Utils.progress(92, "Determining the precipitate dimensions...")
 
-Rappture.Utils.progress(92, "Determining the precipitate dimensions...")
+    f = open('contour_ellipse.xyz','r')
+    point_list = []
+    for line in f:
+        split_line = line.split()
+        if len(split_line) > 4:
+            point_list.append([float(split_line[1]), float(split_line[2])])
 
-f = open('contour_ellipse.xyz','r')
-point_list = []
-for line in f:
-    split_line = line.split()
-    if len(split_line) > 4:
-        point_list.append([float(split_line[1]), float(split_line[2])])
+    points = np.array(point_list)
+    rect = minimum_bounding_rectangle(points)
 
-points = np.array(point_list)
-rect = minimum_bounding_rectangle(points)
+    length_1 = sqrt((rect[0][0]-rect[1][0])**2 + (rect[0][1]-rect[1][1])**2)
+    length_2 = sqrt((rect[1][0]-rect[2][0])**2 + (rect[1][1]-rect[2][1])**2)
 
-length_1 = sqrt((rect[0][0]-rect[1][0])**2 + (rect[0][1]-rect[1][1])**2)
-length_2 = sqrt((rect[1][0]-rect[2][0])**2 + (rect[1][1]-rect[2][1])**2)
+    f = open("precipitate_lengths.txt",'w')
+    f.write(str(round(length_1,4))+'\n'+str(round(length_2,4)))
+    f.close()
 
-f = open("precipitate_lengths.txt",'w')
-f.write(str(round(length_1,4))+'\n'+str(round(length_2,4)))
-f.close()
+    #result = run_analysis("run_"+str(0), 0, dir_path, num_time_steps)
 
-#result = run_analysis("run_"+str(0), 0, dir_path, num_time_steps)
+    subprocess.call(["rm", "precipitate_plot_visit0000.png"])
 
-subprocess.call(["rm", "precipitate_plot_visit0000.png"])
+    Rappture.Utils.progress(93, "Plotting the precipitates...")
+    subprocess.call(["visit", "-cli", "-nowin", "-s", "plotPrecipitate.py"])
+    image = 'precipitate_plot_visit0000.png'
 
-Rappture.Utils.progress(93, "Plotting the precipitates...")
-subprocess.call(["visit", "-cli", "-nowin", "-s", "plotPrecipitate.py"])
-image = 'precipitate_plot_visit0000.png'
+    encoded_string = ""
+    with open(image, "rb") as image_file:
+        encoded_string = base64.b64encode(image_file.read())
+        imdata = encoded_string
 
-encoded_string = ""
-with open(image, "rb") as image_file:
-    encoded_string = base64.b64encode(image_file.read())
-    imdata = encoded_string
+    aspect_ratio = max(length_1/length_2,length_2/length_1)
 
-aspect_ratio = max(length_1/length_2,length_2/length_1)
-
-Rappture.Utils.progress(100, "Done")
+    Rappture.Utils.progress(100, "Done")
 
 #########################################################
 # Save output values back to Rappture
 #########################################################
 
-# save output value for output.image(result_image)
-# data should be base64-encoded image data
-io.put('output.image(result_image).current', imdata)
+if (simulationCompleted):
+    # save output value for output.image(result_image)
+    # data should be base64-encoded image data
+    io.put('output.image(result_image).current', imdata)
 
-# save output value for output.number(aspect_ratio)
-io.put('output.number(aspect_ratio).current',aspect_ratio)
+    # save output value for output.number(aspect_ratio)
+    io.put('output.number(aspect_ratio).current',aspect_ratio)
 
-Rappture.result(io)
+    Rappture.result(io)
+else:
+    print('Simulation aborted by user!')
 sys.exit()
