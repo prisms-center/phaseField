@@ -1,3 +1,15 @@
+# Version 2.1.1
+Minor update to 2.1.1, released in March 2018. The main purpose for the release was to trigger the creation of a
+Zenodo DOI. A few lingering bugs were fixed.
+
+Bug Fixes:
+- Fixed incorrect file extension for the ICs and BCs file in the fickianDiffusion app (Issue #115)
+- Added missing update to a vector containing the past values of integrated postprocessed fields (Issue #120)
+
+Other Changes:
+- PRISMS-PF now has a DOI assigned to it (Issue #121)
+- The terminology in the output printed to the screen regarding the linear solver was updated
+
 # Version 2.1
 Moderate-level update to v2.0, released in August 2018. The largest changes involve a restructuring of the functions in equations.cc and ICs_and_BCs.cc. Grain remapping was also introduced to permit simulations with hundreds/thousands of grains.
 
