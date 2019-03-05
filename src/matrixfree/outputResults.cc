@@ -66,6 +66,7 @@ void MatrixFreePDE<dim,degree>::outputResults() {
                   if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
                       output_file << "\t" << userInputs.pp_var_name[userInputs.integrated_field_indices[i]] << "\t" << integrated_field;
                   }
+                   integrated_postprocessed_fields.at(userInputs.integrated_field_indices[i]) = integrated_field;
               }
           }
           if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
