@@ -132,7 +132,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
                         }
                     }
                     catch (...) {
-                        pcout << "\nWarning: implicit solver did not converge as per set tolerances. consider increasing maxSolverIterations or decreasing solverTolerance.\n";
+                        pcout << "\nWarning: linear solver did not converge as per set tolerances. consider increasing the maximum number of iterations or decreasing the solver tolerance.\n";
                     }
 
                     if (userInputs.var_nonlinear[fieldIndex]){
@@ -197,7 +197,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
                             else {
                                 dU_norm = dU_vector.l2_norm();
                             }
-                            sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
+                            sprintf(buffer, "field '%2s' [linear solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
                             fields[fieldIndex].name.c_str(),			\
                             residualSet[fieldIndex]->l2_norm(),			\
                             solver_control.last_value(),				\
@@ -245,7 +245,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
                                 else {
                                     dU_norm = dU_vector.l2_norm();
                                 }
-                                sprintf(buffer, "field '%2s' [implicit solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
+                                sprintf(buffer, "field '%2s' [linear solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
                                 fields[fieldIndex].name.c_str(),			\
                                 residualSet[fieldIndex]->l2_norm(),			\
                                 solver_control.last_value(),				\
