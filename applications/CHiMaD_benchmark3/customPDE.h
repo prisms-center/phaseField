@@ -42,6 +42,9 @@ private:
 	double getNucleationProbability(variableValueContainer variable_value, double dV) const;
 	#endif
 
+
+    void adaptiveRefine(unsigned int _currentIncrement);
+
 	// ================================================================
 	// Methods specific to this subclass
 	// ================================================================
@@ -63,3 +66,54 @@ private:
 	// ================================================================
 
 };
+
+
+#include <deal.II/distributed/grid_refinement.h>
+
+//default implementation of adaptive mesh refinement
+template <int dim, int degree>
+void customPDE<dim,degree>::adaptiveRefine(unsigned int currentIncrement){
+if (this->userInputs.h_adaptivity == true){
+	if ( (currentIncrement == 0) ){
+		this->computing_timer.enter_section("matrixFreePDE: AMR");
+		unsigned int numDoF_preremesh = this->totalDOFs;
+		for (unsigned int remesh_index=0; remesh_index < (this->userInputs.max_refinement_level-this->userInputs.min_refinement_level); remesh_index++){
+
+			this->adaptiveRefineCriterion();
+			this->refineGrid();
+			this->reinit();
+
+			// If the mesh hasn't changed from the previous cycle, stop remeshing
+			if (this->totalDOFs == numDoF_preremesh) break;
+			numDoF_preremesh = this->totalDOFs;
+		}
+		this->computing_timer.exit_section("matrixFreePDE: AMR");
+	}
+	else {
+
+        double remesh_coeff = 1;
+        if (currentIncrement > 40000){
+            remesh_coeff = 2.5;
+        }
+        else if (currentIncrement > 20000){
+            remesh_coeff = 1.5;
+        }
+
+        if ( (currentIncrement%(int(remesh_coeff * this->userInputs.skip_remeshing_steps))==0) ){
+
+    		this->computing_timer.enter_section("matrixFreePDE: AMR");
+
+    		// Apply constraints before remeshing
+    		for(unsigned int fieldIndex=0; fieldIndex<this->fields.size(); fieldIndex++){
+    			this->constraintsDirichletSet[fieldIndex]->distribute(*this->solutionSet[fieldIndex]);
+    			this->constraintsOtherSet[fieldIndex]->distribute(*this->solutionSet[fieldIndex]);
+    			this->solutionSet[fieldIndex]->update_ghost_values();
+    		}
+    		this->adaptiveRefineCriterion();
+    		this->refineGrid();
+    		this->reinit();
+    		this->computing_timer.exit_section("matrixFreePDE: AMR");
+        }
+	}
+}
+}

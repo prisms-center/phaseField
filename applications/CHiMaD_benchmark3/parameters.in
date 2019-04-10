@@ -18,11 +18,11 @@ set Domain size Z = 960
 # The number of elements in each direction is 2^(refineFactor) * subdivisions
 # Subdivisions Z ignored in 2D
 # For optimal performance, use refineFactor primarily to determine the element size
-set Subdivisions X = 1
-set Subdivisions Y = 1
-set Subdivisions Z = 1
+set Subdivisions X = 3
+set Subdivisions Y = 3
+set Subdivisions Z = 3
 
-set Refine factor = 6
+set Refine factor = 7 #6
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
 set Element degree = 2
@@ -37,8 +37,8 @@ set Mesh adaptivity = true
 # When adaptive meshing is enabled, the refine factor set in the block above is
 # only used to generate the first pass of the mesh as the initial conditions are
 # applied. It should be set somewhere between the max and min levels below.
-set Max refinement level = 9
-set Min refinement level = 2
+set Max refinement level = 7
+set Min refinement level = 0
 
 # Set the fields used to determine the refinement using their index.
 set Refinement criteria fields = phi
@@ -54,7 +54,7 @@ set Steps between remeshing operations = 750
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 0.0125
+set Time step = 0.01875
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
@@ -120,7 +120,7 @@ set Output condition = EQUAL_SPACING
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of outputs = 30
+set Number of outputs = 10 #30
 
 # The number of time steps between updates being printed to the screen
 set Skip print steps = 1000000

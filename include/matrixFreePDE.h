@@ -212,7 +212,7 @@ class MatrixFreePDE:public Subscriptor
   /*AMR methods*/
   void refineGrid();
   /*Virtual method to mark the regions to be adaptively refined. This is expected to be provided by the user.*/
-  void adaptiveRefine(unsigned int _currentIncrement);
+  virtual void adaptiveRefine(unsigned int _currentIncrement);
   /*Virtual method to define AMR refinement criterion. The default implementation uses the Kelly error estimate for estimative the error function. The user can supply a custom implementation to overload the default implementation.*/
   virtual void adaptiveRefineCriterion();
 
