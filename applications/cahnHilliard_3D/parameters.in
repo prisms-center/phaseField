@@ -8,8 +8,8 @@ set Number of dimensions = 2
 # (Domain size Z ignored in 2D)
 # =================================================================================
 # Each axes spans from zero to the specified length
-set Domain size X = 256
-set Domain size Y = 256
+set Domain size X = 100
+set Domain size Y = 100
 set Domain size Z = 100
 
 # =================================================================================
@@ -22,10 +22,10 @@ set Subdivisions X = 1
 set Subdivisions Y = 1
 set Subdivisions Z = 1
 
-set Refine factor = 9
+set Refine factor = 5
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
-set Element degree = 2
+set Element degree = 3
 
 # =================================================================================
 # Set the adaptive mesh refinement parameters
@@ -37,72 +37,28 @@ set Mesh adaptivity = true
 # When adaptive meshing is enabled, the refine factor set in the block above is
 # only used to generate the first pass of the mesh as the initial conditions are
 # applied. It should be set somewhere between the max and min levels below.
-set Max refinement level = 9
-set Min refinement level = 6
+set Max refinement level = 5
+set Min refinement level = 0
 
 # Set the fields used to determine the refinement using their index.
-set Refinement criteria fields = n0,n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11
+set Refinement criteria fields = c
 
 # Set the maximum and minimum value of the fields where the mesh should be refined
-set Refinement window max = 0.999,0.999,0.999,0.999,0.999,0.999,0.999,0.999,0.999,0.999,0.999,0.999
-set Refinement window min = 1e-3,1e-3,1e-3,1e-3,1e-3,1e-3,1e-3,1e-3,1e-3,1e-3,1e-3,1e-3
+set Refinement window max = 0.95
+set Refinement window min = 0.05
 
 # Set the number of time steps between remeshing operations
-set Steps between remeshing operations = 100
+set Steps between remeshing operations = 2000
 
 # =================================================================================
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 0.05
+set Time step = 5.0e-3
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 40000
-
-# =================================================================================
-# Set the output parameters
-# =================================================================================
-# Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
-# or "LIST")
-set Output condition = EQUAL_SPACING
-
-# Number of times the program outputs the fields (total number for "EQUAL_SPACING"
-# and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of outputs = 20
-
-# The number of time steps between updates being printed to the screen
-set Skip print steps = 50
-
-# =================================================================================
-# Set the checkpoint/restart parameters
-# =================================================================================
-# Whether to start this simulation from the checkpoint of a previous simulation
-set Load from a checkpoint = false
-
-# Type of spacing between checkpoints ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
-# or "LIST")
-set Checkpoint condition = EQUAL_SPACING
-
-# Number of times the creates checkpoints (total number for "EQUAL_SPACING"
-# and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of checkpoints = 10
-
-# =================================================================================
-# Set the grain reassignment parameters
-# =================================================================================
-
-set Activate grain reassignment = true
-set Order parameter fields for grain reassignment = n0, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11
-set Time steps between grain reassignments = 4000
-set Order parameter cutoff for grain identification = 1e-2
-set Buffer between grains before reassignment = 1.0 #2.0
-
-set Load grain structure = true
-set Grain structure filename = resampled_2048x2048_738g_us #initial_grain_structure_large_2D
-set Grain structure variable name = FeatureIds
-set Number of smoothing cycles after grain structure loading = 2
-set Minimum radius for loaded grains = 1.0
+set Number of time steps = 100000
 
 # =================================================================================
 # Set the boundary conditions
@@ -124,18 +80,8 @@ set Minimum radius for loaded grains = 1.0
 # 1.5 on the top and bottom for variable 'n' in 2D
 # set Boundary condition for variable n = NATURAL, NATURAL, DIRICHLET: 1.5, DIRICHLET: 1.5
 
-set Boundary condition for variable n0 = NATURAL
-set Boundary condition for variable n1 = NATURAL
-set Boundary condition for variable n2 = NATURAL
-set Boundary condition for variable n3 = NATURAL
-set Boundary condition for variable n4 = NATURAL
-set Boundary condition for variable n5 = NATURAL
-set Boundary condition for variable n6 = NATURAL
-set Boundary condition for variable n7 = NATURAL
-set Boundary condition for variable n8 = NATURAL
-set Boundary condition for variable n9 = NATURAL
-set Boundary condition for variable n10 = NATURAL
-set Boundary condition for variable n11 = NATURAL
+set Boundary condition for variable c = NATURAL
+set Boundary condition for variable mu = NATURAL
 
 # =================================================================================
 # Set the model constants
@@ -146,11 +92,22 @@ set Boundary condition for variable n11 = NATURAL
 # options currently are DOUBLE, INT, BOOL, TENSOR, and [symmetry] ELASTIC CONSTANTS
 # where [symmetry] is ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC.
 
-# The AC mobility, MnV in equations.h
-set Model constant MnV = 1.0, DOUBLE
+# The mobility, McV in equations.h
+set Model constant McV = 1.0, DOUBLE
 
-# Gradient energy coefficient
-set Model constant KnV = 0.1, DOUBLE
+# The gradient energy coefficient, KcV in equations.h
+set Model constant KcV = 1.5, DOUBLE
 
-# Grain interaction coeffiecient
-set Model constant alpha = 1.5, DOUBLE
+# =================================================================================
+# Set the output parameters
+# =================================================================================
+# Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
+# or "LIST")
+set Output condition = EQUAL_SPACING
+
+# Number of times the program outputs the fields (total number for "EQUAL_SPACING"
+# and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
+set Number of outputs = 10
+
+# The number of time steps between updates being printed to the screen
+set Skip print steps = 1000
