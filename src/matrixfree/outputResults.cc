@@ -97,7 +97,8 @@ void MatrixFreePDE<dim,degree>::outputResults() {
 	  }
   }
 
-  data_out.build_patches (degree);
+  //data_out.build_patches (degree);
+  data_out.build_patches (5);
 
   //write to results file
   //file name

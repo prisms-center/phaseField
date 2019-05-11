@@ -55,6 +55,8 @@ private:
 
 	double McV = userInputs.get_model_constant_double("McV");
 	double KcV = userInputs.get_model_constant_double("KcV");
+  double W = userInputs.get_model_constant_double("W");
+
 
 	// ================================================================
 

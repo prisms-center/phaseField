@@ -48,16 +48,16 @@ void customPDE<dim,degree>::explicitEquationRHS(variableContainer<dim,degree,dea
 				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
 
 // --- Getting the values and derivatives of the model variables ---
-scalarvalueType c = variable_list.get_scalar_value(0);
-scalargradType mux = variable_list.get_scalar_gradient(1);
+//scalarvalueType c = variable_list.get_scalar_value(0);
+//scalargradType mux = variable_list.get_scalar_gradient(1);
 
 // --- Setting the expressions for the terms in the governing equations ---
-scalarvalueType eq_c = c;
-scalargradType eqx_c = constV(-McV*userInputs.dtValue)*mux;
+//scalarvalueType eq_c = c;
+//scalargradType eqx_c = constV(-McV*userInputs.dtValue)*mux;
 
 // --- Submitting the terms for the governing equations ---
-variable_list.set_scalar_value_term_RHS(0,eq_c);
-variable_list.set_scalar_gradient_term_RHS(0,eqx_c);
+variable_list.set_scalar_value_term_RHS(0,variable_list.get_scalar_value(0));
+variable_list.set_scalar_gradient_term_RHS(0,constV(-McV*userInputs.dtValue)*variable_list.get_scalar_gradient(1));
 
 }
 
@@ -85,16 +85,16 @@ void customPDE<dim,degree>::nonExplicitEquationRHS(variableContainer<dim,degree,
  // --- Setting the expressions for the terms in the governing equations ---
 
  // The derivative of the local free energy
- scalarvalueType fcV = 4.0*c*(c-1.0)*(c-0.5);
+ //scalarvalueType fcV = W/2.0 * c * (2.0*c*c - 3.0*c  + 1.0);
 
  // The terms for the governing equations
- scalarvalueType eq_mu = fcV;
- scalargradType eqx_mu = constV(KcV)*cx;
+ //scalarvalueType eq_mu = fcV;
+ //scalargradType eqx_mu = constV(KcV)*cx;
 
  // --- Submitting the terms for the governing equations ---
 
- variable_list.set_scalar_value_term_RHS(1,eq_mu);
- variable_list.set_scalar_gradient_term_RHS(1,eqx_mu);
+ variable_list.set_scalar_value_term_RHS(1, 0.5 * W * c * (2.0*c*c - 3.0*c  + 1.0));
+ variable_list.set_scalar_gradient_term_RHS(1,constV(KcV)*cx);
 
 
 }
