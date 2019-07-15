@@ -67,8 +67,54 @@ void MatrixFreePDE<dim,degree>::adaptiveRefineCriterion(){
 //#endif
 //#endif
 
-//Custom defined estimation criterion
+// Newer, more general approach
+{
+    QGaussLobatto<dim>  quadrature(degree+1);
+    const unsigned int num_quad_points = quadrature.size();
 
+    for (unsigned int field_index=0; field_index<userInputs.refinement_criteria.size(); field_index++){
+        FEValues<dim> fe_values (*FESet[userInputs.refinement_criteria[field_index].variable_index], quadrature, update_values);
+
+        typename DoFHandler<dim>::active_cell_iterator cell = dofHandlersSet_nonconst[userInputs.refinement_criteria[field_index].variable_index]->begin_active(), endc = dofHandlersSet_nonconst[userInputs.refinement_criteria[field_index].variable_index]->end();
+        typename parallel::distributed::Triangulation<dim>::active_cell_iterator t_cell = triangulation.begin_active();
+
+        for (;cell!=endc; ++cell){
+            std::vector<double> errorOut(num_quad_points);
+        	if (cell->is_locally_owned()){
+        		fe_values.reinit (cell);
+
+        		fe_values.get_function_values(*solutionSet[userInputs.refinement_criteria[field_index].variable_index], errorOut);
+
+        		bool mark_refine = false;
+
+        		for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
+        			if ((errorOut[q_point]>userInputs.refinement_criteria[field_index].value_lower_bound) && (errorOut[q_point]<userInputs.refinement_criteria[field_index].value_upper_bound)){
+        			    mark_refine = true;
+        				break;
+        			}
+        		}
+
+        		//limit the maximal and minimal refinement depth of the mesh
+        		unsigned int current_level = t_cell->level();
+
+        		if ( (mark_refine && current_level < userInputs.max_refinement_level) ){
+        			cell->set_refine_flag();
+        		}
+        		else if (!mark_refine && current_level > userInputs.min_refinement_level) {
+        			cell->set_coarsen_flag();
+        		}
+
+        	}
+        	++t_cell;
+        }
+
+    }
+
+
+
+}
+/*
+//Custom defined estimation criterion (old approach)
 std::vector<std::vector<double> > errorOutV;
 
 
@@ -117,6 +163,7 @@ for (;cell!=endc; ++cell){
 	}
 	++t_cell;
 }
+*/
 
 }
 

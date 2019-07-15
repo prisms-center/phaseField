@@ -43,6 +43,55 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
         abort();
     }
 
+    // The adaptivity criterion for each variable has its own subsection
+    for (unsigned int i=0; i<number_of_variables; i++){
+
+        std::string subsection_text = "Refinement criterion: ";
+        subsection_text.append(input_file_reader.var_names.at(i));
+
+        parameter_handler.enter_subsection(subsection_text);
+        {
+            std::string crit_type_string = parameter_handler.get("Criterion type");
+            if (crit_type_string.size() > 0){
+                RefinementCriterion new_criterion;
+                new_criterion.variable_index = i;
+                new_criterion.variable_name = input_file_reader.var_names.at(i);
+                criterionType crit_type;
+                if (boost::iequals(crit_type_string,"VALUE")){
+                    crit_type = VALUE;
+                    new_criterion.value_lower_bound = parameter_handler.get_double("Value lower bound");
+                    new_criterion.value_upper_bound = parameter_handler.get_double("Value upper bound");
+
+                    // Check to make sure that the upper bound is greater than or equal to the lower bound
+                    if (new_criterion.value_upper_bound < new_criterion.value_lower_bound){
+                        std::cerr << "PRISMS-PF Error: The upper bound for refinement for variable " << new_criterion.variable_name << " is less than the lower bound. Please correct this in the parameters file." << std::endl;
+                    }
+                }
+                else if (boost::iequals(crit_type_string,"GRADIENT")){
+                    crit_type = GRADIENT;
+                    new_criterion.gradient_lower_bound = parameter_handler.get_double("Gradient magnitude lower bound");
+                }
+                else if (boost::iequals(crit_type_string,"VALUE_AND_GRADIENT")){
+                    crit_type = VALUE_AND_GRADIENT;
+                    new_criterion.value_lower_bound = parameter_handler.get_double("Value lower bound");
+                    new_criterion.value_upper_bound = parameter_handler.get_double("Value upper bound");
+                    new_criterion.gradient_lower_bound = parameter_handler.get_double("Gradient magnitude lower bound");
+
+                    // Check to make sure that the upper bound is greater than or equal to the lower bound
+                    if (new_criterion.value_upper_bound < new_criterion.value_lower_bound){
+                        std::cerr << "PRISMS-PF Error: The upper bound for refinement for variable " << new_criterion.variable_name << " is less than the lower bound. Please correct this in the parameters file." << std::endl;
+                    }
+                }
+                else {
+                    std::cerr << "PRISMS-PF Error: The refinement criteria type found in the parameters file, " << crit_type_string << ", is not an allowed type. The allowed types are VALUE, GRADIENT, VALUE_AND_GRADIENT" << std::endl;
+                    abort();
+                }
+                refinement_criteria.push_back(new_criterion);
+            }
+        }
+        parameter_handler.leave_subsection();
+    }
+
     // Use built-in deal.II utilities to split up a string and convert it to a vector of doubles or ints
     std::vector<std::string> refine_criterion_fields_str = dealii::Utilities::split_string_list(parameter_handler.get("Refinement criteria fields"));
     for (unsigned int ref_field=0; ref_field<refine_criterion_fields_str.size(); ref_field++){

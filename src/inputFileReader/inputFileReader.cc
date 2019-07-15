@@ -2,6 +2,7 @@
 #include "../../include/inputFileReader.h"
 #include "../../include/sortIndexEntryPairList.h"
 #include "../../include/EquationDependencyParser.h"
+#include "../../include/RefinementCriterion.h"
 #include <deal.II/base/mpi.h>
 #include <deal.II/base/utilities.h>
 #include <iostream>
@@ -258,6 +259,26 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
     parameter_handler.declare_entry("Refinement window max","",dealii::Patterns::List(dealii::Patterns::Anything()),"The upper limit for refinement for each of the criteria fields.");
     parameter_handler.declare_entry("Refinement window min","",dealii::Patterns::List(dealii::Patterns::Anything()),"The lower limit for refinement for each of the criteria fields.");
     parameter_handler.declare_entry("Steps between remeshing operations","1",dealii::Patterns::Integer(),"The number of time steps between mesh refinement operations.");
+
+
+    for (unsigned int i=0; i<var_types.size(); i++){
+        std::string subsection_text = "Refinement criterion: ";
+        subsection_text.append(var_names.at(i));
+        parameter_handler.enter_subsection(subsection_text);
+        {
+            parameter_handler.declare_entry("Criterion type","",dealii::Patterns::Anything(),"The type of criterion used to determine if a cell should be refined. The options are VALUE, GRADIENT, VALUE_AND_GRADIENT.");
+
+            parameter_handler.declare_entry("Value lower bound","0.0",dealii::Patterns::Double(),"The lower bound for the window determining where the mesh should be refined.");
+
+            parameter_handler.declare_entry("Value upper bound","1.0",dealii::Patterns::Double(),"The upper bound for the window determining where the mesh should be refined.");
+
+            parameter_handler.declare_entry("Gradient magnitude lower bound","1.0",dealii::Patterns::Double(),"The magnitude of the gradient above which the mesh should be refined.");
+        }
+        parameter_handler.leave_subsection();
+
+    }
+
+
 
     parameter_handler.declare_entry("Number of time steps","-1",dealii::Patterns::Integer(),"The time step size for the simulation.");
     parameter_handler.declare_entry("Time step","-0.1",dealii::Patterns::Double(),"The time step size for the simulation.");

@@ -10,6 +10,7 @@
 
 #include "model_variables.h"
 #include "varBCs.h"
+#include "RefinementCriterion.h"
 #include "inputFileReader.h"
 #include "varTypeEnums.h"
 #include "variableAttributeLoader.h"
@@ -73,6 +74,8 @@ public:
 	std::vector<int> refine_criterion_fields;
 	std::vector<double> refine_window_max;
 	std::vector<double> refine_window_min;
+
+    std::vector<RefinementCriterion> refinement_criteria;
 
 	unsigned int skip_remeshing_steps;
 
