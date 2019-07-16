@@ -50,7 +50,7 @@ end
 subsection Refinement criterion: c
     set Criterion type = value
     set Value lower bound = 0.07
-    set Value upper bound = 0.125
+    set Value upper bound = 0.12
 end
 
 # Set the fields used to determine the refinement using their index.

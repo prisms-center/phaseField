@@ -67,56 +67,84 @@ void MatrixFreePDE<dim,degree>::adaptiveRefineCriterion(){
 //#endif
 //#endif
 
-// Newer, more general approach
+// New way, take two
 {
-    QGaussLobatto<dim>  quadrature(degree+1);
-    const unsigned int num_quad_points = quadrature.size();
+std::vector<std::vector<double> > valuesV;
 
-    for (unsigned int field_index=0; field_index<userInputs.refinement_criteria.size(); field_index++){
-        FEValues<dim> fe_values (*FESet[userInputs.refinement_criteria[field_index].variable_index], quadrature, update_values);
+QGaussLobatto<dim>  quadrature(degree+1);
+const unsigned int num_quad_points = quadrature.size();
 
-        typename DoFHandler<dim>::active_cell_iterator cell = dofHandlersSet_nonconst[userInputs.refinement_criteria[field_index].variable_index]->begin_active(), endc = dofHandlersSet_nonconst[userInputs.refinement_criteria[field_index].variable_index]->end();
-        typename parallel::distributed::Triangulation<dim>::active_cell_iterator t_cell = triangulation.begin_active();
-
-        for (;cell!=endc; ++cell){
-            std::vector<double> errorOut(num_quad_points);
-        	if (cell->is_locally_owned()){
-        		fe_values.reinit (cell);
-
-        		fe_values.get_function_values(*solutionSet[userInputs.refinement_criteria[field_index].variable_index], errorOut);
-
-        		bool mark_refine = false;
-
-        		for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
-        			if ((errorOut[q_point]>userInputs.refinement_criteria[field_index].value_lower_bound) && (errorOut[q_point]<userInputs.refinement_criteria[field_index].value_upper_bound)){
-        			    mark_refine = true;
-        				break;
-        			}
-        		}
-
-        		//limit the maximal and minimal refinement depth of the mesh
-        		unsigned int current_level = t_cell->level();
-
-        		if ( (mark_refine && current_level < userInputs.max_refinement_level) ){
-        			cell->set_refine_flag();
-        		}
-        		else if (!mark_refine && current_level > userInputs.min_refinement_level) {
-        			cell->set_coarsen_flag();
-        		}
-
-        	}
-        	++t_cell;
-        }
-
+// Set the correct update flags
+bool need_value = false;
+bool need_gradient = false;
+for (unsigned int field_index=0; field_index<userInputs.refinement_criteria.size(); field_index++){
+    if (userInputs.refinement_criteria[field_index].criterion_type == VALUE || userInputs.refinement_criteria[field_index].criterion_type == VALUE_AND_GRADIENT){
+        need_value = true;
     }
-
-
-
+    else if (userInputs.refinement_criteria[field_index].criterion_type == GRADIENT || userInputs.refinement_criteria[field_index].criterion_type == VALUE_AND_GRADIENT){
+        need_gradient = true;
+    }
 }
+dealii::UpdateFlags update_flags;
+if (need_value && !need_gradient){
+    update_flags = update_values;
+}
+else if (!need_value && need_gradient){
+    update_flags = update_gradients;
+}
+else {
+    update_flags = update_values | update_gradients;
+}
+
+FEValues<dim> fe_values (*FESet[userInputs.refinement_criteria[0].variable_index], quadrature, update_flags);
+
+std::vector<double> values(num_quad_points);
+std::vector<double> gradient_magnitude(num_quad_points);
+
+typename DoFHandler<dim>::active_cell_iterator cell = dofHandlersSet_nonconst[userInputs.refinement_criteria[0].variable_index]->begin_active(), endc = dofHandlersSet_nonconst[userInputs.refinement_criteria[0].variable_index]->end();
+
+typename parallel::distributed::Triangulation<dim>::active_cell_iterator t_cell = triangulation.begin_active();
+
+for (;cell!=endc; ++cell){
+	if (cell->is_locally_owned()){
+		fe_values.reinit (cell);
+
+		for (unsigned int field_index=0; field_index<userInputs.refinement_criteria.size(); field_index++){
+			fe_values.get_function_values(*solutionSet[userInputs.refinement_criteria[field_index].variable_index], values);
+			valuesV.push_back(values);
+		}
+
+		bool mark_refine = false;
+
+		for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
+			for (unsigned int field_index=0; field_index<userInputs.refinement_criteria.size(); field_index++){
+				if ((valuesV[field_index][q_point]>userInputs.refinement_criteria[field_index].value_lower_bound) && (valuesV[field_index][q_point]<userInputs.refinement_criteria[field_index].value_upper_bound)){
+					mark_refine = true;
+					break;
+				}
+			}
+		}
+
+		valuesV.clear();
+
+		//limit the maximal and minimal refinement depth of the mesh
+		unsigned int current_level = t_cell->level();
+
+		if ( (mark_refine && current_level < userInputs.max_refinement_level) ){
+			cell->set_refine_flag();
+		}
+		else if (!mark_refine && current_level > userInputs.min_refinement_level) {
+			cell->set_coarsen_flag();
+		}
+
+	}
+	++t_cell;
+}
+}
+
 /*
 //Custom defined estimation criterion (old approach)
 std::vector<std::vector<double> > errorOutV;
-
 
 QGaussLobatto<dim>  quadrature(degree+1);
 FEValues<dim> fe_values (*FESet[userInputs.refine_criterion_fields[0]], quadrature, update_values);
