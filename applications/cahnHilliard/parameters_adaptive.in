@@ -40,15 +40,18 @@ set Mesh adaptivity = true
 set Max refinement level = 6
 set Min refinement level = 3
 
-# Set the fields used to determine the refinement using their index.
-set Refinement criteria fields = c
-
-# Set the maximum and minimum value of the fields where the mesh should be refined
-set Refinement window max = 0.95
-set Refinement window min = 0.05
-
 # Set the number of time steps between remeshing operations
 set Steps between remeshing operations = 2000
+
+# Set the criteria for adapting the mesh
+subsection Refinement criterion: c
+    # Select whether the mesh is refined based on the variable value (VALUE),
+    # its gradient (GRADIENT), or both (VALUE_AND_GRADIENT)
+    set Criterion type = VALUE
+    # Set the lower and upper bounds for the value-based refinement window
+    set Value lower bound = 0.05
+    set Value upper bound = 0.95
+end
 
 # =================================================================================
 # Set the time step parameters

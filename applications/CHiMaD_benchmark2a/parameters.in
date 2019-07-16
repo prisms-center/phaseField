@@ -28,26 +28,6 @@ set Refine factor = 6
 set Element degree = 1
 
 # =================================================================================
-# Set the adaptive mesh refinement parameters
-# =================================================================================
-# Set the flag determining if adaptive meshing is activated
-set Mesh adaptivity = false
-
-# Set the maximum and minimum level of refinement
-set Max refinement level = 6
-set Min refinement level = 3
-
-# Set the fields used to determine the refinement using their index.
-set Refinement criteria fields = 0,2,3,4,5
-
-# Set the maximum and minimum value of the fields where the mesh should be refined
-set Refinement window max = 0.65,0.999,0.999,0.999,0.999
-set Refinement window min = 0.35,0.001,0.001,0.001,0.001
-
-# Set the number of time steps between remeshing operations
-set Steps between remeshing operations = 100
-
-# =================================================================================
 # Set the time step parameters
 # =================================================================================
 # The size of the time step

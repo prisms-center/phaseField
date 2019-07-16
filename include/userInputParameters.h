@@ -70,14 +70,8 @@ public:
 	bool h_adaptivity;
 	unsigned int max_refinement_level;
 	unsigned int min_refinement_level;
-
-	std::vector<int> refine_criterion_fields;
-	std::vector<double> refine_window_max;
-	std::vector<double> refine_window_min;
-
+    unsigned int skip_remeshing_steps;
     std::vector<RefinementCriterion> refinement_criteria;
-
-	unsigned int skip_remeshing_steps;
 
 	// Output parameters
 	unsigned int skip_print_steps;

@@ -13,9 +13,6 @@ void load_unit_test_inputs(userInputParameters<dim> & userInputs){
     userInputs.h_adaptivity = false;
     userInputs.max_refinement_level = 3;
     userInputs.min_refinement_level = 3;
-    userInputs.refine_criterion_fields.push_back(0);
-    userInputs.refine_window_max.push_back(0.5);
-    userInputs.refine_window_min.push_back(0.5);
     userInputs.skip_remeshing_steps = 1;
     userInputs.dtValue = 1;
     userInputs.totalIncrements = 20000;

@@ -43,8 +43,9 @@ if (userInputs.h_adaptivity == true){
 //default implementation of adaptive mesh criterion
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::adaptiveRefineCriterion(){
-  //Kelly error estimation criterion
-  //estimate cell wise errors for mesh refinement
+// Old code to implement a Kelly error estimator
+//Kelly error estimation criterion
+//estimate cell wise errors for mesh refinement
 //#if hAdaptivity==true
 //#ifdef adaptivityType
 //#if adaptivityType=="KELLY"
@@ -67,7 +68,6 @@ void MatrixFreePDE<dim,degree>::adaptiveRefineCriterion(){
 //#endif
 //#endif
 
-// New way, take two
 {
 std::vector<std::vector<double> > valuesV;
 std::vector<std::vector<double> > gradientsV;
@@ -120,7 +120,6 @@ for (;cell!=endc; ++cell){
                 fe_values.get_function_gradients(*solutionSet[userInputs.refinement_criteria[field_index].variable_index], gradients);
 
                 for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
-                    //std::cout << gradients.at(q_point).norm() << " " << gradients[q_point][0] << " " << gradients[q_point][1] << std::endl;
                     gradient_magnitudes.at(q_point) = gradients.at(q_point).norm();
                 }
 
@@ -164,57 +163,6 @@ for (;cell!=endc; ++cell){
 	++t_cell;
 }
 }
-
-/*
-//Custom defined estimation criterion (old approach)
-std::vector<std::vector<double> > errorOutV;
-
-QGaussLobatto<dim>  quadrature(degree+1);
-FEValues<dim> fe_values (*FESet[userInputs.refine_criterion_fields[0]], quadrature, update_values);
-const unsigned int num_quad_points = quadrature.size();
-
-std::vector<double> errorOut(num_quad_points);
-
-typename DoFHandler<dim>::active_cell_iterator cell = dofHandlersSet_nonconst[userInputs.refine_criterion_fields[0]]->begin_active(), endc = dofHandlersSet_nonconst[userInputs.refine_criterion_fields[0]]->end();
-
-typename parallel::distributed::Triangulation<dim>::active_cell_iterator t_cell = triangulation.begin_active();
-
-for (;cell!=endc; ++cell){
-	if (cell->is_locally_owned()){
-		fe_values.reinit (cell);
-
-		for (unsigned int field_index=0; field_index<userInputs.refine_criterion_fields.size(); field_index++){
-			fe_values.get_function_values(*solutionSet[userInputs.refine_criterion_fields[field_index]], errorOut);
-			errorOutV.push_back(errorOut);
-		}
-
-		bool mark_refine = false;
-
-		for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
-			for (unsigned int field_index=0; field_index<userInputs.refine_criterion_fields.size(); field_index++){
-				if ((errorOutV[field_index][q_point]>userInputs.refine_window_min[field_index]) && (errorOutV[field_index][q_point]<userInputs.refine_window_max[field_index])){
-					mark_refine = true;
-					break;
-				}
-			}
-		}
-
-		errorOutV.clear();
-
-		//limit the maximal and minimal refinement depth of the mesh
-		unsigned int current_level = t_cell->level();
-
-		if ( (mark_refine && current_level < userInputs.max_refinement_level) ){
-			cell->set_refine_flag();
-		}
-		else if (!mark_refine && current_level > userInputs.min_refinement_level) {
-			cell->set_coarsen_flag();
-		}
-
-	}
-	++t_cell;
-}
-*/
 
 }
 

@@ -1484,3 +1484,61 @@ Time: 101.46475887298584
  
 Tests Passed: 5/5
 --------------------------------------------------------- 
+--------------------------------------------------------- 
+Unit test on 2019-07-16 15:17
+--------------------------------------------------------- 
+Unit Tests Passed: 24/24
+--------------------------------------------------------- 
+Regression test on 2019-07-16 15:17
+--------------------------------------------------------- 
+Application: allenCahn 
+Result: Pass 
+Time: 32.11033797264099 
+ 
+Application: cahnHilliard 
+Result: Pass 
+Time: 83.70220899581909 
+ 
+Application: CHAC_anisotropyRegularized 
+Result: Pass 
+Time: 45.3028998374939 
+ 
+Application: coupledCahnHilliardAllenCahn 
+Result: Fail 
+Time: 121.63287401199341 
+ 
+Application: precipitateEvolution 
+Result: Pass 
+Time: 87.09092903137207 
+ 
+Tests Passed: 4/5
+--------------------------------------------------------- 
+--------------------------------------------------------- 
+Unit test on 2019-07-16 15:48
+--------------------------------------------------------- 
+Unit Tests Passed: 24/24
+--------------------------------------------------------- 
+Regression test on 2019-07-16 15:48
+--------------------------------------------------------- 
+Application: allenCahn 
+Result: Pass 
+Time: 33.30381989479065 
+ 
+Application: cahnHilliard 
+Result: Pass 
+Time: 87.70645403862 
+ 
+Application: CHAC_anisotropyRegularized 
+Result: Pass 
+Time: 46.883241176605225 
+ 
+Application: coupledCahnHilliardAllenCahn 
+Result: Fail 
+Time: 154.17701983451843 
+ 
+Application: precipitateEvolution 
+Result: Pass 
+Time: 102.59357690811157 
+ 
+Tests Passed: 4/5
+--------------------------------------------------------- 
