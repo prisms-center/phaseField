@@ -22,10 +22,10 @@ set Subdivisions X = 3
 set Subdivisions Y = 3
 set Subdivisions Z = 3
 
-set Refine factor = 6
+set Refine factor = 5
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
-set Element degree = 1
+set Element degree = 2
 
 # =================================================================================
 # Set the adaptive mesh refinement parameters
@@ -38,20 +38,23 @@ set Mesh adaptivity = true
 # only used to generate the first pass of the mesh as the initial conditions are
 # applied. It should be set somewhere between the max and min levels below.
 
-set Max refinement level = 6
+set Max refinement level = 5
 set Min refinement level = 3
+
+subsection Refinement criterion: c
+    set Criterion type = gradient
+#    #set Value lower bound = 0.07
+#    #set Value upper bound = 0.12
+    set Gradient magnitude lower bound = 0.0001
+end
 
 subsection Refinement criterion: n
     set Criterion type = value
     set Value lower bound = 0.01
-    set Value upper bound = 0.4
+    set Value upper bound = 0.99
 end
 
-subsection Refinement criterion: c
-    set Criterion type = value
-    set Value lower bound = 0.07
-    set Value upper bound = 0.12
-end
+
 
 # Set the fields used to determine the refinement using their index.
 set Refinement criteria fields = c, n
@@ -61,7 +64,7 @@ set Refinement window max = 0.1, 0.99
 set Refinement window min = 0.02, 0.01
 
 # Set the number of time steps between remeshing operations
-set Steps between remeshing operations = 5000
+set Steps between remeshing operations = 1000
 
 # =================================================================================
 # Set the time step parameters

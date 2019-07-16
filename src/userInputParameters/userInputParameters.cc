@@ -56,9 +56,8 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
                 RefinementCriterion new_criterion;
                 new_criterion.variable_index = i;
                 new_criterion.variable_name = input_file_reader.var_names.at(i);
-                criterionType crit_type;
                 if (boost::iequals(crit_type_string,"VALUE")){
-                    crit_type = VALUE;
+                    new_criterion.criterion_type = VALUE;
                     new_criterion.value_lower_bound = parameter_handler.get_double("Value lower bound");
                     new_criterion.value_upper_bound = parameter_handler.get_double("Value upper bound");
 
@@ -68,11 +67,11 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
                     }
                 }
                 else if (boost::iequals(crit_type_string,"GRADIENT")){
-                    crit_type = GRADIENT;
+                    new_criterion.criterion_type = GRADIENT;
                     new_criterion.gradient_lower_bound = parameter_handler.get_double("Gradient magnitude lower bound");
                 }
                 else if (boost::iequals(crit_type_string,"VALUE_AND_GRADIENT")){
-                    crit_type = VALUE_AND_GRADIENT;
+                    new_criterion.criterion_type = VALUE_AND_GRADIENT;
                     new_criterion.value_lower_bound = parameter_handler.get_double("Value lower bound");
                     new_criterion.value_upper_bound = parameter_handler.get_double("Value upper bound");
                     new_criterion.gradient_lower_bound = parameter_handler.get_double("Gradient magnitude lower bound");

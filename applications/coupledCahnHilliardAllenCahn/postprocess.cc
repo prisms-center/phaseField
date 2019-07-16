@@ -19,6 +19,15 @@ void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 
     set_output_integral         	(0,true);
 
+    // Variable 0
+	set_variable_name				(1,"c_grad");
+	set_variable_type				(1,SCALAR);
+
+    set_dependencies_value_term_RHS(1, "grad(c)");
+    set_dependencies_gradient_term_RHS(1, "");
+
+    set_output_integral         	(1,false);
+
 }
 
 // =============================================================================================
@@ -41,6 +50,7 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 
 //c
 scalarvalueType c = variable_list.get_scalar_value(0);
+scalargradType cx = variable_list.get_scalar_gradient(0);
 
 //n
 scalarvalueType n = variable_list.get_scalar_value(1);
@@ -66,9 +76,20 @@ scalarvalueType f_grad = constV(0.5*Kn)*nx*nx;
 scalarvalueType f_tot;
 f_tot = f_chem + f_grad;
 
+// The magnitude of the gradient of c
+scalarvalueType mag_grad_c = constV(0.0);
+for (unsigned int i=0; i<dim; i++){
+    mag_grad_c = mag_grad_c + cx[i]*cx[i];
+}
+for (unsigned int v=0; v<c.n_array_elements; v++){
+    mag_grad_c[v] = sqrt(mag_grad_c[v]);
+}
+
+
 // --- Submitting the terms for the postprocessing expressions ---
 
 pp_variable_list.set_scalar_value_term_RHS(0, f_tot);
+pp_variable_list.set_scalar_value_term_RHS(1, mag_grad_c);
 
 
 }
