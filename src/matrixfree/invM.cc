@@ -1,6 +1,7 @@
 //computeInvM() method for MatrixFreePDE class
 
 #include "../../include/matrixFreePDE.h"
+#include <numeric>
 
 //compute inverse of the diagonal mass matrix and store in vector invM
 template <int dim, int degree>
@@ -61,9 +62,19 @@ void MatrixFreePDE<dim,degree>::computeInvM(){
 
 
 	invM.compress(VectorOperation::add);
+
+    // Calculate the volume of the smallest cell to prevent a non-zero value of invM being
+    // confused for a near zero value (which can happen if the domain size is 1e-6 or below)
+    std::vector<unsigned int> min_element_length;
+    for (unsigned int d=0; d<dim; d++){
+        int num_elements = userInputs.subdivisions.at(d)*dealii::Utilities::fixed_power<2>(userInputs.max_refinement_level);
+        min_element_length.push_back(userInputs.domain_size[d]/double(num_elements));
+    }
+    double min_cell_volume = std::accumulate(begin(min_element_length), end(min_element_length), 1, std::multiplies<double>());
+
 	//invert mass matrix diagonal elements
 	for (unsigned int k=0; k<invM.local_size(); ++k){
-		if (std::abs(invM.local_element(k))>1.0e-15){
+		if (std::abs(invM.local_element(k))>1.0e-15 * min_cell_volume){
 			invM.local_element(k) = 1./invM.local_element(k);
 		}
 		else{
