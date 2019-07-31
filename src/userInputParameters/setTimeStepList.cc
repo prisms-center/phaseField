@@ -33,11 +33,13 @@ std::vector<unsigned int> userInputParameters<dim>::setTimeStepList(const std::s
 
             }
         }
-        else if (outputSpacingType == "LIST"){
-            timeStepList = userGivenTimeStepList;
-        }
+    }
+    else if (outputSpacingType == "LIST"){
+        timeStepList = userGivenTimeStepList;
     }
     else {
+        // I'm not sure why this is set up this way. It seems like the intuitive thing would be to have an empty list,
+        // not a list with one entry that is higher than will be reached during time stepping.
         timeStepList.push_back(totalIncrements+1);
     }
 
