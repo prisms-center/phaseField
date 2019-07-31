@@ -224,6 +224,8 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
         }
     }
 
+    print_timing_with_output = parameter_handler.get_bool("Print timing information with output");
+
     // Field variable definitions
 
     // If all of the variables are ELLIPTIC, then totalIncrements should be 1 and finalTime should be 0

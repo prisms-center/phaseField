@@ -86,6 +86,10 @@ void MatrixFreePDE<dim,degree>::solve(){
                     solutionSet[fieldIndex]->update_ghost_values();
                 }
                 outputResults();
+                if (userInputs.print_timing_with_output && currentIncrement < userInputs.totalIncrements){
+                    computing_timer.print_summary();
+                }
+
                 currentOutput++;
             }
 

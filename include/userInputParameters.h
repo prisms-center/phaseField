@@ -79,6 +79,7 @@ public:
 	bool output_vtu_per_process;
 	std::string output_file_name;
 	std::vector<unsigned int> outputTimeStepList;
+    bool print_timing_with_output;
 
 	// Time step parameters
 	double dtValue;

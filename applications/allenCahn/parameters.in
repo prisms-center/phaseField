@@ -48,6 +48,9 @@ set Output condition = EQUAL_SPACING
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
 set Number of outputs = 5
 
+# Whether to print timing information every time the code outputs
+set Print timing information with output = true
+
 # The number of time steps between updates being printed to the screen
 set Skip print steps = 1000
 

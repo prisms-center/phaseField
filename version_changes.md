@@ -1,12 +1,18 @@
-# Version 2.1.2(pre)
-Minor update to 2.1.1, planned to be released in August 2019. The biggest change in this version is a change in how the user
+# Version 2.1.2
+Minor update to 2.1.1, released in July 2019. The biggest change in this version is a change in how the user
 specifies the adaptivity criteria in the parameters file.
 
 Added Functionality:
 - Users now specify the adaptivity criteria on a variable-by-variable basis, similar to the nucleation parameters. This new format permits more flexibility in the adaptvity criteria. Gradient-based adaptivity criteria are now supported. (Issue #56)
+- Users now have the option to have a timing summary printed out every time the code outputs, controlled via the parameters file. (Issue #132)
 
 Bug Fixes:
 - PRISMS-PF will no longer zero out fields if the domain size is smaller than approximately 1e-5. This was related to the calculation of the inverse of the mass matrix. A tolerance to prevent a divide by zero error needs to scale with the minimum element volume. (Issue #119)
+- The code will now produce outputs/checkpoints if given a list, regardless of the number of outputs/checkpoints specified for the other frequency types. (Issue #123)
+
+Other Changes:
+- Fixed the derivation for the mechanics and eshelbyInclusion apps with respect to surface tractions. (Issue #130)
+- Improved the error message for attempted access of a value/gradient/hessian that wasn't requested in variableAttributeLoader::loadVariableAttributes(). (Issue #136)
 
 # Version 2.1.1
 Minor update to 2.1, released in March 2019. The main purpose for the release was to trigger the creation of a
