@@ -18,18 +18,18 @@
 \renewcommand{\v}[1]{\ensuremath{\mathbf{#1}}} % for vectors
 \newcommand{\gv}[1]{\ensuremath{\mbox{\boldmath$ #1 $}}} 
 \newcommand{\grad}[1]{\gv{\nabla} #1}
-\renewcommand{\baselinestretch}{1.2}
-\jot 5mm
-\graphicspath{{./figures/}}
+%\renewcommand{\baselinestretch}{1.2}
+%\jot 5mm
+%\graphicspath{{./figures/}}
 %text dimensions
-\textwidth 6.5 in
-\oddsidemargin .2 in
-\topmargin -0.2 in
-\textheight 8.5 in
-\headheight 0.2in
-\overfullrule = 0pt
-\pagestyle{plain}
-\def\newpar{\par\vskip 0.5cm}
+%\textwidth 6.5 in
+%\oddsidemargin .2 in
+%\topmargin -0.2 in
+%\textheight 8.5 in
+%\headheight 0.2in
+%\overfullrule = 0pt
+%\pagestyle{plain}
+%\def\newpar{\par\vskip 0.5cm}
 \begin{document}
 %
 %----------------------------------------------------------------------
@@ -179,19 +179,18 @@
 \smallskip
 \centerline{\Large{\bf Mechanics (Infinitesimal Strain)}}
 \bigskip
-Consider a strain energy expression of the form:
+Consider a elastic free energy expression of the form:
 \begin{equation}
-  \Pi(\varepsilon) = \int_{\Omega}  \frac{1}{2} \varepsilon:C:\varepsilon   ~dV 
+  \Pi(\varepsilon) = \int_{\Omega}  \frac{1}{2} \varepsilon:C:\varepsilon  ~dV - \int_{\partial \Omega}   u \cdot t  ~dS
 \end{equation}
-where $\varepsilon$ is the infinitesimal strain tensor, $C_{ijkl}=\lambda \delta_{ij} \delta_{kl}+\mu ( \delta_{ik} \delta_{jl}+ \delta_{il} \delta_{jk} )$  is the fourth order elasticity tensor and ($\lambda$, $mu$) are the Lame parameters.
+where $\varepsilon$ is the infinitesimal strain tensor, given by $\varepsilon = \frac{1}{2}(\grad u + \grad u^T)$,  $C_{ijkl}=\lambda \delta_{ij} \delta_{kl}+\mu ( \delta_{ik} \delta_{jl}+ \delta_{il} \delta_{jk} )$  is the fourth order elasticity tensor, ($\lambda$, $mu$) are the Lame parameters, $u$ is the displacement, and $t$ is the surface traction.
 
 \section{Governing equation}
 Considering variations on the displacement $u$ of the from $u+\alpha w$, we have
 \begin{align}
-\delta \Pi &=  \left. \frac{d}{d\alpha} \int_{\Omega}    \frac{1}{2}\epsilon(u+\alpha w)  : C : \epsilon(u+\alpha w) ~dV \right\vert_{\alpha=0} \\
-&=  -\int_{\Omega}   \grad w : C :  \epsilon  ~dV +  \int_{\partial \Omega}   w \cdot [C :  \epsilon\cdot n]  ~dS\\
-&=  -\int_{\Omega}   \grad w : \sigma  ~dV +  \int_{\partial \Omega}   w \cdot (\sigma \cdot n)  ~dS\\
-&=  -\int_{\Omega}   \grad w : \sigma  ~dV +  \int_{\partial \Omega}   w \cdot t  ~dS
+\delta \Pi &=  \left. \frac{d}{d\alpha} \left( \int_{\Omega}    \frac{1}{2}\epsilon(u+\alpha w)  : C : \epsilon(u+\alpha w) ~dV  - \int_{\partial \Omega}   u \cdot t  ~dS \right) \right\vert_{\alpha=0}\\
+&=  \int_{\Omega}   \grad w : C :  \epsilon  ~dV -  \int_{\partial \Omega}   w \cdot t~dS\\
+&=  \int_{\Omega}   \grad w : \sigma  ~dV -  \int_{\partial \Omega}   w \cdot t  ~dS
 \end{align}
 where $\sigma = C :  \varepsilon$ is the stress tensor and $t=\sigma \cdot n$ is the surface traction.\\
 
@@ -206,8 +205,8 @@ If surface tractions are zero: \\
 R &=  \int_{\Omega}   \grad w :  \sigma ~dV = 0 
 \end{align}
 
-\section{Residual expressions}
-In PRISMS-PF, two sets of residuals are required for elliptic PDEs (such as this one), one for the left-hand side of the equation (LHS) and one for the right-hand side of the equation (RHS). We solve $R=0$ by casting this in a form that can be solved as a matrix inversion problem. This will involve a brief detour into the discretized form of the equation. First we derive an expression for the solution, given an initial guess, $u_0$:
+\section{Terms for Input into PRISMS-PF}
+In PRISMS-PF, two sets of terms are required for elliptic PDEs (such as this one), one for the left-hand side of the equation (LHS) and one for the right-hand side of the equation (RHS). We solve $R=0$ by casting this in a form that can be solved as a matrix inversion problem. This will involve a brief detour into the discretized form of the equation. First we derive an expression for the solution, given an initial guess, $u_0$:
 \begin{gather}
 0 = R(u) = R(u_0 + \Delta u)
 \end{gather}
@@ -234,8 +233,8 @@ Thus, the full equation relating $u_0$ and $\Delta u$ is:
 \begin{equation}
 \int_{\Omega} \nabla w : \underbrace{C : \nabla (\Delta u)}_{r_{ux}^{LHS}} dV = -\int_{\Omega}   \grad w : \underbrace{\sigma}_{r_{ux}} ~dV
 \end{equation}
-The above values of $r_{ux}^{LHS}$ and $r_{ux}$ are used to define the residuals in the following input file: \\
-$applications/mechanics/equations.h$
+The above values of $r_{ux}^{LHS}$ and $r_{ux}$ are used to define the equation terms in the following input file: \\
+$applications/mechanics/equations.cc$
 
 
 

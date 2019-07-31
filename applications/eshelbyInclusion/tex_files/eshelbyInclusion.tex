@@ -184,17 +184,16 @@ This example application implements a simple 3D calculation of the displacement 
 \\
 Consider a strain energy expression of the form:
 \begin{equation}
-  \Pi(\varepsilon) = \int_{\Omega}  \frac{1}{2} (\epsilon-\epsilon^0):C: (\epsilon-\epsilon^0)   ~dV 
+  \Pi(\varepsilon) = \int_{\Omega}  \frac{1}{2} (\epsilon-\epsilon^0):C: (\epsilon-\epsilon^0)   ~dV  - \int_{\partial \Omega}   u \cdot t  ~dS
 \end{equation}
-where $\varepsilon$ is the infinitesimal strain tensor, $C_{ijkl}=\lambda \delta_{ij} \delta_{kl}+\mu ( \delta_{ik} \delta_{jl}+ \delta_{il} \delta_{jk} )$  is the fourth order elasticity tensor and ($\lambda$, $mu$) are the Lame parameters.
+where $\varepsilon$ is the infinitesimal strain tensor, $C_{ijkl}=\lambda \delta_{ij} \delta_{kl}+\mu ( \delta_{ik} \delta_{jl}+ \delta_{il} \delta_{jk} )$  is the fourth order elasticity tensor, ($\lambda$, $\mu$) are the Lame parameters, $u$ is the displacement, and $t=\sigma \cdot n$ is the surface traction.
 
 \section{Governing equations}
 Considering variations on the displacement $u$ of the from $u+\alpha w$, we have
 \begin{align}
-\delta \Pi &=  \left. \frac{d}{d\alpha} \int_{\Omega}    \frac{1}{2} [\epsilon(u+\alpha w) - \epsilon^0] : C : [\epsilon(u+\alpha w) - \epsilon^0] ~dV \right\vert_{\alpha=0} \\
-&=  -\int_{\Omega}   \grad w : C :  (\epsilon-\epsilon^0)  ~dV +  \int_{\partial \Omega}   w \cdot [C :  (\epsilon-\epsilon^0) \cdot n]  ~dS\\
-&=  -\int_{\Omega}   \grad w : \sigma  ~dV +  \int_{\partial \Omega}   w \cdot (\sigma \cdot n)  ~dS\\
-&=  -\int_{\Omega}   \grad w : \sigma  ~dV +  \int_{\partial \Omega}   w \cdot t  ~dS
+\delta \Pi &=  \left. \frac{d}{d\alpha} \left( \int_{\Omega}   \frac{1}{2} [\epsilon(u+\alpha w) - \epsilon^0] : C : [\epsilon(u+\alpha w) - \epsilon^0] ~dV - \int_{\partial \Omega} u \cdot t ~dS \right)\right\vert_{\alpha=0} \\
+&=  \int_{\Omega}   \grad w : C :  (\epsilon-\epsilon^0)  ~dV -  \int_{\partial \Omega}   w \cdot t~dS\\
+&=  \int_{\Omega}   \grad w : \sigma  ~dV -  \int_{\partial \Omega}   w\cdot t~dS
 \end{align}
 where $\sigma = C : (\epsilon-\epsilon^0)$ is the stress tensor, $\epsilon^0$ is the misfit strain (eigenstrain), and $t=\sigma \cdot n$ is the surface traction. In this case, we assume that the diagonal elements of $\epsilon^0$ take the form:
 \begin{equation}
