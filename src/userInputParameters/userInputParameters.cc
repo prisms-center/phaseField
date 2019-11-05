@@ -215,6 +215,11 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     skip_print_steps = parameter_handler.get_integer("Skip print steps");
     output_file_type = parameter_handler.get("Output file type");
     output_file_name = parameter_handler.get("Output file name (base)");
+    
+    std::string temp_op = parameter_handler.get("Output path");
+    if (!temp_op.empty())
+        if (*(temp_op.end() - 1) != '/')
+             output_path = temp_op + "/";
 
     output_vtu_per_process = parameter_handler.get_bool("Output separate files per process");
     if ((output_file_type == "vtk") && (!output_vtu_per_process)){
@@ -302,6 +307,16 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     load_field_name = dealii::Utilities::split_string_list(parameter_handler.get("Variable names in the files"));
 
     // Parameters for checkpoint/restart
+    std::string temp_csp = parameter_handler.get("Checkpoint save path");
+    if (!temp_csp.empty())
+        if (*(temp_csp.end() - 1) != '/')
+             checkpoint_save_path = temp_csp + "/";
+	     
+    std::string temp_clp = parameter_handler.get("Checkpoint load path");
+    if (!temp_clp.empty())
+        if (*(temp_clp.end() - 1) != '/')
+             checkpoint_load_path = temp_clp + "/";
+	   
     resume_from_checkpoint = parameter_handler.get_bool("Load from a checkpoint");
     std::string checkpoint_condition = parameter_handler.get("Checkpoint condition");
     unsigned int num_checkpoints = parameter_handler.get_integer("Number of checkpoints");
