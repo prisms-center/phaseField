@@ -78,6 +78,7 @@ public:
 	std::string output_file_type;
 	bool output_vtu_per_process;
 	std::string output_file_name;
+	std::string output_path;
 	std::vector<unsigned int> outputTimeStepList;
     bool print_timing_with_output;
 
@@ -117,6 +118,8 @@ public:
 	std::vector<std::string> load_field_name;
 
 	// Variables for saving/loading checkpoints
+	std::string checkpoint_save_path;
+        std::string checkpoint_load_path;
 	bool resume_from_checkpoint;
 	std::vector<unsigned int> checkpointTimeStepList;
 
