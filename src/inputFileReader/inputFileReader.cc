@@ -315,6 +315,7 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
     }
 
     parameter_handler.declare_entry("Output file name (base)","solution",dealii::Patterns::Anything(),"The name for the output file, before the time step and processor info are added.");
+    parameter_handler.declare_entry("Output path","",dealii::Patterns::Anything(),"Path to the directory where output files are stored.");
     parameter_handler.declare_entry("Output file type","vtu",dealii::Patterns::Anything(),"The output file type (either vtu or vtk).");
     parameter_handler.declare_entry("Output separate files per process","false",dealii::Patterns::Bool(),"Whether to output separate vtu files for each process in a parallel calculation (automatically set to true for vtk files).");
     parameter_handler.declare_entry("Output condition","EQUAL_SPACING",dealii::Patterns::Anything(),"The spacing type for outputing the solution fields.");
@@ -330,6 +331,8 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
     parameter_handler.declare_entry("Variable names in the files","void",dealii::Patterns::Anything(),"What each variable is named in the file being loaded.");
 
     // Checkpoint/restart
+    parameter_handler.declare_entry("Checkpoint save path","",dealii::Patterns::Anything(),"Path to the directory where checkpoint files are saved.");
+    parameter_handler.declare_entry("Checkpoint load path","",dealii::Patterns::Anything(),"Path to the directory where checkpoint files are loaded.");
     parameter_handler.declare_entry("Load from a checkpoint","false",dealii::Patterns::Bool(),"Whether to load from a checkpoint created during a previous simulation.");
     parameter_handler.declare_entry("Checkpoint condition","EQUAL_SPACING",dealii::Patterns::Anything(),"The spacing type for saving checkpoints.");
     parameter_handler.declare_entry("List of time steps to save checkpoints","0",dealii::Patterns::Anything(),"The list of time steps to save checkpoints, used for the LIST type.");
