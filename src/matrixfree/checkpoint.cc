@@ -21,9 +21,9 @@ void MatrixFreePDE<dim,degree>::save_checkpoint(){
 
         if (previous_snapshot_exists == true)
         {
-            move_file ("restart.mesh","restart.mesh.old");
-            move_file ("restart.mesh.info","restart.mesh.info.old");
-            move_file ("restart.time.info","restart.time.info.old");
+            move_file (userInputs.checkpoint_save_path+"restart.mesh",userInputs.checkpoint_save_path+"restart.mesh.old");
+            move_file (userInputs.checkpoint_save_path+"restart.mesh.info",userInputs.checkpoint_save_path+"restart.mesh.info.old");
+            move_file (userInputs.checkpoint_save_path+"restart.time.info",userInputs.checkpoint_save_path+"restart.time.info.old");
         }
         // from now on, we know that if we get into this
         // function again that a snapshot has previously
@@ -59,17 +59,18 @@ void MatrixFreePDE<dim,degree>::save_checkpoint(){
         }
 
         // Finally, save the triangulation and the solutionTransfer objects
+        std::string save_with_path = userInputs.checkpoint_save_path+"restart.mesh";
         if (scalar_var_indices.size() > 0 && vector_var_indices.size() == 0){
             parallel::distributed::SolutionTransfer<dim, vectorType> system_trans_scalars (*dofHandlersSet[scalar_var_indices[0]]);
             system_trans_scalars.prepare_serialization(solSet_transfer_scalars);
 
-            triangulation.save ("restart.mesh");
+            triangulation.save (save_with_path.c_str());
         }
         else if (scalar_var_indices.size() == 0 && vector_var_indices.size() > 0){
             parallel::distributed::SolutionTransfer<dim, vectorType> system_trans_vectors (*dofHandlersSet[vector_var_indices[0]]);
             system_trans_vectors.prepare_serialization(solSet_transfer_vectors);
 
-            triangulation.save ("restart.mesh");
+            triangulation.save (save_with_path.c_str());
         }
         else {
             parallel::distributed::SolutionTransfer<dim, vectorType> system_trans_scalars (*dofHandlersSet[scalar_var_indices[0]]);
@@ -78,7 +79,7 @@ void MatrixFreePDE<dim,degree>::save_checkpoint(){
             parallel::distributed::SolutionTransfer<dim, vectorType> system_trans_vectors (*dofHandlersSet[vector_var_indices[0]]);
             system_trans_vectors.prepare_serialization(solSet_transfer_vectors);
 
-            triangulation.save ("restart.mesh");
+            triangulation.save (save_with_path.c_str());
         }
 
     }
@@ -86,7 +87,7 @@ void MatrixFreePDE<dim,degree>::save_checkpoint(){
     // Save information about the current increment and current time
     if (my_id == 0){
         std::ofstream time_info_file;
-        time_info_file.open("restart.time.info");
+        time_info_file.open(userInputs.checkpoint_save_path+"restart.time.info");
         time_info_file << currentIncrement << " (currentIncrement)\n";
         time_info_file << currentTime << " (currentTime)\n";
         time_info_file.close();
@@ -102,15 +103,17 @@ void MatrixFreePDE<dim,degree>::save_checkpoint(){
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::load_checkpoint_triangulation(){
 
-    // First check existence of the two restart files for the mesh and field variables
-    verify_checkpoint_file_exists("restart.mesh");
-    verify_checkpoint_file_exists("restart.mesh.info");
+    std::string load_with_path = userInputs.checkpoint_load_path+"restart.mesh";
+    
+    // First check existence of the two restart files for the mesh and field variables  
+    verify_checkpoint_file_exists(userInputs.checkpoint_load_path+"restart.mesh");
+    verify_checkpoint_file_exists(userInputs.checkpoint_load_path+"restart.mesh.info");
 
     pcout << std::endl << "*** Resuming from a checkpoint! ***" << std::endl << std::endl;
 
     try
     {
-        triangulation.load ("restart.mesh");
+        triangulation.load (load_with_path.c_str());
     }
     catch (...)
     {
@@ -165,10 +168,10 @@ template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::load_checkpoint_time_info(){
 
     // Make sure that restart.time.info exists
-    verify_checkpoint_file_exists("restart.time.info");
+    verify_checkpoint_file_exists(userInputs.checkpoint_load_path+"restart.time.info");
 
     std::ifstream time_info_file;
-    time_info_file.open("restart.time.info");
+    time_info_file.open(userInputs.checkpoint_load_path+"restart.time.info");
     std::string line;
     std::getline(time_info_file, line);
     line.erase(line.end()-19,line.end());
