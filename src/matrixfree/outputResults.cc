@@ -47,10 +47,10 @@ void MatrixFreePDE<dim,degree>::outputResults() {
 
       if (userInputs.num_integrated_fields > 0){
           if (first_integrated_var_output_complete){
-              output_file.open(userInputs.output_file_path + "integratedFields.txt", std::ios::app);
+              output_file.open(userInputs.output_path + "integratedFields.txt", std::ios::app);
           }
           else {
-              output_file.open(userInputs.output_file_path + "integratedFields.txt", std::ios::out);
+              output_file.open(userInputs.output_path + "integratedFields.txt", std::ios::out);
           }
           output_file.precision(10);
 
