@@ -22,7 +22,7 @@ set Subdivisions X = 3
 set Subdivisions Y = 3
 set Subdivisions Z = 3
 
-set Refine factor = 9
+set Refine factor = 7
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
 set Element degree = 2
@@ -37,7 +37,7 @@ set Mesh adaptivity = true
 # When adaptive meshing is enabled, the refine factor set in the block above is
 # only used to generate the first pass of the mesh as the initial conditions are
 # applied. It should be set somewhere between the max and min levels below.
-set Max refinement level = 9
+set Max refinement level = 7
 set Min refinement level = 0
 
 # Set the fields used to determine the refinement using their index.
@@ -54,11 +54,11 @@ set Steps between remeshing operations = 750
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 1.171875e-3
+set Time step = 1.875e-2
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Simulation end time = 3000.0 #1500.0
+set Simulation end time = 1500.0
 
 # =================================================================================
 # Set the boundary conditions

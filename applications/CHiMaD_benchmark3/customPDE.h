@@ -93,14 +93,14 @@ if (this->userInputs.h_adaptivity == true){
 
 
         double remesh_coeff = 1;
-        /*
+        
         if (currentIncrement > 40000){
             remesh_coeff = 2.5;
         }
         else if (currentIncrement > 20000){
             remesh_coeff = 1.5;
         }
-        */
+        
 
         if ( (currentIncrement%(int(remesh_coeff * this->userInputs.skip_remeshing_steps))==0) ){
 
