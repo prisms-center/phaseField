@@ -7,6 +7,8 @@ layout: default
 ***
 # Announcements
 
+- 12/2/2019: The PRISMS Center at the University of Michigan is looking to hire a new research faculty member to lead the development of PRISMS-PF and participate in phase field research related to the center’s goals. If you are interested in applying, [please visit this page](https://careers.umich.edu/job_detail/180053/research_investigatorasst_research_scientist).
+
 - 6/11/2019: The registration for the 2019 PRISMS Center Workshop is now open. The workshop is August 5-9 in Ann Arbor, MI. The first three days are dedicated to hands-on training with the PRISMS codes (including a day for PRISMS-PF). The final two days are a series of technical presentations by members of the PRISMS Center and distinguished outside guests. You can register [here](http://www.prisms-center.org/#/workshop).
 
 - 6/10/2019: A [new GUI-based nanoHUB tool](https://nanohub.org/tools/prismspfmisfit) has been released that is powered by PRISMS-PF. It calculates the equilibrium shape of a precipitate due to anisotropic interfacial energy and misfit strain.
