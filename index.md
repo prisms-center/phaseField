@@ -27,7 +27,7 @@ PRISMS-PF is released under the GNU Lesser General Public License (LGPL).
 
 ***
 ## Announcements
-- 1/14/2020: The PRISMS Center will hold a workshop at the TMS 2020 149th Annucal Meeting and Exhibition, where participants will become familiar with PRISMS software tools, including PRISMS-PF, and will gain the knowledge about when to use these tools. For more information and registration [visit this site](https://www.tms.org/TMS2020/Professional_Development/Workshops_and_Courses/PRISMS__Training_Workshop/TMS2020/pd/PRISMS_Workshop.aspx?hkey=7238a67d-383c-4223-880d-8ea3d87f4729&_zs=DiBXC1&_zl=xeeV5).
+- 1/14/2020: The PRISMS Center will hold a workshop at the TMS 2020 149th Annual Meeting and Exhibition, where participants will become familiar with PRISMS software tools, including PRISMS-PF, and will gain the knowledge about when to use these tools. For more information and registration [visit this site](https://www.tms.org/TMS2020/Professional_Development/Workshops_and_Courses/PRISMS__Training_Workshop/TMS2020/pd/PRISMS_Workshop.aspx?hkey=7238a67d-383c-4223-880d-8ea3d87f4729&_zs=DiBXC1&_zl=xeeV5).
 
 - 12/2/2019: The PRISMS Center at the University of Michigan is looking to hire a new research faculty member to lead the development of PRISMS-PF and participate in phase field research related to the center's goals. If you are interested in applying, [please visit this page](https://careers.umich.edu/job_detail/180053/research_investigatorasst_research_scientist).
 
