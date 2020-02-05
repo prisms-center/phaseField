@@ -51,6 +51,7 @@ PRISMS-PF is released under the GNU Lesser General Public License (LGPL).
 
 ***
 ## Getting Started
+- [Quick Start Guide](https://github.com/prisms-center/phaseField#quick-start-guide) <br>
 - [Installation instructions](doxygen_files/install.html) <br>
 - [User manual](doxygen_files/manual.html) <br>
 - [Repository of training slides and exercises](https://goo.gl/BBTkJ8)
