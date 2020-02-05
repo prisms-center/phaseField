@@ -49,7 +49,21 @@ $ make -j nprocs
 
 ### Running a Pre-Built Application:
   
-  Please refer to the [Running a PRISMS-PF Example App](https://prisms-center.github.io/phaseField/doxygen_files/running_apps.html) for details.
+  Please refer to the [Running a PRISMS-PF Example App](https://prisms-center.github.io/phaseField/doxygen_files/running_apps.html) for full details including instructions for visualization of the results.
+  
+
+
+  Examples of various phase field models are located under the
+applications directory. The easiest way to get started on the code is to
+run the example apps in this folder.
+
+  The example apps are intended to serve as (1) Demonstration of the
+capabilities of this library, (2) Provide a framework for
+further development of specialized/advanced applications by
+users.
+
+  Apps that are still under development/testing are preceded by an
+underscore.
   
   Entering the following commands will run one of the pre-built example applications (the Cahn-Hilliard spinodal decomposition application in this case):<br>
   ```
@@ -81,20 +95,6 @@ $ make -j nprocs
   following open source applications:
   1. VisIt (https://wci.llnl.gov/simulation/computer-codes/visit/downloads)
   2. Paraview (http://www.paraview.org/download/)
-
-### Getting started:
-
-  Examples of various phase field models are located under the
-  applications directory. The easiest way to get started on the code is to
-  run the example apps in this folder.
-
-  The example apps are intended to serve as (1) Demonstration of the
-  capabilities of this library, (2) Provide a framework for
-  further development of specialized/advanced applications by
-  users.
-
-  Apps that are still under development/testing are preceded by an
-  underscore.
 
 ## License:
 
