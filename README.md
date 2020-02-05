@@ -48,7 +48,9 @@ $ make -j nprocs
 [here nprocs denotes the number of processors]
 
 ### Running a Pre-Built Application:
-
+  
+  Please refer to the [Running a PRISMS-PF Example App](https://prisms-center.github.io/phaseField/doxygen_files/running_apps.html) for details.
+  
   Entering the following commands will run one of the pre-built example applications (the Cahn-Hilliard spinodal decomposition application in this case):<br>
   ```
   $ cd applications/cahnHilliard
