@@ -68,6 +68,8 @@ PRISMS-PF is released under the GNU Lesser General Public License (LGPL).
 ***
 ## Publications Citing PRISMS-PF
 
+[DeWitt, Rudraraju, Montiel, Andrews and Thornton, PRISMS-PF: A general framework for phase-field modeling with a matrix-free finite element method, npj Comput Mater 6, 29 (2020)](https://www.nature.com/articles/s41524-020-0298-5)
+
 [Aagesen, Adams, Allison, et al., PRISMS: An Integrated, Open-Source Framework for Accelerating Predictive Structural Materials Science, JOM, 71 (2018)](https://link.springer.com/article/10.1007%2Fs11837-018-3079-6)
 
 [DeWitt and Thornton, Phase Field Modeling of Microstructural Evolution in Computational Materials System Design, Shin and Saal, Eds., Springer Nature, London (2018)](https://link.springer.com/chapter/10.1007/978-3-319-68280-8_4)
