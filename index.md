@@ -25,6 +25,18 @@ This code is developed by the PRedictive Integrated Structural Materials Science
 ### License
 PRISMS-PF is released under the GNU Lesser General Public License (LGPL).
 
+### Citing PRISMS-PF
+
+Please cite [the following reference](https://www.nature.com/articles/s41524-020-0298-5) when discussing PRISMS-PF in a publication:
+
+S. DeWitt, S. Rudraraju, D. Montiel, W.B. Andrews, and K. Thornton. PRISMS-PF: A general framework for phase-field modeling with a matrix-free finite element method. _npj Computuational Materials_ __6__, 29 (2020).
+
+If additionally you would like to cite a specific release of PRISMS-PF, please use the following format:
+
+PRISMS-PF, v2.1.2 (2019). Available from https://github.com/prisms-center/phaseField. DOI: 10.5281/zenodo.3357005.
+
+For DOI information for other releases, please refer to [this site](https://zenodo.org/record/3357005).
+
 ***
 ## Announcements
 
