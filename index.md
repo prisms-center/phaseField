@@ -40,7 +40,8 @@ For DOI information for other releases, please refer to [this site](https://zeno
 ***
 ## Announcements
 
-- 3/26/2020: A new open-access article titled [PRISMS-PF: A general framework for phase-field modeling with a matrix-free finite element method](https://www.nature.com/articles/s41524-020-0298-5) has been published on *npj Computational Materials*. In this article we introduce PRISMS-PF as a new open-source framework for phase-field modeling, emphasizing ease of use, flexibility and adaptability to a wide range of applications, and computational performance. We recommend this article to everyone interested in an overview of the PRISMS-PF framework and its applications.
+- 3/26/2020: A new open-access article titled [PRISMS-PF: A general framework for phase-field modeling with a matrix-free finite element method](https://www.nature.com/articles/s41524-020-0298-5) has been published on *npj Computational Materials*. In this article we introduce PRISMS-PF as a new open-source framework for phase-field modeling, emphasizing ease of use, flexibility and adaptability to a wide range of applications, and computational performance. We recommend this article to everyone interested in an overview of the PRISMS-PF framework and its applications. Please use this publication as the standard reference when citing PRISMS-PF. We'll keep an eye on references to that paper, but if you use PRISMS-PF in your work, please send us the citation so that we can advertise your work on the PRISMS-PF website and can pass usage information to our funding agency.
+
 
 - 1/14/2020: The PRISMS Center will hold a workshop at the TMS 2020 149th Annual Meeting and Exhibition, where participants will become familiar with PRISMS software tools, including PRISMS-PF, and will gain the knowledge about when to use these tools. For more information and registration [visit this site](https://www.tms.org/TMS2020/Professional_Development/Workshops_and_Courses/PRISMS__Training_Workshop/TMS2020/pd/PRISMS_Workshop.aspx?hkey=7238a67d-383c-4223-880d-8ea3d87f4729&_zs=DiBXC1&_zl=xeeV5).
 
@@ -78,15 +79,26 @@ For DOI information for other releases, please refer to [this site](https://zeno
 - [Email the developers](mailto:prismsphasefield.dev@umich.edu)
 
 ***
-## Publications Citing PRISMS-PF
+## Publications That Use PRISMS-PF
+\* [DeWitt, Rudraraju, Montiel, Andrews and Thornton, PRISMS-PF: A general framework for phase-field modeling with a matrix-free finite element method, npj Comput Mater 6, 29 (2020)](https://www.nature.com/articles/s41524-020-0298-5)
 
-[DeWitt, Rudraraju, Montiel, Andrews and Thornton, PRISMS-PF: A general framework for phase-field modeling with a matrix-free finite element method, npj Comput Mater 6, 29 (2020)](https://www.nature.com/articles/s41524-020-0298-5)
+[Aagesen, Adams, Allison, et al., PRISMS: An Integrated, Open-Source Framework for Accelerating Predictive Structural Materials Science,  JOM 70, 2298–2314 (2018)](https://link.springer.com/article/10.1007%2Fs11837-018-3079-6)
 
-[Aagesen, Adams, Allison, et al., PRISMS: An Integrated, Open-Source Framework for Accelerating Predictive Structural Materials Science, JOM, 71 (2018)](https://link.springer.com/article/10.1007%2Fs11837-018-3079-6)
+[DeWitt, Solomon, Natarajan, Araullo-Peters, Rudraraju, Aagesen, Puchala, Marquis, Van der Ven, Thornton, and Allison, Misfit-driven β′′′ precipitate composition and morphology in Mg-Nd alloys, Acta Materialia, 136, 378-389 (2017)](https://www.sciencedirect.com/science/article/pii/S1359645417305281)
+
+\* Please use this publication as the standard reference when citing PRISMS-PF.
+
+***
+## Publications That Cite PRISMS-PF
 
 [DeWitt and Thornton, Phase Field Modeling of Microstructural Evolution in Computational Materials System Design, Shin and Saal, Eds., Springer Nature, London (2018)](https://link.springer.com/chapter/10.1007/978-3-319-68280-8_4)
 
-[DeWitt, Solomon, Natarajan, Araullo-Peters, Rudraraju, Aagesen, Puchala, Marquis, Van der Ven, Thornton, and Allison, Misfit-driven β′′′ precipitate composition and morphology in Mg-Nd alloys, Acta Materialia, 136 (2017)](https://www.sciencedirect.com/science/article/pii/S1359645417305281)
+[Yaghoobi, Ganesan, Sundar, Lakshmanan, Rudraraju, Allison, and Sundararaghavan, PRISMS-Plasticity: An open-source crystal plasticity finite element software, Computational Materials Science 169, 109078 (2019)](https://www.sciencedirect.com/science/article/abs/pii/S0927025619303696)
 
+[Wheeler, Keller, DeWitt, Jokisaari, Schwen, Guyer, Aagesen, Heinonen, Tonks, Voorhees, and Warren, 2019. PFHub: The Phase-Field Community Hub. Journal of Open Research Software, 7(1), 29 (2019)](https://openresearchsoftware.metajnl.com/article/10.5334/jors.276/)
+
+[Hötzer, Reiter, Hierl, Steinmetz, Selzer, and Nestler, The parallel multi-physics phase-field framework Pace3D, Journal of Computational Science 26, 1-12 (2018)](https://www.sciencedirect.com/science/article/abs/pii/S1877750317310116)
+
+[Tonks and Aagesen, The Phase Field Method: Mesoscale Simulation Aiding Material DiscoveryAnnual Review of Materials Research 49, 79–102 (2019)](https://www.annualreviews.org/doi/abs/10.1146/annurev-matsci-070218-010151)
 
 (Note: If you use PRISMS-PF in one of your publications, please send the publication information to [prismsphasefield.dev@umich.edu](mailto:prismsphasefield.dev@umich.edu) to help us demonstrate our impact to our funding agency.)
