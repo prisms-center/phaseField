@@ -88,6 +88,8 @@ For DOI information for other releases, please refer to [this site](https://zeno
 
 \* Please use this publication as the standard reference when citing PRISMS-PF.
 
+Note: If you use PRISMS-PF in one of your publications, please send the publication information to [prismsphasefield.dev@umich.edu](mailto:prismsphasefield.dev@umich.edu) to help us demonstrate our impact to our funding agency.
+
 ***
 ## Publications That Cite PRISMS-PF
 
@@ -100,5 +102,3 @@ For DOI information for other releases, please refer to [this site](https://zeno
 [Hötzer, Reiter, Hierl, Steinmetz, Selzer, and Nestler, The parallel multi-physics phase-field framework Pace3D, Journal of Computational Science 26, 1-12 (2018)](https://www.sciencedirect.com/science/article/abs/pii/S1877750317310116)
 
 [Tonks and Aagesen, The Phase Field Method: Mesoscale Simulation Aiding Material DiscoveryAnnual Review of Materials Research 49, 79–102 (2019)](https://www.annualreviews.org/doi/abs/10.1146/annurev-matsci-070218-010151)
-
-(Note: If you use PRISMS-PF in one of your publications, please send the publication information to [prismsphasefield.dev@umich.edu](mailto:prismsphasefield.dev@umich.edu) to help us demonstrate our impact to our funding agency.)
