@@ -6,4 +6,6 @@ layout: default
 
 ## The PRISMS-PF Tutorial
 ***
-We are in the midst of creating a series of PRISMS-PF tutorials combining text descriptions with videos of PRISMS-PF in use. The first tutorials are scheduled to be posted in July 2020.
+The following PRISMS-PF tutorials combine text descriptions with videos to illustrate the application of PRISMS-PF to simulate physical systems. 
+
+-[Spinodal Decomposition/Nucleation and Growth](https://github.com/prisms-center/phaseField/blob/gh-pages/pages/tutorials/spinodaldec_nucleation.md) <br>
