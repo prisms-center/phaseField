@@ -2,7 +2,7 @@
 layout: default
 ---
 
-[![PRISMS-PF Logo](../assets/logo.png)](https://prisms-center.github.io/phaseField/)
+[![PRISMS-PF Logo](../../assets/logo.png)](https://prisms-center.github.io/phaseField/)
 
 ## Spinodal Decomposition, Nucleation and Growth
 ***
