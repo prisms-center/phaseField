@@ -40,6 +40,9 @@ For DOI information for other releases, please refer to [this site](https://zeno
 ***
 ## Announcements
 
+- 6/13/2020: New corrosion application release! This application simulates the evolution of the metal-electrolyte interface during the anodic corrosion reaction. The model employed [Chadwick et al., J. Electrochem. Soc.,10, C633-C646 (2018)] uses the phase-field and smoothed-boundary methods to track the moving metal/electrolyte interface and to couple it to mass transport (diffusion and migration) within the electrolyte and Butler-Volmer electrochemical kinetics.
+
+
 - 3/26/2020: A new open-access article titled [PRISMS-PF: A general framework for phase-field modeling with a matrix-free finite element method](https://www.nature.com/articles/s41524-020-0298-5) has been published on *npj Computational Materials*. In this article we introduce PRISMS-PF as a new open-source framework for phase-field modeling, emphasizing ease of use, flexibility and adaptability to a wide range of applications, and computational performance. We recommend this article to everyone interested in an overview of the PRISMS-PF framework and its applications. Please use this publication as the standard reference when citing PRISMS-PF. We'll keep an eye on references to that paper, but if you use PRISMS-PF in your work, please send us the citation so that we can advertise your work on the PRISMS-PF website and can pass usage information to our funding agency.
 
 
