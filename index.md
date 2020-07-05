@@ -40,6 +40,8 @@ For DOI information for other releases, please refer to [this site](https://zeno
 ***
 ## Announcements
 
+- 6/23/2020: PRISMS-PF Docker Image Update. We have updated the PRISMS-PF Docker image to use the current version of PRISMS-PF (2.1.2). This update should solve the compatibility issues between the core library and the applications from the previous image. We have also created a [new repository](https://hub.docker.com/r/prismspf/prismspf) on Docker Hub where the new image, as well as all upcoming images, will be stored. Please follow the updated [instructions for the Docker installation](https://prisms-center.github.io/phaseField/doxygen_files/install_prismspf.html) to download and launch containers using the new image.
+
 - 6/13/2020: New corrosion application release! This application simulates the evolution of the metal-electrolyte interface during the anodic corrosion reaction. The model employed [Chadwick et al., J. Electrochem. Soc.,10, C633-C646 (2018)] uses the phase-field and smoothed-boundary methods to track the moving metal/electrolyte interface and to couple it to mass transport (diffusion and migration) within the electrolyte and Butler-Volmer electrochemical kinetics.
 
 
