@@ -40,7 +40,7 @@ For DOI information for other releases, please refer to [this site](https://zeno
 ***
 ## Announcements
 
-- A new video tutorial covering PRISMS-PF installation, running of a sample application and results visualization has been uploaded to the new [PRISMS Center YouTube channel](https://www.youtube.com/watch?v=4mVAvnFW7Gc). It is also visible in the [Tutorials](https://github.com/prisms-center/phaseField/blob/gh-pages/pages/tutorial.md) section. More PRISMS-PF tutorial videos will be available soon. 
+- A new video tutorial covering PRISMS-PF installation, running of a sample application and results visualization has been uploaded to the new [PRISMS Center YouTube channel](https://www.youtube.com/channel/UCZXc3007JuBCGKDcneD_umA). It is also visible in the [Tutorials](https://github.com/prisms-center/phaseField/blob/gh-pages/pages/tutorial.md) section. More PRISMS-PF tutorial videos will be available soon. 
 
 - 8/1/2020: We are working on resolving compatibility issues between PRISMS-PF and the latest version of deal.ii (9.2.0). Until we have a working version, please use [deal.ii version 9.1.1](https://www.dealii.org/9.1.1/index.html). We will send an update when these issues are resolved.
 
