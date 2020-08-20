@@ -8,4 +8,5 @@ layout: default
 ***
 In this tutorial we show how to install PRISMS-PF, run a sample applicartion and visualize the results.
 
+[![Cover](tutorial_1_cover.png)](https://prisms-center.github.io/phaseField/)
 
