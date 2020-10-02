@@ -29,7 +29,7 @@ PRISMS-PF is released under the GNU Lesser General Public License (LGPL).
 
 Please cite [the following reference](https://www.nature.com/articles/s41524-020-0298-5) when discussing PRISMS-PF in a publication:
 
-S. DeWitt, S. Rudraraju, D. Montiel, W.B. Andrews, and K. Thornton. PRISMS-PF: A general framework for phase-field modeling with a matrix-free finite element method. _npj Computuational Materials_ __6__, 29 (2020).
+S. DeWitt, S. Rudraraju, D. Montiel, W.B. Andrews, and K. Thornton. PRISMS-PF: A general framework for phase-field modeling with a matrix-free finite element method. _npj Computational Materials_ __6__, 29 (2020).
 
 If additionally you would like to cite a specific release of PRISMS-PF, please use the following format:
 
