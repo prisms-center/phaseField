@@ -1,81 +1,76 @@
-\documentclass[10pt]{article}
-\usepackage{amsmath}
-\usepackage{bm}
-\usepackage{bbm}
-\usepackage{mathrsfs}
-\usepackage{graphicx}
-\usepackage{wrapfig}
-\usepackage{subcaption}
-\usepackage{epsfig}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\usepackage{amsmath}
-\usepackage{wrapfig}
-\usepackage{graphicx}
-\usepackage{psfrag}
-\usepackage[hidelinks]{hyperref}
-\usepackage{xcolor}
-\newcommand{\sun}{\ensuremath{\odot}} % sun symbol is \sun
+% ***********************************************************
+% ******************* PHYSICS HEADER ************************
+% ***********************************************************
+% Version 2
+\documentclass[11pt]{article} 
+\usepackage{amsmath} % AMS Math Package
+\usepackage{amsthm} % Theorem Formatting
+\usepackage{amssymb}	% Math symbols such as \mathbb
+\usepackage{graphicx} % Allows for eps images
+\usepackage{multicol} % Allows for multiple columns
+\usepackage[dvips,letterpaper,margin=0.75in,bottom=0.5in]{geometry}
+ % Sets margins and page size
+\pagestyle{empty} % Removes page numbers
+\makeatletter % Need for anything that contains an @ command 
+\renewcommand{\maketitle} % Redefine maketitle to conserve space
+{ \begingroup \vskip 10pt \begin{center} \large {\bf \@title}
+	\vskip 10pt \end{center}
+  \vskip 10pt \endgroup \setcounter{footnote}{0} }
+\makeatother % End of region containing @ commands
+\renewcommand{\labelenumi}{(\alph{enumi})} % Use letters for enumerate
+% \DeclareMathOperator{\Sample}{Sample}
 \let\vaccent=\v % rename builtin command \v{} to \vaccent{}
 \renewcommand{\v}[1]{\ensuremath{\mathbf{#1}}} % for vectors
 \newcommand{\gv}[1]{\ensuremath{\mbox{\boldmath$ #1 $}}} 
-\newcommand{\grad}[1]{\gv{\nabla} #1}
-\renewcommand{\baselinestretch}{1.2}
-\jot 5mm
-\graphicspath{{./figures/}}
-%text dimensions
-\textwidth 6.5 in
-\oddsidemargin .2 in
-\topmargin -0.2 in
-\textheight 8.5 in
-\headheight 0.2in
-\overfullrule = 0pt
-\pagestyle{plain}
-\def\newpar{\par\vskip 0.5cm}
-\begin{document}
-%
-%----------------------------------------------------------------------
-%        Define symbols
-%----------------------------------------------------------------------
-%
-\def\iso{\mathbbm{1}}
-\def\half{{\textstyle{1 \over 2}}}
-\def\third{{\textstyle{1 \over 3}}}
-\def\fourth{{\textstyle{{1 \over 4}}}}
-\def\twothird{{\textstyle {{2 \over 3}}}}
-\def\ndim{{n_{\rm dim}}}
-\def\nint{n_{\rm int}}
-\def\lint{l_{\rm int}}
-\def\nel{n_{\rm el}}
-\def\nf{n_{\rm f}}
-\def\DIV {\hbox{\af div}}
-\def\GRAD{\hbox{\af Grad}}
-\def\sym{\mathop{\rm sym}\nolimits}
-\def\tr{\mathop{\rm tr}\nolimits}
-\def\dev{\mathop{\rm dev}\nolimits}
-\def\Dev{\mathop{\rm Dev}\nolimits}
-\def\DEV{\mathop {\rm DEV}\nolimits}
-\def\bfb {{\bi b}}
-\def\Bnabla{\nabla}
-\def\bG{{\bi G}}
-\def\jmpdelu{{\lbrack\!\lbrack \Delta u\rbrack\!\rbrack}}
-\def\jmpudot{{\lbrack\!\lbrack\dot u\rbrack\!\rbrack}}
-\def\jmpu{{\lbrack\!\lbrack u\rbrack\!\rbrack}}
-\def\jmphi{{\lbrack\!\lbrack\varphi\rbrack\!\rbrack}}
-\def\ljmp{{\lbrack\!\lbrack}}
-\def\rjmp{{\rbrack\!\rbrack}}
-\def\sign{{\rm sign}}
-\def\nn{{n+1}}
-\def\na{{n+\vartheta}}
-\def\nna{{n+(1-\vartheta)}}
-\def\nt{{n+{1\over 2}}}
-\def\nb{{n+\beta}}
-\def\nbb{{n+(1-\beta)}}
+% for vectors of Greek letters
+\newcommand{\uv}[1]{\ensuremath{\mathbf{\hat{#1}}}} % for unit vector
+\newcommand{\abs}[1]{\left| #1 \right|} % for absolute value
+\newcommand{\avg}[1]{\left< #1 \right>} % for average
+\let\underdot=\d % rename builtin command \d{} to \underdot{}
+\renewcommand{\d}[2]{\frac{d #1}{d #2}} % for derivatives
+\newcommand{\dd}[2]{\frac{d^2 #1}{d #2^2}} % for double derivatives
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}} 
+% for partial derivatives
+\newcommand{\pdd}[2]{\frac{\partial^2 #1}{\partial #2^2}} 
+% for double partial derivatives
+\newcommand{\pdc}[3]{\left( \frac{\partial #1}{\partial #2}
+ \right)_{#3}} % for thermodynamic partial derivatives
+\newcommand{\ket}[1]{\left| #1 \right>} % for Dirac bras
+\newcommand{\bra}[1]{\left< #1 \right|} % for Dirac kets
+\newcommand{\braket}[2]{\left< #1 \vphantom{#2} \right|
+ \left. #2 \vphantom{#1} \right>} % for Dirac brackets
+\newcommand{\matrixel}[3]{\left< #1 \vphantom{#2#3} \right|
+ #2 \left| #3 \vphantom{#1#2} \right>} % for Dirac matrix elements
+\newcommand{\grad}[1]{\gv{\nabla} #1} % for gradient
+\let\divsymb=\div % rename builtin command \div to \divsymb
+\renewcommand{\div}[1]{\gv{\nabla} \cdot #1} % for divergence
+\newcommand{\curl}[1]{\gv{\nabla} \times #1} % for curl
+\let\baraccent=\= % rename builtin command \= to \baraccent
+\renewcommand{\=}[1]{\stackrel{#1}{=}} % for putting numbers above =
+\newtheorem{prop}{Proposition}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}[thm]{Lemma}
+\theoremstyle{definition}
+\newtheorem{dfn}{Definition}
+\theoremstyle{remark}
+\newtheorem*{rmk}{Remark}
+
+% ***********************************************************
+% ********************** END HEADER *************************
+% ***********************************************************
+
+
+\usepackage[noprefix]{nomencl} 
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
 %---------------------------------------------------------
 %               Bold Face Math Characters:
 %               All In Format: \B***** .
 %---------------------------------------------------------
-\def\bOne{\mbox{\boldmath$1$}}
 \def\BGamma{\mbox{\boldmath$\Gamma$}}
 \def\BDelta{\mbox{\boldmath$\Delta$}}
 \def\BTheta{\mbox{\boldmath$\Theta$}}
@@ -116,8 +111,8 @@
 \def\Bvarrho{\mbox{\boldmath$\varrho$}}
 \def\Bvarsigma{\mbox{\boldmath$\varsigma$}}
 \def\Bvarphi{\mbox{\boldmath$\varphi$}}
-\def\bone{\mathbf{1}}
-\def\bzero{\mathbf{0}}
+\def\bone{\mbox{\boldmath$1$}}
+\def\bzero{\mbox{\boldmath$0$}}
 %---------------------------------------------------------
 %               Bold Face Math Italic:
 %               All In Format: \b* .
@@ -174,13 +169,31 @@
 \def\bx{\mbox{\boldmath$ x$}}
 \def\by{\mbox{\boldmath$ y$}}
 \def\bz{\mbox{\boldmath$ z$}}
-%*********************************
-%Start main paper
-%*********************************
-\centerline{\Large{\bf PRISMS-PF}}
-\smallskip
-\centerline{\Large{\bf Corrosion}}
-\bigskip
+
+\makenomenclature 
+\makeindex 
+\title{\huge Corrosion}
+\begin{document}
+\maketitle
+\nomenclature[a]{$c$}{Concentration (Cahn-Hilliard order parameter)}
+\nomenclature[b]{$\eta$}{Structural order parameter (Allen-Cahn order parameter)}
+\nomenclature[c]{$\bE$}{Lagrange strain tensor (Mechanics order parameter)}
+\nomenclature[d]{$\Pi$}{Total free energy of the system}
+\nomenclature[e]{$F$}{Local free energy density}
+\nomenclature[f]{$\mathcal{J}$}{Concentration flux}
+\nomenclature[g]{$\mu$}{Chemical potential}
+\nomenclature[h]{$\kappa^c$}{Cahn-Hilliard gradient coefficient}
+\nomenclature[i]{$\kappa^{\eta}$}{Allen-Cahn gradient coefficient}
+\nomenclature[j]{$L^{c}$}{Concentration mobility}
+\nomenclature[k]{$L^{\eta}$}{Structural order parameter mobility}
+\nomenclature[l]{$\omega$}{Variations over primal field}
+\nomenclature[m]{$\mathcal{M}$}{Boundary chemical potential like term}
+\nomenclature[n]{$\bn$}{Nomal vector in the current configuration}
+\nomenclature[o]{$(\theta,~\phi)$}{Polar angles of the interface normal, $\bn$}
+\centerline{\today}
+%\printnomenclature[1cm]
+\vspace{.25in}
+
 This application simulates the evolution of the metal-electrolyte interface during the anodic corrosion reaction. The model employed  [Chadwick et al., J. Electrochem. Soc.,{\bf 10}, C633-C646 (2018)]  uses the phase-field and smoothed boundary methods to track the moving metal/electrolyte interface and to couple it to mass transport (diffusion and migration) within the electrolyte and Butler-Volmer electrochemical kinetics.
 \section{Free Energy}
 Consider a  free energy expression of the form:
@@ -189,7 +202,7 @@ Consider a  free energy expression of the form:
 \end{equation}
 \noindent with $f_0$ given by
 \begin{equation}
- f_0(\eta,\psi) = \left( \frac{\eta^4}{4} - \frac{\eta^2}{2} -\right) + \left( \frac{\psi^4}{4} - \frac{\psi^2}{2} -\right) + \gamma ~\eta^2 \psi^2,
+ f_0(\eta,\psi) = \left( \frac{\eta^4}{4} - \frac{\eta^2}{2} \right) + \left( \frac{\psi^4}{4} - \frac{\psi^2}{2} \right) + \gamma ~\eta^2 \psi^2,
 \end{equation}
 \noindent where the fields $\eta$  and $\psi$ represent the physical domain of the metal and the liquid electrolyte, respectively, $W$ is the height of the free energy wall, $\epsilon^2$ is the gradient energy coefficient, and $\gamma$ is a phenomenological parameter that quantifies the free energy increase at overlapping interfaces.
 \section{Governing Equations}
@@ -276,12 +289,12 @@ Considering forward Euler explicit time stepping, the time-discretized version o
 \end{equation}
 \begin{equation}
 \label{mueta_eq_td}
-\mu_\eta=f_\eta^n -\epsilon^2 \nabla^2 \eta^n,
+\mu_\eta^{n+1}=f_\eta^n -\epsilon^2 \nabla^2 \eta^n,
 \end{equation}
 and
 \begin{equation}
 \label{mupsi_eq_td}
-\mu_\psi=f_\psi^n -\epsilon^2 \nabla^2 \psi^n,
+\mu_\psi^{n+1}=f_\psi^n -\epsilon^2 \nabla^2 \psi^n,
 \end{equation}
 where $f_\eta=W \left( \eta^3 - \eta +2 \gamma \eta \psi^2 \right)$ and $f_\psi= W \left( \psi^3 - \psi +2 \gamma \psi  \eta^2 \right)$.\\
 The discretized equation for the ion concentrations are
