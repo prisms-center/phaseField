@@ -5,6 +5,7 @@
 #include <iterator>
 #include <vector>
 #include <iostream>
+#include <fstream>
 #include <algorithm>
 #include <deal.II/base/mpi.h>
 
@@ -32,7 +33,11 @@ class ParseCommandLineOpts{
             }
             else if (argc == 2){
                 if (cmdOptionExists("-i")){
-                    parameters_filename = "parameters.in";
+                    parameters_filename = "parameters.prm";
+                    std::ifstream ifs_prm(parameters_filename);
+                    std::ifstream ifs_in("parameters.in");
+                    if(!ifs_prm && ifs_in)
+                        throw("The previous extension .in for the parameters file is no longer accepted. Please rename parameters.in as parameters.prm");
                     if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
                         std::cout << "Using the input parameter file: " << parameters_filename << std::endl;
                     }
@@ -42,7 +47,11 @@ class ParseCommandLineOpts{
                 }
             }
             else if (argc == 1){
-                parameters_filename = "parameters.in";
+                parameters_filename = "parameters.prm";
+                std::ifstream ifs_prm(parameters_filename);
+               	std::ifstream ifs_in("parameters.in");
+                if(!ifs_prm && ifs_in)
+                    throw("The previous extension .in for the parameters file is no longer accepted. Please rename parameters.in as parameters.prm");
                 if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0){
                     std::cout << "Using the input parameter file: " << parameters_filename << std::endl;
                 }
