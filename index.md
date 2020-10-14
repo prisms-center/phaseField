@@ -40,7 +40,11 @@ For DOI information for other releases, please refer to [this site](https://zeno
 ***
 ## Announcements
 
-- A new video tutorial covering PRISMS-PF installation, running of a sample application and results visualization has been uploaded to the new [PRISMS Center YouTube channel](https://www.youtube.com/channel/UCZXc3007JuBCGKDcneD_umA). It is also visible in the [Tutorials](https://github.com/prisms-center/phaseField/blob/gh-pages/pages/tutorial.md) section. More PRISMS-PF tutorial videos will be available soon. 
+- 10/13/2020: We have updated PRISMS-PF to make it compatible with the latest [deal.II](https://www.dealii.org/) version (9.2.0). The main change from the previous deal.II version (9.1.2) is that now only input files with the ".prm" extension are accepted. In order to comply with that, the default name for the input file in all PRISMS-PF applications has been changed to "parameters.prm" ("parameters.in" will no longer work). After cloning the latest PRISMS-PF repository, make sure to use the correct extension for input files when creating new applications. Please report any issues [here](https://github.com/prisms-center/phaseField/issues).
+
+- 9/25/2020: The PRISMS-PF [GUI-based nanoHUB tool](https://nanohub.org/tools/prismspfmisfit), which calculates the equilibrium shape of a precipitate particle due to anisotropic interfacial energy and misfit strain, has been updated for improved performance.
+
+- 8/16/2020: A new video tutorial covering PRISMS-PF installation, running of a sample application and results visualization has been uploaded to the new [PRISMS Center YouTube channel](https://www.youtube.com/channel/UCZXc3007JuBCGKDcneD_umA). It is also visible in the [Tutorials](https://github.com/prisms-center/phaseField/blob/gh-pages/pages/tutorial.md) section. More PRISMS-PF tutorial videos will be available soon. 
 
 - 8/1/2020: We are working on resolving compatibility issues between PRISMS-PF and the latest version of deal.ii (9.2.0). Until we have a working version, please use [deal.ii version 9.1.1](https://www.dealii.org/9.1.1/index.html). We will send an update when these issues are resolved.
 
