@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['the_20input_20file_3a_20parameters_2ein',['The Input File: parameters.in',['../input_file.html',1,'manual']]],
+  ['the_20input_20file_3a_20parameters_2ein',['The Input File: parameters.prm',['../input_file.html',1,'manual']]],
   ['test_5fcomputeinvm',['test_computeInvM',['../classunit_test.html#a9b5693e865cd814915354a187c54d6d8',1,'unitTest']]],
   ['test_5fcomputestress',['test_computeStress',['../classunit_test.html#aafa50981578d66c114db00cbdcb5173e',1,'unitTest']]],
   ['test_5fcomputestress_2eh',['test_computeStress.h',['../test__compute_stress_8h.html',1,'']]],
