@@ -77,6 +77,7 @@ For DOI information for other releases, please refer to [this site](https://zeno
 - [PRISMS Center homepage](http://www.prisms-center.org/#/home) <br>
 - [PRISMS-PF code repository](https://github.com/prisms-center/phaseField) <br>
 - [User registration link](http://goo.gl/forms/GXo7Im8p2Y)
+- [YouTube channel](https://www.youtube.com/channel/UCZXc3007JuBCGKDcneD_umA/playlists)
 
 ***
 ## Getting Started
