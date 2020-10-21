@@ -53,8 +53,8 @@
                onmouseout="return searchBox.OnSearchSelectHide()"
                alt=""/>
           <input type="text" id="MSearchField" value="Search" accesskey="S"
-               onfocus="searchBox.OnSearchFieldFocus(true)" 
-               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onfocus="searchBox.OnSearchFieldFocus(true)"
+               onblur="searchBox.OnSearchFieldFocus(false)"
                onkeyup="searchBox.OnSearchFieldChange(event)"/>
           </span><span class="right">
             <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
@@ -79,7 +79,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <div id="nav-sync" class="sync"></div>
     </div>
   </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
+  <div id="splitbar" style="-moz-user-select:none;"
        class="ui-resizable-handle">
   </div>
 </div>
@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('app_structure.html','');});
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
-<iframe src="javascript:void(0)" frameborder="0" 
+<iframe src="javascript:void(0)" frameborder="0"
         name="MSearchResults" id="MSearchResults">
 </iframe>
 </div>
@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('app_structure.html','');});
 <div class="contents">
 <div class="textblock"><p>Each of the example application directories should contain at least eight files:</p>
 <ul>
-<li>parameters.in</li>
+<li>parameters.prm</li>
 <li>equations.cc</li>
 <li>ICs_and_BCs.cc</li>
 <li>postprocess.cc</li>
@@ -123,8 +123,8 @@ $(document).ready(function(){initNavTree('app_structure.html','');});
 <li>postprocess.cc</li>
 <li><a class="el" href="nucleation_8cc.html">nucleation.cc</a></li>
 </ul>
-<p>The following section <a href="#input_file">The Parameters File</a> will discuss the structure and options for the input file, parameters.h. Users who do not need to change the governing equations or make other fundamental changes to the application will only need to modify this file.</p>
-<p><a href="#app_files">The App Files</a> discusses the structure of the files that define an application: equations.h, ICs_and_BCs.h, <a class="el" href="postprocess_8h.html">postprocess.h</a>, nucleation.h, customPDE.h, and <a class="el" href="main_8cc.html">main.cc</a>. Users who want to substantially modify existing PRISMS-PF applications or create their own will find this section useful.</p>
+<p>The following section <a href="#input_file">The Parameters File</a> will discuss the structure and options for the input file, parameters.prm. Users who do not need to change the governing equations or make other fundamental changes to the application will only need to modify this file.</p>
+<p><a href="#app_files">The App Files</a> discusses the structure of the files that define an application: equations.cc, ICs_and_BCs.cc, <a class="el" href="postprocess_8h.html">postprocess.cc</a>, nucleation.cc, customPDE.h, and <a class="el" href="main_8cc.html">main.cc</a>. Users who want to substantially modify existing PRISMS-PF applications or create their own will find this section useful.</p>
 <p>The final two files in each application directory are formulation.pdf and CMakeLists.txt. The file formulation.pdf describes the mathematical formulation of the problem solved by the application. Finally, the file CMakeLists.txt is used by CMake to generate the makefile. Most users will not have any reason to change CMakeLists.txt. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->

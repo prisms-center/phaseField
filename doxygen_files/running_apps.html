@@ -53,8 +53,8 @@
                onmouseout="return searchBox.OnSearchSelectHide()"
                alt=""/>
           <input type="text" id="MSearchField" value="Search" accesskey="S"
-               onfocus="searchBox.OnSearchFieldFocus(true)" 
-               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onfocus="searchBox.OnSearchFieldFocus(true)"
+               onblur="searchBox.OnSearchFieldFocus(false)"
                onkeyup="searchBox.OnSearchFieldChange(event)"/>
           </span><span class="right">
             <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
@@ -79,7 +79,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <div id="nav-sync" class="sync"></div>
     </div>
   </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
+  <div id="splitbar" style="-moz-user-select:none;"
        class="ui-resizable-handle">
   </div>
 </div>
@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('running_apps.html','');});
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
-<iframe src="javascript:void(0)" frameborder="0" 
+<iframe src="javascript:void(0)" frameborder="0"
         name="MSearchResults" id="MSearchResults">
 </iframe>
 </div>
@@ -112,6 +112,7 @@ $(document).ready(function(){initNavTree('running_apps.html','');});
 <p>After deal.II and PRISMS-PF are downloaded, you can run the pre-built PRISMS-PF example applications. At this time, the example applications include:</p><ul>
 <li>allenCahn: An implementation of the Allen-Cahn equation for two phases. (2D)</li>
 <li>cahnHilliard: An implementation of the Cahn-Hilliard equation for two phases. (2D)</li>
+<li>corrosion: An implementation of the Cahn-Hilliard equation coupled to electrostatics and the Smooth Boundary Method to simulate corrosion. (2D)</li>
 <li>coupledCahnHilliardAllenCahn: An implementation of the coupled Cahn-Hilliard/Allen-Cahn set of equations. (2D)</li>
 <li>CHAC_performance_test: An implementation of the coupled Cahn-Hilliard/Allen-Cahn set of equations for two growing particles used for benchmarking purposes. (3D)</li>
 <li>CHAC_anisotropy: Coupled Cahn-Hilliard/Allen-Cahn equations with weakly anisotropic interfacial energy. (2D)</li>
@@ -190,8 +191,8 @@ $(document).ready(function(){initNavTree('running_apps.html','');});
 </div>
 <p>VisIt has a wide variety of capabilities for visualizing 1D, 2D, and 3D data, including postprocessing of output fields (e.g. to obtain the result of mathematical expressions involving one or more output field). VisIt also has a powerful Python interface to provide scripting capabilities. More more instructions on how to use these, and other, features of VisIt, please consult the <a href="https://wci.llnl.gov/simulation/computer-codes/visit/manuals">VisIt manual</a>.</p>
 <h2>Using a Different Input File</h2>
-<p>PRISMS-PF parses data from the input file parameters.in as a default. However, you have the option to specify a different input file name. This could be useful, for example, if you want to change some of the settings of an input file but do not want to replace the original one. Suppose you want the simulation to load the input data from the file parameters_2.in. This can be achieved by using the "-i" option:</p>
-<div class="fragment"><div class="line">$ mpirun -n 1 main -i parameters_2.i</div></div><!-- fragment -->
+<p>PRISMS-PF parses data from the input file parameters.prm as a default. However, you have the option to specify a different input file name (the extension should still be .prm). This could be useful, for example, if you want to change some of the settings of an input file but do not want to replace the original one. Suppose you want the simulation to load the input data from the file parameters_2.prm. This can be achieved by using the "-i" option:</p>
+<div class="fragment"><div class="line">$ mpirun -n 1 main -i parameters_2.prm</div></div><!-- fragment -->
 <h2>Running the Other Example Applications</h2>
 <p>Running the other example applications is as simple as going to the directory for the application of interest and repeating the steps in <a href="#Compiling-and-Running-the-Allen-Cahn-Example-App">the Allen-Cahn section above</a>. For example, to run the Cahn-Hilliard example application, when you are currently in the directory for the Allen-Cahn example application, you would type the following commands: </p><div class="fragment"><div class="line">$ cd ../cahnHilliard/</div><div class="line">$ cmake .</div><div class="line">$ make debug</div><div class="line">$ mpirun -n 1 main</div></div><!-- fragment -->
 <h2>Running in Release Mode and with Multple Processors</h2>
