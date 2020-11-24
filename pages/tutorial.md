@@ -10,4 +10,5 @@ The following PRISMS-PF tutorials combine text descriptions with videos to illus
 
 - [Installing PRISMS-PF, Running Applications and Visualizing Results](https://github.com/prisms-center/phaseField/blob/gh-pages/pages/tutorials/install_run.md) <br>
 
-- [Nucleation and Growth](https://github.com/prisms-center/phaseField/blob/gh-pages/pages/tutorials/spinodaldec_nucleation.md) <br>
+- [Nucleation and Growth](https://github.com/prisms-center/phaseField/blob/gh-pages/pages/tutorials/nucleation_growth.md) <br>
+
