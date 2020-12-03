@@ -22,10 +22,12 @@ Or to run entirely in batch mode (with no window apperaring)
 
 \$ visit -cli -nowin -s scriptname.py
 
-Note that for full batch mode to work, the following lines need to be added to the script:
+Note that for full batch mode to work, the following lines need to be added to the script (the first line at the beginning and the second at the end):
 
 import sys
 sys.exit()
+
+### Postprocessing scripts
 
 #### phase_fraction.py
 
