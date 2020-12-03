@@ -1,8 +1,4 @@
-
-
 ## Python postprocessing scripts to work in conjunction with the VisIt CLI
-
-
 
 ### Installation of the visit CLI (MacOS)
 
@@ -35,7 +31,8 @@ sys.exit()
 
 This script calculates the phase fraction (volume fraction for 2D, area fraction for 3D) based on the field variable "n". 
 
-The phase fraction is calculated as the numerical integrals $\phi=\frac{1}{V}\int_V n\,d^3r $ for a 3D system and $\phi=\frac{1}{A}\int_A n\,d^2r $ for a 2D system, where V (A) is the total volume (area) of the system.
+The phase fraction is calculated as the numerical integrals ![formula](https://render.githubusercontent.com/render/math?math=\phi=\frac{1}{V}\int_Vnd^3r) for 
+a 3D system and ![formula](https://render.githubusercontent.com/render/math?math=\phi=\frac{1}{A}\int_An\,d^2r) for a 2D system, where *V* (*A*) is the total volume (area) of the system.
 
 The results for all time states are outputted in the file **phi_vs_t.txt**.
 
@@ -43,7 +40,8 @@ For each row, the first column corresponds to the frame number, the second to th
 
 #### domain_count.py
 
-This script counts the number of separate regions based on the values of field variable "n". Each interconnected region for which n<-0.5 is counted as a separate domain. The results for all time states are outputted in the file **nodoms_vs_t.txt**.
+This script counts the number of separate regions based on the values of field variable "n". Each interconnected region for which n<0.5 is counted as a separate domain. The 
+results for all time states are outputted in the file **nodoms_vs_t.txt**.
 
 For each row, the first column corresponds to the frame number, the second to the time and the third one to the number of domains.
 
@@ -51,8 +49,11 @@ For each row, the first column corresponds to the frame number, the second to th
 
 This script calculates the total area (or length, in a 2D system) of the interface between two phases defined by the field variable "n".   
 
-The numerical integral $A_{int}=2\int_{\delta\Omega} n\,d^2r $ is used to calculate the *area* of a 2D interface in a 3D system, where  $\delta\Omega$ is the contour surface at $n=0.5$.
+The numerical integral ![formula](https://render.githubusercontent.com/render/math?math=A_{int}=2\int_{\delta\Omega}nd^2r) is used to calculate the *area* of a 2D interface 
+in a 3D system, where ![formula](https://render.githubusercontent.com/render/math?math=\delta\Omega) is the contour surface at *n=0.5*.
 
-The numerical integral  $L_{int}=2\int_{\delta l} n\,dr $ is used to the *length* of the 1D interface in a 2D system, where  $\delta l$  is the contour line at $n=0.5$.
+The numerical integral ![formula](https://render.githubusercontent.com/render/math?math=L_{int}=2\int_{\delta%20l}ndr) is used to the *length* of the 1D 
+interface in a 2D system, where ![formula](https://render.githubusercontent.com/render/math?math=\delta%20l) is the contour line at *n=0.5*.
 
-The results for all time states are outputted in the file **iarea_vs_t.txt**. For each row, the first column corresponds to the frame number, the second to the time and the third one to the total interface area (or length).
+The results for all time states are outputted in the file **iarea_vs_t.txt**. 
+For each row, the first column corresponds to the frame number, the second to the time and the third one to the total interface area (or length).
