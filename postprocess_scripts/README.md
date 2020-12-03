@@ -40,7 +40,7 @@ For each row, the first column corresponds to the frame number, the second to th
 
 #### domain_count.py
 
-This script counts the number of separate regions based on the values of field variable "n". Each interconnected region for which n<0.5 is counted as a separate domain. The 
+This script counts the number of separate regions based on the values of field variable "n". Each interconnected region for which n>0.5 is counted as a separate domain. The 
 results for all time states are outputted in the file **nodoms_vs_t.txt**.
 
 For each row, the first column corresponds to the frame number, the second to the time and the third one to the number of domains.
