@@ -1,3 +1,4 @@
+#include <random>
 // =================================================================================
 // Set the attributes of the primary field variables
 // =================================================================================
@@ -79,10 +80,18 @@ for (unsigned i=0; i< phi.n_array_elements;i++){
 scalarvalueType W = constV(W0)*(constV(1.0)+constV(epsilonM)*std::cos(constV(mult)*(theta-constV(theta0))));
 
 // Define required equations
-double K = 1.2;
 scalarvalueType eq_u = (u+constV(K)*mu*constV(userInputs.dtValue)/constV(tau));
 scalargradType eqx_u = (constV(-userInputs.dtValue)*ux);
 scalarvalueType eq_phi = (phi+constV(userInputs.dtValue)*mu/constV(tau));
+
+// Noise term
+scalarvalueType noise_term;
+for (unsigned i=0; i< phi.n_array_elements;i++){
+	//std::random_device rdm;
+	std::uniform_real_distribution<> distribution(-0.5,0.5);
+	//std::mt19937 gena(rd());
+	noise_term[i] = distribution(gen) * phi[i]*(1.0-phi[i]) * 0.01;
+}
 
 // --- Submitting the terms for the governing equations ---
 
@@ -91,7 +100,7 @@ variable_list.set_scalar_value_term_RHS(0,eq_u);
 variable_list.set_scalar_gradient_term_RHS(0,eqx_u);
 
 // Terms for the equation to evolve the order parameter
-variable_list.set_scalar_value_term_RHS(1,eq_phi);
+variable_list.set_scalar_value_term_RHS(1,eq_phi+noise_term);
 
 
 }
@@ -129,8 +138,6 @@ void customPDE<dim,degree>::nonExplicitEquationRHS(variableContainer<dim,degree,
 
  // Derivative of the free energy density with respect to phi
  //scalarvalueType f_phi = -(phi-constV(lambda)*u*(constV(1.0)-phi*phi))*(constV(1.0)-phi*phi); // Karma model
- double alpha = 0.9;
- double gamma = 10.0;
  scalarvalueType m;
  for (unsigned i=0; i< phi.n_array_elements;i++){
  	m[i] = alpha/3.14159 * std::atan(gamma * (1.0 - u[i]));

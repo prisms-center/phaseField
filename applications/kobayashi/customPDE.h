@@ -1,11 +1,12 @@
 #include "../../include/matrixFreePDE.h"
+#include <random>
 
 template <int dim, int degree>
 class customPDE: public MatrixFreePDE<dim,degree>
 {
 public:
     // Constructor
-    customPDE(userInputParameters<dim> _userInputs): MatrixFreePDE<dim,degree>(_userInputs) , userInputs(_userInputs) {};
+    customPDE(userInputParameters<dim> _userInputs): MatrixFreePDE<dim,degree>(_userInputs) , userInputs(_userInputs), gen(rd()), distr(-0.5,0.5) {};
 
     // Function to set the initial conditions (in ICs_and_BCs.h)
     void setInitialCondition(const dealii::Point<dim> &p, const unsigned int index, double & scalar_IC, dealii::Vector<double> & vector_IC);
@@ -60,6 +61,10 @@ private:
 	double epsilonM = userInputs.get_model_constant_double("epsilonM");
 	double theta0 = userInputs.get_model_constant_double("theta0");
 	double mult = userInputs.get_model_constant_double("mult");
+
+    mutable std::random_device rd;
+    mutable std::mt19937 gen;
+    std::uniform_real_distribution<> distr;
 
 	// ================================================================
 

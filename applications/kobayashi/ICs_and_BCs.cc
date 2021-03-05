@@ -15,6 +15,8 @@ void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, con
 	  // by a hyperbolic tangent function. The center of each circle/sphere is
 	  // given by "center" and its radius is given by "rad".
 
+
+	  /*
 	  double center[1][3] = {{1.0/2.0,1.0/2.0,1.0/2.0}};
 	  double rad[1] = {0.1};
 	  double dist;
@@ -37,6 +39,19 @@ void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, con
 			  scalar_IC += (0.5-0.5*std::tanh((dist-rad[i])/(0.05)));
 		  }
 	  }
+	  */
+	  // Planar IC
+	  if (index == 0){
+	  	scalar_IC = -delta;
+	  }
+	  // Initial condition for the order parameter field
+	  else if (index == 1) {
+	  	// Initial condition for the order parameter field
+	  	for (unsigned int i=0; i<1; i++){
+	  		scalar_IC += (0.5-0.5*std::tanh((p[0]-0.01)/(0.05)));
+	  	}
+	  }
+
 
 	  // --------------------------------------------------------------------------
 }
