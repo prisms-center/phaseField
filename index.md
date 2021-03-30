@@ -101,6 +101,8 @@ Note: If you use PRISMS-PF in one of your publications, please send the publicat
 ***
 ## Publications That Cite PRISMS-PF
 
+[Hong and Viswanathan, Open-Sourcing Phase-Field Simulations for Accelerating Energy Materials Design and Optimization, ACS Energy Letters 2020 5, 3254-3259 (10)](https://pubs.acs.org/doi/abs/10.1021/acsenergylett.0c01904)
+
 [DeWitt and Thornton, Phase Field Modeling of Microstructural Evolution in Computational Materials System Design, Shin and Saal, Eds., Springer Nature, London (2018)](https://link.springer.com/chapter/10.1007/978-3-319-68280-8_4)
 
 [Yaghoobi, Ganesan, Sundar, Lakshmanan, Rudraraju, Allison, and Sundararaghavan, PRISMS-Plasticity: An open-source crystal plasticity finite element software, Computational Materials Science 169, 109078 (2019)](https://www.sciencedirect.com/science/article/abs/pii/S0927025619303696)
