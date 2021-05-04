@@ -12,7 +12,7 @@
 [User registration link](http://goo.gl/forms/GXo7Im8p2Y) <br>
 [User forum](https://groups.google.com/forum/#!forum/prisms-pf-users) <br>
 [Training slides/exercises](https://goo.gl/BBTkJ8)
-
+[PFHub phase-field community](https://pages.nist.gov/pfhub/)
 
 ## Version information:
 
