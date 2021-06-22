@@ -8,9 +8,9 @@ set Number of dimensions = 2
 # (Domain size Z ignored in 2D)
 # =================================================================================
 # Each axes spans from zero to the specified length
-set Domain size X = 100
-set Domain size Y = 100
-set Domain size Z = 100
+set Domain size X = 1e-4
+set Domain size Y = 1e-4
+set Domain size Z = 1e-4
 
 # =================================================================================
 # Set the element parameters
@@ -102,11 +102,11 @@ end
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 1.0e-1
+set Time step = 1.0e-7
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 400
+set Number of time steps = 10000
 
 # =================================================================================
 # Set the output parameters
@@ -117,7 +117,7 @@ set Output condition = EQUAL_SPACING
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of outputs = 20
+set Number of outputs = 200
 
 # The number of time steps between updates being printed to the screen
 set Skip print steps = 50
@@ -172,23 +172,24 @@ set Boundary condition for variable z = NATURAL
 # where [symmetry] is ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC.
 
 # The AC mobility, Lg in equations.h
-set Model constant Lg = 1.0, DOUBLE
+set Model constant Lg = 1.0e-3, DOUBLE
 
 # Gradient energy coefficient
-set Model constant Kg = 0.1, DOUBLE
+set Model constant Kg = 3.7e-6, DOUBLE
 
 # Grain interaction coeffiecient
 set Model constant gamma = 1.5, DOUBLE
 
-# Domain Temperature
-set Model constant Temperature = 1540.0, DOUBLE
+# Domain Temperature //this will be read in as a field eventually
+set Model constant Temperature = 1549.0, DOUBLE
 # Liquidus Temperature
 set Model constant Tliquidus = 1550.0, DOUBLE
 
-set Model constant Lp = 1.0, DOUBLE
-set Model constant Kp = 0.1, DOUBLE
+# UNSURE OF THIS VALUE
+set Model constant Lp = 0.5e-3, DOUBLE
+set Model constant Kp = 2.77e-6, DOUBLE
 
 set Model constant theta = 5.0, DOUBLE
 
-set Model constant mp = 0.5, DOUBLE
-set Model constant mg = 1.0, DOUBLE
+set Model constant mp = 120312.5, DOUBLE
+set Model constant mg = 240625.0, DOUBLE

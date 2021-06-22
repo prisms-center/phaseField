@@ -30,6 +30,7 @@ void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, con
           {dealii::Point<dim> p(0.75, 0.1); center.push_back(p);}
           {dealii::Point<dim> p(0.2, 0.45); center.push_back(p);}
 
+double init_factor = 1.0e6;
 
 
           std::vector<double> rad = {0.14, 0.14, 0.14, 0.14, 0.14, 0.08, 0.08, 0.08, 0.08, 0.08, 0.05, 0.05, 0.05, 0.05, 0.05};
@@ -43,7 +44,7 @@ if (index==0){
     	  }
     	  dist = std::sqrt(dist);
 
-    	  scalar_IC +=	0.5*(1.0-std::tanh((dist-rad[0]*userInputs.domain_size[0])/0.5));
+    	  scalar_IC +=	0.5*(1.0-std::tanh(init_factor*(dist-rad[0]*userInputs.domain_size[0])/0.5));
     }
 dist=0.0;
     if (index==1){
@@ -52,7 +53,7 @@ dist=0.0;
     	  }
     	  dist = std::sqrt(dist);
 
-    	  scalar_IC +=	0.5*(1.0-std::tanh((dist-rad[1]*userInputs.domain_size[0])/0.5));
+    	  scalar_IC +=	0.5*(1.0-std::tanh(init_factor*(dist-rad[1]*userInputs.domain_size[0])/0.5));
     }
 
     dist=0.0;
@@ -62,7 +63,7 @@ dist=0.0;
     	  }
     	  dist = std::sqrt(dist);
 
-    	  scalar_IC +=	0.5*(1.0-std::tanh((dist-rad[2]*userInputs.domain_size[0])/0.5));
+    	  scalar_IC +=	0.5*(1.0-std::tanh(init_factor*(dist-rad[2]*userInputs.domain_size[0])/0.5));
     }
 
         dist=0.0;
@@ -72,7 +73,7 @@ dist=0.0;
     	  }
     	  dist = std::sqrt(dist);
 
-    	  scalar_IC +=	0.5*(1.0-std::tanh((dist-rad[3]*userInputs.domain_size[0])/0.5));
+    	  scalar_IC +=	0.5*(1.0-std::tanh(init_factor*(dist-rad[3]*userInputs.domain_size[0])/0.5));
     }
 
         dist=0.0;
@@ -82,7 +83,7 @@ dist=0.0;
     	  }
     	  dist = std::sqrt(dist);
 
-    	  scalar_IC +=	0.5*(1.0-std::tanh((dist-rad[4]*userInputs.domain_size[0])/0.5));
+    	  scalar_IC +=	0.5*(1.0-std::tanh(init_factor*(dist-rad[4]*userInputs.domain_size[0])/0.5));
     }
     dist=0.0;
     if (index==5){
@@ -91,7 +92,7 @@ dist=0.0;
     	  }
     	  dist = std::sqrt(dist);
 
-    	  scalar_IC +=	0.5*(1.0-std::tanh((dist-rad[5]*userInputs.domain_size[0])/0.5));
+    	  scalar_IC +=	0.5*(1.0-std::tanh(init_factor*(dist-rad[5]*userInputs.domain_size[0])/0.5));
     }
         dist=0.0;
     if (index==0){
@@ -100,7 +101,7 @@ dist=0.0;
     	  }
     	  dist = std::sqrt(dist);
 
-    	  scalar_IC +=	0.5*(1.0-std::tanh((dist-rad[6]*userInputs.domain_size[0])/0.5));
+    	  scalar_IC +=	0.5*(1.0-std::tanh(init_factor*(dist-rad[6]*userInputs.domain_size[0])/0.5));
     }
 
             dist=0.0;
@@ -110,18 +111,18 @@ dist=0.0;
     	  }
     	  dist = std::sqrt(dist);
 
-    	  scalar_IC +=	0.5*(1.0-std::tanh((dist-rad[7]*userInputs.domain_size[0])/0.5));
+    	  scalar_IC +=	0.5*(1.0-std::tanh(init_factor*(dist-rad[7]*userInputs.domain_size[0])/0.5));
     }
 
-                dist=0.0;
-    if (index==0){
-    	  for (unsigned int dir = 0; dir < dim; dir++){
-    		  dist += (p[dir]-center[8][dir]*userInputs.domain_size[dir])*(p[dir]-center[8][dir]*userInputs.domain_size[dir]);
-    	  }
-    	  dist = std::sqrt(dist);
+    //             dist=0.0;
+    // if (index==0){
+    // 	  for (unsigned int dir = 0; dir < dim; dir++){
+    // 		  dist += (p[dir]-center[8][dir]*userInputs.domain_size[dir])*(p[dir]-center[8][dir]*userInputs.domain_size[dir]);
+    // 	  }
+    // 	  dist = std::sqrt(dist);
 
-    	  scalar_IC +=	0.5*(1.0-std::tanh((dist-rad[8]*userInputs.domain_size[0])/0.5));
-    }
+    // 	  scalar_IC +=	0.5*(1.0-std::tanh(init_factor*(dist-rad[8]*userInputs.domain_size[0])/0.5));
+    // }
 
 
 
@@ -138,7 +139,7 @@ dist=0.0;
     	  }
     	  dist = std::sqrt(dist);
 
-    	  scalar_IC +=	0.5*(1.0-std::tanh((dist-rad[0]*userInputs.domain_size[0])/0.5));
+    	  scalar_IC +=	0.5*(1.0-std::tanh(init_factor*(dist-rad[0]*userInputs.domain_size[0])/0.5));
     }
 
     dist=0.0;
@@ -148,7 +149,7 @@ dist=0.0;
     	  }
     	  dist = std::sqrt(dist);
 
-    	  scalar_IC +=	0.5*(1.0-std::tanh((dist-rad[1]*userInputs.domain_size[0])/0.5));
+    	  scalar_IC +=	0.5*(1.0-std::tanh(init_factor*(dist-rad[1]*userInputs.domain_size[0])/0.5));
     }
 
         dist=0.0;
@@ -158,7 +159,7 @@ dist=0.0;
     	  }
     	  dist = std::sqrt(dist);
 
-    	  scalar_IC +=	0.5*(1.0-std::tanh((dist-rad[2]*userInputs.domain_size[0])/0.5));
+    	  scalar_IC +=	0.5*(1.0-std::tanh(init_factor*(dist-rad[2]*userInputs.domain_size[0])/0.5));
     }
 
             dist=0.0;
@@ -168,7 +169,7 @@ dist=0.0;
     	  }
     	  dist = std::sqrt(dist);
 
-    	  scalar_IC +=	0.5*(1.0-std::tanh((dist-rad[3]*userInputs.domain_size[0])/0.5));
+    	  scalar_IC +=	0.5*(1.0-std::tanh(init_factor*(dist-rad[3]*userInputs.domain_size[0])/0.5));
     }
 
             dist=0.0;
@@ -178,7 +179,7 @@ dist=0.0;
     	  }
     	  dist = std::sqrt(dist);
 
-    	  scalar_IC +=	0.5*(1.0-std::tanh((dist-rad[4]*userInputs.domain_size[0])/0.5));
+    	  scalar_IC +=	0.5*(1.0-std::tanh(init_factor*(dist-rad[4]*userInputs.domain_size[0])/0.5));
     }
 
             dist=0.0;
@@ -188,7 +189,7 @@ dist=0.0;
     	  }
     	  dist = std::sqrt(dist);
 
-    	  scalar_IC +=	0.5*(1.0-std::tanh((dist-rad[5]*userInputs.domain_size[0])/0.5));
+    	  scalar_IC +=	0.5*(1.0-std::tanh(init_factor*(dist-rad[5]*userInputs.domain_size[0])/0.5));
     }
 
                 dist=0.0;
@@ -198,7 +199,7 @@ dist=0.0;
     	  }
     	  dist = std::sqrt(dist);
 
-    	  scalar_IC +=	0.5*(1.0-std::tanh((dist-rad[6]*userInputs.domain_size[0])/0.5));
+    	  scalar_IC +=	0.5*(1.0-std::tanh(init_factor*(dist-rad[6]*userInputs.domain_size[0])/0.5));
     }
 
                     dist=0.0;
@@ -208,18 +209,18 @@ dist=0.0;
     	  }
     	  dist = std::sqrt(dist);
 
-    	  scalar_IC +=	0.5*(1.0-std::tanh((dist-rad[7]*userInputs.domain_size[0])/0.5));
+    	  scalar_IC +=	0.5*(1.0-std::tanh(init_factor*(dist-rad[7]*userInputs.domain_size[0])/0.5));
     }
 
-                    dist=0.0;
-    if (index==6){
-    	  for (unsigned int dir = 0; dir < dim; dir++){
-    		  dist += (p[dir]-center[8][dir]*userInputs.domain_size[dir])*(p[dir]-center[8][dir]*userInputs.domain_size[dir]);
-    	  }
-    	  dist = std::sqrt(dist);
+    //                 dist=0.0;
+    // if (index==6){
+    // 	  for (unsigned int dir = 0; dir < dim; dir++){
+    // 		  dist += (p[dir]-center[8][dir]*userInputs.domain_size[dir])*(p[dir]-center[8][dir]*userInputs.domain_size[dir]);
+    // 	  }
+    // 	  dist = std::sqrt(dist);
 
-    	  scalar_IC +=	0.5*(1.0-std::tanh((dist-rad[8]*userInputs.domain_size[0])/0.5));
-    }
+    // 	  scalar_IC +=	0.5*(1.0-std::tanh(init_factor*(dist-rad[8]*userInputs.domain_size[0])/0.5));
+    // }
 
 
 	  // --------------------------------------------------------------------------
