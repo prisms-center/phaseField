@@ -117,16 +117,17 @@ scalarvalueType phi=constV(0.5*(1.0-std::tanh(theta*((Temperature/Tliquidus)-1.0
 //value terms
 dealii::VectorizedArray<double> fnz_p = constV(0.0);
 dealii::VectorizedArray<double> fnz_g = constV(0.0);
+dealii::VectorizedArray<double> fnz_g_sum = constV(0.0);
 
 fnz_p=2.0*z*(1.0-phi)-2.0*phi*(1.0-z);//constV(mp*((2.0*z*(1.0-phi))-(2.0*phi*(1.0-z))));
 fnz_g=(-2.0*(1.0-z));
 for (unsigned int i=0; i<userInputs.number_of_variables-1; i++){
 	ni = variable_list.get_scalar_value(i);
-    fnz_g+=ni*ni;
+    fnz_g_sum+=ni*ni;
     }
 
 
-scalarvalueType value_z = z-constV(userInputs.dtValue*Lp*mp)*fnz_p-constV(userInputs.dtValue*Lp*mg)*fnz_g;
+scalarvalueType value_z = z-constV(userInputs.dtValue*Lp*mp)*fnz_p-constV(userInputs.dtValue*Lp*mg)*fnz_g*fnz_g_sum;
 scalargradType grad_z = constV(-userInputs.dtValue*Lp*Kp)*zx;
 
 variable_list.set_scalar_value_term_RHS(6,value_z);
