@@ -114,6 +114,9 @@ for (unsigned int i=0; i<userInputs.number_of_variables-2; i++){
 dealii::VectorizedArray<double> phi = constV(0.0);
 phi = (0.5*(1.0-std::tanh(theta*((T[0]/Tliquidus)-1.0))));
 
+// phi=std::min(phi[0],(1.0));
+// phi=std::max(phi[0],(0.0));
+
 //value terms
 dealii::VectorizedArray<double> fnz_p = constV(0.0);
 dealii::VectorizedArray<double> fnz_g = constV(0.0);

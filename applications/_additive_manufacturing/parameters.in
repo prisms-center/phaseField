@@ -162,7 +162,7 @@ set Boundary condition for variable n5 = NATURAL
 
 set Boundary condition for variable z = NATURAL
 
-set Boundary condition for variable T = DIRICHLET: 1540,DIRICHLET: 1560, NATURAL, NATURAL
+set Boundary condition for variable T = DIRICHLET: 1540.0,NATURAL, NATURAL, NATURAL
 
 # =================================================================================
 # Set the model constants
@@ -175,7 +175,7 @@ set Boundary condition for variable T = DIRICHLET: 1540,DIRICHLET: 1560, NATURAL
 
 # The AC mobility, Lg in equations.h
 #set Model constant Lg = 0.05, DOUBLE
-set Model constant Lg = 0.1, DOUBLE
+set Model constant Lg = 0.2, DOUBLE
 
 # Gradient energy coefficient
 #set Model constant Kg = 3.7e-6, DOUBLE
@@ -190,8 +190,8 @@ set Model constant gamma = 1.5, DOUBLE
 set Model constant Tliquidus = 1550.0, DOUBLE
 
 # UNSURE OF THIS VALUE
-set Model constant Lp = 0.05, DOUBLE
-set Model constant Kp = 0.5e-6, DOUBLE
+set Model constant Lp = 0.1, DOUBLE
+set Model constant Kp = 1.0e-6, DOUBLE
 
 set Model constant theta = 5000.0, DOUBLE
 

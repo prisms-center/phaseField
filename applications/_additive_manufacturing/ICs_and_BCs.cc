@@ -44,7 +44,7 @@ void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, con
 double init_factor = 1.0e6;
 
 
-          std::vector<double> rad = {0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.05, 0.05, 0.05, 0.05, 0.05};
+          std::vector<double> rad = {0.025, 0.025, 0.025, 0.025, 0.025, 0.025, 0.025, 0.025, 0.025, 0.01, 0.05, 0.05, 0.05, 0.05, 0.05};
 
 
     	  double dist = 0.0;
@@ -239,14 +239,14 @@ dist=0.0;
 
 
 	  if (index==7){
-		  if(p[0]<userInputs.domain_size[0]*0.05){
-		  scalar_IC=1540.0;
-		  }
-		  else{
+		//   if(p[0]<userInputs.domain_size[0]*0.025){
+		//   scalar_IC=1545.0;
+		//   }
+		//   else{
 
-			scalar_IC=1560.0;
+			scalar_IC=1551.0;
 
-		  }
+		//   }
 		  }
 }
 
