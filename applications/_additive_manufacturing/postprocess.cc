@@ -52,7 +52,7 @@ scalarvalueType ni;
 
 scalarvalueType max_val = constV(-1.0);
 scalarvalueType max_op = constV(100.0);
-for (unsigned int i=0; i<userInputs.number_of_variables-1; i++){
+for (unsigned int i=0; i<userInputs.number_of_variables-2; i++){
     ni = variable_list.get_scalar_value(i);
 
     for (unsigned int v=0; v<ni.n_array_elements;v++){
@@ -91,7 +91,7 @@ for (unsigned int v=0; v<ni.n_array_elements;v++){
 }
 
 scalarvalueType sum_n = constV(0.0);
-for (unsigned int i=0; i<userInputs.number_of_variables-1; i++){
+for (unsigned int i=0; i<userInputs.number_of_variables-2; i++){
     ni = variable_list.get_scalar_value(i);
     sum_n += ni;
 }

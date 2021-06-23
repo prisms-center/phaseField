@@ -102,7 +102,7 @@ end
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 1.0e-7
+set Time step = 5.0e-7
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
@@ -162,6 +162,8 @@ set Boundary condition for variable n5 = NATURAL
 
 set Boundary condition for variable z = NATURAL
 
+set Boundary condition for variable T = DIRICHLET: 1540,DIRICHLET: 1560, NATURAL, NATURAL
+
 # =================================================================================
 # Set the model constants
 # =================================================================================
@@ -172,24 +174,26 @@ set Boundary condition for variable z = NATURAL
 # where [symmetry] is ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC.
 
 # The AC mobility, Lg in equations.h
-set Model constant Lg = 1.0e-3, DOUBLE
+#set Model constant Lg = 0.05, DOUBLE
+set Model constant Lg = 0.1, DOUBLE
 
 # Gradient energy coefficient
-set Model constant Kg = 3.7e-6, DOUBLE
+#set Model constant Kg = 3.7e-6, DOUBLE
+set Model constant Kg = 1.7e-6, DOUBLE
 
 # Grain interaction coeffiecient
 set Model constant gamma = 1.5, DOUBLE
 
 # Domain Temperature //this will be read in as a field eventually
-set Model constant Temperature = 1549.0, DOUBLE
+#set Model constant Temperature = 1540.0, DOUBLE
 # Liquidus Temperature
 set Model constant Tliquidus = 1550.0, DOUBLE
 
 # UNSURE OF THIS VALUE
-set Model constant Lp = 0.5e-3, DOUBLE
-set Model constant Kp = 2.77e-6, DOUBLE
+set Model constant Lp = 0.05, DOUBLE
+set Model constant Kp = 0.5e-6, DOUBLE
 
-set Model constant theta = 5.0, DOUBLE
+set Model constant theta = 5000.0, DOUBLE
 
-set Model constant mp = 120312.5, DOUBLE
-set Model constant mg = 240625.0, DOUBLE
+set Model constant mp = 250312.5, DOUBLE
+set Model constant mg = 500625, DOUBLE

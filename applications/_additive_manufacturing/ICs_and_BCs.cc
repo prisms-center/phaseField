@@ -19,21 +19,32 @@ void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, con
           std::vector<dealii::Point<dim>> center;
 
           // The big grains
-          {dealii::Point<dim> p(0.2, 0.15); center.push_back(p);}
-          {dealii::Point<dim> p(0.25, 0.7); center.push_back(p);}
-          {dealii::Point<dim> p(0.5, 0.5); center.push_back(p);}
-          {dealii::Point<dim> p(0.6, 0.85); center.push_back(p);}
-          {dealii::Point<dim> p(0.85, 0.35); center.push_back(p);}
+        //   {dealii::Point<dim> p(0.2, 0.15); center.push_back(p);}
+        //   {dealii::Point<dim> p(0.25, 0.7); center.push_back(p);}
+        //   {dealii::Point<dim> p(0.5, 0.5); center.push_back(p);}
+        //   {dealii::Point<dim> p(0.6, 0.85); center.push_back(p);}
+        //   {dealii::Point<dim> p(0.85, 0.35); center.push_back(p);}
 
-          {dealii::Point<dim> p(0.08, 0.92); center.push_back(p);}
-          {dealii::Point<dim> p(0.75, 0.6); center.push_back(p);}
-          {dealii::Point<dim> p(0.75, 0.1); center.push_back(p);}
-          {dealii::Point<dim> p(0.2, 0.45); center.push_back(p);}
+        //   {dealii::Point<dim> p(0.08, 0.92); center.push_back(p);}
+        //   {dealii::Point<dim> p(0.75, 0.6); center.push_back(p);}
+        //   {dealii::Point<dim> p(0.75, 0.1); center.push_back(p);}
+        //   {dealii::Point<dim> p(0.2, 0.45); center.push_back(p);}
+
+          {dealii::Point<dim> p(0.0, 0.15); center.push_back(p);}
+          {dealii::Point<dim> p(0.0, 0.7); center.push_back(p);}
+          {dealii::Point<dim> p(0.0, 0.5); center.push_back(p);}
+          {dealii::Point<dim> p(0.0, 0.85); center.push_back(p);}
+          {dealii::Point<dim> p(0.0, 0.35); center.push_back(p);}
+
+          {dealii::Point<dim> p(0.0, 0.92); center.push_back(p);}
+          {dealii::Point<dim> p(0.0, 0.6); center.push_back(p);}
+          {dealii::Point<dim> p(0.0, 0.1); center.push_back(p);}
+          {dealii::Point<dim> p(0.0, 0.45); center.push_back(p);}
 
 double init_factor = 1.0e6;
 
 
-          std::vector<double> rad = {0.14, 0.14, 0.14, 0.14, 0.14, 0.08, 0.08, 0.08, 0.08, 0.08, 0.05, 0.05, 0.05, 0.05, 0.05};
+          std::vector<double> rad = {0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.05, 0.05, 0.05, 0.05, 0.05};
 
 
     	  double dist = 0.0;
@@ -224,6 +235,19 @@ dist=0.0;
 
 
 	  // --------------------------------------------------------------------------
+
+
+
+	  if (index==7){
+		  if(p[0]<userInputs.domain_size[0]*0.05){
+		  scalar_IC=1540.0;
+		  }
+		  else{
+
+			scalar_IC=1560.0;
+
+		  }
+		  }
 }
 
 // ===========================================================================

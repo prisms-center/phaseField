@@ -35,6 +35,14 @@ void variableAttributeLoader::loadVariableAttributes(){
     	set_dependencies_value_term_RHS(6, "n0, n1, n2, n3, n4, n5, z");
     	set_dependencies_gradient_term_RHS(6, "grad(z)");
 
+
+		set_variable_name				(7,"T");
+		set_variable_type				(7,SCALAR);
+		set_variable_equation_type		(7,EXPLICIT_TIME_DEPENDENT);
+
+    	set_dependencies_value_term_RHS(7, "T");
+    	set_dependencies_gradient_term_RHS(7, "grad(T)");
+
 }
 
 // =============================================================================================
@@ -62,6 +70,9 @@ scalargradType nix;
 scalarvalueType z = variable_list.get_scalar_value(6);
 scalargradType zx = variable_list.get_scalar_gradient(6);
 
+scalarvalueType T = variable_list.get_scalar_value(7);
+scalargradType Tx = variable_list.get_scalar_gradient(7);
+
 // In this application, create temporary variables for the residual terms. We cannot
 // call 'set_scalar_value_residual_term' and 'set_scalar_gradient_residual_term'in the
 // for loop below because those functions write over the scalar value and scalar gradient
@@ -73,12 +84,12 @@ value_terms.resize(userInputs.number_of_variables);
 std::vector<scalargradType> gradient_terms;
 gradient_terms.resize(userInputs.number_of_variables);
 
-for (unsigned int i=0; i<userInputs.number_of_variables-1; i++){
+for (unsigned int i=0; i<userInputs.number_of_variables-2; i++){
 
 	ni = variable_list.get_scalar_value(i);
 	nix = variable_list.get_scalar_gradient(i);
 	fnV = - ni + ni*ni*ni+(2.0*ni*(1.0-z)*(1.0-z));
-	for (unsigned int j=0; j<userInputs.number_of_variables-1; j++){
+	for (unsigned int j=0; j<userInputs.number_of_variables-2; j++){
 		if (i != j){
 			nj = variable_list.get_scalar_value(j);
 			fnV += constV(2.0*gamma) * ni * nj*nj;
@@ -90,7 +101,7 @@ for (unsigned int i=0; i<userInputs.number_of_variables-1; i++){
 
 // --- Submitting the terms for the governing equations ---
 
-for (unsigned int i=0; i<userInputs.number_of_variables-1; i++){
+for (unsigned int i=0; i<userInputs.number_of_variables-2; i++){
 	variable_list.set_scalar_value_term_RHS(i,value_terms[i]);
 	variable_list.set_scalar_gradient_term_RHS(i,gradient_terms[i]);
 }
@@ -99,40 +110,49 @@ for (unsigned int i=0; i<userInputs.number_of_variables-1; i++){
 
 
 
+//scalarvalueType phi=constV(0.5*(1.0-std::tanh(theta*((/*Temperature*/Tliquidus)-1.0))));
+dealii::VectorizedArray<double> phi = constV(0.0);
+phi = (0.5*(1.0-std::tanh(theta*((T[0]/Tliquidus)-1.0))));
 
-
-
-////////Dummy stuff for now////////
-// scalarvalueType eq_T=z;
-// scalargradType eqx_T=(constV(-0.01*userInputs.dtValue)*zx);
-
-
-// variable_list.set_scalar_value_term_RHS(6,eq_T);
-// variable_list.set_scalar_gradient_term_RHS(6,eqx_T);
-////////Dummy stuff for now////////
-
-
-
-scalarvalueType phi=constV(0.5*(1.0-std::tanh(theta*((Temperature/Tliquidus)-1.0))));
 //value terms
 dealii::VectorizedArray<double> fnz_p = constV(0.0);
 dealii::VectorizedArray<double> fnz_g = constV(0.0);
 dealii::VectorizedArray<double> fnz_g_sum = constV(0.0);
 
-fnz_p=2.0*z*(1.0-phi)-2.0*phi*(1.0-z);//constV(mp*((2.0*z*(1.0-phi))-(2.0*phi*(1.0-z))));
-fnz_g=(-2.0*(1.0-z));
-for (unsigned int i=0; i<userInputs.number_of_variables-1; i++){
+fnz_p=2.0*z*(1.0-phi)-2.0*phi*(1.0-z);
+fnz_g=(2.0*(1.0-z));
+for (unsigned int i=0; i<userInputs.number_of_variables-2; i++){
 	ni = variable_list.get_scalar_value(i);
     fnz_g_sum+=ni*ni;
     }
 
 
-scalarvalueType value_z = z-constV(userInputs.dtValue*Lp*mp)*fnz_p-constV(userInputs.dtValue*Lp*mg)*fnz_g*fnz_g_sum;
+scalarvalueType value_z = z-(constV(userInputs.dtValue*Lp*mp)*fnz_p)+(constV(userInputs.dtValue*Lp*mg)*fnz_g*fnz_g_sum);
 scalargradType grad_z = constV(-userInputs.dtValue*Lp*Kp)*zx;
 
 variable_list.set_scalar_value_term_RHS(6,value_z);
 variable_list.set_scalar_gradient_term_RHS(6,grad_z);
 
+// std::tanh(z[0]);
+
+////////Dummy stuff for now////////
+
+
+
+scalarvalueType eq_T=T;
+scalargradType eqx_T=(constV(-0.0000001*userInputs.dtValue)*Tx);
+
+variable_list.set_scalar_value_term_RHS(7,eq_T);
+variable_list.set_scalar_gradient_term_RHS(7,eqx_T);
+
+////////Dummy stuff for now////////
+
+
+
+// dealii::VectorizedArray<double> test = constV(0.0);
+
+// test = (0.5*(1.0-std::tanh(theta*((T[0]/Tliquidus)-1.0))));
+// constV(0.5*(1.0-std::tanh(theta*((/*Temperature*/Tliquidus)-1.0))));
 
 }
 

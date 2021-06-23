@@ -58,7 +58,7 @@ private:
 	double Lp = userInputs.get_model_constant_double("Lp");
 	double Kp = userInputs.get_model_constant_double("Kp");
 
-	double Temperature = userInputs.get_model_constant_double("Temperature");
+	//double Temperature = userInputs.get_model_constant_double("Temperature");
 	double Tliquidus = userInputs.get_model_constant_double("Tliquidus");
 	double theta = userInputs.get_model_constant_double("theta");
 
