@@ -43,6 +43,13 @@ void variableAttributeLoader::loadVariableAttributes(){
     	set_dependencies_value_term_RHS(7, "T");
     	set_dependencies_gradient_term_RHS(7, "grad(T)");
 
+	// set_variable_name				(8,"phi");
+	// set_variable_type				(8,SCALAR);
+	// set_variable_equation_type		(8,AUXILIARY);
+
+    // set_dependencies_value_term_RHS(8, "T");
+    // set_dependencies_gradient_term_RHS(8, "");
+
 }
 
 // =============================================================================================
@@ -111,8 +118,11 @@ for (unsigned int i=0; i<userInputs.number_of_variables-2; i++){
 
 
 //scalarvalueType phi=constV(0.5*(1.0-std::tanh(theta*((/*Temperature*/Tliquidus)-1.0))));
-dealii::VectorizedArray<double> phi = constV(0.0);
-phi = (0.5*(1.0-std::tanh(theta*((T[0]/Tliquidus)-1.0))));
+scalarvalueType phi = constV(0.0);
+
+for (unsigned i=0; i< T.n_array_elements;i++){
+	phi[i] = (0.5)*((1.0)-std::tanh(theta*((T[i]/(Tliquidus)-1.0))));
+}
 
 // phi=std::min(phi[0],(1.0));
 // phi=std::max(phi[0],(0.0));

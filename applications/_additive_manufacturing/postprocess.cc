@@ -28,6 +28,15 @@ void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 
     set_output_integral         	(1,false);
 
+        // Variable 2
+    set_variable_name				(2,"phi_out");
+	set_variable_type				(2,SCALAR);
+
+    set_dependencies_value_term_RHS(2, "T");
+    set_dependencies_gradient_term_RHS(2, "");
+
+    set_output_integral         	(2,false);
+
 }
 
 // =============================================================================================
@@ -103,6 +112,21 @@ for (unsigned int v=0; v<ni.n_array_elements;v++){
 }
 
 
+
+
+scalarvalueType T = variable_list.get_scalar_value(7);
+// dealii::VectorizedArray<double> phi_out = constV(0.0);
+scalarvalueType phi_out = constV(0.0);
+
+phi_out = T;//constV(0.5)*(constV(1.0)-std::tanh(theta*((T[0]/(Tliquidus)-1.0))));//(0.5)*(1.0-std::tanh(theta*((T[0]/(Tliquidus)-1.0))));//(0.5*(1.0-std::tanh(theta*((T[0]/Tliquidus)-1.0))));
+
+
+for (unsigned i=0; i< T.n_array_elements;i++){
+	phi_out[i] = (0.5)*((1.0)-std::tanh(theta*((T[i]/(Tliquidus)-1.0))));
+}
+
+
+pp_variable_list.set_scalar_value_term_RHS(2, phi_out);
 // --- Submitting the terms for the postprocessing expressions ---
 
 pp_variable_list.set_scalar_value_term_RHS(0, feature_ids);

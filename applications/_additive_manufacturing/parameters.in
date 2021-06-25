@@ -31,7 +31,7 @@ set Element degree = 2
 # Set the adaptive mesh refinement parameters
 # =================================================================================
 # Set the flag determining if adaptive meshing is activated
-set Mesh adaptivity = false//true
+set Mesh adaptivity = false
 
 # Set the maximum and minimum level of refinement
 # When adaptive meshing is enabled, the refine factor set in the block above is
@@ -160,9 +160,11 @@ set Boundary condition for variable n3 = NATURAL
 set Boundary condition for variable n4 = NATURAL
 set Boundary condition for variable n5 = NATURAL
 
-set Boundary condition for variable z = NATURAL
+set Boundary condition for variable z = DIRICHLET: 1.0,NATURAL, NATURAL, NATURAL
 
 set Boundary condition for variable T = DIRICHLET: 1540.0,NATURAL, NATURAL, NATURAL
+
+set Boundary condition for variable phi = NATURAL
 
 # =================================================================================
 # Set the model constants
