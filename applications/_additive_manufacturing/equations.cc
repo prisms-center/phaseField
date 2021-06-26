@@ -153,7 +153,7 @@ variable_list.set_scalar_gradient_term_RHS(6,grad_z);
 
 
 scalarvalueType eq_T=T;
-scalargradType eqx_T=(constV(-0.0000001*userInputs.dtValue)*Tx);
+scalargradType eqx_T=(constV(-D*userInputs.dtValue)*Tx);
 
 variable_list.set_scalar_value_term_RHS(7,eq_T);
 variable_list.set_scalar_gradient_term_RHS(7,eqx_T);

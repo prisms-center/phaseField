@@ -162,9 +162,8 @@ set Boundary condition for variable n5 = NATURAL
 
 set Boundary condition for variable z = DIRICHLET: 1.0,NATURAL, NATURAL, NATURAL
 
-set Boundary condition for variable T = DIRICHLET: 1540.0,NATURAL, NATURAL, NATURAL
+set Boundary condition for variable T = DIRICHLET: 1720.0,DIRICHLET: 1724.0, NATURAL, NATURAL
 
-set Boundary condition for variable phi = NATURAL
 
 # =================================================================================
 # Set the model constants
@@ -177,11 +176,11 @@ set Boundary condition for variable phi = NATURAL
 
 # The AC mobility, Lg in equations.h
 #set Model constant Lg = 0.05, DOUBLE
-set Model constant Lg = 0.2, DOUBLE
+set Model constant Lg = 0.1, DOUBLE
 
 # Gradient energy coefficient
 #set Model constant Kg = 3.7e-6, DOUBLE
-set Model constant Kg = 1.7e-6, DOUBLE
+set Model constant Kg = 1.8e-6, DOUBLE
 
 # Grain interaction coeffiecient
 set Model constant gamma = 1.5, DOUBLE
@@ -189,13 +188,15 @@ set Model constant gamma = 1.5, DOUBLE
 # Domain Temperature //this will be read in as a field eventually
 #set Model constant Temperature = 1540.0, DOUBLE
 # Liquidus Temperature
-set Model constant Tliquidus = 1550.0, DOUBLE
+set Model constant Tliquidus = 1723.0, DOUBLE
 
 # UNSURE OF THIS VALUE
-set Model constant Lp = 0.1, DOUBLE
-set Model constant Kp = 1.0e-6, DOUBLE
+set Model constant Lp = 0.2, DOUBLE
+set Model constant Kp = 1.4e-6, DOUBLE
 
-set Model constant theta = 5000.0, DOUBLE
+set Model constant theta = 50000.0, DOUBLE
 
-set Model constant mp = 250312.5, DOUBLE
-set Model constant mg = 500625, DOUBLE
+set Model constant mp = 240312.5, DOUBLE
+set Model constant mg = 480625, DOUBLE
+
+set Model constant D = 2.9e-8, DOUBLE
