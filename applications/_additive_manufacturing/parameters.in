@@ -18,9 +18,9 @@ set Domain size Z = 1e-4
 # The number of elements in each direction is 2^(refineFactor) * subdivisions
 # Subdivisions Z ignored in 2D
 # For optimal performance, use refineFactor primarily to determine the element size
-set Subdivisions X = 3
-set Subdivisions Y = 3
-set Subdivisions Z = 3
+set Subdivisions X = 6
+set Subdivisions Y = 6
+set Subdivisions Z = 6
 
 set Refine factor = 4
 
@@ -38,7 +38,7 @@ set Mesh adaptivity = false
 # only used to generate the first pass of the mesh as the initial conditions are
 # applied. It should be set somewhere between the max and min levels below.
 set Max refinement level = 6
-set Min refinement level = 4
+set Min refinement level = 3
 
 # Set the number of time steps between remeshing operations
 set Steps between remeshing operations = 20
@@ -98,11 +98,29 @@ subsection Refinement criterion: n5
     set Value upper bound = 0.999
 end
 
+subsection Refinement criterion: z
+    # Select whether the mesh is refined based on the variable value (VALUE),
+    # its gradient (GRADIENT), or both (VALUE_AND_GRADIENT)
+    set Criterion type = VALUE
+    # Set the lower and upper bounds for the value-based refinement window
+    set Value lower bound = 1e-3
+    set Value upper bound = 0.999
+end
+
+# Set the criteria for adapting the mesh
+subsection Refinement criterion: T
+    # Select whether the mesh is refined based on the variable value (VALUE),
+    # its gradient (GRADIENT), or both (VALUE_AND_GRADIENT)
+    set Criterion type = GRADIENT
+    # Set the lower and upper bounds for the value-based refinement window
+    set Gradient magnitude lower bound = 1.0e3
+end
+
 # =================================================================================
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 5.0e-7
+set Time step = 0.01e-6
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
@@ -175,28 +193,24 @@ set Boundary condition for variable T = DIRICHLET: 1720.0,DIRICHLET: 1724.0, NAT
 # where [symmetry] is ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC.
 
 # The AC mobility, Lg in equations.h
-#set Model constant Lg = 0.05, DOUBLE
-set Model constant Lg = 0.1, DOUBLE
+set Model constant Lg = 1.285, DOUBLE
 
 # Gradient energy coefficient
-#set Model constant Kg = 3.7e-6, DOUBLE
-set Model constant Kg = 1.8e-6, DOUBLE
+set Model constant Kg = 2.25e-7, DOUBLE
 
 # Grain interaction coeffiecient
 set Model constant gamma = 1.5, DOUBLE
 
-# Domain Temperature //this will be read in as a field eventually
-#set Model constant Temperature = 1540.0, DOUBLE
 # Liquidus Temperature
 set Model constant Tliquidus = 1723.0, DOUBLE
 
 # UNSURE OF THIS VALUE
-set Model constant Lp = 0.2, DOUBLE
-set Model constant Kp = 1.4e-6, DOUBLE
+set Model constant Lp = 1.285, DOUBLE
+set Model constant Kp = 1.5e-6, DOUBLE
 
-set Model constant theta = 50000.0, DOUBLE
+set Model constant theta = 1e6, DOUBLE
 
-set Model constant mp = 240312.5, DOUBLE
-set Model constant mg = 480625, DOUBLE
+set Model constant mp = 1200000, DOUBLE
+set Model constant mg = 450000, DOUBLE
 
 set Model constant D = 2.9e-8, DOUBLE
