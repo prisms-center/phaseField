@@ -65,6 +65,8 @@ private:
 	double mp = userInputs.get_model_constant_double("mp");
 	double mg = userInputs.get_model_constant_double("mg");
 
+	double D = userInputs.get_model_constant_double("D");
+
 	// ================================================================
 
 };

@@ -239,15 +239,17 @@ dist=0.0;
 
 
 	  if (index==7){
-		//   if(p[0]<userInputs.domain_size[0]*0.025){
-		//   scalar_IC=1545.0;
-		//   }
-		//   else{
-
-			scalar_IC=1551.0;
-
-		//   }
+		  if(p[0]<userInputs.domain_size[0]*0.05){
+		  scalar_IC=1720.0;
 		  }
+		  else{
+
+			scalar_IC=1724.0;
+
+		  }
+		  }
+
+
 }
 
 // ===========================================================================
