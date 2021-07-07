@@ -79,20 +79,13 @@ for (unsigned i=0; i< phi.n_array_elements;i++){
 scalarvalueType a_n;
 a_n = (constV(1.0)+constV(epsilon)*std::cos(constV(4.0)*(theta)));
 
-// dimensionless temperature changes
-//scalarvalueType y = q_point_loc[1]; // The y-component
-//scalarvalueType t_n = constV(this->currentTime); // The time
-//scalarvalueType tep = ((y-Vtilde*t_n)/ltilde);
-    
 // coeffcient before phi
-//scalarvalueType u_phi = (constV(1.0)-constV(1.0-k)*tep)*a_n*a_n;
 scalarvalueType u_phi = (constV(1.0)+constV(1.0-k)*U)*a_n*a_n;
     
 // coeffcient before U
 scalarvalueType u_con = (constV(1.0+k)/constV(2.0)-constV(1.0-k)*phi/constV(2.0));
 
 // q(phi) term
-//scalarvalueType q_phi = (constV(2.0)*(constV(1.0)-phi)/(constV(1.0+k)-(constV(1.0-k)*phi)));
 scalarvalueType q_phi = ((constV(1.0)-phi)/constV(2.0));
 
 // Calculation of interface normal vector
