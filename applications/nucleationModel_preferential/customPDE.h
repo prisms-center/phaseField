@@ -96,13 +96,13 @@ void customPDE<dim,degree>::adaptiveRefineCriterion(){
 
 
     QGaussLobatto<dim>  quadrature(degree+1);
-    FEValues<dim> fe_values (*(this->FESet[userInputs.refine_criterion_fields[0]]), quadrature, update_values|update_quadrature_points);
+    FEValues<dim> fe_values (*(this->FESet[userInputs.refinement_criteria[0].variable_index]), quadrature, update_values|update_quadrature_points);
     const unsigned int num_quad_points = quadrature.size();
     std::vector<dealii::Point<dim> > q_point_list(num_quad_points);
 
     std::vector<double> errorOut(num_quad_points);
 
-    typename DoFHandler<dim>::active_cell_iterator cell = this->dofHandlersSet_nonconst[userInputs.refine_criterion_fields[0]]->begin_active(), endc = this->dofHandlersSet_nonconst[userInputs.refine_criterion_fields[0]]->end();
+    typename DoFHandler<dim>::active_cell_iterator cell = this->dofHandlersSet_nonconst[userInputs.refinement_criteria[0].variable_index]->begin_active(), endc = this->dofHandlersSet_nonconst[userInputs.refinement_criteria[0].variable_index]->end();
 
     typename parallel::distributed::Triangulation<dim>::active_cell_iterator t_cell = this->triangulation.begin_active();
 
@@ -110,8 +110,8 @@ void customPDE<dim,degree>::adaptiveRefineCriterion(){
         if (cell->is_locally_owned()){
             fe_values.reinit (cell);
 
-            for (unsigned int field_index=0; field_index<userInputs.refine_criterion_fields.size(); field_index++){
-                fe_values.get_function_values(*(this->solutionSet[userInputs.refine_criterion_fields[field_index]]), errorOut);
+            for (unsigned int field_index=0; field_index<userInputs.refinement_criteria.size(); field_index++){
+                fe_values.get_function_values(*(this->solutionSet[userInputs.refinement_criteria[field_index].variable_index]), errorOut);
                 errorOutV.push_back(errorOut);
             }
 
@@ -120,8 +120,8 @@ void customPDE<dim,degree>::adaptiveRefineCriterion(){
             bool mark_refine = false;
 
             for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
-                for (unsigned int field_index=0; field_index<userInputs.refine_criterion_fields.size(); field_index++){
-                    bool cond_1 = ((errorOutV[field_index][q_point]>userInputs.refine_window_min[field_index]) && (errorOutV[field_index][q_point]<userInputs.refine_window_max[field_index]));
+                for (unsigned int field_index=0; field_index<userInputs.refinement_criteria.size(); field_index++){
+                    bool cond_1 = ((errorOutV[field_index][q_point]>userInputs.refinement_criteria[field_index].value_lower_bound) && (errorOutV[field_index][q_point]<userInputs.refinement_criteria[field_index].value_upper_bound));
                     bool cond_2 = (q_point_list[q_point](0) > gbll) && (q_point_list[q_point](0) < gbrl);
                     if (cond_1 || cond_2){
                         mark_refine = true;
