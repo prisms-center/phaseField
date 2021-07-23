@@ -1,3 +1,24 @@
+# Version 2.2
+Moderate update to 2.1.2, released in July 2019. The biggest change in this version is the addition of new applications and post-processing scripts.
+
+Added Features:
+- New application: corrosion. This app simulates the evolution of the metal-electrolyte interface during the anodic corrosion
+reaction. It uses the nonlinear solver functionality to solve for the electrostatic potential field at every time step.
+- New application: alloySolidification. This app simulates the dendritic solidification of a binary alloy in the dilute limit.
+- New application: spinodalDecomposition. This app simulates the evolution of a two-phase domain system following spinodal decomposition using CahnHilliard dynamics.
+- Postprocessing scripts suite. A suite of Python scripts por post-processing the results from PRISMS-PF was added. Three scripts which are integrated with VisIt via the VisIt CLI have been added. These scripts allow for the calculation of the number of domains, interfacial area (or length, in 2D) and phase fraction. A brief documentation page was added.
+
+Bug Fixes:
+- Updated precipitate evolution documentation (Issue #134).
+- Removed elasticity terms from nucleation application documentation.
+- Updated input file parameters.prm for grainGrowth_dream3d application
+- Removed some commented lines in the equations.cc file of the alloySolidification app
+- Updated application nucleationModel_preferential. Function adaptiveRefineCriterion in customPDE.h was outdated (Issues #144, #159 and #161).
+
+Other Changes:
+- The default parameters file name was changed to parameters.prm for compatibility with the newest recent deal.II versions.
+- Updated the conversion scripts for the vtk input files for the grainGrowth_dream3d app.
+
 # Version 2.1.2
 Minor update to 2.1.1, released in July 2019. The biggest change in this version is a change in how the user
 specifies the adaptivity criteria in the parameters file.
