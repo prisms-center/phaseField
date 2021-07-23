@@ -115,14 +115,14 @@ $(document).ready(function(){initNavTree('install_prismspf.html','');});
 <h3>Compiling the Core Library</h3>
 <p>To compile the core PRISMS-PF library, enter the <code>phaseField</code> directory: </p><div class="fragment"><div class="line">$ cd phaseField</div></div><!-- fragment --><p>Next, use CMake to generate a makefile and then compile the library: </p><div class="fragment"><div class="line">$ cmake .</div><div class="line">$ make -j 8</div></div><!-- fragment --><p> In the last command, the number following <code>-j</code> is the number of threads used during compilation. The general rule of thumb is to pick a number 1.5x the number of processors available. This process should take a minute or two and will compile both the ''debug'' and ''release'' versions of the core PRISMS-PF library.</p>
 <p>Note: This step can be skipped and the core library will be compiled the first time that you compile one of the applications. However, the compilation will be on a single thread and thus will take much longer than if you follow the instructions above and use multiple threads.</p>
-<h2>Docker Installation (Updated for PRISMS-PF version 2.1.2)</h2>
+<h2>Docker Installation (Updated for PRISMS-PF version 2.2)</h2>
 <p>One option when installing PRISMS-PF is to install it and all of its prerequisites using Docker. Docker is a container platform that can be used to run code identically on any OS X, Linux, or Windows machine. If you aren't familiar with Docker, you can get a quick overview <a href="https://opensource.com/resources/what-docker">here</a>.</p>
 <ol type="1">
 <li><a href="https://docs.docker.com/install/">Install Docker</a></li>
 <li>Create a directory on your computer to hold the PRISMS-PF applications folder (e.g. <code>$ mkdir ~/DockerWorkspace</code>) and go to that directory (e.g. <code>$ cd ~/DockerWorkspace</code>)</li>
 <li>Clone the PRISMS-PF repository (<code>$ git clone <a href="https://github.com/prisms-center/phaseField">https://github.com/prisms-center/phaseField</a></code>)</li>
-<li>Get the PRISMS-PF Docker image (<code>$ docker pull prismspf/prismspf:2.1.2</code>)</li>
-<li>Now, launch the Docker container, linking the PRISMS-PF applications folder in the container to your local one: (e.g. <code>$ docker run -ti -v ~/DockerWorkspace/phaseField/applications:/home/dealii/phaseField/applications prismspf/prismspf:2.1.2</code>)</li>
+<li>Get the PRISMS-PF Docker image (<code>$ docker pull prismspf/prismspf:2.2</code>)</li>
+<li>Now, launch the Docker container, linking the PRISMS-PF applications folder in the container to your local one: (e.g. <code>$ docker run -ti -v ~/DockerWorkspace/phaseField/applications:/home/dealii/phaseField/applications prismspf/prismspf:2.2</code>)</li>
 </ol>
 <p>Now you should have a working PRISMS-PF environment. The core library will already be compiled, but you'll need to compile any applications that you want to use. Any changes that you make or output files that you create should be found at ~/DockerWorkspace on your host computer.</p>
 <p>To get out of the container, type: </p><div class="fragment"><div class="line">$ exit</div></div>
