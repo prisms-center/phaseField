@@ -11,6 +11,7 @@ PRISMS-PF is a powerful, massively parallel finite element code for conducting p
 
 ***
 ## Announcements
+
 - 7/26/2021: 2021 PRISMS Virtual Workshop and Training Sessions. Everyone interested in PRISMS-PF (or in materials modeling, in general) is invited to attend the 2021 PRISMS Center Workshop (August 3-6) and training sessions (August 9-13). Both of these events will be held virtually this year. The training part will include two sessions dedicated to a hands-on tutorial for PRISMS-PF on the following dates:
 Monday, Aug. 9, 10 AM -12 PM (EDT)
 Wednesday, Aug. 11, 10 AM -12 PM (EDT). 
