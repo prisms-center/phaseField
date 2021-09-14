@@ -16,7 +16,7 @@
 
 ## Version information:
 
-This version of the code, v2.1.2, contains some small changes from v2.1.1. It was released in July 2019. See [version_changes.md](version_changes.md) for details.
+This version of the code, v2.2, contains moderate changes from v2.1.2. It was released in July 2021. See [version_changes.md](version_changes.md) for details.
 
 ## What is PRISMS-PF?
 
