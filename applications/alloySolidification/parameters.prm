@@ -133,6 +133,8 @@ set Model constant U_off = 0.9, DOUBLE
 # Initial solid-liquid interface position relative to the bottom of the system (y = 0)
 set Model constant y0 = 5.0, DOUBLE
 
+# Small regularization value to add to the magnitude of the gradient of phi when it shows in the denominator.
+set Model constant regval = 1.0e-10, DOUBLE
 
 # =================================================================================
 # Set the output parameters

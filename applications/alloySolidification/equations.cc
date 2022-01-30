@@ -70,14 +70,26 @@ scalarvalueType xi = variable_list.get_scalar_value(2);
 // --- Setting the expressions for the terms in the governing equations ---
 
 // The azimuthal angle
-scalarvalueType theta;
-for (unsigned i=0; i< phi.n_array_elements;i++){
-	theta[i] = std::atan2(phix[1][i],phix[0][i]);
-}
+//scalarvalueType theta;
+//for (unsigned i=0; i< phi.n_array_elements;i++){
+//	theta[i] = std::atan2(phix[1][i],phix[0][i]);
+//}
+
+// Calculation of interface normal vector
+scalarvalueType normgradn = std::sqrt(phix.norm_square());
+scalargradType normal = phix/(normgradn+constV(regval));
+  
+//The cosine of theta
+scalarvalueType cth = normal[0];
+//The sine of theta
+scalarvalueType sth = normal[1];
+//The cosine of 4 theta
+scalarvalueType c4th =sth*sth*sth*sth + cth*cth*cth*cth - constV(6.0)*sth*sth*cth*cth;
 
 // Anisotropic term
 scalarvalueType a_n;
-a_n = (constV(1.0)+constV(epsilon)*std::cos(constV(4.0)*(theta)));
+//a_n = (constV(1.0)+constV(epsilon)*std::cos(constV(4.0)*(theta)));
+a_n = (constV(1.0)+constV(epsilon)*c4th);
 
 // coeffcient before phi
 scalarvalueType u_phi = (constV(1.0)+constV(1.0-k)*U)*a_n*a_n;
@@ -87,10 +99,6 @@ scalarvalueType u_con = (constV(1.0+k)/constV(2.0)-constV(1.0-k)*phi/constV(2.0)
 
 // q(phi) term
 scalarvalueType q_phi = ((constV(1.0)-phi)/constV(2.0));
-
-// Calculation of interface normal vector
-scalarvalueType normgradn = std::sqrt(phix.norm_square());
-scalargradType normal = phix/(normgradn+constV(1.0e-16));
 
 // Antitrapping term
 scalargradType j_at;
@@ -150,18 +158,34 @@ void customPDE<dim,degree>::nonExplicitEquationRHS(variableContainer<dim,degree,
     
 
  // The azimuthal angle
- scalarvalueType theta;
- for (unsigned i=0; i< phi.n_array_elements;i++){
- 	theta[i] = std::atan2(phix[1][i],phix[0][i]);
- }
+ //scalarvalueType theta;
+ //for (unsigned i=0; i< phi.n_array_elements;i++){
+ //	theta[i] = std::atan2(phix[1][i],phix[0][i]);
+ //}
 
-// Anisotropic term
+  // Calculation of interface normal vector
+  scalarvalueType normgradn = std::sqrt(phix.norm_square());
+  scalargradType normal = phix/(normgradn+constV(regval));
+  
+  //The cosine of theta
+  scalarvalueType cth = normal[0];
+  //The sine of theta
+  scalarvalueType sth = normal[1];
+
+  //The cosine of 4 theta
+  scalarvalueType c4th = sth*sth*sth*sth + cth*cth*cth*cth - constV(6.0)*sth*sth*cth*cth;
+  //The sine of 4 theta
+  scalarvalueType s4th = constV(4.0)*sth*cth*cth*cth - constV(4.0)*sth*sth*sth*cth;
+
+  // Anisotropic term
  scalarvalueType a_n;
- a_n = (constV(1.0)+constV(epsilon)*std::cos(constV(4.0)*(theta)));
-    
+ //a_n = (constV(1.0)+constV(epsilon)*std::cos(constV(4.0)*(theta)));
+  a_n = (constV(1.0)+constV(epsilon)*c4th);
+  
 //gradient energy coefficient, its derivative and square
 scalarvalueType a_d;
-a_d = constV(-4.0)*constV(epsilon)*std::sin(constV(4.0)*(theta));
+//a_d = constV(-4.0)*constV(epsilon)*std::sin(constV(4.0)*(theta));
+  a_d = constV(-4.0)*constV(epsilon)*s4th;
     
 // dimensionless temperature changes
 scalarvalueType y =q_point_loc[1]; // The y-component

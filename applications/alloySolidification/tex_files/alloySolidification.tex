@@ -254,7 +254,7 @@ and
 \label{eqjat}
 \vec{j}_{at}^{\,U}=-\frac{1}{\sqrt{2}}[1-(1-k)U]\hat{n}\frac{\partial \phi}{\partial t}.
 \end{equation}
-The function $a_s$ is the anisotropy factor for the solid-liquid interfacial energy, which depends on the outward normal (with respect to the solid) of the interface, $\hat{n}=-\nabla \phi / |\nabla \phi|$. For a solid phase with m-fold symmetry this factor is given by 
+The function $a_s$ is the anisotropy factor for the solid-liquid interfacial energy, which depends on the outward normal (with respect to the solid) of the interface, $\hat{n}=-\nabla \phi / |\nabla \phi|$. For a solid phase with m-fold symmetry this factor is given by~\footnote{In the implementation of the current model, $m$ is set to 4 and  $\theta_0=0$. For the purpose of computational efficiency, explicit calculation of trigonometric functions (and their inverse) is avoided. Thus, all sine and cosine terms with argument $m\theta$ are evaluated as $\sin(m\theta)=4\cos^3\theta\sin\theta-4\cos\theta\sin^3\theta$ and $\cos(m\theta)=\cos^4\theta -6\cos^2\theta\sin^2\theta-\sin^4\theta$, where $\sin\theta=\partial_y\phi / |\nabla \phi|$ and $\cos\theta=\partial_x\phi / |\nabla \phi|$.}
 \begin{equation}
 a_s(\hat{n})=1+\epsilon_m \cos[m(\theta-\theta_0)],
 \end{equation}

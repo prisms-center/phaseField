@@ -64,6 +64,8 @@ private:
     double Dtilde = userInputs.get_model_constant_double("Dtilde");
     double Vtilde = userInputs.get_model_constant_double("Vtilde");
     double ltilde = userInputs.get_model_constant_double("ltilde");
+  
+    double regval = userInputs.get_model_constant_double("regval");
     
 
 	// ================================================================
