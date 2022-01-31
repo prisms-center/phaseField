@@ -100,7 +100,7 @@ set Output condition = LIST
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-#set Number of outputs = 10
+set Number of outputs = 0
 
 set List of time steps to output = 0, 1000, 5000, 10000, 20000
 
