@@ -20,7 +20,7 @@ int main(int argc, char **argv)
 
   // Load input
   variableAttributeLoader variable_attributes;
-  inputFileReader input_file_reader("parameters_test.in",variable_attributes);
+  inputFileReader input_file_reader("parameters_test.prm",variable_attributes);
   userInputParameters<2> userInputs(input_file_reader,input_file_reader.parameter_handler,variable_attributes);
   load_unit_test_inputs<2>(userInputs);
 

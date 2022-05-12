@@ -27,6 +27,7 @@ def run_unit_tests():
 	# Compile and run
 	subprocess.call(["cmake", "."],stdout=f,stderr=f)
 	subprocess.call(["make", "release"],stdout=f)
+	subprocess.call(["make"],stdout=f)
 	subprocess.call(["mpirun", "-n", "2", "main"],stdout=f)
 	f.close()
 

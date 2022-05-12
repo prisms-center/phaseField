@@ -20,7 +20,7 @@ template <int dim,typename T>
 
     dealii::ParameterHandler parameter_handler;
     variableAttributeLoader variable_attributes;
-    inputFileReader input_file_reader("parameters_test.in",variable_attributes);
+    inputFileReader input_file_reader("parameters_test.prm",variable_attributes);
 
     // Subtest 1
     std::string line = "set Test entry = 3";

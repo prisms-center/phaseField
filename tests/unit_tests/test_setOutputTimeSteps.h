@@ -8,7 +8,7 @@ bool unitTest<dim,T>::test_setOutputTimeSteps(){
 
     dealii::ParameterHandler parameter_handler;
 	variableAttributeLoader variable_attributes;
-    inputFileReader input_file_reader("parameters_test.in",variable_attributes);
+    inputFileReader input_file_reader("parameters_test.prm",variable_attributes);
     std::vector<fieldType> var_types;
     var_types.push_back(SCALAR);
     std::vector<PDEType> var_eq_types;
@@ -17,9 +17,9 @@ bool unitTest<dim,T>::test_setOutputTimeSteps(){
 	var_nucleates.push_back(false);
     input_file_reader.declare_parameters(parameter_handler,var_types,var_eq_types,0,var_nucleates);
 	#if (DEAL_II_VERSION_MAJOR < 9 && DEAL_II_VERSION_MINOR < 5)
-    parameter_handler.read_input("parameters_test.in");
+    parameter_handler.read_input("parameters_test.prm");
     #else
-    parameter_handler.parse_input("parameters_test.in");
+    parameter_handler.parse_input("parameters_test.prm");
     #endif
 
     //userInputParameters<dim> userInputs;

@@ -10,9 +10,9 @@ template <int dim,typename T>
 
 	//create test problem class object
     variableAttributeLoader variable_attributes;
-    inputFileReader input_file_reader("parameters_test.in",variable_attributes);
+    inputFileReader input_file_reader("parameters_test.prm",variable_attributes);
     std::vector<std::string> entry_name_ending_list;
-    entry_name_ending_list = input_file_reader.get_entry_name_ending_list("get_entry_name_ending_list_tester.in","set","Model constant");
+    entry_name_ending_list = input_file_reader.get_entry_name_ending_list("get_entry_name_ending_list_tester.prm","set","Model constant");
 
     /*
     // Output the strings to see what, if anything, is going wrong
