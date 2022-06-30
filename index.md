@@ -5,18 +5,19 @@ layout: default
 
 ***
 ## Overview
-PRISMS-PF is a powerful, massively parallel finite element code for conducting phase field and other related simulations of microstructural evolution. The phase field method is commonly used for predicting the evolution if microstructures under a wide range of conditions and material systems. PRISMS-PF provides a simple interface for solving customizable systems of partial differential equations of the type commonly found in phase field models, and has 24 pre-built application modules, including for precipitate evolution, grain growth, dendritic solidification, and spinodal decomposition.
+PRISMS-PF is a powerful, massively parallel finite element code for conducting phase field and other related simulations of microstructural evolution. The phase field method is commonly used for predicting the evolution if microstructures under a wide range of conditions and material systems. PRISMS-PF provides a simple interface for solving customizable systems of partial differential equations of the type commonly found in phase field models, and has 29 pre-built application modules, including for precipitate evolution, grain growth, dendritic solidification, corrosion and spinodal decomposition.
 
 ![PRISMS-PF Example Results](assets/example_bar.png)
 
 ***
 ## Announcements
 
+- 6/30/2022: New Microgalvanic Corrosion (corrosion_microgalvanic) application release! This application simulates the evolution of the metal-electrolyte interface during free immersion due to the microgalvanic coupling between the anodic and cathodic metals. A manuscript detailing the implementation of the model, the scaling performance of the code, and simulation examples in 2D and 3D has been submitted to MRS Communications (currently under revision). 
+
 - 7/26/2021: 2021 PRISMS Virtual Workshop and Training Sessions. Everyone interested in PRISMS-PF (or in materials modeling, in general) is invited to attend the 2021 PRISMS Center Workshop (August 3-6) and training sessions (August 9-13). Both of these events will be held virtually this year. The training part will include two sessions dedicated to a hands-on tutorial for PRISMS-PF on the following dates:
 Monday, Aug. 9, 10 AM -12 PM (EDT)
 Wednesday, Aug. 11, 10 AM -12 PM (EDT). 
 Registration for both the workshop and the training is free! Please register on [this page](https://docs.google.com/forms/d/e/1FAIpQLSfLY5TxU768H2XW0FJuXQtqarpoW0NWLJ9p0ucqAEgXQCaNQA/viewform) (all attendees must register). There will also be training sessions for other PRISMS frameworks (see registration page for details).
-
 - 7/23/2021: PRISMS-PF Docker Image Update. We have updated the PRISMS-PF Docker image to use the current version of PRISMS-PF (2.2).  This new image solves the discrepancy between the previous input parameters filename extension (parameters.in) and the current filename for each application (parameters.prm).  The image is availabel in the PRISMS-PF [Docker repository](https://hub.docker.com/r/prismspf/prismspf). Please follow the updated [instructions for the Docker installation](https://prisms-center.github.io/phaseField/doxygen_files/install_prismspf.html) to download and launch containers using the new image.
 - 7/23/2021: [Version 2.2 released.](https://github.com/prisms-center/phaseField/releases/tag/v2.2) This version contains moderate changes from version 2.1.2, the main one being the release of new applications. For a detailed discussion of the new features, bug fixes and other changes in this version, please consult the [version_changes.md](https://github.com/prisms-center/phaseField/blob/master/version_changes.md) document.
 - 7/6/2021: New Spinodal Decomposition (spinodalDecomposition) application release! This application simulates domain coarsening in time following spinodal decomposition, which is goverened by Cahn-Hilliard dynamics. In contrast to the Cahn-Hilliard application, the initial condition for the concentration is set to uniformly distributed random values around a concentration within the spinodal region. 
