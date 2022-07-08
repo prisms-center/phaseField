@@ -154,10 +154,16 @@ where $E_{corr,2}$ represents the corrosion potential of the cathodic metal. The
 i_{rxn} = \sum^{2}_{j=1}\xi_{j}i_{rxn,j},
 \end{equation}
 
-where $\xi_j$ is an interpolation function that varies from 0 to 1, which indicates the region of each of the metal phases, defined as
+where $\xi_j$ is an interpolation function that varies from 0 to 1, which indicates the region of each of the metal phases. We define $\xi$ for each of the metal phases as
 
-\begin{equation} \label{xi_j}
-\xi_{j} = \frac{\varphi_{j}}{max\left(\varphi_1 + \varphi_2,\zeta\right)},
+\begin{equation} \label{xi_2}
+\xi_{2} = \frac{\varphi_{2}}{max\left(\varphi_1 + \varphi_2,\zeta\right)},
+\end{equation}
+
+and
+
+\begin{equation} \label{xi_1}
+\xi_{1} = 1- \varphi_2,
 \end{equation}
 
 where $\zeta$ is small regularization constant  added to the denominator to avoid division by zero.
