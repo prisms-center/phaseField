@@ -1,15 +1,26 @@
-# Script to convert a rectilinear grid vtk file to an unstructured grid vtk file
+#!/usr/bin/env python3
+
+# Script to convert a rectilinear grid vtk file
+# from cell data into point data
+import sys
+import subprocess
+
+#Output file name
+ofname="microstructure_US.vtk"
+
+#Intermediate file name
+intname="microstructure_RL_resampled.vtk"
+
+print('Converting to unstructured mesh')
 
 shift_x = 0.0
 shift_y = 0.0
 shift_z = 0.0
 
-rl_grid_filename = 'microstructure_RL_resampled.vtk'
+rl_grid_filename = intname
 target_variable = 'FeatureIds'
 
-print "Opening resampled vtk file"
-
-us_grid_filename = "microstructure_US.vtk"
+us_grid_filename = ofname
 
 # Parse the rectilinear grid vtk file
 f = open(rl_grid_filename)
@@ -32,9 +43,15 @@ z_coords = []
 
 data = []
 
-for line in f:
-    if not skip_line:
+lineno = 0
 
+for line in f:
+    lineno = lineno + 1
+    if lineno%1000 == 0 or lineno == 1:
+        print ('Reading line '+ str(lineno))
+    
+    if not skip_line:
+      
         # First make sure line isn't a comment or blank line
         stripped_line = line.strip()
         if len(stripped_line) < 1 or stripped_line[0] == "#":
@@ -70,25 +87,25 @@ for line in f:
 
         if in_x_coords:
             if not in_y_coords:
-                x_coords = x_coords + split_line
+                x_coords.extend(split_line)
             else:
                 in_x_coords = False
 
         if in_y_coords:
             if not in_z_coords:
-                y_coords = y_coords + split_line
+                y_coords.extend(split_line)
             else:
                 in_y_coords = False
 
         if in_z_coords:
             if split_line[0] != "POINT_DATA" and split_line[0] != "CELL_DATA":
-                z_coords = z_coords + split_line
+                z_coords.extend(split_line)
             else:
                 in_z_coords = False
 
         if in_data_list:
             if split_line[0] != "POINT_DATA" and split_line[0] != "CELL_DATA":
-                data = data + split_line
+                data.extend(split_line)
             else:
                 in_data_list = False
     else:
@@ -120,14 +137,10 @@ if (num_z_coords == 1):
 else:
     num_points = 8 * num_cells
 
-print "number of cells: ", num_cells, " number of points: ", num_points
-print "number of x coordinates: ", num_x_coords
-print "number of z coordinates: ", num_y_coords
-print "number of z coordinates: ", num_y_coords
+print('num cells: ', num_cells, 'num points: ', num_points, num_x_coords, num_y_coords, num_z_coords)
 
 f.write('POINTS ' + str(num_points) + ' double\n')
 
-print "Writing points information"
 # Write the list of points for each cell
 x_counter = 0
 y_counter = 0
@@ -142,6 +155,7 @@ if (num_z_coords == 1):
                 f.write(x_coords[x_counter + 1] + ' ' + y_coords[y_counter + 1] + ' ' + z_coords[z_counter] + '\n')
 else:
     for z_counter in range(0, num_z_coords - 1):
+        print ('Writing list of points for each cell - z slice =' + str(z_counter))
         for y_counter in range(0, num_y_coords - 1):
             for x_counter in range(0, num_x_coords - 1):
 
@@ -156,7 +170,6 @@ else:
                 f.write(x_coords[x_counter + 1] + ' ' + y_coords[y_counter + 1] + ' ' + z_coords[z_counter + 1] + '\n')
 
 # Write the cell info
-print "Writing cells information"
 f.write('\nCELLS ' + str(num_cells) + ' ' + str(num_points+num_cells) + '\n')
 
 if (num_z_coords == 1):
@@ -167,6 +180,7 @@ else:
 point_index = 0
 
 for y_counter in range(0, num_y_coords - 1):
+    print ('Writing cell info - y slice =' + str(y_counter))
     for x_counter in range(0, num_x_coords - 1):
 
         if (num_z_coords == 1):
@@ -194,7 +208,6 @@ f.write('SCALARS ' + target_variable + ' double 1\n')
 f.write('LOOKUP_TABLE default\n')
 
 if (num_z_coords == 1):
-
     for y_counter in range(0, num_y_coords - 1):
         for x_counter in range(0, num_x_coords - 1):
 
@@ -204,6 +217,7 @@ if (num_z_coords == 1):
 
 else:
     for z_counter in range(0, num_z_coords - 1):
+        print ('Writing point data - z slice =' + str(z_counter))
         for y_counter in range(0, num_y_coords - 1):
             for x_counter in range(0, num_x_coords - 1):
 
@@ -211,7 +225,18 @@ else:
 
                 f.write(data[base_index] + " " + data[base_index + 1] + " " + data[base_index + (num_x_coords)] + " " + data[base_index + (num_x_coords) + 1] + " " + data[base_index + num_x_coords*num_y_coords] + " " + data[base_index + num_x_coords*num_y_coords + 1] + " " + data[base_index + (num_x_coords+ num_x_coords*num_y_coords)] + " " + data[base_index + (num_x_coords) + num_x_coords*num_y_coords + 1] + " ")
 
-print "Writing to output file (UNSTRUCTURED_GRID)"
 f.write("\n")
 
 f.close()
+
+
+#print('Removing intermediate file')
+#bashCommand = "rm "+rl_grid_filename;
+#process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+#output, error = process.communicate()
+
+print('DONE!')
+
+#Closing the session
+sys.exit()
+
