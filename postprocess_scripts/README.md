@@ -16,11 +16,11 @@ This should open the cli environment and a VisIt window.
 
 To run in batch mode, type:
 
-\$ visit -cli -s scriptname.py
+\$ visit -cli -s <scriptname.py>
 
 Or to run entirely in batch mode (with no window apperaring)
 
-\$ visit -cli -nowin -s scriptname.py
+\$ visit -cli -nowin -s <scriptname.py>
 
 Note that for full batch mode to work, the following lines need to be added to the script (the first line at the beginning and the second at the end):
 
@@ -28,6 +28,10 @@ import sys
 sys.exit()
 
 ### Postprocessing scripts
+
+#### plot_and_save.py
+
+This script creates a pseudocolor (in 2D) or contour (in 3D) plot for each time states and saves the serieas of plots as png images. The default plotting variable is "n".
 
 #### phase_fraction.py
 
@@ -39,13 +43,6 @@ a 3D system and ![formula](https://render.githubusercontent.com/render/math?math
 The results for all time states are outputted in the file **phi_vs_t.txt**.
 
 For each row, the first column corresponds to the frame number, the second to the time and the third one to the phase fraction.
-
-#### domain_count.py
-
-This script counts the number of separate regions based on the values of field variable "n". Each interconnected region for which n>0.5 is counted as a separate domain. The 
-results for all time states are outputted in the file **nodoms_vs_t.txt**.
-
-For each row, the first column corresponds to the frame number, the second to the time and the third one to the number of domains.
 
 #### interface_area.py
 
@@ -59,3 +56,14 @@ interface in a 2D system, where ![formula](https://render.githubusercontent.com/
 
 The results for all time states are outputted in the file **iarea_vs_t.txt**. 
 For each row, the first column corresponds to the frame number, the second to the time and the third one to the total interface area (or length).
+
+#### domain_stats.py
+
+This script calculates the following quantities for each of the time states: 
+1) Number of domains, defined as the number or separate regions based on the values of field variable, "n". Each interconnected region for which n>0.5 is counted as a separate domain. 
+2) Average domain size (area in 2D and volume in 3D)
+3)  Standard deviation of the domain sizes. 
+
+Results for all time states are outputted in the file **domain_stats_vs_t.txt**.
+
+For each row, the first column corresponds to the frame number, the second to the time,  the third column to the number of domains, the fourth column to the average size, and the fifth column to the standard deviation of the size.
