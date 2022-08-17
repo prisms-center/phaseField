@@ -50,3 +50,4 @@ outF.close()
 DeleteAllPlots()
 CloseDatabase(db)
 
+sys.exit()
