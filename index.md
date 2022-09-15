@@ -90,7 +90,11 @@ For DOI information for other releases, please refer to [this site](https://zeno
 
 ***
 ## Publications That Use PRISMS-PF
+[Kinzer and Chandran, A Phase-Field Study on the Effects of Nanoparticles on Solidification and Grain Growth, arXiv preprint](https://doi.org/10.48550/arXiv.2207.07153)
+
 [Cao, Zhang, Meng, and Zhang, Analyzing effects of temperature gradient and scan rate on metal additive manufacturing microstructure by using phase field-finite element method, Modelling Simul. Mater. Sci. Eng. 30, 034003 (2022)](https://iopscience.iop.org/article/10.1088/1361-651X/ac4f3a)
+
+[Yao, Montiel, and Allison, Investigating the Effects of Dendrite Evolution on Microsegregation in Al–Cu Alloys by Coupling Experiments, Micro-modeling, and Phase-Field Simulations. Metall Mater Trans A 53, 3341–3356 (2022)](https://doi.org/10.1007/s11661-022-06748-5)
 
 [Brewick, Simulating Pitting Corrosion in AM 316L Microstructures Through Phase Field Methods and Computational Modeling, J. Electrochem. Soc. 169, 011503 (2022)](https://iopscience.iop.org/article/10.1149/1945-7111/ac4935)
 
@@ -106,6 +110,10 @@ Note: If you use PRISMS-PF in one of your publications, please send the publicat
 
 ***
 ## Publications That Cite PRISMS-PF
+
+[Endo, Matsuda, Tanaka, et al., A phase-field model by an Ising machine and its application to the phase-separation structure of a diblock polymer. Sci Rep 12, 10794 (2022)](https://doi.org/10.1038/s41598-022-14735-4)
+
+[Stewart, Recent progress on the mesoscale modeling of architected thin-films via phase-field formulations of physical vapor deposition, Computational Materials Science 211, 111503 (2022)](https://doi.org/10.1016/j.commatsci.2022.111503)
 
 [Hong and Viswanathan, Open-Sourcing Phase-Field Simulations for Accelerating Energy Materials Design and Optimization, ACS Energy Letters 2020 5, 3254-3259 (10)](https://pubs.acs.org/doi/abs/10.1021/acsenergylett.0c01904)
 
