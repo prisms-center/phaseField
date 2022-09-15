@@ -90,7 +90,7 @@ For DOI information for other releases, please refer to [this site](https://zeno
 
 ***
 ## Publications That Use PRISMS-PF
-[Kinzer and Chandran, A Phase-Field Study on the Effects of Nanoparticles on Solidification and Grain Growth, arXiv preprint](https://doi.org/10.48550/arXiv.2207.07153)
+[Kinzer and Chandran, A Phase-Field Study on the Effects of Nanoparticles on Solidification and Grain Growth, arXiv preprint (2022)](https://doi.org/10.48550/arXiv.2207.07153)
 
 [Cao, Zhang, Meng, and Zhang, Analyzing effects of temperature gradient and scan rate on metal additive manufacturing microstructure by using phase field-finite element method, Modelling Simul. Mater. Sci. Eng. 30, 034003 (2022)](https://iopscience.iop.org/article/10.1088/1361-651X/ac4f3a)
 
