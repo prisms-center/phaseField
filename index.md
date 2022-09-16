@@ -92,9 +92,11 @@ For DOI information for other releases, please refer to [this site](https://zeno
 ## Publications That Use PRISMS-PF
 [Kinzer and Chandran, A Phase-Field Study on the Effects of Nanoparticles on Solidification and Grain Growth, arXiv preprint (2022)](https://doi.org/10.48550/arXiv.2207.07153)
 
-[Cao, Zhang, Meng, and Zhang, Analyzing effects of temperature gradient and scan rate on metal additive manufacturing microstructure by using phase field-finite element method, Modelling Simul. Mater. Sci. Eng. 30, 034003 (2022)](https://iopscience.iop.org/article/10.1088/1361-651X/ac4f3a)
+[Gao, Wang, Li, et al,, Cerium-alloyed ultra-high strength maraging steel with good ductility: Experiments, first-principles calculations and phase-field simulations, Materials Science and Engineering: A 846, 14330 (2022)](https://doi.org/10.1016/j.msea.2022.143306)
 
 [Yao, Montiel, and Allison, Investigating the Effects of Dendrite Evolution on Microsegregation in Al–Cu Alloys by Coupling Experiments, Micro-modeling, and Phase-Field Simulations. Metall Mater Trans A 53, 3341–3356 (2022)](https://doi.org/10.1007/s11661-022-06748-5)
+
+[Cao, Zhang, Meng, and Zhang, Analyzing effects of temperature gradient and scan rate on metal additive manufacturing microstructure by using phase field-finite element method, Modelling Simul. Mater. Sci. Eng. 30, 034003 (2022)](https://iopscience.iop.org/article/10.1088/1361-651X/ac4f3a)
 
 [Brewick, Simulating Pitting Corrosion in AM 316L Microstructures Through Phase Field Methods and Computational Modeling, J. Electrochem. Soc. 169, 011503 (2022)](https://iopscience.iop.org/article/10.1149/1945-7111/ac4935)
 
