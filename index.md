@@ -73,6 +73,7 @@ For DOI information for other releases, please refer to [this site](https://zeno
 - [PRISMS-PF code repository](https://github.com/prisms-center/phaseField) <br>
 - [User registration link](http://goo.gl/forms/GXo7Im8p2Y)
 - [YouTube channel](https://www.youtube.com/channel/UCZXc3007JuBCGKDcneD_umA/playlists)
+- [Virtual Machine](http://www.prisms-center.org/#/ctools/software) (contains most of the PRISMS Center tools, including PRISMS-PF)
 
 ***
 ## Getting Started
