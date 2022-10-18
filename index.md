@@ -114,7 +114,9 @@ Note: If you use PRISMS-PF in one of your publications, please send the publicat
 ***
 ## Publications That Cite PRISMS-PF
 
-[Endo, Matsuda, Tanaka, et al., A phase-field model by an Ising machine and its application to the phase-separation structure of a diblock polymer. Sci Rep 12, 10794 (2022)](https://doi.org/10.1038/s41598-022-14735-4)
+[Gao, Peng, Zhang, et al., Profound strengthening and toughening effect of reinforcement aspect ratio in composite with network architecture, Journal of Alloys and Compounds, 167444 (2022)](https://doi.org/10.1016/j.jallcom.2022.167444)
+
+[Endo, Matsuda, Tanaka, et al., A phase-field model by an Ising machine and its application to the phase-separation structure of a diblock polymer, Sci Rep 12, 10794 (2022)](https://doi.org/10.1038/s41598-022-14735-4)
 
 [Stewart, Recent progress on the mesoscale modeling of architected thin-films via phase-field formulations of physical vapor deposition, Computational Materials Science 211, 111503 (2022)](https://doi.org/10.1016/j.commatsci.2022.111503)
 
