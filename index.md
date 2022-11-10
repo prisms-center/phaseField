@@ -91,6 +91,9 @@ For DOI information for other releases, please refer to [this site](https://zeno
 
 ***
 ## Publications That Use PRISMS-PF
+[Bhagat and Rudraraju, Modeling of dendritic solidification and numerical analysis of the
+phase-field approach to model complex morphologies in alloys, arXiv preprint (2022)](https://doi.org/10.48550/arXiv.2210.14449)
+
 [Kinzer and Chandran, A Phase-Field Study on the Effects of Nanoparticles on Solidification and Grain Growth, arXiv preprint (2022)](https://doi.org/10.48550/arXiv.2207.07153)
 
 [Gao, Wang, Li, et al,, Cerium-alloyed ultra-high strength maraging steel with good ductility: Experiments, first-principles calculations and phase-field simulations, Materials Science and Engineering: A 846, 14330 (2022)](https://doi.org/10.1016/j.msea.2022.143306)
