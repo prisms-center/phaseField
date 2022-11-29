@@ -18,15 +18,15 @@ private:
 
 	const userInputParameters<dim> userInputs;
 
-	// Function to set the RHS of the governing equations for explicit time dependent equations (in equations.h)
+	// Function to set the RHS of the governing equations for explicit time dependent equations (in equations.cc)
     void explicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 
-    // Function to set the RHS of the governing equations for all other equations (in equations.h)
+    // Function to set the RHS of the governing equations for all other equations (in equations.cc)
     void nonExplicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 
-	// Function to set the LHS of the governing equations (in equations.h)
+	// Function to set the LHS of the governing equations (in equations.cc)
 	void equationLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
 					 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const;
 

@@ -58,7 +58,7 @@ set Skip print steps = 1000
 # Set the boundary conditions
 # =================================================================================
 # Set the boundary condition for each variable, where each variable is given by
-# its name, as defined in equations.h. The four boundary condition
+# its name, as defined in equations.cc. The four boundary condition
 # types are NATURAL, DIRICHLET, NON_UNIFORM_DIRICHLET and PERIODIC. If all
 # of the boundaries have the same boundary condition, only one boundary condition
 # type needs to be given. If multiple boundary condition types are needed, give a
@@ -80,13 +80,13 @@ set Boundary condition for variable n = NATURAL
 # Set the model constants
 # =================================================================================
 # Set the user-defined model constants, which must have a counter-part given in
-# customPDE.h. These are most often used in the residual equations in equations.h,
+# customPDE.h. These are most often used in the residual equations in equations.cc,
 # but may also be used for initial conditions and nucleation calculations. The type
 # options currently are DOUBLE, INT, BOOL, TENSOR, and [symmetry] ELASTIC CONSTANTS
 # where [symmetry] is ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC.
 
-# The mobility, MnV in equations.h
+# The mobility, MnV in equations.cc
 set Model constant MnV = 1.0, DOUBLE
 
-# The gradient energy coefficient, KnV in equations.h
+# The gradient energy coefficient, KnV in equations.cc
 set Model constant KnV = 2.0, DOUBLE
