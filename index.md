@@ -91,6 +91,8 @@ For DOI information for other releases, please refer to [this site](https://zeno
 
 ***
 ## Publications That Use PRISMS-PF
+[Goel, Lyu, DeWitt, Montiel, and Thornton, Simulating microgalvanic corrosion in alloys using the PRISMS phase-field framework, MRS Communications 12, 1050–1059 (2022)](https://doi.org/10.1557/s43579-022-00266-6)
+
 [Bhagat and Rudraraju, Modeling of dendritic solidification and numerical analysis of the
 phase-field approach to model complex morphologies in alloys, arXiv preprint (2022)](https://doi.org/10.48550/arXiv.2210.14449)
 
