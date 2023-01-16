@@ -44,7 +44,7 @@ void  MatrixFreePDE<dim,degree>::computeIntegral(double& integratedField, int in
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::computeIntegralMF(double& integratedField, int index, const std::vector<vectorType*> variableSet){
   //log time
-  computing_timer.enter_section("matrixFreePDE: computeIntegralMF");
+  computing_timer.enter_subsection("matrixFreePDE: computeIntegralMF");
 
   integrated_var = 0.0;
   integral_index = index;
@@ -55,7 +55,7 @@ void MatrixFreePDE<dim,degree>::computeIntegralMF(double& integratedField, int i
   integratedField=Utilities::MPI::sum(integrated_var, MPI_COMM_WORLD);
 
   //end log
-  computing_timer.exit_section("matrixFreePDE: computeIntegralMF");
+  computing_timer.leave_subsection("matrixFreePDE: computeIntegralMF");
 }
 
 template <int dim, int degree>

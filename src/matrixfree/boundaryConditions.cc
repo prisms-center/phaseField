@@ -90,13 +90,13 @@ void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 		  for (unsigned int direction = 0; direction < 2*dim; direction++){
 			  if (userInputs.BC_list[starting_BC_list_index].var_BC_type[direction] == DIRICHLET){
 				  VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
-						  direction, ConstantFunction<dim>(userInputs.BC_list[starting_BC_list_index].var_BC_val[direction],1), *(ConstraintMatrix*) \
+						  direction, ConstantFunction<dim>(userInputs.BC_list[starting_BC_list_index].var_BC_val[direction],1), *(AffineConstraints<double>*) \
 						  constraintsDirichletSet[currentFieldIndex]);
 
 			  }
 			  else if (userInputs.BC_list[starting_BC_list_index].var_BC_type[direction] == NON_UNIFORM_DIRICHLET){
 				  VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
-  						direction, NonUniformDirichletBC<dim,degree>(currentFieldIndex,direction,currentTime,this), *(ConstraintMatrix*) \
+  						direction, NonUniformDirichletBC<dim,degree>(currentFieldIndex,direction,currentTime,this), *(AffineConstraints<double>*) \
   						constraintsDirichletSet[currentFieldIndex]);
 			  }
 		  }
@@ -120,7 +120,7 @@ void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 			  }
 
 			  VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
-					  direction, vectorBCFunction<dim>(BC_values), *(ConstraintMatrix*) \
+					  direction, vectorBCFunction<dim>(BC_values), *(AffineConstraints<double>*) \
 					  constraintsDirichletSet[currentFieldIndex],mask);
 
 				// Mask again, this time for non-uniform Dirichlet BCs
@@ -135,10 +135,10 @@ void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 			  }
 
 			  // VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
-				//   direction, NonUniformDirichletBC<dim,degree>(currentFieldIndex,direction,currentTime,this), *(ConstraintMatrix*) \
+				//   direction, NonUniformDirichletBC<dim,degree>(currentFieldIndex,direction,currentTime,this), *(AffineConstraints<double>*) \
 				//   constraintsDirichletSet[currentFieldIndex],mask);
                 VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
-                 direction, NonUniformDirichletBCVector<dim,degree>(currentFieldIndex,direction,currentTime,this), *(ConstraintMatrix*) \
+                 direction, NonUniformDirichletBCVector<dim,degree>(currentFieldIndex,direction,currentTime,this), *(AffineConstraints<double>*) \
                  constraintsDirichletSet[currentFieldIndex],mask);
 
 
@@ -169,7 +169,7 @@ void MatrixFreePDE<dim,degree>::setPeriodicity(){
 
 // Set constraints to enforce periodic boundary conditions
 template <int dim, int degree>
-void MatrixFreePDE<dim,degree>::setPeriodicityConstraints(ConstraintMatrix * constraints, const DoFHandler<dim>* dof_handler) const {
+void MatrixFreePDE<dim,degree>::setPeriodicityConstraints(AffineConstraints<double>* constraints, const DoFHandler<dim>* dof_handler) const {
 	// First, get the variable index of the current field
 		unsigned int starting_BC_list_index = 0;
 		for (unsigned int i=0; i<currentFieldIndex; i++){
@@ -235,7 +235,7 @@ void MatrixFreePDE<dim,degree>::getComponentsWithRigidBodyModes( std::vector<int
 
 // Set constraints to pin the solution if there are no Dirichlet BCs for a component of a variable in an elliptic equation
 template <int dim, int degree>
-void MatrixFreePDE<dim,degree>::setRigidBodyModeConstraints(const std::vector<int> rigidBodyModeComponents, ConstraintMatrix * constraints, const DoFHandler<dim>* dof_handler) const {
+void MatrixFreePDE<dim,degree>::setRigidBodyModeConstraints(const std::vector<int> rigidBodyModeComponents, AffineConstraints<double>* constraints, const DoFHandler<dim>* dof_handler) const {
 
 	if ( rigidBodyModeComponents.size() > 0 ){
 

@@ -6,7 +6,7 @@
 
 
 #include <deal.II/lac/vector.h>
-#include <deal.II/lac/parallel_vector.h>
+#include <deal.II/lac/la_parallel_vector.h>
 
 #include "model_variables.h"
 #include "varBCs.h"

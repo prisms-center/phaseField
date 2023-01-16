@@ -7,7 +7,7 @@
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::computeExplicitRHS(){
   //log time
-  computing_timer.enter_section("matrixFreePDE: computeRHS");
+  computing_timer.enter_subsection("matrixFreePDE: computeRHS");
 
   //clear residual vectors before update
   for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
@@ -20,7 +20,7 @@ void MatrixFreePDE<dim,degree>::computeExplicitRHS(){
   matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getExplicitRHS, this, residualSet, solutionSet);
 
   //end log
-  computing_timer.exit_section("matrixFreePDE: computeRHS");
+  computing_timer.leave_subsection("matrixFreePDE: computeRHS");
 }
 
 template <int dim, int degree>
@@ -57,7 +57,7 @@ void MatrixFreePDE<dim,degree>::getExplicitRHS(const MatrixFree<dim,double> &dat
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::computeNonexplicitRHS(){
   //log time
-  computing_timer.enter_section("matrixFreePDE: computeRHS");
+  computing_timer.enter_subsection("matrixFreePDE: computeRHS");
 
   //clear residual vectors before update
   for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
@@ -70,7 +70,7 @@ void MatrixFreePDE<dim,degree>::computeNonexplicitRHS(){
   matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getNonexplicitRHS, this, residualSet, solutionSet);
 
   //end log
-  computing_timer.exit_section("matrixFreePDE: computeRHS");
+  computing_timer.leave_subsection("matrixFreePDE: computeRHS");
 }
 
 template <int dim, int degree>

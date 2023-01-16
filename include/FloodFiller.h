@@ -8,11 +8,11 @@
 #include <deal.II/grid/tria_accessor.h>
 #include <deal.II/grid/tria_iterator.h>
 #include <deal.II/dofs/dof_handler.h>
-#include <deal.II/lac/parallel_vector.h>
+#include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/matrix_free/fe_evaluation.h>
 
 #ifndef vectorType
-typedef dealii::parallel::distributed::Vector<double> vectorType;
+typedef dealii::LinearAlgebra::distributed::Vector<double> vectorType;
 #endif
 
 /**

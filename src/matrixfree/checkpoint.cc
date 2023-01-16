@@ -9,7 +9,7 @@
 // Save a checkpoint
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::save_checkpoint(){
-    computing_timer.enter_section("matrixFreePDE: save_checkpoint");
+    computing_timer.enter_subsection("matrixFreePDE: save_checkpoint");
     unsigned int my_id = Utilities::MPI::this_mpi_process (MPI_COMM_WORLD);
 
     if (my_id == 0)
@@ -61,22 +61,22 @@ void MatrixFreePDE<dim,degree>::save_checkpoint(){
         // Finally, save the triangulation and the solutionTransfer objects
         if (scalar_var_indices.size() > 0 && vector_var_indices.size() == 0){
             parallel::distributed::SolutionTransfer<dim, vectorType> system_trans_scalars (*dofHandlersSet[scalar_var_indices[0]]);
-            system_trans_scalars.prepare_serialization(solSet_transfer_scalars);
+            system_trans_scalars.prepare_for_serialization(solSet_transfer_scalars);
 
             triangulation.save ("restart.mesh");
         }
         else if (scalar_var_indices.size() == 0 && vector_var_indices.size() > 0){
             parallel::distributed::SolutionTransfer<dim, vectorType> system_trans_vectors (*dofHandlersSet[vector_var_indices[0]]);
-            system_trans_vectors.prepare_serialization(solSet_transfer_vectors);
+            system_trans_vectors.prepare_for_serialization(solSet_transfer_vectors);
 
             triangulation.save ("restart.mesh");
         }
         else {
             parallel::distributed::SolutionTransfer<dim, vectorType> system_trans_scalars (*dofHandlersSet[scalar_var_indices[0]]);
-            system_trans_scalars.prepare_serialization(solSet_transfer_scalars);
+            system_trans_scalars.prepare_for_serialization(solSet_transfer_scalars);
 
             parallel::distributed::SolutionTransfer<dim, vectorType> system_trans_vectors (*dofHandlersSet[vector_var_indices[0]]);
-            system_trans_vectors.prepare_serialization(solSet_transfer_vectors);
+            system_trans_vectors.prepare_for_serialization(solSet_transfer_vectors);
 
             triangulation.save ("restart.mesh");
         }
@@ -93,7 +93,7 @@ void MatrixFreePDE<dim,degree>::save_checkpoint(){
     }
 
     pcout << "*** Checkpoint created! ***" << std::endl << std::endl;
-    computing_timer.exit_section("matrixFreePDE: save_checkpoint");
+    computing_timer.leave_subsection("matrixFreePDE: save_checkpoint");
 
 }
 

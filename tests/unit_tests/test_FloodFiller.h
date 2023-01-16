@@ -163,7 +163,7 @@ template <int dim,typename T>
     additional_data.mapping_update_flags = (update_values | update_gradients | update_JxW_values | update_quadrature_points);
     QGaussLobatto<1> quadrature (degree+1);
 
-    ConstraintMatrix constraints;
+    AffineConstraints<double> constraints;
     constraints.clear();
 
     dealii::MatrixFree<dim,double> matrixFreeObject;

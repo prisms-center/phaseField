@@ -10,7 +10,7 @@ template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::reassignGrains () {
 
     //log time
-    computing_timer.enter_section("matrixFreePDE: reassignGrains");
+    computing_timer.enter_subsection("matrixFreePDE: reassignGrains");
 
     pcout << "Reassigning grains..." << std::endl;
 
@@ -77,7 +77,7 @@ void MatrixFreePDE<dim,degree>::reassignGrains () {
     pcout << "Reassigning grains completed." << std::endl << std::endl;
 
     //end log
-    computing_timer.exit_section("matrixFreePDE: reassignGrains");
+    computing_timer.leave_subsection("matrixFreePDE: reassignGrains");
 
 
 }

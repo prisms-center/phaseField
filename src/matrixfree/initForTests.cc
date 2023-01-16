@@ -48,8 +48,8 @@ template <int dim, int degree>
    DoFTools::extract_locally_relevant_dofs (*dof_handler, *locally_relevant_dofs);
 
    // //create constraints
-   ConstraintMatrix *constraintsOther;
-   constraintsOther=new ConstraintMatrix; constraintsOtherSet.push_back(constraintsOther);
+   AffineConstraints<double> *constraintsOther;
+   constraintsOther=new AffineConstraints<double>; constraintsOtherSet.push_back(constraintsOther);
    constraintsOtherSet_nonconst.push_back(constraintsOther);
    constraintsOther->clear(); constraintsOther->reinit(*locally_relevant_dofs);
    DoFTools::make_hanging_node_constraints (*dof_handler, *constraintsOther);

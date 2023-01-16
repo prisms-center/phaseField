@@ -6,7 +6,7 @@
 template <int dim, int degree>
  void MatrixFreePDE<dim,degree>::reinit(){
 
-	 computing_timer.enter_section("matrixFreePDE: reinitialization");
+	 computing_timer.enter_subsection("matrixFreePDE: reinitialization");
 
 	 //setup system
 	 pcout << "Reinitializing matrix free object\n";
@@ -35,7 +35,7 @@ template <int dim, int degree>
 		 DoFTools::extract_locally_relevant_dofs (*dof_handler, *locally_relevant_dofs);
 
 		 //create constraints
-		 ConstraintMatrix *constraintsDirichlet, *constraintsOther;
+         AffineConstraints<double> *constraintsDirichlet, *constraintsOther;
 
 		 constraintsDirichlet=constraintsDirichletSet_nonconst.at(it->index);
 		 constraintsOther=constraintsOtherSet_nonconst.at(it->index);
@@ -154,7 +154,7 @@ template <int dim, int degree>
 		 solutionSet[fieldIndex]->update_ghost_values();
  	 }
 
- 	 computing_timer.exit_section("matrixFreePDE: reinitialization");
+ 	 computing_timer.leave_subsection("matrixFreePDE: reinitialization");
 }
 
 #include "../../include/matrixFreePDE_template_instantiations.h"

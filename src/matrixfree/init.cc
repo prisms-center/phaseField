@@ -7,7 +7,7 @@
  //populate with fields and setup matrix free system
 template <int dim, int degree>
  void MatrixFreePDE<dim,degree>::init(){
-	 computing_timer.enter_section("matrixFreePDE: initialization");
+	 computing_timer.enter_subsection("matrixFreePDE: initialization");
 
 	 //creating mesh
 
@@ -128,11 +128,11 @@ template <int dim, int degree>
 		 DoFTools::extract_locally_relevant_dofs (*dof_handler, *locally_relevant_dofs);
 
 		 // Create constraints
-		 ConstraintMatrix *constraintsDirichlet, *constraintsOther;
+         AffineConstraints<double> *constraintsDirichlet, *constraintsOther;
 
-		 constraintsDirichlet=new ConstraintMatrix; constraintsDirichletSet.push_back(constraintsDirichlet);
+		 constraintsDirichlet=new AffineConstraints<double>; constraintsDirichletSet.push_back(constraintsDirichlet);
 		 constraintsDirichletSet_nonconst.push_back(constraintsDirichlet);
-		 constraintsOther=new ConstraintMatrix; constraintsOtherSet.push_back(constraintsOther);
+		 constraintsOther=new AffineConstraints<double>; constraintsOtherSet.push_back(constraintsOther);
 		 constraintsOtherSet_nonconst.push_back(constraintsOther);
 		 valuesDirichletSet.push_back(new std::map<dealii::types::global_dof_index, double>);
 
@@ -266,7 +266,7 @@ template <int dim, int degree>
           load_checkpoint_time_info();
       }
 
-	 computing_timer.exit_section("matrixFreePDE: initialization");
+	 computing_timer.leave_subsection("matrixFreePDE: initialization");
 }
 
 template <int dim, int degree>

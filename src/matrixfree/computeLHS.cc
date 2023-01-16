@@ -6,10 +6,10 @@
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::vmult (vectorType &dst, const vectorType &src) const{
   //log time
-  computing_timer.enter_section("matrixFreePDE: computeLHS");
+  computing_timer.enter_subsection("matrixFreePDE: computeLHS");
 
   //create temporary copy of src vector as src2, as vector src is marked const and cannot be changed
-  dealii::parallel::distributed::Vector<double> src2;
+  dealii::LinearAlgebra::distributed::Vector<double> src2;
   matrixFreeObject.initialize_dof_vector(src2,  currentFieldIndex);
   src2=src;
 
@@ -30,7 +30,7 @@ void MatrixFreePDE<dim,degree>::vmult (vectorType &dst, const vectorType &src) c
   }
 
   //end log
-  computing_timer.exit_section("matrixFreePDE: computeLHS");
+  computing_timer.leave_subsection("matrixFreePDE: computeLHS");
 }
 
 template <int dim, int degree>

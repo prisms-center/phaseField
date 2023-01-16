@@ -22,7 +22,7 @@
 #include <deal.II/dofs/dof_tools.h>
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/numerics/vector_tools.h>
-#include <deal.II/lac/parallel_vector.h>
+#include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/matrix_free/matrix_free.h>
 #include <deal.II/matrix_free/fe_evaluation.h>
 #include <deal.II/base/config.h>
@@ -44,7 +44,7 @@
 typedef dealii::VectorizedArray<double> scalarType;
 #endif
 #ifndef vectorType
-typedef dealii::parallel::distributed::Vector<double> vectorType;
+typedef dealii::LinearAlgebra::distributed::Vector<double> vectorType;
 #endif
 
 //macro for constants
@@ -165,7 +165,7 @@ class MatrixFreePDE:public Subscriptor
    *of freedom and the corresponding degree of freedom constraints. Currently the type of constraints stored are either
    *Dirichlet boundary conditions or hanging node constraints for adaptive meshes.
    */
-  std::vector<const ConstraintMatrix*> constraintsDirichletSet, constraintsOtherSet;
+  std::vector<const AffineConstraints<double>*> constraintsDirichletSet, constraintsOtherSet;
   /*A vector of all the degree of freedom objects is the problem. A degree of freedom object handles the serial/parallel distribution
    *of the degrees of freedom for all the primal fields in the problem.*/
   std::vector<const DoFHandler<dim>*>  dofHandlersSet;
@@ -175,7 +175,7 @@ class MatrixFreePDE:public Subscriptor
    */
   std::vector<const IndexSet*>         locally_relevant_dofsSet;
   /*Copies of constraintSet elements, but stored as non-const to enable application of constraints.*/
-  std::vector<ConstraintMatrix*>       constraintsDirichletSet_nonconst, constraintsOtherSet_nonconst;
+  std::vector<AffineConstraints<double>*>       constraintsDirichletSet_nonconst, constraintsOtherSet_nonconst;
   /*Copies of dofHandlerSet elements, but stored as non-const.*/
   std::vector<DoFHandler<dim>*>        dofHandlersSet_nonconst;
   /*Copies of locally_relevant_dofsSet elements, but stored as non-const.*/
@@ -294,9 +294,9 @@ class MatrixFreePDE:public Subscriptor
 
   // Methods to apply periodic BCs
   void setPeriodicity();
-  void setPeriodicityConstraints(ConstraintMatrix *, const DoFHandler<dim>*) const;
+  void setPeriodicityConstraints(AffineConstraints<double>*, const DoFHandler<dim>*) const;
   void getComponentsWithRigidBodyModes(std::vector<int> &) const;
-  void setRigidBodyModeConstraints(const std::vector<int>, ConstraintMatrix *, const DoFHandler<dim>*) const;
+  void setRigidBodyModeConstraints(const std::vector<int>, AffineConstraints<double>*, const DoFHandler<dim>*) const;
 
   //methods to apply initial conditions
   /*Virtual method to apply initial conditions.  This is usually expected to be provided by the user in IBVP (Initial Boundary Value Problems).*/

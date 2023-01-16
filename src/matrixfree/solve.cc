@@ -6,7 +6,7 @@
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::solve(){
     //log time
-    computing_timer.enter_section("matrixFreePDE: solve");
+    computing_timer.enter_subsection("matrixFreePDE: solve");
     pcout << "\nsolving...\n\n";
 
     //time dependent BVP
@@ -114,7 +114,7 @@ void MatrixFreePDE<dim,degree>::solve(){
     }
 
     //log time
-    computing_timer.exit_section("matrixFreePDE: solve");
+    computing_timer.leave_subsection("matrixFreePDE: solve");
 }
 
 #include "../../include/matrixFreePDE_template_instantiations.h"

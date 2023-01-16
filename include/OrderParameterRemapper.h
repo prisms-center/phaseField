@@ -2,7 +2,7 @@
 #define INCLUDE_ORDERPARAMETERREMAPPER_H_
 
 #include "SimplifiedGrainRepresentation.h"
-#include <deal.II/lac/parallel_vector.h>
+#include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/dofs/dof_handler.h>
 #include <vector>
 

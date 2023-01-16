@@ -8,7 +8,7 @@ template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
 
     //log time
-    computing_timer.enter_section("matrixFreePDE: solveIncrements");
+    computing_timer.enter_subsection("matrixFreePDE: solveIncrements");
     Timer time;
     char buffer[200];
 
@@ -40,9 +40,9 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
             if (has_Dirichlet_BCs){
                 constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
             }
-            //computing_timer.enter_section("matrixFreePDE: updateExplicitGhosts");
+            //computing_timer.enter_subsection("matrixFreePDE: updateExplicitGhosts");
             solutionSet[fieldIndex]->update_ghost_values();
-            //computing_timer.exit_section("matrixFreePDE: updateExplicitGhosts");
+            //computing_timer.leave_subsection("matrixFreePDE: updateExplicitGhosts");
 
             // Print update to screen and confirm that solution isn't nan
             if (currentIncrement%userInputs.skip_print_steps==0){
@@ -95,7 +95,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
                         pcout<<buffer;
                     }
 
-                    dealii::parallel::distributed::Vector<double> solution_diff = *solutionSet[fieldIndex];
+                    dealii::LinearAlgebra::distributed::Vector<double> solution_diff = *solutionSet[fieldIndex];
 
                     //apply Dirichlet BC's
                     // Loops through all DoF to which ones have Dirichlet BCs applied, replace the ones that do with the Dirichlet value
@@ -339,7 +339,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
         pcout << "wall time: " << time.wall_time() << "s\n";
     }
     //log time
-    computing_timer.exit_section("matrixFreePDE: solveIncrements");
+    computing_timer.leave_subsection("matrixFreePDE: solveIncrements");
 
 }
 

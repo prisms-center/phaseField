@@ -8,7 +8,7 @@ template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::setNonlinearEqInitialGuess(){
 
     //log time
-    computing_timer.enter_section("matrixFreePDE: setNonlinearEqInitialGuess");
+    computing_timer.enter_subsection("matrixFreePDE: setNonlinearEqInitialGuess");
     Timer time;
     char buffer[200];
 
@@ -85,14 +85,14 @@ void MatrixFreePDE<dim,degree>::setNonlinearEqInitialGuess(){
         pcout << "wall time: " << time.wall_time() << "s\n";
     }
     //log time
-    computing_timer.exit_section("matrixFreePDE: setNonlinearEqInitialGuess");
+    computing_timer.leave_subsection("matrixFreePDE: setNonlinearEqInitialGuess");
 
 }
 
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::computeLaplaceRHS(unsigned int fieldIndex){
   //log time
-  computing_timer.enter_section("matrixFreePDE: computeLaplaceRHS");
+  computing_timer.enter_subsection("matrixFreePDE: computeLaplaceRHS");
 
   //clear residual vectors before update
   (*residualSet[fieldIndex])=0.0;
@@ -102,7 +102,7 @@ void MatrixFreePDE<dim,degree>::computeLaplaceRHS(unsigned int fieldIndex){
   matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getLaplaceRHS, this, *residualSet[fieldIndex], *solutionSet[fieldIndex]);
 
   //end log
-  computing_timer.exit_section("matrixFreePDE: computeLaplaceRHS");
+  computing_timer.leave_subsection("matrixFreePDE: computeLaplaceRHS");
 }
 
 template <int dim, int degree>

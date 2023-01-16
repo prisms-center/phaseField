@@ -7,7 +7,7 @@
 template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::outputResults() {
   //log time
-  computing_timer.enter_section("matrixFreePDE: output");
+  computing_timer.enter_subsection("matrixFreePDE: output");
 
   //create DataOut object
   DataOut<dim> data_out;
@@ -160,7 +160,7 @@ void MatrixFreePDE<dim,degree>::outputResults() {
   }
 
   //log time
-  computing_timer.exit_section("matrixFreePDE: output");
+  computing_timer.leave_subsection("matrixFreePDE: output");
 }
 
 #include "../../include/matrixFreePDE_template_instantiations.h"
