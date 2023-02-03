@@ -303,7 +303,7 @@ Expanding $\mu_{\eta}$ in equation \ref{AC_weak} and applying the divergence the
 
 \section{Nucleation method}
 
-We follow the same approach as Jokisaari and Thornton [Comput. Mater. Sci. {\bf 112}, 128?138 (2016)] which consists of adding nuclei throughout a phase field simulation based on a probability that depends on the local supersaturation. This probability is calculated every fixed number of time steps and for every element of the computational domain. In each nucleation event, nucleation is triggered at a point within the $\alpha$ phase. Each nucleus is then added to the system by modifying the order parameter to it's $\beta$ phase value within a small domain around the selected nucleation center. This domain can be spherical/circular or ellipsoidal/elliptical.  
+We follow the same approach as Jokisaari and Thornton [Comput. Mater. Sci. {\bf 112}, 128-138 (2016)] which consists of adding nuclei throughout a phase field simulation based on a probability that depends on the local supersaturation. This probability is calculated every fixed number of time steps and for every element of the computational domain. In each nucleation event, nucleation is triggered at a point within the $\alpha$ phase. Each nucleus is then added to the system by modifying the order parameter to it's $\beta$ phase value within a small domain around the selected nucleation center. This domain can be spherical/circular or ellipsoidal/elliptical.  
 
 \subsection{Nucleation rate}
 
@@ -325,7 +325,7 @@ where  $k_1$ and $k_2$ are now taken as constant parameters, $\Delta c=c(\mathbf
 
 \subsection{Nucleation probability}
 
-Considering  $J^*$ to be approximately constant within a small volume, $\Delta V$, and for a small time interval, $\Delta t$, the probability that at least one nucleation event occurs in $\Delta V$ within $\Delta t$ is given by
+Considering  $J^*$ to be approximately constant within a small volume, $\Delta V$, and for a small time interval, $\Delta t$, the probability that at least one nucleation event occurs in $\Delta V$ within $\Delta t$ is given by [Simmons et al., Scripta Mater. {\bf 43}, 935 (2000)]
 \\
 \begin{equation}
 \label{nuc_prob}
