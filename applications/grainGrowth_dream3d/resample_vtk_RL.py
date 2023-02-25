@@ -11,7 +11,7 @@ ifname="microstructure_RL.vtk"
 #Output file name
 ofname="microstructure_RL_resampled"
 
-print "Opening input vtk file from DREAM.3D"
+print("Opening input vtk file from DREAM.3D")
 
 # Step 1: Open an Rectilinear vtk file
 OpenDatabase(ifname)
@@ -24,20 +24,20 @@ DrawPlots()
 Query("Grid Information")
 gpq = GetQueryOutputValue()
 # Extracting number of grid points in each direction
-num_x_coords = int(gpq[2]);
-num_y_coords = int(gpq[3]);
-num_z_coords = int(gpq[4]);
+num_x_coords = int(gpq[2])
+num_y_coords = int(gpq[3])
+num_z_coords = int(gpq[4])
 
-print "number of grid points z, y, z:" , num_x_coords, num_y_coords, num_z_coords
+print ("number of grid points z, y, z: " + str(num_x_coords) + ", " + str(num_y_coords) + ", " + str(num_z_coords))
 
-#Getting the min and maz coordinates of the system
+#Getting the min and max coordinates of the system
 Query("SpatialExtents", use_actual_data=1)
 seq = GetQueryOutputValue()
 min_x_val = seq[0]
 min_y_val = seq[2]
 min_z_val = seq[4]
 
-print "Translation of system coordinades to origin"
+print("Translation of system coordinades to origin")
 
 # Translating the system such that all coordinates are positive
 AddOperator("Transform", 1)
@@ -53,7 +53,7 @@ if min_z_val < 0.0:
     TransformAtts.translateZ = -min_z_val
 SetOperatorOptions(TransformAtts, 0, 1)
 
-print "Resampling into rectilinear grid with point data"
+print("Resampling into rectilinear grid with point data")
 #Resampling the system so that values at points are reported
 AddOperator("Resample", 1)
 ResampleAtts = ResampleAttributes()
@@ -70,7 +70,7 @@ SetOperatorOptions(ResampleAtts, 1, 1)
 DrawPlots()
 
 #Export the data in VTK Legacy ASCII format
-print "Generating resampled output file (VTK Legacy ASCII; RECTILINEAR_GRID format)"
+print("Generating resampled output file (VTK Legacy ASCII; RECTILINEAR_GRID format)")
 
 ExportDBAtts = ExportDBAttributes()
 ExportDBAtts.filename = ofname

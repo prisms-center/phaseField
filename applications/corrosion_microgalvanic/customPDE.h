@@ -98,10 +98,10 @@ private:
                           ("tStepStartForV");
   double initialGuessForPhi = userInputs.get_model_constant_double
                               ("guessValPhi");
-  double FarC = 96485.33289;
-  double RV = 8.314;
-  double deltaV = sqrt(2.0*epssqV);
-  double MconstV = 2.0*(VMV/(zMV*FarC))*deltaV; 
+  double FarC = 96485.33289; //Faraday constant [C/mol]
+  double RV = 8.314; //Gas constant [J/(mol K)]
+  double deltaV = sqrt(2.0*epssqV); //Equilibrium interface half-width
+  double MconstV = 2.0*(VMV/(zMV*FarC))*deltaV; //Constant prefactor for mobility
 
   // ================================================================
 
