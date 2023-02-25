@@ -370,7 +370,7 @@ class MatrixFreePDE:public Subscriptor
   // Methods and variables for integration
   double integrated_var;
   unsigned int integral_index;
-  dealii::Threads::Mutex assembler_lock;
+  std::mutex assembler_lock;
 
   void computeIntegralMF(double& integratedField, int index, const std::vector<vectorType*> postProcessedSet);
 
