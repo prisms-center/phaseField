@@ -74,15 +74,13 @@ void MatrixFreePDE<dim,degree>::getIntegralMF(const MatrixFree<dim,double> &data
 
         unsigned int num_q_points = var.n_q_points;
 
-		dealii::AlignedVector<dealii::VectorizedArray<double> > JxW(num_q_points);
-		var.fill_JxW_values(JxW);
-
         //loop over quadrature points
         for (unsigned int q=0; q<num_q_points; ++q){
 			dealii::VectorizedArray<double> val = var.get_value(q);
+			dealii::VectorizedArray<double> jxw = var.JxW(q);
 			assembler_lock.lock ();
-			for (unsigned i=0; i<val.n_array_elements;i++){
-				integrated_var += val[i]*JxW[q][i];
+			for (unsigned i=0; i<val.size();i++){
+				integrated_var += val[i]*jxw[i];
 			}
 			assembler_lock.unlock ();
         }
