@@ -71,7 +71,7 @@ scalarvalueType mu = variable_list.get_scalar_value(2);
 
 // The azimuthal angle
 scalarvalueType theta;
-for (unsigned i=0; i< phi.n_array_elements;i++){
+for (unsigned i=0; i< phi.size();i++){
 	theta[i] = std::atan2(phix[1][i],phix[0][i]);
 }
 
@@ -129,7 +129,7 @@ scalarvalueType f_phi = -(phi-constV(lambda)*u*(constV(1.0)-phi*phi))*(constV(1.
 
 // The azimuthal angle
 scalarvalueType theta;
-for (unsigned i=0; i< phi.n_array_elements;i++){
+for (unsigned i=0; i< phi.size();i++){
 	theta[i] = std::atan2(phix[1][i],phix[0][i]);
 }
 
