@@ -153,7 +153,7 @@ void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim>
 	}
 
 	assembler_lock.acquire ();
-	for (unsigned i=0; i<f_el.n_array_elements;i++){
+	for (unsigned i=0; i<f_el.size();i++){
 	  // For some reason, some of the values in this loop
 	  if (f_el[i] > 1.0e-10){
 		  this->energy+=f_el[i]*JxW_value[i];

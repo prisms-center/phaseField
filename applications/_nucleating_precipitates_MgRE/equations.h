@@ -259,7 +259,7 @@ void customPDE<dim,degree>::seedNucleus(const dealii::Point<dim, dealii::Vectori
                     q_point_loc,
                     thisNucleus->orderParameterIndex);
 
-				for (unsigned i=0; i<gamma.n_array_elements;i++){
+				for (unsigned i=0; i<gamma.size();i++){
 					if (weighted_dist[i] <= 1.0){
 						gamma[i] = 0.0;
 

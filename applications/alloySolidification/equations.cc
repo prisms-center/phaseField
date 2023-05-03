@@ -71,7 +71,7 @@ scalarvalueType xi = variable_list.get_scalar_value(2);
 
 // The azimuthal angle
 //scalarvalueType theta;
-//for (unsigned i=0; i< phi.n_array_elements;i++){
+//for (unsigned i=0; i< phi.size();i++){
 //	theta[i] = std::atan2(phix[1][i],phix[0][i]);
 //}
 
@@ -159,7 +159,7 @@ void customPDE<dim,degree>::nonExplicitEquationRHS(variableContainer<dim,degree,
 
  // The azimuthal angle
  //scalarvalueType theta;
- //for (unsigned i=0; i< phi.n_array_elements;i++){
+ //for (unsigned i=0; i< phi.size();i++){
  //	theta[i] = std::atan2(phix[1][i],phix[0][i]);
  //}
 

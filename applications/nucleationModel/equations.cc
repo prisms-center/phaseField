@@ -127,7 +127,7 @@ void customPDE<dim,degree>::seedNucleus(const dealii::Point<dim, dealii::Vectori
 				// Calculate the weighted distance function to the order parameter freeze boundary (weighted_dist = 1.0 on that boundary)
 				dealii::VectorizedArray<double> weighted_dist = this->weightedDistanceFromNucleusCenter(thisNucleus->center, userInputs.get_nucleus_freeze_semiaxes(thisNucleus->orderParameterIndex), q_point_loc, thisNucleus->orderParameterIndex);
 
-				for (unsigned i=0; i<gamma.n_array_elements;i++){
+				for (unsigned i=0; i<gamma.size();i++){
 					if (weighted_dist[i] <= 1.0){
 						gamma[i] = 0.0;
 

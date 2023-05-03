@@ -55,7 +55,7 @@ scalarvalueType max_op = constV(100.0);
 for (unsigned int i=0; i<userInputs.number_of_variables; i++){
     ni = variable_list.get_scalar_value(i);
 
-    for (unsigned int v=0; v<ni.n_array_elements;v++){
+    for (unsigned int v=0; v<ni.size();v++){
         if (ni[v] > max_val[v]){
             max_val[v] = ni[v];
             max_op[v] = i;
@@ -64,7 +64,7 @@ for (unsigned int i=0; i<userInputs.number_of_variables; i++){
 }
 
 scalarvalueType feature_ids = constV(-1.0);
-for (unsigned int v=0; v<ni.n_array_elements;v++){
+for (unsigned int v=0; v<ni.size();v++){
     for (unsigned int g=0; g<this->simplified_grain_representations.size(); g++){
 
         unsigned int max_op_nonvec = (unsigned int)std::abs(max_op[v]);
@@ -95,7 +95,7 @@ for (unsigned int i=0; i<userInputs.number_of_variables; i++){
     ni = variable_list.get_scalar_value(i);
     sum_n += ni;
 }
-for (unsigned int v=0; v<ni.n_array_elements;v++){
+for (unsigned int v=0; v<ni.size();v++){
     if (sum_n[v] < 0.01){
         max_op[v] = -1.0;
         feature_ids[v] = -1.0;

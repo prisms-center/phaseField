@@ -59,7 +59,7 @@ scalarvalueType f_chem = -0.5 * phi*phi + 0.25*phi*phi*phi*phi + lambda*u*phi*(1
 
 // The azimuthal angle
 scalarvalueType theta;
-for (unsigned i=0; i< phi.n_array_elements;i++){
+for (unsigned i=0; i< phi.size();i++){
 	theta[i] = std::atan2(phix[1][i],phix[0][i]);
 }
 

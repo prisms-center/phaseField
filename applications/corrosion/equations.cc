@@ -278,7 +278,7 @@ void customPDE<dim,degree>::nonExplicitEquationRHS(variableContainer<dim,degree,
     scalarvalueType prefac=zMV*FarC/(constV(1.0)-VMV*cM);
     // 2*deltaV/tau
     scalarvalueType twodelintau=(zMV*DMV*FarC/(RV*TV))*std::abs(gradPhin);
-    for (unsigned int j=0; j<psi.n_array_elements;j++){
+    for (unsigned int j=0; j<psi.size();j++){
         if (twodelintau[j] < DMV/(2.0*deltaV))
         twodelintau[j] = DMV/(2.0*deltaV);
     }
@@ -399,7 +399,7 @@ void customPDE<dim,degree>::equationLHS(variableContainer<dim,degree,dealii::Vec
     // 2*deltaV/tau
     
     scalarvalueType twodelintau=(zMV*DMV*FarC/(RV*TV))*std::abs(gradPhin);
-    for (unsigned int j=0; j<psi.n_array_elements;j++){
+    for (unsigned int j=0; j<psi.size();j++){
         if (twodelintau[j] < DMV/(2.0*deltaV))
         twodelintau[j] = DMV/(2.0*deltaV);
     }
@@ -439,7 +439,7 @@ template <int dim,int degree>
 void customPDE<dim,degree>::capFields(dealii::VectorizedArray<double> & ncp, dealii::VectorizedArray<double> & psicp,
                                       dealii::VectorizedArray<double> n, dealii::VectorizedArray<double> psi) const {
     //Capping n to lower threshold bound and upper bound of 1
-    for (unsigned j=0; j<ncp.n_array_elements;j++){
+    for (unsigned j=0; j<ncp.size();j++){
         ncp[j]=n[j];
         if (n[j] < 0.0)
             ncp[j] = 0.0;
@@ -447,7 +447,7 @@ void customPDE<dim,degree>::capFields(dealii::VectorizedArray<double> & ncp, dea
             ncp[j] = 1.0;
     }
     //Capping psi to lower threshold bound and upper bound of 1
-    for (unsigned j=0; j<ncp.n_array_elements;j++){
+    for (unsigned j=0; j<ncp.size();j++){
         psicp[j]=psi[j];
         if (psi[j] < lthresh)
             psicp[j] = lthresh;

@@ -408,7 +408,7 @@ dealii::VectorizedArray<double> MatrixFreePDE<dim,degree>::weightedDistanceFromN
         shortest_edist_tensor[j] = center(j) - q_point_loc(j); // Can I do this outside the loop?
 
         if (userInputs.BC_list[var_index].var_BC_type[2*j]==PERIODIC){
-            for (unsigned k=0; k<q_point_loc(0).n_array_elements;k++){
+            for (unsigned k=0; k<q_point_loc(0).size();k++){
                 shortest_edist_tensor[j][k] = shortest_edist_tensor[j][k]-round(shortest_edist_tensor[j][k]/userInputs.domain_size[j])*userInputs.domain_size[j];
             }
         }
@@ -418,7 +418,7 @@ dealii::VectorizedArray<double> MatrixFreePDE<dim,degree>::weightedDistanceFromN
         shortest_edist_tensor[j] /= constV(semiaxes[j]);
     }
     weighted_dist = shortest_edist_tensor.norm_square();
-    for (unsigned k=0; k<q_point_loc(0).n_array_elements;k++){
+    for (unsigned k=0; k<q_point_loc(0).size();k++){
         weighted_dist[k] = sqrt(weighted_dist[k]);
     }
     return weighted_dist;

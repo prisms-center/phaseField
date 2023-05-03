@@ -98,7 +98,7 @@ scalarvalueType alpha_y = A1*B1*this->currentTime*std::cos(B1*q_point_loc(0)) + 
 scalarvalueType alpha_yy = -A1*B1*B1*this->currentTime*std::sin(B1*q_point_loc(0)) - A2*B2*B2*std::sin(B2*q_point_loc(0)+C2*this->currentTime);
 
 
-for (unsigned i=0; i<n.n_array_elements;i++){
+for (unsigned i=0; i<n.size();i++){
 
 	source_term[i] = (-2.0*std::sqrt(kappa)*std::tanh( (q_point_loc(1)[i]-alpha[i])/std::sqrt(2.0*kappa)) * (alpha_y[i]*alpha_y[i])
 					+ std::sqrt(2.0)*(alpha_t[i]-kappa*alpha_yy[i]))

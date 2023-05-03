@@ -81,7 +81,7 @@ scalarvalueType mag_grad_c = constV(0.0);
 for (unsigned int i=0; i<dim; i++){
     mag_grad_c = mag_grad_c + cx[i]*cx[i];
 }
-for (unsigned int v=0; v<c.n_array_elements; v++){
+for (unsigned int v=0; v<c.size(); v++){
     mag_grad_c[v] = sqrt(mag_grad_c[v]);
 }
 
