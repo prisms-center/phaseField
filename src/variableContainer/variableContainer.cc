@@ -77,22 +77,6 @@ variableContainer<dim,degree,T>::variableContainer(const dealii::MatrixFree<dim,
     }
 }
 
-template <int dim, int degree, typename T>
-void variableContainer<dim,degree,T>::get_JxW(dealii::AlignedVector<T> & JxW){
-
-    if (scalar_vars.size() > 0){
-        scalar_vars[0].fill_JxW_values(JxW);
-    }
-    else if (vector_vars.size() > 0){
-        scalar_change_in_vars[0].fill_JxW_values(JxW);
-    }
-    else if (scalar_change_in_vars.size() > 0){
-        vector_vars[0].fill_JxW_values(JxW);
-    }
-    else {
-        vector_change_in_vars[0].fill_JxW_values(JxW);
-    }
-}
 
 template <int dim, int degree, typename T>
 unsigned int variableContainer<dim,degree,T>::get_num_q_points(){

@@ -42,9 +42,6 @@ void MatrixFreePDE<dim,degree>::getPostProcessedFields(const dealii::MatrixFree<
 
 		unsigned int num_q_points = variable_list.get_num_q_points();
 
-		dealii::AlignedVector<dealii::VectorizedArray<double> > JxW(num_q_points);
-        pp_variable_list.get_JxW(JxW);
-
 		//loop over quadrature points
 		for (unsigned int q=0; q<num_q_points; ++q){
 			variable_list.q_point = q;

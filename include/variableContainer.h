@@ -87,9 +87,6 @@ public:
     unsigned int get_num_q_points();
     dealii::Point<dim,T> get_q_point_location();
 
-    // Method to obtain JxW (the weighted Jacobian)
-    void get_JxW(dealii::AlignedVector<T> & JxW);
-
 private:
     // The number of variables
     unsigned int num_var;
