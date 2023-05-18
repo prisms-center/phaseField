@@ -91,6 +91,9 @@ For DOI information for other releases, please refer to [this site](https://zeno
 
 ***
 ## Publications That Use PRISMS-PF
+
+[Pendl and Hochrainer, Coupling stress fields and vacancy diffusion in phase-field models of voids as pure vacancy phase, Comput. Mater. Sci. 224, 112157 (2023)](https://doi.org/10.1016/j.commatsci.2023.112157)
+
 [Goel, Lyu, DeWitt, Montiel, and Thornton, Simulating microgalvanic corrosion in alloys using the PRISMS phase-field framework, MRS Communications 12, 1050–1059 (2022)](https://doi.org/10.1557/s43579-022-00266-6)
 
 [Bhagat and Rudraraju, Modeling of dendritic solidification and numerical analysis of the
