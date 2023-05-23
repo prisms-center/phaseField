@@ -92,7 +92,7 @@ For DOI information for other releases, please refer to [this site](https://zeno
 ***
 ## Publications That Use PRISMS-PF
 
-[Wang and Liu, Multiscale thermo-kinetic characterization for β′ and β1 precipitation in Mg-Sm alloys, Acta Mater. 254, 119011 (2023](https://doi.org/10.1016/j.actamat.2023.119011)
+[Wang and Liu, Multiscale thermo-kinetic characterization for β′ and β1 precipitation in Mg-Sm alloys, Acta Mater. 254, 119011 (2023)](https://doi.org/10.1016/j.actamat.2023.119011)
 
 [Pendl and Hochrainer, Coupling stress fields and vacancy diffusion in phase-field models of voids as pure vacancy phase, Comput. Mater. Sci. 224, 112157 (2023)](https://doi.org/10.1016/j.commatsci.2023.112157)
 
