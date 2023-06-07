@@ -65,7 +65,7 @@ void MatrixFreePDE<dim,degree>::computeInvM(){
 
     // Calculate the volume of the smallest cell to prevent a non-zero value of invM being
     // confused for a near zero value (which can happen if the domain size is 1e-6 or below)
-    std::vector<unsigned int> min_element_length;
+    std::vector<double> min_element_length;
     for (unsigned int d=0; d<dim; d++){
         int num_elements = userInputs.subdivisions.at(d)*dealii::Utilities::fixed_power<2>(userInputs.max_refinement_level);
         min_element_length.push_back(userInputs.domain_size[d]/double(num_elements));
