@@ -32,7 +32,7 @@ void MatrixFreePDE<dim,degree>::computeInvM(){
 		VectorizedArray<double> one = make_vectorized_array (1.0);
 		FEEvaluation<dim,degree> fe_eval(matrixFreeObject, parabolicFieldIndex);
 		const unsigned int n_q_points = fe_eval.n_q_points;
-		for (unsigned int cell=0; cell<matrixFreeObject.n_macro_cells(); ++cell){
+		for (unsigned int cell=0; cell<matrixFreeObject.n_cell_batches(); ++cell){
 			fe_eval.reinit(cell);
 			for (unsigned int q=0; q<n_q_points; ++q){
 				fe_eval.submit_value(one,q);
@@ -50,7 +50,7 @@ void MatrixFreePDE<dim,degree>::computeInvM(){
 		FEEvaluation<dim,degree,degree+1,dim> fe_eval(matrixFreeObject, parabolicFieldIndex);
 
 		const unsigned int n_q_points = fe_eval.n_q_points;
-		for (unsigned int cell=0; cell<matrixFreeObject.n_macro_cells(); ++cell){
+		for (unsigned int cell=0; cell<matrixFreeObject.n_cell_batches(); ++cell){
 			fe_eval.reinit(cell);
 			for (unsigned int q=0; q<n_q_points; ++q){
 				fe_eval.submit_value(oneV,q);
