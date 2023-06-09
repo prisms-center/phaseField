@@ -188,7 +188,7 @@ void MatrixFreePDE<dim,degree>::setPeriodicityConstraints(AffineConstraints<doub
 	    				/*direction*/ i, periodicity_vector);
 	    	}
 	    }
-	    DoFTools::make_periodicity_constraints<DoFHandler<dim> >(periodicity_vector, *constraints);
+	    DoFTools::make_periodicity_constraints<dim, dim>(periodicity_vector, *constraints);
 }
 
 // Determine which (if any) components of the current field have rigid body modes (i.e no Dirichlet BCs) if the

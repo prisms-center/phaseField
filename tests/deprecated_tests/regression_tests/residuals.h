@@ -491,7 +491,7 @@ for (unsigned int i=0; i<dim; i++){
 total_energy_density = f_chem + f_grad + f_el;
 
 assembler_lock.acquire ();
-for (unsigned i=0; i<c.n_array_elements;i++){
+for (unsigned i=0; i<c.size();i++){
   // For some reason, some of the values in this loop
   if (c[i] > 1.0e-10){
 	  this->energy+=total_energy_density[i]*JxW_value[i];

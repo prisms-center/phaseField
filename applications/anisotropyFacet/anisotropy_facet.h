@@ -24,7 +24,7 @@ for (unsigned int i=0; i<n_orients; ++i){
     }
 // Application of the heaviside function
 // Vectorized array mn must be unrolled to evaluate conditional
-    for (unsigned int j=0; j<mn.n_array_elements; ++j){
+    for (unsigned int j=0; j<mn.size(); ++j){
         if (mn[j] < 0.0) mn[j] = 0.0;
     }
 // Subtracting terms corresponding to the ith orientation from gamma and the

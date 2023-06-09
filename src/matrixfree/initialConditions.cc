@@ -161,8 +161,8 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
                     for (unsigned int cycle=0; cycle<userInputs.num_grain_smoothing_cycles; cycle++){
                         computeLaplaceRHS(fieldIndex);
 
-                        unsigned int invM_size = invM.local_size();
-                        for (unsigned int dof=0; dof<solutionSet[fieldIndex]->local_size(); ++dof){
+                        unsigned int invM_size = invM.locally_owned_size();
+                        for (unsigned int dof=0; dof<solutionSet[fieldIndex]->locally_owned_size(); ++dof){
                             solutionSet[fieldIndex]->local_element(dof)=solutionSet[fieldIndex]->local_element(dof)-
                             invM.local_element(dof%invM_size)*residualSet[fieldIndex]->local_element(dof)*dt_for_smoothing;
                         }

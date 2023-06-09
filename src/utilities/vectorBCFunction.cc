@@ -6,7 +6,7 @@
  */
 
 #include <deal.II/base/function.h>
-#include <deal.II/lac/la_parallel_vector.h>
+#include <deal.II/lac/vector.h>
 #include "../../include/vectorBCFunction.h"
 
 template <int dim>

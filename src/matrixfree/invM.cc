@@ -32,7 +32,7 @@ void MatrixFreePDE<dim,degree>::computeInvM(){
 		VectorizedArray<double> one = make_vectorized_array (1.0);
 		FEEvaluation<dim,degree> fe_eval(matrixFreeObject, parabolicFieldIndex);
 		const unsigned int n_q_points = fe_eval.n_q_points;
-		for (unsigned int cell=0; cell<matrixFreeObject.n_macro_cells(); ++cell){
+		for (unsigned int cell=0; cell<matrixFreeObject.n_cell_batches(); ++cell){
 			fe_eval.reinit(cell);
 			for (unsigned int q=0; q<n_q_points; ++q){
 				fe_eval.submit_value(one,q);
@@ -50,7 +50,7 @@ void MatrixFreePDE<dim,degree>::computeInvM(){
 		FEEvaluation<dim,degree,degree+1,dim> fe_eval(matrixFreeObject, parabolicFieldIndex);
 
 		const unsigned int n_q_points = fe_eval.n_q_points;
-		for (unsigned int cell=0; cell<matrixFreeObject.n_macro_cells(); ++cell){
+		for (unsigned int cell=0; cell<matrixFreeObject.n_cell_batches(); ++cell){
 			fe_eval.reinit(cell);
 			for (unsigned int q=0; q<n_q_points; ++q){
 				fe_eval.submit_value(oneV,q);
@@ -65,7 +65,7 @@ void MatrixFreePDE<dim,degree>::computeInvM(){
 
     // Calculate the volume of the smallest cell to prevent a non-zero value of invM being
     // confused for a near zero value (which can happen if the domain size is 1e-6 or below)
-    std::vector<unsigned int> min_element_length;
+    std::vector<double> min_element_length;
     for (unsigned int d=0; d<dim; d++){
         int num_elements = userInputs.subdivisions.at(d)*dealii::Utilities::fixed_power<2>(userInputs.max_refinement_level);
         min_element_length.push_back(userInputs.domain_size[d]/double(num_elements));
@@ -73,7 +73,7 @@ void MatrixFreePDE<dim,degree>::computeInvM(){
     double min_cell_volume = std::accumulate(begin(min_element_length), end(min_element_length), 1, std::multiplies<double>());
 
 	//invert mass matrix diagonal elements
-	for (unsigned int k=0; k<invM.local_size(); ++k){
+	for (unsigned int k=0; k<invM.locally_owned_size(); ++k){
 		if (std::abs(invM.local_element(k))>1.0e-15 * min_cell_volume){
 			invM.local_element(k) = 1./invM.local_element(k);
 		}

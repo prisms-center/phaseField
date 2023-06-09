@@ -32,9 +32,9 @@ void MatrixFreePDE<dim,degree>::outputResults() {
 	  std::vector<vectorType*> postProcessedSet;
       computePostProcessedFields(postProcessedSet);
 
-	  unsigned int invM_size = invM.local_size();
+	  unsigned int invM_size = invM.locally_owned_size();
 	  for(unsigned int fieldIndex=0; fieldIndex<postProcessedSet.size(); fieldIndex++){
-		  for (unsigned int dof=0; dof<postProcessedSet[fieldIndex]->local_size(); ++dof){
+		  for (unsigned int dof=0; dof<postProcessedSet[fieldIndex]->locally_owned_size(); ++dof){
 			  postProcessedSet[fieldIndex]->local_element(dof)=			\
 					  invM.local_element(dof%invM_size)*postProcessedSet[fieldIndex]->local_element(dof);
 		  }
