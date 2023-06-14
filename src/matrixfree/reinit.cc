@@ -79,18 +79,18 @@ template <int dim, int degree>
  	 // Setup the matrix free object
  	 typename MatrixFree<dim,double>::AdditionalData additional_data;
      // The member "mpi_communicator" was removed in deal.II version 8.5 but is required before it
-     #if (DEAL_II_VERSION_MAJOR < 9 && DEAL_II_VERSION_MINOR < 5)
-         additional_data.mpi_communicator = MPI_COMM_WORLD;
-     #endif
  	 additional_data.tasks_parallel_scheme = MatrixFree<dim,double>::AdditionalData::partition_partition;
      //additional_data.tasks_parallel_scheme = MatrixFree<dim,double>::AdditionalData::none;
      //additional_data.tasks_block_size = 1; // This improves performance for small runs, not sure about larger runs
  	 additional_data.mapping_update_flags = (update_values | update_gradients | update_JxW_values | update_quadrature_points);
  	 QGaussLobatto<1> quadrature (degree+1);
  	 matrixFreeObject.clear();
+#if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
+         matrixFreeObject.reinit (dofHandlersSet, constraintsOtherSet, quadrature, additional_data);
+#else
  	 matrixFreeObject.reinit (MappingFE< dim, dim >(FE_Q<dim>(QGaussLobatto<1>(degree+1))),
              dofHandlersSet, constraintsOtherSet, quadrature, additional_data);
-
+#endif
  	bool dU_scalar_init = false;
  	bool dU_vector_init = false;
 
