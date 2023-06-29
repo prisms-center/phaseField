@@ -31,12 +31,18 @@ void MatrixFreePDE<dim,degree>::outputResults() {
   if (userInputs.postProcessingRequired){
 	  std::vector<vectorType*> postProcessedSet;
       computePostProcessedFields(postProcessedSet);
-
-	  unsigned int invM_size = invM.locally_owned_size();
+#if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
+	  unsigned int invM_size = invM.local_size();
 	  for(unsigned int fieldIndex=0; fieldIndex<postProcessedSet.size(); fieldIndex++){
-		  for (unsigned int dof=0; dof<postProcessedSet[fieldIndex]->locally_owned_size(); ++dof){
+		  for (unsigned int dof=0; dof<postProcessedSet[fieldIndex]->local_size(); ++dof){
+#else
+          unsigned int invM_size = invM.locally_owned_size();
+          for(unsigned int fieldIndex=0; fieldIndex<postProcessedSet.size(); fieldIndex++){
+                  for (unsigned int dof=0; dof<postProcessedSet[fieldIndex]->locally_owned_size(); ++dof){
+#endif
 			  postProcessedSet[fieldIndex]->local_element(dof)=			\
 					  invM.local_element(dof%invM_size)*postProcessedSet[fieldIndex]->local_element(dof);
+
 		  }
 		  constraintsOtherSet[0]->distribute(*postProcessedSet[fieldIndex]);
 		  postProcessedSet[fieldIndex]->update_ghost_values();

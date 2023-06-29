@@ -31,8 +31,13 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
 
             // Explicit-time step each DOF
             // Takes advantage of knowledge that the length of solutionSet and residualSet is an integer multiple of the length of invM for vector variables
+#if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
+            unsigned int invM_size = invM.local_size();
+            for (unsigned int dof=0; dof<solutionSet[fieldIndex]->local_size(); ++dof){
+#else
             unsigned int invM_size = invM.locally_owned_size();
             for (unsigned int dof=0; dof<solutionSet[fieldIndex]->locally_owned_size(); ++dof){
+#endif
                 solutionSet[fieldIndex]->local_element(dof)=			\
                 invM.local_element(dof%invM_size)*residualSet[fieldIndex]->local_element(dof);
             }
@@ -272,8 +277,13 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
 
                         // Explicit-time step each DOF
                         // Takes advantage of knowledge that the length of solutionSet and residualSet is an integer multiple of the length of invM for vector variables
+#if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
+                        unsigned int invM_size = invM.local_size();
+                        for (unsigned int dof=0; dof<solutionSet[fieldIndex]->local_size(); ++dof){
+#else
                         unsigned int invM_size = invM.locally_owned_size();
                         for (unsigned int dof=0; dof<solutionSet[fieldIndex]->locally_owned_size(); ++dof){
+#endif
                             solutionSet[fieldIndex]->local_element(dof)=			\
                             invM.local_element(dof%invM_size)*residualSet[fieldIndex]->local_element(dof);
                         }

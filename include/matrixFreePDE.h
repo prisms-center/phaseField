@@ -15,7 +15,9 @@
 #include <deal.II/fe/fe_system.h>
 #include <deal.II/fe/fe_q.h>
 #include <deal.II/fe/fe_values.h>
+#if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR > 3)
 #include <deal.II/fe/mapping_fe.h>
+#endif
 #include <deal.II/grid/tria.h>
 #include <deal.II/grid/tria_accessor.h>
 #include <deal.II/grid/tria_iterator.h>

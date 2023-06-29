@@ -73,7 +73,11 @@ void MatrixFreePDE<dim,degree>::computeInvM(){
     double min_cell_volume = std::accumulate(begin(min_element_length), end(min_element_length), 1, std::multiplies<double>());
 
 	//invert mass matrix diagonal elements
+#if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
+        for (unsigned int k=0; k<invM.local_size(); ++k){
+#else
 	for (unsigned int k=0; k<invM.locally_owned_size(); ++k){
+#endif
 		if (std::abs(invM.local_element(k))>1.0e-15 * min_cell_volume){
 			invM.local_element(k) = 1./invM.local_element(k);
 		}

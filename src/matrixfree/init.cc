@@ -194,9 +194,12 @@ template <int dim, int degree>
 	 additional_data.mapping_update_flags = (update_values | update_gradients | update_JxW_values | update_quadrature_points);
 	 QGaussLobatto<1> quadrature (degree+1);
 	 matrixFreeObject.clear();
+#if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
+         matrixFreeObject.reinit (dofHandlersSet, constraintsOtherSet, quadrature, additional_data);
+#else
 	 matrixFreeObject.reinit (MappingFE< dim, dim >(FE_Q<dim>(QGaussLobatto<1>(degree+1))),
 	     dofHandlersSet, constraintsOtherSet, quadrature, additional_data);
-
+#endif
 	 bool dU_scalar_init = false;
 	 bool dU_vector_init = false;
 
