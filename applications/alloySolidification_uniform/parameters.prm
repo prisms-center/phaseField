@@ -1,0 +1,154 @@
+# For this application, W is the unit length, tau is the unit time
+# and cl0 is the reference concentration. All of these quantities are set to 1.
+
+# =================================================================================
+# Set the number of dimensions (2 or 3 for a 2D or 3D calculation)
+# =================================================================================
+set Number of dimensions = 2
+
+# =================================================================================
+# Set the length of the domain in all three dimensions
+# (Domain size Z ignored in 2D)
+# =================================================================================
+# Each axes spans from zero to the specified length
+set Domain size X = 204.8
+set Domain size Y = 204.8
+set Domain size Z = 204.8
+
+# =================================================================================
+# Set the element parameters
+# =================================================================================
+# The number of elements in each direction is 2^(refineFactor) * subdivisions
+# Subdivisions Z ignored in 2D
+# For optimal performance, use refineFactor primarily to determine the element size
+set Subdivisions X = 1
+set Subdivisions Y = 1
+set Subdivisions Z = 1
+
+set Refine factor = 8
+
+# Set the polynomial degree of the element (allowed values: 1, 2, or 3)
+set Element degree = 2
+
+# =================================================================================
+# Set the adaptive mesh refinement parameters
+# =================================================================================
+# Set the flag determining if adaptive meshing is activated
+set Mesh adaptivity = true
+
+# Set the maximum and minimum level of refinement
+# When adaptive meshing is enabled, the refine factor set in the block above is
+# only used to generate the first pass of the mesh as the initial conditions are
+# applied. It should be set somewhere between the max and min levels below.
+set Max refinement level = 8
+set Min refinement level = 0
+
+# Set the number of time steps between remeshing operations
+set Steps between remeshing operations = 50
+
+# Set the criteria for adapting the mesh
+subsection Refinement criterion: phi
+    # Select whether the mesh is refined based on the variable value (VALUE),
+    # its gradient (GRADIENT), or both (VALUE_AND_GRADIENT)
+    set Criterion type = VALUE
+    # Set the lower and upper bounds for the value-based refinement window
+    set Value lower bound = -0.999
+    set Value upper bound = 0.999
+end
+
+# =================================================================================
+# Set the time step parameters
+# =================================================================================
+# The size of the time step
+set Time step = 0.008
+
+# The simulation ends when either the number of time steps is reached or the
+# simulation time is reached.
+set Number of time steps = 100000
+
+# =================================================================================
+# Set the boundary conditions
+# =================================================================================
+# Set the boundary condition for each variable, where each variable is given by
+# its name, as defined in equations.h. The four boundary condition
+# types are NATURAL, DIRICHLET, NON_UNIFORM_DIRICHLET and PERIODIC. If all
+# of the boundaries have the same boundary condition, only one boundary condition
+# type needs to be given. If multiple boundary condition types are needed, give a
+# comma-separated list of the types. The order is the minimum of x, maximum of x,
+# minimum of y, maximum of y, minimum of z, maximum of z (i.e left, right, bottom,
+# top in 2D and left, right, bottom, top, front, back in 3D). The value of a
+# Dirichlet BC is specified in the following way -- DIRCHILET: val -- where 'val' is
+# the desired value. If the boundary condition is NON_UNIFORM_DIRICHLET, the
+# boundary condition should be specified in the appropriate function in 'ICs_and_BCs.h'.
+# Example 1: All periodic BCs for variable 'c'
+# set Boundary condition for variable c = PERIODIC
+# Example 2: Zero-derivative BCs on the left and right, Dirichlet BCs with value
+# 1.5 on the top and bottom for variable 'n' in 2D
+# set Boundary condition for variable n = NATURAL, NATURAL, DIRICHLET: 1.5, DIRICHLET: 1.5
+# PERIODIC, NATURAL, PERIODIC, NATURAL
+# PERIODIC, PERIODIC, NATURAL, NATURAL
+
+set Boundary condition for variable phi =  NATURAL
+set Boundary condition for variable c =  NATURAL
+set Boundary condition for variable xi =  NATURAL
+
+# =================================================================================
+# Set the model constants
+# =================================================================================
+# Set the user-defined model constants, which must have a counter-part given in
+# customPDE.h. These are most often used in the residual equations in equations.h,
+# but may also be used for initial conditions and nucleation calculations. The type
+# options currently are DOUBLE, INT, BOOL, TENSOR, and [symmetry] ELASTIC CONSTANTS
+# where [symmetry] is ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC.
+
+# Anisotropy strength (epsilon4)
+set Model constant eps4 = 0.02, DOUBLE
+
+# Scaled supersaturation
+set Model constant Omega = 0.55, DOUBLE
+
+# Partition coefficient
+set Model constant k = 0.15, DOUBLE
+
+# Ratio of d0 in W
+set Model constant d0inW = 0.277, DOUBLE
+
+# Constant W (unit length)
+set Model constant W = 1.0, DOUBLE
+
+# Constant tau (unit time)
+set Model constant tau = 1.0, DOUBLE
+
+# Reference concentration (cl0)
+set Model constant cl0 = 1.0, DOUBLE
+
+# Small regularization value to add to the magnitude of the gradient of phi when it shows in the denominator.
+set Model constant regval = 1.0e-10, DOUBLE
+
+# =================================================================================
+# Set the output parameters
+# =================================================================================
+# Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
+# or "LIST")
+set Output condition = EQUAL_SPACING
+
+# Number of times the program outputs the fields (total number for "EQUAL_SPACING"
+# and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
+set Number of outputs = 100
+
+# The number of time steps between updates being printed to the screen
+set Skip print steps = 1000
+
+# =================================================================================
+# Set the checkpoint/restart parameters
+# =================================================================================
+# Whether to start this simulation from the checkpoint of a previous simulation
+set Load from a checkpoint = false
+
+# Type of spacing between checkpoints ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
+# or "LIST")
+set Checkpoint condition = EQUAL_SPACING
+
+# Number of times the creates checkpoints (total number for "EQUAL_SPACING"
+# and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
+set Number of checkpoints = 0
