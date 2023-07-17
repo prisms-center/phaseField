@@ -15,8 +15,8 @@ PRISMS-PF is a powerful, massively parallel finite element code for conducting p
 - 7/16/2023: We are pleased to announce the release of a new application, alloySolidification_uniform, to simulate solidification of a binary alloy at uniform temperature. In the model implemented [A. Karma, Phys. Rev. Lett. 87, 115701 (2001)] latent heat is assumed to diffuse much faster than impurities and, therefore, the temperature field is considered to be fixed by external conditions. In contrast to alloySolidification, this application considers solidification under uniform temperature and no solute diffusion in the solid. The implementation of the model in this application has been validated by comparing them the results to those reported in Figure 1 from the paper cited above.
 
 - 7/16/2023: 2023 PRISMS Workshop and Training Sessions. Everyone interested in PRISMS-PF (or in materials modeling, in general) is encouraged to attend the 2023 PRISMS Center Workshop (August 21-25), returning this year as an in person even. The training sessions will be on 21-23 of August and the symposia will be on 25-25 of August. The training part will include two sessions dedicated to a hands-on tutorial for PRISMS-PF on Monday Aug. 21:
-- 10AM - 12PM (EDT)
-- 1PM - 3PM (EDT) 
+10AM - 12PM (EDT)
+1PM - 3PM (EDT) 
 For more information and to register please visit [this page](http://www.prisms-center.org/#/workshop) (all attendees must register). There will also be training sessions for other PRISMS frameworks (see registration page for details).
 
 - 6/30/2022: New Microgalvanic Corrosion (corrosion_microgalvanic) application release! This application simulates the evolution of the metal-electrolyte interface during free immersion due to the microgalvanic coupling between the anodic and cathodic metals. A manuscript detailing the implementation of the model, the scaling performance of the code, and simulation examples in 2D and 3D has been submitted to MRS Communications (currently under revision). 
