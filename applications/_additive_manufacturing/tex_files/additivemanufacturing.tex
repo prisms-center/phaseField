@@ -177,43 +177,104 @@
 %*********************************
 \centerline{\Large{\bf PRISMS-PF Application Formulation:}}
 \smallskip
-\centerline{\Large{\bf grainGrowth}}
+\centerline{\Large{\bf additive\_manufacturing}}
 \bigskip
 
-This example application implements a simple set of governing equations for isotropic grain growth. The model is a simplified version of the one in the following publication:\\
- Simulating recrystallization in titanium using the phase field method, S.P. Gentry and K. Thornton, \emph{IOP Conf. Series: Materials Science and Engineering} 89 (2015) 012024.
+This example application implements a simple set of governing equations for isotropic solidification and grain growth, with an accompanying temperature evolution equation. The model is a simplified version of the one in the following publication:\\
+ Phase-field modeling of grain evolutions in additive manufacturing from nucleation, growth, to coarsening, Yang, M., Wang, L. \& Yan, W., \emph{npj Comput Mater} 7, 56 (2021).
 \\
 \\
 Consider a free energy expression of the form:
 \begin{equation}
-  \Pi(\eta_i, \grad  \eta_i) = \int_{\Omega} \left[\sum_{i=1}^N \left(-\frac{1}{2}\eta_i^2+ \frac{1}{4}\eta_i^4 \right) + \alpha \sum_{i=1}^N \sum_{j>i}^N \eta_i^2 \eta_j^2 +\frac{1}{4} \right] +  \frac{\kappa}{2} \sum_{i=1}^N |\nabla \eta_i|^2    ~dV 
+F=\int_{\Omega}\left(f_{\mathrm{phase}}+f_{\mathrm{grain}}+f_{\mathrm{gradient}}\right)dV\label{eq:Free_energy_equation}
 \end{equation}
-where $\eta_i$ is one of $N$ structural order parameters, $\alpha$ is the grain interaction coefficient, and $\kappa$ is the gradient energy coefficient.
+
+
+where $f_{\mathrm{phase}}$ and $f_{\mathrm{grain}}$ represent contributions to the free energy density due to interfaces between the liquid and the solid phases, and contributions from the grain boundary interfaces, respectively. $f_{\mathrm{gradient}}$ captures the gradient contributions from the inter-grain and inter-state interfaces. 
+
+\begin{equation}
+f_{\mathrm{phase}}=m_{p}\left\{ \left(1-\xi\right)^{2}\phi+\xi^{2}\left(1-\phi\right)\right\} \label{eq:f_phase}
+\end{equation}
+
+\begin{equation}
+f_{\mathrm{grain}}=m_{g} \left\{ \sum_{i=1}^{n}\left(\frac{\eta_{i}^{4}}{4}-\frac{\eta_{i}^{2}}{2}\right)+\gamma\sum_{i=1}^{n}\sum_{j\neq i}\eta_{i}^{2}\eta_{j}^{2}+\frac{1}{4}\left(1-\xi\right)^{2}\sum_{i=1}^{n}\eta_{i}^{2}\right\} \label{eq:f_grain}
+\end{equation}
+
+\begin{equation}
+f_{\mathrm{gradient}}=\frac{\kappa_{p}}{2}\left(\nabla\xi\right)^{2}+\frac{\kappa_{g}}{2}\left(\nabla\eta_{i}\right)^{2}\label{eq:f_gradient}
+\end{equation}
+
+
+where $\eta_i$ is one of $N$ structural order parameters that describe the solid grains, $\xi$ is am order parameter that describes solid/liquid states; $\xi=0$ in the liquid state and $\xi=1$ in the solid state.  $\gamma$ is the grain interaction coefficient, and $\kappa$ is the gradient energy coefficient.
 	
 \section{Variational treatment}
 The driving force for grain evolution is determined by the variational derivative of the total energy with respect to each order parameter:
+
 \begin{equation}
-\mu = \frac{\delta \Pi}{\delta \eta_i} = \left( -\eta_i + \eta_i^3 + 2 \alpha \eta_i \sum_{j \ne i}^N \eta_j^2 - \kappa \nabla^2 \eta_i \right)
+\mu_g = \frac{\delta F}{\delta \eta_i} = m_g \left( -\eta_i + \eta_i^3 + 2 \gamma \eta_i \sum_{j \ne i}^N \eta_j^2 +2\eta_i\left( 1-\xi \right)^2  \right) - \kappa_g \nabla^2 \eta_i
+\end{equation}
+
+\begin{equation}
+\mu_p = \frac{\delta F}{\delta \xi} = m_p \left(  -2 \left( 1- \xi \right) \phi +2 \xi \left( 1- \phi \right)  \right) + m_g \left( -2 \left( 1-\xi \right) \sum_{i=1}^{n} \eta_i^2 \right) - \kappa_p \nabla^2 \xi
 \end{equation}
 
 \section{Kinetics}
 The order parameter for each grain is unconserved, and thus their evolution can be described by Allen-Cahn equations:
+
 \begin{equation}
-\frac{\partial \eta_i}{\partial t} = -L \mu = \left( -\eta_i + \eta_i^3 + 2 \alpha \eta_i \sum_{j \ne i}^N \eta_j^2 - \kappa \nabla^2 \eta_i \right)
+\frac{\partial \eta_i}{\partial t} = -L_g \mu_g = L_g \left( m_g \left( -\eta_i + \eta_i^3 + 2 \gamma \eta_i \sum_{j \ne i}^N \eta_j^2 +2\eta_i\left( 1-\xi \right)^2  \right) - \kappa_g \nabla^2 \eta_i \right)
 \end{equation}
-where $L$ is the constant mobility. 
+where $L_g$ is the constant grain boundary mobility. 
+
+Similarly, the liquis/solid order parameter, $\xi$, is unconserved:
+\begin{equation}
+\frac{\partial \xi}{\partial t} = -L_p \mu_p = -L_g \left( m_p \left(  -2 \left( 1- \xi \right) \phi +2 \xi \left( 1- \phi \right)  \right) + m_g \left( -2 \left( 1-\xi \right) \sum_{i=1}^{n} \eta_i^2 \right) - \kappa_p \nabla^2 \xi \right)
+\end{equation}
+
+Additionally in this application, a transient temperature evolution equation (Heat Equation) is solved:
+
+\begin{equation}
+\frac{\partial T}{\partial t} = -\grad \cdot (-D~\grad T) 
+\end{equation}
+
+Were $D$ is the thermal diffusivity
+
+
 \section{Time discretization}
 Considering forward Euler explicit time stepping, we have the time discretized kinetics equation:
 \begin{align}
- \eta_i^{n+1} &= \eta_i^{n} - \Delta t L~\left( -\eta_i^n + (\eta_i^n)^3 + 2 \alpha \eta_i^n \sum_{j \ne i}^N (\eta^n_j)^2 - \kappa \nabla^2 \eta^n_i \right)
+ \eta_i^{n+1} &= \eta_i^{n} - \Delta t L_g~\left( m_g \left( -\eta_i + \eta_i^3 + 2 \gamma \eta_i \sum_{j \ne i}^N \eta_j^2 +2\eta_i\left( 1-\xi \right)^2  \right) - \kappa_g \nabla^2 \eta_i \right)
 \end{align}
- 
+
+
+ \begin{align}
+ \xi^{n+1} &= \xi^{n} - \Delta t L_p~\left( m_p \left(  -2 \left( 1- \xi \right) \phi +2 \xi \left( 1- \phi \right)  \right) + m_g \left( -2 \left( 1-\xi \right) \sum_{i=1}^{n} \eta_i^2 \right) - \kappa_p \nabla^2 \xi \right)
+\end{align}
+
+ \begin{align}
+ T^{n+1} &= T^{n} + (\Delta t D)~\Delta T^n 
+\end{align}
+
 \section{Weak formulation}
 In the weak formulation, considering an arbitrary variation $w$, the above equation can be expressed as a residual equation:
+
 \begin{align}
-\int_{\Omega}   w \eta_i^{n+1} ~dV&= \int_{\Omega}   w \eta_i^{n} - w \Delta t L~\left( -\eta_i^n + (\eta_i^n)^3 + 2 \alpha \eta_i^n \sum_{j \ne i}^N (\eta^n_j)^2 - \kappa \nabla^2 \eta^n_i \right) ~dV \\
-&= \int_{\Omega}   w ( \underbrace{ \eta^{n} - \Delta t L~\left( -\eta_i^n + (\eta_i^n)^3 + 2 \alpha \eta_i^n \sum_{j \ne i}^N (\eta^n_j)^2\right) }_{r_{\eta_i}} + \grad w \underbrace{ (-\Delta t L \kappa)~ \cdot (\grad \eta_i^{n})}_{r_{\eta_i x}} ~dV \quad [\kappa \grad \eta_i \cdot n = 0 ~ \text{on} ~ \partial \Omega]
+\int_{\Omega}   w \eta_i^{n+1} ~dV&= \int_{\Omega}   w \eta_i^{n} - w \Delta t L_g~\left( m_g \left( -\eta_i + \eta_i^3 + 2 \gamma \eta_i \sum_{j \ne i}^N \eta_j^2 +2\eta_i\left( 1-\xi \right)^2  \right) - \kappa_g \nabla^2 \eta_i \right)~dV \\
+&= \int_{\Omega}   w ( \underbrace{ \eta^{n} - \Delta t L_g~m_g \left( -\eta_i + \eta_i^3 + 2 \gamma \eta_i \sum_{j \ne i}^N \eta_j^2 +2\eta_i\left( 1-\xi \right)^2  \right) }_{r_{\eta_i}} + \grad w \underbrace{ (-\Delta t L_g \kappa_g)~ \cdot (\grad \eta_i^{n})}_{r_{\eta_i x}} ~dV \quad [\kappa_g \grad \eta_i \cdot n = 0 ~ \text{on} ~ \partial \Omega]
 \end{align}
+
+\begin{align}
+\int_{\Omega}   w \xi^{n+1} ~dV&= \int_{\Omega}   w \xi^{n} - w \Delta t L_p~\left( m_p \left(  -2 \left( 1- \xi \right) \phi +2 \xi \left( 1- \phi \right)  \right) + m_g \left( -2 \left( 1-\xi \right) \sum_{i=1}^{n} \eta_i^2 \right) - \kappa_p \nabla^2 \xi \right)~dV \\
+&= \int_{\Omega}   w ( \underbrace{ \eta^{n} - \Delta t L_p~\left( m_p \left(  -2 \left( 1- \xi \right) \phi +2 \xi \left( 1- \phi \right)  \right) + m_g \left( -2 \left( 1-\xi \right) \sum_{i=1}^{n} \eta_i^2 \right) \right) }_{r_{\eta_i}} + \grad w \underbrace{ (-\Delta t L_p \kappa_p)~ \cdot (\grad \xi^{n})}_{r_{\xi x}} ~dV \quad [\kappa_p \grad \xi \cdot n = 0 ~ \text{on} ~ \partial \Omega]
+\end{align}
+
+\begin{align}
+\int_{\Omega}   w T^{n+1} ~dV &= \int_{\Omega}   w T^{n} + w (\Delta t D) \Delta T^n  \\
+&= \int_{\Omega}   w (T^{n}) - \grad w  \cdot (\Delta t D) \grad T^n ~dV + \int_{\partial \Omega}   w  (\Delta t D) \grad T^n \cdot n ~dS\\
+&= \int_{\Omega}   w (T^{n}) - \grad w  \cdot (\Delta t D) \grad T^n ~dV + \int_{\partial \Omega}   w  (\Delta t D) j^n  ~dS\\
+&= \int_{\Omega}   w (\underbrace{T^{n}}_{r_c}) + \grad w  \cdot \underbrace{(-\Delta t D) \grad T^n}_{r_{cx}} ~dV \quad [\text {assuming flux}~j=0 ]
+\end{align} 
+
 \vskip 0.25in
 The above values of  $r_{\eta_i}$ and $r_{\eta_i x}$ are used to define the residuals in the following parameters file: \\
 \textit{applications/grainGrowth/equations.h}
