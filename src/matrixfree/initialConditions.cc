@@ -150,8 +150,14 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
         OrderParameterRemapper<dim> order_parameter_remapper;
         order_parameter_remapper.remap_from_index_field(simplified_grain_representations, &grain_index_field, solutionSet, *dofHandlersSet_nonconst.at(scalar_field_index), FESet.at(scalar_field_index)->dofs_per_cell, userInputs.buffer_between_grains);
 
-        // Smooth the order parameters
-        double dt_for_smoothing = dealii::GridTools::minimal_cell_diameter(triangulation)/1000.0;
+        // Smooth the order parameters according to Fick's 2nd Law
+        // In the time cycle below, we evolve the weak form of Eq.: field_i^(n+1)=field_i^(n)+D*dt*Laplacian(field_i^(n))
+        //Old dt_for_smoothing
+        //double dt_for_smoothing = dealii::GridTools::minimal_cell_diameter(triangulation)/1000.0;
+        //NEW selection of dt_for_smoothing based on dt_max=(dx^2)/2*dim*D, where D=1, addording to the von Neumann stability condition
+        //We chose dt_for_smoothing=0.1*dt_max
+        double min_dx=dealii::GridTools::minimal_cell_diameter(triangulation);
+        double dt_for_smoothing = 0.05*min_dx*min_dx/dim;
 
         op_list_index = 0;
         for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
@@ -159,6 +165,7 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
                 if ( fieldIndex == userInputs.variables_for_remapping.at(op_list_index)){
 
                     for (unsigned int cycle=0; cycle<userInputs.num_grain_smoothing_cycles; cycle++){
+                        //Calculates the Laplace RHS and stores the information in residualSet
                         computeLaplaceRHS(fieldIndex);
 
                         unsigned int invM_size = invM.local_size();
