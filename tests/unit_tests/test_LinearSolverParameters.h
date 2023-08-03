@@ -50,7 +50,7 @@ template <int dim,typename T>
     pass = pass && result;
 
 
-	sprintf (buffer, "Test result for 'LinearSolverParameters': %u\n", pass);
+	snprintf(buffer, sizeof(buffer), "Test result for 'LinearSolverParameters': %u\n", pass);
 	std::cout << buffer;
 
 	return pass;

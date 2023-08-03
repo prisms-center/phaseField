@@ -228,7 +228,7 @@ template <int dim,typename T>
 
     pass = result;
 
-	sprintf (buffer, "Test result for 'FloodFiller': %u\n", pass);
+	snprintf(buffer, sizeof(buffer), "Test result for 'FloodFiller': %u\n", pass);
 	std::cout << buffer;
 
 	return pass;

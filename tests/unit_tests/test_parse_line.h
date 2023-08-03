@@ -34,7 +34,7 @@ template <int dim,typename T>
     if (found_entry == true && boost::iequals(out_string,"3")){
         pass_subtest1 = true;
     }
-    sprintf (buffer, "Subtest 1 result for 'parse_line': %u\n", pass_subtest1);
+    snprintf(buffer, sizeof(buffer), "Subtest 1 result for 'parse_line': %u\n", pass_subtest1);
 	std::cout << buffer;
 
     // Subtest 2
@@ -46,7 +46,7 @@ template <int dim,typename T>
     if (found_entry == false){
         pass_subtest2 = true;
     }
-    sprintf (buffer, "Subtest 2 result for 'parse_line': %u\n", pass_subtest2);
+    snprintf(buffer, sizeof(buffer), "Subtest 2 result for 'parse_line': %u\n", pass_subtest2);
     std::cout << buffer;
 
     // Subtest 3
@@ -58,7 +58,7 @@ template <int dim,typename T>
     if (found_entry == false){
         pass_subtest3 = true;
     }
-    sprintf (buffer, "Subtest 3 result for 'parse_line': %u\n", pass_subtest3);
+    snprintf(buffer, sizeof(buffer), "Subtest 3 result for 'parse_line': %u\n", pass_subtest3);
     std::cout << buffer;
 
     // Subtest 4
@@ -70,7 +70,7 @@ template <int dim,typename T>
     if (found_entry == false){
         pass_subtest4 = true;
     }
-    sprintf (buffer, "Subtest 4 result for 'parse_line': %u\n", pass_subtest4);
+    snprintf(buffer, sizeof(buffer), "Subtest 4 result for 'parse_line': %u\n", pass_subtest4);
     std::cout << buffer;
 
     // Subtest 5
@@ -82,13 +82,13 @@ template <int dim,typename T>
     if (found_entry == true && boost::iequals(out_string,"3")){
         pass_subtest5 = true;
     }
-    sprintf (buffer, "Subtest 5 result for 'parse_line': %u\n", pass_subtest5);
+    snprintf(buffer, sizeof(buffer), "Subtest 5 result for 'parse_line': %u\n", pass_subtest5);
     std::cout << buffer;
 
 	// Check if all subtests passed
 	if (pass_subtest4&&pass_subtest3&&pass_subtest2&&pass_subtest1) {pass=true;}
 
-	sprintf (buffer, "Test result for 'parse_line': %u\n", pass);
+	snprintf(buffer, sizeof(buffer), "Test result for 'parse_line': %u\n", pass);
 	std::cout << buffer;
 
 	return pass;

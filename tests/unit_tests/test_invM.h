@@ -66,7 +66,7 @@ template <int dim,typename T>
 	//check invM norm
 	if ((test.invMNorm - 1700.0) < 1.0e-10) {pass=true;}
 	char buffer[100];
-	sprintf (buffer, "Test result for 'computeInvM' in   %u dimension(s): %u\n", dim, pass);
+	snprintf(buffer, sizeof(buffer), "Test result for 'computeInvM' in   %u dimension(s): %u\n", dim, pass);
 	std::cout << buffer;
 
 	return pass;

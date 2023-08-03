@@ -101,7 +101,7 @@ template <int dim,typename T>
         pass = pass & result;
     }
 
-	sprintf (buffer, "Test result for 'SimplifiedGrainManipulator::transferGrainIds': %u\n", pass);
+	snprintf(buffer, sizeof(buffer), "Test result for 'SimplifiedGrainManipulator::transferGrainIds': %u\n", pass);
 	std::cout << buffer;
 
 	return pass;
@@ -198,7 +198,7 @@ template <int dim,typename T>
             result = true;
         }
 
-        sprintf (buffer, "Subtest 1 result for 'SimplifiedGrainManipulator::reassignGrains': %u\n", result);
+        snprintf(buffer, sizeof(buffer), "Subtest 1 result for 'SimplifiedGrainManipulator::reassignGrains': %u\n", result);
         std::cout << buffer;
 
         pass = pass & result;
@@ -289,13 +289,13 @@ template <int dim,typename T>
             result = true;
         }
 
-        sprintf (buffer, "Subtest 2 result for 'SimplifiedGrainManipulator::reassignGrains': %u\n", result);
+        snprintf(buffer, sizeof(buffer), "Subtest 2 result for 'SimplifiedGrainManipulator::reassignGrains': %u\n", result);
         std::cout << buffer;
 
         pass = pass & result;
     }
 
-	sprintf (buffer, "Test result for 'SimplifiedGrainManipulator::reassignGrains': %u\n", pass);
+	snprintf(buffer, sizeof(buffer), "Test result for 'SimplifiedGrainManipulator::reassignGrains': %u\n", pass);
 	std::cout << buffer;
 
 	return pass;

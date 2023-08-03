@@ -378,7 +378,7 @@ dealii::Tensor<2, 2*dim-1+dim/3> userInputParameters<dim>::getCIJMatrix(const el
   char buffer[100];
   for (unsigned int i=0; i<2*dim-1+dim/3; i++){
     for (unsigned int j=0; j<2*dim-1+dim/3; j++){
-      sprintf(buffer, "%8.3e ", CIJ[i][j]);
+      snprintf(buffer, sizeof(buffer), "%8.3e ", CIJ[i][j]);
       pcout << buffer;
     }
     pcout << "\n";

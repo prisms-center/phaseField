@@ -259,7 +259,7 @@ bool unitTest<dim,T>::test_EquationDependencyParser_variables_and_residuals_need
 
 
 
-    sprintf (buffer, "Test result for 'EquationDependencyParser': %u\n", pass);
+    snprintf(buffer, sizeof(buffer), "Test result for 'EquationDependencyParser': %u\n", pass);
 	std::cout << buffer;
 
     return pass;
@@ -382,7 +382,7 @@ bool unitTest<dim,T>::test_EquationDependencyParser_nonlinear(){
 
 
 
-    sprintf (buffer, "Test result for 'EquationDependencyParser': %u\n", pass);
+    snprintf(buffer, sizeof(buffer), "Test result for 'EquationDependencyParser': %u\n", pass);
 	std::cout << buffer;
 
     return pass;
@@ -492,7 +492,7 @@ bool unitTest<dim,T>::test_EquationDependencyParser_postprocessing(){
     pass = pass && result;
 
 
-    sprintf (buffer, "Test result for 'EquationDependencyParser': %u\n", pass);
+    snprintf(buffer, sizeof(buffer), "Test result for 'EquationDependencyParser': %u\n", pass);
 	std::cout << buffer;
 
     return pass;

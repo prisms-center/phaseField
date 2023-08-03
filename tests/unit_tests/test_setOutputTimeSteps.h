@@ -42,7 +42,7 @@ bool unitTest<dim,T>::test_setOutputTimeSteps(){
 		}
 	}
 
-    sprintf (buffer, "Subtest 1 for 'setOutputTimeSteps' (EQUAL_SPACING) result: %u\n", pass1);
+    snprintf(buffer, sizeof(buffer), "Subtest 1 for 'setOutputTimeSteps' (EQUAL_SPACING) result: %u\n", pass1);
 	std::cout << buffer;
 
     // Subtest 2 (LOG_SPACING)
@@ -58,7 +58,7 @@ bool unitTest<dim,T>::test_setOutputTimeSteps(){
 		}
 	}
 
-    sprintf (buffer, "Subtest 2 for 'setOutputTimeSteps' (LOG_SPACING) result: %u\n", pass2);
+    snprintf(buffer, sizeof(buffer), "Subtest 2 for 'setOutputTimeSteps' (LOG_SPACING) result: %u\n", pass2);
 	std::cout << buffer;
 
     // Subtest 3 (N_PER_DECADE)
@@ -76,7 +76,7 @@ bool unitTest<dim,T>::test_setOutputTimeSteps(){
 		}
 	}
 
-    sprintf (buffer, "Subtest 3 for 'setOutputTimeSteps' (N_PER_DECADE) result: %u\n", pass3);
+    snprintf(buffer, sizeof(buffer), "Subtest 3 for 'setOutputTimeSteps' (N_PER_DECADE) result: %u\n", pass3);
 	std::cout << buffer;
 
     // Subtest 4 (LIST)
@@ -92,7 +92,7 @@ bool unitTest<dim,T>::test_setOutputTimeSteps(){
 		}
 	}
 
-    sprintf (buffer, "Subtest 4 for 'setOutputTimeSteps' (LIST) result: %u\n", pass4);
+    snprintf(buffer, sizeof(buffer), "Subtest 4 for 'setOutputTimeSteps' (LIST) result: %u\n", pass4);
 	std::cout << buffer;
 
 
@@ -100,7 +100,7 @@ bool unitTest<dim,T>::test_setOutputTimeSteps(){
 		pass=true;
 	}
 
-	sprintf (buffer, "Test result for 'setOutputTimeSteps': %u\n", pass);
+	snprintf(buffer, sizeof(buffer), "Test result for 'setOutputTimeSteps': %u\n", pass);
 	std::cout << buffer;
 
 	return pass;

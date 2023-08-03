@@ -32,7 +32,7 @@ template <int dim,typename T>
                     && boost::iequals(entry_name_ending_list[4],"t uv") );
     }
 
-	sprintf (buffer, "Test result for 'get_entry_name_ending_list': %u\n", pass);
+	snprintf(buffer, sizeof(buffer), "Test result for 'get_entry_name_ending_list': %u\n", pass);
 	std::cout << buffer;
 
 	return pass;

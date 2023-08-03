@@ -28,7 +28,7 @@ def run_unit_tests():
 	subprocess.call(["cmake", "."],stdout=f,stderr=f)
 	subprocess.call(["make", "release"],stdout=f)
 	subprocess.call(["make"],stdout=f)
-	subprocess.call(["mpirun", "-n", "2", "main"],stdout=f)
+	subprocess.call(["mpirun", "-n", "2", "./main"],stdout=f)
 	f.close()
 
 	result_file = open("unit_test_results.txt","r")
@@ -65,7 +65,7 @@ def run_simulation(run_name,dir_path):
 	print("Compiling complete, running the regression test...")
 	sys.stdout.flush()
 	start = time.time()
-	subprocess.call(["mpirun", "-n", "1", "main"],stdout=f)
+	subprocess.call(["mpirun", "-n", "1", "./main"],stdout=f)
 	end = time.time()
 	f.close()
 

@@ -23,7 +23,7 @@ template <int dim,typename T>
                     && boost::iequals(list_of_entries[2],"SCALAR") );
     }
 
-	sprintf (buffer, "Test result for 'get_subsection_entry_list': %u\n", pass);
+	snprintf(buffer, sizeof(buffer), "Test result for 'get_subsection_entry_list': %u\n", pass);
 	std::cout << buffer;
 
 	return pass;

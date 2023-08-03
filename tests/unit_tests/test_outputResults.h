@@ -35,7 +35,7 @@ template <int dim,typename T>
   pass=true;
 
   char buffer[100];
-  sprintf (buffer, "Test result for 'outputResults' in %u dimension(s): %u\n", dim, pass);
+  snprintf(buffer, sizeof(buffer), "Test result for 'outputResults' in %u dimension(s): %u\n", dim, pass);
   std::cout << buffer;
 
   return pass;

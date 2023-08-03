@@ -29,7 +29,7 @@ template <int dim,typename T>
         pass1 = pass1 && (userInputs.BC_list[0].var_BC_type[i] == DIRICHLET);
         pass1 = pass1 && (userInputs.BC_list[0].var_BC_val[i] == 2.5);
     }
-    sprintf (buffer, "Subtest 1 result for 'load_BC_list': %u\n", pass1);
+    snprintf(buffer, sizeof(buffer), "Subtest 1 result for 'load_BC_list': %u\n", pass1);
     std::cout << buffer;
 
     bool pass2;
@@ -37,7 +37,7 @@ template <int dim,typename T>
     pass2 = pass2 && (userInputs.BC_list[1].var_BC_type[1] == PERIODIC);
     pass2 = pass2 && (userInputs.BC_list[1].var_BC_type[2] == NATURAL);
     pass2 = pass2 && (userInputs.BC_list[1].var_BC_type[3] == NATURAL);
-    sprintf (buffer, "Subtest 2 result for 'load_BC_list': %u\n", pass2);
+    snprintf(buffer, sizeof(buffer), "Subtest 2 result for 'load_BC_list': %u\n", pass2);
     std::cout << buffer;
 
     bool pass3;
@@ -47,7 +47,7 @@ template <int dim,typename T>
     pass3 = pass3 && (userInputs.BC_list[2].var_BC_val[1] == 1.5);
     pass3 = pass3 && (userInputs.BC_list[2].var_BC_type[2] == NATURAL);
     pass3 = pass3 && (userInputs.BC_list[2].var_BC_type[3] == NATURAL);
-    sprintf (buffer, "Subtest 3 result for 'load_BC_list': %u\n", pass3);
+    snprintf(buffer, sizeof(buffer), "Subtest 3 result for 'load_BC_list': %u\n", pass3);
     std::cout << buffer;
 
     // 3D test:
@@ -65,7 +65,7 @@ template <int dim,typename T>
         pass4 = pass4 && (userInputs_3D.BC_list[0].var_BC_type[i] == DIRICHLET);
         pass4 = pass4 && (userInputs_3D.BC_list[0].var_BC_val[i] == 2.5);
     }
-    sprintf (buffer, "Subtest 4 result for 'load_BC_list': %u\n", pass4);
+    snprintf(buffer, sizeof(buffer), "Subtest 4 result for 'load_BC_list': %u\n", pass4);
     std::cout << buffer;
 
     bool pass5;
@@ -75,13 +75,13 @@ template <int dim,typename T>
     pass5 = pass5 && (userInputs_3D.BC_list[1].var_BC_type[3] == NATURAL);
     pass5 = pass5 && (userInputs_3D.BC_list[1].var_BC_type[4] == PERIODIC);
     pass5 = pass5 && (userInputs_3D.BC_list[1].var_BC_type[5] == PERIODIC);
-    sprintf (buffer, "Subtest 5 result for 'load_BC_list': %u\n", pass5);
+    snprintf(buffer, sizeof(buffer), "Subtest 5 result for 'load_BC_list': %u\n", pass5);
     std::cout << buffer;
 
 
     pass = pass1 && pass2 && pass3 && pass4 && pass5;
 
-	sprintf (buffer, "Test result for 'load_BC_list': %u\n", pass);
+	snprintf(buffer, sizeof(buffer), "Test result for 'load_BC_list': %u\n", pass);
 	std::cout << buffer;
 
 	return pass;

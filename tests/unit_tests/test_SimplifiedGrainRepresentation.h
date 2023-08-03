@@ -33,7 +33,7 @@ template <int dim,typename T>
             result = true;
         }
 
-        sprintf (buffer, "Subtest 1 result for 'SimplifiedGrainRepresentation': %u\n", result);
+        snprintf(buffer, sizeof(buffer), "Subtest 1 result for 'SimplifiedGrainRepresentation': %u\n", result);
         std::cout << buffer;
         pass = pass and result;
     }
@@ -87,12 +87,12 @@ template <int dim,typename T>
             result = true;
         }
 
-        sprintf (buffer, "Subtest 2 result for 'SimplifiedGrainRepresentation': %u\n", result);
+        snprintf(buffer, sizeof(buffer), "Subtest 2 result for 'SimplifiedGrainRepresentation': %u\n", result);
         std::cout << buffer;
         pass = pass and result;
     }
 
-	sprintf (buffer, "Test result for 'SimplifiedGrainRepresentation': %u\n", pass);
+	snprintf(buffer, sizeof(buffer), "Test result for 'SimplifiedGrainRepresentation': %u\n", pass);
 	std::cout << buffer;
 
 	return pass;

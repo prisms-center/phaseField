@@ -68,7 +68,7 @@ void MatrixFreePDE<dim,degree>::setNonlinearEqInitialGuess(){
                 else {
                     dU_norm = dU_vector.l2_norm();
                 }
-                sprintf(buffer, "field '%2s' [laplace solve for initial guess]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
+                snprintf(buffer, sizeof(buffer), "field '%2s' [laplace solve for initial guess]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
                 fields[fieldIndex].name.c_str(),			\
                 residualSet[fieldIndex]->l2_norm(),			\
                 solver_control.last_value(),				\

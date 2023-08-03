@@ -70,7 +70,7 @@ template <int dim, int degree>
 			 }
 		 }
 
-		 sprintf(buffer, "field '%2s' DOF : %u (Constraint DOF : %u)\n", \
+		 snprintf(buffer, sizeof(buffer), "field '%2s' DOF : %u (Constraint DOF : %u)\n", \
 				 it->name.c_str(), dof_handler->n_dofs(), constraintsDirichlet->n_constraints());
 		 pcout << buffer;
 	 }

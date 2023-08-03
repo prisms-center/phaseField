@@ -53,14 +53,14 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
             if (currentIncrement%userInputs.skip_print_steps==0){
                 double solution_L2_norm = solutionSet[fieldIndex]->l2_norm();
 
-                sprintf(buffer, "field '%2s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
+                snprintf(buffer, sizeof(buffer), "field '%2s' [explicit solve]: current solution: %12.6e, current residual:%12.6e\n", \
                 fields[fieldIndex].name.c_str(),				\
                 solution_L2_norm,			\
                 residualSet[fieldIndex]->l2_norm());
                 pcout<<buffer;
 
                 if (!numbers::is_finite(solution_L2_norm)){
-                    sprintf(buffer, "ERROR: field '%s' solution is NAN. exiting.\n\n",
+                    snprintf(buffer, sizeof(buffer), "ERROR: field '%s' solution is NAN. exiting.\n\n",
                     fields[fieldIndex].name.c_str());
                     pcout<<buffer;
                     exit(-1);
@@ -93,7 +93,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
                 if ( (fields[fieldIndex].pdetype == IMPLICIT_TIME_DEPENDENT && !skip_time_dependent) || fields[fieldIndex].pdetype == TIME_INDEPENDENT){
 
                     if (currentIncrement%userInputs.skip_print_steps==0 && userInputs.var_nonlinear[fieldIndex]){
-                        sprintf(buffer, "field '%2s' [nonlinear solve]: current solution: %12.6e, current residual:%12.6e\n", \
+                        snprintf(buffer, sizeof(buffer), "field '%2s' [nonlinear solve]: current solution: %12.6e, current residual:%12.6e\n", \
                         fields[fieldIndex].name.c_str(),				\
                         solutionSet[fieldIndex]->l2_norm(),			\
                         residualSet[fieldIndex]->l2_norm());
@@ -202,7 +202,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
                             else {
                                 dU_norm = dU_vector.l2_norm();
                             }
-                            sprintf(buffer, "field '%2s' [linear solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
+                            snprintf(buffer, sizeof(buffer), "field '%2s' [linear solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
                             fields[fieldIndex].name.c_str(),			\
                             residualSet[fieldIndex]->l2_norm(),			\
                             solver_control.last_value(),				\
@@ -250,7 +250,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
                                 else {
                                     dU_norm = dU_vector.l2_norm();
                                 }
-                                sprintf(buffer, "field '%2s' [linear solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
+                                snprintf(buffer, sizeof(buffer), "field '%2s' [linear solve]: initial residual:%12.6e, current residual:%12.6e, nsteps:%u, tolerance criterion:%12.6e, solution: %12.6e, dU: %12.6e\n", \
                                 fields[fieldIndex].name.c_str(),			\
                                 residualSet[fieldIndex]->l2_norm(),			\
                                 solver_control.last_value(),				\
@@ -294,7 +294,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
 
                         // Print update to screen
                         if (currentIncrement%userInputs.skip_print_steps==0){
-                            sprintf(buffer, "field '%2s' [auxiliary solve]: current solution: %12.6e, current residual:%12.6e\n", \
+                            snprintf(buffer, sizeof(buffer), "field '%2s' [auxiliary solve]: current solution: %12.6e, current residual:%12.6e\n", \
                             fields[fieldIndex].name.c_str(),				\
                             solutionSet[fieldIndex]->l2_norm(),			\
                             residualSet[fieldIndex]->l2_norm());
@@ -333,7 +333,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
 
                 //check if solution is nan
                 if (!numbers::is_finite(solutionSet[fieldIndex]->l2_norm())){
-                    sprintf(buffer, "ERROR: field '%s' solution is NAN. exiting.\n\n",
+                    snprintf(buffer, sizeof(buffer), "ERROR: field '%s' solution is NAN. exiting.\n\n",
                     fields[fieldIndex].name.c_str());
                     pcout<<buffer;
                     exit(-1);

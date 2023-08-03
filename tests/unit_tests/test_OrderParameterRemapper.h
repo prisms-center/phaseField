@@ -192,7 +192,7 @@ template <int dim,typename T>
         }
     }
 
-	sprintf (buffer, "Test result for 'OrderParameterRemapper': %u\n", pass);
+	snprintf(buffer, sizeof(buffer), "Test result for 'OrderParameterRemapper': %u\n", pass);
 	std::cout << buffer;
 
 	return pass;

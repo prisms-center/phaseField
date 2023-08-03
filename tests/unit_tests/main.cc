@@ -188,7 +188,7 @@ int main(int argc, char **argv)
 
   // Print out results
   char buffer[100];
-  sprintf(buffer, "\n\nNumber of tests passed: %u/%u \n\n", tests_passed, total_tests);
+  snprintf(buffer, sizeof(buffer), "\n\nNumber of tests passed: %u/%u \n\n", tests_passed, total_tests);
   std::cout << buffer;
 
   // Write results to a file
