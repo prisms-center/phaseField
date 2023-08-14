@@ -90,7 +90,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
                     locally_relevant_dofs=locally_relevant_dofsSet_nonconst.at(currentFieldIndex);
                     locally_relevant_dofs->clear();
                     DoFTools::extract_locally_relevant_dofs (*dof_handler, *locally_relevant_dofs);
-                    ConstraintMatrix *constraintsDirichlet;
+                    AffineConstraints<double> *constraintsDirichlet;
                     constraintsDirichlet=constraintsDirichletSet_nonconst.at(currentFieldIndex);
                     constraintsDirichlet->clear(); constraintsDirichlet->reinit(*locally_relevant_dofs);
                     applyDirichletBCs();
