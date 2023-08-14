@@ -1600,3 +1600,32 @@ Time: 81.8718562126
  
 Tests Passed: 5/5
 --------------------------------------------------------- 
+--------------------------------------------------------- 
+Unit test on 2023-08-13 22:13
+--------------------------------------------------------- 
+Unit Tests Passed: 24/24
+--------------------------------------------------------- 
+Regression test on 2023-08-13 22:13
+--------------------------------------------------------- 
+Application: allenCahn 
+Result: Pass 
+Time: 23.812302112579346 
+ 
+Application: cahnHilliard 
+Result: Pass 
+Time: 111.97239017486572 
+ 
+Application: CHAC_anisotropyRegularized 
+Result: Pass 
+Time: 79.0097348690033 
+ 
+Application: coupledCahnHilliardAllenCahn 
+Result: Pass 
+Time: 213.27304983139038 
+ 
+Application: precipitateEvolution 
+Result: Pass 
+Time: 125.07475018501282 
+ 
+Tests Passed: 5/5
+--------------------------------------------------------- 
