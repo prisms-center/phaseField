@@ -2,10 +2,10 @@
 #  CMake script for the PRISMS-PF applications:
 ##
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.8)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
 
 # Find deal.II installation
-FIND_PACKAGE(deal.II 8.3.0 REQUIRED
+FIND_PACKAGE(deal.II 9.2.0 REQUIRED
 	HINTS ${DEAL_II_DIR} ../ ../../ $ENV{DEAL_II_DIR})
 
 # Check to make sure deal.II is configured with p4est
@@ -41,21 +41,21 @@ if (${CMAKE_BUILD_TYPE} MATCHES DebugRelease)
 	SET(CMAKE_BUILD_TYPE Debug)
 endif()
 
-# Check if postprocess.h and nucleation.h exist and set preprocessor variables
-if (EXISTS "postprocess.h")
+# Check if postprocess.cc and nucleation.cc exist and set preprocessor variables
+if (EXISTS "postprocess.cc")
 	add_definitions(-DPOSTPROCESS_FILE_EXISTS)
 endif()
-if (EXISTS "nucleation.h")
+if (EXISTS "nucleation.cc")
 	add_definitions(-DNUCLEATION_FILE_EXISTS)
 endif()
 
 # Append extra flags for the GNU compiler to suppress some warnings
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-        set(DEAL_II_CXX_FLAGS_DEBUG "${DEAL_II_CXX_FLAGS_DEBUG} -Wno-maybe-uninitialized -Wno-unused-parameter -Wno-extra")
-        set(DEAL_II_CXX_FLAGS_RELEASE "${DEAL_II_CXX_FLAGS_RELEASE} -Wno-maybe-uninitialized -Wno-unused-parameter -Wno-extra")
+#if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+        #set(DEAL_II_CXX_FLAGS_DEBUG "${DEAL_II_CXX_FLAGS_DEBUG} -Wno-maybe-uninitialized -Wno-unused-parameter -Wno-extra")
+        set(DEAL_II_CXX_FLAGS_RELEASE "${DEAL_II_CXX_FLAGS_RELEASE} -Wno-uninitialized -Wno-unused-parameter -Wno-extra")
         #set(DEAL_II_CXX_FLAGS_DEBUG "${DEAL_II_CXX_FLAGS_DEBUG} -Wno-maybe-uninitialized -Wno-deprecated-declarations -Wno-comment -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable")
         #set(DEAL_II_CXX_FLAGS_RELEASE "${DEAL_II_CXX_FLAGS_RELEASE} -Wno-maybe-uninitialized -Wno-deprecated-declarations -Wno-comment -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable")
-endif()
+#endif()
 
 ADD_EXECUTABLE(main main.cc )
 
