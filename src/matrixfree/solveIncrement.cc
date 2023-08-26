@@ -399,6 +399,8 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
                             constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
                         }
 
+                        solutionSet[fieldIndex]->update_ghost_values();
+
                         // Print update to screen
                         if (currentIncrement%userInputs.skip_print_steps==0){
                             snprintf(buffer, sizeof(buffer), "field '%2s' [auxiliary solve]: current solution: %12.6e, current residual:%12.6e\n", \
