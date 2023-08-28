@@ -441,13 +441,11 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
                 }
 
                 //check if solution is nan
-                if (currentIncrement%userInputs.skip_print_steps==0){
-                    if (!numbers::is_finite(solutionSet[fieldIndex]->l2_norm())){
-                        snprintf(buffer, sizeof(buffer), "ERROR: field '%s' solution is NAN. exiting.\n\n",
-                        fields[fieldIndex].name.c_str());
-                        pcout<<buffer;
-                        exit(-1);
-                    }
+                if (!numbers::is_finite(solutionSet[fieldIndex]->l2_norm())){
+                    snprintf(buffer, sizeof(buffer), "ERROR: field '%s' solution is NAN. exiting.\n\n",
+                    fields[fieldIndex].name.c_str());
+                    pcout<<buffer;
+                    exit(-1);
                 }
 
             }
