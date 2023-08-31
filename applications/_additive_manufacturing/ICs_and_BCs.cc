@@ -30,15 +30,15 @@ void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, con
         //   {dealii::Point<dim> p(0.75, 0.1); center.push_back(p);}
         //   {dealii::Point<dim> p(0.2, 0.45); center.push_back(p);}
 
-          {dealii::Point<dim> p(0.0, 0.15); center.push_back(p);}
-          {dealii::Point<dim> p(0.0, 0.7); center.push_back(p);}
-          {dealii::Point<dim> p(0.0, 0.5); center.push_back(p);}
-          {dealii::Point<dim> p(0.0, 0.85); center.push_back(p);}
+          {dealii::Point<dim> p(0.0, 0.25); center.push_back(p);}
+          {dealii::Point<dim> p(0.05, 0.7); center.push_back(p);}
+          {dealii::Point<dim> p(0.02, 0.5); center.push_back(p);}
+          {dealii::Point<dim> p(0.1, 0.8); center.push_back(p);}
           {dealii::Point<dim> p(0.0, 0.35); center.push_back(p);}
 
-          {dealii::Point<dim> p(0.0, 0.92); center.push_back(p);}
-          {dealii::Point<dim> p(0.0, 0.6); center.push_back(p);}
-          {dealii::Point<dim> p(0.0, 0.1); center.push_back(p);}
+          {dealii::Point<dim> p(0.08, 0.95); center.push_back(p);}
+          {dealii::Point<dim> p(0.04, 0.6); center.push_back(p);}
+          {dealii::Point<dim> p(0.02, 0.1); center.push_back(p);}
           {dealii::Point<dim> p(0.0, 0.45); center.push_back(p);}
 
 double init_factor = 1.0e6;
@@ -235,19 +235,106 @@ dist=0.0;
 
 
 	  // --------------------------------------------------------------------------
+    if (index==7){
+        scalar_IC=1723.05;//1724.0;
+
+    }
+
+
+dist=0.0;
+    if (index==7){
+    	  for (unsigned int dir = 0; dir < dim; dir++){
+    		  dist += (p[dir]-center[0][dir]*userInputs.domain_size[dir])*(p[dir]-center[0][dir]*userInputs.domain_size[dir]);
+    	  }
+    	  dist = std::sqrt(dist);
+
+    	  scalar_IC -=	20.0*0.5*(1.0-std::tanh(init_factor*(dist-rad[0]*userInputs.domain_size[0])/0.5));
+    }
+
+    dist=0.0;
+    if (index==7){
+    	  for (unsigned int dir = 0; dir < dim; dir++){
+    		  dist += (p[dir]-center[1][dir]*userInputs.domain_size[dir])*(p[dir]-center[1][dir]*userInputs.domain_size[dir]);
+    	  }
+    	  dist = std::sqrt(dist);
+
+    	  scalar_IC -=	20.0*0.5*(1.0-std::tanh(init_factor*(dist-rad[1]*userInputs.domain_size[0])/0.5));
+    }
+
+        dist=0.0;
+    if (index==7){
+    	  for (unsigned int dir = 0; dir < dim; dir++){
+    		  dist += (p[dir]-center[2][dir]*userInputs.domain_size[dir])*(p[dir]-center[2][dir]*userInputs.domain_size[dir]);
+    	  }
+    	  dist = std::sqrt(dist);
+
+    	  scalar_IC -=	20.0*0.5*(1.0-std::tanh(init_factor*(dist-rad[2]*userInputs.domain_size[0])/0.5));
+    }
+
+            dist=0.0;
+    if (index==7){
+    	  for (unsigned int dir = 0; dir < dim; dir++){
+    		  dist += (p[dir]-center[3][dir]*userInputs.domain_size[dir])*(p[dir]-center[3][dir]*userInputs.domain_size[dir]);
+    	  }
+    	  dist = std::sqrt(dist);
+
+    	  scalar_IC -=	20.0*0.5*(1.0-std::tanh(init_factor*(dist-rad[3]*userInputs.domain_size[0])/0.5));
+    }
+
+            dist=0.0;
+    if (index==7){
+    	  for (unsigned int dir = 0; dir < dim; dir++){
+    		  dist += (p[dir]-center[4][dir]*userInputs.domain_size[dir])*(p[dir]-center[4][dir]*userInputs.domain_size[dir]);
+    	  }
+    	  dist = std::sqrt(dist);
+
+    	  scalar_IC -=	20.0*0.5*(1.0-std::tanh(init_factor*(dist-rad[4]*userInputs.domain_size[0])/0.5));
+    }
+
+            dist=0.0;
+    if (index==7){
+    	  for (unsigned int dir = 0; dir < dim; dir++){
+    		  dist += (p[dir]-center[5][dir]*userInputs.domain_size[dir])*(p[dir]-center[5][dir]*userInputs.domain_size[dir]);
+    	  }
+    	  dist = std::sqrt(dist);
+
+    	  scalar_IC -=	20.0*0.5*(1.0-std::tanh(init_factor*(dist-rad[5]*userInputs.domain_size[0])/0.5));
+    }
+
+                dist=0.0;
+    if (index==7){
+    	  for (unsigned int dir = 0; dir < dim; dir++){
+    		  dist += (p[dir]-center[6][dir]*userInputs.domain_size[dir])*(p[dir]-center[6][dir]*userInputs.domain_size[dir]);
+    	  }
+    	  dist = std::sqrt(dist);
+
+    	  scalar_IC -=	20.0*0.5*(1.0-std::tanh(init_factor*(dist-rad[6]*userInputs.domain_size[0])/0.5));
+    }
+
+                    dist=0.0;
+    if (index==7){
+    	  for (unsigned int dir = 0; dir < dim; dir++){
+    		  dist += (p[dir]-center[7][dir]*userInputs.domain_size[dir])*(p[dir]-center[7][dir]*userInputs.domain_size[dir]);
+    	  }
+    	  dist = std::sqrt(dist);
+
+    	  scalar_IC -=	20.0*0.5*(1.0-std::tanh(init_factor*(dist-rad[7]*userInputs.domain_size[0])/0.5));
+    }
 
 
 
-	  if (index==7){
-		  if(p[0]<userInputs.domain_size[0]*0.05){
-		  scalar_IC=1720.0;
-		  }
-		  else{
 
-			scalar_IC=1724.0;
 
-		  }
-		  }
+	//   if (index==7){
+	// 	  if(p[0]<userInputs.domain_size[0]*0.05){
+	// 	  scalar_IC=1720.0;
+	// 	  }
+	// 	  else{
+
+	// 		scalar_IC=1722.0;//1724.0;
+
+	// 	  }
+	// 	  }
 
 
 }

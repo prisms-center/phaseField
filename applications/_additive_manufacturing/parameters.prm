@@ -31,13 +31,13 @@ set Element degree = 2
 # Set the adaptive mesh refinement parameters
 # =================================================================================
 # Set the flag determining if adaptive meshing is activated
-set Mesh adaptivity = false
+set Mesh adaptivity = true
 
 # Set the maximum and minimum level of refinement
 # When adaptive meshing is enabled, the refine factor set in the block above is
 # only used to generate the first pass of the mesh as the initial conditions are
 # applied. It should be set somewhere between the max and min levels below.
-set Max refinement level = 6
+set Max refinement level = 5
 set Min refinement level = 3
 
 # Set the number of time steps between remeshing operations
@@ -107,24 +107,17 @@ subsection Refinement criterion: z
     set Value upper bound = 0.999
 end
 
-# Set the criteria for adapting the mesh
-subsection Refinement criterion: T
-    # Select whether the mesh is refined based on the variable value (VALUE),
-    # its gradient (GRADIENT), or both (VALUE_AND_GRADIENT)
-    set Criterion type = GRADIENT
-    # Set the lower and upper bounds for the value-based refinement window
-    set Gradient magnitude lower bound = 1.0e3
-end
+
 
 # =================================================================================
 # Set the time step parameters
 # =================================================================================
 # The size of the time step
-set Time step = 0.01e-6
+set Time step = 2.5e-11
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 10000
+set Number of time steps = 100000
 
 # =================================================================================
 # Set the output parameters
@@ -146,7 +139,7 @@ set Skip print steps = 50
 
 set Activate grain reassignment = true
 set Order parameter fields for grain reassignment = n0, n1, n2, n3, n4, n5
-set Time steps between grain reassignments = 100
+set Time steps between grain reassignments = 10
 set Order parameter cutoff for grain identification = 1e-2
 set Buffer between grains before reassignment = 5.0
 set Load grain structure = false
@@ -178,9 +171,9 @@ set Boundary condition for variable n3 = NATURAL
 set Boundary condition for variable n4 = NATURAL
 set Boundary condition for variable n5 = NATURAL
 
-set Boundary condition for variable z = DIRICHLET: 1.0,NATURAL, NATURAL, NATURAL
+set Boundary condition for variable z = NATURAL, NATURAL, NATURAL, NATURAL
 
-set Boundary condition for variable T = DIRICHLET: 1720.0,DIRICHLET: 1724.0, NATURAL, NATURAL
+set Boundary condition for variable T = DIRICHLET: 1720,NATURAL, NATURAL, NATURAL
 
 
 # =================================================================================
@@ -193,10 +186,10 @@ set Boundary condition for variable T = DIRICHLET: 1720.0,DIRICHLET: 1724.0, NAT
 # where [symmetry] is ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC.
 
 # The AC mobility, Lg in equations.h
-set Model constant Lg = 1.285, DOUBLE
+set Model constant Lg = 1000.0, DOUBLE
 
 # Gradient energy coefficient
-set Model constant Kg = 2.25e-7, DOUBLE
+set Model constant Kg = 2.0e-7, DOUBLE
 
 # Grain interaction coeffiecient
 set Model constant gamma = 1.5, DOUBLE
@@ -204,13 +197,13 @@ set Model constant gamma = 1.5, DOUBLE
 # Liquidus Temperature
 set Model constant Tliquidus = 1723.0, DOUBLE
 
-# UNSURE OF THIS VALUE
-set Model constant Lp = 1.285, DOUBLE
-set Model constant Kp = 1.5e-6, DOUBLE
+
+set Model constant Lp = 100.0, DOUBLE
+set Model constant Kp = 7.5e-8, DOUBLE
 
 set Model constant theta = 1e6, DOUBLE
 
 set Model constant mp = 1200000, DOUBLE
-set Model constant mg = 450000, DOUBLE
+set Model constant mg = 300000, DOUBLE
 
-set Model constant D = 2.9e-8, DOUBLE
+set Model constant D = 50.0e-6, DOUBLE
