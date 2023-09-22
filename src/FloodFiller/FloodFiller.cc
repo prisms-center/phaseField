@@ -80,18 +80,24 @@ void FloodFiller<dim, degree>::recursiveFloodFill(T di, T di_end, vectorType* so
                     std::vector<double> var_values(num_quad_points);
                     std::vector<dealii::Point<dim> > q_point_list(num_quad_points);
 
-                    // Get the average value for the element
+                    // Get the most common value for the element
                     fe_values.reinit(di);
                     fe_values.get_function_values(*solution_field, var_values);
-
-
-                    double ele_val = 0.0;
+                  
+                    double ele_val;
+                    std::map<double, int> quadratureValues;
+                    int maxNumberSeen = 0;
+                    double mostCommonQPointValue = -1;
                     for (unsigned int q_point=0; q_point<num_quad_points; ++q_point){
-                        for (unsigned int i=0; i<dofs_per_cell; ++i){
-                            ele_val += fe_values.shape_value (i, q_point)*var_values[q_point]*quadrature.weight(q_point);
-                        }
+                      // Add the number of times that var_values[q_point] has been seen
+                      ++quadratureValues[var_values[q_point]];
+                      if (quadratureValues[var_values[q_point]] > maxNumberSeen) {
+                          maxNumberSeen = quadratureValues[var_values[q_point]];
+                          mostCommonQPointValue = var_values[q_point];
+                      }
                     }
-
+                    ele_val = mostCommonQPointValue;
+                  
                     if (ele_val > threshold_lower && ele_val < threshold_upper){
                         grain_assigned = true;
 
