@@ -90,7 +90,7 @@ void MatrixFreePDE<dim,degree>::applyDirichletBCs(){
 		  for (unsigned int direction = 0; direction < 2*dim; direction++){
 			  if (userInputs.BC_list[starting_BC_list_index].var_BC_type[direction] == DIRICHLET){
 				  VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
-						  direction, ConstantFunction<dim>(userInputs.BC_list[starting_BC_list_index].var_BC_val[direction],1), *(AffineConstraints<double>*) \
+						  direction, Functions::ConstantFunction<dim>(userInputs.BC_list[starting_BC_list_index].var_BC_val[direction],1), *(AffineConstraints<double>*) \
 						  constraintsDirichletSet[currentFieldIndex]);
 
 			  }
