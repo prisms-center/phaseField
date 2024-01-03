@@ -31,8 +31,9 @@ These are some of the most common issues users encounter while using PRISMS-PF
   
   Either deal.II has not been installed or the deal.II library has not been found. Make sure deal.II is installed and that the installation directory is included in the path variable. Type <span style="font-family:Menlo">"echo $PATH"</span> to see the directories currently on your path variable. Watch [this video](https://www.youtube.com/watch?v=7bBfigZsveM) for instructions on how to set the correct path.
   
-  
+ - **CMake Error: The current CMakeCache.txt directory /../newApp/CMakeCache.txt is different than the directory /../originalApp/ where CMakeCache.txt was created. This may result in binaries being created in the wrong place. If you are not sure, reedit the CMakeCache.txt** 
 
+    This typically occurs when a new application is created by creating a copy directory of another application and assigning it a different name. To fix the problem, simply delete the file CMakeCache.txt from the new application directory and type "cmake ." again.
 ## Compilation Errors
 
 - **make:  No rule to make target `release'. Stop.**
