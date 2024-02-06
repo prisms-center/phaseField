@@ -12,50 +12,45 @@ template <int dim, int degree>
 void MatrixFreePDE<dim,degree>::updateNucleiList() {
 
     if (userInputs.nucleation_occurs){
-
-
         if (currentIncrement % userInputs.steps_between_nucleation_attempts == 0 || currentIncrement == 1){
-            computing_timer.enter_subsection("matrixFreePDE: nucleation");
+            if (userInputs.dtValue*(double)currentIncrement >= userInputs.nucleation_start_time && userInputs.dtValue*(double)currentIncrement <= userInputs.nucleation_end_time){
+                computing_timer.enter_subsection("matrixFreePDE: nucleation");
+                // Apply constraints
+                for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
+                    constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+                    constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+                    solutionSet[fieldIndex]->update_ghost_values();
+                }
 
-            // Apply constraints
-            for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-                constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
-                constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
-                solutionSet[fieldIndex]->update_ghost_values();
-            }
+                std::vector<nucleus<dim> > new_nuclei;
+                if (currentIncrement == 1 && !userInputs.evolution_before_nucleation){
+                    while (new_nuclei.size() == 0){
+                        currentTime+=userInputs.dtValue*(double)userInputs.steps_between_nucleation_attempts;
+                        currentIncrement+=userInputs.steps_between_nucleation_attempts;
 
-            std::vector<nucleus<dim> > new_nuclei;
+                        while (userInputs.outputTimeStepList.size() > 0 && userInputs.outputTimeStepList[currentOutput] < currentIncrement){
+                            currentOutput++;
+                        }
 
-            if (currentIncrement == 1){
-                while (new_nuclei.size() == 0){
-                    currentTime+=userInputs.dtValue*(double)userInputs.steps_between_nucleation_attempts;
-                    currentIncrement+=userInputs.steps_between_nucleation_attempts;
+                        while (userInputs.checkpointTimeStepList.size() > 0 && userInputs.checkpointTimeStepList[currentCheckpoint] < currentIncrement){
+                            currentCheckpoint++;
+                        }
 
-                    while (userInputs.outputTimeStepList.size() > 0 && userInputs.outputTimeStepList[currentOutput] < currentIncrement){
-                        currentOutput++;
+                        new_nuclei = getNewNuclei();
                     }
-
-                    while (userInputs.checkpointTimeStepList.size() > 0 && userInputs.checkpointTimeStepList[currentCheckpoint] < currentIncrement){
-                        currentCheckpoint++;
-                    }
-
+                }
+                else {
                     new_nuclei = getNewNuclei();
                 }
-            }
-            else {
-                new_nuclei = getNewNuclei();
-            }
+                nuclei.insert(nuclei.end(),new_nuclei.begin(),new_nuclei.end());
 
-            nuclei.insert(nuclei.end(),new_nuclei.begin(),new_nuclei.end());
-
-            if (new_nuclei.size() > 0 && userInputs.h_adaptivity == true){
-                refineMeshNearNuclei(new_nuclei);
+                if (new_nuclei.size() > 0 && userInputs.h_adaptivity == true){
+                    refineMeshNearNuclei(new_nuclei);
+                }
+                computing_timer.leave_subsection("matrixFreePDE: nucleation");
             }
-
-            computing_timer.leave_subsection("matrixFreePDE: nucleation");
         }
     }
-
 }
 
 // =======================================================================================================
