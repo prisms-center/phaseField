@@ -74,21 +74,6 @@ void EquationDependencyParser::parse(
             need_value_residual_nonexplicit_LHS.push_back(false);
             need_gradient_residual_nonexplicit_LHS.push_back(false);
         }
-        else if (var_eq_type[i] == CONSTANT){
-            bool need_value_residual_entry, need_gradient_residual_entry, single_var_nonlinear;
-
-            parseDependencyListRHS(var_name, var_eq_type, i, sorted_dependencies_value_RHS.at(i), sorted_dependencies_gradient_RHS.at(i), need_value_nonexplicit_RHS, need_gradient_nonexplicit_RHS, need_hessian_nonexplicit_RHS, need_value_residual_entry, need_gradient_residual_entry, single_var_nonlinear);
-
-            var_nonlinear.push_back(single_var_nonlinear);
-
-            need_value_residual_explicit_RHS.push_back(false);
-            need_gradient_residual_explicit_RHS.push_back(false);
-
-            need_value_residual_nonexplicit_RHS.push_back(false);
-            need_gradient_residual_nonexplicit_RHS.push_back(false);
-            need_value_residual_nonexplicit_LHS.push_back(false);
-            need_gradient_residual_nonexplicit_LHS.push_back(false);
-        }
         else if (var_eq_type[i] == IMPLICIT_TIME_DEPENDENT || var_eq_type[i] == TIME_INDEPENDENT){
 
             bool need_value_residual_entry, need_gradient_residual_entry, single_var_nonlinear_RHS, single_var_nonlinear_LHS;
