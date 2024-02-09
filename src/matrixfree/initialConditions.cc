@@ -210,23 +210,37 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
 
     for (std::unordered_map<std::string, std::vector<size_t>>::iterator it = file_field_map.begin();
             it != file_field_map.end(); it++){
+        bool using_parallel_files = false;
         std::string filename = it->first;
-        std::string filename_ext = filename + ".vtk"; // add file extension
         std::vector<size_t> index_list = it->second;
+        // For parallel file capability
+        for (size_t i = 0; i < index_list.size(); i++){
+            unsigned int var_index = index_list[i];
+            using_parallel_files = (using_parallel_files || userInputs.load_parallel_file[var_index]);
+        }
+        if (using_parallel_files){
+            int proc_num = Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
+            std::ostringstream conversion;
+            conversion << proc_num;
+            filename = filename + "." + conversion.str() + ".vtk";
+        }
+        else {
+            filename = filename + ".vtk"; // add file extension
+        }
         
-        std::cout << "Reading " << filename_ext << "\n";
-        body.read_vtk(filename_ext);
+        std::cout << "Reading " << filename << "\n";
+        body.read_vtk(filename);
 
         for(size_t i = 0; i < index_list.size(); i++){
-            unsigned int index = index_list[i];
-            std::string var_name = userInputs.load_field_name[index];
+            unsigned int var_index = index_list[i];
+            std::string var_name = userInputs.load_field_name[var_index];
 
             // Find the scalar field in the file
             ScalarField &conc = body.find_scalar_field(var_name);
 
-            if (userInputs.var_type[index] == SCALAR){
-                pcout << "Applying PField initial condition for " << userInputs.load_field_name[index] << "...\n";
-                VectorTools::interpolate (*dofHandlersSet[index], InitialConditionPField<dim>(index,conc), *solutionSet[index]);
+            if (userInputs.var_type[var_index] == SCALAR){
+                pcout << "Applying PField initial condition for " << userInputs.load_field_name[var_index] << "...\n";
+                VectorTools::interpolate (*dofHandlersSet[var_index], InitialConditionPField<dim>(var_index,conc), *solutionSet[var_index]);
             }
             else {
                 std::cout << "PRISMS-PF Error: Cannot load vector fields. Loading initial conditions from file is currently limited to scalar fields" << std::endl;
