@@ -14,12 +14,11 @@ void MatrixFreePDE<dim,degree>::vmult (vectorType &dst, const vectorType &src) c
   src2=src;
 
   //call cell_loop
-  dst=0.0;
   if (!generatingInitialGuess){
-      matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getLHS, this, dst, src2);
+      matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getLHS, this, dst, src2, true);
   }
   else {
-      matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getLaplaceLHS, this, dst, src2);
+      matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getLaplaceLHS, this, dst, src2, true);
   }
 
   //Account for Dirichlet BC's (essentially copy dirichlet DOF values present in src to dst, although it is unclear why the constraints can't just be distributed here)

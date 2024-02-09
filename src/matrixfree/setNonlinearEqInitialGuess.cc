@@ -94,12 +94,8 @@ void MatrixFreePDE<dim,degree>::computeLaplaceRHS(unsigned int fieldIndex){
   //log time
   computing_timer.enter_subsection("matrixFreePDE: computeLaplaceRHS");
 
-  //clear residual vectors before update
-  (*residualSet[fieldIndex])=0.0;
-
-
-  //call to integrate and assemble
-  matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getLaplaceRHS, this, *residualSet[fieldIndex], *solutionSet[fieldIndex]);
+  //call to integrate and assemble while clearing residual vecotrs
+  matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getLaplaceRHS, this, *residualSet[fieldIndex], *solutionSet[fieldIndex], true);
 
   //end log
   computing_timer.leave_subsection("matrixFreePDE: computeLaplaceRHS");
