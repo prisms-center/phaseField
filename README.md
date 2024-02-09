@@ -56,13 +56,13 @@ $ cd phaseField
 $ git checkout master
 $ cmake .
 $ make -j nprocs
-  ```
+```
 [here nprocs denotes the number of processors]
 
 ### Running a Pre-Built Application:
-  
+
   Please refer to the [Running a PRISMS-PF Example App](https://prisms-center.github.io/phaseField/doxygen_files/running_apps.html) for full details including instructions for visualization of the results.
-  
+
 
 
   Examples of various phase field models are located under the
@@ -76,7 +76,7 @@ users.
 
   Apps that are still under development/testing are preceded by an
 underscore.
-  
+
   Entering the following commands will run one of the pre-built example applications (the Cahn-Hilliard spinodal decomposition application in this case):<br>
   ```
   $ cd applications/cahnHilliard
@@ -96,7 +96,7 @@ underscore.
   ```
   Execution (parallel runs): <br>
   ```
-  $ mpirun -np nprocs main
+  $ mpirun -np nprocs ./main
   ```
   [here nprocs denotes the number of processors]
 

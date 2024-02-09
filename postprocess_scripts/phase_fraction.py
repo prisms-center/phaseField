@@ -52,12 +52,12 @@ for states in range(TimeSliderGetNStates()):
     Query("Time")
     # Assign this time to the variable "t"
     t = GetQueryOutputValue()
-    # Get the total area (or volume) of domains where n=1 by integration
-    Query("Weighted Variable Sum")
-    # Set this area (or volume) to the variable wvs
-    wvs=GetQueryOutputValue()
-    # Calculate phase fraction
-    phasefrac[states]=wvs/av
+    # Get the average of domains where n=1 by integration
+    Query("Average Value")
+    # Set this to the variable wvs
+    avv=GetQueryOutputValue()
+    # Calculate phase fraction as
+    phasefrac[states]=avv
     # Print the state number, time and phase fraction to
     # screen and to files
     print("% d, %.1f, %.5f" %(states, t, phasefrac[states]))

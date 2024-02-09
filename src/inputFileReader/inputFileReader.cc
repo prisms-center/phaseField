@@ -363,10 +363,15 @@ void inputFileReader::declare_parameters(dealii::ParameterHandler & parameter_ha
     }
 
     // Declare the nucleation parameters
+    parameter_handler.declare_entry("Enable evolution before nucleation","false",dealii::Patterns::Bool(),"Whether variable fields evolve before the first nucleus appears.");  
+    //Implement later
+    //parameter_handler.declare_entry("Allow multiple nuclei per order parameter","true",dealii::Patterns::Bool(),"Whether multiple nucleation events can occur within an order parameter.");
     parameter_handler.declare_entry("Minimum allowed distance between nuclei","-1",dealii::Patterns::Double(),"The minimum allowed distance between nuclei placed during the same time step.");
     parameter_handler.declare_entry("Order parameter cutoff value","0.01",dealii::Patterns::Double(),"Order parameter cutoff value for nucleation (when the sum of all order parameters is above this value, no nucleation is attempted).");
     parameter_handler.declare_entry("Time steps between nucleation attempts","100",dealii::Patterns::Integer(),"The number of time steps between nucleation attempts.");
-
+    parameter_handler.declare_entry("Nucleation start time","0.0",dealii::Patterns::Double(),"The time at which nucleation starts.");
+    parameter_handler.declare_entry("Nucleation end time","1.0e10",dealii::Patterns::Double(),"The time after which no nucleation occurs.");
+    
     for (unsigned int i=0; i<var_types.size(); i++){
         if (var_nucleates.at(i)){
             std::string nucleation_text = "Nucleation parameters: ";
