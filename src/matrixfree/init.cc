@@ -60,6 +60,9 @@ template <int dim, int degree>
          else if (it->pdetype == AUXILIARY){
              var_type = "AUXILIARY";
          }
+		 else if (it->pdetype == CONSTANT){
+             var_type = "CONSTANT";
+         }
 
          snprintf(buffer, sizeof(buffer),"initializing finite element space P^%u for %9s:%6s field '%s'\n", \
 				 degree,					\
@@ -85,6 +88,8 @@ template <int dim, int degree>
              parabolicFieldIndex=it->index;
              ellipticFieldIndex=it->index;
              hasNonExplicitEquation=true;
+         }
+		 else if (it->pdetype==CONSTANT){
          }
 		 else if (it->pdetype==TIME_INDEPENDENT){
 			 isEllipticBVP=true;
