@@ -168,7 +168,12 @@ template <int dim,typename T>
 
     dealii::MatrixFree<dim,double> matrixFreeObject;
     matrixFreeObject.clear();
-    matrixFreeObject.reinit (dof_handler, constraints, quadrature, additional_data);
+      #if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
+   matrixFreeObject.reinit (dof_handler, constraints, quadrature, additional_data);
+#else
+   matrixFreeObject.reinit (MappingFE< dim, dim >(FE_Q<dim>(QGaussLobatto<1>(degree+1))),
+       dof_handler, constraints, quadrature, additional_data);
+#endif
 
     vectorType *solution_field;
     solution_field = new vectorType;
