@@ -85,7 +85,7 @@ void customPDE<dim,degree>::nonExplicitEquationRHS(variableContainer<dim,degree,
  // --- Setting the expressions for the terms in the governing equations ---
 
  // The derivative of the local free energy
- scalarvalueType fcV = 4.0*c*(c-1.0)*(c-0.5);
+ scalarvalueType fcV = constV(4.0)*(c-constV(1.0))*(c-constV(0.5))*c;
 
  // The terms for the governing equations
  scalarvalueType eq_mu = fcV;
