@@ -5,12 +5,12 @@ template <int dim,int degree>
 void MatrixFreePDE<dim,degree>::computePostProcessedFields(std::vector<vectorType*> &postProcessedSet) {
 
 
-	// Zero out the postProcessedSet
+	// Initialize the postProcessedSet
 	for(unsigned int fieldIndex=0; fieldIndex<userInputs.pp_number_of_variables; fieldIndex++){
 		vectorType *U;
 		U=new vectorType;
 		postProcessedSet.push_back(U);
-		matrixFreeObject.initialize_dof_vector(*U,  0); *U=0;
+		matrixFreeObject.initialize_dof_vector(*U,  0);
 	}
 
 	integrated_postprocessed_fields.clear();
@@ -19,7 +19,7 @@ void MatrixFreePDE<dim,degree>::computePostProcessedFields(std::vector<vectorTyp
 	}
 
 	//call to integrate and assemble
-	matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getPostProcessedFields, this, postProcessedSet, solutionSet);
+	matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getPostProcessedFields, this, postProcessedSet, solutionSet, true);
 
 }
 

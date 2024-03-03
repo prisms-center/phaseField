@@ -9,15 +9,8 @@ void MatrixFreePDE<dim,degree>::computeExplicitRHS(){
   //log time
   computing_timer.enter_subsection("matrixFreePDE: computeRHS");
 
-  //clear residual vectors before update
-  for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-      if (userInputs.var_eq_type[fieldIndex] == EXPLICIT_TIME_DEPENDENT){
-          (*residualSet[fieldIndex])=0.0;
-      }
-  }
-
-  //call to integrate and assemble
-  matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getExplicitRHS, this, residualSet, solutionSet);
+  //call to integrate and assemble while clearing residual vecotrs
+  matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getExplicitRHS, this, residualSet, solutionSet, true);
 
   //end log
   computing_timer.leave_subsection("matrixFreePDE: computeRHS");
@@ -59,15 +52,8 @@ void MatrixFreePDE<dim,degree>::computeNonexplicitRHS(){
   //log time
   computing_timer.enter_subsection("matrixFreePDE: computeRHS");
 
-  //clear residual vectors before update
-  for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
-      if (userInputs.var_eq_type[fieldIndex] != EXPLICIT_TIME_DEPENDENT){
-          (*residualSet[fieldIndex])=0.0;
-      }
-  }
-
-  //call to integrate and assemble
-  matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getNonexplicitRHS, this, residualSet, solutionSet);
+  //call to integrate and assemble while clearing residual vecotrs
+  matrixFreeObject.cell_loop (&MatrixFreePDE<dim,degree>::getNonexplicitRHS, this, residualSet, solutionSet, true);
 
   //end log
   computing_timer.leave_subsection("matrixFreePDE: computeRHS");
