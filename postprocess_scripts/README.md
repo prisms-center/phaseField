@@ -67,3 +67,16 @@ This script calculates the following quantities for each of the time states:
 Results for all time states are outputted in the file **domain_stats_vs_t.txt**.
 
 For each row, the first column corresponds to the frame number, the second to the time,  the third column to the number of domains, the fourth column to the average size, and the fifth column to the standard deviation of the size.
+
+#### splitvtufiles.py
+
+This script splits the output .vtu files into several files, allowing for parallel visualization in VisIt or ParaView. To run it simply 
+1. Open a terminal
+
+2. Go to the directory where the series of output files from a single simulation are located (these files must be generated using the single file per process option, see the **Output** section from [this page](https://prisms-center.github.io/phaseField/doxygen_files/input_file.html))
+
+3. Type:
+
+  \$ python splitvtufiles.py <no. files>
+
+  where <no. files> is the number of files into which you want to split each solution\*.vtu file.
