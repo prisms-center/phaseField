@@ -279,7 +279,12 @@ $(document).ready(function(){initNavTree('input_file.html','');});
 <tr class="markdownTableBody" class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">Order parameter cutoff value  </td><td class="markdownTableBodyNone">Any non-negative real number  </td><td class="markdownTableBodyNone">no  </td><td class="markdownTableBodyNone">0.01  </td><td class="markdownTableBodyNone">The minimum allowed value of the sum of all nucleating variable fields where nucleation is allowed to occur. Implemented to prevent nucleation inside existing particles. This parameter is shared among all nucleating variables.   </td></tr>
 <tr class="markdownTableBody" class="markdownTableRowEven">
-<td class="markdownTableBodyNone">Time steps between nucleation attempts  </td><td class="markdownTableBodyNone">Any positive integer  </td><td class="markdownTableBodyNone">no  </td><td class="markdownTableBodyNone">100  </td><td class="markdownTableBodyNone">The number of time steps between nucleation attempts. This parameter is shared among all nucleating variables.   </td></tr>
+<td class="markdownTableBodyNone">Enable evolution before nucleation  </td><td class="markdownTableBodyNone">Boolean  </td><td class="markdownTableBodyNone">no  </td><td class="markdownTableBodyNone">false  </td><td class="markdownTableBodyNone">Whether variable fields evolve before the first nucleus appears. </td></tr> 
+<tr class="markdownTableBody" class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Nucleation start time  </td><td class="markdownTableBodyNone">Any non-negative real number  </td><td class="markdownTableBodyNone">no  </td><td class="markdownTableBodyNone">0  </td><td class="markdownTableBodyNone">The time at which nucleation starts. No nucleation attempts will be made before this time.</td></tr> 
+<tr class="markdownTableBody" class="markdownTableRowEven">
+<td class="markdownTableBodyNone">Nucleation end time  </td><td class="markdownTableBodyNone">Any non-negative real number  </td><td class="markdownTableBodyNone">no  </td><td class="markdownTableBodyNone">1.0e10  </td><td class="markdownTableBodyNone">The time at which nucleation ends. No nucleation attempts will be made after this time.</td></tr>
+  
 </table>
 <h3>Nucleation Parameters for Each Nucleating Variable (optional, see Note 6 below for details)</h3>
 <table class="markdownTable">
