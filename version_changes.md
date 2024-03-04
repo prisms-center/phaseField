@@ -1,4 +1,36 @@
+# Version 2.3
+
+Moderate update to 2.2, released in July 2021. The main changes are new applications, new postprocessing scripts, improvements in performance, big fixes and comparibility with the latest version of deal.II.
+
+Added Features:
+
+- New application: alloySolidification_uniform. This app simulates solidification of a binary alloy at uniform temperature. 
+- New application: corrosion_microgalvanic. This application simulates the evolution of the metal-electrolyte interface during free immersion due to the microgalvanic coupling between the anodic and cathodic metals. 
+- New postprocessing scripts. The following Python scripts for suite post-processing suite were added:
+  - plot_and_save.py - This script creates a pseudocolor (in 2D) or contour (in 3D) plot for each outputted time states and saves the serieas of plots as png images.
+  - domain_stats.py - This script calculates the following quantities for each of the time states:
+    1. Number of domains, defined as the number or separate regions based on the values of field variable, "n". Each interconnected region for which n>0.5 is counted as a separate domain.
+    2. Average domain size (area in 2D and volume in 3D)
+    3. Standard deviation of the domain sizes
+  - splitvtufiles.py - This script splits the output .vtu files into several files, allowing for parallel visualization in VisIt or ParaView.
+- New options for nucleation were added: an option to set the time interval for then nucleation is allowed and an option to allow for microstructure evolution before the first nucleation event.
+- Improved the method for grain detection when reading data from a DREAM3D microstructure file.
+- Added depencency of element degree for time step used in initial smoothing after reading from a DREAM3D microstructure file. This avoids posible numerical instabilities.
+- Added Troubleshooting/FAQ page with the most common compilation/runtime errors and the way to fix them.
+
+Bug Fixes:
+
+- Fixed incomplete loop to detect dirichlet boundary conditions in init.cc
+- The code now correctly updates time-dependent non-uniform Dirichlet boundary conditions.
+- Updated input file parameters.prm for grainGrowth_dream3d application
+- Fixed several typos and errors in the documentation of built-in applications
+
+Other Changes:
+
+- Updated comparibility with deal.II version 9.5.x
+
 # Version 2.2
+
 Moderate update to 2.1.2, released in July 2019. The biggest change in this version is the addition of new applications and post-processing scripts.
 
 Added Features:
