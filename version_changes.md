@@ -1,6 +1,6 @@
 # Version 2.3
 
-Moderate update to 2.2, released in July 2021. The main changes are new applications, new postprocessing scripts, improvements in performance, big fixes and comparibility with the latest version of deal.II.
+Moderate update to 2.2, released in July 2021. The main changes are new applications, new postprocessing scripts, improvements in performance, bug fixes and comparibility with the latest version of deal.II.
 
 ## Added Features:
 
