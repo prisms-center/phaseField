@@ -156,16 +156,9 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
                         pcout<<buffer;
                     }
 
-                    dealii::LinearAlgebra::distributed::Vector<double> solution_diff = *solutionSet[fieldIndex];
-
-                    //apply Dirichlet BC's
-                    // Loops through all DoF to which ones have Dirichlet BCs applied, replace the ones that do with the Dirichlet value
+                    //apply Dirichlet BC'se
                     // This clears the residual where we want to apply Dirichlet BCs, otherwise the solver sees a positive residual
-                    for (std::map<types::global_dof_index, double>::const_iterator it=valuesDirichletSet[fieldIndex]->begin(); it!=valuesDirichletSet[fieldIndex]->end(); ++it){
-                        if (residualSet[fieldIndex]->in_local_range(it->first)){
-                            (*residualSet[fieldIndex])(it->first) = 0.0;
-                        }
-                    }
+                    constraintsDirichletSet[fieldIndex]->set_zero(*residualSet[fieldIndex]);
 
                     //solver controls
                     double tol_value;
