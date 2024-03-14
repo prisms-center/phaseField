@@ -16,7 +16,7 @@
 
 ## Version information:
 
-This version of the code, v2.2, contains moderate changes from v2.1.2. It was released in July 2021. See [version_changes.md](version_changes.md) for details.
+This version of the code, v2.3, contains moderate changes from v2.2. It was released in March 20213. See [version_changes.md](version_changes.md) for details.
 
 ## What is PRISMS-PF?
 
@@ -47,7 +47,7 @@ For detailed instructions on how to download and use PRISMS-PF, please consult t
 
 Please refer to the [installation section of the user manual](https://prisms-center.github.io/phaseField/doxygen_files/install.html) for details.
 
-1) Install CMake, p4est, and deal.II (version 9.0.0 recommended)<br>
+1) Install CMake, p4est, and deal.II (version 9.5 recommended)<br>
 
 2) Clone the PRISMS-PF GitHub repository <br>
 ```
@@ -55,9 +55,9 @@ $ git clone https://github.com/prisms-center/phaseField.git
 $ cd phaseField
 $ git checkout master
 $ cmake .
-$ make -j nprocs
+$ make -j <nprocs>
 ```
-[here nprocs denotes the number of processors]
+[here <nprocs> denotes the number of processors]
 
 ### Running a Pre-Built Application:
 
@@ -96,9 +96,9 @@ underscore.
   ```
   Execution (parallel runs): <br>
   ```
-  $ mpirun -np nprocs ./main
+  $ mpirun -np <nprocs> ./main
   ```
-  [here nprocs denotes the number of processors]
+  [here <nprocs> denotes the number of processors]
 
 ### Visualization:
 
@@ -116,4 +116,4 @@ underscore.
 ## Further information, questions, issues and bugs:
 
  + prisms-pf-users@googlegroups.com (user forum)
- + prismsphaseField.dev@umich.edu  (developer email list)
+ + prisms-pf@umich.edu  (developer email list)
