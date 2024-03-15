@@ -14,7 +14,7 @@ class testInvM: public MatrixFreePDE<dim,degree>
 
 	  //call computeInvM()
 	  this->computeInvM();
-	  invMNorm=this->invM.l2_norm();
+	  invMNorm=this->invMscalar.l2_norm();
 
   };
   ~testInvM(){
