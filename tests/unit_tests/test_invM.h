@@ -12,16 +12,16 @@ class testInvM: public MatrixFreePDE<dim,degree>
 	  //init the MatrixFreePDE class for testing
 	  this->initForTests();
 
-	  //call computeInvM()
-	  this->computeInvM();
-	  invMNorm=this->invMscalar.l2_norm();
+      // call computeInvM()
+      this->computeInvM();
+      invMNormscalar = this->invMscalar.l2_norm();
+    };
+    ~testInvM()
+    {
+        this->matrixFreeObject.clear();
+    };
 
-  };
-  ~testInvM(){
-      this->matrixFreeObject.clear();
-  };
-
-  double invMNorm;
+  double invMNormscalar;
 
   void setBCs(){};
 
@@ -62,12 +62,14 @@ template <int dim,typename T>
 	//userInputParameters userInputs;
 	//userInputs.loadUserInput();
 
-    testInvM<dim,1> test(userInputs);
-	//check invM norm
-	if ((test.invMNorm - 1700.0) < 1.0e-10) {pass=true;}
-	char buffer[100];
-	snprintf(buffer, sizeof(buffer), "Test result for 'computeInvM' in   %u dimension(s): %u\n", dim, pass);
-	std::cout << buffer;
+    testInvM<dim, 1> test(userInputs);
+    // check invM norm
+    if (std::abs(test.invMNormscalar - 1700.0) < 1.0e-10) {
+        pass = true;
+    }
+    char buffer[100];
+    snprintf(buffer, sizeof(buffer), "Test result for 'computeInvM' in   %u dimension(s): %u\n", dim, pass);
+    std::cout << buffer;
 
 	return pass;
 }

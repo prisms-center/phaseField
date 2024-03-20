@@ -6,14 +6,10 @@
 template <int dim, int degree>
  void MatrixFreePDE<dim,degree>::initForTests(){
 
-   //creating mesh
+    // creating mesh
    std::vector<unsigned int> subdivisions;
-   subdivisions.push_back(10);
-   if (dim>1){
-     subdivisions.push_back(10);
-     if (dim>2){
-       subdivisions.push_back(10);
-     }
+   for (unsigned int i = 0; i < dim; i++){
+      subdivisions.push_back(10);
    }
 
    if (dim == 3){
