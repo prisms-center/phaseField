@@ -28,20 +28,21 @@ void MatrixFreePDE<dim,degree>::outputResults() {
 
   // Test section for outputting postprocessed fields
   // Currently there are hacks in place, using the matrixFreeObject, invM, constraints, and DoFHandler as the primary variables
+  //Currently only works for scalar fields. Require separate loop for vector-type post process fields
   if (userInputs.postProcessingRequired){
 	  std::vector<vectorType*> postProcessedSet;
       computePostProcessedFields(postProcessedSet);
 #if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
-	  unsigned int invM_size = invM.local_size();
+	  unsigned int invM_size = invMscalar.local_size();
 	  for(unsigned int fieldIndex=0; fieldIndex<postProcessedSet.size(); fieldIndex++){
 		  for (unsigned int dof=0; dof<postProcessedSet[fieldIndex]->local_size(); ++dof){
 #else
-          unsigned int invM_size = invM.locally_owned_size();
+          unsigned int invM_size = invMscalar.locally_owned_size();
           for(unsigned int fieldIndex=0; fieldIndex<postProcessedSet.size(); fieldIndex++){
                   for (unsigned int dof=0; dof<postProcessedSet[fieldIndex]->locally_owned_size(); ++dof){
 #endif
 			  postProcessedSet[fieldIndex]->local_element(dof)=			\
-					  invM.local_element(dof%invM_size)*postProcessedSet[fieldIndex]->local_element(dof);
+					  invMscalar.local_element(dof%invM_size)*postProcessedSet[fieldIndex]->local_element(dof);
 
 		  }
 		  constraintsOtherSet[0]->distribute(*postProcessedSet[fieldIndex]);

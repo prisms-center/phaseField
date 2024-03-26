@@ -32,18 +32,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
         //Parabolic (first order derivatives in time) fields
         if (fields[fieldIndex].pdetype==EXPLICIT_TIME_DEPENDENT && !skip_time_dependent){
 
-            // Explicit-time step each DOF
-            // Takes advantage of knowledge that the length of solutionSet and residualSet is an integer multiple of the length of invM for vector variables
-#if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
-            unsigned int invM_size = invM.local_size();
-            for (unsigned int dof=0; dof<solutionSet[fieldIndex]->local_size(); ++dof){
-#else
-            unsigned int invM_size = invM.locally_owned_size();
-            for (unsigned int dof=0; dof<solutionSet[fieldIndex]->locally_owned_size(); ++dof){
-#endif
-                solutionSet[fieldIndex]->local_element(dof)=			\
-                invM.local_element(dof%invM_size)*residualSet[fieldIndex]->local_element(dof);
-            }
+            updateExplicitSolution(fieldIndex);
           
             // Set the Dirichelet values (hanging node constraints don't need to be distributed every time step, only at output)
             if (has_Dirichlet_BCs){
@@ -378,18 +367,7 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
                             }
                         }
 
-                        // Explicit-time step each DOF
-                        // Takes advantage of knowledge that the length of solutionSet and residualSet is an integer multiple of the length of invM for vector variables
-#if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
-                        unsigned int invM_size = invM.local_size();
-                        for (unsigned int dof=0; dof<solutionSet[fieldIndex]->local_size(); ++dof){
-#else
-                        unsigned int invM_size = invM.locally_owned_size();
-                        for (unsigned int dof=0; dof<solutionSet[fieldIndex]->locally_owned_size(); ++dof){
-#endif
-                            solutionSet[fieldIndex]->local_element(dof)=			\
-                            invM.local_element(dof%invM_size)*residualSet[fieldIndex]->local_element(dof);
-                        }
+                        updateExplicitSolution(fieldIndex);
 
                         // Set the Dirichelet values (hanging node constraints don't need to be distributed every time step, only at output)
                         if (has_Dirichlet_BCs){
@@ -506,6 +484,37 @@ void MatrixFreePDE<dim,degree>::solveIncrement(bool skip_time_dependent){
     //log time
     computing_timer.leave_subsection("matrixFreePDE: solveIncrements");
 
+}
+
+//Explicit time step for matrixfree solve
+template <int dim, int degree>
+void MatrixFreePDE<dim,degree>::updateExplicitSolution(unsigned int fieldIndex){
+    // Explicit-time step each DOF
+    // Takes advantage of knowledge that the length of solutionSet and residualSet is an integer multiple of the length of invM for vector variables
+    if (fields[fieldIndex].type==SCALAR){
+#if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
+        unsigned int invM_size = invMscalar.local_size();
+        for (unsigned int dof=0; dof<solutionSet[fieldIndex]->local_size(); ++dof){
+#else
+        unsigned int invM_size = invMscalar.locally_owned_size();
+        for (unsigned int dof=0; dof<solutionSet[fieldIndex]->locally_owned_size(); ++dof){
+#endif
+            solutionSet[fieldIndex]->local_element(dof)=			\
+            invMscalar.local_element(dof%invM_size)*residualSet[fieldIndex]->local_element(dof);
+        }
+    }
+    else if (fields[fieldIndex].type==VECTOR){
+#if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
+        unsigned int invM_size = invMvector.local_size();
+        for (unsigned int dof=0; dof<solutionSet[fieldIndex]->local_size(); ++dof){
+#else
+        unsigned int invM_size = invMvector.locally_owned_size();
+        for (unsigned int dof=0; dof<solutionSet[fieldIndex]->locally_owned_size(); ++dof){
+#endif
+            solutionSet[fieldIndex]->local_element(dof)=			\
+            invMvector.local_element(dof%invM_size)*residualSet[fieldIndex]->local_element(dof);
+        }
+    }
 }
 
 #include "../../include/matrixFreePDE_template_instantiations.h"
