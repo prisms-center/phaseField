@@ -4,7 +4,7 @@
 #include <deal.II/grid/grid_generator.h>
 
 template <int dim, int degree>
- void MatrixFreePDE<dim,degree>::initForTests(){
+ void MatrixFreePDE<dim,degree>::initForTests(std::vector<Field<dim>> fields){
 
     // creating mesh
    std::vector<unsigned int> subdivisions;
@@ -23,34 +23,41 @@ template <int dim, int degree>
    }
 
    //setup system
-   //create FESystem
-   FESystem<dim>* fe;
-   fe=new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(degree+1)),1);
-   FESet.push_back(fe);
+   for(typename std::vector<Field<dim> >::iterator it = fields.begin(); it != fields.end(); ++it){
+      //create FESystem
+      FESystem<dim>* fe;
+      if (it->type==SCALAR){
+         fe=new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(degree+1)),1);
+      }
+      else if (it->type==VECTOR){
+         fe=new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(degree+1)),dim);
+      }
+      FESet.push_back(fe);
 
-   //distribute DOFs
-   DoFHandler<dim>* dof_handler;
-   dof_handler=new DoFHandler<dim>(triangulation);
-   dofHandlersSet.push_back(dof_handler);
-   dofHandlersSet_nonconst.push_back(dof_handler);
-   dof_handler->distribute_dofs (*fe);
+      //distribute DOFs
+      DoFHandler<dim>* dof_handler;
+      dof_handler=new DoFHandler<dim>(triangulation);
+      dofHandlersSet.push_back(dof_handler);
+      dofHandlersSet_nonconst.push_back(dof_handler);
+      dof_handler->distribute_dofs (*fe);
 
-   //extract locally_relevant_dofs
-   IndexSet* locally_relevant_dofs;
-   locally_relevant_dofs=new IndexSet;
-   locally_relevant_dofsSet.push_back(locally_relevant_dofs);
-   locally_relevant_dofsSet_nonconst.push_back(locally_relevant_dofs);
-   locally_relevant_dofs->clear();
-   DoFTools::extract_locally_relevant_dofs (*dof_handler, *locally_relevant_dofs);
+      //extract locally_relevant_dofs
+      IndexSet* locally_relevant_dofs;
+      locally_relevant_dofs=new IndexSet;
+      locally_relevant_dofsSet.push_back(locally_relevant_dofs);
+      locally_relevant_dofsSet_nonconst.push_back(locally_relevant_dofs);
+      locally_relevant_dofs->clear();
+      DoFTools::extract_locally_relevant_dofs (*dof_handler, *locally_relevant_dofs);
 
-   // //create constraints
-   AffineConstraints<double> *constraintsOther;
-   constraintsOther=new AffineConstraints<double>; constraintsOtherSet.push_back(constraintsOther);
-   constraintsOtherSet_nonconst.push_back(constraintsOther);
-   constraintsOther->clear(); constraintsOther->reinit(*locally_relevant_dofs);
-   DoFTools::make_hanging_node_constraints (*dof_handler, *constraintsOther);
-   //constraintsOther->close(); // I actually don't want to close them since I'll be adding to them in test_setRigidBodyModeConstraints
-   //
+      //create constraints
+      AffineConstraints<double> *constraintsOther;
+      constraintsOther=new AffineConstraints<double>; constraintsOtherSet.push_back(constraintsOther);
+      constraintsOtherSet_nonconst.push_back(constraintsOther);
+      constraintsOther->clear(); constraintsOther->reinit(*locally_relevant_dofs);
+      DoFTools::make_hanging_node_constraints (*dof_handler, *constraintsOther);
+      //constraintsOther->close(); // I actually don't want to close them since I'll be adding to them in test_setRigidBodyModeConstraints
+   }
+
    // //setup the matrix free object
    typename MatrixFree<dim,double>::AdditionalData additional_data;
    additional_data.tasks_parallel_scheme = MatrixFree<dim,double>::AdditionalData::partition_partition;
@@ -64,12 +71,13 @@ template <int dim, int degree>
        dofHandlersSet, constraintsOtherSet, quadrature, additional_data);
 #endif
    //setup problem vectors
-   vectorType *U, *R;
-   U=new vectorType; R=new vectorType;
-   solutionSet.push_back(U); residualSet.push_back(R);
-   matrixFreeObject.initialize_dof_vector(*R,  0); *R=0;
-   matrixFreeObject.initialize_dof_vector(*U,  0); *U=0;
-
+   for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
+      vectorType *U, *R;
+      U=new vectorType; R=new vectorType;
+      solutionSet.push_back(U); residualSet.push_back(R);
+      matrixFreeObject.initialize_dof_vector(*R,  0); *R=0;
+      matrixFreeObject.initialize_dof_vector(*U,  0); *U=0;
+   }
 
 }
 

@@ -5,23 +5,31 @@ class testInvM: public MatrixFreePDE<dim,degree>
  public:
   testInvM(userInputParameters<dim> _userInputs): MatrixFreePDE<dim,degree>(_userInputs) {
 
-	  // Initialize the test field object (needed for computeInvM())
-	  Field<dim> test_field(SCALAR,EXPLICIT_TIME_DEPENDENT,"c");
-	  this->fields.push_back(test_field);
+    // Initialize the scalar test field object (needed for computeInvM())
+    Field<dim> scalar_test_field(SCALAR,EXPLICIT_TIME_DEPENDENT,"c");
+    this->fields.push_back(scalar_test_field);
 
-	  //init the MatrixFreePDE class for testing
-	  this->initForTests();
+    // Initialize the vector test field object (needed for computeInvM())
+    Field<dim> vector_test_field(VECTOR,EXPLICIT_TIME_DEPENDENT,"c");
+    this->fields.push_back(vector_test_field);
 
-      // call computeInvM()
-      this->computeInvM();
-      invMNormscalar = this->invMscalar.l2_norm();
-    };
-    ~testInvM()
-    {
-        this->matrixFreeObject.clear();
-    };
+    //init the MatrixFreePDE class for testing
+    this->initForTests(this->fields);
+
+    //call computeInvM()
+    this->computeInvM();
+    invMNormscalar = this->invMscalar.l2_norm();
+    invMNormvector = this->invMvector.l2_norm();
+    
+  };
+  ~testInvM()
+  {
+    this->matrixFreeObject.clear();
+  };
 
   double invMNormscalar;
+
+  double invMNormvector;
 
   void setBCs(){};
 
@@ -55,21 +63,41 @@ class testInvM: public MatrixFreePDE<dim,degree>
 
 template <int dim,typename T>
   bool unitTest<dim,T>::test_computeInvM(int argc, char** argv, userInputParameters<dim> userInputs){
-  	bool pass = false;
+  	
+    
+  bool pass = false;
+  bool pass_subtest1 = false;
+  bool pass_subtest2 = false;
+
+  char buffer[100];
 	std::cout << "\nTesting 'computeInvM' in " << dim << " dimension(s)...'" << std::endl;
 
 	//create test problem class object
 	//userInputParameters userInputs;
 	//userInputs.loadUserInput();
+  
+  testInvM<dim, 1> test(userInputs);
 
-    testInvM<dim, 1> test(userInputs);
-    // check invM norm
-    if (std::abs(test.invMNormscalar - 1700.0) < 1.0e-10) {
-        pass = true;
-    }
-    char buffer[100];
-    snprintf(buffer, sizeof(buffer), "Test result for 'computeInvM' in   %u dimension(s): %u\n", dim, pass);
-    std::cout << buffer;
+  //Subtest 1 - check invMscalar norm
+  if (std::abs(test.invMNormscalar - 1700.0) < 1.0e-10) {
+      pass_subtest1 = true;
+  }
+  snprintf(buffer, sizeof(buffer), "Subtest 1 scalar result for 'computeInvM' in %u dimension(s): %u\n", dim, pass_subtest1);
+	std::cout << buffer;
+
+  //Subtest 2 - check invMscalar norm
+  if (std::abs(test.invMNormvector - 2404.16305603426098) < 1.0e-10) {
+      pass_subtest2 = true;
+  }
+  snprintf(buffer, sizeof(buffer), "Subtest 2 vector result for 'computeInvM' in %u dimension(s): %u\n", dim, pass_subtest2);
+	std::cout << buffer;
+
+  //Check if all subtests passed
+  if (pass_subtest2&&pass_subtest1) {
+      pass=true;
+  }
+  snprintf(buffer, sizeof(buffer), "Test result for 'computeInvM' in %u dimension(s): %u\n", dim, pass);
+  std::cout << buffer;
 
 	return pass;
 }

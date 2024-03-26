@@ -90,7 +90,7 @@ class MatrixFreePDE:public Subscriptor
    * other custom selected options specifically to help with unit tests, and should not be called
    * in any of the physical models.
    */
-  void initForTests();
+  void initForTests(std::vector<Field<dim>> _fields);
 
   /**
    * This method implements the time stepping algorithm and invokes the solveIncrement() method.
