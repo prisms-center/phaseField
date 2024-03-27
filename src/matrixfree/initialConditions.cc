@@ -167,15 +167,29 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
                     for (unsigned int cycle=0; cycle<userInputs.num_grain_smoothing_cycles; cycle++){
                         //Calculates the Laplace RHS and stores the information in residualSet
                         computeLaplaceRHS(fieldIndex);
+                        if (fields[fieldIndex].type==SCALAR){ 
 #if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
-                        unsigned int invM_size = invM.local_size();
-                        for (unsigned int dof=0; dof<solutionSet[fieldIndex]->local_size(); ++dof){
+                            unsigned int invM_size = invMscalar.local_size();
+                            for (unsigned int dof=0; dof<solutionSet[fieldIndex]->local_size(); ++dof){
 #else
-                        unsigned int invM_size = invM.locally_owned_size();
-                        for (unsigned int dof=0; dof<solutionSet[fieldIndex]->locally_owned_size(); ++dof){
+                            unsigned int invM_size = invMscalar.locally_owned_size();
+                            for (unsigned int dof=0; dof<solutionSet[fieldIndex]->locally_owned_size(); ++dof){
 #endif
-                            solutionSet[fieldIndex]->local_element(dof)=solutionSet[fieldIndex]->local_element(dof)-
-                            invM.local_element(dof%invM_size)*residualSet[fieldIndex]->local_element(dof)*dt_for_smoothing;
+                                solutionSet[fieldIndex]->local_element(dof)=solutionSet[fieldIndex]->local_element(dof)-
+                                invMscalar.local_element(dof%invM_size)*residualSet[fieldIndex]->local_element(dof)*dt_for_smoothing;
+                            }
+                        }
+                        else if (fields[fieldIndex].type==VECTOR){ 
+#if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
+                            unsigned int invM_size = invMvector.local_size();
+                            for (unsigned int dof=0; dof<solutionSet[fieldIndex]->local_size(); ++dof){
+#else
+                            unsigned int invM_size = invMvector.locally_owned_size();
+                            for (unsigned int dof=0; dof<solutionSet[fieldIndex]->locally_owned_size(); ++dof){
+#endif
+                                solutionSet[fieldIndex]->local_element(dof)=solutionSet[fieldIndex]->local_element(dof)-
+                                invMvector.local_element(dof%invM_size)*residualSet[fieldIndex]->local_element(dof)*dt_for_smoothing;
+                            }
                         }
 
                         solutionSet[fieldIndex]->update_ghost_values();
@@ -208,7 +222,7 @@ void MatrixFreePDE<dim,degree>::applyInitialConditions(){
                 if (userInputs.var_type[var_index] == SCALAR){
                     VectorTools::interpolate (*dofHandlersSet[var_index], InitialCondition<dim,degree>(var_index,userInputs,this), *solutionSet[var_index]);
                 }
-                else {
+                else if (userInputs.var_type[var_index] == VECTOR){
                     VectorTools::interpolate (*dofHandlersSet[var_index], InitialConditionVector<dim,degree>(var_index,userInputs,this), *solutionSet[var_index]);
                 }
             }

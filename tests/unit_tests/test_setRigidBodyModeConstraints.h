@@ -5,7 +5,9 @@ class setRigidBodyModeConstraintsTest: public MatrixFreePDE<dim,degree>
 	public:
 	setRigidBodyModeConstraintsTest(userInputParameters<dim> _userInputs): MatrixFreePDE<dim,degree>(_userInputs) {
 		//init the MatrixFreePDE class for testing
-		this->initForTests();
+		Field<dim> scalar_test_field(SCALAR,EXPLICIT_TIME_DEPENDENT,"c");
+		this->fields.push_back(scalar_test_field);
+		this->initForTests(this->fields);
 	};
 	~setRigidBodyModeConstraintsTest(){
         this->matrixFreeObject.clear();
