@@ -8,6 +8,10 @@
 #ifndef INCLUDE_VECTORBCFUNCTION_H_
 #define INCLUDE_VECTORBCFUNCTION_H_
 
+#include <deal.II/base/function.h>
+#include <deal.II/base/point.h>
+#include <deal.II/lac/vector.h>
+
 template <int dim>
 class vectorBCFunction : public dealii::Function<dim, double> {
 public:
