@@ -13,22 +13,22 @@
 // that can nucleate and whether the value of the field is needed for nucleation
 // rate calculations.
 
-void variableAttributeLoader::loadVariableAttributes(){
-	// Variable 0
-	set_variable_name				(0,"n");
-	set_variable_type				(0,SCALAR);
-	set_variable_equation_type		(0,EXPLICIT_TIME_DEPENDENT);
+void variableAttributeLoader::loadVariableAttributes()
+{
+    // Variable 0
+    set_variable_name(0, "n");
+    set_variable_type(0, SCALAR);
+    set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
 
     set_dependencies_value_term_RHS(0, "n, mu");
-    
+
     // Variable 1
-    set_variable_name                (1,"mu");
-    set_variable_type                (1,SCALAR);
-    set_variable_equation_type        (1,AUXILIARY);
-    
+    set_variable_name(1, "mu");
+    set_variable_type(1, SCALAR);
+    set_variable_equation_type(1, AUXILIARY);
+
     set_dependencies_value_term_RHS(1, "n");
     set_dependencies_gradient_term_RHS(1, "grad(n)");
-
 }
 
 // =============================================================================================
@@ -43,27 +43,27 @@ void variableAttributeLoader::loadVariableAttributes(){
 // each variable in this list corresponds to the index given at the top of this file.
 
 template <int dim, int degree>
-void customPDE<dim,degree>::explicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+void customPDE<dim, degree>::explicitEquationRHS(variableContainer<dim, degree, dealii::VectorizedArray<double>>& variable_list,
+    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+{
 
-// --- Getting the values and derivatives of the model variables ---
+    // --- Getting the values and derivatives of the model variables ---
 
-// The order parameter and its derivatives
-scalarvalueType n = variable_list.get_scalar_value(0);
-    
-// The chemical potential
-scalarvalueType mu = variable_list.get_scalar_value(1);
+    // The order parameter and its derivatives
+    scalarvalueType n = variable_list.get_scalar_value(0);
 
-// --- Setting the expressions for the terms in the governing equations ---
-//scalarvalueType eq_n = (n-constV(userInputs.dtValue*MnV)*mu);
-//Conserved version
-    scalarvalueType mu_av=constV(integrated_mu/(userInputs.domain_size[0]*userInputs.domain_size[1]));
-    scalarvalueType eq_n = (n-constV(userInputs.dtValue*MnV)*(mu-mu_av));
+    // The chemical potential
+    scalarvalueType mu = variable_list.get_scalar_value(1);
 
-// --- Submitting the terms for the governing equations ---
+    // --- Setting the expressions for the terms in the governing equations ---
+    // scalarvalueType eq_n = (n-constV(userInputs.dtValue*MnV)*mu);
+    // Conserved version
+    scalarvalueType mu_av = constV(integrated_mu / (userInputs.domain_size[0] * userInputs.domain_size[1]));
+    scalarvalueType eq_n = (n - constV(userInputs.dtValue * MnV) * (mu - mu_av));
 
-variable_list.set_scalar_value_term_RHS(0,eq_n);
+    // --- Submitting the terms for the governing equations ---
 
+    variable_list.set_scalar_value_term_RHS(0, eq_n);
 }
 
 // =============================================================================================
@@ -79,26 +79,27 @@ variable_list.set_scalar_value_term_RHS(0,eq_n);
 // this file.
 
 template <int dim, int degree>
-void customPDE<dim,degree>::nonExplicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
-    
+void customPDE<dim, degree>::nonExplicitEquationRHS(variableContainer<dim, degree, dealii::VectorizedArray<double>>& variable_list,
+    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+{
+
     // The order parameter and its derivatives
     scalarvalueType n = variable_list.get_scalar_value(0);
     scalargradType nx = variable_list.get_scalar_gradient(0);
-    
+
     // --- Setting the expressions for the terms in the governing equations ---
-    
+
     // The derivative of the local free energy
 
-    scalarvalueType fnV = (4.0*n*(n-1.0)*(n-0.5));
-    
+    scalarvalueType fnV = (4.0 * n * (n - 1.0) * (n - 0.5));
+
     // The terms for the governing equations
     scalarvalueType eq_mu = fnV;
-    scalargradType eqx_mu = constV(KnV)*nx;
-    
+    scalargradType eqx_mu = constV(KnV) * nx;
+
     // --- Submitting the terms for the governing equations ---
-    variable_list.set_scalar_value_term_RHS(1,eq_mu);
-    variable_list.set_scalar_gradient_term_RHS(1,eqx_mu);
+    variable_list.set_scalar_value_term_RHS(1, eq_mu);
+    variable_list.set_scalar_gradient_term_RHS(1, eqx_mu);
 }
 
 // =============================================================================================
@@ -116,6 +117,7 @@ void customPDE<dim,degree>::nonExplicitEquationRHS(variableContainer<dim,degree,
 // being solved can be accessed by "this->currentFieldIndex".
 
 template <int dim, int degree>
-void customPDE<dim,degree>::equationLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+void customPDE<dim, degree>::equationLHS(variableContainer<dim, degree, dealii::VectorizedArray<double>>& variable_list,
+    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+{
 }

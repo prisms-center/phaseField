@@ -13,27 +13,28 @@
 // that can nucleate and whether the value of the field is needed for nucleation
 // rate calculations.
 
-void variableAttributeLoader::loadVariableAttributes(){
-	// Variable 0
-	set_variable_name				(0,"c");
-	set_variable_type				(0,SCALAR);
-	set_variable_equation_type		(0,EXPLICIT_TIME_DEPENDENT);
+void variableAttributeLoader::loadVariableAttributes()
+{
+    // Variable 0
+    set_variable_name(0, "c");
+    set_variable_type(0, SCALAR);
+    set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
 
     set_dependencies_value_term_RHS(0, "c");
     set_dependencies_gradient_term_RHS(0, "c, grad(c), n, grad(n)");
 
     // Variable 1
-	set_variable_name				(1,"n");
-	set_variable_type				(1,SCALAR);
-	set_variable_equation_type		(1,EXPLICIT_TIME_DEPENDENT);
+    set_variable_name(1, "n");
+    set_variable_type(1, SCALAR);
+    set_variable_equation_type(1, EXPLICIT_TIME_DEPENDENT);
 
     set_dependencies_value_term_RHS(1, "c, n");
     set_dependencies_gradient_term_RHS(1, "grad(n), grad(biharm)");
 
     // Variable 2
-	set_variable_name				(2,"biharm");
-	set_variable_type				(2,SCALAR);
-	set_variable_equation_type		(2,AUXILIARY);
+    set_variable_name(2, "biharm");
+    set_variable_type(2, SCALAR);
+    set_variable_equation_type(2, AUXILIARY);
 
     set_dependencies_value_term_RHS(2, "");
     set_dependencies_gradient_term_RHS(2, "grad(n)");
@@ -51,80 +52,80 @@ void variableAttributeLoader::loadVariableAttributes(){
 // each variable in this list corresponds to the index given at the top of this file.
 
 template <int dim, int degree>
-void customPDE<dim,degree>::explicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+void customPDE<dim, degree>::explicitEquationRHS(variableContainer<dim, degree, dealii::VectorizedArray<double>>& variable_list,
+    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+{
 
-// --- Getting the values and derivatives of the model variables ---
+    // --- Getting the values and derivatives of the model variables ---
 
-// Concentration
-scalarvalueType c = variable_list.get_scalar_value(0);
-scalargradType cx = variable_list.get_scalar_gradient(0);
+    // Concentration
+    scalarvalueType c = variable_list.get_scalar_value(0);
+    scalargradType cx = variable_list.get_scalar_gradient(0);
 
-// Order parameter
-scalarvalueType n = variable_list.get_scalar_value(1);
-scalargradType nx = variable_list.get_scalar_gradient(1);
+    // Order parameter
+    scalarvalueType n = variable_list.get_scalar_value(1);
+    scalargradType nx = variable_list.get_scalar_gradient(1);
 
-// Field for split formulation of the biharmonic term
-scalargradType biharmx = variable_list.get_scalar_gradient(2);
+    // Field for split formulation of the biharmonic term
+    scalargradType biharmx = variable_list.get_scalar_gradient(2);
 
-// --- Setting the expressions for the terms in the governing equations ---
+    // --- Setting the expressions for the terms in the governing equations ---
 
-// Bulk terms
-scalarvalueType faV = 0.5*c*c/16.0;
-scalarvalueType facV = 0.5*c/8.0;
-scalarvalueType faccV = constV(0.5/8.0);
-scalarvalueType fbV = 0.5*(c-1.0)*(c-1.0)/16.0;
-scalarvalueType fbcV = 0.5*(c-1.0)/8.0;
-scalarvalueType fbccV = constV(0.5/8.0);
-scalarvalueType hV = 3.0*n*n-2.0*n*n*n;
-scalarvalueType hnV = 6.0*n-6.0*n*n;
+    // Bulk terms
+    scalarvalueType faV = 0.5 * c * c / 16.0;
+    scalarvalueType facV = 0.5 * c / 8.0;
+    scalarvalueType faccV = constV(0.5 / 8.0);
+    scalarvalueType fbV = 0.5 * (c - 1.0) * (c - 1.0) / 16.0;
+    scalarvalueType fbcV = 0.5 * (c - 1.0) / 8.0;
+    scalarvalueType fbccV = constV(0.5 / 8.0);
+    scalarvalueType hV = 3.0 * n * n - 2.0 * n * n * n;
+    scalarvalueType hnV = 6.0 * n - 6.0 * n * n;
 
-// Calculation of interface normal vector
-scalarvalueType normgradn = std::sqrt(nx.norm_square());
-scalargradType normal = nx/(normgradn+constV(1.0e-16));
+    // Calculation of interface normal vector
+    scalarvalueType normgradn = std::sqrt(nx.norm_square());
+    scalargradType normal = nx / (normgradn + constV(1.0e-16));
 
-// Calculation of anisotropy gamma
-scalarvalueType gamma;
-if (dim == 2){
-    gamma = 1.0+epsilonM*(4.0*(normal[0]*normal[0]*normal[0]*normal[0]+normal[1]*normal[1]*normal[1]*normal[1])-3.0);
-}
-else {
-    gamma = 1.0+epsilonM*(4.0*(normal[0]*normal[0]*normal[0]*normal[0]+normal[1]*normal[1]*normal[1]*normal[1]+normal[2]*normal[2]*normal[2]*normal[2])-3.0);
-}
+    // Calculation of anisotropy gamma
+    scalarvalueType gamma;
+    if (dim == 2) {
+        gamma = 1.0 + epsilonM * (4.0 * (normal[0] * normal[0] * normal[0] * normal[0] + normal[1] * normal[1] * normal[1] * normal[1]) - 3.0);
+    } else {
+        gamma = 1.0 + epsilonM * (4.0 * (normal[0] * normal[0] * normal[0] * normal[0] + normal[1] * normal[1] * normal[1] * normal[1] + normal[2] * normal[2] * normal[2] * normal[2]) - 3.0);
+    }
 
-// Derivatives of gamma with respect to the components of the unit normal
-scalargradType dgammadnorm;
-dgammadnorm[0] = (epsilonM*16.0*normal[0]*normal[0]*normal[0]);
-dgammadnorm[1] = (epsilonM*16.0*normal[1]*normal[1]*normal[1]);
-if (dim == 3){
-    dgammadnorm[2] = (epsilonM*16.0*normal[2]*normal[2]*normal[2]);
-}
+    // Derivatives of gamma with respect to the components of the unit normal
+    scalargradType dgammadnorm;
+    dgammadnorm[0] = (epsilonM * 16.0 * normal[0] * normal[0] * normal[0]);
+    dgammadnorm[1] = (epsilonM * 16.0 * normal[1] * normal[1] * normal[1]);
+    if (dim == 3) {
+        dgammadnorm[2] = (epsilonM * 16.0 * normal[2] * normal[2] * normal[2]);
+    }
 
-// Product of projection matrix and dgammadnorm vector
-scalargradType aniso;
-for (unsigned int i=0; i<dim; ++i){
-  for (unsigned int j=0; j<dim; ++j){
-      aniso[i] += -normal[i]*normal[j]*dgammadnorm[j];
-      if (i==j) aniso[i] +=dgammadnorm[j];
-  }
-}
-// Anisotropic gradient term (see derivation)
-aniso = gamma*(aniso*normgradn+gamma*nx);
+    // Product of projection matrix and dgammadnorm vector
+    scalargradType aniso;
+    for (unsigned int i = 0; i < dim; ++i) {
+        for (unsigned int j = 0; j < dim; ++j) {
+            aniso[i] += -normal[i] * normal[j] * dgammadnorm[j];
+            if (i == j)
+                aniso[i] += dgammadnorm[j];
+        }
+    }
+    // Anisotropic gradient term (see derivation)
+    aniso = gamma * (aniso * normgradn + gamma * nx);
 
-// The terms in the governing equations
-scalarvalueType eq_c = c;
-scalargradType eqx_c = constV(-McV*userInputs.dtValue)*(cx*((1.0-hV)*faccV+hV*fbccV)+nx*hnV*(fbcV-facV));
-scalarvalueType eq_n = n-constV(userInputs.dtValue*MnV)*(fbV-faV)*hnV;
-scalargradType eqx_n = constV(userInputs.dtValue*MnV)*(-aniso+constV(delta2)*biharmx);
+    // The terms in the governing equations
+    scalarvalueType eq_c = c;
+    scalargradType eqx_c = constV(-McV * userInputs.dtValue) * (cx * ((1.0 - hV) * faccV + hV * fbccV) + nx * hnV * (fbcV - facV));
+    scalarvalueType eq_n = n - constV(userInputs.dtValue * MnV) * (fbV - faV) * hnV;
+    scalargradType eqx_n = constV(userInputs.dtValue * MnV) * (-aniso + constV(delta2) * biharmx);
 
-// --- Submitting the terms for the governing equations ---
+    // --- Submitting the terms for the governing equations ---
 
-variable_list.set_scalar_value_term_RHS(0,eq_c);
-variable_list.set_scalar_gradient_term_RHS(0,eqx_c);
+    variable_list.set_scalar_value_term_RHS(0, eq_c);
+    variable_list.set_scalar_gradient_term_RHS(0, eqx_c);
 
-variable_list.set_scalar_value_term_RHS(1,eq_n);
-variable_list.set_scalar_gradient_term_RHS(1,eqx_n);
-
+    variable_list.set_scalar_value_term_RHS(1, eq_n);
+    variable_list.set_scalar_gradient_term_RHS(1, eqx_n);
 }
 
 // =============================================================================================
@@ -140,21 +141,18 @@ variable_list.set_scalar_gradient_term_RHS(1,eqx_n);
 // this file.
 
 template <int dim, int degree>
-void customPDE<dim,degree>::nonExplicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+void customPDE<dim, degree>::nonExplicitEquationRHS(variableContainer<dim, degree, dealii::VectorizedArray<double>>& variable_list,
+    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+{
 
+    // --- Getting the values and derivatives of the model variables ---
 
- // --- Getting the values and derivatives of the model variables ---
+    scalargradType nx = variable_list.get_scalar_gradient(1);
 
- scalargradType nx = variable_list.get_scalar_gradient(1);
+    // --- Setting the expressions for the terms in the governing equations ---
 
- // --- Setting the expressions for the terms in the governing equations ---
-
-
- // --- Submitting the terms for the governing equations ---
- variable_list.set_scalar_gradient_term_RHS(2,-nx);
-
-
+    // --- Submitting the terms for the governing equations ---
+    variable_list.set_scalar_gradient_term_RHS(2, -nx);
 }
 
 // =============================================================================================
@@ -172,6 +170,7 @@ void customPDE<dim,degree>::nonExplicitEquationRHS(variableContainer<dim,degree,
 // being solved can be accessed by "this->currentFieldIndex".
 
 template <int dim, int degree>
-void customPDE<dim,degree>::equationLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+void customPDE<dim, degree>::equationLHS(variableContainer<dim, degree, dealii::VectorizedArray<double>>& variable_list,
+    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+{
 }

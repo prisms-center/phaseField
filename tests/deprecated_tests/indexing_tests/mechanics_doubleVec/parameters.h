@@ -44,9 +44,3 @@
 // =================================================================================
 // Each field in the problem will be output is writeOutput is set to "true"
 #define writeOutput true
-
-
-
-
-
-

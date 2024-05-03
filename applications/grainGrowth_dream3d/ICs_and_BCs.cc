@@ -3,7 +3,8 @@
 // ===========================================================================
 
 template <int dim, int degree>
-void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, const unsigned int index, double & scalar_IC, dealii::Vector<double> & vector_IC){
+void customPDE<dim, degree>::setInitialCondition(const dealii::Point<dim>& p, const unsigned int index, double& scalar_IC, dealii::Vector<double>& vector_IC)
+{
     // ---------------------------------------------------------------------
     // ENTER THE INITIAL CONDITIONS HERE
     // ---------------------------------------------------------------------
@@ -11,10 +12,7 @@ void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, con
     // Use "if" statements to set the initial condition for each variable
     // according to its variable index
 
-
-
-
-	// --------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 }
 
 // ===========================================================================
@@ -22,7 +20,7 @@ void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, con
 // ===========================================================================
 
 template <int dim, int degree>
-void customPDE<dim,degree>::setNonUniformDirichletBCs(const dealii::Point<dim> &p, const unsigned int index, const unsigned int direction, const double time, double & scalar_BC, dealii::Vector<double> & vector_BC)
+void customPDE<dim, degree>::setNonUniformDirichletBCs(const dealii::Point<dim>& p, const unsigned int index, const unsigned int direction, const double time, double& scalar_BC, dealii::Vector<double>& vector_BC)
 {
     // --------------------------------------------------------------------------
     // ENTER THE NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS HERE
@@ -36,7 +34,5 @@ void customPDE<dim,degree>::setNonUniformDirichletBCs(const dealii::Point<dim> &
     // at zero and uses the same order as the BC specification in parameters.in
     // (i.e. left = 0, right = 1, bottom = 2, top = 3, front = 4, back = 5).
 
-
     // -------------------------------------------------------------------------
-
 }

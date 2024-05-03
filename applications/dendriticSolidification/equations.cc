@@ -13,27 +13,28 @@
 // that can nucleate and whether the value of the field is needed for nucleation
 // rate calculations.
 
-void variableAttributeLoader::loadVariableAttributes(){
-	// Variable 0
-	set_variable_name				(0,"u");
-	set_variable_type				(0,SCALAR);
-	set_variable_equation_type		(0,EXPLICIT_TIME_DEPENDENT);
+void variableAttributeLoader::loadVariableAttributes()
+{
+    // Variable 0
+    set_variable_name(0, "u");
+    set_variable_type(0, SCALAR);
+    set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
 
     set_dependencies_value_term_RHS(0, "u,mu,grad(phi)");
     set_dependencies_gradient_term_RHS(0, "grad(u)");
 
     // Variable 1
-	set_variable_name				(1,"phi");
-	set_variable_type				(1,SCALAR);
-	set_variable_equation_type		(1,EXPLICIT_TIME_DEPENDENT);
+    set_variable_name(1, "phi");
+    set_variable_type(1, SCALAR);
+    set_variable_equation_type(1, EXPLICIT_TIME_DEPENDENT);
 
     set_dependencies_value_term_RHS(1, "phi,mu");
     set_dependencies_gradient_term_RHS(1, "");
 
-	// Variable 2
-	set_variable_name				(2,"mu");
-	set_variable_type				(2,SCALAR);
-	set_variable_equation_type		(2,AUXILIARY);
+    // Variable 2
+    set_variable_name(2, "mu");
+    set_variable_type(2, SCALAR);
+    set_variable_equation_type(2, AUXILIARY);
 
     set_dependencies_value_term_RHS(2, "phi,u,grad(phi)");
     set_dependencies_gradient_term_RHS(2, "grad(phi)");
@@ -51,49 +52,48 @@ void variableAttributeLoader::loadVariableAttributes(){
 // each variable in this list corresponds to the index given at the top of this file.
 
 template <int dim, int degree>
-void customPDE<dim,degree>::explicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+void customPDE<dim, degree>::explicitEquationRHS(variableContainer<dim, degree, dealii::VectorizedArray<double>>& variable_list,
+    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+{
 
-// --- Getting the values and derivatives of the model variables ---
+    // --- Getting the values and derivatives of the model variables ---
 
-// The temperature and its derivatives
-scalarvalueType u = variable_list.get_scalar_value(0);
-scalargradType ux = variable_list.get_scalar_gradient(0);
+    // The temperature and its derivatives
+    scalarvalueType u = variable_list.get_scalar_value(0);
+    scalargradType ux = variable_list.get_scalar_gradient(0);
 
-// The order parameter and its derivatives
-scalarvalueType phi = variable_list.get_scalar_value(1);
-scalargradType phix = variable_list.get_scalar_gradient(1);
+    // The order parameter and its derivatives
+    scalarvalueType phi = variable_list.get_scalar_value(1);
+    scalargradType phix = variable_list.get_scalar_gradient(1);
 
-// The order parameter chemical potential and its derivatives
-scalarvalueType mu = variable_list.get_scalar_value(2);
+    // The order parameter chemical potential and its derivatives
+    scalarvalueType mu = variable_list.get_scalar_value(2);
 
-// --- Setting the expressions for the terms in the governing equations ---
+    // --- Setting the expressions for the terms in the governing equations ---
 
-// The azimuthal angle
-scalarvalueType theta;
-for (unsigned i=0; i< phi.size();i++){
-	theta[i] = std::atan2(phix[1][i],phix[0][i]);
-}
+    // The azimuthal angle
+    scalarvalueType theta;
+    for (unsigned i = 0; i < phi.size(); i++) {
+        theta[i] = std::atan2(phix[1][i], phix[0][i]);
+    }
 
-// Anisotropic gradient energy coefficient, its derivative and square
-scalarvalueType W = constV(W0)*(constV(1.0)+constV(epsilonM)*std::cos(constV(mult)*(theta-constV(theta0))));
-scalarvalueType tau = W/constV(W0);
+    // Anisotropic gradient energy coefficient, its derivative and square
+    scalarvalueType W = constV(W0) * (constV(1.0) + constV(epsilonM) * std::cos(constV(mult) * (theta - constV(theta0))));
+    scalarvalueType tau = W / constV(W0);
 
-// Define required equations
-scalarvalueType eq_u = (u+constV(0.5)*mu*constV(userInputs.dtValue)/tau);
-scalargradType eqx_u = (constV(-D*userInputs.dtValue)*ux);
-scalarvalueType eq_phi = (phi+constV(userInputs.dtValue)*mu/tau);
+    // Define required equations
+    scalarvalueType eq_u = (u + constV(0.5) * mu * constV(userInputs.dtValue) / tau);
+    scalargradType eqx_u = (constV(-D * userInputs.dtValue) * ux);
+    scalarvalueType eq_phi = (phi + constV(userInputs.dtValue) * mu / tau);
 
-// --- Submitting the terms for the governing equations ---
+    // --- Submitting the terms for the governing equations ---
 
-// Terms for the equation to evolve the concentration
-variable_list.set_scalar_value_term_RHS(0,eq_u);
-variable_list.set_scalar_gradient_term_RHS(0,eqx_u);
+    // Terms for the equation to evolve the concentration
+    variable_list.set_scalar_value_term_RHS(0, eq_u);
+    variable_list.set_scalar_gradient_term_RHS(0, eqx_u);
 
-// Terms for the equation to evolve the order parameter
-variable_list.set_scalar_value_term_RHS(1,eq_phi);
-
-
+    // Terms for the equation to evolve the order parameter
+    variable_list.set_scalar_value_term_RHS(1, eq_phi);
 }
 
 // =============================================================================================
@@ -109,52 +109,51 @@ variable_list.set_scalar_value_term_RHS(1,eq_phi);
 // this file.
 
 template <int dim, int degree>
-void customPDE<dim,degree>::nonExplicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+void customPDE<dim, degree>::nonExplicitEquationRHS(variableContainer<dim, degree, dealii::VectorizedArray<double>>& variable_list,
+    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+{
 
- // --- Getting the values and derivatives of the model variables ---
+    // --- Getting the values and derivatives of the model variables ---
 
+    // The temperature and its derivatives
+    scalarvalueType u = variable_list.get_scalar_value(0);
 
- // The temperature and its derivatives
- scalarvalueType u = variable_list.get_scalar_value(0);
+    // The order parameter and its derivatives
+    scalarvalueType phi = variable_list.get_scalar_value(1);
+    scalargradType phix = variable_list.get_scalar_gradient(1);
 
- // The order parameter and its derivatives
- scalarvalueType phi = variable_list.get_scalar_value(1);
- scalargradType phix = variable_list.get_scalar_gradient(1);
+    // --- Setting the expressions for the terms in the governing equations ---
 
- // --- Setting the expressions for the terms in the governing equations ---
+    // The coupling constant, determined from solvability theory
+    double lambda = (D / 0.6267 / W0 / W0);
 
- // The coupling constant, determined from solvability theory
- double lambda = (D/0.6267/W0/W0);
+    // Derivative of the free energy density with respect to phi
+    scalarvalueType f_phi = -(phi - constV(lambda) * u * (constV(1.0) - phi * phi)) * (constV(1.0) - phi * phi);
 
- // Derivative of the free energy density with respect to phi
- scalarvalueType f_phi = -(phi-constV(lambda)*u*(constV(1.0)-phi*phi))*(constV(1.0)-phi*phi);
+    // The azimuthal angle
+    scalarvalueType theta;
+    for (unsigned i = 0; i < phi.size(); i++) {
+        theta[i] = std::atan2(phix[1][i], phix[0][i]);
+    }
 
- // The azimuthal angle
- scalarvalueType theta;
- for (unsigned i=0; i< phi.size();i++){
- 	theta[i] = std::atan2(phix[1][i],phix[0][i]);
- }
+    // Anisotropic gradient energy coefficient, its derivative and square
+    scalarvalueType W = constV(W0) * (constV(1.0) + constV(epsilonM) * std::cos(constV(mult) * (theta - constV(theta0))));
+    scalarvalueType W_theta = constV(-W0) * (constV(epsilonM) * constV(mult) * std::sin(constV(mult) * (theta - constV(theta0))));
+    scalarvalueType tau = W / constV(W0);
 
- // Anisotropic gradient energy coefficient, its derivative and square
- scalarvalueType W = constV(W0)*(constV(1.0)+constV(epsilonM)*std::cos(constV(mult)*(theta-constV(theta0))));
- scalarvalueType W_theta = constV(-W0)*(constV(epsilonM)*constV(mult)*std::sin(constV(mult)*(theta-constV(theta0))));
- scalarvalueType tau = W/constV(W0);
+    // The anisotropy term that enters in to the  equation for mu
+    scalargradType aniso;
+    aniso[0] = W * W * phix[0] - W * W_theta * phix[1];
+    aniso[1] = W * W * phix[1] + W * W_theta * phix[0];
 
- // The anisotropy term that enters in to the  equation for mu
- scalargradType aniso;
- aniso[0] = W*W*phix[0]-W*W_theta*phix[1];
- aniso[1] = W*W*phix[1]+W*W_theta*phix[0];
+    // Define the terms in the equations
+    scalarvalueType eq_mu = (-f_phi);
+    scalargradType eqx_mu = (-aniso);
 
- // Define the terms in the equations
- scalarvalueType eq_mu = (-f_phi);
- scalargradType eqx_mu = (-aniso);
+    // --- Submitting the terms for the governing equations ---
 
-  // --- Submitting the terms for the governing equations ---
-
- variable_list.set_scalar_value_term_RHS(2,eq_mu);
- variable_list.set_scalar_gradient_term_RHS(2,eqx_mu);
-
+    variable_list.set_scalar_value_term_RHS(2, eq_mu);
+    variable_list.set_scalar_gradient_term_RHS(2, eqx_mu);
 }
 
 // =============================================================================================
@@ -172,6 +171,7 @@ void customPDE<dim,degree>::nonExplicitEquationRHS(variableContainer<dim,degree,
 // being solved can be accessed by "this->currentFieldIndex".
 
 template <int dim, int degree>
-void customPDE<dim,degree>::equationLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+void customPDE<dim, degree>::equationLHS(variableContainer<dim, degree, dealii::VectorizedArray<double>>& variable_list,
+    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+{
 }

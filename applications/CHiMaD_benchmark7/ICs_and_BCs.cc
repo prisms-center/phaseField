@@ -3,7 +3,8 @@
 // ===========================================================================
 
 template <int dim, int degree>
-void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, const unsigned int index, double & scalar_IC, dealii::Vector<double> & vector_IC){
+void customPDE<dim, degree>::setInitialCondition(const dealii::Point<dim>& p, const unsigned int index, double& scalar_IC, dealii::Vector<double>& vector_IC)
+{
     // ---------------------------------------------------------------------
     // ENTER THE INITIAL CONDITIONS HERE
     // ---------------------------------------------------------------------
@@ -15,14 +16,14 @@ void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, con
     // by a hyperbolic tangent function. The center of each circle/sphere is
     // given by "center" and its radius is given by "radius".
 
-    double pi = 2.0*std::acos(0.0);
+    double pi = 2.0 * std::acos(0.0);
 
-    double r0 = 0.25 + A2*std::sin(B2*p(0));
-    double delta = 1.0/std::sqrt(kappa*2.0);
+    double r0 = 0.25 + A2 * std::sin(B2 * p(0));
+    double delta = 1.0 / std::sqrt(kappa * 2.0);
 
-    scalar_IC = 0.5*(1.0-std::tanh((p(1)-r0) * delta));
+    scalar_IC = 0.5 * (1.0 - std::tanh((p(1) - r0) * delta));
 
-  // ---------------------------------------------------------------------
+    // ---------------------------------------------------------------------
 }
 
 // ===========================================================================
@@ -30,7 +31,7 @@ void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, con
 // ===========================================================================
 
 template <int dim, int degree>
-void customPDE<dim,degree>::setNonUniformDirichletBCs(const dealii::Point<dim> &p, const unsigned int index, const unsigned int direction, const double time, double & scalar_BC, dealii::Vector<double> & vector_BC)
+void customPDE<dim, degree>::setNonUniformDirichletBCs(const dealii::Point<dim>& p, const unsigned int index, const unsigned int direction, const double time, double& scalar_BC, dealii::Vector<double>& vector_BC)
 {
     // --------------------------------------------------------------------------
     // ENTER THE NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS HERE
@@ -44,7 +45,5 @@ void customPDE<dim,degree>::setNonUniformDirichletBCs(const dealii::Point<dim> &
     // at zero and uses the same order as the BC specification in parameters.in
     // (i.e. left = 0, right = 1, bottom = 2, top = 3, front = 4, back = 5).
 
-
     // -------------------------------------------------------------------------
-
 }

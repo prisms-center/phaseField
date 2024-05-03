@@ -1,17 +1,18 @@
 // Unit test(s) for the method "parse_line"
 
-template <int dim,typename T>
-  bool unitTest<dim,T>::test_load_BC_list(){
-  	bool pass = false;
+template <int dim, typename T>
+bool unitTest<dim, T>::test_load_BC_list()
+{
+    bool pass = false;
 
     char buffer[100];
 
-	std::cout << "\nTesting 'load_BC_list'... " << std::endl;
+    std::cout << "\nTesting 'load_BC_list'... " << std::endl;
 
-	//create test problem class object
+    // create test problem class object
     variableAttributeLoader variable_attributes;
-    inputFileReader input_file_reader("parameters_test.prm",variable_attributes);
-    userInputParameters<2> userInputs(input_file_reader,input_file_reader.parameter_handler,variable_attributes);
+    inputFileReader input_file_reader("parameters_test.prm", variable_attributes);
+    userInputParameters<2> userInputs(input_file_reader, input_file_reader.parameter_handler, variable_attributes);
 
     // 2D test:
     std::vector<std::string> list_of_BCs;
@@ -25,7 +26,7 @@ template <int dim,typename T>
     bool pass1;
     pass1 = userInputs.BC_list.size() == 3;
     pass1 = pass1 && (userInputs.BC_list[0].var_BC_type.size() == 4);
-    for (unsigned int i=0; i<userInputs.BC_list[0].var_BC_type.size(); i++){
+    for (unsigned int i = 0; i < userInputs.BC_list[0].var_BC_type.size(); i++) {
         pass1 = pass1 && (userInputs.BC_list[0].var_BC_type[i] == DIRICHLET);
         pass1 = pass1 && (userInputs.BC_list[0].var_BC_val[i] == 2.5);
     }
@@ -52,7 +53,7 @@ template <int dim,typename T>
 
     // 3D test:
     list_of_BCs.clear();
-    userInputParameters<3> userInputs_3D(input_file_reader,input_file_reader.parameter_handler,variable_attributes);
+    userInputParameters<3> userInputs_3D(input_file_reader, input_file_reader.parameter_handler, variable_attributes);
     list_of_BCs.push_back("DIRICHLET: 2.5");
     list_of_BCs.push_back("PERIODIC,PERIODIC,NATURAL,NATURAL,PERIODIC,PERIODIC");
 
@@ -61,7 +62,7 @@ template <int dim,typename T>
     bool pass4;
     pass4 = userInputs_3D.BC_list.size() == 2;
     pass4 = pass4 && (userInputs_3D.BC_list[0].var_BC_type.size() == 6);
-    for (unsigned int i=0; i<userInputs_3D.BC_list[0].var_BC_type.size(); i++){
+    for (unsigned int i = 0; i < userInputs_3D.BC_list[0].var_BC_type.size(); i++) {
         pass4 = pass4 && (userInputs_3D.BC_list[0].var_BC_type[i] == DIRICHLET);
         pass4 = pass4 && (userInputs_3D.BC_list[0].var_BC_val[i] == 2.5);
     }
@@ -78,11 +79,10 @@ template <int dim,typename T>
     snprintf(buffer, sizeof(buffer), "Subtest 5 result for 'load_BC_list': %u\n", pass5);
     std::cout << buffer;
 
-
     pass = pass1 && pass2 && pass3 && pass4 && pass5;
 
-	snprintf(buffer, sizeof(buffer), "Test result for 'load_BC_list': %u\n", pass);
-	std::cout << buffer;
+    snprintf(buffer, sizeof(buffer), "Test result for 'load_BC_list': %u\n", pass);
+    std::cout << buffer;
 
-	return pass;
+    return pass;
 }

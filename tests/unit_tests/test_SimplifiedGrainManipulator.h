@@ -1,11 +1,12 @@
 #include "../../include/SimplifiedGrainRepresentation.h"
 
-template <int dim,typename T>
-  bool unitTest<dim,T>::test_SimplifiedGrainManipulator_transferGrainIds(){
+template <int dim, typename T>
+bool unitTest<dim, T>::test_SimplifiedGrainManipulator_transferGrainIds()
+{
 
     char buffer[100];
 
-	std::cout << "\nTesting 'SimplifiedGrainManipulator::transferGrainIds'... " << std::endl;
+    std::cout << "\nTesting 'SimplifiedGrainManipulator::transferGrainIds'... " << std::endl;
 
     bool pass = true;
 
@@ -14,16 +15,28 @@ template <int dim,typename T>
         // Create grain 0_old with center (0.5, 0.5), radius 0.5*sqrt(2), and order parameter 0
         GrainSet<dim> test_grain_set_0;
         {
-        test_grain_set_0.setGrainIndex(0);
-        test_grain_set_0.setOrderParameterIndex(0);
+            test_grain_set_0.setGrainIndex(0);
+            test_grain_set_0.setOrderParameterIndex(0);
 
-        std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
-        {dealii::Point<dim> p(0.0,0.0); vertex_set[0] = p;}
-        {dealii::Point<dim> p(1.0,0.0); vertex_set[1] = p;}
-        {dealii::Point<dim> p(0.0,1.0); vertex_set[2] = p;}
-        {dealii::Point<dim> p(1.0,1.0); vertex_set[3] = p;}
+            std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
+            {
+                dealii::Point<dim> p(0.0, 0.0);
+                vertex_set[0] = p;
+            }
+            {
+                dealii::Point<dim> p(1.0, 0.0);
+                vertex_set[1] = p;
+            }
+            {
+                dealii::Point<dim> p(0.0, 1.0);
+                vertex_set[2] = p;
+            }
+            {
+                dealii::Point<dim> p(1.0, 1.0);
+                vertex_set[3] = p;
+            }
 
-        test_grain_set_0.addVertexList(vertex_set);
+            test_grain_set_0.addVertexList(vertex_set);
         }
 
         SimplifiedGrainRepresentation<dim> simplified_grain_representation_0(test_grain_set_0);
@@ -31,16 +44,28 @@ template <int dim,typename T>
         // Create grain 1_old with center (4.5, 0.5), radius 0.5*sqrt(2), and order parameter 1
         GrainSet<dim> test_grain_set_1;
         {
-        test_grain_set_1.setGrainIndex(1);
-        test_grain_set_1.setOrderParameterIndex(1);
+            test_grain_set_1.setGrainIndex(1);
+            test_grain_set_1.setOrderParameterIndex(1);
 
-        std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
-        {dealii::Point<dim> p(4.0,0.0); vertex_set[0] = p;}
-        {dealii::Point<dim> p(5.0,0.0); vertex_set[1] = p;}
-        {dealii::Point<dim> p(4.0,1.0); vertex_set[2] = p;}
-        {dealii::Point<dim> p(5.0,1.0); vertex_set[3] = p;}
+            std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
+            {
+                dealii::Point<dim> p(4.0, 0.0);
+                vertex_set[0] = p;
+            }
+            {
+                dealii::Point<dim> p(5.0, 0.0);
+                vertex_set[1] = p;
+            }
+            {
+                dealii::Point<dim> p(4.0, 1.0);
+                vertex_set[2] = p;
+            }
+            {
+                dealii::Point<dim> p(5.0, 1.0);
+                vertex_set[3] = p;
+            }
 
-        test_grain_set_1.addVertexList(vertex_set);
+            test_grain_set_1.addVertexList(vertex_set);
         }
 
         SimplifiedGrainRepresentation<dim> simplified_grain_representation_1(test_grain_set_1);
@@ -48,16 +73,28 @@ template <int dim,typename T>
         // Create grain 0_new with center (0.6, 0.6), radius 0.6*sqrt(2), and order parameter 0
         GrainSet<dim> test_grain_set_0_new;
         {
-        test_grain_set_0_new.setGrainIndex(5);
-        test_grain_set_0_new.setOrderParameterIndex(0);
+            test_grain_set_0_new.setGrainIndex(5);
+            test_grain_set_0_new.setOrderParameterIndex(0);
 
-        std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
-        {dealii::Point<dim> p(0.0,0.0); vertex_set[0] = p;}
-        {dealii::Point<dim> p(1.2,0.0); vertex_set[1] = p;}
-        {dealii::Point<dim> p(0.0,1.2); vertex_set[2] = p;}
-        {dealii::Point<dim> p(1.2,1.2); vertex_set[3] = p;}
+            std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
+            {
+                dealii::Point<dim> p(0.0, 0.0);
+                vertex_set[0] = p;
+            }
+            {
+                dealii::Point<dim> p(1.2, 0.0);
+                vertex_set[1] = p;
+            }
+            {
+                dealii::Point<dim> p(0.0, 1.2);
+                vertex_set[2] = p;
+            }
+            {
+                dealii::Point<dim> p(1.2, 1.2);
+                vertex_set[3] = p;
+            }
 
-        test_grain_set_0_new.addVertexList(vertex_set);
+            test_grain_set_0_new.addVertexList(vertex_set);
         }
 
         SimplifiedGrainRepresentation<dim> simplified_grain_representation_0_new(test_grain_set_0_new);
@@ -65,16 +102,28 @@ template <int dim,typename T>
         // Create grain 1_new with center (4.6, 0.6), radius 0.6*sqrt(2), and order parameter 1
         GrainSet<dim> test_grain_set_1_new;
         {
-        test_grain_set_1.setGrainIndex(3);
-        test_grain_set_1.setOrderParameterIndex(1);
+            test_grain_set_1.setGrainIndex(3);
+            test_grain_set_1.setOrderParameterIndex(1);
 
-        std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
-        {dealii::Point<dim> p(4.0,0.0); vertex_set[0] = p;}
-        {dealii::Point<dim> p(5.2,0.0); vertex_set[1] = p;}
-        {dealii::Point<dim> p(4.0,1.2); vertex_set[2] = p;}
-        {dealii::Point<dim> p(5.2,1.2); vertex_set[3] = p;}
+            std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
+            {
+                dealii::Point<dim> p(4.0, 0.0);
+                vertex_set[0] = p;
+            }
+            {
+                dealii::Point<dim> p(5.2, 0.0);
+                vertex_set[1] = p;
+            }
+            {
+                dealii::Point<dim> p(4.0, 1.2);
+                vertex_set[2] = p;
+            }
+            {
+                dealii::Point<dim> p(5.2, 1.2);
+                vertex_set[3] = p;
+            }
 
-        test_grain_set_1_new.addVertexList(vertex_set);
+            test_grain_set_1_new.addVertexList(vertex_set);
         }
 
         SimplifiedGrainRepresentation<dim> simplified_grain_representation_1_new(test_grain_set_1_new);
@@ -95,24 +144,25 @@ template <int dim,typename T>
         std::cout << "Grain ids after transfer: " << new_grain_representations.at(0).getGrainId() << " " << new_grain_representations.at(1).getGrainId() << std::endl;
 
         bool result = false;
-        if ( new_grain_representations.at(0).getGrainId() == 0 and  new_grain_representations.at(1).getGrainId() == 1){
+        if (new_grain_representations.at(0).getGrainId() == 0 and new_grain_representations.at(1).getGrainId() == 1) {
             result = true;
         }
         pass = pass & result;
     }
 
-	snprintf(buffer, sizeof(buffer), "Test result for 'SimplifiedGrainManipulator::transferGrainIds': %u\n", pass);
-	std::cout << buffer;
+    snprintf(buffer, sizeof(buffer), "Test result for 'SimplifiedGrainManipulator::transferGrainIds': %u\n", pass);
+    std::cout << buffer;
 
-	return pass;
+    return pass;
 }
 
-template <int dim,typename T>
-  bool unitTest<dim,T>::test_SimplifiedGrainManipulator_reassignGrains(){
+template <int dim, typename T>
+bool unitTest<dim, T>::test_SimplifiedGrainManipulator_reassignGrains()
+{
 
     char buffer[100];
 
-	std::cout << "\nTesting 'SimplifiedGrainManipulator::reassignGrains'... " << std::endl;
+    std::cout << "\nTesting 'SimplifiedGrainManipulator::reassignGrains'... " << std::endl;
 
     bool pass = true;
 
@@ -121,16 +171,28 @@ template <int dim,typename T>
         // Create grain 0 with center (0.5, 0.5), radius 0.5*sqrt(2), and order parameter 0
         GrainSet<dim> test_grain_set_0;
         {
-        test_grain_set_0.setGrainIndex(0);
-        test_grain_set_0.setOrderParameterIndex(0);
+            test_grain_set_0.setGrainIndex(0);
+            test_grain_set_0.setOrderParameterIndex(0);
 
-        std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
-        {dealii::Point<dim> p(0.0,0.0); vertex_set[0] = p;}
-        {dealii::Point<dim> p(1.0,0.0); vertex_set[1] = p;}
-        {dealii::Point<dim> p(0.0,1.0); vertex_set[2] = p;}
-        {dealii::Point<dim> p(1.0,1.0); vertex_set[3] = p;}
+            std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
+            {
+                dealii::Point<dim> p(0.0, 0.0);
+                vertex_set[0] = p;
+            }
+            {
+                dealii::Point<dim> p(1.0, 0.0);
+                vertex_set[1] = p;
+            }
+            {
+                dealii::Point<dim> p(0.0, 1.0);
+                vertex_set[2] = p;
+            }
+            {
+                dealii::Point<dim> p(1.0, 1.0);
+                vertex_set[3] = p;
+            }
 
-        test_grain_set_0.addVertexList(vertex_set);
+            test_grain_set_0.addVertexList(vertex_set);
         }
 
         SimplifiedGrainRepresentation<dim> simplified_grain_representation_0(test_grain_set_0);
@@ -138,16 +200,28 @@ template <int dim,typename T>
         // Create grain 1 with center (4.5, 0.5), radius 0.5*sqrt(2), and order parameter 1
         GrainSet<dim> test_grain_set_1;
         {
-        test_grain_set_1.setGrainIndex(1);
-        test_grain_set_1.setOrderParameterIndex(1);
+            test_grain_set_1.setGrainIndex(1);
+            test_grain_set_1.setOrderParameterIndex(1);
 
-        std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
-        {dealii::Point<dim> p(4.0,0.0); vertex_set[0] = p;}
-        {dealii::Point<dim> p(5.0,0.0); vertex_set[1] = p;}
-        {dealii::Point<dim> p(4.0,1.0); vertex_set[2] = p;}
-        {dealii::Point<dim> p(5.0,1.0); vertex_set[3] = p;}
+            std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
+            {
+                dealii::Point<dim> p(4.0, 0.0);
+                vertex_set[0] = p;
+            }
+            {
+                dealii::Point<dim> p(5.0, 0.0);
+                vertex_set[1] = p;
+            }
+            {
+                dealii::Point<dim> p(4.0, 1.0);
+                vertex_set[2] = p;
+            }
+            {
+                dealii::Point<dim> p(5.0, 1.0);
+                vertex_set[3] = p;
+            }
 
-        test_grain_set_1.addVertexList(vertex_set);
+            test_grain_set_1.addVertexList(vertex_set);
         }
 
         SimplifiedGrainRepresentation<dim> simplified_grain_representation_1(test_grain_set_1);
@@ -155,20 +229,31 @@ template <int dim,typename T>
         // Create grain 2 with center (0.6, 0.6), radius 0.6*sqrt(2), and order parameter 0
         GrainSet<dim> test_grain_set_2;
         {
-        test_grain_set_2.setGrainIndex(2);
-        test_grain_set_2.setOrderParameterIndex(0);
+            test_grain_set_2.setGrainIndex(2);
+            test_grain_set_2.setOrderParameterIndex(0);
 
-        std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
-        {dealii::Point<dim> p(0.0,0.0); vertex_set[0] = p;}
-        {dealii::Point<dim> p(1.2,0.0); vertex_set[1] = p;}
-        {dealii::Point<dim> p(0.0,1.2); vertex_set[2] = p;}
-        {dealii::Point<dim> p(1.2,1.2); vertex_set[3] = p;}
+            std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
+            {
+                dealii::Point<dim> p(0.0, 0.0);
+                vertex_set[0] = p;
+            }
+            {
+                dealii::Point<dim> p(1.2, 0.0);
+                vertex_set[1] = p;
+            }
+            {
+                dealii::Point<dim> p(0.0, 1.2);
+                vertex_set[2] = p;
+            }
+            {
+                dealii::Point<dim> p(1.2, 1.2);
+                vertex_set[3] = p;
+            }
 
-        test_grain_set_2.addVertexList(vertex_set);
+            test_grain_set_2.addVertexList(vertex_set);
         }
 
         SimplifiedGrainRepresentation<dim> simplified_grain_representation_2(test_grain_set_2);
-
 
         // Now build of the vectors of these grain representations
         std::vector<SimplifiedGrainRepresentation<dim>> grain_representations;
@@ -194,7 +279,7 @@ template <int dim,typename T>
         }
         */
         bool result = false;
-        if ( grain_representations.at(0).getOrderParameterId() == 1 and grain_representations.at(1).getOrderParameterId() == 1 and grain_representations.at(2).getOrderParameterId() == 0){
+        if (grain_representations.at(0).getOrderParameterId() == 1 and grain_representations.at(1).getOrderParameterId() == 1 and grain_representations.at(2).getOrderParameterId() == 0) {
             result = true;
         }
 
@@ -209,16 +294,28 @@ template <int dim,typename T>
         // Create grain 0 with center (0.5, 0.5), radius 0.5*sqrt(2), and order parameter 0
         GrainSet<dim> test_grain_set_0;
         {
-        test_grain_set_0.setGrainIndex(0);
-        test_grain_set_0.setOrderParameterIndex(0);
+            test_grain_set_0.setGrainIndex(0);
+            test_grain_set_0.setOrderParameterIndex(0);
 
-        std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
-        {dealii::Point<dim> p(0.0,0.0); vertex_set[0] = p;}
-        {dealii::Point<dim> p(1.0,0.0); vertex_set[1] = p;}
-        {dealii::Point<dim> p(0.0,1.0); vertex_set[2] = p;}
-        {dealii::Point<dim> p(1.0,1.0); vertex_set[3] = p;}
+            std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
+            {
+                dealii::Point<dim> p(0.0, 0.0);
+                vertex_set[0] = p;
+            }
+            {
+                dealii::Point<dim> p(1.0, 0.0);
+                vertex_set[1] = p;
+            }
+            {
+                dealii::Point<dim> p(0.0, 1.0);
+                vertex_set[2] = p;
+            }
+            {
+                dealii::Point<dim> p(1.0, 1.0);
+                vertex_set[3] = p;
+            }
 
-        test_grain_set_0.addVertexList(vertex_set);
+            test_grain_set_0.addVertexList(vertex_set);
         }
 
         SimplifiedGrainRepresentation<dim> simplified_grain_representation_0(test_grain_set_0);
@@ -226,16 +323,28 @@ template <int dim,typename T>
         // Create grain 1 with center (4.5, 0.5), radius 0.5*sqrt(2), and order parameter 1
         GrainSet<dim> test_grain_set_1;
         {
-        test_grain_set_1.setGrainIndex(1);
-        test_grain_set_1.setOrderParameterIndex(1);
+            test_grain_set_1.setGrainIndex(1);
+            test_grain_set_1.setOrderParameterIndex(1);
 
-        std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
-        {dealii::Point<dim> p(4.0,0.0); vertex_set[0] = p;}
-        {dealii::Point<dim> p(5.0,0.0); vertex_set[1] = p;}
-        {dealii::Point<dim> p(4.0,1.0); vertex_set[2] = p;}
-        {dealii::Point<dim> p(5.0,1.0); vertex_set[3] = p;}
+            std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
+            {
+                dealii::Point<dim> p(4.0, 0.0);
+                vertex_set[0] = p;
+            }
+            {
+                dealii::Point<dim> p(5.0, 0.0);
+                vertex_set[1] = p;
+            }
+            {
+                dealii::Point<dim> p(4.0, 1.0);
+                vertex_set[2] = p;
+            }
+            {
+                dealii::Point<dim> p(5.0, 1.0);
+                vertex_set[3] = p;
+            }
 
-        test_grain_set_1.addVertexList(vertex_set);
+            test_grain_set_1.addVertexList(vertex_set);
         }
 
         SimplifiedGrainRepresentation<dim> simplified_grain_representation_1(test_grain_set_1);
@@ -243,20 +352,31 @@ template <int dim,typename T>
         // Create grain 2 with center (2.5, 2.5), radius 0.5*sqrt(2), and order parameter 0
         GrainSet<dim> test_grain_set_2;
         {
-        test_grain_set_2.setGrainIndex(2);
-        test_grain_set_2.setOrderParameterIndex(0);
+            test_grain_set_2.setGrainIndex(2);
+            test_grain_set_2.setOrderParameterIndex(0);
 
-        std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
-        {dealii::Point<dim> p(2.0,2.0); vertex_set[0] = p;}
-        {dealii::Point<dim> p(3.0,2.0); vertex_set[1] = p;}
-        {dealii::Point<dim> p(2.0,3.0); vertex_set[2] = p;}
-        {dealii::Point<dim> p(3.0,3.0); vertex_set[3] = p;}
+            std::vector<dealii::Point<dim>> vertex_set(dealii::Utilities::fixed_power<dim>(2.0));
+            {
+                dealii::Point<dim> p(2.0, 2.0);
+                vertex_set[0] = p;
+            }
+            {
+                dealii::Point<dim> p(3.0, 2.0);
+                vertex_set[1] = p;
+            }
+            {
+                dealii::Point<dim> p(2.0, 3.0);
+                vertex_set[2] = p;
+            }
+            {
+                dealii::Point<dim> p(3.0, 3.0);
+                vertex_set[3] = p;
+            }
 
-        test_grain_set_2.addVertexList(vertex_set);
+            test_grain_set_2.addVertexList(vertex_set);
         }
 
         SimplifiedGrainRepresentation<dim> simplified_grain_representation_2(test_grain_set_2);
-
 
         // Now build of the vectors of these grain representations
         std::vector<SimplifiedGrainRepresentation<dim>> grain_representations;
@@ -285,7 +405,7 @@ template <int dim,typename T>
         */
 
         bool result = false;
-        if ( grain_representations.at(0).getOrderParameterId() == 0 and grain_representations.at(1).getOrderParameterId() == 1 and grain_representations.at(2).getOrderParameterId() == 0){
+        if (grain_representations.at(0).getOrderParameterId() == 0 and grain_representations.at(1).getOrderParameterId() == 1 and grain_representations.at(2).getOrderParameterId() == 0) {
             result = true;
         }
 
@@ -295,8 +415,8 @@ template <int dim,typename T>
         pass = pass & result;
     }
 
-	snprintf(buffer, sizeof(buffer), "Test result for 'SimplifiedGrainManipulator::reassignGrains': %u\n", pass);
-	std::cout << buffer;
+    snprintf(buffer, sizeof(buffer), "Test result for 'SimplifiedGrainManipulator::reassignGrains': %u\n", pass);
+    std::cout << buffer;
 
-	return pass;
+    return pass;
 }

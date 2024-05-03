@@ -3,7 +3,8 @@
 // ===========================================================================
 
 template <int dim, int degree>
-void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, const unsigned int index, double & scalar_IC, dealii::Vector<double> & vector_IC){
+void customPDE<dim, degree>::setInitialCondition(const dealii::Point<dim>& p, const unsigned int index, double& scalar_IC, dealii::Vector<double>& vector_IC)
+{
     // ---------------------------------------------------------------------
     // ENTER THE INITIAL CONDITIONS HERE
     // ---------------------------------------------------------------------
@@ -11,28 +12,27 @@ void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, con
     // Use "if" statements to set the initial condition for each variable
     // according to its variable index
 
-	  double r=0.0;
+    double r = 0.0;
 
-	  if (index == 0){
-			r = 0.0;
-			for (unsigned int dir = 0; dir < dim; dir++){
-				r += (p[dir]-userInputs.domain_size[dir]/2.0)*(p[dir]-userInputs.domain_size[dir]/2.0);
-			}
-			r = std::sqrt(r);
-			double n = 0.5*(1.0-std::tanh((r-userInputs.domain_size[0]/4.0)/4.0));
-			scalar_IC = 0.082*16.0/(userInputs.domain_size[0]/4.0)+(3.0*n*n-2.0*n*n*n);
+    if (index == 0) {
+        r = 0.0;
+        for (unsigned int dir = 0; dir < dim; dir++) {
+            r += (p[dir] - userInputs.domain_size[dir] / 2.0) * (p[dir] - userInputs.domain_size[dir] / 2.0);
+        }
+        r = std::sqrt(r);
+        double n = 0.5 * (1.0 - std::tanh((r - userInputs.domain_size[0] / 4.0) / 4.0));
+        scalar_IC = 0.082 * 16.0 / (userInputs.domain_size[0] / 4.0) + (3.0 * n * n - 2.0 * n * n * n);
 
-	  }
-	  else {
-			r = 0.0;
-			for (unsigned int dir = 0; dir < dim; dir++){
-			  r += (p[dir]-userInputs.domain_size[dir]/2.0)*(p[dir]-userInputs.domain_size[dir]/2.0);
-			}
-			r = std::sqrt(r);
-            scalar_IC = 0.5*(1.0-std::tanh((r-userInputs.domain_size[0]/4.0)/4.0));
-	  }
+    } else {
+        r = 0.0;
+        for (unsigned int dir = 0; dir < dim; dir++) {
+            r += (p[dir] - userInputs.domain_size[dir] / 2.0) * (p[dir] - userInputs.domain_size[dir] / 2.0);
+        }
+        r = std::sqrt(r);
+        scalar_IC = 0.5 * (1.0 - std::tanh((r - userInputs.domain_size[0] / 4.0) / 4.0));
+    }
 
-	  // --------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 }
 
 // ===========================================================================
@@ -40,7 +40,7 @@ void customPDE<dim,degree>::setInitialCondition(const dealii::Point<dim> &p, con
 // ===========================================================================
 
 template <int dim, int degree>
-void customPDE<dim,degree>::setNonUniformDirichletBCs(const dealii::Point<dim> &p, const unsigned int index, const unsigned int direction, const double time, double & scalar_BC, dealii::Vector<double> & vector_BC)
+void customPDE<dim, degree>::setNonUniformDirichletBCs(const dealii::Point<dim>& p, const unsigned int index, const unsigned int direction, const double time, double& scalar_BC, dealii::Vector<double>& vector_BC)
 {
     // --------------------------------------------------------------------------
     // ENTER THE NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS HERE
@@ -54,7 +54,5 @@ void customPDE<dim,degree>::setNonUniformDirichletBCs(const dealii::Point<dim> &
     // at zero and uses the same order as the BC specification in parameters.in
     // (i.e. left = 0, right = 1, bottom = 2, top = 3, front = 4, back = 5).
 
-
     // -------------------------------------------------------------------------
-
 }

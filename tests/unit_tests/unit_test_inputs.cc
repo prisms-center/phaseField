@@ -1,7 +1,8 @@
 #include "../../include/userInputParameters.h"
 
 template <int dim>
-void load_unit_test_inputs(userInputParameters<dim> & userInputs){
+void load_unit_test_inputs(userInputParameters<dim>& userInputs)
+{
     userInputs.domain_size.push_back(1.0);
     userInputs.domain_size.push_back(1.0);
     userInputs.domain_size.push_back(1.0);
@@ -27,7 +28,4 @@ void load_unit_test_inputs(userInputParameters<dim> & userInputs){
     userInputs.load_field_name.push_back("void");
     userInputs.pp_number_of_variables = 1;
     userInputs.postProcessingRequired = false;
-
-
-
 }

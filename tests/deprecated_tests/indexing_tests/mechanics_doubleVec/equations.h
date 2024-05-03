@@ -8,31 +8,70 @@
 
 // The names of the variables, whether they are scalars or vectors and whether the
 // governing eqn for the variable is parabolic or elliptic
-#define variable_name {"u","u2","u3","c"}
-#define variable_type {"VECTOR","VECTOR","VECTOR","SCALAR"}
-#define variable_eq_type {"ELLIPTIC","PARABOLIC","ELLIPTIC","ELLIPTIC"}
+#define variable_name        \
+    {                        \
+        "u", "u2", "u3", "c" \
+    }
+#define variable_type                          \
+    {                                          \
+        "VECTOR", "VECTOR", "VECTOR", "SCALAR" \
+    }
+#define variable_eq_type                                \
+    {                                                   \
+        "ELLIPTIC", "PARABOLIC", "ELLIPTIC", "ELLIPTIC" \
+    }
 
 // Flags for whether the value, gradient, and Hessian are needed in the residual eqns
-#define need_val {false,false,false,false}
-#define need_grad {true,true,true,true}
-#define need_hess {false,false,false,false}
+#define need_val                   \
+    {                              \
+        false, false, false, false \
+    }
+#define need_grad              \
+    {                          \
+        true, true, true, true \
+    }
+#define need_hess                  \
+    {                              \
+        false, false, false, false \
+    }
 
 // Flags for whether the residual equation has a term multiplied by the test function
 // (need_val_residual) and/or the gradient of the test function (need_grad_residual)
-#define need_val_residual {false,false,false,false}
-#define need_grad_residual {true,true,true,true}
+#define need_val_residual          \
+    {                              \
+        false, false, false, false \
+    }
+#define need_grad_residual     \
+    {                          \
+        true, true, true, true \
+    }
 
 // Flags for whether the value, gradient, and Hessian are needed in the residual eqn
 // for the left-hand-side of the iterative solver for elliptic equations
-#define need_val_LHS {false,false,false,false}
-#define need_grad_LHS {true,true,true,true}
-#define need_hess_LHS {false,false,false,false}
+#define need_val_LHS               \
+    {                              \
+        false, false, false, false \
+    }
+#define need_grad_LHS          \
+    {                          \
+        true, true, true, true \
+    }
+#define need_hess_LHS              \
+    {                              \
+        false, false, false, false \
+    }
 
 // Flags for whether the residual equation for the left-hand-side of the iterative
 // solver for elliptic equations has a term multiplied by the test function
 // (need_val_residual) and/or the gradient of the test function (need_grad_residual)
-#define need_val_residual_LHS {false,false,false,false}
-#define need_grad_residual_LHS {true,false,true,true}
+#define need_val_residual_LHS      \
+    {                              \
+        false, false, false, false \
+    }
+#define need_grad_residual_LHS  \
+    {                           \
+        true, false, true, true \
+    }
 
 // =================================================================================
 // Define the model parameters and the residual equations
@@ -44,9 +83,16 @@
 
 // Define Mechanical properties
 // Mechanical symmetry of the material and stiffness parameters
-#define MaterialModels {"ISOTROPIC"}
-#define MaterialConstants {{2.0,0.3}}
-
+#define MaterialModels \
+    {                  \
+        "ISOTROPIC"    \
+    }
+#define MaterialConstants \
+    {                     \
+        {                 \
+            2.0, 0.3      \
+        }                 \
+    }
 
 // =================================================================================
 // residualRHS
@@ -59,54 +105,51 @@
 // each residual equation. The index for each variable in these lists corresponds to
 // the order it is defined at the top of this file (starting at 0).
 template <int dim>
-void generalizedProblem<dim>::residualRHS(const std::vector<modelVariable<dim> > & modelVariablesList,
-												std::vector<modelResidual<dim> > & modelResidualsList,
-												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+void generalizedProblem<dim>::residualRHS(const std::vector<modelVariable<dim>>& modelVariablesList,
+    std::vector<modelResidual<dim>>& modelResidualsList,
+    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+{
 
-//u
-vectorgradType ux = modelVariablesList[0].vectorGrad;
-vectorgradType u2x = modelVariablesList[1].vectorGrad;
-vectorgradType u3x = modelVariablesList[2].vectorGrad;
-scalargradType cx = modelVariablesList[3].scalarGrad;
-vectorgradType Rux, Rux2;
+    // u
+    vectorgradType ux = modelVariablesList[0].vectorGrad;
+    vectorgradType u2x = modelVariablesList[1].vectorGrad;
+    vectorgradType u3x = modelVariablesList[2].vectorGrad;
+    scalargradType cx = modelVariablesList[3].scalarGrad;
+    vectorgradType Rux, Rux2;
 
+    // compute strain tensor
+    dealii::VectorizedArray<double> E[dim][dim], S[dim][dim];
+    for (unsigned int i = 0; i < dim; i++) {
+        for (unsigned int j = 0; j < dim; j++) {
+            E[i][j] = constV(0.5) * (ux[i][j] + ux[j][i]);
+        }
+    }
 
-//compute strain tensor
-dealii::VectorizedArray<double> E[dim][dim], S[dim][dim];
-for (unsigned int i=0; i<dim; i++){
-	for (unsigned int j=0; j<dim; j++){
-		E[i][j]= constV(0.5)*(ux[i][j]+ux[j][i]);
-	}
-}
+    // compute strain tensor
+    dealii::VectorizedArray<double> E2[dim][dim], S2[dim][dim];
+    for (unsigned int i = 0; i < dim; i++) {
+        for (unsigned int j = 0; j < dim; j++) {
+            E2[i][j] = constV(0.5) * (u3x[i][j] + u3x[j][i]);
+        }
+    }
 
+    // compute stress tensor
+    computeStress<dim>(CIJ_list[0], E, S);
 
-//compute strain tensor
-dealii::VectorizedArray<double> E2[dim][dim], S2[dim][dim];
-for (unsigned int i=0; i<dim; i++){
-	for (unsigned int j=0; j<dim; j++){
-		E2[i][j]= constV(0.5)*(u3x[i][j]+u3x[j][i]);
-	}
-}
+    computeStress<dim>(CIJ_list[0], E2, S2);
 
+    // compute residual
+    for (unsigned int i = 0; i < dim; i++) {
+        for (unsigned int j = 0; j < dim; j++) {
+            Rux[i][j] = -S[i][j];
+            Rux2[i][j] = -S2[i][j];
+        }
+    }
 
-//compute stress tensor
-computeStress<dim>(CIJ_list[0], E, S);
-
-computeStress<dim>(CIJ_list[0], E2, S2);
-
-//compute residual
-for (unsigned int i=0; i<dim; i++){
-	for (unsigned int j=0; j<dim; j++){
-		Rux[i][j] = -S[i][j];
-		Rux2[i][j] = -S2[i][j];
-	}
-}
-
-modelResidualsList[0].vectorGradResidual = Rux;
-modelResidualsList[1].vectorGradResidual = constV(0.0)*Rux;
-modelResidualsList[2].vectorGradResidual = Rux2;
-modelResidualsList[3].scalarGradResidual = -cx;
-
+    modelResidualsList[0].vectorGradResidual = Rux;
+    modelResidualsList[1].vectorGradResidual = constV(0.0) * Rux;
+    modelResidualsList[2].vectorGradResidual = Rux2;
+    modelResidualsList[3].scalarGradResidual = -cx;
 }
 
 // =================================================================================
@@ -125,51 +168,50 @@ modelResidualsList[3].scalarGradResidual = -cx;
 // that the correct residual is being submitted. The index of the field being solved
 // can be accessed by "this->currentFieldIndex".
 template <int dim>
-void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim> > & modelVarList,
-		modelResidual<dim> & modelRes,
-		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim>>& modelVarList,
+    modelResidual<dim>& modelRes,
+    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+{
 
-//u
-vectorgradType ux = modelVarList[0].vectorGrad;
-vectorgradType u2x = modelVarList[1].vectorGrad;
-vectorgradType u3x = modelVarList[2].vectorGrad;
-scalargradType cx = modelVarList[3].scalarGrad;
-vectorgradType Rux;
+    // u
+    vectorgradType ux = modelVarList[0].vectorGrad;
+    vectorgradType u2x = modelVarList[1].vectorGrad;
+    vectorgradType u3x = modelVarList[2].vectorGrad;
+    scalargradType cx = modelVarList[3].scalarGrad;
+    vectorgradType Rux;
 
-dealii::VectorizedArray<double> E[dim][dim], S[dim][dim];
-if (this->currentFieldIndex == 0){
-	//compute strain tensor
-	for (unsigned int i=0; i<dim; i++){
-		for (unsigned int j=0; j<dim; j++){
-			E[i][j]= constV(0.5)*(ux[i][j]+ux[j][i]);
-		}
-	}
-}
-else {
-	//compute strain tensor
-	for (unsigned int i=0; i<dim; i++){
-		for (unsigned int j=0; j<dim; j++){
-			E[i][j]= constV(0.5)*(u3x[i][j]+u3x[j][i]);
-		}
-	}
-}
+    dealii::VectorizedArray<double> E[dim][dim], S[dim][dim];
+    if (this->currentFieldIndex == 0) {
+        // compute strain tensor
+        for (unsigned int i = 0; i < dim; i++) {
+            for (unsigned int j = 0; j < dim; j++) {
+                E[i][j] = constV(0.5) * (ux[i][j] + ux[j][i]);
+            }
+        }
+    } else {
+        // compute strain tensor
+        for (unsigned int i = 0; i < dim; i++) {
+            for (unsigned int j = 0; j < dim; j++) {
+                E[i][j] = constV(0.5) * (u3x[i][j] + u3x[j][i]);
+            }
+        }
+    }
 
-//compute stress tensor
-computeStress<dim>(CIJ_list[0], E, S);
+    // compute stress tensor
+    computeStress<dim>(CIJ_list[0], E, S);
 
-//compute residual
-for (unsigned int i=0; i<dim; i++){
-	for (unsigned int j=0; j<dim; j++){
-		Rux[i][j] = S[i][j];
-	}
-}
+    // compute residual
+    for (unsigned int i = 0; i < dim; i++) {
+        for (unsigned int j = 0; j < dim; j++) {
+            Rux[i][j] = S[i][j];
+        }
+    }
 
-if (this->currentFieldIndex < 3){
-	modelRes.vectorGradResidual = Rux;
-}
-else {
-	modelRes.scalarGradResidual = cx;
-}
+    if (this->currentFieldIndex < 3) {
+        modelRes.vectorGradResidual = Rux;
+    } else {
+        modelRes.scalarGradResidual = cx;
+    }
 }
 
 // =================================================================================
@@ -184,12 +226,8 @@ else {
 // density are added to the "energy_components" variable (index 0: chemical energy,
 // index 1: gradient energy, index 2: elastic energy).
 template <int dim>
-void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim> > & modelVarList,
-											const dealii::VectorizedArray<double> & JxW_value,
-											dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {
-
+void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim>>& modelVarList,
+    const dealii::VectorizedArray<double>& JxW_value,
+    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc)
+{
 }
-
-
-
-
