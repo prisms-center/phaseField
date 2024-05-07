@@ -5,7 +5,7 @@ class customPDE : public MatrixFreePDE<dim, degree> {
 public:
     customPDE(userInputParameters<dim> _userInputs)
         : MatrixFreePDE<dim, degree>(_userInputs)
-        , userInputs(_userInputs) { };
+        , userInputs(_userInputs) {};
 
 private:
 #include "../../include/typeDefs.h"

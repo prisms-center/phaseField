@@ -5,7 +5,7 @@ class customPDE : public MatrixFreePDE<dim, degree> {
 public:
     customPDE(userInputParameters<dim> _userInputs)
         : MatrixFreePDE<dim, degree>(_userInputs)
-        , userInputs(_userInputs) { };
+        , userInputs(_userInputs) {};
     // Function to set the initial conditions (in ICs_and_BCs.h)
     void setInitialCondition(const dealii::Point<dim>& p, const unsigned int index, double& scalar_IC, dealii::Vector<double>& vector_IC);
 

@@ -27,6 +27,8 @@
 template <int dim>
 void computeStress(const dealii::Table<2, double>& CIJ, const dealii::VectorizedArray<double> ux[][dim], const dealii::VectorizedArray<double> R[][dim]);
 
+#include "../../src/models/mechanics/computeStress.h"
+
 #include "../../include/matrixFreePDE.h"
 #include "../../include/parallelNucleationList.h"
 #include "../../src/FloodFiller/FloodFiller.cc"
@@ -54,7 +56,6 @@ void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Vectorized
 #include "../../src/matrixfree/solve.cc"
 #include "../../src/matrixfree/solveIncrement.cc"
 #include "../../src/matrixfree/utilities.cc"
-#include "../../src/models/mechanics/computeStress.h"
 #include "../../src/parallelNucleationList/parallelNucleationList.cc"
 #include "../../src/userInputParameters/loadVariableAttributes.cc"
 #include "../../src/userInputParameters/load_BC_list.cc"

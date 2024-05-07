@@ -3,26 +3,26 @@ template <int dim, int degree>
 class testOutputResults : public MatrixFreePDE<dim, degree> {
 public:
     testOutputResults(userInputParameters<dim> _userInputs)
-        : MatrixFreePDE<dim, degree>(_userInputs) { };
+        : MatrixFreePDE<dim, degree>(_userInputs) {};
 
 private:
-    void setBCs() { };
+    void setBCs() {};
 
 private:
     // RHS implementation for explicit solve
     void getRHS(const MatrixFree<dim, double>& data,
         std::vector<vectorType*>& dst,
         const std::vector<vectorType*>& src,
-        const std::pair<unsigned int, unsigned int>& cell_range) const { };
+        const std::pair<unsigned int, unsigned int>& cell_range) const {};
 
     void residualRHS(variableContainer<dim, degree, dealii::VectorizedArray<double>>& variable_list,
-        dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const { };
+        dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const {};
 
     void residualLHS(variableContainer<dim, degree, dealii::VectorizedArray<double>>& variable_list,
-        dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const { };
+        dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const {};
 
     void energyDensity(const variableContainer<dim, degree, dealii::VectorizedArray<double>>& variable_list, const dealii::VectorizedArray<double>& JxW_value,
-        dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) { };
+        dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) {};
 };
 
 template <int dim, typename T>

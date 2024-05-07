@@ -5,7 +5,7 @@
 class variableValueContainer {
 public:
     variableValueContainer()
-        : num_entries(0) { };
+        : num_entries(0) {};
 
     void set(unsigned int global_variable_index, double variable_value)
     {
