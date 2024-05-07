@@ -85,6 +85,9 @@ IncludeCategories:
   # customPDE.h in main.cc must always be first
   - Regex:    '"customPDE.h"'
     Priority:       -1
+  # computeStress.h
+  - Regex:    '"../../src/models/mechanics/computeStress.h"'
+    Priority:       0
   # deal.II headers:
   - Regex:    '<deal.II.*>'
     Priority:       1
