@@ -48,7 +48,7 @@ For each row, the first column corresponds to the frame number, the second to th
 
 This script calculates the total area (or length, in a 2D system) of the interface between two phases defined by the field variable "n".   
 
-The numerical integral ![formula](https://render.githubusercontent.com/render/math?math=A_{int}=2\int_{\delta\Omega}nd^2r) is used to calculate the *area* of a 2D interface 
+The numerical integral $A_{int}=2\int_{\delta\Omega}nd^2r$ ![formula](https://render.githubusercontent.com/render/math?math=A_{int}=2\int_{\delta\Omega}nd^2r) is used to calculate the *area* of a 2D interface 
 in a 3D system, where ![formula](https://render.githubusercontent.com/render/math?math=\delta\Omega) is the contour surface at *n=0.5*.
 
 The numerical integral ![formula](https://render.githubusercontent.com/render/math?math=L_{int}=2\int_{\delta%20l}ndr) is used to the *length* of the 1D 
