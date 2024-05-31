@@ -360,7 +360,6 @@ protected:
 
     bool hasExplicitEquation;
     bool hasNonExplicitEquation;
-    bool has_Dirichlet_BCs;
     //
     unsigned int parabolicFieldIndex, ellipticFieldIndex;
     double currentTime;
