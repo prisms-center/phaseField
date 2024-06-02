@@ -51,7 +51,6 @@ computeStress(const dealii::Table<2, double>       &CIJ,
 #include "../../src/matrixfree/outputResults.cc"
 #include "../../src/matrixfree/postprocessor.cc"
 #include "../../src/matrixfree/reassignGrains.cc"
-#include "../../src/matrixfree/refine.cc"
 #include "../../src/matrixfree/reinit.cc"
 #include "../../src/matrixfree/setNonlinearEqInitialGuess.cc"
 #include "../../src/matrixfree/solve.cc"
