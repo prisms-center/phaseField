@@ -343,11 +343,26 @@ MatrixFreePDE<dim, degree>::init()
       solutionSet[fieldIndex]->update_ghost_values();
     }
 
-  // If not resuming from a checkpoint, check and perform adaptive mesh
-  // refinement, which reinitializes the system with the new mesh
-  if (!userInputs.resume_from_checkpoint)
+  // If not resuming from a checkpoint, check and perform adaptive mesh refinement, which
+  // reinitializes the system with the new mesh
+  if (!userInputs.resume_from_checkpoint && userInputs.h_adaptivity == true)
     {
-      adaptiveRefine(0);
+      computing_timer.enter_subsection("matrixFreePDE: AMR");
+
+      unsigned int numDoF_preremesh = totalDOFs;
+      for (unsigned int remesh_index = 0;
+           remesh_index <
+           (userInputs.max_refinement_level - userInputs.min_refinement_level);
+           remesh_index++)
+        {
+          RefineAdaptively.adaptiveRefine(currentIncrement);
+          reinit();
+          if (totalDOFs == numDoF_preremesh)
+            break;
+          numDoF_preremesh = totalDOFs;
+        }
+
+      computing_timer.leave_subsection("matrixFreePDE: AMR");
     }
 
   // If resuming from a checkpoint, load the proper starting increment and time

@@ -30,15 +30,15 @@ public:
     // Adaptive refinement
     void adaptiveRefine(unsigned int _currentIncrement);
 
+    // Method that refines the triangulation
+    void refineGrid();
+
     // Current increment
     unsigned int currentIncrement;
 
 protected:
     // Adaptive refinement criterion
     void adaptiveRefineCriterion();
-
-    // Method that refines the triangulation
-    void refineGrid();
 
 private:
     userInputParameters<dim> userInputs;
@@ -55,7 +55,9 @@ private:
 
     std::vector<DoFHandler<dim>*>& dofHandlersSet_nonconst;
 
-    std::vector<const AffineConstraints<double>*>&constraintsDirichletSet, constraintsOtherSet;
+    std::vector<const AffineConstraints<double>*>& constraintsDirichletSet;
+    
+    std::vector<const AffineConstraints<double>*>& constraintsOtherSet;
 
 };
 
@@ -79,7 +81,7 @@ void adaptiveRefinement<dim, degree>::adaptiveRefine(unsigned int currentIncreme
     if ((currentIncrement == 0)) {
         adaptiveRefineCriterion();
         refineGrid();
-    } else if ((currentIncrement % userInputs.skip_remeshing_steps == 0)) {
+    } else {
         // Apply constraints before remeshing
         for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++) {
             constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
