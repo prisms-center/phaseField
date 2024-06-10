@@ -20,7 +20,7 @@ void variableAttributeLoader::loadVariableAttributes(){
 	set_variable_equation_type		(0,EXPLICIT_TIME_DEPENDENT);
 
     set_dependencies_value_term_RHS(0, "c");
-    set_dependencies_gradient_term_RHS(0, "n,grad(c)");
+    set_dependencies_gradient_term_RHS(0, "n,grad(c),grad(n)");
 
     // Variable 1
 	set_variable_name				(1,"n");
