@@ -234,11 +234,16 @@ After nondimensionalization (see Ref.~\cite{Echebarria2004} for derivation), the
 and 
 \begin{equation}
 \label{eqU}
-\tau_U\frac{\partial  U}{\partial  t} = \nabla \cdot \left[ \tilde{D} (1-\phi) \nabla U - \vec{j}_{at}^{\,U} \right] + [1+(1-k)U]\frac{\partial \phi}{\partial t},
+\tau_U\frac{\partial  U}{\partial  t} = \nabla \cdot \left[ \tilde{D} \frac{1-\phi}{2} \nabla U - \vec{j}_{at}^{\,U} \right] + \frac{1}{2}[1+(1-k)U]\frac{\partial \phi}{\partial t},
 \end{equation}
 where
 \begin{equation}
-\tau_\phi=\left[ 1-(1-k)\frac{\tilde{y}-\tilde{V}_p t}{\tilde{l}_T} \right]a_s^2(\hat{n}),\,\,\tau_U=1+k - (1-k)\phi,
+\label{tau_phi}
+\tau_\phi=[1+(1-k) U ]a_s^2(\hat{n}),
+\end{equation}
+\begin{equation}
+\tau_U=\frac{1+k}{2} - \frac{1-k}{2}\phi,
+\label{tauU}
 \end{equation}
 \begin{equation}
 \label{eqxi}
@@ -246,13 +251,13 @@ where
 \xi = & \nabla \cdot  \left[ a_s^2(\hat{n}) \nabla \phi \right] 
 +  \frac{\partial}{\partial x} \left[ |\nabla \phi|^2 a_s(\hat{n}) \frac{\partial a_s(\hat{n})}{\partial \left( \frac{\partial \phi}{\partial x} \right)} \right]
 +  \frac{\partial}{\partial y} \left[ |\nabla \phi|^2 a_s(\hat{n}) \frac{\partial a_s(\hat{n})}{\partial \left( \frac{\partial \phi}{\partial y} \right)} \right] \\
-& +\phi-\phi^3 - \lambda(1-\phi^2)^2 \left[ U + \frac{\tilde{y}-\tilde{V}_p t}{\tilde{l}_T} \right],
+& +\phi-\phi^3 - \lambda(1-\phi^2)^2 \left[ U + U_\text{off} + \frac{\tilde{y} - \tilde{y}_0 - \tilde{V}_p t}{\tilde{l}_T} \right],
 \end{split}
 \end{equation}
 and
 \begin{equation}
 \label{eqjat}
-\vec{j}_{at}^{\,U}=-\frac{1}{\sqrt{2}}[1-(1-k)U]\hat{n}\frac{\partial \phi}{\partial t}.
+\vec{j}_{at}^{\,U}=\frac{1}{2\sqrt{2}}[1+(1-k)U]\hat{n}\frac{\partial \phi}{\partial t}.
 \end{equation}
 The function $a_s$ is the anisotropy factor for the solid-liquid interfacial energy, which depends on the outward normal (with respect to the solid) of the interface, $\hat{n}=-\nabla \phi / |\nabla \phi|$. For a solid phase with m-fold symmetry this factor is given by~\footnote{In the implementation of the current model, $m$ is set to 4 and  $\theta_0=0$. For the purpose of computational efficiency, explicit calculation of trigonometric functions (and their inverse) is avoided. Thus, all sine and cosine terms with argument $m\theta$ are evaluated as $\sin(m\theta)=4\cos^3\theta\sin\theta-4\cos\theta\sin^3\theta$ and $\cos(m\theta)=\cos^4\theta -6\cos^2\theta\sin^2\theta-\sin^4\theta$, where $\sin\theta=\partial_y\phi / |\nabla \phi|$ and $\cos\theta=\partial_x\phi / |\nabla \phi|$.}
 \begin{equation}
@@ -268,15 +273,15 @@ In Eq.~\labelcref{eqxi}, $\lambda$ is a coupling constant defined as $\lambda=5\
 \label{clength}
 d_0=\frac{\gamma T_m}{L |m| (1-k) c_l^0}.
 \end{equation}
-In Eq. \labelcref{clength}, $\gamma$ is the equilibrium surface tension and $L$ is the latent heat of fusion per volume. Finally, $\tilde{y}$, $\tilde{V}_p$, $\tilde{l}_T$ and $\tilde{D}$ are all dimensionless parameters, calculated by taking the unit length as $W$ and the unit time as $\tau_0=0.6267\lambda W^2/D$, where $D$ is the solute diffusivity in the liquid. the coordinate, $\tilde{y}$, represents the position along the direction of the thermal gradient, $\tilde{V}_p$ is the steady-state solidification speed,  $\tilde{l}_T$ is the thermal length, calculated as $\tilde{l}_T=|m|(1-k)c_l^0/\tilde{G}$, where $\tilde{G}$ is the dimensionless thermal gradient, and $\tilde{D}$ is the dimensionless solute diffusivity in the liquid.\\
-
+In Eq. \labelcref{clength}, $\gamma$ is the equilibrium surface tension and $L$ is the latent heat of fusion per volume. Finally, $\tilde{y}$, $\tilde{V}_p$, $\tilde{l}_T$ and $\tilde{D}$ are all dimensionless parameters, calculated by taking the unit length as $W$ and the unit time as $\tau_0=0.6267\lambda W^2/D$, where $D$ is the solute diffusivity in the liquid. the coordinate, $\tilde{y}$, represents the position along the direction of the thermal gradient, $\tilde{V}_p$ is the steady-state solidification speed,  $\tilde{l}_T$ is the thermal length, calculated as $\tilde{l}_T=|m|(1-k)c_l^0/\tilde{G}$, where $\tilde{G}$ is the dimensionless thermal gradient, and $\tilde{D}$ is the dimensionless solute diffusivity in the liquid. Note that Eqs. (\ref{eqphi})-(\ref{eqjat}) are equivalent to Eqs. (132) and (133) from Ref.~\cite{Echebarria2004}, except for the expression for the phase-field relaxation time $\tau_\phi$ which, for this application, was chosen to be U-dependent, as defined by Eq. (123) from Ref.~\cite{Echebarria2004}.\\
+\\
 Equation ~\labelcref{eqxi} can be simplified by explicitly writing $a_s(\hat{n})$ in terms of $\theta$.  We can evaluate the terms $\partial a_s(\theta)/\partial \left( \frac{\partial \phi}{\partial x} \right)$ and $\partial a_s(\theta)/\partial \left( \frac{\partial \phi}{\partial y} \right)$ by using the chain rule (i.e., $\frac{\partial a_s(\theta)}{\partial \left( \frac{\partial \phi}{\partial x} \right)}=\frac{\partial a_s(\theta)}{\partial \theta} \frac{\partial \theta}{\partial \left( \frac{\partial \phi}{\partial x} \right)}$  and $\frac{\partial a_s(\theta)}{\partial \left( \frac{\partial \phi}{\partial y} \right)}=\frac{\partial a_s(\theta)}{\partial \theta} \frac{\partial \theta}{\partial \left( \frac{\partial \phi}{\partial y} \right)}$), along with Eq.~\labelcref{taneq}. Also, second and third terms on the right-hand side be expressed using a divergence operator, allowing them to be grouped with the first term, which will simplify matters later. Carrying out these transformations yields:
 \begin{equation}
 \label{eqxi2}
 \begin{split}
 \xi = & \nabla \cdot  \left[ \left(a_s^2(\theta) \frac{\partial \phi}{\partial x} + \epsilon_m m a_s(\theta) \sin \left[ m \left(\theta - \theta_0 \right) \right] \frac{\partial \phi}{\partial y}\right)\hat{x} \right. \\ 
 & \left . + \left(a_s^2(\theta) \frac{\partial \phi}{\partial y} - \epsilon_m m a_s(\theta) \sin \left[ m \left(\theta - \theta_0 \right) \right] \frac{\partial \phi}{\partial x}\right)\hat{y}\right] \\
-&+ \phi-\phi^3 - \lambda(1-\phi^2)^2 \left[ U + \frac{\tilde{y}-\tilde{V}_p t}{\tilde{l}_T} \right].
+&+ \phi-\phi^3 - \lambda(1-\phi^2)^2 \left[ U + U_\text{off} + \frac{\tilde{y} - \tilde{y}_0 - \tilde{V}_p t}{\tilde{l}_T} \right].
 \end{split}
 \end{equation}
 
@@ -291,44 +296,46 @@ $\tilde{l}_T$: Dimensionless thermal length. \\
 $U_0$: Initial constitutional undercooling of the system ($U_0=-1$ sets the concentration of the liquid as $c_\infty$ and of the solid as $kc_\infty$)\\
 $U_{\text{off}}$: Undercooling offset that determines the initial temperature at the interface ($U_{\text{off}}=0$ sets it to the solidus temperature,  $U_{\text{off}}=1$ sets it to the liquidus temperature).\\
 $\tilde{y}_0$: Initial solid-liquid interface position relative to the bottom of the system ($\tilde{y}=0$) \\
+
 \section{Time Discretization}
-Considering forward Euler explicit time stepping, we have the time discretized kinetics equations:
+Considering forward Euler explicit time stepping, we have the time-discretized kinetics equations:
 \begin{equation}
 \phi^{n+1}=\phi^{n} + \frac{\xi^n}{\tau_\phi}\Delta t,
 \end{equation}
 \begin{equation}
-U^{n+1}=U^{n}+\frac{\Delta t}{\tau_U}\left\{ \tilde{D}\nabla \cdot \left[ (1-\phi^n) \nabla U^n - \vec{j}_{at}^{\,U} \right] + [1+(1-k)U^n]\frac{\xi^n}{\tau_\phi} \right\},
+U^{n+1}=U^{n}+\frac{\Delta t}{\tau_U}\left\{\nabla \cdot \left[ \tilde{D}\frac{1-\phi^n}{2} \nabla U^n - \vec{j}_{at}^{\,U} \right] + \frac{1}{2}[1+(1-k)U^n]\frac{\xi^n}{\tau_\phi} \right\},
+\label{ueq_td}
 \end{equation}
 and
 \begin{equation}
 \begin{split}
 \xi^{n+1} = & \nabla \cdot  \left[ \left(a_s^2(\theta^n) \frac{\partial \phi^n}{\partial x} + \epsilon_m m a_s(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial y}\right)\hat{x} \right. \\ 
 & \left . + \left(a_s^2(\theta^n) \frac{\partial \phi^n}{\partial y} - \epsilon_m m a_s(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial x}\right)\hat{y}\right] \\
-& +\phi^n-(\phi^n)^3 - \lambda \left[1-(\phi^n)^2\right]^2 \left[ U^n + \frac{\tilde{y}-\tilde{V}_p t}{\tilde{l}_T} \right].
+& +\phi^n-(\phi^n)^3 - \lambda \left[1-(\phi^n)^2\right]^2 \left[ U^n + U_\text{off} + \frac{\tilde{y} - \tilde{y}_0 - \tilde{V}_p t}{\tilde{l}_T} \right].
 \end{split}
 \end{equation}
+
 \section{Weak Formulation}
-The weak form of the time-discretized equations for $\phi$, $U$ and $\xi$ is
+The weak formulation is obtained by multiplying the time-discretized equations by test function, $\omega$, and integrating over the volume, $\Omega$. For $\phi$ we get
 \begin{equation}
-\int_{\Omega}   \omega  \phi^{n+1}  ~dV = \int_{\Omega}   \omega \underbrace{\left(\phi^n + \frac{ \xi^n}{\tau_\phi}\Delta t\right)}_{r_{\phi}} ~dV,
+\int_{\Omega}   \omega  \phi^{n+1}  ~dV = \int_{\Omega}   \omega \underbrace{\left(\phi^n + \frac{ \xi^n}{\tau_\phi}\Delta t\right)}_{r_{\phi}} ~dV.
 \end{equation}
+For the weak form of Eq. \ref{ueq_td}, we employ the relation $\nabla \frac{1}{\tau_U}=\frac{1}{\tau_U^2}\frac{1-k}{2}\nabla\phi$ that results from substituting $tau$ as defined by Eq. (\ref{tauU}) into the gradient of $1/\tau_U$:
 \begin{equation}
 \begin{split}
 \int_{\Omega}   \omega  U^{n+1}  ~dV =& 
-\int_{\Omega} \omega \underbrace{ \left( U^{n} - \Delta t \tilde{D}\nabla \frac{1}{\tau_U} \cdot \left[(1-\phi^n)\nabla U^n-\vec{j}_{at}^{\,U}\right]+\Delta t \frac{[1+(1-k)U^n]}{\tau_U}\frac{\xi^n}{\tau_\phi} \right) }_{r_U}~dV\\
-&+\int_{\Omega}  \nabla  \omega  \cdot \underbrace{\left( -\frac{\Delta t \tilde{D}}{\tau_U}\left[(1-\phi^n)\nabla U^n-\vec{j}_{at}^{\,U}\right] \right)}_{r_{Ux}}~dV,
+\int_{\Omega} \omega \underbrace{ \left( U^{n} + \frac{\Delta t}{2\tau_U\tau_\phi}[1+(1-k)U^n]\xi^n  - \frac{\Delta t (1-k)}{2\tau_U^2} \nabla \phi \cdot \left[\tilde{D}\frac{1-\phi^n}{2}\nabla U^n-\vec{j}_{at}^{\,U}\right] \right) }_{r_U}~dV\\
+&+\int_{\Omega}  \nabla  \omega  \cdot \underbrace{\left( -\frac{\Delta t}{\tau_U}\left[\tilde{D}(1-\phi^n)\nabla U^n-\vec{j}_{at}^{\,U}\right] \right)}_{r_{Ux}}~dV.
 \end{split}
 \end{equation}
-\newpage
-and
+Finally, for $\xi$, we obtain
 \begin{equation}
-\int_{\Omega}   \omega \xi^{n+1} ~dV =\int_{\Omega} \omega r_\xi ~dV + \int_{\Omega} \nabla \omega r_{\xi x} ~dV
+\int_{\Omega}   \omega \xi^{n+1} ~dV =\int_{\Omega} \omega r_\xi ~dV + \int_{\Omega} \nabla \omega r_{\xi x} ~dV,
 \end{equation}
 where
 \begin{equation}
-r_\xi= \phi^n-(\phi^n)^3 - \lambda \left[1-(\phi^n)^2\right]^2 \left[ U^n + \frac{\tilde{y}-\tilde{V}_p t}{\tilde{l}_T} \right]
+r_\xi= \phi^n-(\phi^n)^3 - \lambda \left[1-(\phi^n)^2\right]^2 \left[ U^n + U_\text{off} + \frac{\tilde{y} - \tilde{y}_0 - \tilde{V}_p t}{\tilde{l}_T} \right]
 \end{equation}
-and 
 \begin{equation}
 \begin{split}
 r_{\xi x}= &-\left[a_s^2(\theta^n) \frac{\partial \phi^n}{\partial x} + \epsilon_m m a_s(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial y}\right]\hat{x}\\
