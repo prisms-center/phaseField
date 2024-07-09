@@ -196,7 +196,7 @@ scalarvalueType tep =((y-constV(y0)-Vtilde*t_n)/ltilde);
     
  // Define the terms in the equations
  scalarvalueType eq_xi =
-    ((phi-constV(lamda)*(U+tep+constV(U_off))*(constV(1.0)-phi*phi))*(constV(1.0)-phi*phi));
+    phi - phi*phi*phi - constV(lamda)*(constV(1.0)-phi*phi)*(constV(1.0)-phi*phi)*(U+tep+constV(U_off));
 
  scalargradType eqx_xi = (-aniso);
 
