@@ -8,25 +8,25 @@
 // and whether to calculate an integral of the postprocessed quantity over the entire
 // domain.
 
-void variableAttributeLoader::loadPostProcessorVariableAttributes(){
-	// Variable 0
-	set_variable_name				(0,"mg_n");
-	set_variable_type				(0,SCALAR);
+void variableAttributeLoader::loadPostProcessorVariableAttributes()
+{
+    // Variable 0
+    set_variable_name(0, "mg_n");
+    set_variable_type(0, SCALAR);
 
-	set_dependencies_value_term_RHS(0, "grad(n)");
+    set_dependencies_value_term_RHS(0, "grad(n)");
     set_dependencies_gradient_term_RHS(0, "");
 
-    set_output_integral         	(0,true);
+    set_output_integral(0, true);
 
-	// Variable 1
-	set_variable_name				(1,"f_tot");
-	set_variable_type				(1,SCALAR);
+    // Variable 1
+    set_variable_name(1, "f_tot");
+    set_variable_type(1, SCALAR);
 
     set_dependencies_value_term_RHS(1, "n, grad(n)");
     set_dependencies_gradient_term_RHS(1, "");
 
-    set_output_integral         	(1,true);
-
+    set_output_integral(1, true);
 }
 
 // =============================================================================================
@@ -40,40 +40,40 @@ void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 // submitting the terms) and the index in 'equations.h' for assigning the values/derivatives of
 // the primary variables.
 
-template <int dim,int degree>
-void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-				variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
-												const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+template <int dim, int degree>
+void customPDE<dim, degree>::postProcessedFields(const variableContainer<dim, degree, dealii::VectorizedArray<double>>& variable_list,
+    variableContainer<dim, degree, dealii::VectorizedArray<double>>& pp_variable_list,
+    const dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+{
 
-// --- Getting the values and derivatives of the model variables ---
+    // --- Getting the values and derivatives of the model variables ---
 
-// The order parameter and its derivatives
-scalarvalueType n = variable_list.get_scalar_value(0);
-scalargradType nx = variable_list.get_scalar_gradient(0);
+    // The order parameter and its derivatives
+    scalarvalueType n = variable_list.get_scalar_value(0);
+    scalargradType nx = variable_list.get_scalar_gradient(0);
 
-// --- Setting the expressions for the terms in the postprocessing expressions ---
+    // --- Setting the expressions for the terms in the postprocessing expressions ---
 
-scalarvalueType f_tot = constV(0.0);
+    scalarvalueType f_tot = constV(0.0);
 
-// The homogenous free energy
-scalarvalueType f_chem = (n*n*n*n - 2.0*n*n*n + n*n);
+    // The homogenous free energy
+    scalarvalueType f_chem = (n * n * n * n - 2.0 * n * n * n + n * n);
 
-// The gradient free energy
-scalarvalueType f_grad = constV(0.0);
+    // The gradient free energy
+    scalarvalueType f_grad = constV(0.0);
 
-for (int i=0; i<dim; i++){
-  for (int j=0; j<dim; j++){
-	  f_grad += constV(0.5*KnV)*nx[i]*nx[j];
-  }
-}
+    for (int i = 0; i < dim; i++) {
+        for (int j = 0; j < dim; j++) {
+            f_grad += constV(0.5 * KnV) * nx[i] * nx[j];
+        }
+    }
 
-// The total free energy
-f_tot = f_chem + f_grad;
+    // The total free energy
+    f_tot = f_chem + f_grad;
 
-// --- Submitting the terms for the postprocessing expressions ---
+    // --- Submitting the terms for the postprocessing expressions ---
 
-pp_variable_list.set_scalar_value_term_RHS(0, std::sqrt(nx[0]*nx[0]+nx[1]*nx[1]));
+    pp_variable_list.set_scalar_value_term_RHS(0, std::sqrt(nx[0] * nx[0] + nx[1] * nx[1]));
 
-pp_variable_list.set_scalar_value_term_RHS(1, f_tot);
-
+    pp_variable_list.set_scalar_value_term_RHS(1, f_tot);
 }

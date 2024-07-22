@@ -35,15 +35,24 @@
 
 // Set the maximum and minimum level of refinement
 #define maxRefinementLevel (refineFactor)
-#define minRefinementLevel (refineFactor-2)
+#define minRefinementLevel (refineFactor - 2)
 
 // Set the fields used to determine the refinement. Fields determined by the order
 // declared in "equations.h", starting at zero
-#define refineCriterionFields {1,2,3}
+#define refineCriterionFields \
+    {                         \
+        1, 2, 3               \
+    }
 
 // Set the maximum and minimum value of the fields where the mesh should be refined
-#define refineWindowMax {0.99,0.99,0.99}
-#define refineWindowMin {0.01,0.01,0.01}
+#define refineWindowMax  \
+    {                    \
+        0.99, 0.99, 0.99 \
+    }
+#define refineWindowMin  \
+    {                    \
+        0.01, 0.01, 0.01 \
+    }
 
 // Set the number of time steps between remeshing operations
 #define skipRemeshingSteps 1000
@@ -89,12 +98,3 @@
 // Set the flag determining if the total free energy is calculated for each output
 // =================================================================================
 #define calcEnergy false
-
-
-
-
-
-
-
-
-

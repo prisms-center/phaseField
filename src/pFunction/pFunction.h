@@ -7,58 +7,56 @@
 // implemented for scalar functions. Vector functions can be treated component by
 // component.
 
-namespace PFunctions{
+namespace PFunctions {
 
-class pFunction
-{
+class pFunction {
 public:
-	// Constructor, wraps the IntegrationTools checkout function
-	pFunction(std::string function_name);
+    // Constructor, wraps the IntegrationTools checkout function
+    pFunction(std::string function_name);
 
-	// Returns the value of the function for a given input variable
-	scalarvalueType val(scalarvalueType);
+    // Returns the value of the function for a given input variable
+    scalarvalueType val(scalarvalueType);
 
-	// Returns one of first derivatives of the function for a given input variable
-	scalarvalueType grad(scalarvalueType, unsigned int);
+    // Returns one of first derivatives of the function for a given input variable
+    scalarvalueType grad(scalarvalueType, unsigned int);
 
-	// Returns one of the second derivatives of the function for a given input variable
-	scalarvalueType hess(scalarvalueType, unsigned int, unsigned int);
+    // Returns one of the second derivatives of the function for a given input variable
+    scalarvalueType hess(scalarvalueType, unsigned int, unsigned int);
 
 private:
-	PRISMS::PFunction<double*, double> fun;
+    PRISMS::PFunction<double*, double> fun;
 };
 
-pFunction::pFunction(std::string function_name){
-	PRISMS::PLibrary::checkout(function_name, fun);
+pFunction::pFunction(std::string function_name)
+{
+    PRISMS::PLibrary::checkout(function_name, fun);
 }
 
-scalarvalueType pFunction::val(scalarvalueType var){
-	scalarvalueType fun_val;
-	for (unsigned i=0; i < var.size(); i++){
-		fun_val[i] = fun(&var[i]);
-	}
-	return fun_val;
-
+scalarvalueType pFunction::val(scalarvalueType var)
+{
+    scalarvalueType fun_val;
+    for (unsigned i = 0; i < var.size(); i++) {
+        fun_val[i] = fun(&var[i]);
+    }
+    return fun_val;
 }
 
-
-scalarvalueType pFunction::grad(scalarvalueType var,unsigned int dir){
-	scalarvalueType fun_grad;
-	for (unsigned i=0; i <var.size(); i++){
-		fun_grad[i] = fun.grad(&var[i],dir);
-	}
-	return fun_grad;
-
+scalarvalueType pFunction::grad(scalarvalueType var, unsigned int dir)
+{
+    scalarvalueType fun_grad;
+    for (unsigned i = 0; i < var.size(); i++) {
+        fun_grad[i] = fun.grad(&var[i], dir);
+    }
+    return fun_grad;
 }
 
-
-scalarvalueType pFunction::hess(scalarvalueType var,unsigned int dir1, unsigned int dir2){
-	scalarvalueType fun_hess;
-	for (unsigned i=0; i < var.size(); i++){
-		fun_hess[i] = fun.hess(&var[i],dir1,dir2);
-	}
-	return fun_hess;
-
+scalarvalueType pFunction::hess(scalarvalueType var, unsigned int dir1, unsigned int dir2)
+{
+    scalarvalueType fun_hess;
+    for (unsigned i = 0; i < var.size(); i++) {
+        fun_hess[i] = fun.hess(&var[i], dir1, dir2);
+    }
+    return fun_hess;
 }
 
 }

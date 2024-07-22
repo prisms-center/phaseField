@@ -13,17 +13,17 @@
 // that can nucleate and whether the value of the field is needed for nucleation
 // rate calculations.
 
-void variableAttributeLoader::loadVariableAttributes(){
-	// Variable 0
-	set_variable_name				(0,"u");
-	set_variable_type				(0,VECTOR);
-	set_variable_equation_type		(0,TIME_INDEPENDENT);
+void variableAttributeLoader::loadVariableAttributes()
+{
+    // Variable 0
+    set_variable_name(0, "u");
+    set_variable_type(0, VECTOR);
+    set_variable_equation_type(0, TIME_INDEPENDENT);
 
     set_dependencies_value_term_RHS(0, "");
     set_dependencies_gradient_term_RHS(0, "grad(u)");
     set_dependencies_value_term_LHS(0, "");
     set_dependencies_gradient_term_LHS(0, "grad(change(u))");
-
 }
 
 // =============================================================================================
@@ -38,9 +38,9 @@ void variableAttributeLoader::loadVariableAttributes(){
 // each variable in this list corresponds to the index given at the top of this file.
 
 template <int dim, int degree>
-void customPDE<dim,degree>::explicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
-
+void customPDE<dim, degree>::explicitEquationRHS(variableContainer<dim, degree, dealii::VectorizedArray<double>>& variable_list,
+    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+{
 }
 
 // =============================================================================================
@@ -56,67 +56,65 @@ void customPDE<dim,degree>::explicitEquationRHS(variableContainer<dim,degree,dea
 // this file.
 
 template <int dim, int degree>
-void customPDE<dim,degree>::nonExplicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+void customPDE<dim, degree>::nonExplicitEquationRHS(variableContainer<dim, degree, dealii::VectorizedArray<double>>& variable_list,
+    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+{
 
-// --- Getting the values and derivatives of the model variables ---
+    // --- Getting the values and derivatives of the model variables ---
 
-//u
-vectorgradType ux = variable_list.get_vector_gradient(0);
+    // u
+    vectorgradType ux = variable_list.get_vector_gradient(0);
 
-// --- Setting the expressions for the terms in the governing equations ---
+    // --- Setting the expressions for the terms in the governing equations ---
 
-vectorgradType eqx_u;
+    vectorgradType eqx_u;
 
-scalarvalueType sfts[dim][dim];
+    scalarvalueType sfts[dim][dim];
 
-scalarvalueType dist, a;
+    scalarvalueType dist, a;
 
-// Radius of the inclusion
-a = constV(10.0);
+    // Radius of the inclusion
+    a = constV(10.0);
 
-// Distance from the center of the inclusion
-dist = std::sqrt((q_point_loc[0]-constV(0.0))*(q_point_loc[0]-constV(0.0))
-					+(q_point_loc[1]-constV(0.0))*(q_point_loc[1]-constV(0.0))
-					+(q_point_loc[2]-constV(0.0))*(q_point_loc[2]-constV(0.0)));
+    // Distance from the center of the inclusion
+    dist = std::sqrt((q_point_loc[0] - constV(0.0)) * (q_point_loc[0] - constV(0.0))
+        + (q_point_loc[1] - constV(0.0)) * (q_point_loc[1] - constV(0.0))
+        + (q_point_loc[2] - constV(0.0)) * (q_point_loc[2] - constV(0.0)));
 
-// Calculation the stress-free transformation strain (the misfit)
-for (unsigned int i=0; i<dim; i++){
-	for (unsigned int j=0; j<dim; j++){
-		if (i == j){
+    // Calculation the stress-free transformation strain (the misfit)
+    for (unsigned int i = 0; i < dim; i++) {
+        for (unsigned int j = 0; j < dim; j++) {
+            if (i == j) {
 
-			sfts[i][j] = 0.01 * (0.5+ 0.5*( constV(1.0) - std::exp(-20.0*(dist-a)))/ (constV(1.0)+std::exp(-20.0*(dist-a))));
+                sfts[i][j] = 0.01 * (0.5 + 0.5 * (constV(1.0) - std::exp(-20.0 * (dist - a))) / (constV(1.0) + std::exp(-20.0 * (dist - a))));
 
-		}
-		else {
-			sfts[i][j] = 0.0;
-		}
-	}
-}
+            } else {
+                sfts[i][j] = 0.0;
+            }
+        }
+    }
 
+    // compute strain tensor
+    dealii::VectorizedArray<double> E[dim][dim], S[dim][dim];
+    for (unsigned int i = 0; i < dim; i++) {
+        for (unsigned int j = 0; j < dim; j++) {
+            E[i][j] = constV(0.5) * (ux[i][j] + ux[j][i]) - sfts[i][j];
+        }
+    }
 
-//compute strain tensor
-dealii::VectorizedArray<double> E[dim][dim], S[dim][dim];
-for (unsigned int i=0; i<dim; i++){
-	for (unsigned int j=0; j<dim; j++){
-		E[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-sfts[i][j];
-	}
-}
+    // compute stress tensor
+    computeStress<dim>(CIJ, E, S);
 
-//compute stress tensor
-computeStress<dim>(CIJ, E, S);
+    // The RHS term
+    for (unsigned int i = 0; i < dim; i++) {
+        for (unsigned int j = 0; j < dim; j++) {
+            eqx_u[i][j] = -S[i][j];
+        }
+    }
 
-// The RHS term
-for (unsigned int i=0; i<dim; i++){
-	for (unsigned int j=0; j<dim; j++){
-		eqx_u[i][j] = -S[i][j];
-	}
-}
+    // --- Submitting the terms for the governing equations ---
 
-// --- Submitting the terms for the governing equations ---
-
-variable_list.set_vector_gradient_term_RHS(0,eqx_u);
-
+    variable_list.set_vector_gradient_term_RHS(0, eqx_u);
 }
 
 // =============================================================================================
@@ -134,38 +132,38 @@ variable_list.set_vector_gradient_term_RHS(0,eqx_u);
 // being solved can be accessed by "this->currentFieldIndex".
 
 template <int dim, int degree>
-void customPDE<dim,degree>::equationLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+void customPDE<dim, degree>::equationLHS(variableContainer<dim, degree, dealii::VectorizedArray<double>>& variable_list,
+    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+{
 
-// --- Getting the values and derivatives of the model variables ---
+    // --- Getting the values and derivatives of the model variables ---
 
-//u
-vectorgradType ux = variable_list.get_change_in_vector_gradient(0);
+    // u
+    vectorgradType ux = variable_list.get_change_in_vector_gradient(0);
 
-// --- Setting the expressions for the terms in the governing equations ---
+    // --- Setting the expressions for the terms in the governing equations ---
 
-vectorgradType eqx_Du;
+    vectorgradType eqx_Du;
 
-//compute strain tensor
-dealii::VectorizedArray<double> E[dim][dim], S[dim][dim];
-for (unsigned int i=0; i<dim; i++){
-	for (unsigned int j=0; j<dim; j++){
-		E[i][j]= constV(0.5)*(ux[i][j]+ux[j][i]);
-	}
-}
+    // compute strain tensor
+    dealii::VectorizedArray<double> E[dim][dim], S[dim][dim];
+    for (unsigned int i = 0; i < dim; i++) {
+        for (unsigned int j = 0; j < dim; j++) {
+            E[i][j] = constV(0.5) * (ux[i][j] + ux[j][i]);
+        }
+    }
 
-//compute stress tensor
-computeStress<dim>(CIJ, E, S);
+    // compute stress tensor
+    computeStress<dim>(CIJ, E, S);
 
-//compute the LHS term
-for (unsigned int i=0; i<dim; i++){
-	for (unsigned int j=0; j<dim; j++){
-		eqx_Du[i][j] = S[i][j];
-	}
-}
+    // compute the LHS term
+    for (unsigned int i = 0; i < dim; i++) {
+        for (unsigned int j = 0; j < dim; j++) {
+            eqx_Du[i][j] = S[i][j];
+        }
+    }
 
- // --- Submitting the terms for the governing equations ---
+    // --- Submitting the terms for the governing equations ---
 
-variable_list.set_vector_gradient_term_LHS(0,eqx_Du);
-
+    variable_list.set_vector_gradient_term_LHS(0, eqx_Du);
 }

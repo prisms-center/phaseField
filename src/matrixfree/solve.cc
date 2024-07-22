@@ -1,19 +1,20 @@
-//solve() method for MatrixFreePDE class
+// solve() method for MatrixFreePDE class
 
 #include "../../include/matrixFreePDE.h"
 
-//solve BVP
+// solve BVP
 template <int dim, int degree>
-void MatrixFreePDE<dim,degree>::solve(){
-    //log time
+void MatrixFreePDE<dim, degree>::solve()
+{
+    // log time
     computing_timer.enter_subsection("matrixFreePDE: solve");
     pcout << "\nsolving...\n\n";
 
-    //time dependent BVP
-    if (isTimeDependentBVP){
+    // time dependent BVP
+    if (isTimeDependentBVP) {
 
         // If grain reassignment is activated, reassign grains
-        if (userInputs.grain_remapping_activated and (currentIncrement%userInputs.skip_grain_reassignment_steps == 0 or currentIncrement == 0) ) {
+        if (userInputs.grain_remapping_activated and (currentIncrement % userInputs.skip_grain_reassignment_steps == 0 or currentIncrement == 0)) {
             reassignGrains();
         }
 
@@ -25,10 +26,10 @@ void MatrixFreePDE<dim,degree>::solve(){
         // Do an initial solve to set the elliptic fields
         solveIncrement(true);
 
-        //output initial conditions for time dependent BVP
+        // output initial conditions for time dependent BVP
         if (userInputs.outputTimeStepList[currentOutput] == currentIncrement) {
 
-            for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
+            for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++) {
                 constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
                 constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
                 solutionSet[fieldIndex]->update_ghost_values();
@@ -46,47 +47,47 @@ void MatrixFreePDE<dim,degree>::solve(){
         currentIncrement++;
 
         // Cycle up to the proper output and checkpoint counters
-        while (userInputs.outputTimeStepList.size() > 0 && userInputs.outputTimeStepList[currentOutput] < currentIncrement){
+        while (userInputs.outputTimeStepList.size() > 0 && userInputs.outputTimeStepList[currentOutput] < currentIncrement) {
             currentOutput++;
         }
-        while (userInputs.checkpointTimeStepList.size() > 0 && userInputs.checkpointTimeStepList[currentCheckpoint] < currentIncrement){
+        while (userInputs.checkpointTimeStepList.size() > 0 && userInputs.checkpointTimeStepList[currentCheckpoint] < currentIncrement) {
             currentCheckpoint++;
         }
 
-        //time stepping
+        // time stepping
         pcout << "\nTime stepping parameters: timeStep: " << userInputs.dtValue << "  timeFinal: " << userInputs.finalTime << "  timeIncrements: " << userInputs.totalIncrements << "\n";
 
         // This is the main time-stepping loop
-        for (; currentIncrement<=userInputs.totalIncrements; ++currentIncrement){
-            //increment current time
-            currentTime+=userInputs.dtValue;
-            if (currentIncrement%userInputs.skip_print_steps==0){
+        for (; currentIncrement <= userInputs.totalIncrements; ++currentIncrement) {
+            // increment current time
+            currentTime += userInputs.dtValue;
+            if (currentIncrement % userInputs.skip_print_steps == 0) {
                 pcout << "\ntime increment:" << currentIncrement << "  time: " << currentTime << "\n";
             }
 
-            //check and perform adaptive mesh refinement
+            // check and perform adaptive mesh refinement
             adaptiveRefine(currentIncrement);
 
             // Update the list of nuclei (if relevant)
             updateNucleiList();
 
             // If grain reassignment is activated, reassign grains
-            if (userInputs.grain_remapping_activated and (currentIncrement%userInputs.skip_grain_reassignment_steps == 0 or currentIncrement == 0) ) {
+            if (userInputs.grain_remapping_activated and (currentIncrement % userInputs.skip_grain_reassignment_steps == 0 or currentIncrement == 0)) {
                 reassignGrains();
             }
 
-            //solve time increment
+            // solve time increment
             solveIncrement(false);
 
             // Output results to file (on the proper increments)
             if (userInputs.outputTimeStepList[currentOutput] == currentIncrement) {
-                for(unsigned int fieldIndex=0; fieldIndex<fields.size(); fieldIndex++){
+                for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++) {
                     constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
                     constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
                     solutionSet[fieldIndex]->update_ghost_values();
                 }
                 outputResults();
-                if (userInputs.print_timing_with_output && currentIncrement < userInputs.totalIncrements){
+                if (userInputs.print_timing_with_output && currentIncrement < userInputs.totalIncrements) {
                     computing_timer.print_summary();
                 }
 
@@ -98,22 +99,21 @@ void MatrixFreePDE<dim,degree>::solve(){
                 save_checkpoint();
                 currentCheckpoint++;
             }
-
         }
     }
 
-    //time independent BVP
-    else{
+    // time independent BVP
+    else {
         generatingInitialGuess = false;
 
-        //solve
+        // solve
         solveIncrement(false);
 
-        //output results to file
+        // output results to file
         outputResults();
     }
 
-    //log time
+    // log time
     computing_timer.leave_subsection("matrixFreePDE: solve");
 }
 

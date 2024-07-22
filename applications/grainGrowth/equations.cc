@@ -13,21 +13,20 @@
 // that can nucleate and whether the value of the field is needed for nucleation
 // rate calculations.
 
-void variableAttributeLoader::loadVariableAttributes(){
+void variableAttributeLoader::loadVariableAttributes()
+{
 
-    for (unsigned int var_index=0; var_index<6; var_index++){
+    for (unsigned int var_index = 0; var_index < 6; var_index++) {
         std::string var_name = "n";
         var_name.append(std::to_string(var_index));
 
-        set_variable_name				(var_index,var_name);
-    	set_variable_type				(var_index,SCALAR);
-    	set_variable_equation_type		(var_index,EXPLICIT_TIME_DEPENDENT);
+        set_variable_name(var_index, var_name);
+        set_variable_type(var_index, SCALAR);
+        set_variable_equation_type(var_index, EXPLICIT_TIME_DEPENDENT);
 
         set_dependencies_value_term_RHS(var_index, "n0, n1, n2, n3, n4, n5");
         set_dependencies_gradient_term_RHS(var_index, "grad(n0), grad(n1), grad(n2), grad(n3), grad(n4), grad(n5)");
-
     }
-
 }
 
 // =============================================================================================
@@ -42,48 +41,48 @@ void variableAttributeLoader::loadVariableAttributes(){
 // each variable in this list corresponds to the index given at the top of this file.
 
 template <int dim, int degree>
-void customPDE<dim,degree>::explicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+void customPDE<dim, degree>::explicitEquationRHS(variableContainer<dim, degree, dealii::VectorizedArray<double>>& variable_list,
+    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+{
 
-// --- Getting the values and derivatives of the model variables ---
+    // --- Getting the values and derivatives of the model variables ---
 
-dealii::VectorizedArray<double> fnV = constV(0.0);
-scalarvalueType ni, nj;
-scalargradType nix;
+    dealii::VectorizedArray<double> fnV = constV(0.0);
+    scalarvalueType ni, nj;
+    scalargradType nix;
 
-// In this application, create temporary variables for the residual terms. We cannot
-// call 'set_scalar_value_residual_term' and 'set_scalar_gradient_residual_term'in the
-// for loop below because those functions write over the scalar value and scalar gradient
-// internal variables in 'variable_list' (for performance reasons). Therefore, we wait
-// to set the residual terms until all the residuals have been calculated.
+    // In this application, create temporary variables for the residual terms. We cannot
+    // call 'set_scalar_value_residual_term' and 'set_scalar_gradient_residual_term'in the
+    // for loop below because those functions write over the scalar value and scalar gradient
+    // internal variables in 'variable_list' (for performance reasons). Therefore, we wait
+    // to set the residual terms until all the residuals have been calculated.
 
-std::vector<scalarvalueType> value_terms;
-value_terms.resize(userInputs.number_of_variables);
-std::vector<scalargradType> gradient_terms;
-gradient_terms.resize(userInputs.number_of_variables);
+    std::vector<scalarvalueType> value_terms;
+    value_terms.resize(userInputs.number_of_variables);
+    std::vector<scalargradType> gradient_terms;
+    gradient_terms.resize(userInputs.number_of_variables);
 
-for (unsigned int i=0; i<userInputs.number_of_variables; i++){
+    for (unsigned int i = 0; i < userInputs.number_of_variables; i++) {
 
-	ni = variable_list.get_scalar_value(i);
-	nix = variable_list.get_scalar_gradient(i);
-	fnV = - ni + ni*ni*ni;
-	for (unsigned int j=0; j<userInputs.number_of_variables; j++){
-		if (i != j){
-			nj = variable_list.get_scalar_value(j);
-			fnV += constV(2.0*alpha) * ni * nj*nj;
-		}
-	}
-	value_terms[i] = ni-constV(userInputs.dtValue*MnV)*fnV;
-	gradient_terms[i] = constV(-userInputs.dtValue*KnV*MnV)*nix;
-}
+        ni = variable_list.get_scalar_value(i);
+        nix = variable_list.get_scalar_gradient(i);
+        fnV = -ni + ni * ni * ni;
+        for (unsigned int j = 0; j < userInputs.number_of_variables; j++) {
+            if (i != j) {
+                nj = variable_list.get_scalar_value(j);
+                fnV += constV(2.0 * alpha) * ni * nj * nj;
+            }
+        }
+        value_terms[i] = ni - constV(userInputs.dtValue * MnV) * fnV;
+        gradient_terms[i] = constV(-userInputs.dtValue * KnV * MnV) * nix;
+    }
 
-// --- Submitting the terms for the governing equations ---
+    // --- Submitting the terms for the governing equations ---
 
-for (unsigned int i=0; i<userInputs.number_of_variables; i++){
-	variable_list.set_scalar_value_term_RHS(i,value_terms[i]);
-	variable_list.set_scalar_gradient_term_RHS(i,gradient_terms[i]);
-}
-
+    for (unsigned int i = 0; i < userInputs.number_of_variables; i++) {
+        variable_list.set_scalar_value_term_RHS(i, value_terms[i]);
+        variable_list.set_scalar_gradient_term_RHS(i, gradient_terms[i]);
+    }
 }
 
 // =============================================================================================
@@ -99,9 +98,9 @@ for (unsigned int i=0; i<userInputs.number_of_variables; i++){
 // this file.
 
 template <int dim, int degree>
-void customPDE<dim,degree>::nonExplicitEquationRHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-				 dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
-
+void customPDE<dim, degree>::nonExplicitEquationRHS(variableContainer<dim, degree, dealii::VectorizedArray<double>>& variable_list,
+    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+{
 }
 
 // =============================================================================================
@@ -119,6 +118,7 @@ void customPDE<dim,degree>::nonExplicitEquationRHS(variableContainer<dim,degree,
 // being solved can be accessed by "this->currentFieldIndex".
 
 template <int dim, int degree>
-void customPDE<dim,degree>::equationLHS(variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+void customPDE<dim, degree>::equationLHS(variableContainer<dim, degree, dealii::VectorizedArray<double>>& variable_list,
+    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+{
 }

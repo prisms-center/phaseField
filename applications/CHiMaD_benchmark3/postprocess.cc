@@ -8,17 +8,17 @@
 // and whether to calculate an integral of the postprocessed quantity over the entire
 // domain. Note: this function is not a member of customPDE.
 
-void variableAttributeLoader::loadPostProcessorVariableAttributes(){
+void variableAttributeLoader::loadPostProcessorVariableAttributes()
+{
 
-	// Variable 1
-	set_variable_name				(0,"f_tot");
-	set_variable_type				(0,SCALAR);
+    // Variable 1
+    set_variable_name(0, "f_tot");
+    set_variable_type(0, SCALAR);
 
     set_dependencies_value_term_RHS(0, "u, phi, grad(phi)");
     set_dependencies_gradient_term_RHS(0, "");
 
-    set_output_integral         	(0,true);
-
+    set_output_integral(0, true);
 }
 
 // =============================================================================================
@@ -32,48 +32,44 @@ void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 // submitting the terms) and the index in 'equations.h' for assigning the values/derivatives of
 // the primary variables.
 
-template <int dim,int degree>
-void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degree,dealii::VectorizedArray<double> > & variable_list,
-				variableContainer<dim,degree,dealii::VectorizedArray<double> > & pp_variable_list,
-												const dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+template <int dim, int degree>
+void customPDE<dim, degree>::postProcessedFields(const variableContainer<dim, degree, dealii::VectorizedArray<double>>& variable_list,
+    variableContainer<dim, degree, dealii::VectorizedArray<double>>& pp_variable_list,
+    const dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+{
 
+    // --- Getting the values and derivatives of the model variables ---
 
+    // The temperature and its derivatives
+    scalarvalueType u = variable_list.get_scalar_value(0);
 
-// --- Getting the values and derivatives of the model variables ---
+    // The order parameter and its derivatives
+    scalarvalueType phi = variable_list.get_scalar_value(1);
+    scalargradType phix = variable_list.get_scalar_gradient(1);
 
-// The temperature and its derivatives
-scalarvalueType u = variable_list.get_scalar_value(0);
+    // --- Setting the expressions for the terms in the postprocessing expressions ---
 
-// The order parameter and its derivatives
-scalarvalueType phi = variable_list.get_scalar_value(1);
-scalargradType phix = variable_list.get_scalar_gradient(1);
+    double lambda = (D / 0.6267 / W0 / W0);
 
-// --- Setting the expressions for the terms in the postprocessing expressions ---
+    scalarvalueType f_tot = constV(0.0);
 
-double lambda = (D/0.6267/W0/W0);
+    // The homogenous free energy
+    scalarvalueType f_chem = -0.5 * phi * phi + 0.25 * phi * phi * phi * phi + lambda * u * phi * (1.0 - 2.0 / 3.0 * phi * phi + 1.0 / 5.0 / phi * phi * phi * phi);
 
-scalarvalueType f_tot = constV(0.0);
+    // The azimuthal angle
+    scalarvalueType theta;
+    for (unsigned i = 0; i < phi.size(); i++) {
+        theta[i] = std::atan2(phix[1][i], phix[0][i]);
+    }
 
-// The homogenous free energy
-scalarvalueType f_chem = -0.5 * phi*phi + 0.25*phi*phi*phi*phi + lambda*u*phi*(1.0-2.0/3.0*phi*phi+1.0/5.0/phi*phi*phi*phi);
+    scalarvalueType W = constV(W0) * (constV(1.0) + constV(epsilonM) * std::cos(constV(mult) * (theta - constV(theta0))));
 
-// The azimuthal angle
-scalarvalueType theta;
-for (unsigned i=0; i< phi.size();i++){
-	theta[i] = std::atan2(phix[1][i],phix[0][i]);
-}
+    // The gradient free energy
+    scalarvalueType f_grad = constV(0.5) * W * W * (phix[0] * phix[0] + phix[1] * phix[1]);
 
-scalarvalueType W = constV(W0)*(constV(1.0)+constV(epsilonM)*std::cos(constV(mult)*(theta-constV(theta0))));
+    // The total free energy
+    f_tot = f_chem + f_grad;
 
-// The gradient free energy
-scalarvalueType f_grad = constV(0.5)*W*W * (phix[0]*phix[0] + phix[1]*phix[1]);
-
-// The total free energy
-f_tot = f_chem + f_grad;
-
-
-// --- Submitting the terms for the postprocessing expressions ---
-pp_variable_list.set_scalar_value_term_RHS(0, f_tot);
-
-
+    // --- Submitting the terms for the postprocessing expressions ---
+    pp_variable_list.set_scalar_value_term_RHS(0, f_tot);
 }

@@ -1,13 +1,14 @@
 #ifndef INCLUDE_REFINMENTCRITERION_H_
 #define INCLUDE_REFINMENTCRITERION_H_
 
-enum criterionType {VALUE, GRADIENT, VALUE_AND_GRADIENT};
+enum criterionType { VALUE,
+    GRADIENT,
+    VALUE_AND_GRADIENT };
 
 /**
-* This class holds information for a determining whether the mesh should be refined.
-*/
-class RefinementCriterion
-{
+ * This class holds information for a determining whether the mesh should be refined.
+ */
+class RefinementCriterion {
 public:
     std::string variable_name;
     unsigned int variable_index;

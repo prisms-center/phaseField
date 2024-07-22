@@ -9,11 +9,12 @@
 #define APPLICATIONS__NUCLEATIONMODEL_NUCLEUS_H_
 
 #include <deal.II/base/point.h>
+
 #include <vector>
 
 // Structure representing each nucleus
-template<int dim>
-struct nucleus{
+template <int dim>
+struct nucleus {
     unsigned int index;
     dealii::Point<dim> center;
     double radius;
@@ -22,7 +23,5 @@ struct nucleus{
     unsigned int seedingTimestep;
     unsigned int orderParameterIndex;
 };
-
-
 
 #endif /* APPLICATIONS__NUCLEATIONMODEL_NUCLEUS_H_ */

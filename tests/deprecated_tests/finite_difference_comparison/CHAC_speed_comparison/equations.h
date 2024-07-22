@@ -8,19 +8,43 @@
 
 // The names of the variables, whether they are scalars or vectors and whether the
 // governing eqn for the variable is parabolic or elliptic
-#define variable_name {"c", "n"}
-#define variable_type {"SCALAR","SCALAR"}
-#define variable_eq_type {"PARABOLIC","PARABOLIC"}
+#define variable_name \
+    {                 \
+        "c", "n"      \
+    }
+#define variable_type      \
+    {                      \
+        "SCALAR", "SCALAR" \
+    }
+#define variable_eq_type         \
+    {                            \
+        "PARABOLIC", "PARABOLIC" \
+    }
 
 // Flags for whether the value, gradient, and Hessian are needed in the residual eqns
-#define need_val {true, true}
-#define need_grad {true, true}
-#define need_hess {false, false}
+#define need_val   \
+    {              \
+        true, true \
+    }
+#define need_grad  \
+    {              \
+        true, true \
+    }
+#define need_hess    \
+    {                \
+        false, false \
+    }
 
 // Flags for whether the residual equation has a term multiplied by the test function
 // (need_val_residual) and/or the gradient of the test function (need_grad_residual)
-#define need_val_residual {true, true}
-#define need_grad_residual {true, true}
+#define need_val_residual \
+    {                     \
+        true, true        \
+    }
+#define need_grad_residual \
+    {                      \
+        true, true         \
+    }
 
 // =================================================================================
 // Define the model parameters and the residual equations
@@ -40,23 +64,23 @@
 #define KnV 0.5
 
 // Free energy for each phase and they're first and second derivatives
-#define faV (24.7939*c*c - 1.6752*c - 1.9453e-06)
-#define facV (49.5878*c - 1.6752)
+#define faV (24.7939 * c * c - 1.6752 * c - 1.9453e-06)
+#define facV (49.5878 * c - 1.6752)
 #define faccV (49.5878)
-#define fbV (37.9316*c*c - 10.7373*c + 0.5401)
-#define fbcV (75.8633*c - 10.7373)
+#define fbV (37.9316 * c * c - 10.7373 * c + 0.5401)
+#define fbcV (75.8633 * c - 10.7373)
 #define fbccV (75.8633)
 
 // Interpolation function and its derivative
-#define hV (3.0*n*n-2.0*n*n*n)
-#define hnV (6.0*n-6.0*n*n)
+#define hV (3.0 * n * n - 2.0 * n * n * n)
+#define hnV (6.0 * n - 6.0 * n * n)
 
 // Residual equations
-#define muxV ( cx*((1.0-hV)*faccV+hV*fbccV) + nx*((fbcV-facV)*hnV) )
-#define rcV   (c)
-#define rcxV  (constV(-McV*timeStep)*muxV)
-#define rnV  (n-constV(timeStep*MnV)*(fbV-faV)*hnV)
-#define rnxV (constV(-timeStep*KnV*MnV)*nx)
+#define muxV (cx * ((1.0 - hV) * faccV + hV * fbccV) + nx * ((fbcV - facV) * hnV))
+#define rcV (c)
+#define rcxV (constV(-McV * timeStep) * muxV)
+#define rnV (n - constV(timeStep * MnV) * (fbV - faV) * hnV)
+#define rnxV (constV(-timeStep * KnV * MnV) * nx)
 
 // =================================================================================
 // residualRHS
@@ -69,26 +93,26 @@
 // each residual equation. The index for each variable in these lists corresponds to
 // the order it is defined at the top of this file (starting at 0).
 template <int dim>
-void generalizedProblem<dim>::residualRHS(const std::vector<modelVariable<dim> > & modelVariablesList,
-												std::vector<modelResidual<dim> > & modelResidualsList,
-												dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
+void generalizedProblem<dim>::residualRHS(const std::vector<modelVariable<dim>>& modelVariablesList,
+    std::vector<modelResidual<dim>>& modelResidualsList,
+    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+{
 
-// The concentration and its derivatives (names here should match those in the macros above)
-scalarvalueType c = modelVariablesList[0].scalarValue;
-scalargradType cx = modelVariablesList[0].scalarGrad;
+    // The concentration and its derivatives (names here should match those in the macros above)
+    scalarvalueType c = modelVariablesList[0].scalarValue;
+    scalargradType cx = modelVariablesList[0].scalarGrad;
 
-// The order parameter and its derivatives (names here should match those in the macros above)
-scalarvalueType n = modelVariablesList[1].scalarValue;
-scalargradType nx = modelVariablesList[1].scalarGrad;
+    // The order parameter and its derivatives (names here should match those in the macros above)
+    scalarvalueType n = modelVariablesList[1].scalarValue;
+    scalargradType nx = modelVariablesList[1].scalarGrad;
 
-// Residuals for the equation to evolve the concentration (names here should match those in the macros above)
-modelResidualsList[0].scalarValueResidual = rcV;
-modelResidualsList[0].scalarGradResidual = rcxV;
+    // Residuals for the equation to evolve the concentration (names here should match those in the macros above)
+    modelResidualsList[0].scalarValueResidual = rcV;
+    modelResidualsList[0].scalarGradResidual = rcxV;
 
-// Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
-modelResidualsList[1].scalarValueResidual = rnV;
-modelResidualsList[1].scalarGradResidual = rnxV;
-
+    // Residuals for the equation to evolve the order parameter (names here should match those in the macros above)
+    modelResidualsList[1].scalarValueResidual = rnV;
+    modelResidualsList[1].scalarGradResidual = rnxV;
 }
 
 // =================================================================================
@@ -107,10 +131,10 @@ modelResidualsList[1].scalarGradResidual = rnxV;
 // that the correct residual is being submitted. The index of the field being solved
 // can be accessed by "this->currentFieldIndex".
 template <int dim>
-void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim> > & modelVariablesList,
-		modelResidual<dim> & modelRes,
-		dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) const {
-
+void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim>>& modelVariablesList,
+    modelResidual<dim>& modelRes,
+    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+{
 }
 
 // =================================================================================
@@ -125,41 +149,38 @@ void generalizedProblem<dim>::residualLHS(const std::vector<modelVariable<dim> >
 // density are added to the "energy_components" variable (index 0: chemical energy,
 // index 1: gradient energy, index 2: elastic energy).
 template <int dim>
-void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim> > & modelVariablesList,
-											const dealii::VectorizedArray<double> & JxW_value,
-											dealii::Point<dim, dealii::VectorizedArray<double> > q_point_loc) {
+void generalizedProblem<dim>::energyDensity(const std::vector<modelVariable<dim>>& modelVariablesList,
+    const dealii::VectorizedArray<double>& JxW_value,
+    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc)
+{
 
-// The concentration and its derivatives (names here should match those in the macros above)
-scalarvalueType c = modelVariablesList[0].scalarValue;
-scalargradType cx = modelVariablesList[0].scalarGrad;
+    // The concentration and its derivatives (names here should match those in the macros above)
+    scalarvalueType c = modelVariablesList[0].scalarValue;
+    scalargradType cx = modelVariablesList[0].scalarGrad;
 
-// The order parameter and its derivatives (names here should match those in the macros above)
-scalarvalueType n = modelVariablesList[1].scalarValue;
-scalargradType nx = modelVariablesList[1].scalarGrad;
+    // The order parameter and its derivatives (names here should match those in the macros above)
+    scalarvalueType n = modelVariablesList[1].scalarValue;
+    scalargradType nx = modelVariablesList[1].scalarGrad;
 
-// The homogenous free energy
-scalarvalueType f_chem = (constV(1.0)-hV)*faV + hV*fbV;
+    // The homogenous free energy
+    scalarvalueType f_chem = (constV(1.0) - hV) * faV + hV * fbV;
 
-// The gradient free energy
-scalarvalueType f_grad = constV(0.5*KnV)*nx*nx;
+    // The gradient free energy
+    scalarvalueType f_grad = constV(0.5 * KnV) * nx * nx;
 
-// The total free energy
-scalarvalueType total_energy_density;
-total_energy_density = f_chem + f_grad;
+    // The total free energy
+    scalarvalueType total_energy_density;
+    total_energy_density = f_chem + f_grad;
 
-// Loop to step through each element of the vectorized arrays. Working with deal.ii
-// developers to see if there is a more elegant way to do this.
-assembler_lock.acquire ();
-for (unsigned i=0; i<c.size();i++){
-  if (c[i] > 1.0e-10){
-	  this->energy+=total_energy_density[i]*JxW_value[i];
-	  this->energy_components[0]+= f_chem[i]*JxW_value[i];
-	  this->energy_components[1]+= f_grad[i]*JxW_value[i];
-  }
+    // Loop to step through each element of the vectorized arrays. Working with deal.ii
+    // developers to see if there is a more elegant way to do this.
+    assembler_lock.acquire();
+    for (unsigned i = 0; i < c.size(); i++) {
+        if (c[i] > 1.0e-10) {
+            this->energy += total_energy_density[i] * JxW_value[i];
+            this->energy_components[0] += f_chem[i] * JxW_value[i];
+            this->energy_components[1] += f_grad[i] * JxW_value[i];
+        }
+    }
+    assembler_lock.release();
 }
-assembler_lock.release ();
-}
-
-
-
-

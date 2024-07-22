@@ -1,10 +1,10 @@
-template <int dim,typename T>
-bool unitTest<dim,T>::test_EquationDependencyParser_variables_and_residuals_needed(){
+template <int dim, typename T>
+bool unitTest<dim, T>::test_EquationDependencyParser_variables_and_residuals_needed()
+{
     char buffer[100];
 
     std::cout << "\nTesting 'EquationDependencyParser'... " << std::endl;
     bool pass = true;
-
 
     // Declare all of the variables that go into the function call
     std::vector<std::string> sorted_dependencies_value_RHS, sorted_dependencies_gradient_RHS, sorted_dependencies_value_LHS, sorted_dependencies_gradient_LHS;
@@ -17,7 +17,6 @@ bool unitTest<dim,T>::test_EquationDependencyParser_variables_and_residuals_need
     std::vector<PDEType> var_eq_type;
     var_eq_type.push_back(EXPLICIT_TIME_DEPENDENT);
     var_eq_type.push_back(TIME_INDEPENDENT);
-
 
     // Populate the dependency strings
     sorted_dependencies_value_RHS.push_back("a, grad(a), bc");
@@ -37,13 +36,13 @@ bool unitTest<dim,T>::test_EquationDependencyParser_variables_and_residuals_need
     EquationDependencyParser equation_dependency_parser;
 
     equation_dependency_parser.parse(
-            var_name,
-            var_eq_type,
-            sorted_dependencies_value_RHS,
-            sorted_dependencies_gradient_RHS,
-            sorted_dependencies_value_LHS,
-            sorted_dependencies_gradient_LHS,
-            var_nonlinear);
+        var_name,
+        var_eq_type,
+        sorted_dependencies_value_RHS,
+        sorted_dependencies_gradient_RHS,
+        sorted_dependencies_value_LHS,
+        sorted_dependencies_gradient_LHS,
+        var_nonlinear);
 
     // Check that the boolean vectors were generated correctly
     bool result;
@@ -52,8 +51,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_variables_and_residuals_need
     // Check need_value_explicit_RHS
     subtest_index++;
     result = false;
-    if (equation_dependency_parser.need_value_explicit_RHS.size() == 2){
-        if (equation_dependency_parser.need_value_explicit_RHS[0] == true && equation_dependency_parser.need_value_explicit_RHS[1] == true){
+    if (equation_dependency_parser.need_value_explicit_RHS.size() == 2) {
+        if (equation_dependency_parser.need_value_explicit_RHS[0] == true && equation_dependency_parser.need_value_explicit_RHS[1] == true) {
             result = true;
         }
     }
@@ -63,8 +62,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_variables_and_residuals_need
     // Check need_gradient_explicit_RHS
     subtest_index++;
     result = false;
-    if (equation_dependency_parser.need_value_explicit_RHS.size() == 2){
-        if (equation_dependency_parser.need_gradient_explicit_RHS[0] == true && equation_dependency_parser.need_gradient_explicit_RHS[1] == true){
+    if (equation_dependency_parser.need_value_explicit_RHS.size() == 2) {
+        if (equation_dependency_parser.need_gradient_explicit_RHS[0] == true && equation_dependency_parser.need_gradient_explicit_RHS[1] == true) {
             result = true;
         }
     }
@@ -75,8 +74,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_variables_and_residuals_need
     // Check need_hessian_explicit_RHS
     subtest_index++;
     result = false;
-    if (equation_dependency_parser.need_value_explicit_RHS.size() == 2){
-        if (equation_dependency_parser.need_hessian_explicit_RHS[0] == false && equation_dependency_parser.need_hessian_explicit_RHS[1] == false){
+    if (equation_dependency_parser.need_value_explicit_RHS.size() == 2) {
+        if (equation_dependency_parser.need_hessian_explicit_RHS[0] == false && equation_dependency_parser.need_hessian_explicit_RHS[1] == false) {
             result = true;
         }
     }
@@ -87,8 +86,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_variables_and_residuals_need
     // Check need_value_nonexplicit_RHS
     subtest_index++;
     result = false;
-    if (equation_dependency_parser.need_value_nonexplicit_RHS.size() == 2){
-        if (equation_dependency_parser.need_value_nonexplicit_RHS[0] == true && equation_dependency_parser.need_value_nonexplicit_RHS[1] == false){
+    if (equation_dependency_parser.need_value_nonexplicit_RHS.size() == 2) {
+        if (equation_dependency_parser.need_value_nonexplicit_RHS[0] == true && equation_dependency_parser.need_value_nonexplicit_RHS[1] == false) {
             result = true;
         }
     }
@@ -99,8 +98,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_variables_and_residuals_need
     // Check need_gradient_nonexplicit_RHS
     subtest_index++;
     result = false;
-    if (equation_dependency_parser.need_gradient_nonexplicit_RHS.size() == 2){
-        if (equation_dependency_parser.need_gradient_nonexplicit_RHS[0] == false && equation_dependency_parser.need_gradient_nonexplicit_RHS[1] == true){
+    if (equation_dependency_parser.need_gradient_nonexplicit_RHS.size() == 2) {
+        if (equation_dependency_parser.need_gradient_nonexplicit_RHS[0] == false && equation_dependency_parser.need_gradient_nonexplicit_RHS[1] == true) {
             result = true;
         }
     }
@@ -111,8 +110,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_variables_and_residuals_need
     // Check need_hessian_nonexplicit_RHS
     subtest_index++;
     result = false;
-    if (equation_dependency_parser.need_hessian_nonexplicit_RHS.size() == 2){
-        if (equation_dependency_parser.need_hessian_nonexplicit_RHS[0] == true && equation_dependency_parser.need_hessian_nonexplicit_RHS[1] == false){
+    if (equation_dependency_parser.need_hessian_nonexplicit_RHS.size() == 2) {
+        if (equation_dependency_parser.need_hessian_nonexplicit_RHS[0] == true && equation_dependency_parser.need_hessian_nonexplicit_RHS[1] == false) {
             result = true;
         }
     }
@@ -123,8 +122,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_variables_and_residuals_need
     // Check need_value_nonexplicit_LHS
     subtest_index++;
     result = false;
-    if (equation_dependency_parser.need_value_nonexplicit_LHS.size() == 2){
-        if (equation_dependency_parser.need_value_nonexplicit_LHS[0] == false && equation_dependency_parser.need_value_nonexplicit_LHS[1] == true){
+    if (equation_dependency_parser.need_value_nonexplicit_LHS.size() == 2) {
+        if (equation_dependency_parser.need_value_nonexplicit_LHS[0] == false && equation_dependency_parser.need_value_nonexplicit_LHS[1] == true) {
             result = true;
         }
     }
@@ -135,8 +134,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_variables_and_residuals_need
     // Check need_gradient_nonexplicit_LHS
     subtest_index++;
     result = false;
-    if (equation_dependency_parser.need_gradient_nonexplicit_LHS.size() == 2){
-        if (equation_dependency_parser.need_gradient_nonexplicit_LHS[0] == false && equation_dependency_parser.need_gradient_nonexplicit_LHS[1] == true){
+    if (equation_dependency_parser.need_gradient_nonexplicit_LHS.size() == 2) {
+        if (equation_dependency_parser.need_gradient_nonexplicit_LHS[0] == false && equation_dependency_parser.need_gradient_nonexplicit_LHS[1] == true) {
             result = true;
         }
     }
@@ -147,8 +146,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_variables_and_residuals_need
     // Check need_hessian_nonexplicit_LHS
     subtest_index++;
     result = false;
-    if (equation_dependency_parser.need_hessian_nonexplicit_LHS.size() == 2){
-        if (equation_dependency_parser.need_hessian_nonexplicit_LHS[0] == false && equation_dependency_parser.need_hessian_nonexplicit_LHS[1] == false){
+    if (equation_dependency_parser.need_hessian_nonexplicit_LHS.size() == 2) {
+        if (equation_dependency_parser.need_hessian_nonexplicit_LHS[0] == false && equation_dependency_parser.need_hessian_nonexplicit_LHS[1] == false) {
             result = true;
         }
     }
@@ -159,8 +158,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_variables_and_residuals_need
     // Check need_value_change_nonexplicit_LHS
     subtest_index++;
     result = false;
-    if (equation_dependency_parser.need_value_change_nonexplicit_LHS.size() == 2){
-        if (equation_dependency_parser.need_value_change_nonexplicit_LHS[0] == false && equation_dependency_parser.need_value_change_nonexplicit_LHS[1] == true){
+    if (equation_dependency_parser.need_value_change_nonexplicit_LHS.size() == 2) {
+        if (equation_dependency_parser.need_value_change_nonexplicit_LHS[0] == false && equation_dependency_parser.need_value_change_nonexplicit_LHS[1] == true) {
             result = true;
         }
     }
@@ -171,8 +170,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_variables_and_residuals_need
     // Check need_gradient_change_nonexplicit_LHS
     subtest_index++;
     result = false;
-    if (equation_dependency_parser.need_gradient_change_nonexplicit_LHS.size() == 2){
-        if (equation_dependency_parser.need_gradient_change_nonexplicit_LHS[0] == false && equation_dependency_parser.need_gradient_change_nonexplicit_LHS[1] == true){
+    if (equation_dependency_parser.need_gradient_change_nonexplicit_LHS.size() == 2) {
+        if (equation_dependency_parser.need_gradient_change_nonexplicit_LHS[0] == false && equation_dependency_parser.need_gradient_change_nonexplicit_LHS[1] == true) {
             result = true;
         }
     }
@@ -183,8 +182,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_variables_and_residuals_need
     // Check need_hessian_nonexplicit_LHS
     subtest_index++;
     result = false;
-    if (equation_dependency_parser.need_hessian_change_nonexplicit_LHS.size() == 2){
-        if (equation_dependency_parser.need_hessian_change_nonexplicit_LHS[0] == false && equation_dependency_parser.need_hessian_change_nonexplicit_LHS[1] == false){
+    if (equation_dependency_parser.need_hessian_change_nonexplicit_LHS.size() == 2) {
+        if (equation_dependency_parser.need_hessian_change_nonexplicit_LHS[0] == false && equation_dependency_parser.need_hessian_change_nonexplicit_LHS[1] == false) {
             result = true;
         }
     }
@@ -194,8 +193,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_variables_and_residuals_need
     // Check need_value_residual_explicit_RHS
     subtest_index++;
     result = false;
-    if (equation_dependency_parser.need_value_residual_explicit_RHS.size() == 2){
-        if (equation_dependency_parser.need_value_residual_explicit_RHS[0] == true && equation_dependency_parser.need_value_residual_explicit_RHS[1] == false){
+    if (equation_dependency_parser.need_value_residual_explicit_RHS.size() == 2) {
+        if (equation_dependency_parser.need_value_residual_explicit_RHS[0] == true && equation_dependency_parser.need_value_residual_explicit_RHS[1] == false) {
             result = true;
         }
     }
@@ -205,8 +204,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_variables_and_residuals_need
     // Check need_gradient_residual_explicit_RHS
     subtest_index++;
     result = false;
-    if (equation_dependency_parser.need_gradient_residual_explicit_RHS.size() == 2){
-        if (equation_dependency_parser.need_gradient_residual_explicit_RHS[0] == true && equation_dependency_parser.need_gradient_residual_explicit_RHS[1] == false){
+    if (equation_dependency_parser.need_gradient_residual_explicit_RHS.size() == 2) {
+        if (equation_dependency_parser.need_gradient_residual_explicit_RHS[0] == true && equation_dependency_parser.need_gradient_residual_explicit_RHS[1] == false) {
             result = true;
         }
     }
@@ -216,8 +215,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_variables_and_residuals_need
     // Check need_value_residual_nonexplicit_RHS
     subtest_index++;
     result = false;
-    if (equation_dependency_parser.need_value_residual_nonexplicit_RHS.size() == 2){
-        if (equation_dependency_parser.need_value_residual_nonexplicit_RHS[0] == false && equation_dependency_parser.need_value_residual_nonexplicit_RHS[1] == true){
+    if (equation_dependency_parser.need_value_residual_nonexplicit_RHS.size() == 2) {
+        if (equation_dependency_parser.need_value_residual_nonexplicit_RHS[0] == false && equation_dependency_parser.need_value_residual_nonexplicit_RHS[1] == true) {
             result = true;
         }
     }
@@ -227,8 +226,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_variables_and_residuals_need
     // Check need_gradient_residual_nonexplicit_RHS
     subtest_index++;
     result = false;
-    if (equation_dependency_parser.need_gradient_residual_nonexplicit_RHS.size() == 2){
-        if (equation_dependency_parser.need_gradient_residual_nonexplicit_RHS[0] == false && equation_dependency_parser.need_gradient_residual_nonexplicit_RHS[1] == true){
+    if (equation_dependency_parser.need_gradient_residual_nonexplicit_RHS.size() == 2) {
+        if (equation_dependency_parser.need_gradient_residual_nonexplicit_RHS[0] == false && equation_dependency_parser.need_gradient_residual_nonexplicit_RHS[1] == true) {
             result = true;
         }
     }
@@ -238,8 +237,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_variables_and_residuals_need
     // Check need_value_residual_nonexplicit_LHS
     subtest_index++;
     result = false;
-    if (equation_dependency_parser.need_value_residual_nonexplicit_LHS.size() == 2){
-        if (equation_dependency_parser.need_value_residual_nonexplicit_LHS[0] == false && equation_dependency_parser.need_value_residual_nonexplicit_LHS[1] == true){
+    if (equation_dependency_parser.need_value_residual_nonexplicit_LHS.size() == 2) {
+        if (equation_dependency_parser.need_value_residual_nonexplicit_LHS[0] == false && equation_dependency_parser.need_value_residual_nonexplicit_LHS[1] == true) {
             result = true;
         }
     }
@@ -249,30 +248,27 @@ bool unitTest<dim,T>::test_EquationDependencyParser_variables_and_residuals_need
     // Check need_gradient_residual_nonexplicit_LHS
     subtest_index++;
     result = false;
-    if (equation_dependency_parser.need_gradient_residual_nonexplicit_LHS.size() == 2){
-        if (equation_dependency_parser.need_gradient_residual_nonexplicit_LHS[0] == false && equation_dependency_parser.need_gradient_residual_nonexplicit_LHS[1] == true){
+    if (equation_dependency_parser.need_gradient_residual_nonexplicit_LHS.size() == 2) {
+        if (equation_dependency_parser.need_gradient_residual_nonexplicit_LHS[0] == false && equation_dependency_parser.need_gradient_residual_nonexplicit_LHS[1] == true) {
             result = true;
         }
     }
     std::cout << "Subtest " << subtest_index << " result for 'need_gradient_residual_nonexplicit_LHS': " << result << std::endl;
     pass = pass && result;
 
-
-
     snprintf(buffer, sizeof(buffer), "Test result for 'EquationDependencyParser': %u\n", pass);
-	std::cout << buffer;
+    std::cout << buffer;
 
     return pass;
-
 }
 
-template <int dim,typename T>
-bool unitTest<dim,T>::test_EquationDependencyParser_nonlinear(){
+template <int dim, typename T>
+bool unitTest<dim, T>::test_EquationDependencyParser_nonlinear()
+{
     char buffer[100];
 
     std::cout << "\nTesting 'EquationDependencyParser'... " << std::endl;
     bool pass = true;
-
 
     // Declare all of the variables that go into the function call
     std::vector<std::string> sorted_dependencies_value_RHS, sorted_dependencies_gradient_RHS, sorted_dependencies_value_LHS, sorted_dependencies_gradient_LHS;
@@ -287,11 +283,10 @@ bool unitTest<dim,T>::test_EquationDependencyParser_nonlinear(){
 
     std::vector<PDEType> var_eq_type;
     var_eq_type.push_back(EXPLICIT_TIME_DEPENDENT); // Not nonlinear by definition
-    var_eq_type.push_back(TIME_INDEPENDENT);  // Crafted to be nonlinear due to RHS
-    var_eq_type.push_back(TIME_INDEPENDENT);  // Crafted to be nonlinear due to LHS (due to needed non-change version of governing variable)
-    var_eq_type.push_back(TIME_INDEPENDENT);  // Crafted to be nonlinear due to LHS (due to needing a non-governing variable)
-    var_eq_type.push_back(TIME_INDEPENDENT);  // Crafted to be linear
-
+    var_eq_type.push_back(TIME_INDEPENDENT); // Crafted to be nonlinear due to RHS
+    var_eq_type.push_back(TIME_INDEPENDENT); // Crafted to be nonlinear due to LHS (due to needed non-change version of governing variable)
+    var_eq_type.push_back(TIME_INDEPENDENT); // Crafted to be nonlinear due to LHS (due to needing a non-governing variable)
+    var_eq_type.push_back(TIME_INDEPENDENT); // Crafted to be linear
 
     // Populate the dependency strings
     sorted_dependencies_value_RHS.push_back("bc, def, grad(bc)");
@@ -323,13 +318,13 @@ bool unitTest<dim,T>::test_EquationDependencyParser_nonlinear(){
     EquationDependencyParser equation_dependency_parser;
 
     equation_dependency_parser.parse(
-            var_name,
-            var_eq_type,
-            sorted_dependencies_value_RHS,
-            sorted_dependencies_gradient_RHS,
-            sorted_dependencies_value_LHS,
-            sorted_dependencies_gradient_LHS,
-            var_nonlinear);
+        var_name,
+        var_eq_type,
+        sorted_dependencies_value_RHS,
+        sorted_dependencies_gradient_RHS,
+        sorted_dependencies_value_LHS,
+        sorted_dependencies_gradient_LHS,
+        var_nonlinear);
 
     // Check that the boolean vectors were generated correctly
     bool result;
@@ -338,8 +333,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_nonlinear(){
     // Check explicit parabolic equation
     subtest_index++;
     result = false;
-    if (var_nonlinear[0] == false){
-            result = true;
+    if (var_nonlinear[0] == false) {
+        result = true;
     }
     std::cout << "Subtest " << subtest_index << " result for an explicit parabolic equation: " << result << std::endl;
     pass = pass && result;
@@ -347,8 +342,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_nonlinear(){
     // Check nonlinear time independent equation w/ nonlinearity due result for nonlinearity due to needing a non-governing variable on the RHS
     subtest_index++;
     result = false;
-    if (var_nonlinear[1] == true){
-            result = true;
+    if (var_nonlinear[1] == true) {
+        result = true;
     }
     std::cout << "Subtest " << subtest_index << " result for nonlinearity due to needing a non-governing variable on the RHS: " << result << std::endl;
     pass = pass && result;
@@ -356,8 +351,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_nonlinear(){
     // Check nonlinear time independent equation w/ nonlinearity due to needed non-change version of governing variable on the LHS
     subtest_index++;
     result = false;
-    if (var_nonlinear[2] == true){
-            result = true;
+    if (var_nonlinear[2] == true) {
+        result = true;
     }
     std::cout << "Subtest " << subtest_index << " result for nonlinearity due to needed non-change version of governing variable on the LHS: " << result << std::endl;
     pass = pass && result;
@@ -365,8 +360,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_nonlinear(){
     // Check nonlinear time independent equation w/ nonlinearity due to needing a non-governing variable on the LHS
     subtest_index++;
     result = false;
-    if (var_nonlinear[3] == true){
-            result = true;
+    if (var_nonlinear[3] == true) {
+        result = true;
     }
     std::cout << "Subtest " << subtest_index << " result for nonlinearity due to needing a non-governing variable on the LHS: " << result << std::endl;
     pass = pass && result;
@@ -374,28 +369,25 @@ bool unitTest<dim,T>::test_EquationDependencyParser_nonlinear(){
     // Check linear time independent equation
     subtest_index++;
     result = false;
-    if (var_nonlinear[4] == false){
-            result = true;
+    if (var_nonlinear[4] == false) {
+        result = true;
     }
     std::cout << "Subtest " << subtest_index << " result for linear time independent: " << result << std::endl;
     pass = pass && result;
 
-
-
     snprintf(buffer, sizeof(buffer), "Test result for 'EquationDependencyParser': %u\n", pass);
-	std::cout << buffer;
+    std::cout << buffer;
 
     return pass;
-
 }
 
-template <int dim,typename T>
-bool unitTest<dim,T>::test_EquationDependencyParser_postprocessing(){
+template <int dim, typename T>
+bool unitTest<dim, T>::test_EquationDependencyParser_postprocessing()
+{
     char buffer[100];
 
     std::cout << "\nTesting 'EquationDependencyParser'... " << std::endl;
     bool pass = true;
-
 
     // Declare all of the variables that go into the function call
     std::vector<std::string> sorted_dependencies_value, sorted_dependencies_gradient;
@@ -422,10 +414,10 @@ bool unitTest<dim,T>::test_EquationDependencyParser_postprocessing(){
     EquationDependencyParser equation_dependency_parser;
 
     equation_dependency_parser.pp_parse(
-            var_name,
-            pp_var_name,
-            sorted_dependencies_value,
-            sorted_dependencies_gradient);
+        var_name,
+        pp_var_name,
+        sorted_dependencies_value,
+        sorted_dependencies_gradient);
 
     // Check that the boolean vectors were generated correctly
     bool result;
@@ -434,8 +426,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_postprocessing(){
     // Check pp_need_value
     subtest_index++;
     result = false;
-    if (equation_dependency_parser.pp_need_value.size() == 2){
-        if (equation_dependency_parser.pp_need_value[0] == true && equation_dependency_parser.pp_need_value[1] == true){
+    if (equation_dependency_parser.pp_need_value.size() == 2) {
+        if (equation_dependency_parser.pp_need_value[0] == true && equation_dependency_parser.pp_need_value[1] == true) {
             result = true;
         }
     }
@@ -445,8 +437,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_postprocessing(){
     // Check pp_need_gradient
     subtest_index++;
     result = false;
-    if (equation_dependency_parser.pp_need_gradient.size() == 2){
-        if (equation_dependency_parser.pp_need_gradient[0] == false && equation_dependency_parser.pp_need_gradient[1] == true){
+    if (equation_dependency_parser.pp_need_gradient.size() == 2) {
+        if (equation_dependency_parser.pp_need_gradient[0] == false && equation_dependency_parser.pp_need_gradient[1] == true) {
             result = true;
         }
     }
@@ -457,8 +449,8 @@ bool unitTest<dim,T>::test_EquationDependencyParser_postprocessing(){
     // Check pp_need_hessian
     subtest_index++;
     result = false;
-    if (equation_dependency_parser.pp_need_hessian.size() == 2){
-        if (equation_dependency_parser.pp_need_hessian[0] == true && equation_dependency_parser.pp_need_hessian[1] == false){
+    if (equation_dependency_parser.pp_need_hessian.size() == 2) {
+        if (equation_dependency_parser.pp_need_hessian[0] == true && equation_dependency_parser.pp_need_hessian[1] == false) {
             result = true;
         }
     }
@@ -466,13 +458,11 @@ bool unitTest<dim,T>::test_EquationDependencyParser_postprocessing(){
     std::cout << "Subtest " << subtest_index << " result for 'pp_need_hessian': " << result << std::endl;
     pass = pass && result;
 
-
-
     // Check pp_need_value_residual
     subtest_index++;
     result = false;
-    if (equation_dependency_parser.pp_need_value_residual.size() == 3){
-        if (equation_dependency_parser.pp_need_value_residual[0] == true && equation_dependency_parser.pp_need_value_residual[1] == false && equation_dependency_parser.pp_need_value_residual[2] == true){
+    if (equation_dependency_parser.pp_need_value_residual.size() == 3) {
+        if (equation_dependency_parser.pp_need_value_residual[0] == true && equation_dependency_parser.pp_need_value_residual[1] == false && equation_dependency_parser.pp_need_value_residual[2] == true) {
             result = true;
         }
     }
@@ -483,18 +473,16 @@ bool unitTest<dim,T>::test_EquationDependencyParser_postprocessing(){
     subtest_index++;
     result = false;
 
-    if (equation_dependency_parser.pp_need_gradient_residual.size() == 3){
-        if (equation_dependency_parser.pp_need_gradient_residual[0] == true && equation_dependency_parser.pp_need_gradient_residual[1] == true && equation_dependency_parser.pp_need_gradient_residual[2] == true){
+    if (equation_dependency_parser.pp_need_gradient_residual.size() == 3) {
+        if (equation_dependency_parser.pp_need_gradient_residual[0] == true && equation_dependency_parser.pp_need_gradient_residual[1] == true && equation_dependency_parser.pp_need_gradient_residual[2] == true) {
             result = true;
         }
     }
     std::cout << "Subtest " << subtest_index << " result for 'pp_need_gradient_residual': " << result << std::endl;
     pass = pass && result;
 
-
     snprintf(buffer, sizeof(buffer), "Test result for 'EquationDependencyParser': %u\n", pass);
-	std::cout << buffer;
+    std::cout << buffer;
 
     return pass;
-
 }
