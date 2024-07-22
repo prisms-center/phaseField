@@ -149,6 +149,7 @@ void MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                     constraintsDirichletSet[fieldIndex]->set_zero(*residualSet[fieldIndex]);
 
                     // solver controls
+
                     double tol_value;
                     if (userInputs.linear_solver_parameters.getToleranceType(fieldIndex) == ABSOLUTE_RESIDUAL) {
                         tol_value = userInputs.linear_solver_parameters.getToleranceValue(fieldIndex);
