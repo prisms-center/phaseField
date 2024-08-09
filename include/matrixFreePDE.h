@@ -189,11 +189,6 @@ protected:
     /*Vector of parallel solution transfer objects. This is used only when adaptive meshing is enabled.*/
     std::vector<parallel::distributed::SolutionTransfer<dim, vectorType>*> soltransSet;
 
-    // Objects for vectors
-    DoFHandler<dim>* vector_dofHandler;
-    FESystem<dim>* vector_fe;
-    MatrixFree<dim, double> vector_matrixFreeObject;
-
     // matrix free objects
     /*Object of class MatrixFree<dim>. This is primarily responsible for all the base matrix free functionality of this MatrixFreePDE<dim> class.
      *Refer to deal.ii documentation of MatrixFree<dim> class for details.
