@@ -15,6 +15,9 @@ public:
     unsigned int index;
     unsigned int startIndex;
     unsigned int numComponents;
+    bool hasDirichletBCs;
+    bool hasnonuniformDirichletBCs;
+    bool hasNeumannBCs;
 
 private:
     static unsigned int fieldCount;
@@ -58,6 +61,12 @@ Field<dim>::Field(fieldType _type, PDEType _pdetype, std::string _name)
         exit(-1);
     }
     }
+
+    //Default assignment of BCs
+    hasDirichletBCs = false;
+    hasnonuniformDirichletBCs = false;
+    hasNeumannBCs = false;
+
 }
 
 #endif
