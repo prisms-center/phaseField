@@ -360,9 +360,8 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     else if (nucleation_parameters_list.size() > 1) {
         min_distance_between_nuclei = 2.0 * (*(max_element(nucleation_parameters_list[0].semiaxes.begin(),nucleation_parameters_list[0].semiaxes.end())));
     }
-    evolution_before_nucleation = parameter_handler.get_bool("Enable evolution before nucleation");
-    //Implement multiple order parameter nucleation later
-    //multiple_nuclei_per_order_parameter = parameter_handler.get_bool("Allow multiple nuclei per order parameter");
+    min_distance_between_OP = parameter_handler.get_double("Minimum allowed distance between nuclei OP");
+    multiple_nuclei_per_order_parameter = parameter_handler.get_bool("Allow multiple nuclei per order parameter");
     nucleation_order_parameter_cutoff = parameter_handler.get_double("Order parameter cutoff value");
     steps_between_nucleation_attempts = parameter_handler.get_integer("Time steps between nucleation attempts");
     nucleation_start_time = parameter_handler.get_double("Nucleation start time");
@@ -399,6 +398,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader & input_file_reade
     }
 
     load_grain_structure = parameter_handler.get_bool("Load grain structure");
+    load_unstructured_grid = parameter_handler.get_bool("Load as unstructured grid");
     grain_structure_filename = parameter_handler.get("Grain structure filename");
     grain_structure_variable_name = parameter_handler.get("Grain structure variable name");
     num_grain_smoothing_cycles = parameter_handler.get_integer("Number of smoothing cycles after grain structure loading");
