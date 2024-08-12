@@ -144,15 +144,15 @@ public:
 	bool nucleation_occurs;
 	std::vector<unsigned int> nucleating_variable_indices;
 	std::vector<unsigned int> nucleation_need_value;
-	bool evolution_before_nucleation;
-	//Declare later
-	//bool multiple_nuclei_per_order_parameter;
+
+  bool multiple_nuclei_per_order_parameter;
 	double min_distance_between_nuclei; // Only enforced for nuclei placed during the same time step
+	double min_distance_between_OP;
 	double nucleation_order_parameter_cutoff;
 	unsigned int steps_between_nucleation_attempts;
-	double nucleation_start_time;
-	double nucleation_end_time;
-
+  double nucleation_start_time;
+  double nucleation_end_time;
+  
     // Grain remapping parameters
     bool grain_remapping_activated;
     std::vector<unsigned int> variables_for_remapping; // Note: this should be a sorted list
@@ -161,6 +161,7 @@ public:
     double buffer_between_grains;
 
     bool load_grain_structure;
+    bool load_unstructured_grid;
     double min_radius_for_loading_grains;
     std::string grain_structure_filename;
     std::string grain_structure_variable_name;
