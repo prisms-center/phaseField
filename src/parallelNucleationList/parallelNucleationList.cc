@@ -14,7 +14,7 @@ parallelNucleationList<dim>::parallelNucleationList (std::vector<nucleus<dim> > 
 // Generate global list of new nuclei and resolve conflicts between new nuclei
 // =================================================================================
 template <int dim>
-std::vector<nucleus<dim> > parallelNucleationList<dim>::buildGlobalNucleiList(double min_dist_between_nuclei, unsigned int old_num_nuclei)
+std::vector<nucleus<dim> > parallelNucleationList<dim>::buildGlobalNucleiList(double min_dist_between_nuclei, double min_dist_between_OP, unsigned int old_num_nuclei)
 {
 	//MPI INITIALIZATON
 	int numProcs=dealii::Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
@@ -33,7 +33,7 @@ std::vector<nucleus<dim> > parallelNucleationList<dim>::buildGlobalNucleiList(do
 		// The final processor now has all of the new nucleation attempts
 		// Check for conflicts on the final processor before broadcasting the list
 		if (thisProc == numProcs-1){
-			resolveNucleationConflicts(min_dist_between_nuclei, old_num_nuclei);
+			resolveNucleationConflicts(min_dist_between_nuclei, min_dist_between_OP, old_num_nuclei);
 		}
 
 		// The final processor now has the final list of the new nuclei, broadcast it to all the other processors
@@ -41,7 +41,7 @@ std::vector<nucleus<dim> > parallelNucleationList<dim>::buildGlobalNucleiList(do
 	}
 	else {
 		// Check for conflicts between nucleation attempts this time step
-		resolveNucleationConflicts(min_dist_between_nuclei, old_num_nuclei);
+		resolveNucleationConflicts(min_dist_between_nuclei, min_dist_between_OP, old_num_nuclei);
 	}
 
 	return newnuclei;
@@ -305,7 +305,7 @@ void parallelNucleationList<dim>::broadcastUpdate (int broadcastProc, int thisPr
 // Determine if any new nuclei are in conflict and resolve those conflicts
 // =================================================================================
 template <int dim>
-void parallelNucleationList<dim>::resolveNucleationConflicts (double min_dist_between_nuclei, unsigned int old_num_nuclei)
+void parallelNucleationList<dim>::resolveNucleationConflicts (double min_dist_between_nuclei, double min_dist_between_OP, unsigned int old_num_nuclei)
 {
 	std::vector<nucleus<dim> > newnuclei_cleaned;
 
@@ -316,8 +316,16 @@ void parallelNucleationList<dim>::resolveNucleationConflicts (double min_dist_be
 
 			// We may want to break this section into a separate function to allow different choices for when
 			// nucleation should be prevented
-			if (newnuclei[nuc_index].center.distance(newnuclei[prev_nuc_index].center) < min_dist_between_nuclei){
+		
+		// This section checks whether there is any overlap between the two nuclei , irrespective of there order parameter
+	    if (newnuclei[nuc_index].center.distance(newnuclei[prev_nuc_index].center) < min_dist_between_nuclei){
 				isClose = true;
+				std::cout << "Conflict between nuclei! Distance is: " << newnuclei[nuc_index].center.distance(newnuclei[prev_nuc_index].center)
+						<< " Conflict removed."<< std::endl;
+				break;
+			} else if(newnuclei[nuc_index].orderParameterIndex == newnuclei[prev_nuc_index].orderParameterIndex && newnuclei[nuc_index].center.distance(newnuclei[prev_nuc_index].center) < min_dist_between_OP){ // This section makes sure two nuclei with same order parameter are located further apart to avoid any coalesence during growth
+
+			    	isClose = true;
 				std::cout << "Conflict between nuclei! Distance is: " << newnuclei[nuc_index].center.distance(newnuclei[prev_nuc_index].center)
 						<< " Conflict removed."<< std::endl;
 				break;
@@ -326,6 +334,7 @@ void parallelNucleationList<dim>::resolveNucleationConflicts (double min_dist_be
 
 		if (!isClose){
 			newnuclei[nuc_index].index = old_num_nuclei + newnuclei_cleaned.size();
+			std::cout << "Nuclei number : " << (old_num_nuclei + newnuclei_cleaned.size()) << std::endl;
 			newnuclei_cleaned.push_back(newnuclei[nuc_index]);
 		}
 	}
