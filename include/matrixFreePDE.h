@@ -210,6 +210,9 @@ protected:
     /*Method to compute an explicit timestep*/
     void updateExplicitSolution(unsigned int fieldIndex);
 
+    /*Method to apply boundary conditions*/
+    void applyBCs(unsigned int fieldIndex);
+
     /*AMR methods*/
     /**
      * Method that actually changes the triangulation based on refine/coarsen flags set previously.
@@ -352,7 +355,6 @@ protected:
 
     bool hasExplicitEquation;
     bool hasNonExplicitEquation;
-    bool has_Dirichlet_BCs;
     //
     unsigned int parabolicFieldIndex, ellipticFieldIndex;
     double currentTime;
