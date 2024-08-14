@@ -94,7 +94,6 @@ void MatrixFreePDE<dim, degree>::outputResults()
                 std::vector<DataComponentInterpretation::DataComponentInterpretation> dataType(components, DataComponentInterpretation::component_is_part_of_vector);
                 std::vector<std::string> solutionNames(components, userInputs.pp_var_name[fieldIndex].c_str());
                 // add field to data_out
-                // data_out.add_data_vector(*vector_dofHandler, *postProcessedSet[fieldIndex], solutionNames, dataType);
                 data_out.add_data_vector(*dofHandlersSet[0], *postProcessedSet[fieldIndex], solutionNames, dataType);
             }
         }
