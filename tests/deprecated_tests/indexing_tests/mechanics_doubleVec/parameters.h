@@ -18,7 +18,8 @@
 // Set the element parameters
 // =================================================================================
 // The number of elements in each direction is 2^(refineFactor) * subdivisions
-// For optimal performance, use refineFactor primarily to determine the element size
+// For optimal performance, use refineFactor primarily to determine the element
+// size
 #define subdivisionsX 1
 #define subdivisionsY 1
 #define subdivisionsZ 1

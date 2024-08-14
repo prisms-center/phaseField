@@ -1,4 +1,5 @@
-// Parameters list for the parameters involved in mesh generation and time stepping
+// Parameters list for the parameters involved in mesh generation and time
+// stepping
 #define subdivisionsX 5
 #define subdivisionsY 5
 #define subdivisionsZ 5

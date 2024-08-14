@@ -53,28 +53,28 @@ typedef dealii::VectorizedArray<double> scalarvalueType;
 typedef dealii::Tensor<1, dim, dealii::VectorizedArray<double>> vectorvalueType;
 #endif
 #if problemDIM == 1
-#ifndef scalargradType
+#  ifndef scalargradType
 typedef dealii::VectorizedArray<double> scalargradType;
-#endif
-#ifndef vectorgradType
+#  endif
+#  ifndef vectorgradType
 typedef dealii::VectorizedArray<double> vectorgradType;
-#endif
-#ifndef vectorhessType
+#  endif
+#  ifndef vectorhessType
 typedef dealii::VectorizedArray<double> vectorhessType;
-#endif
+#  endif
 #else
-#ifndef scalargradType
+#  ifndef scalargradType
 typedef dealii::Tensor<1, dim, dealii::VectorizedArray<double>> scalargradType;
-#endif
-#ifndef scalarhessType
+#  endif
+#  ifndef scalarhessType
 typedef dealii::Tensor<2, dim, dealii::VectorizedArray<double>> scalarhessType;
-#endif
-#ifndef vectorgradType
+#  endif
+#  ifndef vectorgradType
 typedef dealii::Tensor<2, dim, dealii::VectorizedArray<double>> vectorgradType;
-#endif
-#ifndef vectorhessType
+#  endif
+#  ifndef vectorhessType
 typedef dealii::Tensor<3, dim, dealii::VectorizedArray<double>> vectorhessType;
-#endif
+#  endif
 #endif
 
 // #endif /* INCLUDE_TYPEDEFS_H_ */
