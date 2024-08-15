@@ -42,6 +42,8 @@
 #include "variableContainer.h"
 #include "variableValueContainer.h"
 
+#include "../src/models/mechanics/computeStress.h"
+
 // define data types
 #ifndef scalarType
 typedef dealii::VectorizedArray<double> scalarType;
