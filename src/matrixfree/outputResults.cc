@@ -148,8 +148,6 @@ MatrixFreePDE<dim, degree>::outputResults()
                 components,
                 userInputs.pp_var_name[fieldIndex].c_str());
               // add field to data_out
-              // data_out.add_data_vector(*vector_dofHandler,
-              // *postProcessedSet[fieldIndex], solutionNames, dataType);
               data_out.add_data_vector(*dofHandlersSet[0],
                                        *postProcessedSet[fieldIndex],
                                        solutionNames,

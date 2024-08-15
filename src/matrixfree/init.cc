@@ -185,16 +185,22 @@ MatrixFreePDE<dim, degree>::init()
       setPeriodicityConstraints(constraintsOther, dof_handler);
 
       // Check if Dirichlet BCs are used
-      has_Dirichlet_BCs = false;
       for (unsigned int i = 0; i < userInputs.BC_list.size(); i++)
         {
           for (unsigned int direction = 0; direction < 2 * dim; direction++)
             {
-              if (userInputs.BC_list[i].var_BC_type[direction] == DIRICHLET ||
-                  userInputs.BC_list[i].var_BC_type[direction] == NON_UNIFORM_DIRICHLET)
+              if (userInputs.BC_list[i].var_BC_type[direction] == DIRICHLET)
                 {
-                  has_Dirichlet_BCs = true;
-                  break;
+                  it->hasDirichletBCs = true;
+                }
+              else if (userInputs.BC_list[i].var_BC_type[direction] ==
+                       NON_UNIFORM_DIRICHLET)
+                {
+                  it->hasnonuniformDirichletBCs = true;
+                }
+              else if (userInputs.BC_list[i].var_BC_type[direction] == NEUMANN)
+                {
+                  it->hasNeumannBCs = true;
                 }
             }
         }

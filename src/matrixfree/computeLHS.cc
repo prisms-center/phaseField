@@ -4,6 +4,7 @@
 
 // vmult operation for LHS
 template <int dim, int degree>
+
 void
 MatrixFreePDE<dim, degree>::vmult(vectorType & dst, const vectorType & src) const
 {

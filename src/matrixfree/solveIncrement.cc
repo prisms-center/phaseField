@@ -9,9 +9,6 @@ template <int dim, int degree>
 void
 MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
 {
-  bool         field_has_nonuniform_Dirichlet_BCs;
-  unsigned int starting_BC_list_index;
-
   // log time
   computing_timer.enter_subsection("matrixFreePDE: solveIncrements");
   Timer time;
@@ -28,95 +25,13 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
     {
       currentFieldIndex = fieldIndex; // Used in computeLHS()
 
-      // Add Neumann BC terms to the residual vector for the current field, if
-      // appropriate Currently commented out because it isn't working yet
-      // applyNeumannBCs();
-
       // Parabolic (first order derivatives in time) fields
       if (fields[fieldIndex].pdetype == EXPLICIT_TIME_DEPENDENT && !skip_time_dependent)
         {
           updateExplicitSolution(fieldIndex);
 
-          // Set the Dirichelet values (hanging node constraints don't need to
-          // be distributed every time step, only at output)
-          if (has_Dirichlet_BCs)
-            {
-              // TEMPORARY SECTION (Add to a method later)
-              // Check if any of the Dirichlet BCs if nonuniform
-              field_has_nonuniform_Dirichlet_BCs = false;
-
-              // First, get the starting_BC_list_index for the current field
-              starting_BC_list_index = 0;
-              for (unsigned int i = 0; i < currentFieldIndex; i++)
-                {
-                  if (userInputs.var_type[i] == SCALAR)
-                    {
-                      starting_BC_list_index++;
-                    }
-                  else
-                    {
-                      starting_BC_list_index += dim;
-                    }
-                }
-              // Checking for non-uniform Dirichlet BCs if the field is scalar
-              if (userInputs.var_type[currentFieldIndex] == SCALAR)
-                {
-                  for (unsigned int direction = 0; direction < 2 * dim; direction++)
-                    {
-                      if (userInputs.BC_list[starting_BC_list_index]
-                            .var_BC_type[direction] == NON_UNIFORM_DIRICHLET)
-                        {
-                          field_has_nonuniform_Dirichlet_BCs = true;
-                          break;
-                        }
-                    }
-                }
-              else
-                {
-                  // Checking for non-uniform Dirichlet BCs if the field is
-                  // nonscalar
-                  for (unsigned int direction = 0; direction < 2 * dim; direction++)
-                    {
-                      for (unsigned int component = 0; component < dim; component++)
-                        {
-                          if (userInputs.BC_list[starting_BC_list_index + component]
-                                .var_BC_type[direction] == NON_UNIFORM_DIRICHLET)
-                            {
-                              field_has_nonuniform_Dirichlet_BCs = true;
-                              break;
-                            }
-                        }
-                    }
-                }
-              // Apply non-uniform Dirlichlet_BCs to the current field
-              if (field_has_nonuniform_Dirichlet_BCs)
-                {
-                  DoFHandler<dim> * dof_handler;
-                  dof_handler = dofHandlersSet_nonconst.at(currentFieldIndex);
-                  IndexSet * locally_relevant_dofs;
-                  locally_relevant_dofs =
-                    locally_relevant_dofsSet_nonconst.at(currentFieldIndex);
-                  locally_relevant_dofs->clear();
-                  DoFTools::extract_locally_relevant_dofs(*dof_handler,
-                                                          *locally_relevant_dofs);
-                  AffineConstraints<double> * constraintsDirichlet;
-                  constraintsDirichlet =
-                    constraintsDirichletSet_nonconst.at(currentFieldIndex);
-                  constraintsDirichlet->clear();
-                  constraintsDirichlet->reinit(*locally_relevant_dofs);
-                  applyDirichletBCs();
-                  constraintsDirichlet->close();
-                }
-              // Distribute for Uniform or Non-Uniform Dirichlet BCs
-              constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
-            }
-
-          // computing_timer.enter_subsection("matrixFreePDE:
-          // updateExplicitGhosts");
-
-          solutionSet[fieldIndex]->update_ghost_values();
-          // computing_timer.leave_subsection("matrixFreePDE:
-          // updateExplicitGhosts");
+          // Apply Boundary conditions
+          applyBCs(fieldIndex);
 
           // Print update to screen and confirm that solution isn't nan
           if (currentIncrement % userInputs.skip_print_steps == 0)
@@ -192,6 +107,7 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                   constraintsDirichletSet[fieldIndex]->set_zero(*residualSet[fieldIndex]);
 
                   // solver controls
+
                   double tol_value;
                   if (userInputs.linear_solver_parameters.getToleranceType(fieldIndex) ==
                       ABSOLUTE_RESIDUAL)
@@ -442,92 +358,16 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                             }
                         }
                     }
-                  if (has_Dirichlet_BCs)
-                    {
-                      // TEMPORARY SECTION (Add to a method later)
-                      // Check if any of the Dirichlet BCs if nonuniform
-                      field_has_nonuniform_Dirichlet_BCs = false;
 
-                      // First, get the starting_BC_list_index for the current
-                      // field
-                      starting_BC_list_index = 0;
-                      for (unsigned int i = 0; i < currentFieldIndex; i++)
-                        {
-                          if (userInputs.var_type[i] == SCALAR)
-                            {
-                              starting_BC_list_index++;
-                            }
-                          else
-                            {
-                              starting_BC_list_index += dim;
-                            }
-                        }
-                      // Checking for non-uniform Dirichlet BCs if the field is
-                      // scalar
-                      if (userInputs.var_type[currentFieldIndex] == SCALAR)
-                        {
-                          for (unsigned int direction = 0; direction < 2 * dim;
-                               direction++)
-                            {
-                              if (userInputs.BC_list[starting_BC_list_index]
-                                    .var_BC_type[direction] == NON_UNIFORM_DIRICHLET)
-                                {
-                                  field_has_nonuniform_Dirichlet_BCs = true;
-                                  break;
-                                }
-                            }
-                        }
-                      else
-                        {
-                          // Checking for non-uniform Dirichlet BCs if the field
-                          // is nonscalar
-                          for (unsigned int direction = 0; direction < 2 * dim;
-                               direction++)
-                            {
-                              for (unsigned int component = 0; component < dim;
-                                   component++)
-                                {
-                                  if (userInputs
-                                        .BC_list[starting_BC_list_index + component]
-                                        .var_BC_type[direction] == NON_UNIFORM_DIRICHLET)
-                                    {
-                                      field_has_nonuniform_Dirichlet_BCs = true;
-                                      break;
-                                    }
-                                }
-                            }
-                        }
-                      // Apply non-uniform Dirlichlet_BCs to the current field
-                      if (field_has_nonuniform_Dirichlet_BCs)
-                        {
-                          DoFHandler<dim> * dof_handler;
-                          dof_handler = dofHandlersSet_nonconst.at(currentFieldIndex);
-                          IndexSet * locally_relevant_dofs;
-                          locally_relevant_dofs =
-                            locally_relevant_dofsSet_nonconst.at(currentFieldIndex);
-                          locally_relevant_dofs->clear();
-                          DoFTools::extract_locally_relevant_dofs(*dof_handler,
-                                                                  *locally_relevant_dofs);
-                          AffineConstraints<double> * constraintsDirichlet;
-                          constraintsDirichlet =
-                            constraintsDirichletSet_nonconst.at(currentFieldIndex);
-                          constraintsDirichlet->clear();
-                          constraintsDirichlet->reinit(*locally_relevant_dofs);
-                          applyDirichletBCs();
-                          constraintsDirichlet->close();
-                        }
-                      // Distribute for Uniform or Non-Uniform Dirichlet BCs
-                      constraintsDirichletSet[fieldIndex]->distribute(
-                        *solutionSet[fieldIndex]);
-                    }
-                  solutionSet[fieldIndex]->update_ghost_values();
+                  // Apply Boundary conditions
+                  applyBCs(fieldIndex);
                 }
               else if (fields[fieldIndex].pdetype == AUXILIARY)
                 {
                   if (userInputs.var_nonlinear[fieldIndex] || nonlinear_it_index == 0)
                     {
-                      // If the equation for this field is nonlinear, save the
-                      // old solution
+                      // If the equation for this field is nonlinear, save the old
+                      // solution
                       if (userInputs.var_nonlinear[fieldIndex])
                         {
                           if (fields[fieldIndex].type == SCALAR)
@@ -542,91 +382,8 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
 
                       updateExplicitSolution(fieldIndex);
 
-                      // Set the Dirichelet values (hanging node constraints
-                      // don't need to be distributed every time step, only at
-                      // output)
-                      if (has_Dirichlet_BCs)
-                        {
-                          // TEMPORARY SECTION (Add to a method later)
-                          // Check if any of the Dirichlet BCs if nonuniform
-                          field_has_nonuniform_Dirichlet_BCs = false;
-
-                          // First, get the starting_BC_list_index for the
-                          // current field
-                          starting_BC_list_index = 0;
-                          for (unsigned int i = 0; i < currentFieldIndex; i++)
-                            {
-                              if (userInputs.var_type[i] == SCALAR)
-                                {
-                                  starting_BC_list_index++;
-                                }
-                              else
-                                {
-                                  starting_BC_list_index += dim;
-                                }
-                            }
-                          // Checking for non-uniform Dirichlet BCs if the field
-                          // is scalar
-                          if (userInputs.var_type[currentFieldIndex] == SCALAR)
-                            {
-                              for (unsigned int direction = 0; direction < 2 * dim;
-                                   direction++)
-                                {
-                                  if (userInputs.BC_list[starting_BC_list_index]
-                                        .var_BC_type[direction] == NON_UNIFORM_DIRICHLET)
-                                    {
-                                      field_has_nonuniform_Dirichlet_BCs = true;
-                                      break;
-                                    }
-                                }
-                            }
-                          else
-                            {
-                              // Checking for non-uniform Dirichlet BCs if the
-                              // field is nonscalar
-                              for (unsigned int direction = 0; direction < 2 * dim;
-                                   direction++)
-                                {
-                                  for (unsigned int component = 0; component < dim;
-                                       component++)
-                                    {
-                                      if (userInputs
-                                            .BC_list[starting_BC_list_index + component]
-                                            .var_BC_type[direction] ==
-                                          NON_UNIFORM_DIRICHLET)
-                                        {
-                                          field_has_nonuniform_Dirichlet_BCs = true;
-                                          break;
-                                        }
-                                    }
-                                }
-                            }
-                          // Apply non-uniform Dirlichlet_BCs to the current
-                          // field
-                          if (field_has_nonuniform_Dirichlet_BCs)
-                            {
-                              DoFHandler<dim> * dof_handler;
-                              dof_handler = dofHandlersSet_nonconst.at(currentFieldIndex);
-                              IndexSet * locally_relevant_dofs;
-                              locally_relevant_dofs =
-                                locally_relevant_dofsSet_nonconst.at(currentFieldIndex);
-                              locally_relevant_dofs->clear();
-                              DoFTools::extract_locally_relevant_dofs(
-                                *dof_handler,
-                                *locally_relevant_dofs);
-                              AffineConstraints<double> * constraintsDirichlet;
-                              constraintsDirichlet =
-                                constraintsDirichletSet_nonconst.at(currentFieldIndex);
-                              constraintsDirichlet->clear();
-                              constraintsDirichlet->reinit(*locally_relevant_dofs);
-                              applyDirichletBCs();
-                              constraintsDirichlet->close();
-                            }
-                          // Distribute for Uniform or Non-Uniform Dirichlet BCs
-                          constraintsDirichletSet[fieldIndex]->distribute(
-                            *solutionSet[fieldIndex]);
-                        }
-                      solutionSet[fieldIndex]->update_ghost_values();
+                      // Apply Boundary conditions
+                      applyBCs(fieldIndex);
 
                       // Print update to screen
                       if (currentIncrement % userInputs.skip_print_steps == 0)
@@ -661,8 +418,8 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                                 }
                               if (currentIncrement % userInputs.skip_print_steps == 0)
                                 {
-                                  pcout << "Relative difference between "
-                                           "nonlinear iterations: "
+                                  pcout << "Relative difference between nonlinear "
+                                           "iterations: "
                                         << diff << " " << nonlinear_it_index << " "
                                         << currentIncrement << std::endl;
                                 }
@@ -678,9 +435,9 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                             }
                           else
                             {
-                              std::cerr << "PRISMS-PF Error: Nonlinear solver "
-                                           "tolerance types other than ABSOLUTE_CHANGE "
-                                           "have yet to be implemented."
+                              std::cerr << "PRISMS-PF Error: Nonlinear solver tolerance "
+                                           "types other than ABSOLUTE_CHANGE have yet to "
+                                           "be implemented."
                                         << std::endl;
                             }
                         }
@@ -709,6 +466,44 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
     }
   // log time
   computing_timer.leave_subsection("matrixFreePDE: solveIncrements");
+}
+
+// Application of boundary conditions
+template <int dim, int degree>
+void
+MatrixFreePDE<dim, degree>::applyBCs(unsigned int fieldIndex)
+{
+  // Add Neumann BCs
+  if (fields[fieldIndex].hasNeumannBCs)
+    {
+      // Currently commented out because it isn't working yet
+      // applyNeumannBCs();
+    }
+
+  // Set the Dirichelet values (hanging node constraints don't need to be distributed
+  // every time step, only at output)
+  if (fields[fieldIndex].hasDirichletBCs)
+    {
+      // Apply non-uniform Dirlichlet_BCs to the current field
+      if (fields[fieldIndex].hasnonuniformDirichletBCs)
+        {
+          DoFHandler<dim> * dof_handler;
+          dof_handler = dofHandlersSet_nonconst.at(currentFieldIndex);
+          IndexSet * locally_relevant_dofs;
+          locally_relevant_dofs = locally_relevant_dofsSet_nonconst.at(currentFieldIndex);
+          locally_relevant_dofs->clear();
+          DoFTools::extract_locally_relevant_dofs(*dof_handler, *locally_relevant_dofs);
+          AffineConstraints<double> * constraintsDirichlet;
+          constraintsDirichlet = constraintsDirichletSet_nonconst.at(currentFieldIndex);
+          constraintsDirichlet->clear();
+          constraintsDirichlet->reinit(*locally_relevant_dofs);
+          applyDirichletBCs();
+          constraintsDirichlet->close();
+        }
+      // Distribute for Uniform or Non-Uniform Dirichlet BCs
+      constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
+    }
+  solutionSet[fieldIndex]->update_ghost_values();
 }
 
 // Explicit time step for matrixfree solve

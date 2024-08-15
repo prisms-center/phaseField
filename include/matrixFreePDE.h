@@ -209,34 +209,29 @@ protected:
    *freedom for all the primal fields in the problem.*/
   std::vector<const DoFHandler<dim> *> dofHandlersSet;
 
-  /*A vector of the locally relevant degrees of freedom. Locally relevant
-   *degrees of freedom in a parallel implementation is a collection of the
-   *degrees of freedom owned by the current processor and the surrounding ghost
-   *nodes which are required for the field computations in this processor.
+  /*A vector of the locally relevant degrees of freedom. Locally relevant degrees of
+   *freedom in a parallel implementation is a collection of the degrees of freedom owned
+   *by the current processor and the surrounding ghost nodes which are required for the
+   *field computations in this processor.
    */
   std::vector<const IndexSet *> locally_relevant_dofsSet;
-  /*Copies of constraintSet elements, but stored as non-const to enable
-   * application of constraints.*/
+  /*Copies of constraintSet elements, but stored as non-const to enable application of
+   * constraints.*/
   std::vector<AffineConstraints<double> *> constraintsDirichletSet_nonconst,
     constraintsOtherSet_nonconst;
   /*Copies of dofHandlerSet elements, but stored as non-const.*/
   std::vector<DoFHandler<dim> *> dofHandlersSet_nonconst;
   /*Copies of locally_relevant_dofsSet elements, but stored as non-const.*/
   std::vector<IndexSet *> locally_relevant_dofsSet_nonconst;
-  /*Vector all the solution vectors in the problem. In a multi-field problem,
-   * each primal field has a solution vector associated with it.*/
+  /*Vector all the solution vectors in the problem. In a multi-field problem, each primal
+   * field has a solution vector associated with it.*/
   std::vector<vectorType *> solutionSet;
-  /*Vector all the residual (RHS) vectors in the problem. In a multi-field
-   * problem, each primal field has a residual vector associated with it.*/
+  /*Vector all the residual (RHS) vectors in the problem. In a multi-field problem, each
+   * primal field has a residual vector associated with it.*/
   std::vector<vectorType *> residualSet;
-  /*Vector of parallel solution transfer objects. This is used only when
-   * adaptive meshing is enabled.*/
+  /*Vector of parallel solution transfer objects. This is used only when adaptive meshing
+   * is enabled.*/
   std::vector<parallel::distributed::SolutionTransfer<dim, vectorType> *> soltransSet;
-
-  // Objects for vectors
-  DoFHandler<dim> *       vector_dofHandler;
-  FESystem<dim> *         vector_fe;
-  MatrixFree<dim, double> vector_matrixFreeObject;
 
   // matrix free objects
   /*Object of class MatrixFree<dim>. This is primarily responsible for all the
@@ -266,6 +261,10 @@ protected:
   /*Method to compute an explicit timestep*/
   void
   updateExplicitSolution(unsigned int fieldIndex);
+
+  /*Method to apply boundary conditions*/
+  void
+  applyBCs(unsigned int fieldIndex);
 
   /*AMR methods*/
   /**
@@ -482,7 +481,6 @@ protected:
 
   bool hasExplicitEquation;
   bool hasNonExplicitEquation;
-  bool has_Dirichlet_BCs;
   //
   unsigned int parabolicFieldIndex, ellipticFieldIndex;
   double       currentTime;
