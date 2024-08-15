@@ -6,7 +6,6 @@
 
 #include "../../include/ParseCommandLineOpts.h"
 #include "../../include/inputFileReader.h"
-#include "../../src/models/mechanics/computeStress.h"
 #include "../../src/variableAttributeLoader/variableAttributeLoader.cc"
 
 // Header file for postprocessing that may or may not exist
