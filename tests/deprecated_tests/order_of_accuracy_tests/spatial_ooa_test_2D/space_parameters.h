@@ -1,4 +1,4 @@
-// Parameters list for the parameters involved in mesh generation 
+// Parameters list for the parameters involved in mesh generation
 #define subdivisionsX 1
 #define subdivisionsY 1
 #define subdivisionsZ 1

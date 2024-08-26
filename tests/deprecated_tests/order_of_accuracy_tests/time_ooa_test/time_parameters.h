@@ -1,4 +1,4 @@
-// Parameters list for the parameters involved in time stepping 
+// Parameters list for the parameters involved in time stepping
 #define timeStep 9.375e-06
 #define timeIncrements 1600
 #define timeFinal 100000000

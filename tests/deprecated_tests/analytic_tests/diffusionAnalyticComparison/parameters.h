@@ -1,4 +1,4 @@
-//Parameter list for the Fickian diffusion problem
+// Parameter list for the Fickian diffusion problem
 
 // Define problem dimensions
 #define problemDIM 2
@@ -13,31 +13,24 @@
 #define refineFactor 0
 #define finiteElementDegree 1
 
-//define number of fields in the problem
-//c
+// define number of fields in the problem
+// c
 #define numFields 1
 
-//define time step parameters
+// define time step parameters
 #define timeStep 1.0e-4
 #define timeFinal 100.0
 #define timeIncrements 10000
 
-//define results output parameters
+// define results output parameters
 #define writeOutput true
 
-// Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", or "N_PER_DECADE")
+// Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", or
+// "N_PER_DECADE")
 #define outputCondition "EQUAL_SPACING"
 
-// Number of times the program outputs the fields (total number for "EQUAL_SPACING"
-// and "LOG_SPACING", number per decade for "N_PER_DECADE")
+// Number of times the program outputs the fields (total number for
+// "EQUAL_SPACING" and "LOG_SPACING", number per decade for "N_PER_DECADE")
 #define numOutputs 10
 
 #define calcEnergy false
-
-
-
-
-
-
-
-

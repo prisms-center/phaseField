@@ -18,7 +18,8 @@
 // Set the element parameters
 // =================================================================================
 // The number of elements in each direction is 2^(refineFactor) * subdivisions
-// For optimal performance, use refineFactor primarily to determine the element size
+// For optimal performance, use refineFactor primarily to determine the element
+// size
 #define subdivisionsX 1
 #define subdivisionsY 1
 #define subdivisionsZ 1
@@ -33,8 +34,8 @@
 // The size of the time step
 #define timeStep 1.0e-3
 
-// The simulation ends when either timeFinal is reached or the number of time steps
-// equals timeIncrements
+// The simulation ends when either timeFinal is reached or the number of time
+// steps equals timeIncrements
 #define timeFinal 20.0
 #define timeIncrements 20000
 
@@ -44,29 +45,25 @@
 // Each field in the problem will be output is writeOutput is set to "true"
 #define writeOutput true
 
-// Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
-// or "LIST")
+// Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING",
+// "N_PER_DECADE", or "LIST")
 #define outputCondition "EQUAL_SPACING"
 
-// Number of times the program outputs the fields (total number for "EQUAL_SPACING"
-// and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
+// Number of times the program outputs the fields (total number for
+// "EQUAL_SPACING" and "LOG_SPACING", number per decade for "N_PER_DECADE",
+// ignored for "LIST")
 #define numOutputs 10
 
 // User-defined list of time steps where the program should output. Only used if
 // outputCondition is "LIST"
-#define outputList {}
+#define outputList \
+  {}
 
 // Status is printed to the screen every skipPrintSteps
 #define skipPrintSteps 10
 
 // =================================================================================
-// Set the flag determining if the total free energy is calculated for each output
+// Set the flag determining if the total free energy is calculated for each
+// output
 // =================================================================================
 #define calcEnergy true
-
-
-
-
-
-
-
