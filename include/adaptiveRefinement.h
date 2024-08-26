@@ -96,12 +96,7 @@ template <int dim, int degree>
 void
 adaptiveRefinement<dim, degree>::adaptiveRefine(unsigned int currentIncrement)
 {
-  if ((currentIncrement == 0))
-    {
-      adaptiveRefineCriterion();
-      refineGrid();
-    }
-  else
+  if (currentIncrement != 0)
     {
       // Apply constraints before remeshing
       for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
@@ -110,9 +105,10 @@ adaptiveRefinement<dim, degree>::adaptiveRefine(unsigned int currentIncrement)
           constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
           solutionSet[fieldIndex]->update_ghost_values();
         }
-      adaptiveRefineCriterion();
-      refineGrid();
     }
+
+  adaptiveRefineCriterion();
+  refineGrid();
 }
 
 template <int dim, int degree>
