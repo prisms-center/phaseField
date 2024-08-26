@@ -25,9 +25,10 @@
 
 // define data type
 template <int dim>
-void computeStress(const dealii::Table<2, double>& CIJ, const dealii::VectorizedArray<double> ux[][dim], const dealii::VectorizedArray<double> R[][dim]);
-
-#include "../../src/models/mechanics/computeStress.h"
+void
+computeStress(const dealii::Table<2, double>       &CIJ,
+              const dealii::VectorizedArray<double> ux[][dim],
+              const dealii::VectorizedArray<double> R[][dim]);
 
 #include "../../include/matrixFreePDE.h"
 #include "../../include/parallelNucleationList.h"
@@ -56,6 +57,7 @@ void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Vectorized
 #include "../../src/matrixfree/solve.cc"
 #include "../../src/matrixfree/solveIncrement.cc"
 #include "../../src/matrixfree/utilities.cc"
+#include "../../src/models/mechanics/computeStress.h"
 #include "../../src/parallelNucleationList/parallelNucleationList.cc"
 #include "../../src/userInputParameters/loadVariableAttributes.cc"
 #include "../../src/userInputParameters/load_BC_list.cc"
@@ -66,29 +68,52 @@ void computeStress(const dealii::Table<2, double>& CIJ, const dealii::Vectorized
 #include "../../src/variableContainer/variableContainer.cc"
 
 template <int dim, typename T>
-class unitTest {
+class unitTest
+{
 public:
-    bool test_computeInvM(int argc, char** argv, userInputParameters<dim>);
-    bool test_outputResults(int argc, char** argv, userInputParameters<dim> userInputs);
-    bool test_computeStress();
-    void assignCIJSize(dealii::VectorizedArray<double> CIJ[2 * dim - 1 + dim / 3][2 * dim - 1 + dim / 3]);
-    void assignCIJSize(dealii::Table<2, double>& CIJ);
-    bool test_setRigidBodyModeConstraints(std::vector<int>, userInputParameters<dim> userInputs);
-    bool test_parse_line();
-    bool test_get_subsection_entry_list();
-    bool test_get_entry_name_ending_list();
-    bool test_load_BC_list();
-    bool test_setOutputTimeSteps();
-    bool test_NonlinearSolverParameters();
-    bool test_LinearSolverParameters();
-    bool test_EquationDependencyParser_variables_and_residuals_needed();
-    bool test_EquationDependencyParser_nonlinear();
-    bool test_EquationDependencyParser_postprocessing();
-    bool test_FloodFiller();
-    bool test_SimplifiedGrainRepresentation();
-    bool test_SimplifiedGrainManipulator_transferGrainIds();
-    bool test_SimplifiedGrainManipulator_reassignGrains();
-    bool test_OrderParameterRemapper();
+  bool
+  test_computeInvM(int argc, char **argv, userInputParameters<dim>);
+  bool
+  test_outputResults(int argc, char **argv, userInputParameters<dim> userInputs);
+  bool
+  test_computeStress();
+  void
+  assignCIJSize(
+    dealii::VectorizedArray<double> CIJ[2 * dim - 1 + dim / 3][2 * dim - 1 + dim / 3]);
+  void
+  assignCIJSize(dealii::Table<2, double> &CIJ);
+  bool
+  test_setRigidBodyModeConstraints(std::vector<int>, userInputParameters<dim> userInputs);
+  bool
+  test_parse_line();
+  bool
+  test_get_subsection_entry_list();
+  bool
+  test_get_entry_name_ending_list();
+  bool
+  test_load_BC_list();
+  bool
+  test_setOutputTimeSteps();
+  bool
+  test_NonlinearSolverParameters();
+  bool
+  test_LinearSolverParameters();
+  bool
+  test_EquationDependencyParser_variables_and_residuals_needed();
+  bool
+  test_EquationDependencyParser_nonlinear();
+  bool
+  test_EquationDependencyParser_postprocessing();
+  bool
+  test_FloodFiller();
+  bool
+  test_SimplifiedGrainRepresentation();
+  bool
+  test_SimplifiedGrainManipulator_transferGrainIds();
+  bool
+  test_SimplifiedGrainManipulator_reassignGrains();
+  bool
+  test_OrderParameterRemapper();
 };
 
 #include "test_EquationDependencyParser.h"

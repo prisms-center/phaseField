@@ -1,8 +1,9 @@
 // Parameter list for the Beta Prime precipitate evolution problem
 //(Coupled Allen Cahn, Cahn Hilliard and Mechanics formulation)
 // The free energy expressions in this file are from the reference:
-// H. Liu et al, "A simulation study of the shape of beta prime precipitates in Mg–Y and Mg–Gd alloys",
-// Acta Materialia, Volume 61, Issue 2, January 2013, Pages 453-466. http://dx.doi.org/10.1016/j.actamat.2012.09.044
+// H. Liu et al, "A simulation study of the shape of beta prime precipitates in
+// Mg–Y and Mg–Gd alloys", Acta Materialia, Volume 61, Issue 2, January 2013,
+// Pages 453-466. http://dx.doi.org/10.1016/j.actamat.2012.09.044
 
 // Define problem dimensions
 #define problemDIM 3

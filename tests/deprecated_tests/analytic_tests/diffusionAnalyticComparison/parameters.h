@@ -25,11 +25,12 @@
 // define results output parameters
 #define writeOutput true
 
-// Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", or "N_PER_DECADE")
+// Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", or
+// "N_PER_DECADE")
 #define outputCondition "EQUAL_SPACING"
 
-// Number of times the program outputs the fields (total number for "EQUAL_SPACING"
-// and "LOG_SPACING", number per decade for "N_PER_DECADE")
+// Number of times the program outputs the fields (total number for
+// "EQUAL_SPACING" and "LOG_SPACING", number per decade for "N_PER_DECADE")
 #define numOutputs 10
 
 #define calcEnergy false
