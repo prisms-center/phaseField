@@ -111,11 +111,11 @@ NamespaceIndentation: All
 PenaltyBreakBeforeFirstCallParameter: 90
 PenaltyBreakComment: 90
 
-PointerAlignment: Middle
+PointerAlignment: Right
 
 QualifierAlignment: Left
 
-ReferenceAlignment: Middle
+ReferenceAlignment: Right
 
 ReflowComments: true
 
