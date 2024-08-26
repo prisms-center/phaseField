@@ -272,8 +272,8 @@ parallelNucleationList<dim>::receiveUpdate(int procno)
       // Loop to store info in vectors onto the nuclei structure
       for (int jnuc = 0; jnuc <= recvnonucs - 1; jnuc++)
         {
-          nucleus<dim> * temp = new nucleus<dim>;
-          temp->index         = r_index[jnuc];
+          nucleus<dim> *temp = new nucleus<dim>;
+          temp->index        = r_index[jnuc];
           dealii::Point<dim> r_center;
           r_center[0] = r_center_x[jnuc];
           r_center[1] = r_center_y[jnuc];
@@ -403,8 +403,8 @@ parallelNucleationList<dim>::broadcastUpdate(int broadcastProc, int thisProc)
       // Loop to store info in vectors onto the nuclei structure
       for (int jnuc = 0; jnuc <= currnonucs - 1; jnuc++)
         {
-          nucleus<dim> * temp = new nucleus<dim>;
-          temp->index         = r_index[jnuc];
+          nucleus<dim> *temp = new nucleus<dim>;
+          temp->index        = r_index[jnuc];
           dealii::Point<dim> r_center;
           r_center[0] = r_center_x[jnuc];
           r_center[1] = r_center_y[jnuc];

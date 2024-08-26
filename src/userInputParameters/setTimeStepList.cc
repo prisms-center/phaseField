@@ -3,9 +3,9 @@
 template <int dim>
 std::vector<unsigned int>
 userInputParameters<dim>::setTimeStepList(
-  const std::string                 outputSpacingType,
-  unsigned int                      numberOfOutputs,
-  const std::vector<unsigned int> & userGivenTimeStepList)
+  const std::string                outputSpacingType,
+  unsigned int                     numberOfOutputs,
+  const std::vector<unsigned int> &userGivenTimeStepList)
 {
   std::vector<unsigned int> timeStepList;
 

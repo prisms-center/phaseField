@@ -43,7 +43,7 @@ MatrixFreePDE<dim, degree>::applyNeumannBCs()
                                                                       ->begin_active(),
                                                              endc =
                                                                dofHandlersSet[0]->end();
-              FESystem<dim> *        fe = FESet[currentFieldIndex];
+              FESystem<dim>         *fe = FESet[currentFieldIndex];
               QGaussLobatto<dim - 1> face_quadrature_formula(degree + 1);
               FEFaceValues<dim>      fe_face_values(*fe,
                                                face_quadrature_formula,
@@ -246,8 +246,8 @@ MatrixFreePDE<dim, degree>::setPeriodicity()
 template <int dim, int degree>
 void
 MatrixFreePDE<dim, degree>::setPeriodicityConstraints(
-  AffineConstraints<double> * constraints,
-  const DoFHandler<dim> *     dof_handler) const
+  AffineConstraints<double> *constraints,
+  const DoFHandler<dim>     *dof_handler) const
 {
   // First, get the variable index of the current field
   unsigned int starting_BC_list_index = 0;
@@ -289,7 +289,7 @@ MatrixFreePDE<dim, degree>::setPeriodicityConstraints(
 template <int dim, int degree>
 void
 MatrixFreePDE<dim, degree>::getComponentsWithRigidBodyModes(
-  std::vector<int> & rigidBodyModeComponents) const
+  std::vector<int> &rigidBodyModeComponents) const
 {
   // Rigid body modes only matter for elliptic equations
   if (userInputs.var_eq_type[currentFieldIndex] == IMPLICIT_TIME_DEPENDENT ||
@@ -343,9 +343,9 @@ MatrixFreePDE<dim, degree>::getComponentsWithRigidBodyModes(
 template <int dim, int degree>
 void
 MatrixFreePDE<dim, degree>::setRigidBodyModeConstraints(
-  const std::vector<int>      rigidBodyModeComponents,
-  AffineConstraints<double> * constraints,
-  const DoFHandler<dim> *     dof_handler) const
+  const std::vector<int>     rigidBodyModeComponents,
+  AffineConstraints<double> *constraints,
+  const DoFHandler<dim>     *dof_handler) const
 {
   if (rigidBodyModeComponents.size() > 0)
     {

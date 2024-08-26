@@ -12,7 +12,7 @@ public:
   }
 
   double
-  value(const dealii::Point<dim> & p, const unsigned int component = 0) const
+  value(const dealii::Point<dim> &p, const unsigned int component = 0) const
   {
     double val;
     if (p[1] < 0.6 and p[0] > p[1] + 1.0e-10)
@@ -36,8 +36,8 @@ public:
 template <int dim>
 void
 setExpectedVertexLists(
-  std::vector<std::vector<dealii::Point<dim>>> & expected_vertex_list0,
-  std::vector<std::vector<dealii::Point<dim>>> & expected_vertex_list1)
+  std::vector<std::vector<dealii::Point<dim>>> &expected_vertex_list0,
+  std::vector<std::vector<dealii::Point<dim>>> &expected_vertex_list1)
 {
   // expected_vertex_list0
   {
@@ -341,7 +341,7 @@ unitTest<dim, T>::test_FloodFiller()
                           additional_data);
 #endif
 
-  vectorType * solution_field;
+  vectorType *solution_field;
   solution_field = new vectorType;
   matrixFreeObject.initialize_dof_vector(*solution_field, 0);
   *solution_field = 0;

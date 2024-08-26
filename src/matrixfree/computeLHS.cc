@@ -6,7 +6,7 @@
 template <int dim, int degree>
 
 void
-MatrixFreePDE<dim, degree>::vmult(vectorType & dst, const vectorType & src) const
+MatrixFreePDE<dim, degree>::vmult(vectorType &dst, const vectorType &src) const
 {
   // log time
   computing_timer.enter_subsection("matrixFreePDE: computeLHS");
@@ -45,10 +45,10 @@ MatrixFreePDE<dim, degree>::vmult(vectorType & dst, const vectorType & src) cons
 template <int dim, int degree>
 void
 MatrixFreePDE<dim, degree>::getLHS(
-  const MatrixFree<dim, double> &               data,
-  vectorType &                                  dst,
-  const vectorType &                            src,
-  const std::pair<unsigned int, unsigned int> & cell_range) const
+  const MatrixFree<dim, double>               &data,
+  vectorType                                  &dst,
+  const vectorType                            &src,
+  const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   variableContainer<dim, degree, dealii::VectorizedArray<double>>
     variable_list(data, userInputs.varInfoListLHS, userInputs.varChangeInfoListLHS);

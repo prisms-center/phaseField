@@ -38,9 +38,9 @@ variableAttributeLoader::loadPostProcessorVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::postProcessedFields(
-  const variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> & pp_variable_list,
-  const dealii::Point<dim, dealii::VectorizedArray<double>>         q_point_loc) const
+  const variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
+  variableContainer<dim, degree, dealii::VectorizedArray<double>>       &pp_variable_list,
+  const dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
 {
   // --- Getting the values and derivatives of the model variables ---
 

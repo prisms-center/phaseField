@@ -16,9 +16,9 @@ variableAttributeLoader::loadPostProcessorVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::postProcessedFields(
-  const variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> & pp_variable_list,
-  const dealii::Point<dim, dealii::VectorizedArray<double>>         q_point_loc) const
+  const variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
+  variableContainer<dim, degree, dealii::VectorizedArray<double>>       &pp_variable_list,
+  const dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
 {
   // The order parameter and its derivatives
   scalarvalueType n  = variable_list.get_scalar_value(0);

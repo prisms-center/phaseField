@@ -107,7 +107,7 @@ public:
   /**
    * Constructor.
    */
-  FloodFiller(dealii::FESystem<dim> & _fe, dealii::QGaussLobatto<dim> _quadrature)
+  FloodFiller(dealii::FESystem<dim> &_fe, dealii::QGaussLobatto<dim> _quadrature)
     : quadrature(_quadrature)
     , num_quad_points(_quadrature.size())
     , dofs_per_cell(_fe.dofs_per_cell)
@@ -120,13 +120,13 @@ public:
    * mesh/field and outputs a vector of GrainSet objects.
    */
   void
-  calcGrainSets(dealii::FESystem<dim> &      fe,
-                dealii::DoFHandler<dim> &    dof_handler,
-                vectorType *                 solution_field,
-                double                       threshold_lower,
-                double                       threshold_upper,
-                unsigned int                 order_parameter_index,
-                std::vector<GrainSet<dim>> & grain_sets);
+  calcGrainSets(dealii::FESystem<dim>      &fe,
+                dealii::DoFHandler<dim>    &dof_handler,
+                vectorType                 *solution_field,
+                double                      threshold_lower,
+                double                      threshold_upper,
+                unsigned int                order_parameter_index,
+                std::vector<GrainSet<dim>> &grain_sets);
 
 protected:
   /**
@@ -134,27 +134,27 @@ protected:
    */
   template <typename T>
   void
-  recursiveFloodFill(T                            di,
-                     T                            di_end,
-                     vectorType *                 solution_field,
-                     double                       threshold_lower,
-                     double                       threshold_upper,
-                     unsigned int &               grain_index,
-                     std::vector<GrainSet<dim>> & grain_sets,
-                     bool &                       grain_assigned);
+  recursiveFloodFill(T                           di,
+                     T                           di_end,
+                     vectorType                 *solution_field,
+                     double                      threshold_lower,
+                     double                      threshold_upper,
+                     unsigned int               &grain_index,
+                     std::vector<GrainSet<dim>> &grain_sets,
+                     bool                       &grain_assigned);
 
   /**
    * The method to merge the grain sets from all the processors.
    */
   void
-  createGlobalGrainSetList(std::vector<GrainSet<dim>> & grain_sets) const;
+  createGlobalGrainSetList(std::vector<GrainSet<dim>> &grain_sets) const;
 
   /**
    * Checks to see if grains found on different processors are parts of a larger
    * grain. If so, it merges the grain_sets entries.
    */
   void
-  mergeSplitGrains(std::vector<GrainSet<dim>> & grain_sets) const;
+  mergeSplitGrains(std::vector<GrainSet<dim>> &grain_sets) const;
 
   /**
    * The quadrature used to calculate the element-wise value of the solution
@@ -175,7 +175,7 @@ protected:
   /**
    * The deal.II finite element object, set in the constructor.
    */
-  dealii::FESystem<dim> * fe;
+  dealii::FESystem<dim> *fe;
 };
 
 #endif

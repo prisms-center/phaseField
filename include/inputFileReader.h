@@ -41,7 +41,7 @@ public:
 
   // Method to declare the parameters to be read from an input file
   void
-  declare_parameters(dealii::ParameterHandler &   parameter_handler,
+  declare_parameters(dealii::ParameterHandler    &parameter_handler,
                      const std::vector<fieldType> var_types,
                      const std::vector<PDEType>   var_eq_types,
                      const unsigned int           num_of_constants,
@@ -52,7 +52,7 @@ public:
   parse_line(std::string       line,
              const std::string keyword,
              const std::string entry_name,
-             std::string &     out_string,
+             std::string      &out_string,
              bool              expect_equals_sign) const;
 
   // Variables

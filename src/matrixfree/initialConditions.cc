@@ -13,16 +13,16 @@ public:
   unsigned int                                  index;
   Vector<double>                                values;
   typedef PRISMS::PField<double *, double, dim> ScalarField;
-  ScalarField &                                 inputField;
+  ScalarField                                  &inputField;
 
-  InitialConditionPField(const unsigned int _index, ScalarField & _inputField)
+  InitialConditionPField(const unsigned int _index, ScalarField &_inputField)
     : Function<dim>(1)
     , index(_index)
     , inputField(_inputField)
   {}
 
   double
-  value(const Point<dim> & p, const unsigned int component = 0) const
+  value(const Point<dim> &p, const unsigned int component = 0) const
   {
     double scalar_IC;
 
@@ -90,7 +90,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
       filename += ".vtk";
 
       body.read_vtk(filename);
-      ScalarField & id_field =
+      ScalarField &id_field =
         body.find_scalar_field(userInputs.grain_structure_variable_name);
 
       pcout << "Applying PField initial condition...\n";
@@ -358,7 +358,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
 
               // Load the data from the file using a PField
               body.read_vtk(filename);
-              ScalarField & conc =
+              ScalarField &conc =
                 body.find_scalar_field(userInputs.load_field_name[var_index]);
 
               if (userInputs.var_type[var_index] == SCALAR)

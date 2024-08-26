@@ -10,20 +10,20 @@ public:
 
   // Function to set the initial conditions (in ICs_and_BCs.h)
   void
-  setInitialCondition(const dealii::Point<dim> & p,
-                      const unsigned int         index,
-                      double &                   scalar_IC,
-                      dealii::Vector<double> &   vector_IC);
+  setInitialCondition(const dealii::Point<dim> &p,
+                      const unsigned int        index,
+                      double                   &scalar_IC,
+                      dealii::Vector<double>   &vector_IC);
 
   // Function to set the non-uniform Dirichlet boundary conditions (in
   // ICs_and_BCs.h)
   void
-  setNonUniformDirichletBCs(const dealii::Point<dim> & p,
-                            const unsigned int         index,
-                            const unsigned int         direction,
-                            const double               time,
-                            double &                   scalar_BC,
-                            dealii::Vector<double> &   vector_BC);
+  setNonUniformDirichletBCs(const dealii::Point<dim> &p,
+                            const unsigned int        index,
+                            const unsigned int        direction,
+                            const double              time,
+                            double                   &scalar_BC,
+                            dealii::Vector<double>   &vector_BC);
 
 private:
 #include "../../include/typeDefs.h"
@@ -34,29 +34,29 @@ private:
   // dependent equations (in equations.h)
   void
   explicitEquationRHS(
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
-    dealii::Point<dim, dealii::VectorizedArray<double>>               q_point_loc) const;
+    variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
+    dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const;
 
   // Function to set the RHS of the governing equations for all other equations
   // (in equations.h)
   void
   nonExplicitEquationRHS(
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
-    dealii::Point<dim, dealii::VectorizedArray<double>>               q_point_loc) const;
+    variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
+    dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const;
 
   // Function to set the LHS of the governing equations (in equations.h)
   void
   equationLHS(
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
-    dealii::Point<dim, dealii::VectorizedArray<double>>               q_point_loc) const;
+    variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
+    dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const;
 
 // Function to set postprocessing expressions (in postprocess.h)
 #ifdef POSTPROCESS_FILE_EXISTS
   void
   postProcessedFields(
-    const variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> & pp_variable_list,
-    const dealii::Point<dim, dealii::VectorizedArray<double>>         q_point_loc) const;
+    const variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
+    variableContainer<dim, degree, dealii::VectorizedArray<double>> &pp_variable_list,
+    const dealii::Point<dim, dealii::VectorizedArray<double>>        q_point_loc) const;
 #endif
 
 // Virtual method in MatrixFreePDE that we override if we need nucleation
@@ -75,9 +75,9 @@ private:
   // Method to place the nucleus and calculate the mobility modifier in
   // residualRHS
   void
-  seedNucleus(const dealii::Point<dim, dealii::VectorizedArray<double>> & q_point_loc,
-              dealii::VectorizedArray<double> &                           source_term,
-              dealii::VectorizedArray<double> &                           gamma) const;
+  seedNucleus(const dealii::Point<dim, dealii::VectorizedArray<double>> &q_point_loc,
+              dealii::VectorizedArray<double>                           &source_term,
+              dealii::VectorizedArray<double>                           &gamma) const;
 
   // ================================================================
   // Model constants specific to this subclass

@@ -19,7 +19,7 @@ public:
 
   void
   call_setRigidBodyModeConstraints(std::vector<int> rigidBodyModeComponents,
-                                   unsigned int &   num_constraints)
+                                   unsigned int    &num_constraints)
   {
     this->setRigidBodyModeConstraints(rigidBodyModeComponents,
                                       this->constraintsOtherSet_nonconst[0],
@@ -34,47 +34,47 @@ public:
 
   // Function to set the initial conditions (in ICs_and_BCs.h)
   void
-  setInitialCondition(const dealii::Point<dim> & p,
-                      const unsigned int         index,
-                      double &                   scalar_IC,
-                      dealii::Vector<double> &   vector_IC) {};
+  setInitialCondition(const dealii::Point<dim> &p,
+                      const unsigned int        index,
+                      double                   &scalar_IC,
+                      dealii::Vector<double>   &vector_IC) {};
 
   // Function to set the non-uniform Dirichlet boundary conditions (in
   // ICs_and_BCs.h)
   void
-  setNonUniformDirichletBCs(const dealii::Point<dim> & p,
-                            const unsigned int         index,
-                            const unsigned int         direction,
-                            const double               time,
-                            double &                   scalar_BC,
-                            dealii::Vector<double> &   vector_BC) {};
+  setNonUniformDirichletBCs(const dealii::Point<dim> &p,
+                            const unsigned int        index,
+                            const unsigned int        direction,
+                            const double              time,
+                            double                   &scalar_BC,
+                            dealii::Vector<double>   &vector_BC) {};
 
 private:
   // RHS implementation for explicit solve
   void
-  getRHS(const MatrixFree<dim, double> &               data,
-         std::vector<vectorType *> &                   dst,
-         const std::vector<vectorType *> &             src,
-         const std::pair<unsigned int, unsigned int> & cell_range) const {};
+  getRHS(const MatrixFree<dim, double>               &data,
+         std::vector<vectorType *>                   &dst,
+         const std::vector<vectorType *>             &src,
+         const std::pair<unsigned int, unsigned int> &cell_range) const {};
 
   // Function to set the RHS of the governing equations for explicit time
   // dependent equations (in equations.h)
   void
   explicitEquationRHS(
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
+    variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
     dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const {};
 
   // Function to set the RHS of the governing equations for all other equations
   // (in equations.h)
   void
   nonExplicitEquationRHS(
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
+    variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
     dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const {};
 
   // Function to set the LHS of the governing equations (in equations.h)
   void
   equationLHS(
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
+    variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
     dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const {};
 };
 

@@ -57,7 +57,7 @@ bool
 inputFileReader::parse_line(std::string       line,
                             const std::string keyword,
                             const std::string entry_name,
-                            std::string &     out_string,
+                            std::string      &out_string,
                             const bool        expect_equals_sign) const
 {
   // Strip spaces at the front and back
@@ -271,7 +271,7 @@ inputFileReader::get_entry_name_ending_list(const std::string parameters_file_na
 }
 
 void
-inputFileReader::declare_parameters(dealii::ParameterHandler &   parameter_handler,
+inputFileReader::declare_parameters(dealii::ParameterHandler    &parameter_handler,
                                     const std::vector<fieldType> var_types,
                                     const std::vector<PDEType>   var_eq_types,
                                     const unsigned int           num_of_constants,

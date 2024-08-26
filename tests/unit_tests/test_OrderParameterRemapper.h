@@ -12,7 +12,7 @@ public:
   }
 
   double
-  value(const dealii::Point<dim> & p, const unsigned int component = 0) const
+  value(const dealii::Point<dim> &p, const unsigned int component = 0) const
   {
     double val;
 
@@ -97,7 +97,7 @@ unitTest<dim, T>::test_OrderParameterRemapper()
                           additional_data);
 #endif
 
-  vectorType * solution_field_0;
+  vectorType *solution_field_0;
   solution_field_0 = new vectorType;
   matrixFreeObject.initialize_dof_vector(*solution_field_0, 0);
   *solution_field_0 = 0;
@@ -109,7 +109,7 @@ unitTest<dim, T>::test_OrderParameterRemapper()
 
   solution_field_0->update_ghost_values();
 
-  vectorType * solution_field_1;
+  vectorType *solution_field_1;
   solution_field_1 = new vectorType;
   matrixFreeObject.initialize_dof_vector(*solution_field_1, 0);
   *solution_field_1 = 0;

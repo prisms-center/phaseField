@@ -3,7 +3,7 @@
 
 template <int dim, int degree>
 void
-MatrixFreePDE<dim, degree>::computeIntegral(double &                  integratedField,
+MatrixFreePDE<dim, degree>::computeIntegral(double                   &integratedField,
                                             int                       index,
                                             std::vector<vectorType *> variableSet)
 {
@@ -54,8 +54,8 @@ MatrixFreePDE<dim, degree>::computeIntegral(double &                  integrated
 // update RHS of each field
 template <int dim, int degree>
 void
-MatrixFreePDE<dim, degree>::computeIntegralMF(double & integratedField,
-                                              int      index,
+MatrixFreePDE<dim, degree>::computeIntegralMF(double &integratedField,
+                                              int     index,
                                               const std::vector<vectorType *> variableSet)
 {
   // log time
@@ -79,10 +79,10 @@ MatrixFreePDE<dim, degree>::computeIntegralMF(double & integratedField,
 template <int dim, int degree>
 void
 MatrixFreePDE<dim, degree>::getIntegralMF(
-  const MatrixFree<dim, double> &               data,
-  std::vector<vectorType *> &                   dst,
-  const std::vector<vectorType *> &             src,
-  const std::pair<unsigned int, unsigned int> & cell_range)
+  const MatrixFree<dim, double>               &data,
+  std::vector<vectorType *>                   &dst,
+  const std::vector<vectorType *>             &src,
+  const std::pair<unsigned int, unsigned int> &cell_range)
 {
   dealii::FEEvaluation<dim, degree, degree + 1, 1, double> var(data, 0);
 

@@ -22,7 +22,7 @@ namespace PRISMS
 {
 
   void
-  PLibrary::checkout(std::string name, PSimpleFunction<double *, double> & simplefunc)
+  PLibrary::checkout(std::string name, PSimpleFunction<double *, double> &simplefunc)
   {
     typedef PSimpleFunction<double *, double> psf;
     if (name == "pfunct_faV_f")
@@ -81,7 +81,7 @@ namespace PRISMS
   }
 
   void
-  PLibrary::checkout(std::string name, PFunction<double *, double> & func)
+  PLibrary::checkout(std::string name, PFunction<double *, double> &func)
   {
     typedef PFunction<double *, double> pf;
     if (name == "pfunct_faV")
@@ -119,7 +119,7 @@ namespace PRISMS
   }
 
   void
-  PLibrary::checkout(std::string name, PSimpleBase<double *, double> *& simplefunc)
+  PLibrary::checkout(std::string name, PSimpleBase<double *, double> *&simplefunc)
   {
     if (name == "pfunct_faV_f")
       {
@@ -176,7 +176,7 @@ namespace PRISMS
   }
 
   void
-  PLibrary::checkout(std::string name, PFuncBase<double *, double> *& func)
+  PLibrary::checkout(std::string name, PFuncBase<double *, double> *&func)
   {
     if (name == "pfunct_faV")
       {

@@ -25,10 +25,10 @@ MatrixFreePDE<dim, degree>::computeExplicitRHS()
 template <int dim, int degree>
 void
 MatrixFreePDE<dim, degree>::getExplicitRHS(
-  const MatrixFree<dim, double> &               data,
-  std::vector<vectorType *> &                   dst,
-  const std::vector<vectorType *> &             src,
-  const std::pair<unsigned int, unsigned int> & cell_range) const
+  const MatrixFree<dim, double>               &data,
+  std::vector<vectorType *>                   &dst,
+  const std::vector<vectorType *>             &src,
+  const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   variableContainer<dim, degree, dealii::VectorizedArray<double>> variable_list(
     data,
@@ -80,10 +80,10 @@ MatrixFreePDE<dim, degree>::computeNonexplicitRHS()
 template <int dim, int degree>
 void
 MatrixFreePDE<dim, degree>::getNonexplicitRHS(
-  const MatrixFree<dim, double> &               data,
-  std::vector<vectorType *> &                   dst,
-  const std::vector<vectorType *> &             src,
-  const std::pair<unsigned int, unsigned int> & cell_range) const
+  const MatrixFree<dim, double>               &data,
+  std::vector<vectorType *>                   &dst,
+  const std::vector<vectorType *>             &src,
+  const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   variableContainer<dim, degree, dealii::VectorizedArray<double>> variable_list(
     data,

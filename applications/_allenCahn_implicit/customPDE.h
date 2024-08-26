@@ -16,27 +16,27 @@ private:
   // Pure virtual method in MatrixFreePDE
   void
   residualExplicitRHS(
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
-    dealii::Point<dim, dealii::VectorizedArray<double>>               q_point_loc) const;
+    variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
+    dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const;
 
   void
   residualNonexplicitRHS(
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
-    dealii::Point<dim, dealii::VectorizedArray<double>>               q_point_loc) const;
+    variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
+    dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const;
 
   // Pure virtual method in MatrixFreePDE
   void
   residualLHS(
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
-    dealii::Point<dim, dealii::VectorizedArray<double>>               q_point_loc) const;
+    variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
+    dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const;
 
 // Virtual method in MatrixFreePDE that we override if we need postprocessing
 #ifdef POSTPROCESS_FILE_EXISTS
   void
   postProcessedFields(
-    const variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> & pp_variable_list,
-    const dealii::Point<dim, dealii::VectorizedArray<double>>         q_point_loc) const;
+    const variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
+    variableContainer<dim, degree, dealii::VectorizedArray<double>> &pp_variable_list,
+    const dealii::Point<dim, dealii::VectorizedArray<double>>        q_point_loc) const;
 #endif
 
 // Virtual method in MatrixFreePDE that we override if we need nucleation

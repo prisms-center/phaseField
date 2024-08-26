@@ -20,7 +20,7 @@ public:
    * to set the radius and center of the grain. The members order_parameter_id
    * and old_order_parameter_id are initialized to the same value.
    */
-  SimplifiedGrainRepresentation(const GrainSet<dim> & grain_set);
+  SimplifiedGrainRepresentation(const GrainSet<dim> &grain_set);
 
   /**
    * Getter for the grain center/centroid.
@@ -131,8 +131,8 @@ public:
    * objects with the same order parameter and reassigns them, if needed.
    */
   void
-  reassignGrains(std::vector<SimplifiedGrainRepresentation<dim>> & grain_representations,
-                 double                                            buffer_distance,
+  reassignGrains(std::vector<SimplifiedGrainRepresentation<dim>> &grain_representations,
+                 double                                           buffer_distance,
                  std::vector<unsigned int> order_parameter_id_list);
 
   /**
@@ -143,8 +143,8 @@ public:
    */
   void
   transferGrainIds(
-    const std::vector<SimplifiedGrainRepresentation<dim>> & old_grain_representations,
-    std::vector<SimplifiedGrainRepresentation<dim>> & new_grain_representations) const;
+    const std::vector<SimplifiedGrainRepresentation<dim>> &old_grain_representations,
+    std::vector<SimplifiedGrainRepresentation<dim>> &new_grain_representations) const;
 
 protected:
 };

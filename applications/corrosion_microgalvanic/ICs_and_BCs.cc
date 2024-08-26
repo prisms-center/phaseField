@@ -7,10 +7,10 @@ using namespace std;
 
 template <int dim, int degree>
 void
-customPDE<dim, degree>::setInitialCondition(const dealii::Point<dim> & p,
-                                            const unsigned int         index,
-                                            double &                   scalar_IC,
-                                            dealii::Vector<double> &   vector_IC)
+customPDE<dim, degree>::setInitialCondition(const dealii::Point<dim> &p,
+                                            const unsigned int        index,
+                                            double                   &scalar_IC,
+                                            dealii::Vector<double>   &vector_IC)
 {
   // ---------------------------------------------------------------------
   // ENTER THE INITIAL CONDITIONS HERE FOR SCALAR FIELDS
@@ -91,12 +91,12 @@ customPDE<dim, degree>::setInitialCondition(const dealii::Point<dim> & p,
 
 template <int dim, int degree>
 void
-customPDE<dim, degree>::setNonUniformDirichletBCs(const dealii::Point<dim> & p,
-                                                  const unsigned int         index,
-                                                  const unsigned int         direction,
-                                                  const double               time,
-                                                  double &                   scalar_BC,
-                                                  dealii::Vector<double> &   vector_BC)
+customPDE<dim, degree>::setNonUniformDirichletBCs(const dealii::Point<dim> &p,
+                                                  const unsigned int        index,
+                                                  const unsigned int        direction,
+                                                  const double              time,
+                                                  double                   &scalar_BC,
+                                                  dealii::Vector<double>   &vector_BC)
 {
   // --------------------------------------------------------------------------
   // ENTER THE NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS HERE

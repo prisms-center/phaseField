@@ -41,16 +41,16 @@ public:
   // Constructors
 
   // Standard contructor, used for most situations
-  variableContainer(const dealii::MatrixFree<dim, double> & data,
-                    std::vector<variable_info>              _varInfoList,
-                    std::vector<variable_info>              _varChangeInfoList);
-  variableContainer(const dealii::MatrixFree<dim, double> & data,
-                    std::vector<variable_info>              _varInfoList);
+  variableContainer(const dealii::MatrixFree<dim, double> &data,
+                    std::vector<variable_info>             _varInfoList,
+                    std::vector<variable_info>             _varChangeInfoList);
+  variableContainer(const dealii::MatrixFree<dim, double> &data,
+                    std::vector<variable_info>             _varInfoList);
   // Nonstandard constructor, used when only one index of "data" should be used,
   // use with care!
-  variableContainer(const dealii::MatrixFree<dim, double> & data,
-                    std::vector<variable_info>              _varInfoList,
-                    unsigned int                            fixed_index);
+  variableContainer(const dealii::MatrixFree<dim, double> &data,
+                    std::vector<variable_info>             _varInfoList,
+                    unsigned int                           fixed_index);
 
   // Methods to get the value/grad/hess in the residual method (this is how the
   // user gets these values in equations.h)
@@ -108,13 +108,13 @@ public:
 
   // Initialize, read DOFs, and set evaulation flags for each variable
   void
-  reinit_and_eval(const std::vector<vectorType *> & src, unsigned int cell);
+  reinit_and_eval(const std::vector<vectorType *> &src, unsigned int cell);
   void
-  reinit_and_eval_change_in_solution(const vectorType & src,
-                                     unsigned int       cell,
-                                     unsigned int       var_being_solved);
+  reinit_and_eval_change_in_solution(const vectorType &src,
+                                     unsigned int      cell,
+                                     unsigned int      var_being_solved);
   void
-  reinit_and_eval_LHS(const vectorType &              src,
+  reinit_and_eval_LHS(const vectorType               &src,
                       const std::vector<vectorType *> solutionSet,
                       unsigned int                    cell,
                       unsigned int                    var_being_solved);
@@ -126,9 +126,9 @@ public:
 
   // Integrate the residuals and distribute from local to global
   void
-  integrate_and_distribute(std::vector<vectorType *> & dst);
+  integrate_and_distribute(std::vector<vectorType *> &dst);
   void
-  integrate_and_distribute_change_in_solution_LHS(vectorType &       dst,
+  integrate_and_distribute_change_in_solution_LHS(vectorType        &dst,
                                                   const unsigned int var_being_solved);
 
   // The quadrature point index, a method to get the number of quadrature points

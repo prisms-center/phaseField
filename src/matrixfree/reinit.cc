@@ -20,18 +20,18 @@ MatrixFreePDE<dim, degree>::reinit()
       char buffer[100];
 
       // create FESystem
-      FESystem<dim> * fe;
+      FESystem<dim> *fe;
       fe = FESet.at(it->index);
 
       // distribute DOFs
-      DoFHandler<dim> * dof_handler;
+      DoFHandler<dim> *dof_handler;
       dof_handler = dofHandlersSet_nonconst.at(it->index);
 
       dof_handler->distribute_dofs(*fe);
       totalDOFs += dof_handler->n_dofs();
 
       // extract locally_relevant_dofs
-      IndexSet * locally_relevant_dofs;
+      IndexSet *locally_relevant_dofs;
       locally_relevant_dofs = locally_relevant_dofsSet_nonconst.at(it->index);
 
       locally_relevant_dofs->clear();
@@ -123,7 +123,7 @@ MatrixFreePDE<dim, degree>::reinit()
   pcout << "initializing parallel::distributed residual and solution vectors\n";
   for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
     {
-      vectorType * U;
+      vectorType *U;
 
       U = solutionSet.at(fieldIndex);
 
@@ -170,7 +170,7 @@ MatrixFreePDE<dim, degree>::reinit()
       delete soltransSet[fieldIndex];
 
       // reset residual vector
-      vectorType * R = residualSet.at(fieldIndex);
+      vectorType *R = residualSet.at(fieldIndex);
       matrixFreeObject.initialize_dof_vector(*R, fieldIndex);
       *R = 0;
     }

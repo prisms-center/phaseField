@@ -8,7 +8,7 @@
 template <int dim, int degree>
 void
 MatrixFreePDE<dim, degree>::markBoundaries(
-  parallel::distributed::Triangulation<dim> & tria) const
+  parallel::distributed::Triangulation<dim> &tria) const
 {
   typename Triangulation<dim>::cell_iterator cell = tria.begin(), endc = tria.end();
 

@@ -119,7 +119,7 @@ MatrixFreePDE<dim, degree>::init()
         }
 
       // create FESystem
-      FESystem<dim> * fe;
+      FESystem<dim> *fe;
 
       if (it->type == SCALAR)
         {
@@ -137,7 +137,7 @@ MatrixFreePDE<dim, degree>::init()
       FESet.push_back(fe);
 
       // distribute DOFs
-      DoFHandler<dim> * dof_handler;
+      DoFHandler<dim> *dof_handler;
 
       dof_handler = new DoFHandler<dim>(triangulation);
       dofHandlersSet.push_back(dof_handler);
@@ -147,7 +147,7 @@ MatrixFreePDE<dim, degree>::init()
       totalDOFs += dof_handler->n_dofs();
 
       // Extract locally_relevant_dofs
-      IndexSet * locally_relevant_dofs;
+      IndexSet *locally_relevant_dofs;
 
       locally_relevant_dofs = new IndexSet;
       locally_relevant_dofsSet.push_back(locally_relevant_dofs);
@@ -362,7 +362,7 @@ MatrixFreePDE<dim, degree>::init()
 template <int dim, int degree>
 void
 MatrixFreePDE<dim, degree>::makeTriangulation(
-  parallel::distributed::Triangulation<dim> & tria) const
+  parallel::distributed::Triangulation<dim> &tria) const
 {
   if (dim == 3)
     {

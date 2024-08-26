@@ -122,8 +122,8 @@ variableAttributeLoader::loadVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::explicitEquationRHS(
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
-  dealii::Point<dim, dealii::VectorizedArray<double>>               q_point_loc) const
+  variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
+  dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const
 {
   // --- Parameters in the explicit equations can be set here  ---
 
@@ -256,8 +256,8 @@ customPDE<dim, degree>::explicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::nonExplicitEquationRHS(
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
-  dealii::Point<dim, dealii::VectorizedArray<double>>               q_point_loc) const
+  variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
+  dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
@@ -396,8 +396,8 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::equationLHS(
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
-  dealii::Point<dim, dealii::VectorizedArray<double>>               q_point_loc) const
+  variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
+  dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const
 {
   // The order parameter of the anodic phase
   scalarvalueType nAnodic = variable_list.get_scalar_value(0);

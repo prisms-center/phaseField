@@ -111,7 +111,7 @@ public:
    * A*x functionality for solving the system of equations AX=b.
    */
   void
-  vmult(vectorType & dst, const vectorType & src) const;
+  vmult(vectorType &dst, const vectorType &src) const;
   /**
    * Vector of all the physical fields in the problem. Fields are identified by
    * dimentionality (SCALAR/VECTOR), the kind of PDE (ELLIPTIC/PARABOLIC) used
@@ -128,19 +128,19 @@ public:
 
   // Initial conditions function
   virtual void
-  setInitialCondition(const dealii::Point<dim> & p,
-                      const unsigned int         index,
-                      double &                   scalar_IC,
-                      dealii::Vector<double> &   vector_IC) = 0;
+  setInitialCondition(const dealii::Point<dim> &p,
+                      const unsigned int        index,
+                      double                   &scalar_IC,
+                      dealii::Vector<double>   &vector_IC) = 0;
 
   // Non-uniform boundary conditions function
   virtual void
-  setNonUniformDirichletBCs(const dealii::Point<dim> & p,
-                            const unsigned int         index,
-                            const unsigned int         direction,
-                            const double               time,
-                            double &                   scalar_BC,
-                            dealii::Vector<double> &   vector_BC) = 0;
+  setNonUniformDirichletBCs(const dealii::Point<dim> &p,
+                            const unsigned int        index,
+                            const unsigned int        direction,
+                            const double              time,
+                            double                   &scalar_BC,
+                            dealii::Vector<double>   &vector_BC) = 0;
 
 protected:
   userInputParameters<dim> userInputs;
@@ -296,71 +296,71 @@ protected:
   // virtual methods to be implemented in the derived class
   /*Method to calculate LHS(implicit solve)*/
   void
-  getLHS(const MatrixFree<dim, double> &               data,
-         vectorType &                                  dst,
-         const vectorType &                            src,
-         const std::pair<unsigned int, unsigned int> & cell_range) const;
+  getLHS(const MatrixFree<dim, double>               &data,
+         vectorType                                  &dst,
+         const vectorType                            &src,
+         const std::pair<unsigned int, unsigned int> &cell_range) const;
 
   bool generatingInitialGuess;
   void
-  getLaplaceLHS(const MatrixFree<dim, double> &               data,
-                vectorType &                                  dst,
-                const vectorType &                            src,
-                const std::pair<unsigned int, unsigned int> & cell_range) const;
+  getLaplaceLHS(const MatrixFree<dim, double>               &data,
+                vectorType                                  &dst,
+                const vectorType                            &src,
+                const std::pair<unsigned int, unsigned int> &cell_range) const;
 
   void
   setNonlinearEqInitialGuess();
   void
   computeLaplaceRHS(unsigned int fieldIndex);
   void
-  getLaplaceRHS(const MatrixFree<dim, double> &               data,
-                vectorType &                                  dst,
-                const vectorType &                            src,
-                const std::pair<unsigned int, unsigned int> & cell_range) const;
+  getLaplaceRHS(const MatrixFree<dim, double>               &data,
+                vectorType                                  &dst,
+                const vectorType                            &src,
+                const std::pair<unsigned int, unsigned int> &cell_range) const;
 
   /*Method to calculate RHS (implicit/explicit). This is an abstract method, so
    * every model which inherits MatrixFreePDE<dim> has to implement this
    * method.*/
   void
-  getExplicitRHS(const MatrixFree<dim, double> &               data,
-                 std::vector<vectorType *> &                   dst,
-                 const std::vector<vectorType *> &             src,
-                 const std::pair<unsigned int, unsigned int> & cell_range) const;
+  getExplicitRHS(const MatrixFree<dim, double>               &data,
+                 std::vector<vectorType *>                   &dst,
+                 const std::vector<vectorType *>             &src,
+                 const std::pair<unsigned int, unsigned int> &cell_range) const;
 
   void
-  getNonexplicitRHS(const MatrixFree<dim, double> &               data,
-                    std::vector<vectorType *> &                   dst,
-                    const std::vector<vectorType *> &             src,
-                    const std::pair<unsigned int, unsigned int> & cell_range) const;
+  getNonexplicitRHS(const MatrixFree<dim, double>               &data,
+                    std::vector<vectorType *>                   &dst,
+                    const std::vector<vectorType *>             &src,
+                    const std::pair<unsigned int, unsigned int> &cell_range) const;
 
   virtual void
   explicitEquationRHS(
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
+    variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
     dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const = 0;
 
   virtual void
   nonExplicitEquationRHS(
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
+    variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
     dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const = 0;
 
   virtual void
   equationLHS(
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
+    variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
     dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const = 0;
 
   virtual void
   postProcessedFields(
-    const variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> & pp_variable_list,
+    const variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
+    variableContainer<dim, degree, dealii::VectorizedArray<double>> &pp_variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const {};
   void
-  computePostProcessedFields(std::vector<vectorType *> & postProcessedSet);
+  computePostProcessedFields(std::vector<vectorType *> &postProcessedSet);
 
   void
-  getPostProcessedFields(const dealii::MatrixFree<dim, double> &       data,
-                         std::vector<vectorType *> &                   dst,
-                         const std::vector<vectorType *> &             src,
-                         const std::pair<unsigned int, unsigned int> & cell_range);
+  getPostProcessedFields(const dealii::MatrixFree<dim, double>       &data,
+                         std::vector<vectorType *>                   &dst,
+                         const std::vector<vectorType *>             &src,
+                         const std::pair<unsigned int, unsigned int> &cell_range);
 
   // methods to apply dirichlet BC's
   /*Map of degrees of freedom to the corresponding Dirichlet boundary
@@ -429,10 +429,10 @@ protected:
   std::vector<nucleus<dim>>
   getNewNuclei();
   void
-  getLocalNucleiList(std::vector<nucleus<dim>> & newnuclei) const;
+  getLocalNucleiList(std::vector<nucleus<dim>> &newnuclei) const;
   void
-  safetyCheckNewNuclei(std::vector<nucleus<dim>>   newnuclei,
-                       std::vector<unsigned int> & conflict_ids);
+  safetyCheckNewNuclei(std::vector<nucleus<dim>>  newnuclei,
+                       std::vector<unsigned int> &conflict_ids);
   void
   refineMeshNearNuclei(std::vector<nucleus<dim>> newnuclei);
   double
@@ -465,11 +465,11 @@ protected:
 
   std::vector<double> freeEnergyValues;
   void
-  outputFreeEnergy(const std::vector<double> & freeEnergyValues) const;
+  outputFreeEnergy(const std::vector<double> &freeEnergyValues) const;
 
   /*Method to compute the integral of a field.*/
   void
-  computeIntegral(double &                  integratedField,
+  computeIntegral(double                   &integratedField,
                   int                       index,
                   std::vector<vectorType *> postProcessedSet);
 
@@ -500,15 +500,15 @@ protected:
   std::mutex   assembler_lock;
 
   void
-  computeIntegralMF(double &                        integratedField,
+  computeIntegralMF(double                         &integratedField,
                     int                             index,
                     const std::vector<vectorType *> postProcessedSet);
 
   void
-  getIntegralMF(const MatrixFree<dim, double> &               data,
-                std::vector<vectorType *> &                   dst,
-                const std::vector<vectorType *> &             src,
-                const std::pair<unsigned int, unsigned int> & cell_range);
+  getIntegralMF(const MatrixFree<dim, double>               &data,
+                std::vector<vectorType *>                   &dst,
+                const std::vector<vectorType *>             &src,
+                const std::pair<unsigned int, unsigned int> &cell_range);
 };
 
 #endif

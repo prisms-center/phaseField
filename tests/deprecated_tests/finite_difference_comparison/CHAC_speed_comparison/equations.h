@@ -100,8 +100,8 @@
 template <int dim>
 void
 generalizedProblem<dim>::residualRHS(
-  const std::vector<modelVariable<dim>> &             modelVariablesList,
-  std::vector<modelResidual<dim>> &                   modelResidualsList,
+  const std::vector<modelVariable<dim>>              &modelVariablesList,
+  std::vector<modelResidual<dim>>                    &modelResidualsList,
   dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
 {
   // The concentration and its derivatives (names here should match those in the
@@ -144,8 +144,8 @@ generalizedProblem<dim>::residualRHS(
 template <int dim>
 void
 generalizedProblem<dim>::residualLHS(
-  const std::vector<modelVariable<dim>> &             modelVariablesList,
-  modelResidual<dim> &                                modelRes,
+  const std::vector<modelVariable<dim>>              &modelVariablesList,
+  modelResidual<dim>                                 &modelRes,
   dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
 {}
 
@@ -164,8 +164,8 @@ generalizedProblem<dim>::residualLHS(
 template <int dim>
 void
 generalizedProblem<dim>::energyDensity(
-  const std::vector<modelVariable<dim>> &             modelVariablesList,
-  const dealii::VectorizedArray<double> &             JxW_value,
+  const std::vector<modelVariable<dim>>              &modelVariablesList,
+  const dealii::VectorizedArray<double>              &JxW_value,
   dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc)
 {
   // The concentration and its derivatives (names here should match those in the

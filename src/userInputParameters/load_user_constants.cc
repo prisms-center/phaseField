@@ -8,9 +8,8 @@
 // ==========================================================================================
 template <int dim>
 void
-userInputParameters<dim>::load_user_constants(
-  inputFileReader &          input_file_reader,
-  dealii::ParameterHandler & parameter_handler)
+userInputParameters<dim>::load_user_constants(inputFileReader          &input_file_reader,
+                                              dealii::ParameterHandler &parameter_handler)
 {
   unsigned int number_of_constants = input_file_reader.num_constants;
 
@@ -228,7 +227,7 @@ userInputParameters<dim>::load_user_constants(
                 }
 
               std::string elastic_const_symmetry = model_constants_type_strings.at(0);
-              dealii::Tensor<2, 2 * dim - 1 + dim / 3> temp =
+              dealii::Tensor<2, 2 *dim - 1 + dim / 3> temp =
                 get_Cij_tensor(temp_elastic_constants, elastic_const_symmetry);
               model_constants.push_back(temp);
             }
@@ -323,9 +322,9 @@ userInputParameters<dim>::get_Cij_tensor(std::vector<double> elastic_constants,
 
 template <int dim>
 dealii::Tensor<2, 2 * dim - 1 + dim / 3>
-userInputParameters<dim>::getCIJMatrix(const elasticityModel        model,
-                                       const std::vector<double>    constants,
-                                       dealii::ConditionalOStream & pcout) const
+userInputParameters<dim>::getCIJMatrix(const elasticityModel       model,
+                                       const std::vector<double>   constants,
+                                       dealii::ConditionalOStream &pcout) const
 {
   // CIJ.fill(0.0);
   dealii::Tensor<2, 2 * dim - 1 + dim / 3> CIJ;

@@ -11,7 +11,7 @@
 
 // main
 int
-main(int argc, char ** argv)
+main(int argc, char **argv)
 {
   Utilities::MPI::MPI_InitFinalize mpi_initialization(argc,
                                                       argv,
@@ -26,7 +26,7 @@ main(int argc, char ** argv)
       problem.init();
       problem.solve();
     }
-  catch (std::exception & exc)
+  catch (std::exception &exc)
     {
       std::cerr << std::endl
                 << std::endl

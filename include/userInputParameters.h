@@ -40,9 +40,9 @@ class userInputParameters
 public:
   // Method to read the input parameters from a file and load them into the
   // class member variables
-  userInputParameters(inputFileReader &          input_file_reader,
-                      dealii::ParameterHandler & parameter_handler,
-                      variableAttributeLoader    variable_attributes);
+  userInputParameters(inputFileReader          &input_file_reader,
+                      dealii::ParameterHandler &parameter_handler,
+                      variableAttributeLoader   variable_attributes);
 
   // Method to create the list of BCs from the user input strings (called from
   // the constructor)
@@ -259,22 +259,22 @@ private:
   // Method to create the list of time steps where the results should be output
   // (called from loadInputParameters)
   std::vector<unsigned int>
-  setTimeStepList(const std::string                 outputSpacingType,
-                  unsigned int                      numberOfOutputs,
-                  const std::vector<unsigned int> & userGivenTimeStepList);
+  setTimeStepList(const std::string                outputSpacingType,
+                  unsigned int                     numberOfOutputs,
+                  const std::vector<unsigned int> &userGivenTimeStepList);
 
   void
-  load_user_constants(inputFileReader &          input_file_reader,
-                      dealii::ParameterHandler & parameter_handler);
+  load_user_constants(inputFileReader          &input_file_reader,
+                      dealii::ParameterHandler &parameter_handler);
 
   dealii::Tensor<2, 2 * dim - 1 + dim / 3>
   get_Cij_tensor(std::vector<double> elastic_constants,
                  const std::string   elastic_const_symmetry) const;
 
   dealii::Tensor<2, 2 * dim - 1 + dim / 3>
-  getCIJMatrix(const elasticityModel        model,
-               const std::vector<double>    constants,
-               dealii::ConditionalOStream & pcout) const;
+  getCIJMatrix(const elasticityModel       model,
+               const std::vector<double>   constants,
+               dealii::ConditionalOStream &pcout) const;
 
   // Private nucleation variables
   std::vector<nucleationParameters<dim>> nucleation_parameters_list;

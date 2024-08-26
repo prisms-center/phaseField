@@ -212,8 +212,8 @@ MatrixFreePDE<dim, degree>::load_checkpoint_time_info()
 // Move/rename a checkpoint file
 template <int dim, int degree>
 void
-MatrixFreePDE<dim, degree>::move_file(const std::string & old_name,
-                                      const std::string & new_name)
+MatrixFreePDE<dim, degree>::move_file(const std::string &old_name,
+                                      const std::string &new_name)
 {
   int error = system(("mv " + old_name + " " + new_name).c_str());
 

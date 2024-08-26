@@ -4,8 +4,8 @@
 
 template <int dim>
 double
-InitialCondition<dim>::value(const dealii::Point<dim> & p,
-                             const unsigned int         component) const
+InitialCondition<dim>::value(const dealii::Point<dim> &p,
+                             const unsigned int        component) const
 {
   double scalar_IC;
   // ---------------------------------------------------------------------
@@ -57,8 +57,8 @@ InitialCondition<dim>::value(const dealii::Point<dim> & p,
 
 template <int dim>
 void
-InitialConditionVec<dim>::vector_value(const dealii::Point<dim> & p,
-                                       dealii::Vector<double> &   vector_IC) const
+InitialConditionVec<dim>::vector_value(const dealii::Point<dim> &p,
+                                       dealii::Vector<double>   &vector_IC) const
 {
   // ---------------------------------------------------------------------
   // ENTER THE INITIAL CONDITIONS HERE FOR VECTOR FIELDS
@@ -76,8 +76,8 @@ InitialConditionVec<dim>::vector_value(const dealii::Point<dim> & p,
 
 template <int dim>
 double
-NonUniformDirichletBC<dim>::value(const dealii::Point<dim> & p,
-                                  const unsigned int         component) const
+NonUniformDirichletBC<dim>::value(const dealii::Point<dim> &p,
+                                  const unsigned int        component) const
 {
   double scalar_BC = 0;
   // --------------------------------------------------------------------------
@@ -98,8 +98,8 @@ NonUniformDirichletBC<dim>::value(const dealii::Point<dim> & p,
 
 template <int dim>
 void
-NonUniformDirichletBCVec<dim>::vector_value(const dealii::Point<dim> & p,
-                                            dealii::Vector<double> &   vector_BC) const
+NonUniformDirichletBCVec<dim>::vector_value(const dealii::Point<dim> &p,
+                                            dealii::Vector<double>   &vector_BC) const
 {
   // --------------------------------------------------------------------------
   // ENTER THE NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS HERE FOR VECTOR FIELDS

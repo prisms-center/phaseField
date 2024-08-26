@@ -1,7 +1,7 @@
 // Unit test(s) for the method "computeStress"
 template <int dim, typename T>
 void
-unitTest<dim, T>::assignCIJSize(dealii::Table<2, double> & CIJ)
+unitTest<dim, T>::assignCIJSize(dealii::Table<2, double> &CIJ)
 {
   dealii::TableIndices<2> new_size;
   new_size[0] = 2 * dim - 1 + dim / 3;

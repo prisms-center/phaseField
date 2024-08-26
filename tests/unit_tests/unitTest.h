@@ -26,7 +26,7 @@
 // define data type
 template <int dim>
 void
-computeStress(const dealii::Table<2, double> &      CIJ,
+computeStress(const dealii::Table<2, double>       &CIJ,
               const dealii::VectorizedArray<double> ux[][dim],
               const dealii::VectorizedArray<double> R[][dim]);
 
@@ -72,16 +72,16 @@ class unitTest
 {
 public:
   bool
-  test_computeInvM(int argc, char ** argv, userInputParameters<dim>);
+  test_computeInvM(int argc, char **argv, userInputParameters<dim>);
   bool
-  test_outputResults(int argc, char ** argv, userInputParameters<dim> userInputs);
+  test_outputResults(int argc, char **argv, userInputParameters<dim> userInputs);
   bool
   test_computeStress();
   void
   assignCIJSize(
     dealii::VectorizedArray<double> CIJ[2 * dim - 1 + dim / 3][2 * dim - 1 + dim / 3]);
   void
-  assignCIJSize(dealii::Table<2, double> & CIJ);
+  assignCIJSize(dealii::Table<2, double> &CIJ);
   bool
   test_setRigidBodyModeConstraints(std::vector<int>, userInputParameters<dim> userInputs);
   bool

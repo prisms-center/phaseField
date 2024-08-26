@@ -30,15 +30,15 @@ variableAttributeLoader::loadVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::residualExplicitRHS(
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
-  dealii::Point<dim, dealii::VectorizedArray<double>>               q_point_loc) const
+  variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
+  dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const
 {}
 
 template <int dim, int degree>
 void
 customPDE<dim, degree>::residualNonexplicitRHS(
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
-  dealii::Point<dim, dealii::VectorizedArray<double>>               q_point_loc) const
+  variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
+  dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const
 {
   // The order parameter and its derivatives
   scalarvalueType psi  = variable_list.get_scalar_value(0);
@@ -77,8 +77,8 @@ customPDE<dim, degree>::residualNonexplicitRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::residualLHS(
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
-  dealii::Point<dim, dealii::VectorizedArray<double>>               q_point_loc) const
+  variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
+  dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const
 {
   // The order parameter and its derivatives
 

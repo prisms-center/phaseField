@@ -3,9 +3,9 @@
 
 template <int dim, int degree, typename T>
 variableContainer<dim, degree, T>::variableContainer(
-  const dealii::MatrixFree<dim, double> & data,
-  std::vector<variable_info>              _varInfoList,
-  std::vector<variable_info>              _varChangeInfoList)
+  const dealii::MatrixFree<dim, double> &data,
+  std::vector<variable_info>             _varInfoList,
+  std::vector<variable_info>             _varChangeInfoList)
 {
   varInfoList       = _varInfoList;
   varChangeInfoList = _varChangeInfoList;
@@ -46,8 +46,8 @@ variableContainer<dim, degree, T>::variableContainer(
 
 template <int dim, int degree, typename T>
 variableContainer<dim, degree, T>::variableContainer(
-  const dealii::MatrixFree<dim, double> & data,
-  std::vector<variable_info>              _varInfoList)
+  const dealii::MatrixFree<dim, double> &data,
+  std::vector<variable_info>             _varInfoList)
 {
   varInfoList = _varInfoList;
 
@@ -75,9 +75,9 @@ variableContainer<dim, degree, T>::variableContainer(
 // for post-processing
 template <int dim, int degree, typename T>
 variableContainer<dim, degree, T>::variableContainer(
-  const dealii::MatrixFree<dim, double> & data,
-  std::vector<variable_info>              _varInfoList,
-  unsigned int                            fixed_index)
+  const dealii::MatrixFree<dim, double> &data,
+  std::vector<variable_info>             _varInfoList,
+  unsigned int                           fixed_index)
 {
   varInfoList = _varInfoList;
 
@@ -149,8 +149,8 @@ variableContainer<dim, degree, T>::get_q_point_location()
 
 template <int dim, int degree, typename T>
 void
-variableContainer<dim, degree, T>::reinit_and_eval(const std::vector<vectorType *> & src,
-                                                   unsigned int                      cell)
+variableContainer<dim, degree, T>::reinit_and_eval(const std::vector<vectorType *> &src,
+                                                   unsigned int                     cell)
 {
   for (unsigned int i = 0; i < num_var; i++)
     {
@@ -185,9 +185,9 @@ variableContainer<dim, degree, T>::reinit_and_eval(const std::vector<vectorType 
 template <int dim, int degree, typename T>
 void
 variableContainer<dim, degree, T>::reinit_and_eval_change_in_solution(
-  const vectorType & src,
-  unsigned int       cell,
-  unsigned int       var_being_solved)
+  const vectorType &src,
+  unsigned int      cell,
+  unsigned int      var_being_solved)
 {
   if (varChangeInfoList[var_being_solved].is_scalar)
     {
@@ -210,7 +210,7 @@ variableContainer<dim, degree, T>::reinit_and_eval_change_in_solution(
 template <int dim, int degree, typename T>
 void
 variableContainer<dim, degree, T>::reinit_and_eval_LHS(
-  const vectorType &              src,
+  const vectorType               &src,
   const std::vector<vectorType *> solutionSet,
   unsigned int                    cell,
   unsigned int                    var_being_solved)
@@ -280,7 +280,7 @@ variableContainer<dim, degree, T>::reinit(unsigned int cell)
 template <int dim, int degree, typename T>
 void
 variableContainer<dim, degree, T>::integrate_and_distribute(
-  std::vector<vectorType *> & dst)
+  std::vector<vectorType *> &dst)
 {
   for (unsigned int i = 0; i < num_var; i++)
     {
@@ -309,7 +309,7 @@ variableContainer<dim, degree, T>::integrate_and_distribute(
 template <int dim, int degree, typename T>
 void
 variableContainer<dim, degree, T>::integrate_and_distribute_change_in_solution_LHS(
-  vectorType &       dst,
+  vectorType        &dst,
   const unsigned int var_being_solved)
 {
   // integrate

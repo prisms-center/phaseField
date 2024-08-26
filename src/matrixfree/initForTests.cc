@@ -42,7 +42,7 @@ MatrixFreePDE<dim, degree>::initForTests(std::vector<Field<dim>> fields)
        ++it)
     {
       // create FESystem
-      FESystem<dim> * fe;
+      FESystem<dim> *fe;
       if (it->type == SCALAR)
         {
           fe = new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(degree + 1)), 1);
@@ -54,14 +54,14 @@ MatrixFreePDE<dim, degree>::initForTests(std::vector<Field<dim>> fields)
       FESet.push_back(fe);
 
       // distribute DOFs
-      DoFHandler<dim> * dof_handler;
+      DoFHandler<dim> *dof_handler;
       dof_handler = new DoFHandler<dim>(triangulation);
       dofHandlersSet.push_back(dof_handler);
       dofHandlersSet_nonconst.push_back(dof_handler);
       dof_handler->distribute_dofs(*fe);
 
       // extract locally_relevant_dofs
-      IndexSet * locally_relevant_dofs;
+      IndexSet *locally_relevant_dofs;
       locally_relevant_dofs = new IndexSet;
       locally_relevant_dofsSet.push_back(locally_relevant_dofs);
       locally_relevant_dofsSet_nonconst.push_back(locally_relevant_dofs);
@@ -69,7 +69,7 @@ MatrixFreePDE<dim, degree>::initForTests(std::vector<Field<dim>> fields)
       DoFTools::extract_locally_relevant_dofs(*dof_handler, *locally_relevant_dofs);
 
       // create constraints
-      AffineConstraints<double> * constraintsOther;
+      AffineConstraints<double> *constraintsOther;
       constraintsOther = new AffineConstraints<double>;
       constraintsOtherSet.push_back(constraintsOther);
       constraintsOtherSet_nonconst.push_back(constraintsOther);

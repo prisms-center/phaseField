@@ -12,8 +12,8 @@
 
 template <int dim>
 void
-postProcessedFields(const std::vector<modelVariable<dim>> & modelVariablesList,
-                    std::vector<modelResidual<dim>> &       modelResidualsList,
+postProcessedFields(const std::vector<modelVariable<dim>> &modelVariablesList,
+                    std::vector<modelResidual<dim>>       &modelResidualsList,
                     const dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc,
                     const list_of_CIJ<dim> material_moduli);
 

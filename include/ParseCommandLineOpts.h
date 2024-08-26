@@ -13,7 +13,7 @@
 class ParseCommandLineOpts
 {
 public:
-  ParseCommandLineOpts(int & _argc, char ** argv)
+  ParseCommandLineOpts(int &_argc, char **argv)
   {
     argc = _argc;
     for (int i = 1; i < argc; ++i)
@@ -93,7 +93,7 @@ private:
   std::vector<std::string> tokens;
 
   const std::string &
-  getCmdOption(const std::string & option) const
+  getCmdOption(const std::string &option) const
   {
     std::vector<std::string>::const_iterator itr;
     itr = std::find(tokens.begin(), tokens.end(), option);
@@ -106,7 +106,7 @@ private:
   }
 
   bool
-  cmdOptionExists(const std::string & option) const
+  cmdOptionExists(const std::string &option) const
   {
     return std::find(tokens.begin(), tokens.end(), option) != tokens.end();
   }

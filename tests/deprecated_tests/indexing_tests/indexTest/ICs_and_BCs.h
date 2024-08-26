@@ -13,7 +13,7 @@ public:
   }
 
   double
-  value(const Point<dim> & p, const unsigned int component = 0) const
+  value(const Point<dim> &p, const unsigned int component = 0) const
   {
     double scalar_IC;
     // =====================================================================
@@ -62,7 +62,7 @@ public:
   }
 
   void
-  vector_value(const Point<dim> & p, Vector<double> & vector_IC) const
+  vector_value(const Point<dim> &p, Vector<double> &vector_IC) const
   {
     // =====================================================================
     // ENTER THE INITIAL CONDITIONS HERE FOR VECTOR FIELDS

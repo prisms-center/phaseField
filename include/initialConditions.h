@@ -21,7 +21,7 @@ public:
 
   InitialCondition(const unsigned int             _index,
                    const userInputParameters<dim> _userInputs,
-                   MatrixFreePDE<dim, degree> *   _matrix_free_pde)
+                   MatrixFreePDE<dim, degree>    *_matrix_free_pde)
     : dealii::Function<dim>(1)
     , index(_index)
     , userInputs(_userInputs)
@@ -32,7 +32,7 @@ public:
 
   // IC for scalar values
   double
-  value(const dealii::Point<dim> & p, const unsigned int component = 0) const
+  value(const dealii::Point<dim> &p, const unsigned int component = 0) const
   {
     double                 scalar_IC = 0.0;
     dealii::Vector<double> vector_IC(dim);
@@ -42,7 +42,7 @@ public:
   };
 
 private:
-  MatrixFreePDE<dim, degree> * matrix_free_pde;
+  MatrixFreePDE<dim, degree> *matrix_free_pde;
 };
 
 template <int dim, int degree>
@@ -55,7 +55,7 @@ public:
 
   InitialConditionVector(const unsigned int             _index,
                          const userInputParameters<dim> _userInputs,
-                         MatrixFreePDE<dim, degree> *   _matrix_free_pde)
+                         MatrixFreePDE<dim, degree>    *_matrix_free_pde)
     : dealii::Function<dim>(dim)
     , index(_index)
     , userInputs(_userInputs)
@@ -66,7 +66,7 @@ public:
 
   // IC for vector values
   void
-  vector_value(const dealii::Point<dim> & p, dealii::Vector<double> & vector_IC) const
+  vector_value(const dealii::Point<dim> &p, dealii::Vector<double> &vector_IC) const
   {
     double scalar_IC = 0.0;
     vector_IC.reinit(dim);
@@ -74,7 +74,7 @@ public:
   };
 
 private:
-  MatrixFreePDE<dim, degree> * matrix_free_pde;
+  MatrixFreePDE<dim, degree> *matrix_free_pde;
 };
 
 #endif /* INCLUDE_INITIALCONDITIONS_H_ */

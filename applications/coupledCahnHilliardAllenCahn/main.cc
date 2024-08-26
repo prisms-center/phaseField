@@ -27,7 +27,7 @@ variableAttributeLoader::loadPostProcessorVariableAttributes()
 
 // main
 int
-main(int argc, char ** argv)
+main(int argc, char **argv)
 {
   dealii::Utilities::MPI::MPI_InitFinalize
     mpi_initialization(argc, argv, dealii::numbers::invalid_unsigned_int);
@@ -40,7 +40,7 @@ main(int argc, char ** argv)
       ParseCommandLineOpts cli_options(argc, argv);
       parameters_filename = cli_options.getParametersFilename();
     }
-  catch (const char * msg)
+  catch (const char *msg)
     {
       std::cerr << std::endl
                 << std::endl
@@ -139,7 +139,7 @@ main(int argc, char ** argv)
             break;
         }
     }
-  catch (std::exception & exc)
+  catch (std::exception &exc)
     {
       std::cerr << std::endl
                 << std::endl

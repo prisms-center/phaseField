@@ -11,7 +11,7 @@ EquationDependencyParser::parse(std::vector<std::string> var_name,
                                 std::vector<std::string> sorted_dependencies_gradient_RHS,
                                 std::vector<std::string> sorted_dependencies_value_LHS,
                                 std::vector<std::string> sorted_dependencies_gradient_LHS,
-                                std::vector<bool> &      var_nonlinear)
+                                std::vector<bool>       &var_nonlinear)
 {
   // Initialize the calculation needed flags to false
   for (unsigned int i = 0; i < var_name.size(); i++)
@@ -162,14 +162,14 @@ void
 EquationDependencyParser::parseDependencyListRHS(std::vector<std::string> var_name,
                                                  std::vector<PDEType>     var_eq_type,
                                                  unsigned int             var_index,
-                                                 std::string value_dependencies,
-                                                 std::string gradient_dependencies,
-                                                 std::vector<bool> & need_value,
-                                                 std::vector<bool> & need_gradient,
-                                                 std::vector<bool> & need_hessian,
-                                                 bool &              need_value_residual,
-                                                 bool & need_gradient_residual,
-                                                 bool & is_nonlinear)
+                                                 std::string        value_dependencies,
+                                                 std::string        gradient_dependencies,
+                                                 std::vector<bool> &need_value,
+                                                 std::vector<bool> &need_gradient,
+                                                 std::vector<bool> &need_hessian,
+                                                 bool              &need_value_residual,
+                                                 bool &need_gradient_residual,
+                                                 bool &is_nonlinear)
 {
   // Split the dependency strings into lists of entries
   std::vector<std::string> split_value_dependency_list =
@@ -269,17 +269,17 @@ void
 EquationDependencyParser::parseDependencyListLHS(std::vector<std::string> var_name,
                                                  std::vector<PDEType>     var_eq_type,
                                                  unsigned int             var_index,
-                                                 std::string value_dependencies,
-                                                 std::string gradient_dependencies,
-                                                 std::vector<bool> & need_value,
-                                                 std::vector<bool> & need_gradient,
-                                                 std::vector<bool> & need_hessian,
-                                                 std::vector<bool> & need_value_change,
-                                                 std::vector<bool> & need_gradient_change,
-                                                 std::vector<bool> & need_hessian_change,
-                                                 bool &              need_value_residual,
-                                                 bool & need_gradient_residual,
-                                                 bool & is_nonlinear)
+                                                 std::string        value_dependencies,
+                                                 std::string        gradient_dependencies,
+                                                 std::vector<bool> &need_value,
+                                                 std::vector<bool> &need_gradient,
+                                                 std::vector<bool> &need_hessian,
+                                                 std::vector<bool> &need_value_change,
+                                                 std::vector<bool> &need_gradient_change,
+                                                 std::vector<bool> &need_hessian_change,
+                                                 bool              &need_value_residual,
+                                                 bool &need_gradient_residual,
+                                                 bool &is_nonlinear)
 {
   // Split the dependency strings into lists of entries
   std::vector<std::string> split_value_dependency_list =
@@ -481,13 +481,13 @@ EquationDependencyParser::pp_parse(std::vector<std::string> var_name,
 
 void
 EquationDependencyParser::parseDependencyListPP(std::vector<std::string> var_name,
-                                                std::string         value_dependencies,
-                                                std::string         gradient_dependencies,
-                                                std::vector<bool> & need_value,
-                                                std::vector<bool> & need_gradient,
-                                                std::vector<bool> & need_hessian,
-                                                bool &              need_value_residual,
-                                                bool & need_gradient_residual)
+                                                std::string        value_dependencies,
+                                                std::string        gradient_dependencies,
+                                                std::vector<bool> &need_value,
+                                                std::vector<bool> &need_gradient,
+                                                std::vector<bool> &need_hessian,
+                                                bool              &need_value_residual,
+                                                bool              &need_gradient_residual)
 {
   // Split the dependency strings into lists of entries
   std::vector<std::string> split_value_dependency_list =

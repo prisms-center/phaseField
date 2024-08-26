@@ -152,10 +152,10 @@ MatrixFreePDE<dim, degree>::computeLaplaceRHS(unsigned int fieldIndex)
 template <int dim, int degree>
 void
 MatrixFreePDE<dim, degree>::getLaplaceRHS(
-  const MatrixFree<dim, double> &               data,
-  vectorType &                                  dst,
-  const vectorType &                            src,
-  const std::pair<unsigned int, unsigned int> & cell_range) const
+  const MatrixFree<dim, double>               &data,
+  vectorType                                  &dst,
+  const vectorType                            &src,
+  const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   FEEvaluation<dim, degree> mat(data);
   // loop over all "cells"
@@ -176,10 +176,10 @@ MatrixFreePDE<dim, degree>::getLaplaceRHS(
 template <int dim, int degree>
 void
 MatrixFreePDE<dim, degree>::getLaplaceLHS(
-  const MatrixFree<dim, double> &               data,
-  vectorType &                                  dst,
-  const vectorType &                            src,
-  const std::pair<unsigned int, unsigned int> & cell_range) const
+  const MatrixFree<dim, double>               &data,
+  vectorType                                  &dst,
+  const vectorType                            &src,
+  const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   FEEvaluation<dim, degree> mat(data);
   // loop over all "cells"

@@ -22,11 +22,11 @@ public:
    * objects.
    */
   void
-  remap(std::vector<SimplifiedGrainRepresentation<dim>> & grain_representations,
-        std::vector<vectorType *> &                       solution_fields,
-        dealii::DoFHandler<dim> &                         dof_handler,
-        unsigned int                                      dofs_per_cell,
-        double                                            buffer);
+  remap(std::vector<SimplifiedGrainRepresentation<dim>> &grain_representations,
+        std::vector<vectorType *>                       &solution_fields,
+        dealii::DoFHandler<dim>                         &dof_handler,
+        unsigned int                                     dofs_per_cell,
+        double                                           buffer);
 
   /**
    * This method does the core work of the class to reassign grains across
@@ -35,12 +35,12 @@ public:
    */
   void
   remap_from_index_field(
-    std::vector<SimplifiedGrainRepresentation<dim>> & grain_representations,
-    const vectorType *                                grain_index_field,
-    std::vector<vectorType *> &                       solution_fields,
-    dealii::DoFHandler<dim> &                         dof_handler,
-    unsigned int                                      dofs_per_cell,
-    double                                            buffer);
+    std::vector<SimplifiedGrainRepresentation<dim>> &grain_representations,
+    const vectorType                                *grain_index_field,
+    std::vector<vectorType *>                       &solution_fields,
+    dealii::DoFHandler<dim>                         &dof_handler,
+    unsigned int                                     dofs_per_cell,
+    double                                           buffer);
 
 protected:
 };

@@ -4,13 +4,13 @@
 
 template <int dim, int degree>
 void
-FloodFiller<dim, degree>::calcGrainSets(dealii::FESystem<dim> &   fe,
-                                        dealii::DoFHandler<dim> & dof_handler,
-                                        vectorType *              solution_field,
-                                        double                    threshold_lower,
-                                        double                    threshold_upper,
-                                        unsigned int              order_parameter_index,
-                                        std::vector<GrainSet<dim>> & grain_sets)
+FloodFiller<dim, degree>::calcGrainSets(dealii::FESystem<dim>      &fe,
+                                        dealii::DoFHandler<dim>    &dof_handler,
+                                        vectorType                 *solution_field,
+                                        double                      threshold_lower,
+                                        double                      threshold_upper,
+                                        unsigned int                order_parameter_index,
+                                        std::vector<GrainSet<dim>> &grain_sets)
 {
   unsigned int grain_index = 0;
 
@@ -78,14 +78,14 @@ FloodFiller<dim, degree>::calcGrainSets(dealii::FESystem<dim> &   fe,
 template <int dim, int degree>
 template <typename T>
 void
-FloodFiller<dim, degree>::recursiveFloodFill(T                            di,
-                                             T                            di_end,
-                                             vectorType *                 solution_field,
-                                             double                       threshold_lower,
-                                             double                       threshold_upper,
-                                             unsigned int &               grain_index,
-                                             std::vector<GrainSet<dim>> & grain_sets,
-                                             bool &                       grain_assigned)
+FloodFiller<dim, degree>::recursiveFloodFill(T                           di,
+                                             T                           di_end,
+                                             vectorType                 *solution_field,
+                                             double                      threshold_lower,
+                                             double                      threshold_upper,
+                                             unsigned int               &grain_index,
+                                             std::vector<GrainSet<dim>> &grain_sets,
+                                             bool                       &grain_assigned)
 {
   if (di != di_end)
     {
@@ -178,7 +178,7 @@ FloodFiller<dim, degree>::recursiveFloodFill(T                            di,
 template <int dim, int degree>
 void
 FloodFiller<dim, degree>::createGlobalGrainSetList(
-  std::vector<GrainSet<dim>> & grain_sets) const
+  std::vector<GrainSet<dim>> &grain_sets) const
 {
   int numProcs = dealii::Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
   int thisProc = dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
@@ -332,7 +332,7 @@ FloodFiller<dim, degree>::createGlobalGrainSetList(
 
 template <int dim, int degree>
 void
-FloodFiller<dim, degree>::mergeSplitGrains(std::vector<GrainSet<dim>> & grain_sets) const
+FloodFiller<dim, degree>::mergeSplitGrains(std::vector<GrainSet<dim>> &grain_sets) const
 {
   // Loop though each vertex in the base grain "g"
   for (unsigned int g = 0; g < grain_sets.size(); g++)

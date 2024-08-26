@@ -18,8 +18,8 @@ vectorBCFunction<dim>::vectorBCFunction(std::vector<double> input_values)
 
 template <int dim>
 void
-vectorBCFunction<dim>::vector_value(const dealii::Point<dim> & p,
-                                    dealii::Vector<double> &   values) const
+vectorBCFunction<dim>::vector_value(const dealii::Point<dim> &p,
+                                    dealii::Vector<double>   &values) const
 {
   for (unsigned int i = 0; i < dim; i++)
     {
@@ -30,8 +30,8 @@ vectorBCFunction<dim>::vector_value(const dealii::Point<dim> & p,
 template <int dim>
 void
 vectorBCFunction<dim>::vector_value_list(
-  const std::vector<dealii::Point<dim>> & points,
-  std::vector<dealii::Vector<double>> &   value_list) const
+  const std::vector<dealii::Point<dim>> &points,
+  std::vector<dealii::Vector<double>>   &value_list) const
 {
   const unsigned int n_points = points.size();
   for (unsigned int p = 0; p < n_points; ++p)

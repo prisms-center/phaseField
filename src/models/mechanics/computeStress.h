@@ -48,7 +48,7 @@
 // vectorized arrays
 template <int dim>
 void
-computeStress(const dealii::Table<2, double> &      CIJ,
+computeStress(const dealii::Table<2, double>       &CIJ,
               const dealii::VectorizedArray<double> strain[][dim],
               dealii::VectorizedArray<double>       R[][dim])
 {
@@ -202,7 +202,7 @@ computeStress(
 template <int dim>
 void
 computeStress(
-  const dealii::Tensor<2, 2 * dim - 1 + dim / 3, dealii::VectorizedArray<double>> & CIJ,
+  const dealii::Tensor<2, 2 * dim - 1 + dim / 3, dealii::VectorizedArray<double>> &CIJ,
   const dealii::VectorizedArray<double> strain[][dim],
   dealii::VectorizedArray<double>       R[][dim])
 {
@@ -268,9 +268,9 @@ computeStress(
 template <int dim>
 void
 computeStress(
-  const dealii::Tensor<2, 2 * dim - 1 + dim / 3, dealii::VectorizedArray<double>> & CIJ,
-  const dealii::Tensor<2, dim, dealii::VectorizedArray<double>> strain,
-  dealii::Tensor<2, dim, dealii::VectorizedArray<double>> &     R)
+  const dealii::Tensor<2, 2 * dim - 1 + dim / 3, dealii::VectorizedArray<double>> &CIJ,
+  const dealii::Tensor<2, dim, dealii::VectorizedArray<double>>                    strain,
+  dealii::Tensor<2, dim, dealii::VectorizedArray<double>>                         &R)
 {
   dealii::Tensor<1, 2 * dim - 1 + dim / 3, dealii::VectorizedArray<double>> S, E;
 
@@ -324,9 +324,9 @@ computeStress(
 // stored as tensors
 template <int dim>
 void
-computeStress(const dealii::Table<2, double> &                                CIJ,
-              const dealii::Tensor<2, dim, dealii::VectorizedArray<double>> & strain,
-              dealii::Tensor<2, dim, dealii::VectorizedArray<double>> &       R)
+computeStress(const dealii::Table<2, double>                                &CIJ,
+              const dealii::Tensor<2, dim, dealii::VectorizedArray<double>> &strain,
+              dealii::Tensor<2, dim, dealii::VectorizedArray<double>>       &R)
 {
   if (dim == 3)
     {

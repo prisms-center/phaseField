@@ -14,7 +14,7 @@
 #include <iostream>
 
 int
-main(int argc, char ** argv)
+main(int argc, char **argv)
 {
   dealii::deallog.depth_console(3);
   // init MPI

@@ -6,7 +6,7 @@
 
 template <int dim>
 SimplifiedGrainRepresentation<dim>::SimplifiedGrainRepresentation(
-  const GrainSet<dim> & grain_set)
+  const GrainSet<dim> &grain_set)
 {
   grain_id                        = grain_set.getGrainIndex();
   order_parameter_id              = grain_set.getOrderParameterIndex();
@@ -143,9 +143,9 @@ SimplifiedGrainRepresentation<dim>::getDistanceToNeighbor() const
 template <int dim>
 void
 SimplifiedGrainManipulator<dim>::reassignGrains(
-  std::vector<SimplifiedGrainRepresentation<dim>> & grain_representations,
-  double                                            buffer_distance,
-  std::vector<unsigned int>                         order_parameter_id_list)
+  std::vector<SimplifiedGrainRepresentation<dim>> &grain_representations,
+  double                                           buffer_distance,
+  std::vector<unsigned int>                        order_parameter_id_list)
 {
   int thisProc = dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
 
@@ -272,8 +272,8 @@ SimplifiedGrainManipulator<dim>::reassignGrains(
 template <int dim>
 void
 SimplifiedGrainManipulator<dim>::transferGrainIds(
-  const std::vector<SimplifiedGrainRepresentation<dim>> & old_grain_representations,
-  std::vector<SimplifiedGrainRepresentation<dim>> &       new_grain_representations) const
+  const std::vector<SimplifiedGrainRepresentation<dim>> &old_grain_representations,
+  std::vector<SimplifiedGrainRepresentation<dim>>       &new_grain_representations) const
 {
   for (unsigned int g_new = 0; g_new < new_grain_representations.size(); g_new++)
     {

@@ -55,8 +55,8 @@ variableAttributeLoader::loadVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::explicitEquationRHS(
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
-  dealii::Point<dim, dealii::VectorizedArray<double>>               q_point_loc) const
+  variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
+  dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
@@ -129,9 +129,9 @@ customPDE<dim, degree>::explicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::seedNucleus(
-  const dealii::Point<dim, dealii::VectorizedArray<double>> & q_point_loc,
-  dealii::VectorizedArray<double> &                           source_term,
-  dealii::VectorizedArray<double> &                           gamma) const
+  const dealii::Point<dim, dealii::VectorizedArray<double>> &q_point_loc,
+  dealii::VectorizedArray<double>                           &source_term,
+  dealii::VectorizedArray<double>                           &gamma) const
 {
   for (typename std::vector<nucleus<dim>>::const_iterator thisNucleus =
          this->nuclei.begin();
@@ -206,8 +206,8 @@ customPDE<dim, degree>::seedNucleus(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::nonExplicitEquationRHS(
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
-  dealii::Point<dim, dealii::VectorizedArray<double>>               q_point_loc) const
+  variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
+  dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const
 {}
 
 // =============================================================================================
@@ -228,6 +228,6 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::equationLHS(
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> & variable_list,
-  dealii::Point<dim, dealii::VectorizedArray<double>>               q_point_loc) const
+  variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
+  dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const
 {}

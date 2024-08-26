@@ -111,8 +111,7 @@ MatrixFreePDE<dim, degree>::getNewNuclei()
 // =================================================================================
 template <int dim, int degree>
 void
-MatrixFreePDE<dim, degree>::getLocalNucleiList(
-  std::vector<nucleus<dim>> & newnuclei) const
+MatrixFreePDE<dim, degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuclei) const
 {
   // Nickname for current time and time step
   double       t   = currentTime;
@@ -305,9 +304,9 @@ MatrixFreePDE<dim, degree>::getLocalNucleiList(
                           std::cout << "Nucleus center: " << nuc_ele_pos << std::endl;
                           std::cout << "Nucleus order parameter: " << variable_index
                                     << std::endl;
-                          nucleus<dim> * temp = new nucleus<dim>;
-                          temp->index         = nuclei.size();
-                          temp->center        = nuc_ele_pos;
+                          nucleus<dim> *temp = new nucleus<dim>;
+                          temp->index        = nuclei.size();
+                          temp->center       = nuc_ele_pos;
                           temp->semiaxes =
                             userInputs.get_nucleus_semiaxes(variable_index);
                           temp->seededTime = t;
@@ -332,8 +331,8 @@ MatrixFreePDE<dim, degree>::getLocalNucleiList(
 // =======================================================================================================
 template <int dim, int degree>
 void
-MatrixFreePDE<dim, degree>::safetyCheckNewNuclei(std::vector<nucleus<dim>>   newnuclei,
-                                                 std::vector<unsigned int> & conflict_ids)
+MatrixFreePDE<dim, degree>::safetyCheckNewNuclei(std::vector<nucleus<dim>>  newnuclei,
+                                                 std::vector<unsigned int> &conflict_ids)
 {
   // QGauss<dim>  quadrature(degree+1);
   QGaussLobatto<dim>               quadrature(degree + 1);

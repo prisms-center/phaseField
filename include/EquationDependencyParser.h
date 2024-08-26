@@ -21,7 +21,7 @@ public:
         std::vector<std::string> sorted_dependencies_gradient_RHS,
         std::vector<std::string> sorted_dependencies_value_LHS,
         std::vector<std::string> sorted_dependencies_gradient_LHS,
-        std::vector<bool> &      var_nonlinear);
+        std::vector<bool>       &var_nonlinear);
 
   void
   pp_parse(std::vector<std::string> var_name,
@@ -56,12 +56,12 @@ protected:
                          unsigned int             var_index,
                          std::string              value_dependencies,
                          std::string              gradient_dependencies,
-                         std::vector<bool> &      need_value,
-                         std::vector<bool> &      need_gradient,
-                         std::vector<bool> &      need_hessian,
-                         bool &                   need_value_residual,
-                         bool &                   need_gradient_residual,
-                         bool &                   is_nonlinear);
+                         std::vector<bool>       &need_value,
+                         std::vector<bool>       &need_gradient,
+                         std::vector<bool>       &need_hessian,
+                         bool                    &need_value_residual,
+                         bool                    &need_gradient_residual,
+                         bool                    &is_nonlinear);
 
   /**
    * Method to parse the LHS dependency strings and populate the vectors for
@@ -73,15 +73,15 @@ protected:
                          unsigned int             var_index,
                          std::string              value_dependencies,
                          std::string              gradient_dependencies,
-                         std::vector<bool> &      need_value,
-                         std::vector<bool> &      need_gradient,
-                         std::vector<bool> &      need_hessian,
-                         std::vector<bool> &      need_value_change,
-                         std::vector<bool> &      need_gradient_change,
-                         std::vector<bool> &      need_hessian_change,
-                         bool &                   need_value_residual,
-                         bool &                   need_gradient_residual,
-                         bool &                   is_nonlinear);
+                         std::vector<bool>       &need_value,
+                         std::vector<bool>       &need_gradient,
+                         std::vector<bool>       &need_hessian,
+                         std::vector<bool>       &need_value_change,
+                         std::vector<bool>       &need_gradient_change,
+                         std::vector<bool>       &need_hessian_change,
+                         bool                    &need_value_residual,
+                         bool                    &need_gradient_residual,
+                         bool                    &is_nonlinear);
 
   /**
    * Method to parse the postprocessing dependency strings and populate the
@@ -91,11 +91,11 @@ protected:
   parseDependencyListPP(std::vector<std::string> var_name,
                         std::string              value_dependencies,
                         std::string              gradient_dependencies,
-                        std::vector<bool> &      need_value,
-                        std::vector<bool> &      need_gradient,
-                        std::vector<bool> &      need_hessian,
-                        bool &                   need_value_residual,
-                        bool &                   need_gradient_residual);
+                        std::vector<bool>       &need_value,
+                        std::vector<bool>       &need_gradient,
+                        std::vector<bool>       &need_hessian,
+                        bool                    &need_value_residual,
+                        bool                    &need_gradient_residual);
 };
 
 #endif

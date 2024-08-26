@@ -112,8 +112,8 @@
 template <int dim>
 void
 generalizedProblem<dim>::residualRHS(
-  const std::vector<modelVariable<dim>> &             modelVariablesList,
-  std::vector<modelResidual<dim>> &                   modelResidualsList,
+  const std::vector<modelVariable<dim>>              &modelVariablesList,
+  std::vector<modelResidual<dim>>                    &modelResidualsList,
   dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
 {
   // The order parameter and its derivatives (names here should match those in
@@ -168,8 +168,8 @@ generalizedProblem<dim>::residualRHS(
 template <int dim>
 void
 generalizedProblem<dim>::residualLHS(
-  const std::vector<modelVariable<dim>> &             modelVarList,
-  modelResidual<dim> &                                modelRes,
+  const std::vector<modelVariable<dim>>              &modelVarList,
+  modelResidual<dim>                                 &modelRes,
   dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
 {}
 
@@ -188,8 +188,8 @@ generalizedProblem<dim>::residualLHS(
 template <int dim>
 void
 generalizedProblem<dim>::energyDensity(
-  const std::vector<modelVariable<dim>> &             modelVarList,
-  const dealii::VectorizedArray<double> &             JxW_value,
+  const std::vector<modelVariable<dim>>              &modelVarList,
+  const dealii::VectorizedArray<double>              &JxW_value,
   dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc)
 {
   scalarvalueType total_energy_density = constV(0.0);
