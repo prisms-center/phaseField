@@ -45,9 +45,6 @@ public:
   void
   refineGrid();
 
-  // Current increment
-  unsigned int currentIncrement;
-
 protected:
   // Adaptive refinement criterion
   void
