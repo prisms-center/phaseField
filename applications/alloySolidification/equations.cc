@@ -99,36 +99,35 @@ customPDE<dim, degree>::explicitEquationRHS(
   a_n = (constV(1.0) + constV(epsilon) * c4th);
 
   // coeffcient before phi
-  scalarvalueType u_phi = (constV(1.0) + constV(1.0 - k) * U) * a_n * a_n;
+  scalarvalueType tau_phi = (constV(1.0) + constV(1.0 - k) * U) * a_n * a_n;
 
   // coeffcient before U
-  scalarvalueType u_con =
+  scalarvalueType tau_U =
     (constV(1.0 + k) / constV(2.0) - constV(1.0 - k) * phi / constV(2.0));
-
-  // q(phi) term
-  scalarvalueType q_phi = ((constV(1.0) - phi) / constV(2.0));
 
   // Antitrapping term
   scalargradType j_at;
-  j_at = constV(1.0 / 2.0 / sqrt(2.0)) * (constV(1.0) + constV(1.0 - k) * U) *
-         (xi / u_phi) * normal;
+  j_at = constV(1.0 / (2.0 * sqrt(2.0))) * (constV(1.0) + constV(1.0 - k) * U) *
+         (xi / tau_phi) * normal;
 
   // grad_phi and grad_U dot product term
-  scalarvalueType con_term = (constV((1.0 - k) / 2.0) / u_con / u_con *
-                              (phix[0] * (Dtilde * q_phi * Ux[0] + j_at[0]) +
-                               phix[1] * (Dtilde * q_phi * Ux[1] + j_at[1])));
+  scalarvalueType val_term1 = constV(userInputs.dtValue) *
+                              (constV(1.0) + constV(1.0 - k) * U) * xi /
+                              (constV(2.0) * tau_phi * tau_U);
+  scalarvalueType val_term2 =
+    constV(userInputs.dtValue) *
+    (constV((1.0 - k) / 2.0) / (tau_U * tau_U) *
+     (phix[0] * (Dtilde * ((constV(1.0) - phi) / constV(2.0)) * Ux[0] + j_at[0]) +
+      phix[1] * (Dtilde * ((constV(1.0) - phi) / constV(2.0)) * Ux[1] + j_at[1])));
 
   // Define required equations
-  scalarvalueType eq_U =
-    (U +
-     constV(userInputs.dtValue) * (constV(1.0) + constV(1.0 - k) * U) * xi / constV(2.0) /
-       u_phi / u_con -
-     constV(userInputs.dtValue) * con_term);
+  scalarvalueType eq_U = (U + val_term1 - val_term2);
 
   scalargradType eqx_U =
-    (constV(-1.0) * constV(userInputs.dtValue) * (Dtilde * q_phi * Ux + j_at) / u_con);
+    (constV(-1.0) * constV(userInputs.dtValue) *
+     (Dtilde * ((constV(1.0) - phi) / constV(2.0)) * Ux + j_at) / tau_U);
 
-  scalarvalueType eq_phi = (phi + constV(userInputs.dtValue) * xi / u_phi);
+  scalarvalueType eq_phi = (phi + constV(userInputs.dtValue) * xi / tau_phi);
 
   // --- Submitting the terms for the governing equations ---
 
@@ -207,15 +206,15 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
   scalarvalueType t_n = constV(this->currentTime); // The time
   scalarvalueType tep = ((y - constV(y0) - Vtilde * t_n) / ltilde);
 
-  // The anisotropy term that enters in to the  equation for xi
+  // The anisotropy term that enters in to the equation for xi
   scalargradType aniso;
   aniso[0] = a_n * a_n * phix[0] - a_n * a_d * phix[1];
   aniso[1] = a_n * a_n * phix[1] + a_n * a_d * phix[0];
 
   // Define the terms in the equations
-  scalarvalueType eq_xi =
-    ((phi - constV(lamda) * (U + tep + constV(U_off)) * (constV(1.0) - phi * phi)) *
-     (constV(1.0) - phi * phi));
+  scalarvalueType eq_xi = phi - phi * phi * phi -
+                          constV(lamda) * (constV(1.0) - phi * phi) *
+                            (constV(1.0) - phi * phi) * (U + tep + constV(U_off));
 
   scalargradType eqx_xi = (-aniso);
 
