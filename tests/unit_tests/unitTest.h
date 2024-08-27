@@ -36,6 +36,7 @@ computeStress(const dealii::Table<2, double>       &CIJ,
 #include "../../src/OrderParameterRemapper/OrderParameterRemapper.cc"
 #include "../../src/SimplifiedGrainRepresentation/SimplifiedGrainRepresentation.cc"
 #include "../../src/inputFileReader/inputFileReader.cc"
+#include "../../src/matrixfree/AdaptiveRefinement.cc"
 #include "../../src/matrixfree/boundaryConditions.cc"
 #include "../../src/matrixfree/checkpoint.cc"
 #include "../../src/matrixfree/computeIntegral.cc"
