@@ -129,32 +129,20 @@ AdaptiveRefinement<dim, degree>::adaptive_refinement_criterion()
   QGaussLobatto<dim> quadrature(degree + 1);
   const unsigned int num_quad_points = quadrature.size();
 
-  // Determine which update flags are neccessary to apply the refinement criterion
-  bool need_value    = false;
-  bool need_gradient = false;
+  // Set the update flags
+  dealii::UpdateFlags update_flags;
   for (const auto &criterion : userInputs.refinement_criteria)
     {
       if (criterion.criterion_type == VALUE ||
           criterion.criterion_type == VALUE_AND_GRADIENT)
         {
-          need_value = true;
+          update_flags = update_values | update_flags;
         }
       else if (criterion.criterion_type == GRADIENT ||
                criterion.criterion_type == VALUE_AND_GRADIENT)
         {
-          need_gradient = true;
+          update_flags = update_gradients | update_flags;
         }
-    }
-
-  // Set the update flags
-  dealii::UpdateFlags update_flags;
-  if (need_value && !need_gradient)
-    {
-      update_flags = update_values | update_flags;
-    }
-  else if (!need_value && need_gradient)
-    {
-      update_flags = update_gradients | update_flags;
     }
 
   FEValues<dim> fe_values(*FESet[userInputs.refinement_criteria[0].variable_index],
@@ -178,13 +166,13 @@ AdaptiveRefinement<dim, degree>::adaptive_refinement_criterion()
 
           for (const auto &criterion : userInputs.refinement_criteria)
             {
-              if (need_value)
+              if (update_values & update_flags)
                 {
                   fe_values.get_function_values(*solutionSet[criterion.variable_index],
                                                 values);
                   valuesV.push_back(values);
                 }
-              if (need_gradient)
+              if (update_gradients & update_flags)
                 {
                   fe_values.get_function_gradients(*solutionSet[criterion.variable_index],
                                                    gradients);
