@@ -355,7 +355,7 @@ MatrixFreePDE<dim, degree>::init()
            (userInputs.max_refinement_level - userInputs.min_refinement_level);
            remesh_index++)
         {
-          RefineAdaptively.do_adaptive_refinement(currentIncrement);
+          AMR.do_adaptive_refinement(currentIncrement);
           reinit();
           if (totalDOFs == numDoF_preremesh)
             break;

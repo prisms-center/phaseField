@@ -497,7 +497,7 @@ MatrixFreePDE<dim, degree>::refineMeshNearNuclei(std::vector<nucleus<dim>> newnu
         }
       // The bulk of all of modifySolutionFields is spent in the following two function
       // calls
-      RefineAdaptively.refine_grid();
+      AMR.refine_grid();
       reinit();
 
       // If the mesh hasn't changed from the previous cycle, stop remeshing

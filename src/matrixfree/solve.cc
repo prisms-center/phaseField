@@ -88,7 +88,7 @@ MatrixFreePDE<dim, degree>::solve()
             {
               computing_timer.enter_subsection("matrixFreePDE: AMR");
 
-              RefineAdaptively.do_adaptive_refinement(currentIncrement);
+              AMR.do_adaptive_refinement(currentIncrement);
               reinit();
 
               computing_timer.leave_subsection("matrixFreePDE: AMR");

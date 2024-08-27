@@ -268,7 +268,7 @@ protected:
   applyBCs(unsigned int fieldIndex);
 
   /*AMR methods*/
-  AdaptiveRefinement<dim, degree> RefineAdaptively;
+  AdaptiveRefinement<dim, degree> AMR;
 
   /*Method to compute the right hand side (RHS) residual vectors*/
   void
