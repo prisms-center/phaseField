@@ -35,8 +35,8 @@
 #include <deal.II/numerics/vector_tools.h>
 
 // PRISMS headers
+#include "AdaptiveRefinement.h"
 #include "SimplifiedGrainRepresentation.h"
-#include "adaptiveRefinement.h"
 #include "fields.h"
 #include "nucleus.h"
 #include "userInputParameters.h"
@@ -268,7 +268,7 @@ protected:
   applyBCs(unsigned int fieldIndex);
 
   /*AMR methods*/
-  adaptiveRefinement<dim, degree> RefineAdaptively;
+  AdaptiveRefinement<dim, degree> RefineAdaptively;
 
   /*Method to compute the right hand side (RHS) residual vectors*/
   void

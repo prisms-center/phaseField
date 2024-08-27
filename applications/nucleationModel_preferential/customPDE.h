@@ -81,7 +81,7 @@ private:
 
   // Method to refine the mesh
   void
-  adaptiveRefineCriterion();
+  adaptive_refinement_criterion();
 
   // ================================================================
   // Model constants specific to this subclass
@@ -118,7 +118,7 @@ private:
 // region is adapted to the highest level
 template <int dim, int degree>
 void
-customPDE<dim, degree>::adaptiveRefineCriterion()
+customPDE<dim, degree>::adaptive_refinement_criterion()
 {
   // Custom defined estimation criterion
 

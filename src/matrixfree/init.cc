@@ -314,7 +314,7 @@ MatrixFreePDE<dim, degree>::init()
     }
 
   // Apply the initial conditions to the solution vectors
-  // The initial conditions are re-applied below in the "adaptiveRefine"
+  // The initial conditions are re-applied below in the "do_adaptive_refinement"
   // function so that the mesh can adapt based on the initial conditions.
   if (userInputs.resume_from_checkpoint)
     {
@@ -355,7 +355,7 @@ MatrixFreePDE<dim, degree>::init()
            (userInputs.max_refinement_level - userInputs.min_refinement_level);
            remesh_index++)
         {
-          RefineAdaptively.adaptiveRefine(currentIncrement);
+          RefineAdaptively.do_adaptive_refinement(currentIncrement);
           reinit();
           if (totalDOFs == numDoF_preremesh)
             break;

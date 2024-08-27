@@ -19,7 +19,7 @@ using namespace dealii;
  * A class that handles the determination and application of AMR criterion.
  */
 template <int dim, int degree>
-class adaptiveRefinement
+class AdaptiveRefinement
 {
 public:
   using vectorType = dealii::LinearAlgebra::distributed::Vector<double>;
@@ -27,7 +27,7 @@ public:
   /**
    * Default constructor.
    */
-  adaptiveRefinement(
+  AdaptiveRefinement(
     const userInputParameters<dim>            &_userInputs,
     parallel::distributed::Triangulation<dim> &_triangulation,
     std::vector<Field<dim>>                   &_fields,
@@ -43,7 +43,7 @@ public:
    * constraints when in the 0th timestep.
    */
   void
-  adaptiveRefine(unsigned int _currentIncrement);
+  do_adaptive_refinement(unsigned int _currentIncrement);
 
   /**
    * Refine the triangulation and transfer the solution.
@@ -56,7 +56,7 @@ protected:
    * Mark cells to be coarsened or refined based on the specified AMR criterion.
    */
   void
-  adaptiveRefineCriterion();
+  adaptive_refinement_criterion();
 
 private:
   userInputParameters<dim> userInputs;
@@ -79,7 +79,7 @@ private:
 };
 
 template <int dim, int degree>
-adaptiveRefinement<dim, degree>::adaptiveRefinement(
+AdaptiveRefinement<dim, degree>::AdaptiveRefinement(
   const userInputParameters<dim>                                          &_userInputs,
   parallel::distributed::Triangulation<dim>                               &_triangulation,
   std::vector<Field<dim>>                                                 &_fields,
@@ -102,7 +102,7 @@ adaptiveRefinement<dim, degree>::adaptiveRefinement(
 
 template <int dim, int degree>
 void
-adaptiveRefinement<dim, degree>::adaptiveRefine(unsigned int currentIncrement)
+AdaptiveRefinement<dim, degree>::do_adaptive_refinement(unsigned int currentIncrement)
 {
   if (currentIncrement != 0)
     {
@@ -115,13 +115,13 @@ adaptiveRefinement<dim, degree>::adaptiveRefine(unsigned int currentIncrement)
         }
     }
 
-  adaptiveRefineCriterion();
+  adaptive_refinement_criterion();
   refine_grid();
 }
 
 template <int dim, int degree>
 void
-adaptiveRefinement<dim, degree>::adaptiveRefineCriterion()
+AdaptiveRefinement<dim, degree>::adaptive_refinement_criterion()
 {
   std::vector<std::vector<double>> valuesV;
   std::vector<std::vector<double>> gradientsV;
@@ -273,7 +273,7 @@ adaptiveRefinement<dim, degree>::adaptiveRefineCriterion()
 
 template <int dim, int degree>
 void
-adaptiveRefinement<dim, degree>::refine_grid()
+AdaptiveRefinement<dim, degree>::refine_grid()
 {
   // prepare and refine
   triangulation.prepare_coarsening_and_refinement();
