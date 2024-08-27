@@ -306,8 +306,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
         }
     }
   // Read out unique filenames
-  int proc_num = Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
-  if (proc_num == 0)
+  if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
     {
       std::cout << "Unique VTK input files: " << std::endl;
       for (std::unordered_map<std::string, std::vector<size_t>>::iterator it =
@@ -315,8 +314,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
            it != file_field_map.end();
            it++)
         {
-          std::string filename = it->first;
-          std::cout << filename << ", ";
+          std::cout << it->first << ", ";
         }
     }
   // 2) READ EACH VTK FILE ONCE, APPLY ICs FOR SCALAR FIELDS
@@ -342,7 +340,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
       if (using_parallel_files)
         {
           std::ostringstream conversion;
-          conversion << proc_num;
+          conversion << Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
           filename = filename + "." + conversion.str() + ".vtk";
         }
       else
