@@ -309,12 +309,9 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
   if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
     {
       std::cout << "Unique VTK input files: " << std::endl;
-      for (std::unordered_map<std::string, std::vector<size_t>>::iterator it =
-             file_field_map.begin();
-           it != file_field_map.end();
-           it++)
+      for (const auto &pair : file_field_map)
         {
-          std::cout << it->first << ", ";
+          std::cout << pair.first << ", ";
         }
     }
   // 2) READ EACH VTK FILE ONCE, APPLY ICs FOR SCALAR FIELDS
@@ -322,20 +319,16 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
   typedef PRISMS::Body<double *, dim>           Body;
   Body                                          body;
 
-  for (std::unordered_map<std::string, std::vector<size_t>>::iterator it =
-         file_field_map.begin();
-       it != file_field_map.end();
-       it++)
+  for (const auto &pair : file_field_map)
     {
       bool                using_parallel_files = false;
-      std::string         filename             = it->first;
-      std::vector<size_t> index_list           = it->second;
+      std::string         filename             = pair.first;
+      std::vector<size_t> index_list           = pair.second;
       // For parallel file capability
-      for (size_t i = 0; i < index_list.size(); i++)
+      for (const auto &index : index_list)
         {
-          unsigned int var_index = index_list[i];
           using_parallel_files =
-            (using_parallel_files || userInputs.load_parallel_file[var_index]);
+            (using_parallel_files || userInputs.load_parallel_file[index]);
         }
       if (using_parallel_files)
         {
@@ -351,21 +344,20 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
       std::cout << "Reading " << filename << "\n";
       body.read_vtk(filename);
 
-      for (size_t i = 0; i < index_list.size(); i++)
+      for (const auto &index : index_list)
         {
-          unsigned int var_index = index_list[i];
-          std::string  var_name  = userInputs.load_field_name[var_index];
+          std::string var_name = userInputs.load_field_name[index];
 
           // Find the scalar field in the file
           ScalarField &conc = body.find_scalar_field(var_name);
 
-          if (userInputs.var_type[var_index] == SCALAR)
+          if (userInputs.var_type[index] == SCALAR)
             {
               pcout << "Applying PField initial condition for "
-                    << userInputs.load_field_name[var_index] << "...\n";
-              VectorTools::interpolate(*dofHandlersSet[var_index],
-                                       InitialConditionPField<dim>(var_index, conc),
-                                       *solutionSet[var_index]);
+                    << userInputs.load_field_name[index] << "...\n";
+              VectorTools::interpolate(*dofHandlersSet[index],
+                                       InitialConditionPField<dim>(index, conc),
+                                       *solutionSet[index]);
             }
           else
             {
