@@ -123,9 +123,6 @@ template <int dim, int degree>
 void
 AdaptiveRefinement<dim, degree>::adaptive_refinement_criterion()
 {
-  std::vector<std::vector<double>> valuesV;
-  std::vector<std::vector<double>> gradientsV;
-
   QGaussLobatto<dim> quadrature(degree + 1);
   const unsigned int num_quad_points = quadrature.size();
 
@@ -136,12 +133,12 @@ AdaptiveRefinement<dim, degree>::adaptive_refinement_criterion()
       if (criterion.criterion_type == VALUE ||
           criterion.criterion_type == VALUE_AND_GRADIENT)
         {
-          update_flags = update_values | update_flags;
+          update_flags |= update_values;
         }
       else if (criterion.criterion_type == GRADIENT ||
                criterion.criterion_type == VALUE_AND_GRADIENT)
         {
-          update_flags = update_gradients | update_flags;
+          update_flags |= update_gradients;
         }
     }
 
@@ -164,13 +161,17 @@ AdaptiveRefinement<dim, degree>::adaptive_refinement_criterion()
         {
           fe_values.reinit(cell);
 
+          bool mark_refine = false;
+
+          // Loop through the refinement criteria to determine whether a cell needs to be
+          // refined or coarsened
           for (const auto &criterion : userInputs.refinement_criteria)
             {
+              // Get the values and/or gradients
               if (update_values & update_flags)
                 {
                   fe_values.get_function_values(*solutionSet[criterion.variable_index],
                                                 values);
-                  valuesV.push_back(values);
                 }
               if (update_gradients & update_flags)
                 {
@@ -179,48 +180,39 @@ AdaptiveRefinement<dim, degree>::adaptive_refinement_criterion()
 
                   for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
                     {
-                      gradient_magnitudes.at(q_point) = gradients.at(q_point).norm();
+                      gradient_magnitudes[q_point] = gradients[q_point].norm();
                     }
-
-                  gradientsV.push_back(gradient_magnitudes);
                 }
-            }
 
-          bool mark_refine = false;
-
-          for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
-            {
-              for (const auto &criterion : userInputs.refinement_criteria)
+              // Loop through the quadrature points and determine if the cell needs to be
+              // refined
+              for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
                 {
-                  if (criterion.criterion_type == VALUE ||
-                      criterion.criterion_type == VALUE_AND_GRADIENT)
+                  if ((criterion.criterion_type == VALUE ||
+                       criterion.criterion_type == VALUE_AND_GRADIENT) &&
+                      values[q_point] > criterion.value_lower_bound &&
+                      values[q_point] < criterion.value_upper_bound)
                     {
-                      if ((valuesV[criterion.variable_index][q_point] >
-                           criterion.value_lower_bound) &&
-                          (valuesV[criterion.variable_index][q_point] <
-                           criterion.value_upper_bound))
-                        {
-                          mark_refine = true;
-                          break;
-                        }
+                      mark_refine = true;
+                      break;
                     }
-                  if (criterion.criterion_type == GRADIENT ||
-                      criterion.criterion_type == VALUE_AND_GRADIENT)
+                  if ((criterion.criterion_type == GRADIENT ||
+                       criterion.criterion_type == VALUE_AND_GRADIENT) &&
+                      gradient_magnitudes[q_point] > criterion.gradient_lower_bound)
                     {
-                      if (gradientsV[criterion.variable_index][q_point] >
-                          criterion.gradient_lower_bound)
-                        {
-                          mark_refine = true;
-                          break;
-                        }
+                      mark_refine = true;
+                      break;
                     }
+                }
+
+              // Early exit for when there are multiple refinement criteria
+              if (mark_refine)
+                {
+                  break;
                 }
             }
 
-          valuesV.clear();
-          gradientsV.clear();
-
-          // limit the maximal and minimal refinement depth of the mesh
+          // Limit the max and min refinement depth of the mesh
           unsigned int current_level = t_cell->level();
 
           if ((mark_refine && current_level < userInputs.max_refinement_level))
