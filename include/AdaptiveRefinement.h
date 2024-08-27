@@ -104,9 +104,9 @@ template <int dim, int degree>
 void
 AdaptiveRefinement<dim, degree>::do_adaptive_refinement(unsigned int currentIncrement)
 {
+  // Apply constraints for the initial condition so they are considered when remeshing
   if (currentIncrement != 0)
     {
-      // Apply constraints before remeshing
       for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
         {
           constraintsDirichletSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
@@ -228,13 +228,17 @@ template <int dim, int degree>
 void
 AdaptiveRefinement<dim, degree>::refine_grid()
 {
-  // prepare and refine
+  // Prepare for refinement
   triangulation.prepare_coarsening_and_refinement();
+
+  // Transfer solution
   for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
     {
       soltransSet[fieldIndex]->prepare_for_coarsening_and_refinement(
         *solutionSet[fieldIndex]);
     }
+
+  // Execute refinement
   triangulation.execute_coarsening_and_refinement();
 }
 
