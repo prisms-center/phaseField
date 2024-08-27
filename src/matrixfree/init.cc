@@ -325,7 +325,7 @@ MatrixFreePDE<dim, degree>::init()
       applyInitialConditions();
     }
 
-  // Create new solution transfer sets (needed for the "refineGrid" call, might
+  // Create new solution transfer sets (needed for the "refine_grid" call, might
   // be able to move this elsewhere)
   soltransSet.clear();
   for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)

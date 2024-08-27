@@ -13,19 +13,20 @@
 #include "fields.h"
 #include "userInputParameters.h"
 
-#ifndef vectorType
-typedef dealii::LinearAlgebra::distributed::Vector<double> vectorType;
-#endif
-
 using namespace dealii;
 
 /**
- * This class deals with adaptive refinement. Add more comments later
+ * A class that handles the determination and application of AMR criterion.
  */
 template <int dim, int degree>
 class adaptiveRefinement
 {
 public:
+  using vectorType = dealii::LinearAlgebra::distributed::Vector<double>;
+
+  /**
+   * Default constructor.
+   */
   adaptiveRefinement(
     const userInputParameters<dim>            &_userInputs,
     parallel::distributed::Triangulation<dim> &_triangulation,
@@ -37,16 +38,23 @@ public:
     std::vector<const AffineConstraints<double> *> &_constraintsDirichletSet,
     std::vector<const AffineConstraints<double> *> &_constraintsOtherSet);
 
-  // Adaptive refinement
+  /**
+   * Perform the adaptive refinement based on the specified AMR criterion. Also apply
+   * constraints when in the 0th timestep.
+   */
   void
   adaptiveRefine(unsigned int _currentIncrement);
 
-  // Method that refines the triangulation
+  /**
+   * Refine the triangulation and transfer the solution.
+   */
   void
-  refineGrid();
+  refine_grid();
 
 protected:
-  // Adaptive refinement criterion
+  /**
+   * Mark cells to be coarsened or refined based on the specified AMR criterion.
+   */
   void
   adaptiveRefineCriterion();
 
@@ -108,7 +116,7 @@ adaptiveRefinement<dim, degree>::adaptiveRefine(unsigned int currentIncrement)
     }
 
   adaptiveRefineCriterion();
-  refineGrid();
+  refine_grid();
 }
 
 template <int dim, int degree>
@@ -265,7 +273,7 @@ adaptiveRefinement<dim, degree>::adaptiveRefineCriterion()
 
 template <int dim, int degree>
 void
-adaptiveRefinement<dim, degree>::refineGrid()
+adaptiveRefinement<dim, degree>::refine_grid()
 {
   // prepare and refine
   triangulation.prepare_coarsening_and_refinement();
