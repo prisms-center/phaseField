@@ -129,37 +129,32 @@ AdaptiveRefinement<dim, degree>::adaptive_refinement_criterion()
   QGaussLobatto<dim> quadrature(degree + 1);
   const unsigned int num_quad_points = quadrature.size();
 
-  // Set the correct update flags
+  // Determine which update flags are neccessary to apply the refinement criterion
   bool need_value    = false;
   bool need_gradient = false;
-  for (unsigned int field_index = 0; field_index < userInputs.refinement_criteria.size();
-       field_index++)
+  for (const auto &criterion : userInputs.refinement_criteria)
     {
-      if (userInputs.refinement_criteria[field_index].criterion_type == VALUE ||
-          userInputs.refinement_criteria[field_index].criterion_type ==
-            VALUE_AND_GRADIENT)
+      if (criterion.criterion_type == VALUE ||
+          criterion.criterion_type == VALUE_AND_GRADIENT)
         {
           need_value = true;
         }
-      else if (userInputs.refinement_criteria[field_index].criterion_type == GRADIENT ||
-               userInputs.refinement_criteria[field_index].criterion_type ==
-                 VALUE_AND_GRADIENT)
+      else if (criterion.criterion_type == GRADIENT ||
+               criterion.criterion_type == VALUE_AND_GRADIENT)
         {
           need_gradient = true;
         }
     }
+
+  // Set the update flags
   dealii::UpdateFlags update_flags;
   if (need_value && !need_gradient)
     {
-      update_flags = update_values;
+      update_flags = update_values | update_flags;
     }
   else if (!need_value && need_gradient)
     {
-      update_flags = update_gradients;
-    }
-  else
-    {
-      update_flags = update_values | update_gradients;
+      update_flags = update_gradients | update_flags;
     }
 
   FEValues<dim> fe_values(*FESet[userInputs.refinement_criteria[0].variable_index],
@@ -170,39 +165,29 @@ AdaptiveRefinement<dim, degree>::adaptive_refinement_criterion()
   std::vector<double>                         gradient_magnitudes(num_quad_points);
   std::vector<dealii::Tensor<1, dim, double>> gradients(num_quad_points);
 
-  typename DoFHandler<dim>::active_cell_iterator
-    cell = dofHandlersSet_nonconst[userInputs.refinement_criteria[0].variable_index]
-             ->begin_active(),
-    endc =
-      dofHandlersSet_nonconst[userInputs.refinement_criteria[0].variable_index]->end();
-
   typename parallel::distributed::Triangulation<dim>::active_cell_iterator t_cell =
     triangulation.begin_active();
 
-  for (; cell != endc; ++cell)
+  for (const auto &cell :
+       dofHandlersSet_nonconst[userInputs.refinement_criteria[0].variable_index]
+         ->active_cell_iterators())
     {
       if (cell->is_locally_owned())
         {
           fe_values.reinit(cell);
 
-          for (unsigned int field_index = 0;
-               field_index < userInputs.refinement_criteria.size();
-               field_index++)
+          for (const auto &criterion : userInputs.refinement_criteria)
             {
               if (need_value)
                 {
-                  fe_values.get_function_values(
-                    *solutionSet[userInputs.refinement_criteria[field_index]
-                                   .variable_index],
-                    values);
+                  fe_values.get_function_values(*solutionSet[criterion.variable_index],
+                                                values);
                   valuesV.push_back(values);
                 }
               if (need_gradient)
                 {
-                  fe_values.get_function_gradients(
-                    *solutionSet[userInputs.refinement_criteria[field_index]
-                                   .variable_index],
-                    gradients);
+                  fe_values.get_function_gradients(*solutionSet[criterion.variable_index],
+                                                   gradients);
 
                   for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
                     {
@@ -217,33 +202,25 @@ AdaptiveRefinement<dim, degree>::adaptive_refinement_criterion()
 
           for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
             {
-              for (unsigned int field_index = 0;
-                   field_index < userInputs.refinement_criteria.size();
-                   field_index++)
+              for (const auto &criterion : userInputs.refinement_criteria)
                 {
-                  if (userInputs.refinement_criteria[field_index].criterion_type ==
-                        VALUE ||
-                      userInputs.refinement_criteria[field_index].criterion_type ==
-                        VALUE_AND_GRADIENT)
+                  if (criterion.criterion_type == VALUE ||
+                      criterion.criterion_type == VALUE_AND_GRADIENT)
                     {
-                      if ((valuesV[field_index][q_point] >
-                           userInputs.refinement_criteria[field_index]
-                             .value_lower_bound) &&
-                          (valuesV[field_index][q_point] <
-                           userInputs.refinement_criteria[field_index].value_upper_bound))
+                      if ((valuesV[criterion.variable_index][q_point] >
+                           criterion.value_lower_bound) &&
+                          (valuesV[criterion.variable_index][q_point] <
+                           criterion.value_upper_bound))
                         {
                           mark_refine = true;
                           break;
                         }
                     }
-                  if (userInputs.refinement_criteria[field_index].criterion_type ==
-                        GRADIENT ||
-                      userInputs.refinement_criteria[field_index].criterion_type ==
-                        VALUE_AND_GRADIENT)
+                  if (criterion.criterion_type == GRADIENT ||
+                      criterion.criterion_type == VALUE_AND_GRADIENT)
                     {
-                      if (gradientsV[field_index][q_point] >
-                          userInputs.refinement_criteria[field_index]
-                            .gradient_lower_bound)
+                      if (gradientsV[criterion.variable_index][q_point] >
+                          criterion.gradient_lower_bound)
                         {
                           mark_refine = true;
                           break;
