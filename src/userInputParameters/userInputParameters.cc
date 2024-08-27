@@ -77,7 +77,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
             new_criterion.variable_name  = input_file_reader.var_names.at(i);
             if (boost::iequals(crit_type_string, "VALUE"))
               {
-                new_criterion.criterion_type = VALUE;
+                new_criterion.criterion_type = criterion_value;
                 new_criterion.value_lower_bound =
                   parameter_handler.get_double("Value lower bound");
                 new_criterion.value_upper_bound =
@@ -97,13 +97,13 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
               }
             else if (boost::iequals(crit_type_string, "GRADIENT"))
               {
-                new_criterion.criterion_type = GRADIENT;
+                new_criterion.criterion_type = criterion_gradient;
                 new_criterion.gradient_lower_bound =
                   parameter_handler.get_double("Gradient magnitude lower bound");
               }
             else if (boost::iequals(crit_type_string, "VALUE_AND_GRADIENT"))
               {
-                new_criterion.criterion_type = VALUE_AND_GRADIENT;
+                new_criterion.criterion_type = criterion_value | criterion_gradient;
                 new_criterion.value_lower_bound =
                   parameter_handler.get_double("Value lower bound");
                 new_criterion.value_upper_bound =

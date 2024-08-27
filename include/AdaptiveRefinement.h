@@ -130,13 +130,11 @@ AdaptiveRefinement<dim, degree>::adaptive_refinement_criterion()
   dealii::UpdateFlags update_flags;
   for (const auto &criterion : userInputs.refinement_criteria)
     {
-      if (criterion.criterion_type == VALUE ||
-          criterion.criterion_type == VALUE_AND_GRADIENT)
+      if (criterion.criterion_type & criterion_value)
         {
           update_flags |= update_values;
         }
-      else if (criterion.criterion_type == GRADIENT ||
-               criterion.criterion_type == VALUE_AND_GRADIENT)
+      else if (criterion.criterion_type & criterion_gradient)
         {
           update_flags |= update_gradients;
         }
@@ -188,16 +186,14 @@ AdaptiveRefinement<dim, degree>::adaptive_refinement_criterion()
               // refined
               for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
                 {
-                  if ((criterion.criterion_type == VALUE ||
-                       criterion.criterion_type == VALUE_AND_GRADIENT) &&
+                  if (criterion.criterion_type & criterion_value &&
                       values[q_point] > criterion.value_lower_bound &&
                       values[q_point] < criterion.value_upper_bound)
                     {
                       mark_refine = true;
                       break;
                     }
-                  if ((criterion.criterion_type == GRADIENT ||
-                       criterion.criterion_type == VALUE_AND_GRADIENT) &&
+                  if (criterion.criterion_type & criterion_gradient &&
                       gradient_magnitudes[q_point] > criterion.gradient_lower_bound)
                     {
                       mark_refine = true;
