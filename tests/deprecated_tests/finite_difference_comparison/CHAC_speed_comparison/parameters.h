@@ -20,7 +20,8 @@
 // Set the element parameters
 // =================================================================================
 // The number of elements in each direction is 2^(refineFactor) * subdivisions
-// For optimal performance, use refineFactor primarily to determine the element size
+// For optimal performance, use refineFactor primarily to determine the element
+// size
 #define subdivisionsX 5
 #define subdivisionsY 5
 #define subdivisionsZ 5
@@ -35,10 +36,10 @@
 // Set the time step parameters
 // =================================================================================
 // The size of the time step
-#define timeStep (5.0/5500.0)
+#define timeStep (5.0 / 5500.0)
 
-// The simulation ends when either timeFinal is reached or the number of time steps
-// equals timeIncrements
+// The simulation ends when either timeFinal is reached or the number of time
+// steps equals timeIncrements
 #define timeFinal 10000.0
 #define timeIncrements 27500
 // =================================================================================
@@ -49,21 +50,18 @@
 // Each field in the problem will be output is writeOutput is set to "true"
 #define writeOutput true
 
-// Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", or "N_PER_DECADE")
+// Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", or
+// "N_PER_DECADE")
 #define outputCondition "EQUAL_SPACING"
 
-// Number of times the program outputs the fields (total number for "EQUAL_SPACING"
-// and "LOG_SPACING", number per decade for "N_PER_DECADE")
+// Number of times the program outputs the fields (total number for
+// "EQUAL_SPACING" and "LOG_SPACING", number per decade for "N_PER_DECADE")
 #define numOutputs 1
 // =================================================================================
 
 // =================================================================================
-// Set the flag determining if the total free energy is calculated for each output
+// Set the flag determining if the total free energy is calculated for each
+// output
 // =================================================================================
 #define calcEnergy false
 // =================================================================================
-
-
-
-
-
