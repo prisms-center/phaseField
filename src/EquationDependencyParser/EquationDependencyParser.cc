@@ -251,20 +251,21 @@ EquationDependencyParser::parseDependencyListRHS(
 }
 
 void
-EquationDependencyParser::parseDependencyListLHS(std::vector<std::string> var_name,
-                                                 std::vector<PDEType>     var_eq_type,
-                                                 unsigned int             var_index,
-                                                 std::string        value_dependencies,
-                                                 std::string        gradient_dependencies,
-                                                 std::vector<bool> &need_value,
-                                                 std::vector<bool> &need_gradient,
-                                                 std::vector<bool> &need_hessian,
-                                                 std::vector<bool> &need_value_change,
-                                                 std::vector<bool> &need_gradient_change,
-                                                 std::vector<bool> &need_hessian_change,
-                                                 bool              &need_value_residual,
-                                                 bool &need_gradient_residual,
-                                                 bool &is_nonlinear)
+EquationDependencyParser::parseDependencyListLHS(
+  std::vector<std::string> variable_name_list,
+  std::vector<PDEType>     variable_eq_type,
+  unsigned int             variable_index,
+  std::string              value_dependencies,
+  std::string              gradient_dependencies,
+  std::vector<bool>       &need_value,
+  std::vector<bool>       &need_gradient,
+  std::vector<bool>       &need_hessian,
+  std::vector<bool>       &need_value_change,
+  std::vector<bool>       &need_gradient_change,
+  std::vector<bool>       &need_hessian_change,
+  bool                    &need_value_residual,
+  bool                    &need_gradient_residual,
+  bool                    &is_nonlinear)
 {
   // Split the dependency strings into lists of entries
   std::vector<std::string> split_value_dependency_list =
@@ -285,114 +286,124 @@ EquationDependencyParser::parseDependencyListLHS(std::vector<std::string> var_na
                                split_gradient_dependency_list.begin(),
                                split_gradient_dependency_list.end());
 
+  // Set nonlinearity to false
   is_nonlinear = false;
-  for (unsigned int dep = 0; dep < split_dependency_list.size(); dep++)
+
+  // Cycle through each dependency entry
+  for (const auto &dependency : split_dependency_list)
     {
+      // Flag to make sure we have assigned a dependency entry
       bool dependency_entry_assigned = false;
 
-      for (unsigned int var = 0; var < var_name.size(); var++)
+      // Loop through all known variable names [x, grad(x), and hess(x)] to see which ones
+      // are on our dependency list. If we have two variables x and y this will loop twice
+      // to see if the supplied dependency needs either two of the variables. A successful
+      // match will update the values/gradient/hessian flag for that dependency variable.
+      std::size_t dependency_variable_index = 0;
+      for (const auto &variable : variable_name_list)
         {
-          std::string grad_var_name = {"grad()"};
-          grad_var_name.insert(--grad_var_name.end(),
-                               var_name.at(var).begin(),
-                               var_name.at(var).end());
+          // Create grad(), hess(), change(), grad(change()), and hess(change()) variants
+          // of the variable name
+          std::string gradient_variable = {"grad()"};
+          gradient_variable.insert(--gradient_variable.end(),
+                                   variable.begin(),
+                                   variable.end());
 
-          std::string hess_var_name = {"hess()"};
-          hess_var_name.insert(--hess_var_name.end(),
-                               var_name.at(var).begin(),
-                               var_name.at(var).end());
+          std::string hessian_variable = {"hess()"};
+          hessian_variable.insert(--hessian_variable.end(),
+                                  variable.begin(),
+                                  variable.end());
 
-          std::string val_change_var_name = {"change()"};
-          val_change_var_name.insert(--val_change_var_name.end(),
-                                     var_name.at(var).begin(),
-                                     var_name.at(var).end());
+          std::string change_value_variable = {"change()"};
+          change_value_variable.insert(--change_value_variable.end(),
+                                       variable.begin(),
+                                       variable.end());
 
-          std::string grad_change_var_name = {"grad(change())"};
-          grad_change_var_name.insert(--(--grad_change_var_name.end()),
-                                      var_name.at(var).begin(),
-                                      var_name.at(var).end());
+          std::string change_gradient_variable = {"grad(change())"};
+          change_gradient_variable.insert(--(--change_gradient_variable.end()),
+                                          variable.begin(),
+                                          variable.end());
 
-          std::string hess_change_var_name = {"hess(change())"};
-          hess_change_var_name.insert(--(--hess_change_var_name.end()),
-                                      var_name.at(var).begin(),
-                                      var_name.at(var).end());
+          std::string change_hessian_variable = {"hess(change())"};
+          change_hessian_variable.insert(--(--change_hessian_variable.end()),
+                                         variable.begin(),
+                                         variable.end());
 
-          if (split_dependency_list.at(dep) == var_name.at(var))
+          // Is the variable we are finding the dependencies for explicit
+          bool dependency_variable_is_explicit =
+            variable_eq_type[dependency_variable_index] == EXPLICIT_TIME_DEPENDENT;
+
+          // Case if the dependency is x
+          if (dependency == variable)
             {
-              need_value.at(var)        = true;
-              dependency_entry_assigned = true;
-              if ((var_eq_type[var] != EXPLICIT_TIME_DEPENDENT))
-                {
-                  is_nonlinear = true;
-                }
+              need_value[dependency_variable_index] = true;
+              dependency_entry_assigned             = true;
+
+              // Check for nonlinearity
+              is_nonlinear = is_nonlinear || !dependency_variable_is_explicit;
             }
-          else if (split_dependency_list.at(dep) == grad_var_name)
+          // Case if the dependency is grad(x)
+          else if (dependency == gradient_variable)
             {
-              need_gradient.at(var)     = true;
-              dependency_entry_assigned = true;
-              if ((var_eq_type[var] != EXPLICIT_TIME_DEPENDENT))
-                {
-                  is_nonlinear = true;
-                }
+              need_gradient[dependency_variable_index] = true;
+              dependency_entry_assigned                = true;
+
+              // Check for nonlinearity
+              is_nonlinear = is_nonlinear || !dependency_variable_is_explicit;
             }
-          else if (split_dependency_list.at(dep) == hess_var_name)
+          // Case if the dependency is hess(x)
+          else if (dependency == hessian_variable)
             {
-              need_hessian.at(var)      = true;
-              dependency_entry_assigned = true;
-              if ((var_eq_type[var] != EXPLICIT_TIME_DEPENDENT))
-                {
-                  is_nonlinear = true;
-                }
+              need_hessian[dependency_variable_index] = true;
+              dependency_entry_assigned               = true;
+
+              // Check for nonlinearity
+              is_nonlinear = is_nonlinear || !dependency_variable_is_explicit;
             }
-          else if (split_dependency_list.at(dep) == val_change_var_name)
+          // Case if the dependency is change(x)
+          else if (dependency == change_value_variable)
             {
-              need_value_change.at(var) = true;
-              dependency_entry_assigned = true;
-              if (var_index != var)
-                {
-                  std::cerr << "PRISMS-PF Error: Dependency entry "
-                            << split_dependency_list.at(dep)
-                            << " is not valid because the change in a variable can "
-                               "only be accessed in its own governing equation."
-                            << std::endl;
-                  abort();
-                }
+              need_value_change[dependency_variable_index] = true;
+              dependency_entry_assigned                    = true;
+
+              Assert(variable_index != dependency_variable_index,
+                     dealii::StandardExceptions::ExcMessage(
+                       "PRISMS-PF Error: Dependency entry " + dependency +
+                       " is not valid because the change in a variable can "
+                       "only be accessed in its own governing equation."));
             }
-          else if (split_dependency_list.at(dep) == grad_change_var_name)
+          // Case if the dependency is grad(change(x))
+          else if (dependency == change_gradient_variable)
             {
-              need_gradient_change.at(var) = true;
-              dependency_entry_assigned    = true;
-              if (var_index != var)
-                {
-                  std::cerr << "PRISMS-PF Error: Dependency entry "
-                            << split_dependency_list.at(dep)
-                            << " is not valid because the change in a variable can "
-                               "only be accessed in its own governing equation."
-                            << std::endl;
-                  abort();
-                }
+              need_gradient_change[dependency_variable_index] = true;
+              dependency_entry_assigned                       = true;
+
+              Assert(variable_index != dependency_variable_index,
+                     dealii::StandardExceptions::ExcMessage(
+                       "PRISMS-PF Error: Dependency entry " + dependency +
+                       " is not valid because the change in a variable can "
+                       "only be accessed in its own governing equation."));
             }
-          else if (split_dependency_list.at(dep) == hess_change_var_name)
+          // Case if the dependency is hess(change(x))
+          else if (dependency == change_hessian_variable)
             {
-              need_hessian_change.at(var) = true;
-              dependency_entry_assigned   = true;
-              if (var_index != var)
-                {
-                  std::cerr << "PRISMS-PF Error: Dependency entry "
-                            << split_dependency_list.at(dep)
-                            << " is not valid because the change in a variable can "
-                               "only be accessed in its own governing equation."
-                            << std::endl;
-                  abort();
-                }
+              need_hessian_change[dependency_variable_index] = true;
+              dependency_entry_assigned                      = true;
+
+              Assert(variable_index != dependency_variable_index,
+                     dealii::StandardExceptions::ExcMessage(
+                       "PRISMS-PF Error: Dependency entry " + dependency +
+                       " is not valid because the change in a variable can "
+                       "only be accessed in its own governing equation."));
             }
+
+          // Increment counter
+          ++dependency_variable_index;
         }
-      if (!dependency_entry_assigned)
-        {
-          std::cerr << "PRISMS-PF Error: Dependency entry "
-                    << split_dependency_list.at(dep) << " is not valid." << std::endl;
-          abort();
-        }
+
+      Assert(dependency_entry_assigned,
+             dealii::StandardExceptions::ExcMessage("PRISMS-PF Error: Dependency entry " +
+                                                    dependency + " is not valid."))
     }
 }
 
