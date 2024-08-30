@@ -482,7 +482,6 @@ protected:
   bool hasExplicitEquation;
   bool hasNonExplicitEquation;
   //
-  unsigned int parabolicFieldIndex;
   double       currentTime;
   unsigned int currentIncrement, currentOutput, currentCheckpoint,
     current_grain_reassignment;

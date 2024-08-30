@@ -90,7 +90,6 @@ MatrixFreePDE<dim, degree>::init()
       if (it->pdetype == EXPLICIT_TIME_DEPENDENT)
         {
           isTimeDependentBVP  = true;
-          parabolicFieldIndex = it->index;
           hasExplicitEquation = true;
         }
       else if (it->pdetype == IMPLICIT_TIME_DEPENDENT)
@@ -104,7 +103,6 @@ MatrixFreePDE<dim, degree>::init()
         }
       else if (it->pdetype == AUXILIARY)
         {
-          parabolicFieldIndex    = it->index;
           hasNonExplicitEquation = true;
         }
       else if (it->pdetype == TIME_INDEPENDENT)
