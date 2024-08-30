@@ -5,6 +5,13 @@
 #include <iostream>
 
 void
+EquationDependencyParser::strip_dependency_whitespace(std::string &dependency_list)
+{
+  dependency_list.erase(std::remove(dependency_list.begin(), dependency_list.end(), ' '),
+                        dependency_list.end());
+}
+
+void
 EquationDependencyParser::parse(std::vector<std::string> var_name,
                                 std::vector<PDEType>     var_eq_type,
                                 std::vector<std::string> sorted_dependencies_value_RHS,
@@ -36,17 +43,10 @@ EquationDependencyParser::parse(std::vector<std::string> var_name,
   // Now parse the dependency strings to set the flags to true where needed
   for (unsigned int i = 0; i < var_name.size(); i++)
     {
-      // First strip excess whitespace
-      for (unsigned int j = 0; j < sorted_dependencies_value_RHS.at(i).length(); j++)
-        {
-          if (sorted_dependencies_value_RHS.at(i)[j] == ' ')
-            sorted_dependencies_value_RHS.at(i).erase(j, 1);
-        }
-      for (unsigned int j = 0; j < sorted_dependencies_gradient_RHS.at(i).length(); j++)
-        {
-          if (sorted_dependencies_gradient_RHS.at(i)[j] == ' ')
-            sorted_dependencies_gradient_RHS.at(i).erase(j, 1);
-        }
+      // Strip excess whitespace
+      strip_dependency_whitespace(sorted_dependencies_value_RHS.at(i));
+      strip_dependency_whitespace(sorted_dependencies_gradient_RHS.at(i));
+
       // Now check for each variable_eq_type
       if (var_eq_type[i] == EXPLICIT_TIME_DEPENDENT)
         {
@@ -446,20 +446,12 @@ EquationDependencyParser::pp_parse(std::vector<std::string> var_name,
     {
       if (sorted_dependencies_value.size() > 0)
         {
-          for (unsigned int j = 0; j < sorted_dependencies_value.at(i).length(); j++)
-            {
-              if (sorted_dependencies_value.at(i)[j] == ' ')
-                sorted_dependencies_value.at(i).erase(j, 1);
-            }
+          strip_dependency_whitespace(sorted_dependencies_value.at(i));
         }
 
       if (sorted_dependencies_gradient.size() > 0)
         {
-          for (unsigned int j = 0; j < sorted_dependencies_gradient.at(i).length(); j++)
-            {
-              if (sorted_dependencies_gradient.at(i)[j] == ' ')
-                sorted_dependencies_gradient.at(i).erase(j, 1);
-            }
+          strip_dependency_whitespace(sorted_dependencies_gradient.at(i));
         }
     }
 

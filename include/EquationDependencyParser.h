@@ -3,6 +3,7 @@
 
 #include "varTypeEnums.h"
 
+#include <algorithm>
 #include <string>
 #include <vector>
 
@@ -65,6 +66,12 @@ public:
   std::vector<bool> pp_need_gradient_residual;
 
 protected:
+  /*
+   * Method to strip excess whitespace for the dependency lists
+   */
+  void
+  strip_dependency_whitespace(std::string &dependency_list);
+
   /**
    * Method to parse the RHS dependency strings and populate the vectors for
    * whether values, gradients, or hessians are needed.
