@@ -13,22 +13,25 @@ EquationDependencyParser::parse(std::vector<std::string> var_name,
                                 std::vector<std::string> sorted_dependencies_gradient_LHS,
                                 std::vector<bool>       &var_nonlinear)
 {
-  // Initialize the calculation needed flags to false
-  for (unsigned int i = 0; i < var_name.size(); i++)
-    {
-      need_value_explicit_RHS.push_back(false);
-      need_gradient_explicit_RHS.push_back(false);
-      need_hessian_explicit_RHS.push_back(false);
-      need_value_nonexplicit_RHS.push_back(false);
-      need_gradient_nonexplicit_RHS.push_back(false);
-      need_hessian_nonexplicit_RHS.push_back(false);
-      need_value_nonexplicit_LHS.push_back(false);
-      need_gradient_nonexplicit_LHS.push_back(false);
-      need_hessian_nonexplicit_LHS.push_back(false);
-      need_value_change_nonexplicit_LHS.push_back(false);
-      need_gradient_change_nonexplicit_LHS.push_back(false);
-      need_hessian_change_nonexplicit_LHS.push_back(false);
-    }
+  // Determine the number of variables
+  size_t n_variables = var_name.size();
+
+  // Resize the dependency vectors
+  need_value_explicit_RHS.resize(n_variables, false);
+  need_gradient_explicit_RHS.resize(n_variables, false);
+  need_hessian_explicit_RHS.resize(n_variables, false);
+
+  need_value_nonexplicit_RHS.resize(n_variables, false);
+  need_gradient_nonexplicit_RHS.resize(n_variables, false);
+  need_hessian_nonexplicit_RHS.resize(n_variables, false);
+
+  need_value_nonexplicit_LHS.resize(n_variables, false);
+  need_gradient_nonexplicit_LHS.resize(n_variables, false);
+  need_hessian_nonexplicit_LHS.resize(n_variables, false);
+
+  need_value_change_nonexplicit_LHS.resize(n_variables, false);
+  need_gradient_change_nonexplicit_LHS.resize(n_variables, false);
+  need_hessian_change_nonexplicit_LHS.resize(n_variables, false);
 
   // Now parse the dependency strings to set the flags to true where needed
   for (unsigned int i = 0; i < var_name.size(); i++)

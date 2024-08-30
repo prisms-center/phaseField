@@ -30,20 +30,39 @@ public:
            std::vector<std::string> sorted_dependencies_gradient);
 
   // All of the vectors of flags for what is needed for the solution variables
-  std::vector<bool> need_value_explicit_RHS, need_gradient_explicit_RHS,
-    need_hessian_explicit_RHS, need_value_nonexplicit_RHS, need_gradient_nonexplicit_RHS,
-    need_hessian_nonexplicit_RHS, need_value_nonexplicit_LHS,
-    need_gradient_nonexplicit_LHS, need_hessian_nonexplicit_LHS,
-    need_value_change_nonexplicit_LHS, need_gradient_change_nonexplicit_LHS,
-    need_hessian_change_nonexplicit_LHS, need_value_residual_explicit_RHS,
-    need_gradient_residual_explicit_RHS, need_value_residual_nonexplicit_RHS,
-    need_gradient_residual_nonexplicit_RHS, need_value_residual_nonexplicit_LHS,
-    need_gradient_residual_nonexplicit_LHS;
+  std::vector<bool> need_value_explicit_RHS;
+  std::vector<bool> need_gradient_explicit_RHS;
+  std::vector<bool> need_hessian_explicit_RHS;
+
+  std::vector<bool> need_value_nonexplicit_RHS;
+  std::vector<bool> need_gradient_nonexplicit_RHS;
+  std::vector<bool> need_hessian_nonexplicit_RHS;
+
+  std::vector<bool> need_value_nonexplicit_LHS;
+  std::vector<bool> need_gradient_nonexplicit_LHS;
+  std::vector<bool> need_hessian_nonexplicit_LHS;
+
+  std::vector<bool> need_value_change_nonexplicit_LHS;
+  std::vector<bool> need_gradient_change_nonexplicit_LHS;
+  std::vector<bool> need_hessian_change_nonexplicit_LHS;
+
+  std::vector<bool> need_value_residual_explicit_RHS;
+  std::vector<bool> need_gradient_residual_explicit_RHS;
+
+  std::vector<bool> need_value_residual_nonexplicit_RHS;
+  std::vector<bool> need_gradient_residual_nonexplicit_RHS;
+
+  std::vector<bool> need_value_residual_nonexplicit_LHS;
+  std::vector<bool> need_gradient_residual_nonexplicit_LHS;
 
   // All of the vectors of flags for what is needed for the postprocessing
   // variables
-  std::vector<bool> pp_need_value, pp_need_gradient, pp_need_hessian,
-    pp_need_value_residual, pp_need_gradient_residual;
+  std::vector<bool> pp_need_value;
+  std::vector<bool> pp_need_gradient;
+  std::vector<bool> pp_need_hessian;
+
+  std::vector<bool> pp_need_value_residual;
+  std::vector<bool> pp_need_gradient_residual;
 
 protected:
   /**
