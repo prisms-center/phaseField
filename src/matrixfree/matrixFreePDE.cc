@@ -23,6 +23,15 @@ MatrixFreePDE<dim, degree>::MatrixFreePDE(userInputParameters<dim> _userInputs)
   , current_grain_reassignment(0)
   , computing_timer(pcout, TimerOutput::summary, TimerOutput::wall_times)
   , first_integrated_var_output_complete(false)
+  , AMR(_userInputs,
+        triangulation,
+        fields,
+        solutionSet,
+        soltransSet,
+        FESet,
+        dofHandlersSet_nonconst,
+        constraintsDirichletSet,
+        constraintsOtherSet)
 {}
 
 // destructor

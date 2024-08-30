@@ -314,7 +314,7 @@ MatrixFreePDE<dim, degree>::init()
     }
 
   // Apply the initial conditions to the solution vectors
-  // The initial conditions are re-applied below in the "adaptiveRefine"
+  // The initial conditions are re-applied below in the "do_adaptive_refinement"
   // function so that the mesh can adapt based on the initial conditions.
   if (userInputs.resume_from_checkpoint)
     {
@@ -325,7 +325,7 @@ MatrixFreePDE<dim, degree>::init()
       applyInitialConditions();
     }
 
-  // Create new solution transfer sets (needed for the "refineGrid" call, might
+  // Create new solution transfer sets (needed for the "refine_grid" call, might
   // be able to move this elsewhere)
   soltransSet.clear();
   for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
@@ -343,11 +343,26 @@ MatrixFreePDE<dim, degree>::init()
       solutionSet[fieldIndex]->update_ghost_values();
     }
 
-  // If not resuming from a checkpoint, check and perform adaptive mesh
-  // refinement, which reinitializes the system with the new mesh
-  if (!userInputs.resume_from_checkpoint)
+  // If not resuming from a checkpoint, check and perform adaptive mesh refinement, which
+  // reinitializes the system with the new mesh
+  if (!userInputs.resume_from_checkpoint && userInputs.h_adaptivity == true)
     {
-      adaptiveRefine(0);
+      computing_timer.enter_subsection("matrixFreePDE: AMR");
+
+      unsigned int numDoF_preremesh = totalDOFs;
+      for (unsigned int remesh_index = 0;
+           remesh_index <
+           (userInputs.max_refinement_level - userInputs.min_refinement_level);
+           remesh_index++)
+        {
+          AMR.do_adaptive_refinement(currentIncrement);
+          reinit();
+          if (totalDOFs == numDoF_preremesh)
+            break;
+          numDoF_preremesh = totalDOFs;
+        }
+
+      computing_timer.leave_subsection("matrixFreePDE: AMR");
     }
 
   // If resuming from a checkpoint, load the proper starting increment and time

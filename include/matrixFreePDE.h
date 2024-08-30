@@ -35,6 +35,7 @@
 #include <deal.II/numerics/vector_tools.h>
 
 // PRISMS headers
+#include "AdaptiveRefinement.h"
 #include "SimplifiedGrainRepresentation.h"
 #include "fields.h"
 #include "nucleus.h"
@@ -267,25 +268,7 @@ protected:
   applyBCs(unsigned int fieldIndex);
 
   /*AMR methods*/
-  /**
-   * Method that actually changes the triangulation based on refine/coarsen
-   * flags set previously.
-   */
-  void
-  refineGrid();
-
-  /**
-   * Method to control the overall flow of adaptive mesh refinement.
-   */
-  void
-  adaptiveRefine(unsigned int _currentIncrement);
-
-  /**
-   * Virtual method to define the the criterion for refining or coarsening the
-   * mesh. This method sets refine/coarsen flags that are read by refineGrid.
-   */
-  virtual void
-  adaptiveRefineCriterion();
+  AdaptiveRefinement<dim, degree> AMR;
 
   /*Method to compute the right hand side (RHS) residual vectors*/
   void
