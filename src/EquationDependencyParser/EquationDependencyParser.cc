@@ -40,12 +40,22 @@ EquationDependencyParser::parse(std::vector<std::string> var_name,
   need_gradient_change_nonexplicit_LHS.resize(n_variables, false);
   need_hessian_change_nonexplicit_LHS.resize(n_variables, false);
 
+  // Resize the residual vectors
+  need_value_residual_explicit_RHS.resize(n_variables, false);
+  need_gradient_residual_explicit_RHS.resize(n_variables, false);
+
+  need_value_residual_nonexplicit_RHS.resize(n_variables, false);
+  need_gradient_residual_nonexplicit_RHS.resize(n_variables, false);
+
+  need_value_residual_nonexplicit_LHS.resize(n_variables, false);
+  need_gradient_residual_nonexplicit_LHS.resize(n_variables, false);
+
   // Now parse the dependency strings to set the flags to true where needed
   for (unsigned int i = 0; i < var_name.size(); i++)
     {
       // Strip excess whitespace
-      strip_dependency_whitespace(sorted_dependencies_value_RHS.at(i));
-      strip_dependency_whitespace(sorted_dependencies_gradient_RHS.at(i));
+      strip_dependency_whitespace(sorted_dependencies_value_RHS[i]);
+      strip_dependency_whitespace(sorted_dependencies_gradient_RHS[i]);
 
       // Now check for each variable_eq_type
       if (var_eq_type[i] == EXPLICIT_TIME_DEPENDENT)
@@ -56,8 +66,8 @@ EquationDependencyParser::parse(std::vector<std::string> var_name,
           parseDependencyListRHS(var_name,
                                  var_eq_type,
                                  i,
-                                 sorted_dependencies_value_RHS.at(i),
-                                 sorted_dependencies_gradient_RHS.at(i),
+                                 sorted_dependencies_value_RHS[i],
+                                 sorted_dependencies_gradient_RHS[i],
                                  need_value_explicit_RHS,
                                  need_gradient_explicit_RHS,
                                  need_hessian_explicit_RHS,
@@ -65,18 +75,10 @@ EquationDependencyParser::parse(std::vector<std::string> var_name,
                                  need_gradient_residual_entry,
                                  single_var_nonlinear);
 
-          // std::cout << "RHS Nonlinear flag for var " << i << " :" <<
-          // single_var_nonlinear << std::endl;
-
           var_nonlinear.push_back(single_var_nonlinear);
 
-          need_value_residual_explicit_RHS.push_back(need_value_residual_entry);
-          need_gradient_residual_explicit_RHS.push_back(need_gradient_residual_entry);
-
-          need_value_residual_nonexplicit_RHS.push_back(false);
-          need_gradient_residual_nonexplicit_RHS.push_back(false);
-          need_value_residual_nonexplicit_LHS.push_back(false);
-          need_gradient_residual_nonexplicit_LHS.push_back(false);
+          need_value_residual_explicit_RHS[i]    = need_value_residual_entry;
+          need_gradient_residual_explicit_RHS[i] = need_gradient_residual_entry;
         }
       else if (var_eq_type[i] == AUXILIARY)
         {
@@ -86,8 +88,8 @@ EquationDependencyParser::parse(std::vector<std::string> var_name,
           parseDependencyListRHS(var_name,
                                  var_eq_type,
                                  i,
-                                 sorted_dependencies_value_RHS.at(i),
-                                 sorted_dependencies_gradient_RHS.at(i),
+                                 sorted_dependencies_value_RHS[i],
+                                 sorted_dependencies_gradient_RHS[i],
                                  need_value_nonexplicit_RHS,
                                  need_gradient_nonexplicit_RHS,
                                  need_hessian_nonexplicit_RHS,
@@ -97,16 +99,8 @@ EquationDependencyParser::parse(std::vector<std::string> var_name,
 
           var_nonlinear.push_back(single_var_nonlinear);
 
-          // std::cout << "RHS Nonlinear flag for var " << i << " :" <<
-          // single_var_nonlinear << std::endl;
-
-          need_value_residual_explicit_RHS.push_back(false);
-          need_gradient_residual_explicit_RHS.push_back(false);
-
-          need_value_residual_nonexplicit_RHS.push_back(need_value_residual_entry);
-          need_gradient_residual_nonexplicit_RHS.push_back(need_gradient_residual_entry);
-          need_value_residual_nonexplicit_LHS.push_back(false);
-          need_gradient_residual_nonexplicit_LHS.push_back(false);
+          need_value_residual_nonexplicit_RHS[i]    = need_value_residual_entry;
+          need_gradient_residual_nonexplicit_RHS[i] = need_gradient_residual_entry;
         }
       else if (var_eq_type[i] == IMPLICIT_TIME_DEPENDENT ||
                var_eq_type[i] == TIME_INDEPENDENT)
@@ -117,8 +111,8 @@ EquationDependencyParser::parse(std::vector<std::string> var_name,
           parseDependencyListRHS(var_name,
                                  var_eq_type,
                                  i,
-                                 sorted_dependencies_value_RHS.at(i),
-                                 sorted_dependencies_gradient_RHS.at(i),
+                                 sorted_dependencies_value_RHS[i],
+                                 sorted_dependencies_gradient_RHS[i],
                                  need_value_nonexplicit_RHS,
                                  need_gradient_nonexplicit_RHS,
                                  need_hessian_nonexplicit_RHS,
@@ -126,17 +120,14 @@ EquationDependencyParser::parse(std::vector<std::string> var_name,
                                  need_gradient_residual_entry,
                                  single_var_nonlinear_RHS);
 
-          // std::cout << "RHS Nonlinear flag for var " << i << " :" <<
-          // single_var_nonlinear_RHS << std::endl;
-
-          need_value_residual_nonexplicit_RHS.push_back(need_value_residual_entry);
-          need_gradient_residual_nonexplicit_RHS.push_back(need_gradient_residual_entry);
+          need_value_residual_nonexplicit_RHS[i]    = need_value_residual_entry;
+          need_gradient_residual_nonexplicit_RHS[i] = need_gradient_residual_entry;
 
           parseDependencyListLHS(var_name,
                                  var_eq_type,
                                  i,
-                                 sorted_dependencies_value_LHS.at(i),
-                                 sorted_dependencies_gradient_LHS.at(i),
+                                 sorted_dependencies_value_LHS[i],
+                                 sorted_dependencies_gradient_LHS[i],
                                  need_value_nonexplicit_LHS,
                                  need_gradient_nonexplicit_LHS,
                                  need_hessian_nonexplicit_LHS,
@@ -147,16 +138,10 @@ EquationDependencyParser::parse(std::vector<std::string> var_name,
                                  need_gradient_residual_entry,
                                  single_var_nonlinear_LHS);
 
-          // std::cout << "LHS Nonlinear flag for var " << i << " :" <<
-          // single_var_nonlinear_LHS << std::endl;
-
           var_nonlinear.push_back(single_var_nonlinear_RHS || single_var_nonlinear_LHS);
 
-          need_value_residual_nonexplicit_LHS.push_back(need_value_residual_entry);
-          need_gradient_residual_nonexplicit_LHS.push_back(need_gradient_residual_entry);
-
-          need_value_residual_explicit_RHS.push_back(false);
-          need_gradient_residual_explicit_RHS.push_back(false);
+          need_value_residual_nonexplicit_LHS[i]    = need_value_residual_entry;
+          need_gradient_residual_nonexplicit_LHS[i] = need_gradient_residual_entry;
         }
     }
 }
