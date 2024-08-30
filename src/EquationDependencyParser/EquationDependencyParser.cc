@@ -147,17 +147,18 @@ EquationDependencyParser::parse(std::vector<std::string> var_name,
 }
 
 void
-EquationDependencyParser::parseDependencyListRHS(std::vector<std::string> var_name,
-                                                 std::vector<PDEType>     var_eq_type,
-                                                 unsigned int             var_index,
-                                                 std::string        value_dependencies,
-                                                 std::string        gradient_dependencies,
-                                                 std::vector<bool> &need_value,
-                                                 std::vector<bool> &need_gradient,
-                                                 std::vector<bool> &need_hessian,
-                                                 bool              &need_value_residual,
-                                                 bool &need_gradient_residual,
-                                                 bool &is_nonlinear)
+EquationDependencyParser::parseDependencyListRHS(
+  std::vector<std::string> variable_name_list,
+  std::vector<PDEType>     variable_eq_type,
+  unsigned int             variable_index,
+  std::string              value_dependencies,
+  std::string              gradient_dependencies,
+  std::vector<bool>       &need_value,
+  std::vector<bool>       &need_gradient,
+  std::vector<bool>       &need_hessian,
+  bool                    &need_value_residual,
+  bool                    &need_gradient_residual,
+  bool                    &is_nonlinear)
 {
   // Split the dependency strings into lists of entries
   std::vector<std::string> split_value_dependency_list =
@@ -167,23 +168,10 @@ EquationDependencyParser::parseDependencyListRHS(std::vector<std::string> var_na
 
   // Check if either is empty and set need_value_residual and need_gradient
   // residual appropriately
-  if (split_value_dependency_list.size() > 0)
-    {
-      need_value_residual = true;
-    }
-  else
-    {
-      need_value_residual = false;
-    }
-
-  if (split_gradient_dependency_list.size() > 0)
-    {
-      need_gradient_residual = true;
-    }
-  else
-    {
-      need_gradient_residual = false;
-    }
+  split_value_dependency_list.size() > 0 ? need_value_residual = true
+                                         : need_value_residual = false;
+  split_gradient_dependency_list.size() > 0 ? need_gradient_residual = true
+                                            : need_gradient_residual = false;
 
   // Merge the lists of dependency entries
   std::vector<std::string> split_dependency_list = split_value_dependency_list;
@@ -191,65 +179,74 @@ EquationDependencyParser::parseDependencyListRHS(std::vector<std::string> var_na
                                split_gradient_dependency_list.begin(),
                                split_gradient_dependency_list.end());
 
-  // Cycle through each dependency entry
-  // NOTE: This section is pretty confusing I think it needs refactoring or more
-  // comments
+  // Set nonlinearity to false
   is_nonlinear = false;
-  for (unsigned int dep = 0; dep < split_dependency_list.size(); dep++)
+
+  // Cycle through each dependency entry
+  for (const auto &dependency : split_dependency_list)
     {
+      // Flag to make sure we have assigned a dependency entry
       bool dependency_entry_assigned = false;
 
-      for (unsigned int var = 0; var < var_name.size(); var++)
+      // Loop through all known variable names [x, grad(x), and hess(x)] to see which ones
+      // are on our dependency list. If we have two variables x and y this will loop twice
+      // to see if the supplied dependency needs either two of the variables. A successful
+      // match will update the values/gradient/hessian flag for that dependency variable.
+      std::size_t dependency_variable_index = 0;
+      for (const auto &variable : variable_name_list)
         {
           // Create grad() and hess() variants of the variable name
-          std::string grad_var_name = {"grad()"};
-          grad_var_name.insert(--grad_var_name.end(),
-                               var_name.at(var).begin(),
-                               var_name.at(var).end());
+          std::string gradient_variable = {"grad()"};
+          gradient_variable.insert(--gradient_variable.end(),
+                                   variable.begin(),
+                                   variable.end());
 
-          std::string hess_var_name = {"hess()"};
-          hess_var_name.insert(--hess_var_name.end(),
-                               var_name.at(var).begin(),
-                               var_name.at(var).end());
+          std::string hessian_variable = {"hess()"};
+          hessian_variable.insert(--hessian_variable.end(),
+                                  variable.begin(),
+                                  variable.end());
 
-          if (split_dependency_list.at(dep) == var_name.at(var))
-            {
-              need_value.at(var)        = true;
-              dependency_entry_assigned = true;
+          // Is the variable we are finding the dependencies for explicit
+          bool variable_is_explicit =
+            variable_eq_type[variable_index] == EXPLICIT_TIME_DEPENDENT;
 
-              if ((var_eq_type[var_index] != EXPLICIT_TIME_DEPENDENT) &&
-                  (var_index != var) && (var_eq_type[var] != EXPLICIT_TIME_DEPENDENT))
-                {
-                  is_nonlinear = true;
-                }
-            }
-          else if (split_dependency_list.at(dep) == grad_var_name)
+          // Is the dependency variable explicit
+          bool dependency_variable_is_explicit =
+            variable_eq_type[dependency_variable_index] == EXPLICIT_TIME_DEPENDENT;
+
+          // Is the dependency the variable
+          bool same_variable = variable_index == dependency_variable_index;
+
+          // Case if the dependency is x
+          if (dependency == variable)
             {
-              need_gradient.at(var)     = true;
-              dependency_entry_assigned = true;
-              if ((var_eq_type[var_index] != EXPLICIT_TIME_DEPENDENT) &&
-                  (var_index != var) && (var_eq_type[var] != EXPLICIT_TIME_DEPENDENT))
-                {
-                  is_nonlinear = true;
-                }
+              need_value[dependency_variable_index] = true;
+              dependency_entry_assigned             = true;
             }
-          else if (split_dependency_list.at(dep) == hess_var_name)
+          // Case if the dependency is grad(x)
+          else if (dependency == gradient_variable)
             {
-              need_hessian.at(var)      = true;
-              dependency_entry_assigned = true;
-              if ((var_eq_type[var_index] != EXPLICIT_TIME_DEPENDENT) &&
-                  (var_index != var) && (var_eq_type[var] != EXPLICIT_TIME_DEPENDENT))
-                {
-                  is_nonlinear = true;
-                }
+              need_gradient[dependency_variable_index] = true;
+              dependency_entry_assigned                = true;
             }
+          // Case if the dependency is hess(x)
+          else if (dependency == hessian_variable)
+            {
+              need_hessian.at(dependency_variable_index) = true;
+              dependency_entry_assigned                  = true;
+            }
+
+          // Check for nonlinearity
+          is_nonlinear = is_nonlinear || !variable_is_explicit && !same_variable &&
+                                           !dependency_variable_is_explicit;
+
+          // Increment counter
+          ++dependency_variable_index;
         }
-      if (!dependency_entry_assigned)
-        {
-          std::cerr << "PRISMS-PF Error: Dependency entry "
-                    << split_dependency_list.at(dep) << " is not valid." << std::endl;
-          abort();
-        }
+
+      Assert(dependency_entry_assigned,
+             dealii::StandardExceptions::ExcMessage("PRISMS-PF Error: Dependency entry " +
+                                                    dependency + " is not valid."))
     }
 }
 
@@ -277,23 +274,10 @@ EquationDependencyParser::parseDependencyListLHS(std::vector<std::string> var_na
 
   // Check if either is empty and set need_value_residual and need_gradient
   // residual appropriately
-  if (split_value_dependency_list.size() > 0)
-    {
-      need_value_residual = true;
-    }
-  else
-    {
-      need_value_residual = false;
-    }
-
-  if (split_gradient_dependency_list.size() > 0)
-    {
-      need_gradient_residual = true;
-    }
-  else
-    {
-      need_gradient_residual = false;
-    }
+  split_value_dependency_list.size() > 0 ? need_value_residual = true
+                                         : need_value_residual = false;
+  split_gradient_dependency_list.size() > 0 ? need_gradient_residual = true
+                                            : need_gradient_residual = false;
 
   // Merge the lists of dependency entries
   std::vector<std::string> split_dependency_list = split_value_dependency_list;

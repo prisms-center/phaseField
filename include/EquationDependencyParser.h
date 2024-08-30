@@ -77,9 +77,9 @@ protected:
    * whether values, gradients, or hessians are needed.
    */
   void
-  parseDependencyListRHS(std::vector<std::string> var_name,
-                         std::vector<PDEType>     var_eq_type,
-                         unsigned int             var_index,
+  parseDependencyListRHS(std::vector<std::string> variable_name_list,
+                         std::vector<PDEType>     variable_eq_type,
+                         unsigned int             variable_index,
                          std::string              value_dependencies,
                          std::string              gradient_dependencies,
                          std::vector<bool>       &need_value,
