@@ -63,16 +63,18 @@ FloodFiller<dim, degree>::calcGrainSets(dealii::FESystem<dim>      &fe,
       grain_sets.pop_back();
     }
 
-  // Generate global list of the grains, merging grains split between multiple
-  // processors
+  // Merge grains sharing common vertices
+  mergeSplitGrains(grain_sets);
+
+  // Generate global list of the grains
   if (dealii::Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD) > 1)
     {
       // Send the grain set info to all processors so everyone has the full list
-      createGlobalGrainSetList(grain_sets);
-
-      // Merge grains that are split across processors
-      mergeSplitGrains(grain_sets);
+      createGlobalGrainSetList(grain_sets);  
+      mergeSplitGrains(grain_sets);    
     }
+
+   
 }
 
 template <int dim, int degree>
@@ -131,7 +133,10 @@ FloodFiller<dim, degree>::recursiveFloodFill(T                           di,
                     {
                       // Add the number of times that var_values[q_point] has
                       // been seen
-                      ++quadratureValues[var_values[q_point]];
+                      if (var_values[q_point] > 0)
+                        {
+                          ++quadratureValues[var_values[q_point]];
+                        }
                       if (quadratureValues[var_values[q_point]] > maxNumberSeen)
                         {
                           maxNumberSeen         = quadratureValues[var_values[q_point]];
