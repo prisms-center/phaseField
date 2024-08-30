@@ -35,14 +35,8 @@ userInputParameters<dim>::loadVariableAttributes(
         }
     }
 
-  if (nucleating_variable_indices.size() > 0)
-    {
-      nucleation_occurs = true;
-    }
-  else
-    {
-      nucleation_occurs = false;
-    }
+  nucleating_variable_indices.size() > 0 ? nucleation_occurs = true
+                                         : nucleation_occurs = false;
 
   // Load these attributes into the varInfoList objects
 
@@ -77,14 +71,9 @@ userInputParameters<dim>::loadVariableAttributes(
 
       varInfo.global_var_index = i;
 
-      if (varInfo.need_value or varInfo.need_gradient or varInfo.need_hessian)
-        {
-          varInfo.var_needed = true;
-        }
-      else
-        {
-          varInfo.var_needed = false;
-        }
+      varInfo.need_value || varInfo.need_gradient || varInfo.need_hessian
+        ? varInfo.var_needed = true
+        : varInfo.var_needed = false;
 
       if (var_type[i] == SCALAR)
         {
@@ -140,14 +129,9 @@ userInputParameters<dim>::loadVariableAttributes(
 
       varInfo.global_var_index = i;
 
-      if (varInfo.need_value or varInfo.need_gradient or varInfo.need_hessian)
-        {
-          varInfo.var_needed = true;
-        }
-      else
-        {
-          varInfo.var_needed = false;
-        }
+      varInfo.need_value || varInfo.need_gradient || varInfo.need_hessian
+        ? varInfo.var_needed = true
+        : varInfo.var_needed = false;
 
       if (var_type[i] == SCALAR)
         {
@@ -204,14 +188,9 @@ userInputParameters<dim>::loadVariableAttributes(
 
       varInfo.global_var_index = i;
 
-      if (varInfo.need_value or varInfo.need_gradient or varInfo.need_hessian)
-        {
-          varInfo.var_needed = true;
-        }
-      else
-        {
-          varInfo.var_needed = false;
-        }
+      varInfo.need_value || varInfo.need_gradient || varInfo.need_hessian
+        ? varInfo.var_needed = true
+        : varInfo.var_needed = false;
 
       if (var_type[i] == SCALAR)
         {
@@ -257,14 +236,9 @@ userInputParameters<dim>::loadVariableAttributes(
 
       varInfo.global_var_index = i;
 
-      if (varInfo.need_value or varInfo.need_gradient or varInfo.need_hessian)
-        {
-          varInfo.var_needed = true;
-        }
-      else
-        {
-          varInfo.var_needed = false;
-        }
+      varInfo.need_value || varInfo.need_gradient || varInfo.need_hessian
+        ? varInfo.var_needed = true
+        : varInfo.var_needed = false;
 
       if (var_type[i] == SCALAR)
         {
@@ -306,16 +280,11 @@ userInputParameters<dim>::loadVariableAttributes(
 
       varInfo.global_var_index = i;
 
-      if (variable_attributes.equation_dependency_parser.pp_need_value[i] or
-          variable_attributes.equation_dependency_parser.pp_need_gradient[i] or
-          variable_attributes.equation_dependency_parser.pp_need_hessian[i])
-        {
-          varInfo.var_needed = true;
-        }
-      else
-        {
-          varInfo.var_needed = false;
-        }
+      variable_attributes.equation_dependency_parser.pp_need_value[i] ||
+          variable_attributes.equation_dependency_parser.pp_need_gradient[i] ||
+          variable_attributes.equation_dependency_parser.pp_need_hessian[i]
+        ? varInfo.var_needed = true
+        : varInfo.var_needed = false;
 
       if (var_type[i] == SCALAR)
         {
@@ -341,14 +310,8 @@ userInputParameters<dim>::loadVariableAttributes(
 
   // Now load the information for the post-processing variables
   // Parameters for postprocessing
-  if (pp_number_of_variables > 0)
-    {
-      postProcessingRequired = true;
-    }
-  else
-    {
-      postProcessingRequired = false;
-    }
+  pp_number_of_variables > 0 ? postProcessingRequired = true
+                             : postProcessingRequired = false;
 
   num_integrated_fields = 0;
   for (unsigned int i = 0; i < pp_number_of_variables; i++)
