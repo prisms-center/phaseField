@@ -86,9 +86,7 @@ MatrixFreePDE<dim, degree>::init()
                it->name.c_str());
       pcout << buffer;
 
-      // Check if any time dependent fields present (note: I should get rid of
-      // parabolicFieldIndex and ellipticFieldIndex, they only work if there is
-      // at max one of each)
+      // Check if any time dependent fields present
       if (it->pdetype == EXPLICIT_TIME_DEPENDENT)
         {
           isTimeDependentBVP  = true;
@@ -98,7 +96,6 @@ MatrixFreePDE<dim, degree>::init()
       else if (it->pdetype == IMPLICIT_TIME_DEPENDENT)
         {
           isTimeDependentBVP     = true;
-          ellipticFieldIndex     = it->index;
           hasNonExplicitEquation = true;
           std::cerr << "PRISMS-PF Error: IMPLICIT_TIME_DEPENDENT equation "
                        "types are not currently supported"
@@ -108,13 +105,11 @@ MatrixFreePDE<dim, degree>::init()
       else if (it->pdetype == AUXILIARY)
         {
           parabolicFieldIndex    = it->index;
-          ellipticFieldIndex     = it->index;
           hasNonExplicitEquation = true;
         }
       else if (it->pdetype == TIME_INDEPENDENT)
         {
           isEllipticBVP          = true;
-          ellipticFieldIndex     = it->index;
           hasNonExplicitEquation = true;
         }
 
