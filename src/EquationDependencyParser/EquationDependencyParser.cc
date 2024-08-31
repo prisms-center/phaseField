@@ -23,32 +23,18 @@ EquationDependencyParser::parse(std::vector<std::string> var_name,
   // Determine the number of variables
   size_t n_variables = var_name.size();
 
-  // Resize the dependency vectors
-  need_value_explicit_RHS.resize(n_variables, false);
-  need_gradient_explicit_RHS.resize(n_variables, false);
-  need_hessian_explicit_RHS.resize(n_variables, false);
+  // Resize the dependency evaluation flag vectors
+  eval_flags_explicit_RHS.resize(n_variables, dealii::EvaluationFlags::nothing);
+  eval_flags_nonexplicit_RHS.resize(n_variables, dealii::EvaluationFlags::nothing);
+  eval_flags_nonexplicit_LHS.resize(n_variables, dealii::EvaluationFlags::nothing);
+  eval_flags_change_nonexplicit_LHS.resize(n_variables, dealii::EvaluationFlags::nothing);
 
-  need_value_nonexplicit_RHS.resize(n_variables, false);
-  need_gradient_nonexplicit_RHS.resize(n_variables, false);
-  need_hessian_nonexplicit_RHS.resize(n_variables, false);
-
-  need_value_nonexplicit_LHS.resize(n_variables, false);
-  need_gradient_nonexplicit_LHS.resize(n_variables, false);
-  need_hessian_nonexplicit_LHS.resize(n_variables, false);
-
-  need_value_change_nonexplicit_LHS.resize(n_variables, false);
-  need_gradient_change_nonexplicit_LHS.resize(n_variables, false);
-  need_hessian_change_nonexplicit_LHS.resize(n_variables, false);
-
-  // Resize the residual vectors
-  need_value_residual_explicit_RHS.resize(n_variables, false);
-  need_gradient_residual_explicit_RHS.resize(n_variables, false);
-
-  need_value_residual_nonexplicit_RHS.resize(n_variables, false);
-  need_gradient_residual_nonexplicit_RHS.resize(n_variables, false);
-
-  need_value_residual_nonexplicit_LHS.resize(n_variables, false);
-  need_gradient_residual_nonexplicit_LHS.resize(n_variables, false);
+  // Resize the residual evaluation flag vectors
+  eval_flags_residual_explicit_RHS.resize(n_variables, dealii::EvaluationFlags::nothing);
+  eval_flags_residual_nonexplicit_RHS.resize(n_variables,
+                                             dealii::EvaluationFlags::nothing);
+  eval_flags_residual_nonexplicit_LHS.resize(n_variables,
+                                             dealii::EvaluationFlags::nothing);
 
   // Now parse the dependency strings to set the flags to true where needed
   for (unsigned int i = 0; i < var_name.size(); i++)
@@ -60,105 +46,73 @@ EquationDependencyParser::parse(std::vector<std::string> var_name,
       // Now check for each variable_eq_type
       if (var_eq_type[i] == EXPLICIT_TIME_DEPENDENT)
         {
-          bool need_value_residual_entry, need_gradient_residual_entry,
-            single_var_nonlinear;
+          bool single_var_nonlinear;
 
           parseDependencyListRHS(var_name,
                                  var_eq_type,
                                  i,
                                  sorted_dependencies_value_RHS[i],
                                  sorted_dependencies_gradient_RHS[i],
-                                 need_value_explicit_RHS,
-                                 need_gradient_explicit_RHS,
-                                 need_hessian_explicit_RHS,
-                                 need_value_residual_entry,
-                                 need_gradient_residual_entry,
+                                 eval_flags_explicit_RHS,
+                                 eval_flags_residual_explicit_RHS,
                                  single_var_nonlinear);
 
           var_nonlinear.push_back(single_var_nonlinear);
-
-          need_value_residual_explicit_RHS[i]    = need_value_residual_entry;
-          need_gradient_residual_explicit_RHS[i] = need_gradient_residual_entry;
         }
       else if (var_eq_type[i] == AUXILIARY)
         {
-          bool need_value_residual_entry, need_gradient_residual_entry,
-            single_var_nonlinear;
+          bool single_var_nonlinear;
 
           parseDependencyListRHS(var_name,
                                  var_eq_type,
                                  i,
                                  sorted_dependencies_value_RHS[i],
                                  sorted_dependencies_gradient_RHS[i],
-                                 need_value_nonexplicit_RHS,
-                                 need_gradient_nonexplicit_RHS,
-                                 need_hessian_nonexplicit_RHS,
-                                 need_value_residual_entry,
-                                 need_gradient_residual_entry,
+                                 eval_flags_nonexplicit_RHS,
+                                 eval_flags_residual_nonexplicit_RHS,
                                  single_var_nonlinear);
 
           var_nonlinear.push_back(single_var_nonlinear);
-
-          need_value_residual_nonexplicit_RHS[i]    = need_value_residual_entry;
-          need_gradient_residual_nonexplicit_RHS[i] = need_gradient_residual_entry;
         }
       else if (var_eq_type[i] == IMPLICIT_TIME_DEPENDENT ||
                var_eq_type[i] == TIME_INDEPENDENT)
         {
-          bool need_value_residual_entry, need_gradient_residual_entry,
-            single_var_nonlinear_RHS, single_var_nonlinear_LHS;
+          bool single_var_nonlinear_RHS, single_var_nonlinear_LHS;
 
           parseDependencyListRHS(var_name,
                                  var_eq_type,
                                  i,
                                  sorted_dependencies_value_RHS[i],
                                  sorted_dependencies_gradient_RHS[i],
-                                 need_value_nonexplicit_RHS,
-                                 need_gradient_nonexplicit_RHS,
-                                 need_hessian_nonexplicit_RHS,
-                                 need_value_residual_entry,
-                                 need_gradient_residual_entry,
+                                 eval_flags_nonexplicit_RHS,
+                                 eval_flags_residual_nonexplicit_RHS,
                                  single_var_nonlinear_RHS);
-
-          need_value_residual_nonexplicit_RHS[i]    = need_value_residual_entry;
-          need_gradient_residual_nonexplicit_RHS[i] = need_gradient_residual_entry;
 
           parseDependencyListLHS(var_name,
                                  var_eq_type,
                                  i,
                                  sorted_dependencies_value_LHS[i],
                                  sorted_dependencies_gradient_LHS[i],
-                                 need_value_nonexplicit_LHS,
-                                 need_gradient_nonexplicit_LHS,
-                                 need_hessian_nonexplicit_LHS,
-                                 need_value_change_nonexplicit_LHS,
-                                 need_gradient_change_nonexplicit_LHS,
-                                 need_hessian_change_nonexplicit_LHS,
-                                 need_value_residual_entry,
-                                 need_gradient_residual_entry,
+                                 eval_flags_nonexplicit_LHS,
+                                 eval_flags_change_nonexplicit_LHS,
+                                 eval_flags_residual_nonexplicit_LHS,
                                  single_var_nonlinear_LHS);
 
           var_nonlinear.push_back(single_var_nonlinear_RHS || single_var_nonlinear_LHS);
-
-          need_value_residual_nonexplicit_LHS[i]    = need_value_residual_entry;
-          need_gradient_residual_nonexplicit_LHS[i] = need_gradient_residual_entry;
         }
     }
 }
 
 void
 EquationDependencyParser::parseDependencyListRHS(
-  std::vector<std::string> variable_name_list,
-  std::vector<PDEType>     variable_eq_type,
-  unsigned int             variable_index,
-  std::string              value_dependencies,
-  std::string              gradient_dependencies,
-  std::vector<bool>       &need_value,
-  std::vector<bool>       &need_gradient,
-  std::vector<bool>       &need_hessian,
-  bool                    &need_value_residual,
-  bool                    &need_gradient_residual,
-  bool                    &is_nonlinear)
+  std::vector<std::string>                               variable_name_list,
+  std::vector<PDEType>                                   variable_eq_type,
+  unsigned int                                           variable_index,
+  std::string                                            value_dependencies,
+  std::string                                            gradient_dependencies,
+  std::vector<dealii::EvaluationFlags::EvaluationFlags> &evaluation_flags,
+  std::vector<dealii::EvaluationFlags::EvaluationFlags> &residual_flags,
+  bool                                                  &is_nonlinear)
 {
   // Split the dependency strings into lists of entries
   std::vector<std::string> split_value_dependency_list =
@@ -166,12 +120,16 @@ EquationDependencyParser::parseDependencyListRHS(
   std::vector<std::string> split_gradient_dependency_list =
     dealii::Utilities::split_string_list(gradient_dependencies);
 
-  // Check if either is empty and set need_value_residual and need_gradient
+  // Check if either is empty and set value and gradient flags for the
   // residual appropriately
-  split_value_dependency_list.size() > 0 ? need_value_residual = true
-                                         : need_value_residual = false;
-  split_gradient_dependency_list.size() > 0 ? need_gradient_residual = true
-                                            : need_gradient_residual = false;
+  if (split_value_dependency_list.size() > 0)
+    {
+      residual_flags[variable_index] |= dealii::EvaluationFlags::values;
+    }
+  if (split_gradient_dependency_list.size() > 0)
+    {
+      residual_flags[variable_index] |= dealii::EvaluationFlags::gradients;
+    }
 
   // Merge the lists of dependency entries
   std::vector<std::string> split_dependency_list = split_value_dependency_list;
@@ -220,20 +178,23 @@ EquationDependencyParser::parseDependencyListRHS(
           // Case if the dependency is x
           if (dependency == variable)
             {
-              need_value[dependency_variable_index] = true;
-              dependency_entry_assigned             = true;
+              evaluation_flags[dependency_variable_index] |=
+                dealii::EvaluationFlags::values;
+              dependency_entry_assigned = true;
             }
           // Case if the dependency is grad(x)
           else if (dependency == gradient_variable)
             {
-              need_gradient[dependency_variable_index] = true;
-              dependency_entry_assigned                = true;
+              evaluation_flags[dependency_variable_index] |=
+                dealii::EvaluationFlags::gradients;
+              dependency_entry_assigned = true;
             }
           // Case if the dependency is hess(x)
           else if (dependency == hessian_variable)
             {
-              need_hessian.at(dependency_variable_index) = true;
-              dependency_entry_assigned                  = true;
+              evaluation_flags[dependency_variable_index] |=
+                dealii::EvaluationFlags::hessians;
+              dependency_entry_assigned = true;
             }
 
           // Check for nonlinearity
@@ -252,20 +213,15 @@ EquationDependencyParser::parseDependencyListRHS(
 
 void
 EquationDependencyParser::parseDependencyListLHS(
-  std::vector<std::string> variable_name_list,
-  std::vector<PDEType>     variable_eq_type,
-  unsigned int             variable_index,
-  std::string              value_dependencies,
-  std::string              gradient_dependencies,
-  std::vector<bool>       &need_value,
-  std::vector<bool>       &need_gradient,
-  std::vector<bool>       &need_hessian,
-  std::vector<bool>       &need_value_change,
-  std::vector<bool>       &need_gradient_change,
-  std::vector<bool>       &need_hessian_change,
-  bool                    &need_value_residual,
-  bool                    &need_gradient_residual,
-  bool                    &is_nonlinear)
+  std::vector<std::string>                               variable_name_list,
+  std::vector<PDEType>                                   variable_eq_type,
+  unsigned int                                           variable_index,
+  std::string                                            value_dependencies,
+  std::string                                            gradient_dependencies,
+  std::vector<dealii::EvaluationFlags::EvaluationFlags> &evaluation_flags,
+  std::vector<dealii::EvaluationFlags::EvaluationFlags> &change_flags,
+  std::vector<dealii::EvaluationFlags::EvaluationFlags> &residual_flags,
+  bool                                                  &is_nonlinear)
 {
   // Split the dependency strings into lists of entries
   std::vector<std::string> split_value_dependency_list =
@@ -273,12 +229,16 @@ EquationDependencyParser::parseDependencyListLHS(
   std::vector<std::string> split_gradient_dependency_list =
     dealii::Utilities::split_string_list(gradient_dependencies);
 
-  // Check if either is empty and set need_value_residual and need_gradient
+  // Check if either is empty and set value and gradient flags for the
   // residual appropriately
-  split_value_dependency_list.size() > 0 ? need_value_residual = true
-                                         : need_value_residual = false;
-  split_gradient_dependency_list.size() > 0 ? need_gradient_residual = true
-                                            : need_gradient_residual = false;
+  if (split_value_dependency_list.size() > 0)
+    {
+      residual_flags[variable_index] |= dealii::EvaluationFlags::values;
+    }
+  if (split_gradient_dependency_list.size() > 0)
+    {
+      residual_flags[variable_index] |= dealii::EvaluationFlags::gradients;
+    }
 
   // Merge the lists of dependency entries
   std::vector<std::string> split_dependency_list = split_value_dependency_list;
@@ -336,8 +296,9 @@ EquationDependencyParser::parseDependencyListLHS(
           // Case if the dependency is x
           if (dependency == variable)
             {
-              need_value[dependency_variable_index] = true;
-              dependency_entry_assigned             = true;
+              evaluation_flags[dependency_variable_index] |=
+                dealii::EvaluationFlags::values;
+              dependency_entry_assigned = true;
 
               // Check for nonlinearity
               is_nonlinear = is_nonlinear || !dependency_variable_is_explicit;
@@ -345,8 +306,9 @@ EquationDependencyParser::parseDependencyListLHS(
           // Case if the dependency is grad(x)
           else if (dependency == gradient_variable)
             {
-              need_gradient[dependency_variable_index] = true;
-              dependency_entry_assigned                = true;
+              evaluation_flags[dependency_variable_index] |=
+                dealii::EvaluationFlags::gradients;
+              dependency_entry_assigned = true;
 
               // Check for nonlinearity
               is_nonlinear = is_nonlinear || !dependency_variable_is_explicit;
@@ -354,8 +316,9 @@ EquationDependencyParser::parseDependencyListLHS(
           // Case if the dependency is hess(x)
           else if (dependency == hessian_variable)
             {
-              need_hessian[dependency_variable_index] = true;
-              dependency_entry_assigned               = true;
+              evaluation_flags[dependency_variable_index] |=
+                dealii::EvaluationFlags::hessians;
+              dependency_entry_assigned = true;
 
               // Check for nonlinearity
               is_nonlinear = is_nonlinear || !dependency_variable_is_explicit;
@@ -363,8 +326,8 @@ EquationDependencyParser::parseDependencyListLHS(
           // Case if the dependency is change(x)
           else if (dependency == change_value_variable)
             {
-              need_value_change[dependency_variable_index] = true;
-              dependency_entry_assigned                    = true;
+              change_flags[dependency_variable_index] |= dealii::EvaluationFlags::values;
+              dependency_entry_assigned = true;
 
               Assert(variable_index != dependency_variable_index,
                      dealii::StandardExceptions::ExcMessage(
@@ -375,8 +338,9 @@ EquationDependencyParser::parseDependencyListLHS(
           // Case if the dependency is grad(change(x))
           else if (dependency == change_gradient_variable)
             {
-              need_gradient_change[dependency_variable_index] = true;
-              dependency_entry_assigned                       = true;
+              change_flags[dependency_variable_index] |=
+                dealii::EvaluationFlags::gradients;
+              dependency_entry_assigned = true;
 
               Assert(variable_index != dependency_variable_index,
                      dealii::StandardExceptions::ExcMessage(
@@ -387,8 +351,9 @@ EquationDependencyParser::parseDependencyListLHS(
           // Case if the dependency is hess(change(x))
           else if (dependency == change_hessian_variable)
             {
-              need_hessian_change[dependency_variable_index] = true;
-              dependency_entry_assigned                      = true;
+              change_flags[dependency_variable_index] |=
+                dealii::EvaluationFlags::hessians;
+              dependency_entry_assigned = true;
 
               Assert(variable_index != dependency_variable_index,
                      dealii::StandardExceptions::ExcMessage(

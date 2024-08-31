@@ -44,9 +44,8 @@ userInputParameters<dim>::loadVariableAttributes(
   num_var_explicit_RHS = 0;
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
-      if (variable_attributes.equation_dependency_parser.need_value_explicit_RHS[i] or
-          variable_attributes.equation_dependency_parser.need_gradient_explicit_RHS[i] or
-          variable_attributes.equation_dependency_parser.need_hessian_explicit_RHS[i])
+      if (!(variable_attributes.equation_dependency_parser.eval_flags_explicit_RHS[i] &
+            dealii::EvaluationFlags::nothing))
         {
           num_var_explicit_RHS++;
         }
@@ -59,15 +58,21 @@ userInputParameters<dim>::loadVariableAttributes(
       variable_info varInfo;
 
       varInfo.need_value =
-        variable_attributes.equation_dependency_parser.need_value_explicit_RHS[i];
+        variable_attributes.equation_dependency_parser.eval_flags_explicit_RHS[i] &
+        dealii::EvaluationFlags::values;
       varInfo.need_gradient =
-        variable_attributes.equation_dependency_parser.need_gradient_explicit_RHS[i];
+        variable_attributes.equation_dependency_parser.eval_flags_explicit_RHS[i] &
+        dealii::EvaluationFlags::gradients;
       varInfo.need_hessian =
-        variable_attributes.equation_dependency_parser.need_hessian_explicit_RHS[i];
+        variable_attributes.equation_dependency_parser.eval_flags_explicit_RHS[i] &
+        dealii::EvaluationFlags::hessians;
+
       varInfo.value_residual = variable_attributes.equation_dependency_parser
-                                 .need_value_residual_explicit_RHS[i];
+                                 .eval_flags_residual_explicit_RHS[i] &
+                               dealii::EvaluationFlags::values;
       varInfo.gradient_residual = variable_attributes.equation_dependency_parser
-                                    .need_gradient_residual_explicit_RHS[i];
+                                    .eval_flags_residual_explicit_RHS[i] &
+                                  dealii::EvaluationFlags::gradients;
 
       varInfo.global_var_index = i;
 
@@ -101,10 +106,8 @@ userInputParameters<dim>::loadVariableAttributes(
   num_var_nonexplicit_RHS = 0;
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
-      if (variable_attributes.equation_dependency_parser.need_value_nonexplicit_RHS[i] or
-          variable_attributes.equation_dependency_parser
-            .need_gradient_nonexplicit_RHS[i] or
-          variable_attributes.equation_dependency_parser.need_hessian_nonexplicit_RHS[i])
+      if (!(variable_attributes.equation_dependency_parser.eval_flags_nonexplicit_RHS[i] &
+            dealii::EvaluationFlags::nothing))
         {
           num_var_nonexplicit_RHS++;
         }
@@ -117,15 +120,20 @@ userInputParameters<dim>::loadVariableAttributes(
       variable_info varInfo;
 
       varInfo.need_value =
-        variable_attributes.equation_dependency_parser.need_value_nonexplicit_RHS[i];
+        variable_attributes.equation_dependency_parser.eval_flags_nonexplicit_RHS[i] &
+        dealii::EvaluationFlags::values;
       varInfo.need_gradient =
-        variable_attributes.equation_dependency_parser.need_gradient_nonexplicit_RHS[i];
+        variable_attributes.equation_dependency_parser.eval_flags_nonexplicit_RHS[i] &
+        dealii::EvaluationFlags::gradients;
       varInfo.need_hessian =
-        variable_attributes.equation_dependency_parser.need_hessian_nonexplicit_RHS[i];
+        variable_attributes.equation_dependency_parser.eval_flags_nonexplicit_RHS[i] &
+        dealii::EvaluationFlags::hessians;
       varInfo.value_residual = variable_attributes.equation_dependency_parser
-                                 .need_value_residual_nonexplicit_RHS[i];
+                                 .eval_flags_residual_nonexplicit_RHS[i] &
+                               dealii::EvaluationFlags::values;
       varInfo.gradient_residual = variable_attributes.equation_dependency_parser
-                                    .need_gradient_residual_nonexplicit_RHS[i];
+                                    .eval_flags_residual_nonexplicit_RHS[i] &
+                                  dealii::EvaluationFlags::gradients;
 
       varInfo.global_var_index = i;
 
@@ -159,10 +167,8 @@ userInputParameters<dim>::loadVariableAttributes(
   num_var_LHS = 0;
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
-      if (variable_attributes.equation_dependency_parser.need_value_nonexplicit_LHS[i] or
-          variable_attributes.equation_dependency_parser
-            .need_gradient_nonexplicit_LHS[i] or
-          variable_attributes.equation_dependency_parser.need_hessian_nonexplicit_LHS[i])
+      if (!(variable_attributes.equation_dependency_parser.eval_flags_nonexplicit_LHS[i] &
+            dealii::EvaluationFlags::nothing))
         {
           num_var_LHS++;
         }
@@ -176,15 +182,20 @@ userInputParameters<dim>::loadVariableAttributes(
       variable_info varInfo;
 
       varInfo.need_value =
-        variable_attributes.equation_dependency_parser.need_value_nonexplicit_LHS[i];
+        variable_attributes.equation_dependency_parser.eval_flags_nonexplicit_LHS[i] &
+        dealii::EvaluationFlags::values;
       varInfo.need_gradient =
-        variable_attributes.equation_dependency_parser.need_gradient_nonexplicit_LHS[i];
+        variable_attributes.equation_dependency_parser.eval_flags_nonexplicit_LHS[i] &
+        dealii::EvaluationFlags::gradients;
       varInfo.need_hessian =
-        variable_attributes.equation_dependency_parser.need_hessian_nonexplicit_LHS[i];
+        variable_attributes.equation_dependency_parser.eval_flags_nonexplicit_LHS[i] &
+        dealii::EvaluationFlags::hessians;
       varInfo.value_residual = variable_attributes.equation_dependency_parser
-                                 .need_value_residual_nonexplicit_LHS[i];
+                                 .eval_flags_residual_nonexplicit_LHS[i] &
+                               dealii::EvaluationFlags::values;
       varInfo.gradient_residual = variable_attributes.equation_dependency_parser
-                                    .need_gradient_residual_nonexplicit_LHS[i];
+                                    .eval_flags_residual_nonexplicit_LHS[i] &
+                                  dealii::EvaluationFlags::gradients;
 
       varInfo.global_var_index = i;
 
@@ -222,17 +233,22 @@ userInputParameters<dim>::loadVariableAttributes(
       variable_info varInfo;
 
       varInfo.need_value = variable_attributes.equation_dependency_parser
-                             .need_value_change_nonexplicit_LHS[i];
+                             .eval_flags_change_nonexplicit_LHS[i] &
+                           dealii::EvaluationFlags::values;
       varInfo.need_gradient = variable_attributes.equation_dependency_parser
-                                .need_gradient_change_nonexplicit_LHS[i];
+                                .eval_flags_change_nonexplicit_LHS[i] &
+                              dealii::EvaluationFlags::gradients;
       varInfo.need_hessian = variable_attributes.equation_dependency_parser
-                               .need_hessian_change_nonexplicit_LHS[i];
+                               .eval_flags_change_nonexplicit_LHS[i] &
+                             dealii::EvaluationFlags::hessians;
 
       // FOR NOW, TAKING THESE FROM THE VARIABLE ITSELF!!
       varInfo.value_residual = variable_attributes.equation_dependency_parser
-                                 .need_value_residual_nonexplicit_LHS[i];
+                                 .eval_flags_residual_nonexplicit_LHS[i] &
+                               dealii::EvaluationFlags::values;
       varInfo.gradient_residual = variable_attributes.equation_dependency_parser
-                                    .need_gradient_residual_nonexplicit_LHS[i];
+                                    .eval_flags_residual_nonexplicit_LHS[i] &
+                                  dealii::EvaluationFlags::gradients;
 
       varInfo.global_var_index = i;
 

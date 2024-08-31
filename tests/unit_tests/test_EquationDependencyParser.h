@@ -53,10 +53,12 @@ unitTest<dim, T>::test_EquationDependencyParser_variables_and_residuals_needed()
   // Check need_value_explicit_RHS
   subtest_index++;
   result = false;
-  if (equation_dependency_parser.need_value_explicit_RHS.size() == 2)
+  if (equation_dependency_parser.eval_flags_explicit_RHS.size() == 2)
     {
-      if (equation_dependency_parser.need_value_explicit_RHS[0] == true &&
-          equation_dependency_parser.need_value_explicit_RHS[1] == true)
+      if (equation_dependency_parser.eval_flags_explicit_RHS[0] &
+            dealii::EvaluationFlags::values &&
+          equation_dependency_parser.eval_flags_explicit_RHS[1] &
+            dealii::EvaluationFlags::values)
         {
           result = true;
         }
@@ -68,10 +70,12 @@ unitTest<dim, T>::test_EquationDependencyParser_variables_and_residuals_needed()
   // Check need_gradient_explicit_RHS
   subtest_index++;
   result = false;
-  if (equation_dependency_parser.need_value_explicit_RHS.size() == 2)
+  if (equation_dependency_parser.eval_flags_explicit_RHS.size() == 2)
     {
-      if (equation_dependency_parser.need_gradient_explicit_RHS[0] == true &&
-          equation_dependency_parser.need_gradient_explicit_RHS[1] == true)
+      if (equation_dependency_parser.eval_flags_explicit_RHS[0] &
+            dealii::EvaluationFlags::gradients &&
+          equation_dependency_parser.eval_flags_explicit_RHS[1] &
+            dealii::EvaluationFlags::gradients)
         {
           result = true;
         }
@@ -84,10 +88,12 @@ unitTest<dim, T>::test_EquationDependencyParser_variables_and_residuals_needed()
   // Check need_hessian_explicit_RHS
   subtest_index++;
   result = false;
-  if (equation_dependency_parser.need_value_explicit_RHS.size() == 2)
+  if (equation_dependency_parser.eval_flags_explicit_RHS.size() == 2)
     {
-      if (equation_dependency_parser.need_hessian_explicit_RHS[0] == false &&
-          equation_dependency_parser.need_hessian_explicit_RHS[1] == false)
+      if (!(equation_dependency_parser.eval_flags_explicit_RHS[0] &
+            dealii::EvaluationFlags::hessians) &&
+          !(equation_dependency_parser.eval_flags_explicit_RHS[1] &
+            dealii::EvaluationFlags::hessians))
         {
           result = true;
         }
@@ -100,10 +106,12 @@ unitTest<dim, T>::test_EquationDependencyParser_variables_and_residuals_needed()
   // Check need_value_nonexplicit_RHS
   subtest_index++;
   result = false;
-  if (equation_dependency_parser.need_value_nonexplicit_RHS.size() == 2)
+  if (equation_dependency_parser.eval_flags_nonexplicit_RHS.size() == 2)
     {
-      if (equation_dependency_parser.need_value_nonexplicit_RHS[0] == true &&
-          equation_dependency_parser.need_value_nonexplicit_RHS[1] == false)
+      if (equation_dependency_parser.eval_flags_nonexplicit_RHS[0] &
+            dealii::EvaluationFlags::values &&
+          !(equation_dependency_parser.eval_flags_nonexplicit_RHS[1] &
+            dealii::EvaluationFlags::values))
         {
           result = true;
         }
@@ -116,10 +124,12 @@ unitTest<dim, T>::test_EquationDependencyParser_variables_and_residuals_needed()
   // Check need_gradient_nonexplicit_RHS
   subtest_index++;
   result = false;
-  if (equation_dependency_parser.need_gradient_nonexplicit_RHS.size() == 2)
+  if (equation_dependency_parser.eval_flags_nonexplicit_RHS.size() == 2)
     {
-      if (equation_dependency_parser.need_gradient_nonexplicit_RHS[0] == false &&
-          equation_dependency_parser.need_gradient_nonexplicit_RHS[1] == true)
+      if (!(equation_dependency_parser.eval_flags_nonexplicit_RHS[0] &
+            dealii::EvaluationFlags::gradients) &&
+          equation_dependency_parser.eval_flags_nonexplicit_RHS[1] &
+            dealii::EvaluationFlags::gradients)
         {
           result = true;
         }
@@ -132,10 +142,12 @@ unitTest<dim, T>::test_EquationDependencyParser_variables_and_residuals_needed()
   // Check need_hessian_nonexplicit_RHS
   subtest_index++;
   result = false;
-  if (equation_dependency_parser.need_hessian_nonexplicit_RHS.size() == 2)
+  if (equation_dependency_parser.eval_flags_nonexplicit_RHS.size() == 2)
     {
-      if (equation_dependency_parser.need_hessian_nonexplicit_RHS[0] == true &&
-          equation_dependency_parser.need_hessian_nonexplicit_RHS[1] == false)
+      if (equation_dependency_parser.eval_flags_nonexplicit_RHS[0] &
+            dealii::EvaluationFlags::hessians &&
+          !(equation_dependency_parser.eval_flags_nonexplicit_RHS[1] &
+            dealii::EvaluationFlags::hessians))
         {
           result = true;
         }
@@ -148,10 +160,12 @@ unitTest<dim, T>::test_EquationDependencyParser_variables_and_residuals_needed()
   // Check need_value_nonexplicit_LHS
   subtest_index++;
   result = false;
-  if (equation_dependency_parser.need_value_nonexplicit_LHS.size() == 2)
+  if (equation_dependency_parser.eval_flags_nonexplicit_LHS.size() == 2)
     {
-      if (equation_dependency_parser.need_value_nonexplicit_LHS[0] == false &&
-          equation_dependency_parser.need_value_nonexplicit_LHS[1] == true)
+      if (!(equation_dependency_parser.eval_flags_nonexplicit_LHS[0] &
+            dealii::EvaluationFlags::values) &&
+          equation_dependency_parser.eval_flags_nonexplicit_LHS[1] &
+            dealii::EvaluationFlags::values)
         {
           result = true;
         }
@@ -164,10 +178,12 @@ unitTest<dim, T>::test_EquationDependencyParser_variables_and_residuals_needed()
   // Check need_gradient_nonexplicit_LHS
   subtest_index++;
   result = false;
-  if (equation_dependency_parser.need_gradient_nonexplicit_LHS.size() == 2)
+  if (equation_dependency_parser.eval_flags_nonexplicit_LHS.size() == 2)
     {
-      if (equation_dependency_parser.need_gradient_nonexplicit_LHS[0] == false &&
-          equation_dependency_parser.need_gradient_nonexplicit_LHS[1] == true)
+      if (!(equation_dependency_parser.eval_flags_nonexplicit_LHS[0] &
+            dealii::EvaluationFlags::gradients) &&
+          equation_dependency_parser.eval_flags_nonexplicit_LHS[1] &
+            dealii::EvaluationFlags::gradients)
         {
           result = true;
         }
@@ -180,10 +196,12 @@ unitTest<dim, T>::test_EquationDependencyParser_variables_and_residuals_needed()
   // Check need_hessian_nonexplicit_LHS
   subtest_index++;
   result = false;
-  if (equation_dependency_parser.need_hessian_nonexplicit_LHS.size() == 2)
+  if (equation_dependency_parser.eval_flags_nonexplicit_LHS.size() == 2)
     {
-      if (equation_dependency_parser.need_hessian_nonexplicit_LHS[0] == false &&
-          equation_dependency_parser.need_hessian_nonexplicit_LHS[1] == false)
+      if (!(equation_dependency_parser.eval_flags_nonexplicit_LHS[0] &
+            dealii::EvaluationFlags::hessians) &&
+          !(equation_dependency_parser.eval_flags_nonexplicit_LHS[1] &
+            dealii::EvaluationFlags::hessians))
         {
           result = true;
         }
@@ -196,10 +214,12 @@ unitTest<dim, T>::test_EquationDependencyParser_variables_and_residuals_needed()
   // Check need_value_change_nonexplicit_LHS
   subtest_index++;
   result = false;
-  if (equation_dependency_parser.need_value_change_nonexplicit_LHS.size() == 2)
+  if (equation_dependency_parser.eval_flags_change_nonexplicit_LHS.size() == 2)
     {
-      if (equation_dependency_parser.need_value_change_nonexplicit_LHS[0] == false &&
-          equation_dependency_parser.need_value_change_nonexplicit_LHS[1] == true)
+      if (!(equation_dependency_parser.eval_flags_change_nonexplicit_LHS[0] &
+            dealii::EvaluationFlags::values) &&
+          equation_dependency_parser.eval_flags_change_nonexplicit_LHS[1] &
+            dealii::EvaluationFlags::values)
         {
           result = true;
         }
@@ -212,10 +232,12 @@ unitTest<dim, T>::test_EquationDependencyParser_variables_and_residuals_needed()
   // Check need_gradient_change_nonexplicit_LHS
   subtest_index++;
   result = false;
-  if (equation_dependency_parser.need_gradient_change_nonexplicit_LHS.size() == 2)
+  if (equation_dependency_parser.eval_flags_change_nonexplicit_LHS.size() == 2)
     {
-      if (equation_dependency_parser.need_gradient_change_nonexplicit_LHS[0] == false &&
-          equation_dependency_parser.need_gradient_change_nonexplicit_LHS[1] == true)
+      if (!(equation_dependency_parser.eval_flags_change_nonexplicit_LHS[0] &
+            dealii::EvaluationFlags::gradients) &&
+          equation_dependency_parser.eval_flags_change_nonexplicit_LHS[1] &
+            dealii::EvaluationFlags::gradients)
         {
           result = true;
         }
@@ -229,10 +251,12 @@ unitTest<dim, T>::test_EquationDependencyParser_variables_and_residuals_needed()
   // Check need_hessian_nonexplicit_LHS
   subtest_index++;
   result = false;
-  if (equation_dependency_parser.need_hessian_change_nonexplicit_LHS.size() == 2)
+  if (equation_dependency_parser.eval_flags_change_nonexplicit_LHS.size() == 2)
     {
-      if (equation_dependency_parser.need_hessian_change_nonexplicit_LHS[0] == false &&
-          equation_dependency_parser.need_hessian_change_nonexplicit_LHS[1] == false)
+      if (!(equation_dependency_parser.eval_flags_change_nonexplicit_LHS[0] &
+            dealii::EvaluationFlags::hessians) &&
+          !(equation_dependency_parser.eval_flags_change_nonexplicit_LHS[1] &
+            dealii::EvaluationFlags::hessians))
         {
           result = true;
         }
@@ -245,10 +269,12 @@ unitTest<dim, T>::test_EquationDependencyParser_variables_and_residuals_needed()
   // Check need_value_residual_explicit_RHS
   subtest_index++;
   result = false;
-  if (equation_dependency_parser.need_value_residual_explicit_RHS.size() == 2)
+  if (equation_dependency_parser.eval_flags_residual_explicit_RHS.size() == 2)
     {
-      if (equation_dependency_parser.need_value_residual_explicit_RHS[0] == true &&
-          equation_dependency_parser.need_value_residual_explicit_RHS[1] == false)
+      if (equation_dependency_parser.eval_flags_residual_explicit_RHS[0] &
+            dealii::EvaluationFlags::values &&
+          !(equation_dependency_parser.eval_flags_residual_explicit_RHS[1] &
+            dealii::EvaluationFlags::values))
         {
           result = true;
         }
@@ -260,10 +286,12 @@ unitTest<dim, T>::test_EquationDependencyParser_variables_and_residuals_needed()
   // Check need_gradient_residual_explicit_RHS
   subtest_index++;
   result = false;
-  if (equation_dependency_parser.need_gradient_residual_explicit_RHS.size() == 2)
+  if (equation_dependency_parser.eval_flags_residual_explicit_RHS.size() == 2)
     {
-      if (equation_dependency_parser.need_gradient_residual_explicit_RHS[0] == true &&
-          equation_dependency_parser.need_gradient_residual_explicit_RHS[1] == false)
+      if (equation_dependency_parser.eval_flags_residual_explicit_RHS[0] &
+            dealii::EvaluationFlags::gradients &&
+          !(equation_dependency_parser.eval_flags_residual_explicit_RHS[1] &
+            dealii::EvaluationFlags::gradients))
         {
           result = true;
         }
@@ -276,10 +304,12 @@ unitTest<dim, T>::test_EquationDependencyParser_variables_and_residuals_needed()
   // Check need_value_residual_nonexplicit_RHS
   subtest_index++;
   result = false;
-  if (equation_dependency_parser.need_value_residual_nonexplicit_RHS.size() == 2)
+  if (equation_dependency_parser.eval_flags_residual_nonexplicit_RHS.size() == 2)
     {
-      if (equation_dependency_parser.need_value_residual_nonexplicit_RHS[0] == false &&
-          equation_dependency_parser.need_value_residual_nonexplicit_RHS[1] == true)
+      if (!(equation_dependency_parser.eval_flags_residual_nonexplicit_RHS[0] &
+            dealii::EvaluationFlags::values) &&
+          equation_dependency_parser.eval_flags_residual_nonexplicit_RHS[1] &
+            dealii::EvaluationFlags::values)
         {
           result = true;
         }
@@ -292,10 +322,12 @@ unitTest<dim, T>::test_EquationDependencyParser_variables_and_residuals_needed()
   // Check need_gradient_residual_nonexplicit_RHS
   subtest_index++;
   result = false;
-  if (equation_dependency_parser.need_gradient_residual_nonexplicit_RHS.size() == 2)
+  if (equation_dependency_parser.eval_flags_residual_nonexplicit_RHS.size() == 2)
     {
-      if (equation_dependency_parser.need_gradient_residual_nonexplicit_RHS[0] == false &&
-          equation_dependency_parser.need_gradient_residual_nonexplicit_RHS[1] == true)
+      if (!(equation_dependency_parser.eval_flags_residual_nonexplicit_RHS[0] &
+            dealii::EvaluationFlags::gradients) &&
+          equation_dependency_parser.eval_flags_residual_nonexplicit_RHS[1] &
+            dealii::EvaluationFlags::gradients)
         {
           result = true;
         }
@@ -308,10 +340,12 @@ unitTest<dim, T>::test_EquationDependencyParser_variables_and_residuals_needed()
   // Check need_value_residual_nonexplicit_LHS
   subtest_index++;
   result = false;
-  if (equation_dependency_parser.need_value_residual_nonexplicit_LHS.size() == 2)
+  if (equation_dependency_parser.eval_flags_residual_nonexplicit_LHS.size() == 2)
     {
-      if (equation_dependency_parser.need_value_residual_nonexplicit_LHS[0] == false &&
-          equation_dependency_parser.need_value_residual_nonexplicit_LHS[1] == true)
+      if (!(equation_dependency_parser.eval_flags_residual_nonexplicit_LHS[0] &
+            dealii::EvaluationFlags::values) &&
+          equation_dependency_parser.eval_flags_residual_nonexplicit_LHS[1] &
+            dealii::EvaluationFlags::values)
         {
           result = true;
         }
@@ -324,10 +358,12 @@ unitTest<dim, T>::test_EquationDependencyParser_variables_and_residuals_needed()
   // Check need_gradient_residual_nonexplicit_LHS
   subtest_index++;
   result = false;
-  if (equation_dependency_parser.need_gradient_residual_nonexplicit_LHS.size() == 2)
+  if (equation_dependency_parser.eval_flags_residual_nonexplicit_LHS.size() == 2)
     {
-      if (equation_dependency_parser.need_gradient_residual_nonexplicit_LHS[0] == false &&
-          equation_dependency_parser.need_gradient_residual_nonexplicit_LHS[1] == true)
+      if (!(equation_dependency_parser.eval_flags_residual_nonexplicit_LHS[0] &
+            dealii::EvaluationFlags::gradients) &&
+          equation_dependency_parser.eval_flags_residual_nonexplicit_LHS[1] &
+            dealii::EvaluationFlags::gradients)
         {
           result = true;
         }

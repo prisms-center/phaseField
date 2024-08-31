@@ -1,6 +1,8 @@
 #ifndef INCLUDE_EQUATIONDEPENDECYPARSER_H_
 #define INCLUDE_EQUATIONDEPENDECYPARSER_H_
 
+#include <deal.II/matrix_free/evaluation_flags.h>
+
 #include "varTypeEnums.h"
 
 #include <algorithm>
@@ -30,31 +32,18 @@ public:
            std::vector<std::string> sorted_dependencies_value,
            std::vector<std::string> sorted_dependencies_gradient);
 
-  // All of the vectors of flags for what is needed for the solution variables
-  std::vector<bool> need_value_explicit_RHS;
-  std::vector<bool> need_gradient_explicit_RHS;
-  std::vector<bool> need_hessian_explicit_RHS;
+  // Evaluation flags for each type of solution variable (e.g., explicit, nonexplicit,
+  // nonexplicit_change, etc.)
+  std::vector<dealii::EvaluationFlags::EvaluationFlags> eval_flags_explicit_RHS;
+  std::vector<dealii::EvaluationFlags::EvaluationFlags> eval_flags_nonexplicit_RHS;
+  std::vector<dealii::EvaluationFlags::EvaluationFlags> eval_flags_nonexplicit_LHS;
+  std::vector<dealii::EvaluationFlags::EvaluationFlags> eval_flags_change_nonexplicit_LHS;
 
-  std::vector<bool> need_value_nonexplicit_RHS;
-  std::vector<bool> need_gradient_nonexplicit_RHS;
-  std::vector<bool> need_hessian_nonexplicit_RHS;
-
-  std::vector<bool> need_value_nonexplicit_LHS;
-  std::vector<bool> need_gradient_nonexplicit_LHS;
-  std::vector<bool> need_hessian_nonexplicit_LHS;
-
-  std::vector<bool> need_value_change_nonexplicit_LHS;
-  std::vector<bool> need_gradient_change_nonexplicit_LHS;
-  std::vector<bool> need_hessian_change_nonexplicit_LHS;
-
-  std::vector<bool> need_value_residual_explicit_RHS;
-  std::vector<bool> need_gradient_residual_explicit_RHS;
-
-  std::vector<bool> need_value_residual_nonexplicit_RHS;
-  std::vector<bool> need_gradient_residual_nonexplicit_RHS;
-
-  std::vector<bool> need_value_residual_nonexplicit_LHS;
-  std::vector<bool> need_gradient_residual_nonexplicit_LHS;
+  std::vector<dealii::EvaluationFlags::EvaluationFlags> eval_flags_residual_explicit_RHS;
+  std::vector<dealii::EvaluationFlags::EvaluationFlags>
+    eval_flags_residual_nonexplicit_RHS;
+  std::vector<dealii::EvaluationFlags::EvaluationFlags>
+    eval_flags_residual_nonexplicit_LHS;
 
   // All of the vectors of flags for what is needed for the postprocessing
   // variables
@@ -77,37 +66,31 @@ protected:
    * whether values, gradients, or hessians are needed.
    */
   void
-  parseDependencyListRHS(std::vector<std::string> variable_name_list,
-                         std::vector<PDEType>     variable_eq_type,
-                         unsigned int             variable_index,
-                         std::string              value_dependencies,
-                         std::string              gradient_dependencies,
-                         std::vector<bool>       &need_value,
-                         std::vector<bool>       &need_gradient,
-                         std::vector<bool>       &need_hessian,
-                         bool                    &need_value_residual,
-                         bool                    &need_gradient_residual,
-                         bool                    &is_nonlinear);
+  parseDependencyListRHS(
+    std::vector<std::string>                               variable_name_list,
+    std::vector<PDEType>                                   variable_eq_type,
+    unsigned int                                           variable_index,
+    std::string                                            value_dependencies,
+    std::string                                            gradient_dependencies,
+    std::vector<dealii::EvaluationFlags::EvaluationFlags> &evaluation_flags,
+    std::vector<dealii::EvaluationFlags::EvaluationFlags> &residual_flags,
+    bool                                                  &is_nonlinear);
 
   /**
    * Method to parse the LHS dependency strings and populate the vectors for
    * whether values, gradients, or hessians are needed.
    */
   void
-  parseDependencyListLHS(std::vector<std::string> variable_name_list,
-                         std::vector<PDEType>     variable_eq_type,
-                         unsigned int             variable_index,
-                         std::string              value_dependencies,
-                         std::string              gradient_dependencies,
-                         std::vector<bool>       &need_value,
-                         std::vector<bool>       &need_gradient,
-                         std::vector<bool>       &need_hessian,
-                         std::vector<bool>       &need_value_change,
-                         std::vector<bool>       &need_gradient_change,
-                         std::vector<bool>       &need_hessian_change,
-                         bool                    &need_value_residual,
-                         bool                    &need_gradient_residual,
-                         bool                    &is_nonlinear);
+  parseDependencyListLHS(
+    std::vector<std::string>                               variable_name_list,
+    std::vector<PDEType>                                   variable_eq_type,
+    unsigned int                                           variable_index,
+    std::string                                            value_dependencies,
+    std::string                                            gradient_dependencies,
+    std::vector<dealii::EvaluationFlags::EvaluationFlags> &evaluation_flags,
+    std::vector<dealii::EvaluationFlags::EvaluationFlags> &change_flags,
+    std::vector<dealii::EvaluationFlags::EvaluationFlags> &residual_flags,
+    bool                                                  &is_nonlinear);
 
   /**
    * Method to parse the postprocessing dependency strings and populate the
