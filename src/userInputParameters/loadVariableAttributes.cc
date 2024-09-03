@@ -73,7 +73,7 @@ userInputParameters<dim>::loadVariableAttributes(
           varInfo.is_scalar = true;
           if (varInfo.var_needed)
             {
-              varInfo.scalar_or_vector_index = scalar_var_index;
+              varInfo.variable_index = scalar_var_index;
               scalar_var_index++;
             }
         }
@@ -82,7 +82,7 @@ userInputParameters<dim>::loadVariableAttributes(
           varInfo.is_scalar = false;
           if (varInfo.var_needed)
             {
-              varInfo.scalar_or_vector_index = vector_var_index;
+              varInfo.variable_index = vector_var_index;
               vector_var_index++;
             }
         }
@@ -124,7 +124,7 @@ userInputParameters<dim>::loadVariableAttributes(
           varInfo.is_scalar = true;
           if (varInfo.var_needed)
             {
-              varInfo.scalar_or_vector_index = scalar_var_index;
+              varInfo.variable_index = scalar_var_index;
               scalar_var_index++;
             }
         }
@@ -133,7 +133,7 @@ userInputParameters<dim>::loadVariableAttributes(
           varInfo.is_scalar = false;
           if (varInfo.var_needed)
             {
-              varInfo.scalar_or_vector_index = vector_var_index;
+              varInfo.variable_index = vector_var_index;
               vector_var_index++;
             }
         }
@@ -176,7 +176,7 @@ userInputParameters<dim>::loadVariableAttributes(
           varInfo.is_scalar = true;
           if (varInfo.var_needed)
             {
-              varInfo.scalar_or_vector_index = scalar_var_index;
+              varInfo.variable_index = scalar_var_index;
               scalar_var_index++;
             }
         }
@@ -185,7 +185,7 @@ userInputParameters<dim>::loadVariableAttributes(
           varInfo.is_scalar = false;
           if (varInfo.var_needed)
             {
-              varInfo.scalar_or_vector_index = vector_var_index;
+              varInfo.variable_index = vector_var_index;
               vector_var_index++;
             }
         }
@@ -218,7 +218,7 @@ userInputParameters<dim>::loadVariableAttributes(
           varInfo.is_scalar = true;
           if (varInfo.var_needed)
             {
-              varInfo.scalar_or_vector_index = scalar_var_index;
+              varInfo.variable_index = scalar_var_index;
               scalar_var_index++;
             }
         }
@@ -227,7 +227,7 @@ userInputParameters<dim>::loadVariableAttributes(
           varInfo.is_scalar = false;
           if (varInfo.var_needed)
             {
-              varInfo.scalar_or_vector_index = vector_var_index;
+              varInfo.variable_index = vector_var_index;
               vector_var_index++;
             }
         }
@@ -258,7 +258,7 @@ userInputParameters<dim>::loadVariableAttributes(
           varInfo.is_scalar = true;
           if (varInfo.var_needed)
             {
-              varInfo.scalar_or_vector_index = scalar_var_index;
+              varInfo.variable_index = scalar_var_index;
               scalar_var_index++;
             }
         }
@@ -267,7 +267,7 @@ userInputParameters<dim>::loadVariableAttributes(
           varInfo.is_scalar = false;
           if (varInfo.var_needed)
             {
-              varInfo.scalar_or_vector_index = vector_var_index;
+              varInfo.variable_index = vector_var_index;
               vector_var_index++;
             }
         }
@@ -305,14 +305,14 @@ userInputParameters<dim>::loadVariableAttributes(
       varInfo.global_var_index = i;
       if (pp_var_type[i] == SCALAR)
         {
-          varInfo.is_scalar              = true;
-          varInfo.scalar_or_vector_index = scalar_var_index;
+          varInfo.is_scalar      = true;
+          varInfo.variable_index = scalar_var_index;
           scalar_var_index++;
         }
       else
         {
-          varInfo.is_scalar              = false;
-          varInfo.scalar_or_vector_index = vector_var_index;
+          varInfo.is_scalar      = false;
+          varInfo.variable_index = vector_var_index;
           vector_var_index++;
         }
       pp_varInfoList.push_back(varInfo);
