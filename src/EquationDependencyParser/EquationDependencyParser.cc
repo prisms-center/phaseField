@@ -198,8 +198,8 @@ EquationDependencyParser::parseDependencyListRHS(
             }
 
           // Check for nonlinearity
-          is_nonlinear = is_nonlinear || !variable_is_explicit && !same_variable &&
-                                           !dependency_variable_is_explicit;
+          is_nonlinear =
+            !variable_is_explicit && !same_variable && !dependency_variable_is_explicit;
 
           // Increment counter
           ++dependency_variable_index;
@@ -301,7 +301,7 @@ EquationDependencyParser::parseDependencyListLHS(
               dependency_entry_assigned = true;
 
               // Check for nonlinearity
-              is_nonlinear = is_nonlinear || !dependency_variable_is_explicit;
+              is_nonlinear = !dependency_variable_is_explicit;
             }
           // Case if the dependency is grad(x)
           else if (dependency == gradient_variable)
@@ -311,7 +311,7 @@ EquationDependencyParser::parseDependencyListLHS(
               dependency_entry_assigned = true;
 
               // Check for nonlinearity
-              is_nonlinear = is_nonlinear || !dependency_variable_is_explicit;
+              is_nonlinear = !dependency_variable_is_explicit;
             }
           // Case if the dependency is hess(x)
           else if (dependency == hessian_variable)
@@ -321,7 +321,7 @@ EquationDependencyParser::parseDependencyListLHS(
               dependency_entry_assigned = true;
 
               // Check for nonlinearity
-              is_nonlinear = is_nonlinear || !dependency_variable_is_explicit;
+              is_nonlinear = !dependency_variable_is_explicit;
             }
           // Case if the dependency is change(x)
           else if (dependency == change_value_variable)
