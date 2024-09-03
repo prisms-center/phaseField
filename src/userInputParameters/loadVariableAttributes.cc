@@ -288,17 +288,18 @@ userInputParameters<dim>::loadVariableAttributes(
       variable_info varInfo;
 
       varInfo.need_value =
-        variable_attributes.equation_dependency_parser.pp_need_value[i];
+        variable_attributes.equation_dependency_parser.eval_flags_postprocess[i] &
+        dealii::EvaluationFlags::values;
       varInfo.need_gradient =
-        variable_attributes.equation_dependency_parser.pp_need_gradient[i];
+        variable_attributes.equation_dependency_parser.eval_flags_postprocess[i] &
+        dealii::EvaluationFlags::gradients;
       varInfo.need_hessian =
-        variable_attributes.equation_dependency_parser.pp_need_hessian[i];
+        variable_attributes.equation_dependency_parser.eval_flags_postprocess[i] &
+        dealii::EvaluationFlags::hessians;
 
       varInfo.global_var_index = i;
 
-      variable_attributes.equation_dependency_parser.pp_need_value[i] ||
-          variable_attributes.equation_dependency_parser.pp_need_gradient[i] ||
-          variable_attributes.equation_dependency_parser.pp_need_hessian[i]
+      varInfo.need_value || varInfo.need_gradient || varInfo.need_hessian
         ? varInfo.var_needed = true
         : varInfo.var_needed = false;
 
@@ -349,9 +350,11 @@ userInputParameters<dim>::loadVariableAttributes(
       varInfo.var_needed = true;
 
       varInfo.value_residual =
-        variable_attributes.equation_dependency_parser.pp_need_value_residual[i];
+        variable_attributes.equation_dependency_parser.eval_flags_postprocess[i] &
+        dealii::EvaluationFlags::values;
       varInfo.gradient_residual =
-        variable_attributes.equation_dependency_parser.pp_need_gradient_residual[i];
+        variable_attributes.equation_dependency_parser.eval_flags_postprocess[i] &
+        dealii::EvaluationFlags::gradients;
 
       varInfo.global_var_index = i;
       if (pp_var_type[i] == SCALAR)

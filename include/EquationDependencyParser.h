@@ -47,12 +47,8 @@ public:
 
   // All of the vectors of flags for what is needed for the postprocessing
   // variables
-  std::vector<bool> pp_need_value;
-  std::vector<bool> pp_need_gradient;
-  std::vector<bool> pp_need_hessian;
-
-  std::vector<bool> pp_need_value_residual;
-  std::vector<bool> pp_need_gradient_residual;
+  std::vector<dealii::EvaluationFlags::EvaluationFlags> eval_flags_postprocess;
+  std::vector<dealii::EvaluationFlags::EvaluationFlags> eval_flags_residual_postprocess;
 
 protected:
   /*
@@ -97,14 +93,13 @@ protected:
    * vectors for whether values, gradients, or hessians are needed.
    */
   void
-  parseDependencyListPP(std::vector<std::string> var_name,
-                        std::string              value_dependencies,
-                        std::string              gradient_dependencies,
-                        std::vector<bool>       &need_value,
-                        std::vector<bool>       &need_gradient,
-                        std::vector<bool>       &need_hessian,
-                        bool                    &need_value_residual,
-                        bool                    &need_gradient_residual);
+  parseDependencyListPP(
+    std::vector<std::string>                               variable_name_list,
+    unsigned int                                           variable_index,
+    std::string                                            value_dependencies,
+    std::string                                            gradient_dependencies,
+    std::vector<dealii::EvaluationFlags::EvaluationFlags> &evaluation_flags,
+    std::vector<dealii::EvaluationFlags::EvaluationFlags> &residual_flags);
 };
 
 #endif

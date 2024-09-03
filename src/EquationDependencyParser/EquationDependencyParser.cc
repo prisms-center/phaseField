@@ -378,56 +378,41 @@ EquationDependencyParser::pp_parse(std::vector<std::string> var_name,
                                    std::vector<std::string> sorted_dependencies_value,
                                    std::vector<std::string> sorted_dependencies_gradient)
 {
-  // Initialize the calculation needed flags to false
-  for (unsigned int i = 0; i < var_name.size(); i++)
-    {
-      pp_need_value.push_back(false);
-      pp_need_gradient.push_back(false);
-      pp_need_hessian.push_back(false);
-    }
+  // Determine the number of variables
+  size_t n_variables             = var_name.size();
+  size_t n_postprocess_variables = pp_var_name.size();
 
-  // Delete whitespace in the dependencies
-  for (unsigned int i = 0; i < pp_var_name.size(); i++)
-    {
-      if (sorted_dependencies_value.size() > 0)
-        {
-          strip_dependency_whitespace(sorted_dependencies_value.at(i));
-        }
+  // Resize the dependency evaluation flag vectors
+  eval_flags_postprocess.resize(n_variables, dealii::EvaluationFlags::nothing);
 
-      if (sorted_dependencies_gradient.size() > 0)
-        {
-          strip_dependency_whitespace(sorted_dependencies_gradient.at(i));
-        }
-    }
+  // Resize the residual evaluation flag vectors
+  eval_flags_residual_postprocess.resize(n_postprocess_variables,
+                                         dealii::EvaluationFlags::nothing);
 
   // Now parse the dependency strings to set the flags to true where needed
   for (unsigned int i = 0; i < pp_var_name.size(); i++)
     {
-      bool need_value_residual_entry, need_gradient_residual_entry;
+      // Strip excess whitespace
+      strip_dependency_whitespace(sorted_dependencies_value[i]);
+      strip_dependency_whitespace(sorted_dependencies_gradient[i]);
 
       parseDependencyListPP(var_name,
-                            sorted_dependencies_value.at(i),
-                            sorted_dependencies_gradient.at(i),
-                            pp_need_value,
-                            pp_need_gradient,
-                            pp_need_hessian,
-                            need_value_residual_entry,
-                            need_gradient_residual_entry);
-
-      pp_need_value_residual.push_back(need_value_residual_entry);
-      pp_need_gradient_residual.push_back(need_gradient_residual_entry);
+                            i,
+                            sorted_dependencies_value[i],
+                            sorted_dependencies_gradient[i],
+                            eval_flags_postprocess,
+                            eval_flags_residual_postprocess);
     }
 }
 
 void
-EquationDependencyParser::parseDependencyListPP(std::vector<std::string> var_name,
-                                                std::string        value_dependencies,
-                                                std::string        gradient_dependencies,
-                                                std::vector<bool> &need_value,
-                                                std::vector<bool> &need_gradient,
-                                                std::vector<bool> &need_hessian,
-                                                bool              &need_value_residual,
-                                                bool              &need_gradient_residual)
+EquationDependencyParser::parseDependencyListPP(
+  std::vector<std::string>                               variable_name_list,
+  unsigned int                                           variable_index,
+  std::string                                            value_dependencies,
+  std::string                                            gradient_dependencies,
+  std::vector<dealii::EvaluationFlags::EvaluationFlags> &evaluation_flags,
+  std::vector<dealii::EvaluationFlags::EvaluationFlags> &residual_flags)
 {
   // Split the dependency strings into lists of entries
   std::vector<std::string> split_value_dependency_list =
@@ -435,84 +420,72 @@ EquationDependencyParser::parseDependencyListPP(std::vector<std::string> var_nam
   std::vector<std::string> split_gradient_dependency_list =
     dealii::Utilities::split_string_list(gradient_dependencies);
 
-  // Check if either is empty and set need_value_residual and need_gradient
+  // Check if either is empty and set value and gradient flags for the
   // residual appropriately
   if (split_value_dependency_list.size() > 0)
     {
-      need_value_residual = true;
+      residual_flags[variable_index] |= dealii::EvaluationFlags::values;
     }
-  else
-    {
-      need_value_residual = false;
-    }
-
   if (split_gradient_dependency_list.size() > 0)
     {
-      need_gradient_residual = true;
-    }
-  else
-    {
-      need_gradient_residual = false;
+      residual_flags[variable_index] |= dealii::EvaluationFlags::gradients;
     }
 
   // Merge the lists of dependency entries
-  /*
   std::vector<std::string> split_dependency_list = split_value_dependency_list;
-  split_dependency_list.insert(split_dependency_list.end(),split_gradient_dependency_list.begin(),split_gradient_dependency_list.end());
-  */
-
-  std::vector<std::string> split_dependency_list;
-  if (need_value_residual)
-    {
-      split_dependency_list = split_value_dependency_list;
-      split_dependency_list.insert(split_dependency_list.end(),
-                                   split_gradient_dependency_list.begin(),
-                                   split_gradient_dependency_list.end());
-    }
-  else
-    {
-      split_dependency_list = split_gradient_dependency_list;
-    }
+  split_dependency_list.insert(split_dependency_list.end(),
+                               split_gradient_dependency_list.begin(),
+                               split_gradient_dependency_list.end());
 
   // Cycle through each dependency entry
-  for (unsigned int dep = 0; dep < split_dependency_list.size(); dep++)
+  for (const auto &dependency : split_dependency_list)
     {
+      // Flag to make sure we have assigned a dependency entry
       bool dependency_entry_assigned = false;
 
-      for (unsigned int var = 0; var < var_name.size(); var++)
+      // Loop through all known variable names [x, grad(x), and hess(x)] to see which ones
+      // are on our dependency list. If we have two variables x and y this will loop twice
+      // to see if the supplied dependency needs either two of the variables. A successful
+      // match will update the values/gradient/hessian flag for that dependency variable.
+      std::size_t dependency_variable_index = 0;
+      for (const auto &variable : variable_name_list)
         {
           // Create grad() and hess() variants of the variable name
-          std::string grad_var_name = {"grad()"};
-          grad_var_name.insert(--grad_var_name.end(),
-                               var_name.at(var).begin(),
-                               var_name.at(var).end());
+          std::string gradient_variable = {"grad()"};
+          gradient_variable.insert(--gradient_variable.end(),
+                                   variable.begin(),
+                                   variable.end());
 
-          std::string hess_var_name = {"hess()"};
-          hess_var_name.insert(--hess_var_name.end(),
-                               var_name.at(var).begin(),
-                               var_name.at(var).end());
+          std::string hessian_variable = {"hess()"};
+          hessian_variable.insert(--hessian_variable.end(),
+                                  variable.begin(),
+                                  variable.end());
 
-          if (split_dependency_list.at(dep) == var_name.at(var))
+          if (dependency == variable)
             {
-              need_value.at(var)        = true;
+              evaluation_flags[dependency_variable_index] |=
+                dealii::EvaluationFlags::values;
               dependency_entry_assigned = true;
             }
-          else if (split_dependency_list.at(dep) == grad_var_name)
+          else if (dependency == gradient_variable)
             {
-              need_gradient.at(var)     = true;
+              evaluation_flags[dependency_variable_index] |=
+                dealii::EvaluationFlags::gradients;
               dependency_entry_assigned = true;
             }
-          else if (split_dependency_list.at(dep) == hess_var_name)
+          else if (dependency == hessian_variable)
             {
-              need_hessian.at(var)      = true;
+              evaluation_flags[dependency_variable_index] |=
+                dealii::EvaluationFlags::hessians;
               dependency_entry_assigned = true;
             }
+
+          // Increment counter
+          ++dependency_variable_index;
         }
-      if (!dependency_entry_assigned)
-        {
-          std::cerr << "PRISMS-PF Error: Dependency entry "
-                    << split_dependency_list.at(dep) << " is not valid." << std::endl;
-          abort();
-        }
+
+      Assert(dependency_entry_assigned,
+             dealii::StandardExceptions::ExcMessage("PRISMS-PF Error: Dependency entry " +
+                                                    dependency + " is not valid."))
     }
 }
