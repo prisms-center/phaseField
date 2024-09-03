@@ -207,7 +207,7 @@ EquationDependencyParser::parseDependencyListRHS(
 
       Assert(dependency_entry_assigned,
              dealii::StandardExceptions::ExcMessage("PRISMS-PF Error: Dependency entry " +
-                                                    dependency + " is not valid."))
+                                                    dependency + " is not valid."));
     }
 }
 
@@ -368,7 +368,7 @@ EquationDependencyParser::parseDependencyListLHS(
 
       Assert(dependency_entry_assigned,
              dealii::StandardExceptions::ExcMessage("PRISMS-PF Error: Dependency entry " +
-                                                    dependency + " is not valid."))
+                                                    dependency + " is not valid."));
     }
 }
 
@@ -486,6 +486,6 @@ EquationDependencyParser::parseDependencyListPP(
 
       Assert(dependency_entry_assigned,
              dealii::StandardExceptions::ExcMessage("PRISMS-PF Error: Dependency entry " +
-                                                    dependency + " is not valid."))
+                                                    dependency + " is not valid."));
     }
 }
