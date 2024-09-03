@@ -161,18 +161,14 @@ variableContainer<dim, degree, T>::reinit_and_eval(const std::vector<vectorType 
               scalar_vars[varInfoList[i].scalar_or_vector_index].reinit(cell);
               scalar_vars[varInfoList[i].scalar_or_vector_index].read_dof_values(*src[i]);
               scalar_vars[varInfoList[i].scalar_or_vector_index].evaluate(
-                varInfoList[i].need_value,
-                varInfoList[i].need_gradient,
-                varInfoList[i].need_hessian);
+                varInfoList[i].evaluation_flags);
             }
           else
             {
               vector_vars[varInfoList[i].scalar_or_vector_index].reinit(cell);
               vector_vars[varInfoList[i].scalar_or_vector_index].read_dof_values(*src[i]);
               vector_vars[varInfoList[i].scalar_or_vector_index].evaluate(
-                varInfoList[i].need_value,
-                varInfoList[i].need_gradient,
-                varInfoList[i].need_hessian);
+                varInfoList[i].evaluation_flags);
             }
         }
     }
@@ -193,17 +189,15 @@ variableContainer<dim, degree, T>::reinit_and_eval_change_in_solution(
     {
       scalar_change_in_vars[0].reinit(cell);
       scalar_change_in_vars[0].read_dof_values(src);
-      scalar_change_in_vars[0].evaluate(varChangeInfoList[var_being_solved].need_value,
-                                        varChangeInfoList[var_being_solved].need_gradient,
-                                        varChangeInfoList[var_being_solved].need_hessian);
+      scalar_change_in_vars[0].evaluate(
+        varChangeInfoList[var_being_solved].evaluation_flags);
     }
   else
     {
       vector_change_in_vars[0].reinit(cell);
       vector_change_in_vars[0].read_dof_values(src);
-      vector_change_in_vars[0].evaluate(varChangeInfoList[var_being_solved].need_value,
-                                        varChangeInfoList[var_being_solved].need_gradient,
-                                        varChangeInfoList[var_being_solved].need_hessian);
+      vector_change_in_vars[0].evaluate(
+        varChangeInfoList[var_being_solved].evaluation_flags);
     }
 }
 
@@ -232,9 +226,7 @@ variableContainer<dim, degree, T>::reinit_and_eval_LHS(
                     *solutionSet[i]);
                 }
               scalar_vars[varInfoList[i].scalar_or_vector_index].evaluate(
-                varInfoList[i].need_value,
-                varInfoList[i].need_gradient,
-                varInfoList[i].need_hessian);
+                varInfoList[i].evaluation_flags);
             }
           else
             {
@@ -249,9 +241,7 @@ variableContainer<dim, degree, T>::reinit_and_eval_LHS(
                     *solutionSet[i]);
                 }
               vector_vars[varInfoList[i].scalar_or_vector_index].evaluate(
-                varInfoList[i].need_value,
-                varInfoList[i].need_gradient,
-                varInfoList[i].need_hessian);
+                varInfoList[i].evaluation_flags);
             }
         }
     }
@@ -284,21 +274,19 @@ variableContainer<dim, degree, T>::integrate_and_distribute(
 {
   for (unsigned int i = 0; i < num_var; i++)
     {
-      if (varInfoList[i].value_residual || varInfoList[i].gradient_residual)
+      if (!(varInfoList[i].residual_flags & dealii::EvaluationFlags::nothing))
         {
           if (varInfoList[i].is_scalar)
             {
               scalar_vars[varInfoList[i].scalar_or_vector_index].integrate(
-                varInfoList[i].value_residual,
-                varInfoList[i].gradient_residual);
+                varInfoList[i].residual_flags);
               scalar_vars[varInfoList[i].scalar_or_vector_index]
                 .distribute_local_to_global(*dst[i]);
             }
           else
             {
               vector_vars[varInfoList[i].scalar_or_vector_index].integrate(
-                varInfoList[i].value_residual,
-                varInfoList[i].gradient_residual);
+                varInfoList[i].residual_flags);
               vector_vars[varInfoList[i].scalar_or_vector_index]
                 .distribute_local_to_global(*dst[i]);
             }
@@ -316,15 +304,13 @@ variableContainer<dim, degree, T>::integrate_and_distribute_change_in_solution_L
   if (varChangeInfoList[var_being_solved].is_scalar)
     {
       scalar_change_in_vars[0].integrate(
-        varChangeInfoList[var_being_solved].value_residual,
-        varChangeInfoList[var_being_solved].gradient_residual);
+        varChangeInfoList[var_being_solved].residual_flags);
       scalar_change_in_vars[0].distribute_local_to_global(dst);
     }
   else
     {
       vector_change_in_vars[0].integrate(
-        varChangeInfoList[var_being_solved].value_residual,
-        varChangeInfoList[var_being_solved].gradient_residual);
+        varChangeInfoList[var_being_solved].residual_flags);
       vector_change_in_vars[0].distribute_local_to_global(dst);
     }
 }
@@ -336,7 +322,8 @@ T
 variableContainer<dim, degree, T>::get_scalar_value(
   unsigned int global_variable_index) const
 {
-  if (varInfoList[global_variable_index].need_value)
+  if (varInfoList[global_variable_index].evaluation_flags &
+      dealii::EvaluationFlags::values)
     {
       return scalar_vars[varInfoList[global_variable_index].scalar_or_vector_index]
         .get_value(q_point);
@@ -356,7 +343,8 @@ dealii::Tensor<1, dim, T>
 variableContainer<dim, degree, T>::get_scalar_gradient(
   unsigned int global_variable_index) const
 {
-  if (varInfoList[global_variable_index].need_gradient)
+  if (varInfoList[global_variable_index].evaluation_flags &
+      dealii::EvaluationFlags::gradients)
     {
       return scalar_vars[varInfoList[global_variable_index].scalar_or_vector_index]
         .get_gradient(q_point);
@@ -376,7 +364,8 @@ dealii::Tensor<2, dim, T>
 variableContainer<dim, degree, T>::get_scalar_hessian(
   unsigned int global_variable_index) const
 {
-  if (varInfoList[global_variable_index].need_hessian)
+  if (varInfoList[global_variable_index].evaluation_flags &
+      dealii::EvaluationFlags::hessians)
     {
       return scalar_vars[varInfoList[global_variable_index].scalar_or_vector_index]
         .get_hessian(q_point);
@@ -396,7 +385,8 @@ dealii::Tensor<1, dim, T>
 variableContainer<dim, degree, T>::get_vector_value(
   unsigned int global_variable_index) const
 {
-  if (varInfoList[global_variable_index].need_value)
+  if (varInfoList[global_variable_index].evaluation_flags &
+      dealii::EvaluationFlags::values)
     {
       return vector_vars[varInfoList[global_variable_index].scalar_or_vector_index]
         .get_value(q_point);
@@ -416,7 +406,8 @@ dealii::Tensor<2, dim, T>
 variableContainer<dim, degree, T>::get_vector_gradient(
   unsigned int global_variable_index) const
 {
-  if (varInfoList[global_variable_index].need_gradient)
+  if (varInfoList[global_variable_index].evaluation_flags &
+      dealii::EvaluationFlags::gradients)
     {
       return vector_vars[varInfoList[global_variable_index].scalar_or_vector_index]
         .get_gradient(q_point);
@@ -436,7 +427,8 @@ dealii::Tensor<3, dim, T>
 variableContainer<dim, degree, T>::get_vector_hessian(
   unsigned int global_variable_index) const
 {
-  if (varInfoList[global_variable_index].need_hessian)
+  if (varInfoList[global_variable_index].evaluation_flags &
+      dealii::EvaluationFlags::hessians)
     {
       return vector_vars[varInfoList[global_variable_index].scalar_or_vector_index]
         .get_hessian(q_point);
@@ -458,7 +450,8 @@ T
 variableContainer<dim, degree, T>::get_change_in_scalar_value(
   unsigned int global_variable_index) const
 {
-  if (varChangeInfoList[global_variable_index].need_value)
+  if (varChangeInfoList[global_variable_index].evaluation_flags &
+      dealii::EvaluationFlags::values)
     {
       return scalar_change_in_vars[varChangeInfoList[global_variable_index]
                                      .scalar_or_vector_index]
@@ -479,7 +472,8 @@ dealii::Tensor<1, dim, T>
 variableContainer<dim, degree, T>::get_change_in_scalar_gradient(
   unsigned int global_variable_index) const
 {
-  if (varChangeInfoList[global_variable_index].need_gradient)
+  if (varChangeInfoList[global_variable_index].evaluation_flags &
+      dealii::EvaluationFlags::gradients)
     {
       return scalar_change_in_vars[varChangeInfoList[global_variable_index]
                                      .scalar_or_vector_index]
@@ -500,7 +494,8 @@ dealii::Tensor<2, dim, T>
 variableContainer<dim, degree, T>::get_change_in_scalar_hessian(
   unsigned int global_variable_index) const
 {
-  if (varChangeInfoList[global_variable_index].need_hessian)
+  if (varChangeInfoList[global_variable_index].evaluation_flags &
+      dealii::EvaluationFlags::hessians)
     {
       return scalar_change_in_vars[varChangeInfoList[global_variable_index]
                                      .scalar_or_vector_index]
@@ -521,7 +516,8 @@ dealii::Tensor<1, dim, T>
 variableContainer<dim, degree, T>::get_change_in_vector_value(
   unsigned int global_variable_index) const
 {
-  if (varChangeInfoList[global_variable_index].need_value)
+  if (varChangeInfoList[global_variable_index].evaluation_flags &
+      dealii::EvaluationFlags::values)
     {
       return vector_change_in_vars[varChangeInfoList[global_variable_index]
                                      .scalar_or_vector_index]
@@ -542,7 +538,8 @@ dealii::Tensor<2, dim, T>
 variableContainer<dim, degree, T>::get_change_in_vector_gradient(
   unsigned int global_variable_index) const
 {
-  if (varChangeInfoList[global_variable_index].need_gradient)
+  if (varChangeInfoList[global_variable_index].evaluation_flags &
+      dealii::EvaluationFlags::gradients)
     {
       return vector_change_in_vars[varChangeInfoList[global_variable_index]
                                      .scalar_or_vector_index]
@@ -563,7 +560,8 @@ dealii::Tensor<3, dim, T>
 variableContainer<dim, degree, T>::get_change_in_vector_hessian(
   unsigned int global_variable_index) const
 {
-  if (varChangeInfoList[global_variable_index].need_hessian)
+  if (varChangeInfoList[global_variable_index].evaluation_flags &
+      dealii::EvaluationFlags::hessians)
     {
       return vector_change_in_vars[varChangeInfoList[global_variable_index]
                                      .scalar_or_vector_index]
