@@ -1,6 +1,10 @@
 # VS Code
 .vscode/*
 
+# Python virtual environments
+.venv/*
+*.venv/
+
 # Compiled Object files
 *.slo
 *.lo
