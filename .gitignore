@@ -1,3 +1,6 @@
+# VS Code
+.vscode/*
+
 # Compiled Object files
 *.slo
 *.lo
@@ -82,10 +85,11 @@ DoxygenWarningLog.txt
 freeEnergy.txt
 output.txt
 
-restart*
+# Output files
 integratedFields.txt
 
 # Checkpoint/restart files
+restart*
 restart.mesh
 restart.mesh.info
 restart.mesh.info.old
