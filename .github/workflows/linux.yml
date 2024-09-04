@@ -29,7 +29,6 @@ jobs:
 
     container:
       image: dealii/dealii:v9.6.0-jammy
-      options: --user root
 
     steps:
       - name: Checkout repo
