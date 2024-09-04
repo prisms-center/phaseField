@@ -9,6 +9,7 @@ FloodFiller<dim, degree>::calcGrainSets(dealii::FESystem<dim>      &fe,
                                         vectorType                 *solution_field,
                                         double                      threshold_lower,
                                         double                      threshold_upper,
+                                        int                         min_id,
                                         unsigned int                order_parameter_index,
                                         std::vector<GrainSet<dim>> &grain_sets)
 {
@@ -40,6 +41,7 @@ FloodFiller<dim, degree>::calcGrainSets(dealii::FESystem<dim>      &fe,
             solution_field,
             threshold_lower,
             threshold_upper,
+            min_id,
             grain_index,
             grain_sets,
             grain_assigned);
@@ -82,6 +84,7 @@ FloodFiller<dim, degree>::recursiveFloodFill(T                           di,
                                              vectorType                 *solution_field,
                                              double                      threshold_lower,
                                              double                      threshold_upper,
+                                             int                         min_id,
                                              unsigned int               &grain_index,
                                              std::vector<GrainSet<dim>> &grain_sets,
                                              bool                       &grain_assigned)
@@ -103,6 +106,7 @@ FloodFiller<dim, degree>::recursiveFloodFill(T                           di,
                                         solution_field,
                                         threshold_lower,
                                         threshold_upper,
+                                        min_id,
                                         grain_index,
                                         grain_sets,
                                         grain_assigned);
@@ -130,7 +134,7 @@ FloodFiller<dim, degree>::recursiveFloodFill(T                           di,
                     {
                       // Add the number of times that var_values[q_point] has
                       // been seen
-                      if (var_values[q_point] > 0)
+                      if (var_values[q_point] > min_id)
                         {
                           ++quadratureValues[var_values[q_point]];
                         }
@@ -163,6 +167,7 @@ FloodFiller<dim, degree>::recursiveFloodFill(T                           di,
                                                 solution_field,
                                                 threshold_lower,
                                                 threshold_upper,
+                                                min_id,
                                                 grain_index,
                                                 grain_sets,
                                                 grain_assigned);

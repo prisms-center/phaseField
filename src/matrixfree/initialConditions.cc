@@ -123,6 +123,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
                                      &grain_index_field,
                                      (double) id - userInputs.order_parameter_threshold,
                                      (double) id + userInputs.order_parameter_threshold,
+                                     min_id,
                                      0,
                                      grain_sets_single_id);
 
