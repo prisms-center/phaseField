@@ -63,18 +63,15 @@ FloodFiller<dim, degree>::calcGrainSets(dealii::FESystem<dim>      &fe,
       grain_sets.pop_back();
     }
 
-  // Merge grains sharing common vertices
-  mergeSplitGrains(grain_sets);
-
-  // Generate global list of the grains
+  // Generate global list of the grains & send the grain set info to all processors so
+  // everyone has the full list
   if (dealii::Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD) > 1)
     {
-      // Send the grain set info to all processors so everyone has the full list
-      createGlobalGrainSetList(grain_sets);  
-      mergeSplitGrains(grain_sets);    
+      createGlobalGrainSetList(grain_sets);
     }
 
-   
+  // Merge grains sharing common vertices
+  mergeSplitGrains(grain_sets);
 }
 
 template <int dim, int degree>
