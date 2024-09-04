@@ -41,6 +41,9 @@ jobs:
 
       - name: Run PRISMS-PF tests
         run: |
+          export OMPI_ALLOW_RUN_AS_ROOT=1
+          export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
+
           cd tests/automatic_tests
           python3 run_automatic_tests.py
 
