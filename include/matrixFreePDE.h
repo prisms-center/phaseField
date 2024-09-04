@@ -465,7 +465,6 @@ protected:
   bool hasExplicitEquation;
   bool hasNonExplicitEquation;
   //
-  unsigned int parabolicFieldIndex, ellipticFieldIndex;
   double       currentTime;
   unsigned int currentIncrement, currentOutput, currentCheckpoint,
     current_grain_reassignment;
@@ -481,17 +480,6 @@ protected:
   double       integrated_var;
   unsigned int integral_index;
   std::mutex   assembler_lock;
-
-  void
-  computeIntegralMF(double                         &integratedField,
-                    int                             index,
-                    const std::vector<vectorType *> postProcessedSet);
-
-  void
-  getIntegralMF(const MatrixFree<dim, double>               &data,
-                std::vector<vectorType *>                   &dst,
-                const std::vector<vectorType *>             &src,
-                const std::pair<unsigned int, unsigned int> &cell_range);
 };
 
 #endif

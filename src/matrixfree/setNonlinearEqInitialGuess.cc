@@ -1,6 +1,6 @@
 // setNonlinearEqInitialGuess() method for MatrixFreePDE class
-
 #include <deal.II/lac/solver_cg.h>
+#include <deal.II/matrix_free/evaluation_flags.h>
 
 #include "../../include/matrixFreePDE.h"
 
@@ -158,17 +158,20 @@ MatrixFreePDE<dim, degree>::getLaplaceRHS(
   const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   FEEvaluation<dim, degree> mat(data);
+
+  dealii::EvaluationFlags::EvaluationFlags laplace_flags =
+    dealii::EvaluationFlags::gradients;
   // loop over all "cells"
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
     {
       mat.reinit(cell);
       mat.read_dof_values(src);
-      mat.evaluate(false, true, false);
+      mat.evaluate(laplace_flags);
       for (unsigned int q = 0; q < mat.n_q_points; ++q)
         {
           mat.submit_gradient(mat.get_gradient(q), q);
         }
-      mat.integrate(false, true);
+      mat.integrate(laplace_flags);
       mat.distribute_local_to_global(dst);
     }
 }
@@ -182,17 +185,20 @@ MatrixFreePDE<dim, degree>::getLaplaceLHS(
   const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   FEEvaluation<dim, degree> mat(data);
+
+  dealii::EvaluationFlags::EvaluationFlags laplace_flags =
+    dealii::EvaluationFlags::gradients;
   // loop over all "cells"
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
     {
       mat.reinit(cell);
       mat.read_dof_values(src);
-      mat.evaluate(false, true, false);
+      mat.evaluate(laplace_flags);
       for (unsigned int q = 0; q < mat.n_q_points; ++q)
         {
           mat.submit_gradient(-mat.get_gradient(q), q);
         }
-      mat.integrate(false, true);
+      mat.integrate(laplace_flags);
       mat.distribute_local_to_global(dst);
     }
 }

@@ -1,6 +1,5 @@
-#include "../../include/userInputParameters.h"
-// #include "../../include/sortIndexEntryPairList.h"
 #include "../../include/EquationDependencyParser.h"
+#include "../../include/userInputParameters.h"
 
 template <int dim>
 void
@@ -35,14 +34,8 @@ userInputParameters<dim>::loadVariableAttributes(
         }
     }
 
-  if (nucleating_variable_indices.size() > 0)
-    {
-      nucleation_occurs = true;
-    }
-  else
-    {
-      nucleation_occurs = false;
-    }
+  nucleating_variable_indices.size() > 0 ? nucleation_occurs = true
+                                         : nucleation_occurs = false;
 
   // Load these attributes into the varInfoList objects
 
@@ -50,9 +43,8 @@ userInputParameters<dim>::loadVariableAttributes(
   num_var_explicit_RHS = 0;
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
-      if (variable_attributes.equation_dependency_parser.need_value_explicit_RHS[i] or
-          variable_attributes.equation_dependency_parser.need_gradient_explicit_RHS[i] or
-          variable_attributes.equation_dependency_parser.need_hessian_explicit_RHS[i])
+      if (!(variable_attributes.equation_dependency_parser.eval_flags_explicit_RHS[i] &
+            dealii::EvaluationFlags::nothing))
         {
           num_var_explicit_RHS++;
         }
@@ -64,34 +56,24 @@ userInputParameters<dim>::loadVariableAttributes(
     {
       variable_info varInfo;
 
-      varInfo.need_value =
-        variable_attributes.equation_dependency_parser.need_value_explicit_RHS[i];
-      varInfo.need_gradient =
-        variable_attributes.equation_dependency_parser.need_gradient_explicit_RHS[i];
-      varInfo.need_hessian =
-        variable_attributes.equation_dependency_parser.need_hessian_explicit_RHS[i];
-      varInfo.value_residual = variable_attributes.equation_dependency_parser
-                                 .need_value_residual_explicit_RHS[i];
-      varInfo.gradient_residual = variable_attributes.equation_dependency_parser
-                                    .need_gradient_residual_explicit_RHS[i];
+      varInfo.evaluation_flags =
+        variable_attributes.equation_dependency_parser.eval_flags_explicit_RHS[i];
+
+      varInfo.residual_flags = variable_attributes.equation_dependency_parser
+                                 .eval_flags_residual_explicit_RHS[i];
 
       varInfo.global_var_index = i;
 
-      if (varInfo.need_value or varInfo.need_gradient or varInfo.need_hessian)
-        {
-          varInfo.var_needed = true;
-        }
-      else
-        {
-          varInfo.var_needed = false;
-        }
+      !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing)
+        ? varInfo.var_needed = true
+        : varInfo.var_needed = false;
 
       if (var_type[i] == SCALAR)
         {
           varInfo.is_scalar = true;
           if (varInfo.var_needed)
             {
-              varInfo.scalar_or_vector_index = scalar_var_index;
+              varInfo.variable_index = scalar_var_index;
               scalar_var_index++;
             }
         }
@@ -100,7 +82,7 @@ userInputParameters<dim>::loadVariableAttributes(
           varInfo.is_scalar = false;
           if (varInfo.var_needed)
             {
-              varInfo.scalar_or_vector_index = vector_var_index;
+              varInfo.variable_index = vector_var_index;
               vector_var_index++;
             }
         }
@@ -112,10 +94,8 @@ userInputParameters<dim>::loadVariableAttributes(
   num_var_nonexplicit_RHS = 0;
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
-      if (variable_attributes.equation_dependency_parser.need_value_nonexplicit_RHS[i] or
-          variable_attributes.equation_dependency_parser
-            .need_gradient_nonexplicit_RHS[i] or
-          variable_attributes.equation_dependency_parser.need_hessian_nonexplicit_RHS[i])
+      if (!(variable_attributes.equation_dependency_parser.eval_flags_nonexplicit_RHS[i] &
+            dealii::EvaluationFlags::nothing))
         {
           num_var_nonexplicit_RHS++;
         }
@@ -127,34 +107,24 @@ userInputParameters<dim>::loadVariableAttributes(
     {
       variable_info varInfo;
 
-      varInfo.need_value =
-        variable_attributes.equation_dependency_parser.need_value_nonexplicit_RHS[i];
-      varInfo.need_gradient =
-        variable_attributes.equation_dependency_parser.need_gradient_nonexplicit_RHS[i];
-      varInfo.need_hessian =
-        variable_attributes.equation_dependency_parser.need_hessian_nonexplicit_RHS[i];
-      varInfo.value_residual = variable_attributes.equation_dependency_parser
-                                 .need_value_residual_nonexplicit_RHS[i];
-      varInfo.gradient_residual = variable_attributes.equation_dependency_parser
-                                    .need_gradient_residual_nonexplicit_RHS[i];
+      varInfo.evaluation_flags =
+        variable_attributes.equation_dependency_parser.eval_flags_nonexplicit_RHS[i];
+
+      varInfo.residual_flags = variable_attributes.equation_dependency_parser
+                                 .eval_flags_residual_nonexplicit_RHS[i];
 
       varInfo.global_var_index = i;
 
-      if (varInfo.need_value or varInfo.need_gradient or varInfo.need_hessian)
-        {
-          varInfo.var_needed = true;
-        }
-      else
-        {
-          varInfo.var_needed = false;
-        }
+      !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing)
+        ? varInfo.var_needed = true
+        : varInfo.var_needed = false;
 
       if (var_type[i] == SCALAR)
         {
           varInfo.is_scalar = true;
           if (varInfo.var_needed)
             {
-              varInfo.scalar_or_vector_index = scalar_var_index;
+              varInfo.variable_index = scalar_var_index;
               scalar_var_index++;
             }
         }
@@ -163,7 +133,7 @@ userInputParameters<dim>::loadVariableAttributes(
           varInfo.is_scalar = false;
           if (varInfo.var_needed)
             {
-              varInfo.scalar_or_vector_index = vector_var_index;
+              varInfo.variable_index = vector_var_index;
               vector_var_index++;
             }
         }
@@ -175,10 +145,8 @@ userInputParameters<dim>::loadVariableAttributes(
   num_var_LHS = 0;
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
-      if (variable_attributes.equation_dependency_parser.need_value_nonexplicit_LHS[i] or
-          variable_attributes.equation_dependency_parser
-            .need_gradient_nonexplicit_LHS[i] or
-          variable_attributes.equation_dependency_parser.need_hessian_nonexplicit_LHS[i])
+      if (!(variable_attributes.equation_dependency_parser.eval_flags_nonexplicit_LHS[i] &
+            dealii::EvaluationFlags::nothing))
         {
           num_var_LHS++;
         }
@@ -191,34 +159,24 @@ userInputParameters<dim>::loadVariableAttributes(
     {
       variable_info varInfo;
 
-      varInfo.need_value =
-        variable_attributes.equation_dependency_parser.need_value_nonexplicit_LHS[i];
-      varInfo.need_gradient =
-        variable_attributes.equation_dependency_parser.need_gradient_nonexplicit_LHS[i];
-      varInfo.need_hessian =
-        variable_attributes.equation_dependency_parser.need_hessian_nonexplicit_LHS[i];
-      varInfo.value_residual = variable_attributes.equation_dependency_parser
-                                 .need_value_residual_nonexplicit_LHS[i];
-      varInfo.gradient_residual = variable_attributes.equation_dependency_parser
-                                    .need_gradient_residual_nonexplicit_LHS[i];
+      varInfo.evaluation_flags =
+        variable_attributes.equation_dependency_parser.eval_flags_nonexplicit_LHS[i];
+
+      varInfo.residual_flags = variable_attributes.equation_dependency_parser
+                                 .eval_flags_residual_nonexplicit_LHS[i];
 
       varInfo.global_var_index = i;
 
-      if (varInfo.need_value or varInfo.need_gradient or varInfo.need_hessian)
-        {
-          varInfo.var_needed = true;
-        }
-      else
-        {
-          varInfo.var_needed = false;
-        }
+      !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing)
+        ? varInfo.var_needed = true
+        : varInfo.var_needed = false;
 
       if (var_type[i] == SCALAR)
         {
           varInfo.is_scalar = true;
           if (varInfo.var_needed)
             {
-              varInfo.scalar_or_vector_index = scalar_var_index;
+              varInfo.variable_index = scalar_var_index;
               scalar_var_index++;
             }
         }
@@ -227,7 +185,7 @@ userInputParameters<dim>::loadVariableAttributes(
           varInfo.is_scalar = false;
           if (varInfo.var_needed)
             {
-              varInfo.scalar_or_vector_index = vector_var_index;
+              varInfo.variable_index = vector_var_index;
               vector_var_index++;
             }
         }
@@ -242,36 +200,25 @@ userInputParameters<dim>::loadVariableAttributes(
     {
       variable_info varInfo;
 
-      varInfo.need_value = variable_attributes.equation_dependency_parser
-                             .need_value_change_nonexplicit_LHS[i];
-      varInfo.need_gradient = variable_attributes.equation_dependency_parser
-                                .need_gradient_change_nonexplicit_LHS[i];
-      varInfo.need_hessian = variable_attributes.equation_dependency_parser
-                               .need_hessian_change_nonexplicit_LHS[i];
+      varInfo.evaluation_flags = variable_attributes.equation_dependency_parser
+                                   .eval_flags_change_nonexplicit_LHS[i];
 
       // FOR NOW, TAKING THESE FROM THE VARIABLE ITSELF!!
-      varInfo.value_residual = variable_attributes.equation_dependency_parser
-                                 .need_value_residual_nonexplicit_LHS[i];
-      varInfo.gradient_residual = variable_attributes.equation_dependency_parser
-                                    .need_gradient_residual_nonexplicit_LHS[i];
+      varInfo.residual_flags = variable_attributes.equation_dependency_parser
+                                 .eval_flags_residual_nonexplicit_LHS[i];
 
       varInfo.global_var_index = i;
 
-      if (varInfo.need_value or varInfo.need_gradient or varInfo.need_hessian)
-        {
-          varInfo.var_needed = true;
-        }
-      else
-        {
-          varInfo.var_needed = false;
-        }
+      !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing)
+        ? varInfo.var_needed = true
+        : varInfo.var_needed = false;
 
       if (var_type[i] == SCALAR)
         {
           varInfo.is_scalar = true;
           if (varInfo.var_needed)
             {
-              varInfo.scalar_or_vector_index = scalar_var_index;
+              varInfo.variable_index = scalar_var_index;
               scalar_var_index++;
             }
         }
@@ -280,7 +227,7 @@ userInputParameters<dim>::loadVariableAttributes(
           varInfo.is_scalar = false;
           if (varInfo.var_needed)
             {
-              varInfo.scalar_or_vector_index = vector_var_index;
+              varInfo.variable_index = vector_var_index;
               vector_var_index++;
             }
         }
@@ -297,32 +244,21 @@ userInputParameters<dim>::loadVariableAttributes(
     {
       variable_info varInfo;
 
-      varInfo.need_value =
-        variable_attributes.equation_dependency_parser.pp_need_value[i];
-      varInfo.need_gradient =
-        variable_attributes.equation_dependency_parser.pp_need_gradient[i];
-      varInfo.need_hessian =
-        variable_attributes.equation_dependency_parser.pp_need_hessian[i];
+      varInfo.evaluation_flags =
+        variable_attributes.equation_dependency_parser.eval_flags_postprocess[i];
 
       varInfo.global_var_index = i;
 
-      if (variable_attributes.equation_dependency_parser.pp_need_value[i] or
-          variable_attributes.equation_dependency_parser.pp_need_gradient[i] or
-          variable_attributes.equation_dependency_parser.pp_need_hessian[i])
-        {
-          varInfo.var_needed = true;
-        }
-      else
-        {
-          varInfo.var_needed = false;
-        }
+      !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing)
+        ? varInfo.var_needed = true
+        : varInfo.var_needed = false;
 
       if (var_type[i] == SCALAR)
         {
           varInfo.is_scalar = true;
           if (varInfo.var_needed)
             {
-              varInfo.scalar_or_vector_index = scalar_var_index;
+              varInfo.variable_index = scalar_var_index;
               scalar_var_index++;
             }
         }
@@ -331,7 +267,7 @@ userInputParameters<dim>::loadVariableAttributes(
           varInfo.is_scalar = false;
           if (varInfo.var_needed)
             {
-              varInfo.scalar_or_vector_index = vector_var_index;
+              varInfo.variable_index = vector_var_index;
               vector_var_index++;
             }
         }
@@ -341,14 +277,8 @@ userInputParameters<dim>::loadVariableAttributes(
 
   // Now load the information for the post-processing variables
   // Parameters for postprocessing
-  if (pp_number_of_variables > 0)
-    {
-      postProcessingRequired = true;
-    }
-  else
-    {
-      postProcessingRequired = false;
-    }
+  pp_number_of_variables > 0 ? postProcessingRequired = true
+                             : postProcessingRequired = false;
 
   num_integrated_fields = 0;
   for (unsigned int i = 0; i < pp_number_of_variables; i++)
@@ -369,22 +299,20 @@ userInputParameters<dim>::loadVariableAttributes(
       variable_info varInfo;
       varInfo.var_needed = true;
 
-      varInfo.value_residual =
-        variable_attributes.equation_dependency_parser.pp_need_value_residual[i];
-      varInfo.gradient_residual =
-        variable_attributes.equation_dependency_parser.pp_need_gradient_residual[i];
+      varInfo.residual_flags =
+        variable_attributes.equation_dependency_parser.eval_flags_residual_postprocess[i];
 
       varInfo.global_var_index = i;
       if (pp_var_type[i] == SCALAR)
         {
-          varInfo.is_scalar              = true;
-          varInfo.scalar_or_vector_index = scalar_var_index;
+          varInfo.is_scalar      = true;
+          varInfo.variable_index = scalar_var_index;
           scalar_var_index++;
         }
       else
         {
-          varInfo.is_scalar              = false;
-          varInfo.scalar_or_vector_index = vector_var_index;
+          varInfo.is_scalar      = false;
+          varInfo.variable_index = vector_var_index;
           vector_var_index++;
         }
       pp_varInfoList.push_back(varInfo);
