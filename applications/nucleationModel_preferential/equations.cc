@@ -134,21 +134,18 @@ customPDE<dim, degree>::seedNucleus(
   dealii::VectorizedArray<double>                           &gamma) const
 {
   // Loop through all of the seeded nuclei
-  for (typename std::vector<nucleus<dim>>::const_iterator thisNucleus =
-         this->nuclei.begin();
-       thisNucleus != this->nuclei.end();
-       ++thisNucleus)
+  for (const auto &thisNucleus : this->nuclei)
     {
-      if (thisNucleus->seededTime + thisNucleus->seedingTime > this->currentTime)
+      if (thisNucleus.seededTime + thisNucleus.seedingTime > this->currentTime)
         {
           // Calculate the weighted distance function to the order parameter
           // freeze boundary (weighted_dist = 1.0 on that boundary)
           dealii::VectorizedArray<double> weighted_dist =
             this->weightedDistanceFromNucleusCenter(
-              thisNucleus->center,
-              userInputs.get_nucleus_freeze_semiaxes(thisNucleus->orderParameterIndex),
+              thisNucleus.center,
+              userInputs.get_nucleus_freeze_semiaxes(thisNucleus.orderParameterIndex),
               q_point_loc,
-              thisNucleus->orderParameterIndex);
+              thisNucleus.orderParameterIndex);
 
           for (unsigned i = 0; i < gamma.size(); i++)
             {
@@ -158,7 +155,7 @@ customPDE<dim, degree>::seedNucleus(
 
                   // Seed a nucleus if it was added to the list of nuclei this
                   // time step
-                  if (thisNucleus->seedingTimestep == this->currentIncrement)
+                  if (thisNucleus.seedingTimestep == this->currentIncrement)
                     {
                       // Find the weighted distance to the outer edge of the
                       // nucleus and use it to calculate the order parameter
@@ -169,15 +166,15 @@ customPDE<dim, degree>::seedNucleus(
                           q_point_loc_element(j) = q_point_loc(j)[i];
                         }
                       double r = this->weightedDistanceFromNucleusCenter(
-                        thisNucleus->center,
-                        userInputs.get_nucleus_semiaxes(thisNucleus->orderParameterIndex),
+                        thisNucleus.center,
+                        userInputs.get_nucleus_semiaxes(thisNucleus.orderParameterIndex),
                         q_point_loc_element,
-                        thisNucleus->orderParameterIndex);
+                        thisNucleus.orderParameterIndex);
 
                       double avg_semiaxis = 0.0;
                       for (unsigned int j = 0; j < dim; j++)
                         {
-                          avg_semiaxis += thisNucleus->semiaxes[j];
+                          avg_semiaxis += thisNucleus.semiaxes[j];
                         }
                       avg_semiaxis /= dim;
 

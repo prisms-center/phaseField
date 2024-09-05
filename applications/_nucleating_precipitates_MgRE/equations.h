@@ -281,22 +281,19 @@ customPDE<dim, degree>::seedNucleus(
   dealii::AlignedVector<dealii::VectorizedArray<double>> &source_terms,
   dealii::VectorizedArray<double>                        &gamma) const
 {
-  for (typename std::vector<nucleus<dim>>::const_iterator thisNucleus =
-         this->nuclei.begin();
-       thisNucleus != this->nuclei.end();
-       ++thisNucleus)
+  for (const auto &thisNucleus : this->nuclei)
     {
-      if (thisNucleus->seededTime + thisNucleus->seedingTime > this->currentTime)
+      if (thisNucleus.seededTime + thisNucleus.seedingTime > this->currentTime)
         {
           // Calculate the weighted distance function to the order parameter
           // freeze boundary (weighted_dist = 1.0 on that boundary)
           dealii::VectorizedArray<double> weighted_dist =
             this->weightedDistanceFromNucleusCenter(
-              thisNucleus->center,
-              userInputs.get_nucleus_freeze_semiaxes(thisNucleus->orderParameterIndex),
-              userInputs.get_nucleus_rotation_matrix(thisNucleus->orderParameterIndex),
+              thisNucleus.center,
+              userInputs.get_nucleus_freeze_semiaxes(thisNucleus.orderParameterIndex),
+              userInputs.get_nucleus_rotation_matrix(thisNucleus.orderParameterIndex),
               q_point_loc,
-              thisNucleus->orderParameterIndex);
+              thisNucleus.orderParameterIndex);
 
           for (unsigned i = 0; i < gamma.size(); i++)
             {
@@ -306,13 +303,13 @@ customPDE<dim, degree>::seedNucleus(
 
                   // Seed a nucleus if it was added to the list of nuclei this
                   // time step
-                  if (thisNucleus->seedingTimestep == this->currentIncrement)
+                  if (thisNucleus.seedingTimestep == this->currentIncrement)
                     {
                       // Set the rotation matrix for this nucleus (two possible
                       // per order parameter)
                       dealii::Tensor<2, dim, double> nucleus_rot_matrix;
                       nucleus_rot_matrix = userInputs.get_nucleus_rotation_matrix(
-                        thisNucleus->orderParameterIndex);
+                        thisNucleus.orderParameterIndex);
 
                       // Find the weighted distance to the outer edge of the
                       // nucleus and use it to calculate the order parameter
@@ -323,26 +320,26 @@ customPDE<dim, degree>::seedNucleus(
                           q_point_loc_element(j) = q_point_loc(j)[i];
                         }
                       double r = this->weightedDistanceFromNucleusCenter(
-                        thisNucleus->center,
-                        userInputs.get_nucleus_semiaxes(thisNucleus->orderParameterIndex),
+                        thisNucleus.center,
+                        userInputs.get_nucleus_semiaxes(thisNucleus.orderParameterIndex),
                         nucleus_rot_matrix,
                         q_point_loc_element,
-                        thisNucleus->orderParameterIndex);
+                        thisNucleus.orderParameterIndex);
 
                       double avg_semiaxis = 0.0;
                       for (unsigned int j = 0; j < dim; j++)
                         {
-                          avg_semiaxis += thisNucleus->semiaxes[j];
+                          avg_semiaxis += thisNucleus.semiaxes[j];
                         }
                       avg_semiaxis /= dim;
 
-                      if (thisNucleus->orderParameterIndex == 1)
+                      if (thisNucleus.orderParameterIndex == 1)
                         {
                           source_terms[0][i] =
                             0.5 *
                             (1.0 - std::tanh(avg_semiaxis * (r - 1.0) / interface_coeff));
                         }
-                      else if (thisNucleus->orderParameterIndex == 2)
+                      else if (thisNucleus.orderParameterIndex == 2)
                         {
                           source_terms[1][i] =
                             0.5 *

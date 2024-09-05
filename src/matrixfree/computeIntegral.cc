@@ -19,13 +19,9 @@ MatrixFreePDE<dim, degree>::computeIntegral(double                   &integrated
   // constraintsOtherSet[index]->distribute(*variableSet[index]);
   // variableSet[index]->update_ghost_values();
 
-  typename DoFHandler<dim>::active_cell_iterator cell = this->dofHandlersSet[0]
-                                                          ->begin_active(),
-                                                 endc = this->dofHandlersSet[0]->end();
-
   double value = 0.0;
 
-  for (; cell != endc; ++cell)
+  for (const auto &cell : dofHandlersSet[0]->active_cell_iterators())
     {
       if (cell->is_locally_owned())
         {

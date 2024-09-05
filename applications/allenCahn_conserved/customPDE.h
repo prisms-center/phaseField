@@ -242,14 +242,11 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                   //  applied, replace the ones that do with the Dirichlet value
                   //  This clears the residual where we want to apply Dirichlet
                   //  BCs, otherwise the solver sees a positive residual
-                  for (std::map<types::global_dof_index, double>::const_iterator it =
-                         this->valuesDirichletSet[fieldIndex]->begin();
-                       it != this->valuesDirichletSet[fieldIndex]->end();
-                       ++it)
+                  for (const auto &it : *this->valuesDirichletSet[fieldIndex])
                     {
-                      if (this->residualSet[fieldIndex]->in_local_range(it->first))
+                      if (this->residualSet[fieldIndex]->in_local_range(it.first))
                         {
-                          (*this->residualSet[fieldIndex])(it->first) = 0.0;
+                          (*this->residualSet[fieldIndex])(it.first) = 0.0;
                         }
                     }
 
@@ -341,16 +338,12 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
 
                               this->computeNonexplicitRHS();
 
-                              for (std::map<types::global_dof_index,
-                                            double>::const_iterator it =
-                                     this->valuesDirichletSet[fieldIndex]->begin();
-                                   it != this->valuesDirichletSet[fieldIndex]->end();
-                                   ++it)
+                              for (const auto &it : *this->valuesDirichletSet[fieldIndex])
                                 {
                                   if (this->residualSet[fieldIndex]->in_local_range(
-                                        it->first))
+                                        it.first))
                                     {
-                                      (*this->residualSet[fieldIndex])(it->first) = 0.0;
+                                      (*this->residualSet[fieldIndex])(it.first) = 0.0;
                                     }
                                 }
 
