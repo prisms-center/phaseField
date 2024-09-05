@@ -7,11 +7,10 @@ template <int dim, int degree>
 unsigned int
 MatrixFreePDE<dim, degree>::getFieldIndex(std::string _name)
 {
-  for (typename std::vector<Field<dim>>::iterator it = fields.begin(); it != fields.end();
-       ++it)
+  for (const auto &field : fields)
     {
-      if (it->name.compare(_name) == 0)
-        return it->index;
+      if (field.name.compare(_name) == 0)
+        return field.index;
     }
   pcout << "\nutilities.h: field '" << _name.c_str() << "' not initialized\n";
   exit(-1);
