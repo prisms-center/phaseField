@@ -205,9 +205,7 @@ customPDE<dim, degree>::makeTriangulation(
     }
 
   // Mark the boundaries
-  typename parallel::distributed::Triangulation<dim>::cell_iterator cell4 = tria.begin(),
-                                                                    endc4 = tria.end();
-  for (; cell4 != endc4; ++cell4)
+  for (const auto &cell4 : tria.active_cell_iterators())
     {
       // Mark all of the faces
       for (unsigned int face_number = 0; face_number < GeometryInfo<dim>::faces_per_cell;

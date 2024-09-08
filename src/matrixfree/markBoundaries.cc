@@ -10,9 +10,7 @@ void
 MatrixFreePDE<dim, degree>::markBoundaries(
   parallel::distributed::Triangulation<dim> &tria) const
 {
-  typename Triangulation<dim>::cell_iterator cell = tria.begin(), endc = tria.end();
-
-  for (; cell != endc; ++cell)
+  for (const auto &cell : tria.active_cell_iterators())
     {
       // Mark all of the faces
       for (unsigned int face_number = 0; face_number < GeometryInfo<dim>::faces_per_cell;

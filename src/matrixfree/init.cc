@@ -51,28 +51,27 @@ MatrixFreePDE<dim, degree>::init()
   // Setup system
   pcout << "initializing matrix free object\n";
   totalDOFs = 0;
-  for (typename std::vector<Field<dim>>::iterator it = fields.begin(); it != fields.end();
-       ++it)
+  for (auto &field : fields)
     {
-      currentFieldIndex = it->index;
+      currentFieldIndex = field.index;
 
       char buffer[100];
 
       // print to std::out
       std::string var_type;
-      if (it->pdetype == EXPLICIT_TIME_DEPENDENT)
+      if (field.pdetype == EXPLICIT_TIME_DEPENDENT)
         {
           var_type = "EXPLICIT_TIME_DEPENDENT";
         }
-      else if (it->pdetype == IMPLICIT_TIME_DEPENDENT)
+      else if (field.pdetype == IMPLICIT_TIME_DEPENDENT)
         {
           var_type = "IMPLICIT_TIME_DEPENDENT";
         }
-      else if (it->pdetype == TIME_INDEPENDENT)
+      else if (field.pdetype == TIME_INDEPENDENT)
         {
           var_type = "TIME_INDEPENDENT";
         }
-      else if (it->pdetype == AUXILIARY)
+      else if (field.pdetype == AUXILIARY)
         {
           var_type = "AUXILIARY";
         }
@@ -82,17 +81,17 @@ MatrixFreePDE<dim, degree>::init()
                "initializing finite element space P^%u for %9s:%6s field '%s'\n",
                degree,
                var_type.c_str(),
-               (it->type == SCALAR ? "SCALAR" : "VECTOR"),
-               it->name.c_str());
+               (field.type == SCALAR ? "SCALAR" : "VECTOR"),
+               field.name.c_str());
       pcout << buffer;
 
       // Check if any time dependent fields present
-      if (it->pdetype == EXPLICIT_TIME_DEPENDENT)
+      if (field.pdetype == EXPLICIT_TIME_DEPENDENT)
         {
           isTimeDependentBVP  = true;
           hasExplicitEquation = true;
         }
-      else if (it->pdetype == IMPLICIT_TIME_DEPENDENT)
+      else if (field.pdetype == IMPLICIT_TIME_DEPENDENT)
         {
           isTimeDependentBVP     = true;
           hasNonExplicitEquation = true;
@@ -101,11 +100,11 @@ MatrixFreePDE<dim, degree>::init()
                     << std::endl;
           abort();
         }
-      else if (it->pdetype == AUXILIARY)
+      else if (field.pdetype == AUXILIARY)
         {
           hasNonExplicitEquation = true;
         }
-      else if (it->pdetype == TIME_INDEPENDENT)
+      else if (field.pdetype == TIME_INDEPENDENT)
         {
           isEllipticBVP          = true;
           hasNonExplicitEquation = true;
@@ -114,11 +113,11 @@ MatrixFreePDE<dim, degree>::init()
       // create FESystem
       FESystem<dim> *fe;
 
-      if (it->type == SCALAR)
+      if (field.type == SCALAR)
         {
           fe = new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(degree + 1)), 1);
         }
-      else if (it->type == VECTOR)
+      else if (field.type == VECTOR)
         {
           fe = new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(degree + 1)), dim);
         }
@@ -184,16 +183,16 @@ MatrixFreePDE<dim, degree>::init()
             {
               if (userInputs.BC_list[i].var_BC_type[direction] == DIRICHLET)
                 {
-                  it->hasDirichletBCs = true;
+                  field.hasDirichletBCs = true;
                 }
               else if (userInputs.BC_list[i].var_BC_type[direction] ==
                        NON_UNIFORM_DIRICHLET)
                 {
-                  it->hasnonuniformDirichletBCs = true;
+                  field.hasnonuniformDirichletBCs = true;
                 }
               else if (userInputs.BC_list[i].var_BC_type[direction] == NEUMANN)
                 {
-                  it->hasNeumannBCs = true;
+                  field.hasNeumannBCs = true;
                 }
             }
         }
@@ -205,14 +204,14 @@ MatrixFreePDE<dim, degree>::init()
       constraintsOther->close();
 
       // Store Dirichlet BC DOF's
-      valuesDirichletSet[it->index]->clear();
+      valuesDirichletSet[field.index]->clear();
       for (types::global_dof_index i = 0; i < dof_handler->n_dofs(); i++)
         {
           if (locally_relevant_dofs->is_element(i))
             {
               if (constraintsDirichlet->is_constrained(i))
                 {
-                  (*valuesDirichletSet[it->index])[i] =
+                  (*valuesDirichletSet[field.index])[i] =
                     constraintsDirichlet->get_inhomogeneity(i);
                 }
             }
@@ -221,7 +220,7 @@ MatrixFreePDE<dim, degree>::init()
       snprintf(buffer,
                sizeof(buffer),
                "field '%2s' DOF : %u (Constraint DOF : %u)\n",
-               it->name.c_str(),
+               field.name.c_str(),
                dof_handler->n_dofs(),
                constraintsDirichlet->n_constraints());
       pcout << buffer;
