@@ -329,7 +329,7 @@ EquationDependencyParser::parseDependencyListLHS(
               change_flags[dependency_variable_index] |= dealii::EvaluationFlags::values;
               dependency_entry_assigned = true;
 
-              Assert(variable_index != dependency_variable_index,
+              Assert(variable_index == dependency_variable_index,
                      dealii::StandardExceptions::ExcMessage(
                        "PRISMS-PF Error: Dependency entry " + dependency +
                        " is not valid because the change in a variable can "
@@ -342,7 +342,7 @@ EquationDependencyParser::parseDependencyListLHS(
                 dealii::EvaluationFlags::gradients;
               dependency_entry_assigned = true;
 
-              Assert(variable_index != dependency_variable_index,
+              Assert(variable_index == dependency_variable_index,
                      dealii::StandardExceptions::ExcMessage(
                        "PRISMS-PF Error: Dependency entry " + dependency +
                        " is not valid because the change in a variable can "
@@ -355,7 +355,7 @@ EquationDependencyParser::parseDependencyListLHS(
                 dealii::EvaluationFlags::hessians;
               dependency_entry_assigned = true;
 
-              Assert(variable_index != dependency_variable_index,
+              Assert(variable_index == dependency_variable_index,
                      dealii::StandardExceptions::ExcMessage(
                        "PRISMS-PF Error: Dependency entry " + dependency +
                        " is not valid because the change in a variable can "
