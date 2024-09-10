@@ -12,7 +12,7 @@ public:
   }
 
   double
-  value(const dealii::Point<dim> &p, const unsigned int component = 0) const
+  value(const dealii::Point<dim> &p, const unsigned int component = 0) const override
   {
     double val;
     if (p[1] < 0.6 and p[0] > p[1] + 1.0e-10)

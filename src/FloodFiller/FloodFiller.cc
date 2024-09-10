@@ -188,7 +188,6 @@ FloodFiller<dim, degree>::createGlobalGrainSetList(
   std::vector<GrainSet<dim>> &grain_sets) const
 {
   int numProcs = dealii::Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
-  int thisProc = dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
 
   unsigned int num_grains_local = grain_sets.size();
 

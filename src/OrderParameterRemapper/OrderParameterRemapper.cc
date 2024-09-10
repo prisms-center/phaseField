@@ -67,7 +67,6 @@ OrderParameterRemapper<dim>::remap(
             {
               if (dof->is_locally_owned())
                 {
-                  unsigned int op_new = grain_representations.at(g).getOrderParameterId();
                   unsigned int op_old =
                     grain_representations.at(g).getOldOrderParameterId();
 
@@ -126,9 +125,6 @@ OrderParameterRemapper<dim>::remap_from_index_field(
       double transfer_buffer =
         std::max(0.0, grain_representations.at(g).getDistanceToNeighbor() / 2.0);
 
-      typename dealii::DoFHandler<dim>::active_cell_iterator di =
-        dof_handler.begin_active();
-
       // For now I have two loops, one where I copy the values from the old
       // order parameter to the new one and a second where I zero out the old
       // order parameter. This separation prevents writing zero-out values to
@@ -139,7 +135,6 @@ OrderParameterRemapper<dim>::remap_from_index_field(
           if (dof->is_locally_owned())
             {
               unsigned int op_new = grain_representations.at(g).getOrderParameterId();
-              unsigned int op_old = grain_representations.at(g).getOldOrderParameterId();
 
               // Check if the cell is within the simplified grain representation
               bool in_grain = true;

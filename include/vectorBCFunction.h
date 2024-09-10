@@ -18,11 +18,12 @@ class vectorBCFunction : public dealii::Function<dim, double>
 public:
   vectorBCFunction(const std::vector<double> BC_values);
   virtual void
-  vector_value(const dealii::Point<dim> &p, dealii::Vector<double> &values) const;
+  vector_value(const dealii::Point<dim> &p,
+               dealii::Vector<double>   &values) const override;
 
   virtual void
   vector_value_list(const std::vector<dealii::Point<dim>> &points,
-                    std::vector<dealii::Vector<double>>   &value_list) const;
+                    std::vector<dealii::Vector<double>>   &value_list) const override;
 
 private:
   const std::vector<double> BC_values;

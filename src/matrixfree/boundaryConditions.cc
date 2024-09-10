@@ -190,9 +190,10 @@ MatrixFreePDE<dim, degree>::applyDirichletBCs()
                 }
             }
 
-          // VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
-				//   direction, NonUniformDirichletBC<dim,degree>(currentFieldIndex,direction,currentTime,this), *(AffineConstraints<double>*) \
-				//   constraintsDirichletSet[currentFieldIndex],mask);
+          // VectorTools::interpolate_boundary_values
+          // (*dofHandlersSet[currentFieldIndex],direction,
+          // NonUniformDirichletBC<dim,degree>(currentFieldIndex,direction,currentTime,this),
+          // *(AffineConstraints<double>*)constraintsDirichletSet[currentFieldIndex],mask);
           VectorTools::interpolate_boundary_values(
             *dofHandlersSet[currentFieldIndex],
             direction,
@@ -368,10 +369,11 @@ MatrixFreePDE<dim, degree>::setRigidBodyModeConstraints(
                            component_num < rigidBodyModeComponents.size();
                            component_num++)
                         {
-                          unsigned int nodeID = cell->vertex_dof_index(i, component_num);
-                          // Temporarily disabling the addition of inhomogeneous
-                          // constraints constraints->add_line(nodeID);
-                          // constraints->set_inhomogeneity(nodeID,0.0);
+                          // unsigned int nodeID = cell->vertex_dof_index(i,
+                          // component_num);
+                          //  Temporarily disabling the addition of inhomogeneous
+                          //  constraints constraints->add_line(nodeID);
+                          //  constraints->set_inhomogeneity(nodeID,0.0);
                         }
                     }
                 }
