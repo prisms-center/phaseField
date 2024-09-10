@@ -267,9 +267,6 @@ protected:
   void
   applyBCs(unsigned int fieldIndex);
 
-  /*AMR methods*/
-  AdaptiveRefinement<dim, degree> AMR;
-
   /*Method to compute the right hand side (RHS) residual vectors*/
   void
   computeExplicitRHS();
@@ -480,6 +477,9 @@ protected:
   double       integrated_var;
   unsigned int integral_index;
   std::mutex   assembler_lock;
+
+  /*AMR methods*/
+  AdaptiveRefinement<dim, degree> AMR;
 };
 
 #endif
