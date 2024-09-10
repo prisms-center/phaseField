@@ -145,7 +145,7 @@ EquationDependencyParser::parseDependencyListRHS(
   for (const auto &dependency : split_dependency_list)
     {
       // Flag to make sure we have assigned a dependency entry
-      bool dependency_entry_assigned = false;
+      [[maybe_unused]] bool dependency_entry_assigned = false;
 
       // Loop through all known variable names [x, grad(x), and hess(x)] to see which ones
       // are on our dependency list. If we have two variables x and y this will loop twice
@@ -254,7 +254,7 @@ EquationDependencyParser::parseDependencyListLHS(
   for (const auto &dependency : split_dependency_list)
     {
       // Flag to make sure we have assigned a dependency entry
-      bool dependency_entry_assigned = false;
+      [[maybe_unused]] bool dependency_entry_assigned = false;
 
       // Loop through all known variable names [x, grad(x), and hess(x)] to see which ones
       // are on our dependency list. If we have two variables x and y this will loop twice
@@ -442,7 +442,7 @@ EquationDependencyParser::parseDependencyListPP(
   for (const auto &dependency : split_dependency_list)
     {
       // Flag to make sure we have assigned a dependency entry
-      bool dependency_entry_assigned = false;
+      [[maybe_unused]] bool dependency_entry_assigned = false;
 
       // Loop through all known variable names [x, grad(x), and hess(x)] to see which ones
       // are on our dependency list. If we have two variables x and y this will loop twice

@@ -147,8 +147,6 @@ SimplifiedGrainManipulator<dim>::reassignGrains(
   double                                           buffer_distance,
   std::vector<unsigned int>                        order_parameter_id_list)
 {
-  int thisProc = dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
-
   for (int cycle = order_parameter_id_list.size(); cycle >= 0; cycle--)
     {
       for (unsigned int g_base = 0; g_base < grain_representations.size(); g_base++)
