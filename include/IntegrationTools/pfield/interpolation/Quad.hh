@@ -178,11 +178,13 @@ namespace PRISMS
     typedef PFuncBase<std::vector<PRISMS::Coordinate<2>>, double>::size_type size_type;
 
     Quad()
+      : PFuncBase<std::vector<PRISMS::Coordinate<2>>, double>()
     {
       construct();
     }
 
     Quad(const Quad &RHS)
+      : PFuncBase<std::vector<PRISMS::Coordinate<2>>, double>(RHS)
     {
       construct();
     }

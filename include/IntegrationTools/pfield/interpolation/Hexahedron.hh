@@ -313,11 +313,13 @@ namespace PRISMS
 
   public:
     Hexahedron()
+      : PFuncBase<std::vector<PRISMS::Coordinate<3>>, double>()
     {
       construct();
     }
 
     Hexahedron(const Hexahedron &RHS)
+      : PFuncBase<std::vector<PRISMS::Coordinate<3>>, double>(RHS)
     {
       construct();
     }
