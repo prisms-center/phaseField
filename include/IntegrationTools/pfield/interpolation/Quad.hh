@@ -395,7 +395,7 @@ namespace PRISMS
     }
 
     PRISMS::Coordinate<2>
-    min() const
+    min() const override
     {
       PRISMS::Coordinate<2> coord = _var[1];
 
@@ -408,7 +408,7 @@ namespace PRISMS
     }
 
     PRISMS::Coordinate<2>
-    max() const
+    max() const override
     {
       PRISMS::Coordinate<2> coord = _var[1];
 
@@ -421,7 +421,7 @@ namespace PRISMS
     }
 
     bool
-    is_in_range(const Coordinate &coord)
+    is_in_range(const Coordinate &coord) override
     {
       _var[0][0] = coord[0];
       _var[0][1] = coord[1];
@@ -452,7 +452,7 @@ namespace PRISMS
     //   you are expected to KNOW that the coord is_in_range!!!
 
     double
-    operator()(const Coordinate &coord)
+    operator()(const Coordinate &coord) override
     {
       _var[0][0] = coord[0];
       _var[0][1] = coord[1];
@@ -460,7 +460,7 @@ namespace PRISMS
     }
 
     double
-    grad(const Coordinate &coord, size_type di)
+    grad(const Coordinate &coord, size_type di) override
     {
       _var[0][0] = coord[0];
       _var[0][1] = coord[1];
@@ -468,7 +468,7 @@ namespace PRISMS
     }
 
     double
-    hess(const Coordinate &coord, size_type di, size_type dj)
+    hess(const Coordinate &coord, size_type di, size_type dj) override
     {
       _var[0][0] = coord[0];
       _var[0][1] = coord[1];
