@@ -2,7 +2,7 @@
 #  CMake script for the PRISMS-PF applications:
 ##
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1.0)
 
 # Find deal.II installation
 FIND_PACKAGE(deal.II 9.2.0 REQUIRED

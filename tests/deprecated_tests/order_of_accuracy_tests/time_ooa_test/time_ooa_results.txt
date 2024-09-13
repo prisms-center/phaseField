@@ -1,3 +1,0 @@
-Results of standard temporal order of accuracy test: 
-From time step 1 to time step 2: 1.10208685907
-From time step 2 to time step 3: 1.22239242131

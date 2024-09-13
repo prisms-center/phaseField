@@ -1,4 +1,0 @@
-Results of 2D spatial order of accuracy test: 
-From coarse mesh to medium mesh: 1.914655385
-From from medium mesh to fine mesh: 2.0491712881
-From from fine mesh to very fine mesh: 2.30283753388

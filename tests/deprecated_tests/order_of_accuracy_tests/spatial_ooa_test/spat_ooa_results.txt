@@ -1,3 +1,0 @@
-Results of standard spatial order of accuracy test: 
-From coarse mesh to medium mesh: 1.93835063599
-From from medium mesh to fine mesh: 2.29732147951
