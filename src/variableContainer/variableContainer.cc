@@ -3,8 +3,8 @@
 template <int dim, int degree, typename T>
 variableContainer<dim, degree, T>::variableContainer(
   const dealii::MatrixFree<dim, double> &data,
-  std::vector<variable_info>             _varInfoList,
-  std::vector<variable_info>             _varChangeInfoList)
+  const std::vector<variable_info>      &_varInfoList,
+  const std::vector<variable_info>      &_varChangeInfoList)
   : varInfoList(std::move(_varInfoList))
   , varChangeInfoList(std::move(_varChangeInfoList))
   , num_var(varInfoList.size())
@@ -16,14 +16,16 @@ variableContainer<dim, degree, T>::variableContainer(
 
       if (var_info.var_needed)
         {
+          const unsigned int var_index = var_info.variable_index;
+
           if (var_info.is_scalar)
             {
-              scalar_vars_map.emplace(var_info.variable_index,
+              scalar_vars_map.emplace(var_index,
                                       std::make_unique<scalar_FEEval>(data, i));
             }
           else
             {
-              vector_vars_map.emplace(var_info.variable_index,
+              vector_vars_map.emplace(var_index,
                                       std::make_unique<vector_FEEval>(data, i));
             }
         }
@@ -47,7 +49,7 @@ variableContainer<dim, degree, T>::variableContainer(
 template <int dim, int degree, typename T>
 variableContainer<dim, degree, T>::variableContainer(
   const dealii::MatrixFree<dim, double> &data,
-  std::vector<variable_info>             _varInfoList)
+  const std::vector<variable_info>      &_varInfoList)
   : varInfoList(std::move(_varInfoList))
   , num_var(varInfoList.size())
 {
@@ -55,18 +57,20 @@ variableContainer<dim, degree, T>::variableContainer(
     {
       const auto &var_info = varInfoList[i];
 
-      if (var_info.var_needed)
+      if (!var_info.var_needed)
         {
-          if (var_info.is_scalar)
-            {
-              scalar_vars_map.emplace(var_info.variable_index,
-                                      std::make_unique<scalar_FEEval>(data, i));
-            }
-          else
-            {
-              vector_vars_map.emplace(var_info.variable_index,
-                                      std::make_unique<vector_FEEval>(data, i));
-            }
+          continue;
+        }
+
+      const unsigned int var_index = var_info.variable_index;
+
+      if (var_info.is_scalar)
+        {
+          scalar_vars_map.emplace(var_index, std::make_unique<scalar_FEEval>(data, i));
+        }
+      else
+        {
+          vector_vars_map.emplace(var_index, std::make_unique<vector_FEEval>(data, i));
         }
     }
 }
@@ -76,8 +80,8 @@ variableContainer<dim, degree, T>::variableContainer(
 template <int dim, int degree, typename T>
 variableContainer<dim, degree, T>::variableContainer(
   const dealii::MatrixFree<dim, double> &data,
-  std::vector<variable_info>             _varInfoList,
-  unsigned int                           fixed_index)
+  const std::vector<variable_info>      &_varInfoList,
+  const unsigned int                    &fixed_index)
   : varInfoList(std::move(_varInfoList))
   , num_var(varInfoList.size())
 {
@@ -85,67 +89,81 @@ variableContainer<dim, degree, T>::variableContainer(
     {
       const auto &var_info = varInfoList[i];
 
-      if (var_info.var_needed)
+      if (!var_info.var_needed)
         {
-          if (var_info.is_scalar)
-            {
-              scalar_vars_map.emplace(var_info.variable_index,
-                                      std::make_unique<scalar_FEEval>(data, fixed_index));
-            }
-          else
-            {
-              vector_vars_map.emplace(var_info.variable_index,
-                                      std::make_unique<vector_FEEval>(data, fixed_index));
-            }
+          continue;
+        }
+
+      const unsigned int var_index = var_info.variable_index;
+
+      if (var_info.is_scalar)
+        {
+          scalar_vars_map.emplace(var_index,
+                                  std::make_unique<scalar_FEEval>(data, fixed_index));
+        }
+      else
+        {
+          vector_vars_map.emplace(var_index,
+                                  std::make_unique<vector_FEEval>(data, fixed_index));
         }
     }
 }
 
 template <int dim, int degree, typename T>
 unsigned int
-variableContainer<dim, degree, T>::get_num_q_points()
+variableContainer<dim, degree, T>::get_num_q_points() const
 {
   if (!scalar_vars_map.empty())
     {
-      auto it = scalar_vars_map.begin();
-      return it->second->n_q_points;
+      return scalar_vars_map.begin()->second->n_q_points;
     }
   else if (!vector_vars_map.empty())
     {
-      auto it = vector_vars_map.begin();
-      return it->second->n_q_points;
+      return vector_vars_map.begin()->second->n_q_points;
     }
-  else if (scalar_change_in_vars.size() > 0)
+  else if (!scalar_change_in_vars.empty())
     {
       return scalar_change_in_vars[0].n_q_points;
     }
-  else
+  else if (!vector_change_in_vars.empty())
     {
       return vector_change_in_vars[0].n_q_points;
+    }
+  else
+    {
+      AssertThrow(false,
+                  dealii::ExcMessage(
+                    "PRISMS-PF Error: When trying to access the number of quadrature "
+                    "points, all FEEvaluation object containers were empty."));
     }
 }
 
 template <int dim, int degree, typename T>
 dealii::Point<dim, T>
-variableContainer<dim, degree, T>::get_q_point_location()
+variableContainer<dim, degree, T>::get_q_point_location() const
 {
   if (!scalar_vars_map.empty())
     {
-      auto it = scalar_vars_map.begin();
-      return it->second->quadrature_point(q_point);
+      return scalar_vars_map.begin()->second->quadrature_point(q_point);
     }
   else if (!vector_vars_map.empty())
     {
-      auto it = vector_vars_map.begin();
-      return it->second->quadrature_point(q_point);
+      return vector_vars_map.begin()->second->quadrature_point(q_point);
     }
-  else if (scalar_change_in_vars.size() > 0)
+  else if (!scalar_change_in_vars.empty())
     {
       return scalar_change_in_vars[0].quadrature_point(q_point);
     }
-  else
+  else if (!vector_change_in_vars.empty())
     {
       return vector_change_in_vars[0].quadrature_point(q_point);
+    }
+  else
+    {
+      AssertThrow(false,
+                  dealii::ExcMessage(
+                    "PRISMS-PF Error: When trying to access the quadrature point "
+                    "location, all FEEvaluation object containers were empty."));
     }
 }
 
@@ -156,22 +174,28 @@ variableContainer<dim, degree, T>::reinit_and_eval(const std::vector<vectorType 
 {
   for (unsigned int i = 0; i < num_var; i++)
     {
-      if (varInfoList[i].var_needed)
-        {
-          unsigned int var_index = varInfoList[i].variable_index;
+      const auto &var_info = varInfoList[i];
 
-          if (varInfoList[i].is_scalar)
-            {
-              scalar_vars_map[var_index]->reinit(cell);
-              scalar_vars_map[var_index]->read_dof_values(*src[i]);
-              scalar_vars_map[var_index]->evaluate(varInfoList[i].evaluation_flags);
-            }
-          else
-            {
-              vector_vars_map[var_index]->reinit(cell);
-              vector_vars_map[var_index]->read_dof_values(*src[i]);
-              vector_vars_map[var_index]->evaluate(varInfoList[i].evaluation_flags);
-            }
+      if (!var_info.var_needed)
+        {
+          continue;
+        }
+
+      const unsigned int var_index = var_info.variable_index;
+
+      if (var_info.is_scalar)
+        {
+          auto *scalar_FEEval_ptr = scalar_vars_map[var_index].get();
+          scalar_FEEval_ptr->reinit(cell);
+          scalar_FEEval_ptr->read_dof_values(*src[i]);
+          scalar_FEEval_ptr->evaluate(var_info.evaluation_flags);
+        }
+      else
+        {
+          auto *vector_FEEval_ptr = vector_vars_map[var_index].get();
+          vector_FEEval_ptr->reinit(cell);
+          vector_FEEval_ptr->read_dof_values(*src[i]);
+          vector_FEEval_ptr->evaluate(var_info.evaluation_flags);
         }
     }
 }
@@ -209,16 +233,22 @@ variableContainer<dim, degree, T>::reinit(unsigned int cell)
 {
   for (unsigned int i = 0; i < num_var; i++)
     {
-      if (varInfoList[i].var_needed)
+      const auto &var_info = varInfoList[i];
+
+      if (!var_info.var_needed)
         {
-          if (varInfoList[i].is_scalar)
-            {
-              scalar_vars_map[varInfoList[i].variable_index]->reinit(cell);
-            }
-          else
-            {
-              vector_vars_map[varInfoList[i].variable_index]->reinit(cell);
-            }
+          continue;
+        }
+
+      const unsigned int var_index = var_info.variable_index;
+
+      if (var_info.is_scalar)
+        {
+          scalar_vars_map[var_index]->reinit(cell);
+        }
+      else
+        {
+          vector_vars_map[var_index]->reinit(cell);
         }
     }
 }
@@ -230,22 +260,26 @@ variableContainer<dim, degree, T>::integrate_and_distribute(
 {
   for (unsigned int i = 0; i < num_var; i++)
     {
-      if (!(varInfoList[i].residual_flags & dealii::EvaluationFlags::nothing))
+      const auto &var_info = varInfoList[i];
+
+      if (var_info.residual_flags & dealii::EvaluationFlags::nothing)
         {
-          if (varInfoList[i].is_scalar)
-            {
-              scalar_vars_map[varInfoList[i].variable_index]->integrate(
-                varInfoList[i].residual_flags);
-              scalar_vars_map[varInfoList[i].variable_index]->distribute_local_to_global(
-                *dst[i]);
-            }
-          else
-            {
-              vector_vars_map[varInfoList[i].variable_index]->integrate(
-                varInfoList[i].residual_flags);
-              vector_vars_map[varInfoList[i].variable_index]->distribute_local_to_global(
-                *dst[i]);
-            }
+          continue;
+        }
+
+      const unsigned int var_index = var_info.variable_index;
+
+      if (var_info.is_scalar)
+        {
+          auto *scalar_FEEval_ptr = scalar_vars_map[var_index].get();
+          scalar_FEEval_ptr->integrate(var_info.residual_flags);
+          scalar_FEEval_ptr->distribute_local_to_global(*dst[i]);
+        }
+      else
+        {
+          auto *vector_FEEval_ptr = vector_vars_map[var_index].get();
+          vector_FEEval_ptr->integrate(var_info.residual_flags);
+          vector_FEEval_ptr->distribute_local_to_global(*dst[i]);
         }
     }
 }

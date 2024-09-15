@@ -22,15 +22,16 @@ public:
 
   // Standard contructor, used for most situations
   variableContainer(const dealii::MatrixFree<dim, double> &data,
-                    std::vector<variable_info>             _varInfoList,
-                    std::vector<variable_info>             _varChangeInfoList);
+                    const std::vector<variable_info>      &_varInfoList,
+                    const std::vector<variable_info>      &_varChangeInfoList);
+
   variableContainer(const dealii::MatrixFree<dim, double> &data,
-                    std::vector<variable_info>             _varInfoList);
+                    const std::vector<variable_info>      &_varInfoList);
   // Nonstandard constructor, used when only one index of "data" should be used,
   // use with care!
   variableContainer(const dealii::MatrixFree<dim, double> &data,
-                    std::vector<variable_info>             _varInfoList,
-                    unsigned int                           fixed_index);
+                    const std::vector<variable_info>      &_varInfoList,
+                    const unsigned int                    &fixed_index);
 
   // Methods to get the value/grad/hess in the residual method (this is how the
   // user gets these values in equations.h)
@@ -109,10 +110,12 @@ public:
   // The quadrature point index, a method to get the number of quadrature points
   // per cell, and a method to get the xyz coordinates for the quadrature point
   unsigned int q_point;
+
   unsigned int
-  get_num_q_points();
+  get_num_q_points() const;
+
   dealii::Point<dim, T>
-  get_q_point_location();
+  get_q_point_location() const;
 
 private:
   // Vectors of the actual FEEvaluation objects for each active variable, split
