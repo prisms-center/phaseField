@@ -3,10 +3,13 @@
 #ifndef VARIBLECONTAINER_H
 #define VARIBLECONTAINER_H
 
+#include <deal.II/base/exceptions.h>
 #include <deal.II/lac/vector.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
 #include <deal.II/matrix_free/fe_evaluation.h>
 #include <deal.II/matrix_free/matrix_free.h>
+
+#include <boost/unordered_map.hpp>
 
 #include "userInputParameters.h"
 
@@ -90,11 +93,6 @@ public:
   reinit_and_eval_change_in_solution(const vectorType &src,
                                      unsigned int      cell,
                                      unsigned int      var_being_solved);
-  void
-  reinit_and_eval_LHS(const vectorType               &src,
-                      const std::vector<vectorType *> solutionSet,
-                      unsigned int                    cell,
-                      unsigned int                    var_being_solved);
 
   // Only initialize the FEEvaluation object for each variable (used for
   // post-processing)
@@ -117,23 +115,24 @@ public:
   get_q_point_location();
 
 private:
-  // The number of variables
-  unsigned int num_var;
-
   // Vectors of the actual FEEvaluation objects for each active variable, split
   // into scalar variables and vector variables for type reasons
-  std::vector<dealii::FEEvaluation<dim, degree, degree + 1, 1, double>>   scalar_vars;
-  std::vector<dealii::FEEvaluation<dim, degree, degree + 1, dim, double>> vector_vars;
+  using scalar_FEEval = dealii::FEEvaluation<dim, degree, degree + 1, 1, double>;
+  using vector_FEEval = dealii::FEEvaluation<dim, degree, degree + 1, dim, double>;
 
-  std::vector<dealii::FEEvaluation<dim, degree, degree + 1, 1, double>>
-    scalar_change_in_vars;
-  std::vector<dealii::FEEvaluation<dim, degree, degree + 1, dim, double>>
-    vector_change_in_vars;
+  boost::unordered_map<unsigned int, std::unique_ptr<scalar_FEEval>> scalar_vars_map;
+  boost::unordered_map<unsigned int, std::unique_ptr<vector_FEEval>> vector_vars_map;
+
+  std::vector<scalar_FEEval> scalar_change_in_vars;
+  std::vector<vector_FEEval> vector_change_in_vars;
 
   // Object containing some information about each variable (indices, whether
   // the val/grad/hess is needed, etc)
   std::vector<variable_info> varInfoList;
   std::vector<variable_info> varChangeInfoList;
+
+  // The number of variables
+  unsigned int num_var;
 };
 
 #endif
