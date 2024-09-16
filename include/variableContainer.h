@@ -126,8 +126,10 @@ private:
   boost::unordered_map<unsigned int, std::unique_ptr<scalar_FEEval>> scalar_vars_map;
   boost::unordered_map<unsigned int, std::unique_ptr<vector_FEEval>> vector_vars_map;
 
-  std::vector<scalar_FEEval> scalar_change_in_vars;
-  std::vector<vector_FEEval> vector_change_in_vars;
+  boost::unordered_map<unsigned int, std::unique_ptr<scalar_FEEval>>
+    scalar_change_in_vars_map;
+  boost::unordered_map<unsigned int, std::unique_ptr<vector_FEEval>>
+    vector_change_in_vars_map;
 
   // Object containing some information about each variable (indices, whether
   // the val/grad/hess is needed, etc)
