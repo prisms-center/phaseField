@@ -34,7 +34,6 @@ public:
 struct variable_info
 {
   bool                                     is_scalar;
-  unsigned int                             variable_index;
   unsigned int                             global_var_index;
   dealii::EvaluationFlags::EvaluationFlags evaluation_flags;
   dealii::EvaluationFlags::EvaluationFlags residual_flags;
