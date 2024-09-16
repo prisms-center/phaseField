@@ -41,8 +41,9 @@ variableAttributeLoader::loadVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::explicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const
+  [[maybe_unused]] variableContainer<dim, degree, dealii::VectorizedArray<double>>
+                                                                      &variable_list,
+  [[maybe_unused]] dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
@@ -78,8 +79,9 @@ customPDE<dim, degree>::explicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::nonExplicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const
+  [[maybe_unused]] variableContainer<dim, degree, dealii::VectorizedArray<double>>
+                                                                      &variable_list,
+  [[maybe_unused]] dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
 {}
 
 // =============================================================================================
@@ -100,6 +102,7 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::equationLHS(
-  [[maybe_unused]] variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const
+  [[maybe_unused]] variableContainer<dim, degree, dealii::VectorizedArray<double>>
+                                                                      &variable_list,
+  [[maybe_unused]] dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
 {}
