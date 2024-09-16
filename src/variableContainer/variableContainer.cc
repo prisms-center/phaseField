@@ -16,7 +16,7 @@ variableContainer<dim, degree, T>::variableContainer(
 
       if (var_info.var_needed)
         {
-          const unsigned int var_index = var_info.variable_index;
+          const unsigned int var_index = var_info.global_var_index;
 
           if (var_info.is_scalar)
             {
@@ -64,7 +64,7 @@ variableContainer<dim, degree, T>::variableContainer(
           continue;
         }
 
-      const unsigned int var_index = var_info.variable_index;
+      const unsigned int var_index = var_info.global_var_index;
 
       if (var_info.is_scalar)
         {
@@ -96,7 +96,7 @@ variableContainer<dim, degree, T>::variableContainer(
           continue;
         }
 
-      const unsigned int var_index = var_info.variable_index;
+      const unsigned int var_index = var_info.global_var_index;
 
       if (var_info.is_scalar)
         {
@@ -183,7 +183,7 @@ variableContainer<dim, degree, T>::reinit_and_eval(const std::vector<vectorType 
           continue;
         }
 
-      const unsigned int var_index = var_info.variable_index;
+      const unsigned int var_index = var_info.global_var_index;
 
       if (var_info.is_scalar)
         {
@@ -242,7 +242,7 @@ variableContainer<dim, degree, T>::reinit(unsigned int cell)
           continue;
         }
 
-      const unsigned int var_index = var_info.variable_index;
+      const unsigned int var_index = var_info.global_var_index;
 
       if (var_info.is_scalar)
         {
@@ -269,7 +269,7 @@ variableContainer<dim, degree, T>::integrate_and_distribute(
           continue;
         }
 
-      const unsigned int var_index = var_info.variable_index;
+      const unsigned int var_index = var_info.global_var_index;
 
       if (var_info.is_scalar)
         {
@@ -317,8 +317,7 @@ variableContainer<dim, degree, T>::get_scalar_value(
   if (varInfoList[global_variable_index].evaluation_flags &
       dealii::EvaluationFlags::values)
     {
-      return scalar_vars_map.at(varInfoList[global_variable_index].variable_index)
-        ->get_value(q_point);
+      return scalar_vars_map.at(global_variable_index)->get_value(q_point);
     }
   else
     {
@@ -338,8 +337,7 @@ variableContainer<dim, degree, T>::get_scalar_gradient(
   if (varInfoList[global_variable_index].evaluation_flags &
       dealii::EvaluationFlags::gradients)
     {
-      return scalar_vars_map.at(varInfoList[global_variable_index].variable_index)
-        ->get_gradient(q_point);
+      return scalar_vars_map.at(global_variable_index)->get_gradient(q_point);
     }
   else
     {
@@ -359,8 +357,7 @@ variableContainer<dim, degree, T>::get_scalar_hessian(
   if (varInfoList[global_variable_index].evaluation_flags &
       dealii::EvaluationFlags::hessians)
     {
-      return scalar_vars_map.at(varInfoList[global_variable_index].variable_index)
-        ->get_hessian(q_point);
+      return scalar_vars_map.at(global_variable_index)->get_hessian(q_point);
     }
   else
     {
@@ -380,8 +377,7 @@ variableContainer<dim, degree, T>::get_vector_value(
   if (varInfoList[global_variable_index].evaluation_flags &
       dealii::EvaluationFlags::values)
     {
-      return vector_vars_map.at(varInfoList[global_variable_index].variable_index)
-        ->get_value(q_point);
+      return vector_vars_map.at(global_variable_index)->get_value(q_point);
     }
   else
     {
@@ -401,8 +397,7 @@ variableContainer<dim, degree, T>::get_vector_gradient(
   if (varInfoList[global_variable_index].evaluation_flags &
       dealii::EvaluationFlags::gradients)
     {
-      return vector_vars_map.at(varInfoList[global_variable_index].variable_index)
-        ->get_gradient(q_point);
+      return vector_vars_map.at(global_variable_index)->get_gradient(q_point);
     }
   else
     {
@@ -422,8 +417,7 @@ variableContainer<dim, degree, T>::get_vector_hessian(
   if (varInfoList[global_variable_index].evaluation_flags &
       dealii::EvaluationFlags::hessians)
     {
-      return vector_vars_map.at(varInfoList[global_variable_index].variable_index)
-        ->get_hessian(q_point);
+      return vector_vars_map.at(global_variable_index)->get_hessian(q_point);
     }
   else
     {
@@ -564,8 +558,7 @@ variableContainer<dim, degree, T>::set_scalar_value_term_RHS(
   unsigned int global_variable_index,
   T            val)
 {
-  scalar_vars_map[varInfoList[global_variable_index].variable_index]
-    ->submit_value(val, q_point);
+  scalar_vars_map[global_variable_index]->submit_value(val, q_point);
 }
 
 template <int dim, int degree, typename T>
@@ -574,8 +567,7 @@ variableContainer<dim, degree, T>::set_scalar_gradient_term_RHS(
   unsigned int              global_variable_index,
   dealii::Tensor<1, dim, T> grad)
 {
-  scalar_vars_map[varInfoList[global_variable_index].variable_index]
-    ->submit_gradient(grad, q_point);
+  scalar_vars_map[global_variable_index]->submit_gradient(grad, q_point);
 }
 
 template <int dim, int degree, typename T>
@@ -584,8 +576,7 @@ variableContainer<dim, degree, T>::set_vector_value_term_RHS(
   unsigned int              global_variable_index,
   dealii::Tensor<1, dim, T> val)
 {
-  vector_vars_map[varInfoList[global_variable_index].variable_index]
-    ->submit_value(val, q_point);
+  vector_vars_map[global_variable_index]->submit_value(val, q_point);
 }
 
 template <int dim, int degree, typename T>
@@ -594,8 +585,7 @@ variableContainer<dim, degree, T>::set_vector_gradient_term_RHS(
   unsigned int              global_variable_index,
   dealii::Tensor<2, dim, T> grad)
 {
-  vector_vars_map[varInfoList[global_variable_index].variable_index]
-    ->submit_gradient(grad, q_point);
+  vector_vars_map[global_variable_index]->submit_gradient(grad, q_point);
 }
 
 template <int dim, int degree, typename T>

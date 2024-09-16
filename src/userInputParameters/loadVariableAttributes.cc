@@ -50,8 +50,6 @@ userInputParameters<dim>::loadVariableAttributes(
         }
     }
   varInfoListExplicitRHS.reserve(num_var_explicit_RHS);
-  unsigned int scalar_var_index = 0;
-  unsigned int vector_var_index = 0;
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
       variable_info varInfo;
@@ -64,28 +62,9 @@ userInputParameters<dim>::loadVariableAttributes(
 
       varInfo.global_var_index = i;
 
-      !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing)
-        ? varInfo.var_needed = true
-        : varInfo.var_needed = false;
+      varInfo.var_needed = !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
 
-      if (var_type[i] == SCALAR)
-        {
-          varInfo.is_scalar = true;
-          if (varInfo.var_needed)
-            {
-              varInfo.variable_index = scalar_var_index;
-              scalar_var_index++;
-            }
-        }
-      else
-        {
-          varInfo.is_scalar = false;
-          if (varInfo.var_needed)
-            {
-              varInfo.variable_index = vector_var_index;
-              vector_var_index++;
-            }
-        }
+      varInfo.is_scalar = var_type[i] == SCALAR;
 
       varInfoListExplicitRHS.push_back(varInfo);
     }
@@ -101,8 +80,6 @@ userInputParameters<dim>::loadVariableAttributes(
         }
     }
   varInfoListNonexplicitRHS.reserve(num_var_nonexplicit_RHS);
-  scalar_var_index = 0;
-  vector_var_index = 0;
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
       variable_info varInfo;
@@ -115,28 +92,9 @@ userInputParameters<dim>::loadVariableAttributes(
 
       varInfo.global_var_index = i;
 
-      !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing)
-        ? varInfo.var_needed = true
-        : varInfo.var_needed = false;
+      varInfo.var_needed = !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
 
-      if (var_type[i] == SCALAR)
-        {
-          varInfo.is_scalar = true;
-          if (varInfo.var_needed)
-            {
-              varInfo.variable_index = scalar_var_index;
-              scalar_var_index++;
-            }
-        }
-      else
-        {
-          varInfo.is_scalar = false;
-          if (varInfo.var_needed)
-            {
-              varInfo.variable_index = vector_var_index;
-              vector_var_index++;
-            }
-        }
+      varInfo.is_scalar = var_type[i] == SCALAR;
 
       varInfoListNonexplicitRHS.push_back(varInfo);
     }
@@ -153,8 +111,6 @@ userInputParameters<dim>::loadVariableAttributes(
     }
 
   varInfoListLHS.reserve(num_var_LHS);
-  scalar_var_index = 0;
-  vector_var_index = 0;
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
       variable_info varInfo;
@@ -167,35 +123,14 @@ userInputParameters<dim>::loadVariableAttributes(
 
       varInfo.global_var_index = i;
 
-      !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing)
-        ? varInfo.var_needed = true
-        : varInfo.var_needed = false;
+      varInfo.var_needed = !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
 
-      if (var_type[i] == SCALAR)
-        {
-          varInfo.is_scalar = true;
-          if (varInfo.var_needed)
-            {
-              varInfo.variable_index = scalar_var_index;
-              scalar_var_index++;
-            }
-        }
-      else
-        {
-          varInfo.is_scalar = false;
-          if (varInfo.var_needed)
-            {
-              varInfo.variable_index = vector_var_index;
-              vector_var_index++;
-            }
-        }
+      varInfo.is_scalar = var_type[i] == SCALAR;
 
       varInfoListLHS.push_back(varInfo);
     }
 
   varChangeInfoListLHS.reserve(num_var_LHS);
-  scalar_var_index = 0;
-  vector_var_index = 0;
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
       variable_info varInfo;
@@ -209,28 +144,9 @@ userInputParameters<dim>::loadVariableAttributes(
 
       varInfo.global_var_index = i;
 
-      !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing)
-        ? varInfo.var_needed = true
-        : varInfo.var_needed = false;
+      varInfo.var_needed = !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
 
-      if (var_type[i] == SCALAR)
-        {
-          varInfo.is_scalar = true;
-          if (varInfo.var_needed)
-            {
-              varInfo.variable_index = scalar_var_index;
-              scalar_var_index++;
-            }
-        }
-      else
-        {
-          varInfo.is_scalar = false;
-          if (varInfo.var_needed)
-            {
-              varInfo.variable_index = vector_var_index;
-              vector_var_index++;
-            }
-        }
+      varInfo.is_scalar = var_type[i] == SCALAR;
 
       varChangeInfoListLHS.push_back(varInfo);
     }
@@ -238,8 +154,6 @@ userInputParameters<dim>::loadVariableAttributes(
   // Load variable information for postprocessing
   // First, the info list for the base field variables
   pp_baseVarInfoList.reserve(number_of_variables);
-  scalar_var_index = 0;
-  vector_var_index = 0;
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
       variable_info varInfo;
@@ -249,28 +163,9 @@ userInputParameters<dim>::loadVariableAttributes(
 
       varInfo.global_var_index = i;
 
-      !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing)
-        ? varInfo.var_needed = true
-        : varInfo.var_needed = false;
+      varInfo.var_needed = !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
 
-      if (var_type[i] == SCALAR)
-        {
-          varInfo.is_scalar = true;
-          if (varInfo.var_needed)
-            {
-              varInfo.variable_index = scalar_var_index;
-              scalar_var_index++;
-            }
-        }
-      else
-        {
-          varInfo.is_scalar = false;
-          if (varInfo.var_needed)
-            {
-              varInfo.variable_index = vector_var_index;
-              vector_var_index++;
-            }
-        }
+      varInfo.is_scalar = var_type[i] == SCALAR;
 
       pp_baseVarInfoList.push_back(varInfo);
     }
@@ -292,8 +187,6 @@ userInputParameters<dim>::loadVariableAttributes(
 
   // The info list for the postprocessing field variables
   pp_varInfoList.reserve(pp_number_of_variables);
-  scalar_var_index = 0;
-  vector_var_index = 0;
   for (unsigned int i = 0; i < pp_number_of_variables; i++)
     {
       variable_info varInfo;
@@ -303,18 +196,9 @@ userInputParameters<dim>::loadVariableAttributes(
         variable_attributes.equation_dependency_parser.eval_flags_residual_postprocess[i];
 
       varInfo.global_var_index = i;
-      if (pp_var_type[i] == SCALAR)
-        {
-          varInfo.is_scalar      = true;
-          varInfo.variable_index = scalar_var_index;
-          scalar_var_index++;
-        }
-      else
-        {
-          varInfo.is_scalar      = false;
-          varInfo.variable_index = vector_var_index;
-          vector_var_index++;
-        }
+
+      varInfo.is_scalar = pp_var_type[i] == SCALAR;
+
       pp_varInfoList.push_back(varInfo);
     }
 }
