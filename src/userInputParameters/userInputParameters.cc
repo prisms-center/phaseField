@@ -597,6 +597,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
     }
 
   load_grain_structure          = parameter_handler.get_bool("Load grain structure");
+  load_unstructured_grid        = parameter_handler.get_bool("Load as unstructured grid");
   grain_structure_filename      = parameter_handler.get("Grain structure filename");
   grain_structure_variable_name = parameter_handler.get("Grain structure variable name");
   num_grain_smoothing_cycles    = parameter_handler.get_integer(
