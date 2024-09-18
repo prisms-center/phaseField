@@ -89,7 +89,12 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
       std::string filename = userInputs.grain_structure_filename;
       filename += ".vtk";
 
-      body.read_vtk(filename);
+      if (userInputs.load_unstructured_grid){
+        body.read_vtk(filename);
+         } else {
+         body.read_RL_vtk(filename);     
+         }
+         
       ScalarField &id_field =
         body.find_scalar_field(userInputs.grain_structure_variable_name);
 
@@ -357,7 +362,11 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
                 }
 
               // Load the data from the file using a PField
-              body.read_vtk(filename);
+               if (userInputs.load_unstructured_grid){
+                    body.read_vtk(filename);
+                     } else {
+                     body.read_RL_vtk(filename);     
+                     }
               ScalarField &conc =
                 body.find_scalar_field(userInputs.load_field_name[var_index]);
 
