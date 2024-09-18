@@ -13,7 +13,7 @@ namespace PRISMS
     template<int DIM>
     class Coordinate
     {
-      float _coord[DIM];
+      float _coord[DIM]; // floating point precision is good enough for coordinates, it also reduces the memory usage
     public:
     
         
