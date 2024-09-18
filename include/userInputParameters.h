@@ -250,6 +250,7 @@ public:
   double                    buffer_between_grains;
 
   bool         load_grain_structure;
+  bool         load_unstructured_grid;
   double       min_radius_for_loading_grains;
   std::string  grain_structure_filename;
   std::string  grain_structure_variable_name;
