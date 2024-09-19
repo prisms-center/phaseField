@@ -1,5 +1,7 @@
 #include "../../include/matrixFreePDE.h"
 
+using namespace dealii;
+
 template <int dim, int degree>
 class customPDE : public MatrixFreePDE<dim, degree>
 {
@@ -11,20 +13,20 @@ public:
 
   // Function to set the initial conditions (in ICs_and_BCs.h)
   void
-  setInitialCondition(const dealii::Point<dim> &p,
-                      const unsigned int        index,
-                      double                   &scalar_IC,
-                      dealii::Vector<double>   &vector_IC) override;
+  setInitialCondition([[maybe_unused]] const Point<dim>  &p,
+                      [[maybe_unused]] const unsigned int index,
+                      [[maybe_unused]] double            &scalar_IC,
+                      [[maybe_unused]] Vector<double>    &vector_IC) override;
 
   // Function to set the non-uniform Dirichlet boundary conditions (in
   // ICs_and_BCs.h)
   void
-  setNonUniformDirichletBCs(const dealii::Point<dim> &p,
-                            const unsigned int        index,
-                            const unsigned int        direction,
-                            const double              time,
-                            double                   &scalar_BC,
-                            dealii::Vector<double>   &vector_BC) override;
+  setNonUniformDirichletBCs([[maybe_unused]] const Point<dim>  &p,
+                            [[maybe_unused]] const unsigned int index,
+                            [[maybe_unused]] const unsigned int direction,
+                            [[maybe_unused]] const double       time,
+                            [[maybe_unused]] double            &scalar_BC,
+                            [[maybe_unused]] Vector<double>    &vector_BC) override;
 
 private:
 #include "../../include/typeDefs.h"
@@ -32,39 +34,45 @@ private:
   const userInputParameters<dim> userInputs;
 
   // Function to set the RHS of the governing equations for explicit time
-  // dependent equations (in equations.h)
+  // dependent equations (in equations.cc)
   void
   explicitEquationRHS(
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const override;
+    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+                                                        &variable_list,
+    [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const override;
 
   // Function to set the RHS of the governing equations for all other equations
   // (in equations.h)
   void
   nonExplicitEquationRHS(
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const override;
+    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+                                                        &variable_list,
+    [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const override;
 
-  // Function to set the LHS of the governing equations (in equations.h)
+  // Function to set the LHS of the governing equations (in equations.cc)
   void
   equationLHS(
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const override;
+    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+                                                        &variable_list,
+    [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const override;
 
-// Function to set postprocessing expressions (in postprocess.h)
+// Function to set postprocessing expressions (in postprocess.cc)
 #ifdef POSTPROCESS_FILE_EXISTS
   void
   postProcessedFields(
-    const variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> &pp_variable_list,
-    const dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const override;
+    [[maybe_unused]] const variableContainer<dim, degree, VectorizedArray<double>>
+      &variable_list,
+    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+                                                              &pp_variable_list,
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc)
+    const override;
 #endif
 
-// Function to set the nucleation probability (in nucleation.h)
+// Function to set the nucleation probability (in nucleation.cc)
 #ifdef NUCLEATION_FILE_EXISTS
   double
-  getNucleationProbability(variableValueContainer variable_value,
-                           double                 dV) const override;
+  getNucleationProbability([[maybe_unused]] variableValueContainer variable_value,
+                           [[maybe_unused]] double                 dV) const override;
 #endif
 
   // ================================================================
@@ -74,7 +82,7 @@ private:
   // Function to override solveIncrement from
   // ../../src/matrixfree/solveIncrement.cc
   void
-  solveIncrement(bool skip_time_dependent);
+  solveIncrement(bool skip_time_dependent) override;
 
   // ================================================================
   // Model constants specific to this subclass
@@ -125,46 +133,14 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
     {
       this->currentFieldIndex = fieldIndex; // Used in computeLHS()
 
-      // Add Neumann BC terms to the residual vector for the current field, if
-      // appropriate Currently commented out because it isn't working yet
-      // applyNeumannBCs();
-
       // Parabolic (first order derivatives in time) fields
       if (this->fields[fieldIndex].pdetype == EXPLICIT_TIME_DEPENDENT &&
           !skip_time_dependent)
         {
-          // Explicit-time step each DOF
-          // Takes advantage of knowledge that the length of solutionSet and
-          // residualSet is an integer multiple of the length of invM for vector
-          // variables
-#if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
-          unsigned int invM_size = this->invM.local_size();
-          for (unsigned int dof = 0; dof < this->solutionSet[fieldIndex]->local_size();
-               ++dof)
-            {
-#else
-          unsigned int invM_size = this->invM.locally_owned_size();
-          for (unsigned int dof = 0;
-               dof < this->solutionSet[fieldIndex]->locally_owned_size();
-               ++dof)
-            {
-#endif
-              this->solutionSet[fieldIndex]->local_element(dof) =
-                this->invM.local_element(dof % invM_size) *
-                this->residualSet[fieldIndex]->local_element(dof);
-            }
-          // Set the Dirichelet values (hanging node constraints don't need to
-          // be distributed every time step, only at output)
-          if (this->has_Dirichlet_BCs)
-            {
-              this->constraintsDirichletSet[fieldIndex]->distribute(
-                *this->solutionSet[fieldIndex]);
-            }
-          // computing_timer.enter_subsection("matrixFreePDE:
-          // updateExplicitGhosts");
-          this->solutionSet[fieldIndex]->update_ghost_values();
-          // computing_timer.exit_subsection("matrixFreePDE:
-          // updateExplicitGhosts");
+          this->updateExplicitSolution(fieldIndex);
+
+          // Apply Boundary conditions
+          this->applyBCs(fieldIndex);
 
           // Print update to screen and confirm that solution isn't nan
           if (this->currentIncrement % userInputs.skip_print_steps == 0)
@@ -235,21 +211,14 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                       this->pcout << buffer;
                     }
 
-                  dealii::LinearAlgebra::distributed::Vector<double> solution_diff =
+                  LinearAlgebra::distributed::Vector<double> solution_diff =
                     *this->solutionSet[fieldIndex];
 
                   // apply Dirichlet BC's
-                  //  Loops through all DoF to which ones have Dirichlet BCs
-                  //  applied, replace the ones that do with the Dirichlet value
                   //  This clears the residual where we want to apply Dirichlet
                   //  BCs, otherwise the solver sees a positive residual
-                  for (const auto &it : *this->valuesDirichletSet[fieldIndex])
-                    {
-                      if (this->residualSet[fieldIndex]->in_local_range(it.first))
-                        {
-                          (*this->residualSet[fieldIndex])(it.first) = 0.0;
-                        }
-                    }
+                  this->constraintsDirichletSet[fieldIndex]->set_zero(
+                    *this->residualSet[fieldIndex]);
 
                   // solver controls
                   double tol_value;
@@ -532,34 +501,10 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                             }
                         }
 
-                        // Explicit-time step each DOF
-                        // Takes advantage of knowledge that the length of
-                        // solutionSet and residualSet is an integer multiple of
-                        // the length of invM for vector variables
-#if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
-                      unsigned int invM_size = this->invM.local_size();
-                      for (unsigned int dof = 0;
-                           dof < this->solutionSet[fieldIndex]->local_size();
-                           ++dof)
-                        {
-#else
-                      unsigned int invM_size = this->invM.locally_owned_size();
-                      for (unsigned int dof = 0;
-                           dof < this->solutionSet[fieldIndex]->locally_owned_size();
-                           ++dof)
-                        {
-#endif
-                          this->solutionSet[fieldIndex]->local_element(dof) =
-                            this->invM.local_element(dof % invM_size) *
-                            this->residualSet[fieldIndex]->local_element(dof);
-                        }
+                      this->updateExplicitSolution(fieldIndex);
 
-                      // Set the Dirichelet values (hanging node constraints
-                      // don't need to be distributed every time step, only at
-                      // output)
-                      this->constraintsDirichletSet[fieldIndex]->distribute(
-                        *this->solutionSet[fieldIndex]);
-                      this->solutionSet[fieldIndex]->update_ghost_values();
+                      // Apply Boundary conditions
+                      this->applyBCs(fieldIndex);
 
                       // Print update to screen
                       if (this->currentIncrement % userInputs.skip_print_steps == 0)
