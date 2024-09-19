@@ -79,7 +79,7 @@ namespace PRISMS
 
   private:
     virtual OutType
-    eval(const VarContainer &var) const
+    eval([[maybe_unused]] const VarContainer &var) const
     {
       undefined("OutType eval( const VarContainer &var)");
       return OutType();

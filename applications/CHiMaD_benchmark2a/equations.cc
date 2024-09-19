@@ -81,8 +81,8 @@ variableAttributeLoader::loadVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::explicitEquationRHS(
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-  dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const
+  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
@@ -105,19 +105,10 @@ customPDE<dim, degree>::explicitEquationRHS(
   // --- Setting the expressions for the terms in the governing equations ---
 
   // Free energy for each phase and their first and second derivatives
-  scalarvalueType faV   = (constV(2.0) * (c - constV(0.3)) * (c - constV(0.3)));
-  scalarvalueType facV  = (constV(4.0) * (c - constV(0.3)));
-  scalarvalueType faccV = (constV(4.0));
-  scalarvalueType fbV   = (constV(2.0) * (c - constV(0.7)) * (c - constV(0.7)));
-  scalarvalueType fbcV  = (constV(4.0) * (c - constV(0.7)));
-  scalarvalueType fbccV = (constV(4.0));
+  scalarvalueType faV = (constV(2.0) * (c - constV(0.3)) * (c - constV(0.3)));
+  scalarvalueType fbV = (constV(2.0) * (c - constV(0.7)) * (c - constV(0.7)));
 
   // Interpolation function and its derivatives
-  scalarvalueType hV =
-    (n1 * n1 * n1 * (constV(6.0) * n1 * n1 - constV(15.0) * n1 + constV(10.0)) +
-     n2 * n2 * n2 * (constV(6.0) * n2 * n2 - constV(15.0) * n2 + constV(10.0)) +
-     n3 * n3 * n3 * (constV(6.0) * n3 * n3 - constV(15.0) * n3 + constV(10.0)) +
-     n4 * n4 * n4 * (constV(6.0) * n4 * n4 - constV(15.0) * n4 + constV(10.0)));
   scalarvalueType hn1V =
     (n1 * n1 * (constV(30.0) * n1 * n1 - constV(60.0) * n1 + constV(30.0)));
   scalarvalueType hn2V =
@@ -126,19 +117,6 @@ customPDE<dim, degree>::explicitEquationRHS(
     (n3 * n3 * (constV(30.0) * n3 * n3 - constV(60.0) * n3 + constV(30.0)));
   scalarvalueType hn4V =
     (n4 * n4 * (constV(30.0) * n4 * n4 - constV(60.0) * n4 + constV(30.0)));
-
-  // Combined double-well and interaction functions (function g) and its
-  // derivatives Double-well part
-  scalarvalueType gdwV = (n1 * n1 * (constV(1.0) - n1) * (constV(1.0) - n1) +
-                          n2 * n2 * (constV(1.0) - n2) * (constV(1.0) - n2) +
-                          n3 * n3 * (constV(1.0) - n3) * (constV(1.0) - n3) +
-                          n4 * n4 * (constV(1.0) - n4) * (constV(1.0) - n4));
-  // Interaction part
-  scalarvalueType gintV =
-    (alpha * (n1 * n1 * n2 * n2 + n1 * n1 * n3 * n3 + n1 * n1 * n4 * n4 +
-              n2 * n2 * n3 * n3 + n2 * n2 * n4 * n4 + n3 * n3 * n4 * n4));
-  // Combined function (g)
-  // scalarvalueType gV = ( gdwV + gintV ); // Not actually needed
 
   // Derivatives
   scalarvalueType dgn1V =
@@ -204,8 +182,8 @@ customPDE<dim, degree>::explicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::nonExplicitEquationRHS(
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-  dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const
+  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
@@ -259,6 +237,6 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::equationLHS(
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-  dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const
+  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const
 {}

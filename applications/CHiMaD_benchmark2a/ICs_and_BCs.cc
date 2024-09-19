@@ -4,10 +4,10 @@
 
 template <int dim, int degree>
 void
-customPDE<dim, degree>::setInitialCondition(const dealii::Point<dim> &p,
-                                            const unsigned int        index,
-                                            double                   &scalar_IC,
-                                            dealii::Vector<double>   &vector_IC)
+customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &p,
+                                            [[maybe_unused]] const unsigned int index,
+                                            [[maybe_unused]] double            &scalar_IC,
+                                            [[maybe_unused]] Vector<double>    &vector_IC)
 {
   // ---------------------------------------------------------------------
   // ENTER THE INITIAL CONDITIONS HERE
@@ -22,8 +22,6 @@ customPDE<dim, degree>::setInitialCondition(const dealii::Point<dim> &p,
   double epsilon_n = 0.1;
   double psi       = 1.5;
 
-  double dx = userInputs.domain_size[0] / ((double) userInputs.subdivisions[0]) /
-              std::pow(2.0, userInputs.refine_factor);
   double x = p[0];
   double y = p[1];
 
@@ -83,12 +81,13 @@ customPDE<dim, degree>::setInitialCondition(const dealii::Point<dim> &p,
 
 template <int dim, int degree>
 void
-customPDE<dim, degree>::setNonUniformDirichletBCs(const dealii::Point<dim> &p,
-                                                  const unsigned int        index,
-                                                  const unsigned int        direction,
-                                                  const double              time,
-                                                  double                   &scalar_BC,
-                                                  dealii::Vector<double>   &vector_BC)
+customPDE<dim, degree>::setNonUniformDirichletBCs(
+  [[maybe_unused]] const Point<dim>  &p,
+  [[maybe_unused]] const unsigned int index,
+  [[maybe_unused]] const unsigned int direction,
+  [[maybe_unused]] const double       time,
+  [[maybe_unused]] double            &scalar_BC,
+  [[maybe_unused]] Vector<double>    &vector_BC)
 {
   // --------------------------------------------------------------------------
   // ENTER THE NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS HERE

@@ -45,19 +45,18 @@
 
 #include "../src/models/mechanics/computeStress.h"
 
+using namespace dealii;
+
 // define data types
 #ifndef scalarType
-typedef dealii::VectorizedArray<double> scalarType;
+typedef VectorizedArray<double> scalarType;
 #endif
 #ifndef vectorType
-typedef dealii::LinearAlgebra::distributed::Vector<double> vectorType;
+typedef LinearAlgebra::distributed::Vector<double> vectorType;
 #endif
 
 // macro for constants
 #define constV(a) make_vectorized_array(a)
-
-//
-using namespace dealii;
 
 //
 // base class for matrix free PDE's
@@ -129,19 +128,19 @@ public:
 
   // Initial conditions function
   virtual void
-  setInitialCondition(const dealii::Point<dim> &p,
-                      const unsigned int        index,
-                      double                   &scalar_IC,
-                      dealii::Vector<double>   &vector_IC) = 0;
+  setInitialCondition([[maybe_unused]] const Point<dim>  &p,
+                      [[maybe_unused]] const unsigned int index,
+                      [[maybe_unused]] double            &scalar_IC,
+                      [[maybe_unused]] Vector<double>    &vector_IC) = 0;
 
   // Non-uniform boundary conditions function
   virtual void
-  setNonUniformDirichletBCs(const dealii::Point<dim> &p,
-                            const unsigned int        index,
-                            const unsigned int        direction,
-                            const double              time,
-                            double                   &scalar_BC,
-                            dealii::Vector<double>   &vector_BC) = 0;
+  setNonUniformDirichletBCs([[maybe_unused]] const Point<dim>  &p,
+                            [[maybe_unused]] const unsigned int index,
+                            [[maybe_unused]] const unsigned int direction,
+                            [[maybe_unused]] const double       time,
+                            [[maybe_unused]] double            &scalar_BC,
+                            [[maybe_unused]] Vector<double>    &vector_BC) = 0;
 
 protected:
   userInputParameters<dim> userInputs;
@@ -315,29 +314,33 @@ protected:
 
   virtual void
   explicitEquationRHS(
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const = 0;
+    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+                                                        &variable_list,
+    [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const = 0;
 
   virtual void
   nonExplicitEquationRHS(
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const = 0;
+    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+                                                        &variable_list,
+    [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const = 0;
 
   virtual void
-  equationLHS(
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const = 0;
+  equationLHS([[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+                                                                  &variable_list,
+              [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const = 0;
 
   virtual void
   postProcessedFields(
-    const variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> &pp_variable_list,
-    const dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const {};
+    [[maybe_unused]] const variableContainer<dim, degree, VectorizedArray<double>>
+      &variable_list,
+    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+                                                              &pp_variable_list,
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc) const {};
   void
   computePostProcessedFields(std::vector<vectorType *> &postProcessedSet);
 
   void
-  getPostProcessedFields(const dealii::MatrixFree<dim, double>       &data,
+  getPostProcessedFields(const MatrixFree<dim, double>               &data,
                          std::vector<vectorType *>                   &dst,
                          const std::vector<vectorType *>             &src,
                          const std::pair<unsigned int, unsigned int> &cell_range);
@@ -345,7 +348,7 @@ protected:
   // methods to apply dirichlet BC's
   /*Map of degrees of freedom to the corresponding Dirichlet boundary
    * conditions, if any.*/
-  std::vector<std::map<dealii::types::global_dof_index, double> *> valuesDirichletSet;
+  std::vector<std::map<types::global_dof_index, double> *> valuesDirichletSet;
   /*Virtual method to mark the boundaries for applying Dirichlet boundary
    * conditions.  This is usually expected to be provided by the user.*/
   void
@@ -416,24 +419,23 @@ protected:
   void
   refineMeshNearNuclei(std::vector<nucleus<dim>> newnuclei);
   double
-  weightedDistanceFromNucleusCenter(const dealii::Point<dim, double> center,
-                                    const std::vector<double>        semiaxes,
-                                    const dealii::Point<dim, double> q_point_loc,
-                                    const unsigned int               var_index) const;
-  dealii::VectorizedArray<double>
-  weightedDistanceFromNucleusCenter(
-    const dealii::Point<dim, double>                          center,
-    const std::vector<double>                                 semiaxes,
-    const dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc,
-    const unsigned int                                        var_index) const;
+  weightedDistanceFromNucleusCenter(const Point<dim, double>  center,
+                                    const std::vector<double> semiaxes,
+                                    const Point<dim, double>  q_point_loc,
+                                    const unsigned int        var_index) const;
+  VectorizedArray<double>
+  weightedDistanceFromNucleusCenter(const Point<dim, double>                  center,
+                                    const std::vector<double>                 semiaxes,
+                                    const Point<dim, VectorizedArray<double>> q_point_loc,
+                                    const unsigned int var_index) const;
 
   // Method to obtain the nucleation probability for an element, nontrival case
   // must be implemented in the subsclass
   virtual double
   getNucleationProbability(variableValueContainer,
                            double,
-                           dealii::Point<dim>,
-                           unsigned int variable_index) const
+                           Point<dim>,
+                           [[maybe_unused]] unsigned int variable_index) const
   {
     return 0.0;
   };

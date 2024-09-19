@@ -77,9 +77,8 @@ variableAttributeLoader::loadVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::explicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, dealii::VectorizedArray<double>>
-                                                                      &variable_list,
-  [[maybe_unused]] dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
@@ -145,8 +144,8 @@ customPDE<dim, degree>::explicitEquationRHS(
 
   // Calculate the stress-free transformation strain and its derivatives at the
   // quadrature point
-  dealii::Tensor<2, dim, dealii::VectorizedArray<double>> sfts1, sfts1c, sfts1cc, sfts2,
-    sfts2c, sfts2cc, sfts3, sfts3c, sfts3cc;
+  Tensor<2, dim, VectorizedArray<double>> sfts1, sfts1c, sfts1cc, sfts2, sfts2c, sfts2cc,
+    sfts3, sfts3c, sfts3cc;
 
   for (unsigned int i = 0; i < dim; i++)
     {
@@ -173,7 +172,7 @@ customPDE<dim, degree>::explicitEquationRHS(
     }
 
   // compute E2=(E-E0)
-  dealii::VectorizedArray<double> E2[dim][dim], S[dim][dim];
+  VectorizedArray<double> E2[dim][dim], S[dim][dim];
 
   for (unsigned int i = 0; i < dim; i++)
     {
@@ -187,11 +186,11 @@ customPDE<dim, degree>::explicitEquationRHS(
   // compute stress
   // S=C*(E-E0)
   //  Compute stress tensor (which is equal to the residual, Rux)
-  dealii::VectorizedArray<double> CIJ_combined[CIJ_tensor_size][CIJ_tensor_size];
+  VectorizedArray<double> CIJ_combined[CIJ_tensor_size][CIJ_tensor_size];
 
   if (n_dependent_stiffness == true)
     {
-      dealii::VectorizedArray<double> sum_hV;
+      VectorizedArray<double> sum_hV;
       sum_hV = h1V + h2V + h3V;
       for (unsigned int i = 0; i < 2 * dim - 1 + dim / 3; i++)
         {
@@ -210,9 +209,9 @@ customPDE<dim, degree>::explicitEquationRHS(
 
   // Compute one of the stress terms in the order parameter chemical potential,
   // nDependentMisfitACp = C*(E-E0)*(E0_p*Hn)
-  dealii::VectorizedArray<double> nDependentMisfitAC1 = constV(0.0);
-  dealii::VectorizedArray<double> nDependentMisfitAC2 = constV(0.0);
-  dealii::VectorizedArray<double> nDependentMisfitAC3 = constV(0.0);
+  VectorizedArray<double> nDependentMisfitAC1 = constV(0.0);
+  VectorizedArray<double> nDependentMisfitAC2 = constV(0.0);
+  VectorizedArray<double> nDependentMisfitAC3 = constV(0.0);
 
   for (unsigned int i = 0; i < dim; i++)
     {
@@ -230,10 +229,10 @@ customPDE<dim, degree>::explicitEquationRHS(
 
   // Compute the other stress term in the order parameter chemical potential,
   // heterMechACp = 0.5*Hn*(C_beta-C_alpha)*(E-E0)*(E-E0)
-  dealii::VectorizedArray<double> heterMechAC1 = constV(0.0);
-  dealii::VectorizedArray<double> heterMechAC2 = constV(0.0);
-  dealii::VectorizedArray<double> heterMechAC3 = constV(0.0);
-  dealii::VectorizedArray<double> S2[dim][dim];
+  VectorizedArray<double> heterMechAC1 = constV(0.0);
+  VectorizedArray<double> heterMechAC2 = constV(0.0);
+  VectorizedArray<double> heterMechAC3 = constV(0.0);
+  VectorizedArray<double> S2[dim][dim];
 
   if (n_dependent_stiffness == true)
     {
@@ -259,7 +258,7 @@ customPDE<dim, degree>::explicitEquationRHS(
 
   if (c_dependent_misfit == true)
     {
-      dealii::VectorizedArray<double> E3[dim][dim], S3[dim][dim];
+      VectorizedArray<double> E3[dim][dim], S3[dim][dim];
 
       for (unsigned int i = 0; i < dim; i++)
         {
@@ -374,9 +373,8 @@ customPDE<dim, degree>::explicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::nonExplicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, dealii::VectorizedArray<double>>
-                                                                      &variable_list,
-  [[maybe_unused]] dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
@@ -407,7 +405,7 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 
   // Calculate the stress-free transformation strain and its derivatives at the
   // quadrature point
-  dealii::Tensor<2, dim, dealii::VectorizedArray<double>> sfts1, sfts2, sfts3;
+  Tensor<2, dim, VectorizedArray<double>> sfts1, sfts2, sfts3;
 
   for (unsigned int i = 0; i < dim; i++)
     {
@@ -426,7 +424,7 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
     }
 
   // compute E2=(E-E0)
-  dealii::VectorizedArray<double> E2[dim][dim], S[dim][dim];
+  VectorizedArray<double> E2[dim][dim], S[dim][dim];
 
   for (unsigned int i = 0; i < dim; i++)
     {
@@ -440,11 +438,11 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
   // compute stress
   // S=C*(E-E0)
   //  Compute stress tensor (which is equal to the residual, Rux)
-  dealii::VectorizedArray<double> CIJ_combined[CIJ_tensor_size][CIJ_tensor_size];
+  VectorizedArray<double> CIJ_combined[CIJ_tensor_size][CIJ_tensor_size];
 
   if (n_dependent_stiffness == true)
     {
-      dealii::VectorizedArray<double> sum_hV;
+      VectorizedArray<double> sum_hV;
       sum_hV = h1V + h2V + h3V;
       for (unsigned int i = 0; i < 2 * dim - 1 + dim / 3; i++)
         {
@@ -493,9 +491,8 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::equationLHS(
-  [[maybe_unused]] variableContainer<dim, degree, dealii::VectorizedArray<double>>
-                                                                      &variable_list,
-  [[maybe_unused]] dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
@@ -526,13 +523,13 @@ customPDE<dim, degree>::equationLHS(
 
   // Take advantage of E being simply 0.5*(ux + transpose(ux)) and use the
   // dealii "symmetrize" function
-  dealii::Tensor<2, dim, dealii::VectorizedArray<double>> E;
+  Tensor<2, dim, VectorizedArray<double>> E;
   E = symmetrize(Dux);
 
   // Compute stress tensor (which is equal to the residual, Rux)
   if (n_dependent_stiffness == true)
     {
-      dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double>> CIJ_combined;
+      Tensor<2, CIJ_tensor_size, VectorizedArray<double>> CIJ_combined;
       CIJ_combined =
         CIJ_Mg * (constV(1.0) - h1V - h2V - h3V) + CIJ_Beta * (h1V + h2V + h3V);
 
