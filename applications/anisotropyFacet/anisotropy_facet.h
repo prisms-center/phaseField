@@ -4,9 +4,9 @@
 template <int dim, int degree>
 void
 customPDE<dim, degree>::anisotropy(
-  const dealii::Tensor<1, dim, dealii::VectorizedArray<double>> &normal,
-  dealii::VectorizedArray<double>                               &gamma,
-  dealii::Tensor<1, dim, dealii::VectorizedArray<double>>       &dgammadnormal) const
+  const Tensor<1, dim, VectorizedArray<double>> &normal,
+  VectorizedArray<double>                       &gamma,
+  Tensor<1, dim, VectorizedArray<double>>       &dgammadnormal) const
 {
   // Orientations
   // Defining orientations in a static array greatly improves performance, but

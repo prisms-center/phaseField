@@ -6,8 +6,7 @@
 #ifndef pfunct_McV_HH
 #define pfunct_McV_HH
 
-#include "IntegrationTools/PFunction.hh"
-
+#include "../../../include/IntegrationTools/PFunction.hh"
 #include <cmath>
 #include <cstdlib>
 
@@ -17,7 +16,7 @@ namespace PRISMS
   class pfunct_McV_f : public PSimpleBase<VarContainer, double>
   {
     double
-    eval(const VarContainer &var) const
+    eval([[maybe_unused]] const VarContainer &var) const override
     {
       return 1.0000000000000000e+00;
     }
@@ -29,25 +28,25 @@ namespace PRISMS
     }
 
     std::string
-    csrc() const
+    csrc() const override
     {
       return "1.0000000000000000e+00";
     }
 
     std::string
-    sym() const
+    sym() const override
     {
       return "1.0";
     }
 
     std::string
-    latex() const
+    latex() const override
     {
       return "1.0";
     }
 
     pfunct_McV_f *
-    clone() const
+    clone() const override
     {
       return new pfunct_McV_f(*this);
     }
@@ -69,6 +68,7 @@ namespace PRISMS
     }
 
     pfunct_McV(const pfunct_McV &RHS)
+      : PFuncBase<double *, double>(RHS)
     {
       construct(false);
 
@@ -91,31 +91,31 @@ namespace PRISMS
     }
 
     pfunct_McV<VarContainer> *
-    clone() const
+    clone() const override
     {
       return new pfunct_McV<VarContainer>(*this);
     }
 
     PSimpleFunction<VarContainer, double>
-    simplefunction() const
+    simplefunction() const override
     {
       return PSimpleFunction<VarContainer, double>(*_val);
     }
 
     double
-    operator()(const VarContainer &var)
+    operator()(const VarContainer &var) override
     {
       return (*_val)(var);
     }
 
     void
-    eval(const VarContainer &var)
+    eval(const VarContainer &var) override
     {
       (*_val)(var);
     }
 
     double
-    operator()() const
+    operator()() const override
     {
       return (*_val)();
     }

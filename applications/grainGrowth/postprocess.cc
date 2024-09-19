@@ -45,12 +45,11 @@ variableAttributeLoader::loadPostProcessorVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::postProcessedFields(
-  [[maybe_unused]] const variableContainer<dim, degree, dealii::VectorizedArray<double>>
+  [[maybe_unused]] const variableContainer<dim, degree, VectorizedArray<double>>
     &variable_list,
-  [[maybe_unused]] variableContainer<dim, degree, dealii::VectorizedArray<double>>
-    &pp_variable_list,
-  [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc)
-  const
+  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+                                                            &pp_variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
@@ -82,7 +81,7 @@ customPDE<dim, degree>::postProcessedFields(
           if (this->simplified_grain_representations[g].getOrderParameterId() ==
               max_op_nonvec)
             {
-              dealii::Point<dim> q_point_loc_nonvec;
+              Point<dim> q_point_loc_nonvec;
               for (unsigned int d = 0; d < dim; d++)
                 {
                   q_point_loc_nonvec(d) = q_point_loc(d)[v];

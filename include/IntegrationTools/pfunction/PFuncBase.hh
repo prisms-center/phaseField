@@ -94,14 +94,15 @@ namespace PRISMS
     }
 
     virtual PSimpleFunction<VarContainer, OutType>
-    grad_simplefunction(size_type di) const
+    grad_simplefunction([[maybe_unused]] size_type di) const
     {
       undefined("PSimpleFunction<VarContainer, OutType> grad_simplefunction() const");
       return PSimpleFunction<VarContainer, OutType>();
     }
 
     virtual PSimpleFunction<VarContainer, OutType>
-    hess_simplefunction(size_type di, size_type dj) const
+    hess_simplefunction([[maybe_unused]] size_type di,
+                        [[maybe_unused]] size_type dj) const
     {
       undefined("PSimpleFunction<VarContainer, OutType> hess_simplefunction(size_type "
                 "di, size_type dj) const");
@@ -111,21 +112,23 @@ namespace PRISMS
     // ----------------------------------------------------------
     // Use these functions if you want to evaluate a single value
     virtual OutType
-    operator()(const VarContainer &var)
+    operator()([[maybe_unused]] const VarContainer &var)
     {
       undefined("OutType operator()(const VarContainer &var)");
       return OutType();
     }
 
     virtual OutType
-    grad(const VarContainer &var, size_type di)
+    grad([[maybe_unused]] const VarContainer &var, [[maybe_unused]] size_type di)
     {
       undefined("OutType grad(const VarContainer &var, size_type di)");
       return OutType();
     }
 
     virtual OutType
-    hess(const VarContainer &var, size_type di, size_type dj)
+    hess([[maybe_unused]] const VarContainer &var,
+         [[maybe_unused]] size_type           di,
+         [[maybe_unused]] size_type           dj)
     {
       undefined("OutType hess(const VarContainer &var, size_type di, size_type dj)");
       return OutType();
@@ -135,19 +138,19 @@ namespace PRISMS
     // Use these functions to evaluate several values, then use 'get' methods to access
     // results
     virtual void
-    eval(const VarContainer &var)
+    eval([[maybe_unused]] const VarContainer &var)
     {
       undefined("void eval_grad( const VarContainer &var)");
     }
 
     virtual void
-    eval_grad(const VarContainer &var)
+    eval_grad([[maybe_unused]] const VarContainer &var)
     {
       undefined("void eval_grad( const VarContainer &var)");
     }
 
     virtual void
-    eval_hess(const VarContainer &var)
+    eval_hess([[maybe_unused]] const VarContainer &var)
     {
       undefined("void eval_hess( const VarContainer &var)");
     }
@@ -160,14 +163,14 @@ namespace PRISMS
     }
 
     virtual OutType
-    grad(size_type di) const
+    grad([[maybe_unused]] size_type di) const
     {
       undefined("OutType grad(size_type di)");
       return OutType();
     }
 
     virtual OutType
-    hess(size_type di, size_type dj) const
+    hess([[maybe_unused]] size_type di, [[maybe_unused]] size_type dj) const
     {
       undefined("OutType hess(size_type di, size_type dj)");
       return OutType();

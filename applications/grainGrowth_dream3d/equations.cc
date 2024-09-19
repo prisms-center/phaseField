@@ -59,14 +59,14 @@ variableAttributeLoader::loadVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::explicitEquationRHS(
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-  dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const
+  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
-  dealii::VectorizedArray<double> fnV = constV(0.0);
-  scalarvalueType                 ni, nj;
-  scalargradType                  nix;
+  VectorizedArray<double> fnV = constV(0.0);
+  scalarvalueType         ni, nj;
+  scalargradType          nix;
 
   // In this application, create temporary variables for the residual terms. We
   // cannot call 'set_scalar_value_residual_term' and
@@ -122,8 +122,8 @@ customPDE<dim, degree>::explicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::nonExplicitEquationRHS(
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-  dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const
+  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const
 {}
 
 // =============================================================================================
@@ -144,6 +144,6 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::equationLHS(
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-  dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const
+  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const
 {}

@@ -6,9 +6,8 @@
 #ifndef PLIBRARY_HH
 #define PLIBRARY_HH
 
-#include "IntegrationTools/PFunction.hh"
-#include "IntegrationTools/PPieceWise.hh"
-
+#include "../../../include/IntegrationTools/PFunction.hh"
+#include "../../../include/IntegrationTools/PPieceWise.hh"
 #include <cstring>
 
 namespace PRISMS

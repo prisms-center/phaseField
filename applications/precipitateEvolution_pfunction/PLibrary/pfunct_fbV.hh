@@ -6,8 +6,7 @@
 #ifndef pfunct_fbV_HH
 #define pfunct_fbV_HH
 
-#include "IntegrationTools/PFunction.hh"
-
+#include "../../../include/IntegrationTools/PFunction.hh"
 #include <cmath>
 #include <cstdlib>
 
@@ -17,7 +16,7 @@ namespace PRISMS
   class pfunct_fbV_f : public PSimpleBase<VarContainer, double>
   {
     double
-    eval(const VarContainer &var) const
+    eval(const VarContainer &var) const override
     {
       return -5.9745999999999997e+00 * var[0] +
              5.0000000000000000e+00 * (var[0] * var[0]) - 1.5924000000000000e+00;
@@ -30,26 +29,26 @@ namespace PRISMS
     }
 
     std::string
-    csrc() const
+    csrc() const override
     {
       return " -5.9745999999999997e+00*var[0]+5.0000000000000000e+00*(var[0]*var[0])-1."
              "5924000000000000e+00";
     }
 
     std::string
-    sym() const
+    sym() const override
     {
       return "-1.5924-(5.9746)*c+(5.0)*c^2";
     }
 
     std::string
-    latex() const
+    latex() const override
     {
       return "-1.5924+{(5.0)} c^{2}-{(5.9746)} c";
     }
 
     pfunct_fbV_f *
-    clone() const
+    clone() const override
     {
       return new pfunct_fbV_f(*this);
     }
@@ -59,7 +58,7 @@ namespace PRISMS
   class pfunct_fbV_grad_0 : public PSimpleBase<VarContainer, double>
   {
     double
-    eval(const VarContainer &var) const
+    eval(const VarContainer &var) const override
     {
       return 1.0000000000000000e+01 * var[0] - 5.9745999999999997e+00;
     }
@@ -71,25 +70,25 @@ namespace PRISMS
     }
 
     std::string
-    csrc() const
+    csrc() const override
     {
       return " 1.0000000000000000e+01*var[0]-5.9745999999999997e+00";
     }
 
     std::string
-    sym() const
+    sym() const override
     {
       return "-5.9746+(10.0)*c";
     }
 
     std::string
-    latex() const
+    latex() const override
     {
       return "-5.9746+{(10.0)} c";
     }
 
     pfunct_fbV_grad_0 *
-    clone() const
+    clone() const override
     {
       return new pfunct_fbV_grad_0(*this);
     }
@@ -99,7 +98,7 @@ namespace PRISMS
   class pfunct_fbV_hess_0_0 : public PSimpleBase<VarContainer, double>
   {
     double
-    eval(const VarContainer &var) const
+    eval([[maybe_unused]] const VarContainer &var) const override
     {
       return 1.0000000000000000e+01;
     }
@@ -111,25 +110,25 @@ namespace PRISMS
     }
 
     std::string
-    csrc() const
+    csrc() const override
     {
       return "1.0000000000000000e+01";
     }
 
     std::string
-    sym() const
+    sym() const override
     {
       return "10.0";
     }
 
     std::string
-    latex() const
+    latex() const override
     {
       return "10.0";
     }
 
     pfunct_fbV_hess_0_0 *
-    clone() const
+    clone() const override
     {
       return new pfunct_fbV_hess_0_0(*this);
     }
@@ -151,6 +150,7 @@ namespace PRISMS
     }
 
     pfunct_fbV(const pfunct_fbV &RHS)
+      : PFuncBase<double *, double>(RHS)
     {
       construct(false);
 
@@ -184,79 +184,79 @@ namespace PRISMS
     }
 
     pfunct_fbV<VarContainer> *
-    clone() const
+    clone() const override
     {
       return new pfunct_fbV<VarContainer>(*this);
     }
 
     PSimpleFunction<VarContainer, double>
-    simplefunction() const
+    simplefunction() const override
     {
       return PSimpleFunction<VarContainer, double>(*_val);
     }
 
     PSimpleFunction<VarContainer, double>
-    grad_simplefunction(size_type di) const
+    grad_simplefunction(size_type di) const override
     {
       return PSimpleFunction<VarContainer, double>(*_grad_val[di]);
     }
 
     PSimpleFunction<VarContainer, double>
-    hess_simplefunction(size_type di, size_type dj) const
+    hess_simplefunction(size_type di, size_type dj) const override
     {
       return PSimpleFunction<VarContainer, double>(*_hess_val[di][dj]);
     }
 
     double
-    operator()(const VarContainer &var)
+    operator()(const VarContainer &var) override
     {
       return (*_val)(var);
     }
 
     double
-    grad(const VarContainer &var, size_type di)
+    grad(const VarContainer &var, size_type di) override
     {
       return (*_grad_val[di])(var);
     }
 
     double
-    hess(const VarContainer &var, size_type di, size_type dj)
+    hess(const VarContainer &var, size_type di, size_type dj) override
     {
       return (*_hess_val[di][dj])(var);
     }
 
     void
-    eval(const VarContainer &var)
+    eval(const VarContainer &var) override
     {
       (*_val)(var);
     }
 
     void
-    eval_grad(const VarContainer &var)
+    eval_grad(const VarContainer &var) override
     {
       (*_grad_val[0])(var);
     }
 
     void
-    eval_hess(const VarContainer &var)
+    eval_hess(const VarContainer &var) override
     {
       (*_hess_val[0][0])(var);
     }
 
     double
-    operator()() const
+    operator()() const override
     {
       return (*_val)();
     }
 
     double
-    grad(size_type di) const
+    grad(size_type di) const override
     {
       return (*_grad_val[di])();
     }
 
     double
-    hess(size_type di, size_type dj) const
+    hess(size_type di, size_type dj) const override
     {
       return (*_hess_val[di][dj])();
     }
