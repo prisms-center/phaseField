@@ -51,7 +51,7 @@ AdaptiveRefinement<dim, degree>::adaptive_refinement_criterion()
   const unsigned int num_quad_points = quadrature.size();
 
   // Set the update flags
-  dealii::UpdateFlags update_flags;
+  dealii::UpdateFlags update_flags = update_default;
   for (const auto &criterion : userInputs.refinement_criteria)
     {
       if (criterion.criterion_type & criterion_value)
