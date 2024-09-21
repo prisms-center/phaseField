@@ -555,7 +555,7 @@ inputFileReader::declare_parameters(dealii::ParameterHandler     &parameter_hand
     "The list of time steps to save checkpoints, used for the LIST type.");
   parameter_handler.declare_entry(
     "Number of checkpoints",
-    "1",
+    "0",
     dealii::Patterns::Integer(),
     "The number of checkpoints (or number of checkpoints per decade for the "
     "N_PER_DECADE type).");
