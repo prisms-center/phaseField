@@ -135,7 +135,8 @@ def compile_and_run(app_name, new_parameter_file, test_dir):
         print(f"Cleaning up {app_dir}")
         os.remove("CMakeCache.txt")
         os.remove("main")
-        os.remove("integratedFields.txt")
+        if os.path.exists("integratedFields.txt"):
+            os.remove("integratedFields.txt")
         for solution_file in glob.glob("solution-*.vtu"):
             os.remove(solution_file)
         for restart_file in glob.glob("restart.*"):
