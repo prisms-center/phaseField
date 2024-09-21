@@ -500,7 +500,7 @@ inputFileReader::declare_parameters(dealii::ParameterHandler    &parameter_handl
     dealii::Patterns::Anything(),
     "The list of time steps to output, used for the LIST type.");
   parameter_handler.declare_entry("Number of outputs",
-                                  "10",
+                                  "0",
                                   dealii::Patterns::Integer(),
                                   "The number of outputs (or number of outputs "
                                   "per decade for the N_PER_DECADE type).");
