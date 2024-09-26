@@ -174,7 +174,6 @@ def run_regression_test(applicationName, getNewGoldStandard, dir_path):
 dir_path = os.path.dirname(os.path.realpath(__file__))
 os.chdir(dir_path)
 
-text_file = open("test_results.txt", "a")
 now = datetime.datetime.now()
 
 
@@ -183,30 +182,25 @@ unit_test_results = run_unit_tests()
 unit_tests_passed = unit_test_results[0]
 unit_test_counter = unit_test_results[1]
 
-print()
-print(
-    "Unit Tests Passed: " + str(unit_tests_passed) + "/" + str(unit_test_counter) + "\n"
-)
 
 sys.stdout.flush()
-
-text_file.write("--------------------------------------------------------- \n")
-text_file.write("Unit test on " + now.strftime("%Y-%m-%d %H:%M") + "\n")
-text_file.write("--------------------------------------------------------- \n")
-text_file.write(
-    "Unit Tests Passed: " + str(unit_tests_passed) + "/" + str(unit_test_counter) + "\n"
-)
+with open("test_results.txt", "a") as text_file:
+    text_file.write(
+        "--------------------------------------------------------- \n"
+        "Unit test on " + now.strftime("%Y-%m-%d %H:%M") + "\n"
+        "--------------------------------------------------------- \n"
+        f"Unit Tests Passed: {unit_tests_passed}/{unit_test_counter}\n"
+    )
 
 os.chdir(dir_path)
 
 
-regression_test_counter = 0
-regression_tests_passed = 0
-
-text_file.write("--------------------------------------------------------- \n")
-text_file.write("Regression test on " + now.strftime("%Y-%m-%d %H:%M") + "\n")
-text_file.write("--------------------------------------------------------- \n")
-text_file.close()
+with open("test_results.txt", "a") as text_file:
+    text_file.write(
+        "--------------------------------------------------------- \n"
+        "Regression test on " + now.strftime("%Y-%m-%d %H:%M") + "\n"
+        "--------------------------------------------------------- \n"
+    )
 
 # Shorter list of applications so that it completes on Travis
 applicationList = [
@@ -218,6 +212,8 @@ applicationList = [
 ]
 getNewGoldStandardList = [False, False, False, False, False]
 
+regression_test_counter = 0
+regression_tests_passed = 0
 
 for applicationName in applicationList:
     test_result = run_regression_test(
@@ -227,27 +223,17 @@ for applicationName in applicationList:
     regression_test_counter += 1
     regression_tests_passed += int(test_result[0])
 
-print()
-print(
-    "Regression Tests Passed: "
-    + str(regression_tests_passed)
-    + "/"
-    + str(regression_test_counter)
-    + "\n"
-)
-
 
 # Output the overall test results
-text_file = open("test_results.txt", "a")
-text_file.write(
-    "Tests Passed: "
-    + str(regression_tests_passed)
-    + "/"
-    + str(regression_test_counter)
-    + "\n"
-)
-text_file.write("--------------------------------------------------------- \n")
-text_file.close()
+with open("test_results.txt", "a") as text_file:
+    text_file.write(
+        f"Tests Passed: {regression_tests_passed}/{regression_test_counter}\n"
+        "--------------------------------------------------------- \n"
+    )
+
+# Print overall results
+print(f"Unit Tests Passed: {unit_tests_passed}/{unit_test_counter}\n")
+print(f"Regression Tests Passed: {regression_tests_passed}/{regression_test_counter}\n")
 
 # Set exit code
 if (regression_tests_passed < regression_test_counter) or (
