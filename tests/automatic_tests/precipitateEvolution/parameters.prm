@@ -1,0 +1,200 @@
+# =================================================================================
+# Set the number of dimensions (1, 2, or 3 for a 1D, 2D, or 3D calculation)
+# =================================================================================
+set Number of dimensions = 2
+
+# =================================================================================
+# Set the length of the domain in all three dimensions
+# =================================================================================
+# Each axes spans from zero to the specified length
+set Domain size X = 40.0
+set Domain size Y = 40.0
+set Domain size Z = 40.0
+
+# =================================================================================
+# Set the element parameters
+# =================================================================================
+# The number of elements in each direction is 2^(refineFactor) * subdivisions
+# For optimal performance, use refineFactor primarily to determine the element size
+set Subdivisions X = 3
+set Subdivisions Y = 3
+set Subdivisions Z = 3
+
+set Refine factor = 5
+
+# Set the polynomial degree of the element (allowed values: 1, 2, or 3)
+set Element degree = 2
+
+# =================================================================================
+# Set the adaptive mesh refinement parameters
+# =================================================================================
+# Set the flag determining if adaptive meshing is activated
+set Mesh adaptivity = true
+
+# Set the maximum and minimum level of refinement
+# When adaptive meshing is enabled, the refine factor set in the block above is
+# only used to generate the first pass of the mesh as the initial conditions are
+# applied. It should be set somewhere between the max and min levels below.
+set Max refinement level = 5
+set Min refinement level = 1
+
+# Set the number of time steps between remeshing operations
+set Steps between remeshing operations = 1000
+
+# Set the criteria for adapting the mesh
+subsection Refinement criterion: n1
+    # Select whether the mesh is refined based on the variable value (VALUE),
+    # its gradient (GRADIENT), or both (VALUE_AND_GRADIENT)
+    set Criterion type = VALUE
+    # Set the lower and upper bounds for the value-based refinement window
+    set Value lower bound = 0.01
+    set Value upper bound = 0.99
+end
+
+subsection Refinement criterion: n2
+    # Select whether the mesh is refined based on the variable value (VALUE),
+    # its gradient (GRADIENT), or both (VALUE_AND_GRADIENT)
+    set Criterion type = VALUE
+    # Set the lower and upper bounds for the value-based refinement window
+    set Value lower bound = 0.01
+    set Value upper bound = 0.99
+end
+
+subsection Refinement criterion: n3
+    # Select whether the mesh is refined based on the variable value (VALUE),
+    # its gradient (GRADIENT), or both (VALUE_AND_GRADIENT)
+    set Criterion type = VALUE
+    # Set the lower and upper bounds for the value-based refinement window
+    set Value lower bound = 0.01
+    set Value upper bound = 0.99
+end
+
+# =================================================================================
+# Set the time step parameters
+# =================================================================================
+# The size of the time step
+set Time step = 6.0e-4
+
+# The simulation ends when either the number of time steps is reached or the
+# simulation time is reached.
+set Number of time steps = 20000
+
+# =================================================================================
+# Set the linear solver parameters
+# =================================================================================
+
+subsection Linear solver parameters: u
+    # Whether the tolerance value is compared to the residual (ABSOLUTE_RESIDUAL)
+    # or the change in the residual (RELATIVE_RESIDUAL_CHANGE)
+    set Tolerance type = ABSOLUTE_RESIDUAL
+
+    # The tolerance for convergence (L2 norm)
+    set Tolerance value = 5e-3
+
+    # The maximum number of linear solver iterations per solve
+    set Maximum linear solver iterations = 1000
+end
+
+# =================================================================================
+# Set the output parameters
+# =================================================================================
+# Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
+# or "LIST")
+set Output condition =  EQUAL_SPACING
+
+# Number of times the program outputs the fields (total number for "EQUAL_SPACING"
+# and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
+set Number of outputs = 10
+
+# The number of time steps between updates being printed to the screen
+set Skip print steps = 1 #1000
+
+# =================================================================================
+# Set the checkpoint/restart parameters
+# =================================================================================
+# Whether to start this simulation from the checkpoint of a previous simulation
+set Load from a checkpoint = false
+
+# Type of spacing between checkpoints ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
+# or "LIST")
+set Checkpoint condition = EQUAL_SPACING
+
+# Number of times the creates checkpoints (total number for "EQUAL_SPACING"
+# and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
+set Number of checkpoints = 2
+
+# =================================================================================
+# Set the boundary conditions
+# =================================================================================
+# Set the boundary condition for each variable, where each variable is given by
+# its name, as defined in equations.h. The four boundary condition
+# types are NATURAL, DIRICHLET, NON_UNIFORM_DIRICHLET and PERIODIC. If all
+# of the boundaries have the same boundary condition, only one boundary condition
+# type needs to be given. If multiple boundary condition types are needed, give a
+# comma-separated list of the types. The order is the miniumum of x, maximum of x,
+# minimum of y, maximum of y, minimum of z, maximum of z (i.e left, right, bottom,
+# top in 2D and left, right, bottom, top, front, back in 3D). The value of a
+# Dirichlet BC is specfied in the following way -- DIRCHILET: val -- where 'val' is
+# the desired value. If the boundary condition is NON_UNIFORM_DIRICHLET, the
+# boundary condition should be specified in the appropriate function in 'ICs_and_BCs.h'.
+# Example 1: All periodic BCs for variable 'c'
+# set Boundary condition for variable c = PERIODIC
+# Example 2: Zero-derivative BCs on the left and right, Dirichlet BCs with value
+# 1.5 on the top and bottom for variable 'n' in 2D
+# set Boundary condition for variable n = NATURAL, NATURAL, DIRICHLET: 1.5, DIRICHLET: 1.5
+
+set Boundary condition for variable c = NATURAL
+set Boundary condition for variable n1 = NATURAL
+set Boundary condition for variable n2 = NATURAL
+set Boundary condition for variable n3 = NATURAL
+set Boundary condition for variable u, x component = DIRICHLET: 0.0
+set Boundary condition for variable u, y component = DIRICHLET: 0.0
+set Boundary condition for variable u, z component = DIRICHLET: 0.0
+
+#set Boundary condition for variable u, x component = DIRICHLET: 0.0, DIRICHLET: 1.0, NATURAL, NATURAL
+#set Boundary condition for variable u, y component = NATURAL
+#set Boundary condition for variable u, z component = NATURAL
+
+# =================================================================================
+# Set the model constants
+# =================================================================================
+# Type options currently are double, int, bool, and tensor
+
+# McV, the Cahn-Hilliard mobility
+set Model constant McV = 1.0, double
+
+# The Allen-Cahn mobilities
+set Model constant Mn1V = 100.0, double
+set Model constant Mn2V = 100.0, double
+set Model constant Mn3V = 100.0, double
+
+# The gradient energy coefficients
+set Model constant Kn1 = ((0.03,0,0),(0,0.007,0),(0,0,1.0)), tensor
+set Model constant Kn2 = ((0.01275,-0.009959,0),(-0.009959,0.02425,0),(0,0,1.0)), tensor
+set Model constant Kn3 = ((0.01275,0.009959,0),(0.009959,0.02425,0),(0,0,1.0)), tensor
+
+# n_dependent_stiffness
+set Model constant n_dependent_stiffness = true, bool
+
+# The linear and constant coefficients of the stress-free transformation strains
+set Model constant sfts_linear1 = ((0,0,0),(0,0,0),(0,0,0)), tensor
+set Model constant sfts_const1 = ((0.0345,0,0),(0,0.0185,0),(0,0,-0.00270)), tensor
+set Model constant sfts_linear2 = ((0,0,0),(0,0,0),(0,0,0)), tensor
+set Model constant sfts_const2 = ((0.0225,-0.0069,0),(-0.0069,0.0305,0),(0,0,-0.00270)), tensor
+set Model constant sfts_linear3 = ((0,0,0),(0,0,0),(0,0,0)), tensor
+set Model constant sfts_const3 = ((0.0225, 0.0069,0),(0.0069,0.0305,0),(0,0,-0.00270)), tensor
+
+# A4, A3, A2, A1, and A0 Mg-Y matrix free energy parameters
+set Model constant A4 = 1.3687, double
+set Model constant A3 = -2.7375, double
+set Model constant A2 = 5.1622, double
+set Model constant A1 = -4.776, double
+set Model constant A0 = -1.6704, double
+
+# B2, B1, and B0 Mg-Y matrix free energy parameters
+set Model constant B2 = 5.0, double
+set Model constant B1 = -5.9746, double
+set Model constant B0 = -1.5924, double
+
+set Model constant CIJ_Mg = (40.0,0.3), isotropic elastic constants
+set Model constant CIJ_Beta = (50.0,0.3), isotropic elastic constants
