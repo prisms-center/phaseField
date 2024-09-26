@@ -1,16 +1,12 @@
 import subprocess
 import shutil
 import glob
-import math
 import os
 import datetime
 import time
 import sys
 
 
-# ----------------------------------------------------------------------------------------
-# Function that compiles and runs the unit tests.
-# ----------------------------------------------------------------------------------------
 def run_unit_tests():
     # Open file where output is redirected to
     if os.path.exists("output.txt") == True:
@@ -39,10 +35,7 @@ def run_unit_tests():
     return test_results
 
 
-# ----------------------------------------------------------------------------------------
-# Function that compiles the PRISMS-PF code and runs the executable.
-# ----------------------------------------------------------------------------------------
-def run_simulation(run_name, dir_path):
+def run_simulation(run_name):
     # Delete any pre-existing executables or results
     if os.path.exists(run_name) == True:
         shutil.rmtree(run_name)
@@ -83,9 +76,6 @@ def run_simulation(run_name, dir_path):
     return test_time
 
 
-# ----------------------------------------------------------------------------------------
-# Function that runs a regression test
-# ----------------------------------------------------------------------------------------
 def run_regression_test(applicationName, getNewGoldStandard, dir_path):
 
     if getNewGoldStandard == False:
@@ -102,7 +92,7 @@ def run_regression_test(applicationName, getNewGoldStandard, dir_path):
     os.chdir("../../applications/" + applicationName)
 
     # Run the simulation and move the results to the test directory
-    test_time = run_simulation(testName, dir_path)
+    test_time = run_simulation(testName)
 
     shutil.move(testName, r_test_dir)
 
@@ -128,7 +118,6 @@ def run_regression_test(applicationName, getNewGoldStandard, dir_path):
         test_energy = test_file.readlines()
         test_file.close()
 
-        last_energy_index = len(test_energy) - 1
         split_last_line = test_energy[-1].split()
         for index, entry in enumerate(split_last_line):
             if entry == "f_tot":
@@ -180,20 +169,12 @@ def run_regression_test(applicationName, getNewGoldStandard, dir_path):
     return (test_passed, test_time)
 
 
-# ----------------------------------------------------------------------------------------
-# Test Script
-# ----------------------------------------------------------------------------------------
-
 # Initialize
 dir_path = os.path.dirname(os.path.realpath(__file__))
 os.chdir(dir_path)
 
 text_file = open("test_results.txt", "a")
 now = datetime.datetime.now()
-
-# ------------------------------------
-# Start the unit tests
-# ------------------------------------
 
 
 os.chdir("../unit_tests/")
@@ -217,9 +198,6 @@ text_file.write(
 
 os.chdir(dir_path)
 
-# ------------------------------------
-# Start the regression tests
-# ------------------------------------
 
 regression_test_counter = 0
 regression_tests_passed = 0
@@ -228,9 +206,6 @@ text_file.write("--------------------------------------------------------- \n")
 text_file.write("Regression test on " + now.strftime("%Y-%m-%d %H:%M") + "\n")
 text_file.write("--------------------------------------------------------- \n")
 text_file.close()
-
-# applicationList = ["allenCahn","cahnHilliard","cahnHilliard","CHAC_anisotropy","CHAC_anisotropyRegularized","coupledCahnHilliardAllenCahn","mechanics","precipitateEvolution"]
-# getNewGoldStandardList = [False, False, False, False, False, False, False, False]
 
 # Shorter list of applications so that it completes on Travis
 applicationList = [
@@ -241,8 +216,6 @@ applicationList = [
     "precipitateEvolution",
 ]
 getNewGoldStandardList = [False, False, False, False, False]
-# applicationList = ["allenCahn"]
-# getNewGoldStandardList = [False]
 
 
 for applicationName in applicationList:
@@ -275,7 +248,7 @@ text_file.write(
 text_file.write("--------------------------------------------------------- \n")
 text_file.close()
 
-# Set exit code (passed to Travis CI)
+# Set exit code
 if (regression_tests_passed < regression_test_counter) or (
     unit_tests_passed < unit_test_counter
 ):
