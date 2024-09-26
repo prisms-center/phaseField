@@ -5,6 +5,7 @@ import os
 import datetime
 import time
 import sys
+from concurrent.futures import ProcessPoolExecutor
 
 
 def remove_file(file):
@@ -58,9 +59,7 @@ def run_simulation(run_name):
     subprocess.call(["rm", "*vtu"], stdout=f, stderr=f)
 
     # Compile and run
-    subprocess.call(
-        ["cmake", "."]
-    )  # print to the screen to prevent a timeout on Travis
+    subprocess.call(["cmake", "."])
     subprocess.call(["make", "release"], stdout=f)
     print("Compiling complete, running the regression test...")
     sys.stdout.flush()
@@ -102,7 +101,9 @@ def run_regression_test(applicationName, getNewGoldStandard, dir_path):
     # Compare the result against the gold standard, if it exists
     os.chdir(r_test_dir)
 
-    if not getNewGoldStandard:
+    if getNewGoldStandard:
+        test_passed = True
+    else:
         # Read the gold standard free energies
         os.chdir("gold_" + applicationName)
         gold_standard_file = open("integratedFields.txt", "r")
@@ -135,37 +136,33 @@ def run_regression_test(applicationName, getNewGoldStandard, dir_path):
         else:
             test_passed = False
 
-    else:
-        test_passed = True
-
     # Print the results to the screen
-    print("Regression Test: ", applicationName)
+    print(f"Regression Test: {applicationName}")
 
     if test_passed:
-        if not getNewGoldStandard:
-            print("Result: Pass")
-        else:
+        if getNewGoldStandard:
             print("Result: New Gold Standard")
+        else:
+            print("Result: Pass")
     else:
         print("Result: Fail")
 
-    print("Time taken:", test_time)
+    print(f"Time taken: {test_time}")
 
     sys.stdout.flush()
 
     # Write the results to a file
     os.chdir(r_test_dir)
-    text_file = open("test_results.txt", "a")
-    text_file.write("Application: " + applicationName + " \n")
-    if test_passed:
-        if not getNewGoldStandard:
-            text_file.write("Result: Pass \n")
+    with open("test_results.txt", "a") as text_file:
+        text_file.write(f"Application: {applicationName}\n")
+        if test_passed:
+            if getNewGoldStandard:
+                text_file.write("Result: New Gold Standard \n")
+            else:
+                text_file.write("Result: Pass \n")
         else:
-            text_file.write("Result: New Gold Standard \n")
-    else:
-        text_file.write("Result: Fail \n")
-    text_file.write("Time: " + str(test_time) + " \n \n")
-    text_file.close()
+            text_file.write("Result: Fail \n")
+        text_file.write(f"Time: {test_time}\n \n")
 
     return (test_passed, test_time)
 
