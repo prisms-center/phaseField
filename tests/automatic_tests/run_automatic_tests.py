@@ -8,22 +8,21 @@ import sys
 
 
 def run_unit_tests():
-    # Open file where output is redirected to
-    if os.path.exists("output.txt") == True:
+    # Remove old files if they exist
+    if os.path.exists("output.txt"):
         os.remove("output.txt")
-    f = open("output.txt", "w+")
-
-    # Remove old files
-    if os.path.exists("main") == True:
+    if os.path.exists("main"):
         os.remove("main")
-    if os.path.exists("CMakeCache.txt") == True:
+    if os.path.exists("CMakeCache.txt"):
         os.remove("CMakeCache.txt")
-    if os.path.exists("unit_test_results.txt") == True:
+    if os.path.exists("unit_test_results.txt"):
         os.remove("unit_test_results.txt")
+
+    # Open file where output is redirected to
+    f = open("output.txt", "w+")
 
     # Compile and run
     subprocess.call(["cmake", "."], stdout=f, stderr=f)
-    subprocess.call(["make", "release"], stdout=f)
     subprocess.call(["make"], stdout=f)
     subprocess.call(["mpirun", "-n", "1", "./main"], stdout=f)
     f.close()
@@ -37,18 +36,18 @@ def run_unit_tests():
 
 def run_simulation(run_name):
     # Delete any pre-existing executables or results
-    if os.path.exists(run_name) == True:
+    if os.path.exists(run_name):
         shutil.rmtree(run_name)
 
     # Open file where output is redirected to
-    if os.path.exists("output.txt") == True:
+    if os.path.exists("output.txt"):
         os.remove("output.txt")
     f = open("output.txt", "w+")
 
     # Remove old files
-    if os.path.exists("main") == True:
+    if os.path.exists("main"):
         os.remove("main")
-    if os.path.exists("CMakeCache.txt") == True:
+    if os.path.exists("CMakeCache.txt"):
         os.remove("CMakeCache.txt")
 
     subprocess.call(["rm", "*vtu"], stdout=f, stderr=f)
@@ -69,7 +68,7 @@ def run_simulation(run_name):
     subprocess.call(["mkdir", run_name])
     for output_files in glob.glob("*vtu"):
         shutil.move(output_files, run_name)
-    if os.path.exists("integratedFields.txt") == True:
+    if os.path.exists("integratedFields.txt"):
         shutil.move("integratedFields.txt", run_name)
 
     test_time = end - start
@@ -78,13 +77,12 @@ def run_simulation(run_name):
 
 def run_regression_test(applicationName, getNewGoldStandard, dir_path):
 
-    if getNewGoldStandard == False:
+    if not getNewGoldStandard:
         testName = "test_" + applicationName
-
     else:
         testName = "gold_" + applicationName
 
-    if os.path.exists(testName) == True:
+    if os.path.exists(testName):
         shutil.rmtree(testName)
 
     # Move to the application directory
@@ -99,14 +97,13 @@ def run_regression_test(applicationName, getNewGoldStandard, dir_path):
     # Compare the result against the gold standard, if it exists
     os.chdir(r_test_dir)
 
-    if getNewGoldStandard == False:
+    if not getNewGoldStandard:
         # Read the gold standard free energies
         os.chdir("gold_" + applicationName)
         gold_standard_file = open("integratedFields.txt", "r")
         gold_energy = gold_standard_file.readlines()
         gold_standard_file.close()
 
-        last_energy_index = len(gold_energy) - 1
         split_last_line = gold_energy[-1].split()
         for index, entry in enumerate(split_last_line):
             if entry == "f_tot":
@@ -140,7 +137,7 @@ def run_regression_test(applicationName, getNewGoldStandard, dir_path):
     print("Regression Test: ", applicationName)
 
     if test_passed:
-        if getNewGoldStandard == False:
+        if not getNewGoldStandard:
             print("Result: Pass")
         else:
             print("Result: New Gold Standard")
@@ -157,7 +154,7 @@ def run_regression_test(applicationName, getNewGoldStandard, dir_path):
     now = datetime.datetime.now()
     text_file.write("Application: " + applicationName + " \n")
     if test_passed:
-        if getNewGoldStandard == False:
+        if not getNewGoldStandard:
             text_file.write("Result: Pass \n")
         else:
             text_file.write("Result: New Gold Standard \n")
