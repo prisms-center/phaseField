@@ -5,102 +5,96 @@ import os
 import datetime
 import time
 import sys
-from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import ProcessPoolExecutor, as_completed
 
 
 def remove_file(file):
     """Remove a file if it exists
 
     Args:
-            file (string): path of the file
+            file (string): Path to file
     """
     if os.path.exists(file):
         os.remove(file)
 
 
-def run_unit_tests():
+def write_to_file(file, text):
+    """Write text to file
+
+    Args:
+        file (string): Path to file
+        text (string): Text to write in file
+    """
+    with open(file, "a") as text_file:
+        text_file.write(text)
+
+
+def compile_and_run_unit_tests():
     # Remove old files if they exist
-    remove_file("output.txt")
     remove_file("main")
     remove_file("CMakeCache.txt")
     remove_file("unit_test_results.txt")
 
-    # Open file where output is redirected to
-    f = open("output.txt", "w+")
-
     # Compile and run
-    subprocess.call(["cmake", "."], stdout=f, stderr=f)
-    subprocess.call(["make"], stdout=f)
-    subprocess.call(["mpirun", "-n", "1", "./main"], stdout=f)
-    f.close()
+    subprocess.call(["cmake", "."])
+    subprocess.call(["make"])
+    subprocess.call(["mpirun", "-n", "1", "./main"])
 
-    result_file = open("unit_test_results.txt", "r")
-    test_results = result_file.read().splitlines()
-    result_file.close()
-
-    return test_results
+    with open("unit_test_results.txt", "r") as result_file:
+        return result_file.read().splitlines()
 
 
-def run_simulation(run_name):
+def compile_and_run_simulation(run_name):
     # Delete any pre-existing executables or results
     if os.path.exists(run_name):
         shutil.rmtree(run_name)
 
-    # Open file where output is redirected to
-    remove_file("output.txt")
-    f = open("output.txt", "w+")
-
     # Remove old files
-    if os.path.exists("main"):
-        os.remove("main")
-    if os.path.exists("CMakeCache.txt"):
-        os.remove("CMakeCache.txt")
+    remove_file("main")
+    remove_file("CMakeCache.txt")
+    for solution_file in glob.glob("solution-*.vtu"):
+        os.remove(solution_file)
 
-    subprocess.call(["rm", "*vtu"], stdout=f, stderr=f)
-
-    # Compile and run
+    # Compile application
     subprocess.call(["cmake", "."])
-    subprocess.call(["make", "release"], stdout=f)
+    subprocess.call(["make", "release"])
+
+    # Print successful compilation to screen
     print("Compiling complete, running the regression test...")
     sys.stdout.flush()
+
+    # Run application with timer
     start = time.time()
-    subprocess.call(["mpirun", "-n", "1", "./main"], stdout=f)
+    subprocess.call(["mpirun", "-n", "1", "./main"])
     end = time.time()
-    f.close()
 
     # Group the files
     subprocess.call(["mkdir", run_name])
-    for output_files in glob.glob("*vtu"):
+    for output_files in glob.glob("solution-*.vtu"):
         shutil.move(output_files, run_name)
     if os.path.exists("integratedFields.txt"):
         shutil.move("integratedFields.txt", run_name)
 
-    test_time = end - start
-    return test_time
+    return end - start
 
 
 def run_regression_test(applicationName, getNewGoldStandard, dir_path):
 
-    if not getNewGoldStandard:
-        testName = "test_" + applicationName
-    else:
-        testName = "gold_" + applicationName
+    testName = f"{'gold' if getNewGoldStandard else 'test'}_{applicationName}"
 
     if os.path.exists(testName):
         shutil.rmtree(testName)
 
     # Move to the application directory
-    r_test_dir = dir_path
-    os.chdir("../../applications/" + applicationName)
+    os.chdir(os.path.join("../../applications/", applicationName))
 
     # Run the simulation and move the results to the test directory
-    test_time = run_simulation(testName)
+    test_time = compile_and_run_simulation(testName)
 
-    shutil.move(testName, r_test_dir)
+    shutil.move(testName, dir_path)
+    os.chdir(dir_path)
 
     # Compare the result against the gold standard, if it exists
-    os.chdir(r_test_dir)
-
     if getNewGoldStandard:
         test_passed = True
     else:
@@ -126,80 +120,83 @@ def run_regression_test(applicationName, getNewGoldStandard, dir_path):
             if entry == "f_tot":
                 last_energy = split_last_line[index + 1]
 
-        rel_diff = (float(gold_last_energy) - float(last_energy)) / float(
-            gold_last_energy
+        rel_diff = abs(
+            (float(gold_last_energy) - float(last_energy)) / float(gold_last_energy)
         )
-        rel_diff = abs(rel_diff)
+        test_passed = rel_diff < 1.0e-9
 
-        if rel_diff < 1.0e-9:
-            test_passed = True
-        else:
-            test_passed = False
+    # Determine test result
+    test_result = (
+        "New Gold Standard"
+        if test_passed and getNewGoldStandard
+        else "Pass" if test_passed else "Fail"
+    )
 
     # Print the results to the screen
-    print(f"Regression Test: {applicationName}")
-
-    if test_passed:
-        if getNewGoldStandard:
-            print("Result: New Gold Standard")
-        else:
-            print("Result: Pass")
-    else:
-        print("Result: Fail")
-
-    print(f"Time taken: {test_time}")
-
+    print(
+        f"Regression Test: {applicationName}\n"
+        f"Result: {test_result}\n"
+        f"Time taken: {test_time}\n"
+    )
     sys.stdout.flush()
 
     # Write the results to a file
-    os.chdir(r_test_dir)
-    with open("test_results.txt", "a") as text_file:
-        text_file.write(f"Application: {applicationName}\n")
-        if test_passed:
-            if getNewGoldStandard:
-                text_file.write("Result: New Gold Standard \n")
-            else:
-                text_file.write("Result: Pass \n")
-        else:
-            text_file.write("Result: Fail \n")
-        text_file.write(f"Time: {test_time}\n \n")
+    os.chdir(dir_path)
+    write_to_file(
+        "test_results.txt",
+        f"Application: {applicationName}\n" f"Time: {test_time}\n \n",
+    )
 
-    return (test_passed, test_time)
+    return test_passed, test_time
+
+
+def run_regression_tests_in_parallel(application_list, gold_standard_list, dir_path):
+
+    regression_test_counter = 0
+    regression_tests_passed = 0
+
+    with ProcessPoolExecutor() as executor:
+        futures = [
+            executor.submit(run_regression_test, application, gold_standard, dir_path)
+            for application, gold_standard in zip(application_list, gold_standard_list)
+        ]
+
+        for future in as_completed(futures):
+            test_passed, test_time = future.result()
+            regression_tests_passed += int(test_passed)
+            regression_test_counter += 1
+
+    return regression_tests_passed, regression_test_counter
 
 
 # Initialize
 dir_path = os.path.dirname(os.path.realpath(__file__))
 os.chdir(dir_path)
-
 now = datetime.datetime.now()
 
-
 os.chdir("../unit_tests/")
-unit_test_results = run_unit_tests()
+unit_test_results = compile_and_run_unit_tests()
 unit_tests_passed = unit_test_results[0]
 unit_test_counter = unit_test_results[1]
 
-
-sys.stdout.flush()
-with open("test_results.txt", "a") as text_file:
-    text_file.write(
-        "--------------------------------------------------------- \n"
-        "Unit test on " + now.strftime("%Y-%m-%d %H:%M") + "\n"
-        "--------------------------------------------------------- \n"
-        f"Unit Tests Passed: {unit_tests_passed}/{unit_test_counter}\n"
-    )
-
 os.chdir(dir_path)
+write_to_file(
+    "test_results.txt",
+    "--------------------------------------------------------- \n"
+    "Unit test on " + now.strftime("%Y-%m-%d %H:%M") + "\n"
+    "--------------------------------------------------------- \n"
+    f"Unit Tests Passed: {unit_tests_passed}/{unit_test_counter}\n",
+)
 
 
-with open("test_results.txt", "a") as text_file:
-    text_file.write(
-        "--------------------------------------------------------- \n"
-        "Regression test on " + now.strftime("%Y-%m-%d %H:%M") + "\n"
-        "--------------------------------------------------------- \n"
-    )
+write_to_file(
+    "test_results.txt",
+    "--------------------------------------------------------- \n"
+    "Regression test on " + now.strftime("%Y-%m-%d %H:%M") + "\n"
+    "--------------------------------------------------------- \n",
+)
 
-# Shorter list of applications so that it completes on Travis
+# List of applications
 applicationList = [
     "allenCahn",
     "cahnHilliard",
@@ -209,24 +206,17 @@ applicationList = [
 ]
 getNewGoldStandardList = [False, False, False, False, False]
 
-regression_test_counter = 0
-regression_tests_passed = 0
-
-for applicationName in applicationList:
-    test_result = run_regression_test(
-        applicationName, getNewGoldStandardList[regression_test_counter], dir_path
-    )
-
-    regression_test_counter += 1
-    regression_tests_passed += int(test_result[0])
-
+regression_tests_passed, regression_test_counter = run_regression_tests_in_parallel(
+    applicationList, getNewGoldStandardList, dir_path
+)
 
 # Output the overall test results
-with open("test_results.txt", "a") as text_file:
-    text_file.write(
-        f"Tests Passed: {regression_tests_passed}/{regression_test_counter}\n"
-        "--------------------------------------------------------- \n"
-    )
+write_to_file(
+    "test_results.txt",
+    f"Tests Passed: {regression_tests_passed}/{regression_test_counter}\n"
+    "--------------------------------------------------------- \n",
+)
+
 
 # Print overall results
 print(f"Unit Tests Passed: {unit_tests_passed}/{unit_test_counter}\n")
