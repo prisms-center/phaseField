@@ -7,16 +7,22 @@ import time
 import sys
 
 
+def remove_file(file):
+    """Remove a file if it exists
+
+    Args:
+            file (string): path of the file
+    """
+    if os.path.exists(file):
+        os.remove(file)
+
+
 def run_unit_tests():
     # Remove old files if they exist
-    if os.path.exists("output.txt"):
-        os.remove("output.txt")
-    if os.path.exists("main"):
-        os.remove("main")
-    if os.path.exists("CMakeCache.txt"):
-        os.remove("CMakeCache.txt")
-    if os.path.exists("unit_test_results.txt"):
-        os.remove("unit_test_results.txt")
+    remove_file("output.txt")
+    remove_file("main")
+    remove_file("CMakeCache.txt")
+    remove_file("unit_test_results.txt")
 
     # Open file where output is redirected to
     f = open("output.txt", "w+")
@@ -40,8 +46,7 @@ def run_simulation(run_name):
         shutil.rmtree(run_name)
 
     # Open file where output is redirected to
-    if os.path.exists("output.txt"):
-        os.remove("output.txt")
+    remove_file("output.txt")
     f = open("output.txt", "w+")
 
     # Remove old files
@@ -151,7 +156,6 @@ def run_regression_test(applicationName, getNewGoldStandard, dir_path):
     # Write the results to a file
     os.chdir(r_test_dir)
     text_file = open("test_results.txt", "a")
-    now = datetime.datetime.now()
     text_file.write("Application: " + applicationName + " \n")
     if test_passed:
         if not getNewGoldStandard:
