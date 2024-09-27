@@ -29,7 +29,7 @@ public:
                             [[maybe_unused]] Vector<double>    &vector_BC) override;
 
 private:
-#include "../../include/typeDefs.h"
+#include "../../../include/typeDefs.h"
 
   const userInputParameters<dim> userInputs;
 
