@@ -5,6 +5,7 @@ import os
 import datetime
 import time
 import sys
+import argparse
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
 
@@ -70,7 +71,7 @@ def compile_and_run_simulation(application_path):
     )
 
     # Print successful compilation to screen
-    print("Compiling complete, running the regression test...")
+    print(f"Compiling complete, running the regression test for {application_path}...")
     sys.stdout.flush()
 
     # Run application with timer
@@ -150,11 +151,13 @@ def run_regression_test(application, new_gold_standard, test_dir):
     return test_passed, test_time
 
 
-def run_regression_tests_in_parallel(application_list, gold_standard_list, test_dir):
+def run_regression_tests_in_parallel(
+    application_list, gold_standard_list, test_dir, n_processes=None
+):
     regression_test_counter = 0
     regression_tests_passed = 0
 
-    with ProcessPoolExecutor(max_workers=1) as executor:
+    with ProcessPoolExecutor(max_workers=n_processes) as executor:
         futures = [
             executor.submit(run_regression_test, application, gold_standard, test_dir)
             for application, gold_standard in zip(application_list, gold_standard_list)
@@ -168,12 +171,25 @@ def run_regression_tests_in_parallel(application_list, gold_standard_list, test_
     return regression_tests_passed, regression_test_counter
 
 
-# Initialize
+# Initialize arg parser
+parser = argparse.ArgumentParser(
+    description="The maximum processes to use to run the regression tests"
+)
+parser.add_argument("-n", "--ntasks", type=int, default=1, help="Number of processes")
+args = parser.parse_args()
+n_processes = args.ntasks
+
+# Grab current directory and the path to the test results file
 pwd = os.path.dirname(os.path.realpath(__file__))
 test_result_file = os.path.join(pwd, "test_results.txt")
 
+# Grab current date
 now = datetime.datetime.now()
+
+# Navigate to the unit test directory
 os.chdir("../unit_tests/")
+
+# Run unit tests
 unit_test_results = compile_and_run_unit_tests()
 unit_tests_passed = unit_test_results[0]
 unit_test_counter = unit_test_results[1]
@@ -204,9 +220,13 @@ applicationList = [
 ]
 getNewGoldStandardList = [False, False, False, False, False]
 
+start_parallel = time.time()
 regression_tests_passed, regression_test_counter = run_regression_tests_in_parallel(
-    applicationList, getNewGoldStandardList, pwd
+    applicationList, getNewGoldStandardList, pwd, n_processes
 )
+end_parallel = time.time()
+print(f"Total time spend on regressions tests: {end_parallel - start_parallel}")
+
 
 os.chdir(pwd)
 # Output the overall test results
