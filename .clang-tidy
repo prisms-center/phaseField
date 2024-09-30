@@ -1,0 +1,10 @@
+# Setting file for clang-tidy
+
+Checks: >
+  -*,
+  boost-*,
+  modernize-*,
+  mpi-*,
+  performance-*
+
+WarningsAsErrors: '*'
