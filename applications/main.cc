@@ -100,6 +100,30 @@ main(int argc, char **argv)
                       problem.solve();
                       break;
                     }
+                  case (4):
+                    {
+                      customPDE<2, 4> problem(userInputs);
+                      problem.buildFields();
+                      problem.init();
+                      problem.solve();
+                      break;
+                    }
+                  case (5):
+                    {
+                      customPDE<2, 5> problem(userInputs);
+                      problem.buildFields();
+                      problem.init();
+                      problem.solve();
+                      break;
+                    }
+                  case (6):
+                    {
+                      customPDE<2, 6> problem(userInputs);
+                      problem.buildFields();
+                      problem.init();
+                      problem.solve();
+                      break;
+                    }
                 }
               break;
             }
@@ -129,6 +153,30 @@ main(int argc, char **argv)
                   case (3):
                     {
                       customPDE<3, 3> problem(userInputs);
+                      problem.buildFields();
+                      problem.init();
+                      problem.solve();
+                      break;
+                    }
+                  case (4):
+                    {
+                      customPDE<3, 4> problem(userInputs);
+                      problem.buildFields();
+                      problem.init();
+                      problem.solve();
+                      break;
+                    }
+                  case (5):
+                    {
+                      customPDE<3, 5> problem(userInputs);
+                      problem.buildFields();
+                      problem.init();
+                      problem.solve();
+                      break;
+                    }
+                  case (6):
+                    {
+                      customPDE<3, 6> problem(userInputs);
                       problem.buildFields();
                       problem.init();
                       problem.solve();

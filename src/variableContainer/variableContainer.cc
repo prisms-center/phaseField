@@ -625,10 +625,19 @@ variableContainer<dim, degree, T>::set_vector_gradient_term_LHS(
 }
 
 template class variableContainer<2, 1, dealii::VectorizedArray<double>>;
-template class variableContainer<2, 2, dealii::VectorizedArray<double>>;
-template class variableContainer<2, 3, dealii::VectorizedArray<double>>;
-template class variableContainer<2, 4, dealii::VectorizedArray<double>>;
 template class variableContainer<3, 1, dealii::VectorizedArray<double>>;
+
+template class variableContainer<2, 2, dealii::VectorizedArray<double>>;
 template class variableContainer<3, 2, dealii::VectorizedArray<double>>;
+
+template class variableContainer<2, 3, dealii::VectorizedArray<double>>;
 template class variableContainer<3, 3, dealii::VectorizedArray<double>>;
+
+template class variableContainer<2, 4, dealii::VectorizedArray<double>>;
 template class variableContainer<3, 4, dealii::VectorizedArray<double>>;
+
+template class variableContainer<2, 5, dealii::VectorizedArray<double>>;
+template class variableContainer<3, 5, dealii::VectorizedArray<double>>;
+
+template class variableContainer<2, 6, dealii::VectorizedArray<double>>;
+template class variableContainer<3, 6, dealii::VectorizedArray<double>>;
