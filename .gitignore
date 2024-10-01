@@ -35,6 +35,7 @@ compile_commands.json
 *.exe
 *.out
 *.app
+*.pbs
 
 #Output files
 *vtk
