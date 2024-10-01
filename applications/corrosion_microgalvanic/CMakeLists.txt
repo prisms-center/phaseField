@@ -45,7 +45,8 @@ if(EXISTS "nucleation.cc")
 endif()
 
 # Set location of files
-include_directories(${CMAKE_SOURCE_DIR}/..)
+include_directories(${CMAKE_SOURCE_DIR}/../../include)
+include_directories(${CMAKE_SOURCE_DIR}/../../src)
 include_directories(${CMAKE_SOURCE_DIR})
 
 # SEt the location of the main.cc file
