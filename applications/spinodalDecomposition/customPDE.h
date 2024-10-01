@@ -1,4 +1,5 @@
-#include "../../include/matrixFreePDE.h"
+#include "matrixFreePDE.h"
+
 #include <random>
 
 using namespace dealii;
@@ -41,7 +42,7 @@ public:
   typedef std::uniform_real_distribution<double> distribution;
 
 private:
-#include "../../include/typeDefs.h"
+#include "typeDefs.h"
 
   const userInputParameters<dim> userInputs;
 

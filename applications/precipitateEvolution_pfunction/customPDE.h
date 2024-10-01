@@ -1,4 +1,4 @@
-#include "../../include/matrixFreePDE.h"
+#include "matrixFreePDE.h"
 
 using namespace dealii;
 
@@ -6,8 +6,7 @@ using namespace dealii;
 typedef VectorizedArray<double> scalarvalueType;
 #include "PLibrary/PLibrary.cc"
 #include "PLibrary/PLibrary.hh"
-
-#include "../../src/pFunction/pFunction.h"
+#include "pFunction/pFunction.h"
 
 // Declare the PFunctions to be used
 PFunctions::pFunction pfunct_McV("pfunct_McV"), pfunct_Mn1V("pfunct_Mn1V"),
@@ -39,7 +38,7 @@ public:
                             [[maybe_unused]] Vector<double>    &vector_BC) override;
 
 private:
-#include "../../include/typeDefs.h"
+#include "typeDefs.h"
 
   const userInputParameters<dim> userInputs;
 
