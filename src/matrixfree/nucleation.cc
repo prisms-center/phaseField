@@ -2,8 +2,8 @@
 #include "../../include/matrixFreePDE.h"
 #include "../../include/parallelNucleationList.h"
 #include "../../include/varBCs.h"
+#include <ctime>
 #include <random>
-#include <time.h>
 
 // =======================================================================================================
 // Function called in solve to update the global list of nuclei
@@ -301,9 +301,9 @@ MatrixFreePDE<dim, degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
                           std::cout << "Nucleus center: " << nuc_ele_pos << std::endl;
                           std::cout << "Nucleus order parameter: " << variable_index
                                     << std::endl;
-                          nucleus<dim> *temp = new nucleus<dim>;
-                          temp->index        = nuclei.size();
-                          temp->center       = nuc_ele_pos;
+                          auto *temp   = new nucleus<dim>;
+                          temp->index  = nuclei.size();
+                          temp->center = nuc_ele_pos;
                           temp->semiaxes =
                             userInputs.get_nucleus_semiaxes(variable_index);
                           temp->seededTime = t;
@@ -498,7 +498,7 @@ template <int dim, int degree>
 double
 MatrixFreePDE<dim, degree>::weightedDistanceFromNucleusCenter(
   const dealii::Point<dim, double> center,
-  const std::vector<double>        semiaxes,
+  const std::vector<double>       &semiaxes,
   const dealii::Point<dim, double> q_point_loc,
   const unsigned int               var_index) const
 {
@@ -531,7 +531,7 @@ template <int dim, int degree>
 dealii::VectorizedArray<double>
 MatrixFreePDE<dim, degree>::weightedDistanceFromNucleusCenter(
   const dealii::Point<dim, double>                          center,
-  const std::vector<double>                                 semiaxes,
+  const std::vector<double>                                &semiaxes,
   const dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc,
   const unsigned int                                        var_index) const
 {

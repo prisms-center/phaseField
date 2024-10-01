@@ -18,19 +18,19 @@ class EquationDependencyParser
 {
 public:
   void
-  parse(std::vector<std::string> var_name,
-        std::vector<PDEType>     var_eq_type,
-        std::vector<std::string> sorted_dependencies_value_RHS,
-        std::vector<std::string> sorted_dependencies_gradient_RHS,
-        std::vector<std::string> sorted_dependencies_value_LHS,
-        std::vector<std::string> sorted_dependencies_gradient_LHS,
-        std::vector<bool>       &var_nonlinear);
+  parse(std::vector<std::string> &var_name,
+        std::vector<PDEType>      var_eq_type,
+        std::vector<std::string>  sorted_dependencies_value_RHS,
+        std::vector<std::string>  sorted_dependencies_gradient_RHS,
+        std::vector<std::string>  sorted_dependencies_value_LHS,
+        std::vector<std::string>  sorted_dependencies_gradient_LHS,
+        std::vector<bool>        &var_nonlinear);
 
   void
-  pp_parse(std::vector<std::string> var_name,
-           std::vector<std::string> pp_var_name,
-           std::vector<std::string> sorted_dependencies_value,
-           std::vector<std::string> sorted_dependencies_gradient);
+  pp_parse(std::vector<std::string> &var_name,
+           std::vector<std::string> &pp_var_name,
+           std::vector<std::string>  sorted_dependencies_value,
+           std::vector<std::string>  sorted_dependencies_gradient);
 
   // Evaluation flags for each type of solution variable (e.g., explicit, nonexplicit,
   // nonexplicit_change, etc.)
@@ -63,11 +63,11 @@ protected:
    */
   void
   parseDependencyListRHS(
-    std::vector<std::string>                               variable_name_list,
+    std::vector<std::string>                              &variable_name_list,
     std::vector<PDEType>                                   variable_eq_type,
     unsigned int                                           variable_index,
-    std::string                                            value_dependencies,
-    std::string                                            gradient_dependencies,
+    std::string                                           &value_dependencies,
+    std::string                                           &gradient_dependencies,
     std::vector<dealii::EvaluationFlags::EvaluationFlags> &evaluation_flags,
     std::vector<dealii::EvaluationFlags::EvaluationFlags> &residual_flags,
     bool                                                  &is_nonlinear);
@@ -78,11 +78,11 @@ protected:
    */
   void
   parseDependencyListLHS(
-    std::vector<std::string>                               variable_name_list,
+    std::vector<std::string>                              &variable_name_list,
     std::vector<PDEType>                                   variable_eq_type,
     unsigned int                                           variable_index,
-    std::string                                            value_dependencies,
-    std::string                                            gradient_dependencies,
+    std::string                                           &value_dependencies,
+    std::string                                           &gradient_dependencies,
     std::vector<dealii::EvaluationFlags::EvaluationFlags> &evaluation_flags,
     std::vector<dealii::EvaluationFlags::EvaluationFlags> &change_flags,
     std::vector<dealii::EvaluationFlags::EvaluationFlags> &residual_flags,
@@ -94,10 +94,10 @@ protected:
    */
   void
   parseDependencyListPP(
-    std::vector<std::string>                               variable_name_list,
+    std::vector<std::string>                              &variable_name_list,
     unsigned int                                           variable_index,
-    std::string                                            value_dependencies,
-    std::string                                            gradient_dependencies,
+    std::string                                           &value_dependencies,
+    std::string                                           &gradient_dependencies,
     std::vector<dealii::EvaluationFlags::EvaluationFlags> &evaluation_flags,
     std::vector<dealii::EvaluationFlags::EvaluationFlags> &residual_flags);
 };

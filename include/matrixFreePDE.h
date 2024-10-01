@@ -369,7 +369,7 @@ protected:
   void
   getComponentsWithRigidBodyModes(std::vector<int> &) const;
   void
-  setRigidBodyModeConstraints(const std::vector<int>,
+  setRigidBodyModeConstraints(const std::vector<int> &,
                               AffineConstraints<double> *,
                               const DoFHandler<dim> *) const;
 
@@ -398,7 +398,7 @@ protected:
   move_file(const std::string &, const std::string &);
 
   void
-  verify_checkpoint_file_exists(const std::string filename);
+  verify_checkpoint_file_exists(const std::string &filename);
 
   // --------------------------------------------------------------------------
   // Nucleation methods and variables
@@ -419,13 +419,13 @@ protected:
   void
   refineMeshNearNuclei(std::vector<nucleus<dim>> newnuclei);
   double
-  weightedDistanceFromNucleusCenter(const Point<dim, double>  center,
-                                    const std::vector<double> semiaxes,
-                                    const Point<dim, double>  q_point_loc,
-                                    const unsigned int        var_index) const;
+  weightedDistanceFromNucleusCenter(const Point<dim, double>   center,
+                                    const std::vector<double> &semiaxes,
+                                    const Point<dim, double>   q_point_loc,
+                                    const unsigned int         var_index) const;
   VectorizedArray<double>
   weightedDistanceFromNucleusCenter(const Point<dim, double>                  center,
-                                    const std::vector<double>                 semiaxes,
+                                    const std::vector<double>                &semiaxes,
                                     const Point<dim, VectorizedArray<double>> q_point_loc,
                                     const unsigned int var_index) const;
 

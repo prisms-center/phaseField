@@ -41,7 +41,7 @@ MatrixFreePDE<dim, degree>::initForTests(std::vector<Field<dim>> fields)
   for (auto &field : fields)
     {
       // create FESystem
-      FESystem<dim> *fe;
+      FESystem<dim> *fe = nullptr;
       if (field.type == SCALAR)
         {
           fe = new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(degree + 1)), 1);

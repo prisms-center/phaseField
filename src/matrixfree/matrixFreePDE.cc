@@ -41,33 +41,33 @@ MatrixFreePDE<dim, degree>::~MatrixFreePDE()
   // Delete the pointers contained in several member variable vectors
   // The size of each of these must be checked individually in case an exception
   // is thrown as they are being initialized.
-  for (unsigned int iter = 0; iter < locally_relevant_dofsSet.size(); iter++)
+  for (const auto &locally_relevant_dofs : locally_relevant_dofsSet)
     {
-      delete locally_relevant_dofsSet[iter];
+      delete locally_relevant_dofs;
     }
-  for (unsigned int iter = 0; iter < constraintsDirichletSet.size(); iter++)
+  for (const auto &constraintsDirichlet : constraintsDirichletSet)
     {
-      delete constraintsDirichletSet[iter];
+      delete constraintsDirichlet;
     }
-  for (unsigned int iter = 0; iter < soltransSet.size(); iter++)
+  for (const auto &soltrans : soltransSet)
     {
-      delete soltransSet[iter];
+      delete soltrans;
     }
-  for (unsigned int iter = 0; iter < dofHandlersSet.size(); iter++)
+  for (const auto &dofHandlers : dofHandlersSet)
     {
-      delete dofHandlersSet[iter];
+      delete dofHandlers;
     }
-  for (unsigned int iter = 0; iter < FESet.size(); iter++)
+  for (const auto &FE : FESet)
     {
-      delete FESet[iter];
+      delete FE;
     }
-  for (unsigned int iter = 0; iter < solutionSet.size(); iter++)
+  for (const auto &solution : solutionSet)
     {
-      delete solutionSet[iter];
+      delete solution;
     }
-  for (unsigned int iter = 0; iter < residualSet.size(); iter++)
+  for (const auto &residual : residualSet)
     {
-      delete residualSet[iter];
+      delete residual;
     }
 }
 

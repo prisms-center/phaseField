@@ -9,29 +9,26 @@
 
 template <int dim>
 void
-userInputParameters<dim>::load_BC_list(std::vector<std::string> list_of_BCs)
+userInputParameters<dim>::load_BC_list(const std::vector<std::string> &list_of_BCs)
 {
   // Loop over the list of boundary conditions specified in parameters
   // and provided in the input list_of_BCs. Process the BCs and place
   // them into the vector BC_list
   std::vector<std::string> temp;
-  for (unsigned int i = 0; i < list_of_BCs.size(); i++)
+  for (const auto &boundary_condition : list_of_BCs)
     {
       // Ensure all variables have BCs specified in parameters.prm
-      AssertThrow(!list_of_BCs[i].empty(),
+      AssertThrow(!boundary_condition.empty(),
                   dealii::ExcMessage(std::string("Boundary condition not specified.")));
 
       varBCs<dim> newBC;
-      temp = dealii::Utilities::split_string_list(list_of_BCs[i]);
+      temp = dealii::Utilities::split_string_list(boundary_condition);
 
-      // If there is only one BC listed, make another dim*2-1 copies of it so that
+      // If there is only one BC listed, make another 2*dim-1 copies of it so that
       // the same BC is applied for all boundaries
       if (temp.size() == 1)
         {
-          for (unsigned int boundary = 0; boundary < (dim * 2 - 1); boundary++)
-            {
-              temp.push_back(temp[0]);
-            }
+          temp.resize(2 * dim, temp[0]);
         }
 
       // Load the BC for each boundary into 'newBC'.
