@@ -30,6 +30,32 @@ def write_to_file(file, text):
         text_file.write(text)
 
 
+def grab_cpu_information():
+    # Get the CPU information
+    cpu_info_raw = subprocess.check_output("lscpu", shell=True).decode()
+
+    # Split into lines
+    cpu_info_lines = cpu_info_raw.splitlines()
+
+    # Create dict to store parsed info
+    cpu_info = {}
+
+    for line in cpu_info_lines:
+        if ":" in line:
+            key, value = line.split(":", 1)
+            cpu_info[key.strip()] = value.strip()
+
+    # Grab relevant fields
+    architecture = cpu_info.get("Architecture")
+    cpu_model = cpu_info.get("Model name")
+    cpu_cores = cpu_info.get("CPU(s)")
+    cpu_max_freq = cpu_info.get("CPU max MHz")
+    cpu_min_freq = cpu_info.get("CPU min MHz")
+    hypervisor = cpu_info.get("Hypervisor vendor")
+
+    return architecture, cpu_model, cpu_cores, cpu_max_freq, cpu_min_freq, hypervisor
+
+
 def compile_and_run_unit_tests():
     # Remove old files if they exist
     remove_file("main")
@@ -202,14 +228,6 @@ write_to_file(
     f"Unit Tests Passed: {unit_tests_passed}/{unit_test_counter}\n",
 )
 
-
-write_to_file(
-    test_result_file,
-    "--------------------------------------------------------- \n"
-    "Regression test on " + now.strftime("%Y-%m-%d %H:%M") + "\n"
-    "--------------------------------------------------------- \n",
-)
-
 # List of applications
 applicationList = [
     "allenCahn",
@@ -220,6 +238,26 @@ applicationList = [
 ]
 getNewGoldStandardList = [False, False, False, False, False]
 
+# Grab cpu information
+architecture, cpu_model, cpu_cores, cpu_max_freq, cpu_min_freq, hypervisor = (
+    grab_cpu_information()
+)
+
+# Write to test results file
+write_to_file(
+    test_result_file,
+    "--------------------------------------------------------- \n"
+    "Regression test on " + now.strftime("%Y-%m-%d %H:%M") + "\n"
+    f"Architecture: {architecture}\n"
+    f"Model name: {cpu_model}\n"
+    f"CPU(s): {cpu_cores}\n"
+    f"CPU max/min MHz: {cpu_max_freq}, {cpu_min_freq}\n"
+    f"Hypervisor vendor: {hypervisor}\n"
+    f"Number of processes: {n_processes}\n"
+    "--------------------------------------------------------- \n",
+)
+
+# Run tests in parallel
 start_parallel = time.time()
 regression_tests_passed, regression_test_counter = run_regression_tests_in_parallel(
     applicationList, getNewGoldStandardList, pwd, n_processes
