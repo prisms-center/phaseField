@@ -1,9 +1,18 @@
+# Build folder
+build/*
+
 # VS Code
 .vscode/*
 
 # Python virtual environments
 .venv/*
 *.venv/
+
+# clangd
+.clangd
+
+# misc
+compile_commands.json
 
 # Compiled Object files
 *.slo
