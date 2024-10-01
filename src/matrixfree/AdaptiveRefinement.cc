@@ -168,10 +168,19 @@ AdaptiveRefinement<dim, degree>::refine_grid()
 
 // Explicit instantiation
 template class AdaptiveRefinement<2, 1>;
-template class AdaptiveRefinement<2, 2>;
-template class AdaptiveRefinement<2, 3>;
-template class AdaptiveRefinement<2, 4>;
 template class AdaptiveRefinement<3, 1>;
+
+template class AdaptiveRefinement<2, 2>;
 template class AdaptiveRefinement<3, 2>;
+
+template class AdaptiveRefinement<2, 3>;
 template class AdaptiveRefinement<3, 3>;
+
+template class AdaptiveRefinement<2, 4>;
 template class AdaptiveRefinement<3, 4>;
+
+template class AdaptiveRefinement<2, 5>;
+template class AdaptiveRefinement<3, 5>;
+
+template class AdaptiveRefinement<2, 6>;
+template class AdaptiveRefinement<3, 6>;
