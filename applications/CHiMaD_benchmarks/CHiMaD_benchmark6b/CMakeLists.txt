@@ -45,11 +45,11 @@ if(EXISTS "nucleation.cc")
 endif()
 
 # Set location of files
-include_directories(${CMAKE_SOURCE_DIR}/..)
+include_directories(${CMAKE_SOURCE_DIR}/../..)
 include_directories(${CMAKE_SOURCE_DIR})
 
 # SEt the location of the main.cc file
-set(MAIN "${CMAKE_SOURCE_DIR}/../main.cc")
+set(MAIN "${CMAKE_SOURCE_DIR}/../../main.cc")
 
 # Add main.cc for executable target
 add_executable(main ${MAIN})
@@ -59,9 +59,9 @@ DEAL_II_SETUP_TARGET(main)
 
 # Link libraries for the build type
 if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
-	target_link_libraries(main ${CMAKE_SOURCE_DIR}/../../libprisms_pf.a)
+	target_link_libraries(main ${CMAKE_SOURCE_DIR}/../../../libprisms_pf.a)
 elseif(${CMAKE_BUILD_TYPE} STREQUAL "DebugRelease")
-  target_link_libraries(main ${CMAKE_SOURCE_DIR}/../../libprisms_pf.a)
+  target_link_libraries(main ${CMAKE_SOURCE_DIR}/../../../libprisms_pf.a)
 else()
-  target_link_libraries(main ${CMAKE_SOURCE_DIR}/../../libprisms_pf_debug.a)
+  target_link_libraries(main ${CMAKE_SOURCE_DIR}/../../../libprisms_pf_debug.a)
 endif()
