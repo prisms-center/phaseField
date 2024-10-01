@@ -45,28 +45,22 @@ MatrixFreePDE<dim, degree>::outputResults()
       computePostProcessedFields(postProcessedSet);
 #if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
       unsigned int invM_size = invMscalar.local_size();
-      for (unsigned int fieldIndex = 0; fieldIndex < postProcessedSet.size();
-           fieldIndex++)
+      for (auto &field : postProcessedSet)
         {
-          for (unsigned int dof = 0; dof < postProcessedSet[fieldIndex]->local_size();
-               ++dof)
+          for (unsigned int dof = 0; dof < field->local_size(); ++dof)
             {
 #else
       unsigned int invM_size = invMscalar.locally_owned_size();
-      for (unsigned int fieldIndex = 0; fieldIndex < postProcessedSet.size();
-           fieldIndex++)
+      for (auto &field : postProcessedSet)
         {
-          for (unsigned int dof = 0;
-               dof < postProcessedSet[fieldIndex]->locally_owned_size();
-               ++dof)
+          for (unsigned int dof = 0; dof < field->locally_owned_size(); ++dof)
             {
 #endif
-              postProcessedSet[fieldIndex]->local_element(dof) =
-                invMscalar.local_element(dof % invM_size) *
-                postProcessedSet[fieldIndex]->local_element(dof);
+              field->local_element(dof) =
+                invMscalar.local_element(dof % invM_size) * field->local_element(dof);
             }
-          constraintsOtherSet[0]->distribute(*postProcessedSet[fieldIndex]);
-          postProcessedSet[fieldIndex]->update_ghost_values();
+          constraintsOtherSet[0]->distribute(*field);
+          field->update_ghost_values();
         }
 
       // Integrate over selected post-processed fields and output them to the
@@ -212,7 +206,7 @@ MatrixFreePDE<dim, degree>::outputResults()
                                   cycleAsString.str().c_str(),
                                   i,
                                   userInputs.output_file_type.c_str());
-                  filenames.push_back(vtuProcFileName);
+                  filenames.emplace_back(vtuProcFileName);
                 }
               char pvtuFileName[100];
               snprintf_nowarn(pvtuFileName,

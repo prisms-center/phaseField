@@ -145,7 +145,7 @@ void
 SimplifiedGrainManipulator<dim>::reassignGrains(
   std::vector<SimplifiedGrainRepresentation<dim>> &grain_representations,
   double                                           buffer_distance,
-  std::vector<unsigned int>                        order_parameter_id_list)
+  std::vector<unsigned int>                       &order_parameter_id_list)
 {
   for (int cycle = order_parameter_id_list.size(); cycle >= 0; cycle--)
     {

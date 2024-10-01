@@ -59,7 +59,7 @@ namespace PRISMS
   {
     if (name == "Quad")
       {
-        Interpolator<Coordinate, 2> *interp_ptr;
+        Interpolator<Coordinate, 2> *interp_ptr = nullptr;
 
         // std::cout << "cell nodes: " << cell_node[0] << " " << cell_node[2] <<
         // std::endl;
@@ -100,7 +100,7 @@ namespace PRISMS
   {
     if (name == "Hexahedron")
       {
-        Interpolator<Coordinate, 3> *interp_ptr;
+        Interpolator<Coordinate, 3> *interp_ptr = nullptr;
 
         PRISMS::Coordinate<3> dim;
         dim[0] = node[cell_node[6]][0] - node[cell_node[0]][0];
@@ -305,7 +305,8 @@ namespace PRISMS
 
                   ss >> str >> Ncells >> Ncell_numbers;
 
-                  PFuncBase<std::vector<PRISMS::Coordinate<DIM>>, double> *bfunc_ptr;
+                  PFuncBase<std::vector<PRISMS::Coordinate<DIM>>, double> *bfunc_ptr =
+                    nullptr;
                   _bfunc.push_back(bfunc_ptr);
 
                   if (DIM == 2)
@@ -575,7 +576,7 @@ namespace PRISMS
               Ncells *= (z_coord.size() - 1);
             }
 
-          PFuncBase<std::vector<PRISMS::Coordinate<DIM>>, double> *bfunc_ptr;
+          PFuncBase<std::vector<PRISMS::Coordinate<DIM>>, double> *bfunc_ptr = nullptr;
           _bfunc.push_back(bfunc_ptr);
 
           if (DIM == 2)

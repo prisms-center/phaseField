@@ -70,7 +70,7 @@ variableAttributeLoader::set_variable_name(unsigned int index, std::string name)
 {
   std::pair<unsigned int, std::string> var_pair;
   var_pair.first  = index;
-  var_pair.second = name;
+  var_pair.second = std::move(name);
 
   if (setting_primary_field_attributes)
     {
@@ -142,7 +142,7 @@ variableAttributeLoader::set_dependencies_value_term_RHS(unsigned int index,
 {
   std::pair<unsigned int, std::string> var_pair;
   var_pair.first  = index;
-  var_pair.second = dependencies;
+  var_pair.second = std::move(dependencies);
 
   if (setting_primary_field_attributes)
     {
@@ -160,7 +160,7 @@ variableAttributeLoader::set_dependencies_gradient_term_RHS(unsigned int index,
 {
   std::pair<unsigned int, std::string> var_pair;
   var_pair.first  = index;
-  var_pair.second = dependencies;
+  var_pair.second = std::move(dependencies);
 
   if (setting_primary_field_attributes)
     {
@@ -178,7 +178,7 @@ variableAttributeLoader::set_dependencies_value_term_LHS(unsigned int index,
 {
   std::pair<unsigned int, std::string> var_pair;
   var_pair.first  = index;
-  var_pair.second = dependencies;
+  var_pair.second = std::move(dependencies);
   var_eq_dependencies_value_LHS.push_back(var_pair);
 }
 
@@ -188,6 +188,6 @@ variableAttributeLoader::set_dependencies_gradient_term_LHS(unsigned int index,
 {
   std::pair<unsigned int, std::string> var_pair;
   var_pair.first  = index;
-  var_pair.second = dependencies;
+  var_pair.second = std::move(dependencies);
   var_eq_dependencies_gradient_LHS.push_back(var_pair);
 }

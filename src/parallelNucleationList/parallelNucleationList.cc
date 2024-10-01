@@ -269,8 +269,8 @@ parallelNucleationList<dim>::receiveUpdate(int procno)
       // Loop to store info in vectors onto the nuclei structure
       for (int jnuc = 0; jnuc <= recvnonucs - 1; jnuc++)
         {
-          nucleus<dim> *temp = new nucleus<dim>;
-          temp->index        = r_index[jnuc];
+          auto *temp  = new nucleus<dim>;
+          temp->index = r_index[jnuc];
           dealii::Point<dim> r_center;
           r_center[0] = r_center_x[jnuc];
           r_center[1] = r_center_y[jnuc];
@@ -397,8 +397,8 @@ parallelNucleationList<dim>::broadcastUpdate(int broadcastProc, int thisProc)
       // Loop to store info in vectors onto the nuclei structure
       for (int jnuc = 0; jnuc <= currnonucs - 1; jnuc++)
         {
-          nucleus<dim> *temp = new nucleus<dim>;
-          temp->index        = r_index[jnuc];
+          auto *temp  = new nucleus<dim>;
+          temp->index = r_index[jnuc];
           dealii::Point<dim> r_center;
           r_center[0] = r_center_x[jnuc];
           r_center[1] = r_center_y[jnuc];
@@ -539,9 +539,9 @@ parallelNucleationList<dim>::removeSubsetOfNuclei(
       nuclei_to_remove = recieved_nuclei_to_remove;
     }
 
-  for (unsigned int i = 0; i < nuclei_to_remove.size(); i++)
+  for (unsigned int i : nuclei_to_remove)
     {
-      std::cout << thisProc << ": " << nuclei_to_remove[i] << std::endl;
+      std::cout << thisProc << ": " << i << std::endl;
     }
 
   // Remove the nuclei from the list
@@ -549,9 +549,9 @@ parallelNucleationList<dim>::removeSubsetOfNuclei(
   for (unsigned int nuc = 0; nuc < newnuclei.size(); nuc++)
     {
       bool pruneNucleus = false;
-      for (unsigned int i = 0; i < nuclei_to_remove.size(); i++)
+      for (unsigned int i : nuclei_to_remove)
         {
-          if (nuclei_to_remove[i] == nuclei_size + nuc)
+          if (i == nuclei_size + nuc)
             {
               pruneNucleus = true;
               break;

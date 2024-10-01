@@ -2,6 +2,7 @@
 #include <deal.II/matrix_free/evaluation_flags.h>
 
 #include "../../include/matrixFreePDE.h"
+#include <functional>
 #include <numeric>
 
 // compute inverse of the diagonal mass matrix and store in vector invM
@@ -125,8 +126,8 @@ MatrixFreePDE<dim, degree>::computeInvM()
     }
   double min_cell_volume = std::accumulate(begin(min_element_length),
                                            end(min_element_length),
-                                           1,
-                                           std::multiplies<double>());
+                                           1.0,
+                                           std::multiplies<>());
 
   // Invert scalar mass matrix diagonal elements
 #if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)

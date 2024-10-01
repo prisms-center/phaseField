@@ -54,10 +54,10 @@ OrderParameterRemapper<dim>::remap(
                         dofs_per_cell,
                         0);
                       dof->get_dof_indices(dof_indices);
-                      for (unsigned int i = 0; i < dof_indices.size(); i++)
+                      for (const auto &index : dof_indices)
                         {
-                          (*solution_fields.at(op_new))[dof_indices.at(i)] =
-                            (*solution_fields.at(op_old))[dof_indices.at(i)];
+                          (*solution_fields.at(op_new))[index] =
+                            (*solution_fields.at(op_old))[index];
                         }
                     }
                 }
@@ -94,9 +94,9 @@ OrderParameterRemapper<dim>::remap(
                         0);
                       dof->get_dof_indices(dof_indices);
 
-                      for (unsigned int i = 0; i < dof_indices.size(); i++)
+                      for (const auto &index : dof_indices)
                         {
-                          (*solution_fields.at(op_old))[dof_indices.at(i)] = 0.0;
+                          (*solution_fields.at(op_old))[index] = 0.0;
                         }
                     }
                 }
@@ -156,13 +156,13 @@ OrderParameterRemapper<dim>::remap_from_index_field(
                   std::vector<dealii::types::global_dof_index> dof_indices(dofs_per_cell,
                                                                            0);
                   dof->get_dof_indices(dof_indices);
-                  for (unsigned int i = 0; i < dof_indices.size(); i++)
+                  for (const auto &index : dof_indices)
                     {
-                      if (std::abs((*grain_index_field)[dof_indices.at(i)] -
+                      if (std::abs((*grain_index_field)[index] -
                                    (double) grain_representations.at(g).getGrainId()) <
                           1e-6)
                         {
-                          (*solution_fields.at(op_new))[dof_indices.at(i)] = 1.0;
+                          (*solution_fields.at(op_new))[index] = 1.0;
                         }
                     }
                 }

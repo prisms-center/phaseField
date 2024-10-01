@@ -3,7 +3,7 @@
 template <int dim>
 std::vector<unsigned int>
 userInputParameters<dim>::setTimeStepList(
-  const std::string                outputSpacingType,
+  const std::string               &outputSpacingType,
   unsigned int                     numberOfOutputs,
   const std::vector<unsigned int> &userGivenTimeStepList)
 {

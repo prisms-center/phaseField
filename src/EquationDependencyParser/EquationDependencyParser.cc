@@ -13,9 +13,9 @@ EquationDependencyParser::strip_dependency_whitespace(std::string &dependency_li
 }
 
 void
-EquationDependencyParser::parse(std::vector<std::string> var_name,
-                                std::vector<PDEType>     var_eq_type,
-                                std::vector<std::string> sorted_dependencies_value_RHS,
+EquationDependencyParser::parse(std::vector<std::string> &var_name,
+                                std::vector<PDEType>      var_eq_type,
+                                std::vector<std::string>  sorted_dependencies_value_RHS,
                                 std::vector<std::string> sorted_dependencies_gradient_RHS,
                                 std::vector<std::string> sorted_dependencies_value_LHS,
                                 std::vector<std::string> sorted_dependencies_gradient_LHS,
@@ -106,11 +106,11 @@ EquationDependencyParser::parse(std::vector<std::string> var_name,
 
 void
 EquationDependencyParser::parseDependencyListRHS(
-  std::vector<std::string>                               variable_name_list,
+  std::vector<std::string>                              &variable_name_list,
   std::vector<PDEType>                                   variable_eq_type,
   unsigned int                                           variable_index,
-  std::string                                            value_dependencies,
-  std::string                                            gradient_dependencies,
+  std::string                                           &value_dependencies,
+  std::string                                           &gradient_dependencies,
   std::vector<dealii::EvaluationFlags::EvaluationFlags> &evaluation_flags,
   std::vector<dealii::EvaluationFlags::EvaluationFlags> &residual_flags,
   bool                                                  &is_nonlinear)
@@ -214,11 +214,11 @@ EquationDependencyParser::parseDependencyListRHS(
 
 void
 EquationDependencyParser::parseDependencyListLHS(
-  std::vector<std::string>                               variable_name_list,
+  std::vector<std::string>                              &variable_name_list,
   std::vector<PDEType>                                   variable_eq_type,
   unsigned int                                           variable_index,
-  std::string                                            value_dependencies,
-  std::string                                            gradient_dependencies,
+  std::string                                           &value_dependencies,
+  std::string                                           &gradient_dependencies,
   std::vector<dealii::EvaluationFlags::EvaluationFlags> &evaluation_flags,
   std::vector<dealii::EvaluationFlags::EvaluationFlags> &change_flags,
   std::vector<dealii::EvaluationFlags::EvaluationFlags> &residual_flags,
@@ -374,10 +374,10 @@ EquationDependencyParser::parseDependencyListLHS(
 }
 
 void
-EquationDependencyParser::pp_parse(std::vector<std::string> var_name,
-                                   std::vector<std::string> pp_var_name,
-                                   std::vector<std::string> sorted_dependencies_value,
-                                   std::vector<std::string> sorted_dependencies_gradient)
+EquationDependencyParser::pp_parse(std::vector<std::string> &var_name,
+                                   std::vector<std::string> &pp_var_name,
+                                   std::vector<std::string>  sorted_dependencies_value,
+                                   std::vector<std::string>  sorted_dependencies_gradient)
 {
   // Determine the number of variables
   size_t n_variables             = var_name.size();
@@ -408,10 +408,10 @@ EquationDependencyParser::pp_parse(std::vector<std::string> var_name,
 
 void
 EquationDependencyParser::parseDependencyListPP(
-  std::vector<std::string>                               variable_name_list,
+  std::vector<std::string>                              &variable_name_list,
   unsigned int                                           variable_index,
-  std::string                                            value_dependencies,
-  std::string                                            gradient_dependencies,
+  std::string                                           &value_dependencies,
+  std::string                                           &gradient_dependencies,
   std::vector<dealii::EvaluationFlags::EvaluationFlags> &evaluation_flags,
   std::vector<dealii::EvaluationFlags::EvaluationFlags> &residual_flags)
 {

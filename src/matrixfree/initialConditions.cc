@@ -10,10 +10,11 @@ template <int dim>
 class InitialConditionPField : public Function<dim>
 {
 public:
-  unsigned int                                  index;
-  Vector<double>                                values;
-  typedef PRISMS::PField<double *, double, dim> ScalarField;
-  ScalarField                                  &inputField;
+  unsigned int   index;
+  Vector<double> values;
+
+  using ScalarField = PRISMS::PField<double *, double, dim>;
+  ScalarField &inputField;
 
   InitialConditionPField(const unsigned int _index, ScalarField &_inputField)
     : Function<dim>(1)
@@ -102,7 +103,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
       grain_index_field.update_ghost_values();
 
       // Get the max and min grain ids
-      unsigned int max_id = (unsigned int) grain_index_field.linfty_norm();
+      auto         max_id = (unsigned int) grain_index_field.linfty_norm();
       unsigned int min_id = 0;
 
       // Now locate all of the grains and create simplified representations of

@@ -5,8 +5,8 @@ variableContainer<dim, degree, T>::variableContainer(
   const dealii::MatrixFree<dim, double> &data,
   const std::vector<variable_info>      &_varInfoList,
   const std::vector<variable_info>      &_varChangeInfoList)
-  : varInfoList(std::move(_varInfoList))
-  , varChangeInfoList(std::move(_varChangeInfoList))
+  : varInfoList(_varInfoList)
+  , varChangeInfoList(_varChangeInfoList)
   , num_var(varInfoList.size())
 {
   for (unsigned int i = 0; i < num_var; i++)
@@ -52,7 +52,7 @@ template <int dim, int degree, typename T>
 variableContainer<dim, degree, T>::variableContainer(
   const dealii::MatrixFree<dim, double> &data,
   const std::vector<variable_info>      &_varInfoList)
-  : varInfoList(std::move(_varInfoList))
+  : varInfoList(_varInfoList)
   , num_var(varInfoList.size())
 {
   for (unsigned int i = 0; i < num_var; i++)
@@ -84,7 +84,7 @@ variableContainer<dim, degree, T>::variableContainer(
   const dealii::MatrixFree<dim, double> &data,
   const std::vector<variable_info>      &_varInfoList,
   const unsigned int                    &fixed_index)
-  : varInfoList(std::move(_varInfoList))
+  : varInfoList(_varInfoList)
   , num_var(varInfoList.size())
 {
   for (unsigned int i = 0; i < num_var; i++)

@@ -133,7 +133,7 @@ public:
   void
   reassignGrains(std::vector<SimplifiedGrainRepresentation<dim>> &grain_representations,
                  double                                           buffer_distance,
-                 std::vector<unsigned int> order_parameter_id_list);
+                 std::vector<unsigned int> &order_parameter_id_list);
 
   /**
    * This method checks the centers of two lists of
