@@ -37,7 +37,7 @@ std::vector<std::string>
 sortIndexEntryPairList(
   const std::vector<std::pair<unsigned int, std::string>> &unsorted_pair_list,
   unsigned int                                             number_of_variables,
-  std::string                                             &default_value)
+  const std::string                                       &default_value)
 {
   std::vector<std::string> sorted_vec;
   unsigned int             entry_index;

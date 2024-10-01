@@ -15,7 +15,7 @@ class inputFileReader
 {
 public:
   // Constructor
-  inputFileReader(std::string             &input_file_name,
+  inputFileReader(const std::string       &input_file_name,
                   variableAttributeLoader &variable_attributes);
 
   // Method to get a list of entry values from multiple subsections in an input

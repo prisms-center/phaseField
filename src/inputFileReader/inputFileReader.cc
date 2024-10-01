@@ -10,7 +10,7 @@
 #include <iostream>
 
 // Constructor
-inputFileReader::inputFileReader(std::string             &input_file_name,
+inputFileReader::inputFileReader(const std::string       &input_file_name,
                                  variableAttributeLoader &variable_attributes)
 {
   // Extract an ordered vector of the variable types from variable_attributes
