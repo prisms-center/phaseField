@@ -1,12 +1,12 @@
-/// Header files
+// Header files
 #include "customPDE.h"
 
 #include "ICs_and_BCs.cc"
 #include "equations.cc"
 
-#include "../../include/ParseCommandLineOpts.h"
-#include "../../include/inputFileReader.h"
-#include "../../src/variableAttributeLoader/variableAttributeLoader.cc"
+#include "../../../include/ParseCommandLineOpts.h"
+#include "../../../include/inputFileReader.h"
+#include "../../../src/variableAttributeLoader/variableAttributeLoader.cc"
 
 // Header file for postprocessing that may or may not exist
 #ifdef POSTPROCESS_FILE_EXISTS
