@@ -36,8 +36,8 @@ set Simulation end time = 1000
 # Set the boundary conditions
 # =================================================================================
 
-set Boundary condition for variable c = PERIODIC
-set Boundary condition for variable mu = PERIODIC
+set Boundary condition for variable c = NATURAL
+set Boundary condition for variable mu = NATURAL
 
 # =================================================================================
 # Set the output parameters

@@ -16,11 +16,11 @@ set Domain size Z = 200
 # Set the element parameters
 # =================================================================================
 
-set Subdivisions X = 1
-set Subdivisions Y = 1
-set Subdivisions Z = 1
+set Subdivisions X = 3
+set Subdivisions Y = 3
+set Subdivisions Z = 3
 
-set Refine factor = 7
+set Refine factor = 2
 
 set Element degree = 1
 
@@ -36,8 +36,8 @@ set Simulation end time = 1000
 # Set the boundary conditions
 # =================================================================================
 
-set Boundary condition for variable c = PERIODIC
-set Boundary condition for variable mu = PERIODIC
+set Boundary condition for variable c = NATURAL
+set Boundary condition for variable mu = NATURAL
 
 # =================================================================================
 # Set the output parameters
