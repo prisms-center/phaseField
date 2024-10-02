@@ -1,0 +1,52 @@
+# =================================================================================
+# Set the number of dimensions (2 or 3 for a 2D or 3D calculation)
+# =================================================================================
+set Number of dimensions = 2
+
+# =================================================================================
+# Set the length of the domain in all three dimensions
+# (Domain size Z ignored in 2D)
+# =================================================================================
+
+set Domain size X = 200
+set Domain size Y = 200
+set Domain size Z = 200
+
+# =================================================================================
+# Set the element parameters
+# =================================================================================
+
+set Subdivisions X = 1
+set Subdivisions Y = 1
+set Subdivisions Z = 1
+
+set Refine factor = 7
+
+set Element degree = 1
+
+# =================================================================================
+# Set the time step parameters
+# =================================================================================
+
+set Time step = 1.0e-2
+
+set Simulation end time = 1000
+
+# =================================================================================
+# Set the boundary conditions
+# =================================================================================
+
+set Boundary condition for variable c = NATURAL
+set Boundary condition for variable mu = NATURAL
+
+# =================================================================================
+# Set the output parameters
+# =================================================================================
+
+set Output condition = EQUAL_SPACING
+
+set Number of outputs = 1
+
+set Skip print steps = 1000
+
+set Number of checkpoints = 0
