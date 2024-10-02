@@ -53,10 +53,9 @@ customPDE<dim, degree>::postProcessedFields(
   // --- Setting the expressions for the terms in the postprocessing expressions
   // ---
 
-  scalarvalueType f_tot = constV(0.0);
-
   // The homogenous free energy
-  scalarvalueType f_chem = (5.0 * (c - 0.3) * (c - 0.3) * (c - 0.7) * (c - 0.7));
+  scalarvalueType f_chem = rho_s * dealii::Utilities::fixed_power<2>(c - c_alpha) *
+                           dealii::Utilities::fixed_power<2>(c - c_beta);
 
   // The gradient free energy
   scalarvalueType f_grad = constV(0.0);
@@ -65,12 +64,12 @@ customPDE<dim, degree>::postProcessedFields(
     {
       for (int j = 0; j < dim; j++)
         {
-          f_grad += constV(0.5 * KcV) * cx[i] * cx[j];
+          f_grad += constV(0.5) * kappa * cx[i] * cx[j];
         }
     }
 
   // The total free energy
-  f_tot = f_chem + f_grad;
+  scalarvalueType f_tot = f_chem + f_grad;
 
   // --- Submitting the terms for the postprocessing expressions ---
   pp_variable_list.set_scalar_value_term_RHS(0, f_tot);

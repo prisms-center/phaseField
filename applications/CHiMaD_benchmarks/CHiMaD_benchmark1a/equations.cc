@@ -62,8 +62,8 @@ customPDE<dim, degree>::explicitEquationRHS(
 
   // --- Setting the expressions for the terms in the governing equations ---
 
-  scalarvalueType eq_c  = (c);
-  scalargradType  eqx_c = (constV(-McV * userInputs.dtValue) * mux);
+  scalarvalueType eq_c  = c;
+  scalargradType  eqx_c = constV(-userInputs.dtValue) * M * mux;
 
   // --- Submitting the terms for the governing equations ---
 
@@ -99,14 +99,13 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
   // --- Setting the expressions for the terms in the governing equations ---
 
   // The free energy and its derivative
-  // scalarvalueType fV = (5.0*(c-0.3)*(c-0.3)*(c-0.7)*(c-0.7)); // Not actually
-  // needed
-  scalarvalueType fcV = (5.0 * (2.0 * (c - 0.3) * (c - 0.7) * (c - 0.7) +
-                                2.0 * (c - 0.3) * (c - 0.3) * (c - 0.7)));
+  scalarvalueType fcV = constV(2.0) * rho_s *
+                        ((c - c_alpha) * dealii::Utilities::fixed_power<2>(c - c_beta) +
+                         (c - c_beta) * dealii::Utilities::fixed_power<2>(c - c_alpha));
 
   // The terms for the governing equations
-  scalarvalueType eq_mu  = (fcV);
-  scalargradType  eqx_mu = (constV(KcV) * cx);
+  scalarvalueType eq_mu  = fcV;
+  scalargradType  eqx_mu = kappa * cx;
 
   // --- Submitting the terms for the governing equations ---
 

@@ -83,8 +83,11 @@ private:
   // Model constants specific to this subclass
   // ================================================================
 
-  double McV = userInputs.get_model_constant_double("McV");
-  double KcV = userInputs.get_model_constant_double("KcV");
+  scalarvalueType c_alpha = constV(0.3);
+  scalarvalueType c_beta  = constV(0.7);
+  scalarvalueType rho_s   = constV(5.0);
+  scalarvalueType kappa   = constV(2.0);
+  scalarvalueType M       = constV(5.0);
 
   // ================================================================
 };

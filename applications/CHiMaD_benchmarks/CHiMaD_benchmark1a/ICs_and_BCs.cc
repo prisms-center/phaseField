@@ -2,6 +2,8 @@
 // FUNCTION FOR INITIAL CONDITIONS
 // ===========================================================================
 
+#include <deal.II/base/utilities.h>
+
 template <int dim, int degree>
 void
 customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &p,
@@ -20,12 +22,14 @@ customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &
     {
       double epsilon = 0.01;
       double c0      = 0.5;
+      double x       = p[0];
+      double y       = p[1];
 
       scalar_IC =
-        c0 + epsilon * (std::cos(0.105 * p[0]) * std::cos(0.11 * p[1]) +
-                        std::pow(std::cos(0.13 * p[0]) * std::cos(0.087 * p[1]), 2.0) +
-                        std::cos(0.025 * p[0] - 0.15 * p[1]) *
-                          std::cos(0.07 * p[0] - 0.02 * p[1]));
+        c0 + epsilon * (std::cos(0.105 * x) * std::cos(0.11 * y) +
+                        dealii::Utilities::fixed_power<2>(std::cos(0.13 * x) *
+                                                          std::cos(0.087 * y)) +
+                        std::cos(0.025 * x - 0.15 * y) * std::cos(0.07 * x - 0.02 * y));
     }
   else
     {
