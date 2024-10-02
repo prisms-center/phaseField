@@ -10,10 +10,11 @@ template <int dim>
 class InitialConditionPField : public Function<dim>
 {
 public:
-  unsigned int                                  index;
-  Vector<double>                                values;
-  typedef PRISMS::PField<double *, double, dim> ScalarField;
-  ScalarField                                  &inputField;
+  unsigned int   index;
+  Vector<double> values;
+
+  using ScalarField = PRISMS::PField<double *, double, dim>;
+  ScalarField &inputField;
 
   InitialConditionPField(const unsigned int _index, ScalarField &_inputField)
     : Function<dim>(1)
@@ -22,7 +23,7 @@ public:
   {}
 
   double
-  value(const Point<dim> &p, const unsigned int component = 0) const
+  value(const Point<dim> &p, const unsigned int component = 0) const override
   {
     double scalar_IC;
 
@@ -102,7 +103,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
       grain_index_field.update_ghost_values();
 
       // Get the max and min grain ids
-      unsigned int max_id = (unsigned int) grain_index_field.linfty_norm();
+      auto         max_id = (unsigned int) grain_index_field.linfty_norm();
       unsigned int min_id = 0;
 
       // Now locate all of the grains and create simplified representations of
@@ -123,6 +124,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
                                      &grain_index_field,
                                      (double) id - userInputs.order_parameter_threshold,
                                      (double) id + userInputs.order_parameter_threshold,
+                                     min_id,
                                      0,
                                      grain_sets_single_id);
 

@@ -242,7 +242,7 @@ MatrixFreePDE<dim, degree>::move_file(const std::string &old_name,
 
 template <int dim, int degree>
 void
-MatrixFreePDE<dim, degree>::verify_checkpoint_file_exists(const std::string filename)
+MatrixFreePDE<dim, degree>::verify_checkpoint_file_exists(const std::string &filename)
 {
   std::ifstream in(filename);
   if (!in)

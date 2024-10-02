@@ -47,7 +47,7 @@ public:
   // Method to create the list of BCs from the user input strings (called from
   // the constructor)
   void
-  load_BC_list(const std::vector<std::string> list_of_BCs);
+  load_BC_list(const std::vector<std::string> &list_of_BCs);
 
   // Map linking the model constant name to its index
   std::unordered_map<std::string, unsigned int> model_constant_name_map;
@@ -259,7 +259,7 @@ private:
   // Method to create the list of time steps where the results should be output
   // (called from loadInputParameters)
   std::vector<unsigned int>
-  setTimeStepList(const std::string                outputSpacingType,
+  setTimeStepList(const std::string               &outputSpacingType,
                   unsigned int                     numberOfOutputs,
                   const std::vector<unsigned int> &userGivenTimeStepList);
 
@@ -269,11 +269,11 @@ private:
 
   dealii::Tensor<2, 2 * dim - 1 + dim / 3>
   get_Cij_tensor(std::vector<double> elastic_constants,
-                 const std::string   elastic_const_symmetry) const;
+                 const std::string  &elastic_const_symmetry) const;
 
   dealii::Tensor<2, 2 * dim - 1 + dim / 3>
   getCIJMatrix(const elasticityModel       model,
-               const std::vector<double>   constants,
+               const std::vector<double>  &constants,
                dealii::ConditionalOStream &pcout) const;
 
   // Private nucleation variables

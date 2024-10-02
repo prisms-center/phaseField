@@ -1,252 +1,287 @@
 import subprocess
 import shutil
 import glob
-import math
 import os
 import datetime
 import time
 import sys
-
-# ----------------------------------------------------------------------------------------
-# Function that compiles and runs the unit tests.
-# ----------------------------------------------------------------------------------------
-def run_unit_tests():
-	# Open file where output is redirected to
-	if os.path.exists("output.txt") == True:
-		os.remove("output.txt")
-	f = open("output.txt",'w+')
-
-	# Remove old files
-	if os.path.exists("main") == True:
-		os.remove("main")
-	if os.path.exists("CMakeCache.txt") == True:
-		os.remove("CMakeCache.txt")
-	if os.path.exists("unit_test_results.txt") == True:
-		os.remove("unit_test_results.txt")
-
-	# Compile and run
-	subprocess.call(["cmake", "."],stdout=f,stderr=f)
-	subprocess.call(["make", "release"],stdout=f)
-	subprocess.call(["make"],stdout=f)
-	subprocess.call(["mpirun", "-n", "2", "./main"],stdout=f)
-	f.close()
-
-	result_file = open("unit_test_results.txt","r")
-	test_results = result_file.read().splitlines()
-	result_file.close()
-
-	return test_results
+import argparse
+from concurrent.futures import ProcessPoolExecutor, as_completed
 
 
-# ----------------------------------------------------------------------------------------
-# Function that compiles the PRISMS-PF code and runs the executable.
-# ----------------------------------------------------------------------------------------
-def run_simulation(run_name,dir_path):
-	# Delete any pre-existing executables or results
-	if os.path.exists(run_name) == True:
-		shutil.rmtree(run_name)
+def remove_file(file):
+    """Remove a file if it exists
 
-	# Open file where output is redirected to
-	if os.path.exists("output.txt") == True:
-		os.remove("output.txt")
-	f = open("output.txt",'w+')
+    Args:
+            file (string): Path to file
+    """
+    if os.path.exists(file):
+        os.remove(file)
 
-	# Remove old files
-	if os.path.exists("main") == True:
-		os.remove("main")
-	if os.path.exists("CMakeCache.txt") == True:
-		os.remove("CMakeCache.txt")
 
-	subprocess.call(["rm", "*vtu"],stdout=f,stderr=f)
+def write_to_file(file, text):
+    """Write text to file
 
-	# Compile and run
-	subprocess.call(["cmake", "."]) # print to the screen to prevent a timeout on Travis
-	subprocess.call(["make", "release"],stdout=f)
-	print("Compiling complete, running the regression test...")
-	sys.stdout.flush()
-	start = time.time()
-	subprocess.call(["mpirun", "-n", "1", "./main"],stdout=f)
-	end = time.time()
-	f.close()
+    Args:
+        file (string): Path to file
+        text (string): Text to write in file
+    """
+    with open(file, "a") as text_file:
+        text_file.write(text)
 
-	# Group the files
-	subprocess.call(["mkdir",run_name])
-	for output_files in glob.glob('*vtu'):
-		shutil.move(output_files,run_name)
-	if os.path.exists("integratedFields.txt") == True:
-		shutil.move("integratedFields.txt",run_name)
 
-	test_time = end-start
-	return test_time
+def grab_cpu_information():
+    # Get the CPU information
+    cpu_info_raw = subprocess.check_output("lscpu", shell=True).decode()
 
-# ----------------------------------------------------------------------------------------
-# Function that runs a regression test
-# ----------------------------------------------------------------------------------------
-def run_regression_test(applicationName,getNewGoldStandard,dir_path):
+    # Split into lines
+    cpu_info_lines = cpu_info_raw.splitlines()
 
-	if (getNewGoldStandard == False):
-		testName = "test_"+applicationName
+    # Create dict to store parsed info
+    cpu_info = {}
 
-	else:
-		testName = "gold_"+applicationName
+    for line in cpu_info_lines:
+        if ":" in line:
+            key, value = line.split(":", 1)
+            cpu_info[key.strip()] = value.strip()
 
-	if os.path.exists(testName) == True:
-		shutil.rmtree(testName)
+    # Grab relevant fields
+    architecture = cpu_info.get("Architecture")
+    cpu_model = cpu_info.get("Model name")
+    cpu_cores = cpu_info.get("CPU(s)")
+    cpu_max_freq = cpu_info.get("CPU max MHz")
+    cpu_min_freq = cpu_info.get("CPU min MHz")
+    hypervisor = cpu_info.get("Hypervisor vendor")
 
-	# Move to the application directory
-	r_test_dir = dir_path
-	os.chdir("../../applications/"+applicationName)
+    return architecture, cpu_model, cpu_cores, cpu_max_freq, cpu_min_freq, hypervisor
 
-	# Run the simulation and move the results to the test directory
-	test_time = run_simulation(testName,dir_path)
 
-	shutil.move(testName,r_test_dir)
+def compile_and_run_unit_tests():
+    # Remove old files if they exist
+    remove_file("main")
+    remove_file("CMakeCache.txt")
+    remove_file("unit_test_results.txt")
 
-	# Compare the result against the gold standard, if it exists
-	os.chdir(r_test_dir)
+    # Compile and run
+    subprocess.call(
+        ["cmake", "."], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+    )
+    subprocess.call(["make"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    subprocess.call(
+        ["mpirun", "-n", "1", "./main"],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
 
-	if (getNewGoldStandard == False):
-		# Read the gold standard free energies
-		os.chdir("gold_"+applicationName)
-		gold_standard_file = open("integratedFields.txt","r")
-		gold_energy = gold_standard_file.readlines()
-		gold_standard_file.close()
+    with open("unit_test_results.txt", "r") as result_file:
+        return result_file.read().splitlines()
 
-		last_energy_index = len(gold_energy)-1
-		split_last_line = gold_energy[-1].split()
-		for index, entry in enumerate(split_last_line):
-			if entry == "f_tot":
-				gold_last_energy = split_last_line[index+1]
 
-		# Read the test free energies
-		os.chdir("../"+testName)
-		test_file = open("integratedFields.txt","r")
-		test_energy = test_file.readlines()
-		test_file.close()
+def compile_and_run_simulation(application_path):
+    # Navigate to test application directory
+    os.chdir(application_path)
 
-		last_energy_index = len(test_energy)-1
-		split_last_line = test_energy[-1].split()
-		for index, entry in enumerate(split_last_line):
-			if entry == "f_tot":
-				last_energy = split_last_line[index+1]
+    # Remove old files
+    remove_file("main")
+    remove_file("CMakeCache.txt")
+    remove_file("integratedFields.txt")
+    for solution_file in glob.glob("solution-*.vtu"):
+        os.remove(solution_file)
 
-		rel_diff = (float(gold_last_energy)-float(last_energy))/float(gold_last_energy)
-		rel_diff = abs(rel_diff)
+    # Compile application
+    subprocess.call(
+        ["cmake", "."], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+    )
+    subprocess.call(
+        ["make", "release"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+    )
 
-		if (rel_diff < 1.0e-9):
-			test_passed = True
-		else:
-			test_passed = False
+    # Print successful compilation to screen
+    print(f"Compiling complete, running the regression test for {application_path}...")
+    sys.stdout.flush()
 
-	else:
-		test_passed = True
+    # Run application with timer
+    start = time.time()
+    subprocess.call(
+        ["mpirun", "-n", "1", "./main"],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    end = time.time()
 
-	# Print the results to the screen
-	print("Regression Test: ", applicationName)
+    return end - start
 
-	if test_passed:
-		if getNewGoldStandard == False:
-			print("Result: Pass")
-		else:
-			print("Result: New Gold Standard")
-	else:
-		print("Result: Fail")
 
-	print("Time taken:", test_time)
+def run_regression_test(application, new_gold_standard, test_dir):
+    # Move to the application directory
+    application_path = os.path.join(test_dir, application)
 
-	sys.stdout.flush()
+    # Run the simulation and move the results to the test directory
+    test_time = compile_and_run_simulation(application_path)
 
-	# Write the results to a file
-	os.chdir(r_test_dir)
-	text_file = open("test_results.txt","a")
-	now = datetime.datetime.now()
-	text_file.write("Application: " + applicationName +" \n")
-	if test_passed:
-		if getNewGoldStandard == False:
-			text_file.write("Result: Pass \n")
-		else:
-			text_file.write("Result: New Gold Standard \n")
-	else:
-		text_file.write("Result: Fail \n")
-	text_file.write("Time: "+str(test_time)+" \n \n")
-	text_file.close()
+    # Compare the result against the gold standard, if it exists
+    if new_gold_standard:
+        shutil.move("integratedFields.txt", "gold_integratedFields.txt")
+        test_passed = True
+    else:
+        # Read the gold standard free energies
+        with open("gold_integratedFields.txt", "r") as gold_standard_file:
+            gold_energy = gold_standard_file.readlines()
 
-	return (test_passed,test_time)
+        split_last_line = gold_energy[-1].split()
+        for index, entry in enumerate(split_last_line):
+            if entry == "f_tot":
+                gold_last_energy = split_last_line[index + 1]
 
-# ----------------------------------------------------------------------------------------
-# Test Script
-# ----------------------------------------------------------------------------------------
+        # Read the test free energies
+        with open("integratedFields.txt", "r") as test_file:
+            test_energy = test_file.readlines()
 
-# Initialize
-dir_path = os.path.dirname(os.path.realpath(__file__))
-os.chdir(dir_path)
+        split_last_line = test_energy[-1].split()
+        for index, entry in enumerate(split_last_line):
+            if entry == "f_tot":
+                last_energy = split_last_line[index + 1]
 
-text_file = open("test_results.txt","a")
+        # Compare the relative difference. If under a certain threshold pass
+        rel_diff = abs(
+            (float(gold_last_energy) - float(last_energy)) / float(gold_last_energy)
+        )
+        test_passed = rel_diff < 1.0e-9
+
+    # Determine test result
+    test_result = (
+        "New Gold Standard"
+        if test_passed and new_gold_standard
+        else "Pass"
+        if test_passed
+        else "Fail"
+    )
+
+    # Print the results to the screen
+    print(
+        f"Regression Test: {application}\n"
+        f"Result: {test_result}\n"
+        f"Time taken: {test_time}\n"
+    )
+    sys.stdout.flush()
+
+    # Write the results to a file
+    test_result_file = os.path.join(test_dir, "test_results.txt")
+    write_to_file(
+        test_result_file,
+        f"Application: {application}\n"
+        f"Result: {test_result}\n"
+        f"Time: {test_time}\n \n",
+    )
+
+    return test_passed, test_time
+
+
+def run_regression_tests_in_parallel(
+    application_list, gold_standard_list, test_dir, n_processes=None
+):
+    regression_test_counter = 0
+    regression_tests_passed = 0
+
+    with ProcessPoolExecutor(max_workers=n_processes) as executor:
+        futures = [
+            executor.submit(run_regression_test, application, gold_standard, test_dir)
+            for application, gold_standard in zip(application_list, gold_standard_list)
+        ]
+
+        for future in as_completed(futures):
+            test_passed, test_time = future.result()
+            regression_tests_passed += int(test_passed)
+            regression_test_counter += 1
+
+    return regression_tests_passed, regression_test_counter
+
+
+# Initialize arg parser
+parser = argparse.ArgumentParser(
+    description="The maximum processes to use to run the regression tests"
+)
+parser.add_argument("-n", "--ntasks", type=int, default=1, help="Number of processes")
+args = parser.parse_args()
+n_processes = args.ntasks
+
+# Grab current directory and the path to the test results file
+pwd = os.path.dirname(os.path.realpath(__file__))
+test_result_file = os.path.join(pwd, "test_results.txt")
+
+# Grab current date
 now = datetime.datetime.now()
 
-# ------------------------------------
-# Start the unit tests
-# ------------------------------------
-
-
+# Navigate to the unit test directory
 os.chdir("../unit_tests/")
-unit_test_results = run_unit_tests()
+
+# Run unit tests
+unit_test_results = compile_and_run_unit_tests()
 unit_tests_passed = unit_test_results[0]
 unit_test_counter = unit_test_results[1]
 
-print()
-print("Unit Tests Passed: "+str(unit_tests_passed)+"/"+str(unit_test_counter)+"\n")
+write_to_file(
+    test_result_file,
+    "--------------------------------------------------------- \n"
+    "Unit test on " + now.strftime("%Y-%m-%d %H:%M") + "\n"
+    "--------------------------------------------------------- \n"
+    f"Unit Tests Passed: {unit_tests_passed}/{unit_test_counter}\n",
+)
 
-sys.stdout.flush()
-
-text_file.write("--------------------------------------------------------- \n")
-text_file.write("Unit test on " + now.strftime("%Y-%m-%d %H:%M") + "\n")
-text_file.write("--------------------------------------------------------- \n")
-text_file.write("Unit Tests Passed: "+str(unit_tests_passed)+"/"+str(unit_test_counter)+"\n")
-
-os.chdir(dir_path)
-
-# ------------------------------------
-# Start the regression tests
-# ------------------------------------
-
-regression_test_counter = 0
-regression_tests_passed = 0
-
-text_file.write("--------------------------------------------------------- \n")
-text_file.write("Regression test on " + now.strftime("%Y-%m-%d %H:%M") + "\n")
-text_file.write("--------------------------------------------------------- \n")
-text_file.close()
-
-#applicationList = ["allenCahn","cahnHilliard","cahnHilliard","CHAC_anisotropy","CHAC_anisotropyRegularized","coupledCahnHilliardAllenCahn","mechanics","precipitateEvolution"]
-#getNewGoldStandardList = [False, False, False, False, False, False, False, False]
-
-# Shorter list of applications so that it completes on Travis
-applicationList = ["allenCahn","cahnHilliard","CHAC_anisotropyRegularized","coupledCahnHilliardAllenCahn","precipitateEvolution"]
+# List of applications
+applicationList = [
+    "allenCahn",
+    "cahnHilliard",
+    "CHAC_anisotropyRegularized",
+    "coupledCahnHilliardAllenCahn",
+    "precipitateEvolution",
+]
 getNewGoldStandardList = [False, False, False, False, False]
-#applicationList = ["allenCahn"]
-#getNewGoldStandardList = [False]
+
+# Grab cpu information
+architecture, cpu_model, cpu_cores, cpu_max_freq, cpu_min_freq, hypervisor = (
+    grab_cpu_information()
+)
+
+# Write to test results file
+write_to_file(
+    test_result_file,
+    "--------------------------------------------------------- \n"
+    "Regression test on " + now.strftime("%Y-%m-%d %H:%M") + "\n"
+    f"Architecture: {architecture}\n"
+    f"Model name: {cpu_model}\n"
+    f"CPU(s): {cpu_cores}\n"
+    f"CPU max/min MHz: {cpu_max_freq}, {cpu_min_freq}\n"
+    f"Hypervisor vendor: {hypervisor}\n"
+    f"Number of processes: {n_processes}\n"
+    "--------------------------------------------------------- \n",
+)
+
+# Run tests in parallel
+start_parallel = time.time()
+regression_tests_passed, regression_test_counter = run_regression_tests_in_parallel(
+    applicationList, getNewGoldStandardList, pwd, n_processes
+)
+end_parallel = time.time()
+print(f"Total time spend on regressions tests: {end_parallel - start_parallel}")
 
 
-
-for applicationName in applicationList:
-	test_result = run_regression_test(applicationName,getNewGoldStandardList[regression_test_counter],dir_path)
-
-	regression_test_counter += 1
-	regression_tests_passed += int(test_result[0])
-
-print()
-print("Regression Tests Passed: "+str(regression_tests_passed)+"/"+str(regression_test_counter)+"\n")
-
-
+os.chdir(pwd)
 # Output the overall test results
-text_file = open("test_results.txt","a")
-text_file.write("Tests Passed: "+str(regression_tests_passed)+"/"+str(regression_test_counter)+"\n")
-text_file.write("--------------------------------------------------------- \n")
-text_file.close()
+write_to_file(
+    test_result_file,
+    f"Tests Passed: {regression_tests_passed}/{regression_test_counter}\n"
+    "--------------------------------------------------------- \n",
+)
 
-# Set exit code (passed to Travis CI)
-if ((regression_tests_passed < regression_test_counter) or (unit_tests_passed < unit_test_counter)):
-	sys.exit(1)
+# Print overall results
+print(f"Unit Tests Passed: {unit_tests_passed}/{unit_test_counter}\n")
+print(f"Regression Tests Passed: {regression_tests_passed}/{regression_test_counter}\n")
+
+# Set exit code
+if (regression_tests_passed < regression_test_counter) or (
+    unit_tests_passed < unit_test_counter
+):
+    sys.exit(1)
 else:
-	sys.exit(0)
+    sys.exit(0)

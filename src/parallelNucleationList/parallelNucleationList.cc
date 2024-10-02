@@ -97,27 +97,24 @@ parallelNucleationList<dim>::sendUpdate(int procno) const
       std::vector<unsigned int> s_orderParameterIndex;
 
       // Loop to store info of all nuclei into vectors
-      for (typename std::vector<nucleus<dim>>::const_iterator thisNuclei =
-             newnuclei.begin();
-           thisNuclei != newnuclei.end();
-           ++thisNuclei)
+      for (const auto &thisNuclei : newnuclei)
         {
-          s_index.push_back(thisNuclei->index);
-          dealii::Point<dim> s_center = thisNuclei->center;
+          s_index.push_back(thisNuclei.index);
+          dealii::Point<dim> s_center = thisNuclei.center;
           s_center_x.push_back(s_center[0]);
           s_center_y.push_back(s_center[1]);
           if (dim == 3)
             s_center_z.push_back(s_center[2]);
 
-          s_semiaxis_a.push_back(thisNuclei->semiaxes[0]);
-          s_semiaxis_b.push_back(thisNuclei->semiaxes[1]);
+          s_semiaxis_a.push_back(thisNuclei.semiaxes[0]);
+          s_semiaxis_b.push_back(thisNuclei.semiaxes[1]);
           if (dim == 3)
-            s_semiaxis_c.push_back(thisNuclei->semiaxes[2]);
+            s_semiaxis_c.push_back(thisNuclei.semiaxes[2]);
 
-          s_seededTime.push_back(thisNuclei->seededTime);
-          s_seedingTime.push_back(thisNuclei->seedingTime);
-          s_seedingTimestep.push_back(thisNuclei->seedingTimestep);
-          s_orderParameterIndex.push_back(thisNuclei->orderParameterIndex);
+          s_seededTime.push_back(thisNuclei.seededTime);
+          s_seedingTime.push_back(thisNuclei.seedingTime);
+          s_seedingTimestep.push_back(thisNuclei.seedingTimestep);
+          s_orderParameterIndex.push_back(thisNuclei.orderParameterIndex);
         }
       // Send vectors to next processor
       MPI_Send(&s_index[0], currnonucs, MPI_UNSIGNED, procno, 1, MPI_COMM_WORLD);
@@ -272,8 +269,8 @@ parallelNucleationList<dim>::receiveUpdate(int procno)
       // Loop to store info in vectors onto the nuclei structure
       for (int jnuc = 0; jnuc <= recvnonucs - 1; jnuc++)
         {
-          nucleus<dim> *temp = new nucleus<dim>;
-          temp->index        = r_index[jnuc];
+          auto *temp  = new nucleus<dim>;
+          temp->index = r_index[jnuc];
           dealii::Point<dim> r_center;
           r_center[0] = r_center_x[jnuc];
           r_center[1] = r_center_y[jnuc];
@@ -341,13 +338,10 @@ parallelNucleationList<dim>::broadcastUpdate(int broadcastProc, int thisProc)
 
       if (thisProc == broadcastProc)
         {
-          for (typename std::vector<nucleus<dim>>::iterator thisNuclei =
-                 newnuclei.begin();
-               thisNuclei != newnuclei.end();
-               ++thisNuclei)
+          for (const auto &thisNuclei : newnuclei)
             {
-              r_index.push_back(thisNuclei->index);
-              dealii::Point<dim> s_center = thisNuclei->center;
+              r_index.push_back(thisNuclei.index);
+              dealii::Point<dim> s_center = thisNuclei.center;
               r_center_x.push_back(s_center[0]);
               r_center_y.push_back(s_center[1]);
               if (dim == 3)
@@ -355,17 +349,17 @@ parallelNucleationList<dim>::broadcastUpdate(int broadcastProc, int thisProc)
                   r_center_z.push_back(s_center[2]);
                 }
 
-              r_semiaxis_a.push_back(thisNuclei->semiaxes[0]);
-              r_semiaxis_b.push_back(thisNuclei->semiaxes[1]);
+              r_semiaxis_a.push_back(thisNuclei.semiaxes[0]);
+              r_semiaxis_b.push_back(thisNuclei.semiaxes[1]);
               if (dim == 3)
                 {
-                  r_semiaxis_c.push_back(thisNuclei->semiaxes[2]);
+                  r_semiaxis_c.push_back(thisNuclei.semiaxes[2]);
                 }
 
-              r_seededTime.push_back(thisNuclei->seededTime);
-              r_seedingTime.push_back(thisNuclei->seedingTime);
-              r_seedingTimestep.push_back(thisNuclei->seedingTimestep);
-              r_orderParameterIndex.push_back(thisNuclei->orderParameterIndex);
+              r_seededTime.push_back(thisNuclei.seededTime);
+              r_seedingTime.push_back(thisNuclei.seedingTime);
+              r_seedingTimestep.push_back(thisNuclei.seedingTimestep);
+              r_orderParameterIndex.push_back(thisNuclei.orderParameterIndex);
             }
         }
 
@@ -403,8 +397,8 @@ parallelNucleationList<dim>::broadcastUpdate(int broadcastProc, int thisProc)
       // Loop to store info in vectors onto the nuclei structure
       for (int jnuc = 0; jnuc <= currnonucs - 1; jnuc++)
         {
-          nucleus<dim> *temp = new nucleus<dim>;
-          temp->index        = r_index[jnuc];
+          auto *temp  = new nucleus<dim>;
+          temp->index = r_index[jnuc];
           dealii::Point<dim> r_center;
           r_center[0] = r_center_x[jnuc];
           r_center[1] = r_center_y[jnuc];
@@ -545,9 +539,9 @@ parallelNucleationList<dim>::removeSubsetOfNuclei(
       nuclei_to_remove = recieved_nuclei_to_remove;
     }
 
-  for (unsigned int i = 0; i < nuclei_to_remove.size(); i++)
+  for (unsigned int i : nuclei_to_remove)
     {
-      std::cout << thisProc << ": " << nuclei_to_remove[i] << std::endl;
+      std::cout << thisProc << ": " << i << std::endl;
     }
 
   // Remove the nuclei from the list
@@ -555,9 +549,9 @@ parallelNucleationList<dim>::removeSubsetOfNuclei(
   for (unsigned int nuc = 0; nuc < newnuclei.size(); nuc++)
     {
       bool pruneNucleus = false;
-      for (unsigned int i = 0; i < nuclei_to_remove.size(); i++)
+      for (unsigned int i : nuclei_to_remove)
         {
-          if (nuclei_to_remove[i] == nuclei_size + nuc)
+          if (i == nuclei_size + nuc)
             {
               pruneNucleus = true;
               break;

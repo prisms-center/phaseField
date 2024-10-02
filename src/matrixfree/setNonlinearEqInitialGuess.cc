@@ -1,6 +1,6 @@
 // setNonlinearEqInitialGuess() method for MatrixFreePDE class
-
 #include <deal.II/lac/solver_cg.h>
+#include <deal.II/matrix_free/evaluation_flags.h>
 
 #include "../../include/matrixFreePDE.h"
 
@@ -24,14 +24,11 @@ MatrixFreePDE<dim, degree>::setNonlinearEqInitialGuess()
 
           computeLaplaceRHS(fieldIndex);
 
-          for (std::map<types::global_dof_index, double>::const_iterator it =
-                 valuesDirichletSet[fieldIndex]->begin();
-               it != valuesDirichletSet[fieldIndex]->end();
-               ++it)
+          for (const auto &it : *valuesDirichletSet[fieldIndex])
             {
-              if (residualSet[fieldIndex]->in_local_range(it->first))
+              if (residualSet[fieldIndex]->in_local_range(it.first))
                 {
-                  (*residualSet[fieldIndex])(it->first) = 0.0;
+                  (*residualSet[fieldIndex])(it.first) = 0.0;
                 }
             }
 
@@ -158,17 +155,20 @@ MatrixFreePDE<dim, degree>::getLaplaceRHS(
   const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   FEEvaluation<dim, degree> mat(data);
+
+  dealii::EvaluationFlags::EvaluationFlags laplace_flags =
+    dealii::EvaluationFlags::gradients;
   // loop over all "cells"
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
     {
       mat.reinit(cell);
       mat.read_dof_values(src);
-      mat.evaluate(false, true, false);
+      mat.evaluate(laplace_flags);
       for (unsigned int q = 0; q < mat.n_q_points; ++q)
         {
           mat.submit_gradient(mat.get_gradient(q), q);
         }
-      mat.integrate(false, true);
+      mat.integrate(laplace_flags);
       mat.distribute_local_to_global(dst);
     }
 }
@@ -182,17 +182,20 @@ MatrixFreePDE<dim, degree>::getLaplaceLHS(
   const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   FEEvaluation<dim, degree> mat(data);
+
+  dealii::EvaluationFlags::EvaluationFlags laplace_flags =
+    dealii::EvaluationFlags::gradients;
   // loop over all "cells"
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
     {
       mat.reinit(cell);
       mat.read_dof_values(src);
-      mat.evaluate(false, true, false);
+      mat.evaluate(laplace_flags);
       for (unsigned int q = 0; q < mat.n_q_points; ++q)
         {
           mat.submit_gradient(-mat.get_gradient(q), q);
         }
-      mat.integrate(false, true);
+      mat.integrate(laplace_flags);
       mat.distribute_local_to_global(dst);
     }
 }

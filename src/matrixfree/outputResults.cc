@@ -45,28 +45,22 @@ MatrixFreePDE<dim, degree>::outputResults()
       computePostProcessedFields(postProcessedSet);
 #if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
       unsigned int invM_size = invMscalar.local_size();
-      for (unsigned int fieldIndex = 0; fieldIndex < postProcessedSet.size();
-           fieldIndex++)
+      for (auto &field : postProcessedSet)
         {
-          for (unsigned int dof = 0; dof < postProcessedSet[fieldIndex]->local_size();
-               ++dof)
+          for (unsigned int dof = 0; dof < field->local_size(); ++dof)
             {
 #else
       unsigned int invM_size = invMscalar.locally_owned_size();
-      for (unsigned int fieldIndex = 0; fieldIndex < postProcessedSet.size();
-           fieldIndex++)
+      for (auto &field : postProcessedSet)
         {
-          for (unsigned int dof = 0;
-               dof < postProcessedSet[fieldIndex]->locally_owned_size();
-               ++dof)
+          for (unsigned int dof = 0; dof < field->locally_owned_size(); ++dof)
             {
 #endif
-              postProcessedSet[fieldIndex]->local_element(dof) =
-                invMscalar.local_element(dof % invM_size) *
-                postProcessedSet[fieldIndex]->local_element(dof);
+              field->local_element(dof) =
+                invMscalar.local_element(dof % invM_size) * field->local_element(dof);
             }
-          constraintsOtherSet[0]->distribute(*postProcessedSet[fieldIndex]);
-          postProcessedSet[fieldIndex]->update_ghost_values();
+          constraintsOtherSet[0]->distribute(*field);
+          field->update_ghost_values();
         }
 
       // Integrate over selected post-processed fields and output them to the
@@ -158,23 +152,26 @@ MatrixFreePDE<dim, degree>::outputResults()
 
   data_out.build_patches(degree);
 
+  // Defining snprintf with no warnings because we don't can about truncation
+#define snprintf_nowarn(...) (snprintf(__VA_ARGS__) < 0 ? abort() : (void) 0)
+
   // write to results file
   // file name
   std::ostringstream cycleAsString;
   cycleAsString << std::setw(std::floor(std::log10(userInputs.totalIncrements)) + 1)
                 << std::setfill('0') << currentIncrement;
   char baseFileName[100], vtuFileName[100];
-  snprintf(baseFileName,
-           sizeof(baseFileName),
-           "%s-%s",
-           userInputs.output_file_name.c_str(),
-           cycleAsString.str().c_str());
-  snprintf(vtuFileName,
-           sizeof(vtuFileName),
-           "%s.%u.%s",
-           baseFileName,
-           Utilities::MPI::this_mpi_process(MPI_COMM_WORLD),
-           userInputs.output_file_type.c_str());
+  snprintf_nowarn(baseFileName,
+                  sizeof(baseFileName),
+                  "%s-%s",
+                  userInputs.output_file_name.c_str(),
+                  cycleAsString.str().c_str());
+  snprintf_nowarn(vtuFileName,
+                  sizeof(vtuFileName),
+                  "%s.%u.%s",
+                  baseFileName,
+                  Utilities::MPI::this_mpi_process(MPI_COMM_WORLD),
+                  userInputs.output_file_type.c_str());
 
   // Write to file in either vtu or vtk format
   if (userInputs.output_file_type == "vtu")
@@ -202,21 +199,21 @@ MatrixFreePDE<dim, degree>::outputResults()
                    ++i)
                 {
                   char vtuProcFileName[100];
-                  snprintf(vtuProcFileName,
-                           sizeof(vtuProcFileName),
-                           "%s-%s.%u.%s",
-                           userInputs.output_file_name.c_str(),
-                           cycleAsString.str().c_str(),
-                           i,
-                           userInputs.output_file_type.c_str());
-                  filenames.push_back(vtuProcFileName);
+                  snprintf_nowarn(vtuProcFileName,
+                                  sizeof(vtuProcFileName),
+                                  "%s-%s.%u.%s",
+                                  userInputs.output_file_name.c_str(),
+                                  cycleAsString.str().c_str(),
+                                  i,
+                                  userInputs.output_file_type.c_str());
+                  filenames.emplace_back(vtuProcFileName);
                 }
               char pvtuFileName[100];
-              snprintf(pvtuFileName,
-                       sizeof(pvtuFileName),
-                       "%s.p%s",
-                       baseFileName,
-                       userInputs.output_file_type.c_str());
+              snprintf_nowarn(pvtuFileName,
+                              sizeof(pvtuFileName),
+                              "%s.p%s",
+                              baseFileName,
+                              userInputs.output_file_type.c_str());
               std::ofstream master_output(pvtuFileName);
 
               data_out.write_pvtu_record(master_output, filenames);
@@ -227,11 +224,11 @@ MatrixFreePDE<dim, degree>::outputResults()
         {
           // Write the results to a file shared between all processes
           char svtuFileName[100];
-          snprintf(svtuFileName,
-                   sizeof(svtuFileName),
-                   "%s.%s",
-                   baseFileName,
-                   userInputs.output_file_type.c_str());
+          snprintf_nowarn(svtuFileName,
+                          sizeof(svtuFileName),
+                          "%s.%s",
+                          baseFileName,
+                          userInputs.output_file_type.c_str());
           data_out.write_vtu_in_parallel(svtuFileName, MPI_COMM_WORLD);
           pcout << "Output written to:" << svtuFileName << "\n\n";
         }

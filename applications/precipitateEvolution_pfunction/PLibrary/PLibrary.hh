@@ -6,37 +6,35 @@
 #ifndef PLIBRARY_HH
 #define PLIBRARY_HH
 
-#include<cstring>
-#include "IntegrationTools/PFunction.hh"
-#include "IntegrationTools/PPieceWise.hh"
+#include "../../../include/IntegrationTools/PFunction.hh"
+#include "../../../include/IntegrationTools/PPieceWise.hh"
+#include <cstring>
 
 namespace PRISMS
 {
 
-    /// Library where you can find functions and basis sets
-    ///
-    namespace PLibrary
-    {
-        // Use these functions to checkout objects which manage their own memory
+  /// Library where you can find functions and basis sets
+  ///
+  namespace PLibrary
+  {
+    // Use these functions to checkout objects which manage their own memory
 
-        void checkout( std::string name, PSimpleFunction< double*, double > &simplefunc);
+    void
+    checkout(std::string name, PSimpleFunction<double *, double> &simplefunc);
 
-        void checkout( std::string name, PFunction< double*, double > &func);
+    void
+    checkout(std::string name, PFunction<double *, double> &func);
 
+    // Use these functions to checkout new 'Base' objects which the user must delete
 
+    void
+    checkout(std::string name, PSimpleBase<double *, double> *&simplefunc);
 
+    void
+    checkout(std::string name, PFuncBase<double *, double> *&func);
 
-        // Use these functions to checkout new 'Base' objects which the user must delete
+  } // namespace PLibrary
 
-        void checkout( std::string name, PSimpleBase< double*, double > *&simplefunc);
-
-        void checkout( std::string name, PFuncBase< double*, double > *&func);
-
-
-
-    }
-
-}
-
+} // namespace PRISMS
 
 #endif

@@ -46,6 +46,7 @@ MatrixFreePDE<dim, degree>::reassignGrains()
                                          solutionSet.at(fieldIndex),
                                          userInputs.order_parameter_threshold,
                                          1.0 + userInputs.order_parameter_threshold,
+                                         0,
                                          fieldIndex,
                                          single_OP_grain_sets);
 

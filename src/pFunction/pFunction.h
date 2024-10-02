@@ -7,14 +7,20 @@
 // take. Currently this is only implemented for scalar functions. Vector
 // functions can be treated component by component.
 
+#include <deal.II/base/vectorization.h>
+
+#include "../../include/IntegrationTools/extern/PLibraryExtern.hh"
+#include <string>
+
 namespace PFunctions
 {
+  using scalarvalueType = dealii::VectorizedArray<double>;
 
   class pFunction
   {
   public:
     // Constructor, wraps the IntegrationTools checkout function
-    pFunction(std::string function_name);
+    pFunction(const std::string &function_name);
 
     // Returns the value of the function for a given input variable
     scalarvalueType val(scalarvalueType);
@@ -33,7 +39,7 @@ namespace PFunctions
     PRISMS::PFunction<double *, double> fun;
   };
 
-  pFunction::pFunction(std::string function_name)
+  pFunction::pFunction(const std::string &function_name)
   {
     PRISMS::PLibrary::checkout(function_name, fun);
   }

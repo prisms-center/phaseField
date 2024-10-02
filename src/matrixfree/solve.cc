@@ -83,7 +83,16 @@ MatrixFreePDE<dim, degree>::solve()
             }
 
           // check and perform adaptive mesh refinement
-          adaptiveRefine(currentIncrement);
+          if (userInputs.h_adaptivity == true &&
+              currentIncrement % userInputs.skip_remeshing_steps == 0)
+            {
+              computing_timer.enter_subsection("matrixFreePDE: AMR");
+
+              AMR.do_adaptive_refinement(currentIncrement);
+              reinit();
+
+              computing_timer.leave_subsection("matrixFreePDE: AMR");
+            }
 
           // Update the list of nuclei (if relevant)
           updateNucleiList();

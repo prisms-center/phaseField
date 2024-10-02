@@ -2,128 +2,135 @@
 #ifndef PSimpleFunction_HH
 #define PSimpleFunction_HH
 
-#include<cstring>
-#include<iostream>
-#include<vector>
-#include<cstdlib>
-
 #include "./PSimpleBase.hh"
+#include <cstdlib>
+#include <cstring>
+#include <iostream>
+#include <vector>
 
 namespace PRISMS
 {
-    template< class VarContainer, class OutType>
-    class PSimpleFunction 
+  template <class VarContainer, class OutType>
+  class PSimpleFunction
+  {
+  private:
+    PSimpleBase<VarContainer, OutType> *ptr;
+
+  public:
+    std::string
+    name() const
     {
-    private:
-        PSimpleBase<VarContainer,OutType> *ptr;
+      return (*ptr).name();
+    }
 
-    public:
+    std::string
+    csrc() const
+    {
+      return (*ptr).csrc();
+    }
 
-        std::string name() const
+    std::string
+    sym() const
+    {
+      return (*ptr).sym();
+    }
+
+    std::string
+    latex() const
+    {
+      return (*ptr).latex();
+    }
+
+    // ----------------------------------------------------------
+    // Use this function if you want to evaluate,
+    //   return and store result
+    OutType
+    operator()(const VarContainer &var)
+    {
+      return (*ptr)(var);
+    }
+
+    // ----------------------------------------------------------
+    // Then use 'get' methods to access results later
+    void
+    eval(const VarContainer &var)
+    {
+      (*ptr)(var);
+    }
+
+    OutType
+    operator()() const
+    {
+      return (*ptr)();
+    }
+
+    // PFunction unique members ------------------------------------------
+
+    PSimpleFunction &
+    operator=(const PSimpleFunction &RHS)
+    {
+      if (ptr != NULL)
+        delete ptr;
+      ptr = RHS.ptr->clone();
+      return *this;
+    }
+
+    template <class T>
+    PSimpleFunction &
+    operator=(const T &RHS)
+    {
+      RHS.is_derived_from_PSimpleBase();
+
+      if (ptr != NULL)
+        delete ptr;
+      ptr = RHS.clone();
+      return *this;
+    }
+
+    // If you use this, PSimpleFunction becomes the 'owner' of the function RHS points to
+    //    and it will delete it
+    PSimpleFunction &
+    set(PSimpleBase<VarContainer, OutType> *RHS)
+    {
+      if (RHS == NULL)
         {
-            return (*ptr).name();
+          std::cout << "Error in PSimpleFunction::set. RHS == NULL." << std::endl;
+          exit(1);
         }
-        std::string csrc() const
-        {
-            return (*ptr).csrc();
-        }
-        std::string sym() const
-        {
-            return (*ptr).sym();
-        }
-        std::string latex() const
-        {
-            return (*ptr).latex();
-        }
-        
+      if (ptr != NULL)
+        delete ptr;
+      ptr = RHS;
+      return *this;
+    }
 
-        // ----------------------------------------------------------
-        // Use this function if you want to evaluate,
-        //   return and store result
-        OutType operator()(const VarContainer &var)
-        {
-            return (*ptr)(var);
-        }
+    PSimpleFunction()
+    {
+      ptr = NULL;
+    }
 
-        // ----------------------------------------------------------
-        // Then use 'get' methods to access results later
-        void eval(const VarContainer &var)
-        {
-            (*ptr)(var);
-        }
+    PSimpleFunction(const PSimpleFunction &RHS)
+    {
+      if (RHS.ptr != NULL)
+        ptr = RHS.ptr->clone();
+      else
+        ptr = NULL;
+    }
 
-        OutType operator()() const
-        {
-            return (*ptr)();
-        }
+    template <class T>
+    PSimpleFunction(const T &RHS)
+    {
+      RHS.is_derived_from_PSimpleBase();
 
-        // PFunction unique members ------------------------------------------
+      ptr = RHS.clone();
+    }
 
-        PSimpleFunction& operator=(const PSimpleFunction &RHS)
-        {
-            if(ptr != NULL)
-                delete ptr;
-            ptr = RHS.ptr->clone();
-            return *this;
-        }
+    ~PSimpleFunction()
+    {
+      if (ptr != NULL)
+        delete ptr;
+    }
+  };
 
-        template<class T> 
-        PSimpleFunction& operator=(const T &RHS)
-        {
-            RHS.is_derived_from_PSimpleBase();
-
-            if(ptr != NULL)
-                delete ptr;
-            ptr = RHS.clone();
-            return *this;
-        }
-
-        // If you use this, PSimpleFunction becomes the 'owner' of the function RHS points to
-        //    and it will delete it
-        PSimpleFunction& set( PSimpleBase<VarContainer,OutType> *RHS)
-        {
-            if(RHS == NULL)
-            {
-                std::cout << "Error in PSimpleFunction::set. RHS == NULL." << std::endl;
-                exit(1);
-            }
-            if(ptr != NULL)
-                delete ptr;
-            ptr = RHS;
-            return *this;
-        }
-        
-        PSimpleFunction()
-        {
-            ptr = NULL;
-        }
-
-        PSimpleFunction(const PSimpleFunction &RHS)
-        {
-            if( RHS.ptr != NULL)
-                ptr = RHS.ptr->clone();
-            else 
-                ptr = NULL;
-        }
-        
-        template<class T> PSimpleFunction(const T &RHS)
-        {
-            RHS.is_derived_from_PSimpleBase();
-
-            ptr = RHS.clone();
-            
-        }
-
-        ~PSimpleFunction()
-        {
-            if(ptr != NULL)
-                delete ptr;
-        }
-
-    
-    };
-
-}
-
+} // namespace PRISMS
 
 #endif
