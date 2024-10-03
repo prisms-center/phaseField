@@ -1,7 +1,7 @@
 # =================================================================================
 # Set the number of dimensions (2 or 3 for a 2D or 3D calculation)
 # =================================================================================
-set Number of dimensions = 2
+set Number of dimensions = 3
 
 # =================================================================================
 # Set the length of the domain in all three dimensions
@@ -10,7 +10,7 @@ set Number of dimensions = 2
 # Each axes spans from zero to the specified length
 set Domain size X = 64
 set Domain size Y = 64
-set Domain size Z = 100
+set Domain size Z = 1
 
 # =================================================================================
 # Set the element parameters
@@ -25,20 +25,20 @@ set Subdivisions Z = 1
 set Refine factor = 7
 
 # Set the polynomial degree of the element (allowed values: 1, 2, or 3)
-set Element degree = 2
+set Element degree = 1
 
 # =================================================================================
 # Set the adaptive mesh refinement parameters
 # =================================================================================
 # Set the flag determining if adaptive meshing is activated
-set Mesh adaptivity = true
+set Mesh adaptivity = false
 
 # Set the maximum and minimum level of refinement
 # When adaptive meshing is enabled, the refine factor set in the block above is
 # only used to generate the first pass of the mesh as the initial conditions are
 # applied. It should be set somewhere between the max and min levels below.
-set Max refinement level = 7
-set Min refinement level = 4
+set Max refinement level = 6
+set Min refinement level = 3
 
 # Set the criteria for adapting the mesh
 subsection Refinement criterion: n0
@@ -46,64 +46,120 @@ subsection Refinement criterion: n0
     # its gradient (GRADIENT), or both (VALUE_AND_GRADIENT)
     set Criterion type = VALUE
     # Set the lower and upper bounds for the value-based refinement window
-    set Value lower bound = 1e-3
-    set Value upper bound = 0.999
+    set Value lower bound = 1e-2
+    set Value upper bound = 0.99
 end
 subsection Refinement criterion: n1
     # Select whether the mesh is refined based on the variable value (VALUE),
     # its gradient (GRADIENT), or both (VALUE_AND_GRADIENT)
     set Criterion type = VALUE
     # Set the lower and upper bounds for the value-based refinement window
-    set Value lower bound = 1e-3
-    set Value upper bound = 0.999
+    set Value lower bound = 1e-2
+    set Value upper bound = 0.99
 end
 subsection Refinement criterion: n2
     # Select whether the mesh is refined based on the variable value (VALUE),
     # its gradient (GRADIENT), or both (VALUE_AND_GRADIENT)
     set Criterion type = VALUE
     # Set the lower and upper bounds for the value-based refinement window
-    set Value lower bound = 1e-3
-    set Value upper bound = 0.999
+    set Value lower bound = 1e-2
+    set Value upper bound = 0.99
 end
 subsection Refinement criterion: n3
     # Select whether the mesh is refined based on the variable value (VALUE),
     # its gradient (GRADIENT), or both (VALUE_AND_GRADIENT)
     set Criterion type = VALUE
     # Set the lower and upper bounds for the value-based refinement window
-    set Value lower bound = 1e-3
-    set Value upper bound = 0.999
+    set Value lower bound = 1e-2
+    set Value upper bound = 0.99
 end
 subsection Refinement criterion: n4
     # Select whether the mesh is refined based on the variable value (VALUE),
     # its gradient (GRADIENT), or both (VALUE_AND_GRADIENT)
     set Criterion type = VALUE
     # Set the lower and upper bounds for the value-based refinement window
-    set Value lower bound = 1e-3
-    set Value upper bound = 0.999
+    set Value lower bound = 1e-2
+    set Value upper bound = 0.99
 end
 subsection Refinement criterion: n5
     # Select whether the mesh is refined based on the variable value (VALUE),
     # its gradient (GRADIENT), or both (VALUE_AND_GRADIENT)
     set Criterion type = VALUE
     # Set the lower and upper bounds for the value-based refinement window
-    set Value lower bound = 1e-3
-    set Value upper bound = 0.999
+    set Value lower bound = 1e-2
+    set Value upper bound = 0.99
 end
 subsection Refinement criterion: n6
     # Select whether the mesh is refined based on the variable value (VALUE),
     # its gradient (GRADIENT), or both (VALUE_AND_GRADIENT)
     set Criterion type = VALUE
     # Set the lower and upper bounds for the value-based refinement window
-    set Value lower bound = 1e-3
-    set Value upper bound = 0.999
+    set Value lower bound = 1e-2
+    set Value upper bound = 0.99
 end
 subsection Refinement criterion: n7
     # Select whether the mesh is refined based on the variable value (VALUE),
     # its gradient (GRADIENT), or both (VALUE_AND_GRADIENT)
     set Criterion type = VALUE
     # Set the lower and upper bounds for the value-based refinement window
-    set Value lower bound = 1e-3
-    set Value upper bound = 0.999
+    set Value lower bound = 1e-2
+    set Value upper bound = 0.99
+end
+subsection Refinement criterion: n8
+    # Select whether the mesh is refined based on the variable value (VALUE),
+    # its gradient (GRADIENT), or both (VALUE_AND_GRADIENT)
+    set Criterion type = VALUE
+    # Set the lower and upper bounds for the value-based refinement window
+    set Value lower bound = 1e-2
+    set Value upper bound = 0.99
+end
+subsection Refinement criterion: n9
+    # Select whether the mesh is refined based on the variable value (VALUE),
+    # its gradient (GRADIENT), or both (VALUE_AND_GRADIENT)
+    set Criterion type = VALUE
+    # Set the lower and upper bounds for the value-based refinement window
+    set Value lower bound = 1e-2
+    set Value upper bound = 0.99
+end
+subsection Refinement criterion: n10
+    # Select whether the mesh is refined based on the variable value (VALUE),
+    # its gradient (GRADIENT), or both (VALUE_AND_GRADIENT)
+    set Criterion type = VALUE
+    # Set the lower and upper bounds for the value-based refinement window
+    set Value lower bound = 1e-2
+    set Value upper bound = 0.99
+end
+subsection Refinement criterion: n11
+    # Select whether the mesh is refined based on the variable value (VALUE),
+    # its gradient (GRADIENT), or both (VALUE_AND_GRADIENT)
+    set Criterion type = VALUE
+    # Set the lower and upper bounds for the value-based refinement window
+    set Value lower bound = 1e-2
+    set Value upper bound = 0.99
+end
+subsection Refinement criterion: n12
+    # Select whether the mesh is refined based on the variable value (VALUE),
+    # its gradient (GRADIENT), or both (VALUE_AND_GRADIENT)
+    set Criterion type = VALUE
+    # Set the lower and upper bounds for the value-based refinement window
+    set Value lower bound = 1e-2
+    set Value upper bound = 0.99
+end
+subsection Refinement criterion: n13
+    # Select whether the mesh is refined based on the variable value (VALUE),
+    # its gradient (GRADIENT), or both (VALUE_AND_GRADIENT)
+    set Criterion type = VALUE
+    # Set the lower and upper bounds for the value-based refinement window
+    set Value lower bound = 1e-2
+    set Value upper bound = 0.99
+end
+subsection Refinement criterion: n14
+    # Select whether the mesh is refined based on the variable value (VALUE),
+    # its gradient (GRADIENT), or both (VALUE_AND_GRADIENT)
+    set Criterion type = VALUE
+    # Set the lower and upper bounds for the value-based refinement window
+    set Value lower bound = 1e-2
+    set Value upper bound = 0.99
 end
 
 # Set the number of time steps between remeshing operations
@@ -117,7 +173,7 @@ set Time step = 0.05
 
 # The simulation ends when either the number of time steps is reached or the
 # simulation time is reached.
-set Number of time steps = 10000 #4000
+set Number of time steps = 1 #4000
 
 # =================================================================================
 # Set the output parameters
@@ -128,26 +184,27 @@ set Output condition = EQUAL_SPACING
 
 # Number of times the program outputs the fields (total number for "EQUAL_SPACING"
 # and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set Number of outputs = 20
+set Number of outputs = 2
 
 # The number of time steps between updates being printed to the screen
-set Skip print steps = 50
+set Skip print steps = 500
 
 # =================================================================================
 # Set the grain reassignment parameters
 # =================================================================================
 
 set Activate grain reassignment = true
-set Order parameter fields for grain reassignment = n0, n1, n2, n3, n4, n5, n6, n7
+set Order parameter fields for grain reassignment = n0, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14
 set Time steps between grain reassignments = 2000
 set Order parameter cutoff for grain identification = 1e-2
 set Buffer between grains before reassignment = 2.0
 
 set Load grain structure = true
-set Grain structure filename = initial_grain_structure_small_2D
+set vtk file type = UNSTRUCTURED
+set Grain structure filename = 20_grains_2D_US
 set Grain structure variable name = FeatureIds
-set Number of smoothing cycles after grain structure loading = 2
-set Minimum radius for loaded grains = 2.0
+set Number of smoothing cycles after grain structure loading = 0
+set Minimum radius for loaded grains = 0.0
 
 # =================================================================================
 # Set the boundary conditions
@@ -177,6 +234,13 @@ set Boundary condition for variable n4 = NATURAL
 set Boundary condition for variable n5 = NATURAL
 set Boundary condition for variable n6 = NATURAL
 set Boundary condition for variable n7 = NATURAL
+set Boundary condition for variable n8 = NATURAL
+set Boundary condition for variable n9 = NATURAL
+set Boundary condition for variable n10 = NATURAL
+set Boundary condition for variable n11 = NATURAL
+set Boundary condition for variable n12 = NATURAL
+set Boundary condition for variable n13 = NATURAL
+set Boundary condition for variable n14 = NATURAL
 
 # =================================================================================
 # Set the model constants
