@@ -124,46 +124,14 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
     {
       this->currentFieldIndex = fieldIndex; // Used in computeLHS()
 
-      // Add Neumann BC terms to the residual vector for the current field, if
-      // appropriate Currently commented out because it isn't working yet
-      // applyNeumannBCs();
-
       // Parabolic (first order derivatives in time) fields
       if (this->fields[fieldIndex].pdetype == EXPLICIT_TIME_DEPENDENT &&
           !skip_time_dependent)
         {
-          // Explicit-time step each DOF
-          // Takes advantage of knowledge that the length of solutionSet and
-          // residualSet is an integer multiple of the length of invM for vector
-          // variables
-#if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
-          unsigned int invM_size = this->invM.local_size();
-          for (unsigned int dof = 0; dof < this->solutionSet[fieldIndex]->local_size();
-               ++dof)
-            {
-#else
-          unsigned int invM_size = this->invM.locally_owned_size();
-          for (unsigned int dof = 0;
-               dof < this->solutionSet[fieldIndex]->locally_owned_size();
-               ++dof)
-            {
-#endif
-              this->solutionSet[fieldIndex]->local_element(dof) =
-                this->invM.local_element(dof % invM_size) *
-                this->residualSet[fieldIndex]->local_element(dof);
-            }
-          // Set the Dirichelet values (hanging node constraints don't need to
-          // be distributed every time step, only at output)
-          if (this->has_Dirichlet_BCs)
-            {
-              this->constraintsDirichletSet[fieldIndex]->distribute(
-                *this->solutionSet[fieldIndex]);
-            }
-          // computing_timer.enter_subsection("matrixFreePDE:
-          // updateExplicitGhosts");
-          this->solutionSet[fieldIndex]->update_ghost_values();
-          // computing_timer.exit_subsection("matrixFreePDE:
-          // updateExplicitGhosts");
+          this->updateExplicitSolution(fieldIndex);
+
+          // Apply Boundary conditions
+          this->applyBCs(fieldIndex);
 
           // Print update to screen and confirm that solution isn't nan
           if (this->currentIncrement % userInputs.skip_print_steps == 0)
@@ -538,34 +506,10 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                             }
                         }
 
-                        // Explicit-time step each DOF
-                        // Takes advantage of knowledge that the length of
-                        // solutionSet and residualSet is an integer multiple of
-                        // the length of invM for vector variables
-#if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
-                      unsigned int invM_size = this->invM.local_size();
-                      for (unsigned int dof = 0;
-                           dof < this->solutionSet[fieldIndex]->local_size();
-                           ++dof)
-                        {
-#else
-                      unsigned int invM_size = this->invM.locally_owned_size();
-                      for (unsigned int dof = 0;
-                           dof < this->solutionSet[fieldIndex]->locally_owned_size();
-                           ++dof)
-                        {
-#endif
-                          this->solutionSet[fieldIndex]->local_element(dof) =
-                            this->invM.local_element(dof % invM_size) *
-                            this->residualSet[fieldIndex]->local_element(dof);
-                        }
+                      this->updateExplicitSolution(fieldIndex);
 
-                      // Set the Dirichelet values (hanging node constraints
-                      // don't need to be distributed every time step, only at
-                      // output)
-                      this->constraintsDirichletSet[fieldIndex]->distribute(
-                        *this->solutionSet[fieldIndex]);
-                      this->solutionSet[fieldIndex]->update_ghost_values();
+                      // Apply Boundary conditions
+                      this->applyBCs(fieldIndex);
 
                       // Print update to screen
                       if (this->currentIncrement % userInputs.skip_print_steps == 0)
