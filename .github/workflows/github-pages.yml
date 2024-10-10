@@ -1,0 +1,51 @@
+name: Publish doc to GitHub pages
+
+on:
+  push:
+    branches:
+      - devel
+  pull_request:
+    paths-ignore:
+      - 'doc/**'
+    
+permissions:
+  contents: write
+
+concurrency:
+  group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request'}}
+
+jobs:
+  docs:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Setup doxygen
+      run: |
+        sudo apt-get install doxygen
+        sudo apt-get install -y graphviz
+
+    - name: Build doxygen files
+      run: |
+        cd doc/doxygen
+        cmake .
+        make
+
+    - name: Upload folders
+      uses: actions/upload-artifact@v4
+      with:
+        name: html-doc
+        path: doc/doxygen/html/
+
+    - name: Deploy to GitHub pages
+      uses: JamesIves/github-pages-deploy-action@v4
+      if: github.ref == 'refs/heads/devel'
+      with:
+        branch: gh-pages
+        folder: doc/doxygen/html/
+        target-folder: doxygen/
+        
