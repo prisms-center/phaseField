@@ -99,50 +99,80 @@ public:
   create_triangulation(parallel::distributed::Triangulation<dim> &tria) const;
 
   /**
-   * Initializes the data structures for enabling unit tests.
+   * \brief Initializes the data structures for enabling unit tests.
    *
-   * This method initializes the MatrixFreePDE object with a fixed geometry,
-   * discretization and other custom selected options specifically to help with
-   * unit tests, and should not be called in any of the physical models.
+   * \details This method initializes the MatrixFreePDE object with a fixed geometry,
+   * discretization and other custom selected options specifically to help with unit
+   * tests, and should not be called in any of the physical models.
+   *
+   * \param _fields Vector of PDE descriptions (e.g., scalar/vector) for each field.
    */
   void
   initForTests(std::vector<Field<dim>> _fields);
 
   /**
-   * This method implements the time stepping algorithm and invokes the
+   * \brief This method implements the time stepping algorithm and invokes the
    * solveIncrement() method.
    */
   void
   solve();
+
   /**
-   * This method essentially converts the MatrixFreePDE object into a matrix
-   * object which can be used with matrix free iterative solvers. Provides the
-   * A*x functionality for solving the system of equations AX=b.
+   * \brief This method essentially converts the MatrixFreePDE object into a matrix object
+   * which can be used with matrix free iterative solvers. Provides the A*x functionality
+   * for solving the system of equations Ax=b.
+   *
+   * \param dst The destination vector.
+   * \param src The source vector.
    */
   void
   vmult(vectorType &dst, const vectorType &src) const;
+
   /**
-   * Vector of all the physical fields in the problem. Fields are identified by
-   * dimentionality (SCALAR/VECTOR), the kind of PDE (ELLIPTIC/PARABOLIC) used
-   * to compute them and a character identifier  (e.g.: "c" for composition)
-   * which is used to write the fields to the output files.
+   * \brief Vector of all the physical fields in the problem. Fields are identified by
+   * dimentionality (SCALAR/VECTOR), the kind of PDE (ELLIPTIC/PARABOLIC) used to compute
+   * them and a character identifier  (e.g.: "c" for composition) which is used to write
+   * the fields to the output files.
    */
   std::vector<Field<dim>> fields;
 
+  /**
+   * \brief Create the vector of all physical fields in the problem.
+   */
   void
   buildFields();
 
-  // Parallel message stream
+  /**
+   * \brief Parallel message stream.
+   */
   ConditionalOStream pcout;
 
-  // Initial conditions function
+  /**
+   * \brief Set the initial condition for all fields. This function is overriden in each
+   * application.
+   *
+   * \param p The point at which the initial condition is evaluated.
+   * \param index The index of the field being evaluated.
+   * \param scalar_IC Return variable for scalar fields.
+   * \param vector_IC Return variable for vector fields.
+   */
   virtual void
   setInitialCondition([[maybe_unused]] const Point<dim>  &p,
                       [[maybe_unused]] const unsigned int index,
                       [[maybe_unused]] double            &scalar_IC,
                       [[maybe_unused]] Vector<double>    &vector_IC) = 0;
 
-  // Non-uniform boundary conditions function
+  /**
+   * \brief Set the spatially or temporally non-uniform boundary conditions. This function
+   * is overriden in each application.
+   *
+   * \param p The point at which the boundary condition is evaluated.
+   * \param index The index of the field being evaluated.
+   * \param direction The face of the boundary condition.
+   * \param time The time at which the boundary condition is evaluated.
+   * \param scalar_BC Return variable for scalar fields.
+   * \param vector_BC Return variable for vector fields.
+   */
   virtual void
   setNonUniformDirichletBCs([[maybe_unused]] const Point<dim>  &p,
                             [[maybe_unused]] const unsigned int index,
