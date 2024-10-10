@@ -114,3 +114,10 @@ DoxygenWarningLog.txt
 *.nav
 *.snm
 *.nlo
+
+# Doxygen
+doc/doxygen/html/*
+doc/doxygen/latex/*
+doc/doxygen/Doxyfile.doc_doxygen
+doc/doxygen/CMakeDoxyfile.in
+doc/doxygen/DoxygenWarningLog.txt
