@@ -1,0 +1,2 @@
+# Installing Visualization Software {#install_vis}
+The output files for PRISMS-PF are follow the VTK format. Two popular programs to read and visualize these files are VisIt (which is used in the remainder of this user manual) and ParaView. Installation instructions for VisIt can be found [here](https://wci.llnl.gov/simulation/computer-codes/visit/downloads). Installation instructions for ParaView can be found [here](https://www.paraview.org/download/).
