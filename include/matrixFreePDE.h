@@ -49,45 +49,54 @@ using namespace dealii;
 
 // define data types
 #ifndef scalarType
-typedef VectorizedArray<double> scalarType;
+using scalarType = VectorizedArray<double>;
 #endif
 #ifndef vectorType
-typedef LinearAlgebra::distributed::Vector<double> vectorType;
+using vectorType = LinearAlgebra::distributed::Vector<double>;
 #endif
 
 // macro for constants
 #define constV(a) make_vectorized_array(a)
 
-//
-// base class for matrix free PDE's
-//
 /**
- * This is the abstract base class for the matrix free implementation of
- * Parabolic and Elliptic BVP's, and supports MPI, Threads and Vectorization
- * (Hybrid Parallel). This class contains the parallel data structures, mesh
- * (referred to as triangulation), parallel degrees of freedom distribution,
- * constraints,  and general utility methods.
+ * \brief This is the abstract base class for the matrix free implementation of parabolic
+ * and elliptic BVP's, and supports MPI, threads and vectorization (Hybrid Parallel). This
+ * class contains the parallel data structures, mesh (referred to as triangulation),
+ * parallel degrees of freedom distribution, constraints, and general utility methods.
  *
  * All the physical models in this package inherit this base class.
+ *
+ * \tparam dim The number of dimensions in the problem.
+ * \tparam degree The polynomial degree of the shape functions.
  */
 template <int dim, int degree>
 class MatrixFreePDE : public Subscriptor
 {
 public:
   /**
-   * Class contructor
+   * \brief Class contructor.
    */
   MatrixFreePDE(userInputParameters<dim>);
-  ~MatrixFreePDE();
+
   /**
-   * Initializes the mesh, degrees of freedom, constraints and data structures
+   * \brief Class destructor.
+   */
+  ~MatrixFreePDE() override;
+
+  /**
+   * \brief Initializes the mesh, degrees of freedom, constraints and data structures
    * using the user provided inputs in the application parameters file.
    */
   virtual void
   init();
 
+  /**
+   * \brief Create the mesh with the user provided domain sizes.
+   *
+   * \param tria Triangulation object. It must be empty prior to calling this function.
+   */
   virtual void
-  makeTriangulation(parallel::distributed::Triangulation<dim> &) const;
+  create_triangulation(parallel::distributed::Triangulation<dim> &tria) const;
 
   /**
    * Initializes the data structures for enabling unit tests.

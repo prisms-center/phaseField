@@ -16,7 +16,7 @@ MatrixFreePDE<dim, degree>::init()
 
   pcout << "creating problem mesh...\n";
   // Create the coarse mesh and mark the boundaries
-  makeTriangulation(triangulation);
+  create_triangulation(triangulation);
 
   // Set which (if any) faces of the triangulation are periodic
   setPeriodicity();
@@ -368,7 +368,7 @@ MatrixFreePDE<dim, degree>::init()
 
 template <int dim, int degree>
 void
-MatrixFreePDE<dim, degree>::makeTriangulation(
+MatrixFreePDE<dim, degree>::create_triangulation(
   parallel::distributed::Triangulation<dim> &tria) const
 {
   if (dim == 3)
