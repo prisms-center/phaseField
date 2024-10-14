@@ -9,7 +9,11 @@ userInputParameters<dim>::setTimeStepList(
 {
   std::vector<unsigned int> timeStepList;
 
-  if (numberOfOutputs > 0)
+  if (outputSpacingType == "LIST")
+    {
+      timeStepList = userGivenTimeStepList;
+    }
+  else if (numberOfOutputs > 0)
     {
       if (outputSpacingType == "EQUAL_SPACING")
         {
@@ -47,10 +51,6 @@ userInputParameters<dim>::setTimeStepList(
                 }
             }
         }
-    }
-  else if (outputSpacingType == "LIST")
-    {
-      timeStepList = userGivenTimeStepList;
     }
   else
     {
