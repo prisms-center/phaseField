@@ -31,12 +31,21 @@ One option when installing PRISMS-PF is to install it and all of its prerequisit
 1. [Install Docker](https://docs.docker.com/install/)
 2. Create a directory on your computer to hold the PRISMS-PF applications folder (e.g. ```$ mkdir ~/DockerWorkspace```) and go to that directory (e.g. ```$ cd ~/DockerWorkspace```)
 3. Clone the PRISMS-PF repository (```$ git clone https://github.com/prisms-center/phaseField```)
-4. Get the PRISMS-PF Docker image (```$ docker pull stvdwtt/prismspf:prismspf```)
-5. Now, launch the Docker container, linking the PRISMS-PF applications folder in the container to your local one: (e.g.  ```$ docker run -ti -v ~/DockerWorkspace/phaseField/applications:/home/dealii/phaseField/applications stvdwtt/prismspf:prismspf```)
+4. Get the PRISMS-PF Docker image (```$ docker pull prismspf/prismspf:latest```)
+5. Now, launch the Docker container, linking the PRISMS-PF applications folder in the container to your local one: (e.g.  ```$ docker run -ti -v ~/DockerWorkspace/phaseField/applications:/home/dealii/phaseField/applications prismspf/prismspf:latest```)
 
 Now you should have a working PRISMS-PF environment. The core library will already be compiled, but you'll need to compile any applications that you want to use. Any changes that you make or output files that you create should be found at ~/DockerWorkspace on your host computer.
 
 To get out of the container, type:
 ```
 $ exit
+```
+
+**Note:** If you only want to update (and use) the new Docker image, follow steps 4 and 5 above. If you want to remove the previous image, simply type: 
+```
+$ docker rmi stvdwtt/prismspf:prismspf
+```
+or
+```
+$ docker rmi prismspf/prismspf:2.2
 ```
