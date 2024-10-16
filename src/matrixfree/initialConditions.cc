@@ -10,10 +10,11 @@ template <int dim>
 class InitialConditionPField : public Function<dim>
 {
 public:
-  unsigned int                                  index;
-  Vector<double>                                values;
-  typedef PRISMS::PField<double *, double, dim> ScalarField;
-  ScalarField                                  &inputField;
+  unsigned int   index;
+  Vector<double> values;
+
+  using ScalarField = PRISMS::PField<double *, double, dim>;
+  ScalarField &inputField;
 
   InitialConditionPField(const unsigned int _index, ScalarField &_inputField)
     : Function<dim>(1)
@@ -22,7 +23,7 @@ public:
   {}
 
   double
-  value(const Point<dim> &p, const unsigned int component = 0) const
+  value(const Point<dim> &p, const unsigned int component = 0) const override
   {
     double scalar_IC;
 
@@ -116,7 +117,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
       grain_index_field.update_ghost_values();
 
       // Get the max and min grain ids
-      unsigned int max_id = (unsigned int) grain_index_field.linfty_norm();
+      auto         max_id = (unsigned int) grain_index_field.linfty_norm();
       unsigned int min_id = 0;
 
       // Now locate all of the grains and create simplified representations of
@@ -137,6 +138,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
                                      &grain_index_field,
                                      (double) id - userInputs.order_parameter_threshold,
                                      (double) id + userInputs.order_parameter_threshold,
+                                     min_id,
                                      0,
                                      grain_sets_single_id);
 
@@ -306,6 +308,78 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
 
                   op_list_index++;
                 }
+            }
+        }
+    }
+
+  // Create map of vtk files that are read in
+  std::unordered_map<std::string, std::vector<size_t>> file_field_map;
+  for (size_t i = 0; i < userInputs.number_of_variables; ++i)
+    {
+      if (userInputs.load_ICs[i])
+        {
+          file_field_map[userInputs.load_file_name[i]].push_back(i);
+        }
+    }
+  // Read out unique filenames
+  if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0 && !file_field_map.empty())
+    {
+      std::cout << "Unique VTK input files: " << std::endl;
+      for (const auto &pair : file_field_map)
+        {
+          std::cout << pair.first << ", ";
+        }
+    }
+  // Read in each vtk once and apply initial conditions
+  using ScalarField = PRISMS::PField<double *, double, dim>;
+  using Body        = PRISMS::Body<double *, dim>;
+  Body body;
+
+  for (const auto &pair : file_field_map)
+    {
+      bool                using_parallel_files = false;
+      std::string         filename             = pair.first;
+      std::vector<size_t> index_list           = pair.second;
+      // For parallel file capability
+      for (const auto &index : index_list)
+        {
+          using_parallel_files =
+            using_parallel_files || userInputs.load_parallel_file[index];
+        }
+      if (using_parallel_files)
+        {
+          std::ostringstream conversion;
+          conversion << Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
+          filename = filename + "." + conversion.str() + ".vtk";
+        }
+      else
+        {
+          filename = filename + ".vtk"; // add file extension
+        }
+
+      std::cout << "Reading " << filename << "\n";
+      body.read_vtk(filename);
+
+      for (const auto &index : index_list)
+        {
+          std::string var_name = userInputs.load_field_name[index];
+
+          // Find the scalar field in the file
+          ScalarField &field = body.find_scalar_field(var_name);
+
+          if (userInputs.var_type[index] == SCALAR)
+            {
+              pcout << "Applying PField initial condition for "
+                    << userInputs.load_field_name[index] << "...\n";
+              VectorTools::interpolate(*dofHandlersSet[index],
+                                       InitialConditionPField<dim>(index, field),
+                                       *solutionSet[index]);
+            }
+          else
+            {
+              AssertThrow(false,
+                          ExcMessage("PRISMS-PF Error: We do not support the loading of "
+                                     "vector fields from vtks at this moment."));
             }
         }
     }

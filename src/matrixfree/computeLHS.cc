@@ -35,8 +35,15 @@ MatrixFreePDE<dim, degree>::vmult(vectorType &dst, const vectorType &src) const
                                  true);
     }
 
-  // Account for Dirichlet BC's
-  constraintsDirichletSet[currentFieldIndex]->distribute(dst);
+  // Account for Dirichlet BC's (essentially copy dirichlet DOF values present in src to
+  // dst, although it is unclear why the constraints can't just be distributed here)
+  for (auto &it : *valuesDirichletSet[currentFieldIndex])
+    {
+      if (dst.in_local_range(it.first))
+        {
+          dst(it.first) = src(it.first);
+        }
+    }
 
   // end log
   computing_timer.leave_subsection("matrixFreePDE: computeLHS");
@@ -57,7 +64,6 @@ MatrixFreePDE<dim, degree>::getLHS(
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
     {
       // Initialize, read DOFs, and set evaulation flags for each variable
-      // variable_list.reinit_and_eval_LHS(src,solutionSet,cell,currentFieldIndex);
       variable_list.reinit_and_eval(solutionSet, cell);
       variable_list.reinit_and_eval_change_in_solution(src, cell, currentFieldIndex);
 

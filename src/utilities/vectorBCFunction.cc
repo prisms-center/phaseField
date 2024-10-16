@@ -13,7 +13,7 @@
 template <int dim>
 vectorBCFunction<dim>::vectorBCFunction(std::vector<double> input_values)
   : dealii::Function<dim>(dim)
-  , BC_values(input_values)
+  , BC_values(std::move(input_values))
 {}
 
 template <int dim>

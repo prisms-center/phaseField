@@ -3,13 +3,17 @@
 template <int dim>
 std::vector<unsigned int>
 userInputParameters<dim>::setTimeStepList(
-  const std::string                outputSpacingType,
+  const std::string               &outputSpacingType,
   unsigned int                     numberOfOutputs,
   const std::vector<unsigned int> &userGivenTimeStepList)
 {
   std::vector<unsigned int> timeStepList;
 
-  if (numberOfOutputs > 0)
+  if (outputSpacingType == "LIST")
+    {
+      timeStepList = userGivenTimeStepList;
+    }
+  else if (numberOfOutputs > 0)
     {
       if (outputSpacingType == "EQUAL_SPACING")
         {
@@ -47,10 +51,6 @@ userInputParameters<dim>::setTimeStepList(
                 }
             }
         }
-    }
-  else if (outputSpacingType == "LIST")
-    {
-      timeStepList = userGivenTimeStepList;
     }
   else
     {

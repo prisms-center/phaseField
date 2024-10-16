@@ -24,7 +24,7 @@ namespace PRISMS
   class PField : public PFuncBase<Coordinate, FieldType>
   {
   public:
-    typedef typename PFuncBase<Coordinate, FieldType>::size_type size_type;
+    using size_type = typename PFuncBase<Coordinate, FieldType>::size_type;
 
     // pointer to a Mesh that lives in a Body
     Mesh<Coordinate, DIM> *_mesh;
@@ -67,7 +67,7 @@ namespace PRISMS
     // Clone
 
     PField<Coordinate, FieldType, DIM> *
-    clone() const
+    clone() const override
     {
       return new PField<Coordinate, FieldType, DIM>(*this);
     }
@@ -75,28 +75,28 @@ namespace PRISMS
     // ----------------------------------------------------------
     // Use these functions if you want to evaluate a single value
     FieldType
-    operator()(const Coordinate &coord);
+    operator()(const Coordinate &coord) override;
     FieldType
-    grad(const Coordinate &coord, size_type di);
+    grad(const Coordinate &coord, size_type di) override;
     FieldType
-    hess(const Coordinate &coord, size_type di, size_type dj);
+    hess(const Coordinate &coord, size_type di, size_type dj) override;
 
     // ----------------------------------------------------------
     // Use these functions to evaluate several values, then use 'get' methods to access
     // results
     void
-    eval(const Coordinate &coord);
+    eval(const Coordinate &coord) override;
     void
-    eval_grad(const Coordinate &coord);
+    eval_grad(const Coordinate &coord) override;
     void
-    eval_hess(const Coordinate &coord);
+    eval_hess(const Coordinate &coord) override;
 
     FieldType
-    operator()() const;
+    operator()() const override;
     FieldType
-    grad(size_type di) const;
+    grad(size_type di) const override;
     FieldType
-    hess(size_type di, size_type dj) const;
+    hess(size_type di, size_type dj) const override;
 
     // PField unique members ------------------------------------------
 

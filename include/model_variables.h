@@ -5,6 +5,7 @@
 
 #include <deal.II/base/tensor.h>
 #include <deal.II/base/vectorization.h>
+#include <deal.II/matrix_free/evaluation_flags.h>
 
 template <int dim>
 class modelVariable
@@ -32,15 +33,11 @@ public:
 
 struct variable_info
 {
-  bool         is_scalar;
-  unsigned int scalar_or_vector_index;
-  unsigned int global_var_index;
-  bool         need_value;
-  bool         need_gradient;
-  bool         need_hessian;
-  bool         value_residual;
-  bool         gradient_residual;
-  bool         var_needed;
+  bool                                     is_scalar;
+  unsigned int                             global_var_index;
+  dealii::EvaluationFlags::EvaluationFlags evaluation_flags;
+  dealii::EvaluationFlags::EvaluationFlags residual_flags;
+  bool                                     var_needed;
 };
 
 #endif /* INCLUDE_MODELVARIABLE_H_ */

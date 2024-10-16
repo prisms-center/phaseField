@@ -125,6 +125,7 @@ public:
                 vectorType                 *solution_field,
                 double                      threshold_lower,
                 double                      threshold_upper,
+                int                         min_id,
                 unsigned int                order_parameter_index,
                 std::vector<GrainSet<dim>> &grain_sets);
 
@@ -139,6 +140,7 @@ protected:
                      vectorType                 *solution_field,
                      double                      threshold_lower,
                      double                      threshold_upper,
+                     int                         min_id,
                      unsigned int               &grain_index,
                      std::vector<GrainSet<dim>> &grain_sets,
                      bool                       &grain_assigned);

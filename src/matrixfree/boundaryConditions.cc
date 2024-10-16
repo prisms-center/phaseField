@@ -39,10 +39,6 @@ MatrixFreePDE<dim, degree>::applyNeumannBCs()
           if (userInputs.BC_list[starting_BC_list_index].var_BC_type[direction] ==
               NEUMANN)
             {
-              typename DoFHandler<dim>::active_cell_iterator cell = dofHandlersSet[0]
-                                                                      ->begin_active(),
-                                                             endc =
-                                                               dofHandlersSet[0]->end();
               FESystem<dim>         *fe = FESet[currentFieldIndex];
               QGaussLobatto<dim - 1> face_quadrature_formula(degree + 1);
               FEFaceValues<dim>      fe_face_values(*fe,
@@ -54,7 +50,7 @@ MatrixFreePDE<dim, degree>::applyNeumannBCs()
               std::vector<types::global_dof_index> local_dof_indices(dofs_per_cell);
 
               // Loop over each face on a boundary
-              for (; cell != endc; ++cell)
+              for (const auto &cell : dofHandlersSet[0]->active_cell_iterators())
                 {
                   for (unsigned int f = 0; f < GeometryInfo<dim>::faces_per_cell; ++f)
                     {
@@ -194,9 +190,10 @@ MatrixFreePDE<dim, degree>::applyDirichletBCs()
                 }
             }
 
-          // VectorTools::interpolate_boundary_values (*dofHandlersSet[currentFieldIndex],\
-				//   direction, NonUniformDirichletBC<dim,degree>(currentFieldIndex,direction,currentTime,this), *(AffineConstraints<double>*) \
-				//   constraintsDirichletSet[currentFieldIndex],mask);
+          // VectorTools::interpolate_boundary_values
+          // (*dofHandlersSet[currentFieldIndex],direction,
+          // NonUniformDirichletBC<dim,degree>(currentFieldIndex,direction,currentTime,this),
+          // *(AffineConstraints<double>*)constraintsDirichletSet[currentFieldIndex],mask);
           VectorTools::interpolate_boundary_values(
             *dofHandlersSet[currentFieldIndex],
             direction,
@@ -343,7 +340,7 @@ MatrixFreePDE<dim, degree>::getComponentsWithRigidBodyModes(
 template <int dim, int degree>
 void
 MatrixFreePDE<dim, degree>::setRigidBodyModeConstraints(
-  const std::vector<int>     rigidBodyModeComponents,
+  const std::vector<int>    &rigidBodyModeComponents,
   AffineConstraints<double> *constraints,
   const DoFHandler<dim>     *dof_handler) const
 {
@@ -357,10 +354,7 @@ MatrixFreePDE<dim, degree>::setRigidBodyModeConstraints(
       unsigned int vertices_per_cell = GeometryInfo<dim>::vertices_per_cell;
 
       // Loop over each locally owned cell
-      typename DoFHandler<dim>::active_cell_iterator cell = dof_handler->begin_active(),
-                                                     endc = dof_handler->end();
-
-      for (; cell != endc; ++cell)
+      for (const auto &cell : dof_handler->active_cell_iterators())
         {
           if (cell->is_locally_owned())
             {
@@ -375,10 +369,11 @@ MatrixFreePDE<dim, degree>::setRigidBodyModeConstraints(
                            component_num < rigidBodyModeComponents.size();
                            component_num++)
                         {
-                          unsigned int nodeID = cell->vertex_dof_index(i, component_num);
-                          // Temporarily disabling the addition of inhomogeneous
-                          // constraints constraints->add_line(nodeID);
-                          // constraints->set_inhomogeneity(nodeID,0.0);
+                          // unsigned int nodeID = cell->vertex_dof_index(i,
+                          // component_num);
+                          //  Temporarily disabling the addition of inhomogeneous
+                          //  constraints constraints->add_line(nodeID);
+                          //  constraints->set_inhomogeneity(nodeID,0.0);
                         }
                     }
                 }

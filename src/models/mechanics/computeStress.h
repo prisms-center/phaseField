@@ -4,7 +4,8 @@
 #ifndef COMPUTESTRESS_MECHANICS_H
 #define COMPUTESTRESS_MECHANICS_H
 
-#include "../../../include/matrixFreePDE.h"
+#include <deal.II/base/table.h>
+#include <deal.II/base/vectorization.h>
 
 // this source file is temporarily treated as a header file (hence
 // #ifndef's) till library packaging scheme is finalized

@@ -1,0 +1,33 @@
+name: Clang-Format Check
+
+on: 
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+      - development
+
+concurrency:
+  group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request'}}
+
+permissions:
+  contents: read
+
+jobs:
+  clang-format-check:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 30
+
+    - name: Run Clang-Format
+      uses: jidicula/clang-format-action@v4.13.0
+      with:
+        clang-format-version: '16'

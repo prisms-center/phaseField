@@ -17,17 +17,14 @@ OrderParameterRemapper<dim>::remap(
           double transfer_buffer =
             std::max(0.0, grain_representations.at(g).getDistanceToNeighbor() / 2.0);
 
-          typename dealii::DoFHandler<dim>::active_cell_iterator di =
-            dof_handler.begin_active();
-
           // For now I have two loops, one where I copy the values from the old
           // order parameter to the new one and a second where I zero out the
           // old order parameter. This separation prevents writing zero-out
           // values to the new order parameter. There probably is a more
           // efficient way of doing this.
-          while (di != dof_handler.end())
+          for (const auto &dof : dof_handler.active_cell_iterators())
             {
-              if (di->is_locally_owned())
+              if (dof->is_locally_owned())
                 {
                   unsigned int op_new = grain_representations.at(g).getOrderParameterId();
                   unsigned int op_old =
@@ -40,7 +37,7 @@ OrderParameterRemapper<dim>::remap(
                        v < dealii::GeometryInfo<dim>::vertices_per_cell;
                        v++)
                     {
-                      if (di->vertex(v).distance(
+                      if (dof->vertex(v).distance(
                             grain_representations.at(g).getCenter()) >
                           grain_representations.at(g).getRadius() + transfer_buffer)
                         {
@@ -56,24 +53,20 @@ OrderParameterRemapper<dim>::remap(
                       std::vector<dealii::types::global_dof_index> dof_indices(
                         dofs_per_cell,
                         0);
-                      di->get_dof_indices(dof_indices);
-                      for (unsigned int i = 0; i < dof_indices.size(); i++)
+                      dof->get_dof_indices(dof_indices);
+                      for (const auto &index : dof_indices)
                         {
-                          (*solution_fields.at(op_new))[dof_indices.at(i)] =
-                            (*solution_fields.at(op_old))[dof_indices.at(i)];
+                          (*solution_fields.at(op_new))[index] =
+                            (*solution_fields.at(op_old))[index];
                         }
                     }
                 }
-              ++di;
             }
 
-          di = dof_handler.begin_active();
-
-          while (di != dof_handler.end())
+          for (const auto &dof : dof_handler.active_cell_iterators())
             {
-              if (di->is_locally_owned())
+              if (dof->is_locally_owned())
                 {
-                  unsigned int op_new = grain_representations.at(g).getOrderParameterId();
                   unsigned int op_old =
                     grain_representations.at(g).getOldOrderParameterId();
 
@@ -84,7 +77,7 @@ OrderParameterRemapper<dim>::remap(
                        v < dealii::GeometryInfo<dim>::vertices_per_cell;
                        v++)
                     {
-                      if (di->vertex(v).distance(
+                      if (dof->vertex(v).distance(
                             grain_representations.at(g).getCenter()) >
                           grain_representations.at(g).getRadius() + transfer_buffer)
                         {
@@ -99,15 +92,14 @@ OrderParameterRemapper<dim>::remap(
                       std::vector<dealii::types::global_dof_index> dof_indices(
                         dofs_per_cell,
                         0);
-                      di->get_dof_indices(dof_indices);
+                      dof->get_dof_indices(dof_indices);
 
-                      for (unsigned int i = 0; i < dof_indices.size(); i++)
+                      for (const auto &index : dof_indices)
                         {
-                          (*solution_fields.at(op_old))[dof_indices.at(i)] = 0.0;
+                          (*solution_fields.at(op_old))[index] = 0.0;
                         }
                     }
                 }
-              ++di;
             }
         }
     }
@@ -133,27 +125,23 @@ OrderParameterRemapper<dim>::remap_from_index_field(
       double transfer_buffer =
         std::max(0.0, grain_representations.at(g).getDistanceToNeighbor() / 2.0);
 
-      typename dealii::DoFHandler<dim>::active_cell_iterator di =
-        dof_handler.begin_active();
-
       // For now I have two loops, one where I copy the values from the old
       // order parameter to the new one and a second where I zero out the old
       // order parameter. This separation prevents writing zero-out values to
       // the new order parameter. There probably is a more efficient way of
       // doing this.
-      while (di != dof_handler.end())
+      for (const auto &dof : dof_handler.active_cell_iterators())
         {
-          if (di->is_locally_owned())
+          if (dof->is_locally_owned())
             {
               unsigned int op_new = grain_representations.at(g).getOrderParameterId();
-              unsigned int op_old = grain_representations.at(g).getOldOrderParameterId();
 
               // Check if the cell is within the simplified grain representation
               bool in_grain = true;
               for (unsigned int v = 0; v < dealii::GeometryInfo<dim>::vertices_per_cell;
                    v++)
                 {
-                  if (di->vertex(v).distance(grain_representations.at(g).getCenter()) >
+                  if (dof->vertex(v).distance(grain_representations.at(g).getCenter()) >
                       grain_representations.at(g).getRadius() + transfer_buffer)
                     {
                       in_grain = false;
@@ -167,19 +155,18 @@ OrderParameterRemapper<dim>::remap_from_index_field(
                 {
                   std::vector<dealii::types::global_dof_index> dof_indices(dofs_per_cell,
                                                                            0);
-                  di->get_dof_indices(dof_indices);
-                  for (unsigned int i = 0; i < dof_indices.size(); i++)
+                  dof->get_dof_indices(dof_indices);
+                  for (const auto &index : dof_indices)
                     {
-                      if (std::abs((*grain_index_field)[dof_indices.at(i)] -
+                      if (std::abs((*grain_index_field)[index] -
                                    (double) grain_representations.at(g).getGrainId()) <
                           1e-6)
                         {
-                          (*solution_fields.at(op_new))[dof_indices.at(i)] = 1.0;
+                          (*solution_fields.at(op_new))[index] = 1.0;
                         }
                     }
                 }
             }
-          ++di;
         }
     }
 }
