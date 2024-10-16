@@ -1,7 +1,6 @@
 #include <deal.II/base/exceptions.h>
 
-#include "userInputParameters.h"
-
+#include "../../include/userInputParameters.h"
 #include <vector>
 
 template <int dim>
