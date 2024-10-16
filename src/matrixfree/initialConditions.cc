@@ -88,17 +88,22 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
       // Load the data from the file using a PField
       std::string filename = userInputs.grain_structure_filename;
       filename += ".vtk";
-      
-      //std::string load_unstructured_grid = userInputs.load_grid;
-      if (userInputs.load_vtk_file_type == "UNSTRUCTURED"){
-        body.read_vtk(filename);
-         } else if (userInputs.load_vtk_file_type == "RECTILINEAR"){
-         body.read_RL_vtk(filename);     
-         } else {
-         pcout << "Error in vtk file type: Use either UNSTRUCTURED OR RECTILINEAR\n";   
-         abort();
-         }
-         
+
+      // std::string load_unstructured_grid = userInputs.load_grid;
+      if (userInputs.load_vtk_file_type == "UNSTRUCTURED")
+        {
+          body.read_vtk(filename);
+        }
+      else if (userInputs.load_vtk_file_type == "RECTILINEAR")
+        {
+          body.read_RL_vtk(filename);
+        }
+      else
+        {
+          pcout << "Error in vtk file type: Use either UNSTRUCTURED OR RECTILINEAR\n";
+          abort();
+        }
+
       ScalarField &id_field =
         body.find_scalar_field(userInputs.grain_structure_variable_name);
 
@@ -366,15 +371,21 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
                 }
 
               // Load the data from the file using a PField
-             // std::string load_unstructured_grid = userInputs.load_grid;
-             if (userInputs.load_vtk_file_type == "UNSTRUCTURED"){
-                body.read_vtk(filename);
-                 } else if (userInputs.load_vtk_file_type == "RECTILINEAR"){
-                 body.read_RL_vtk(filename);     
-                 } else {
-                 pcout << "Error in vtk file type: Use either UNSTRUCTURED OR RECTILINEAR\n";   
-                 abort();
-                 }
+              // std::string load_unstructured_grid = userInputs.load_grid;
+              if (userInputs.load_vtk_file_type == "UNSTRUCTURED")
+                {
+                  body.read_vtk(filename);
+                }
+              else if (userInputs.load_vtk_file_type == "RECTILINEAR")
+                {
+                  body.read_RL_vtk(filename);
+                }
+              else
+                {
+                  pcout
+                    << "Error in vtk file type: Use either UNSTRUCTURED OR RECTILINEAR\n";
+                  abort();
+                }
               ScalarField &conc =
                 body.find_scalar_field(userInputs.load_field_name[var_index]);
 
