@@ -17,7 +17,7 @@ customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &
   // according to its variable index
 
   // The initial condition is a set of overlapping circles/spheres defined
-  // by a hyperbolic tangent function. The center_list of each circle/sphere is
+  // by a hyperbolic tangent function. The center of each circle/sphere is
   // given by "center_list" and its radius is given by "radius".
 
   if (index < 5)
