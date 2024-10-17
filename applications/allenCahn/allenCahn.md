@@ -60,4 +60,16 @@ $$
 \end{align}
 $$
 
+$$
+\begin{align}
+r_{\eta}= \eta^{n} - \Delta t M f_{,\eta}^{n} 
+\end{align}
+$$
+
+$$
+\begin{align}
+r_{\eta x} = -\Delta t M \kappa\nabla \eta^{n}
+\end{align}
+$$
+
 The above values of $r_{\eta}$ and $r_{\eta x}$ are used to define the residuals in `applications/allenCahn/equations.cc`.
