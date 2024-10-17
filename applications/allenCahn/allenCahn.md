@@ -56,8 +56,8 @@ In the weak formulation, considering an arbitrary variation $w$, the above equat
 $$
 \begin{align}
 \int_{\Omega} w \eta^{n+1} ~dV &= \int_{\Omega} w \eta^{n} - w \Delta t M(f_{,\eta}^{n} - \kappa \Delta \eta^{n}) ~dV \\
-&= \int_{\Omega} w \left( \underbrace{\eta^{n} - \Delta t M f_{,\eta}^{n}}_{r_{\eta}} \right) + \nabla w \underbrace{(-\Delta t M \kappa) \cdot (\nabla \eta^{n})}_{r_{\eta x}} ~dV \quad [\kappa \nabla \eta \cdot n = 0 \quad \text{on} \quad \partial \Omega]
+&= \int_{\Omega} w \left( \eta^{n} - \Delta t M f_{,\eta}^{n} \right) + \nabla w (-\Delta t M \kappa) \cdot (\nabla \eta^{n}) ~dV \quad [\kappa \nabla \eta \cdot n = 0 \quad \text{on} \quad \partial \Omega]
 \end{align}
 $$
 
-The above values of $r_{\eta}$ and $r_{\eta x}$ are used to define the residuals in `applications/allenCahn/equations.cc`
+The above values of $r_{\eta}$ and $r_{\eta x}$ are used to define the residuals in `applications/allenCahn/equations.cc`.
