@@ -262,6 +262,10 @@ protected:
   void
   updateExplicitSolution(unsigned int fieldIndex);
 
+  /*Method to compute an implicit timestep*/
+  bool
+  updateImplicitSolution(unsigned int fieldIndex, unsigned int nonlinear_it_index);
+
   /*Method to apply boundary conditions*/
   void
   applyBCs(unsigned int fieldIndex);
