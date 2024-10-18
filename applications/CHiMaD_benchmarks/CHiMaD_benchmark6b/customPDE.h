@@ -84,7 +84,7 @@ private:
 
   // Virtual method in MatrixFreePDE
   void
-  makeTriangulation(parallel::distributed::Triangulation<dim> &) const override;
+  create_triangulation(parallel::distributed::Triangulation<dim> &tria) const override;
 
   // ================================================================
   // Model constants specific to this subclass
@@ -105,7 +105,7 @@ private:
 
 template <int dim, int degree>
 void
-customPDE<dim, degree>::makeTriangulation(
+customPDE<dim, degree>::create_triangulation(
   parallel::distributed::Triangulation<dim> &tria) const
 {
   parallel::distributed::Triangulation<dim> tria_box(MPI_COMM_WORLD);

@@ -49,91 +49,130 @@ using namespace dealii;
 
 // define data types
 #ifndef scalarType
-typedef VectorizedArray<double> scalarType;
+using scalarType = VectorizedArray<double>;
 #endif
 #ifndef vectorType
-typedef LinearAlgebra::distributed::Vector<double> vectorType;
+using vectorType = LinearAlgebra::distributed::Vector<double>;
 #endif
 
 // macro for constants
 #define constV(a) make_vectorized_array(a)
 
-//
-// base class for matrix free PDE's
-//
 /**
- * This is the abstract base class for the matrix free implementation of
- * Parabolic and Elliptic BVP's, and supports MPI, Threads and Vectorization
- * (Hybrid Parallel). This class contains the parallel data structures, mesh
- * (referred to as triangulation), parallel degrees of freedom distribution,
- * constraints,  and general utility methods.
+ * \brief This is the abstract base class for the matrix free implementation of parabolic
+ * and elliptic BVP's, and supports MPI, threads and vectorization (Hybrid Parallel). This
+ * class contains the parallel data structures, mesh (referred to as triangulation),
+ * parallel degrees of freedom distribution, constraints, and general utility methods.
  *
  * All the physical models in this package inherit this base class.
+ *
+ * \tparam dim The number of dimensions in the problem.
+ * \tparam degree The polynomial degree of the shape functions.
  */
 template <int dim, int degree>
 class MatrixFreePDE : public Subscriptor
 {
 public:
   /**
-   * Class contructor
+   * \brief Class contructor.
    */
   MatrixFreePDE(userInputParameters<dim>);
-  ~MatrixFreePDE();
+
   /**
-   * Initializes the mesh, degrees of freedom, constraints and data structures
+   * \brief Class destructor.
+   */
+  ~MatrixFreePDE() override;
+
+  /**
+   * \brief Initializes the mesh, degrees of freedom, constraints and data structures
    * using the user provided inputs in the application parameters file.
    */
   virtual void
   init();
 
+  /**
+   * \brief Create the mesh with the user provided domain sizes.
+   *
+   * \param tria Triangulation object. It must be empty prior to calling this function.
+   */
   virtual void
-  makeTriangulation(parallel::distributed::Triangulation<dim> &) const;
+  create_triangulation(parallel::distributed::Triangulation<dim> &tria) const;
 
   /**
-   * Initializes the data structures for enabling unit tests.
+   * \brief Initializes the data structures for enabling unit tests.
    *
-   * This method initializes the MatrixFreePDE object with a fixed geometry,
-   * discretization and other custom selected options specifically to help with
-   * unit tests, and should not be called in any of the physical models.
+   * \details This method initializes the MatrixFreePDE object with a fixed geometry,
+   * discretization and other custom selected options specifically to help with unit
+   * tests, and should not be called in any of the physical models.
+   *
+   * \param _fields Vector of PDE descriptions (e.g., scalar/vector) for each field.
    */
   void
   initForTests(std::vector<Field<dim>> _fields);
 
   /**
-   * This method implements the time stepping algorithm and invokes the
+   * \brief This method implements the time stepping algorithm and invokes the
    * solveIncrement() method.
    */
   void
   solve();
+
   /**
-   * This method essentially converts the MatrixFreePDE object into a matrix
-   * object which can be used with matrix free iterative solvers. Provides the
-   * A*x functionality for solving the system of equations AX=b.
+   * \brief This method essentially converts the MatrixFreePDE object into a matrix object
+   * which can be used with matrix free iterative solvers. Provides the A*x functionality
+   * for solving the system of equations Ax=b.
+   *
+   * \param dst The destination vector.
+   * \param src The source vector.
    */
   void
   vmult(vectorType &dst, const vectorType &src) const;
+
   /**
-   * Vector of all the physical fields in the problem. Fields are identified by
-   * dimentionality (SCALAR/VECTOR), the kind of PDE (ELLIPTIC/PARABOLIC) used
-   * to compute them and a character identifier  (e.g.: "c" for composition)
-   * which is used to write the fields to the output files.
+   * \brief Vector of all the physical fields in the problem. Fields are identified by
+   * dimentionality (SCALAR/VECTOR), the kind of PDE (ELLIPTIC/PARABOLIC) used to compute
+   * them and a character identifier  (e.g.: "c" for composition) which is used to write
+   * the fields to the output files.
    */
   std::vector<Field<dim>> fields;
 
+  /**
+   * \brief Create the vector of all physical fields in the problem.
+   */
   void
   buildFields();
 
-  // Parallel message stream
+  /**
+   * \brief Parallel message stream.
+   */
   ConditionalOStream pcout;
 
-  // Initial conditions function
+  /**
+   * \brief Set the initial condition for all fields. This function is overriden in each
+   * application.
+   *
+   * \param p The point at which the initial condition is evaluated.
+   * \param index The index of the field being evaluated.
+   * \param scalar_IC Return variable for scalar fields.
+   * \param vector_IC Return variable for vector fields.
+   */
   virtual void
   setInitialCondition([[maybe_unused]] const Point<dim>  &p,
                       [[maybe_unused]] const unsigned int index,
                       [[maybe_unused]] double            &scalar_IC,
                       [[maybe_unused]] Vector<double>    &vector_IC) = 0;
 
-  // Non-uniform boundary conditions function
+  /**
+   * \brief Set the spatially or temporally non-uniform boundary conditions. This function
+   * is overriden in each application.
+   *
+   * \param p The point at which the boundary condition is evaluated.
+   * \param index The index of the field being evaluated.
+   * \param direction The face of the boundary condition.
+   * \param time The time at which the boundary condition is evaluated.
+   * \param scalar_BC Return variable for scalar fields.
+   * \param vector_BC Return variable for vector fields.
+   */
   virtual void
   setNonUniformDirichletBCs([[maybe_unused]] const Point<dim>  &p,
                             [[maybe_unused]] const unsigned int index,

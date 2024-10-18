@@ -92,7 +92,6 @@ main
 *.nlo
 
 test
-DoxygenWarningLog.txt
 *.project
 *.cproject
 *.DS_Store
@@ -111,3 +110,10 @@ restart.mesh.old
 restart.resume.z
 restart.time.info
 restart.time.info.old
+
+# Doxygen
+doc/doxygen/html/*
+doc/doxygen/latex/*
+doc/doxygen/Doxyfile.doc_doxygen
+doc/doxygen/CMakeDoxyfile.in
+doc/doxygen/DoxygenWarningLog.txt
