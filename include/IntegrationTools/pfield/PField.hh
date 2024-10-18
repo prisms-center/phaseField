@@ -24,7 +24,7 @@ namespace PRISMS
   class PField : public PFuncBase<Coordinate, FieldType>
   {
   public:
-    typedef typename PFuncBase<Coordinate, FieldType>::size_type size_type;
+    using size_type = typename PFuncBase<Coordinate, FieldType>::size_type;
 
     // pointer to a Mesh that lives in a Body
     Mesh<Coordinate, DIM> *_mesh;
