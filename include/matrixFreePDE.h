@@ -272,6 +272,14 @@ protected:
   void
   applyBCs(unsigned int fieldIndex);
 
+  /**
+   * \brief Copy the solutions from the current timestep to previous time states.
+   */
+  void
+  copy_solution_vectors(const std::vector<vectorType *> &solutionSet,
+                        boost::unordered_map<unsigned int, std::unique_ptr<vectorType>>
+                          &solutionSet_previous);
+
   /*Method to compute the right hand side (RHS) residual vectors*/
   void
   computeExplicitRHS();
