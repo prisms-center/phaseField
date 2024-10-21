@@ -16,9 +16,12 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
 
   for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
     {
-      std::copy(solutionSet[fieldIndex]->begin(),
-                solutionSet[fieldIndex]->end(),
-                solutionSet_old[fieldIndex]->begin());
+      for (unsigned int dof = 0; dof < solutionSet[fieldIndex]->locally_owned_size();
+           ++dof)
+        {
+          solutionSet_old[fieldIndex]->local_element(dof) =
+            solutionSet[fieldIndex]->local_element(dof);
+        }
     }
 
   // Get the RHS of the explicit equations
