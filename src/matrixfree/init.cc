@@ -257,15 +257,14 @@ MatrixFreePDE<dim, degree>::init()
   pcout << "initializing parallel::distributed residual and solution vectors\n";
   for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
     {
-      vectorType *U, *R, *U_old;
+      auto *U = new vectorType;
+      auto *R = new vectorType;
 
-      U     = new vectorType;
-      R     = new vectorType;
-      U_old = new vectorType;
+      std::unique_ptr<vectorType> U_previous = std::make_unique<vectorType>();
 
       solutionSet.push_back(U);
       residualSet.push_back(R);
-      solutionSet_old.push_back(U_old);
+      solutionSet_previous.emplace(fieldIndex, std::move(U_previous));
 
       matrixFreeObject.initialize_dof_vector(*R, fieldIndex);
       *R = 0;
@@ -273,8 +272,9 @@ MatrixFreePDE<dim, degree>::init()
       matrixFreeObject.initialize_dof_vector(*U, fieldIndex);
       *U = 0;
 
-      matrixFreeObject.initialize_dof_vector(*U_old, fieldIndex);
-      *U_old = 0;
+      matrixFreeObject.initialize_dof_vector(*solutionSet_previous[fieldIndex],
+                                             fieldIndex);
+      *solutionSet_previous[fieldIndex] = 0;
 
       // Initializing temporary dU vector required for implicit solves of the
       // elliptic equation.

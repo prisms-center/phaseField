@@ -19,7 +19,7 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
       for (unsigned int dof = 0; dof < solutionSet[fieldIndex]->locally_owned_size();
            ++dof)
         {
-          solutionSet_old[fieldIndex]->local_element(dof) =
+          solutionSet_previous[fieldIndex]->local_element(dof) =
             solutionSet[fieldIndex]->local_element(dof);
         }
     }
