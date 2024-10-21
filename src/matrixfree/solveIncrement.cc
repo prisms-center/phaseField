@@ -301,7 +301,9 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
                                                    unsigned int nonlinear_it_index)
 {
   char buffer[200];
-  bool nonlinear_it_converged = false;
+
+  // Assume convergence criterion is met, unless otherwise proven later on.
+  bool nonlinear_it_converged = true;
 
   // Apply Dirichlet BC's. This clears the residual where we want to apply Dirichlet BCs,
   // otherwise the solver sees a positive residual
