@@ -11,6 +11,7 @@
 
 #include <boost/unordered_map.hpp>
 
+#include "model_variables.h"
 #include "userInputParameters.h"
 
 template <int dim, int degree, typename T>
@@ -23,10 +24,12 @@ public:
   // Standard contructor, used for most situations
   variableContainer(const dealii::MatrixFree<dim, double> &data,
                     const std::vector<variable_info>      &_varInfoList,
-                    const std::vector<variable_info>      &_varChangeInfoList);
+                    const std::vector<variable_info>      &_varChangeInfoList,
+                    const std::vector<variable_info>      &_varOldInfoList);
 
   variableContainer(const dealii::MatrixFree<dim, double> &data,
-                    const std::vector<variable_info>      &_varInfoList);
+                    const std::vector<variable_info>      &_varInfoList,
+                    const std::vector<variable_info>      &_varOldInfoList);
   // Nonstandard constructor, used when only one index of "data" should be used,
   // use with care!
   variableContainer(const dealii::MatrixFree<dim, double> &data,
@@ -61,6 +64,19 @@ public:
   dealii::Tensor<3, dim, T>
   get_change_in_vector_hessian(unsigned int global_variable_index) const;
 
+  T
+  get_old_scalar_value(unsigned int global_variable_index) const;
+  dealii::Tensor<1, dim, T>
+  get_old_scalar_gradient(unsigned int global_variable_index) const;
+  dealii::Tensor<2, dim, T>
+  get_old_scalar_hessian(unsigned int global_variable_index) const;
+  dealii::Tensor<1, dim, T>
+  get_old_vector_value(unsigned int global_variable_index) const;
+  dealii::Tensor<2, dim, T>
+  get_old_vector_gradient(unsigned int global_variable_index) const;
+  dealii::Tensor<3, dim, T>
+  get_old_vector_hessian(unsigned int global_variable_index) const;
+
   // Methods to set the value residual and the gradient residual (this is how
   // the user sets these values in equations.h)
   void
@@ -94,6 +110,8 @@ public:
   reinit_and_eval_change_in_solution(const vectorType &src,
                                      unsigned int      cell,
                                      unsigned int      var_being_solved);
+  void
+  reinit_and_eval_old_solution(const std::vector<vectorType *> &src, unsigned int cell);
 
   // Only initialize the FEEvaluation object for each variable (used for
   // post-processing)
@@ -131,10 +149,14 @@ private:
   boost::unordered_map<unsigned int, std::unique_ptr<vector_FEEval>>
     vector_change_in_vars_map;
 
+  boost::unordered_map<unsigned int, std::unique_ptr<scalar_FEEval>> scalar_old_vars_map;
+  boost::unordered_map<unsigned int, std::unique_ptr<vector_FEEval>> vector_old_vars_map;
+
   // Object containing some information about each variable (indices, whether
   // the val/grad/hess is needed, etc)
   std::vector<variable_info> varInfoList;
   std::vector<variable_info> varChangeInfoList;
+  std::vector<variable_info> varOldInfoList;
 
   // The number of variables
   unsigned int num_var;

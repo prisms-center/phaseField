@@ -29,6 +29,8 @@ EquationDependencyParser::parse(std::vector<std::string> &var_name,
   eval_flags_nonexplicit_RHS.resize(n_variables, dealii::EvaluationFlags::nothing);
   eval_flags_nonexplicit_LHS.resize(n_variables, dealii::EvaluationFlags::nothing);
   eval_flags_change_nonexplicit_LHS.resize(n_variables, dealii::EvaluationFlags::nothing);
+  eval_flags_old_RHS.resize(n_variables, dealii::EvaluationFlags::nothing);
+  eval_flags_old_LHS.resize(n_variables, dealii::EvaluationFlags::nothing);
 
   // Resize the residual evaluation flag vectors
   eval_flags_residual_explicit_RHS.resize(n_variables, dealii::EvaluationFlags::nothing);
@@ -55,6 +57,7 @@ EquationDependencyParser::parse(std::vector<std::string> &var_name,
                                  sorted_dependencies_value_RHS[i],
                                  sorted_dependencies_gradient_RHS[i],
                                  eval_flags_explicit_RHS,
+                                 eval_flags_old_RHS,
                                  eval_flags_residual_explicit_RHS,
                                  single_var_nonlinear);
 
@@ -70,6 +73,7 @@ EquationDependencyParser::parse(std::vector<std::string> &var_name,
                                  sorted_dependencies_value_RHS[i],
                                  sorted_dependencies_gradient_RHS[i],
                                  eval_flags_nonexplicit_RHS,
+                                 eval_flags_old_RHS,
                                  eval_flags_residual_nonexplicit_RHS,
                                  single_var_nonlinear);
 
@@ -86,6 +90,7 @@ EquationDependencyParser::parse(std::vector<std::string> &var_name,
                                  sorted_dependencies_value_RHS[i],
                                  sorted_dependencies_gradient_RHS[i],
                                  eval_flags_nonexplicit_RHS,
+                                 eval_flags_old_RHS,
                                  eval_flags_residual_nonexplicit_RHS,
                                  single_var_nonlinear_RHS);
 
@@ -95,6 +100,7 @@ EquationDependencyParser::parse(std::vector<std::string> &var_name,
                                  sorted_dependencies_value_LHS[i],
                                  sorted_dependencies_gradient_LHS[i],
                                  eval_flags_nonexplicit_LHS,
+                                 eval_flags_old_LHS,
                                  eval_flags_change_nonexplicit_LHS,
                                  eval_flags_residual_nonexplicit_LHS,
                                  single_var_nonlinear_LHS);
@@ -112,6 +118,7 @@ EquationDependencyParser::parseDependencyListRHS(
   std::string                                           &value_dependencies,
   std::string                                           &gradient_dependencies,
   std::vector<dealii::EvaluationFlags::EvaluationFlags> &evaluation_flags,
+  std::vector<dealii::EvaluationFlags::EvaluationFlags> &old_flags,
   std::vector<dealii::EvaluationFlags::EvaluationFlags> &residual_flags,
   bool                                                  &is_nonlinear)
 {
@@ -165,6 +172,21 @@ EquationDependencyParser::parseDependencyListRHS(
                                   variable.begin(),
                                   variable.end());
 
+          std::string old_value_variable = {"old()"};
+          old_value_variable.insert(--old_value_variable.end(),
+                                    variable.begin(),
+                                    variable.end());
+
+          std::string old_gradient_variable = {"grad(old())"};
+          old_gradient_variable.insert(--(--old_gradient_variable.end()),
+                                       variable.begin(),
+                                       variable.end());
+
+          std::string old_hessian_variable = {"hess(old())"};
+          old_hessian_variable.insert(--(--old_hessian_variable.end()),
+                                      variable.begin(),
+                                      variable.end());
+
           // Is the variable we are finding the dependencies for explicit
           bool variable_is_explicit =
             variable_eq_type[variable_index] == EXPLICIT_TIME_DEPENDENT;
@@ -197,6 +219,24 @@ EquationDependencyParser::parseDependencyListRHS(
                 dealii::EvaluationFlags::hessians;
               dependency_entry_assigned = true;
             }
+          // Case if the dependency is old(x)
+          else if (dependency == old_value_variable)
+            {
+              old_flags[dependency_variable_index] |= dealii::EvaluationFlags::values;
+              dependency_entry_assigned = true;
+            }
+          // Case if the dependency is grad(old(x))
+          else if (dependency == old_gradient_variable)
+            {
+              old_flags[dependency_variable_index] |= dealii::EvaluationFlags::gradients;
+              dependency_entry_assigned = true;
+            }
+          // Case if the dependency is hess(old(x))
+          else if (dependency == old_hessian_variable)
+            {
+              old_flags[dependency_variable_index] |= dealii::EvaluationFlags::hessians;
+              dependency_entry_assigned = true;
+            }
 
           // Check for nonlinearity
           is_nonlinear =
@@ -220,6 +260,7 @@ EquationDependencyParser::parseDependencyListLHS(
   std::string                                           &value_dependencies,
   std::string                                           &gradient_dependencies,
   std::vector<dealii::EvaluationFlags::EvaluationFlags> &evaluation_flags,
+  std::vector<dealii::EvaluationFlags::EvaluationFlags> &old_flags,
   std::vector<dealii::EvaluationFlags::EvaluationFlags> &change_flags,
   std::vector<dealii::EvaluationFlags::EvaluationFlags> &residual_flags,
   bool                                                  &is_nonlinear)
@@ -289,6 +330,20 @@ EquationDependencyParser::parseDependencyListLHS(
           change_hessian_variable.insert(--(--change_hessian_variable.end()),
                                          variable.begin(),
                                          variable.end());
+          std::string old_value_variable = {"old()"};
+          old_value_variable.insert(--old_value_variable.end(),
+                                    variable.begin(),
+                                    variable.end());
+
+          std::string old_gradient_variable = {"grad(old())"};
+          old_gradient_variable.insert(--(--old_gradient_variable.end()),
+                                       variable.begin(),
+                                       variable.end());
+
+          std::string old_hessian_variable = {"hess(old())"};
+          old_hessian_variable.insert(--(--old_hessian_variable.end()),
+                                      variable.begin(),
+                                      variable.end());
 
           // Is the variable we are finding the dependencies for explicit
           bool dependency_variable_is_explicit =
@@ -319,6 +374,33 @@ EquationDependencyParser::parseDependencyListLHS(
             {
               evaluation_flags[dependency_variable_index] |=
                 dealii::EvaluationFlags::hessians;
+              dependency_entry_assigned = true;
+
+              // Check for nonlinearity
+              is_nonlinear = !dependency_variable_is_explicit;
+            }
+          // Case if the dependency is old(x)
+          else if (dependency == old_value_variable)
+            {
+              old_flags[dependency_variable_index] |= dealii::EvaluationFlags::values;
+              dependency_entry_assigned = true;
+
+              // Check for nonlinearity
+              is_nonlinear = !dependency_variable_is_explicit;
+            }
+          // Case if the dependency is grad(old(x))
+          else if (dependency == old_gradient_variable)
+            {
+              old_flags[dependency_variable_index] |= dealii::EvaluationFlags::gradients;
+              dependency_entry_assigned = true;
+
+              // Check for nonlinearity
+              is_nonlinear = !dependency_variable_is_explicit;
+            }
+          // Case if the dependency is hess(old(x))
+          else if (dependency == old_hessian_variable)
+            {
+              old_flags[dependency_variable_index] |= dealii::EvaluationFlags::hessians;
               dependency_entry_assigned = true;
 
               // Check for nonlinearity

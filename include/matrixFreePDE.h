@@ -226,6 +226,7 @@ protected:
   /*Vector all the solution vectors in the problem. In a multi-field problem, each primal
    * field has a solution vector associated with it.*/
   std::vector<vectorType *> solutionSet;
+  std::vector<vectorType *> solutionSet_old;
   /*Vector all the residual (RHS) vectors in the problem. In a multi-field problem, each
    * primal field has a residual vector associated with it.*/
   std::vector<vectorType *> residualSet;

@@ -95,10 +95,6 @@ MatrixFreePDE<dim, degree>::init()
         {
           isTimeDependentBVP     = true;
           hasNonExplicitEquation = true;
-          std::cerr << "PRISMS-PF Error: IMPLICIT_TIME_DEPENDENT equation "
-                       "types are not currently supported"
-                    << std::endl;
-          abort();
         }
       else if (field.pdetype == AUXILIARY)
         {
@@ -261,17 +257,24 @@ MatrixFreePDE<dim, degree>::init()
   pcout << "initializing parallel::distributed residual and solution vectors\n";
   for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
     {
-      vectorType *U, *R;
+      vectorType *U, *R, *U_old;
 
-      U = new vectorType;
-      R = new vectorType;
+      U     = new vectorType;
+      R     = new vectorType;
+      U_old = new vectorType;
+
       solutionSet.push_back(U);
       residualSet.push_back(R);
+      solutionSet_old.push_back(U_old);
+
       matrixFreeObject.initialize_dof_vector(*R, fieldIndex);
       *R = 0;
 
       matrixFreeObject.initialize_dof_vector(*U, fieldIndex);
       *U = 0;
+
+      matrixFreeObject.initialize_dof_vector(*U_old, fieldIndex);
+      *U_old = 0;
 
       // Initializing temporary dU vector required for implicit solves of the
       // elliptic equation.
