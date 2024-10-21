@@ -3,6 +3,8 @@
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/utilities.h>
 
+#include "varTypeEnums.h"
+
 #include <iostream>
 
 void
@@ -222,18 +224,30 @@ EquationDependencyParser::parseDependencyListRHS(
           // Case if the dependency is old(x)
           else if (dependency == old_value_variable)
             {
+              AssertThrow(!dependency_variable_is_explicit,
+                          dealii::ExcMessage(
+                            "PRISMS-PF Error: Currently, old variables are only "
+                            "available for implicit equations."));
               old_flags[dependency_variable_index] |= dealii::EvaluationFlags::values;
               dependency_entry_assigned = true;
             }
           // Case if the dependency is grad(old(x))
           else if (dependency == old_gradient_variable)
             {
+              AssertThrow(!dependency_variable_is_explicit,
+                          dealii::ExcMessage(
+                            "PRISMS-PF Error: Currently, old variables are only "
+                            "available for implicit equations."));
               old_flags[dependency_variable_index] |= dealii::EvaluationFlags::gradients;
               dependency_entry_assigned = true;
             }
           // Case if the dependency is hess(old(x))
           else if (dependency == old_hessian_variable)
             {
+              AssertThrow(!dependency_variable_is_explicit,
+                          dealii::ExcMessage(
+                            "PRISMS-PF Error: Currently, old variables are only "
+                            "available for implicit equations."));
               old_flags[dependency_variable_index] |= dealii::EvaluationFlags::hessians;
               dependency_entry_assigned = true;
             }
@@ -330,6 +344,7 @@ EquationDependencyParser::parseDependencyListLHS(
           change_hessian_variable.insert(--(--change_hessian_variable.end()),
                                          variable.begin(),
                                          variable.end());
+
           std::string old_value_variable = {"old()"};
           old_value_variable.insert(--old_value_variable.end(),
                                     variable.begin(),
@@ -348,6 +363,10 @@ EquationDependencyParser::parseDependencyListLHS(
           // Is the variable we are finding the dependencies for explicit
           bool dependency_variable_is_explicit =
             variable_eq_type[dependency_variable_index] == EXPLICIT_TIME_DEPENDENT;
+
+          // Is the variable we are finding the dependencies for implicit
+          bool dependency_variable_is_implicit =
+            variable_eq_type[dependency_variable_index] == IMPLICIT_TIME_DEPENDENT;
 
           // Case if the dependency is x
           if (dependency == variable)
@@ -382,6 +401,10 @@ EquationDependencyParser::parseDependencyListLHS(
           // Case if the dependency is old(x)
           else if (dependency == old_value_variable)
             {
+              AssertThrow(dependency_variable_is_implicit,
+                          dealii::ExcMessage(
+                            "PRISMS-PF Error: Currently, old variables are only "
+                            "available for implicit equations."));
               old_flags[dependency_variable_index] |= dealii::EvaluationFlags::values;
               dependency_entry_assigned = true;
 
@@ -391,6 +414,10 @@ EquationDependencyParser::parseDependencyListLHS(
           // Case if the dependency is grad(old(x))
           else if (dependency == old_gradient_variable)
             {
+              AssertThrow(dependency_variable_is_implicit,
+                          dealii::ExcMessage(
+                            "PRISMS-PF Error: Currently, old variables are only "
+                            "available for implicit equations."));
               old_flags[dependency_variable_index] |= dealii::EvaluationFlags::gradients;
               dependency_entry_assigned = true;
 
@@ -400,6 +427,10 @@ EquationDependencyParser::parseDependencyListLHS(
           // Case if the dependency is hess(old(x))
           else if (dependency == old_hessian_variable)
             {
+              AssertThrow(dependency_variable_is_implicit,
+                          dealii::ExcMessage(
+                            "PRISMS-PF Error: Currently, old variables are only "
+                            "available for implicit equations."));
               old_flags[dependency_variable_index] |= dealii::EvaluationFlags::hessians;
               dependency_entry_assigned = true;
 
