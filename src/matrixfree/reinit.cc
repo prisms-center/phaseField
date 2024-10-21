@@ -122,12 +122,16 @@ MatrixFreePDE<dim, degree>::reinit()
   pcout << "initializing parallel::distributed residual and solution vectors\n";
   for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
     {
-      vectorType *U;
+      vectorType *U, *U_old;
 
-      U = solutionSet.at(fieldIndex);
+      U     = solutionSet.at(fieldIndex);
+      U_old = solutionSet_old.at(fieldIndex);
 
       matrixFreeObject.initialize_dof_vector(*U, fieldIndex);
       *U = 0;
+
+      matrixFreeObject.initialize_dof_vector(*U_old, fieldIndex);
+      *U_old = 0;
 
       // Initializing temporary dU vector required for implicit solves of the
       // elliptic equation.
