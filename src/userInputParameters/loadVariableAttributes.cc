@@ -96,6 +96,8 @@ userInputParameters<dim>::loadVariableAttributes(
 
       varInfo.is_scalar = var_type[i] == SCALAR;
 
+      varInfo.is_implicit = var_eq_type[i] == IMPLICIT_TIME_DEPENDENT;
+
       varInfoListNonexplicitRHS.push_back(varInfo);
     }
   // Load the old variable information for calculating the RHS for nonexplicit equations
@@ -155,6 +157,8 @@ userInputParameters<dim>::loadVariableAttributes(
       varInfo.var_needed = !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
 
       varInfo.is_scalar = var_type[i] == SCALAR;
+
+      varInfo.is_implicit = var_eq_type[i] == IMPLICIT_TIME_DEPENDENT;
 
       varInfoListLHS.push_back(varInfo);
     }

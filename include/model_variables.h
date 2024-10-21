@@ -1,5 +1,3 @@
-// Model Variables Class
-
 #ifndef INCLUDE_MODELVARIABLE_H_
 #define INCLUDE_MODELVARIABLE_H_
 
@@ -33,11 +31,12 @@ public:
 
 struct variable_info
 {
-  bool                                     is_scalar;
   unsigned int                             global_var_index;
   dealii::EvaluationFlags::EvaluationFlags evaluation_flags;
   dealii::EvaluationFlags::EvaluationFlags residual_flags;
-  bool                                     var_needed;
+  bool                                     var_needed  = false;
+  bool                                     is_scalar   = true;
+  bool                                     is_implicit = false;
 };
 
-#endif /* INCLUDE_MODELVARIABLE_H_ */
+#endif

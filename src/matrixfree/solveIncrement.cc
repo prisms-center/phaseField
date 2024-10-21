@@ -559,7 +559,7 @@ MatrixFreePDE<dim, degree>::copy_solution_vectors(
   for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
     {
       // Skip the copy if not tracking prior solutions for the variable index.
-      if (solutionSet_previous.find(fieldIndex) == solutionSet_previous.end())
+      if (!userInputs.varInfoListNonexplicitRHS[fieldIndex].is_implicit)
         {
           continue;
         }
