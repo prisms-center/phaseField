@@ -65,20 +65,23 @@ private:
   void
   explicitEquationRHS(
     variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const override {};
+    dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc,
+    [[maybe_unused]] dealii::VectorizedArray<double> element_volume) const override {};
 
   // Function to set the RHS of the governing equations for all other equations
   // (in equations.h)
   void
   nonExplicitEquationRHS(
     variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const override {};
+    dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc,
+    [[maybe_unused]] dealii::VectorizedArray<double> element_volume) const override {};
 
   // Function to set the LHS of the governing equations (in equations.h)
   void
   equationLHS(
     variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const override {};
+    dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc,
+    [[maybe_unused]] dealii::VectorizedArray<double> element_volume) const override {};
 };
 
 template <int dim, typename T>
