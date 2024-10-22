@@ -40,26 +40,25 @@ private:
 
   void
   explicitEquationRHS(
-    [[maybe_unused]] variableContainer<dim, degree, dealii::VectorizedArray<double>>
-                                                                        &variable_list,
-    [[maybe_unused]] dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc)
+    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+                                                                &variable_list,
+    [[maybe_unused]] dealii::Point<dim, VectorizedArray<double>> q_point_loc)
     const override;
 
   // Function to set the RHS of the governing equations
   // for all other equations (in equations.h)
   void
   nonExplicitEquationRHS(
-    [[maybe_unused]] variableContainer<dim, degree, dealii::VectorizedArray<double>>
-                                                                        &variable_list,
-    [[maybe_unused]] dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc)
+    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+                                                                &variable_list,
+    [[maybe_unused]] dealii::Point<dim, VectorizedArray<double>> q_point_loc)
     const override;
 
   // Function to set the LHS of the governing equations (in equations.h)
   void
-  equationLHS(
-    [[maybe_unused]] variableContainer<dim, degree, dealii::VectorizedArray<double>>
-                                                                        &variable_list,
-    [[maybe_unused]] dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc)
+  equationLHS([[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+                                                                          &variable_list,
+              [[maybe_unused]] dealii::Point<dim, VectorizedArray<double>> q_point_loc)
     const override;
 
   // Function to set postprocessing expressions (in postprocess.h)
@@ -67,12 +66,12 @@ private:
 #ifdef POSTPROCESS_FILE_EXISTS
   void
   postProcessedFields(
-    [[maybe_unused]] const variableContainer<dim, degree, dealii::VectorizedArray<double>>
+    [[maybe_unused]] const variableContainer<dim, degree, VectorizedArray<double>>
       &variable_list,
-    [[maybe_unused]] variableContainer<dim, degree, dealii::VectorizedArray<double>>
-      &pp_variable_list,
-    [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<double>>
-      q_point_loc) const override;
+    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+                                                                      &pp_variable_list,
+    [[maybe_unused]] const dealii::Point<dim, VectorizedArray<double>> q_point_loc)
+    const override;
 #endif
 
 // Function to set the nucleation probability (in nucleation.h)

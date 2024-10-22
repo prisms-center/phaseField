@@ -65,8 +65,8 @@ private:
       &variable_list,
     [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
                                                               &pp_variable_list,
-    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc)
-    const override;
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] VectorizedArray<double> element_volume) const override;
 #endif
 
 // Virtual method in MatrixFreePDE that we override if we need nucleation

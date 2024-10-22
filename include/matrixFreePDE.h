@@ -346,20 +346,20 @@ protected:
     [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
                                                         &variable_list,
     [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc,
-    [[maybe_unused]] dealii::VectorizedArray<double>     element_volume) const = 0;
+    [[maybe_unused]] VectorizedArray<double>             element_volume) const = 0;
 
   virtual void
   nonExplicitEquationRHS(
     [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
                                                         &variable_list,
     [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc,
-    [[maybe_unused]] dealii::VectorizedArray<double>     element_volume) const = 0;
+    [[maybe_unused]] VectorizedArray<double>             element_volume) const = 0;
 
   virtual void
   equationLHS([[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
                                                                   &variable_list,
               [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc,
-              [[maybe_unused]] dealii::VectorizedArray<double> element_volume) const = 0;
+              [[maybe_unused]] VectorizedArray<double> element_volume) const = 0;
 
   virtual void
   postProcessedFields(
@@ -368,7 +368,7 @@ protected:
     [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
                                                               &pp_variable_list,
     [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
-    [[maybe_unused]] dealii::VectorizedArray<double>           element_volume) const {};
+    [[maybe_unused]] VectorizedArray<double>                   element_volume) const {};
   void
   computePostProcessedFields(std::vector<vectorType *> &postProcessedSet);
 
