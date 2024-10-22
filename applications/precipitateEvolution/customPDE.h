@@ -36,23 +36,25 @@ private:
   void
   explicitEquationRHS(
     [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
-                                                        &variable_list,
-    [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const override;
+                                                              &variable_list,
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] VectorizedArray<double> element_volume) const override;
 
   // Function to set the RHS of the governing equations for all other equations
   // (in equations.h)
   void
   nonExplicitEquationRHS(
     [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
-                                                        &variable_list,
-    [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const override;
+                                                              &variable_list,
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] VectorizedArray<double> element_volume) const override;
 
   // Function to set the LHS of the governing equations (in equations.h)
   void
-  equationLHS(
-    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
-                                                        &variable_list,
-    [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const override;
+  equationLHS([[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+                                                                        &variable_list,
+              [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+              [[maybe_unused]] VectorizedArray<double> element_volume) const override;
 
 // Function to set postprocessing expressions (in postprocess.h)
 #ifdef POSTPROCESS_FILE_EXISTS
