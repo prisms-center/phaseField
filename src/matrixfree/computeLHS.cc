@@ -73,6 +73,8 @@ MatrixFreePDE<dim, degree>::getLHS(
 
       unsigned int num_q_points = variable_list.get_num_q_points();
 
+      dealii::VectorizedArray<double> local_element_volume = element_volume[cell];
+
       // loop over quadrature points
       for (unsigned int q = 0; q < num_q_points; ++q)
         {
@@ -82,7 +84,7 @@ MatrixFreePDE<dim, degree>::getLHS(
             variable_list.get_q_point_location();
 
           // Calculate the residuals
-          equationLHS(variable_list, q_point_loc);
+          equationLHS(variable_list, q_point_loc, local_element_volume);
         }
 
       // Integrate the residuals and distribute from local to global

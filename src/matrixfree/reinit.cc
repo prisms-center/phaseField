@@ -205,6 +205,9 @@ MatrixFreePDE<dim, degree>::reinit()
       solutionSet[fieldIndex]->update_ghost_values();
     }
 
+  // Once the initial triangulation has been set, compute element volume
+  compute_element_volume();
+
   computing_timer.leave_subsection("matrixFreePDE: reinitialization");
 }
 
