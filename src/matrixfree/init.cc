@@ -370,6 +370,9 @@ MatrixFreePDE<dim, degree>::init()
       load_checkpoint_time_info();
     }
 
+  // Once the initial triangulation has been set, compute element volume
+  compute_element_volume();
+
   computing_timer.leave_subsection("matrixFreePDE: initialization");
 }
 
@@ -405,6 +408,53 @@ MatrixFreePDE<dim, degree>::makeTriangulation(
 
   // Mark boundaries for applying the boundary conditions
   markBoundaries(tria);
+}
+
+template <int dim, int degree>
+void
+MatrixFreePDE<dim, degree>::compute_element_volume()
+{
+  // Get the number of cell batches. Note this is the same as the cell range in
+  // cell_loop()
+  const unsigned int n_cells = matrixFreeObject.n_cell_batches();
+
+  // Resize vector
+  element_volume.resize(n_cells);
+
+  // Set quadrature rule and FEValues to update the JxW values
+  QGaussLobatto<dim> quadrature(degree + 1);
+  FEValues<dim>      fe_values(*(FESet[0]), quadrature, update_JxW_values);
+
+  // Get the number of quadrature points
+  const unsigned int num_quad_points = quadrature.size();
+
+  // Loop over the cells and each lane in the vectorized array
+  for (unsigned int cell = 0; cell < n_cells; cell++)
+    {
+      for (unsigned int lane = 0;
+           lane < matrixFreeObject.n_active_entries_per_cell_batch(cell);
+           lane++)
+        {
+          // Get the iterator for the current cell
+          auto cell_iterator = matrixFreeObject.get_cell_iterator(cell, lane);
+
+          // Reinitialize the cell
+          fe_values.reinit(cell_iterator);
+
+          // Initialize volume to 0 for the current cell
+          double cell_volume = 0.0;
+
+          // Sum up the JxW values at each quadrature point to compute the element volume
+          // in 3D or area in 2D.
+          for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
+            {
+              cell_volume += fe_values.JxW(q_point);
+            }
+
+          // Store the element volume
+          element_volume[cell][lane] = cell_volume;
+        }
+    }
 }
 
 #include "../../include/matrixFreePDE_template_instantiations.h"

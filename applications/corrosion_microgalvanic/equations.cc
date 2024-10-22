@@ -122,9 +122,9 @@ variableAttributeLoader::loadVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::explicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, dealii::VectorizedArray<double>>
-                                                                      &variable_list,
-  [[maybe_unused]] dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {
   // --- Parameters in the explicit equations can be set here  ---
 
@@ -255,9 +255,9 @@ customPDE<dim, degree>::explicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::nonExplicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, dealii::VectorizedArray<double>>
-                                                                      &variable_list,
-  [[maybe_unused]] dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
@@ -396,9 +396,9 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::equationLHS(
-  [[maybe_unused]] variableContainer<dim, degree, dealii::VectorizedArray<double>>
-                                                                      &variable_list,
-  [[maybe_unused]] dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {
   // The order parameter of the anodic phase
   scalarvalueType nAnodic = variable_list.get_scalar_value(0);

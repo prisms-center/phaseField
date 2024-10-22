@@ -50,7 +50,8 @@ template <int dim, int degree>
 void
 customPDE<dim, degree>::explicitEquationRHS(
   [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
@@ -150,7 +151,8 @@ template <int dim, int degree>
 void
 customPDE<dim, degree>::nonExplicitEquationRHS(
   [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {}
 
 // =============================================================================================
@@ -172,5 +174,6 @@ template <int dim, int degree>
 void
 customPDE<dim, degree>::equationLHS(
   [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {}

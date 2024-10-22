@@ -277,6 +277,17 @@ protected:
   applyBCs(unsigned int fieldIndex);
 
   /**
+   * \brief Compute element volume for the triangulation
+   */
+  void
+  compute_element_volume();
+
+  /**
+   * \brief Vector that stores element volumes
+   */
+  dealii::AlignedVector<dealii::VectorizedArray<double>> element_volume;
+
+  /**
    * \brief Copy the solutions from the current timestep to previous time states.
    */
   void
@@ -333,19 +344,22 @@ protected:
   virtual void
   explicitEquationRHS(
     [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
-                                                        &variable_list,
-    [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const = 0;
+                                                              &variable_list,
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] const VectorizedArray<double>             element_volume) const = 0;
 
   virtual void
   nonExplicitEquationRHS(
     [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
-                                                        &variable_list,
-    [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const = 0;
+                                                              &variable_list,
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] const VectorizedArray<double>             element_volume) const = 0;
 
   virtual void
   equationLHS([[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
-                                                                  &variable_list,
-              [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const = 0;
+                                                                        &variable_list,
+              [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+              [[maybe_unused]] const VectorizedArray<double> element_volume) const = 0;
 
   virtual void
   postProcessedFields(
@@ -353,7 +367,8 @@ protected:
       &variable_list,
     [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
                                                               &pp_variable_list,
-    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc) const {};
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] const VectorizedArray<double>             element_volume) const {};
   void
   computePostProcessedFields(std::vector<vectorType *> &postProcessedSet);
 
