@@ -44,20 +44,6 @@ MatrixFreePDE<dim, degree>::computeInvM()
         }
     }
 
-  // Check if invM has been found. If not, print an "error" message
-  if (!invMscalarFound)
-    {
-      pcout << "matrixFreePDE.h: no PARABOLIC scalar field... hence setting "
-               "parabolicScalarFieldIndex to 0 and marching ahead withn invM "
-               "computation\n";
-    }
-  else if (!invMvectorFound)
-    {
-      pcout << "matrixFreePDE.h: no PARABOLIC vector field... hence setting "
-               "parabolicVectorFieldIndex to 0 and marching ahead withn invM "
-               "computation\n";
-    }
-
   // Initialize invM and clear its values
   matrixFreeObject.initialize_dof_vector(invMscalar, parabolicScalarFieldIndex);
   invMscalar = 0.0;

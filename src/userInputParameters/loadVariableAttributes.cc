@@ -69,7 +69,7 @@ userInputParameters<dim>::loadVariableAttributes(
       varInfoListExplicitRHS.push_back(varInfo);
     }
 
-  // Load variable information for calculating the RHS for nonexplicit equations
+  // Load the variable information for calculating the RHS for nonexplicit equations
   num_var_nonexplicit_RHS = 0;
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
@@ -96,10 +96,41 @@ userInputParameters<dim>::loadVariableAttributes(
 
       varInfo.is_scalar = var_type[i] == SCALAR;
 
+      varInfo.is_implicit = var_eq_type[i] == IMPLICIT_TIME_DEPENDENT;
+
       varInfoListNonexplicitRHS.push_back(varInfo);
     }
+  // Load the old variable information for calculating the RHS for nonexplicit equations
+  num_var_old_RHS = 0;
+  for (unsigned int i = 0; i < number_of_variables; i++)
+    {
+      if (!(variable_attributes.equation_dependency_parser.eval_flags_old_RHS[i] &
+            dealii::EvaluationFlags::nothing))
+        {
+          num_var_old_RHS++;
+        }
+    }
+  varInfoList_old_RHS.reserve(num_var_old_RHS);
+  for (unsigned int i = 0; i < number_of_variables; i++)
+    {
+      variable_info varInfo;
 
-  // Load variable information for calculating the LHS
+      varInfo.evaluation_flags =
+        variable_attributes.equation_dependency_parser.eval_flags_old_RHS[i];
+
+      varInfo.residual_flags = variable_attributes.equation_dependency_parser
+                                 .eval_flags_residual_nonexplicit_RHS[i];
+
+      varInfo.global_var_index = i;
+
+      varInfo.var_needed = !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
+
+      varInfo.is_scalar = var_type[i] == SCALAR;
+
+      varInfoList_old_RHS.push_back(varInfo);
+    }
+
+  // Load variable information for calculating the LHS for nonexplicit equations
   num_var_LHS = 0;
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
@@ -127,9 +158,12 @@ userInputParameters<dim>::loadVariableAttributes(
 
       varInfo.is_scalar = var_type[i] == SCALAR;
 
+      varInfo.is_implicit = var_eq_type[i] == IMPLICIT_TIME_DEPENDENT;
+
       varInfoListLHS.push_back(varInfo);
     }
-
+  // Load the change variable information for calculating the LHS for nonexplicit
+  // equations
   varChangeInfoListLHS.reserve(num_var_LHS);
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
@@ -138,7 +172,6 @@ userInputParameters<dim>::loadVariableAttributes(
       varInfo.evaluation_flags = variable_attributes.equation_dependency_parser
                                    .eval_flags_change_nonexplicit_LHS[i];
 
-      // FOR NOW, TAKING THESE FROM THE VARIABLE ITSELF!!
       varInfo.residual_flags = variable_attributes.equation_dependency_parser
                                  .eval_flags_residual_nonexplicit_LHS[i];
 
@@ -149,6 +182,36 @@ userInputParameters<dim>::loadVariableAttributes(
       varInfo.is_scalar = var_type[i] == SCALAR;
 
       varChangeInfoListLHS.push_back(varInfo);
+    }
+
+  // Load the old variable information for calculating the LHS for nonexplicit equations
+  num_var_old_LHS = 0;
+  for (unsigned int i = 0; i < number_of_variables; i++)
+    {
+      if (!(variable_attributes.equation_dependency_parser.eval_flags_old_LHS[i] &
+            dealii::EvaluationFlags::nothing))
+        {
+          num_var_old_LHS++;
+        }
+    }
+  varInfoList_old_LHS.reserve(num_var_old_LHS);
+  for (unsigned int i = 0; i < number_of_variables; i++)
+    {
+      variable_info varInfo;
+
+      varInfo.evaluation_flags =
+        variable_attributes.equation_dependency_parser.eval_flags_old_LHS[i];
+
+      varInfo.residual_flags = variable_attributes.equation_dependency_parser
+                                 .eval_flags_residual_nonexplicit_LHS[i];
+
+      varInfo.global_var_index = i;
+
+      varInfo.var_needed = !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
+
+      varInfo.is_scalar = var_type[i] == SCALAR;
+
+      varInfoList_old_LHS.push_back(varInfo);
     }
 
   // Load variable information for postprocessing

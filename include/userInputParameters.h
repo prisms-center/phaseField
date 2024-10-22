@@ -254,13 +254,19 @@ public:
   std::vector<bool> var_nonlinear;
 
   // Variables needed to calculate the RHS
-  unsigned int               num_var_explicit_RHS, num_var_nonexplicit_RHS;
-  std::vector<variable_info> varInfoListExplicitRHS, varInfoListNonexplicitRHS;
+  unsigned int               num_var_explicit_RHS;
+  unsigned int               num_var_nonexplicit_RHS;
+  unsigned int               num_var_old_RHS;
+  std::vector<variable_info> varInfoListExplicitRHS;
+  std::vector<variable_info> varInfoListNonexplicitRHS;
+  std::vector<variable_info> varInfoList_old_RHS;
 
   // Variables needed to calculate the LHS
   unsigned int               num_var_LHS;
+  unsigned int               num_var_old_LHS;
   std::vector<variable_info> varInfoListLHS;
   std::vector<variable_info> varChangeInfoListLHS;
+  std::vector<variable_info> varInfoList_old_LHS;
 
   // Variables for loading in initial conditions
   std::vector<bool>        load_ICs;

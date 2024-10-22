@@ -57,8 +57,11 @@ MatrixFreePDE<dim, degree>::getLHS(
   const vectorType                            &src,
   const std::pair<unsigned int, unsigned int> &cell_range) const
 {
-  variableContainer<dim, degree, dealii::VectorizedArray<double>>
-    variable_list(data, userInputs.varInfoListLHS, userInputs.varChangeInfoListLHS);
+  variableContainer<dim, degree, dealii::VectorizedArray<double>> variable_list(
+    data,
+    userInputs.varInfoListLHS,
+    userInputs.varChangeInfoListLHS,
+    userInputs.varInfoList_old_LHS);
 
   // loop over cells
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
@@ -66,6 +69,7 @@ MatrixFreePDE<dim, degree>::getLHS(
       // Initialize, read DOFs, and set evaulation flags for each variable
       variable_list.reinit_and_eval(solutionSet, cell);
       variable_list.reinit_and_eval_change_in_solution(src, cell, currentFieldIndex);
+      variable_list.reinit_and_eval_old_solution(solutionSet, cell);
 
       unsigned int num_q_points = variable_list.get_num_q_points();
 
