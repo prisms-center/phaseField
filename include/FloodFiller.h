@@ -12,7 +12,7 @@
 #include <deal.II/matrix_free/fe_evaluation.h>
 
 #ifndef vectorType
-typedef dealii::LinearAlgebra::distributed::Vector<double> vectorType;
+using vectorType = dealii::LinearAlgebra::distributed::Vector<double>;
 #endif
 
 /**
