@@ -16,7 +16,7 @@ namespace PRISMS
     double _coord[DIM];
 
   public:
-    int
+    [[nodiscard]] int
     size() const
     {
       return DIM;
