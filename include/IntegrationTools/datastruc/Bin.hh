@@ -89,7 +89,9 @@ namespace PRISMS
       for (int i = 0; i < singlebin.size(); i++)
         {
           if (singlebin[i] == newitem)
-            return;
+            {
+              return;
+            }
         }
 
       singlebin.push_back(newitem);
@@ -171,8 +173,12 @@ namespace PRISMS
     {
       unsigned int max = 0;
       for (int i = 0; i < _item.volume(); i++)
-        if (_item(i).size() > max)
-          max = _item(i).size();
+        {
+          if (_item(i).size() > max)
+            {
+              max = _item(i).size();
+            }
+        }
       return max;
     }
 
