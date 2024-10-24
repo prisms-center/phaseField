@@ -605,7 +605,9 @@ namespace PRISMS
         {
           e = _var[3][i] * (_var[0][i] - _var[1][i]) / _var[2][i];
           if (e < 0.0 || e >= 1.0)
-            return false;
+            {
+              return false;
+            }
 
           // if( e == 0.0 && std::signbit(e))
           //     return false;

@@ -47,7 +47,9 @@ namespace PRISMS
       {
         outstream << coord[i];
         if (i < coord.size() - 1)
-          outstream << " ";
+          {
+            outstream << " ";
+          }
       }
     return outstream;
   }
