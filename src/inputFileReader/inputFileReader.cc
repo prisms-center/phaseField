@@ -62,63 +62,89 @@ inputFileReader::parse_line(std::string        line,
 {
   // Strip spaces at the front and back
   while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
-    line.erase(0, 1);
+    {
+      line.erase(0, 1);
+    }
   while ((line.size() > 0) &&
          (line[line.size() - 1] == ' ' || line[line.size() - 1] == '\t'))
-    line.erase(line.size() - 1, std::string::npos);
+    {
+      line.erase(line.size() - 1, std::string::npos);
+    }
 
   // now see whether the line starts with 'keyword' followed by multiple spaces
   // if not, try next line (if the entry is "", then zero spaces after the
   // keyword is ok)
   if (line.size() < keyword.size())
-    return false;
+    {
+      return false;
+    }
 
   for (unsigned int i = 0; i < keyword.size(); i++)
     {
       if (line[i] != keyword[i])
-        return false;
+        {
+          return false;
+        }
     }
   if (entry_name.size() > 0)
     {
       if (!(line[keyword.size()] == ' ' || line[keyword.size()] == '\t'))
-        return false;
+        {
+          return false;
+        }
     }
 
   // delete the "keyword" and then delete more spaces if present
   line.erase(0, keyword.size());
   while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
-    line.erase(0, 1);
+    {
+      line.erase(0, 1);
+    }
   // now see whether the next word is the word we look for
   if (line.find(entry_name) != 0)
-    return false;
+    {
+      return false;
+    }
 
   line.erase(0, entry_name.size());
   while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
-    line.erase(0, 1);
+    {
+      line.erase(0, 1);
+    }
 
   // we'd expect an equals size here if expect_equals_sign is true
   if (expect_equals_sign)
     {
       if ((line.size() < 1) || (line[0] != '='))
-        return false;
+        {
+          return false;
+        }
     }
 
   // remove comment
   std::string::size_type pos = line.find('#');
   if (pos != std::string::npos)
-    line.erase(pos);
+    {
+      line.erase(pos);
+    }
 
   // trim the equals sign at the beginning and possibly following spaces
   // as well as spaces at the end
   if (expect_equals_sign)
-    line.erase(0, 1);
+    {
+      line.erase(0, 1);
+    }
 
   while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
-    line.erase(0, 1);
+    {
+      line.erase(0, 1);
+    }
 
   while ((line.size() > 0) &&
          (line[line.size() - 1] == ' ' || line[line.size() - 1] == '\t'))
-    line.erase(line.size() - 1, std::string::npos);
+    {
+      line.erase(line.size() - 1, std::string::npos);
+    }
 
   out_string = line;
   return true;
@@ -218,7 +244,9 @@ inputFileReader::get_number_of_entries(const std::string &parameters_file_name,
     {
       found_entry = parse_line(line, keyword, entry_name, entry, false);
       if (found_entry)
-        count++;
+        {
+          count++;
+        }
     }
   return count;
 }
@@ -249,11 +277,15 @@ inputFileReader::get_entry_name_ending_list(const std::string &parameters_file_n
 
           // Strip whitespace at the beginning
           while ((entry.size() > 0) && (entry[0] == ' ' || entry[0] == '\t'))
-            entry.erase(0, 1);
+            {
+              entry.erase(0, 1);
+            }
 
           // Strip everything up to the equals sign
           while ((entry.size() > 0) && (entry[entry.size() - 1] != '='))
-            entry.erase(entry.size() - 1, std::string::npos);
+            {
+              entry.erase(entry.size() - 1, std::string::npos);
+            }
 
           // Strip the equals sign
           entry.erase(entry.size() - 1, std::string::npos);
@@ -261,7 +293,9 @@ inputFileReader::get_entry_name_ending_list(const std::string &parameters_file_n
           // Strip whitespace between the entry name and the equals sign
           while ((entry.size() > 0) &&
                  (entry[entry.size() - 1] == ' ' || entry[entry.size() - 1] == '\t'))
-            entry.erase(entry.size() - 1, std::string::npos);
+            {
+              entry.erase(entry.size() - 1, std::string::npos);
+            }
 
           // Add it to the list
           entry_name_end_list.push_back(entry);
