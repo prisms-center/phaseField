@@ -61,7 +61,7 @@ public:
    *
    * \param constant_name Name of the constant to retrieve.
    */
-  double
+  [[nodiscard]] double
   get_model_constant_double(const std::string constant_name) const
   {
     Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
@@ -79,7 +79,7 @@ public:
    *
    * \param constant_name Name of the constant to retrieve.
    */
-  int
+  [[nodiscard]] int
   get_model_constant_int(const std::string constant_name) const
   {
     Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
@@ -97,7 +97,7 @@ public:
    *
    * \param constant_name Name of the constant to retrieve.
    */
-  bool
+  [[nodiscard]] bool
   get_model_constant_bool(const std::string constant_name) const
   {
     Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
@@ -115,7 +115,7 @@ public:
    *
    * \param constant_name Name of the constant to retrieve.
    */
-  dealii::Tensor<1, dim>
+  [[nodiscard]] dealii::Tensor<1, dim>
   get_model_constant_rank_1_tensor(const std::string constant_name) const
   {
     Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
@@ -134,7 +134,7 @@ public:
    *
    * \param constant_name Name of the constant to retrieve.
    */
-  dealii::Tensor<2, dim>
+  [[nodiscard]] dealii::Tensor<2, dim>
   get_model_constant_rank_2_tensor(const std::string constant_name) const
   {
     Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
@@ -153,7 +153,7 @@ public:
    *
    * \param constant_name Name of the constant to retrieve.
    */
-  dealii::Tensor<2, 2 * dim - 1 + dim / 3>
+  [[nodiscard]] dealii::Tensor<2, 2 * dim - 1 + dim / 3>
   get_model_constant_elasticity_tensor(const std::string constant_name) const
   {
     Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
@@ -171,35 +171,35 @@ public:
   loadVariableAttributes(variableAttributeLoader variable_attributes);
 
   // Nucleation attribute methods
-  std::vector<double>
+  [[nodiscard]] std::vector<double>
   get_nucleus_semiaxes(unsigned int var_index) const
   {
     return nucleation_parameters_list[nucleation_parameters_list_index.at(var_index)]
       .semiaxes;
   };
 
-  std::vector<double>
+  [[nodiscard]] std::vector<double>
   get_nucleus_freeze_semiaxes(unsigned int var_index) const
   {
     return nucleation_parameters_list[nucleation_parameters_list_index.at(var_index)]
       .freeze_semiaxes;
   };
 
-  std::vector<double>
+  [[nodiscard]] std::vector<double>
   get_nucleus_rotation(unsigned int var_index) const
   {
     return nucleation_parameters_list[nucleation_parameters_list_index.at(var_index)]
       .ellipsoid_rotation;
   };
 
-  double
+  [[nodiscard]] double
   get_no_nucleation_border_thickness(unsigned int var_index) const
   {
     return nucleation_parameters_list[nucleation_parameters_list_index.at(var_index)]
       .no_nucleation_border_thickness;
   };
 
-  double
+  [[nodiscard]] double
   get_nucleus_hold_time(unsigned int var_index) const
   {
     return nucleation_parameters_list[nucleation_parameters_list_index.at(var_index)]
@@ -348,7 +348,7 @@ private:
   load_user_constants(inputFileReader          &input_file_reader,
                       dealii::ParameterHandler &parameter_handler);
 
-  dealii::Tensor<2, 2 * dim - 1 + dim / 3>
+  [[nodiscard]] dealii::Tensor<2, 2 * dim - 1 + dim / 3>
   get_Cij_tensor(std::vector<double> elastic_constants,
                  const std::string  &elastic_const_symmetry) const;
 

@@ -44,7 +44,7 @@ namespace PRISMS
       return _name;
     }
 
-    size_type
+    [[nodiscard]] size_type
     size() const
     {
       return _var_name.size();

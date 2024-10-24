@@ -473,7 +473,7 @@ protected:
 
   // Method to obtain the nucleation probability for an element, nontrival case
   // must be implemented in the subsclass
-  virtual double
+  [[nodiscard]] virtual double
   getNucleationProbability(variableValueContainer,
                            double,
                            Point<dim>,
