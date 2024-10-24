@@ -24,7 +24,7 @@ namespace PRISMS
   class PField : public PFuncBase<Coordinate, FieldType>
   {
   public:
-    typedef typename PFuncBase<Coordinate, FieldType>::size_type size_type;
+    using size_type = typename PFuncBase<Coordinate, FieldType>::size_type;
 
     // pointer to a Mesh that lives in a Body
     Mesh<Coordinate, DIM> *_mesh;
@@ -178,7 +178,9 @@ namespace PRISMS
   PField<Coordinate, FieldType, DIM>::eval_grad(const Coordinate &coord)
   {
     for (int di = 0; di < DIM; di++)
-      (*this).grad(coord, di);
+      {
+        (*this).grad(coord, di);
+      }
   }
 
   template <class Coordinate, class FieldType, int DIM>
@@ -186,8 +188,12 @@ namespace PRISMS
   PField<Coordinate, FieldType, DIM>::eval_hess(const Coordinate &coord)
   {
     for (int di = 0; di < DIM; di++)
-      for (int dj = 0; dj < DIM; dj++)
-        (*this).hess(coord, di, dj);
+      {
+        for (int dj = 0; dj < DIM; dj++)
+          {
+            (*this).hess(coord, di, dj);
+          }
+      }
   }
 
   template <class Coordinate, class FieldType, int DIM>

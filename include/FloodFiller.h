@@ -12,7 +12,7 @@
 #include <deal.II/matrix_free/fe_evaluation.h>
 
 #ifndef vectorType
-typedef dealii::LinearAlgebra::distributed::Vector<double> vectorType;
+using vectorType = dealii::LinearAlgebra::distributed::Vector<double>;
 #endif
 
 /**
@@ -35,7 +35,7 @@ public:
   /**
    * Gets the grain index.
    */
-  unsigned int
+  [[nodiscard]] unsigned int
   getGrainIndex() const
   {
     return grain_index;
@@ -53,7 +53,7 @@ public:
   /**
    * Gets the order parameter index.
    */
-  unsigned int
+  [[nodiscard]] unsigned int
   getOrderParameterIndex() const
   {
     return order_parameter_index;
@@ -111,16 +111,14 @@ public:
     : quadrature(_quadrature)
     , num_quad_points(_quadrature.size())
     , dofs_per_cell(_fe.dofs_per_cell)
-  {
-    fe = &_fe;
-  };
+    , fe(&_fe) {};
 
   /**
    * The primary external interface. This method takes in information about the
    * mesh/field and outputs a vector of GrainSet objects.
    */
   void
-  calcGrainSets(dealii::FESystem<dim>      &fe,
+  calcGrainSets(dealii::FESystem<dim>      &finite_element,
                 dealii::DoFHandler<dim>    &dof_handler,
                 vectorType                 *solution_field,
                 double                      threshold_lower,
@@ -135,8 +133,8 @@ protected:
    */
   template <typename T>
   void
-  recursiveFloodFill(T                           di,
-                     T                           di_end,
+  recursiveFloodFill(T                           cell,
+                     T                           cell_end,
                      vectorType                 *solution_field,
                      double                      threshold_lower,
                      double                      threshold_upper,

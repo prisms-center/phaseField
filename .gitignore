@@ -11,6 +11,10 @@ build/*
 # clangd
 .clangd
 
+# Clang-tidy
+output.txt
+error.txt
+
 # misc
 compile_commands.json
 
@@ -97,7 +101,7 @@ DoxygenWarningLog.txt
 *.cproject
 *.DS_Store
 freeEnergy.txt
-output.txt
+
 
 # Output files
 integratedFields.txt

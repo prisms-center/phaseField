@@ -17,25 +17,25 @@ namespace PRISMS
     PSimpleBase<VarContainer, OutType> *ptr;
 
   public:
-    std::string
+    [[nodiscard]] std::string
     name() const
     {
       return (*ptr).name();
     }
 
-    std::string
+    [[nodiscard]] std::string
     csrc() const
     {
       return (*ptr).csrc();
     }
 
-    std::string
+    [[nodiscard]] std::string
     sym() const
     {
       return (*ptr).sym();
     }
 
-    std::string
+    [[nodiscard]] std::string
     latex() const
     {
       return (*ptr).latex();
@@ -70,7 +70,9 @@ namespace PRISMS
     operator=(const PSimpleFunction &RHS)
     {
       if (ptr != NULL)
-        delete ptr;
+        {
+          delete ptr;
+        }
       ptr = RHS.ptr->clone();
       return *this;
     }
@@ -82,7 +84,9 @@ namespace PRISMS
       RHS.is_derived_from_PSimpleBase();
 
       if (ptr != NULL)
-        delete ptr;
+        {
+          delete ptr;
+        }
       ptr = RHS.clone();
       return *this;
     }
@@ -98,7 +102,9 @@ namespace PRISMS
           exit(1);
         }
       if (ptr != NULL)
-        delete ptr;
+        {
+          delete ptr;
+        }
       ptr = RHS;
       return *this;
     }
@@ -111,9 +117,13 @@ namespace PRISMS
     PSimpleFunction(const PSimpleFunction &RHS)
     {
       if (RHS.ptr != NULL)
-        ptr = RHS.ptr->clone();
+        {
+          ptr = RHS.ptr->clone();
+        }
       else
-        ptr = NULL;
+        {
+          ptr = NULL;
+        }
     }
 
     template <class T>
@@ -127,7 +137,9 @@ namespace PRISMS
     ~PSimpleFunction()
     {
       if (ptr != NULL)
-        delete ptr;
+        {
+          delete ptr;
+        }
     }
   };
 

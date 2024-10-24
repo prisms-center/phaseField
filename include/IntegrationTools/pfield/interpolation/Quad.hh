@@ -12,7 +12,7 @@ namespace PRISMS
 {
   class Quad_f : public PSimpleBase<std::vector<PRISMS::Coordinate<2>>, double>
   {
-    double
+    [[nodiscard]] double
     eval(const std::vector<PRISMS::Coordinate<2>> &var) const override
     {
       // var[0]: coordinate to be evaluated
@@ -33,7 +33,7 @@ namespace PRISMS
       this->_name = "Quad_f";
     }
 
-    Quad_f *
+    [[nodiscard]] Quad_f *
     clone() const override
     {
       return new Quad_f(*this);
@@ -42,7 +42,7 @@ namespace PRISMS
 
   class Quad_grad_0 : public PSimpleBase<std::vector<PRISMS::Coordinate<2>>, double>
   {
-    double
+    [[nodiscard]] double
     eval(const std::vector<PRISMS::Coordinate<2>> &var) const override
     {
       return -var[3][0] * (1.0 - var[3][1] * (var[0][1] - var[1][1]) / var[2][1]) /
@@ -55,7 +55,7 @@ namespace PRISMS
       this->_name = "Quad_grad_0";
     }
 
-    Quad_grad_0 *
+    [[nodiscard]] Quad_grad_0 *
     clone() const override
     {
       return new Quad_grad_0(*this);
@@ -64,7 +64,7 @@ namespace PRISMS
 
   class Quad_grad_1 : public PSimpleBase<std::vector<PRISMS::Coordinate<2>>, double>
   {
-    double
+    [[nodiscard]] double
     eval(const std::vector<PRISMS::Coordinate<2>> &var) const override
     {
       return -var[3][1] * (1.0 - var[3][0] * (var[0][0] - var[1][0]) / var[2][0]) /
@@ -77,7 +77,7 @@ namespace PRISMS
       this->_name = "Quad_grad_1";
     }
 
-    Quad_grad_1 *
+    [[nodiscard]] Quad_grad_1 *
     clone() const override
     {
       return new Quad_grad_1(*this);
@@ -86,7 +86,7 @@ namespace PRISMS
 
   class Quad_hess_0_0 : public PSimpleBase<std::vector<PRISMS::Coordinate<2>>, double>
   {
-    double
+    [[nodiscard]] double
     eval(const std::vector<PRISMS::Coordinate<2>> &var) const override
     {
       return 0.0;
@@ -98,7 +98,7 @@ namespace PRISMS
       this->_name = "Quad_hess_0_0";
     }
 
-    Quad_hess_0_0 *
+    [[nodiscard]] Quad_hess_0_0 *
     clone() const override
     {
       return new Quad_hess_0_0(*this);
@@ -107,7 +107,7 @@ namespace PRISMS
 
   class Quad_hess_0_1 : public PSimpleBase<std::vector<PRISMS::Coordinate<2>>, double>
   {
-    double
+    [[nodiscard]] double
     eval(const std::vector<PRISMS::Coordinate<2>> &var) const override
     {
       return var[3][0] * var[3][1] / var[2][0] / var[2][1];
@@ -119,7 +119,7 @@ namespace PRISMS
       this->_name = "Quad_hess_0_1";
     }
 
-    Quad_hess_0_1 *
+    [[nodiscard]] Quad_hess_0_1 *
     clone() const override
     {
       return new Quad_hess_0_1(*this);
@@ -128,7 +128,7 @@ namespace PRISMS
 
   class Quad_hess_1_0 : public PSimpleBase<std::vector<PRISMS::Coordinate<2>>, double>
   {
-    double
+    [[nodiscard]] double
     eval(const std::vector<PRISMS::Coordinate<2>> &var) const override
     {
       return var[3][0] * var[3][1] / var[2][0] / var[2][1];
@@ -140,7 +140,7 @@ namespace PRISMS
       this->_name = "Quad_hess_1_0";
     }
 
-    Quad_hess_1_0 *
+    [[nodiscard]] Quad_hess_1_0 *
     clone() const override
     {
       return new Quad_hess_1_0(*this);
@@ -149,7 +149,7 @@ namespace PRISMS
 
   class Quad_hess_1_1 : public PSimpleBase<std::vector<PRISMS::Coordinate<2>>, double>
   {
-    double
+    [[nodiscard]] double
     eval(const std::vector<PRISMS::Coordinate<2>> &var) const override
     {
       return 0.0;
@@ -161,7 +161,7 @@ namespace PRISMS
       this->_name = "Quad_hess_1_1";
     }
 
-    Quad_hess_1_1 *
+    [[nodiscard]] Quad_hess_1_1 *
     clone() const override
     {
       return new Quad_hess_1_1(*this);
@@ -206,7 +206,7 @@ namespace PRISMS
       delete[] _hess_val;
     }
 
-    Quad *
+    [[nodiscard]] Quad *
     clone() const override
     {
       return new Quad(*this);
@@ -336,7 +336,7 @@ namespace PRISMS
     std::vector<PRISMS::Coordinate<2>> _var;
 
   public:
-    typedef typename Interpolator<Coordinate, 2>::size_type size_type;
+    using size_type = typename Interpolator<Coordinate, 2>::size_type;
 
     // node_index: index of node in mesh
     // node_index: index of element in mesh
@@ -396,7 +396,7 @@ namespace PRISMS
         }
     }
 
-    PRISMS::Coordinate<2>
+    [[nodiscard]] PRISMS::Coordinate<2>
     min() const override
     {
       PRISMS::Coordinate<2> coord = _var[1];
@@ -409,7 +409,7 @@ namespace PRISMS
       return coord;
     }
 
-    PRISMS::Coordinate<2>
+    [[nodiscard]] PRISMS::Coordinate<2>
     max() const override
     {
       PRISMS::Coordinate<2> coord = _var[1];
@@ -433,7 +433,9 @@ namespace PRISMS
         {
           e = _var[3][i] * (_var[0][i] - _var[1][i]) / _var[2][i];
           if (e < 0.0 || e >= 1.0)
-            return false;
+            {
+              return false;
+            }
 
           // if( e == 0.0 && std::signbit(e))
           //     return false;

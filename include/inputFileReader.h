@@ -20,21 +20,21 @@ public:
 
   // Method to get a list of entry values from multiple subsections in an input
   // file
-  std::vector<std::string>
+  [[nodiscard]] std::vector<std::string>
   get_subsection_entry_list(const std::string &parameters_file_name,
                             const std::string &subsec_name,
                             const std::string &entry_name,
                             const std::string &default_entry) const;
 
   // Method to count the number of related entries in an input file
-  unsigned int
+  [[nodiscard]] unsigned int
   get_number_of_entries(const std::string &parameters_file_name,
                         const std::string &keyword,
                         const std::string &entry_name) const;
 
   // Get the trailing part of the entry name after a specified string (used to
   // extract the model constant names)
-  std::vector<std::string>
+  [[nodiscard]] std::vector<std::string>
   get_entry_name_ending_list(const std::string &parameters_file_name,
                              const std::string &keyword,
                              const std::string &entry_name_begining) const;

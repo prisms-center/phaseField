@@ -49,10 +49,10 @@ using namespace dealii;
 
 // define data types
 #ifndef scalarType
-typedef VectorizedArray<double> scalarType;
+using scalarType = VectorizedArray<double>;
 #endif
 #ifndef vectorType
-typedef LinearAlgebra::distributed::Vector<double> vectorType;
+using vectorType = LinearAlgebra::distributed::Vector<double>;
 #endif
 
 // macro for constants
@@ -464,7 +464,7 @@ protected:
 
   // Method to obtain the nucleation probability for an element, nontrival case
   // must be implemented in the subsclass
-  virtual double
+  [[nodiscard]] virtual double
   getNucleationProbability(variableValueContainer,
                            double,
                            Point<dim>,

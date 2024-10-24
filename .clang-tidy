@@ -3,10 +3,22 @@
 Checks: >
   -*,
   boost-*,
+  bugprone-*,
+  -bugprone-easily-swappable-parameters,
+  cert-*,
+  cppcoreguidelines-*,
+  -cppcoreguidelines-avoid-const-or-ref-data-members,
+  -cppcoreguidelines-non-private-member-variables-in-classes,
+  hicpp-*,
+  misc-*,
+  -misc-non-private-member-variables-in-classes,
   modernize-*,
-  -modernize-avoid-c-arrays,
   -modernize-use-trailing-return-type,
   mpi-*,
-  performance-*
+  performance-*,
+  readability-*,
+  -readability-else-after-return,
+  -readability-static-accessed-through-instance,
+  -readability-avoid-const-params-in-decls
 
 WarningsAsErrors: '*'

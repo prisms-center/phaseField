@@ -12,7 +12,7 @@ namespace PRISMS
 {
   class Hexahedron_f : public PSimpleBase<std::vector<PRISMS::Coordinate<3>>, double>
   {
-    double
+    [[nodiscard]] double
     eval(const std::vector<PRISMS::Coordinate<3>> &var) const override
     {
       // var[0]: coordinate to be evaluated
@@ -34,7 +34,7 @@ namespace PRISMS
       this->_name = "Hexahedron_f";
     }
 
-    Hexahedron_f *
+    [[nodiscard]] Hexahedron_f *
     clone() const override
     {
       return new Hexahedron_f(*this);
@@ -43,7 +43,7 @@ namespace PRISMS
 
   class Hexahedron_grad_0 : public PSimpleBase<std::vector<PRISMS::Coordinate<3>>, double>
   {
-    double
+    [[nodiscard]] double
     eval(const std::vector<PRISMS::Coordinate<3>> &var) const override
     {
       return -var[3][0] * (1.0 - var[3][1] * (var[0][1] - var[1][1]) / var[2][1]) *
@@ -56,7 +56,7 @@ namespace PRISMS
       this->_name = "Hexahedron_grad_0";
     }
 
-    Hexahedron_grad_0 *
+    [[nodiscard]] Hexahedron_grad_0 *
     clone() const override
     {
       return new Hexahedron_grad_0(*this);
@@ -65,7 +65,7 @@ namespace PRISMS
 
   class Hexahedron_grad_1 : public PSimpleBase<std::vector<PRISMS::Coordinate<3>>, double>
   {
-    double
+    [[nodiscard]] double
     eval(const std::vector<PRISMS::Coordinate<3>> &var) const override
     {
       return -var[3][1] * (1.0 - var[3][0] * (var[0][0] - var[1][0]) / var[2][0]) *
@@ -78,7 +78,7 @@ namespace PRISMS
       this->_name = "Hexahedron_grad_1";
     }
 
-    Hexahedron_grad_1 *
+    [[nodiscard]] Hexahedron_grad_1 *
     clone() const override
     {
       return new Hexahedron_grad_1(*this);
@@ -87,7 +87,7 @@ namespace PRISMS
 
   class Hexahedron_grad_2 : public PSimpleBase<std::vector<PRISMS::Coordinate<3>>, double>
   {
-    double
+    [[nodiscard]] double
     eval(const std::vector<PRISMS::Coordinate<3>> &var) const override
     {
       return -var[3][2] * (1.0 - var[3][0] * (var[0][0] - var[1][0]) / var[2][0]) *
@@ -100,7 +100,7 @@ namespace PRISMS
       this->_name = "Hexahedron_grad_2";
     }
 
-    Hexahedron_grad_2 *
+    [[nodiscard]] Hexahedron_grad_2 *
     clone() const override
     {
       return new Hexahedron_grad_2(*this);
@@ -110,7 +110,7 @@ namespace PRISMS
   class Hexahedron_hess_0_0
     : public PSimpleBase<std::vector<PRISMS::Coordinate<3>>, double>
   {
-    double
+    [[nodiscard]] double
     eval(const std::vector<PRISMS::Coordinate<3>> &var) const override
     {
       return 0.0;
@@ -122,7 +122,7 @@ namespace PRISMS
       this->_name = "Hexahedron_hess_0_0";
     }
 
-    Hexahedron_hess_0_0 *
+    [[nodiscard]] Hexahedron_hess_0_0 *
     clone() const override
     {
       return new Hexahedron_hess_0_0(*this);
@@ -132,7 +132,7 @@ namespace PRISMS
   class Hexahedron_hess_0_1
     : public PSimpleBase<std::vector<PRISMS::Coordinate<3>>, double>
   {
-    double
+    [[nodiscard]] double
     eval(const std::vector<PRISMS::Coordinate<3>> &var) const override
     {
       return var[3][0] * var[3][1] / var[2][0] / var[2][1];
@@ -144,7 +144,7 @@ namespace PRISMS
       this->_name = "Hexahedron_hess_0_1";
     }
 
-    Hexahedron_hess_0_1 *
+    [[nodiscard]] Hexahedron_hess_0_1 *
     clone() const override
     {
       return new Hexahedron_hess_0_1(*this);
@@ -154,7 +154,7 @@ namespace PRISMS
   class Hexahedron_hess_0_2
     : public PSimpleBase<std::vector<PRISMS::Coordinate<3>>, double>
   {
-    double
+    [[nodiscard]] double
     eval(const std::vector<PRISMS::Coordinate<3>> &var) const override
     {
       return var[3][0] * var[3][2] / var[2][0] / var[2][2];
@@ -166,7 +166,7 @@ namespace PRISMS
       this->_name = "Hexahedron_hess_0_2";
     }
 
-    Hexahedron_hess_0_2 *
+    [[nodiscard]] Hexahedron_hess_0_2 *
     clone() const override
     {
       return new Hexahedron_hess_0_2(*this);
@@ -176,7 +176,7 @@ namespace PRISMS
   class Hexahedron_hess_1_0
     : public PSimpleBase<std::vector<PRISMS::Coordinate<3>>, double>
   {
-    double
+    [[nodiscard]] double
     eval(const std::vector<PRISMS::Coordinate<3>> &var) const override
     {
       return var[3][1] * var[3][0] / var[2][1] / var[2][0];
@@ -188,7 +188,7 @@ namespace PRISMS
       this->_name = "Hexahedron_hess_1_0";
     }
 
-    Hexahedron_hess_1_0 *
+    [[nodiscard]] Hexahedron_hess_1_0 *
     clone() const override
     {
       return new Hexahedron_hess_1_0(*this);
@@ -198,7 +198,7 @@ namespace PRISMS
   class Hexahedron_hess_1_1
     : public PSimpleBase<std::vector<PRISMS::Coordinate<3>>, double>
   {
-    double
+    [[nodiscard]] double
     eval(const std::vector<PRISMS::Coordinate<3>> &var) const override
     {
       return 0.0;
@@ -210,7 +210,7 @@ namespace PRISMS
       this->_name = "Hexahedron_hess_1_1";
     }
 
-    Hexahedron_hess_1_1 *
+    [[nodiscard]] Hexahedron_hess_1_1 *
     clone() const override
     {
       return new Hexahedron_hess_1_1(*this);
@@ -220,7 +220,7 @@ namespace PRISMS
   class Hexahedron_hess_1_2
     : public PSimpleBase<std::vector<PRISMS::Coordinate<3>>, double>
   {
-    double
+    [[nodiscard]] double
     eval(const std::vector<PRISMS::Coordinate<3>> &var) const override
     {
       return var[3][1] * var[3][2] / var[2][1] / var[2][2];
@@ -232,7 +232,7 @@ namespace PRISMS
       this->_name = "Hexahedron_hess_1_2";
     }
 
-    Hexahedron_hess_1_2 *
+    [[nodiscard]] Hexahedron_hess_1_2 *
     clone() const override
     {
       return new Hexahedron_hess_1_2(*this);
@@ -242,7 +242,7 @@ namespace PRISMS
   class Hexahedron_hess_2_0
     : public PSimpleBase<std::vector<PRISMS::Coordinate<3>>, double>
   {
-    double
+    [[nodiscard]] double
     eval(const std::vector<PRISMS::Coordinate<3>> &var) const override
     {
       return var[3][2] * var[3][0] / var[2][2] / var[2][0];
@@ -254,7 +254,7 @@ namespace PRISMS
       this->_name = "Hexahedron_hess_2_0";
     }
 
-    Hexahedron_hess_2_0 *
+    [[nodiscard]] Hexahedron_hess_2_0 *
     clone() const override
     {
       return new Hexahedron_hess_2_0(*this);
@@ -264,7 +264,7 @@ namespace PRISMS
   class Hexahedron_hess_2_1
     : public PSimpleBase<std::vector<PRISMS::Coordinate<3>>, double>
   {
-    double
+    [[nodiscard]] double
     eval(const std::vector<PRISMS::Coordinate<3>> &var) const override
     {
       return var[3][2] * var[3][1] / var[2][2] / var[2][1];
@@ -276,7 +276,7 @@ namespace PRISMS
       this->_name = "Hexahedron_hess_2_1";
     }
 
-    Hexahedron_hess_2_1 *
+    [[nodiscard]] Hexahedron_hess_2_1 *
     clone() const override
     {
       return new Hexahedron_hess_2_1(*this);
@@ -286,7 +286,7 @@ namespace PRISMS
   class Hexahedron_hess_2_2
     : public PSimpleBase<std::vector<PRISMS::Coordinate<3>>, double>
   {
-    double
+    [[nodiscard]] double
     eval(const std::vector<PRISMS::Coordinate<3>> &var) const override
     {
       return 0.0;
@@ -298,7 +298,7 @@ namespace PRISMS
       this->_name = "Hexahedron_hess_2_2";
     }
 
-    Hexahedron_hess_2_2 *
+    [[nodiscard]] Hexahedron_hess_2_2 *
     clone() const override
     {
       return new Hexahedron_hess_2_2(*this);
@@ -348,7 +348,7 @@ namespace PRISMS
       delete[] _hess_val;
     }
 
-    Hexahedron *
+    [[nodiscard]] Hexahedron *
     clone() const override
     {
       return new Hexahedron(*this);
@@ -485,7 +485,7 @@ namespace PRISMS
     std::vector<PRISMS::Coordinate<3>> _var;
 
   public:
-    typedef typename Interpolator<Coordinate, 3>::size_type size_type;
+    using size_type = typename Interpolator<Coordinate, 3>::size_type;
 
     // node_index: index of node in mesh
     // node_index: index of element in mesh
@@ -563,7 +563,7 @@ namespace PRISMS
         }
     }
 
-    PRISMS::Coordinate<3>
+    [[nodiscard]] PRISMS::Coordinate<3>
     min() const override
     {
       PRISMS::Coordinate<3> coord = _var[1];
@@ -578,7 +578,7 @@ namespace PRISMS
       return coord;
     }
 
-    PRISMS::Coordinate<3>
+    [[nodiscard]] PRISMS::Coordinate<3>
     max() const override
     {
       PRISMS::Coordinate<3> coord = _var[1];
@@ -605,7 +605,9 @@ namespace PRISMS
         {
           e = _var[3][i] * (_var[0][i] - _var[1][i]) / _var[2][i];
           if (e < 0.0 || e >= 1.0)
-            return false;
+            {
+              return false;
+            }
 
           // if( e == 0.0 && std::signbit(e))
           //     return false;
