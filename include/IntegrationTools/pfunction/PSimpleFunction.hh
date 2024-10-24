@@ -17,25 +17,25 @@ namespace PRISMS
     PSimpleBase<VarContainer, OutType> *ptr;
 
   public:
-    std::string
+    [[nodiscard]] std::string
     name() const
     {
       return (*ptr).name();
     }
 
-    std::string
+    [[nodiscard]] std::string
     csrc() const
     {
       return (*ptr).csrc();
     }
 
-    std::string
+    [[nodiscard]] std::string
     sym() const
     {
       return (*ptr).sym();
     }
 
-    std::string
+    [[nodiscard]] std::string
     latex() const
     {
       return (*ptr).latex();

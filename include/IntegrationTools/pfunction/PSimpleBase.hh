@@ -26,7 +26,7 @@ namespace PRISMS
   public:
     virtual ~PSimpleBase() {};
 
-    std::string
+    [[nodiscard]] std::string
     name() const
     {
       return _name;
@@ -56,21 +56,21 @@ namespace PRISMS
       return new PSimpleBase<VarContainer, OutType>(*this);
     }
 
-    virtual std::string
+    [[nodiscard]] virtual std::string
     csrc() const
     {
       undefined("std::string csrc()");
       return std::string();
     }
 
-    virtual std::string
+    [[nodiscard]] virtual std::string
     sym() const
     {
       undefined("std::string sym()");
       return std::string();
     }
 
-    virtual std::string
+    [[nodiscard]] virtual std::string
     latex() const
     {
       undefined("std::string latex()");

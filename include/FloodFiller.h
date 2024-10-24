@@ -35,7 +35,7 @@ public:
   /**
    * Gets the grain index.
    */
-  unsigned int
+  [[nodiscard]] unsigned int
   getGrainIndex() const
   {
     return grain_index;
@@ -53,7 +53,7 @@ public:
   /**
    * Gets the order parameter index.
    */
-  unsigned int
+  [[nodiscard]] unsigned int
   getOrderParameterIndex() const
   {
     return order_parameter_index;

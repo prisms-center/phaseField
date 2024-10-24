@@ -22,7 +22,7 @@ public:
     , inputField(_inputField)
   {}
 
-  double
+  [[nodiscard]] double
   value(const Point<dim> &p, const unsigned int component = 0) const override
   {
     double scalar_IC;
