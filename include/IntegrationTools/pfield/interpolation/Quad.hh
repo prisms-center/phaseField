@@ -336,7 +336,7 @@ namespace PRISMS
     std::vector<PRISMS::Coordinate<2>> _var;
 
   public:
-    typedef typename Interpolator<Coordinate, 2>::size_type size_type;
+    using size_type = typename Interpolator<Coordinate, 2>::size_type;
 
     // node_index: index of node in mesh
     // node_index: index of element in mesh

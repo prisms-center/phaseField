@@ -22,7 +22,7 @@ namespace PRISMS
     std::vector<std::string> _var_description;
 
   public:
-    typedef std::vector<std::string>::size_type size_type;
+    using size_type = std::vector<std::string>::size_type;
 
     PFuncBase()
     {}
