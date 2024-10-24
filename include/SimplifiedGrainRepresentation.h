@@ -44,7 +44,7 @@ public:
    * Setter for the grain id.
    */
   void
-  setGrainId(unsigned int id);
+  setGrainId(unsigned int _grain_id);
 
   /**
    * Getter for the order parameter id.
@@ -56,7 +56,7 @@ public:
    * Setter for the order parameter id.
    */
   void
-  setOrderParameterId(unsigned int id);
+  setOrderParameterId(unsigned int _order_parameter_id);
 
   /**
    * Getter for the old value of the order parameter id (used in the
