@@ -4,7 +4,7 @@
 
 template <int dim, int degree>
 void
-FloodFiller<dim, degree>::calcGrainSets(dealii::FESystem<dim>      &fe,
+FloodFiller<dim, degree>::calcGrainSets(dealii::FESystem<dim>      &finite_element,
                                         dealii::DoFHandler<dim>    &dof_handler,
                                         vectorType                 *solution_field,
                                         double                      threshold_lower,
@@ -17,11 +17,11 @@ FloodFiller<dim, degree>::calcGrainSets(dealii::FESystem<dim>      &fe,
 
   // Loop through the whole mesh and set the user flags to false (so everything
   // is considered unmarked)
-  typename dealii::DoFHandler<dim>::cell_iterator di = dof_handler.begin();
-  while (di != dof_handler.end())
+  typename dealii::DoFHandler<dim>::cell_iterator cell = dof_handler.begin();
+  while (cell != dof_handler.end())
     {
-      di->clear_user_flag();
-      ++di;
+      cell->clear_user_flag();
+      ++cell;
     }
 
   GrainSet<dim> grain_set;
@@ -29,14 +29,14 @@ FloodFiller<dim, degree>::calcGrainSets(dealii::FESystem<dim>      &fe,
   grain_sets.back().setOrderParameterIndex(order_parameter_index);
 
   // The flood fill loop
-  di = dof_handler.begin();
-  while (di != dof_handler.end())
+  cell = dof_handler.begin();
+  while (cell != dof_handler.end())
     {
-      if (!di->has_children())
+      if (!cell->has_children())
         {
           bool grain_assigned = false;
           recursiveFloodFill<typename dealii::DoFHandler<dim>::cell_iterator>(
-            di,
+            cell,
             dof_handler.end(),
             solution_field,
             threshold_lower,
@@ -56,7 +56,7 @@ FloodFiller<dim, degree>::calcGrainSets(dealii::FESystem<dim>      &fe,
             }
         }
 
-      ++di;
+      ++cell;
     }
 
   // If the last grain was initialized but empty, delete it
@@ -79,8 +79,8 @@ FloodFiller<dim, degree>::calcGrainSets(dealii::FESystem<dim>      &fe,
 template <int dim, int degree>
 template <typename T>
 void
-FloodFiller<dim, degree>::recursiveFloodFill(T                           di,
-                                             T                           di_end,
+FloodFiller<dim, degree>::recursiveFloodFill(T                           cell,
+                                             T                           cell_end,
                                              vectorType                 *solution_field,
                                              double                      threshold_lower,
                                              double                      threshold_upper,
@@ -89,20 +89,20 @@ FloodFiller<dim, degree>::recursiveFloodFill(T                           di,
                                              std::vector<GrainSet<dim>> &grain_sets,
                                              bool                       &grain_assigned)
 {
-  if (di != di_end)
+  if (cell != cell_end)
     {
       // Check if the cell has been marked yet
-      bool cellMarked = di->user_flag_set();
+      bool cellMarked = cell->user_flag_set();
 
       if (!cellMarked)
         {
-          if (di->has_children())
+          if (cell->has_children())
             {
               // Call recursiveFloodFill on the element's children
-              for (unsigned int n = 0; n < di->n_children(); n++)
+              for (unsigned int n_child = 0; n_child < cell->n_children(); n_child++)
                 {
-                  recursiveFloodFill<T>(di->child(n),
-                                        di_end,
+                  recursiveFloodFill<T>(cell->child(n_child),
+                                        cell_end,
                                         solution_field,
                                         threshold_lower,
                                         threshold_upper,
@@ -114,16 +114,17 @@ FloodFiller<dim, degree>::recursiveFloodFill(T                           di,
             }
           else
             {
-              if (di->is_locally_owned())
+              if (cell->is_locally_owned())
                 {
-                  di->set_user_flag();
+                  cell->set_user_flag();
 
                   dealii::FEValues<dim> fe_values(*fe, quadrature, dealii::update_values);
-                  std::vector<double>   var_values(num_quad_points);
+
+                  std::vector<double>             var_values(num_quad_points);
                   std::vector<dealii::Point<dim>> q_point_list(num_quad_points);
 
                   // Get the most common value for the element
-                  fe_values.reinit(di);
+                  fe_values.reinit(cell);
                   fe_values.get_function_values(*solution_field, var_values);
 
                   double                ele_val;
@@ -151,19 +152,19 @@ FloodFiller<dim, degree>::recursiveFloodFill(T                           di,
                       grain_assigned = true;
 
                       std::vector<dealii::Point<dim>> vertex_list;
-                      for (unsigned int v = 0;
-                           v < dealii::Utilities::fixed_power<dim>(2.0);
-                           v++)
+                      for (unsigned int vertex_index = 0;
+                           vertex_index < dealii::Utilities::fixed_power<dim>(2.0);
+                           vertex_index++)
                         {
-                          vertex_list.push_back(di->vertex(v));
+                          vertex_list.push_back(cell->vertex(vertex_index));
                         }
                       grain_sets.back().addVertexList(vertex_list);
 
                       // Call recursiveFloodFill on the element's neighbors
-                      for (unsigned int n = 0; n < 2 * dim; n++)
+                      for (unsigned int n_child = 0; n_child < 2 * dim; n_child++)
                         {
-                          recursiveFloodFill<T>(di->neighbor(n),
-                                                di_end,
+                          recursiveFloodFill<T>(cell->neighbor(n_child),
+                                                cell_end,
                                                 solution_field,
                                                 threshold_lower,
                                                 threshold_upper,

@@ -10,34 +10,34 @@ enum RefinementCriterionFlags
 
 // Function that enables bitwise OR between flags
 inline RefinementCriterionFlags
-operator|(const RefinementCriterionFlags f1, const RefinementCriterionFlags f2)
+operator|(const RefinementCriterionFlags flag_1, const RefinementCriterionFlags flag_2)
 {
-  return static_cast<RefinementCriterionFlags>(static_cast<unsigned int>(f1) |
-                                               static_cast<unsigned int>(f2));
+  return static_cast<RefinementCriterionFlags>(static_cast<unsigned int>(flag_1) |
+                                               static_cast<unsigned int>(flag_2));
 }
 
 // Function that enables bitwise compound OR between flags
 inline RefinementCriterionFlags &
-operator|=(RefinementCriterionFlags &f1, const RefinementCriterionFlags f2)
+operator|=(RefinementCriterionFlags &flag_1, const RefinementCriterionFlags flag_2)
 {
-  f1 = f1 | f2;
-  return f1;
+  flag_1 = flag_1 | flag_2;
+  return flag_1;
 }
 
 // Function that enables bitwise AND between flags
 inline RefinementCriterionFlags
-operator&(const RefinementCriterionFlags f1, const RefinementCriterionFlags f2)
+operator&(const RefinementCriterionFlags flag_1, const RefinementCriterionFlags flag_2)
 {
-  return static_cast<RefinementCriterionFlags>(static_cast<unsigned int>(f1) &
-                                               static_cast<unsigned int>(f2));
+  return static_cast<RefinementCriterionFlags>(static_cast<unsigned int>(flag_1) &
+                                               static_cast<unsigned int>(flag_2));
 }
 
 // Function that enables bitwise compound AND between flags
 inline RefinementCriterionFlags &
-operator&=(RefinementCriterionFlags &f1, const RefinementCriterionFlags f2)
+operator&=(RefinementCriterionFlags &flag_1, const RefinementCriterionFlags flag_2)
 {
-  f1 = f1 & f2;
-  return f1;
+  flag_1 = flag_1 & flag_2;
+  return flag_1;
 }
 
 /**
