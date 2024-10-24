@@ -35,8 +35,18 @@ MatrixFreePDE<dim, degree>::vmult(vectorType &dst, const vectorType &src) const
                                  true);
     }
 
-  // Account for Dirichlet BC's
-  constraintsDirichletSet[currentFieldIndex]->distribute(dst);
+  // Account for Dirichlet BC's (essentially copy dirichlet DOF values present in src to
+  // dst, although it is unclear why the constraints can't just be distributed here)
+  for (std::map<types::global_dof_index, double>::const_iterator it =
+         valuesDirichletSet[currentFieldIndex]->begin();
+       it != valuesDirichletSet[currentFieldIndex]->end();
+       ++it)
+    {
+      if (dst.in_local_range(it->first))
+        {
+          dst(it->first) = src(it->first); //*jacobianDiagonal(it->first);
+        }
+    }
 
   // end log
   computing_timer.leave_subsection("matrixFreePDE: computeLHS");
