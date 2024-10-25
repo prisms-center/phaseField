@@ -399,8 +399,17 @@ protected:
   setPeriodicity();
   void
   setPeriodicityConstraints(AffineConstraints<double> *, const DoFHandler<dim> *) const;
+
+  /**
+   * \brief Determine which (if any) components of the current field have rigid body modes
+   * (i.e no Dirichlet BCs) if the equation is elliptic.
+   */
   void
   getComponentsWithRigidBodyModes(std::vector<int> &) const;
+
+  /**
+   * \brief Set constraints to pin the solution to 0 at a certain vertex.
+   */
   void
   setRigidBodyModeConstraints(const std::vector<int> &,
                               AffineConstraints<double> *,

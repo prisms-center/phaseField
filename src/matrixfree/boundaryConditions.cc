@@ -281,8 +281,6 @@ MatrixFreePDE<dim, degree>::setPeriodicityConstraints(
 #endif
 }
 
-// Determine which (if any) components of the current field have rigid body
-// modes (i.e no Dirichlet BCs) if the equation is elliptic
 template <int dim, int degree>
 void
 MatrixFreePDE<dim, degree>::getComponentsWithRigidBodyModes(
@@ -335,8 +333,6 @@ MatrixFreePDE<dim, degree>::getComponentsWithRigidBodyModes(
     }
 }
 
-// Set constraints to pin the solution if there are no Dirichlet BCs for a
-// component of a variable in an elliptic equation
 template <int dim, int degree>
 void
 MatrixFreePDE<dim, degree>::setRigidBodyModeConstraints(
@@ -348,20 +344,17 @@ MatrixFreePDE<dim, degree>::setRigidBodyModeConstraints(
     {
       // Choose the point where the constraint will be placed. Must be the
       // coordinates of a vertex.
-      dealii::Point<dim> target_point; // default constructor places the point at the
-                                       // origin
-
-      unsigned int vertices_per_cell = GeometryInfo<dim>::vertices_per_cell;
+      dealii::Point<dim> target_point;
 
       // Loop over each locally owned cell
       for (const auto &cell : dof_handler->active_cell_iterators())
         {
           if (cell->is_locally_owned())
             {
-              for (unsigned int i = 0; i < vertices_per_cell; ++i)
+              for (unsigned int i = 0; i < GeometryInfo<dim>::vertices_per_cell; ++i)
                 {
                   // Check if the vertex is the target vertex
-                  if (target_point.distance(cell->vertex(i)) < 1e-2 * cell->diameter())
+                  if (target_point.distance(cell->vertex(i)) < 1.0e-2 * cell->diameter())
                     {
                       // Loop through the list of components with rigid body
                       // modes and add an inhomogeneous constraint for each
@@ -369,11 +362,9 @@ MatrixFreePDE<dim, degree>::setRigidBodyModeConstraints(
                            component_num < rigidBodyModeComponents.size();
                            component_num++)
                         {
-                          // unsigned int nodeID = cell->vertex_dof_index(i,
-                          // component_num);
-                          //  Temporarily disabling the addition of inhomogeneous
-                          //  constraints constraints->add_line(nodeID);
-                          //  constraints->set_inhomogeneity(nodeID,0.0);
+                          unsigned int nodeID = cell->vertex_dof_index(i, component_num);
+                          constraints->add_line(nodeID);
+                          constraints->set_inhomogeneity(nodeID, 0.0);
                         }
                     }
                 }

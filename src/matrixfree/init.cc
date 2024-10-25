@@ -163,11 +163,10 @@ MatrixFreePDE<dim, degree>::init()
       // Get hanging node constraints
       DoFTools::make_hanging_node_constraints(*dof_handler, *constraintsOther);
 
-      // Add a constraint to fix the value at the origin to zero if all BCs are
-      // zero-derivative or periodic
+      // Pin solution
       std::vector<int> rigidBodyModeComponents;
-      // getComponentsWithRigidBodyModes(rigidBodyModeComponents);
-      // setRigidBodyModeConstraints(rigidBodyModeComponents,constraintsOther,dof_handler);
+      getComponentsWithRigidBodyModes(rigidBodyModeComponents);
+      setRigidBodyModeConstraints(rigidBodyModeComponents, constraintsOther, dof_handler);
 
       // Get constraints for periodic BCs
       setPeriodicityConstraints(constraintsOther, dof_handler);
