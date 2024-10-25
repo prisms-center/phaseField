@@ -399,12 +399,21 @@ protected:
   setPeriodicity();
   void
   setPeriodicityConstraints(AffineConstraints<double> *, const DoFHandler<dim> *) const;
+
+  /**
+   * \brief Set constraints to pin the solution to 0 at a certain vertex. This is
+   * automatically done at the origin if no value terms are detected in your dependencies
+   * in a time_independent or implicit solve.
+   *
+   * \param constraints The constraint set.
+   * \param dof_handler The list of the degrees of freedom.
+   * \param target_point The point where the solution is constrained. This is the origin
+   * by default.
+   */
   void
-  getComponentsWithRigidBodyModes(std::vector<int> &) const;
-  void
-  setRigidBodyModeConstraints(const std::vector<int> &,
-                              AffineConstraints<double> *,
-                              const DoFHandler<dim> *) const;
+  set_rigid_body_mode_constraints(AffineConstraints<double> *constraints,
+                                  const DoFHandler<dim>     *dof_handler,
+                                  const Point<dim> target_point = Point<dim>()) const;
 
   // methods to apply initial conditions
   /*Virtual method to apply initial conditions.  This is usually expected to be

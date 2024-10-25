@@ -6,11 +6,13 @@
 
 #include <deal.II/base/conditional_ostream.h>
 #include <deal.II/base/exceptions.h>
+#include <deal.II/base/point.h>
 #include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/lac/vector.h>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/unordered_map.hpp>
 #include <boost/variant.hpp>
 
 #include "RefinementCriterion.h"
@@ -242,6 +244,9 @@ public:
 
   // Nonlinear solver parameters
   NonlinearSolverParameters nonlinear_solver_parameters;
+
+  // Pinning point parameters
+  boost::unordered_map<unsigned int, dealii::Point<dim>> pinned_point;
 
   // Variable inputs (I might be able to leave some/all of these in
   // variable_attributes)

@@ -107,34 +107,6 @@ main(int argc, char **argv)
   pass = computeStress_tester_3DT.test_computeStress();
   tests_passed += pass;
 
-  // Unit tests for the method "setRigidBodyModeConstraints"
-  total_tests++;
-  unitTest<2, double> setRigidBodyModeConstraints_tester_null;
-  std::vector<int>    rigidBodyModeComponents;
-  pass = setRigidBodyModeConstraints_tester_null
-           .test_setRigidBodyModeConstraints(rigidBodyModeComponents, userInputs);
-  tests_passed += pass;
-
-  total_tests++;
-  unitTest<2, double> setRigidBodyModeConstraints_tester_one;
-  rigidBodyModeComponents.clear();
-  rigidBodyModeComponents.push_back(0);
-  pass = setRigidBodyModeConstraints_tester_one
-           .test_setRigidBodyModeConstraints(rigidBodyModeComponents, userInputs);
-  tests_passed += pass;
-
-  // In debug mode this test has an exception because it is trying to access
-  // components higher than 0 on the mesh for a scalar. To get this test working
-  // again, I'll need a DoFHandler for a vector field. total_tests++;
-  // unitTest<2,double> setRigidBodyModeConstraints_tester_three;
-  // rigidBodyModeComponents.clear();
-  // rigidBodyModeComponents.push_back(0);
-  // rigidBodyModeComponents.push_back(1);
-  // rigidBodyModeComponents.push_back(2);
-  // pass =
-  // setRigidBodyModeConstraints_tester_three.test_setRigidBodyModeConstraints(rigidBodyModeComponents,
-  // userInputs); tests_passed += pass;
-
   // Unit tests for the "LinearSolverParameters" class
   total_tests++;
   unitTest<2, double> LinearSolverParameters_tester;
