@@ -609,22 +609,27 @@ inputFileReader::declare_parameters(dealii::ParameterHandler     &parameter_hand
   /*----------------------
   |  Pinning point
   -----------------------*/
-  parameter_handler.enter_subsection("Pinning point");
-  {
-    parameter_handler.declare_entry("x",
-                                    "-1.0",
-                                    dealii::Patterns::Double(),
-                                    "X-coordinate of the point");
-    parameter_handler.declare_entry("y",
-                                    "0.0",
-                                    dealii::Patterns::Double(),
-                                    "Y-coordinate of the point");
-    parameter_handler.declare_entry("z",
-                                    "0.0",
-                                    dealii::Patterns::Double(),
-                                    "Z-coordinate of the point");
-  }
-  parameter_handler.leave_subsection();
+  std::string pinning_text = "Pinning point: ";
+  for (unsigned int i = 0; i < var_types.size(); i++)
+    {
+      pinning_text.append(var_names.at(i));
+      parameter_handler.enter_subsection(pinning_text);
+      {
+        parameter_handler.declare_entry("x",
+                                        "-1.0",
+                                        dealii::Patterns::Double(),
+                                        "X-coordinate of the point");
+        parameter_handler.declare_entry("y",
+                                        "0.0",
+                                        dealii::Patterns::Double(),
+                                        "Y-coordinate of the point");
+        parameter_handler.declare_entry("z",
+                                        "0.0",
+                                        dealii::Patterns::Double(),
+                                        "Z-coordinate of the point");
+      }
+      parameter_handler.leave_subsection();
+    }
 
   // Declare the nucleation parameters
   parameter_handler.declare_entry(

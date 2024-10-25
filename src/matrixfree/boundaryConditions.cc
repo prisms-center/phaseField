@@ -288,18 +288,6 @@ MatrixFreePDE<dim, degree>::set_rigid_body_mode_constraints(
   const DoFHandler<dim>     *dof_handler,
   const Point<dim>           target_point) const
 {
-  // Exit if the field is not implicit or time independent
-  if (userInputs.var_eq_type[currentFieldIndex] != IMPLICIT_TIME_DEPENDENT &&
-      userInputs.var_eq_type[currentFieldIndex] != TIME_INDEPENDENT)
-    {
-      return;
-    }
-  // Exit if the user hasn't specified a pinning point
-  if (!userInputs.do_pinning)
-    {
-      return;
-    }
-
   // Determine the number of components in the field. For a scalar field this is 1, for a
   // vector dim, etc.
   unsigned int n_components = 0;

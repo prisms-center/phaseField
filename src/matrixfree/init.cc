@@ -164,9 +164,13 @@ MatrixFreePDE<dim, degree>::init()
       DoFTools::make_hanging_node_constraints(*dof_handler, *constraintsOther);
 
       // Pin solution
-      set_rigid_body_mode_constraints(constraintsOther,
-                                      dof_handler,
-                                      userInputs.pinned_point);
+      if (userInputs.pinned_point.find(currentFieldIndex) !=
+          userInputs.pinned_point.end())
+        {
+          set_rigid_body_mode_constraints(constraintsOther,
+                                          dof_handler,
+                                          userInputs.pinned_point[currentFieldIndex]);
+        }
 
       // Get constraints for periodic BCs
       setPeriodicityConstraints(constraintsOther, dof_handler);

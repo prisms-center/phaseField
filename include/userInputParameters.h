@@ -12,6 +12,7 @@
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/unordered_map.hpp>
 #include <boost/variant.hpp>
 
 #include "RefinementCriterion.h"
@@ -245,8 +246,7 @@ public:
   NonlinearSolverParameters nonlinear_solver_parameters;
 
   // Pinning point parameters
-  bool               do_pinning;
-  dealii::Point<dim> pinned_point;
+  boost::unordered_map<unsigned int, dealii::Point<dim>> pinned_point;
 
   // Variable inputs (I might be able to leave some/all of these in
   // variable_attributes)
