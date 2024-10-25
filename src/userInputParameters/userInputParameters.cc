@@ -643,9 +643,9 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
   /*----------------------
   |  Pinning point
   -----------------------*/
-  std::string pinning_text = "Pinning point: ";
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
+      std::string pinning_text = "Pinning point: ";
       pinning_text.append(input_file_reader.var_names.at(i));
       parameter_handler.enter_subsection(pinning_text);
 
