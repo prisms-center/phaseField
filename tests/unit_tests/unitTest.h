@@ -131,7 +131,6 @@ public:
 #include "test_outputResults.h"
 #include "test_parse_line.h"
 #include "test_setOutputTimeSteps.h"
-#include "test_setRigidBodyModeConstraints.h"
 #include "variableAttributeLoader_test.cc"
 
 #include "../../include/SolverParameters.h"
