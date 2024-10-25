@@ -560,7 +560,9 @@ inputFileReader::declare_parameters(dealii::ParameterHandler     &parameter_hand
     "The number of checkpoints (or number of checkpoints per decade for the "
     "N_PER_DECADE type).");
 
-  // Declare the boundary condition variables
+  /*----------------------
+  |  Boundary conditions
+  -----------------------*/
   for (unsigned int i = 0; i < var_types.size(); i++)
     {
       if (var_types[i] == SCALAR)
@@ -603,6 +605,26 @@ inputFileReader::declare_parameters(dealii::ParameterHandler     &parameter_hand
             "The boundary conditions for one of the governing equations).");
         }
     }
+
+  /*----------------------
+  |  Pinning point
+  -----------------------*/
+  parameter_handler.enter_subsection("Pinning point");
+  {
+    parameter_handler.declare_entry("x",
+                                    "-1.0",
+                                    dealii::Patterns::Double(),
+                                    "X-coordinate of the point");
+    parameter_handler.declare_entry("y",
+                                    "0.0",
+                                    dealii::Patterns::Double(),
+                                    "Y-coordinate of the point");
+    parameter_handler.declare_entry("z",
+                                    "0.0",
+                                    dealii::Patterns::Double(),
+                                    "Z-coordinate of the point");
+  }
+  parameter_handler.leave_subsection();
 
   // Declare the nucleation parameters
   parameter_handler.declare_entry(

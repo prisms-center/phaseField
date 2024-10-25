@@ -630,12 +630,34 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
           bc_text.append(", y component");
           list_of_BCs.push_back(parameter_handler.get(bc_text));
 
-          bc_text = "Boundary condition for variable ";
-          bc_text.append(var_name.at(i));
-          bc_text.append(", z component");
-          list_of_BCs.push_back(parameter_handler.get(bc_text));
+          if (dim > 2)
+            {
+              bc_text = "Boundary condition for variable ";
+              bc_text.append(var_name.at(i));
+              bc_text.append(", z component");
+              list_of_BCs.push_back(parameter_handler.get(bc_text));
+            }
         }
     }
+
+  /*----------------------
+  |  Pinning point
+  -----------------------*/
+  parameter_handler.enter_subsection("Pinning point");
+  if (dim == 2)
+    {
+      pinned_point = dealii::Point<dim>(parameter_handler.get_double("x"),
+                                        parameter_handler.get_double("y"));
+      do_pinning   = parameter_handler.get_double("x") == -1.0;
+    }
+  else
+    {
+      pinned_point = dealii::Point<dim>(parameter_handler.get_double("x"),
+                                        parameter_handler.get_double("y"),
+                                        parameter_handler.get_double("z"));
+      do_pinning   = parameter_handler.get_double("x") == -1.0;
+    }
+  parameter_handler.leave_subsection();
 
   // Load the BC information from the strings into a varBCs object
   load_BC_list(list_of_BCs);

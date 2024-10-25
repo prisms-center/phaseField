@@ -6,6 +6,7 @@
 
 #include <deal.II/base/conditional_ostream.h>
 #include <deal.II/base/exceptions.h>
+#include <deal.II/base/point.h>
 #include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/lac/vector.h>
 
@@ -242,6 +243,10 @@ public:
 
   // Nonlinear solver parameters
   NonlinearSolverParameters nonlinear_solver_parameters;
+
+  // Pinning point parameters
+  bool               do_pinning;
+  dealii::Point<dim> pinned_point;
 
   // Variable inputs (I might be able to leave some/all of these in
   // variable_attributes)
