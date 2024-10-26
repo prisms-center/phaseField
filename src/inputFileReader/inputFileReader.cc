@@ -609,9 +609,9 @@ inputFileReader::declare_parameters(dealii::ParameterHandler     &parameter_hand
   /*----------------------
   |  Pinning point
   -----------------------*/
-  std::string pinning_text = "Pinning point: ";
   for (unsigned int i = 0; i < var_types.size(); i++)
     {
+      std::string pinning_text = "Pinning point: ";
       pinning_text.append(var_names.at(i));
       parameter_handler.enter_subsection(pinning_text);
       {
