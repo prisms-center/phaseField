@@ -44,5 +44,3 @@ MatrixFreePDE<dim, degree>::computeIntegral(double                   &integrated
 
   integratedField = value;
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

@@ -111,5 +111,3 @@ MatrixFreePDE<dim, degree>::reassignGrains()
   // end log
   computing_timer.leave_subsection("matrixFreePDE: reassignGrains");
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

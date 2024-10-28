@@ -92,5 +92,3 @@ MatrixFreePDE<dim, degree>::getLHS(
                                                                     currentFieldIndex);
     }
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

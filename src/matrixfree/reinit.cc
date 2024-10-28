@@ -213,5 +213,3 @@ MatrixFreePDE<dim, degree>::reinit()
 
   computing_timer.leave_subsection("matrixFreePDE: reinitialization");
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

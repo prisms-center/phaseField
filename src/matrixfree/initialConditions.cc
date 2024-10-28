@@ -438,5 +438,3 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
 //	  vector_IC = inputField(coord);
 //  }
 //};
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

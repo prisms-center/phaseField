@@ -573,5 +573,3 @@ MatrixFreePDE<dim, degree>::copy_solution_vectors(
         }
     }
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

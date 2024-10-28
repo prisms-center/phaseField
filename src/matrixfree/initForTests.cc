@@ -113,5 +113,3 @@ MatrixFreePDE<dim, degree>::initForTests(std::vector<Field<dim>> fields)
       *U = 0;
     }
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

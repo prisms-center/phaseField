@@ -254,5 +254,3 @@ MatrixFreePDE<dim, degree>::verify_checkpoint_file_exists(const std::string &fil
                              filename + "> does not appear to exist!"));
     }
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"
