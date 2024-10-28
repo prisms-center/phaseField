@@ -251,5 +251,3 @@ MatrixFreePDE<dim, degree>::outputResults()
   // log time
   computing_timer.leave_subsection("matrixFreePDE: output");
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

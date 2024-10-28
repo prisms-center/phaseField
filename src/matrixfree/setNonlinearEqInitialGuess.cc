@@ -199,5 +199,3 @@ MatrixFreePDE<dim, degree>::getLaplaceLHS(
       mat.distribute_local_to_global(dst);
     }
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

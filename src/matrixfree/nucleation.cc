@@ -566,6 +566,3 @@ MatrixFreePDE<dim, degree>::weightedDistanceFromNucleusCenter(
     }
   return weighted_dist;
 }
-
-// Template instantiations
-#include "../../include/matrixFreePDE_template_instantiations.h"

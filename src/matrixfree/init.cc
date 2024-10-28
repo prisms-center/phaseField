@@ -452,5 +452,3 @@ MatrixFreePDE<dim, degree>::compute_element_volume()
         }
     }
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

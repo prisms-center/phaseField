@@ -31,5 +31,3 @@ MatrixFreePDE<dim, degree>::markBoundaries(
         }
     }
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

@@ -546,5 +546,3 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
 
   return nonlinear_it_converged;
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

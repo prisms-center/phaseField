@@ -70,5 +70,3 @@ MatrixFreePDE<dim, degree>::~MatrixFreePDE()
       delete residual;
     }
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"
