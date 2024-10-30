@@ -156,7 +156,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
           parameter_handler.enter_subsection(subsection_text);
           {
             // Set the tolerance type
-            SolverToleranceType temp_type;
+            SolverToleranceType temp_type   = ABSOLUTE_RESIDUAL;
             std::string         type_string = parameter_handler.get("Tolerance type");
             if (boost::iequals(type_string, "ABSOLUTE_RESIDUAL"))
               {
@@ -218,7 +218,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
           parameter_handler.enter_subsection(subsection_text);
           {
             // Set the tolerance type
-            SolverToleranceType temp_type;
+            SolverToleranceType temp_type   = ABSOLUTE_RESIDUAL;
             std::string         type_string = parameter_handler.get("Tolerance type");
             if (boost::iequals(type_string, "ABSOLUTE_RESIDUAL"))
               {
@@ -266,7 +266,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
             // Set whether to use the solution of Laplace's equation instead of
             // the IC in ICs_and_BCs.h as the initial guess for nonlinear, time
             // independent equations
-            bool temp_laplace_for_initial_guess;
+            bool temp_laplace_for_initial_guess = false;
             if (var_eq_type[i] == TIME_INDEPENDENT)
               {
                 temp_laplace_for_initial_guess = parameter_handler.get_bool(

@@ -88,7 +88,7 @@ MatrixFreePDE<dim, degree>::outputResults()
             {
               if (userInputs.pp_calc_integral[i])
                 {
-                  double integrated_field;
+                  double integrated_field = 0.0;
                   computeIntegral(integrated_field, i, postProcessedSet);
                   pcout << "Integrated value of "
                         << userInputs.pp_var_name[userInputs.integrated_field_indices[i]]
@@ -117,10 +117,9 @@ MatrixFreePDE<dim, degree>::outputResults()
            fieldIndex++)
         {
           // mark field as scalar/vector
-          unsigned int components;
           if (userInputs.pp_varInfoList[fieldIndex].is_scalar)
             {
-              components = 1;
+              unsigned int components = 1;
               std::vector<DataComponentInterpretation::DataComponentInterpretation>
                 dataType(components, DataComponentInterpretation::component_is_scalar);
               std::vector<std::string> solutionNames(
@@ -134,7 +133,7 @@ MatrixFreePDE<dim, degree>::outputResults()
             }
           else
             {
-              components = dim;
+              unsigned int components = dim;
               std::vector<DataComponentInterpretation::DataComponentInterpretation>
                                        dataType(components,
                          DataComponentInterpretation::component_is_part_of_vector);

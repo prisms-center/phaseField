@@ -7,7 +7,7 @@ sortIndexEntryPairList(
   bool                                              default_value)
 {
   std::vector<bool> sorted_vec;
-  unsigned int      entry_index;
+  unsigned int      entry_index = 0;
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
       bool entry_found = false;
@@ -40,7 +40,7 @@ sortIndexEntryPairList(
   const std::string                                       &default_value)
 {
   std::vector<std::string> sorted_vec;
-  unsigned int             entry_index;
+  unsigned int             entry_index = 0;
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
       bool entry_found = false;
@@ -73,7 +73,7 @@ sortIndexEntryPairList(
   fieldType                                              default_value)
 {
   std::vector<fieldType> sorted_vec;
-  unsigned int           entry_index;
+  unsigned int           entry_index = 0;
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
       bool entry_found = false;
@@ -106,7 +106,7 @@ sortIndexEntryPairList(
   PDEType                                              default_value)
 {
   std::vector<PDEType> sorted_vec;
-  unsigned int         entry_index;
+  unsigned int         entry_index = 0;
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
       bool entry_found = false;

@@ -162,9 +162,10 @@ inputFileReader::get_subsection_entry_list(const std::string &parameters_file_na
   input_file.open(parameters_file_name);
 
   std::string               line, entry;
-  bool                      in_subsection = false;
-  bool                      found_entry, desired_entry_found;
-  unsigned int              subsection_index;
+  bool                      in_subsection       = false;
+  bool                      found_entry         = false;
+  bool                      desired_entry_found = false;
+  unsigned int              subsection_index    = 0;
   std::vector<std::string>  entry_list;
   std::vector<unsigned int> index_list;
 
@@ -235,7 +236,7 @@ inputFileReader::get_number_of_entries(const std::string &parameters_file_name,
   input_file.open(parameters_file_name);
 
   std::string line, entry;
-  bool        found_entry;
+  bool        found_entry = false;
 
   unsigned int count = 0;
 
@@ -262,7 +263,7 @@ inputFileReader::get_entry_name_ending_list(const std::string &parameters_file_n
   input_file.open(parameters_file_name);
 
   std::string line, entry;
-  bool        found_entry;
+  bool        found_entry = false;
 
   std::vector<std::string> entry_name_end_list;
 

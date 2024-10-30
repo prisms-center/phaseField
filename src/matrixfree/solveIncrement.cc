@@ -152,7 +152,7 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                           if (userInputs.nonlinear_solver_parameters.getToleranceType(
                                 fieldIndex) == ABSOLUTE_SOLUTION_CHANGE)
                             {
-                              double diff;
+                              double diff = 0.0;
 
                               if (fields[fieldIndex].type == SCALAR)
                                 {
@@ -235,13 +235,13 @@ MatrixFreePDE<dim, degree>::applyBCs(unsigned int fieldIndex)
       // Apply non-uniform Dirlichlet_BCs to the current field
       if (fields[fieldIndex].hasnonuniformDirichletBCs)
         {
-          DoFHandler<dim> *dof_handler;
-          dof_handler = dofHandlersSet_nonconst.at(currentFieldIndex);
-          IndexSet *locally_relevant_dofs;
+          DoFHandler<dim> *dof_handler    = nullptr;
+          dof_handler                     = dofHandlersSet_nonconst.at(currentFieldIndex);
+          IndexSet *locally_relevant_dofs = nullptr;
           locally_relevant_dofs = locally_relevant_dofsSet_nonconst.at(currentFieldIndex);
           locally_relevant_dofs->clear();
           DoFTools::extract_locally_relevant_dofs(*dof_handler, *locally_relevant_dofs);
-          AffineConstraints<double> *constraintsDirichlet;
+          AffineConstraints<double> *constraintsDirichlet = nullptr;
           constraintsDirichlet = constraintsDirichletSet_nonconst.at(currentFieldIndex);
           constraintsDirichlet->clear();
           constraintsDirichlet->reinit(*locally_relevant_dofs);
@@ -313,7 +313,7 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
   constraintsDirichletSet[fieldIndex]->set_zero(*residualSet[fieldIndex]);
 
   // Grab solver controls
-  double tol_value;
+  double tol_value = 1.0;
   if (userInputs.linear_solver_parameters.getToleranceType(fieldIndex) ==
       ABSOLUTE_RESIDUAL)
     {
@@ -365,7 +365,7 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
     {
       // Now that we have the calculated change in the solution,
       // we need to select a damping coefficient
-      double damping_coefficient;
+      double damping_coefficient = 1.0;
 
       if (userInputs.nonlinear_solver_parameters.getBacktrackDampingFlag(fieldIndex))
         {
@@ -442,7 +442,7 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
 
       if (currentIncrement % userInputs.skip_print_steps == 0)
         {
-          double dU_norm;
+          double dU_norm = 0.0;
           if (fields[fieldIndex].type == SCALAR)
             {
               dU_norm = dU_scalar.l2_norm();
@@ -471,7 +471,7 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
       if (userInputs.nonlinear_solver_parameters.getToleranceType(fieldIndex) ==
           ABSOLUTE_SOLUTION_CHANGE)
         {
-          double diff;
+          double diff = 0.0;
 
           if (fields[fieldIndex].type == SCALAR)
             {
@@ -520,7 +520,7 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
 
           if (currentIncrement % userInputs.skip_print_steps == 0)
             {
-              double dU_norm;
+              double dU_norm = 0.0;
               if (fields[fieldIndex].type == SCALAR)
                 {
                   dU_norm = dU_scalar.l2_norm();

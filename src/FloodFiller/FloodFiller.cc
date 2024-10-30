@@ -127,7 +127,6 @@ FloodFiller<dim, degree>::recursiveFloodFill(T                           cell,
                   fe_values.reinit(cell);
                   fe_values.get_function_values(*solution_field, var_values);
 
-                  double                ele_val;
                   std::map<double, int> quadratureValues;
                   int                   maxNumberSeen         = 0;
                   double                mostCommonQPointValue = -1;
@@ -145,7 +144,7 @@ FloodFiller<dim, degree>::recursiveFloodFill(T                           cell,
                           mostCommonQPointValue = var_values[q_point];
                         }
                     }
-                  ele_val = mostCommonQPointValue;
+                  double ele_val = mostCommonQPointValue;
 
                   if (ele_val > threshold_lower && ele_val < threshold_upper)
                     {

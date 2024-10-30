@@ -305,7 +305,7 @@ parallelNucleationList<dim>::broadcastUpdate(int broadcastProc, int thisProc)
     {
       // Creating vectors of each quantity in nuclei. Each numbered acording to
       // the tags used for MPI_Send/MPI_Recv
-      unsigned int initial_vec_size;
+      unsigned int initial_vec_size = 0;
       if (thisProc == broadcastProc)
         {
           initial_vec_size = 0;

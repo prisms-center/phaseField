@@ -54,7 +54,7 @@ userInputParameters<dim>::load_user_constants(inputFileReader          &input_fi
             }
           else if (boost::iequals(model_constants_type_strings.at(0), "bool"))
             {
-              bool temp;
+              bool temp = false;
               if (boost::iequals(model_constants_strings.at(0), "true"))
                 {
                   temp = true;
@@ -139,7 +139,7 @@ userInputParameters<dim>::load_user_constants(inputFileReader          &input_fi
               // Rank 2 tensor
               else if (open_parentheses < 5)
                 {
-                  unsigned int row_length;
+                  unsigned int row_length = 0;
                   if (num_elements == 4)
                     {
                       row_length = 2;
@@ -227,7 +227,7 @@ userInputParameters<dim>::load_user_constants(inputFileReader          &input_fi
                 }
 
               std::string elastic_const_symmetry = model_constants_type_strings.at(0);
-              dealii::Tensor<2, 2 *dim - 1 + dim / 3> temp =
+              dealii::Tensor<2, 2 * dim - 1 + dim / 3> temp =
                 get_Cij_tensor(temp_elastic_constants, elastic_const_symmetry);
               model_constants.push_back(temp);
             }

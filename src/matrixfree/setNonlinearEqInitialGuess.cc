@@ -33,7 +33,7 @@ MatrixFreePDE<dim, degree>::setNonlinearEqInitialGuess()
             }
 
           // solver controls
-          double tol_value;
+          double tol_value = 1.0;
           if (userInputs.linear_solver_parameters.getToleranceType(fieldIndex) ==
               ABSOLUTE_RESIDUAL)
             {
@@ -93,7 +93,7 @@ MatrixFreePDE<dim, degree>::setNonlinearEqInitialGuess()
 
           if (currentIncrement % userInputs.skip_print_steps == 0)
             {
-              double dU_norm;
+              double dU_norm = 0.0;
               if (fields[fieldIndex].type == SCALAR)
                 {
                   dU_norm = dU_scalar.l2_norm();

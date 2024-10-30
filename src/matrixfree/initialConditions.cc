@@ -25,15 +25,13 @@ public:
   [[nodiscard]] double
   value(const Point<dim> &p, const unsigned int component = 0) const override
   {
-    double scalar_IC;
-
     double coord[dim];
     for (unsigned int i = 0; i < dim; i++)
       {
         coord[i] = p(i);
       }
 
-    scalar_IC = inputField(coord);
+    double scalar_IC = inputField(coord);
 
     return scalar_IC;
   }
