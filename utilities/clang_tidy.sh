@@ -32,7 +32,7 @@ CC=clang CXX=clang++ cmake "${arguments[@]}" "$dir" || (echo "cmake failed!"; fa
 cmake --build . || (echo "make failed!"; false) || exit 3
 
 # Run clang-tidy
-run-clang-tidy -p . -quiet -header-filter "$dir/include/(?!IntegrationTools).*" "$dir/src/*" 2>error.txt >output.txt
+run-clang-tidy -p . -quiet -header-filter "$dir/include/(?!IntegrationTools).*" 2>error.txt >output.txt
 
 # Remove duplicates & log them
 grep -E '(warning|error): ' output.txt | sort | uniq > clang-tidy.log
