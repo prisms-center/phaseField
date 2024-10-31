@@ -9,12 +9,9 @@ Checks: >
   cppcoreguidelines-*,
   -cppcoreguidelines-avoid-const-or-ref-data-members,
   -cppcoreguidelines-non-private-member-variables-in-classes,
-  -cppcoreguidelines-avoid-magic-numbers,
   hicpp-*,
   misc-*,
   -misc-non-private-member-variables-in-classes,
-  -misc-include-cleaner,
-  -misc-const-correctness,
   modernize-*,
   -modernize-use-trailing-return-type,
   mpi-*,
@@ -23,6 +20,5 @@ Checks: >
   -readability-else-after-return,
   -readability-static-accessed-through-instance,
   -readability-avoid-const-params-in-decls,
-  -readability-magic-numbers
 
 WarningsAsErrors: '*'
