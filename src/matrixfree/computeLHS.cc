@@ -41,7 +41,7 @@ MatrixFreePDE<dim, degree>::vmult(vectorType &dst, const vectorType &src) const
     {
       if (dst.in_local_range(it.first))
         {
-          dst(it.first) = src(it.first);
+          dst(it.first) = src(it.first); //*jacobianDiagonal(it->first);
         }
     }
 

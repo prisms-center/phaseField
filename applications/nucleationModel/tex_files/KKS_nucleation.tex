@@ -220,7 +220,7 @@ f_{chem}(c, \eta) = f_{\alpha}(c_\alpha) \left( 1- H(\eta)\right) + f_{\beta}(c_
 
 The concentration in each phase is determined by the following system of equations:
 \begin{gather}
-c =  c_{\alpha} \left( 1- H(\eta)\right) + c_{\beta} H(\eta \\
+c =  c_{\alpha} \left( 1- H(\eta)\right) + c_{\beta} H(\eta) \\
 \frac{\partial f_{\alpha}(c_{\alpha})}{\partial c_{\alpha}} = \frac{\partial f_{\beta}(c_{\beta})}{\partial c_{\beta}}
 \end{gather}
 
@@ -253,7 +253,7 @@ In addition, to drive the kinetics, we need:
 We obtain chemical potentials for the concentration and the structural order parameter by taking variational derivatives of $\Pi$:
 \begin{align}
   \mu_{c}  &= f_{\alpha,c} \left( 1- H(\eta)\right) +f_{\beta,c} H(\eta) \\
-  \mu_{\eta}  &= \left[ f_{\beta}-f_{\alpha} -(c_{\beta}-c_{\alpha}) f_{\beta,c_{\beta}} \right] H(\eta)_{,\eta} + W f_{Landau,\eta}- \kappa\eta
+  \mu_{\eta}  &= \left[ f_{\beta}-f_{\alpha} -(c_{\beta}-c_{\alpha}) f_{\beta,c_{\beta}} \right] H(\eta)_{,\eta} + W f_{Landau,\eta}- \kappa\nabla^2\eta
 \end{align}
 
 \subsection{Kinetics}
@@ -297,7 +297,7 @@ Expanding $\mu_{\eta}$ in equation \ref{AC_weak} and applying the divergence the
 \begin{equation}
 \begin{split}
 \int_\Omega w \eta^{n+1} dV = &\int_\Omega w \Bigg\{\underbrace{\eta^{n}-\Delta t L \bigg[(f_{\beta}-f_{\alpha})H(\eta^n)_{,\eta} -(c_{\beta}-c_{\alpha}) f_{\beta,c_{\beta}}H(\eta^n)_{,\eta} + W f_{Landau,\eta}}_{r_{\eta}}\\ 
-&+ \nabla w \cdot (\underbrace{-\Delta t  L \kappa \eta^n}_{r_{\eta x}} ) dV 
+&+ \nabla w \cdot (\underbrace{-\Delta t  L \kappa \nabla \eta^n}_{r_{\eta x}} ) dV 
 \end{split}
 \end{equation}
 
