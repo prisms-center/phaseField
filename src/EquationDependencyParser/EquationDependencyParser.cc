@@ -22,7 +22,7 @@ EquationDependencyParser::parse(std::vector<std::string> &var_name,
                                 std::vector<bool>       &var_nonlinear)
 {
   // Determine the number of variables
-  size_t n_variables = var_name.size();
+  const size_t n_variables = var_name.size();
 
   // Resize the dependency evaluation flag vectors
   eval_flags_explicit_RHS.resize(n_variables, dealii::EvaluationFlags::nothing);
@@ -47,7 +47,7 @@ EquationDependencyParser::parse(std::vector<std::string> &var_name,
       // Now check for each variable_eq_type
       if (var_eq_type[i] == EXPLICIT_TIME_DEPENDENT)
         {
-          bool single_var_nonlinear;
+          bool single_var_nonlinear = false;
 
           parseDependencyListRHS(var_name,
                                  var_eq_type,
@@ -62,7 +62,7 @@ EquationDependencyParser::parse(std::vector<std::string> &var_name,
         }
       else if (var_eq_type[i] == AUXILIARY)
         {
-          bool single_var_nonlinear;
+          bool single_var_nonlinear = false;
 
           parseDependencyListRHS(var_name,
                                  var_eq_type,
@@ -78,7 +78,8 @@ EquationDependencyParser::parse(std::vector<std::string> &var_name,
       else if (var_eq_type[i] == IMPLICIT_TIME_DEPENDENT ||
                var_eq_type[i] == TIME_INDEPENDENT)
         {
-          bool single_var_nonlinear_RHS, single_var_nonlinear_LHS;
+          bool single_var_nonlinear_RHS = false;
+          bool single_var_nonlinear_LHS = false;
 
           parseDependencyListRHS(var_name,
                                  var_eq_type,
@@ -116,18 +117,18 @@ EquationDependencyParser::parseDependencyListRHS(
   bool                                                  &is_nonlinear)
 {
   // Split the dependency strings into lists of entries
-  std::vector<std::string> split_value_dependency_list =
+  const std::vector<std::string> split_value_dependency_list =
     dealii::Utilities::split_string_list(value_dependencies);
   std::vector<std::string> split_gradient_dependency_list =
     dealii::Utilities::split_string_list(gradient_dependencies);
 
   // Check if either is empty and set value and gradient flags for the
   // residual appropriately
-  if (split_value_dependency_list.size() > 0)
+  if (!split_value_dependency_list.empty())
     {
       residual_flags[variable_index] |= dealii::EvaluationFlags::values;
     }
-  if (split_gradient_dependency_list.size() > 0)
+  if (!split_gradient_dependency_list.empty())
     {
       residual_flags[variable_index] |= dealii::EvaluationFlags::gradients;
     }
@@ -166,15 +167,15 @@ EquationDependencyParser::parseDependencyListRHS(
                                   variable.end());
 
           // Is the variable we are finding the dependencies for explicit
-          bool variable_is_explicit =
+          const bool variable_is_explicit =
             variable_eq_type[variable_index] == EXPLICIT_TIME_DEPENDENT;
 
           // Is the dependency variable explicit
-          bool dependency_variable_is_explicit =
+          const bool dependency_variable_is_explicit =
             variable_eq_type[dependency_variable_index] == EXPLICIT_TIME_DEPENDENT;
 
           // Is the dependency the variable
-          bool same_variable = variable_index == dependency_variable_index;
+          const bool same_variable = variable_index == dependency_variable_index;
 
           // Case if the dependency is x
           if (dependency == variable)
@@ -225,18 +226,18 @@ EquationDependencyParser::parseDependencyListLHS(
   bool                                                  &is_nonlinear)
 {
   // Split the dependency strings into lists of entries
-  std::vector<std::string> split_value_dependency_list =
+  const std::vector<std::string> split_value_dependency_list =
     dealii::Utilities::split_string_list(value_dependencies);
   std::vector<std::string> split_gradient_dependency_list =
     dealii::Utilities::split_string_list(gradient_dependencies);
 
   // Check if either is empty and set value and gradient flags for the
   // residual appropriately
-  if (split_value_dependency_list.size() > 0)
+  if (!split_value_dependency_list.empty())
     {
       residual_flags[variable_index] |= dealii::EvaluationFlags::values;
     }
-  if (split_gradient_dependency_list.size() > 0)
+  if (!split_gradient_dependency_list.empty())
     {
       residual_flags[variable_index] |= dealii::EvaluationFlags::gradients;
     }
@@ -291,7 +292,7 @@ EquationDependencyParser::parseDependencyListLHS(
                                          variable.end());
 
           // Is the variable we are finding the dependencies for explicit
-          bool dependency_variable_is_explicit =
+          const bool dependency_variable_is_explicit =
             variable_eq_type[dependency_variable_index] == EXPLICIT_TIME_DEPENDENT;
 
           // Case if the dependency is x
@@ -380,8 +381,8 @@ EquationDependencyParser::pp_parse(std::vector<std::string> &var_name,
                                    std::vector<std::string>  sorted_dependencies_gradient)
 {
   // Determine the number of variables
-  size_t n_variables             = var_name.size();
-  size_t n_postprocess_variables = pp_var_name.size();
+  const size_t n_variables             = var_name.size();
+  const size_t n_postprocess_variables = pp_var_name.size();
 
   // Resize the dependency evaluation flag vectors
   eval_flags_postprocess.resize(n_variables, dealii::EvaluationFlags::nothing);
@@ -416,18 +417,18 @@ EquationDependencyParser::parseDependencyListPP(
   std::vector<dealii::EvaluationFlags::EvaluationFlags> &residual_flags)
 {
   // Split the dependency strings into lists of entries
-  std::vector<std::string> split_value_dependency_list =
+  const std::vector<std::string> split_value_dependency_list =
     dealii::Utilities::split_string_list(value_dependencies);
   std::vector<std::string> split_gradient_dependency_list =
     dealii::Utilities::split_string_list(gradient_dependencies);
 
   // Check if either is empty and set value and gradient flags for the
   // residual appropriately
-  if (split_value_dependency_list.size() > 0)
+  if (!split_value_dependency_list.empty())
     {
       residual_flags[variable_index] |= dealii::EvaluationFlags::values;
     }
-  if (split_gradient_dependency_list.size() > 0)
+  if (!split_gradient_dependency_list.empty())
     {
       residual_flags[variable_index] |= dealii::EvaluationFlags::gradients;
     }

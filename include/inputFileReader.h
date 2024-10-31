@@ -20,24 +20,24 @@ public:
 
   // Method to get a list of entry values from multiple subsections in an input
   // file
-  [[nodiscard]] std::vector<std::string>
+  [[nodiscard]] static std::vector<std::string>
   get_subsection_entry_list(const std::string &parameters_file_name,
                             const std::string &subsec_name,
                             const std::string &entry_name,
-                            const std::string &default_entry) const;
+                            const std::string &default_entry);
 
   // Method to count the number of related entries in an input file
-  [[nodiscard]] unsigned int
+  [[nodiscard]] static unsigned int
   get_number_of_entries(const std::string &parameters_file_name,
                         const std::string &keyword,
-                        const std::string &entry_name) const;
+                        const std::string &entry_name);
 
   // Get the trailing part of the entry name after a specified string (used to
   // extract the model constant names)
-  [[nodiscard]] std::vector<std::string>
+  [[nodiscard]] static std::vector<std::string>
   get_entry_name_ending_list(const std::string &parameters_file_name,
                              const std::string &keyword,
-                             const std::string &entry_name_begining) const;
+                             const std::string &entry_name_begining);
 
   // Method to declare the parameters to be read from an input file
   void
@@ -48,12 +48,12 @@ public:
                      const std::vector<bool>      &var_nucleates) const;
 
   // Method to check if a line has the desired contents and if so, extract it
-  bool
+  static bool
   parse_line(std::string        line,
              const std::string &keyword,
              const std::string &entry_name,
              std::string       &out_string,
-             bool               expect_equals_sign) const;
+             bool               expect_equals_sign);
 
   // Variables
   dealii::ParameterHandler parameter_handler;

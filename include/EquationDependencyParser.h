@@ -54,14 +54,14 @@ protected:
   /*
    * Method to strip excess whitespace for the dependency lists
    */
-  void
+  static void
   strip_dependency_whitespace(std::string &dependency_list);
 
   /**
    * Method to parse the RHS dependency strings and populate the vectors for
    * whether values, gradients, or hessians are needed.
    */
-  void
+  static void
   parseDependencyListRHS(
     std::vector<std::string>                              &variable_name_list,
     std::vector<PDEType>                                   variable_eq_type,
@@ -76,7 +76,7 @@ protected:
    * Method to parse the LHS dependency strings and populate the vectors for
    * whether values, gradients, or hessians are needed.
    */
-  void
+  static void
   parseDependencyListLHS(
     std::vector<std::string>                              &variable_name_list,
     std::vector<PDEType>                                   variable_eq_type,
@@ -92,7 +92,7 @@ protected:
    * Method to parse the postprocessing dependency strings and populate the
    * vectors for whether values, gradients, or hessians are needed.
    */
-  void
+  static void
   parseDependencyListPP(
     std::vector<std::string>                              &variable_name_list,
     unsigned int                                           variable_index,

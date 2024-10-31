@@ -12,20 +12,18 @@
 // Constructor
 inputFileReader::inputFileReader(const std::string       &input_file_name,
                                  variableAttributeLoader &variable_attributes)
+  : var_types(variable_attributes.var_type)
+  , var_eq_types(variable_attributes.var_eq_type)
+  , num_pp_vars(variable_attributes.var_name_list_PP.size())
+  , var_names(variable_attributes.var_name)
+  , var_nonlinear(variable_attributes.var_nonlinear)
 {
   // Extract an ordered vector of the variable types from variable_attributes
-  unsigned int number_of_variables = variable_attributes.var_name_list.size();
-  var_types                        = variable_attributes.var_type;
-  var_eq_types                     = variable_attributes.var_eq_type;
-  var_names                        = variable_attributes.var_name;
-
-  var_nonlinear = variable_attributes.var_nonlinear;
+  const unsigned int number_of_variables = variable_attributes.var_name_list.size();
 
   var_nucleates = sortIndexEntryPairList(variable_attributes.nucleating_variable_list,
                                          number_of_variables,
                                          false);
-
-  num_pp_vars = variable_attributes.var_name_list_PP.size();
 
   num_constants = get_number_of_entries(input_file_name, "set", "Model constant");
 
@@ -58,14 +56,14 @@ inputFileReader::parse_line(std::string        line,
                             const std::string &keyword,
                             const std::string &entry_name,
                             std::string       &out_string,
-                            const bool         expect_equals_sign) const
+                            const bool         expect_equals_sign)
 {
   // Strip spaces at the front and back
-  while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
+  while ((!line.empty()) && (line[0] == ' ' || line[0] == '\t'))
     {
       line.erase(0, 1);
     }
-  while ((line.size() > 0) &&
+  while ((!line.empty()) &&
          (line[line.size() - 1] == ' ' || line[line.size() - 1] == '\t'))
     {
       line.erase(line.size() - 1, std::string::npos);
@@ -86,9 +84,9 @@ inputFileReader::parse_line(std::string        line,
           return false;
         }
     }
-  if (entry_name.size() > 0)
+  if (!entry_name.empty())
     {
-      if (!(line[keyword.size()] == ' ' || line[keyword.size()] == '\t'))
+      if (line[keyword.size()] != ' ' && line[keyword.size()] != '\t')
         {
           return false;
         }
@@ -96,7 +94,7 @@ inputFileReader::parse_line(std::string        line,
 
   // delete the "keyword" and then delete more spaces if present
   line.erase(0, keyword.size());
-  while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
+  while ((!line.empty()) && (line[0] == ' ' || line[0] == '\t'))
     {
       line.erase(0, 1);
     }
@@ -107,7 +105,7 @@ inputFileReader::parse_line(std::string        line,
     }
 
   line.erase(0, entry_name.size());
-  while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
+  while ((!line.empty()) && (line[0] == ' ' || line[0] == '\t'))
     {
       line.erase(0, 1);
     }
@@ -115,14 +113,14 @@ inputFileReader::parse_line(std::string        line,
   // we'd expect an equals size here if expect_equals_sign is true
   if (expect_equals_sign)
     {
-      if ((line.size() < 1) || (line[0] != '='))
+      if ((line.empty()) || (line[0] != '='))
         {
           return false;
         }
     }
 
   // remove comment
-  std::string::size_type pos = line.find('#');
+  const std::string::size_type pos = line.find('#');
   if (pos != std::string::npos)
     {
       line.erase(pos);
@@ -135,12 +133,12 @@ inputFileReader::parse_line(std::string        line,
       line.erase(0, 1);
     }
 
-  while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
+  while ((!line.empty()) && (line[0] == ' ' || line[0] == '\t'))
     {
       line.erase(0, 1);
     }
 
-  while ((line.size() > 0) &&
+  while ((!line.empty()) &&
          (line[line.size() - 1] == ' ' || line[line.size() - 1] == '\t'))
     {
       line.erase(line.size() - 1, std::string::npos);
@@ -156,15 +154,17 @@ std::vector<std::string>
 inputFileReader::get_subsection_entry_list(const std::string &parameters_file_name,
                                            const std::string &subsec_name,
                                            const std::string &entry_name,
-                                           const std::string &default_entry) const
+                                           const std::string &default_entry)
 {
   std::ifstream input_file;
   input_file.open(parameters_file_name);
 
-  std::string               line, entry;
-  bool                      in_subsection = false;
-  bool                      found_entry, desired_entry_found;
-  unsigned int              subsection_index;
+  std::string               line;
+  std::string               entry;
+  bool                      in_subsection       = false;
+  bool                      found_entry         = false;
+  bool                      desired_entry_found = false;
+  unsigned int              subsection_index    = 0;
   std::vector<std::string>  entry_list;
   std::vector<unsigned int> index_list;
 
@@ -229,13 +229,14 @@ inputFileReader::get_subsection_entry_list(const std::string &parameters_file_na
 unsigned int
 inputFileReader::get_number_of_entries(const std::string &parameters_file_name,
                                        const std::string &keyword,
-                                       const std::string &entry_name) const
+                                       const std::string &entry_name)
 {
   std::ifstream input_file;
   input_file.open(parameters_file_name);
 
-  std::string line, entry;
-  bool        found_entry;
+  std::string line;
+  std::string entry;
+  bool        found_entry = false;
 
   unsigned int count = 0;
 
@@ -256,13 +257,14 @@ inputFileReader::get_number_of_entries(const std::string &parameters_file_name,
 std::vector<std::string>
 inputFileReader::get_entry_name_ending_list(const std::string &parameters_file_name,
                                             const std::string &keyword,
-                                            const std::string &entry_name_begining) const
+                                            const std::string &entry_name_begining)
 {
   std::ifstream input_file;
   input_file.open(parameters_file_name);
 
-  std::string line, entry;
-  bool        found_entry;
+  std::string line;
+  std::string entry;
+  bool        found_entry = false;
 
   std::vector<std::string> entry_name_end_list;
 
@@ -276,13 +278,13 @@ inputFileReader::get_entry_name_ending_list(const std::string &parameters_file_n
           // sign
 
           // Strip whitespace at the beginning
-          while ((entry.size() > 0) && (entry[0] == ' ' || entry[0] == '\t'))
+          while ((!entry.empty()) && (entry[0] == ' ' || entry[0] == '\t'))
             {
               entry.erase(0, 1);
             }
 
           // Strip everything up to the equals sign
-          while ((entry.size() > 0) && (entry[entry.size() - 1] != '='))
+          while ((!entry.empty()) && (entry[entry.size() - 1] != '='))
             {
               entry.erase(entry.size() - 1, std::string::npos);
             }
@@ -291,7 +293,7 @@ inputFileReader::get_entry_name_ending_list(const std::string &parameters_file_n
           entry.erase(entry.size() - 1, std::string::npos);
 
           // Strip whitespace between the entry name and the equals sign
-          while ((entry.size() > 0) &&
+          while ((!entry.empty()) &&
                  (entry[entry.size() - 1] == ' ' || entry[entry.size() - 1] == '\t'))
             {
               entry.erase(entry.size() - 1, std::string::npos);

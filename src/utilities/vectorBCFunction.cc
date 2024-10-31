@@ -35,7 +35,9 @@ vectorBCFunction<dim>::vector_value_list(
 {
   const unsigned int n_points = points.size();
   for (unsigned int p = 0; p < n_points; ++p)
-    vectorBCFunction<dim>::vector_value(points[p], value_list[p]);
+    {
+      vectorBCFunction<dim>::vector_value(points[p], value_list[p]);
+    }
 }
 
 template class vectorBCFunction<1>;

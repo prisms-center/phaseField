@@ -23,7 +23,7 @@ userInputParameters<dim>::loadVariableAttributes(
   // Load some nucleation parameters
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
-      if (variable_attributes.nucleating_variable.at(i) == true)
+      if (variable_attributes.nucleating_variable.at(i))
         {
           nucleating_variable_indices.push_back(i);
         }
@@ -34,8 +34,8 @@ userInputParameters<dim>::loadVariableAttributes(
         }
     }
 
-  nucleating_variable_indices.size() > 0 ? nucleation_occurs = true
-                                         : nucleation_occurs = false;
+  !nucleating_variable_indices.empty() ? nucleation_occurs = true
+                                       : nucleation_occurs = false;
 
   // Load these attributes into the varInfoList objects
 
@@ -43,7 +43,8 @@ userInputParameters<dim>::loadVariableAttributes(
   num_var_explicit_RHS = 0;
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
-      if (!(variable_attributes.equation_dependency_parser.eval_flags_explicit_RHS[i] &
+      if (!static_cast<bool>(
+            variable_attributes.equation_dependency_parser.eval_flags_explicit_RHS[i] &
             dealii::EvaluationFlags::nothing))
         {
           num_var_explicit_RHS++;
@@ -52,19 +53,13 @@ userInputParameters<dim>::loadVariableAttributes(
   varInfoListExplicitRHS.reserve(num_var_explicit_RHS);
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
-      variable_info varInfo;
-
-      varInfo.evaluation_flags =
-        variable_attributes.equation_dependency_parser.eval_flags_explicit_RHS[i];
-
-      varInfo.residual_flags = variable_attributes.equation_dependency_parser
-                                 .eval_flags_residual_explicit_RHS[i];
-
-      varInfo.global_var_index = i;
-
-      varInfo.var_needed = !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
-
-      varInfo.is_scalar = var_type[i] == SCALAR;
+      variable_info varInfo {
+        var_type[i] == SCALAR,
+        i,
+        variable_attributes.equation_dependency_parser.eval_flags_explicit_RHS[i],
+        variable_attributes.equation_dependency_parser
+          .eval_flags_residual_explicit_RHS[i],
+        !static_cast<bool>(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing)};
 
       varInfoListExplicitRHS.push_back(varInfo);
     }
@@ -73,7 +68,8 @@ userInputParameters<dim>::loadVariableAttributes(
   num_var_nonexplicit_RHS = 0;
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
-      if (!(variable_attributes.equation_dependency_parser.eval_flags_nonexplicit_RHS[i] &
+      if (!static_cast<bool>(
+            variable_attributes.equation_dependency_parser.eval_flags_nonexplicit_RHS[i] &
             dealii::EvaluationFlags::nothing))
         {
           num_var_nonexplicit_RHS++;
@@ -82,19 +78,13 @@ userInputParameters<dim>::loadVariableAttributes(
   varInfoListNonexplicitRHS.reserve(num_var_nonexplicit_RHS);
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
-      variable_info varInfo;
-
-      varInfo.evaluation_flags =
-        variable_attributes.equation_dependency_parser.eval_flags_nonexplicit_RHS[i];
-
-      varInfo.residual_flags = variable_attributes.equation_dependency_parser
-                                 .eval_flags_residual_nonexplicit_RHS[i];
-
-      varInfo.global_var_index = i;
-
-      varInfo.var_needed = !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
-
-      varInfo.is_scalar = var_type[i] == SCALAR;
+      variable_info varInfo {
+        var_type[i] == SCALAR,
+        i,
+        variable_attributes.equation_dependency_parser.eval_flags_nonexplicit_RHS[i],
+        variable_attributes.equation_dependency_parser
+          .eval_flags_residual_nonexplicit_RHS[i],
+        !static_cast<bool>(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing)};
 
       varInfoListNonexplicitRHS.push_back(varInfo);
     }
@@ -103,7 +93,8 @@ userInputParameters<dim>::loadVariableAttributes(
   num_var_LHS = 0;
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
-      if (!(variable_attributes.equation_dependency_parser.eval_flags_nonexplicit_LHS[i] &
+      if (!static_cast<bool>(
+            variable_attributes.equation_dependency_parser.eval_flags_nonexplicit_LHS[i] &
             dealii::EvaluationFlags::nothing))
         {
           num_var_LHS++;
@@ -113,19 +104,13 @@ userInputParameters<dim>::loadVariableAttributes(
   varInfoListLHS.reserve(num_var_LHS);
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
-      variable_info varInfo;
-
-      varInfo.evaluation_flags =
-        variable_attributes.equation_dependency_parser.eval_flags_nonexplicit_LHS[i];
-
-      varInfo.residual_flags = variable_attributes.equation_dependency_parser
-                                 .eval_flags_residual_nonexplicit_LHS[i];
-
-      varInfo.global_var_index = i;
-
-      varInfo.var_needed = !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
-
-      varInfo.is_scalar = var_type[i] == SCALAR;
+      variable_info varInfo {
+        var_type[i] == SCALAR,
+        i,
+        variable_attributes.equation_dependency_parser.eval_flags_nonexplicit_LHS[i],
+        variable_attributes.equation_dependency_parser
+          .eval_flags_residual_nonexplicit_LHS[i],
+        !static_cast<bool>(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing)};
 
       varInfoListLHS.push_back(varInfo);
     }
@@ -133,20 +118,14 @@ userInputParameters<dim>::loadVariableAttributes(
   varChangeInfoListLHS.reserve(num_var_LHS);
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
-      variable_info varInfo;
-
-      varInfo.evaluation_flags = variable_attributes.equation_dependency_parser
-                                   .eval_flags_change_nonexplicit_LHS[i];
-
-      // FOR NOW, TAKING THESE FROM THE VARIABLE ITSELF!!
-      varInfo.residual_flags = variable_attributes.equation_dependency_parser
-                                 .eval_flags_residual_nonexplicit_LHS[i];
-
-      varInfo.global_var_index = i;
-
-      varInfo.var_needed = !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
-
-      varInfo.is_scalar = var_type[i] == SCALAR;
+      variable_info varInfo {var_type[i] == SCALAR,
+                             i,
+                             variable_attributes.equation_dependency_parser
+                               .eval_flags_change_nonexplicit_LHS[i],
+                             variable_attributes.equation_dependency_parser
+                               .eval_flags_residual_nonexplicit_LHS[i],
+                             !static_cast<bool>(varInfo.evaluation_flags &
+                                                dealii::EvaluationFlags::nothing)};
 
       varChangeInfoListLHS.push_back(varInfo);
     }
@@ -156,16 +135,12 @@ userInputParameters<dim>::loadVariableAttributes(
   pp_baseVarInfoList.reserve(number_of_variables);
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
-      variable_info varInfo;
-
-      varInfo.evaluation_flags =
-        variable_attributes.equation_dependency_parser.eval_flags_postprocess[i];
-
-      varInfo.global_var_index = i;
-
-      varInfo.var_needed = !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
-
-      varInfo.is_scalar = var_type[i] == SCALAR;
+      variable_info varInfo {
+        var_type[i] == SCALAR,
+        i,
+        variable_attributes.equation_dependency_parser.eval_flags_postprocess[i],
+        dealii::EvaluationFlags::nothing,
+        !static_cast<bool>(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing)};
 
       pp_baseVarInfoList.push_back(varInfo);
     }
@@ -189,15 +164,12 @@ userInputParameters<dim>::loadVariableAttributes(
   pp_varInfoList.reserve(pp_number_of_variables);
   for (unsigned int i = 0; i < pp_number_of_variables; i++)
     {
-      variable_info varInfo;
-      varInfo.var_needed = true;
-
-      varInfo.residual_flags =
-        variable_attributes.equation_dependency_parser.eval_flags_residual_postprocess[i];
-
-      varInfo.global_var_index = i;
-
-      varInfo.is_scalar = pp_var_type[i] == SCALAR;
+      variable_info varInfo {
+        pp_var_type[i] == SCALAR,
+        i,
+        dealii::EvaluationFlags::nothing,
+        variable_attributes.equation_dependency_parser.eval_flags_residual_postprocess[i],
+        true};
 
       pp_varInfoList.push_back(varInfo);
     }

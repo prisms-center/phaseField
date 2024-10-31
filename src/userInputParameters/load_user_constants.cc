@@ -11,7 +11,7 @@ void
 userInputParameters<dim>::load_user_constants(inputFileReader          &input_file_reader,
                                               dealii::ParameterHandler &parameter_handler)
 {
-  unsigned int number_of_constants = input_file_reader.num_constants;
+  const unsigned int number_of_constants = input_file_reader.num_constants;
 
   for (unsigned int i = 0; i < input_file_reader.model_constant_names.size(); i++)
     {
@@ -54,15 +54,7 @@ userInputParameters<dim>::load_user_constants(inputFileReader          &input_fi
             }
           else if (boost::iequals(model_constants_type_strings.at(0), "bool"))
             {
-              bool temp;
-              if (boost::iequals(model_constants_strings.at(0), "true"))
-                {
-                  temp = true;
-                }
-              else
-                {
-                  temp = false;
-                }
+              bool temp = boost::iequals(model_constants_strings.at(0), "true");
               model_constants.push_back(temp);
             }
           else
@@ -78,7 +70,7 @@ userInputParameters<dim>::load_user_constants(inputFileReader          &input_fi
         {
           if (boost::iequals(model_constants_type_strings.at(0), "tensor"))
             {
-              unsigned int num_elements = model_constants_strings.size() - 1;
+              const unsigned int num_elements = model_constants_strings.size() - 1;
 
               // Strip parentheses from the input, counting how many rows there
               // are
@@ -139,7 +131,7 @@ userInputParameters<dim>::load_user_constants(inputFileReader          &input_fi
               // Rank 2 tensor
               else if (open_parentheses < 5)
                 {
-                  unsigned int row_length;
+                  unsigned int row_length = 0;
                   if (num_elements == 4)
                     {
                       row_length = 2;
@@ -180,7 +172,7 @@ userInputParameters<dim>::load_user_constants(inputFileReader          &input_fi
           else if (boost::iequals(model_constants_type_strings.at(1), "elastic") &&
                    boost::iequals(model_constants_type_strings.at(2), "constants"))
             {
-              unsigned int num_elements = model_constants_strings.size() - 1;
+              const unsigned int num_elements = model_constants_strings.size() - 1;
 
               // Strip parentheses from the input, counting how many rows there
               // are
@@ -226,7 +218,8 @@ userInputParameters<dim>::load_user_constants(inputFileReader          &input_fi
                     dealii::Utilities::string_to_double(model_constants_strings.at(i)));
                 }
 
-              std::string elastic_const_symmetry = model_constants_type_strings.at(0);
+              const std::string elastic_const_symmetry =
+                model_constants_type_strings.at(0);
               dealii::Tensor<2, 2 *dim - 1 + dim / 3> temp =
                 get_Cij_tensor(temp_elastic_constants, elastic_const_symmetry);
               model_constants.push_back(temp);
@@ -283,7 +276,7 @@ userInputParameters<dim>::get_Cij_tensor(std::vector<double> elastic_constants,
     {
       std::vector<double> elastic_constants_temp = elastic_constants;
       elastic_constants.clear();
-      std::vector<unsigned int> indices_2D = {0, 1, 5, 6, 10, 14};
+      const std::vector<unsigned int> indices_2D = {0, 1, 5, 6, 10, 14};
       for (const auto &index : indices_2D)
         {
           elastic_constants.push_back(elastic_constants_temp.at(index));
@@ -363,12 +356,13 @@ userInputParameters<dim>::getCIJMatrix(const elasticityModel       model,
               case ISOTROPIC:
                 {
                   pcout << " ISOTROPIC \n";
-                  double E = constants[0], nu = constants[1];
-                  double mu     = E / (2 * (1 + nu)),
-                         lambda = nu * E / ((1 + nu) * (1 - 2 * nu));
-                  CIJ[0][0]     = lambda + 2 * mu;
-                  CIJ[1][1]     = lambda + 2 * mu;
-                  CIJ[2][2]     = mu;
+                  const double E      = constants[0];
+                  const double nu     = constants[1];
+                  const double mu     = E / (2 * (1 + nu));
+                  const double lambda = nu * E / ((1 + nu) * (1 - 2 * nu));
+                  CIJ[0][0]           = lambda + 2 * mu;
+                  CIJ[1][1]           = lambda + 2 * mu;
+                  CIJ[2][2]           = mu;
                   CIJ[0][1] = CIJ[1][0] = lambda;
                   break;
                 }
@@ -402,15 +396,16 @@ userInputParameters<dim>::getCIJMatrix(const elasticityModel       model,
               case ISOTROPIC:
                 {
                   pcout << " ISOTROPIC \n";
-                  double E = constants[0], nu = constants[1];
-                  double mu     = E / (2 * (1 + nu)),
-                         lambda = nu * E / ((1 + nu) * (1 - 2 * nu));
-                  CIJ[0][0]     = lambda + 2 * mu;
-                  CIJ[1][1]     = lambda + 2 * mu;
-                  CIJ[2][2]     = lambda + 2 * mu;
-                  CIJ[3][3]     = mu;
-                  CIJ[4][4]     = mu;
-                  CIJ[5][5]     = mu;
+                  const double E      = constants[0];
+                  const double nu     = constants[1];
+                  const double mu     = E / (2 * (1 + nu));
+                  const double lambda = nu * E / ((1 + nu) * (1 - 2 * nu));
+                  CIJ[0][0]           = lambda + 2 * mu;
+                  CIJ[1][1]           = lambda + 2 * mu;
+                  CIJ[2][2]           = lambda + 2 * mu;
+                  CIJ[3][3]           = mu;
+                  CIJ[4][4]           = mu;
+                  CIJ[5][5]           = mu;
                   CIJ[0][1] = CIJ[1][0] = lambda;
                   CIJ[0][2] = CIJ[2][0] = lambda;
                   CIJ[1][2] = CIJ[2][1] = lambda;

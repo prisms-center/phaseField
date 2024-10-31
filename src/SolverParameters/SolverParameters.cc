@@ -103,7 +103,7 @@ NonlinearSolverParameters::setMaxIterations(unsigned int _max_iterations)
 }
 
 double
-NonlinearSolverParameters::getMaxIterations()
+NonlinearSolverParameters::getMaxIterations() const
 {
   return max_iterations;
 }

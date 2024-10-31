@@ -16,16 +16,16 @@ variableAttributeLoader::variableAttributeLoader()
                                        number_of_variables,
                                        EXPLICIT_TIME_DEPENDENT);
 
-  std::vector<std::string> sorted_dependencies_value_RHS =
+  const std::vector<std::string> sorted_dependencies_value_RHS =
     sortIndexEntryPairList(var_eq_dependencies_value_RHS, number_of_variables, "");
 
-  std::vector<std::string> sorted_dependencies_gradient_RHS =
+  const std::vector<std::string> sorted_dependencies_gradient_RHS =
     sortIndexEntryPairList(var_eq_dependencies_gradient_RHS, number_of_variables, "");
 
-  std::vector<std::string> sorted_dependencies_value_LHS =
+  const std::vector<std::string> sorted_dependencies_value_LHS =
     sortIndexEntryPairList(var_eq_dependencies_value_LHS, number_of_variables, "");
 
-  std::vector<std::string> sorted_dependencies_gradient_LHS =
+  const std::vector<std::string> sorted_dependencies_gradient_LHS =
     sortIndexEntryPairList(var_eq_dependencies_gradient_LHS, number_of_variables, "");
 
   nucleating_variable =
@@ -49,10 +49,10 @@ variableAttributeLoader::variableAttributeLoader()
   pp_var_name = sortIndexEntryPairList(var_name_list_PP, pp_number_of_variables, "var");
   pp_var_type = sortIndexEntryPairList(var_type_list_PP, pp_number_of_variables, SCALAR);
 
-  std::vector<std::string> pp_sorted_dependencies_value =
+  const std::vector<std::string> pp_sorted_dependencies_value =
     sortIndexEntryPairList(var_eq_dependencies_value_PP, pp_number_of_variables, "");
 
-  std::vector<std::string> pp_sorted_dependencies_gradient =
+  const std::vector<std::string> pp_sorted_dependencies_gradient =
     sortIndexEntryPairList(var_eq_dependencies_gradient_PP, pp_number_of_variables, "");
 
   pp_calc_integral =

@@ -69,8 +69,8 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
 
       parameter_handler.enter_subsection(subsection_text);
       {
-        std::string crit_type_string = parameter_handler.get("Criterion type");
-        if (crit_type_string.size() > 0)
+        const std::string crit_type_string = parameter_handler.get("Criterion type");
+        if (!crit_type_string.empty())
           {
             RefinementCriterion new_criterion;
             new_criterion.variable_index = i;
@@ -140,9 +140,9 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
     }
 
   // Time stepping parameters
-  dtValue                  = parameter_handler.get_double("Time step");
-  int totalIncrements_temp = parameter_handler.get_integer("Number of time steps");
-  finalTime                = parameter_handler.get_double("Simulation end time");
+  dtValue                        = parameter_handler.get_double("Time step");
+  const int totalIncrements_temp = parameter_handler.get_integer("Number of time steps");
+  finalTime                      = parameter_handler.get_double("Simulation end time");
 
   // Linear solver parameters
   for (unsigned int i = 0; i < number_of_variables; i++)
@@ -157,7 +157,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
           {
             // Set the tolerance type
             SolverToleranceType temp_type;
-            std::string         type_string = parameter_handler.get("Tolerance type");
+            const std::string   type_string = parameter_handler.get("Tolerance type");
             if (boost::iequals(type_string, "ABSOLUTE_RESIDUAL"))
               {
                 temp_type = ABSOLUTE_RESIDUAL;
@@ -187,10 +187,10 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
               }
 
             // Set the tolerance value
-            double temp_value = parameter_handler.get_double("Tolerance value");
+            const double temp_value = parameter_handler.get_double("Tolerance value");
 
             // Set the maximum number of iterations
-            unsigned int temp_max_iterations =
+            const unsigned int temp_max_iterations =
               parameter_handler.get_integer("Maximum linear solver iterations");
 
             linear_solver_parameters.loadParameters(i,
@@ -219,7 +219,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
           {
             // Set the tolerance type
             SolverToleranceType temp_type;
-            std::string         type_string = parameter_handler.get("Tolerance type");
+            const std::string   type_string = parameter_handler.get("Tolerance type");
             if (boost::iequals(type_string, "ABSOLUTE_RESIDUAL"))
               {
                 temp_type = ABSOLUTE_RESIDUAL;
@@ -243,24 +243,24 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
               }
 
             // Set the tolerance value
-            double temp_value = parameter_handler.get_double("Tolerance value");
+            const double temp_value = parameter_handler.get_double("Tolerance value");
 
             // Set the backtrace damping flag
-            bool temp_backtrack_damping =
+            const bool temp_backtrack_damping =
               parameter_handler.get_bool("Use backtracking line search damping");
 
             // Set the backtracking step size modifier
-            double temp_step_modifier =
+            const double temp_step_modifier =
               parameter_handler.get_double("Backtracking step size modifier");
 
             // Set the constant that determines how much the residual must
             // decrease to be accepted as sufficient
-            double temp_residual_decrease_coeff =
+            const double temp_residual_decrease_coeff =
               parameter_handler.get_double("Backtracking residual decrease coefficient");
 
             // Set the default damping coefficient (used if backtracking isn't
             // used)
-            double temp_damping_coefficient =
+            const double temp_damping_coefficient =
               parameter_handler.get_double("Constant damping value");
 
             // Set whether to use the solution of Laplace's equation instead of
@@ -301,15 +301,15 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
     }
 
   // Set the max number of nonlinear iterations
-  if (var_nonlinear.size() == 0)
+  if (var_nonlinear.empty())
     {
       nonlinear_solver_parameters.setMaxIterations(0);
     }
 
   // Output parameters
-  std::string      output_condition = parameter_handler.get("Output condition");
-  unsigned int     num_outputs      = parameter_handler.get_integer("Number of outputs");
-  std::vector<int> user_given_time_step_list_temp =
+  const std::string      output_condition = parameter_handler.get("Output condition");
+  const unsigned int     num_outputs = parameter_handler.get_integer("Number of outputs");
+  const std::vector<int> user_given_time_step_list_temp =
     dealii::Utilities::string_to_int(dealii::Utilities::split_string_list(
       parameter_handler.get("List of time steps to output")));
   std::vector<unsigned int> user_given_time_step_list;
@@ -445,10 +445,11 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
 
   // Parameters for checkpoint/restart
   resume_from_checkpoint = parameter_handler.get_bool("Load from a checkpoint");
-  std::string  checkpoint_condition = parameter_handler.get("Checkpoint condition");
-  unsigned int num_checkpoints = parameter_handler.get_integer("Number of checkpoints");
+  const std::string  checkpoint_condition = parameter_handler.get("Checkpoint condition");
+  const unsigned int num_checkpoints =
+    parameter_handler.get_integer("Number of checkpoints");
 
-  std::vector<int> user_given_checkpoint_time_step_list_temp =
+  const std::vector<int> user_given_checkpoint_time_step_list_temp =
     dealii::Utilities::string_to_int(dealii::Utilities::split_string_list(
       parameter_handler.get("List of time steps to save checkpoints")));
   std::vector<unsigned int> user_given_checkpoint_time_step_list;
@@ -473,27 +474,27 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
 
           parameter_handler.enter_subsection(nucleation_text);
           {
-            unsigned int        var_index = i;
-            std::vector<double> semiaxes =
+            const unsigned int        var_index = i;
+            const std::vector<double> semiaxes =
               dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(
                 parameter_handler.get("Nucleus semiaxes (x, y, z)")));
-            std::vector<double> ellipsoid_rotation =
+            const std::vector<double> ellipsoid_rotation =
               dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(
                 parameter_handler.get("Nucleus rotation in degrees (x, y, z)")));
-            std::vector<double> freeze_semiaxes =
+            const std::vector<double> freeze_semiaxes =
               dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(
                 parameter_handler.get("Freeze zone semiaxes (x, y, z)")));
-            double hold_time =
+            const double hold_time =
               parameter_handler.get_double("Freeze time following nucleation");
-            double no_nucleation_border_thickness =
+            const double no_nucleation_border_thickness =
               parameter_handler.get_double("Nucleation-free border thickness");
 
-            nucleationParameters<dim> temp(var_index,
-                                           semiaxes,
-                                           freeze_semiaxes,
-                                           ellipsoid_rotation,
-                                           hold_time,
-                                           no_nucleation_border_thickness);
+            const nucleationParameters<dim> temp(var_index,
+                                                 semiaxes,
+                                                 freeze_semiaxes,
+                                                 ellipsoid_rotation,
+                                                 hold_time,
+                                                 no_nucleation_border_thickness);
             nucleation_parameters_list.push_back(temp);
 
             // Validate nucleation input
@@ -563,7 +564,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
 
   buffer_between_grains =
     parameter_handler.get_double("Buffer between grains before reassignment");
-  if (buffer_between_grains < 0.0 && grain_remapping_activated == true)
+  if (buffer_between_grains < 0.0 && grain_remapping_activated)
     {
       std::cerr << "PRISMS-PF Error: If grain reassignment is activated, a "
                    "non-negative buffer distance must be given. See the 'Buffer "
@@ -572,7 +573,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
       abort();
     }
 
-  std::vector<std::string> variables_for_remapping_str =
+  const std::vector<std::string> variables_for_remapping_str =
     dealii::Utilities::split_string_list(
       parameter_handler.get("Order parameter fields for grain reassignment"));
   for (const auto &field : variables_for_remapping_str)
@@ -588,7 +589,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
               break;
             }
         }
-      if (field_found == false && grain_remapping_activated == true)
+      if (!field_found && grain_remapping_activated)
         {
           std::cerr << "PRISMS-PF Error: Entries in the list of order "
                        "parameter fields used for grain reassignment must "
