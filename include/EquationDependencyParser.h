@@ -38,8 +38,6 @@ public:
   std::vector<dealii::EvaluationFlags::EvaluationFlags> eval_flags_nonexplicit_RHS;
   std::vector<dealii::EvaluationFlags::EvaluationFlags> eval_flags_nonexplicit_LHS;
   std::vector<dealii::EvaluationFlags::EvaluationFlags> eval_flags_change_nonexplicit_LHS;
-  std::vector<dealii::EvaluationFlags::EvaluationFlags> eval_flags_old_RHS;
-  std::vector<dealii::EvaluationFlags::EvaluationFlags> eval_flags_old_LHS;
 
   std::vector<dealii::EvaluationFlags::EvaluationFlags> eval_flags_residual_explicit_RHS;
   std::vector<dealii::EvaluationFlags::EvaluationFlags>
@@ -71,7 +69,6 @@ protected:
     std::string                                           &value_dependencies,
     std::string                                           &gradient_dependencies,
     std::vector<dealii::EvaluationFlags::EvaluationFlags> &evaluation_flags,
-    std::vector<dealii::EvaluationFlags::EvaluationFlags> &old_flags,
     std::vector<dealii::EvaluationFlags::EvaluationFlags> &residual_flags,
     bool                                                  &is_nonlinear);
 
@@ -87,7 +84,6 @@ protected:
     std::string                                           &value_dependencies,
     std::string                                           &gradient_dependencies,
     std::vector<dealii::EvaluationFlags::EvaluationFlags> &evaluation_flags,
-    std::vector<dealii::EvaluationFlags::EvaluationFlags> &old_flags,
     std::vector<dealii::EvaluationFlags::EvaluationFlags> &change_flags,
     std::vector<dealii::EvaluationFlags::EvaluationFlags> &residual_flags,
     bool                                                  &is_nonlinear);

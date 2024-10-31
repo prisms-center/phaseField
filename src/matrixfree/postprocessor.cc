@@ -39,8 +39,9 @@ MatrixFreePDE<dim, degree>::getPostProcessedFields(
   const std::pair<unsigned int, unsigned int> &cell_range)
 {
   // initialize FEEvaulation objects
-  variableContainer<dim, degree, dealii::VectorizedArray<double>>
-    variable_list(data, userInputs.pp_baseVarInfoList, userInputs.varInfoList_old_RHS);
+  variableContainer<dim, degree, dealii::VectorizedArray<double>> variable_list(
+    data,
+    userInputs.pp_baseVarInfoList);
   variableContainer<dim, degree, dealii::VectorizedArray<double>>
     pp_variable_list(data, userInputs.pp_varInfoList, 0);
 
@@ -49,7 +50,6 @@ MatrixFreePDE<dim, degree>::getPostProcessedFields(
     {
       // Initialize, read DOFs, and set evaulation flags for each variable
       variable_list.reinit_and_eval(src, cell);
-      variable_list.reinit_and_eval_old_solution(src, cell);
       pp_variable_list.reinit(cell);
 
       unsigned int num_q_points = variable_list.get_num_q_points();

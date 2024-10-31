@@ -226,12 +226,6 @@ protected:
   /*Vector all the solution vectors in the problem. In a multi-field problem, each primal
    * field has a solution vector associated with it.*/
   std::vector<vectorType *> solutionSet;
-
-  /**
-   * \brief Map of old solution vectors and their corresponding global field index.
-   */
-  boost::unordered_map<unsigned int, std::unique_ptr<vectorType>> solutionSet_previous;
-
   /*Vector all the residual (RHS) vectors in the problem. In a multi-field problem, each
    * primal field has a residual vector associated with it.*/
   std::vector<vectorType *> residualSet;
@@ -286,14 +280,6 @@ protected:
    * \brief Vector that stores element volumes
    */
   dealii::AlignedVector<dealii::VectorizedArray<double>> element_volume;
-
-  /**
-   * \brief Copy the solutions from the current timestep to previous time states.
-   */
-  void
-  copy_solution_vectors(const std::vector<vectorType *> &solutionSet,
-                        boost::unordered_map<unsigned int, std::unique_ptr<vectorType>>
-                          &solutionSet_previous);
 
   /*Method to compute the right hand side (RHS) residual vectors*/
   void

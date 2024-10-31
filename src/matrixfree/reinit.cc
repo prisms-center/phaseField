@@ -125,19 +125,12 @@ MatrixFreePDE<dim, degree>::reinit()
   pcout << "initializing parallel::distributed residual and solution vectors\n";
   for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
     {
-      vectorType *U = solutionSet.at(fieldIndex);
+      vectorType *U;
+
+      U = solutionSet.at(fieldIndex);
 
       matrixFreeObject.initialize_dof_vector(*U, fieldIndex);
       *U = 0;
-
-      // If the equation type is implicit reinitialize a solution vector for the previous
-      // timestep. In the future, we should support arbitrary saving of old timesteps.
-      if (fields[fieldIndex].pdetype == TIME_INDEPENDENT)
-        {
-          matrixFreeObject.initialize_dof_vector(*solutionSet_previous[fieldIndex],
-                                                 fieldIndex);
-          *solutionSet_previous[fieldIndex] = 0;
-        }
 
       // Initializing temporary dU vector required for implicit solves of the
       // elliptic equation.

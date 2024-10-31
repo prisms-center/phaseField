@@ -14,9 +14,6 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
   Timer time;
   char  buffer[200];
 
-  // Copy solution vectors
-  copy_solution_vectors(solutionSet, solutionSet_previous);
-
   // Get the RHS of the explicit equations
   if (hasExplicitEquation && !skip_time_dependent)
     {
@@ -548,30 +545,6 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
     }
 
   return nonlinear_it_converged;
-}
-
-template <int dim, int degree>
-void
-MatrixFreePDE<dim, degree>::copy_solution_vectors(
-  const std::vector<vectorType *>                                 &solutionSet,
-  boost::unordered_map<unsigned int, std::unique_ptr<vectorType>> &solutionSet_previous)
-{
-  for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
-    {
-      // Skip the copy if not tracking prior solutions for the variable index.
-      if (!userInputs.varInfoListNonexplicitRHS[fieldIndex].is_implicit)
-        {
-          continue;
-        }
-
-      // Copy the solution vector.
-      for (unsigned int dof = 0; dof < solutionSet[fieldIndex]->locally_owned_size();
-           ++dof)
-        {
-          solutionSet_previous[fieldIndex]->local_element(dof) =
-            solutionSet[fieldIndex]->local_element(dof);
-        }
-    }
 }
 
 #include "../../include/matrixFreePDE_template_instantiations.h"
