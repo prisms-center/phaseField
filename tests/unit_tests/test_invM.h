@@ -40,7 +40,7 @@ public:
   setInitialCondition(const dealii::Point<dim> &p,
                       const unsigned int        index,
                       double                   &scalar_IC,
-                      dealii::Vector<double>   &vector_IC) {};
+                      dealii::Vector<double>   &vector_IC) override {};
 
   // Function to set the non-uniform Dirichlet boundary conditions (in
   // ICs_and_BCs.h)
@@ -50,7 +50,7 @@ public:
                             const unsigned int        direction,
                             const double              time,
                             double                   &scalar_BC,
-                            dealii::Vector<double>   &vector_BC) {};
+                            dealii::Vector<double>   &vector_BC) override {};
 
 private:
   // RHS implementation for explicit solve
@@ -65,20 +65,23 @@ private:
   void
   explicitEquationRHS(
     variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const {};
+    dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc,
+    [[maybe_unused]] dealii::VectorizedArray<double> element_volume) const override {};
 
   // Function to set the RHS of the governing equations for all other equations
   // (in equations.h)
   void
   nonExplicitEquationRHS(
     variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const {};
+    dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc,
+    [[maybe_unused]] dealii::VectorizedArray<double> element_volume) const override {};
 
   // Function to set the LHS of the governing equations (in equations.h)
   void
   equationLHS(
     variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const {};
+    dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc,
+    [[maybe_unused]] dealii::VectorizedArray<double> element_volume) const override {};
 };
 
 template <int dim, typename T>

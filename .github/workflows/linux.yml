@@ -1,0 +1,52 @@
+name: CI-Linux
+
+on: 
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+      - development
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+    paths-ignore:
+      - 'applications/**'
+
+concurrency:
+  group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request'}}
+
+permissions:
+  contents: read
+
+jobs:
+  CI-Linux:
+    runs-on: [ubuntu-22.04]
+    timeout-minutes: 120
+
+    container:
+      image: dealii/dealii:v9.6.0-jammy
+      options: --user root
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Compile PRISMS-PF
+        run: |
+          cmake .
+          make -j $(nproc)
+
+      - name: Run PRISMS-PF tests
+        timeout-minutes: 60
+        run: |
+          export OMPI_ALLOW_RUN_AS_ROOT=1
+          export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
+
+          cd tests/automatic_tests
+          python3 run_automatic_tests.py
+

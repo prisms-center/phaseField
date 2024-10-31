@@ -51,28 +51,27 @@ MatrixFreePDE<dim, degree>::init()
   // Setup system
   pcout << "initializing matrix free object\n";
   totalDOFs = 0;
-  for (typename std::vector<Field<dim>>::iterator it = fields.begin(); it != fields.end();
-       ++it)
+  for (auto &field : fields)
     {
-      currentFieldIndex = it->index;
+      currentFieldIndex = field.index;
 
       char buffer[100];
 
       // print to std::out
       std::string var_type;
-      if (it->pdetype == EXPLICIT_TIME_DEPENDENT)
+      if (field.pdetype == EXPLICIT_TIME_DEPENDENT)
         {
           var_type = "EXPLICIT_TIME_DEPENDENT";
         }
-      else if (it->pdetype == IMPLICIT_TIME_DEPENDENT)
+      else if (field.pdetype == IMPLICIT_TIME_DEPENDENT)
         {
           var_type = "IMPLICIT_TIME_DEPENDENT";
         }
-      else if (it->pdetype == TIME_INDEPENDENT)
+      else if (field.pdetype == TIME_INDEPENDENT)
         {
           var_type = "TIME_INDEPENDENT";
         }
-      else if (it->pdetype == AUXILIARY)
+      else if (field.pdetype == AUXILIARY)
         {
           var_type = "AUXILIARY";
         }
@@ -82,50 +81,43 @@ MatrixFreePDE<dim, degree>::init()
                "initializing finite element space P^%u for %9s:%6s field '%s'\n",
                degree,
                var_type.c_str(),
-               (it->type == SCALAR ? "SCALAR" : "VECTOR"),
-               it->name.c_str());
+               (field.type == SCALAR ? "SCALAR" : "VECTOR"),
+               field.name.c_str());
       pcout << buffer;
 
-      // Check if any time dependent fields present (note: I should get rid of
-      // parabolicFieldIndex and ellipticFieldIndex, they only work if there is
-      // at max one of each)
-      if (it->pdetype == EXPLICIT_TIME_DEPENDENT)
+      // Check if any time dependent fields present
+      if (field.pdetype == EXPLICIT_TIME_DEPENDENT)
         {
           isTimeDependentBVP  = true;
-          parabolicFieldIndex = it->index;
           hasExplicitEquation = true;
         }
-      else if (it->pdetype == IMPLICIT_TIME_DEPENDENT)
+      else if (field.pdetype == IMPLICIT_TIME_DEPENDENT)
         {
           isTimeDependentBVP     = true;
-          ellipticFieldIndex     = it->index;
           hasNonExplicitEquation = true;
           std::cerr << "PRISMS-PF Error: IMPLICIT_TIME_DEPENDENT equation "
                        "types are not currently supported"
                     << std::endl;
           abort();
         }
-      else if (it->pdetype == AUXILIARY)
+      else if (field.pdetype == AUXILIARY)
         {
-          parabolicFieldIndex    = it->index;
-          ellipticFieldIndex     = it->index;
           hasNonExplicitEquation = true;
         }
-      else if (it->pdetype == TIME_INDEPENDENT)
+      else if (field.pdetype == TIME_INDEPENDENT)
         {
           isEllipticBVP          = true;
-          ellipticFieldIndex     = it->index;
           hasNonExplicitEquation = true;
         }
 
       // create FESystem
       FESystem<dim> *fe;
 
-      if (it->type == SCALAR)
+      if (field.type == SCALAR)
         {
           fe = new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(degree + 1)), 1);
         }
-      else if (it->type == VECTOR)
+      else if (field.type == VECTOR)
         {
           fe = new FESystem<dim>(FE_Q<dim>(QGaussLobatto<1>(degree + 1)), dim);
         }
@@ -175,11 +167,14 @@ MatrixFreePDE<dim, degree>::init()
       // Get hanging node constraints
       DoFTools::make_hanging_node_constraints(*dof_handler, *constraintsOther);
 
-      // Add a constraint to fix the value at the origin to zero if all BCs are
-      // zero-derivative or periodic
-      std::vector<int> rigidBodyModeComponents;
-      // getComponentsWithRigidBodyModes(rigidBodyModeComponents);
-      // setRigidBodyModeConstraints(rigidBodyModeComponents,constraintsOther,dof_handler);
+      // Pin solution
+      if (userInputs.pinned_point.find(currentFieldIndex) !=
+          userInputs.pinned_point.end())
+        {
+          set_rigid_body_mode_constraints(constraintsOther,
+                                          dof_handler,
+                                          userInputs.pinned_point[currentFieldIndex]);
+        }
 
       // Get constraints for periodic BCs
       setPeriodicityConstraints(constraintsOther, dof_handler);
@@ -191,16 +186,16 @@ MatrixFreePDE<dim, degree>::init()
             {
               if (userInputs.BC_list[i].var_BC_type[direction] == DIRICHLET)
                 {
-                  it->hasDirichletBCs = true;
+                  field.hasDirichletBCs = true;
                 }
               else if (userInputs.BC_list[i].var_BC_type[direction] ==
                        NON_UNIFORM_DIRICHLET)
                 {
-                  it->hasnonuniformDirichletBCs = true;
+                  field.hasnonuniformDirichletBCs = true;
                 }
               else if (userInputs.BC_list[i].var_BC_type[direction] == NEUMANN)
                 {
-                  it->hasNeumannBCs = true;
+                  field.hasNeumannBCs = true;
                 }
             }
         }
@@ -212,14 +207,14 @@ MatrixFreePDE<dim, degree>::init()
       constraintsOther->close();
 
       // Store Dirichlet BC DOF's
-      valuesDirichletSet[it->index]->clear();
+      valuesDirichletSet[field.index]->clear();
       for (types::global_dof_index i = 0; i < dof_handler->n_dofs(); i++)
         {
           if (locally_relevant_dofs->is_element(i))
             {
               if (constraintsDirichlet->is_constrained(i))
                 {
-                  (*valuesDirichletSet[it->index])[i] =
+                  (*valuesDirichletSet[field.index])[i] =
                     constraintsDirichlet->get_inhomogeneity(i);
                 }
             }
@@ -228,7 +223,7 @@ MatrixFreePDE<dim, degree>::init()
       snprintf(buffer,
                sizeof(buffer),
                "field '%2s' DOF : %u (Constraint DOF : %u)\n",
-               it->name.c_str(),
+               field.name.c_str(),
                dof_handler->n_dofs(),
                constraintsDirichlet->n_constraints());
       pcout << buffer;
@@ -314,7 +309,7 @@ MatrixFreePDE<dim, degree>::init()
     }
 
   // Apply the initial conditions to the solution vectors
-  // The initial conditions are re-applied below in the "adaptiveRefine"
+  // The initial conditions are re-applied below in the "do_adaptive_refinement"
   // function so that the mesh can adapt based on the initial conditions.
   if (userInputs.resume_from_checkpoint)
     {
@@ -325,7 +320,7 @@ MatrixFreePDE<dim, degree>::init()
       applyInitialConditions();
     }
 
-  // Create new solution transfer sets (needed for the "refineGrid" call, might
+  // Create new solution transfer sets (needed for the "refine_grid" call, might
   // be able to move this elsewhere)
   soltransSet.clear();
   for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
@@ -343,11 +338,26 @@ MatrixFreePDE<dim, degree>::init()
       solutionSet[fieldIndex]->update_ghost_values();
     }
 
-  // If not resuming from a checkpoint, check and perform adaptive mesh
-  // refinement, which reinitializes the system with the new mesh
-  if (!userInputs.resume_from_checkpoint)
+  // If not resuming from a checkpoint, check and perform adaptive mesh refinement, which
+  // reinitializes the system with the new mesh
+  if (!userInputs.resume_from_checkpoint && userInputs.h_adaptivity == true)
     {
-      adaptiveRefine(0);
+      computing_timer.enter_subsection("matrixFreePDE: AMR");
+
+      unsigned int numDoF_preremesh = totalDOFs;
+      for (unsigned int remesh_index = 0;
+           remesh_index <
+           (userInputs.max_refinement_level - userInputs.min_refinement_level);
+           remesh_index++)
+        {
+          AMR.do_adaptive_refinement(currentIncrement);
+          reinit();
+          if (totalDOFs == numDoF_preremesh)
+            break;
+          numDoF_preremesh = totalDOFs;
+        }
+
+      computing_timer.leave_subsection("matrixFreePDE: AMR");
     }
 
   // If resuming from a checkpoint, load the proper starting increment and time
@@ -355,6 +365,9 @@ MatrixFreePDE<dim, degree>::init()
     {
       load_checkpoint_time_info();
     }
+
+  // Once the initial triangulation has been set, compute element volume
+  compute_element_volume();
 
   computing_timer.leave_subsection("matrixFreePDE: initialization");
 }
@@ -391,6 +404,53 @@ MatrixFreePDE<dim, degree>::makeTriangulation(
 
   // Mark boundaries for applying the boundary conditions
   markBoundaries(tria);
+}
+
+template <int dim, int degree>
+void
+MatrixFreePDE<dim, degree>::compute_element_volume()
+{
+  // Get the number of cell batches. Note this is the same as the cell range in
+  // cell_loop()
+  const unsigned int n_cells = matrixFreeObject.n_cell_batches();
+
+  // Resize vector
+  element_volume.resize(n_cells);
+
+  // Set quadrature rule and FEValues to update the JxW values
+  QGaussLobatto<dim> quadrature(degree + 1);
+  FEValues<dim>      fe_values(*(FESet[0]), quadrature, update_JxW_values);
+
+  // Get the number of quadrature points
+  const unsigned int num_quad_points = quadrature.size();
+
+  // Loop over the cells and each lane in the vectorized array
+  for (unsigned int cell = 0; cell < n_cells; cell++)
+    {
+      for (unsigned int lane = 0;
+           lane < matrixFreeObject.n_active_entries_per_cell_batch(cell);
+           lane++)
+        {
+          // Get the iterator for the current cell
+          auto cell_iterator = matrixFreeObject.get_cell_iterator(cell, lane);
+
+          // Reinitialize the cell
+          fe_values.reinit(cell_iterator);
+
+          // Initialize volume to 0 for the current cell
+          double cell_volume = 0.0;
+
+          // Sum up the JxW values at each quadrature point to compute the element volume
+          // in 3D or area in 2D.
+          for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
+            {
+              cell_volume += fe_values.JxW(q_point);
+            }
+
+          // Store the element volume
+          element_volume[cell][lane] = cell_volume;
+        }
+    }
 }
 
 #include "../../include/matrixFreePDE_template_instantiations.h"

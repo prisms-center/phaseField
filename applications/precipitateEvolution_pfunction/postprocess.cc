@@ -32,15 +32,17 @@ variableAttributeLoader::loadPostProcessorVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::postProcessedFields(
-  const variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-  variableContainer<dim, degree, dealii::VectorizedArray<double>>       &pp_variable_list,
-  const dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+  [[maybe_unused]] const variableContainer<dim, degree, VectorizedArray<double>>
+    &variable_list,
+  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+                                                            &pp_variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
   // The concentration and its derivatives
-  scalarvalueType c  = variable_list.get_scalar_value(0);
-  scalargradType  cx = variable_list.get_scalar_gradient(0);
+  scalarvalueType c = variable_list.get_scalar_value(0);
 
   // The first order parameter and its derivatives
   scalarvalueType n1  = variable_list.get_scalar_value(1);
@@ -103,8 +105,8 @@ customPDE<dim, degree>::postProcessedFields(
 
   // Calculate the stress-free transformation strain and its derivatives at the
   // quadrature point
-  dealii::Tensor<2, dim, dealii::VectorizedArray<double>> sfts1, sfts1c, sfts1cc, sfts2,
-    sfts2c, sfts2cc, sfts3, sfts3c, sfts3cc;
+  Tensor<2, dim, VectorizedArray<double>> sfts1, sfts1c, sfts1cc, sfts2, sfts2c, sfts2cc,
+    sfts3, sfts3c, sfts3cc;
 
   for (unsigned int i = 0; i < dim; i++)
     {
@@ -131,7 +133,7 @@ customPDE<dim, degree>::postProcessedFields(
     }
 
   // compute E2=(E-E0)
-  dealii::VectorizedArray<double> E2[dim][dim], S[dim][dim];
+  VectorizedArray<double> E2[dim][dim], S[dim][dim];
 
   for (unsigned int i = 0; i < dim; i++)
     {
@@ -146,11 +148,11 @@ customPDE<dim, degree>::postProcessedFields(
 
   // compute stress
   // S=C*(E-E0)
-  dealii::VectorizedArray<double> CIJ_combined[CIJ_tensor_size][CIJ_tensor_size];
+  VectorizedArray<double> CIJ_combined[CIJ_tensor_size][CIJ_tensor_size];
 
   if (n_dependent_stiffness == true)
     {
-      dealii::VectorizedArray<double> sum_hV;
+      VectorizedArray<double> sum_hV;
       sum_hV = h1V + h2V + h3V;
       for (unsigned int i = 0; i < 2 * dim - 1 + dim / 3; i++)
         {

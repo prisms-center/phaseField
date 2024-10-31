@@ -10,8 +10,8 @@
 #include <iostream>
 
 // Constructor
-inputFileReader::inputFileReader(std::string             input_file_name,
-                                 variableAttributeLoader variable_attributes)
+inputFileReader::inputFileReader(const std::string       &input_file_name,
+                                 variableAttributeLoader &variable_attributes)
 {
   // Extract an ordered vector of the variable types from variable_attributes
   unsigned int number_of_variables = variable_attributes.var_name_list.size();
@@ -54,11 +54,11 @@ inputFileReader::inputFileReader(std::string             input_file_name,
 
 // Method to parse a single line to find a target key value pair
 bool
-inputFileReader::parse_line(std::string       line,
-                            const std::string keyword,
-                            const std::string entry_name,
-                            std::string      &out_string,
-                            const bool        expect_equals_sign) const
+inputFileReader::parse_line(std::string        line,
+                            const std::string &keyword,
+                            const std::string &entry_name,
+                            std::string       &out_string,
+                            const bool         expect_equals_sign) const
 {
   // Strip spaces at the front and back
   while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
@@ -127,10 +127,10 @@ inputFileReader::parse_line(std::string       line,
 // Method to parse an input file to get a list of variables from related
 // subsections
 std::vector<std::string>
-inputFileReader::get_subsection_entry_list(const std::string parameters_file_name,
-                                           const std::string subsec_name,
-                                           const std::string entry_name,
-                                           const std::string default_entry) const
+inputFileReader::get_subsection_entry_list(const std::string &parameters_file_name,
+                                           const std::string &subsec_name,
+                                           const std::string &entry_name,
+                                           const std::string &default_entry) const
 {
   std::ifstream input_file;
   input_file.open(parameters_file_name);
@@ -201,9 +201,9 @@ inputFileReader::get_subsection_entry_list(const std::string parameters_file_nam
 // Method to parse an input file to get a list of variables from related
 // subsections
 unsigned int
-inputFileReader::get_number_of_entries(const std::string parameters_file_name,
-                                       const std::string keyword,
-                                       const std::string entry_name) const
+inputFileReader::get_number_of_entries(const std::string &parameters_file_name,
+                                       const std::string &keyword,
+                                       const std::string &entry_name) const
 {
   std::ifstream input_file;
   input_file.open(parameters_file_name);
@@ -226,9 +226,9 @@ inputFileReader::get_number_of_entries(const std::string parameters_file_name,
 // Method to parse an input file to get a list of variables from related
 // subsections
 std::vector<std::string>
-inputFileReader::get_entry_name_ending_list(const std::string parameters_file_name,
-                                            const std::string keyword,
-                                            const std::string entry_name_begining) const
+inputFileReader::get_entry_name_ending_list(const std::string &parameters_file_name,
+                                            const std::string &keyword,
+                                            const std::string &entry_name_begining) const
 {
   std::ifstream input_file;
   input_file.open(parameters_file_name);
@@ -271,11 +271,11 @@ inputFileReader::get_entry_name_ending_list(const std::string parameters_file_na
 }
 
 void
-inputFileReader::declare_parameters(dealii::ParameterHandler    &parameter_handler,
-                                    const std::vector<fieldType> var_types,
-                                    const std::vector<PDEType>   var_eq_types,
-                                    const unsigned int           num_of_constants,
-                                    const std::vector<bool>      var_nucleates) const
+inputFileReader::declare_parameters(dealii::ParameterHandler     &parameter_handler,
+                                    const std::vector<fieldType> &var_types,
+                                    const std::vector<PDEType>   &var_eq_types,
+                                    const unsigned int            num_of_constants,
+                                    const std::vector<bool>      &var_nucleates) const
 {
   // Declare all of the entries
   parameter_handler.declare_entry("Number of dimensions",
@@ -555,12 +555,14 @@ inputFileReader::declare_parameters(dealii::ParameterHandler    &parameter_handl
     "The list of time steps to save checkpoints, used for the LIST type.");
   parameter_handler.declare_entry(
     "Number of checkpoints",
-    "1",
+    "0",
     dealii::Patterns::Integer(),
     "The number of checkpoints (or number of checkpoints per decade for the "
     "N_PER_DECADE type).");
 
-  // Declare the boundary condition variables
+  /*----------------------
+  |  Boundary conditions
+  -----------------------*/
   for (unsigned int i = 0; i < var_types.size(); i++)
     {
       if (var_types[i] == SCALAR)
@@ -602,6 +604,31 @@ inputFileReader::declare_parameters(dealii::ParameterHandler    &parameter_handl
             dealii::Patterns::Anything(),
             "The boundary conditions for one of the governing equations).");
         }
+    }
+
+  /*----------------------
+  |  Pinning point
+  -----------------------*/
+  for (unsigned int i = 0; i < var_types.size(); i++)
+    {
+      std::string pinning_text = "Pinning point: ";
+      pinning_text.append(var_names.at(i));
+      parameter_handler.enter_subsection(pinning_text);
+      {
+        parameter_handler.declare_entry("x",
+                                        "-1.0",
+                                        dealii::Patterns::Double(),
+                                        "X-coordinate of the point");
+        parameter_handler.declare_entry("y",
+                                        "0.0",
+                                        dealii::Patterns::Double(),
+                                        "Y-coordinate of the point");
+        parameter_handler.declare_entry("z",
+                                        "0.0",
+                                        dealii::Patterns::Double(),
+                                        "Z-coordinate of the point");
+      }
+      parameter_handler.leave_subsection();
     }
 
   // Declare the nucleation parameters

@@ -12,7 +12,7 @@ public:
   }
 
   double
-  value(const dealii::Point<dim> &p, const unsigned int component = 0) const
+  value(const dealii::Point<dim> &p, const unsigned int component = 0) const override
   {
     double val;
 
@@ -49,8 +49,6 @@ template <int dim, typename T>
 bool
 unitTest<dim, T>::test_OrderParameterRemapper()
 {
-  int thisProc = dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
-
   char buffer[100];
 
   std::cout << "\nTesting 'OrderParameterRemapper'... " << std::endl;
@@ -131,10 +129,12 @@ unitTest<dim, T>::test_OrderParameterRemapper()
 
   FloodFiller<dim, degree>   test_object(fe, quadrature2);
   std::vector<GrainSet<dim>> grain_sets_0;
-  test_object.calcGrainSets(fe, dof_handler, solution_field_0, 0.1, 1.1, 0, grain_sets_0);
+  test_object
+    .calcGrainSets(fe, dof_handler, solution_field_0, 0.1, 1.1, 0, 0, grain_sets_0);
 
   std::vector<GrainSet<dim>> grain_sets_1;
-  test_object.calcGrainSets(fe, dof_handler, solution_field_1, 0.1, 1.1, 1, grain_sets_1);
+  test_object
+    .calcGrainSets(fe, dof_handler, solution_field_1, 0.1, 1.1, 0, 1, grain_sets_1);
 
   std::vector<GrainSet<dim>> grain_sets = grain_sets_0;
   grain_sets.insert(grain_sets.end(), grain_sets_1.begin(), grain_sets_1.end());
@@ -162,36 +162,12 @@ unitTest<dim, T>::test_OrderParameterRemapper()
                                               order_parameter_id_list);
 
   // ---------- The actual test run of OrderParameterRemapper -----------
-  /*
-  for (unsigned int g=0; g<simplified_grain_representations.size(); g++){
-      std::cout << simplified_grain_representations.at(g).getGrainId() << " " <<
-  simplified_grain_representations.at(g).getRadius() << std::endl;
-  }
-  */
-  // std::cout << "Field 0, core" << thisProc << std::endl;
-  // solution_fields.at(0)->print(std::cout);
-  // std::cout << "Field 1, core" << thisProc << std::endl;
-  // solution_fields.at(1)->print(std::cout);
-
   OrderParameterRemapper<dim> order_parameter_remapper;
   order_parameter_remapper.remap(simplified_grain_representations,
                                  solution_fields,
                                  dof_handler,
                                  fe.dofs_per_cell,
                                  0.001);
-
-  /*
-  for (unsigned int g=0; g<simplified_grain_representations.size(); g++){
-      std::cout << simplified_grain_representations.at(g).getGrainId() << " " <<
-  simplified_grain_representations.at(g).getOrderParameterId() << " " <<
-  simplified_grain_representations.at(g).getOldOrderParameterId() << std::endl;
-  }
-  */
-
-  // std::cout << "Field 0, core" << thisProc << std::endl;
-  // solution_fields.at(0)->print(std::cout);
-  // std::cout << "Field 1, core" << thisProc << std::endl;
-  // solution_fields.at(1)->print(std::cout);
 
   // ---------- Check the result -----------
   pass = true;

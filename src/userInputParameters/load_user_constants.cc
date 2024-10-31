@@ -89,7 +89,7 @@ userInputParameters<dim>::load_user_constants(inputFileReader          &input_fi
                   std::size_t index = 0;
                   while (index != std::string::npos)
                     {
-                      index = model_constants_strings.at(element).find("(");
+                      index = model_constants_strings.at(element).find('(');
                       if (index != std::string::npos)
                         {
                           model_constants_strings.at(element).erase(index, 1);
@@ -99,7 +99,7 @@ userInputParameters<dim>::load_user_constants(inputFileReader          &input_fi
                   index = 0;
                   while (index != std::string::npos)
                     {
-                      index = model_constants_strings.at(element).find(")");
+                      index = model_constants_strings.at(element).find(')');
                       if (index != std::string::npos)
                         {
                           model_constants_strings.at(element).erase(index, 1);
@@ -191,7 +191,7 @@ userInputParameters<dim>::load_user_constants(inputFileReader          &input_fi
                   std::size_t index = 0;
                   while (index != std::string::npos)
                     {
-                      index = model_constants_strings.at(element).find("(");
+                      index = model_constants_strings.at(element).find('(');
                       if (index != std::string::npos)
                         {
                           model_constants_strings.at(element).erase(index, 1);
@@ -201,7 +201,7 @@ userInputParameters<dim>::load_user_constants(inputFileReader          &input_fi
                   index = 0;
                   while (index != std::string::npos)
                     {
-                      index = model_constants_strings.at(element).find(")");
+                      index = model_constants_strings.at(element).find(')');
                       if (index != std::string::npos)
                         {
                           model_constants_strings.at(element).erase(index, 1);
@@ -248,7 +248,7 @@ userInputParameters<dim>::load_user_constants(inputFileReader          &input_fi
 template <int dim>
 dealii::Tensor<2, 2 * dim - 1 + dim / 3>
 userInputParameters<dim>::get_Cij_tensor(std::vector<double> elastic_constants,
-                                         const std::string   elastic_const_symmetry) const
+                                         const std::string  &elastic_const_symmetry) const
 {
   // First set the material model
   elasticityModel mat_model = ISOTROPIC;
@@ -284,9 +284,9 @@ userInputParameters<dim>::get_Cij_tensor(std::vector<double> elastic_constants,
       std::vector<double> elastic_constants_temp = elastic_constants;
       elastic_constants.clear();
       std::vector<unsigned int> indices_2D = {0, 1, 5, 6, 10, 14};
-      for (unsigned int i = 0; i < indices_2D.size(); i++)
+      for (const auto &index : indices_2D)
         {
-          elastic_constants.push_back(elastic_constants_temp.at(indices_2D.at(i)));
+          elastic_constants.push_back(elastic_constants_temp.at(index));
         }
     }
 
@@ -323,7 +323,7 @@ userInputParameters<dim>::get_Cij_tensor(std::vector<double> elastic_constants,
 template <int dim>
 dealii::Tensor<2, 2 * dim - 1 + dim / 3>
 userInputParameters<dim>::getCIJMatrix(const elasticityModel       model,
-                                       const std::vector<double>   constants,
+                                       const std::vector<double>  &constants,
                                        dealii::ConditionalOStream &pcout) const
 {
   // CIJ.fill(0.0);

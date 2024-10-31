@@ -1658,3 +1658,102 @@ Time: 105.63543462753296
  
 Tests Passed: 4/5
 --------------------------------------------------------- 
+--------------------------------------------------------- 
+Unit test on 2024-08-26 11:23
+--------------------------------------------------------- 
+Unit Tests Passed: 22/24
+--------------------------------------------------------- 
+Regression test on 2024-08-26 11:23
+--------------------------------------------------------- 
+Application: allenCahn 
+Result: Pass 
+Time: 20.680600881576538 
+ 
+Application: cahnHilliard 
+Result: Pass 
+Time: 213.79854011535645 
+ 
+Application: CHAC_anisotropyRegularized 
+Result: Pass 
+Time: 92.19172048568726 
+ 
+Application: coupledCahnHilliardAllenCahn 
+Result: Pass 
+Time: 239.0977635383606 
+ 
+Application: precipitateEvolution 
+Result: New Gold Standard 
+Time: 248.99486303329468 
+ 
+Tests Passed: 5/5
+--------------------------------------------------------- 
+--------------------------------------------------------- 
+Unit test on 2024-09-30 20:35
+--------------------------------------------------------- 
+Unit Tests Passed: 24/24
+--------------------------------------------------------- 
+Regression test on 2024-09-30 20:35
+Architecture: x86_64
+Model name: AMD Ryzen 9 7900X 12-Core Processor
+CPU(s): 24
+CPU max/min MHz: 4701.0000, 0.0000
+Hypervisor vendor: Windows Subsystem for Linux
+Number of processes: 5
+--------------------------------------------------------- 
+Application: allenCahn
+Result: Pass
+Time: 5.137420654296875
+ 
+Application: CHAC_anisotropyRegularized
+Result: Pass
+Time: 21.923932313919067
+ 
+Application: cahnHilliard
+Result: Pass
+Time: 46.90225148200989
+ 
+Application: precipitateEvolution
+Result: Pass
+Time: 49.90675449371338
+ 
+Application: coupledCahnHilliardAllenCahn
+Result: Pass
+Time: 61.51672077178955
+ 
+Tests Passed: 5/5
+--------------------------------------------------------- 
+--------------------------------------------------------- 
+Unit test on 2024-09-30 20:37
+--------------------------------------------------------- 
+Unit Tests Passed: 24/24
+--------------------------------------------------------- 
+Regression test on 2024-09-30 20:37
+Architecture: x86_64
+Model name: AMD Ryzen 9 7900X 12-Core Processor
+CPU(s): 24
+CPU max/min MHz: 4701.0000, 0.0000
+Hypervisor vendor: Windows Subsystem for Linux
+Number of processes: 1
+--------------------------------------------------------- 
+Application: allenCahn
+Result: Pass
+Time: 3.2358179092407227
+ 
+Application: cahnHilliard
+Result: Pass
+Time: 37.65849280357361
+ 
+Application: CHAC_anisotropyRegularized
+Result: Pass
+Time: 23.44599485397339
+ 
+Application: coupledCahnHilliardAllenCahn
+Result: Pass
+Time: 46.90539360046387
+ 
+Application: precipitateEvolution
+Result: Pass
+Time: 41.89884090423584
+ 
+Tests Passed: 5/5
+--------------------------------------------------------- 

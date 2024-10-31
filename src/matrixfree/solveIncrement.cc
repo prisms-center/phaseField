@@ -101,263 +101,8 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                       pcout << buffer;
                     }
 
-                  // apply Dirichlet BC'se
-                  //  This clears the residual where we want to apply Dirichlet
-                  //  BCs, otherwise the solver sees a positive residual
-                  constraintsDirichletSet[fieldIndex]->set_zero(*residualSet[fieldIndex]);
-
-                  // solver controls
-
-                  double tol_value;
-                  if (userInputs.linear_solver_parameters.getToleranceType(fieldIndex) ==
-                      ABSOLUTE_RESIDUAL)
-                    {
-                      tol_value =
-                        userInputs.linear_solver_parameters.getToleranceValue(fieldIndex);
-                    }
-                  else
-                    {
-                      tol_value = userInputs.linear_solver_parameters.getToleranceValue(
-                                    fieldIndex) *
-                                  residualSet[fieldIndex]->l2_norm();
-                    }
-
-                  SolverControl solver_control(
-                    userInputs.linear_solver_parameters.getMaxIterations(fieldIndex),
-                    tol_value);
-
-                  // Currently the only allowed solver is SolverCG, the
-                  // SolverType input variable is a dummy
-                  SolverCG<vectorType> solver(solver_control);
-
-                  // solve
-                  try
-                    {
-                      if (fields[fieldIndex].type == SCALAR)
-                        {
-                          dU_scalar = 0.0;
-                          solver.solve(*this,
-                                       dU_scalar,
-                                       *residualSet[fieldIndex],
-                                       IdentityMatrix(solutionSet[fieldIndex]->size()));
-                        }
-                      else
-                        {
-                          dU_vector = 0.0;
-                          solver.solve(*this,
-                                       dU_vector,
-                                       *residualSet[fieldIndex],
-                                       IdentityMatrix(solutionSet[fieldIndex]->size()));
-                        }
-                    }
-                  catch (...)
-                    {
-                      pcout << "\nWarning: linear solver did not converge as "
-                               "per set tolerances. consider increasing the "
-                               "maximum number of iterations or decreasing the "
-                               "solver tolerance.\n";
-                    }
-
-                  if (userInputs.var_nonlinear[fieldIndex])
-                    {
-                      // Now that we have the calculated change in the solution,
-                      // we need to select a damping coefficient
-                      double damping_coefficient;
-
-                      if (userInputs.nonlinear_solver_parameters.getBacktrackDampingFlag(
-                            fieldIndex))
-                        {
-                          vectorType solutionSet_old = *solutionSet[fieldIndex];
-                          double     residual_old    = residualSet[fieldIndex]->l2_norm();
-
-                          damping_coefficient            = 1.0;
-                          bool damping_coefficient_found = false;
-                          while (!damping_coefficient_found)
-                            {
-                              if (fields[fieldIndex].type == SCALAR)
-                                {
-                                  solutionSet[fieldIndex]->sadd(1.0,
-                                                                damping_coefficient,
-                                                                dU_scalar);
-                                }
-                              else
-                                {
-                                  solutionSet[fieldIndex]->sadd(1.0,
-                                                                damping_coefficient,
-                                                                dU_vector);
-                                }
-
-                              computeNonexplicitRHS();
-
-                              for (std::map<types::global_dof_index,
-                                            double>::const_iterator it =
-                                     valuesDirichletSet[fieldIndex]->begin();
-                                   it != valuesDirichletSet[fieldIndex]->end();
-                                   ++it)
-                                {
-                                  if (residualSet[fieldIndex]->in_local_range(it->first))
-                                    {
-                                      (*residualSet[fieldIndex])(it->first) = 0.0;
-                                    }
-                                }
-
-                              double residual_new = residualSet[fieldIndex]->l2_norm();
-
-                              if (currentIncrement % userInputs.skip_print_steps == 0)
-                                {
-                                  pcout << "    Old residual: " << residual_old
-                                        << " Damping Coeff: " << damping_coefficient
-                                        << " New Residual: " << residual_new << std::endl;
-                                }
-
-                              // An improved approach would use the
-                              // Armijo–Goldstein condition to ensure a
-                              // sufficent decrease in the residual. This way is
-                              // just scales the residual.
-                              if ((residual_new <
-                                   (residual_old *
-                                    userInputs.nonlinear_solver_parameters
-                                      .getBacktrackResidualDecreaseCoeff(fieldIndex))) ||
-                                  damping_coefficient < 1.0e-4)
-                                {
-                                  damping_coefficient_found = true;
-                                }
-                              else
-                                {
-                                  damping_coefficient *=
-                                    userInputs.nonlinear_solver_parameters
-                                      .getBacktrackStepModifier(fieldIndex);
-                                  *solutionSet[fieldIndex] = solutionSet_old;
-                                }
-                            }
-                        }
-                      else
-                        {
-                          damping_coefficient =
-                            userInputs.nonlinear_solver_parameters
-                              .getDefaultDampingCoefficient(fieldIndex);
-
-                          if (fields[fieldIndex].type == SCALAR)
-                            {
-                              solutionSet[fieldIndex]->sadd(1.0,
-                                                            damping_coefficient,
-                                                            dU_scalar);
-                            }
-                          else
-                            {
-                              solutionSet[fieldIndex]->sadd(1.0,
-                                                            damping_coefficient,
-                                                            dU_vector);
-                            }
-                        }
-
-                      if (currentIncrement % userInputs.skip_print_steps == 0)
-                        {
-                          double dU_norm;
-                          if (fields[fieldIndex].type == SCALAR)
-                            {
-                              dU_norm = dU_scalar.l2_norm();
-                            }
-                          else
-                            {
-                              dU_norm = dU_vector.l2_norm();
-                            }
-                          snprintf(buffer,
-                                   sizeof(buffer),
-                                   "field '%2s' [linear solve]: initial "
-                                   "residual:%12.6e, current residual:%12.6e, "
-                                   "nsteps:%u, tolerance criterion:%12.6e, "
-                                   "solution: %12.6e, dU: %12.6e\n",
-                                   fields[fieldIndex].name.c_str(),
-                                   residualSet[fieldIndex]->l2_norm(),
-                                   solver_control.last_value(),
-                                   solver_control.last_step(),
-                                   solver_control.tolerance(),
-                                   solutionSet[fieldIndex]->l2_norm(),
-                                   dU_norm);
-                          pcout << buffer;
-                        }
-
-                      // Check to see if this individual variable has converged
-                      if (userInputs.nonlinear_solver_parameters.getToleranceType(
-                            fieldIndex) == ABSOLUTE_SOLUTION_CHANGE)
-                        {
-                          double diff;
-
-                          if (fields[fieldIndex].type == SCALAR)
-                            {
-                              diff = dU_scalar.l2_norm();
-                            }
-                          else
-                            {
-                              diff = dU_vector.l2_norm();
-                            }
-                          if (currentIncrement % userInputs.skip_print_steps == 0)
-                            {
-                              pcout << "Relative difference between nonlinear "
-                                       "iterations: "
-                                    << diff << " " << nonlinear_it_index << " "
-                                    << currentIncrement << std::endl;
-                            }
-
-                          if (diff >
-                                userInputs.nonlinear_solver_parameters.getToleranceValue(
-                                  fieldIndex) &&
-                              nonlinear_it_index <
-                                userInputs.nonlinear_solver_parameters.getMaxIterations())
-                            {
-                              nonlinear_it_converged = false;
-                            }
-                        }
-                      else
-                        {
-                          std::cerr << "PRISMS-PF Error: Nonlinear solver tolerance "
-                                       "types other than ABSOLUTE_CHANGE have yet to "
-                                       "be implemented."
-                                    << std::endl;
-                        }
-                    }
-                  else
-                    {
-                      if (nonlinear_it_index == 0)
-                        {
-                          if (fields[fieldIndex].type == SCALAR)
-                            {
-                              *solutionSet[fieldIndex] += dU_scalar;
-                            }
-                          else
-                            {
-                              *solutionSet[fieldIndex] += dU_vector;
-                            }
-
-                          if (currentIncrement % userInputs.skip_print_steps == 0)
-                            {
-                              double dU_norm;
-                              if (fields[fieldIndex].type == SCALAR)
-                                {
-                                  dU_norm = dU_scalar.l2_norm();
-                                }
-                              else
-                                {
-                                  dU_norm = dU_vector.l2_norm();
-                                }
-                              snprintf(buffer,
-                                       sizeof(buffer),
-                                       "field '%2s' [linear solve]: initial "
-                                       "residual:%12.6e, current residual:%12.6e, "
-                                       "nsteps:%u, tolerance criterion:%12.6e, "
-                                       "solution: %12.6e, dU: %12.6e\n",
-                                       fields[fieldIndex].name.c_str(),
-                                       residualSet[fieldIndex]->l2_norm(),
-                                       solver_control.last_value(),
-                                       solver_control.last_step(),
-                                       solver_control.tolerance(),
-                                       solutionSet[fieldIndex]->l2_norm(),
-                                       dU_norm);
-                              pcout << buffer;
-                            }
-                        }
-                    }
+                  nonlinear_it_converged =
+                    updateImplicitSolution(fieldIndex, nonlinear_it_index);
 
                   // Apply Boundary conditions
                   applyBCs(fieldIndex);
@@ -548,6 +293,258 @@ MatrixFreePDE<dim, degree>::updateExplicitSolution(unsigned int fieldIndex)
             residualSet[fieldIndex]->local_element(dof);
         }
     }
+}
+
+template <int dim, int degree>
+bool
+MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
+                                                   unsigned int nonlinear_it_index)
+{
+  char buffer[200];
+
+  // Assume convergence criterion is met, unless otherwise proven later on.
+  bool nonlinear_it_converged = true;
+
+  // Apply Dirichlet BC's. This clears the residual where we want to apply Dirichlet BCs,
+  // otherwise the solver sees a positive residual
+  constraintsDirichletSet[fieldIndex]->set_zero(*residualSet[fieldIndex]);
+
+  // Grab solver controls
+  double tol_value;
+  if (userInputs.linear_solver_parameters.getToleranceType(fieldIndex) ==
+      ABSOLUTE_RESIDUAL)
+    {
+      tol_value = userInputs.linear_solver_parameters.getToleranceValue(fieldIndex);
+    }
+  else
+    {
+      tol_value = userInputs.linear_solver_parameters.getToleranceValue(fieldIndex) *
+                  residualSet[fieldIndex]->l2_norm();
+    }
+
+  SolverControl solver_control(userInputs.linear_solver_parameters.getMaxIterations(
+                                 fieldIndex),
+                               tol_value);
+
+  // Currently the only allowed solver is SolverCG, the
+  // SolverType input variable is a dummy
+  SolverCG<vectorType> solver(solver_control);
+
+  // Solve
+  try
+    {
+      if (fields[fieldIndex].type == SCALAR)
+        {
+          dU_scalar = 0.0;
+          solver.solve(*this,
+                       dU_scalar,
+                       *residualSet[fieldIndex],
+                       IdentityMatrix(solutionSet[fieldIndex]->size()));
+        }
+      else
+        {
+          dU_vector = 0.0;
+          solver.solve(*this,
+                       dU_vector,
+                       *residualSet[fieldIndex],
+                       IdentityMatrix(solutionSet[fieldIndex]->size()));
+        }
+    }
+  catch (...)
+    {
+      pcout << "\nWarning: linear solver did not converge as "
+               "per set tolerances. consider increasing the "
+               "maximum number of iterations or decreasing the "
+               "solver tolerance.\n";
+    }
+
+  if (userInputs.var_nonlinear[fieldIndex])
+    {
+      // Now that we have the calculated change in the solution,
+      // we need to select a damping coefficient
+      double damping_coefficient;
+
+      if (userInputs.nonlinear_solver_parameters.getBacktrackDampingFlag(fieldIndex))
+        {
+          vectorType solutionSet_old = *solutionSet[fieldIndex];
+          double     residual_old    = residualSet[fieldIndex]->l2_norm();
+
+          damping_coefficient            = 1.0;
+          bool damping_coefficient_found = false;
+          while (!damping_coefficient_found)
+            {
+              if (fields[fieldIndex].type == SCALAR)
+                {
+                  solutionSet[fieldIndex]->sadd(1.0, damping_coefficient, dU_scalar);
+                }
+              else
+                {
+                  solutionSet[fieldIndex]->sadd(1.0, damping_coefficient, dU_vector);
+                }
+
+              computeNonexplicitRHS();
+
+              for (const auto &it : *valuesDirichletSet[fieldIndex])
+                {
+                  if (residualSet[fieldIndex]->in_local_range(it.first))
+                    {
+                      (*residualSet[fieldIndex])(it.first) = 0.0;
+                    }
+                }
+
+              double residual_new = residualSet[fieldIndex]->l2_norm();
+
+              if (currentIncrement % userInputs.skip_print_steps == 0)
+                {
+                  pcout << "    Old residual: " << residual_old
+                        << " Damping Coeff: " << damping_coefficient
+                        << " New Residual: " << residual_new << std::endl;
+                }
+
+              // An improved approach would use the
+              // Armijo–Goldstein condition to ensure a
+              // sufficent decrease in the residual. This way is
+              // just scales the residual.
+              if ((residual_new <
+                   (residual_old * userInputs.nonlinear_solver_parameters
+                                     .getBacktrackResidualDecreaseCoeff(fieldIndex))) ||
+                  damping_coefficient < 1.0e-4)
+                {
+                  damping_coefficient_found = true;
+                }
+              else
+                {
+                  damping_coefficient *=
+                    userInputs.nonlinear_solver_parameters.getBacktrackStepModifier(
+                      fieldIndex);
+                  *solutionSet[fieldIndex] = solutionSet_old;
+                }
+            }
+        }
+      else
+        {
+          damping_coefficient =
+            userInputs.nonlinear_solver_parameters.getDefaultDampingCoefficient(
+              fieldIndex);
+
+          if (fields[fieldIndex].type == SCALAR)
+            {
+              solutionSet[fieldIndex]->sadd(1.0, damping_coefficient, dU_scalar);
+            }
+          else
+            {
+              solutionSet[fieldIndex]->sadd(1.0, damping_coefficient, dU_vector);
+            }
+        }
+
+      if (currentIncrement % userInputs.skip_print_steps == 0)
+        {
+          double dU_norm;
+          if (fields[fieldIndex].type == SCALAR)
+            {
+              dU_norm = dU_scalar.l2_norm();
+            }
+          else
+            {
+              dU_norm = dU_vector.l2_norm();
+            }
+          snprintf(buffer,
+                   sizeof(buffer),
+                   "field '%2s' [linear solve]: initial "
+                   "residual:%12.6e, current residual:%12.6e, "
+                   "nsteps:%u, tolerance criterion:%12.6e, "
+                   "solution: %12.6e, dU: %12.6e\n",
+                   fields[fieldIndex].name.c_str(),
+                   residualSet[fieldIndex]->l2_norm(),
+                   solver_control.last_value(),
+                   solver_control.last_step(),
+                   solver_control.tolerance(),
+                   solutionSet[fieldIndex]->l2_norm(),
+                   dU_norm);
+          pcout << buffer;
+        }
+
+      // Check to see if this individual variable has converged
+      if (userInputs.nonlinear_solver_parameters.getToleranceType(fieldIndex) ==
+          ABSOLUTE_SOLUTION_CHANGE)
+        {
+          double diff;
+
+          if (fields[fieldIndex].type == SCALAR)
+            {
+              diff = dU_scalar.l2_norm();
+            }
+          else
+            {
+              diff = dU_vector.l2_norm();
+            }
+          if (currentIncrement % userInputs.skip_print_steps == 0)
+            {
+              pcout << "Relative difference between nonlinear "
+                       "iterations: "
+                    << diff << " " << nonlinear_it_index << " " << currentIncrement
+                    << std::endl;
+            }
+
+          if (diff >
+                userInputs.nonlinear_solver_parameters.getToleranceValue(fieldIndex) &&
+              nonlinear_it_index <
+                userInputs.nonlinear_solver_parameters.getMaxIterations())
+            {
+              nonlinear_it_converged = false;
+            }
+        }
+      else
+        {
+          std::cerr << "PRISMS-PF Error: Nonlinear solver tolerance "
+                       "types other than ABSOLUTE_CHANGE have yet to "
+                       "be implemented."
+                    << std::endl;
+        }
+    }
+  else
+    {
+      if (nonlinear_it_index == 0)
+        {
+          if (fields[fieldIndex].type == SCALAR)
+            {
+              *solutionSet[fieldIndex] += dU_scalar;
+            }
+          else
+            {
+              *solutionSet[fieldIndex] += dU_vector;
+            }
+
+          if (currentIncrement % userInputs.skip_print_steps == 0)
+            {
+              double dU_norm;
+              if (fields[fieldIndex].type == SCALAR)
+                {
+                  dU_norm = dU_scalar.l2_norm();
+                }
+              else
+                {
+                  dU_norm = dU_vector.l2_norm();
+                }
+              snprintf(buffer,
+                       sizeof(buffer),
+                       "field '%2s' [linear solve]: initial "
+                       "residual:%12.6e, current residual:%12.6e, "
+                       "nsteps:%u, tolerance criterion:%12.6e, "
+                       "solution: %12.6e, dU: %12.6e\n",
+                       fields[fieldIndex].name.c_str(),
+                       residualSet[fieldIndex]->l2_norm(),
+                       solver_control.last_value(),
+                       solver_control.last_step(),
+                       solver_control.tolerance(),
+                       solutionSet[fieldIndex]->l2_norm(),
+                       dU_norm);
+              pcout << buffer;
+            }
+        }
+    }
+
+  return nonlinear_it_converged;
 }
 
 #include "../../include/matrixFreePDE_template_instantiations.h"

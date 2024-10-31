@@ -1,0 +1,12 @@
+# Setting file for clang-tidy
+
+Checks: >
+  -*,
+  boost-*,
+  modernize-*,
+  -modernize-avoid-c-arrays,
+  -modernize-use-trailing-return-type,
+  mpi-*,
+  performance-*
+
+WarningsAsErrors: '*'

@@ -5,11 +5,14 @@
 #define INCLUDE_USERINPUTPARAMETERS_H_
 
 #include <deal.II/base/conditional_ostream.h>
+#include <deal.II/base/exceptions.h>
+#include <deal.II/base/point.h>
 #include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/lac/vector.h>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/unordered_map.hpp>
 #include <boost/variant.hpp>
 
 #include "RefinementCriterion.h"
@@ -47,49 +50,118 @@ public:
   // Method to create the list of BCs from the user input strings (called from
   // the constructor)
   void
-  load_BC_list(const std::vector<std::string> list_of_BCs);
+  load_BC_list(const std::vector<std::string> &list_of_BCs);
 
   // Map linking the model constant name to its index
   std::unordered_map<std::string, unsigned int> model_constant_name_map;
 
-  // Methods to access members of 'model_constant', one for each type (since one
-  // can't template based on return values) These are really just wrappers for
-  // Boost's 'get' function
+  /**
+   * \brief Retrieve the double from the `model_constants` that are defined from the
+   * parameters.prm parser. This is essentially just a wrapper for boost::get.
+   *
+   * \param constant_name Name of the constant to retrieve.
+   */
   double
   get_model_constant_double(const std::string constant_name) const
   {
+    Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
+           dealii::ExcMessage(
+             "PRISMS-PF Error: Mismatch between constants in parameters.prm and "
+             "customPDE.h. The constant that you attempted to access was " +
+             constant_name + "."));
+
     return boost::get<double>(model_constants[model_constant_name_map.at(constant_name)]);
   };
 
+  /**
+   * \brief Retrieve the int from the `model_constants` that are defined from the
+   * parameters.prm parser. This is essentially just a wrapper for boost::get.
+   *
+   * \param constant_name Name of the constant to retrieve.
+   */
   int
   get_model_constant_int(const std::string constant_name) const
   {
+    Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
+           dealii::ExcMessage(
+             "PRISMS-PF Error: Mismatch between constants in parameters.prm and "
+             "customPDE.h. The constant that you attempted to access was " +
+             constant_name + "."));
+
     return boost::get<int>(model_constants[model_constant_name_map.at(constant_name)]);
   };
 
+  /**
+   * \brief Retrieve the bool from the `model_constants` that are defined from the
+   * parameters.prm parser. This is essentially just a wrapper for boost::get.
+   *
+   * \param constant_name Name of the constant to retrieve.
+   */
   bool
   get_model_constant_bool(const std::string constant_name) const
   {
+    Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
+           dealii::ExcMessage(
+             "PRISMS-PF Error: Mismatch between constants in parameters.prm and "
+             "customPDE.h. The constant that you attempted to access was " +
+             constant_name + "."));
+
     return boost::get<bool>(model_constants[model_constant_name_map.at(constant_name)]);
   };
 
+  /**
+   * \brief Retrieve the rank 1 tensor from the `model_constants` that are defined from
+   * the parameters.prm parser. This is essentially just a wrapper for boost::get.
+   *
+   * \param constant_name Name of the constant to retrieve.
+   */
   dealii::Tensor<1, dim>
   get_model_constant_rank_1_tensor(const std::string constant_name) const
   {
+    Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
+           dealii::ExcMessage(
+             "PRISMS-PF Error: Mismatch between constants in parameters.prm and "
+             "customPDE.h. The constant that you attempted to access was " +
+             constant_name + "."));
+
     return boost::get<dealii::Tensor<1, dim>>(
       model_constants[model_constant_name_map.at(constant_name)]);
   };
 
+  /**
+   * \brief Retrieve the rank 2 tensor from the `model_constants` that are defined from
+   * the parameters.prm parser. This is essentially just a wrapper for boost::get.
+   *
+   * \param constant_name Name of the constant to retrieve.
+   */
   dealii::Tensor<2, dim>
   get_model_constant_rank_2_tensor(const std::string constant_name) const
   {
+    Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
+           dealii::ExcMessage(
+             "PRISMS-PF Error: Mismatch between constants in parameters.prm and "
+             "customPDE.h. The constant that you attempted to access was " +
+             constant_name + "."));
+
     return boost::get<dealii::Tensor<2, dim>>(
       model_constants[model_constant_name_map.at(constant_name)]);
   };
 
+  /**
+   * \brief Retrieve the elasticity tensor from the `model_constants` that are defined
+   * from the parameters.prm parser. This is essentially just a wrapper for boost::get.
+   *
+   * \param constant_name Name of the constant to retrieve.
+   */
   dealii::Tensor<2, 2 * dim - 1 + dim / 3>
   get_model_constant_elasticity_tensor(const std::string constant_name) const
   {
+    Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
+           dealii::ExcMessage(
+             "PRISMS-PF Error: Mismatch between constants in parameters.prm and "
+             "customPDE.h. The constant that you attempted to access was " +
+             constant_name + "."));
+
     return boost::get<dealii::Tensor<2, 2 * dim - 1 + dim / 3>>(
       model_constants[model_constant_name_map.at(constant_name)]);
   };
@@ -172,6 +244,9 @@ public:
 
   // Nonlinear solver parameters
   NonlinearSolverParameters nonlinear_solver_parameters;
+
+  // Pinning point parameters
+  boost::unordered_map<unsigned int, dealii::Point<dim>> pinned_point;
 
   // Variable inputs (I might be able to leave some/all of these in
   // variable_attributes)
@@ -259,7 +334,7 @@ private:
   // Method to create the list of time steps where the results should be output
   // (called from loadInputParameters)
   std::vector<unsigned int>
-  setTimeStepList(const std::string                outputSpacingType,
+  setTimeStepList(const std::string               &outputSpacingType,
                   unsigned int                     numberOfOutputs,
                   const std::vector<unsigned int> &userGivenTimeStepList);
 
@@ -269,11 +344,11 @@ private:
 
   dealii::Tensor<2, 2 * dim - 1 + dim / 3>
   get_Cij_tensor(std::vector<double> elastic_constants,
-                 const std::string   elastic_const_symmetry) const;
+                 const std::string  &elastic_const_symmetry) const;
 
   dealii::Tensor<2, 2 * dim - 1 + dim / 3>
   getCIJMatrix(const elasticityModel       model,
-               const std::vector<double>   constants,
+               const std::vector<double>  &constants,
                dealii::ConditionalOStream &pcout) const;
 
   // Private nucleation variables

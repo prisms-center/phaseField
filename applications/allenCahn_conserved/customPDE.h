@@ -1,4 +1,6 @@
-#include "../../include/matrixFreePDE.h"
+#include "matrixFreePDE.h"
+
+using namespace dealii;
 
 template <int dim, int degree>
 class customPDE : public MatrixFreePDE<dim, degree>
@@ -11,59 +13,69 @@ public:
 
   // Function to set the initial conditions (in ICs_and_BCs.h)
   void
-  setInitialCondition(const dealii::Point<dim> &p,
-                      const unsigned int        index,
-                      double                   &scalar_IC,
-                      dealii::Vector<double>   &vector_IC);
+  setInitialCondition([[maybe_unused]] const Point<dim>  &p,
+                      [[maybe_unused]] const unsigned int index,
+                      [[maybe_unused]] double            &scalar_IC,
+                      [[maybe_unused]] Vector<double>    &vector_IC) override;
 
   // Function to set the non-uniform Dirichlet boundary conditions (in
   // ICs_and_BCs.h)
   void
-  setNonUniformDirichletBCs(const dealii::Point<dim> &p,
-                            const unsigned int        index,
-                            const unsigned int        direction,
-                            const double              time,
-                            double                   &scalar_BC,
-                            dealii::Vector<double>   &vector_BC);
+  setNonUniformDirichletBCs([[maybe_unused]] const Point<dim>  &p,
+                            [[maybe_unused]] const unsigned int index,
+                            [[maybe_unused]] const unsigned int direction,
+                            [[maybe_unused]] const double       time,
+                            [[maybe_unused]] double            &scalar_BC,
+                            [[maybe_unused]] Vector<double>    &vector_BC) override;
 
 private:
-#include "../../include/typeDefs.h"
+#include "typeDefs.h"
 
   const userInputParameters<dim> userInputs;
 
   // Function to set the RHS of the governing equations for explicit time
-  // dependent equations (in equations.h)
+  // dependent equations (in equations.cc)
   void
   explicitEquationRHS(
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-    dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const;
+    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+                                                              &variable_list,
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
 
   // Function to set the RHS of the governing equations for all other equations
   // (in equations.h)
   void
   nonExplicitEquationRHS(
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-    dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const;
+    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+                                                              &variable_list,
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
 
-  // Function to set the LHS of the governing equations (in equations.h)
+  // Function to set the LHS of the governing equations (in equations.cc)
   void
   equationLHS(
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-    dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const;
+    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+                                                              &variable_list,
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
 
-// Function to set postprocessing expressions (in postprocess.h)
+// Function to set postprocessing expressions (in postprocess.cc)
 #ifdef POSTPROCESS_FILE_EXISTS
   void
   postProcessedFields(
-    const variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> &pp_variable_list,
-    const dealii::Point<dim, dealii::VectorizedArray<double>>        q_point_loc) const;
+    [[maybe_unused]] const variableContainer<dim, degree, VectorizedArray<double>>
+      &variable_list,
+    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+                                                              &pp_variable_list,
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
 #endif
 
-// Function to set the nucleation probability (in nucleation.h)
+// Function to set the nucleation probability (in nucleation.cc)
 #ifdef NUCLEATION_FILE_EXISTS
   double
-  getNucleationProbability(variableValueContainer variable_value, double dV) const;
+  getNucleationProbability([[maybe_unused]] variableValueContainer variable_value,
+                           [[maybe_unused]] double                 dV) const override;
 #endif
 
   // ================================================================
@@ -73,7 +85,7 @@ private:
   // Function to override solveIncrement from
   // ../../src/matrixfree/solveIncrement.cc
   void
-  solveIncrement(bool skip_time_dependent);
+  solveIncrement(bool skip_time_dependent) override;
 
   // ================================================================
   // Model constants specific to this subclass
@@ -202,291 +214,11 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                       this->pcout << buffer;
                     }
 
-                  dealii::LinearAlgebra::distributed::Vector<double> solution_diff =
-                    *this->solutionSet[fieldIndex];
+                  nonlinear_it_converged =
+                    this->updateImplicitSolution(fieldIndex, nonlinear_it_index);
 
-                  // apply Dirichlet BC's
-                  //  Loops through all DoF to which ones have Dirichlet BCs
-                  //  applied, replace the ones that do with the Dirichlet value
-                  //  This clears the residual where we want to apply Dirichlet
-                  //  BCs, otherwise the solver sees a positive residual
-                  for (std::map<types::global_dof_index, double>::const_iterator it =
-                         this->valuesDirichletSet[fieldIndex]->begin();
-                       it != this->valuesDirichletSet[fieldIndex]->end();
-                       ++it)
-                    {
-                      if (this->residualSet[fieldIndex]->in_local_range(it->first))
-                        {
-                          (*this->residualSet[fieldIndex])(it->first) = 0.0;
-                        }
-                    }
-
-                  // solver controls
-                  double tol_value;
-                  if (MatrixFreePDE<dim, degree>::userInputs.linear_solver_parameters
-                        .getToleranceType(fieldIndex) == ABSOLUTE_RESIDUAL)
-                    {
-                      tol_value =
-                        MatrixFreePDE<dim, degree>::userInputs.linear_solver_parameters
-                          .getToleranceValue(fieldIndex);
-                    }
-                  else
-                    {
-                      tol_value =
-                        MatrixFreePDE<dim, degree>::userInputs.linear_solver_parameters
-                          .getToleranceValue(fieldIndex) *
-                        this->residualSet[fieldIndex]->l2_norm();
-                    }
-
-                  SolverControl solver_control(
-                    MatrixFreePDE<dim, degree>::userInputs.linear_solver_parameters
-                      .getMaxIterations(fieldIndex),
-                    tol_value);
-
-                  // Currently the only allowed solver is SolverCG, the
-                  // SolverType input variable is a dummy
-                  SolverCG<vectorType> solver(solver_control);
-
-                  // solve
-                  try
-                    {
-                      if (this->fields[fieldIndex].type == SCALAR)
-                        {
-                          this->dU_scalar = 0.0;
-                          solver.solve(*this,
-                                       this->dU_scalar,
-                                       *this->residualSet[fieldIndex],
-                                       IdentityMatrix(
-                                         this->solutionSet[fieldIndex]->size()));
-                        }
-                      else
-                        {
-                          this->dU_vector = 0.0;
-                          solver.solve(*this,
-                                       this->dU_vector,
-                                       *this->residualSet[fieldIndex],
-                                       IdentityMatrix(
-                                         this->solutionSet[fieldIndex]->size()));
-                        }
-                    }
-                  catch (...)
-                    {
-                      this->pcout << "\nWarning: linear solver did not converge as per "
-                                     "set tolerances. consider increasing the maximum "
-                                     "number of iterations or decreasing the solver "
-                                     "tolerance.\n";
-                    }
-
-                  if (userInputs.var_nonlinear[fieldIndex])
-                    {
-                      // Now that we have the calculated change in the solution,
-                      // we need to select a damping coefficient
-                      double damping_coefficient;
-
-                      if (MatrixFreePDE<dim, degree>::userInputs
-                            .nonlinear_solver_parameters.getBacktrackDampingFlag(
-                              fieldIndex))
-                        {
-                          vectorType solutionSet_old = *this->solutionSet[fieldIndex];
-                          double residual_old = this->residualSet[fieldIndex]->l2_norm();
-
-                          damping_coefficient            = 1.0;
-                          bool damping_coefficient_found = false;
-                          while (!damping_coefficient_found)
-                            {
-                              if (this->fields[fieldIndex].type == SCALAR)
-                                {
-                                  this->solutionSet[fieldIndex]->sadd(1.0,
-                                                                      damping_coefficient,
-                                                                      this->dU_scalar);
-                                }
-                              else
-                                {
-                                  this->solutionSet[fieldIndex]->sadd(1.0,
-                                                                      damping_coefficient,
-                                                                      this->dU_vector);
-                                }
-
-                              this->computeNonexplicitRHS();
-
-                              for (std::map<types::global_dof_index,
-                                            double>::const_iterator it =
-                                     this->valuesDirichletSet[fieldIndex]->begin();
-                                   it != this->valuesDirichletSet[fieldIndex]->end();
-                                   ++it)
-                                {
-                                  if (this->residualSet[fieldIndex]->in_local_range(
-                                        it->first))
-                                    {
-                                      (*this->residualSet[fieldIndex])(it->first) = 0.0;
-                                    }
-                                }
-
-                              double residual_new =
-                                this->residualSet[fieldIndex]->l2_norm();
-
-                              if (this->currentIncrement % userInputs.skip_print_steps ==
-                                  0)
-                                {
-                                  this->pcout << "    Old residual: " << residual_old
-                                              << " Damping Coeff: " << damping_coefficient
-                                              << " New Residual: " << residual_new
-                                              << std::endl;
-                                }
-
-                              // An improved approach would use the
-                              // Armijo–Goldstein condition to ensure a
-                              // sufficent decrease in the residual. This way is
-                              // just scales the residual.
-                              if ((residual_new <
-                                   (residual_old *
-                                    MatrixFreePDE<dim, degree>::userInputs
-                                      .nonlinear_solver_parameters
-                                      .getBacktrackResidualDecreaseCoeff(fieldIndex))) ||
-                                  damping_coefficient < 1.0e-4)
-                                {
-                                  damping_coefficient_found = true;
-                                }
-                              else
-                                {
-                                  damping_coefficient *=
-                                    MatrixFreePDE<dim, degree>::userInputs
-                                      .nonlinear_solver_parameters
-                                      .getBacktrackStepModifier(fieldIndex);
-                                  *this->solutionSet[fieldIndex] = solutionSet_old;
-                                }
-                            }
-                        }
-                      else
-                        {
-                          damping_coefficient =
-                            MatrixFreePDE<dim, degree>::userInputs
-                              .nonlinear_solver_parameters.getDefaultDampingCoefficient(
-                                fieldIndex);
-
-                          if (this->fields[fieldIndex].type == SCALAR)
-                            {
-                              this->solutionSet[fieldIndex]->sadd(1.0,
-                                                                  damping_coefficient,
-                                                                  this->dU_scalar);
-                            }
-                          else
-                            {
-                              this->solutionSet[fieldIndex]->sadd(1.0,
-                                                                  damping_coefficient,
-                                                                  this->dU_vector);
-                            }
-                        }
-
-                      if (this->currentIncrement % userInputs.skip_print_steps == 0)
-                        {
-                          double dU_norm;
-                          if (this->fields[fieldIndex].type == SCALAR)
-                            {
-                              dU_norm = this->dU_scalar.l2_norm();
-                            }
-                          else
-                            {
-                              dU_norm = this->dU_vector.l2_norm();
-                            }
-                          snprintf(buffer,
-                                   sizeof(buffer),
-                                   "field '%2s' [linear solve]: initial "
-                                   "residual:%12.6e, current residual:%12.6e, "
-                                   "nsteps:%u, tolerance criterion:%12.6e, "
-                                   "solution: %12.6e, dU: %12.6e\n",
-                                   this->fields[fieldIndex].name.c_str(),
-                                   this->residualSet[fieldIndex]->l2_norm(),
-                                   solver_control.last_value(),
-                                   solver_control.last_step(),
-                                   solver_control.tolerance(),
-                                   this->solutionSet[fieldIndex]->l2_norm(),
-                                   dU_norm);
-                          this->pcout << buffer;
-                        }
-
-                      // Check to see if this individual variable has converged
-                      if (MatrixFreePDE<dim, degree>::userInputs
-                            .nonlinear_solver_parameters.getToleranceType(fieldIndex) ==
-                          ABSOLUTE_SOLUTION_CHANGE)
-                        {
-                          double diff;
-
-                          if (this->fields[fieldIndex].type == SCALAR)
-                            {
-                              diff = this->dU_scalar.l2_norm();
-                            }
-                          else
-                            {
-                              diff = this->dU_vector.l2_norm();
-                            }
-                          if (this->currentIncrement % userInputs.skip_print_steps == 0)
-                            {
-                              this->pcout << "Relative difference between "
-                                             "nonlinear iterations: "
-                                          << diff << " " << nonlinear_it_index << " "
-                                          << this->currentIncrement << std::endl;
-                            }
-
-                          if (diff > MatrixFreePDE<dim, degree>::userInputs
-                                       .nonlinear_solver_parameters.getToleranceValue(
-                                         fieldIndex) &&
-                              nonlinear_it_index <
-                                MatrixFreePDE<dim, degree>::userInputs
-                                  .nonlinear_solver_parameters.getMaxIterations())
-                            {
-                              nonlinear_it_converged = false;
-                            }
-                        }
-                      else
-                        {
-                          std::cerr << "PRISMS-PF Error: Nonlinear solver tolerance "
-                                       "types other than ABSOLUTE_CHANGE have yet to "
-                                       "be implemented."
-                                    << std::endl;
-                        }
-                    }
-                  else
-                    {
-                      if (nonlinear_it_index == 0)
-                        {
-                          if (this->fields[fieldIndex].type == SCALAR)
-                            {
-                              *this->solutionSet[fieldIndex] += this->dU_scalar;
-                            }
-                          else
-                            {
-                              *this->solutionSet[fieldIndex] += this->dU_vector;
-                            }
-
-                          if (this->currentIncrement % userInputs.skip_print_steps == 0)
-                            {
-                              double dU_norm;
-                              if (this->fields[fieldIndex].type == SCALAR)
-                                {
-                                  dU_norm = this->dU_scalar.l2_norm();
-                                }
-                              else
-                                {
-                                  dU_norm = this->dU_vector.l2_norm();
-                                }
-                              snprintf(buffer,
-                                       sizeof(buffer),
-                                       "field '%2s' [linear solve]: initial "
-                                       "residual:%12.6e, current residual:%12.6e, "
-                                       "nsteps:%u, tolerance criterion:%12.6e, "
-                                       "solution: %12.6e, dU: %12.6e\n",
-                                       this->fields[fieldIndex].name.c_str(),
-                                       this->residualSet[fieldIndex]->l2_norm(),
-                                       solver_control.last_value(),
-                                       solver_control.last_step(),
-                                       solver_control.tolerance(),
-                                       this->solutionSet[fieldIndex]->l2_norm(),
-                                       dU_norm);
-                              this->pcout << buffer;
-                            }
-                        }
-                    }
+                  // Apply Boundary conditions
+                  this->applyBCs(fieldIndex);
                 }
               else if (this->fields[fieldIndex].pdetype == AUXILIARY)
                 {

@@ -42,6 +42,8 @@ MatrixFreePDE<dim, degree>::getExplicitRHS(
 
       unsigned int num_q_points = variable_list.get_num_q_points();
 
+      dealii::VectorizedArray<double> local_element_volume = element_volume[cell];
+
       // loop over quadrature points
       for (unsigned int q = 0; q < num_q_points; ++q)
         {
@@ -51,7 +53,7 @@ MatrixFreePDE<dim, degree>::getExplicitRHS(
             variable_list.get_q_point_location();
 
           // Calculate the residuals
-          explicitEquationRHS(variable_list, q_point_loc);
+          explicitEquationRHS(variable_list, q_point_loc, local_element_volume);
         }
 
       variable_list.integrate_and_distribute(dst);
@@ -97,6 +99,8 @@ MatrixFreePDE<dim, degree>::getNonexplicitRHS(
 
       unsigned int num_q_points = variable_list.get_num_q_points();
 
+      dealii::VectorizedArray<double> local_element_volume = element_volume[cell];
+
       // loop over quadrature points
       for (unsigned int q = 0; q < num_q_points; ++q)
         {
@@ -106,7 +110,7 @@ MatrixFreePDE<dim, degree>::getNonexplicitRHS(
             variable_list.get_q_point_location();
 
           // Calculate the residuals
-          nonExplicitEquationRHS(variable_list, q_point_loc);
+          nonExplicitEquationRHS(variable_list, q_point_loc, local_element_volume);
         }
 
       variable_list.integrate_and_distribute(dst);

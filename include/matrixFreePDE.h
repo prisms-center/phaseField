@@ -35,6 +35,7 @@
 #include <deal.II/numerics/vector_tools.h>
 
 // PRISMS headers
+#include "AdaptiveRefinement.h"
 #include "SimplifiedGrainRepresentation.h"
 #include "fields.h"
 #include "nucleus.h"
@@ -44,19 +45,18 @@
 
 #include "../src/models/mechanics/computeStress.h"
 
+using namespace dealii;
+
 // define data types
 #ifndef scalarType
-typedef dealii::VectorizedArray<double> scalarType;
+typedef VectorizedArray<double> scalarType;
 #endif
 #ifndef vectorType
-typedef dealii::LinearAlgebra::distributed::Vector<double> vectorType;
+typedef LinearAlgebra::distributed::Vector<double> vectorType;
 #endif
 
 // macro for constants
 #define constV(a) make_vectorized_array(a)
-
-//
-using namespace dealii;
 
 //
 // base class for matrix free PDE's
@@ -128,19 +128,19 @@ public:
 
   // Initial conditions function
   virtual void
-  setInitialCondition(const dealii::Point<dim> &p,
-                      const unsigned int        index,
-                      double                   &scalar_IC,
-                      dealii::Vector<double>   &vector_IC) = 0;
+  setInitialCondition([[maybe_unused]] const Point<dim>  &p,
+                      [[maybe_unused]] const unsigned int index,
+                      [[maybe_unused]] double            &scalar_IC,
+                      [[maybe_unused]] Vector<double>    &vector_IC) = 0;
 
   // Non-uniform boundary conditions function
   virtual void
-  setNonUniformDirichletBCs(const dealii::Point<dim> &p,
-                            const unsigned int        index,
-                            const unsigned int        direction,
-                            const double              time,
-                            double                   &scalar_BC,
-                            dealii::Vector<double>   &vector_BC) = 0;
+  setNonUniformDirichletBCs([[maybe_unused]] const Point<dim>  &p,
+                            [[maybe_unused]] const unsigned int index,
+                            [[maybe_unused]] const unsigned int direction,
+                            [[maybe_unused]] const double       time,
+                            [[maybe_unused]] double            &scalar_BC,
+                            [[maybe_unused]] Vector<double>    &vector_BC) = 0;
 
 protected:
   userInputParameters<dim> userInputs;
@@ -262,30 +262,24 @@ protected:
   void
   updateExplicitSolution(unsigned int fieldIndex);
 
+  /*Method to compute an implicit timestep*/
+  bool
+  updateImplicitSolution(unsigned int fieldIndex, unsigned int nonlinear_it_index);
+
   /*Method to apply boundary conditions*/
   void
   applyBCs(unsigned int fieldIndex);
 
-  /*AMR methods*/
   /**
-   * Method that actually changes the triangulation based on refine/coarsen
-   * flags set previously.
+   * \brief Compute element volume for the triangulation
    */
   void
-  refineGrid();
+  compute_element_volume();
 
   /**
-   * Method to control the overall flow of adaptive mesh refinement.
+   * \brief Vector that stores element volumes
    */
-  void
-  adaptiveRefine(unsigned int _currentIncrement);
-
-  /**
-   * Virtual method to define the the criterion for refining or coarsening the
-   * mesh. This method sets refine/coarsen flags that are read by refineGrid.
-   */
-  virtual void
-  adaptiveRefineCriterion();
+  dealii::AlignedVector<dealii::VectorizedArray<double>> element_volume;
 
   /*Method to compute the right hand side (RHS) residual vectors*/
   void
@@ -335,29 +329,37 @@ protected:
 
   virtual void
   explicitEquationRHS(
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const = 0;
+    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+                                                              &variable_list,
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] const VectorizedArray<double>             element_volume) const = 0;
 
   virtual void
   nonExplicitEquationRHS(
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const = 0;
+    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+                                                              &variable_list,
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] const VectorizedArray<double>             element_volume) const = 0;
 
   virtual void
-  equationLHS(
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-    dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const = 0;
+  equationLHS([[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+                                                                        &variable_list,
+              [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+              [[maybe_unused]] const VectorizedArray<double> element_volume) const = 0;
 
   virtual void
   postProcessedFields(
-    const variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-    variableContainer<dim, degree, dealii::VectorizedArray<double>> &pp_variable_list,
-    const dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const {};
+    [[maybe_unused]] const variableContainer<dim, degree, VectorizedArray<double>>
+      &variable_list,
+    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+                                                              &pp_variable_list,
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] const VectorizedArray<double>             element_volume) const {};
   void
   computePostProcessedFields(std::vector<vectorType *> &postProcessedSet);
 
   void
-  getPostProcessedFields(const dealii::MatrixFree<dim, double>       &data,
+  getPostProcessedFields(const MatrixFree<dim, double>               &data,
                          std::vector<vectorType *>                   &dst,
                          const std::vector<vectorType *>             &src,
                          const std::pair<unsigned int, unsigned int> &cell_range);
@@ -365,7 +367,7 @@ protected:
   // methods to apply dirichlet BC's
   /*Map of degrees of freedom to the corresponding Dirichlet boundary
    * conditions, if any.*/
-  std::vector<std::map<dealii::types::global_dof_index, double> *> valuesDirichletSet;
+  std::vector<std::map<types::global_dof_index, double> *> valuesDirichletSet;
   /*Virtual method to mark the boundaries for applying Dirichlet boundary
    * conditions.  This is usually expected to be provided by the user.*/
   void
@@ -383,12 +385,21 @@ protected:
   setPeriodicity();
   void
   setPeriodicityConstraints(AffineConstraints<double> *, const DoFHandler<dim> *) const;
+
+  /**
+   * \brief Set constraints to pin the solution to 0 at a certain vertex. This is
+   * automatically done at the origin if no value terms are detected in your dependencies
+   * in a time_independent or implicit solve.
+   *
+   * \param constraints The constraint set.
+   * \param dof_handler The list of the degrees of freedom.
+   * \param target_point The point where the solution is constrained. This is the origin
+   * by default.
+   */
   void
-  getComponentsWithRigidBodyModes(std::vector<int> &) const;
-  void
-  setRigidBodyModeConstraints(const std::vector<int>,
-                              AffineConstraints<double> *,
-                              const DoFHandler<dim> *) const;
+  set_rigid_body_mode_constraints(AffineConstraints<double> *constraints,
+                                  const DoFHandler<dim>     *dof_handler,
+                                  const Point<dim> target_point = Point<dim>()) const;
 
   // methods to apply initial conditions
   /*Virtual method to apply initial conditions.  This is usually expected to be
@@ -415,7 +426,7 @@ protected:
   move_file(const std::string &, const std::string &);
 
   void
-  verify_checkpoint_file_exists(const std::string filename);
+  verify_checkpoint_file_exists(const std::string &filename);
 
   // --------------------------------------------------------------------------
   // Nucleation methods and variables
@@ -436,24 +447,23 @@ protected:
   void
   refineMeshNearNuclei(std::vector<nucleus<dim>> newnuclei);
   double
-  weightedDistanceFromNucleusCenter(const dealii::Point<dim, double> center,
-                                    const std::vector<double>        semiaxes,
-                                    const dealii::Point<dim, double> q_point_loc,
-                                    const unsigned int               var_index) const;
-  dealii::VectorizedArray<double>
-  weightedDistanceFromNucleusCenter(
-    const dealii::Point<dim, double>                          center,
-    const std::vector<double>                                 semiaxes,
-    const dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc,
-    const unsigned int                                        var_index) const;
+  weightedDistanceFromNucleusCenter(const Point<dim, double>   center,
+                                    const std::vector<double> &semiaxes,
+                                    const Point<dim, double>   q_point_loc,
+                                    const unsigned int         var_index) const;
+  VectorizedArray<double>
+  weightedDistanceFromNucleusCenter(const Point<dim, double>                  center,
+                                    const std::vector<double>                &semiaxes,
+                                    const Point<dim, VectorizedArray<double>> q_point_loc,
+                                    const unsigned int var_index) const;
 
   // Method to obtain the nucleation probability for an element, nontrival case
   // must be implemented in the subsclass
   virtual double
   getNucleationProbability(variableValueContainer,
                            double,
-                           dealii::Point<dim>,
-                           unsigned int variable_index) const
+                           Point<dim>,
+                           [[maybe_unused]] unsigned int variable_index) const
   {
     return 0.0;
   };
@@ -482,7 +492,6 @@ protected:
   bool hasExplicitEquation;
   bool hasNonExplicitEquation;
   //
-  unsigned int parabolicFieldIndex, ellipticFieldIndex;
   double       currentTime;
   unsigned int currentIncrement, currentOutput, currentCheckpoint,
     current_grain_reassignment;
@@ -499,16 +508,8 @@ protected:
   unsigned int integral_index;
   std::mutex   assembler_lock;
 
-  void
-  computeIntegralMF(double                         &integratedField,
-                    int                             index,
-                    const std::vector<vectorType *> postProcessedSet);
-
-  void
-  getIntegralMF(const MatrixFree<dim, double>               &data,
-                std::vector<vectorType *>                   &dst,
-                const std::vector<vectorType *>             &src,
-                const std::pair<unsigned int, unsigned int> &cell_range);
+  /*AMR methods*/
+  AdaptiveRefinement<dim, degree> AMR;
 };
 
 #endif

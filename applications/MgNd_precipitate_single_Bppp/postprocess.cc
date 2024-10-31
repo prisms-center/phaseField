@@ -47,17 +47,18 @@ variableAttributeLoader::loadPostProcessorVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::postProcessedFields(
-  const variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-  variableContainer<dim, degree, dealii::VectorizedArray<double>>       &pp_variable_list,
-  const dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc) const
+  [[maybe_unused]] const variableContainer<dim, degree, VectorizedArray<double>>
+    &variable_list,
+  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+                                                            &pp_variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
   /// The concentration and its derivatives (names here should match those in
   /// the macros above)
   scalarvalueType c = variable_list.get_scalar_value(0);
-
-  scalargradType mux = variable_list.get_scalar_gradient(1);
 
   // The first order parameter and its derivatives (names here should match
   // those in the macros above)
@@ -75,8 +76,7 @@ customPDE<dim, degree>::postProcessedFields(
   scalarvalueType hn1V = (6.0 * n1 - 6.0 * n1 * n1);
 
   // This double-well function can be used to tune the interfacial energy
-  scalarvalueType fbarrierV  = (n1 * n1 - 2.0 * n1 * n1 * n1 + n1 * n1 * n1 * n1);
-  scalarvalueType fbarriernV = (2.0 * n1 - 6.0 * n1 * n1 + 4.0 * n1 * n1 * n1);
+  scalarvalueType fbarrierV = (n1 * n1 - 2.0 * n1 * n1 * n1 + n1 * n1 * n1 * n1);
 
   // Calculate c_alpha and c_beta from c
   scalarvalueType c_alpha =
@@ -120,8 +120,7 @@ customPDE<dim, degree>::postProcessedFields(
 
   // Calculate the stress-free transformation strain and its derivatives at the
   // quadrature point
-  dealii::Tensor<2, dim, dealii::VectorizedArray<double>> sfts1, sfts1c, sfts1cc, sfts1n,
-    sfts1cn;
+  Tensor<2, dim, VectorizedArray<double>> sfts1, sfts1c, sfts1cc, sfts1n, sfts1cn;
 
   for (unsigned int i = 0; i < dim; i++)
     {
@@ -138,7 +137,7 @@ customPDE<dim, degree>::postProcessedFields(
     }
 
   // compute E2=(E-E0)
-  dealii::VectorizedArray<double> E2[dim][dim], S[dim][dim];
+  VectorizedArray<double> E2[dim][dim], S[dim][dim];
 
   for (unsigned int i = 0; i < dim; i++)
     {
@@ -150,8 +149,7 @@ customPDE<dim, degree>::postProcessedFields(
 
   // compute stress
   // S=C*(E-E0)
-  dealii::VectorizedArray<double> CIJ_combined[2 * dim - 1 + dim / 3]
-                                              [2 * dim - 1 + dim / 3];
+  VectorizedArray<double> CIJ_combined[2 * dim - 1 + dim / 3][2 * dim - 1 + dim / 3];
 
   if (n_dependent_stiffness == true)
     {
@@ -203,7 +201,7 @@ customPDE<dim, degree>::postProcessedFields(
     }
 
   // The Von Mises Stress
-  dealii::VectorizedArray<double> vm_stress;
+  VectorizedArray<double> vm_stress;
   if (dim == 3)
     {
       vm_stress = (S[0][0] - S[1][1]) * (S[0][0] - S[1][1]) +
@@ -221,13 +219,11 @@ customPDE<dim, degree>::postProcessedFields(
       vm_stress = std::sqrt(vm_stress);
     }
 
-  scalarvalueType dn_dt_chem, dn_dt_el;
-
   // Compute one of the stress terms in the order parameter chemical potential,
   // nDependentMisfitACp = -C*(E-E0)*(E0_n)
-  dealii::VectorizedArray<double> nDependentMisfitAC1    = constV(0.0);
-  dealii::VectorizedArray<double> nDependentMisfitAC1_t1 = constV(0.0);
-  dealii::VectorizedArray<double> nDependentMisfitAC1_t2 = constV(0.0);
+  VectorizedArray<double> nDependentMisfitAC1    = constV(0.0);
+  VectorizedArray<double> nDependentMisfitAC1_t1 = constV(0.0);
+  VectorizedArray<double> nDependentMisfitAC1_t2 = constV(0.0);
 
   for (unsigned int i = 0; i < dim; i++)
     {
@@ -241,8 +237,8 @@ customPDE<dim, degree>::postProcessedFields(
 
   // Compute the other stress term in the order parameter chemical potential,
   // heterMechACp = 0.5*Hn*(C_beta-C_alpha)*(E-E0)*(E-E0)
-  dealii::VectorizedArray<double> heterMechAC1 = constV(0.0);
-  dealii::VectorizedArray<double> S2[dim][dim];
+  VectorizedArray<double> heterMechAC1 = constV(0.0);
+  VectorizedArray<double> S2[dim][dim];
 
   if (n_dependent_stiffness == true)
     {

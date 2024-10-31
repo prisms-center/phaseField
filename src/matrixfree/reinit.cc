@@ -12,27 +12,26 @@ MatrixFreePDE<dim, degree>::reinit()
   // setup system
   pcout << "Reinitializing matrix free object\n";
   totalDOFs = 0;
-  for (typename std::vector<Field<dim>>::iterator it = fields.begin(); it != fields.end();
-       ++it)
+  for (const auto &field : fields)
     {
-      currentFieldIndex = it->index;
+      currentFieldIndex = field.index;
 
       char buffer[100];
 
       // create FESystem
       FESystem<dim> *fe;
-      fe = FESet.at(it->index);
+      fe = FESet.at(field.index);
 
       // distribute DOFs
       DoFHandler<dim> *dof_handler;
-      dof_handler = dofHandlersSet_nonconst.at(it->index);
+      dof_handler = dofHandlersSet_nonconst.at(field.index);
 
       dof_handler->distribute_dofs(*fe);
       totalDOFs += dof_handler->n_dofs();
 
       // extract locally_relevant_dofs
       IndexSet *locally_relevant_dofs;
-      locally_relevant_dofs = locally_relevant_dofsSet_nonconst.at(it->index);
+      locally_relevant_dofs = locally_relevant_dofsSet_nonconst.at(field.index);
 
       locally_relevant_dofs->clear();
       DoFTools::extract_locally_relevant_dofs(*dof_handler, *locally_relevant_dofs);
@@ -40,8 +39,8 @@ MatrixFreePDE<dim, degree>::reinit()
       // create constraints
       AffineConstraints<double> *constraintsDirichlet, *constraintsOther;
 
-      constraintsDirichlet = constraintsDirichletSet_nonconst.at(it->index);
-      constraintsOther     = constraintsOtherSet_nonconst.at(it->index);
+      constraintsDirichlet = constraintsDirichletSet_nonconst.at(field.index);
+      constraintsOther     = constraintsOtherSet_nonconst.at(field.index);
 
       constraintsDirichlet->clear();
       constraintsDirichlet->reinit(*locally_relevant_dofs);
@@ -51,11 +50,14 @@ MatrixFreePDE<dim, degree>::reinit()
       // Get hanging node constraints
       DoFTools::make_hanging_node_constraints(*dof_handler, *constraintsOther);
 
-      // Add a constraint to fix the value at the origin to zero if all BCs are
-      // zero-derivative or periodic
-      std::vector<int> rigidBodyModeComponents;
-      getComponentsWithRigidBodyModes(rigidBodyModeComponents);
-      setRigidBodyModeConstraints(rigidBodyModeComponents, constraintsOther, dof_handler);
+      // Pin solution
+      if (userInputs.pinned_point.find(currentFieldIndex) !=
+          userInputs.pinned_point.end())
+        {
+          set_rigid_body_mode_constraints(constraintsOther,
+                                          dof_handler,
+                                          userInputs.pinned_point[currentFieldIndex]);
+        }
 
       // Get constraints for periodic BCs
       setPeriodicityConstraints(constraintsOther, dof_handler);
@@ -67,14 +69,14 @@ MatrixFreePDE<dim, degree>::reinit()
       constraintsOther->close();
 
       // Store Dirichlet BC DOF's
-      valuesDirichletSet[it->index]->clear();
+      valuesDirichletSet[field.index]->clear();
       for (types::global_dof_index i = 0; i < dof_handler->n_dofs(); i++)
         {
           if (locally_relevant_dofs->is_element(i))
             {
               if (constraintsDirichlet->is_constrained(i))
                 {
-                  (*valuesDirichletSet[it->index])[i] =
+                  (*valuesDirichletSet[field.index])[i] =
                     constraintsDirichlet->get_inhomogeneity(i);
                 }
             }
@@ -83,7 +85,7 @@ MatrixFreePDE<dim, degree>::reinit()
       snprintf(buffer,
                sizeof(buffer),
                "field '%2s' DOF : %u (Constraint DOF : %u)\n",
-               it->name.c_str(),
+               field.name.c_str(),
                dof_handler->n_dofs(),
                constraintsDirichlet->n_constraints());
       pcout << buffer;
@@ -198,6 +200,9 @@ MatrixFreePDE<dim, degree>::reinit()
       constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
       solutionSet[fieldIndex]->update_ghost_values();
     }
+
+  // Once the initial triangulation has been set, compute element volume
+  compute_element_volume();
 
   computing_timer.leave_subsection("matrixFreePDE: reinitialization");
 }

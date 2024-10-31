@@ -77,7 +77,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
             new_criterion.variable_name  = input_file_reader.var_names.at(i);
             if (boost::iequals(crit_type_string, "VALUE"))
               {
-                new_criterion.criterion_type = VALUE;
+                new_criterion.criterion_type = criterion_value;
                 new_criterion.value_lower_bound =
                   parameter_handler.get_double("Value lower bound");
                 new_criterion.value_upper_bound =
@@ -97,13 +97,13 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
               }
             else if (boost::iequals(crit_type_string, "GRADIENT"))
               {
-                new_criterion.criterion_type = GRADIENT;
+                new_criterion.criterion_type = criterion_gradient;
                 new_criterion.gradient_lower_bound =
                   parameter_handler.get_double("Gradient magnitude lower bound");
               }
             else if (boost::iequals(crit_type_string, "VALUE_AND_GRADIENT"))
               {
-                new_criterion.criterion_type = VALUE_AND_GRADIENT;
+                new_criterion.criterion_type = criterion_value | criterion_gradient;
                 new_criterion.value_lower_bound =
                   parameter_handler.get_double("Value lower bound");
                 new_criterion.value_upper_bound =
@@ -313,8 +313,11 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
     dealii::Utilities::string_to_int(dealii::Utilities::split_string_list(
       parameter_handler.get("List of time steps to output")));
   std::vector<unsigned int> user_given_time_step_list;
-  for (unsigned int i = 0; i < user_given_time_step_list_temp.size(); i++)
-    user_given_time_step_list.push_back(user_given_time_step_list_temp[i]);
+  user_given_time_step_list.reserve(user_given_time_step_list_temp.size());
+  for (const auto &time_step : user_given_time_step_list_temp)
+    {
+      user_given_time_step_list.push_back(time_step);
+    }
 
   skip_print_steps = parameter_handler.get_integer("Skip print steps");
   output_file_type = parameter_handler.get("Output file type");
@@ -343,10 +346,9 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
   // If all of the variables are ELLIPTIC, then totalIncrements should be 1 and
   // finalTime should be 0
   bool only_time_independent_pdes = true;
-  for (unsigned int i = 0; i < var_eq_type.size(); i++)
+  for (const auto &var_type : var_eq_type)
     {
-      if (var_eq_type.at(i) == EXPLICIT_TIME_DEPENDENT ||
-          var_eq_type.at(i) == IMPLICIT_TIME_DEPENDENT)
+      if (var_type == EXPLICIT_TIME_DEPENDENT || var_type == IMPLICIT_TIME_DEPENDENT)
         {
           only_time_independent_pdes = false;
           break;
@@ -450,10 +452,12 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
     dealii::Utilities::string_to_int(dealii::Utilities::split_string_list(
       parameter_handler.get("List of time steps to save checkpoints")));
   std::vector<unsigned int> user_given_checkpoint_time_step_list;
-  for (unsigned int i = 0; i < user_given_checkpoint_time_step_list_temp.size(); i++)
-    user_given_checkpoint_time_step_list.push_back(
-      user_given_checkpoint_time_step_list_temp[i]);
-
+  user_given_checkpoint_time_step_list.reserve(
+    user_given_checkpoint_time_step_list_temp.size());
+  for (const auto &checkpoint_step : user_given_checkpoint_time_step_list_temp)
+    {
+      user_given_checkpoint_time_step_list.push_back(checkpoint_step);
+    }
   checkpointTimeStepList = setTimeStepList(checkpoint_condition,
                                            num_checkpoints,
                                            user_given_checkpoint_time_step_list);
@@ -571,13 +575,12 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
   std::vector<std::string> variables_for_remapping_str =
     dealii::Utilities::split_string_list(
       parameter_handler.get("Order parameter fields for grain reassignment"));
-  for (unsigned int field = 0; field < variables_for_remapping_str.size(); field++)
+  for (const auto &field : variables_for_remapping_str)
     {
       bool field_found = false;
       for (unsigned int i = 0; i < number_of_variables; i++)
         {
-          if (boost::iequals(variables_for_remapping_str[field],
-                             variable_attributes.var_name_list[i].second))
+          if (boost::iequals(field, variable_attributes.var_name_list[i].second))
             {
               variables_for_remapping.push_back(
                 variable_attributes.var_name_list[i].first);
@@ -591,7 +594,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
                        "parameter fields used for grain reassignment must "
                        "match the variable names in equations.h."
                     << std::endl;
-          std::cerr << variables_for_remapping_str[field] << std::endl;
+          std::cerr << field << std::endl;
           abort();
         }
     }
@@ -627,11 +630,45 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
           bc_text.append(", y component");
           list_of_BCs.push_back(parameter_handler.get(bc_text));
 
-          bc_text = "Boundary condition for variable ";
-          bc_text.append(var_name.at(i));
-          bc_text.append(", z component");
-          list_of_BCs.push_back(parameter_handler.get(bc_text));
+          if (dim > 2)
+            {
+              bc_text = "Boundary condition for variable ";
+              bc_text.append(var_name.at(i));
+              bc_text.append(", z component");
+              list_of_BCs.push_back(parameter_handler.get(bc_text));
+            }
         }
+    }
+
+  /*----------------------
+  |  Pinning point
+  -----------------------*/
+  for (unsigned int i = 0; i < number_of_variables; i++)
+    {
+      std::string pinning_text = "Pinning point: ";
+      pinning_text.append(input_file_reader.var_names.at(i));
+      parameter_handler.enter_subsection(pinning_text);
+
+      // Skip if the default
+      if (parameter_handler.get_double("x") == -1.0)
+        {
+          parameter_handler.leave_subsection();
+          continue;
+        }
+
+      // Otherwise, fill out point
+      if (dim == 2)
+        {
+          pinned_point[i] = dealii::Point<dim>(parameter_handler.get_double("x"),
+                                               parameter_handler.get_double("y"));
+        }
+      else
+        {
+          pinned_point[i] = dealii::Point<dim>(parameter_handler.get_double("x"),
+                                               parameter_handler.get_double("y"),
+                                               parameter_handler.get_double("z"));
+        }
+      parameter_handler.leave_subsection();
     }
 
   // Load the BC information from the strings into a varBCs object

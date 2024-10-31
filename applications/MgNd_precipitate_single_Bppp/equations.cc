@@ -67,8 +67,9 @@ variableAttributeLoader::loadVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::explicitEquationRHS(
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-  dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const
+  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
@@ -102,11 +103,9 @@ customPDE<dim, degree>::explicitEquationRHS(
   scalarvalueType facV  = (2.0 * A2 * c_alpha + A1);
   scalarvalueType faccV = (constV(2.0) * A2);
   scalarvalueType fbV   = (B2 * c_beta * c_beta + B1 * c_beta + B0);
-  scalarvalueType fbcV  = (2.0 * B2 * c_beta + B1);
   scalarvalueType fbccV = (constV(2.0) * B2);
 
   // This double-well function can be used to tune the interfacial energy
-  scalarvalueType fbarrierV  = (n1 * n1 - 2.0 * n1 * n1 * n1 + n1 * n1 * n1 * n1);
   scalarvalueType fbarriernV = (2.0 * n1 - 6.0 * n1 * n1 + 4.0 * n1 * n1 * n1);
 
   // Calculate the derivatives of c_beta (derivatives of c_alpha aren't needed)
@@ -124,8 +123,7 @@ customPDE<dim, degree>::explicitEquationRHS(
 
   // Calculate the stress-free transformation strain and its derivatives at the
   // quadrature point
-  dealii::Tensor<2, dim, dealii::VectorizedArray<double>> sfts1, sfts1c, sfts1cc, sfts1n,
-    sfts1cn;
+  Tensor<2, dim, VectorizedArray<double>> sfts1, sfts1c, sfts1cc, sfts1n, sfts1cn;
 
   for (unsigned int i = 0; i < dim; i++)
     {
@@ -142,7 +140,7 @@ customPDE<dim, degree>::explicitEquationRHS(
     }
 
   // compute E2=(E-E0)
-  dealii::VectorizedArray<double> E2[dim][dim], S[dim][dim];
+  VectorizedArray<double> E2[dim][dim], S[dim][dim];
 
   for (unsigned int i = 0; i < dim; i++)
     {
@@ -155,7 +153,7 @@ customPDE<dim, degree>::explicitEquationRHS(
   // compute stress
   // S=C*(E-E0)
   //  Compute stress tensor (which is equal to the residual, Rux)
-  dealii::VectorizedArray<double> CIJ_combined[CIJ_tensor_size][CIJ_tensor_size];
+  VectorizedArray<double> CIJ_combined[CIJ_tensor_size][CIJ_tensor_size];
 
   if (n_dependent_stiffness == true)
     {
@@ -176,7 +174,7 @@ customPDE<dim, degree>::explicitEquationRHS(
 
   // Compute one of the stress terms in the order parameter chemical potential,
   // nDependentMisfitACp = -C*(E-E0)*(E0_n)
-  dealii::VectorizedArray<double> nDependentMisfitAC1 = constV(0.0);
+  VectorizedArray<double> nDependentMisfitAC1 = constV(0.0);
 
   for (unsigned int i = 0; i < dim; i++)
     {
@@ -188,8 +186,8 @@ customPDE<dim, degree>::explicitEquationRHS(
 
   // Compute the other stress term in the order parameter chemical potential,
   // heterMechACp = 0.5*Hn*(C_beta-C_alpha)*(E-E0)*(E-E0)
-  dealii::VectorizedArray<double> heterMechAC1 = constV(0.0);
-  dealii::VectorizedArray<double> S2[dim][dim];
+  VectorizedArray<double> heterMechAC1 = constV(0.0);
+  VectorizedArray<double> S2[dim][dim];
 
   if (n_dependent_stiffness == true)
     {
@@ -252,8 +250,9 @@ customPDE<dim, degree>::explicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::nonExplicitEquationRHS(
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-  dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const
+  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
@@ -280,10 +279,8 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
   scalarvalueType c_beta =
     ((A2 * c + 0.5 * (A1 - B1) * (1.0 - h1V)) / (A2 * h1V + B2 * (1.0 - h1V)));
 
-  scalarvalueType faV   = (A2 * c_alpha * c_alpha + A1 * c_alpha + A0);
   scalarvalueType facV  = (2.0 * A2 * c_alpha + A1);
   scalarvalueType faccV = (constV(2.0) * A2);
-  scalarvalueType fbV   = (B2 * c_beta * c_beta + B1 * c_beta + B0);
   scalarvalueType fbcV  = (2.0 * B2 * c_beta + B1);
   scalarvalueType fbccV = (constV(2.0) * B2);
 
@@ -306,8 +303,7 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 
   // Calculate the stress-free transformation strain and its derivatives at the
   // quadrature point
-  dealii::Tensor<2, dim, dealii::VectorizedArray<double>> sfts1, sfts1c, sfts1cc, sfts1n,
-    sfts1cn;
+  Tensor<2, dim, VectorizedArray<double>> sfts1, sfts1c, sfts1cc, sfts1n, sfts1cn;
 
   for (unsigned int i = 0; i < dim; i++)
     {
@@ -324,7 +320,7 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
     }
 
   // compute E2=(E-E0)
-  dealii::VectorizedArray<double> E2[dim][dim], S[dim][dim];
+  VectorizedArray<double> E2[dim][dim], S[dim][dim];
 
   for (unsigned int i = 0; i < dim; i++)
     {
@@ -337,7 +333,7 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
   // compute stress
   // S=C*(E-E0)
   //  Compute stress tensor (which is equal to the residual, Rux)
-  dealii::VectorizedArray<double> CIJ_combined[CIJ_tensor_size][CIJ_tensor_size];
+  VectorizedArray<double> CIJ_combined[CIJ_tensor_size][CIJ_tensor_size];
 
   if (n_dependent_stiffness == true)
     {
@@ -405,8 +401,9 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::equationLHS(
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-  dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const
+  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
@@ -419,14 +416,14 @@ customPDE<dim, degree>::equationLHS(
 
   // Take advantage of E being simply 0.5*(ux + transpose(ux)) and use the
   // dealii "symmetrize" function
-  dealii::Tensor<2, dim, dealii::VectorizedArray<double>> E;
+  Tensor<2, dim, VectorizedArray<double>> E;
   E = symmetrize(variable_list.get_change_in_vector_gradient(3));
 
   // Compute stress tensor (which is equal to the residual, Rux)
   if (n_dependent_stiffness == true)
     {
       scalarvalueType h1V = (3.0 * n1 * n1 - 2.0 * n1 * n1 * n1);
-      dealii::Tensor<2, CIJ_tensor_size, dealii::VectorizedArray<double>> CIJ_combined;
+      Tensor<2, CIJ_tensor_size, VectorizedArray<double>> CIJ_combined;
       CIJ_combined = CIJ_Mg * (constV(1.0) - h1V);
       CIJ_combined += CIJ_Beta * (h1V);
 

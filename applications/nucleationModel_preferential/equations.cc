@@ -55,8 +55,9 @@ variableAttributeLoader::loadVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::explicitEquationRHS(
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-  dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const
+  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
@@ -81,22 +82,18 @@ customPDE<dim, degree>::explicitEquationRHS(
                            (A2 * hV + B2 * (1.0 - hV));
 
   // Free energy for each phase and their first and second derivatives
-  scalarvalueType faV   = A0 + A2 * (c_alpha - calmin) * (c_alpha - calmin);
-  scalarvalueType facV  = 2.0 * A2 * (c_alpha - calmin);
-  scalarvalueType faccV = constV(2.0) * A2;
-  scalarvalueType fbV   = B0 + B2 * (c_beta - cbtmin) * (c_beta - cbtmin);
-  scalarvalueType fbcV  = 2.0 * B2 * (c_beta - cbtmin);
-  scalarvalueType fbccV = constV(2.0 * B2);
+  scalarvalueType faV  = A0 + A2 * (c_alpha - calmin) * (c_alpha - calmin);
+  scalarvalueType fbV  = B0 + B2 * (c_beta - cbtmin) * (c_beta - cbtmin);
+  scalarvalueType fbcV = 2.0 * B2 * (c_beta - cbtmin);
 
   // Double-Well function (can be used to tune the interfacial energy)
-  scalarvalueType fbarrierV  = n * n - 2.0 * n * n * n + n * n * n * n;
   scalarvalueType fbarriernV = 2.0 * n - 6.0 * n * n + 4.0 * n * n * n;
 
   // -------------------------------------------------
   // Nucleation expressions
   // -------------------------------------------------
-  dealii::VectorizedArray<double> source_term = constV(0.0);
-  dealii::VectorizedArray<double> gamma       = constV(1.0);
+  VectorizedArray<double> source_term = constV(0.0);
+  VectorizedArray<double> gamma       = constV(1.0);
   seedNucleus(q_point_loc, source_term, gamma);
   // -------------------------------------------------
 
@@ -129,26 +126,22 @@ customPDE<dim, degree>::explicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::seedNucleus(
-  const dealii::Point<dim, dealii::VectorizedArray<double>> &q_point_loc,
-  dealii::VectorizedArray<double>                           &source_term,
-  dealii::VectorizedArray<double>                           &gamma) const
+  const Point<dim, VectorizedArray<double>> &q_point_loc,
+  VectorizedArray<double>                   &source_term,
+  VectorizedArray<double>                   &gamma) const
 {
   // Loop through all of the seeded nuclei
-  for (typename std::vector<nucleus<dim>>::const_iterator thisNucleus =
-         this->nuclei.begin();
-       thisNucleus != this->nuclei.end();
-       ++thisNucleus)
+  for (const auto &thisNucleus : this->nuclei)
     {
-      if (thisNucleus->seededTime + thisNucleus->seedingTime > this->currentTime)
+      if (thisNucleus.seededTime + thisNucleus.seedingTime > this->currentTime)
         {
           // Calculate the weighted distance function to the order parameter
           // freeze boundary (weighted_dist = 1.0 on that boundary)
-          dealii::VectorizedArray<double> weighted_dist =
-            this->weightedDistanceFromNucleusCenter(
-              thisNucleus->center,
-              userInputs.get_nucleus_freeze_semiaxes(thisNucleus->orderParameterIndex),
-              q_point_loc,
-              thisNucleus->orderParameterIndex);
+          VectorizedArray<double> weighted_dist = this->weightedDistanceFromNucleusCenter(
+            thisNucleus.center,
+            userInputs.get_nucleus_freeze_semiaxes(thisNucleus.orderParameterIndex),
+            q_point_loc,
+            thisNucleus.orderParameterIndex);
 
           for (unsigned i = 0; i < gamma.size(); i++)
             {
@@ -158,26 +151,26 @@ customPDE<dim, degree>::seedNucleus(
 
                   // Seed a nucleus if it was added to the list of nuclei this
                   // time step
-                  if (thisNucleus->seedingTimestep == this->currentIncrement)
+                  if (thisNucleus.seedingTimestep == this->currentIncrement)
                     {
                       // Find the weighted distance to the outer edge of the
                       // nucleus and use it to calculate the order parameter
                       // source term (r = 1.0 on that boundary)
-                      dealii::Point<dim, double> q_point_loc_element;
+                      Point<dim, double> q_point_loc_element;
                       for (unsigned int j = 0; j < dim; j++)
                         {
                           q_point_loc_element(j) = q_point_loc(j)[i];
                         }
                       double r = this->weightedDistanceFromNucleusCenter(
-                        thisNucleus->center,
-                        userInputs.get_nucleus_semiaxes(thisNucleus->orderParameterIndex),
+                        thisNucleus.center,
+                        userInputs.get_nucleus_semiaxes(thisNucleus.orderParameterIndex),
                         q_point_loc_element,
-                        thisNucleus->orderParameterIndex);
+                        thisNucleus.orderParameterIndex);
 
                       double avg_semiaxis = 0.0;
                       for (unsigned int j = 0; j < dim; j++)
                         {
-                          avg_semiaxis += thisNucleus->semiaxes[j];
+                          avg_semiaxis += thisNucleus.semiaxes[j];
                         }
                       avg_semiaxis /= dim;
 
@@ -207,8 +200,9 @@ customPDE<dim, degree>::seedNucleus(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::nonExplicitEquationRHS(
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-  dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const
+  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {}
 
 // =============================================================================================
@@ -229,6 +223,7 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::equationLHS(
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> &variable_list,
-  dealii::Point<dim, dealii::VectorizedArray<double>>              q_point_loc) const
+  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {}

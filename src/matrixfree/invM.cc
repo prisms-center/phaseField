@@ -1,6 +1,8 @@
 // computeInvM() method for MatrixFreePDE class
+#include <deal.II/matrix_free/evaluation_flags.h>
 
 #include "../../include/matrixFreePDE.h"
+#include <functional>
 #include <numeric>
 
 // compute inverse of the diagonal mass matrix and store in vector invM
@@ -62,13 +64,17 @@ MatrixFreePDE<dim, degree>::computeInvM()
   matrixFreeObject.initialize_dof_vector(invMvector, parabolicVectorFieldIndex);
   invMvector = 0.0;
 
+  // invM evaluation flags
+  dealii::EvaluationFlags::EvaluationFlags invM_flags = dealii::EvaluationFlags::values;
+
   // Compute mass matrix for the given type of quadrature. Selecting gauss
   // lobatto quadrature points which are suboptimal but give diagonal M
   if (fields[parabolicScalarFieldIndex].type == SCALAR)
     {
       VectorizedArray<double>   one = make_vectorized_array(1.0);
       FEEvaluation<dim, degree> fe_eval(matrixFreeObject, parabolicScalarFieldIndex);
-      const unsigned int        n_q_points = fe_eval.n_q_points;
+
+      const unsigned int n_q_points = fe_eval.n_q_points;
       for (unsigned int cell = 0; cell < matrixFreeObject.n_cell_batches(); ++cell)
         {
           fe_eval.reinit(cell);
@@ -76,7 +82,7 @@ MatrixFreePDE<dim, degree>::computeInvM()
             {
               fe_eval.submit_value(one, q);
             }
-          fe_eval.integrate(true, false);
+          fe_eval.integrate(invM_flags);
           fe_eval.distribute_local_to_global(invMscalar);
         }
     }
@@ -99,7 +105,7 @@ MatrixFreePDE<dim, degree>::computeInvM()
             {
               fe_eval.submit_value(oneV, q);
             }
-          fe_eval.integrate(true, false);
+          fe_eval.integrate(invM_flags);
           fe_eval.distribute_local_to_global(invMvector);
         }
     }
@@ -120,8 +126,8 @@ MatrixFreePDE<dim, degree>::computeInvM()
     }
   double min_cell_volume = std::accumulate(begin(min_element_length),
                                            end(min_element_length),
-                                           1,
-                                           std::multiplies<double>());
+                                           1.0,
+                                           std::multiplies<>());
 
   // Invert scalar mass matrix diagonal elements
 #if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)

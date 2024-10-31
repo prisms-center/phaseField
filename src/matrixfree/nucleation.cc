@@ -2,8 +2,8 @@
 #include "../../include/matrixFreePDE.h"
 #include "../../include/parallelNucleationList.h"
 #include "../../include/varBCs.h"
+#include <ctime>
 #include <random>
-#include <time.h>
 
 // =======================================================================================================
 // Function called in solve to update the global list of nuclei
@@ -129,9 +129,6 @@ MatrixFreePDE<dim, degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
 
   std::vector<dealii::Point<dim>> q_point_list_overlap(num_quad_points);
 
-  typename DoFHandler<dim>::active_cell_iterator di =
-    dofHandlersSet_nonconst[0]->begin_active();
-
   // What used to be in nuc_attempt
   double rand_val;
   // Better random no. generator
@@ -140,13 +137,13 @@ MatrixFreePDE<dim, degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
   std::uniform_real_distribution<> distr(0.0, 1.0);
 
   // Element cycle
-  while (di != this->dofHandlersSet_nonconst[0]->end())
+  for (const auto &dof : dofHandlersSet_nonconst[0]->active_cell_iterators())
     {
-      if (di->is_locally_owned())
+      if (dof->is_locally_owned())
         {
           // Obtaining average element concentration by averaging over element's
           // quadrature points
-          fe_values.reinit(di);
+          fe_values.reinit(dof);
           for (unsigned int var = 0; var < userInputs.nucleation_need_value.size(); var++)
             {
               fe_values.get_function_values(
@@ -304,9 +301,9 @@ MatrixFreePDE<dim, degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
                           std::cout << "Nucleus center: " << nuc_ele_pos << std::endl;
                           std::cout << "Nucleus order parameter: " << variable_index
                                     << std::endl;
-                          nucleus<dim> *temp = new nucleus<dim>;
-                          temp->index        = nuclei.size();
-                          temp->center       = nuc_ele_pos;
+                          auto *temp   = new nucleus<dim>;
+                          temp->index  = nuclei.size();
+                          temp->center = nuc_ele_pos;
                           temp->semiaxes =
                             userInputs.get_nucleus_semiaxes(variable_index);
                           temp->seededTime = t;
@@ -320,8 +317,6 @@ MatrixFreePDE<dim, degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
                 }
             }
         }
-      // Increment the cell iterators
-      ++di;
     }
 }
 
@@ -346,20 +341,17 @@ MatrixFreePDE<dim, degree>::safetyCheckNewNuclei(std::vector<nucleus<dim>>  newn
   std::vector<dealii::Point<dim>> q_point_list(num_quad_points);
 
   // Nucleus cycle
-  for (typename std::vector<nucleus<dim>>::iterator thisNucleus = newnuclei.begin();
-       thisNucleus != newnuclei.end();
-       ++thisNucleus)
+  for (const auto &thisNucleus : newnuclei)
     {
       bool isClose = false;
 
       // Element cycle
-      typename DoFHandler<dim>::active_cell_iterator di =
-        dofHandlersSet_nonconst[0]->begin_active();
-      while (di != dofHandlersSet_nonconst[0]->end())
+
+      for (const auto &dof : dofHandlersSet_nonconst[0]->active_cell_iterators())
         {
-          if (di->is_locally_owned())
+          if (dof->is_locally_owned())
             {
-              fe_values.reinit(di);
+              fe_values.reinit(dof);
               for (unsigned int var = 0;
                    var < userInputs.nucleating_variable_indices.size();
                    var++)
@@ -376,11 +368,11 @@ MatrixFreePDE<dim, degree>::safetyCheckNewNuclei(std::vector<nucleus<dim>>  newn
                   // Calculate the ellipsoidal distance to the center of the
                   // nucleus
                   double weighted_dist = weightedDistanceFromNucleusCenter(
-                    thisNucleus->center,
+                    thisNucleus.center,
                     userInputs.get_nucleus_freeze_semiaxes(
-                      thisNucleus->orderParameterIndex),
+                      thisNucleus.orderParameterIndex),
                     q_point_list[q_point],
-                    thisNucleus->orderParameterIndex);
+                    thisNucleus.orderParameterIndex);
 
                   if (weighted_dist < 1.0)
                     {
@@ -397,7 +389,7 @@ MatrixFreePDE<dim, degree>::safetyCheckNewNuclei(std::vector<nucleus<dim>>  newn
                           std::cout << "Attempted nucleation failed due to "
                                        "overlap w/ existing particle!!!!!!"
                                     << std::endl;
-                          conflict_ids.push_back(thisNucleus->index);
+                          conflict_ids.push_back(thisNucleus.index);
                           break;
                         }
                     }
@@ -405,8 +397,6 @@ MatrixFreePDE<dim, degree>::safetyCheckNewNuclei(std::vector<nucleus<dim>>  newn
               if (isClose)
                 break;
             }
-          // Increment the cell iterators
-          ++di;
         }
     }
 }
@@ -427,7 +417,6 @@ MatrixFreePDE<dim, degree>::refineMeshNearNuclei(std::vector<nucleus<dim>> newnu
   std::vector<dealii::Point<dim>> q_point_list(num_quad_points);
 
   typename Triangulation<dim>::active_cell_iterator ti;
-  typename DoFHandler<dim>::active_cell_iterator    di;
 
   unsigned int numDoF_preremesh = totalDOFs;
 
@@ -436,14 +425,13 @@ MatrixFreePDE<dim, degree>::refineMeshNearNuclei(std::vector<nucleus<dim>> newnu
        remesh_index++)
     {
       ti = triangulation.begin_active();
-      di = dofHandlersSet_nonconst[0]->begin_active();
-      while (di != dofHandlersSet_nonconst[0]->end())
+      for (const auto &dof : dofHandlersSet_nonconst[0]->active_cell_iterators())
         {
-          if (di->is_locally_owned())
+          if (dof->is_locally_owned())
             {
               bool mark_refine = false;
 
-              fe_values.reinit(di);
+              fe_values.reinit(dof);
               q_point_list = fe_values.get_quadrature_points();
 
               // Calculate the distance from the corner of the cell to the
@@ -459,22 +447,19 @@ MatrixFreePDE<dim, degree>::refineMeshNearNuclei(std::vector<nucleus<dim>> newnu
 
               for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
                 {
-                  for (typename std::vector<nucleus<dim>>::iterator thisNucleus =
-                         newnuclei.begin();
-                       thisNucleus != newnuclei.end();
-                       ++thisNucleus)
+                  for (const auto &thisNucleus : newnuclei)
                     {
                       // Calculate the ellipsoidal distance to the center of the
                       // nucleus
                       double weighted_dist = weightedDistanceFromNucleusCenter(
-                        thisNucleus->center,
+                        thisNucleus.center,
                         userInputs.get_nucleus_freeze_semiaxes(
-                          thisNucleus->orderParameterIndex),
+                          thisNucleus.orderParameterIndex),
                         q_point_list[q_point],
-                        thisNucleus->orderParameterIndex);
+                        thisNucleus.orderParameterIndex);
 
                       if (weighted_dist < 1.0 ||
-                          thisNucleus->center.distance(q_point_list[q_point]) < diag_dist)
+                          thisNucleus.center.distance(q_point_list[q_point]) < diag_dist)
                         {
                           if ((unsigned int) ti->level() <
                               userInputs.max_refinement_level)
@@ -490,14 +475,13 @@ MatrixFreePDE<dim, degree>::refineMeshNearNuclei(std::vector<nucleus<dim>> newnu
                     break;
                 }
               if (mark_refine)
-                di->set_refine_flag();
+                dof->set_refine_flag();
             }
-          ++di;
           ++ti;
         }
-      // The bulk of all of modifySolutionFields is spent in the following two
-      // function calls
-      refineGrid();
+      // The bulk of all of modifySolutionFields is spent in the following two function
+      // calls
+      AMR.refine_grid();
       reinit();
 
       // If the mesh hasn't changed from the previous cycle, stop remeshing
@@ -514,7 +498,7 @@ template <int dim, int degree>
 double
 MatrixFreePDE<dim, degree>::weightedDistanceFromNucleusCenter(
   const dealii::Point<dim, double> center,
-  const std::vector<double>        semiaxes,
+  const std::vector<double>       &semiaxes,
   const dealii::Point<dim, double> q_point_loc,
   const unsigned int               var_index) const
 {
@@ -547,7 +531,7 @@ template <int dim, int degree>
 dealii::VectorizedArray<double>
 MatrixFreePDE<dim, degree>::weightedDistanceFromNucleusCenter(
   const dealii::Point<dim, double>                          center,
-  const std::vector<double>                                 semiaxes,
+  const std::vector<double>                                &semiaxes,
   const dealii::Point<dim, dealii::VectorizedArray<double>> q_point_loc,
   const unsigned int                                        var_index) const
 {

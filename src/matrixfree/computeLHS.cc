@@ -37,14 +37,11 @@ MatrixFreePDE<dim, degree>::vmult(vectorType &dst, const vectorType &src) const
 
   // Account for Dirichlet BC's (essentially copy dirichlet DOF values present in src to
   // dst, although it is unclear why the constraints can't just be distributed here)
-  for (std::map<types::global_dof_index, double>::const_iterator it =
-         valuesDirichletSet[currentFieldIndex]->begin();
-       it != valuesDirichletSet[currentFieldIndex]->end();
-       ++it)
+  for (auto &it : *valuesDirichletSet[currentFieldIndex])
     {
-      if (dst.in_local_range(it->first))
+      if (dst.in_local_range(it.first))
         {
-          dst(it->first) = src(it->first); //*jacobianDiagonal(it->first);
+          dst(it.first) = src(it.first); //*jacobianDiagonal(it->first);
         }
     }
 
@@ -67,11 +64,12 @@ MatrixFreePDE<dim, degree>::getLHS(
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
     {
       // Initialize, read DOFs, and set evaulation flags for each variable
-      // variable_list.reinit_and_eval_LHS(src,solutionSet,cell,currentFieldIndex);
       variable_list.reinit_and_eval(solutionSet, cell);
       variable_list.reinit_and_eval_change_in_solution(src, cell, currentFieldIndex);
 
       unsigned int num_q_points = variable_list.get_num_q_points();
+
+      dealii::VectorizedArray<double> local_element_volume = element_volume[cell];
 
       // loop over quadrature points
       for (unsigned int q = 0; q < num_q_points; ++q)
@@ -82,7 +80,7 @@ MatrixFreePDE<dim, degree>::getLHS(
             variable_list.get_q_point_location();
 
           // Calculate the residuals
-          equationLHS(variable_list, q_point_loc);
+          equationLHS(variable_list, q_point_loc, local_element_volume);
         }
 
       // Integrate the residuals and distribute from local to global

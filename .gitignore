@@ -1,3 +1,19 @@
+# Build folder
+build/*
+
+# VS Code
+.vscode/*
+
+# Python virtual environments
+.venv/*
+*.venv/
+
+# clangd
+.clangd
+
+# misc
+compile_commands.json
+
 # Compiled Object files
 *.slo
 *.lo
@@ -19,6 +35,7 @@
 *.exe
 *.out
 *.app
+*.pbs
 
 #Output files
 *vtk
@@ -82,10 +99,11 @@ DoxygenWarningLog.txt
 freeEnergy.txt
 output.txt
 
-restart*
+# Output files
 integratedFields.txt
 
 # Checkpoint/restart files
+restart*
 restart.mesh
 restart.mesh.info
 restart.mesh.info.old

@@ -1,2 +1,0 @@
-Maximum difference between the calculated and analytic result: 
-1.23977661133e-05
