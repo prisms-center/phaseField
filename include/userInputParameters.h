@@ -325,6 +325,7 @@ public:
   double                    buffer_between_grains;
 
   bool         load_grain_structure;
+  std::string  load_vtk_file_type;
   double       min_radius_for_loading_grains;
   std::string  grain_structure_filename;
   std::string  grain_structure_variable_name;

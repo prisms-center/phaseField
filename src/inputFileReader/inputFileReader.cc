@@ -758,6 +758,12 @@ inputFileReader::declare_parameters(dealii::ParameterHandler     &parameter_hand
     "the grain structure to be loaded.");
 
   parameter_handler.declare_entry(
+    "vtk file type",
+    "UNSTRUCTURED",
+    dealii::Patterns::Anything(),
+    "Whether to load a unstructured file for grain structure.");
+
+  parameter_handler.declare_entry(
     "Grain structure variable name",
     "",
     dealii::Patterns::Anything(),

@@ -90,7 +90,21 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
       std::string filename = userInputs.grain_structure_filename;
       filename += ".vtk";
 
-      body.read_vtk(filename);
+      // std::string load_unstructured_grid = userInputs.load_grid;
+      if (userInputs.load_vtk_file_type == "UNSTRUCTURED")
+        {
+          body.read_vtk(filename);
+        }
+      else if (userInputs.load_vtk_file_type == "RECTILINEAR")
+        {
+          body.read_RL_vtk(filename);
+        }
+      else
+        {
+          pcout << "Error in vtk file type: Use either UNSTRUCTURED OR RECTILINEAR\n";
+          abort();
+        }
+
       ScalarField &id_field =
         body.find_scalar_field(userInputs.grain_structure_variable_name);
 
@@ -407,6 +421,64 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
                                            *solutionSet[var_index]);
                 }
             }
+
+          else
+            {
+              // Declare the PField types and containers
+              typedef PRISMS::PField<double *, double, dim> ScalarField;
+              typedef PRISMS::Body<double *, dim>           Body;
+              Body                                          body;
+
+              // Create the filename of the the file to be loaded
+              std::string filename;
+              if (userInputs.load_parallel_file[var_index] == false)
+                {
+                  filename = userInputs.load_file_name[var_index] + ".vtk";
+                }
+              else
+                {
+                  int proc_num = Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
+                  std::ostringstream conversion;
+                  conversion << proc_num;
+                  filename = userInputs.load_file_name[var_index] + "." +
+                             conversion.str() + ".vtk";
+                }
+
+              // Load the data from the file using a PField
+              // std::string load_unstructured_grid = userInputs.load_grid;
+              if (userInputs.load_vtk_file_type == "UNSTRUCTURED")
+                {
+                  body.read_vtk(filename);
+                }
+              else if (userInputs.load_vtk_file_type == "RECTILINEAR")
+                {
+                  body.read_RL_vtk(filename);
+                }
+              else
+                {
+                  pcout
+                    << "Error in vtk file type: Use either UNSTRUCTURED OR RECTILINEAR\n";
+                  abort();
+                }
+              ScalarField &conc =
+                body.find_scalar_field(userInputs.load_field_name[var_index]);
+
+              if (userInputs.var_type[var_index] == SCALAR)
+                {
+                  pcout << "Applying PField initial condition...\n";
+                  VectorTools::interpolate(*dofHandlersSet[var_index],
+                                           InitialConditionPField<dim>(var_index, conc),
+                                           *solutionSet[var_index]);
+                }
+              else
+                {
+                  std::cout << "PRISMS-PF Error: Cannot load vector fields. "
+                               "Loading initial conditions from file is "
+                               "currently limited to scalar fields"
+                            << std::endl;
+                }
+            }
+
           pcout << "Application of initial conditions for field number " << var_index
                 << " complete \n";
         }
