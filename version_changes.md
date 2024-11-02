@@ -1,6 +1,37 @@
+# Version 2.4
+Moderate update from 2.3. The main changes are compatibility with deal.II 9.6.0, support for the use of up to 6th order elements, 
+improved testing and continuous integration, code auto-formatting, and bug fixes.
+
+## Features
+* deal.II 9.2.0 - 9.6.0 compatibility by @landinjm in https://github.com/prisms-center/phaseField/pull/226 and https://github.com/prisms-center/phaseField/pull/236
+* Adding support for 4th, 5th, and 6th order elements by @landinjm in https://github.com/prisms-center/phaseField/pull/251
+* The local element volume is now available in `equations.cc` and `postprocess.cc` for stabilization schemes like PSPG and SUPG by @landinjm in https://github.com/prisms-center/phaseField/pull/269
+* Fields can be pinned to 0 at any vertex in the mesh. This works in addition to the boundary conditions prescribed in `parameters.prm` by @landinjm in https://github.com/prisms-center/phaseField/pull/275
+* Switched Allen-Cahn documentation to markdown by @landinjm in https://github.com/prisms-center/phaseField/pull/263
+
+## Bug fixes
+* Fixed explicit solves for problems with both scalar and vector explicit fields by @landinjm in https://github.com/prisms-center/phaseField/pull/208
+* Fixed multiple linear/nonlinear solves by @landinjm in https://github.com/prisms-center/phaseField/pull/241
+* Fixed incomplete refactoring of methods in customPDE override by @landinjm in https://github.com/prisms-center/phaseField/pull/256
+* Fixed FloodFiller unit test and fixed grainGrowth bug by @zachcroft in https://github.com/prisms-center/phaseField/pull/224
+* Optimized vtk file read-in behavior by @fractalsbyx in https://github.com/prisms-center/phaseField/pull/222
+* Better error handling for boundary conditions by @zachcroft in https://github.com/prisms-center/phaseField/pull/225
+* Better error handling for model constants by @landinjm in https://github.com/prisms-center/phaseField/pull/262
+* Deleted deprecated applications by @landinjm in https://github.com/prisms-center/phaseField/pull/234
+
+## Miscellaneous
+* Code auto-formatting by @landinjm in https://github.com/prisms-center/phaseField/pull/209, https://github.com/prisms-center/phaseField/pull/216, https://github.com/prisms-center/phaseField/pull/229
+* Suppression of warnings by @landinjm in https://github.com/prisms-center/phaseField/pull/243 and https://github.com/prisms-center/phaseField/pull/235, @arijitroy6 in https://github.com/prisms-center/phaseField/pull/239, @gjerdej in https://github.com/prisms-center/phaseField/pull/238, and @ellery-hendrix in https://github.com/prisms-center/phaseField/pull/237
+* Fixed some typos and style by @tkphd in https://github.com/prisms-center/phaseField/pull/246
+
+## Tests/CI
+* Continuous integration via GitHub Actions by @landinjm in https://github.com/prisms-center/phaseField/pull/230
+* Adding script to check that all applications work by @landinjm in https://github.com/prisms-center/phaseField/pull/245
+* Update automatic test script to run in parallel by @landinjm in https://github.com/prisms-center/phaseField/pull/247
+
 # Version 2.3
 
-Moderate update to 2.2, released in July 2021. The main changes are new applications, new postprocessing scripts, improvements in performance, bug fixes and comparibility with the latest version of deal.II.
+Moderate update from 2.2, released in July 2021. The main changes are new applications, new postprocessing scripts, improvements in performance, bug fixes and comparibility with the latest version of deal.II.
 
 ## Added Features:
 

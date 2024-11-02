@@ -26,6 +26,7 @@ permissions:
 jobs:
   CI-Linux:
     runs-on: [ubuntu-22.04]
+    timeout-minutes: 120
 
     container:
       image: dealii/dealii:v9.6.0-jammy
@@ -41,6 +42,7 @@ jobs:
           make -j $(nproc)
 
       - name: Run PRISMS-PF tests
+        timeout-minutes: 60
         run: |
           export OMPI_ALLOW_RUN_AS_ROOT=1
           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1

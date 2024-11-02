@@ -18,76 +18,76 @@ customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &
 
   // The initial condition is a set of overlapping circles/spheres defined
   // by a hyperbolic tangent function. The center of each circle/sphere is
-  // given by "center" and its radius is given by "radius".
+  // given by "center_list" and its radius is given by "radius".
 
   if (index < 5)
     {
-      std::vector<Point<dim>> center;
+      std::vector<Point<dim>> center_list;
 
       // The big grains
       {
-        Point<dim> p(0.2, 0.15);
-        center.push_back(p);
+        Point<dim> center(0.2, 0.15);
+        center_list.push_back(center);
       }
       {
-        Point<dim> p(0.25, 0.7);
-        center.push_back(p);
+        Point<dim> center(0.25, 0.7);
+        center_list.push_back(center);
       }
       {
-        Point<dim> p(0.5, 0.5);
-        center.push_back(p);
+        Point<dim> center(0.5, 0.5);
+        center_list.push_back(center);
       }
       {
-        Point<dim> p(0.6, 0.85);
-        center.push_back(p);
+        Point<dim> center(0.6, 0.85);
+        center_list.push_back(center);
       }
       {
-        Point<dim> p(0.85, 0.35);
-        center.push_back(p);
+        Point<dim> center(0.85, 0.35);
+        center_list.push_back(center);
       }
 
       // The medium grains
       {
-        Point<dim> p(0.08, 0.92);
-        center.push_back(p);
+        Point<dim> center(0.08, 0.92);
+        center_list.push_back(center);
       }
       {
-        Point<dim> p(0.75, 0.6);
-        center.push_back(p);
+        Point<dim> center(0.75, 0.6);
+        center_list.push_back(center);
       }
       {
-        Point<dim> p(0.75, 0.1);
-        center.push_back(p);
+        Point<dim> center(0.75, 0.1);
+        center_list.push_back(center);
       }
       {
-        Point<dim> p(0.2, 0.45);
-        center.push_back(p);
+        Point<dim> center(0.2, 0.45);
+        center_list.push_back(center);
       }
       {
-        Point<dim> p(0.85, 0.85);
-        center.push_back(p);
+        Point<dim> center(0.85, 0.85);
+        center_list.push_back(center);
       }
 
       // The small grains
       {
-        Point<dim> p(0.55, 0.05);
-        center.push_back(p);
+        Point<dim> center(0.55, 0.05);
+        center_list.push_back(center);
       }
       {
-        Point<dim> p(0.1, 0.35);
-        center.push_back(p);
+        Point<dim> center(0.1, 0.35);
+        center_list.push_back(center);
       }
       {
-        Point<dim> p(0.95, 0.65);
-        center.push_back(p);
+        Point<dim> center(0.95, 0.65);
+        center_list.push_back(center);
       }
       {
-        Point<dim> p(0.9, 0.15);
-        center.push_back(p);
+        Point<dim> center(0.9, 0.15);
+        center_list.push_back(center);
       }
       {
-        Point<dim> p(0.45, 0.25);
-        center.push_back(p);
+        Point<dim> center(0.45, 0.25);
+        center_list.push_back(center);
       }
 
       std::vector<double> rad = {0.14,
@@ -111,8 +111,8 @@ customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &
 
       for (unsigned int dir = 0; dir < dim; dir++)
         {
-          dist += (p[dir] - center[index][dir] * userInputs.domain_size[dir]) *
-                  (p[dir] - center[index][dir] * userInputs.domain_size[dir]);
+          dist += (p[dir] - center_list[index][dir] * userInputs.domain_size[dir]) *
+                  (p[dir] - center_list[index][dir] * userInputs.domain_size[dir]);
         }
       dist = std::sqrt(dist);
 
@@ -122,8 +122,8 @@ customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &
       dist = 0.0;
       for (unsigned int dir = 0; dir < dim; dir++)
         {
-          dist += (p[dir] - center[index + 5][dir] * userInputs.domain_size[dir]) *
-                  (p[dir] - center[index + 5][dir] * userInputs.domain_size[dir]);
+          dist += (p[dir] - center_list[index + 5][dir] * userInputs.domain_size[dir]) *
+                  (p[dir] - center_list[index + 5][dir] * userInputs.domain_size[dir]);
         }
       dist = std::sqrt(dist);
 
@@ -134,8 +134,8 @@ customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &
       dist = 0.0;
       for (unsigned int dir = 0; dir < dim; dir++)
         {
-          dist += (p[dir] - center[index + 10][dir] * userInputs.domain_size[dir]) *
-                  (p[dir] - center[index + 10][dir] * userInputs.domain_size[dir]);
+          dist += (p[dir] - center_list[index + 10][dir] * userInputs.domain_size[dir]) *
+                  (p[dir] - center_list[index + 10][dir] * userInputs.domain_size[dir]);
         }
       dist = std::sqrt(dist);
 

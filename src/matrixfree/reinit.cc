@@ -50,11 +50,14 @@ MatrixFreePDE<dim, degree>::reinit()
       // Get hanging node constraints
       DoFTools::make_hanging_node_constraints(*dof_handler, *constraintsOther);
 
-      // Add a constraint to fix the value at the origin to zero if all BCs are
-      // zero-derivative or periodic
-      std::vector<int> rigidBodyModeComponents;
-      getComponentsWithRigidBodyModes(rigidBodyModeComponents);
-      setRigidBodyModeConstraints(rigidBodyModeComponents, constraintsOther, dof_handler);
+      // Pin solution
+      if (userInputs.pinned_point.find(currentFieldIndex) !=
+          userInputs.pinned_point.end())
+        {
+          set_rigid_body_mode_constraints(constraintsOther,
+                                          dof_handler,
+                                          userInputs.pinned_point[currentFieldIndex]);
+        }
 
       // Get constraints for periodic BCs
       setPeriodicityConstraints(constraintsOther, dof_handler);
@@ -197,6 +200,9 @@ MatrixFreePDE<dim, degree>::reinit()
       constraintsOtherSet[fieldIndex]->distribute(*solutionSet[fieldIndex]);
       solutionSet[fieldIndex]->update_ghost_values();
     }
+
+  // Once the initial triangulation has been set, compute element volume
+  compute_element_volume();
 
   computing_timer.leave_subsection("matrixFreePDE: reinitialization");
 }
