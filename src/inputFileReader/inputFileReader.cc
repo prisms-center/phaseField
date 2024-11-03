@@ -749,7 +749,9 @@ inputFileReader::declare_parameters(dealii::ParameterHandler     &parameter_hand
                                   "false",
                                   dealii::Patterns::Bool(),
                                   "Whether to load a grain structure in from file.");
-
+  
+  parameter_handler.declare_entry("vtk file type","UNSTRUCTURED",dealii::Patterns::Anything(),"Whether to load an unstructured file for grain structure."); // reads the type of file from the input parameters.prm file, deafault setting is unstructured mesh
+                                  
   parameter_handler.declare_entry(
     "Grain structure filename",
     "",

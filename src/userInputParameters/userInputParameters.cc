@@ -600,6 +600,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
     }
 
   load_grain_structure          = parameter_handler.get_bool("Load grain structure");
+  load_vtk_file_type = parameter_handler.get("vtk file type"); // assign the vtk file type and getting it ready to send to initialconditions.cc
   grain_structure_filename      = parameter_handler.get("Grain structure filename");
   grain_structure_variable_name = parameter_handler.get("Grain structure variable name");
   num_grain_smoothing_cycles    = parameter_handler.get_integer(
