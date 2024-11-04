@@ -1757,3 +1757,38 @@ Time: 41.89884090423584
  
 Tests Passed: 5/5
 --------------------------------------------------------- 
+--------------------------------------------------------- 
+Unit test on 2024-11-04 11:55
+--------------------------------------------------------- 
+Unit Tests Passed: 22/22
+--------------------------------------------------------- 
+Regression test on 2024-11-04 11:55
+Architecture: x86_64
+Model name: AMD Ryzen 7 7745HX with Radeon Graphics
+CPU(s): 16
+CPU max/min MHz: None, None
+Hypervisor vendor: Microsoft
+Number of processes: 1
+--------------------------------------------------------- 
+Application: allenCahn
+Result: New Gold Standard
+Time: 16.540193557739258
+ 
+Application: cahnHilliard
+Result: New Gold Standard
+Time: 11.50249695777893
+ 
+Application: CHAC_anisotropyRegularized
+Result: New Gold Standard
+Time: 12.078028440475464
+ 
+Application: coupledCahnHilliardAllenCahn
+Result: New Gold Standard
+Time: 5.930960178375244
+ 
+Application: precipitateEvolution
+Result: New Gold Standard
+Time: 66.96555471420288
+ 
+Tests Passed: 5/5
+--------------------------------------------------------- 
