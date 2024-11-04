@@ -582,7 +582,10 @@ namespace PRISMS
             {
               _coord[0] = COORD_X[i];
               _coord[1] = COORD_Y[i];
-              _coord[2] = COORD_Z[i];
+              if (DIM > 2)
+                {
+                  _coord[2] = COORD_Z[i];
+                }
 
               for (int m = 0; m < DIM; m++)
                 add_once(value[m], hist[m], _coord[m]);
