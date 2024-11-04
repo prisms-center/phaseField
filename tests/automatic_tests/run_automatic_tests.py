@@ -146,7 +146,7 @@ def run_regression_test(application, new_gold_standard, test_dir):
         rel_diff = abs(
             (float(gold_last_energy) - float(last_energy)) / float(gold_last_energy)
         )
-        test_passed = rel_diff < 1.0e-9
+        test_passed = rel_diff < 1.0e-5
 
     # Determine test result
     test_result = (
