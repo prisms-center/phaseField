@@ -13,7 +13,7 @@ namespace PRISMS
   template <int DIM>
   class Coordinate
   {
-    double _coord[DIM];
+    float _coord[DIM];
 
   public:
     int
@@ -22,13 +22,13 @@ namespace PRISMS
       return DIM;
     }
 
-    double &
+    float &
     operator[](int i)
     {
       return _coord[i];
     }
 
-    const double &
+    const float &
     operator[](int i) const
     {
       return _coord[i];
