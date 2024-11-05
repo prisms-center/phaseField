@@ -63,7 +63,6 @@ computeStress(const dealii::Table<2, double>       &CIJ,
 #include "../../src/userInputParameters/load_BC_list.cc"
 #include "../../src/userInputParameters/load_user_constants.cc"
 #include "../../src/userInputParameters/setTimeStepList.cc"
-#include "../../src/utilities/sortIndexEntryPairList.cc"
 #include "../../src/variableAttributeLoader/variableAttributeLoader.cc"
 #include "../../src/variableContainer/variableContainer.cc"
 

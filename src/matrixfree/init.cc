@@ -281,7 +281,7 @@ MatrixFreePDE<dim, degree>::init()
       if (fields[fieldIndex].pdetype == TIME_INDEPENDENT ||
           fields[fieldIndex].pdetype == IMPLICIT_TIME_DEPENDENT ||
           (fields[fieldIndex].pdetype == AUXILIARY &&
-           userInputs.var_nonlinear[fieldIndex]))
+           var_attributes.attributes.at(fieldIndex).is_nonlinear))
         {
           if (fields[fieldIndex].type == SCALAR)
             {

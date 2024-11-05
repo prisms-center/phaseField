@@ -80,7 +80,7 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
           // not too terrible
           computeNonexplicitRHS();
 
-          for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
+          for (const auto &[fieldIndex, variable] : var_attributes.attributes)
             {
               currentFieldIndex = fieldIndex; // Used in computeLHS()
 
@@ -89,7 +89,7 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                   fields[fieldIndex].pdetype == TIME_INDEPENDENT)
                 {
                   if (currentIncrement % userInputs.skip_print_steps == 0 &&
-                      userInputs.var_nonlinear[fieldIndex])
+                      variable.is_nonlinear)
                     {
                       snprintf(buffer,
                                sizeof(buffer),
@@ -109,11 +109,11 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                 }
               else if (fields[fieldIndex].pdetype == AUXILIARY)
                 {
-                  if (userInputs.var_nonlinear[fieldIndex] || nonlinear_it_index == 0)
+                  if (variable.is_nonlinear || nonlinear_it_index == 0)
                     {
                       // If the equation for this field is nonlinear, save the old
                       // solution
-                      if (userInputs.var_nonlinear[fieldIndex])
+                      if (variable.is_nonlinear)
                         {
                           if (fields[fieldIndex].type == SCALAR)
                             {
@@ -144,7 +144,7 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                         }
 
                       // Check to see if this individual variable has converged
-                      if (userInputs.var_nonlinear[fieldIndex])
+                      if (variable.is_nonlinear)
                         {
                           if (userInputs.nonlinear_solver_parameters.getToleranceType(
                                 fieldIndex) == ABSOLUTE_SOLUTION_CHANGE)
@@ -358,7 +358,7 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
                "solver tolerance.\n";
     }
 
-  if (userInputs.var_nonlinear[fieldIndex])
+  if (var_attributes.attributes.at(fieldIndex).is_nonlinear)
     {
       // Now that we have the calculated change in the solution,
       // we need to select a damping coefficient

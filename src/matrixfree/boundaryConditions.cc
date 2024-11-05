@@ -22,7 +22,7 @@ MatrixFreePDE<dim, degree>::applyNeumannBCs()
   unsigned int starting_BC_list_index = 0;
   for (unsigned int i = 0; i < currentFieldIndex; i++)
     {
-      if (userInputs.var_type[i] == SCALAR)
+      if (var_attributes.attributes.at(i).var_type == SCALAR)
         {
           starting_BC_list_index++;
         }
@@ -32,7 +32,7 @@ MatrixFreePDE<dim, degree>::applyNeumannBCs()
         }
     }
 
-  if (userInputs.var_type[currentFieldIndex] == SCALAR)
+  if (var_attributes.attributes.at(currentFieldIndex).var_type == SCALAR)
     {
       for (unsigned int direction = 0; direction < 2 * dim; direction++)
         {
@@ -102,7 +102,7 @@ MatrixFreePDE<dim, degree>::applyDirichletBCs()
 
   for (unsigned int i = 0; i < currentFieldIndex; i++)
     {
-      if (userInputs.var_type[i] == SCALAR)
+      if (var_attributes.attributes.at(i).var_type == SCALAR)
         {
           starting_BC_list_index++;
         }
@@ -112,7 +112,7 @@ MatrixFreePDE<dim, degree>::applyDirichletBCs()
         }
     }
 
-  if (userInputs.var_type[currentFieldIndex] == SCALAR)
+  if (var_attributes.attributes.at(currentFieldIndex).var_type == SCALAR)
     {
       for (unsigned int direction = 0; direction < 2 * dim; direction++)
         {
@@ -250,7 +250,7 @@ MatrixFreePDE<dim, degree>::setPeriodicityConstraints(
   unsigned int starting_BC_list_index = 0;
   for (unsigned int i = 0; i < currentFieldIndex; i++)
     {
-      if (userInputs.var_type[i] == SCALAR)
+      if (var_attributes.attributes.at(i).var_type == SCALAR)
         {
           starting_BC_list_index++;
         }
@@ -291,8 +291,8 @@ MatrixFreePDE<dim, degree>::set_rigid_body_mode_constraints(
   // Determine the number of components in the field. For a scalar field this is 1, for a
   // vector dim, etc.
   unsigned int n_components = 0;
-  userInputs.var_type[currentFieldIndex] == VECTOR ? n_components = dim
-                                                   : n_components = 1;
+  var_attributes.attributes.at(currentFieldIndex).var_type == VECTOR ? n_components = dim
+                                                                     : n_components = 1;
 
   // Loop over each locally owned cell
   for (const auto &cell : dof_handler->active_cell_iterators())

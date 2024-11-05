@@ -1,193 +1,285 @@
 #include "../../include/variableAttributeLoader.h"
 
-#include "../../include/sortIndexEntryPairList.h"
+#include <deal.II/base/mpi.h>
+
+#include <algorithm>
+
+void
+variableAttributeLoader::format_dependencies()
+{
+  {
+    for (auto &[index, variable] : attributes)
+      {
+        variable.dependencies_RHS.insert(variable.dependencies_value_RHS.begin(),
+                                         variable.dependencies_value_RHS.end());
+        variable.dependencies_RHS.insert(variable.dependencies_gradient_RHS.begin(),
+                                         variable.dependencies_gradient_RHS.end());
+
+        variable.dependencies_LHS.insert(variable.dependencies_value_LHS.begin(),
+                                         variable.dependencies_value_LHS.end());
+        variable.dependencies_LHS.insert(variable.dependencies_gradient_LHS.begin(),
+                                         variable.dependencies_gradient_LHS.end());
+
+        variable.dependencies_PP.insert(variable.dependencies_value_PP.begin(),
+                                        variable.dependencies_value_PP.end());
+        variable.dependencies_PP.insert(variable.dependencies_gradient_PP.begin(),
+                                        variable.dependencies_gradient_PP.end());
+
+        variable.dependency_set.insert(variable.dependencies_RHS.begin(),
+                                       variable.dependencies_RHS.end());
+        variable.dependency_set.insert(variable.dependencies_LHS.begin(),
+                                       variable.dependencies_LHS.end());
+        variable.dependency_set.insert(variable.dependencies_PP.begin(),
+                                       variable.dependencies_PP.end());
+      }
+  }
+}
+
+void
+variableAttributes::parse_residual_dependencies()
+{ // Check if either is empty and set value and gradient flags for the
+  // residual appropriately
+  const std::map<
+    PDEType,
+    std::set<std::pair<EvalFlags *,
+                       std::pair<std::set<std::string> *, std::set<std::string> *>>>>
+    dependencies_for = {
+      {EXPLICIT_TIME_DEPENDENT,
+       {{&eval_flags_residual_explicit_RHS,
+         {&dependencies_value_RHS, &dependencies_gradient_RHS}}}},
+      {AUXILIARY,
+       {{&eval_flags_residual_nonexplicit_RHS,
+         {&dependencies_value_RHS, &dependencies_gradient_RHS}}}},
+      {IMPLICIT_TIME_DEPENDENT,
+       {{&eval_flags_residual_nonexplicit_RHS,
+         {&dependencies_value_RHS, &dependencies_gradient_RHS}},
+        {&eval_flags_residual_nonexplicit_LHS,
+         {&dependencies_value_LHS, &dependencies_gradient_LHS}}}},
+      {TIME_INDEPENDENT,
+       {{&eval_flags_residual_nonexplicit_RHS,
+         {&dependencies_value_RHS, &dependencies_gradient_RHS}},
+        {&eval_flags_residual_nonexplicit_LHS,
+         {&dependencies_value_LHS, &dependencies_gradient_LHS}}}}
+  };
+
+  for (const std::pair<EvalFlags *,
+                       std::pair<std::set<std::string> *, std::set<std::string> *>>
+         &eval_dep_pair : dependencies_for.at(eq_type))
+    {
+      EvalFlags             &residual_flags          = *(eval_dep_pair.first);
+      auto                  &dep_pair                = eval_dep_pair.second;
+      std::set<std::string> &value_dependency_set    = *(dep_pair.first);
+      std::set<std::string> &gradient_dependency_set = *(dep_pair.second);
+
+      if (!value_dependency_set.empty())
+        {
+          residual_flags |= dealii::EvaluationFlags::values;
+        }
+      if (!gradient_dependency_set.empty())
+        {
+          residual_flags |= dealii::EvaluationFlags::gradients;
+        }
+    }
+}
+
+void
+variableAttributes::parse_dependencies(
+  std::map<uint, variableAttributes> &other_var_attributes)
+{
+  const std::map<std::string, EvalFlags> relevant_flag {
+    {"val",         dealii::EvaluationFlags::values   },
+    {"grad",        dealii::EvaluationFlags::gradients},
+    {"hess",        dealii::EvaluationFlags::hessians },
+    {"val_change",  dealii::EvaluationFlags::values   },
+    {"grad_change", dealii::EvaluationFlags::gradients},
+    {"hess_change", dealii::EvaluationFlags::hessians }
+  };
+  const std::map<std::string, std::pair<std::string, std::string>> delimiters = {
+    {"val",         {"", ""}              },
+    {"grad",        {"grad(", ")"}        },
+    {"hess",        {"hess(", ")"}        },
+    {"val_change",  {"change(", ")"}      },
+    {"grad_change", {"grad(change(", "))"}},
+    {"hess_change", {"hess(change(", "))"}}
+  };
+
+  for (const auto &[variation, delimiter] : delimiters)
+    {
+      bool is_change = variation == "val_change" || variation == "grad_change" ||
+                       variation == "hess_change";
+      std::string possible_dependency = delimiter.first + name + delimiter.second;
+      if (is_change && dependency_set.find(possible_dependency) != dependency_set.end())
+        {
+          eval_flags_change_nonexplicit_LHS |= relevant_flag.at(variation);
+        }
+      else
+        {
+          for (auto &[other_index, other_variable] : other_var_attributes)
+            {
+              if (other_variable.dependency_set.find(possible_dependency) !=
+                  other_variable.dependency_set.end())
+                {
+                  for (auto &eval_flag : eval_flags_for_eq_type(other_variable.eq_type))
+                    {
+                      *eval_flag |= relevant_flag.at(variation);
+                    }
+                  other_variable.is_nonlinear |=
+                    (eq_type != EXPLICIT_TIME_DEPENDENT) && (&other_variable == this) &&
+                    (other_variable.eq_type != EXPLICIT_TIME_DEPENDENT);
+                }
+            }
+        }
+    }
+}
 
 // Constructor
 variableAttributeLoader::variableAttributeLoader()
 {
   setting_primary_field_attributes = true;
   loadVariableAttributes(); // This is the user-facing function
-
-  number_of_variables = var_name_list.size();
-
-  var_name    = sortIndexEntryPairList(var_name_list, number_of_variables, "var");
-  var_type    = sortIndexEntryPairList(var_type_list, number_of_variables, SCALAR);
-  var_eq_type = sortIndexEntryPairList(var_eq_type_list,
-                                       number_of_variables,
-                                       EXPLICIT_TIME_DEPENDENT);
-
-  std::vector<std::string> sorted_dependencies_value_RHS =
-    sortIndexEntryPairList(var_eq_dependencies_value_RHS, number_of_variables, "");
-
-  std::vector<std::string> sorted_dependencies_gradient_RHS =
-    sortIndexEntryPairList(var_eq_dependencies_gradient_RHS, number_of_variables, "");
-
-  std::vector<std::string> sorted_dependencies_value_LHS =
-    sortIndexEntryPairList(var_eq_dependencies_value_LHS, number_of_variables, "");
-
-  std::vector<std::string> sorted_dependencies_gradient_LHS =
-    sortIndexEntryPairList(var_eq_dependencies_gradient_LHS, number_of_variables, "");
-
-  nucleating_variable =
-    sortIndexEntryPairList(nucleating_variable_list, number_of_variables, false);
-  need_value_nucleation =
-    sortIndexEntryPairList(need_value_list_nucleation, number_of_variables, false);
-
-  equation_dependency_parser.parse(var_name,
-                                   var_eq_type,
-                                   sorted_dependencies_value_RHS,
-                                   sorted_dependencies_gradient_RHS,
-                                   sorted_dependencies_value_LHS,
-                                   sorted_dependencies_gradient_LHS,
-                                   var_nonlinear);
-
   setting_primary_field_attributes = false;
-  loadPostProcessorVariableAttributes(); // This is the user-facing function
+  loadPostProcessorVariableAttributes();
 
-  pp_number_of_variables = var_name_list_PP.size();
-
-  pp_var_name = sortIndexEntryPairList(var_name_list_PP, pp_number_of_variables, "var");
-  pp_var_type = sortIndexEntryPairList(var_type_list_PP, pp_number_of_variables, SCALAR);
-
-  std::vector<std::string> pp_sorted_dependencies_value =
-    sortIndexEntryPairList(var_eq_dependencies_value_PP, pp_number_of_variables, "");
-
-  std::vector<std::string> pp_sorted_dependencies_gradient =
-    sortIndexEntryPairList(var_eq_dependencies_gradient_PP, pp_number_of_variables, "");
-
-  pp_calc_integral =
-    sortIndexEntryPairList(output_integral_list, pp_number_of_variables, false);
-
-  equation_dependency_parser.pp_parse(var_name,
-                                      pp_var_name,
-                                      pp_sorted_dependencies_value,
-                                      pp_sorted_dependencies_gradient);
+  format_dependencies();
+  validate_attributes();
+  for (auto &[index, variable] : attributes)
+    {
+      variable.parse_residual_dependencies();
+      variable.parse_dependencies(attributes);
+      variable.parse_dependencies(pp_attributes);
+    }
+  for (auto &[index, variable] : pp_attributes)
+    {
+      variable.parse_residual_dependencies();
+    }
 }
 
 // Methods to set the various variable attributes
 void
-variableAttributeLoader::set_variable_name(unsigned int index, std::string name)
+variableAttributeLoader::set_variable_name(const unsigned int &index,
+                                           const std::string  &name)
 {
-  std::pair<unsigned int, std::string> var_pair;
-  var_pair.first  = index;
-  var_pair.second = std::move(name);
-
   if (setting_primary_field_attributes)
     {
-      var_name_list.push_back(var_pair);
+      attributes[index].name = name;
     }
   else
     {
-      var_name_list_PP.push_back(var_pair);
+      attributes[index].name_pp = name;
     }
 }
 
 void
-variableAttributeLoader::set_variable_type(unsigned int index, fieldType var_type)
+variableAttributeLoader::set_variable_type(const unsigned int &index,
+                                           const fieldType    &var_type)
 {
-  std::pair<unsigned int, fieldType> var_pair;
-  var_pair.first  = index;
-  var_pair.second = var_type;
-
   if (setting_primary_field_attributes)
     {
-      var_type_list.push_back(var_pair);
+      attributes[index].var_type = var_type;
     }
   else
     {
-      var_type_list_PP.push_back(var_pair);
+      attributes[index].var_type_PP = var_type;
     }
 }
 
 void
-variableAttributeLoader::set_variable_equation_type(unsigned int index,
-                                                    PDEType      var_eq_type)
+variableAttributeLoader::set_variable_equation_type(const unsigned int &index,
+                                                    const PDEType      &var_eq_type)
 {
-  std::pair<unsigned int, PDEType> var_pair;
-  var_pair.first  = index;
-  var_pair.second = var_eq_type;
-  var_eq_type_list.push_back(var_pair);
+  attributes[index].eq_type = var_eq_type;
 }
 
 void
-variableAttributeLoader::set_need_value_nucleation(unsigned int index, bool flag)
+variableAttributeLoader::set_need_value_nucleation(const unsigned int &index,
+                                                   const bool         &flag)
 {
-  std::pair<unsigned int, bool> var_pair;
-  var_pair.first  = index;
-  var_pair.second = flag;
-  need_value_list_nucleation.push_back(var_pair);
+  attributes[index].need_value_nucleation = flag;
 }
 
 void
-variableAttributeLoader::set_allowed_to_nucleate(unsigned int index, bool flag)
+variableAttributeLoader::set_allowed_to_nucleate(const unsigned int &index,
+                                                 const bool         &flag)
 {
-  std::pair<unsigned int, bool> var_pair;
-  var_pair.first  = index;
-  var_pair.second = flag;
-  nucleating_variable_list.push_back(var_pair);
+  attributes[index].nucleating_variable = flag;
 }
 
 void
-variableAttributeLoader::set_output_integral(unsigned int index, bool flag)
+variableAttributeLoader::set_output_integral(const unsigned int &index, const bool &flag)
 {
-  std::pair<unsigned int, bool> var_pair;
-  var_pair.first  = index;
-  var_pair.second = flag;
-  output_integral_list.push_back(var_pair);
+  attributes[index].output_integral = flag;
 }
 
 void
-variableAttributeLoader::set_dependencies_value_term_RHS(unsigned int index,
-                                                         std::string  dependencies)
+variableAttributeLoader::set_dependencies_value_term_RHS(const unsigned int &index,
+                                                         const std::string  &dependencies)
 {
-  std::pair<unsigned int, std::string> var_pair;
-  var_pair.first  = index;
-  var_pair.second = std::move(dependencies);
-
+  std::vector<std::string> dependencies_set =
+    dealii::Utilities::split_string_list(strip_whitespace(dependencies));
   if (setting_primary_field_attributes)
     {
-      var_eq_dependencies_value_RHS.push_back(var_pair);
+      attributes[index].dependencies_value_RHS =
+        std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
     }
   else
     {
-      var_eq_dependencies_value_PP.push_back(var_pair);
+      attributes[index].dependencies_value_PP =
+        std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
     }
 }
 
 void
-variableAttributeLoader::set_dependencies_gradient_term_RHS(unsigned int index,
-                                                            std::string  dependencies)
+variableAttributeLoader::set_dependencies_gradient_term_RHS(
+  const unsigned int &index,
+  const std::string  &dependencies)
 {
-  std::pair<unsigned int, std::string> var_pair;
-  var_pair.first  = index;
-  var_pair.second = std::move(dependencies);
-
+  std::vector<std::string> dependencies_set =
+    dealii::Utilities::split_string_list(strip_whitespace(dependencies));
   if (setting_primary_field_attributes)
     {
-      var_eq_dependencies_gradient_RHS.push_back(var_pair);
+      attributes[index].dependencies_gradient_RHS =
+        std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
     }
   else
     {
-      var_eq_dependencies_gradient_PP.push_back(var_pair);
+      attributes[index].dependencies_gradient_PP =
+        std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
     }
 }
 
 void
-variableAttributeLoader::set_dependencies_value_term_LHS(unsigned int index,
-                                                         std::string  dependencies)
+variableAttributeLoader::set_dependencies_value_term_LHS(const unsigned int &index,
+                                                         const std::string  &dependencies)
 {
-  std::pair<unsigned int, std::string> var_pair;
-  var_pair.first  = index;
-  var_pair.second = std::move(dependencies);
-  var_eq_dependencies_value_LHS.push_back(var_pair);
+  std::vector<std::string> dependencies_set =
+    dealii::Utilities::split_string_list(strip_whitespace(dependencies));
+  attributes[index].dependencies_value_LHS =
+    std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
 }
 
 void
-variableAttributeLoader::set_dependencies_gradient_term_LHS(unsigned int index,
-                                                            std::string  dependencies)
+variableAttributeLoader::set_dependencies_gradient_term_LHS(
+  const unsigned int &index,
+  const std::string  &dependencies)
 {
-  std::pair<unsigned int, std::string> var_pair;
-  var_pair.first  = index;
-  var_pair.second = std::move(dependencies);
-  var_eq_dependencies_gradient_LHS.push_back(var_pair);
+  std::vector<std::string> dependencies_set =
+    dealii::Utilities::split_string_list(strip_whitespace(dependencies));
+  attributes[index].dependencies_gradient_LHS =
+    std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
+}
+
+void
+variableAttributeLoader::validate_attributes()
+{
+  for (const auto &[index, attribute_set] : attributes)
+    {
+    }
+}
+
+std::string
+variableAttributeLoader::strip_whitespace(const std::string &_text)
+{
+  std::string text = _text;
+  text.erase(std::remove(text.begin(), text.end(), ' '), text.end());
+  return text;
 }
