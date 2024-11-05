@@ -90,7 +90,7 @@ MatrixFreePDE<dim, degree>::reinit()
                constraintsDirichlet->n_constraints());
       pcout << buffer;
     }
-  pcout << "total DOF : " << totalDOFs << std::endl;
+  pcout << "total DOF : " << totalDOFs << "\n";
 
   // Setup the matrix free object
   typename MatrixFree<dim, double>::AdditionalData additional_data;

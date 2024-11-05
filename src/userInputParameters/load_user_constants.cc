@@ -30,8 +30,7 @@ userInputParameters<dim>::load_user_constants(inputFileReader          &input_fi
       if (model_constants_strings.size() < 2)
         {
           std::cerr << "PRISMS-PF ERROR: Users must input two fields for "
-                       "user-defined variables (value and type)."
-                    << std::endl;
+                       "user-defined variables (value and type).\n";
           abort();
         }
 
@@ -61,8 +60,7 @@ userInputParameters<dim>::load_user_constants(inputFileReader          &input_fi
             {
               std::cerr << "PRISMS-PF ERROR: The type for user-defined "
                            "variables must be 'double', 'int', 'bool', "
-                           "'tensor', or 'elastic constants'."
-                        << std::endl;
+                           "'tensor', or 'elastic constants'.\n";
               abort();
             }
         }
@@ -102,8 +100,7 @@ userInputParameters<dim>::load_user_constants(inputFileReader          &input_fi
               if (open_parentheses != close_parentheses)
                 {
                   std::cerr << "PRISMS-PF ERROR: User-defined constant tensor does not "
-                               "have the same number of open and close parentheses."
-                            << std::endl;
+                               "have the same number of open and close parentheses.\n";
                   abort();
                 }
               // Rank 1 tensor
@@ -121,10 +118,10 @@ userInputParameters<dim>::load_user_constants(inputFileReader          &input_fi
                     }
                   else
                     {
-                      std::cerr << "PRISMS-PF ERROR: The columns in user-defined "
-                                   "constant tensors cannot be longer than 3 elements "
-                                   "(internally truncated to the number of dimensions)."
-                                << std::endl;
+                      std::cerr
+                        << "PRISMS-PF ERROR: The columns in user-defined "
+                           "constant tensors cannot be longer than 3 elements "
+                           "(internally truncated to the number of dimensions).\n";
                       abort();
                     }
                 }
@@ -139,8 +136,7 @@ userInputParameters<dim>::load_user_constants(inputFileReader          &input_fi
                         {
                           std::cerr << "PRISMS-PF ERROR: User-defined constant tensor "
                                        "does not have enough elements, for 3D "
-                                       "calculations matrices must be 3x3."
-                                    << std::endl;
+                                       "calculations matrices must be 3x3.\n";
                           abort();
                         }
                     }
@@ -152,8 +148,7 @@ userInputParameters<dim>::load_user_constants(inputFileReader          &input_fi
                     {
                       std::cerr << "PRISMS-PF ERROR: User-defined constant "
                                    "tensor does not have the correct number of "
-                                   "elements, matrices must be 2x2 or 3x3."
-                                << std::endl;
+                                   "elements, matrices must be 2x2 or 3x3.\n";
                       abort();
                     }
 
@@ -205,8 +200,7 @@ userInputParameters<dim>::load_user_constants(inputFileReader          &input_fi
                 {
                   std::cerr << "PRISMS-PF ERROR: User-defined elastic constant "
                                "list does not have the same number of open and "
-                               "close parentheses."
-                            << std::endl;
+                               "close parentheses.\n";
                   abort();
                 }
 
@@ -220,15 +214,14 @@ userInputParameters<dim>::load_user_constants(inputFileReader          &input_fi
 
               const std::string elastic_const_symmetry =
                 model_constants_type_strings.at(0);
-              dealii::Tensor<2, 2 *dim - 1 + dim / 3> temp =
+              dealii::Tensor<2, 2 * dim - 1 + dim / 3> temp =
                 get_Cij_tensor(temp_elastic_constants, elastic_const_symmetry);
               model_constants.push_back(temp);
             }
           else
             {
               std::cerr << "PRISMS-PF ERROR: Only user-defined constant "
-                           "tensors may have multiple elements."
-                        << std::endl;
+                           "tensors may have multiple elements.\n";
               abort();
             }
         }
@@ -265,8 +258,7 @@ userInputParameters<dim>::get_Cij_tensor(std::vector<double> elastic_constants,
     {
       // Should change to an exception
       std::cerr << "Elastic material model is invalid, please use isotropic, "
-                   "transverse, orthotropic, or anisotropic"
-                << std::endl;
+                   "transverse, orthotropic, or anisotropic\n";
     }
 
   // If the material model is anisotropic for a 2D calculation but the elastic

@@ -324,7 +324,7 @@ variableContainer<dim, degree, T>::get_scalar_value(
       std::cerr << "PRISMS-PF Error: Attempted access of a variable value that "
                    "was not marked as needed in 'equations.cc'. The attempted "
                    "access was for variable with index "
-                << global_variable_index << " ." << std::endl;
+                << global_variable_index << " .\n";
       abort();
     }
 }
@@ -344,7 +344,7 @@ variableContainer<dim, degree, T>::get_scalar_gradient(
       std::cerr << "PRISMS-PF Error: Attempted access of a variable gradient "
                    "that was not marked as needed in 'equations.cc'. The "
                    "attempted access was for variable with index "
-                << global_variable_index << " ." << std::endl;
+                << global_variable_index << " .\n";
       abort();
     }
 }
@@ -364,7 +364,7 @@ variableContainer<dim, degree, T>::get_scalar_hessian(
       std::cerr << "PRISMS-PF Error: Attempted access of a variable hessian "
                    "that was not marked as needed in 'equations.cc'. The "
                    "attempted access was for variable with index "
-                << global_variable_index << " ." << std::endl;
+                << global_variable_index << " .\n";
       abort();
     }
 }
@@ -384,7 +384,7 @@ variableContainer<dim, degree, T>::get_vector_value(
       std::cerr << "PRISMS-PF Error: Attempted access of a variable value that "
                    "was not marked as needed in 'equations.cc'. The attempted "
                    "access was for variable with index "
-                << global_variable_index << " ." << std::endl;
+                << global_variable_index << " .\n";
       abort();
     }
 }
@@ -404,7 +404,7 @@ variableContainer<dim, degree, T>::get_vector_gradient(
       std::cerr << "PRISMS-PF Error: Attempted access of a variable gradient "
                    "that was not marked as needed in 'equations.cc'. The "
                    "attempted access was for variable with index "
-                << global_variable_index << " ." << std::endl;
+                << global_variable_index << " .\n";
       abort();
     }
 }
@@ -424,7 +424,7 @@ variableContainer<dim, degree, T>::get_vector_hessian(
       std::cerr << "PRISMS-PF Error: Attempted access of a variable hessian "
                    "that was not marked as needed in 'equations.cc'. The "
                    "attempted access was for variable with index "
-                << global_variable_index << " ." << std::endl;
+                << global_variable_index << " .\n";
       abort();
     }
 }
@@ -446,7 +446,7 @@ variableContainer<dim, degree, T>::get_change_in_scalar_value(
       std::cerr << "PRISMS-PF Error: Attempted access of a change in variable "
                    "value that was not marked as needed in 'equations.cc'. The "
                    "attempted access was for variable with index "
-                << global_variable_index << " ." << std::endl;
+                << global_variable_index << " .\n";
       abort();
     }
 }
@@ -466,7 +466,7 @@ variableContainer<dim, degree, T>::get_change_in_scalar_gradient(
       std::cerr << "PRISMS-PF Error: Attempted access of a change in variable "
                    "gradient that was not marked as needed in 'equations.cc'. "
                    "The attempted access was for variable with index "
-                << global_variable_index << " ." << std::endl;
+                << global_variable_index << " .\n";
       abort();
     }
 }
@@ -486,7 +486,7 @@ variableContainer<dim, degree, T>::get_change_in_scalar_hessian(
       std::cerr << "PRISMS-PF Error: Attempted access of a change in variable "
                    "hessian that was not marked as needed in 'equations.cc'. "
                    "The attempted access was for variable with index "
-                << global_variable_index << " ." << std::endl;
+                << global_variable_index << " .\n";
       abort();
     }
 }
@@ -506,7 +506,7 @@ variableContainer<dim, degree, T>::get_change_in_vector_value(
       std::cerr << "PRISMS-PF Error: Attempted access of a change in variable "
                    "value that was not marked as needed in 'equations.cc'. The "
                    "attempted access was for variable with index "
-                << global_variable_index << " ." << std::endl;
+                << global_variable_index << " .\n";
       abort();
     }
 }
@@ -526,7 +526,7 @@ variableContainer<dim, degree, T>::get_change_in_vector_gradient(
       std::cerr << "PRISMS-PF Error: Attempted access of a change in variable "
                    "gradient that was not marked as needed in 'equations.cc'. "
                    "The attempted access was for variable with index "
-                << global_variable_index << " ." << std::endl;
+                << global_variable_index << " .\n";
       abort();
     }
 }
@@ -546,7 +546,7 @@ variableContainer<dim, degree, T>::get_change_in_vector_hessian(
       std::cerr << "PRISMS-PF Error: Attempted access of a change in variable "
                    "hessian that was not marked as needed in 'equations.cc'. "
                    "The attempted access was for variable with index "
-                << global_variable_index << " ." << std::endl;
+                << global_variable_index << " .\n";
       abort();
     }
 }

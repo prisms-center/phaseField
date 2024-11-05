@@ -32,8 +32,8 @@ inputFileReader::inputFileReader(const std::string       &input_file_name,
 
   if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
     {
-      std::cout << "Number of constants: " << num_constants << std::endl;
-      std::cout << "Number of post-processing variables: " << num_pp_vars << std::endl;
+      std::cout << "Number of constants: " << num_constants << "\n";
+      std::cout << "Number of post-processing variables: " << num_pp_vars << "\n";
     }
 
   // Read in all of the parameters now

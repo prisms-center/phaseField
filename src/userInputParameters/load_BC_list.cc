@@ -67,9 +67,8 @@ userInputParameters<dim>::load_BC_list(const std::vector<std::string> &list_of_B
             }
           else
             {
-              std::cout << temp[j].substr(0, 8) << std::endl;
-              std::cout << "Error: Boundary conditions specified improperly."
-                        << std::endl;
+              std::cout << temp[j].substr(0, 8) << "\n";
+              std::cout << "Error: Boundary conditions specified improperly.\n";
               abort();
             }
 

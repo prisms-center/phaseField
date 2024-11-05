@@ -38,15 +38,14 @@ MatrixFreePDE<dim, degree>::init()
   if (dim < 3)
     {
       pcout << "problem dimensions: " << userInputs.domain_size[0] << "x"
-            << userInputs.domain_size[1] << std::endl;
+            << userInputs.domain_size[1] << "\n";
     }
   else
     {
       pcout << "problem dimensions: " << userInputs.domain_size[0] << "x"
-            << userInputs.domain_size[1] << "x" << userInputs.domain_size[2] << std::endl;
+            << userInputs.domain_size[1] << "x" << userInputs.domain_size[2] << "\n";
     }
-  pcout << "number of elements: " << triangulation.n_global_active_cells() << std::endl;
-  pcout << std::endl;
+  pcout << "number of elements: " << triangulation.n_global_active_cells() << "\n\n";
 
   // Setup system
   pcout << "initializing matrix free object\n";
@@ -96,8 +95,7 @@ MatrixFreePDE<dim, degree>::init()
           isTimeDependentBVP     = true;
           hasNonExplicitEquation = true;
           std::cerr << "PRISMS-PF Error: IMPLICIT_TIME_DEPENDENT equation "
-                       "types are not currently supported"
-                    << std::endl;
+                       "types are not currently supported\n";
           abort();
         }
       else if (field.pdetype == AUXILIARY)
@@ -228,7 +226,7 @@ MatrixFreePDE<dim, degree>::init()
                constraintsDirichlet->n_constraints());
       pcout << buffer;
     }
-  pcout << "total DOF : " << totalDOFs << std::endl;
+  pcout << "total DOF : " << totalDOFs << "\n";
 
   // Setup the matrix free object
   typename MatrixFree<dim, double>::AdditionalData additional_data;

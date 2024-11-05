@@ -53,11 +53,10 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
     {
       std::cerr << "PRISMS-PF Error: The initial refinement factor must be "
                    "between the maximum and minimum refinement levels when "
-                   "adaptive meshing is enabled."
-                << std::endl;
+                   "adaptive meshing is enabled.\n";
       std::cerr << "Initial refinement level: " << refine_factor
                 << " Maximum and minimum refinement levels: " << max_refinement_level
-                << ", " << min_refinement_level << std::endl;
+                << ", " << min_refinement_level << "\n";
       abort();
     }
 
@@ -91,8 +90,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
                                  "refinement for variable "
                               << new_criterion.variable_name
                               << " is less than the lower bound. Please "
-                                 "correct this in the parameters file."
-                              << std::endl;
+                                 "correct this in the parameters file.\n";
                   }
               }
             else if (boost::iequals(crit_type_string, "GRADIENT"))
@@ -119,8 +117,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
                                  "refinement for variable "
                               << new_criterion.variable_name
                               << " is less than the lower bound. Please "
-                                 "correct this in the parameters file."
-                              << std::endl;
+                                 "correct this in the parameters file.\n";
                   }
               }
             else
@@ -129,8 +126,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
                              "found in the parameters file, "
                           << crit_type_string
                           << ", is not an allowed type. The allowed types are "
-                             "VALUE, GRADIENT, VALUE_AND_GRADIENT"
-                          << std::endl;
+                             "VALUE, GRADIENT, VALUE_AND_GRADIENT\n";
                 abort();
               }
             refinement_criteria.push_back(new_criterion);
@@ -172,8 +168,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
                 std::cerr << "PRISMS-PF Error: Linear solver tolerance type "
                           << type_string
                           << " is not currently implemented, please use either "
-                             "ABSOLUTE_RESIDUAL or RELATIVE_RESIDUAL_CHANGE"
-                          << std::endl;
+                             "ABSOLUTE_RESIDUAL or RELATIVE_RESIDUAL_CHANGE\n";
                 abort();
               }
             else
@@ -181,8 +176,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
                 std::cerr << "PRISMS-PF Error: Linear solver tolerance type "
                           << type_string
                           << " is not one of the allowed values (ABSOLUTE_RESIDUAL, "
-                             "RELATIVE_RESIDUAL_CHANGE, ABSOLUTE_SOLUTION_CHANGE)"
-                          << std::endl;
+                             "RELATIVE_RESIDUAL_CHANGE, ABSOLUTE_SOLUTION_CHANGE)\n";
                 abort();
               }
 
@@ -237,8 +231,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
                 std::cerr << "PRISMS-PF Error: Nonlinear solver tolerance type "
                           << type_string
                           << " is not one of the allowed values (ABSOLUTE_RESIDUAL, "
-                             "RELATIVE_RESIDUAL_CHANGE, ABSOLUTE_SOLUTION_CHANGE)"
-                          << std::endl;
+                             "RELATIVE_RESIDUAL_CHANGE, ABSOLUTE_SOLUTION_CHANGE)\n";
                 abort();
               }
 
@@ -282,8 +275,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
                                  "equations. The equation for variable "
                               << var_name[i]
                               << " is not a time independent equation. No initial "
-                                 "guess is needed for this equation."
-                              << std::endl;
+                                 "guess is needed for this equation.\n";
                   }
               }
 
@@ -333,8 +325,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
           std::cout << "PRISMS-PF Warning: 'Output file type' given as 'vtk' and "
                        "'Output separate files per process' given as 'false'. Shared "
                        "output files are not supported for the vtk output format. "
-                       "Separate files per process will be created."
-                    << std::endl;
+                       "Separate files per process will be created.\n";
         }
     }
 
@@ -389,9 +380,8 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
           // Should change to an exception
           std::cerr << "Invalid selections for the final time and the number "
                        "of increments. At least one should be given in the "
-                       "input file and should be positive."
-                    << std::endl;
-          std::cout << finalTime << " " << totalIncrements_temp << std::endl;
+                       "input file and should be positive.\n";
+          std::cout << finalTime << " " << totalIncrements_temp << "\n";
           abort();
         }
     }
@@ -502,23 +492,20 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
               {
                 std::cerr << "PRISMS-PF Error: The number of nucleus semiaxes given in "
                              "the 'parameters.in' file must be at least the number of "
-                             "dimensions and no more than 3."
-                          << std::endl;
+                             "dimensions and no more than 3.\n";
                 abort();
               }
             if (freeze_semiaxes.size() < dim || freeze_semiaxes.size() > 3)
               {
                 std::cerr << "PRISMS-PF Error: The number of nucleation freeze zone "
                              "semiaxes given in the 'parameters.in' file must be at "
-                             "least the number of dimensions and no more than 3."
-                          << std::endl;
+                             "least the number of dimensions and no more than 3.\n";
                 abort();
               }
             if (ellipsoid_rotation.size() != 3)
               {
                 std::cerr << "PRISMS-PF Error: Exactly three nucleus rotation "
-                             "angles must be given in the 'parameters.in' file."
-                          << std::endl;
+                             "angles must be given in the 'parameters.in' file.\n";
                 abort();
               }
           }
@@ -568,8 +555,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
     {
       std::cerr << "PRISMS-PF Error: If grain reassignment is activated, a "
                    "non-negative buffer distance must be given. See the 'Buffer "
-                   "between grains before reassignment' entry in parameters.in."
-                << std::endl;
+                   "between grains before reassignment' entry in parameters.in.\n";
       abort();
     }
 
@@ -593,9 +579,8 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
         {
           std::cerr << "PRISMS-PF Error: Entries in the list of order "
                        "parameter fields used for grain reassignment must "
-                       "match the variable names in equations.h."
-                    << std::endl;
-          std::cerr << field << std::endl;
+                       "match the variable names in equations.h.\n";
+          std::cerr << field << "\n";
           abort();
         }
     }

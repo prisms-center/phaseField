@@ -86,10 +86,10 @@ MatrixFreePDE<dim, degree>::getNewNuclei()
   std::vector<nucleus<dim>> newnuclei;
 
   // Get list of prospective new nuclei for the local processor
-  pcout << "Nucleation attempt for increment " << currentIncrement << std::endl;
+  pcout << "Nucleation attempt for increment " << currentIncrement << "\n";
 
   getLocalNucleiList(newnuclei);
-  pcout << "nucleation attempt! " << currentTime << " " << currentIncrement << std::endl;
+  pcout << "nucleation attempt! " << currentTime << " " << currentIncrement << "\n";
 
   // Generate global list of new nuclei and resolve conflicts between new nuclei
   parallelNucleationList<dim> new_nuclei_parallel(newnuclei);
@@ -297,10 +297,10 @@ MatrixFreePDE<dim, degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
 
                           // Add nucleus to prospective list
                           std::cout << "Prospective nucleation event. Nucleus no. "
-                                    << nuclei.size() + 1 << std::endl;
-                          std::cout << "Nucleus center: " << nuc_ele_pos << std::endl;
+                                    << nuclei.size() + 1 << "\n";
+                          std::cout << "Nucleus center: " << nuc_ele_pos << "\n";
                           std::cout << "Nucleus order parameter: " << variable_index
-                                    << std::endl;
+                                    << "\n";
                           auto *temp   = new nucleus<dim>;
                           temp->index  = nuclei.size();
                           temp->center = nuc_ele_pos;
@@ -387,8 +387,7 @@ MatrixFreePDE<dim, degree>::safetyCheckNewNuclei(std::vector<nucleus<dim>>  newn
                         {
                           isClose = true;
                           std::cout << "Attempted nucleation failed due to "
-                                       "overlap w/ existing particle!!!!!!"
-                                    << std::endl;
+                                       "overlap w/ existing particle!\n";
                           conflict_ids.push_back(thisNucleus.index);
                           break;
                         }

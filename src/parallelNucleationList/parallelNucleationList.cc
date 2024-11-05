@@ -582,7 +582,7 @@ parallelNucleationList<dim>::removeSubsetOfNuclei(
 
   for (const unsigned int nuclei : nuclei_to_remove)
     {
-      std::cout << thisProc << ": " << nuclei << std::endl;
+      std::cout << thisProc << ": " << nuclei << "\n";
     }
 
   // Remove the nuclei from the list

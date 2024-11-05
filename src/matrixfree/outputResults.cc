@@ -106,7 +106,7 @@ MatrixFreePDE<dim, degree>::outputResults()
             }
           if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
             {
-              output_file << std::endl;
+              output_file << "\n";
             }
           output_file.close();
           first_integrated_var_output_complete = true;
@@ -243,8 +243,7 @@ MatrixFreePDE<dim, degree>::outputResults()
   else
     {
       std::cerr << "PRISMS-PF Error: The parameter 'outputFileType' must be "
-                   "either \"vtu\" or \"vtk\""
-                << std::endl;
+                   "either \"vtu\" or \"vtk\"\n";
       abort();
     }
 
