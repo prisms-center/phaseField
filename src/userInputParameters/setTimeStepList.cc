@@ -14,10 +14,7 @@ userInputParameters<dim>::setTimeStepList(
   std::vector<unsigned int> timeStepList;
 
   // The number of outputs cannot be greater than the number increments
-  if (numberOfOutputs > totalIncrements)
-    {
-      numberOfOutputs = totalIncrements;
-    }
+  numberOfOutputs = std::min(numberOfOutputs, totalIncrements);
 
   // Prevent divide by zero in subsequent output types by returning the a vector where the
   // only entry is one greater than the number of increments. This way, we effectively

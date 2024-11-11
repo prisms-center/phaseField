@@ -475,13 +475,14 @@ userInputParameters<dim>::getCIJMatrix(const elasticityModel       model,
     }
   // print CIJ to terminal
   pcout << "Elasticity matrix (Voigt notation):\n";
-  char buffer[100];
-  for (unsigned int i = 0; i < 2 * dim - 1 + dim / 3; i++)
+  constexpr unsigned int voight_matrix_size = 2 * dim - 1 + dim / 3;
+  std::array<char, 100>  buffer;
+  for (unsigned int i = 0; i < voight_matrix_size; i++)
     {
-      for (unsigned int j = 0; j < 2 * dim - 1 + dim / 3; j++)
+      for (unsigned int j = 0; j < voight_matrix_size; j++)
         {
-          snprintf(buffer, sizeof(buffer), "%8.3e ", CIJ[i][j]);
-          pcout << buffer;
+          snprintf(buffer.data(), buffer.size(), "%8.3e ", CIJ[i][j]);
+          pcout << buffer.data();
         }
       pcout << "\n";
     }

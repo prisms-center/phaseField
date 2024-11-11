@@ -11,9 +11,9 @@
 #include <deal.II/lac/vector.h>
 
 template <int dim>
-vectorBCFunction<dim>::vectorBCFunction(std::vector<double> input_values)
+vectorBCFunction<dim>::vectorBCFunction(const std::vector<double> &BC_values)
   : dealii::Function<dim>(dim)
-  , BC_values(std::move(input_values))
+  , BC_values(BC_values)
 {}
 
 template <int dim>
