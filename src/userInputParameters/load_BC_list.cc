@@ -6,6 +6,7 @@
 #include <deal.II/base/exceptions.h>
 
 #include "../../include/userInputParameters.h"
+#include <cstddef>
 
 template <int dim>
 void
@@ -28,7 +29,7 @@ userInputParameters<dim>::load_BC_list(const std::vector<std::string> &list_of_B
       // the same BC is applied for all boundaries
       if (temp.size() == 1)
         {
-          temp.resize(2 * dim, temp[0]);
+          temp.resize(static_cast<size_t>(2 * dim), temp[0]);
         }
 
       // Load the BC for each boundary into 'newBC'.
@@ -76,10 +77,8 @@ userInputParameters<dim>::load_BC_list(const std::vector<std::string> &list_of_B
           // domain
           if (j % 2 == 0)
             {
-              AssertThrow(!((boost::iequals(temp[j], "PERIODIC") &&
-                             !boost::iequals(temp[j + 1], "PERIODIC")) ||
-                            (!boost::iequals(temp[j], "PERIODIC") &&
-                             boost::iequals(temp[j + 1], "PERIODIC"))),
+              AssertThrow(boost::iequals(temp[j], "PERIODIC") ==
+                            boost::iequals(temp[j + 1], "PERIODIC"),
                           dealii::ExcMessage(
                             std::string("Periodic boundary condition must be "
                                         "specified on both sides of domain")));

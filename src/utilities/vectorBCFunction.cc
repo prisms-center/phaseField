@@ -18,8 +18,8 @@ vectorBCFunction<dim>::vectorBCFunction(std::vector<double> input_values)
 
 template <int dim>
 void
-vectorBCFunction<dim>::vector_value(const dealii::Point<dim> &p,
-                                    dealii::Vector<double>   &values) const
+vectorBCFunction<dim>::vector_value([[maybe_unused]] const dealii::Point<dim> &p,
+                                    dealii::Vector<double> &values) const
 {
   for (unsigned int i = 0; i < dim; i++)
     {

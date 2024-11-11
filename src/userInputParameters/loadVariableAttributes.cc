@@ -53,7 +53,7 @@ userInputParameters<dim>::loadVariableAttributes(
   varInfoListExplicitRHS.reserve(num_var_explicit_RHS);
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
-      variable_info varInfo {
+      const variable_info varInfo {
         var_type[i] == SCALAR,
         i,
         variable_attributes.equation_dependency_parser.eval_flags_explicit_RHS[i],
@@ -78,7 +78,7 @@ userInputParameters<dim>::loadVariableAttributes(
   varInfoListNonexplicitRHS.reserve(num_var_nonexplicit_RHS);
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
-      variable_info varInfo {
+      const variable_info varInfo {
         var_type[i] == SCALAR,
         i,
         variable_attributes.equation_dependency_parser.eval_flags_nonexplicit_RHS[i],
@@ -104,7 +104,7 @@ userInputParameters<dim>::loadVariableAttributes(
   varInfoListLHS.reserve(num_var_LHS);
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
-      variable_info varInfo {
+      const variable_info varInfo {
         var_type[i] == SCALAR,
         i,
         variable_attributes.equation_dependency_parser.eval_flags_nonexplicit_LHS[i],
@@ -118,14 +118,14 @@ userInputParameters<dim>::loadVariableAttributes(
   varChangeInfoListLHS.reserve(num_var_LHS);
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
-      variable_info varInfo {var_type[i] == SCALAR,
-                             i,
-                             variable_attributes.equation_dependency_parser
-                               .eval_flags_change_nonexplicit_LHS[i],
-                             variable_attributes.equation_dependency_parser
-                               .eval_flags_residual_nonexplicit_LHS[i],
-                             !static_cast<bool>(varInfo.evaluation_flags &
-                                                dealii::EvaluationFlags::nothing)};
+      const variable_info varInfo {var_type[i] == SCALAR,
+                                   i,
+                                   variable_attributes.equation_dependency_parser
+                                     .eval_flags_change_nonexplicit_LHS[i],
+                                   variable_attributes.equation_dependency_parser
+                                     .eval_flags_residual_nonexplicit_LHS[i],
+                                   !static_cast<bool>(varInfo.evaluation_flags &
+                                                      dealii::EvaluationFlags::nothing)};
 
       varChangeInfoListLHS.push_back(varInfo);
     }
@@ -135,7 +135,7 @@ userInputParameters<dim>::loadVariableAttributes(
   pp_baseVarInfoList.reserve(number_of_variables);
   for (unsigned int i = 0; i < number_of_variables; i++)
     {
-      variable_info varInfo {
+      const variable_info varInfo {
         var_type[i] == SCALAR,
         i,
         variable_attributes.equation_dependency_parser.eval_flags_postprocess[i],
@@ -164,7 +164,7 @@ userInputParameters<dim>::loadVariableAttributes(
   pp_varInfoList.reserve(pp_number_of_variables);
   for (unsigned int i = 0; i < pp_number_of_variables; i++)
     {
-      variable_info varInfo {
+      const variable_info varInfo {
         pp_var_type[i] == SCALAR,
         i,
         dealii::EvaluationFlags::nothing,

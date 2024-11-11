@@ -12,7 +12,8 @@ MatrixFreePDE<dim, degree>::setNonlinearEqInitialGuess()
   // log time
   computing_timer.enter_subsection("matrixFreePDE: setNonlinearEqInitialGuess");
   Timer time;
-  char  buffer[200];
+  time.start();
+  char buffer[200];
 
   for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
     {
@@ -114,8 +115,7 @@ MatrixFreePDE<dim, degree>::setNonlinearEqInitialGuess()
                        solver_control.tolerance(),
                        solutionSet[fieldIndex]->l2_norm(),
                        dU_norm);
-              pcout << buffer;
-              pcout << std::endl;
+              pcout << buffer << "\n";
             }
         }
     }

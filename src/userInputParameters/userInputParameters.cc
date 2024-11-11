@@ -136,9 +136,10 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
     }
 
   // Time stepping parameters
-  dtValue                        = parameter_handler.get_double("Time step");
-  const int totalIncrements_temp = parameter_handler.get_integer("Number of time steps");
-  finalTime                      = parameter_handler.get_double("Simulation end time");
+  dtValue = parameter_handler.get_double("Time step");
+  const int totalIncrements_temp =
+    static_cast<int>(parameter_handler.get_integer("Number of time steps"));
+  finalTime = parameter_handler.get_double("Simulation end time");
 
   // Linear solver parameters
   for (unsigned int i = 0; i < number_of_variables; i++)

@@ -64,8 +64,9 @@ userInputParameters<dim>::setTimeStepList(
       timeStepList.push_back(1);
       for (unsigned int iter = 2; iter <= totalIncrements; iter++)
         {
-          const unsigned int decade    = std::ceil(std::log10(iter));
-          const unsigned int step_size = std::pow(10, decade) / numberOfOutputs;
+          const unsigned int decade = std::ceil(std::log10(iter));
+          const auto         step_size =
+            static_cast<unsigned int>(std::pow(10, decade) / numberOfOutputs);
           if (iter % step_size == 0)
             {
               timeStepList.push_back(iter);
