@@ -15,33 +15,15 @@ using EvalFlags = dealii::EvaluationFlags::EvaluationFlags;
 struct variableAttributes
 {
   // Variable inputs (v2.0)
-  std::string name                       = "";
-  fieldType   var_type                   = UNDEFINED_FIELD;
-  PDEType     eq_type                    = UNDEFINED_PDE;
-  bool        need_value                 = false;
-  bool        need_gradient              = false;
-  bool        need_hessian               = false;
-  bool        need_value_residual        = false;
-  bool        need_gradient_residual     = false;
-  bool        need_value_LHS             = false;
-  bool        need_gradient_LHS          = false;
-  bool        need_hessian_LHS           = false;
-  bool        need_value_residual_LHS    = false;
-  bool        need_gradient_residual_LHS = false;
-  bool        need_value_change_LHS      = false;
-  bool        need_gradient_change_LHS   = false;
-  bool        need_hessian_change_LHS    = false;
-  bool        need_value_PP              = false;
-  bool        need_gradient_PP           = false;
-  bool        need_hessian_PP            = false;
-  bool        need_value_nucleation      = false;
-  bool        nucleating_variable        = false;
-  fieldType   var_type_PP                = UNDEFINED_FIELD;
-  bool        output_integral            = false;
-  bool        need_value_residual_PP     = false;
-  bool        need_gradient_residual_PP  = false;
-  bool        is_nonlinear               = false;
-  bool        calc_integral              = false;
+  std::string name                  = "";
+  fieldType   var_type              = UNDEFINED_FIELD;
+  PDEType     eq_type               = UNDEFINED_PDE;
+  bool        need_value_nucleation = false;
+  bool        nucleating_variable   = false;
+  bool        is_pp                 = false;
+  bool        output_integral       = false;
+  bool        is_nonlinear          = false;
+  bool        calc_integral         = false;
 
   std::set<std::string> dependencies_value_RHS;
   std::set<std::string> dependencies_gradient_RHS;
@@ -75,69 +57,54 @@ struct variableAttributes
   parse_residual_dependencies();
 
   std::set<EvalFlags *>
-  eval_flags_for_eq_type(PDEType other_eq_type)
-  {
-    if (other_eq_type == EXPLICIT_TIME_DEPENDENT)
-      {
-        return {&eval_flags_explicit_RHS};
-      }
-    if (other_eq_type == AUXILIARY)
-      {
-        return {&eval_flags_nonexplicit_RHS};
-      }
-    if (other_eq_type == IMPLICIT_TIME_DEPENDENT || other_eq_type == TIME_INDEPENDENT)
-      {
-        return {&eval_flags_nonexplicit_RHS, &eval_flags_nonexplicit_LHS};
-      }
-    return {};
-  }
+  eval_flags_for_eq_type(const variableAttributes &other_variable);
 
-  std::set<EvalFlags *>
-  residual_flags_for_eq_type(PDEType other_eq_type)
-  {
-    if (other_eq_type == EXPLICIT_TIME_DEPENDENT)
-      {
-        return {&eval_flags_residual_explicit_RHS};
-      }
-    if (other_eq_type == AUXILIARY)
-      {
-        return {&eval_flags_residual_nonexplicit_RHS};
-      }
-    if (other_eq_type == IMPLICIT_TIME_DEPENDENT || other_eq_type == TIME_INDEPENDENT)
-      {
-        return {&eval_flags_residual_nonexplicit_RHS,
-                &eval_flags_residual_nonexplicit_LHS};
-      }
-    return {};
-  }
+  /*   std::set<EvalFlags *>
+    residual_flags_for_eq_type(PDEType other_eq_type)
+    {
+      if (other_eq_type == EXPLICIT_TIME_DEPENDENT)
+        {
+          return {&eval_flags_residual_explicit_RHS};
+        }
+      if (other_eq_type == AUXILIARY)
+        {
+          return {&eval_flags_residual_nonexplicit_RHS};
+        }
+      if (other_eq_type == IMPLICIT_TIME_DEPENDENT || other_eq_type == TIME_INDEPENDENT)
+        {
+          return {&eval_flags_residual_nonexplicit_RHS,
+                  &eval_flags_residual_nonexplicit_LHS};
+        }
+      return {};
+    } */
+
+  /* std::set<std::pair<std::set<std::string> *, std::set<std::string> *>>
+    dep_set_for_eq_type(PDEType other_eq_type)
+    {
+      if (other_eq_type == EXPLICIT_TIME_DEPENDENT)
+        {
+          return dependencies_RHS;
+          // return {
+          //   {&dependencies_value_RHS, &dependencies_gradient_RHS}
+          // };
+        }
+      if (other_eq_type == AUXILIARY)
+        {
+          return dependencies_RHS;
+          // return {
+          //   {&dependencies_value_RHS, &dependencies_gradient_RHS}
+          // };
+        }
+      if (other_eq_type == IMPLICIT_TIME_DEPENDENT || other_eq_type == TIME_INDEPENDENT)
+        {
+          return dependencies_RHS;
+          // return {
+          //   {&dependencies_value_RHS, &dependencies_gradient_RHS}
+          // };
+        }
+      return {};
+    } */
 };
-
-/* std::set<std::pair<std::set<std::string> *, std::set<std::string> *>>
-  dep_set_for_eq_type(PDEType other_eq_type)
-  {
-    if (other_eq_type == EXPLICIT_TIME_DEPENDENT)
-      {
-        return dependencies_RHS;
-        // return {
-        //   {&dependencies_value_RHS, &dependencies_gradient_RHS}
-        // };
-      }
-    if (other_eq_type == AUXILIARY)
-      {
-        return dependencies_RHS;
-        // return {
-        //   {&dependencies_value_RHS, &dependencies_gradient_RHS}
-        // };
-      }
-    if (other_eq_type == IMPLICIT_TIME_DEPENDENT || other_eq_type == TIME_INDEPENDENT)
-      {
-        return dependencies_RHS;
-        // return {
-        //   {&dependencies_value_RHS, &dependencies_gradient_RHS}
-        // };
-      }
-    return {};
-  } */
 
 class variableAttributeLoader
 {

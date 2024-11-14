@@ -2,6 +2,8 @@
 
 #include <deal.II/base/mpi.h>
 
+#include "varTypeEnums.h"
+
 #include <algorithm>
 
 void
@@ -119,7 +121,7 @@ variableAttributes::parse_dependencies(
               if (other_variable.dependency_set.find(possible_dependency) !=
                   other_variable.dependency_set.end())
                 {
-                  for (auto &eval_flag : eval_flags_for_eq_type(other_variable.eq_type))
+                  for (auto &eval_flag : eval_flags_for_eq_type(other_variable))
                     {
                       *eval_flag |= relevant_flag.at(variation);
                     }
@@ -132,6 +134,29 @@ variableAttributes::parse_dependencies(
     }
 }
 
+std::set<EvalFlags *>
+variableAttributes::eval_flags_for_eq_type(const variableAttributes &other_variable)
+{
+  PDEType other_eq_type = other_variable.eq_type;
+  if (other_variable.is_pp)
+    {
+      return {&eval_flags_postprocess};
+    }
+  if (other_eq_type == EXPLICIT_TIME_DEPENDENT)
+    {
+      return {&eval_flags_explicit_RHS};
+    }
+  if (other_eq_type == AUXILIARY)
+    {
+      return {&eval_flags_nonexplicit_RHS};
+    }
+  if (other_eq_type == IMPLICIT_TIME_DEPENDENT || other_eq_type == TIME_INDEPENDENT)
+    {
+      return {&eval_flags_nonexplicit_RHS, &eval_flags_nonexplicit_LHS};
+    }
+  return {};
+}
+
 // Constructor
 variableAttributeLoader::variableAttributeLoader()
 {
@@ -139,6 +164,11 @@ variableAttributeLoader::variableAttributeLoader()
   loadVariableAttributes(); // This is the user-facing function
   setting_primary_field_attributes = false;
   loadPostProcessorVariableAttributes();
+  for (auto &[index, pp_variable] : pp_attributes)
+    {
+      pp_variable.is_pp   = true;
+      pp_variable.eq_type = EXPLICIT_TIME_DEPENDENT;
+    }
 
   format_dependencies();
   validate_attributes();
@@ -148,9 +178,9 @@ variableAttributeLoader::variableAttributeLoader()
       variable.parse_dependencies(attributes);
       variable.parse_dependencies(pp_attributes);
     }
-  for (auto &[index, variable] : pp_attributes)
+  for (auto &[index, pp_variable] : pp_attributes)
     {
-      variable.parse_residual_dependencies();
+      pp_variable.parse_residual_dependencies();
     }
 }
 
@@ -179,7 +209,7 @@ variableAttributeLoader::set_variable_type(const unsigned int &index,
     }
   else
     {
-      pp_attributes[index].var_type_PP = var_type;
+      pp_attributes[index].var_type = var_type;
     }
 }
 

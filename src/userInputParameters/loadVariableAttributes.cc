@@ -168,7 +168,7 @@ userInputParameters<dim>::loadVariableAttributes(
 
       varInfo.global_var_index = pp_index;
 
-      varInfo.is_scalar = pp_variable.var_type_PP == SCALAR;
+      varInfo.is_scalar = pp_variable.var_type == SCALAR;
 
       pp_varInfoList.push_back(varInfo);
     }
