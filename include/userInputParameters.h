@@ -275,11 +275,7 @@ public:
   unsigned int              pp_number_of_variables;
   unsigned int              num_integrated_fields;
   bool                      postProcessingRequired;
-  std::vector<bool>         pp_calc_integral;
   std::vector<unsigned int> integrated_field_indices;
-
-  std::vector<std::string> pp_var_name;
-  std::vector<fieldType>   pp_var_type;
 
   // Variable and residual info
   std::vector<variable_info> pp_varInfoList;

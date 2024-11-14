@@ -149,7 +149,7 @@ userInputParameters<dim>::loadVariableAttributes(
   num_integrated_fields = 0;
   for (const auto &[pp_index, pp_variable] : variable_attributes.pp_attributes)
     {
-      if (pp_calc_integral[pp_index])
+      if (pp_variable.calc_integral)
         {
           num_integrated_fields++;
           integrated_field_indices.push_back(pp_index);

@@ -36,7 +36,6 @@ struct variableAttributes
   bool        need_hessian_PP            = false;
   bool        need_value_nucleation      = false;
   bool        nucleating_variable        = false;
-  std::string name_pp                    = "";
   fieldType   var_type_PP                = UNDEFINED_FIELD;
   bool        output_integral            = false;
   bool        need_value_residual_PP     = false;

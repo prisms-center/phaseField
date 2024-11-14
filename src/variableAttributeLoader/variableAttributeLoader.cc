@@ -165,7 +165,7 @@ variableAttributeLoader::set_variable_name(const unsigned int &index,
     }
   else
     {
-      attributes[index].name_pp = name;
+      pp_attributes[index].name = name;
     }
 }
 
@@ -179,7 +179,7 @@ variableAttributeLoader::set_variable_type(const unsigned int &index,
     }
   else
     {
-      attributes[index].var_type_PP = var_type;
+      pp_attributes[index].var_type_PP = var_type;
     }
 }
 
@@ -223,7 +223,7 @@ variableAttributeLoader::set_dependencies_value_term_RHS(const unsigned int &ind
     }
   else
     {
-      attributes[index].dependencies_value_PP =
+      pp_attributes[index].dependencies_value_PP =
         std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
     }
 }
@@ -242,7 +242,7 @@ variableAttributeLoader::set_dependencies_gradient_term_RHS(
     }
   else
     {
-      attributes[index].dependencies_gradient_PP =
+      pp_attributes[index].dependencies_gradient_PP =
         std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
     }
 }
