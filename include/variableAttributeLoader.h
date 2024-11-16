@@ -51,6 +51,8 @@ struct variableAttributes
   EvalFlags eval_flags_residual_postprocess = dealii::EvaluationFlags::nothing;
 
   void
+  format_dependencies();
+  void
   parse_dependencies(std::map<uint, variableAttributes> &other_var_attributes);
 
   void
@@ -119,8 +121,6 @@ public:
   loadPostProcessorVariableAttributes();
 
   // Methods to set the parameter_attributes
-  bool setting_primary_field_attributes;
-
   void
   set_variable_name(const unsigned int &index, const std::string &name);
 

@@ -7,34 +7,23 @@
 #include <algorithm>
 
 void
-variableAttributeLoader::format_dependencies()
+variableAttributes::format_dependencies()
 {
-  {
-    for (auto &[index, variable] : attributes)
-      {
-        variable.dependencies_RHS.insert(variable.dependencies_value_RHS.begin(),
-                                         variable.dependencies_value_RHS.end());
-        variable.dependencies_RHS.insert(variable.dependencies_gradient_RHS.begin(),
-                                         variable.dependencies_gradient_RHS.end());
+  dependencies_RHS.insert(dependencies_value_RHS.begin(), dependencies_value_RHS.end());
+  dependencies_RHS.insert(dependencies_gradient_RHS.begin(),
+                          dependencies_gradient_RHS.end());
 
-        variable.dependencies_LHS.insert(variable.dependencies_value_LHS.begin(),
-                                         variable.dependencies_value_LHS.end());
-        variable.dependencies_LHS.insert(variable.dependencies_gradient_LHS.begin(),
-                                         variable.dependencies_gradient_LHS.end());
+  dependencies_LHS.insert(dependencies_value_LHS.begin(), dependencies_value_LHS.end());
+  dependencies_LHS.insert(dependencies_gradient_LHS.begin(),
+                          dependencies_gradient_LHS.end());
 
-        variable.dependencies_PP.insert(variable.dependencies_value_PP.begin(),
-                                        variable.dependencies_value_PP.end());
-        variable.dependencies_PP.insert(variable.dependencies_gradient_PP.begin(),
-                                        variable.dependencies_gradient_PP.end());
+  dependencies_PP.insert(dependencies_value_PP.begin(), dependencies_value_PP.end());
+  dependencies_PP.insert(dependencies_gradient_PP.begin(),
+                         dependencies_gradient_PP.end());
 
-        variable.dependency_set.insert(variable.dependencies_RHS.begin(),
-                                       variable.dependencies_RHS.end());
-        variable.dependency_set.insert(variable.dependencies_LHS.begin(),
-                                       variable.dependencies_LHS.end());
-        variable.dependency_set.insert(variable.dependencies_PP.begin(),
-                                       variable.dependencies_PP.end());
-      }
-  }
+  dependency_set.insert(dependencies_RHS.begin(), dependencies_RHS.end());
+  dependency_set.insert(dependencies_LHS.begin(), dependencies_LHS.end());
+  dependency_set.insert(dependencies_PP.begin(), dependencies_PP.end());
 }
 
 void
@@ -160,17 +149,26 @@ variableAttributes::eval_flags_for_eq_type(const variableAttributes &other_varia
 // Constructor
 variableAttributeLoader::variableAttributeLoader()
 {
-  setting_primary_field_attributes = true;
-  loadVariableAttributes(); // This is the user-facing function
-  setting_primary_field_attributes = false;
-  loadPostProcessorVariableAttributes();
+  relevant_attributes = &attributes;
+  loadVariableAttributes(); // This is a user-facing function
+  relevant_attributes = &pp_attributes;
+  loadPostProcessorVariableAttributes(); // This is a user-facing function
+  relevant_attributes = nullptr;
+
   for (auto &[index, pp_variable] : pp_attributes)
     {
       pp_variable.is_pp   = true;
       pp_variable.eq_type = EXPLICIT_TIME_DEPENDENT;
     }
 
-  format_dependencies();
+  for (auto &[index, variable] : attributes)
+    {
+      variable.format_dependencies();
+    }
+  for (auto &[pp_index, pp_variable] : pp_attributes)
+    {
+      pp_variable.format_dependencies();
+    }
   validate_attributes();
   for (auto &[index, variable] : attributes)
     {
@@ -189,55 +187,41 @@ void
 variableAttributeLoader::set_variable_name(const unsigned int &index,
                                            const std::string  &name)
 {
-  if (setting_primary_field_attributes)
-    {
-      attributes[index].name = name;
-    }
-  else
-    {
-      pp_attributes[index].name = name;
-    }
+  (*relevant_attributes)[index].name = name;
 }
 
 void
 variableAttributeLoader::set_variable_type(const unsigned int &index,
                                            const fieldType    &var_type)
 {
-  if (setting_primary_field_attributes)
-    {
-      attributes[index].var_type = var_type;
-    }
-  else
-    {
-      pp_attributes[index].var_type = var_type;
-    }
+  (*relevant_attributes)[index].var_type = var_type;
 }
 
 void
 variableAttributeLoader::set_variable_equation_type(const unsigned int &index,
                                                     const PDEType      &var_eq_type)
 {
-  attributes[index].eq_type = var_eq_type;
+  (*relevant_attributes)[index].eq_type = var_eq_type;
 }
 
 void
 variableAttributeLoader::set_need_value_nucleation(const unsigned int &index,
                                                    const bool         &flag)
 {
-  attributes[index].need_value_nucleation = flag;
+  (*relevant_attributes)[index].need_value_nucleation = flag;
 }
 
 void
 variableAttributeLoader::set_allowed_to_nucleate(const unsigned int &index,
                                                  const bool         &flag)
 {
-  attributes[index].nucleating_variable = flag;
+  (*relevant_attributes)[index].nucleating_variable = flag;
 }
 
 void
 variableAttributeLoader::set_output_integral(const unsigned int &index, const bool &flag)
 {
-  attributes[index].output_integral = flag;
+  (*relevant_attributes)[index].output_integral = flag;
 }
 
 void
@@ -246,7 +230,9 @@ variableAttributeLoader::set_dependencies_value_term_RHS(const unsigned int &ind
 {
   std::vector<std::string> dependencies_set =
     dealii::Utilities::split_string_list(strip_whitespace(dependencies));
-  if (setting_primary_field_attributes)
+  /* (*relevant_attributes)[index].dependencies_value_RHS =
+      std::set<std::string>(dependencies_set.begin(), dependencies_set.end()); */
+  if (relevant_attributes != &pp_attributes)
     {
       attributes[index].dependencies_value_RHS =
         std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
@@ -265,7 +251,9 @@ variableAttributeLoader::set_dependencies_gradient_term_RHS(
 {
   std::vector<std::string> dependencies_set =
     dealii::Utilities::split_string_list(strip_whitespace(dependencies));
-  if (setting_primary_field_attributes)
+  /* (*relevant_attributes)[index].dependencies_gradient_RHS =
+    std::set<std::string>(dependencies_set.begin(), dependencies_set.end()); */
+  if (relevant_attributes != &pp_attributes)
     {
       attributes[index].dependencies_gradient_RHS =
         std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
@@ -283,7 +271,7 @@ variableAttributeLoader::set_dependencies_value_term_LHS(const unsigned int &ind
 {
   std::vector<std::string> dependencies_set =
     dealii::Utilities::split_string_list(strip_whitespace(dependencies));
-  attributes[index].dependencies_value_LHS =
+  (*relevant_attributes)[index].dependencies_value_LHS =
     std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
 }
 
@@ -294,16 +282,22 @@ variableAttributeLoader::set_dependencies_gradient_term_LHS(
 {
   std::vector<std::string> dependencies_set =
     dealii::Utilities::split_string_list(strip_whitespace(dependencies));
-  attributes[index].dependencies_gradient_LHS =
+  (*relevant_attributes)[index].dependencies_gradient_LHS =
     std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
 }
 
 void
 variableAttributeLoader::validate_attributes()
 {
-  for (const auto &[index, attribute_set] : attributes)
+  // Make sure main attributes arent set in pp_attributes
+  // Make sure dependencies are all variable names and if there are "change()" deps, they
+  // are correctly placed
+  /* for (const auto &[index, attribute_set] : attributes)
     {
     }
+  for (const auto &[pp_index, pp_attribute_set] : pp_attributes)
+    {
+    } */
 }
 
 std::string
