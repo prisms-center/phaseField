@@ -2,8 +2,7 @@
 
 #include <deal.II/base/mpi.h>
 
-#include "varTypeEnums.h"
-
+#include "../../include/varTypeEnums.h"
 #include <algorithm>
 
 void
