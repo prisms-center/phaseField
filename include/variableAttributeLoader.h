@@ -21,9 +21,9 @@ struct variableAttributes
   bool        need_value_nucleation = false;
   bool        nucleating_variable   = false;
   bool        is_pp                 = false;
-  bool        output_integral       = false;
   bool        is_nonlinear          = false;
   bool        calc_integral         = false;
+  bool        output_integral       = false;
 
   std::set<std::string> dependencies_value_RHS;
   std::set<std::string> dependencies_gradient_RHS;

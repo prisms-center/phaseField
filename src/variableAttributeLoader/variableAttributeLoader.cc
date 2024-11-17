@@ -53,6 +53,23 @@ variableAttributes::parse_residual_dependencies()
          {&dependencies_value_LHS, &dependencies_gradient_LHS}}}}
   };
 
+  if (is_pp)
+    {
+      EvalFlags             &residual_flags          = eval_flags_residual_postprocess;
+      std::set<std::string> &value_dependency_set    = dependencies_value_PP;
+      std::set<std::string> &gradient_dependency_set = dependencies_gradient_PP;
+
+      if (!value_dependency_set.empty())
+        {
+          residual_flags |= dealii::EvaluationFlags::values;
+        }
+      if (!gradient_dependency_set.empty())
+        {
+          residual_flags |= dealii::EvaluationFlags::gradients;
+        }
+      return;
+    }
+
   for (const std::pair<EvalFlags *,
                        std::pair<std::set<std::string> *, std::set<std::string> *>>
          &eval_dep_pair : dependencies_for.at(eq_type))
@@ -222,6 +239,7 @@ void
 variableAttributeLoader::set_output_integral(const unsigned int &index, const bool &flag)
 {
   (*relevant_attributes)[index].output_integral = flag;
+  (*relevant_attributes)[index].calc_integral   = flag;
 }
 
 void
