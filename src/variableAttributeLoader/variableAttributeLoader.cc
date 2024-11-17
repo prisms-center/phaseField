@@ -132,8 +132,9 @@ variableAttributes::parse_dependencies(
                       *eval_flag |= relevant_flag.at(variation);
                     }
                   other_variable.is_nonlinear |=
-                    (eq_type != EXPLICIT_TIME_DEPENDENT) && (&other_variable == this) &&
-                    (other_variable.eq_type != EXPLICIT_TIME_DEPENDENT);
+                    (eq_type != EXPLICIT_TIME_DEPENDENT) &&
+                    (other_variable.eq_type != EXPLICIT_TIME_DEPENDENT) &&
+                    (&other_variable != this);
                 }
             }
         }
