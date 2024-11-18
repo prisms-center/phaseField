@@ -1,8 +1,6 @@
 // Calls the unit tests for the PRISMS-PF code
 // Orignal author: Stephen DeWitt (stvdwtt@umich.edu)
 
-#include "boundaryConditions.cc"
-#include "initialConditions.cc"
 #include "unitTest.h"
 #include "unit_test_inputs.cc"
 
