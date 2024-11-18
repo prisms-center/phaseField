@@ -1,6 +1,9 @@
 # Build folder
 build/*
 
+# Config header
+include/config.h
+
 # VS Code
 *.vscode/*
 
@@ -42,28 +45,30 @@ compile_commands.json
 *.pbs
 
 #Output files
-*vtk
-*vtu
-*vts
-*frt
+*.vtk
+*.vtu
+*.vts
+*.frt
 
 #Temporary files
 *~
 *#
 *.#
 *.btr
-freeEnergy.txt
-integratedFields.txt
 .*vtu*
+
+# Visit log
 visitlog.py
 
-#CMAKE files
+#CMake files
 *.cmake
 CMakeCache.txt
 CMakeFiles/
 Makefile
+.ninja*
+build.ninja
 main
-*#main*
+*main*
 
 #Tex files
 *.aux
@@ -100,18 +105,17 @@ DoxygenWarningLog.txt
 *.project
 *.cproject
 *.DS_Store
-freeEnergy.txt
-output.txt
 
 # Output files
 integratedFields.txt
+output.txt
+error.txt
 
 # Checkpoint/restart files
 restart*
 restart.mesh
+restart.mesh.old
 restart.mesh.info
 restart.mesh.info.old
-restart.mesh.old
-restart.resume.z
 restart.time.info
 restart.time.info.old
