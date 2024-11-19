@@ -93,9 +93,7 @@ def compile_and_run_simulation(application_path):
     subprocess.call(
         ["cmake", "."], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
     )
-    subprocess.call(
-        ["make", "-j2"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
-    )
+    subprocess.call(["make"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
     # Print successful compilation to screen
     print(f"Compiling complete, running the regression test for {application_path}...")
