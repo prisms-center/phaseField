@@ -9,6 +9,7 @@
 #include "../../include/vectorBCFunction.h"
 #include "../../src/userInputParameters/userInputParameters.cc"
 #include "../../src/utilities/vectorBCFunction.cc"
+#include "../../src/variableAttributes/variableAttributes.cc"
 #include <iostream>
 
 int
