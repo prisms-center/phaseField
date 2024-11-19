@@ -36,7 +36,7 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug" OR
    "${CMAKE_BUILD_TYPE}" STREQUAL "DebugRelease")
   set(PRISMS_PF_BUILD_DEBUG "ON")
 else()
-set(PRISMS_PF_BUILD_DEBUG "OFF")
+  set(PRISMS_PF_BUILD_DEBUG "OFF")
 endif()
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Release" OR 
@@ -159,7 +159,7 @@ endif()
 
 if(${PRISMS_PF_BUILD_RELEASE} STREQUAL "ON")
   add_executable(main_release ${TARGET_SRC})
-  set_property(TARGET main_release PROPERTY OUTPUT_NAME main-release)
+  set_property(TARGET main_release PROPERTY OUTPUT_NAME main)
   deal_ii_setup_target(main_release RELEASE)
   target_link_libraries(main_release ${CMAKE_SOURCE_DIR}/../../../libprisms-pf-release.a)
 endif()

@@ -50,7 +50,7 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug" OR
    "${CMAKE_BUILD_TYPE}" STREQUAL "DebugRelease")
   set(PRISMS_PF_BUILD_DEBUG "ON")
 else()
-set(PRISMS_PF_BUILD_DEBUG "OFF")
+  set(PRISMS_PF_BUILD_DEBUG "OFF")
 endif()
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Release" OR 

@@ -82,7 +82,7 @@ def compile_and_run_simulation(application_path):
     os.chdir(application_path)
 
     # Remove old files
-    remove_file("main-release")
+    remove_file("main")
     remove_file("main-debug")
     remove_file("CMakeCache.txt")
     remove_file("integratedFields.txt")
@@ -117,7 +117,7 @@ def compile_and_run_simulation(application_path):
     start = time.time()
     try:
         subprocess.run(
-            ["mpirun", "-n", "1", "./main-release"],
+            ["mpirun", "-n", "1", "./main"],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.PIPE,
             check=True,

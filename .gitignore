@@ -48,7 +48,6 @@ compile_commands.json
 *.out
 *.app
 *.pbs
-main-release
 main-debug
 main
 

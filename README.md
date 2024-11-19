@@ -76,7 +76,7 @@ cd applications/cahnHilliard
 cmake .
 make -j <nprocs>
 ```
-This will generate two executable files: `main-release` and `main-debug`. Debug and release are compiler configurations. Debug mode is slower, but contains less optimiziations and more meaningful error messages. This makes it ideal for application/model code development. Release mode has less "safety features" and meaningful error messages, with more optimizations (faster runtime).
+This will generate two executable files: `main` and `main-debug`. Debug and release are compiler configurations. Debug mode is slower, but contains less optimiziations and more meaningful error messages. This makes it ideal for application/model code development. Release mode has less "safety features" and meaningful error messages, with more optimizations (faster runtime).
 
 Debug execution (serial runs):
 ```bash
@@ -84,7 +84,7 @@ $ ./main-debug
 ```
 Release execution (parallel runs):
 ```bash
-$ mpirun -np <nprocs> ./main-release
+$ mpirun -np <nprocs> ./main
 ```
 
 ### Visualization:
