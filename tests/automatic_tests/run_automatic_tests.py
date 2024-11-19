@@ -82,7 +82,8 @@ def compile_and_run_simulation(application_path):
     os.chdir(application_path)
 
     # Remove old files
-    remove_file("main")
+    remove_file("main-release")
+    remove_file("main-debug")
     remove_file("CMakeCache.txt")
     remove_file("integratedFields.txt")
     for solution_file in glob.glob("solution-*.vtu"):
@@ -93,7 +94,7 @@ def compile_and_run_simulation(application_path):
         ["cmake", "."], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
     )
     subprocess.call(
-        ["make", "release"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+        ["make", "-j2"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
     )
 
     # Print successful compilation to screen
@@ -103,7 +104,7 @@ def compile_and_run_simulation(application_path):
     # Run application with timer
     start = time.time()
     subprocess.call(
-        ["mpirun", "-n", "1", "./main"],
+        ["mpirun", "-n", "1", "./main-release"],
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
     )
