@@ -1,6 +1,6 @@
 ##
-#  CMake for the PRISMS-PF applications:
-#  Adapated from the ASPECT CMake file
+#  CMake for the PRISMS-PF
+#  Adapted from the ASPECT CMake file
 ##
 
 cmake_minimum_required(VERSION 3.1.0)
