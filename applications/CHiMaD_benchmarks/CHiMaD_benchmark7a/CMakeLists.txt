@@ -1,39 +1,130 @@
 ##
-#  CMake script for the PRISMS-PF applications:
+#  CMake script for the PRISMS-PF applications
+#  Adapted from the ASPECT CMake file
 ##
 
 cmake_minimum_required(VERSION 3.1.0)
+
 project(myapp)
 
+message(STATUS "")
+message(STATUS "=========================================================")
+message(STATUS "Configuring PRISMS-PF application")
+message(STATUS "=========================================================")
+message(STATUS "")
+
+# Setup the build type (debug, release, debugrelease)
+if("${CMAKE_BUILD_TYPE}" STREQUAL "")
+  set(CMAKE_BUILD_TYPE "DebugRelease" 
+      CACHE STRING
+      "Choose the type of build, options are: Debug, Release and DebugRelease."
+      FORCE)
+endif()
+
+# Convert build type into the debug and release builds, which may or may 
+# not be built.
+if("${CMAKE_BUILD_TYPE}" STREQUAL "Release" OR
+   "${CMAKE_BUILD_TYPE}" STREQUAL "Debug" OR
+   "${CMAKE_BUILD_TYPE}" STREQUAL "DebugRelease" )
+  message(STATUS "Setting up PRISMS-PF application for ${CMAKE_BUILD_TYPE} mode.")
+else()
+  message(FATAL_ERROR
+    "CMAKE_BUILD_TYPE must either be 'Release', 'Debug', or 'DebugRelease', but is set to '${CMAKE_BUILD_TYPE}'.")
+endif()
+
+if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug" OR 
+   "${CMAKE_BUILD_TYPE}" STREQUAL "DebugRelease")
+  set(PRISMS_PF_BUILD_DEBUG "ON")
+else()
+  set(PRISMS_PF_BUILD_DEBUG "OFF")
+endif()
+
+if("${CMAKE_BUILD_TYPE}" STREQUAL "Release" OR 
+   "${CMAKE_BUILD_TYPE}" STREQUAL "DebugRelease")
+  set(PRISMS_PF_BUILD_RELEASE "ON")
+else()
+  set(PRISMS_PF_BUILD_RELEASE "OFF")
+endif()
+
 # Find deal.II installation
-find_package(deal.II 9.2.0 QUIET REQUIRED
-	HINTS ${DEAL_II_DIR} ../ ../../ $ENV{DEAL_II_DIR})
-
-# Check to make sure deal.II is configured with p4est
-if(NOT ${DEAL_II_WITH_P4EST})
-  message(FATAL_ERROR "deal.II must be installed with p4est.")
+find_package(deal.II 9.2.0 QUIET
+	HINTS ${DEAL_II_DIR} $ENV{DEAL_II_DIR}
+  )
+if(NOT ${deal.II_FOUND})
+  message(FATAL_ERROR "\n*** Could not find a recent version of deal.II. ***\n"
+  "You may want to either pass a flag -DDEAL_II_DIR=/path/to/deal.II to cmake "
+  "or set an environment variable \"DEAL_II_DIR\" that contains a path to a "
+  "recent version of deal.II."
+  )
 endif()
 
-DEAL_II_INITIALIZE_CACHED_VARIABLES()
+message(STATUS "Found deal.II version ${DEAL_II_PACKAGE_VERSION} at '${deal.II_DIR}'")
 
-# Set default build type
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
+set(DEALII_INSTALL_VALID ON)
+
+if(NOT DEAL_II_WITH_P4EST)
+    message(SEND_ERROR
+      "\n**deal.II was built without support for p4est!\n"
+      )
+    set(DEALII_INSTALL_VALID OFF)
 endif()
 
-# Set up the debug, release, and run targets
-add_custom_target(debug
-  COMMAND +env ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE=Debug ${CMAKE_SOURCE_DIR}
-  COMMAND +env ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target all
-  COMMENT "Switch CMAKE_BUILD_TYPE to Debug"
+if(NOT DEALII_INSTALL_VALID)
+  message(FATAL_ERROR
+    "\nPRISMS-PF requires a deal.II installation with certain features enabled!\n"
+    )
+endif()
+
+deal_ii_initialize_cached_variables()
+
+# Make and ninja build options
+if(CMAKE_GENERATOR MATCHES "Ninja")
+  set(_make_command "$ ninja")
+else()
+  set(_make_command " $ make")
+endif()
+
+# Debug and release targets
+if(${DEAL_II_BUILD_TYPE} MATCHES "DebugRelease")
+  add_custom_target(release
+    COMMAND ${CMAKE_COMMAND} -D CMAKE_BUILD_TYPE=Release .
+    COMMAND ${CMAKE_COMMAND} -E echo "***"
+    COMMAND ${CMAKE_COMMAND} -E echo "*** Switched to Release mode. Now recompile with: ${_make_command}"
+    COMMAND ${CMAKE_COMMAND} -E echo "***"
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    VERBATIM
+    COMMENT "switching to RELEASE mode..."
   )
-add_custom_target(release
-  COMMAND +env ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE=Release ${CMAKE_SOURCE_DIR}
-  COMMAND +env ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target all
-  COMMENT "Switch CMAKE_BUILD_TYPE to Release"
+
+  add_custom_target(debug
+    COMMAND ${CMAKE_COMMAND} -D CMAKE_BUILD_TYPE=Debug .
+    COMMAND ${CMAKE_COMMAND} -E echo "***"
+    COMMAND ${CMAKE_COMMAND} -E echo "*** Switched to Debug mode. Now recompile with: ${_make_command}"
+    COMMAND ${CMAKE_COMMAND} -E echo "***"
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    VERBATIM
+    COMMENT "switching to DEBUG mode..."
   )
-add_custom_target(run COMMAND main
-  COMMENT "Run with ${CMAKE_BUILD_TYPE} configuration"
+
+  add_custom_target(debugrelease
+    COMMAND ${CMAKE_COMMAND} -D CMAKE_BUILD_TYPE=DebugRelease .
+    COMMAND ${CMAKE_COMMAND} -E echo "***"
+    COMMAND ${CMAKE_COMMAND} -E echo "*** Switched to Debug and Release mode. Now recompile with: ${_make_command}"
+    COMMAND ${CMAKE_COMMAND} -E echo "***"
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    VERBATIM
+    COMMENT "switching to DEBUG/RELEASE mode..."
+  )
+endif()
+
+# Add distclean target to clean build
+add_custom_target(distclean
+  COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target clean
+  COMMAND ${CMAKE_COMMAND} -E remove_directory CMakeFiles
+  COMMAND ${CMAKE_COMMAND} -E remove
+    CMakeCache.txt cmake_install.cmake Makefile
+    build.ninja rules.ninja .ninja_deps .ninja_log
+  COMMENT "distclean invoked"
   )
 
 # Add postprocess.cc and nucleation.cc if they exist
@@ -50,19 +141,25 @@ include_directories(${CMAKE_SOURCE_DIR}/../../../src)
 include_directories(${CMAKE_SOURCE_DIR})
 
 # Set the location of the main.cc file
-set(MAIN "${CMAKE_SOURCE_DIR}/../../main.cc")
+set(TARGET_SRC "${CMAKE_SOURCE_DIR}/../../main.cc")
 
-# Add main.cc for executable target
-add_executable(main ${MAIN})
+# Check if there has been updates to main library
+set(dir ${PROJECT_SOURCE_DIR}/../../..)
+EXECUTE_PROCESS(COMMAND "rm" "CMakeCache.txt" WORKING_DIRECTORY ${dir})
+EXECUTE_PROCESS(COMMAND "cmake" "CMakeLists.txt" WORKING_DIRECTORY ${dir})
+EXECUTE_PROCESS(COMMAND "make" WORKING_DIRECTORY ${dir})
 
-# deal.II linker
-DEAL_II_SETUP_TARGET(main)
+# Set targets & link libraries for the build type
+if(${PRISMS_PF_BUILD_DEBUG} STREQUAL "ON")
+  add_executable(main_debug ${TARGET_SRC})
+  set_property(TARGET main_debug PROPERTY OUTPUT_NAME main-debug)
+  deal_ii_setup_target(main_debug DEBUG)
+  target_link_libraries(main_debug ${CMAKE_SOURCE_DIR}/../../../libprisms-pf-debug.a)
+endif()
 
-# Link libraries for the build type
-if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
-	target_link_libraries(main ${CMAKE_SOURCE_DIR}/../../../libprisms_pf.a)
-elseif(${CMAKE_BUILD_TYPE} STREQUAL "DebugRelease")
-  target_link_libraries(main ${CMAKE_SOURCE_DIR}/../../../libprisms_pf.a)
-else()
-  target_link_libraries(main ${CMAKE_SOURCE_DIR}/../../../libprisms_pf_debug.a)
+if(${PRISMS_PF_BUILD_RELEASE} STREQUAL "ON")
+  add_executable(main_release ${TARGET_SRC})
+  set_property(TARGET main_release PROPERTY OUTPUT_NAME main)
+  deal_ii_setup_target(main_release RELEASE)
+  target_link_libraries(main_release ${CMAKE_SOURCE_DIR}/../../../libprisms-pf-release.a)
 endif()
