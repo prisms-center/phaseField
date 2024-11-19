@@ -1,8 +1,7 @@
 #include "../../include/variableAttributeLoader.h"
 
+#include <deal.II/base/exceptions.h>
 #include <deal.II/base/utilities.h>
-
-#include <algorithm>
 
 // Constructor
 variableAttributeLoader::variableAttributeLoader()
@@ -13,9 +12,15 @@ variableAttributeLoader::variableAttributeLoader()
   loadPostProcessorVariableAttributes(); // This is a user-facing function
   relevant_attributes = nullptr;
 
-  for (auto &[index, pp_variable] : pp_attributes)
+  for (auto &[pp_index, pp_variable] : pp_attributes)
     {
-      pp_variable.is_pp   = true;
+      pp_variable.is_pp = true;
+      Assert(pp_variable.eq_type == EXPLICIT_TIME_DEPENDENT ||
+               pp_variable.eq_type == UNDEFINED_PDE,
+             dealii::ExcMessage("PRISMS-PF Error: Warning: Postprocess variables can "
+                                "only be explicit.\nProblem postprocessing index: " +
+                                std::to_string(pp_index) +
+                                ", Variable name: " + pp_variable.name + "\n"));
       pp_variable.eq_type = EXPLICIT_TIME_DEPENDENT;
     }
 
@@ -151,12 +156,106 @@ variableAttributeLoader::validate_attributes()
   // Make sure main attributes arent set in pp_attributes
   // Make sure dependencies are all variable names and if there are "change()" deps, they
   // are correctly placed
-  /* for (const auto &[index, attribute_set] : attributes)
+  const std::set<std::pair<std::string, std::string>> reg_delimiters = {
+    {"",      "" },
+    {"grad(", ")"},
+    {"hess(", ")"}
+  };
+  const std::set<std::string>           forbidden_names = {"grad(", "hess(", "change("};
+  std::set<std::string>                 name_list, pp_name_list, reg_possible_deps;
+  std::map<uint, std::set<std::string>> change_possible_deps;
+  // Populate name_list, pp_name_list, reg_possible_deps, change_possible_deps
+  // Check that variable names are mostly well-formed
+  for (const auto &[index, variable] : attributes)
     {
+      name_list.insert(variable.name);
+      for (const auto &delims : reg_delimiters)
+        {
+          reg_possible_deps.insert(delims.first + variable.name + delims.second);
+          change_possible_deps[index].insert(delims.first + "change(" + variable.name +
+                                             ")" + delims.second);
+        }
+      for ([[maybe_unused]] const std::string &forbidden_name : forbidden_names)
+        {
+          Assert(variable.name.find(forbidden_name) == std::string::npos,
+                 dealii::ExcMessage(
+                   "PRISMS-PF Error: Variable names must not contain \"grad()\", "
+                   "\"hess()\", \"change()\".\nProblem index: " +
+                   std::to_string(index) + ", Variable name: " + variable.name + "\n"));
+        }
     }
-  for (const auto &[pp_index, pp_attribute_set] : pp_attributes)
+  for (const auto &[pp_index, pp_variable] : pp_attributes)
     {
-    } */
+      pp_name_list.insert(pp_variable.name);
+      for ([[maybe_unused]] const std::string &forbidden_name : forbidden_names)
+        {
+          Assert(pp_variable.name.find(forbidden_name) == std::string::npos,
+                 dealii::ExcMessage("PRISMS-PF Error: (postprocess) Variable names must "
+                                    "not contain \"grad()\", "
+                                    "\"hess()\", \"change()\".\nProblem index: " +
+                                    std::to_string(pp_index) +
+                                    ", Variable name: " + pp_variable.name + "\n"));
+        }
+    }
+  // Check Dependencies & PP
+  for (const auto &[index, variable] : attributes)
+    {
+      for ([[maybe_unused]] const std::string &RHS_dep : variable.dependencies_RHS)
+        {
+          Assert(
+            reg_possible_deps.find(RHS_dep) != reg_possible_deps.end() ||
+              change_possible_deps.at(index).find(RHS_dep) !=
+                change_possible_deps.at(index).end(),
+            dealii::ExcMessage(
+              "PRISMS-PF Error: Invalid RHS dependency.\nProblem index: " +
+              std::to_string(index) + ", Variable name: " + variable.name +
+              ", Invalid dependency name: " + RHS_dep +
+              "\n(HINT: Dependencies that contain \"change(variable_A)\" can only be "
+              "used for the "
+              "field \"variable_A\")\n"));
+        }
+      for ([[maybe_unused]] const std::string &LHS_dep : variable.dependencies_LHS)
+        {
+          Assert(
+            reg_possible_deps.find(LHS_dep) != reg_possible_deps.end() ||
+              change_possible_deps.at(index).find(LHS_dep) !=
+                change_possible_deps.at(index).end(),
+            dealii::ExcMessage(
+              "PRISMS-PF Error: Invalid LHS dependency.\nProblem index: " +
+              std::to_string(index) + ", Variable name: " + variable.name +
+              ", Invalid dependency name: " + LHS_dep +
+              "\n(HINT: Dependencies that contain \"change(variable_A)\" can only be "
+              "used for the "
+              "field \"variable_A\")\n"));
+        }
+    }
+  for (const auto &[pp_index, pp_variable] : pp_attributes)
+    {
+      Assert(name_list.find(pp_variable.name) != name_list.end(),
+             dealii::ExcMessage(
+               "PRISMS-PF Error: Postprocess variable names must be named differently "
+               "than solution variable names.\nProblem postprocessing index: " +
+               std::to_string(pp_index) + ", Variable name: " + pp_variable.name + "\n"));
+      for ([[maybe_unused]] const std::string &PP_dep : pp_variable.dependencies_PP)
+        {
+          Assert(reg_possible_deps.find(PP_dep) != reg_possible_deps.end(),
+                 dealii::ExcMessage(
+                   "PRISMS-PF Error: Invalid postprocessing RHS dependency.\nProblem "
+                   "postprocessing index: " +
+                   std::to_string(pp_index) + ", Variable name: " + pp_variable.name +
+                   ", Invalid dependency name: " + PP_dep + "\n"));
+        }
+      Assert(pp_variable.dependencies_LHS.empty(),
+             dealii::ExcMessage(
+               "PRISMS-PF Error: Warning: Postprocess variables can only have RHS "
+               "dependencies.\nProblem postprocessing index: " +
+               std::to_string(pp_index) + ", Variable name: " + pp_variable.name + "\n"));
+      Assert(!pp_variable.nucleating_variable && !pp_variable.need_value_nucleation,
+             dealii::ExcMessage(
+               "PRISMS-PF Error: Warning: Postprocess variables cannot "
+               "be used for nucleation.\nProblem postprocessing index: " +
+               std::to_string(pp_index) + ", Variable name: " + pp_variable.name + "\n"));
+    }
 }
 
 std::string
