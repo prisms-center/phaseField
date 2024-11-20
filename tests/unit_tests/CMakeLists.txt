@@ -58,20 +58,38 @@ deal_ii_initialize_cached_variables()
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(FORCE_COLORED_OUTPUT ON CACHE BOOL "Forces colored output when compiling with gcc and clang.")
 
-# deal.II versions >=9.5 disable deprecation warnings in user code. Enable
-# the warnings again by removing the flag that disables them.
-string(REPLACE "-Wno-deprecated-declarations" "" DEAL_II_WARNING_FLAGS "${DEAL_II_WARNING_FLAGS}")
+# Setting up tests
+MESSAGE(STATUS "Setting up tests with CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE}")
 
-# Set additional compiler flags
-set(PRISMS_PF_ADDITIONAL_CXX_FLAGS "" CACHE STRING "Additional CMAKE_CXX_FLAGS applied after the deal.II options.")
+enable_testing()
 
-if(NOT PRISMS_PF_ADDITIONAL_CXX_FLAGS STREQUAL "")
-  message(STATUS "Appending PRISMS_PF_ADDITIONAL_CXX_FLAGS: '${PRISMS_PF_ADDITIONAL_CXX_FLAGS}':")
-  string(APPEND DEAL_II_CXX_FLAGS_DEBUG " ${PRISMS_PF_ADDITIONAL_CXX_FLAGS}")
-  string(APPEND DEAL_II_CXX_FLAGS_RELEASE " ${PRISMS_PF_ADDITIONAL_CXX_FLAGS}")
-  message(STATUS "  DEAL_II_WARNING_FLAGS: ${DEAL_II_WARNING_FLAGS}")
-  message(STATUS "  DEAL_II_CXX_FLAGS_DEBUG: ${DEAL_II_CXX_FLAGS_DEBUG}")
-  message(STATUS "  DEAL_II_CXX_FLAGS_RELEASE: ${DEAL_II_CXX_FLAGS_RELEASE}")
+add_custom_target(tests)
+
+# diff tool
+find_program(DIFF_EXECUTABLE
+  NAMES diff
+  HINTS ${DIFF_DIR}
+  PATH_SUFFIXES bin  
+  )
+find_program(NUMDIFF_EXECUTABLE
+  NAMES numdiff
+  HINTS ${NUMDIFF_DIR}
+  PATH_SUFFIXES bin  
+  )
+
+mark_as_advanced(DIFF_EXECUTABLE NUMDIFF_EXECUTABLE)
+
+if("${TEST_DIFF}" STREQUAL "")
+  if(NOT NUMDIFF_EXECUTABLE MATCHES "-NOTFOUND")
+    set(TEST_DIFF ${NUMDIFF_EXECUTABLE})
+  elseif(NOT DIFF_EXECUTABLE MATCHES "-NOTFOUND")
+    set(TEST_DIFF ${DIFF_EXECUTABLE})
+  else()
+    message(FATAL_ERROR
+      "Could not find diff or numdiff. One of those must be installed for running the testsuite./n"
+      "Please specify TEST_DIFF by hand."
+      )
+  endif()
 endif()
 
 # Set the name of the project and target:
