@@ -57,7 +57,6 @@ computeStress(const dealii::Table<2, double>       &CIJ,
 #include "../../src/matrixfree/solve.cc"
 #include "../../src/matrixfree/solveIncrement.cc"
 #include "../../src/matrixfree/utilities.cc"
-#include "../../src/models/mechanics/computeStress.h"
 #include "../../src/parallelNucleationList/parallelNucleationList.cc"
 #include "../../src/userInputParameters/loadVariableAttributes.cc"
 #include "../../src/userInputParameters/load_BC_list.cc"
@@ -75,8 +74,6 @@ public:
   test_computeInvM(int argc, char **argv, userInputParameters<dim>);
   bool
   test_outputResults(int argc, char **argv, userInputParameters<dim> userInputs);
-  bool
-  test_computeStress();
   void
   assignCIJSize(
     dealii::VectorizedArray<double> CIJ[2 * dim - 1 + dim / 3][2 * dim - 1 + dim / 3]);
