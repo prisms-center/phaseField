@@ -1,50 +1,86 @@
 ##
-#  CMake script for the phaseField applications:
+#  CMake for the PRISMS-PF unit tests
+#  Adapted from the ASPECT CMake file
 ##
 
+cmake_minimum_required(VERSION 3.1.0)
+
+project(prisms_pf_unit_tests)
+
+# =========================================================
+# Some basic bookkeeping
+# =========================================================
+
+# Check that a prior CMakeCache is not located in the build directory
+if(EXISTS ${CMAKE_SOURCE_DIR}/CMakeCache.txt)
+  message(FATAL_ERROR "Detected the file:\n"
+  "${CMAKE_SOURCE_DIR}/CMakeCache.txt\n"
+  "in your source directory, which may be leftover from prior builds. " 
+  "Please delete the file before running cmake again.")
+endif()
+
+# =========================================================
+# External libraries
+# =========================================================
+
+# Find deal.II installation
+find_package(deal.II 9.2.0 QUIET
+	HINTS ${DEAL_II_DIR} $ENV{DEAL_II_DIR}
+  )
+if(NOT ${deal.II_FOUND})
+  message(FATAL_ERROR "\n*** Could not find a recent version of deal.II. ***\n"
+  "You may want to either pass a flag -DDEAL_II_DIR=/path/to/deal.II to cmake "
+  "or set an environment variable \"DEAL_II_DIR\" that contains a path to a "
+  "recent version of deal.II."
+  )
+endif()
+
+message(STATUS "Found deal.II version ${DEAL_II_PACKAGE_VERSION} at '${deal.II_DIR}'")
+
+set(DEALII_INSTALL_VALID ON)
+
+if(NOT DEAL_II_WITH_P4EST)
+    message(SEND_ERROR
+      "\n**deal.II was built without support for p4est!\n"
+      )
+    set(DEALII_INSTALL_VALID OFF)
+endif()
+
+if(NOT DEALII_INSTALL_VALID)
+  message(FATAL_ERROR
+    "\nPRISMS-PF requires a deal.II installation with certain features enabled!\n"
+    )
+endif()
+
+deal_ii_initialize_cached_variables()
+
+# Create compile_commands.json
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(FORCE_COLORED_OUTPUT ON CACHE BOOL "Forces colored output when compiling with gcc and clang.")
+
+# deal.II versions >=9.5 disable deprecation warnings in user code. Enable
+# the warnings again by removing the flag that disables them.
+string(REPLACE "-Wno-deprecated-declarations" "" DEAL_II_WARNING_FLAGS "${DEAL_II_WARNING_FLAGS}")
+
+# Set additional compiler flags
+set(PRISMS_PF_ADDITIONAL_CXX_FLAGS "" CACHE STRING "Additional CMAKE_CXX_FLAGS applied after the deal.II options.")
+
+if(NOT PRISMS_PF_ADDITIONAL_CXX_FLAGS STREQUAL "")
+  message(STATUS "Appending PRISMS_PF_ADDITIONAL_CXX_FLAGS: '${PRISMS_PF_ADDITIONAL_CXX_FLAGS}':")
+  string(APPEND DEAL_II_CXX_FLAGS_DEBUG " ${PRISMS_PF_ADDITIONAL_CXX_FLAGS}")
+  string(APPEND DEAL_II_CXX_FLAGS_RELEASE " ${PRISMS_PF_ADDITIONAL_CXX_FLAGS}")
+  message(STATUS "  DEAL_II_WARNING_FLAGS: ${DEAL_II_WARNING_FLAGS}")
+  message(STATUS "  DEAL_II_CXX_FLAGS_DEBUG: ${DEAL_II_CXX_FLAGS_DEBUG}")
+  message(STATUS "  DEAL_II_CXX_FLAGS_RELEASE: ${DEAL_II_CXX_FLAGS_RELEASE}")
+endif()
 
 # Set the name of the project and target:
-SET(TARGET "main")
+set(TARGET "main")
 
 # Declare all source files the target consists of:
-SET(TARGET_SRC
+set(TARGET_SRC
   ${TARGET}.cc
   # You can specify additional files here!
   )
 
-# Usually, you will not need to modify anything beyond this point...
-
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.8)
-
-FIND_PACKAGE(deal.II 9.2.0 QUIET
-  HINTS ${deal.II_DIR} ${DEAL_II_DIR} ../ ../../ $ENV{DEAL_II_DIR}
-  )
-IF(NOT ${deal.II_FOUND})
-  MESSAGE(FATAL_ERROR "\n"
-    "*** Could not locate deal.II. ***\n\n"
-    "You may want to either pass a flag -DDEAL_II_DIR=/path/to/deal.II to cmake\n"
-    "or set an environment variable \"DEAL_II_DIR\" that contains this path."
-    )
-ENDIF()
-
-# Check for prerequisites
-IF(NOT ${DEAL_II_WITH_P4EST})
-  MESSAGE(FATAL_ERROR "\n"
-    "*** deal.II was not installed with p4est. ***\n\n"
-    “The p4est library is a mandatory prerequisite for PRISMS-PF. Please consult the \n”
-    “user guide to confirm that deal.II and p4est were installed and configured correctly.”
-    )
-ENDIF()
-
-DEAL_II_INITIALIZE_CACHED_VARIABLES()
-PROJECT(${TARGET})
-
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-	set(DEAL_II_CXX_FLAGS_DEBUG "${DEAL_II_CXX_FLAGS_DEBUG} -Wno-maybe-uninitialized -Wno-unused-parameter -Wno-extra")
-	set(DEAL_II_CXX_FLAGS_RELEASE "${DEAL_II_CXX_FLAGS_RELEASE} -Wno-maybe-uninitialized -Wno-unused-parameter -Wno-extra")
-	#set(DEAL_II_CXX_FLAGS_DEBUG "${DEAL_II_CXX_FLAGS_DEBUG} -Wno-maybe-uninitialized -Wno-deprecated-declarations -Wno-comment -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable")
-	#set(DEAL_II_CXX_FLAGS_RELEASE "${DEAL_II_CXX_FLAGS_RELEASE} -Wno-maybe-uninitialized -Wno-deprecated-declarations -Wno-comment -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable")
-endif()
-
-
-DEAL_II_INVOKE_AUTOPILOT()
+deal_II_invoke_autopilot()
