@@ -1,17 +1,9 @@
 name: CI-Linux
 
 on: 
-  push:
-    branches:
-      - master
   pull_request:
     branches:
       - master
-    types:
-      - opened
-      - reopened
-      - synchronize
-      - ready_for_review
     paths-ignore:
       - 'applications/**'
 
@@ -24,6 +16,7 @@ permissions:
 
 jobs:
   CI-Linux:
+    if: ${{ github.event.label.name == 'Status: Ready to test' }}
     runs-on: [ubuntu-22.04]
     timeout-minutes: 120
 
