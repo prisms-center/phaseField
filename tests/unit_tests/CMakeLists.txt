@@ -79,7 +79,7 @@ set(TARGET "main")
 
 # Declare all source files the target consists of:
 set(TARGET_SRC
-  ${TARGET}.cc
+  test.cc
   # You can specify additional files here!
   )
 
