@@ -239,7 +239,7 @@ variableAttributeLoader::validate_attributes()
     }
   for (const auto &[pp_index, pp_variable] : pp_attributes)
     {
-      Assert(name_list.find(pp_variable.name) != name_list.end(),
+      Assert(name_list.find(pp_variable.name) == name_list.end(),
              dealii::ExcMessage(
                "PRISMS-PF Error: Postprocess variable names must be named differently "
                "than solution variable names.\nProblem postprocessing index: " +
