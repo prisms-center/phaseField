@@ -95,10 +95,12 @@ endif()
 # Set the name of the project and target:
 set(TARGET "main")
 
+file(GLOB_RECURSE TEST_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.cc")
+
 # Declare all source files the target consists of:
 set(TARGET_SRC
-  test.cc
-  # You can specify additional files here!
+  main.cc
+  ${TEST_SOURCES}
   )
 
 deal_II_invoke_autopilot()

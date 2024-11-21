@@ -1,7 +1,5 @@
-#include "../src/models/mechanics/computeStress.h"
-
-#define CATCH_CONFIG_MAIN
-#include "../contrib/catch/catch.hpp"
+#include "../../contrib/catch/catch.hpp"
+#include "../../src/models/mechanics/computeStress.h"
 
 TEST_CASE("Compute Stress")
 {
