@@ -1,193 +1,275 @@
 #include "../../include/variableAttributeLoader.h"
 
-#include "../../include/sortIndexEntryPairList.h"
+#include <deal.II/base/exceptions.h>
+#include <deal.II/base/utilities.h>
 
-// Constructor
 variableAttributeLoader::variableAttributeLoader()
 {
-  setting_primary_field_attributes = true;
-  loadVariableAttributes(); // This is the user-facing function
+  relevant_attributes = &attributes;
+  loadVariableAttributes(); // This is a user-facing function
+  relevant_attributes = &pp_attributes;
+  loadPostProcessorVariableAttributes(); // This is a user-facing function
+  relevant_attributes = nullptr;
 
-  number_of_variables = var_name_list.size();
+  for (auto &[pp_index, pp_variable] : pp_attributes)
+    {
+      pp_variable.is_pp = true;
+      Assert(pp_variable.eq_type == EXPLICIT_TIME_DEPENDENT ||
+               pp_variable.eq_type == UNDEFINED_PDE,
+             dealii::ExcMessage("PRISMS-PF Error: Warning: Postprocess variables can "
+                                "only be explicit.\nProblem postprocessing index: " +
+                                std::to_string(pp_index) +
+                                ", Variable name: " + pp_variable.name + "\n"));
+      pp_variable.eq_type = EXPLICIT_TIME_DEPENDENT;
+    }
 
-  var_name    = sortIndexEntryPairList(var_name_list, number_of_variables, "var");
-  var_type    = sortIndexEntryPairList(var_type_list, number_of_variables, SCALAR);
-  var_eq_type = sortIndexEntryPairList(var_eq_type_list,
-                                       number_of_variables,
-                                       EXPLICIT_TIME_DEPENDENT);
-
-  std::vector<std::string> sorted_dependencies_value_RHS =
-    sortIndexEntryPairList(var_eq_dependencies_value_RHS, number_of_variables, "");
-
-  std::vector<std::string> sorted_dependencies_gradient_RHS =
-    sortIndexEntryPairList(var_eq_dependencies_gradient_RHS, number_of_variables, "");
-
-  std::vector<std::string> sorted_dependencies_value_LHS =
-    sortIndexEntryPairList(var_eq_dependencies_value_LHS, number_of_variables, "");
-
-  std::vector<std::string> sorted_dependencies_gradient_LHS =
-    sortIndexEntryPairList(var_eq_dependencies_gradient_LHS, number_of_variables, "");
-
-  nucleating_variable =
-    sortIndexEntryPairList(nucleating_variable_list, number_of_variables, false);
-  need_value_nucleation =
-    sortIndexEntryPairList(need_value_list_nucleation, number_of_variables, false);
-
-  equation_dependency_parser.parse(var_name,
-                                   var_eq_type,
-                                   sorted_dependencies_value_RHS,
-                                   sorted_dependencies_gradient_RHS,
-                                   sorted_dependencies_value_LHS,
-                                   sorted_dependencies_gradient_LHS,
-                                   var_nonlinear);
-
-  setting_primary_field_attributes = false;
-  loadPostProcessorVariableAttributes(); // This is the user-facing function
-
-  pp_number_of_variables = var_name_list_PP.size();
-
-  pp_var_name = sortIndexEntryPairList(var_name_list_PP, pp_number_of_variables, "var");
-  pp_var_type = sortIndexEntryPairList(var_type_list_PP, pp_number_of_variables, SCALAR);
-
-  std::vector<std::string> pp_sorted_dependencies_value =
-    sortIndexEntryPairList(var_eq_dependencies_value_PP, pp_number_of_variables, "");
-
-  std::vector<std::string> pp_sorted_dependencies_gradient =
-    sortIndexEntryPairList(var_eq_dependencies_gradient_PP, pp_number_of_variables, "");
-
-  pp_calc_integral =
-    sortIndexEntryPairList(output_integral_list, pp_number_of_variables, false);
-
-  equation_dependency_parser.pp_parse(var_name,
-                                      pp_var_name,
-                                      pp_sorted_dependencies_value,
-                                      pp_sorted_dependencies_gradient);
+  for (auto &[index, variable] : attributes)
+    {
+      variable.format_dependencies();
+    }
+  for (auto &[pp_index, pp_variable] : pp_attributes)
+    {
+      pp_variable.format_dependencies();
+    }
+  validate_attributes();
+  for (auto &[index, variable] : attributes)
+    {
+      variable.parse_residual_dependencies();
+      variable.parse_dependencies(attributes);
+      variable.parse_dependencies(pp_attributes);
+    }
+  for (auto &[index, pp_variable] : pp_attributes)
+    {
+      pp_variable.parse_residual_dependencies();
+    }
 }
 
 // Methods to set the various variable attributes
 void
-variableAttributeLoader::set_variable_name(unsigned int index, std::string name)
+variableAttributeLoader::set_variable_name(const unsigned int &index,
+                                           const std::string  &name)
 {
-  std::pair<unsigned int, std::string> var_pair;
-  var_pair.first  = index;
-  var_pair.second = std::move(name);
+  (*relevant_attributes)[index].name = name;
+}
 
-  if (setting_primary_field_attributes)
+void
+variableAttributeLoader::set_variable_type(const unsigned int &index,
+                                           const fieldType    &var_type)
+{
+  (*relevant_attributes)[index].var_type = var_type;
+}
+
+void
+variableAttributeLoader::set_variable_equation_type(const unsigned int &index,
+                                                    const PDEType      &var_eq_type)
+{
+  (*relevant_attributes)[index].eq_type = var_eq_type;
+}
+
+void
+variableAttributeLoader::set_need_value_nucleation(const unsigned int &index,
+                                                   const bool         &flag)
+{
+  (*relevant_attributes)[index].need_value_nucleation = flag;
+}
+
+void
+variableAttributeLoader::set_allowed_to_nucleate(const unsigned int &index,
+                                                 const bool         &flag)
+{
+  (*relevant_attributes)[index].nucleating_variable = flag;
+}
+
+void
+variableAttributeLoader::set_output_integral(const unsigned int &index, const bool &flag)
+{
+  (*relevant_attributes)[index].output_integral = flag;
+  (*relevant_attributes)[index].calc_integral   = flag;
+}
+
+void
+variableAttributeLoader::set_dependencies_value_term_RHS(const unsigned int &index,
+                                                         const std::string  &dependencies)
+{
+  std::vector<std::string> dependencies_set =
+    dealii::Utilities::split_string_list(strip_whitespace(dependencies));
+  /* (*relevant_attributes)[index].dependencies_value_RHS =
+      std::set<std::string>(dependencies_set.begin(), dependencies_set.end()); */
+  if (relevant_attributes != &pp_attributes)
     {
-      var_name_list.push_back(var_pair);
+      attributes[index].dependencies_value_RHS =
+        std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
     }
   else
     {
-      var_name_list_PP.push_back(var_pair);
+      pp_attributes[index].dependencies_value_PP =
+        std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
     }
 }
 
 void
-variableAttributeLoader::set_variable_type(unsigned int index, fieldType var_type)
+variableAttributeLoader::set_dependencies_gradient_term_RHS(
+  const unsigned int &index,
+  const std::string  &dependencies)
 {
-  std::pair<unsigned int, fieldType> var_pair;
-  var_pair.first  = index;
-  var_pair.second = var_type;
-
-  if (setting_primary_field_attributes)
+  std::vector<std::string> dependencies_set =
+    dealii::Utilities::split_string_list(strip_whitespace(dependencies));
+  /* (*relevant_attributes)[index].dependencies_gradient_RHS =
+    std::set<std::string>(dependencies_set.begin(), dependencies_set.end()); */
+  if (relevant_attributes != &pp_attributes)
     {
-      var_type_list.push_back(var_pair);
+      attributes[index].dependencies_gradient_RHS =
+        std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
     }
   else
     {
-      var_type_list_PP.push_back(var_pair);
+      pp_attributes[index].dependencies_gradient_PP =
+        std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
     }
 }
 
 void
-variableAttributeLoader::set_variable_equation_type(unsigned int index,
-                                                    PDEType      var_eq_type)
+variableAttributeLoader::set_dependencies_value_term_LHS(const unsigned int &index,
+                                                         const std::string  &dependencies)
 {
-  std::pair<unsigned int, PDEType> var_pair;
-  var_pair.first  = index;
-  var_pair.second = var_eq_type;
-  var_eq_type_list.push_back(var_pair);
+  std::vector<std::string> dependencies_set =
+    dealii::Utilities::split_string_list(strip_whitespace(dependencies));
+  (*relevant_attributes)[index].dependencies_value_LHS =
+    std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
 }
 
 void
-variableAttributeLoader::set_need_value_nucleation(unsigned int index, bool flag)
+variableAttributeLoader::set_dependencies_gradient_term_LHS(
+  const unsigned int &index,
+  const std::string  &dependencies)
 {
-  std::pair<unsigned int, bool> var_pair;
-  var_pair.first  = index;
-  var_pair.second = flag;
-  need_value_list_nucleation.push_back(var_pair);
+  std::vector<std::string> dependencies_set =
+    dealii::Utilities::split_string_list(strip_whitespace(dependencies));
+  (*relevant_attributes)[index].dependencies_gradient_LHS =
+    std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
 }
 
 void
-variableAttributeLoader::set_allowed_to_nucleate(unsigned int index, bool flag)
+variableAttributeLoader::validate_attributes()
 {
-  std::pair<unsigned int, bool> var_pair;
-  var_pair.first  = index;
-  var_pair.second = flag;
-  nucleating_variable_list.push_back(var_pair);
-}
-
-void
-variableAttributeLoader::set_output_integral(unsigned int index, bool flag)
-{
-  std::pair<unsigned int, bool> var_pair;
-  var_pair.first  = index;
-  var_pair.second = flag;
-  output_integral_list.push_back(var_pair);
-}
-
-void
-variableAttributeLoader::set_dependencies_value_term_RHS(unsigned int index,
-                                                         std::string  dependencies)
-{
-  std::pair<unsigned int, std::string> var_pair;
-  var_pair.first  = index;
-  var_pair.second = std::move(dependencies);
-
-  if (setting_primary_field_attributes)
+  // Make sure main attributes arent set in pp_attributes
+  // Make sure dependencies are all variable names and if there are "change()" deps, they
+  // are correctly placed
+  const std::set<std::pair<std::string, std::string>> reg_delimiters = {
+    {"",      "" },
+    {"grad(", ")"},
+    {"hess(", ")"}
+  };
+  const std::set<std::string>           forbidden_names = {"grad(", "hess(", "change("};
+  std::set<std::string>                 name_list, pp_name_list, reg_possible_deps;
+  std::map<uint, std::set<std::string>> change_possible_deps;
+  // Populate name_list, pp_name_list, reg_possible_deps, change_possible_deps
+  // Check that variable names are mostly well-formed
+  for (const auto &[index, variable] : attributes)
     {
-      var_eq_dependencies_value_RHS.push_back(var_pair);
+      name_list.insert(variable.name);
+      for (const auto &delims : reg_delimiters)
+        {
+          reg_possible_deps.insert(delims.first + variable.name + delims.second);
+          change_possible_deps[index].insert(delims.first + "change(" + variable.name +
+                                             ")" + delims.second);
+        }
+      Assert(!variable.name.empty(),
+             dealii::ExcMessage(
+               "PRISMS-PF Error: Variable names must not be empty.\nProblem index: " +
+               std::to_string(index) + "\n"));
+      for ([[maybe_unused]] const std::string &forbidden_name : forbidden_names)
+        {
+          Assert(variable.name.find(forbidden_name) == std::string::npos,
+                 dealii::ExcMessage(
+                   "PRISMS-PF Error: Variable names must not contain \"grad()\", "
+                   "\"hess()\", \"change()\".\nProblem index: " +
+                   std::to_string(index) + ", Variable name: " + variable.name + "\n"));
+        }
     }
-  else
+  for (const auto &[pp_index, pp_variable] : pp_attributes)
     {
-      var_eq_dependencies_value_PP.push_back(var_pair);
+      pp_name_list.insert(pp_variable.name);
+      Assert(!pp_variable.name.empty(),
+             dealii::ExcMessage(
+               "PRISMS-PF Error: (postprocess) Variable names must not be "
+               "empty.\nProblem index: " +
+               std::to_string(pp_index) + "\n"));
+      for ([[maybe_unused]] const std::string &forbidden_name : forbidden_names)
+        {
+          Assert(pp_variable.name.find(forbidden_name) == std::string::npos,
+                 dealii::ExcMessage("PRISMS-PF Error: (postprocess) Variable names must "
+                                    "not contain \"grad()\", "
+                                    "\"hess()\", \"change()\".\nProblem index: " +
+                                    std::to_string(pp_index) +
+                                    ", Variable name: " + pp_variable.name + "\n"));
+        }
+    }
+  // Check Dependencies & PP
+  for (const auto &[index, variable] : attributes)
+    {
+      for ([[maybe_unused]] const std::string &RHS_dep : variable.dependencies_RHS)
+        {
+          Assert(
+            reg_possible_deps.find(RHS_dep) != reg_possible_deps.end() ||
+              change_possible_deps.at(index).find(RHS_dep) !=
+                change_possible_deps.at(index).end(),
+            dealii::ExcMessage(
+              "PRISMS-PF Error: Invalid RHS dependency.\nProblem index: " +
+              std::to_string(index) + ", Variable name: " + variable.name +
+              ", Invalid dependency name: " + RHS_dep +
+              "\n(HINT: Dependencies that contain \"change(variable_A)\" can only be "
+              "used for the "
+              "field \"variable_A\")\n"));
+        }
+      for ([[maybe_unused]] const std::string &LHS_dep : variable.dependencies_LHS)
+        {
+          Assert(
+            reg_possible_deps.find(LHS_dep) != reg_possible_deps.end() ||
+              change_possible_deps.at(index).find(LHS_dep) !=
+                change_possible_deps.at(index).end(),
+            dealii::ExcMessage(
+              "PRISMS-PF Error: Invalid LHS dependency.\nProblem index: " +
+              std::to_string(index) + ", Variable name: " + variable.name +
+              ", Invalid dependency name: " + LHS_dep +
+              "\n(HINT: Dependencies that contain \"change(variable_A)\" can only be "
+              "used for the "
+              "field \"variable_A\")\n"));
+        }
+    }
+  for (const auto &[pp_index, pp_variable] : pp_attributes)
+    {
+      Assert(name_list.find(pp_variable.name) == name_list.end(),
+             dealii::ExcMessage(
+               "PRISMS-PF Error: Postprocess variable names must be named differently "
+               "than solution variable names.\nProblem postprocessing index: " +
+               std::to_string(pp_index) + ", Variable name: " + pp_variable.name + "\n"));
+      for ([[maybe_unused]] const std::string &PP_dep : pp_variable.dependencies_PP)
+        {
+          Assert(reg_possible_deps.find(PP_dep) != reg_possible_deps.end(),
+                 dealii::ExcMessage(
+                   "PRISMS-PF Error: Invalid postprocessing RHS dependency.\nProblem "
+                   "postprocessing index: " +
+                   std::to_string(pp_index) + ", Variable name: " + pp_variable.name +
+                   ", Invalid dependency name: " + PP_dep + "\n"));
+        }
+      Assert(pp_variable.dependencies_LHS.empty(),
+             dealii::ExcMessage(
+               "PRISMS-PF Error: Warning: Postprocess variables can only have RHS "
+               "dependencies.\nProblem postprocessing index: " +
+               std::to_string(pp_index) + ", Variable name: " + pp_variable.name + "\n"));
+      Assert(!pp_variable.nucleating_variable && !pp_variable.need_value_nucleation,
+             dealii::ExcMessage(
+               "PRISMS-PF Error: Warning: Postprocess variables cannot "
+               "be used for nucleation.\nProblem postprocessing index: " +
+               std::to_string(pp_index) + ", Variable name: " + pp_variable.name + "\n"));
     }
 }
 
-void
-variableAttributeLoader::set_dependencies_gradient_term_RHS(unsigned int index,
-                                                            std::string  dependencies)
+std::string
+variableAttributeLoader::strip_whitespace(const std::string &_text)
 {
-  std::pair<unsigned int, std::string> var_pair;
-  var_pair.first  = index;
-  var_pair.second = std::move(dependencies);
-
-  if (setting_primary_field_attributes)
-    {
-      var_eq_dependencies_gradient_RHS.push_back(var_pair);
-    }
-  else
-    {
-      var_eq_dependencies_gradient_PP.push_back(var_pair);
-    }
-}
-
-void
-variableAttributeLoader::set_dependencies_value_term_LHS(unsigned int index,
-                                                         std::string  dependencies)
-{
-  std::pair<unsigned int, std::string> var_pair;
-  var_pair.first  = index;
-  var_pair.second = std::move(dependencies);
-  var_eq_dependencies_value_LHS.push_back(var_pair);
-}
-
-void
-variableAttributeLoader::set_dependencies_gradient_term_LHS(unsigned int index,
-                                                            std::string  dependencies)
-{
-  std::pair<unsigned int, std::string> var_pair;
-  var_pair.first  = index;
-  var_pair.second = std::move(dependencies);
-  var_eq_dependencies_gradient_LHS.push_back(var_pair);
+  std::string text = _text;
+  text.erase(std::remove(text.begin(), text.end(), ' '), text.end());
+  return text;
 }

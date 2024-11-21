@@ -16,7 +16,7 @@ class inputFileReader
 public:
   // Constructor
   inputFileReader(const std::string       &input_file_name,
-                  variableAttributeLoader &variable_attributes);
+                  variableAttributeLoader &_variable_attributes);
 
   // Method to get a list of entry values from multiple subsections in an input
   // file
@@ -41,11 +41,8 @@ public:
 
   // Method to declare the parameters to be read from an input file
   void
-  declare_parameters(dealii::ParameterHandler     &parameter_handler,
-                     const std::vector<fieldType> &var_types,
-                     const std::vector<PDEType>   &var_eq_types,
-                     const unsigned int            num_of_constants,
-                     const std::vector<bool>      &var_nucleates) const;
+  declare_parameters(dealii::ParameterHandler &parameter_handler,
+                     const unsigned int        num_of_constants) const;
 
   // Method to check if a line has the desired contents and if so, extract it
   bool
@@ -56,16 +53,12 @@ public:
              bool               expect_equals_sign) const;
 
   // Variables
+  variableAttributeLoader &variable_attributes;
   dealii::ParameterHandler parameter_handler;
-  std::vector<fieldType>   var_types;
-  std::vector<PDEType>     var_eq_types;
   unsigned int             num_pp_vars;
   unsigned int             num_constants;
   std::vector<std::string> model_constant_names;
-  std::vector<std::string> var_names;
   unsigned int             number_of_dimensions;
-  std::vector<bool>        var_nucleates;
-  std::vector<bool>        var_nonlinear;
 };
 
 #endif /* INCLUDE_INPUTFILEREADER_H_ */

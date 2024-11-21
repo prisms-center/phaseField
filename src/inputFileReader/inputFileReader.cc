@@ -4,29 +4,16 @@
 #include <deal.II/base/mpi.h>
 #include <deal.II/base/utilities.h>
 
-#include "../../include/EquationDependencyParser.h"
+// #include "variableAttributeLoader.h"
+
 #include "../../include/RefinementCriterion.h"
-#include "../../include/sortIndexEntryPairList.h"
 #include <iostream>
 
 // Constructor
 inputFileReader::inputFileReader(const std::string       &input_file_name,
-                                 variableAttributeLoader &variable_attributes)
+                                 variableAttributeLoader &_variable_attributes)
+  : variable_attributes(_variable_attributes)
 {
-  // Extract an ordered vector of the variable types from variable_attributes
-  unsigned int number_of_variables = variable_attributes.var_name_list.size();
-  var_types                        = variable_attributes.var_type;
-  var_eq_types                     = variable_attributes.var_eq_type;
-  var_names                        = variable_attributes.var_name;
-
-  var_nonlinear = variable_attributes.var_nonlinear;
-
-  var_nucleates = sortIndexEntryPairList(variable_attributes.nucleating_variable_list,
-                                         number_of_variables,
-                                         false);
-
-  num_pp_vars = variable_attributes.var_name_list_PP.size();
-
   num_constants = get_number_of_entries(input_file_name, "set", "Model constant");
 
   model_constant_names =
@@ -39,11 +26,7 @@ inputFileReader::inputFileReader(const std::string       &input_file_name,
     }
 
   // Read in all of the parameters now
-  declare_parameters(parameter_handler,
-                     var_types,
-                     var_eq_types,
-                     num_constants,
-                     var_nucleates);
+  declare_parameters(parameter_handler, num_constants);
 #if (DEAL_II_VERSION_MAJOR < 9 && DEAL_II_VERSION_MINOR < 5)
   parameter_handler.read_input(input_file_name);
 #else
@@ -271,11 +254,8 @@ inputFileReader::get_entry_name_ending_list(const std::string &parameters_file_n
 }
 
 void
-inputFileReader::declare_parameters(dealii::ParameterHandler     &parameter_handler,
-                                    const std::vector<fieldType> &var_types,
-                                    const std::vector<PDEType>   &var_eq_types,
-                                    const unsigned int            num_of_constants,
-                                    const std::vector<bool>      &var_nucleates) const
+inputFileReader::declare_parameters(dealii::ParameterHandler &parameter_handler,
+                                    const unsigned int        num_of_constants) const
 {
   // Declare all of the entries
   parameter_handler.declare_entry("Number of dimensions",
@@ -335,10 +315,10 @@ inputFileReader::declare_parameters(dealii::ParameterHandler     &parameter_hand
     dealii::Patterns::Integer(),
     "The number of time steps between mesh refinement operations.");
 
-  for (unsigned int i = 0; i < var_types.size(); i++)
+  for (const auto &[index, variable] : variable_attributes.attributes)
     {
       std::string subsection_text = "Refinement criterion: ";
-      subsection_text.append(var_names.at(i));
+      subsection_text.append(variable.name);
       parameter_handler.enter_subsection(subsection_text);
       {
         parameter_handler.declare_entry(
@@ -385,13 +365,13 @@ inputFileReader::declare_parameters(dealii::ParameterHandler     &parameter_hand
     dealii::Patterns::Double(),
     "The value of simulated time where the simulation ends.");
 
-  for (unsigned int i = 0; i < var_types.size(); i++)
+  for (const auto &[index, variable] : variable_attributes.attributes)
     {
-      if (var_eq_types.at(i) == TIME_INDEPENDENT ||
-          var_eq_types.at(i) == IMPLICIT_TIME_DEPENDENT)
+      if (variable.eq_type == TIME_INDEPENDENT ||
+          variable.eq_type == IMPLICIT_TIME_DEPENDENT)
         {
           std::string subsection_text = "Linear solver parameters: ";
-          subsection_text.append(var_names.at(i));
+          subsection_text.append(variable.name);
           parameter_handler.enter_subsection(subsection_text);
           {
             parameter_handler.declare_entry("Tolerance type",
@@ -420,12 +400,12 @@ inputFileReader::declare_parameters(dealii::ParameterHandler     &parameter_hand
                                   "The maximum number of nonlinear solver "
                                   "iterations before the loop is stopped.");
 
-  for (unsigned int i = 0; i < var_types.size(); i++)
+  for (const auto &[index, variable] : variable_attributes.attributes)
     {
-      if (var_nonlinear.at(i))
+      if (variable.is_nonlinear)
         {
           std::string subsection_text = "Nonlinear solver parameters: ";
-          subsection_text.append(var_names.at(i));
+          subsection_text.append(variable.name);
           parameter_handler.enter_subsection(subsection_text);
           {
             parameter_handler.declare_entry(
@@ -563,12 +543,12 @@ inputFileReader::declare_parameters(dealii::ParameterHandler     &parameter_hand
   /*----------------------
   |  Boundary conditions
   -----------------------*/
-  for (unsigned int i = 0; i < var_types.size(); i++)
+  for (const auto &[index, variable] : variable_attributes.attributes)
     {
-      if (var_types[i] == SCALAR)
+      if (variable.var_type == SCALAR)
         {
           std::string bc_text = "Boundary condition for variable ";
-          bc_text.append(var_names.at(i));
+          bc_text.append(variable.name);
           parameter_handler.declare_entry(
             bc_text,
             "",
@@ -578,7 +558,7 @@ inputFileReader::declare_parameters(dealii::ParameterHandler     &parameter_hand
       else
         {
           std::string bc_text = "Boundary condition for variable ";
-          bc_text.append(var_names.at(i));
+          bc_text.append(variable.name);
           bc_text.append(", x component");
           parameter_handler.declare_entry(
             bc_text,
@@ -587,7 +567,7 @@ inputFileReader::declare_parameters(dealii::ParameterHandler     &parameter_hand
             "The boundary conditions for one of the governing equations).");
 
           bc_text = "Boundary condition for variable ";
-          bc_text.append(var_names.at(i));
+          bc_text.append(variable.name);
           bc_text.append(", y component");
           parameter_handler.declare_entry(
             bc_text,
@@ -596,7 +576,7 @@ inputFileReader::declare_parameters(dealii::ParameterHandler     &parameter_hand
             "The boundary conditions for one of the governing equations).");
 
           bc_text = "Boundary condition for variable ";
-          bc_text.append(var_names.at(i));
+          bc_text.append(variable.name);
           bc_text.append(", z component");
           parameter_handler.declare_entry(
             bc_text,
@@ -609,10 +589,10 @@ inputFileReader::declare_parameters(dealii::ParameterHandler     &parameter_hand
   /*----------------------
   |  Pinning point
   -----------------------*/
-  for (unsigned int i = 0; i < var_types.size(); i++)
+  for (const auto &[index, variable] : variable_attributes.attributes)
     {
       std::string pinning_text = "Pinning point: ";
-      pinning_text.append(var_names.at(i));
+      pinning_text.append(variable.name);
       parameter_handler.enter_subsection(pinning_text);
       {
         parameter_handler.declare_entry("x",
@@ -666,12 +646,12 @@ inputFileReader::declare_parameters(dealii::ParameterHandler     &parameter_hand
                                   dealii::Patterns::Double(),
                                   "The time after which no nucleation occurs.");
 
-  for (unsigned int i = 0; i < var_types.size(); i++)
+  for (const auto &[index, variable] : variable_attributes.attributes)
     {
-      if (var_nucleates.at(i))
+      if (variable.nucleating_variable)
         {
           std::string nucleation_text = "Nucleation parameters: ";
-          nucleation_text.append(var_names.at(i));
+          nucleation_text.append(variable.name);
           parameter_handler.enter_subsection(nucleation_text);
           {
             parameter_handler.declare_entry(

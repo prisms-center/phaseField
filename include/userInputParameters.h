@@ -168,7 +168,7 @@ public:
 
   // Method to load in the variable attributes
   void
-  loadVariableAttributes(variableAttributeLoader variable_attributes);
+  loadVariableAttributes(const variableAttributeLoader &variable_attributes);
 
   // Nucleation attribute methods
   std::vector<double>
@@ -252,12 +252,6 @@ public:
   // variable_attributes)
   unsigned int number_of_variables;
 
-  std::vector<std::string> var_name;
-  std::vector<fieldType>   var_type;
-  std::vector<PDEType>     var_eq_type;
-
-  std::vector<bool> var_nonlinear;
-
   // Variables needed to calculate the RHS
   unsigned int               num_var_explicit_RHS, num_var_nonexplicit_RHS;
   std::vector<variable_info> varInfoListExplicitRHS, varInfoListNonexplicitRHS;
@@ -281,11 +275,7 @@ public:
   unsigned int              pp_number_of_variables;
   unsigned int              num_integrated_fields;
   bool                      postProcessingRequired;
-  std::vector<bool>         pp_calc_integral;
   std::vector<unsigned int> integrated_field_indices;
-
-  std::vector<std::string> pp_var_name;
-  std::vector<fieldType>   pp_var_type;
 
   // Variable and residual info
   std::vector<variable_info> pp_varInfoList;
