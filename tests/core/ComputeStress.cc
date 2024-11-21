@@ -1,7 +1,8 @@
-#include "../../contrib/catch/catch.hpp"
 #include "../../src/models/mechanics/computeStress.h"
 
-TEST_CASE("Compute Stress")
+#include "../../contrib/catch/catch.hpp"
+
+TEST_CASE("Compute stress")
 {
   const double tolerance = 1.0e-6;
 
