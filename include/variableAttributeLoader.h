@@ -1,4 +1,3 @@
-// Class to manage the variable attributes that the user specifies
 #ifndef VARIABLEATTRIBUTELOADER_H
 #define VARIABLEATTRIBUTELOADER_H
 
@@ -10,21 +9,30 @@
 
 using EvalFlags = dealii::EvaluationFlags::EvaluationFlags;
 
+/**
+ * \brief Class to manage the variable attributes that the user specifies.
+ */
 class variableAttributeLoader
 {
 public:
-  // Constructor. Executes the user-facing functions and constructs the variable
-  // attributes.
+  /**
+   * \brief Constructor. Executes the user-facing functions and constructs the variable
+   * attributes.
+   */
   variableAttributeLoader();
 
-  // User-facing method where the variable attributes are set.
+  /**
+   * \brief User-facing method where the variable attributes are set.
+   */
   void
   loadVariableAttributes();
-  // User-facing method where the postprocessing variable attributes are set.
+
+  /**
+   * \brief User-facing method where the postprocessing variable attributes are set.
+   */
   void
   loadPostProcessorVariableAttributes();
 
-  // Methods to set the parameter_attributes
   /**
    * \brief Set the name of the variable at `index` to `name`.
    *
@@ -46,9 +54,8 @@ public:
 
   /**
    * \brief Set the PDE type of the variable at `index` to `var_eq_type` where
-   *`var_eq_type`can be
-   * `EXPLICIT_TIME_DEPENDENT`, `IMPLICIT_TIME_DEPENDENT`, `TIME_INDEPENDENT`,
-   *`AUXILIARY`.
+   *`var_eq_type`can be `EXPLICIT_TIME_DEPENDENT`, `IMPLICIT_TIME_DEPENDENT`,
+   *`TIME_INDEPENDENT`, `AUXILIARY`.
    *
    * \param index Index of variable
    * \param var_eq_type PDE type of variable at `index`.
@@ -134,12 +141,20 @@ public:
   void
   set_output_integral(const unsigned int &index, const bool &flag);
 
-  // The solutions variable attributes
+  /**
+   * \brief The solutions variable attributes
+   */
   std::map<uint, variableAttributes> attributes;
-  // The postprocessing variable attributes
+
+  /**
+   * \brief The postprocessing variable attributes
+   */
   std::map<uint, variableAttributes> pp_attributes;
-  // Useful pointer for setting whether solution or postprocessiong variables are being
-  // loaded
+
+  /**
+   * \brief Useful pointer for setting whether solution or postprocessiong variables are
+   * being loaded
+   */
   std::map<uint, variableAttributes> *relevant_attributes = nullptr;
 
 private:

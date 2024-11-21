@@ -1,5 +1,3 @@
-// Class to hold the variable attributes that will be passed to a
-// userInputParameters object
 #ifndef VARIABLEATTRIBUTES_H
 #define VARIABLEATTRIBUTES_H
 
@@ -13,6 +11,10 @@
 
 using EvalFlags = dealii::EvaluationFlags::EvaluationFlags;
 
+/**
+ * \brief Structure to hold the variable attributes that will be passed to a
+ * setInputParameters object.
+ */
 struct variableAttributes
 {
   // Variable attributes
@@ -39,7 +41,7 @@ struct variableAttributes
 
   std::set<std::string> dependency_set;
 
-  // Evaluation Flags. Tells deal.ii whether or not to retrieve the value, grad, hess,
+  // Evaluation Flags. Tells deal.II whether or not to retrieve the value, grad, hess,
   // etc. for equations
   EvalFlags eval_flags_explicit_RHS    = dealii::EvaluationFlags::nothing;
   EvalFlags eval_flags_nonexplicit_RHS = dealii::EvaluationFlags::nothing;
@@ -55,8 +57,8 @@ struct variableAttributes
   EvalFlags eval_flags_residual_postprocess = dealii::EvaluationFlags::nothing;
 
   /**
-   * \brief Combine 'value' and 'gradient' dependencies to one dependency set per RHS,
-   * LHS, PP.
+   * \brief Combine 'value' and 'gradient' residual dependencies to one dependency set per
+   * RHS, LHS, PP.
    */
   void
   format_dependencies();
@@ -78,56 +80,11 @@ struct variableAttributes
   /**
    * \brief Helper function that returns a set of pointers to the flags that need to be
    * set when `other_variable` is dependent on this variable.
+   *
    * \param other_variable Variable that is dependent on this variable.
    */
   std::set<EvalFlags *>
   eval_flags_for_eq_type(const variableAttributes &other_variable);
-
-  /*   std::set<EvalFlags *>
-    residual_flags_for_eq_type(PDEType other_eq_type)
-    {
-      if (other_eq_type == EXPLICIT_TIME_DEPENDENT)
-        {
-          return {&eval_flags_residual_explicit_RHS};
-        }
-      if (other_eq_type == AUXILIARY)
-        {
-          return {&eval_flags_residual_nonexplicit_RHS};
-        }
-      if (other_eq_type == IMPLICIT_TIME_DEPENDENT || other_eq_type == TIME_INDEPENDENT)
-        {
-          return {&eval_flags_residual_nonexplicit_RHS,
-                  &eval_flags_residual_nonexplicit_LHS};
-        }
-      return {};
-    } */
-
-  /* std::set<std::pair<std::set<std::string> *, std::set<std::string> *>>
-    dep_set_for_eq_type(PDEType other_eq_type)
-    {
-      if (other_eq_type == EXPLICIT_TIME_DEPENDENT)
-        {
-          return dependencies_RHS;
-          // return {
-          //   {&dependencies_value_RHS, &dependencies_gradient_RHS}
-          // };
-        }
-      if (other_eq_type == AUXILIARY)
-        {
-          return dependencies_RHS;
-          // return {
-          //   {&dependencies_value_RHS, &dependencies_gradient_RHS}
-          // };
-        }
-      if (other_eq_type == IMPLICIT_TIME_DEPENDENT || other_eq_type == TIME_INDEPENDENT)
-        {
-          return dependencies_RHS;
-          // return {
-          //   {&dependencies_value_RHS, &dependencies_gradient_RHS}
-          // };
-        }
-      return {};
-    } */
 };
 
 #endif

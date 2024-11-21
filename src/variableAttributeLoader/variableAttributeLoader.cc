@@ -3,7 +3,6 @@
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/utilities.h>
 
-// Constructor
 variableAttributeLoader::variableAttributeLoader()
 {
   relevant_attributes = &attributes;
