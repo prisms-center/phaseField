@@ -174,6 +174,10 @@ variableAttributeLoader::validate_attributes()
           change_possible_deps[index].insert(delims.first + "change(" + variable.name +
                                              ")" + delims.second);
         }
+      Assert(!variable.name.empty(),
+             dealii::ExcMessage(
+               "PRISMS-PF Error: Variable names must not be empty.\nProblem index: " +
+               std::to_string(index) + "\n"));
       for ([[maybe_unused]] const std::string &forbidden_name : forbidden_names)
         {
           Assert(variable.name.find(forbidden_name) == std::string::npos,
@@ -186,6 +190,11 @@ variableAttributeLoader::validate_attributes()
   for (const auto &[pp_index, pp_variable] : pp_attributes)
     {
       pp_name_list.insert(pp_variable.name);
+      Assert(!pp_variable.name.empty(),
+             dealii::ExcMessage(
+               "PRISMS-PF Error: (postprocess) Variable names must not be "
+               "empty.\nProblem index: " +
+               std::to_string(pp_index) + "\n"));
       for ([[maybe_unused]] const std::string &forbidden_name : forbidden_names)
         {
           Assert(pp_variable.name.find(forbidden_name) == std::string::npos,
