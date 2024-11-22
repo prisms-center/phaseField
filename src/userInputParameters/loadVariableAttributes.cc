@@ -55,7 +55,8 @@ userInputParameters<dim>::loadVariableAttributes(
   num_var_nonexplicit_RHS = 0;
   for (const auto &[index, variable] : variable_attributes.attributes)
     {
-      if (!(variable.eval_flags_nonexplicit_RHS & dealii::EvaluationFlags::nothing))
+      if (!static_cast<bool>(variable.eval_flags_nonexplicit_RHS &
+                             dealii::EvaluationFlags::nothing))
         {
           num_var_nonexplicit_RHS++;
         }
@@ -83,7 +84,8 @@ userInputParameters<dim>::loadVariableAttributes(
   num_var_LHS = 0;
   for (const auto &[index, variable] : variable_attributes.attributes)
     {
-      if (!(variable.eval_flags_nonexplicit_LHS & dealii::EvaluationFlags::nothing))
+      if (!static_cast<bool>(variable.eval_flags_nonexplicit_LHS &
+                             dealii::EvaluationFlags::nothing))
         {
           num_var_LHS++;
         }
