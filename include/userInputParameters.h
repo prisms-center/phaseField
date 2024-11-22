@@ -41,16 +41,27 @@ template <int dim>
 class userInputParameters
 {
 public:
-  // Method to read the input parameters from a file and load them into the
-  // class member variables
+  /**
+   * \brief Constructor. Reads in user input parameters from file and loads them into
+   * member variables.
+   */
   userInputParameters(inputFileReader          &input_file_reader,
                       dealii::ParameterHandler &parameter_handler,
                       variableAttributeLoader   variable_attributes);
 
-  // Method to create the list of BCs from the user input strings (called from
-  // the constructor)
+  /**
+   * \brief Creates a list of BCs to store in BC_list object.
+   */
   void
   load_BC_list(const std::vector<std::string> &list_of_BCs);
+
+  /**
+   * \brief Assign the boundary condition to the varBC<dim> object given some boundary
+   * condition string vector.
+   */
+  void
+  assign_boundary_conditions(std::vector<std::string> &boundary_condition_list,
+                             varBCs<dim>              &boundary_condition);
 
   // Map linking the model constant name to its index
   std::unordered_map<std::string, unsigned int> model_constant_name_map;
@@ -62,7 +73,7 @@ public:
    * \param constant_name Name of the constant to retrieve.
    */
   [[nodiscard]] double
-  get_model_constant_double(const std::string constant_name) const
+  get_model_constant_double(const std::string &constant_name) const
   {
     Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
            dealii::ExcMessage(
@@ -80,7 +91,7 @@ public:
    * \param constant_name Name of the constant to retrieve.
    */
   [[nodiscard]] int
-  get_model_constant_int(const std::string constant_name) const
+  get_model_constant_int(const std::string &constant_name) const
   {
     Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
            dealii::ExcMessage(
@@ -98,7 +109,7 @@ public:
    * \param constant_name Name of the constant to retrieve.
    */
   [[nodiscard]] bool
-  get_model_constant_bool(const std::string constant_name) const
+  get_model_constant_bool(const std::string &constant_name) const
   {
     Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
            dealii::ExcMessage(
@@ -116,7 +127,7 @@ public:
    * \param constant_name Name of the constant to retrieve.
    */
   [[nodiscard]] dealii::Tensor<1, dim>
-  get_model_constant_rank_1_tensor(const std::string constant_name) const
+  get_model_constant_rank_1_tensor(const std::string &constant_name) const
   {
     Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
            dealii::ExcMessage(
@@ -135,7 +146,7 @@ public:
    * \param constant_name Name of the constant to retrieve.
    */
   [[nodiscard]] dealii::Tensor<2, dim>
-  get_model_constant_rank_2_tensor(const std::string constant_name) const
+  get_model_constant_rank_2_tensor(const std::string &constant_name) const
   {
     Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
            dealii::ExcMessage(
@@ -154,7 +165,7 @@ public:
    * \param constant_name Name of the constant to retrieve.
    */
   [[nodiscard]] dealii::Tensor<2, 2 * dim - 1 + dim / 3>
-  get_model_constant_elasticity_tensor(const std::string constant_name) const
+  get_model_constant_elasticity_tensor(const std::string &constant_name) const
   {
     Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
            dealii::ExcMessage(
@@ -324,6 +335,75 @@ public:
   unsigned int num_grain_smoothing_cycles;
 
 private:
+  /**
+   * \brief Assign the provided user inputs to parameters for anything related to the
+   * spatial discretiziation.
+   */
+  void
+  assign_spatial_discretization_parameters(dealii::ParameterHandler &parameter_handler,
+                                           variableAttributeLoader  &variable_attributes);
+
+  /**
+   * \brief Assign the provided user inputs to parameters for anything related to the
+   * temporal discretiziation.
+   */
+  void
+  assign_temporal_discretization_parameters(dealii::ParameterHandler &parameter_handler,
+                                            variableAttributeLoader &variable_attributes);
+  /**
+   * \brief Assign the provided user inputs to parameters for anything related to linear
+   * solves.
+   */
+  void
+  assign_linear_solve_parameters(dealii::ParameterHandler &parameter_handler,
+                                 variableAttributeLoader  &variable_attributes);
+
+  /**
+   * \brief Assign the provided user inputs to parameters for anything related to
+   * nonlinear solves.
+   */
+  void
+  assign_nonlinear_solve_parameters(dealii::ParameterHandler &parameter_handler,
+                                    variableAttributeLoader  &variable_attributes);
+
+  /**
+   * \brief Assign the provided user inputs to parameters for anything related to
+   * outputs.
+   */
+  void
+  assign_output_parameters(dealii::ParameterHandler &parameter_handler);
+
+  /**
+   * \brief Assign the provided user inputs to parameters for anything related to
+   * loading in initial condition.
+   */
+  void
+  assign_load_initial_condition_parameters(dealii::ParameterHandler &parameter_handler);
+
+  /**
+   * \brief Assign the provided user inputs to parameters for anything related to
+   * nucleation.
+   */
+  void
+  assign_nucleation_parameters(dealii::ParameterHandler &parameter_handler,
+                               variableAttributeLoader  &variable_attributes);
+
+  /**
+   * \brief Assign the provided user inputs to parameters for anything related to
+   * grain remapping and grain vtk load-in.
+   */
+  void
+  assign_grain_parameters(dealii::ParameterHandler &parameter_handler,
+                          variableAttributeLoader  &variable_attributes);
+
+  /**
+   * \brief Assign the provided user inputs to parameters for anything related to
+   * boundary conditions.
+   */
+  void
+  assign_boundary_condition_parameters(dealii::ParameterHandler &parameter_handler,
+                                       variableAttributeLoader  &variable_attributes);
+
   // Method to create the list of time steps where the results should be output
   // (called from loadInputParameters)
   std::vector<unsigned int>
@@ -334,6 +414,45 @@ private:
   void
   load_user_constants(inputFileReader          &input_file_reader,
                       dealii::ParameterHandler &parameter_handler);
+
+  /**
+   * \brief Compute the number of tensor rows.
+   */
+  unsigned int
+  compute_tensor_parentheses(const unsigned int              n_elements,
+                             const std::vector<std::string> &tensor_elements);
+
+  /**
+   * \brief Remove and leading and trailing parentheses.
+   */
+  void
+  remove_parentheses(std::vector<std::string> &tensor_elements);
+
+  /**
+   * \brief Compute a 1st rank tensor from user inputs .
+   */
+  dealii::Tensor<1, dim>
+  compute_rank_1_tensor_constant(const unsigned int       n_elements,
+                                 std::vector<std::string> tensor_elements);
+
+  /**
+   * \brief Compute a 2nd rank tensor from user inputs .
+   */
+  dealii::Tensor<2, dim>
+  compute_rank_2_tensor_constant(const unsigned int       n_elements,
+                                 std::vector<std::string> tensor_elements);
+
+  /**
+   * \brief Assign the specified user constant to whatever type.
+   */
+  void
+  assign_user_constant(std::vector<std::string> &model_constants_strings);
+
+  /**
+   * \brief Assign the primitive user constants (e.g., int, double, bool).
+   */
+  void
+  assign_primitive_user_constant(std::vector<std::string> &model_constants_strings);
 
   [[nodiscard]] dealii::Tensor<2, 2 * dim - 1 + dim / 3>
   get_Cij_tensor(std::vector<double> elastic_constants,

@@ -1,21 +1,17 @@
-// Methods for the inputFileReader class
 #include "../../include/inputFileReader.h"
 
 #include <deal.II/base/mpi.h>
 #include <deal.II/base/utilities.h>
 
-// #include "variableAttributeLoader.h"
-
 #include "../../include/RefinementCriterion.h"
 #include <iostream>
 
-// Constructor
 inputFileReader::inputFileReader(const std::string       &input_file_name,
                                  variableAttributeLoader &_variable_attributes)
   : variable_attributes(_variable_attributes)
+  , num_pp_vars(_variable_attributes.pp_attributes.size())
 {
   num_constants = get_number_of_entries(input_file_name, "set", "Model constant");
-  num_pp_vars   = variable_attributes.pp_attributes.size();
 
   model_constant_names =
     get_entry_name_ending_list(input_file_name, "set", "Model constant");
@@ -36,15 +32,9 @@ inputFileReader::inputFileReader(const std::string       &input_file_name,
   number_of_dimensions = parameter_handler.get_integer("Number of dimensions");
 }
 
-// Method to parse a single line to find a target key value pair
-bool
-inputFileReader::parse_line(std::string        line,
-                            const std::string &keyword,
-                            const std::string &entry_name,
-                            std::string       &out_string,
-                            const bool         expect_equals_sign)
+void
+inputFileReader::strip_spaces(std::string &line)
 {
-  // Strip spaces at the front and back
   while ((!line.empty()) && (line[0] == ' ' || line[0] == '\t'))
     {
       line.erase(0, 1);
@@ -54,15 +44,18 @@ inputFileReader::parse_line(std::string        line,
     {
       line.erase(line.size() - 1, std::string::npos);
     }
+}
 
-  // now see whether the line starts with 'keyword' followed by multiple spaces
-  // if not, try next line (if the entry is "", then zero spaces after the
-  // keyword is ok)
+bool
+inputFileReader::check_keyword_match(std::string &line, const std::string &keyword)
+{
+  // Early return if the line is less than the keyword size
   if (line.size() < keyword.size())
     {
       return false;
     }
 
+  // Check that the line begins with the keyword
   for (unsigned int i = 0; i < keyword.size(); i++)
     {
       if (line[i] != keyword[i])
@@ -70,6 +63,27 @@ inputFileReader::parse_line(std::string        line,
           return false;
         }
     }
+
+  return true;
+}
+
+bool
+inputFileReader::parse_line(std::string        line,
+                            const std::string &keyword,
+                            const std::string &entry_name,
+                            std::string       &out_string,
+                            const bool         expect_equals_sign)
+{
+  // Remove spaces from the front and back
+  strip_spaces(line);
+
+  // Check whether the line starts with 'keyword'. If not, try next line (if the entry is
+  // "", then zero spaces after the keyword is ok)
+  if (!check_keyword_match(line, keyword))
+    {
+      return false;
+    }
+
   if (!entry_name.empty())
     {
       if (line[keyword.size()] != ' ' && line[keyword.size()] != '\t')
@@ -78,12 +92,10 @@ inputFileReader::parse_line(std::string        line,
         }
     }
 
-  // delete the "keyword" and then delete more spaces if present
+  // Delete the "keyword" and any more spaces, if present
   line.erase(0, keyword.size());
-  while ((!line.empty()) && (line[0] == ' ' || line[0] == '\t'))
-    {
-      line.erase(0, 1);
-    }
+  strip_spaces(line);
+
   // now see whether the next word is the word we look for
   if (line.find(entry_name) != 0)
     {
@@ -91,10 +103,7 @@ inputFileReader::parse_line(std::string        line,
     }
 
   line.erase(0, entry_name.size());
-  while ((!line.empty()) && (line[0] == ' ' || line[0] == '\t'))
-    {
-      line.erase(0, 1);
-    }
+  strip_spaces(line);
 
   // we'd expect an equals size here if expect_equals_sign is true
   if (expect_equals_sign)
@@ -118,17 +127,7 @@ inputFileReader::parse_line(std::string        line,
     {
       line.erase(0, 1);
     }
-
-  while ((!line.empty()) && (line[0] == ' ' || line[0] == '\t'))
-    {
-      line.erase(0, 1);
-    }
-
-  while ((!line.empty()) &&
-         (line[line.size() - 1] == ' ' || line[line.size() - 1] == '\t'))
-    {
-      line.erase(line.size() - 1, std::string::npos);
-    }
+  strip_spaces(line);
 
   out_string = line;
   return true;

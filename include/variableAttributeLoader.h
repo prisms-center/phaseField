@@ -40,7 +40,7 @@ public:
    * \param name Name of variable at `index`
    */
   void
-  set_variable_name(const unsigned int &index, const std::string &name);
+  set_variable_name(const unsigned int &index, const std::string &name) const;
 
   /**
    * \brief Set the field type of the variable at `index` to `var_type` where `var_type`
@@ -50,7 +50,7 @@ public:
    * \param var_type Field type of variable at `index` (`SCALAR` or `VECTOR`).
    */
   void
-  set_variable_type(const unsigned int &index, const fieldType &var_type);
+  set_variable_type(const unsigned int &index, const fieldType &var_type) const;
 
   /**
    * \brief Set the PDE type of the variable at `index` to `var_eq_type` where
@@ -61,7 +61,7 @@ public:
    * \param var_eq_type PDE type of variable at `index`.
    */
   void
-  set_variable_equation_type(const unsigned int &index, const PDEType &var_eq_type);
+  set_variable_equation_type(const unsigned int &index, const PDEType &var_eq_type) const;
 
   /**
    * \brief Set the dependencies for the value term of the RHS equation of the variable at
@@ -97,7 +97,7 @@ public:
    */
   void
   set_dependencies_value_term_LHS(const unsigned int &index,
-                                  const std::string  &dependencies);
+                                  const std::string  &dependencies) const;
 
   /**
    * \brief Set the dependencies for the gradient term of the LHS equation of the variable
@@ -109,7 +109,7 @@ public:
    */
   void
   set_dependencies_gradient_term_LHS(const unsigned int &index,
-                                     const std::string  &dependencies);
+                                     const std::string  &dependencies) const;
 
   /**
    * \brief Flag whether the variable at `index` is needed to calculate the nucleation
@@ -119,7 +119,7 @@ public:
    * \param flag true: variable is needed, false: variable is not needed.
    */
   void
-  set_need_value_nucleation(const unsigned int &index, const bool &flag);
+  set_need_value_nucleation(const unsigned int &index, const bool &flag) const;
 
   /**
    * \brief Flag whether the variable at `index` is can have a nucleation event.
@@ -128,7 +128,7 @@ public:
    * \param flag true: variable can nucleate, false: variable can not nucleate.
    */
   void
-  set_allowed_to_nucleate(const unsigned int &index, const bool &flag);
+  set_allowed_to_nucleate(const unsigned int &index, const bool &flag) const;
 
   /**
    * \brief (Postprocess only) Flag whether the postprocessing variable at `index` should
@@ -139,7 +139,7 @@ public:
    * false: do nothing
    */
   void
-  set_output_integral(const unsigned int &index, const bool &flag);
+  set_output_integral(const unsigned int &index, const bool &flag) const;
 
   /**
    * \brief The solutions variable attributes
@@ -166,9 +166,52 @@ private:
   validate_attributes();
 
   /**
+   * \brief Validate that the variable name is not empty and does not contain any
+   * forbidden substrings (names).
+   */
+  static void
+  validate_variable_name(const std::string           &name,
+                         const std::set<std::string> &forbidden_names,
+                         const std::string           &context,
+                         unsigned int                 index);
+
+  /**
+   * \brief Populate dependencies that we should expect from the user.
+   */
+  static void
+  populate_dependencies(
+    const std::set<std::pair<std::string, std::string>> &reg_delimiters,
+    const std::string                                   &variable_name,
+    unsigned int                                         index,
+    std::set<std::string>                               &reg_possible_deps,
+    std::map<uint, std::set<std::string>>               &change_possible_deps);
+
+  /**
+   * \brief Validate the dependencies (RHS or LHS) that the user has provided.
+   */
+  static void
+  validate_dependencies(
+    const std::set<std::string>                 &dependencies,
+    const std::string                           &context,
+    unsigned int                                 index,
+    const std::string                           &variable_name,
+    const std::set<std::string>                 &reg_possible_deps,
+    const std::map<uint, std::set<std::string>> &change_possible_deps);
+
+  /**
+   * \brief Validate the postprocess variables.
+   */
+  static void
+  validate_postprocess_variable(const std::string           &name,
+                                const std::set<std::string> &name_list,
+                                const std::set<std::string> &reg_possible_deps,
+                                const variableAttributes    &pp_variable,
+                                unsigned int                 index);
+
+  /**
    * \brief Utility to remove whitespace from strings
    */
-  std::string
+  static std::string
   strip_whitespace(const std::string &text);
   // The above function should be moved to a 'utilities' module
 };
