@@ -26,7 +26,8 @@ userInputParameters<dim>::loadVariableAttributes(
   num_var_explicit_RHS = 0;
   for (const auto &[index, variable] : variable_attributes.attributes)
     {
-      if (!(variable.eval_flags_explicit_RHS & dealii::EvaluationFlags::nothing))
+      if (!static_cast<bool>(variable.eval_flags_explicit_RHS &
+                             dealii::EvaluationFlags::nothing))
         {
           num_var_explicit_RHS++;
         }
@@ -34,7 +35,7 @@ userInputParameters<dim>::loadVariableAttributes(
   varInfoListExplicitRHS.reserve(num_var_explicit_RHS);
   for (const auto &[index, variable] : variable_attributes.attributes)
     {
-      variable_info varInfo;
+      variable_info varInfo {};
 
       varInfo.evaluation_flags = variable.eval_flags_explicit_RHS;
 
@@ -42,7 +43,8 @@ userInputParameters<dim>::loadVariableAttributes(
 
       varInfo.global_var_index = index;
 
-      varInfo.var_needed = !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
+      varInfo.var_needed =
+        !static_cast<bool>(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
 
       varInfo.is_scalar = variable.var_type == SCALAR;
 
@@ -61,7 +63,7 @@ userInputParameters<dim>::loadVariableAttributes(
   varInfoListNonexplicitRHS.reserve(num_var_nonexplicit_RHS);
   for (const auto &[index, variable] : variable_attributes.attributes)
     {
-      variable_info varInfo;
+      variable_info varInfo {};
 
       varInfo.evaluation_flags = variable.eval_flags_nonexplicit_RHS;
 
@@ -69,7 +71,8 @@ userInputParameters<dim>::loadVariableAttributes(
 
       varInfo.global_var_index = index;
 
-      varInfo.var_needed = !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
+      varInfo.var_needed =
+        !static_cast<bool>(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
 
       varInfo.is_scalar = variable.var_type == SCALAR;
 
@@ -89,7 +92,7 @@ userInputParameters<dim>::loadVariableAttributes(
   varInfoListLHS.reserve(num_var_LHS);
   for (const auto &[index, variable] : variable_attributes.attributes)
     {
-      variable_info varInfo;
+      variable_info varInfo {};
 
       varInfo.evaluation_flags = variable.eval_flags_nonexplicit_LHS;
 
@@ -97,7 +100,8 @@ userInputParameters<dim>::loadVariableAttributes(
 
       varInfo.global_var_index = index;
 
-      varInfo.var_needed = !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
+      varInfo.var_needed =
+        !static_cast<bool>(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
 
       varInfo.is_scalar = variable.var_type == SCALAR;
 
@@ -107,7 +111,7 @@ userInputParameters<dim>::loadVariableAttributes(
   varChangeInfoListLHS.reserve(num_var_LHS);
   for (const auto &[index, variable] : variable_attributes.attributes)
     {
-      variable_info varInfo;
+      variable_info varInfo {};
 
       varInfo.evaluation_flags = variable.eval_flags_change_nonexplicit_LHS;
 
@@ -116,7 +120,8 @@ userInputParameters<dim>::loadVariableAttributes(
 
       varInfo.global_var_index = index;
 
-      varInfo.var_needed = !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
+      varInfo.var_needed =
+        !static_cast<bool>(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
 
       varInfo.is_scalar = variable.var_type == SCALAR;
 
@@ -128,13 +133,14 @@ userInputParameters<dim>::loadVariableAttributes(
   pp_baseVarInfoList.reserve(number_of_variables);
   for (const auto &[index, variable] : variable_attributes.attributes)
     {
-      variable_info varInfo;
+      variable_info varInfo {};
 
       varInfo.evaluation_flags = variable.eval_flags_postprocess;
 
       varInfo.global_var_index = index;
 
-      varInfo.var_needed = !(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
+      varInfo.var_needed =
+        !static_cast<bool>(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
 
       varInfo.is_scalar = variable.var_type == SCALAR;
 
@@ -160,7 +166,7 @@ userInputParameters<dim>::loadVariableAttributes(
   pp_varInfoList.reserve(pp_number_of_variables);
   for (const auto &[pp_index, pp_variable] : variable_attributes.pp_attributes)
     {
-      variable_info varInfo;
+      variable_info varInfo {};
 
       varInfo.var_needed = true;
 
