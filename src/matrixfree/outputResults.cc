@@ -84,24 +84,20 @@ MatrixFreePDE<dim, degree>::outputResults()
               output_file << currentTime;
             }
 
-          for (unsigned int i = 0; i < userInputs.pp_number_of_variables; i++)
+          for (const auto &[pp_index, pp_variable] : var_attributes.pp_attributes)
             {
-              if (userInputs.pp_calc_integral[i])
+              if (pp_variable.calc_integral)
                 {
                   double integrated_field;
-                  computeIntegral(integrated_field, i, postProcessedSet);
-                  pcout << "Integrated value of "
-                        << userInputs.pp_var_name[userInputs.integrated_field_indices[i]]
-                        << ": " << integrated_field << std::endl;
+                  computeIntegral(integrated_field, pp_index, postProcessedSet);
+                  pcout << "Integrated value of " << pp_variable.name << ": "
+                        << integrated_field << std::endl;
                   if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
                     {
-                      output_file
-                        << "\t"
-                        << userInputs.pp_var_name[userInputs.integrated_field_indices[i]]
-                        << "\t" << integrated_field;
+                      output_file << "\t" << pp_variable.name << "\t" << integrated_field;
                     }
                   integrated_postprocessed_fields.at(
-                    userInputs.integrated_field_indices[i]) = integrated_field;
+                    userInputs.integrated_field_indices[pp_index]) = integrated_field;
                 }
             }
           if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
@@ -113,8 +109,7 @@ MatrixFreePDE<dim, degree>::outputResults()
         }
 
       // Add the postprocessed fields to data_out
-      for (unsigned int fieldIndex = 0; fieldIndex < userInputs.pp_number_of_variables;
-           fieldIndex++)
+      for (const auto &[fieldIndex, pp_variable] : var_attributes.pp_attributes)
         {
           // mark field as scalar/vector
           unsigned int components;
@@ -123,9 +118,8 @@ MatrixFreePDE<dim, degree>::outputResults()
               components = 1;
               std::vector<DataComponentInterpretation::DataComponentInterpretation>
                 dataType(components, DataComponentInterpretation::component_is_scalar);
-              std::vector<std::string> solutionNames(
-                components,
-                userInputs.pp_var_name[fieldIndex].c_str());
+              std::vector<std::string> solutionNames(components,
+                                                     pp_variable.name.c_str());
               // add field to data_out
               data_out.add_data_vector(*dofHandlersSet[0],
                                        *postProcessedSet[fieldIndex],
@@ -138,9 +132,8 @@ MatrixFreePDE<dim, degree>::outputResults()
               std::vector<DataComponentInterpretation::DataComponentInterpretation>
                                        dataType(components,
                          DataComponentInterpretation::component_is_part_of_vector);
-              std::vector<std::string> solutionNames(
-                components,
-                userInputs.pp_var_name[fieldIndex].c_str());
+              std::vector<std::string> solutionNames(components,
+                                                     pp_variable.name.c_str());
               // add field to data_out
               data_out.add_data_vector(*dofHandlersSet[0],
                                        *postProcessedSet[fieldIndex],

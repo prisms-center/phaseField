@@ -61,19 +61,19 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
     }
 
   // The adaptivity criterion for each variable has its own subsection
-  for (unsigned int i = 0; i < number_of_variables; i++)
+  for (const auto &[index, variable] : variable_attributes.attributes)
     {
       std::string subsection_text = "Refinement criterion: ";
-      subsection_text.append(input_file_reader.var_names.at(i));
+      subsection_text.append(variable.name);
 
       parameter_handler.enter_subsection(subsection_text);
       {
-        const std::string crit_type_string = parameter_handler.get("Criterion type");
+        std::string crit_type_string = parameter_handler.get("Criterion type");
         if (!crit_type_string.empty())
           {
             RefinementCriterion new_criterion;
-            new_criterion.variable_index = i;
-            new_criterion.variable_name  = input_file_reader.var_names.at(i);
+            new_criterion.variable_index = index;
+            new_criterion.variable_name  = variable.name;
             if (boost::iequals(crit_type_string, "VALUE"))
               {
                 new_criterion.criterion_type = criterion_value;
@@ -142,13 +142,13 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
   finalTime = parameter_handler.get_double("Simulation end time");
 
   // Linear solver parameters
-  for (unsigned int i = 0; i < number_of_variables; i++)
+  for (const auto &[index, variable] : variable_attributes.attributes)
     {
-      if (input_file_reader.var_eq_types.at(i) == TIME_INDEPENDENT ||
-          input_file_reader.var_eq_types.at(i) == IMPLICIT_TIME_DEPENDENT)
+      if (variable.eq_type == TIME_INDEPENDENT ||
+          variable.eq_type == IMPLICIT_TIME_DEPENDENT)
         {
           std::string subsection_text = "Linear solver parameters: ";
-          subsection_text.append(input_file_reader.var_names.at(i));
+          subsection_text.append(variable.name);
 
           parameter_handler.enter_subsection(subsection_text);
           {
@@ -188,7 +188,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
             const unsigned int temp_max_iterations =
               parameter_handler.get_integer("Maximum linear solver iterations");
 
-            linear_solver_parameters.loadParameters(i,
+            linear_solver_parameters.loadParameters(index,
                                                     temp_type,
                                                     temp_value,
                                                     temp_max_iterations);
@@ -198,17 +198,15 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
     }
 
   // Non-linear solver parameters
-  std::vector<bool> var_nonlinear = variable_attributes.var_nonlinear;
-
   nonlinear_solver_parameters.setMaxIterations(
     parameter_handler.get_integer("Maximum nonlinear solver iterations"));
 
-  for (unsigned int i = 0; i < var_nonlinear.size(); i++)
+  for (const auto &[index, variable] : variable_attributes.attributes)
     {
-      if (var_nonlinear.at(i))
+      if (variable.is_nonlinear)
         {
           std::string subsection_text = "Nonlinear solver parameters: ";
-          subsection_text.append(input_file_reader.var_names.at(i));
+          subsection_text.append(variable.name);
 
           parameter_handler.enter_subsection(subsection_text);
           {
@@ -260,8 +258,8 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
             // Set whether to use the solution of Laplace's equation instead of
             // the IC in ICs_and_BCs.h as the initial guess for nonlinear, time
             // independent equations
-            bool temp_laplace_for_initial_guess = false;
-            if (var_eq_type[i] == TIME_INDEPENDENT)
+            bool temp_laplace_for_initial_guess;
+            if (variable.eq_type == TIME_INDEPENDENT)
               {
                 temp_laplace_for_initial_guess = parameter_handler.get_bool(
                   "Use Laplace's equation to determine the initial guess");
@@ -273,13 +271,13 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
                     std::cout << "PRISMS-PF Warning: Laplace's equation is only used "
                                  "to generate the initial guess for time independent "
                                  "equations. The equation for variable "
-                              << var_name[i]
+                              << variable.name
                               << " is not a time independent equation. No initial "
                                  "guess is needed for this equation.\n";
                   }
               }
 
-            nonlinear_solver_parameters.loadParameters(i,
+            nonlinear_solver_parameters.loadParameters(index,
                                                        temp_type,
                                                        temp_value,
                                                        temp_backtrack_damping,
@@ -293,7 +291,12 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
     }
 
   // Set the max number of nonlinear iterations
-  if (var_nonlinear.empty())
+  bool any_nonlinear = false;
+  for (const auto &[index, variable] : variable_attributes.attributes)
+    {
+      any_nonlinear |= variable.is_nonlinear;
+    }
+  if (!any_nonlinear)
     {
       nonlinear_solver_parameters.setMaxIterations(0);
     }
@@ -337,9 +340,10 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
   // If all of the variables are ELLIPTIC, then totalIncrements should be 1 and
   // finalTime should be 0
   bool only_time_independent_pdes = true;
-  for (const auto &var_type : var_eq_type)
+  for (const auto &[index, variable] : variable_attributes.attributes)
     {
-      if (var_type == EXPLICIT_TIME_DEPENDENT || var_type == IMPLICIT_TIME_DEPENDENT)
+      if (variable.eq_type == EXPLICIT_TIME_DEPENDENT ||
+          variable.eq_type == IMPLICIT_TIME_DEPENDENT)
         {
           only_time_independent_pdes = false;
           break;
@@ -455,17 +459,17 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
 
   // Parameters for nucleation
 
-  for (unsigned int i = 0; i < input_file_reader.var_types.size(); i++)
+  for (const auto &[index, variable] : variable_attributes.attributes)
     {
-      if (input_file_reader.var_nucleates.at(i))
+      if (variable.nucleating_variable)
         {
           std::string nucleation_text = "Nucleation parameters: ";
-          nucleation_text.append(input_file_reader.var_names.at(i));
+          nucleation_text.append(variable.name);
 
           parameter_handler.enter_subsection(nucleation_text);
           {
-            const unsigned int        var_index = i;
-            const std::vector<double> semiaxes =
+            unsigned int        var_index = index;
+            std::vector<double> semiaxes =
               dealii::Utilities::string_to_double(dealii::Utilities::split_string_list(
                 parameter_handler.get("Nucleus semiaxes (x, y, z)")));
             const std::vector<double> ellipsoid_rotation =
@@ -565,12 +569,11 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
   for (const auto &field : variables_for_remapping_str)
     {
       bool field_found = false;
-      for (unsigned int i = 0; i < number_of_variables; i++)
+      for (const auto &[index, variable] : variable_attributes.attributes)
         {
-          if (boost::iequals(field, variable_attributes.var_name_list[i].second))
+          if (boost::iequals(field, variable.name))
             {
-              variables_for_remapping.push_back(
-                variable_attributes.var_name_list[i].first);
+              variables_for_remapping.push_back(index);
               field_found = true;
               break;
             }
@@ -599,30 +602,30 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
   // Load the boundary condition variables into list of BCs (where each element
   // of the vector is one component of one variable)
   std::vector<std::string> list_of_BCs;
-  for (unsigned int i = 0; i < number_of_variables; i++)
+  for (const auto &[index, variable] : variable_attributes.attributes)
     {
-      if (var_type[i] == SCALAR)
+      if (variable.var_type == SCALAR)
         {
           std::string bc_text = "Boundary condition for variable ";
-          bc_text.append(var_name.at(i));
+          bc_text.append(variable.name);
           list_of_BCs.push_back(parameter_handler.get(bc_text));
         }
       else
         {
           std::string bc_text = "Boundary condition for variable ";
-          bc_text.append(var_name.at(i));
+          bc_text.append(variable.name);
           bc_text.append(", x component");
           list_of_BCs.push_back(parameter_handler.get(bc_text));
 
           bc_text = "Boundary condition for variable ";
-          bc_text.append(var_name.at(i));
+          bc_text.append(variable.name);
           bc_text.append(", y component");
           list_of_BCs.push_back(parameter_handler.get(bc_text));
 
           if (dim > 2)
             {
               bc_text = "Boundary condition for variable ";
-              bc_text.append(var_name.at(i));
+              bc_text.append(variable.name);
               bc_text.append(", z component");
               list_of_BCs.push_back(parameter_handler.get(bc_text));
             }
@@ -632,10 +635,10 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
   /*----------------------
   |  Pinning point
   -----------------------*/
-  for (unsigned int i = 0; i < number_of_variables; i++)
+  for (const auto &[index, variable] : variable_attributes.attributes)
     {
       std::string pinning_text = "Pinning point: ";
-      pinning_text.append(input_file_reader.var_names.at(i));
+      pinning_text.append(variable.name);
       parameter_handler.enter_subsection(pinning_text);
 
       // Skip if the default
@@ -648,14 +651,14 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
       // Otherwise, fill out point
       if (dim == 2)
         {
-          pinned_point[i] = dealii::Point<dim>(parameter_handler.get_double("x"),
-                                               parameter_handler.get_double("y"));
+          pinned_point[index] = dealii::Point<dim>(parameter_handler.get_double("x"),
+                                                   parameter_handler.get_double("y"));
         }
       else
         {
-          pinned_point[i] = dealii::Point<dim>(parameter_handler.get_double("x"),
-                                               parameter_handler.get_double("y"),
-                                               parameter_handler.get_double("z"));
+          pinned_point[index] = dealii::Point<dim>(parameter_handler.get_double("x"),
+                                                   parameter_handler.get_double("y"),
+                                                   parameter_handler.get_double("z"));
         }
       parameter_handler.leave_subsection();
     }

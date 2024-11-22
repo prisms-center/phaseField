@@ -40,30 +40,30 @@ MatrixFreePDE<dim, degree>::save_checkpoint()
 
     // First, get lists of scalar and vector fields
     std::vector<unsigned int> scalar_var_indices, vector_var_indices;
-    for (unsigned int var = 0; var < userInputs.number_of_variables; var++)
+    for (const auto &[index, variable] : var_attributes.attributes)
       {
-        if (userInputs.var_type[var] == SCALAR)
+        if (variable.var_type == SCALAR)
           {
-            scalar_var_indices.push_back(var);
+            scalar_var_indices.push_back(index);
           }
         else
           {
-            vector_var_indices.push_back(var);
+            vector_var_indices.push_back(index);
           }
       }
 
     // Second, build one solution set list for scalars and one for vectors
     std::vector<const vectorType *> solSet_transfer_scalars;
     std::vector<const vectorType *> solSet_transfer_vectors;
-    for (unsigned int var = 0; var < userInputs.number_of_variables; ++var)
+    for (const auto &[index, variable] : var_attributes.attributes)
       {
-        if (userInputs.var_type[var] == SCALAR)
+        if (variable.var_type == SCALAR)
           {
-            solSet_transfer_scalars.push_back(solutionSet[var]);
+            solSet_transfer_scalars.push_back(solutionSet[index]);
           }
         else
           {
-            solSet_transfer_vectors.push_back(solutionSet[var]);
+            solSet_transfer_vectors.push_back(solutionSet[index]);
           }
       }
 
@@ -145,30 +145,30 @@ MatrixFreePDE<dim, degree>::load_checkpoint_fields()
 
   // First, get lists of scalar and vector fields
   std::vector<unsigned int> scalar_var_indices, vector_var_indices;
-  for (unsigned int var = 0; var < userInputs.number_of_variables; var++)
+  for (const auto &[index, variable] : var_attributes.attributes)
     {
-      if (userInputs.var_type[var] == SCALAR)
+      if (variable.var_type == SCALAR)
         {
-          scalar_var_indices.push_back(var);
+          scalar_var_indices.push_back(index);
         }
       else
         {
-          vector_var_indices.push_back(var);
+          vector_var_indices.push_back(index);
         }
     }
 
   // Second, build one solution set list for scalars and one for vectors
   std::vector<vectorType *> solSet_transfer_scalars;
   std::vector<vectorType *> solSet_transfer_vectors;
-  for (unsigned int var = 0; var < userInputs.number_of_variables; ++var)
+  for (const auto &[index, variable] : var_attributes.attributes)
     {
-      if (userInputs.var_type[var] == SCALAR)
+      if (variable.var_type == SCALAR)
         {
-          solSet_transfer_scalars.push_back(solutionSet[var]);
+          solSet_transfer_scalars.push_back(solutionSet[index]);
         }
       else
         {
-          solSet_transfer_vectors.push_back(solutionSet[var]);
+          solSet_transfer_vectors.push_back(solutionSet[index]);
         }
     }
 

@@ -202,7 +202,7 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                   this->fields[fieldIndex].pdetype == TIME_INDEPENDENT)
                 {
                   if (this->currentIncrement % userInputs.skip_print_steps == 0 &&
-                      userInputs.var_nonlinear[fieldIndex])
+                      this->var_attributes.attributes.at(fieldIndex).is_nonlinear)
                     {
                       snprintf(buffer,
                                sizeof(buffer),
@@ -222,11 +222,12 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                 }
               else if (this->fields[fieldIndex].pdetype == AUXILIARY)
                 {
-                  if (userInputs.var_nonlinear[fieldIndex] || nonlinear_it_index == 0)
+                  if (this->var_attributes.attributes.at(fieldIndex).is_nonlinear ||
+                      nonlinear_it_index == 0)
                     {
                       // If the equation for this field is nonlinear, save the
                       // old solution
-                      if (userInputs.var_nonlinear[fieldIndex])
+                      if (this->var_attributes.attributes.at(fieldIndex).is_nonlinear)
                         {
                           if (this->fields[fieldIndex].type == SCALAR)
                             {
@@ -257,7 +258,7 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                         }
 
                       // Check to see if this individual variable has converged
-                      if (userInputs.var_nonlinear[fieldIndex])
+                      if (this->var_attributes.attributes.at(fieldIndex).is_nonlinear)
                         {
                           if (MatrixFreePDE<dim, degree>::userInputs
                                 .nonlinear_solver_parameters.getToleranceType(

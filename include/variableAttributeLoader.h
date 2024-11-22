@@ -1,110 +1,176 @@
-// Class to hold the variable attributes that will be passed to a
-// userInputParameters object
 #ifndef VARIABLEATTRIBUTELOADER_H
 #define VARIABLEATTRIBUTELOADER_H
 
-#include "EquationDependencyParser.h"
-#include "model_variables.h"
 #include "varTypeEnums.h"
+#include "variableAttributes.h"
 
+#include <map>
 #include <string>
-#include <vector>
 
+using EvalFlags = dealii::EvaluationFlags::EvaluationFlags;
+
+/**
+ * \brief Class to manage the variable attributes that the user specifies.
+ */
 class variableAttributeLoader
 {
 public:
-  // Constructor
+  /**
+   * \brief Constructor. Executes the user-facing functions and constructs the variable
+   * attributes.
+   */
   variableAttributeLoader();
 
-  // Methods where the attributes are set
+  /**
+   * \brief User-facing method where the variable attributes are set.
+   */
   void
   loadVariableAttributes();
+
+  /**
+   * \brief User-facing method where the postprocessing variable attributes are set.
+   */
   void
   loadPostProcessorVariableAttributes();
 
-  // Methods to set the parameter_attributes
-  bool setting_primary_field_attributes;
+  /**
+   * \brief Set the name of the variable at `index` to `name`.
+   *
+   * \param index Index of variable
+   * \param name Name of variable at `index`
+   */
   void
-  set_variable_name(unsigned int index, std::string name);
+  set_variable_name(const unsigned int &index, const std::string &name);
+
+  /**
+   * \brief Set the field type of the variable at `index` to `var_type` where `var_type`
+   * can be `SCALAR` or `VECTOR`.
+   *
+   * \param index Index of variable
+   * \param var_type Field type of variable at `index` (`SCALAR` or `VECTOR`).
+   */
   void
-  set_variable_type(unsigned int index, fieldType);
+  set_variable_type(const unsigned int &index, const fieldType &var_type);
+
+  /**
+   * \brief Set the PDE type of the variable at `index` to `var_eq_type` where
+   *`var_eq_type`can be `EXPLICIT_TIME_DEPENDENT`, `IMPLICIT_TIME_DEPENDENT`,
+   *`TIME_INDEPENDENT`, `AUXILIARY`.
+   *
+   * \param index Index of variable
+   * \param var_eq_type PDE type of variable at `index`.
+   */
   void
-  set_variable_equation_type(unsigned int index, PDEType);
+  set_variable_equation_type(const unsigned int &index, const PDEType &var_eq_type);
 
+  /**
+   * \brief Set the dependencies for the value term of the RHS equation of the variable at
+   * `index`.
+   *
+   * \param index Index of variable
+   * \param dependencies String containing comma-separated list of dependencies for
+   * variable at `index` Hint: "variable, grad(variable), hess(variable)"
+   */
   void
-  set_need_value_nucleation(unsigned int index, bool);
+  set_dependencies_value_term_RHS(const unsigned int &index,
+                                  const std::string  &dependencies);
+
+  /**
+   * \brief Set the dependencies for the gradient term of the RHS equation of the variable
+   * at `index`.
+   *
+   * \param index Index of variable
+   * \param dependencies String containing comma-separated list of dependencies for
+   * variable at `index` Hint: "variable, grad(variable), hess(variable)"
+   */
   void
-  set_allowed_to_nucleate(unsigned int index, bool);
+  set_dependencies_gradient_term_RHS(const unsigned int &index,
+                                     const std::string  &dependencies);
 
+  /**
+   * \brief Set the dependencies for the value term of the LHS equation of the variable at
+   * `index`.
+   *
+   * \param index Index of variable
+   * \param dependencies String containing comma-separated list of dependencies for
+   * variable at `index` Hint: "variable, grad(variable), hess(variable)"
+   */
   void
-  set_output_integral(unsigned int index, bool);
+  set_dependencies_value_term_LHS(const unsigned int &index,
+                                  const std::string  &dependencies);
 
-  // Variable inputs (v2.0)
-  std::vector<std::pair<unsigned int, std::string>> var_name_list;
-  std::vector<std::pair<unsigned int, fieldType>>   var_type_list;
-  std::vector<std::pair<unsigned int, PDEType>>     var_eq_type_list;
-  std::vector<std::pair<unsigned int, bool>>        need_value_list;
-  std::vector<std::pair<unsigned int, bool>>        need_gradient_list;
-  std::vector<std::pair<unsigned int, bool>>        need_hessian_list;
-  std::vector<std::pair<unsigned int, bool>>        need_value_residual_list;
-  std::vector<std::pair<unsigned int, bool>>        need_gradient_residual_list;
-  std::vector<std::pair<unsigned int, bool>>        need_value_list_LHS;
-  std::vector<std::pair<unsigned int, bool>>        need_gradient_list_LHS;
-  std::vector<std::pair<unsigned int, bool>>        need_hessian_list_LHS;
-  std::vector<std::pair<unsigned int, bool>>        need_value_residual_list_LHS;
-  std::vector<std::pair<unsigned int, bool>>        need_gradient_residual_list_LHS;
-
-  std::vector<std::pair<unsigned int, bool>> need_value_change_list_LHS;
-  std::vector<std::pair<unsigned int, bool>> need_gradient_change_list_LHS;
-  std::vector<std::pair<unsigned int, bool>> need_hessian_change_list_LHS;
-
-  std::vector<std::pair<unsigned int, bool>> need_value_list_PP;
-  std::vector<std::pair<unsigned int, bool>> need_gradient_list_PP;
-  std::vector<std::pair<unsigned int, bool>> need_hessian_list_PP;
-  std::vector<std::pair<unsigned int, bool>> need_value_list_nucleation;
-  std::vector<std::pair<unsigned int, bool>> nucleating_variable_list;
-
-  std::vector<std::pair<unsigned int, std::string>> var_name_list_PP;
-  std::vector<std::pair<unsigned int, fieldType>>   var_type_list_PP;
-  std::vector<std::pair<unsigned int, bool>>        output_integral_list;
-  std::vector<std::pair<unsigned int, bool>>        need_value_residual_list_PP;
-  std::vector<std::pair<unsigned int, bool>>        need_gradient_residual_list_PP;
-
+  /**
+   * \brief Set the dependencies for the gradient term of the LHS equation of the variable
+   * at `index`.
+   *
+   * \param index Index of variable
+   * \param dependencies String containing comma-separated list of dependencies for
+   * variable at `index` Hint: "variable, grad(variable), hess(variable)"
+   */
   void
-  set_dependencies_value_term_RHS(unsigned int index, std::string dependencies);
+  set_dependencies_gradient_term_LHS(const unsigned int &index,
+                                     const std::string  &dependencies);
+
+  /**
+   * \brief Flag whether the variable at `index` is needed to calculate the nucleation
+   * probability.
+   *
+   * \param index Index of variable
+   * \param flag true: variable is needed, false: variable is not needed.
+   */
   void
-  set_dependencies_gradient_term_RHS(unsigned int index, std::string dependencies);
+  set_need_value_nucleation(const unsigned int &index, const bool &flag);
+
+  /**
+   * \brief Flag whether the variable at `index` is can have a nucleation event.
+   *
+   * \param index Index of variable
+   * \param flag true: variable can nucleate, false: variable can not nucleate.
+   */
   void
-  set_dependencies_value_term_LHS(unsigned int index, std::string dependencies);
+  set_allowed_to_nucleate(const unsigned int &index, const bool &flag);
+
+  /**
+   * \brief (Postprocess only) Flag whether the postprocessing variable at `index` should
+   * have its domain integral calculated and output.
+   *
+   * \param index Index of variable
+   * \param flag true: calculate and output the integral of the field over the domain,
+   * false: do nothing
+   */
   void
-  set_dependencies_gradient_term_LHS(unsigned int index, std::string dependencies);
+  set_output_integral(const unsigned int &index, const bool &flag);
 
-  std::vector<std::pair<unsigned int, std::string>> var_eq_dependencies_value_RHS;
-  std::vector<std::pair<unsigned int, std::string>> var_eq_dependencies_gradient_RHS;
-  std::vector<std::pair<unsigned int, std::string>> var_eq_dependencies_value_LHS;
-  std::vector<std::pair<unsigned int, std::string>> var_eq_dependencies_gradient_LHS;
+  /**
+   * \brief The solutions variable attributes
+   */
+  std::map<uint, variableAttributes> attributes;
 
-  std::vector<std::pair<unsigned int, std::string>> var_eq_dependencies_value_PP;
-  std::vector<std::pair<unsigned int, std::string>> var_eq_dependencies_gradient_PP;
+  /**
+   * \brief The postprocessing variable attributes
+   */
+  std::map<uint, variableAttributes> pp_attributes;
 
-  EquationDependencyParser equation_dependency_parser;
+  /**
+   * \brief Useful pointer for setting whether solution or postprocessiong variables are
+   * being loaded
+   */
+  std::map<uint, variableAttributes> *relevant_attributes = nullptr;
 
-  unsigned int number_of_variables;
+private:
+  /**
+   * \brief Perform a suite of assertions on attributes and pp_attributes to ensure that
+   * the user's inputs are well-formed
+   */
+  void
+  validate_attributes();
 
-  std::vector<std::string> var_name;
-  std::vector<fieldType>   var_type;
-  std::vector<PDEType>     var_eq_type;
-
-  std::vector<bool> var_nonlinear;
-
-  std::vector<bool> nucleating_variable;
-  std::vector<bool> need_value_nucleation;
-
-  unsigned int pp_number_of_variables;
-
-  std::vector<std::string> pp_var_name;
-  std::vector<fieldType>   pp_var_type;
-  std::vector<bool>        pp_calc_integral;
+  /**
+   * \brief Utility to remove whitespace from strings
+   */
+  std::string
+  strip_whitespace(const std::string &text);
+  // The above function should be moved to a 'utilities' module
 };
 
 #endif

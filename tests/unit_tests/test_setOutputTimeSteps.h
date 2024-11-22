@@ -13,17 +13,7 @@ unitTest<dim, T>::test_setOutputTimeSteps()
   dealii::ParameterHandler parameter_handler;
   variableAttributeLoader  variable_attributes;
   inputFileReader          input_file_reader("parameters_test.prm", variable_attributes);
-  std::vector<fieldType>   var_types;
-  var_types.push_back(SCALAR);
-  std::vector<PDEType> var_eq_types;
-  var_eq_types.push_back(TIME_INDEPENDENT);
-  std::vector<bool> var_nucleates;
-  var_nucleates.push_back(false);
-  input_file_reader.declare_parameters(parameter_handler,
-                                       var_types,
-                                       var_eq_types,
-                                       0,
-                                       var_nucleates);
+  input_file_reader.declare_parameters(parameter_handler, 0);
 #if (DEAL_II_VERSION_MAJOR < 9 && DEAL_II_VERSION_MINOR < 5)
   parameter_handler.read_input("parameters_test.prm");
 #else
@@ -34,9 +24,6 @@ unitTest<dim, T>::test_setOutputTimeSteps()
 
   // Subtest 1 (EQUAL_SPACING)
   parameter_handler.set("Output condition", "EQUAL_SPACING");
-  input_file_reader.var_types     = var_types;
-  input_file_reader.num_pp_vars   = 0;
-  input_file_reader.num_constants = 0;
 
   // userInputs.loadInputParameters(input_file_reader,parameter_handler,var_types.size(),0,0,0);
   userInputParameters<dim> userInputs1(input_file_reader,
