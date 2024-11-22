@@ -1,15 +1,26 @@
-# Build folder
+# Build files & folders
 build/*
+CMakeFiles/
+CMakeCache.txt
+*.cmake
+Makefile
+.ninja*
+build.ninja
 
-# VS Code
+# Config files
+include/config.h
+*.project
+*.cproject
+*.DS_Store
+
+# IDE files
 *.vscode/*
+.clangd
+compile_commands.json
 
 # Python virtual environments
 .venv/*
 *.venv/
-
-# clangd
-.clangd
 
 # Clang-tidy
 output.txt
@@ -18,9 +29,6 @@ error.txt
 # Compressed Libraries
 *.zip
 *.tar.gz
-
-# misc
-compile_commands.json
 
 # Compiled Object files
 *.slo
@@ -44,30 +52,37 @@ compile_commands.json
 *.out
 *.app
 *.pbs
+main-debug
+main
 
 #Output files
-*vtk
-*vtu
-*vts
-*frt
+*.vtk
+*.vtu
+*.vts
+*.frt
+integratedFields.txt
+output.txt
+error.txt
+
+# Checkpoint/restart files
+restart.*
+restart.mesh
+restart.mesh.old
+restart.mesh.info
+restart.mesh.info.old
+restart.time.info
+restart.time.info.old
 
 #Temporary files
 *~
 *#
 *.#
 *.btr
-freeEnergy.txt
-integratedFields.txt
 .*vtu*
-visitlog.py
 
-#CMAKE files
-*.cmake
-CMakeCache.txt
-CMakeFiles/
-Makefile
-main
-*#main*
+# Misc
+visitlog.py
+DoxygenWarningLog.txt
 
 #Tex files
 *.aux
@@ -98,24 +113,3 @@ main
 *.nav
 *.snm
 *.nlo
-
-test
-DoxygenWarningLog.txt
-*.project
-*.cproject
-*.DS_Store
-freeEnergy.txt
-
-
-# Output files
-integratedFields.txt
-
-# Checkpoint/restart files
-restart*
-restart.mesh
-restart.mesh.info
-restart.mesh.info.old
-restart.mesh.old
-restart.resume.z
-restart.time.info
-restart.time.info.old

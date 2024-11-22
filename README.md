@@ -7,7 +7,7 @@
 [![License: LGPL v2.1](https://img.shields.io/badge/License-lgpl-blue.svg)](https://www.gnu.org/licenses/lgpl-2.1)
 [![DOI](https://zenodo.org/badge/22602327.svg)](https://zenodo.org/badge/latestdoi/22602327)
 
-## Useful Links:
+## Useful links:
 
 [PRISMS-PF Website](https://prisms-center.github.io/phaseField/) <br>
 [Code repository](https://github.com/prisms-center/phaseField) <br>
@@ -16,10 +16,6 @@
 [User forum](https://groups.google.com/forum/#!forum/prisms-pf-users) <br>
 [Training slides/exercises](https://goo.gl/BBTkJ8) <br>
 [PFHub phase-field community](https://pages.nist.gov/pfhub/)
-
-## Version information:
-
-This version of the code, v2.4, contains moderate changes from v2.3. It was released in November 2024. See [version_changes.md](version_changes.md) for details.
 
 ## What is PRISMS-PF?
 
@@ -38,85 +34,78 @@ S. DeWitt, S. Rudraraju, D. Montiel, W.B. Andrews, and K. Thornton. PRISMS-PF: A
 
 If additionally you would like to cite a specific release of PRISMS-PF, please use the following format:
 
-PRISMS-PF, v2.1.2 (2019). Available from https://github.com/prisms-center/phaseField. DOI: 10.5281/zenodo.3357005.
+PRISMS-PF, v2.4.0 (2024). Available from https://github.com/prisms-center/phaseField. DOI: 10.5281/zenodo.14026472.
 
-For DOI information for other releases, please refer to [this site](https://zenodo.org/record/3357005).
+For DOI information for other releases, please refer to [this site](https://doi.org/10.5281/zenodo.14026472).
 
-## Quick Start Guide:
+## Quick start guide:
 
 For detailed instructions on how to download and use PRISMS-PF, please consult the [PRISMS-PF User Manual](https://prisms-center.github.io/phaseField/doxygen_files/manual.html). A (very) abbreviated version of the instructions is given below.
 
-### Installation:
+### Install:
 
-Please refer to the [installation section of the user manual](https://prisms-center.github.io/phaseField/doxygen_files/install.html) for details.
+Install CMake, p4est, and deal.II (version 9.6 recommended).
 
-1) Install CMake, p4est, and deal.II (version 9.5 recommended)<br>
-
-2) Clone the PRISMS-PF GitHub repository <br>
+Clone the PRISMS-PF GitHub repository and navigate its folder.
+```bash
+git clone https://github.com/prisms-center/phaseField.git
+cd phaseField
 ```
-$ git clone https://github.com/prisms-center/phaseField.git
-$ cd phaseField
-$ git checkout master
-$ cmake .
-$ make -j <nprocs>
+Configure and compile the main library.
+```bash
+cmake . && make -j <nprocs>
 ```
-[here <nprocs> denotes the number of processors]
+here `<nprocs>` denotes the number of threads you want to use to compile the library.
 
-### Running a Pre-Built Application:
+### Running a pre-built application:
 
-  Please refer to the [Running a PRISMS-PF Example App](https://prisms-center.github.io/phaseField/doxygen_files/running_apps.html) for full details including instructions for visualization of the results.
+Please refer to the [Running a PRISMS-PF Example App](https://prisms-center.github.io/phaseField/doxygen_files/running_apps.html) for full details including instructions for visualization of the results.
 
-
-
-  Examples of various phase field models are located under the
+Examples of various phase field models are located under the
 applications directory. The easiest way to get started on the code is to
 run the example apps in this folder.
 
-  The example apps are intended to serve as (1) Demonstration of the
+The example apps are intended to serve as (1) Demonstration of the
 capabilities of this library, (2) Provide a framework for
 further development of specialized/advanced applications by
 users.
 
-  Apps that are still under development/testing are preceded by an
-underscore.
+Entering the following commands will run one of the pre-built example applications (the Cahn-Hilliard spinodal decomposition application in this case):
+```bash
+cd applications/cahnHilliard
+cmake .
+make -j <nprocs>
+```
+This will generate two executable files: `main` and `main-debug`. Debug and release are compiler configurations. Debug mode is slower, but contains less optimiziations and more meaningful error messages. This makes it ideal for application/model code development. Release mode has less "safety features" and meaningful error messages, with more optimizations (faster runtime).
 
-  Entering the following commands will run one of the pre-built example applications (the Cahn-Hilliard spinodal decomposition application in this case):<br>
-  ```
-  $ cd applications/cahnHilliard
-  $ cmake .
-  ```
-  For debug mode [default mode, very slow]: <br>
-  ```
-  $ make debug
-  ```
-  For optimized mode:<br>
-  ```
-  $ make release
-  ```
-  Execution (serial runs): <br>
-  ```
-  $ ./main
-  ```
-  Execution (parallel runs): <br>
-  ```
-  $ mpirun -np <nprocs> ./main
-  ```
-  [here <nprocs> denotes the number of processors]
+Debug execution (serial runs):
+```bash
+$ ./main-debug
+```
+Release execution (parallel runs):
+```bash
+$ mpirun -np <nprocs> ./main
+```
 
 ### Visualization:
 
-  Output of the primal fields fields is in standard vtk
-  format (parallel:*.pvtu, serial:*.vtu files) which can be visualized with the
-  following open source applications:
-  1. VisIt (https://wci.llnl.gov/simulation/computer-codes/visit/downloads)
-  2. Paraview (http://www.paraview.org/download/)
+Output of the primal fields fields is in standard vtk
+format (parallel:*.pvtu, serial:*.vtu files) which can be visualized with the
+following open source applications:
+
+1. VisIt (https://wci.llnl.gov/simulation/computer-codes/visit/downloads)
+2. Paraview (http://www.paraview.org/download/)
+
+## Version information:
+
+This version of the code, v2.4, contains moderate changes from v2.3. It was released in November 2024. See [version_changes.md](version_changes.md) for details.
 
 ## License:
 
-  GNU Lesser General Public License (LGPL). Please see the file
-  LICENSE for details.
+GNU Lesser General Public License (LGPL). Please see the file
+LICENSE for details.
 
 ## Further information, questions, issues and bugs:
 
- + prisms-pf-users@googlegroups.com (user forum)
- + prisms-pf@umich.edu  (developer email list)
++ prisms-pf-users@googlegroups.com (user forum)
++ prisms-pf@umich.edu  (developer email list)

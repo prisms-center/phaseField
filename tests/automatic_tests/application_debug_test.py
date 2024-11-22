@@ -119,13 +119,13 @@ def compile_and_run(app_name, new_parameter_file, test_dir):
             ["cmake", "."], check=True, capture_output=True, text=True
         )
         make_result = subprocess.run(
-            ["make", "debug"], check=True, capture_output=True, text=True
+            ["make"], check=True, capture_output=True, text=True
         )
 
         # Run the application
         print(f"Running {app_dir} with parameter file {new_parameter_file}")
         run_result = subprocess.run(
-            ["mpirun", "-n", "1", "./main", "-i", new_parameter_file],
+            ["mpirun", "-n", "1", "./main-debug", "-i", new_parameter_file],
             check=True,
             capture_output=True,
             text=True,

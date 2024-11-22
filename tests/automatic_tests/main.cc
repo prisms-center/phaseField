@@ -2,11 +2,10 @@
 #include "customPDE.h"
 
 #include "ICs_and_BCs.cc"
+#include "ParseCommandLineOpts.h"
 #include "equations.cc"
-
-#include "../../../include/ParseCommandLineOpts.h"
-#include "../../../include/inputFileReader.h"
-#include "../../../src/variableAttributeLoader/variableAttributeLoader.cc"
+#include "inputFileReader.h"
+#include "variableAttributeLoader/variableAttributeLoader.cc"
 
 // Header file for postprocessing that may or may not exist
 #ifdef POSTPROCESS_FILE_EXISTS
@@ -100,6 +99,30 @@ main(int argc, char **argv)
                       problem.solve();
                       break;
                     }
+                  case (4):
+                    {
+                      customPDE<2, 4> problem(userInputs);
+                      problem.buildFields();
+                      problem.init();
+                      problem.solve();
+                      break;
+                    }
+                  case (5):
+                    {
+                      customPDE<2, 5> problem(userInputs);
+                      problem.buildFields();
+                      problem.init();
+                      problem.solve();
+                      break;
+                    }
+                  case (6):
+                    {
+                      customPDE<2, 6> problem(userInputs);
+                      problem.buildFields();
+                      problem.init();
+                      problem.solve();
+                      break;
+                    }
                 }
               break;
             }
@@ -129,6 +152,30 @@ main(int argc, char **argv)
                   case (3):
                     {
                       customPDE<3, 3> problem(userInputs);
+                      problem.buildFields();
+                      problem.init();
+                      problem.solve();
+                      break;
+                    }
+                  case (4):
+                    {
+                      customPDE<3, 4> problem(userInputs);
+                      problem.buildFields();
+                      problem.init();
+                      problem.solve();
+                      break;
+                    }
+                  case (5):
+                    {
+                      customPDE<3, 5> problem(userInputs);
+                      problem.buildFields();
+                      problem.init();
+                      problem.solve();
+                      break;
+                    }
+                  case (6):
+                    {
+                      customPDE<3, 6> problem(userInputs);
                       problem.buildFields();
                       problem.init();
                       problem.solve();
