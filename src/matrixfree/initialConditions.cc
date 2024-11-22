@@ -68,11 +68,11 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
 
       // Get the index of one of the scalar fields
       unsigned int scalar_field_index = 0;
-      for (unsigned int var = 0; var < userInputs.number_of_variables; var++)
+      for (const auto &[index, variable] : var_attributes.attributes)
         {
-          if (userInputs.var_type.at(var) == SCALAR)
+          if (variable.var_type == SCALAR)
             {
-              scalar_field_index = var;
+              scalar_field_index = index;
               break;
             }
         }
@@ -90,7 +90,21 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
       std::string filename = userInputs.grain_structure_filename;
       filename += ".vtk";
 
-      body.read_vtk(filename);
+      // new section added for the choice of unstructured mesh and rectilinear mesh
+      if (userInputs.load_vtk_file_type == "UNSTRUCTURED")
+        {
+          body.read_vtk(filename);
+        }
+      else if (userInputs.load_vtk_file_type == "RECTILINEAR")
+        {
+          body.read_RL_vtk(filename);
+        }
+      else
+        {
+          pcout << "Error in vtk file type: Use either UNSTRUCTURED OR RECTILINEAR\n";
+          abort();
+        } // new section ends
+
       ScalarField &id_field =
         body.find_scalar_field(userInputs.grain_structure_variable_name);
 
@@ -344,16 +358,30 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
         }
 
       std::cout << "Reading " << filename << "\n";
-      body.read_vtk(filename);
+      // Load the data from the file using a PField
+      // new section added for the choice of unstructured mesh and rectilinear mesh
+      if (userInputs.load_vtk_file_type == "UNSTRUCTURED")
+        {
+          body.read_vtk(filename);
+        }
+      else if (userInputs.load_vtk_file_type == "RECTILINEAR")
+        {
+          body.read_RL_vtk(filename);
+        }
+      else
+        {
+          pcout << "Error in vtk file type: Use either UNSTRUCTURED OR RECTILINEAR\n";
+          abort();
+        } // new section ends
 
       for (const auto &index : index_list)
         {
-          std::string var_name = userInputs.load_field_name[index];
+          std::string var_name = var_attributes.attributes.at(index).name;
 
           // Find the scalar field in the file
           ScalarField &field = body.find_scalar_field(var_name);
 
-          if (userInputs.var_type[index] == SCALAR)
+          if (var_attributes.attributes.at(index).var_type == SCALAR)
             {
               pcout << "Applying PField initial condition for "
                     << userInputs.load_field_name[index] << "...\n";
@@ -371,8 +399,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
     }
 
   unsigned int op_list_index = 0;
-  for (unsigned int var_index = 0; var_index < userInputs.number_of_variables;
-       var_index++)
+  for (const auto &[var_index, variable] : var_attributes.attributes)
     {
       bool is_remapped_op = false;
       if (op_list_index < userInputs.variables_for_remapping.size())
@@ -390,7 +417,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
             {
               pcout << "Applying non-PField initial condition...\n";
 
-              if (userInputs.var_type[var_index] == SCALAR)
+              if (variable.var_type == SCALAR)
                 {
                   VectorTools::interpolate(*dofHandlersSet[var_index],
                                            InitialCondition<dim, degree>(var_index,
@@ -398,7 +425,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
                                                                          this),
                                            *solutionSet[var_index]);
                 }
-              else if (userInputs.var_type[var_index] == VECTOR)
+              else if (variable.var_type == VECTOR)
                 {
                   VectorTools::interpolate(*dofHandlersSet[var_index],
                                            InitialConditionVector<dim, degree>(var_index,

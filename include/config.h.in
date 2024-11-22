@@ -1,0 +1,8 @@
+#ifndef _prisms_pf_config_h
+#define _prisms_pf_config_h
+
+#cmakedefine PRISMS_PF_SOURCE_DIR "@PRISMS_PF_SOURCE_DIR@"
+
+// Optional features:
+
+#endif

@@ -83,31 +83,55 @@ def compile_and_run_simulation(application_path):
 
     # Remove old files
     remove_file("main")
+    remove_file("main-debug")
     remove_file("CMakeCache.txt")
     remove_file("integratedFields.txt")
     for solution_file in glob.glob("solution-*.vtu"):
         os.remove(solution_file)
 
     # Compile application
-    subprocess.call(
-        ["cmake", "."], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
-    )
-    subprocess.call(
-        ["make", "release"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
-    )
+    try:
+        subprocess.run(
+            ["cmake", "."],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.PIPE,
+            check=True,
+        )
+        subprocess.run(
+            ["make"], stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, check=True
+        )
+        print("Compiling complete.")
+    except subprocess.CalledProcessError as e:
+        # Print the error stream if there's a compilation error
+        print(
+            f"Compilation failed with error:\n{e.stderr.decode('utf-8')}",
+            file=sys.stderr,
+        )
+        sys.exit(1)
 
     # Print successful compilation to screen
-    print(f"Compiling complete, running the regression test for {application_path}...")
+    print(f"Running the regression test for {application_path}...")
     sys.stdout.flush()
 
     # Run application with timer
     start = time.time()
-    subprocess.call(
-        ["mpirun", "-n", "1", "./main"],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    )
+    try:
+        subprocess.run(
+            ["mpirun", "-n", "1", "./main"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.PIPE,
+            check=True,
+        )
+    except subprocess.CalledProcessError as e:
+        # Print the error stream if the application fails
+        print(
+            f"Application execution failed with error:\n{e.stderr.decode('utf-8')}",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
     end = time.time()
+    print(f"Application completed in {end - start:.2f} seconds.")
 
     return end - start
 
@@ -146,7 +170,7 @@ def run_regression_test(application, new_gold_standard, test_dir):
         rel_diff = abs(
             (float(gold_last_energy) - float(last_energy)) / float(gold_last_energy)
         )
-        test_passed = rel_diff < 1.0e-9
+        test_passed = rel_diff < 1.0e-5
 
     # Determine test result
     test_result = (

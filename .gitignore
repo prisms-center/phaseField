@@ -1,18 +1,30 @@
-# Build folder
+# Build files & folders
 build/*
+CMakeFiles/
+CMakeCache.txt
+*.cmake
+Makefile
+.ninja*
+build.ninja
 
-# VS Code
-.vscode/*
+# Config files
+include/config.h
+*.project
+*.cproject
+*.DS_Store
+
+# IDE files
+*.vscode/*
+.clangd
+compile_commands.json
 
 # Python virtual environments
 .venv/*
 *.venv/
 
-# clangd
-.clangd
-
-# misc
-compile_commands.json
+# Compressed Libraries
+*.zip
+*.tar.gz
 
 # Compiled Object files
 *.slo
@@ -35,30 +47,44 @@ compile_commands.json
 *.exe
 *.out
 *.app
+*.pbs
+main-debug
+main
 
 #Output files
-*vtk
-*vtu
-*vts
-*frt
+*.vtk
+*.vtu
+*.vts
+*.frt
+integratedFields.txt
+output.txt
+error.txt
+
+# Checkpoint/restart files
+restart.*
+restart.mesh
+restart.mesh.old
+restart.mesh.info
+restart.mesh.info.old
+restart.time.info
+restart.time.info.old
 
 #Temporary files
 *~
 *#
 *.#
 *.btr
-freeEnergy.txt
-integratedFields.txt
 .*vtu*
+
+# Misc
 visitlog.py
 
-#CMAKE files
-*.cmake
-CMakeCache.txt
-CMakeFiles/
-Makefile
-main
-*#main*
+# Doxygen
+doc/doxygen/html/*
+doc/doxygen/latex/*
+doc/doxygen/Doxyfile.doc_doxygen
+doc/doxygen/CMakeDoxyfile.in
+doc/doxygen/DoxygenWarningLog.txt
 
 #Tex files
 *.aux
@@ -89,30 +115,3 @@ main
 *.nav
 *.snm
 *.nlo
-
-test
-*.project
-*.cproject
-*.DS_Store
-freeEnergy.txt
-output.txt
-
-# Output files
-integratedFields.txt
-
-# Checkpoint/restart files
-restart*
-restart.mesh
-restart.mesh.info
-restart.mesh.info.old
-restart.mesh.old
-restart.resume.z
-restart.time.info
-restart.time.info.old
-
-# Doxygen
-doc/doxygen/html/*
-doc/doxygen/latex/*
-doc/doxygen/Doxyfile.doc_doxygen
-doc/doxygen/CMakeDoxyfile.in
-doc/doxygen/DoxygenWarningLog.txt

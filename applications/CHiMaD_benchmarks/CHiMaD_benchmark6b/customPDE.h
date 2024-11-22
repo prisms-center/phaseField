@@ -1,3 +1,6 @@
+#include <deal.II/base/tensor.h>
+#include <deal.II/grid/manifold.h>
+
 #include "matrixFreePDE.h"
 
 using namespace dealii;
@@ -38,23 +41,26 @@ private:
   void
   explicitEquationRHS(
     [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
-                                                        &variable_list,
-    [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const override;
+                                                              &variable_list,
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
 
   // Function to set the RHS of the governing equations for all other equations
   // (in equations.h)
   void
   nonExplicitEquationRHS(
     [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
-                                                        &variable_list,
-    [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const override;
+                                                              &variable_list,
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
 
   // Function to set the LHS of the governing equations (in equations.h)
   void
   equationLHS(
     [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
-                                                        &variable_list,
-    [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const override;
+                                                              &variable_list,
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
 
 // Function to set postprocessing expressions (in postprocess.h)
 #ifdef POSTPROCESS_FILE_EXISTS
@@ -64,8 +70,8 @@ private:
       &variable_list,
     [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
                                                               &pp_variable_list,
-    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc)
-    const override;
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
 #endif
 
 // Function to set the nucleation probability (in nucleation.h)
@@ -105,48 +111,41 @@ void
 customPDE<dim, degree>::create_triangulation(
   parallel::distributed::Triangulation<dim> &tria) const
 {
-  parallel::distributed::Triangulation<dim> tria_box(MPI_COMM_WORLD),
-    tria_semicircle(MPI_COMM_WORLD);
-  if (dim == 3)
+  parallel::distributed::Triangulation<dim> tria_box(MPI_COMM_WORLD);
+  parallel::distributed::Triangulation<dim> tria_semicircle(MPI_COMM_WORLD);
+
+  // Check that dimensions match the benchmark
+  AssertThrow(dim == 2, ExcMessage("CHiMaD Benchmark 6b should only be run in 2D."));
+
+  // Create bounding points for each part of the triangulation
+  Point<dim> box_origin;
+  Point<dim> box_corner;
+  Point<dim> semicircle_origin;
+
+  if (dim == 2)
     {
-      GridGenerator::subdivided_hyper_rectangle(tria_box,
-                                                userInputs.subdivisions,
-                                                Point<dim>(),
-                                                Point<dim>(userInputs.domain_size[0],
-                                                           userInputs.domain_size[1],
-                                                           userInputs.domain_size[2]));
-    }
-  else if (dim == 2)
-    {
-      GridGenerator::subdivided_hyper_rectangle(tria_box,
-                                                userInputs.subdivisions,
-                                                Point<dim>(),
-                                                Point<dim>(userInputs.domain_size[0],
-                                                           userInputs.domain_size[1]));
-    }
-  else
-    {
-      GridGenerator::subdivided_hyper_rectangle(tria_box,
-                                                userInputs.subdivisions,
-                                                Point<dim>(),
-                                                Point<dim>(userInputs.domain_size[0]));
+      box_corner = Point<dim>(userInputs.domain_size[0], userInputs.domain_size[1]);
+      semicircle_origin =
+        Point<dim>(userInputs.domain_size[0], userInputs.domain_size[1] / 2.0);
     }
 
+  GridGenerator::subdivided_hyper_rectangle(tria_box,
+                                            userInputs.subdivisions,
+                                            box_origin,
+                                            box_corner);
+
   GridGenerator::half_hyper_ball(tria_semicircle,
-                                 Point<dim>(userInputs.domain_size[0],
-                                            userInputs.domain_size[1] / 2.0),
+                                 semicircle_origin,
                                  userInputs.domain_size[1] / 2.0);
 
   // Find the two non-corner vertices on the right side of the rectangular mesh
-  Point<dim> pt1, pt2;
-  typename parallel::distributed::Triangulation<dim>::active_cell_iterator
-    cell3 = tria_box.begin_active(),
-    endc3 = tria_box.end();
-  for (; cell3 != endc3; ++cell3)
+  Point<dim> pt1;
+  Point<dim> pt2;
+  for (auto &cell : tria_box.active_cell_iterators())
     {
       for (unsigned int i = 0; i < GeometryInfo<dim>::vertices_per_cell; ++i)
         {
-          Point<dim> &v = cell3->vertex(i);
+          Point<dim> &v = cell->vertex(i);
           if ((std::abs(v(0) - userInputs.domain_size[0]) < 1e-10) &&
               (v(1) > userInputs.domain_size[1] / 2.0) &&
               (v(1) < userInputs.domain_size[1] - 1.0e-10))
@@ -160,16 +159,14 @@ customPDE<dim, degree>::create_triangulation(
             }
         }
     }
+
   // Move the vertices at the center of the half hyper ball so that they will
   // align with non-corner vertices on the right side of the rectangular mesh
-  typename parallel::distributed::Triangulation<dim>::active_cell_iterator
-    cell2 = tria_semicircle.begin_active(),
-    endc2 = tria_semicircle.end();
-  for (; cell2 != endc2; ++cell2)
+  for (auto &cell : tria_semicircle.active_cell_iterators())
     {
       for (unsigned int i = 0; i < GeometryInfo<dim>::vertices_per_cell; ++i)
         {
-          Point<dim> &v = cell2->vertex(i);
+          Point<dim> &v = cell->vertex(i);
           if ((std::abs(v(0) - userInputs.domain_size[0]) < 1e-10) &&
               (v(1) > userInputs.domain_size[1] / 2.0) &&
               (v(1) < userInputs.domain_size[1] - 1.0e-10))
@@ -183,69 +180,69 @@ customPDE<dim, degree>::create_triangulation(
             }
         }
     }
+
   // Merge the rectangle and the semicircle
   GridGenerator::merge_triangulations(tria_box, tria_semicircle, tria);
 
-  // Attach a spherical manifold to the semicircular part of the domain so that
-  // it gets refined with rounded edges
-  static const SphericalManifold<dim> boundary(
-    Point<dim>(userInputs.domain_size[0], userInputs.domain_size[1] / 2.0));
-  tria.set_manifold(8, boundary);
+  // Attach flat manifold to the entire domain
+  tria.reset_all_manifolds();
+  tria.set_manifold(0, FlatManifold<dim>());
+  tria.set_all_manifold_ids(0);
 
-  typename parallel::distributed::Triangulation<dim>::active_cell_iterator
-    cell = tria.begin_active(),
-    endc = tria.end();
-  for (; cell != endc; ++cell)
+  // Attach spherical manifold
+  tria.set_manifold(8, SphericalManifold<dim>(semicircle_origin));
+
+  // Set the 3 outer cells of semicircle to the spherical manifold
+  for (const auto &cell : tria.active_cell_iterators())
     {
-      for (unsigned int f = 0; f < GeometryInfo<dim>::faces_per_cell; ++f)
+      const Point<dim> cell_center          = cell->center();
+      const double     distance_from_center = cell_center.distance(semicircle_origin);
+
+      if (cell_center[0] > userInputs.domain_size[0] + 1.0e-10 &&
+          distance_from_center > 0.1 * userInputs.domain_size[1])
         {
-          const Point<dim> face_center = cell->face(f)->center();
-          if (face_center[0] > userInputs.domain_size[0] + 1.0e-10)
-            {
-              cell->face(f)->set_all_manifold_ids(8);
-              if (face_center.distance(Point<dim>(userInputs.domain_size[0],
-                                                  userInputs.domain_size[1] / 2.0)) >
-                  0.2 * userInputs.domain_size[1])
-                {
-                  cell->set_all_manifold_ids(8);
-                }
-            }
+          cell->set_all_manifold_ids(8);
         }
     }
 
+  // Transfinite interpolation
+  TransfiniteInterpolationManifold<dim> transfinite_manifold;
+  transfinite_manifold.initialize(tria);
+  tria.set_manifold(0, transfinite_manifold);
+
   // Mark the boundaries
-  for (const auto &cell4 : tria.active_cell_iterators())
+  for (const auto &cell : tria.active_cell_iterators())
     {
       // Mark all of the faces
       for (unsigned int face_number = 0; face_number < GeometryInfo<dim>::faces_per_cell;
            ++face_number)
         {
-          if (cell4->face(face_number)->at_boundary())
+          if (cell->face(face_number)->at_boundary())
             {
               for (unsigned int i = 0; i < dim; i++)
                 {
                   if (i == 0)
                     {
-                      if (std::fabs(cell4->face(face_number)->center()(i) - (0)) < 1e-12)
+                      if (std::fabs(cell->face(face_number)->center()(i) - (0)) < 1e-12)
                         {
-                          cell4->face(face_number)->set_boundary_id(2 * i);
+                          cell->face(face_number)->set_boundary_id(2 * i);
                         }
-                      else if (std::fabs(cell4->face(face_number)->center()(i) >
+                      else if (std::fabs(cell->face(face_number)->center()(i) >
                                          (userInputs.domain_size[i])))
                         {
-                          cell4->face(face_number)->set_boundary_id(2 * i + 1);
+                          cell->face(face_number)->set_boundary_id(2 * i + 1);
                         }
                     }
                   else
                     {
-                      if (std::fabs(cell4->face(face_number)->center()(i) - (0)) < 1e-12)
+                      if (std::fabs(cell->face(face_number)->center()(i) - (0)) < 1e-12)
                         {
-                          cell4->face(face_number)->set_boundary_id(2 * i);
+                          cell->face(face_number)->set_boundary_id(2 * i);
                         }
-                      else if (std::fabs(cell4->face(face_number)->center()(i) -
+                      else if (std::fabs(cell->face(face_number)->center()(i) -
                                          (userInputs.domain_size[i])) < 1e-12)
                         {
-                          cell4->face(face_number)->set_boundary_id(2 * i + 1);
+                          cell->face(face_number)->set_boundary_id(2 * i + 1);
                         }
                     }
                 }

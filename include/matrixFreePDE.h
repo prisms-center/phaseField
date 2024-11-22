@@ -301,9 +301,24 @@ protected:
   void
   updateExplicitSolution(unsigned int fieldIndex);
 
+  /*Method to compute an implicit timestep*/
+  bool
+  updateImplicitSolution(unsigned int fieldIndex, unsigned int nonlinear_it_index);
+
   /*Method to apply boundary conditions*/
   void
   applyBCs(unsigned int fieldIndex);
+
+  /**
+   * \brief Compute element volume for the triangulation
+   */
+  void
+  compute_element_volume();
+
+  /**
+   * \brief Vector that stores element volumes
+   */
+  dealii::AlignedVector<dealii::VectorizedArray<double>> element_volume;
 
   /*Method to compute the right hand side (RHS) residual vectors*/
   void
@@ -354,19 +369,22 @@ protected:
   virtual void
   explicitEquationRHS(
     [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
-                                                        &variable_list,
-    [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const = 0;
+                                                              &variable_list,
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] const VectorizedArray<double>             element_volume) const = 0;
 
   virtual void
   nonExplicitEquationRHS(
     [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
-                                                        &variable_list,
-    [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const = 0;
+                                                              &variable_list,
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] const VectorizedArray<double>             element_volume) const = 0;
 
   virtual void
   equationLHS([[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
-                                                                  &variable_list,
-              [[maybe_unused]] Point<dim, VectorizedArray<double>> q_point_loc) const = 0;
+                                                                        &variable_list,
+              [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+              [[maybe_unused]] const VectorizedArray<double> element_volume) const = 0;
 
   virtual void
   postProcessedFields(
@@ -374,7 +392,8 @@ protected:
       &variable_list,
     [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
                                                               &pp_variable_list,
-    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc) const {};
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] const VectorizedArray<double>             element_volume) const {};
   void
   computePostProcessedFields(std::vector<vectorType *> &postProcessedSet);
 
@@ -405,12 +424,21 @@ protected:
   setPeriodicity();
   void
   setPeriodicityConstraints(AffineConstraints<double> *, const DoFHandler<dim> *) const;
+
+  /**
+   * \brief Set constraints to pin the solution to 0 at a certain vertex. This is
+   * automatically done at the origin if no value terms are detected in your dependencies
+   * in a time_independent or implicit solve.
+   *
+   * \param constraints The constraint set.
+   * \param dof_handler The list of the degrees of freedom.
+   * \param target_point The point where the solution is constrained. This is the origin
+   * by default.
+   */
   void
-  getComponentsWithRigidBodyModes(std::vector<int> &) const;
-  void
-  setRigidBodyModeConstraints(const std::vector<int> &,
-                              AffineConstraints<double> *,
-                              const DoFHandler<dim> *) const;
+  set_rigid_body_mode_constraints(AffineConstraints<double> *constraints,
+                                  const DoFHandler<dim>     *dof_handler,
+                                  const Point<dim> target_point = Point<dim>()) const;
 
   // methods to apply initial conditions
   /*Virtual method to apply initial conditions.  This is usually expected to be

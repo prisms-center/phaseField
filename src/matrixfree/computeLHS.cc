@@ -35,8 +35,15 @@ MatrixFreePDE<dim, degree>::vmult(vectorType &dst, const vectorType &src) const
                                  true);
     }
 
-  // Account for Dirichlet BC's
-  constraintsDirichletSet[currentFieldIndex]->distribute(dst);
+  // Account for Dirichlet BC's (essentially copy dirichlet DOF values present in src to
+  // dst, although it is unclear why the constraints can't just be distributed here)
+  for (auto &it : *valuesDirichletSet[currentFieldIndex])
+    {
+      if (dst.in_local_range(it.first))
+        {
+          dst(it.first) = src(it.first); //*jacobianDiagonal(it->first);
+        }
+    }
 
   // end log
   computing_timer.leave_subsection("matrixFreePDE: computeLHS");
@@ -62,6 +69,8 @@ MatrixFreePDE<dim, degree>::getLHS(
 
       unsigned int num_q_points = variable_list.get_num_q_points();
 
+      dealii::VectorizedArray<double> local_element_volume = element_volume[cell];
+
       // loop over quadrature points
       for (unsigned int q = 0; q < num_q_points; ++q)
         {
@@ -71,7 +80,7 @@ MatrixFreePDE<dim, degree>::getLHS(
             variable_list.get_q_point_location();
 
           // Calculate the residuals
-          equationLHS(variable_list, q_point_loc);
+          equationLHS(variable_list, q_point_loc, local_element_volume);
         }
 
       // Integrate the residuals and distribute from local to global

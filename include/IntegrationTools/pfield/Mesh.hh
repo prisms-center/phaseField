@@ -54,12 +54,12 @@ namespace PRISMS
     const std::string                                     &name,
     unsigned long int                                      cell,
     PFuncBase<std::vector<PRISMS::Coordinate<2>>, double> *bfunc_ptr,
-    const std::vector<unsigned long int>                  &cell_node,
+    const std::vector<unsigned int>                       &cell_node,
     const std::vector<PRISMS::Coordinate<2>>              &node)
   {
     if (name == "Quad")
       {
-        Interpolator<Coordinate, 2> *interp_ptr = nullptr;
+        Interpolator<Coordinate, 2> *interp_ptr;
 
         // std::cout << "cell nodes: " << cell_node[0] << " " << cell_node[2] <<
         // std::endl;
@@ -95,12 +95,12 @@ namespace PRISMS
     const std::string                                     &name,
     unsigned long int                                      cell,
     PFuncBase<std::vector<PRISMS::Coordinate<3>>, double> *bfunc_ptr,
-    const std::vector<unsigned long int>                  &cell_node,
+    const std::vector<unsigned int>                       &cell_node,
     const std::vector<PRISMS::Coordinate<3>>              &node)
   {
     if (name == "Hexahedron")
       {
-        Interpolator<Coordinate, 3> *interp_ptr = nullptr;
+        Interpolator<Coordinate, 3> *interp_ptr;
 
         PRISMS::Coordinate<3> dim;
         dim[0] = node[cell_node[6]][0] - node[cell_node[0]][0];
@@ -177,23 +177,25 @@ namespace PRISMS
         }
     };
 
-    // reads vtk file through 'CELL_TYPES' and then returns
     void
     read_vtk(std::ifstream &infile)
     {
-      bool                mesh_as_points = true;
-      std::vector<double> x_coord, y_coord, z_coord;
+      std::cout << "Read unstructured mesh" << std::endl;
 
       std::istringstream ss;
       std::string        line, str, type;
 
-      unsigned long int uli_dummy;
-      double            d_dummy;
+      unsigned int uli_dummy;
+      double       d_dummy;
 
-      unsigned long int              Npoints, Ncells, Ncell_numbers;
-      std::vector<unsigned long int> cell_node;
+      unsigned long int         Npoints, Ncells, Ncell_numbers, u;
+      std::vector<unsigned int> cell_node;
 
       PRISMS::Coordinate<DIM> _coord;
+
+      std::vector<double> min;
+      std::vector<int>    N;
+      std::vector<double> incr;
 
       while (!infile.eof())
         {
@@ -244,26 +246,10 @@ namespace PRISMS
                   std::cout << "  done" << std::endl;
 
                   // create bins
-                  std::vector<double> min;
-                  std::vector<int>    N;
-                  std::vector<double> incr;
 
                   std::cout << "Determine Body size" << std::endl;
                   for (int j = 0; j < DIM; j++)
                     {
-                      for (unsigned int i = 1; i < hist[j].size(); i++)
-                        {
-                          /*if( hist[j][i] != hist[j][i-1])
-                          {
-                          std::cout << "Error reading 2D vtk file." << std::endl;
-                          std::cout << "  Not rectangular." << std::endl;
-                          std::cout << "  Dimension: " << j << std::endl;
-                          std::cout << value[j][i-1] << ": " << hist[j][i-1] << "  " <<
-                      value[j][i] << ": " << hist[j][i] << std::endl; exit(1);
-                      }
-                      */
-                        }
-
                       std::sort(value[j].begin(), value[j].end());
                       // std::cout << "j: " << j << " back(): " << value[j].back() <<
                       // std::endl;
@@ -295,6 +281,7 @@ namespace PRISMS
                   std::cout << "  done" << std::endl;
                 }
             }
+
           else if (line[0] == 'C')
             {
               if (line.size() > 4 && line.substr(0, 5) == "CELLS")
@@ -305,8 +292,7 @@ namespace PRISMS
 
                   ss >> str >> Ncells >> Ncell_numbers;
 
-                  PFuncBase<std::vector<PRISMS::Coordinate<DIM>>, double> *bfunc_ptr =
-                    nullptr;
+                  PFuncBase<std::vector<PRISMS::Coordinate<DIM>>, double> *bfunc_ptr;
                   _bfunc.push_back(bfunc_ptr);
 
                   if (DIM == 2)
@@ -393,15 +379,40 @@ namespace PRISMS
                   return;
                 }
             }
+        }
+    }
+
+    // main code reading the RL coordinates and constructing cells and connectivity
+    // similar to unstructured grid
+    void
+    read_RL_vtk(std::ifstream &infile)
+    {
+      std::cout << "Read rectilinear file and create mesh" << std::endl;
+
+      bool               mesh_as_points = true;
+      std::vector<float> x_coord, y_coord, z_coord;
+
+      std::istringstream ss;
+      std::string        line, str, type;
+
+      unsigned int uli_dummy;
+      double       d_dummy;
+
+      unsigned long int         Npoints, Ncells, Ncell_numbers, u;
+      std::vector<unsigned int> cell_node;
+
+      PRISMS::Coordinate<DIM> _coord;
+
+      std::vector<double> min;
+      std::vector<int>    N;
+      std::vector<double> incr;
+
+      while (!infile.eof())
+        {
+          std::getline(infile, line);
+          // std::cout << "line: " << line << std::endl;
           if (line[0] == 'X')
             {
-              mesh_as_points = false;
-
-              // read X_COORDINATES info:
-              // X_COORDINATES # type
-              // x
-              // x
-              // ...
               if (line.size() > 12 && line.substr(0, 13) == "X_COORDINATES")
                 {
                   // read header line
@@ -411,11 +422,10 @@ namespace PRISMS
                   ss >> str >> Npoints >> type;
 
                   std::cout << "Read X_COORDINATES: " << Npoints << std::endl;
-                  _node.reserve(Npoints);
                   std::cout << "  reserve OK" << std::endl;
                   for (unsigned int i = 0; i < Npoints; i++)
                     {
-                      double temp_coord;
+                      float temp_coord;
 
                       infile >> temp_coord;
 
@@ -425,13 +435,6 @@ namespace PRISMS
             }
           if (line[0] == 'Y')
             {
-              mesh_as_points = false;
-
-              // read Y_COORDINATES info:
-              // Y_COORDINATES # type
-              // y
-              // y
-              // ...
               if (line.size() > 12 && line.substr(0, 13) == "Y_COORDINATES")
                 {
                   // read header line
@@ -441,15 +444,13 @@ namespace PRISMS
                   ss >> str >> Npoints >> type;
 
                   // read points
-                  std::vector<std::vector<double>> value(DIM);
-                  std::vector<std::vector<int>>    hist(DIM);
 
                   std::cout << "Read Y_COORDINATES: " << Npoints << std::endl;
-                  _node.reserve(Npoints);
+
                   std::cout << "  reserve OK" << std::endl;
                   for (unsigned int i = 0; i < Npoints; i++)
                     {
-                      double temp_coord;
+                      float temp_coord;
 
                       infile >> temp_coord;
 
@@ -459,13 +460,6 @@ namespace PRISMS
             }
           if (line[0] == 'Z')
             {
-              mesh_as_points = false;
-
-              // read Z_COORDINATES info:
-              // Z_COORDINATES # type
-              // z
-              // z
-              // ...
               if (line.size() > 12 && line.substr(0, 13) == "Z_COORDINATES")
                 {
                   // read header line
@@ -477,11 +471,11 @@ namespace PRISMS
                   // read points
 
                   std::cout << "Read Z_COORDINATES: " << Npoints << std::endl;
-                  _node.reserve(Npoints);
+
                   std::cout << "  reserve OK" << std::endl;
                   for (unsigned int i = 0; i < Npoints; i++)
                     {
-                      double temp_coord;
+                      float temp_coord;
 
                       infile >> temp_coord;
 
@@ -491,55 +485,126 @@ namespace PRISMS
             }
         }
 
-      if (!mesh_as_points)
+      if (mesh_as_points)
         {
           std::vector<std::vector<double>> value(DIM);
           std::vector<std::vector<int>>    hist(DIM);
 
-          for (unsigned int i = 0; i < x_coord.size(); i++)
+          if (DIM > 2)
             {
-              for (unsigned int j = 0; j < y_coord.size(); j++)
+              Npoints =
+                8 * (x_coord.size() - 1) * (y_coord.size() - 1) * (z_coord.size() - 1);
+            }
+          if (DIM == 2)
+            {
+              Npoints = 4 * (x_coord.size() - 1) * (y_coord.size() - 1);
+            }
+
+          // interpolated coordinates for each node of a cell
+          std::vector<float> COORD_X(Npoints), COORD_Y(Npoints), COORD_Z(Npoints);
+
+          u = 0; //(defined at the beginning of read_vtk)
+          if (DIM > 2)
+            {
+              for (unsigned int i = 0; i < (z_coord.size() - 1); i++)
                 {
-                  for (unsigned int k = 0; k < z_coord.size(); k++)
+                  for (unsigned int j = 0; j < (y_coord.size() - 1); j++)
                     {
-                      _coord[0] = x_coord.at(i);
-                      _coord[1] = y_coord.at(j);
-                      if (DIM > 2)
+                      for (unsigned int k = 0; k < (x_coord.size() - 1); k++)
                         {
-                          _coord[2] = z_coord.at(k);
+                          COORD_X[u] = x_coord.at(k);
+                          COORD_Y[u] = y_coord.at(j);
+                          COORD_Z[u] = z_coord.at(i);
+
+                          COORD_X[u + 1] = x_coord.at(k + 1);
+                          COORD_Y[u + 1] = y_coord.at(j);
+                          COORD_Z[u + 1] = z_coord.at(i);
+
+                          COORD_X[u + 2] = x_coord.at(k);
+                          COORD_Y[u + 2] = y_coord.at(j + 1);
+                          COORD_Z[u + 2] = z_coord.at(i);
+
+                          COORD_X[u + 3] = x_coord.at(k + 1);
+                          COORD_Y[u + 3] = y_coord.at(j + 1);
+                          COORD_Z[u + 3] = z_coord.at(i);
+
+                          COORD_X[u + 4] = x_coord.at(k);
+                          COORD_Y[u + 4] = y_coord.at(j);
+                          COORD_Z[u + 4] = z_coord.at(i + 1);
+
+                          COORD_X[u + 5] = x_coord.at(k + 1);
+                          COORD_Y[u + 5] = y_coord.at(j);
+                          COORD_Z[u + 5] = z_coord.at(i + 1);
+
+                          COORD_X[u + 6] = x_coord.at(k);
+                          COORD_Y[u + 6] = y_coord.at(j + 1);
+                          COORD_Z[u + 6] = z_coord.at(i + 1);
+
+                          COORD_X[u + 7] = x_coord.at(k + 1);
+                          COORD_Y[u + 7] = y_coord.at(j + 1);
+                          COORD_Z[u + 7] = z_coord.at(i + 1);
+
+                          u += 8;
                         }
-
-                      for (int m = 0; m < DIM; m++)
-                        add_once(value[m], hist[m], _coord[m]);
-
-                      _node.push_back(_coord);
                     }
                 }
             }
 
-          std::cout << "  done" << std::endl;
+          if (DIM == 2)
+            {
+              for (unsigned int j = 0; j < (y_coord.size() - 1); j++)
+                {
+                  for (unsigned int k = 0; k < (x_coord.size() - 1); k++)
+                    {
+                      COORD_X[u] = x_coord.at(k);
+                      COORD_Y[u] = y_coord.at(j);
+                      COORD_Z[u] = z_coord.at(0);
 
-          // create bins
-          std::vector<double> min;
-          std::vector<int>    N;
-          std::vector<double> incr;
+                      COORD_X[u + 1] = x_coord.at(k + 1);
+                      COORD_Y[u + 1] = y_coord.at(j);
+                      COORD_Z[u + 1] = z_coord.at(0);
+
+                      COORD_X[u + 2] = x_coord.at(k);
+                      COORD_Y[u + 2] = y_coord.at(j + 1);
+                      COORD_Z[u + 2] = z_coord.at(0);
+
+                      COORD_X[u + 3] = x_coord.at(k + 1);
+                      COORD_Y[u + 3] = y_coord.at(j + 1);
+                      COORD_Z[u + 3] = z_coord.at(0);
+
+                      u += 4;
+                    }
+                }
+            }
+
+          // _node.reserve(Npoints);
+          for (unsigned int i = 0; i < Npoints; i++)
+            {
+              _coord[0] = COORD_X[i];
+              _coord[1] = COORD_Y[i];
+              if (DIM > 2)
+                {
+                  _coord[2] = COORD_Z[i];
+                }
+
+              for (int m = 0; m < DIM; m++)
+                add_once(value[m], hist[m], _coord[m]);
+
+              _node.push_back(_coord);
+            }
+
+          x_coord.clear();
+          y_coord.clear();
+          z_coord.clear();
+          COORD_X.clear();
+          COORD_Y.clear();
+          COORD_Z.clear();
+
+          std::cout << "point coordinates done" << std::endl;
 
           std::cout << "Determine Body size" << std::endl;
           for (int j = 0; j < DIM; j++)
             {
-              for (unsigned int i = 1; i < hist[j].size(); i++)
-                {
-                  /*if( hist[j][i] != hist[j][i-1])
-                  {
-                  std::cout << "Error reading 2D vtk file." << std::endl;
-                  std::cout << "  Not rectangular." << std::endl;
-                  std::cout << "  Dimension: " << j << std::endl;
-                  std::cout << value[j][i-1] << ": " << hist[j][i-1] << "  " <<
-              value[j][i] << ": " << hist[j][i] << std::endl; exit(1);
-              }
-              */
-                }
-
               std::sort(value[j].begin(), value[j].end());
               // std::cout << "j: " << j << " back(): " << value[j].back() << std::endl;
               min.push_back(value[j][0]);
@@ -570,32 +635,35 @@ namespace PRISMS
           std::cout << "  done" << std::endl;
 
           // Now add the cell data
-          unsigned int Ncells = (x_coord.size() - 1) * (y_coord.size() - 1);
-          if (DIM > 2)
+          // unsigned int Ncells = (x_coord.size()-1) * (y_coord.size()-1);
+          if (DIM == 2)
             {
-              Ncells *= (z_coord.size() - 1);
+              Ncells = (_node.size() / 4);
+            }
+          else if (DIM > 2)
+            {
+              Ncells = (_node.size() / 8);
             }
 
-          PFuncBase<std::vector<PRISMS::Coordinate<DIM>>, double> *bfunc_ptr = nullptr;
+          PFuncBase<std::vector<PRISMS::Coordinate<DIM>>, double> *bfunc_ptr;
           _bfunc.push_back(bfunc_ptr);
 
           if (DIM == 2)
             {
               // add Quad basis function
-              _interp.reserve(Ncells * 4);
+              // _interp.reserve(Ncells*4);
               construct_basis_function(_bfunc.back(), "Quad");
             }
-          else if (DIM == 3)
+          else if (DIM > 2)
             {
               // add Hexahedron basis function
-              _interp.reserve(Ncells * 8);
+              // _interp.reserve(Ncells*8);
               construct_basis_function(_bfunc.back(), "Hexahedron");
             }
           bfunc_ptr = _bfunc.back();
 
           std::cout << "Read CELLS: " << Ncells << std::endl;
 
-          unsigned int uli_dummy;
           if (DIM > 2)
             {
               uli_dummy = 8;
@@ -604,9 +672,10 @@ namespace PRISMS
             {
               uli_dummy = 4;
             }
+
+          cell_node.reserve(uli_dummy);
           for (unsigned int i = 0; i < Ncells; i++)
             {
-              cell_node.resize(uli_dummy);
               for (unsigned int j = 0; j < uli_dummy; j++)
                 {
                   cell_node[j] = i * uli_dummy + j;
@@ -614,11 +683,13 @@ namespace PRISMS
 
               if (DIM == 2)
                 {
-                  double temp  = cell_node[2];
-                  cell_node[2] = cell_node[3];
-                  cell_node[3] = temp;
+                  std::swap(cell_node[2], cell_node[3]);
                 }
-
+              if (DIM > 2)
+                {
+                  std::swap(cell_node[2], cell_node[3]);
+                  std::swap(cell_node[6], cell_node[7]);
+                }
               // std::cout << cell_node[0] << " " << cell_node[1] << " " << cell_node[2]
               // << " " << cell_node[3] << std::endl;
 
@@ -632,7 +703,7 @@ namespace PRISMS
                                                     cell_node,
                                                     _node);
                 }
-              else if (DIM == 3)
+              else if (DIM > 2)
                 {
                   construct_interpolating_functions(_interp,
                                                     "Hexahedron",
@@ -642,15 +713,15 @@ namespace PRISMS
                                                     _node);
                 }
             }
-          std::cout << "  done" << std::endl;
+          std::cout << "cell creation done" << std::endl;
 
           // bin interpolators
           std::cout << "Bin interpolating functions" << std::endl;
           std::cout << "num nodes: " << _node.size() << std::endl;
           for (unsigned int i = 0; i < _interp.size(); i++)
             {
-              std::cout << "interp: " << _interp[i] << " " << _interp[i]->min() << " "
-                        << _interp[i]->max() << std::endl;
+              // std::cout << "interp: " << _interp[i] << " " << _interp[i]->min() << " "
+              // << _interp[i]->max() << std::endl;
               _bin.add_range(_interp[i], _interp[i]->min(), _interp[i]->max());
             }
           std::cout << "  done  max_bin_size: " << _bin.max_size() << std::endl;
@@ -851,7 +922,6 @@ namespace PRISMS
       // std::cout << "finish add_once()" << std::endl;
     }
   };
-
 } // namespace PRISMS
 
 #endif

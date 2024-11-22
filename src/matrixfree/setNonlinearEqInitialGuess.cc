@@ -14,10 +14,9 @@ MatrixFreePDE<dim, degree>::setNonlinearEqInitialGuess()
   Timer time;
   char  buffer[200];
 
-  for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
+  for (const auto &[fieldIndex, variable] : var_attributes.attributes)
     {
-      if ((userInputs.var_eq_type[fieldIndex] == TIME_INDEPENDENT) &&
-          userInputs.var_nonlinear[fieldIndex] &&
+      if ((variable.eq_type == TIME_INDEPENDENT) && variable.is_nonlinear &&
           userInputs.nonlinear_solver_parameters.getLaplaceInitializationFlag(fieldIndex))
         {
           currentFieldIndex = fieldIndex; // Used in computeLaplaceLHS()

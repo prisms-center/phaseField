@@ -5,11 +5,14 @@
 #define INCLUDE_USERINPUTPARAMETERS_H_
 
 #include <deal.II/base/conditional_ostream.h>
+#include <deal.II/base/exceptions.h>
+#include <deal.II/base/point.h>
 #include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/lac/vector.h>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/unordered_map.hpp>
 #include <boost/variant.hpp>
 
 #include "RefinementCriterion.h"
@@ -52,51 +55,120 @@ public:
   // Map linking the model constant name to its index
   std::unordered_map<std::string, unsigned int> model_constant_name_map;
 
-  // Methods to access members of 'model_constant', one for each type (since one
-  // can't template based on return values) These are really just wrappers for
-  // Boost's 'get' function
+  /**
+   * \brief Retrieve the double from the `model_constants` that are defined from the
+   * parameters.prm parser. This is essentially just a wrapper for boost::get.
+   *
+   * \param constant_name Name of the constant to retrieve.
+   */
   double
   get_model_constant_double(const std::string constant_name) const
   {
+    Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
+           dealii::ExcMessage(
+             "PRISMS-PF Error: Mismatch between constants in parameters.prm and "
+             "customPDE.h. The constant that you attempted to access was " +
+             constant_name + "."));
+
     return boost::get<double>(model_constants[model_constant_name_map.at(constant_name)]);
   };
 
+  /**
+   * \brief Retrieve the int from the `model_constants` that are defined from the
+   * parameters.prm parser. This is essentially just a wrapper for boost::get.
+   *
+   * \param constant_name Name of the constant to retrieve.
+   */
   int
   get_model_constant_int(const std::string constant_name) const
   {
+    Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
+           dealii::ExcMessage(
+             "PRISMS-PF Error: Mismatch between constants in parameters.prm and "
+             "customPDE.h. The constant that you attempted to access was " +
+             constant_name + "."));
+
     return boost::get<int>(model_constants[model_constant_name_map.at(constant_name)]);
   };
 
+  /**
+   * \brief Retrieve the bool from the `model_constants` that are defined from the
+   * parameters.prm parser. This is essentially just a wrapper for boost::get.
+   *
+   * \param constant_name Name of the constant to retrieve.
+   */
   bool
   get_model_constant_bool(const std::string constant_name) const
   {
+    Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
+           dealii::ExcMessage(
+             "PRISMS-PF Error: Mismatch between constants in parameters.prm and "
+             "customPDE.h. The constant that you attempted to access was " +
+             constant_name + "."));
+
     return boost::get<bool>(model_constants[model_constant_name_map.at(constant_name)]);
   };
 
+  /**
+   * \brief Retrieve the rank 1 tensor from the `model_constants` that are defined from
+   * the parameters.prm parser. This is essentially just a wrapper for boost::get.
+   *
+   * \param constant_name Name of the constant to retrieve.
+   */
   dealii::Tensor<1, dim>
   get_model_constant_rank_1_tensor(const std::string constant_name) const
   {
+    Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
+           dealii::ExcMessage(
+             "PRISMS-PF Error: Mismatch between constants in parameters.prm and "
+             "customPDE.h. The constant that you attempted to access was " +
+             constant_name + "."));
+
     return boost::get<dealii::Tensor<1, dim>>(
       model_constants[model_constant_name_map.at(constant_name)]);
   };
 
+  /**
+   * \brief Retrieve the rank 2 tensor from the `model_constants` that are defined from
+   * the parameters.prm parser. This is essentially just a wrapper for boost::get.
+   *
+   * \param constant_name Name of the constant to retrieve.
+   */
   dealii::Tensor<2, dim>
   get_model_constant_rank_2_tensor(const std::string constant_name) const
   {
+    Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
+           dealii::ExcMessage(
+             "PRISMS-PF Error: Mismatch between constants in parameters.prm and "
+             "customPDE.h. The constant that you attempted to access was " +
+             constant_name + "."));
+
     return boost::get<dealii::Tensor<2, dim>>(
       model_constants[model_constant_name_map.at(constant_name)]);
   };
 
+  /**
+   * \brief Retrieve the elasticity tensor from the `model_constants` that are defined
+   * from the parameters.prm parser. This is essentially just a wrapper for boost::get.
+   *
+   * \param constant_name Name of the constant to retrieve.
+   */
   dealii::Tensor<2, 2 * dim - 1 + dim / 3>
   get_model_constant_elasticity_tensor(const std::string constant_name) const
   {
+    Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
+           dealii::ExcMessage(
+             "PRISMS-PF Error: Mismatch between constants in parameters.prm and "
+             "customPDE.h. The constant that you attempted to access was " +
+             constant_name + "."));
+
     return boost::get<dealii::Tensor<2, 2 * dim - 1 + dim / 3>>(
       model_constants[model_constant_name_map.at(constant_name)]);
   };
 
   // Method to load in the variable attributes
   void
-  loadVariableAttributes(variableAttributeLoader variable_attributes);
+  loadVariableAttributes(const variableAttributeLoader &variable_attributes);
 
   // Nucleation attribute methods
   std::vector<double>
@@ -173,15 +245,12 @@ public:
   // Nonlinear solver parameters
   NonlinearSolverParameters nonlinear_solver_parameters;
 
+  // Pinning point parameters
+  boost::unordered_map<unsigned int, dealii::Point<dim>> pinned_point;
+
   // Variable inputs (I might be able to leave some/all of these in
   // variable_attributes)
   unsigned int number_of_variables;
-
-  std::vector<std::string> var_name;
-  std::vector<fieldType>   var_type;
-  std::vector<PDEType>     var_eq_type;
-
-  std::vector<bool> var_nonlinear;
 
   // Variables needed to calculate the RHS
   unsigned int               num_var_explicit_RHS, num_var_nonexplicit_RHS;
@@ -206,11 +275,7 @@ public:
   unsigned int              pp_number_of_variables;
   unsigned int              num_integrated_fields;
   bool                      postProcessingRequired;
-  std::vector<bool>         pp_calc_integral;
   std::vector<unsigned int> integrated_field_indices;
-
-  std::vector<std::string> pp_var_name;
-  std::vector<fieldType>   pp_var_type;
 
   // Variable and residual info
   std::vector<variable_info> pp_varInfoList;
@@ -249,7 +314,10 @@ public:
   double                    order_parameter_threshold;
   double                    buffer_between_grains;
 
-  bool         load_grain_structure;
+  bool        load_grain_structure;
+  std::string load_vtk_file_type; // adding this string to know what type of vtk file you
+                                  // want to read, it will be passed to
+                                  // initialconditions.cc
   double       min_radius_for_loading_grains;
   std::string  grain_structure_filename;
   std::string  grain_structure_variable_name;

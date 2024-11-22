@@ -63,7 +63,6 @@ computeStress(const dealii::Table<2, double>       &CIJ,
 #include "../../src/userInputParameters/load_BC_list.cc"
 #include "../../src/userInputParameters/load_user_constants.cc"
 #include "../../src/userInputParameters/setTimeStepList.cc"
-#include "../../src/utilities/sortIndexEntryPairList.cc"
 #include "../../src/variableAttributeLoader/variableAttributeLoader.cc"
 #include "../../src/variableContainer/variableContainer.cc"
 
@@ -116,7 +115,6 @@ public:
   test_OrderParameterRemapper();
 };
 
-#include "test_EquationDependencyParser.h"
 #include "test_FloodFiller.h"
 #include "test_LinearSolverParameters.h"
 #include "test_NonlinearSolverParameters.h"
@@ -131,9 +129,7 @@ public:
 #include "test_outputResults.h"
 #include "test_parse_line.h"
 #include "test_setOutputTimeSteps.h"
-#include "test_setRigidBodyModeConstraints.h"
 #include "variableAttributeLoader_test.cc"
 
 #include "../../include/SolverParameters.h"
-#include "../../src/EquationDependencyParser/EquationDependencyParser.cc"
 #include "../../src/SolverParameters/SolverParameters.cc"
