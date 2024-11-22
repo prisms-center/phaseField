@@ -258,7 +258,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
             // Set whether to use the solution of Laplace's equation instead of
             // the IC in ICs_and_BCs.h as the initial guess for nonlinear, time
             // independent equations
-            bool temp_laplace_for_initial_guess;
+            bool temp_laplace_for_initial_guess = false;
             if (variable.eq_type == TIME_INDEPENDENT)
               {
                 temp_laplace_for_initial_guess = parameter_handler.get_bool(

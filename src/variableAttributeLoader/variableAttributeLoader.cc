@@ -6,9 +6,9 @@
 variableAttributeLoader::variableAttributeLoader()
 {
   relevant_attributes = &attributes;
-  loadVariableAttributes();              // This is a user-facing function
+  loadVariableAttributes();
   relevant_attributes = &pp_attributes;
-  loadPostProcessorVariableAttributes(); // This is a user-facing function
+  loadPostProcessorVariableAttributes();
   relevant_attributes = nullptr;
 
   for (auto &[pp_index, pp_variable] : pp_attributes)
