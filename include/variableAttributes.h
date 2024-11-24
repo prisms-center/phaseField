@@ -87,4 +87,6 @@ struct variableAttributes
   eval_flags_for_eq_type(const variableAttributes &other_variable);
 };
 
+using AttributesList = std::map<uint, variableAttributes>;
+
 #endif

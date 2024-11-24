@@ -15,6 +15,9 @@
 #include <deal.II/fe/fe_values.h>
 #include <deal.II/lac/affine_constraints.h>
 #include <deal.II/lac/vector.h>
+
+#include "variableAttributes.h"
+
 #if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR > 3)
 #  include <deal.II/fe/mapping_fe.h>
 #endif
@@ -77,7 +80,7 @@ public:
   /**
    * Class contructor
    */
-  MatrixFreePDE(userInputParameters<dim>);
+  MatrixFreePDE(const userInputParameters<dim> &);
   ~MatrixFreePDE();
   /**
    * Initializes the mesh, degrees of freedom, constraints and data structures
@@ -145,12 +148,10 @@ public:
 protected:
   userInputParameters<dim> userInputs;
 
-  unsigned int totalDOFs;
+  const AttributesList &var_attributes;
+  const AttributesList &pp_attributes;
 
-  // Virtual methods to set the attributes of the primary field variables and
-  // the postprocessing field variables virtual void setVariableAttriubutes() =
-  // 0; virtual void setPostProcessingVariableAttriubutes(){};
-  variableAttributeLoader var_attributes;
+  unsigned int totalDOFs;
 
   // Elasticity matrix variables
   const static unsigned int CIJ_tensor_size = 2 * dim - 1 + dim / 3;

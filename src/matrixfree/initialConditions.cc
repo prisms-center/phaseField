@@ -68,7 +68,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
 
       // Get the index of one of the scalar fields
       unsigned int scalar_field_index = 0;
-      for (const auto &[index, variable] : var_attributes.attributes)
+      for (const auto &[index, variable] : var_attributes)
         {
           if (variable.var_type == SCALAR)
             {
@@ -376,12 +376,12 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
 
       for (const auto &index : index_list)
         {
-          std::string var_name = var_attributes.attributes.at(index).name;
+          std::string var_name = var_attributes.at(index).name;
 
           // Find the scalar field in the file
           ScalarField &field = body.find_scalar_field(var_name);
 
-          if (var_attributes.attributes.at(index).var_type == SCALAR)
+          if (var_attributes.at(index).var_type == SCALAR)
             {
               pcout << "Applying PField initial condition for "
                     << userInputs.load_field_name[index] << "...\n";
@@ -399,7 +399,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
     }
 
   unsigned int op_list_index = 0;
-  for (const auto &[var_index, variable] : var_attributes.attributes)
+  for (const auto &[var_index, variable] : var_attributes)
     {
       bool is_remapped_op = false;
       if (op_list_index < userInputs.variables_for_remapping.size())

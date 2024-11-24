@@ -11,8 +11,10 @@ unitTest<dim, T>::test_get_entry_name_ending_list()
   std::cout << "\nTesting 'get_entry_name_ending_list'... " << std::endl;
 
   // create test problem class object
-  variableAttributeLoader  variable_attributes;
-  inputFileReader          input_file_reader("parameters_test.prm", variable_attributes);
+  variableAttributeLoader attribute_loader;
+  const AttributesList    var_attributes = attribute_loader.get_var_attributes();
+  const AttributesList    pp_attributes  = attribute_loader.get_pp_attributes();
+  inputFileReader input_file_reader("parameters_test.prm", var_attributes, pp_attributes);
   std::vector<std::string> entry_name_ending_list;
   entry_name_ending_list =
     input_file_reader.get_entry_name_ending_list("get_entry_name_ending_list_tester.prm",

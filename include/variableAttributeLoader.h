@@ -142,20 +142,32 @@ public:
   set_output_integral(const unsigned int &index, const bool &flag);
 
   /**
+   * \brief Get function for retrieving the solution variable attributes. (copy)
+   */
+  AttributesList
+  get_var_attributes();
+
+  /**
+   * \brief Get function for retrieving the postprocess variable attributes. (copy)
+   */
+  AttributesList
+  get_pp_attributes();
+
+  /**
    * \brief The solutions variable attributes
    */
-  std::map<uint, variableAttributes> attributes;
+  AttributesList attributes;
 
   /**
    * \brief The postprocessing variable attributes
    */
-  std::map<uint, variableAttributes> pp_attributes;
+  AttributesList pp_attributes;
 
   /**
    * \brief Useful pointer for setting whether solution or postprocessiong variables are
    * being loaded
    */
-  std::map<uint, variableAttributes> *relevant_attributes = nullptr;
+  AttributesList *relevant_attributes = nullptr;
 
 private:
   /**

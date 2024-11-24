@@ -21,10 +21,8 @@
 #include "model_variables.h"
 #include "nucleationParameters.h"
 #include "varBCs.h"
-#include "varTypeEnums.h"
-#include "variableAttributeLoader.h"
+#include "variableAttributes.h"
 
-#include <iostream>
 #include <unordered_map>
 #include <vector>
 
@@ -45,8 +43,11 @@ public:
   // class member variables
   userInputParameters(inputFileReader          &input_file_reader,
                       dealii::ParameterHandler &parameter_handler,
-                      variableAttributeLoader   variable_attributes);
+                      const AttributesList     &_var_attributes,
+                      const AttributesList     &_pp_attributes);
 
+  void
+  loadVariableAttributes();
   // Method to create the list of BCs from the user input strings (called from
   // the constructor)
   void
@@ -62,7 +63,7 @@ public:
    * \param constant_name Name of the constant to retrieve.
    */
   double
-  get_model_constant_double(const std::string constant_name) const
+  get_model_constant_double(const std::string &constant_name) const
   {
     Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
            dealii::ExcMessage(
@@ -80,7 +81,7 @@ public:
    * \param constant_name Name of the constant to retrieve.
    */
   int
-  get_model_constant_int(const std::string constant_name) const
+  get_model_constant_int(const std::string &constant_name) const
   {
     Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
            dealii::ExcMessage(
@@ -98,7 +99,7 @@ public:
    * \param constant_name Name of the constant to retrieve.
    */
   bool
-  get_model_constant_bool(const std::string constant_name) const
+  get_model_constant_bool(const std::string &constant_name) const
   {
     Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
            dealii::ExcMessage(
@@ -116,7 +117,7 @@ public:
    * \param constant_name Name of the constant to retrieve.
    */
   dealii::Tensor<1, dim>
-  get_model_constant_rank_1_tensor(const std::string constant_name) const
+  get_model_constant_rank_1_tensor(const std::string &constant_name) const
   {
     Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
            dealii::ExcMessage(
@@ -135,7 +136,7 @@ public:
    * \param constant_name Name of the constant to retrieve.
    */
   dealii::Tensor<2, dim>
-  get_model_constant_rank_2_tensor(const std::string constant_name) const
+  get_model_constant_rank_2_tensor(const std::string &constant_name) const
   {
     Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
            dealii::ExcMessage(
@@ -154,7 +155,7 @@ public:
    * \param constant_name Name of the constant to retrieve.
    */
   dealii::Tensor<2, 2 * dim - 1 + dim / 3>
-  get_model_constant_elasticity_tensor(const std::string constant_name) const
+  get_model_constant_elasticity_tensor(const std::string &constant_name) const
   {
     Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
            dealii::ExcMessage(
@@ -166,52 +167,52 @@ public:
       model_constants[model_constant_name_map.at(constant_name)]);
   };
 
-  // Method to load in the variable attributes
-  void
-  loadVariableAttributes(const variableAttributeLoader &variable_attributes);
-
   // Nucleation attribute methods
   std::vector<double>
-  get_nucleus_semiaxes(unsigned int var_index) const
+  get_nucleus_semiaxes(const unsigned int &var_index) const
   {
     return nucleation_parameters_list[nucleation_parameters_list_index.at(var_index)]
       .semiaxes;
   };
 
   std::vector<double>
-  get_nucleus_freeze_semiaxes(unsigned int var_index) const
+  get_nucleus_freeze_semiaxes(const unsigned int &var_index) const
   {
     return nucleation_parameters_list[nucleation_parameters_list_index.at(var_index)]
       .freeze_semiaxes;
   };
 
   std::vector<double>
-  get_nucleus_rotation(unsigned int var_index) const
+  get_nucleus_rotation(const unsigned int &var_index) const
   {
     return nucleation_parameters_list[nucleation_parameters_list_index.at(var_index)]
       .ellipsoid_rotation;
   };
 
   double
-  get_no_nucleation_border_thickness(unsigned int var_index) const
+  get_no_nucleation_border_thickness(const unsigned int &var_index) const
   {
     return nucleation_parameters_list[nucleation_parameters_list_index.at(var_index)]
       .no_nucleation_border_thickness;
   };
 
   double
-  get_nucleus_hold_time(unsigned int var_index) const
+  get_nucleus_hold_time(const unsigned int &var_index) const
   {
     return nucleation_parameters_list[nucleation_parameters_list_index.at(var_index)]
       .hold_time;
   };
 
   dealii::Tensor<2, dim, double>
-  get_nucleus_rotation_matrix(unsigned int var_index) const
+  get_nucleus_rotation_matrix(const unsigned int &var_index) const
   {
     return nucleation_parameters_list[nucleation_parameters_list_index.at(var_index)]
       .rotation_matrix;
   };
+
+  // variable attrubute reference
+  const AttributesList &var_attributes;
+  const AttributesList &pp_attributes;
 
   // Meshing parameters
   std::vector<double>       domain_size;

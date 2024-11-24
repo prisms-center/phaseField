@@ -3,6 +3,8 @@
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/utilities.h>
 
+#include "../../include/variableAttributes.h"
+
 variableAttributeLoader::variableAttributeLoader()
 {
   relevant_attributes = &attributes;
@@ -147,6 +149,18 @@ variableAttributeLoader::set_dependencies_gradient_term_LHS(
     dealii::Utilities::split_string_list(strip_whitespace(dependencies));
   (*relevant_attributes)[index].dependencies_gradient_LHS =
     std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
+}
+
+AttributesList
+variableAttributeLoader::get_var_attributes()
+{
+  return attributes;
+}
+
+AttributesList
+variableAttributeLoader::get_pp_attributes()
+{
+  return pp_attributes;
 }
 
 void

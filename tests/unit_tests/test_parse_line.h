@@ -21,8 +21,10 @@ unitTest<dim, T>::test_parse_line()
   // userInputs.loadUserInput();
 
   dealii::ParameterHandler parameter_handler;
-  variableAttributeLoader  variable_attributes;
-  inputFileReader          input_file_reader("parameters_test.prm", variable_attributes);
+  variableAttributeLoader  attribute_loader;
+  const AttributesList     var_attributes = attribute_loader.get_var_attributes();
+  const AttributesList     pp_attributes  = attribute_loader.get_pp_attributes();
+  inputFileReader input_file_reader("parameters_test.prm", var_attributes, pp_attributes);
 
   // Subtest 1
   std::string line       = "set Test entry = 3";

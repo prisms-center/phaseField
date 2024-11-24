@@ -11,11 +11,14 @@ unitTest<dim, T>::test_load_BC_list()
   std::cout << "\nTesting 'load_BC_list'... " << std::endl;
 
   // create test problem class object
-  variableAttributeLoader variable_attributes;
-  inputFileReader         input_file_reader("parameters_test.prm", variable_attributes);
-  userInputParameters<2>  userInputs(input_file_reader,
+  variableAttributeLoader attribute_loader;
+  const AttributesList    var_attributes = attribute_loader.get_var_attributes();
+  const AttributesList    pp_attributes  = attribute_loader.get_pp_attributes();
+  inputFileReader input_file_reader("parameters_test.prm", var_attributes, pp_attributes);
+  userInputParameters<2> userInputs(input_file_reader,
                                     input_file_reader.parameter_handler,
-                                    variable_attributes);
+                                    var_attributes,
+                                    pp_attributes);
 
   // 2D test:
   std::vector<std::string> list_of_BCs;
@@ -59,7 +62,8 @@ unitTest<dim, T>::test_load_BC_list()
   list_of_BCs.clear();
   userInputParameters<3> userInputs_3D(input_file_reader,
                                        input_file_reader.parameter_handler,
-                                       variable_attributes);
+                                       var_attributes,
+                                       pp_attributes);
   list_of_BCs.push_back("DIRICHLET: 2.5");
   list_of_BCs.push_back("PERIODIC,PERIODIC,NATURAL,NATURAL,PERIODIC,PERIODIC");
 

@@ -2,13 +2,12 @@
 
 template <int dim>
 void
-userInputParameters<dim>::loadVariableAttributes(
-  const variableAttributeLoader &variable_attributes)
+userInputParameters<dim>::loadVariableAttributes()
 {
-  number_of_variables    = variable_attributes.attributes.size();
-  pp_number_of_variables = variable_attributes.pp_attributes.size();
+  number_of_variables    = var_attributes.size();
+  pp_number_of_variables = pp_attributes.size();
   // Load some nucleation parameters
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (variable.nucleating_variable)
         {
@@ -24,7 +23,7 @@ userInputParameters<dim>::loadVariableAttributes(
 
   // Load variable information for calculating the RHS for explicit equations
   num_var_explicit_RHS = 0;
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (!(variable.eval_flags_explicit_RHS & dealii::EvaluationFlags::nothing))
         {
@@ -32,7 +31,7 @@ userInputParameters<dim>::loadVariableAttributes(
         }
     }
   varInfoListExplicitRHS.reserve(num_var_explicit_RHS);
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       variable_info varInfo;
 
@@ -51,7 +50,7 @@ userInputParameters<dim>::loadVariableAttributes(
 
   // Load variable information for calculating the RHS for nonexplicit equations
   num_var_nonexplicit_RHS = 0;
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (!(variable.eval_flags_nonexplicit_RHS & dealii::EvaluationFlags::nothing))
         {
@@ -59,7 +58,7 @@ userInputParameters<dim>::loadVariableAttributes(
         }
     }
   varInfoListNonexplicitRHS.reserve(num_var_nonexplicit_RHS);
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       variable_info varInfo;
 
@@ -78,7 +77,7 @@ userInputParameters<dim>::loadVariableAttributes(
 
   // Load variable information for calculating the LHS
   num_var_LHS = 0;
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (!(variable.eval_flags_nonexplicit_LHS & dealii::EvaluationFlags::nothing))
         {
@@ -87,7 +86,7 @@ userInputParameters<dim>::loadVariableAttributes(
     }
 
   varInfoListLHS.reserve(num_var_LHS);
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       variable_info varInfo;
 
@@ -105,7 +104,7 @@ userInputParameters<dim>::loadVariableAttributes(
     }
 
   varChangeInfoListLHS.reserve(num_var_LHS);
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       variable_info varInfo;
 
@@ -126,7 +125,7 @@ userInputParameters<dim>::loadVariableAttributes(
   // Load variable information for postprocessing
   // First, the info list for the base field variables
   pp_baseVarInfoList.reserve(number_of_variables);
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       variable_info varInfo;
 
@@ -147,7 +146,7 @@ userInputParameters<dim>::loadVariableAttributes(
   postProcessingRequired = pp_number_of_variables > 0;
 
   num_integrated_fields = 0;
-  for (const auto &[pp_index, pp_variable] : variable_attributes.pp_attributes)
+  for (const auto &[pp_index, pp_variable] : pp_attributes)
     {
       if (pp_variable.calc_integral)
         {
@@ -158,7 +157,7 @@ userInputParameters<dim>::loadVariableAttributes(
 
   // The info list for the postprocessing field variables
   pp_varInfoList.reserve(pp_number_of_variables);
-  for (const auto &[pp_index, pp_variable] : variable_attributes.pp_attributes)
+  for (const auto &[pp_index, pp_variable] : pp_attributes)
     {
       variable_info varInfo;
 

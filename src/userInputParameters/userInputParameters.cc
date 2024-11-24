@@ -7,9 +7,12 @@
 template <int dim>
 userInputParameters<dim>::userInputParameters(inputFileReader          &input_file_reader,
                                               dealii::ParameterHandler &parameter_handler,
-                                              variableAttributeLoader variable_attributes)
+                                              const AttributesList     &_var_attributes,
+                                              const AttributesList     &_pp_attributes)
+  : var_attributes(_var_attributes)
+  , pp_attributes(_pp_attributes)
 {
-  loadVariableAttributes(variable_attributes);
+  loadVariableAttributes();
 
   // Load the inputs into the class member variables
 
@@ -62,7 +65,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
     }
 
   // The adaptivity criterion for each variable has its own subsection
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       std::string subsection_text = "Refinement criterion: ";
       subsection_text.append(variable.name);
@@ -145,7 +148,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
   finalTime                = parameter_handler.get_double("Simulation end time");
 
   // Linear solver parameters
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (variable.eq_type == TIME_INDEPENDENT ||
           variable.eq_type == IMPLICIT_TIME_DEPENDENT)
@@ -206,7 +209,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
   nonlinear_solver_parameters.setMaxIterations(
     parameter_handler.get_integer("Maximum nonlinear solver iterations"));
 
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (variable.is_nonlinear)
         {
@@ -300,7 +303,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
 
   // Set the max number of nonlinear iterations
   bool any_nonlinear = false;
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       any_nonlinear |= variable.is_nonlinear;
     }
@@ -349,7 +352,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
   // If all of the variables are ELLIPTIC, then totalIncrements should be 1 and
   // finalTime should be 0
   bool only_time_independent_pdes = true;
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (variable.eq_type == EXPLICIT_TIME_DEPENDENT ||
           variable.eq_type == IMPLICIT_TIME_DEPENDENT)
@@ -468,7 +471,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
 
   // Parameters for nucleation
 
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (variable.nucleating_variable)
         {
@@ -582,7 +585,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
   for (const auto &field : variables_for_remapping_str)
     {
       bool field_found = false;
-      for (const auto &[index, variable] : variable_attributes.attributes)
+      for (const auto &[index, variable] : var_attributes)
         {
           if (boost::iequals(field, variable.name))
             {
@@ -616,7 +619,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
   // Load the boundary condition variables into list of BCs (where each element
   // of the vector is one component of one variable)
   std::vector<std::string> list_of_BCs;
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (variable.var_type == SCALAR)
         {
@@ -649,7 +652,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
   /*----------------------
   |  Pinning point
   -----------------------*/
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       std::string pinning_text = "Pinning point: ";
       pinning_text.append(variable.name);

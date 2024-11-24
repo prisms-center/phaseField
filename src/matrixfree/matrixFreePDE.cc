@@ -4,10 +4,12 @@
 
 // constructor
 template <int dim, int degree>
-MatrixFreePDE<dim, degree>::MatrixFreePDE(userInputParameters<dim> _userInputs)
+MatrixFreePDE<dim, degree>::MatrixFreePDE(const userInputParameters<dim> &_userInputs)
   : Subscriptor()
   , pcout(std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
   , userInputs(_userInputs)
+  , var_attributes(_userInputs.var_attributes)
+  , pp_attributes(_userInputs.pp_attributes)
   , triangulation(MPI_COMM_WORLD)
   , currentFieldIndex(0)
   , isTimeDependentBVP(false)

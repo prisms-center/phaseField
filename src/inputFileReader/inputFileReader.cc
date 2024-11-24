@@ -4,15 +4,16 @@
 #include <deal.II/base/mpi.h>
 #include <deal.II/base/utilities.h>
 
-// #include "variableAttributeLoader.h"
-
-#include "../../include/RefinementCriterion.h"
+#include <fstream>
 #include <iostream>
 
+
 // Constructor
-inputFileReader::inputFileReader(const std::string       &input_file_name,
-                                 variableAttributeLoader &_variable_attributes)
-  : variable_attributes(_variable_attributes)
+inputFileReader::inputFileReader(const std::string    &input_file_name,
+                                 const AttributesList &_var_attributes,
+                                 const AttributesList &_pp_attributes)
+  : var_attributes(_var_attributes)
+  , pp_attributes(_pp_attributes)
 {
   num_constants = get_number_of_entries(input_file_name, "set", "Model constant");
 
@@ -22,7 +23,8 @@ inputFileReader::inputFileReader(const std::string       &input_file_name,
   if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
     {
       std::cout << "Number of constants: " << num_constants << std::endl;
-      std::cout << "Number of post-processing variables: " << num_pp_vars << std::endl;
+      std::cout << "Number of post-processing variables: " << pp_attributes.size()
+                << std::endl;
     }
 
   // Read in all of the parameters now
@@ -315,7 +317,7 @@ inputFileReader::declare_parameters(dealii::ParameterHandler &parameter_handler,
     dealii::Patterns::Integer(),
     "The number of time steps between mesh refinement operations.");
 
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       std::string subsection_text = "Refinement criterion: ";
       subsection_text.append(variable.name);
@@ -365,7 +367,7 @@ inputFileReader::declare_parameters(dealii::ParameterHandler &parameter_handler,
     dealii::Patterns::Double(),
     "The value of simulated time where the simulation ends.");
 
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (variable.eq_type == TIME_INDEPENDENT ||
           variable.eq_type == IMPLICIT_TIME_DEPENDENT)
@@ -400,7 +402,7 @@ inputFileReader::declare_parameters(dealii::ParameterHandler &parameter_handler,
                                   "The maximum number of nonlinear solver "
                                   "iterations before the loop is stopped.");
 
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (variable.is_nonlinear)
         {
@@ -543,7 +545,7 @@ inputFileReader::declare_parameters(dealii::ParameterHandler &parameter_handler,
   /*----------------------
   |  Boundary conditions
   -----------------------*/
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (variable.var_type == SCALAR)
         {
@@ -589,7 +591,7 @@ inputFileReader::declare_parameters(dealii::ParameterHandler &parameter_handler,
   /*----------------------
   |  Pinning point
   -----------------------*/
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       std::string pinning_text = "Pinning point: ";
       pinning_text.append(variable.name);
@@ -646,7 +648,7 @@ inputFileReader::declare_parameters(dealii::ParameterHandler &parameter_handler,
                                   dealii::Patterns::Double(),
                                   "The time after which no nucleation occurs.");
 
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (variable.nucleating_variable)
         {

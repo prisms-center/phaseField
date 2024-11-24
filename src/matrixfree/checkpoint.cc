@@ -40,7 +40,7 @@ MatrixFreePDE<dim, degree>::save_checkpoint()
 
     // First, get lists of scalar and vector fields
     std::vector<unsigned int> scalar_var_indices, vector_var_indices;
-    for (const auto &[index, variable] : var_attributes.attributes)
+    for (const auto &[index, variable] : var_attributes)
       {
         if (variable.var_type == SCALAR)
           {
@@ -55,7 +55,7 @@ MatrixFreePDE<dim, degree>::save_checkpoint()
     // Second, build one solution set list for scalars and one for vectors
     std::vector<const vectorType *> solSet_transfer_scalars;
     std::vector<const vectorType *> solSet_transfer_vectors;
-    for (const auto &[index, variable] : var_attributes.attributes)
+    for (const auto &[index, variable] : var_attributes)
       {
         if (variable.var_type == SCALAR)
           {
@@ -145,7 +145,7 @@ MatrixFreePDE<dim, degree>::load_checkpoint_fields()
 
   // First, get lists of scalar and vector fields
   std::vector<unsigned int> scalar_var_indices, vector_var_indices;
-  for (const auto &[index, variable] : var_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (variable.var_type == SCALAR)
         {
@@ -160,7 +160,7 @@ MatrixFreePDE<dim, degree>::load_checkpoint_fields()
   // Second, build one solution set list for scalars and one for vectors
   std::vector<vectorType *> solSet_transfer_scalars;
   std::vector<vectorType *> solSet_transfer_vectors;
-  for (const auto &[index, variable] : var_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (variable.var_type == SCALAR)
         {

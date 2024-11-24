@@ -11,8 +11,10 @@ unitTest<dim, T>::test_setOutputTimeSteps()
             << std::endl;
 
   dealii::ParameterHandler parameter_handler;
-  variableAttributeLoader  variable_attributes;
-  inputFileReader          input_file_reader("parameters_test.prm", variable_attributes);
+  variableAttributeLoader  attribute_loader;
+  const AttributesList     var_attributes = attribute_loader.get_var_attributes();
+  const AttributesList     pp_attributes  = attribute_loader.get_pp_attributes();
+  inputFileReader input_file_reader("parameters_test.prm", var_attributes, pp_attributes);
   input_file_reader.declare_parameters(parameter_handler, 0);
 #if (DEAL_II_VERSION_MAJOR < 9 && DEAL_II_VERSION_MINOR < 5)
   parameter_handler.read_input("parameters_test.prm");
@@ -28,7 +30,8 @@ unitTest<dim, T>::test_setOutputTimeSteps()
   // userInputs.loadInputParameters(input_file_reader,parameter_handler,var_types.size(),0,0,0);
   userInputParameters<dim> userInputs1(input_file_reader,
                                        parameter_handler,
-                                       variable_attributes);
+                                       var_attributes,
+                                       pp_attributes);
 
   std::vector<unsigned int> expected_result =
     {0, 2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000, 18000, 20000};
@@ -52,7 +55,8 @@ unitTest<dim, T>::test_setOutputTimeSteps()
   parameter_handler.set("Output condition", "LOG_SPACING");
   userInputParameters<dim> userInputs2(input_file_reader,
                                        parameter_handler,
-                                       variable_attributes);
+                                       var_attributes,
+                                       pp_attributes);
 
   expected_result = {0, 3, 7, 20, 53, 141, 381, 1025, 2759, 7429, 20000};
 
@@ -75,7 +79,8 @@ unitTest<dim, T>::test_setOutputTimeSteps()
   parameter_handler.set("Output condition", "N_PER_DECADE");
   userInputParameters<dim> userInputs3(input_file_reader,
                                        parameter_handler,
-                                       variable_attributes);
+                                       var_attributes,
+                                       pp_attributes);
 
   expected_result = {0,    1,    2,    3,    4,    5,    6,    7,     8,    9,
                      10,   20,   30,   40,   50,   60,   70,   80,    90,   100,
@@ -101,7 +106,8 @@ unitTest<dim, T>::test_setOutputTimeSteps()
   parameter_handler.set("Output condition", "LIST");
   userInputParameters<dim> userInputs4(input_file_reader,
                                        parameter_handler,
-                                       variable_attributes);
+                                       var_attributes,
+                                       pp_attributes);
 
   expected_result = {0, 3, 55, 61};
 
