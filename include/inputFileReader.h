@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-
 class inputFileReader
 {
 public:

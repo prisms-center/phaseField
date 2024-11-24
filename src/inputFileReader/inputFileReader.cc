@@ -7,7 +7,6 @@
 #include <fstream>
 #include <iostream>
 
-
 // Constructor
 inputFileReader::inputFileReader(const std::string    &input_file_name,
                                  const AttributesList &_var_attributes,
@@ -16,7 +15,6 @@ inputFileReader::inputFileReader(const std::string    &input_file_name,
   , pp_attributes(_pp_attributes)
 {
   num_constants = get_number_of_entries(input_file_name, "set", "Model constant");
-  num_pp_vars   = variable_attributes.pp_attributes.size();
 
   model_constant_names =
     get_entry_name_ending_list(input_file_name, "set", "Model constant");
