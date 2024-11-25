@@ -3,16 +3,17 @@ name: Clang-tidy
 on:
   push:
       branches:
-        -master
+        - master
   pull_request:
       branches:
-      - master
-      - development
+        - master
       types:
-      - opened
-      - reopened
-      - synchronize
-      - ready_for_review
+        - opened
+        - reopened
+        - synchronize
+        - ready_for_review
+      paths-ignore:
+      - 'applications/**'
 
 concurrency:
   group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref }}
