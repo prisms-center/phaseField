@@ -15,9 +15,6 @@
 #include <deal.II/fe/fe_values.h>
 #include <deal.II/lac/affine_constraints.h>
 #include <deal.II/lac/vector.h>
-
-#include "variableAttributes.h"
-
 #if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR > 3)
 #  include <deal.II/fe/mapping_fe.h>
 #endif
@@ -43,6 +40,7 @@
 #include "fields.h"
 #include "nucleus.h"
 #include "userInputParameters.h"
+#include "variableAttributes.h"
 #include "variableContainer.h"
 #include "variableValueContainer.h"
 
