@@ -23,8 +23,7 @@ SolverParametersBase::getEquationIndex(unsigned int global_index)
         }
     }
   std::cerr << "PRISMS-PF Error: Attempted access of a parameter for the "
-               "nonlinear solver for an ineligible variable index."
-            << std::endl;
+               "nonlinear solver for an ineligible variable index.\n";
   abort();
 }
 
@@ -103,7 +102,7 @@ NonlinearSolverParameters::setMaxIterations(unsigned int _max_iterations)
 }
 
 double
-NonlinearSolverParameters::getMaxIterations()
+NonlinearSolverParameters::getMaxIterations() const
 {
   return max_iterations;
 }

@@ -1,18 +1,15 @@
-// Methods for the inputFileReader class
 #include "../../include/inputFileReader.h"
 
 #include <deal.II/base/mpi.h>
 #include <deal.II/base/utilities.h>
 
-// #include "variableAttributeLoader.h"
-
 #include "../../include/RefinementCriterion.h"
 #include <iostream>
 
-// Constructor
 inputFileReader::inputFileReader(const std::string       &input_file_name,
                                  variableAttributeLoader &_variable_attributes)
   : variable_attributes(_variable_attributes)
+  , num_pp_vars(_variable_attributes.pp_attributes.size())
 {
   num_constants = get_number_of_entries(input_file_name, "set", "Model constant");
   num_pp_vars   = variable_attributes.pp_attributes.size();
@@ -22,8 +19,8 @@ inputFileReader::inputFileReader(const std::string       &input_file_name,
 
   if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
     {
-      std::cout << "Number of constants: " << num_constants << std::endl;
-      std::cout << "Number of post-processing variables: " << num_pp_vars << std::endl;
+      std::cout << "Number of constants: " << num_constants << "\n";
+      std::cout << "Number of post-processing variables: " << num_pp_vars << "\n";
     }
 
   // Read in all of the parameters now
@@ -36,73 +33,102 @@ inputFileReader::inputFileReader(const std::string       &input_file_name,
   number_of_dimensions = parameter_handler.get_integer("Number of dimensions");
 }
 
-// Method to parse a single line to find a target key value pair
+void
+inputFileReader::strip_spaces(std::string &line)
+{
+  while ((!line.empty()) && (line[0] == ' ' || line[0] == '\t'))
+    {
+      line.erase(0, 1);
+    }
+  while ((!line.empty()) &&
+         (line[line.size() - 1] == ' ' || line[line.size() - 1] == '\t'))
+    {
+      line.erase(line.size() - 1, std::string::npos);
+    }
+}
+
+bool
+inputFileReader::check_keyword_match(std::string &line, const std::string &keyword)
+{
+  // Early return if the line is less than the keyword size
+  if (line.size() < keyword.size())
+    {
+      return false;
+    }
+
+  // Check that the line begins with the keyword
+  for (unsigned int i = 0; i < keyword.size(); i++)
+    {
+      if (line[i] != keyword[i])
+        {
+          return false;
+        }
+    }
+
+  return true;
+}
+
 bool
 inputFileReader::parse_line(std::string        line,
                             const std::string &keyword,
                             const std::string &entry_name,
                             std::string       &out_string,
-                            const bool         expect_equals_sign) const
+                            const bool         expect_equals_sign)
 {
-  // Strip spaces at the front and back
-  while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
-    line.erase(0, 1);
-  while ((line.size() > 0) &&
-         (line[line.size() - 1] == ' ' || line[line.size() - 1] == '\t'))
-    line.erase(line.size() - 1, std::string::npos);
+  // Remove spaces from the front and back
+  strip_spaces(line);
 
-  // now see whether the line starts with 'keyword' followed by multiple spaces
-  // if not, try next line (if the entry is "", then zero spaces after the
-  // keyword is ok)
-  if (line.size() < keyword.size())
-    return false;
-
-  for (unsigned int i = 0; i < keyword.size(); i++)
+  // Check whether the line starts with 'keyword'. If not, try next line (if the entry is
+  // "", then zero spaces after the keyword is ok)
+  if (!check_keyword_match(line, keyword))
     {
-      if (line[i] != keyword[i])
-        return false;
-    }
-  if (entry_name.size() > 0)
-    {
-      if (!(line[keyword.size()] == ' ' || line[keyword.size()] == '\t'))
-        return false;
+      return false;
     }
 
-  // delete the "keyword" and then delete more spaces if present
+  if (!entry_name.empty())
+    {
+      if (line[keyword.size()] != ' ' && line[keyword.size()] != '\t')
+        {
+          return false;
+        }
+    }
+
+  // Delete the "keyword" and any more spaces, if present
   line.erase(0, keyword.size());
-  while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
-    line.erase(0, 1);
+  strip_spaces(line);
+
   // now see whether the next word is the word we look for
   if (line.find(entry_name) != 0)
-    return false;
+    {
+      return false;
+    }
 
   line.erase(0, entry_name.size());
-  while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
-    line.erase(0, 1);
+  strip_spaces(line);
 
   // we'd expect an equals size here if expect_equals_sign is true
   if (expect_equals_sign)
     {
-      if ((line.size() < 1) || (line[0] != '='))
-        return false;
+      if ((line.empty()) || (line[0] != '='))
+        {
+          return false;
+        }
     }
 
   // remove comment
-  std::string::size_type pos = line.find('#');
+  const std::string::size_type pos = line.find('#');
   if (pos != std::string::npos)
-    line.erase(pos);
+    {
+      line.erase(pos);
+    }
 
   // trim the equals sign at the beginning and possibly following spaces
   // as well as spaces at the end
   if (expect_equals_sign)
-    line.erase(0, 1);
-
-  while ((line.size() > 0) && (line[0] == ' ' || line[0] == '\t'))
-    line.erase(0, 1);
-
-  while ((line.size() > 0) &&
-         (line[line.size() - 1] == ' ' || line[line.size() - 1] == '\t'))
-    line.erase(line.size() - 1, std::string::npos);
+    {
+      line.erase(0, 1);
+    }
+  strip_spaces(line);
 
   out_string = line;
   return true;
@@ -114,15 +140,17 @@ std::vector<std::string>
 inputFileReader::get_subsection_entry_list(const std::string &parameters_file_name,
                                            const std::string &subsec_name,
                                            const std::string &entry_name,
-                                           const std::string &default_entry) const
+                                           const std::string &default_entry)
 {
   std::ifstream input_file;
   input_file.open(parameters_file_name);
 
-  std::string               line, entry;
-  bool                      in_subsection = false;
-  bool                      found_entry, desired_entry_found;
-  unsigned int              subsection_index;
+  std::string               line;
+  std::string               entry;
+  bool                      in_subsection       = false;
+  bool                      found_entry         = false;
+  bool                      desired_entry_found = false;
+  unsigned int              subsection_index    = 0;
   std::vector<std::string>  entry_list;
   std::vector<unsigned int> index_list;
 
@@ -187,13 +215,14 @@ inputFileReader::get_subsection_entry_list(const std::string &parameters_file_na
 unsigned int
 inputFileReader::get_number_of_entries(const std::string &parameters_file_name,
                                        const std::string &keyword,
-                                       const std::string &entry_name) const
+                                       const std::string &entry_name)
 {
   std::ifstream input_file;
   input_file.open(parameters_file_name);
 
-  std::string line, entry;
-  bool        found_entry;
+  std::string line;
+  std::string entry;
+  bool        found_entry = false;
 
   unsigned int count = 0;
 
@@ -202,7 +231,9 @@ inputFileReader::get_number_of_entries(const std::string &parameters_file_name,
     {
       found_entry = parse_line(line, keyword, entry_name, entry, false);
       if (found_entry)
-        count++;
+        {
+          count++;
+        }
     }
   return count;
 }
@@ -212,13 +243,14 @@ inputFileReader::get_number_of_entries(const std::string &parameters_file_name,
 std::vector<std::string>
 inputFileReader::get_entry_name_ending_list(const std::string &parameters_file_name,
                                             const std::string &keyword,
-                                            const std::string &entry_name_begining) const
+                                            const std::string &entry_name_begining)
 {
   std::ifstream input_file;
   input_file.open(parameters_file_name);
 
-  std::string line, entry;
-  bool        found_entry;
+  std::string line;
+  std::string entry;
+  bool        found_entry = false;
 
   std::vector<std::string> entry_name_end_list;
 
@@ -232,20 +264,26 @@ inputFileReader::get_entry_name_ending_list(const std::string &parameters_file_n
           // sign
 
           // Strip whitespace at the beginning
-          while ((entry.size() > 0) && (entry[0] == ' ' || entry[0] == '\t'))
-            entry.erase(0, 1);
+          while ((!entry.empty()) && (entry[0] == ' ' || entry[0] == '\t'))
+            {
+              entry.erase(0, 1);
+            }
 
           // Strip everything up to the equals sign
-          while ((entry.size() > 0) && (entry[entry.size() - 1] != '='))
-            entry.erase(entry.size() - 1, std::string::npos);
+          while ((!entry.empty()) && (entry[entry.size() - 1] != '='))
+            {
+              entry.erase(entry.size() - 1, std::string::npos);
+            }
 
           // Strip the equals sign
           entry.erase(entry.size() - 1, std::string::npos);
 
           // Strip whitespace between the entry name and the equals sign
-          while ((entry.size() > 0) &&
+          while ((!entry.empty()) &&
                  (entry[entry.size() - 1] == ' ' || entry[entry.size() - 1] == '\t'))
-            entry.erase(entry.size() - 1, std::string::npos);
+            {
+              entry.erase(entry.size() - 1, std::string::npos);
+            }
 
           // Add it to the list
           entry_name_end_list.push_back(entry);

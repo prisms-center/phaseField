@@ -108,7 +108,7 @@ MatrixFreePDE<dim, degree>::save_checkpoint()
       time_info_file.close();
     }
 
-  pcout << "*** Checkpoint created! ***" << std::endl << std::endl;
+  pcout << "*** Checkpoint created! ***\n\n";
   computing_timer.leave_subsection("matrixFreePDE: save_checkpoint");
 }
 
@@ -122,7 +122,7 @@ MatrixFreePDE<dim, degree>::load_checkpoint_triangulation()
   verify_checkpoint_file_exists("restart.mesh");
   verify_checkpoint_file_exists("restart.mesh.info");
 
-  pcout << std::endl << "*** Resuming from a checkpoint! ***" << std::endl << std::endl;
+  pcout << "\n*** Resuming from a checkpoint! ***\n\n";
 
   try
     {
@@ -254,5 +254,3 @@ MatrixFreePDE<dim, degree>::verify_checkpoint_file_exists(const std::string &fil
                              filename + "> does not appear to exist!"));
     }
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

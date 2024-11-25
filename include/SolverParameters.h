@@ -95,8 +95,8 @@ public:
    * Method to get the maximum number of allowed iterations for the nonlinear
    * solver.
    */
-  double
-  getMaxIterations();
+  [[nodiscard]] double
+  getMaxIterations() const;
 
   /**
    * Method to load the parameters for one governing equation into the class.

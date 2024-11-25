@@ -33,11 +33,14 @@ public:
 
 struct variable_info
 {
-  bool                                     is_scalar;
-  unsigned int                             global_var_index;
-  dealii::EvaluationFlags::EvaluationFlags evaluation_flags;
-  dealii::EvaluationFlags::EvaluationFlags residual_flags;
-  bool                                     var_needed;
+  unsigned int global_var_index = 0;
+  bool         is_scalar        = true;
+  bool         var_needed       = false;
+
+  dealii::EvaluationFlags::EvaluationFlags evaluation_flags =
+    dealii::EvaluationFlags::nothing;
+  dealii::EvaluationFlags::EvaluationFlags residual_flags =
+    dealii::EvaluationFlags::nothing;
 };
 
 #endif /* INCLUDE_MODELVARIABLE_H_ */

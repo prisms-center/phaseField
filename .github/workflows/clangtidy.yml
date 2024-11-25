@@ -1,0 +1,58 @@
+name: Clang-tidy
+
+on:
+  push:
+      branches:
+        - master
+  pull_request:
+      branches:
+        - master
+      types:
+        - opened
+        - reopened
+        - synchronize
+        - ready_for_review
+      paths-ignore:
+      - 'applications/**'
+
+concurrency:
+  group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request'}}
+
+jobs:
+    clang-tidy:
+      runs-on: [ubuntu-22.04]
+
+      container:
+        image: dealii/dealii:v9.6.0-jammy
+        options: --user root
+
+      steps:
+        - name: Checkout repo
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 30
+
+        - name: Cache llvm-18 installation
+          uses: actions/cache@v3
+          with:
+            path: /usr/lib/llvm-18
+            key: ${{ runner.os }}-llvm-18
+            restore-keys: |
+              ${{ runner.os }}-llvm
+
+        - name: Install llvm-18
+          if: steps.cache.outputs.cache-hit != 'true'
+          run: |
+            wget https://apt.llvm.org/llvm.sh
+            chmod +x llvm.sh
+            ./llvm.sh 18 all
+
+        - name: Set up path for llvm-18
+          run: |
+            echo "/usr/lib/llvm-18/bin" >> "$GITHUB_PATH"
+
+        - name: Run clang-tidy
+          run: |
+            ./utilities/clang_tidy.sh .
+

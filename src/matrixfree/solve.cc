@@ -152,5 +152,3 @@ MatrixFreePDE<dim, degree>::solve()
   // log time
   computing_timer.leave_subsection("matrixFreePDE: solve");
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

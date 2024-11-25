@@ -316,5 +316,3 @@ MatrixFreePDE<dim, degree>::set_rigid_body_mode_constraints(
         }
     }
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

@@ -166,7 +166,7 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                                   pcout << "Relative difference between nonlinear "
                                            "iterations: "
                                         << diff << " " << nonlinear_it_index << " "
-                                        << currentIncrement << std::endl;
+                                        << currentIncrement << "\n";
                                 }
 
                               if (diff > userInputs.nonlinear_solver_parameters
@@ -182,8 +182,7 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                             {
                               std::cerr << "PRISMS-PF Error: Nonlinear solver tolerance "
                                            "types other than ABSOLUTE_CHANGE have yet to "
-                                           "be implemented."
-                                        << std::endl;
+                                           "be implemented.\n";
                             }
                         }
                     }
@@ -398,7 +397,7 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
                 {
                   pcout << "    Old residual: " << residual_old
                         << " Damping Coeff: " << damping_coefficient
-                        << " New Residual: " << residual_new << std::endl;
+                        << " New Residual: " << residual_new << "\n";
                 }
 
               // An improved approach would use the
@@ -483,7 +482,7 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
               pcout << "Relative difference between nonlinear "
                        "iterations: "
                     << diff << " " << nonlinear_it_index << " " << currentIncrement
-                    << std::endl;
+                    << "\n";
             }
 
           if (diff >
@@ -498,8 +497,7 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
         {
           std::cerr << "PRISMS-PF Error: Nonlinear solver tolerance "
                        "types other than ABSOLUTE_CHANGE have yet to "
-                       "be implemented."
-                    << std::endl;
+                       "be implemented.\n";
         }
     }
   else
@@ -546,5 +544,3 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
 
   return nonlinear_it_converged;
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

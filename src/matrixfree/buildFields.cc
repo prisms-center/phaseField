@@ -23,5 +23,3 @@ MatrixFreePDE<dim, degree>::buildFields()
                                   var_attributes.attributes.at(i).name));
     }
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

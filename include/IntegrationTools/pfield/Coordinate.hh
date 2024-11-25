@@ -16,7 +16,7 @@ namespace PRISMS
     float _coord[DIM];
 
   public:
-    int
+    [[nodiscard]] int
     size() const
     {
       return DIM;
@@ -47,7 +47,9 @@ namespace PRISMS
       {
         outstream << coord[i];
         if (i < coord.size() - 1)
-          outstream << " ";
+          {
+            outstream << " ";
+          }
       }
     return outstream;
   }

@@ -11,7 +11,7 @@ MatrixFreePDE<dim, degree>::reassignGrains()
   // log time
   computing_timer.enter_subsection("matrixFreePDE: reassignGrains");
 
-  pcout << "Reassigning grains..." << std::endl;
+  pcout << "Reassigning grains...\n";
 
   // Get the index of the first scalar field (used to get the FE object and
   // DOFHandler)
@@ -106,10 +106,8 @@ MatrixFreePDE<dim, degree>::reassignGrains()
                                  FESet.at(scalar_field_index)->dofs_per_cell,
                                  userInputs.buffer_between_grains);
 
-  pcout << "Reassigning grains completed." << std::endl << std::endl;
+  pcout << "Reassigning grains completed.\n\n";
 
   // end log
   computing_timer.leave_subsection("matrixFreePDE: reassignGrains");
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

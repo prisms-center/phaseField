@@ -33,47 +33,47 @@
 
 // define data types
 #ifndef scalarType
-typedef dealii::VectorizedArray<double> scalarType;
+using scalarType = dealii::VectorizedArray<double>;
 #endif
 #ifndef vectorType
-typedef dealii::LinearAlgebra::distributed::Vector<double> vectorType;
+using vectorType = dealii::LinearAlgebra::distributed::Vector<double>;
 #endif
 // define FE system types
 #ifndef typeScalar
-typedef dealii::FEEvaluation<dim, degree, degree + 1, 1, double> typeScalar;
+using typeScalar = dealii::FEEvaluation<dim, degree, degree + 1, 1, double>;
 #endif
 #ifndef typeVector
-typedef dealii::FEEvaluation<dim, degree, degree + 1, dim, double> typeVector;
+using typeVector = dealii::FEEvaluation<dim, degree, degree + 1, dim, double>;
 #endif
 // define data value types
 #ifndef scalarvalueType
-typedef dealii::VectorizedArray<double> scalarvalueType;
+using scalarvalueType = dealii::VectorizedArray<double>;
 #endif
 #ifndef vectorvalueType
-typedef dealii::Tensor<1, dim, dealii::VectorizedArray<double>> vectorvalueType;
+using vectorvalueType = dealii::Tensor<1, dim, dealii::VectorizedArray<double>>;
 #endif
 #if problemDIM == 1
 #  ifndef scalargradType
-typedef dealii::VectorizedArray<double> scalargradType;
+using scalargradType = dealii::VectorizedArray<double>;
 #  endif
 #  ifndef vectorgradType
-typedef dealii::VectorizedArray<double> vectorgradType;
+using vectorgradType = dealii::VectorizedArray<double>;
 #  endif
 #  ifndef vectorhessType
-typedef dealii::VectorizedArray<double> vectorhessType;
+using vectorhessType = dealii::VectorizedArray<double>;
 #  endif
 #else
 #  ifndef scalargradType
-typedef dealii::Tensor<1, dim, dealii::VectorizedArray<double>> scalargradType;
+using scalargradType = dealii::Tensor<1, dim, dealii::VectorizedArray<double>>;
 #  endif
 #  ifndef scalarhessType
-typedef dealii::Tensor<2, dim, dealii::VectorizedArray<double>> scalarhessType;
+using scalarhessType = dealii::Tensor<2, dim, dealii::VectorizedArray<double>>;
 #  endif
 #  ifndef vectorgradType
-typedef dealii::Tensor<2, dim, dealii::VectorizedArray<double>> vectorgradType;
+using vectorgradType = dealii::Tensor<2, dim, dealii::VectorizedArray<double>>;
 #  endif
 #  ifndef vectorhessType
-typedef dealii::Tensor<3, dim, dealii::VectorizedArray<double>> vectorhessType;
+using vectorhessType = dealii::Tensor<3, dim, dealii::VectorizedArray<double>>;
 #  endif
 #endif
 

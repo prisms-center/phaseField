@@ -169,5 +169,3 @@ MatrixFreePDE<dim, degree>::computeInvM()
   pcout << "computed vector mass matrix (using FE space for field: "
         << parabolicVectorFieldIndex << ")\n";
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

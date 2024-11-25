@@ -49,9 +49,9 @@ variableAttributes::parse_residual_dependencies()
 
   if (is_pp)
     {
-      EvalFlags             &residual_flags          = eval_flags_residual_postprocess;
-      std::set<std::string> &value_dependency_set    = dependencies_value_PP;
-      std::set<std::string> &gradient_dependency_set = dependencies_gradient_PP;
+      EvalFlags                   &residual_flags       = eval_flags_residual_postprocess;
+      const std::set<std::string> &value_dependency_set = dependencies_value_PP;
+      const std::set<std::string> &gradient_dependency_set = dependencies_gradient_PP;
 
       if (!value_dependency_set.empty())
         {
@@ -68,10 +68,10 @@ variableAttributes::parse_residual_dependencies()
                        std::pair<std::set<std::string> *, std::set<std::string> *>>
          &eval_dep_pair : dependencies_for.at(eq_type))
     {
-      EvalFlags             &residual_flags          = *(eval_dep_pair.first);
-      auto                  &dep_pair                = eval_dep_pair.second;
-      std::set<std::string> &value_dependency_set    = *(dep_pair.first);
-      std::set<std::string> &gradient_dependency_set = *(dep_pair.second);
+      EvalFlags                   &residual_flags          = *(eval_dep_pair.first);
+      const auto                  &dep_pair                = eval_dep_pair.second;
+      const std::set<std::string> &value_dependency_set    = *(dep_pair.first);
+      const std::set<std::string> &gradient_dependency_set = *(dep_pair.second);
 
       if (!value_dependency_set.empty())
         {
@@ -107,9 +107,9 @@ variableAttributes::parse_dependencies(
 
   for (const auto &[variation, delimiter] : delimiters)
     {
-      bool is_change = variation == "val_change" || variation == "grad_change" ||
-                       variation == "hess_change";
-      std::string possible_dependency = delimiter.first + name + delimiter.second;
+      const bool is_change = variation == "val_change" || variation == "grad_change" ||
+                             variation == "hess_change";
+      const std::string possible_dependency = delimiter.first + name + delimiter.second;
       if (is_change && dependency_set.find(possible_dependency) != dependency_set.end())
         {
           eval_flags_change_nonexplicit_LHS |= relevant_flag.at(variation);
@@ -121,7 +121,7 @@ variableAttributes::parse_dependencies(
               if (other_variable.dependency_set.find(possible_dependency) !=
                   other_variable.dependency_set.end())
                 {
-                  for (auto &eval_flag : eval_flags_for_eq_type(other_variable))
+                  for (const auto &eval_flag : eval_flags_for_eq_type(other_variable))
                     {
                       *eval_flag |= relevant_flag.at(variation);
                     }
@@ -138,7 +138,7 @@ variableAttributes::parse_dependencies(
 std::set<EvalFlags *>
 variableAttributes::eval_flags_for_eq_type(const variableAttributes &other_variable)
 {
-  PDEType other_eq_type = other_variable.eq_type;
+  const PDEType other_eq_type = other_variable.eq_type;
   if (other_variable.is_pp)
     {
       return {&eval_flags_postprocess};

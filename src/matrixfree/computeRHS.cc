@@ -116,5 +116,3 @@ MatrixFreePDE<dim, degree>::getNonexplicitRHS(
       variable_list.integrate_and_distribute(dst);
     }
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"
