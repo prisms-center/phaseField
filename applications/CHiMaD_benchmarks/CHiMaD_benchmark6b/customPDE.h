@@ -1,7 +1,7 @@
 #include <deal.II/base/tensor.h>
 #include <deal.II/grid/manifold.h>
 
-#include "matrixFreePDE.h"
+#include <core/matrixFreePDE.h>
 
 using namespace dealii;
 
@@ -32,7 +32,7 @@ public:
                             [[maybe_unused]] Vector<double>    &vector_BC) override;
 
 private:
-#include "typeDefs.h"
+#include <core/typeDefs.h>
 
   const userInputParameters<dim> userInputs;
 
