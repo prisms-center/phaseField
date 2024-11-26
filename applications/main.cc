@@ -2,10 +2,11 @@
 #include "customPDE.h"
 
 #include "ICs_and_BCs.cc"
-#include "ParseCommandLineOpts.h"
 #include "equations.cc"
-#include "inputFileReader.h"
-#include "variableAttributeLoader/variableAttributeLoader.cc"
+
+#include <core/ParseCommandLineOpts.h>
+#include <core/inputFileReader.h>
+#include <core/variableAttributeLoader.h>
 
 // Header file for postprocessing that may or may not exist
 #ifdef POSTPROCESS_FILE_EXISTS
