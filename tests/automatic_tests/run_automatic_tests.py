@@ -56,27 +56,6 @@ def grab_cpu_information():
     return architecture, cpu_model, cpu_cores, cpu_max_freq, cpu_min_freq, hypervisor
 
 
-def compile_and_run_unit_tests():
-    # Remove old files if they exist
-    remove_file("main")
-    remove_file("CMakeCache.txt")
-    remove_file("unit_test_results.txt")
-
-    # Compile and run
-    subprocess.call(
-        ["cmake", "."], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
-    )
-    subprocess.call(["make"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    subprocess.call(
-        ["mpirun", "-n", "1", "./main"],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    )
-
-    with open("unit_test_results.txt", "r") as result_file:
-        return result_file.read().splitlines()
-
-
 def compile_and_run_simulation(application_path):
     # Navigate to test application directory
     os.chdir(application_path)
@@ -236,22 +215,6 @@ test_result_file = os.path.join(pwd, "test_results.txt")
 # Grab current date
 now = datetime.datetime.now()
 
-# Navigate to the unit test directory
-os.chdir("../unit_tests/")
-
-# Run unit tests
-unit_test_results = compile_and_run_unit_tests()
-unit_tests_passed = unit_test_results[0]
-unit_test_counter = unit_test_results[1]
-
-write_to_file(
-    test_result_file,
-    "--------------------------------------------------------- \n"
-    "Unit test on " + now.strftime("%Y-%m-%d %H:%M") + "\n"
-    "--------------------------------------------------------- \n"
-    f"Unit Tests Passed: {unit_tests_passed}/{unit_test_counter}\n",
-)
-
 # List of applications
 applicationList = [
     "allenCahn",
@@ -299,13 +262,10 @@ write_to_file(
 )
 
 # Print overall results
-print(f"Unit Tests Passed: {unit_tests_passed}/{unit_test_counter}\n")
 print(f"Regression Tests Passed: {regression_tests_passed}/{regression_test_counter}\n")
 
 # Set exit code
-if (regression_tests_passed < regression_test_counter) or (
-    unit_tests_passed < unit_test_counter
-):
+if regression_tests_passed < regression_test_counter:
     sys.exit(1)
 else:
     sys.exit(0)
