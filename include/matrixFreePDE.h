@@ -3,6 +3,7 @@
 #define MATRIXFREEPDE_H
 
 // general headers
+#include <filesystem>
 #include <fstream>
 #include <iterator>
 #include <sstream>
@@ -481,7 +482,7 @@ protected:
   void
   computeIntegral(double                   &integratedField,
                   int                       index,
-                  std::vector<vectorType *> postProcessedSet);
+                  std::vector<vectorType *> variableSet);
 
   // variables for time dependent problems
   /*Flag used to see if invM, time stepping in run(), etc are necessary*/

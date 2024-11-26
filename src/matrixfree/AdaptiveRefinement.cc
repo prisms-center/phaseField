@@ -90,12 +90,12 @@ AdaptiveRefinement<dim, degree>::adaptive_refinement_criterion()
           for (const auto &criterion : userInputs.refinement_criteria)
             {
               // Get the values and/or gradients
-              if (update_values & update_flags)
+              if (static_cast<bool>(update_values & update_flags))
                 {
                   fe_values.get_function_values(*solutionSet[criterion.variable_index],
                                                 values);
                 }
-              if (update_gradients & update_flags)
+              if (static_cast<bool>(update_gradients & update_flags))
                 {
                   fe_values.get_function_gradients(*solutionSet[criterion.variable_index],
                                                    gradients);
