@@ -9,7 +9,6 @@
 #include <cstddef>
 #include <vector>
 
-
 // NOLINTBEGIN(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
 template <int dim>
 userInputParameters<dim>::userInputParameters(inputFileReader          &input_file_reader,
