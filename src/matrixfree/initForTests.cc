@@ -53,23 +53,23 @@ MatrixFreePDE<dim, degree>::initForTests(std::vector<Field<dim>> fields)
       FESet.push_back(fe);
 
       // distribute DOFs
-      DoFHandler<dim> *dof_handler;
-      dof_handler = new DoFHandler<dim>(triangulation);
+      DoFHandler<dim> *dof_handler = nullptr;
+      dof_handler                  = new DoFHandler<dim>(triangulation);
       dofHandlersSet.push_back(dof_handler);
       dofHandlersSet_nonconst.push_back(dof_handler);
       dof_handler->distribute_dofs(*fe);
 
       // extract locally_relevant_dofs
-      IndexSet *locally_relevant_dofs;
-      locally_relevant_dofs = new IndexSet;
+      IndexSet *locally_relevant_dofs = nullptr;
+      locally_relevant_dofs           = new IndexSet;
       locally_relevant_dofsSet.push_back(locally_relevant_dofs);
       locally_relevant_dofsSet_nonconst.push_back(locally_relevant_dofs);
       locally_relevant_dofs->clear();
       DoFTools::extract_locally_relevant_dofs(*dof_handler, *locally_relevant_dofs);
 
       // create constraints
-      AffineConstraints<double> *constraintsOther;
-      constraintsOther = new AffineConstraints<double>;
+      AffineConstraints<double> *constraintsOther = nullptr;
+      constraintsOther                            = new AffineConstraints<double>;
       constraintsOtherSet.push_back(constraintsOther);
       constraintsOtherSet_nonconst.push_back(constraintsOther);
       constraintsOther->clear();
@@ -102,9 +102,10 @@ MatrixFreePDE<dim, degree>::initForTests(std::vector<Field<dim>> fields)
   // setup problem vectors
   for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
     {
-      vectorType *U, *R;
-      U = new vectorType;
-      R = new vectorType;
+      vectorType *U = nullptr;
+      vectorType *R = nullptr;
+      U             = new vectorType;
+      R             = new vectorType;
       solutionSet.push_back(U);
       residualSet.push_back(R);
       matrixFreeObject.initialize_dof_vector(*R, 0);
@@ -113,5 +114,3 @@ MatrixFreePDE<dim, degree>::initForTests(std::vector<Field<dim>> fields)
       *U = 0;
     }
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

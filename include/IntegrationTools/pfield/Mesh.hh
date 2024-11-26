@@ -732,14 +732,18 @@ namespace PRISMS
     min(Coordinate &coord)
     {
       for (int i = 0; i < DIM; i++)
-        coord[i] = _min[i];
+        {
+          coord[i] = _min[i];
+        }
     }
 
     void
     max(Coordinate &coord)
     {
       for (int i = 0; i < DIM; i++)
-        coord[i] = _max[i];
+        {
+          coord[i] = _max[i];
+        }
     }
 
     double

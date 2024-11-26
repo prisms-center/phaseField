@@ -3,6 +3,7 @@
 #define MATRIXFREEPDE_H
 
 // general headers
+#include <filesystem>
 #include <fstream>
 #include <iterator>
 #include <sstream>
@@ -50,10 +51,10 @@ using namespace dealii;
 
 // define data types
 #ifndef scalarType
-typedef VectorizedArray<double> scalarType;
+using scalarType = VectorizedArray<double>;
 #endif
 #ifndef vectorType
-typedef LinearAlgebra::distributed::Vector<double> vectorType;
+using vectorType = LinearAlgebra::distributed::Vector<double>;
 #endif
 
 // macro for constants
@@ -458,7 +459,7 @@ protected:
 
   // Method to obtain the nucleation probability for an element, nontrival case
   // must be implemented in the subsclass
-  virtual double
+  [[nodiscard]] virtual double
   getNucleationProbability(variableValueContainer,
                            double,
                            Point<dim>,
@@ -480,7 +481,7 @@ protected:
   void
   computeIntegral(double                   &integratedField,
                   int                       index,
-                  std::vector<vectorType *> postProcessedSet);
+                  std::vector<vectorType *> variableSet);
 
   // variables for time dependent problems
   /*Flag used to see if invM, time stepping in run(), etc are necessary*/
@@ -510,5 +511,23 @@ protected:
   /*AMR methods*/
   AdaptiveRefinement<dim, degree> AMR;
 };
+
+template class MatrixFreePDE<2, 1>;
+template class MatrixFreePDE<3, 1>;
+
+template class MatrixFreePDE<2, 2>;
+template class MatrixFreePDE<3, 2>;
+
+template class MatrixFreePDE<3, 3>;
+template class MatrixFreePDE<2, 3>;
+
+template class MatrixFreePDE<3, 4>;
+template class MatrixFreePDE<2, 4>;
+
+template class MatrixFreePDE<3, 5>;
+template class MatrixFreePDE<2, 5>;
+
+template class MatrixFreePDE<3, 6>;
+template class MatrixFreePDE<2, 6>;
 
 #endif

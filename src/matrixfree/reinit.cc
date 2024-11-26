@@ -19,25 +19,26 @@ MatrixFreePDE<dim, degree>::reinit()
       char buffer[100];
 
       // create FESystem
-      FESystem<dim> *fe;
-      fe = FESet.at(field.index);
+      FESystem<dim> *fe = nullptr;
+      fe                = FESet.at(field.index);
 
       // distribute DOFs
-      DoFHandler<dim> *dof_handler;
-      dof_handler = dofHandlersSet_nonconst.at(field.index);
+      DoFHandler<dim> *dof_handler = nullptr;
+      dof_handler                  = dofHandlersSet_nonconst.at(field.index);
 
       dof_handler->distribute_dofs(*fe);
       totalDOFs += dof_handler->n_dofs();
 
       // extract locally_relevant_dofs
-      IndexSet *locally_relevant_dofs;
-      locally_relevant_dofs = locally_relevant_dofsSet_nonconst.at(field.index);
+      IndexSet *locally_relevant_dofs = nullptr;
+      locally_relevant_dofs           = locally_relevant_dofsSet_nonconst.at(field.index);
 
       locally_relevant_dofs->clear();
       DoFTools::extract_locally_relevant_dofs(*dof_handler, *locally_relevant_dofs);
 
       // create constraints
-      AffineConstraints<double> *constraintsDirichlet, *constraintsOther;
+      AffineConstraints<double> *constraintsDirichlet = nullptr;
+      AffineConstraints<double> *constraintsOther     = nullptr;
 
       constraintsDirichlet = constraintsDirichletSet_nonconst.at(field.index);
       constraintsOther     = constraintsOtherSet_nonconst.at(field.index);
@@ -90,7 +91,7 @@ MatrixFreePDE<dim, degree>::reinit()
                constraintsDirichlet->n_constraints());
       pcout << buffer;
     }
-  pcout << "total DOF : " << totalDOFs << std::endl;
+  pcout << "total DOF : " << totalDOFs << "\n";
 
   // Setup the matrix free object
   typename MatrixFree<dim, double>::AdditionalData additional_data;
@@ -125,7 +126,7 @@ MatrixFreePDE<dim, degree>::reinit()
   pcout << "initializing parallel::distributed residual and solution vectors\n";
   for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
     {
-      vectorType *U;
+      vectorType *U = nullptr;
 
       U = solutionSet.at(fieldIndex);
 
@@ -141,7 +142,7 @@ MatrixFreePDE<dim, degree>::reinit()
         {
           if (fields[fieldIndex].type == SCALAR)
             {
-              if (dU_scalar_init == false)
+              if (!dU_scalar_init)
                 {
                   matrixFreeObject.initialize_dof_vector(dU_scalar, fieldIndex);
                   dU_scalar_init = true;
@@ -149,7 +150,7 @@ MatrixFreePDE<dim, degree>::reinit()
             }
           else
             {
-              if (dU_vector_init == false)
+              if (!dU_vector_init)
                 {
                   matrixFreeObject.initialize_dof_vector(dU_vector, fieldIndex);
                   dU_vector_init = true;
@@ -206,5 +207,3 @@ MatrixFreePDE<dim, degree>::reinit()
 
   computing_timer.leave_subsection("matrixFreePDE: reinitialization");
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

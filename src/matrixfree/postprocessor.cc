@@ -10,8 +10,8 @@ MatrixFreePDE<dim, degree>::computePostProcessedFields(
   for (unsigned int fieldIndex = 0; fieldIndex < userInputs.pp_number_of_variables;
        fieldIndex++)
     {
-      vectorType *U;
-      U = new vectorType;
+      vectorType *U = nullptr;
+      U             = new vectorType;
       postProcessedSet.push_back(U);
       matrixFreeObject.initialize_dof_vector(*U, 0);
     }
@@ -75,5 +75,3 @@ MatrixFreePDE<dim, degree>::getPostProcessedFields(
       pp_variable_list.integrate_and_distribute(dst);
     }
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

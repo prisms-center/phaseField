@@ -44,9 +44,9 @@ MatrixFreePDE<dim, degree>::applyNeumannBCs()
               FEFaceValues<dim>      fe_face_values(*fe,
                                                face_quadrature_formula,
                                                update_values | update_JxW_values);
-              const unsigned int     n_face_q_points = face_quadrature_formula.size(),
-                                 dofs_per_cell       = fe->dofs_per_cell;
-              Vector<double>                       cell_rhs(dofs_per_cell);
+              const unsigned int     n_face_q_points = face_quadrature_formula.size();
+              const unsigned int     dofs_per_cell   = fe->dofs_per_cell;
+              Vector<double>         cell_rhs(dofs_per_cell);
               std::vector<types::global_dof_index> local_dof_indices(dofs_per_cell);
 
               // Loop over each face on a boundary
@@ -225,7 +225,7 @@ MatrixFreePDE<dim, degree>::setPeriodicity()
               periodic_pair = true;
             }
         }
-      if (periodic_pair == true)
+      if (periodic_pair)
         {
           GridTools::collect_periodic_faces(triangulation,
                                             /*b_id1*/ 2 * i,
@@ -316,5 +316,3 @@ MatrixFreePDE<dim, degree>::set_rigid_body_mode_constraints(
         }
     }
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

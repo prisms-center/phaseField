@@ -2,6 +2,7 @@
 #include "../../include/matrixFreePDE.h"
 #include "../../include/parallelNucleationList.h"
 #include "../../include/varBCs.h"
+#include <cmath>
 #include <ctime>
 #include <random>
 
@@ -86,10 +87,10 @@ MatrixFreePDE<dim, degree>::getNewNuclei()
   std::vector<nucleus<dim>> newnuclei;
 
   // Get list of prospective new nuclei for the local processor
-  pcout << "Nucleation attempt for increment " << currentIncrement << std::endl;
+  pcout << "Nucleation attempt for increment " << currentIncrement << "\n";
 
   getLocalNucleiList(newnuclei);
-  pcout << "nucleation attempt! " << currentTime << " " << currentIncrement << std::endl;
+  pcout << "nucleation attempt! " << currentTime << " " << currentIncrement << "\n";
 
   // Generate global list of new nuclei and resolve conflicts between new nuclei
   parallelNucleationList<dim> new_nuclei_parallel(newnuclei);
@@ -130,7 +131,7 @@ MatrixFreePDE<dim, degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
   std::vector<dealii::Point<dim>> q_point_list_overlap(num_quad_points);
 
   // What used to be in nuc_attempt
-  double rand_val;
+  double rand_val = NAN;
   // Better random no. generator
   std::random_device               rd;
   std::mt19937                     gen(rd());
@@ -164,8 +165,10 @@ MatrixFreePDE<dim, degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
             {
               element_volume = element_volume + fe_values.JxW(q_point);
               for (unsigned int i = 0; i < dim; i++)
-                ele_center[i] =
-                  ele_center[i] + q_point_list[q_point](i) / ((double) num_quad_points);
+                {
+                  ele_center[i] =
+                    ele_center[i] + q_point_list[q_point](i) / ((double) num_quad_points);
+                }
             }
 
           // Loop over each variable and each quadrature point to get the
@@ -207,10 +210,14 @@ MatrixFreePDE<dim, degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
                   // furthest away from the origin
                   std::vector<double> ele_origin(dim);
                   for (unsigned int i = 0; i < dim; i++)
-                    ele_origin[i] = q_point_list[0](i);
+                    {
+                      ele_origin[i] = q_point_list[0](i);
+                    }
                   std::vector<double> ele_max(dim);
                   for (unsigned int i = 0; i < dim; i++)
-                    ele_max[i] = q_point_list[0](i);
+                    {
+                      ele_max[i] = q_point_list[0](i);
+                    }
                   for (unsigned int i = 0; i < dim; i++)
                     {
                       for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
@@ -218,9 +225,13 @@ MatrixFreePDE<dim, degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
                           for (unsigned int i = 0; i < dim; i++)
                             {
                               if (q_point_list[q_point](i) < ele_origin[i])
-                                ele_origin[i] = q_point_list[q_point](i);
+                                {
+                                  ele_origin[i] = q_point_list[q_point](i);
+                                }
                               if (q_point_list[q_point](i) > ele_max[i])
-                                ele_max[i] = q_point_list[q_point](i);
+                                {
+                                  ele_max[i] = q_point_list[q_point](i);
+                                }
                             }
                         }
                     }
@@ -297,10 +308,10 @@ MatrixFreePDE<dim, degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
 
                           // Add nucleus to prospective list
                           std::cout << "Prospective nucleation event. Nucleus no. "
-                                    << nuclei.size() + 1 << std::endl;
-                          std::cout << "Nucleus center: " << nuc_ele_pos << std::endl;
+                                    << nuclei.size() + 1 << "\n";
+                          std::cout << "Nucleus center: " << nuc_ele_pos << "\n";
                           std::cout << "Nucleus order parameter: " << variable_index
-                                    << std::endl;
+                                    << "\n";
                           auto *temp   = new nucleus<dim>;
                           temp->index  = nuclei.size();
                           temp->center = nuc_ele_pos;
@@ -387,15 +398,16 @@ MatrixFreePDE<dim, degree>::safetyCheckNewNuclei(std::vector<nucleus<dim>>  newn
                         {
                           isClose = true;
                           std::cout << "Attempted nucleation failed due to "
-                                       "overlap w/ existing particle!!!!!!"
-                                    << std::endl;
+                                       "overlap w/ existing particle!\n";
                           conflict_ids.push_back(thisNucleus.index);
                           break;
                         }
                     }
                 }
               if (isClose)
-                break;
+                {
+                  break;
+                }
             }
         }
     }
@@ -469,13 +481,19 @@ MatrixFreePDE<dim, degree>::refineMeshNearNuclei(std::vector<nucleus<dim>> newnu
                             }
                         }
                       if (mark_refine)
-                        break;
+                        {
+                          break;
+                        }
                     }
                   if (mark_refine)
-                    break;
+                    {
+                      break;
+                    }
                 }
               if (mark_refine)
-                dof->set_refine_flag();
+                {
+                  dof->set_refine_flag();
+                }
             }
           ++ti;
         }
@@ -486,7 +504,9 @@ MatrixFreePDE<dim, degree>::refineMeshNearNuclei(std::vector<nucleus<dim>> newnu
 
       // If the mesh hasn't changed from the previous cycle, stop remeshing
       if (totalDOFs == numDoF_preremesh)
-        break;
+        {
+          break;
+        }
       numDoF_preremesh = totalDOFs;
     }
 }
@@ -566,6 +586,3 @@ MatrixFreePDE<dim, degree>::weightedDistanceFromNucleusCenter(
     }
   return weighted_dist;
 }
-
-// Template instantiations
-#include "../../include/matrixFreePDE_template_instantiations.h"

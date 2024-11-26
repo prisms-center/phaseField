@@ -33,7 +33,7 @@ namespace PRISMS
       resize(dim);
     }
 
-    PNDArray(const std::vector<int> &dim, const std::vector<OutType> &value)
+    [[nodiscard]] PNDArray(const std::vector<int> &dim, const std::vector<OutType> &value)
     {
       resize(dim);
       if (_volume != value.size())
@@ -47,13 +47,13 @@ namespace PRISMS
       _val = value;
     }
 
-    int
+    [[nodiscard]] int
     order() const
     {
       return _order;
     }
 
-    int
+    [[nodiscard]] int
     volume() const
     {
       return _volume;
@@ -96,13 +96,13 @@ namespace PRISMS
       _volume = 0;
     }
 
-    const std::vector<int> &
+    [[nodiscard]] const std::vector<int> &
     dim() const
     {
       return _dim;
     }
 
-    int
+    [[nodiscard]] int
     dim(int i) const
     {
       return _dim[i];

@@ -11,15 +11,15 @@
 #include <deal.II/lac/vector.h>
 
 template <int dim>
-vectorBCFunction<dim>::vectorBCFunction(std::vector<double> input_values)
+vectorBCFunction<dim>::vectorBCFunction(const std::vector<double> &BC_values)
   : dealii::Function<dim>(dim)
-  , BC_values(std::move(input_values))
+  , BC_values(BC_values)
 {}
 
 template <int dim>
 void
-vectorBCFunction<dim>::vector_value(const dealii::Point<dim> &p,
-                                    dealii::Vector<double>   &values) const
+vectorBCFunction<dim>::vector_value([[maybe_unused]] const dealii::Point<dim> &p,
+                                    dealii::Vector<double> &values) const
 {
   for (unsigned int i = 0; i < dim; i++)
     {
@@ -35,7 +35,9 @@ vectorBCFunction<dim>::vector_value_list(
 {
   const unsigned int n_points = points.size();
   for (unsigned int p = 0; p < n_points; ++p)
-    vectorBCFunction<dim>::vector_value(points[p], value_list[p]);
+    {
+      vectorBCFunction<dim>::vector_value(points[p], value_list[p]);
+    }
 }
 
 template class vectorBCFunction<1>;

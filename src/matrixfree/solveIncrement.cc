@@ -3,6 +3,7 @@
 #include <deal.II/lac/solver_cg.h>
 
 #include "../../include/matrixFreePDE.h"
+#include <cmath>
 
 // solve each time increment
 template <int dim, int degree>
@@ -149,7 +150,7 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                           if (userInputs.nonlinear_solver_parameters.getToleranceType(
                                 fieldIndex) == ABSOLUTE_SOLUTION_CHANGE)
                             {
-                              double diff;
+                              double diff = NAN;
 
                               if (fields[fieldIndex].type == SCALAR)
                                 {
@@ -166,7 +167,7 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                                   pcout << "Relative difference between nonlinear "
                                            "iterations: "
                                         << diff << " " << nonlinear_it_index << " "
-                                        << currentIncrement << std::endl;
+                                        << currentIncrement << "\n";
                                 }
 
                               if (diff > userInputs.nonlinear_solver_parameters
@@ -182,8 +183,7 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                             {
                               std::cerr << "PRISMS-PF Error: Nonlinear solver tolerance "
                                            "types other than ABSOLUTE_CHANGE have yet to "
-                                           "be implemented."
-                                        << std::endl;
+                                           "be implemented.\n";
                             }
                         }
                     }
@@ -232,13 +232,13 @@ MatrixFreePDE<dim, degree>::applyBCs(unsigned int fieldIndex)
       // Apply non-uniform Dirlichlet_BCs to the current field
       if (fields[fieldIndex].hasnonuniformDirichletBCs)
         {
-          DoFHandler<dim> *dof_handler;
-          dof_handler = dofHandlersSet_nonconst.at(currentFieldIndex);
-          IndexSet *locally_relevant_dofs;
+          DoFHandler<dim> *dof_handler    = nullptr;
+          dof_handler                     = dofHandlersSet_nonconst.at(currentFieldIndex);
+          IndexSet *locally_relevant_dofs = nullptr;
           locally_relevant_dofs = locally_relevant_dofsSet_nonconst.at(currentFieldIndex);
           locally_relevant_dofs->clear();
           DoFTools::extract_locally_relevant_dofs(*dof_handler, *locally_relevant_dofs);
-          AffineConstraints<double> *constraintsDirichlet;
+          AffineConstraints<double> *constraintsDirichlet = nullptr;
           constraintsDirichlet = constraintsDirichletSet_nonconst.at(currentFieldIndex);
           constraintsDirichlet->clear();
           constraintsDirichlet->reinit(*locally_relevant_dofs);
@@ -310,7 +310,7 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
   constraintsDirichletSet[fieldIndex]->set_zero(*residualSet[fieldIndex]);
 
   // Grab solver controls
-  double tol_value;
+  double tol_value = NAN;
   if (userInputs.linear_solver_parameters.getToleranceType(fieldIndex) ==
       ABSOLUTE_RESIDUAL)
     {
@@ -362,7 +362,7 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
     {
       // Now that we have the calculated change in the solution,
       // we need to select a damping coefficient
-      double damping_coefficient;
+      double damping_coefficient = NAN;
 
       if (userInputs.nonlinear_solver_parameters.getBacktrackDampingFlag(fieldIndex))
         {
@@ -398,7 +398,7 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
                 {
                   pcout << "    Old residual: " << residual_old
                         << " Damping Coeff: " << damping_coefficient
-                        << " New Residual: " << residual_new << std::endl;
+                        << " New Residual: " << residual_new << "\n";
                 }
 
               // An improved approach would use the
@@ -439,7 +439,7 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
 
       if (currentIncrement % userInputs.skip_print_steps == 0)
         {
-          double dU_norm;
+          double dU_norm = NAN;
           if (fields[fieldIndex].type == SCALAR)
             {
               dU_norm = dU_scalar.l2_norm();
@@ -468,7 +468,7 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
       if (userInputs.nonlinear_solver_parameters.getToleranceType(fieldIndex) ==
           ABSOLUTE_SOLUTION_CHANGE)
         {
-          double diff;
+          double diff = NAN;
 
           if (fields[fieldIndex].type == SCALAR)
             {
@@ -483,7 +483,7 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
               pcout << "Relative difference between nonlinear "
                        "iterations: "
                     << diff << " " << nonlinear_it_index << " " << currentIncrement
-                    << std::endl;
+                    << "\n";
             }
 
           if (diff >
@@ -498,8 +498,7 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
         {
           std::cerr << "PRISMS-PF Error: Nonlinear solver tolerance "
                        "types other than ABSOLUTE_CHANGE have yet to "
-                       "be implemented."
-                    << std::endl;
+                       "be implemented.\n";
         }
     }
   else
@@ -517,7 +516,7 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
 
           if (currentIncrement % userInputs.skip_print_steps == 0)
             {
-              double dU_norm;
+              double dU_norm = NAN;
               if (fields[fieldIndex].type == SCALAR)
                 {
                   dU_norm = dU_scalar.l2_norm();
@@ -546,5 +545,3 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
 
   return nonlinear_it_converged;
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

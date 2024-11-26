@@ -7,12 +7,11 @@
 template <int dim>
 SimplifiedGrainRepresentation<dim>::SimplifiedGrainRepresentation(
   const GrainSet<dim> &grain_set)
+  : grain_id(grain_set.getGrainIndex())
+  , order_parameter_id(grain_set.getOrderParameterIndex())
+  , old_order_parameter_id(order_parameter_id)
+  , distance_to_neighbor_sharing_op(0.0)
 {
-  grain_id                        = grain_set.getGrainIndex();
-  order_parameter_id              = grain_set.getOrderParameterIndex();
-  old_order_parameter_id          = order_parameter_id;
-  distance_to_neighbor_sharing_op = 0.0;
-
   // Calculate the centroid assuming that the elements are rectangular and with
   // no weighting based on the actual value of the field
   std::vector<std::vector<dealii::Point<dim>>> vertex_list = grain_set.getVertexList();
@@ -20,12 +19,12 @@ SimplifiedGrainRepresentation<dim>::SimplifiedGrainRepresentation(
   double                 grain_volume = 0.0;
   dealii::Tensor<1, dim> centroid;
 
-  for (unsigned int c = 0; c < vertex_list.size(); c++)
+  for (auto &vertex : vertex_list)
     {
       double             cell_volume = 1.0;
       dealii::Point<dim> cell_center;
 
-      unsigned int opposite_corner_index;
+      unsigned int opposite_corner_index = 0;
       if (dim == 2)
         {
           opposite_corner_index = 3;
@@ -35,17 +34,17 @@ SimplifiedGrainRepresentation<dim>::SimplifiedGrainRepresentation(
           opposite_corner_index = 7;
         }
 
-      for (unsigned int d = 0; d < dim; d++)
+      for (unsigned int dimension = 0; dimension < dim; dimension++)
         {
           cell_volume *=
-            (vertex_list.at(c)[opposite_corner_index][d] - vertex_list.at(c)[0][d]);
-          cell_center(d) =
-            (vertex_list.at(c)[opposite_corner_index][d] + vertex_list.at(c)[0][d]) / 2.0;
+            (vertex[opposite_corner_index][dimension] - vertex[0][dimension]);
+          cell_center(dimension) =
+            (vertex[opposite_corner_index][dimension] + vertex[0][dimension]) / 2.0;
         }
 
-      for (unsigned int d = 0; d < dim; d++)
+      for (unsigned int dimension = 0; dimension < dim; dimension++)
         {
-          centroid[d] += cell_volume * cell_center(d);
+          centroid[dimension] += cell_volume * cell_center(dimension);
         }
 
       grain_volume += cell_volume;
@@ -53,21 +52,23 @@ SimplifiedGrainRepresentation<dim>::SimplifiedGrainRepresentation(
 
   centroid /= grain_volume;
 
-  for (unsigned int d = 0; d < dim; d++)
+  for (unsigned int dimension = 0; dimension < dim; dimension++)
     {
-      center(d) = centroid[d];
+      center(dimension) = centroid[dimension];
     }
 
   // Calculate the radius as the largest distance from the centroid to one of
   // the vertices
   radius = 0.0;
-  for (unsigned int c = 0; c < vertex_list.size(); c++)
+  for (auto &vertex : vertex_list)
     {
-      for (unsigned int v = 0; v < dealii::Utilities::fixed_power<dim>(2.0); v++)
+      for (unsigned int vertex_index = 0;
+           vertex_index < dealii::Utilities::fixed_power<dim>(2.0);
+           vertex_index++)
         {
-          if (vertex_list[c][v].distance(center) > radius)
+          if (vertex[vertex_index].distance(center) > radius)
             {
-              radius = vertex_list[c][v].distance(center);
+              radius = vertex[vertex_index].distance(center);
             }
         }
     }
@@ -96,9 +97,9 @@ SimplifiedGrainRepresentation<dim>::getGrainId() const
 
 template <int dim>
 void
-SimplifiedGrainRepresentation<dim>::setGrainId(unsigned int id)
+SimplifiedGrainRepresentation<dim>::setGrainId(unsigned int _grain_id)
 {
-  grain_id = id;
+  grain_id = _grain_id;
 }
 
 template <int dim>
@@ -110,9 +111,9 @@ SimplifiedGrainRepresentation<dim>::getOrderParameterId() const
 
 template <int dim>
 void
-SimplifiedGrainRepresentation<dim>::setOrderParameterId(unsigned int id)
+SimplifiedGrainRepresentation<dim>::setOrderParameterId(unsigned int _order_parameter_id)
 {
-  order_parameter_id = id;
+  order_parameter_id = _order_parameter_id;
 }
 
 template <int dim>

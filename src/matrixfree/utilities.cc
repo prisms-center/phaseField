@@ -10,10 +10,10 @@ MatrixFreePDE<dim, degree>::getFieldIndex(std::string _name)
   for (const auto &field : fields)
     {
       if (field.name.compare(_name) == 0)
-        return field.index;
+        {
+          return field.index;
+        }
     }
   pcout << "\nutilities.h: field '" << _name.c_str() << "' not initialized\n";
   exit(-1);
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

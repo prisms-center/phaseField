@@ -1,7 +1,10 @@
+#include <deal.II/base/exceptions.h>
+
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 
 #include "../../include/matrixFreePDE.h"
+#include <filesystem>
 
 #ifdef DEAL_II_WITH_ZLIB
 #  include <zlib.h>
@@ -22,7 +25,7 @@ MatrixFreePDE<dim, degree>::save_checkpoint()
       // will only be initialized once per model run.
       static bool previous_snapshot_exists = (userInputs.resume_from_checkpoint == true);
 
-      if (previous_snapshot_exists == true)
+      if (previous_snapshot_exists)
         {
           move_file("restart.mesh", "restart.mesh.old");
           move_file("restart.mesh.info", "restart.mesh.info.old");
@@ -39,7 +42,8 @@ MatrixFreePDE<dim, degree>::save_checkpoint()
     // Serializing all of the scalars together and all of the vectors together
 
     // First, get lists of scalar and vector fields
-    std::vector<unsigned int> scalar_var_indices, vector_var_indices;
+    std::vector<unsigned int> scalar_var_indices;
+    std::vector<unsigned int> vector_var_indices;
     for (const auto &[index, variable] : var_attributes)
       {
         if (variable.var_type == SCALAR)
@@ -108,7 +112,7 @@ MatrixFreePDE<dim, degree>::save_checkpoint()
       time_info_file.close();
     }
 
-  pcout << "*** Checkpoint created! ***" << std::endl << std::endl;
+  pcout << "*** Checkpoint created! ***\n\n";
   computing_timer.leave_subsection("matrixFreePDE: save_checkpoint");
 }
 
@@ -122,7 +126,7 @@ MatrixFreePDE<dim, degree>::load_checkpoint_triangulation()
   verify_checkpoint_file_exists("restart.mesh");
   verify_checkpoint_file_exists("restart.mesh.info");
 
-  pcout << std::endl << "*** Resuming from a checkpoint! ***" << std::endl << std::endl;
+  pcout << "\n*** Resuming from a checkpoint! ***\n\n";
 
   try
     {
@@ -144,7 +148,8 @@ MatrixFreePDE<dim, degree>::load_checkpoint_fields()
   // Serializing all of the scalars together and all of the vectors together
 
   // First, get lists of scalar and vector fields
-  std::vector<unsigned int> scalar_var_indices, vector_var_indices;
+  std::vector<unsigned int> scalar_var_indices;
+  std::vector<unsigned int> vector_var_indices;
   for (const auto &[index, variable] : var_attributes)
     {
       if (variable.var_type == SCALAR)
@@ -215,28 +220,32 @@ void
 MatrixFreePDE<dim, degree>::move_file(const std::string &old_name,
                                       const std::string &new_name)
 {
-  int error = system(("mv " + old_name + " " + new_name).c_str());
-
-  // If the above call failed, e.g. because there is no command-line
-  // available, try with internal functions.
-  if (error != 0)
+  try
     {
-      std::ifstream ifile(new_name);
-      if (static_cast<bool>(ifile))
+      std::filesystem::rename(old_name, new_name);
+    }
+  catch (const std::filesystem::filesystem_error &error)
+    {
+      if (std::filesystem::exists(new_name))
         {
-          error = remove(new_name.c_str());
-          AssertThrow(error == 0,
-                      ExcMessage(std::string("Unable to remove file: " + new_name +
-                                             ", although it seems to exist. " +
-                                             "The error code is " +
-                                             dealii::Utilities::to_string(error) + ".")));
+          bool is_removed = std::filesystem::remove(new_name);
+          AssertThrow(is_removed,
+                      dealii::ExcMessage(
+                        "Unable to remove file: " + new_name +
+                        ", although it seems to exist. The error code is " +
+                        error.what()));
         }
 
-      error = rename(old_name.c_str(), new_name.c_str());
-      AssertThrow(error == 0,
-                  ExcMessage(std::string("Unable to rename files: ") + old_name + " -> " +
-                             new_name + ". The error code is " +
-                             dealii::Utilities::to_string(error) + "."));
+      try
+        {
+          std::filesystem::rename(old_name, new_name);
+        }
+      catch (const std::filesystem::filesystem_error &rename_error)
+        {
+          AssertThrow(false,
+                      ExcMessage("Unable to rename file: " + old_name + " -> " +
+                                 new_name + ". Error: " + rename_error.what()));
+        }
     }
 }
 
@@ -254,5 +263,3 @@ MatrixFreePDE<dim, degree>::verify_checkpoint_file_exists(const std::string &fil
                              filename + "> does not appear to exist!"));
     }
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

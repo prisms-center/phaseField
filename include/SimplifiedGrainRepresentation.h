@@ -25,44 +25,44 @@ public:
   /**
    * Getter for the grain center/centroid.
    */
-  dealii::Point<dim>
+  [[nodiscard]] dealii::Point<dim>
   getCenter() const;
 
   /**
    * Getter for the grain radius.
    */
-  double
+  [[nodiscard]] double
   getRadius() const;
 
   /**
    * Getter for the grain id.
    */
-  unsigned int
+  [[nodiscard]] unsigned int
   getGrainId() const;
 
   /**
    * Setter for the grain id.
    */
   void
-  setGrainId(unsigned int id);
+  setGrainId(unsigned int _grain_id);
 
   /**
    * Getter for the order parameter id.
    */
-  unsigned int
+  [[nodiscard]] unsigned int
   getOrderParameterId() const;
 
   /**
    * Setter for the order parameter id.
    */
   void
-  setOrderParameterId(unsigned int id);
+  setOrderParameterId(unsigned int _order_parameter_id);
 
   /**
    * Getter for the old value of the order parameter id (used in the
    * transferGrainIds method of the SimplifiedGrainManipulator class).
    */
-  unsigned int
+  [[nodiscard]] unsigned int
   getOldOrderParameterId() const;
 
   /**
@@ -76,7 +76,7 @@ public:
    * Getter for the distance from this grain to the nearest grain with the same
    * order parameter
    */
-  double
+  [[nodiscard]] double
   getDistanceToNeighbor() const;
 
 protected:

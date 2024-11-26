@@ -38,15 +38,14 @@ MatrixFreePDE<dim, degree>::init()
   if (dim < 3)
     {
       pcout << "problem dimensions: " << userInputs.domain_size[0] << "x"
-            << userInputs.domain_size[1] << std::endl;
+            << userInputs.domain_size[1] << "\n";
     }
   else
     {
       pcout << "problem dimensions: " << userInputs.domain_size[0] << "x"
-            << userInputs.domain_size[1] << "x" << userInputs.domain_size[2] << std::endl;
+            << userInputs.domain_size[1] << "x" << userInputs.domain_size[2] << "\n";
     }
-  pcout << "number of elements: " << triangulation.n_global_active_cells() << std::endl;
-  pcout << std::endl;
+  pcout << "number of elements: " << triangulation.n_global_active_cells() << "\n\n";
 
   // Setup system
   pcout << "initializing matrix free object\n";
@@ -96,8 +95,7 @@ MatrixFreePDE<dim, degree>::init()
           isTimeDependentBVP     = true;
           hasNonExplicitEquation = true;
           std::cerr << "PRISMS-PF Error: IMPLICIT_TIME_DEPENDENT equation "
-                       "types are not currently supported"
-                    << std::endl;
+                       "types are not currently supported\n";
           abort();
         }
       else if (field.pdetype == AUXILIARY)
@@ -111,7 +109,7 @@ MatrixFreePDE<dim, degree>::init()
         }
 
       // create FESystem
-      FESystem<dim> *fe;
+      FESystem<dim> *fe = nullptr;
 
       if (field.type == SCALAR)
         {
@@ -129,7 +127,7 @@ MatrixFreePDE<dim, degree>::init()
       FESet.push_back(fe);
 
       // distribute DOFs
-      DoFHandler<dim> *dof_handler;
+      DoFHandler<dim> *dof_handler = nullptr;
 
       dof_handler = new DoFHandler<dim>(triangulation);
       dofHandlersSet.push_back(dof_handler);
@@ -139,7 +137,7 @@ MatrixFreePDE<dim, degree>::init()
       totalDOFs += dof_handler->n_dofs();
 
       // Extract locally_relevant_dofs
-      IndexSet *locally_relevant_dofs;
+      IndexSet *locally_relevant_dofs = nullptr;
 
       locally_relevant_dofs = new IndexSet;
       locally_relevant_dofsSet.push_back(locally_relevant_dofs);
@@ -149,7 +147,8 @@ MatrixFreePDE<dim, degree>::init()
       DoFTools::extract_locally_relevant_dofs(*dof_handler, *locally_relevant_dofs);
 
       // Create constraints
-      AffineConstraints<double> *constraintsDirichlet, *constraintsOther;
+      AffineConstraints<double> *constraintsDirichlet = nullptr;
+      AffineConstraints<double> *constraintsOther     = nullptr;
 
       constraintsDirichlet = new AffineConstraints<double>;
       constraintsDirichletSet.push_back(constraintsDirichlet);
@@ -228,7 +227,7 @@ MatrixFreePDE<dim, degree>::init()
                constraintsDirichlet->n_constraints());
       pcout << buffer;
     }
-  pcout << "total DOF : " << totalDOFs << std::endl;
+  pcout << "total DOF : " << totalDOFs << "\n";
 
   // Setup the matrix free object
   typename MatrixFree<dim, double>::AdditionalData additional_data;
@@ -264,7 +263,8 @@ MatrixFreePDE<dim, degree>::init()
   pcout << "initializing parallel::distributed residual and solution vectors\n";
   for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
     {
-      vectorType *U, *R;
+      vectorType *U = nullptr;
+      vectorType *R = nullptr;
 
       U = new vectorType;
       R = new vectorType;
@@ -285,7 +285,7 @@ MatrixFreePDE<dim, degree>::init()
         {
           if (fields[fieldIndex].type == SCALAR)
             {
-              if (dU_scalar_init == false)
+              if (!dU_scalar_init)
                 {
                   matrixFreeObject.initialize_dof_vector(dU_scalar, fieldIndex);
                   dU_scalar_init = true;
@@ -293,7 +293,7 @@ MatrixFreePDE<dim, degree>::init()
             }
           else
             {
-              if (dU_vector_init == false)
+              if (!dU_vector_init)
                 {
                   matrixFreeObject.initialize_dof_vector(dU_vector, fieldIndex);
                   dU_vector_init = true;
@@ -353,7 +353,9 @@ MatrixFreePDE<dim, degree>::init()
           AMR.do_adaptive_refinement(currentIncrement);
           reinit();
           if (totalDOFs == numDoF_preremesh)
-            break;
+            {
+              break;
+            }
           numDoF_preremesh = totalDOFs;
         }
 
@@ -452,5 +454,3 @@ MatrixFreePDE<dim, degree>::compute_element_volume()
         }
     }
 }
-
-#include "../../include/matrixFreePDE_template_instantiations.h"

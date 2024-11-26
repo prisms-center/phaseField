@@ -22,6 +22,10 @@ compile_commands.json
 .venv/*
 *.venv/
 
+# Clang-tidy
+output.txt
+error.txt
+
 # Compressed Libraries
 *.zip
 *.tar.gz

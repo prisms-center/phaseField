@@ -23,13 +23,13 @@ parallelNucleationList<dim>::buildGlobalNucleiList(double       min_dist_between
                                                    unsigned int old_num_nuclei)
 {
   // MPI INITIALIZATON
-  int numProcs = dealii::Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
-  int thisProc = dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
+  const unsigned int numProcs = dealii::Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
+  const unsigned int thisProc = dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
   if (numProcs > 1)
     {
       // Cycle through each processor, sending and receiving, to append the list
       // of new nuclei
-      for (int proc_index = 0; proc_index < numProcs - 1; proc_index++)
+      for (unsigned int proc_index = 0; proc_index < numProcs - 1; proc_index++)
         {
           if (thisProc == proc_index)
             {
@@ -104,12 +104,16 @@ parallelNucleationList<dim>::sendUpdate(int procno) const
           s_center_x.push_back(s_center[0]);
           s_center_y.push_back(s_center[1]);
           if (dim == 3)
-            s_center_z.push_back(s_center[2]);
+            {
+              s_center_z.push_back(s_center[2]);
+            }
 
           s_semiaxis_a.push_back(thisNuclei.semiaxes[0]);
           s_semiaxis_b.push_back(thisNuclei.semiaxes[1]);
           if (dim == 3)
-            s_semiaxis_c.push_back(thisNuclei.semiaxes[2]);
+            {
+              s_semiaxis_c.push_back(thisNuclei.semiaxes[2]);
+            }
 
           s_seededTime.push_back(thisNuclei.seededTime);
           s_seedingTime.push_back(thisNuclei.seedingTime);
@@ -117,27 +121,32 @@ parallelNucleationList<dim>::sendUpdate(int procno) const
           s_orderParameterIndex.push_back(thisNuclei.orderParameterIndex);
         }
       // Send vectors to next processor
-      MPI_Send(&s_index[0], currnonucs, MPI_UNSIGNED, procno, 1, MPI_COMM_WORLD);
-      MPI_Send(&s_center_x[0], currnonucs, MPI_DOUBLE, procno, 2, MPI_COMM_WORLD);
-      MPI_Send(&s_center_y[0], currnonucs, MPI_DOUBLE, procno, 3, MPI_COMM_WORLD);
+      MPI_Send(s_index.data(), currnonucs, MPI_UNSIGNED, procno, 1, MPI_COMM_WORLD);
+      MPI_Send(s_center_x.data(), currnonucs, MPI_DOUBLE, procno, 2, MPI_COMM_WORLD);
+      MPI_Send(s_center_y.data(), currnonucs, MPI_DOUBLE, procno, 3, MPI_COMM_WORLD);
       if (dim == 3)
         {
-          MPI_Send(&s_center_z[0], currnonucs, MPI_DOUBLE, procno, 4, MPI_COMM_WORLD);
-          MPI_Send(&s_semiaxis_c[0], currnonucs, MPI_DOUBLE, procno, 7, MPI_COMM_WORLD);
+          MPI_Send(s_center_z.data(), currnonucs, MPI_DOUBLE, procno, 4, MPI_COMM_WORLD);
+          MPI_Send(s_semiaxis_c.data(),
+                   currnonucs,
+                   MPI_DOUBLE,
+                   procno,
+                   7,
+                   MPI_COMM_WORLD);
         }
 
-      MPI_Send(&s_semiaxis_a[0], currnonucs, MPI_DOUBLE, procno, 5, MPI_COMM_WORLD);
-      MPI_Send(&s_semiaxis_b[0], currnonucs, MPI_DOUBLE, procno, 6, MPI_COMM_WORLD);
+      MPI_Send(s_semiaxis_a.data(), currnonucs, MPI_DOUBLE, procno, 5, MPI_COMM_WORLD);
+      MPI_Send(s_semiaxis_b.data(), currnonucs, MPI_DOUBLE, procno, 6, MPI_COMM_WORLD);
 
-      MPI_Send(&s_seededTime[0], currnonucs, MPI_DOUBLE, procno, 8, MPI_COMM_WORLD);
-      MPI_Send(&s_seedingTime[0], currnonucs, MPI_DOUBLE, procno, 9, MPI_COMM_WORLD);
-      MPI_Send(&s_seedingTimestep[0],
+      MPI_Send(s_seededTime.data(), currnonucs, MPI_DOUBLE, procno, 8, MPI_COMM_WORLD);
+      MPI_Send(s_seedingTime.data(), currnonucs, MPI_DOUBLE, procno, 9, MPI_COMM_WORLD);
+      MPI_Send(s_seedingTimestep.data(),
                currnonucs,
                MPI_UNSIGNED,
                procno,
                10,
                MPI_COMM_WORLD);
-      MPI_Send(&s_orderParameterIndex[0],
+      MPI_Send(s_orderParameterIndex.data(),
                currnonucs,
                MPI_UNSIGNED,
                procno,
@@ -183,21 +192,21 @@ parallelNucleationList<dim>::receiveUpdate(int procno)
       std::vector<unsigned int> r_orderParameterIndex(recvnonucs, 0);
 
       // Recieve vectors from processor procno
-      MPI_Recv(&r_index[0],
+      MPI_Recv(r_index.data(),
                recvnonucs,
                MPI_UNSIGNED,
                procno,
                1,
                MPI_COMM_WORLD,
                MPI_STATUS_IGNORE);
-      MPI_Recv(&r_center_x[0],
+      MPI_Recv(r_center_x.data(),
                recvnonucs,
                MPI_DOUBLE,
                procno,
                2,
                MPI_COMM_WORLD,
                MPI_STATUS_IGNORE);
-      MPI_Recv(&r_center_y[0],
+      MPI_Recv(r_center_y.data(),
                recvnonucs,
                MPI_DOUBLE,
                procno,
@@ -206,14 +215,14 @@ parallelNucleationList<dim>::receiveUpdate(int procno)
                MPI_STATUS_IGNORE);
       if (dim == 3)
         {
-          MPI_Recv(&r_center_z[0],
+          MPI_Recv(r_center_z.data(),
                    recvnonucs,
                    MPI_DOUBLE,
                    procno,
                    4,
                    MPI_COMM_WORLD,
                    MPI_STATUS_IGNORE);
-          MPI_Recv(&r_semiaxis_c[0],
+          MPI_Recv(r_semiaxis_c.data(),
                    recvnonucs,
                    MPI_DOUBLE,
                    procno,
@@ -222,14 +231,14 @@ parallelNucleationList<dim>::receiveUpdate(int procno)
                    MPI_STATUS_IGNORE);
         }
 
-      MPI_Recv(&r_semiaxis_a[0],
+      MPI_Recv(r_semiaxis_a.data(),
                recvnonucs,
                MPI_DOUBLE,
                procno,
                5,
                MPI_COMM_WORLD,
                MPI_STATUS_IGNORE);
-      MPI_Recv(&r_semiaxis_b[0],
+      MPI_Recv(r_semiaxis_b.data(),
                recvnonucs,
                MPI_DOUBLE,
                procno,
@@ -237,28 +246,28 @@ parallelNucleationList<dim>::receiveUpdate(int procno)
                MPI_COMM_WORLD,
                MPI_STATUS_IGNORE);
 
-      MPI_Recv(&r_seededTime[0],
+      MPI_Recv(r_seededTime.data(),
                recvnonucs,
                MPI_DOUBLE,
                procno,
                8,
                MPI_COMM_WORLD,
                MPI_STATUS_IGNORE);
-      MPI_Recv(&r_seedingTime[0],
+      MPI_Recv(r_seedingTime.data(),
                recvnonucs,
                MPI_DOUBLE,
                procno,
                9,
                MPI_COMM_WORLD,
                MPI_STATUS_IGNORE);
-      MPI_Recv(&r_seedingTimestep[0],
+      MPI_Recv(r_seedingTimestep.data(),
                recvnonucs,
                MPI_UNSIGNED,
                procno,
                10,
                MPI_COMM_WORLD,
                MPI_STATUS_IGNORE);
-      MPI_Recv(&r_orderParameterIndex[0],
+      MPI_Recv(r_orderParameterIndex.data(),
                recvnonucs,
                MPI_UNSIGNED,
                procno,
@@ -269,18 +278,23 @@ parallelNucleationList<dim>::receiveUpdate(int procno)
       // Loop to store info in vectors onto the nuclei structure
       for (int jnuc = 0; jnuc <= recvnonucs - 1; jnuc++)
         {
-          auto *temp  = new nucleus<dim>;
+          auto temp = std::make_unique<nucleus<dim>>();
+
           temp->index = r_index[jnuc];
           dealii::Point<dim> r_center;
           r_center[0] = r_center_x[jnuc];
           r_center[1] = r_center_y[jnuc];
           if (dim == 3)
-            r_center[2] = r_center_z[jnuc];
+            {
+              r_center[2] = r_center_z[jnuc];
+            }
           temp->center = r_center;
           temp->semiaxes.push_back(r_semiaxis_a[jnuc]);
           temp->semiaxes.push_back(r_semiaxis_b[jnuc]);
           if (dim == 3)
-            temp->semiaxes.push_back(r_semiaxis_c[jnuc]);
+            {
+              temp->semiaxes.push_back(r_semiaxis_c[jnuc]);
+            }
           temp->seededTime          = r_seededTime[jnuc];
           temp->seedingTime         = r_seedingTime[jnuc];
           temp->seedingTimestep     = r_seedingTimestep[jnuc];
@@ -301,122 +315,130 @@ parallelNucleationList<dim>::broadcastUpdate(int broadcastProc, int thisProc)
   // OTHERS
   int currnonucs = newnuclei.size();
   MPI_Bcast(&currnonucs, 1, MPI_INT, broadcastProc, MPI_COMM_WORLD);
-  if (currnonucs > 0)
+
+  if (currnonucs == 0)
     {
-      // Creating vectors of each quantity in nuclei. Each numbered acording to
-      // the tags used for MPI_Send/MPI_Recv
-      unsigned int initial_vec_size;
-      if (thisProc == broadcastProc)
+      return;
+    }
+
+  // Creating vectors of each quantity in nuclei. Each numbered acording to
+  // the tags used for MPI_Send/MPI_Recv
+  unsigned int initial_vec_size = 0;
+  if (thisProc == broadcastProc)
+    {
+      initial_vec_size = 0;
+    }
+  else
+    {
+      initial_vec_size = currnonucs;
+    }
+
+  // 1 - index
+  std::vector<unsigned int> r_index(initial_vec_size, 0);
+  // 2 - "x" componenet of center
+  std::vector<double> r_center_x(initial_vec_size, 0.0);
+  // 3 - "y" componenet of center
+  std::vector<double> r_center_y(initial_vec_size, 0.0);
+  // 4 - "z" componenet of center
+  std::vector<double> r_center_z(initial_vec_size, 0.0);
+  // 5 - radius
+  std::vector<double> r_semiaxis_a(initial_vec_size, 0.0);
+  std::vector<double> r_semiaxis_b(initial_vec_size, 0.0);
+  std::vector<double> r_semiaxis_c(initial_vec_size, 0.0);
+  // 6 - seededTime
+  std::vector<double> r_seededTime(initial_vec_size, 0.0);
+  // 7 - seedingTime
+  std::vector<double> r_seedingTime(initial_vec_size, 0.0);
+  // 8 - seedingTimestep
+  std::vector<unsigned int> r_seedingTimestep(initial_vec_size, 0);
+  // 9 - orderParameterIndex
+  std::vector<unsigned int> r_orderParameterIndex(initial_vec_size, 0);
+
+  if (thisProc == broadcastProc)
+    {
+      for (const auto &thisNuclei : newnuclei)
         {
-          initial_vec_size = 0;
-        }
-      else
-        {
-          initial_vec_size = currnonucs;
-        }
-
-      // 1 - index
-      std::vector<unsigned int> r_index(initial_vec_size, 0);
-      // 2 - "x" componenet of center
-      std::vector<double> r_center_x(initial_vec_size, 0.0);
-      // 3 - "y" componenet of center
-      std::vector<double> r_center_y(initial_vec_size, 0.0);
-      // 4 - "z" componenet of center
-      std::vector<double> r_center_z(initial_vec_size, 0.0);
-      // 5 - radius
-      std::vector<double> r_semiaxis_a(initial_vec_size, 0.0);
-      std::vector<double> r_semiaxis_b(initial_vec_size, 0.0);
-      std::vector<double> r_semiaxis_c(initial_vec_size, 0.0);
-      // 6 - seededTime
-      std::vector<double> r_seededTime(initial_vec_size, 0.0);
-      // 7 - seedingTime
-      std::vector<double> r_seedingTime(initial_vec_size, 0.0);
-      // 8 - seedingTimestep
-      std::vector<unsigned int> r_seedingTimestep(initial_vec_size, 0);
-      // 9 - orderParameterIndex
-      std::vector<unsigned int> r_orderParameterIndex(initial_vec_size, 0);
-
-      if (thisProc == broadcastProc)
-        {
-          for (const auto &thisNuclei : newnuclei)
-            {
-              r_index.push_back(thisNuclei.index);
-              dealii::Point<dim> s_center = thisNuclei.center;
-              r_center_x.push_back(s_center[0]);
-              r_center_y.push_back(s_center[1]);
-              if (dim == 3)
-                {
-                  r_center_z.push_back(s_center[2]);
-                }
-
-              r_semiaxis_a.push_back(thisNuclei.semiaxes[0]);
-              r_semiaxis_b.push_back(thisNuclei.semiaxes[1]);
-              if (dim == 3)
-                {
-                  r_semiaxis_c.push_back(thisNuclei.semiaxes[2]);
-                }
-
-              r_seededTime.push_back(thisNuclei.seededTime);
-              r_seedingTime.push_back(thisNuclei.seedingTime);
-              r_seedingTimestep.push_back(thisNuclei.seedingTimestep);
-              r_orderParameterIndex.push_back(thisNuclei.orderParameterIndex);
-            }
-        }
-
-      // Recieve vectors from processor procno
-      MPI_Bcast(&r_index[0], currnonucs, MPI_UNSIGNED, broadcastProc, MPI_COMM_WORLD);
-      MPI_Bcast(&r_center_x[0], currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
-      MPI_Bcast(&r_center_y[0], currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
-      if (dim == 3)
-        MPI_Bcast(&r_center_z[0], currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
-
-      MPI_Bcast(&r_semiaxis_a[0], currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
-      MPI_Bcast(&r_semiaxis_b[0], currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
-      if (dim == 3)
-        MPI_Bcast(&r_semiaxis_c[0],
-                  currnonucs,
-                  MPI_DOUBLE,
-                  broadcastProc,
-                  MPI_COMM_WORLD);
-
-      MPI_Bcast(&r_seededTime[0], currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
-      MPI_Bcast(&r_seedingTime[0], currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
-      MPI_Bcast(&r_seedingTimestep[0],
-                currnonucs,
-                MPI_UNSIGNED,
-                broadcastProc,
-                MPI_COMM_WORLD);
-      MPI_Bcast(&r_orderParameterIndex[0],
-                currnonucs,
-                MPI_UNSIGNED,
-                broadcastProc,
-                MPI_COMM_WORLD);
-
-      newnuclei.clear();
-
-      // Loop to store info in vectors onto the nuclei structure
-      for (int jnuc = 0; jnuc <= currnonucs - 1; jnuc++)
-        {
-          auto *temp  = new nucleus<dim>;
-          temp->index = r_index[jnuc];
-          dealii::Point<dim> r_center;
-          r_center[0] = r_center_x[jnuc];
-          r_center[1] = r_center_y[jnuc];
-          if (dim == 3)
-            r_center[2] = r_center_z[jnuc];
-          temp->center = r_center;
-          temp->semiaxes.push_back(r_semiaxis_a[jnuc]);
-          temp->semiaxes.push_back(r_semiaxis_b[jnuc]);
+          r_index.push_back(thisNuclei.index);
+          dealii::Point<dim> s_center = thisNuclei.center;
+          r_center_x.push_back(s_center[0]);
+          r_center_y.push_back(s_center[1]);
           if (dim == 3)
             {
-              temp->semiaxes.push_back(r_semiaxis_c[jnuc]);
+              r_center_z.push_back(s_center[2]);
             }
-          temp->seededTime          = r_seededTime[jnuc];
-          temp->seedingTime         = r_seedingTime[jnuc];
-          temp->seedingTimestep     = r_seedingTimestep[jnuc];
-          temp->orderParameterIndex = r_orderParameterIndex[jnuc];
-          newnuclei.push_back(*temp);
+
+          r_semiaxis_a.push_back(thisNuclei.semiaxes[0]);
+          r_semiaxis_b.push_back(thisNuclei.semiaxes[1]);
+          if (dim == 3)
+            {
+              r_semiaxis_c.push_back(thisNuclei.semiaxes[2]);
+            }
+
+          r_seededTime.push_back(thisNuclei.seededTime);
+          r_seedingTime.push_back(thisNuclei.seedingTime);
+          r_seedingTimestep.push_back(thisNuclei.seedingTimestep);
+          r_orderParameterIndex.push_back(thisNuclei.orderParameterIndex);
         }
+    }
+
+  // Recieve vectors from processor procno
+  MPI_Bcast(r_index.data(), currnonucs, MPI_UNSIGNED, broadcastProc, MPI_COMM_WORLD);
+  MPI_Bcast(r_center_x.data(), currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
+  MPI_Bcast(r_center_y.data(), currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
+  if (dim == 3)
+    {
+      MPI_Bcast(r_center_z.data(), currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
+    }
+  MPI_Bcast(r_semiaxis_a.data(), currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
+  MPI_Bcast(r_semiaxis_b.data(), currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
+  if (dim == 3)
+    {
+      MPI_Bcast(r_semiaxis_c.data(),
+                currnonucs,
+                MPI_DOUBLE,
+                broadcastProc,
+                MPI_COMM_WORLD);
+    }
+  MPI_Bcast(r_seededTime.data(), currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
+  MPI_Bcast(r_seedingTime.data(), currnonucs, MPI_DOUBLE, broadcastProc, MPI_COMM_WORLD);
+  MPI_Bcast(r_seedingTimestep.data(),
+            currnonucs,
+            MPI_UNSIGNED,
+            broadcastProc,
+            MPI_COMM_WORLD);
+  MPI_Bcast(r_orderParameterIndex.data(),
+            currnonucs,
+            MPI_UNSIGNED,
+            broadcastProc,
+            MPI_COMM_WORLD);
+
+  newnuclei.clear();
+
+  // Loop to store info in vectors onto the nuclei structure
+  for (int jnuc = 0; jnuc <= currnonucs - 1; jnuc++)
+    {
+      auto temp = std::make_unique<nucleus<dim>>();
+
+      temp->index = r_index[jnuc];
+      dealii::Point<dim> r_center;
+      r_center[0] = r_center_x[jnuc];
+      r_center[1] = r_center_y[jnuc];
+      if (dim == 3)
+        {
+          r_center[2] = r_center_z[jnuc];
+        }
+      temp->center = r_center;
+      temp->semiaxes.push_back(r_semiaxis_a[jnuc]);
+      temp->semiaxes.push_back(r_semiaxis_b[jnuc]);
+      if (dim == 3)
+        {
+          temp->semiaxes.push_back(r_semiaxis_c[jnuc]);
+        }
+      temp->seededTime          = r_seededTime[jnuc];
+      temp->seedingTime         = r_seedingTime[jnuc];
+      temp->seedingTimestep     = r_seedingTimestep[jnuc];
+      temp->orderParameterIndex = r_orderParameterIndex[jnuc];
+      newnuclei.push_back(*temp);
     }
 }
 
@@ -475,8 +497,10 @@ parallelNucleationList<dim>::removeSubsetOfNuclei(
   // methods to reduce duplication.
 
   // MPI INITIALIZATON
-  int numProcs = dealii::Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
-  int thisProc = dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
+  const int numProcs =
+    static_cast<int>(dealii::Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD));
+  const int thisProc =
+    static_cast<int>(dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD));
 
   // Build a global list of nuclei to delete, first sending the length of the
   // vector of indices, then the vector itself
@@ -488,9 +512,9 @@ parallelNucleationList<dim>::removeSubsetOfNuclei(
         {
           if (thisProc == proc_index)
             {
-              int currnonucs = nuclei_to_remove.size();
+              int currnonucs = static_cast<int>(nuclei_to_remove.size());
               MPI_Send(&currnonucs, 1, MPI_INT, thisProc + 1, 0, MPI_COMM_WORLD);
-              MPI_Send(&nuclei_to_remove[0],
+              MPI_Send(nuclei_to_remove.data(),
                        currnonucs,
                        MPI_UNSIGNED,
                        thisProc + 1,
@@ -508,7 +532,7 @@ parallelNucleationList<dim>::removeSubsetOfNuclei(
                        MPI_COMM_WORLD,
                        MPI_STATUS_IGNORE);
               std::vector<unsigned int> recieved_nuclei_to_remove(recvnonucs);
-              MPI_Recv(&recieved_nuclei_to_remove[0],
+              MPI_Recv(recieved_nuclei_to_remove.data(),
                        recvnonucs,
                        MPI_UNSIGNED,
                        thisProc - 1,
@@ -524,14 +548,14 @@ parallelNucleationList<dim>::removeSubsetOfNuclei(
 
       // The final processor now has the final list of the new nuclei, broadcast
       // it to all the other processors
-      int currnonucs = nuclei_to_remove.size();
+      int currnonucs = static_cast<int>(nuclei_to_remove.size());
       MPI_Bcast(&currnonucs, 1, MPI_INT, numProcs - 1, MPI_COMM_WORLD);
       std::vector<unsigned int> recieved_nuclei_to_remove(currnonucs);
       if (thisProc == numProcs - 1)
         {
           recieved_nuclei_to_remove = nuclei_to_remove;
         }
-      MPI_Bcast(&recieved_nuclei_to_remove[0],
+      MPI_Bcast(recieved_nuclei_to_remove.data(),
                 currnonucs,
                 MPI_UNSIGNED,
                 numProcs - 1,
@@ -539,9 +563,9 @@ parallelNucleationList<dim>::removeSubsetOfNuclei(
       nuclei_to_remove = recieved_nuclei_to_remove;
     }
 
-  for (unsigned int i : nuclei_to_remove)
+  for (const unsigned int nuclei : nuclei_to_remove)
     {
-      std::cout << thisProc << ": " << i << std::endl;
+      std::cout << thisProc << ": " << nuclei << "\n";
     }
 
   // Remove the nuclei from the list
@@ -549,9 +573,9 @@ parallelNucleationList<dim>::removeSubsetOfNuclei(
   for (unsigned int nuc = 0; nuc < newnuclei.size(); nuc++)
     {
       bool pruneNucleus = false;
-      for (unsigned int i : nuclei_to_remove)
+      for (const unsigned int nuclei : nuclei_to_remove)
         {
-          if (i == nuclei_size + nuc)
+          if (nuclei == nuclei_size + nuc)
             {
               pruneNucleus = true;
               break;

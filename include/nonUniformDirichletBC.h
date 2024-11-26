@@ -24,7 +24,7 @@ public:
   }
 
   // IC for scalar values
-  double
+  [[nodiscard]] double
   value(const dealii::Point<dim> &p, const unsigned int component = 0) const override
   {
     double                 scalar_BC = 0.0;
