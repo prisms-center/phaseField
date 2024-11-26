@@ -5,6 +5,7 @@
 #include "../../include/IntegrationTools/PField.hh"
 #include "../../include/OrderParameterRemapper.h"
 #include "../../include/matrixFreePDE.h"
+#include <cmath>
 
 template <int dim>
 class InitialConditionPField : public Function<dim>
@@ -23,9 +24,10 @@ public:
   {}
 
   [[nodiscard]] double
-  value(const Point<dim> &p, const unsigned int component = 0) const override
+  value(const Point<dim>                   &p,
+        [[maybe_unused]] const unsigned int component = 0) const override
   {
-    double scalar_IC;
+    double scalar_IC = NAN;
 
     double coord[dim];
     for (unsigned int i = 0; i < dim; i++)
@@ -350,11 +352,11 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
         {
           std::ostringstream conversion;
           conversion << Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
-          filename = filename + "." + conversion.str() + ".vtk";
+          filename.append("." + conversion.str() + ".vtk");
         }
       else
         {
-          filename = filename + ".vtk"; // add file extension
+          filename.append(".vtk");
         }
 
       std::cout << "Reading " << filename << "\n";

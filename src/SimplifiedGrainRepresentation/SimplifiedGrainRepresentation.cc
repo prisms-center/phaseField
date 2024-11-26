@@ -7,12 +7,11 @@
 template <int dim>
 SimplifiedGrainRepresentation<dim>::SimplifiedGrainRepresentation(
   const GrainSet<dim> &grain_set)
+  : grain_id(grain_set.getGrainIndex())
+  , order_parameter_id(grain_set.getOrderParameterIndex())
+  , old_order_parameter_id(order_parameter_id)
+  , distance_to_neighbor_sharing_op(0.0)
 {
-  grain_id                        = grain_set.getGrainIndex();
-  order_parameter_id              = grain_set.getOrderParameterIndex();
-  old_order_parameter_id          = order_parameter_id;
-  distance_to_neighbor_sharing_op = 0.0;
-
   // Calculate the centroid assuming that the elements are rectangular and with
   // no weighting based on the actual value of the field
   std::vector<std::vector<dealii::Point<dim>>> vertex_list = grain_set.getVertexList();
@@ -25,7 +24,7 @@ SimplifiedGrainRepresentation<dim>::SimplifiedGrainRepresentation(
       double             cell_volume = 1.0;
       dealii::Point<dim> cell_center;
 
-      unsigned int opposite_corner_index;
+      unsigned int opposite_corner_index = 0;
       if (dim == 2)
         {
           opposite_corner_index = 3;

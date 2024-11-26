@@ -3,6 +3,7 @@
 #include <deal.II/numerics/data_out.h>
 
 #include "../../include/matrixFreePDE.h"
+#include <cmath>
 
 // output results
 template <int dim, int degree>
@@ -88,7 +89,7 @@ MatrixFreePDE<dim, degree>::outputResults()
             {
               if (pp_variable.calc_integral)
                 {
-                  double integrated_field;
+                  double integrated_field = NAN;
                   computeIntegral(integrated_field, pp_index, postProcessedSet);
                   pcout << "Integrated value of " << pp_variable.name << ": "
                         << integrated_field << std::endl;
@@ -112,14 +113,13 @@ MatrixFreePDE<dim, degree>::outputResults()
       for (const auto &[fieldIndex, pp_variable] : var_attributes.pp_attributes)
         {
           // mark field as scalar/vector
-          unsigned int components;
+          unsigned int components = 0;
           if (userInputs.pp_varInfoList[fieldIndex].is_scalar)
             {
               components = 1;
               std::vector<DataComponentInterpretation::DataComponentInterpretation>
                 dataType(components, DataComponentInterpretation::component_is_scalar);
-              std::vector<std::string> solutionNames(components,
-                                                     pp_variable.name.c_str());
+              std::vector<std::string> solutionNames(components, pp_variable.name);
               // add field to data_out
               data_out.add_data_vector(*dofHandlersSet[0],
                                        *postProcessedSet[fieldIndex],
@@ -132,8 +132,7 @@ MatrixFreePDE<dim, degree>::outputResults()
               std::vector<DataComponentInterpretation::DataComponentInterpretation>
                                        dataType(components,
                          DataComponentInterpretation::component_is_part_of_vector);
-              std::vector<std::string> solutionNames(components,
-                                                     pp_variable.name.c_str());
+              std::vector<std::string> solutionNames(components, pp_variable.name);
               // add field to data_out
               data_out.add_data_vector(*dofHandlersSet[0],
                                        *postProcessedSet[fieldIndex],
@@ -145,26 +144,26 @@ MatrixFreePDE<dim, degree>::outputResults()
 
   data_out.build_patches(degree);
 
-  // Defining snprintf with no warnings because we don't can about truncation
-#define snprintf_nowarn(...) (snprintf(__VA_ARGS__) < 0 ? abort() : (void) 0)
-
   // write to results file
   // file name
   std::ostringstream cycleAsString;
   cycleAsString << std::setw(std::floor(std::log10(userInputs.totalIncrements)) + 1)
                 << std::setfill('0') << currentIncrement;
-  char baseFileName[100], vtuFileName[100];
-  snprintf_nowarn(baseFileName,
-                  sizeof(baseFileName),
-                  "%s-%s",
-                  userInputs.output_file_name.c_str(),
-                  cycleAsString.str().c_str());
-  snprintf_nowarn(vtuFileName,
-                  sizeof(vtuFileName),
-                  "%s.%u.%s",
-                  baseFileName,
-                  Utilities::MPI::this_mpi_process(MPI_COMM_WORLD),
-                  userInputs.output_file_type.c_str());
+
+  char baseFileName[100];
+  char vtuFileName[100];
+
+  snprintf(baseFileName,
+           sizeof(baseFileName),
+           "%s-%s",
+           userInputs.output_file_name.c_str(),
+           cycleAsString.str().c_str());
+  snprintf(vtuFileName,
+           sizeof(vtuFileName),
+           "%s.%u.%s",
+           baseFileName,
+           Utilities::MPI::this_mpi_process(MPI_COMM_WORLD),
+           userInputs.output_file_type.c_str());
 
   // Write to file in either vtu or vtk format
   if (userInputs.output_file_type == "vtu")
@@ -192,21 +191,21 @@ MatrixFreePDE<dim, degree>::outputResults()
                    ++i)
                 {
                   char vtuProcFileName[100];
-                  snprintf_nowarn(vtuProcFileName,
-                                  sizeof(vtuProcFileName),
-                                  "%s-%s.%u.%s",
-                                  userInputs.output_file_name.c_str(),
-                                  cycleAsString.str().c_str(),
-                                  i,
-                                  userInputs.output_file_type.c_str());
+                  snprintf(vtuProcFileName,
+                           sizeof(vtuProcFileName),
+                           "%s-%s.%u.%s",
+                           userInputs.output_file_name.c_str(),
+                           cycleAsString.str().c_str(),
+                           i,
+                           userInputs.output_file_type.c_str());
                   filenames.emplace_back(vtuProcFileName);
                 }
               char pvtuFileName[100];
-              snprintf_nowarn(pvtuFileName,
-                              sizeof(pvtuFileName),
-                              "%s.p%s",
-                              baseFileName,
-                              userInputs.output_file_type.c_str());
+              snprintf(pvtuFileName,
+                       sizeof(pvtuFileName),
+                       "%s.p%s",
+                       baseFileName,
+                       userInputs.output_file_type.c_str());
               std::ofstream master_output(pvtuFileName);
 
               data_out.write_pvtu_record(master_output, filenames);
@@ -217,11 +216,11 @@ MatrixFreePDE<dim, degree>::outputResults()
         {
           // Write the results to a file shared between all processes
           char svtuFileName[100];
-          snprintf_nowarn(svtuFileName,
-                          sizeof(svtuFileName),
-                          "%s.%s",
-                          baseFileName,
-                          userInputs.output_file_type.c_str());
+          snprintf(svtuFileName,
+                   sizeof(svtuFileName),
+                   "%s.%s",
+                   baseFileName,
+                   userInputs.output_file_type.c_str());
           data_out.write_vtu_in_parallel(svtuFileName, MPI_COMM_WORLD);
           pcout << "Output written to:" << svtuFileName << "\n\n";
         }

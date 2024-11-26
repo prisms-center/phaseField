@@ -109,7 +109,7 @@ MatrixFreePDE<dim, degree>::init()
         }
 
       // create FESystem
-      FESystem<dim> *fe;
+      FESystem<dim> *fe = nullptr;
 
       if (field.type == SCALAR)
         {
@@ -127,7 +127,7 @@ MatrixFreePDE<dim, degree>::init()
       FESet.push_back(fe);
 
       // distribute DOFs
-      DoFHandler<dim> *dof_handler;
+      DoFHandler<dim> *dof_handler = nullptr;
 
       dof_handler = new DoFHandler<dim>(triangulation);
       dofHandlersSet.push_back(dof_handler);
@@ -137,7 +137,7 @@ MatrixFreePDE<dim, degree>::init()
       totalDOFs += dof_handler->n_dofs();
 
       // Extract locally_relevant_dofs
-      IndexSet *locally_relevant_dofs;
+      IndexSet *locally_relevant_dofs = nullptr;
 
       locally_relevant_dofs = new IndexSet;
       locally_relevant_dofsSet.push_back(locally_relevant_dofs);
@@ -147,7 +147,8 @@ MatrixFreePDE<dim, degree>::init()
       DoFTools::extract_locally_relevant_dofs(*dof_handler, *locally_relevant_dofs);
 
       // Create constraints
-      AffineConstraints<double> *constraintsDirichlet, *constraintsOther;
+      AffineConstraints<double> *constraintsDirichlet = nullptr;
+      AffineConstraints<double> *constraintsOther     = nullptr;
 
       constraintsDirichlet = new AffineConstraints<double>;
       constraintsDirichletSet.push_back(constraintsDirichlet);
@@ -262,7 +263,8 @@ MatrixFreePDE<dim, degree>::init()
   pcout << "initializing parallel::distributed residual and solution vectors\n";
   for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
     {
-      vectorType *U, *R;
+      vectorType *U = nullptr;
+      vectorType *R = nullptr;
 
       U = new vectorType;
       R = new vectorType;
@@ -283,7 +285,7 @@ MatrixFreePDE<dim, degree>::init()
         {
           if (fields[fieldIndex].type == SCALAR)
             {
-              if (dU_scalar_init == false)
+              if (!dU_scalar_init)
                 {
                   matrixFreeObject.initialize_dof_vector(dU_scalar, fieldIndex);
                   dU_scalar_init = true;
@@ -291,7 +293,7 @@ MatrixFreePDE<dim, degree>::init()
             }
           else
             {
-              if (dU_vector_init == false)
+              if (!dU_vector_init)
                 {
                   matrixFreeObject.initialize_dof_vector(dU_vector, fieldIndex);
                   dU_vector_init = true;
@@ -351,7 +353,9 @@ MatrixFreePDE<dim, degree>::init()
           AMR.do_adaptive_refinement(currentIncrement);
           reinit();
           if (totalDOFs == numDoF_preremesh)
-            break;
+            {
+              break;
+            }
           numDoF_preremesh = totalDOFs;
         }
 
