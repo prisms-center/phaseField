@@ -1,8 +1,0 @@
-# Test input file for the method 'get_entry_name_ending_list'
-
-set Model constant abc = 1.0, double
-set Model constant dfg = 1.0, double
-set Model constant i j k = 1.0, double
-set Model constan not = 1.0, double
-set Model constant qrs = 1.0, double
-set Model constant t uv = 1.0, double
