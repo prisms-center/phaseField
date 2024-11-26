@@ -54,5 +54,5 @@ jobs:
 
         - name: Run clang-tidy
           run: |
-            ./utilities/clang_tidy.sh .
+            ./contrib/utilities/clang_tidy.sh .
 
