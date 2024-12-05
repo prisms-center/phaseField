@@ -378,7 +378,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
 
       for (const auto &index : index_list)
         {
-          std::string var_name = var_attributes.attributes.at(index).name;
+          std::string var_name = userInputs.load_field_name[index];
 
           // Find the scalar field in the file
           ScalarField &field = body.find_scalar_field(var_name);
