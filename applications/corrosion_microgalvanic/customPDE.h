@@ -1,6 +1,5 @@
-#include "matrixFreePDE.h"
-
 #include <cmath>
+#include <core/matrixFreePDE.h>
 #include <iostream>
 using namespace std;
 
@@ -31,7 +30,7 @@ public:
                             [[maybe_unused]] dealii::Vector<double> &vector_BC) override;
 
 private:
-#include "typeDefs.h"
+#include <core/typeDefs.h>
 
   const userInputParameters<dim> userInputs;
 

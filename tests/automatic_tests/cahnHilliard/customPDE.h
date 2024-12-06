@@ -1,4 +1,4 @@
-#include "../../../include/matrixFreePDE.h"
+#include <core/matrixFreePDE.h>
 
 using namespace dealii;
 
@@ -29,7 +29,7 @@ public:
                             [[maybe_unused]] Vector<double>    &vector_BC) override;
 
 private:
-#include "../../../include/typeDefs.h"
+#include <core/typeDefs.h>
 
   const userInputParameters<dim> userInputs;
 

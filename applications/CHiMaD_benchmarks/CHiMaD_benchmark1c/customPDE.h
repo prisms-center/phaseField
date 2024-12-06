@@ -1,6 +1,6 @@
 #include <deal.II/base/exceptions.h>
 
-#include "matrixFreePDE.h"
+#include <core/matrixFreePDE.h>
 
 using namespace dealii;
 
@@ -31,7 +31,7 @@ public:
                             [[maybe_unused]] Vector<double>    &vector_BC) override;
 
 private:
-#include "typeDefs.h"
+#include <core/typeDefs.h>
 
   const userInputParameters<dim> userInputs;
 
