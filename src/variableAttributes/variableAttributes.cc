@@ -116,6 +116,8 @@ variableAttributes::parse_dependencies(
         }
       else
         {
+          // `other_variable` refers to the variable with a dependency on `this`.
+          // `this` is the dependency variable.
           for (auto &[other_index, other_variable] : other_var_attributes)
             {
               if (other_variable.dependency_set.find(possible_dependency) !=
@@ -125,10 +127,21 @@ variableAttributes::parse_dependencies(
                     {
                       *eval_flag |= relevant_flag.at(variation);
                     }
+                  // Determine whether other_variable is nonlinear (1): LHS has
+                  // dependency on the guess term.
+                  if (other_variable.dependencies_LHS.find(possible_dependency) !=
+                      other_variable.dependencies_LHS.end())
+                    {
+                      other_variable.is_nonlinear |=
+                        (other_variable.eq_type != EXPLICIT_TIME_DEPENDENT) &&
+                        (&other_variable == this);
+                    }
+                  // Determine whether other_variable is nonlinear (2): RHS or LHS has
+                  // nonexplicit dependency other than the guess term.
+                  // This is required because PRISMS-PF does concurrent solves.
                   other_variable.is_nonlinear |=
-                    (eq_type != EXPLICIT_TIME_DEPENDENT) &&
                     (other_variable.eq_type != EXPLICIT_TIME_DEPENDENT) &&
-                    (&other_variable != this);
+                    (eq_type != EXPLICIT_TIME_DEPENDENT) && (&other_variable != this);
                 }
             }
         }
