@@ -6,7 +6,8 @@ using namespace dealii;
 typedef VectorizedArray<double> scalarvalueType;
 #include "PLibrary/PLibrary.cc"
 #include "PLibrary/PLibrary.hh"
-#include "pFunction/pFunction.h"
+
+#include <field_input/pFunction.h>
 
 // Declare the PFunctions to be used
 PFunctions::pFunction pfunct_McV("pfunct_McV"), pfunct_Mn1V("pfunct_Mn1V"),

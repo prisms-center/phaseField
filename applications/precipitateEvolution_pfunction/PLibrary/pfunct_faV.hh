@@ -6,9 +6,9 @@
 #ifndef pfunct_faV_HH
 #define pfunct_faV_HH
 
-#include "../../../include/IntegrationTools/PFunction.hh"
 #include <cmath>
 #include <cstdlib>
+#include <field_input/IntegrationTools/PFunction.hh>
 
 namespace PRISMS
 {
