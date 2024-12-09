@@ -6,9 +6,9 @@
 #ifndef pfunct_Mn2V_HH
 #define pfunct_Mn2V_HH
 
-#include "../../../include/IntegrationTools/PFunction.hh"
 #include <cmath>
 #include <cstdlib>
+#include <field_input/IntegrationTools/PFunction.hh>
 
 namespace PRISMS
 {
