@@ -120,3 +120,6 @@ add_executable(main ${TARGET_SRC})
 set_property(TARGET main PROPERTY OUTPUT_NAME main)
 deal_ii_setup_target(main DEBUG)
 target_link_libraries(main ${CMAKE_SOURCE_DIR}/../libprisms-pf-debug.a)
+
+# CTest 
+add_test(NAME PRISMS_PF_Testsuite COMMAND main)
