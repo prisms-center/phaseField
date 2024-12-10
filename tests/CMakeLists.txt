@@ -97,10 +97,26 @@ set(TARGET "main")
 
 file(GLOB_RECURSE TEST_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.cc")
 
+# Set location of Catch
+include_directories(${CMAKE_SOURCE_DIR}/../contrib/catch/)
+
+# Set location of core library files
+include_directories(${CMAKE_SOURCE_DIR}/../include)
+
 # Declare all source files the target consists of:
 set(TARGET_SRC
   main.cc
   ${TEST_SOURCES}
   )
 
-deal_II_invoke_autopilot()
+# Check if there has been updates to main library
+set(dir ${PROJECT_SOURCE_DIR}/../..)
+EXECUTE_PROCESS(COMMAND "rm" "CMakeCache.txt" WORKING_DIRECTORY ${dir})
+EXECUTE_PROCESS(COMMAND "cmake" "CMakeLists.txt" WORKING_DIRECTORY ${dir})
+EXECUTE_PROCESS(COMMAND "make" WORKING_DIRECTORY ${dir})
+
+# Set targets & link libraries for the build type
+add_executable(main ${TARGET_SRC})
+set_property(TARGET main PROPERTY OUTPUT_NAME main)
+deal_ii_setup_target(main DEBUG)
+target_link_libraries(main ${CMAKE_SOURCE_DIR}/../libprisms-pf-debug.a)
