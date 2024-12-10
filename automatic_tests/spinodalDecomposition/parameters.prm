@@ -7,8 +7,8 @@ set Number of dimensions = 2
 # Set the length of the domain in all three dimensions
 # (Domain size Z ignored in 2D)
 # =================================================================================
-set Domain size X = 100
-set Domain size Y = 100
+set Domain size X = 51.2
+set Domain size Y = 51.2
 set Domain size Z = 100
 
 # =================================================================================
@@ -18,7 +18,7 @@ set Subdivisions X = 1
 set Subdivisions Y = 1
 set Subdivisions Z = 1
 
-set Refine factor = 7
+set Refine factor = 8
 
 set Element degree = 1
 
@@ -27,45 +27,48 @@ set Element degree = 1
 # =================================================================================
 set Mesh adaptivity = true
 
-set Max refinement level = 7
-set Min refinement level = 4
+set Max refinement level = 8
+set Min refinement level = 2
 
-set Steps between remeshing operations = 1000
+set Steps between remeshing operations = 2000
 
-subsection Refinement criterion: n
+subsection Refinement criterion: c
     set Criterion type = VALUE
-    set Value lower bound = 0.001
-    set Value upper bound = 0.999
+    set Value lower bound = 0.01
+    set Value upper bound = 0.99
 end
 
 # =================================================================================
 # Set the time step parameters
 # =================================================================================
-set Time step = 5.0e-2
+set Time step = 0.004
 
-set Number of time steps = 5000
+set Number of time steps = 20000
 
 # =================================================================================
 # Set the boundary conditions
 # =================================================================================
-set Boundary condition for variable c = NATURAL
-set Boundary condition for variable n = NATURAL
-set Boundary condition for variable biharm = NATURAL
+set Boundary condition for variable c = PERIODIC
+set Boundary condition for variable mu = PERIODIC
 
 # =================================================================================
 # Set the model constants
 # =================================================================================
-# The CH mobility, McV in equations.h
+
+# The mobility, McV in equations.h
 set Model constant McV = 1.0, DOUBLE
 
-# The AC mobility, MnV in equations.h
-set Model constant MnV = 0.1, DOUBLE
+# The gradient energy coefficient, KcV in equations.h
+set Model constant KcV = 0.01, DOUBLE
 
-# Anisotropy parameter
-set Model constant epsilonM = 0.2, DOUBLE
+# The double well coefficient
+set Model constant WcV = 1.0, DOUBLE
 
-# Regularization parameter
-set Model constant delta2 = 1.0, DOUBLE
+# The average composition
+set Model constant c0 = 0.50, DOUBLE
+
+# The initial perturbation amplitude
+set Model constant icamplitude = 0.01, DOUBLE
 
 # =================================================================================
 # Set the output parameters
