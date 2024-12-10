@@ -18,54 +18,69 @@ set Subdivisions X = 1
 set Subdivisions Y = 1
 set Subdivisions Z = 1
 
-set Refine factor = 7
+set Refine factor = 6
 
-set Element degree = 1
-
-# =================================================================================
-# Set the adaptive mesh refinement parameters
-# =================================================================================
-set Mesh adaptivity = true
-
-set Max refinement level = 7
-set Min refinement level = 4
-
-set Steps between remeshing operations = 1000
-
-subsection Refinement criterion: n
-    set Criterion type = VALUE
-    set Value lower bound = 0.001
-    set Value upper bound = 0.999
-end
+set Element degree = 2
 
 # =================================================================================
 # Set the time step parameters
 # =================================================================================
-set Time step = 5.0e-2
+set Time step = 2.0e-4
 
-set Number of time steps = 5000
+set Number of time steps = 40000
+
+# =================================================================================
+# Set the linear solver parameters
+# =================================================================================
+
+subsection Linear solver parameters: phi
+    set Tolerance type = ABSOLUTE_RESIDUAL
+
+    set Tolerance value = 1e-5
+
+    set Maximum linear solver iterations = 10000
+end
+
+# =================================================================================
+# Set the nonlinear solver parameters
+# =================================================================================
+
+set Maximum nonlinear solver iterations = 100
+
+subsection Nonlinear solver parameters: mu
+    set Tolerance type = ABSOLUTE_SOLUTION_CHANGE
+    set Tolerance value = 1e-5
+    set Use backtracking line search damping = false
+    set Constant damping value = 1.0
+    set Use Laplace's equation to determine the initial guess = false
+end
 
 # =================================================================================
 # Set the boundary conditions
 # =================================================================================
 set Boundary condition for variable c = NATURAL
-set Boundary condition for variable n = NATURAL
-set Boundary condition for variable biharm = NATURAL
+set Boundary condition for variable mu = NATURAL
+set Boundary condition for variable phi =  DIRICHLET: 0.0, NON_UNIFORM_DIRICHLET, NATURAL, NATURAL, NATURAL, NATURAL
 
 # =================================================================================
 # Set the model constants
 # =================================================================================
-# The CH mobility, McV in equations.h
-set Model constant McV = 1.0, DOUBLE
+# The mobility, McV in equations.h
+set Model constant McV = 5.0, DOUBLE
 
-# The AC mobility, MnV in equations.h
-set Model constant MnV = 0.1, DOUBLE
+# The gradient energy coefficient, KcV in equations.h
+set Model constant KcV = 2.0, DOUBLE
 
-# Anisotropy parameter
-set Model constant epsilonM = 0.2, DOUBLE
+# Parameters for the chemical and electrostatic components of the free energy
 
-# Regularization parameter
-set Model constant delta2 = 1.0, DOUBLE
+#chemical
+set Model constant rho = 5.0, DOUBLE
+set Model constant c_alpha = 0.3, DOUBLE
+set Model constant c_beta = 0.7, DOUBLE
+
+# electrostatic
+set Model constant k = 0.09, DOUBLE
+set Model constant epsilon = 90.0, DOUBLE
 
 # =================================================================================
 # Set the output parameters
