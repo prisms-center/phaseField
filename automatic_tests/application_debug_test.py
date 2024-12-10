@@ -36,12 +36,10 @@ def get_application_path(app_name):
     pwd = os.getcwd()
 
     # Check that we're in the automatic test directory
-    assert (
-        "tests/automatic_tests" in pwd
-    ), "Current directory is not within 'tests/automatic_tests'"
+    assert "automatic_tests" in pwd, "Current directory is not within 'automatic_tests'"
 
     # Application path assuming file structure matches GitHub repo
-    app_path = pwd.replace("tests/automatic_tests", f"applications/{app_name}")
+    app_path = pwd.replace("automatic_tests", f"applications/{app_name}")
 
     return app_path
 
@@ -101,7 +99,7 @@ def compile_and_run(app_name, new_parameter_file, test_dir):
         is the application name and the second is success or failure
     """
     try:
-        # Navigate to tests/automatic_tests
+        # Navigate to automatic_tests
         os.chdir(test_dir)
 
         # Grab application path
