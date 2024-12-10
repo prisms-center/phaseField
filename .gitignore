@@ -63,6 +63,7 @@ main
 integratedFields.txt
 output.txt
 error.txt
+CTestCostData.txt
 
 # Checkpoint/restart files
 restart.*
