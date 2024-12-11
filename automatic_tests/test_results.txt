@@ -1792,3 +1792,54 @@ Time: 66.96555471420288
  
 Tests Passed: 5/5
 --------------------------------------------------------- 
+--------------------------------------------------------- 
+Regression test on 2024-12-11 12:27
+Architecture: x86_64
+Model name: AMD Ryzen 9 7900X 12-Core Processor
+CPU(s): 24
+CPU max/min MHz: 4701.0000, 0.0000
+Hypervisor vendor: Windows Subsystem for Linux
+Number of processes: 1
+--------------------------------------------------------- 
+Application: allenCahn
+Result: Pass
+Time: 4.505462408065796
+ 
+Application: cahnHilliard
+Result: Pass
+Time: 2.7520039081573486
+ 
+Application: CHAC_anisotropyRegularized
+Result: Pass
+Time: 4.074458122253418
+ 
+Application: CHiMaD_benchmark6a
+Result: New Gold Standard
+Time: 23.678637266159058
+ 
+Application: corrosion_microgalvanic
+Result: New Gold Standard
+Time: 20.824553728103638
+ 
+Application: coupledCahnHilliardAllenCahn
+Result: Pass
+Time: 2.059581995010376
+ 
+Application: grainGrowth
+Result: New Gold Standard
+Time: 12.296957015991211
+ 
+Application: precipitateEvolution
+Result: Pass
+Time: 14.774498701095581
+ 
+Application: precipitateEvolution_pfunction
+Result: New Gold Standard
+Time: 21.35426139831543
+ 
+Application: spinodalDecomposition
+Result: New Gold Standard
+Time: 23.352713108062744
+ 
+Tests Passed: 10/10
+--------------------------------------------------------- 
