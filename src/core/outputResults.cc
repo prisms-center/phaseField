@@ -98,8 +98,6 @@ MatrixFreePDE<dim, degree>::outputResults()
                     {
                       output_file << "\t" << pp_variable.name << "\t" << integrated_field;
                     }
-                  integrated_postprocessed_fields.at(
-                    userInputs.integrated_field_indices[pp_index]) = integrated_field;
                 }
             }
           if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
