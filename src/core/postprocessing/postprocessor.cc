@@ -6,8 +6,7 @@ MatrixFreePDE<dim, degree>::computePostProcessedFields(
   std::vector<vectorType *> &postProcessedSet)
 {
   // Initialize the postProcessedSet
-  for (unsigned int fieldIndex = 0; fieldIndex < userInputs.pp_number_of_variables;
-       fieldIndex++)
+  for (unsigned int fieldIndex = 0; fieldIndex < pp_attributes.size(); fieldIndex++)
     {
       vectorType *U = nullptr;
       U             = new vectorType;

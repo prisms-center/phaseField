@@ -8,8 +8,7 @@
 template <int dim>
 void
 userInputParameters<dim>::assign_spatial_discretization_parameters(
-  dealii::ParameterHandler &parameter_handler,
-  variableAttributeLoader  &variable_attributes)
+  dealii::ParameterHandler &parameter_handler)
 {
   // Domain size & subdivisions
   domain_size.push_back(parameter_handler.get_double("Domain size X"));
@@ -54,7 +53,7 @@ userInputParameters<dim>::assign_spatial_discretization_parameters(
     }
 
   // The adaptivity criterion for each variable has its own subsection
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       std::string subsection_text = "Refinement criterion: ";
       subsection_text.append(variable.name);
@@ -132,8 +131,7 @@ userInputParameters<dim>::assign_spatial_discretization_parameters(
 template <int dim>
 void
 userInputParameters<dim>::assign_temporal_discretization_parameters(
-  dealii::ParameterHandler &parameter_handler,
-  variableAttributeLoader  &variable_attributes)
+  dealii::ParameterHandler &parameter_handler)
 {
   dtValue = parameter_handler.get_double("Time step");
   const int totalIncrements_temp =
@@ -143,7 +141,7 @@ userInputParameters<dim>::assign_temporal_discretization_parameters(
   // If all of the variables are ELLIPTIC, then totalIncrements should be 1 and
   // finalTime should be 0
   bool only_time_independent_pdes = true;
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (variable.eq_type == EXPLICIT_TIME_DEPENDENT ||
           variable.eq_type == IMPLICIT_TIME_DEPENDENT)
@@ -197,10 +195,9 @@ userInputParameters<dim>::assign_temporal_discretization_parameters(
 template <int dim>
 void
 userInputParameters<dim>::assign_linear_solve_parameters(
-  dealii::ParameterHandler &parameter_handler,
-  variableAttributeLoader  &variable_attributes)
+  dealii::ParameterHandler &parameter_handler)
 {
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (variable.eq_type == TIME_INDEPENDENT ||
           variable.eq_type == IMPLICIT_TIME_DEPENDENT)
@@ -259,13 +256,12 @@ userInputParameters<dim>::assign_linear_solve_parameters(
 template <int dim>
 void
 userInputParameters<dim>::assign_nonlinear_solve_parameters(
-  dealii::ParameterHandler &parameter_handler,
-  variableAttributeLoader  &variable_attributes)
+  dealii::ParameterHandler &parameter_handler)
 {
   nonlinear_solver_parameters.setMaxIterations(
     parameter_handler.get_integer("Maximum nonlinear solver iterations"));
 
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (variable.is_nonlinear)
         {
@@ -356,7 +352,7 @@ userInputParameters<dim>::assign_nonlinear_solve_parameters(
 
   // Set the max number of nonlinear iterations
   bool any_nonlinear = false;
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       any_nonlinear |= variable.is_nonlinear;
     }
@@ -444,7 +440,7 @@ userInputParameters<dim>::assign_load_initial_condition_parameters(
 
   if (boost::iequals(load_ICs_temp.at(0), "void"))
     {
-      for (unsigned int var = 0; var < number_of_variables; var++)
+      for (unsigned int var = 0; var < var_attributes.size(); var++)
         {
           load_ICs.push_back(false);
           load_parallel_file.push_back(false);
@@ -452,7 +448,7 @@ userInputParameters<dim>::assign_load_initial_condition_parameters(
     }
   else
     {
-      for (unsigned int var = 0; var < number_of_variables; var++)
+      for (unsigned int var = 0; var < var_attributes.size(); var++)
         {
           if (boost::iequals(load_ICs_temp.at(var), "true"))
             {
@@ -482,10 +478,9 @@ userInputParameters<dim>::assign_load_initial_condition_parameters(
 template <int dim>
 void
 userInputParameters<dim>::assign_nucleation_parameters(
-  dealii::ParameterHandler &parameter_handler,
-  variableAttributeLoader  &variable_attributes)
+  dealii::ParameterHandler &parameter_handler)
 {
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (variable.nucleating_variable)
         {
@@ -574,8 +569,7 @@ userInputParameters<dim>::assign_nucleation_parameters(
 template <int dim>
 void
 userInputParameters<dim>::assign_grain_parameters(
-  dealii::ParameterHandler &parameter_handler,
-  variableAttributeLoader  &variable_attributes)
+  dealii::ParameterHandler &parameter_handler)
 { // Load the grain remapping parameters
   grain_remapping_activated = parameter_handler.get_bool("Activate grain reassignment");
 
@@ -601,7 +595,7 @@ userInputParameters<dim>::assign_grain_parameters(
   for (const auto &field : variables_for_remapping_str)
     {
       bool field_found = false;
-      for (const auto &[index, variable] : variable_attributes.attributes)
+      for (const auto &[index, variable] : var_attributes)
         {
           if (boost::iequals(field, variable.name))
             {
@@ -635,13 +629,12 @@ userInputParameters<dim>::assign_grain_parameters(
 template <int dim>
 void
 userInputParameters<dim>::assign_boundary_condition_parameters(
-  dealii::ParameterHandler &parameter_handler,
-  variableAttributeLoader  &variable_attributes)
+  dealii::ParameterHandler &parameter_handler)
 {
   // Load the boundary condition variables into list of BCs (where each element
   // of the vector is one component of one variable)
   std::vector<std::string> list_of_BCs;
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (variable.var_type == SCALAR)
         {
@@ -674,7 +667,7 @@ userInputParameters<dim>::assign_boundary_condition_parameters(
   /*----------------------
   |  Pinning point
   -----------------------*/
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       std::string pinning_text = "Pinning point: ";
       pinning_text.append(variable.name);
@@ -709,22 +702,23 @@ userInputParameters<dim>::assign_boundary_condition_parameters(
 // NOLINTBEGIN(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
 template <int dim>
 userInputParameters<dim>::userInputParameters(inputFileReader          &input_file_reader,
-                                              dealii::ParameterHandler &parameter_handler,
-                                              variableAttributeLoader variable_attributes)
+                                              dealii::ParameterHandler &parameter_handler)
+  : var_attributes(input_file_reader.var_attributes)
+  , pp_attributes(input_file_reader.pp_attributes)
 {
-  loadVariableAttributes(variable_attributes);
+  loadVariableAttributes();
 
   // Spatial discretization
-  assign_spatial_discretization_parameters(parameter_handler, variable_attributes);
+  assign_spatial_discretization_parameters(parameter_handler);
 
   // Time stepping parameters
-  assign_temporal_discretization_parameters(parameter_handler, variable_attributes);
+  assign_temporal_discretization_parameters(parameter_handler);
 
   // Linear solver parameters
-  assign_linear_solve_parameters(parameter_handler, variable_attributes);
+  assign_linear_solve_parameters(parameter_handler);
 
   // Non-linear solver parameters
-  assign_nonlinear_solve_parameters(parameter_handler, variable_attributes);
+  assign_nonlinear_solve_parameters(parameter_handler);
 
   // Output parameters
   assign_output_parameters(parameter_handler);
@@ -733,13 +727,13 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
   assign_load_initial_condition_parameters(parameter_handler);
 
   // Nucleation parameters
-  assign_nucleation_parameters(parameter_handler, variable_attributes);
+  assign_nucleation_parameters(parameter_handler);
 
   // Grain remapping & vtk load-in parameters
-  assign_grain_parameters(parameter_handler, variable_attributes);
+  assign_grain_parameters(parameter_handler);
 
   // Boundary conditions
-  assign_boundary_condition_parameters(parameter_handler, variable_attributes);
+  assign_boundary_condition_parameters(parameter_handler);
 
   // Load the user-defined constants
   load_user_constants(input_file_reader, parameter_handler);
@@ -924,13 +918,10 @@ userInputParameters<dim>::setTimeStepList(
 
 template <int dim>
 void
-userInputParameters<dim>::loadVariableAttributes(
-  const variableAttributeLoader &variable_attributes)
+userInputParameters<dim>::loadVariableAttributes()
 {
-  number_of_variables    = variable_attributes.attributes.size();
-  pp_number_of_variables = variable_attributes.pp_attributes.size();
   // Load some nucleation parameters
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (variable.nucleating_variable)
         {
@@ -946,7 +937,7 @@ userInputParameters<dim>::loadVariableAttributes(
 
   // Load variable information for calculating the RHS for explicit equations
   num_var_explicit_RHS = 0;
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (!static_cast<bool>(variable.eval_flags_explicit_RHS &
                              dealii::EvaluationFlags::nothing))
@@ -955,7 +946,7 @@ userInputParameters<dim>::loadVariableAttributes(
         }
     }
   varInfoListExplicitRHS.reserve(num_var_explicit_RHS);
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       variable_info varInfo {};
 
@@ -975,7 +966,7 @@ userInputParameters<dim>::loadVariableAttributes(
 
   // Load variable information for calculating the RHS for nonexplicit equations
   num_var_nonexplicit_RHS = 0;
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (!static_cast<bool>(variable.eval_flags_nonexplicit_RHS &
                              dealii::EvaluationFlags::nothing))
@@ -984,7 +975,7 @@ userInputParameters<dim>::loadVariableAttributes(
         }
     }
   varInfoListNonexplicitRHS.reserve(num_var_nonexplicit_RHS);
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       variable_info varInfo {};
 
@@ -1004,7 +995,7 @@ userInputParameters<dim>::loadVariableAttributes(
 
   // Load variable information for calculating the LHS
   num_var_LHS = 0;
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (!static_cast<bool>(variable.eval_flags_nonexplicit_LHS &
                              dealii::EvaluationFlags::nothing))
@@ -1014,7 +1005,7 @@ userInputParameters<dim>::loadVariableAttributes(
     }
 
   varInfoListLHS.reserve(num_var_LHS);
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       variable_info varInfo {};
 
@@ -1033,7 +1024,7 @@ userInputParameters<dim>::loadVariableAttributes(
     }
 
   varChangeInfoListLHS.reserve(num_var_LHS);
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       variable_info varInfo {};
 
@@ -1054,8 +1045,8 @@ userInputParameters<dim>::loadVariableAttributes(
 
   // Load variable information for postprocessing
   // First, the info list for the base field variables
-  pp_baseVarInfoList.reserve(number_of_variables);
-  for (const auto &[index, variable] : variable_attributes.attributes)
+  pp_baseVarInfoList.reserve(var_attributes.size());
+  for (const auto &[index, variable] : var_attributes)
     {
       variable_info varInfo {};
 
@@ -1074,10 +1065,10 @@ userInputParameters<dim>::loadVariableAttributes(
   // Now load the information for the post-processing variables
   // Parameters for postprocessing
 
-  postProcessingRequired = pp_number_of_variables > 0;
+  postProcessingRequired = !pp_attributes.empty();
 
   num_integrated_fields = 0;
-  for (const auto &[pp_index, pp_variable] : variable_attributes.pp_attributes)
+  for (const auto &[pp_index, pp_variable] : pp_attributes)
     {
       if (pp_variable.calc_integral)
         {
@@ -1087,8 +1078,8 @@ userInputParameters<dim>::loadVariableAttributes(
     }
 
   // The info list for the postprocessing field variables
-  pp_varInfoList.reserve(pp_number_of_variables);
-  for (const auto &[pp_index, pp_variable] : variable_attributes.pp_attributes)
+  pp_varInfoList.reserve(pp_attributes.size());
+  for (const auto &[pp_index, pp_variable] : pp_attributes)
     {
       variable_info varInfo {};
 

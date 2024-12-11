@@ -16,7 +16,7 @@ MatrixFreePDE<dim, degree>::reassignGrains()
   // Get the index of the first scalar field (used to get the FE object and
   // DOFHandler)
   unsigned int scalar_field_index = 0;
-  for (const auto &[index, variable] : var_attributes.attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (variable.var_type == SCALAR)
         {
