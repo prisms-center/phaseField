@@ -14,12 +14,6 @@ MatrixFreePDE<dim, degree>::computePostProcessedFields(
       matrixFreeObject.initialize_dof_vector(*U, 0);
     }
 
-  integrated_postprocessed_fields.clear();
-  for (unsigned int index = 0; index < userInputs.num_integrated_fields; index++)
-    {
-      integrated_postprocessed_fields.push_back(0.0);
-    }
-
   // call to integrate and assemble
   matrixFreeObject.cell_loop(&MatrixFreePDE<dim, degree>::getPostProcessedFields,
                              this,
