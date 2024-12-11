@@ -220,10 +220,26 @@ applicationList = [
     "allenCahn",
     "cahnHilliard",
     "CHAC_anisotropyRegularized",
+    "CHiMaD_benchmark6a",
+    "corrosion_microgalvanic",
     "coupledCahnHilliardAllenCahn",
+    "grainGrowth",
     "precipitateEvolution",
+    "precipitateEvolution_pfunction",
+    "spinodalDecomposition",
 ]
-getNewGoldStandardList = [False, False, False, False, False]
+getNewGoldStandardList = [
+    False,
+    False,
+    False,
+    False,
+    False,
+    False,
+    False,
+    False,
+    False,
+    False,
+]
 
 # Grab cpu information
 architecture, cpu_model, cpu_cores, cpu_max_freq, cpu_min_freq, hypervisor = (
