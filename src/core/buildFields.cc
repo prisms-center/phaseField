@@ -16,10 +16,8 @@ void
 MatrixFreePDE<dim, degree>::buildFields()
 {
   // Build each of the fields in the system
-  for (unsigned int i = 0; i < userInputs.number_of_variables; i++)
+  for (const auto &[index, variable] : var_attributes)
     {
-      fields.push_back(Field<dim>(var_attributes.attributes.at(i).var_type,
-                                  var_attributes.attributes.at(i).eq_type,
-                                  var_attributes.attributes.at(i).name));
+      fields.push_back(Field<dim>(variable.var_type, variable.eq_type, variable.name));
     }
 }

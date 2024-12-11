@@ -18,8 +18,9 @@ public:
   /**
    * \brief Constructor.
    */
-  inputFileReader(const std::string       &input_file_name,
-                  variableAttributeLoader &_variable_attributes);
+  inputFileReader(const std::string    &input_file_name,
+                  const AttributesList &_var_attributes,
+                  const AttributesList &_pp_attributes);
 
   /**
    * \brief Method to get a list of entry values from multiple subsections in an input
@@ -77,9 +78,9 @@ public:
   static bool
   check_keyword_match(std::string &line, const std::string &keyword);
 
-  variableAttributeLoader &variable_attributes;
+  const AttributesList    &var_attributes;
+  const AttributesList    &pp_attributes;
   dealii::ParameterHandler parameter_handler;
-  unsigned int             num_pp_vars;
   unsigned int             num_constants;
   std::vector<std::string> model_constant_names;
   unsigned int             number_of_dimensions;

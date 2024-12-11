@@ -62,8 +62,12 @@ main(int argc, char **argv)
       // postprocessing variables there are, how many sets of elastic constants
       // there are, and how many user-defined constants there are.
 
-      variableAttributeLoader variable_attributes;
-      inputFileReader         input_file_reader(parameters_filename, variable_attributes);
+      const variableAttributeLoader attribute_loader;
+      const AttributesList var_attributes = attribute_loader.get_var_attributes();
+      const AttributesList pp_attributes  = attribute_loader.get_pp_attributes();
+      inputFileReader      input_file_reader(parameters_filename,
+                                        var_attributes,
+                                        pp_attributes);
 
       // Continue based on the number of dimensions and degree of the elements
       // specified in the input file
@@ -72,8 +76,7 @@ main(int argc, char **argv)
           case 2:
             {
               userInputParameters<2> userInputs(input_file_reader,
-                                                input_file_reader.parameter_handler,
-                                                variable_attributes);
+                                                input_file_reader.parameter_handler);
               switch (userInputs.degree)
                 {
                   case (1):
@@ -130,8 +133,7 @@ main(int argc, char **argv)
           case 3:
             {
               userInputParameters<3> userInputs(input_file_reader,
-                                                input_file_reader.parameter_handler,
-                                                variable_attributes);
+                                                input_file_reader.parameter_handler);
               switch (userInputs.degree)
                 {
                   case (1):

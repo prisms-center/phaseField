@@ -66,16 +66,16 @@ customPDE<dim, degree>::explicitEquationRHS(
   // to set the residual terms until all the residuals have been calculated.
 
   std::vector<scalarvalueType> value_terms;
-  value_terms.resize(userInputs.number_of_variables);
+  value_terms.resize(userInputs.var_attributes.size());
   std::vector<scalargradType> gradient_terms;
-  gradient_terms.resize(userInputs.number_of_variables);
+  gradient_terms.resize(userInputs.var_attributes.size());
 
-  for (unsigned int i = 0; i < userInputs.number_of_variables; i++)
+  for (unsigned int i = 0; i < userInputs.var_attributes.size(); i++)
     {
       ni  = variable_list.get_scalar_value(i);
       nix = variable_list.get_scalar_gradient(i);
       fnV = -ni + ni * ni * ni;
-      for (unsigned int j = 0; j < userInputs.number_of_variables; j++)
+      for (unsigned int j = 0; j < userInputs.var_attributes.size(); j++)
         {
           if (i != j)
             {
@@ -89,7 +89,7 @@ customPDE<dim, degree>::explicitEquationRHS(
 
   // --- Submitting the terms for the governing equations ---
 
-  for (unsigned int i = 0; i < userInputs.number_of_variables; i++)
+  for (unsigned int i = 0; i < userInputs.var_attributes.size(); i++)
     {
       variable_list.set_scalar_value_term_RHS(i, value_terms[i]);
       variable_list.set_scalar_gradient_term_RHS(i, gradient_terms[i]);
