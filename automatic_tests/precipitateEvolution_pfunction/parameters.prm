@@ -54,7 +54,7 @@ end
 # =================================================================================
 set Time step = 6.0e-4
 
-set Number of time steps = 20000
+set Number of time steps = 6000
 
 # =================================================================================
 # Set the linear solver parameters
@@ -73,7 +73,7 @@ end
 # =================================================================================
 set Output condition =  EQUAL_SPACING
 
-set Number of outputs = 10
+set Number of outputs = 6
 
 set Skip print steps = 1000
 

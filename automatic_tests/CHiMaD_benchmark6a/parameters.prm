@@ -27,7 +27,7 @@ set Element degree = 2
 # =================================================================================
 set Time step = 2.0e-4
 
-set Number of time steps = 40000
+set Number of time steps = 20000
 
 # =================================================================================
 # Set the linear solver parameters
