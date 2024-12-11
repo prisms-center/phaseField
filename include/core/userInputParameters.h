@@ -20,7 +20,7 @@
 #include <core/model_variables.h>
 #include <core/refinement/RefinementCriterion.h>
 #include <core/solvers/SolverParameters.h>
-#include <core/variableAttributeLoader.h>
+#include <core/variableAttributes.h>
 #include <nucleation/nucleationParameters.h>
 #include <unordered_map>
 #include <vector>
@@ -43,8 +43,7 @@ public:
    * member variables.
    */
   userInputParameters(inputFileReader          &input_file_reader,
-                      dealii::ParameterHandler &parameter_handler,
-                      variableAttributeLoader   variable_attributes);
+                      dealii::ParameterHandler &parameter_handler);
 
   /**
    * \brief Creates a list of BCs to store in BC_list object.
@@ -176,7 +175,7 @@ public:
 
   // Method to load in the variable attributes
   void
-  loadVariableAttributes(const variableAttributeLoader &variable_attributes);
+  loadVariableAttributes();
 
   // Nucleation attribute methods
   [[nodiscard]] std::vector<double>
@@ -258,7 +257,8 @@ public:
 
   // Variable inputs (I might be able to leave some/all of these in
   // variable_attributes)
-  unsigned int number_of_variables;
+  const AttributesList &var_attributes;
+  const AttributesList &pp_attributes;
 
   // Variables needed to calculate the RHS
   unsigned int               num_var_explicit_RHS, num_var_nonexplicit_RHS;
@@ -280,7 +280,6 @@ public:
   std::vector<unsigned int> checkpointTimeStepList;
 
   // Postprocessing parameters
-  unsigned int              pp_number_of_variables;
   unsigned int              num_integrated_fields;
   bool                      postProcessingRequired;
   std::vector<unsigned int> integrated_field_indices;
@@ -337,31 +336,27 @@ private:
    * spatial discretiziation.
    */
   void
-  assign_spatial_discretization_parameters(dealii::ParameterHandler &parameter_handler,
-                                           variableAttributeLoader  &variable_attributes);
+  assign_spatial_discretization_parameters(dealii::ParameterHandler &parameter_handler);
 
   /**
    * \brief Assign the provided user inputs to parameters for anything related to the
    * temporal discretiziation.
    */
   void
-  assign_temporal_discretization_parameters(dealii::ParameterHandler &parameter_handler,
-                                            variableAttributeLoader &variable_attributes);
+  assign_temporal_discretization_parameters(dealii::ParameterHandler &parameter_handler);
   /**
    * \brief Assign the provided user inputs to parameters for anything related to linear
    * solves.
    */
   void
-  assign_linear_solve_parameters(dealii::ParameterHandler &parameter_handler,
-                                 variableAttributeLoader  &variable_attributes);
+  assign_linear_solve_parameters(dealii::ParameterHandler &parameter_handler);
 
   /**
    * \brief Assign the provided user inputs to parameters for anything related to
    * nonlinear solves.
    */
   void
-  assign_nonlinear_solve_parameters(dealii::ParameterHandler &parameter_handler,
-                                    variableAttributeLoader  &variable_attributes);
+  assign_nonlinear_solve_parameters(dealii::ParameterHandler &parameter_handler);
 
   /**
    * \brief Assign the provided user inputs to parameters for anything related to
@@ -382,24 +377,21 @@ private:
    * nucleation.
    */
   void
-  assign_nucleation_parameters(dealii::ParameterHandler &parameter_handler,
-                               variableAttributeLoader  &variable_attributes);
+  assign_nucleation_parameters(dealii::ParameterHandler &parameter_handler);
 
   /**
    * \brief Assign the provided user inputs to parameters for anything related to
    * grain remapping and grain vtk load-in.
    */
   void
-  assign_grain_parameters(dealii::ParameterHandler &parameter_handler,
-                          variableAttributeLoader  &variable_attributes);
+  assign_grain_parameters(dealii::ParameterHandler &parameter_handler);
 
   /**
    * \brief Assign the provided user inputs to parameters for anything related to
    * boundary conditions.
    */
   void
-  assign_boundary_condition_parameters(dealii::ParameterHandler &parameter_handler,
-                                       variableAttributeLoader  &variable_attributes);
+  assign_boundary_condition_parameters(dealii::ParameterHandler &parameter_handler);
 
   // Method to create the list of time steps where the results should be output
   // (called from loadInputParameters)

@@ -86,7 +86,7 @@ MatrixFreePDE<dim, degree>::outputResults()
               output_file << currentTime;
             }
 
-          for (const auto &[pp_index, pp_variable] : var_attributes.pp_attributes)
+          for (const auto &[pp_index, pp_variable] : pp_attributes)
             {
               if (pp_variable.calc_integral)
                 {
@@ -111,7 +111,7 @@ MatrixFreePDE<dim, degree>::outputResults()
         }
 
       // Add the postprocessed fields to data_out
-      for (const auto &[fieldIndex, pp_variable] : var_attributes.pp_attributes)
+      for (const auto &[fieldIndex, pp_variable] : pp_attributes)
         {
           // mark field as scalar/vector
           unsigned int components = 0;

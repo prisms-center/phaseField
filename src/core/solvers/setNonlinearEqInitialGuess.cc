@@ -16,7 +16,7 @@ MatrixFreePDE<dim, degree>::setNonlinearEqInitialGuess()
   time.start();
   char buffer[200];
 
-  for (const auto &[fieldIndex, variable] : var_attributes.attributes)
+  for (const auto &[fieldIndex, variable] : var_attributes)
     {
       if ((variable.eq_type == TIME_INDEPENDENT) && variable.is_nonlinear &&
           userInputs.nonlinear_solver_parameters.getLaplaceInitializationFlag(fieldIndex))
