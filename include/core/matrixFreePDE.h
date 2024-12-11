@@ -489,8 +489,6 @@ protected:
   /*Timer and logging object*/
   mutable TimerOutput computing_timer;
 
-  std::vector<double> integrated_postprocessed_fields;
-
   bool first_integrated_var_output_complete;
 
   // Methods and variables for integration
