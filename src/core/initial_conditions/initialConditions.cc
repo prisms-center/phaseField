@@ -52,8 +52,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
 
       // Clear the order parameter fields
       unsigned int op_list_index = 0;
-      for (unsigned int var_index = 0; var_index < userInputs.number_of_variables;
-           var_index++)
+      for (unsigned int var_index = 0; var_index < var_attributes.size(); var_index++)
         {
           if (op_list_index < userInputs.variables_for_remapping.size())
             {
@@ -69,7 +68,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
 
       // Get the index of one of the scalar fields
       unsigned int scalar_field_index = 0;
-      for (const auto &[index, variable] : var_attributes.attributes)
+      for (const auto &[index, variable] : var_attributes)
         {
           if (variable.var_type == SCALAR)
             {
@@ -315,7 +314,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
 
   // Create map of vtk files that are read in
   std::unordered_map<std::string, std::vector<size_t>> file_field_map;
-  for (size_t i = 0; i < userInputs.number_of_variables; ++i)
+  for (size_t i = 0; i < var_attributes.size(); ++i)
     {
       if (userInputs.load_ICs[i])
         {
@@ -382,7 +381,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
           // Find the scalar field in the file
           ScalarField &field = body.find_scalar_field(var_name);
 
-          if (var_attributes.attributes.at(index).var_type == SCALAR)
+          if (var_attributes.at(index).var_type == SCALAR)
             {
               pcout << "Applying PField initial condition for "
                     << userInputs.load_field_name[index] << "...\n";
@@ -400,7 +399,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
     }
 
   unsigned int op_list_index = 0;
-  for (const auto &[var_index, variable] : var_attributes.attributes)
+  for (const auto &[var_index, variable] : var_attributes)
     {
       bool is_remapped_op = false;
       if (op_list_index < userInputs.variables_for_remapping.size())

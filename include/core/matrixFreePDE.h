@@ -141,10 +141,10 @@ protected:
 
   unsigned int totalDOFs;
 
-  // Virtual methods to set the attributes of the primary field variables and
-  // the postprocessing field variables virtual void setVariableAttriubutes() =
-  // 0; virtual void setPostProcessingVariableAttriubutes(){};
-  variableAttributeLoader var_attributes;
+  // The attributes of the primary field variables and
+  // the postprocessing field variables
+  const AttributesList &var_attributes;
+  const AttributesList &pp_attributes;
 
   // Elasticity matrix variables
   const static unsigned int CIJ_tensor_size = 2 * dim - 1 + dim / 3;

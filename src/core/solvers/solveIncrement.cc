@@ -81,7 +81,7 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
           // not too terrible
           computeNonexplicitRHS();
 
-          for (const auto &[fieldIndex, variable] : var_attributes.attributes)
+          for (const auto &[fieldIndex, variable] : var_attributes)
             {
               currentFieldIndex = fieldIndex; // Used in computeLHS()
 
@@ -358,7 +358,7 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
                "solver tolerance.\n";
     }
 
-  if (var_attributes.attributes.at(fieldIndex).is_nonlinear)
+  if (var_attributes.at(fieldIndex).is_nonlinear)
     {
       // Now that we have the calculated change in the solution,
       // we need to select a damping coefficient

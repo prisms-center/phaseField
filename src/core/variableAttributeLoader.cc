@@ -6,7 +6,7 @@
 // NOLINTBEGIN(cppcoreguidelines-prefer-member-initializer)
 variableAttributeLoader::variableAttributeLoader()
 {
-  relevant_attributes = &attributes;
+  relevant_attributes = &var_attributes;
   loadVariableAttributes();
   relevant_attributes = &pp_attributes;
   loadPostProcessorVariableAttributes();
@@ -24,7 +24,7 @@ variableAttributeLoader::variableAttributeLoader()
       pp_variable.eq_type = EXPLICIT_TIME_DEPENDENT;
     }
 
-  for (auto &[index, variable] : attributes)
+  for (auto &[index, variable] : var_attributes)
     {
       variable.format_dependencies();
     }
@@ -33,10 +33,10 @@ variableAttributeLoader::variableAttributeLoader()
       pp_variable.format_dependencies();
     }
   validate_attributes();
-  for (auto &[index, variable] : attributes)
+  for (auto &[index, variable] : var_attributes)
     {
       variable.parse_residual_dependencies();
-      variable.parse_dependencies(attributes);
+      variable.parse_dependencies(var_attributes);
       variable.parse_dependencies(pp_attributes);
     }
   for (auto &[index, pp_variable] : pp_attributes)
@@ -46,6 +46,18 @@ variableAttributeLoader::variableAttributeLoader()
 }
 
 // NOLINTEND(cppcoreguidelines-prefer-member-initializer)
+
+AttributesList
+variableAttributeLoader::get_var_attributes() const
+{
+  return var_attributes;
+}
+
+AttributesList
+variableAttributeLoader::get_pp_attributes() const
+{
+  return pp_attributes;
+}
 
 // Methods to set the various variable attributes
 void
@@ -101,7 +113,7 @@ variableAttributeLoader::set_dependencies_value_term_RHS(const unsigned int &ind
       std::set<std::string>(dependencies_set.begin(), dependencies_set.end()); */
   if (relevant_attributes != &pp_attributes)
     {
-      attributes[index].dependencies_value_RHS =
+      var_attributes[index].dependencies_value_RHS =
         std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
     }
   else
@@ -122,7 +134,7 @@ variableAttributeLoader::set_dependencies_gradient_term_RHS(
     std::set<std::string>(dependencies_set.begin(), dependencies_set.end()); */
   if (relevant_attributes != &pp_attributes)
     {
-      attributes[index].dependencies_gradient_RHS =
+      var_attributes[index].dependencies_gradient_RHS =
         std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
     }
   else
@@ -272,7 +284,7 @@ variableAttributeLoader::validate_attributes()
 
   // Populate the expected variable dependencies and check that variable names are mostly
   // well-formed.
-  for (const auto &[index, variable] : attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       name_list.insert(variable.name);
 
@@ -302,7 +314,7 @@ variableAttributeLoader::validate_attributes()
                                     pp_index);
     }
   // Check dependencies
-  for (const auto &[index, variable] : attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       validate_dependencies(variable.dependencies_RHS,
                             "RHS",
