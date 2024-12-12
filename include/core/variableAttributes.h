@@ -9,6 +9,8 @@
 #include <string>
 
 using EvalFlags = dealii::EvaluationFlags::EvaluationFlags;
+struct variableAttributes;
+using AttributesList = std::map<uint, variableAttributes>;
 
 /**
  * \brief Structure to hold the variable attributes that will be passed to a
@@ -85,7 +87,5 @@ struct variableAttributes
   std::set<EvalFlags *>
   eval_flags_for_eq_type(const variableAttributes &other_variable);
 };
-
-using AttributesList = std::map<uint, variableAttributes>;
 
 #endif
