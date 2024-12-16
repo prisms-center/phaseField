@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['setrigidbodymodeconstraintstest',['setRigidBodyModeConstraintsTest',['../classset_rigid_body_mode_constraints_test.html',1,'']]],
-  ['simplifiedgrainmanipulator',['SimplifiedGrainManipulator',['../class_simplified_grain_manipulator.html',1,'']]],
-  ['simplifiedgrainrepresentation',['SimplifiedGrainRepresentation',['../class_simplified_grain_representation.html',1,'']]],
-  ['solverparametersbase',['SolverParametersBase',['../class_solver_parameters_base.html',1,'']]]
+  ['nonlinearsolverparameters_240',['NonlinearSolverParameters',['../classNonlinearSolverParameters.html',1,'']]],
+  ['nonuniformdirichletbc_241',['NonUniformDirichletBC',['../classNonUniformDirichletBC.html',1,'']]],
+  ['nonuniformdirichletbcvector_242',['NonUniformDirichletBCVector',['../classNonUniformDirichletBCVector.html',1,'']]],
+  ['nucleationparameters_243',['nucleationParameters',['../classnucleationParameters.html',1,'']]],
+  ['nucleus_244',['nucleus',['../structnucleus.html',1,'']]]
 ];

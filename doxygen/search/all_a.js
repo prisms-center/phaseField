@@ -1,29 +1,7 @@
 var searchData=
 [
-  ['main',['main',['../main_8cc.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'main.cc']]],
-  ['main_2ecc',['main.cc',['../main_8cc.html',1,'']]],
-  ['maketriangulation',['makeTriangulation',['../class_matrix_free_p_d_e.html#a22e030842c2feaeea8ec0b71aa39d1a7',1,'MatrixFreePDE']]],
-  ['markboundaries',['markBoundaries',['../class_matrix_free_p_d_e.html#af7d704fe7970d0a596798ca3776b860c',1,'MatrixFreePDE']]],
-  ['markboundaries_2ecc',['markBoundaries.cc',['../mark_boundaries_8cc.html',1,'']]],
-  ['matrix_5ffree_5fpde',['matrix_free_pde',['../class_initial_condition.html#a4b0c3c4ae46e4354f9a61876c0223e82',1,'InitialCondition::matrix_free_pde()'],['../class_initial_condition_vector.html#a4b0c3c4ae46e4354f9a61876c0223e82',1,'InitialConditionVector::matrix_free_pde()'],['../class_non_uniform_dirichlet_b_c.html#a4b0c3c4ae46e4354f9a61876c0223e82',1,'NonUniformDirichletBC::matrix_free_pde()'],['../class_non_uniform_dirichlet_b_c_vector.html#a4b0c3c4ae46e4354f9a61876c0223e82',1,'NonUniformDirichletBCVector::matrix_free_pde()']]],
-  ['matrixfreeobject',['matrixFreeObject',['../class_matrix_free_p_d_e.html#aab1d495720103a33c9f29e9ed29db819',1,'MatrixFreePDE']]],
-  ['matrixfreepde',['MatrixFreePDE',['../class_matrix_free_p_d_e.html',1,'MatrixFreePDE&lt; dim, degree &gt;'],['../class_matrix_free_p_d_e.html#a2687789df6132f733302b9a1f0b49f8f',1,'MatrixFreePDE::MatrixFreePDE()']]],
-  ['matrixfreepde_2ecc',['matrixFreePDE.cc',['../matrix_free_p_d_e_8cc.html',1,'']]],
-  ['matrixfreepde_2eh',['matrixFreePDE.h',['../matrix_free_p_d_e_8h.html',1,'']]],
-  ['matrixfreepde_5ftemplate_5finstantiation',['MATRIXFREEPDE_TEMPLATE_INSTANTIATION',['../matrix_free_p_d_e__template__instantiations_8h.html#a6e74a5f497ef93a7411eb62e48c5bde6',1,'matrixFreePDE_template_instantiations.h']]],
-  ['matrixfreepde_5ftemplate_5finstantiations_2eh',['matrixFreePDE_template_instantiations.h',['../matrix_free_p_d_e__template__instantiations_8h.html',1,'']]],
-  ['max_5fiterations',['max_iterations',['../class_nonlinear_solver_parameters.html#a6d1fb853793cdbd341600473a0168fc2',1,'NonlinearSolverParameters']]],
-  ['max_5fiterations_5flist',['max_iterations_list',['../class_linear_solver_parameters.html#aa87bf902f5bb63249c0a03ab6c0263b6',1,'LinearSolverParameters']]],
-  ['max_5frefinement_5flevel',['max_refinement_level',['../classuser_input_parameters.html#a9af2085fffbca9507b1e3ee182724c0d',1,'userInputParameters']]],
-  ['mergesplitgrains',['mergeSplitGrains',['../class_flood_filler.html#a3b78c1bf420f1dc733cdb1fb29ccf10b',1,'FloodFiller']]],
-  ['min_5fdistance_5fbetween_5fnuclei',['min_distance_between_nuclei',['../classuser_input_parameters.html#a4b0a17a60a260cb5dbcd0a2120bbc7e7',1,'userInputParameters']]],
-  ['min_5fradius_5ffor_5floading_5fgrains',['min_radius_for_loading_grains',['../classuser_input_parameters.html#a9f9734b3757204cd1a66774e6356d786',1,'userInputParameters']]],
-  ['min_5frefinement_5flevel',['min_refinement_level',['../classuser_input_parameters.html#a1d0e8f55622d4a5b9ed34cd0f748fae8',1,'userInputParameters']]],
-  ['model_5fconstant_5fname_5fmap',['model_constant_name_map',['../classuser_input_parameters.html#a1ce6bb70065c97d0abf6756d896fc5b3',1,'userInputParameters']]],
-  ['model_5fconstant_5fnames',['model_constant_names',['../classinput_file_reader.html#ae1b321182f4e1ad5963757511acc8174',1,'inputFileReader']]],
-  ['model_5fconstants',['model_constants',['../classuser_input_parameters.html#a783ef719f3eae37d53fc5ced8129cade',1,'userInputParameters']]],
-  ['model_5fvariables_2eh',['model_variables.h',['../model__variables_8h.html',1,'']]],
-  ['modelresidual',['modelResidual',['../classmodel_residual.html',1,'']]],
-  ['modelvariable',['modelVariable',['../classmodel_variable.html',1,'']]],
-  ['move_5ffile',['move_file',['../class_matrix_free_p_d_e.html#a2499e8c6f264dae75dce80ed53551ea1',1,'MatrixFreePDE']]]
+  ['matrixfreepde_96',['MatrixFreePDE',['../classMatrixFreePDE.html',1,'MatrixFreePDE&lt; dim, degree &gt;'],['../classMatrixFreePDE.html#a80bf1fd46a0e470c8d0470539e14de89',1,'MatrixFreePDE::MatrixFreePDE()']]],
+  ['mergesplitgrains_97',['mergeSplitGrains',['../classFloodFiller.html#a3721f4d44dce9e18d9df4a7735863e67',1,'FloodFiller']]],
+  ['mesh_98',['Mesh',['../classPRISMS_1_1Mesh.html',1,'PRISMS']]],
+  ['mesh_3c_20prisms_3a_3acoordinate_2c_20dim_20_3e_99',['Mesh&lt; PRISMS::Coordinate, DIM &gt;',['../classPRISMS_1_1Mesh.html',1,'PRISMS']]]
 ];

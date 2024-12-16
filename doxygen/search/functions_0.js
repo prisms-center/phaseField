@@ -1,10 +1,12 @@
 var searchData=
 [
-  ['adaptiverefine',['adaptiveRefine',['../class_matrix_free_p_d_e.html#a85ecead813fa420589176afebc1c3152',1,'MatrixFreePDE']]],
-  ['adaptiverefinecriterion',['adaptiveRefineCriterion',['../class_matrix_free_p_d_e.html#add5d3caaa759b5286f76db4fda4d0d11',1,'MatrixFreePDE']]],
-  ['addvertexlist',['addVertexList',['../class_grain_set.html#ad2e2ac5b69d342d8c265c3133ee1fcce',1,'GrainSet']]],
-  ['applydirichletbcs',['applyDirichletBCs',['../class_matrix_free_p_d_e.html#a90568dce4dabb9258e735f55b7a8722b',1,'MatrixFreePDE']]],
-  ['applyinitialconditions',['applyInitialConditions',['../class_matrix_free_p_d_e.html#a64fbd7dc135ad44c1dd45f57c5e24510',1,'MatrixFreePDE']]],
-  ['applyneumannbcs',['applyNeumannBCs',['../class_matrix_free_p_d_e.html#a247247ad46d4df30ac4fbc99cc202952',1,'MatrixFreePDE']]],
-  ['assigncijsize',['assignCIJSize',['../classunit_test.html#a69ea60499425e198800ef7708ee18f92',1,'unitTest::assignCIJSize(dealii::VectorizedArray&lt; double &gt; CIJ[2 *dim-1+dim/3][2 *dim-1+dim/3])'],['../classunit_test.html#a62213e7c2a0295212f542efeeb4404f4',1,'unitTest::assignCIJSize(dealii::Table&lt; 2, double &gt; &amp;CIJ)']]]
+  ['adaptive_5frefinement_5fcriterion_293',['adaptive_refinement_criterion',['../classAdaptiveRefinement.html#ae77dd5dc3e0673d88820f1b17f4e59dc',1,'AdaptiveRefinement']]],
+  ['adaptiverefinement_294',['AdaptiveRefinement',['../classAdaptiveRefinement.html#af10c38eefd6f82a5a4b35482c4a6d519',1,'AdaptiveRefinement']]],
+  ['add_295',['add',['../classPRISMS_1_1Bin.html#afd84a3fa3dda6d670fbd10640175cc17',1,'PRISMS::Bin']]],
+  ['add_5fonce_296',['add_once',['../classPRISMS_1_1Bin.html#a4cd16826a37b9a948e2448e6e9031f4a',1,'PRISMS::Bin']]],
+  ['add_5frange_297',['add_range',['../classPRISMS_1_1Bin.html#a4099076a6f8d74bbe2d2e2f6ddba1600',1,'PRISMS::Bin']]],
+  ['addvertexlist_298',['addVertexList',['../classGrainSet.html#af296b135fa0205ff958806f573931031',1,'GrainSet']]],
+  ['applydirichletbcs_299',['applyDirichletBCs',['../classMatrixFreePDE.html#a05037ad643070beaf4abc4b4a304b5f2',1,'MatrixFreePDE']]],
+  ['applyneumannbcs_300',['applyNeumannBCs',['../classMatrixFreePDE.html#a2af67badeaae89034d4cea840514a344',1,'MatrixFreePDE']]],
+  ['assign_5fboundary_5fconditions_301',['assign_boundary_conditions',['../classuserInputParameters.html#adf60178cc407a754991baaf218d2719b',1,'userInputParameters']]]
 ];
