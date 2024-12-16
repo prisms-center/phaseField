@@ -1,5 +1,7 @@
 var NAVTREEINDEX3 =
 {
+"classes.html":[3,1],
+"classinputFileReader.html":[3,0,9],
 "classinputFileReader.html#a29cbecae135a8d87cfca073ec65981bb":[3,0,9,1],
 "classinputFileReader.html#a3b6850655861293e09bf4f18ee8f5f86":[3,0,9,7],
 "classinputFileReader.html#a78efc3a4281859ebe8fa2fc19aa81754":[3,0,9,3],
@@ -197,8 +199,8 @@ var NAVTREEINDEX3 =
 "functions_func.html":[3,3,1],
 "functions_vars.html":[3,3,2],
 "hierarchy.html":[3,2],
-"index.html":[],
 "index.html":[0],
+"index.html":[],
 "index.html#autotoc_md62":[0,0],
 "index.html#autotoc_md63":[0,1],
 "initialConditions_8h_source.html":[4,0,0,0,1,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX3 =
 "install_prismspf.html#autotoc_md54":[1,2,1,1],
 "install_vis.html":[1,2,2],
 "manual.html":[1],
-"manual.html#autotoc_md15":[1,0],
-"manual.html#autotoc_md16":[1,1],
-"matrixFreePDE_8h_source.html":[4,0,0,0,8]
+"manual.html#autotoc_md15":[1,0]
 };
