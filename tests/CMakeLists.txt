@@ -110,7 +110,7 @@ set(TARGET_SRC
   )
 
 # Check if there has been updates to main library
-set(dir ${PROJECT_SOURCE_DIR}/../..)
+set(dir ${PROJECT_SOURCE_DIR}/..)
 EXECUTE_PROCESS(COMMAND "rm" "CMakeCache.txt" WORKING_DIRECTORY ${dir})
 EXECUTE_PROCESS(COMMAND "cmake" "CMakeLists.txt" WORKING_DIRECTORY ${dir})
 EXECUTE_PROCESS(COMMAND "make" WORKING_DIRECTORY ${dir})

@@ -49,7 +49,8 @@ jobs:
 
           cd tests
           cmake .
-          make -j $(nproc) test
+          make -j $(nproc)
+          ctest
           cd ..
 
 
