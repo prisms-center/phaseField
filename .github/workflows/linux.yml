@@ -42,7 +42,18 @@ jobs:
           cmake .
           make -j $(nproc)
 
-      - name: Run PRISMS-PF tests
+      - name: Run PRISMS-PF unit tests
+        run: |
+          export OMPI_ALLOW_RUN_AS_ROOT=1
+          export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
+
+          cd tests
+          cmake .
+          make -j $(nproc) test
+          cd ..
+
+
+      - name: Run PRISMS-PF automatic tests
         timeout-minutes: 60
         run: |
           export OMPI_ALLOW_RUN_AS_ROOT=1
