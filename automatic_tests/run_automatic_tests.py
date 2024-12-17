@@ -225,11 +225,9 @@ applicationList = [
     "coupledCahnHilliardAllenCahn",
     "grainGrowth",
     "precipitateEvolution",
-    "precipitateEvolution_pfunction",
     "spinodalDecomposition",
 ]
 getNewGoldStandardList = [
-    False,
     False,
     False,
     False,

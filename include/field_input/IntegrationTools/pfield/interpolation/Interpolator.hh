@@ -1,9 +1,8 @@
-
 #ifndef Interpolator_HH
 #define Interpolator_HH
 
-#include "../../pfunction/PFuncBase.hh"
-#include "../Coordinate.hh"
+#include <field_input/IntegrationTools/pfield/Coordinate.hh>
+#include <field_input/IntegrationTools/pfunction/PFuncBase.hh>
 
 namespace PRISMS
 {
@@ -20,8 +19,8 @@ namespace PRISMS
                                                                      // evaluate
 
   public:
-    typedef typename PFuncBase<std::vector<PRISMS::Coordinate<DIM>>, double>::size_type
-      size_type;
+    using size_type =
+      typename PFuncBase<std::vector<PRISMS::Coordinate<DIM>>, double>::size_type;
 
     Interpolator(unsigned long int                                        node,
                  unsigned long int                                        element,
@@ -69,20 +68,6 @@ namespace PRISMS
     operator()(const Coordinate &coord)
     {
       undefined("double operator()(Coordinate coord)");
-      return double();
-    }
-
-    virtual double
-    grad(const Coordinate &coord, size_type di)
-    {
-      undefined("double grad()(Coordinate coord, size_type di)");
-      return double();
-    }
-
-    virtual double
-    hess(const Coordinate &coord, size_type di, size_type dj)
-    {
-      undefined("double hess()(Coordinate coord, size_type di, size_type dj)");
       return double();
     }
 
