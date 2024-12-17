@@ -19,7 +19,7 @@ $ vi ~/.profile
 ```
 
 ## Installing deal.II
-deal.II can be downloaded [here](https://www.dealii.org/current_release/download/), which also has installation instructions. The deal.II installation process depends on your operating system. The current PRISMS-PF version has been tested with deal.II versions 9.2.0 through 9.5.1. We recommend using the latest version of deal.II, if possible. Other versions are available [here](https://github.com/dealii/dealii/releases).
+deal.II can be downloaded [here](https://www.dealii.org/current_release/download/), which also has installation instructions. The deal.II installation process depends on your operating system. The current PRISMS-PF version has been tested with deal.II versions 9.2.0 through 9.6.1. We recommend using the latest version of deal.II, if possible. Other versions are available [here](https://github.com/dealii/dealii/releases).
 
 There are three general approaches to installing deal.II: using a binary package, installing from source, and using Docker. For general use on a personal computer, any of these are appropriate. When available, we recommend installing deal.II using a binary package, this should be the most straightforward approach. If a binary package isn't available, installation using Docker is also fairly straightforward. The third option is to install deal.II and its prerequisites from source, which is more difficult than the other options. When using PRISMS-PF on a HPC cluster we recommend installing from source to make full use of the optimized libraries installed on the cluster.
 
@@ -31,7 +31,7 @@ A binary package for the latest version of deal.II (and other versions) is avail
 In some cases, deal.II.app will not open, possibly freezing at the ''Verifying...'' stage. If this happens, right click on it and select ''Show Package Contents''. Then go to ''/Contents/Resources/bin/'' and launch ''dealii-terminal''. This should launch the Terminal window that sets the environment variables.
 
 ### Binary Package (Linux)
-Binary packages for deal.II are available for Gentoo, Debian (stretch or newer), Ubuntu (16.10 or newer), and Arch Linux. Please refer to https://www.dealii.org/download.html for details.
+Binary packages for deal.II are available for Gentoo, Debian (stretch or newer), Ubuntu (16.10 or newer), and Arch Linux. Please refer to https://www.dealii.org/current_release/download/ for details.
 
 ### Docker (Mac OS X, Linux, Windows)
 Docker is a container platform that can be used to run code identically on any OS X, Linux, or Windows machine. The [PRISMS-PF Docker image](https://hub.docker.com/repository/docker/prismspf/prismspf/) contains a full instantiation of PRISMS-PF and all of its prerequisites. The steps to use it are given in on the [Installing PRISMS-PF page](#install_prismspf). Docker images for deal.II are also posted on [DockerHub](https://hub.docker.com/r/dealii/dealii/). These can be used directly, if so desired.
