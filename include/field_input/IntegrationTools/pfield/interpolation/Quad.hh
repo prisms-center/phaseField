@@ -168,11 +168,10 @@ namespace PRISMS
     {
       _var[0][0] = coord[0];
       _var[0][1] = coord[1];
-      double e;
 
       for (int i = 0; i < 2; i++)
         {
-          e = _var[3][i] * (_var[0][i] - _var[1][i]) / _var[2][i];
+          double e = _var[3][i] * (_var[0][i] - _var[1][i]) / _var[2][i];
           if (e < 0.0 || e >= 1.0)
             {
               return false;
