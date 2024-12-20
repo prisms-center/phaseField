@@ -3,7 +3,7 @@
 #  Adapted from the ASPECT CMake file
 ##
 
-cmake_minimum_required(VERSION 3.1.0)
+cmake_minimum_required(VERSION 3.3.0)
 
 project(prisms_pf)
 
@@ -71,7 +71,7 @@ message(STATUS "=========================================================")
 message(STATUS "")
 
 # Find deal.II installation
-find_package(deal.II 9.2.0 QUIET
+find_package(deal.II 9.6.0 QUIET
 	HINTS ${DEAL_II_DIR} $ENV{DEAL_II_DIR}
   )
 if(NOT ${deal.II_FOUND})
