@@ -63,7 +63,7 @@ public:
   set_variable_equation_type(const unsigned int &index, const PDEType &var_eq_type) const;
 
   /**
-   * \brief Set the dependencies for the value term of the RHS equation of the variable at
+   * \brief Add dependencies for the value term of the RHS equation of the variable at
    * `index`.
    *
    * \param index Index of variable
@@ -75,7 +75,7 @@ public:
                                   const std::string  &dependencies);
 
   /**
-   * \brief Set the dependencies for the gradient term of the RHS equation of the variable
+   * \brief Add dependencies for the gradient term of the RHS equation of the variable
    * at `index`.
    *
    * \param index Index of variable
@@ -87,7 +87,7 @@ public:
                                      const std::string  &dependencies);
 
   /**
-   * \brief Set the dependencies for the value term of the LHS equation of the variable at
+   * \brief Add dependencies for the value term of the LHS equation of the variable at
    * `index`.
    *
    * \param index Index of variable
@@ -99,7 +99,7 @@ public:
                                   const std::string  &dependencies) const;
 
   /**
-   * \brief Set the dependencies for the gradient term of the LHS equation of the variable
+   * \brief Add dependencies for the gradient term of the LHS equation of the variable
    * at `index`.
    *
    * \param index Index of variable
@@ -109,6 +109,58 @@ public:
   void
   set_dependencies_gradient_term_LHS(const unsigned int &index,
                                      const std::string  &dependencies) const;
+
+  /**
+   * \brief Insert dependencies for the value term of the RHS equation of the variable at
+   * `index`.
+   *
+   * \param index Index of variable
+   * \param dependencies Container containing list of dependency strings for
+   * variable at `index` Hint: {"variable", "grad(variable)", "hess(variable)"}
+   */
+  template <typename Iterable>
+  void
+  insert_dependencies_value_term_RHS(const unsigned int &index,
+                                     const Iterable     &dependencies);
+
+  /**
+   * \brief Insert dependencies for the gradient term of the RHS equation of the variable
+   * at `index`.
+   *
+   * \param index Index of variable
+   * \param dependencies Container containing list of dependency strings for
+   * variable at `index` Hint: {"variable", "grad(variable)", "hess(variable)"}
+   */
+  template <typename Iterable>
+  void
+  insert_dependencies_gradient_term_RHS(const unsigned int &index,
+                                        const Iterable     &dependencies);
+
+  /**
+   * \brief Insert dependencies for the value term of the LHS equation of the variable at
+   * `index`.
+   *
+   * \param index Index of variable
+   * \param dependencies Container containing list of dependency strings for
+   * variable at `index` Hint: {"variable", "grad(variable)", "hess(variable)"}
+   */
+  template <typename Iterable>
+  void
+  insert_dependencies_value_term_LHS(const unsigned int &index,
+                                     const Iterable     &dependencies) const;
+
+  /**
+   * \brief Insert dependencies for the gradient term of the LHS equation of the variable
+   * at `index`.
+   *
+   * \param index Index of variable
+   * \param dependencies Container containing list of dependency strings for
+   * variable at `index` Hint: {"variable", "grad(variable)", "hess(variable)"}
+   */
+  template <typename Iterable>
+  void
+  insert_dependencies_gradient_term_LHS(const unsigned int &index,
+                                        const Iterable     &dependencies) const;
 
   /**
    * \brief Flag whether the variable at `index` is needed to calculate the nucleation
@@ -143,13 +195,13 @@ public:
   /**
    * \brief getter function for variable attributes list (copy).
    */
-  AttributesList
+  [[nodiscard]] AttributesList
   get_var_attributes() const;
 
   /**
    * \brief getter function for postprocessing attributes list (copy).
    */
-  AttributesList
+  [[nodiscard]] AttributesList
   get_pp_attributes() const;
 
   /**
