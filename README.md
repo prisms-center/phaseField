@@ -44,7 +44,7 @@ For detailed instructions on how to download and use PRISMS-PF, please consult t
 
 ### Install:
 
-Install CMake, p4est, and deal.II (version 9.6 recommended).
+Install CMake, p4est, and deal.II (version 9.6.0 or above required).
 
 Clone the PRISMS-PF GitHub repository and navigate its folder.
 ```bash
@@ -98,7 +98,7 @@ following open source applications:
 
 ## Version information:
 
-This version of the code, v2.4, contains moderate changes from v2.3. It was released in November 2024. See [version_changes.md](version_changes.md) for details.
+This version of the code, v3.0, is still under development. See [version_changes.md](version_changes.md) for details of previous releases.
 
 ## Contributors
 Thanks to everyone who has contributed to the project!

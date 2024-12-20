@@ -273,12 +273,8 @@ MatrixFreePDE<dim, degree>::setPeriodicityConstraints(
                                             periodicity_vector);
         }
     }
-#if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR >= 4)
+
   DoFTools::make_periodicity_constraints<dim, dim>(periodicity_vector, *constraints);
-#else
-  DoFTools::make_periodicity_constraints<DoFHandler<dim>>(periodicity_vector,
-                                                          *constraints);
-#endif
 }
 
 template <int dim, int degree>

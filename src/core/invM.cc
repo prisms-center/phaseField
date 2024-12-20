@@ -128,13 +128,8 @@ MatrixFreePDE<dim, degree>::computeInvM()
                                            std::multiplies<>());
 
   // Invert scalar mass matrix diagonal elements
-#if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
-  for (unsigned int k = 0; k < invMscalar.local_size(); ++k)
-    {
-#else
   for (unsigned int k = 0; k < invMscalar.locally_owned_size(); ++k)
     {
-#endif
       if (std::abs(invMscalar.local_element(k)) > 1.0e-15 * min_cell_volume)
         {
           invMscalar.local_element(k) = 1. / invMscalar.local_element(k);
@@ -148,13 +143,8 @@ MatrixFreePDE<dim, degree>::computeInvM()
         << parabolicScalarFieldIndex << ")\n";
 
   // Invert vector mass matrix diagonal elements
-#if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
-  for (unsigned int k = 0; k < invMvector.local_size(); ++k)
-    {
-#else
   for (unsigned int k = 0; k < invMvector.locally_owned_size(); ++k)
     {
-#endif
       if (std::abs(invMvector.local_element(k)) > 1.0e-15 * min_cell_volume)
         {
           invMvector.local_element(k) = 1. / invMvector.local_element(k);
