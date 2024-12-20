@@ -260,19 +260,11 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
                       computeLaplaceRHS(fieldIndex);
                       if (fields[fieldIndex].type == SCALAR)
                         {
-#if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
-                          unsigned int invM_size = invMscalar.local_size();
-                          for (unsigned int dof = 0;
-                               dof < solutionSet[fieldIndex]->local_size();
-                               ++dof)
-                            {
-#else
                           unsigned int invM_size = invMscalar.locally_owned_size();
                           for (unsigned int dof = 0;
                                dof < solutionSet[fieldIndex]->locally_owned_size();
                                ++dof)
                             {
-#endif
                               solutionSet[fieldIndex]->local_element(dof) =
                                 solutionSet[fieldIndex]->local_element(dof) -
                                 invMscalar.local_element(dof % invM_size) *
@@ -282,19 +274,11 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
                         }
                       else if (fields[fieldIndex].type == VECTOR)
                         {
-#if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
-                          unsigned int invM_size = invMvector.local_size();
-                          for (unsigned int dof = 0;
-                               dof < solutionSet[fieldIndex]->local_size();
-                               ++dof)
-                            {
-#else
                           unsigned int invM_size = invMvector.locally_owned_size();
                           for (unsigned int dof = 0;
                                dof < solutionSet[fieldIndex]->locally_owned_size();
                                ++dof)
                             {
-#endif
                               solutionSet[fieldIndex]->local_element(dof) =
                                 solutionSet[fieldIndex]->local_element(dof) -
                                 invMvector.local_element(dof % invM_size) *
