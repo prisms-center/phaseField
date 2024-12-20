@@ -1,5 +1,11 @@
 var NAVTREEINDEX4 =
 {
+"install_prismspf.html#autotoc_md54":[1,2,1,1],
+"install_vis.html":[1,2,2],
+"manual.html":[1],
+"manual.html#autotoc_md15":[1,0],
+"manual.html#autotoc_md16":[1,1],
+"matrixFreePDE_8h_source.html":[4,0,0,0,8],
 "model__variables_8h_source.html":[4,0,0,0,9],
 "namespacePRISMS_1_1PLibrary.html":[2,0,1,0],
 "namespacePRISMS_1_1PLibrary.html#a0e4f1455667660a8170a71c5e284d574":[2,0,1,0,1],
@@ -91,7 +97,5 @@ var NAVTREEINDEX4 =
 "variableAttributes_8h_source.html":[4,0,0,0,15],
 "variableContainer_8h_source.html":[4,0,0,0,16],
 "variableValueContainer_8h_source.html":[4,0,0,0,17],
-"vectorBCFunction_8h_source.html":[4,0,0,0,0,2],
-"":[2,0,1],
-"":[2,0,0]
+"vectorBCFunction_8h_source.html":[4,0,0,0,0,2]
 };

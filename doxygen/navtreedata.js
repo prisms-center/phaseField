@@ -51,11 +51,11 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"AdaptiveRefinement_8h_source.html",
-"classPRISMS_1_1Bin.html#afd84a3fa3dda6d670fbd10640175cc17",
-"classPRISMS_1_1PFunction.html#ac2e7eeb41ee0ff4f93fd964f813d18dc",
-"classinputFileReader.html#a29cbecae135a8d87cfca073ec65981bb",
-"model__variables_8h_source.html"
+"",
+"classPRISMS_1_1Bin.html#add1667d166074cb49fa32b0265ef8bc4",
+"classPRISMS_1_1PFunction.html#aa5c70ec47f391c91098b4d63dd659bc0",
+"classes.html",
+"install_prismspf.html#autotoc_md54"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
