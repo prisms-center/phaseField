@@ -100,6 +100,15 @@ following open source applications:
 
 This version of the code, v2.4, contains moderate changes from v2.3. It was released in November 2024. See [version_changes.md](version_changes.md) for details.
 
+## Contributors
+Thanks to everyone who has contributed to the project!
+
+<a href="https://github.com/prisms-center/phaseField/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=prisms-center/phaseField" />
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
+
 ## License:
 
 GNU Lesser General Public License (LGPL). Please see the file
