@@ -101,6 +101,19 @@ endif()
 
 deal_ii_initialize_cached_variables()
 
+# Caliper
+set(PRISMS_PF_WITH_CALIPER OFF CACHE BOOL "Whether the user wants to compile PRISMS-PF with the profiling code Caliper, or not.")
+message(STATUS "Using PRISMS_PF_WITH_CALIPER = '${PRISMS_PF_WITH_CALIPER}'")
+if(PRISMS_PF_WITH_CALIPER)
+  find_package(CALIPER)
+  if(${CALIPER_FOUND})
+    include_directories(${CALIPER_INCLUDE_DIR})
+    message(STATUS "Caliper found at ${CALIPER_DIR}")
+  else()
+    message(FATAL_ERROR "Caliper not found. Disable PRISMS_PF_WITH_CALIPER or specify a hint to your installation directory with CALIPER_DIR")
+  endif()
+endif()
+
 # Create compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(FORCE_COLORED_OUTPUT ON CACHE BOOL "Forces colored output when compiling with gcc and clang.")
