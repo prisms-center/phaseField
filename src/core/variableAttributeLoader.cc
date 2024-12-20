@@ -109,18 +109,7 @@ variableAttributeLoader::set_dependencies_value_term_RHS(const unsigned int &ind
 {
   std::vector<std::string> dependencies_set =
     dealii::Utilities::split_string_list(strip_whitespace(dependencies));
-  /* (*relevant_attributes)[index].dependencies_value_RHS =
-      std::set<std::string>(dependencies_set.begin(), dependencies_set.end()); */
-  if (relevant_attributes != &pp_attributes)
-    {
-      var_attributes[index].dependencies_value_RHS =
-        std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
-    }
-  else
-    {
-      pp_attributes[index].dependencies_value_PP =
-        std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
-    }
+  insert_dependencies_value_term_RHS(index, dependencies_set);
 }
 
 void
@@ -130,18 +119,7 @@ variableAttributeLoader::set_dependencies_gradient_term_RHS(
 {
   std::vector<std::string> dependencies_set =
     dealii::Utilities::split_string_list(strip_whitespace(dependencies));
-  /* (*relevant_attributes)[index].dependencies_gradient_RHS =
-    std::set<std::string>(dependencies_set.begin(), dependencies_set.end()); */
-  if (relevant_attributes != &pp_attributes)
-    {
-      var_attributes[index].dependencies_gradient_RHS =
-        std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
-    }
-  else
-    {
-      pp_attributes[index].dependencies_gradient_PP =
-        std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
-    }
+  insert_dependencies_gradient_term_RHS(index, dependencies_set);
 }
 
 void
@@ -151,8 +129,7 @@ variableAttributeLoader::set_dependencies_value_term_LHS(
 {
   std::vector<std::string> dependencies_set =
     dealii::Utilities::split_string_list(strip_whitespace(dependencies));
-  (*relevant_attributes)[index].dependencies_value_LHS =
-    std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
+  insert_dependencies_value_term_LHS(index, dependencies_set);
 }
 
 void
@@ -162,8 +139,66 @@ variableAttributeLoader::set_dependencies_gradient_term_LHS(
 {
   std::vector<std::string> dependencies_set =
     dealii::Utilities::split_string_list(strip_whitespace(dependencies));
-  (*relevant_attributes)[index].dependencies_gradient_LHS =
-    std::set<std::string>(dependencies_set.begin(), dependencies_set.end());
+  insert_dependencies_gradient_term_LHS(index, dependencies_set);
+}
+
+template <typename Iterable>
+void
+variableAttributeLoader::insert_dependencies_value_term_RHS(const unsigned int &index,
+                                                            const Iterable &dependencies)
+{
+  /* (*relevant_attributes)[index].dependencies_value_RHS.insert(dependencies.begin(),
+   * dependencies.end()); */
+  if (relevant_attributes != &pp_attributes)
+    {
+      var_attributes[index].dependencies_value_RHS.insert(dependencies.begin(),
+                                                          dependencies.end());
+    }
+  else
+    {
+      pp_attributes[index].dependencies_value_PP.insert(dependencies.begin(),
+                                                        dependencies.end());
+    }
+}
+
+template <typename Iterable>
+void
+variableAttributeLoader::insert_dependencies_gradient_term_RHS(
+  const unsigned int &index,
+  const Iterable     &dependencies)
+{
+  /* (*relevant_attributes)[index].dependencies_gradient_RHS.insert(dependencies.begin(),
+   * dependencies.end()); */
+  if (relevant_attributes != &pp_attributes)
+    {
+      var_attributes[index].dependencies_gradient_RHS.insert(dependencies.begin(),
+                                                             dependencies.end());
+    }
+  else
+    {
+      pp_attributes[index].dependencies_gradient_PP.insert(dependencies.begin(),
+                                                           dependencies.end());
+    }
+}
+
+template <typename Iterable>
+void
+variableAttributeLoader::insert_dependencies_value_term_LHS(
+  const unsigned int &index,
+  const Iterable     &dependencies) const
+{
+  (*relevant_attributes)[index].dependencies_value_LHS.insert(dependencies.begin(),
+                                                              dependencies.end());
+}
+
+template <typename Iterable>
+void
+variableAttributeLoader::insert_dependencies_gradient_term_LHS(
+  const unsigned int &index,
+  const Iterable     &dependencies) const
+{
+  (*relevant_attributes)[index].dependencies_gradient_LHS.insert(dependencies.begin(),
+                                                                 dependencies.end());
 }
 
 void
