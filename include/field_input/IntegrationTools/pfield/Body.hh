@@ -81,42 +81,24 @@ namespace PRISMS
                   infile >> value;
                 }
 
-              // Construct field descriptions
-              std::vector<std::string> var_name(DIM);
-              std::vector<std::string> var_description(DIM);
+              // Check dim
               switch (DIM)
                 {
                   case 1:
                     throw std::runtime_error(
                       "1D dimensional vtk read-in is not currently supported.");
-
                     break;
-
                   case 2:
-                    var_name[0]        = "x";
-                    var_description[0] = "x coordinate";
-                    var_name[1]        = "y";
-                    var_description[1] = "y coordinate";
-
                     break;
-
                   case 3:
-                    var_name[0]        = "x";
-                    var_description[0] = "x coordinate";
-                    var_name[1]        = "y";
-                    var_description[1] = "y coordinate";
-                    var_name[2]        = "z";
-                    var_description[2] = "z coordinate";
-
                     break;
-
                   default:
                     throw std::runtime_error("Invalid dimension for vtk read-in.");
                 }
 
               // Construct field
               std::cout << "\tConstructing PField '" << name << "'\n";
-              scalar_field.emplace_back(name, var_name, var_description, mesh, gid, 0.0);
+              scalar_field.emplace_back(name, mesh, gid, 0.0);
             }
         }
       std::cout << "Finished reading VTK file." << std::endl;
@@ -280,36 +262,13 @@ namespace PRISMS
                     }
 
                   data.clear();
-                  // MPI_Barrier(MPI_COMM_WORLD);
-
-                  // construct field
-                  std::vector<std::string> var_name(DIM);
-                  std::vector<std::string> var_description(DIM);
-
-                  if (DIM == 2)
-                    {
-                      var_name[0]        = "x";
-                      var_description[0] = "x coordinate";
-                      var_name[1]        = "y";
-                      var_description[1] = "y coordinate";
-                    }
-                  if (DIM > 2)
-                    {
-                      var_name[2]        = "z";
-                      var_description[2] = "z coordinate";
-                    }
 
                   std::cout << "Construct PField '" << name << "'" << std::endl;
-                  scalar_field.push_back(PField<Coordinate, double, DIM>(name,
-                                                                         var_name,
-                                                                         var_description,
-                                                                         mesh,
-                                                                         gid,
-                                                                         0.0));
+                  scalar_field.push_back(
+                    PField<Coordinate, double, DIM>(name, mesh, gid, 0.0));
                   std::cout << "  done" << std::endl;
 
                   gid.clear();
-                  //
                 }
             }
         }
