@@ -4,5 +4,6 @@
 #cmakedefine PRISMS_PF_SOURCE_DIR "@PRISMS_PF_SOURCE_DIR@"
 
 // Optional features:
+#cmakedefine PRISMS_PF_WITH_CALIPER
 
 #endif
