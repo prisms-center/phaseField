@@ -215,7 +215,6 @@ application_list = [
     "allenCahn_conserved",
     "alloySolidification",
     "precipitateEvolution",
-    "precipitateEvolution_pfunction",
     "alloySolidification_uniform",
     "spinodalDecomposition",
     "anisotropyFacet",
