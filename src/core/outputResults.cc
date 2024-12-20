@@ -45,19 +45,11 @@ MatrixFreePDE<dim, degree>::outputResults()
     {
       std::vector<vectorType *> postProcessedSet;
       computePostProcessedFields(postProcessedSet);
-#if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
-      unsigned int invM_size = invMscalar.local_size();
-      for (auto &field : postProcessedSet)
-        {
-          for (unsigned int dof = 0; dof < field->local_size(); ++dof)
-            {
-#else
       unsigned int invM_size = invMscalar.locally_owned_size();
       for (auto &field : postProcessedSet)
         {
           for (unsigned int dof = 0; dof < field->locally_owned_size(); ++dof)
             {
-#endif
               field->local_element(dof) =
                 invMscalar.local_element(dof % invM_size) * field->local_element(dof);
             }

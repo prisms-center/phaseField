@@ -261,16 +261,10 @@ MatrixFreePDE<dim, degree>::updateExplicitSolution(unsigned int fieldIndex)
   // is an integer multiple of the length of invM for vector variables
   if (fields[fieldIndex].type == SCALAR)
     {
-#if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
-      unsigned int invM_size = invMscalar.local_size();
-      for (unsigned int dof = 0; dof < solutionSet[fieldIndex]->local_size(); ++dof)
-        {
-#else
       unsigned int invM_size = invMscalar.locally_owned_size();
       for (unsigned int dof = 0; dof < solutionSet[fieldIndex]->locally_owned_size();
            ++dof)
         {
-#endif
           solutionSet[fieldIndex]->local_element(dof) =
             invMscalar.local_element(dof % invM_size) *
             residualSet[fieldIndex]->local_element(dof);
@@ -278,16 +272,10 @@ MatrixFreePDE<dim, degree>::updateExplicitSolution(unsigned int fieldIndex)
     }
   else if (fields[fieldIndex].type == VECTOR)
     {
-#if (DEAL_II_VERSION_MAJOR == 9 && DEAL_II_VERSION_MINOR < 4)
-      unsigned int invM_size = invMvector.local_size();
-      for (unsigned int dof = 0; dof < solutionSet[fieldIndex]->local_size(); ++dof)
-        {
-#else
       unsigned int invM_size = invMvector.locally_owned_size();
       for (unsigned int dof = 0; dof < solutionSet[fieldIndex]->locally_owned_size();
            ++dof)
         {
-#endif
           solutionSet[fieldIndex]->local_element(dof) =
             invMvector.local_element(dof % invM_size) *
             residualSet[fieldIndex]->local_element(dof);
