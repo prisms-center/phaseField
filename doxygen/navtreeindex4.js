@@ -1,8 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"install_prismspf.html#autotoc_md54":[1,2,1,1],
-"install_vis.html":[1,2,2],
-"manual.html":[1],
 "manual.html#autotoc_md15":[1,0],
 "manual.html#autotoc_md16":[1,1],
 "matrixFreePDE_8h_source.html":[4,0,0,0,8],

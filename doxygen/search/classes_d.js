@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['refinementcriterion_283',['RefinementCriterion',['../classRefinementCriterion.html',1,'']]]
+  ['refinementcriterion_280',['RefinementCriterion',['../classRefinementCriterion.html',1,'']]]
 ];
