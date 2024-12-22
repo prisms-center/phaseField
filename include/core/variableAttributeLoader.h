@@ -23,13 +23,13 @@ public:
   /**
    * \brief User-facing method where the variable attributes are set.
    */
-  void
+  virtual void
   loadVariableAttributes();
 
   /**
    * \brief User-facing method where the postprocessing variable attributes are set.
    */
-  void
+  virtual void
   loadPostProcessorVariableAttributes();
 
   /**
@@ -204,6 +204,7 @@ public:
   [[nodiscard]] AttributesList
   get_pp_attributes() const;
 
+private:
   /**
    * \brief The solutions variable attributes
    */
@@ -220,7 +221,6 @@ public:
    */
   AttributesList *relevant_attributes = nullptr;
 
-private:
   /**
    * \brief Perform a suite of assertions on attributes and pp_attributes to ensure that
    * the user's inputs are well-formed
