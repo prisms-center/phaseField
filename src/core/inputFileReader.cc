@@ -236,7 +236,7 @@ inputFileReader::get_number_of_entries(const std::string &parameters_file_name,
 
 // Method to parse an input file to get a list of variables from related
 // subsections
-std::vector<std::string>
+std::set<std::string>
 inputFileReader::get_entry_name_ending_list(const std::string &parameters_file_name,
                                             const std::string &keyword,
                                             const std::string &entry_name_begining)
@@ -248,7 +248,7 @@ inputFileReader::get_entry_name_ending_list(const std::string &parameters_file_n
   std::string entry;
   bool        found_entry = false;
 
-  std::vector<std::string> entry_name_end_list;
+  std::set<std::string> entry_name_end_list;
 
   // Loop through each line
   while (std::getline(input_file, line))
@@ -282,7 +282,12 @@ inputFileReader::get_entry_name_ending_list(const std::string &parameters_file_n
             }
 
           // Add it to the list
-          entry_name_end_list.push_back(entry);
+          AssertThrow(
+            entry_name_end_list.insert(entry).second,
+            dealii::ExcMessage(
+              "PRISMS-PF Error: Non-unique constant name in parameters.prm. The "
+              "constant that you attempted to create was \"" +
+              entry + "\"."));
         }
     }
   return entry_name_end_list;
@@ -805,10 +810,10 @@ inputFileReader::declare_parameters(dealii::ParameterHandler &parameter_handler,
     "artifact from the loading process.");
 
   // Declare the user-defined constants
-  for (unsigned int i = 0; i < num_of_constants; i++)
+  for (const std::string &constant_name : model_constant_names)
     {
       std::string constants_text = "Model constant ";
-      constants_text.append(model_constant_names[i]);
+      constants_text.append(constant_name);
       parameter_handler.declare_entry(constants_text,
                                       "0",
                                       dealii::Patterns::Anything(),

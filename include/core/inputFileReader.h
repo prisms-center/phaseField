@@ -6,8 +6,10 @@
 #include <deal.II/base/parameter_handler.h>
 
 #include <core/variableAttributeLoader.h>
+#include <set>
 #include <string>
 #include <vector>
+
 
 /**
  * \brief Input file reader.
@@ -44,7 +46,7 @@ public:
    * \brief Get the trailing part of the entry name after a specified string (used to
    * extract the model constant names).
    */
-  [[nodiscard]] static std::vector<std::string>
+  [[nodiscard]] static std::set<std::string>
   get_entry_name_ending_list(const std::string &parameters_file_name,
                              const std::string &keyword,
                              const std::string &entry_name_begining);
@@ -82,7 +84,7 @@ public:
   const AttributesList    &pp_attributes;
   dealii::ParameterHandler parameter_handler;
   unsigned int             num_constants;
-  std::vector<std::string> model_constant_names;
+  std::set<std::string>    model_constant_names;
   unsigned int             number_of_dimensions;
 };
 

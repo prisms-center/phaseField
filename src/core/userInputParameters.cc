@@ -1203,8 +1203,8 @@ userInputParameters<dim>::compute_rank_2_tensor_constant(
 }
 
 template <int dim>
-void
-userInputParameters<dim>::assign_user_constant(
+InputVariant<dim>
+userInputParameters<dim>::construct_user_constant(
   std::vector<std::string> &model_constants_strings)
 {
   // Ensure that the input includes a value and a type
@@ -1219,7 +1219,7 @@ userInputParameters<dim>::assign_user_constant(
 
   if (model_constants_strings.size() == 2)
     {
-      assign_primitive_user_constant(model_constants_strings);
+      return primitive_user_constant(model_constants_strings);
     }
   else
     {
@@ -1234,14 +1234,12 @@ userInputParameters<dim>::assign_user_constant(
           // Rank 1 tensor
           if (open_parentheses < 3)
             {
-              model_constants.push_back(
-                compute_rank_1_tensor_constant(n_elements, model_constants_strings));
+              return compute_rank_1_tensor_constant(n_elements, model_constants_strings);
             }
           // Rank 2 tensor
           else if (open_parentheses < 5)
             {
-              model_constants.push_back(
-                compute_rank_2_tensor_constant(n_elements, model_constants_strings));
+              return compute_rank_2_tensor_constant(n_elements, model_constants_strings);
             }
         }
       else if (boost::iequals(model_constants_type_strings.at(1), "elastic") &&
@@ -1262,7 +1260,7 @@ userInputParameters<dim>::assign_user_constant(
           const std::string elastic_const_symmetry = model_constants_type_strings.at(0);
           dealii::Tensor<2, 2 *dim - 1 + dim / 3> temp =
             get_Cij_tensor(temp_elastic_constants, elastic_const_symmetry);
-          model_constants.push_back(temp);
+          return temp;
         }
       else
         {
@@ -1271,12 +1269,13 @@ userInputParameters<dim>::assign_user_constant(
                         "PRISMS-PF ERROR: Only user-defined constant tensors may "
                         "have multiple elements."));
         }
+      return 0;
     }
 }
 
 template <int dim>
-void
-userInputParameters<dim>::assign_primitive_user_constant(
+InputVariant<dim>
+userInputParameters<dim>::primitive_user_constant(
   std::vector<std::string> &model_constants_strings)
 {
   std::vector<std::string> model_constants_type_strings =
@@ -1286,18 +1285,16 @@ userInputParameters<dim>::assign_primitive_user_constant(
 
   if (boost::iequals(model_constants_type_strings.at(0), "double"))
     {
-      model_constants.push_back(
-        dealii::Utilities::string_to_double(model_constants_strings.at(0)));
+      return dealii::Utilities::string_to_double(model_constants_strings.at(0));
     }
   else if (boost::iequals(model_constants_type_strings.at(0), "int"))
     {
-      model_constants.push_back(
-        dealii::Utilities::string_to_int(model_constants_strings.at(0)));
+      return dealii::Utilities::string_to_int(model_constants_strings.at(0));
     }
   else if (boost::iequals(model_constants_type_strings.at(0), "bool"))
     {
       bool temp = boost::iequals(model_constants_strings.at(0), "true");
-      model_constants.push_back(temp);
+      return temp;
     }
   else
     {
@@ -1305,6 +1302,7 @@ userInputParameters<dim>::assign_primitive_user_constant(
                   dealii::ExcMessage(
                     "PRISMS-PF Error: The type for user-defined variables must be "
                     "`double`, `int`, `bool`, `tensor`, or `elastic constants`."));
+      return 0;
     }
 }
 
@@ -1313,22 +1311,15 @@ void
 userInputParameters<dim>::load_user_constants(inputFileReader          &input_file_reader,
                                               dealii::ParameterHandler &parameter_handler)
 {
-  const unsigned int number_of_constants = input_file_reader.num_constants;
-
-  for (unsigned int i = 0; i < input_file_reader.model_constant_names.size(); i++)
-    {
-      model_constant_name_map[input_file_reader.model_constant_names[i]] = i;
-    }
-
-  for (unsigned int i = 0; i < number_of_constants; i++)
+  for (const std::string &constant_name : input_file_reader.model_constant_names)
     {
       std::string constants_text = "Model constant ";
-      constants_text.append(input_file_reader.model_constant_names[i]);
+      constants_text.append(constant_name);
 
       std::vector<std::string> model_constants_strings =
         dealii::Utilities::split_string_list(parameter_handler.get(constants_text));
 
-      assign_user_constant(model_constants_strings);
+      model_constants[constant_name] = construct_user_constant(model_constants_strings);
     }
 }
 
