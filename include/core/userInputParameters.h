@@ -398,8 +398,8 @@ private:
                   const std::vector<unsigned int> &userGivenTimeStepList);
 
   void
-  load_user_constants(inputFileReader          &input_file_reader,
-                      dealii::ParameterHandler &parameter_handler);
+  load_model_constants(inputFileReader          &input_file_reader,
+                       dealii::ParameterHandler &parameter_handler);
 
   /**
    * \brief Compute the number of tensor rows.
@@ -438,7 +438,7 @@ private:
    * \brief Assign the primitive user constants (e.g., int, double, bool).
    */
   InputVariant<dim>
-  primitive_user_constant(std::vector<std::string> &model_constants_strings);
+  primitive_model_constant(std::vector<std::string> &model_constants_strings);
 
   [[nodiscard]] dealii::Tensor<2, 2 * dim - 1 + dim / 3>
   get_Cij_tensor(std::vector<double> elastic_constants,

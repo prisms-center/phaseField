@@ -8,13 +8,12 @@
 inputFileReader::inputFileReader(const std::string    &input_file_name,
                                  const AttributesList &_var_attributes,
                                  const AttributesList &_pp_attributes)
-  : var_attributes(_var_attributes)
+  : parameters_file_name(input_file_name)
+  , var_attributes(_var_attributes)
   , pp_attributes(_pp_attributes)
 {
-  num_constants = get_number_of_entries(input_file_name, "set", "Model constant");
-
-  model_constant_names =
-    get_entry_name_ending_list(input_file_name, "set", "Model constant");
+  model_constant_names = get_model_constant_names();
+  uint num_constants   = model_constant_names.size();
 
   if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
     {
@@ -24,8 +23,8 @@ inputFileReader::inputFileReader(const std::string    &input_file_name,
     }
 
   // Read in all of the parameters now
-  declare_parameters(parameter_handler, num_constants);
-  parameter_handler.parse_input(input_file_name);
+  declare_parameters();
+  parameter_handler.parse_input(parameters_file_name);
   number_of_dimensions = parameter_handler.get_integer("Number of dimensions");
 }
 
@@ -133,8 +132,7 @@ inputFileReader::parse_line(std::string        line,
 // Method to parse an input file to get a list of variables from related
 // subsections
 std::vector<std::string>
-inputFileReader::get_subsection_entry_list(const std::string &parameters_file_name,
-                                           const std::string &subsec_name,
+inputFileReader::get_subsection_entry_list(const std::string &subsec_name,
                                            const std::string &entry_name,
                                            const std::string &default_entry)
 {
@@ -208,40 +206,12 @@ inputFileReader::get_subsection_entry_list(const std::string &parameters_file_na
 
 // Method to parse an input file to get a list of variables from related
 // subsections
-unsigned int
-inputFileReader::get_number_of_entries(const std::string &parameters_file_name,
-                                       const std::string &keyword,
-                                       const std::string &entry_name)
-{
-  std::ifstream input_file;
-  input_file.open(parameters_file_name);
-
-  std::string line;
-  std::string entry;
-  bool        found_entry = false;
-
-  unsigned int count = 0;
-
-  // Loop through each line
-  while (std::getline(input_file, line))
-    {
-      found_entry = parse_line(line, keyword, entry_name, entry, false);
-      if (found_entry)
-        {
-          count++;
-        }
-    }
-  return count;
-}
-
-// Method to parse an input file to get a list of variables from related
-// subsections
 std::set<std::string>
-inputFileReader::get_entry_name_ending_list(const std::string &parameters_file_name,
-                                            const std::string &keyword,
-                                            const std::string &entry_name_begining)
+inputFileReader::get_model_constant_names()
 {
-  std::ifstream input_file;
+  const std::string keyword             = "set";
+  const std::string entry_name_begining = "Model constant";
+  std::ifstream     input_file;
   input_file.open(parameters_file_name);
 
   std::string line;
@@ -294,10 +264,26 @@ inputFileReader::get_entry_name_ending_list(const std::string &parameters_file_n
 }
 
 void
-inputFileReader::declare_parameters(dealii::ParameterHandler &parameter_handler,
-                                    const unsigned int        num_of_constants) const
+inputFileReader::declare_parameters()
 {
   // Declare all of the entries
+  declare_mesh();
+  declare_time_discretization();
+  declare_solver_parameters();
+  declare_output_parameters();
+  declare_load_IC_parameters();
+  declare_checkpoint_parameters();
+  declare_BC_parameters();
+  declare_pinning_parameters();
+  declare_nucleation_parameters();
+  declare_grain_remapping_parameters();
+  declare_grain_loading_parameters();
+  declare_model_constants();
+}
+
+void
+inputFileReader::declare_mesh()
+{
   parameter_handler.declare_entry("Number of dimensions",
                                   "-1",
                                   dealii::Patterns::Integer(),
@@ -390,7 +376,11 @@ inputFileReader::declare_parameters(dealii::ParameterHandler &parameter_handler,
       }
       parameter_handler.leave_subsection();
     }
+}
 
+void
+inputFileReader::declare_time_discretization()
+{
   parameter_handler.declare_entry("Number of time steps",
                                   "-1",
                                   dealii::Patterns::Integer(),
@@ -404,7 +394,11 @@ inputFileReader::declare_parameters(dealii::ParameterHandler &parameter_handler,
     "-0.1",
     dealii::Patterns::Double(),
     "The value of simulated time where the simulation ends.");
+}
 
+void
+inputFileReader::declare_solver_parameters()
+{
   for (const auto &[index, variable] : var_attributes)
     {
       if (variable.eq_type == TIME_INDEPENDENT ||
@@ -494,7 +488,11 @@ inputFileReader::declare_parameters(dealii::ParameterHandler &parameter_handler,
           parameter_handler.leave_subsection();
         }
     }
+}
 
+void
+inputFileReader::declare_output_parameters()
+{
   parameter_handler.declare_entry("Output file name (base)",
                                   "solution",
                                   dealii::Patterns::Anything(),
@@ -535,8 +533,11 @@ inputFileReader::declare_parameters(dealii::ParameterHandler &parameter_handler,
     dealii::Patterns::Bool(),
     "Whether to print the summary table of the wall time and wall time for "
     "indiviual subroutines every time the code outputs.");
+}
 
-  // Declare entries for reading initial conditions from file
+void
+inputFileReader::declare_load_IC_parameters()
+{
   parameter_handler.declare_entry(
     "Load initial conditions",
     "void",
@@ -557,8 +558,11 @@ inputFileReader::declare_parameters(dealii::ParameterHandler &parameter_handler,
     "void",
     dealii::Patterns::Anything(),
     "What each variable is named in the file being loaded.");
+}
 
-  // Checkpoint/restart
+void
+inputFileReader::declare_checkpoint_parameters()
+{
   parameter_handler.declare_entry(
     "Load from a checkpoint",
     "false",
@@ -579,10 +583,11 @@ inputFileReader::declare_parameters(dealii::ParameterHandler &parameter_handler,
     dealii::Patterns::Integer(),
     "The number of checkpoints (or number of checkpoints per decade for the "
     "N_PER_DECADE type).");
+}
 
-  /*----------------------
-  |  Boundary conditions
-  -----------------------*/
+void
+inputFileReader::declare_BC_parameters()
+{
   for (const auto &[index, variable] : var_attributes)
     {
       if (variable.var_type == SCALAR)
@@ -625,10 +630,11 @@ inputFileReader::declare_parameters(dealii::ParameterHandler &parameter_handler,
             "The boundary conditions for one of the governing equations).");
         }
     }
+}
 
-  /*----------------------
-  |  Pinning point
-  -----------------------*/
+void
+inputFileReader::declare_pinning_parameters()
+{
   for (const auto &[index, variable] : var_attributes)
     {
       std::string pinning_text = "Pinning point: ";
@@ -650,8 +656,11 @@ inputFileReader::declare_parameters(dealii::ParameterHandler &parameter_handler,
       }
       parameter_handler.leave_subsection();
     }
+}
 
-  // Declare the nucleation parameters
+void
+inputFileReader::declare_nucleation_parameters()
+{
   parameter_handler.declare_entry(
     "Enable evolution before nucleation",
     "false",
@@ -728,8 +737,11 @@ inputFileReader::declare_parameters(dealii::ParameterHandler &parameter_handler,
           parameter_handler.leave_subsection();
         }
     }
+}
 
-  // Declare the grain remapping constants
+void
+inputFileReader::declare_grain_remapping_parameters()
+{
   parameter_handler.declare_entry(
     "Activate grain reassignment",
     "false",
@@ -764,7 +776,11 @@ inputFileReader::declare_parameters(dealii::ParameterHandler &parameter_handler,
     dealii::Patterns::List(dealii::Patterns::Anything()),
     "The list of field indices for the shared order parameters for grain "
     "reassignment.");
+}
 
+void
+inputFileReader::declare_grain_loading_parameters()
+{
   parameter_handler.declare_entry("Load grain structure",
                                   "false",
                                   dealii::Patterns::Bool(),
@@ -808,8 +824,11 @@ inputFileReader::declare_parameters(dealii::ParameterHandler &parameter_handler,
     dealii::Patterns::Double(),
     "The minimum radius for a body to be considered a grain instead of an "
     "artifact from the loading process.");
+}
 
-  // Declare the user-defined constants
+void
+inputFileReader::declare_model_constants()
+{
   for (const std::string &constant_name : model_constant_names)
     {
       std::string constants_text = "Model constant ";
