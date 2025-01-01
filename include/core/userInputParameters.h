@@ -25,6 +25,14 @@
 #include <unordered_map>
 #include <vector>
 
+template <int dim>
+using InputVariant = boost::variant<double,
+                                    int,
+                                    bool,
+                                    dealii::Tensor<1, dim>,
+                                    dealii::Tensor<2, dim>,
+                                    dealii::Tensor<2, 2 * dim - 1 + dim / 3>>;
+
 enum elasticityModel
 {
   ISOTROPIC,
@@ -59,9 +67,6 @@ public:
   assign_boundary_conditions(std::vector<std::string> &boundary_condition_list,
                              varBCs<dim>              &boundary_condition);
 
-  // Map linking the model constant name to its index
-  std::unordered_map<std::string, unsigned int> model_constant_name_map;
-
   /**
    * \brief Retrieve the double from the `model_constants` that are defined from the
    * parameters.prm parser. This is essentially just a wrapper for boost::get.
@@ -71,13 +76,13 @@ public:
   [[nodiscard]] double
   get_model_constant_double(const std::string &constant_name) const
   {
-    Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
+    Assert(model_constants.find(constant_name) != model_constants.end(),
            dealii::ExcMessage(
              "PRISMS-PF Error: Mismatch between constants in parameters.prm and "
              "customPDE.h. The constant that you attempted to access was " +
              constant_name + "."));
 
-    return boost::get<double>(model_constants[model_constant_name_map.at(constant_name)]);
+    return boost::get<double>(model_constants.at(constant_name));
   };
 
   /**
@@ -89,13 +94,13 @@ public:
   [[nodiscard]] int
   get_model_constant_int(const std::string &constant_name) const
   {
-    Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
+    Assert(model_constants.find(constant_name) != model_constants.end(),
            dealii::ExcMessage(
              "PRISMS-PF Error: Mismatch between constants in parameters.prm and "
              "customPDE.h. The constant that you attempted to access was " +
              constant_name + "."));
 
-    return boost::get<int>(model_constants[model_constant_name_map.at(constant_name)]);
+    return boost::get<int>(model_constants.at(constant_name));
   };
 
   /**
@@ -107,13 +112,13 @@ public:
   [[nodiscard]] bool
   get_model_constant_bool(const std::string &constant_name) const
   {
-    Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
+    Assert(model_constants.find(constant_name) != model_constants.end(),
            dealii::ExcMessage(
              "PRISMS-PF Error: Mismatch between constants in parameters.prm and "
              "customPDE.h. The constant that you attempted to access was " +
              constant_name + "."));
 
-    return boost::get<bool>(model_constants[model_constant_name_map.at(constant_name)]);
+    return boost::get<bool>(model_constants.at(constant_name));
   };
 
   /**
@@ -125,14 +130,13 @@ public:
   [[nodiscard]] dealii::Tensor<1, dim>
   get_model_constant_rank_1_tensor(const std::string &constant_name) const
   {
-    Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
+    Assert(model_constants.find(constant_name) != model_constants.end(),
            dealii::ExcMessage(
              "PRISMS-PF Error: Mismatch between constants in parameters.prm and "
              "customPDE.h. The constant that you attempted to access was " +
              constant_name + "."));
 
-    return boost::get<dealii::Tensor<1, dim>>(
-      model_constants[model_constant_name_map.at(constant_name)]);
+    return boost::get<dealii::Tensor<1, dim>>(model_constants.at(constant_name));
   };
 
   /**
@@ -144,14 +148,13 @@ public:
   [[nodiscard]] dealii::Tensor<2, dim>
   get_model_constant_rank_2_tensor(const std::string &constant_name) const
   {
-    Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
+    Assert(model_constants.find(constant_name) != model_constants.end(),
            dealii::ExcMessage(
              "PRISMS-PF Error: Mismatch between constants in parameters.prm and "
              "customPDE.h. The constant that you attempted to access was " +
              constant_name + "."));
 
-    return boost::get<dealii::Tensor<2, dim>>(
-      model_constants[model_constant_name_map.at(constant_name)]);
+    return boost::get<dealii::Tensor<2, dim>>(model_constants.at(constant_name));
   };
 
   /**
@@ -163,14 +166,14 @@ public:
   [[nodiscard]] dealii::Tensor<2, 2 * dim - 1 + dim / 3>
   get_model_constant_elasticity_tensor(const std::string &constant_name) const
   {
-    Assert(model_constant_name_map.find(constant_name) != model_constant_name_map.end(),
+    Assert(model_constants.find(constant_name) != model_constants.end(),
            dealii::ExcMessage(
              "PRISMS-PF Error: Mismatch between constants in parameters.prm and "
              "customPDE.h. The constant that you attempted to access was " +
              constant_name + "."));
 
     return boost::get<dealii::Tensor<2, 2 * dim - 1 + dim / 3>>(
-      model_constants[model_constant_name_map.at(constant_name)]);
+      model_constants.at(constant_name));
   };
 
   // Method to load in the variable attributes
@@ -292,13 +295,7 @@ public:
   std::vector<varBCs<dim>> BC_list;
 
   // List of user-defined constants
-  std::vector<boost::variant<double,
-                             int,
-                             bool,
-                             dealii::Tensor<1, dim>,
-                             dealii::Tensor<2, dim>,
-                             dealii::Tensor<2, 2 * dim - 1 + dim / 3>>>
-    model_constants;
+  std::map<std::string, InputVariant<dim>> model_constants;
 
   // Nucleation parameters
   bool                      nucleation_occurs;
@@ -401,8 +398,8 @@ private:
                   const std::vector<unsigned int> &userGivenTimeStepList);
 
   void
-  load_user_constants(inputFileReader          &input_file_reader,
-                      dealii::ParameterHandler &parameter_handler);
+  load_model_constants(inputFileReader          &input_file_reader,
+                       dealii::ParameterHandler &parameter_handler);
 
   /**
    * \brief Compute the number of tensor rows.
@@ -434,14 +431,14 @@ private:
   /**
    * \brief Assign the specified user constant to whatever type.
    */
-  void
-  assign_user_constant(std::vector<std::string> &model_constants_strings);
+  InputVariant<dim>
+  construct_user_constant(std::vector<std::string> &model_constants_strings);
 
   /**
    * \brief Assign the primitive user constants (e.g., int, double, bool).
    */
-  void
-  assign_primitive_user_constant(std::vector<std::string> &model_constants_strings);
+  InputVariant<dim>
+  primitive_model_constant(std::vector<std::string> &model_constants_strings);
 
   [[nodiscard]] dealii::Tensor<2, 2 * dim - 1 + dim / 3>
   get_Cij_tensor(std::vector<double> elastic_constants,

@@ -5,6 +5,227 @@
 
 #include <core/userInputParameters.h>
 
+// NOLINTBEGIN(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
+template <int dim>
+userInputParameters<dim>::userInputParameters(inputFileReader          &input_file_reader,
+                                              dealii::ParameterHandler &parameter_handler)
+  : var_attributes(input_file_reader.var_attributes)
+  , pp_attributes(input_file_reader.pp_attributes)
+{
+  loadVariableAttributes();
+
+  // Spatial discretization
+  assign_spatial_discretization_parameters(parameter_handler);
+
+  // Time stepping parameters
+  assign_temporal_discretization_parameters(parameter_handler);
+
+  // Linear solver parameters
+  assign_linear_solve_parameters(parameter_handler);
+
+  // Non-linear solver parameters
+  assign_nonlinear_solve_parameters(parameter_handler);
+
+  // Output parameters
+  assign_output_parameters(parameter_handler);
+
+  // Initial condition parameters
+  assign_load_initial_condition_parameters(parameter_handler);
+
+  // Nucleation parameters
+  assign_nucleation_parameters(parameter_handler);
+
+  // Grain remapping & vtk load-in parameters
+  assign_grain_parameters(parameter_handler);
+
+  // Boundary conditions
+  assign_boundary_condition_parameters(parameter_handler);
+
+  // Load the user-defined constants
+  load_model_constants(input_file_reader, parameter_handler);
+}
+
+// NOLINTEND(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
+
+template <int dim>
+void
+userInputParameters<dim>::loadVariableAttributes()
+{
+  // Load some nucleation parameters
+  for (const auto &[index, variable] : var_attributes)
+    {
+      if (variable.nucleating_variable)
+        {
+          nucleating_variable_indices.push_back(index);
+        }
+      if (variable.need_value_nucleation || variable.nucleating_variable)
+        {
+          nucleation_need_value.push_back(index);
+        }
+    }
+
+  nucleation_occurs = !nucleating_variable_indices.empty();
+
+  // Load variable information for calculating the RHS for explicit equations
+  num_var_explicit_RHS = 0;
+  for (const auto &[index, variable] : var_attributes)
+    {
+      if (!static_cast<bool>(variable.eval_flags_explicit_RHS &
+                             dealii::EvaluationFlags::nothing))
+        {
+          num_var_explicit_RHS++;
+        }
+    }
+  varInfoListExplicitRHS.reserve(num_var_explicit_RHS);
+  for (const auto &[index, variable] : var_attributes)
+    {
+      variable_info varInfo {};
+
+      varInfo.evaluation_flags = variable.eval_flags_explicit_RHS;
+
+      varInfo.residual_flags = variable.eval_flags_residual_explicit_RHS;
+
+      varInfo.global_var_index = index;
+
+      varInfo.var_needed =
+        !static_cast<bool>(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
+
+      varInfo.is_scalar = variable.var_type == SCALAR;
+
+      varInfoListExplicitRHS.push_back(varInfo);
+    }
+
+  // Load variable information for calculating the RHS for nonexplicit equations
+  num_var_nonexplicit_RHS = 0;
+  for (const auto &[index, variable] : var_attributes)
+    {
+      if (!static_cast<bool>(variable.eval_flags_nonexplicit_RHS &
+                             dealii::EvaluationFlags::nothing))
+        {
+          num_var_nonexplicit_RHS++;
+        }
+    }
+  varInfoListNonexplicitRHS.reserve(num_var_nonexplicit_RHS);
+  for (const auto &[index, variable] : var_attributes)
+    {
+      variable_info varInfo {};
+
+      varInfo.evaluation_flags = variable.eval_flags_nonexplicit_RHS;
+
+      varInfo.residual_flags = variable.eval_flags_residual_nonexplicit_RHS;
+
+      varInfo.global_var_index = index;
+
+      varInfo.var_needed =
+        !static_cast<bool>(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
+
+      varInfo.is_scalar = variable.var_type == SCALAR;
+
+      varInfoListNonexplicitRHS.push_back(varInfo);
+    }
+
+  // Load variable information for calculating the LHS
+  num_var_LHS = 0;
+  for (const auto &[index, variable] : var_attributes)
+    {
+      if (!static_cast<bool>(variable.eval_flags_nonexplicit_LHS &
+                             dealii::EvaluationFlags::nothing))
+        {
+          num_var_LHS++;
+        }
+    }
+
+  varInfoListLHS.reserve(num_var_LHS);
+  for (const auto &[index, variable] : var_attributes)
+    {
+      variable_info varInfo {};
+
+      varInfo.evaluation_flags = variable.eval_flags_nonexplicit_LHS;
+
+      varInfo.residual_flags = variable.eval_flags_residual_nonexplicit_LHS;
+
+      varInfo.global_var_index = index;
+
+      varInfo.var_needed =
+        !static_cast<bool>(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
+
+      varInfo.is_scalar = variable.var_type == SCALAR;
+
+      varInfoListLHS.push_back(varInfo);
+    }
+
+  varChangeInfoListLHS.reserve(num_var_LHS);
+  for (const auto &[index, variable] : var_attributes)
+    {
+      variable_info varInfo {};
+
+      varInfo.evaluation_flags = variable.eval_flags_change_nonexplicit_LHS;
+
+      // FOR NOW, TAKING THESE FROM THE VARIABLE ITSELF!!
+      varInfo.residual_flags = variable.eval_flags_residual_nonexplicit_LHS;
+
+      varInfo.global_var_index = index;
+
+      varInfo.var_needed =
+        !static_cast<bool>(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
+
+      varInfo.is_scalar = variable.var_type == SCALAR;
+
+      varChangeInfoListLHS.push_back(varInfo);
+    }
+
+  // Load variable information for postprocessing
+  // First, the info list for the base field variables
+  pp_baseVarInfoList.reserve(var_attributes.size());
+  for (const auto &[index, variable] : var_attributes)
+    {
+      variable_info varInfo {};
+
+      varInfo.evaluation_flags = variable.eval_flags_postprocess;
+
+      varInfo.global_var_index = index;
+
+      varInfo.var_needed =
+        !static_cast<bool>(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
+
+      varInfo.is_scalar = variable.var_type == SCALAR;
+
+      pp_baseVarInfoList.push_back(varInfo);
+    }
+
+  // Now load the information for the post-processing variables
+  // Parameters for postprocessing
+
+  postProcessingRequired = !pp_attributes.empty();
+
+  num_integrated_fields = 0;
+  for (const auto &[pp_index, pp_variable] : pp_attributes)
+    {
+      if (pp_variable.calc_integral)
+        {
+          num_integrated_fields++;
+          integrated_field_indices.push_back(pp_index);
+        }
+    }
+
+  // The info list for the postprocessing field variables
+  pp_varInfoList.reserve(pp_attributes.size());
+  for (const auto &[pp_index, pp_variable] : pp_attributes)
+    {
+      variable_info varInfo {};
+
+      varInfo.var_needed = true;
+
+      varInfo.residual_flags = pp_variable.eval_flags_residual_postprocess;
+
+      varInfo.global_var_index = pp_index;
+
+      varInfo.is_scalar = pp_variable.var_type == SCALAR;
+
+      pp_varInfoList.push_back(varInfo);
+    }
+}
+
 template <int dim>
 void
 userInputParameters<dim>::assign_spatial_discretization_parameters(
@@ -699,48 +920,6 @@ userInputParameters<dim>::assign_boundary_condition_parameters(
   load_BC_list(list_of_BCs);
 }
 
-// NOLINTBEGIN(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
-template <int dim>
-userInputParameters<dim>::userInputParameters(inputFileReader          &input_file_reader,
-                                              dealii::ParameterHandler &parameter_handler)
-  : var_attributes(input_file_reader.var_attributes)
-  , pp_attributes(input_file_reader.pp_attributes)
-{
-  loadVariableAttributes();
-
-  // Spatial discretization
-  assign_spatial_discretization_parameters(parameter_handler);
-
-  // Time stepping parameters
-  assign_temporal_discretization_parameters(parameter_handler);
-
-  // Linear solver parameters
-  assign_linear_solve_parameters(parameter_handler);
-
-  // Non-linear solver parameters
-  assign_nonlinear_solve_parameters(parameter_handler);
-
-  // Output parameters
-  assign_output_parameters(parameter_handler);
-
-  // Initial condition parameters
-  assign_load_initial_condition_parameters(parameter_handler);
-
-  // Nucleation parameters
-  assign_nucleation_parameters(parameter_handler);
-
-  // Grain remapping & vtk load-in parameters
-  assign_grain_parameters(parameter_handler);
-
-  // Boundary conditions
-  assign_boundary_condition_parameters(parameter_handler);
-
-  // Load the user-defined constants
-  load_user_constants(input_file_reader, parameter_handler);
-}
-
-// NOLINTEND(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
-
 template <int dim>
 void
 userInputParameters<dim>::assign_boundary_conditions(
@@ -917,185 +1096,6 @@ userInputParameters<dim>::setTimeStepList(
 }
 
 template <int dim>
-void
-userInputParameters<dim>::loadVariableAttributes()
-{
-  // Load some nucleation parameters
-  for (const auto &[index, variable] : var_attributes)
-    {
-      if (variable.nucleating_variable)
-        {
-          nucleating_variable_indices.push_back(index);
-        }
-      if (variable.need_value_nucleation || variable.nucleating_variable)
-        {
-          nucleation_need_value.push_back(index);
-        }
-    }
-
-  nucleation_occurs = !nucleating_variable_indices.empty();
-
-  // Load variable information for calculating the RHS for explicit equations
-  num_var_explicit_RHS = 0;
-  for (const auto &[index, variable] : var_attributes)
-    {
-      if (!static_cast<bool>(variable.eval_flags_explicit_RHS &
-                             dealii::EvaluationFlags::nothing))
-        {
-          num_var_explicit_RHS++;
-        }
-    }
-  varInfoListExplicitRHS.reserve(num_var_explicit_RHS);
-  for (const auto &[index, variable] : var_attributes)
-    {
-      variable_info varInfo {};
-
-      varInfo.evaluation_flags = variable.eval_flags_explicit_RHS;
-
-      varInfo.residual_flags = variable.eval_flags_residual_explicit_RHS;
-
-      varInfo.global_var_index = index;
-
-      varInfo.var_needed =
-        !static_cast<bool>(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
-
-      varInfo.is_scalar = variable.var_type == SCALAR;
-
-      varInfoListExplicitRHS.push_back(varInfo);
-    }
-
-  // Load variable information for calculating the RHS for nonexplicit equations
-  num_var_nonexplicit_RHS = 0;
-  for (const auto &[index, variable] : var_attributes)
-    {
-      if (!static_cast<bool>(variable.eval_flags_nonexplicit_RHS &
-                             dealii::EvaluationFlags::nothing))
-        {
-          num_var_nonexplicit_RHS++;
-        }
-    }
-  varInfoListNonexplicitRHS.reserve(num_var_nonexplicit_RHS);
-  for (const auto &[index, variable] : var_attributes)
-    {
-      variable_info varInfo {};
-
-      varInfo.evaluation_flags = variable.eval_flags_nonexplicit_RHS;
-
-      varInfo.residual_flags = variable.eval_flags_residual_nonexplicit_RHS;
-
-      varInfo.global_var_index = index;
-
-      varInfo.var_needed =
-        !static_cast<bool>(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
-
-      varInfo.is_scalar = variable.var_type == SCALAR;
-
-      varInfoListNonexplicitRHS.push_back(varInfo);
-    }
-
-  // Load variable information for calculating the LHS
-  num_var_LHS = 0;
-  for (const auto &[index, variable] : var_attributes)
-    {
-      if (!static_cast<bool>(variable.eval_flags_nonexplicit_LHS &
-                             dealii::EvaluationFlags::nothing))
-        {
-          num_var_LHS++;
-        }
-    }
-
-  varInfoListLHS.reserve(num_var_LHS);
-  for (const auto &[index, variable] : var_attributes)
-    {
-      variable_info varInfo {};
-
-      varInfo.evaluation_flags = variable.eval_flags_nonexplicit_LHS;
-
-      varInfo.residual_flags = variable.eval_flags_residual_nonexplicit_LHS;
-
-      varInfo.global_var_index = index;
-
-      varInfo.var_needed =
-        !static_cast<bool>(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
-
-      varInfo.is_scalar = variable.var_type == SCALAR;
-
-      varInfoListLHS.push_back(varInfo);
-    }
-
-  varChangeInfoListLHS.reserve(num_var_LHS);
-  for (const auto &[index, variable] : var_attributes)
-    {
-      variable_info varInfo {};
-
-      varInfo.evaluation_flags = variable.eval_flags_change_nonexplicit_LHS;
-
-      // FOR NOW, TAKING THESE FROM THE VARIABLE ITSELF!!
-      varInfo.residual_flags = variable.eval_flags_residual_nonexplicit_LHS;
-
-      varInfo.global_var_index = index;
-
-      varInfo.var_needed =
-        !static_cast<bool>(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
-
-      varInfo.is_scalar = variable.var_type == SCALAR;
-
-      varChangeInfoListLHS.push_back(varInfo);
-    }
-
-  // Load variable information for postprocessing
-  // First, the info list for the base field variables
-  pp_baseVarInfoList.reserve(var_attributes.size());
-  for (const auto &[index, variable] : var_attributes)
-    {
-      variable_info varInfo {};
-
-      varInfo.evaluation_flags = variable.eval_flags_postprocess;
-
-      varInfo.global_var_index = index;
-
-      varInfo.var_needed =
-        !static_cast<bool>(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
-
-      varInfo.is_scalar = variable.var_type == SCALAR;
-
-      pp_baseVarInfoList.push_back(varInfo);
-    }
-
-  // Now load the information for the post-processing variables
-  // Parameters for postprocessing
-
-  postProcessingRequired = !pp_attributes.empty();
-
-  num_integrated_fields = 0;
-  for (const auto &[pp_index, pp_variable] : pp_attributes)
-    {
-      if (pp_variable.calc_integral)
-        {
-          num_integrated_fields++;
-          integrated_field_indices.push_back(pp_index);
-        }
-    }
-
-  // The info list for the postprocessing field variables
-  pp_varInfoList.reserve(pp_attributes.size());
-  for (const auto &[pp_index, pp_variable] : pp_attributes)
-    {
-      variable_info varInfo {};
-
-      varInfo.var_needed = true;
-
-      varInfo.residual_flags = pp_variable.eval_flags_residual_postprocess;
-
-      varInfo.global_var_index = pp_index;
-
-      varInfo.is_scalar = pp_variable.var_type == SCALAR;
-
-      pp_varInfoList.push_back(varInfo);
-    }
-}
-
-template <int dim>
 unsigned int
 userInputParameters<dim>::compute_tensor_parentheses(
   const unsigned int              n_elements,
@@ -1203,8 +1203,8 @@ userInputParameters<dim>::compute_rank_2_tensor_constant(
 }
 
 template <int dim>
-void
-userInputParameters<dim>::assign_user_constant(
+InputVariant<dim>
+userInputParameters<dim>::construct_user_constant(
   std::vector<std::string> &model_constants_strings)
 {
   // Ensure that the input includes a value and a type
@@ -1219,7 +1219,7 @@ userInputParameters<dim>::assign_user_constant(
 
   if (model_constants_strings.size() == 2)
     {
-      assign_primitive_user_constant(model_constants_strings);
+      return primitive_model_constant(model_constants_strings);
     }
   else
     {
@@ -1234,14 +1234,12 @@ userInputParameters<dim>::assign_user_constant(
           // Rank 1 tensor
           if (open_parentheses < 3)
             {
-              model_constants.push_back(
-                compute_rank_1_tensor_constant(n_elements, model_constants_strings));
+              return compute_rank_1_tensor_constant(n_elements, model_constants_strings);
             }
           // Rank 2 tensor
           else if (open_parentheses < 5)
             {
-              model_constants.push_back(
-                compute_rank_2_tensor_constant(n_elements, model_constants_strings));
+              return compute_rank_2_tensor_constant(n_elements, model_constants_strings);
             }
         }
       else if (boost::iequals(model_constants_type_strings.at(1), "elastic") &&
@@ -1262,7 +1260,7 @@ userInputParameters<dim>::assign_user_constant(
           const std::string elastic_const_symmetry = model_constants_type_strings.at(0);
           dealii::Tensor<2, 2 *dim - 1 + dim / 3> temp =
             get_Cij_tensor(temp_elastic_constants, elastic_const_symmetry);
-          model_constants.push_back(temp);
+          return temp;
         }
       else
         {
@@ -1271,12 +1269,13 @@ userInputParameters<dim>::assign_user_constant(
                         "PRISMS-PF ERROR: Only user-defined constant tensors may "
                         "have multiple elements."));
         }
+      return 0;
     }
 }
 
 template <int dim>
-void
-userInputParameters<dim>::assign_primitive_user_constant(
+InputVariant<dim>
+userInputParameters<dim>::primitive_model_constant(
   std::vector<std::string> &model_constants_strings)
 {
   std::vector<std::string> model_constants_type_strings =
@@ -1286,18 +1285,16 @@ userInputParameters<dim>::assign_primitive_user_constant(
 
   if (boost::iequals(model_constants_type_strings.at(0), "double"))
     {
-      model_constants.push_back(
-        dealii::Utilities::string_to_double(model_constants_strings.at(0)));
+      return dealii::Utilities::string_to_double(model_constants_strings.at(0));
     }
   else if (boost::iequals(model_constants_type_strings.at(0), "int"))
     {
-      model_constants.push_back(
-        dealii::Utilities::string_to_int(model_constants_strings.at(0)));
+      return dealii::Utilities::string_to_int(model_constants_strings.at(0));
     }
   else if (boost::iequals(model_constants_type_strings.at(0), "bool"))
     {
       bool temp = boost::iequals(model_constants_strings.at(0), "true");
-      model_constants.push_back(temp);
+      return temp;
     }
   else
     {
@@ -1305,30 +1302,25 @@ userInputParameters<dim>::assign_primitive_user_constant(
                   dealii::ExcMessage(
                     "PRISMS-PF Error: The type for user-defined variables must be "
                     "`double`, `int`, `bool`, `tensor`, or `elastic constants`."));
+      return 0;
     }
 }
 
 template <int dim>
 void
-userInputParameters<dim>::load_user_constants(inputFileReader          &input_file_reader,
-                                              dealii::ParameterHandler &parameter_handler)
+userInputParameters<dim>::load_model_constants(
+  inputFileReader          &input_file_reader,
+  dealii::ParameterHandler &parameter_handler)
 {
-  const unsigned int number_of_constants = input_file_reader.num_constants;
-
-  for (unsigned int i = 0; i < input_file_reader.model_constant_names.size(); i++)
-    {
-      model_constant_name_map[input_file_reader.model_constant_names[i]] = i;
-    }
-
-  for (unsigned int i = 0; i < number_of_constants; i++)
+  for (const std::string &constant_name : input_file_reader.model_constant_names)
     {
       std::string constants_text = "Model constant ";
-      constants_text.append(input_file_reader.model_constant_names[i]);
+      constants_text.append(constant_name);
 
       std::vector<std::string> model_constants_strings =
         dealii::Utilities::split_string_list(parameter_handler.get(constants_text));
 
-      assign_user_constant(model_constants_strings);
+      model_constants[constant_name] = construct_user_constant(model_constants_strings);
     }
 }
 
