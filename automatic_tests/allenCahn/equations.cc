@@ -41,21 +41,21 @@ variableAttributeLoader::loadVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::explicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+  [[maybe_unused]] variableContainer<dim, degree, double>   &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
   // The order parameter and its derivatives
-  scalarvalueType n  = variable_list.get_scalar_value(0);
-  scalargradType  nx = variable_list.get_scalar_gradient(0);
+  scalarValue n  = variable_list.get_scalar_value(0);
+  scalarGrad  nx = variable_list.get_scalar_gradient(0);
 
   // --- Setting the expressions for the terms in the governing equations ---
 
-  scalarvalueType fnV   = (4.0 * n * (n - 1.0) * (n - 0.5));
-  scalarvalueType eq_n  = (n - constV(userInputs.dtValue * MnV) * fnV);
-  scalargradType  eqx_n = (-constV(userInputs.dtValue * KnV * MnV) * nx);
+  scalarValue fnV   = (4.0 * n * (n - 1.0) * (n - 0.5));
+  scalarValue eq_n  = (n - constV(userInputs.dtValue * MnV) * fnV);
+  scalarGrad  eqx_n = (-constV(userInputs.dtValue * KnV * MnV) * nx);
 
   // --- Submitting the terms for the governing equations ---
 
@@ -79,9 +79,9 @@ customPDE<dim, degree>::explicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::nonExplicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+  [[maybe_unused]] variableContainer<dim, degree, double>   &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
 {}
 
 // =============================================================================================
@@ -102,7 +102,7 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::equationLHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+  [[maybe_unused]] variableContainer<dim, degree, double>   &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
 {}

@@ -144,7 +144,7 @@ include_directories(${CMAKE_SOURCE_DIR})
 set(TARGET_SRC "${CMAKE_SOURCE_DIR}/../main.cc")
 
 # Check if there has been updates to main library
-set(dir ${PROJECT_SOURCE_DIR}/../../..)
+set(dir ${PROJECT_SOURCE_DIR}/../..)
 EXECUTE_PROCESS(COMMAND "rm" "CMakeCache.txt" WORKING_DIRECTORY ${dir})
 EXECUTE_PROCESS(COMMAND "cmake" "CMakeLists.txt" WORKING_DIRECTORY ${dir})
 EXECUTE_PROCESS(COMMAND "make" WORKING_DIRECTORY ${dir})

@@ -49,17 +49,17 @@ variableAttributeLoader::loadVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::explicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+  [[maybe_unused]] variableContainer<dim, degree, double>   &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
-  scalarvalueType c   = variable_list.get_scalar_value(0);
-  scalargradType  mux = variable_list.get_scalar_gradient(1);
+  scalarValue c   = variable_list.get_scalar_value(0);
+  scalarGrad  mux = variable_list.get_scalar_gradient(1);
 
   // --- Setting the expressions for the terms in the governing equations ---
-  scalarvalueType eq_c  = c;
-  scalargradType  eqx_c = constV(-McV * userInputs.dtValue) * mux;
+  scalarValue eq_c  = c;
+  scalarGrad  eqx_c = constV(-McV * userInputs.dtValue) * mux;
 
   // --- Submitting the terms for the governing equations ---
   variable_list.set_scalar_value_term_RHS(0, eq_c);
@@ -82,23 +82,23 @@ customPDE<dim, degree>::explicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::nonExplicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+  [[maybe_unused]] variableContainer<dim, degree, double>   &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
-  scalarvalueType c  = variable_list.get_scalar_value(0);
-  scalargradType  cx = variable_list.get_scalar_gradient(0);
+  scalarValue c  = variable_list.get_scalar_value(0);
+  scalarGrad  cx = variable_list.get_scalar_gradient(0);
 
   // --- Setting the expressions for the terms in the governing equations ---
 
   // The derivative of the local free energy
-  scalarvalueType fcV = constV(4.0) * (c - constV(1.0)) * (c - constV(0.5)) * c;
+  scalarValue fcV = constV(4.0) * (c - constV(1.0)) * (c - constV(0.5)) * c;
 
   // The terms for the governing equations
-  scalarvalueType eq_mu  = fcV;
-  scalargradType  eqx_mu = constV(KcV) * cx;
+  scalarValue eq_mu  = fcV;
+  scalarGrad  eqx_mu = constV(KcV) * cx;
 
   // --- Submitting the terms for the governing equations ---
 
@@ -124,7 +124,7 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::equationLHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+  [[maybe_unused]] variableContainer<dim, degree, double>   &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
 {}

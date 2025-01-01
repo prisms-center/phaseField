@@ -42,7 +42,7 @@ MatrixFreePDE<dim, degree>::outputResults()
   // fields
   if (userInputs.postProcessingRequired)
     {
-      std::vector<vectorType *> postProcessedSet;
+      std::vector<LinearAlgebra::distributed::Vector<double> *> postProcessedSet;
       computePostProcessedFields(postProcessedSet);
       unsigned int invM_size = invMscalar.locally_owned_size();
       for (auto &field : postProcessedSet)
@@ -104,7 +104,7 @@ MatrixFreePDE<dim, degree>::outputResults()
         {
           // mark field as scalar/vector
           unsigned int components = 0;
-          if (userInputs.pp_varInfoList[fieldIndex].is_scalar)
+          if (userInputs.pp_variable_info_list[fieldIndex].is_scalar)
             {
               components = 1;
               std::vector<DataComponentInterpretation::DataComponentInterpretation>

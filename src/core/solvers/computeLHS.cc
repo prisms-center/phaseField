@@ -1,64 +1,46 @@
-// vmult() and getLHS() method for MatrixFreePDE class
-
 #include <core/matrixFreePDE.h>
 
-// vmult operation for LHS
 template <int dim, int degree>
-
 void
-MatrixFreePDE<dim, degree>::vmult(vectorType &dst, const vectorType &src) const
+MatrixFreePDE<dim, degree>::vmult(
+  LinearAlgebra::distributed::Vector<double>       &dst,
+  const LinearAlgebra::distributed::Vector<double> &src) const
 {
-  // log time
   computing_timer.enter_subsection("matrixFreePDE: computeLHS");
 
-  // create temporary copy of src vector as src2, as vector src is marked const
-  // and cannot be changed
-  dealii::LinearAlgebra::distributed::Vector<double> src2;
-  matrixFreeObject.initialize_dof_vector(src2, currentFieldIndex);
-  src2 = src;
+  // Determine which function to use for the cell loop
+  auto LHS_function = generatingInitialGuess ? &MatrixFreePDE<dim, degree>::getLaplaceLHS
+                                             : &MatrixFreePDE<dim, degree>::getLHS;
 
-  // call cell_loop
-  if (!generatingInitialGuess)
-    {
-      matrixFreeObject.cell_loop(&MatrixFreePDE<dim, degree>::getLHS,
-                                 this,
-                                 dst,
-                                 src2,
-                                 true);
-    }
-  else
-    {
-      matrixFreeObject.cell_loop(&MatrixFreePDE<dim, degree>::getLaplaceLHS,
-                                 this,
-                                 dst,
-                                 src2,
-                                 true);
-    }
+  // Cell loop
+  matrixFreeObject.cell_loop(LHS_function, this, dst, src, true);
 
   // Account for Dirichlet BC's (essentially copy dirichlet DOF values present in src to
   // dst, although it is unclear why the constraints can't just be distributed here)
-  for (auto &it : *valuesDirichletSet[currentFieldIndex])
+  for (const auto &[index, value] : *valuesDirichletSet[currentFieldIndex])
     {
-      if (dst.in_local_range(it.first))
+      if (dst.in_local_range(index))
         {
-          dst(it.first) = src(it.first); //*jacobianDiagonal(it->first);
+          dst(index) = src(index);
         }
     }
 
-  // end log
   computing_timer.leave_subsection("matrixFreePDE: computeLHS");
 }
 
 template <int dim, int degree>
 void
 MatrixFreePDE<dim, degree>::getLHS(
-  const MatrixFree<dim, double>               &data,
-  vectorType                                  &dst,
-  const vectorType                            &src,
-  const std::pair<unsigned int, unsigned int> &cell_range) const
+  const MatrixFree<dim, double>                    &data,
+  LinearAlgebra::distributed::Vector<double>       &dst,
+  const LinearAlgebra::distributed::Vector<double> &src,
+  const std::pair<unsigned int, unsigned int>      &cell_range) const
 {
-  variableContainer<dim, degree, dealii::VectorizedArray<double>>
-    variable_list(data, userInputs.varInfoListLHS, userInputs.varChangeInfoListLHS);
+  variableContainer<dim, degree, double> variable_list(
+    data,
+    userInputs.variable_info_list_LHS,
+    userInputs.old_variable_info_list_LHS,
+    userInputs.change_variable_info_list_LHS);
 
   // loop over cells
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)

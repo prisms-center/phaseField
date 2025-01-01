@@ -1,4 +1,5 @@
 #include <core/matrixFreePDE.h>
+#include <core/typeDefs.h>
 #include <random>
 
 using namespace dealii;
@@ -41,16 +42,20 @@ public:
   typedef std::uniform_real_distribution<double> distribution;
 
 private:
-#include <core/typeDefs.h>
-
   const userInputParameters<dim> userInputs;
+
+  using scalarValue = typename TypeDefs<dim, double>::scalarValue;
+  using scalarGrad  = typename TypeDefs<dim, double>::scalarGrad;
+  using scalarHess  = typename TypeDefs<dim, double>::scalarHess;
+  using vectorValue = typename TypeDefs<dim, double>::vectorValue;
+  using vectorGrad  = typename TypeDefs<dim, double>::vectorGrad;
+  using vectorHess  = typename TypeDefs<dim, double>::vectorHess;
 
   // Function to set the RHS of the governing equations for explicit time
   // dependent equations (in equations.h)
   void
   explicitEquationRHS(
-    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
-                                                              &variable_list,
+    [[maybe_unused]] variableContainer<dim, degree, double>   &variable_list,
     [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
     [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
 
@@ -58,16 +63,14 @@ private:
   // (in equations.h)
   void
   nonExplicitEquationRHS(
-    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
-                                                              &variable_list,
+    [[maybe_unused]] variableContainer<dim, degree, double>   &variable_list,
     [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
     [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
 
   // Function to set the LHS of the governing equations (in equations.h)
   void
   equationLHS(
-    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
-                                                              &variable_list,
+    [[maybe_unused]] variableContainer<dim, degree, double>   &variable_list,
     [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
     [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
 
@@ -75,11 +78,9 @@ private:
 #ifdef POSTPROCESS_FILE_EXISTS
   void
   postProcessedFields(
-    [[maybe_unused]] const variableContainer<dim, degree, VectorizedArray<double>>
-      &variable_list,
-    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
-                                                              &pp_variable_list,
-    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] const variableContainer<dim, degree, double> &variable_list,
+    [[maybe_unused]] variableContainer<dim, degree, double>       &pp_variable_list,
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>>     q_point_loc,
     [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
 #endif
 

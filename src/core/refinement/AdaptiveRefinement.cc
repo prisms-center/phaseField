@@ -4,12 +4,14 @@ using namespace dealii;
 
 template <int dim, int degree>
 AdaptiveRefinement<dim, degree>::AdaptiveRefinement(
-  const userInputParameters<dim>                                          &_userInputs,
-  parallel::distributed::Triangulation<dim>                               &_triangulation,
-  std::vector<Field<dim>>                                                 &_fields,
-  std::vector<vectorType *>                                               &_solutionSet,
-  std::vector<parallel::distributed::SolutionTransfer<dim, vectorType> *> &_soltransSet,
-  std::vector<FESystem<dim> *>                                            &_FESet,
+  const userInputParameters<dim>                            &_userInputs,
+  parallel::distributed::Triangulation<dim>                 &_triangulation,
+  std::vector<Field<dim>>                                   &_fields,
+  std::vector<LinearAlgebra::distributed::Vector<double> *> &_solutionSet,
+  std::vector<parallel::distributed::
+                SolutionTransfer<dim, LinearAlgebra::distributed::Vector<double>> *>
+                                                 &_soltransSet,
+  std::vector<FESystem<dim> *>                   &_FESet,
   std::vector<DoFHandler<dim> *>                 &_dofHandlersSet_nonconst,
   std::vector<const AffineConstraints<double> *> &_constraintsDirichletSet,
   std::vector<const AffineConstraints<double> *> &_constraintsOtherSet)

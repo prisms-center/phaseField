@@ -228,11 +228,11 @@ MatrixFreePDE<dim, degree>::init()
   pcout << "initializing parallel::distributed residual and solution vectors\n";
   for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
     {
-      vectorType *U = nullptr;
-      vectorType *R = nullptr;
+      LinearAlgebra::distributed::Vector<double> *U = nullptr;
+      LinearAlgebra::distributed::Vector<double> *R = nullptr;
 
-      U = new vectorType;
-      R = new vectorType;
+      U = new LinearAlgebra::distributed::Vector<double>;
+      R = new LinearAlgebra::distributed::Vector<double>;
       solutionSet.push_back(U);
       residualSet.push_back(R);
       matrixFreeObject.initialize_dof_vector(*R, fieldIndex);
@@ -290,8 +290,10 @@ MatrixFreePDE<dim, degree>::init()
   soltransSet.clear();
   for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
     {
-      soltransSet.push_back(new parallel::distributed::SolutionTransfer<dim, vectorType>(
-        *dofHandlersSet_nonconst[fieldIndex]));
+      soltransSet.push_back(
+        new parallel::distributed::
+          SolutionTransfer<dim, LinearAlgebra::distributed::Vector<double>>(
+            *dofHandlersSet_nonconst[fieldIndex]));
     }
 
   // Ghost the solution vectors. Also apply the constraints (if any) on the

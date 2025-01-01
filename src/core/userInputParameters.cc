@@ -75,7 +75,7 @@ userInputParameters<dim>::loadVariableAttributes()
           num_var_explicit_RHS++;
         }
     }
-  varInfoListExplicitRHS.reserve(num_var_explicit_RHS);
+  variable_info_list_explicit_RHS.reserve(num_var_explicit_RHS);
   for (const auto &[index, variable] : var_attributes)
     {
       variable_info varInfo {};
@@ -91,7 +91,7 @@ userInputParameters<dim>::loadVariableAttributes()
 
       varInfo.is_scalar = variable.var_type == SCALAR;
 
-      varInfoListExplicitRHS.push_back(varInfo);
+      variable_info_list_explicit_RHS.push_back(varInfo);
     }
 
   // Load variable information for calculating the RHS for nonexplicit equations
@@ -104,7 +104,7 @@ userInputParameters<dim>::loadVariableAttributes()
           num_var_nonexplicit_RHS++;
         }
     }
-  varInfoListNonexplicitRHS.reserve(num_var_nonexplicit_RHS);
+  variable_info_list_nonexplicit_RHS.reserve(num_var_nonexplicit_RHS);
   for (const auto &[index, variable] : var_attributes)
     {
       variable_info varInfo {};
@@ -120,7 +120,7 @@ userInputParameters<dim>::loadVariableAttributes()
 
       varInfo.is_scalar = variable.var_type == SCALAR;
 
-      varInfoListNonexplicitRHS.push_back(varInfo);
+      variable_info_list_nonexplicit_RHS.push_back(varInfo);
     }
 
   // Load variable information for calculating the LHS
@@ -134,7 +134,7 @@ userInputParameters<dim>::loadVariableAttributes()
         }
     }
 
-  varInfoListLHS.reserve(num_var_LHS);
+  variable_info_list_LHS.reserve(num_var_LHS);
   for (const auto &[index, variable] : var_attributes)
     {
       variable_info varInfo {};
@@ -150,10 +150,10 @@ userInputParameters<dim>::loadVariableAttributes()
 
       varInfo.is_scalar = variable.var_type == SCALAR;
 
-      varInfoListLHS.push_back(varInfo);
+      variable_info_list_LHS.push_back(varInfo);
     }
 
-  varChangeInfoListLHS.reserve(num_var_LHS);
+  change_variable_info_list_LHS.reserve(num_var_LHS);
   for (const auto &[index, variable] : var_attributes)
     {
       variable_info varInfo {};
@@ -170,12 +170,12 @@ userInputParameters<dim>::loadVariableAttributes()
 
       varInfo.is_scalar = variable.var_type == SCALAR;
 
-      varChangeInfoListLHS.push_back(varInfo);
+      change_variable_info_list_LHS.push_back(varInfo);
     }
 
   // Load variable information for postprocessing
   // First, the info list for the base field variables
-  pp_baseVarInfoList.reserve(var_attributes.size());
+  pp_base_variable_info_list.reserve(var_attributes.size());
   for (const auto &[index, variable] : var_attributes)
     {
       variable_info varInfo {};
@@ -189,7 +189,7 @@ userInputParameters<dim>::loadVariableAttributes()
 
       varInfo.is_scalar = variable.var_type == SCALAR;
 
-      pp_baseVarInfoList.push_back(varInfo);
+      pp_base_variable_info_list.push_back(varInfo);
     }
 
   // Now load the information for the post-processing variables
@@ -208,7 +208,7 @@ userInputParameters<dim>::loadVariableAttributes()
     }
 
   // The info list for the postprocessing field variables
-  pp_varInfoList.reserve(pp_attributes.size());
+  pp_variable_info_list.reserve(pp_attributes.size());
   for (const auto &[pp_index, pp_variable] : pp_attributes)
     {
       variable_info varInfo {};
@@ -221,7 +221,7 @@ userInputParameters<dim>::loadVariableAttributes()
 
       varInfo.is_scalar = pp_variable.var_type == SCALAR;
 
-      pp_varInfoList.push_back(varInfo);
+      pp_variable_info_list.push_back(varInfo);
     }
 }
 

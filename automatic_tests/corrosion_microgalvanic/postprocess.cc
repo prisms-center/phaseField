@@ -36,17 +36,15 @@ variableAttributeLoader::loadPostProcessorVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::postProcessedFields(
-  [[maybe_unused]] const variableContainer<dim, degree, VectorizedArray<double>>
-    &variable_list,
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
-                                                            &pp_variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
+  [[maybe_unused]] const variableContainer<dim, degree, double> &variable_list,
+  [[maybe_unused]] variableContainer<dim, degree, double>       &pp_variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>>     q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double>                 element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
   // The order parameter and its derivatives
-  scalarvalueType psi = variable_list.get_scalar_value(4);
+  scalarValue psi = variable_list.get_scalar_value(4);
 
   // --- Setting the expressions for the terms in the postprocessing expressions
   // ---

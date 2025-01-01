@@ -17,20 +17,12 @@ void
 variableAttributeLoader::loadVariableAttributes()
 {
   // Variable 0
-  set_variable_name(0, "c");
+  set_variable_name(0, "n");
   set_variable_type(0, SCALAR);
-  set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
+  set_variable_equation_type(0, IMPLICIT_TIME_DEPENDENT);
 
-  set_dependencies_value_term_RHS(0, "c");
-  set_dependencies_gradient_term_RHS(0, "grad(mu)");
-
-  // Variable 1
-  set_variable_name(1, "mu");
-  set_variable_type(1, SCALAR);
-  set_variable_equation_type(1, AUXILIARY);
-
-  set_dependencies_value_term_RHS(1, "c");
-  set_dependencies_gradient_term_RHS(1, "grad(c)");
+  set_dependencies_value_term_RHS(0, "n, old(n), grad(n)");
+  set_dependencies_value_term_LHS(0, "change(n), grad(change(n))");
 }
 
 // =============================================================================================
@@ -49,22 +41,10 @@ variableAttributeLoader::loadVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::explicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, double>   &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
-{
-  // --- Getting the values and derivatives of the model variables ---
-  scalarValue c   = variable_list.get_scalar_value(0);
-  scalarGrad  mux = variable_list.get_scalar_gradient(1);
-
-  // --- Setting the expressions for the terms in the governing equations ---
-  scalarValue eq_c  = c;
-  scalarGrad  eqx_c = constV(-McV * userInputs.dtValue) * mux;
-
-  // --- Submitting the terms for the governing equations ---
-  variable_list.set_scalar_value_term_RHS(0, eq_c);
-  variable_list.set_scalar_gradient_term_RHS(0, eqx_c);
-}
+  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+{}
 
 // =============================================================================================
 // nonExplicitEquationRHS (needed only if one or more equation is time
@@ -82,28 +62,30 @@ customPDE<dim, degree>::explicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::nonExplicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, double>   &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
+  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {
-  // --- Getting the values and derivatives of the model variables ---
+  // Getting necessary variables
+  scalarvalueType n     = variable_list.get_scalar_value(0);
+  scalargradType  nx    = variable_list.get_scalar_gradient(0);
+  scalarvalueType n_old = variable_list.get_old_scalar_value(0);
 
-  scalarValue c  = variable_list.get_scalar_value(0);
-  scalarGrad  cx = variable_list.get_scalar_gradient(0);
+  // Converting prescibed velocity to a vectorvalueType
+  vectorvalueType vel;
+  for (unsigned int i = 0; i < dim; i++)
+    {
+      vel[i] = constV(velocity[i]);
+    }
 
-  // --- Setting the expressions for the terms in the governing equations ---
+  // Norm of the local velocity
+  scalarvalueType u_l2norm = 1.0e-12 + vel.norm_square();
 
-  // The derivative of the local free energy
-  scalarValue fcV = 1.0 * WcV * c * (c - 1.0) * (c - 0.5);
+  // Submission terms
+  scalarvalueType residual = (n_old - n - constV(userInputs.dtValue) * vel * nx);
+  scalarvalueType eq_n     = residual;
 
-  // The terms for the governing equations
-  scalarValue eq_mu  = fcV;
-  scalarGrad  eqx_mu = constV(KcV) * cx;
-
-  // --- Submitting the terms for the governing equations ---
-
-  variable_list.set_scalar_value_term_RHS(1, eq_mu);
-  variable_list.set_scalar_gradient_term_RHS(1, eqx_mu);
+  variable_list.set_scalar_value_term_RHS(0, eq_n);
 }
 
 // =============================================================================================
@@ -124,7 +106,27 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::equationLHS(
-  [[maybe_unused]] variableContainer<dim, degree, double>   &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
-{}
+  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+{
+  // Getting necessary variables
+  scalarvalueType change_n  = variable_list.get_change_in_scalar_value(0);
+  scalargradType  change_nx = variable_list.get_change_in_scalar_gradient(0);
+
+  // Converting prescibed velocity to a vectorvalueType
+  vectorvalueType vel;
+  for (unsigned int i = 0; i < dim; i++)
+    {
+      vel[i] = constV(velocity[i]);
+    }
+
+  // Norm of the local velocity
+  scalarvalueType u_l2norm = 1.0e-12 + vel.norm_square();
+
+  // Submission terms
+  scalarvalueType residual = (change_n + constV(userInputs.dtValue) * vel * change_nx);
+  scalarvalueType eq_n     = residual;
+
+  variable_list.set_scalar_value_term_LHS(0, eq_n);
+}

@@ -122,39 +122,39 @@ variableAttributeLoader::loadVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::explicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+  [[maybe_unused]] variableContainer<dim, degree, double>   &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
 {
   // --- Parameters in the explicit equations can be set here  ---
 
   // Timestep
-  scalarvalueType delt = constV(userInputs.dtValue);
+  scalarValue delt = constV(userInputs.dtValue);
 
   // The order parameter of the anodic phase
-  scalarvalueType nAnodic = variable_list.get_scalar_value(0);
+  scalarValue nAnodic = variable_list.get_scalar_value(0);
 
   // The gradient of the chemical potential of the anodic phase
-  scalargradType muAnodicx = variable_list.get_scalar_gradient(1);
+  scalarGrad muAnodicx = variable_list.get_scalar_gradient(1);
 
   // The order parameter of the cathodic phase
-  scalarvalueType nCathodic = variable_list.get_scalar_value(2);
+  scalarValue nCathodic = variable_list.get_scalar_value(2);
 
   // The gradient of the chemical potential of the cathodic phase
-  scalargradType muCathodicx = variable_list.get_scalar_gradient(3);
+  scalarGrad muCathodicx = variable_list.get_scalar_gradient(3);
 
   // The domain parameter of the electrolyte phase and its derivatives
-  scalarvalueType psi  = variable_list.get_scalar_value(4);
-  scalargradType  psix = variable_list.get_scalar_gradient(4);
+  scalarValue psi  = variable_list.get_scalar_value(4);
+  scalarGrad  psix = variable_list.get_scalar_gradient(4);
 
   // The derivative of the chemical potential of the electrolyte phase
-  scalargradType mupsix = variable_list.get_scalar_gradient(5);
+  scalarGrad mupsix = variable_list.get_scalar_gradient(5);
 
   // The electrolyte potential
-  scalarvalueType Phi = variable_list.get_scalar_value(6);
+  scalarValue Phi = variable_list.get_scalar_value(6);
 
   // The interpolation factor for the anodic phase
-  scalarvalueType xiAnodic = variable_list.get_scalar_value(8);
+  scalarValue xiAnodic = variable_list.get_scalar_value(8);
 
   // Ensuring that the domain and order parameters remain within [0 1]
 
@@ -173,7 +173,7 @@ customPDE<dim, degree>::explicitEquationRHS(
   // --- Calculation of terms needed in multiple expressions  ---
 
   // Magnifude of the derivative of psi
-  scalarvalueType magpsix = constV(0.0);
+  scalarValue magpsix = constV(0.0);
   for (int i = 0; i < dim; i++)
     {
       magpsix += psix[i] * psix[i];
@@ -183,11 +183,11 @@ customPDE<dim, degree>::explicitEquationRHS(
   // --- Calculation of irxn  ---
 
   // Overpotentials for the anodic and cathodic phases
-  scalarvalueType etaAnodic = VsV - EcorrAnodic - Phi;
+  scalarValue etaAnodic = VsV - EcorrAnodic - Phi;
 
   // Calculation of anodic/cathodic current density
-  scalarvalueType itafel  = i0Anodic * exp(etaAnodic / AAnodic);
-  scalarvalueType iAnodic = itafel / (constV(1.0) + (itafel / iMax));
+  scalarValue itafel  = i0Anodic * exp(etaAnodic / AAnodic);
+  scalarValue iAnodic = itafel / (constV(1.0) + (itafel / iMax));
 
   // Time for initial equilibration of all the interfaces present in the
   // domain
@@ -206,24 +206,24 @@ customPDE<dim, degree>::explicitEquationRHS(
   // Normal component of the interface velocity, which switches from vMin
   // to vMax at time = tStepStartForV * timeStep
 
-  scalarvalueType vMin = constV(0.0);
-  scalarvalueType vMax = -constV(VMV / (zMV * FarC)) * xiAnodic * iAnodic;
-  scalarvalueType v    = constV(1.0 - switchVal) * vMin + constV(switchVal) * vMax;
+  scalarValue vMin = constV(0.0);
+  scalarValue vMax = -constV(VMV / (zMV * FarC)) * xiAnodic * iAnodic;
+  scalarValue v    = constV(1.0 - switchVal) * vMin + constV(switchVal) * vMax;
 
   // The mobility for all the phases
-  scalarvalueType MnV = MconstV * psi * abs(xiAnodic * iAnodic);
+  scalarValue MnV = MconstV * psi * abs(xiAnodic * iAnodic);
 
   // --- Calculation of residual terms for nAnodic  ---
-  scalarvalueType rnAnodic  = nAnodic + v * delt * magpsix;
-  scalargradType  rnAnodicx = -MnV * delt * muAnodicx;
+  scalarValue rnAnodic  = nAnodic + v * delt * magpsix;
+  scalarGrad  rnAnodicx = -MnV * delt * muAnodicx;
 
   // --- Calculation of residual terms for nCathodic  ---
-  scalarvalueType rnCathodic  = nCathodic;
-  scalargradType  rnCathodicx = -MnV * delt * muCathodicx;
+  scalarValue rnCathodic  = nCathodic;
+  scalarGrad  rnCathodicx = -MnV * delt * muCathodicx;
 
   // --- Calculation of residual terms for psi ---
-  scalarvalueType rpsi  = psi - v * delt * magpsix;
-  scalargradType  rpsix = -MnV * delt * mupsix;
+  scalarValue rpsi  = psi - v * delt * magpsix;
+  scalarGrad  rpsix = -MnV * delt * mupsix;
 
   // --- Submitting the terms for the governing equations ---
   // Residuals terms for the equation to evolve the order parameter
@@ -255,31 +255,31 @@ customPDE<dim, degree>::explicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::nonExplicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+  [[maybe_unused]] variableContainer<dim, degree, double>   &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
   // The order parameter of the anodic phase and its gradient
-  scalarvalueType nAnodic  = variable_list.get_scalar_value(0);
-  scalargradType  nAnodicx = variable_list.get_scalar_gradient(0);
+  scalarValue nAnodic  = variable_list.get_scalar_value(0);
+  scalarGrad  nAnodicx = variable_list.get_scalar_gradient(0);
 
   // The order parameter of the cathodic phase and its gradient
-  scalarvalueType nCathodic  = variable_list.get_scalar_value(2);
-  scalargradType  nCathodicx = variable_list.get_scalar_gradient(2);
+  scalarValue nCathodic  = variable_list.get_scalar_value(2);
+  scalarGrad  nCathodicx = variable_list.get_scalar_gradient(2);
 
   // The domain parameter of the electrolyte phase and its derivatives
-  scalarvalueType psi  = variable_list.get_scalar_value(4);
-  scalargradType  psix = variable_list.get_scalar_gradient(4);
+  scalarValue psi  = variable_list.get_scalar_value(4);
+  scalarGrad  psix = variable_list.get_scalar_gradient(4);
 
   // The electrolyte potential and its derivatives
-  scalarvalueType Phi  = variable_list.get_scalar_value(6);
-  scalargradType  Phix = variable_list.get_scalar_gradient(6);
+  scalarValue Phi  = variable_list.get_scalar_value(6);
+  scalarGrad  Phix = variable_list.get_scalar_gradient(6);
 
   // The reaction current density
-  scalarvalueType irxn     = variable_list.get_scalar_value(7);
-  scalarvalueType xiAnodic = variable_list.get_scalar_value(8);
+  scalarValue irxn     = variable_list.get_scalar_value(7);
+  scalarValue xiAnodic = variable_list.get_scalar_value(8);
 
   // Ensuring domain and order parameters are in the range [0 1]
   psi = min(psi, constV(1.0));
@@ -294,7 +294,7 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
   // --- Calculation of terms needed in multiple expressions  ---
   // Magnitude of the gradient of the domain parameter
 
-  scalarvalueType magpsix = constV(0.0);
+  scalarValue magpsix = constV(0.0);
   for (int i = 0; i < dim; i++)
     {
       magpsix = magpsix + psix[i] * psix[i];
@@ -304,55 +304,55 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
   // --- Calculation of residual terms for muAnodic  ---
 
   // Derivative of bulk free energy with respect to nAnodic
-  scalarvalueType rmuAnodic =
+  scalarValue rmuAnodic =
     (nAnodic * nAnodic * nAnodic - nAnodic + constV(2.0) * gamma * nAnodic * psi * psi +
      constV(2.0) * gamma * nAnodic * nCathodic * nCathodic);
 
-  scalargradType rmuAnodicx = epssqV * nAnodicx;
+  scalarGrad rmuAnodicx = epssqV * nAnodicx;
 
   // --- Calculation of residual terms for muCathodic  ---
 
   // Derivative of bulk free energy with respect to nCathodic
-  scalarvalueType rmuCathodic = (nCathodic * nCathodic * nCathodic - nCathodic +
-                                 constV(2.0) * gamma * nCathodic * psi * psi +
-                                 constV(2.0) * gamma * nCathodic * nAnodic * nAnodic);
+  scalarValue rmuCathodic = (nCathodic * nCathodic * nCathodic - nCathodic +
+                             constV(2.0) * gamma * nCathodic * psi * psi +
+                             constV(2.0) * gamma * nCathodic * nAnodic * nAnodic);
 
-  scalargradType rmuCathodicx = epssqV * nCathodicx;
+  scalarGrad rmuCathodicx = epssqV * nCathodicx;
 
   // --- Calculation of residual terms for mupsi  ---
 
   // Derivative of bulk free energy with respect to psi
-  scalarvalueType rmupsi =
+  scalarValue rmupsi =
     (psi * psi * psi - psi + constV(2.0) * gamma * psi * nAnodic * nAnodic +
      constV(2.0) * gamma * psi * nCathodic * nCathodic);
 
-  scalargradType rmupsix = epssqV * psix;
+  scalarGrad rmupsix = epssqV * psix;
 
   // --- Calculation of irxn  ---
 
   // Overpotential
 
-  scalarvalueType etaAnodic   = VsV - EcorrAnodic - Phi;
-  scalarvalueType etaCathodic = VsV - EcorrCathodic - Phi;
+  scalarValue etaAnodic   = VsV - EcorrAnodic - Phi;
+  scalarValue etaCathodic = VsV - EcorrCathodic - Phi;
 
   // Calculation of anodic/cathodic current density
-  scalarvalueType itafel    = i0Anodic * exp(etaAnodic / AAnodic);
-  scalarvalueType iAnodic   = itafel / (constV(1.0) + (itafel / iMax));
-  scalarvalueType iCathodic = -i0Cathodic * exp(etaCathodic / ACathodic);
+  scalarValue itafel    = i0Anodic * exp(etaAnodic / AAnodic);
+  scalarValue iAnodic   = itafel / (constV(1.0) + (itafel / iMax));
+  scalarValue iCathodic = -i0Cathodic * exp(etaCathodic / ACathodic);
 
   // Calculation of the interpolation factor for the anodic phase
   // The factor for the cathodic phase is calculated  first, and then the
   // one for the anodic phase is calculated via xiAnodic = 1 - xiCathodic
-  scalarvalueType xiCathodic = nCathodic / max(nAnodic + nCathodic, constV(lthresh));
+  scalarValue xiCathodic = nCathodic / max(nAnodic + nCathodic, constV(lthresh));
 
   xiAnodic = constV(1.0) - xiCathodic;
 
   // combination of irxn
-  scalarvalueType rirxn = xiAnodic * iAnodic + xiCathodic * iCathodic;
+  scalarValue rirxn = xiAnodic * iAnodic + xiCathodic * iCathodic;
 
   // --- Calculation of residual terms for Phi  ---
-  scalarvalueType rPhi  = -magpsix * irxn;
-  scalargradType  rPhix = psi * kappa * Phix;
+  scalarValue rPhi  = -magpsix * irxn;
+  scalarGrad  rPhix = psi * kappa * Phix;
 
   // --- Submitting the terms for the governing equations ---
   // Residuals for the equation to calculate muAnodic
@@ -396,29 +396,29 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::equationLHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+  [[maybe_unused]] variableContainer<dim, degree, double>   &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
 {
   // The order parameter of the anodic phase
-  scalarvalueType nAnodic = variable_list.get_scalar_value(0);
+  scalarValue nAnodic = variable_list.get_scalar_value(0);
 
   // The order parameter of the cathodic phase
-  scalarvalueType nCathodic = variable_list.get_scalar_value(2);
+  scalarValue nCathodic = variable_list.get_scalar_value(2);
 
   // The domain parameter of the electrolyt phase and its derivatives
-  scalarvalueType psi  = variable_list.get_scalar_value(4);
-  scalargradType  psix = variable_list.get_scalar_gradient(4);
+  scalarValue psi  = variable_list.get_scalar_value(4);
+  scalarGrad  psix = variable_list.get_scalar_gradient(4);
 
   // The electrolyte potential and its derivatives
-  scalarvalueType Phi = variable_list.get_scalar_value(6);
+  scalarValue Phi = variable_list.get_scalar_value(6);
 
   // The change in potential in the electrode and its derivatives
-  scalarvalueType DPhi  = variable_list.get_change_in_scalar_value(6);
-  scalargradType  DPhix = variable_list.get_change_in_scalar_gradient(6);
+  scalarValue DPhi  = variable_list.get_change_in_scalar_value(6);
+  scalarGrad  DPhix = variable_list.get_change_in_scalar_gradient(6);
 
   // The interpolation factor for the anodic phase
-  scalarvalueType xiAnodic = variable_list.get_scalar_value(8);
+  scalarValue xiAnodic = variable_list.get_scalar_value(8);
 
   // Ensuring that the domain and order parameters remain within the range
   // [0 1]
@@ -434,7 +434,7 @@ customPDE<dim, degree>::equationLHS(
   // --- Calculation of terms needed in multiple expressions  ---
 
   // Magnitude of the gradient of the domain parameter
-  scalarvalueType magpsix = constV(0.0);
+  scalarValue magpsix = constV(0.0);
   for (int i = 0; i < dim; i++)
     {
       magpsix = magpsix + psix[i] * psix[i];
@@ -446,23 +446,23 @@ customPDE<dim, degree>::equationLHS(
   // irxn wrt to Phi)   ---
 
   // Overpotential
-  scalarvalueType etaAnodic   = VsV - EcorrAnodic - Phi;
-  scalarvalueType etaCathodic = VsV - EcorrCathodic - Phi;
+  scalarValue etaAnodic   = VsV - EcorrAnodic - Phi;
+  scalarValue etaCathodic = VsV - EcorrCathodic - Phi;
 
   // Calculation of anodic/cathodic current density
-  scalarvalueType itafel    = i0Anodic * exp(etaAnodic / AAnodic);
-  scalarvalueType iCathodic = -i0Cathodic * exp(etaCathodic / ACathodic);
+  scalarValue itafel    = i0Anodic * exp(etaAnodic / AAnodic);
+  scalarValue iCathodic = -i0Cathodic * exp(etaCathodic / ACathodic);
 
   // The interpolation factor for the cathodic phase
-  scalarvalueType xiCathodic = constV(1.0) - xiAnodic;
+  scalarValue xiCathodic = constV(1.0) - xiAnodic;
 
   // The derivative of irxn wrt to Phi
-  scalarvalueType irxnp =
+  scalarValue irxnp =
     -xiAnodic * (iMax / (iMax + itafel)) * (iMax / (iMax + itafel)) * (itafel / AAnodic) -
     xiCathodic * (iCathodic / ACathodic);
 
-  scalarvalueType rDPhi  = magpsix * irxnp * DPhi;
-  scalargradType  rDPhix = -psi * kappa * DPhix;
+  scalarValue rDPhi  = magpsix * irxnp * DPhi;
+  scalarGrad  rDPhix = -psi * kappa * DPhix;
 
   // Residuals for the equation to evolve the potential(Phi)
   variable_list.set_scalar_value_term_LHS(6, rDPhi);

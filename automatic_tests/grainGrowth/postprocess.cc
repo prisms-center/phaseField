@@ -45,19 +45,17 @@ variableAttributeLoader::loadPostProcessorVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::postProcessedFields(
-  [[maybe_unused]] const variableContainer<dim, degree, VectorizedArray<double>>
-    &variable_list,
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
-                                                            &pp_variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
+  [[maybe_unused]] const variableContainer<dim, degree, double> &variable_list,
+  [[maybe_unused]] variableContainer<dim, degree, double>       &pp_variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>>     q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double>                 element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
-  scalarvalueType ni;
+  scalarValue ni;
 
-  scalarvalueType max_val = constV(-1.0);
-  scalarvalueType max_op  = constV(100.0);
+  scalarValue max_val = constV(-1.0);
+  scalarValue max_op  = constV(100.0);
   for (unsigned int i = 0; i < userInputs.var_attributes.size(); i++)
     {
       ni = variable_list.get_scalar_value(i);
@@ -72,7 +70,7 @@ customPDE<dim, degree>::postProcessedFields(
         }
     }
 
-  scalarvalueType feature_ids = constV(-1.0);
+  scalarValue feature_ids = constV(-1.0);
   for (unsigned int v = 0; v < ni.size(); v++)
     {
       for (unsigned int g = 0; g < this->simplified_grain_representations.size(); g++)
@@ -108,7 +106,7 @@ customPDE<dim, degree>::postProcessedFields(
         }
     }
 
-  scalarvalueType sum_n = constV(0.0);
+  scalarValue sum_n = constV(0.0);
   for (unsigned int i = 0; i < userInputs.var_attributes.size(); i++)
     {
       ni = variable_list.get_scalar_value(i);

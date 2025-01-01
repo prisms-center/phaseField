@@ -57,41 +57,41 @@ variableAttributeLoader::loadVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::explicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+  [[maybe_unused]] variableContainer<dim, degree, double>   &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
   // Concentration
-  scalarvalueType c  = variable_list.get_scalar_value(0);
-  scalargradType  cx = variable_list.get_scalar_gradient(0);
+  scalarValue c  = variable_list.get_scalar_value(0);
+  scalarGrad  cx = variable_list.get_scalar_gradient(0);
 
   // Order parameter
-  scalarvalueType n  = variable_list.get_scalar_value(1);
-  scalargradType  nx = variable_list.get_scalar_gradient(1);
+  scalarValue n  = variable_list.get_scalar_value(1);
+  scalarGrad  nx = variable_list.get_scalar_gradient(1);
 
   // Field for split formulation of the biharmonic term
-  scalargradType biharmx = variable_list.get_scalar_gradient(2);
+  scalarGrad biharmx = variable_list.get_scalar_gradient(2);
 
   // --- Setting the expressions for the terms in the governing equations ---
 
   // Bulk terms
-  scalarvalueType faV   = 0.5 * c * c / 16.0;
-  scalarvalueType facV  = 0.5 * c / 8.0;
-  scalarvalueType faccV = constV(0.5 / 8.0);
-  scalarvalueType fbV   = 0.5 * (c - 1.0) * (c - 1.0) / 16.0;
-  scalarvalueType fbcV  = 0.5 * (c - 1.0) / 8.0;
-  scalarvalueType fbccV = constV(0.5 / 8.0);
-  scalarvalueType hV    = 3.0 * n * n - 2.0 * n * n * n;
-  scalarvalueType hnV   = 6.0 * n - 6.0 * n * n;
+  scalarValue faV   = 0.5 * c * c / 16.0;
+  scalarValue facV  = 0.5 * c / 8.0;
+  scalarValue faccV = constV(0.5 / 8.0);
+  scalarValue fbV   = 0.5 * (c - 1.0) * (c - 1.0) / 16.0;
+  scalarValue fbcV  = 0.5 * (c - 1.0) / 8.0;
+  scalarValue fbccV = constV(0.5 / 8.0);
+  scalarValue hV    = 3.0 * n * n - 2.0 * n * n * n;
+  scalarValue hnV   = 6.0 * n - 6.0 * n * n;
 
   // Calculation of interface normal vector
-  scalarvalueType normgradn = std::sqrt(nx.norm_square());
-  scalargradType  normal    = nx / (normgradn + constV(1.0e-16));
+  scalarValue normgradn = std::sqrt(nx.norm_square());
+  scalarGrad  normal    = nx / (normgradn + constV(1.0e-16));
 
   // Calculation of anisotropy gamma
-  scalarvalueType gamma;
+  scalarValue gamma;
   if (dim == 2)
     {
       gamma = 1.0 + epsilonM * (4.0 * (normal[0] * normal[0] * normal[0] * normal[0] +
@@ -107,7 +107,7 @@ customPDE<dim, degree>::explicitEquationRHS(
     }
 
   // Derivatives of gamma with respect to the components of the unit normal
-  scalargradType dgammadnorm;
+  scalarGrad dgammadnorm;
   dgammadnorm[0] = (epsilonM * 16.0 * normal[0] * normal[0] * normal[0]);
   dgammadnorm[1] = (epsilonM * 16.0 * normal[1] * normal[1] * normal[1]);
   if (dim == 3)
@@ -116,7 +116,7 @@ customPDE<dim, degree>::explicitEquationRHS(
     }
 
   // Product of projection matrix and dgammadnorm vector
-  scalargradType aniso;
+  scalarGrad aniso;
   for (unsigned int i = 0; i < dim; ++i)
     {
       for (unsigned int j = 0; j < dim; ++j)
@@ -130,12 +130,11 @@ customPDE<dim, degree>::explicitEquationRHS(
   aniso = gamma * (aniso * normgradn + gamma * nx);
 
   // The terms in the governing equations
-  scalarvalueType eq_c = c;
-  scalargradType  eqx_c =
-    constV(-McV * userInputs.dtValue) *
-    (cx * ((1.0 - hV) * faccV + hV * fbccV) + nx * hnV * (fbcV - facV));
-  scalarvalueType eq_n = n - constV(userInputs.dtValue * MnV) * (fbV - faV) * hnV;
-  scalargradType  eqx_n =
+  scalarValue eq_c  = c;
+  scalarGrad  eqx_c = constV(-McV * userInputs.dtValue) *
+                     (cx * ((1.0 - hV) * faccV + hV * fbccV) + nx * hnV * (fbcV - facV));
+  scalarValue eq_n = n - constV(userInputs.dtValue * MnV) * (fbV - faV) * hnV;
+  scalarGrad  eqx_n =
     constV(userInputs.dtValue * MnV) * (-aniso + constV(delta2) * biharmx);
 
   // --- Submitting the terms for the governing equations ---
@@ -163,13 +162,13 @@ customPDE<dim, degree>::explicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::nonExplicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+  [[maybe_unused]] variableContainer<dim, degree, double>   &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
-  scalargradType nx = variable_list.get_scalar_gradient(1);
+  scalarGrad nx = variable_list.get_scalar_gradient(1);
 
   // --- Setting the expressions for the terms in the governing equations ---
 
@@ -195,7 +194,7 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::equationLHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+  [[maybe_unused]] variableContainer<dim, degree, double>   &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
 {}

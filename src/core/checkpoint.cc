@@ -58,8 +58,10 @@ MatrixFreePDE<dim, degree>::save_checkpoint()
       }
 
     // Second, build one solution set list for scalars and one for vectors
-    std::vector<const vectorType *> solSet_transfer_scalars;
-    std::vector<const vectorType *> solSet_transfer_vectors;
+    std::vector<const LinearAlgebra::distributed::Vector<double> *>
+      solSet_transfer_scalars;
+    std::vector<const LinearAlgebra::distributed::Vector<double> *>
+      solSet_transfer_vectors;
     for (const auto &[index, variable] : var_attributes)
       {
         if (variable.var_type == SCALAR)
@@ -73,30 +75,34 @@ MatrixFreePDE<dim, degree>::save_checkpoint()
       }
 
     // Finally, save the triangulation and the solutionTransfer objects
-    if (scalar_var_indices.size() > 0 && vector_var_indices.size() == 0)
+    if (!scalar_var_indices.empty() && vector_var_indices.empty())
       {
-        parallel::distributed::SolutionTransfer<dim, vectorType> system_trans_scalars(
-          *dofHandlersSet[scalar_var_indices[0]]);
+        parallel::distributed::
+          SolutionTransfer<dim, LinearAlgebra::distributed::Vector<double>>
+            system_trans_scalars(*dofHandlersSet[scalar_var_indices[0]]);
         system_trans_scalars.prepare_for_serialization(solSet_transfer_scalars);
 
         triangulation.save("restart.mesh");
       }
-    else if (scalar_var_indices.size() == 0 && vector_var_indices.size() > 0)
+    else if (scalar_var_indices.empty() && !vector_var_indices.empty())
       {
-        parallel::distributed::SolutionTransfer<dim, vectorType> system_trans_vectors(
-          *dofHandlersSet[vector_var_indices[0]]);
+        parallel::distributed::
+          SolutionTransfer<dim, LinearAlgebra::distributed::Vector<double>>
+            system_trans_vectors(*dofHandlersSet[vector_var_indices[0]]);
         system_trans_vectors.prepare_for_serialization(solSet_transfer_vectors);
 
         triangulation.save("restart.mesh");
       }
     else
       {
-        parallel::distributed::SolutionTransfer<dim, vectorType> system_trans_scalars(
-          *dofHandlersSet[scalar_var_indices[0]]);
+        parallel::distributed::
+          SolutionTransfer<dim, LinearAlgebra::distributed::Vector<double>>
+            system_trans_scalars(*dofHandlersSet[scalar_var_indices[0]]);
         system_trans_scalars.prepare_for_serialization(solSet_transfer_scalars);
 
-        parallel::distributed::SolutionTransfer<dim, vectorType> system_trans_vectors(
-          *dofHandlersSet[vector_var_indices[0]]);
+        parallel::distributed::
+          SolutionTransfer<dim, LinearAlgebra::distributed::Vector<double>>
+            system_trans_vectors(*dofHandlersSet[vector_var_indices[0]]);
         system_trans_vectors.prepare_for_serialization(solSet_transfer_vectors);
 
         triangulation.save("restart.mesh");
@@ -164,8 +170,8 @@ MatrixFreePDE<dim, degree>::load_checkpoint_fields()
     }
 
   // Second, build one solution set list for scalars and one for vectors
-  std::vector<vectorType *> solSet_transfer_scalars;
-  std::vector<vectorType *> solSet_transfer_vectors;
+  std::vector<LinearAlgebra::distributed::Vector<double> *> solSet_transfer_scalars;
+  std::vector<LinearAlgebra::distributed::Vector<double> *> solSet_transfer_vectors;
   for (const auto &[index, variable] : var_attributes)
     {
       if (variable.var_type == SCALAR)
@@ -180,16 +186,18 @@ MatrixFreePDE<dim, degree>::load_checkpoint_fields()
 
   // Finally, deserialize the fields to the solSet_transfer objects, which
   // contain pointers to solutionSet
-  if (scalar_var_indices.size() > 0)
+  if (!scalar_var_indices.empty())
     {
-      parallel::distributed::SolutionTransfer<dim, vectorType> system_trans_scalars(
-        *dofHandlersSet[scalar_var_indices[0]]);
+      parallel::distributed::SolutionTransfer<dim,
+                                              LinearAlgebra::distributed::Vector<double>>
+        system_trans_scalars(*dofHandlersSet[scalar_var_indices[0]]);
       system_trans_scalars.deserialize(solSet_transfer_scalars);
     }
-  if (vector_var_indices.size() > 0)
+  if (!vector_var_indices.empty())
     {
-      parallel::distributed::SolutionTransfer<dim, vectorType> system_trans_vectors(
-        *dofHandlersSet[vector_var_indices[0]]);
+      parallel::distributed::SolutionTransfer<dim,
+                                              LinearAlgebra::distributed::Vector<double>>
+        system_trans_vectors(*dofHandlersSet[vector_var_indices[0]]);
       system_trans_vectors.deserialize(solSet_transfer_vectors);
     }
 }

@@ -264,13 +264,18 @@ public:
   const AttributesList &pp_attributes;
 
   // Variables needed to calculate the RHS
-  unsigned int               num_var_explicit_RHS, num_var_nonexplicit_RHS;
-  std::vector<variable_info> varInfoListExplicitRHS, varInfoListNonexplicitRHS;
+  unsigned int               num_var_explicit_RHS;
+  unsigned int               num_var_nonexplicit_RHS;
+  std::vector<variable_info> variable_info_list_explicit_RHS;
+  std::vector<variable_info> old_variable_info_list_explicit_RHS;
+  std::vector<variable_info> variable_info_list_nonexplicit_RHS;
+  std::vector<variable_info> old_variable_info_list_nonexplicit_RHS;
 
   // Variables needed to calculate the LHS
   unsigned int               num_var_LHS;
-  std::vector<variable_info> varInfoListLHS;
-  std::vector<variable_info> varChangeInfoListLHS;
+  std::vector<variable_info> variable_info_list_LHS;
+  std::vector<variable_info> old_variable_info_list_LHS;
+  std::vector<variable_info> change_variable_info_list_LHS;
 
   // Variables for loading in initial conditions
   std::vector<bool>        load_ICs;
@@ -288,8 +293,9 @@ public:
   std::vector<unsigned int> integrated_field_indices;
 
   // Variable and residual info
-  std::vector<variable_info> pp_varInfoList;
-  std::vector<variable_info> pp_baseVarInfoList;
+  std::vector<variable_info> pp_variable_info_list;
+  std::vector<variable_info> pp_base_variable_info_list;
+  std::vector<variable_info> pp_base_old_variable_info_list;
 
   // List of boundary conditions
   std::vector<varBCs<dim>> BC_list;

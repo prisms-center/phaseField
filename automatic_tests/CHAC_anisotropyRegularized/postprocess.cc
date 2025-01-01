@@ -38,38 +38,36 @@ variableAttributeLoader::loadPostProcessorVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::postProcessedFields(
-  [[maybe_unused]] const variableContainer<dim, degree, VectorizedArray<double>>
-    &variable_list,
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
-                                                            &pp_variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
+  [[maybe_unused]] const variableContainer<dim, degree, double> &variable_list,
+  [[maybe_unused]] variableContainer<dim, degree, double>       &pp_variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>>     q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double>                 element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
   // c
-  scalarvalueType c = variable_list.get_scalar_value(0);
+  scalarValue c = variable_list.get_scalar_value(0);
 
   // n1
-  scalarvalueType n  = variable_list.get_scalar_value(1);
-  scalargradType  nx = variable_list.get_scalar_gradient(1);
+  scalarValue n  = variable_list.get_scalar_value(1);
+  scalarGrad  nx = variable_list.get_scalar_gradient(1);
 
   // biharm
-  scalarvalueType biharm = variable_list.get_scalar_value(2);
+  scalarValue biharm = variable_list.get_scalar_value(2);
 
   // --- Setting the expressions for the terms in the postprocessing expressions
   // ---
 
-  scalarvalueType f_tot = constV(0.0);
+  scalarValue f_tot = constV(0.0);
 
-  scalarvalueType faV = 0.5 * c * c / 16.0;
-  scalarvalueType fbV = 0.5 * (c - 1.0) * (c - 1.0) / 16.0;
-  scalarvalueType hV  = 3.0 * n * n - 2.0 * n * n * n;
+  scalarValue faV = 0.5 * c * c / 16.0;
+  scalarValue fbV = 0.5 * (c - 1.0) * (c - 1.0) / 16.0;
+  scalarValue hV  = 3.0 * n * n - 2.0 * n * n * n;
 
-  scalarvalueType normgradn = std::sqrt(nx.norm_square());
-  scalargradType  normal    = nx / (normgradn + constV(1.0e-16));
+  scalarValue normgradn = std::sqrt(nx.norm_square());
+  scalarGrad  normal    = nx / (normgradn + constV(1.0e-16));
 
-  scalarvalueType gamma;
+  scalarValue gamma;
   if (dim == 2)
     {
       gamma = 1.0 + epsilonM * (4.0 * (normal[0] * normal[0] * normal[0] * normal[0] +
@@ -84,12 +82,12 @@ customPDE<dim, degree>::postProcessedFields(
                                 3.0);
     }
 
-  scalarvalueType f_chem = (constV(1.0) - hV) * faV + hV * fbV;
+  scalarValue f_chem = (constV(1.0) - hV) * faV + hV * fbV;
 
   // anisotropy code
-  scalarvalueType f_grad = constV(0.5) * gamma * gamma * nx * nx;
+  scalarValue f_grad = constV(0.5) * gamma * gamma * nx * nx;
 
-  scalarvalueType f_reg = constV(0.5 * delta2) * biharm * biharm;
+  scalarValue f_reg = constV(0.5 * delta2) * biharm * biharm;
 
   f_tot = f_chem + f_grad + f_reg;
 

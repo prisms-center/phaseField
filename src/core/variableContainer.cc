@@ -3,19 +3,21 @@
 #include <core/variableContainer.h>
 #include <string>
 
-template <int dim, int degree, typename T>
-variableContainer<dim, degree, T>::variableContainer(
-  const dealii::MatrixFree<dim, double> &data,
-  const std::vector<variable_info>      &_varInfoList,
-  const std::vector<variable_info>      &_varChangeInfoList)
-  : varInfoList(_varInfoList)
-  , varChangeInfoList(_varChangeInfoList)
-  , num_var(varInfoList.size())
+template <int dim, int degree, typename number>
+variableContainer<dim, degree, number>::variableContainer(
+  const dealii::MatrixFree<dim, number> &data,
+  const std::vector<variable_info>      &_variable_info_list,
+  const std::vector<variable_info>      &_old_variable_info_list,
+  const std::vector<variable_info>      &_change_variable_info_list)
+  : variable_info_list(_variable_info_list)
+  , old_variable_info_list(_old_variable_info_list)
+  , change_variable_info_list(_change_variable_info_list)
+  , num_var(variable_info_list.size())
 {
   for (unsigned int i = 0; i < num_var; i++)
     {
-      const auto &var_info        = varInfoList[i];
-      const auto &var_change_info = varChangeInfoList[i];
+      const auto &var_info        = variable_info_list[i];
+      const auto &var_change_info = change_variable_info_list[i];
 
       if (var_info.var_needed)
         {
@@ -51,16 +53,18 @@ variableContainer<dim, degree, T>::variableContainer(
     }
 }
 
-template <int dim, int degree, typename T>
-variableContainer<dim, degree, T>::variableContainer(
-  const dealii::MatrixFree<dim, double> &data,
-  const std::vector<variable_info>      &_varInfoList)
-  : varInfoList(_varInfoList)
-  , num_var(varInfoList.size())
+template <int dim, int degree, typename number>
+variableContainer<dim, degree, number>::variableContainer(
+  const dealii::MatrixFree<dim, number> &data,
+  const std::vector<variable_info>      &_variable_info_list,
+  const std::vector<variable_info>      &_old_variable_info_list)
+  : variable_info_list(_variable_info_list)
+  , old_variable_info_list(_old_variable_info_list)
+  , num_var(variable_info_list.size())
 {
   for (unsigned int i = 0; i < num_var; i++)
     {
-      const auto &var_info = varInfoList[i];
+      const auto &var_info = variable_info_list[i];
 
       if (!var_info.var_needed)
         {
@@ -82,17 +86,17 @@ variableContainer<dim, degree, T>::variableContainer(
 
 // Variant of the constructor where it reads from a fixed index of "data", used
 // for post-processing
-template <int dim, int degree, typename T>
-variableContainer<dim, degree, T>::variableContainer(
-  const dealii::MatrixFree<dim, double> &data,
-  const std::vector<variable_info>      &_varInfoList,
+template <int dim, int degree, typename number>
+variableContainer<dim, degree, number>::variableContainer(
+  const dealii::MatrixFree<dim, number> &data,
+  const std::vector<variable_info>      &_variable_info_list,
   const unsigned int                    &fixed_index)
-  : varInfoList(_varInfoList)
-  , num_var(varInfoList.size())
+  : variable_info_list(_variable_info_list)
+  , num_var(variable_info_list.size())
 {
   for (unsigned int i = 0; i < num_var; i++)
     {
-      const auto &var_info = varInfoList[i];
+      const auto &var_info = variable_info_list[i];
 
       if (!var_info.var_needed)
         {
@@ -114,9 +118,9 @@ variableContainer<dim, degree, T>::variableContainer(
     }
 }
 
-template <int dim, int degree, typename T>
+template <int dim, int degree, typename number>
 unsigned int
-variableContainer<dim, degree, T>::get_num_q_points() const
+variableContainer<dim, degree, number>::get_num_q_points() const
 {
   if (!scalar_vars_map.empty())
     {
@@ -143,9 +147,9 @@ variableContainer<dim, degree, T>::get_num_q_points() const
     }
 }
 
-template <int dim, int degree, typename T>
-dealii::Point<dim, T>
-variableContainer<dim, degree, T>::get_q_point_location() const
+template <int dim, int degree, typename number>
+dealii::Point<dim, dealii::VectorizedArray<number>>
+variableContainer<dim, degree, number>::get_q_point_location() const
 {
   if (!scalar_vars_map.empty())
     {
@@ -172,14 +176,15 @@ variableContainer<dim, degree, T>::get_q_point_location() const
     }
 }
 
-template <int dim, int degree, typename T>
+template <int dim, int degree, typename number>
 void
-variableContainer<dim, degree, T>::reinit_and_eval(const std::vector<vectorType *> &src,
-                                                   unsigned int                     cell)
+variableContainer<dim, degree, number>::reinit_and_eval(
+  const std::vector<dealii::LinearAlgebra::distributed::Vector<number> *> &src,
+  unsigned int                                                             cell)
 {
   for (unsigned int i = 0; i < num_var; i++)
     {
-      const auto &var_info = varInfoList[i];
+      const auto &var_info = variable_info_list[i];
 
       if (!var_info.var_needed)
         {
@@ -207,38 +212,40 @@ variableContainer<dim, degree, T>::reinit_and_eval(const std::vector<vectorType 
 
 /**
  * This is specialized for the LHS where a change in solution is needed. The RHS method
- * takes the src as a vector of vectorTypes.
+ * takes the src as a vector of LinearAlgebra::distributed::Vector<double>.
  */
-template <int dim, int degree, typename T>
+template <int dim, int degree, typename number>
 void
-variableContainer<dim, degree, T>::reinit_and_eval_change_in_solution(
-  const vectorType &src,
-  unsigned int      cell,
-  unsigned int      var_being_solved)
+variableContainer<dim, degree, number>::reinit_and_eval_change_in_solution(
+  const dealii::LinearAlgebra::distributed::Vector<number> &src,
+  unsigned int                                              cell,
+  unsigned int                                              var_being_solved)
 {
-  if (varChangeInfoList[var_being_solved].is_scalar)
+  if (change_variable_info_list[var_being_solved].is_scalar)
     {
       auto *scalar_FEEval_ptr = scalar_change_in_vars_map[var_being_solved].get();
       scalar_FEEval_ptr->reinit(cell);
       scalar_FEEval_ptr->read_dof_values(src);
-      scalar_FEEval_ptr->evaluate(varChangeInfoList[var_being_solved].evaluation_flags);
+      scalar_FEEval_ptr->evaluate(
+        change_variable_info_list[var_being_solved].evaluation_flags);
     }
   else
     {
       auto *vector_FEEval_ptr = vector_change_in_vars_map[var_being_solved].get();
       vector_FEEval_ptr->reinit(cell);
       vector_FEEval_ptr->read_dof_values(src);
-      vector_FEEval_ptr->evaluate(varChangeInfoList[var_being_solved].evaluation_flags);
+      vector_FEEval_ptr->evaluate(
+        change_variable_info_list[var_being_solved].evaluation_flags);
     }
 }
 
-template <int dim, int degree, typename T>
+template <int dim, int degree, typename number>
 void
-variableContainer<dim, degree, T>::reinit(unsigned int cell)
+variableContainer<dim, degree, number>::reinit(unsigned int cell)
 {
   for (unsigned int i = 0; i < num_var; i++)
     {
-      const auto &var_info = varInfoList[i];
+      const auto &var_info = variable_info_list[i];
 
       if (!var_info.var_needed)
         {
@@ -258,14 +265,14 @@ variableContainer<dim, degree, T>::reinit(unsigned int cell)
     }
 }
 
-template <int dim, int degree, typename T>
+template <int dim, int degree, typename number>
 void
-variableContainer<dim, degree, T>::integrate_and_distribute(
-  std::vector<vectorType *> &dst)
+variableContainer<dim, degree, number>::integrate_and_distribute(
+  std::vector<dealii::LinearAlgebra::distributed::Vector<number> *> &dst)
 {
   for (unsigned int i = 0; i < num_var; i++)
     {
-      const auto &var_info = varInfoList[i];
+      const auto &var_info = variable_info_list[i];
 
       if (var_info.residual_flags & dealii::EvaluationFlags::nothing)
         {
@@ -287,34 +294,36 @@ variableContainer<dim, degree, T>::integrate_and_distribute(
     }
 }
 
-template <int dim, int degree, typename T>
+template <int dim, int degree, typename number>
 void
-variableContainer<dim, degree, T>::integrate_and_distribute_change_in_solution_LHS(
-  vectorType        &dst,
-  const unsigned int var_being_solved)
+variableContainer<dim, degree, number>::integrate_and_distribute_change_in_solution_LHS(
+  dealii::LinearAlgebra::distributed::Vector<number> &dst,
+  const unsigned int                                  var_being_solved)
 {
-  if (varChangeInfoList[var_being_solved].is_scalar)
+  if (change_variable_info_list[var_being_solved].is_scalar)
     {
       auto *scalar_FEEval_ptr = scalar_change_in_vars_map[var_being_solved].get();
-      scalar_FEEval_ptr
-        ->integrate_scatter(varChangeInfoList[var_being_solved].residual_flags, dst);
+      scalar_FEEval_ptr->integrate_scatter(
+        change_variable_info_list[var_being_solved].residual_flags,
+        dst);
     }
   else
     {
       auto *vector_FEEval_ptr = vector_change_in_vars_map[var_being_solved].get();
-      vector_FEEval_ptr
-        ->integrate_scatter(varChangeInfoList[var_being_solved].residual_flags, dst);
+      vector_FEEval_ptr->integrate_scatter(
+        change_variable_info_list[var_being_solved].residual_flags,
+        dst);
     }
 }
 
 // Need to add index checking to these functions so that an error is thrown if
 // the index wasn't set
-template <int dim, int degree, typename T>
-T
-variableContainer<dim, degree, T>::get_scalar_value(
+template <int dim, int degree, typename number>
+dealii::VectorizedArray<number>
+variableContainer<dim, degree, number>::get_scalar_value(
   unsigned int global_variable_index) const
 {
-  Assert(!(varInfoList[global_variable_index].evaluation_flags &
+  Assert(!(variable_info_list[global_variable_index].evaluation_flags &
            dealii::EvaluationFlags::values),
          dealii::ExcMessage(
            "PRISMS-PF Error: Attempted access of a variable value that was not marked as "
@@ -324,13 +333,13 @@ variableContainer<dim, degree, T>::get_scalar_value(
   return scalar_vars_map.at(global_variable_index)->get_value(q_point);
 }
 
-template <int dim, int degree, typename T>
-dealii::Tensor<1, dim, T>
-variableContainer<dim, degree, T>::get_scalar_gradient(
+template <int dim, int degree, typename number>
+dealii::Tensor<1, dim, dealii::VectorizedArray<number>>
+variableContainer<dim, degree, number>::get_scalar_gradient(
   unsigned int global_variable_index) const
 {
   Assert(
-    !(varInfoList[global_variable_index].evaluation_flags &
+    !(variable_info_list[global_variable_index].evaluation_flags &
       dealii::EvaluationFlags::gradients),
     dealii::ExcMessage(
       "PRISMS-PF Error: Attempted access of a variable gradient that was not marked as "
@@ -340,13 +349,13 @@ variableContainer<dim, degree, T>::get_scalar_gradient(
   return scalar_vars_map.at(global_variable_index)->get_gradient(q_point);
 }
 
-template <int dim, int degree, typename T>
-dealii::Tensor<2, dim, T>
-variableContainer<dim, degree, T>::get_scalar_hessian(
+template <int dim, int degree, typename number>
+dealii::Tensor<2, dim, dealii::VectorizedArray<number>>
+variableContainer<dim, degree, number>::get_scalar_hessian(
   unsigned int global_variable_index) const
 {
   Assert(
-    !(varInfoList[global_variable_index].evaluation_flags &
+    !(variable_info_list[global_variable_index].evaluation_flags &
       dealii::EvaluationFlags::hessians),
     dealii::ExcMessage(
       "PRISMS-PF Error: Attempted access of a variable hessian that was not marked as "
@@ -356,12 +365,12 @@ variableContainer<dim, degree, T>::get_scalar_hessian(
   return scalar_vars_map.at(global_variable_index)->get_hessian(q_point);
 }
 
-template <int dim, int degree, typename T>
-dealii::Tensor<1, dim, T>
-variableContainer<dim, degree, T>::get_vector_value(
+template <int dim, int degree, typename number>
+dealii::Tensor<1, dim, dealii::VectorizedArray<number>>
+variableContainer<dim, degree, number>::get_vector_value(
   unsigned int global_variable_index) const
 {
-  Assert(!(varInfoList[global_variable_index].evaluation_flags &
+  Assert(!(variable_info_list[global_variable_index].evaluation_flags &
            dealii::EvaluationFlags::values),
          dealii::ExcMessage(
            "PRISMS-PF Error: Attempted access of a variable value that was not marked as "
@@ -371,13 +380,13 @@ variableContainer<dim, degree, T>::get_vector_value(
   return vector_vars_map.at(global_variable_index)->get_value(q_point);
 }
 
-template <int dim, int degree, typename T>
-dealii::Tensor<2, dim, T>
-variableContainer<dim, degree, T>::get_vector_gradient(
+template <int dim, int degree, typename number>
+dealii::Tensor<2, dim, dealii::VectorizedArray<number>>
+variableContainer<dim, degree, number>::get_vector_gradient(
   unsigned int global_variable_index) const
 {
   Assert(
-    !(varInfoList[global_variable_index].evaluation_flags &
+    !(variable_info_list[global_variable_index].evaluation_flags &
       dealii::EvaluationFlags::gradients),
     dealii::ExcMessage(
       "PRISMS-PF Error: Attempted access of a variable gradient that was not marked as "
@@ -387,13 +396,13 @@ variableContainer<dim, degree, T>::get_vector_gradient(
   return vector_vars_map.at(global_variable_index)->get_gradient(q_point);
 }
 
-template <int dim, int degree, typename T>
-dealii::Tensor<3, dim, T>
-variableContainer<dim, degree, T>::get_vector_hessian(
+template <int dim, int degree, typename number>
+dealii::Tensor<3, dim, dealii::VectorizedArray<number>>
+variableContainer<dim, degree, number>::get_vector_hessian(
   unsigned int global_variable_index) const
 {
   Assert(
-    !(varInfoList[global_variable_index].evaluation_flags &
+    !(variable_info_list[global_variable_index].evaluation_flags &
       dealii::EvaluationFlags::hessians),
     dealii::ExcMessage(
       "PRISMS-PF Error: Attempted access of a variable hessian that was not marked as "
@@ -405,12 +414,12 @@ variableContainer<dim, degree, T>::get_vector_hessian(
 
 // Need to add index checking to these functions so that an error is thrown if
 // the index wasn't set
-template <int dim, int degree, typename T>
-T
-variableContainer<dim, degree, T>::get_change_in_scalar_value(
+template <int dim, int degree, typename number>
+dealii::VectorizedArray<number>
+variableContainer<dim, degree, number>::get_change_in_scalar_value(
   unsigned int global_variable_index) const
 {
-  Assert(!(varChangeInfoList[global_variable_index].evaluation_flags &
+  Assert(!(change_variable_info_list[global_variable_index].evaluation_flags &
            dealii::EvaluationFlags::values),
          dealii::ExcMessage(
            "PRISMS-PF Error: Attempted access of a change in variable value that was not "
@@ -421,13 +430,13 @@ variableContainer<dim, degree, T>::get_change_in_scalar_value(
   return scalar_change_in_vars_map.at(global_variable_index)->get_value(q_point);
 }
 
-template <int dim, int degree, typename T>
-dealii::Tensor<1, dim, T>
-variableContainer<dim, degree, T>::get_change_in_scalar_gradient(
+template <int dim, int degree, typename number>
+dealii::Tensor<1, dim, dealii::VectorizedArray<number>>
+variableContainer<dim, degree, number>::get_change_in_scalar_gradient(
   unsigned int global_variable_index) const
 {
   Assert(
-    !(varChangeInfoList[global_variable_index].evaluation_flags &
+    !(change_variable_info_list[global_variable_index].evaluation_flags &
       dealii::EvaluationFlags::gradients),
     dealii::ExcMessage(
       "PRISMS-PF Error: Attempted access of a change in variable gradient that was not "
@@ -438,13 +447,13 @@ variableContainer<dim, degree, T>::get_change_in_scalar_gradient(
   return scalar_change_in_vars_map.at(global_variable_index)->get_gradient(q_point);
 }
 
-template <int dim, int degree, typename T>
-dealii::Tensor<2, dim, T>
-variableContainer<dim, degree, T>::get_change_in_scalar_hessian(
+template <int dim, int degree, typename number>
+dealii::Tensor<2, dim, dealii::VectorizedArray<number>>
+variableContainer<dim, degree, number>::get_change_in_scalar_hessian(
   unsigned int global_variable_index) const
 {
   Assert(
-    !(varChangeInfoList[global_variable_index].evaluation_flags &
+    !(change_variable_info_list[global_variable_index].evaluation_flags &
       dealii::EvaluationFlags::hessians),
     dealii::ExcMessage(
       "PRISMS-PF Error: Attempted access of a change in variable hessian that was not "
@@ -455,12 +464,12 @@ variableContainer<dim, degree, T>::get_change_in_scalar_hessian(
   return scalar_change_in_vars_map.at(global_variable_index)->get_hessian(q_point);
 }
 
-template <int dim, int degree, typename T>
-dealii::Tensor<1, dim, T>
-variableContainer<dim, degree, T>::get_change_in_vector_value(
+template <int dim, int degree, typename number>
+dealii::Tensor<1, dim, dealii::VectorizedArray<number>>
+variableContainer<dim, degree, number>::get_change_in_vector_value(
   unsigned int global_variable_index) const
 {
-  Assert(!(varChangeInfoList[global_variable_index].evaluation_flags &
+  Assert(!(change_variable_info_list[global_variable_index].evaluation_flags &
            dealii::EvaluationFlags::values),
          dealii::ExcMessage(
            "PRISMS-PF Error: Attempted access of a change in variable value that was not "
@@ -471,13 +480,13 @@ variableContainer<dim, degree, T>::get_change_in_vector_value(
   return vector_change_in_vars_map.at(global_variable_index)->get_value(q_point);
 }
 
-template <int dim, int degree, typename T>
-dealii::Tensor<2, dim, T>
-variableContainer<dim, degree, T>::get_change_in_vector_gradient(
+template <int dim, int degree, typename number>
+dealii::Tensor<2, dim, dealii::VectorizedArray<number>>
+variableContainer<dim, degree, number>::get_change_in_vector_gradient(
   unsigned int global_variable_index) const
 {
   Assert(
-    !(varChangeInfoList[global_variable_index].evaluation_flags &
+    !(change_variable_info_list[global_variable_index].evaluation_flags &
       dealii::EvaluationFlags::gradients),
     dealii::ExcMessage(
       "PRISMS-PF Error: Attempted access of a change in variable gradient that was not "
@@ -488,13 +497,13 @@ variableContainer<dim, degree, T>::get_change_in_vector_gradient(
   return vector_change_in_vars_map.at(global_variable_index)->get_gradient(q_point);
 }
 
-template <int dim, int degree, typename T>
-dealii::Tensor<3, dim, T>
-variableContainer<dim, degree, T>::get_change_in_vector_hessian(
+template <int dim, int degree, typename number>
+dealii::Tensor<3, dim, dealii::VectorizedArray<number>>
+variableContainer<dim, degree, number>::get_change_in_vector_hessian(
   unsigned int global_variable_index) const
 {
   Assert(
-    !(varChangeInfoList[global_variable_index].evaluation_flags &
+    !(change_variable_info_list[global_variable_index].evaluation_flags &
       dealii::EvaluationFlags::hessians),
     dealii::ExcMessage(
       "PRISMS-PF Error: Attempted access of a change in variable hessian that was not "
@@ -506,92 +515,74 @@ variableContainer<dim, degree, T>::get_change_in_vector_hessian(
 }
 
 // The methods to set the residual terms
-template <int dim, int degree, typename T>
+template <int dim, int degree, typename number>
 void
-variableContainer<dim, degree, T>::set_scalar_value_term_RHS(
-  unsigned int global_variable_index,
-  T            val)
+variableContainer<dim, degree, number>::set_scalar_value_term_RHS(
+  unsigned int                    global_variable_index,
+  dealii::VectorizedArray<number> val)
 {
   scalar_vars_map[global_variable_index]->submit_value(val, q_point);
 }
 
-template <int dim, int degree, typename T>
+template <int dim, int degree, typename number>
 void
-variableContainer<dim, degree, T>::set_scalar_gradient_term_RHS(
-  unsigned int              global_variable_index,
-  dealii::Tensor<1, dim, T> grad)
+variableContainer<dim, degree, number>::set_scalar_gradient_term_RHS(
+  unsigned int                                            global_variable_index,
+  dealii::Tensor<1, dim, dealii::VectorizedArray<number>> grad)
 {
   scalar_vars_map[global_variable_index]->submit_gradient(grad, q_point);
 }
 
-template <int dim, int degree, typename T>
+template <int dim, int degree, typename number>
 void
-variableContainer<dim, degree, T>::set_vector_value_term_RHS(
-  unsigned int              global_variable_index,
-  dealii::Tensor<1, dim, T> val)
+variableContainer<dim, degree, number>::set_vector_value_term_RHS(
+  unsigned int                                            global_variable_index,
+  dealii::Tensor<1, dim, dealii::VectorizedArray<number>> val)
 {
   vector_vars_map[global_variable_index]->submit_value(val, q_point);
 }
 
-template <int dim, int degree, typename T>
+template <int dim, int degree, typename number>
 void
-variableContainer<dim, degree, T>::set_vector_gradient_term_RHS(
-  unsigned int              global_variable_index,
-  dealii::Tensor<2, dim, T> grad)
+variableContainer<dim, degree, number>::set_vector_gradient_term_RHS(
+  unsigned int                                            global_variable_index,
+  dealii::Tensor<2, dim, dealii::VectorizedArray<number>> grad)
 {
   vector_vars_map[global_variable_index]->submit_gradient(grad, q_point);
 }
 
-template <int dim, int degree, typename T>
+template <int dim, int degree, typename number>
 void
-variableContainer<dim, degree, T>::set_scalar_value_term_LHS(
-  unsigned int global_variable_index,
-  T            val)
+variableContainer<dim, degree, number>::set_scalar_value_term_LHS(
+  unsigned int                    global_variable_index,
+  dealii::VectorizedArray<number> val)
 {
   scalar_change_in_vars_map[global_variable_index]->submit_value(val, q_point);
 }
 
-template <int dim, int degree, typename T>
+template <int dim, int degree, typename number>
 void
-variableContainer<dim, degree, T>::set_scalar_gradient_term_LHS(
-  unsigned int              global_variable_index,
-  dealii::Tensor<1, dim, T> grad)
+variableContainer<dim, degree, number>::set_scalar_gradient_term_LHS(
+  unsigned int                                            global_variable_index,
+  dealii::Tensor<1, dim, dealii::VectorizedArray<number>> grad)
 {
   scalar_change_in_vars_map[global_variable_index]->submit_gradient(grad, q_point);
 }
 
-template <int dim, int degree, typename T>
+template <int dim, int degree, typename number>
 void
-variableContainer<dim, degree, T>::set_vector_value_term_LHS(
-  unsigned int              global_variable_index,
-  dealii::Tensor<1, dim, T> val)
+variableContainer<dim, degree, number>::set_vector_value_term_LHS(
+  unsigned int                                            global_variable_index,
+  dealii::Tensor<1, dim, dealii::VectorizedArray<number>> val)
 {
   vector_change_in_vars_map[global_variable_index]->submit_value(val, q_point);
 }
 
-template <int dim, int degree, typename T>
+template <int dim, int degree, typename number>
 void
-variableContainer<dim, degree, T>::set_vector_gradient_term_LHS(
-  unsigned int              global_variable_index,
-  dealii::Tensor<2, dim, T> grad)
+variableContainer<dim, degree, number>::set_vector_gradient_term_LHS(
+  unsigned int                                            global_variable_index,
+  dealii::Tensor<2, dim, dealii::VectorizedArray<number>> grad)
 {
   vector_change_in_vars_map[global_variable_index]->submit_gradient(grad, q_point);
 }
-
-template class variableContainer<2, 1, dealii::VectorizedArray<double>>;
-template class variableContainer<3, 1, dealii::VectorizedArray<double>>;
-
-template class variableContainer<2, 2, dealii::VectorizedArray<double>>;
-template class variableContainer<3, 2, dealii::VectorizedArray<double>>;
-
-template class variableContainer<2, 3, dealii::VectorizedArray<double>>;
-template class variableContainer<3, 3, dealii::VectorizedArray<double>>;
-
-template class variableContainer<2, 4, dealii::VectorizedArray<double>>;
-template class variableContainer<3, 4, dealii::VectorizedArray<double>>;
-
-template class variableContainer<2, 5, dealii::VectorizedArray<double>>;
-template class variableContainer<3, 5, dealii::VectorizedArray<double>>;
-
-template class variableContainer<2, 6, dealii::VectorizedArray<double>>;
-template class variableContainer<3, 6, dealii::VectorizedArray<double>>;

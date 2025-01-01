@@ -32,52 +32,49 @@ variableAttributeLoader::loadPostProcessorVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::postProcessedFields(
-  [[maybe_unused]] const variableContainer<dim, degree, VectorizedArray<double>>
-    &variable_list,
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
-                                                            &pp_variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
+  [[maybe_unused]] const variableContainer<dim, degree, double> &variable_list,
+  [[maybe_unused]] variableContainer<dim, degree, double>       &pp_variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>>     q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double>                 element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
   // The concentration and its derivatives
-  scalarvalueType c = variable_list.get_scalar_value(0);
+  scalarValue c = variable_list.get_scalar_value(0);
 
   // The first order parameter and its derivatives
-  scalarvalueType n1  = variable_list.get_scalar_value(1);
-  scalargradType  n1x = variable_list.get_scalar_gradient(1);
+  scalarValue n1  = variable_list.get_scalar_value(1);
+  scalarGrad  n1x = variable_list.get_scalar_gradient(1);
 
   // The second order parameter and its derivatives
-  scalarvalueType n2  = variable_list.get_scalar_value(2);
-  scalargradType  n2x = variable_list.get_scalar_gradient(2);
+  scalarValue n2  = variable_list.get_scalar_value(2);
+  scalarGrad  n2x = variable_list.get_scalar_gradient(2);
 
   // The third order parameter and its derivatives
-  scalarvalueType n3  = variable_list.get_scalar_value(3);
-  scalargradType  n3x = variable_list.get_scalar_gradient(3);
+  scalarValue n3  = variable_list.get_scalar_value(3);
+  scalarGrad  n3x = variable_list.get_scalar_gradient(3);
 
   // The derivative of the displacement vector
-  vectorgradType ux = variable_list.get_vector_gradient(4);
+  vectorGrad ux = variable_list.get_vector_gradient(4);
 
   // --- Setting the expressions for the terms in the postprocessing expressions
   // ---
 
-  scalarvalueType f_tot = constV(0.0);
+  scalarValue f_tot = constV(0.0);
 
   // Free energy expressions and interpolation functions
-  scalarvalueType faV = (A0 + A1 * c + A2 * c * c + A3 * c * c * c + A4 * c * c * c * c);
-  scalarvalueType fbV = (B2 * c * c + B1 * c + B0);
-  scalarvalueType h1V =
+  scalarValue faV = (A0 + A1 * c + A2 * c * c + A3 * c * c * c + A4 * c * c * c * c);
+  scalarValue fbV = (B2 * c * c + B1 * c + B0);
+  scalarValue h1V =
     (10.0 * n1 * n1 * n1 - 15.0 * n1 * n1 * n1 * n1 + 6.0 * n1 * n1 * n1 * n1 * n1);
-  scalarvalueType h2V =
+  scalarValue h2V =
     (10.0 * n2 * n2 * n2 - 15.0 * n2 * n2 * n2 * n2 + 6.0 * n2 * n2 * n2 * n2 * n2);
-  scalarvalueType h3V =
+  scalarValue h3V =
     (10.0 * n3 * n3 * n3 - 15.0 * n3 * n3 * n3 * n3 + 6.0 * n3 * n3 * n3 * n3 * n3);
 
-  scalarvalueType f_chem =
-    (constV(1.0) - (h1V + h2V + h3V)) * faV + (h1V + h2V + h3V) * fbV;
+  scalarValue f_chem = (constV(1.0) - (h1V + h2V + h3V)) * faV + (h1V + h2V + h3V) * fbV;
 
-  scalarvalueType f_grad = constV(0.0);
+  scalarValue f_grad = constV(0.0);
 
   for (int i = 0; i < dim; i++)
     {
@@ -169,7 +166,7 @@ customPDE<dim, degree>::postProcessedFields(
       computeStress<dim>(CIJ_Mg, E2, S);
     }
 
-  scalarvalueType f_el = constV(0.0);
+  scalarValue f_el = constV(0.0);
 
   for (unsigned int i = 0; i < dim; i++)
     {

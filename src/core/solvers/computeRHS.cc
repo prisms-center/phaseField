@@ -1,5 +1,3 @@
-// computeRHS() method for MatrixFreePDE class
-
 #include <core/matrixFreePDE.h>
 #include <core/variableContainer.h>
 
@@ -25,14 +23,15 @@ MatrixFreePDE<dim, degree>::computeExplicitRHS()
 template <int dim, int degree>
 void
 MatrixFreePDE<dim, degree>::getExplicitRHS(
-  const MatrixFree<dim, double>               &data,
-  std::vector<vectorType *>                   &dst,
-  const std::vector<vectorType *>             &src,
-  const std::pair<unsigned int, unsigned int> &cell_range) const
+  const MatrixFree<dim, double>                                   &data,
+  std::vector<LinearAlgebra::distributed::Vector<double> *>       &dst,
+  const std::vector<LinearAlgebra::distributed::Vector<double> *> &src,
+  const std::pair<unsigned int, unsigned int>                     &cell_range) const
 {
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> variable_list(
+  variableContainer<dim, degree, double> variable_list(
     data,
-    userInputs.varInfoListExplicitRHS);
+    userInputs.variable_info_list_explicit_RHS,
+    userInputs.old_variable_info_list_explicit_RHS);
 
   // loop over cells
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
@@ -82,14 +81,15 @@ MatrixFreePDE<dim, degree>::computeNonexplicitRHS()
 template <int dim, int degree>
 void
 MatrixFreePDE<dim, degree>::getNonexplicitRHS(
-  const MatrixFree<dim, double>               &data,
-  std::vector<vectorType *>                   &dst,
-  const std::vector<vectorType *>             &src,
-  const std::pair<unsigned int, unsigned int> &cell_range) const
+  const MatrixFree<dim, double>                                   &data,
+  std::vector<LinearAlgebra::distributed::Vector<double> *>       &dst,
+  const std::vector<LinearAlgebra::distributed::Vector<double> *> &src,
+  const std::pair<unsigned int, unsigned int>                     &cell_range) const
 {
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> variable_list(
+  variableContainer<dim, degree, double> variable_list(
     data,
-    userInputs.varInfoListNonexplicitRHS);
+    userInputs.variable_info_list_nonexplicit_RHS,
+    userInputs.old_variable_info_list_nonexplicit_RHS);
 
   // loop over cells
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)

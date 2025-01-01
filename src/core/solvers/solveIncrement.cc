@@ -316,7 +316,7 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
 
   // Currently the only allowed solver is SolverCG, the
   // SolverType input variable is a dummy
-  SolverCG<vectorType> solver(solver_control);
+  SolverCG<LinearAlgebra::distributed::Vector<double>> solver(solver_control);
 
   // Solve
   try
@@ -354,8 +354,9 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
 
       if (userInputs.nonlinear_solver_parameters.getBacktrackDampingFlag(fieldIndex))
         {
-          vectorType solutionSet_old = *solutionSet[fieldIndex];
-          double     residual_old    = residualSet[fieldIndex]->l2_norm();
+          LinearAlgebra::distributed::Vector<double> solutionSet_old =
+            *solutionSet[fieldIndex];
+          double residual_old = residualSet[fieldIndex]->l2_norm();
 
           damping_coefficient            = 1.0;
           bool damping_coefficient_found = false;

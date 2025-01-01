@@ -1,3 +1,5 @@
+#include <deal.II/base/function_signed_distance.h>
+
 // ===========================================================================
 // FUNCTION FOR INITIAL CONDITIONS
 // ===========================================================================
@@ -16,52 +18,28 @@ customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &
   // Use "if" statements to set the initial condition for each variable
   // according to its variable index
 
-  double center[4][3] = {
-    {1.0 / 3.0, 1.0 / 3.0, 0.5},
-    {2.0 / 3.0, 2.0 / 3.0, 0.5},
-    {3.0 / 4.0, 1.0 / 4.0, 0.5},
-    {1.0 / 4.0, 3.0 / 4,   0.5}
-  };
-  double rad[4]         = {userInputs.domain_size[0] / 16.0,
-                           userInputs.domain_size[0] / 16.0,
-                           userInputs.domain_size[0] / 16.0,
-                           userInputs.domain_size[0] / 16.0};
-  double orientation[4] = {1, 1, 2, 3};
-  double dx = userInputs.domain_size[0] / ((double) userInputs.subdivisions[0]) /
-              std::pow(2.0, userInputs.refine_factor);
-  double dist;
-  scalar_IC = 0;
+  // Sphere level-set
+  double             radius = 15.0;
+  dealii::Point<dim> center(20.0, 20.0);
+
+  dealii::Functions::SignedDistance::Sphere<dim> sphere(center, radius);
+
+  double distance = sphere.value(p);
+
+  // tanh profile
+  double phi = 0.5 * (1.0 - std::tanh(distance / (std::sqrt(2) * W)));
 
   if (index == 0)
     {
-      scalar_IC = 0.04;
+      scalar_IC = phi;
     }
 
-  for (unsigned int i = 0; i < 4; i++)
+  else
     {
-      dist = 0.0;
-      for (unsigned int dir = 0; dir < dim; dir++)
-        {
-          dist += (p[dir] - center[i][dir] * userInputs.domain_size[dir]) *
-                  (p[dir] - center[i][dir] * userInputs.domain_size[dir]);
-        }
-      dist = std::sqrt(dist);
-
-      if (index == orientation[i])
-        {
-          scalar_IC += 0.5 * (1.0 - std::tanh((dist - rad[i]) / (dx)));
-        }
+      scalar_IC = 0.0;
     }
 
-  if (index == 4)
-    {
-      for (unsigned int d = 0; d < dim; d++)
-        {
-          vector_IC(d) = 0.0;
-        }
-    }
-
-  // --------------------------------------------------------------------------
+  // ---------------------------------------------------------------------
 }
 
 // ===========================================================================

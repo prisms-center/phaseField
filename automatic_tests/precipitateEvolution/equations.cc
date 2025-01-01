@@ -77,34 +77,34 @@ variableAttributeLoader::loadVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::explicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+  [[maybe_unused]] variableContainer<dim, degree, double>   &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
   // The concentration and its derivatives
-  scalarvalueType c  = variable_list.get_scalar_value(0);
-  scalargradType  cx = variable_list.get_scalar_gradient(0);
+  scalarValue c  = variable_list.get_scalar_value(0);
+  scalarGrad  cx = variable_list.get_scalar_gradient(0);
 
   // The first order parameter and its derivatives
-  scalarvalueType n1  = variable_list.get_scalar_value(1);
-  scalargradType  n1x = variable_list.get_scalar_gradient(1);
+  scalarValue n1  = variable_list.get_scalar_value(1);
+  scalarGrad  n1x = variable_list.get_scalar_gradient(1);
 
   // The second order parameter and its derivatives
-  scalarvalueType n2  = variable_list.get_scalar_value(2);
-  scalargradType  n2x = variable_list.get_scalar_gradient(2);
+  scalarValue n2  = variable_list.get_scalar_value(2);
+  scalarGrad  n2x = variable_list.get_scalar_gradient(2);
 
   // The third order parameter and its derivatives
-  scalarvalueType n3  = variable_list.get_scalar_value(3);
-  scalargradType  n3x = variable_list.get_scalar_gradient(3);
+  scalarValue n3  = variable_list.get_scalar_value(3);
+  scalarGrad  n3x = variable_list.get_scalar_gradient(3);
 
   // The derivative of the displacement vector
-  vectorgradType ux = variable_list.get_vector_gradient(4);
+  vectorGrad ux = variable_list.get_vector_gradient(4);
 
   // --- Setting the expressions for the terms in the governing equations ---
 
-  vectorhessType uxx;
+  vectorHess uxx;
 
   bool c_dependent_misfit = false;
   for (unsigned int i = 0; i < dim; i++)
@@ -124,24 +124,21 @@ customPDE<dim, degree>::explicitEquationRHS(
     }
 
   // Free energy expressions and interpolation functions
-  scalarvalueType faV  = (A0 + A1 * c + A2 * c * c + A3 * c * c * c + A4 * c * c * c * c);
-  scalarvalueType facV = (A1 + 2.0 * A2 * c + 3.0 * A3 * c * c + 4.0 * A4 * c * c * c);
-  scalarvalueType faccV = (2.0 * A2 + 6.0 * A3 * c + 12.0 * A4 * c * c);
-  scalarvalueType fbV   = (B2 * c * c + B1 * c + B0);
-  scalarvalueType fbcV  = (2.0 * B2 * c + B1);
-  scalarvalueType fbccV = constV(2.0 * B2);
-  scalarvalueType h1V =
+  scalarValue faV   = (A0 + A1 * c + A2 * c * c + A3 * c * c * c + A4 * c * c * c * c);
+  scalarValue facV  = (A1 + 2.0 * A2 * c + 3.0 * A3 * c * c + 4.0 * A4 * c * c * c);
+  scalarValue faccV = (2.0 * A2 + 6.0 * A3 * c + 12.0 * A4 * c * c);
+  scalarValue fbV   = (B2 * c * c + B1 * c + B0);
+  scalarValue fbcV  = (2.0 * B2 * c + B1);
+  scalarValue fbccV = constV(2.0 * B2);
+  scalarValue h1V =
     (10.0 * n1 * n1 * n1 - 15.0 * n1 * n1 * n1 * n1 + 6.0 * n1 * n1 * n1 * n1 * n1);
-  scalarvalueType h2V =
+  scalarValue h2V =
     (10.0 * n2 * n2 * n2 - 15.0 * n2 * n2 * n2 * n2 + 6.0 * n2 * n2 * n2 * n2 * n2);
-  scalarvalueType h3V =
+  scalarValue h3V =
     (10.0 * n3 * n3 * n3 - 15.0 * n3 * n3 * n3 * n3 + 6.0 * n3 * n3 * n3 * n3 * n3);
-  scalarvalueType hn1V =
-    (30.0 * n1 * n1 - 60.0 * n1 * n1 * n1 + 30.0 * n1 * n1 * n1 * n1);
-  scalarvalueType hn2V =
-    (30.0 * n2 * n2 - 60.0 * n2 * n2 * n2 + 30.0 * n2 * n2 * n2 * n2);
-  scalarvalueType hn3V =
-    (30.0 * n3 * n3 - 60.0 * n3 * n3 * n3 + 30.0 * n3 * n3 * n3 * n3);
+  scalarValue hn1V = (30.0 * n1 * n1 - 60.0 * n1 * n1 * n1 + 30.0 * n1 * n1 * n1 * n1);
+  scalarValue hn2V = (30.0 * n2 * n2 - 60.0 * n2 * n2 * n2 + 30.0 * n2 * n2 * n2 * n2);
+  scalarValue hn3V = (30.0 * n3 * n3 - 60.0 * n3 * n3 * n3 + 30.0 * n3 * n3 * n3 * n3);
 
   // Calculate the stress-free transformation strain and its derivatives at the
   // quadrature point
@@ -255,7 +252,7 @@ customPDE<dim, degree>::explicitEquationRHS(
 
   // compute the stress term in the gradient of the concentration chemical
   // potential, grad_mu_el = [C*(E-E0)*E0c]x, must be a vector with length dim
-  scalargradType grad_mu_el;
+  scalarGrad grad_mu_el;
 
   if (c_dependent_misfit == true)
     {
@@ -308,7 +305,7 @@ customPDE<dim, degree>::explicitEquationRHS(
     }
 
   // compute K*nx
-  scalargradType Knx1, Knx2, Knx3;
+  scalarGrad Knx1, Knx2, Knx3;
   for (unsigned int a = 0; a < dim; a++)
     {
       Knx1[a] = 0.0;
@@ -323,25 +320,22 @@ customPDE<dim, degree>::explicitEquationRHS(
     }
 
   // The terms in the govering equations
-  scalarvalueType eq_c = (c);
-  scalargradType  eqx_c_temp =
+  scalarValue eq_c = (c);
+  scalarGrad  eqx_c_temp =
     (cx * ((1.0 - h1V - h2V - h3V) * faccV + (h1V + h2V + h3V) * fbccV) +
      n1x * ((fbcV - facV) * hn1V) + n2x * ((fbcV - facV) * hn2V) +
      n3x * ((fbcV - facV) * hn3V) + grad_mu_el);
-  scalargradType eqx_c = (constV(-userInputs.dtValue * McV) * eqx_c_temp);
+  scalarGrad eqx_c = (constV(-userInputs.dtValue * McV) * eqx_c_temp);
 
-  scalarvalueType eq_n1 =
-    (n1 - constV(userInputs.dtValue * Mn1V) *
-            ((fbV - faV) * hn1V + nDependentMisfitAC1 + heterMechAC1));
-  scalarvalueType eq_n2 =
-    (n2 - constV(userInputs.dtValue * Mn2V) *
-            ((fbV - faV) * hn2V + nDependentMisfitAC2 + heterMechAC2));
-  scalarvalueType eq_n3 =
-    (n3 - constV(userInputs.dtValue * Mn3V) *
-            ((fbV - faV) * hn3V + nDependentMisfitAC3 + heterMechAC3));
-  scalargradType eqx_n1 = (constV(-userInputs.dtValue * Mn1V) * Knx1);
-  scalargradType eqx_n2 = (constV(-userInputs.dtValue * Mn2V) * Knx2);
-  scalargradType eqx_n3 = (constV(-userInputs.dtValue * Mn3V) * Knx3);
+  scalarValue eq_n1  = (n1 - constV(userInputs.dtValue * Mn1V) *
+                              ((fbV - faV) * hn1V + nDependentMisfitAC1 + heterMechAC1));
+  scalarValue eq_n2  = (n2 - constV(userInputs.dtValue * Mn2V) *
+                              ((fbV - faV) * hn2V + nDependentMisfitAC2 + heterMechAC2));
+  scalarValue eq_n3  = (n3 - constV(userInputs.dtValue * Mn3V) *
+                              ((fbV - faV) * hn3V + nDependentMisfitAC3 + heterMechAC3));
+  scalarGrad  eqx_n1 = (constV(-userInputs.dtValue * Mn1V) * Knx1);
+  scalarGrad  eqx_n2 = (constV(-userInputs.dtValue * Mn2V) * Knx2);
+  scalarGrad  eqx_n3 = (constV(-userInputs.dtValue * Mn3V) * Knx3);
 
   // --- Submitting the terms for the governing equations ---
 
@@ -374,35 +368,35 @@ customPDE<dim, degree>::explicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::nonExplicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+  [[maybe_unused]] variableContainer<dim, degree, double>   &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
   // The concentration and its derivatives
-  scalarvalueType c = variable_list.get_scalar_value(0);
+  scalarValue c = variable_list.get_scalar_value(0);
 
   // The first order parameter and its derivatives
-  scalarvalueType n1 = variable_list.get_scalar_value(1);
+  scalarValue n1 = variable_list.get_scalar_value(1);
 
   // The second order parameter and its derivatives
-  scalarvalueType n2 = variable_list.get_scalar_value(2);
+  scalarValue n2 = variable_list.get_scalar_value(2);
 
   // The third order parameter and its derivatives
-  scalarvalueType n3 = variable_list.get_scalar_value(3);
+  scalarValue n3 = variable_list.get_scalar_value(3);
 
   // The derivative of the displacement vector
-  vectorgradType ux = variable_list.get_vector_gradient(4);
+  vectorGrad ux = variable_list.get_vector_gradient(4);
 
   // --- Setting the expressions for the terms in the governing equations ---
 
   // Interpolation functions
-  scalarvalueType h1V =
+  scalarValue h1V =
     (10.0 * n1 * n1 * n1 - 15.0 * n1 * n1 * n1 * n1 + 6.0 * n1 * n1 * n1 * n1 * n1);
-  scalarvalueType h2V =
+  scalarValue h2V =
     (10.0 * n2 * n2 * n2 - 15.0 * n2 * n2 * n2 * n2 + 6.0 * n2 * n2 * n2 * n2 * n2);
-  scalarvalueType h3V =
+  scalarValue h3V =
     (10.0 * n3 * n3 * n3 - 15.0 * n3 * n3 * n3 * n3 + 6.0 * n3 * n3 * n3 * n3 * n3);
 
   // Calculate the stress-free transformation strain and its derivatives at the
@@ -461,7 +455,7 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
       computeStress<dim>(CIJ_Mg, E2, S);
     }
 
-  vectorgradType eqx_u;
+  vectorGrad eqx_u;
   for (unsigned int i = 0; i < dim; i++)
     {
       for (unsigned int j = 0; j < dim; j++)
@@ -493,35 +487,35 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::equationLHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] variableContainer<dim, degree, double> &variable_list,
   [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
   [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
   // n1
-  scalarvalueType n1 = variable_list.get_scalar_value(1);
+  scalarValue n1 = variable_list.get_scalar_value(1);
 
   // n2
-  scalarvalueType n2 = variable_list.get_scalar_value(2);
+  scalarValue n2 = variable_list.get_scalar_value(2);
 
   // n3
-  scalarvalueType n3 = variable_list.get_scalar_value(3);
+  scalarValue n3 = variable_list.get_scalar_value(3);
 
   // u
-  vectorgradType Dux = variable_list.get_change_in_vector_gradient(4);
+  vectorGrad Dux = variable_list.get_change_in_vector_gradient(4);
 
   // --- Setting the expressions for the terms in the governing equations ---
 
-  vectorgradType eqx_Du;
+  vectorGrad eqx_Du;
 
   // Interpolation functions
 
-  scalarvalueType h1V =
+  scalarValue h1V =
     (10.0 * n1 * n1 * n1 - 15.0 * n1 * n1 * n1 * n1 + 6.0 * n1 * n1 * n1 * n1 * n1);
-  scalarvalueType h2V =
+  scalarValue h2V =
     (10.0 * n2 * n2 * n2 - 15.0 * n2 * n2 * n2 * n2 + 6.0 * n2 * n2 * n2 * n2 * n2);
-  scalarvalueType h3V =
+  scalarValue h3V =
     (10.0 * n3 * n3 * n3 - 15.0 * n3 * n3 * n3 * n3 + 6.0 * n3 * n3 * n3 * n3 * n3);
 
   // Take advantage of E being simply 0.5*(ux + transpose(ux)) and use the

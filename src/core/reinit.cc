@@ -120,7 +120,7 @@ MatrixFreePDE<dim, degree>::reinit()
   pcout << "initializing parallel::distributed residual and solution vectors\n";
   for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
     {
-      vectorType *U = nullptr;
+      LinearAlgebra::distributed::Vector<double> *U = nullptr;
 
       U = solutionSet.at(fieldIndex);
 
@@ -167,7 +167,7 @@ MatrixFreePDE<dim, degree>::reinit()
       delete soltransSet[fieldIndex];
 
       // reset residual vector
-      vectorType *R = residualSet.at(fieldIndex);
+      LinearAlgebra::distributed::Vector<double> *R = residualSet.at(fieldIndex);
       matrixFreeObject.initialize_dof_vector(*R, fieldIndex);
       *R = 0;
     }
@@ -176,8 +176,10 @@ MatrixFreePDE<dim, degree>::reinit()
   soltransSet.clear();
   for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
     {
-      soltransSet.push_back(new parallel::distributed::SolutionTransfer<dim, vectorType>(
-        *dofHandlersSet_nonconst[fieldIndex]));
+      soltransSet.push_back(
+        new parallel::distributed::
+          SolutionTransfer<dim, LinearAlgebra::distributed::Vector<double>>(
+            *dofHandlersSet_nonconst[fieldIndex]));
     }
 
   // If remeshing at the zeroth time step, re-apply initial conditions so the

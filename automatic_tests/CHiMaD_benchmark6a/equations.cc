@@ -59,23 +59,23 @@ variableAttributeLoader::loadVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::explicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+  [[maybe_unused]] variableContainer<dim, degree, double>   &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
   // The concentration and its derivatives
-  scalarvalueType c = variable_list.get_scalar_value(0);
+  scalarValue c = variable_list.get_scalar_value(0);
 
   // The chemical potential and its derivatives
-  scalargradType mux = variable_list.get_scalar_gradient(1);
+  scalarGrad mux = variable_list.get_scalar_gradient(1);
 
   // --- Setting the expressions for the terms in the governing equations ---
 
   // The terms in the equations
-  scalarvalueType eq_c  = c;
-  scalargradType  eqx_c = constV(-McV * userInputs.dtValue) * mux;
+  scalarValue eq_c  = c;
+  scalarGrad  eqx_c = constV(-McV * userInputs.dtValue) * mux;
 
   // --- Submitting the terms for the governing equations ---
 
@@ -99,32 +99,32 @@ customPDE<dim, degree>::explicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::nonExplicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+  [[maybe_unused]] variableContainer<dim, degree, double>   &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
-  scalarvalueType c  = variable_list.get_scalar_value(0);
-  scalargradType  cx = variable_list.get_scalar_gradient(0);
+  scalarValue c  = variable_list.get_scalar_value(0);
+  scalarGrad  cx = variable_list.get_scalar_gradient(0);
 
   // The electric potential and its derivatives
-  scalarvalueType phi  = variable_list.get_scalar_value(2);
-  scalargradType  phix = variable_list.get_scalar_gradient(2);
+  scalarValue phi  = variable_list.get_scalar_value(2);
+  scalarGrad  phix = variable_list.get_scalar_gradient(2);
 
   // --- Setting the expressions for the terms in the governing equations ---
 
   // The derivative of the local chemical free energy
-  scalarvalueType fcV =
+  scalarValue fcV =
     2.0 * rho * (c - c_alpha) * (c_beta - c) * (c_alpha + c_beta - 2.0 * c);
 
   // The derivative of the local electrostatic free energy
-  scalarvalueType fphiV = k * phi;
+  scalarValue fphiV = k * phi;
 
-  scalarvalueType eq_mu   = fcV + fphiV;
-  scalargradType  eqx_mu  = constV(KcV) * cx;
-  scalarvalueType eq_phi  = -constV(-k / epsilon) * c;
-  scalargradType  eqx_phi = -phix;
+  scalarValue eq_mu   = fcV + fphiV;
+  scalarGrad  eqx_mu  = constV(KcV) * cx;
+  scalarValue eq_phi  = -constV(-k / epsilon) * c;
+  scalarGrad  eqx_phi = -phix;
 
   // --- Submitting the terms for the governing equations ---
 
@@ -153,18 +153,18 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::equationLHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+  [[maybe_unused]] variableContainer<dim, degree, double>   &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
   // grad(delta phi)
-  scalargradType Dphix = variable_list.get_change_in_scalar_gradient(2);
+  scalarGrad Dphix = variable_list.get_change_in_scalar_gradient(2);
 
   // --- Setting the expressions for the terms in the governing equations ---
 
-  scalargradType eqx_Dphi = Dphix;
+  scalarGrad eqx_Dphi = Dphix;
 
   // --- Submitting the terms for the governing equations ---
 

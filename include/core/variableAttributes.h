@@ -19,7 +19,7 @@ using AttributesList = std::map<uint, variableAttributes>;
 struct variableAttributes
 {
   // Variable attributes
-  std::string name                  = "";
+  std::string name;
   fieldType   var_type              = UNDEFINED_FIELD;
   PDEType     eq_type               = UNDEFINED_PDE;
   bool        need_value_nucleation = false;
@@ -44,9 +44,11 @@ struct variableAttributes
 
   // Evaluation Flags. Tells deal.II whether or not to retrieve the value, grad, hess,
   // etc. for equations
-  EvalFlags eval_flags_explicit_RHS    = dealii::EvaluationFlags::nothing;
-  EvalFlags eval_flags_nonexplicit_RHS = dealii::EvaluationFlags::nothing;
-  EvalFlags eval_flags_nonexplicit_LHS = dealii::EvaluationFlags::nothing;
+  EvalFlags eval_flags_explicit_RHS        = dealii::EvaluationFlags::nothing;
+  EvalFlags eval_flags_nonexplicit_RHS     = dealii::EvaluationFlags::nothing;
+  EvalFlags eval_flags_nonexplicit_LHS     = dealii::EvaluationFlags::nothing;
+  EvalFlags eval_flags_old_nonexplicit_RHS = dealii::EvaluationFlags::nothing;
+  EvalFlags eval_flags_old_nonexplicit_LHS = dealii::EvaluationFlags::nothing;
 
   EvalFlags eval_flags_change_nonexplicit_LHS = dealii::EvaluationFlags::nothing;
 

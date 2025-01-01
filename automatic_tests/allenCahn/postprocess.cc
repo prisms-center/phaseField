@@ -45,29 +45,27 @@ variableAttributeLoader::loadPostProcessorVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::postProcessedFields(
-  [[maybe_unused]] const variableContainer<dim, degree, VectorizedArray<double>>
-    &variable_list,
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
-                                                            &pp_variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double>             element_volume) const
+  [[maybe_unused]] const variableContainer<dim, degree, double> &variable_list,
+  [[maybe_unused]] variableContainer<dim, degree, double>       &pp_variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<double>>     q_point_loc,
+  [[maybe_unused]] const VectorizedArray<double>                 element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
   // The order parameter and its derivatives
-  scalarvalueType n  = variable_list.get_scalar_value(0);
-  scalargradType  nx = variable_list.get_scalar_gradient(0);
+  scalarValue n  = variable_list.get_scalar_value(0);
+  scalarGrad  nx = variable_list.get_scalar_gradient(0);
 
   // --- Setting the expressions for the terms in the postprocessing expressions
   // ---
 
-  scalarvalueType f_tot = constV(0.0);
+  scalarValue f_tot = constV(0.0);
 
   // The homogenous free energy
-  scalarvalueType f_chem = (n * n * n * n - 2.0 * n * n * n + n * n);
+  scalarValue f_chem = (n * n * n * n - 2.0 * n * n * n + n * n);
 
   // The gradient free energy
-  scalarvalueType f_grad = constV(0.0);
+  scalarValue f_grad = constV(0.0);
 
   for (int i = 0; i < dim; i++)
     {
