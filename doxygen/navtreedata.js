@@ -55,7 +55,7 @@ var NAVTREEINDEX =
 "classPRISMS_1_1Bin.html#add1667d166074cb49fa32b0265ef8bc4",
 "classPRISMS_1_1PFunction.html#aa5c70ec47f391c91098b4d63dd659bc0",
 "classes.html",
-"manual.html#autotoc_md15"
+"install_prereqs.html#autotoc_md45"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,5 +1,18 @@
 var NAVTREEINDEX4 =
 {
+"install_prereqs.html#autotoc_md45":[1,2,0,1,0],
+"install_prereqs.html#autotoc_md46":[1,2,0,1,1],
+"install_prereqs.html#autotoc_md47":[1,2,0,1,2],
+"install_prereqs.html#autotoc_md48":[1,2,0,1,3],
+"install_prereqs.html#autotoc_md49":[1,2,0,1,3,0],
+"install_prereqs.html#autotoc_md50":[1,2,0,1,4],
+"install_prismspf.html":[1,2,1],
+"install_prismspf.html#autotoc_md51":[1,2,1,0],
+"install_prismspf.html#autotoc_md52":[1,2,1,0,0],
+"install_prismspf.html#autotoc_md53":[1,2,1,0,1],
+"install_prismspf.html#autotoc_md54":[1,2,1,1],
+"install_vis.html":[1,2,2],
+"manual.html":[1],
 "manual.html#autotoc_md15":[1,0],
 "manual.html#autotoc_md16":[1,1],
 "matrixFreePDE_8h_source.html":[4,0,0,0,8],
