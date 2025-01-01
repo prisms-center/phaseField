@@ -1,28 +1,23 @@
-// init() method for MatrixFreePDE class
-
 #include <deal.II/grid/grid_generator.h>
 
 #include <core/boundary_conditions/varBCs.h>
 #include <core/matrixFreePDE.h>
 
-// populate with fields and setup matrix free system
 template <int dim, int degree>
 void
 MatrixFreePDE<dim, degree>::init()
 {
   computing_timer.enter_subsection("matrixFreePDE: initialization");
 
-  // creating mesh
-
-  pcout << "creating problem mesh...\n";
   // Create the coarse mesh and mark the boundaries
+  pcout << "creating problem mesh...\n";
   create_triangulation(triangulation);
 
   // Set which (if any) faces of the triangulation are periodic
   setPeriodicity();
 
   // If resuming from a checkpoint, load the refined triangulation, otherwise
-  // refine globally per the parameters.in file
+  // refine globally per the parameters.prm file
   if (userInputs.resume_from_checkpoint)
     {
       load_checkpoint_triangulation();
@@ -56,23 +51,30 @@ MatrixFreePDE<dim, degree>::init()
 
       char buffer[100];
 
-      // print to std::out
+      // Assign the field type and associated flags
       std::string var_type;
       if (field.pdetype == EXPLICIT_TIME_DEPENDENT)
         {
-          var_type = "EXPLICIT_TIME_DEPENDENT";
+          var_type            = "EXPLICIT_TIME_DEPENDENT";
+          isTimeDependentBVP  = true;
+          hasExplicitEquation = true;
         }
       else if (field.pdetype == IMPLICIT_TIME_DEPENDENT)
         {
-          var_type = "IMPLICIT_TIME_DEPENDENT";
+          var_type               = "IMPLICIT_TIME_DEPENDENT";
+          isTimeDependentBVP     = true;
+          hasNonExplicitEquation = true;
         }
       else if (field.pdetype == TIME_INDEPENDENT)
         {
-          var_type = "TIME_INDEPENDENT";
+          var_type               = "TIME_INDEPENDENT";
+          isEllipticBVP          = true;
+          hasNonExplicitEquation = true;
         }
       else if (field.pdetype == AUXILIARY)
         {
-          var_type = "AUXILIARY";
+          var_type               = "AUXILIARY";
+          hasNonExplicitEquation = true;
         }
 
       snprintf(buffer,
@@ -83,30 +85,6 @@ MatrixFreePDE<dim, degree>::init()
                (field.type == SCALAR ? "SCALAR" : "VECTOR"),
                field.name.c_str());
       pcout << buffer;
-
-      // Check if any time dependent fields present
-      if (field.pdetype == EXPLICIT_TIME_DEPENDENT)
-        {
-          isTimeDependentBVP  = true;
-          hasExplicitEquation = true;
-        }
-      else if (field.pdetype == IMPLICIT_TIME_DEPENDENT)
-        {
-          isTimeDependentBVP     = true;
-          hasNonExplicitEquation = true;
-          std::cerr << "PRISMS-PF Error: IMPLICIT_TIME_DEPENDENT equation "
-                       "types are not currently supported\n";
-          abort();
-        }
-      else if (field.pdetype == AUXILIARY)
-        {
-          hasNonExplicitEquation = true;
-        }
-      else if (field.pdetype == TIME_INDEPENDENT)
-        {
-          isEllipticBVP          = true;
-          hasNonExplicitEquation = true;
-        }
 
       // create FESystem
       FESystem<dim> *fe = nullptr;

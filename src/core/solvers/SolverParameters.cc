@@ -1,3 +1,5 @@
+#include <deal.II/base/exceptions.h>
+
 #include <core/solvers/SolverParameters.h>
 #include <iostream>
 
@@ -23,9 +25,10 @@ SolverParametersBase::getEquationIndex(unsigned int global_index)
           return i;
         }
     }
-  std::cerr << "PRISMS-PF Error: Attempted access of a parameter for the "
-               "nonlinear solver for an ineligible variable index.\n";
-  abort();
+  AssertThrow(false,
+              dealii::ExcMessage(
+                "PRISMS-PF Error: Attempted access of a parameter for the nonlinear "
+                "solver for an ineligible variable index."));
 }
 
 void

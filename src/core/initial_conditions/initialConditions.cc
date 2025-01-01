@@ -1,4 +1,4 @@
-// methods to apply initial conditions
+#include <deal.II/base/exceptions.h>
 
 #include <cmath>
 #include <core/initial_conditions/initialConditions.h>
@@ -90,7 +90,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
       std::string filename = userInputs.grain_structure_filename;
       filename += ".vtk";
 
-      // new section added for the choice of unstructured mesh and rectilinear mesh
+      // Read user input vtk
       if (userInputs.load_vtk_file_type == "UNSTRUCTURED")
         {
           body.read_vtk(filename);
@@ -101,9 +101,11 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
         }
       else
         {
-          pcout << "Error in vtk file type: Use either UNSTRUCTURED OR RECTILINEAR\n";
-          abort();
-        } // new section ends
+          AssertThrow(
+            false,
+            dealii::ExcMessage(
+              "Error in vtk file type: Use either UNSTRUCTURED OR RECTILINEAR."));
+        }
 
       ScalarField &id_field =
         body.find_scalar_field(userInputs.grain_structure_variable_name);
@@ -342,8 +344,8 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
         }
 
       std::cout << "Reading " << filename << "\n";
-      // Load the data from the file using a PField
-      // new section added for the choice of unstructured mesh and rectilinear mesh
+
+      // Read user input vtk
       if (userInputs.load_vtk_file_type == "UNSTRUCTURED")
         {
           body.read_vtk(filename);
@@ -354,9 +356,11 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
         }
       else
         {
-          pcout << "Error in vtk file type: Use either UNSTRUCTURED OR RECTILINEAR\n";
-          abort();
-        } // new section ends
+          AssertThrow(
+            false,
+            dealii::ExcMessage(
+              "Error in vtk file type: Use either UNSTRUCTURED OR RECTILINEAR."));
+        }
 
       for (const auto &index : index_list)
         {

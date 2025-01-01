@@ -80,8 +80,7 @@ MatrixFreePDE<dim, degree>::computeInvM()
             {
               fe_eval.submit_value(one, q);
             }
-          fe_eval.integrate(invM_flags);
-          fe_eval.distribute_local_to_global(invMscalar);
+          fe_eval.integrate_scatter(invM_flags, invMscalar);
         }
     }
   if (fields[parabolicVectorFieldIndex].type == VECTOR)
@@ -103,8 +102,7 @@ MatrixFreePDE<dim, degree>::computeInvM()
             {
               fe_eval.submit_value(oneV, q);
             }
-          fe_eval.integrate(invM_flags);
-          fe_eval.distribute_local_to_global(invMvector);
+          fe_eval.integrate_scatter(invM_flags, invMvector);
         }
     }
 

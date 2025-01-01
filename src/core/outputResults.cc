@@ -1,5 +1,4 @@
-// outputResults() method for MatrixFreePDE class
-
+#include <deal.II/base/exceptions.h>
 #include <deal.II/numerics/data_out.h>
 
 #include <cmath>
@@ -225,9 +224,9 @@ MatrixFreePDE<dim, degree>::outputResults()
     }
   else
     {
-      std::cerr << "PRISMS-PF Error: The parameter 'outputFileType' must be "
-                   "either \"vtu\" or \"vtk\"\n";
-      abort();
+      AssertThrow(false,
+                  dealii::ExcMessage("PRISMS-PF Error: The parameter 'outputFileType' "
+                                     "must be either \"vtu\" or \"vtk\""));
     }
 
   // log time

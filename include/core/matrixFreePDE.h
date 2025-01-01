@@ -91,18 +91,6 @@ public:
   create_triangulation(parallel::distributed::Triangulation<dim> &tria) const;
 
   /**
-   * \brief Initializes the data structures for enabling unit tests.
-   *
-   * \details This method initializes the MatrixFreePDE object with a fixed geometry,
-   * discretization and other custom selected options specifically to help with unit
-   * tests, and should not be called in any of the physical models.
-   *
-   * \param _fields Vector of PDE descriptions (e.g., scalar/vector) for each field.
-   */
-  void
-  initForTests(std::vector<Field<dim>> _fields);
-
-  /**
    * \brief This method implements the time stepping algorithm and invokes the
    * solveIncrement() method.
    */

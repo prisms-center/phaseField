@@ -168,8 +168,7 @@ MatrixFreePDE<dim, degree>::getLaplaceRHS(
         {
           mat.submit_gradient(mat.get_gradient(q), q);
         }
-      mat.integrate(laplace_flags);
-      mat.distribute_local_to_global(dst);
+      mat.integrate_scatter(laplace_flags, dst);
     }
 }
 
@@ -195,7 +194,6 @@ MatrixFreePDE<dim, degree>::getLaplaceLHS(
         {
           mat.submit_gradient(-mat.get_gradient(q), q);
         }
-      mat.integrate(laplace_flags);
-      mat.distribute_local_to_global(dst);
+      mat.integrate_scatter(laplace_flags, dst);
     }
 }

@@ -1,4 +1,3 @@
-// Methods for the userInputParameters class
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/mpi.h>
 #include <deal.II/base/utilities.h>
@@ -261,17 +260,12 @@ userInputParameters<dim>::assign_spatial_discretization_parameters(
 
   // Enforce that the initial refinement level must be between the max and min
   // level
-  if (h_adaptivity &&
-      ((refine_factor < min_refinement_level) || (refine_factor > max_refinement_level)))
-    {
-      std::cerr << "PRISMS-PF Error: The initial refinement factor must be "
-                   "between the maximum and minimum refinement levels when "
-                   "adaptive meshing is enabled.\n";
-      std::cerr << "Initial refinement level: " << refine_factor
-                << " Maximum and minimum refinement levels: " << max_refinement_level
-                << ", " << min_refinement_level << "\n";
-      abort();
-    }
+  AssertThrow((!h_adaptivity || ((refine_factor >= min_refinement_level) &&
+                                 (refine_factor <= max_refinement_level))),
+              dealii::ExcMessage(
+                "PRISMS-PF Error: The initial refinement factor must be between the "
+                "maximum and minimum refinement levels when adaptive meshing is "
+                "enabled."));
 
   // The adaptivity criterion for each variable has its own subsection
   for (const auto &[index, variable] : var_attributes)
@@ -335,12 +329,13 @@ userInputParameters<dim>::assign_spatial_discretization_parameters(
               }
             else
               {
-                std::cerr << "PRISMS-PF Error: The refinement criteria type "
-                             "found in the parameters file, "
-                          << crit_type_string
-                          << ", is not an allowed type. The allowed types are "
-                             "VALUE, GRADIENT, VALUE_AND_GRADIENT\n";
-                abort();
+                AssertThrow(false,
+                            dealii::ExcMessage(
+                              "PRISMS-PF Error: The refinement criteria type found in "
+                              "the parameters file, " +
+                              crit_type_string +
+                              ", is not an allowed type. The allowed types are VALUE, "
+                              "GRADIENT, VALUE_AND_GRADIENT."));
               }
             refinement_criteria.push_back(new_criterion);
           }
@@ -403,12 +398,11 @@ userInputParameters<dim>::assign_temporal_discretization_parameters(
         }
       else
         {
-          // Should change to an exception
-          std::cerr << "Invalid selections for the final time and the number "
-                       "of increments. At least one should be given in the "
-                       "input file and should be positive.\n";
-          std::cout << finalTime << " " << totalIncrements_temp << "\n";
-          abort();
+          AssertThrow(
+            false,
+            dealii::ExcMessage(
+              "Invalid selections for the final time and the number of increments. At "
+              "least one should be given in the input file and should be positive."));
         }
     }
 }
@@ -442,19 +436,22 @@ userInputParameters<dim>::assign_linear_solve_parameters(
             else if (boost::iequals(type_string, "ABSOLUTE_SOLUTION_CHANGE"))
               {
                 temp_type = ABSOLUTE_SOLUTION_CHANGE;
-                std::cerr << "PRISMS-PF Error: Linear solver tolerance type "
-                          << type_string
-                          << " is not currently implemented, please use either "
-                             "ABSOLUTE_RESIDUAL or RELATIVE_RESIDUAL_CHANGE\n";
-                abort();
+
+                AssertThrow(false,
+                            dealii::ExcMessage(
+                              "PRISMS-PF Error: Linear solver tolerance type " +
+                              type_string +
+                              " is not currently implemented, please use either "
+                              "ABSOLUTE_RESIDUAL or RELATIVE_RESIDUAL_CHANGE."));
               }
             else
               {
-                std::cerr << "PRISMS-PF Error: Linear solver tolerance type "
-                          << type_string
-                          << " is not one of the allowed values (ABSOLUTE_RESIDUAL, "
-                             "RELATIVE_RESIDUAL_CHANGE, ABSOLUTE_SOLUTION_CHANGE)\n";
-                abort();
+                AssertThrow(false,
+                            dealii::ExcMessage(
+                              "PRISMS-PF Error: Linear solver tolerance type " +
+                              type_string +
+                              "  is not one of the allowed values (ABSOLUTE_RESIDUAL, "
+                              "RELATIVE_RESIDUAL_CHANGE, ABSOLUTE_SOLUTION_CHANGE)."));
               }
 
             // Set the tolerance value
@@ -508,11 +505,12 @@ userInputParameters<dim>::assign_nonlinear_solve_parameters(
               }
             else
               {
-                std::cerr << "PRISMS-PF Error: Nonlinear solver tolerance type "
-                          << type_string
-                          << " is not one of the allowed values (ABSOLUTE_RESIDUAL, "
-                             "RELATIVE_RESIDUAL_CHANGE, ABSOLUTE_SOLUTION_CHANGE)\n";
-                abort();
+                AssertThrow(false,
+                            dealii::ExcMessage(
+                              "PRISMS-PF Error: Nonlinear solver tolerance type " +
+                              type_string +
+                              "  is not one of the allowed values (ABSOLUTE_RESIDUAL, "
+                              "RELATIVE_RESIDUAL_CHANGE, ABSOLUTE_SOLUTION_CHANGE)."));
               }
 
             // Set the tolerance value
@@ -734,26 +732,20 @@ userInputParameters<dim>::assign_nucleation_parameters(
             nucleation_parameters_list.push_back(temp);
 
             // Validate nucleation input
-            if (semiaxes.size() < dim || semiaxes.size() > 3)
-              {
-                std::cerr << "PRISMS-PF Error: The number of nucleus semiaxes given in "
-                             "the 'parameters.in' file must be at least the number of "
-                             "dimensions and no more than 3.\n";
-                abort();
-              }
-            if (freeze_semiaxes.size() < dim || freeze_semiaxes.size() > 3)
-              {
-                std::cerr << "PRISMS-PF Error: The number of nucleation freeze zone "
-                             "semiaxes given in the 'parameters.in' file must be at "
-                             "least the number of dimensions and no more than 3.\n";
-                abort();
-              }
-            if (ellipsoid_rotation.size() != 3)
-              {
-                std::cerr << "PRISMS-PF Error: Exactly three nucleus rotation "
-                             "angles must be given in the 'parameters.in' file.\n";
-                abort();
-              }
+            AssertThrow(semiaxes.size() >= dim && semiaxes.size() <= 3,
+                        dealii::ExcMessage(
+                          "PRISMS-PF Error: The number of nucleus semiaxes given in the "
+                          "'parameters.prm' file must be at least the number of "
+                          "dimensions and no more than 3."));
+            AssertThrow(freeze_semiaxes.size() >= dim && freeze_semiaxes.size() <= 3,
+                        dealii::ExcMessage(
+                          "PRISMS-PF Error: The number of nucleation freeze zone "
+                          "semiaxes given in the 'parameters.prm' file must be at least "
+                          "the number of dimensions and no more than 3."));
+            AssertThrow(ellipsoid_rotation.size() == 3,
+                        dealii::ExcMessage(
+                          "PRISMS-PF Error: Exactly three nucleus rotation angles must "
+                          "be given in the 'parameters.in' file."));
           }
           parameter_handler.leave_subsection();
         }
@@ -802,13 +794,12 @@ userInputParameters<dim>::assign_grain_parameters(
 
   buffer_between_grains =
     parameter_handler.get_double("Buffer between grains before reassignment");
-  if (buffer_between_grains < 0.0 && grain_remapping_activated)
-    {
-      std::cerr << "PRISMS-PF Error: If grain reassignment is activated, a "
-                   "non-negative buffer distance must be given. See the 'Buffer "
-                   "between grains before reassignment' entry in parameters.in.\n";
-      abort();
-    }
+
+  AssertThrow(buffer_between_grains >= 0.0 || !grain_remapping_activated,
+              dealii::ExcMessage(
+                "PRISMS-PF Error: If grain reassignment is activated, a non-negative "
+                "buffer distance must be given. See the 'Buffer between grains before "
+                "reassignment' entry in parameters.prm."));
 
   const std::vector<std::string> variables_for_remapping_str =
     dealii::Utilities::split_string_list(
@@ -825,14 +816,14 @@ userInputParameters<dim>::assign_grain_parameters(
               break;
             }
         }
-      if (!field_found && grain_remapping_activated)
-        {
-          std::cerr << "PRISMS-PF Error: Entries in the list of order "
-                       "parameter fields used for grain reassignment must "
-                       "match the variable names in equations.h.\n";
-          std::cerr << field << "\n";
-          abort();
-        }
+
+      AssertThrow(
+        field_found || !grain_remapping_activated,
+        dealii::ExcMessage(
+          "PRISMS-PF Error: Entries in the list of order parameter fields used for grain "
+          "reassignment must match the variable names in equations.cc. The invalid field "
+          "is " +
+          field));
     }
 
   load_grain_structure = parameter_handler.get_bool("Load grain structure");
@@ -971,9 +962,9 @@ userInputParameters<dim>::assign_boundary_conditions(
         }
       else
         {
-          std::cout << boundary_condition_list[j].substr(0, 8) << "\n";
-          std::cout << "Error: Boundary conditions specified improperly.\n";
-          abort();
+          AssertThrow(false,
+                      dealii::ExcMessage("Invalid boundary condition: " +
+                                         boundary_condition_list[j].substr(0, 8)));
         }
 
       // If periodic BCs are used, ensure they are applied on both sides of
@@ -1119,13 +1110,10 @@ userInputParameters<dim>::compute_tensor_parentheses(
         }
     }
 
-  if (open_parentheses != close_parentheses)
-    {
-      std::cerr << "PRISMS-PF ERROR: User-defined elastic constant "
-                   "list does not have the same number of open and "
-                   "close parentheses.\n";
-      abort();
-    }
+  AssertThrow(open_parentheses == close_parentheses,
+              dealii::ExcMessage(
+                "PRISMS-PF ERROR: User-defined elastic constant list does not have the "
+                "same number of open and close parentheses."));
 
   return open_parentheses;
 }
