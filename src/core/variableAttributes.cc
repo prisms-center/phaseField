@@ -1,3 +1,5 @@
+#include <deal.II/base/exceptions.h>
+
 #include <core/variableAttributes.h>
 
 void
@@ -169,4 +171,76 @@ variableAttributes::eval_flags_for_eq_type(const variableAttributes &other_varia
       return {&eval_flags_nonexplicit_RHS, &eval_flags_nonexplicit_LHS};
     }
   return {};
+}
+
+const EvalFlags &
+variableAttributes::eval_flags_for_solve(const solveType &solve_type) const
+{
+  switch (solve_type)
+    {
+      case (solveType::EXPLICIT_RHS):
+        {
+          return eval_flags_explicit_RHS;
+          break;
+        }
+      case (solveType::NONEXPLICIT_RHS):
+        {
+          return eval_flags_nonexplicit_RHS;
+          break;
+        }
+      case (solveType::LHS):
+        {
+          return eval_flags_nonexplicit_LHS;
+          break;
+        }
+      case (solveType::POSTPROCESS):
+        {
+          return eval_flags_postprocess;
+          break;
+        }
+      default:
+        AssertThrow(false,
+                    dealii::ExcMessage("PRISMS-PF Error: Invalid solveType enum."));
+        return eval_flags_explicit_RHS;
+        break;
+    }
+}
+
+const EvalFlags &
+variableAttributes::residual_flags_for_solve(const solveType &solve_type) const
+{
+  switch (solve_type)
+    {
+      case (solveType::EXPLICIT_RHS):
+        {
+          return eval_flags_residual_explicit_RHS;
+          break;
+        }
+      case (solveType::NONEXPLICIT_RHS):
+        {
+          return eval_flags_residual_nonexplicit_RHS;
+          break;
+        }
+      case (solveType::LHS):
+        {
+          return eval_flags_residual_nonexplicit_LHS;
+          break;
+        }
+      case (solveType::POSTPROCESS):
+        {
+          return eval_flags_residual_postprocess;
+          break;
+        }
+      default:
+        AssertThrow(false,
+                    dealii::ExcMessage("PRISMS-PF Error: Invalid solveType enum."));
+        return eval_flags_explicit_RHS;
+        break;
+    }
+}
+
+bool
+variableAttributes::var_needed(const solveType &solve_type) const
+{
+  return bool(eval_flags_for_solve(solve_type));
 }

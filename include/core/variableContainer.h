@@ -11,6 +11,10 @@
 
 #include <boost/unordered_map.hpp>
 
+#include "core/solveTypeEnums.h"
+#include "core/variableAttributes.h"
+#include "varTypeEnums.h"
+
 #include <core/model_variables.h>
 
 template <int dim, int degree, typename T>
@@ -22,16 +26,8 @@ public:
 
   // Standard contructor, used for most situations
   variableContainer(const dealii::MatrixFree<dim, double> &data,
-                    const std::vector<variable_info>      &_varInfoList,
-                    const std::vector<variable_info>      &_varChangeInfoList);
-
-  variableContainer(const dealii::MatrixFree<dim, double> &data,
-                    const std::vector<variable_info>      &_varInfoList);
-  // Nonstandard constructor, used when only one index of "data" should be used,
-  // use with care!
-  variableContainer(const dealii::MatrixFree<dim, double> &data,
-                    const std::vector<variable_info>      &_varInfoList,
-                    const unsigned int                    &fixed_index);
+                    AttributesList                         _subset_attributes,
+                    solveType                              solve_type);
 
   // Methods to get the value/grad/hess in the residual method (this is how the
   // user gets these values in equations.h)
@@ -93,7 +89,7 @@ public:
   void
   reinit_and_eval_change_in_solution(const vectorType &src,
                                      unsigned int      cell,
-                                     unsigned int      var_being_solved);
+                                     const uint       &var_index);
 
   // Only initialize the FEEvaluation object for each variable (used for
   // post-processing)
@@ -104,17 +100,16 @@ public:
   void
   integrate_and_distribute(std::vector<vectorType *> &dst);
   void
-  integrate_and_distribute_change_in_solution_LHS(vectorType        &dst,
-                                                  const unsigned int var_being_solved);
+  integrate_and_distribute_change_in_solution_LHS(vectorType &dst, const uint &var_index);
 
   // The quadrature point index, a method to get the number of quadrature points
   // per cell, and a method to get the xyz coordinates for the quadrature point
-  unsigned int q_point;
+  unsigned int q_point = 0;
 
-  unsigned int
+  [[nodiscard]] unsigned int
   get_num_q_points() const;
 
-  dealii::Point<dim, T>
+  [[nodiscard]] dealii::Point<dim, T>
   get_q_point_location() const;
 
 private:
@@ -133,11 +128,14 @@ private:
 
   // Object containing some information about each variable (indices, whether
   // the val/grad/hess is needed, etc)
-  std::vector<variable_info> varInfoList;
-  std::vector<variable_info> varChangeInfoList;
+  const AttributesList subset_attributes;
+  const solveType      solve_type;
 
-  // The number of variables
-  unsigned int num_var;
+  void
+  AssertValid(const uint      &var_index,
+              const fieldType &field_type,
+              const EvalFlags &eval_flag,
+              bool             is_change) const;
 };
 
 #endif

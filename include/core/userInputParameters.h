@@ -263,14 +263,8 @@ public:
   const AttributesList &var_attributes;
   const AttributesList &pp_attributes;
 
-  // Variables needed to calculate the RHS
-  unsigned int               num_var_explicit_RHS, num_var_nonexplicit_RHS;
-  std::vector<variable_info> varInfoListExplicitRHS, varInfoListNonexplicitRHS;
-
-  // Variables needed to calculate the LHS
-  unsigned int               num_var_LHS;
-  std::vector<variable_info> varInfoListLHS;
-  std::vector<variable_info> varChangeInfoListLHS;
+  // Variables needed to calculate each expression
+  AttributesList attributes_RHS_exp, attributes_RHS_nonexp, attributes_LHS;
 
   // Variables for loading in initial conditions
   std::vector<bool>        load_ICs;
@@ -286,10 +280,6 @@ public:
   unsigned int              num_integrated_fields;
   bool                      postProcessingRequired;
   std::vector<unsigned int> integrated_field_indices;
-
-  // Variable and residual info
-  std::vector<variable_info> pp_varInfoList;
-  std::vector<variable_info> pp_baseVarInfoList;
 
   // List of boundary conditions
   std::vector<varBCs<dim>> BC_list;

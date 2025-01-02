@@ -8,8 +8,7 @@ MatrixFreePDE<dim, degree>::computePostProcessedFields(
   // Initialize the postProcessedSet
   for (unsigned int fieldIndex = 0; fieldIndex < pp_attributes.size(); fieldIndex++)
     {
-      vectorType *U = nullptr;
-      U             = new vectorType;
+      vectorType *U = new vectorType;
       postProcessedSet.push_back(U);
       matrixFreeObject.initialize_dof_vector(*U, 0);
     }
@@ -31,12 +30,10 @@ MatrixFreePDE<dim, degree>::getPostProcessedFields(
   const std::pair<unsigned int, unsigned int> &cell_range)
 {
   // initialize FEEvaulation objects
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> variable_list(
-    data,
-    userInputs.pp_baseVarInfoList);
   variableContainer<dim, degree, dealii::VectorizedArray<double>>
-    pp_variable_list(data, userInputs.pp_varInfoList, 0);
-
+    variable_list(data, var_attributes, solveType::POSTPROCESS);
+  variableContainer<dim, degree, dealii::VectorizedArray<double>>
+    pp_variable_list(data, pp_attributes, solveType::POSTPROCESS);
   // loop over cells
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
     {

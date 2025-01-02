@@ -3,6 +3,8 @@
 #include <deal.II/base/mpi.h>
 #include <deal.II/base/utilities.h>
 
+#include "core/solveTypeEnums.h"
+
 #include <core/userInputParameters.h>
 
 // NOLINTBEGIN(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
@@ -67,132 +69,32 @@ userInputParameters<dim>::loadVariableAttributes()
   nucleation_occurs = !nucleating_variable_indices.empty();
 
   // Load variable information for calculating the RHS for explicit equations
-  num_var_explicit_RHS = 0;
   for (const auto &[index, variable] : var_attributes)
     {
-      if (!static_cast<bool>(variable.eval_flags_explicit_RHS &
-                             dealii::EvaluationFlags::nothing))
+      if (variable.var_needed(solveType::EXPLICIT_RHS))
         {
-          num_var_explicit_RHS++;
+          attributes_RHS_exp.emplace(index, variable);
         }
-    }
-  varInfoListExplicitRHS.reserve(num_var_explicit_RHS);
-  for (const auto &[index, variable] : var_attributes)
-    {
-      variable_info varInfo {};
-
-      varInfo.evaluation_flags = variable.eval_flags_explicit_RHS;
-
-      varInfo.residual_flags = variable.eval_flags_residual_explicit_RHS;
-
-      varInfo.global_var_index = index;
-
-      varInfo.var_needed =
-        !static_cast<bool>(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
-
-      varInfo.is_scalar = variable.var_type == SCALAR;
-
-      varInfoListExplicitRHS.push_back(varInfo);
     }
 
   // Load variable information for calculating the RHS for nonexplicit equations
-  num_var_nonexplicit_RHS = 0;
   for (const auto &[index, variable] : var_attributes)
     {
-      if (!static_cast<bool>(variable.eval_flags_nonexplicit_RHS &
-                             dealii::EvaluationFlags::nothing))
+      if (variable.var_needed(solveType::NONEXPLICIT_RHS))
         {
-          num_var_nonexplicit_RHS++;
+          attributes_RHS_nonexp.emplace(index, variable);
         }
-    }
-  varInfoListNonexplicitRHS.reserve(num_var_nonexplicit_RHS);
-  for (const auto &[index, variable] : var_attributes)
-    {
-      variable_info varInfo {};
-
-      varInfo.evaluation_flags = variable.eval_flags_nonexplicit_RHS;
-
-      varInfo.residual_flags = variable.eval_flags_residual_nonexplicit_RHS;
-
-      varInfo.global_var_index = index;
-
-      varInfo.var_needed =
-        !static_cast<bool>(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
-
-      varInfo.is_scalar = variable.var_type == SCALAR;
-
-      varInfoListNonexplicitRHS.push_back(varInfo);
     }
 
   // Load variable information for calculating the LHS
-  num_var_LHS = 0;
   for (const auto &[index, variable] : var_attributes)
     {
-      if (!static_cast<bool>(variable.eval_flags_nonexplicit_LHS &
-                             dealii::EvaluationFlags::nothing))
+      if (variable.var_needed(solveType::LHS) ||
+          bool(variable.eval_flags_change_nonexplicit_LHS))
         {
-          num_var_LHS++;
+          attributes_LHS.emplace(index, variable);
         }
     }
-
-  varInfoListLHS.reserve(num_var_LHS);
-  for (const auto &[index, variable] : var_attributes)
-    {
-      variable_info varInfo {};
-
-      varInfo.evaluation_flags = variable.eval_flags_nonexplicit_LHS;
-
-      varInfo.residual_flags = variable.eval_flags_residual_nonexplicit_LHS;
-
-      varInfo.global_var_index = index;
-
-      varInfo.var_needed =
-        !static_cast<bool>(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
-
-      varInfo.is_scalar = variable.var_type == SCALAR;
-
-      varInfoListLHS.push_back(varInfo);
-    }
-
-  varChangeInfoListLHS.reserve(num_var_LHS);
-  for (const auto &[index, variable] : var_attributes)
-    {
-      variable_info varInfo {};
-
-      varInfo.evaluation_flags = variable.eval_flags_change_nonexplicit_LHS;
-
-      // FOR NOW, TAKING THESE FROM THE VARIABLE ITSELF!!
-      varInfo.residual_flags = variable.eval_flags_residual_nonexplicit_LHS;
-
-      varInfo.global_var_index = index;
-
-      varInfo.var_needed =
-        !static_cast<bool>(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
-
-      varInfo.is_scalar = variable.var_type == SCALAR;
-
-      varChangeInfoListLHS.push_back(varInfo);
-    }
-
-  // Load variable information for postprocessing
-  // First, the info list for the base field variables
-  pp_baseVarInfoList.reserve(var_attributes.size());
-  for (const auto &[index, variable] : var_attributes)
-    {
-      variable_info varInfo {};
-
-      varInfo.evaluation_flags = variable.eval_flags_postprocess;
-
-      varInfo.global_var_index = index;
-
-      varInfo.var_needed =
-        !static_cast<bool>(varInfo.evaluation_flags & dealii::EvaluationFlags::nothing);
-
-      varInfo.is_scalar = variable.var_type == SCALAR;
-
-      pp_baseVarInfoList.push_back(varInfo);
-    }
-
   // Now load the information for the post-processing variables
   // Parameters for postprocessing
 
@@ -206,23 +108,6 @@ userInputParameters<dim>::loadVariableAttributes()
           num_integrated_fields++;
           integrated_field_indices.push_back(pp_index);
         }
-    }
-
-  // The info list for the postprocessing field variables
-  pp_varInfoList.reserve(pp_attributes.size());
-  for (const auto &[pp_index, pp_variable] : pp_attributes)
-    {
-      variable_info varInfo {};
-
-      varInfo.var_needed = true;
-
-      varInfo.residual_flags = pp_variable.eval_flags_residual_postprocess;
-
-      varInfo.global_var_index = pp_index;
-
-      varInfo.is_scalar = pp_variable.var_type == SCALAR;
-
-      pp_varInfoList.push_back(varInfo);
     }
 }
 

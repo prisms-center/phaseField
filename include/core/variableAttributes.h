@@ -3,6 +3,7 @@
 
 #include <deal.II/matrix_free/evaluation_flags.h>
 
+#include <core/solveTypeEnums.h>
 #include <core/varTypeEnums.h>
 #include <map>
 #include <set>
@@ -19,7 +20,7 @@ using AttributesList = std::map<uint, variableAttributes>;
 struct variableAttributes
 {
   // Variable attributes
-  std::string name                  = "";
+  std::string name;
   fieldType   var_type              = UNDEFINED_FIELD;
   PDEType     eq_type               = UNDEFINED_PDE;
   bool        need_value_nucleation = false;
@@ -86,6 +87,33 @@ struct variableAttributes
    */
   std::set<EvalFlags *>
   eval_flags_for_eq_type(const variableAttributes &other_variable);
+
+  /**
+   * \brief Helper function that returns a set of pointers to the evaluation flags needed
+   * for an expression type
+   *
+   * \param solve_type EXPLICIT_RHS, NONEXPLICIT_RHS, LHS, POSTPROCESS
+   */
+  [[nodiscard]] const EvalFlags &
+  eval_flags_for_solve(const solveType &solve_type) const;
+
+  /**
+   * \brief Helper function that returns a set of pointers to the residual flags needed
+   * for an expression type
+   *
+   * \param solve_type EXPLICIT_RHS, NONEXPLICIT_RHS, LHS, POSTPROCESS
+   */
+  [[nodiscard]] const EvalFlags &
+  residual_flags_for_solve(const solveType &solve_type) const;
+
+  /**
+   * \brief Helper function that returns true if this variable is needed for an expression
+   * type
+   *
+   * \param solve_type EXPLICIT_RHS, NONEXPLICIT_RHS, LHS, POSTPROCESS
+   */
+  [[nodiscard]] bool
+  var_needed(const solveType &solve_type) const;
 };
 
 #endif

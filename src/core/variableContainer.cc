@@ -1,112 +1,55 @@
+#include <deal.II/base/exceptions.h>
+#include <deal.II/matrix_free/evaluation_flags.h>
+
+#include <core/solveTypeEnums.h>
+#include <core/varTypeEnums.h>
+#include <core/variableAttributes.h>
 #include <core/variableContainer.h>
+#include <string>
 
 template <int dim, int degree, typename T>
 variableContainer<dim, degree, T>::variableContainer(
   const dealii::MatrixFree<dim, double> &data,
-  const std::vector<variable_info>      &_varInfoList,
-  const std::vector<variable_info>      &_varChangeInfoList)
-  : varInfoList(_varInfoList)
-  , varChangeInfoList(_varChangeInfoList)
-  , num_var(varInfoList.size())
+  AttributesList                         _subset_attributes,
+  solveType                              _solve_type)
+  : subset_attributes(std::move(_subset_attributes))
+  , solve_type(_solve_type)
 {
-  for (unsigned int i = 0; i < num_var; i++)
+  for (const auto &[var_index, variable] : subset_attributes)
     {
-      const auto &var_info        = varInfoList[i];
-      const auto &var_change_info = varChangeInfoList[i];
-
-      if (var_info.var_needed)
+      uint      dof_no           = (solve_type != solveType::POSTPROCESS) ? var_index : 0;
+      EvalFlags evaluation_flags = variable.eval_flags_for_solve(solve_type);
+      bool      var_needed =
+        (evaluation_flags != dealii::EvaluationFlags::nothing) || variable.is_pp;
+      bool change_needed =
+        (variable.eval_flags_change_nonexplicit_LHS != dealii::EvaluationFlags::nothing);
+      if (var_needed)
         {
-          const unsigned int var_index = var_info.global_var_index;
-
-          if (var_info.is_scalar)
+          if (variable.var_type == SCALAR)
             {
               scalar_vars_map.emplace(var_index,
-                                      std::make_unique<scalar_FEEval>(data, i));
+                                      std::make_unique<scalar_FEEval>(data, dof_no));
             }
           else
             {
               vector_vars_map.emplace(var_index,
-                                      std::make_unique<vector_FEEval>(data, i));
+                                      std::make_unique<vector_FEEval>(data, dof_no));
             }
         }
-
-      if (var_change_info.var_needed)
+      if (change_needed)
         {
-          const unsigned int var_index = var_change_info.global_var_index;
-
-          if (var_change_info.is_scalar)
+          if (variable.var_type == SCALAR)
             {
               scalar_change_in_vars_map.emplace(var_index,
-                                                std::make_unique<scalar_FEEval>(data, i));
+                                                std::make_unique<scalar_FEEval>(data,
+                                                                                dof_no));
             }
           else
             {
               vector_change_in_vars_map.emplace(var_index,
-                                                std::make_unique<vector_FEEval>(data, i));
+                                                std::make_unique<vector_FEEval>(data,
+                                                                                dof_no));
             }
-        }
-    }
-}
-
-template <int dim, int degree, typename T>
-variableContainer<dim, degree, T>::variableContainer(
-  const dealii::MatrixFree<dim, double> &data,
-  const std::vector<variable_info>      &_varInfoList)
-  : varInfoList(_varInfoList)
-  , num_var(varInfoList.size())
-{
-  for (unsigned int i = 0; i < num_var; i++)
-    {
-      const auto &var_info = varInfoList[i];
-
-      if (!var_info.var_needed)
-        {
-          continue;
-        }
-
-      const unsigned int var_index = var_info.global_var_index;
-
-      if (var_info.is_scalar)
-        {
-          scalar_vars_map.emplace(var_index, std::make_unique<scalar_FEEval>(data, i));
-        }
-      else
-        {
-          vector_vars_map.emplace(var_index, std::make_unique<vector_FEEval>(data, i));
-        }
-    }
-}
-
-// Variant of the constructor where it reads from a fixed index of "data", used
-// for post-processing
-template <int dim, int degree, typename T>
-variableContainer<dim, degree, T>::variableContainer(
-  const dealii::MatrixFree<dim, double> &data,
-  const std::vector<variable_info>      &_varInfoList,
-  const unsigned int                    &fixed_index)
-  : varInfoList(_varInfoList)
-  , num_var(varInfoList.size())
-{
-  for (unsigned int i = 0; i < num_var; i++)
-    {
-      const auto &var_info = varInfoList[i];
-
-      if (!var_info.var_needed)
-        {
-          continue;
-        }
-
-      const unsigned int var_index = var_info.global_var_index;
-
-      if (var_info.is_scalar)
-        {
-          scalar_vars_map.emplace(var_index,
-                                  std::make_unique<scalar_FEEval>(data, fixed_index));
-        }
-      else
-        {
-          vector_vars_map.emplace(var_index,
-                                  std::make_unique<vector_FEEval>(data, fixed_index));
         }
     }
 }
@@ -174,30 +117,25 @@ void
 variableContainer<dim, degree, T>::reinit_and_eval(const std::vector<vectorType *> &src,
                                                    unsigned int                     cell)
 {
-  for (unsigned int i = 0; i < num_var; i++)
+  for (const auto &[var_index, variable] : subset_attributes)
     {
-      const auto &var_info = varInfoList[i];
-
-      if (!var_info.var_needed)
+      if (variable.var_needed(solve_type) || variable.is_pp)
         {
-          continue;
-        }
-
-      const unsigned int var_index = var_info.global_var_index;
-
-      if (var_info.is_scalar)
-        {
-          auto *scalar_FEEval_ptr = scalar_vars_map[var_index].get();
-          scalar_FEEval_ptr->reinit(cell);
-          scalar_FEEval_ptr->read_dof_values(*src[i]);
-          scalar_FEEval_ptr->evaluate(var_info.evaluation_flags);
-        }
-      else
-        {
-          auto *vector_FEEval_ptr = vector_vars_map[var_index].get();
-          vector_FEEval_ptr->reinit(cell);
-          vector_FEEval_ptr->read_dof_values(*src[i]);
-          vector_FEEval_ptr->evaluate(var_info.evaluation_flags);
+          const uint dof_no = var_index;
+          if (variable.var_type == SCALAR)
+            {
+              auto *scalar_FEEval_ptr = scalar_vars_map[var_index].get();
+              scalar_FEEval_ptr->reinit(cell);
+              scalar_FEEval_ptr->read_dof_values(*src[dof_no]);
+              scalar_FEEval_ptr->evaluate(variable.eval_flags_for_solve(solve_type));
+            }
+          else
+            {
+              auto *vector_FEEval_ptr = vector_vars_map[var_index].get();
+              vector_FEEval_ptr->reinit(cell);
+              vector_FEEval_ptr->read_dof_values(*src[dof_no]);
+              vector_FEEval_ptr->evaluate(variable.eval_flags_for_solve(solve_type));
+            }
         }
     }
 }
@@ -211,21 +149,22 @@ void
 variableContainer<dim, degree, T>::reinit_and_eval_change_in_solution(
   const vectorType &src,
   unsigned int      cell,
-  unsigned int      var_being_solved)
+  const uint       &var_index)
 {
-  if (varChangeInfoList[var_being_solved].is_scalar)
+  const variableAttributes variable = subset_attributes.at(var_index);
+  if (variable.var_type == SCALAR)
     {
-      auto *scalar_FEEval_ptr = scalar_change_in_vars_map[var_being_solved].get();
+      auto *scalar_FEEval_ptr = scalar_change_in_vars_map[var_index].get();
       scalar_FEEval_ptr->reinit(cell);
       scalar_FEEval_ptr->read_dof_values(src);
-      scalar_FEEval_ptr->evaluate(varChangeInfoList[var_being_solved].evaluation_flags);
+      scalar_FEEval_ptr->evaluate(variable.eval_flags_residual_nonexplicit_LHS);
     }
   else
     {
-      auto *vector_FEEval_ptr = vector_change_in_vars_map[var_being_solved].get();
+      auto *vector_FEEval_ptr = vector_change_in_vars_map[var_index].get();
       vector_FEEval_ptr->reinit(cell);
       vector_FEEval_ptr->read_dof_values(src);
-      vector_FEEval_ptr->evaluate(varChangeInfoList[var_being_solved].evaluation_flags);
+      vector_FEEval_ptr->evaluate(variable.eval_flags_residual_nonexplicit_LHS);
     }
 }
 
@@ -233,24 +172,18 @@ template <int dim, int degree, typename T>
 void
 variableContainer<dim, degree, T>::reinit(unsigned int cell)
 {
-  for (unsigned int i = 0; i < num_var; i++)
+  for (const auto &[var_index, variable] : subset_attributes)
     {
-      const auto &var_info = varInfoList[i];
-
-      if (!var_info.var_needed)
+      if (variable.var_needed(solve_type) || variable.is_pp)
         {
-          continue;
-        }
-
-      const unsigned int var_index = var_info.global_var_index;
-
-      if (var_info.is_scalar)
-        {
-          scalar_vars_map[var_index]->reinit(cell);
-        }
-      else
-        {
-          vector_vars_map[var_index]->reinit(cell);
+          if (variable.var_type == SCALAR)
+            {
+              scalar_vars_map[var_index]->reinit(cell);
+            }
+          else
+            {
+              vector_vars_map[var_index]->reinit(cell);
+            }
         }
     }
 }
@@ -260,28 +193,23 @@ void
 variableContainer<dim, degree, T>::integrate_and_distribute(
   std::vector<vectorType *> &dst)
 {
-  for (unsigned int i = 0; i < num_var; i++)
+  for (const auto &[var_index, variable] : subset_attributes)
     {
-      const auto &var_info = varInfoList[i];
-
-      if (var_info.residual_flags & dealii::EvaluationFlags::nothing)
+      if (variable.var_needed(solve_type) || variable.is_pp)
         {
-          continue;
-        }
-
-      const unsigned int var_index = var_info.global_var_index;
-
-      if (var_info.is_scalar)
-        {
-          auto *scalar_FEEval_ptr = scalar_vars_map[var_index].get();
-          scalar_FEEval_ptr->integrate(var_info.residual_flags);
-          scalar_FEEval_ptr->distribute_local_to_global(*dst[i]);
-        }
-      else
-        {
-          auto *vector_FEEval_ptr = vector_vars_map[var_index].get();
-          vector_FEEval_ptr->integrate(var_info.residual_flags);
-          vector_FEEval_ptr->distribute_local_to_global(*dst[i]);
+          const uint dof_no = var_index;
+          if (variable.var_type == SCALAR)
+            {
+              auto *scalar_FEEval_ptr = scalar_vars_map[var_index].get();
+              scalar_FEEval_ptr->integrate(variable.residual_flags_for_solve(solve_type));
+              scalar_FEEval_ptr->distribute_local_to_global(*dst[dof_no]);
+            }
+          else
+            {
+              auto *vector_FEEval_ptr = vector_vars_map[var_index].get();
+              vector_FEEval_ptr->integrate(variable.residual_flags_for_solve(solve_type));
+              vector_FEEval_ptr->distribute_local_to_global(*dst[dof_no]);
+            }
         }
     }
 }
@@ -289,20 +217,21 @@ variableContainer<dim, degree, T>::integrate_and_distribute(
 template <int dim, int degree, typename T>
 void
 variableContainer<dim, degree, T>::integrate_and_distribute_change_in_solution_LHS(
-  vectorType        &dst,
-  const unsigned int var_being_solved)
+  vectorType &dst,
+  const uint &var_index)
 {
   // integrate
-  if (varChangeInfoList[var_being_solved].is_scalar)
+  const variableAttributes variable = subset_attributes.at(var_index);
+  if (variable.var_type == SCALAR)
     {
-      auto *scalar_FEEval_ptr = scalar_change_in_vars_map[var_being_solved].get();
-      scalar_FEEval_ptr->integrate(varChangeInfoList[var_being_solved].residual_flags);
+      auto *scalar_FEEval_ptr = scalar_change_in_vars_map[var_index].get();
+      scalar_FEEval_ptr->integrate(variable.residual_flags_for_solve(solve_type));
       scalar_FEEval_ptr->distribute_local_to_global(dst);
     }
   else
     {
-      auto *vector_FEEval_ptr = vector_change_in_vars_map[var_being_solved].get();
-      vector_FEEval_ptr->integrate(varChangeInfoList[var_being_solved].residual_flags);
+      auto *vector_FEEval_ptr = vector_change_in_vars_map[var_index].get();
+      vector_FEEval_ptr->integrate(variable.residual_flags_for_solve(solve_type));
       vector_FEEval_ptr->distribute_local_to_global(dst);
     }
 }
@@ -314,19 +243,8 @@ T
 variableContainer<dim, degree, T>::get_scalar_value(
   unsigned int global_variable_index) const
 {
-  if (varInfoList[global_variable_index].evaluation_flags &
-      dealii::EvaluationFlags::values)
-    {
-      return scalar_vars_map.at(global_variable_index)->get_value(q_point);
-    }
-  else
-    {
-      std::cerr << "PRISMS-PF Error: Attempted access of a variable value that "
-                   "was not marked as needed in 'equations.cc'. The attempted "
-                   "access was for variable with index "
-                << global_variable_index << " .\n";
-      abort();
-    }
+  AssertValid(global_variable_index, SCALAR, dealii::EvaluationFlags::values, false);
+  return scalar_vars_map.at(global_variable_index)->get_value(q_point);
 }
 
 template <int dim, int degree, typename T>
@@ -334,19 +252,8 @@ dealii::Tensor<1, dim, T>
 variableContainer<dim, degree, T>::get_scalar_gradient(
   unsigned int global_variable_index) const
 {
-  if (varInfoList[global_variable_index].evaluation_flags &
-      dealii::EvaluationFlags::gradients)
-    {
-      return scalar_vars_map.at(global_variable_index)->get_gradient(q_point);
-    }
-  else
-    {
-      std::cerr << "PRISMS-PF Error: Attempted access of a variable gradient "
-                   "that was not marked as needed in 'equations.cc'. The "
-                   "attempted access was for variable with index "
-                << global_variable_index << " .\n";
-      abort();
-    }
+  AssertValid(global_variable_index, SCALAR, dealii::EvaluationFlags::gradients, false);
+  return scalar_vars_map.at(global_variable_index)->get_gradient(q_point);
 }
 
 template <int dim, int degree, typename T>
@@ -354,19 +261,8 @@ dealii::Tensor<2, dim, T>
 variableContainer<dim, degree, T>::get_scalar_hessian(
   unsigned int global_variable_index) const
 {
-  if (varInfoList[global_variable_index].evaluation_flags &
-      dealii::EvaluationFlags::hessians)
-    {
-      return scalar_vars_map.at(global_variable_index)->get_hessian(q_point);
-    }
-  else
-    {
-      std::cerr << "PRISMS-PF Error: Attempted access of a variable hessian "
-                   "that was not marked as needed in 'equations.cc'. The "
-                   "attempted access was for variable with index "
-                << global_variable_index << " .\n";
-      abort();
-    }
+  AssertValid(global_variable_index, SCALAR, dealii::EvaluationFlags::hessians, false);
+  return scalar_vars_map.at(global_variable_index)->get_hessian(q_point);
 }
 
 template <int dim, int degree, typename T>
@@ -374,19 +270,8 @@ dealii::Tensor<1, dim, T>
 variableContainer<dim, degree, T>::get_vector_value(
   unsigned int global_variable_index) const
 {
-  if (varInfoList[global_variable_index].evaluation_flags &
-      dealii::EvaluationFlags::values)
-    {
-      return vector_vars_map.at(global_variable_index)->get_value(q_point);
-    }
-  else
-    {
-      std::cerr << "PRISMS-PF Error: Attempted access of a variable value that "
-                   "was not marked as needed in 'equations.cc'. The attempted "
-                   "access was for variable with index "
-                << global_variable_index << " .\n";
-      abort();
-    }
+  AssertValid(global_variable_index, VECTOR, dealii::EvaluationFlags::values, false);
+  return vector_vars_map.at(global_variable_index)->get_value(q_point);
 }
 
 template <int dim, int degree, typename T>
@@ -394,19 +279,8 @@ dealii::Tensor<2, dim, T>
 variableContainer<dim, degree, T>::get_vector_gradient(
   unsigned int global_variable_index) const
 {
-  if (varInfoList[global_variable_index].evaluation_flags &
-      dealii::EvaluationFlags::gradients)
-    {
-      return vector_vars_map.at(global_variable_index)->get_gradient(q_point);
-    }
-  else
-    {
-      std::cerr << "PRISMS-PF Error: Attempted access of a variable gradient "
-                   "that was not marked as needed in 'equations.cc'. The "
-                   "attempted access was for variable with index "
-                << global_variable_index << " .\n";
-      abort();
-    }
+  AssertValid(global_variable_index, VECTOR, dealii::EvaluationFlags::gradients, false);
+  return vector_vars_map.at(global_variable_index)->get_gradient(q_point);
 }
 
 template <int dim, int degree, typename T>
@@ -414,41 +288,17 @@ dealii::Tensor<3, dim, T>
 variableContainer<dim, degree, T>::get_vector_hessian(
   unsigned int global_variable_index) const
 {
-  if (varInfoList[global_variable_index].evaluation_flags &
-      dealii::EvaluationFlags::hessians)
-    {
-      return vector_vars_map.at(global_variable_index)->get_hessian(q_point);
-    }
-  else
-    {
-      std::cerr << "PRISMS-PF Error: Attempted access of a variable hessian "
-                   "that was not marked as needed in 'equations.cc'. The "
-                   "attempted access was for variable with index "
-                << global_variable_index << " .\n";
-      abort();
-    }
+  AssertValid(global_variable_index, VECTOR, dealii::EvaluationFlags::hessians, false);
+  return vector_vars_map.at(global_variable_index)->get_hessian(q_point);
 }
 
-// Need to add index checking to these functions so that an error is thrown if
-// the index wasn't set
 template <int dim, int degree, typename T>
 T
 variableContainer<dim, degree, T>::get_change_in_scalar_value(
   unsigned int global_variable_index) const
 {
-  if (varChangeInfoList[global_variable_index].evaluation_flags &
-      dealii::EvaluationFlags::values)
-    {
-      return scalar_change_in_vars_map.at(global_variable_index)->get_value(q_point);
-    }
-  else
-    {
-      std::cerr << "PRISMS-PF Error: Attempted access of a change in variable "
-                   "value that was not marked as needed in 'equations.cc'. The "
-                   "attempted access was for variable with index "
-                << global_variable_index << " .\n";
-      abort();
-    }
+  AssertValid(global_variable_index, SCALAR, dealii::EvaluationFlags::values, true);
+  return scalar_change_in_vars_map.at(global_variable_index)->get_value(q_point);
 }
 
 template <int dim, int degree, typename T>
@@ -456,19 +306,8 @@ dealii::Tensor<1, dim, T>
 variableContainer<dim, degree, T>::get_change_in_scalar_gradient(
   unsigned int global_variable_index) const
 {
-  if (varChangeInfoList[global_variable_index].evaluation_flags &
-      dealii::EvaluationFlags::gradients)
-    {
-      return scalar_change_in_vars_map.at(global_variable_index)->get_gradient(q_point);
-    }
-  else
-    {
-      std::cerr << "PRISMS-PF Error: Attempted access of a change in variable "
-                   "gradient that was not marked as needed in 'equations.cc'. "
-                   "The attempted access was for variable with index "
-                << global_variable_index << " .\n";
-      abort();
-    }
+  AssertValid(global_variable_index, SCALAR, dealii::EvaluationFlags::gradients, true);
+  return scalar_change_in_vars_map.at(global_variable_index)->get_gradient(q_point);
 }
 
 template <int dim, int degree, typename T>
@@ -476,19 +315,8 @@ dealii::Tensor<2, dim, T>
 variableContainer<dim, degree, T>::get_change_in_scalar_hessian(
   unsigned int global_variable_index) const
 {
-  if (varChangeInfoList[global_variable_index].evaluation_flags &
-      dealii::EvaluationFlags::hessians)
-    {
-      return scalar_change_in_vars_map.at(global_variable_index)->get_hessian(q_point);
-    }
-  else
-    {
-      std::cerr << "PRISMS-PF Error: Attempted access of a change in variable "
-                   "hessian that was not marked as needed in 'equations.cc'. "
-                   "The attempted access was for variable with index "
-                << global_variable_index << " .\n";
-      abort();
-    }
+  AssertValid(global_variable_index, SCALAR, dealii::EvaluationFlags::hessians, true);
+  return scalar_change_in_vars_map.at(global_variable_index)->get_hessian(q_point);
 }
 
 template <int dim, int degree, typename T>
@@ -496,19 +324,8 @@ dealii::Tensor<1, dim, T>
 variableContainer<dim, degree, T>::get_change_in_vector_value(
   unsigned int global_variable_index) const
 {
-  if (varChangeInfoList[global_variable_index].evaluation_flags &
-      dealii::EvaluationFlags::values)
-    {
-      return vector_change_in_vars_map.at(global_variable_index)->get_value(q_point);
-    }
-  else
-    {
-      std::cerr << "PRISMS-PF Error: Attempted access of a change in variable "
-                   "value that was not marked as needed in 'equations.cc'. The "
-                   "attempted access was for variable with index "
-                << global_variable_index << " .\n";
-      abort();
-    }
+  AssertValid(global_variable_index, VECTOR, dealii::EvaluationFlags::values, true);
+  return vector_change_in_vars_map.at(global_variable_index)->get_value(q_point);
 }
 
 template <int dim, int degree, typename T>
@@ -516,19 +333,8 @@ dealii::Tensor<2, dim, T>
 variableContainer<dim, degree, T>::get_change_in_vector_gradient(
   unsigned int global_variable_index) const
 {
-  if (varChangeInfoList[global_variable_index].evaluation_flags &
-      dealii::EvaluationFlags::gradients)
-    {
-      return vector_change_in_vars_map.at(global_variable_index)->get_gradient(q_point);
-    }
-  else
-    {
-      std::cerr << "PRISMS-PF Error: Attempted access of a change in variable "
-                   "gradient that was not marked as needed in 'equations.cc'. "
-                   "The attempted access was for variable with index "
-                << global_variable_index << " .\n";
-      abort();
-    }
+  AssertValid(global_variable_index, VECTOR, dealii::EvaluationFlags::gradients, true);
+  return vector_change_in_vars_map.at(global_variable_index)->get_gradient(q_point);
 }
 
 template <int dim, int degree, typename T>
@@ -536,19 +342,35 @@ dealii::Tensor<3, dim, T>
 variableContainer<dim, degree, T>::get_change_in_vector_hessian(
   unsigned int global_variable_index) const
 {
-  if (varChangeInfoList[global_variable_index].evaluation_flags &
-      dealii::EvaluationFlags::hessians)
-    {
-      return vector_change_in_vars_map.at(global_variable_index)->get_hessian(q_point);
-    }
-  else
-    {
-      std::cerr << "PRISMS-PF Error: Attempted access of a change in variable "
-                   "hessian that was not marked as needed in 'equations.cc'. "
-                   "The attempted access was for variable with index "
-                << global_variable_index << " .\n";
-      abort();
-    }
+  AssertValid(global_variable_index, VECTOR, dealii::EvaluationFlags::hessians, true);
+  return vector_change_in_vars_map.at(global_variable_index)->get_hessian(q_point);
+}
+
+template <int dim, int degree, typename T>
+void
+variableContainer<dim, degree, T>::AssertValid(const uint      &var_index,
+                                               const fieldType &field_type,
+                                               const EvalFlags &eval_flag,
+                                               bool             is_change) const
+{
+#ifdef DEBUG
+  std::string field_string = (field_type == SCALAR) ? "scalar" : "vector";
+  Assert((subset_attributes.find(var_index) != subset_attributes.end()) &&
+           bool((!is_change
+                   ? subset_attributes.at(var_index).eval_flags_for_solve(solve_type)
+                   : subset_attributes.at(var_index).eval_flags_change_nonexplicit_LHS) &
+                eval_flag),
+         dealii::ExcMessage(
+           "PRISMS-PF Error: Attempted access of a variable value that was not marked as "
+           "needed in 'equations.cc'. The attempted access was for variable with index " +
+           std::to_string(var_index) + " .\n"));
+  Assert(subset_attributes.at(var_index).var_type == field_type,
+         dealii::ExcMessage(
+           "PRISMS-PF Error: Attempted access of a " + field_string +
+           " variable at the index of a non-" + field_string +
+           " variable. The attempted access was for variable with index " +
+           std::to_string(var_index) + " .\n"));
+#endif
 }
 
 // The methods to set the residual terms

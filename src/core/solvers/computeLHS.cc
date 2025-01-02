@@ -58,7 +58,7 @@ MatrixFreePDE<dim, degree>::getLHS(
   const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   variableContainer<dim, degree, dealii::VectorizedArray<double>>
-    variable_list(data, userInputs.varInfoListLHS, userInputs.varChangeInfoListLHS);
+    variable_list(data, userInputs.attributes_LHS, solveType::LHS);
 
   // loop over cells
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)

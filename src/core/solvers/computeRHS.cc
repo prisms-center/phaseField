@@ -30,9 +30,8 @@ MatrixFreePDE<dim, degree>::getExplicitRHS(
   const std::vector<vectorType *>             &src,
   const std::pair<unsigned int, unsigned int> &cell_range) const
 {
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> variable_list(
-    data,
-    userInputs.varInfoListExplicitRHS);
+  variableContainer<dim, degree, dealii::VectorizedArray<double>>
+    variable_list(data, userInputs.attributes_RHS_exp, solveType::EXPLICIT_RHS);
 
   // loop over cells
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
@@ -87,9 +86,8 @@ MatrixFreePDE<dim, degree>::getNonexplicitRHS(
   const std::vector<vectorType *>             &src,
   const std::pair<unsigned int, unsigned int> &cell_range) const
 {
-  variableContainer<dim, degree, dealii::VectorizedArray<double>> variable_list(
-    data,
-    userInputs.varInfoListNonexplicitRHS);
+  variableContainer<dim, degree, dealii::VectorizedArray<double>>
+    variable_list(data, userInputs.attributes_RHS_nonexp, solveType::NONEXPLICIT_RHS);
 
   // loop over cells
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)

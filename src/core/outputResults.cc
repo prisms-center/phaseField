@@ -105,7 +105,7 @@ MatrixFreePDE<dim, degree>::outputResults()
         {
           // mark field as scalar/vector
           unsigned int components = 0;
-          if (userInputs.pp_varInfoList[fieldIndex].is_scalar)
+          if (pp_variable.var_type == SCALAR)
             {
               components = 1;
               std::vector<DataComponentInterpretation::DataComponentInterpretation>

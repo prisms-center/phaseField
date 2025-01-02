@@ -1,0 +1,12 @@
+#ifndef INCLUDE_SOLVETYPEENUMS_H
+#define INCLUDE_SOLVETYPEENUMS_H
+
+enum class solveType
+{
+  EXPLICIT_RHS,
+  NONEXPLICIT_RHS,
+  LHS,
+  POSTPROCESS
+};
+
+#endif

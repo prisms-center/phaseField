@@ -6,8 +6,6 @@
 #include <map>
 #include <string>
 
-using EvalFlags = dealii::EvaluationFlags::EvaluationFlags;
-
 /**
  * \brief Class to manage the variable attributes that the user specifies.
  */
