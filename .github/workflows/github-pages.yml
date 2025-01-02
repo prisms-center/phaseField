@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - devel
-  pull_request:
-    paths-ignore:
-      - 'doc/**'
     
 permissions:
   contents: write
