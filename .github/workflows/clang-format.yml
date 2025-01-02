@@ -10,6 +10,7 @@ on:
       - devel
     paths-ignore:
       - 'doc/**'
+      - 'contrib/**'
 
 concurrency:
   group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref }}
