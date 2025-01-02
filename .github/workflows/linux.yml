@@ -16,6 +16,7 @@ on:
     paths-ignore:
       - 'applications/**'
       - 'doc/**'
+      - 'contrib/**'
 
 concurrency:
   group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref }}

@@ -15,7 +15,10 @@ on:
         - ready_for_review
       paths-ignore:
       - 'applications/**'
+      - 'contrib/**'
       - 'doc/**'
+      - 'automatic_test/**'
+      - 'tests/**'
 
 
 concurrency:
