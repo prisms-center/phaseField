@@ -3,14 +3,14 @@
 template <int dim, int degree>
 void
 FloodFiller<dim, degree>::calcGrainSets(
-  [[maybe_unused]] dealii::FESystem<dim> &finite_element,
-  dealii::DoFHandler<dim>                &dof_handler,
-  vectorType                             *solution_field,
-  double                                  threshold_lower,
-  double                                  threshold_upper,
-  int                                     min_id,
-  unsigned int                            order_parameter_index,
-  std::vector<GrainSet<dim>>             &grain_sets)
+  [[maybe_unused]] dealii::FESystem<dim>             &finite_element,
+  dealii::DoFHandler<dim>                            &dof_handler,
+  dealii::LinearAlgebra::distributed::Vector<double> *solution_field,
+  double                                              threshold_lower,
+  double                                              threshold_upper,
+  int                                                 min_id,
+  unsigned int                                        order_parameter_index,
+  std::vector<GrainSet<dim>>                         &grain_sets)
 {
   unsigned int grain_index = 0;
 
@@ -79,15 +79,16 @@ FloodFiller<dim, degree>::calcGrainSets(
 template <int dim, int degree>
 template <typename T>
 void
-FloodFiller<dim, degree>::recursiveFloodFill(T                           cell,
-                                             T                           cell_end,
-                                             vectorType                 *solution_field,
-                                             double                      threshold_lower,
-                                             double                      threshold_upper,
-                                             int                         min_id,
-                                             unsigned int               &grain_index,
-                                             std::vector<GrainSet<dim>> &grain_sets,
-                                             bool                       &grain_assigned)
+FloodFiller<dim, degree>::recursiveFloodFill(
+  T                                                   cell,
+  T                                                   cell_end,
+  dealii::LinearAlgebra::distributed::Vector<double> *solution_field,
+  double                                              threshold_lower,
+  double                                              threshold_upper,
+  int                                                 min_id,
+  unsigned int                                       &grain_index,
+  std::vector<GrainSet<dim>>                         &grain_sets,
+  bool                                               &grain_assigned)
 {
   if (cell == cell_end)
     {

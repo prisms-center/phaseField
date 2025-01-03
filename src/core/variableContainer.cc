@@ -171,8 +171,9 @@ variableContainer<dim, degree, T>::get_q_point_location() const
 
 template <int dim, int degree, typename T>
 void
-variableContainer<dim, degree, T>::reinit_and_eval(const std::vector<vectorType *> &src,
-                                                   unsigned int                     cell)
+variableContainer<dim, degree, T>::reinit_and_eval(
+  const std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> &src,
+  unsigned int                                                             cell)
 {
   for (unsigned int i = 0; i < num_var; i++)
     {
@@ -204,14 +205,14 @@ variableContainer<dim, degree, T>::reinit_and_eval(const std::vector<vectorType 
 
 /**
  * This is specialized for the LHS where a change in solution is needed. The RHS method
- * takes the src as a vector of vectorTypes.
+ * takes the src as a vector of dealii::LinearAlgebra::distributed::Vector<double>s.
  */
 template <int dim, int degree, typename T>
 void
 variableContainer<dim, degree, T>::reinit_and_eval_change_in_solution(
-  const vectorType &src,
-  unsigned int      cell,
-  unsigned int      var_being_solved)
+  const dealii::LinearAlgebra::distributed::Vector<double> &src,
+  unsigned int                                              cell,
+  unsigned int                                              var_being_solved)
 {
   if (varChangeInfoList[var_being_solved].is_scalar)
     {
@@ -258,7 +259,7 @@ variableContainer<dim, degree, T>::reinit(unsigned int cell)
 template <int dim, int degree, typename T>
 void
 variableContainer<dim, degree, T>::integrate_and_distribute(
-  std::vector<vectorType *> &dst)
+  std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> &dst)
 {
   for (unsigned int i = 0; i < num_var; i++)
     {
@@ -289,8 +290,8 @@ variableContainer<dim, degree, T>::integrate_and_distribute(
 template <int dim, int degree, typename T>
 void
 variableContainer<dim, degree, T>::integrate_and_distribute_change_in_solution_LHS(
-  vectorType        &dst,
-  const unsigned int var_being_solved)
+  dealii::LinearAlgebra::distributed::Vector<double> &dst,
+  const unsigned int                                  var_being_solved)
 {
   // integrate
   if (varChangeInfoList[var_being_solved].is_scalar)

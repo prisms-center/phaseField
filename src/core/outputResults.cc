@@ -43,7 +43,7 @@ MatrixFreePDE<dim, degree>::outputResults()
   // fields
   if (userInputs.postProcessingRequired)
     {
-      std::vector<vectorType *> postProcessedSet;
+      std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> postProcessedSet;
       computePostProcessedFields(postProcessedSet);
       unsigned int invM_size = invMscalar.locally_owned_size();
       for (auto &field : postProcessedSet)

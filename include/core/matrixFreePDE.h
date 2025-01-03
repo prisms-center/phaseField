@@ -1,4 +1,3 @@
-// base class for matrix Free implementation of PDE's
 #ifndef MATRIXFREEPDE_H
 #define MATRIXFREEPDE_H
 
@@ -38,14 +37,6 @@
 #include <utilities/computeStress.h>
 
 using namespace dealii;
-
-// define data types
-#ifndef scalarType
-using scalarType = VectorizedArray<double>;
-#endif
-#ifndef vectorType
-using vectorType = LinearAlgebra::distributed::Vector<double>;
-#endif
 
 // macro for constants
 #define constV(a) make_vectorized_array(a)
@@ -118,7 +109,8 @@ public:
    * \param src The source vector.
    */
   void
-  vmult(vectorType &dst, const vectorType &src) const;
+  vmult(dealii::LinearAlgebra::distributed::Vector<double>       &dst,
+        const dealii::LinearAlgebra::distributed::Vector<double> &src) const;
 
   /**
    * \brief Vector of all the physical fields in the problem. Fields are identified by
@@ -256,13 +248,16 @@ protected:
   std::vector<IndexSet *> locally_relevant_dofsSet_nonconst;
   /*Vector all the solution vectors in the problem. In a multi-field problem, each primal
    * field has a solution vector associated with it.*/
-  std::vector<vectorType *> solutionSet;
+  std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> solutionSet;
   /*Vector all the residual (RHS) vectors in the problem. In a multi-field problem, each
    * primal field has a residual vector associated with it.*/
-  std::vector<vectorType *> residualSet;
+  std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> residualSet;
   /*Vector of parallel solution transfer objects. This is used only when adaptive meshing
    * is enabled.*/
-  std::vector<parallel::distributed::SolutionTransfer<dim, vectorType> *> soltransSet;
+  std::vector<parallel::distributed::SolutionTransfer<
+    dim,
+    dealii::LinearAlgebra::distributed::Vector<double>> *>
+    soltransSet;
 
   // matrix free objects
   /*Object of class MatrixFree<dim>. This is primarily responsible for all the
@@ -273,14 +268,14 @@ protected:
   /*Vector to store the inverse of the mass matrix diagonal for scalar fields.
    * Due to the choice of spectral elements with Guass-Lobatto quadrature, the
    * mass matrix is diagonal.*/
-  vectorType invMscalar;
+  dealii::LinearAlgebra::distributed::Vector<double> invMscalar;
   /*Vector to store the inverse of the mass matrix diagonal for vector fields.
    * Due to the choice of spectral elements with Guass-Lobatto quadrature, the
    * mass matrix is diagonal.*/
-  vectorType invMvector;
+  dealii::LinearAlgebra::distributed::Vector<double> invMvector;
   /*Vector to store the solution increment. This is a temporary vector used
    * during implicit solves of the Elliptic fields.*/
-  vectorType dU_vector, dU_scalar;
+  dealii::LinearAlgebra::distributed::Vector<double> dU_vector, dU_scalar;
 
   // matrix free methods
   /*Current field index*/
@@ -321,16 +316,16 @@ protected:
   // virtual methods to be implemented in the derived class
   /*Method to calculate LHS(implicit solve)*/
   void
-  getLHS(const MatrixFree<dim, double>               &data,
-         vectorType                                  &dst,
-         const vectorType                            &src,
-         const std::pair<unsigned int, unsigned int> &cell_range) const;
+  getLHS(const MatrixFree<dim, double>                            &data,
+         dealii::LinearAlgebra::distributed::Vector<double>       &dst,
+         const dealii::LinearAlgebra::distributed::Vector<double> &src,
+         const std::pair<unsigned int, unsigned int>              &cell_range) const;
 
   bool generatingInitialGuess;
   void
-  getLaplaceLHS(const MatrixFree<dim, double>               &data,
-                vectorType                                  &dst,
-                const vectorType                            &src,
+  getLaplaceLHS(const MatrixFree<dim, double>                            &data,
+                dealii::LinearAlgebra::distributed::Vector<double>       &dst,
+                const dealii::LinearAlgebra::distributed::Vector<double> &src,
                 const std::pair<unsigned int, unsigned int> &cell_range) const;
 
   void
@@ -338,25 +333,27 @@ protected:
   void
   computeLaplaceRHS(unsigned int fieldIndex);
   void
-  getLaplaceRHS(const MatrixFree<dim, double>               &data,
-                vectorType                                  &dst,
-                const vectorType                            &src,
+  getLaplaceRHS(const MatrixFree<dim, double>                            &data,
+                dealii::LinearAlgebra::distributed::Vector<double>       &dst,
+                const dealii::LinearAlgebra::distributed::Vector<double> &src,
                 const std::pair<unsigned int, unsigned int> &cell_range) const;
 
   /*Method to calculate RHS (implicit/explicit). This is an abstract method, so
    * every model which inherits MatrixFreePDE<dim> has to implement this
    * method.*/
   void
-  getExplicitRHS(const MatrixFree<dim, double>               &data,
-                 std::vector<vectorType *>                   &dst,
-                 const std::vector<vectorType *>             &src,
-                 const std::pair<unsigned int, unsigned int> &cell_range) const;
+  getExplicitRHS(
+    const MatrixFree<dim, double>                                           &data,
+    std::vector<dealii::LinearAlgebra::distributed::Vector<double> *>       &dst,
+    const std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> &src,
+    const std::pair<unsigned int, unsigned int> &cell_range) const;
 
   void
-  getNonexplicitRHS(const MatrixFree<dim, double>               &data,
-                    std::vector<vectorType *>                   &dst,
-                    const std::vector<vectorType *>             &src,
-                    const std::pair<unsigned int, unsigned int> &cell_range) const;
+  getNonexplicitRHS(
+    const MatrixFree<dim, double>                                           &data,
+    std::vector<dealii::LinearAlgebra::distributed::Vector<double> *>       &dst,
+    const std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> &src,
+    const std::pair<unsigned int, unsigned int> &cell_range) const;
 
   virtual void
   explicitEquationRHS(
@@ -387,13 +384,15 @@ protected:
     [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
     [[maybe_unused]] const VectorizedArray<double>             element_volume) const {};
   void
-  computePostProcessedFields(std::vector<vectorType *> &postProcessedSet);
+  computePostProcessedFields(
+    std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> &postProcessedSet);
 
   void
-  getPostProcessedFields(const MatrixFree<dim, double>               &data,
-                         std::vector<vectorType *>                   &dst,
-                         const std::vector<vectorType *>             &src,
-                         const std::pair<unsigned int, unsigned int> &cell_range);
+  getPostProcessedFields(
+    const MatrixFree<dim, double>                                           &data,
+    std::vector<dealii::LinearAlgebra::distributed::Vector<double> *>       &dst,
+    const std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> &src,
+    const std::pair<unsigned int, unsigned int>                             &cell_range);
 
   // methods to apply dirichlet BC's
   /*Map of degrees of freedom to the corresponding Dirichlet boundary
@@ -506,9 +505,10 @@ protected:
 
   /*Method to compute the integral of a field.*/
   void
-  computeIntegral(double                   &integratedField,
-                  int                       index,
-                  std::vector<vectorType *> variableSet);
+  computeIntegral(
+    double                                                           &integratedField,
+    int                                                               index,
+    std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> variableSet);
 
   // variables for time dependent problems
   /*Flag used to see if invM, time stepping in run(), etc are necessary*/

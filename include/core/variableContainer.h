@@ -89,11 +89,14 @@ public:
 
   // Initialize, read DOFs, and set evaulation flags for each variable
   void
-  reinit_and_eval(const std::vector<vectorType *> &src, unsigned int cell);
+  reinit_and_eval(
+    const std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> &src,
+    unsigned int                                                             cell);
   void
-  reinit_and_eval_change_in_solution(const vectorType &src,
-                                     unsigned int      cell,
-                                     unsigned int      var_being_solved);
+  reinit_and_eval_change_in_solution(
+    const dealii::LinearAlgebra::distributed::Vector<double> &src,
+    unsigned int                                              cell,
+    unsigned int                                              var_being_solved);
 
   // Only initialize the FEEvaluation object for each variable (used for
   // post-processing)
@@ -102,10 +105,12 @@ public:
 
   // Integrate the residuals and distribute from local to global
   void
-  integrate_and_distribute(std::vector<vectorType *> &dst);
+  integrate_and_distribute(
+    std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> &dst);
   void
-  integrate_and_distribute_change_in_solution_LHS(vectorType        &dst,
-                                                  const unsigned int var_being_solved);
+  integrate_and_distribute_change_in_solution_LHS(
+    dealii::LinearAlgebra::distributed::Vector<double> &dst,
+    const unsigned int                                  var_being_solved);
 
   // The quadrature point index, a method to get the number of quadrature points
   // per cell, and a method to get the xyz coordinates for the quadrature point

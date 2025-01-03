@@ -3,9 +3,10 @@
 
 template <int dim, int degree>
 void
-MatrixFreePDE<dim, degree>::computeIntegral(double                   &integratedField,
-                                            int                       index,
-                                            std::vector<vectorType *> variableSet)
+MatrixFreePDE<dim, degree>::computeIntegral(
+  double                                                           &integratedField,
+  int                                                               index,
+  std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> variableSet)
 {
   QGauss<dim>         quadrature_formula(degree + 1);
   FE_Q<dim>           FE(QGaussLobatto<1>(degree + 1));
