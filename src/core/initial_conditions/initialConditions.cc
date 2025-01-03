@@ -48,7 +48,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
   if (userInputs.load_grain_structure)
     {
       // Create the dummy field
-      vectorType grain_index_field;
+      dealii::LinearAlgebra::distributed::Vector<double> grain_index_field;
 
       // Clear the order parameter fields
       unsigned int op_list_index = 0;

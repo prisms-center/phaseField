@@ -11,10 +11,6 @@
 #include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/matrix_free/fe_evaluation.h>
 
-#ifndef vectorType
-using vectorType = dealii::LinearAlgebra::distributed::Vector<double>;
-#endif
-
 /**
  * This class holds information for a grain, including its index and the list of
  * vertices in that grain.
@@ -118,14 +114,14 @@ public:
    * mesh/field and outputs a vector of GrainSet objects.
    */
   void
-  calcGrainSets(dealii::FESystem<dim>      &finite_element,
-                dealii::DoFHandler<dim>    &dof_handler,
-                vectorType                 *solution_field,
-                double                      threshold_lower,
-                double                      threshold_upper,
-                int                         min_id,
-                unsigned int                order_parameter_index,
-                std::vector<GrainSet<dim>> &grain_sets);
+  calcGrainSets(dealii::FESystem<dim>                              &finite_element,
+                dealii::DoFHandler<dim>                            &dof_handler,
+                dealii::LinearAlgebra::distributed::Vector<double> *solution_field,
+                double                                              threshold_lower,
+                double                                              threshold_upper,
+                int                                                 min_id,
+                unsigned int                                        order_parameter_index,
+                std::vector<GrainSet<dim>>                         &grain_sets);
 
 protected:
   /**
@@ -133,15 +129,15 @@ protected:
    */
   template <typename T>
   void
-  recursiveFloodFill(T                           cell,
-                     T                           cell_end,
-                     vectorType                 *solution_field,
-                     double                      threshold_lower,
-                     double                      threshold_upper,
-                     int                         min_id,
-                     unsigned int               &grain_index,
-                     std::vector<GrainSet<dim>> &grain_sets,
-                     bool                       &grain_assigned);
+  recursiveFloodFill(T                                                   cell,
+                     T                                                   cell_end,
+                     dealii::LinearAlgebra::distributed::Vector<double> *solution_field,
+                     double                                              threshold_lower,
+                     double                                              threshold_upper,
+                     int                                                 min_id,
+                     unsigned int                                       &grain_index,
+                     std::vector<GrainSet<dim>>                         &grain_sets,
+                     bool                                               &grain_assigned);
 
   /**
    * The method to merge the grain sets from all the processors.
