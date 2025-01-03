@@ -1,8 +1,8 @@
 #ifndef Body_HH
 #define Body_HH
 
-#include "./Mesh.hh"
-#include "./PField.hh"
+#include <field_input/IntegrationTools/pfield/Mesh.hh>
+#include <field_input/IntegrationTools/pfield/PField.hh>
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
@@ -11,8 +11,9 @@
 namespace PRISMS
 {
 
-  /// A class for a Body: a combination of Mesh and Field(s))
-  ///
+  /**
+   * \brief  A class for a Body-a combination of Mesh and Field(s)-used in file read-in.
+   */
   template <class Coordinate, int DIM>
   class Body
   {
@@ -21,109 +22,82 @@ namespace PRISMS
 
     std::vector<PField<Coordinate, double, DIM>> scalar_field;
 
-    // std::vector< PField<Coordinate, std::vector<double>, DIM > > vector_field;
+    /**
+     * \brief Constructor.
+     */
+    Body() = default;
 
-    // std::vector< PField<Coordinate, Tensor<double>, DIM > > tensor_field;
-
-    // ----------------------------------------------------------
-    // Constructors
-    Body() {};
-
-    /// Read from a 2D vtk file
-    ///   For now:
-    ///      only ASCII files
-    ///      only rectilinear grids (though output as UNSTRUCTURED_GRID)
-    ///      only (2d) Quad elements
-    ///
+    /**
+     * \brief Read from a 2D/3D vtk file with quad/hex elements
+     */
     void
     read_vtk(const std::string &vtkfile)
     {
-      std::cout << "Begin reading unstructured vtk file" << std::endl;
-
-      // read in vtk file here
-      std::ifstream infile_mesh(vtkfile.c_str());
-
-      // read mesh info
-      mesh.read_vtk(infile_mesh);
-
+      // Read vtk file
       std::ifstream infile(vtkfile.c_str());
-
-      // read point data
-      std::istringstream ss;
-      std::string        str, name, type, line;
-      int                numcomp;
-      unsigned long int  Npoints, u, p;
-
-      while (!infile.eof())
+      if (!infile.is_open())
         {
-          std::getline(infile, line);
-
-          if (line[0] == 'P')
-            {
-              if (line.size() > 9 && line.substr(0, 10) == "POINT_DATA")
-                {
-                  // std::cout << line << "\n";
-                  ss.clear();
-                  ss.str(line);
-                  ss >> str >> Npoints;
-                }
-            }
-
-          if (line[0] == 'S')
-            {
-              if (line.size() > 6 && line.substr(0, 7) == "SCALARS")
-                {
-                  ss.clear();
-                  ss.str(line);
-                  ss >> str >> name >> type >> numcomp;
-
-                  // read LOOKUP_TABLE line
-                  std::getline(infile, line);
-
-                  // read data
-                  std::cout << "begin reading data" << std::endl;
-
-                  std::vector<double> gid(Npoints);
-                  for (unsigned int i = 0; i < Npoints; i++)
-                    {
-                      infile >> gid[i];
-                      // std::cout << data[i] << std::endl;
-                    }
-                  std::cout << "  done" << std::endl;
-
-                  // construct field
-                  std::vector<std::string> var_name(DIM);
-                  std::vector<std::string> var_description(DIM);
-
-                  if (DIM == 2)
-                    {
-                      var_name[0]        = "x";
-                      var_description[0] = "x coordinate";
-                      var_name[1]        = "y";
-                      var_description[1] = "y coordinate";
-                    }
-                  if (DIM > 2)
-                    {
-                      var_name[2]        = "z";
-                      var_description[2] = "z coordinate";
-                    }
-
-                  std::cout << "Construct PField '" << name << "'" << std::endl;
-                  scalar_field.push_back(PField<Coordinate, double, DIM>(name,
-                                                                         var_name,
-                                                                         var_description,
-                                                                         mesh,
-                                                                         gid,
-                                                                         0.0));
-                  std::cout << "  done" << std::endl;
-
-                  gid.clear();
-                  //
-                }
-            }
+          throw std::runtime_error("Could not open VTK file: " + vtkfile);
         }
 
-      infile.close();
+      // Read mesh info
+      mesh.read_vtk(infile);
+
+      // Read point data
+      std::istringstream ss;
+      std::string        str;
+      std::string        name;
+      std::string        type;
+      std::string        line;
+      int                numcomp = 0;
+      unsigned long int  Npoints = 0;
+
+      while (std::getline(infile, line))
+        {
+          // Check for Point data
+          if (line.rfind("POINT_DATA", 0) == 0)
+            {
+              ss.clear();
+              ss.str(line);
+              ss >> str >> Npoints;
+            }
+
+          // Check for Scalar data
+          if (line.rfind("SCALARS", 0) == 0)
+            {
+              ss.clear();
+              ss.str(line);
+              ss >> str >> name >> type >> numcomp;
+
+              // Skip LOOKUP_TABLE line that follows SCALAR line
+              std::getline(infile, line);
+
+              // Read data
+              std::vector<double> gid(Npoints);
+              for (auto &value : gid)
+                {
+                  infile >> value;
+                }
+
+              // Check dim
+              switch (DIM)
+                {
+                  case 1:
+                    throw std::runtime_error(
+                      "1D dimensional vtk read-in is not currently supported.");
+                    break;
+                  case 2:
+                    break;
+                  case 3:
+                    break;
+                  default:
+                    throw std::runtime_error("Invalid dimension for vtk read-in.");
+                }
+
+              // Construct field
+              scalar_field.emplace_back(name, mesh, gid, 0.0);
+            }
+        }
     }
 
     void
@@ -284,36 +258,13 @@ namespace PRISMS
                     }
 
                   data.clear();
-                  // MPI_Barrier(MPI_COMM_WORLD);
-
-                  // construct field
-                  std::vector<std::string> var_name(DIM);
-                  std::vector<std::string> var_description(DIM);
-
-                  if (DIM == 2)
-                    {
-                      var_name[0]        = "x";
-                      var_description[0] = "x coordinate";
-                      var_name[1]        = "y";
-                      var_description[1] = "y coordinate";
-                    }
-                  if (DIM > 2)
-                    {
-                      var_name[2]        = "z";
-                      var_description[2] = "z coordinate";
-                    }
 
                   std::cout << "Construct PField '" << name << "'" << std::endl;
-                  scalar_field.push_back(PField<Coordinate, double, DIM>(name,
-                                                                         var_name,
-                                                                         var_description,
-                                                                         mesh,
-                                                                         gid,
-                                                                         0.0));
+                  scalar_field.push_back(
+                    PField<Coordinate, double, DIM>(name, mesh, gid, 0.0));
                   std::cout << "  done" << std::endl;
 
                   gid.clear();
-                  //
                 }
             }
         }
@@ -327,11 +278,17 @@ namespace PRISMS
       for (unsigned int i = 0; i < scalar_field.size(); i++)
         {
           if (scalar_field[i].name() == name)
-            return scalar_field[i];
+            {
+              return scalar_field[i];
+            }
         }
       throw std::invalid_argument("Could not find scalar_field named '" + name + "'");
     }
   };
+
+  template class Body<double *, 2>;
+  template class Body<double *, 3>;
+
 } // namespace PRISMS
 
 #endif
