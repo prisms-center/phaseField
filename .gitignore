@@ -56,7 +56,7 @@ main-debug
 main
 
 #Output files
-*.vtk
+applications/*/*.vtk
 *.vtu
 *.vts
 *.frt

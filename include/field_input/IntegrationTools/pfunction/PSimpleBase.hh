@@ -1,4 +1,3 @@
-
 #ifndef PSimpleBase_HH
 #define PSimpleBase_HH
 
@@ -42,39 +41,6 @@ namespace PRISMS
     operator()() const
     {
       return _val;
-    }
-
-    void
-    is_derived_from_PSimpleBase() const
-    {
-      return;
-    }
-
-    virtual PSimpleBase<VarContainer, OutType> *
-    clone() const
-    {
-      return new PSimpleBase<VarContainer, OutType>(*this);
-    }
-
-    [[nodiscard]] virtual std::string
-    csrc() const
-    {
-      undefined("std::string csrc()");
-      return std::string();
-    }
-
-    [[nodiscard]] virtual std::string
-    sym() const
-    {
-      undefined("std::string sym()");
-      return std::string();
-    }
-
-    [[nodiscard]] virtual std::string
-    latex() const
-    {
-      undefined("std::string latex()");
-      return std::string();
     }
 
   private:
