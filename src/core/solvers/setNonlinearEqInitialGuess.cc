@@ -54,7 +54,8 @@ MatrixFreePDE<dim, degree>::setNonlinearEqInitialGuess()
 
           // Currently the only allowed solver is SolverCG, the SolverType input
           // variable is a dummy
-          SolverCG<vectorType> solver(solver_control);
+          SolverCG<dealii::LinearAlgebra::distributed::Vector<double>> solver(
+            solver_control);
 
           // solve
           try
@@ -149,10 +150,10 @@ MatrixFreePDE<dim, degree>::computeLaplaceRHS(unsigned int fieldIndex)
 template <int dim, int degree>
 void
 MatrixFreePDE<dim, degree>::getLaplaceRHS(
-  const MatrixFree<dim, double>               &data,
-  vectorType                                  &dst,
-  const vectorType                            &src,
-  const std::pair<unsigned int, unsigned int> &cell_range) const
+  const MatrixFree<dim, double>                            &data,
+  dealii::LinearAlgebra::distributed::Vector<double>       &dst,
+  const dealii::LinearAlgebra::distributed::Vector<double> &src,
+  const std::pair<unsigned int, unsigned int>              &cell_range) const
 {
   FEEvaluation<dim, degree> mat(data);
 
@@ -176,10 +177,10 @@ MatrixFreePDE<dim, degree>::getLaplaceRHS(
 template <int dim, int degree>
 void
 MatrixFreePDE<dim, degree>::getLaplaceLHS(
-  const MatrixFree<dim, double>               &data,
-  vectorType                                  &dst,
-  const vectorType                            &src,
-  const std::pair<unsigned int, unsigned int> &cell_range) const
+  const MatrixFree<dim, double>                            &data,
+  dealii::LinearAlgebra::distributed::Vector<double>       &dst,
+  const dealii::LinearAlgebra::distributed::Vector<double> &src,
+  const std::pair<unsigned int, unsigned int>              &cell_range) const
 {
   FEEvaluation<dim, degree> mat(data);
 

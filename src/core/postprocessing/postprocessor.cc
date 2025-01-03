@@ -3,13 +3,13 @@
 template <int dim, int degree>
 void
 MatrixFreePDE<dim, degree>::computePostProcessedFields(
-  std::vector<vectorType *> &postProcessedSet)
+  std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> &postProcessedSet)
 {
   // Initialize the postProcessedSet
   for (unsigned int fieldIndex = 0; fieldIndex < pp_attributes.size(); fieldIndex++)
     {
-      vectorType *U = nullptr;
-      U             = new vectorType;
+      dealii::LinearAlgebra::distributed::Vector<double> *U = nullptr;
+      U = new dealii::LinearAlgebra::distributed::Vector<double>;
       postProcessedSet.push_back(U);
       matrixFreeObject.initialize_dof_vector(*U, 0);
     }
@@ -25,10 +25,10 @@ MatrixFreePDE<dim, degree>::computePostProcessedFields(
 template <int dim, int degree>
 void
 MatrixFreePDE<dim, degree>::getPostProcessedFields(
-  const dealii::MatrixFree<dim, double>       &data,
-  std::vector<vectorType *>                   &dst,
-  const std::vector<vectorType *>             &src,
-  const std::pair<unsigned int, unsigned int> &cell_range)
+  const dealii::MatrixFree<dim, double>                                   &data,
+  std::vector<dealii::LinearAlgebra::distributed::Vector<double> *>       &dst,
+  const std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> &src,
+  const std::pair<unsigned int, unsigned int>                             &cell_range)
 {
   // initialize FEEvaulation objects
   variableContainer<dim, degree, dealii::VectorizedArray<double>> variable_list(
