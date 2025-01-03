@@ -6,6 +6,22 @@
 // NOLINTBEGIN(cppcoreguidelines-prefer-member-initializer)
 variableAttributeLoader::variableAttributeLoader()
 {
+  this->init_attributes();
+}
+
+// NOLINTEND(cppcoreguidelines-prefer-member-initializer)
+
+void
+variableAttributeLoader::loadVariableAttributes()
+{}
+
+void
+variableAttributeLoader::loadPostProcessorVariableAttributes()
+{}
+
+void
+variableAttributeLoader::init_attributes()
+{
   relevant_attributes = &var_attributes;
   loadVariableAttributes();
   relevant_attributes = &pp_attributes;
@@ -44,8 +60,6 @@ variableAttributeLoader::variableAttributeLoader()
       pp_variable.parse_residual_dependencies();
     }
 }
-
-// NOLINTEND(cppcoreguidelines-prefer-member-initializer)
 
 AttributesList
 variableAttributeLoader::get_var_attributes() const
@@ -213,7 +227,7 @@ variableAttributeLoader::validate_variable_name(
                             " Variable names must not be empty.\nProblem index: " +
                             std::to_string(index)));
 
-  for (const std::string &forbidden_name : forbidden_names)
+  for ([[maybe_unused]] const std::string &forbidden_name : forbidden_names)
     {
       std::string error_message = "PRISMS-PF Error: " + context +
                                   " Variable names must not contain \"grad()\", "
@@ -243,12 +257,12 @@ variableAttributeLoader::populate_dependencies(
 
 void
 variableAttributeLoader::validate_dependencies(
-  const std::set<std::string>                 &dependencies,
-  const std::string                           &context,
-  unsigned int                                 index,
-  const std::string                           &variable_name,
-  const std::set<std::string>                 &reg_possible_deps,
-  const std::map<uint, std::set<std::string>> &change_possible_deps)
+  const std::set<std::string>                                  &dependencies,
+  const std::string                                            &context,
+  unsigned int                                                  index,
+  const std::string                                            &variable_name,
+  [[maybe_unused]] const std::set<std::string>                 &reg_possible_deps,
+  [[maybe_unused]] const std::map<uint, std::set<std::string>> &change_possible_deps)
 {
   for (const std::string &dependency : dependencies)
     {
@@ -270,11 +284,11 @@ variableAttributeLoader::validate_dependencies(
 
 void
 variableAttributeLoader::variableAttributeLoader::validate_postprocess_variable(
-  const std::string           &name,
-  const std::set<std::string> &name_list,
-  const std::set<std::string> &reg_possible_deps,
-  const variableAttributes    &pp_variable,
-  unsigned int                 index)
+  const std::string                            &name,
+  [[maybe_unused]] const std::set<std::string> &name_list,
+  [[maybe_unused]] const std::set<std::string> &reg_possible_deps,
+  const variableAttributes                     &pp_variable,
+  unsigned int                                  index)
 {
   Assert(name_list.find(name) == name_list.end(),
          dealii::ExcMessage("PRISMS-PF Error: Postprocess variable names must be "

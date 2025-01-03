@@ -21,6 +21,11 @@ public:
   variableAttributeLoader();
 
   /**
+   * \brief Destructor.
+   */
+  virtual ~variableAttributeLoader() = default;
+
+  /**
    * \brief User-facing method where the variable attributes are set.
    */
   virtual void
@@ -203,6 +208,14 @@ public:
    */
   [[nodiscard]] AttributesList
   get_pp_attributes() const;
+
+protected:
+  /**
+   * \brief Initialize the attributes of the variables. This is done is the constructor of
+   * this class and must be called in constructors of child classes.
+   */
+  void
+  init_attributes();
 
 private:
   /**
