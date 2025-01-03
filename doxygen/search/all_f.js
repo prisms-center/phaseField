@@ -1,13 +1,19 @@
 var searchData=
 [
-  ['radius_166',['radius',['../classSimplifiedGrainRepresentation.html#a37bd32baa82c4a3c391197afff46b719',1,'SimplifiedGrainRepresentation']]],
-  ['read_5fvtk_167',['read_vtk',['../classPRISMS_1_1Body.html#a5e0f2aba92a504042eb5cad0991afe87',1,'PRISMS::Body']]],
-  ['reassigngrains_168',['reassignGrains',['../classMatrixFreePDE.html#a7975eb6bc4ca5be5c4580a953336a0d3',1,'MatrixFreePDE::reassignGrains()'],['../classSimplifiedGrainManipulator.html#a482348a28f2f62cfdd09899089386ad8',1,'SimplifiedGrainManipulator::reassignGrains()']]],
-  ['recursivefloodfill_169',['recursiveFloodFill',['../classFloodFiller.html#a7a3030ce41ff41ebc87d6dd2cd5f3b60',1,'FloodFiller']]],
-  ['refine_5fgrid_170',['refine_grid',['../classAdaptiveRefinement.html#ae94f15593790f75d26a65b62ebc1ef61',1,'AdaptiveRefinement']]],
-  ['refinementcriterion_171',['RefinementCriterion',['../classRefinementCriterion.html',1,'']]],
-  ['reinit_5fand_5feval_5fchange_5fin_5fsolution_172',['reinit_and_eval_change_in_solution',['../classvariableContainer.html#a5993cf15f52c868df2257d83b081cc44',1,'variableContainer']]],
-  ['remap_173',['remap',['../classOrderParameterRemapper.html#a4a7354870a66054a80fbae30f32777b6',1,'OrderParameterRemapper']]],
-  ['remap_5ffrom_5findex_5ffield_174',['remap_from_index_field',['../classOrderParameterRemapper.html#af8233c0f86080fe8e70a526774db9c15',1,'OrderParameterRemapper']]],
-  ['running_20a_20prisms_2dpf_20example_20app_175',['Running a PRISMS-PF Example App',['../running_apps.html',1,'manual']]]
+  ['h_0',['customPDE.h',['../app_files.html#autotoc_md13',1,'']]],
+  ['hexahedron_1',['Hexahedron',['../classPRISMS_1_1Hexahedron.html',1,'PRISMS']]],
+  ['hexahedron_5ff_2',['Hexahedron_f',['../classPRISMS_1_1Hexahedron__f.html',1,'PRISMS']]],
+  ['hexahedron_5fgrad_5f0_3',['Hexahedron_grad_0',['../classPRISMS_1_1Hexahedron__grad__0.html',1,'PRISMS']]],
+  ['hexahedron_5fgrad_5f1_4',['Hexahedron_grad_1',['../classPRISMS_1_1Hexahedron__grad__1.html',1,'PRISMS']]],
+  ['hexahedron_5fgrad_5f2_5',['Hexahedron_grad_2',['../classPRISMS_1_1Hexahedron__grad__2.html',1,'PRISMS']]],
+  ['hexahedron_5fhess_5f0_5f0_6',['Hexahedron_hess_0_0',['../classPRISMS_1_1Hexahedron__hess__0__0.html',1,'PRISMS']]],
+  ['hexahedron_5fhess_5f0_5f1_7',['Hexahedron_hess_0_1',['../classPRISMS_1_1Hexahedron__hess__0__1.html',1,'PRISMS']]],
+  ['hexahedron_5fhess_5f0_5f2_8',['Hexahedron_hess_0_2',['../classPRISMS_1_1Hexahedron__hess__0__2.html',1,'PRISMS']]],
+  ['hexahedron_5fhess_5f1_5f0_9',['Hexahedron_hess_1_0',['../classPRISMS_1_1Hexahedron__hess__1__0.html',1,'PRISMS']]],
+  ['hexahedron_5fhess_5f1_5f1_10',['Hexahedron_hess_1_1',['../classPRISMS_1_1Hexahedron__hess__1__1.html',1,'PRISMS']]],
+  ['hexahedron_5fhess_5f1_5f2_11',['Hexahedron_hess_1_2',['../classPRISMS_1_1Hexahedron__hess__1__2.html',1,'PRISMS']]],
+  ['hexahedron_5fhess_5f2_5f0_12',['Hexahedron_hess_2_0',['../classPRISMS_1_1Hexahedron__hess__2__0.html',1,'PRISMS']]],
+  ['hexahedron_5fhess_5f2_5f1_13',['Hexahedron_hess_2_1',['../classPRISMS_1_1Hexahedron__hess__2__1.html',1,'PRISMS']]],
+  ['hexahedron_5fhess_5f2_5f2_14',['Hexahedron_hess_2_2',['../classPRISMS_1_1Hexahedron__hess__2__2.html',1,'PRISMS']]],
+  ['hexahedronvalues_15',['HexahedronValues',['../classPRISMS_1_1HexahedronValues.html',1,'PRISMS']]]
 ];

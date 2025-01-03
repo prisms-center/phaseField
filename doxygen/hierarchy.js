@@ -42,6 +42,7 @@ var hierarchy =
     [ "PRISMS::PFuncBase< Coordinate, FieldType >", "classPRISMS_1_1PFuncBase.html", [
       [ "PRISMS::PField< Coordinate, FieldType, DIM >", "classPRISMS_1_1PField.html", null ]
     ] ],
+    [ "PRISMS::PFuncBase< double *, double >", "classPRISMS_1_1PFuncBase.html", null ],
     [ "PRISMS::PFuncBase< std::vector< PRISMS::Coordinate< 2 > >, double >", "classPRISMS_1_1PFuncBase.html", [
       [ "PRISMS::Quad", "classPRISMS_1_1Quad.html", null ]
     ] ],
@@ -53,6 +54,7 @@ var hierarchy =
     [ "PRISMS::PFunction< VarContainer, OutType >", "classPRISMS_1_1PFunction.html", null ],
     [ "PRISMS::PFunction< double *, double >", "classPRISMS_1_1PFunction.html", null ],
     [ "PRISMS::PNDArray< OutType >", "classPRISMS_1_1PNDArray.html", null ],
+    [ "PRISMS::PNDArray< std::vector< PRISMS::Interpolator< PRISMS::Coordinate, DIM > * > >", "classPRISMS_1_1PNDArray.html", null ],
     [ "PRISMS::PNDArray< std::vector< T > >", "classPRISMS_1_1PNDArray.html", null ],
     [ "PRISMS::PSimpleBase< VarContainer, OutType >", "classPRISMS_1_1PSimpleBase.html", [
       [ "PRISMS::PPieceWiseSimpleBase< VarContainer, OutType >", "classPRISMS_1_1PPieceWiseSimpleBase.html", null ],

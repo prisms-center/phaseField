@@ -2,20 +2,43 @@
 \usepackage{ifthen}
 \usepackage{epsfig}
 \usepackage[utf8]{inputenc}
+\usepackage{xcolor}
 \usepackage{newunicodechar}
-  \newunicodechar{⁻}{${}^{-}$}% Superscript minus
-  \newunicodechar{²}{${}^{2}$}% Superscript two
-  \newunicodechar{³}{${}^{3}$}% Superscript three
+  \makeatletter
+    \def\doxynewunicodechar#1#2{%
+    \@tempswafalse
+    \edef\nuc@tempa{\detokenize{#1}}%
+    \if\relax\nuc@tempa\relax
+      \nuc@emptyargerr
+    \else
+      \edef\@tempb{\expandafter\@car\nuc@tempa\@nil}%
+      \nuc@check
+      \if@tempswa
+        \@namedef{u8:\nuc@tempa}{#2}%
+      \fi
+    \fi
+  }
+  \makeatother
+  \doxynewunicodechar{⁻}{${}^{-}$}% Superscript minus
+  \doxynewunicodechar{²}{${}^{2}$}% Superscript two
+  \doxynewunicodechar{³}{${}^{3}$}% Superscript three
 
 \pagestyle{empty}
 \begin{document}
-\[ \int_{\Omega} w \eta^{n+1} ~dV =\int_{\Omega} w \left( \underbrace{\eta^{n} - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n)}_{eq_{\eta}} \right)+ \nabla w \cdot \underbrace{(- \Delta t M_{\eta}\kappa) \nabla \eta^{n}}_{eqx_{\eta}} ~dV \]
+\[
+\int_{\Omega}   w  \eta^{n+1}  ~dV =\int_{\Omega}  w  \left( \underbrace{\eta^{n} - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n)}_{eq_{\eta}} \right)+ \nabla w \cdot \underbrace{(- \Delta t M_{\eta}\kappa) \nabla \eta^{n}}_{eqx_{\eta}} ~dV
+\]
 \pagebreak
 
-\[ ]$\int_{\Omega} w c^{n+1} ~dV = \int_{\Omega} w \underbrace{c^{n}}_{eq_c} + \nabla w \underbrace{(-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n+1})+f_{\beta,cc}^n H^{n+1}) \nabla c + ~((f_{\beta,c}^n-f_{\alpha,c}^n)H^{n+1}_{,\eta} \nabla \eta) ] }_{eqx_{c}} ~dV \]
+\[
+
+]$\int_{\Omega}   w  c^{n+1}  ~dV = \int_{\Omega}   w \underbrace{c^{n}}_{eq_c} +  \nabla w   \underbrace{(-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n+1})+f_{\beta,cc}^n H^{n+1}) \nabla c + ~((f_{\beta,c}^n-f_{\alpha,c}^n)H^{n+1}_{,\eta} \nabla \eta) ] }_{eqx_{c}} ~dV
+\]
 \pagebreak
 
-\[ R(u) = \int_{\Omega} \nabla w : C(\eta_1, \eta_2, \eta_3) : \left( \epsilon - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0 \]
+\[
+R(u) = \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \epsilon - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0
+\]
 \pagebreak
 
 $u$
@@ -27,13 +50,19 @@ $u_0$
 $\Delta u$
 \pagebreak
 
-\[ R(u) = R(u_0 + \Delta u) = R(u_0) + \int_{\Omega} \left. \frac{\delta R(u)}{\delta u}\right|_{u=u_0} \Delta u ~dV = 0 \]
+\[
+R(u) = R(u_0 + \Delta u) = R(u_0) +  \int_{\Omega} \left. \frac{\delta R(u)}{\delta u}\right|_{u=u_0} \Delta u ~dV = 0
+\]
 \pagebreak
 
-\[ R(u_0 + \Delta u) = \int_{\Omega} \nabla w : C(\eta_1, \eta_2, \eta_3) : \left( \epsilon(u_0 + \Delta u) - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = \int_{\Omega} \nabla w : C(\eta_1, \eta_2, \eta_3) : \left( \epsilon(u_0) + \epsilon(\Delta u) - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0 \]
+\[
+R(u_0 + \Delta u) =  \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \epsilon(u_0 + \Delta u) - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \epsilon(u_0) + \epsilon(\Delta u) - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0
+\]
 \pagebreak
 
-\[ \int_{\Omega} \nabla w : \underbrace{C : \nabla (\epsilon(\Delta u))}_{eqx_{u}^{LHS}} dV = -\int_{\Omega} \nabla w : \underbrace{C :(\epsilon(u_0)-\epsilon^0)}_{eqx_{u}^{RHS}} ~dV \]
+\[
+\int_{\Omega} \nabla w : \underbrace{C : \nabla (\epsilon(\Delta u))}_{eqx_{u}^{LHS}} dV = -\int_{\Omega}   \nabla w : \underbrace{C :(\epsilon(u_0)-\epsilon^0)}_{eqx_{u}^{RHS}} ~dV
+\]
 \pagebreak
 
 $eqx_{u}^{LHS}$

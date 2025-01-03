@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['other_20app_20files_438',['Other App Files',['../app_files.html',1,'manual']]]
+  ['deal_20ii_0',['Installing CMake and deal.II',['../install_prereqs.html',1,'install']]]
 ];

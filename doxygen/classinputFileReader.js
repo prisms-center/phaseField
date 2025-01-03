@@ -15,11 +15,5 @@ var classinputFileReader =
     [ "declare_solver_parameters", "classinputFileReader.html#a8b286eacf630a67b27dc49feeee481ee", null ],
     [ "declare_time_discretization", "classinputFileReader.html#ab084f539bba80eb5af9569908bc34bc0", null ],
     [ "get_model_constant_names", "classinputFileReader.html#a93489007a8322e12bf25367697a676da", null ],
-    [ "get_subsection_entry_list", "classinputFileReader.html#aba81efe5e574333ea880fe6461988759", null ],
-    [ "model_constant_names", "classinputFileReader.html#a4dd5131f925a1d3ae0bfb654c3489967", null ],
-    [ "number_of_dimensions", "classinputFileReader.html#af1d0956398d710018b36633f3dc0a1b6", null ],
-    [ "parameter_handler", "classinputFileReader.html#a9dfd25b427ba794b929146aba6a89c5a", null ],
-    [ "parameters_file_name", "classinputFileReader.html#acb02ef01b69ba090c9847a3a5efa2a70", null ],
-    [ "pp_attributes", "classinputFileReader.html#ad4aa801c4c9e9671c9c68b4724a56e05", null ],
-    [ "var_attributes", "classinputFileReader.html#a3b6850655861293e09bf4f18ee8f5f86", null ]
+    [ "get_subsection_entry_list", "classinputFileReader.html#aba81efe5e574333ea880fe6461988759", null ]
 ];

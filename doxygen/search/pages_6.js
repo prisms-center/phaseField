@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['tests_442',['Tests',['../tests.html',1,'manual']]],
-  ['the_20input_20file_3a_20parameters_2ein_443',['The Input File: parameters.in',['../input_file.html',1,'manual']]]
+  ['manual_0',['PRISMS-PF User Manual',['../manual.html',1,'']]]
 ];
