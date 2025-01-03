@@ -35,11 +35,9 @@
 #include <grains/SimplifiedGrainRepresentation.h>
 #include <nucleation/nucleus.h>
 #include <utilities/computeStress.h>
+#include <utilities/utilities.h>
 
 using namespace dealii;
-
-// macro for constants
-#define constV(a) make_vectorized_array(a)
 
 /**
  * \brief This is the abstract base class for the matrix free implementation of parabolic
