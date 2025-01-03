@@ -17,7 +17,7 @@
 using namespace std;
 
 void
-variableAttributeLoader::loadVariableAttributes()
+customAttributeLoader::loadVariableAttributes()
 {
   // Declaring all the model variables as follows:
   // domain parameter for the electrolyte - psi

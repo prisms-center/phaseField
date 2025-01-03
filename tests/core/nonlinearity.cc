@@ -25,11 +25,6 @@ TEST_CASE("Nonlinearity criterion")
     class testVariableAttributeLoader : public variableAttributeLoader
     {
     public:
-      testVariableAttributeLoader()
-      {
-        this->init_attributes();
-      }
-
       ~testVariableAttributeLoader() override = default;
 
       void
@@ -60,7 +55,7 @@ TEST_CASE("Nonlinearity criterion")
     };
 
     testVariableAttributeLoader attributes;
-
+    attributes.init_variable_attributes();
     AttributesList main_variables = attributes.get_var_attributes();
     AttributesList pp_variables   = attributes.get_pp_attributes();
 
@@ -94,11 +89,6 @@ TEST_CASE("Nonlinearity criterion")
     class testVariableAttributeLoader : public variableAttributeLoader
     {
     public:
-      testVariableAttributeLoader()
-      {
-        this->init_attributes();
-      }
-
       ~testVariableAttributeLoader() override = default;
 
       void
@@ -148,7 +138,7 @@ TEST_CASE("Nonlinearity criterion")
     };
 
     testVariableAttributeLoader attributes;
-
+    attributes.init_variable_attributes();
     AttributesList main_variables = attributes.get_var_attributes();
     AttributesList pp_variables   = attributes.get_pp_attributes();
 
@@ -173,11 +163,6 @@ TEST_CASE("Nonlinearity criterion")
     class testVariableAttributeLoader : public variableAttributeLoader
     {
     public:
-      testVariableAttributeLoader()
-      {
-        this->init_attributes();
-      }
-
       ~testVariableAttributeLoader() override = default;
 
       void
@@ -200,7 +185,7 @@ TEST_CASE("Nonlinearity criterion")
     };
 
     testVariableAttributeLoader attributes;
-
+    attributes.init_variable_attributes();
     AttributesList main_variables = attributes.get_var_attributes();
     AttributesList pp_variables   = attributes.get_pp_attributes();
 
@@ -222,11 +207,6 @@ TEST_CASE("Nonlinearity criterion")
     class testVariableAttributeLoader : public variableAttributeLoader
     {
     public:
-      testVariableAttributeLoader()
-      {
-        this->init_attributes();
-      }
-
       ~testVariableAttributeLoader() override = default;
 
       void
@@ -259,7 +239,7 @@ TEST_CASE("Nonlinearity criterion")
     };
 
     testVariableAttributeLoader attributes;
-
+    attributes.init_variable_attributes();
     AttributesList main_variables = attributes.get_var_attributes();
     AttributesList pp_variables   = attributes.get_pp_attributes();
 
@@ -283,11 +263,6 @@ TEST_CASE("Nonlinearity criterion")
     class testVariableAttributeLoader : public variableAttributeLoader
     {
     public:
-      testVariableAttributeLoader()
-      {
-        this->init_attributes();
-      }
-
       ~testVariableAttributeLoader() override = default;
 
       void
@@ -329,7 +304,7 @@ TEST_CASE("Nonlinearity criterion")
     };
 
     testVariableAttributeLoader attributes;
-
+    attributes.init_variable_attributes();
     AttributesList main_variables = attributes.get_var_attributes();
     AttributesList pp_variables   = attributes.get_pp_attributes();
 

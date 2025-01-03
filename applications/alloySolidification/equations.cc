@@ -14,7 +14,7 @@
 // rate calculations.
 
 void
-variableAttributeLoader::loadVariableAttributes()
+customAttributeLoader::loadVariableAttributes()
 {
   // Variable 0
   set_variable_name(0, "U");

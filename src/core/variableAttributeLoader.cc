@@ -3,14 +3,6 @@
 
 #include <core/variableAttributeLoader.h>
 
-// NOLINTBEGIN(cppcoreguidelines-prefer-member-initializer)
-variableAttributeLoader::variableAttributeLoader()
-{
-  this->init_attributes();
-}
-
-// NOLINTEND(cppcoreguidelines-prefer-member-initializer)
-
 void
 variableAttributeLoader::loadVariableAttributes()
 {}
@@ -20,7 +12,7 @@ variableAttributeLoader::loadPostProcessorVariableAttributes()
 {}
 
 void
-variableAttributeLoader::init_attributes()
+variableAttributeLoader::init_variable_attributes()
 {
   relevant_attributes = &var_attributes;
   loadVariableAttributes();

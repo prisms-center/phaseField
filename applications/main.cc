@@ -2,6 +2,7 @@
 #include "customPDE.h"
 
 #include "ICs_and_BCs.cc"
+#include "core/variableAttributes.h"
 #include "equations.cc"
 
 #include <core/ParseCommandLineOpts.h>
@@ -13,7 +14,7 @@
 #  include "postprocess.cc"
 #else
 void
-variableAttributeLoader::loadPostProcessorVariableAttributes()
+customAttributeLoader::loadPostProcessorVariableAttributes()
 {}
 #endif
 
@@ -62,10 +63,11 @@ main(int argc, char **argv)
       // postprocessing variables there are, how many sets of elastic constants
       // there are, and how many user-defined constants there are.
 
-      const variableAttributeLoader attribute_loader;
-      const AttributesList var_attributes = attribute_loader.get_var_attributes();
-      const AttributesList pp_attributes  = attribute_loader.get_pp_attributes();
-      inputFileReader      input_file_reader(parameters_filename,
+      customAttributeLoader attribute_loader;
+      attribute_loader.init_variable_attributes();
+      AttributesList  var_attributes = attribute_loader.get_var_attributes();
+      AttributesList  pp_attributes  = attribute_loader.get_pp_attributes();
+      inputFileReader input_file_reader(parameters_filename,
                                         var_attributes,
                                         pp_attributes);
 
