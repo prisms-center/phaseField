@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>PRISMS-PF Manual: PRISMS::Coordinate&lt; DIM &gt; Class Template Reference</title>
+<title>PRISMS-PF Manual: PRISMS::Coordinate&lt; dim &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -95,34 +95,41 @@ $(document).ready(function(){initNavTree('classPRISMS_1_1Coordinate.html',''); i
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="classPRISMS_1_1Coordinate-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">PRISMS::Coordinate&lt; DIM &gt; Class Template Reference</div></div>
+  <div class="headertitle"><div class="title">PRISMS::Coordinate&lt; dim &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>A class for a coordinate, templated by dimension. This is a possible option anyplace '<a class="el" href="classPRISMS_1_1Coordinate.html" title="A class for a coordinate, templated by dimension. This is a possible option anyplace &#39;Coordinate&#39; cla...">Coordinate</a>' class template is used but it is not the only option. Any class that implements '<a class="el" href="classPRISMS_1_1Coordinate.html#af4266297c77bc3ab5f54ac38f89768b6" title="Get the ith coordinate.">Coordinate::operator[]()</a>' should work.  
+ <a href="classPRISMS_1_1Coordinate.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="Coordinate_8hh_source.html">Coordinate.hh</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac7e44dd1f9053aae58df510de5913fd0" id="r_ac7e44dd1f9053aae58df510de5913fd0"><td class="memItemLeft" align="right" valign="top"><a id="ac7e44dd1f9053aae58df510de5913fd0" name="ac7e44dd1f9053aae58df510de5913fd0"></a>
+<tr class="memitem:ae2759bb253ad34554cec5bc00c954f1d" id="r_ae2759bb253ad34554cec5bc00c954f1d"><td class="memItemLeft" align="right" valign="top"><a id="ae2759bb253ad34554cec5bc00c954f1d" name="ae2759bb253ad34554cec5bc00c954f1d"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> () const</td></tr>
-<tr class="separator:ac7e44dd1f9053aae58df510de5913fd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28a27b4ee99043ffc6c38731a1dfa243" id="r_a28a27b4ee99043ffc6c38731a1dfa243"><td class="memItemLeft" align="right" valign="top"><a id="a28a27b4ee99043ffc6c38731a1dfa243" name="a28a27b4ee99043ffc6c38731a1dfa243"></a>
+<tr class="memdesc:ae2759bb253ad34554cec5bc00c954f1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of dimensions. <br /></td></tr>
+<tr class="separator:ae2759bb253ad34554cec5bc00c954f1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4266297c77bc3ab5f54ac38f89768b6" id="r_af4266297c77bc3ab5f54ac38f89768b6"><td class="memItemLeft" align="right" valign="top"><a id="af4266297c77bc3ab5f54ac38f89768b6" name="af4266297c77bc3ab5f54ac38f89768b6"></a>
 float &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (int i)</td></tr>
-<tr class="separator:a28a27b4ee99043ffc6c38731a1dfa243"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5165e166edd42d7938e6f7904df01a72" id="r_a5165e166edd42d7938e6f7904df01a72"><td class="memItemLeft" align="right" valign="top"><a id="a5165e166edd42d7938e6f7904df01a72" name="a5165e166edd42d7938e6f7904df01a72"></a>
+<tr class="memdesc:af4266297c77bc3ab5f54ac38f89768b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the ith coordinate. <br /></td></tr>
+<tr class="separator:af4266297c77bc3ab5f54ac38f89768b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1958e8c8cfa8dcc55d5aa149ce705990" id="r_a1958e8c8cfa8dcc55d5aa149ce705990"><td class="memItemLeft" align="right" valign="top"><a id="a1958e8c8cfa8dcc55d5aa149ce705990" name="a1958e8c8cfa8dcc55d5aa149ce705990"></a>
 const float &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (int i) const</td></tr>
-<tr class="separator:a5165e166edd42d7938e6f7904df01a72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a1958e8c8cfa8dcc55d5aa149ce705990"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a const reference to the ith coordinate. <br /></td></tr>
+<tr class="separator:a1958e8c8cfa8dcc55d5aa149ce705990"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
 <tr class="memitem:a456ffea5294dc3f977c157ca36ab15eb" id="r_a456ffea5294dc3f977c157ca36ab15eb"><td class="memTemplParams" colspan="2"><a id="a456ffea5294dc3f977c157ca36ab15eb" name="a456ffea5294dc3f977c157ca36ab15eb"></a>
 template&lt;int D&gt; </td></tr>
 <tr class="memitem:a456ffea5294dc3f977c157ca36ab15eb"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;outstream, const <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a>&lt; D &gt; &amp;coord)</td></tr>
+<tr class="memdesc:a456ffea5294dc3f977c157ca36ab15eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Friend function for output stream. <br /></td></tr>
 <tr class="separator:a456ffea5294dc3f977c157ca36ab15eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;int DIM&gt;<br />
-class PRISMS::Coordinate&lt; DIM &gt;</div><p>A class for a coordinate, templated by dimension This is a possible option anyplace '<a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a>' class template is used but it is not the only option. Any class that implements 'Coordinate::operator[]()' should work </p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;int dim&gt;<br />
+class PRISMS::Coordinate&lt; dim &gt;</div><p>A class for a coordinate, templated by dimension. This is a possible option anyplace '<a class="el" href="classPRISMS_1_1Coordinate.html" title="A class for a coordinate, templated by dimension. This is a possible option anyplace &#39;Coordinate&#39; cla...">Coordinate</a>' class template is used but it is not the only option. Any class that implements '<a class="el" href="classPRISMS_1_1Coordinate.html#af4266297c77bc3ab5f54ac38f89768b6" title="Get the ith coordinate.">Coordinate::operator[]()</a>' should work. </p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/field_input/IntegrationTools/pfield/<a class="el" href="Coordinate_8hh_source.html">Coordinate.hh</a></li>
 </ul>

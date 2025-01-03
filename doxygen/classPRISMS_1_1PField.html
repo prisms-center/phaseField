@@ -123,79 +123,22 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>size_type</b> = std:
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5bbce840714b9fa09b6dc769648c0958" id="r_a5bbce840714b9fa09b6dc769648c0958"><td class="memItemLeft" align="right" valign="top"><a id="a5bbce840714b9fa09b6dc769648c0958" name="a5bbce840714b9fa09b6dc769648c0958"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>PField</b> (const std::string &amp;name, const std::vector&lt; std::string &gt; &amp;var_name, const std::vector&lt; std::string &gt; &amp;var_description, <a class="el" href="classPRISMS_1_1Mesh.html">Mesh</a>&lt; <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a>, DIM &gt; &amp;mesh, const std::vector&lt; FieldType &gt; &amp;field, const FieldType &amp;zero)</td></tr>
-<tr class="separator:a5bbce840714b9fa09b6dc769648c0958"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31b9e5b6b867ef3962276afb12c4b07a" id="r_a31b9e5b6b867ef3962276afb12c4b07a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classPRISMS_1_1PField.html">PField</a>&lt; <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a>, FieldType, DIM &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPRISMS_1_1PField.html#a31b9e5b6b867ef3962276afb12c4b07a">clone</a> () const override</td></tr>
-<tr class="separator:a31b9e5b6b867ef3962276afb12c4b07a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54a43272c283b29fd45fc8586d37fe1b" id="r_a54a43272c283b29fd45fc8586d37fe1b"><td class="memItemLeft" align="right" valign="top"><a id="a54a43272c283b29fd45fc8586d37fe1b" name="a54a43272c283b29fd45fc8586d37fe1b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>PField</b> (const std::string &amp;name, <a class="el" href="classPRISMS_1_1Mesh.html">Mesh</a>&lt; <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a>, DIM &gt; &amp;mesh, const std::vector&lt; FieldType &gt; &amp;field, const FieldType &amp;zero)</td></tr>
+<tr class="separator:a54a43272c283b29fd45fc8586d37fe1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f681e2faf935284181576ee997c8eb1" id="r_a4f681e2faf935284181576ee997c8eb1"><td class="memItemLeft" align="right" valign="top">FieldType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPRISMS_1_1PField.html#a4f681e2faf935284181576ee997c8eb1">operator()</a> (const <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a> &amp;coord) override</td></tr>
 <tr class="separator:a4f681e2faf935284181576ee997c8eb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5ba9835efd95d3e1408d1f498c7b405" id="r_af5ba9835efd95d3e1408d1f498c7b405"><td class="memItemLeft" align="right" valign="top"><a id="af5ba9835efd95d3e1408d1f498c7b405" name="af5ba9835efd95d3e1408d1f498c7b405"></a>
-FieldType&#160;</td><td class="memItemRight" valign="bottom"><b>grad</b> (const <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a> &amp;coord, size_type di) override</td></tr>
-<tr class="separator:af5ba9835efd95d3e1408d1f498c7b405"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab7b47e683fe94838cd2acd857ca34355" id="r_ab7b47e683fe94838cd2acd857ca34355"><td class="memItemLeft" align="right" valign="top"><a id="ab7b47e683fe94838cd2acd857ca34355" name="ab7b47e683fe94838cd2acd857ca34355"></a>
-FieldType&#160;</td><td class="memItemRight" valign="bottom"><b>hess</b> (const <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a> &amp;coord, size_type di, size_type dj) override</td></tr>
-<tr class="separator:ab7b47e683fe94838cd2acd857ca34355"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fb8679e44244edfd611ecabfadef027" id="r_a2fb8679e44244edfd611ecabfadef027"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPRISMS_1_1PField.html#a2fb8679e44244edfd611ecabfadef027">eval</a> (const <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a> &amp;coord) override</td></tr>
 <tr class="separator:a2fb8679e44244edfd611ecabfadef027"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7765d4595872e801029b9d3f443c060" id="r_af7765d4595872e801029b9d3f443c060"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPRISMS_1_1PField.html#af7765d4595872e801029b9d3f443c060">eval_grad</a> (const <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a> &amp;coord) override</td></tr>
-<tr class="separator:af7765d4595872e801029b9d3f443c060"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a824a218c1151fdb9e5b4186b5e1990ad" id="r_a824a218c1151fdb9e5b4186b5e1990ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPRISMS_1_1PField.html#a824a218c1151fdb9e5b4186b5e1990ad">eval_hess</a> (const <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a> &amp;coord) override</td></tr>
-<tr class="separator:a824a218c1151fdb9e5b4186b5e1990ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acaf273a5510601f7aea695abdb89b889" id="r_acaf273a5510601f7aea695abdb89b889"><td class="memItemLeft" align="right" valign="top">FieldType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPRISMS_1_1PField.html#acaf273a5510601f7aea695abdb89b889">operator()</a> () const override</td></tr>
 <tr class="separator:acaf273a5510601f7aea695abdb89b889"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac64dad6cac5094fdd9e45cb1c22a7d89" id="r_ac64dad6cac5094fdd9e45cb1c22a7d89"><td class="memItemLeft" align="right" valign="top"><a id="ac64dad6cac5094fdd9e45cb1c22a7d89" name="ac64dad6cac5094fdd9e45cb1c22a7d89"></a>
-FieldType&#160;</td><td class="memItemRight" valign="bottom"><b>grad</b> (size_type di) const override</td></tr>
-<tr class="separator:ac64dad6cac5094fdd9e45cb1c22a7d89"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6cb603e808cd0c9940f8ca2b4b750d0" id="r_ae6cb603e808cd0c9940f8ca2b4b750d0"><td class="memItemLeft" align="right" valign="top"><a id="ae6cb603e808cd0c9940f8ca2b4b750d0" name="ae6cb603e808cd0c9940f8ca2b4b750d0"></a>
-FieldType&#160;</td><td class="memItemRight" valign="bottom"><b>hess</b> (size_type di, size_type dj) const override</td></tr>
-<tr class="separator:ae6cb603e808cd0c9940f8ca2b4b750d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classPRISMS_1_1PFuncBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classPRISMS_1_1PFuncBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classPRISMS_1_1PFuncBase.html">PRISMS::PFuncBase&lt; Coordinate, FieldType &gt;</a></td></tr>
-<tr class="memitem:a2e58d96e1e4803b43910ca19b7162eaf inherit pub_methods_classPRISMS_1_1PFuncBase" id="r_a2e58d96e1e4803b43910ca19b7162eaf"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>PFuncBase</b> (const std::string &amp;name, const std::vector&lt; std::string &gt; &amp;var_name, const std::vector&lt; std::string &gt; &amp;var_description)</td></tr>
-<tr class="separator:a2e58d96e1e4803b43910ca19b7162eaf inherit pub_methods_classPRISMS_1_1PFuncBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7bd1c5c63ad0a770591d2e3400c6647 inherit pub_methods_classPRISMS_1_1PFuncBase" id="r_ab7bd1c5c63ad0a770591d2e3400c6647"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>PFuncBase</b> (const std::string &amp;name)</td></tr>
+<tr class="separator:ab7bd1c5c63ad0a770591d2e3400c6647 inherit pub_methods_classPRISMS_1_1PFuncBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0193ce810ebfe11ef0eccfb080ef50c0 inherit pub_methods_classPRISMS_1_1PFuncBase" id="r_a0193ce810ebfe11ef0eccfb080ef50c0"><td class="memItemLeft" align="right" valign="top">
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b> ()</td></tr>
 <tr class="separator:a0193ce810ebfe11ef0eccfb080ef50c0 inherit pub_methods_classPRISMS_1_1PFuncBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afca23158c9f928074a455e7c673f0565 inherit pub_methods_classPRISMS_1_1PFuncBase" id="r_afca23158c9f928074a455e7c673f0565"><td class="memItemLeft" align="right" valign="top">
-size_type&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> () const</td></tr>
-<tr class="separator:afca23158c9f928074a455e7c673f0565 inherit pub_methods_classPRISMS_1_1PFuncBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc8b0cf1d7eeccb153e486d88ffbad6f inherit pub_methods_classPRISMS_1_1PFuncBase" id="r_acc8b0cf1d7eeccb153e486d88ffbad6f"><td class="memItemLeft" align="right" valign="top">
-std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>var_name</b> ()</td></tr>
-<tr class="separator:acc8b0cf1d7eeccb153e486d88ffbad6f inherit pub_methods_classPRISMS_1_1PFuncBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adde2d6678f98b621cc09c70180697cb0 inherit pub_methods_classPRISMS_1_1PFuncBase" id="r_adde2d6678f98b621cc09c70180697cb0"><td class="memItemLeft" align="right" valign="top">
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>var_name</b> (size_type i)</td></tr>
-<tr class="separator:adde2d6678f98b621cc09c70180697cb0 inherit pub_methods_classPRISMS_1_1PFuncBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a4c41ff80a33080b9a414853ee0b868 inherit pub_methods_classPRISMS_1_1PFuncBase" id="r_a8a4c41ff80a33080b9a414853ee0b868"><td class="memItemLeft" align="right" valign="top">
-std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>var_description</b> ()</td></tr>
-<tr class="separator:a8a4c41ff80a33080b9a414853ee0b868 inherit pub_methods_classPRISMS_1_1PFuncBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8fc81a55d3579550f1cd4cbb4dd17ac9 inherit pub_methods_classPRISMS_1_1PFuncBase" id="r_a8fc81a55d3579550f1cd4cbb4dd17ac9"><td class="memItemLeft" align="right" valign="top">
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>var_description</b> (size_type i)</td></tr>
-<tr class="separator:a8fc81a55d3579550f1cd4cbb4dd17ac9 inherit pub_methods_classPRISMS_1_1PFuncBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81279123be6133fcc97aad06a500dc44 inherit pub_methods_classPRISMS_1_1PFuncBase" id="r_a81279123be6133fcc97aad06a500dc44"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>is_derived_from_PFuncBase</b> () const</td></tr>
-<tr class="separator:a81279123be6133fcc97aad06a500dc44 inherit pub_methods_classPRISMS_1_1PFuncBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af00f50d8331f38046cf990dbdef9e4ab inherit pub_methods_classPRISMS_1_1PFuncBase" id="r_af00f50d8331f38046cf990dbdef9e4ab"><td class="memItemLeft" align="right" valign="top">
-virtual <a class="el" href="classPRISMS_1_1PSimpleFunction.html">PSimpleFunction</a>&lt; <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a>, FieldType &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>simplefunction</b> () const</td></tr>
-<tr class="separator:af00f50d8331f38046cf990dbdef9e4ab inherit pub_methods_classPRISMS_1_1PFuncBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1564f28ee7cceb5b4e967d901e5596ed inherit pub_methods_classPRISMS_1_1PFuncBase" id="r_a1564f28ee7cceb5b4e967d901e5596ed"><td class="memItemLeft" align="right" valign="top">
-virtual <a class="el" href="classPRISMS_1_1PSimpleFunction.html">PSimpleFunction</a>&lt; <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a>, FieldType &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>grad_simplefunction</b> (size_type di) const</td></tr>
-<tr class="separator:a1564f28ee7cceb5b4e967d901e5596ed inherit pub_methods_classPRISMS_1_1PFuncBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d5e6b99285914cc77e3d67f9138246d inherit pub_methods_classPRISMS_1_1PFuncBase" id="r_a7d5e6b99285914cc77e3d67f9138246d"><td class="memItemLeft" align="right" valign="top">
-virtual <a class="el" href="classPRISMS_1_1PSimpleFunction.html">PSimpleFunction</a>&lt; <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a>, FieldType &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>hess_simplefunction</b> (size_type di, size_type dj) const</td></tr>
-<tr class="separator:a7d5e6b99285914cc77e3d67f9138246d inherit pub_methods_classPRISMS_1_1PFuncBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad03fe1f55c48ea62a46805ec5d6cfa32 inherit pub_methods_classPRISMS_1_1PFuncBase" id="r_ad03fe1f55c48ea62a46805ec5d6cfa32"><td class="memItemLeft" align="right" valign="top">
-virtual FieldType&#160;</td><td class="memItemRight" valign="bottom"><b>grad</b> (const <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a> &amp;var, size_type di)</td></tr>
-<tr class="separator:ad03fe1f55c48ea62a46805ec5d6cfa32 inherit pub_methods_classPRISMS_1_1PFuncBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf9fd22115ebb586a71087bd924142cc inherit pub_methods_classPRISMS_1_1PFuncBase" id="r_abf9fd22115ebb586a71087bd924142cc"><td class="memItemLeft" align="right" valign="top">
-virtual FieldType&#160;</td><td class="memItemRight" valign="bottom"><b>grad</b> (size_type di) const</td></tr>
-<tr class="separator:abf9fd22115ebb586a71087bd924142cc inherit pub_methods_classPRISMS_1_1PFuncBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9644ac590a895e8b1502dfae6e2d909 inherit pub_methods_classPRISMS_1_1PFuncBase" id="r_aa9644ac590a895e8b1502dfae6e2d909"><td class="memItemLeft" align="right" valign="top">
-virtual FieldType&#160;</td><td class="memItemRight" valign="bottom"><b>hess</b> (const <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a> &amp;var, size_type di, size_type dj)</td></tr>
-<tr class="separator:aa9644ac590a895e8b1502dfae6e2d909 inherit pub_methods_classPRISMS_1_1PFuncBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0cc1c5888eea6118b1a7a928ef058233 inherit pub_methods_classPRISMS_1_1PFuncBase" id="r_a0cc1c5888eea6118b1a7a928ef058233"><td class="memItemLeft" align="right" valign="top">
-virtual FieldType&#160;</td><td class="memItemRight" valign="bottom"><b>hess</b> (size_type di, size_type dj) const</td></tr>
-<tr class="separator:a0cc1c5888eea6118b1a7a928ef058233 inherit pub_methods_classPRISMS_1_1PFuncBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -211,12 +154,6 @@ FieldType&#160;</td><td class="memItemRight" valign="bottom"><b>_zero</b></td></
 <tr class="memitem:a94ff314f0d597424850f5e6fff371377" id="r_a94ff314f0d597424850f5e6fff371377"><td class="memItemLeft" align="right" valign="top"><a id="a94ff314f0d597424850f5e6fff371377" name="a94ff314f0d597424850f5e6fff371377"></a>
 FieldType&#160;</td><td class="memItemRight" valign="bottom"><b>_val</b></td></tr>
 <tr class="separator:a94ff314f0d597424850f5e6fff371377"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac79dc2b0cef73d79dd29efb9e78f654c" id="r_ac79dc2b0cef73d79dd29efb9e78f654c"><td class="memItemLeft" align="right" valign="top"><a id="ac79dc2b0cef73d79dd29efb9e78f654c" name="ac79dc2b0cef73d79dd29efb9e78f654c"></a>
-std::vector&lt; FieldType &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>_grad_val</b></td></tr>
-<tr class="separator:ac79dc2b0cef73d79dd29efb9e78f654c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51fb46efaa6a0776e91be29a593e44fe" id="r_a51fb46efaa6a0776e91be29a593e44fe"><td class="memItemLeft" align="right" valign="top"><a id="a51fb46efaa6a0776e91be29a593e44fe" name="a51fb46efaa6a0776e91be29a593e44fe"></a>
-std::vector&lt; std::vector&lt; FieldType &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>_hess_val</b></td></tr>
-<tr class="separator:a51fb46efaa6a0776e91be29a593e44fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -224,12 +161,6 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:afa449341cf4eff0b6160d9c726a2cdc2 inherit pro_attribs_classPRISMS_1_1PFuncBase" id="r_afa449341cf4eff0b6160d9c726a2cdc2"><td class="memItemLeft" align="right" valign="top">
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>_name</b></td></tr>
 <tr class="separator:afa449341cf4eff0b6160d9c726a2cdc2 inherit pro_attribs_classPRISMS_1_1PFuncBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade340948c759f4e093ce43b1aeb69d8e inherit pro_attribs_classPRISMS_1_1PFuncBase" id="r_ade340948c759f4e093ce43b1aeb69d8e"><td class="memItemLeft" align="right" valign="top">
-std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>_var_name</b></td></tr>
-<tr class="separator:ade340948c759f4e093ce43b1aeb69d8e inherit pro_attribs_classPRISMS_1_1PFuncBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a796970e88ace8c40d86fafee0dd7c1b3 inherit pro_attribs_classPRISMS_1_1PFuncBase" id="r_a796970e88ace8c40d86fafee0dd7c1b3"><td class="memItemLeft" align="right" valign="top">
-std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>_var_description</b></td></tr>
-<tr class="separator:a796970e88ace8c40d86fafee0dd7c1b3 inherit pro_attribs_classPRISMS_1_1PFuncBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a>, class FieldType, int DIM&gt;<br />
@@ -237,35 +168,6 @@ class PRISMS::PField&lt; Coordinate, FieldType, DIM &gt;</div><p>A class for a f
 <p>Varcontainer contains variables, for instance 'std::vector&lt;double&gt;' for x, y, z FieldType is the datatype for the field, for instance 'double' for temperature or 'std::vector&lt;double&gt;' for vector displacement</p>
 <p>A field consists of a pointer to a mesh, a list field values (at mesh nodes) </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a31b9e5b6b867ef3962276afb12c4b07a" name="a31b9e5b6b867ef3962276afb12c4b07a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a31b9e5b6b867ef3962276afb12c4b07a">&#9670;&#160;</a></span>clone()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a> , class FieldType , int DIM&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classPRISMS_1_1PField.html">PField</a>&lt; <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a>, FieldType, DIM &gt; * <a class="el" href="classPRISMS_1_1PField.html">PRISMS::PField</a>&lt; <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a>, FieldType, DIM &gt;::clone </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reimplemented from <a class="el" href="classPRISMS_1_1PFuncBase.html">PRISMS::PFuncBase&lt; Coordinate, FieldType &gt;</a>.</p>
-
-</div>
-</div>
 <a id="a2fb8679e44244edfd611ecabfadef027" name="a2fb8679e44244edfd611ecabfadef027"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2fb8679e44244edfd611ecabfadef027">&#9670;&#160;</a></span>eval()</h2>
 
@@ -279,66 +181,6 @@ template&lt;class <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate
       <table class="memname">
         <tr>
           <td class="memname">void <a class="el" href="classPRISMS_1_1PField.html">PRISMS::PField</a>&lt; <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a>, FieldType, DIM &gt;::eval </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a> &amp;&#160;</td>
-          <td class="paramname"><em>coord</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reimplemented from <a class="el" href="classPRISMS_1_1PFuncBase.html">PRISMS::PFuncBase&lt; Coordinate, FieldType &gt;</a>.</p>
-
-</div>
-</div>
-<a id="af7765d4595872e801029b9d3f443c060" name="af7765d4595872e801029b9d3f443c060"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af7765d4595872e801029b9d3f443c060">&#9670;&#160;</a></span>eval_grad()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a> , class FieldType , int DIM&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classPRISMS_1_1PField.html">PRISMS::PField</a>&lt; <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a>, FieldType, DIM &gt;::eval_grad </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a> &amp;&#160;</td>
-          <td class="paramname"><em>coord</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reimplemented from <a class="el" href="classPRISMS_1_1PFuncBase.html">PRISMS::PFuncBase&lt; Coordinate, FieldType &gt;</a>.</p>
-
-</div>
-</div>
-<a id="a824a218c1151fdb9e5b4186b5e1990ad" name="a824a218c1151fdb9e5b4186b5e1990ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a824a218c1151fdb9e5b4186b5e1990ad">&#9670;&#160;</a></span>eval_hess()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a> , class FieldType , int DIM&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classPRISMS_1_1PField.html">PRISMS::PField</a>&lt; <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a>, FieldType, DIM &gt;::eval_hess </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a> &amp;&#160;</td>
           <td class="paramname"><em>coord</em></td><td>)</td>

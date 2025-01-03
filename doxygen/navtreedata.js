@@ -113,9 +113,6 @@ var NAVTREE =
       [ "Tests", "tests.html", null ],
       [ "Creating Custom PRISMS-PF Apps", "custom_apps.html", null ]
     ] ],
-    [ "Namespaces", "namespaces.html", [
-      [ "Namespace List", "namespaces.html", null ]
-    ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -123,7 +120,8 @@ var NAVTREE =
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", null ],
         [ "Functions", "functions_func.html", null ],
-        [ "Variables", "functions_vars.html", null ]
+        [ "Variables", "functions_vars.html", null ],
+        [ "Related Symbols", "functions_rela.html", null ]
       ] ]
     ] ],
     [ "Files", "files.html", [
@@ -135,7 +133,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "AdaptiveRefinement_8h_source.html",
-"dir_08e2c57dada70b3ac96184fffb80fd0b.html"
+"input_file.html#autotoc_md28"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

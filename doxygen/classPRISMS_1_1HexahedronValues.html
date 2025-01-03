@@ -116,9 +116,9 @@ Public Types</h2></td></tr>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>size_type</b> = typename <a class="el" href="classPRISMS_1_1Interpolator.html">Interpolator</a>&lt; <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a>, 3 &gt;::size_type</td></tr>
 <tr class="separator:af2029a7c394a2db0c96907f67d53cb08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_classPRISMS_1_1Interpolator"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classPRISMS_1_1Interpolator')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classPRISMS_1_1Interpolator.html">PRISMS::Interpolator&lt; Coordinate, 3 &gt;</a></td></tr>
-<tr class="memitem:acfa67ff2015f9d18b703766f3d7f774b inherit pub_types_classPRISMS_1_1Interpolator" id="r_acfa67ff2015f9d18b703766f3d7f774b"><td class="memItemLeft" align="right" valign="top">
-typedef <a class="el" href="classPRISMS_1_1PFuncBase.html">PFuncBase</a>&lt; std::vector&lt; <a class="el" href="classPRISMS_1_1Coordinate.html">PRISMS::Coordinate</a>&lt; DIM &gt; &gt;, double &gt;::size_type&#160;</td><td class="memItemRight" valign="bottom"><b>size_type</b></td></tr>
-<tr class="separator:acfa67ff2015f9d18b703766f3d7f774b inherit pub_types_classPRISMS_1_1Interpolator"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac041bee252bb958810592119685c99b9 inherit pub_types_classPRISMS_1_1Interpolator" id="r_ac041bee252bb958810592119685c99b9"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>size_type</b> = typename <a class="el" href="classPRISMS_1_1PFuncBase.html">PFuncBase</a>&lt; std::vector&lt; <a class="el" href="classPRISMS_1_1Coordinate.html">PRISMS::Coordinate</a>&lt; DIM &gt; &gt;, double &gt;::size_type</td></tr>
+<tr class="separator:ac041bee252bb958810592119685c99b9 inherit pub_types_classPRISMS_1_1Interpolator"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -133,12 +133,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a940516439cea84a5a6ee1bed314c51cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53be2d08e73f559aa7d44871186e3b99" id="r_a53be2d08e73f559aa7d44871186e3b99"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPRISMS_1_1HexahedronValues.html#a53be2d08e73f559aa7d44871186e3b99">operator()</a> (const <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a> &amp;coord) override</td></tr>
 <tr class="separator:a53be2d08e73f559aa7d44871186e3b99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9a8457f897ffc31fbe4357c272fadf4" id="r_ad9a8457f897ffc31fbe4357c272fadf4"><td class="memItemLeft" align="right" valign="top"><a id="ad9a8457f897ffc31fbe4357c272fadf4" name="ad9a8457f897ffc31fbe4357c272fadf4"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>grad</b> (const <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a> &amp;coord, size_type di) override</td></tr>
-<tr class="separator:ad9a8457f897ffc31fbe4357c272fadf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0c27ec2148c46b2d8b38abe49625b77" id="r_ab0c27ec2148c46b2d8b38abe49625b77"><td class="memItemLeft" align="right" valign="top"><a id="ab0c27ec2148c46b2d8b38abe49625b77" name="ab0c27ec2148c46b2d8b38abe49625b77"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>hess</b> (const <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a> &amp;coord, size_type di, size_type dj) override</td></tr>
-<tr class="separator:ab0c27ec2148c46b2d8b38abe49625b77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classPRISMS_1_1Interpolator"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classPRISMS_1_1Interpolator')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classPRISMS_1_1Interpolator.html">PRISMS::Interpolator&lt; Coordinate, 3 &gt;</a></td></tr>
 <tr class="memitem:a67649828dd3e523596a3dbbca5f9fcd7 inherit pub_methods_classPRISMS_1_1Interpolator" id="r_a67649828dd3e523596a3dbbca5f9fcd7"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>Interpolator</b> (unsigned long int node, unsigned long int element, <a class="el" href="classPRISMS_1_1PFuncBase.html">PFuncBase</a>&lt; std::vector&lt; <a class="el" href="classPRISMS_1_1Coordinate.html">PRISMS::Coordinate</a>&lt; DIM &gt; &gt;, double &gt; *bfunc)</td></tr>
@@ -149,12 +143,6 @@ unsigned long int&#160;</td><td class="memItemRight" valign="bottom"><b>node</b>
 <tr class="memitem:aa98e065d0a6452c3104ac5a6aa1f073c inherit pub_methods_classPRISMS_1_1Interpolator" id="r_aa98e065d0a6452c3104ac5a6aa1f073c"><td class="memItemLeft" align="right" valign="top">
 unsigned long int&#160;</td><td class="memItemRight" valign="bottom"><b>element</b> ()</td></tr>
 <tr class="separator:aa98e065d0a6452c3104ac5a6aa1f073c inherit pub_methods_classPRISMS_1_1Interpolator"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3055b8afef68b89df7a8b2a42dfa38f3 inherit pub_methods_classPRISMS_1_1Interpolator" id="r_a3055b8afef68b89df7a8b2a42dfa38f3"><td class="memItemLeft" align="right" valign="top">
-virtual double&#160;</td><td class="memItemRight" valign="bottom"><b>grad</b> (const <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a> &amp;coord, size_type di)</td></tr>
-<tr class="separator:a3055b8afef68b89df7a8b2a42dfa38f3 inherit pub_methods_classPRISMS_1_1Interpolator"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2bcbf0233e489e92debc76e33714610c inherit pub_methods_classPRISMS_1_1Interpolator" id="r_a2bcbf0233e489e92debc76e33714610c"><td class="memItemLeft" align="right" valign="top">
-virtual double&#160;</td><td class="memItemRight" valign="bottom"><b>hess</b> (const <a class="el" href="classPRISMS_1_1Coordinate.html">Coordinate</a> &amp;coord, size_type di, size_type dj)</td></tr>
-<tr class="separator:a2bcbf0233e489e92debc76e33714610c inherit pub_methods_classPRISMS_1_1Interpolator"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
