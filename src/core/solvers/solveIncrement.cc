@@ -66,19 +66,14 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
   // parabolic and auxilary equations should also be here
   if (hasNonExplicitEquation)
     {
-      bool         nonlinear_it_converged = false;
-      unsigned int nonlinear_it_index     = 0;
+      bool         nonlinear_iteration_converged = false;
+      unsigned int nonlinear_iteration_index     = 0;
 
-      while (!nonlinear_it_converged)
+      while (!nonlinear_iteration_converged)
         {
-          nonlinear_it_converged = true; // Set to true here and will be set to false if
-                                         // any variable isn't converged
+          nonlinear_iteration_converged = true;
 
           // Update residualSet for the non-explicitly updated variables
-          // compute_nonexplicit_RHS()
-          // Ideally, I'd just do this for the non-explicit variables, but for
-          // now I'll do all of them this is a little redundant, but hopefully
-          // not too terrible
           computeNonexplicitRHS();
 
           for (const auto &[fieldIndex, variable] : var_attributes)
@@ -102,15 +97,15 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                       pcout << buffer;
                     }
 
-                  nonlinear_it_converged =
-                    updateImplicitSolution(fieldIndex, nonlinear_it_index);
+                  nonlinear_iteration_converged =
+                    updateImplicitSolution(fieldIndex, nonlinear_iteration_index);
 
                   // Apply Boundary conditions
                   applyBCs(fieldIndex);
                 }
               else if (fields[fieldIndex].pdetype == AUXILIARY)
                 {
-                  if (variable.is_nonlinear || nonlinear_it_index == 0)
+                  if (variable.is_nonlinear || nonlinear_iteration_index == 0)
                     {
                       // If the equation for this field is nonlinear, save the old
                       // solution
@@ -164,19 +159,26 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                                 }
                               if (currentIncrement % userInputs.skip_print_steps == 0)
                                 {
-                                  pcout << "Relative difference between nonlinear "
-                                           "iterations: "
-                                        << diff << " " << nonlinear_it_index << " "
-                                        << currentIncrement << "\n";
+                                  snprintf(buffer,
+                                           sizeof(buffer),
+                                           "  field '%2s' [nonlinear solve] current "
+                                           "increment: %u, nonlinear "
+                                           "iteration: "
+                                           "%u, dU: %12.6e\n",
+                                           fields[fieldIndex].name.c_str(),
+                                           currentIncrement,
+                                           nonlinear_iteration_index,
+                                           diff);
+                                  pcout << buffer;
                                 }
 
                               if (diff > userInputs.nonlinear_solver_parameters
                                            .getToleranceValue(fieldIndex) &&
-                                  nonlinear_it_index <
+                                  nonlinear_iteration_index <
                                     userInputs.nonlinear_solver_parameters
                                       .getMaxIterations())
                                 {
-                                  nonlinear_it_converged = false;
+                                  nonlinear_iteration_converged = false;
                                 }
                             }
                           else
@@ -201,7 +203,7 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                 }
             }
 
-          nonlinear_it_index++;
+          nonlinear_iteration_index++;
         }
     }
 
@@ -286,12 +288,12 @@ MatrixFreePDE<dim, degree>::updateExplicitSolution(unsigned int fieldIndex)
 template <int dim, int degree>
 bool
 MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
-                                                   unsigned int nonlinear_it_index)
+                                                   unsigned int nonlinear_iteration_index)
 {
   char buffer[200];
 
   // Assume convergence criterion is met, unless otherwise proven later on.
-  bool nonlinear_it_converged = true;
+  bool nonlinear_iteration_converged = true;
 
   // Apply Dirichlet BC's. This clears the residual where we want to apply Dirichlet BCs,
   // otherwise the solver sees a positive residual
@@ -469,18 +471,32 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
             }
           if (currentIncrement % userInputs.skip_print_steps == 0)
             {
-              pcout << "Relative difference between nonlinear "
-                       "iterations: "
-                    << diff << " " << nonlinear_it_index << " " << currentIncrement
-                    << "\n";
+              snprintf(buffer,
+                       sizeof(buffer),
+                       "  field '%2s' [nonlinear solve] current increment: %u, nonlinear "
+                       "iteration: "
+                       "%u, dU: %12.6e\n",
+                       fields[fieldIndex].name.c_str(),
+                       currentIncrement,
+                       nonlinear_iteration_index,
+                       diff);
+              pcout << buffer;
             }
 
           if (diff >
                 userInputs.nonlinear_solver_parameters.getToleranceValue(fieldIndex) &&
-              nonlinear_it_index <
+              nonlinear_iteration_index <
                 userInputs.nonlinear_solver_parameters.getMaxIterations())
             {
-              nonlinear_it_converged = false;
+              nonlinear_iteration_converged = false;
+            }
+          else if (diff >
+                   userInputs.nonlinear_solver_parameters.getToleranceValue(fieldIndex))
+            {
+              pcout << "\nWarning: nonlinear solver did not converge as "
+                       "per set tolerances. consider increasing the "
+                       "maximum number of iterations or decreasing the "
+                       "solver tolerance.\n";
             }
         }
       else
@@ -492,7 +508,7 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
     }
   else
     {
-      if (nonlinear_it_index == 0)
+      if (nonlinear_iteration_index == 0)
         {
           if (fields[fieldIndex].type == SCALAR)
             {
@@ -532,5 +548,5 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
         }
     }
 
-  return nonlinear_it_converged;
+  return nonlinear_iteration_converged;
 }

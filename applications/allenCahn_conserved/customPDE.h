@@ -177,13 +177,13 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
   // parabolic and auxilary equations should also be here
   if (this->hasNonExplicitEquation)
     {
-      bool         nonlinear_it_converged = false;
-      unsigned int nonlinear_it_index     = 0;
+      bool         nonlinear_iteration_converged = false;
+      unsigned int nonlinear_iteration_index     = 0;
 
-      while (!nonlinear_it_converged)
+      while (!nonlinear_iteration_converged)
         {
-          nonlinear_it_converged = true; // Set to true here and will be set to false if
-                                         // any variable isn't converged
+          nonlinear_iteration_converged = true; // Set to true here and will be set to
+                                                // false if any variable isn't converged
 
           // Update residualSet for the non-explicitly updated variables
           // compute_nonexplicit_RHS()
@@ -214,8 +214,8 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                       this->pcout << buffer;
                     }
 
-                  nonlinear_it_converged =
-                    this->updateImplicitSolution(fieldIndex, nonlinear_it_index);
+                  nonlinear_iteration_converged =
+                    this->updateImplicitSolution(fieldIndex, nonlinear_iteration_index);
 
                   // Apply Boundary conditions
                   this->applyBCs(fieldIndex);
@@ -223,7 +223,7 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
               else if (this->fields[fieldIndex].pdetype == AUXILIARY)
                 {
                   if (this->var_attributes.at(fieldIndex).is_nonlinear ||
-                      nonlinear_it_index == 0)
+                      nonlinear_iteration_index == 0)
                     {
                       // If the equation for this field is nonlinear, save the
                       // old solution
@@ -281,18 +281,19 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                                 {
                                   this->pcout << "Relative difference between nonlinear "
                                                  "iterations: "
-                                              << diff << " " << nonlinear_it_index << " "
-                                              << this->currentIncrement << std::endl;
+                                              << diff << " " << nonlinear_iteration_index
+                                              << " " << this->currentIncrement
+                                              << std::endl;
                                 }
 
                               if (diff > MatrixFreePDE<dim, degree>::userInputs
                                            .nonlinear_solver_parameters.getToleranceValue(
                                              fieldIndex) &&
-                                  nonlinear_it_index <
+                                  nonlinear_iteration_index <
                                     MatrixFreePDE<dim, degree>::userInputs
                                       .nonlinear_solver_parameters.getMaxIterations())
                                 {
-                                  nonlinear_it_converged = false;
+                                  nonlinear_iteration_converged = false;
                                 }
                             }
                           else
@@ -318,7 +319,7 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                 }
             }
 
-          nonlinear_it_index++;
+          nonlinear_iteration_index++;
         }
     }
 
