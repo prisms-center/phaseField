@@ -15,11 +15,36 @@ class variableAttributeLoader
 {
 public:
   /**
-   * \brief Constructor. Executes the user-facing functions and constructs the variable
-   * attributes.
+   * \brief Constructor.
    */
-  variableAttributeLoader();
+  variableAttributeLoader() = default;
 
+  /**
+   * \brief Destructor.
+   */
+  virtual ~variableAttributeLoader() = default;
+
+  /**
+   * \brief Initialize the variable attributes from the two user-facing methods
+   * `loadVariableAttributes()` and `loadPostProcessorVariableAttributes()`. This must be
+   * called after the default constructor for derived classes.
+   */
+  void
+  init_variable_attributes();
+
+  /**
+   * \brief getter function for variable attributes list (copy).
+   */
+  [[nodiscard]] AttributesList
+  get_var_attributes() const;
+
+  /**
+   * \brief getter function for postprocessing attributes list (copy).
+   */
+  [[nodiscard]] AttributesList
+  get_pp_attributes() const;
+
+protected:
   /**
    * \brief User-facing method where the variable attributes are set.
    */
@@ -192,18 +217,6 @@ public:
   void
   set_output_integral(const unsigned int &index, const bool &flag) const;
 
-  /**
-   * \brief getter function for variable attributes list (copy).
-   */
-  [[nodiscard]] AttributesList
-  get_var_attributes() const;
-
-  /**
-   * \brief getter function for postprocessing attributes list (copy).
-   */
-  [[nodiscard]] AttributesList
-  get_pp_attributes() const;
-
 private:
   /**
    * \brief The solutions variable attributes
@@ -277,6 +290,21 @@ private:
   static std::string
   strip_whitespace(const std::string &text);
   // The above function should be moved to a 'utilities' module
+};
+
+// Template derived class for variableAttributeLoader for applications.
+// `loadVariableAttributes()` and `loadPostProcessorVariableAttributes()` are should be
+// filled out in all the applications.
+class customAttributeLoader : public variableAttributeLoader
+{
+public:
+  ~customAttributeLoader() override = default;
+
+  void
+  loadVariableAttributes() override;
+
+  void
+  loadPostProcessorVariableAttributes() override;
 };
 
 #endif
