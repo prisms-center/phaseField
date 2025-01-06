@@ -1,8 +1,7 @@
-// solveIncrement() method for MatrixFreePDE class
-
 #include <deal.II/lac/solver_cg.h>
 
 #include <cmath>
+#include <core/exceptions.h>
 #include <core/matrixFreePDE.h>
 
 // solve each time increment
@@ -183,9 +182,10 @@ MatrixFreePDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                             }
                           else
                             {
-                              std::cerr << "PRISMS-PF Error: Nonlinear solver tolerance "
-                                           "types other than ABSOLUTE_CHANGE have yet to "
-                                           "be implemented.\n";
+                              AssertThrow(
+                                false,
+                                FeatureNotImplemented(
+                                  "Nonlinear solver tolerances besides ABSOLUTE_CHANGE"));
                             }
                         }
                     }
@@ -501,9 +501,9 @@ MatrixFreePDE<dim, degree>::updateImplicitSolution(unsigned int fieldIndex,
         }
       else
         {
-          std::cerr << "PRISMS-PF Error: Nonlinear solver tolerance "
-                       "types other than ABSOLUTE_CHANGE have yet to "
-                       "be implemented.\n";
+          AssertThrow(false,
+                      FeatureNotImplemented(
+                        "Nonlinear solver tolerances besides ABSOLUTE_CHANGE"));
         }
     }
   else

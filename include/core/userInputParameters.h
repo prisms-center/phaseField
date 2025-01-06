@@ -5,7 +5,6 @@
 #define INCLUDE_USERINPUTPARAMETERS_H_
 
 #include <deal.II/base/conditional_ostream.h>
-#include <deal.II/base/exceptions.h>
 #include <deal.II/base/point.h>
 #include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/lac/vector.h>
@@ -16,6 +15,7 @@
 #include <boost/variant.hpp>
 
 #include <core/boundary_conditions/varBCs.h>
+#include <core/exceptions.h>
 #include <core/inputFileReader.h>
 #include <core/model_variables.h>
 #include <core/refinement/RefinementCriterion.h>

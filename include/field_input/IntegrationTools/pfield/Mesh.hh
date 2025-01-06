@@ -1,10 +1,9 @@
 #ifndef Mesh_HH
 #define Mesh_HH
 
-#include <deal.II/base/exceptions.h>
-
 #include <algorithm>
 #include <cmath>
+#include <core/exceptions.h>
 #include <cstdlib>
 #include <field_input/IntegrationTools/datastruc/Bin.hh>
 #include <field_input/IntegrationTools/pfield/interpolation/Hexahedron.hh>
@@ -12,6 +11,7 @@
 #include <field_input/IntegrationTools/pfield/interpolation/Quad.hh>
 #include <field_input/IntegrationTools/pfunction/PFuncBase.hh>
 #include <fstream>
+#include <math.h>
 #include <sstream>
 
 namespace PRISMS
@@ -329,15 +329,20 @@ namespace PRISMS
       std::cout << "Read rectilinear file and create mesh" << std::endl;
 
       bool               mesh_as_points = true;
-      std::vector<float> x_coord, y_coord, z_coord;
+      std::vector<float> x_coord;
+      std::vector<float> y_coord;
+      std::vector<float> z_coord;
 
       std::istringstream ss;
-      std::string        line, str, type;
+      std::string        line;
+      std::string        str;
+      std::string        type;
 
-      unsigned int uli_dummy;
-      double       d_dummy;
+      unsigned int uli_dummy = 0;
 
-      unsigned long int         Npoints, Ncells, Ncell_numbers, u;
+      unsigned long int         Npoints = 0;
+      unsigned long int         Ncells  = 0;
+      unsigned long int         u       = 0;
       std::vector<unsigned int> cell_node;
 
       PRISMS::Coordinate<dim> _coord;
@@ -364,7 +369,7 @@ namespace PRISMS
                   std::cout << "  reserve OK" << std::endl;
                   for (unsigned int i = 0; i < Npoints; i++)
                     {
-                      float temp_coord;
+                      float temp_coord = NAN;
 
                       infile >> temp_coord;
 
@@ -389,7 +394,7 @@ namespace PRISMS
                   std::cout << "  reserve OK" << std::endl;
                   for (unsigned int i = 0; i < Npoints; i++)
                     {
-                      float temp_coord;
+                      float temp_coord = NAN;
 
                       infile >> temp_coord;
 
@@ -414,7 +419,7 @@ namespace PRISMS
                   std::cout << "  reserve OK" << std::endl;
                   for (unsigned int i = 0; i < Npoints; i++)
                     {
-                      float temp_coord;
+                      float temp_coord = NAN;
 
                       infile >> temp_coord;
 
@@ -440,7 +445,9 @@ namespace PRISMS
             }
 
           // interpolated coordinates for each node of a cell
-          std::vector<float> COORD_X(Npoints), COORD_Y(Npoints), COORD_Z(Npoints);
+          std::vector<float> COORD_X(Npoints);
+          std::vector<float> COORD_Y(Npoints);
+          std::vector<float> COORD_Z(Npoints);
 
           u = 0; //(defined at the beginning of read_vtk)
           if (dim > 2)
@@ -527,7 +534,9 @@ namespace PRISMS
                 }
 
               for (int m = 0; m < dim; m++)
-                add_once(value[m], hist[m], _coord[m]);
+                {
+                  add_once(value[m], hist[m], _coord[m]);
+                }
 
               _node.push_back(_coord);
             }
@@ -560,11 +569,15 @@ namespace PRISMS
             }
           std::cout << "  Min Coordinate: ";
           for (int j = 0; j < dim; j++)
-            std::cout << _min[j] << " ";
+            {
+              std::cout << _min[j] << " ";
+            }
           std::cout << std::endl;
           std::cout << "  Max Coordinate: ";
           for (int j = 0; j < dim; j++)
-            std::cout << _max[j] << " ";
+            {
+              std::cout << _max[j] << " ";
+            }
           std::cout << std::endl;
 
           std::cout << "  done" << std::endl;

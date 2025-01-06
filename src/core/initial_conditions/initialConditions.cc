@@ -1,6 +1,5 @@
-// methods to apply initial conditions
-
 #include <cmath>
+#include <core/exceptions.h>
 #include <core/initial_conditions/initialConditions.h>
 #include <core/matrixFreePDE.h>
 #include <field_input/IntegrationTools/PField.hh>
@@ -229,8 +228,7 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
         &grain_index_field,
         solutionSet,
         *dofHandlersSet_nonconst.at(scalar_field_index),
-        FESet.at(scalar_field_index)->dofs_per_cell,
-        userInputs.buffer_between_grains);
+        FESet.at(scalar_field_index)->dofs_per_cell);
 
       // Smooth the order parameters according to Fick's 2nd Law
       // In the time cycle below, we evolve the weak form of Eq.:
@@ -423,29 +421,3 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
         }
     }
 }
-
-// =================================================================================
-
-// I don't think vector fields are implemented in PFields yet
-// template <int dim>
-// class InitialConditionPFieldVec : public Function<dim>
-//{
-// public:
-//  unsigned int index;
-//  Vector<double> values;
-//  typedef PRISMS::PField<double*, double, 2> ScalarField2D;
-//  ScalarField2D &inputField;
-//
-//  InitialConditionPFieldVec (const unsigned int _index, ScalarField2D
-//  &_inputField) : Function<dim>(1), index(_index), inputField(_inputField) {}
-//
-//  void vector_value (const Point<dim> &p,Vector<double> &vector_IC) const
-//  {
-//	  double coord[dim];
-//	  for (unsigned int i = 0; i < dim; i++){
-//		  coord[i] = p(i);
-//	  }
-//
-//	  vector_IC = inputField(coord);
-//  }
-//};

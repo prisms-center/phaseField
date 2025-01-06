@@ -1,11 +1,9 @@
-// Methods for the userInputParameters class
-#include <deal.II/base/exceptions.h>
 #include <deal.II/base/mpi.h>
 #include <deal.II/base/utilities.h>
 
+#include <core/exceptions.h>
 #include <core/userInputParameters.h>
 
-// NOLINTBEGIN(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
 template <int dim>
 userInputParameters<dim>::userInputParameters(inputFileReader          &input_file_reader,
                                               dealii::ParameterHandler &parameter_handler)
@@ -44,8 +42,6 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
   // Load the user-defined constants
   load_model_constants(input_file_reader, parameter_handler);
 }
-
-// NOLINTEND(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
 
 template <int dim>
 void
@@ -442,11 +438,9 @@ userInputParameters<dim>::assign_linear_solve_parameters(
             else if (boost::iequals(type_string, "ABSOLUTE_SOLUTION_CHANGE"))
               {
                 temp_type = ABSOLUTE_SOLUTION_CHANGE;
-                std::cerr << "PRISMS-PF Error: Linear solver tolerance type "
-                          << type_string
-                          << " is not currently implemented, please use either "
-                             "ABSOLUTE_RESIDUAL or RELATIVE_RESIDUAL_CHANGE\n";
-                abort();
+                AssertThrow(false,
+                            FeatureNotImplemented(
+                              "Linear solver tolerance ABSOLUTE_SOLUTION_CHANGE"));
               }
             else
               {

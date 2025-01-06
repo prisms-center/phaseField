@@ -25,8 +25,7 @@ public:
     std::vector<SimplifiedGrainRepresentation<dim>> &grain_representations,
     std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> &solution_fields,
     dealii::DoFHandler<dim>                                           &dof_handler,
-    unsigned int                                                       dofs_per_cell,
-    double                                                             buffer);
+    unsigned int                                                       dofs_per_cell);
 
   /**
    * This method does the core work of the class to reassign grains across
@@ -39,8 +38,7 @@ public:
     const dealii::LinearAlgebra::distributed::Vector<double> *grain_index_field,
     std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> &solution_fields,
     dealii::DoFHandler<dim>                                           &dof_handler,
-    unsigned int                                                       dofs_per_cell,
-    double                                                             buffer);
+    unsigned int                                                       dofs_per_cell);
 
 protected:
 };

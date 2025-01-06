@@ -1,6 +1,7 @@
 #include <deal.II/base/mpi.h>
 #include <deal.II/base/utilities.h>
 
+#include <core/exceptions.h>
 #include <core/inputFileReader.h>
 #include <core/refinement/RefinementCriterion.h>
 #include <fstream>

@@ -3,7 +3,6 @@
 #ifndef VARIBLECONTAINER_H
 #define VARIBLECONTAINER_H
 
-#include <deal.II/base/exceptions.h>
 #include <deal.II/lac/vector.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
 #include <deal.II/matrix_free/fe_evaluation.h>

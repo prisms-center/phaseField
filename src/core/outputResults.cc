@@ -1,12 +1,10 @@
-// outputResults() method for MatrixFreePDE class
-
 #include <deal.II/numerics/data_out.h>
 
 #include <cmath>
 #include <core/matrixFreePDE.h>
 #include <fstream>
+#include <sstream>
 
-// output results
 template <int dim, int degree>
 void
 MatrixFreePDE<dim, degree>::outputResults()
@@ -141,20 +139,15 @@ MatrixFreePDE<dim, degree>::outputResults()
   cycleAsString << std::setw(std::floor(std::log10(userInputs.totalIncrements)) + 1)
                 << std::setfill('0') << currentIncrement;
 
-  char baseFileName[100];
-  char vtuFileName[100];
+  std::ostringstream baseFileNameStream;
+  baseFileNameStream << userInputs.output_file_name << "-" << cycleAsString.str();
+  std::string baseFileName = baseFileNameStream.str();
 
-  snprintf(baseFileName,
-           sizeof(baseFileName),
-           "%s-%s",
-           userInputs.output_file_name.c_str(),
-           cycleAsString.str().c_str());
-  snprintf(vtuFileName,
-           sizeof(vtuFileName),
-           "%s.%u.%s",
-           baseFileName,
-           Utilities::MPI::this_mpi_process(MPI_COMM_WORLD),
-           userInputs.output_file_type.c_str());
+  std::ostringstream vtuFileNameStream;
+  vtuFileNameStream << baseFileName << "."
+                    << Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) << "."
+                    << userInputs.output_file_type;
+  std::string vtuFileName = vtuFileNameStream.str();
 
   // Write to file in either vtu or vtk format
   if (userInputs.output_file_type == "vtu")
@@ -181,22 +174,19 @@ MatrixFreePDE<dim, degree>::outputResults()
                    i < Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
                    ++i)
                 {
-                  char vtuProcFileName[100];
-                  snprintf(vtuProcFileName,
-                           sizeof(vtuProcFileName),
-                           "%s-%s.%u.%s",
-                           userInputs.output_file_name.c_str(),
-                           cycleAsString.str().c_str(),
-                           i,
-                           userInputs.output_file_type.c_str());
+                  std::ostringstream vtuProcFileNameStream;
+                  vtuProcFileNameStream << userInputs.output_file_name << "-"
+                                        << cycleAsString.str() << "." << i << "."
+                                        << "userInputs.output_file_type";
+                  std::string vtuProcFileName = vtuProcFileNameStream.str();
+
                   filenames.emplace_back(vtuProcFileName);
                 }
-              char pvtuFileName[100];
-              snprintf(pvtuFileName,
-                       sizeof(pvtuFileName),
-                       "%s.p%s",
-                       baseFileName,
-                       userInputs.output_file_type.c_str());
+
+              std::ostringstream pvtuFileNameStream;
+              pvtuFileNameStream << baseFileName << ".p" << userInputs.output_file_type;
+              std::string pvtuFileName = pvtuFileNameStream.str();
+
               std::ofstream master_output(pvtuFileName);
 
               data_out.write_pvtu_record(master_output, filenames);
@@ -206,12 +196,10 @@ MatrixFreePDE<dim, degree>::outputResults()
       else
         {
           // Write the results to a file shared between all processes
-          char svtuFileName[100];
-          snprintf(svtuFileName,
-                   sizeof(svtuFileName),
-                   "%s.%s",
-                   baseFileName,
-                   userInputs.output_file_type.c_str());
+          std::ostringstream svtuFileNameStream;
+          svtuFileNameStream << baseFileName << "." << userInputs.output_file_type;
+          std::string svtuFileName = svtuFileNameStream.str();
+
           data_out.write_vtu_in_parallel(svtuFileName, MPI_COMM_WORLD);
           pcout << "Output written to:" << svtuFileName << "\n\n";
         }

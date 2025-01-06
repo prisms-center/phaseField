@@ -75,7 +75,6 @@ FloodFiller<dim, degree>::calcGrainSets(
   mergeSplitGrains(grain_sets);
 }
 
-// NOLINTBEGIN(misc-no-recursion)
 template <int dim, int degree>
 template <typename T>
 void
@@ -184,8 +183,6 @@ FloodFiller<dim, degree>::recursiveFloodFill(
     }
 }
 
-// NOLINTEND(misc-no-recursion)
-
 // =================================================================================
 // All-to-all communication of the grain sets
 // =================================================================================
@@ -245,7 +242,7 @@ FloodFiller<dim, degree>::createGlobalGrainSetList(
 
   // Communicate the order_parameters
   std::vector<int> offset(numProcs, 0);
-  for (int n = 1; n < numProcs; n++)
+  for (unsigned int n = 1; n < numProcs; n++)
     {
       offset[n] = offset[n - 1] + num_grains_per_core[n - 1];
     }
