@@ -1,3 +1,4 @@
+#include <core/exceptions.h>
 #include <core/variableContainer.h>
 
 template <int dim, int degree, typename T>

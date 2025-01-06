@@ -3,7 +3,6 @@
 
 // dealii headers
 #include <deal.II/base/config.h>
-#include <deal.II/base/exceptions.h>
 #include <deal.II/base/quadrature.h>
 #include <deal.II/base/timer.h>
 #include <deal.II/distributed/solution_transfer.h>

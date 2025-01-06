@@ -103,8 +103,7 @@ MatrixFreePDE<dim, degree>::reassignGrains()
   order_parameter_remapper.remap(simplified_grain_representations,
                                  solutionSet,
                                  *dofHandlersSet_nonconst.at(scalar_field_index),
-                                 FESet.at(scalar_field_index)->dofs_per_cell,
-                                 userInputs.buffer_between_grains);
+                                 FESet.at(scalar_field_index)->dofs_per_cell);
 
   pcout << "Reassigning grains completed.\n\n";
 

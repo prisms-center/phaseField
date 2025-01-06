@@ -6,8 +6,7 @@ OrderParameterRemapper<dim>::remap(
   std::vector<SimplifiedGrainRepresentation<dim>> &grain_representations,
   std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> &solution_fields,
   dealii::DoFHandler<dim>                                           &dof_handler,
-  unsigned int                                                       dofs_per_cell,
-  double                                                             buffer)
+  unsigned int                                                       dofs_per_cell)
 {
   for (unsigned int g = 0; g < grain_representations.size(); g++)
     {
@@ -112,8 +111,7 @@ OrderParameterRemapper<dim>::remap_from_index_field(
   const dealii::LinearAlgebra::distributed::Vector<double> *grain_index_field,
   std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> &solution_fields,
   dealii::DoFHandler<dim>                                           &dof_handler,
-  unsigned int                                                       dofs_per_cell,
-  double                                                             buffer)
+  unsigned int                                                       dofs_per_cell)
 {
   for (unsigned int g = 0; g < grain_representations.size(); g++)
     {

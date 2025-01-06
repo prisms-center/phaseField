@@ -106,6 +106,8 @@ private:
 // solve each time increment
 #include <deal.II/lac/solver_cg.h>
 
+#include <core/exceptions.h>
+
 template <int dim, int degree>
 void
 customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
@@ -298,10 +300,10 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                             }
                           else
                             {
-                              std::cerr << "PRISMS-PF Error: Nonlinear solver "
-                                           "tolerance types other than ABSOLUTE_CHANGE "
-                                           "have yet to be implemented."
-                                        << std::endl;
+                              AssertThrow(
+                                false,
+                                FeatureNotImplemented(
+                                  "Nonlinear solver tolerances besides ABSOLUTE_CHANGE"));
                             }
                         }
                     }

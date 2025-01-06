@@ -106,6 +106,8 @@ private:
 
 #include <deal.II/grid/grid_generator.h>
 
+#include <core/exceptions.h>
+
 template <int dim, int degree>
 void
 customPDE<dim, degree>::create_triangulation(
