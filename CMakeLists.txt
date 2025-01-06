@@ -5,8 +5,6 @@
 
 cmake_minimum_required(VERSION 3.1.0)
 
-project(prisms_pf)
-
 file(STRINGS "${CMAKE_SOURCE_DIR}/VERSION" PRISMS_PF_VERSION LIMIT_COUNT 1)
 
 message(STATUS "")
@@ -93,6 +91,13 @@ if(NOT DEAL_II_WITH_P4EST)
     set(DEALII_INSTALL_VALID OFF)
 endif()
 
+if(NOT DEAL_II_WITH_MPI)
+    message(SEND_ERROR
+      "\n**deal.II was built without support for MPI!\n"
+      )
+    set(DEALII_INSTALL_VALID OFF)
+endif()
+
 if(NOT DEALII_INSTALL_VALID)
   message(FATAL_ERROR
     "\nPRISMS-PF requires a deal.II installation with certain features enabled!\n"
@@ -114,6 +119,16 @@ message(STATUS "=========================================================")
 message(STATUS "Configuring PRISMS-PF build targets")
 message(STATUS "=========================================================")
 message(STATUS "")
+
+# Set name of project with deal.II variables loaded in. This lets us find the 
+# right compilers.
+project(prisms_pf CXX)
+message(STATUS "")
+
+# Ensure C++17 is used
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Generate config.h to enable and disable certain features within the source code.
 set(PRISMS_PF_SOURCE_DIR ${CMAKE_SOURCE_DIR})
@@ -227,6 +242,11 @@ string(REPLACE "-Wno-deprecated-declarations" "" DEAL_II_WARNING_FLAGS "${DEAL_I
 # Set additional compiler flags
 set(PRISMS_PF_ADDITIONAL_CXX_FLAGS "" CACHE STRING "Additional CMAKE_CXX_FLAGS applied after the deal.II options.")
 
+# Add default flags if PRISMS_PF_ADDITIONAL_CXX_FLAGS is empty
+if(PRISMS_PF_ADDITIONAL_CXX_FLAGS STREQUAL "")
+  set(PRISMS_PF_ADDITIONAL_CXX_FLAGS "-Wall -Wextra -Wpedantic -Wunused-variable -Wdisabled-optimization -std=c++17" CACHE STRING "Default CXX flags" FORCE)
+endif()
+
 if(NOT PRISMS_PF_ADDITIONAL_CXX_FLAGS STREQUAL "")
   message(STATUS "Appending PRISMS_PF_ADDITIONAL_CXX_FLAGS: '${PRISMS_PF_ADDITIONAL_CXX_FLAGS}':")
   string(APPEND DEAL_II_CXX_FLAGS_DEBUG " ${PRISMS_PF_ADDITIONAL_CXX_FLAGS}")
@@ -234,6 +254,7 @@ if(NOT PRISMS_PF_ADDITIONAL_CXX_FLAGS STREQUAL "")
   message(STATUS "  DEAL_II_WARNING_FLAGS: ${DEAL_II_WARNING_FLAGS}")
   message(STATUS "  DEAL_II_CXX_FLAGS_DEBUG: ${DEAL_II_CXX_FLAGS_DEBUG}")
   message(STATUS "  DEAL_II_CXX_FLAGS_RELEASE: ${DEAL_II_CXX_FLAGS_RELEASE}")
+  message(STATUS "")
 endif()
 
 if(${PRISMS_PF_BUILD_DEBUG} STREQUAL "ON")

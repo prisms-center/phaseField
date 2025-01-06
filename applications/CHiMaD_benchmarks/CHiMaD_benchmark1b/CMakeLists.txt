@@ -5,8 +5,6 @@
 
 cmake_minimum_required(VERSION 3.1.0)
 
-project(myapp)
-
 message(STATUS "")
 message(STATUS "=========================================================")
 message(STATUS "Configuring PRISMS-PF application")
@@ -69,6 +67,13 @@ if(NOT DEAL_II_WITH_P4EST)
     set(DEALII_INSTALL_VALID OFF)
 endif()
 
+if(NOT DEAL_II_WITH_MPI)
+    message(SEND_ERROR
+      "\n**deal.II was built without support for MPI!\n"
+      )
+    set(DEALII_INSTALL_VALID OFF)
+endif()
+
 if(NOT DEALII_INSTALL_VALID)
   message(FATAL_ERROR
     "\nPRISMS-PF requires a deal.II installation with certain features enabled!\n"
@@ -76,6 +81,15 @@ if(NOT DEALII_INSTALL_VALID)
 endif()
 
 deal_ii_initialize_cached_variables()
+
+# Set name of project with deal.II variables loaded in. This lets us find the 
+# right compilers.
+project(myapp CXX)
+
+# Ensure C++17 is used
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Make and ninja build options
 if(CMAKE_GENERATOR MATCHES "Ninja")
