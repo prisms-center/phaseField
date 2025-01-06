@@ -292,9 +292,9 @@ TEST_CASE("Nonlinearity criterion")
         set_variable_type(3, SCALAR);
         set_variable_equation_type(3, TIME_INDEPENDENT);
 
-        set_dependencies_value_term_LHS(3, "grad(phi)");
+        set_dependencies_value_term_LHS(3, "");
         set_dependencies_gradient_term_LHS(3, "grad(change(eta))");
-        set_dependencies_value_term_RHS(3, "");
+        set_dependencies_value_term_RHS(3, "grad(phi)");
         set_dependencies_gradient_term_RHS(3, "grad(eta)");
       }
 
