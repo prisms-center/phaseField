@@ -58,14 +58,14 @@ namespace PRISMS
     }
 
     virtual bool
-    is_in_range(const Coordinate &coord)
+    is_in_range([[maybe_unused]] const Coordinate &coord)
     {
       undefined("bool is_in_range(Coordinate coord) const");
       return false;
     }
 
     virtual double
-    operator()(const Coordinate &coord)
+    operator()([[maybe_unused]] const Coordinate &coord)
     {
       undefined("double operator()(Coordinate coord)");
       return double();

@@ -1,10 +1,3 @@
-/*
- * initialConditions.h
- *
- *  Created on: Feb 27, 2017
- *      Author: stephendewitt
- */
-
 #ifndef INCLUDE_INITIALCONDITIONS_H_
 #define INCLUDE_INITIALCONDITIONS_H_
 
@@ -32,7 +25,8 @@ public:
 
   // IC for scalar values
   [[nodiscard]] double
-  value(const dealii::Point<dim> &p, const unsigned int component = 0) const override
+  value(const dealii::Point<dim>           &p,
+        [[maybe_unused]] const unsigned int component = 0) const override
   {
     double                 scalar_IC = 0.0;
     dealii::Vector<double> vector_IC(dim);
@@ -78,4 +72,4 @@ private:
   MatrixFreePDE<dim, degree> *matrix_free_pde;
 };
 
-#endif /* INCLUDE_INITIALCONDITIONS_H_ */
+#endif

@@ -1,5 +1,3 @@
-#include <deal.II/base/exceptions.h>
-
 #include <core/matrixFreePDE.h>
 
 using namespace dealii;
@@ -101,6 +99,8 @@ private:
 };
 
 #include <deal.II/grid/grid_generator.h>
+
+#include <core/exceptions.h>
 
 template <int dim, int degree>
 void
