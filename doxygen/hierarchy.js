@@ -65,7 +65,9 @@ var hierarchy =
     [ "userInputParameters< dim >", "classuserInputParameters.html", null ],
     [ "varBCs< dim >", "classvarBCs.html", null ],
     [ "variable_info", "structvariable__info.html", null ],
-    [ "variableAttributeLoader", "classvariableAttributeLoader.html", null ],
+    [ "variableAttributeLoader", "classvariableAttributeLoader.html", [
+      [ "customAttributeLoader", "classcustomAttributeLoader.html", null ]
+    ] ],
     [ "variableAttributes", "structvariableAttributes.html", null ],
     [ "variableContainer< dim, degree, T >", "classvariableContainer.html", null ],
     [ "variableValueContainer", "classvariableValueContainer.html", null ]

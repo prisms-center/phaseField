@@ -17,6 +17,7 @@ var annotated_dup =
     ] ],
     [ "AdaptiveRefinement", "classAdaptiveRefinement.html", "classAdaptiveRefinement" ],
     [ "Bin", "classBin.html", "classBin" ],
+    [ "customAttributeLoader", "classcustomAttributeLoader.html", "classcustomAttributeLoader" ],
     [ "Field", "classField.html", "classField" ],
     [ "FloodFiller", "classFloodFiller.html", "classFloodFiller" ],
     [ "GrainSet", "classGrainSet.html", "classGrainSet" ],
