@@ -19,7 +19,7 @@ using AttributesList = std::map<uint, variableAttributes>;
 struct variableAttributes
 {
   // Variable attributes
-  std::string name                  = "";
+  std::string name;
   fieldType   var_type              = UNDEFINED_FIELD;
   PDEType     eq_type               = UNDEFINED_PDE;
   bool        need_value_nucleation = false;

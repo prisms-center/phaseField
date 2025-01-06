@@ -5,7 +5,7 @@
 // Set the attributes of the primary field variables
 // =================================================================================
 void
-variableAttributeLoader::loadVariableAttributes()
+customAttributeLoader::loadVariableAttributes()
 {
   // Variable 2
   set_variable_name(0, "u");

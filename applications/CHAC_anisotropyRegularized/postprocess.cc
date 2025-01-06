@@ -11,7 +11,7 @@
 // member of customPDE.
 
 void
-variableAttributeLoader::loadPostProcessorVariableAttributes()
+customAttributeLoader::loadPostProcessorVariableAttributes()
 {
   // Variable 0
   set_variable_name(0, "f_tot");
