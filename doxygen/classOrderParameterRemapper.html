@@ -102,17 +102,17 @@ $(document).ready(function(){initNavTree('classOrderParameterRemapper.html','');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a049cfb666c6e1be73f993bf5b14a5872" id="r_a049cfb666c6e1be73f993bf5b14a5872"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOrderParameterRemapper.html#a049cfb666c6e1be73f993bf5b14a5872">remap</a> (std::vector&lt; <a class="el" href="classSimplifiedGrainRepresentation.html">SimplifiedGrainRepresentation</a>&lt; dim &gt; &gt; &amp;grain_representations, std::vector&lt; dealii::LinearAlgebra::distributed::Vector&lt; double &gt; * &gt; &amp;solution_fields, dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, unsigned int dofs_per_cell, double buffer)</td></tr>
-<tr class="separator:a049cfb666c6e1be73f993bf5b14a5872"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3cb3a0e81920b423b8c5d5a64a768bcb" id="r_a3cb3a0e81920b423b8c5d5a64a768bcb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOrderParameterRemapper.html#a3cb3a0e81920b423b8c5d5a64a768bcb">remap_from_index_field</a> (std::vector&lt; <a class="el" href="classSimplifiedGrainRepresentation.html">SimplifiedGrainRepresentation</a>&lt; dim &gt; &gt; &amp;grain_representations, const dealii::LinearAlgebra::distributed::Vector&lt; double &gt; *grain_index_field, std::vector&lt; dealii::LinearAlgebra::distributed::Vector&lt; double &gt; * &gt; &amp;solution_fields, dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, unsigned int dofs_per_cell, double buffer)</td></tr>
-<tr class="separator:a3cb3a0e81920b423b8c5d5a64a768bcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea9c185811e61d61196124dbabac9f31" id="r_aea9c185811e61d61196124dbabac9f31"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOrderParameterRemapper.html#aea9c185811e61d61196124dbabac9f31">remap</a> (std::vector&lt; <a class="el" href="classSimplifiedGrainRepresentation.html">SimplifiedGrainRepresentation</a>&lt; dim &gt; &gt; &amp;grain_representations, std::vector&lt; dealii::LinearAlgebra::distributed::Vector&lt; double &gt; * &gt; &amp;solution_fields, dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, unsigned int dofs_per_cell)</td></tr>
+<tr class="separator:aea9c185811e61d61196124dbabac9f31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dd81ec7ca565239c18defd502418abe" id="r_a4dd81ec7ca565239c18defd502418abe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOrderParameterRemapper.html#a4dd81ec7ca565239c18defd502418abe">remap_from_index_field</a> (std::vector&lt; <a class="el" href="classSimplifiedGrainRepresentation.html">SimplifiedGrainRepresentation</a>&lt; dim &gt; &gt; &amp;grain_representations, const dealii::LinearAlgebra::distributed::Vector&lt; double &gt; *grain_index_field, std::vector&lt; dealii::LinearAlgebra::distributed::Vector&lt; double &gt; * &gt; &amp;solution_fields, dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, unsigned int dofs_per_cell)</td></tr>
+<tr class="separator:a4dd81ec7ca565239c18defd502418abe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;int dim&gt;<br />
 class OrderParameterRemapper&lt; dim &gt;</div><p>This class uses information from the list of <a class="el" href="classSimplifiedGrainRepresentation.html">SimplifiedGrainRepresentation</a> objects to reassign grains across multiple solution fields. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a049cfb666c6e1be73f993bf5b14a5872" name="a049cfb666c6e1be73f993bf5b14a5872"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a049cfb666c6e1be73f993bf5b14a5872">&#9670;&#160;</a></span>remap()</h2>
+<a id="aea9c185811e61d61196124dbabac9f31" name="aea9c185811e61d61196124dbabac9f31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea9c185811e61d61196124dbabac9f31">&#9670;&#160;</a></span>remap()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -141,13 +141,7 @@ template&lt;int dim&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>dofs_per_cell</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>buffer</em>&#160;</td>
+          <td class="paramname"><em>dofs_per_cell</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -160,8 +154,8 @@ template&lt;int dim&gt; </div>
 
 </div>
 </div>
-<a id="a3cb3a0e81920b423b8c5d5a64a768bcb" name="a3cb3a0e81920b423b8c5d5a64a768bcb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3cb3a0e81920b423b8c5d5a64a768bcb">&#9670;&#160;</a></span>remap_from_index_field()</h2>
+<a id="a4dd81ec7ca565239c18defd502418abe" name="a4dd81ec7ca565239c18defd502418abe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4dd81ec7ca565239c18defd502418abe">&#9670;&#160;</a></span>remap_from_index_field()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -196,13 +190,7 @@ template&lt;int dim&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>dofs_per_cell</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>buffer</em>&#160;</td>
+          <td class="paramname"><em>dofs_per_cell</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

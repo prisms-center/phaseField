@@ -6,6 +6,7 @@ var dir_3d69f64eaf81436fe2b22361382717e5 =
     [ "refinement", "dir_7f1bc341b5f9e22a0f116b536c49d179.html", "dir_7f1bc341b5f9e22a0f116b536c49d179" ],
     [ "solvers", "dir_8430ef4c2c39f10ca87987cf2cb7f356.html", "dir_8430ef4c2c39f10ca87987cf2cb7f356" ],
     [ "checkpoint.h", "checkpoint_8h_source.html", null ],
+    [ "exceptions.h", "exceptions_8h_source.html", null ],
     [ "fields.h", "fields_8h_source.html", null ],
     [ "inputFileReader.h", "inputFileReader_8h_source.html", null ],
     [ "matrixFreePDE.h", "matrixFreePDE_8h_source.html", null ],
