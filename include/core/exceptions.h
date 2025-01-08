@@ -1,5 +1,5 @@
-#ifndef EXCEPTIONS_H
-#define EXCEPTIONS_H
+#ifndef exceptions_h
+#define exceptions_h
 
 #include <deal.II/base/exceptions.h>
 
