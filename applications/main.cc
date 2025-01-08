@@ -5,8 +5,8 @@
 #include "core/variableAttributes.h"
 #include "equations.cc"
 
-#include <core/ParseCommandLineOpts.h>
 #include <core/inputFileReader.h>
+#include <core/parse_cmd_options.h>
 #include <core/variableAttributeLoader.h>
 
 // Header file for postprocessing that may or may not exist
@@ -38,7 +38,7 @@ main(int argc, char **argv)
   std::string parameters_filename;
   try
     {
-      ParseCommandLineOpts cli_options(argc, argv);
+      parseCMDOptions cli_options(argc, argv);
       parameters_filename = cli_options.getParametersFilename();
     }
   catch (const char *msg)
