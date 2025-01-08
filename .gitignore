@@ -59,6 +59,7 @@ main
 #Output files
 applications/*/*.vtk
 *.vtu
+*.pvtu
 *.vts
 *.frt
 integratedFields.txt

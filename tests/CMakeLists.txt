@@ -5,8 +5,6 @@
 
 cmake_minimum_required(VERSION 3.8.0)
 
-project(prisms_pf_unit_tests)
-
 # =========================================================
 # Some basic bookkeeping
 # =========================================================
@@ -53,6 +51,8 @@ if(NOT DEALII_INSTALL_VALID)
 endif()
 
 deal_ii_initialize_cached_variables()
+
+project(prisms_pf_unit_tests)
 
 # Create compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
