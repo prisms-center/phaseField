@@ -89,23 +89,65 @@ In the weak formulation, considering an arbitrary variation $w$, the above equat
 
 $$
 \begin{align}
-  \int_{\Omega}   w  \phi^{n+1}  ~dV &=\int_{\Omega}  \nabla w \cdot \underbrace{ \nabla \eta^n }_{r_{\phi x}} ~dV 
+  \int_{\Omega}   w  \phi^{n+1}  ~dV &=\int_{\Omega}  \nabla w \cdot \nabla \eta^n ~dV  
+\end{align} 
+$$
+
+$$
+\begin{align}
+r_{\phi x} &= \nabla \eta^n
 \end{align}
 $$
 
 $$
 \begin{align}
-  \int_{\Omega}   w  \eta^{n+1}  ~dV &= \int_{\Omega}   w \eta^{n} -   w    \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n - \kappa \Delta \eta^n)  ~dV\\
-  &=\int_{\Omega}  w  \left( \underbrace{\eta^{n} - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n)}_{r_{\eta}} \right)+ \nabla w \cdot \underbrace{(- \Delta t M_{\eta})  ( \mathbf{m}^n - \delta^2 \phi^n)}_{r_{\eta x}} ~dV 
+  \int_{\Omega}   w  \eta^{n+1}  ~dV &= \int_{\Omega}   w \eta^{n} -   w    \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n - \kappa \Delta \eta^n)  ~dV
+\end{align}
+$$
+
+$$
+\begin{align}
+  &=\int_{\Omega}  w  \left( \eta^{n} - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n) \right)+ \nabla w \cdot (- \Delta t M_{\eta})  ( \mathbf{m}^n - \delta^2 
+  \phi^n) ~dV 
+\end{align}
+$$
+
+$$
+\begin{align}
+r_{\eta} &= \eta^{n} - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n)
+\end{align}
+$$
+
+
+$$
+\begin{align}
+r_{\eta x} &= (- \Delta t M_{\eta})  ( \mathbf{m}^n - \delta^2 \phi^n)
 \end{align}
 $$
 
 and 
 
-$
+$$
 \begin{align}
-  \int_{\Omega}   w  c^{n+1}  ~dV &= \int_{\Omega}   w c^{n} + w    \Delta t M_{c}~ \nabla \cdot (\nabla (f_{\alpha,c}^n(1-H^{n})+f_{\beta,c}^n H^{n}))  ~dV\\
-    &= \int_{\Omega}   w \underbrace{c^{n}}_{r_c} +  \nabla w   \underbrace{(-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n})+f_{\beta,cc}^n H^{n}) \nabla c + ~((f_{\beta,c}^n-f_{\alpha,c}^n)H^{n}_{,\eta} \grad \eta^n) ] }_{r_{cx}} ~dV
+  \int_{\Omega}   w  c^{n+1}  ~dV &= \int_{\Omega}   w c^{n} + w    \Delta t M_{c}~ \nabla \cdot (\nabla (f_{\alpha,c}^n(1-H^{n})+f_{\beta,c}^n H^{n}))  ~dV
+\end{align}
+$$
+
+$$
+\begin{align}
+&= \int_{\Omega}   w c^{n} +  \nabla w (-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n})+f_{\beta,cc}^n H^{n}) \nabla c + ~((f_{\beta,c}^n-f_{\alpha,c}^n)H^{n}_{,\eta} \nabla \eta^n) ] ~dV
+\end{align}
+$$
+
+$$
+\begin{align}
+r_c &= c^{n}
+\end{align}
+$$
+
+$$
+\begin{align}
+r_{cx}  &= (-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n})+f_{\beta,cc}^n H^{n}) \nabla c + ~((f_{\beta,c}^n-f_{\alpha,c}^n)H^{n}_{,\eta} \nabla \eta^n) ] 
 \end{align}
 $$
 
