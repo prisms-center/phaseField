@@ -12,10 +12,16 @@ where $f_{\alpha}$ and $f_{\beta}$ are the free energy densities corresponding t
 
 ## Variational treatment
 Following standard variational arguments (see Cahn-Hilliard formulation), we obtain the chemical potentials:
+
 $$
 \begin{align}
-  \mu_{c}  &= (f_{\alpha,c}(1-H)+f_{\beta,c}H)  \\
-  \mu_{\eta}  &= (f_{\beta}-f_{\alpha})H_{,\eta} - \kappa \Delta \eta 
+\mu_{c}  &= (f_{\alpha,c}(1-H)+f_{\beta,c}H)
+\end{align}
+$$
+
+$$
+\begin{align}
+\mu_{\eta}  &= (f_{\beta}-f_{\alpha})H_{,\eta} - \kappa \Delta \eta 
 \end{align}
 $$
 
@@ -55,8 +61,25 @@ In the weak formulation, considering an arbitrary variation $w$, the above equat
 
 $$
 \begin{align}
-  \int_{\Omega}   w  \eta^{n+1}  ~dV &= \int_{\Omega}   w \eta^{n} -   w    \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n - \kappa \Delta \eta^n)  ~dV\\
-  &=\int_{\Omega}  w  \left( \underbrace{\eta^{n} - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n)}_{r_{\eta}} \right)+ \nabla w \cdot \underbrace{(- \Delta t M_{\eta}\kappa) \nabla \eta^{n}}_{r_{\eta x}} ~dV 
+\int_{\Omega}   w  \eta^{n+1}  ~dV &= \int_{\Omega}   w \eta^{n} -   w    \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n - \kappa \Delta \eta^n)  ~dV
+\end{align}
+$$
+
+$$
+\begin{align}
+&=\int_{\Omega}  w  \left( \eta^{n} - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n) \right)+ \nabla w \cdot (- \Delta t M_{\eta}\kappa) \nabla \eta^{n} ~dV 
+\end{align}
+$$
+
+$$
+\begin{align}
+r_{\eta} &= \eta^{n} - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n)
+\end{align}
+$$
+
+$$
+\begin{align}
+r_{\eta x} &= (- \Delta t M_{\eta}\kappa) \nabla \eta^{n}
 \end{align}
 $$
 
@@ -64,8 +87,25 @@ and
 
 $$
 \begin{align}
-  \int_{\Omega}   w  c^{n+1}  ~dV &= \int_{\Omega}   w c^{n} + w    \Delta t M_{c}~ \nabla \cdot (\nabla (f_{\alpha,c}^n(1-H^{n})+f_{\beta,c}^n H^{n}))  ~dV\\
-    &= \int_{\Omega}   w \underbrace{c^{n}}_{r_c} +  \nabla w   \underbrace{(-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n})+f_{\beta,cc}^n H^{n}) \nabla c + ~((f_{\beta,c}^n-f_{\alpha,c}^n)H^{n}_{,\eta} \nabla \eta) ] }_{r_{cx}} ~dV
+\int_{\Omega}   w  c^{n+1}  ~dV &= \int_{\Omega}   w c^{n} + w    \Delta t M_{c}~ \nabla \cdot (\nabla (f_{\alpha,c}^n(1-H^{n})+f_{\beta,c}^n H^{n}))  ~dV
+\end{align}
+$$
+
+$$
+\begin{align}
+&= \int_{\Omega}   w c^{n} +  \nabla w   (-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n})+f_{\beta,cc}^n H^{n}) \nabla c + ~((f_{\beta,c}^n-f_{\alpha,c}^n)H^{n}_{,\eta} \nabla \eta) ] ~dV
+\end{align}
+$$
+
+$$
+\begin{align}
+r_c &= c^{n}
+\end{align}
+$$
+
+$$
+\begin{align}
+r_{cx} &= (-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n})+f_{\beta,cc}^n H^{n}) \nabla c + ~((f_{\beta,c}^n-f_{\alpha,c}^n)H^{n}_{,\eta} \nabla \eta) ] 
 \end{align}
 $$
 
