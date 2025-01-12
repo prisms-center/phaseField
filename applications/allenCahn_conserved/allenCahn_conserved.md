@@ -153,7 +153,7 @@ $$
 
 $$
 \begin{align}
-r_{\mu x} &=  (\kappa \nabla \eta^{n})
+r_{\mu x} &=  \kappa \nabla \eta^{n}
 \end{align}
 $$
 
