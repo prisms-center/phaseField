@@ -1,4 +1,4 @@
-## PRISMS-PF: CHAC Anisotropy (with Coupled CH-AC Dynamics)
+# PRISMS-PF: CHAC Anisotropy (with Coupled CH-AC Dynamics)
 Consider a free energy expression of the form:
 
 $$
