@@ -1,4 +1,4 @@
-# PRISMS PhaseField: Globally Conserved Allen-Cahn Dynamics}}
+# PRISMS PhaseField: Globally Conserved Allen-Cahn Dynamics
 
 This application performs a  phase field simulation of Allen-Cahn dynamics subject to global (as opposed to local) conservation. Global conservation implies that $\int_\Omega \eta \,dV$, where $\Omega$ is the volume of the system, is constant in time.
 
