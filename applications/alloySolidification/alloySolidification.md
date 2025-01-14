@@ -63,9 +63,9 @@ T_s=T_m-\frac{|m|}{k}c_s,
 \end{equation}
 $$
 
-where $m$ is the liquidus slope and $k=c_s/c_l$ is the partition coefficient, which relates the equilibrium concentrations, $c_l$ and $c_s$, of the liquid and solid, respectively.\\
+where $m$ is the liquidus slope and $k=c_s/c_l$ is the partition coefficient, which relates the equilibrium concentrations, $c_l$ and $c_s$, of the liquid and solid, respectively.
 
-For the governing equations to simulate directional solidification, we follow the same approach of Ref.~\cite{Echebarria2004} by introducing a dimensionless supersaturation, $U$, instead of $c$. This supersaturation term is defined as
+For the governing equations to simulate directional solidification, we follow the same approach of Ref. [2] by introducing a dimensionless supersaturation, $U$, instead of $c$. This supersaturation term is defined as
 
 $$
 \begin{equation}
@@ -181,9 +181,17 @@ In the previous equation, $\gamma$ is the equilibrium surface tension and $L$ is
 Finally, $\tilde{y}$, $\tilde{V}_p$, $\tilde{l}_T$ and $\tilde{D}$ are all dimensionless parameters, calculated by taking the unit length as $W$ and the unit time as $\tau_0=0.6267\lambda W^2/D$, 
 where $D$ is the solute diffusivity in the liquid. The coordinate, $\tilde{y}$, represents the position along the direction of the thermal gradient, $\tilde{V}_p$ is the steady-state solidification speed, 
 $\tilde{l}_T$ is the thermal length, calculated as
-$\tilde{l}_T=|m|(1-k)c_l^0/\tilde{G}$, where $\tilde{G}$ is the dimensionless thermal gradient, and $\tilde{D}$ is the dimensionless solute diffusivity in the liquid. Note that Eqs. (\ref{eqphi})-(\ref{eqjat}) 
-are equivalent to Eqs. (132) and (133) from Ref.~\cite{Echebarria2004}, except for the expression for the phase-field relaxation time $\tau_\phi$ which, for this application, was chosen to be $U$-dependent, 
-as defined by Eq. (123) from Ref.~\cite{Echebarria2004}.\\
+
+$$
+\begin{align}
+\tilde{l}_T=|m|(1-k)c_l^0/\tilde{G}
+\end{align}
+$$
+
+
+where $\tilde{G}$ is the dimensionless thermal gradient, and $\tilde{D}$ is the dimensionless solute diffusivity in the liquid. Note that Eqs. 10 through 15 
+are equivalent to Eqs. (132) and (133) from Ref. [2], except for the expression for the phase-field relaxation time $\tau_\phi$ which, for this application, was chosen to be $U$-dependent, 
+as defined by Eq. (123) from Ref. [2].
 
 
 Equation
@@ -202,18 +210,40 @@ $$
 $$
 
 can be simplified by explicitly writing $a_s(\hat{n})$ in terms of $\theta$.  We can evaluate the terms $\partial a_s(\theta)/\partial \left( \frac{\partial \phi}{\partial x} \right)$ and $\partial a_s(\theta)/\partial \left( \frac{\partial \phi}{\partial y} \right)$ by using the chain rule, i.e.,
-\[
+
+$$
+\begin{align}
 \frac{\partial a_s(\theta)}{\partial \left( \frac{\partial \phi}{\partial x} \right)}=\frac{\partial a_s(\theta)}{\partial \theta} \frac{\partial \theta}{\partial \left( \frac{\partial \phi}{\partial x} \right)}\ \mathrm{and}\ \frac{\partial a_s(\theta)}{\partial \left( \frac{\partial \phi}{\partial y} \right)}=\frac{\partial a_s(\theta)}{\partial \theta} \frac{\partial \theta}{\partial \left( \frac{\partial \phi}{\partial y} \right)}
-\]
-along with Eq.~\labelcref{taneq}. Also, the second and third terms on the right-hand side can be expressed using a divergence operator, allowing them to be grouped with the first term, which will simplify matters later. Carrying out these transformations yields:
+\end{align}
+$$
+
+along with 
+
+$$
 \begin{equation}
-\label{eqxi2}
-\begin{split}
-\xi = & \nabla \cdot  \left[ \left(a_s^2(\theta) \frac{\partial \phi}{\partial x} + \epsilon_m m a_s(\theta) \sin \left[ m \left(\theta - \theta_0 \right) \right] \frac{\partial \phi}{\partial y}\right)\hat{x} \right. \\ 
-& \left . + \left(a_s^2(\theta) \frac{\partial \phi}{\partial y} - \epsilon_m m a_s(\theta) \sin \left[ m \left(\theta - \theta_0 \right) \right] \frac{\partial \phi}{\partial x}\right)\hat{y}\right] \\
-&+ \phi-\phi^3 - \lambda{(1-\phi^2)}^2 \left[ U + U_\text{off} + \frac{\tilde{y} - \tilde{y}_0 - \tilde{V}_p t}{\tilde{l}_T} \right].
-\end{split}
+\tan(\theta) = \frac{\partial \phi / \partial y}{\partial \phi / \partial x}. 
 \end{equation}
+$$
+
+Also, the second and third terms on the right-hand side can be expressed using a divergence operator, allowing them to be grouped with the first term, which will simplify matters later. Carrying out these transformations yields:
+
+$$
+\begin{align}
+\xi = & \nabla \cdot  \left[ \left(a_s^2(\theta) \frac{\partial \phi}{\partial x} + \epsilon_m m a_s(\theta) \sin \left[ m \left(\theta - \theta_0 \right) \right] \frac{\partial \phi}{\partial y}\right)\hat{x} \right.
+\end{align}
+$$
+
+$$
+\begin{align}
+& \left . + \left(a_s^2(\theta) \frac{\partial \phi}{\partial y} - \epsilon_m m a_s(\theta) \sin \left[ m \left(\theta - \theta_0 \right) \right] \frac{\partial \phi}{\partial x}\right)\hat{y}\right]
+\end{align}
+$$
+
+$$
+\begin{align}
+&+ \phi-\phi^3 - \lambda{(1-\phi^2)}^2 \left[ U + U_\text{off} + \frac{\tilde{y} - \tilde{y}_0 - \tilde{V}_p t}{\tilde{l}_T} \right].
+\end{align}
+$$
 
 ## Model Constants
 
@@ -239,41 +269,88 @@ $$
 $$
 
 $$
-\begin{equation}
-U^{n+1}=U^{n}+\frac{\Delta t}{\tau_U}\left\{\nabla \cdot \left[ \tilde{D}\frac{1-\phi^n}{2} \nabla U^n - \vec{\jmath}_{at}^{\,U} \right] + \frac{1}{2}[1+(1-k)U^n]\frac{\xi^n}{\tau_\phi} \right\},
-\end{equation}
+\begin{align}
+U^{n+1}=U^{n}+\frac{\Delta t}{\tau_U}\left[\nabla \cdot \left( \tilde{D}\frac{1-\phi^n}{2} \nabla U^n - \vec{\jmath_{at}}^{\ U} \right) + \frac{1}{2}[1+(1-k)U^n]\frac{\xi^n}{\tau_\phi} \right\],
+\end{align}
 $$
 
 and
 
 $$
-\begin{equation}
-\begin{split}
-\xi^{n+1} = & \nabla \cdot  \left[ \left(a_s^2(\theta^n) \frac{\partial \phi^n}{\partial x} + \epsilon_m m a_s(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial y}\right)\hat{x} \right. \\ 
-& \left . + \left(a_s^2(\theta^n) \frac{\partial \phi^n}{\partial y} - \epsilon_m m a_s(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial x}\right)\hat{y}\right] \\
+\begin{align}
+\xi^{n+1} = & \nabla \cdot  \left[ \left(a_s^2(\theta^n) \frac{\partial \phi^n}{\partial x} + \epsilon_m m a_s(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial y}\right)\hat{x} \right.
+\end{align}
+$$
+
+$$
+\begin{align}
+& \left . + \left(a_s^2(\theta^n) \frac{\partial \phi^n}{\partial y} - \epsilon_m m a_s(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial x}\right)\hat{y}\right] 
+\end{align}
+$$
+
+$$
+\begin{align}
 & +\phi^n-{(\phi^n)}^3 - \lambda {\left[1-{(\phi^n)}^2\right]}^2 \left[ U^n + U_\text{off} + \frac{\tilde{y} - \tilde{y}_0 - \tilde{V}_p t}{\tilde{l}_T} \right].
-\end{split}
-\end{equation}
+\end{align}
+$$
 
 ## Weak Formulation
 The weak formulation is obtained by multiplying the time-discretized equations by test function, $\omega$, and integrating over the volume, $\Omega$. For $\phi$ we get
 
 $$
-\begin{equation}
-\int_{\Omega}   \omega  \phi^{n+1}  ~dV = \int_{\Omega}   \omega \underbrace{\left(\phi^n + \frac{ \xi^n}{\tau_\phi}\Delta t\right)}_{r_{\phi}} ~dV.
-\end{equation}
+\begin{align}
+\int_{\Omega}   \omega  \phi^{n+1}  ~dV = \int_{\Omega}   \omega \left(\phi^n + \frac{ \xi^n}{\tau_\phi}\Delta t\right) ~dV.
+\end{align}
 $$
 
-For the weak form of Eq.~\ref{ueq_td}, we employ the relation $\nabla \frac{1}{\tau_U}=\frac{1}{\tau_U^2}\frac{1-k}{2}\nabla\phi$ that results from substituting $\tau$ as defined by Eq. (\ref{tauU}) into the gradient of $1/\tau_U$:
+$$
+\begin{align}
+r_{\phi} &= \left(\phi^n + \frac{ \xi^n}{\tau_\phi}\Delta t\right)
+\end{align}
+$$
+
+
+For the weak form of 
 
 $$
-\begin{equation}
-\begin{split}
+\begin{align}
+U^{n+1}=U^{n}+\frac{\Delta t}{\tau_U}\left[\nabla \cdot \left( \tilde{D}\frac{1-\phi^n}{2} \nabla U^n - \vec{\jmath_{at}}^{\ U} \right) + \frac{1}{2}[1+(1-k)U^n]\frac{\xi^n}{\tau_\phi} \right\],
+\end{align}
+$$
+
+we employ the relation $\nabla \frac{1}{\tau_U}=\frac{1}{\tau_U^2}\frac{1-k}{2}\nabla\phi$ that results from substituting $\tau$ as defined by
+
+$$
+\begin{align}
+\tau_U=\frac{1+k}{2} - \frac{1-k}{2}\phi,
+\end{align}
+$$
+
+into the gradient of $1/\tau_U$:
+
+$$
+\begin{align}
 \int_{\Omega}   \omega  U^{n+1}  ~dV =& 
-\int_{\Omega} \omega \underbrace{ \left( U^{n} + \frac{\Delta t}{2\tau_U\tau_\phi}[1+(1-k)U^n]\xi^n  - \frac{\Delta t (1-k)}{2\tau_U^2} \nabla \phi \cdot \left[\tilde{D}\frac{1-\phi^n}{2}\nabla U^n-\vec{\jmath}_{at}^{\,U}\right] \right) }_{r_U}~dV\\
-&+\int_{\Omega}  \nabla  \omega  \cdot \underbrace{\left( -\frac{\Delta t}{\tau_U}\left[\tilde{D}(1-\phi^n)\nabla U^n-\vec{\jmath}_{at}^{\,U}\right] \right)}_{r_{Ux}}~dV.
-\end{split}
-\end{equation}
+\int_{\Omega} \omega \left( U^{n} + \frac{\Delta t}{2\tau_U\tau_\phi}[1+(1-k)U^n]\xi^n  - \frac{\Delta t (1-k)}{2\tau_U^2} \nabla \phi \cdot \left[\tilde{D}\frac{1-\phi^n}{2}\nabla U^n-\vec{\jmath}_{at}^{\,U}\right] \right) ~dV
+\end{align}
+$$
+
+$$
+\begin{align}
+&+\int_{\Omega}  \nabla  \omega  \cdot \left( -\frac{\Delta t}{\tau_U}\left[\tilde{D}(1-\phi^n)\nabla U^n-\vec{\jmath}_{at}^{\,U}\right] \right) ~dV.
+\end{align}
+$$
+
+$$
+\begin{align}
+r_U &=  \left( U^{n} + \frac{\Delta t}{2\tau_U\tau_\phi}[1+(1-k)U^n]\xi^n  - \frac{\Delta t (1-k)}{2\tau_U^2} \nabla \phi \cdot \left[\tilde{D}\frac{1-\phi^n}{2}\nabla U^n-\vec{\jmath}_{at}^{\,U}\right] \right) 
+\end{align}
+$$
+
+$$
+\begin{align}
+r_{Ux} &= \left( -\frac{\Delta t}{\tau_U}\left[\tilde{D}(1-\phi^n)\nabla U^n-\vec{\jmath}_{at}^{\,U}\right] \right)
+\end{align}
 $$
 
 Finally, for $\xi$, we obtain
@@ -308,4 +385,4 @@ The above values of $r_{\phi}$, $r_{U}$, $r_{Ux}$,  $r_{\xi}$ and  $r_{\xi x}$ a
 ## References
 [1] Developed by Zhenjie Yao, Department of Material Science and Engineering, University of Michigan (2021).
 
-[2] B. Echebarria, R. Folch, A. Karma, and M. Plapp, Quantitative phase-field model of alloy solidification, \emph{Phys. Rev. E} {\bf 70}, 061604 (2004).
+[2] B. Echebarria, R. Folch, A. Karma, and M. Plapp, Quantitative phase-field model of alloy solidification, *Phys. Rev. E* **70**, 061604 (2004).
