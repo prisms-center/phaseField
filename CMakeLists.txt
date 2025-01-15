@@ -77,7 +77,7 @@ message(STATUS "=========================================================")
 message(STATUS "")
 
 # Find deal.II installation
-find_package(deal.II 9.6.0 QUIET
+find_package(deal.II 9.4.0 QUIET
 	HINTS ${DEAL_II_DIR} $ENV{DEAL_II_DIR}
   )
 if(NOT ${deal.II_FOUND})
