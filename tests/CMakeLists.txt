@@ -3,7 +3,7 @@
 #  Adapted from the ASPECT CMake file
 ##
 
-cmake_minimum_required(VERSION 3.3.0)
+cmake_minimum_required(VERSION 3.8.0)
 
 project(prisms_pf_unit_tests)
 

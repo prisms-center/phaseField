@@ -3,9 +3,7 @@
 #  Adapted from the ASPECT CMake file
 ##
 
-cmake_minimum_required(VERSION 3.3.0)
-
-project(prisms_pf)
+cmake_minimum_required(VERSION 3.8.0)
 
 file(STRINGS "${CMAKE_SOURCE_DIR}/VERSION" PRISMS_PF_VERSION LIMIT_COUNT 1)
 
@@ -26,6 +24,14 @@ if(EXISTS ${CMAKE_SOURCE_DIR}/CMakeCache.txt)
   "in your source directory, which may be leftover from prior builds. " 
   "Please delete the file before running cmake again.")
 endif()
+
+# Print the current cmake version
+message(STATUS "CMake version: ${CMAKE_VERSION}")
+
+# Set the standard to C++17
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Setup the build type (debug, release, debugrelease)
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
@@ -93,12 +99,41 @@ if(NOT DEAL_II_WITH_P4EST)
     set(DEALII_INSTALL_VALID OFF)
 endif()
 
+if(NOT DEAL_II_WITH_MPI)
+    message(SEND_ERROR
+      "\n**deal.II was built without support for MPI!\n"
+      )
+    set(DEALII_INSTALL_VALID OFF)
+endif()
+
 if(NOT DEALII_INSTALL_VALID)
   message(FATAL_ERROR
     "\nPRISMS-PF requires a deal.II installation with certain features enabled!\n"
     )
 endif()
 
+# Optional deal.II packages
+set(PRISMS_PF_WITH_ZLIB OFF CACHE BOOL "Whether the user wants to compile PRISMS-PF with deal.II's zlib dependency, or not.")
+message(STATUS "Using PRISMS_PF_WITH_ZLIB = '${PRISMS_PF_WITH_ZLIB}'")
+if(PRISMS_PF_WITH_ZLIB)
+  if(DEAL_II_WITH_ZLIB)
+    message(STATUS "  Found deal.II installation with zlib")
+  else()
+    message(FATAL_ERROR "deal.II installation with zlib not found. Disable PRISMS_PF_WITH_ZLIB or recompile deal.II with zlib.")
+  endif()
+endif()
+
+set(PRISMS_PF_WITH_SUNDIALS OFF CACHE BOOL "Whether the user wants to compile PRISMS-PF with deal.II's SUNDIALS dependency, or not.")
+message(STATUS "Using PRISMS_PF_WITH_SUNDIALS = '${PRISMS_PF_WITH_SUNDIALS}'")
+if(PRISMS_PF_WITH_SUNDIALS)
+  if(DEAL_II_WITH_SUNDIALS)
+    message(STATUS "  Found deal.II installation with SUNDIALS")
+  else()
+    message(FATAL_ERROR "deal.II installation with SUNDIALS not found. Disable PRISMS_PF_WITH_SUNDIALS or recompile deal.II with SUNDIALS.")
+  endif()
+endif()
+
+# Load deal.II cached variables
 deal_ii_initialize_cached_variables()
 
 # Caliper
@@ -108,7 +143,7 @@ if(PRISMS_PF_WITH_CALIPER)
   find_package(CALIPER)
   if(${CALIPER_FOUND})
     include_directories(${CALIPER_INCLUDE_DIR})
-    message(STATUS "Caliper found at ${CALIPER_DIR}")
+    message(STATUS "  Caliper found at ${CALIPER_DIR}")
   else()
     message(FATAL_ERROR "Caliper not found. Disable PRISMS_PF_WITH_CALIPER or specify a hint to your installation directory with CALIPER_DIR")
   endif()
@@ -128,6 +163,8 @@ message(STATUS "Configuring PRISMS-PF build targets")
 message(STATUS "=========================================================")
 message(STATUS "")
 
+project(prisms_pf CXX)
+
 # Generate config.h to enable and disable certain features within the source code.
 set(PRISMS_PF_SOURCE_DIR ${CMAKE_SOURCE_DIR})
 
@@ -137,12 +174,7 @@ configure_file(
   )
 
 # Collect source files
-file(GLOB_RECURSE PRISMS_PF_SOURCE_FILES "src/*.cc" "include/*.h")
-file(GLOB_RECURSE PRISMS_PF_UNIT_TEST_FILES "unit_tests/*.cc" "contrib/catch/catch.hpp")
-
-# Setup include directories
-include_directories(BEFORE ${CMAKE_BINARY_DIR}/include include)
-include_directories(AFTER contrib/catch)
+add_subdirectory(src)
 
 # Test stuff goes here
 
