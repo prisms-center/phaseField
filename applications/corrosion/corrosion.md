@@ -46,7 +46,7 @@ M=2\frac{V_M |i_{rxn}| \psi}{z_M F}\sqrt{\frac{2 \epsilon^2}{W}}
 \end{equation}
 $$
 
-The evolution of $\psi$ employs the advective Cahn-Hilliard equation, but with the opposite sign of the advective source term in Eq. \eqref{CH_eta}:
+The evolution of $\psi$ employs the advective Cahn-Hilliard equation, but with the opposite sign of the advective source term:
 
 $$
 \begin{equation}
@@ -60,19 +60,34 @@ $$
 $$
 \begin{equation}
 z_M c_M + z_+ c_+ + z_-c_- = 0.
- \end{equation}
-$$
-
-Thus, the concentrations are not independent of each other only two additional equations are required to describe the concentration evolution for all three species.  The concentrations of the effective metal cation and the supporting electrolyte cation are directly solved and the supporting anion concentration is eliminated via Eq. \eqref{electroneutrality}. The SBM reformulated governing equation for each species, $i$, which includes diffusion and migration effects, is given by
-
-$$
-\begin{equation}
-\frac{\partial c_i}{\partial t}=\frac{1}{\psi} \nabla \cdot (\psi D_i \nabla c_i) + \frac{1}{\psi} \left( \frac{z_i F}{RT} \nabla \cdot (\psi D_i c_i \nabla \Phi) \right)
-+ \frac{|\nabla \psi|}{\psi} \left( \frac{i_{rxn}}{z_i F} \right)
 \end{equation}
 $$
 
-where $c_i =c_M, c_+$ and $\Phi$ is the electrostatic potential.  The last term of the right hand side of Eq. \eqref{conc_dynamics} is zero for $c_i =c_+$  because $i_{rxn}$ is the reaction current density for the dissolution of the metal (M), which does not involve the supporting cation (+) and anion (-). The SBM reformulated governing equation for the potential is
+Thus, the concentrations are not independent of each other only two additional equations are required to describe the concentration evolution for all three species.  The concentrations of the effective metal cation and the supporting electrolyte cation are directly solved and the supporting anion concentration is eliminated via 
+
+$$
+\begin{equation}
+z_M c_M + z_+ c_+ + z_-c_- = 0.
+\end{equation}
+$$
+
+The SBM reformulated governing equation for each species, $i$, which includes diffusion and migration effects, is given by
+
+$$
+\begin{align}
+\frac{\partial c_i}{\partial t}=\frac{1}{\psi} \nabla \cdot (\psi D_i \nabla c_i) + \frac{1}{\psi} \left(\frac{z_i F}{RT} \nabla \cdot (\psi D_i c_i \nabla \Phi) \right) + \frac{|\nabla \psi|}{\psi} \left( \frac{i_{rxn}}{z_i F} \right)
+\end{align}
+$$
+
+where $c_i =c_M, c_+$ and $\Phi$ is the electrostatic potential.  The last term of the right hand side of 
+
+$$
+\begin{align}
+\frac{\partial c_i}{\partial t}=\frac{1}{\psi} \nabla \cdot (\psi D_i \nabla c_i) + \frac{1}{\psi} \left(\frac{z_i F}{RT} \nabla \cdot (\psi D_i c_i \nabla \Phi) \right) + \frac{|\nabla \psi|}{\psi} \left( \frac{i_{rxn}}{z_i F} \right)
+\end{align}
+$$
+
+is zero for $c_i =c_+$  because $i_{rxn}$ is the reaction current density for the dissolution of the metal (M), which does not involve the supporting cation (+) and anion (-). The SBM reformulated governing equation for the potential is
 
 $$
 \begin{equation}
@@ -113,7 +128,23 @@ $$
 $$
 
 ## Time Discretization
-The fields $\eta$, $\psi$, $c_M$ and $c_+$ are solved using an explicit Euler method for time integration. For  $\eta$ and $\psi$ we employ a splitting strategy to transform Eqs. \eqref{CH_eta} and \eqref{CH_psi} into second order PDEs:
+The fields $\eta$, $\psi$, $c_M$ and $c_+$ are solved using an explicit Euler method for time integration. For  $\eta$ and $\psi$ we employ a splitting strategy to transform Eqs. 
+
+$$
+\begin{equation}
+ \frac{\partial \eta}{\partial t} = \nabla \cdot \left[ M(\psi) \nabla \frac{\delta \Pi}{\delta \eta}\right] + v |\nabla \psi|,
+ \end{equation}
+$$
+
+and 
+
+$$
+\begin{equation}
+ \frac{\partial \psi}{\partial t} = \nabla \cdot \left[ M(\psi) \nabla \frac{\delta \Pi}{\delta \psi} \right] - v |\nabla \psi|.
+ \end{equation}
+$$
+
+into second order PDEs:
 
 $$
 \begin{equation}
@@ -186,37 +217,103 @@ $$
 The electrostatic potential is assumed to be in equilibrium throughout the simulation and needs to be solved as a non-linear time-independent equation.
 
 ## Weak Formulation
-For the weak formulation of time-discretized equations \eqref{eta_eq_td}-\eqref{conc_eq_td} only RHS terms need to be specified (see `https://prisms-center.github.io/phaseField/doxygen_files/app_files.html` {\textcolor{blue}{User Manual}} for details)
+For the weak formulation of time-discretized equations only the RHS terms need to be specified (see `https://prisms-center.github.io/phaseField/doxygen_files/app_files.html` for details)
 
 $$
 \begin{equation}
-\int_{\Omega} \omega \eta^{n+1} dV = \int_{\Omega} \omega \underbrace{\left( \eta^n +\Delta t v  |\psi^n|\right)}_{r_\eta}dV + \int_{\Omega} \nabla \omega \cdot  \underbrace{\left(-  \Delta t M \nabla \mu_\eta^n \right)}_{r_{\eta x}}dV
-\end{equation}
-$$
-
-$$
-\begin{equation}
-\int_{\Omega} \omega \mu_\eta^{n+1} dV = \int_{\Omega} \omega \underbrace{f_\eta^n}_{r_{\mu \eta}}dV + \int_{\Omega} \nabla \omega \cdot  \underbrace{(\epsilon^2\nabla\eta^n)}_{r_{\mu \eta x}}dV
-\end{equation}
-$$
-
-$$
-\begin{equation}
-\int_{\Omega} \omega \psi^{n+1} dV = \int_{\Omega} \omega \underbrace{\left( \psi^n -\Delta t v  |\psi^n|\right)}_{r_\psi} dV+ \int_{\Omega} \nabla \omega \cdot  \underbrace{\left(-  \Delta t M \nabla \mu_\psi^n \right)}_{r_{\psi x}}dV
-\end{equation}
-$$
-
-$$
-\begin{equation}
-\int_{\Omega} \omega \mu_\psi^{n+1} dV = \int_{\Omega} \omega \underbrace{f_\psi^n}_{r_{\mu \psi}}dV + \int_{\Omega} \nabla \omega \cdot  \underbrace{(\epsilon^2\nabla\psi^n)}_{r_{\mu \psi x}}dV
+\int_{\Omega} \omega \eta^{n+1} dV = \int_{\Omega} \omega \left( \eta^n +\Delta t v  |\psi^n|\right)dV + \int_{\Omega} \nabla \omega \cdot  \left(-  \Delta t M \nabla \mu_\eta^n \right) dV
 \end{equation}
 $$
 
 $$
 \begin{align}
-\int_{\Omega} \omega c_i^{n+1} dV &=\int_{\Omega} \omega \underbrace{\left( c_i^n+\frac{\Delta t D_i}{\psi^n}\nabla\psi^n\cdot\nabla c_i^n 
-+\frac{\Delta t D_i z_i F}{RT\psi^n}\nabla\psi^n\cdot(c_i^n\nabla \Phi^n) +\frac{\Delta t}{z_i F\psi^n} |\nabla\psi^n| i_{rxn}\right)}_{r_{ci}} dV\\ 
-&+ \int_{\Omega} \nabla \omega \cdot  \underbrace{\left( -\Delta t D_i \nabla c_i^n -\frac{\Delta t D_i z_i F}{RT} c_i^n\nabla \Phi^n \right)}_{r_{cix}}dV
+r_\eta &= \left( \eta^n +\Delta t v  |\psi^n|\right)
+\end{align}
+$$
+
+$$
+\begin{align}
+r_{\eta x} &= \left(-  \Delta t M \nabla \mu_\eta^n \right)
+\end{align}
+$$
+
+$$
+\begin{equation}
+\int_{\Omega} \omega \mu_\eta^{n+1} dV = \int_{\Omega} \omega f_\eta^n dV + \int_{\Omega} \nabla \omega \cdot  (\epsilon^2\nabla\eta^n) dV
+\end{equation}
+$$
+
+$$
+\begin{align}
+r_{\mu \eta} &= f_\eta^n
+\end{align}
+$$
+
+$$
+\begin{align}
+r_{\mu \eta x} &= (\epsilon^2\nabla\eta^n)
+\end{align}
+$$
+
+$$
+\begin{equation}
+\int_{\Omega} \omega \psi^{n+1} dV = \int_{\Omega} \omega \left( \psi^n -\Delta t v  |\psi^n|\right) dV+ \int_{\Omega} \nabla \omega \cdot  \left(-  \Delta t M \nabla \mu_\psi^n \right) dV
+\end{equation}
+$$
+
+$$
+\begin{align}
+r_\psi &= \left( \psi^n -\Delta t v  |\psi^n|\right)
+\end{align}
+$$
+
+$$
+\begin{align}
+r_{\psi x} &= \left(-  \Delta t M \nabla \mu_\psi^n \right)
+\end{align}
+$$
+
+$$
+\begin{equation}
+\int_{\Omega} \omega \mu_\psi^{n+1} dV = \int_{\Omega} \omega f_\psi^n dV + \int_{\Omega} \nabla \omega \cdot  (\epsilon^2\nabla\psi^n) dV
+\end{equation}
+$$
+
+$$
+\begin{align}
+r_{\mu \psi} &= f_\psi^n
+\end{align}
+$$
+
+$$
+\begin{align}
+r_{\mu \psi x} &= (\epsilon^2\nabla\psi^n)
+\end{align}
+$$
+
+$$
+\begin{align}
+\int_{\Omega} \omega c_i^{n+1} dV &=\int_{\Omega} \omega \left( c_i^n+\frac{\Delta t D_i}{\psi^n}\nabla\psi^n\cdot\nabla c_i^n 
++\frac{\Delta t D_i z_i F}{RT\psi^n}\nabla\psi^n\cdot(c_i^n\nabla \Phi^n) +\frac{\Delta t}{z_i F\psi^n} |\nabla\psi^n| i_{rxn}\right) dV
+\end{align}
+$$
+
+$$
+\begin{align}
+&+ \int_{\Omega} \nabla \omega \cdot  \left( -\Delta t D_i \nabla c_i^n -\frac{\Delta t D_i z_i F}{RT} c_i^n\nabla \Phi^n \right) dV
+\end{align}
+$$
+
+$$
+\begin{align}
+r_{ci} &= \left( c_i^n+\frac{\Delta t D_i}{\psi^n}\nabla\psi^n\cdot\nabla c_i^n 
++\frac{\Delta t D_i z_i F}{RT\psi^n}\nabla\psi^n\cdot(c_i^n\nabla \Phi^n) +\frac{\Delta t}{z_i F\psi^n} |\nabla\psi^n| i_{rxn}\right)
+\end{align}
+$$
+
+$$
+\begin{align}
+r_{cix} &= \left( -\Delta t D_i \nabla c_i^n -\frac{\Delta t D_i z_i F}{RT} c_i^n\nabla \Phi^n \right)
 \end{align}
 $$
 
@@ -224,9 +321,37 @@ For the time-independent electrostatic potential, we need to specify LHS and RHS
 
 $$
 \begin{align}
-&\int_{\Omega} \omega  \underbrace{\left( \frac{\partial i_{rxn}}{\partial \Phi}^n |\nabla\psi^n| \Delta\Phi\right)}_{r_{\Delta \Phi}} dV 
-+ \int_{\Omega} \nabla\omega \cdot  \underbrace{\left( -\psi^n \kappa  \nabla(\Delta\Phi)\right)}_{r_{\Delta \Phi x}} dV =\\
-&\int_{\Omega} \omega  \underbrace{\left( -|\nabla\psi^n| i_{rxn} \right)}_{r_\Phi} dV + \int_{\Omega} \nabla\omega \cdot  \underbrace{\left( -F  \left[ \left( z_M (D_- - D_M) \nabla c_M^n + z_+ (D_- - D_+)  \nabla c_+^n \right) \right] +\psi^n \kappa \nabla\Phi^n \right)}_{r_\Phi x} dV
+&\int_{\Omega} \omega  \left( \frac{\partial i_{rxn}}{\partial \Phi}^n |\nabla\psi^n| \Delta\Phi\right) dV + \int_{\Omega} \nabla\omega \cdot  \left( -\psi^n \kappa  \nabla(\Delta\Phi)\right) dV =
+\end{align}
+$$
+
+$$
+\begin{align}
+&\int_{\Omega} \omega  \left( -|\nabla\psi^n| i_{rxn} \right) dV + \int_{\Omega} \nabla\omega \cdot  \left( -F  \left[ \left( z_M (D_- - D_M) \nabla c_M^n + z_+ (D_- - D_+)  \nabla c_+^n \right) \right] +\psi^n \kappa \nabla\Phi^n \right) dV
+\end{align}
+$$
+
+$$
+\begin{align}
+r_{\Delta \Phi} &= \left( \frac{\partial i_{rxn}}{\partial \Phi}^n |\nabla\psi^n| \Delta\Phi\right)
+\end{align}
+$$
+
+$$
+\begin{align}
+r_{\Delta \Phi x} &= \left( -\psi^n \kappa  \nabla(\Delta\Phi)\right)
+\end{align}
+$$
+
+$$
+\begin{align}
+r_\Phi &= \left( -|\nabla\psi^n| i_{rxn} \right)
+\end{align}
+$$
+
+$$
+\begin{align}
+r_\Phi x &= \left( -F  \left[ \left( z_M (D_- - D_M) \nabla c_M^n + z_+ (D_- - D_+)  \nabla c_+^n \right) \right] +\psi^n \kappa \nabla\Phi^n \right)
 \end{align}
 $$
 
