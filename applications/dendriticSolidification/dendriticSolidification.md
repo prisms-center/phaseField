@@ -72,10 +72,15 @@ $$
 The  $\frac{\partial W(\theta)}{\partial \left( \frac{\partial \phi}{\partial x} \right)}$ and $\frac{\partial W(\theta)}{\partial \left( \frac{\partial \phi}{\partial y} \right)}$ expressions can be evaluated using the chain rule, using $\theta$ as an intermediary (i.e. $\frac{\partial W(\theta)}{\partial \left( \frac{\partial \phi}{\partial x} \right)}=\frac{\partial W(\theta)}{\partial \theta} \frac{\partial \theta}{\partial \left( \frac{\partial \phi}{\partial x} \right)}$  and $\frac{\partial W(\theta)}{\partial \left( \frac{\partial \phi}{\partial y} \right)}=\frac{\partial W(\theta)}{\partial \theta} \frac{\partial \theta}{\partial \left( \frac{\partial \phi}{\partial y} \right)}$). Also, the last two terms can be expressed using a divergence operator, allowing them to be grouped with the second term, which will simplify matters later. Carrying out these transformations yields:
 
 $$
-\begin{multline}
-\mu = \left[ \phi - \lambda u \left(1 - \phi^2 \right) \right] \left(1-\phi^2\right) + \nabla \cdot \bigg[\left(W^2 \frac{\partial \phi}{\partial x} + W_0 \epsilon_m m W(\theta) \sin \left[ m \left(\theta - \theta_0 \right) \right] \frac{\partial \phi}{\partial y}\right)\hat{x}  \\
-+ \left(W^2 \frac{\partial \phi}{\partial y} -W_0 \epsilon_m m W(\theta) \sin \left[ m \left(\theta - \theta_0 \right) \right] \frac{\partial \phi}{\partial x}\right) \hat{y} \bigg]
-\end{multline}
+\begin{align}
+\mu = \left[ \phi - \lambda u \left(1 - \phi^2 \right) \right] \left(1-\phi^2\right) + \nabla \cdot \bigg[\left(W^2 \frac{\partial \phi}{\partial x} + W_0 \epsilon_m m W(\theta) \sin \left[ m \left(\theta - \theta_0 \right) \right] \frac{\partial \phi}{\partial y}\right)\hat{x}
+\end{align}
+$$
+
+$$
+\begin{align}
+&+ \left(W^2 \frac{\partial \phi}{\partial y} -W_0 \epsilon_m m W(\theta) \sin \left[ m \left(\theta - \theta_0 \right) \right] \frac{\partial \phi}{\partial x}\right) \hat{y} \bigg]
+\end{align}
 $$
 
 ## Model Constants
@@ -102,27 +107,73 @@ u^{n+1} = u^{n} + \Delta t \left( D  \nabla^2 u^n + \frac{\mu^n}{2 \tau} \right)
 $$
 
 $$
-\begin{multline}
-\mu^{n+1} =  \left[ \phi^n - \lambda u \left(1 - (\phi^n)^2 \right) \right] \left(1-(\phi^n)^2\right) + \nabla \cdot \bigg[\left(W^2 \frac{\partial \phi^n}{\partial x} + W_0 \epsilon_m m W(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial y}\right)\hat{x}  \\
-+ \left(W^2 \frac{\partial \phi^n}{\partial y} -W_0 \epsilon_m m W(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial x}\right) \hat{y} \bigg]
-\end{multline}
+\begin{align}
+\mu^{n+1} =  \left[ \phi^n - \lambda u \left(1 - (\phi^n)^2 \right) \right] \left(1-(\phi^n)^2\right) + \nabla \cdot \bigg[\left(W^2 \frac{\partial \phi^n}{\partial x} + W_0 \epsilon_m m W(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial y}\right)\hat{x} 
+\end{align}
+$$
+
+$$
+\begin{align}
+&+ \left(W^2 \frac{\partial \phi^n}{\partial y} -W_0 \epsilon_m m W(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial x}\right) \hat{y} \bigg]
+\end{align}
 $$
 
 ## Weak Formulation
 
 $$
-\begin{gather}
-\int_{\Omega}   w  u^{n+1}  ~dV = \int_{\Omega}   w \underbrace{\left(u^{n} + \frac{\mu^n \Delta t}{2 \tau}\right)}_{r_u} + \nabla w \cdot \underbrace{(-D \Delta t \nabla u^n)}_{r_{ux}} ~dV \\
-\int_{\Omega}   w  \phi^{n+1}  ~dV = \int_{\Omega}   w \underbrace{\left(\phi^n + \frac{\Delta t \mu^n}{\tau}\right)}_{r_{\phi}} ~dV 
-\end{gather}
+\begin{align}
+\int_{\Omega}   w  u^{n+1}  ~dV = \int_{\Omega}   w \left(u^{n} + \frac{\mu^n \Delta t}{2 \tau}\right) + \nabla w \cdot (-D \Delta t \nabla u^n) ~dV 
+\end{align}
 $$
 
 $$
-\begin{multline}
-\int_{\Omega}   w  \mu^{n+1}  ~dV = \int_{\Omega}   w \underbrace{\left[ \phi^n - \lambda u \left(1 - (\phi^n)^2 \right) \right] \left(1-(\phi^n)^2\right)}_{r_{\mu}} \\
-+ \nabla w \cdot \underbrace{\bigg[-\left(W^2 \frac{\partial \phi^n}{\partial x} + W_0 \epsilon_m m W(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial y}\right)\hat{x}
-- \left(W^2 \frac{\partial \phi^n}{\partial y} -W_0 \epsilon_m m W(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial x}\right) \hat{y} \bigg]}_{r_{\phi x}}  ~dV 
-\end{multline}
+\begin{align}
+\int_{\Omega}   w  \phi^{n+1}  ~dV = \int_{\Omega}   w \left(\phi^n + \frac{\Delta t \mu^n}{\tau}\right) ~dV 
+\end{align}
+$$
+
+$$
+\begin{align}
+r_u &= \left(u^{n} + \frac{\mu^n \Delta t}{2 \tau}\right)
+\end{align}
+$$
+
+$$
+\begin{align}
+r_{ux} &= (-D \Delta t \nabla u^n)
+\end{align}
+$$
+
+$$
+\begin{align}
+r_{\phi} &= \left(\phi^n + \frac{\Delta t \mu^n}{\tau}\right)
+\end{align}
+$$
+
+$$
+\begin{align}
+\int_{\Omega}   w  \mu^{n+1}  ~dV = \int_{\Omega}   w \left[ \phi^n - \lambda u \left(1 - (\phi^n)^2 \right) \right] \left(1-(\phi^n)^2\right)
+\end{align}
+$$
+
+$$
+\begin{align}
+&+ \nabla w \cdot \bigg[-\left(W^2 \frac{\partial \phi^n}{\partial x} + W_0 \epsilon_m m W(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial y}\right)\hat{x}
+&- \left(W^2 \frac{\partial \phi^n}{\partial y} -W_0 \epsilon_m m W(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial x}\right) \hat{y} \bigg]  ~dV 
+\end{align}
+$$
+
+$$
+\begin{align}
+r_{\mu} &= \left[ \phi^n - \lambda u \left(1 - (\phi^n)^2 \right) \right] \left(1-(\phi^n)^2\right)
+\end{align}
+$$
+
+$$
+\begin{align}
+r_{\phi x} &= \bigg[-\left(W^2 \frac{\partial \phi^n}{\partial x} + W_0 \epsilon_m m W(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial y}\right)\hat{x}
+&- \left(W^2 \frac{\partial \phi^n}{\partial y} -W_0 \epsilon_m m W(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial x}\right) \hat{y} \bigg]
+\end{align}
 $$
 
 
