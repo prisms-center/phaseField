@@ -229,7 +229,7 @@ MatrixFreePDE<dim, degree>::applyBCs(unsigned int fieldIndex)
 
   // Set the Dirichelet values (hanging node constraints don't need to be distributed
   // every time step, only at output)
-  if (fields[fieldIndex].hasDirichletBCs)
+  if ((fields[fieldIndex].hasDirichletBCs) or (fields[fieldIndex].hasnonuniformDirichletBCs))
     {
       // Apply non-uniform Dirlichlet_BCs to the current field
       if (fields[fieldIndex].hasnonuniformDirichletBCs)
