@@ -16,11 +16,11 @@ class SimplifiedGrainRepresentation
 public:
   /**
    * Constructor. Creates the simplified representation of a grain from its
-   * GrainSet. This sets all of the internal data members and is the only way
+   * Grain. This sets all of the internal data members and is the only way
    * to set the radius and center of the grain. The members order_parameter_id
    * and old_order_parameter_id are initialized to the same value.
    */
-  SimplifiedGrainRepresentation(const GrainSet<dim> &grain_set);
+  SimplifiedGrainRepresentation(const Grain<dim> &grain);
 
   /**
    * Getter for the grain center/centroid.

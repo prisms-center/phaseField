@@ -125,12 +125,12 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
       FloodFiller<dim, degree> flood_filler(*FESet.at(scalar_field_index), quadrature2);
 
       pcout << "Locating the grains...\n";
-      std::vector<GrainSet<dim>> grain_sets;
+      std::vector<Grain<dim>> grain_sets;
       for (unsigned int id = min_id; id < max_id + 1; id++)
         {
           pcout << "Locating grain " << id << "...\n";
 
-          std::vector<GrainSet<dim>> grain_sets_single_id;
+          std::vector<Grain<dim>> grain_sets_single_id;
 
           flood_filler.calcGrainSets(*FESet.at(scalar_field_index),
                                      *dofHandlersSet_nonconst.at(scalar_field_index),

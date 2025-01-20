@@ -10,7 +10,7 @@ FloodFiller<dim, degree>::calcGrainSets(
   double                                              threshold_upper,
   int                                                 min_id,
   unsigned int                                        order_parameter_index,
-  std::vector<GrainSet<dim>>                         &grain_sets)
+  std::vector<Grain<dim>>                            &grain_sets)
 {
   unsigned int grain_index = 0;
 
@@ -23,8 +23,8 @@ FloodFiller<dim, degree>::calcGrainSets(
       ++cell;
     }
 
-  GrainSet<dim> grain_set;
-  grain_sets.push_back(grain_set);
+  Grain<dim> grain;
+  grain_sets.push_back(grain);
   grain_sets.back().setOrderParameterIndex(order_parameter_index);
 
   // The flood fill loop
@@ -49,9 +49,9 @@ FloodFiller<dim, degree>::calcGrainSets(
             {
               // Get the grain set initialized for the next grain to be found
               grain_index++;
-              GrainSet<dim> new_grain_set;
-              new_grain_set.setOrderParameterIndex(order_parameter_index);
-              grain_sets.push_back(new_grain_set);
+              Grain<dim> new_grain;
+              new_grain.setOrderParameterIndex(order_parameter_index);
+              grain_sets.push_back(new_grain);
             }
         }
 
@@ -86,7 +86,7 @@ FloodFiller<dim, degree>::recursiveFloodFill(
   double                                              threshold_upper,
   int                                                 min_id,
   unsigned int                                       &grain_index,
-  std::vector<GrainSet<dim>>                         &grain_sets,
+  std::vector<Grain<dim>>                            &grain_sets,
   bool                                               &grain_assigned)
 {
   if (cell == cell_end)
@@ -189,7 +189,7 @@ FloodFiller<dim, degree>::recursiveFloodFill(
 template <int dim, int degree>
 void
 FloodFiller<dim, degree>::createGlobalGrainSetList(
-  std::vector<GrainSet<dim>> &grain_sets) const
+  std::vector<Grain<dim>> &grain_sets) const
 {
   unsigned int numProcs = dealii::Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
 
@@ -308,12 +308,12 @@ FloodFiller<dim, degree>::createGlobalGrainSetList(
                  MPI_DOUBLE,
                  MPI_COMM_WORLD);
 
-  // Put the GrainSet objects back together
+  // Put the Grain objects back together
   grain_sets.clear();
 
   for (int g = 0; g < num_grains_global; g++)
     {
-      GrainSet<dim> new_grain_set;
+      Grain<dim> new_grain;
       for (unsigned int c = 0; c < num_elements_global.at(g); c++)
         {
           std::vector<dealii::Point<dim>> verts;
@@ -329,10 +329,10 @@ FloodFiller<dim, degree>::createGlobalGrainSetList(
               dealii::Point<dim>     vert(tensor_coords);
               verts.push_back(vert);
             }
-          new_grain_set.addVertexList(verts);
+          new_grain.addVertexList(verts);
         }
-      new_grain_set.setOrderParameterIndex(order_parameters_global.at(g));
-      grain_sets.push_back(new_grain_set);
+      new_grain.setOrderParameterIndex(order_parameters_global.at(g));
+      grain_sets.push_back(new_grain);
     }
 }
 
@@ -342,7 +342,7 @@ FloodFiller<dim, degree>::createGlobalGrainSetList(
 
 template <int dim, int degree>
 void
-FloodFiller<dim, degree>::mergeSplitGrains(std::vector<GrainSet<dim>> &grain_sets) const
+FloodFiller<dim, degree>::mergeSplitGrains(std::vector<Grain<dim>> &grain_sets) const
 {
   // Loop though each vertex in the base grain "g"
   for (unsigned int g = 0; g < grain_sets.size(); g++)
