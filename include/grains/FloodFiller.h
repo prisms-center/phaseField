@@ -16,7 +16,7 @@
  * vertices in that grain.
  */
 template <int dim>
-class GrainSet
+class Grain
 {
 public:
   /**
@@ -111,7 +111,7 @@ public:
 
   /**
    * The primary external interface. This method takes in information about the
-   * mesh/field and outputs a vector of GrainSet objects.
+   * mesh/field and outputs a vector of Grain objects.
    */
   void
   calcGrainSets(dealii::FESystem<dim>                              &finite_element,
@@ -121,7 +121,7 @@ public:
                 double                                              threshold_upper,
                 int                                                 min_id,
                 unsigned int                                        order_parameter_index,
-                std::vector<GrainSet<dim>>                         &grain_sets);
+                std::vector<Grain<dim>>                            &grain_sets);
 
 protected:
   /**
@@ -136,21 +136,21 @@ protected:
                      double                                              threshold_upper,
                      int                                                 min_id,
                      unsigned int                                       &grain_index,
-                     std::vector<GrainSet<dim>>                         &grain_sets,
+                     std::vector<Grain<dim>>                            &grain_sets,
                      bool                                               &grain_assigned);
 
   /**
    * The method to merge the grain sets from all the processors.
    */
   void
-  createGlobalGrainSetList(std::vector<GrainSet<dim>> &grain_sets) const;
+  createGlobalGrainSetList(std::vector<Grain<dim>> &grain_sets) const;
 
   /**
    * Checks to see if grains found on different processors are parts of a larger
    * grain. If so, it merges the grain_sets entries.
    */
   void
-  mergeSplitGrains(std::vector<GrainSet<dim>> &grain_sets) const;
+  mergeSplitGrains(std::vector<Grain<dim>> &grain_sets) const;
 
   /**
    * The quadrature used to calculate the element-wise value of the solution
