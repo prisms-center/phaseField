@@ -5,16 +5,15 @@
 // ============================================================================
 
 template <int dim>
-SimplifiedGrainRepresentation<dim>::SimplifiedGrainRepresentation(
-  const GrainSet<dim> &grain_set)
-  : grain_id(grain_set.getGrainIndex())
-  , order_parameter_id(grain_set.getOrderParameterIndex())
+SimplifiedGrainRepresentation<dim>::SimplifiedGrainRepresentation(const Grain<dim> &grain)
+  : grain_id(grain.getGrainIndex())
+  , order_parameter_id(grain.getOrderParameterIndex())
   , old_order_parameter_id(order_parameter_id)
   , distance_to_neighbor_sharing_op(0.0)
 {
   // Calculate the centroid assuming that the elements are rectangular and with
   // no weighting based on the actual value of the field
-  std::vector<std::vector<dealii::Point<dim>>> vertex_list = grain_set.getVertexList();
+  std::vector<std::vector<dealii::Point<dim>>> vertex_list = grain.getVertexList();
 
   double                 grain_volume = 0.0;
   dealii::Tensor<1, dim> centroid;
