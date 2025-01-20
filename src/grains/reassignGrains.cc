@@ -29,7 +29,7 @@ MatrixFreePDE<dim, degree>::reassignGrains()
   QGaussLobatto<dim>       quadrature2(degree + 1);
   FloodFiller<dim, degree> flood_filler(*FESet.at(scalar_field_index), quadrature2);
 
-  std::vector<GrainSet<dim>> grain_sets;
+  std::vector<Grain<dim>> grain_sets;
 
   unsigned int op_list_index = 0;
   for (unsigned int fieldIndex = 0; fieldIndex < fields.size(); fieldIndex++)
@@ -40,7 +40,7 @@ MatrixFreePDE<dim, degree>::reassignGrains()
             {
               op_list_index++;
 
-              std::vector<GrainSet<dim>> single_OP_grain_sets;
+              std::vector<Grain<dim>> single_OP_grain_sets;
               flood_filler.calcGrainSets(*FESet.at(scalar_field_index),
                                          *dofHandlersSet_nonconst.at(scalar_field_index),
                                          solutionSet.at(fieldIndex),
