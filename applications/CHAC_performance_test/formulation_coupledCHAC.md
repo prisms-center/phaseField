@@ -1,4 +1,4 @@
-## PRISMS PhaseField: Coupled Cahn-Hilliard and Allen-Cahn Dynamics
+# PRISMS PhaseField: Coupled Cahn-Hilliard and Allen-Cahn Dynamics
 
 Consider a free energy expression of the form:
 

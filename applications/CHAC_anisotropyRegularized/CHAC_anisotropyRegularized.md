@@ -1,4 +1,4 @@
-## PRISMS PhaseField: Regularized Anisotropy (with Coupled CH-AC Dynamics)
+# PRISMS PhaseField: Regularized Anisotropy (with Coupled CH-AC Dynamics)
 
 Consider a free energy expression of the form:
 
