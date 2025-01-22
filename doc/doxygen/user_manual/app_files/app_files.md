@@ -17,16 +17,43 @@ The file ''equations.cc'' contains a list of the variables in the model equation
 
 To modify the functions in this file, one needs to be familiar with the weak form of the governing equations. In PRISMS-PF, the governing equations are expressed in two terms. The first is the part of the integrand that is multiplied by the test function (marked by 'eq' with the subscript of the variable in the example below). The second is the part of the integrand that multiplied by the gradient of the test function (marked by 'eqx' with the subscript of the variable in the example below). For the coupled Cahn-Hilliard/Allen-Cahn system, the governing equations are
 
-\f[
-\int_{\Omega}   w  \eta^{n+1}  ~dV =\int_{\Omega}  w  \left( \underbrace{\eta^{n} - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n)}_{eq_{\eta}} \right)+ \nabla w \cdot \underbrace{(- \Delta t M_{\eta}\kappa) \nabla \eta^{n}}_{eqx_{\eta}} ~dV
-\f]
+$$
+\begin{align}
+\int_{\Omega}   w  \eta^{n+1}  ~dV =\int_{\Omega}  w  \left( \eta^{n} - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n) \right)+ \nabla w \cdot (- \Delta t M_{\eta}\kappa) \nabla \eta^{n} ~dV
+\end{align}
+$$
+
+$$
+\begin{align}
+eq_{\eta} &= \eta^{n} - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n)
+\end{align}
+$$
+
+$$
+\begin{align}
+eqx_{\eta} &= (- \Delta t M_{\eta}\kappa) \nabla \eta^{n}
+\end{align}
+$$
 
 and
 
-\f[
+$$
+\begin{align}
+]$\int_{\Omega}   w  c^{n+1}  ~dV = \int_{\Omega}   w c^{n} +  \nabla w   (-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n+1})+f_{\beta,cc}^n H^{n+1}) \nabla c + ~((f_{\beta,c}^n-f_{\alpha,c}^n)H^{n+1}_{,\eta} \nabla \eta) ] ~dV
+\end{align}
+$$
 
-]$\int_{\Omega}   w  c^{n+1}  ~dV = \int_{\Omega}   w \underbrace{c^{n}}_{eq_c} +  \nabla w   \underbrace{(-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n+1})+f_{\beta,cc}^n H^{n+1}) \nabla c + ~((f_{\beta,c}^n-f_{\alpha,c}^n)H^{n+1}_{,\eta} \nabla \eta) ] }_{eqx_{c}} ~dV
-\f]
+$$
+\begin{align}
+eq_c &= c^{n}
+\end{align}
+$$
+
+$$
+\begin{align}
+eqx_{c} &= (-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n+1})+f_{\beta,cc}^n H^{n+1}) \nabla c + ~((f_{\beta,c}^n-f_{\alpha,c}^n)H^{n+1}_{,\eta} \nabla \eta)
+\end{align}
+$$
 
 for the Allen-Cahn and Cahn-Hilliard equation, respectively. Each of the terms in the governing equation is marked with an underbrace. The terms multiplied by the test function are referred to as the value terms and the terms multiplied by the gradient of the test function are referred to as the gradient terms.
 
