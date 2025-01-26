@@ -126,10 +126,10 @@ set [parameter name] = [parameter value]
 ### Element Parameters
 | Name          | Options | Required | Default | Description |
 | --------------|---------|----------|---------|----------------------------------------------------|
-|Subdivisions X | Any positive integer | no | 1 | The number of mesh subdivisions in the x direction to control the element aspect ratio. The mesh size is \f$2^{(Refine Factor)} \times Subdivisions\f$ in each direction.
-Subdivisions Y | Any positive integer | no | 1 | The number of mesh subdivisions in the y direction to control the element aspect ratio.The mesh size is \f$2^{(Refine Factor)} \times Subdivisions\f$ in each direction.
-Subdivisions Z | Any positive integer | no | 1 | The number of mesh subdivisions in the z direction to control the element aspect ratio. The mesh size is \f$2^{(Refine Factor)} \times Subdivisions\f$ in each direction.
-Refine factor | Any non-negative integer | yes | n/a | The number of initial refinements of the mesh. The mesh size is \f$2^{(Refine Factor)} \times Subdivisions\f$ in each direction. While in principle the mesh could be entirely controlled by the number of subdivisons, computational performance is best when the majority of the refinement is done via the Refine factor.
+|Subdivisions X | Any positive integer | no | 1 | The number of mesh subdivisions in the x direction to control the element aspect ratio. The mesh size is $2^{(Refine Factor)} \times Subdivisions$ in each direction.
+Subdivisions Y | Any positive integer | no | 1 | The number of mesh subdivisions in the y direction to control the element aspect ratio.The mesh size is $2^{(Refine Factor)} \times Subdivisions$ in each direction.
+Subdivisions Z | Any positive integer | no | 1 | The number of mesh subdivisions in the z direction to control the element aspect ratio. The mesh size is $2^{(Refine Factor)} \times Subdivisions$ in each direction.
+Refine factor | Any non-negative integer | yes | n/a | The number of initial refinements of the mesh. The mesh size is $2^{(Refine Factor)} \times Subdivisions$ in each direction. While in principle the mesh could be entirely controlled by the number of subdivisons, computational performance is best when the majority of the refinement is done via the Refine factor.
 Element degree | 1, 2, 3 | no | 1 | The polynomial order of the elements. The spatial order of accuracy is one plus the degree.
 
 ### Mesh Adaptivity (optional)
@@ -176,7 +176,7 @@ Use Laplace's equation to determine the initial guess | Boolean | no | false | W
 ### Output (optional)
 | Name          | Options | Required | Default | Description |
 | --------------|---------|----------|---------|----------------------------------------------------|
-Output condition | EQUAL_SPACING, LOG_SPACING, N_PER_DECADE, LIST | no | EQUAL_SPACING | This sets the spacing between the times the simulation outputs the model variables. EQUAL_SPACING spaces them equally, LOG_SPACING spaces them  \f$10^{n/(outputs) \log(time steps)}\f$, N_PER_DECADE allows the user to set how many times the simulation outputs per power of ten iterations, and LIST outputs at a user-given list of time step numbers.
+Output condition | EQUAL_SPACING, LOG_SPACING, N_PER_DECADE, LIST | no | EQUAL_SPACING | This sets the spacing between the times the simulation outputs the model variables. EQUAL_SPACING spaces them equally, LOG_SPACING spaces them  $10^{n/(outputs) \log(time steps)}$, N_PER_DECADE allows the user to set how many times the simulation outputs per power of ten iterations, and LIST outputs at a user-given list of time step numbers.
 Number of outputs | Any non-negative integer | no | 10 | The number of inputs if the output condition is EQUAL_SPACING. The number of outputs if the output condition is N_PER_DECADE. Ignored for the other output conditions.
 List of time steps to output | Comma-separated list of non-negative integers | no | 0 | The list of time steps to output, used for the LIST output condition and ignored for the others.
 Output file name (base) | String | no | solution | The name for the output file, before the time step and processor info are added.
@@ -188,7 +188,7 @@ Skip print steps | Any positive integer | no | 1 | The number of time steps betw
 | Name          | Options | Required | Default | Description |
 | --------------|---------|----------|---------|----------------------------------------------------|
 Load from a checkpoint | Boolean | no | false | Whether to start the simulation from the checkpoint of another simulation.
-Checkpoint condition | EQUAL_SPACING, LOG_SPACING, N_PER_DECADE, LIST | no | EQUAL_SPACING | This sets the spacing between the times the simulation outputs the model variables. EQUAL_SPACING spaces them equally, LOG_SPACING spaces them  \f$10^{n/(outputs) \log(time steps)}\f$, N_PER_DECADE allows the user to set how many times the simulation outputs per power of ten iterations, and LIST outputs at a user-given list of time step numbers.
+Checkpoint condition | EQUAL_SPACING, LOG_SPACING, N_PER_DECADE, LIST | no | EQUAL_SPACING | This sets the spacing between the times the simulation outputs the model variables. EQUAL_SPACING spaces them equally, LOG_SPACING spaces them  $10^{n/(outputs) \log(time steps)}$, N_PER_DECADE allows the user to set how many times the simulation outputs per power of ten iterations, and LIST outputs at a user-given list of time step numbers.
 Number of checkpoints | Any non-negative integer | no | 1 | The number of inputs if the output condition is EQUAL_SPACING. The number of outputs if the output condition is N_PER_DECADE. Ignored for the other output conditions.
 List of time steps to save checkpoints | Comma-separated list of non-negative integers | no | 0 | The list of time steps to create checkpoints, used for the LIST output condition and ignored for the others.
 
@@ -210,7 +210,7 @@ Variable names in the files | Comma-separated list of strings | no | [empty] | W
 | Name          | Options | Required | Default | Description |
 | --------------|---------|----------|---------|----------------------------------------------------|
 Time steps between nucleation attempts | Any positive integer | no | 100  | The number of time steps between nucleation attempts. This parameter is shared among all nucleating variables.
-Minimum allowed distance between nuclei | Any non-negative real number | no | 2\f$\times\f$ the largest nucleus semiaxis  | The minimum allowed distance between nuclei centers during a single nucleation attempt. This parameter is shared among all nucleating variables.
+Minimum allowed distance between nuclei | Any non-negative real number | no | 2$\times$ the largest nucleus semiaxis  | The minimum allowed distance between nuclei centers during a single nucleation attempt. This parameter is shared among all nucleating variables.
 Order parameter cutoff value | Any non-negative real number | no | 0.01  | The minimum allowed value of the sum of all nucleating variable fields where nucleation is allowed to occur. Implemented to prevent nucleation inside existing particles. This parameter is shared among all nucleating variables.
 Time steps between nucleation attempts | Any positive integer | no | 100  | The number of time steps between nucleation attempts. This parameter is shared among all nucleating variables.
 
@@ -406,12 +406,12 @@ Each application specifies its own set of model constants. These are most often 
 - TENSOR: For either rank 1 tensors (i.e. vectors) or rank 2 tensors (i.e. matrices) with a size of the number of dimensions. These are assumed to be real numbers. Each row should be given by a comma-separated list in parentheses. For example, a 3D vector would be given as ```(2.5, 1.2, 0.1)``` and a 2D matrix would be given as: ```((4.1, 2.0),(1.6, 5.2))```.
 - {[symmetry]} ELASTIC CONSTANTS: For sets of elastic constants, given as a vector. The symmetry options are ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC. The number of entries for the different symmetries are given below. PRISMS-PF converts these sets of elastic constants into a stiffness matrix.
 
-The number and order of the entries for the elastic constants are (where \f$C_{ij}\f$ are entries in the stiffness matrix):
+The number and order of the entries for the elastic constants are (where $C_{ij}$ are entries in the stiffness matrix):
 
 - ISOTROPIC (2D/3D): 2 constants (Young's Modulus, Poisson's Ratio)
-- TRANSVERSE (3D): 5 constants (\f$C_{11}\f$, \f$C_{33}\f$, \f$C_{44}\f$, \f$C_{12}\f$, \f$C_{13}\f$)
-- ORTHOTROPIC (3D): 9 constants (\f$C_{11}\f$, \f$C_{22}\f$, \f$C_{33}\f$, \f$C_{44}\f$, \f$C_{55}\f$, \f$C_{66}\f$, \f$C_{12}\f$, \f$C_{13}\f$, \f$C_{23}\f$)
-- ANISOTROPIC (2D/3D): 21 constants (\f$C_{11}\f$, \f$C_{22}\f$, \f$C_{33}\f$, \f$C_{44}\f$, \f$C_{55}\f$, \f$C_{66}\f$, \f$C_{12}\f$, \f$C_{13}\f$, \f$C_{14}\f$, \f$C_{15}\f$, \f$C_{16}\f$, \f$C_{23}\f$, \f$C_{24}\f$, \f$C_{25}\f$, \f$C_{26}\f$, \f$C_{34}\f$, \f$C_{35}\f$, \f$C_{36}\f$, \f$C_{45}\f$, \f$C_{46}\f$, \f$C_{56}\f$)
+- TRANSVERSE (3D): 5 constants ($C_{11}$, $C_{33}$, $C_{44}$, $C_{12}$, $C_{13}$)
+- ORTHOTROPIC (3D): 9 constants ($C_{11}$, $C_{22}$, $C_{33}$, $C_{44}$, $C_{55}$, $C_{66}$, $C_{12}$, $C_{13}$, $C_{23}$)
+- ANISOTROPIC (2D/3D): 21 constants ($C_{11}$, $C_{22}$, $C_{33}$, $C_{44}$, $C_{55}$, $C_{66}$, $C_{12}$, $C_{13}$, $C_{14}$, $C_{15}$, $C_{16}$, $C_{23}$, $C_{24}$, $C_{25}$, $C_{26}$, $C_{34}$, $C_{35}$, $C_{36}$, $C_{45}$, $C_{46}$, $C_{56}$)
 
 Each model constant in `parameters.in' must have a counterpart in the appropriate section of the `customPDE.h' file.
 
