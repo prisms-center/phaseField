@@ -106,18 +106,18 @@ $(document).ready(function(){initNavTree('classFloodFiller.html',''); initResiza
 Public Member Functions</h2></td></tr>
 <tr class="memitem:af212073e0197f51598c90f1df584b060" id="r_af212073e0197f51598c90f1df584b060"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFloodFiller.html#af212073e0197f51598c90f1df584b060">FloodFiller</a> (dealii::FESystem&lt; dim &gt; &amp;_fe, dealii::QGaussLobatto&lt; dim &gt; _quadrature)</td></tr>
 <tr class="separator:af212073e0197f51598c90f1df584b060"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7220d5a5b3bab608297070f6c4d228f8" id="r_a7220d5a5b3bab608297070f6c4d228f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFloodFiller.html#a7220d5a5b3bab608297070f6c4d228f8">calcGrainSets</a> (dealii::FESystem&lt; dim &gt; &amp;finite_element, dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, dealii::LinearAlgebra::distributed::Vector&lt; double &gt; *solution_field, double threshold_lower, double threshold_upper, int min_id, unsigned int order_parameter_index, std::vector&lt; <a class="el" href="classGrainSet.html">GrainSet</a>&lt; dim &gt; &gt; &amp;grain_sets)</td></tr>
-<tr class="separator:a7220d5a5b3bab608297070f6c4d228f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8292c80ae9c98efc336a15b35e717aac" id="r_a8292c80ae9c98efc336a15b35e717aac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFloodFiller.html#a8292c80ae9c98efc336a15b35e717aac">calcGrainSets</a> (dealii::FESystem&lt; dim &gt; &amp;finite_element, dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, dealii::LinearAlgebra::distributed::Vector&lt; double &gt; *solution_field, double threshold_lower, double threshold_upper, int min_id, unsigned int order_parameter_index, std::vector&lt; <a class="el" href="classGrain.html">Grain</a>&lt; dim &gt; &gt; &amp;grain_sets)</td></tr>
+<tr class="separator:a8292c80ae9c98efc336a15b35e717aac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a63a4fdf1b8fd60279293f5fed378ee97" id="r_a63a4fdf1b8fd60279293f5fed378ee97"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a63a4fdf1b8fd60279293f5fed378ee97"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classFloodFiller.html#a63a4fdf1b8fd60279293f5fed378ee97">recursiveFloodFill</a> (T cell, T cell_end, dealii::LinearAlgebra::distributed::Vector&lt; double &gt; *solution_field, double threshold_lower, double threshold_upper, int min_id, unsigned int &amp;grain_index, std::vector&lt; <a class="el" href="classGrainSet.html">GrainSet</a>&lt; dim &gt; &gt; &amp;grain_sets, bool &amp;grain_assigned)</td></tr>
-<tr class="separator:a63a4fdf1b8fd60279293f5fed378ee97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad727c6feeab33426b1491b4f007045d7" id="r_ad727c6feeab33426b1491b4f007045d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFloodFiller.html#ad727c6feeab33426b1491b4f007045d7">createGlobalGrainSetList</a> (std::vector&lt; <a class="el" href="classGrainSet.html">GrainSet</a>&lt; dim &gt; &gt; &amp;grain_sets) const</td></tr>
-<tr class="separator:ad727c6feeab33426b1491b4f007045d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab484ec9b3419a4222b15479b11356d6c" id="r_ab484ec9b3419a4222b15479b11356d6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFloodFiller.html#ab484ec9b3419a4222b15479b11356d6c">mergeSplitGrains</a> (std::vector&lt; <a class="el" href="classGrainSet.html">GrainSet</a>&lt; dim &gt; &gt; &amp;grain_sets) const</td></tr>
-<tr class="separator:ab484ec9b3419a4222b15479b11356d6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad0e137c26f7eac44420f8eb944a4974" id="r_aad0e137c26f7eac44420f8eb944a4974"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:aad0e137c26f7eac44420f8eb944a4974"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classFloodFiller.html#aad0e137c26f7eac44420f8eb944a4974">recursiveFloodFill</a> (T cell, T cell_end, dealii::LinearAlgebra::distributed::Vector&lt; double &gt; *solution_field, double threshold_lower, double threshold_upper, int min_id, unsigned int &amp;grain_index, std::vector&lt; <a class="el" href="classGrain.html">Grain</a>&lt; dim &gt; &gt; &amp;grain_sets, bool &amp;grain_assigned)</td></tr>
+<tr class="separator:aad0e137c26f7eac44420f8eb944a4974"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b26158686e5bf13a2f11ab0d6a3ed46" id="r_a8b26158686e5bf13a2f11ab0d6a3ed46"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFloodFiller.html#a8b26158686e5bf13a2f11ab0d6a3ed46">createGlobalGrainSetList</a> (std::vector&lt; <a class="el" href="classGrain.html">Grain</a>&lt; dim &gt; &gt; &amp;grain_sets) const</td></tr>
+<tr class="separator:a8b26158686e5bf13a2f11ab0d6a3ed46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09dc82e3780563c78e8495bc7b8c076c" id="r_a09dc82e3780563c78e8495bc7b8c076c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFloodFiller.html#a09dc82e3780563c78e8495bc7b8c076c">mergeSplitGrains</a> (std::vector&lt; <a class="el" href="classGrain.html">Grain</a>&lt; dim &gt; &gt; &amp;grain_sets) const</td></tr>
+<tr class="separator:a09dc82e3780563c78e8495bc7b8c076c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -174,8 +174,8 @@ template&lt;int dim, int degree&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a7220d5a5b3bab608297070f6c4d228f8" name="a7220d5a5b3bab608297070f6c4d228f8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7220d5a5b3bab608297070f6c4d228f8">&#9670;&#160;</a></span>calcGrainSets()</h2>
+<a id="a8292c80ae9c98efc336a15b35e717aac" name="a8292c80ae9c98efc336a15b35e717aac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8292c80ae9c98efc336a15b35e717aac">&#9670;&#160;</a></span>calcGrainSets()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -227,7 +227,7 @@ template&lt;int dim, int degree&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="classGrainSet.html">GrainSet</a>&lt; dim &gt; &gt; &amp;&#160;</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classGrain.html">Grain</a>&lt; dim &gt; &gt; &amp;&#160;</td>
           <td class="paramname"><em>grain_sets</em>&#160;</td>
         </tr>
         <tr>
@@ -237,12 +237,12 @@ template&lt;int dim, int degree&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>The primary external interface. This method takes in information about the mesh/field and outputs a vector of <a class="el" href="classGrainSet.html">GrainSet</a> objects. </p>
+<p>The primary external interface. This method takes in information about the mesh/field and outputs a vector of <a class="el" href="classGrain.html">Grain</a> objects. </p>
 
 </div>
 </div>
-<a id="ad727c6feeab33426b1491b4f007045d7" name="ad727c6feeab33426b1491b4f007045d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad727c6feeab33426b1491b4f007045d7">&#9670;&#160;</a></span>createGlobalGrainSetList()</h2>
+<a id="a8b26158686e5bf13a2f11ab0d6a3ed46" name="a8b26158686e5bf13a2f11ab0d6a3ed46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b26158686e5bf13a2f11ab0d6a3ed46">&#9670;&#160;</a></span>createGlobalGrainSetList()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -255,7 +255,7 @@ template&lt;int dim, int degree&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classFloodFiller.html">FloodFiller</a>&lt; dim, degree &gt;::createGlobalGrainSetList </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="classGrainSet.html">GrainSet</a>&lt; dim &gt; &gt; &amp;&#160;</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classGrain.html">Grain</a>&lt; dim &gt; &gt; &amp;&#160;</td>
           <td class="paramname"><em>grain_sets</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -270,8 +270,8 @@ template&lt;int dim, int degree&gt; </div>
 
 </div>
 </div>
-<a id="ab484ec9b3419a4222b15479b11356d6c" name="ab484ec9b3419a4222b15479b11356d6c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab484ec9b3419a4222b15479b11356d6c">&#9670;&#160;</a></span>mergeSplitGrains()</h2>
+<a id="a09dc82e3780563c78e8495bc7b8c076c" name="a09dc82e3780563c78e8495bc7b8c076c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09dc82e3780563c78e8495bc7b8c076c">&#9670;&#160;</a></span>mergeSplitGrains()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -284,7 +284,7 @@ template&lt;int dim, int degree&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classFloodFiller.html">FloodFiller</a>&lt; dim, degree &gt;::mergeSplitGrains </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="classGrainSet.html">GrainSet</a>&lt; dim &gt; &gt; &amp;&#160;</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classGrain.html">Grain</a>&lt; dim &gt; &gt; &amp;&#160;</td>
           <td class="paramname"><em>grain_sets</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -299,8 +299,8 @@ template&lt;int dim, int degree&gt; </div>
 
 </div>
 </div>
-<a id="a63a4fdf1b8fd60279293f5fed378ee97" name="a63a4fdf1b8fd60279293f5fed378ee97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a63a4fdf1b8fd60279293f5fed378ee97">&#9670;&#160;</a></span>recursiveFloodFill()</h2>
+<a id="aad0e137c26f7eac44420f8eb944a4974" name="aad0e137c26f7eac44420f8eb944a4974"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad0e137c26f7eac44420f8eb944a4974">&#9670;&#160;</a></span>recursiveFloodFill()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -357,7 +357,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="classGrainSet.html">GrainSet</a>&lt; dim &gt; &gt; &amp;&#160;</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classGrain.html">Grain</a>&lt; dim &gt; &gt; &amp;&#160;</td>
           <td class="paramname"><em>grain_sets</em>, </td>
         </tr>
         <tr>

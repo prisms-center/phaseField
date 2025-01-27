@@ -9,7 +9,7 @@ var searchData=
   ['add_6',['add',['../classBin.html#aca5fe09ecae378347ec63ea3a5b33aed',1,'Bin']]],
   ['add_5fonce_7',['add_once',['../classBin.html#a06b388400aaa142f8032d634a4622abd',1,'Bin']]],
   ['add_5frange_8',['add_range',['../classBin.html#ad0e191ea334d422b0777ad7b738ec30c',1,'Bin']]],
-  ['addvertexlist_9',['addVertexList',['../classGrainSet.html#af07780f674a5d924601cda0c3f3b9b1c',1,'GrainSet']]],
+  ['addvertexlist_9',['addVertexList',['../classGrain.html#a391537e0e758663bb2050c8f60f8139a',1,'Grain']]],
   ['allen_20cahn_20example_20app_10',['Compiling and Running the Allen-Cahn Example App',['../running_apps.html#autotoc_md56',1,'']]],
   ['and_20deal_20ii_11',['Installing CMake and deal.II',['../install_prereqs.html',1,'install']]],
   ['and_20running_20the_20allen_20cahn_20example_20app_12',['Compiling and Running the Allen-Cahn Example App',['../running_apps.html#autotoc_md56',1,'']]],

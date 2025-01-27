@@ -18,14 +18,14 @@ var searchData=
   ['getdistancetoneighbor_15',['getDistanceToNeighbor',['../classSimplifiedGrainRepresentation.html#ad16411a647ad4f4eef3cadbe06e27e82',1,'SimplifiedGrainRepresentation']]],
   ['getequationindex_16',['getEquationIndex',['../classSolverParametersBase.html#acb3cb69b7c36fe83032f51aa50740421',1,'SolverParametersBase']]],
   ['getgrainid_17',['getGrainId',['../classSimplifiedGrainRepresentation.html#a6f4a7f23194e969db2fe7b0f1bae64c2',1,'SimplifiedGrainRepresentation']]],
-  ['getgrainindex_18',['getGrainIndex',['../classGrainSet.html#a8d77362e601a3ca24b24a235563144a7',1,'GrainSet']]],
+  ['getgrainindex_18',['getGrainIndex',['../classGrain.html#abd6b2df2a339ed566be890492d6c2d01',1,'Grain']]],
   ['getlaplaceinitializationflag_19',['getLaplaceInitializationFlag',['../classNonlinearSolverParameters.html#ab71725284c9372903a347fff5f6a1f5f',1,'NonlinearSolverParameters']]],
   ['getmaxiterations_20',['getmaxiterations',['../classLinearSolverParameters.html#ab9cfa5a409bbbc0e68ddc10129a7818d',1,'LinearSolverParameters::getMaxIterations()'],['../classNonlinearSolverParameters.html#ab4c86d0251a00b3d9dc47730bccf6ab7',1,'NonlinearSolverParameters::getMaxIterations()']]],
   ['getoldorderparameterid_21',['getOldOrderParameterId',['../classSimplifiedGrainRepresentation.html#ae09718d4128c7af4e3b1f2a3f508cd7d',1,'SimplifiedGrainRepresentation']]],
   ['getorderparameterid_22',['getOrderParameterId',['../classSimplifiedGrainRepresentation.html#ab3b43a48c52e55f0f12b330515d3a059',1,'SimplifiedGrainRepresentation']]],
-  ['getorderparameterindex_23',['getOrderParameterIndex',['../classGrainSet.html#a44da329511f954ac47570d5d374320ac',1,'GrainSet']]],
+  ['getorderparameterindex_23',['getOrderParameterIndex',['../classGrain.html#a3a7738394f896c790c355b36149523c5',1,'Grain']]],
   ['getradius_24',['getRadius',['../classSimplifiedGrainRepresentation.html#a5815ff16105e15eb7b74e68794ff63e5',1,'SimplifiedGrainRepresentation']]],
   ['gettolerancetype_25',['getToleranceType',['../classSolverParametersBase.html#a92d3a10ebed6c7b47ad61ded83786e08',1,'SolverParametersBase']]],
   ['gettolerancevalue_26',['getToleranceValue',['../classSolverParametersBase.html#a38d2dc34690c64d6edb5baa123614657',1,'SolverParametersBase']]],
-  ['getvertexlist_27',['getVertexList',['../classGrainSet.html#ae22913b72a87341bcc6a5720997bb5ec',1,'GrainSet']]]
+  ['getvertexlist_27',['getVertexList',['../classGrain.html#a01e39b87bc531ed0acad490a9890e58d',1,'Grain']]]
 ];

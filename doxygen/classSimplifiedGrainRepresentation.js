@@ -1,6 +1,6 @@
 var classSimplifiedGrainRepresentation =
 [
-    [ "SimplifiedGrainRepresentation", "classSimplifiedGrainRepresentation.html#aa6f397421421a8e123ecdf575bd0f0f1", null ],
+    [ "SimplifiedGrainRepresentation", "classSimplifiedGrainRepresentation.html#a70e20b85b249b0776f4a0c82a2baa277", null ],
     [ "getCenter", "classSimplifiedGrainRepresentation.html#a9dab257765df4457343a6067a717cf5f", null ],
     [ "getDistanceToNeighbor", "classSimplifiedGrainRepresentation.html#ad16411a647ad4f4eef3cadbe06e27e82", null ],
     [ "getGrainId", "classSimplifiedGrainRepresentation.html#a6f4a7f23194e969db2fe7b0f1bae64c2", null ],

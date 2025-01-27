@@ -15,7 +15,7 @@ var hierarchy =
       [ "NonUniformDirichletBCVector< dim, degree >", "classNonUniformDirichletBCVector.html", null ],
       [ "vectorBCFunction< dim >", "classvectorBCFunction.html", null ]
     ] ],
-    [ "GrainSet< dim >", "classGrainSet.html", null ],
+    [ "Grain< dim >", "classGrain.html", null ],
     [ "inputFileReader", "classinputFileReader.html", null ],
     [ "PRISMS::Interpolator< Coordinate, DIM >", "classPRISMS_1_1Interpolator.html", null ],
     [ "PRISMS::Interpolator< Coordinate, 2 >", "classPRISMS_1_1Interpolator.html", [

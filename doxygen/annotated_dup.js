@@ -20,7 +20,7 @@ var annotated_dup =
     [ "customAttributeLoader", "classcustomAttributeLoader.html", "classcustomAttributeLoader" ],
     [ "Field", "classField.html", "classField" ],
     [ "FloodFiller", "classFloodFiller.html", "classFloodFiller" ],
-    [ "GrainSet", "classGrainSet.html", "classGrainSet" ],
+    [ "Grain", "classGrain.html", "classGrain" ],
     [ "InitialCondition", "classInitialCondition.html", null ],
     [ "InitialConditionPField", "classInitialConditionPField.html", null ],
     [ "InitialConditionVector", "classInitialConditionVector.html", null ],

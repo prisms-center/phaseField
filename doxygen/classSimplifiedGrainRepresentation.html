@@ -103,8 +103,8 @@ $(document).ready(function(){initNavTree('classSimplifiedGrainRepresentation.htm
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa6f397421421a8e123ecdf575bd0f0f1" id="r_aa6f397421421a8e123ecdf575bd0f0f1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSimplifiedGrainRepresentation.html#aa6f397421421a8e123ecdf575bd0f0f1">SimplifiedGrainRepresentation</a> (const <a class="el" href="classGrainSet.html">GrainSet</a>&lt; dim &gt; &amp;grain_set)</td></tr>
-<tr class="separator:aa6f397421421a8e123ecdf575bd0f0f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70e20b85b249b0776f4a0c82a2baa277" id="r_a70e20b85b249b0776f4a0c82a2baa277"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSimplifiedGrainRepresentation.html#a70e20b85b249b0776f4a0c82a2baa277">SimplifiedGrainRepresentation</a> (const <a class="el" href="classGrain.html">Grain</a>&lt; dim &gt; &amp;grain)</td></tr>
+<tr class="separator:a70e20b85b249b0776f4a0c82a2baa277"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9dab257765df4457343a6067a717cf5f" id="r_a9dab257765df4457343a6067a717cf5f"><td class="memItemLeft" align="right" valign="top">dealii::Point&lt; dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSimplifiedGrainRepresentation.html#a9dab257765df4457343a6067a717cf5f">getCenter</a> () const</td></tr>
 <tr class="separator:a9dab257765df4457343a6067a717cf5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5815ff16105e15eb7b74e68794ff63e5" id="r_a5815ff16105e15eb7b74e68794ff63e5"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSimplifiedGrainRepresentation.html#a5815ff16105e15eb7b74e68794ff63e5">getRadius</a> () const</td></tr>
@@ -143,8 +143,8 @@ Protected Attributes</h2></td></tr>
 <div class="textblock"><div class="compoundTemplParams">template&lt;int dim&gt;<br />
 class SimplifiedGrainRepresentation&lt; dim &gt;</div><p>This class converts lists of grains and the vertices inside the grains to a simplified representation (currently spheres, other representations may be added later). Currently, assumptions are made that the elements are rectangular prisms. If not, a valid representation will still be made, but the centroid might be suboptimally placed. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aa6f397421421a8e123ecdf575bd0f0f1" name="aa6f397421421a8e123ecdf575bd0f0f1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa6f397421421a8e123ecdf575bd0f0f1">&#9670;&#160;</a></span>SimplifiedGrainRepresentation()</h2>
+<a id="a70e20b85b249b0776f4a0c82a2baa277" name="a70e20b85b249b0776f4a0c82a2baa277"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70e20b85b249b0776f4a0c82a2baa277">&#9670;&#160;</a></span>SimplifiedGrainRepresentation()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -154,13 +154,13 @@ template&lt;int dim&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="classSimplifiedGrainRepresentation.html">SimplifiedGrainRepresentation</a>&lt; dim &gt;<a class="el" href="classSimplifiedGrainRepresentation.html">::SimplifiedGrainRepresentation</a> </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classGrainSet.html">GrainSet</a>&lt; dim &gt; &amp;&#160;</td>
-          <td class="paramname"><em>grain_set</em></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classGrain.html">Grain</a>&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>grain</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Constructor. Creates the simplified representation of a grain from its <a class="el" href="classGrainSet.html">GrainSet</a>. This sets all of the internal data members and is the only way to set the radius and center of the grain. The members order_parameter_id and old_order_parameter_id are initialized to the same value. </p>
+<p>Constructor. Creates the simplified representation of a grain from its <a class="el" href="classGrain.html">Grain</a>. This sets all of the internal data members and is the only way to set the radius and center of the grain. The members order_parameter_id and old_order_parameter_id are initialized to the same value. </p>
 
 </div>
 </div>

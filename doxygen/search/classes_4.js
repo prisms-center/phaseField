@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['grainset_0',['GrainSet',['../classGrainSet.html',1,'']]]
+  ['grain_0',['Grain',['../classGrain.html',1,'']]]
 ];

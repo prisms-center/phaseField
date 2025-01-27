@@ -7,7 +7,7 @@ var searchData=
   ['manual_4',['PRISMS-PF User Manual',['../manual.html',1,'']]],
   ['manual_20installation_5',['Manual Installation',['../install_prereqs.html#autotoc_md49',1,'']]],
   ['matrixfreepde_6',['matrixfreepde',['../classMatrixFreePDE.html',1,'MatrixFreePDE&lt; dim, degree &gt;'],['../classMatrixFreePDE.html#a80bf1fd46a0e470c8d0470539e14de89',1,'MatrixFreePDE::MatrixFreePDE()']]],
-  ['mergesplitgrains_7',['mergeSplitGrains',['../classFloodFiller.html#ab484ec9b3419a4222b15479b11356d6c',1,'FloodFiller']]],
+  ['mergesplitgrains_7',['mergeSplitGrains',['../classFloodFiller.html#a09dc82e3780563c78e8495bc7b8c076c',1,'FloodFiller']]],
   ['mesh_8',['Mesh',['../classPRISMS_1_1Mesh.html',1,'PRISMS']]],
   ['mesh_20adaptivity_20optional_9',['Mesh Adaptivity (optional)',['../input_file.html#autotoc_md22',1,'']]],
   ['mesh_3c_20prisms_3a_3acoordinate_2c_20dim_20_3e_10',['Mesh&lt; PRISMS::Coordinate, DIM &gt;',['../classPRISMS_1_1Mesh.html',1,'PRISMS']]],
