@@ -51,7 +51,7 @@ Clone the PRISMS-PF GitHub repository and navigate its folder.
 git clone -b <tag ID> https://github.com/prisms-center/phaseField.git
 cd phaseField
 ```
-Here <tag ID> corresponds to the stable release version of your choice. For example to clone the latest release (2.4), type
+Here ```<tag ID>``` corresponds to the stable release version of your choice. For example, to clone the latest release (2.4), type
 ```bash
 git clone -b v2.4 https://github.com/prisms-center/phaseField.git
 ```
