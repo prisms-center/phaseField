@@ -44,19 +44,6 @@ public:
   [[nodiscard]] AttributesList
   get_pp_attributes() const;
 
-protected:
-  /**
-   * \brief User-facing method where the variable attributes are set.
-   */
-  virtual void
-  loadVariableAttributes();
-
-  /**
-   * \brief User-facing method where the postprocessing variable attributes are set.
-   */
-  virtual void
-  loadPostProcessorVariableAttributes();
-
   /**
    * \brief Set the name of the variable at `index` to `name`.
    *
@@ -216,6 +203,19 @@ protected:
    */
   void
   set_output_integral(const unsigned int &index, const bool &flag) const;
+
+protected:
+  /**
+   * \brief User-facing method where the variable attributes are set.
+   */
+  virtual void
+  loadVariableAttributes();
+
+  /**
+   * \brief User-facing method where the postprocessing variable attributes are set.
+   */
+  virtual void
+  loadPostProcessorVariableAttributes();
 
 private:
   /**
