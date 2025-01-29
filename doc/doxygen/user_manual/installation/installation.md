@@ -1,6 +1,6 @@
 # Installation {#install}
 
-## Installing CMake and deal.II {#install_prereqs}
+## Installing CMake and deal.II
 
 Before downloading and installing PRISMS-PF itself, one should install CMake and deal.II. For MacOS or Linux users, it is likely that your distribution already contains CMake. To test if you have it type:
 ```
@@ -60,7 +60,7 @@ where ''/path/to/install/dir'' is the path to where you want to install deal.II.
 ### Installation using candi
 An alternative route is to use the [candi (compile and install)](https://github.com/koecher/candi) script to install deal.II and its prerequisites. If it works, it should be much simpler than the traditional route described above. While some users have reported success using this approach, it hasn't worked for everyone.
 
-## Installing PRISMS-PF {#install_prismspf}
+## Installing PRISMS-PF 
 
 ### Traditional Installation (Non-Docker)
 #### Downloading PRISMS-PF
