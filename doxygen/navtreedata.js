@@ -120,7 +120,8 @@ var NAVTREE =
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", null ],
         [ "Functions", "functions_func.html", null ],
-        [ "Variables", "functions_vars.html", null ]
+        [ "Variables", "functions_vars.html", null ],
+        [ "Related Symbols", "functions_rela.html", null ]
       ] ]
     ] ],
     [ "Files", "files.html", [
@@ -131,8 +132,8 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"adaptive__refinement_8h_source.html",
-"input_file.html#autotoc_md18"
+"AdaptiveRefinement_8h_source.html",
+"input_file.html#autotoc_md22"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['fe_0',['fe',['../classbaseSolver.html#a31ffc9a14d5374fe7c1ffa6625c17b8e',1,'baseSolver']]],
-  ['field_5findex_1',['field_index',['../classbaseSolver.html#adebb43bcfc27d94be235fa5d46af4366',1,'baseSolver::field_index'],['../structvariableAttributes.html#a0b074663177ff34635308d659fc6e05b',1,'variableAttributes::field_index']]],
-  ['field_5fsolve_5ftype_2',['field_solve_type',['../structvariableAttributes.html#ae29dc28cb9a8856f0e317178466c6351',1,'variableAttributes']]],
-  ['field_5ftype_3',['field_type',['../structvariableAttributes.html#aaa63fac4615b66be80855139b7b5da45',1,'variableAttributes']]]
+  ['fe_0',['fe',['../classFloodFiller.html#af11c7b5ba2417a7a62375a4b8813f6ac',1,'FloodFiller']]],
+  ['fields_1',['fields',['../classMatrixFreePDE.html#a5e77da924166e45e5f7f8d1b17873ea2',1,'MatrixFreePDE']]]
 ];

@@ -99,106 +99,148 @@ $(document).ready(function(){initNavTree('structvariableAttributes.html',''); in
 </div><!--header-->
 <div class="contents">
 
-<p>Structure to hold the variable attributes of a field. This includes things like the name, equation type, whether it's nonlinear, and its dependence on other variables.  
+<p>Structure to hold the variable attributes that will be passed to a setInputParameters object.  
  <a href="structvariableAttributes.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="variable__attributes_8h_source.html">variable_attributes.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="variableAttributes_8h_source.html">variableAttributes.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a4eda6a8b14d38683f85d04f617eaf234" id="r_a4eda6a8b14d38683f85d04f617eaf234"><td class="memItemLeft" align="right" valign="top"><a id="a4eda6a8b14d38683f85d04f617eaf234" name="a4eda6a8b14d38683f85d04f617eaf234"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>format_dependencies</b> ()</td></tr>
-<tr class="memdesc:a4eda6a8b14d38683f85d04f617eaf234"><td class="mdescLeft">&#160;</td><td class="mdescRight">Combine 'value' and 'gradient' residual dependencies to one dependency set per RHS and LHS. This will populate <code>dependencies_RHS</code> and <code>dependencies_LHS</code>. <br /></td></tr>
+<tr class="memdesc:a4eda6a8b14d38683f85d04f617eaf234"><td class="mdescLeft">&#160;</td><td class="mdescRight">Combine 'value' and 'gradient' residual dependencies to one dependency set per RHS, LHS, PP. <br /></td></tr>
 <tr class="separator:a4eda6a8b14d38683f85d04f617eaf234"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2592218d322f4ef1019ce24a8a26a0d9" id="r_a2592218d322f4ef1019ce24a8a26a0d9"><td class="memItemLeft" align="right" valign="top"><a id="a2592218d322f4ef1019ce24a8a26a0d9" name="a2592218d322f4ef1019ce24a8a26a0d9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>parse_dependencies</b> (std::map&lt; uint, <a class="el" href="structvariableAttributes.html">variableAttributes</a> &gt; &amp;other_var_attributes)</td></tr>
+<tr class="memdesc:a2592218d322f4ef1019ce24a8a26a0d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Take user-defined dependency sets to set the evaluation flags for each variable. <br /></td></tr>
+<tr class="separator:a2592218d322f4ef1019ce24a8a26a0d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6a99e88a8882fa5158d12eee21e2a58" id="r_ac6a99e88a8882fa5158d12eee21e2a58"><td class="memItemLeft" align="right" valign="top"><a id="ac6a99e88a8882fa5158d12eee21e2a58" name="ac6a99e88a8882fa5158d12eee21e2a58"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>parse_residual_dependencies</b> ()</td></tr>
 <tr class="memdesc:ac6a99e88a8882fa5158d12eee21e2a58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Take user-defined dependency sets to set the residual flags for each variable. <br /></td></tr>
 <tr class="separator:ac6a99e88a8882fa5158d12eee21e2a58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1002eeaec913e954a549871c6e0fad8" id="r_af1002eeaec913e954a549871c6e0fad8"><td class="memItemLeft" align="right" valign="top"><a id="af1002eeaec913e954a549871c6e0fad8" name="af1002eeaec913e954a549871c6e0fad8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>parse_dependencies</b> (AttributesList &amp;other_var_attributes)</td></tr>
-<tr class="memdesc:af1002eeaec913e954a549871c6e0fad8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Take user-defined dependency sets to set the evaluation flags for each variable. <br /></td></tr>
-<tr class="separator:af1002eeaec913e954a549871c6e0fad8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae6da4e0f8077430d94f22c3e4c8d131" id="r_aae6da4e0f8077430d94f22c3e4c8d131"><td class="memItemLeft" align="right" valign="top"><a id="aae6da4e0f8077430d94f22c3e4c8d131" name="aae6da4e0f8077430d94f22c3e4c8d131"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>determine_field_solve_type</b> (AttributesList &amp;other_var_attributes, const bool &amp;is_postprocessed=false)</td></tr>
-<tr class="memdesc:aae6da4e0f8077430d94f22c3e4c8d131"><td class="mdescLeft">&#160;</td><td class="mdescRight">Using the assigned evaluation flags determine the solve type for this equation. <br /></td></tr>
-<tr class="separator:aae6da4e0f8077430d94f22c3e4c8d131"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af709bde08468820c2bc2ebd53d47b7ba" id="r_af709bde08468820c2bc2ebd53d47b7ba"><td class="memItemLeft" align="right" valign="top"><a id="af709bde08468820c2bc2ebd53d47b7ba" name="af709bde08468820c2bc2ebd53d47b7ba"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>print</b> () const</td></tr>
-<tr class="memdesc:af709bde08468820c2bc2ebd53d47b7ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print variable attributes to summary.log. <br /></td></tr>
-<tr class="separator:af709bde08468820c2bc2ebd53d47b7ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a924b4ccb25c249f20a1d0e5c0caa3de5" id="r_a924b4ccb25c249f20a1d0e5c0caa3de5"><td class="memItemLeft" align="right" valign="top">std::set&lt; EvalFlags * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structvariableAttributes.html#a924b4ccb25c249f20a1d0e5c0caa3de5">eval_flags_for_eq_type</a> (const <a class="el" href="structvariableAttributes.html">variableAttributes</a> &amp;other_variable)</td></tr>
+<tr class="memdesc:a924b4ccb25c249f20a1d0e5c0caa3de5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function that returns a set of pointers to the flags that need to be set when <code>other_variable</code> is dependent on this variable.  <br /></td></tr>
+<tr class="separator:a924b4ccb25c249f20a1d0e5c0caa3de5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a9e5627dd7ee538f84e0a5f18b41a48de" id="r_a9e5627dd7ee538f84e0a5f18b41a48de"><td class="memItemLeft" align="right" valign="top"><a id="a9e5627dd7ee538f84e0a5f18b41a48de" name="a9e5627dd7ee538f84e0a5f18b41a48de"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b></td></tr>
-<tr class="memdesc:a9e5627dd7ee538f84e0a5f18b41a48de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Field name. <br /></td></tr>
 <tr class="separator:a9e5627dd7ee538f84e0a5f18b41a48de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b074663177ff34635308d659fc6e05b" id="r_a0b074663177ff34635308d659fc6e05b"><td class="memItemLeft" align="right" valign="top"><a id="a0b074663177ff34635308d659fc6e05b" name="a0b074663177ff34635308d659fc6e05b"></a>
-uint&#160;</td><td class="memItemRight" valign="bottom"><b>field_index</b></td></tr>
-<tr class="memdesc:a0b074663177ff34635308d659fc6e05b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Field index. <br /></td></tr>
-<tr class="separator:a0b074663177ff34635308d659fc6e05b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa63fac4615b66be80855139b7b5da45" id="r_aaa63fac4615b66be80855139b7b5da45"><td class="memItemLeft" align="right" valign="top"><a id="aaa63fac4615b66be80855139b7b5da45" name="aaa63fac4615b66be80855139b7b5da45"></a>
-fieldType&#160;</td><td class="memItemRight" valign="bottom"><b>field_type</b> = fieldType::UNDEFINED_FIELD</td></tr>
-<tr class="memdesc:aaa63fac4615b66be80855139b7b5da45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Field type (SCALAR/VECTOR). <br /></td></tr>
-<tr class="separator:aaa63fac4615b66be80855139b7b5da45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24b7f03a26a5068f9b9ec6044ae45dca" id="r_a24b7f03a26a5068f9b9ec6044ae45dca"><td class="memItemLeft" align="right" valign="top"><a id="a24b7f03a26a5068f9b9ec6044ae45dca" name="a24b7f03a26a5068f9b9ec6044ae45dca"></a>
-PDEType&#160;</td><td class="memItemRight" valign="bottom"><b>pde_type</b> = PDEType::UNDEFINED_PDE</td></tr>
-<tr class="memdesc:a24b7f03a26a5068f9b9ec6044ae45dca"><td class="mdescLeft">&#160;</td><td class="mdescRight">PDE type (EXPLICIT/NONEXPLICIT). <br /></td></tr>
-<tr class="separator:a24b7f03a26a5068f9b9ec6044ae45dca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae29dc28cb9a8856f0e317178466c6351" id="r_ae29dc28cb9a8856f0e317178466c6351"><td class="memItemLeft" align="right" valign="top"><a id="ae29dc28cb9a8856f0e317178466c6351" name="ae29dc28cb9a8856f0e317178466c6351"></a>
-fieldSolveType&#160;</td><td class="memItemRight" valign="bottom"><b>field_solve_type</b> = fieldSolveType::UNDEFINED_SOLVE</td></tr>
-<tr class="memdesc:ae29dc28cb9a8856f0e317178466c6351"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal classification for the field solve type. <br /></td></tr>
-<tr class="separator:ae29dc28cb9a8856f0e317178466c6351"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fbae3a5d359ce45033da7701358e797" id="r_a3fbae3a5d359ce45033da7701358e797"><td class="memItemLeft" align="right" valign="top"><a id="a3fbae3a5d359ce45033da7701358e797" name="a3fbae3a5d359ce45033da7701358e797"></a>
+fieldType&#160;</td><td class="memItemRight" valign="bottom"><b>var_type</b> = UNDEFINED_FIELD</td></tr>
+<tr class="separator:a3fbae3a5d359ce45033da7701358e797"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b428106e5a6653f6f6bfbd23d3b6a3e" id="r_a8b428106e5a6653f6f6bfbd23d3b6a3e"><td class="memItemLeft" align="right" valign="top"><a id="a8b428106e5a6653f6f6bfbd23d3b6a3e" name="a8b428106e5a6653f6f6bfbd23d3b6a3e"></a>
+PDEType&#160;</td><td class="memItemRight" valign="bottom"><b>eq_type</b> = UNDEFINED_PDE</td></tr>
+<tr class="separator:a8b428106e5a6653f6f6bfbd23d3b6a3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f1e22f6c27eb9c6400e0c66f04ee8b9" id="r_a3f1e22f6c27eb9c6400e0c66f04ee8b9"><td class="memItemLeft" align="right" valign="top"><a id="a3f1e22f6c27eb9c6400e0c66f04ee8b9" name="a3f1e22f6c27eb9c6400e0c66f04ee8b9"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>need_value_nucleation</b> = false</td></tr>
+<tr class="separator:a3f1e22f6c27eb9c6400e0c66f04ee8b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae558947dcb96a0f50afb064aae8cd684" id="r_ae558947dcb96a0f50afb064aae8cd684"><td class="memItemLeft" align="right" valign="top"><a id="ae558947dcb96a0f50afb064aae8cd684" name="ae558947dcb96a0f50afb064aae8cd684"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>nucleating_variable</b> = false</td></tr>
+<tr class="separator:ae558947dcb96a0f50afb064aae8cd684"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab36256c6bfbb6775440ea3150b95563f" id="r_ab36256c6bfbb6775440ea3150b95563f"><td class="memItemLeft" align="right" valign="top"><a id="ab36256c6bfbb6775440ea3150b95563f" name="ab36256c6bfbb6775440ea3150b95563f"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_pp</b> = false</td></tr>
+<tr class="separator:ab36256c6bfbb6775440ea3150b95563f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51fbd240e2c10aafb69486236ff00feb" id="r_a51fbd240e2c10aafb69486236ff00feb"><td class="memItemLeft" align="right" valign="top"><a id="a51fbd240e2c10aafb69486236ff00feb" name="a51fbd240e2c10aafb69486236ff00feb"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_nonlinear</b> = false</td></tr>
+<tr class="separator:a51fbd240e2c10aafb69486236ff00feb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89b7979018ee79febe54a6a2817d7d59" id="r_a89b7979018ee79febe54a6a2817d7d59"><td class="memItemLeft" align="right" valign="top"><a id="a89b7979018ee79febe54a6a2817d7d59" name="a89b7979018ee79febe54a6a2817d7d59"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>calc_integral</b> = false</td></tr>
+<tr class="separator:a89b7979018ee79febe54a6a2817d7d59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac10665f8ca1b77622548a2dad8931e96" id="r_ac10665f8ca1b77622548a2dad8931e96"><td class="memItemLeft" align="right" valign="top"><a id="ac10665f8ca1b77622548a2dad8931e96" name="ac10665f8ca1b77622548a2dad8931e96"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>output_integral</b> = false</td></tr>
+<tr class="separator:ac10665f8ca1b77622548a2dad8931e96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d11b30829e5069735dad16eb911330f" id="r_a2d11b30829e5069735dad16eb911330f"><td class="memItemLeft" align="right" valign="top"><a id="a2d11b30829e5069735dad16eb911330f" name="a2d11b30829e5069735dad16eb911330f"></a>
 std::set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>dependencies_value_RHS</b></td></tr>
-<tr class="memdesc:a2d11b30829e5069735dad16eb911330f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user-inputted dependencies for the RHS value term. <br /></td></tr>
 <tr class="separator:a2d11b30829e5069735dad16eb911330f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00f3b9aa4ddbd88cbf592132911b8f2a" id="r_a00f3b9aa4ddbd88cbf592132911b8f2a"><td class="memItemLeft" align="right" valign="top"><a id="a00f3b9aa4ddbd88cbf592132911b8f2a" name="a00f3b9aa4ddbd88cbf592132911b8f2a"></a>
 std::set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>dependencies_gradient_RHS</b></td></tr>
-<tr class="memdesc:a00f3b9aa4ddbd88cbf592132911b8f2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user-inputted dependencies for the RHS gradient term. <br /></td></tr>
 <tr class="separator:a00f3b9aa4ddbd88cbf592132911b8f2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9e738d79428630a69a545faf2612d27" id="r_aa9e738d79428630a69a545faf2612d27"><td class="memItemLeft" align="right" valign="top"><a id="aa9e738d79428630a69a545faf2612d27" name="aa9e738d79428630a69a545faf2612d27"></a>
 std::set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>dependencies_RHS</b></td></tr>
-<tr class="memdesc:aa9e738d79428630a69a545faf2612d27"><td class="mdescLeft">&#160;</td><td class="mdescRight">The collection of value and gradient dependencies for the RHS. <br /></td></tr>
 <tr class="separator:aa9e738d79428630a69a545faf2612d27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65104677fdb32ef0f2220a0c96222c6c" id="r_a65104677fdb32ef0f2220a0c96222c6c"><td class="memItemLeft" align="right" valign="top"><a id="a65104677fdb32ef0f2220a0c96222c6c" name="a65104677fdb32ef0f2220a0c96222c6c"></a>
 std::set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>dependencies_value_LHS</b></td></tr>
-<tr class="memdesc:a65104677fdb32ef0f2220a0c96222c6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user-inputted dependencies for the LHS value term. <br /></td></tr>
 <tr class="separator:a65104677fdb32ef0f2220a0c96222c6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49b3a3a31052a8631ff2a853fb42a75c" id="r_a49b3a3a31052a8631ff2a853fb42a75c"><td class="memItemLeft" align="right" valign="top"><a id="a49b3a3a31052a8631ff2a853fb42a75c" name="a49b3a3a31052a8631ff2a853fb42a75c"></a>
 std::set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>dependencies_gradient_LHS</b></td></tr>
-<tr class="memdesc:a49b3a3a31052a8631ff2a853fb42a75c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user-inputted dependencies for the LHS gradient term. <br /></td></tr>
 <tr class="separator:a49b3a3a31052a8631ff2a853fb42a75c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a29a46e36924d555615602be330f010" id="r_a7a29a46e36924d555615602be330f010"><td class="memItemLeft" align="right" valign="top"><a id="a7a29a46e36924d555615602be330f010" name="a7a29a46e36924d555615602be330f010"></a>
 std::set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>dependencies_LHS</b></td></tr>
-<tr class="memdesc:a7a29a46e36924d555615602be330f010"><td class="mdescLeft">&#160;</td><td class="mdescRight">The collection of value and gradient dependencies for the LHS. <br /></td></tr>
 <tr class="separator:a7a29a46e36924d555615602be330f010"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad764ad28d021fb85b9a763f140e12158" id="r_ad764ad28d021fb85b9a763f140e12158"><td class="memItemLeft" align="right" valign="top"><a id="ad764ad28d021fb85b9a763f140e12158" name="ad764ad28d021fb85b9a763f140e12158"></a>
-std::unordered_map&lt; std::pair&lt; uint, dependencyType &gt;, EvalFlags, <a class="el" href="structpairHash.html">pairHash</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>eval_flag_set_RHS</b></td></tr>
-<tr class="memdesc:ad764ad28d021fb85b9a763f140e12158"><td class="mdescLeft">&#160;</td><td class="mdescRight">A map of evaluation flags for the dependencies of the current variable's RHS. This will tell deal.II whether to evaluate the value, gradient, and/or hessian for the specified field. <br /></td></tr>
-<tr class="separator:ad764ad28d021fb85b9a763f140e12158"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af921ce210a80fdd3ee695828ce8e25f9" id="r_af921ce210a80fdd3ee695828ce8e25f9"><td class="memItemLeft" align="right" valign="top"><a id="af921ce210a80fdd3ee695828ce8e25f9" name="af921ce210a80fdd3ee695828ce8e25f9"></a>
-std::unordered_map&lt; std::pair&lt; uint, dependencyType &gt;, EvalFlags, <a class="el" href="structpairHash.html">pairHash</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>eval_flag_set_LHS</b></td></tr>
-<tr class="memdesc:af921ce210a80fdd3ee695828ce8e25f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">A map of evaluation flags for the dependencies of the current variable's LHS. This will tell deal.II whether to evaluate the value, gradient, and/or hessian for the specified field. <br /></td></tr>
-<tr class="separator:af921ce210a80fdd3ee695828ce8e25f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c561f35060eae148ad50d6dbb492ebb" id="r_a5c561f35060eae148ad50d6dbb492ebb"><td class="memItemLeft" align="right" valign="top"><a id="a5c561f35060eae148ad50d6dbb492ebb" name="a5c561f35060eae148ad50d6dbb492ebb"></a>
-EvalFlags&#160;</td><td class="memItemRight" valign="bottom"><b>eval_flags_residual_RHS</b> = dealii::EvaluationFlags::nothing</td></tr>
-<tr class="memdesc:a5c561f35060eae148ad50d6dbb492ebb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluation flags for the types of residual the user is expected to submit to on the RHS. <br /></td></tr>
-<tr class="separator:a5c561f35060eae148ad50d6dbb492ebb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf1ff8572a1e7a17563965863301df38" id="r_aaf1ff8572a1e7a17563965863301df38"><td class="memItemLeft" align="right" valign="top"><a id="aaf1ff8572a1e7a17563965863301df38" name="aaf1ff8572a1e7a17563965863301df38"></a>
-EvalFlags&#160;</td><td class="memItemRight" valign="bottom"><b>eval_flags_residual_LHS</b> = dealii::EvaluationFlags::nothing</td></tr>
-<tr class="memdesc:aaf1ff8572a1e7a17563965863301df38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluation flags for the types of residual the user is expected to submit to on the LHS. This is empty for EXPLICIT fields. <br /></td></tr>
-<tr class="separator:aaf1ff8572a1e7a17563965863301df38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3c7794e1ccbc221da325b1c30585259" id="r_aa3c7794e1ccbc221da325b1c30585259"><td class="memItemLeft" align="right" valign="top"><a id="aa3c7794e1ccbc221da325b1c30585259" name="aa3c7794e1ccbc221da325b1c30585259"></a>
-std::set&lt; uint &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>dependency_set</b></td></tr>
-<tr class="memdesc:aa3c7794e1ccbc221da325b1c30585259"><td class="mdescLeft">&#160;</td><td class="mdescRight">A simplified set of evaluation flags for the dependencies of the current variable's LHS &amp; RHS. This will help determine the fieldSolveType of the field. Fields indices where the evaluation flags are not 0 (not nothing) are included. Additionally, explicit fields are excluded to speed up the graph search. <br /></td></tr>
-<tr class="separator:aa3c7794e1ccbc221da325b1c30585259"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae45c320823d26d32250ee4efa061a84" id="r_aae45c320823d26d32250ee4efa061a84"><td class="memItemLeft" align="right" valign="top"><a id="aae45c320823d26d32250ee4efa061a84" name="aae45c320823d26d32250ee4efa061a84"></a>
+std::set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>dependencies_value_PP</b></td></tr>
+<tr class="separator:aae45c320823d26d32250ee4efa061a84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90ae0e823b93369aeb5ac2f1546f0711" id="r_a90ae0e823b93369aeb5ac2f1546f0711"><td class="memItemLeft" align="right" valign="top"><a id="a90ae0e823b93369aeb5ac2f1546f0711" name="a90ae0e823b93369aeb5ac2f1546f0711"></a>
+std::set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>dependencies_gradient_PP</b></td></tr>
+<tr class="separator:a90ae0e823b93369aeb5ac2f1546f0711"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96a364f113ee8ae312b205dd1bcd3317" id="r_a96a364f113ee8ae312b205dd1bcd3317"><td class="memItemLeft" align="right" valign="top"><a id="a96a364f113ee8ae312b205dd1bcd3317" name="a96a364f113ee8ae312b205dd1bcd3317"></a>
+std::set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>dependencies_PP</b></td></tr>
+<tr class="separator:a96a364f113ee8ae312b205dd1bcd3317"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0deca5b7a8caad7eeffe1cffc431584a" id="r_a0deca5b7a8caad7eeffe1cffc431584a"><td class="memItemLeft" align="right" valign="top"><a id="a0deca5b7a8caad7eeffe1cffc431584a" name="a0deca5b7a8caad7eeffe1cffc431584a"></a>
+std::set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>dependency_set</b></td></tr>
+<tr class="separator:a0deca5b7a8caad7eeffe1cffc431584a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a3aea43d59a7807a3a0db8d152889b7" id="r_a2a3aea43d59a7807a3a0db8d152889b7"><td class="memItemLeft" align="right" valign="top"><a id="a2a3aea43d59a7807a3a0db8d152889b7" name="a2a3aea43d59a7807a3a0db8d152889b7"></a>
+EvalFlags&#160;</td><td class="memItemRight" valign="bottom"><b>eval_flags_explicit_RHS</b> = dealii::EvaluationFlags::nothing</td></tr>
+<tr class="separator:a2a3aea43d59a7807a3a0db8d152889b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47869f45890cd50edbd972675c94c050" id="r_a47869f45890cd50edbd972675c94c050"><td class="memItemLeft" align="right" valign="top"><a id="a47869f45890cd50edbd972675c94c050" name="a47869f45890cd50edbd972675c94c050"></a>
+EvalFlags&#160;</td><td class="memItemRight" valign="bottom"><b>eval_flags_nonexplicit_RHS</b> = dealii::EvaluationFlags::nothing</td></tr>
+<tr class="separator:a47869f45890cd50edbd972675c94c050"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a291ec1b2daa5b7c46328acccee707e6c" id="r_a291ec1b2daa5b7c46328acccee707e6c"><td class="memItemLeft" align="right" valign="top"><a id="a291ec1b2daa5b7c46328acccee707e6c" name="a291ec1b2daa5b7c46328acccee707e6c"></a>
+EvalFlags&#160;</td><td class="memItemRight" valign="bottom"><b>eval_flags_nonexplicit_LHS</b> = dealii::EvaluationFlags::nothing</td></tr>
+<tr class="separator:a291ec1b2daa5b7c46328acccee707e6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a589d8f768773e6671aed49a0f75d0b" id="r_a4a589d8f768773e6671aed49a0f75d0b"><td class="memItemLeft" align="right" valign="top"><a id="a4a589d8f768773e6671aed49a0f75d0b" name="a4a589d8f768773e6671aed49a0f75d0b"></a>
+EvalFlags&#160;</td><td class="memItemRight" valign="bottom"><b>eval_flags_change_nonexplicit_LHS</b> = dealii::EvaluationFlags::nothing</td></tr>
+<tr class="separator:a4a589d8f768773e6671aed49a0f75d0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42c79ca7d9e5ba2a7ea7e36960a76c16" id="r_a42c79ca7d9e5ba2a7ea7e36960a76c16"><td class="memItemLeft" align="right" valign="top"><a id="a42c79ca7d9e5ba2a7ea7e36960a76c16" name="a42c79ca7d9e5ba2a7ea7e36960a76c16"></a>
+EvalFlags&#160;</td><td class="memItemRight" valign="bottom"><b>eval_flags_residual_explicit_RHS</b> = dealii::EvaluationFlags::nothing</td></tr>
+<tr class="separator:a42c79ca7d9e5ba2a7ea7e36960a76c16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac442a9b82cc14e5b62354dcf40e91d1b" id="r_ac442a9b82cc14e5b62354dcf40e91d1b"><td class="memItemLeft" align="right" valign="top"><a id="ac442a9b82cc14e5b62354dcf40e91d1b" name="ac442a9b82cc14e5b62354dcf40e91d1b"></a>
+EvalFlags&#160;</td><td class="memItemRight" valign="bottom"><b>eval_flags_residual_nonexplicit_RHS</b> = dealii::EvaluationFlags::nothing</td></tr>
+<tr class="separator:ac442a9b82cc14e5b62354dcf40e91d1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2522f3cf03e1bc5c1dc1b8f3ba36dbe" id="r_ab2522f3cf03e1bc5c1dc1b8f3ba36dbe"><td class="memItemLeft" align="right" valign="top"><a id="ab2522f3cf03e1bc5c1dc1b8f3ba36dbe" name="ab2522f3cf03e1bc5c1dc1b8f3ba36dbe"></a>
+EvalFlags&#160;</td><td class="memItemRight" valign="bottom"><b>eval_flags_residual_nonexplicit_LHS</b> = dealii::EvaluationFlags::nothing</td></tr>
+<tr class="separator:ab2522f3cf03e1bc5c1dc1b8f3ba36dbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a012fd92ce26dd5a9e5ab4e1f1f90e015" id="r_a012fd92ce26dd5a9e5ab4e1f1f90e015"><td class="memItemLeft" align="right" valign="top"><a id="a012fd92ce26dd5a9e5ab4e1f1f90e015" name="a012fd92ce26dd5a9e5ab4e1f1f90e015"></a>
+EvalFlags&#160;</td><td class="memItemRight" valign="bottom"><b>eval_flags_postprocess</b> = dealii::EvaluationFlags::nothing</td></tr>
+<tr class="separator:a012fd92ce26dd5a9e5ab4e1f1f90e015"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25a6ff411be6a4cb563e96439b22fd34" id="r_a25a6ff411be6a4cb563e96439b22fd34"><td class="memItemLeft" align="right" valign="top"><a id="a25a6ff411be6a4cb563e96439b22fd34" name="a25a6ff411be6a4cb563e96439b22fd34"></a>
+EvalFlags&#160;</td><td class="memItemRight" valign="bottom"><b>eval_flags_residual_postprocess</b> = dealii::EvaluationFlags::nothing</td></tr>
+<tr class="separator:a25a6ff411be6a4cb563e96439b22fd34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Structure to hold the variable attributes of a field. This includes things like the name, equation type, whether it's nonlinear, and its dependence on other variables. </p>
-</div><hr/>The documentation for this struct was generated from the following files:<ul>
-<li>/home/runner/work/phaseField/phaseField/include/core/<a class="el" href="variable__attributes_8h_source.html">variable_attributes.h</a></li>
-<li>/home/runner/work/phaseField/phaseField/src/core/<b>variable_attributes.cc</b></li>
+<div class="textblock"><p>Structure to hold the variable attributes that will be passed to a setInputParameters object. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a924b4ccb25c249f20a1d0e5c0caa3de5" name="a924b4ccb25c249f20a1d0e5c0caa3de5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a924b4ccb25c249f20a1d0e5c0caa3de5">&#9670;&#160;</a></span>eval_flags_for_eq_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::set&lt; EvalFlags * &gt; variableAttributes::eval_flags_for_eq_type </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structvariableAttributes.html">variableAttributes</a> &amp;&#160;</td>
+          <td class="paramname"><em>other_variable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Helper function that returns a set of pointers to the flags that need to be set when <code>other_variable</code> is dependent on this variable. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other_variable</td><td>Variable that is dependent on this variable. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following files:<ul>
+<li>/home/runner/work/phaseField/phaseField/include/core/<a class="el" href="variableAttributes_8h_source.html">variableAttributes.h</a></li>
+<li>/home/runner/work/phaseField/phaseField/src/core/<b>variableAttributes.cc</b></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

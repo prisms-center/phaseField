@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['pairhash_0',['pairHash',['../structpairHash.html',1,'']]],
-  ['parsecmdoptions_1',['parseCMDOptions',['../classparseCMDOptions.html',1,'']]],
-  ['pdeproblem_2',['PDEProblem',['../classPDEProblem.html',1,'']]]
+  ['nonlinearsolverparameters_0',['NonlinearSolverParameters',['../classNonlinearSolverParameters.html',1,'']]],
+  ['nonuniformdirichletbc_1',['NonUniformDirichletBC',['../classNonUniformDirichletBC.html',1,'']]],
+  ['nonuniformdirichletbcvector_2',['NonUniformDirichletBCVector',['../classNonUniformDirichletBCVector.html',1,'']]],
+  ['nucleationparameters_3',['nucleationParameters',['../classnucleationParameters.html',1,'']]],
+  ['nucleus_4',['nucleus',['../structnucleus.html',1,'']]]
 ];

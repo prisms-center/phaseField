@@ -1,6 +1,10 @@
 var searchData=
 [
-  ['recompute_5finvm_0',['recompute_invm',['../classinvmHandler.html#ad78286b721026319253de1471a0c8b1c',1,'invmHandler']]],
-  ['reinit_5fsystem_1',['reinit_system',['../classbaseSolver.html#a6bf8ee1cdc5afb4e0af957e3b5334543',1,'baseSolver::reinit_system()'],['../classexplicitSolver.html#af36f500f53049853a0faccdfd1855c67',1,'explicitSolver::reinit_system()'],['../classGMGSolver.html#a1dfcb5c45353323fe6fcffa56ccbcc32',1,'GMGSolver::reinit_system()'],['../classidentitySolver.html#ad551514cb9b5c65b0d64ed006abbd630',1,'identitySolver::reinit_system()']]],
-  ['run_2',['run',['../classPDEProblem.html#aa3630b72c935f80955de30259c90fe96',1,'PDEProblem']]]
+  ['read_5fvtk_0',['read_vtk',['../classPRISMS_1_1Body.html#a5e0f2aba92a504042eb5cad0991afe87',1,'PRISMS::Body']]],
+  ['reassigngrains_1',['reassigngrains',['../classMatrixFreePDE.html#a7975eb6bc4ca5be5c4580a953336a0d3',1,'MatrixFreePDE::reassignGrains()'],['../classSimplifiedGrainManipulator.html#a158a8368fb6f65f64ec9fdddd4eb50b8',1,'SimplifiedGrainManipulator::reassignGrains()']]],
+  ['recursivefloodfill_2',['recursiveFloodFill',['../classFloodFiller.html#a63a4fdf1b8fd60279293f5fed378ee97',1,'FloodFiller']]],
+  ['refine_5fgrid_3',['refine_grid',['../classAdaptiveRefinement.html#ae94f15593790f75d26a65b62ebc1ef61',1,'AdaptiveRefinement']]],
+  ['reinit_5fand_5feval_5fchange_5fin_5fsolution_4',['reinit_and_eval_change_in_solution',['../classvariableContainer.html#ae5921bff40c4026eca4027756c21a2d2',1,'variableContainer']]],
+  ['remap_5',['remap',['../classOrderParameterRemapper.html#aea9c185811e61d61196124dbabac9f31',1,'OrderParameterRemapper']]],
+  ['remap_5ffrom_5findex_5ffield_6',['remap_from_index_field',['../classOrderParameterRemapper.html#a4dd81ec7ca565239c18defd502418abe',1,'OrderParameterRemapper']]]
 ];

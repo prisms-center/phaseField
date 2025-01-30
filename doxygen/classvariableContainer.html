@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>PRISMS-PF Manual: variableContainer&lt; dim, degree, number &gt; Class Template Reference</title>
+<title>PRISMS-PF Manual: variableContainer&lt; dim, degree, T &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -92,139 +92,152 @@ $(document).ready(function(){initNavTree('classvariableContainer.html',''); init
 
 <div class="header">
   <div class="summary">
-<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classvariableContainer-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">variableContainer&lt; dim, degree, number &gt; Class Template Reference</div></div>
+  <div class="headertitle"><div class="title">variableContainer&lt; dim, degree, T &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p>This class permits the access of a subset of indexed fields and gives an error if any non-allowed fields are requested.  
- <a href="classvariableContainer.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="variable__container_8h_source.html">variable_container.h</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:af38d449cd9e8d506ae1765453f13c5ac" id="r_af38d449cd9e8d506ae1765453f13c5ac"><td class="memItemLeft" align="right" valign="top"><a id="af38d449cd9e8d506ae1765453f13c5ac" name="af38d449cd9e8d506ae1765453f13c5ac"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>EvalFlags</b> = dealii::EvaluationFlags::EvaluationFlags</td></tr>
-<tr class="separator:af38d449cd9e8d506ae1765453f13c5ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c64942dbb4aecaf74bc5d0cd384f799" id="r_a8c64942dbb4aecaf74bc5d0cd384f799"><td class="memItemLeft" align="right" valign="top"><a id="a8c64942dbb4aecaf74bc5d0cd384f799" name="a8c64942dbb4aecaf74bc5d0cd384f799"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>scalarValue</b> = dealii::VectorizedArray&lt; number &gt;</td></tr>
-<tr class="separator:a8c64942dbb4aecaf74bc5d0cd384f799"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af142a67223910325b71190f12c07a280" id="r_af142a67223910325b71190f12c07a280"><td class="memItemLeft" align="right" valign="top"><a id="af142a67223910325b71190f12c07a280" name="af142a67223910325b71190f12c07a280"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>scalarGrad</b> = dealii::Tensor&lt; 1, dim, dealii::VectorizedArray&lt; number &gt; &gt;</td></tr>
-<tr class="separator:af142a67223910325b71190f12c07a280"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9663e4347c3df96a59cc7d13acea5ef9" id="r_a9663e4347c3df96a59cc7d13acea5ef9"><td class="memItemLeft" align="right" valign="top"><a id="a9663e4347c3df96a59cc7d13acea5ef9" name="a9663e4347c3df96a59cc7d13acea5ef9"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>scalarHess</b> = dealii::Tensor&lt; 2, dim, dealii::VectorizedArray&lt; number &gt; &gt;</td></tr>
-<tr class="separator:a9663e4347c3df96a59cc7d13acea5ef9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbe17dd8495965e640d0cd8b5c483a2f" id="r_abbe17dd8495965e640d0cd8b5c483a2f"><td class="memItemLeft" align="right" valign="top"><a id="abbe17dd8495965e640d0cd8b5c483a2f" name="abbe17dd8495965e640d0cd8b5c483a2f"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>vectorValue</b> = dealii::Tensor&lt; 1, dim, dealii::VectorizedArray&lt; number &gt; &gt;</td></tr>
-<tr class="separator:abbe17dd8495965e640d0cd8b5c483a2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a902cc90574d9e85d0f757bac9b90bbeb" id="r_a902cc90574d9e85d0f757bac9b90bbeb"><td class="memItemLeft" align="right" valign="top"><a id="a902cc90574d9e85d0f757bac9b90bbeb" name="a902cc90574d9e85d0f757bac9b90bbeb"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>vectorGrad</b> = dealii::Tensor&lt; 2, dim, dealii::VectorizedArray&lt; number &gt; &gt;</td></tr>
-<tr class="separator:a902cc90574d9e85d0f757bac9b90bbeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f57c2a4e55cfaa2ed56f31d56865dc6" id="r_a0f57c2a4e55cfaa2ed56f31d56865dc6"><td class="memItemLeft" align="right" valign="top"><a id="a0f57c2a4e55cfaa2ed56f31d56865dc6" name="a0f57c2a4e55cfaa2ed56f31d56865dc6"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>vectorHess</b> = dealii::Tensor&lt; 3, dim, dealii::VectorizedArray&lt; number &gt; &gt;</td></tr>
-<tr class="separator:a0f57c2a4e55cfaa2ed56f31d56865dc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ada9ce660e72b42772c7be026921a69df" id="r_ada9ce660e72b42772c7be026921a69df"><td class="memItemLeft" align="right" valign="top"><a id="ada9ce660e72b42772c7be026921a69df" name="ada9ce660e72b42772c7be026921a69df"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>variableContainer</b> (const dealii::MatrixFree&lt; dim, number &gt; &amp;data, const AttributesList &amp;_subset_attributes, const solveType &amp;_solve_type)</td></tr>
-<tr class="memdesc:ada9ce660e72b42772c7be026921a69df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
-<tr class="separator:ada9ce660e72b42772c7be026921a69df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1e8d2ec4c234eba6c4ae70d959cfa22" id="r_af1e8d2ec4c234eba6c4ae70d959cfa22"><td class="memItemLeft" align="right" valign="top"><a id="af1e8d2ec4c234eba6c4ae70d959cfa22" name="af1e8d2ec4c234eba6c4ae70d959cfa22"></a>
-scalarValue&#160;</td><td class="memItemRight" valign="bottom"><b>get_scalar_value</b> (uint global_variable_index, dependencyType dependency_type=dependencyType::NORMAL) const</td></tr>
-<tr class="memdesc:af1e8d2ec4c234eba6c4ae70d959cfa22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the value of the specified scalar field. <br /></td></tr>
-<tr class="separator:af1e8d2ec4c234eba6c4ae70d959cfa22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87dd6ef787b4cc4f9741f7253fa51d94" id="r_a87dd6ef787b4cc4f9741f7253fa51d94"><td class="memItemLeft" align="right" valign="top"><a id="a87dd6ef787b4cc4f9741f7253fa51d94" name="a87dd6ef787b4cc4f9741f7253fa51d94"></a>
-scalarGrad&#160;</td><td class="memItemRight" valign="bottom"><b>get_scalar_gradient</b> (uint global_variable_index, dependencyType dependency_type=dependencyType::NORMAL) const</td></tr>
-<tr class="memdesc:a87dd6ef787b4cc4f9741f7253fa51d94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the gradient of the specified scalar field. <br /></td></tr>
-<tr class="separator:a87dd6ef787b4cc4f9741f7253fa51d94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa67085b12a8744b46dd1563a43e60edd" id="r_aa67085b12a8744b46dd1563a43e60edd"><td class="memItemLeft" align="right" valign="top"><a id="aa67085b12a8744b46dd1563a43e60edd" name="aa67085b12a8744b46dd1563a43e60edd"></a>
-scalarHess&#160;</td><td class="memItemRight" valign="bottom"><b>get_scalar_hessian</b> (uint global_variable_index, dependencyType dependency_type=dependencyType::NORMAL) const</td></tr>
-<tr class="memdesc:aa67085b12a8744b46dd1563a43e60edd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the hessian of the specified scalar field. <br /></td></tr>
-<tr class="separator:aa67085b12a8744b46dd1563a43e60edd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc0b16ba0122b8bfb2735c53d573b3b1" id="r_afc0b16ba0122b8bfb2735c53d573b3b1"><td class="memItemLeft" align="right" valign="top"><a id="afc0b16ba0122b8bfb2735c53d573b3b1" name="afc0b16ba0122b8bfb2735c53d573b3b1"></a>
-scalarGrad&#160;</td><td class="memItemRight" valign="bottom"><b>get_scalar_hessian_diagonal</b> (uint global_variable_index, dependencyType dependency_type=dependencyType::NORMAL) const</td></tr>
-<tr class="memdesc:afc0b16ba0122b8bfb2735c53d573b3b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the diagonal of the hessian of the specified scalar field. <br /></td></tr>
-<tr class="separator:afc0b16ba0122b8bfb2735c53d573b3b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4887f4f93b8be86ef9b1877f7054e68d" id="r_a4887f4f93b8be86ef9b1877f7054e68d"><td class="memItemLeft" align="right" valign="top"><a id="a4887f4f93b8be86ef9b1877f7054e68d" name="a4887f4f93b8be86ef9b1877f7054e68d"></a>
-scalarValue&#160;</td><td class="memItemRight" valign="bottom"><b>get_scalar_laplacian</b> (uint global_variable_index, dependencyType dependency_type=dependencyType::NORMAL) const</td></tr>
-<tr class="memdesc:a4887f4f93b8be86ef9b1877f7054e68d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the laplacian of the specified scalar field. <br /></td></tr>
-<tr class="separator:a4887f4f93b8be86ef9b1877f7054e68d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77e60b03012cc013c13404f67b738c0d" id="r_a77e60b03012cc013c13404f67b738c0d"><td class="memItemLeft" align="right" valign="top"><a id="a77e60b03012cc013c13404f67b738c0d" name="a77e60b03012cc013c13404f67b738c0d"></a>
-vectorValue&#160;</td><td class="memItemRight" valign="bottom"><b>get_vector_value</b> (uint global_variable_index, dependencyType dependency_type=dependencyType::NORMAL) const</td></tr>
-<tr class="memdesc:a77e60b03012cc013c13404f67b738c0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the value of the specified vector field. <br /></td></tr>
-<tr class="separator:a77e60b03012cc013c13404f67b738c0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a414087f3ec4ad970bf62daec782a1eee" id="r_a414087f3ec4ad970bf62daec782a1eee"><td class="memItemLeft" align="right" valign="top"><a id="a414087f3ec4ad970bf62daec782a1eee" name="a414087f3ec4ad970bf62daec782a1eee"></a>
-vectorGrad&#160;</td><td class="memItemRight" valign="bottom"><b>get_vector_gradient</b> (uint global_variable_index, dependencyType dependency_type=dependencyType::NORMAL) const</td></tr>
-<tr class="memdesc:a414087f3ec4ad970bf62daec782a1eee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the gradient of the specified vector field. <br /></td></tr>
-<tr class="separator:a414087f3ec4ad970bf62daec782a1eee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7dc9af152e0859aecedeacbf3d8bb51b" id="r_a7dc9af152e0859aecedeacbf3d8bb51b"><td class="memItemLeft" align="right" valign="top"><a id="a7dc9af152e0859aecedeacbf3d8bb51b" name="a7dc9af152e0859aecedeacbf3d8bb51b"></a>
-vectorHess&#160;</td><td class="memItemRight" valign="bottom"><b>get_vector_hessian</b> (uint global_variable_index, dependencyType dependency_type=dependencyType::NORMAL) const</td></tr>
-<tr class="memdesc:a7dc9af152e0859aecedeacbf3d8bb51b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the hessian of the specified vector field. <br /></td></tr>
-<tr class="separator:a7dc9af152e0859aecedeacbf3d8bb51b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9867f0c7960849b84d663e283642bad" id="r_ad9867f0c7960849b84d663e283642bad"><td class="memItemLeft" align="right" valign="top"><a id="ad9867f0c7960849b84d663e283642bad" name="ad9867f0c7960849b84d663e283642bad"></a>
-vectorGrad&#160;</td><td class="memItemRight" valign="bottom"><b>get_vector_hessian_diagonal</b> (uint global_variable_index, dependencyType dependency_type=dependencyType::NORMAL) const</td></tr>
-<tr class="memdesc:ad9867f0c7960849b84d663e283642bad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the diagonal of the hessian of the specified vector field. <br /></td></tr>
-<tr class="separator:ad9867f0c7960849b84d663e283642bad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac14502b3c6a52df47af978d73bea2991" id="r_ac14502b3c6a52df47af978d73bea2991"><td class="memItemLeft" align="right" valign="top"><a id="ac14502b3c6a52df47af978d73bea2991" name="ac14502b3c6a52df47af978d73bea2991"></a>
-vectorValue&#160;</td><td class="memItemRight" valign="bottom"><b>get_vector_laplacian</b> (uint global_variable_index, dependencyType dependency_type=dependencyType::NORMAL) const</td></tr>
-<tr class="memdesc:ac14502b3c6a52df47af978d73bea2991"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the laplacian of the specified vector field. <br /></td></tr>
-<tr class="separator:ac14502b3c6a52df47af978d73bea2991"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4782636fa3059fe7e854d457bc158870" id="r_a4782636fa3059fe7e854d457bc158870"><td class="memItemLeft" align="right" valign="top"><a id="a4782636fa3059fe7e854d457bc158870" name="a4782636fa3059fe7e854d457bc158870"></a>
-scalarValue&#160;</td><td class="memItemRight" valign="bottom"><b>get_vector_divergence</b> (uint global_variable_index, dependencyType dependency_type=dependencyType::NORMAL) const</td></tr>
-<tr class="memdesc:a4782636fa3059fe7e854d457bc158870"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the divergence of the specified vector field. <br /></td></tr>
-<tr class="separator:a4782636fa3059fe7e854d457bc158870"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14df8b7be30da68e640b97cbc2e8189d" id="r_a14df8b7be30da68e640b97cbc2e8189d"><td class="memItemLeft" align="right" valign="top"><a id="a14df8b7be30da68e640b97cbc2e8189d" name="a14df8b7be30da68e640b97cbc2e8189d"></a>
-vectorGrad&#160;</td><td class="memItemRight" valign="bottom"><b>get_vector_symmetric_gradient</b> (uint global_variable_index, dependencyType dependency_type=dependencyType::NORMAL) const</td></tr>
-<tr class="memdesc:a14df8b7be30da68e640b97cbc2e8189d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the symmetric gradient of the specified vector field. <br /></td></tr>
-<tr class="separator:a14df8b7be30da68e640b97cbc2e8189d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1dddee7b4c3b9dfe8dd6e123c0401c3c" id="r_a1dddee7b4c3b9dfe8dd6e123c0401c3c"><td class="memItemLeft" align="right" valign="top"><a id="a1dddee7b4c3b9dfe8dd6e123c0401c3c" name="a1dddee7b4c3b9dfe8dd6e123c0401c3c"></a>
-dealii::Tensor&lt; 1,(dim==2 ? 1 :dim), dealii::VectorizedArray&lt; number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_vector_curl</b> (uint global_variable_index, dependencyType dependency_type=dependencyType::NORMAL) const</td></tr>
-<tr class="memdesc:a1dddee7b4c3b9dfe8dd6e123c0401c3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the curl of the specified vector field. Note that this is scalarValue type for 2D and vectorValue type for 3D. <br /></td></tr>
-<tr class="separator:a1dddee7b4c3b9dfe8dd6e123c0401c3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7a863099c9c9b7939b0cba8e6d94b3e" id="r_ae7a863099c9c9b7939b0cba8e6d94b3e"><td class="memItemLeft" align="right" valign="top"><a id="ae7a863099c9c9b7939b0cba8e6d94b3e" name="ae7a863099c9c9b7939b0cba8e6d94b3e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_scalar_value_term</b> (uint global_variable_index, scalarValue val, dependencyType dependency_type=dependencyType::NORMAL)</td></tr>
-<tr class="memdesc:ae7a863099c9c9b7939b0cba8e6d94b3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the residual value of the specified scalar field. <br /></td></tr>
-<tr class="separator:ae7a863099c9c9b7939b0cba8e6d94b3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adaa943400ca93dc09141e98b0b70dd0f" id="r_adaa943400ca93dc09141e98b0b70dd0f"><td class="memItemLeft" align="right" valign="top"><a id="adaa943400ca93dc09141e98b0b70dd0f" name="adaa943400ca93dc09141e98b0b70dd0f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_scalar_gradient_term</b> (uint global_variable_index, scalarGrad grad, dependencyType dependency_type=dependencyType::NORMAL)</td></tr>
-<tr class="memdesc:adaa943400ca93dc09141e98b0b70dd0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the residual gradient of the specified scalar field. <br /></td></tr>
-<tr class="separator:adaa943400ca93dc09141e98b0b70dd0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2700f442b69b3230b691149b35d4267b" id="r_a2700f442b69b3230b691149b35d4267b"><td class="memItemLeft" align="right" valign="top"><a id="a2700f442b69b3230b691149b35d4267b" name="a2700f442b69b3230b691149b35d4267b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_vector_value_term</b> (uint global_variable_index, vectorValue val, dependencyType dependency_type=dependencyType::NORMAL)</td></tr>
-<tr class="memdesc:a2700f442b69b3230b691149b35d4267b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the residual value of the specified vector field. <br /></td></tr>
-<tr class="separator:a2700f442b69b3230b691149b35d4267b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2171fbf22c03ea4efdcfc1ae78c11c47" id="r_a2171fbf22c03ea4efdcfc1ae78c11c47"><td class="memItemLeft" align="right" valign="top"><a id="a2171fbf22c03ea4efdcfc1ae78c11c47" name="a2171fbf22c03ea4efdcfc1ae78c11c47"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_vector_gradient_term</b> (uint global_variable_index, vectorGrad grad, dependencyType dependency_type=dependencyType::NORMAL)</td></tr>
-<tr class="memdesc:a2171fbf22c03ea4efdcfc1ae78c11c47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the residual gradient of the specified vector field. <br /></td></tr>
-<tr class="separator:a2171fbf22c03ea4efdcfc1ae78c11c47"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6ed3ffbeb3e056fa421e1f9d55db938" id="r_ae6ed3ffbeb3e056fa421e1f9d55db938"><td class="memItemLeft" align="right" valign="top"><a id="ae6ed3ffbeb3e056fa421e1f9d55db938" name="ae6ed3ffbeb3e056fa421e1f9d55db938"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>eval_local_operator</b> (const std::function&lt; void(<a class="el" href="classvariableContainer.html">variableContainer</a> &amp;, const dealii::Point&lt; dim, dealii::VectorizedArray&lt; number &gt; &gt; &amp;)&gt; &amp;func, dealii::LinearAlgebra::distributed::Vector&lt; number &gt; &amp;dst, const LinearAlgebra::distributed::Vector&lt; number &gt; &amp;src, const std::pair&lt; uint, uint &gt; &amp;cell_range)</td></tr>
-<tr class="memdesc:ae6ed3ffbeb3e056fa421e1f9d55db938"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: Add comments. <br /></td></tr>
-<tr class="separator:ae6ed3ffbeb3e056fa421e1f9d55db938"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a813a6ec89627a4c2c7c1e6ddc574d15b" id="r_a813a6ec89627a4c2c7c1e6ddc574d15b"><td class="memItemLeft" align="right" valign="top"><a id="a813a6ec89627a4c2c7c1e6ddc574d15b" name="a813a6ec89627a4c2c7c1e6ddc574d15b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>eval_local_diagonal</b> (const std::function&lt; void(<a class="el" href="classvariableContainer.html">variableContainer</a> &amp;, const dealii::Point&lt; dim, dealii::VectorizedArray&lt; number &gt; &gt; &amp;)&gt; &amp;func, dealii::LinearAlgebra::distributed::Vector&lt; number &gt; &amp;dst, const std::pair&lt; uint, uint &gt; &amp;cell_range, const uint &amp;global_var_index)</td></tr>
-<tr class="memdesc:a813a6ec89627a4c2c7c1e6ddc574d15b"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: Add comments. <br /></td></tr>
-<tr class="separator:a813a6ec89627a4c2c7c1e6ddc574d15b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7a16c3ae76c46351de281eeaff69d32" id="r_ae7a16c3ae76c46351de281eeaff69d32"><td class="memItemLeft" align="right" valign="top"><a id="ae7a16c3ae76c46351de281eeaff69d32" name="ae7a16c3ae76c46351de281eeaff69d32"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>variableContainer</b> (const dealii::MatrixFree&lt; dim, double &gt; &amp;data, const std::vector&lt; <a class="el" href="structvariable__info.html">variable_info</a> &gt; &amp;_varInfoList, const std::vector&lt; <a class="el" href="structvariable__info.html">variable_info</a> &gt; &amp;_varChangeInfoList)</td></tr>
+<tr class="separator:ae7a16c3ae76c46351de281eeaff69d32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf4c0cd4b8c2f10fb1fa527a8b41d7e0" id="r_acf4c0cd4b8c2f10fb1fa527a8b41d7e0"><td class="memItemLeft" align="right" valign="top"><a id="acf4c0cd4b8c2f10fb1fa527a8b41d7e0" name="acf4c0cd4b8c2f10fb1fa527a8b41d7e0"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>variableContainer</b> (const dealii::MatrixFree&lt; dim, double &gt; &amp;data, const std::vector&lt; <a class="el" href="structvariable__info.html">variable_info</a> &gt; &amp;_varInfoList)</td></tr>
+<tr class="separator:acf4c0cd4b8c2f10fb1fa527a8b41d7e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62a0a462573e665b8a67071738c8d886" id="r_a62a0a462573e665b8a67071738c8d886"><td class="memItemLeft" align="right" valign="top"><a id="a62a0a462573e665b8a67071738c8d886" name="a62a0a462573e665b8a67071738c8d886"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>variableContainer</b> (const dealii::MatrixFree&lt; dim, double &gt; &amp;data, const std::vector&lt; <a class="el" href="structvariable__info.html">variable_info</a> &gt; &amp;_varInfoList, const unsigned int &amp;fixed_index)</td></tr>
+<tr class="separator:a62a0a462573e665b8a67071738c8d886"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16bc22bd86a400f3dc131e14f94ac373" id="r_a16bc22bd86a400f3dc131e14f94ac373"><td class="memItemLeft" align="right" valign="top"><a id="a16bc22bd86a400f3dc131e14f94ac373" name="a16bc22bd86a400f3dc131e14f94ac373"></a>
+T&#160;</td><td class="memItemRight" valign="bottom"><b>get_scalar_value</b> (unsigned int global_variable_index) const</td></tr>
+<tr class="separator:a16bc22bd86a400f3dc131e14f94ac373"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1bd1434444eb5b4efaef8a60846ef00" id="r_ae1bd1434444eb5b4efaef8a60846ef00"><td class="memItemLeft" align="right" valign="top"><a id="ae1bd1434444eb5b4efaef8a60846ef00" name="ae1bd1434444eb5b4efaef8a60846ef00"></a>
+dealii::Tensor&lt; 1, dim, T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_scalar_gradient</b> (unsigned int global_variable_index) const</td></tr>
+<tr class="separator:ae1bd1434444eb5b4efaef8a60846ef00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac674dca28d697b45a6fad390567d448d" id="r_ac674dca28d697b45a6fad390567d448d"><td class="memItemLeft" align="right" valign="top"><a id="ac674dca28d697b45a6fad390567d448d" name="ac674dca28d697b45a6fad390567d448d"></a>
+dealii::Tensor&lt; 2, dim, T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_scalar_hessian</b> (unsigned int global_variable_index) const</td></tr>
+<tr class="separator:ac674dca28d697b45a6fad390567d448d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1eda5a563f77f97e7528d2b6c99d4059" id="r_a1eda5a563f77f97e7528d2b6c99d4059"><td class="memItemLeft" align="right" valign="top"><a id="a1eda5a563f77f97e7528d2b6c99d4059" name="a1eda5a563f77f97e7528d2b6c99d4059"></a>
+dealii::Tensor&lt; 1, dim, T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_vector_value</b> (unsigned int global_variable_index) const</td></tr>
+<tr class="separator:a1eda5a563f77f97e7528d2b6c99d4059"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95bccc22f9aeaa95dcfcbf74fafd699e" id="r_a95bccc22f9aeaa95dcfcbf74fafd699e"><td class="memItemLeft" align="right" valign="top"><a id="a95bccc22f9aeaa95dcfcbf74fafd699e" name="a95bccc22f9aeaa95dcfcbf74fafd699e"></a>
+dealii::Tensor&lt; 2, dim, T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_vector_gradient</b> (unsigned int global_variable_index) const</td></tr>
+<tr class="separator:a95bccc22f9aeaa95dcfcbf74fafd699e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9b09896a4cfdb189ec04bc9cedef858" id="r_af9b09896a4cfdb189ec04bc9cedef858"><td class="memItemLeft" align="right" valign="top"><a id="af9b09896a4cfdb189ec04bc9cedef858" name="af9b09896a4cfdb189ec04bc9cedef858"></a>
+dealii::Tensor&lt; 3, dim, T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_vector_hessian</b> (unsigned int global_variable_index) const</td></tr>
+<tr class="separator:af9b09896a4cfdb189ec04bc9cedef858"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c019dbe2d3b0aede3f4b76727a66e6b" id="r_a3c019dbe2d3b0aede3f4b76727a66e6b"><td class="memItemLeft" align="right" valign="top"><a id="a3c019dbe2d3b0aede3f4b76727a66e6b" name="a3c019dbe2d3b0aede3f4b76727a66e6b"></a>
+T&#160;</td><td class="memItemRight" valign="bottom"><b>get_change_in_scalar_value</b> (unsigned int global_variable_index) const</td></tr>
+<tr class="separator:a3c019dbe2d3b0aede3f4b76727a66e6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a8083fc7693f7d0becaec5dc77c150a" id="r_a7a8083fc7693f7d0becaec5dc77c150a"><td class="memItemLeft" align="right" valign="top"><a id="a7a8083fc7693f7d0becaec5dc77c150a" name="a7a8083fc7693f7d0becaec5dc77c150a"></a>
+dealii::Tensor&lt; 1, dim, T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_change_in_scalar_gradient</b> (unsigned int global_variable_index) const</td></tr>
+<tr class="separator:a7a8083fc7693f7d0becaec5dc77c150a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad789ffb6cf66dfa851002133f4077f3c" id="r_ad789ffb6cf66dfa851002133f4077f3c"><td class="memItemLeft" align="right" valign="top"><a id="ad789ffb6cf66dfa851002133f4077f3c" name="ad789ffb6cf66dfa851002133f4077f3c"></a>
+dealii::Tensor&lt; 2, dim, T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_change_in_scalar_hessian</b> (unsigned int global_variable_index) const</td></tr>
+<tr class="separator:ad789ffb6cf66dfa851002133f4077f3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02079784dec54faa0c20538fdd1374b7" id="r_a02079784dec54faa0c20538fdd1374b7"><td class="memItemLeft" align="right" valign="top"><a id="a02079784dec54faa0c20538fdd1374b7" name="a02079784dec54faa0c20538fdd1374b7"></a>
+dealii::Tensor&lt; 1, dim, T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_change_in_vector_value</b> (unsigned int global_variable_index) const</td></tr>
+<tr class="separator:a02079784dec54faa0c20538fdd1374b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1dce93af10988a987925b1c6a520b4c" id="r_ad1dce93af10988a987925b1c6a520b4c"><td class="memItemLeft" align="right" valign="top"><a id="ad1dce93af10988a987925b1c6a520b4c" name="ad1dce93af10988a987925b1c6a520b4c"></a>
+dealii::Tensor&lt; 2, dim, T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_change_in_vector_gradient</b> (unsigned int global_variable_index) const</td></tr>
+<tr class="separator:ad1dce93af10988a987925b1c6a520b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a847cd121a469729ff1850cd1548c1a" id="r_a0a847cd121a469729ff1850cd1548c1a"><td class="memItemLeft" align="right" valign="top"><a id="a0a847cd121a469729ff1850cd1548c1a" name="a0a847cd121a469729ff1850cd1548c1a"></a>
+dealii::Tensor&lt; 3, dim, T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_change_in_vector_hessian</b> (unsigned int global_variable_index) const</td></tr>
+<tr class="separator:a0a847cd121a469729ff1850cd1548c1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84d9b96658aa2d6abe3552fd593afa38" id="r_a84d9b96658aa2d6abe3552fd593afa38"><td class="memItemLeft" align="right" valign="top"><a id="a84d9b96658aa2d6abe3552fd593afa38" name="a84d9b96658aa2d6abe3552fd593afa38"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set_scalar_value_term_RHS</b> (unsigned int global_variable_index, T val)</td></tr>
+<tr class="separator:a84d9b96658aa2d6abe3552fd593afa38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb936981bc589ad60c114590682bc801" id="r_afb936981bc589ad60c114590682bc801"><td class="memItemLeft" align="right" valign="top"><a id="afb936981bc589ad60c114590682bc801" name="afb936981bc589ad60c114590682bc801"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set_scalar_gradient_term_RHS</b> (unsigned int global_variable_index, dealii::Tensor&lt; 1, dim, T &gt; grad)</td></tr>
+<tr class="separator:afb936981bc589ad60c114590682bc801"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b145f3b367bbe9ab8d58c3b7da6416e" id="r_a3b145f3b367bbe9ab8d58c3b7da6416e"><td class="memItemLeft" align="right" valign="top"><a id="a3b145f3b367bbe9ab8d58c3b7da6416e" name="a3b145f3b367bbe9ab8d58c3b7da6416e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set_vector_value_term_RHS</b> (unsigned int global_variable_index, dealii::Tensor&lt; 1, dim, T &gt; val)</td></tr>
+<tr class="separator:a3b145f3b367bbe9ab8d58c3b7da6416e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2568ad2f7a5e33d9bcee3e42d6548f73" id="r_a2568ad2f7a5e33d9bcee3e42d6548f73"><td class="memItemLeft" align="right" valign="top"><a id="a2568ad2f7a5e33d9bcee3e42d6548f73" name="a2568ad2f7a5e33d9bcee3e42d6548f73"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set_vector_gradient_term_RHS</b> (unsigned int global_variable_index, dealii::Tensor&lt; 2, dim, T &gt; grad)</td></tr>
+<tr class="separator:a2568ad2f7a5e33d9bcee3e42d6548f73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22d2afea3b1a466da7d0cbccd25cb24f" id="r_a22d2afea3b1a466da7d0cbccd25cb24f"><td class="memItemLeft" align="right" valign="top"><a id="a22d2afea3b1a466da7d0cbccd25cb24f" name="a22d2afea3b1a466da7d0cbccd25cb24f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set_scalar_value_term_LHS</b> (unsigned int global_variable_index, T val)</td></tr>
+<tr class="separator:a22d2afea3b1a466da7d0cbccd25cb24f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa8327cde13ee9ef5164c9c25af850cf" id="r_aaa8327cde13ee9ef5164c9c25af850cf"><td class="memItemLeft" align="right" valign="top"><a id="aaa8327cde13ee9ef5164c9c25af850cf" name="aaa8327cde13ee9ef5164c9c25af850cf"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set_scalar_gradient_term_LHS</b> (unsigned int global_variable_index, dealii::Tensor&lt; 1, dim, T &gt; grad)</td></tr>
+<tr class="separator:aaa8327cde13ee9ef5164c9c25af850cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9de2bc75acf2f0999803a3318f28eec3" id="r_a9de2bc75acf2f0999803a3318f28eec3"><td class="memItemLeft" align="right" valign="top"><a id="a9de2bc75acf2f0999803a3318f28eec3" name="a9de2bc75acf2f0999803a3318f28eec3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set_vector_value_term_LHS</b> (unsigned int global_variable_index, dealii::Tensor&lt; 1, dim, T &gt; val)</td></tr>
+<tr class="separator:a9de2bc75acf2f0999803a3318f28eec3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a44ed86ea93e3c59e0abf2ead9d10c6" id="r_a1a44ed86ea93e3c59e0abf2ead9d10c6"><td class="memItemLeft" align="right" valign="top"><a id="a1a44ed86ea93e3c59e0abf2ead9d10c6" name="a1a44ed86ea93e3c59e0abf2ead9d10c6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set_vector_gradient_term_LHS</b> (unsigned int global_variable_index, dealii::Tensor&lt; 2, dim, T &gt; grad)</td></tr>
+<tr class="separator:a1a44ed86ea93e3c59e0abf2ead9d10c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1994d601a7fdc13b5047b6f2e1e2988e" id="r_a1994d601a7fdc13b5047b6f2e1e2988e"><td class="memItemLeft" align="right" valign="top"><a id="a1994d601a7fdc13b5047b6f2e1e2988e" name="a1994d601a7fdc13b5047b6f2e1e2988e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>reinit_and_eval</b> (const std::vector&lt; dealii::LinearAlgebra::distributed::Vector&lt; double &gt; * &gt; &amp;src, unsigned int cell)</td></tr>
+<tr class="separator:a1994d601a7fdc13b5047b6f2e1e2988e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5921bff40c4026eca4027756c21a2d2" id="r_ae5921bff40c4026eca4027756c21a2d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableContainer.html#ae5921bff40c4026eca4027756c21a2d2">reinit_and_eval_change_in_solution</a> (const dealii::LinearAlgebra::distributed::Vector&lt; double &gt; &amp;src, unsigned int cell, unsigned int var_being_solved)</td></tr>
+<tr class="separator:ae5921bff40c4026eca4027756c21a2d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e7a4102c6327c0a1ed95edb5b620372" id="r_a7e7a4102c6327c0a1ed95edb5b620372"><td class="memItemLeft" align="right" valign="top"><a id="a7e7a4102c6327c0a1ed95edb5b620372" name="a7e7a4102c6327c0a1ed95edb5b620372"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>reinit</b> (unsigned int cell)</td></tr>
+<tr class="separator:a7e7a4102c6327c0a1ed95edb5b620372"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a9a613c0fc648dd0f936be875835347" id="r_a9a9a613c0fc648dd0f936be875835347"><td class="memItemLeft" align="right" valign="top"><a id="a9a9a613c0fc648dd0f936be875835347" name="a9a9a613c0fc648dd0f936be875835347"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>integrate_and_distribute</b> (std::vector&lt; dealii::LinearAlgebra::distributed::Vector&lt; double &gt; * &gt; &amp;dst)</td></tr>
+<tr class="separator:a9a9a613c0fc648dd0f936be875835347"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c61d1455156c7e7ec62b0421d0543cd" id="r_a9c61d1455156c7e7ec62b0421d0543cd"><td class="memItemLeft" align="right" valign="top"><a id="a9c61d1455156c7e7ec62b0421d0543cd" name="a9c61d1455156c7e7ec62b0421d0543cd"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>integrate_and_distribute_change_in_solution_LHS</b> (dealii::LinearAlgebra::distributed::Vector&lt; double &gt; &amp;dst, const unsigned int var_being_solved)</td></tr>
+<tr class="separator:a9c61d1455156c7e7ec62b0421d0543cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e6411cbed34de6a2a6272d45a89d217" id="r_a5e6411cbed34de6a2a6272d45a89d217"><td class="memItemLeft" align="right" valign="top"><a id="a5e6411cbed34de6a2a6272d45a89d217" name="a5e6411cbed34de6a2a6272d45a89d217"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>get_num_q_points</b> () const</td></tr>
+<tr class="separator:a5e6411cbed34de6a2a6272d45a89d217"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6f9a06c88513ed1227687eb3688deb1" id="r_ac6f9a06c88513ed1227687eb3688deb1"><td class="memItemLeft" align="right" valign="top"><a id="ac6f9a06c88513ed1227687eb3688deb1" name="ac6f9a06c88513ed1227687eb3688deb1"></a>
+dealii::Point&lt; dim, T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_q_point_location</b> () const</td></tr>
+<tr class="separator:ac6f9a06c88513ed1227687eb3688deb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a36b45a58aec54606f59b457803cae5c8" id="r_a36b45a58aec54606f59b457803cae5c8"><td class="memItemLeft" align="right" valign="top"><a id="a36b45a58aec54606f59b457803cae5c8" name="a36b45a58aec54606f59b457803cae5c8"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>q_point</b></td></tr>
+<tr class="separator:a36b45a58aec54606f59b457803cae5c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;int dim, int degree, typename number&gt;<br />
-class variableContainer&lt; dim, degree, number &gt;</div><p>This class permits the access of a subset of indexed fields and gives an error if any non-allowed fields are requested. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">dim</td><td>The number of dimensions in the problem. </td></tr>
-    <tr><td class="paramname">degree</td><td>The polynomial degree of the shape functions. </td></tr>
-    <tr><td class="paramname">number</td><td>Datatype to use for <code>dealii::VectorizedArray&lt;number&gt;</code>. Either double or float. </td></tr>
-  </table>
-  </dd>
-</dl>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/runner/work/phaseField/phaseField/include/core/<a class="el" href="variable__container_8h_source.html">variable_container.h</a></li>
-<li>/home/runner/work/phaseField/phaseField/src/core/<b>variable_container.cc</b></li>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae5921bff40c4026eca4027756c21a2d2" name="ae5921bff40c4026eca4027756c21a2d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5921bff40c4026eca4027756c21a2d2">&#9670;&#160;</a></span>reinit_and_eval_change_in_solution()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int dim, int degree, typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classvariableContainer.html">variableContainer</a>&lt; dim, degree, T &gt;::reinit_and_eval_change_in_solution </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::LinearAlgebra::distributed::Vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>cell</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>var_being_solved</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is specialized for the LHS where a change in solution is needed. The RHS method takes the src as a vector of dealii::LinearAlgebra::distributed::Vector&lt;double&gt;s. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>/home/runner/work/phaseField/phaseField/include/core/<a class="el" href="variableContainer_8h_source.html">variableContainer.h</a></li>
+<li>/home/runner/work/phaseField/phaseField/src/core/<b>variableContainer.cc</b></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

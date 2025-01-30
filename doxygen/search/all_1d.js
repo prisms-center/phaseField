@@ -1,19 +1,6 @@
 var searchData=
 [
-  ['_7ebasesolver_0',['~baseSolver',['../classbaseSolver.html#a9a096a42e2d93d2dd067fdd82e7dea04',1,'baseSolver']]],
-  ['_7eboundarycondition_1',['~boundaryCondition',['../classboundaryCondition.html#ac4b60624ec1dbc5e4a605ce5eacc8bf8',1,'boundaryCondition']]],
-  ['_7eboundaryparameters_2',['~boundaryParameters',['../classboundaryParameters.html#a5a1c535672770e6267aadb647b29db45',1,'boundaryParameters']]],
-  ['_7econditionalostreams_3',['~conditionalOStreams',['../classconditionalOStreams.html#ae9eafe0dc5354d6dce44d309eaf797dc',1,'conditionalOStreams']]],
-  ['_7eexplicitsolver_4',['~explicitSolver',['../classexplicitSolver.html#adf16562449828dfdd967f14f13b35da5',1,'explicitSolver']]],
-  ['_7egmgsolver_5',['~GMGSolver',['../classGMGSolver.html#ae3f84b8eafd81ecf8384674b610a445a',1,'GMGSolver']]],
-  ['_7eidentitysolver_6',['~identitySolver',['../classidentitySolver.html#a8b86fdadad993193d5e3c1d6d3593a94',1,'identitySolver']]],
-  ['_7einvmhandler_7',['~invmHandler',['../classinvmHandler.html#ab5004d1a4d81fb0c4a23b7806ba04cc7',1,'invmHandler']]],
-  ['_7elinearsolveparameters_8',['~linearSolveParameters',['../classlinearSolveParameters.html#a37717b94a1d1034fb6e8e8454400b5e6',1,'linearSolveParameters']]],
-  ['_7elinearsolverparameters_9',['~linearSolverParameters',['../classlinearSolverParameters.html#aafdf6d65fc9f3c75bae3096ad9ecc86a',1,'linearSolverParameters']]],
-  ['_7eoutputparameters_10',['~outputParameters',['../classoutputParameters.html#a7614e034f88ae0a7d86e26b07b4ee3ac',1,'outputParameters']]],
-  ['_7espatialdiscretization_11',['~spatialDiscretization',['../classspatialDiscretization.html#aa2d7504a788aa4ab51d814574f5fdec3',1,'spatialDiscretization']]],
-  ['_7etemporaldiscretization_12',['~temporalDiscretization',['../classtemporalDiscretization.html#a2bb2798842958c1c4030376880a699ae',1,'temporalDiscretization']]],
-  ['_7euserconstants_13',['~userConstants',['../classuserConstants.html#accf88006a6ea791995b7c8601b7f84f2',1,'userConstants']]],
-  ['_7euserinputparameters_14',['~userInputParameters',['../classuserInputParameters.html#ac7da91743b287de0513e170a9b5c3e01',1,'userInputParameters']]],
-  ['_7evariableattributeloader_15',['~variableAttributeLoader',['../classvariableAttributeLoader.html#a498f796b3f923e338ff5979f7bbd9644',1,'variableAttributeLoader']]]
+  ['x_0',['Binary Package (Mac OS X)',['../install_prereqs.html#autotoc_md45',1,'']]],
+  ['x_20linux_1',['Installing from Source (Mac OS X, Linux)',['../install_prereqs.html#autotoc_md48',1,'']]],
+  ['x_20linux_20windows_2',['Docker (Mac OS X, Linux, Windows)',['../install_prereqs.html#autotoc_md47',1,'']]]
 ];

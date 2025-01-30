@@ -1,19 +1,6 @@
 var searchData=
 [
-  ['check_5fkeyword_5fmatch_0',['check_keyword_match',['../classinputFileReader.html#af80fe9572970eb100c4f0046bf2c429f',1,'inputFileReader']]],
-  ['clear_1',['clear',['../classmatrixFreeOperator.html#a254c0d77863be5ac79d05bd2f382d58c',1,'matrixFreeOperator']]],
-  ['compute_5fboundary_5fconditions_2',['compute_boundary_conditions',['../classboundaryParameters.html#adff8ad8ed9478813221c7707cb2f0521',1,'boundaryParameters']]],
-  ['compute_5fdiagonal_3',['compute_diagonal',['../classmatrixFreeOperator.html#a9c3d9c4cd6ec0010aeff5d1a79020be4',1,'matrixFreeOperator']]],
-  ['compute_5fexplicit_5frhs_4',['compute_explicit_RHS',['../classmatrixFreeOperator.html#a5ee1cef6c744931a97fa6abb458dfd09',1,'matrixFreeOperator']]],
-  ['compute_5finvm_5',['compute_invm',['../classinvmHandler.html#ac0adde7d988528de73c7da45a2575c0e',1,'invmHandler']]],
-  ['compute_5fnonexplicit_5flhs_6',['compute_nonexplicit_LHS',['../classmatrixFreeOperator.html#a496e2a6abe508aecbb3ac1a2238932d8',1,'matrixFreeOperator']]],
-  ['compute_5fnonexplicit_5frhs_7',['compute_nonexplicit_RHS',['../classmatrixFreeOperator.html#a383d7e3870c4cc22b3dca261c494a3f3',1,'matrixFreeOperator']]],
-  ['compute_5foutput_5flist_8',['compute_output_list',['../classoutputParameters.html#aeb107fe4bb723a33e12aa8fb02dfd769',1,'outputParameters']]],
-  ['compute_5fresidual_9',['compute_residual',['../classmatrixFreeOperator.html#a0a00f5b32408c02e87c8fc9964f2849f',1,'matrixFreeOperator']]],
-  ['compute_5fsolver_5ftolerance_10',['compute_solver_tolerance',['../classbaseSolver.html#a1cd2e5cddf564a3f354f6b72491d33c9',1,'baseSolver']]],
-  ['conditionalostreams_11',['conditionalOStreams',['../classconditionalOStreams.html#ac724e2f4c59f68c0bd04f3938ecfb931',1,'conditionalOStreams']]],
-  ['constrainthandler_12',['constraintHandler',['../classconstraintHandler.html#a5ad27116656f72b52c5de5acfdfc031c',1,'constraintHandler']]],
-  ['construct_5fuser_5fconstant_13',['construct_user_constant',['../classuserConstants.html#a9780f186c8d697f6230ad58f90c75131',1,'userConstants']]],
-  ['criterion_5fto_5fstring_14',['criterion_to_string',['../classRefinementCriterion.html#a71a7928ea84bb196cf556cfcbe324692',1,'RefinementCriterion']]],
-  ['customnonuniformdirichlet_15',['customNonuniformDirichlet',['../classcustomNonuniformDirichlet.html#ad101ded3cffa7dd56b736c89172c216d',1,'customNonuniformDirichlet']]]
+  ['bin_0',['Bin',['../classBin.html#a4fb2da4b0fed3c96fa1089cdb1a6543f',1,'Bin']]],
+  ['body_1',['Body',['../classPRISMS_1_1Body.html#ad137698a65c3ae0793bc2a6d545bb810',1,'PRISMS::Body']]],
+  ['buildfields_2',['buildFields',['../classMatrixFreePDE.html#a784cf346a85baeb82d5c8fbed520bc0b',1,'MatrixFreePDE']]]
 ];
