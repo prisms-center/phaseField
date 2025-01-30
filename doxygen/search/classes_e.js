@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['simplifiedgrainmanipulator_0',['SimplifiedGrainManipulator',['../classSimplifiedGrainManipulator.html',1,'']]],
-  ['simplifiedgrainrepresentation_1',['SimplifiedGrainRepresentation',['../classSimplifiedGrainRepresentation.html',1,'']]],
-  ['solverparametersbase_2',['SolverParametersBase',['../classSolverParametersBase.html',1,'']]]
+  ['variableattributeloader_0',['variableAttributeLoader',['../classvariableAttributeLoader.html',1,'']]],
+  ['variableattributes_1',['variableAttributes',['../structvariableAttributes.html',1,'']]],
+  ['variablecontainer_2',['variableContainer',['../classvariableContainer.html',1,'']]]
 ];

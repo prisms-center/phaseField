@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['radius_0',['radius',['../classSimplifiedGrainRepresentation.html#a37bd32baa82c4a3c391197afff46b719',1,'SimplifiedGrainRepresentation']]]
+  ['tolerance_0',['tolerance',['../classbaseSolver.html#a83bb7207ad49ad07029aa1b02000c75c',1,'baseSolver']]]
 ];

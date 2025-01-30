@@ -92,6 +92,7 @@ $(document).ready(function(){initNavTree('classvariableAttributeLoader.html','')
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classvariableAttributeLoader-members.html">List of all members</a>  </div>
@@ -102,7 +103,7 @@ $(document).ready(function(){initNavTree('classvariableAttributeLoader.html','')
 <p>Class to manage the variable attributes that the user specifies.  
  <a href="classvariableAttributeLoader.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="variableAttributeLoader_8h_source.html">variableAttributeLoader.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="variable__attribute__loader_8h_source.html">variable_attribute_loader.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for variableAttributeLoader:</div>
 <div class="dyncontent">
@@ -113,6 +114,12 @@ Inheritance diagram for variableAttributeLoader:</div>
   </map>
 </div></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a071221f8db529cbe1ca8081c2a03530a" id="r_a071221f8db529cbe1ca8081c2a03530a"><td class="memItemLeft" align="right" valign="top"><a id="a071221f8db529cbe1ca8081c2a03530a" name="a071221f8db529cbe1ca8081c2a03530a"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>EvalFlags</b> = dealii::EvaluationFlags::EvaluationFlags</td></tr>
+<tr class="separator:a071221f8db529cbe1ca8081c2a03530a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a01c1fb95aff3b75dc75f251aa8ac3c2e" id="r_a01c1fb95aff3b75dc75f251aa8ac3c2e"><td class="memItemLeft" align="right" valign="top"><a id="a01c1fb95aff3b75dc75f251aa8ac3c2e" name="a01c1fb95aff3b75dc75f251aa8ac3c2e"></a>
@@ -144,58 +151,49 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a929cea4029a8a58111c481b5e8fe911a" id="r_a929cea4029a8a58111c481b5e8fe911a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a929cea4029a8a58111c481b5e8fe911a">loadPostProcessorVariableAttributes</a> ()</td></tr>
 <tr class="memdesc:a929cea4029a8a58111c481b5e8fe911a"><td class="mdescLeft">&#160;</td><td class="mdescRight">User-facing method where the postprocessing variable attributes are set.  <br /></td></tr>
 <tr class="separator:a929cea4029a8a58111c481b5e8fe911a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af526aac0e6b47da6ef23e9529dc766e1" id="r_af526aac0e6b47da6ef23e9529dc766e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#af526aac0e6b47da6ef23e9529dc766e1">set_variable_name</a> (const unsigned int &amp;index, const std::string &amp;name) const</td></tr>
-<tr class="memdesc:af526aac0e6b47da6ef23e9529dc766e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the name of the variable at <code>index</code> to <code>name</code>.  <br /></td></tr>
-<tr class="separator:af526aac0e6b47da6ef23e9529dc766e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1212f556f2bda71b0e8aca02f6ab137d" id="r_a1212f556f2bda71b0e8aca02f6ab137d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a1212f556f2bda71b0e8aca02f6ab137d">set_variable_type</a> (const unsigned int &amp;index, const fieldType &amp;var_type) const</td></tr>
-<tr class="memdesc:a1212f556f2bda71b0e8aca02f6ab137d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the field type of the variable at <code>index</code> to <code>var_type</code> where <code>var_type</code> can be <code>SCALAR</code> or <code>VECTOR</code>.  <br /></td></tr>
-<tr class="separator:a1212f556f2bda71b0e8aca02f6ab137d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91de587294b5cf78b794fd74f0a689c5" id="r_a91de587294b5cf78b794fd74f0a689c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a91de587294b5cf78b794fd74f0a689c5">set_variable_equation_type</a> (const unsigned int &amp;index, const PDEType &amp;var_eq_type) const</td></tr>
-<tr class="memdesc:a91de587294b5cf78b794fd74f0a689c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the PDE type of the variable at <code>index</code> to <code>var_eq_type</code> where <code>var_eq_type</code>can be <code>EXPLICIT_TIME_DEPENDENT</code>, <code>IMPLICIT_TIME_DEPENDENT</code>, <code>TIME_INDEPENDENT</code>, <code>AUXILIARY</code>.  <br /></td></tr>
-<tr class="separator:a91de587294b5cf78b794fd74f0a689c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afccf44c6b892033ca4ff66f65cc71a79" id="r_afccf44c6b892033ca4ff66f65cc71a79"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#afccf44c6b892033ca4ff66f65cc71a79">set_dependencies_value_term_RHS</a> (const unsigned int &amp;index, const std::string &amp;dependencies)</td></tr>
-<tr class="memdesc:afccf44c6b892033ca4ff66f65cc71a79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add dependencies for the value term of the RHS equation of the variable at <code>index</code>.  <br /></td></tr>
-<tr class="separator:afccf44c6b892033ca4ff66f65cc71a79"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a903217690c09ccfc9f9926dc56044039" id="r_a903217690c09ccfc9f9926dc56044039"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a903217690c09ccfc9f9926dc56044039">set_dependencies_gradient_term_RHS</a> (const unsigned int &amp;index, const std::string &amp;dependencies)</td></tr>
-<tr class="memdesc:a903217690c09ccfc9f9926dc56044039"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add dependencies for the gradient term of the RHS equation of the variable at <code>index</code>.  <br /></td></tr>
-<tr class="separator:a903217690c09ccfc9f9926dc56044039"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7838b2c2030dd7d5884824e4224a8ac0" id="r_a7838b2c2030dd7d5884824e4224a8ac0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a7838b2c2030dd7d5884824e4224a8ac0">set_dependencies_value_term_LHS</a> (const unsigned int &amp;index, const std::string &amp;dependencies) const</td></tr>
-<tr class="memdesc:a7838b2c2030dd7d5884824e4224a8ac0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add dependencies for the value term of the LHS equation of the variable at <code>index</code>.  <br /></td></tr>
-<tr class="separator:a7838b2c2030dd7d5884824e4224a8ac0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54da95069ad05d46dccb7e8e2d01177a" id="r_a54da95069ad05d46dccb7e8e2d01177a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a54da95069ad05d46dccb7e8e2d01177a">set_dependencies_gradient_term_LHS</a> (const unsigned int &amp;index, const std::string &amp;dependencies) const</td></tr>
-<tr class="memdesc:a54da95069ad05d46dccb7e8e2d01177a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add dependencies for the gradient term of the LHS equation of the variable at <code>index</code>.  <br /></td></tr>
-<tr class="separator:a54da95069ad05d46dccb7e8e2d01177a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8140101944800e99e2ceb73ff97b809d" id="r_a8140101944800e99e2ceb73ff97b809d"><td class="memTemplParams" colspan="2">template&lt;typename Iterable &gt; </td></tr>
-<tr class="memitem:a8140101944800e99e2ceb73ff97b809d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a8140101944800e99e2ceb73ff97b809d">insert_dependencies_value_term_RHS</a> (const unsigned int &amp;index, const Iterable &amp;dependencies)</td></tr>
-<tr class="memdesc:a8140101944800e99e2ceb73ff97b809d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert dependencies for the value term of the RHS equation of the variable at <code>index</code>.  <br /></td></tr>
-<tr class="separator:a8140101944800e99e2ceb73ff97b809d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2419731964cdad99e238d0f81018381" id="r_ac2419731964cdad99e238d0f81018381"><td class="memTemplParams" colspan="2">template&lt;typename Iterable &gt; </td></tr>
-<tr class="memitem:ac2419731964cdad99e238d0f81018381"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#ac2419731964cdad99e238d0f81018381">insert_dependencies_gradient_term_RHS</a> (const unsigned int &amp;index, const Iterable &amp;dependencies)</td></tr>
-<tr class="memdesc:ac2419731964cdad99e238d0f81018381"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert dependencies for the gradient term of the RHS equation of the variable at <code>index</code>.  <br /></td></tr>
-<tr class="separator:ac2419731964cdad99e238d0f81018381"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8dd08e890ca57f7433106796f20d4bcd" id="r_a8dd08e890ca57f7433106796f20d4bcd"><td class="memTemplParams" colspan="2">template&lt;typename Iterable &gt; </td></tr>
-<tr class="memitem:a8dd08e890ca57f7433106796f20d4bcd"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a8dd08e890ca57f7433106796f20d4bcd">insert_dependencies_value_term_LHS</a> (const unsigned int &amp;index, const Iterable &amp;dependencies) const</td></tr>
-<tr class="memdesc:a8dd08e890ca57f7433106796f20d4bcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert dependencies for the value term of the LHS equation of the variable at <code>index</code>.  <br /></td></tr>
-<tr class="separator:a8dd08e890ca57f7433106796f20d4bcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ce6993b306fe93b9084f2c1aa3a8cd6" id="r_a7ce6993b306fe93b9084f2c1aa3a8cd6"><td class="memTemplParams" colspan="2">template&lt;typename Iterable &gt; </td></tr>
-<tr class="memitem:a7ce6993b306fe93b9084f2c1aa3a8cd6"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a7ce6993b306fe93b9084f2c1aa3a8cd6">insert_dependencies_gradient_term_LHS</a> (const unsigned int &amp;index, const Iterable &amp;dependencies) const</td></tr>
-<tr class="memdesc:a7ce6993b306fe93b9084f2c1aa3a8cd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert dependencies for the gradient term of the LHS equation of the variable at <code>index</code>.  <br /></td></tr>
-<tr class="separator:a7ce6993b306fe93b9084f2c1aa3a8cd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab540fc04213fcdfcacc7b83ecbaad38" id="r_aab540fc04213fcdfcacc7b83ecbaad38"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#aab540fc04213fcdfcacc7b83ecbaad38">set_need_value_nucleation</a> (const unsigned int &amp;index, const bool &amp;flag) const</td></tr>
-<tr class="memdesc:aab540fc04213fcdfcacc7b83ecbaad38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag whether the variable at <code>index</code> is needed to calculate the nucleation probability.  <br /></td></tr>
-<tr class="separator:aab540fc04213fcdfcacc7b83ecbaad38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebaa8c5c2c9af1f9276d2ca7950731eb" id="r_aebaa8c5c2c9af1f9276d2ca7950731eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#aebaa8c5c2c9af1f9276d2ca7950731eb">set_allowed_to_nucleate</a> (const unsigned int &amp;index, const bool &amp;flag) const</td></tr>
-<tr class="memdesc:aebaa8c5c2c9af1f9276d2ca7950731eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag whether the variable at <code>index</code> is can have a nucleation event.  <br /></td></tr>
-<tr class="separator:aebaa8c5c2c9af1f9276d2ca7950731eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ae3680f130f93c1095e6bb7346fd247" id="r_a1ae3680f130f93c1095e6bb7346fd247"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a1ae3680f130f93c1095e6bb7346fd247">set_output_integral</a> (const unsigned int &amp;index, const bool &amp;flag) const</td></tr>
-<tr class="memdesc:a1ae3680f130f93c1095e6bb7346fd247"><td class="mdescLeft">&#160;</td><td class="mdescRight">(Postprocess only) Flag whether the postprocessing variable at <code>index</code> should have its domain integral calculated and output.  <br /></td></tr>
-<tr class="separator:a1ae3680f130f93c1095e6bb7346fd247"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acaa0920f53cd14d1fcdf18d2b133fe40" id="r_acaa0920f53cd14d1fcdf18d2b133fe40"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#acaa0920f53cd14d1fcdf18d2b133fe40">set_variable_name</a> (const uint &amp;index, const std::string &amp;name) const</td></tr>
+<tr class="memdesc:acaa0920f53cd14d1fcdf18d2b133fe40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the name of the variable at <code>index</code> to <code>name</code>.  <br /></td></tr>
+<tr class="separator:acaa0920f53cd14d1fcdf18d2b133fe40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3751d587fb95109ed6351348327790aa" id="r_a3751d587fb95109ed6351348327790aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a3751d587fb95109ed6351348327790aa">set_variable_type</a> (const uint &amp;index, const fieldType &amp;field_type) const</td></tr>
+<tr class="memdesc:a3751d587fb95109ed6351348327790aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the field type of the variable at <code>index</code> to <code>field_type</code> where <code>field_type</code> can be <code>SCALAR</code> or <code>VECTOR</code>.  <br /></td></tr>
+<tr class="separator:a3751d587fb95109ed6351348327790aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae114baaa9ce15129c14b4f0f122259ed" id="r_ae114baaa9ce15129c14b4f0f122259ed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#ae114baaa9ce15129c14b4f0f122259ed">set_variable_equation_type</a> (const uint &amp;index, const PDEType &amp;pde_type) const</td></tr>
+<tr class="memdesc:ae114baaa9ce15129c14b4f0f122259ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the PDE type of the variable at <code>index</code> to <code>pde_type</code> where <code>pde_type</code>can be <code>EXPLICIT_TIME_DEPENDENT</code>, <code>IMPLICIT_TIME_DEPENDENT</code>, <code>TIME_INDEPENDENT</code>, <code>AUXILIARY</code>.  <br /></td></tr>
+<tr class="separator:ae114baaa9ce15129c14b4f0f122259ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77be237ff664c70b4ebb394e112096e5" id="r_a77be237ff664c70b4ebb394e112096e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a77be237ff664c70b4ebb394e112096e5">set_dependencies_value_term_RHS</a> (const uint &amp;index, const std::string &amp;dependencies)</td></tr>
+<tr class="memdesc:a77be237ff664c70b4ebb394e112096e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add dependencies for the value term of the RHS equation of the variable at <code>index</code>.  <br /></td></tr>
+<tr class="separator:a77be237ff664c70b4ebb394e112096e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ab887cbcea1e550498d49b4fe6be23e" id="r_a3ab887cbcea1e550498d49b4fe6be23e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a3ab887cbcea1e550498d49b4fe6be23e">set_dependencies_gradient_term_RHS</a> (const uint &amp;index, const std::string &amp;dependencies)</td></tr>
+<tr class="memdesc:a3ab887cbcea1e550498d49b4fe6be23e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add dependencies for the gradient term of the RHS equation of the variable at <code>index</code>.  <br /></td></tr>
+<tr class="separator:a3ab887cbcea1e550498d49b4fe6be23e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada67b05259c26df6fd13fd5c599f13c4" id="r_ada67b05259c26df6fd13fd5c599f13c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#ada67b05259c26df6fd13fd5c599f13c4">set_dependencies_value_term_LHS</a> (const uint &amp;index, const std::string &amp;dependencies) const</td></tr>
+<tr class="memdesc:ada67b05259c26df6fd13fd5c599f13c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add dependencies for the value term of the LHS equation of the variable at <code>index</code>.  <br /></td></tr>
+<tr class="separator:ada67b05259c26df6fd13fd5c599f13c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a0e4357c30da7a7ba34dbdd1db07d9e" id="r_a3a0e4357c30da7a7ba34dbdd1db07d9e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a3a0e4357c30da7a7ba34dbdd1db07d9e">set_dependencies_gradient_term_LHS</a> (const uint &amp;index, const std::string &amp;dependencies) const</td></tr>
+<tr class="memdesc:a3a0e4357c30da7a7ba34dbdd1db07d9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add dependencies for the gradient term of the LHS equation of the variable at <code>index</code>.  <br /></td></tr>
+<tr class="separator:a3a0e4357c30da7a7ba34dbdd1db07d9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4e216d50c8c9478dfe1386e823d022d" id="r_af4e216d50c8c9478dfe1386e823d022d"><td class="memTemplParams" colspan="2">template&lt;typename Iterable &gt; </td></tr>
+<tr class="memitem:af4e216d50c8c9478dfe1386e823d022d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#af4e216d50c8c9478dfe1386e823d022d">insert_dependencies_value_term_RHS</a> (const uint &amp;index, const Iterable &amp;dependencies)</td></tr>
+<tr class="memdesc:af4e216d50c8c9478dfe1386e823d022d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert dependencies for the value term of the RHS equation of the variable at <code>index</code>.  <br /></td></tr>
+<tr class="separator:af4e216d50c8c9478dfe1386e823d022d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f1527ab4042cd9e2f2ee648d91f7c19" id="r_a4f1527ab4042cd9e2f2ee648d91f7c19"><td class="memTemplParams" colspan="2">template&lt;typename Iterable &gt; </td></tr>
+<tr class="memitem:a4f1527ab4042cd9e2f2ee648d91f7c19"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a4f1527ab4042cd9e2f2ee648d91f7c19">insert_dependencies_gradient_term_RHS</a> (const uint &amp;index, const Iterable &amp;dependencies)</td></tr>
+<tr class="memdesc:a4f1527ab4042cd9e2f2ee648d91f7c19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert dependencies for the gradient term of the RHS equation of the variable at <code>index</code>.  <br /></td></tr>
+<tr class="separator:a4f1527ab4042cd9e2f2ee648d91f7c19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0145cab432f4bf0e99495100bb9d6fb9" id="r_a0145cab432f4bf0e99495100bb9d6fb9"><td class="memTemplParams" colspan="2">template&lt;typename Iterable &gt; </td></tr>
+<tr class="memitem:a0145cab432f4bf0e99495100bb9d6fb9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a0145cab432f4bf0e99495100bb9d6fb9">insert_dependencies_value_term_LHS</a> (const uint &amp;index, const Iterable &amp;dependencies) const</td></tr>
+<tr class="memdesc:a0145cab432f4bf0e99495100bb9d6fb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert dependencies for the value term of the LHS equation of the variable at <code>index</code>.  <br /></td></tr>
+<tr class="separator:a0145cab432f4bf0e99495100bb9d6fb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4e93518b9ce15730fd2beab49a2308f" id="r_aa4e93518b9ce15730fd2beab49a2308f"><td class="memTemplParams" colspan="2">template&lt;typename Iterable &gt; </td></tr>
+<tr class="memitem:aa4e93518b9ce15730fd2beab49a2308f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#aa4e93518b9ce15730fd2beab49a2308f">insert_dependencies_gradient_term_LHS</a> (const uint &amp;index, const Iterable &amp;dependencies) const</td></tr>
+<tr class="memdesc:aa4e93518b9ce15730fd2beab49a2308f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert dependencies for the gradient term of the LHS equation of the variable at <code>index</code>.  <br /></td></tr>
+<tr class="separator:aa4e93518b9ce15730fd2beab49a2308f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class to manage the variable attributes that the user specifies. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a7ce6993b306fe93b9084f2c1aa3a8cd6" name="a7ce6993b306fe93b9084f2c1aa3a8cd6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ce6993b306fe93b9084f2c1aa3a8cd6">&#9670;&#160;</a></span>insert_dependencies_gradient_term_LHS()</h2>
+<a id="aa4e93518b9ce15730fd2beab49a2308f" name="aa4e93518b9ce15730fd2beab49a2308f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4e93518b9ce15730fd2beab49a2308f">&#9670;&#160;</a></span>insert_dependencies_gradient_term_LHS()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -208,7 +206,7 @@ template&lt;typename Iterable &gt; </div>
         <tr>
           <td class="memname">void variableAttributeLoader::insert_dependencies_gradient_term_LHS </td>
           <td>(</td>
-          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramtype">const uint &amp;&#160;</td>
           <td class="paramname"><em>index</em>, </td>
         </tr>
         <tr>
@@ -241,8 +239,8 @@ template&lt;typename Iterable &gt; </div>
 
 </div>
 </div>
-<a id="ac2419731964cdad99e238d0f81018381" name="ac2419731964cdad99e238d0f81018381"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac2419731964cdad99e238d0f81018381">&#9670;&#160;</a></span>insert_dependencies_gradient_term_RHS()</h2>
+<a id="a4f1527ab4042cd9e2f2ee648d91f7c19" name="a4f1527ab4042cd9e2f2ee648d91f7c19"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f1527ab4042cd9e2f2ee648d91f7c19">&#9670;&#160;</a></span>insert_dependencies_gradient_term_RHS()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -255,7 +253,7 @@ template&lt;typename Iterable &gt; </div>
         <tr>
           <td class="memname">void variableAttributeLoader::insert_dependencies_gradient_term_RHS </td>
           <td>(</td>
-          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramtype">const uint &amp;&#160;</td>
           <td class="paramname"><em>index</em>, </td>
         </tr>
         <tr>
@@ -288,8 +286,8 @@ template&lt;typename Iterable &gt; </div>
 
 </div>
 </div>
-<a id="a8dd08e890ca57f7433106796f20d4bcd" name="a8dd08e890ca57f7433106796f20d4bcd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8dd08e890ca57f7433106796f20d4bcd">&#9670;&#160;</a></span>insert_dependencies_value_term_LHS()</h2>
+<a id="a0145cab432f4bf0e99495100bb9d6fb9" name="a0145cab432f4bf0e99495100bb9d6fb9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0145cab432f4bf0e99495100bb9d6fb9">&#9670;&#160;</a></span>insert_dependencies_value_term_LHS()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -302,7 +300,7 @@ template&lt;typename Iterable &gt; </div>
         <tr>
           <td class="memname">void variableAttributeLoader::insert_dependencies_value_term_LHS </td>
           <td>(</td>
-          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramtype">const uint &amp;&#160;</td>
           <td class="paramname"><em>index</em>, </td>
         </tr>
         <tr>
@@ -335,8 +333,8 @@ template&lt;typename Iterable &gt; </div>
 
 </div>
 </div>
-<a id="a8140101944800e99e2ceb73ff97b809d" name="a8140101944800e99e2ceb73ff97b809d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8140101944800e99e2ceb73ff97b809d">&#9670;&#160;</a></span>insert_dependencies_value_term_RHS()</h2>
+<a id="af4e216d50c8c9478dfe1386e823d022d" name="af4e216d50c8c9478dfe1386e823d022d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4e216d50c8c9478dfe1386e823d022d">&#9670;&#160;</a></span>insert_dependencies_value_term_RHS()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -349,7 +347,7 @@ template&lt;typename Iterable &gt; </div>
         <tr>
           <td class="memname">void variableAttributeLoader::insert_dependencies_value_term_RHS </td>
           <td>(</td>
-          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramtype">const uint &amp;&#160;</td>
           <td class="paramname"><em>index</em>, </td>
         </tr>
         <tr>
@@ -440,53 +438,8 @@ template&lt;typename Iterable &gt; </div>
 
 </div>
 </div>
-<a id="aebaa8c5c2c9af1f9276d2ca7950731eb" name="aebaa8c5c2c9af1f9276d2ca7950731eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aebaa8c5c2c9af1f9276d2ca7950731eb">&#9670;&#160;</a></span>set_allowed_to_nucleate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void variableAttributeLoader::set_allowed_to_nucleate </td>
-          <td>(</td>
-          <td class="paramtype">const unsigned int &amp;&#160;</td>
-          <td class="paramname"><em>index</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const bool &amp;&#160;</td>
-          <td class="paramname"><em>flag</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Flag whether the variable at <code>index</code> is can have a nucleation event. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">index</td><td>Index of variable </td></tr>
-    <tr><td class="paramname">flag</td><td>true: variable can nucleate, false: variable can not nucleate. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a54da95069ad05d46dccb7e8e2d01177a" name="a54da95069ad05d46dccb7e8e2d01177a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a54da95069ad05d46dccb7e8e2d01177a">&#9670;&#160;</a></span>set_dependencies_gradient_term_LHS()</h2>
+<a id="a3a0e4357c30da7a7ba34dbdd1db07d9e" name="a3a0e4357c30da7a7ba34dbdd1db07d9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a0e4357c30da7a7ba34dbdd1db07d9e">&#9670;&#160;</a></span>set_dependencies_gradient_term_LHS()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -497,7 +450,7 @@ template&lt;typename Iterable &gt; </div>
         <tr>
           <td class="memname">void variableAttributeLoader::set_dependencies_gradient_term_LHS </td>
           <td>(</td>
-          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramtype">const uint &amp;&#160;</td>
           <td class="paramname"><em>index</em>, </td>
         </tr>
         <tr>
@@ -530,8 +483,8 @@ template&lt;typename Iterable &gt; </div>
 
 </div>
 </div>
-<a id="a903217690c09ccfc9f9926dc56044039" name="a903217690c09ccfc9f9926dc56044039"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a903217690c09ccfc9f9926dc56044039">&#9670;&#160;</a></span>set_dependencies_gradient_term_RHS()</h2>
+<a id="a3ab887cbcea1e550498d49b4fe6be23e" name="a3ab887cbcea1e550498d49b4fe6be23e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ab887cbcea1e550498d49b4fe6be23e">&#9670;&#160;</a></span>set_dependencies_gradient_term_RHS()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -542,7 +495,7 @@ template&lt;typename Iterable &gt; </div>
         <tr>
           <td class="memname">void variableAttributeLoader::set_dependencies_gradient_term_RHS </td>
           <td>(</td>
-          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramtype">const uint &amp;&#160;</td>
           <td class="paramname"><em>index</em>, </td>
         </tr>
         <tr>
@@ -575,8 +528,8 @@ template&lt;typename Iterable &gt; </div>
 
 </div>
 </div>
-<a id="a7838b2c2030dd7d5884824e4224a8ac0" name="a7838b2c2030dd7d5884824e4224a8ac0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7838b2c2030dd7d5884824e4224a8ac0">&#9670;&#160;</a></span>set_dependencies_value_term_LHS()</h2>
+<a id="ada67b05259c26df6fd13fd5c599f13c4" name="ada67b05259c26df6fd13fd5c599f13c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada67b05259c26df6fd13fd5c599f13c4">&#9670;&#160;</a></span>set_dependencies_value_term_LHS()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -587,7 +540,7 @@ template&lt;typename Iterable &gt; </div>
         <tr>
           <td class="memname">void variableAttributeLoader::set_dependencies_value_term_LHS </td>
           <td>(</td>
-          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramtype">const uint &amp;&#160;</td>
           <td class="paramname"><em>index</em>, </td>
         </tr>
         <tr>
@@ -620,8 +573,8 @@ template&lt;typename Iterable &gt; </div>
 
 </div>
 </div>
-<a id="afccf44c6b892033ca4ff66f65cc71a79" name="afccf44c6b892033ca4ff66f65cc71a79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afccf44c6b892033ca4ff66f65cc71a79">&#9670;&#160;</a></span>set_dependencies_value_term_RHS()</h2>
+<a id="a77be237ff664c70b4ebb394e112096e5" name="a77be237ff664c70b4ebb394e112096e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77be237ff664c70b4ebb394e112096e5">&#9670;&#160;</a></span>set_dependencies_value_term_RHS()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -632,7 +585,7 @@ template&lt;typename Iterable &gt; </div>
         <tr>
           <td class="memname">void variableAttributeLoader::set_dependencies_value_term_RHS </td>
           <td>(</td>
-          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramtype">const uint &amp;&#160;</td>
           <td class="paramname"><em>index</em>, </td>
         </tr>
         <tr>
@@ -665,98 +618,8 @@ template&lt;typename Iterable &gt; </div>
 
 </div>
 </div>
-<a id="aab540fc04213fcdfcacc7b83ecbaad38" name="aab540fc04213fcdfcacc7b83ecbaad38"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab540fc04213fcdfcacc7b83ecbaad38">&#9670;&#160;</a></span>set_need_value_nucleation()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void variableAttributeLoader::set_need_value_nucleation </td>
-          <td>(</td>
-          <td class="paramtype">const unsigned int &amp;&#160;</td>
-          <td class="paramname"><em>index</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const bool &amp;&#160;</td>
-          <td class="paramname"><em>flag</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Flag whether the variable at <code>index</code> is needed to calculate the nucleation probability. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">index</td><td>Index of variable </td></tr>
-    <tr><td class="paramname">flag</td><td>true: variable is needed, false: variable is not needed. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a1ae3680f130f93c1095e6bb7346fd247" name="a1ae3680f130f93c1095e6bb7346fd247"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1ae3680f130f93c1095e6bb7346fd247">&#9670;&#160;</a></span>set_output_integral()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void variableAttributeLoader::set_output_integral </td>
-          <td>(</td>
-          <td class="paramtype">const unsigned int &amp;&#160;</td>
-          <td class="paramname"><em>index</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const bool &amp;&#160;</td>
-          <td class="paramname"><em>flag</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>(Postprocess only) Flag whether the postprocessing variable at <code>index</code> should have its domain integral calculated and output. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">index</td><td>Index of variable </td></tr>
-    <tr><td class="paramname">flag</td><td>true: calculate and output the integral of the field over the domain, false: do nothing </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a91de587294b5cf78b794fd74f0a689c5" name="a91de587294b5cf78b794fd74f0a689c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a91de587294b5cf78b794fd74f0a689c5">&#9670;&#160;</a></span>set_variable_equation_type()</h2>
+<a id="ae114baaa9ce15129c14b4f0f122259ed" name="ae114baaa9ce15129c14b4f0f122259ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae114baaa9ce15129c14b4f0f122259ed">&#9670;&#160;</a></span>set_variable_equation_type()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -767,14 +630,14 @@ template&lt;typename Iterable &gt; </div>
         <tr>
           <td class="memname">void variableAttributeLoader::set_variable_equation_type </td>
           <td>(</td>
-          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramtype">const uint &amp;&#160;</td>
           <td class="paramname"><em>index</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const PDEType &amp;&#160;</td>
-          <td class="paramname"><em>var_eq_type</em>&#160;</td>
+          <td class="paramname"><em>pde_type</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -789,19 +652,19 @@ template&lt;typename Iterable &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Set the PDE type of the variable at <code>index</code> to <code>var_eq_type</code> where <code>var_eq_type</code>can be <code>EXPLICIT_TIME_DEPENDENT</code>, <code>IMPLICIT_TIME_DEPENDENT</code>, <code>TIME_INDEPENDENT</code>, <code>AUXILIARY</code>. </p>
+<p>Set the PDE type of the variable at <code>index</code> to <code>pde_type</code> where <code>pde_type</code>can be <code>EXPLICIT_TIME_DEPENDENT</code>, <code>IMPLICIT_TIME_DEPENDENT</code>, <code>TIME_INDEPENDENT</code>, <code>AUXILIARY</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">index</td><td>Index of variable </td></tr>
-    <tr><td class="paramname">var_eq_type</td><td>PDE type of variable at <code>index</code>. </td></tr>
+    <tr><td class="paramname">pde_type</td><td>PDE type of variable at <code>index</code>. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="af526aac0e6b47da6ef23e9529dc766e1" name="af526aac0e6b47da6ef23e9529dc766e1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af526aac0e6b47da6ef23e9529dc766e1">&#9670;&#160;</a></span>set_variable_name()</h2>
+<a id="acaa0920f53cd14d1fcdf18d2b133fe40" name="acaa0920f53cd14d1fcdf18d2b133fe40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acaa0920f53cd14d1fcdf18d2b133fe40">&#9670;&#160;</a></span>set_variable_name()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -812,7 +675,7 @@ template&lt;typename Iterable &gt; </div>
         <tr>
           <td class="memname">void variableAttributeLoader::set_variable_name </td>
           <td>(</td>
-          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramtype">const uint &amp;&#160;</td>
           <td class="paramname"><em>index</em>, </td>
         </tr>
         <tr>
@@ -845,8 +708,8 @@ template&lt;typename Iterable &gt; </div>
 
 </div>
 </div>
-<a id="a1212f556f2bda71b0e8aca02f6ab137d" name="a1212f556f2bda71b0e8aca02f6ab137d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1212f556f2bda71b0e8aca02f6ab137d">&#9670;&#160;</a></span>set_variable_type()</h2>
+<a id="a3751d587fb95109ed6351348327790aa" name="a3751d587fb95109ed6351348327790aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3751d587fb95109ed6351348327790aa">&#9670;&#160;</a></span>set_variable_type()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -857,14 +720,14 @@ template&lt;typename Iterable &gt; </div>
         <tr>
           <td class="memname">void variableAttributeLoader::set_variable_type </td>
           <td>(</td>
-          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramtype">const uint &amp;&#160;</td>
           <td class="paramname"><em>index</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const fieldType &amp;&#160;</td>
-          <td class="paramname"><em>var_type</em>&#160;</td>
+          <td class="paramname"><em>field_type</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -879,11 +742,11 @@ template&lt;typename Iterable &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Set the field type of the variable at <code>index</code> to <code>var_type</code> where <code>var_type</code> can be <code>SCALAR</code> or <code>VECTOR</code>. </p>
+<p>Set the field type of the variable at <code>index</code> to <code>field_type</code> where <code>field_type</code> can be <code>SCALAR</code> or <code>VECTOR</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">index</td><td>Index of variable </td></tr>
-    <tr><td class="paramname">var_type</td><td><a class="el" href="classField.html" title="Field class that handles the attributes of each field.">Field</a> type of variable at <code>index</code> (<code>SCALAR</code> or <code>VECTOR</code>). </td></tr>
+    <tr><td class="paramname">field_type</td><td>Field type of variable at <code>index</code> (<code>SCALAR</code> or <code>VECTOR</code>). </td></tr>
   </table>
   </dd>
 </dl>
@@ -891,8 +754,8 @@ template&lt;typename Iterable &gt; </div>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/runner/work/phaseField/phaseField/include/core/<a class="el" href="variableAttributeLoader_8h_source.html">variableAttributeLoader.h</a></li>
-<li>/home/runner/work/phaseField/phaseField/src/core/<b>variableAttributeLoader.cc</b></li>
+<li>/home/runner/work/phaseField/phaseField/include/core/<a class="el" href="variable__attribute__loader_8h_source.html">variable_attribute_loader.h</a></li>
+<li>/home/runner/work/phaseField/phaseField/src/core/<b>variable_attribute_loader.cc</b></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

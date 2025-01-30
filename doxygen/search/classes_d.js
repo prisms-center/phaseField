@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['refinementcriterion_0',['RefinementCriterion',['../classRefinementCriterion.html',1,'']]]
+  ['userconstants_0',['userConstants',['../classuserConstants.html',1,'']]],
+  ['userinputparameters_1',['userInputParameters',['../classuserInputParameters.html',1,'']]]
 ];

@@ -92,39 +92,47 @@ $(document).ready(function(){initNavTree('classRefinementCriterion.html',''); in
 
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classRefinementCriterion-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">RefinementCriterion Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="RefinementCriterion_8h_source.html">RefinementCriterion.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="refinement__criterion_8h_source.html">refinement_criterion.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a71a7928ea84bb196cf556cfcbe324692" id="r_a71a7928ea84bb196cf556cfcbe324692"><td class="memItemLeft" align="right" valign="top"><a id="a71a7928ea84bb196cf556cfcbe324692" name="a71a7928ea84bb196cf556cfcbe324692"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>criterion_to_string</b> () const</td></tr>
+<tr class="memdesc:a71a7928ea84bb196cf556cfcbe324692"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert refinement criterion type to string. <br /></td></tr>
+<tr class="separator:a71a7928ea84bb196cf556cfcbe324692"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a41a636a6d29f479a7ac05b3199dd619c" id="r_a41a636a6d29f479a7ac05b3199dd619c"><td class="memItemLeft" align="right" valign="top"><a id="a41a636a6d29f479a7ac05b3199dd619c" name="a41a636a6d29f479a7ac05b3199dd619c"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>variable_name</b></td></tr>
 <tr class="separator:a41a636a6d29f479a7ac05b3199dd619c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f95be8675397dcc20beca8e0acbe2f1" id="r_a3f95be8675397dcc20beca8e0acbe2f1"><td class="memItemLeft" align="right" valign="top"><a id="a3f95be8675397dcc20beca8e0acbe2f1" name="a3f95be8675397dcc20beca8e0acbe2f1"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>variable_index</b></td></tr>
-<tr class="separator:a3f95be8675397dcc20beca8e0acbe2f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93f6014fa55333967dcbf951870d2c66" id="r_a93f6014fa55333967dcbf951870d2c66"><td class="memItemLeft" align="right" valign="top"><a id="a93f6014fa55333967dcbf951870d2c66" name="a93f6014fa55333967dcbf951870d2c66"></a>
+uint&#160;</td><td class="memItemRight" valign="bottom"><b>variable_index</b> = 0</td></tr>
+<tr class="separator:a93f6014fa55333967dcbf951870d2c66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab4c5fa76903a631161a902b1ffb5dfe" id="r_aab4c5fa76903a631161a902b1ffb5dfe"><td class="memItemLeft" align="right" valign="top"><a id="aab4c5fa76903a631161a902b1ffb5dfe" name="aab4c5fa76903a631161a902b1ffb5dfe"></a>
-RefinementCriterionFlags&#160;</td><td class="memItemRight" valign="bottom"><b>criterion_type</b></td></tr>
+RefinementCriterionFlags&#160;</td><td class="memItemRight" valign="bottom"><b>criterion_type</b> = RefinementCriterionFlags::criterion_default</td></tr>
 <tr class="separator:aab4c5fa76903a631161a902b1ffb5dfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e45ddf143a75846ae6d4cdefbb384c6" id="r_a5e45ddf143a75846ae6d4cdefbb384c6"><td class="memItemLeft" align="right" valign="top"><a id="a5e45ddf143a75846ae6d4cdefbb384c6" name="a5e45ddf143a75846ae6d4cdefbb384c6"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>value_lower_bound</b></td></tr>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>value_lower_bound</b> = DBL_MAX</td></tr>
 <tr class="separator:a5e45ddf143a75846ae6d4cdefbb384c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8c5fcc5aacb1fc63c54da77f03e87f3" id="r_ab8c5fcc5aacb1fc63c54da77f03e87f3"><td class="memItemLeft" align="right" valign="top"><a id="ab8c5fcc5aacb1fc63c54da77f03e87f3" name="ab8c5fcc5aacb1fc63c54da77f03e87f3"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>value_upper_bound</b></td></tr>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>value_upper_bound</b> = DBL_MAX</td></tr>
 <tr class="separator:ab8c5fcc5aacb1fc63c54da77f03e87f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0d97f2d4ffffef01ed12f48e0ce6641" id="r_ad0d97f2d4ffffef01ed12f48e0ce6641"><td class="memItemLeft" align="right" valign="top"><a id="ad0d97f2d4ffffef01ed12f48e0ce6641" name="ad0d97f2d4ffffef01ed12f48e0ce6641"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>gradient_lower_bound</b></td></tr>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>gradient_lower_bound</b> = DBL_MAX</td></tr>
 <tr class="separator:ad0d97f2d4ffffef01ed12f48e0ce6641"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class holds information for a determining whether the mesh should be refined. </p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
-<li>/home/runner/work/phaseField/phaseField/include/core/refinement/<a class="el" href="RefinementCriterion_8h_source.html">RefinementCriterion.h</a></li>
+<li>/home/runner/work/phaseField/phaseField/include/core/refinement/<a class="el" href="refinement__criterion_8h_source.html">refinement_criterion.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

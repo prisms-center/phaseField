@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['orderparameterremapper_0',['OrderParameterRemapper',['../classOrderParameterRemapper.html',1,'']]]
+  ['refinementcriterion_0',['RefinementCriterion',['../classRefinementCriterion.html',1,'']]]
 ];

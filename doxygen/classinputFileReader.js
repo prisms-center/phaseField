@@ -1,6 +1,7 @@
 var classinputFileReader =
 [
     [ "inputFileReader", "classinputFileReader.html#a93ea5b9b49d0fa9962f88e199bd063ff", null ],
+    [ "check_keyword_match", "classinputFileReader.html#af80fe9572970eb100c4f0046bf2c429f", null ],
     [ "declare_BC_parameters", "classinputFileReader.html#ab88de098c86b49a75b258c479dc51c2e", null ],
     [ "declare_checkpoint_parameters", "classinputFileReader.html#a424a3df51463b861112b408e612e0ab0", null ],
     [ "declare_grain_loading_parameters", "classinputFileReader.html#aedb23075b39be240d268f9f5159e5260", null ],
@@ -15,5 +16,7 @@ var classinputFileReader =
     [ "declare_solver_parameters", "classinputFileReader.html#a8b286eacf630a67b27dc49feeee481ee", null ],
     [ "declare_time_discretization", "classinputFileReader.html#ab084f539bba80eb5af9569908bc34bc0", null ],
     [ "get_model_constant_names", "classinputFileReader.html#a93489007a8322e12bf25367697a676da", null ],
-    [ "get_subsection_entry_list", "classinputFileReader.html#aba81efe5e574333ea880fe6461988759", null ]
+    [ "get_subsection_entry_list", "classinputFileReader.html#aba81efe5e574333ea880fe6461988759", null ],
+    [ "parse_line", "classinputFileReader.html#a578f1601441f9c8bb6f3dcda8a918cfb", null ],
+    [ "strip_spaces", "classinputFileReader.html#a71e63d00d628829f4ce547969c7f547c", null ]
 ];

@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['coordinate_0',['Coordinate',['../classPRISMS_1_1Coordinate.html',1,'PRISMS']]],
-  ['customattributeloader_1',['customAttributeLoader',['../classcustomAttributeLoader.html',1,'']]]
+  ['explicitconstantsolver_0',['explicitConstantSolver',['../classexplicitConstantSolver.html',1,'']]],
+  ['explicitpostprocesssolver_1',['explicitPostprocessSolver',['../classexplicitPostprocessSolver.html',1,'']]],
+  ['explicitsolver_2',['explicitSolver',['../classexplicitSolver.html',1,'']]]
 ];

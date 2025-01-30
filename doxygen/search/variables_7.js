@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['pcout_0',['pcout',['../classMatrixFreePDE.html#a4c980b65b4311d177998ffae878768bc',1,'MatrixFreePDE']]]
+  ['residual_0',['residual',['../classbaseSolver.html#a51f3f807c682b38fc5333edc71a8b920',1,'baseSolver']]]
 ];

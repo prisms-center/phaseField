@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['adaptiverefinement_0',['AdaptiveRefinement',['../classAdaptiveRefinement.html',1,'']]]
+  ['basesolver_0',['baseSolver',['../classbaseSolver.html',1,'']]],
+  ['boundarycondition_1',['boundaryCondition',['../classboundaryCondition.html',1,'']]],
+  ['boundaryparameters_2',['boundaryParameters',['../classboundaryParameters.html',1,'']]]
 ];
