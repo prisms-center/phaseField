@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['grain_5fid_0',['grain_id',['../classSimplifiedGrainRepresentation.html#ac70b28fddf804f66049a91e307a8d3be',1,'SimplifiedGrainRepresentation']]]
+  ['mapping_0',['mapping',['../classbaseSolver.html#aec9b4056aa1d228a910b9e8dacef150c',1,'baseSolver']]]
 ];

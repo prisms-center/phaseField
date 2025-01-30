@@ -1,74 +1,47 @@
 var hierarchy =
 [
-    [ "AdaptiveRefinement< dim, degree >", "classAdaptiveRefinement.html", null ],
-    [ "Bin< T, Coordinate >", "classBin.html", null ],
-    [ "Bin< PRISMS::Interpolator< PRISMS::Coordinate, dim > *, PRISMS::Coordinate >", "classBin.html", null ],
-    [ "PRISMS::Body< Coordinate, DIM >", "classPRISMS_1_1Body.html", null ],
-    [ "PRISMS::Coordinate< dim >", "classPRISMS_1_1Coordinate.html", null ],
-    [ "Field< dim >", "classField.html", null ],
-    [ "FloodFiller< dim, degree >", "classFloodFiller.html", null ],
+    [ "dealii::MatrixFreeOperators:: Base", null, [
+      [ "matrixFreeOperator< dim, degree, number >", "classmatrixFreeOperator.html", null ]
+    ] ],
+    [ "baseSolver< dim, degree >", "classbaseSolver.html", [
+      [ "GMGSolver< dim, degree >", "classGMGSolver.html", null ],
+      [ "identitySolver< dim, degree >", "classidentitySolver.html", null ]
+    ] ],
+    [ "boundaryCondition< dim >", "classboundaryCondition.html", null ],
+    [ "boundaryParameters< dim >", "classboundaryParameters.html", null ],
+    [ "conditionalOStreams", "classconditionalOStreams.html", null ],
+    [ "constraintHandler< dim, field_type >", "classconstraintHandler.html", null ],
+    [ "customNonuniformDirichlet< dim >", "classcustomNonuniformDirichlet.html", null ],
+    [ "customPDE< dim, degree, number >", "classcustomPDE.html", null ],
+    [ "customPDE< dim, degree, double >", "classcustomPDE.html", null ],
+    [ "explicitConstantSolver", "classexplicitConstantSolver.html", null ],
+    [ "explicitPostprocessSolver", "classexplicitPostprocessSolver.html", null ],
+    [ "explicitSolver", "classexplicitSolver.html", null ],
     [ "dealii::Function", null, [
-      [ "InitialCondition< dim, degree >", "classInitialCondition.html", null ],
-      [ "InitialConditionPField< dim >", "classInitialConditionPField.html", null ],
-      [ "InitialConditionVector< dim, degree >", "classInitialConditionVector.html", null ],
-      [ "NonUniformDirichletBC< dim, degree >", "classNonUniformDirichletBC.html", null ],
-      [ "NonUniformDirichletBCVector< dim, degree >", "classNonUniformDirichletBCVector.html", null ],
-      [ "vectorBCFunction< dim >", "classvectorBCFunction.html", null ]
+      [ "nonuniformDirichlet< dim, field_type >", "classnonuniformDirichlet.html", null ]
     ] ],
-    [ "GrainSet< dim >", "classGrainSet.html", null ],
     [ "inputFileReader", "classinputFileReader.html", null ],
-    [ "PRISMS::Interpolator< Coordinate, DIM >", "classPRISMS_1_1Interpolator.html", null ],
-    [ "PRISMS::Interpolator< Coordinate, 2 >", "classPRISMS_1_1Interpolator.html", [
-      [ "PRISMS::QuadValues< Coordinate >", "classPRISMS_1_1QuadValues.html", null ]
-    ] ],
-    [ "PRISMS::Interpolator< Coordinate, 3 >", "classPRISMS_1_1Interpolator.html", [
-      [ "PRISMS::HexahedronValues< Coordinate >", "classPRISMS_1_1HexahedronValues.html", null ]
-    ] ],
-    [ "PRISMS::Mesh< Coordinate, dim >", "classPRISMS_1_1Mesh.html", null ],
-    [ "PRISMS::Mesh< PRISMS::Coordinate, DIM >", "classPRISMS_1_1Mesh.html", null ],
-    [ "nucleationParameters< dim >", "classnucleationParameters.html", null ],
-    [ "nucleus< dim >", "structnucleus.html", null ],
-    [ "OrderParameterRemapper< dim >", "classOrderParameterRemapper.html", null ],
-    [ "parallelNucleationList< dim >", "classparallelNucleationList.html", null ],
-    [ "ParseCommandLineOpts", "classParseCommandLineOpts.html", null ],
-    [ "PRISMS::PFuncBase< VarContainer, OutType >", "classPRISMS_1_1PFuncBase.html", null ],
-    [ "PRISMS::PFuncBase< Coordinate, FieldType >", "classPRISMS_1_1PFuncBase.html", [
-      [ "PRISMS::PField< Coordinate, FieldType, DIM >", "classPRISMS_1_1PField.html", null ]
-    ] ],
-    [ "PRISMS::PFuncBase< std::vector< PRISMS::Coordinate< 2 > >, double >", "classPRISMS_1_1PFuncBase.html", [
-      [ "PRISMS::Quad", "classPRISMS_1_1Quad.html", null ]
-    ] ],
-    [ "PRISMS::PFuncBase< std::vector< PRISMS::Coordinate< 3 > >, double >", "classPRISMS_1_1PFuncBase.html", [
-      [ "PRISMS::Hexahedron", "classPRISMS_1_1Hexahedron.html", null ]
-    ] ],
-    [ "PRISMS::PFuncBase< std::vector< PRISMS::Coordinate< DIM > >, double >", "classPRISMS_1_1PFuncBase.html", null ],
-    [ "PNDArray< OutType >", "classPNDArray.html", null ],
-    [ "PNDArray< std::vector< PRISMS::Interpolator< PRISMS::Coordinate, dim > * > >", "classPNDArray.html", null ],
-    [ "PNDArray< std::vector< T > >", "classPNDArray.html", null ],
-    [ "PRISMS::PSimpleBase< VarContainer, OutType >", "classPRISMS_1_1PSimpleBase.html", null ],
-    [ "PRISMS::PSimpleBase< std::vector< PRISMS::Coordinate< 2 > >, double >", "classPRISMS_1_1PSimpleBase.html", [
-      [ "PRISMS::Quad_f", "classPRISMS_1_1Quad__f.html", null ]
-    ] ],
-    [ "PRISMS::PSimpleBase< std::vector< PRISMS::Coordinate< 3 > >, double >", "classPRISMS_1_1PSimpleBase.html", [
-      [ "PRISMS::Hexahedron_f", "classPRISMS_1_1Hexahedron__f.html", null ]
-    ] ],
+    [ "invmHandler< dim, degree >", "classinvmHandler.html", null ],
+    [ "linearSolveParameters", "classlinearSolveParameters.html", null ],
+    [ "linearSolverParameters", "classlinearSolverParameters.html", null ],
+    [ "nonexplicitAuxiliarySolves", "classnonexplicitAuxiliarySolves.html", null ],
+    [ "nonexplicitCoNonlinearSolver", "classnonexplicitCoNonlinearSolver.html", null ],
+    [ "nonexplicitLinearSolver", "classnonexplicitLinearSolver.html", null ],
+    [ "nonexplicitSelfNonlinearSolver", "classnonexplicitSelfNonlinearSolver.html", null ],
+    [ "outputParameters", "classoutputParameters.html", null ],
+    [ "pairHash", "structpairHash.html", null ],
+    [ "parseCMDOptions", "classparseCMDOptions.html", null ],
+    [ "PDEProblem< dim, degree >", "classPDEProblem.html", null ],
     [ "RefinementCriterion", "classRefinementCriterion.html", null ],
-    [ "SimplifiedGrainManipulator< dim >", "classSimplifiedGrainManipulator.html", null ],
-    [ "SimplifiedGrainRepresentation< dim >", "classSimplifiedGrainRepresentation.html", null ],
-    [ "SolverParametersBase", "classSolverParametersBase.html", [
-      [ "LinearSolverParameters", "classLinearSolverParameters.html", null ],
-      [ "NonlinearSolverParameters", "classNonlinearSolverParameters.html", null ]
-    ] ],
-    [ "Subscriptor", null, [
-      [ "MatrixFreePDE< dim, degree >", "classMatrixFreePDE.html", null ]
-    ] ],
+    [ "solutionOutput< dim >", "classsolutionOutput.html", null ],
+    [ "spatialDiscretization< dim >", "classspatialDiscretization.html", null ],
+    [ "temporalDiscretization", "classtemporalDiscretization.html", null ],
+    [ "triangulationHandler< dim >", "classtriangulationHandler.html", null ],
+    [ "userConstants< dim >", "classuserConstants.html", null ],
     [ "userInputParameters< dim >", "classuserInputParameters.html", null ],
-    [ "varBCs< dim >", "classvarBCs.html", null ],
-    [ "variable_info", "structvariable__info.html", null ],
     [ "variableAttributeLoader", "classvariableAttributeLoader.html", [
       [ "customAttributeLoader", "classcustomAttributeLoader.html", null ]
     ] ],
     [ "variableAttributes", "structvariableAttributes.html", null ],
-    [ "variableContainer< dim, degree, T >", "classvariableContainer.html", null ],
-    [ "variableValueContainer", "classvariableValueContainer.html", null ]
+    [ "variableContainer< dim, degree, number >", "classvariableContainer.html", null ]
 ];

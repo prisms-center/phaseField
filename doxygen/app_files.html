@@ -487,7 +487,7 @@ nucleation.cc</h1>
 <div class="line">}</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md13"></a>
 customPDE.h</h1>
-<p>The final file in each application folder that users often need to change is customPDE.h. This file contains the declarations for all of the functions and variables specific to the application. In C++ terminology, it is the declaration for the customPDE class, which is a subclass of <a class="el" href="classMatrixFreePDE.html" title="This is the abstract base class for the matrix free implementation of parabolic and elliptic BVP&#39;s,...">MatrixFreePDE</a>. For most users, the relevant section is labeled as ''Model constants specific to this subclass'', which is where the model constants from parameters.in are extracted from the <code>userInputs</code> object. There is a separate function to extract constants of each type. These are:</p>
+<p>The final file in each application folder that users often need to change is customPDE.h. This file contains the declarations for all of the functions and variables specific to the application. In C++ terminology, it is the declaration for the <a class="el" href="classcustomPDE.html">customPDE</a> class, which is a subclass of MatrixFreePDE. For most users, the relevant section is labeled as ''Model constants specific to this subclass'', which is where the model constants from parameters.in are extracted from the <code>userInputs</code> object. There is a separate function to extract constants of each type. These are:</p>
 <ul>
 <li>get_model_constant_double</li>
 <li>get_model_constant_int</li>
@@ -581,7 +581,7 @@ customPDE.h</h1>
 <div class="line"> </div>
 <div class="line">};</div>
 </div><!-- fragment --><p>This file can also be used to declare new member functions for the application. One example of this is the seedNucleus function in the nucleationModel application.</p>
-<p>Furthermore, for advanced users, the customPDE class can be used to override <a class="el" href="classMatrixFreePDE.html" title="This is the abstract base class for the matrix free implementation of parabolic and elliptic BVP&#39;s,...">MatrixFreePDE</a> functions from the core PRISMS-PF library. One example of this is in the CHiMaD_benchmark6b application, where the makeTriangulation function is overridden to create a non-square mesh.</p>
+<p>Furthermore, for advanced users, the <a class="el" href="classcustomPDE.html">customPDE</a> class can be used to override MatrixFreePDE functions from the core PRISMS-PF library. One example of this is in the CHiMaD_benchmark6b application, where the makeTriangulation function is overridden to create a non-square mesh.</p>
 <h1><a class="anchor" id="autotoc_md14"></a>
 main.cc</h1>
 <p>The final C++ file in the application directory is the main.cc file. This file controls the overall flow of the code and is unlikely to be modified by most users. For all of the example applications, main.cc is identical. One situation where a user may want to modify 'main.cc' is if they wanted to run several simulations with different parameter sets for one execution of the code. </p>
