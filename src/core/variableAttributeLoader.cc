@@ -68,42 +68,41 @@ variableAttributeLoader::get_pp_attributes() const
 // Methods to set the various variable attributes
 void
 variableAttributeLoader::set_variable_name(const unsigned int &index,
-                                           const std::string  &name) const
+                                           const std::string  &name)
 {
   (*relevant_attributes)[index].name = name;
 }
 
 void
 variableAttributeLoader::set_variable_type(const unsigned int &index,
-                                           const fieldType    &var_type) const
+                                           const fieldType    &var_type)
 {
   (*relevant_attributes)[index].var_type = var_type;
 }
 
 void
 variableAttributeLoader::set_variable_equation_type(const unsigned int &index,
-                                                    const PDEType      &var_eq_type) const
+                                                    const PDEType      &var_eq_type)
 {
   (*relevant_attributes)[index].eq_type = var_eq_type;
 }
 
 void
 variableAttributeLoader::set_need_value_nucleation(const unsigned int &index,
-                                                   const bool         &flag) const
+                                                   const bool         &flag)
 {
   (*relevant_attributes)[index].need_value_nucleation = flag;
 }
 
 void
 variableAttributeLoader::set_allowed_to_nucleate(const unsigned int &index,
-                                                 const bool         &flag) const
+                                                 const bool         &flag)
 {
   (*relevant_attributes)[index].nucleating_variable = flag;
 }
 
 void
-variableAttributeLoader::set_output_integral(const unsigned int &index,
-                                             const bool         &flag) const
+variableAttributeLoader::set_output_integral(const unsigned int &index, const bool &flag)
 {
   (*relevant_attributes)[index].output_integral = flag;
   (*relevant_attributes)[index].calc_integral   = flag;
@@ -129,9 +128,8 @@ variableAttributeLoader::set_dependencies_gradient_term_RHS(
 }
 
 void
-variableAttributeLoader::set_dependencies_value_term_LHS(
-  const unsigned int &index,
-  const std::string  &dependencies) const
+variableAttributeLoader::set_dependencies_value_term_LHS(const unsigned int &index,
+                                                         const std::string  &dependencies)
 {
   std::vector<std::string> dependencies_set =
     dealii::Utilities::split_string_list(strip_whitespace(dependencies));
@@ -141,7 +139,7 @@ variableAttributeLoader::set_dependencies_value_term_LHS(
 void
 variableAttributeLoader::set_dependencies_gradient_term_LHS(
   const unsigned int &index,
-  const std::string  &dependencies) const
+  const std::string  &dependencies)
 {
   std::vector<std::string> dependencies_set =
     dealii::Utilities::split_string_list(strip_whitespace(dependencies));
@@ -189,9 +187,8 @@ variableAttributeLoader::insert_dependencies_gradient_term_RHS(
 
 template <typename Iterable>
 void
-variableAttributeLoader::insert_dependencies_value_term_LHS(
-  const unsigned int &index,
-  const Iterable     &dependencies) const
+variableAttributeLoader::insert_dependencies_value_term_LHS(const unsigned int &index,
+                                                            const Iterable &dependencies)
 {
   (*relevant_attributes)[index].dependencies_value_LHS.insert(dependencies.begin(),
                                                               dependencies.end());
@@ -201,7 +198,7 @@ template <typename Iterable>
 void
 variableAttributeLoader::insert_dependencies_gradient_term_LHS(
   const unsigned int &index,
-  const Iterable     &dependencies) const
+  const Iterable     &dependencies)
 {
   (*relevant_attributes)[index].dependencies_gradient_LHS.insert(dependencies.begin(),
                                                                  dependencies.end());
@@ -380,3 +377,55 @@ variableAttributeLoader::strip_whitespace(const std::string &_text)
   text.erase(std::remove(text.begin(), text.end(), ' '), text.end());
   return text;
 }
+
+// Template instantiations
+template void
+variableAttributeLoader::insert_dependencies_value_term_RHS<std::vector<std::string>>(
+  const unsigned int             &index,
+  const std::vector<std::string> &dependencies);
+template void
+variableAttributeLoader::insert_dependencies_gradient_term_RHS<std::vector<std::string>>(
+  const unsigned int             &index,
+  const std::vector<std::string> &dependencies);
+template void
+variableAttributeLoader::insert_dependencies_value_term_LHS<std::vector<std::string>>(
+  const unsigned int             &index,
+  const std::vector<std::string> &dependencies);
+template void
+variableAttributeLoader::insert_dependencies_gradient_term_LHS<std::vector<std::string>>(
+  const unsigned int             &index,
+  const std::vector<std::string> &dependencies);
+
+template void
+variableAttributeLoader::insert_dependencies_value_term_RHS<std::set<std::string>>(
+  const unsigned int          &index,
+  const std::set<std::string> &dependencies);
+template void
+variableAttributeLoader::insert_dependencies_gradient_term_RHS<std::set<std::string>>(
+  const unsigned int          &index,
+  const std::set<std::string> &dependencies);
+template void
+variableAttributeLoader::insert_dependencies_value_term_LHS<std::set<std::string>>(
+  const unsigned int          &index,
+  const std::set<std::string> &dependencies);
+template void
+variableAttributeLoader::insert_dependencies_gradient_term_LHS<std::set<std::string>>(
+  const unsigned int          &index,
+  const std::set<std::string> &dependencies);
+
+template void
+variableAttributeLoader::insert_dependencies_value_term_RHS<std::list<std::string>>(
+  const unsigned int           &index,
+  const std::list<std::string> &dependencies);
+template void
+variableAttributeLoader::insert_dependencies_gradient_term_RHS<std::list<std::string>>(
+  const unsigned int           &index,
+  const std::list<std::string> &dependencies);
+template void
+variableAttributeLoader::insert_dependencies_value_term_LHS<std::list<std::string>>(
+  const unsigned int           &index,
+  const std::list<std::string> &dependencies);
+template void
+variableAttributeLoader::insert_dependencies_gradient_term_LHS<std::list<std::string>>(
+  const unsigned int           &index,
+  const std::list<std::string> &dependencies);
