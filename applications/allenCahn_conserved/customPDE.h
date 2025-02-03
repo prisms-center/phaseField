@@ -1,3 +1,6 @@
+//SPDX-FileCopyrightText: © 2025 PRISMS Phase Field Laboratory at the University of Michigan <prisms-pf@umich.edu>
+//SPDX-License-Identifier: GNU Lesser General Public Version 2.1
+
 #include <core/matrixFreePDE.h>
 
 using namespace dealii;
@@ -123,7 +126,8 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
 
   if (this->currentIncrement % userInputs.skip_print_steps == 0)
     {
-      snprintf(buffer, sizeof(buffer), "Integrated mu is %12.6e\n", integrated_mu);
+      snprintf(buffer, sizeof(buffer), "Integrated mu is %12.6e
+", integrated_mu);
       this->pcout << buffer;
     }
 
@@ -155,7 +159,8 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
               snprintf(buffer,
                        sizeof(buffer),
                        "field '%2s' [explicit solve]: current solution: "
-                       "%12.6e, current residual:%12.6e\n",
+                       "%12.6e, current residual:%12.6e
+",
                        this->fields[fieldIndex].name.c_str(),
                        solution_L2_norm,
                        this->residualSet[fieldIndex]->l2_norm());
@@ -165,7 +170,9 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                 {
                   snprintf(buffer,
                            sizeof(buffer),
-                           "ERROR: field '%s' solution is NAN. exiting.\n\n",
+                           "ERROR: field '%s' solution is NAN. exiting.
+
+",
                            this->fields[fieldIndex].name.c_str());
                   this->pcout << buffer;
                   exit(-1);
@@ -209,7 +216,8 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                       snprintf(buffer,
                                sizeof(buffer),
                                "field '%2s' [nonlinear solve]: current "
-                               "solution: %12.6e, current residual:%12.6e\n",
+                               "solution: %12.6e, current residual:%12.6e
+",
                                this->fields[fieldIndex].name.c_str(),
                                this->solutionSet[fieldIndex]->l2_norm(),
                                this->residualSet[fieldIndex]->l2_norm());
@@ -252,7 +260,8 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                           snprintf(buffer,
                                    sizeof(buffer),
                                    "field '%2s' [auxiliary solve]: current solution: "
-                                   "%12.6e, current residual:%12.6e\n",
+                                   "%12.6e, current residual:%12.6e
+",
                                    this->fields[fieldIndex].name.c_str(),
                                    this->solutionSet[fieldIndex]->l2_norm(),
                                    this->residualSet[fieldIndex]->l2_norm());
@@ -314,7 +323,9 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                 {
                   snprintf(buffer,
                            sizeof(buffer),
-                           "ERROR: field '%s' solution is NAN. exiting.\n\n",
+                           "ERROR: field '%s' solution is NAN. exiting.
+
+",
                            this->fields[fieldIndex].name.c_str());
                   this->pcout << buffer;
                   exit(-1);
@@ -327,7 +338,8 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
 
   if (this->currentIncrement % userInputs.skip_print_steps == 0)
     {
-      this->pcout << "wall time: " << time.wall_time() << "s\n";
+      this->pcout << "wall time: " << time.wall_time() << "s
+";
     }
   // log time
   this->computing_timer.leave_subsection("matrixFreePDE: solveIncrements");
