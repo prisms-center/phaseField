@@ -114,12 +114,14 @@ invmHandler<dim, degree>::invmHandler(const AttributesList &_variable_attributes
 {
   for (const auto &[index, variable] : variable_attributes)
     {
-      if (variable.field_type == fieldType::SCALAR && !scalar_needed)
+      if (variable.field_type == fieldType::SCALAR && !scalar_needed &&
+          variable.pde_type == PDEType::EXPLICIT_TIME_DEPENDENT)
         {
           scalar_needed = true;
           scalar_index  = index;
         }
-      if (variable.field_type == fieldType::VECTOR && !vector_needed)
+      if (variable.field_type == fieldType::VECTOR && !vector_needed &&
+          variable.pde_type == PDEType::EXPLICIT_TIME_DEPENDENT)
         {
           vector_needed = true;
           vector_index  = index;
@@ -206,7 +208,8 @@ invmHandler<dim, degree>::get_invm(const uint &index)
       Assert(scalar_needed,
              dealii::ExcMessage(
                "The invm for scalar fields is marked as not needed. Make sure the "
-               "variable attributes correspond with the provided index."));
+               "variable attributes correspond with the provided index. Additionally, "
+               "the invm is only necessary for explicit fields."));
       Assert(invm_scalar.size() == 0,
              dealii::ExcMessage("The scalar invm has size 0. Please make sure to call "
                                 "compute_invm() prior to calling the getter function."));
@@ -218,7 +221,8 @@ invmHandler<dim, degree>::get_invm(const uint &index)
       Assert(vector_needed,
              dealii::ExcMessage(
                "The invm for vector fields is marked as not needed. Make sure the "
-               "variable attributes correspond with the provided index."));
+               "variable attributes correspond with the provided index. Additionally, "
+               "the invm is only necessary for explicit fields."));
       Assert(invm_vector.size() == 0,
              dealii::ExcMessage("The vector invm has size 0. Please make sure to call "
                                 "compute_invm() prior to calling the getter function."));
