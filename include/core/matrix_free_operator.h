@@ -11,7 +11,7 @@
 #include <core/variable_container.h>
 
 /**
- * \brief This is the abstract base class for the matrix free implementation of some PDE.
+ * \brief This is the abstract base class for the matrix-free implementation of some PDE.
  *
  * \tparam dim The number of dimensions in the problem.
  * \tparam degree The polynomial degree of the shape functions.

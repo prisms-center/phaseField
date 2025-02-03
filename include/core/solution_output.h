@@ -5,6 +5,8 @@
 #include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/numerics/data_out.h>
 
+#include <string>
+
 /**
  * \brief Class that outputs a passed solution to vtu, vtk, or pvtu
  */
@@ -17,7 +19,9 @@ public:
    */
   solutionOutput(const dealii::LinearAlgebra::distributed::Vector<double> &solution,
                  const dealii::DoFHandler<dim>                            &dof_handler,
-                 const uint                                               &degree);
+                 const uint                                               &degree,
+                 const std::string                                        &name,
+                 const uint                                               &increment);
 
 private:
 };
@@ -26,13 +30,15 @@ template <int dim>
 solutionOutput<dim>::solutionOutput(
   const dealii::LinearAlgebra::distributed::Vector<double> &solution,
   const dealii::DoFHandler<dim>                            &dof_handler,
-  const uint                                               &degree)
+  const uint                                               &degree,
+  const std::string                                        &name,
+  const uint                                               &increment)
 {
   // Init data out
   dealii::DataOut<dim> data_out;
 
   // Add data vector
-  data_out.add_data_vector(dof_handler, solution, "solution");
+  data_out.add_data_vector(dof_handler, solution, name);
 
   // Build patches to linearly interpolate from higher order element degrees. Note that
   // this essentially converts the element to an equal amount of subdivisions in the
@@ -44,7 +50,7 @@ solutionOutput<dim>::solutionOutput(
   dealii::DataOutBase::VtkFlags flags;
   flags.compression_level = dealii::DataOutBase::CompressionLevel::best_speed;
   data_out.set_flags(flags);
-  data_out.write_vtu_with_pvtu_record("./", "solution", 0, MPI_COMM_WORLD, 3);
+  data_out.write_vtu_with_pvtu_record("./", name, increment, MPI_COMM_WORLD, 3);
 }
 
 #endif

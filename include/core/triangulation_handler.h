@@ -26,7 +26,7 @@ public:
   /**
    * \brief Constructor.
    */
-  triangulationHandler();
+  triangulationHandler(const userInputParameters<dim> &_user_inputs);
 
   /**
    * \brief Getter function for triangulation (constant reference).
@@ -44,7 +44,7 @@ public:
    * \brief Generate mesh.
    */
   void
-  generate_mesh(const userInputParameters<dim> &user_inputs);
+  generate_mesh();
 
   /**
    * \brief Export triangulation to vtk.
@@ -58,19 +58,29 @@ private:
    * specified boundary conditions.
    */
   void
-  mark_boundaries(const userInputParameters<dim> &user_inputs) const;
+  mark_boundaries() const;
 
   /**
    * \brief Mark certain faces of the triangulation periodic.
    */
   void
-  mark_periodic(const userInputParameters<dim> &user_inputs);
+  mark_periodic();
 
+  /**
+   * \brief User-inputs.
+   */
+  const userInputParameters<dim> &user_inputs;
+
+  /**
+   * \brief Triangulation.
+   */
   std::unique_ptr<Triangulation> triangulation;
 };
 
 template <int dim>
-triangulationHandler<dim>::triangulationHandler()
+triangulationHandler<dim>::triangulationHandler(
+  const userInputParameters<dim> &_user_inputs)
+  : user_inputs(_user_inputs)
 {
   if constexpr (dim == 1)
     {
@@ -102,7 +112,7 @@ triangulationHandler<dim>::get_n_global_levels() const
 
 template <int dim>
 void
-triangulationHandler<dim>::generate_mesh(const userInputParameters<dim> &user_inputs)
+triangulationHandler<dim>::generate_mesh()
 {
   // Generate rectangle
   dealii::GridGenerator::subdivided_hyper_rectangle(
@@ -113,10 +123,10 @@ triangulationHandler<dim>::generate_mesh(const userInputParameters<dim> &user_in
 
   // Mark boundaries. This is done before global refinement to reduce the number of cells
   // we have to loop through.
-  mark_boundaries(user_inputs);
+  mark_boundaries();
 
   // Mark periodicity
-  mark_periodic(user_inputs);
+  mark_periodic();
 
   // Output triangulation to vtk if in debug mode
 #ifdef DEBUG
@@ -139,8 +149,7 @@ triangulationHandler<dim>::export_triangulation_as_vtk(const std::string &filena
 
 template <int dim>
 void
-triangulationHandler<dim>::mark_boundaries(
-  const userInputParameters<dim> &user_inputs) const
+triangulationHandler<dim>::mark_boundaries() const
 {
   double tolerance = 1e-12;
 
@@ -173,7 +182,7 @@ triangulationHandler<dim>::mark_boundaries(
 
 template <int dim>
 void
-triangulationHandler<dim>::mark_periodic(const userInputParameters<dim> &user_inputs)
+triangulationHandler<dim>::mark_periodic()
 {
   // Add periodicity in the triangulation where specified in the boundary conditions. Note
   // that if one field is periodic all others should be as well.

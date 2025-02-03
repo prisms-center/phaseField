@@ -77,11 +77,6 @@ protected:
   const userInputParameters<dim> &user_inputs;
 
   /**
-   * \brief Constraint handler.
-   */
-  constraintHandler<dim> constraint_handler;
-
-  /**
    * \brief The change in solution that is solved for to update the solution vector. This
    * is the x in Ax=b.
    */
@@ -96,16 +91,6 @@ protected:
    * \brief PDE operator.
    */
   SystemMatrixType system_matrix;
-
-  /**
-   * \brief Finite element rule.
-   */
-  const dealii::FE_Q<dim> fe;
-
-  /**
-   * \brief Mappings to and from reference cell.
-   */
-  dealii::MappingQ1<dim> mapping;
 
   /**
    * \brief Solver control.
@@ -123,9 +108,7 @@ baseSolver<dim, degree>::baseSolver(const userInputParameters<dim> &_user_inputs
                                     const uint                     &_field_index)
   : field_index(_field_index)
   , user_inputs(_user_inputs)
-  , constraint_handler(_user_inputs.boundary_parameters, _field_index)
   , system_matrix(_user_inputs)
-  , fe(degree)
   , solver_control(
       _user_inputs.linear_solve_parameters.linear_solve.at(_field_index).max_iterations)
 {}

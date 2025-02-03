@@ -13,90 +13,111 @@
 #include <core/exceptions.h>
 #include <core/type_enums.h>
 #include <core/user_inputs/user_input_parameters.h>
-#include <memory>
+#include <vector>
 
 /**
  * \brief The class handles the generation and application of boundary conditions based on
  * the user-inputs.
  */
-template <int dim, fieldType field_type = fieldType::SCALAR>
+template <int dim>
 class constraintHandler
 {
 public:
   /**
    * \brief Constructor.
    */
-  constraintHandler(const boundaryParameters<dim> &_boundary_parameters,
-                    const uint                    &_global_variable_index);
+  constraintHandler(const userInputParameters<dim> &_user_inputs);
 
   /**
-   * \brief Getter function for constraints (constant reference).
+   * \brief Getter function for the constraints.
    */
-  [[nodiscard]] dealii::AffineConstraints<double> &
+  [[nodiscard]] std::vector<const dealii::AffineConstraints<double> *>
   get_constraints();
 
   /**
    * \brief Make constraints based on the inputs of the construct.
    */
   void
-  make_constraints(const dealii::MappingQ1<dim>  &mapping,
-                   const dealii::DoFHandler<dim> &dof_handler);
+  make_constraints(const dealii::Mapping<dim>                   &mapping,
+                   const std::vector<dealii::DoFHandler<dim> *> &dof_handlers);
 
 private:
   /**
-   * \brief Set the uniform dirichlet constraint.
+   * \brief Make the constrainst for a single index.
    */
   void
-  set_dirichlet_constraints();
+  make_constraint(const dealii::Mapping<dim>    &mapping,
+                  const dealii::DoFHandler<dim> *dof_handler,
+                  const uint                    &index);
 
   /**
    * \brief Set the dirichlet constraint for the pinned point.
    */
   void
-  set_pinned_point(const std::pair<double, dealii::Point<dim>> &value_point_pair,
-                   const dealii::DoFHandler<dim>               &dof_handler);
+  set_pinned_point(const dealii::DoFHandler<dim> *dof_handler, const uint &index);
 
-  std::unique_ptr<dealii::AffineConstraints<double>> constraints;
+  /**
+   * \brief User-inputs.
+   */
+  const userInputParameters<dim> &user_inputs;
 
-  boundaryParameters<dim> boundary_parameters;
-
-  uint global_variable_index;
+  /**
+   * \brief Constraints.
+   */
+  std::vector<dealii::AffineConstraints<double>> constraints;
 };
 
-template <int dim, fieldType field_type>
-constraintHandler<dim, field_type>::constraintHandler(
-  const boundaryParameters<dim> &_boundary_parameters,
-  const uint                    &_global_variable_index)
-  : constraints(std::make_unique<dealii::AffineConstraints<double>>())
-  , boundary_parameters(_boundary_parameters)
-  , global_variable_index(_global_variable_index)
+template <int dim>
+constraintHandler<dim>::constraintHandler(const userInputParameters<dim> &_user_inputs)
+  : user_inputs(_user_inputs)
+  , constraints(user_inputs.var_attributes.size(), dealii::AffineConstraints<double>())
+{}
+
+template <int dim>
+std::vector<const dealii::AffineConstraints<double> *>
+constraintHandler<dim>::get_constraints()
 {
-  constraints->clear();
+  std::vector<const dealii::AffineConstraints<double> *> temp;
+  temp.reserve(constraints.size());
+  for (const auto &constraint : constraints)
+    {
+      temp.push_back(&constraint);
+    }
+  return temp;
 }
 
-template <int dim, fieldType field_type>
-dealii::AffineConstraints<double> &
-constraintHandler<dim, field_type>::get_constraints()
+template <int dim>
+inline void
+constraintHandler<dim>::make_constraints(
+  const dealii::Mapping<dim>                   &mapping,
+  const std::vector<dealii::DoFHandler<dim> *> &dof_handlers)
 {
-  return *constraints;
+  for (const auto &[index, variable] : user_inputs.var_attributes)
+    {
+      make_constraint(mapping, dof_handlers.at(index), index);
+    }
 }
 
-template <int dim, fieldType field_type>
-void
-constraintHandler<dim, field_type>::make_constraints(
-  const dealii::MappingQ1<dim>  &mapping,
-  const dealii::DoFHandler<dim> &dof_handler)
+template <int dim>
+inline void
+constraintHandler<dim>::make_constraint(const dealii::Mapping<dim>    &mapping,
+                                        const dealii::DoFHandler<dim> *dof_handler,
+                                        const uint                    &index)
 {
+  // Clear constraints
+  constraints.at(index).clear();
+
   // Reinitialize constraints
-  constraints->reinit(dof_handler.locally_owned_dofs(),
-                      dealii::DoFTools::extract_locally_relevant_dofs(dof_handler));
+  constraints.at(index).reinit(dof_handler->locally_owned_dofs(),
+                               dealii::DoFTools::extract_locally_relevant_dofs(
+                                 *dof_handler));
 
   // Make hanging node constraints
-  dealii::DoFTools::make_hanging_node_constraints(dof_handler, *constraints);
+  dealii::DoFTools::make_hanging_node_constraints(*dof_handler, constraints.at(index));
 
   // First check the normal boundary conditions
   const auto &boundary_condition =
-    boundary_parameters.boundary_condition_list.at(global_variable_index);
+    user_inputs.boundary_parameters.boundary_condition_list.at(index);
 
   for (const auto &[component, condition] : boundary_condition)
     {
@@ -109,14 +130,17 @@ constraintHandler<dim, field_type>::make_constraints(
             }
           else if (boundary_type == boundaryType::DIRICHLET)
             {
+              Assert(user_inputs.var_attributes.at(index).field_type == fieldType::VECTOR,
+                     FeatureNotImplemented("Dirichlet vector fields"));
+
               dealii::VectorTools::interpolate_boundary_values(
                 mapping,
-                dof_handler,
+                *dof_handler,
                 boundary_id,
                 dealii::Functions::ConstantFunction<dim>(condition.dirichlet_value_map.at(
                                                            boundary_id),
                                                          1),
-                *constraints);
+                constraints.at(index));
             }
           else if (boundary_type == boundaryType::PERIODIC)
             {
@@ -135,7 +159,7 @@ constraintHandler<dim, field_type>::make_constraints(
               const uint direction = std::floor(boundary_id / dim);
 
               // Collect the matched pairs on the coarsest level of the mesh
-              dealii::GridTools::collect_periodic_faces(dof_handler,
+              dealii::GridTools::collect_periodic_faces(*dof_handler,
                                                         boundary_id,
                                                         boundary_id + 1,
                                                         direction,
@@ -143,7 +167,8 @@ constraintHandler<dim, field_type>::make_constraints(
 
               // Set constraints
               dealii::DoFTools::make_periodicity_constraints<dim, dim>(periodicity_vector,
-                                                                       *constraints);
+                                                                       constraints.at(
+                                                                         index));
             }
           else if (boundary_type == boundaryType::NEUMANN)
             {
@@ -151,12 +176,15 @@ constraintHandler<dim, field_type>::make_constraints(
             }
           else if (boundary_type == boundaryType::NON_UNIFORM_DIRICHLET)
             {
+              Assert(user_inputs.var_attributes.at(index).field_type == fieldType::VECTOR,
+                     FeatureNotImplemented("Nonuniform dirichlet vector fields"));
+
               dealii::VectorTools::interpolate_boundary_values(
                 mapping,
-                dof_handler,
+                *dof_handler,
                 boundary_id,
-                nonuniformDirichlet<dim, field_type>(global_variable_index, boundary_id),
-                *constraints);
+                nonuniformDirichlet<dim, fieldType::SCALAR>(index, boundary_id),
+                constraints.at(index));
             }
           else if (boundary_type == boundaryType::NON_UNIFORM_NEUMANN)
             {
@@ -167,27 +195,28 @@ constraintHandler<dim, field_type>::make_constraints(
     }
 
   // Second check for pinned points, if they exist
-  if (boundary_parameters.pinned_point_list.find(global_variable_index) !=
-      boundary_parameters.pinned_point_list.end())
+  if (user_inputs.boundary_parameters.pinned_point_list.find(index) !=
+      user_inputs.boundary_parameters.pinned_point_list.end())
     {
-      set_pinned_point(boundary_parameters.pinned_point_list.at(global_variable_index),
-                       dof_handler);
+      set_pinned_point(dof_handler, index);
     }
 
   // Close constraints
-  constraints->close();
+  constraints.at(index).close();
 }
 
-template <int dim, fieldType field_type>
-void
-constraintHandler<dim, field_type>::set_pinned_point(
-  const std::pair<double, dealii::Point<dim>> &value_point_pair,
-  const dealii::DoFHandler<dim>               &dof_handler)
+template <int dim>
+inline void
+constraintHandler<dim>::set_pinned_point(const dealii::DoFHandler<dim> *dof_handler,
+                                         const uint                    &index)
 {
-  Assert(field_type == fieldType::VECTOR,
+  Assert(user_inputs.var_attributes.at(index).field_type == fieldType::VECTOR,
          FeatureNotImplemented("Pinned points for vector fields"));
 
-  for (const auto &cell : dof_handler.active_cell_iterators())
+  const auto &value_point_pair =
+    user_inputs.boundary_parameters.pinned_point_list.at(index);
+
+  for (const auto &cell : dof_handler->active_cell_iterators())
     {
       if (cell->is_locally_owned())
         {
@@ -198,8 +227,8 @@ constraintHandler<dim, field_type>::set_pinned_point(
                   1.0e-2 * cell->diameter())
                 {
                   unsigned int nodeID = cell->vertex_dof_index(i, 0);
-                  constraints->add_line(nodeID);
-                  constraints->set_inhomogeneity(nodeID, value_point_pair.first);
+                  constraints.at(index).add_line(nodeID);
+                  constraints.at(index).set_inhomogeneity(nodeID, value_point_pair.first);
                 }
             }
         }
