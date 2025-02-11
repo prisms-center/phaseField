@@ -40,6 +40,11 @@ These are some of the most common issues users encounter while using PRISMS-PF
 
   If you find this error when you type <span style="font-family:Menlo">"make release"</span> or <span style="font-family:Menlo">"make debug"</span>, it means a Makefile has not been found in the current directory. Please ensure that the CMake has executed with no errors.
 
+- **icpc: error #10106: Fatal error in /path/to/compiler, terminated by kill signal
+compilation aborted for /path/to/PRISMS-PF/core/library path**
+
+  This error message indicates that the compiler (in this case icpc) process was terminated by a kill signal. This is often due to a limitation in memory. If you are using parallel compilation (e.g., "make -j N"), the system might be overwhelmed. Try reducing the number of parallel jobs by running "make -j 1" or "make -j 2".
+
 ## Runtime Errors
 
 - Failure to run the code  
