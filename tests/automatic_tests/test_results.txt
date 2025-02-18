@@ -1,0 +1,31 @@
+--------------------------------------------------------- 
+Regression test on 2025-02-14 16:06
+Architecture: x86_64
+Model name: AMD Ryzen 7 7745HX with Radeon Graphics
+CPU(s): 16
+CPU max/min MHz: None, None
+Hypervisor vendor: Microsoft
+Number of processes: 1
+--------------------------------------------------------- 
+Application: allen_cahn_explicit
+Result: New Gold Standard
+Time: 26.58109426498413
+ 
+Application: allen_cahn_implicit
+Result: New Gold Standard
+Time: 402.71794414520264
+ 
+Application: cahn_hilliard_explicit
+Result: New Gold Standard
+Time: 224.86245203018188
+ 
+Application: heat_equation_steady_state
+Result: New Gold Standard
+Time: 0.27942633628845215
+ 
+Application: poisson
+Result: New Gold Standard
+Time: 0.3027811050415039
+ 
+Tests Passed: 5/5
+--------------------------------------------------------- 

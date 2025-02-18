@@ -9,7 +9,7 @@ Makefile
 build.ninja
 
 # Config files
-include/config.h
+include/prismspf/config.h
 *.project
 *.cproject
 *.DS_Store

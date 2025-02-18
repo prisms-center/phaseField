@@ -1,0 +1,28 @@
+Using the input parameter file: parameters.prm
+Number of constants: 1
+Number of variables: 1
+Reading material model: 3D  ISOTROPIC 
+Elasticity matrix (Voigt notation):
+2.692e+00 1.154e+00 1.154e+00 0.000e+00 0.000e+00 0.000e+00 
+1.154e+00 2.692e+00 1.154e+00 0.000e+00 0.000e+00 0.000e+00 
+1.154e+00 1.154e+00 2.692e+00 0.000e+00 0.000e+00 0.000e+00 
+0.000e+00 0.000e+00 0.000e+00 7.692e-01 0.000e+00 0.000e+00 
+0.000e+00 0.000e+00 0.000e+00 0.000e+00 7.692e-01 0.000e+00 
+0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 7.692e-01 
+
+number of degrees of freedom: 14739
+Iteration: 1
+  Solution index 0 type CHANGE l2-norm: 0.000e+00
+  Solution index 0 type NORMAL l2-norm: 4.110e+01
+
+
+
++---------------------------------------------+------------+------------+
+| Total wallclock time elapsed since start    | 2.241e-01s |            |
+|                                             |            |            |
+| Section                         | no. calls |  wall time | % of total |
++---------------------------------+-----------+------------+------------+
+| Initialization                  |         1 | 1.632e-01s |  7.28e+01% |
+| Solve Increment                 |         1 | 9.142e-04s |  4.08e-01% |
++---------------------------------+-----------+------------+------------+
+
