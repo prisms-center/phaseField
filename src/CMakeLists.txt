@@ -2,10 +2,7 @@
 set(PRISMS_PF_SOURCE_FILES)
 foreach(TARGET IN ITEMS
   core
-  field_input
-  grains
-  nucleation
-  utilities
+  user_inputs
 )
   add_subdirectory(${TARGET})
 endforeach()

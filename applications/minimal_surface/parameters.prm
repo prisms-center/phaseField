@@ -1,0 +1,24 @@
+set Number of dimensions = 2
+set Element degree = 2
+set Refine factor = 5
+
+subsection spherical mesh
+    set radius = 1
+end
+
+set Boundary condition for variable u = NON_UNIFORM_DIRICHLET
+
+subsection Linear solver parameters: u
+    set Tolerance type = ABSOLUTE_RESIDUAL
+    set Tolerance value = 1e-10
+    set Maximum linear solver iterations = 100 
+    set Preconditioner = GMG
+    set Smoothing range = 20
+    set Smoother degree = 5
+    set Eigenvalue CG iterations = 20
+end
+
+subsection Nonlinear solver parameters: u
+    set Maximum nonlinear solver iterations = 100
+    set Constant damping value = 0.1
+end

@@ -1,0 +1,24 @@
+set Number of dimensions = 2
+
+subsection rectangular mesh
+    set size X = 100
+    set size Y = 100
+    set size Z = 100
+    set subdivisions X = 1
+    set subdivisions Y = 1
+    set subdivisions Z = 1
+end
+
+set Refine factor = 8
+set Element degree = 1
+
+set Time step = 1.0e-2
+set Number of time steps = 5000
+set Number of outputs = 5
+
+set Boundary condition for variable n = NATURAL
+set Boundary condition for variable mg_n = NATURAL
+set Boundary condition for variable f_tot = NATURAL
+
+set Model constant MnV = 1.0, DOUBLE
+set Model constant KnV = 2.0, DOUBLE
