@@ -1,108 +1,96 @@
-// =================================================================================
-// Set the attributes of the primary field variables
-// =================================================================================
-// This function sets attributes for each variable/equation in the app. The
-// attributes are set via standardized function calls. The first parameter for
-// each function call is the variable index (starting at zero). The first set of
-// variable/equation attributes are the variable name (any string), the variable
-// type (SCALAR/VECTOR), and the equation type (EXPLICIT_TIME_DEPENDENT/
-// TIME_INDEPENDENT/AUXILIARY). The next set of attributes describe the
-// dependencies for the governing equation on the values and derivatives of the
-// other variables for the value term and gradient term of the RHS and the LHS.
-// The final pair of attributes determine whether a variable represents a field
-// that can nucleate and whether the value of the field is needed for nucleation
-// rate calculations.
+#include "custom_pde.h"
+
+#include <prismspf/config.h>
+#include <prismspf/core/type_enums.h>
+#include <prismspf/core/variable_attribute_loader.h>
 
 void
 customAttributeLoader::loadVariableAttributes()
 {
-  // Variable 0
   set_variable_name(0, "n");
   set_variable_type(0, SCALAR);
   set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
 
   set_dependencies_value_term_RHS(0, "n");
   set_dependencies_gradient_term_RHS(0, "grad(n)");
+
+  set_variable_name(1, "mg_n");
+  set_variable_type(1, SCALAR);
+  set_variable_equation_type(1, EXPLICIT_TIME_DEPENDENT);
+  set_is_postprocessed_field(1, true);
+
+  set_dependencies_value_term_RHS(1, "grad(n)");
+  set_dependencies_gradient_term_RHS(1, "");
+
+  set_variable_name(2, "f_tot");
+  set_variable_type(2, SCALAR);
+  set_variable_equation_type(2, EXPLICIT_TIME_DEPENDENT);
+  set_is_postprocessed_field(2, true);
+
+  set_dependencies_value_term_RHS(2, "n, grad(n)");
+  set_dependencies_gradient_term_RHS(2, "");
 }
 
-// =============================================================================================
-// explicitEquationRHS (needed only if one or more equation is explict time
-// dependent)
-// =============================================================================================
-// This function calculates the right-hand-side of the explicit time-dependent
-// equations for each variable. It takes "variable_list" as an input, which is a
-// list of the value and derivatives of each of the variables at a specific
-// quadrature point. The (x,y,z) location of that quadrature point is given by
-// "q_point_loc". The function outputs two terms to variable_list -- one
-// proportional to the test function and one proportional to the gradient of the
-// test function. The index for each variable in this list corresponds to the
-// index given at the top of this file.
-
-template <int dim, int degree>
+template <int dim, int degree, typename number>
 void
-customPDE<dim, degree>::explicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+customPDE<dim, degree, number>::compute_explicit_RHS(
+  [[maybe_unused]] variableContainer<dim, degree, number>    &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<number>> &q_point_loc) const
 {
-  // --- Getting the values and derivatives of the model variables ---
+  scalarValue n  = variable_list.get_scalar_value(0);
+  scalarGrad  nx = variable_list.get_scalar_gradient(0);
 
-  // The order parameter and its derivatives
-  scalarvalueType n  = variable_list.get_scalar_value(0);
-  scalargradType  nx = variable_list.get_scalar_gradient(0);
+  scalarValue fnV = 4.0 * n * (n - 1.0) * (n - 0.5);
+  scalarValue eq_n =
+    n - constV(static_cast<number>(user_inputs.temporal_discretization.dt * MnV)) * fnV;
+  scalarGrad eqx_n =
+    constV(static_cast<number>(-user_inputs.temporal_discretization.dt * KnV * MnV)) * nx;
 
-  // --- Setting the expressions for the terms in the governing equations ---
-
-  scalarvalueType fnV   = (4.0 * n * (n - 1.0) * (n - 0.5));
-  scalarvalueType eq_n  = (n - constV(userInputs.dtValue * MnV) * fnV);
-  scalargradType  eqx_n = (-constV(userInputs.dtValue * KnV * MnV) * nx);
-
-  // --- Submitting the terms for the governing equations ---
-
-  variable_list.set_scalar_value_term_RHS(0, eq_n);
-  variable_list.set_scalar_gradient_term_RHS(0, eqx_n);
+  variable_list.set_scalar_value_term(0, eq_n);
+  variable_list.set_scalar_gradient_term(0, eqx_n);
 }
 
-// =============================================================================================
-// nonExplicitEquationRHS (needed only if one or more equation is time
-// independent or auxiliary)
-// =============================================================================================
-// This function calculates the right-hand-side of all of the equations that are
-// not explicit time-dependent equations. It takes "variable_list" as an input,
-// which is a list of the value and derivatives of each of the variables at a
-// specific quadrature point. The (x,y,z) location of that quadrature point is
-// given by "q_point_loc". The function outputs two terms to variable_list --
-// one proportional to the test function and one proportional to the gradient of
-// the test function. The index for each variable in this list corresponds to
-// the index given at the top of this file.
-
-template <int dim, int degree>
+template <int dim, int degree, typename number>
 void
-customPDE<dim, degree>::nonExplicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+customPDE<dim, degree, number>::compute_nonexplicit_RHS(
+  [[maybe_unused]] variableContainer<dim, degree, number>    &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<number>> &q_point_loc) const
 {}
 
-// =============================================================================================
-// equationLHS (needed only if at least one equation is time independent)
-// =============================================================================================
-// This function calculates the left-hand-side of time-independent equations. It
-// takes "variable_list" as an input, which is a list of the value and
-// derivatives of each of the variables at a specific quadrature point. The
-// (x,y,z) location of that quadrature point is given by "q_point_loc". The
-// function outputs two terms to variable_list -- one proportional to the test
-// function and one proportional to the gradient of the test function -- for the
-// left-hand-side of the equation. The index for each variable in this list
-// corresponds to the index given at the top of this file. If there are multiple
-// elliptic equations, conditional statements should be sed to ensure that the
-// correct residual is being submitted. The index of the field being solved can
-// be accessed by "this->currentFieldIndex".
-
-template <int dim, int degree>
+template <int dim, int degree, typename number>
 void
-customPDE<dim, degree>::equationLHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+customPDE<dim, degree, number>::compute_nonexplicit_LHS(
+  [[maybe_unused]] variableContainer<dim, degree, number>    &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<number>> &q_point_loc) const
 {}
+
+template <int dim, int degree, typename number>
+void
+customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
+  [[maybe_unused]] variableContainer<dim, degree, number>    &variable_list,
+  [[maybe_unused]] const Point<dim, VectorizedArray<number>> &q_point_loc) const
+{
+  scalarValue n  = variable_list.get_scalar_value(0);
+  scalarGrad  nx = variable_list.get_scalar_gradient(0);
+
+  scalarValue f_tot = constV(static_cast<number>(0.0));
+
+  scalarValue f_chem = (n * n * n * n - 2.0 * n * n * n + n * n);
+
+  scalarValue f_grad = constV(static_cast<number>(0.0));
+
+  for (int i = 0; i < dim; i++)
+    {
+      for (int j = 0; j < dim; j++)
+        {
+          f_grad += constV(static_cast<number>(0.5 * KnV)) * nx[i] * nx[j];
+        }
+    }
+  f_tot = f_chem + f_grad;
+
+  variable_list.set_scalar_value_term(1, std::sqrt(nx[0] * nx[0] + nx[1] * nx[1]));
+
+  variable_list.set_scalar_value_term(2, f_tot);
+}
+
+INSTANTIATE_TRI_TEMPLATE(customPDE)

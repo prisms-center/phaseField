@@ -10,7 +10,10 @@ Checks: >
   -cppcoreguidelines-avoid-const-or-ref-data-members,
   -cppcoreguidelines-non-private-member-variables-in-classes,
   -cppcoreguidelines-avoid-magic-numbers,
+  -cppcoreguidelines-owning-memory,
+  -cppcoreguidelines-special-member-functions,
   hicpp-*,
+  -hicpp-special-member-functions,
   misc-*,
   -misc-non-private-member-variables-in-classes,
   modernize-*,
@@ -23,5 +26,6 @@ Checks: >
   -readability-identifier-length,
   -readability-magic-numbers,
   -readability-convert-member-functions-to-static,
+  -readability-function-cognitive-complexity,
 
 WarningsAsErrors: '*'

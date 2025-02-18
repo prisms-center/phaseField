@@ -76,8 +76,8 @@ FixNamespaceComments: true
 
 IncludeBlocks:   Regroup
 IncludeCategories:
-  # customPDE.h in main.cc must always be first
-  - Regex:    '"customPDE.h"'
+  # custom_pde.h in main.cc must always be first
+  - Regex:    '"custom_pde.h"'
     Priority:       -1
   # deal.II headers:
   - Regex:    '<deal.II.*>'
@@ -85,6 +85,9 @@ IncludeCategories:
   # boost headers:
   - Regex:    '<boost.*>'
     Priority:       9
+  # prismspf headers:
+  - Regex:    '<prismspf.*>'
+    Priority:       10
   # all standard <...> headers
   - Regex:    '<[-\w\/-_]+[\.\/]*[-\w\/-_]+>>'
     Priority:       99       

@@ -25,6 +25,6 @@ subsection Linear solver parameters: phi
     set Maximum linear solver iterations = 100
     set Preconditioner = GMG
     set Smoothing range = 15
-    set Smoother iterations = 5
+    set Smoother degree = 5
     set Eigenvalue CG iterations = 10
 end

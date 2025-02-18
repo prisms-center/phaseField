@@ -1,0 +1,21 @@
+Using the input parameter file: parameters.prm
+Number of constants: 0
+Number of variables: 3
+number of degrees of freedom: 12675
+Iteration: 1
+  Solution index 2 type NORMAL l2-norm: 2.60584e-14
+  Solution index 0 type CHANGE l2-norm: 0
+  Solution index 1 type NORMAL l2-norm: 110.016
+  Solution index 0 type NORMAL l2-norm: 8.26236
+
+
+
++---------------------------------------------+------------+------------+
+| Total wallclock time elapsed since start    |       0.2s |            |
+|                                             |            |            |
+| Section                         | no. calls |  wall time | % of total |
++---------------------------------+-----------+------------+------------+
+| Initialization                  |         1 |     0.139s |        70% |
+| Solve Increment                 |         1 |      0.01s |         5% |
++---------------------------------+-----------+------------+------------+
+

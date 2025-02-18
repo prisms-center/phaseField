@@ -169,8 +169,8 @@ project(prisms_pf CXX)
 set(PRISMS_PF_SOURCE_DIR ${CMAKE_SOURCE_DIR})
 
 configure_file(
-  ${CMAKE_SOURCE_DIR}/include/config.h.in
-  ${CMAKE_BINARY_DIR}/include/config.h
+  ${CMAKE_SOURCE_DIR}/include/prismspf/config.h.in
+  ${CMAKE_BINARY_DIR}/include/prismspf/config.h
   )
 
 # Collect source files
@@ -287,6 +287,10 @@ if(${PRISMS_PF_BUILD_DEBUG} STREQUAL "ON")
   set_property(TARGET ${LIBRARY_NAME_DEBUG} PROPERTY OUTPUT_NAME prisms-pf-debug)
   target_include_directories(${LIBRARY_NAME_DEBUG} PRIVATE ${CMAKE_BINARY_DIR}/include include)
   deal_ii_setup_target(${LIBRARY_NAME_DEBUG} DEBUG)
+
+  if(${PRISMS_PF_WITH_CALIPER})
+    target_link_libraries(${LIBRARY_NAME_DEBUG} caliper)
+  endif()
 endif()
 
 if(${PRISMS_PF_BUILD_RELEASE} STREQUAL "ON")
@@ -295,4 +299,8 @@ if(${PRISMS_PF_BUILD_RELEASE} STREQUAL "ON")
   set_property(TARGET ${LIBRARY_NAME_RELEASE} PROPERTY OUTPUT_NAME prisms-pf-release)
   target_include_directories(${LIBRARY_NAME_RELEASE} PRIVATE ${CMAKE_BINARY_DIR}/include include)
   deal_ii_setup_target(${LIBRARY_NAME_RELEASE} RELEASE)
+
+  if(${PRISMS_PF_WITH_CALIPER})
+    target_link_libraries(${LIBRARY_NAME_RELEASE} caliper)
+  endif()
 endif()
