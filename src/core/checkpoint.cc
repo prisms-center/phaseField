@@ -3,7 +3,7 @@
 
 #include <core/exceptions.h>
 #include <core/matrixFreePDE.h>
-#include <filesystem>
+#include <cstdio>
 #include <fstream>
 
 #ifdef DEAL_II_WITH_ZLIB
@@ -230,31 +230,18 @@ void
 MatrixFreePDE<dim, degree>::move_file(const std::string &old_name,
                                       const std::string &new_name)
 {
-  try
+  if (std::rename(old_name.c_str(), new_name.c_str()) != 0)
     {
-      std::filesystem::rename(old_name, new_name);
-    }
-  catch (const std::filesystem::filesystem_error &error)
-    {
-      if (std::filesystem::exists(new_name))
+      if (std::remove(new_name.c_str()) != 0)
         {
-          bool is_removed = std::filesystem::remove(new_name);
-          AssertThrow(is_removed,
-                      dealii::ExcMessage(
-                        "Unable to remove file: " + new_name +
-                        ", although it seems to exist. The error code is " +
-                        error.what()));
+          AssertThrow(false, dealii::ExcMessage("Unable to remove file: " + new_name));
         }
 
-      try
-        {
-          std::filesystem::rename(old_name, new_name);
-        }
-      catch (const std::filesystem::filesystem_error &rename_error)
+      if (std::rename(old_name.c_str(), new_name.c_str()) != 0)
         {
           AssertThrow(false,
-                      ExcMessage("Unable to rename file: " + old_name + " -> " +
-                                 new_name + ". Error: " + rename_error.what()));
+                      dealii::ExcMessage("Unable to rename file: " + old_name + " -> " +
+                                         new_name));
         }
     }
 }

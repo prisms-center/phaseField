@@ -51,7 +51,7 @@ public:
    * \param name Name of variable at `index`
    */
   void
-  set_variable_name(const unsigned int &index, const std::string &name) const;
+  set_variable_name(const unsigned int &index, const std::string &name);
 
   /**
    * \brief Set the field type of the variable at `index` to `var_type` where `var_type`
@@ -61,7 +61,7 @@ public:
    * \param var_type Field type of variable at `index` (`SCALAR` or `VECTOR`).
    */
   void
-  set_variable_type(const unsigned int &index, const fieldType &var_type) const;
+  set_variable_type(const unsigned int &index, const fieldType &var_type);
 
   /**
    * \brief Set the PDE type of the variable at `index` to `var_eq_type` where
@@ -72,7 +72,7 @@ public:
    * \param var_eq_type PDE type of variable at `index`.
    */
   void
-  set_variable_equation_type(const unsigned int &index, const PDEType &var_eq_type) const;
+  set_variable_equation_type(const unsigned int &index, const PDEType &var_eq_type);
 
   /**
    * \brief Add dependencies for the value term of the RHS equation of the variable at
@@ -108,7 +108,7 @@ public:
    */
   void
   set_dependencies_value_term_LHS(const unsigned int &index,
-                                  const std::string  &dependencies) const;
+                                  const std::string  &dependencies);
 
   /**
    * \brief Add dependencies for the gradient term of the LHS equation of the variable
@@ -120,7 +120,7 @@ public:
    */
   void
   set_dependencies_gradient_term_LHS(const unsigned int &index,
-                                     const std::string  &dependencies) const;
+                                     const std::string  &dependencies);
 
   /**
    * \brief Insert dependencies for the value term of the RHS equation of the variable at
@@ -159,7 +159,7 @@ public:
   template <typename Iterable>
   void
   insert_dependencies_value_term_LHS(const unsigned int &index,
-                                     const Iterable     &dependencies) const;
+                                     const Iterable     &dependencies);
 
   /**
    * \brief Insert dependencies for the gradient term of the LHS equation of the variable
@@ -172,7 +172,7 @@ public:
   template <typename Iterable>
   void
   insert_dependencies_gradient_term_LHS(const unsigned int &index,
-                                        const Iterable     &dependencies) const;
+                                        const Iterable     &dependencies);
 
   /**
    * \brief Flag whether the variable at `index` is needed to calculate the nucleation
@@ -182,7 +182,7 @@ public:
    * \param flag true: variable is needed, false: variable is not needed.
    */
   void
-  set_need_value_nucleation(const unsigned int &index, const bool &flag) const;
+  set_need_value_nucleation(const unsigned int &index, const bool &flag);
 
   /**
    * \brief Flag whether the variable at `index` is can have a nucleation event.
@@ -191,7 +191,7 @@ public:
    * \param flag true: variable can nucleate, false: variable can not nucleate.
    */
   void
-  set_allowed_to_nucleate(const unsigned int &index, const bool &flag) const;
+  set_allowed_to_nucleate(const unsigned int &index, const bool &flag);
 
   /**
    * \brief (Postprocess only) Flag whether the postprocessing variable at `index` should
@@ -202,7 +202,7 @@ public:
    * false: do nothing
    */
   void
-  set_output_integral(const unsigned int &index, const bool &flag) const;
+  set_output_integral(const unsigned int &index, const bool &flag);
 
 protected:
   /**
