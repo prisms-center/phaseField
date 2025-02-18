@@ -1,8 +1,8 @@
 var classidentitySolver =
 [
-    [ "identitySolver", "classidentitySolver.html#af3c03808ade79eaed0a70000e8b5ec6b", null ],
-    [ "~identitySolver", "classidentitySolver.html#a8b86fdadad993193d5e3c1d6d3593a94", null ],
-    [ "init_system", "classidentitySolver.html#a2e6dd972d0e008704c5ef3bd56396aaf", null ],
-    [ "reinit_system", "classidentitySolver.html#ad551514cb9b5c65b0d64ed006abbd630", null ],
-    [ "solve", "classidentitySolver.html#a49731225c43377450416a397840e11b5", null ]
+    [ "identitySolver", "classidentitySolver.html#a950594c6d3cfa38717bc662df59c6369", null ],
+    [ "~identitySolver", "classidentitySolver.html#af158a1c075f97c7ef3559525ef9a53a3", null ],
+    [ "init", "classidentitySolver.html#a7916f1ae18347e7a312971cebcaff027", null ],
+    [ "reinit", "classidentitySolver.html#a621f340bc087d1523403c5b6e97b1b25", null ],
+    [ "solve", "classidentitySolver.html#ac73613d9e808d672a9282f4b716f734e", null ]
 ];

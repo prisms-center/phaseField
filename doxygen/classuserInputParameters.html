@@ -101,10 +101,10 @@ $(document).ready(function(){initNavTree('classuserInputParameters.html',''); in
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a759bdec0305c62acb2b1fdb0254ae5dd" id="r_a759bdec0305c62acb2b1fdb0254ae5dd"><td class="memItemLeft" align="right" valign="top"><a id="a759bdec0305c62acb2b1fdb0254ae5dd" name="a759bdec0305c62acb2b1fdb0254ae5dd"></a>
+<tr class="memitem:a7217c909a070735a8d1f263c990cf903" id="r_a7217c909a070735a8d1f263c990cf903"><td class="memItemLeft" align="right" valign="top"><a id="a7217c909a070735a8d1f263c990cf903" name="a7217c909a070735a8d1f263c990cf903"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>userInputParameters</b> (<a class="el" href="classinputFileReader.html">inputFileReader</a> &amp;input_file_reader, dealii::ParameterHandler &amp;parameter_handler)</td></tr>
-<tr class="memdesc:a759bdec0305c62acb2b1fdb0254ae5dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. Reads in user input parameters from file and loads them into member variables. <br /></td></tr>
-<tr class="separator:a759bdec0305c62acb2b1fdb0254ae5dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a7217c909a070735a8d1f263c990cf903"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. Reads in user input parameters from file and loads them into member variables. <br /></td></tr>
+<tr class="separator:a7217c909a070735a8d1f263c990cf903"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7da91743b287de0513e170a9b5c3e01" id="r_ac7da91743b287de0513e170a9b5c3e01"><td class="memItemLeft" align="right" valign="top"><a id="ac7da91743b287de0513e170a9b5c3e01" name="ac7da91743b287de0513e170a9b5c3e01"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>~userInputParameters</b> ()=default</td></tr>
 <tr class="memdesc:ac7da91743b287de0513e170a9b5c3e01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
@@ -112,12 +112,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:af018d7203784064f9210fa5c7deaecb1" id="r_af018d7203784064f9210fa5c7deaecb1"><td class="memItemLeft" align="right" valign="top"><a id="af018d7203784064f9210fa5c7deaecb1" name="af018d7203784064f9210fa5c7deaecb1"></a>
-const AttributesList &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>var_attributes</b></td></tr>
-<tr class="separator:af018d7203784064f9210fa5c7deaecb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a870cc73eda1abab5e94e87f5b6f8c49c" id="r_a870cc73eda1abab5e94e87f5b6f8c49c"><td class="memItemLeft" align="right" valign="top"><a id="a870cc73eda1abab5e94e87f5b6f8c49c" name="a870cc73eda1abab5e94e87f5b6f8c49c"></a>
-const AttributesList &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>pp_attributes</b></td></tr>
-<tr class="separator:a870cc73eda1abab5e94e87f5b6f8c49c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f5499db0fe34b3f77ada61ce97bf1d2" id="r_a3f5499db0fe34b3f77ada61ce97bf1d2"><td class="memItemLeft" align="right" valign="top"><a id="a3f5499db0fe34b3f77ada61ce97bf1d2" name="a3f5499db0fe34b3f77ada61ce97bf1d2"></a>
+const std::map&lt; unsigned int, <a class="el" href="structvariableAttributes.html">variableAttributes</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>var_attributes</b></td></tr>
+<tr class="separator:a3f5499db0fe34b3f77ada61ce97bf1d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4766b4aa19ae81e40342663ef3984e2" id="r_af4766b4aa19ae81e40342663ef3984e2"><td class="memItemLeft" align="right" valign="top"><a id="af4766b4aa19ae81e40342663ef3984e2" name="af4766b4aa19ae81e40342663ef3984e2"></a>
 <a class="el" href="classspatialDiscretization.html">spatialDiscretization</a>&lt; dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>spatial_discretization</b></td></tr>
 <tr class="separator:af4766b4aa19ae81e40342663ef3984e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -128,18 +125,21 @@ const AttributesList &amp;&#160;</td><td class="memItemRight" valign="bottom"><b
 <a class="el" href="classoutputParameters.html">outputParameters</a>&#160;</td><td class="memItemRight" valign="bottom"><b>output_parameters</b></td></tr>
 <tr class="separator:a81a829c2e8ba788ebe75b8c70edc50b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af21d2a225154436082208d2f509b7a2e" id="r_af21d2a225154436082208d2f509b7a2e"><td class="memItemLeft" align="right" valign="top"><a id="af21d2a225154436082208d2f509b7a2e" name="af21d2a225154436082208d2f509b7a2e"></a>
-<a class="el" href="classboundaryParameters.html">boundaryParameters</a>&lt; dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>boundary_parameters</b></td></tr>
+<a class="el" href="structboundaryParameters.html">boundaryParameters</a>&lt; dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>boundary_parameters</b></td></tr>
 <tr class="separator:af21d2a225154436082208d2f509b7a2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7b09ac30ef9eb6c43d7089624a557a9" id="r_ad7b09ac30ef9eb6c43d7089624a557a9"><td class="memItemLeft" align="right" valign="top"><a id="ad7b09ac30ef9eb6c43d7089624a557a9" name="ad7b09ac30ef9eb6c43d7089624a557a9"></a>
-<a class="el" href="classlinearSolveParameters.html">linearSolveParameters</a>&#160;</td><td class="memItemRight" valign="bottom"><b>linear_solve_parameters</b></td></tr>
+<a class="el" href="structlinearSolveParameters.html">linearSolveParameters</a>&#160;</td><td class="memItemRight" valign="bottom"><b>linear_solve_parameters</b></td></tr>
 <tr class="separator:ad7b09ac30ef9eb6c43d7089624a557a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6acc769bf7b3f921d2456a9ea427abed" id="r_a6acc769bf7b3f921d2456a9ea427abed"><td class="memItemLeft" align="right" valign="top"><a id="a6acc769bf7b3f921d2456a9ea427abed" name="a6acc769bf7b3f921d2456a9ea427abed"></a>
+<a class="el" href="structnonlinearSolveParameters.html">nonlinearSolveParameters</a>&#160;</td><td class="memItemRight" valign="bottom"><b>nonlinear_solve_parameters</b></td></tr>
+<tr class="separator:a6acc769bf7b3f921d2456a9ea427abed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5bd45526a7f8e625c18e0c3b22f26187" id="r_a5bd45526a7f8e625c18e0c3b22f26187"><td class="memItemLeft" align="right" valign="top"><a id="a5bd45526a7f8e625c18e0c3b22f26187" name="a5bd45526a7f8e625c18e0c3b22f26187"></a>
 <a class="el" href="classuserConstants.html">userConstants</a>&lt; dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>user_constants</b></td></tr>
 <tr class="separator:a5bd45526a7f8e625c18e0c3b22f26187"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/runner/work/phaseField/phaseField/include/core/user_inputs/<a class="el" href="user__input__parameters_8h_source.html">user_input_parameters.h</a></li>
-<li>/home/runner/work/phaseField/phaseField/src/core/user_inputs/<b>user_input_parameters.cc</b></li>
+<li>/home/runner/work/phaseField/phaseField/include/prismspf/user_inputs/<a class="el" href="user__input__parameters_8h_source.html">user_input_parameters.h</a></li>
+<li>/home/runner/work/phaseField/phaseField/src/user_inputs/<b>user_input_parameters.cc</b></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

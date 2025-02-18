@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['solutionoutput_0',['solutionOutput',['../classsolutionOutput.html',1,'']]],
-  ['spatialdiscretization_1',['spatialDiscretization',['../classspatialDiscretization.html',1,'']]]
+  ['refinementcriterion_0',['RefinementCriterion',['../classRefinementCriterion.html',1,'']]]
 ];

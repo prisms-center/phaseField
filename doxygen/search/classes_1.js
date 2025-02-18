@@ -1,9 +1,10 @@
 var searchData=
 [
-  ['conditionalostreams_0',['conditionalOStreams',['../classconditionalOStreams.html',1,'']]],
-  ['constrainthandler_1',['constraintHandler',['../classconstraintHandler.html',1,'']]],
-  ['customattributeloader_2',['customAttributeLoader',['../classcustomAttributeLoader.html',1,'']]],
-  ['customnonuniformdirichlet_3',['customNonuniformDirichlet',['../classcustomNonuniformDirichlet.html',1,'']]],
-  ['custompde_4',['customPDE',['../classcustomPDE.html',1,'']]],
-  ['custompde_3c_20dim_2c_20degree_2c_20double_20_3e_5',['customPDE&lt; dim, degree, double &gt;',['../classcustomPDE.html',1,'']]]
+  ['computeintegral_0',['computeIntegral',['../classcomputeIntegral.html',1,'']]],
+  ['conditionalostreams_1',['conditionalOStreams',['../classconditionalOStreams.html',1,'']]],
+  ['constrainthandler_2',['constraintHandler',['../classconstraintHandler.html',1,'']]],
+  ['customattributeloader_3',['customAttributeLoader',['../classcustomAttributeLoader.html',1,'']]],
+  ['custominitialcondition_4',['customInitialCondition',['../classcustomInitialCondition.html',1,'']]],
+  ['customnonuniformdirichlet_5',['customNonuniformDirichlet',['../classcustomNonuniformDirichlet.html',1,'']]],
+  ['custompde_6',['customPDE',['../classcustomPDE.html',1,'']]]
 ];

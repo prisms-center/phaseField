@@ -13,8 +13,13 @@ var searchData=
   ['the_20results_20of_20the_20simulation_10',['Visualizing the Results of the Simulation',['../running_apps.html#autotoc_md58',1,'']]],
   ['time_20stepping_11',['Time Stepping',['../input_file.html#autotoc_md23',1,'']]],
   ['time_5findependent_20equation_20optional_20see_20note_201_20below_20for_20details_12',['Linear Solver Parameters for Each TIME_INDEPENDENT Equation (optional, see Note 1 below for details)',['../input_file.html#autotoc_md24',1,'']]],
-  ['tolerance_13',['tolerance',['../classbaseSolver.html#a83bb7207ad49ad07029aa1b02000c75c',1,'baseSolver']]],
-  ['traditional_20installation_20non_20docker_14',['Traditional Installation (Non-Docker)',['../install_prismspf.html#autotoc_md51',1,'']]],
-  ['triangulationhandler_15',['triangulationhandler',['../classtriangulationHandler.html#a4e1855fec1890c1f902289680ef14600',1,'triangulationHandler::triangulationHandler()'],['../classtriangulationHandler.html',1,'triangulationHandler&lt; dim &gt;']]],
-  ['types_16',['A note on types',['../app_files.html#autotoc_md3',1,'']]]
+  ['timer_13',['timer',['../classtimer.html#ae536faf93e02933cd025a6fbcbb48d0a',1,'timer::timer()'],['../classtimer.html',1,'timer']]],
+  ['to_5fstring_14',['to_string',['../structboundaryCondition.html#a59fce99fe3cf5a7bb53bd6a6c0c8f2c8',1,'boundaryCondition']]],
+  ['tolerance_15',['tolerance',['../classlinearSolverBase.html#a9d820db4948bb852b93e7ba35f352faf',1,'linearSolverBase']]],
+  ['traditional_20installation_20non_20docker_16',['Traditional Installation (Non-Docker)',['../install_prismspf.html#autotoc_md51',1,'']]],
+  ['triangulation_5fhandler_17',['triangulation_handler',['../classnonexplicitBase.html#af20ea9853e4791945d6e9664a6278217',1,'nonexplicitBase']]],
+  ['triangulationhandler_18',['triangulationhandler',['../classtriangulationHandler.html#a97429ede6e732f242b7f75dbb0983244',1,'triangulationHandler::triangulationHandler()'],['../classtriangulationHandler.html',1,'triangulationHandler&lt; dim &gt;']]],
+  ['tvmult_19',['Tvmult',['../classmatrixFreeOperator.html#a8dcc9db29547882b0fd163c2d56cfe5e',1,'matrixFreeOperator']]],
+  ['type_20',['type',['../structboundaryCondition.html#a7f349381f33387bae2ac970a60be5ed4',1,'boundaryCondition']]],
+  ['types_21',['A note on types',['../app_files.html#autotoc_md3',1,'']]]
 ];

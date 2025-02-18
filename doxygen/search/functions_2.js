@@ -13,5 +13,6 @@ var searchData=
   ['declare_5fpinning_5fparameters_10',['declare_pinning_parameters',['../classinputFileReader.html#a8d1a12cf5b1df42631b3e13533702192',1,'inputFileReader']]],
   ['declare_5fsolver_5fparameters_11',['declare_solver_parameters',['../classinputFileReader.html#a8b286eacf630a67b27dc49feeee481ee',1,'inputFileReader']]],
   ['declare_5ftime_5fdiscretization_12',['declare_time_discretization',['../classinputFileReader.html#ab084f539bba80eb5af9569908bc34bc0',1,'inputFileReader']]],
-  ['determine_5ffield_5fsolve_5ftype_13',['determine_field_solve_type',['../structvariableAttributes.html#aae6da4e0f8077430d94f22c3e4c8d131',1,'variableAttributes']]]
+  ['determine_5ffield_5fsolve_5ftype_13',['determine_field_solve_type',['../structvariableAttributes.html#abde87bc1509e99e00f42c320c30dbb7f',1,'variableAttributes']]],
+  ['dofhandler_14',['dofHandler',['../classdofHandler.html#a2ff8a73052c330733008360d1cd1203a',1,'dofHandler']]]
 ];

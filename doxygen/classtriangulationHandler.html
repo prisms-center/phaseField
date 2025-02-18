@@ -106,28 +106,28 @@ $(document).ready(function(){initNavTree('classtriangulationHandler.html',''); i
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a2c584194b21c0a0796b0a17827410446" id="r_a2c584194b21c0a0796b0a17827410446"><td class="memItemLeft" align="right" valign="top"><a id="a2c584194b21c0a0796b0a17827410446" name="a2c584194b21c0a0796b0a17827410446"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>Triangulation</b> = typename std::conditional&lt; dim==1, dealii::Triangulation&lt; dim &gt;, dealii::parallel::distributed::Triangulation&lt; dim &gt; &gt;::type</td></tr>
-<tr class="separator:a2c584194b21c0a0796b0a17827410446"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ecfb6b4b003fd14b345463302aa7909" id="r_a9ecfb6b4b003fd14b345463302aa7909"><td class="memItemLeft" align="right" valign="top"><a id="a9ecfb6b4b003fd14b345463302aa7909" name="a9ecfb6b4b003fd14b345463302aa7909"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>Triangulation</b> = std::conditional_t&lt; dim==1, dealii::Triangulation&lt; dim &gt;, dealii::parallel::distributed::Triangulation&lt; dim &gt; &gt;</td></tr>
+<tr class="separator:a9ecfb6b4b003fd14b345463302aa7909"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4e1855fec1890c1f902289680ef14600" id="r_a4e1855fec1890c1f902289680ef14600"><td class="memItemLeft" align="right" valign="top"><a id="a4e1855fec1890c1f902289680ef14600" name="a4e1855fec1890c1f902289680ef14600"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>triangulationHandler</b> ()</td></tr>
-<tr class="memdesc:a4e1855fec1890c1f902289680ef14600"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
-<tr class="separator:a4e1855fec1890c1f902289680ef14600"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97429ede6e732f242b7f75dbb0983244" id="r_a97429ede6e732f242b7f75dbb0983244"><td class="memItemLeft" align="right" valign="top"><a id="a97429ede6e732f242b7f75dbb0983244" name="a97429ede6e732f242b7f75dbb0983244"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>triangulationHandler</b> (const <a class="el" href="classuserInputParameters.html">userInputParameters</a>&lt; dim &gt; &amp;_user_inputs)</td></tr>
+<tr class="memdesc:a97429ede6e732f242b7f75dbb0983244"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="separator:a97429ede6e732f242b7f75dbb0983244"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac83501ae417a8a2f68f8e1c2f47e0dcb" id="r_ac83501ae417a8a2f68f8e1c2f47e0dcb"><td class="memItemLeft" align="right" valign="top"><a id="ac83501ae417a8a2f68f8e1c2f47e0dcb" name="ac83501ae417a8a2f68f8e1c2f47e0dcb"></a>
 const Triangulation &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_triangulation</b> () const</td></tr>
 <tr class="memdesc:ac83501ae417a8a2f68f8e1c2f47e0dcb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for triangulation (constant reference). <br /></td></tr>
 <tr class="separator:ac83501ae417a8a2f68f8e1c2f47e0dcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade0b89a2a50b34d54430a31c23978292" id="r_ade0b89a2a50b34d54430a31c23978292"><td class="memItemLeft" align="right" valign="top"><a id="ade0b89a2a50b34d54430a31c23978292" name="ade0b89a2a50b34d54430a31c23978292"></a>
-uint&#160;</td><td class="memItemRight" valign="bottom"><b>get_n_global_levels</b> () const</td></tr>
-<tr class="memdesc:ade0b89a2a50b34d54430a31c23978292"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the global maximum level of the triangulation. <br /></td></tr>
-<tr class="separator:ade0b89a2a50b34d54430a31c23978292"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b2560ebefb01881fe30455b4915514f" id="r_a5b2560ebefb01881fe30455b4915514f"><td class="memItemLeft" align="right" valign="top"><a id="a5b2560ebefb01881fe30455b4915514f" name="a5b2560ebefb01881fe30455b4915514f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>generate_mesh</b> (const <a class="el" href="classuserInputParameters.html">userInputParameters</a>&lt; dim &gt; &amp;user_inputs)</td></tr>
-<tr class="memdesc:a5b2560ebefb01881fe30455b4915514f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate mesh. <br /></td></tr>
-<tr class="separator:a5b2560ebefb01881fe30455b4915514f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6391aacafbfb20cd42be313b32f1119" id="r_ac6391aacafbfb20cd42be313b32f1119"><td class="memItemLeft" align="right" valign="top"><a id="ac6391aacafbfb20cd42be313b32f1119" name="ac6391aacafbfb20cd42be313b32f1119"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>get_n_global_levels</b> () const</td></tr>
+<tr class="memdesc:ac6391aacafbfb20cd42be313b32f1119"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the global maximum level of the triangulation. <br /></td></tr>
+<tr class="separator:ac6391aacafbfb20cd42be313b32f1119"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1ddbd931ed9712d2b89e37849ebdb9b" id="r_aa1ddbd931ed9712d2b89e37849ebdb9b"><td class="memItemLeft" align="right" valign="top"><a id="aa1ddbd931ed9712d2b89e37849ebdb9b" name="aa1ddbd931ed9712d2b89e37849ebdb9b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>generate_mesh</b> ()</td></tr>
+<tr class="memdesc:aa1ddbd931ed9712d2b89e37849ebdb9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate mesh. <br /></td></tr>
+<tr class="separator:aa1ddbd931ed9712d2b89e37849ebdb9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ebb794d89867a3bf852bf2b0f5a3f7a" id="r_a5ebb794d89867a3bf852bf2b0f5a3f7a"><td class="memItemLeft" align="right" valign="top"><a id="a5ebb794d89867a3bf852bf2b0f5a3f7a" name="a5ebb794d89867a3bf852bf2b0f5a3f7a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>export_triangulation_as_vtk</b> (const std::string &amp;filename) const</td></tr>
 <tr class="memdesc:a5ebb794d89867a3bf852bf2b0f5a3f7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export triangulation to vtk. <br /></td></tr>
@@ -136,8 +136,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>export_triangulation_
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;int dim&gt;<br />
 class triangulationHandler&lt; dim &gt;</div><p>This class handlers the generation and manipulation of triangulations. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
-<li>/home/runner/work/phaseField/phaseField/include/core/<a class="el" href="triangulation__handler_8h_source.html">triangulation_handler.h</a></li>
+</div><hr/>The documentation for this class was generated from the following files:<ul>
+<li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="triangulation__handler_8h_source.html">triangulation_handler.h</a></li>
+<li>/home/runner/work/phaseField/phaseField/src/core/<b>triangulation_handler.cc</b></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>PRISMS-PF Manual: solutionOutput&lt; dim &gt; Class Template Reference</title>
+<title>PRISMS-PF Manual: solutionOutput&lt; dim, number &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -94,7 +94,7 @@ $(document).ready(function(){initNavTree('classsolutionOutput.html',''); initRes
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classsolutionOutput-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">solutionOutput&lt; dim &gt; Class Template Reference</div></div>
+  <div class="headertitle"><div class="title">solutionOutput&lt; dim, number &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -105,16 +105,20 @@ $(document).ready(function(){initNavTree('classsolutionOutput.html',''); initRes
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4cd62e5364f2057e1106e5a55dbbec0d" id="r_a4cd62e5364f2057e1106e5a55dbbec0d"><td class="memItemLeft" align="right" valign="top"><a id="a4cd62e5364f2057e1106e5a55dbbec0d" name="a4cd62e5364f2057e1106e5a55dbbec0d"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>solutionOutput</b> (const dealii::LinearAlgebra::distributed::Vector&lt; double &gt; &amp;solution, const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, const uint &amp;degree)</td></tr>
-<tr class="memdesc:a4cd62e5364f2057e1106e5a55dbbec0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for a single field that must be output. <br /></td></tr>
-<tr class="separator:a4cd62e5364f2057e1106e5a55dbbec0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a75c86ce4db14721eb437f27110e0bb" id="r_a1a75c86ce4db14721eb437f27110e0bb"><td class="memItemLeft" align="right" valign="top"><a id="a1a75c86ce4db14721eb437f27110e0bb" name="a1a75c86ce4db14721eb437f27110e0bb"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>solutionOutput</b> (const dealii::LinearAlgebra::distributed::Vector&lt; number &gt; &amp;solution, const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, const unsigned int &amp;degree, const std::string &amp;name, const <a class="el" href="classuserInputParameters.html">userInputParameters</a>&lt; dim &gt; &amp;user_inputs)</td></tr>
+<tr class="memdesc:a1a75c86ce4db14721eb437f27110e0bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for a single field that must be output. <br /></td></tr>
+<tr class="separator:a1a75c86ce4db14721eb437f27110e0bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac196a4bd1467f6e7b77c548c9c640e74" id="r_ac196a4bd1467f6e7b77c548c9c640e74"><td class="memItemLeft" align="right" valign="top"><a id="ac196a4bd1467f6e7b77c548c9c640e74" name="ac196a4bd1467f6e7b77c548c9c640e74"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>solutionOutput</b> (const std::unordered_map&lt; std::pair&lt; unsigned int, dependencyType &gt;, dealii::LinearAlgebra::distributed::Vector&lt; number &gt; *, <a class="el" href="structpairHash.html">pairHash</a> &gt; &amp;solution_set, const std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; &amp;dof_handlers, const unsigned int &amp;degree, const std::string &amp;name, const <a class="el" href="classuserInputParameters.html">userInputParameters</a>&lt; dim &gt; &amp;user_inputs)</td></tr>
+<tr class="memdesc:ac196a4bd1467f6e7b77c548c9c640e74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for a multiple fields that must be output. <br /></td></tr>
+<tr class="separator:ac196a4bd1467f6e7b77c548c9c640e74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;int dim&gt;<br />
-class solutionOutput&lt; dim &gt;</div><p>Class that outputs a passed solution to vtu, vtk, or pvtu. </p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;int dim, typename number = double&gt;<br />
+class solutionOutput&lt; dim, number &gt;</div><p>Class that outputs a passed solution to vtu, vtk, or pvtu. </p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
-<li>/home/runner/work/phaseField/phaseField/include/core/<a class="el" href="solution__output_8h_source.html">solution_output.h</a></li>
+<li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="solution__output_8h_source.html">solution_output.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

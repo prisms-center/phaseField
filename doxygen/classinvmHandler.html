@@ -92,6 +92,7 @@ $(document).ready(function(){initNavTree('classinvmHandler.html',''); initResiza
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classinvmHandler-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">invmHandler&lt; dim, degree &gt; Class Template Reference</div></div>
@@ -103,16 +104,32 @@ $(document).ready(function(){initNavTree('classinvmHandler.html',''); initResiza
 
 <p><code>#include &lt;<a class="el" href="invm__handler_8h_source.html">invm_handler.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a852d0fcbcefbbe9250ffba99eebad8f7" id="r_a852d0fcbcefbbe9250ffba99eebad8f7"><td class="memItemLeft" align="right" valign="top"><a id="a852d0fcbcefbbe9250ffba99eebad8f7" name="a852d0fcbcefbbe9250ffba99eebad8f7"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>VectorType</b> = dealii::LinearAlgebra::distributed::Vector&lt; double &gt;</td></tr>
+<tr class="separator:a852d0fcbcefbbe9250ffba99eebad8f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a661ec907d002a23a0f55eb1cbf34148a" id="r_a661ec907d002a23a0f55eb1cbf34148a"><td class="memItemLeft" align="right" valign="top"><a id="a661ec907d002a23a0f55eb1cbf34148a" name="a661ec907d002a23a0f55eb1cbf34148a"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = double</td></tr>
+<tr class="separator:a661ec907d002a23a0f55eb1cbf34148a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf46d398dca3d9f44e71d7885cac2b60" id="r_adf46d398dca3d9f44e71d7885cac2b60"><td class="memItemLeft" align="right" valign="top"><a id="adf46d398dca3d9f44e71d7885cac2b60" name="adf46d398dca3d9f44e71d7885cac2b60"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>size_type</b> = dealii::VectorizedArray&lt; double &gt;</td></tr>
+<tr class="separator:adf46d398dca3d9f44e71d7885cac2b60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac4ec34e0a36acca5508b44d0c2fc0245" id="r_ac4ec34e0a36acca5508b44d0c2fc0245"><td class="memItemLeft" align="right" valign="top"><a id="ac4ec34e0a36acca5508b44d0c2fc0245" name="ac4ec34e0a36acca5508b44d0c2fc0245"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>invmHandler</b> (const AttributesList &amp;_variable_attributes)</td></tr>
-<tr class="memdesc:ac4ec34e0a36acca5508b44d0c2fc0245"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
-<tr class="separator:ac4ec34e0a36acca5508b44d0c2fc0245"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5004d1a4d81fb0c4a23b7806ba04cc7" id="r_ab5004d1a4d81fb0c4a23b7806ba04cc7"><td class="memItemLeft" align="right" valign="top"><a id="ab5004d1a4d81fb0c4a23b7806ba04cc7" name="ab5004d1a4d81fb0c4a23b7806ba04cc7"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>~invmHandler</b> ()</td></tr>
-<tr class="memdesc:ab5004d1a4d81fb0c4a23b7806ba04cc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
-<tr class="separator:ab5004d1a4d81fb0c4a23b7806ba04cc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81d04c19386a3c754316f699ca4bfe6c" id="r_a81d04c19386a3c754316f699ca4bfe6c"><td class="memItemLeft" align="right" valign="top"><a id="a81d04c19386a3c754316f699ca4bfe6c" name="a81d04c19386a3c754316f699ca4bfe6c"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>invmHandler</b> (const std::map&lt; unsigned int, <a class="el" href="structvariableAttributes.html">variableAttributes</a> &gt; &amp;_variable_attributes)</td></tr>
+<tr class="memdesc:a81d04c19386a3c754316f699ca4bfe6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="separator:a81d04c19386a3c754316f699ca4bfe6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aceea78ffceffe92cd999e3cb67f8ebd5" id="r_aceea78ffceffe92cd999e3cb67f8ebd5"><td class="memItemLeft" align="right" valign="top"><a id="aceea78ffceffe92cd999e3cb67f8ebd5" name="aceea78ffceffe92cd999e3cb67f8ebd5"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>~invmHandler</b> ()=default</td></tr>
+<tr class="memdesc:aceea78ffceffe92cd999e3cb67f8ebd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
+<tr class="separator:aceea78ffceffe92cd999e3cb67f8ebd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58a706d58a6de1b000944fc2b3b02075" id="r_a58a706d58a6de1b000944fc2b3b02075"><td class="memItemLeft" align="right" valign="top"><a id="a58a706d58a6de1b000944fc2b3b02075" name="a58a706d58a6de1b000944fc2b3b02075"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>initialize</b> (std::shared_ptr&lt; dealii::MatrixFree&lt; dim, double, size_type &gt; &gt; _data)</td></tr>
+<tr class="memdesc:a58a706d58a6de1b000944fc2b3b02075"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize. <br /></td></tr>
+<tr class="separator:a58a706d58a6de1b000944fc2b3b02075"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0adde7d988528de73c7da45a2575c0e" id="r_ac0adde7d988528de73c7da45a2575c0e"><td class="memItemLeft" align="right" valign="top"><a id="ac0adde7d988528de73c7da45a2575c0e" name="ac0adde7d988528de73c7da45a2575c0e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>compute_invm</b> ()</td></tr>
 <tr class="memdesc:ac0adde7d988528de73c7da45a2575c0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the mass matrix for scalar/vector fields. <br /></td></tr>
@@ -121,16 +138,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>compute_invm</b> ()</
 void&#160;</td><td class="memItemRight" valign="bottom"><b>recompute_invm</b> ()</td></tr>
 <tr class="memdesc:ad78286b721026319253de1471a0c8b1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recompute the mass matrix for scalar/vector fields. This just points to <a class="el" href="classinvmHandler.html#ac0adde7d988528de73c7da45a2575c0e" title="Compute the mass matrix for scalar/vector fields.">compute_invm()</a> and is used for style. <br /></td></tr>
 <tr class="separator:ad78286b721026319253de1471a0c8b1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe19066f4bbc9f4f20ea5c445c0a2441" id="r_abe19066f4bbc9f4f20ea5c445c0a2441"><td class="memItemLeft" align="right" valign="top"><a id="abe19066f4bbc9f4f20ea5c445c0a2441" name="abe19066f4bbc9f4f20ea5c445c0a2441"></a>
-const dealii::LinearAlgebra::distributed::Vector&lt; double &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_invm</b> (const uint &amp;index)</td></tr>
-<tr class="memdesc:abe19066f4bbc9f4f20ea5c445c0a2441"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the mass matrix for the given field index (constant reference). <br /></td></tr>
-<tr class="separator:abe19066f4bbc9f4f20ea5c445c0a2441"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae44bbc4e3d0957361bd9c419d287904f" id="r_ae44bbc4e3d0957361bd9c419d287904f"><td class="memItemLeft" align="right" valign="top"><a id="ae44bbc4e3d0957361bd9c419d287904f" name="ae44bbc4e3d0957361bd9c419d287904f"></a>
+const VectorType &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_invm</b> (const unsigned int &amp;index) const</td></tr>
+<tr class="memdesc:ae44bbc4e3d0957361bd9c419d287904f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the mass matrix for the given field index (constant reference). <br /></td></tr>
+<tr class="separator:ae44bbc4e3d0957361bd9c419d287904f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;int dim, int degree&gt;<br />
 class invmHandler&lt; dim, degree &gt;</div><p>This class handles the computation and access of the inverted mass matrix for explicit solves. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
-<li>/home/runner/work/phaseField/phaseField/include/core/<a class="el" href="invm__handler_8h_source.html">invm_handler.h</a></li>
+</div><hr/>The documentation for this class was generated from the following files:<ul>
+<li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="invm__handler_8h_source.html">invm_handler.h</a></li>
+<li>/home/runner/work/phaseField/phaseField/src/core/<b>invm_handler.cc</b></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

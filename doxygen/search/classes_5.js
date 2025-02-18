@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['linearsolveparameters_0',['linearSolveParameters',['../classlinearSolveParameters.html',1,'']]],
-  ['linearsolverparameters_1',['linearSolverParameters',['../classlinearSolverParameters.html',1,'']]]
+  ['identitysolver_0',['identitySolver',['../classidentitySolver.html',1,'']]],
+  ['initialcondition_1',['initialCondition',['../classinitialCondition.html',1,'']]],
+  ['inputfilereader_2',['inputFileReader',['../classinputFileReader.html',1,'']]],
+  ['invmhandler_3',['invmHandler',['../classinvmHandler.html',1,'']]]
 ];

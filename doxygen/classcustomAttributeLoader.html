@@ -110,11 +110,8 @@ Inheritance diagram for customAttributeLoader:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a3b7a440e8b99be30e711f6f6f6bc6757" id="r_a3b7a440e8b99be30e711f6f6f6bc6757"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcustomAttributeLoader.html#a3b7a440e8b99be30e711f6f6f6bc6757">loadVariableAttributes</a> () override</td></tr>
-<tr class="memdesc:a3b7a440e8b99be30e711f6f6f6bc6757"><td class="mdescLeft">&#160;</td><td class="mdescRight">User-facing method where the variable attributes are set.  <br /></td></tr>
+<tr class="memdesc:a3b7a440e8b99be30e711f6f6f6bc6757"><td class="mdescLeft">&#160;</td><td class="mdescRight">User-facing method where the variable attributes are set for solution fields and postprocess fields.  <br /></td></tr>
 <tr class="separator:a3b7a440e8b99be30e711f6f6f6bc6757"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58e7cb7bb47b8455486ab9a1a28b5509" id="r_a58e7cb7bb47b8455486ab9a1a28b5509"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcustomAttributeLoader.html#a58e7cb7bb47b8455486ab9a1a28b5509">loadPostProcessorVariableAttributes</a> () override</td></tr>
-<tr class="memdesc:a58e7cb7bb47b8455486ab9a1a28b5509"><td class="mdescLeft">&#160;</td><td class="mdescRight">User-facing method where the postprocessing variable attributes are set.  <br /></td></tr>
-<tr class="separator:a58e7cb7bb47b8455486ab9a1a28b5509"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classvariableAttributeLoader"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classvariableAttributeLoader')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classvariableAttributeLoader.html">variableAttributeLoader</a></td></tr>
 <tr class="memitem:a01c1fb95aff3b75dc75f251aa8ac3c2e inherit pub_methods_classvariableAttributeLoader" id="r_a01c1fb95aff3b75dc75f251aa8ac3c2e"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>variableAttributeLoader</b> ()=default</td></tr>
@@ -126,92 +123,58 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~variableAttribute
 <tr class="separator:a498f796b3f923e338ff5979f7bbd9644 inherit pub_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf88b9d7f39fd40346b98daf181fadf0 inherit pub_methods_classvariableAttributeLoader" id="r_acf88b9d7f39fd40346b98daf181fadf0"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>init_variable_attributes</b> ()</td></tr>
-<tr class="memdesc:acf88b9d7f39fd40346b98daf181fadf0 inherit pub_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the variable attributes from the two user-facing methods <code><a class="el" href="classvariableAttributeLoader.html#a3715ca75c580a480ba963f4e299b647a" title="User-facing method where the variable attributes are set.">loadVariableAttributes()</a></code> and <code><a class="el" href="classvariableAttributeLoader.html#a929cea4029a8a58111c481b5e8fe911a" title="User-facing method where the postprocessing variable attributes are set.">loadPostProcessorVariableAttributes()</a></code>. This must be called after the default constructor for derived classes. <br /></td></tr>
+<tr class="memdesc:acf88b9d7f39fd40346b98daf181fadf0 inherit pub_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the variable attributes from the two user-facing methods <code><a class="el" href="classvariableAttributeLoader.html#a7e2792b84961126efd6d0f63a9a19fbe" title="User-facing method where the variable attributes are set for solution fields and postprocess fields.">loadVariableAttributes()</a></code> and <code>loadPostProcessorVariableAttributes()</code>. This must be called after the default constructor for derived classes. <br /></td></tr>
 <tr class="separator:acf88b9d7f39fd40346b98daf181fadf0 inherit pub_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a195f8ab6aca6f9d3490d8d9c7273cec4 inherit pub_methods_classvariableAttributeLoader" id="r_a195f8ab6aca6f9d3490d8d9c7273cec4"><td class="memItemLeft" align="right" valign="top">
-AttributesList&#160;</td><td class="memItemRight" valign="bottom"><b>get_var_attributes</b> () const</td></tr>
-<tr class="memdesc:a195f8ab6aca6f9d3490d8d9c7273cec4 inherit pub_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">getter function for variable attributes list (copy). <br /></td></tr>
-<tr class="separator:a195f8ab6aca6f9d3490d8d9c7273cec4 inherit pub_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f8f23d443aeae0f7d10a1fb9888fded inherit pub_methods_classvariableAttributeLoader" id="r_a2f8f23d443aeae0f7d10a1fb9888fded"><td class="memItemLeft" align="right" valign="top">
-AttributesList&#160;</td><td class="memItemRight" valign="bottom"><b>get_pp_attributes</b> () const</td></tr>
-<tr class="memdesc:a2f8f23d443aeae0f7d10a1fb9888fded inherit pub_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">getter function for postprocessing attributes list (copy). <br /></td></tr>
-<tr class="separator:a2f8f23d443aeae0f7d10a1fb9888fded inherit pub_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a209fcfb2eb7b34b2f7e5c672995f3b6a inherit pub_methods_classvariableAttributeLoader" id="r_a209fcfb2eb7b34b2f7e5c672995f3b6a"><td class="memItemLeft" align="right" valign="top">
+std::map&lt; unsigned int, <a class="el" href="structvariableAttributes.html">variableAttributes</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_var_attributes</b> () const</td></tr>
+<tr class="memdesc:a209fcfb2eb7b34b2f7e5c672995f3b6a inherit pub_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">getter function for variable attributes list (copy). <br /></td></tr>
+<tr class="separator:a209fcfb2eb7b34b2f7e5c672995f3b6a inherit pub_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_types_classvariableAttributeLoader"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classvariableAttributeLoader')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classvariableAttributeLoader.html">variableAttributeLoader</a></td></tr>
-<tr class="memitem:a071221f8db529cbe1ca8081c2a03530a inherit pub_types_classvariableAttributeLoader" id="r_a071221f8db529cbe1ca8081c2a03530a"><td class="memItemLeft" align="right" valign="top">
-using&#160;</td><td class="memItemRight" valign="bottom"><b>EvalFlags</b> = dealii::EvaluationFlags::EvaluationFlags</td></tr>
-<tr class="separator:a071221f8db529cbe1ca8081c2a03530a inherit pub_types_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classvariableAttributeLoader"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classvariableAttributeLoader')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classvariableAttributeLoader.html">variableAttributeLoader</a></td></tr>
-<tr class="memitem:acaa0920f53cd14d1fcdf18d2b133fe40 inherit pro_methods_classvariableAttributeLoader" id="r_acaa0920f53cd14d1fcdf18d2b133fe40"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#acaa0920f53cd14d1fcdf18d2b133fe40">set_variable_name</a> (const uint &amp;index, const std::string &amp;name) const</td></tr>
-<tr class="memdesc:acaa0920f53cd14d1fcdf18d2b133fe40 inherit pro_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the name of the variable at <code>index</code> to <code>name</code>.  <br /></td></tr>
-<tr class="separator:acaa0920f53cd14d1fcdf18d2b133fe40 inherit pro_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3751d587fb95109ed6351348327790aa inherit pro_methods_classvariableAttributeLoader" id="r_a3751d587fb95109ed6351348327790aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a3751d587fb95109ed6351348327790aa">set_variable_type</a> (const uint &amp;index, const fieldType &amp;field_type) const</td></tr>
-<tr class="memdesc:a3751d587fb95109ed6351348327790aa inherit pro_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the field type of the variable at <code>index</code> to <code>field_type</code> where <code>field_type</code> can be <code>SCALAR</code> or <code>VECTOR</code>.  <br /></td></tr>
-<tr class="separator:a3751d587fb95109ed6351348327790aa inherit pro_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae114baaa9ce15129c14b4f0f122259ed inherit pro_methods_classvariableAttributeLoader" id="r_ae114baaa9ce15129c14b4f0f122259ed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#ae114baaa9ce15129c14b4f0f122259ed">set_variable_equation_type</a> (const uint &amp;index, const PDEType &amp;pde_type) const</td></tr>
-<tr class="memdesc:ae114baaa9ce15129c14b4f0f122259ed inherit pro_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the PDE type of the variable at <code>index</code> to <code>pde_type</code> where <code>pde_type</code>can be <code>EXPLICIT_TIME_DEPENDENT</code>, <code>IMPLICIT_TIME_DEPENDENT</code>, <code>TIME_INDEPENDENT</code>, <code>AUXILIARY</code>.  <br /></td></tr>
-<tr class="separator:ae114baaa9ce15129c14b4f0f122259ed inherit pro_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77be237ff664c70b4ebb394e112096e5 inherit pro_methods_classvariableAttributeLoader" id="r_a77be237ff664c70b4ebb394e112096e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a77be237ff664c70b4ebb394e112096e5">set_dependencies_value_term_RHS</a> (const uint &amp;index, const std::string &amp;dependencies)</td></tr>
-<tr class="memdesc:a77be237ff664c70b4ebb394e112096e5 inherit pro_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add dependencies for the value term of the RHS equation of the variable at <code>index</code>.  <br /></td></tr>
-<tr class="separator:a77be237ff664c70b4ebb394e112096e5 inherit pro_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ab887cbcea1e550498d49b4fe6be23e inherit pro_methods_classvariableAttributeLoader" id="r_a3ab887cbcea1e550498d49b4fe6be23e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a3ab887cbcea1e550498d49b4fe6be23e">set_dependencies_gradient_term_RHS</a> (const uint &amp;index, const std::string &amp;dependencies)</td></tr>
-<tr class="memdesc:a3ab887cbcea1e550498d49b4fe6be23e inherit pro_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add dependencies for the gradient term of the RHS equation of the variable at <code>index</code>.  <br /></td></tr>
-<tr class="separator:a3ab887cbcea1e550498d49b4fe6be23e inherit pro_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada67b05259c26df6fd13fd5c599f13c4 inherit pro_methods_classvariableAttributeLoader" id="r_ada67b05259c26df6fd13fd5c599f13c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#ada67b05259c26df6fd13fd5c599f13c4">set_dependencies_value_term_LHS</a> (const uint &amp;index, const std::string &amp;dependencies) const</td></tr>
-<tr class="memdesc:ada67b05259c26df6fd13fd5c599f13c4 inherit pro_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add dependencies for the value term of the LHS equation of the variable at <code>index</code>.  <br /></td></tr>
-<tr class="separator:ada67b05259c26df6fd13fd5c599f13c4 inherit pro_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a0e4357c30da7a7ba34dbdd1db07d9e inherit pro_methods_classvariableAttributeLoader" id="r_a3a0e4357c30da7a7ba34dbdd1db07d9e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a3a0e4357c30da7a7ba34dbdd1db07d9e">set_dependencies_gradient_term_LHS</a> (const uint &amp;index, const std::string &amp;dependencies) const</td></tr>
-<tr class="memdesc:a3a0e4357c30da7a7ba34dbdd1db07d9e inherit pro_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add dependencies for the gradient term of the LHS equation of the variable at <code>index</code>.  <br /></td></tr>
-<tr class="separator:a3a0e4357c30da7a7ba34dbdd1db07d9e inherit pro_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4e216d50c8c9478dfe1386e823d022d inherit pro_methods_classvariableAttributeLoader" id="r_af4e216d50c8c9478dfe1386e823d022d"><td class="memTemplParams" colspan="2">template&lt;typename Iterable &gt; </td></tr>
-<tr class="memitem:af4e216d50c8c9478dfe1386e823d022d inherit pro_methods_classvariableAttributeLoader"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#af4e216d50c8c9478dfe1386e823d022d">insert_dependencies_value_term_RHS</a> (const uint &amp;index, const Iterable &amp;dependencies)</td></tr>
-<tr class="memdesc:af4e216d50c8c9478dfe1386e823d022d inherit pro_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert dependencies for the value term of the RHS equation of the variable at <code>index</code>.  <br /></td></tr>
-<tr class="separator:af4e216d50c8c9478dfe1386e823d022d inherit pro_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f1527ab4042cd9e2f2ee648d91f7c19 inherit pro_methods_classvariableAttributeLoader" id="r_a4f1527ab4042cd9e2f2ee648d91f7c19"><td class="memTemplParams" colspan="2">template&lt;typename Iterable &gt; </td></tr>
-<tr class="memitem:a4f1527ab4042cd9e2f2ee648d91f7c19 inherit pro_methods_classvariableAttributeLoader"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a4f1527ab4042cd9e2f2ee648d91f7c19">insert_dependencies_gradient_term_RHS</a> (const uint &amp;index, const Iterable &amp;dependencies)</td></tr>
-<tr class="memdesc:a4f1527ab4042cd9e2f2ee648d91f7c19 inherit pro_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert dependencies for the gradient term of the RHS equation of the variable at <code>index</code>.  <br /></td></tr>
-<tr class="separator:a4f1527ab4042cd9e2f2ee648d91f7c19 inherit pro_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0145cab432f4bf0e99495100bb9d6fb9 inherit pro_methods_classvariableAttributeLoader" id="r_a0145cab432f4bf0e99495100bb9d6fb9"><td class="memTemplParams" colspan="2">template&lt;typename Iterable &gt; </td></tr>
-<tr class="memitem:a0145cab432f4bf0e99495100bb9d6fb9 inherit pro_methods_classvariableAttributeLoader"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a0145cab432f4bf0e99495100bb9d6fb9">insert_dependencies_value_term_LHS</a> (const uint &amp;index, const Iterable &amp;dependencies) const</td></tr>
-<tr class="memdesc:a0145cab432f4bf0e99495100bb9d6fb9 inherit pro_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert dependencies for the value term of the LHS equation of the variable at <code>index</code>.  <br /></td></tr>
-<tr class="separator:a0145cab432f4bf0e99495100bb9d6fb9 inherit pro_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4e93518b9ce15730fd2beab49a2308f inherit pro_methods_classvariableAttributeLoader" id="r_aa4e93518b9ce15730fd2beab49a2308f"><td class="memTemplParams" colspan="2">template&lt;typename Iterable &gt; </td></tr>
-<tr class="memitem:aa4e93518b9ce15730fd2beab49a2308f inherit pro_methods_classvariableAttributeLoader"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#aa4e93518b9ce15730fd2beab49a2308f">insert_dependencies_gradient_term_LHS</a> (const uint &amp;index, const Iterable &amp;dependencies) const</td></tr>
-<tr class="memdesc:aa4e93518b9ce15730fd2beab49a2308f inherit pro_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert dependencies for the gradient term of the LHS equation of the variable at <code>index</code>.  <br /></td></tr>
-<tr class="separator:aa4e93518b9ce15730fd2beab49a2308f inherit pro_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98ce24bc091f8a739ba423ff7389dcfb inherit pro_methods_classvariableAttributeLoader" id="r_a98ce24bc091f8a739ba423ff7389dcfb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a98ce24bc091f8a739ba423ff7389dcfb">set_variable_name</a> (const unsigned int &amp;index, const std::string &amp;name)</td></tr>
+<tr class="memdesc:a98ce24bc091f8a739ba423ff7389dcfb inherit pro_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the name of the variable at <code>index</code> to <code>name</code>.  <br /></td></tr>
+<tr class="separator:a98ce24bc091f8a739ba423ff7389dcfb inherit pro_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49d45cd903aca385d8bf019e05ea2391 inherit pro_methods_classvariableAttributeLoader" id="r_a49d45cd903aca385d8bf019e05ea2391"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a49d45cd903aca385d8bf019e05ea2391">set_variable_type</a> (const unsigned int &amp;index, const fieldType &amp;field_type)</td></tr>
+<tr class="memdesc:a49d45cd903aca385d8bf019e05ea2391 inherit pro_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the field type of the variable at <code>index</code> to <code>field_type</code> where <code>field_type</code> can be <code>SCALAR</code> or <code>VECTOR</code>.  <br /></td></tr>
+<tr class="separator:a49d45cd903aca385d8bf019e05ea2391 inherit pro_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2267c669c2f4be21c345ffc6c1f87f3c inherit pro_methods_classvariableAttributeLoader" id="r_a2267c669c2f4be21c345ffc6c1f87f3c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a2267c669c2f4be21c345ffc6c1f87f3c">set_variable_equation_type</a> (const unsigned int &amp;index, const PDEType &amp;pde_type)</td></tr>
+<tr class="memdesc:a2267c669c2f4be21c345ffc6c1f87f3c inherit pro_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the PDE type of the variable at <code>index</code> to <code>pde_type</code> where <code>pde_type</code>can be <code>EXPLICIT_TIME_DEPENDENT</code>, <code>IMPLICIT_TIME_DEPENDENT</code>, <code>TIME_INDEPENDENT</code>, <code>AUXILIARY</code>.  <br /></td></tr>
+<tr class="separator:a2267c669c2f4be21c345ffc6c1f87f3c inherit pro_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a301a4c0992fd76893daf41830ac19413 inherit pro_methods_classvariableAttributeLoader" id="r_a301a4c0992fd76893daf41830ac19413"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a301a4c0992fd76893daf41830ac19413">set_is_postprocessed_field</a> (const unsigned int &amp;index, const bool &amp;is_postprocess)</td></tr>
+<tr class="memdesc:a301a4c0992fd76893daf41830ac19413 inherit pro_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the whether the field is a postprocessed field.  <br /></td></tr>
+<tr class="separator:a301a4c0992fd76893daf41830ac19413 inherit pro_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afccf44c6b892033ca4ff66f65cc71a79 inherit pro_methods_classvariableAttributeLoader" id="r_afccf44c6b892033ca4ff66f65cc71a79"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#afccf44c6b892033ca4ff66f65cc71a79">set_dependencies_value_term_RHS</a> (const unsigned int &amp;index, const std::string &amp;dependencies)</td></tr>
+<tr class="memdesc:afccf44c6b892033ca4ff66f65cc71a79 inherit pro_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add dependencies for the value term of the RHS equation of the variable at <code>index</code>.  <br /></td></tr>
+<tr class="separator:afccf44c6b892033ca4ff66f65cc71a79 inherit pro_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a903217690c09ccfc9f9926dc56044039 inherit pro_methods_classvariableAttributeLoader" id="r_a903217690c09ccfc9f9926dc56044039"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a903217690c09ccfc9f9926dc56044039">set_dependencies_gradient_term_RHS</a> (const unsigned int &amp;index, const std::string &amp;dependencies)</td></tr>
+<tr class="memdesc:a903217690c09ccfc9f9926dc56044039 inherit pro_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add dependencies for the gradient term of the RHS equation of the variable at <code>index</code>.  <br /></td></tr>
+<tr class="separator:a903217690c09ccfc9f9926dc56044039 inherit pro_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add756c6dc193b15ffab838306bc5e703 inherit pro_methods_classvariableAttributeLoader" id="r_add756c6dc193b15ffab838306bc5e703"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#add756c6dc193b15ffab838306bc5e703">set_dependencies_value_term_LHS</a> (const unsigned int &amp;index, const std::string &amp;dependencies)</td></tr>
+<tr class="memdesc:add756c6dc193b15ffab838306bc5e703 inherit pro_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add dependencies for the value term of the LHS equation of the variable at <code>index</code>.  <br /></td></tr>
+<tr class="separator:add756c6dc193b15ffab838306bc5e703 inherit pro_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6baa2d3657b6668f3946f5446da0d14c inherit pro_methods_classvariableAttributeLoader" id="r_a6baa2d3657b6668f3946f5446da0d14c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a6baa2d3657b6668f3946f5446da0d14c">set_dependencies_gradient_term_LHS</a> (const unsigned int &amp;index, const std::string &amp;dependencies)</td></tr>
+<tr class="memdesc:a6baa2d3657b6668f3946f5446da0d14c inherit pro_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add dependencies for the gradient term of the LHS equation of the variable at <code>index</code>.  <br /></td></tr>
+<tr class="separator:a6baa2d3657b6668f3946f5446da0d14c inherit pro_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8140101944800e99e2ceb73ff97b809d inherit pro_methods_classvariableAttributeLoader" id="r_a8140101944800e99e2ceb73ff97b809d"><td class="memTemplParams" colspan="2">template&lt;typename Iterable &gt; </td></tr>
+<tr class="memitem:a8140101944800e99e2ceb73ff97b809d inherit pro_methods_classvariableAttributeLoader"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a8140101944800e99e2ceb73ff97b809d">insert_dependencies_value_term_RHS</a> (const unsigned int &amp;index, const Iterable &amp;dependencies)</td></tr>
+<tr class="memdesc:a8140101944800e99e2ceb73ff97b809d inherit pro_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert dependencies for the value term of the RHS equation of the variable at <code>index</code>.  <br /></td></tr>
+<tr class="separator:a8140101944800e99e2ceb73ff97b809d inherit pro_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2419731964cdad99e238d0f81018381 inherit pro_methods_classvariableAttributeLoader" id="r_ac2419731964cdad99e238d0f81018381"><td class="memTemplParams" colspan="2">template&lt;typename Iterable &gt; </td></tr>
+<tr class="memitem:ac2419731964cdad99e238d0f81018381 inherit pro_methods_classvariableAttributeLoader"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#ac2419731964cdad99e238d0f81018381">insert_dependencies_gradient_term_RHS</a> (const unsigned int &amp;index, const Iterable &amp;dependencies)</td></tr>
+<tr class="memdesc:ac2419731964cdad99e238d0f81018381 inherit pro_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert dependencies for the gradient term of the RHS equation of the variable at <code>index</code>.  <br /></td></tr>
+<tr class="separator:ac2419731964cdad99e238d0f81018381 inherit pro_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d561ebe5911f5ea41e02986232052e7 inherit pro_methods_classvariableAttributeLoader" id="r_a6d561ebe5911f5ea41e02986232052e7"><td class="memTemplParams" colspan="2">template&lt;typename Iterable &gt; </td></tr>
+<tr class="memitem:a6d561ebe5911f5ea41e02986232052e7 inherit pro_methods_classvariableAttributeLoader"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a6d561ebe5911f5ea41e02986232052e7">insert_dependencies_value_term_LHS</a> (const unsigned int &amp;index, const Iterable &amp;dependencies)</td></tr>
+<tr class="memdesc:a6d561ebe5911f5ea41e02986232052e7 inherit pro_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert dependencies for the value term of the LHS equation of the variable at <code>index</code>.  <br /></td></tr>
+<tr class="separator:a6d561ebe5911f5ea41e02986232052e7 inherit pro_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a893e8a001cdf7944942fe18057216789 inherit pro_methods_classvariableAttributeLoader" id="r_a893e8a001cdf7944942fe18057216789"><td class="memTemplParams" colspan="2">template&lt;typename Iterable &gt; </td></tr>
+<tr class="memitem:a893e8a001cdf7944942fe18057216789 inherit pro_methods_classvariableAttributeLoader"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classvariableAttributeLoader.html#a893e8a001cdf7944942fe18057216789">insert_dependencies_gradient_term_LHS</a> (const unsigned int &amp;index, const Iterable &amp;dependencies)</td></tr>
+<tr class="memdesc:a893e8a001cdf7944942fe18057216789 inherit pro_methods_classvariableAttributeLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert dependencies for the gradient term of the LHS equation of the variable at <code>index</code>.  <br /></td></tr>
+<tr class="separator:a893e8a001cdf7944942fe18057216789 inherit pro_methods_classvariableAttributeLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a58e7cb7bb47b8455486ab9a1a28b5509" name="a58e7cb7bb47b8455486ab9a1a28b5509"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a58e7cb7bb47b8455486ab9a1a28b5509">&#9670;&#160;</a></span>loadPostProcessorVariableAttributes()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void customAttributeLoader::loadPostProcessorVariableAttributes </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>User-facing method where the postprocessing variable attributes are set. </p>
-
-<p>Reimplemented from <a class="el" href="classvariableAttributeLoader.html#a929cea4029a8a58111c481b5e8fe911a">variableAttributeLoader</a>.</p>
-
-</div>
-</div>
 <a id="a3b7a440e8b99be30e711f6f6f6bc6757" name="a3b7a440e8b99be30e711f6f6f6bc6757"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3b7a440e8b99be30e711f6f6f6bc6757">&#9670;&#160;</a></span>loadVariableAttributes()</h2>
 
@@ -235,14 +198,14 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>EvalFlags</b> = deal
 </table>
 </div><div class="memdoc">
 
-<p>User-facing method where the variable attributes are set. </p>
+<p>User-facing method where the variable attributes are set for solution fields and postprocess fields. </p>
 
-<p>Reimplemented from <a class="el" href="classvariableAttributeLoader.html#a3715ca75c580a480ba963f4e299b647a">variableAttributeLoader</a>.</p>
+<p>Reimplemented from <a class="el" href="classvariableAttributeLoader.html#a7e2792b84961126efd6d0f63a9a19fbe">variableAttributeLoader</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>/home/runner/work/phaseField/phaseField/include/core/<a class="el" href="variable__attribute__loader_8h_source.html">variable_attribute_loader.h</a></li>
+<li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="variable__attribute__loader_8h_source.html">variable_attribute_loader.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

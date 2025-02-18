@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['temporaldiscretization_0',['temporalDiscretization',['../classtemporalDiscretization.html',1,'']]],
-  ['triangulationhandler_1',['triangulationHandler',['../classtriangulationHandler.html',1,'']]]
+  ['solutionhandler_0',['solutionHandler',['../classsolutionHandler.html',1,'']]],
+  ['solutionoutput_1',['solutionOutput',['../classsolutionOutput.html',1,'']]],
+  ['spatialdiscretization_2',['spatialDiscretization',['../classspatialDiscretization.html',1,'']]]
 ];

@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['basesolver_0',['baseSolver',['../classbaseSolver.html#ae10748bfdfb69cd49b2201e80549f493',1,'baseSolver']]],
-  ['boundarycondition_1',['boundaryCondition',['../classboundaryCondition.html#a21a64fb30bde70bbd7e73a0dbf57dbfc',1,'boundaryCondition']]],
-  ['boundaryparameters_2',['boundaryParameters',['../classboundaryParameters.html#a0d3e4eb4b5b50779b6c0717ba8a7dc93',1,'boundaryParameters']]]
+  ['add_5fglobal_5fto_5flocal_5fmapping_0',['add_global_to_local_mapping',['../classmatrixFreeOperator.html#ae94f3952db24d19351175a369d9037fa',1,'matrixFreeOperator']]],
+  ['add_5fsrc_5fsolution_5fsubset_1',['add_src_solution_subset',['../classmatrixFreeOperator.html#a897b7a7a3fcf0dc7ed1a9f1ae85f65ae',1,'matrixFreeOperator']]]
 ];

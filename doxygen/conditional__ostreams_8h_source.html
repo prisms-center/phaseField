@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>PRISMS-PF Manual: /home/runner/work/phaseField/phaseField/include/core/conditional_ostreams.h Source File</title>
+<title>PRISMS-PF Manual: /home/runner/work/phaseField/phaseField/include/prismspf/core/conditional_ostreams.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,47 +103,51 @@ $(document).ready(function(){initNavTree('conditional__ostreams_8h_source.html',
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define conditional_ostreams_h</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;deal.II/base/conditional_ostream.h&gt;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;deal.II/base/mpi.h&gt;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;fstream&gt;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="foldopen" id="foldopen00014" data-start="{" data-end="};">
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="classconditionalOStreams.html">   14</a></span><span class="keyword">class </span><a class="code hl_class" href="classconditionalOStreams.html">conditionalOStreams</a></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>{</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <a class="code hl_function" href="classconditionalOStreams.html#ac724e2f4c59f68c0bd04f3938ecfb931">conditionalOStreams</a>();</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <a class="code hl_function" href="classconditionalOStreams.html#ae9eafe0dc5354d6dce44d309eaf797dc">~conditionalOStreams</a>();</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classconditionalOStreams.html#afa9f514f88a2cd79d5c4edd9e44fd312">   31</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> dealii::ConditionalOStream <a class="code hl_variable" href="classconditionalOStreams.html#afa9f514f88a2cd79d5c4edd9e44fd312">pout_base</a>;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="classconditionalOStreams.html#afb126f577a9b7f03724d5124aaf17dfe">   36</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> dealii::ConditionalOStream <a class="code hl_variable" href="classconditionalOStreams.html#afb126f577a9b7f03724d5124aaf17dfe">pout_verbose</a>;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keyword">static</span> dealii::ConditionalOStream &amp;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <a class="code hl_function" href="classconditionalOStreams.html#a78ca7c60d1c6bb1adfc3f0ec72e4fbb3">pout_summary</a>();</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="comment">// summary.log file</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keyword">static</span> std::ofstream summary_log_file;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="comment">// summary.log output stream</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keyword">static</span> dealii::ConditionalOStream pout_summary_instance;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>};</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;fstream&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="foldopen" id="foldopen00017" data-start="{" data-end="};">
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="classconditionalOStreams.html">   17</a></span><span class="keyword">class </span><a class="code hl_class" href="classconditionalOStreams.html">conditionalOStreams</a></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>{</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <a class="code hl_function" href="classconditionalOStreams.html#ac724e2f4c59f68c0bd04f3938ecfb931">conditionalOStreams</a>();</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <a class="code hl_function" href="classconditionalOStreams.html#ae9eafe0dc5354d6dce44d309eaf797dc">~conditionalOStreams</a>();</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keyword">static</span> dealii::ConditionalOStream &amp;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <a class="code hl_function" href="classconditionalOStreams.html#a2efcf782fde21881ad5f696f62a4f2ba">pout_base</a>();</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keyword">static</span> dealii::ConditionalOStream &amp;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <a class="code hl_function" href="classconditionalOStreams.html#a6d3d22d58e8e6ad572ec786d3e9752f9">pout_verbose</a>();</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keyword">static</span> dealii::ConditionalOStream &amp;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <a class="code hl_function" href="classconditionalOStreams.html#a78ca7c60d1c6bb1adfc3f0ec72e4fbb3">pout_summary</a>();</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="comment">// summary.log file</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keyword">static</span> std::ofstream summary_log_file;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>};</div>
 </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassconditionalOStreams_html"><div class="ttname"><a href="classconditionalOStreams.html">conditionalOStreams</a></div><div class="ttdoc">A class that allows printing to different output streams that are classified based on their verbosity...</div><div class="ttdef"><b>Definition</b> conditional_ostreams.h:15</div></div>
-<div class="ttc" id="aclassconditionalOStreams_html_a78ca7c60d1c6bb1adfc3f0ec72e4fbb3"><div class="ttname"><a href="classconditionalOStreams.html#a78ca7c60d1c6bb1adfc3f0ec72e4fbb3">conditionalOStreams::pout_summary</a></div><div class="ttdeci">static dealii::ConditionalOStream &amp; pout_summary()</div><div class="ttdoc">Log output stream for writing a summary.log file.</div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:40</div></div>
-<div class="ttc" id="aclassconditionalOStreams_html_ac724e2f4c59f68c0bd04f3938ecfb931"><div class="ttname"><a href="classconditionalOStreams.html#ac724e2f4c59f68c0bd04f3938ecfb931">conditionalOStreams::conditionalOStreams</a></div><div class="ttdeci">conditionalOStreams()</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:23</div></div>
-<div class="ttc" id="aclassconditionalOStreams_html_ae9eafe0dc5354d6dce44d309eaf797dc"><div class="ttname"><a href="classconditionalOStreams.html#ae9eafe0dc5354d6dce44d309eaf797dc">conditionalOStreams::~conditionalOStreams</a></div><div class="ttdeci">~conditionalOStreams()</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:31</div></div>
-<div class="ttc" id="aclassconditionalOStreams_html_afa9f514f88a2cd79d5c4edd9e44fd312"><div class="ttname"><a href="classconditionalOStreams.html#afa9f514f88a2cd79d5c4edd9e44fd312">conditionalOStreams::pout_base</a></div><div class="ttdeci">static const dealii::ConditionalOStream pout_base</div><div class="ttdoc">Generic parallel output stream. Used for essential information in release and debug mode.</div><div class="ttdef"><b>Definition</b> conditional_ostreams.h:31</div></div>
-<div class="ttc" id="aclassconditionalOStreams_html_afb126f577a9b7f03724d5124aaf17dfe"><div class="ttname"><a href="classconditionalOStreams.html#afb126f577a9b7f03724d5124aaf17dfe">conditionalOStreams::pout_verbose</a></div><div class="ttdeci">static const dealii::ConditionalOStream pout_verbose</div><div class="ttdoc">Verbose parallel output stream. Used for additional information in debug mode.</div><div class="ttdef"><b>Definition</b> conditional_ostreams.h:36</div></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>PRISMS_PF_END_NAMESPACE</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclassconditionalOStreams_html"><div class="ttname"><a href="classconditionalOStreams.html">conditionalOStreams</a></div><div class="ttdoc">A class that allows printing to different output streams that are classified based on their verbosity...</div><div class="ttdef"><b>Definition</b> conditional_ostreams.h:18</div></div>
+<div class="ttc" id="aclassconditionalOStreams_html_a2efcf782fde21881ad5f696f62a4f2ba"><div class="ttname"><a href="classconditionalOStreams.html#a2efcf782fde21881ad5f696f62a4f2ba">conditionalOStreams::pout_base</a></div><div class="ttdeci">static dealii::ConditionalOStream &amp; pout_base()</div><div class="ttdoc">Generic parallel output stream. Used for essential information in release and debug mode.</div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:31</div></div>
+<div class="ttc" id="aclassconditionalOStreams_html_a6d3d22d58e8e6ad572ec786d3e9752f9"><div class="ttname"><a href="classconditionalOStreams.html#a6d3d22d58e8e6ad572ec786d3e9752f9">conditionalOStreams::pout_verbose</a></div><div class="ttdeci">static dealii::ConditionalOStream &amp; pout_verbose()</div><div class="ttdoc">Verbose parallel output stream. Used for additional information in debug mode.</div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:40</div></div>
+<div class="ttc" id="aclassconditionalOStreams_html_a78ca7c60d1c6bb1adfc3f0ec72e4fbb3"><div class="ttname"><a href="classconditionalOStreams.html#a78ca7c60d1c6bb1adfc3f0ec72e4fbb3">conditionalOStreams::pout_summary</a></div><div class="ttdeci">static dealii::ConditionalOStream &amp; pout_summary()</div><div class="ttdoc">Log output stream for writing a summary.log file.</div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:22</div></div>
+<div class="ttc" id="aclassconditionalOStreams_html_ac724e2f4c59f68c0bd04f3938ecfb931"><div class="ttname"><a href="classconditionalOStreams.html#ac724e2f4c59f68c0bd04f3938ecfb931">conditionalOStreams::conditionalOStreams</a></div><div class="ttdeci">conditionalOStreams()</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:51</div></div>
+<div class="ttc" id="aclassconditionalOStreams_html_ae9eafe0dc5354d6dce44d309eaf797dc"><div class="ttname"><a href="classconditionalOStreams.html#ae9eafe0dc5354d6dce44d309eaf797dc">conditionalOStreams::~conditionalOStreams</a></div><div class="ttdeci">~conditionalOStreams()</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:59</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_3d69f64eaf81436fe2b22361382717e5.html">core</a></li><li class="navelem"><b>conditional_ostreams.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_72d2fbe96e504e5d9d70c5885bd9c513.html">core</a></li><li class="navelem"><b>conditional_ostreams.h</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

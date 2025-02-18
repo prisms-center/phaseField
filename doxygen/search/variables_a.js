@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['user_5finputs_0',['user_inputs',['../classbaseSolver.html#a423bc7721e64bada40ef2a3fd967baaf',1,'baseSolver']]]
+  ['tolerance_0',['tolerance',['../classlinearSolverBase.html#a9d820db4948bb852b93e7ba35f352faf',1,'linearSolverBase']]],
+  ['triangulation_5fhandler_1',['triangulation_handler',['../classnonexplicitBase.html#af20ea9853e4791945d6e9664a6278217',1,'nonexplicitBase']]]
 ];
