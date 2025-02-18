@@ -1,0 +1,40 @@
+Using the input parameter file: parameters.prm
+Number of constants: 2
+Number of variables: 3
+number of degrees of freedom: 198147
+Iteration: 1000
+  Solution index 2 type NORMAL l2-norm: 9.65062
+  Solution index 1 type NORMAL l2-norm: 20.1584
+  Solution index 0 type NORMAL l2-norm: 210.966
+
+Iteration: 2000
+  Solution index 2 type NORMAL l2-norm: 9.23081
+  Solution index 1 type NORMAL l2-norm: 19.1879
+  Solution index 0 type NORMAL l2-norm: 213.597
+
+Iteration: 3000
+  Solution index 2 type NORMAL l2-norm: 9.03234
+  Solution index 1 type NORMAL l2-norm: 18.3898
+  Solution index 0 type NORMAL l2-norm: 216
+
+Iteration: 4000
+  Solution index 2 type NORMAL l2-norm: 8.76189
+  Solution index 1 type NORMAL l2-norm: 17.3322
+  Solution index 0 type NORMAL l2-norm: 218.54
+
+Iteration: 5000
+  Solution index 2 type NORMAL l2-norm: 8.6999
+  Solution index 1 type NORMAL l2-norm: 16.9118
+  Solution index 0 type NORMAL l2-norm: 219.773
+
+
+
++---------------------------------------------+------------+------------+
+| Total wallclock time elapsed since start    |      29.2s |            |
+|                                             |            |            |
+| Section                         | no. calls |  wall time | % of total |
++---------------------------------+-----------+------------+------------+
+| Initialization                  |         1 |     0.525s |       1.8% |
+| Solve Increment                 |      5000 |      27.8s |        95% |
++---------------------------------+-----------+------------+------------+
+

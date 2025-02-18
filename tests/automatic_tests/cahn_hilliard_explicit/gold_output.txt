@@ -1,0 +1,65 @@
+Using the input parameter file: parameters.prm
+Number of constants: 2
+Number of variables: 3
+number of degrees of freedom: 49923
+Iteration: 10000
+  Solution index 2 type NORMAL l2-norm: 5.11626
+  Solution index 1 type NORMAL l2-norm: 3.9195
+  Solution index 0 type NORMAL l2-norm: 103.739
+
+Iteration: 20000
+  Solution index 2 type NORMAL l2-norm: 5.02105
+  Solution index 1 type NORMAL l2-norm: 3.7856
+  Solution index 0 type NORMAL l2-norm: 103.618
+
+Iteration: 30000
+  Solution index 2 type NORMAL l2-norm: 4.9804
+  Solution index 1 type NORMAL l2-norm: 3.52473
+  Solution index 0 type NORMAL l2-norm: 103.601
+
+Iteration: 40000
+  Solution index 2 type NORMAL l2-norm: 4.95257
+  Solution index 1 type NORMAL l2-norm: 3.3684
+  Solution index 0 type NORMAL l2-norm: 103.609
+
+Iteration: 50000
+  Solution index 2 type NORMAL l2-norm: 4.9296
+  Solution index 1 type NORMAL l2-norm: 3.27298
+  Solution index 0 type NORMAL l2-norm: 103.628
+
+Iteration: 60000
+  Solution index 2 type NORMAL l2-norm: 4.90954
+  Solution index 1 type NORMAL l2-norm: 3.2089
+  Solution index 0 type NORMAL l2-norm: 103.65
+
+Iteration: 70000
+  Solution index 2 type NORMAL l2-norm: 4.89181
+  Solution index 1 type NORMAL l2-norm: 3.15998
+  Solution index 0 type NORMAL l2-norm: 103.674
+
+Iteration: 80000
+  Solution index 2 type NORMAL l2-norm: 4.87515
+  Solution index 1 type NORMAL l2-norm: 3.11699
+  Solution index 0 type NORMAL l2-norm: 103.699
+
+Iteration: 90000
+  Solution index 2 type NORMAL l2-norm: 4.85839
+  Solution index 1 type NORMAL l2-norm: 3.07676
+  Solution index 0 type NORMAL l2-norm: 103.724
+
+Iteration: 100000
+  Solution index 2 type NORMAL l2-norm: 4.84121
+  Solution index 1 type NORMAL l2-norm: 3.03917
+  Solution index 0 type NORMAL l2-norm: 103.748
+
+
+
++---------------------------------------------+------------+------------+
+| Total wallclock time elapsed since start    |       246s |            |
+|                                             |            |            |
+| Section                         | no. calls |  wall time | % of total |
++---------------------------------+-----------+------------+------------+
+| Initialization                  |         1 |    0.0499s |         0% |
+| Solve Increment                 |    100000 |       242s |        98% |
++---------------------------------+-----------+------------+------------+
+

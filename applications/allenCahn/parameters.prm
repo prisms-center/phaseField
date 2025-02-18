@@ -75,6 +75,8 @@ set Skip print steps = 1000
 # set Boundary condition for variable n = NATURAL, NATURAL, DIRICHLET: 1.5, DIRICHLET: 1.5
 
 set Boundary condition for variable n = NATURAL
+set Boundary condition for variable mg_n = NATURAL
+set Boundary condition for variable f_tot = NATURAL
 
 # =================================================================================
 # Set the model constants

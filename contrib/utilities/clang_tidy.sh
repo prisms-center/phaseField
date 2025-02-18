@@ -13,13 +13,12 @@
 ##
 ## ------------------------------------------------------------------------
 ## Modifications:
-## - Modified by landinjm on 11/26/2024
+## - Modified by landinjm on 2/4/2025
 ## - Description of changes: 
 ##     - Updated LLVM requirements (line 37)
 ##     - Changed file path check (line 44) to reflect PRISMS-PF
 ##     - Removal of some cmake arguments (line 65)
-##     - Removal allheader.h generation (line 69)
-##     - Exclusion of IntegrationTools folder in clang-tidy (line 75)
+##     - Modified allheader.h generation (line 68)
 ## ------------------------------------------------------------------------
 
 #
@@ -66,13 +65,13 @@ CC=clang CXX=clang++ cmake "${ARGS[@]}" "$SRC" || (echo "cmake failed!"; false) 
 cmake --build . || exit 3
 
 # generate allheaders.h
-# (cd include; find . -name '*.h'; cd $SRC/include/; find . -name '*.h') | grep -v allheaders.h | grep -v undefine_macros.h | sed 's|^./|#include <|' | sed 's|$|>|' >include/deal.II/allheaders.h
+(cd include; find . -name '*.h'; cd $SRC/include/; find . -name '*.h') | grep -v allheaders.h | grep -v undefine_macros.h | sed 's|^./|#include <|' | sed 's|$|>|' >include/allheaders.h
 
 # finally run clang-tidy on deal.II
 #
 # pipe away stderr (just contains nonsensical "x warnings generated")
 # pipe output to output.txt
-run-clang-tidy -p . -quiet -header-filter "$SRC/include/(?!IntegrationTools).*" -extra-arg='-DCLANG_TIDY' 2>error.txt >output.txt
+run-clang-tidy -p . -quiet -header-filter "$SRC/include/*" -extra-arg='-DCLANG_TIDY' 2>error.txt >output.txt
 
 # grep interesting errors and make sure we remove duplicates:
 grep -E '(warning|error): ' output.txt | sort | uniq >clang-tidy.log

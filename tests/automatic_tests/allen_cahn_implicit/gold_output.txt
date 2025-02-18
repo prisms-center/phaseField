@@ -1,0 +1,50 @@
+Using the input parameter file: parameters.prm
+Number of constants: 2
+Number of variables: 3
+number of degrees of freedom: 198147
+Iteration: 1000
+  Solution index 1 type NORMAL l2-norm: 20.2166
+  Solution index 0 type CHANGE l2-norm: 0.0641636
+  Solution index 2 type NORMAL l2-norm: 9.67955
+  Solution index 0 type OLD_1 l2-norm: 210.801
+  Solution index 0 type NORMAL l2-norm: 210.798
+
+Iteration: 2000
+  Solution index 1 type NORMAL l2-norm: 19.2663
+  Solution index 0 type CHANGE l2-norm: 0.0494446
+  Solution index 2 type NORMAL l2-norm: 9.25715
+  Solution index 0 type OLD_1 l2-norm: 213.354
+  Solution index 0 type NORMAL l2-norm: 213.352
+
+Iteration: 3000
+  Solution index 1 type NORMAL l2-norm: 18.5008
+  Solution index 0 type CHANGE l2-norm: 0.0464322
+  Solution index 2 type NORMAL l2-norm: 9.05571
+  Solution index 0 type OLD_1 l2-norm: 215.656
+  Solution index 0 type NORMAL l2-norm: 215.654
+
+Iteration: 4000
+  Solution index 1 type NORMAL l2-norm: 17.5942
+  Solution index 0 type CHANGE l2-norm: 0.0625636
+  Solution index 2 type NORMAL l2-norm: 8.84121
+  Solution index 0 type OLD_1 l2-norm: 217.994
+  Solution index 0 type NORMAL l2-norm: 217.992
+
+Iteration: 5000
+  Solution index 1 type NORMAL l2-norm: 17.0071
+  Solution index 0 type CHANGE l2-norm: 0.0321302
+  Solution index 2 type NORMAL l2-norm: 8.71747
+  Solution index 0 type OLD_1 l2-norm: 219.493
+  Solution index 0 type NORMAL l2-norm: 219.492
+
+
+
++---------------------------------------------+------------+------------+
+| Total wallclock time elapsed since start    |       437s |            |
+|                                             |            |            |
+| Section                         | no. calls |  wall time | % of total |
++---------------------------------+-----------+------------+------------+
+| Initialization                  |         1 |     0.666s |      0.15% |
+| Solve Increment                 |      5000 |       436s |     1e+02% |
++---------------------------------+-----------+------------+------------+
+

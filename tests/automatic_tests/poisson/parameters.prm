@@ -1,0 +1,29 @@
+set Number of dimensions = 3
+
+subsection rectangular mesh
+    set size X = 100
+    set size Y = 100
+    set size Z = 100
+    set subdivisions X = 1
+    set subdivisions Y = 1
+    set subdivisions Z = 1
+end
+
+set Refine factor = 4
+set Element degree = 1
+
+set Boundary condition for variable u, x component = DIRICHLET: -1.0, DIRICHLET: 0.0, NATURAL, NATURAL, NATURAL, NATURAL
+set Boundary condition for variable u, y component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, NATURAL, NATURAL, NATURAL
+set Boundary condition for variable u, z component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, NATURAL, NATURAL, NATURAL
+
+set Model constant CIJ = (2.0,0.3), isotropic elastic constants
+
+subsection Linear solver parameters: u
+    set Tolerance type = ABSOLUTE_RESIDUAL
+    set Tolerance value = 1e-10
+    set Maximum linear solver iterations = 1000 
+    set Preconditioner = NONE
+    set Smoothing range = 15
+    set Smoother degree = 5
+    set Eigenvalue CG iterations = 6
+end

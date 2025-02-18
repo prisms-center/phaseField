@@ -1,24 +1,52 @@
-#include <core/conditional_ostreams.h>
+#include <deal.II/base/conditional_ostream.h>
+#include <deal.II/base/mpi.h>
+
+#include <prismspf/config.h>
+#include <prismspf/core/conditional_ostreams.h>
+
+#include <ios>
+#include <iostream>
+#include <mpi.h>
+#include <stdexcept>
+
+PRISMS_PF_BEGIN_NAMESPACE
 
 // NOLINTBEGIN
 
 std::ofstream conditionalOStreams::summary_log_file("summary.log",
                                                     std::ios::out | std::ios::trunc);
 
-dealii::ConditionalOStream conditionalOStreams::pout_summary_instance(
-  summary_log_file,
-  dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0);
+// NOLINTEND
 
-const dealii::ConditionalOStream conditionalOStreams::pout_base(
-  std::cout,
-  dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0);
+dealii::ConditionalOStream &
+conditionalOStreams::pout_summary()
+{
+  static dealii::ConditionalOStream instance(summary_log_file,
+                                             dealii::Utilities::MPI::this_mpi_process(
+                                               MPI_COMM_WORLD) == 0);
+  return instance;
+}
 
-const dealii::ConditionalOStream conditionalOStreams::pout_verbose(
-  std::cout,
+dealii::ConditionalOStream &
+conditionalOStreams::pout_base()
+{
+  static dealii::ConditionalOStream instance(std::cout,
+                                             dealii::Utilities::MPI::this_mpi_process(
+                                               MPI_COMM_WORLD) == 0);
+  return instance;
+}
+
+dealii::ConditionalOStream &
+conditionalOStreams::pout_verbose()
+{
+  static dealii::ConditionalOStream instance(std::cout,
 #ifndef DEBUG
-  false &&
+                                             false &&
 #endif
-    dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0);
+                                               dealii::Utilities::MPI::this_mpi_process(
+                                                 MPI_COMM_WORLD) == 0);
+  return instance;
+}
 
 conditionalOStreams::conditionalOStreams()
 {
@@ -36,14 +64,4 @@ conditionalOStreams::~conditionalOStreams()
     }
 }
 
-dealii::ConditionalOStream &
-conditionalOStreams::pout_summary()
-{
-  if (!summary_log_file.is_open())
-    {
-      throw std::runtime_error("summary.log file is not open.");
-    }
-  return pout_summary_instance;
-}
-
-// NOLINTEND
+PRISMS_PF_END_NAMESPACE
