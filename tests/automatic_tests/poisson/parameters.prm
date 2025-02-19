@@ -1,29 +1,26 @@
-set Number of dimensions = 3
+set dim = 2
+set global refinement = 4
+set degree = 1
 
 subsection rectangular mesh
-    set size X = 100
-    set size Y = 100
-    set size Z = 100
-    set subdivisions X = 1
-    set subdivisions Y = 1
-    set subdivisions Z = 1
+    set x size = 100
+    set y size = 100
+    set z size = 100
+    set x subdivisions = 1
+    set y subdivisions = 1
+    set z subdivisions = 1
 end
 
-set Refine factor = 4
-set Element degree = 1
+set boundary condition for u, x component = DIRICHLET: -1.0, DIRICHLET: 0.0, NATURAL, NATURAL, NATURAL, NATURAL
+set boundary condition for u, y component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, NATURAL, NATURAL, NATURAL
+set boundary condition for u, z component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, NATURAL, NATURAL, NATURAL
 
-set Boundary condition for variable u, x component = DIRICHLET: -1.0, DIRICHLET: 0.0, NATURAL, NATURAL, NATURAL, NATURAL
-set Boundary condition for variable u, y component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, NATURAL, NATURAL, NATURAL
-set Boundary condition for variable u, z component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, NATURAL, NATURAL, NATURAL
-
-set Model constant CIJ = (2.0,0.3), isotropic elastic constants
-
-subsection Linear solver parameters: u
-    set Tolerance type = ABSOLUTE_RESIDUAL
-    set Tolerance value = 1e-10
-    set Maximum linear solver iterations = 1000 
-    set Preconditioner = NONE
-    set Smoothing range = 15
-    set Smoother degree = 5
-    set Eigenvalue CG iterations = 6
+subsection linear solver parameters: u
+    set tolerance type = ABSOLUTE_RESIDUAL
+    set tolerance value = 1e-10
+    set max iterations = 1000 
+    set preconditioner type = NONE
+    set smoothing range = 20
+    set smoother degree = 5
+    set eigenvalue cg iterations = 20
 end

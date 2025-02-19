@@ -1,24 +1,25 @@
-set Number of dimensions = 2
+set dim = 2
+set global refinement = 8
+set degree = 1
 
 subsection rectangular mesh
-    set size X = 100
-    set size Y = 100
-    set size Z = 100
-    set subdivisions X = 1
-    set subdivisions Y = 1
-    set subdivisions Z = 1
+    set x size = 100
+    set y size = 100
+    set z size = 100
+    set x subdivisions = 1
+    set y subdivisions = 1
+    set z subdivisions = 1
 end
 
-set Refine factor = 8
-set Element degree = 1
+set time step = 1.0e-2
+set number steps = 5000
 
-set Time step = 1.0e-2
-set Number of time steps = 5000
-set Number of outputs = 5
+subsection output
+    set condition = EQUAL_SPACING
+    set number = 5
+end
 
-set Boundary condition for variable n = NATURAL
-set Boundary condition for variable mg_n = NATURAL
-set Boundary condition for variable f_tot = NATURAL
+set boundary condition for n = NATURAL
 
 set Model constant MnV = 1.0, DOUBLE
 set Model constant KnV = 2.0, DOUBLE

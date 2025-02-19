@@ -64,7 +64,7 @@ customPDE<dim, degree>::explicitEquationRHS(
   // scalarvalueType eq_n = (n-constV(userInputs.dtValue*MnV)*mu);
   // Conserved version
   scalarvalueType mu_av =
-    constV(integrated_mu / (userInputs.domain_size[0] * userInputs.domain_size[1]));
+    constV(integrated_mu / (userInputs.size[0] * userInputs.size[1]));
   scalarvalueType eq_n = (n - constV(userInputs.dtValue * MnV) * (mu - mu_av));
 
   // --- Submitting the terms for the governing equations ---

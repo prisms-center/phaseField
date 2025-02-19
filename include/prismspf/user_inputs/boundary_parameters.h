@@ -22,7 +22,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Class that stores relevant information for boundary conditions of a certain
+ * \brief Struct that stores relevant information for boundary conditions of a certain
  * field.
  */
 struct boundaryCondition
@@ -80,7 +80,7 @@ public:
 };
 
 /**
- * \brief Class that holds boundary parameters.
+ * \brief Struct that holds boundary parameters.
  */
 template <int dim>
 struct boundaryParameters
@@ -92,10 +92,10 @@ public:
   using PinnedPointMap = std::map<types::index, std::pair<double, dealii::Point<dim>>>;
 
   /**
-   * \brief Compute the boundary conditions from the unfiltered string list.
+   * \brief Postprocess and validate parameters.
    */
   void
-  compute_boundary_conditions(
+  postprocess_and_validate(
     const std::map<unsigned int, variableAttributes> &var_attributes);
 
   /**
@@ -134,7 +134,7 @@ private:
 
 template <int dim>
 inline void
-boundaryParameters<dim>::compute_boundary_conditions(
+boundaryParameters<dim>::postprocess_and_validate(
   const std::map<unsigned int, variableAttributes> &var_attributes)
 {
   for (const auto &[index, variable] : var_attributes)
@@ -145,22 +145,49 @@ boundaryParameters<dim>::compute_boundary_conditions(
         {
           for (unsigned int i = 0; i < dim; i++)
             {
-              AssertThrow(!BC_list.at(variable.field_index).at(i).empty(),
-                          dealii::ExcMessage("Boundary conditions must be specified "
-                                             "for all components in all vector field."));
+              if (variable.is_postprocess)
+                {
+                  set_boundary("NATURAL", variable.field_index, i);
+                }
+              else
+                {
+                  AssertThrow(BC_list.find(variable.field_index) != BC_list.end(),
+                              dealii::ExcMessage("Invalid entry"));
+                  AssertThrow(BC_list.at(variable.field_index).find(i) !=
+                                BC_list.at(variable.field_index).end(),
+                              dealii::ExcMessage("Invalid entry"));
+                  AssertThrow(!BC_list.at(variable.field_index).at(i).empty(),
+                              dealii::ExcMessage(
+                                "Boundary conditions must be specified "
+                                "for all components in all vector field."));
 
-              set_boundary(BC_list.at(variable.field_index).at(i),
-                           variable.field_index,
-                           i);
+                  set_boundary(BC_list.at(variable.field_index).at(i),
+                               variable.field_index,
+                               i);
+                }
             }
         }
       else
         {
-          AssertThrow(!BC_list.at(variable.field_index).at(0).empty(),
-                      dealii::ExcMessage("Boundary conditions must be specified "
-                                         "for all scalar fields."));
+          if (variable.is_postprocess)
+            {
+              set_boundary("NATURAL", variable.field_index, 0);
+            }
+          else
+            {
+              AssertThrow(BC_list.find(variable.field_index) != BC_list.end(),
+                          dealii::ExcMessage("Invalid entry"));
+              AssertThrow(BC_list.at(variable.field_index).find(0) !=
+                            BC_list.at(variable.field_index).end(),
+                          dealii::ExcMessage("Invalid entry"));
+              AssertThrow(!BC_list.at(variable.field_index).at(0).empty(),
+                          dealii::ExcMessage("Boundary conditions must be specified "
+                                             "for all scalar fields."));
 
-          set_boundary(BC_list.at(variable.field_index).at(0), variable.field_index, 0);
+              set_boundary(BC_list.at(variable.field_index).at(0),
+                           variable.field_index,
+                           0);
+            }
         }
     }
 
@@ -175,46 +202,45 @@ template <int dim>
 inline void
 boundaryParameters<dim>::print_parameter_summary() const
 {
-  prisms::conditionalOStreams::pout_summary()
+  conditionalOStreams::pout_summary()
     << "================================================\n"
     << "  Boundary Parameters\n"
     << "================================================\n";
 
   for (const auto &[index, component_map] : boundary_condition_list)
     {
-      prisms::conditionalOStreams::pout_summary() << "Index: " << index << "\n";
+      conditionalOStreams::pout_summary() << "Index: " << index << "\n";
       for (const auto &[component, boundary_condition] : component_map)
         {
-          prisms::conditionalOStreams::pout_summary()
-            << "  Component: " << component << "\n";
+          conditionalOStreams::pout_summary() << "  Component: " << component << "\n";
           for (const auto &[domain_id, boundary_type] :
                boundary_condition.boundary_condition_map)
             {
-              prisms::conditionalOStreams::pout_summary()
+              conditionalOStreams::pout_summary()
                 << "    Boundary id: " << domain_id << "    "
                 << "Condition: " << boundary_condition.to_string(boundary_type);
               if (boundary_type == boundaryCondition::type::DIRICHLET)
                 {
-                  prisms::conditionalOStreams::pout_summary()
+                  conditionalOStreams::pout_summary()
                     << " = " << boundary_condition.dirichlet_value_map.at(domain_id);
                 }
-              prisms::conditionalOStreams::pout_summary() << "\n";
+              conditionalOStreams::pout_summary() << "\n";
             }
         }
     }
 
   if (!pinned_point_list.empty())
     {
-      prisms::conditionalOStreams::pout_summary() << "Pinned field index: ";
+      conditionalOStreams::pout_summary() << "Pinned field index: ";
     }
   for (const auto &[index, point_value_map] : pinned_point_list)
     {
-      prisms::conditionalOStreams::pout_summary()
+      conditionalOStreams::pout_summary()
         << index << "\n"
         << "  Value: " << point_value_map.first << "\n"
         << "  Point: " << point_value_map.second << "\n";
     }
-  prisms::conditionalOStreams::pout_summary() << "\n" << std::flush;
+  conditionalOStreams::pout_summary() << "\n" << std::flush;
 }
 
 template <int dim>
@@ -263,8 +289,7 @@ boundaryParameters<dim>::set_boundary(const std::string  &BC_string,
         }
       else if (boost::iequals(BC_string_list[i].substr(0, 7), "NEUMANN"))
         {
-          AssertThrow(false,
-                      prisms::FeatureNotImplemented("Neumann boundary conditions"));
+          AssertThrow(false, FeatureNotImplemented("Neumann boundary conditions"));
         }
       else if (boost::iequals(BC_string_list[i], "NON_UNIFORM_DIRICHLET"))
         {
@@ -274,8 +299,7 @@ boundaryParameters<dim>::set_boundary(const std::string  &BC_string,
       else if (boost::iequals(BC_string_list[i], "NON_UNIFORM_NEUMANN"))
         {
           AssertThrow(false,
-                      prisms::FeatureNotImplemented(
-                        "Nonuniform neumann boundary conditions"));
+                      FeatureNotImplemented("Nonuniform neumann boundary conditions"));
         }
       else
         {
@@ -326,7 +350,7 @@ boundaryParameters<dim>::validate_boundary_conditions() const
         }
       else
         {
-          AssertThrow(false, prisms::UnreachableCode());
+          AssertThrow(false, UnreachableCode());
         }
 
       AssertThrow(on_vertex, dealii::ExcMessage("Pinned point must be on the origin"));

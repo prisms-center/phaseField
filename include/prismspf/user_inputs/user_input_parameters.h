@@ -3,6 +3,7 @@
 
 #include <prismspf/config.h>
 #include <prismspf/user_inputs/boundary_parameters.h>
+#include <prismspf/user_inputs/checkpoint_parameters.h>
 #include <prismspf/user_inputs/input_file_reader.h>
 #include <prismspf/user_inputs/linear_solve_parameters.h>
 #include <prismspf/user_inputs/nonlinear_solve_parameters.h>
@@ -36,19 +37,22 @@ public:
   spatialDiscretization<dim> spatial_discretization;
 
   // Temporal discretization parameters
-  mutable temporalDiscretization temporal_discretization;
-
-  // Output parameters
-  outputParameters output_parameters;
-
-  // Boundary parameters
-  boundaryParameters<dim> boundary_parameters;
+  temporalDiscretization temporal_discretization;
 
   // Linear solve paramters
   linearSolveParameters linear_solve_parameters;
 
   // Nonlinear solve parameters
   nonlinearSolveParameters nonlinear_solve_parameters;
+
+  // Output parameters
+  outputParameters output_parameters;
+
+  // Checkpoint parameters
+  checkpointParameters checkpoint_parameters;
+
+  // Boundary parameters
+  boundaryParameters<dim> boundary_parameters;
 
   // User constants
   userConstants<dim> user_constants;
@@ -88,6 +92,13 @@ private:
    */
   void
   assign_output_parameters(dealii::ParameterHandler &parameter_handler);
+
+  /**
+   * \brief Assign the provided user inputs to parameters for anything related to
+   * checkpoints.
+   */
+  void
+  assign_checkpoint_parameters(dealii::ParameterHandler &parameter_handler);
 
   /**
    * \brief Assign the provided user inputs to parameters for anything related to

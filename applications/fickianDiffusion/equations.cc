@@ -59,17 +59,15 @@ customPDE<dim, degree>::explicitEquationRHS(
 
   double          t_1   = 0.2 * T;
   double          tau_1 = 0.2 * T;
-  scalarvalueType x_1   = constV(0.6 * userInputs.domain_size[0]);
-  scalarvalueType y_1   = constV(0.2 * userInputs.domain_size[1]);
-  scalarvalueType L_1 =
-    constV(0.01 * (userInputs.domain_size[0] + userInputs.domain_size[1]));
+  scalarvalueType x_1   = constV(0.6 * userInputs.size[0]);
+  scalarvalueType y_1   = constV(0.2 * userInputs.size[1]);
+  scalarvalueType L_1   = constV(0.01 * (userInputs.size[0] + userInputs.size[1]));
 
   double          t_2   = 0.6 * T;
   double          tau_2 = 0.2 * T;
-  scalarvalueType x_2   = constV(0.3 * userInputs.domain_size[0]);
-  scalarvalueType y_2   = constV(0.7 * userInputs.domain_size[1]);
-  scalarvalueType L_2 =
-    constV(0.01 * (userInputs.domain_size[0] + userInputs.domain_size[1]));
+  scalarvalueType x_2   = constV(0.3 * userInputs.size[0]);
+  scalarvalueType y_2   = constV(0.7 * userInputs.size[1]);
+  scalarvalueType L_2   = constV(0.01 * (userInputs.size[0] + userInputs.size[1]));
 
   scalarvalueType source_term1 =
     100.0 * std::exp(-(t - t_1) / tau_1 * (t - t_1) / tau_1) *

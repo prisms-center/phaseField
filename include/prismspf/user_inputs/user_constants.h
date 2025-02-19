@@ -31,16 +31,6 @@ public:
                                       dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>>;
 
   /**
-   * \brief Constructor.
-   */
-  userConstants() = default;
-
-  /**
-   * \brief Destructor.
-   */
-  ~userConstants() = default;
-
-  /**
    * \brief Assign the specified user constant to whatever type.
    */
   InputVariant
@@ -493,18 +483,18 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
   // CIJ.fill(0.0);
   dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)> CIJ;
 
-  prisms::conditionalOStreams::pout_base() << "Reading material model:";
+  conditionalOStreams::pout_base() << "Reading material model:";
   switch (dim)
     {
       case 1:
         {
-          prisms::conditionalOStreams::pout_base() << " 1D ";
+          conditionalOStreams::pout_base() << " 1D ";
           // 1D models
           switch (model)
             {
               case ISOTROPIC:
                 {
-                  prisms::conditionalOStreams::pout_base() << " ISOTROPIC \n";
+                  conditionalOStreams::pout_base() << " ISOTROPIC \n";
                   CIJ[0][0] = constants[0];
                   break;
                 }
@@ -517,13 +507,13 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
         }
       case 2:
         {
-          prisms::conditionalOStreams::pout_base() << " 2D ";
+          conditionalOStreams::pout_base() << " 2D ";
           // 2D models
           switch (model)
             {
               case ISOTROPIC:
                 {
-                  prisms::conditionalOStreams::pout_base() << " ISOTROPIC \n";
+                  conditionalOStreams::pout_base() << " ISOTROPIC \n";
                   const double E      = constants[0];
                   const double nu     = constants[1];
                   const double mu     = E / (2 * (1 + nu));
@@ -536,7 +526,7 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
                 }
               case ANISOTROPIC:
                 {
-                  prisms::conditionalOStreams::pout_base() << " ANISOTROPIC \n";
+                  conditionalOStreams::pout_base() << " ANISOTROPIC \n";
                   CIJ[0][0] = constants[0];             // C11
                   CIJ[1][1] = constants[1];             // C22
                   CIJ[2][2] = constants[2];             // C33
@@ -554,13 +544,13 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
         }
       case 3:
         {
-          prisms::conditionalOStreams::pout_base() << " 3D ";
+          conditionalOStreams::pout_base() << " 3D ";
           // 3D models
           switch (model)
             {
               case ISOTROPIC:
                 {
-                  prisms::conditionalOStreams::pout_base() << " ISOTROPIC \n";
+                  conditionalOStreams::pout_base() << " ISOTROPIC \n";
                   const double E      = constants[0];
                   const double nu     = constants[1];
                   const double mu     = E / (2 * (1 + nu));
@@ -578,7 +568,7 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
                 }
               case TRANSVERSE:
                 {
-                  prisms::conditionalOStreams::pout_base() << " TRANSVERSE \n";
+                  conditionalOStreams::pout_base() << " TRANSVERSE \n";
                   CIJ[0][0] = constants[0];                        // C11
                   CIJ[1][1] = constants[0];                        // C11
                   CIJ[2][2] = constants[1];                        // C33
@@ -592,7 +582,7 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
                 }
               case ORTHOTROPIC:
                 {
-                  prisms::conditionalOStreams::pout_base() << " ORTHOTROPIC \n";
+                  conditionalOStreams::pout_base() << " ORTHOTROPIC \n";
                   CIJ[0][0] = constants[0];             // C11
                   CIJ[1][1] = constants[1];             // C22
                   CIJ[2][2] = constants[2];             // C33
@@ -606,7 +596,7 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
                 }
               case ANISOTROPIC:
                 {
-                  prisms::conditionalOStreams::pout_base() << " ANISOTROPIC \n";
+                  conditionalOStreams::pout_base() << " ANISOTROPIC \n";
                   CIJ[0][0] = constants[0];              // C11
                   CIJ[1][1] = constants[1];              // C22
                   CIJ[2][2] = constants[2];              // C33
@@ -643,18 +633,18 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
         }
     }
   // print CIJ to terminal
-  prisms::conditionalOStreams::pout_base() << "Elasticity matrix (Voigt notation):\n";
+  conditionalOStreams::pout_base() << "Elasticity matrix (Voigt notation):\n";
   constexpr unsigned int voight_matrix_size = (2 * dim) - 1 + (dim / 3);
   for (unsigned int i = 0; i < voight_matrix_size; i++)
     {
       for (unsigned int j = 0; j < voight_matrix_size; j++)
         {
-          prisms::conditionalOStreams::pout_base() << std::setw(8) << std::setprecision(3)
-                                                   << std::scientific << CIJ[i][j] << " ";
+          conditionalOStreams::pout_base() << std::setw(8) << std::setprecision(3)
+                                           << std::scientific << CIJ[i][j] << " ";
         }
-      prisms::conditionalOStreams::pout_base() << "\n";
+      conditionalOStreams::pout_base() << "\n";
     }
-  prisms::conditionalOStreams::pout_base() << "\n";
+  conditionalOStreams::pout_base() << "\n";
   return CIJ;
 }
 

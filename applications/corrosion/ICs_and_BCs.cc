@@ -24,8 +24,8 @@ customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &
   double deltaV = std::sqrt(2.0 * epssqV);
   double posx   = p[0];
   double posy   = p[1];
-  double cx     = 0.5 * userInputs.domain_size[0];
-  double cy     = userInputs.domain_size[1];
+  double cx     = 0.5 * userInputs.size[0];
+  double cy     = userInputs.size[1];
   double rad    = std::sqrt((posx - cx) * (posx - cx) + (posy - cy) * (posy - cy));
   double n0pro  = 0.5 * (1.0 - std::tanh((rad0 - rad) / deltaV));
 
