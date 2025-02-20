@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"structvariableAttributes.html#a49b3a3a31052a8631ff2a853fb42a75c":[2,0,48,5],
 "structvariableAttributes.html#a4eda6a8b14d38683f85d04f617eaf234":[2,0,48,1],
 "structvariableAttributes.html#a5c5578f98174fbcce18b39b75b7b2dbb":[2,0,48,12],
 "structvariableAttributes.html#a65104677fdb32ef0f2220a0c96222c6c":[2,0,48,9],

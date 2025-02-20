@@ -99,178 +99,181 @@ $(document).ready(function(){initNavTree('nonexplicit__linear__solver_8h_source.
   <div class="headertitle"><div class="title">nonexplicit_linear_solver.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef nonexplicit_linear_solver_h</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define nonexplicit_linear_solver_h</span></div>
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-License-Identifier: GNU Lesser General Public Version 2.1</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;deal.II/lac/precondition.h&gt;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;deal.II/lac/solver_cg.h&gt;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;deal.II/lac/solver_control.h&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;prismspf/core/constraint_handler.h&gt;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;prismspf/core/dof_handler.h&gt;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;prismspf/core/matrix_free_handler.h&gt;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;prismspf/core/solution_handler.h&gt;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;prismspf/core/type_enums.h&gt;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;prismspf/core/variable_attributes.h&gt;</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;prismspf/solvers/linear_solver_gmg.h&gt;</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &lt;prismspf/solvers/linear_solver_identity.h&gt;</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &lt;prismspf/solvers/nonexplicit_base.h&gt;</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &lt;prismspf/user_inputs/user_input_parameters.h&gt;</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>PRISMS_PF_BEGIN_NAMESPACE</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">class </span><a class="code hl_class" href="classcustomPDE.html">customPDE</a>;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> degree&gt;</div>
-<div class="foldopen" id="foldopen00032" data-start="{" data-end="};">
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classnonexplicitLinearSolver.html">   32</a></span><span class="keyword">class </span><a class="code hl_class" href="classnonexplicitLinearSolver.html">nonexplicitLinearSolver</a> : <span class="keyword">public</span> <a class="code hl_class" href="classnonexplicitBase.html">nonexplicitBase</a>&lt;dim, degree&gt;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>{</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keyword">using </span><a class="code hl_class" href="classcustomPDE.html">SystemMatrixType</a> = <a class="code hl_class" href="classcustomPDE.html">customPDE&lt;dim, degree, double&gt;</a>;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <a class="code hl_class" href="classnonexplicitLinearSolver.html">nonexplicitLinearSolver</a>(</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keyword">const</span> <a class="code hl_class" href="classuserInputParameters.html">userInputParameters&lt;dim&gt;</a>                       &amp;_user_inputs,</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keyword">const</span> <a class="code hl_class" href="classmatrixfreeHandler.html">matrixfreeHandler&lt;dim&gt;</a>                         &amp;_matrix_free_handler,</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keyword">const</span> <a class="code hl_class" href="classtriangulationHandler.html">triangulationHandler&lt;dim&gt;</a>                      &amp;_triangulation_handler,</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keyword">const</span> <a class="code hl_class" href="classinvmHandler.html">invmHandler&lt;dim, degree&gt;</a>                       &amp;_invm_handler,</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keyword">const</span> <a class="code hl_class" href="classconstraintHandler.html">constraintHandler&lt;dim&gt;</a>                         &amp;_constraint_handler,</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keyword">const</span> prisms::dofHandler&lt;dim&gt;                        &amp;_dof_handler,</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keyword">const</span> dealii::MappingQ1&lt;dim&gt;                         &amp;_mapping,</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    dealii::MGLevelObject&lt;<a class="code hl_class" href="classmatrixfreeHandler.html">matrixfreeHandler&lt;dim, float&gt;</a>&gt; &amp;_mg_matrix_free_handler,</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <a class="code hl_class" href="classsolutionHandler.html">solutionHandler&lt;dim&gt;</a>                                 &amp;_solution_handler);</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="classnonexplicitLinearSolver.html#a2bf478f799ba67ef509cbe83c94815ef">   54</a></span>  <a class="code hl_function" href="classnonexplicitLinearSolver.html#a2bf478f799ba67ef509cbe83c94815ef">~nonexplicitLinearSolver</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <a class="code hl_function" href="classnonexplicitLinearSolver.html#a939d4191ef067a37d22e5c14a0c6735c">init</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <a class="code hl_function" href="classnonexplicitLinearSolver.html#a564a05dc133bbed1ebd54a5b50555973">solve</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  std::map&lt;unsigned int, std::unique_ptr&lt;identitySolver&lt;dim, degree&gt;&gt;&gt; identity_solvers;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  std::map&lt;unsigned int, std::unique_ptr&lt;GMGSolver&lt;dim, degree&gt;&gt;&gt; gmg_solvers;</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>};</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#ifndef nonexplicit_linear_solver_h</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#define nonexplicit_linear_solver_h</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;deal.II/lac/precondition.h&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;deal.II/lac/solver_cg.h&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;deal.II/lac/solver_control.h&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;prismspf/core/constraint_handler.h&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;prismspf/core/dof_handler.h&gt;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;prismspf/core/matrix_free_handler.h&gt;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;prismspf/core/solution_handler.h&gt;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &lt;prismspf/core/type_enums.h&gt;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &lt;prismspf/core/variable_attributes.h&gt;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &lt;prismspf/solvers/linear_solver_gmg.h&gt;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;prismspf/solvers/linear_solver_identity.h&gt;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &lt;prismspf/solvers/nonexplicit_base.h&gt;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &lt;prismspf/user_inputs/user_input_parameters.h&gt;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">class </span><a class="code hl_class" href="classcustomPDE.html">customPDE</a>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> degree&gt;</div>
+<div class="foldopen" id="foldopen00035" data-start="{" data-end="};">
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classnonexplicitLinearSolver.html">   35</a></span><span class="keyword">class </span><a class="code hl_class" href="classnonexplicitLinearSolver.html">nonexplicitLinearSolver</a> : <span class="keyword">public</span> <a class="code hl_class" href="classnonexplicitBase.html">nonexplicitBase</a>&lt;dim, degree&gt;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>{</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keyword">using </span><a class="code hl_class" href="classcustomPDE.html">SystemMatrixType</a> = <a class="code hl_class" href="classcustomPDE.html">customPDE&lt;dim, degree, double&gt;</a>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <a class="code hl_class" href="classnonexplicitLinearSolver.html">nonexplicitLinearSolver</a>(</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keyword">const</span> <a class="code hl_class" href="classuserInputParameters.html">userInputParameters&lt;dim&gt;</a>                       &amp;_user_inputs,</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keyword">const</span> <a class="code hl_class" href="classmatrixfreeHandler.html">matrixfreeHandler&lt;dim&gt;</a>                         &amp;_matrix_free_handler,</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keyword">const</span> <a class="code hl_class" href="classtriangulationHandler.html">triangulationHandler&lt;dim&gt;</a>                      &amp;_triangulation_handler,</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keyword">const</span> <a class="code hl_class" href="classinvmHandler.html">invmHandler&lt;dim, degree&gt;</a>                       &amp;_invm_handler,</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keyword">const</span> <a class="code hl_class" href="classconstraintHandler.html">constraintHandler&lt;dim&gt;</a>                         &amp;_constraint_handler,</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keyword">const</span> prisms::dofHandler&lt;dim&gt;                        &amp;_dof_handler,</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keyword">const</span> dealii::MappingQ1&lt;dim&gt;                         &amp;_mapping,</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    dealii::MGLevelObject&lt;<a class="code hl_class" href="classmatrixfreeHandler.html">matrixfreeHandler&lt;dim, float&gt;</a>&gt; &amp;_mg_matrix_free_handler,</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <a class="code hl_class" href="classsolutionHandler.html">solutionHandler&lt;dim&gt;</a>                                 &amp;_solution_handler);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classnonexplicitLinearSolver.html#a2bf478f799ba67ef509cbe83c94815ef">   57</a></span>  <a class="code hl_function" href="classnonexplicitLinearSolver.html#a2bf478f799ba67ef509cbe83c94815ef">~nonexplicitLinearSolver</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keywordtype">void</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <a class="code hl_function" href="classnonexplicitLinearSolver.html#a939d4191ef067a37d22e5c14a0c6735c">init</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="keywordtype">void</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <a class="code hl_function" href="classnonexplicitLinearSolver.html#a564a05dc133bbed1ebd54a5b50555973">solve</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  std::map&lt;unsigned int, std::unique_ptr&lt;identitySolver&lt;dim, degree&gt;&gt;&gt; identity_solvers;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  std::map&lt;unsigned int, std::unique_ptr&lt;GMGSolver&lt;dim, degree&gt;&gt;&gt; gmg_solvers;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>};</div>
 </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> degree&gt;</div>
-<div class="foldopen" id="foldopen00081" data-start="{" data-end="}">
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="classnonexplicitLinearSolver.html#a17c4cfed3917d17ecac41e79463d7ba5">   81</a></span><a class="code hl_function" href="classnonexplicitLinearSolver.html#a17c4cfed3917d17ecac41e79463d7ba5">nonexplicitLinearSolver&lt;dim, degree&gt;::nonexplicitLinearSolver</a>(</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="keyword">const</span> <a class="code hl_class" href="classuserInputParameters.html">userInputParameters&lt;dim&gt;</a>                       &amp;_user_inputs,</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="keyword">const</span> <a class="code hl_class" href="classmatrixfreeHandler.html">matrixfreeHandler&lt;dim&gt;</a>                         &amp;_matrix_free_handler,</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="keyword">const</span> <a class="code hl_class" href="classtriangulationHandler.html">triangulationHandler&lt;dim&gt;</a>                      &amp;_triangulation_handler,</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keyword">const</span> <a class="code hl_class" href="classinvmHandler.html">invmHandler&lt;dim, degree&gt;</a>                       &amp;_invm_handler,</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keyword">const</span> <a class="code hl_class" href="classconstraintHandler.html">constraintHandler&lt;dim&gt;</a>                         &amp;_constraint_handler,</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="keyword">const</span> prisms::dofHandler&lt;dim&gt;                        &amp;_dof_handler,</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keyword">const</span> dealii::MappingQ1&lt;dim&gt;                         &amp;_mapping,</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  dealii::MGLevelObject&lt;<a class="code hl_class" href="classmatrixfreeHandler.html">matrixfreeHandler&lt;dim, float&gt;</a>&gt; &amp;_mg_matrix_free_handler,</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <a class="code hl_class" href="classsolutionHandler.html">solutionHandler&lt;dim&gt;</a>                                 &amp;_solution_handler)</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  : <a class="code hl_class" href="classnonexplicitBase.html">nonexplicitBase</a>&lt;dim, degree&gt;(_user_inputs,</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>                                 _matrix_free_handler,</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                                 _triangulation_handler,</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                                 _invm_handler,</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                                 _constraint_handler,</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                                 _dof_handler,</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                                 _mapping,</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                                 _mg_matrix_free_handler,</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                                 _solution_handler)</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>{}</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> degree&gt;</div>
+<div class="foldopen" id="foldopen00084" data-start="{" data-end="}">
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="classnonexplicitLinearSolver.html#a17c4cfed3917d17ecac41e79463d7ba5">   84</a></span><a class="code hl_function" href="classnonexplicitLinearSolver.html#a17c4cfed3917d17ecac41e79463d7ba5">nonexplicitLinearSolver&lt;dim, degree&gt;::nonexplicitLinearSolver</a>(</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keyword">const</span> <a class="code hl_class" href="classuserInputParameters.html">userInputParameters&lt;dim&gt;</a>                       &amp;_user_inputs,</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keyword">const</span> <a class="code hl_class" href="classmatrixfreeHandler.html">matrixfreeHandler&lt;dim&gt;</a>                         &amp;_matrix_free_handler,</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="keyword">const</span> <a class="code hl_class" href="classtriangulationHandler.html">triangulationHandler&lt;dim&gt;</a>                      &amp;_triangulation_handler,</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keyword">const</span> <a class="code hl_class" href="classinvmHandler.html">invmHandler&lt;dim, degree&gt;</a>                       &amp;_invm_handler,</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keyword">const</span> <a class="code hl_class" href="classconstraintHandler.html">constraintHandler&lt;dim&gt;</a>                         &amp;_constraint_handler,</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="keyword">const</span> prisms::dofHandler&lt;dim&gt;                        &amp;_dof_handler,</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keyword">const</span> dealii::MappingQ1&lt;dim&gt;                         &amp;_mapping,</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  dealii::MGLevelObject&lt;<a class="code hl_class" href="classmatrixfreeHandler.html">matrixfreeHandler&lt;dim, float&gt;</a>&gt; &amp;_mg_matrix_free_handler,</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <a class="code hl_class" href="classsolutionHandler.html">solutionHandler&lt;dim&gt;</a>                                 &amp;_solution_handler)</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  : <a class="code hl_class" href="classnonexplicitBase.html">nonexplicitBase</a>&lt;dim, degree&gt;(_user_inputs,</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                                 _matrix_free_handler,</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                                 _triangulation_handler,</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                                 _invm_handler,</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                                 _constraint_handler,</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                                 _dof_handler,</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                                 _mapping,</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                                 _mg_matrix_free_handler,</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>                                 _solution_handler)</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>{}</div>
 </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> degree&gt;</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="keyword">inline</span> <span class="keywordtype">void</span></div>
-<div class="foldopen" id="foldopen00104" data-start="{" data-end="}">
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="classnonexplicitLinearSolver.html#a939d4191ef067a37d22e5c14a0c6735c">  104</a></span><a class="code hl_function" href="classnonexplicitLinearSolver.html#a939d4191ef067a37d22e5c14a0c6735c">nonexplicitLinearSolver&lt;dim, degree&gt;::init</a>()</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>{</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  this-&gt;compute_subset_attributes(fieldSolveType::NONEXPLICIT_LINEAR);</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <span class="comment">// If the subset attribute is empty return early</span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <span class="keywordflow">if</span> (this-&gt;subset_attributes.empty())</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    {</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    }</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  this-&gt;set_initial_condition();</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[index, variable] : this-&gt;subset_attributes)</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    {</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>      <span class="keywordflow">if</span> (this-&gt;user_inputs.linear_solve_parameters.linear_solve.at(index)</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>            .preconditioner == preconditionerType::GMG)</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        {</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>          gmg_solvers.emplace(</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>            index,</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>            std::make_unique&lt;<a class="code hl_class" href="classGMGSolver.html">GMGSolver&lt;dim, degree&gt;</a>&gt;(this-&gt;user_inputs,</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>                                                     variable,</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>                                                     this-&gt;matrix_free_handler,</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>                                                     this-&gt;constraint_handler,</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>                                                     this-&gt;triangulation_handler,</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>                                                     this-&gt;dof_handler,</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>                                                     this-&gt;mg_matrix_free_handler,</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>                                                     this-&gt;solution_handler));</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>          gmg_solvers.at(index)-&gt;init();</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        }</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>      <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        {</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>          identity_solvers.emplace(</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>            index,</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>            std::make_unique&lt;<a class="code hl_class" href="classidentitySolver.html">identitySolver&lt;dim, degree&gt;</a>&gt;(this-&gt;user_inputs,</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>                                                          variable,</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>                                                          this-&gt;matrix_free_handler,</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>                                                          this-&gt;constraint_handler,</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>                                                          this-&gt;solution_handler));</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>          identity_solvers.at(index)-&gt;init();</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>        }</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    }</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>}</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> degree&gt;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="keyword">inline</span> <span class="keywordtype">void</span></div>
+<div class="foldopen" id="foldopen00107" data-start="{" data-end="}">
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="classnonexplicitLinearSolver.html#a939d4191ef067a37d22e5c14a0c6735c">  107</a></span><a class="code hl_function" href="classnonexplicitLinearSolver.html#a939d4191ef067a37d22e5c14a0c6735c">nonexplicitLinearSolver&lt;dim, degree&gt;::init</a>()</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>{</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  this-&gt;compute_subset_attributes(fieldSolveType::NONEXPLICIT_LINEAR);</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="comment">// If the subset attribute is empty return early</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="keywordflow">if</span> (this-&gt;subset_attributes.empty())</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    {</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    }</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  this-&gt;set_initial_condition();</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[index, variable] : this-&gt;subset_attributes)</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    {</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>      <span class="keywordflow">if</span> (this-&gt;user_inputs.linear_solve_parameters.linear_solve.at(index)</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>            .preconditioner == preconditionerType::GMG)</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        {</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>          gmg_solvers.emplace(</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>            index,</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>            std::make_unique&lt;<a class="code hl_class" href="classGMGSolver.html">GMGSolver&lt;dim, degree&gt;</a>&gt;(this-&gt;user_inputs,</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>                                                     variable,</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>                                                     this-&gt;matrix_free_handler,</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>                                                     this-&gt;constraint_handler,</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>                                                     this-&gt;triangulation_handler,</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>                                                     this-&gt;dof_handler,</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>                                                     this-&gt;mg_matrix_free_handler,</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>                                                     this-&gt;solution_handler));</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>          gmg_solvers.at(index)-&gt;init();</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        }</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>      <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>        {</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>          identity_solvers.emplace(</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>            index,</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>            std::make_unique&lt;<a class="code hl_class" href="classidentitySolver.html">identitySolver&lt;dim, degree&gt;</a>&gt;(this-&gt;user_inputs,</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>                                                          variable,</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>                                                          this-&gt;matrix_free_handler,</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>                                                          this-&gt;constraint_handler,</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>                                                          this-&gt;solution_handler));</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>          identity_solvers.at(index)-&gt;init();</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>        }</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    }</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>}</div>
 </div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> degree&gt;</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="keyword">inline</span> <span class="keywordtype">void</span></div>
-<div class="foldopen" id="foldopen00149" data-start="{" data-end="}">
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno"><a class="line" href="classnonexplicitLinearSolver.html#a564a05dc133bbed1ebd54a5b50555973">  149</a></span><a class="code hl_function" href="classnonexplicitLinearSolver.html#a564a05dc133bbed1ebd54a5b50555973">nonexplicitLinearSolver&lt;dim, degree&gt;::solve</a>()</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>{</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>  <span class="comment">// If the subset attribute is empty return early</span></div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <span class="keywordflow">if</span> (this-&gt;subset_attributes.empty())</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    {</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    }</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[index, variable] : this-&gt;subset_attributes)</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    {</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>      <span class="keywordflow">if</span> (this-&gt;user_inputs.linear_solve_parameters.linear_solve.at(index)</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>            .preconditioner == preconditionerType::GMG)</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        {</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>          gmg_solvers.at(index)-&gt;solve();</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>        }</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>      <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>        {</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>          identity_solvers.at(index)-&gt;solve();</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>        }</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    }</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>}</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> degree&gt;</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="keyword">inline</span> <span class="keywordtype">void</span></div>
+<div class="foldopen" id="foldopen00152" data-start="{" data-end="}">
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="classnonexplicitLinearSolver.html#a564a05dc133bbed1ebd54a5b50555973">  152</a></span><a class="code hl_function" href="classnonexplicitLinearSolver.html#a564a05dc133bbed1ebd54a5b50555973">nonexplicitLinearSolver&lt;dim, degree&gt;::solve</a>()</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>{</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  <span class="comment">// If the subset attribute is empty return early</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  <span class="keywordflow">if</span> (this-&gt;subset_attributes.empty())</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    {</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    }</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[index, variable] : this-&gt;subset_attributes)</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    {</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>      <span class="keywordflow">if</span> (this-&gt;user_inputs.linear_solve_parameters.linear_solve.at(index)</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>            .preconditioner == preconditionerType::GMG)</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        {</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>          gmg_solvers.at(index)-&gt;solve();</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>        }</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>      <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>        {</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>          identity_solvers.at(index)-&gt;solve();</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>        }</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    }</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>}</div>
 </div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>PRISMS_PF_END_NAMESPACE</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassGMGSolver_html"><div class="ttname"><a href="classGMGSolver.html">GMGSolver</a></div><div class="ttdoc">Class that handles the assembly and solving of a field with a GMG preconditioner.</div><div class="ttdef"><b>Definition</b> linear_solver_gmg.h:37</div></div>
-<div class="ttc" id="aclassconstraintHandler_html"><div class="ttname"><a href="classconstraintHandler.html">constraintHandler</a></div><div class="ttdoc">The class handles the generation and application of boundary conditions based on the user-inputs.</div><div class="ttdef"><b>Definition</b> constraint_handler.h:21</div></div>
-<div class="ttc" id="aclasscustomPDE_html"><div class="ttname"><a href="classcustomPDE.html">customPDE</a></div><div class="ttdef"><b>Definition</b> explicit_base.h:24</div></div>
-<div class="ttc" id="aclassidentitySolver_html"><div class="ttname"><a href="classidentitySolver.html">identitySolver</a></div><div class="ttdoc">Class that handles the assembly and solving of a field with the identity preconditioner (no precondit...</div><div class="ttdef"><b>Definition</b> linear_solver_identity.h:19</div></div>
-<div class="ttc" id="aclassinvmHandler_html"><div class="ttname"><a href="classinvmHandler.html">invmHandler</a></div><div class="ttdoc">This class handles the computation and access of the inverted mass matrix for explicit solves.</div><div class="ttdef"><b>Definition</b> invm_handler.h:22</div></div>
-<div class="ttc" id="aclassmatrixfreeHandler_html"><div class="ttname"><a href="classmatrixfreeHandler.html">matrixfreeHandler</a></div><div class="ttdoc">This class handlers the management and access of the matrix-free objects.</div><div class="ttdef"><b>Definition</b> matrix_free_handler.h:22</div></div>
-<div class="ttc" id="aclassnonexplicitBase_html"><div class="ttname"><a href="classnonexplicitBase.html">nonexplicitBase</a></div><div class="ttdoc">Base class for nonexplicit solves.</div><div class="ttdef"><b>Definition</b> nonexplicit_base.h:32</div></div>
-<div class="ttc" id="aclassnonexplicitLinearSolver_html"><div class="ttname"><a href="classnonexplicitLinearSolver.html">nonexplicitLinearSolver</a></div><div class="ttdoc">This class handles all linear solves.</div><div class="ttdef"><b>Definition</b> nonexplicit_linear_solver.h:33</div></div>
-<div class="ttc" id="aclassnonexplicitLinearSolver_html_a17c4cfed3917d17ecac41e79463d7ba5"><div class="ttname"><a href="classnonexplicitLinearSolver.html#a17c4cfed3917d17ecac41e79463d7ba5">nonexplicitLinearSolver::nonexplicitLinearSolver</a></div><div class="ttdeci">nonexplicitLinearSolver(const userInputParameters&lt; dim &gt; &amp;_user_inputs, const matrixfreeHandler&lt; dim &gt; &amp;_matrix_free_handler, const triangulationHandler&lt; dim &gt; &amp;_triangulation_handler, const invmHandler&lt; dim, degree &gt; &amp;_invm_handler, const constraintHandler&lt; dim &gt; &amp;_constraint_handler, const prisms::dofHandler&lt; dim &gt; &amp;_dof_handler, const dealii::MappingQ1&lt; dim &gt; &amp;_mapping, dealii::MGLevelObject&lt; matrixfreeHandler&lt; dim, float &gt; &gt; &amp;_mg_matrix_free_handler, solutionHandler&lt; dim &gt; &amp;_solution_handler)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition</b> nonexplicit_linear_solver.h:81</div></div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>PRISMS_PF_END_NAMESPACE</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclassGMGSolver_html"><div class="ttname"><a href="classGMGSolver.html">GMGSolver</a></div><div class="ttdoc">Class that handles the assembly and solving of a field with a GMG preconditioner.</div><div class="ttdef"><b>Definition</b> linear_solver_gmg.h:40</div></div>
+<div class="ttc" id="aclassconstraintHandler_html"><div class="ttname"><a href="classconstraintHandler.html">constraintHandler</a></div><div class="ttdoc">The class handles the generation and application of boundary conditions based on the user-inputs.</div><div class="ttdef"><b>Definition</b> constraint_handler.h:24</div></div>
+<div class="ttc" id="aclasscustomPDE_html"><div class="ttname"><a href="classcustomPDE.html">customPDE</a></div><div class="ttdef"><b>Definition</b> explicit_base.h:27</div></div>
+<div class="ttc" id="aclassidentitySolver_html"><div class="ttname"><a href="classidentitySolver.html">identitySolver</a></div><div class="ttdoc">Class that handles the assembly and solving of a field with the identity preconditioner (no precondit...</div><div class="ttdef"><b>Definition</b> linear_solver_identity.h:22</div></div>
+<div class="ttc" id="aclassinvmHandler_html"><div class="ttname"><a href="classinvmHandler.html">invmHandler</a></div><div class="ttdoc">This class handles the computation and access of the inverted mass matrix for explicit solves.</div><div class="ttdef"><b>Definition</b> invm_handler.h:25</div></div>
+<div class="ttc" id="aclassmatrixfreeHandler_html"><div class="ttname"><a href="classmatrixfreeHandler.html">matrixfreeHandler</a></div><div class="ttdoc">This class handlers the management and access of the matrix-free objects.</div><div class="ttdef"><b>Definition</b> matrix_free_handler.h:25</div></div>
+<div class="ttc" id="aclassnonexplicitBase_html"><div class="ttname"><a href="classnonexplicitBase.html">nonexplicitBase</a></div><div class="ttdoc">Base class for nonexplicit solves.</div><div class="ttdef"><b>Definition</b> nonexplicit_base.h:35</div></div>
+<div class="ttc" id="aclassnonexplicitLinearSolver_html"><div class="ttname"><a href="classnonexplicitLinearSolver.html">nonexplicitLinearSolver</a></div><div class="ttdoc">This class handles all linear solves.</div><div class="ttdef"><b>Definition</b> nonexplicit_linear_solver.h:36</div></div>
+<div class="ttc" id="aclassnonexplicitLinearSolver_html_a17c4cfed3917d17ecac41e79463d7ba5"><div class="ttname"><a href="classnonexplicitLinearSolver.html#a17c4cfed3917d17ecac41e79463d7ba5">nonexplicitLinearSolver::nonexplicitLinearSolver</a></div><div class="ttdeci">nonexplicitLinearSolver(const userInputParameters&lt; dim &gt; &amp;_user_inputs, const matrixfreeHandler&lt; dim &gt; &amp;_matrix_free_handler, const triangulationHandler&lt; dim &gt; &amp;_triangulation_handler, const invmHandler&lt; dim, degree &gt; &amp;_invm_handler, const constraintHandler&lt; dim &gt; &amp;_constraint_handler, const prisms::dofHandler&lt; dim &gt; &amp;_dof_handler, const dealii::MappingQ1&lt; dim &gt; &amp;_mapping, dealii::MGLevelObject&lt; matrixfreeHandler&lt; dim, float &gt; &gt; &amp;_mg_matrix_free_handler, solutionHandler&lt; dim &gt; &amp;_solution_handler)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition</b> nonexplicit_linear_solver.h:84</div></div>
 <div class="ttc" id="aclassnonexplicitLinearSolver_html_a2bf478f799ba67ef509cbe83c94815ef"><div class="ttname"><a href="classnonexplicitLinearSolver.html#a2bf478f799ba67ef509cbe83c94815ef">nonexplicitLinearSolver::~nonexplicitLinearSolver</a></div><div class="ttdeci">~nonexplicitLinearSolver()=default</div><div class="ttdoc">Destructor.</div></div>
-<div class="ttc" id="aclassnonexplicitLinearSolver_html_a564a05dc133bbed1ebd54a5b50555973"><div class="ttname"><a href="classnonexplicitLinearSolver.html#a564a05dc133bbed1ebd54a5b50555973">nonexplicitLinearSolver::solve</a></div><div class="ttdeci">void solve() override</div><div class="ttdoc">Solve a single update step.</div><div class="ttdef"><b>Definition</b> nonexplicit_linear_solver.h:149</div></div>
-<div class="ttc" id="aclassnonexplicitLinearSolver_html_a939d4191ef067a37d22e5c14a0c6735c"><div class="ttname"><a href="classnonexplicitLinearSolver.html#a939d4191ef067a37d22e5c14a0c6735c">nonexplicitLinearSolver::init</a></div><div class="ttdeci">void init() override</div><div class="ttdoc">Initialize system.</div><div class="ttdef"><b>Definition</b> nonexplicit_linear_solver.h:104</div></div>
-<div class="ttc" id="aclasssolutionHandler_html"><div class="ttname"><a href="classsolutionHandler.html">solutionHandler</a></div><div class="ttdoc">Class that manages solution initialization and swapping with old solutions.</div><div class="ttdef"><b>Definition</b> solution_handler.h:19</div></div>
-<div class="ttc" id="aclasstriangulationHandler_html"><div class="ttname"><a href="classtriangulationHandler.html">triangulationHandler</a></div><div class="ttdoc">This class handlers the generation and manipulation of triangulations.</div><div class="ttdef"><b>Definition</b> triangulation_handler.h:20</div></div>
-<div class="ttc" id="aclassuserInputParameters_html"><div class="ttname"><a href="classuserInputParameters.html">userInputParameters</a></div><div class="ttdef"><b>Definition</b> user_input_parameters.h:19</div></div>
+<div class="ttc" id="aclassnonexplicitLinearSolver_html_a564a05dc133bbed1ebd54a5b50555973"><div class="ttname"><a href="classnonexplicitLinearSolver.html#a564a05dc133bbed1ebd54a5b50555973">nonexplicitLinearSolver::solve</a></div><div class="ttdeci">void solve() override</div><div class="ttdoc">Solve a single update step.</div><div class="ttdef"><b>Definition</b> nonexplicit_linear_solver.h:152</div></div>
+<div class="ttc" id="aclassnonexplicitLinearSolver_html_a939d4191ef067a37d22e5c14a0c6735c"><div class="ttname"><a href="classnonexplicitLinearSolver.html#a939d4191ef067a37d22e5c14a0c6735c">nonexplicitLinearSolver::init</a></div><div class="ttdeci">void init() override</div><div class="ttdoc">Initialize system.</div><div class="ttdef"><b>Definition</b> nonexplicit_linear_solver.h:107</div></div>
+<div class="ttc" id="aclasssolutionHandler_html"><div class="ttname"><a href="classsolutionHandler.html">solutionHandler</a></div><div class="ttdoc">Class that manages solution initialization and swapping with old solutions.</div><div class="ttdef"><b>Definition</b> solution_handler.h:22</div></div>
+<div class="ttc" id="aclasstriangulationHandler_html"><div class="ttname"><a href="classtriangulationHandler.html">triangulationHandler</a></div><div class="ttdoc">This class handlers the generation and manipulation of triangulations.</div><div class="ttdef"><b>Definition</b> triangulation_handler.h:23</div></div>
+<div class="ttc" id="aclassuserInputParameters_html"><div class="ttname"><a href="classuserInputParameters.html">userInputParameters</a></div><div class="ttdef"><b>Definition</b> user_input_parameters.h:22</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
