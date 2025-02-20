@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
+// SPDX-License-Identifier: GNU Lesser General Public Version 2.1
+
 #ifndef input_file_reader_h
 #define input_file_reader_h
 
