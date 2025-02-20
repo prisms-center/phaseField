@@ -38,9 +38,16 @@ for TARGET_DIR in "${TARGET_DIRS[@]}" ; do
     INSERT_TEXT="// SPDX-FileCopyrightText: © ${last_year} PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 "
-    # Insert the text at the beginning of the file
-    printf "%s\n%s" "$INSERT_TEXT" "$(cat "$file")" > "$file"
-    echo "Inserted text into $file"
+    # Check if the file already contains the copyright text
+    if grep -q "SPDX-FileCopyrightText" "$file" ; then
+      # Update the year in the existing text
+      sed -i "s|// SPDX-FileCopyrightText: © .* PRISMS Center at the University of Michigan|// SPDX-FileCopyrightText: © ${last_year} PRISMS Center at the University of Michigan|g" "$file"
+      echo "Updated text in $file"
+    else
+      # Insert the text at the beginning of the file
+      printf "%s\n%s" "$INSERT_TEXT" "$(cat "$file")" > "$file"
+      echo "Inserted text into $file"
+    fi
 
     # Run clang-format on the file
     clang-format -i "$file"
