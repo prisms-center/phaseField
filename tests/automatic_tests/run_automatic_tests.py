@@ -57,7 +57,7 @@ def grab_cpu_information():
     return architecture, cpu_model, cpu_cores, cpu_max_freq, cpu_min_freq, hypervisor
 
 
-def compile_and_run_simulation(application_path):
+def compile_and_run_simulation(application_path, n_threads=1):
     # Navigate to test application directory
     os.chdir(application_path)
 
@@ -73,13 +73,16 @@ def compile_and_run_simulation(application_path):
     # Compile application
     try:
         subprocess.run(
-            ["cmake", "."],
+            ["cmake", ".", "-G", "Ninja"],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.PIPE,
             check=True,
         )
         subprocess.run(
-            ["make"], stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, check=True
+            ["ninja", "-j", f"{n_threads}"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.PIPE,
+            check=True,
         )
         print("Compiling complete.")
     except subprocess.CalledProcessError as e:
@@ -126,7 +129,7 @@ def run_regression_test(application, new_gold_standard, test_dir):
     test_time = compile_and_run_simulation(application_path)
 
     # Compare the result against the gold standard, if it exists
-    tolerance = 1e-4
+    tolerance = 1e-6
     if new_gold_standard:
         shutil.move("output.txt", "gold_output.txt")
         test_passed = True
@@ -138,7 +141,7 @@ def run_regression_test(application, new_gold_standard, test_dir):
             with open(filename, "r") as file:
                 for line in file:
                     match = re.search(
-                        r"Solution index (\d+) type NORMAL l2-norm: ([\d.]+)", line
+                        r"Solution index (\d+) type \w+ l2-norm: ([\d.eE+-]+)", line
                     )
                     if match:
                         index, norm_value = int(match.group(1)), float(match.group(2))
@@ -214,6 +217,9 @@ parser = argparse.ArgumentParser(
     description="The maximum processes to use to run the regression tests"
 )
 parser.add_argument("-n", "--ntasks", type=int, default=1, help="Number of processes")
+parser.add_argument(
+    "-j", "--nthreads", type=int, default=1, help="Number of threads for ninja"
+)
 args = parser.parse_args()
 n_processes = args.ntasks
 
