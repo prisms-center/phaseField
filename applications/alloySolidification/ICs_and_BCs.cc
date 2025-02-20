@@ -41,8 +41,8 @@ customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &
           dist = 0.0;
           for (unsigned int dir = 0; dir < dim; dir++)
             {
-              dist += (p[dir] - center[i][dir] * userInputs.domain_size[dir]) *
-                      (p[dir] - center[i][dir] * userInputs.domain_size[dir]);
+              dist += (p[dir] - center[i][dir] * userInputs.size[dir]) *
+                      (p[dir] - center[i][dir] * userInputs.size[dir]);
             }
           dist = std::sqrt(dist);
 

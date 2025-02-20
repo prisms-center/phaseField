@@ -6,6 +6,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <prismspf/config.h>
+#include <prismspf/core/exceptions.h>
 #include <prismspf/core/refinement_criterion.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/user_inputs/input_file_reader.h>
@@ -13,7 +14,6 @@
 
 #include <algorithm>
 #include <cmath>
-#include <iostream>
 #include <string>
 #include <vector>
 
@@ -24,34 +24,33 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
                                               dealii::ParameterHandler &parameter_handler)
   : var_attributes(input_file_reader.var_attributes)
 {
-  // Spatial discretization
+  // Assign the parameters to the appropriate data structures
   assign_spatial_discretization_parameters(parameter_handler);
-
-  // Time stepping parameters
   assign_temporal_discretization_parameters(parameter_handler);
-
-  // Output parameters
-  assign_output_parameters(parameter_handler);
-
-  // Boundary parameters
-  assign_boundary_parameters(parameter_handler);
-
-  // Linear solve parameters
   assign_linear_solve_parameters(parameter_handler);
-
-  // Nonlinear solve parameters
   assign_nonlinear_solve_parameters(parameter_handler);
-
-  // Load the user-defined constants
+  assign_output_parameters(parameter_handler);
+  assign_checkpoint_parameters(parameter_handler);
+  assign_boundary_parameters(parameter_handler);
   load_model_constants(input_file_reader, parameter_handler);
+
+  // Perform and postprocessing of user inputs and run checks
+  spatial_discretization.postprocess_and_validate();
+  temporal_discretization.postprocess_and_validate(var_attributes);
+  linear_solve_parameters.postprocess_and_validate();
+  nonlinear_solve_parameters.postprocess_and_validate();
+  output_parameters.postprocess_and_validate(temporal_discretization);
+  checkpoint_parameters.postprocess_and_validate(temporal_discretization);
+  boundary_parameters.postprocess_and_validate(var_attributes);
 
   // Print all the parameters to summary.log
   spatial_discretization.print_parameter_summary();
   temporal_discretization.print_parameter_summary();
-  output_parameters.print_parameter_summary();
-  boundary_parameters.print_parameter_summary();
   linear_solve_parameters.print_parameter_summary();
   nonlinear_solve_parameters.print_parameter_summary();
+  output_parameters.print_parameter_summary();
+  checkpoint_parameters.print_parameter_summary();
+  boundary_parameters.print_parameter_summary();
 }
 
 template <int dim>
@@ -61,13 +60,13 @@ userInputParameters<dim>::assign_spatial_discretization_parameters(
 {
   parameter_handler.enter_subsection("rectangular mesh");
   {
-    std::vector<std::string> axis_labels = {"X", "Y", "Z"};
+    std::vector<std::string> axis_labels = {"x", "y", "z"};
     for (unsigned int i = 0; i < dim; ++i)
       {
-        spatial_discretization.domain_size[i] =
-          parameter_handler.get_double("size " + axis_labels[i]);
+        spatial_discretization.size[i] =
+          parameter_handler.get_double(axis_labels[i] + " size");
         spatial_discretization.subdivisions[i] =
-          parameter_handler.get_integer("subdivisions " + axis_labels[i]);
+          parameter_handler.get_integer(axis_labels[i] + " subdivisions");
       }
   }
   parameter_handler.leave_subsection();
@@ -78,112 +77,58 @@ userInputParameters<dim>::assign_spatial_discretization_parameters(
   }
   parameter_handler.leave_subsection();
 
-  spatial_discretization.refine_factor = parameter_handler.get_integer("Refine factor");
+  spatial_discretization.global_refinement =
+    parameter_handler.get_integer("global refinement");
 
-  spatial_discretization.degree = parameter_handler.get_integer("Element degree");
+  spatial_discretization.degree = parameter_handler.get_integer("degree");
 
-  // Adaptive meshing parameters
-  spatial_discretization.has_adaptivity = parameter_handler.get_bool("Mesh adaptivity");
+  spatial_discretization.has_adaptivity = parameter_handler.get_bool("mesh adaptivity");
 
-  AssertThrow(
-    (!spatial_discretization.has_adaptivity || dim != 1),
-    dealii::ExcMessage(
-      "Adaptive meshing for the matrix-free method is not currently supported."));
+  spatial_discretization.remeshing_period =
+    parameter_handler.get_integer("remeshing period");
 
-  spatial_discretization.remeshing_frequency =
-    parameter_handler.get_integer("Steps between remeshing operations");
+  spatial_discretization.max_refinement = parameter_handler.get_integer("max refinement");
+  spatial_discretization.min_refinement = parameter_handler.get_integer("min refinement");
 
-  spatial_discretization.max_refinement_level =
-    parameter_handler.get_integer("Max refinement level");
-  spatial_discretization.min_refinement_level =
-    parameter_handler.get_integer("Min refinement level");
-
-  // Enforce that the initial refinement level must be between the max and min
-  // level
-  if (spatial_discretization.has_adaptivity &&
-      ((spatial_discretization.refine_factor <
-        spatial_discretization.min_refinement_level) ||
-       (spatial_discretization.refine_factor >
-        spatial_discretization.max_refinement_level)))
-    {
-      std::cerr << "PRISMS-PF Error: The initial refinement factor must be "
-                   "between the maximum and minimum refinement levels when "
-                   "adaptive meshing is enabled.\n";
-      std::cerr << "Initial refinement level: " << spatial_discretization.refine_factor
-                << " Maximum and minimum refinement levels: "
-                << spatial_discretization.max_refinement_level << ", "
-                << spatial_discretization.min_refinement_level << "\n";
-      abort();
-    }
-
-  // The adaptivity criterion for each variable has its own subsection
   for (const auto &[index, variable] : var_attributes)
     {
-      std::string subsection_text = "Refinement criterion: ";
+      std::string subsection_text = "refinement criterion: ";
       subsection_text.append(variable.name);
-
       parameter_handler.enter_subsection(subsection_text);
       {
-        const std::string crit_type_string = parameter_handler.get("Criterion type");
-        if (!crit_type_string.empty())
+        const std::string crit_type_string = parameter_handler.get("type");
+        if (!boost::iequals(crit_type_string, "none"))
           {
             RefinementCriterion new_criterion;
             new_criterion.variable_index = index;
             new_criterion.variable_name  = variable.name;
-            if (boost::iequals(crit_type_string, "VALUE"))
+            if (boost::iequals(crit_type_string, "value"))
               {
                 new_criterion.criterion_type = criterion_value;
                 new_criterion.value_lower_bound =
-                  parameter_handler.get_double("Value lower bound");
+                  parameter_handler.get_double("value lower bound");
                 new_criterion.value_upper_bound =
-                  parameter_handler.get_double("Value upper bound");
-
-                // Check to make sure that the upper bound is greater than or
-                // equal to the lower bound
-                if (new_criterion.value_upper_bound < new_criterion.value_lower_bound)
-                  {
-                    std::cerr << "PRISMS-PF Error: The upper bound for "
-                                 "refinement for variable "
-                              << new_criterion.variable_name
-                              << " is less than the lower bound. Please "
-                                 "correct this in the parameters file.\n";
-                  }
+                  parameter_handler.get_double("value upper bound");
               }
-            else if (boost::iequals(crit_type_string, "GRADIENT"))
+            else if (boost::iequals(crit_type_string, "gradient"))
               {
                 new_criterion.criterion_type = criterion_gradient;
                 new_criterion.gradient_lower_bound =
-                  parameter_handler.get_double("Gradient magnitude lower bound");
+                  parameter_handler.get_double("gradient magnitude lower bound");
               }
-            else if (boost::iequals(crit_type_string, "VALUE_AND_GRADIENT"))
+            else if (boost::iequals(crit_type_string, "value_and_gradient"))
               {
                 new_criterion.criterion_type = criterion_value | criterion_gradient;
                 new_criterion.value_lower_bound =
-                  parameter_handler.get_double("Value lower bound");
+                  parameter_handler.get_double("value lower bound");
                 new_criterion.value_upper_bound =
-                  parameter_handler.get_double("Value upper bound");
+                  parameter_handler.get_double("value upper bound");
                 new_criterion.gradient_lower_bound =
-                  parameter_handler.get_double("Gradient magnitude lower bound");
-
-                // Check to make sure that the upper bound is greater than or
-                // equal to the lower bound
-                if (new_criterion.value_upper_bound < new_criterion.value_lower_bound)
-                  {
-                    std::cerr << "PRISMS-PF Error: The upper bound for "
-                                 "refinement for variable "
-                              << new_criterion.variable_name
-                              << " is less than the lower bound. Please "
-                                 "correct this in the parameters file.\n";
-                  }
+                  parameter_handler.get_double("gradient magnitude lower bound");
               }
             else
               {
-                std::cerr << "PRISMS-PF Error: The refinement criteria type "
-                             "found in the parameters file, "
-                          << crit_type_string
-                          << ", is not an allowed type. The allowed types are "
-                             "VALUE, GRADIENT, VALUE_AND_GRADIENT\n";
-                abort();
+                AssertThrow(false, UnreachableCode());
               }
             spatial_discretization.refinement_criteria.push_back(new_criterion);
           }
@@ -197,41 +142,10 @@ void
 userInputParameters<dim>::assign_temporal_discretization_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
-  temporal_discretization.dt = parameter_handler.get_double("Time step");
-  temporal_discretization.final_time =
-    parameter_handler.get_double("Simulation end time");
+  temporal_discretization.dt         = parameter_handler.get_double("time step");
+  temporal_discretization.final_time = parameter_handler.get_double("end time");
   temporal_discretization.total_increments =
-    static_cast<unsigned int>(parameter_handler.get_integer("Number of time steps"));
-
-  // If all of the variables are `TIME_INDEPENDENT` or `AUXILIARY`, then total_increments
-  // should be 1 and final_time should be 0
-  bool only_time_independent_pdes = true;
-  for (const auto &[index, variable] : var_attributes)
-    {
-      if (variable.pde_type == PDEType::EXPLICIT_TIME_DEPENDENT ||
-          variable.pde_type == PDEType::IMPLICIT_TIME_DEPENDENT)
-        {
-          only_time_independent_pdes = false;
-          break;
-        }
-    }
-
-  if (only_time_independent_pdes)
-    {
-      temporal_discretization.total_increments = 1;
-      return;
-    }
-
-  AssertThrow(temporal_discretization.dt > 0.0,
-              dealii::ExcMessage(
-                "The timestep (dt) must be greater than zero for transient problems."));
-
-  // Pick the maximum specified time since the default values are zero
-  temporal_discretization.final_time =
-    std::max(temporal_discretization.final_time,
-             temporal_discretization.dt * temporal_discretization.total_increments);
-  temporal_discretization.total_increments = static_cast<unsigned int>(
-    std::ceil(temporal_discretization.final_time / temporal_discretization.dt));
+    static_cast<unsigned int>(parameter_handler.get_integer("number steps"));
 }
 
 template <int dim>
@@ -239,20 +153,41 @@ void
 userInputParameters<dim>::assign_output_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
-  output_parameters.output_condition = parameter_handler.get("Output condition");
-  output_parameters.n_outputs =
-    static_cast<unsigned int>(parameter_handler.get_integer("Number of outputs"));
-  output_parameters.user_output_list =
-    dealii::Utilities::string_to_int(dealii::Utilities::split_string_list(
-      parameter_handler.get("List of time steps to output")));
-  output_parameters.output_frequency = parameter_handler.get_integer("Skip print steps");
-  output_parameters.output_file_type = parameter_handler.get("Output file type");
-  output_parameters.output_file_name = parameter_handler.get("Output file name (base)");
-  output_parameters.print_timing_with_output =
-    parameter_handler.get_bool("Print timing information with output");
+  parameter_handler.enter_subsection("output");
+  {
+    output_parameters.file_name = parameter_handler.get("file name");
+    output_parameters.file_type = parameter_handler.get("file type");
+    output_parameters.output_per_process =
+      parameter_handler.get_bool("separate files per process");
+    output_parameters.condition        = parameter_handler.get("condition");
+    output_parameters.user_output_list = dealii::Utilities::string_to_int(
+      dealii::Utilities::split_string_list(parameter_handler.get("list")));
+    output_parameters.n_outputs =
+      static_cast<unsigned int>(parameter_handler.get_integer("number"));
+    output_parameters.print_output_period =
+      parameter_handler.get_integer("print step period");
+    output_parameters.print_timing_with_output =
+      parameter_handler.get_bool("timing information with output");
+  }
+  parameter_handler.leave_subsection();
+}
 
-  // Determine the list of increments where output is neccessary
-  output_parameters.compute_output_list(temporal_discretization);
+template <int dim>
+void
+userInputParameters<dim>::assign_checkpoint_parameters(
+  dealii::ParameterHandler &parameter_handler)
+{
+  parameter_handler.enter_subsection("checkpoints");
+  {
+    checkpoint_parameters.load_from_checkpoint =
+      parameter_handler.get_bool("load from checkpoint");
+    checkpoint_parameters.condition            = parameter_handler.get("condition");
+    checkpoint_parameters.user_checkpoint_list = dealii::Utilities::string_to_int(
+      dealii::Utilities::split_string_list(parameter_handler.get("list")));
+    checkpoint_parameters.n_checkpoints =
+      static_cast<unsigned int>(parameter_handler.get_integer("number"));
+  }
+  parameter_handler.leave_subsection();
 }
 
 template <int dim>
@@ -260,13 +195,15 @@ void
 userInputParameters<dim>::assign_boundary_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
-  // Load the boundary condition variables into list of BCs (where each element
-  // of the vector is one component of one variable)
   for (const auto &[index, variable] : var_attributes)
     {
+      if (variable.is_postprocess)
+        {
+          continue;
+        }
       if (variable.field_type == SCALAR)
         {
-          std::string bc_text = "Boundary condition for variable ";
+          std::string bc_text = "boundary condition for ";
           bc_text.append(variable.name);
           boundary_parameters.BC_list[index].emplace(0, parameter_handler.get(bc_text));
         }
@@ -275,7 +212,7 @@ userInputParameters<dim>::assign_boundary_parameters(
           std::vector<std::string> axis_labels = {"x", "y", "z"};
           for (unsigned int i = 0; i < dim; i++)
             {
-              std::string bc_text = "Boundary condition for variable ";
+              std::string bc_text = "boundary condition for ";
               bc_text.append(variable.name + ", " + axis_labels[i] + " component");
               boundary_parameters.BC_list[index].emplace(i,
                                                          parameter_handler.get(bc_text));
@@ -283,33 +220,37 @@ userInputParameters<dim>::assign_boundary_parameters(
         }
     }
 
-  // Compute the boundary conditions from the unfiltered string and throw errors, if
-  // applicable.
-  boundary_parameters.compute_boundary_conditions(var_attributes);
-
   for (const auto &[index, variable] : var_attributes)
     {
-      std::string pinning_text = "Pinning point: ";
-      pinning_text.append(variable.name);
-      parameter_handler.enter_subsection(pinning_text);
-
-      // Skip if the value is the default INT_MAX
-      if (parameter_handler.get_double("value") == 2147483647)
+      if (variable.is_postprocess)
         {
-          parameter_handler.leave_subsection();
           continue;
         }
-
-      // Otherwise, fill out point and value
-      std::vector<std::string> axis_labels = {"x", "y", "z"};
-      dealii::Point<dim>       point;
-      for (unsigned int i = 0; i < dim; ++i)
+      std::string pinning_text = "pinning point for ";
+      pinning_text.append(variable.name);
+      parameter_handler.enter_subsection(pinning_text);
+      if (variable.field_type == SCALAR)
         {
-          point[i] = parameter_handler.get_double(axis_labels[i]);
+          // Skip if the value is the default INT_MAX
+          if (parameter_handler.get_double("value") == 2147483647)
+            {
+              parameter_handler.leave_subsection();
+              continue;
+            }
+          // Otherwise, fill out point and value
+          std::vector<std::string> axis_labels = {"x", "y", "z"};
+          dealii::Point<dim>       point;
+          for (unsigned int i = 0; i < dim; ++i)
+            {
+              point[i] = parameter_handler.get_double(axis_labels[i]);
+            }
+          boundary_parameters.pinned_point_list
+            .emplace(index, std::make_pair(parameter_handler.get_double("value"), point));
         }
-      boundary_parameters.pinned_point_list
-        .emplace(index, std::make_pair(parameter_handler.get_double("value"), point));
-
+      else
+        {
+          AssertThrow(false, FeatureNotImplemented("Vector pinned points"));
+        }
       parameter_handler.leave_subsection();
     }
 }
@@ -324,12 +265,12 @@ userInputParameters<dim>::assign_linear_solve_parameters(
       if (variable.pde_type == TIME_INDEPENDENT ||
           variable.pde_type == IMPLICIT_TIME_DEPENDENT)
         {
-          std::string subsection_text = "Linear solver parameters: ";
+          std::string subsection_text = "linear solver parameters: ";
           subsection_text.append(variable.name);
           parameter_handler.enter_subsection(subsection_text);
 
           // Set the tolerance type
-          const std::string type_string = parameter_handler.get("Tolerance type");
+          const std::string type_string = parameter_handler.get("tolerance type");
           if (boost::iequals(type_string, "ABSOLUTE_RESIDUAL"))
             {
               linear_solve_parameters.linear_solve[index].tolerance_type =
@@ -340,29 +281,33 @@ userInputParameters<dim>::assign_linear_solve_parameters(
               linear_solve_parameters.linear_solve[index].tolerance_type =
                 solverToleranceType::RELATIVE_RESIDUAL_CHANGE;
             }
+          else
+            {
+              AssertThrow(false, UnreachableCode());
+            }
 
           // Set the tolerance value
           linear_solve_parameters.linear_solve[index].tolerance =
-            parameter_handler.get_double("Tolerance value");
+            parameter_handler.get_double("tolerance value");
 
           // Set the maximum number of iterations
           linear_solve_parameters.linear_solve[index].max_iterations =
-            parameter_handler.get_integer("Maximum linear solver iterations");
+            parameter_handler.get_integer("max iterations");
 
           // Set preconditioner type and related parameters
           linear_solve_parameters.linear_solve[index].preconditioner =
-            boost::iequals(parameter_handler.get("Preconditioner"), "GMG")
+            boost::iequals(parameter_handler.get("preconditioner type"), "GMG")
               ? preconditionerType::GMG
               : preconditionerType::NONE;
 
           linear_solve_parameters.linear_solve[index].smoothing_range =
-            parameter_handler.get_double("Smoothing range");
+            parameter_handler.get_double("smoothing range");
 
           linear_solve_parameters.linear_solve[index].smoother_degree =
-            parameter_handler.get_integer("Smoother degree");
+            parameter_handler.get_integer("smoother degree");
 
           linear_solve_parameters.linear_solve[index].eig_cg_n_iterations =
-            parameter_handler.get_integer("Eigenvalue CG iterations");
+            parameter_handler.get_integer("eigenvalue cg iterations");
 
           parameter_handler.leave_subsection();
         }
@@ -379,17 +324,16 @@ userInputParameters<dim>::assign_nonlinear_solve_parameters(
       if (variable.field_solve_type == fieldSolveType::NONEXPLICIT_SELF_NONLINEAR ||
           variable.field_solve_type == fieldSolveType::NONEXPLICIT_CO_NONLINEAR)
         {
-          std::string subsection_text = "Nonlinear solver parameters: ";
+          std::string subsection_text = "nonlinear solver parameters: ";
           subsection_text.append(variable.name);
           parameter_handler.enter_subsection(subsection_text);
 
-          // Set the maximum number of iterations
           nonlinear_solve_parameters.nonlinear_solve[index].max_iterations =
-            parameter_handler.get_integer("Maximum nonlinear solver iterations");
-
-          // Set the step length
+            parameter_handler.get_integer("max iterations");
           nonlinear_solve_parameters.nonlinear_solve[index].step_length =
-            parameter_handler.get_double("Constant damping value");
+            parameter_handler.get_double("step size");
+
+          // TODO: Implement backtracking line search
 
           parameter_handler.leave_subsection();
         }

@@ -34,7 +34,7 @@ inputFileReader::inputFileReader(
   // Read in all of the parameters now
   declare_parameters();
   parameter_handler.parse_input(parameters_file_name);
-  number_of_dimensions = parameter_handler.get_integer("Number of dimensions");
+  number_of_dimensions = parameter_handler.get_integer("dim");
 }
 
 void
@@ -293,46 +293,48 @@ inputFileReader::declare_parameters()
 void
 inputFileReader::declare_mesh()
 {
-  parameter_handler.declare_entry("Number of dimensions",
+  parameter_handler.declare_entry("dim",
                                   "1",
                                   dealii::Patterns::Integer(1, 3),
-                                  "The number of dimensions for the simulation.");
-  parameter_handler.declare_entry("Element degree",
+                                  "The number of dimensions for the simulation.",
+                                  true);
+  parameter_handler.declare_entry("degree",
                                   "1",
                                   dealii::Patterns::Integer(1, 6),
-                                  "The polynomial order of the finte element.");
-  parameter_handler.declare_entry(
-    "Refine factor",
-    "0",
-    dealii::Patterns::Integer(0, INT_MAX),
-    "The number of initial refinements of the coarse mesh.");
+                                  "The polynomial order of the finite element.",
+                                  true);
+  parameter_handler.declare_entry("global refinement",
+                                  "0",
+                                  dealii::Patterns::Integer(0, INT_MAX),
+                                  "The number of initial refinements of the coarse mesh.",
+                                  true);
 
   parameter_handler.enter_subsection("rectangular mesh");
   {
-    parameter_handler.declare_entry("size X",
-                                    "0",
+    parameter_handler.declare_entry("x size",
+                                    "0.0",
                                     dealii::Patterns::Double(0.0, DBL_MAX),
                                     "The size of the domain in the x direction.");
-    parameter_handler.declare_entry("size Y",
-                                    "0",
+    parameter_handler.declare_entry("y size",
+                                    "0.0",
                                     dealii::Patterns::Double(0.0, DBL_MAX),
                                     "The size of the domain in the y direction.");
-    parameter_handler.declare_entry("size Z",
-                                    "0",
+    parameter_handler.declare_entry("z size",
+                                    "0.0",
                                     dealii::Patterns::Double(0.0, DBL_MAX),
                                     "The size of the domain in the z direction.");
     parameter_handler.declare_entry(
-      "subdivisions X",
+      "x subdivisions",
       "1",
       dealii::Patterns::Integer(1, INT_MAX),
       "The number of mesh subdivisions in the x direction.");
     parameter_handler.declare_entry(
-      "subdivisions Y",
+      "y subdivisions",
       "1",
       dealii::Patterns::Integer(1, INT_MAX),
       "The number of mesh subdivisions in the y direction.");
     parameter_handler.declare_entry(
-      "subdivisions Z",
+      "z subdivisions",
       "1",
       dealii::Patterns::Integer(1, INT_MAX),
       "The number of mesh subdivisions in the z direction.");
@@ -348,53 +350,50 @@ inputFileReader::declare_mesh()
   }
   parameter_handler.leave_subsection();
 
-  parameter_handler.declare_entry("Mesh adaptivity",
+  parameter_handler.declare_entry("mesh adaptivity",
                                   "false",
                                   dealii::Patterns::Bool(),
                                   "Whether to enable mesh adaptivity.");
-  parameter_handler.declare_entry("Max refinement level",
+  parameter_handler.declare_entry("max refinement",
                                   "0",
                                   dealii::Patterns::Integer(0, INT_MAX),
                                   "The maximum level of refinement.");
-  parameter_handler.declare_entry("Min refinement level",
+  parameter_handler.declare_entry("min refinement",
                                   "0",
                                   dealii::Patterns::Integer(0, INT_MAX),
                                   "The minimum level of refinement.");
   parameter_handler.declare_entry(
-    "Steps between remeshing operations",
+    "remeshing period",
     "2147483647",
     dealii::Patterns::Integer(1, INT_MAX),
     "The number of time steps between mesh refinement operations.");
 
   for (const auto &[index, variable] : var_attributes)
     {
-      std::string subsection_text = "Refinement criterion: ";
+      std::string subsection_text = "refinement criterion: ";
       subsection_text.append(variable.name);
       parameter_handler.enter_subsection(subsection_text);
       {
         parameter_handler.declare_entry(
-          "Criterion type",
-          "",
-          dealii::Patterns::Anything(),
+          "type",
+          "none",
+          dealii::Patterns::Selection("none|value|gradient|value_and_gradient"),
           "The type of criterion used to determine if a cell should be "
-          "refined. The options are VALUE, GRADIENT, VALUE_AND_GRADIENT.");
-
+          "refined. The options are none, value, gradient, value_and_gradient.");
         parameter_handler.declare_entry(
-          "Value lower bound",
+          "value lower bound",
           "0.0",
-          dealii::Patterns::Double(),
+          dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
           "The lower bound for the window determining where the mesh should be "
           "refined.");
-
         parameter_handler.declare_entry(
-          "Value upper bound",
-          "1.0",
-          dealii::Patterns::Double(),
+          "value upper bound",
+          "0.0",
+          dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
           "The upper bound for the window determining where the mesh should be "
           "refined.");
-
-        parameter_handler.declare_entry("Gradient magnitude lower bound",
-                                        "1.0",
+        parameter_handler.declare_entry("gradient magnitude lower bound",
+                                        "2147483647",
                                         dealii::Patterns::Double(0.0, DBL_MAX),
                                         "The magnitude of the gradient above "
                                         "which the mesh should be refined.");
@@ -406,16 +405,16 @@ inputFileReader::declare_mesh()
 void
 inputFileReader::declare_time_discretization()
 {
-  parameter_handler.declare_entry("Number of time steps",
-                                  "0",
-                                  dealii::Patterns::Integer(0, INT_MAX),
-                                  "The time step size for the simulation.");
-  parameter_handler.declare_entry("Time step",
+  parameter_handler.declare_entry("number steps",
+                                  "1",
+                                  dealii::Patterns::Integer(1, INT_MAX),
+                                  "The total number of step for the simulation.");
+  parameter_handler.declare_entry("time step",
                                   "0.0",
                                   dealii::Patterns::Double(0.0, DBL_MAX),
                                   "The time step size for the simulation.");
   parameter_handler.declare_entry(
-    "Simulation end time",
+    "end time",
     "0.0",
     dealii::Patterns::Double(0.0, DBL_MAX),
     "The value of simulated time where the simulation ends.");
@@ -430,43 +429,43 @@ inputFileReader::declare_solver_parameters()
       if (variable.pde_type == TIME_INDEPENDENT ||
           variable.pde_type == IMPLICIT_TIME_DEPENDENT)
         {
-          std::string subsection_text = "Linear solver parameters: ";
+          std::string subsection_text = "linear solver parameters: ";
           subsection_text.append(variable.name);
           parameter_handler.enter_subsection(subsection_text);
           {
             parameter_handler.declare_entry(
-              "Tolerance type",
+              "tolerance type",
               "ABSOLUTE_RESIDUAL",
               dealii::Patterns::Selection("ABSOLUTE_RESIDUAL|RELATIVE_RESIDUAL_CHANGE"),
               "The tolerance type for the linear solver.");
             parameter_handler.declare_entry(
-              "Tolerance value",
+              "tolerance value",
               "1.0e-10",
-              dealii::Patterns::Double(0, DBL_MAX),
+              dealii::Patterns::Double(DBL_MIN, DBL_MAX),
               "The value of for the linear solver tolerance.");
             parameter_handler.declare_entry(
-              "Maximum linear solver iterations",
-              "1000",
-              dealii::Patterns::Integer(0, INT_MAX),
+              "max iterations",
+              "100",
+              dealii::Patterns::Integer(1, INT_MAX),
               "The maximum number of linear solver iterations before the loop "
               "is stopped.");
             parameter_handler.declare_entry(
-              "Preconditioner",
+              "preconditioner type",
               "GMG",
               dealii::Patterns::Selection("NONE|GMG"),
               "The preconditioner type for the linear solver.");
-            parameter_handler.declare_entry("Smoothing range",
+            parameter_handler.declare_entry("smoothing range",
                                             "15.0",
-                                            dealii::Patterns::Double(0, DBL_MAX),
+                                            dealii::Patterns::Double(DBL_MIN, DBL_MAX),
                                             "The smoothing range for eigenvalues.");
-            parameter_handler.declare_entry("Smoother degree",
+            parameter_handler.declare_entry("smoother degree",
                                             "5",
-                                            dealii::Patterns::Integer(0, INT_MAX),
+                                            dealii::Patterns::Integer(1, INT_MAX),
                                             "The smoother polynomial degree.");
             parameter_handler.declare_entry(
-              "Eigenvalue CG iterations",
+              "eigenvalue cg iterations",
               "10",
-              dealii::Patterns::Integer(0, INT_MAX),
+              dealii::Patterns::Integer(1, INT_MAX),
               "The maximum number of CG iterations used to find the maximum eigenvalue.");
           }
           parameter_handler.leave_subsection();
@@ -479,57 +478,49 @@ inputFileReader::declare_solver_parameters()
       if (variable.field_solve_type == fieldSolveType::NONEXPLICIT_SELF_NONLINEAR ||
           variable.field_solve_type == fieldSolveType::NONEXPLICIT_CO_NONLINEAR)
         {
-          std::string subsection_text = "Nonlinear solver parameters: ";
+          std::string subsection_text = "nonlinear solver parameters: ";
           subsection_text.append(variable.name);
           parameter_handler.enter_subsection(subsection_text);
           {
-            parameter_handler.declare_entry("Maximum nonlinear solver iterations",
+            parameter_handler.declare_entry("max iterations",
                                             "100",
-                                            dealii::Patterns::Integer(0, INT_MAX),
+                                            dealii::Patterns::Integer(1, INT_MAX),
                                             "The maximum number of nonlinear solver "
                                             "iterations before the loop is stopped.");
             parameter_handler.declare_entry(
-              "Tolerance type",
+              "tolerance type",
               "ABSOLUTE_SOLUTION_CHANGE",
-              dealii::Patterns::Anything(),
+              dealii::Patterns::Selection("ABSOLUTE_RESIDUAL|RELATIVE_RESIDUAL_CHANGE"),
               "The tolerance type for the nonlinear solver.");
             parameter_handler.declare_entry(
-              "Tolerance value",
+              "tolerance value",
               "1.0e-10",
-              dealii::Patterns::Double(),
+              dealii::Patterns::Double(DBL_MIN, DBL_MAX),
               "The value of for the nonlinear solver tolerance.");
             parameter_handler.declare_entry(
-              "Use backtracking line search damping",
+              "use backtracking line search",
               "true",
               dealii::Patterns::Bool(),
               "Whether to use a backtracking line-search to find the best "
               "choice of the damping coefficient.");
             parameter_handler.declare_entry(
-              "Backtracking step size modifier",
+              "step size modifier",
               "0.5",
-              dealii::Patterns::Double(),
+              dealii::Patterns::Double(0.0, 1.0),
               "The constant that determines how much the step size decreases "
               "per backtrack. The 'tau' parameter.");
             parameter_handler.declare_entry(
-              "Backtracking residual decrease coefficient",
-              "1.0",
-              dealii::Patterns::Double(),
+              "residual decrease coefficient",
+              "0.5",
+              dealii::Patterns::Double(0.0, 1.0),
               "The constant that determines how much the residual must "
               "decrease to be accepted as sufficient. The 'c' parameter.");
             parameter_handler.declare_entry(
-              "Constant damping value",
+              "step size",
               "1.0",
               dealii::Patterns::Double(0.0, 1.0),
               "The constant damping value to be used if the backtrace "
               "line-search approach isn't used.");
-            parameter_handler.declare_entry(
-              "Use Laplace's equation to determine the initial guess",
-              "false",
-              dealii::Patterns::Bool(),
-              "Whether to use the solution of Laplace's equation instead of "
-              "the IC in ICs_and_BCs.h as the initial guess for nonlinear, "
-              "time independent equations. This guarantees smoothness and "
-              "compliance with BCs.");
           }
           parameter_handler.leave_subsection();
         }
@@ -539,46 +530,52 @@ inputFileReader::declare_solver_parameters()
 void
 inputFileReader::declare_output_parameters()
 {
-  parameter_handler.declare_entry("Output file name (base)",
-                                  "solution",
-                                  dealii::Patterns::Anything(),
-                                  "The name for the output file, before the "
-                                  "time step and processor info are added.");
-  parameter_handler.declare_entry("Output file type",
-                                  "vtu",
-                                  dealii::Patterns::Selection("vtu|vtk|pvtu"),
-                                  "The output file type (either vtu, pvtu, or vtk).");
-  parameter_handler.declare_entry(
-    "Output separate files per process",
-    "false",
-    dealii::Patterns::Bool(),
-    "Whether to output separate vtu files for each process in a parallel "
-    "calculation (automatically set to true for vtk files).");
-  parameter_handler.declare_entry("Output condition",
-                                  "EQUAL_SPACING",
-                                  dealii::Patterns::Anything(),
-                                  "The spacing type for outputing the solution fields.");
-  parameter_handler.declare_entry(
-    "List of time steps to output",
-    "0",
-    dealii::Patterns::Anything(),
-    "The list of time steps to output, used for the LIST type.");
-  parameter_handler.declare_entry("Number of outputs",
-                                  "10",
-                                  dealii::Patterns::Integer(0, INT_MAX),
-                                  "The number of outputs (or number of outputs "
-                                  "per decade for the N_PER_DECADE type).");
-  parameter_handler.declare_entry(
-    "Skip print steps",
-    "2147483647",
-    dealii::Patterns::Integer(1, INT_MAX),
-    "The number of time steps between updates to the screen.");
-  parameter_handler.declare_entry(
-    "Print timing information with output",
-    "false",
-    dealii::Patterns::Bool(),
-    "Whether to print the summary table of the wall time and wall time for "
-    "indiviual subroutines every time the code outputs.");
+  parameter_handler.enter_subsection("output");
+  {
+    parameter_handler.declare_entry("file name",
+                                    "solution",
+                                    dealii::Patterns::Anything(),
+                                    "The name for the output file, before the "
+                                    "time step and processor info are added.");
+    parameter_handler.declare_entry("file type",
+                                    "vtu",
+                                    dealii::Patterns::Selection("vtu|vtk|pvtu"),
+                                    "The output file type (either vtu, pvtu, or vtk).");
+    parameter_handler.declare_entry(
+      "separate files per process",
+      "false",
+      dealii::Patterns::Bool(),
+      "Whether to output separate vtu files for each process in a parallel "
+      "calculation (automatically set to true for vtk files).");
+    parameter_handler.declare_entry(
+      "condition",
+      "EQUAL_SPACING",
+      dealii::Patterns::Selection("EQUAL_SPACING|LOG_SPACING|N_PER_DECADE|LIST"),
+      "The spacing type for outputing the solution fields (either EQUAL_SPACING, "
+      "LOG_SPACING, N_PER_DECADE, or LIST).");
+    parameter_handler.declare_entry(
+      "list",
+      "0",
+      dealii::Patterns::List(dealii::Patterns::Integer(0, INT_MAX), 0, INT_MAX, ","),
+      "The list of time steps to output, used for the LIST type.");
+    parameter_handler.declare_entry("number",
+                                    "10",
+                                    dealii::Patterns::Integer(0, INT_MAX),
+                                    "The number of outputs (or number of outputs "
+                                    "per decade for the N_PER_DECADE type).");
+    parameter_handler.declare_entry(
+      "print step period",
+      "2147483647",
+      dealii::Patterns::Integer(1, INT_MAX),
+      "The number of time steps between updates to the screen.");
+    parameter_handler.declare_entry(
+      "timing information with output",
+      "false",
+      dealii::Patterns::Bool(),
+      "Whether to print the summary table of the wall time and wall time for "
+      "indiviual subroutines every time the code outputs.");
+  }
+  parameter_handler.leave_subsection();
 }
 
 void
@@ -609,26 +606,32 @@ inputFileReader::declare_load_IC_parameters()
 void
 inputFileReader::declare_checkpoint_parameters()
 {
-  // parameter_handler.declare_entry(
-  //   "Load from a checkpoint",
-  //   "false",
-  //   dealii::Patterns::Bool(),
-  //   "Whether to load from a checkpoint created during a previous simulation.");
-  // parameter_handler.declare_entry("Checkpoint condition",
-  //                                 "EQUAL_SPACING",
-  //                                 dealii::Patterns::Anything(),
-  //                                 "The spacing type for saving checkpoints.");
-  // parameter_handler.declare_entry(
-  //   "List of time steps to save checkpoints",
-  //   "0",
-  //   dealii::Patterns::Anything(),
-  //   "The list of time steps to save checkpoints, used for the LIST type.");
-  // parameter_handler.declare_entry(
-  //   "Number of checkpoints",
-  //   "0",
-  //   dealii::Patterns::Integer(),
-  //   "The number of checkpoints (or number of checkpoints per decade for the "
-  //   "N_PER_DECADE type).");
+  parameter_handler.enter_subsection("checkpoints");
+  {
+    parameter_handler.declare_entry(
+      "load from checkpoint",
+      "false",
+      dealii::Patterns::Bool(),
+      "Whether to load from a checkpoint created during a previous simulation.");
+    parameter_handler.declare_entry(
+      "condition",
+      "EQUAL_SPACING",
+      dealii::Patterns::Selection("EQUAL_SPACING|LOG_SPACING|N_PER_DECADE|LIST"),
+      "The spacing type for saving checkpoints (either EQUAL_SPACING, "
+      "LOG_SPACING, N_PER_DECADE, or LIST).");
+    parameter_handler.declare_entry(
+      "list",
+      "0",
+      dealii::Patterns::List(dealii::Patterns::Integer(0, INT_MAX), 0, INT_MAX, ","),
+      "The list of time steps to save checkpoints, used for the LIST type.");
+    parameter_handler.declare_entry(
+      "number",
+      "0",
+      dealii::Patterns::Integer(0, INT_MAX),
+      "The number of checkpoints (or number of checkpoints per decade for the "
+      "N_PER_DECADE type).");
+  }
+  parameter_handler.leave_subsection();
 }
 
 void
@@ -636,9 +639,13 @@ inputFileReader::declare_BC_parameters()
 {
   for (const auto &[index, variable] : var_attributes)
     {
+      if (variable.is_postprocess)
+        {
+          continue;
+        }
       if (variable.field_type == SCALAR)
         {
-          std::string bc_text = "Boundary condition for variable ";
+          std::string bc_text = "boundary condition for ";
           bc_text.append(variable.name);
           parameter_handler.declare_entry(
             bc_text,
@@ -648,7 +655,7 @@ inputFileReader::declare_BC_parameters()
         }
       else
         {
-          std::string bc_text = "Boundary condition for variable ";
+          std::string bc_text = "boundary condition for ";
           bc_text.append(variable.name);
           bc_text.append(", x component");
           parameter_handler.declare_entry(
@@ -683,14 +690,36 @@ inputFileReader::declare_pinning_parameters()
 {
   for (const auto &[index, variable] : var_attributes)
     {
-      std::string pinning_text = "Pinning point: ";
+      if (variable.is_postprocess)
+        {
+          continue;
+        }
+      std::string pinning_text = "pinning point for ";
       pinning_text.append(variable.name);
       parameter_handler.enter_subsection(pinning_text);
       {
-        parameter_handler.declare_entry("value",
-                                        "2147483647",
-                                        dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
-                                        "Value of pinned point");
+        if (variable.field_type == SCALAR)
+          {
+            parameter_handler.declare_entry("value",
+                                            "2147483647",
+                                            dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
+                                            "Value of pinned point.");
+          }
+        else
+          {
+            parameter_handler.declare_entry("x value",
+                                            "2147483647",
+                                            dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
+                                            "Value of pinned point for the x-component.");
+            parameter_handler.declare_entry("y value",
+                                            "2147483647",
+                                            dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
+                                            "Value of pinned point for the y-component.");
+            parameter_handler.declare_entry("z value",
+                                            "2147483647",
+                                            dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
+                                            "Value of pinned point for the z-component.");
+          }
         parameter_handler.declare_entry("x",
                                         "0.0",
                                         dealii::Patterns::Double(-DBL_MAX, DBL_MAX),

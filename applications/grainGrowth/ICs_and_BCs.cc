@@ -111,37 +111,35 @@ customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &
 
       for (unsigned int dir = 0; dir < dim; dir++)
         {
-          dist += (p[dir] - center_list[index][dir] * userInputs.domain_size[dir]) *
-                  (p[dir] - center_list[index][dir] * userInputs.domain_size[dir]);
+          dist += (p[dir] - center_list[index][dir] * userInputs.size[dir]) *
+                  (p[dir] - center_list[index][dir] * userInputs.size[dir]);
         }
       dist = std::sqrt(dist);
 
       scalar_IC +=
-        0.5 * (1.0 - std::tanh((dist - rad[index] * userInputs.domain_size[0]) / 0.5));
+        0.5 * (1.0 - std::tanh((dist - rad[index] * userInputs.size[0]) / 0.5));
 
       dist = 0.0;
       for (unsigned int dir = 0; dir < dim; dir++)
         {
-          dist += (p[dir] - center_list[index + 5][dir] * userInputs.domain_size[dir]) *
-                  (p[dir] - center_list[index + 5][dir] * userInputs.domain_size[dir]);
+          dist += (p[dir] - center_list[index + 5][dir] * userInputs.size[dir]) *
+                  (p[dir] - center_list[index + 5][dir] * userInputs.size[dir]);
         }
       dist = std::sqrt(dist);
 
       scalar_IC +=
-        0.5 *
-        (1.0 - std::tanh((dist - rad[index + 5] * userInputs.domain_size[0]) / 0.5));
+        0.5 * (1.0 - std::tanh((dist - rad[index + 5] * userInputs.size[0]) / 0.5));
 
       dist = 0.0;
       for (unsigned int dir = 0; dir < dim; dir++)
         {
-          dist += (p[dir] - center_list[index + 10][dir] * userInputs.domain_size[dir]) *
-                  (p[dir] - center_list[index + 10][dir] * userInputs.domain_size[dir]);
+          dist += (p[dir] - center_list[index + 10][dir] * userInputs.size[dir]) *
+                  (p[dir] - center_list[index + 10][dir] * userInputs.size[dir]);
         }
       dist = std::sqrt(dist);
 
       scalar_IC +=
-        0.5 *
-        (1.0 - std::tanh((dist - rad[index + 10] * userInputs.domain_size[0]) / 0.5));
+        0.5 * (1.0 - std::tanh((dist - rad[index + 10] * userInputs.size[0]) / 0.5));
     }
   else
     {
