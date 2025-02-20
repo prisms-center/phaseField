@@ -23,24 +23,24 @@ customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &
       r = 0.0;
       for (unsigned int dir = 0; dir < dim; dir++)
         {
-          r += (p[dir] - userInputs.domain_size[dir] / 2.0) *
-               (p[dir] - userInputs.domain_size[dir] / 2.0);
+          r +=
+            (p[dir] - userInputs.size[dir] / 2.0) * (p[dir] - userInputs.size[dir] / 2.0);
         }
-      r         = std::sqrt(r);
-      double n  = 0.5 * (1.0 - std::tanh((r - userInputs.domain_size[0] / 4.0) / 4.0));
-      scalar_IC = 0.082 * 16.0 / (userInputs.domain_size[0] / 4.0) +
-                  (3.0 * n * n - 2.0 * n * n * n);
+      r        = std::sqrt(r);
+      double n = 0.5 * (1.0 - std::tanh((r - userInputs.size[0] / 4.0) / 4.0));
+      scalar_IC =
+        0.082 * 16.0 / (userInputs.size[0] / 4.0) + (3.0 * n * n - 2.0 * n * n * n);
     }
   else
     {
       r = 0.0;
       for (unsigned int dir = 0; dir < dim; dir++)
         {
-          r += (p[dir] - userInputs.domain_size[dir] / 2.0) *
-               (p[dir] - userInputs.domain_size[dir] / 2.0);
+          r +=
+            (p[dir] - userInputs.size[dir] / 2.0) * (p[dir] - userInputs.size[dir] / 2.0);
         }
       r         = std::sqrt(r);
-      scalar_IC = 0.5 * (1.0 - std::tanh((r - userInputs.domain_size[0] / 4.0) / 4.0));
+      scalar_IC = 0.5 * (1.0 - std::tanh((r - userInputs.size[0] / 4.0) / 4.0));
     }
 
   // --------------------------------------------------------------------------

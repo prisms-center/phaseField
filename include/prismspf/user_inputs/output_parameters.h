@@ -3,34 +3,33 @@
 
 #include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/core/exceptions.h>
 #include <prismspf/user_inputs/temporal_discretization.h>
 #include <prismspf/utilities.h>
 
+#include <climits>
 #include <set>
+#include <string>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Class that holds output parameters.
+ * \brief Struct that holds output parameters.
  */
-class outputParameters
+struct outputParameters
 {
 public:
   /**
-   * \brief Constructor.
+   * \brief Return is the current increment should be output.
    */
-  outputParameters() = default;
+  [[nodiscard]] bool
+  should_output(unsigned int increment) const;
 
   /**
-   * \brief Destructor.
-   */
-  ~outputParameters() = default;
-
-  /**
-   * \brief Compute the list of increments where the solution is output to file.
+   * \brief Postprocess and validate parameters.
    */
   void
-  compute_output_list(const temporalDiscretization &temporal_discretization);
+  postprocess_and_validate(const temporalDiscretization &temporal_discretization);
 
   /**
    * \brief Print parameters to summary.log
@@ -39,16 +38,20 @@ public:
   print_parameter_summary() const;
 
   // Output file type
-  std::string output_file_type;
+  std::string file_type;
 
   // Output file name
-  std::string output_file_name;
+  std::string file_name;
 
-  // The number of steps between outputting
-  unsigned int output_frequency = UINT_MAX;
+  // Whether to output one vtu or vtk file per process
+  // TODO: Actually implement this and set it to true is vtk outputs
+  bool output_per_process = false;
+
+  // The number of steps between outputting relevant information to screen
+  unsigned int print_output_period = UINT_MAX;
 
   // Output condition type
-  std::string output_condition;
+  std::string condition;
 
   // Number of outputs
   unsigned int n_outputs = 0;
@@ -63,12 +66,18 @@ public:
   std::set<unsigned int> output_list;
 };
 
+inline bool
+outputParameters::should_output(unsigned int increment) const
+{
+  return output_list.find(increment) != output_list.end();
+}
+
 inline void
-outputParameters::compute_output_list(
+outputParameters::postprocess_and_validate(
   const temporalDiscretization &temporal_discretization)
 {
   // If the user has specified a list and we have list output use that and return early
-  if (output_condition == "LIST")
+  if (condition == "LIST")
     {
       for (const auto &increment : user_output_list)
         {
@@ -88,7 +97,7 @@ outputParameters::compute_output_list(
   n_outputs = std::min(n_outputs, temporal_discretization.total_increments);
 
   // Determine the output list from the other criteria
-  if (output_condition == "EQUAL_SPACING")
+  if (condition == "EQUAL_SPACING")
     {
       for (unsigned int iteration = 0;
            iteration <= temporal_discretization.total_increments;
@@ -97,7 +106,7 @@ outputParameters::compute_output_list(
           output_list.insert(iteration);
         }
     }
-  else if (output_condition == "LOG_SPACING")
+  else if (condition == "LOG_SPACING")
     {
       output_list.insert(0);
       for (unsigned int output = 1; output <= n_outputs; output++)
@@ -107,7 +116,7 @@ outputParameters::compute_output_list(
                      static_cast<double>(output) / static_cast<double>(n_outputs)))));
         }
     }
-  else if (output_condition == "N_PER_DECADE")
+  else if (condition == "N_PER_DECADE")
     {
       AssertThrow(temporal_discretization.total_increments > 1,
                   dealii::ExcMessage("For n per decaded spaced outputs, the number of "
@@ -130,30 +139,30 @@ outputParameters::compute_output_list(
     }
   else
     {
-      AssertThrow(false, dealii::ExcMessage("Invalid output spacing type."));
+      AssertThrow(false, UnreachableCode());
     }
 }
 
 inline void
 outputParameters::print_parameter_summary() const
 {
-  prisms::conditionalOStreams::pout_summary()
+  conditionalOStreams::pout_summary()
     << "================================================\n"
     << "  Output Parameters\n"
     << "================================================\n"
-    << "Output file type: " << output_file_type << "\n"
-    << "Output file name: " << output_file_name << "\n"
-    << "Output frequency: " << output_frequency << "\n"
-    << "Output condition: " << output_condition << "\n"
+    << "Output file type: " << file_type << "\n"
+    << "Output file name: " << file_name << "\n"
+    << "Print output period: " << print_output_period << "\n"
+    << "Output condition: " << condition << "\n"
     << "Number of outputs: " << n_outputs << "\n"
     << "Print timing info: " << bool_to_string(print_timing_with_output) << "\n";
 
-  prisms::conditionalOStreams::pout_summary() << "Output iteration list: ";
+  conditionalOStreams::pout_summary() << "Output iteration list: ";
   for (const auto &iteration : output_list)
     {
-      prisms::conditionalOStreams::pout_summary() << iteration << " ";
+      conditionalOStreams::pout_summary() << iteration << " ";
     }
-  prisms::conditionalOStreams::pout_summary() << "\n\n" << std::flush;
+  conditionalOStreams::pout_summary() << "\n\n" << std::flush;
 }
 
 PRISMS_PF_END_NAMESPACE

@@ -3,18 +3,28 @@
 
 #include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/core/exceptions.h>
 #include <prismspf/core/refinement_criterion.h>
 #include <prismspf/utilities.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Class that holds spatial discretization parameters.
+ * \brief Struct that holds spatial discretization parameters.
  */
 template <int dim>
-class spatialDiscretization
+struct spatialDiscretization
 {
 public:
+  /**
+   * \brief Internal enum for various triangulation types.
+   */
+  enum TriangulationType : std::uint8_t
+  {
+    rectangular,
+    spherical
+  };
+
   /**
    * \brief Constructor.
    */
@@ -22,9 +32,10 @@ public:
     : subdivisions(dim, 1) {};
 
   /**
-   * \brief Destructor.
+   * \brief Postprocess and validate parameters.
    */
-  ~spatialDiscretization() = default;
+  void
+  postprocess_and_validate();
 
   /**
    * \brief Print parameters to summary.log
@@ -32,8 +43,11 @@ public:
   void
   print_parameter_summary() const;
 
+  // Triangulation type
+  TriangulationType type = TriangulationType::rectangular;
+
   // Domain extents in each cartesian direction
-  dealii::Tensor<1, dim, double> domain_size;
+  dealii::Tensor<1, dim, double> size;
 
   // Radius of the spherical domain
   double radius = 0.0;
@@ -42,7 +56,7 @@ public:
   std::vector<unsigned int> subdivisions;
 
   // Global refinement of mesh
-  unsigned int refine_factor = 0;
+  unsigned int global_refinement = 0;
 
   // Element polynomial degree
   unsigned int degree = 1;
@@ -51,13 +65,13 @@ public:
   bool has_adaptivity = false;
 
   // Maximum global refinement for AMR
-  unsigned int max_refinement_level = 0;
+  unsigned int max_refinement = 0;
 
   // Minimum global refinement for AMR
-  unsigned int min_refinement_level = 0;
+  unsigned int min_refinement = 0;
 
   // The number of steps between remeshing
-  unsigned int remeshing_frequency = UINT_MAX;
+  unsigned int remeshing_period = UINT_MAX;
 
   // The criteria used for remeshing
   std::vector<RefinementCriterion> refinement_criteria;
@@ -65,56 +79,112 @@ public:
 
 template <int dim>
 inline void
+spatialDiscretization<dim>::postprocess_and_validate()
+{
+  // Assign the triangulation type
+  if (radius != 0.0 && size.norm() == 0.0)
+    {
+      type = TriangulationType::spherical;
+    }
+  else if (radius == 0.0 && size.norm() != 0.0)
+    {
+      type = TriangulationType::rectangular;
+    }
+  else
+    {
+      AssertThrow(false, UnreachableCode());
+    }
+
+  // Check that AMR is not enabled for 1D
+  AssertThrow(
+    (!has_adaptivity || dim != 1),
+    dealii::ExcMessage(
+      "Adaptive meshing for the matrix-free method is not currently supported."));
+
+  // Some check if AMR is enabled
+  if (has_adaptivity)
+    {
+      // Check that the minimum and maximum refinement levels are valid
+      AssertThrow((max_refinement >= global_refinement),
+                  dealii::ExcMessage(
+                    "The maximum refinement level must be greater than or equal to the "
+                    "global refinement level."));
+      AssertThrow((min_refinement <= global_refinement),
+                  dealii::ExcMessage(
+                    "The minimum refinement level must be less than or equal to the "
+                    "global refinement level."));
+      AssertThrow((max_refinement >= min_refinement),
+                  dealii::ExcMessage(
+                    "The maximum refinement level must be greater than or equal to the "
+                    "minimum refinement level."));
+
+      // Check that the refinement criteria are valid for the lower and upper bounds
+      for (const auto &criterion : refinement_criteria)
+        {
+          AssertThrow((criterion.value_lower_bound <= criterion.value_upper_bound),
+                      dealii::ExcMessage(
+                        "The lower bound of the value-based refinement "
+                        "criteria must be less than or equal to the upper bound."));
+        }
+    }
+}
+
+template <int dim>
+inline void
 spatialDiscretization<dim>::print_parameter_summary() const
 {
-  prisms::conditionalOStreams::pout_summary()
+  conditionalOStreams::pout_summary()
     << "================================================\n"
     << "  Spatial Discretization\n"
     << "================================================\n";
 
-  if (radius != 0.0)
+  if (type == TriangulationType::spherical)
     {
-      prisms::conditionalOStreams::pout_summary() << "Domain radius: " << radius << "\n";
+      conditionalOStreams::pout_summary() << "Domain radius: " << radius << "\n";
     }
-  else
+  else if (type == TriangulationType::rectangular)
     {
       if constexpr (dim == 1)
         {
-          prisms::conditionalOStreams::pout_summary()
-            << "Domain size: x=" << domain_size[0] << "\n"
+          conditionalOStreams::pout_summary()
+            << "Domain size: x=" << size[0] << "\n"
             << "Subdivisions: x=" << subdivisions[0] << "\n";
         }
       else if constexpr (dim == 2)
         {
-          prisms::conditionalOStreams::pout_summary()
-            << "Domain size: x=" << domain_size[0] << ", y=" << domain_size[1] << "\n"
+          conditionalOStreams::pout_summary()
+            << "Domain size: x=" << size[0] << ", y=" << size[1] << "\n"
             << "Subdivisions: x=" << subdivisions[0] << ", y=" << subdivisions[1] << "\n";
         }
       else if constexpr (dim == 3)
         {
-          prisms::conditionalOStreams::pout_summary()
-            << "Domain size: x=" << domain_size[0] << ", y=" << domain_size[1]
-            << ", z=" << domain_size[2] << "\n"
+          conditionalOStreams::pout_summary()
+            << "Domain size: x=" << size[0] << ", y=" << size[1] << ", z=" << size[2]
+            << "\n"
             << "Subdivisions: x=" << subdivisions[0] << ", y=" << subdivisions[1]
             << ", z=" << subdivisions[2] << "\n";
         }
     }
+  else
+    {
+      AssertThrow(false, UnreachableCode());
+    }
 
-  prisms::conditionalOStreams::pout_summary()
-    << "Global refinement: " << refine_factor << "\n"
+  conditionalOStreams::pout_summary()
+    << "Global refinement: " << global_refinement << "\n"
     << "Degree: " << degree << "\n"
     << "Adaptivity enabled: " << bool_to_string(has_adaptivity) << "\n"
-    << "Max refinement level: " << max_refinement_level << "\n"
-    << "Min refinement level: " << min_refinement_level << "\n"
-    << "Remeshing frequency: " << remeshing_frequency << "\n";
+    << "Max refinement: " << max_refinement << "\n"
+    << "Min refinement: " << min_refinement << "\n"
+    << "Remeshing period: " << remeshing_period << "\n";
 
   if (!refinement_criteria.empty())
     {
-      prisms::conditionalOStreams::pout_summary() << "Refinement criteria:\n";
+      conditionalOStreams::pout_summary() << "Refinement criteria:\n";
     }
   for (const auto &criterion : refinement_criteria)
     {
-      prisms::conditionalOStreams::pout_summary()
+      conditionalOStreams::pout_summary()
         << "  Variable name: " << criterion.variable_name << "\n"
         << "  Variable index: " << criterion.variable_index << "\n"
         << "  Criterion type: " << criterion.criterion_to_string() << "\n"
@@ -122,7 +192,7 @@ spatialDiscretization<dim>::print_parameter_summary() const
         << "  Value upper bound: " << criterion.value_upper_bound << "\n"
         << "  Gradient lower bound: " << criterion.gradient_lower_bound << "\n\n";
     }
-  prisms::conditionalOStreams::pout_summary() << "\n" << std::flush;
+  conditionalOStreams::pout_summary() << "\n" << std::flush;
 }
 
 PRISMS_PF_END_NAMESPACE

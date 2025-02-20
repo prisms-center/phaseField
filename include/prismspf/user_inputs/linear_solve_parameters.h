@@ -10,7 +10,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Class that stores relevant linear solve information of a certain field
+ * \brief Struct that stores relevant linear solve information of a certain field
  */
 struct linearSolverParameters
 {
@@ -41,11 +41,17 @@ public:
 };
 
 /**
- * \brief Class that holds linear solver parameters.
+ * \brief Struct that holds linear solver parameters.
  */
 struct linearSolveParameters
 {
 public:
+  /**
+   * \brief Postprocess and validate parameters.
+   */
+  void
+  postprocess_and_validate();
+
   /**
    * \brief Print parameters to summary.log
    */
@@ -57,18 +63,24 @@ public:
 };
 
 inline void
+linearSolveParameters::postprocess_and_validate()
+{
+  // Nothing to do here for now
+}
+
+inline void
 linearSolveParameters::print_parameter_summary() const
 {
   if (!linear_solve.empty())
     {
-      prisms::conditionalOStreams::pout_summary()
+      conditionalOStreams::pout_summary()
         << "================================================\n"
         << "  Linear Solve Parameters\n"
         << "================================================\n";
 
       for (const auto &[index, linear_solver_parameters] : linear_solve)
         {
-          prisms::conditionalOStreams::pout_summary()
+          conditionalOStreams::pout_summary()
             << "Index: " << index << "\n"
             << "  Tolerance: " << linear_solver_parameters.tolerance << "\n"
             << "  Type: " << to_string(linear_solver_parameters.tolerance_type) << "\n"
@@ -78,7 +90,7 @@ linearSolveParameters::print_parameter_summary() const
 
           if (linear_solver_parameters.preconditioner == preconditionerType::GMG)
             {
-              prisms::conditionalOStreams::pout_summary()
+              conditionalOStreams::pout_summary()
                 << "  Smoothing range: " << linear_solver_parameters.smoothing_range
                 << "\n"
                 << "  Smoother degree: " << linear_solver_parameters.smoother_degree
@@ -88,7 +100,7 @@ linearSolveParameters::print_parameter_summary() const
             }
         }
 
-      prisms::conditionalOStreams::pout_summary() << "\n" << std::flush;
+      conditionalOStreams::pout_summary() << "\n" << std::flush;
     }
 }
 

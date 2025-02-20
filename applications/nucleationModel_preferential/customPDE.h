@@ -201,11 +201,11 @@ customPDE<dim, degree>::adaptive_refinement_criterion()
           // limit the maximal and minimal refinement depth of the mesh
           unsigned int current_level = t_cell->level();
 
-          if ((mark_refine && current_level < userInputs.max_refinement_level))
+          if ((mark_refine && current_level < userInputs.max_refinement))
             {
               cell->set_refine_flag();
             }
-          else if (!mark_refine && current_level > userInputs.min_refinement_level)
+          else if (!mark_refine && current_level > userInputs.min_refinement)
             {
               cell->set_coarsen_flag();
             }

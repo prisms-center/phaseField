@@ -22,13 +22,13 @@ customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &
     {3.0 / 4.0, 1.0 / 4.0, 0.5},
     {1.0 / 4.0, 3.0 / 4,   0.5}
   };
-  double rad[4]         = {userInputs.domain_size[0] / 16.0,
-                           userInputs.domain_size[0] / 16.0,
-                           userInputs.domain_size[0] / 16.0,
-                           userInputs.domain_size[0] / 16.0};
+  double rad[4]         = {userInputs.size[0] / 16.0,
+                           userInputs.size[0] / 16.0,
+                           userInputs.size[0] / 16.0,
+                           userInputs.size[0] / 16.0};
   double orientation[4] = {1, 1, 2, 3};
-  double dx = userInputs.domain_size[0] / ((double) userInputs.subdivisions[0]) /
-              std::pow(2.0, userInputs.refine_factor);
+  double dx             = userInputs.size[0] / ((double) userInputs.subdivisions[0]) /
+              std::pow(2.0, userInputs.global_refinement);
   double dist;
   scalar_IC = 0;
 
@@ -42,8 +42,8 @@ customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &
       dist = 0.0;
       for (unsigned int dir = 0; dir < dim; dir++)
         {
-          dist += (p[dir] - center[i][dir] * userInputs.domain_size[dir]) *
-                  (p[dir] - center[i][dir] * userInputs.domain_size[dir]);
+          dist += (p[dir] - center[i][dir] * userInputs.size[dir]) *
+                  (p[dir] - center[i][dir] * userInputs.size[dir]);
         }
       dist = std::sqrt(dist);
 

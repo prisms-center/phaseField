@@ -7,9 +7,9 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Class that stores relevant nonlinear solve information of a certain field
+ * \brief Struct that stores relevant nonlinear solve information of a certain field
  */
-class nonlinearSolverParameters
+struct nonlinearSolverParameters
 {
 public:
   // Nonlinear step length
@@ -20,11 +20,17 @@ public:
 };
 
 /**
- * \brief Class that holds nonlinear solver parameters.
+ * \brief Struct that holds nonlinear solver parameters.
  */
 struct nonlinearSolveParameters
 {
 public:
+  /**
+   * \brief Postprocess and validate parameters.
+   */
+  void
+  postprocess_and_validate();
+
   /**
    * \brief Print parameters to summary.log
    */
@@ -36,24 +42,30 @@ public:
 };
 
 inline void
+nonlinearSolveParameters::postprocess_and_validate()
+{
+  // Nothing to do here for now
+}
+
+inline void
 nonlinearSolveParameters::print_parameter_summary() const
 {
   if (!nonlinear_solve.empty())
     {
-      prisms::conditionalOStreams::pout_summary()
+      conditionalOStreams::pout_summary()
         << "================================================\n"
         << "  Nonlinear Solve Parameters\n"
         << "================================================\n";
 
       for (const auto &[index, nonlinear_solver_parameters] : nonlinear_solve)
         {
-          prisms::conditionalOStreams::pout_summary()
+          conditionalOStreams::pout_summary()
             << "Index: " << index << "\n"
             << "  Max iterations: " << nonlinear_solver_parameters.max_iterations << "\n"
             << "  Step length: " << nonlinear_solver_parameters.step_length << "\n";
         }
 
-      prisms::conditionalOStreams::pout_summary() << "\n" << std::flush;
+      conditionalOStreams::pout_summary() << "\n" << std::flush;
     }
 }
 

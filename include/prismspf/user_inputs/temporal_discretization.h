@@ -3,24 +3,22 @@
 
 #include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/core/variable_attributes.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Class that holds temporal discretization parameters.
+ * \brief Struct that holds temporal discretization parameters.
  */
-class temporalDiscretization
+struct temporalDiscretization
 {
 public:
   /**
-   * \brief Constructor.
+   * \brief Postprocess and validate parameters.
    */
-  temporalDiscretization() = default;
-
-  /**
-   * \brief Destructor.
-   */
-  ~temporalDiscretization() = default;
+  void
+  postprocess_and_validate(
+    const std::map<unsigned int, variableAttributes> &var_attributes);
 
   /**
    * \brief Print parameters to summary.log
@@ -28,26 +26,58 @@ public:
   void
   print_parameter_summary() const;
 
-  // Timestep
-  double dt = 0.0;
-
   // Final time
   double final_time = 0.0;
 
   // Total number of increments
   unsigned int total_increments = 0;
 
+  // Timestep
+  mutable double dt = 0.0;
+
   // The current increment
-  unsigned int increment = 0;
+  mutable unsigned int increment = 0;
 
   // The current time
-  double time = 0.0;
+  mutable double time = 0.0;
 };
+
+inline void
+temporalDiscretization::postprocess_and_validate(
+  const std::map<unsigned int, variableAttributes> &var_attributes)
+{
+  // If all of the variables are `TIME_INDEPENDENT`, `AUXILIARY`, or `CONSTANT` then
+  // total_increments should be 1 and final_time should be 0
+  bool only_time_independent_pdes = true;
+  for (const auto &[index, variable] : var_attributes)
+    {
+      if (variable.pde_type == PDEType::EXPLICIT_TIME_DEPENDENT ||
+          variable.pde_type == PDEType::IMPLICIT_TIME_DEPENDENT)
+        {
+          only_time_independent_pdes = false;
+          break;
+        }
+    }
+  if (only_time_independent_pdes)
+    {
+      total_increments = 1;
+      return;
+    }
+
+  // Check that the timestep is greater than zero
+  AssertThrow(dt > 0.0,
+              dealii::ExcMessage(
+                "The timestep must be greater than zero for transient problems."));
+
+  // Pick the maximum specified time since the default values are zero
+  final_time       = std::max(final_time, dt * total_increments);
+  total_increments = static_cast<unsigned int>(std::ceil(final_time / dt));
+}
 
 inline void
 temporalDiscretization::print_parameter_summary() const
 {
-  prisms::conditionalOStreams::pout_summary()
+  conditionalOStreams::pout_summary()
     << "================================================\n"
     << "  Temporal Discretization\n"
     << "================================================\n"
