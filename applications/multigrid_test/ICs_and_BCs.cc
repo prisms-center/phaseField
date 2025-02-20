@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
+// SPDX-License-Identifier: GNU Lesser General Public Version 2.1
+
 #include <cmath>
 #include <config.h>
 #include <core/boundary_conditions/nonuniform_dirichlet.h>
