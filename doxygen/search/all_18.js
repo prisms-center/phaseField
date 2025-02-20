@@ -1,7 +1,7 @@
 var searchData=
 [
   ['tables_20describing_20each_20block_20of_20input_20parameters_0',['Tables Describing Each Block of Input Parameters',['../input_file.html#autotoc_md18',1,'']]],
-  ['temporaldiscretization_1',['temporaldiscretization',['../classtemporalDiscretization.html',1,'temporalDiscretization'],['../classtemporalDiscretization.html#a0bb00d98b0b956fd20d94fad450420e6',1,'temporalDiscretization::temporalDiscretization()']]],
+  ['temporaldiscretization_1',['temporalDiscretization',['../structtemporalDiscretization.html',1,'']]],
   ['tests_2',['Tests',['../tests.html',1,'manual']]],
   ['the_20allen_20cahn_20example_20app_3',['Compiling and Running the Allen-Cahn Example App',['../running_apps.html#autotoc_md56',1,'']]],
   ['the_20core_20library_4',['Compiling the Core Library',['../install_prismspf.html#autotoc_md53',1,'']]],
@@ -19,7 +19,8 @@ var searchData=
   ['traditional_20installation_20non_20docker_16',['Traditional Installation (Non-Docker)',['../install_prismspf.html#autotoc_md51',1,'']]],
   ['triangulation_5fhandler_17',['triangulation_handler',['../classnonexplicitBase.html#af20ea9853e4791945d6e9664a6278217',1,'nonexplicitBase']]],
   ['triangulationhandler_18',['triangulationhandler',['../classtriangulationHandler.html#a97429ede6e732f242b7f75dbb0983244',1,'triangulationHandler::triangulationHandler()'],['../classtriangulationHandler.html',1,'triangulationHandler&lt; dim &gt;']]],
-  ['tvmult_19',['Tvmult',['../classmatrixFreeOperator.html#a8dcc9db29547882b0fd163c2d56cfe5e',1,'matrixFreeOperator']]],
-  ['type_20',['type',['../structboundaryCondition.html#a7f349381f33387bae2ac970a60be5ed4',1,'boundaryCondition']]],
-  ['types_21',['A note on types',['../app_files.html#autotoc_md3',1,'']]]
+  ['triangulationtype_19',['TriangulationType',['../structspatialDiscretization.html#a1b605c34f9e2a3cfdee659a9a8485d59',1,'spatialDiscretization']]],
+  ['tvmult_20',['Tvmult',['../classmatrixFreeOperator.html#a8dcc9db29547882b0fd163c2d56cfe5e',1,'matrixFreeOperator']]],
+  ['type_21',['type',['../structboundaryCondition.html#a7f349381f33387bae2ac970a60be5ed4',1,'boundaryCondition']]],
+  ['types_22',['A note on types',['../app_files.html#autotoc_md3',1,'']]]
 ];

@@ -1,7 +1,5 @@
 var classuserConstants =
 [
-    [ "userConstants", "classuserConstants.html#a91a1df10f154051f7d5ac2697e6af67b", null ],
-    [ "~userConstants", "classuserConstants.html#accf88006a6ea791995b7c8601b7f84f2", null ],
     [ "construct_user_constant", "classuserConstants.html#a9780f186c8d697f6230ad58f90c75131", null ],
     [ "get_model_constant_bool", "classuserConstants.html#a9be3124cf321df9c843fc1112b7f5216", null ],
     [ "get_model_constant_double", "classuserConstants.html#acfa2aa42500b3836856ebdfaca2263bf", null ],

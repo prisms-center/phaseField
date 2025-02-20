@@ -16,13 +16,9 @@ var searchData=
   ['_7enonexplicitbase_13',['~nonexplicitBase',['../classnonexplicitBase.html#a3092ab1ae437f373b8d2a6e00cc6c015',1,'nonexplicitBase']]],
   ['_7enonexplicitlinearsolver_14',['~nonexplicitLinearSolver',['../classnonexplicitLinearSolver.html#a2bf478f799ba67ef509cbe83c94815ef',1,'nonexplicitLinearSolver']]],
   ['_7enonexplicitselfnonlinearsolver_15',['~nonexplicitSelfNonlinearSolver',['../classnonexplicitSelfNonlinearSolver.html#ac6fe5fa5576cbfc05bde2f84b9e9e51b',1,'nonexplicitSelfNonlinearSolver']]],
-  ['_7eoutputparameters_16',['~outputParameters',['../classoutputParameters.html#a7614e034f88ae0a7d86e26b07b4ee3ac',1,'outputParameters']]],
-  ['_7epdeproblem_17',['~PDEProblem',['../classPDEProblem.html#a48116fb4918438aeffeecd82e2e1f0bd',1,'PDEProblem']]],
-  ['_7esolutionhandler_18',['~solutionHandler',['../classsolutionHandler.html#a62c497d404f45857fad94af8c0f45343',1,'solutionHandler']]],
-  ['_7espatialdiscretization_19',['~spatialDiscretization',['../classspatialDiscretization.html#aa2d7504a788aa4ab51d814574f5fdec3',1,'spatialDiscretization']]],
-  ['_7etemporaldiscretization_20',['~temporalDiscretization',['../classtemporalDiscretization.html#a2bb2798842958c1c4030376880a699ae',1,'temporalDiscretization']]],
-  ['_7etimer_21',['~timer',['../classtimer.html#ac62e813c93be20afaf9bd933f6f49c7a',1,'timer']]],
-  ['_7euserconstants_22',['~userConstants',['../classuserConstants.html#accf88006a6ea791995b7c8601b7f84f2',1,'userConstants']]],
-  ['_7euserinputparameters_23',['~userInputParameters',['../classuserInputParameters.html#ac7da91743b287de0513e170a9b5c3e01',1,'userInputParameters']]],
-  ['_7evariableattributeloader_24',['~variableAttributeLoader',['../classvariableAttributeLoader.html#a498f796b3f923e338ff5979f7bbd9644',1,'variableAttributeLoader']]]
+  ['_7epdeproblem_16',['~PDEProblem',['../classPDEProblem.html#a48116fb4918438aeffeecd82e2e1f0bd',1,'PDEProblem']]],
+  ['_7esolutionhandler_17',['~solutionHandler',['../classsolutionHandler.html#a62c497d404f45857fad94af8c0f45343',1,'solutionHandler']]],
+  ['_7etimer_18',['~timer',['../classtimer.html#ac62e813c93be20afaf9bd933f6f49c7a',1,'timer']]],
+  ['_7euserinputparameters_19',['~userInputParameters',['../classuserInputParameters.html#ac7da91743b287de0513e170a9b5c3e01',1,'userInputParameters']]],
+  ['_7evariableattributeloader_20',['~variableAttributeLoader',['../classvariableAttributeLoader.html#a498f796b3f923e338ff5979f7bbd9644',1,'variableAttributeLoader']]]
 ];

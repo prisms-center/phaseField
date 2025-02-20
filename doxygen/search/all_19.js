@@ -6,7 +6,7 @@ var searchData=
   ['user_20guide_3',['Structure of the PRISMS-PF User Guide',['../manual.html#autotoc_md16',1,'']]],
   ['user_20manual_4',['PRISMS-PF User Manual',['../manual.html',1,'']]],
   ['user_5finputs_5',['user_inputs',['../classexplicitBase.html#a03f07e34d43d04976892781e17052172',1,'explicitBase::user_inputs'],['../classlinearSolverBase.html#a44d3218c353176883faff65688c659d9',1,'linearSolverBase::user_inputs'],['../classnonexplicitBase.html#a838d95ede9e6f94df05487a987015ce3',1,'nonexplicitBase::user_inputs']]],
-  ['userconstants_6',['userconstants',['../classuserConstants.html',1,'userConstants&lt; dim &gt;'],['../classuserConstants.html#a91a1df10f154051f7d5ac2697e6af67b',1,'userConstants::userConstants()']]],
+  ['userconstants_6',['userConstants',['../classuserConstants.html',1,'']]],
   ['userinputparameters_7',['userinputparameters',['../classuserInputParameters.html',1,'userInputParameters&lt; dim &gt;'],['../classuserInputParameters.html#a7217c909a070735a8d1f263c990cf903',1,'userInputParameters::userInputParameters()']]],
   ['using_20candi_8',['Installation using candi',['../install_prereqs.html#autotoc_md50',1,'']]]
 ];

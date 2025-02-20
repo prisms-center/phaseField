@@ -20,6 +20,6 @@ var searchData=
   ['other_20app_20files_17',['Other App Files',['../app_files.html',1,'manual']]],
   ['other_20example_20applications_18',['Running the Other Example Applications',['../running_apps.html#autotoc_md59',1,'']]],
   ['output_20optional_19',['Output (optional)',['../input_file.html#autotoc_md27',1,'']]],
-  ['outputparameters_20',['outputparameters',['../classoutputParameters.html',1,'outputParameters'],['../classoutputParameters.html#abdbf0810de8d76405789250cb5639be5',1,'outputParameters::outputParameters()']]],
+  ['outputparameters_20',['outputParameters',['../structoutputParameters.html',1,'']]],
   ['overview_21',['PRISMS-PF Overview',['../manual.html#autotoc_md15',1,'']]]
 ];

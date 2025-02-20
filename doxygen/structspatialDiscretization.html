@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>PRISMS-PF Manual: spatialDiscretization&lt; dim &gt; Class Template Reference</title>
+<title>PRISMS-PF Manual: spatialDiscretization&lt; dim &gt; Struct Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -65,7 +65,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('classspatialDiscretization.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('structspatialDiscretization.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -92,28 +92,37 @@ $(document).ready(function(){initNavTree('classspatialDiscretization.html',''); 
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="classspatialDiscretization-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">spatialDiscretization&lt; dim &gt; Class Template Reference</div></div>
+<a href="structspatialDiscretization-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">spatialDiscretization&lt; dim &gt; Struct Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Class that holds spatial discretization parameters.  
- <a href="classspatialDiscretization.html#details">More...</a></p>
+<p>Struct that holds spatial discretization parameters.  
+ <a href="structspatialDiscretization.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="spatial__discretization_8h_source.html">spatial_discretization.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a1b605c34f9e2a3cfdee659a9a8485d59" id="r_a1b605c34f9e2a3cfdee659a9a8485d59"><td class="memItemLeft" align="right" valign="top"><a id="a1b605c34f9e2a3cfdee659a9a8485d59" name="a1b605c34f9e2a3cfdee659a9a8485d59"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structspatialDiscretization.html#a1b605c34f9e2a3cfdee659a9a8485d59">TriangulationType</a> : std::uint8_t { <b>rectangular</b>
+, <b>spherical</b>
+ }</td></tr>
+<tr class="memdesc:a1b605c34f9e2a3cfdee659a9a8485d59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal enum for various triangulation types. <br /></td></tr>
+<tr class="separator:a1b605c34f9e2a3cfdee659a9a8485d59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a9a59a491d04c5f85d051f6c51cb2535a" id="r_a9a59a491d04c5f85d051f6c51cb2535a"><td class="memItemLeft" align="right" valign="top"><a id="a9a59a491d04c5f85d051f6c51cb2535a" name="a9a59a491d04c5f85d051f6c51cb2535a"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>spatialDiscretization</b> ()</td></tr>
 <tr class="memdesc:a9a59a491d04c5f85d051f6c51cb2535a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
 <tr class="separator:a9a59a491d04c5f85d051f6c51cb2535a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2d7504a788aa4ab51d814574f5fdec3" id="r_aa2d7504a788aa4ab51d814574f5fdec3"><td class="memItemLeft" align="right" valign="top"><a id="aa2d7504a788aa4ab51d814574f5fdec3" name="aa2d7504a788aa4ab51d814574f5fdec3"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>~spatialDiscretization</b> ()=default</td></tr>
-<tr class="memdesc:aa2d7504a788aa4ab51d814574f5fdec3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
-<tr class="separator:aa2d7504a788aa4ab51d814574f5fdec3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cee1e3ff567f854abb425b51bbf9725" id="r_a2cee1e3ff567f854abb425b51bbf9725"><td class="memItemLeft" align="right" valign="top"><a id="a2cee1e3ff567f854abb425b51bbf9725" name="a2cee1e3ff567f854abb425b51bbf9725"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>postprocess_and_validate</b> ()</td></tr>
+<tr class="memdesc:a2cee1e3ff567f854abb425b51bbf9725"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postprocess and validate parameters. <br /></td></tr>
+<tr class="separator:a2cee1e3ff567f854abb425b51bbf9725"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a552402e0c3de132d86e7ac9f87e95dfa" id="r_a552402e0c3de132d86e7ac9f87e95dfa"><td class="memItemLeft" align="right" valign="top"><a id="a552402e0c3de132d86e7ac9f87e95dfa" name="a552402e0c3de132d86e7ac9f87e95dfa"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>print_parameter_summary</b> () const</td></tr>
 <tr class="memdesc:a552402e0c3de132d86e7ac9f87e95dfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print parameters to summary.log. <br /></td></tr>
@@ -121,41 +130,44 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>print_parameter_summa
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a8b28cfaf92ea3e5c078cbcf443689638" id="r_a8b28cfaf92ea3e5c078cbcf443689638"><td class="memItemLeft" align="right" valign="top"><a id="a8b28cfaf92ea3e5c078cbcf443689638" name="a8b28cfaf92ea3e5c078cbcf443689638"></a>
-dealii::Tensor&lt; 1, dim, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>domain_size</b></td></tr>
-<tr class="separator:a8b28cfaf92ea3e5c078cbcf443689638"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0b1bbec22ae5d21ca9cd6940179ecda" id="r_ac0b1bbec22ae5d21ca9cd6940179ecda"><td class="memItemLeft" align="right" valign="top"><a id="ac0b1bbec22ae5d21ca9cd6940179ecda" name="ac0b1bbec22ae5d21ca9cd6940179ecda"></a>
+<a class="el" href="structspatialDiscretization.html#a1b605c34f9e2a3cfdee659a9a8485d59">TriangulationType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>type</b> = TriangulationType::rectangular</td></tr>
+<tr class="separator:ac0b1bbec22ae5d21ca9cd6940179ecda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7652dcc25b8ec64546c292767feacb02" id="r_a7652dcc25b8ec64546c292767feacb02"><td class="memItemLeft" align="right" valign="top"><a id="a7652dcc25b8ec64546c292767feacb02" name="a7652dcc25b8ec64546c292767feacb02"></a>
+dealii::Tensor&lt; 1, dim, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></tr>
+<tr class="separator:a7652dcc25b8ec64546c292767feacb02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd26e8872bf73f97b52774611b492a1a" id="r_acd26e8872bf73f97b52774611b492a1a"><td class="memItemLeft" align="right" valign="top"><a id="acd26e8872bf73f97b52774611b492a1a" name="acd26e8872bf73f97b52774611b492a1a"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>radius</b> = 0.0</td></tr>
 <tr class="separator:acd26e8872bf73f97b52774611b492a1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26c3c2f2061abfae07fb794676b383e6" id="r_a26c3c2f2061abfae07fb794676b383e6"><td class="memItemLeft" align="right" valign="top"><a id="a26c3c2f2061abfae07fb794676b383e6" name="a26c3c2f2061abfae07fb794676b383e6"></a>
 std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>subdivisions</b></td></tr>
 <tr class="separator:a26c3c2f2061abfae07fb794676b383e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc20a44f84d69be49443617ca9e267f5" id="r_abc20a44f84d69be49443617ca9e267f5"><td class="memItemLeft" align="right" valign="top"><a id="abc20a44f84d69be49443617ca9e267f5" name="abc20a44f84d69be49443617ca9e267f5"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>refine_factor</b> = 0</td></tr>
-<tr class="separator:abc20a44f84d69be49443617ca9e267f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee02c4c29fb86b30e26e08591d270ccf" id="r_aee02c4c29fb86b30e26e08591d270ccf"><td class="memItemLeft" align="right" valign="top"><a id="aee02c4c29fb86b30e26e08591d270ccf" name="aee02c4c29fb86b30e26e08591d270ccf"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>global_refinement</b> = 0</td></tr>
+<tr class="separator:aee02c4c29fb86b30e26e08591d270ccf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f36eb16398b2b5322e739e7ab9adfa5" id="r_a1f36eb16398b2b5322e739e7ab9adfa5"><td class="memItemLeft" align="right" valign="top"><a id="a1f36eb16398b2b5322e739e7ab9adfa5" name="a1f36eb16398b2b5322e739e7ab9adfa5"></a>
 unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>degree</b> = 1</td></tr>
 <tr class="separator:a1f36eb16398b2b5322e739e7ab9adfa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03356c9f24446c0e28997703c0bfdafe" id="r_a03356c9f24446c0e28997703c0bfdafe"><td class="memItemLeft" align="right" valign="top"><a id="a03356c9f24446c0e28997703c0bfdafe" name="a03356c9f24446c0e28997703c0bfdafe"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>has_adaptivity</b> = false</td></tr>
 <tr class="separator:a03356c9f24446c0e28997703c0bfdafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05926fe9f808d4b2fffbaae12a7849f5" id="r_a05926fe9f808d4b2fffbaae12a7849f5"><td class="memItemLeft" align="right" valign="top"><a id="a05926fe9f808d4b2fffbaae12a7849f5" name="a05926fe9f808d4b2fffbaae12a7849f5"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>max_refinement_level</b> = 0</td></tr>
-<tr class="separator:a05926fe9f808d4b2fffbaae12a7849f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada91fef97e8c0405e1134e47b29a0ec6" id="r_ada91fef97e8c0405e1134e47b29a0ec6"><td class="memItemLeft" align="right" valign="top"><a id="ada91fef97e8c0405e1134e47b29a0ec6" name="ada91fef97e8c0405e1134e47b29a0ec6"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>min_refinement_level</b> = 0</td></tr>
-<tr class="separator:ada91fef97e8c0405e1134e47b29a0ec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88482ec1d25edacbd492e7d36b5c15e9" id="r_a88482ec1d25edacbd492e7d36b5c15e9"><td class="memItemLeft" align="right" valign="top"><a id="a88482ec1d25edacbd492e7d36b5c15e9" name="a88482ec1d25edacbd492e7d36b5c15e9"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>remeshing_frequency</b> = UINT_MAX</td></tr>
-<tr class="separator:a88482ec1d25edacbd492e7d36b5c15e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a57414b08c0c234ccf97915938aa7b2" id="r_a2a57414b08c0c234ccf97915938aa7b2"><td class="memItemLeft" align="right" valign="top"><a id="a2a57414b08c0c234ccf97915938aa7b2" name="a2a57414b08c0c234ccf97915938aa7b2"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>max_refinement</b> = 0</td></tr>
+<tr class="separator:a2a57414b08c0c234ccf97915938aa7b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8beaf183555ad648937abfee33f302d" id="r_aa8beaf183555ad648937abfee33f302d"><td class="memItemLeft" align="right" valign="top"><a id="aa8beaf183555ad648937abfee33f302d" name="aa8beaf183555ad648937abfee33f302d"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>min_refinement</b> = 0</td></tr>
+<tr class="separator:aa8beaf183555ad648937abfee33f302d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a035f2418148540b3ad12abf987c300b0" id="r_a035f2418148540b3ad12abf987c300b0"><td class="memItemLeft" align="right" valign="top"><a id="a035f2418148540b3ad12abf987c300b0" name="a035f2418148540b3ad12abf987c300b0"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>remeshing_period</b> = UINT_MAX</td></tr>
+<tr class="separator:a035f2418148540b3ad12abf987c300b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a630fcf6f6ab30ad5e15a90d8ed584078" id="r_a630fcf6f6ab30ad5e15a90d8ed584078"><td class="memItemLeft" align="right" valign="top"><a id="a630fcf6f6ab30ad5e15a90d8ed584078" name="a630fcf6f6ab30ad5e15a90d8ed584078"></a>
 std::vector&lt; <a class="el" href="classRefinementCriterion.html">RefinementCriterion</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>refinement_criteria</b></td></tr>
 <tr class="separator:a630fcf6f6ab30ad5e15a90d8ed584078"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;int dim&gt;<br />
-class spatialDiscretization&lt; dim &gt;</div><p>Class that holds spatial discretization parameters. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+struct spatialDiscretization&lt; dim &gt;</div><p>Struct that holds spatial discretization parameters. </p>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/user_inputs/<a class="el" href="spatial__discretization_8h_source.html">spatial_discretization.h</a></li>
 </ul>
 </div><!-- contents -->
@@ -163,7 +175,7 @@ class spatialDiscretization&lt; dim &gt;</div><p>Class that holds spatial discre
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="classspatialDiscretization.html">spatialDiscretization</a></li>
+    <li class="navelem"><a class="el" href="structspatialDiscretization.html">spatialDiscretization</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

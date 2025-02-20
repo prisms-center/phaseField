@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['outputparameters_0',['outputParameters',['../classoutputParameters.html',1,'']]]
+  ['outputparameters_0',['outputParameters',['../structoutputParameters.html',1,'']]]
 ];

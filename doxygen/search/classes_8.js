@@ -6,6 +6,6 @@ var searchData=
   ['nonexplicitlinearsolver_3',['nonexplicitLinearSolver',['../classnonexplicitLinearSolver.html',1,'']]],
   ['nonexplicitselfnonlinearsolver_4',['nonexplicitSelfNonlinearSolver',['../classnonexplicitSelfNonlinearSolver.html',1,'']]],
   ['nonlinearsolveparameters_5',['nonlinearSolveParameters',['../structnonlinearSolveParameters.html',1,'']]],
-  ['nonlinearsolverparameters_6',['nonlinearSolverParameters',['../classnonlinearSolverParameters.html',1,'']]],
+  ['nonlinearsolverparameters_6',['nonlinearSolverParameters',['../structnonlinearSolverParameters.html',1,'']]],
   ['nonuniformdirichlet_7',['nonuniformDirichlet',['../classnonuniformDirichlet.html',1,'']]]
 ];

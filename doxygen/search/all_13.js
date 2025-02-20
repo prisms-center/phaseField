@@ -16,7 +16,7 @@ var searchData=
   ['nonlinear_20solver_20parameters_20for_20each_20nonlinear_20equation_20optional_20see_20note_202_20below_20for_20details_13',['Nonlinear Solver Parameters for Each Nonlinear Equation (optional, see Note 2 below for details)',['../input_file.html#autotoc_md26',1,'']]],
   ['nonlinear_20solver_20parameters_20optional_20see_20note_202_20below_20for_20details_14',['Shared Nonlinear Solver Parameters (optional, see Note 2 below for details)',['../input_file.html#autotoc_md25',1,'']]],
   ['nonlinearsolveparameters_15',['nonlinearSolveParameters',['../structnonlinearSolveParameters.html',1,'']]],
-  ['nonlinearsolverparameters_16',['nonlinearSolverParameters',['../classnonlinearSolverParameters.html',1,'']]],
+  ['nonlinearsolverparameters_16',['nonlinearSolverParameters',['../structnonlinearSolverParameters.html',1,'']]],
   ['nonuniformdirichlet_17',['nonuniformdirichlet',['../classnonuniformDirichlet.html',1,'nonuniformDirichlet&lt; dim, field_type &gt;'],['../classnonuniformDirichlet.html#ae4e0955ed518e9d37970619830d8bc74',1,'nonuniformDirichlet::nonuniformDirichlet()']]],
   ['note_201_20below_20for_20details_18',['Linear Solver Parameters for Each TIME_INDEPENDENT Equation (optional, see Note 1 below for details)',['../input_file.html#autotoc_md24',1,'']]],
   ['note_201_3a_20linear_20solver_20parameters_19',['Note 1: Linear Solver Parameters',['../input_file.html#autotoc_md35',1,'']]],
