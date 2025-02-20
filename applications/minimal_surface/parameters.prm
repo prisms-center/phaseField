@@ -1,6 +1,6 @@
 set dim = 2
 set degree = 2
-set global refinement = 1
+set global refinement = 4
 
 subsection spherical mesh
     set radius = 1
@@ -12,13 +12,15 @@ subsection linear solver parameters: u
     set tolerance type = ABSOLUTE_RESIDUAL
     set tolerance value = 1e-10
     set max iterations = 100 
-    set preconditioner type = NONE
+    set preconditioner type = GMG
     set smoothing range = 20
     set smoother degree = 5
     set eigenvalue cg iterations = 20
 end
 
 subsection nonlinear solver parameters: u
-    set max iterations = 100
-    set step length = 0.1
+    set tolerance type = ABSOLUTE_RESIDUAL
+    set tolerance value = 1e-10
+    set max iterations = 5
+    set step size = 0.1
 end
