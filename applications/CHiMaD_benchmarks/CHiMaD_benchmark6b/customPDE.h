@@ -126,9 +126,8 @@ customPDE<dim, degree>::create_triangulation(
 
   if (dim == 2)
     {
-      box_corner = Point<dim>(userInputs.domain_size[0], userInputs.domain_size[1]);
-      semicircle_origin =
-        Point<dim>(userInputs.domain_size[0], userInputs.domain_size[1] / 2.0);
+      box_corner        = Point<dim>(userInputs.size[0], userInputs.size[1]);
+      semicircle_origin = Point<dim>(userInputs.size[0], userInputs.size[1] / 2.0);
     }
 
   GridGenerator::subdivided_hyper_rectangle(tria_box,
@@ -138,7 +137,7 @@ customPDE<dim, degree>::create_triangulation(
 
   GridGenerator::half_hyper_ball(tria_semicircle,
                                  semicircle_origin,
-                                 userInputs.domain_size[1] / 2.0);
+                                 userInputs.size[1] / 2.0);
 
   // Find the two non-corner vertices on the right side of the rectangular mesh
   Point<dim> pt1;
@@ -148,14 +147,13 @@ customPDE<dim, degree>::create_triangulation(
       for (unsigned int i = 0; i < GeometryInfo<dim>::vertices_per_cell; ++i)
         {
           Point<dim> &v = cell->vertex(i);
-          if ((std::abs(v(0) - userInputs.domain_size[0]) < 1e-10) &&
-              (v(1) > userInputs.domain_size[1] / 2.0) &&
-              (v(1) < userInputs.domain_size[1] - 1.0e-10))
+          if ((std::abs(v(0) - userInputs.size[0]) < 1e-10) &&
+              (v(1) > userInputs.size[1] / 2.0) && (v(1) < userInputs.size[1] - 1.0e-10))
             {
               pt1 = v;
             }
-          if ((std::abs(v(0) - userInputs.domain_size[0]) < 1e-10) &&
-              (v(1) < userInputs.domain_size[1] / 2.0) && (v(1) > 1.0e-10))
+          if ((std::abs(v(0) - userInputs.size[0]) < 1e-10) &&
+              (v(1) < userInputs.size[1] / 2.0) && (v(1) > 1.0e-10))
             {
               pt2 = v;
             }
@@ -169,14 +167,13 @@ customPDE<dim, degree>::create_triangulation(
       for (unsigned int i = 0; i < GeometryInfo<dim>::vertices_per_cell; ++i)
         {
           Point<dim> &v = cell->vertex(i);
-          if ((std::abs(v(0) - userInputs.domain_size[0]) < 1e-10) &&
-              (v(1) > userInputs.domain_size[1] / 2.0) &&
-              (v(1) < userInputs.domain_size[1] - 1.0e-10))
+          if ((std::abs(v(0) - userInputs.size[0]) < 1e-10) &&
+              (v(1) > userInputs.size[1] / 2.0) && (v(1) < userInputs.size[1] - 1.0e-10))
             {
               v(1) = pt1(1);
             }
-          if ((std::abs(v(0) - userInputs.domain_size[0]) < 1e-10) &&
-              (v(1) < userInputs.domain_size[1] / 2.0) && (v(1) > 1.0e-10))
+          if ((std::abs(v(0) - userInputs.size[0]) < 1e-10) &&
+              (v(1) < userInputs.size[1] / 2.0) && (v(1) > 1.0e-10))
             {
               v(1) = pt2(1);
             }
@@ -200,8 +197,8 @@ customPDE<dim, degree>::create_triangulation(
       const Point<dim> cell_center          = cell->center();
       const double     distance_from_center = cell_center.distance(semicircle_origin);
 
-      if (cell_center[0] > userInputs.domain_size[0] + 1.0e-10 &&
-          distance_from_center > 0.1 * userInputs.domain_size[1])
+      if (cell_center[0] > userInputs.size[0] + 1.0e-10 &&
+          distance_from_center > 0.1 * userInputs.size[1])
         {
           cell->set_all_manifold_ids(8);
         }
@@ -230,7 +227,7 @@ customPDE<dim, degree>::create_triangulation(
                           cell->face(face_number)->set_boundary_id(2 * i);
                         }
                       else if (std::fabs(cell->face(face_number)->center()(i) >
-                                         (userInputs.domain_size[i])))
+                                         (userInputs.size[i])))
                         {
                           cell->face(face_number)->set_boundary_id(2 * i + 1);
                         }
@@ -242,7 +239,7 @@ customPDE<dim, degree>::create_triangulation(
                           cell->face(face_number)->set_boundary_id(2 * i);
                         }
                       else if (std::fabs(cell->face(face_number)->center()(i) -
-                                         (userInputs.domain_size[i])) < 1e-12)
+                                         (userInputs.size[i])) < 1e-12)
                         {
                           cell->face(face_number)->set_boundary_id(2 * i + 1);
                         }

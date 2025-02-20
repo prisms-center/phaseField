@@ -445,9 +445,8 @@ PDEProblem<dim, degree>::solve()
       solve_increment();
       CALI_MARK_END("Solve increment");
 
-      if (user_inputs.output_parameters.output_list.find(
-            user_inputs.temporal_discretization.increment) !=
-          user_inputs.output_parameters.output_list.end())
+      if (user_inputs.output_parameters.should_output(
+            user_inputs.temporal_discretization.increment))
         {
           CALI_MARK_BEGIN("Output");
 

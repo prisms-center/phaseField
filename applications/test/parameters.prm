@@ -1,26 +1,40 @@
-set Number of dimensions = 2
+set dim = 2
+set global refinement = 5
+set degree = 2
 
 subsection rectangular mesh
-    set size X = 2
-    set size Y = 1
-    set size Z = 1
-    set subdivisions X = 1
-    set subdivisions Y = 1
-    set subdivisions Z = 1
+    set x size = 2
+    set y size = 1
+    set z size = 1
+    set x subdivisions = 1
+    set y subdivisions = 1
+    set z subdivisions = 1
 end
 
-set Refine factor = 5
-set Element degree = 2
+subsection output
+    set file name = window
+    set file type = vtu
+    set condition = LIST
+    set list = 0, 1
+    set print step period = 1
+    set timing information with output = true
+end
 
-set Boundary condition for variable T = DIRICHLET: 0.0
-set Boundary condition for variable q = NATURAL
+subsection checkpoints
+    set load from checkpoint = false
+    set condition = EQUAL_SPACING
+    set number = 10
+end
 
-subsection Linear solver parameters: T
-    set Tolerance type = ABSOLUTE_RESIDUAL
-    set Tolerance value = 1e-10
-    set Maximum linear solver iterations = 1000 
-    set Preconditioner = GMG
-    set Smoothing range = 20
-    set Smoother degree = 5
-    set Eigenvalue CG iterations = 20
+set boundary condition for T = DIRICHLET: 0.0
+set boundary condition for q = NATURAL
+
+subsection linear solver parameters: T
+    set tolerance type = ABSOLUTE_RESIDUAL
+    set tolerance value = 1e-10
+    set max iterations = 1000 
+    set preconditioner type = GMG
+    set smoothing range = 20
+    set smoother degree = 5
+    set eigenvalue cg iterations = 20
 end

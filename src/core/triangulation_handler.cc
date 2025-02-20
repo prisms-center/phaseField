@@ -69,7 +69,7 @@ triangulationHandler<dim>::generate_mesh()
         *triangulation,
         user_inputs.spatial_discretization.subdivisions,
         dealii::Point<dim>(),
-        dealii::Point<dim>(user_inputs.spatial_discretization.domain_size));
+        dealii::Point<dim>(user_inputs.spatial_discretization.size));
 
       // Mark boundaries. This is done before global refinement to reduce the number of
       // cells we have to loop through.
@@ -85,7 +85,7 @@ triangulationHandler<dim>::generate_mesh()
 #endif
 
   // Global refinement
-  triangulation->refine_global(user_inputs.spatial_discretization.refine_factor);
+  triangulation->refine_global(user_inputs.spatial_discretization.global_refinement);
 }
 
 template <int dim>
@@ -122,9 +122,8 @@ triangulationHandler<dim>::mark_boundaries() const
               cell->face(face_number)->set_boundary_id(face_number);
             }
           // Mark the boundary id for x=max, y=max, z=max
-          else if (std::fabs(
-                     cell->face(face_number)->center()(direction) -
-                     (user_inputs.spatial_discretization.domain_size[direction])) <
+          else if (std::fabs(cell->face(face_number)->center()(direction) -
+                             (user_inputs.spatial_discretization.size[direction])) <
                    tolerance)
             {
               cell->face(face_number)->set_boundary_id(face_number);

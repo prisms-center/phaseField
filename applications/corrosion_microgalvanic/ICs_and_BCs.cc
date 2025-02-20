@@ -45,8 +45,8 @@ customPDE<dim, degree>::setInitialCondition(
   // zCoordinate of the point considered
   // double posz = p[2];
 
-  const double SYSTEM_WIDTH  = userInputs.domain_size[0];
-  const double SYSTEM_HEIGHT = userInputs.domain_size[1];
+  const double SYSTEM_WIDTH  = userInputs.size[0];
+  const double SYSTEM_HEIGHT = userInputs.size[1];
 
   double hyperTan = tanh((abs(posx - 1 * SYSTEM_WIDTH) - 1 * cathodeThickness) / deltaV);
   double height   = 0.5 * SYSTEM_HEIGHT;
