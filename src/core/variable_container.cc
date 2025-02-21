@@ -174,16 +174,17 @@ variableContainer<dim, degree, number>::eval_local_diagonal(
   const std::function<void(variableContainer &, const dealii::Point<dim, size_type> &)>
                                               &func,
   VectorType                                  &dst,
+  const std::vector<VectorType *>             &src_subset,
   const std::pair<unsigned int, unsigned int> &cell_range)
 {
   Assert(subset_attributes.size() == 1,
          dealii::ExcMessage(
            "For nonexplicit solves, subset attributes should only be 1 variable."));
 
-  const auto &global_var_index = subset_attributes.begin()->first;
-
   AssertThrow(subset_attributes.begin()->second.field_type != fieldType::VECTOR,
               FeatureNotImplemented("Vector multigrid"));
+
+  const auto &global_var_index = subset_attributes.begin()->first;
 
   auto *scalar_FEEval_ptr =
     scalar_vars_map.at(global_var_index).at(dependencyType::CHANGE).get();
@@ -193,10 +194,12 @@ variableContainer<dim, degree, number>::eval_local_diagonal(
 
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
     {
+      // Reinit the cell for all the dependencies
       reinit(cell, global_var_index);
 
       for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
         {
+          // Submit an identity matrix for the change term
           for (unsigned int j = 0; j < n_dofs_per_cell; ++j)
             {
               scalar_FEEval_ptr->submit_dof_value(size_type(), j);
@@ -204,6 +207,10 @@ variableContainer<dim, degree, number>::eval_local_diagonal(
           scalar_FEEval_ptr->submit_dof_value(dealii::make_vectorized_array<number>(1.0),
                                               i);
 
+          // Read plain dof values for non change src
+          read_dof_values(src_subset, cell);
+
+          // Evaluate the dependencies based on the flags
           eval(global_var_index);
 
           for (unsigned int q = 0; q < get_n_q_points(); ++q)
@@ -218,6 +225,7 @@ variableContainer<dim, degree, number>::eval_local_diagonal(
               func(*this, q_point_loc);
             }
 
+          // Integrate the diagonal
           integrate(global_var_index);
           (*diagonal)[i] = scalar_FEEval_ptr->get_dof_value(i);
         }
@@ -605,6 +613,103 @@ variableContainer<dim, degree, number>::reinit(unsigned int        cell,
 
       reinit_map(subset_attributes.at(global_variable_index).eval_flag_set_RHS);
     }
+}
+
+template <int dim, int degree, typename number>
+void
+variableContainer<dim, degree, number>::read_dof_values(
+  const std::vector<VectorType *> &src,
+  unsigned int                     cell)
+{
+  auto reinit_and_eval_map =
+    [&](const std::unordered_map<std::pair<unsigned int, dependencyType>,
+                                 dealii::EvaluationFlags::EvaluationFlags,
+                                 pairHash>                                &eval_flag_set,
+        const std::map<unsigned int, std::map<dependencyType, fieldType>> &dependency_set)
+  {
+    for (const auto &[dependency_index, map] : dependency_set)
+      {
+        for (const auto &[dependency_type, field_type] : map)
+          {
+            if (dependency_type == dependencyType::CHANGE)
+              {
+                continue;
+              }
+
+            const auto &pair = std::make_pair(dependency_index, dependency_type);
+
+            Assert(global_to_local_solution.find(pair) != global_to_local_solution.end(),
+                   dealii::ExcMessage(
+                     "The global to local mapping does not exists for global index = " +
+                     std::to_string(dependency_index) +
+                     "  and type = " + to_string(dependency_type)));
+
+            if (field_type == fieldType::SCALAR)
+              {
+                scalar_FEEval_exists(dependency_index, dependency_type);
+
+                auto *scalar_FEEval_ptr =
+                  scalar_vars_map.at(dependency_index).at(dependency_type).get();
+
+                if (eval_flag_set.find(pair) != eval_flag_set.end())
+                  {
+                    const unsigned int &local_index = global_to_local_solution.at(pair);
+
+                    Assert(src.size() > local_index,
+                           dealii::ExcMessage(
+                             "The provided src vector's size is below the given local "
+                             "index = " +
+                             std::to_string(local_index) +
+                             " for global index = " + std::to_string(dependency_index) +
+                             "  and type = " + to_string(dependency_type)));
+
+                    scalar_FEEval_ptr->read_dof_values_plain(*(src.at(local_index)));
+                  }
+              }
+            else
+              {
+                vector_FEEval_exists(dependency_index, dependency_type);
+
+                auto *vector_FEEval_ptr =
+                  vector_vars_map.at(dependency_index).at(dependency_type).get();
+                vector_FEEval_ptr->reinit(cell);
+
+                if (eval_flag_set.find(pair) != eval_flag_set.end())
+                  {
+                    const unsigned int &local_index = global_to_local_solution.at(pair);
+
+                    Assert(src.size() > local_index,
+                           dealii::ExcMessage(
+                             "The provided src vector's size is below the given local "
+                             "index = " +
+                             std::to_string(local_index) +
+                             " for global index = " + std::to_string(dependency_index) +
+                             "  and type = " + to_string(dependency_type)));
+
+                    vector_FEEval_ptr->read_dof_values_plain(*(src.at(local_index)));
+                    vector_FEEval_ptr->evaluate(eval_flag_set.at(pair));
+                  }
+              }
+          }
+      }
+  };
+
+  if (solve_type != solveType::NONEXPLICIT_LHS)
+    {
+      Assert(false, UnreachableCode());
+      return;
+    }
+  if (src.empty())
+    {
+      return;
+    }
+
+  Assert(subset_attributes.size() == 1,
+         dealii::ExcMessage(
+           "For nonexplicit solves, subset attributes should only be 1 variable."));
+
+  reinit_and_eval_map(subset_attributes.begin()->second.eval_flag_set_LHS,
+                      subset_attributes.begin()->second.dependency_set_LHS);
 }
 
 template <int dim, int degree, typename number>
