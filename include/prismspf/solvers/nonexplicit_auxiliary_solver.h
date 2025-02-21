@@ -133,8 +133,8 @@ nonexplicitAuxiliarySolver<dim, degree>::init()
       // Create the implementation of customPDE with the subset of variable attributes
       this->system_matrix[index] =
         std::make_unique<SystemMatrixType>(this->user_inputs,
-                                           subset_attributes_list.back(),
-                                           index);
+                                           index,
+                                           subset_attributes_list.back());
 
       // Set up the user-implemented equations and create the residual vectors
       this->system_matrix.at(index)->clear();

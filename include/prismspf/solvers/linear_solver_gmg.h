@@ -234,8 +234,8 @@ GMGSolver<dim, degree>::init()
     std::make_unique<dealii::MGLevelObject<LevelMatrixType>>(min_level,
                                                              max_level,
                                                              this->user_inputs,
-                                                             this->subset_attributes,
-                                                             this->field_index);
+                                                             this->field_index,
+                                                             this->subset_attributes);
   mg_transfer_operators.resize(min_level, max_level);
 
   // Object for constraints on different levels

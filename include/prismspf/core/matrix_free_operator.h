@@ -37,13 +37,20 @@ public:
   /**
    * \brief Default constructor.
    */
-  matrixFreeOperator();
+  matrixFreeOperator() = default;
 
   /**
-   * \brief Constructor.
+   * \brief Constructor for concurrent solves.
    */
-  explicit matrixFreeOperator(
-    const std::map<unsigned int, variableAttributes> &_attributes_list);
+  matrixFreeOperator(const userInputParameters<dim>                   &_user_inputs,
+                     const std::map<unsigned int, variableAttributes> &_attributes_list);
+
+  /**
+   * \brief Constructor for single solves.
+   */
+  matrixFreeOperator(const userInputParameters<dim>                   &_user_inputs,
+                     const unsigned int                               &_current_index,
+                     const std::map<unsigned int, variableAttributes> &_attributes_list);
 
   /**
    * \brief Initialize operator on the fine scale.
@@ -210,6 +217,16 @@ protected:
     variableContainer<dim, degree, number> &variable_list,
     const dealii::Point<dim, size_type>    &q_point_loc) const = 0;
 
+  /**
+   * \brief The user-inputs.
+   */
+  const userInputParameters<dim> &user_inputs;
+
+  /**
+   * \brief The current index that is being solved.
+   */
+  const unsigned int current_index = numbers::invalid_index;
+
 private:
   /**
    * \brief Local computation of the explicit update.
@@ -313,8 +330,21 @@ private:
 
 template <int dim, int degree, typename number>
 matrixFreeOperator<dim, degree, number>::matrixFreeOperator(
+  const userInputParameters<dim>                   &_user_inputs,
   const std::map<unsigned int, variableAttributes> &_attributes_list)
   : Subscriptor()
+  , user_inputs(_user_inputs)
+  , attributes_list(_attributes_list)
+{}
+
+template <int dim, int degree, typename number>
+matrixFreeOperator<dim, degree, number>::matrixFreeOperator(
+  const userInputParameters<dim>                   &_user_inputs,
+  const unsigned int                               &_current_index,
+  const std::map<unsigned int, variableAttributes> &_attributes_list)
+  : Subscriptor()
+  , user_inputs(_user_inputs)
+  , current_index(_current_index)
   , attributes_list(_attributes_list)
 {}
 

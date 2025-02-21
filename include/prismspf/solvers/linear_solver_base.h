@@ -190,9 +190,9 @@ linearSolverBase<dim, degree>::linearSolverBase(
 
   // Create the implementation of customPDE with the subset of variable attributes
   system_matrix =
-    std::make_unique<SystemMatrixType>(user_inputs, subset_attributes, field_index);
+    std::make_unique<SystemMatrixType>(user_inputs, field_index, subset_attributes);
   update_system_matrix =
-    std::make_unique<SystemMatrixType>(user_inputs, subset_attributes, field_index);
+    std::make_unique<SystemMatrixType>(user_inputs, field_index, subset_attributes);
 
   // Create the residual subset of solution vectors and add the mapping to customPDE
   residual_src.push_back(solution_handler.solution_set.at(
