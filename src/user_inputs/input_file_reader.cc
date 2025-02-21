@@ -492,7 +492,7 @@ inputFileReader::declare_solver_parameters()
                                             "iterations before the loop is stopped.");
             parameter_handler.declare_entry(
               "tolerance type",
-              "ABSOLUTE_SOLUTION_CHANGE",
+              "ABSOLUTE_RESIDUAL",
               dealii::Patterns::Selection("ABSOLUTE_RESIDUAL|RELATIVE_RESIDUAL_CHANGE"),
               "The tolerance type for the nonlinear solver.");
             parameter_handler.declare_entry(
