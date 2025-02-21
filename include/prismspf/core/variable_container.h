@@ -218,6 +218,7 @@ public:
     const std::function<void(variableContainer &, const dealii::Point<dim, size_type> &)>
                                                 &func,
     VectorType                                  &dst,
+    const std::vector<VectorType *>             &src_subset,
     const std::pair<unsigned int, unsigned int> &cell_range);
 
 private:
@@ -282,6 +283,12 @@ private:
    */
   void
   reinit(unsigned int cell, const unsigned int &global_variable_index);
+
+  /**
+   * \brief Read dofs values on the cell for all dependencies of a certain variable index.
+   */
+  void
+  read_dof_values(const std::vector<VectorType *> &src, unsigned int cell);
 
   /**
    * \brief Evaluate the flags on the cell for all dependencies of a certain variable

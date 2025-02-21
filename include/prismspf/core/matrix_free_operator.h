@@ -99,7 +99,7 @@ public:
    * contains.
    */
   void
-  initialize_dof_vector(VectorType &dst) const;
+  initialize_dof_vector(VectorType &dst, unsigned int dof_handler_index = 0) const;
 
   /**
    * \brief Set constrained entries to one.
@@ -178,7 +178,7 @@ public:
    * \brief Compute the diagonal of this operator.
    */
   void
-  compute_diagonal();
+  compute_diagonal(unsigned int field_index);
 
 protected:
   /**
@@ -469,9 +469,12 @@ matrixFreeOperator<dim, degree, number>::clear()
 
 template <int dim, int degree, typename number>
 void
-matrixFreeOperator<dim, degree, number>::initialize_dof_vector(VectorType &dst) const
+matrixFreeOperator<dim, degree, number>::initialize_dof_vector(
+  VectorType  &dst,
+  unsigned int dof_handler_index) const
 {
-  data->initialize_dof_vector(dst);
+  // TODO: This won't work because we have to specify which field (DoFHandler) to use
+  data->initialize_dof_vector(dst, dof_handler_index);
 }
 
 template <int dim, int degree, typename number>
@@ -778,11 +781,11 @@ matrixFreeOperator<dim, degree, number>::compute_local_newton_update(
 
 template <int dim, int degree, typename number>
 void
-matrixFreeOperator<dim, degree, number>::compute_diagonal()
+matrixFreeOperator<dim, degree, number>::compute_diagonal(unsigned int field_index)
 {
   inverse_diagonal_entries.reset(new dealii::DiagonalMatrix<VectorType>());
   VectorType &inverse_diagonal = inverse_diagonal_entries->get_vector();
-  data->initialize_dof_vector(inverse_diagonal);
+  data->initialize_dof_vector(inverse_diagonal, field_index);
   unsigned int dummy = 0;
   data->cell_loop(&matrixFreeOperator::local_compute_diagonal,
                   this,
@@ -822,6 +825,7 @@ matrixFreeOperator<dim, degree, number>::local_compute_diagonal(
       this->compute_nonexplicit_LHS(var_list, q_point_loc);
     },
     dst,
+    src_solution_subset,
     cell_range);
 }
 
