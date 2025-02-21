@@ -157,10 +157,10 @@ number&#160;</td><td class="memItemRight" valign="bottom"><b>el</b> (const unsig
 void&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b> ()</td></tr>
 <tr class="memdesc:a8c1ad1b8f1f6696f5a9ca955654187f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Release all memory and return to state like having called the default constructor. <br /></td></tr>
 <tr class="separator:a8c1ad1b8f1f6696f5a9ca955654187f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca6ed2bfc5d63f732265a6eae0deb940" id="r_aca6ed2bfc5d63f732265a6eae0deb940"><td class="memItemLeft" align="right" valign="top"><a id="aca6ed2bfc5d63f732265a6eae0deb940" name="aca6ed2bfc5d63f732265a6eae0deb940"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>initialize_dof_vector</b> (VectorType &amp;dst) const</td></tr>
-<tr class="memdesc:aca6ed2bfc5d63f732265a6eae0deb940"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a given vector with the MatrixFree object that this object contains. <br /></td></tr>
-<tr class="separator:aca6ed2bfc5d63f732265a6eae0deb940"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0fab79031a95a118ded74d261692450" id="r_af0fab79031a95a118ded74d261692450"><td class="memItemLeft" align="right" valign="top"><a id="af0fab79031a95a118ded74d261692450" name="af0fab79031a95a118ded74d261692450"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>initialize_dof_vector</b> (VectorType &amp;dst, unsigned int dof_handler_index=0) const</td></tr>
+<tr class="memdesc:af0fab79031a95a118ded74d261692450"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a given vector with the MatrixFree object that this object contains. <br /></td></tr>
+<tr class="separator:af0fab79031a95a118ded74d261692450"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a563f901403ad0ef478a39167235213f4" id="r_a563f901403ad0ef478a39167235213f4"><td class="memItemLeft" align="right" valign="top"><a id="a563f901403ad0ef478a39167235213f4" name="a563f901403ad0ef478a39167235213f4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>set_constrained_entries_to_one</b> (VectorType &amp;dst) const</td></tr>
 <tr class="memdesc:a563f901403ad0ef478a39167235213f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set constrained entries to one. <br /></td></tr>
@@ -205,10 +205,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>compute_nonexplicit_a
 void&#160;</td><td class="memItemRight" valign="bottom"><b>compute_residual</b> (VectorType &amp;dst, const VectorType &amp;src) const</td></tr>
 <tr class="memdesc:a1bdee489963f11f758e1a68973465cb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the residual of this operator. This is the b in Ax=b. <br /></td></tr>
 <tr class="separator:a1bdee489963f11f758e1a68973465cb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f9083bd643c0476c5cacd4522b00147" id="r_a6f9083bd643c0476c5cacd4522b00147"><td class="memItemLeft" align="right" valign="top"><a id="a6f9083bd643c0476c5cacd4522b00147" name="a6f9083bd643c0476c5cacd4522b00147"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>compute_diagonal</b> ()</td></tr>
-<tr class="memdesc:a6f9083bd643c0476c5cacd4522b00147"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the diagonal of this operator. <br /></td></tr>
-<tr class="separator:a6f9083bd643c0476c5cacd4522b00147"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a745bae570359cf0d4a3d9fdf35234ea9" id="r_a745bae570359cf0d4a3d9fdf35234ea9"><td class="memItemLeft" align="right" valign="top"><a id="a745bae570359cf0d4a3d9fdf35234ea9" name="a745bae570359cf0d4a3d9fdf35234ea9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>compute_diagonal</b> (unsigned int field_index)</td></tr>
+<tr class="memdesc:a745bae570359cf0d4a3d9fdf35234ea9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the diagonal of this operator. <br /></td></tr>
+<tr class="separator:a745bae570359cf0d4a3d9fdf35234ea9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>

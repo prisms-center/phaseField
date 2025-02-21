@@ -2,7 +2,7 @@ var searchData=
 [
   ['check_5fkeyword_5fmatch_0',['check_keyword_match',['../classinputFileReader.html#af80fe9572970eb100c4f0046bf2c429f',1,'inputFileReader']]],
   ['clear_1',['clear',['../classmatrixFreeOperator.html#a8c1ad1b8f1f6696f5a9ca955654187f6',1,'matrixFreeOperator']]],
-  ['compute_5fdiagonal_2',['compute_diagonal',['../classmatrixFreeOperator.html#a6f9083bd643c0476c5cacd4522b00147',1,'matrixFreeOperator']]],
+  ['compute_5fdiagonal_2',['compute_diagonal',['../classmatrixFreeOperator.html#a745bae570359cf0d4a3d9fdf35234ea9',1,'matrixFreeOperator']]],
   ['compute_5felement_5fvolume_3',['compute_element_volume',['../classelementVolume.html#a18e23b9f92f48eaabd54924663d3415b',1,'elementVolume']]],
   ['compute_5fexplicit_5frhs_4',['compute_explicit_RHS',['../classmatrixFreeOperator.html#af94bf59622bf9bddaf2c71b50aebb6c2',1,'matrixFreeOperator']]],
   ['compute_5fexplicit_5fupdate_5',['compute_explicit_update',['../classmatrixFreeOperator.html#a155e44e26fbe944e2ba179a664853edc',1,'matrixFreeOperator']]],

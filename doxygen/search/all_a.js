@@ -14,7 +14,7 @@ var searchData=
   ['compiling_20and_20running_20the_20allen_20cahn_20example_20app_11',['Compiling and Running the Allen-Cahn Example App',['../running_apps.html#autotoc_md56',1,'']]],
   ['compiling_20the_20core_20library_12',['Compiling the Core Library',['../install_prismspf.html#autotoc_md53',1,'']]],
   ['computational_20domain_13',['Computational Domain',['../input_file.html#autotoc_md20',1,'']]],
-  ['compute_5fdiagonal_14',['compute_diagonal',['../classmatrixFreeOperator.html#a6f9083bd643c0476c5cacd4522b00147',1,'matrixFreeOperator']]],
+  ['compute_5fdiagonal_14',['compute_diagonal',['../classmatrixFreeOperator.html#a745bae570359cf0d4a3d9fdf35234ea9',1,'matrixFreeOperator']]],
   ['compute_5felement_5fvolume_15',['compute_element_volume',['../classelementVolume.html#a18e23b9f92f48eaabd54924663d3415b',1,'elementVolume']]],
   ['compute_5fexplicit_5frhs_16',['compute_explicit_RHS',['../classmatrixFreeOperator.html#af94bf59622bf9bddaf2c71b50aebb6c2',1,'matrixFreeOperator']]],
   ['compute_5fexplicit_5fupdate_17',['compute_explicit_update',['../classmatrixFreeOperator.html#a155e44e26fbe944e2ba179a664853edc',1,'matrixFreeOperator']]],

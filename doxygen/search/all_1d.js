@@ -8,7 +8,7 @@ var searchData=
   ['_7eexplicitconstantsolver_5',['~explicitConstantSolver',['../classexplicitConstantSolver.html#a7187611948d7937068511aeeb7edaf27',1,'explicitConstantSolver']]],
   ['_7eexplicitpostprocesssolver_6',['~explicitPostprocessSolver',['../classexplicitPostprocessSolver.html#a451b4b63085e0904edd00d2e39a6be01',1,'explicitPostprocessSolver']]],
   ['_7eexplicitsolver_7',['~explicitSolver',['../classexplicitSolver.html#ad67d49f7001d52cf2a67da31281a2e65',1,'explicitSolver']]],
-  ['_7egmgsolver_8',['~GMGSolver',['../classGMGSolver.html#a6d65d29d5828d56125da3c719de635ba',1,'GMGSolver']]],
+  ['_7egmgsolver_8',['~GMGSolver',['../classGMGSolver.html#acd2d217d3255190e56b29b0dd058c977',1,'GMGSolver']]],
   ['_7eidentitysolver_9',['~identitySolver',['../classidentitySolver.html#af158a1c075f97c7ef3559525ef9a53a3',1,'identitySolver']]],
   ['_7einvmhandler_10',['~invmHandler',['../classinvmHandler.html#aceea78ffceffe92cd999e3cb67f8ebd5',1,'invmHandler']]],
   ['_7elinearsolverbase_11',['~linearSolverBase',['../classlinearSolverBase.html#a7a982833e97a83cd694f503a95f12d58',1,'linearSolverBase']]],
