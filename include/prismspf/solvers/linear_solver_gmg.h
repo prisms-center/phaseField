@@ -58,7 +58,7 @@ public:
   /**
    * \brief Destructor.
    */
-  ~GMGSolver() override = default;
+  ~GMGSolver() override;
 
   /**
    * \brief Initialize the system.
@@ -144,6 +144,12 @@ private:
    * \brief Transfer operator for global coarsening.
    */
   std::shared_ptr<dealii::MGTransferGlobalCoarsening<dim, MGVectorType>> mg_transfer;
+
+  /**
+   * \brief Subset of fields that are necessary for the source of the newton update for
+   * each multigrid level.
+   */
+  dealii::MGLevelObject<std::vector<MGVectorType *>> mg_newton_update_src;
 };
 
 template <int dim, int degree>
@@ -165,6 +171,18 @@ GMGSolver<dim, degree>::GMGSolver(
   , dof_handler(_dof_handler)
   , mg_matrix_free_handler(_mg_matrix_free_handler)
 {}
+
+template <int dim, int degree>
+GMGSolver<dim, degree>::~GMGSolver()
+{
+  for (unsigned int level = min_level; level <= max_level; ++level)
+    {
+      for (const auto *vector : mg_newton_update_src[level])
+        {
+          delete vector;
+        }
+    }
+}
 
 template <int dim, int degree>
 inline void
@@ -368,25 +386,44 @@ GMGSolver<dim, degree>::init()
     }
 
   // Setup operator on each level
+  mg_newton_update_src.resize(min_level, max_level);
   for (unsigned int level = min_level; level <= max_level; ++level)
     {
       // TODO: Fix so mapping is same as rest of the problem. Do the same for the finite
       // element I think.
+      // TODO: Fix so that we include all DoF handlers and constraints and select only the
+      // ones we need.
       mg_matrix_free_handler[level].reinit(mapping,
                                            mg_dof_handlers[level],
                                            level_constraints[level],
                                            dealii::QGaussLobatto<1>(degree + 1));
 
-      // TODO: Is this right? I don't think I need anything special for the initialization
-      // right?
       (*mg_operators)[level].initialize(mg_matrix_free_handler[level].get_matrix_free());
 
       (*mg_operators)[level].add_global_to_local_mapping(
         this->newton_update_global_to_local_solution);
 
+      // Setup src solutions for each level
+      mg_newton_update_src[level].resize(this->newton_update_src.size());
+      for (const auto &[pair, local_index] : this->newton_update_global_to_local_solution)
+        {
+          mg_newton_update_src[level][local_index] = new MGVectorType();
+          (*mg_operators)[level]
+            .initialize_dof_vector(*mg_newton_update_src[level][local_index], pair.first);
+        }
+
+      // Check that the vector partitioning is right
+      // TODO: Check this for all of the vectors. May also be able to remove this
+      Assert((*mg_operators)[level]
+               .get_matrix_free()
+               ->get_vector_partitioner(this->field_index)
+               ->is_compatible(*(mg_newton_update_src[level][0]->get_partitioner())),
+             dealii::ExcMessage("Incompatabile vector partitioners"));
+
       // TODO: Allow for src subset that is float instead of double. Not sure how to
-      // handle this to be honest. I would rather not store more matrices than I need to.
-      (*mg_operators)[level].add_src_solution_subset();
+      // handle this to be honest. I would rather not store more matrices than I need
+      // to.
+      (*mg_operators)[level].add_src_solution_subset(mg_newton_update_src[level]);
     }
   mg_matrix = std::make_shared<dealii::mg::Matrix<MGVectorType>>(*mg_operators);
 
@@ -468,6 +505,23 @@ GMGSolver<dim, degree>::solve(const double step_length)
   dealii::SolverCG<dealii::LinearAlgebra::distributed::Vector<double>> cg(
     this->solver_control);
 
+  // Interpolate the newton update src vector to each multigrid level
+  for (unsigned int local_index = 0; local_index < this->newton_update_src.size();
+       local_index++)
+    {
+      // Create a temporary collection of the the dst pointers
+      dealii::MGLevelObject<MGVectorType> mg_src_subset(min_level, max_level);
+      for (unsigned int level = min_level; level < max_level; ++level)
+        {
+          mg_src_subset[level] = *mg_newton_update_src[level][local_index];
+        }
+
+      // Interpolate
+      mg_transfer->interpolate_to_mg(*current_dof_handler,
+                                     mg_src_subset,
+                                     *this->newton_update_src[local_index]);
+    }
+
   // Create smoother for each level
   using SmootherType = dealii::PreconditionChebyshev<LevelMatrixType, MGVectorType>;
   dealii::MGSmootherPrecondition<LevelMatrixType, SmootherType, MGVectorType> mg_smoother;
@@ -484,7 +538,7 @@ GMGSolver<dim, degree>::solve(const double step_length)
       smoother_data[level].eig_cg_n_iterations =
         this->user_inputs.linear_solve_parameters.linear_solve.at(this->field_index)
           .eig_cg_n_iterations;
-      (*mg_operators)[level].compute_diagonal();
+      (*mg_operators)[level].compute_diagonal(this->field_index);
       smoother_data[level].preconditioner =
         (*mg_operators)[level].get_matrix_diagonal_inverse();
       smoother_data[level].constraints.copy_from(level_constraints[level]);
