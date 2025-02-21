@@ -22,6 +22,7 @@ class identitySolver : public linearSolverBase<dim, degree>
 {
 public:
   using SystemMatrixType = customPDE<dim, degree, double>;
+  using VectorType       = dealii::LinearAlgebra::distributed::Vector<double>;
 
   /**
    * \brief Constructor.
@@ -116,8 +117,7 @@ identitySolver<dim, degree>::solve(const double step_length)
 
   // Update solver controls
   this->solver_control.set_tolerance(this->tolerance);
-  dealii::SolverCG<dealii::LinearAlgebra::distributed::Vector<double>> cg(
-    this->solver_control);
+  dealii::SolverCG<VectorType> cg(this->solver_control);
 
   try
     {

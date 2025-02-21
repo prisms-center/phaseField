@@ -30,6 +30,7 @@ class explicitSolver : public explicitBase<dim, degree>
 {
 public:
   using SystemMatrixType = customPDE<dim, degree, double>;
+  using VectorType       = dealii::LinearAlgebra::distributed::Vector<double>;
 
   /**
    * \brief Constructor.
@@ -69,12 +70,12 @@ private:
   /**
    * \brief Subset of solutions fields that are necessary for explicit solves.
    */
-  std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> solution_subset;
+  std::vector<VectorType *> solution_subset;
 
   /**
    * \brief Subset of new solutions fields that are necessary for explicit solves.
    */
-  std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> new_solution_subset;
+  std::vector<VectorType *> new_solution_subset;
 };
 
 template <int dim, int degree>

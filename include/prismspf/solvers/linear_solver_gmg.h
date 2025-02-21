@@ -41,6 +41,7 @@ class GMGSolver : public linearSolverBase<dim, degree>
 public:
   using SystemMatrixType = customPDE<dim, degree, double>;
   using LevelMatrixType  = customPDE<dim, degree, float>;
+  using VectorType       = dealii::LinearAlgebra::distributed::Vector<double>;
   using MGVectorType     = dealii::LinearAlgebra::distributed::Vector<float>;
 
   /**
@@ -502,8 +503,7 @@ GMGSolver<dim, degree>::solve(const double step_length)
 
   // Update solver controls
   this->solver_control.set_tolerance(this->tolerance);
-  dealii::SolverCG<dealii::LinearAlgebra::distributed::Vector<double>> cg(
-    this->solver_control);
+  dealii::SolverCG<VectorType> cg(this->solver_control);
 
   // Interpolate the newton update src vector to each multigrid level
   for (unsigned int local_index = 0; local_index < this->newton_update_src.size();
