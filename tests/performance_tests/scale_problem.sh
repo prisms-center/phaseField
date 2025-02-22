@@ -17,9 +17,9 @@ APP_DIR=$(cd "$APP_DIR";pwd)
 N_COPIES=$2
 
 # Check that the paths are correct
-if [ ! -f "$APP_DIR/custom_pde.h" ] || [ ! -f "$APP_DIR/main.cc" ] ; then
+if [ ! -f "$APP_DIR/custom_pde.h" ] || [ ! -f "main.cc" ] ; then
     echo "Usage:"
-    echo "  update_application.sh /path/to/application <number of copies>"
+    echo "  scale_problem.sh /path/to/application <number of copies>"
     exit 1
 fi
 echo "APP-DIR=$APP_DIR"
@@ -35,8 +35,8 @@ fi
 sed -i "s|const unsigned int n_copies\s*=\s*[0-9]*\s*;|const unsigned int n_copies = $N_COPIES;|" "$APP_DIR/custom_pde.h"
 
 # Update the parameters file
-grep -E "set Boundary condition for variable [a-z]+0\s*=\s*[A-Z]+" "$APP_DIR/parameters.prm" > "$APP_DIR/parameters_new.prm"
-sed -i -E "/set Boundary condition for variable [a-z]+[0-9]+\s*=\s*[A-Z]+/d" "$APP_DIR/parameters.prm"
+grep -E "set boundary condition for [a-z]+0\s*=\s*[A-Z]+" "$APP_DIR/parameters.prm" > "$APP_DIR/parameters_new.prm"
+sed -i -E "/set boundary condition for [a-z]+[0-9]+\s*=\s*[A-Z]+/d" "$APP_DIR/parameters.prm"
 for ((i=0; i<N_COPIES; i++)) ; do
     sed "s/\([a-z]\)0/\1$i/" "$APP_DIR/parameters_new.prm" >> "$APP_DIR/parameters.prm"
 done
