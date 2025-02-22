@@ -78,9 +78,9 @@ customPDE<dim, degree, number>::compute_nonexplicit_LHS(
 
       scalarValue fnV = 4.0 * change_n * (change_n - 1.0) * (change_n - 0.5);
       scalarValue eq_change_n =
-        change_n + user_inputs.temporal_discretization.dt * MnV * fnV;
+        change_n + this->user_inputs.temporal_discretization.dt * MnV * fnV;
       scalarGrad eqx_change_n =
-        user_inputs.temporal_discretization.dt * KnV * MnV * change_nx;
+        this->user_inputs.temporal_discretization.dt * KnV * MnV * change_nx;
 
       variable_list.set_scalar_value_term(0, eq_change_n, CHANGE);
       variable_list.set_scalar_gradient_term(0, eqx_change_n, CHANGE);
