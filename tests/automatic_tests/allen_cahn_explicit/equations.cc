@@ -42,8 +42,8 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
   scalarGrad  nx = variable_list.get_scalar_gradient(0);
 
   scalarValue fnV   = 4.0 * n * (n - 1.0) * (n - 0.5);
-  scalarValue eq_n  = n - user_inputs.temporal_discretization.dt * MnV * fnV;
-  scalarGrad  eqx_n = -user_inputs.temporal_discretization.dt * KnV * MnV * nx;
+  scalarValue eq_n  = n - this->user_inputs.temporal_discretization.dt * MnV * fnV;
+  scalarGrad  eqx_n = -this->user_inputs.temporal_discretization.dt * KnV * MnV * nx;
 
   variable_list.set_scalar_value_term(0, eq_n);
   variable_list.set_scalar_gradient_term(0, eqx_n);
