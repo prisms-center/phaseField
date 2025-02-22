@@ -110,7 +110,6 @@ protected:
   /**
    * \brief Mapping from global solution vectors to the local ones for the residual solve.
    */
-
   std::unordered_map<std::pair<unsigned int, dependencyType>, unsigned int, pairHash>
     residual_global_to_local_solution;
 
