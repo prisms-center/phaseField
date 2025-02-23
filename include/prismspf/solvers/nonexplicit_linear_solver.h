@@ -20,6 +20,10 @@
 #include <prismspf/solvers/nonexplicit_base.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#ifdef PRISMS_PF_WITH_CALIPER
+#  include <caliper/cali.h>
+#endif
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**

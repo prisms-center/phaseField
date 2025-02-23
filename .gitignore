@@ -63,7 +63,8 @@ applications/*/*.vtk
 *.vts
 *.frt
 integratedFields.txt
-trial*.txt
+tests/performance_tests/*.png
+tests/performance_tests/*/trial*.txt
 output.txt
 error.txt
 CTestCostData.txt

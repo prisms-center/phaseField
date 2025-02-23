@@ -11,6 +11,10 @@
 #include <prismspf/config.h>
 #include <prismspf/solvers/linear_solver_base.h>
 
+#ifdef PRISMS_PF_WITH_CALIPER
+#  include <caliper/cali.h>
+#endif
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**

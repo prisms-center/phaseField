@@ -252,6 +252,7 @@ PDEProblem<dim, degree>::init_system()
 
   // Create the SCALAR/VECTOR FESystem's, if applicable
   conditionalOStreams::pout_summary() << "creating FESystem...\n" << std::flush;
+  CALI_MARK_BEGIN("FESystem init");
   for (const auto &[index, variable] : user_inputs.var_attributes)
     {
       if (variable.field_type == fieldType::SCALAR &&
@@ -275,43 +276,58 @@ PDEProblem<dim, degree>::init_system()
                                               << std::flush;
         }
     }
+  CALI_MARK_END("FESystem init");
 
   // Create the mesh
   conditionalOStreams::pout_summary() << "creating triangulation...\n" << std::flush;
+  CALI_MARK_BEGIN("Mesh init");
   triangulation_handler.generate_mesh();
+  CALI_MARK_END("Mesh init");
 
   // Create the dof handlers.
   conditionalOStreams::pout_summary() << "creating DoFHandlers...\n" << std::flush;
+  CALI_MARK_BEGIN("DoFHandler init");
   dof_handler.init(triangulation_handler, fe_system);
+  CALI_MARK_END("DoFHandler init");
 
   // Create the constraints
   conditionalOStreams::pout_summary() << "creating constraints...\n" << std::flush;
+  CALI_MARK_BEGIN("Constraints init");
   constraint_handler.make_constraints(mapping, dof_handler.dof_handlers);
+  CALI_MARK_END("Constraints init");
 
   // Reinit the matrix-free objects
   conditionalOStreams::pout_summary() << "initializing matrix-free objects...\n"
                                       << std::flush;
+  CALI_MARK_BEGIN("Matrix-free init");
   matrix_free_handler.reinit(mapping,
                              dof_handler.const_dof_handlers,
                              constraint_handler.get_constraints(),
                              dealii::QGaussLobatto<1>(degree + 1));
+  CALI_MARK_END("Matrix-free init");
 
   // Initialize the solution set
   conditionalOStreams::pout_summary() << "initializing solution set...\n" << std::flush;
+  CALI_MARK_BEGIN("Solution init");
   solution_handler.init(matrix_free_handler);
+  CALI_MARK_END("Solution init");
 
   // Initialize the invm and compute it
   // TODO: Output the invm for debug mode
   conditionalOStreams::pout_summary() << "initializing invm...\n" << std::flush;
+  CALI_MARK_BEGIN("Invm init");
   invm_handler.initialize(matrix_free_handler.get_matrix_free());
   invm_handler.compute_invm();
+  CALI_MARK_END("Invm init");
 
   // Initialize the element volumes and compute them
   // TODO: Output the element volumes for debug mode
   conditionalOStreams::pout_summary() << "initializing element volumes...\n"
                                       << std::flush;
+  CALI_MARK_BEGIN("Element volume init");
   element_volume.initialize(matrix_free_handler.get_matrix_free());
   element_volume.compute_element_volume(fe_system.begin()->second);
+  CALI_MARK_END("Element volume init");
 
   // Initialize the solver types
   conditionalOStreams::pout_summary() << "initializing solvers...\n" << std::flush;
@@ -380,11 +396,13 @@ PDEProblem<dim, degree>::init_system()
   // Output initial condition
   conditionalOStreams::pout_summary() << "outputting initial condition...\n"
                                       << std::flush;
+  CALI_MARK_BEGIN("Solution output");
   solutionOutput<dim> output_solution(solution_handler.solution_set,
                                       dof_handler.const_dof_handlers,
                                       degree,
                                       "solution",
                                       user_inputs);
+  CALI_MARK_END("Solution output");
 
   timer::serial_timer().leave_subsection();
 }
@@ -457,11 +475,13 @@ PDEProblem<dim, degree>::solve()
           postprocess_explicit_solver.solve();
           CALI_MARK_END("Postprocess solve");
 
+          CALI_MARK_BEGIN("Solution output");
           solutionOutput<dim> output_solution(solution_handler.solution_set,
                                               dof_handler.const_dof_handlers,
                                               degree,
                                               "solution",
                                               user_inputs);
+          CALI_MARK_END("Solution output");
 
           // Print the l2-norms of each solution
           conditionalOStreams::pout_base()
@@ -486,7 +506,9 @@ PDEProblem<dim, degree>::run()
   solve();
   CALI_MARK_END("Main solve");
 
+#ifndef PRISMS_PF_WITH_CALIPER
   timer::print_summary();
+#endif
 }
 
 PRISMS_PF_END_NAMESPACE

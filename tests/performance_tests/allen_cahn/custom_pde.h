@@ -18,7 +18,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-const unsigned int n_copies = 16;
+const unsigned int n_copies = 64;
 
 /**
  * \brief This is a derived class of `matrixFreeOperator` where the user implements their
