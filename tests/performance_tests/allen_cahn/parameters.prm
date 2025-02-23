@@ -20,3 +20,18 @@ subsection output
 end
 
 set boundary condition for phi0 = NATURAL
+set boundary condition for phi1 = NATURAL
+set boundary condition for phi2 = NATURAL
+set boundary condition for phi3 = NATURAL
+set boundary condition for phi4 = NATURAL
+set boundary condition for phi5 = NATURAL
+set boundary condition for phi6 = NATURAL
+set boundary condition for phi7 = NATURAL
+set boundary condition for phi8 = NATURAL
+set boundary condition for phi9 = NATURAL
+set boundary condition for phi10 = NATURAL
+set boundary condition for phi11 = NATURAL
+set boundary condition for phi12 = NATURAL
+set boundary condition for phi13 = NATURAL
+set boundary condition for phi14 = NATURAL
+set boundary condition for phi15 = NATURAL

@@ -44,7 +44,7 @@ rm "$APP_DIR/parameters_new.prm"
 
 # Compile and run 
 cd "$APP_DIR"
-make -j4
+make -j$(nproc)
 for ((i=0; i<3; i++)) ; do
     mpirun -n 1 main -P runtime-report,mem.highwatermark > "trial_${i}_${N_COPIES}.txt" 2>&1
 done
