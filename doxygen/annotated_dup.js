@@ -42,6 +42,7 @@ var annotated_dup =
     [ "solutionHandler", "classsolutionHandler.html", "classsolutionHandler" ],
     [ "solutionOutput", "classsolutionOutput.html", "classsolutionOutput" ],
     [ "spatialDiscretization", "structspatialDiscretization.html", "structspatialDiscretization" ],
+    [ "TeeStream", "classTeeStream.html", null ],
     [ "temporalDiscretization", "structtemporalDiscretization.html", "structtemporalDiscretization" ],
     [ "timer", "classtimer.html", "classtimer" ],
     [ "triangulationHandler", "classtriangulationHandler.html", "classtriangulationHandler" ],

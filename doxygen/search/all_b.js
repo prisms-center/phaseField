@@ -29,7 +29,7 @@ var searchData=
   ['docker_26',['Traditional Installation (Non-Docker)',['../install_prismspf.html#autotoc_md51',1,'']]],
   ['docker_20installation_27',['Docker Installation',['../install_prismspf.html#autotoc_md54',1,'']]],
   ['docker_20mac_20os_20x_20linux_20windows_28',['Docker (Mac OS X, Linux, Windows)',['../install_prereqs.html#autotoc_md47',1,'']]],
-  ['dof_5fhandler_29',['dof_handler',['../classnonexplicitBase.html#a69d001401e161b4b9dd2ec1efea57b7f',1,'nonexplicitBase::dof_handler'],['../classexplicitBase.html#a656186e9f9e53c1fb32ca3f1f5caa1f9',1,'explicitBase::dof_handler']]],
+  ['dof_5fhandler_29',['dof_handler',['../classnonexplicitBase.html#a8eb0e9307c2df0d8d871e75c3ef5b9fc',1,'nonexplicitBase::dof_handler'],['../classexplicitBase.html#acd660064151f4a3eecaa670891422bb2',1,'explicitBase::dof_handler']]],
   ['dof_5fhandlers_30',['dof_handlers',['../classdofHandler.html#a49a94e21121f3fa47558faaa60edf488',1,'dofHandler']]],
   ['dofhandler_31',['dofhandler',['../classdofHandler.html#a2ff8a73052c330733008360d1cd1203a',1,'dofHandler::dofHandler()'],['../classdofHandler.html',1,'dofHandler&lt; dim &gt;']]],
   ['domain_32',['Computational Domain',['../input_file.html#autotoc_md20',1,'']]],

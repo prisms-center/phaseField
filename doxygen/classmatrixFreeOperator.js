@@ -1,7 +1,8 @@
 var classmatrixFreeOperator =
 [
-    [ "matrixFreeOperator", "classmatrixFreeOperator.html#a0351c2c846735f406bb759c805953b82", null ],
-    [ "matrixFreeOperator", "classmatrixFreeOperator.html#ada086f60de601de7d45121264e301a03", null ],
+    [ "matrixFreeOperator", "classmatrixFreeOperator.html#a2404d00f5ef9d688e05f6e0ef8018731", null ],
+    [ "matrixFreeOperator", "classmatrixFreeOperator.html#a6a00192bcf00f71dbc8390840d23042a", null ],
+    [ "matrixFreeOperator", "classmatrixFreeOperator.html#a2d8215a2c53f23165cffed28d804804c", null ],
     [ "add_global_to_local_mapping", "classmatrixFreeOperator.html#ae94f3952db24d19351175a369d9037fa", null ],
     [ "add_src_solution_subset", "classmatrixFreeOperator.html#a897b7a7a3fcf0dc7ed1a9f1ae85f65ae", null ],
     [ "clear", "classmatrixFreeOperator.html#a8c1ad1b8f1f6696f5a9ca955654187f6", null ],
@@ -17,12 +18,12 @@ var classmatrixFreeOperator =
     [ "el", "classmatrixFreeOperator.html#a413bd8336a4fa1308fa9bd0bdf5f8bcb", null ],
     [ "get_matrix_diagonal_inverse", "classmatrixFreeOperator.html#ad961d734b1430025bc4d6bd4a31cfda5", null ],
     [ "get_matrix_free", "classmatrixFreeOperator.html#a9b1b0e4d209409668bceeba55f39b25b", null ],
-    [ "initialize", "classmatrixFreeOperator.html#a92d7526d1748757271bdadc9951b4bc2", null ],
-    [ "initialize", "classmatrixFreeOperator.html#a619430952ff63b57a664ed35140d3839", null ],
     [ "initialize", "classmatrixFreeOperator.html#a3a07ffce2bd02329dcb80d768273ac58", null ],
     [ "initialize_dof_vector", "classmatrixFreeOperator.html#af0fab79031a95a118ded74d261692450", null ],
     [ "m", "classmatrixFreeOperator.html#a7dddd4205c78b9a1aef5d32418f05468", null ],
     [ "set_constrained_entries_to_one", "classmatrixFreeOperator.html#a563f901403ad0ef478a39167235213f4", null ],
     [ "Tvmult", "classmatrixFreeOperator.html#a8dcc9db29547882b0fd163c2d56cfe5e", null ],
-    [ "vmult", "classmatrixFreeOperator.html#afb91ccd80e6c088b07eec8bf64158319", null ]
+    [ "vmult", "classmatrixFreeOperator.html#afb91ccd80e6c088b07eec8bf64158319", null ],
+    [ "current_index", "classmatrixFreeOperator.html#a500b83b5be1d9783a5a9bca1292f89e4", null ],
+    [ "user_inputs", "classmatrixFreeOperator.html#a2ae3a079ba5557bd38ea00283b8ff004", null ]
 ];

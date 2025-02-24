@@ -22,7 +22,7 @@ var hierarchy =
       [ "nonuniformDirichlet< dim, field_type >", "classnonuniformDirichlet.html", null ]
     ] ],
     [ "inputFileReader", "classinputFileReader.html", null ],
-    [ "invmHandler< dim, degree >", "classinvmHandler.html", null ],
+    [ "invmHandler< dim, degree, number >", "classinvmHandler.html", null ],
     [ "linearSolveParameters", "structlinearSolveParameters.html", null ],
     [ "linearSolverBase< dim, degree >", "classlinearSolverBase.html", [
       [ "GMGSolver< dim, degree >", "classGMGSolver.html", null ],
@@ -38,6 +38,9 @@ var hierarchy =
     [ "nonexplicitCoNonlinearSolver", "classnonexplicitCoNonlinearSolver.html", null ],
     [ "nonlinearSolveParameters", "structnonlinearSolveParameters.html", null ],
     [ "nonlinearSolverParameters", "structnonlinearSolverParameters.html", null ],
+    [ "std::ostream", null, [
+      [ "TeeStream", "classTeeStream.html", null ]
+    ] ],
     [ "outputParameters", "structoutputParameters.html", null ],
     [ "pairHash", "structpairHash.html", null ],
     [ "parseCMDOptions", "classparseCMDOptions.html", null ],

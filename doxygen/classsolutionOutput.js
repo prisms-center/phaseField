@@ -1,5 +1,5 @@
 var classsolutionOutput =
 [
-    [ "solutionOutput", "classsolutionOutput.html#a1a75c86ce4db14721eb437f27110e0bb", null ],
-    [ "solutionOutput", "classsolutionOutput.html#ac196a4bd1467f6e7b77c548c9c640e74", null ]
+    [ "solutionOutput", "classsolutionOutput.html#a6080629ccc2dc287ee75c185ece6f7c8", null ],
+    [ "solutionOutput", "classsolutionOutput.html#a9f805d6bcf2a4b69e64f25002250dae8", null ]
 ];

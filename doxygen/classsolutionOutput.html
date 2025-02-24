@@ -92,6 +92,7 @@ $(document).ready(function(){initNavTree('classsolutionOutput.html',''); initRes
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classsolutionOutput-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">solutionOutput&lt; dim, number &gt; Class Template Reference</div></div>
@@ -103,16 +104,22 @@ $(document).ready(function(){initNavTree('classsolutionOutput.html',''); initRes
 
 <p><code>#include &lt;<a class="el" href="solution__output_8h_source.html">solution_output.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:ac865fa8c8fea5768032606e2edba26b4" id="r_ac865fa8c8fea5768032606e2edba26b4"><td class="memItemLeft" align="right" valign="top"><a id="ac865fa8c8fea5768032606e2edba26b4" name="ac865fa8c8fea5768032606e2edba26b4"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>VectorType</b> = dealii::LinearAlgebra::distributed::Vector&lt; number &gt;</td></tr>
+<tr class="separator:ac865fa8c8fea5768032606e2edba26b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1a75c86ce4db14721eb437f27110e0bb" id="r_a1a75c86ce4db14721eb437f27110e0bb"><td class="memItemLeft" align="right" valign="top"><a id="a1a75c86ce4db14721eb437f27110e0bb" name="a1a75c86ce4db14721eb437f27110e0bb"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>solutionOutput</b> (const dealii::LinearAlgebra::distributed::Vector&lt; number &gt; &amp;solution, const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, const unsigned int &amp;degree, const std::string &amp;name, const <a class="el" href="classuserInputParameters.html">userInputParameters</a>&lt; dim &gt; &amp;user_inputs)</td></tr>
-<tr class="memdesc:a1a75c86ce4db14721eb437f27110e0bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for a single field that must be output. <br /></td></tr>
-<tr class="separator:a1a75c86ce4db14721eb437f27110e0bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac196a4bd1467f6e7b77c548c9c640e74" id="r_ac196a4bd1467f6e7b77c548c9c640e74"><td class="memItemLeft" align="right" valign="top"><a id="ac196a4bd1467f6e7b77c548c9c640e74" name="ac196a4bd1467f6e7b77c548c9c640e74"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>solutionOutput</b> (const std::unordered_map&lt; std::pair&lt; unsigned int, dependencyType &gt;, dealii::LinearAlgebra::distributed::Vector&lt; number &gt; *, <a class="el" href="structpairHash.html">pairHash</a> &gt; &amp;solution_set, const std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; &amp;dof_handlers, const unsigned int &amp;degree, const std::string &amp;name, const <a class="el" href="classuserInputParameters.html">userInputParameters</a>&lt; dim &gt; &amp;user_inputs)</td></tr>
-<tr class="memdesc:ac196a4bd1467f6e7b77c548c9c640e74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for a multiple fields that must be output. <br /></td></tr>
-<tr class="separator:ac196a4bd1467f6e7b77c548c9c640e74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6080629ccc2dc287ee75c185ece6f7c8" id="r_a6080629ccc2dc287ee75c185ece6f7c8"><td class="memItemLeft" align="right" valign="top"><a id="a6080629ccc2dc287ee75c185ece6f7c8" name="a6080629ccc2dc287ee75c185ece6f7c8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>solutionOutput</b> (const VectorType &amp;solution, const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, const unsigned int &amp;degree, const std::string &amp;name, const <a class="el" href="classuserInputParameters.html">userInputParameters</a>&lt; dim &gt; &amp;user_inputs)</td></tr>
+<tr class="memdesc:a6080629ccc2dc287ee75c185ece6f7c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for a single field that must be output. <br /></td></tr>
+<tr class="separator:a6080629ccc2dc287ee75c185ece6f7c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f805d6bcf2a4b69e64f25002250dae8" id="r_a9f805d6bcf2a4b69e64f25002250dae8"><td class="memItemLeft" align="right" valign="top"><a id="a9f805d6bcf2a4b69e64f25002250dae8" name="a9f805d6bcf2a4b69e64f25002250dae8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>solutionOutput</b> (const std::unordered_map&lt; std::pair&lt; unsigned int, dependencyType &gt;, VectorType *, <a class="el" href="structpairHash.html">pairHash</a> &gt; &amp;solution_set, const std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; &amp;dof_handlers, const unsigned int &amp;degree, const std::string &amp;name, const <a class="el" href="classuserInputParameters.html">userInputParameters</a>&lt; dim &gt; &amp;user_inputs)</td></tr>
+<tr class="memdesc:a9f805d6bcf2a4b69e64f25002250dae8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for a multiple fields that must be output. <br /></td></tr>
+<tr class="separator:a9f805d6bcf2a4b69e64f25002250dae8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;int dim, typename number = double&gt;<br />

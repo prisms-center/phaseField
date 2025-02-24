@@ -95,6 +95,7 @@ $(document).ready(function(){initNavTree('classmatrixFreeOperator.html',''); ini
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classmatrixFreeOperator-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">matrixFreeOperator&lt; dim, degree, number &gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
 </div><!--header-->
@@ -125,26 +126,22 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>size_type</b> = deal
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0351c2c846735f406bb759c805953b82" id="r_a0351c2c846735f406bb759c805953b82"><td class="memItemLeft" align="right" valign="top"><a id="a0351c2c846735f406bb759c805953b82" name="a0351c2c846735f406bb759c805953b82"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>matrixFreeOperator</b> ()</td></tr>
-<tr class="memdesc:a0351c2c846735f406bb759c805953b82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
-<tr class="separator:a0351c2c846735f406bb759c805953b82"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada086f60de601de7d45121264e301a03" id="r_ada086f60de601de7d45121264e301a03"><td class="memItemLeft" align="right" valign="top"><a id="ada086f60de601de7d45121264e301a03" name="ada086f60de601de7d45121264e301a03"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>matrixFreeOperator</b> (const std::map&lt; unsigned int, <a class="el" href="structvariableAttributes.html">variableAttributes</a> &gt; &amp;_attributes_list)</td></tr>
-<tr class="memdesc:ada086f60de601de7d45121264e301a03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
-<tr class="separator:ada086f60de601de7d45121264e301a03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2404d00f5ef9d688e05f6e0ef8018731" id="r_a2404d00f5ef9d688e05f6e0ef8018731"><td class="memItemLeft" align="right" valign="top"><a id="a2404d00f5ef9d688e05f6e0ef8018731" name="a2404d00f5ef9d688e05f6e0ef8018731"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>matrixFreeOperator</b> ()=default</td></tr>
+<tr class="memdesc:a2404d00f5ef9d688e05f6e0ef8018731"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
+<tr class="separator:a2404d00f5ef9d688e05f6e0ef8018731"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a00192bcf00f71dbc8390840d23042a" id="r_a6a00192bcf00f71dbc8390840d23042a"><td class="memItemLeft" align="right" valign="top"><a id="a6a00192bcf00f71dbc8390840d23042a" name="a6a00192bcf00f71dbc8390840d23042a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>matrixFreeOperator</b> (const <a class="el" href="classuserInputParameters.html">userInputParameters</a>&lt; dim &gt; &amp;_user_inputs, const std::map&lt; unsigned int, <a class="el" href="structvariableAttributes.html">variableAttributes</a> &gt; &amp;_attributes_list)</td></tr>
+<tr class="memdesc:a6a00192bcf00f71dbc8390840d23042a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for concurrent solves. <br /></td></tr>
+<tr class="separator:a6a00192bcf00f71dbc8390840d23042a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d8215a2c53f23165cffed28d804804c" id="r_a2d8215a2c53f23165cffed28d804804c"><td class="memItemLeft" align="right" valign="top"><a id="a2d8215a2c53f23165cffed28d804804c" name="a2d8215a2c53f23165cffed28d804804c"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>matrixFreeOperator</b> (const <a class="el" href="classuserInputParameters.html">userInputParameters</a>&lt; dim &gt; &amp;_user_inputs, const unsigned int &amp;_current_index, const std::map&lt; unsigned int, <a class="el" href="structvariableAttributes.html">variableAttributes</a> &gt; &amp;_attributes_list)</td></tr>
+<tr class="memdesc:a2d8215a2c53f23165cffed28d804804c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for single solves. <br /></td></tr>
+<tr class="separator:a2d8215a2c53f23165cffed28d804804c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a07ffce2bd02329dcb80d768273ac58" id="r_a3a07ffce2bd02329dcb80d768273ac58"><td class="memItemLeft" align="right" valign="top"><a id="a3a07ffce2bd02329dcb80d768273ac58" name="a3a07ffce2bd02329dcb80d768273ac58"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>initialize</b> (std::shared_ptr&lt; const dealii::MatrixFree&lt; dim, number, size_type &gt; &gt; _data, const std::vector&lt; unsigned int &gt; &amp;selected_field_indexes=std::vector&lt; unsigned int &gt;())</td></tr>
-<tr class="memdesc:a3a07ffce2bd02329dcb80d768273ac58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize operator on the fine scale. <br /></td></tr>
+<tr class="memdesc:a3a07ffce2bd02329dcb80d768273ac58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize operator. <br /></td></tr>
 <tr class="separator:a3a07ffce2bd02329dcb80d768273ac58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92d7526d1748757271bdadc9951b4bc2" id="r_a92d7526d1748757271bdadc9951b4bc2"><td class="memItemLeft" align="right" valign="top"><a id="a92d7526d1748757271bdadc9951b4bc2" name="a92d7526d1748757271bdadc9951b4bc2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>initialize</b> (std::shared_ptr&lt; const dealii::MatrixFree&lt; dim, number, size_type &gt; &gt; _data, const dealii::MGConstrainedDoFs &amp;mg_constrained_dofs, const unsigned int &amp;level, const std::vector&lt; unsigned int &gt; &amp;selected_field_indexes=std::vector&lt; unsigned int &gt;())</td></tr>
-<tr class="memdesc:a92d7526d1748757271bdadc9951b4bc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize operator on a multigrid level. <br /></td></tr>
-<tr class="separator:a92d7526d1748757271bdadc9951b4bc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a619430952ff63b57a664ed35140d3839" id="r_a619430952ff63b57a664ed35140d3839"><td class="memItemLeft" align="right" valign="top"><a id="a619430952ff63b57a664ed35140d3839" name="a619430952ff63b57a664ed35140d3839"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>initialize</b> (std::shared_ptr&lt; const dealii::MatrixFree&lt; dim, number, size_type &gt; &gt; _data, const std::vector&lt; dealii::MGConstrainedDoFs &gt; &amp;mg_constrained_dofs, const unsigned int &amp;level, const std::vector&lt; unsigned int &gt; &amp;selected_field_indexes=std::vector&lt; unsigned int &gt;())</td></tr>
-<tr class="memdesc:a619430952ff63b57a664ed35140d3839"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize operator on a multigrid level. <br /></td></tr>
-<tr class="separator:a619430952ff63b57a664ed35140d3839"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7dddd4205c78b9a1aef5d32418f05468" id="r_a7dddd4205c78b9a1aef5d32418f05468"><td class="memItemLeft" align="right" valign="top"><a id="a7dddd4205c78b9a1aef5d32418f05468" name="a7dddd4205c78b9a1aef5d32418f05468"></a>
 dealii::types::global_dof_index&#160;</td><td class="memItemRight" valign="bottom"><b>m</b> () const</td></tr>
 <tr class="memdesc:a7dddd4205c78b9a1aef5d32418f05468"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the number of DoFs. <br /></td></tr>
@@ -228,6 +225,17 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>compute_nonex
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>compute_postprocess_explicit_RHS</b> (<a class="el" href="classvariableContainer.html">variableContainer</a>&lt; dim, degree, number &gt; &amp;variable_list, const dealii::Point&lt; dim, size_type &gt; &amp;q_point_loc) const =0</td></tr>
 <tr class="memdesc:a1c4a2c5a133f1587487e12e1a280bd3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">User-implemented class for the RHS of postprocessed explicit equations. <br /></td></tr>
 <tr class="separator:a1c4a2c5a133f1587487e12e1a280bd3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a2ae3a079ba5557bd38ea00283b8ff004" id="r_a2ae3a079ba5557bd38ea00283b8ff004"><td class="memItemLeft" align="right" valign="top"><a id="a2ae3a079ba5557bd38ea00283b8ff004" name="a2ae3a079ba5557bd38ea00283b8ff004"></a>
+const <a class="el" href="classuserInputParameters.html">userInputParameters</a>&lt; dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>user_inputs</b></td></tr>
+<tr class="memdesc:a2ae3a079ba5557bd38ea00283b8ff004"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user-inputs. <br /></td></tr>
+<tr class="separator:a2ae3a079ba5557bd38ea00283b8ff004"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a500b83b5be1d9783a5a9bca1292f89e4" id="r_a500b83b5be1d9783a5a9bca1292f89e4"><td class="memItemLeft" align="right" valign="top"><a id="a500b83b5be1d9783a5a9bca1292f89e4" name="a500b83b5be1d9783a5a9bca1292f89e4"></a>
+const unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>current_index</b> = numbers::invalid_index</td></tr>
+<tr class="memdesc:a500b83b5be1d9783a5a9bca1292f89e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current index that is being solved. <br /></td></tr>
+<tr class="separator:a500b83b5be1d9783a5a9bca1292f89e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;int dim, int degree, typename number&gt;<br />

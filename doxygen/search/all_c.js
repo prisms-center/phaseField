@@ -22,10 +22,10 @@ var searchData=
   ['example_20app_19',['example app',['../running_apps.html#autotoc_md56',1,'Compiling and Running the Allen-Cahn Example App'],['../running_apps.html',1,'Running a PRISMS-PF Example App']]],
   ['example_20applications_20',['Running the Other Example Applications',['../running_apps.html#autotoc_md59',1,'']]],
   ['example_20apps_21',['The Example Apps',['../running_apps.html#autotoc_md55',1,'']]],
-  ['explicitbase_22',['explicitbase',['../classexplicitBase.html#aa2dddb2dd9b56413ef0a84de6b0301e6',1,'explicitBase::explicitBase()'],['../classexplicitBase.html',1,'explicitBase&lt; dim, degree &gt;']]],
-  ['explicitconstantsolver_23',['explicitconstantsolver',['../classexplicitConstantSolver.html#a61c4516abda6ec63b602f282872a2bc1',1,'explicitConstantSolver::explicitConstantSolver()'],['../classexplicitConstantSolver.html',1,'explicitConstantSolver&lt; dim, degree &gt;']]],
+  ['explicitbase_22',['explicitbase',['../classexplicitBase.html#a0598e8eef4d23416c50cbced5db7efad',1,'explicitBase::explicitBase()'],['../classexplicitBase.html',1,'explicitBase&lt; dim, degree &gt;']]],
+  ['explicitconstantsolver_23',['explicitconstantsolver',['../classexplicitConstantSolver.html#a620760139cefaaabdc2adbac5d928047',1,'explicitConstantSolver::explicitConstantSolver()'],['../classexplicitConstantSolver.html',1,'explicitConstantSolver&lt; dim, degree &gt;']]],
   ['explicitequationrhs_24',['explicitEquationRHS',['../app_files.html#autotoc_md2',1,'']]],
-  ['explicitpostprocesssolver_25',['explicitpostprocesssolver',['../classexplicitPostprocessSolver.html#aa84972b0ef4101d19991304aa1715cd4',1,'explicitPostprocessSolver::explicitPostprocessSolver()'],['../classexplicitPostprocessSolver.html',1,'explicitPostprocessSolver&lt; dim, degree &gt;']]],
-  ['explicitsolver_26',['explicitsolver',['../classexplicitSolver.html#a0f79fc4989c56aa1b628df4a40926655',1,'explicitSolver::explicitSolver()'],['../classexplicitSolver.html',1,'explicitSolver&lt; dim, degree &gt;']]],
+  ['explicitpostprocesssolver_25',['explicitpostprocesssolver',['../classexplicitPostprocessSolver.html#ad8e777d0c6ce5844ccdd4a69b8a390e1',1,'explicitPostprocessSolver::explicitPostprocessSolver()'],['../classexplicitPostprocessSolver.html',1,'explicitPostprocessSolver&lt; dim, degree &gt;']]],
+  ['explicitsolver_26',['explicitsolver',['../classexplicitSolver.html#aa9f1115dfa8385938016d3b1c75d69ea',1,'explicitSolver::explicitSolver()'],['../classexplicitSolver.html',1,'explicitSolver&lt; dim, degree &gt;']]],
   ['export_5ftriangulation_5fas_5fvtk_27',['export_triangulation_as_vtk',['../classtriangulationHandler.html#a5ebb794d89867a3bf852bf2b0f5a3f7a',1,'triangulationHandler']]]
 ];

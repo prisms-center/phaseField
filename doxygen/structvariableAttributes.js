@@ -1,7 +1,7 @@
 var structvariableAttributes =
 [
     [ "determine_field_solve_type", "structvariableAttributes.html#abde87bc1509e99e00f42c320c30dbb7f", null ],
-    [ "format_dependencies", "structvariableAttributes.html#a4eda6a8b14d38683f85d04f617eaf234", null ],
+    [ "format_dependencies", "structvariableAttributes.html#aa4fb152ba292845c75e90f3a73981bf0", null ],
     [ "parse_dependencies", "structvariableAttributes.html#a0da67364a90aa5c546fe992494493e2d", null ],
     [ "parse_residual_dependencies", "structvariableAttributes.html#ac6a99e88a8882fa5158d12eee21e2a58", null ],
     [ "print", "structvariableAttributes.html#af709bde08468820c2bc2ebd53d47b7ba", null ],

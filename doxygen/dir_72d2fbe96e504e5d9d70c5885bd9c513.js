@@ -16,6 +16,7 @@ var dir_72d2fbe96e504e5d9d70c5885bd9c513 =
     [ "refinement_criterion.h", "refinement__criterion_8h_source.html", null ],
     [ "solution_handler.h", "solution__handler_8h_source.html", null ],
     [ "solution_output.h", "solution__output_8h_source.html", null ],
+    [ "tee_stream.h", "tee__stream_8h_source.html", null ],
     [ "timer.h", "timer_8h_source.html", null ],
     [ "triangulation_handler.h", "triangulation__handler_8h_source.html", null ],
     [ "type_enums.h", "type__enums_8h_source.html", null ],

@@ -1,6 +1,6 @@
 var classexplicitBase =
 [
-    [ "explicitBase", "classexplicitBase.html#aa2dddb2dd9b56413ef0a84de6b0301e6", null ],
+    [ "explicitBase", "classexplicitBase.html#a0598e8eef4d23416c50cbced5db7efad", null ],
     [ "~explicitBase", "classexplicitBase.html#ad04bc94aac9b13f157226586b0e661da", null ],
     [ "compute_shared_dependencies", "classexplicitBase.html#a488a4cf35fc18e20111413374d9950c7", null ],
     [ "compute_subset_attributes", "classexplicitBase.html#a466d4727f80ff3356a553479d67b1ec3", null ],
@@ -9,7 +9,7 @@ var classexplicitBase =
     [ "set_initial_condition", "classexplicitBase.html#a1a5129189e21163441a5e614fc61ef06", null ],
     [ "solve", "classexplicitBase.html#ac688788a0265b834c6c34cde12741a52", null ],
     [ "constraint_handler", "classexplicitBase.html#a3ff5d929ec1319d427876b1afc7d6930", null ],
-    [ "dof_handler", "classexplicitBase.html#a656186e9f9e53c1fb32ca3f1f5caa1f9", null ],
+    [ "dof_handler", "classexplicitBase.html#acd660064151f4a3eecaa670891422bb2", null ],
     [ "invm_handler", "classexplicitBase.html#aef0361c5a195ff64f5b27f3a0a6c0c88", null ],
     [ "mapping", "classexplicitBase.html#ac556d446d22e5b5aefd9d58dd1021bcf", null ],
     [ "matrix_free_handler", "classexplicitBase.html#a05ad448f33e0b76daa11df3cd3311e8c", null ],
