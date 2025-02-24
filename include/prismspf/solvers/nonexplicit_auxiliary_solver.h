@@ -15,6 +15,10 @@
 #include <prismspf/solvers/nonexplicit_base.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#ifdef PRISMS_PF_WITH_CALIPER
+#  include <caliper/cali.h>
+#endif
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
@@ -31,6 +35,7 @@ class nonexplicitAuxiliarySolver : public nonexplicitBase<dim, degree>
 {
 public:
   using SystemMatrixType = customPDE<dim, degree, double>;
+  using VectorType       = dealii::LinearAlgebra::distributed::Vector<double>;
 
   /**
    * \brief Constructor.
@@ -41,7 +46,7 @@ public:
     const triangulationHandler<dim>                      &_triangulation_handler,
     const invmHandler<dim, degree>                       &_invm_handler,
     const constraintHandler<dim>                         &_constraint_handler,
-    const prisms::dofHandler<dim>                        &_dof_handler,
+    const dofHandler<dim>                                &_dof_handler,
     const dealii::MappingQ1<dim>                         &_mapping,
     dealii::MGLevelObject<matrixfreeHandler<dim, float>> &_mg_matrix_free_handler,
     solutionHandler<dim>                                 &_solution_handler);
@@ -75,16 +80,12 @@ private:
   /**
    * \brief Subset of solutions fields that are necessary for explicit solves.
    */
-  std::map<unsigned int,
-           std::vector<dealii::LinearAlgebra::distributed::Vector<double> *>>
-    solution_subset;
+  std::map<unsigned int, std::vector<VectorType *>> solution_subset;
 
   /**
    * \brief Subset of new solutions fields that are necessary for explicit solves.
    */
-  std::map<unsigned int,
-           std::vector<dealii::LinearAlgebra::distributed::Vector<double> *>>
-    new_solution_subset;
+  std::map<unsigned int, std::vector<VectorType *>> new_solution_subset;
 
   /**
    * \brief List of subset attributes.
@@ -99,7 +100,7 @@ nonexplicitAuxiliarySolver<dim, degree>::nonexplicitAuxiliarySolver(
   const triangulationHandler<dim>                      &_triangulation_handler,
   const invmHandler<dim, degree>                       &_invm_handler,
   const constraintHandler<dim>                         &_constraint_handler,
-  const prisms::dofHandler<dim>                        &_dof_handler,
+  const dofHandler<dim>                                &_dof_handler,
   const dealii::MappingQ1<dim>                         &_mapping,
   dealii::MGLevelObject<matrixfreeHandler<dim, float>> &_mg_matrix_free_handler,
   solutionHandler<dim>                                 &_solution_handler)
@@ -136,8 +137,8 @@ nonexplicitAuxiliarySolver<dim, degree>::init()
       // Create the implementation of customPDE with the subset of variable attributes
       this->system_matrix[index] =
         std::make_unique<SystemMatrixType>(this->user_inputs,
-                                           subset_attributes_list.back(),
-                                           index);
+                                           index,
+                                           subset_attributes_list.back());
 
       // Set up the user-implemented equations and create the residual vectors
       this->system_matrix.at(index)->clear();

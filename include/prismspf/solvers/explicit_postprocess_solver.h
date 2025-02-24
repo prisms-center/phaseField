@@ -9,6 +9,10 @@
 #include <prismspf/core/matrix_free_handler.h>
 #include <prismspf/solvers/explicit_constant_solver.h>
 
+#ifdef PRISMS_PF_WITH_CALIPER
+#  include <caliper/cali.h>
+#endif
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
@@ -25,6 +29,7 @@ class explicitPostprocessSolver : public explicitBase<dim, degree>
 {
 public:
   using SystemMatrixType = customPDE<dim, degree, double>;
+  using VectorType       = dealii::LinearAlgebra::distributed::Vector<double>;
 
   /**
    * \brief Constructor.
@@ -33,7 +38,7 @@ public:
                             const matrixfreeHandler<dim>   &_matrix_free_handler,
                             const invmHandler<dim, degree> &_invm_handler,
                             const constraintHandler<dim>   &_constraint_handler,
-                            const prisms::dofHandler<dim>  &_dof_handler,
+                            const dofHandler<dim>          &_dof_handler,
                             const dealii::MappingQ1<dim>   &_mapping,
                             solutionHandler<dim>           &_solution_handler);
 
@@ -64,12 +69,12 @@ private:
   /**
    * \brief Subset of solutions fields that are necessary for explicit solves.
    */
-  std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> solution_subset;
+  std::vector<VectorType *> solution_subset;
 
   /**
    * \brief Subset of new solutions fields that are necessary for explicit solves.
    */
-  std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> new_solution_subset;
+  std::vector<VectorType *> new_solution_subset;
 };
 
 template <int dim, int degree>
@@ -78,7 +83,7 @@ explicitPostprocessSolver<dim, degree>::explicitPostprocessSolver(
   const matrixfreeHandler<dim>   &_matrix_free_handler,
   const invmHandler<dim, degree> &_invm_handler,
   const constraintHandler<dim>   &_constraint_handler,
-  const prisms::dofHandler<dim>  &_dof_handler,
+  const dofHandler<dim>          &_dof_handler,
   const dealii::MappingQ1<dim>   &_mapping,
   solutionHandler<dim>           &_solution_handler)
   : explicitBase<dim, degree>(_user_inputs,

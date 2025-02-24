@@ -21,7 +21,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
-prisms::variableAttributes::format_dependencies()
+variableAttributes::format_dependencies()
 {
   dependencies_RHS.insert(dependencies_value_RHS.begin(), dependencies_value_RHS.end());
   dependencies_RHS.insert(dependencies_gradient_RHS.begin(),
@@ -33,7 +33,7 @@ prisms::variableAttributes::format_dependencies()
 }
 
 void
-prisms::variableAttributes::parse_residual_dependencies()
+variableAttributes::parse_residual_dependencies()
 {
   // Check if either is empty and set value and gradient flags for the
   // residual appropriately. Note that this relies on the fact that only valid
@@ -57,7 +57,7 @@ prisms::variableAttributes::parse_residual_dependencies()
 }
 
 void
-prisms::variableAttributes::parse_dependencies(
+variableAttributes::parse_dependencies(
   std::map<unsigned int, variableAttributes> &other_var_attributes)
 {
   const std::map<std::string,
@@ -194,7 +194,7 @@ prisms::variableAttributes::parse_dependencies(
 }
 
 void
-prisms::variableAttributes::determine_field_solve_type(
+variableAttributes::determine_field_solve_type(
   std::map<unsigned int, variableAttributes> &other_var_attributes)
 {
   // Early return for constant fields
@@ -266,9 +266,9 @@ prisms::variableAttributes::determine_field_solve_type(
 }
 
 void
-prisms::variableAttributes::print() const
+variableAttributes::print() const
 {
-  prisms::conditionalOStreams::pout_summary()
+  conditionalOStreams::pout_summary()
     << "================================================\n"
     << "  Variable attribute for " << name << "\n"
     << "================================================\n"
@@ -279,25 +279,25 @@ prisms::variableAttributes::print() const
     << "Postprocessed field: " << bool_to_string(is_postprocess) << "\n"
     << "Field solve type: " << to_string(field_solve_type) << "\n";
 
-  prisms::conditionalOStreams::pout_summary() << "Evaluation flags RHS:\n";
+  conditionalOStreams::pout_summary() << "Evaluation flags RHS:\n";
   for (const auto &[key, value] : eval_flag_set_RHS)
     {
-      prisms::conditionalOStreams::pout_summary()
+      conditionalOStreams::pout_summary()
         << "  Index: " << key.first << "\n"
         << "  Dependency type: " << to_string(key.second) << "\n"
         << "  Evaluation flags: " << eval_flags_to_string(value) << "\n\n";
     }
 
-  prisms::conditionalOStreams::pout_summary() << "Evaluation flags LHS:\n";
+  conditionalOStreams::pout_summary() << "Evaluation flags LHS:\n";
   for (const auto &[key, value] : eval_flag_set_LHS)
     {
-      prisms::conditionalOStreams::pout_summary()
+      conditionalOStreams::pout_summary()
         << "  Index: " << key.first << "\n"
         << "  Dependency type: " << to_string(key.second) << "\n"
         << "  Evaluation flags: " << eval_flags_to_string(value) << "\n\n";
     }
 
-  prisms::conditionalOStreams::pout_summary()
+  conditionalOStreams::pout_summary()
     << "Residual flags RHS: " << eval_flags_to_string(eval_flags_residual_RHS) << "\n"
     << "Residual flags LHS: " << eval_flags_to_string(eval_flags_residual_LHS) << "\n"
     << "\n"
@@ -305,11 +305,10 @@ prisms::variableAttributes::print() const
 }
 
 void
-prisms::variableAttributes::validate_dependency(
-  [[maybe_unused]] const std::string  &variation,
-  [[maybe_unused]] dependencyType      dep_type,
-  [[maybe_unused]] const unsigned int &other_index,
-  [[maybe_unused]] const std::string  &context) const
+variableAttributes::validate_dependency([[maybe_unused]] const std::string  &variation,
+                                        [[maybe_unused]] dependencyType      dep_type,
+                                        [[maybe_unused]] const unsigned int &other_index,
+                                        [[maybe_unused]] const std::string &context) const
 {
   AssertThrow(context != "RHS" || dep_type != dependencyType::CHANGE,
               dealii::ExcMessage("Dependencies with the delimiter change(var) are "
@@ -339,7 +338,7 @@ prisms::variableAttributes::validate_dependency(
 }
 
 void
-prisms::variableAttributes::compute_dependency_set(
+variableAttributes::compute_dependency_set(
   const std::map<unsigned int, variableAttributes> &other_var_attributes)
 {
   // Compute dependencies for a given eval_flag_set. Change flags are irrelevant for RHS,
@@ -382,7 +381,7 @@ prisms::variableAttributes::compute_dependency_set(
 }
 
 void
-prisms::variableAttributes::compute_simplified_dependency_set(
+variableAttributes::compute_simplified_dependency_set(
   const std::map<unsigned int, variableAttributes> &other_var_attributes)
 {
   // Compute dependencies for a given eval_flag_set. Change and old flags are irrelevant,
@@ -412,7 +411,7 @@ prisms::variableAttributes::compute_simplified_dependency_set(
 }
 
 void
-prisms::variableAttributes::find_circular_dependencies(
+variableAttributes::find_circular_dependencies(
   const std::map<unsigned int, variableAttributes> &other_var_attributes)
 {
   // Set for visited nodes
@@ -427,7 +426,7 @@ prisms::variableAttributes::find_circular_dependencies(
 // NOLINTBEGIN(misc-no-recursion)
 
 void
-prisms::variableAttributes::recursive_DFS(
+variableAttributes::recursive_DFS(
   const std::map<unsigned int, variableAttributes> &other_var_attributes,
   std::set<unsigned int>                           &visited,
   std::set<unsigned int>                           &current_stack,

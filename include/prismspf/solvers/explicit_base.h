@@ -42,7 +42,7 @@ public:
                const matrixfreeHandler<dim>   &_matrix_free_handler,
                const invmHandler<dim, degree> &_invm_handler,
                const constraintHandler<dim>   &_constraint_handler,
-               const prisms::dofHandler<dim>  &_dof_handler,
+               const dofHandler<dim>          &_dof_handler,
                const dealii::MappingQ1<dim>   &_mapping,
                solutionHandler<dim>           &_solution_handler);
 
@@ -115,7 +115,7 @@ protected:
   /**
    * \brief DoF handler.
    */
-  const prisms::dofHandler<dim> &dof_handler;
+  const dofHandler<dim> &dof_handler;
 
   /**
    * \brief Mappings to and from reference cell.
@@ -144,7 +144,7 @@ explicitBase<dim, degree>::explicitBase(
   const matrixfreeHandler<dim>   &_matrix_free_handler,
   const invmHandler<dim, degree> &_invm_handler,
   const constraintHandler<dim>   &_constraint_handler,
-  const prisms::dofHandler<dim>  &_dof_handler,
+  const dofHandler<dim>          &_dof_handler,
   const dealii::MappingQ1<dim>   &_mapping,
   solutionHandler<dim>           &_solution_handler)
   : user_inputs(_user_inputs)
@@ -259,7 +259,7 @@ template <int dim, int degree>
 inline void
 explicitBase<dim, degree>::print()
 {
-  prisms::conditionalOStreams::pout_summary()
+  conditionalOStreams::pout_summary()
     << "  ==============================================\n"
     << "    Shared dependency set\n"
     << "  ==============================================\n";
@@ -268,12 +268,12 @@ explicitBase<dim, degree>::print()
     {
       for (const auto &[dependency_type, field_type] : map)
         {
-          prisms::conditionalOStreams::pout_summary()
+          conditionalOStreams::pout_summary()
             << "  Index: " << index << " Dependency: " << to_string(dependency_type)
             << " Field: " << to_string(field_type) << "\n";
         }
     }
-  prisms::conditionalOStreams::pout_summary() << "\n" << std::flush;
+  conditionalOStreams::pout_summary() << "\n" << std::flush;
 }
 
 PRISMS_PF_END_NAMESPACE

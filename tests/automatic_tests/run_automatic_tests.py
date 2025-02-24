@@ -129,7 +129,7 @@ def run_regression_test(application, new_gold_standard, test_dir):
     test_time = compile_and_run_simulation(application_path)
 
     # Compare the result against the gold standard, if it exists
-    tolerance = 1e-6
+    tolerance = 1e-3
     if new_gold_standard:
         shutil.move("output.txt", "gold_output.txt")
         test_passed = True

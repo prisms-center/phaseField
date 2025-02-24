@@ -17,11 +17,11 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief Convert given scalar to vectorized array.
  */
-template <typename number>
+template <typename number, typename T>
 constexpr auto
-constV(number value)
+constV(T value)
 {
-  return dealii::make_vectorized_array<number>(value);
+  return dealii::make_vectorized_array<number>(static_cast<number>(value));
 }
 
 /**

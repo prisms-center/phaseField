@@ -42,8 +42,8 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
   scalarGrad  nx = variable_list.get_scalar_gradient(0);
 
   scalarValue fnV   = 4.0 * n * (n - 1.0) * (n - 0.5);
-  scalarValue eq_n  = n - user_inputs.temporal_discretization.dt * MnV * fnV;
-  scalarGrad  eqx_n = -user_inputs.temporal_discretization.dt * KnV * MnV * nx;
+  scalarValue eq_n  = n - this->user_inputs.temporal_discretization.dt * MnV * fnV;
+  scalarGrad  eqx_n = -this->user_inputs.temporal_discretization.dt * KnV * MnV * nx;
 
   variable_list.set_scalar_value_term(0, eq_n);
   variable_list.set_scalar_gradient_term(0, eqx_n);
@@ -75,9 +75,9 @@ customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
   scalarValue n  = variable_list.get_scalar_value(0);
   scalarGrad  nx = variable_list.get_scalar_gradient(0);
 
-  scalarValue f_tot  = constV(static_cast<number>(0.0));
+  scalarValue f_tot  = constV<number>(0.0);
   scalarValue f_chem = n * n * n * n - 2.0 * n * n * n + n * n;
-  scalarValue f_grad = constV(static_cast<number>(0.0));
+  scalarValue f_grad = constV<number>(0.0);
   for (int i = 0; i < dim; i++)
     {
       for (int j = 0; j < dim; j++)

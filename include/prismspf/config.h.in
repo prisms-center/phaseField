@@ -7,9 +7,7 @@
 
 // Optional features:
 #cmakedefine PRISMS_PF_WITH_ZLIB
-
 #cmakedefine PRISMS_PF_WITH_SUNDIALS
-
 #cmakedefine PRISMS_PF_WITH_CALIPER
 
 // Macros for opening and closing prisms namespace
@@ -20,9 +18,23 @@
 
 // Replacement macros for caliper that do nothing
 #ifndef PRISMS_PF_WITH_CALIPER
-#  define CALI_MARK_BEGIN(region_name) ((void) (region_name))
-#  define CALI_MARK_END(region_name) ((void) (region_name))
+#  define CALI_MARK_BEGIN(region_name)
+#  define CALI_MARK_END(region_name)
 #endif
+
+// Templating parameters
+#define PRISMS_PF_DIMS \
+  {                    \
+    1, 2, 3            \
+  }
+#define PRISMS_PF_DEGREES \
+  {                       \
+    1, 2, 3, 4, 5, 6      \
+  }
+#define PRISMS_PF_NUMBERS \
+  {                       \
+    float, double         \
+  }
 
 // Macro for template instantations with <dim, degree, number>
 #define INSTANTIATE_TRI_TEMPLATE(class_name) \

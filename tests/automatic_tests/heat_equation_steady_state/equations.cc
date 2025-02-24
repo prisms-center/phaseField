@@ -45,7 +45,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  if (current_index == 0)
+  if (this->current_index == 0)
     {
       scalarGrad  Tx = variable_list.get_scalar_gradient(0);
       scalarValue q  = variable_list.get_scalar_value(1);
@@ -62,7 +62,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_LHS(
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  if (current_index == 0)
+  if (this->current_index == 0)
     {
       scalarGrad change_Tx = variable_list.get_scalar_gradient(0, CHANGE);
 
@@ -80,9 +80,9 @@ customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
   scalarValue T = variable_list.get_scalar_value(0);
 
   scalarValue analytic =
-    std::sin(M_PI * q_point_loc[0] / user_inputs.spatial_discretization.size[0]) *
-    q_point_loc[1] / user_inputs.spatial_discretization.size[1] *
-    (1.0 - q_point_loc[1] / user_inputs.spatial_discretization.size[1]);
+    std::sin(M_PI * q_point_loc[0] / this->user_inputs.spatial_discretization.size[0]) *
+    q_point_loc[1] / this->user_inputs.spatial_discretization.size[1] *
+    (1.0 - q_point_loc[1] / this->user_inputs.spatial_discretization.size[1]);
 
   scalarValue error = (T - analytic) * (T - analytic);
 

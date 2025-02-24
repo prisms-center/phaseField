@@ -31,14 +31,22 @@ public:
   using vectorHess  = dealii::Tensor<3, dim, dealii::VectorizedArray<number>>;
 
   /**
-   * \brief Constructor.
+   * \brief Constructor for concurrent solves.
    */
   customPDE(const userInputParameters<dim>                   &_user_inputs,
-            const std::map<unsigned int, variableAttributes> &subset_attributes,
-            const unsigned int                               &_current_index = 0)
-    : matrixFreeOperator<dim, degree, number>(subset_attributes)
-    , user_inputs(_user_inputs)
-    , current_index(_current_index)
+            const std::map<unsigned int, variableAttributes> &subset_attributes)
+    : matrixFreeOperator<dim, degree, number>(_user_inputs, subset_attributes)
+  {}
+
+  /**
+   * \brief Constructor for single solves.
+   */
+  customPDE(const userInputParameters<dim>                   &_user_inputs,
+            const unsigned int                               &_current_index,
+            const std::map<unsigned int, variableAttributes> &subset_attributes)
+    : matrixFreeOperator<dim, degree, number>(_user_inputs,
+                                              _current_index,
+                                              subset_attributes)
   {}
 
 private:
@@ -75,19 +83,8 @@ private:
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
     const override;
 
-  /**
-   * \brief The user-inputs.
-   */
-  const userInputParameters<dim> &user_inputs;
-
-  /**
-   * \brief The current index that is being solved. For explicit equations, they are
-   * solved concurrently, so this should not be used.
-   */
-  const unsigned int current_index;
-
-  number McV = user_inputs.user_constants.get_model_constant_double("McV");
-  number KcV = user_inputs.user_constants.get_model_constant_double("KcV");
+  number McV = this->user_inputs.user_constants.get_model_constant_double("McV");
+  number KcV = this->user_inputs.user_constants.get_model_constant_double("KcV");
 };
 
 PRISMS_PF_END_NAMESPACE

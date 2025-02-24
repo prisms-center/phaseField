@@ -22,7 +22,7 @@ namespace numbers
   /**
    * \brief Invalid field index.
    */
-  static const prisms::types::index invalid_index = static_cast<prisms::types::index>(-1);
+  static const types::index invalid_index = static_cast<types::index>(-1);
 
 } // namespace numbers
 
