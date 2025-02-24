@@ -24,37 +24,37 @@ template <int dim, typename number = double>
 class solutionOutput
 {
 public:
+  using VectorType = dealii::LinearAlgebra::distributed::Vector<number>;
+
   /**
    * \brief Constructor for a single field that must be output.
    */
-  solutionOutput(const dealii::LinearAlgebra::distributed::Vector<number> &solution,
-                 const dealii::DoFHandler<dim>                            &dof_handler,
-                 const unsigned int                                       &degree,
-                 const std::string                                        &name,
-                 const userInputParameters<dim>                           &user_inputs);
+  solutionOutput(const VectorType               &solution,
+                 const dealii::DoFHandler<dim>  &dof_handler,
+                 const unsigned int             &degree,
+                 const std::string              &name,
+                 const userInputParameters<dim> &user_inputs);
 
   /**
    * \brief Constructor for a multiple fields that must be output.
    */
-  solutionOutput(
-    const std::unordered_map<std::pair<unsigned int, dependencyType>,
-                             dealii::LinearAlgebra::distributed::Vector<number> *,
-                             pairHash>                 &solution_set,
-    const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers,
-    const unsigned int                                 &degree,
-    const std::string                                  &name,
-    const userInputParameters<dim>                     &user_inputs);
+  solutionOutput(const std::unordered_map<std::pair<unsigned int, dependencyType>,
+                                          VectorType *,
+                                          pairHash>                 &solution_set,
+                 const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers,
+                 const unsigned int                                 &degree,
+                 const std::string                                  &name,
+                 const userInputParameters<dim>                     &user_inputs);
 
 private:
 };
 
 template <int dim, typename number>
-solutionOutput<dim, number>::solutionOutput(
-  const dealii::LinearAlgebra::distributed::Vector<number> &solution,
-  const dealii::DoFHandler<dim>                            &dof_handler,
-  const unsigned int                                       &degree,
-  const std::string                                        &name,
-  const userInputParameters<dim>                           &user_inputs)
+solutionOutput<dim, number>::solutionOutput(const VectorType               &solution,
+                                            const dealii::DoFHandler<dim>  &dof_handler,
+                                            const unsigned int             &degree,
+                                            const std::string              &name,
+                                            const userInputParameters<dim> &user_inputs)
 {
   // Some stuff to determine the actual name of the output file.
   const auto n_trailing_digits = static_cast<unsigned int>(
@@ -94,7 +94,7 @@ solutionOutput<dim, number>::solutionOutput(
 template <int dim, typename number>
 solutionOutput<dim, number>::solutionOutput(
   const std::unordered_map<std::pair<unsigned int, dependencyType>,
-                           dealii::LinearAlgebra::distributed::Vector<number> *,
+                           VectorType *,
                            pairHash>                 &solution_set,
   const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers,
   const unsigned int                                 &degree,

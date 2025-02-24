@@ -251,6 +251,13 @@ userInputParameters<dim>::assign_boundary_parameters(
         }
       else
         {
+          // Skip if the value is the default INT_MAX
+          if (parameter_handler.get_double("x value") == 2147483647)
+            {
+              parameter_handler.leave_subsection();
+              continue;
+            }
+
           AssertThrow(false, FeatureNotImplemented("Vector pinned points"));
         }
       parameter_handler.leave_subsection();

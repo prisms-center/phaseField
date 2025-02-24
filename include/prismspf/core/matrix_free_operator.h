@@ -37,40 +37,27 @@ public:
   /**
    * \brief Default constructor.
    */
-  matrixFreeOperator();
+  matrixFreeOperator() = default;
 
   /**
-   * \brief Constructor.
+   * \brief Constructor for concurrent solves.
    */
-  explicit matrixFreeOperator(
-    const std::map<unsigned int, variableAttributes> &_attributes_list);
+  matrixFreeOperator(const userInputParameters<dim>                   &_user_inputs,
+                     const std::map<unsigned int, variableAttributes> &_attributes_list);
 
   /**
-   * \brief Initialize operator on the fine scale.
+   * \brief Constructor for single solves.
+   */
+  matrixFreeOperator(const userInputParameters<dim>                   &_user_inputs,
+                     const unsigned int                               &_current_index,
+                     const std::map<unsigned int, variableAttributes> &_attributes_list);
+
+  /**
+   * \brief Initialize operator.
    */
   void
   initialize(std::shared_ptr<const dealii::MatrixFree<dim, number, size_type>> _data,
              const std::vector<unsigned int> &selected_field_indexes =
-               std::vector<unsigned int>());
-
-  /**
-   * \brief Initialize operator on a multigrid level.
-   */
-  void
-  initialize(std::shared_ptr<const dealii::MatrixFree<dim, number, size_type>> _data,
-             const dealii::MGConstrainedDoFs &mg_constrained_dofs,
-             const unsigned int              &level,
-             const std::vector<unsigned int> &selected_field_indexes =
-               std::vector<unsigned int>());
-
-  /**
-   * \brief Initialize operator on a multigrid level.
-   */
-  void
-  initialize(std::shared_ptr<const dealii::MatrixFree<dim, number, size_type>> _data,
-             const std::vector<dealii::MGConstrainedDoFs> &mg_constrained_dofs,
-             const unsigned int                           &level,
-             const std::vector<unsigned int>              &selected_field_indexes =
                std::vector<unsigned int>());
 
   /**
@@ -210,6 +197,16 @@ protected:
     variableContainer<dim, degree, number> &variable_list,
     const dealii::Point<dim, size_type>    &q_point_loc) const = 0;
 
+  /**
+   * \brief The user-inputs.
+   */
+  const userInputParameters<dim> &user_inputs;
+
+  /**
+   * \brief The current index that is being solved.
+   */
+  const unsigned int current_index = numbers::invalid_index;
+
 private:
   /**
    * \brief Local computation of the explicit update.
@@ -313,8 +310,21 @@ private:
 
 template <int dim, int degree, typename number>
 matrixFreeOperator<dim, degree, number>::matrixFreeOperator(
+  const userInputParameters<dim>                   &_user_inputs,
   const std::map<unsigned int, variableAttributes> &_attributes_list)
   : Subscriptor()
+  , user_inputs(_user_inputs)
+  , attributes_list(_attributes_list)
+{}
+
+template <int dim, int degree, typename number>
+matrixFreeOperator<dim, degree, number>::matrixFreeOperator(
+  const userInputParameters<dim>                   &_user_inputs,
+  const unsigned int                               &_current_index,
+  const std::map<unsigned int, variableAttributes> &_attributes_list)
+  : Subscriptor()
+  , user_inputs(_user_inputs)
+  , current_index(_current_index)
   , attributes_list(_attributes_list)
 {}
 
@@ -356,86 +366,6 @@ matrixFreeOperator<dim, degree, number>::initialize(
 }
 
 template <int dim, int degree, typename number>
-void
-matrixFreeOperator<dim, degree, number>::initialize(
-  std::shared_ptr<const dealii::MatrixFree<dim, number, size_type>> _data,
-  const dealii::MGConstrainedDoFs                                  &mg_constrained_dofs,
-  const unsigned int                                               &level,
-  const std::vector<unsigned int> &selected_field_indexes)
-{
-  std::vector<dealii::MGConstrainedDoFs> mg_constrained_dofs_vector(1,
-                                                                    mg_constrained_dofs);
-  initialize(_data, mg_constrained_dofs_vector, level, selected_field_indexes);
-}
-
-template <int dim, int degree, typename number>
-void
-matrixFreeOperator<dim, degree, number>::initialize(
-  std::shared_ptr<const dealii::MatrixFree<dim, number, size_type>> _data,
-  const std::vector<dealii::MGConstrainedDoFs>                     &mg_constrained_dofs,
-  const unsigned int                                               &level,
-  const std::vector<unsigned int> &selected_field_indexes)
-{
-  AssertThrow(level != dealii::numbers::invalid_unsigned_int,
-              dealii::ExcMessage("level is not set"));
-
-  data = _data;
-
-  selected_fields.clear();
-  if (selected_field_indexes.empty())
-    {
-      for (unsigned int i = 0; i < _data->n_components(); ++i)
-        {
-          selected_fields.push_back(i);
-        }
-    }
-  else
-    {
-      for (unsigned int i = 0; i < selected_field_indexes.size(); ++i)
-        {
-          AssertIndexRange(selected_field_indexes[i], _data->n_components());
-          for (unsigned int j = 0; j < selected_field_indexes.size(); ++j)
-            {
-              if (j != i)
-                {
-                  Assert(selected_field_indexes[j] != selected_field_indexes[i],
-                         dealii::ExcMessage("Given row indices must be unique"));
-                }
-            }
-          selected_fields.push_back(selected_field_indexes[i]);
-        }
-    }
-
-  AssertDimension(mg_constrained_dofs.size(), selected_fields.size());
-  edge_constrained_indices.clear();
-  edge_constrained_indices.resize(selected_fields.size());
-
-  for (unsigned int j = 0; j < selected_fields.size(); ++j)
-    {
-      if (_data->n_cell_batches() > 0)
-        {
-          AssertDimension(level, _data->get_cell_iterator(0, 0, j)->level());
-        }
-
-      // setup edge_constrained indices
-      const std::vector<dealii::types::global_dof_index> interface_indices =
-        mg_constrained_dofs[j].get_refinement_edge_indices(level).get_index_vector();
-      edge_constrained_indices[j].clear();
-      edge_constrained_indices[j].reserve(interface_indices.size());
-      const dealii::IndexSet &locally_owned =
-        data->get_dof_handler(selected_fields[j]).locally_owned_mg_dofs(level);
-      for (const auto interface_index : interface_indices)
-        {
-          if (locally_owned.is_element(interface_index))
-            {
-              edge_constrained_indices[j].push_back(
-                locally_owned.index_within_set(interface_index));
-            }
-        }
-    }
-}
-
-template <int dim, int degree, typename number>
 dealii::types::global_dof_index
 matrixFreeOperator<dim, degree, number>::m() const
 {
@@ -454,7 +384,7 @@ matrixFreeOperator<dim, degree, number>::el(
   [[maybe_unused]] const unsigned int &row,
   [[maybe_unused]] const unsigned int &col) const
 {
-  AssertThrow(false, prisms::FeatureNotImplemented("el()"));
+  AssertThrow(false, FeatureNotImplemented("el()"));
   return 0.0;
 }
 

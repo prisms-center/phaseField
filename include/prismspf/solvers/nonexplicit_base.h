@@ -45,7 +45,7 @@ public:
     const triangulationHandler<dim>                      &_triangulation_handler,
     const invmHandler<dim, degree>                       &_invm_handler,
     const constraintHandler<dim>                         &_constraint_handler,
-    const prisms::dofHandler<dim>                        &_dof_handler,
+    const dofHandler<dim>                                &_dof_handler,
     const dealii::MappingQ1<dim>                         &_mapping,
     dealii::MGLevelObject<matrixfreeHandler<dim, float>> &_mg_matrix_free_handler,
     solutionHandler<dim>                                 &_solution_handler);
@@ -127,7 +127,7 @@ protected:
   /**
    * \brief DoF handler.
    */
-  const prisms::dofHandler<dim> &dof_handler;
+  const dofHandler<dim> &dof_handler;
 
   /**
    * \brief Mappings to and from reference cell.
@@ -167,7 +167,7 @@ nonexplicitBase<dim, degree>::nonexplicitBase(
   const triangulationHandler<dim>                      &_triangulation_handler,
   const invmHandler<dim, degree>                       &_invm_handler,
   const constraintHandler<dim>                         &_constraint_handler,
-  const prisms::dofHandler<dim>                        &_dof_handler,
+  const dofHandler<dim>                                &_dof_handler,
   const dealii::MappingQ1<dim>                         &_mapping,
   dealii::MGLevelObject<matrixfreeHandler<dim, float>> &_mg_matrix_free_handler,
   solutionHandler<dim>                                 &_solution_handler)
@@ -310,7 +310,7 @@ template <int dim, int degree>
 inline void
 nonexplicitBase<dim, degree>::print()
 {
-  prisms::conditionalOStreams::pout_summary()
+  conditionalOStreams::pout_summary()
     << "  ==============================================\n"
     << "    Shared dependency set\n"
     << "  ==============================================\n";
@@ -319,12 +319,12 @@ nonexplicitBase<dim, degree>::print()
     {
       for (const auto &[dependency_type, field_type] : map)
         {
-          prisms::conditionalOStreams::pout_summary()
+          conditionalOStreams::pout_summary()
             << "  Index: " << index << " Dependency: " << to_string(dependency_type)
             << " Field: " << to_string(field_type) << "\n";
         }
     }
-  prisms::conditionalOStreams::pout_summary() << "\n" << std::flush;
+  conditionalOStreams::pout_summary() << "\n" << std::flush;
 }
 
 PRISMS_PF_END_NAMESPACE

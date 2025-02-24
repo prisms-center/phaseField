@@ -1,4 +1,4 @@
-set dim = 2
+set dim = 3
 set global refinement = 4
 set degree = 1
 

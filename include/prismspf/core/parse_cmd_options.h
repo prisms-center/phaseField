@@ -82,7 +82,7 @@ public:
       }
 
     // Log the filename being used
-    prisms::conditionalOStreams::pout_base()
+    conditionalOStreams::pout_base()
       << "Using the input parameter file: " << parameters_filename << "\n";
 
     return parameters_filename;
@@ -121,7 +121,7 @@ public:
       }
 
     // Log the filename being used
-    prisms::conditionalOStreams::pout_base()
+    conditionalOStreams::pout_base()
       << "Using the caliper configuration: " << config << "\n";
 
     return config;

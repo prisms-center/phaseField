@@ -11,6 +11,10 @@
 #include <prismspf/config.h>
 #include <prismspf/solvers/linear_solver_base.h>
 
+#ifdef PRISMS_PF_WITH_CALIPER
+#  include <caliper/cali.h>
+#endif
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
@@ -22,6 +26,7 @@ class identitySolver : public linearSolverBase<dim, degree>
 {
 public:
   using SystemMatrixType = customPDE<dim, degree, double>;
+  using VectorType       = dealii::LinearAlgebra::distributed::Vector<double>;
 
   /**
    * \brief Constructor.
@@ -107,7 +112,7 @@ identitySolver<dim, degree>::solve(const double step_length)
 
   // Compute the residual
   this->system_matrix->compute_residual(*this->residual, *solution);
-  prisms::conditionalOStreams::pout_summary()
+  conditionalOStreams::pout_summary()
     << "  field: " << this->field_index
     << " Initial residual: " << this->residual->l2_norm() << std::flush;
 
@@ -116,8 +121,7 @@ identitySolver<dim, degree>::solve(const double step_length)
 
   // Update solver controls
   this->solver_control.set_tolerance(this->tolerance);
-  dealii::SolverCG<dealii::LinearAlgebra::distributed::Vector<double>> cg(
-    this->solver_control);
+  dealii::SolverCG<VectorType> cg(this->solver_control);
 
   try
     {
@@ -129,13 +133,13 @@ identitySolver<dim, degree>::solve(const double step_length)
     }
   catch (...)
     {
-      prisms::conditionalOStreams::pout_base()
+      conditionalOStreams::pout_base()
         << "Warning: linear solver did not converge as per set tolerances.\n";
     }
   this->constraint_handler.get_constraint(this->field_index)
     .set_zero(*this->newton_update);
 
-  prisms::conditionalOStreams::pout_summary()
+  conditionalOStreams::pout_summary()
     << " Final residual: " << this->solver_control.last_value()
     << " Steps: " << this->solver_control.last_step() << "\n"
     << std::flush;
