@@ -6,6 +6,7 @@
 
 #include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/core/tee_stream.h>
 
 #include <ios>
 #include <iostream>
@@ -33,7 +34,8 @@ conditionalOStreams::pout_summary()
 dealii::ConditionalOStream &
 conditionalOStreams::pout_base()
 {
-  static dealii::ConditionalOStream instance(std::cout,
+  static TeeStream                  tee_stream(std::cout, summary_log_file);
+  static dealii::ConditionalOStream instance(tee_stream,
                                              dealii::Utilities::MPI::this_mpi_process(
                                                MPI_COMM_WORLD) == 0);
   return instance;
@@ -42,7 +44,8 @@ conditionalOStreams::pout_base()
 dealii::ConditionalOStream &
 conditionalOStreams::pout_verbose()
 {
-  static dealii::ConditionalOStream instance(std::cout,
+  static TeeStream                  tee_stream(std::cout, summary_log_file);
+  static dealii::ConditionalOStream instance(tee_stream,
 #ifndef DEBUG
                                              false &&
 #endif

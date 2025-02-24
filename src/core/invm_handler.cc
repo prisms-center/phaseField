@@ -13,25 +13,29 @@
 #include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <map>
-#include <memory>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim, int degree>
-invmHandler<dim, degree>::invmHandler(
+template <int dim, int degree, typename number>
+invmHandler<dim, degree, number>::invmHandler(
   const std::map<unsigned int, variableAttributes> &_variable_attributes)
   : variable_attributes(_variable_attributes)
+  , data(nullptr)
+  , invm_scalar(VectorType())
+  , invm_vector(VectorType())
 {
   for (const auto &[index, variable] : variable_attributes)
     {
       if (variable.field_type == fieldType::SCALAR && !scalar_needed &&
-          variable.pde_type == PDEType::EXPLICIT_TIME_DEPENDENT)
+          (variable.pde_type == PDEType::EXPLICIT_TIME_DEPENDENT ||
+           variable.pde_type == PDEType::AUXILIARY))
         {
           scalar_needed = true;
           scalar_index  = index;
         }
       if (variable.field_type == fieldType::VECTOR && !vector_needed &&
-          variable.pde_type == PDEType::EXPLICIT_TIME_DEPENDENT)
+          (variable.pde_type == PDEType::EXPLICIT_TIME_DEPENDENT ||
+           variable.pde_type == PDEType::AUXILIARY))
         {
           vector_needed = true;
           vector_index  = index;
@@ -39,25 +43,31 @@ invmHandler<dim, degree>::invmHandler(
     }
 }
 
-template <int dim, int degree>
+template <int dim, int degree, typename number>
 void
-invmHandler<dim, degree>::initialize(
-  std::shared_ptr<dealii::MatrixFree<dim, double, size_type>> _data)
+invmHandler<dim, degree, number>::initialize(
+  std::shared_ptr<dealii::MatrixFree<dim, number, size_type>> _data)
 {
+  Assert(data == nullptr,
+         dealii::ExcMessage("A ptr to a matrix-free object has already been assigned. "
+                            "Please call clear() before calling this function."));
+
   // Grab the shared_ptr to the matrix-free object
   data = _data;
 }
 
-template <int dim, int degree>
+template <int dim, int degree, typename number>
 void
-invmHandler<dim, degree>::compute_invm()
+invmHandler<dim, degree, number>::compute_invm()
 {
+  Assert(data != nullptr, dealii::ExcNotInitialized());
+
   // Initialize the invm vectors and cell loop to compute the invm vector, as neccessary
   if (scalar_needed)
     {
       data->initialize_dof_vector(invm_scalar, scalar_index);
 
-      dealii::FEEvaluation<dim, degree, degree + 1, 1, double> fe_eval(*data,
+      dealii::FEEvaluation<dim, degree, degree + 1, 1, number> fe_eval(*data,
                                                                        scalar_index);
 
       for (unsigned int cell = 0; cell < data->n_cell_batches(); ++cell)
@@ -65,7 +75,7 @@ invmHandler<dim, degree>::compute_invm()
           fe_eval.reinit(cell);
           for (const unsigned int q : fe_eval.quadrature_point_indices())
             {
-              fe_eval.submit_value(dealii::VectorizedArray<double>(1.0), q);
+              fe_eval.submit_value(dealii::VectorizedArray<number>(1.0), q);
             }
           fe_eval.integrate(dealii::EvaluationFlags::values);
           fe_eval.distribute_local_to_global(invm_scalar);
@@ -89,10 +99,10 @@ invmHandler<dim, degree>::compute_invm()
     {
       data->initialize_dof_vector(invm_vector, vector_index);
 
-      dealii::FEEvaluation<dim, degree, degree + 1, dim, double> fe_eval(*data,
+      dealii::FEEvaluation<dim, degree, degree + 1, dim, number> fe_eval(*data,
                                                                          vector_index);
 
-      dealii::Tensor<1, dim, dealii::VectorizedArray<double>> one;
+      dealii::Tensor<1, dim, dealii::VectorizedArray<number>> one;
       for (unsigned int i = 0; i < dim; i++)
         {
           one[i] = 1.0;
@@ -125,17 +135,19 @@ invmHandler<dim, degree>::compute_invm()
     }
 }
 
-template <int dim, int degree>
+template <int dim, int degree, typename number>
 void
-invmHandler<dim, degree>::recompute_invm()
+invmHandler<dim, degree, number>::recompute_invm()
 {
   this->compute_invm();
 }
 
-template <int dim, int degree>
-const typename invmHandler<dim, degree>::VectorType &
-invmHandler<dim, degree>::get_invm(const unsigned int &index) const
+template <int dim, int degree, typename number>
+const typename invmHandler<dim, degree, number>::VectorType &
+invmHandler<dim, degree, number>::get_invm(const unsigned int &index) const
 {
+  Assert(data != nullptr, dealii::ExcNotInitialized());
+
   Assert(variable_attributes.find(index) != variable_attributes.end(),
          dealii::ExcMessage(
            "Invalid index. The provided index does not have an entry in the variable "
@@ -168,9 +180,22 @@ invmHandler<dim, degree>::get_invm(const unsigned int &index) const
       return invm_vector;
     }
 
-  AssertThrow(false, dealii::ExcMessage("Invalid field type"));
+  AssertThrow(false, UnreachableCode());
 }
 
-INSTANTIATE_BI_TEMPLATE(invmHandler)
+template <int dim, int degree, typename number>
+void
+invmHandler<dim, degree, number>::clear()
+{
+  data          = nullptr;
+  invm_scalar   = VectorType();
+  invm_vector   = VectorType();
+  scalar_needed = false;
+  vector_needed = false;
+  scalar_index  = numbers::invalid_index;
+  vector_index  = numbers::invalid_index;
+}
+
+INSTANTIATE_TRI_TEMPLATE(invmHandler)
 
 PRISMS_PF_END_NAMESPACE

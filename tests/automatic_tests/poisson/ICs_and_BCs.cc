@@ -12,8 +12,8 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <int dim>
 void
 customInitialCondition<dim>::set_initial_condition(
-  [[maybe_unused]] const uint               &index,
-  [[maybe_unused]] const uint               &component,
+  [[maybe_unused]] const unsigned int       &index,
+  [[maybe_unused]] const unsigned int       &component,
   [[maybe_unused]] const dealii::Point<dim> &point,
   [[maybe_unused]] double                   &scalar_value,
   [[maybe_unused]] double                   &vector_component_value) const
@@ -22,9 +22,9 @@ customInitialCondition<dim>::set_initial_condition(
 template <int dim>
 void
 customNonuniformDirichlet<dim>::set_nonuniform_dirichlet(
-  [[maybe_unused]] const uint               &index,
-  [[maybe_unused]] const uint               &boundary_id,
-  [[maybe_unused]] const uint               &component,
+  [[maybe_unused]] const unsigned int       &index,
+  [[maybe_unused]] const unsigned int       &boundary_id,
+  [[maybe_unused]] const unsigned int       &component,
   [[maybe_unused]] const dealii::Point<dim> &point,
   [[maybe_unused]] double                   &scalar_value,
   [[maybe_unused]] double                   &vector_component_value) const

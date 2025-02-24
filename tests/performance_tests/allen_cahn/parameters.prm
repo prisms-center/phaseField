@@ -1,26 +1,85 @@
-set Number of dimensions = 2
+set dim = 2
+set global refinement = 8
+set degree = 1
 
-set Domain size X = 100
-set Domain size Y = 100
-set Domain size Z = 100
+subsection rectangular mesh
+    set x size = 100
+    set y size = 100
+    set z size = 100
+    set x subdivisions = 1
+    set y subdivisions = 1
+    set z subdivisions = 1
+end
 
-set Subdivisions X = 1
-set Subdivisions Y = 1
-set Subdivisions Z = 1
-set Refine factor = 8
-set Element degree = 1
+set time step = 1.0e-2
+set number steps = 5000
 
-set Time step = 1.0e-2
-set Number of time steps = 5000
+subsection output
+    set condition = EQUAL_SPACING
+    set number = 5
+end
 
-set Output condition = EQUAL_SPACING
-set Number of outputs = 5
-
-set Boundary condition for variable phi0 = NATURAL
-set Boundary condition for variable phi1 = NATURAL
-set Boundary condition for variable phi2 = NATURAL
-set Boundary condition for variable phi3 = NATURAL
-set Boundary condition for variable phi4 = NATURAL
-set Boundary condition for variable phi5 = NATURAL
-set Boundary condition for variable phi6 = NATURAL
-set Boundary condition for variable phi7 = NATURAL
+set boundary condition for phi0 = NATURAL
+set boundary condition for phi1 = NATURAL
+set boundary condition for phi2 = NATURAL
+set boundary condition for phi3 = NATURAL
+set boundary condition for phi4 = NATURAL
+set boundary condition for phi5 = NATURAL
+set boundary condition for phi6 = NATURAL
+set boundary condition for phi7 = NATURAL
+set boundary condition for phi8 = NATURAL
+set boundary condition for phi9 = NATURAL
+set boundary condition for phi10 = NATURAL
+set boundary condition for phi11 = NATURAL
+set boundary condition for phi12 = NATURAL
+set boundary condition for phi13 = NATURAL
+set boundary condition for phi14 = NATURAL
+set boundary condition for phi15 = NATURAL
+set boundary condition for phi16 = NATURAL
+set boundary condition for phi17 = NATURAL
+set boundary condition for phi18 = NATURAL
+set boundary condition for phi19 = NATURAL
+set boundary condition for phi20 = NATURAL
+set boundary condition for phi21 = NATURAL
+set boundary condition for phi22 = NATURAL
+set boundary condition for phi23 = NATURAL
+set boundary condition for phi24 = NATURAL
+set boundary condition for phi25 = NATURAL
+set boundary condition for phi26 = NATURAL
+set boundary condition for phi27 = NATURAL
+set boundary condition for phi28 = NATURAL
+set boundary condition for phi29 = NATURAL
+set boundary condition for phi30 = NATURAL
+set boundary condition for phi31 = NATURAL
+set boundary condition for phi32 = NATURAL
+set boundary condition for phi33 = NATURAL
+set boundary condition for phi34 = NATURAL
+set boundary condition for phi35 = NATURAL
+set boundary condition for phi36 = NATURAL
+set boundary condition for phi37 = NATURAL
+set boundary condition for phi38 = NATURAL
+set boundary condition for phi39 = NATURAL
+set boundary condition for phi40 = NATURAL
+set boundary condition for phi41 = NATURAL
+set boundary condition for phi42 = NATURAL
+set boundary condition for phi43 = NATURAL
+set boundary condition for phi44 = NATURAL
+set boundary condition for phi45 = NATURAL
+set boundary condition for phi46 = NATURAL
+set boundary condition for phi47 = NATURAL
+set boundary condition for phi48 = NATURAL
+set boundary condition for phi49 = NATURAL
+set boundary condition for phi50 = NATURAL
+set boundary condition for phi51 = NATURAL
+set boundary condition for phi52 = NATURAL
+set boundary condition for phi53 = NATURAL
+set boundary condition for phi54 = NATURAL
+set boundary condition for phi55 = NATURAL
+set boundary condition for phi56 = NATURAL
+set boundary condition for phi57 = NATURAL
+set boundary condition for phi58 = NATURAL
+set boundary condition for phi59 = NATURAL
+set boundary condition for phi60 = NATURAL
+set boundary condition for phi61 = NATURAL
+set boundary condition for phi62 = NATURAL
+set boundary condition for phi63 = NATURAL

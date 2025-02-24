@@ -24,6 +24,10 @@
 #include <prismspf/core/triangulation_handler.h>
 #include <prismspf/solvers/linear_solver_base.h>
 
+#ifdef PRISMS_PF_WITH_CALIPER
+#  include <caliper/cali.h>
+#endif
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
@@ -41,6 +45,7 @@ class GMGSolver : public linearSolverBase<dim, degree>
 public:
   using SystemMatrixType = customPDE<dim, degree, double>;
   using LevelMatrixType  = customPDE<dim, degree, float>;
+  using VectorType       = dealii::LinearAlgebra::distributed::Vector<double>;
   using MGVectorType     = dealii::LinearAlgebra::distributed::Vector<float>;
 
   /**
@@ -51,7 +56,7 @@ public:
             const matrixfreeHandler<dim>                         &_matrix_free_handler,
             const constraintHandler<dim>                         &_constraint_handler,
             const triangulationHandler<dim>                      &_triangulation_handler,
-            const prisms::dofHandler<dim>                        &_dof_handler,
+            const dofHandler<dim>                                &_dof_handler,
             dealii::MGLevelObject<matrixfreeHandler<dim, float>> &_mg_matrix_free_handler,
             solutionHandler<dim>                                 &_solution_handler);
 
@@ -87,7 +92,7 @@ private:
   /**
    * \brief DoF handler.
    */
-  const prisms::dofHandler<dim> &dof_handler;
+  const dofHandler<dim> &dof_handler;
 
   /**
    * \brief Matrix-free object handler for multigrid data.
@@ -159,7 +164,7 @@ GMGSolver<dim, degree>::GMGSolver(
   const matrixfreeHandler<dim>                         &_matrix_free_handler,
   const constraintHandler<dim>                         &_constraint_handler,
   const triangulationHandler<dim>                      &_triangulation_handler,
-  const prisms::dofHandler<dim>                        &_dof_handler,
+  const dofHandler<dim>                                &_dof_handler,
   dealii::MGLevelObject<matrixfreeHandler<dim, float>> &_mg_matrix_free_handler,
   solutionHandler<dim>                                 &_solution_handler)
   : linearSolverBase<dim, degree>(_user_inputs,
@@ -233,8 +238,8 @@ GMGSolver<dim, degree>::init()
     std::make_unique<dealii::MGLevelObject<LevelMatrixType>>(min_level,
                                                              max_level,
                                                              this->user_inputs,
-                                                             this->subset_attributes,
-                                                             this->field_index);
+                                                             this->field_index,
+                                                             this->subset_attributes);
   mg_transfer_operators.resize(min_level, max_level);
 
   // Object for constraints on different levels
@@ -348,8 +353,7 @@ GMGSolver<dim, degree>::init()
                 }
               else if (boundary_type == boundaryCondition::type::NEUMANN)
                 {
-                  Assert(false,
-                         prisms::FeatureNotImplemented("Neumann boundary conditions"));
+                  Assert(false, FeatureNotImplemented("Neumann boundary conditions"));
                 }
               else if (boundary_type == boundaryCondition::type::NON_UNIFORM_DIRICHLET)
                 {
@@ -377,8 +381,7 @@ GMGSolver<dim, degree>::init()
               else if (boundary_type == boundaryCondition::type::NON_UNIFORM_NEUMANN)
                 {
                   Assert(false,
-                         prisms::FeatureNotImplemented(
-                           "Nonuniform neumann boundary conditions"));
+                         FeatureNotImplemented("Nonuniform neumann boundary conditions"));
                 }
             }
         }
@@ -457,19 +460,19 @@ GMGSolver<dim, degree>::init()
       std::make_pair(this->field_index, dependencyType::NORMAL))));
 
 #ifdef DEBUG
-  prisms::conditionalOStreams::pout_summary()
+  conditionalOStreams::pout_summary()
     << "\nMultigrid Setup Information for index " << this->field_index << ":\n"
     << "  Min level: " << min_level << "\n"
     << "  Max level: " << max_level << "\n";
   for (unsigned int level = min_level; level <= max_level; ++level)
     {
-      prisms::conditionalOStreams::pout_summary()
+      conditionalOStreams::pout_summary()
         << "  Level: " << level << "\n"
         << "    Cells: " << coarse_triangulations[level]->n_global_active_cells() << "\n"
         << "    DoFs: " << mg_dof_handlers[level].n_dofs() << "\n"
         << "    Constrained DoFs: " << level_constraints[level].n_constraints() << "\n";
     }
-  prisms::conditionalOStreams::pout_summary()
+  conditionalOStreams::pout_summary()
     << "  MG vertical communication efficiency: "
     << dealii::MGTools::vertical_communication_efficiency(coarse_triangulations) << "\n"
     << "  MG workload imbalance: "
@@ -493,7 +496,7 @@ GMGSolver<dim, degree>::solve(const double step_length)
 
   // Compute the residual
   this->system_matrix->compute_residual(*this->residual, *solution);
-  prisms::conditionalOStreams::pout_summary()
+  conditionalOStreams::pout_summary()
     << "  field: " << this->field_index
     << " Initial residual: " << this->residual->l2_norm() << std::flush;
 
@@ -502,8 +505,7 @@ GMGSolver<dim, degree>::solve(const double step_length)
 
   // Update solver controls
   this->solver_control.set_tolerance(this->tolerance);
-  dealii::SolverCG<dealii::LinearAlgebra::distributed::Vector<double>> cg(
-    this->solver_control);
+  dealii::SolverCG<VectorType> cg(this->solver_control);
 
   // Interpolate the newton update src vector to each multigrid level
   for (unsigned int local_index = 0; local_index < this->newton_update_src.size();
@@ -574,13 +576,13 @@ GMGSolver<dim, degree>::solve(const double step_length)
     }
   catch (...)
     {
-      prisms::conditionalOStreams::pout_base()
+      conditionalOStreams::pout_base()
         << "Warning: linear solver did not converge as per set tolerances.\n";
     }
   this->constraint_handler.get_constraint(this->field_index)
     .set_zero(*this->newton_update);
 
-  prisms::conditionalOStreams::pout_summary()
+  conditionalOStreams::pout_summary()
     << " Final residual: " << this->solver_control.last_value()
     << " Steps: " << this->solver_control.last_step() << "\n"
     << std::flush;

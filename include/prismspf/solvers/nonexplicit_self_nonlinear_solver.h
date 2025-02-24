@@ -6,6 +6,10 @@
 
 #include <prismspf/config.h>
 
+#ifdef PRISMS_PF_WITH_CALIPER
+#  include <caliper/cali.h>
+#endif
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
@@ -32,7 +36,7 @@ public:
     const triangulationHandler<dim>                      &_triangulation_handler,
     const invmHandler<dim, degree>                       &_invm_handler,
     const constraintHandler<dim>                         &_constraint_handler,
-    const prisms::dofHandler<dim>                        &_dof_handler,
+    const dofHandler<dim>                                &_dof_handler,
     const dealii::MappingQ1<dim>                         &_mapping,
     dealii::MGLevelObject<matrixfreeHandler<dim, float>> &_mg_matrix_free_handler,
     solutionHandler<dim>                                 &_solution_handler);
@@ -73,7 +77,7 @@ nonexplicitSelfNonlinearSolver<dim, degree>::nonexplicitSelfNonlinearSolver(
   const triangulationHandler<dim>                      &_triangulation_handler,
   const invmHandler<dim, degree>                       &_invm_handler,
   const constraintHandler<dim>                         &_constraint_handler,
-  const prisms::dofHandler<dim>                        &_dof_handler,
+  const dofHandler<dim>                                &_dof_handler,
   const dealii::MappingQ1<dim>                         &_mapping,
   dealii::MGLevelObject<matrixfreeHandler<dim, float>> &_mg_matrix_free_handler,
   solutionHandler<dim>                                 &_solution_handler)

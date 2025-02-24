@@ -14,6 +14,10 @@
 #include <prismspf/solvers/explicit_base.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#ifdef PRISMS_PF_WITH_CALIPER
+#  include <caliper/cali.h>
+#endif
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
@@ -30,6 +34,7 @@ class explicitSolver : public explicitBase<dim, degree>
 {
 public:
   using SystemMatrixType = customPDE<dim, degree, double>;
+  using VectorType       = dealii::LinearAlgebra::distributed::Vector<double>;
 
   /**
    * \brief Constructor.
@@ -38,7 +43,7 @@ public:
                  const matrixfreeHandler<dim>   &_matrix_free_handler,
                  const invmHandler<dim, degree> &_invm_handler,
                  const constraintHandler<dim>   &_constraint_handler,
-                 const prisms::dofHandler<dim>  &_dof_handler,
+                 const dofHandler<dim>          &_dof_handler,
                  const dealii::MappingQ1<dim>   &_mapping,
                  solutionHandler<dim>           &_solution_handler);
 
@@ -69,12 +74,12 @@ private:
   /**
    * \brief Subset of solutions fields that are necessary for explicit solves.
    */
-  std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> solution_subset;
+  std::vector<VectorType *> solution_subset;
 
   /**
    * \brief Subset of new solutions fields that are necessary for explicit solves.
    */
-  std::vector<dealii::LinearAlgebra::distributed::Vector<double> *> new_solution_subset;
+  std::vector<VectorType *> new_solution_subset;
 };
 
 template <int dim, int degree>
@@ -83,7 +88,7 @@ explicitSolver<dim, degree>::explicitSolver(
   const matrixfreeHandler<dim>   &_matrix_free_handler,
   const invmHandler<dim, degree> &_invm_handler,
   const constraintHandler<dim>   &_constraint_handler,
-  const prisms::dofHandler<dim>  &_dof_handler,
+  const dofHandler<dim>          &_dof_handler,
   const dealii::MappingQ1<dim>   &_mapping,
   solutionHandler<dim>           &_solution_handler)
   : explicitBase<dim, degree>(_user_inputs,
@@ -170,10 +175,13 @@ explicitSolver<dim, degree>::solve()
     }
 
   // Compute the update
+  CALI_MARK_BEGIN("Explicit compute update");
   this->system_matrix->compute_explicit_update(new_solution_subset, solution_subset);
+  CALI_MARK_END("Explicit compute update");
 
   // Scale the update by the respective (SCALAR/VECTOR) invm. Note that we do this with
   // the original solution set to avoid some messy mapping.
+  CALI_MARK_BEGIN("Explicit scale solution");
   for (auto [index, vector] : this->solution_handler.new_solution_set)
     {
       if (this->subset_attributes.find(index) != this->subset_attributes.end())
@@ -181,11 +189,15 @@ explicitSolver<dim, degree>::solve()
           vector->scale(this->invm_handler.get_invm(index));
         }
     }
+  CALI_MARK_END("Explicit scale solution");
 
   // Update the solutions
+  CALI_MARK_BEGIN("Explicit update solution");
   this->solution_handler.update(fieldSolveType::EXPLICIT);
+  CALI_MARK_END("Explicit update solution");
 
   // Apply constraints
+  CALI_MARK_BEGIN("Explicit apply constraints");
   for (auto &[pair, vector] : this->solution_handler.solution_set)
     {
       if (this->subset_attributes.find(pair.first) == this->subset_attributes.end())
@@ -194,6 +206,7 @@ explicitSolver<dim, degree>::solve()
         }
       this->constraint_handler.get_constraint(pair.first).distribute(*vector);
     }
+  CALI_MARK_END("Explicit apply constraints");
 }
 
 PRISMS_PF_END_NAMESPACE
