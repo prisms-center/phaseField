@@ -384,7 +384,7 @@ matrixFreeOperator<dim, degree, number>::el(
   [[maybe_unused]] const unsigned int &row,
   [[maybe_unused]] const unsigned int &col) const
 {
-  AssertThrow(false, prisms::FeatureNotImplemented("el()"));
+  AssertThrow(false, FeatureNotImplemented("el()"));
   return 0.0;
 }
 

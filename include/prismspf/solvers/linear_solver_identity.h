@@ -112,7 +112,7 @@ identitySolver<dim, degree>::solve(const double step_length)
 
   // Compute the residual
   this->system_matrix->compute_residual(*this->residual, *solution);
-  prisms::conditionalOStreams::pout_summary()
+  conditionalOStreams::pout_summary()
     << "  field: " << this->field_index
     << " Initial residual: " << this->residual->l2_norm() << std::flush;
 
@@ -133,13 +133,13 @@ identitySolver<dim, degree>::solve(const double step_length)
     }
   catch (...)
     {
-      prisms::conditionalOStreams::pout_base()
+      conditionalOStreams::pout_base()
         << "Warning: linear solver did not converge as per set tolerances.\n";
     }
   this->constraint_handler.get_constraint(this->field_index)
     .set_zero(*this->newton_update);
 
-  prisms::conditionalOStreams::pout_summary()
+  conditionalOStreams::pout_summary()
     << " Final residual: " << this->solver_control.last_value()
     << " Steps: " << this->solver_control.last_step() << "\n"
     << std::flush;

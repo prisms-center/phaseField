@@ -46,7 +46,7 @@ public:
     const triangulationHandler<dim>                      &_triangulation_handler,
     const invmHandler<dim, degree>                       &_invm_handler,
     const constraintHandler<dim>                         &_constraint_handler,
-    const prisms::dofHandler<dim>                        &_dof_handler,
+    const dofHandler<dim>                                &_dof_handler,
     const dealii::MappingQ1<dim>                         &_mapping,
     dealii::MGLevelObject<matrixfreeHandler<dim, float>> &_mg_matrix_free_handler,
     solutionHandler<dim>                                 &_solution_handler);
@@ -100,7 +100,7 @@ nonexplicitAuxiliarySolver<dim, degree>::nonexplicitAuxiliarySolver(
   const triangulationHandler<dim>                      &_triangulation_handler,
   const invmHandler<dim, degree>                       &_invm_handler,
   const constraintHandler<dim>                         &_constraint_handler,
-  const prisms::dofHandler<dim>                        &_dof_handler,
+  const dofHandler<dim>                                &_dof_handler,
   const dealii::MappingQ1<dim>                         &_mapping,
   dealii::MGLevelObject<matrixfreeHandler<dim, float>> &_mg_matrix_free_handler,
   solutionHandler<dim>                                 &_solution_handler)

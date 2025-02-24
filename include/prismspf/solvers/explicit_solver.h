@@ -43,7 +43,7 @@ public:
                  const matrixfreeHandler<dim>   &_matrix_free_handler,
                  const invmHandler<dim, degree> &_invm_handler,
                  const constraintHandler<dim>   &_constraint_handler,
-                 const prisms::dofHandler<dim>  &_dof_handler,
+                 const dofHandler<dim>          &_dof_handler,
                  const dealii::MappingQ1<dim>   &_mapping,
                  solutionHandler<dim>           &_solution_handler);
 
@@ -88,7 +88,7 @@ explicitSolver<dim, degree>::explicitSolver(
   const matrixfreeHandler<dim>   &_matrix_free_handler,
   const invmHandler<dim, degree> &_invm_handler,
   const constraintHandler<dim>   &_constraint_handler,
-  const prisms::dofHandler<dim>  &_dof_handler,
+  const dofHandler<dim>          &_dof_handler,
   const dealii::MappingQ1<dim>   &_mapping,
   solutionHandler<dim>           &_solution_handler)
   : explicitBase<dim, degree>(_user_inputs,
