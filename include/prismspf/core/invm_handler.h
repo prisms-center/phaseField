@@ -20,13 +20,12 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \brief This class handles the computation and access of the inverted mass matrix for
  * explicit solves.
  */
-template <int dim, int degree>
+template <int dim, int degree, typename number = double>
 class invmHandler
 {
 public:
-  using VectorType = dealii::LinearAlgebra::distributed::Vector<double>;
-  using value_type = double;
-  using size_type  = dealii::VectorizedArray<double>;
+  using VectorType = dealii::LinearAlgebra::distributed::Vector<number>;
+  using size_type  = dealii::VectorizedArray<number>;
 
   /**
    * \brief Constructor.
@@ -35,15 +34,10 @@ public:
     const std::map<unsigned int, variableAttributes> &_variable_attributes);
 
   /**
-   * \brief Destructor.
-   */
-  ~invmHandler() = default;
-
-  /**
    * \brief Initialize.
    */
   void
-  initialize(std::shared_ptr<dealii::MatrixFree<dim, double, size_type>> _data);
+  initialize(std::shared_ptr<dealii::MatrixFree<dim, number, size_type>> _data);
 
   /**
    * \brief Compute the mass matrix for scalar/vector fields.
@@ -59,11 +53,17 @@ public:
   recompute_invm();
 
   /**
-   * \brief  Getter function for the mass matrix for the given field index (constant
+   * \brief Getter function for the mass matrix for the given field index (constant
    * reference).
    */
   [[nodiscard]] const VectorType &
   get_invm(const unsigned int &index) const;
+
+  /**
+   * \brief Clear the data so we have something that resembles the base constructor.
+   */
+  void
+  clear();
 
 private:
   /**
@@ -75,7 +75,7 @@ private:
   /**
    * \brief Matrix-free object.
    */
-  std::shared_ptr<dealii::MatrixFree<dim, double, size_type>> data;
+  std::shared_ptr<dealii::MatrixFree<dim, number, size_type>> data;
 
   /**
    * \brief Inverse of the mass matrix for scalar fields.
@@ -101,13 +101,13 @@ private:
    * \brief Field index of the first occuring scalar field. This is the index for which we
    * attached the FEEvaluation objects to evaluate and initialize the invm vector.
    */
-  unsigned int scalar_index;
+  unsigned int scalar_index = numbers::invalid_index;
 
   /**
    * \brief Field index of the first occuring vector field. This is the index for which we
    * attached the FEEvaluation objects to evaluate and initialize the invm vector.
    */
-  unsigned int vector_index;
+  unsigned int vector_index = numbers::invalid_index;
 };
 
 PRISMS_PF_END_NAMESPACE
