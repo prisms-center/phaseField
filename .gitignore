@@ -62,8 +62,7 @@ applications/*/*.vtk
 *.pvtu
 *.vts
 *.frt
-integratedFields.txt
-tests/performance_tests/*.png
+*.png
 tests/performance_tests/*/trial*.txt
 output.txt
 error.txt
