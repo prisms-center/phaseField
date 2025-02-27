@@ -1,3 +1,9 @@
+# Version 2.4.1
+Minor update from 2.4. The main changes are: 
+* Minor bug fixes.
+* Compilation has been fixed for clang, gcc, and intel-oneapi compilers that support the c++17 standard.
+* deal.II 9.5.0 or later is now required.
+
 # Version 2.4
 Moderate update from 2.3. The main changes are compatibility with deal.II 9.6.0, support for the use of up to 6th order elements, 
 improved testing and continuous integration, code auto-formatting, and bug fixes.
