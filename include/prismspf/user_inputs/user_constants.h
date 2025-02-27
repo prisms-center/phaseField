@@ -8,10 +8,12 @@
 #include <deal.II/base/utilities.h>
 
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/range/algorithm_ext/erase.hpp>
 #include <boost/variant.hpp>
 
 #include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/core/exceptions.h>
 #include <prismspf/core/type_enums.h>
 
 #include <iomanip>
@@ -144,8 +146,8 @@ userConstants<dim>::get_model_constant_double(const std::string &constant_name) 
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
-           "PRISMS-PF Error: Mismatch between constants in parameters.prm and "
-           "customPDE.h. The constant that you attempted to access was " +
+           "Mismatch between constants in parameters.prm and customPDE.h. The constant "
+           "that you attempted to access was " +
            constant_name + "."));
 
   return boost::get<double>(model_constants.at(constant_name));
@@ -157,8 +159,8 @@ userConstants<dim>::get_model_constant_int(const std::string &constant_name) con
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
-           "PRISMS-PF Error: Mismatch between constants in parameters.prm and "
-           "customPDE.h. The constant that you attempted to access was " +
+           "Mismatch between constants in parameters.prm and customPDE.h. The constant "
+           "that you attempted to access was " +
            constant_name + "."));
 
   return boost::get<int>(model_constants.at(constant_name));
@@ -170,8 +172,8 @@ userConstants<dim>::get_model_constant_bool(const std::string &constant_name) co
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
-           "PRISMS-PF Error: Mismatch between constants in parameters.prm and "
-           "customPDE.h. The constant that you attempted to access was " +
+           "Mismatch between constants in parameters.prm and customPDE.h. The constant "
+           "that you attempted to access was " +
            constant_name + "."));
 
   return boost::get<bool>(model_constants.at(constant_name));
@@ -184,7 +186,7 @@ userConstants<dim>::get_model_constant_rank_1_tensor(
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
-           "PRISMS-PF Error: Mismatch between constants in parameters.prm and "
+           " Mismatch between constants in parameters.prm and "
            "customPDE.h. The constant that you attempted to access was " +
            constant_name + "."));
 
@@ -198,8 +200,8 @@ userConstants<dim>::get_model_constant_rank_2_tensor(
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
-           "PRISMS-PF Error: Mismatch between constants in parameters.prm and "
-           "customPDE.h. The constant that you attempted to access was " +
+           "Mismatch between constants in parameters.prm and customPDE.h. The constant "
+           "that you attempted to access was " +
            constant_name + "."));
 
   return boost::get<dealii::Tensor<2, dim>>(model_constants.at(constant_name));
@@ -212,8 +214,8 @@ userConstants<dim>::get_model_constant_elasticity_tensor(
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
-           "PRISMS-PF Error: Mismatch between constants in parameters.prm and "
-           "customPDE.h. The constant that you attempted to access was " +
+           "Mismatch between constants in parameters.prm and customPDE.h. The constant "
+           "that you attempted to access was " +
            constant_name + "."));
 
   return boost::get<dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>>(
@@ -231,13 +233,13 @@ userConstants<dim>::compute_tensor_parentheses(
 
   for (unsigned int element = 0; element < n_elements; element++)
     {
-      for (const char c : tensor_elements.at(element))
+      for (const char character : tensor_elements.at(element))
         {
-          if (c == '(')
+          if (character == '(')
             {
               ++open_parentheses;
             }
-          else if (c == ')')
+          else if (character == ')')
             {
               ++close_parentheses;
             }
@@ -246,10 +248,9 @@ userConstants<dim>::compute_tensor_parentheses(
 
   if (open_parentheses != close_parentheses)
     {
-      std::cerr << "PRISMS-PF ERROR: User-defined elastic constant "
-                   "list does not have the same number of open and "
-                   "close parentheses.\n";
-      abort();
+      AssertThrow(false,
+                  dealii::ExcMessage("User-defined elastic constant list does not have "
+                                     "the same number of open and close parentheses."));
     }
 
   return open_parentheses;
@@ -261,8 +262,8 @@ userConstants<dim>::remove_parentheses(std::vector<std::string> &tensor_elements
 {
   for (std::string &element : tensor_elements)
     {
-      element.erase(std::remove(element.begin(), element.end(), '('), element.end());
-      element.erase(std::remove(element.begin(), element.end(), ')'), element.end());
+      boost::range::remove_erase(element, '(');
+      boost::range::remove_erase(element, '(');
     }
 }
 
@@ -272,10 +273,9 @@ userConstants<dim>::compute_rank_1_tensor_constant(
   const unsigned int             &n_elements,
   const std::vector<std::string> &tensor_elements)
 {
-  AssertThrow(n_elements > 1 && n_elements < 4,
-              dealii::ExcMessage("PRISMS-PF Error: The columns in user-defined constant "
-                                 "tensors cannot be longer than 3 elements (internally "
-                                 "truncated to the number of dimensions)."));
+  AssertThrow(n_elements == dim,
+              dealii::ExcMessage("The columns in user-defined constant tensors must be "
+                                 "equal to the number of dimensions."));
 
   dealii::Tensor<1, dim> temp;
   for (unsigned int i = 0; i < dim; i++)
@@ -292,27 +292,12 @@ userConstants<dim>::compute_rank_2_tensor_constant(
   const unsigned int             &n_elements,
   const std::vector<std::string> &tensor_elements)
 {
-  unsigned int row_length = 0;
-  if (n_elements == 4)
-    {
-      AssertThrow(dim < 3,
-                  dealii::ExcMessage(
-                    "PRISMS-PF ERROR: User-defined constant tensor does not have "
-                    "enough elements. For 3D calculations matrices must be 3x3."));
+  AssertThrow(n_elements == (dim * dim),
+              dealii::ExcMessage(
+                "User-defined constant tensor does not have the "
+                "correct number of elements, matrices must be 2x2 or 3x3."));
 
-      row_length = 2;
-    }
-  else if (n_elements == 9)
-    {
-      row_length = 3;
-    }
-  else
-    {
-      AssertThrow(false,
-                  dealii::ExcMessage("PRISMS-PF ERROR: User-defined constant tensor does "
-                                     "not have the correct number of elements, matrices "
-                                     "must be 2x2 or 3x3."));
-    }
+  const unsigned int row_length = dim;
 
   dealii::Tensor<2, dim> temp;
   for (unsigned int i = 0; i < dim; i++)
@@ -333,9 +318,10 @@ userConstants<dim>::construct_user_constant(
   std::vector<std::string> &model_constants_strings)
 {
   // Ensure that the input includes a value and a type
-  AssertThrow(model_constants_strings.size() > 1,
-              dealii::ExcMessage("PRISMS-PF Error: At least two fields are required for "
-                                 "user-defined variables (value and type)."));
+  AssertThrow(
+    model_constants_strings.size() > 1,
+    dealii::ExcMessage(
+      "At least two fields are required for user-defined variables (value and type)."));
 
   std::vector<std::string> model_constants_type_strings =
     dealii::Utilities::split_string_list(model_constants_strings.at(
@@ -346,56 +332,52 @@ userConstants<dim>::construct_user_constant(
     {
       return primitive_model_constant(model_constants_strings);
     }
-  else
+
+  if (boost::iequals(model_constants_type_strings.at(0), "tensor"))
     {
-      if (boost::iequals(model_constants_type_strings.at(0), "tensor"))
+      const unsigned int n_elements = model_constants_strings.size() - 1;
+
+      const unsigned int open_parentheses =
+        compute_tensor_parentheses(n_elements, model_constants_strings);
+
+      AssertThrow(open_parentheses < 4,
+                  FeatureNotImplemented("3rd rank tensors and above"));
+
+      remove_parentheses(model_constants_strings);
+
+      // Rank 1 tensor
+      if (open_parentheses == 1)
         {
-          const unsigned int n_elements = model_constants_strings.size() - 1;
-
-          const unsigned int open_parentheses =
-            compute_tensor_parentheses(n_elements, model_constants_strings);
-          remove_parentheses(model_constants_strings);
-
-          // Rank 1 tensor
-          if (open_parentheses < 3)
-            {
-              return compute_rank_1_tensor_constant(n_elements, model_constants_strings);
-            }
-          // Rank 2 tensor
-          else if (open_parentheses < 5)
-            {
-              return compute_rank_2_tensor_constant(n_elements, model_constants_strings);
-            }
+          return compute_rank_1_tensor_constant(n_elements, model_constants_strings);
         }
-      else if (boost::iequals(model_constants_type_strings.at(1), "elastic") &&
-               boost::iequals(model_constants_type_strings.at(2), "constants"))
-        {
-          const unsigned int n_elements = model_constants_strings.size() - 1;
-
-          remove_parentheses(model_constants_strings);
-
-          // Load in the elastic constants as a vector
-          std::vector<double> temp_elastic_constants;
-          for (unsigned int i = 0; i < n_elements; i++)
-            {
-              temp_elastic_constants.push_back(
-                dealii::Utilities::string_to_double(model_constants_strings.at(i)));
-            }
-
-          const std::string &elastic_const_symmetry = model_constants_type_strings.at(0);
-          dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)> temp =
-            get_Cij_tensor(temp_elastic_constants, elastic_const_symmetry);
-          return temp;
-        }
-      else
-        {
-          AssertThrow(false,
-                      dealii::ExcMessage(
-                        "PRISMS-PF ERROR: Only user-defined constant tensors may "
-                        "have multiple elements."));
-        }
-      return 0;
+      // Rank 2 tensor
+      return compute_rank_2_tensor_constant(n_elements, model_constants_strings);
     }
+  if (boost::iequals(model_constants_type_strings.at(1), "elastic") &&
+      boost::iequals(model_constants_type_strings.at(2), "constants"))
+    {
+      const unsigned int n_elements = model_constants_strings.size() - 1;
+
+      remove_parentheses(model_constants_strings);
+
+      // Load in the elastic constants as a vector
+      std::vector<double> temp_elastic_constants;
+      for (unsigned int i = 0; i < n_elements; i++)
+        {
+          temp_elastic_constants.push_back(
+            dealii::Utilities::string_to_double(model_constants_strings.at(i)));
+        }
+
+      const std::string &elastic_const_symmetry = model_constants_type_strings.at(0);
+      dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)> temp =
+        get_Cij_tensor(temp_elastic_constants, elastic_const_symmetry);
+      return temp;
+    }
+
+  AssertThrow(false,
+              dealii::ExcMessage(
+                "Only user-defined constant tensors may have multiple elements."));
+  return 0;
 }
 
 template <int dim>
@@ -412,23 +394,20 @@ userConstants<dim>::primitive_model_constant(
     {
       return dealii::Utilities::string_to_double(model_constants_strings.at(0));
     }
-  else if (boost::iequals(model_constants_type_strings.at(0), "int"))
+  if (boost::iequals(model_constants_type_strings.at(0), "int"))
     {
       return dealii::Utilities::string_to_int(model_constants_strings.at(0));
     }
-  else if (boost::iequals(model_constants_type_strings.at(0), "bool"))
+  if (boost::iequals(model_constants_type_strings.at(0), "bool"))
     {
-      bool temp = boost::iequals(model_constants_strings.at(0), "true");
-      return temp;
+      return boost::iequals(model_constants_strings.at(0), "true");
     }
-  else
-    {
-      AssertThrow(false,
-                  dealii::ExcMessage(
-                    "PRISMS-PF Error: The type for user-defined variables must be "
-                    "`double`, `int`, `bool`, `tensor`, or `elastic constants`."));
-      return 0;
-    }
+
+  AssertThrow(false,
+              dealii::ExcMessage(
+                "The type for user-defined variables must be `double`, `int`, "
+                "`bool`, `tensor`, or `elastic constants`."));
+  return 0;
 }
 
 template <int dim>
@@ -456,15 +435,14 @@ userConstants<dim>::get_Cij_tensor(std::vector<double> elastic_constants,
     }
   else
     {
-      // Should change to an exception
-      std::cerr << "Elastic material model is invalid, please use isotropic, "
-                   "transverse, orthotropic, or anisotropic\n";
+      AssertThrow(false, dealii::ExcMessage("Invalid elasticity tensor type"));
     }
 
   // If the material model is anisotropic for a 2D calculation but the elastic
   // constants are given for a 3D calculation, change the elastic constant
   // vector to the 2D form
-  if ((mat_model == ANISOTROPIC) && (dim == 2) && elastic_constants.size() == 21)
+  constexpr unsigned int max_number = 21;
+  if ((mat_model == ANISOTROPIC) && (dim == 2) && elastic_constants.size() == max_number)
     {
       std::vector<double> elastic_constants_temp = elastic_constants;
       elastic_constants.clear();
@@ -483,171 +461,61 @@ inline dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
 userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
                                  const std::vector<double> &constants) const
 {
-  // CIJ.fill(0.0);
   dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)> CIJ;
 
-  conditionalOStreams::pout_base() << "Reading material model:";
+  (void) constants; // TODO (landinjm): Implement this function
+
   switch (dim)
     {
       case 1:
         {
-          conditionalOStreams::pout_base() << " 1D ";
-          // 1D models
           switch (model)
             {
+              // TODO (landinjm): Should we both fixing this for the other cases and just
+              // selecting the x index. It would allow the user to switch from 2D to 1D to
+              // 3D, but would produce unexpected behavior.
               case ISOTROPIC:
-                {
-                  conditionalOStreams::pout_base() << " ISOTROPIC \n";
-                  CIJ[0][0] = constants[0];
-                  break;
-                }
               default:
                 {
-                  exit(-1);
+                  AssertThrow(false, dealii::ExcMessage("Invalid elasticity model type"));
                 }
             }
           break;
         }
       case 2:
         {
-          conditionalOStreams::pout_base() << " 2D ";
-          // 2D models
           switch (model)
             {
               case ISOTROPIC:
-                {
-                  conditionalOStreams::pout_base() << " ISOTROPIC \n";
-                  const double E      = constants[0];
-                  const double nu     = constants[1];
-                  const double mu     = E / (2 * (1 + nu));
-                  const double lambda = nu * E / ((1 + nu) * (1 - 2 * nu));
-                  CIJ[0][0]           = lambda + 2 * mu;
-                  CIJ[1][1]           = lambda + 2 * mu;
-                  CIJ[2][2]           = mu;
-                  CIJ[0][1] = CIJ[1][0] = lambda;
-                  break;
-                }
               case ANISOTROPIC:
-                {
-                  conditionalOStreams::pout_base() << " ANISOTROPIC \n";
-                  CIJ[0][0] = constants[0];             // C11
-                  CIJ[1][1] = constants[1];             // C22
-                  CIJ[2][2] = constants[2];             // C33
-                  CIJ[0][1] = CIJ[1][0] = constants[3]; // C12
-                  CIJ[0][2] = CIJ[2][0] = constants[4]; // C13
-                  CIJ[1][2] = CIJ[2][1] = constants[5]; // C23
-                  break;
-                }
               default:
                 {
-                  exit(-1);
+                  AssertThrow(false, dealii::ExcMessage("Invalid elasticity model type"));
                 }
             }
           break;
         }
       case 3:
         {
-          conditionalOStreams::pout_base() << " 3D ";
-          // 3D models
           switch (model)
             {
               case ISOTROPIC:
-                {
-                  conditionalOStreams::pout_base() << " ISOTROPIC \n";
-                  const double E      = constants[0];
-                  const double nu     = constants[1];
-                  const double mu     = E / (2 * (1 + nu));
-                  const double lambda = nu * E / ((1 + nu) * (1 - 2 * nu));
-                  CIJ[0][0]           = lambda + 2 * mu;
-                  CIJ[1][1]           = lambda + 2 * mu;
-                  CIJ[2][2]           = lambda + 2 * mu;
-                  CIJ[3][3]           = mu;
-                  CIJ[4][4]           = mu;
-                  CIJ[5][5]           = mu;
-                  CIJ[0][1] = CIJ[1][0] = lambda;
-                  CIJ[0][2] = CIJ[2][0] = lambda;
-                  CIJ[1][2] = CIJ[2][1] = lambda;
-                  break;
-                }
               case TRANSVERSE:
-                {
-                  conditionalOStreams::pout_base() << " TRANSVERSE \n";
-                  CIJ[0][0] = constants[0];                        // C11
-                  CIJ[1][1] = constants[0];                        // C11
-                  CIJ[2][2] = constants[1];                        // C33
-                  CIJ[3][3] = constants[2];                        // C44
-                  CIJ[4][4] = constants[2];                        // C44
-                  CIJ[5][5] = (constants[0] - constants[3]) / 2.0; //(C11-C12)/2
-                  CIJ[0][1] = CIJ[1][0] = constants[3];            // C12
-                  CIJ[0][2] = CIJ[2][0] = constants[4];            // C13
-                  CIJ[1][2] = CIJ[2][1] = constants[4];            // C13
-                  break;
-                }
               case ORTHOTROPIC:
-                {
-                  conditionalOStreams::pout_base() << " ORTHOTROPIC \n";
-                  CIJ[0][0] = constants[0];             // C11
-                  CIJ[1][1] = constants[1];             // C22
-                  CIJ[2][2] = constants[2];             // C33
-                  CIJ[3][3] = constants[3];             // C44
-                  CIJ[4][4] = constants[4];             // C55
-                  CIJ[5][5] = constants[5];             // C66
-                  CIJ[0][1] = CIJ[1][0] = constants[6]; // C12
-                  CIJ[0][2] = CIJ[2][0] = constants[7]; // C13
-                  CIJ[1][2] = CIJ[2][1] = constants[8]; // C23
-                  break;
-                }
               case ANISOTROPIC:
-                {
-                  conditionalOStreams::pout_base() << " ANISOTROPIC \n";
-                  CIJ[0][0] = constants[0];              // C11
-                  CIJ[1][1] = constants[1];              // C22
-                  CIJ[2][2] = constants[2];              // C33
-                  CIJ[3][3] = constants[3];              // C44
-                  CIJ[4][4] = constants[4];              // C55
-                  CIJ[5][5] = constants[5];              // C66
-                  CIJ[0][1] = CIJ[1][0] = constants[6];  // C12
-                  CIJ[0][2] = CIJ[2][0] = constants[7];  // C13
-                  CIJ[0][3] = CIJ[3][0] = constants[8];  // C14
-                  CIJ[0][4] = CIJ[4][0] = constants[9];  // C15
-                  CIJ[0][5] = CIJ[5][0] = constants[10]; // C16
-                  CIJ[1][2] = CIJ[2][1] = constants[11]; // C23
-                  CIJ[1][3] = CIJ[3][1] = constants[12]; // C24
-                  CIJ[1][4] = CIJ[4][1] = constants[13]; // C25
-                  CIJ[1][5] = CIJ[5][1] = constants[14]; // C26
-                  CIJ[2][3] = CIJ[3][2] = constants[15]; // C34
-                  CIJ[2][4] = CIJ[4][2] = constants[16]; // C35
-                  CIJ[2][5] = CIJ[5][2] = constants[17]; // C36
-                  CIJ[3][4] = CIJ[4][3] = constants[18]; // C45
-                  CIJ[3][5] = CIJ[5][3] = constants[19]; // C46
-                  CIJ[4][5] = CIJ[5][4] = constants[20]; // C56
-                  break;
-                }
               default:
                 {
-                  exit(-1);
+                  AssertThrow(false, dealii::ExcMessage("Invalid elasticity model type"));
                 }
             }
           break;
         }
       default:
         {
-          exit(-1);
+          Assert(false, UnreachableCode());
         }
     }
-  // print CIJ to terminal
-  conditionalOStreams::pout_base() << "Elasticity matrix (Voigt notation):\n";
-  constexpr unsigned int voight_matrix_size = (2 * dim) - 1 + (dim / 3);
-  for (unsigned int i = 0; i < voight_matrix_size; i++)
-    {
-      for (unsigned int j = 0; j < voight_matrix_size; j++)
-        {
-          conditionalOStreams::pout_base() << std::setw(8) << std::setprecision(3)
-                                           << std::scientific << CIJ[i][j] << " ";
-        }
-      conditionalOStreams::pout_base() << "\n";
-    }
-  conditionalOStreams::pout_base() << "\n";
+
   return CIJ;
 }
 

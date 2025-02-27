@@ -41,7 +41,7 @@ endif()
 
 
 # Find deal.II installation
-find_package(deal.II 9.5.0 QUIET
+find_package(deal.II 9.6.0 QUIET
 	HINTS ${DEAL_II_DIR} $ENV{DEAL_II_DIR}
   )
 if(NOT ${deal.II_FOUND})
@@ -52,9 +52,16 @@ if(NOT ${deal.II_FOUND})
   )
 endif()
 
-message(STATUS "Found deal.II version ${DEAL_II_PACKAGE_VERSION} at '${deal.II_DIR}'\n")
+message(STATUS "Found deal.II version ${DEAL_II_PACKAGE_VERSION} at '${deal.II_DIR}'")
 
 set(DEALII_INSTALL_VALID ON)
+
+if(NOT DEAL_II_WITH_LAPACK)
+    message(SEND_ERROR
+      "\n**deal.II was built without support for lapack!\n"
+      )
+    set(DEALII_INSTALL_VALID OFF)
+endif()
 
 if(NOT DEAL_II_WITH_P4EST)
     message(SEND_ERROR
@@ -76,8 +83,42 @@ if(NOT DEALII_INSTALL_VALID)
     )
 endif()
 
+# Optional deal.II packages
+set(PRISMS_PF_WITH_ZLIB OFF CACHE BOOL "Whether the user wants to compile PRISMS-PF with deal.II's zlib dependency, or not.")
+message(STATUS "Using PRISMS_PF_WITH_ZLIB = '${PRISMS_PF_WITH_ZLIB}'")
+if(PRISMS_PF_WITH_ZLIB)
+  if(DEAL_II_WITH_ZLIB)
+    message(STATUS "  Found deal.II installation with zlib")
+  else()
+    message(FATAL_ERROR "deal.II installation with zlib not found. Disable PRISMS_PF_WITH_ZLIB or recompile deal.II with zlib.")
+  endif()
+endif()
+
+set(PRISMS_PF_WITH_SUNDIALS OFF CACHE BOOL "Whether the user wants to compile PRISMS-PF with deal.II's SUNDIALS dependency, or not.")
+message(STATUS "Using PRISMS_PF_WITH_SUNDIALS = '${PRISMS_PF_WITH_SUNDIALS}'")
+if(PRISMS_PF_WITH_SUNDIALS)
+  if(DEAL_II_WITH_SUNDIALS)
+    message(STATUS "  Found deal.II installation with SUNDIALS")
+  else()
+    message(FATAL_ERROR "deal.II installation with SUNDIALS not found. Disable PRISMS_PF_WITH_SUNDIALS or recompile deal.II with SUNDIALS.")
+  endif()
+endif()
+
 # Load deal.II cached variables
 deal_ii_initialize_cached_variables()
+
+# Caliper
+set(PRISMS_PF_WITH_CALIPER OFF CACHE BOOL "Whether the user wants to compile PRISMS-PF with the profiling code Caliper, or not.")
+message(STATUS "Using PRISMS_PF_WITH_CALIPER = '${PRISMS_PF_WITH_CALIPER}'")
+if(PRISMS_PF_WITH_CALIPER)
+  find_package(CALIPER)
+  if(${CALIPER_FOUND})
+    include_directories(${CALIPER_INCLUDE_DIR})
+    message(STATUS "  Caliper found at ${CALIPER_DIR}")
+  else()
+    message(FATAL_ERROR "Caliper not found. Disable PRISMS_PF_WITH_CALIPER or specify a hint to your installation directory with CALIPER_DIR")
+  endif()
+endif()
 
 # Make and ninja build options
 if(CMAKE_GENERATOR MATCHES "Ninja")
@@ -128,11 +169,3 @@ add_custom_target(distclean
     build.ninja rules.ninja .ninja_deps .ninja_log
   COMMENT "distclean invoked"
   )
-
-# Add postprocess.cc and nucleation.cc if they exist
-if(EXISTS "postprocess.cc")
-	add_definitions(-DPOSTPROCESS_FILE_EXISTS)
-endif()
-if(EXISTS "nucleation.cc")
-	add_definitions(-DNUCLEATION_FILE_EXISTS)
-endif()

@@ -8,7 +8,7 @@
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/user_inputs/temporal_discretization.h>
-#include <prismspf/utilities.h>
+#include <prismspf/utilities/utilities.h>
 
 #include <climits>
 #include <set>
@@ -47,7 +47,7 @@ public:
   std::string file_name;
 
   // Whether to output one vtu or vtk file per process
-  // TODO: Actually implement this and set it to true is vtk outputs
+  // TODO (landinjm): Actually implement this and set it to true is vtk outputs
   bool output_per_process = false;
 
   // The number of steps between outputting relevant information to screen

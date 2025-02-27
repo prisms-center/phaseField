@@ -1,18 +1,18 @@
 set dim = 2
-set global refinement = 8
+set global refinement = 7
 set degree = 1
 
 subsection rectangular mesh
-    set x size = 100
-    set y size = 100
-    set z size = 100
+    set x size = 50
+    set y size = 50
+    set z size = 50
     set x subdivisions = 1
     set y subdivisions = 1
     set z subdivisions = 1
 end
 
 set time step = 1.0e-2
-set number steps = 5000
+set end time = 15
 
 subsection output
     set condition = EQUAL_SPACING

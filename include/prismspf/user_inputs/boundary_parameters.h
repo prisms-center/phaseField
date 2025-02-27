@@ -14,8 +14,8 @@
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/type_enums.h>
+#include <prismspf/core/types.h>
 #include <prismspf/core/variable_attributes.h>
-#include <prismspf/types.h>
 
 #include <cstddef>
 #include <map>
@@ -32,7 +32,7 @@ struct boundaryCondition
 {
 public:
   /**
-   * \brief Type of boundary condition
+   * \brief Type of boundary condition.
    */
   enum type : std::uint8_t
   {
@@ -44,6 +44,16 @@ public:
     NON_UNIFORM_DIRICHLET,
     NON_UNIFORM_NEUMANN
   };
+
+  /**
+   * \brief Test for equality of two boundary conditions.
+   */
+  bool
+  operator==(const boundaryCondition &other) const
+  {
+    return boundary_condition_map == other.boundary_condition_map &&
+           dirichlet_value_map == other.dirichlet_value_map;
+  }
 
   // Map of boundary conditions and domain boundary for which they correspond to. For a
   // simple geometry like a square the boundary ids are marked, in order, by x=0, x=max,
@@ -100,6 +110,13 @@ public:
   void
   postprocess_and_validate(
     const std::map<unsigned int, variableAttributes> &var_attributes);
+
+  /**
+   * \brief Check whether the boundary conditions for two fields are the same.
+   */
+  [[nodiscard]] bool
+  check_duplicate_boundary_conditions(const types::index &index_1,
+                                      const types::index &index_2) const;
 
   /**
    * \brief Print parameters to summary.log
@@ -199,6 +216,84 @@ boundaryParameters<dim>::postprocess_and_validate(
 
   // Clear the BC_list now that it's no longer necessary
   BC_list.clear();
+
+#ifdef ADDITIONAL_OPTIMIZATIONS
+  // Check if any fields are duplicates in terms of boundary conditions
+  // TODO (landinjm): Clean this up
+  for (const auto &[index_1, variable_1] : var_attributes)
+    {
+      // Skip is the duplicate index has already been assigned
+      if (variable_1.duplicate_field_index != numbers::invalid_index)
+        {
+          continue;
+        }
+      if (variable_1.is_postprocess)
+        {
+          continue;
+        }
+
+      const auto field_type_1 = variable_1.field_type;
+
+      for (const auto &[index_2, variable_2] : var_attributes)
+        {
+          if (variable_2.is_postprocess)
+            {
+              continue;
+            }
+
+          bool is_duplicate = false;
+
+          const auto field_type_2 = variable_2.field_type;
+
+          is_duplicate = field_type_1 == field_type_2 &&
+                         check_duplicate_boundary_conditions(index_1, index_2);
+
+          if (is_duplicate)
+            {
+              conditionalOStreams::pout_verbose()
+                << "Field " << variable_1.name << " has the same boundary conditions as "
+                << variable_2.name << ". Using optimizations...\n";
+              variable_2.duplicate_field_index = index_1;
+            }
+        }
+    }
+#endif
+}
+
+template <int dim>
+inline bool
+boundaryParameters<dim>::check_duplicate_boundary_conditions(
+  const types::index &index_1,
+  const types::index &index_2) const
+{
+  // If the indices are the same return false
+  if (index_1 == index_2)
+    {
+      return false;
+    }
+
+  Assert(boundary_condition_list.find(index_1) != boundary_condition_list.end(),
+         dealii::ExcMessage("Invalid entry for index = " + std::to_string(index_1)));
+  Assert(boundary_condition_list.find(index_2) != boundary_condition_list.end(),
+         dealii::ExcMessage("Invalid entry for index = " + std::to_string(index_2)));
+
+  bool is_duplicate = false;
+
+  // First check the boundary_condition_list
+  const auto &boundary_condition_1 = boundary_condition_list.at(index_1);
+  const auto &boundary_condition_2 = boundary_condition_list.at(index_2);
+
+  is_duplicate = boundary_condition_1 == boundary_condition_2;
+
+  // Check the pinned points
+  if (pinned_point_list.find(index_1) != pinned_point_list.end() &&
+      pinned_point_list.find(index_2) != pinned_point_list.end())
+    {
+      is_duplicate =
+        is_duplicate && pinned_point_list.at(index_1) == pinned_point_list.at(index_2);
+    }
+
+  return is_duplicate;
 }
 
 template <int dim>

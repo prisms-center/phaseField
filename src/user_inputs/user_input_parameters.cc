@@ -101,12 +101,12 @@ userInputParameters<dim>::assign_spatial_discretization_parameters(
         const std::string crit_type_string = parameter_handler.get("type");
         if (!boost::iequals(crit_type_string, "none"))
           {
-            RefinementCriterion new_criterion;
+            GridRefinement::RefinementCriterion new_criterion;
             new_criterion.variable_index = index;
             new_criterion.variable_name  = variable.name;
             if (boost::iequals(crit_type_string, "value"))
               {
-                new_criterion.criterion_type = criterion_value;
+                new_criterion.criterion_type = GridRefinement::RefinementFlags::value;
                 new_criterion.value_lower_bound =
                   parameter_handler.get_double("value lower bound");
                 new_criterion.value_upper_bound =
@@ -114,13 +114,14 @@ userInputParameters<dim>::assign_spatial_discretization_parameters(
               }
             else if (boost::iequals(crit_type_string, "gradient"))
               {
-                new_criterion.criterion_type = criterion_gradient;
+                new_criterion.criterion_type = GridRefinement::RefinementFlags::gradient;
                 new_criterion.gradient_lower_bound =
                   parameter_handler.get_double("gradient magnitude lower bound");
               }
             else if (boost::iequals(crit_type_string, "value_and_gradient"))
               {
-                new_criterion.criterion_type = criterion_value | criterion_gradient;
+                new_criterion.criterion_type = GridRefinement::RefinementFlags::value |
+                                               GridRefinement::RefinementFlags::gradient;
                 new_criterion.value_lower_bound =
                   parameter_handler.get_double("value lower bound");
                 new_criterion.value_upper_bound =
@@ -197,8 +198,11 @@ void
 userInputParameters<dim>::assign_boundary_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
+  // Assign the normal boundary parameters
   for (const auto &[index, variable] : var_attributes)
     {
+      // TODO (landinjm): We Should still add the ability to assign boundary conditions
+      // for postprocessed fields
       if (variable.is_postprocess)
         {
           continue;
@@ -222,6 +226,7 @@ userInputParameters<dim>::assign_boundary_parameters(
         }
     }
 
+  // Assign any pinning points
   for (const auto &[index, variable] : var_attributes)
     {
       if (variable.is_postprocess)
@@ -234,7 +239,7 @@ userInputParameters<dim>::assign_boundary_parameters(
       if (variable.field_type == SCALAR)
         {
           // Skip if the value is the default INT_MAX
-          if (parameter_handler.get_double("value") == 2147483647)
+          if (parameter_handler.get_double("value") == INT_MAX)
             {
               parameter_handler.leave_subsection();
               continue;
@@ -252,7 +257,7 @@ userInputParameters<dim>::assign_boundary_parameters(
       else
         {
           // Skip if the value is the default INT_MAX
-          if (parameter_handler.get_double("x value") == 2147483647)
+          if (parameter_handler.get_double("x value") == INT_MAX)
             {
               parameter_handler.leave_subsection();
               continue;
@@ -342,7 +347,7 @@ userInputParameters<dim>::assign_nonlinear_solve_parameters(
           nonlinear_solve_parameters.nonlinear_solve[index].step_length =
             parameter_handler.get_double("step size");
 
-          // TODO: Implement backtracking line search
+          // TODO (landinjm): Implement backtracking line search
 
           parameter_handler.leave_subsection();
         }

@@ -403,7 +403,6 @@ matrixFreeOperator<dim, degree, number>::initialize_dof_vector(
   VectorType  &dst,
   unsigned int dof_handler_index) const
 {
-  // TODO: This won't work because we have to specify which field (DoFHandler) to use
   data->initialize_dof_vector(dst, dof_handler_index);
 }
 

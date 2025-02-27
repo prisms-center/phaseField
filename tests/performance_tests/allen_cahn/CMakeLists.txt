@@ -15,7 +15,7 @@ include_directories(${CMAKE_SOURCE_DIR}/../../../src)
 include_directories(${CMAKE_SOURCE_DIR})
 
 # Set the location of the main.cc file
-set(TARGET_SRC "${CMAKE_SOURCE_DIR}/../main.cc")
+set(TARGET_SRC "${CMAKE_SOURCE_DIR}/../../../src/main.cc")
 
 # Set targets & link libraries for the build type
 if(${PRISMS_PF_BUILD_DEBUG} STREQUAL "ON")

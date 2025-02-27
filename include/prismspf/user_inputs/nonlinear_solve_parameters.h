@@ -5,6 +5,7 @@
 #define nonlinear_solve_parameters_h
 
 #include <prismspf/config.h>
+#include <prismspf/core/types.h>
 #include <prismspf/user_inputs/linear_solve_parameters.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -19,7 +20,7 @@ public:
   mutable double step_length = 1.0;
 
   // Max number of iterations for the nonlinear solve
-  unsigned int max_iterations = 100;
+  unsigned int max_iterations = defaults::iterations;
 };
 
 /**

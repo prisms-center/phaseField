@@ -6,26 +6,21 @@ Checks: >
   bugprone-*,
   -bugprone-easily-swappable-parameters,
   cert-*,
+  clang-analyzer-*,
   cppcoreguidelines-*,
-  -cppcoreguidelines-avoid-const-or-ref-data-members,
-  -cppcoreguidelines-non-private-member-variables-in-classes,
-  -cppcoreguidelines-avoid-magic-numbers,
-  -cppcoreguidelines-owning-memory,
-  -cppcoreguidelines-special-member-functions,
+  google-*,
   hicpp-*,
-  -hicpp-special-member-functions,
   misc-*,
-  -misc-non-private-member-variables-in-classes,
   modernize-*,
   -modernize-use-trailing-return-type,
-  -modernize-pass-by-value,
   mpi-*,
   performance-*,
+  portability-*,
   readability-*,
-  -readability-else-after-return,
-  -readability-identifier-length,
-  -readability-magic-numbers,
   -readability-convert-member-functions-to-static,
-  -readability-function-cognitive-complexity,
+
+CheckOptions:
+  - key: readability-function-cognitive-complexity.IgnoreMacros
+    value: 'true'
 
 WarningsAsErrors: '*'
