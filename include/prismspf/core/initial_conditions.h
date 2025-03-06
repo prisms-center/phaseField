@@ -94,7 +94,8 @@ public:
                         const unsigned int       &component,
                         const dealii::Point<dim> &point,
                         double                   &scalar_value,
-                        double                   &vector_component_value) const;
+                        double                   &vector_component_value
+                        const dealii::userInputParameters<dim> &user_inputs) const;
 };
 
 PRISMS_PF_END_NAMESPACE
