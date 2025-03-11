@@ -95,7 +95,7 @@ public:
                         const dealii::Point<dim> &point,
                         double                   &scalar_value,
                         double                   &vector_component_value
-                        const dealii::userInputParameters<dim> &user_inputs) const;
+                        const userInputParameters<dim> &user_inputs) const;
 };
 
 PRISMS_PF_END_NAMESPACE
