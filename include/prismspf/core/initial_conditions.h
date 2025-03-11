@@ -94,7 +94,7 @@ public:
                         const unsigned int       &component,
                         const dealii::Point<dim> &point,
                         double                   &scalar_value,
-                        double                   &vector_component_value
+                        double                   &vector_component_value,
                         const userInputParameters<dim> &user_inputs) const;
 };
 
