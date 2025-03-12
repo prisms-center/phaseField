@@ -23,7 +23,7 @@ After deal.II and PRISMS-PF are downloaded, you can run the pre-built PRISMS-PF 
 - grainGrowth_dream3D: An implementation of coupled Allen-Cahn equations simulating grain growth in two dimensions with an initial microstructure imported from Dream3D. (2D)
 - precipiateEvolution: An implementation of the coupled Cahn-Hilliard/Allen-Cahn/Linear Elasticity equations often used in phase field simulation of precipitate evolution. (2D)
 - precipiateEvolution_pfunction: Like precipitateEvolution, but loads inputs using PRISMS IntegrationTools. (2D)
-- MgNd_precipitate_single_Bppp: Similar to precipiateEvolution, but uses the KKS model rather than the WBM model for the free energy functional. The parameters are set for \f$\beta\f$''' precipitates in an Mg-Nd alloy from [this publication](https://www.sciencedirect.com/science/article/pii/S1359645417305281). (3D)
+- MgNd_precipitate_single_Bppp: Similar to precipiateEvolution, but uses the KKS model rather than the WBM model for the free energy functional. The parameters are set for $\beta$''' precipitates in an Mg-Nd alloy from [this publication](https://www.sciencedirect.com/science/article/pii/S1359645417305281). (3D)
 - nucleationModel: KKS precipitation model that makes use of the PRISMS-PF explicit nucleation capabilities. (2D)
 - nucleationModel_preferential: Like nucleationModel, but with a zone with an increased nucleation rate to simulate a grain boundary. (2D)
 
