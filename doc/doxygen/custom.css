@@ -19,7 +19,7 @@ body {
 }
 
 #nav-tree {
-  background-color: #dae2ea;
+  background-color: #042b52;
   color: #fff;
   padding: 10px;
 }
@@ -30,7 +30,7 @@ body {
 }
 
 #nav-tree a:hover {
-  color: #1abc9c;
+  color: #1a25bc;
 }
 
 .contents {
