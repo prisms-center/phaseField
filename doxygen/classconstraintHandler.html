@@ -117,22 +117,22 @@ std::vector&lt; const dealii::AffineConstraints&lt; double &gt; * &gt;&#160;</td
 const dealii::AffineConstraints&lt; double &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_constraint</b> (const unsigned int &amp;index) const</td></tr>
 <tr class="memdesc:a4ce44f2ef2653ed425abed2472767177"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the constraint of an index (constant reference). <br /></td></tr>
 <tr class="separator:a4ce44f2ef2653ed425abed2472767177"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90b8733ef8aa27ed870c989a5c4914be" id="r_a90b8733ef8aa27ed870c989a5c4914be"><td class="memItemLeft" align="right" valign="top"><a id="a90b8733ef8aa27ed870c989a5c4914be" name="a90b8733ef8aa27ed870c989a5c4914be"></a>
-const dealii::MGLevelObject&lt; dealii::AffineConstraints&lt; float &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_mg_constraint</b> (const unsigned int &amp;index) const</td></tr>
-<tr class="memdesc:a90b8733ef8aa27ed870c989a5c4914be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the multigrid constraints of an index (constant reference). <br /></td></tr>
-<tr class="separator:a90b8733ef8aa27ed870c989a5c4914be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45c7e2cdf2ba7a401468366bb12fac58" id="r_a45c7e2cdf2ba7a401468366bb12fac58"><td class="memItemLeft" align="right" valign="top"><a id="a45c7e2cdf2ba7a401468366bb12fac58" name="a45c7e2cdf2ba7a401468366bb12fac58"></a>
-const dealii::AffineConstraints&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_mg_level_constraint</b> (const unsigned int &amp;index, const unsigned int &amp;level) const</td></tr>
-<tr class="memdesc:a45c7e2cdf2ba7a401468366bb12fac58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the multigrid constraints of an index at a certain multigrid level (constant reference). <br /></td></tr>
-<tr class="separator:a45c7e2cdf2ba7a401468366bb12fac58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6caf1dd94f4be35941cb3d11bfcc8c5" id="r_af6caf1dd94f4be35941cb3d11bfcc8c5"><td class="memItemLeft" align="right" valign="top"><a id="af6caf1dd94f4be35941cb3d11bfcc8c5" name="af6caf1dd94f4be35941cb3d11bfcc8c5"></a>
+const dealii::MGLevelObject&lt; dealii::AffineConstraints&lt; float &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_mg_constraint</b> (unsigned int index) const</td></tr>
+<tr class="memdesc:af6caf1dd94f4be35941cb3d11bfcc8c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the multigrid constraints of an index (constant reference). <br /></td></tr>
+<tr class="separator:af6caf1dd94f4be35941cb3d11bfcc8c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d665034645be84d02a1e098336f64f1" id="r_a8d665034645be84d02a1e098336f64f1"><td class="memItemLeft" align="right" valign="top"><a id="a8d665034645be84d02a1e098336f64f1" name="a8d665034645be84d02a1e098336f64f1"></a>
+const dealii::AffineConstraints&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_mg_constraint</b> (unsigned int index, unsigned int level) const</td></tr>
+<tr class="memdesc:a8d665034645be84d02a1e098336f64f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the multigrid constraints of an index at a certain multigrid level (constant reference). <br /></td></tr>
+<tr class="separator:a8d665034645be84d02a1e098336f64f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab779b0b317f40b082e3a420d0872b8e2" id="r_ab779b0b317f40b082e3a420d0872b8e2"><td class="memItemLeft" align="right" valign="top"><a id="ab779b0b317f40b082e3a420d0872b8e2" name="ab779b0b317f40b082e3a420d0872b8e2"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>make_constraints</b> (const dealii::Mapping&lt; dim &gt; &amp;mapping, const std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; &amp;dof_handlers)</td></tr>
 <tr class="memdesc:ab779b0b317f40b082e3a420d0872b8e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make constraints based on the inputs of the constructor. <br /></td></tr>
 <tr class="separator:ab779b0b317f40b082e3a420d0872b8e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a373f83711f3628c18f6a926b21be2421" id="r_a373f83711f3628c18f6a926b21be2421"><td class="memItemLeft" align="right" valign="top"><a id="a373f83711f3628c18f6a926b21be2421" name="a373f83711f3628c18f6a926b21be2421"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>make_mg_constraints</b> (const dealii::Mapping&lt; dim &gt; &amp;mapping, const std::vector&lt; dealii::MGLevelObject&lt; dealii::DoFHandler&lt; dim &gt; &gt; * &gt; &amp;dof_handlers)</td></tr>
-<tr class="memdesc:a373f83711f3628c18f6a926b21be2421"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make multigrid constraints based on the inputs of the constructor. <br /></td></tr>
-<tr class="separator:a373f83711f3628c18f6a926b21be2421"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd03d7a57946c62023351ec40a03126b" id="r_afd03d7a57946c62023351ec40a03126b"><td class="memItemLeft" align="right" valign="top"><a id="afd03d7a57946c62023351ec40a03126b" name="afd03d7a57946c62023351ec40a03126b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>make_mg_constraints</b> (const dealii::Mapping&lt; dim &gt; &amp;mapping, const std::map&lt; unsigned int, dealii::MGLevelObject&lt; dealii::DoFHandler&lt; dim &gt; &gt; &gt; &amp;mg_dof_handlers)</td></tr>
+<tr class="memdesc:afd03d7a57946c62023351ec40a03126b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make multigrid constraints based on the inputs of the constructor. <br /></td></tr>
+<tr class="separator:afd03d7a57946c62023351ec40a03126b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;int dim&gt;<br />
