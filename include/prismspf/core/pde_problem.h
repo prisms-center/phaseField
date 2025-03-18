@@ -286,6 +286,7 @@ PDEProblem<dim, degree>::init_system()
   // Create the constraints
   conditionalOStreams::pout_base() << "creating constraints...\n" << std::flush;
   constraint_handler.make_constraints(mapping, dof_handler.get_dof_handlers());
+  constraint_handler.make_mg_constraints(mapping, dof_handler.get_mg_dof_handlers());
 
   // Reinit the matrix-free objects
   conditionalOStreams::pout_base() << "initializing matrix-free objects...\n"

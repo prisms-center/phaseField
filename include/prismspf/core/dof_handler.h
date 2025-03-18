@@ -43,6 +43,13 @@ public:
   get_dof_handlers() const;
 
   /**
+   * \brief Getter function for the multigrid DoFHandlers (constant reference).
+   */
+  [[nodiscard]] const std::map<unsigned int,
+                               dealii::MGLevelObject<dealii::DoFHandler<dim>>> &
+  get_mg_dof_handlers() const;
+
+  /**
    * \brief Getter function for the DoFHandler at a certain field and multigrid level
    * (constant reference).
    */
