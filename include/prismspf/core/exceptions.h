@@ -7,25 +7,31 @@
 #include <deal.II/base/exceptions.h>
 
 #include <prismspf/config.h>
-#include <prismspf/types.h>
+#include <prismspf/core/types.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-// NOLINTBEGIN(hicpp-explicit-conversions)
-
-// NOLINTBEGIN(cppcoreguidelines-macro-usage)
-
 /**
- * Macro for deal.II AssertThrow that is only valid in DEBUG mode. This is used to throw
- * and error that can be caught by catch2 while not bloating code in release mode.
+ * Function for deal.II AssertThrow that is only valid in DEBUG mode. This is used to
+ * throw and error that can be caught by catch2 while not bloating code in release mode.
  */
 #ifdef DEBUG
-#  define AssertThrowDebug(cond, exc) AssertThrow(cond, exc)
+template <typename Condition, typename Exception>
+constexpr void
+AssertThrowDebug(const Condition &cond, const Exception &exc)
+{
+  AssertThrow(cond, exc);
+}
 #else
-#  define AssertThrowDebug(cond, exc)
+template <typename Condition, typename Exception>
+constexpr void
+AssertThrowDebug(const Condition &, const Exception &)
+{
+  // Do nothing in release mode
+}
 #endif
 
-// NOLINTEND(cppcoreguidelines-macro-usage)
+// NOLINTBEGIN
 
 /**
  * Exception for parts of the library that have yet to be implemented yet. The argument is
@@ -56,7 +62,7 @@ DeclException2(DependencyNotFound,
                << " and dependency type " << arg2
                << " that was not marked as needed. Please check customAttributeLoader.");
 
-// NOLINTEND(hicpp-explicit-conversions)
+// NOLINTEND
 
 PRISMS_PF_END_NAMESPACE
 

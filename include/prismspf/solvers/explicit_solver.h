@@ -175,13 +175,10 @@ explicitSolver<dim, degree>::solve()
     }
 
   // Compute the update
-  CALI_MARK_BEGIN("Explicit compute update");
   this->system_matrix->compute_explicit_update(new_solution_subset, solution_subset);
-  CALI_MARK_END("Explicit compute update");
 
   // Scale the update by the respective (SCALAR/VECTOR) invm. Note that we do this with
   // the original solution set to avoid some messy mapping.
-  CALI_MARK_BEGIN("Explicit scale solution");
   for (auto [index, vector] : this->solution_handler.new_solution_set)
     {
       if (this->subset_attributes.find(index) != this->subset_attributes.end())
@@ -189,15 +186,11 @@ explicitSolver<dim, degree>::solve()
           vector->scale(this->invm_handler.get_invm(index));
         }
     }
-  CALI_MARK_END("Explicit scale solution");
 
   // Update the solutions
-  CALI_MARK_BEGIN("Explicit update solution");
   this->solution_handler.update(fieldSolveType::EXPLICIT);
-  CALI_MARK_END("Explicit update solution");
 
   // Apply constraints
-  CALI_MARK_BEGIN("Explicit apply constraints");
   for (auto &[pair, vector] : this->solution_handler.solution_set)
     {
       if (this->subset_attributes.find(pair.first) == this->subset_attributes.end())
@@ -206,7 +199,6 @@ explicitSolver<dim, degree>::solve()
         }
       this->constraint_handler.get_constraint(pair.first).distribute(*vector);
     }
-  CALI_MARK_END("Explicit apply constraints");
 }
 
 PRISMS_PF_END_NAMESPACE

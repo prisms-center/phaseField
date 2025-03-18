@@ -1,6 +1,8 @@
 #ifndef prisms_pf_config_h
 #define prisms_pf_config_h
 
+// TODO (landinjm): Remove the no lint and change how template instantiations are done
+
 // NOLINTBEGIN
 
 #cmakedefine PRISMS_PF_SOURCE_DIR "@PRISMS_PF_SOURCE_DIR@"
@@ -9,6 +11,9 @@
 #cmakedefine PRISMS_PF_WITH_ZLIB
 #cmakedefine PRISMS_PF_WITH_SUNDIALS
 #cmakedefine PRISMS_PF_WITH_CALIPER
+
+// Flags for enabling and disabling certain features
+#cmakedefine ADDITIONAL_OPTIMIZATIONS
 
 // Macros for opening and closing prisms namespace
 #define PRISMS_PF_BEGIN_NAMESPACE \
@@ -41,60 +46,33 @@
   template class class_name<1, 1, float>;    \
   template class class_name<1, 2, float>;    \
   template class class_name<1, 3, float>;    \
-  template class class_name<1, 4, float>;    \
-  template class class_name<1, 5, float>;    \
-  template class class_name<1, 6, float>;    \
   template class class_name<1, 1, double>;   \
   template class class_name<1, 2, double>;   \
   template class class_name<1, 3, double>;   \
-  template class class_name<1, 4, double>;   \
-  template class class_name<1, 5, double>;   \
-  template class class_name<1, 6, double>;   \
   template class class_name<2, 1, float>;    \
   template class class_name<2, 2, float>;    \
   template class class_name<2, 3, float>;    \
-  template class class_name<2, 4, float>;    \
-  template class class_name<2, 5, float>;    \
-  template class class_name<2, 6, float>;    \
   template class class_name<2, 1, double>;   \
   template class class_name<2, 2, double>;   \
   template class class_name<2, 3, double>;   \
-  template class class_name<2, 4, double>;   \
-  template class class_name<2, 5, double>;   \
-  template class class_name<2, 6, double>;   \
   template class class_name<3, 1, float>;    \
   template class class_name<3, 2, float>;    \
   template class class_name<3, 3, float>;    \
-  template class class_name<3, 4, float>;    \
-  template class class_name<3, 5, float>;    \
-  template class class_name<3, 6, float>;    \
   template class class_name<3, 1, double>;   \
   template class class_name<3, 2, double>;   \
-  template class class_name<3, 3, double>;   \
-  template class class_name<3, 4, double>;   \
-  template class class_name<3, 5, double>;   \
-  template class class_name<3, 6, double>;
+  template class class_name<3, 3, double>;
 
 // Macro for template instantations with <dim, degree>
 #define INSTANTIATE_BI_TEMPLATE(class_name) \
   template class class_name<1, 1>;          \
   template class class_name<1, 2>;          \
   template class class_name<1, 3>;          \
-  template class class_name<1, 4>;          \
-  template class class_name<1, 5>;          \
-  template class class_name<1, 6>;          \
   template class class_name<2, 1>;          \
   template class class_name<2, 2>;          \
   template class class_name<2, 3>;          \
-  template class class_name<2, 4>;          \
-  template class class_name<2, 5>;          \
-  template class class_name<2, 6>;          \
   template class class_name<3, 1>;          \
   template class class_name<3, 2>;          \
-  template class class_name<3, 3>;          \
-  template class class_name<3, 4>;          \
-  template class class_name<3, 5>;          \
-  template class class_name<3, 6>;
+  template class class_name<3, 3>;
 
 // Macro for template instantations with <dim>
 #define INSTANTIATE_UNI_TEMPLATE(class_name) \

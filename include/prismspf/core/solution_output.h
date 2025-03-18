@@ -78,12 +78,14 @@ solutionOutput<dim, number>::solutionOutput(const VectorType               &solu
   flags.cycle               = user_inputs.temporal_discretization.increment;
   flags.print_date_and_time = true;
 #ifdef PRISMS_PF_WITH_ZLIB
+  // TODO (landinjm): Make this a user input parameter so they can select between
+  // compression levels. Best speed can be the default
   flags.compression_level = dealii::DataOutBase::CompressionLevel::best_speed;
 #endif
   data_out.set_flags(flags);
 
-  // Write to file based on the user input. TODO: actually write stuff according to user
-  // input.
+  // Write to file based on the user input.
+  // TODO (landinjm): actually write stuff according to user input.
   data_out.write_vtu_with_pvtu_record("./",
                                       name,
                                       user_inputs.temporal_discretization.increment,
@@ -147,8 +149,8 @@ solutionOutput<dim, number>::solutionOutput(
 #endif
   data_out.set_flags(flags);
 
-  // Write to file based on the user input. TODO: actually write stuff according to user
-  // input.
+  // Write to file based on the user input.
+  // TODO (landinjm): actually write stuff according to user input.
   data_out.write_vtu_with_pvtu_record("./",
                                       name,
                                       user_inputs.temporal_discretization.increment,

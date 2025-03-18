@@ -1,40 +1,48 @@
 Using the input parameter file: parameters.prm
 Number of constants: 2
 Number of variables: 3
-number of degrees of freedom: 198147
-Iteration: 1000
-  Solution index 2 type NORMAL l2-norm: 9.65062
-  Solution index 1 type NORMAL l2-norm: 20.1584
-  Solution index 0 type NORMAL l2-norm: 210.966
+number of processes: 1
+vectorization over 2 doubles = 128 bits (SSE2)
+creating FESystem...
+creating triangulation...
+creating DoFHandlers...
+  number of degrees of freedom: 49923
+creating constraints...
+initializing matrix-free objects...
+initializing solution set...
+initializing invm...
+initializing element volumes...
+initializing solvers...
+solving auxiliary variables in 0th timestep...
+solving linear time-independent variables in 0th timestep...
+solving self-nonlinear time-independent variables in 0th timestep...
+solving postprocessed variables in 0th timestep...
+outputting initial condition...
 
-Iteration: 2000
-  Solution index 2 type NORMAL l2-norm: 9.23081
-  Solution index 1 type NORMAL l2-norm: 19.1879
-  Solution index 0 type NORMAL l2-norm: 213.597
+Iteration: 300
+  Solution index 2 type NORMAL l2-norm: 3.81206
+  Solution index 1 type NORMAL l2-norm: 8.39936
+  Solution index 0 type NORMAL l2-norm: 115.028
 
-Iteration: 3000
-  Solution index 2 type NORMAL l2-norm: 9.03234
-  Solution index 1 type NORMAL l2-norm: 18.3898
-  Solution index 0 type NORMAL l2-norm: 216
+Iteration: 600
+  Solution index 2 type NORMAL l2-norm: 3.69065
+  Solution index 1 type NORMAL l2-norm: 8.12353
+  Solution index 0 type NORMAL l2-norm: 115.825
 
-Iteration: 4000
-  Solution index 2 type NORMAL l2-norm: 8.76189
-  Solution index 1 type NORMAL l2-norm: 17.3322
-  Solution index 0 type NORMAL l2-norm: 218.54
+Iteration: 900
+  Solution index 2 type NORMAL l2-norm: 3.61509
+  Solution index 1 type NORMAL l2-norm: 7.91317
+  Solution index 0 type NORMAL l2-norm: 116.492
 
-Iteration: 5000
-  Solution index 2 type NORMAL l2-norm: 8.6999
-  Solution index 1 type NORMAL l2-norm: 16.9118
-  Solution index 0 type NORMAL l2-norm: 219.773
+Iteration: 1200
+  Solution index 2 type NORMAL l2-norm: 3.53943
+  Solution index 1 type NORMAL l2-norm: 7.73138
+  Solution index 0 type NORMAL l2-norm: 117.123
 
+Iteration: 1500
+  Solution index 2 type NORMAL l2-norm: 3.45866
+  Solution index 1 type NORMAL l2-norm: 7.56697
+  Solution index 0 type NORMAL l2-norm: 117.734
 
-
-+---------------------------------------------+------------+------------+
-| Total wallclock time elapsed since start    |      29.2s |            |
-|                                             |            |            |
-| Section                         | no. calls |  wall time | % of total |
-+---------------------------------+-----------+------------+------------+
-| Initialization                  |         1 |     0.525s |       1.8% |
-| Solve Increment                 |      5000 |      27.8s |        95% |
-+---------------------------------+-----------+------------+------------+
-
+Serial: Initialization - 0.0990035s (0.0990035s/call, 1 calls)
+Serial: Solve Increment - 0.299042s (0.000199361s/call, 1500 calls)

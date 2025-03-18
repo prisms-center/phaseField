@@ -4,9 +4,12 @@
 #include <deal.II/distributed/tria.h>
 #include <deal.II/grid/grid_generator.h>
 #include <deal.II/grid/grid_out.h>
+#include <deal.II/grid/grid_refinement.h>
 #include <deal.II/grid/grid_tools.h>
 #include <deal.II/grid/tria.h>
 #include <deal.II/grid/tria_accessor.h>
+#include <deal.II/multigrid/mg_coarse.h>
+#include <deal.II/multigrid/mg_transfer_global_coarsening.h>
 
 #include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
@@ -23,19 +26,18 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <int dim>
 triangulationHandler<dim>::triangulationHandler(
   const userInputParameters<dim> &_user_inputs)
-  : user_inputs(_user_inputs)
+  : user_inputs(&_user_inputs)
 {
   if constexpr (dim == 1)
     {
-      triangulation = std::make_unique<dealii::Triangulation<dim>>(
+      triangulation = std::make_shared<dealii::Triangulation<dim>>(
         dealii::Triangulation<dim>::limit_level_difference_at_vertices);
     }
   else
     {
-      triangulation = std::make_unique<dealii::parallel::distributed::Triangulation<dim>>(
+      triangulation = std::make_shared<dealii::parallel::distributed::Triangulation<dim>>(
         MPI_COMM_WORLD,
-        dealii::Triangulation<dim>::limit_level_difference_at_vertices,
-        dealii::parallel::distributed::Triangulation<dim>::construct_multigrid_hierarchy);
+        dealii::Triangulation<dim>::limit_level_difference_at_vertices);
     }
 }
 
@@ -43,36 +45,85 @@ template <int dim>
 const typename triangulationHandler<dim>::Triangulation &
 triangulationHandler<dim>::get_triangulation() const
 {
+  Assert(triangulation != nullptr, dealii::ExcNotInitialized());
   return *triangulation;
+}
+
+template <int dim>
+const std::vector<std::shared_ptr<const dealii::Triangulation<dim>>> &
+triangulationHandler<dim>::get_mg_triangulation() const
+{
+  Assert(has_multigrid, dealii::ExcNotInitialized());
+  Assert(!coarsened_triangulations.empty(), dealii::ExcNotInitialized());
+  return coarsened_triangulations;
+}
+
+template <int dim>
+const dealii::Triangulation<dim> &
+triangulationHandler<dim>::get_mg_triangulation(unsigned int level) const
+{
+  Assert(has_multigrid, dealii::ExcNotInitialized());
+  Assert(!coarsened_triangulations.empty(), dealii::ExcNotInitialized());
+  Assert(coarsened_triangulations.size() >= level,
+         dealii::ExcMessage(
+           "The coarse triangulation set does not contain that specified level"));
+  return *coarsened_triangulations[level];
 }
 
 template <int dim>
 unsigned int
 triangulationHandler<dim>::get_n_global_levels() const
 {
+  Assert(triangulation != nullptr, dealii::ExcNotInitialized());
   return triangulation->n_global_levels();
+}
+
+template <int dim>
+unsigned int
+triangulationHandler<dim>::get_mg_min_level() const
+{
+  Assert(has_multigrid, dealii::ExcNotInitialized());
+  Assert(!coarsened_triangulations.empty(), dealii::ExcNotInitialized());
+  return min_level;
+}
+
+template <int dim>
+unsigned int
+triangulationHandler<dim>::get_mg_max_level() const
+{
+  Assert(has_multigrid, dealii::ExcNotInitialized());
+  Assert(!coarsened_triangulations.empty(), dealii::ExcNotInitialized());
+  return max_level;
 }
 
 template <int dim>
 void
 triangulationHandler<dim>::generate_mesh()
 {
-  if (user_inputs.spatial_discretization.radius != 0.0)
+  // TODO (landinjm): Add more generality in selecting mesh types
+  if (user_inputs->spatial_discretization.radius != 0.0)
     {
-      // TODO: Adding assertion about periodic boundary conditions for spheres
+      // TODO (landinjm): Adding assertion about periodic boundary conditions for spheres
       // Generate a sphere
+
+      // TODO (landinjm): Add assertion that the user cannot specify multiple boundary
+      // conditions for a hyper_ball geometry
       dealii::GridGenerator::hyper_ball(*triangulation,
                                         dealii::Point<dim>(),
-                                        user_inputs.spatial_discretization.radius);
+                                        user_inputs->spatial_discretization.radius);
     }
   else
     {
+      // TODO (landinjm): Add assertions about periodic boundary conditions for
+      // rectangular domains here. Not sure whether it is better to check for assertions
+      // here or when we parse user inputs.
+
       // Generate rectangle
       dealii::GridGenerator::subdivided_hyper_rectangle(
         *triangulation,
-        user_inputs.spatial_discretization.subdivisions,
+        user_inputs->spatial_discretization.subdivisions,
         dealii::Point<dim>(),
-        dealii::Point<dim>(user_inputs.spatial_discretization.size));
+        dealii::Point<dim>(user_inputs->spatial_discretization.size));
 
       // Mark boundaries. This is done before global refinement to reduce the number of
       // cells we have to loop through.
@@ -82,13 +133,53 @@ triangulationHandler<dim>::generate_mesh()
       mark_periodic();
     }
 
-    // Output triangulation to vtk if in debug mode
+    // TODO (landinjm): This be better as a combination of a parameter flag and debug
+    // mode. Output triangulation to vtk if in debug mode
 #ifdef DEBUG
   export_triangulation_as_vtk("triangulation");
 #endif
 
   // Global refinement
-  triangulation->refine_global(user_inputs.spatial_discretization.global_refinement);
+  triangulation->refine_global(user_inputs->spatial_discretization.global_refinement);
+
+  // Create the triangulations for the coarser levels if we have at least one instance of
+  // multigrid for any of the fields
+  for (const auto &[index, linear_solver_parameters] :
+       user_inputs->linear_solve_parameters.linear_solve)
+    {
+      if (linear_solver_parameters.preconditioner == preconditionerType::GMG)
+        {
+          has_multigrid = true;
+        }
+    }
+
+  if (!has_multigrid)
+    {
+      return;
+    }
+
+  Assert(triangulation->n_global_levels() > 1,
+         dealii::ExcMessage(
+           "Multigrid preconditioners require multilevel triangulations"));
+
+  coarsened_triangulations =
+    dealii::MGTransferGlobalCoarseningTools::create_geometric_coarsening_sequence(
+      *triangulation);
+
+  // TODO (landinjm): p-multigrid
+
+  // Set the maximum and minimum levels for the multigrid based on the triangulation.
+  min_level = 0; // TODO (landinjm): This should be set based on the user inputs
+  max_level = coarsened_triangulations.size() - 1;
+}
+
+template <int dim>
+void
+triangulationHandler<dim>::adaptively_refine_mesh(solutionHandler<dim> &solution_handler)
+{
+  AssertThrow(false, FeatureNotImplemented("Adaptive mesh refinement"));
+  // TODO (landinjm): Implement adaptive mesh refinement
+  (void) solution_handler;
 }
 
 template <int dim>
@@ -105,7 +196,7 @@ template <int dim>
 void
 triangulationHandler<dim>::mark_boundaries() const
 {
-  double tolerance = 1e-12;
+  const double tolerance = 1e-12;
 
   // Loop through the cells
   for (const auto &cell : triangulation->active_cell_iterators())
@@ -125,7 +216,7 @@ triangulationHandler<dim>::mark_boundaries() const
             }
           // Mark the boundary id for x=max, y=max, z=max
           else if (std::fabs(cell->face(face_number)->center()(direction) -
-                             (user_inputs.spatial_discretization.size[direction])) <
+                             (user_inputs->spatial_discretization.size[direction])) <
                    tolerance)
             {
               cell->face(face_number)->set_boundary_id(face_number);
@@ -141,7 +232,7 @@ triangulationHandler<dim>::mark_periodic()
   // Add periodicity in the triangulation where specified in the boundary conditions. Note
   // that if one field is periodic all others should be as well.
   for (const auto &[index, boundary_condition] :
-       user_inputs.boundary_parameters.boundary_condition_list)
+       user_inputs->boundary_parameters.boundary_condition_list)
     {
       for (const auto &[component, condition] : boundary_condition)
         {

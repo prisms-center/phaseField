@@ -15,12 +15,8 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-// NOLINTBEGIN
-
 std::ofstream conditionalOStreams::summary_log_file("summary.log",
                                                     std::ios::out | std::ios::trunc);
-
-// NOLINTEND
 
 dealii::ConditionalOStream &
 conditionalOStreams::pout_summary()

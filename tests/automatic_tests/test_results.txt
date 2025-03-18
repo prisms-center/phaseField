@@ -60,3 +60,96 @@ Time: 0.2895970344543457
  
 Tests Passed: 5/5
 --------------------------------------------------------- 
+--------------------------------------------------------- 
+Regression test on 2025-03-13 11:28
+Architecture: x86_64
+Model name: AMD Ryzen 9 7900X 12-Core Processor
+CPU(s): 24
+CPU max/min MHz: 4701.0000, 0.0000
+Hypervisor vendor: Windows Subsystem for Linux
+Number of processes: 1
+--------------------------------------------------------- 
+Application: allen_cahn_explicit
+Result: Pass
+Time: 3.972020387649536
+ 
+Application: allen_cahn_implicit
+Result: Pass
+Time: 46.3747022151947
+ 
+Application: cahn_hilliard_explicit
+Result: Pass
+Time: 30.518799304962158
+ 
+Application: heat_equation_steady_state
+Result: Pass
+Time: 0.3217480182647705
+ 
+Application: poisson
+Result: Pass
+Time: 0.39566564559936523
+ 
+Tests Passed: 5/5
+--------------------------------------------------------- 
+--------------------------------------------------------- 
+Regression test on 2025-03-17 10:08
+Architecture: x86_64
+Model name: AMD Ryzen 9 7900X 12-Core Processor
+CPU(s): 24
+CPU max/min MHz: 4701.0000, 0.0000
+Hypervisor vendor: Windows Subsystem for Linux
+Number of processes: 1
+--------------------------------------------------------- 
+Application: allen_cahn_explicit
+Result: Pass
+Time: 5.4006125926971436
+ 
+Application: allen_cahn_implicit
+Result: Pass
+Time: 45.25198030471802
+ 
+Application: cahn_hilliard_explicit
+Result: Pass
+Time: 30.47153377532959
+ 
+Application: heat_equation_steady_state
+Result: Pass
+Time: 0.3563358783721924
+ 
+Application: poisson
+Result: Pass
+Time: 0.37386178970336914
+ 
+Tests Passed: 5/5
+--------------------------------------------------------- 
+--------------------------------------------------------- 
+Regression test on 2025-03-17 14:46
+Architecture: x86_64
+Model name: AMD Ryzen 9 7900X 12-Core Processor
+CPU(s): 24
+CPU max/min MHz: 4701.0000, 0.0000
+Hypervisor vendor: Windows Subsystem for Linux
+Number of processes: 1
+--------------------------------------------------------- 
+Application: allen_cahn_explicit
+Result: New Gold Standard
+Time: 0.7263472080230713
+ 
+Application: allen_cahn_implicit
+Result: New Gold Standard
+Time: 4.478261470794678
+ 
+Application: cahn_hilliard_explicit
+Result: New Gold Standard
+Time: 4.714993715286255
+ 
+Application: heat_equation_steady_state
+Result: Pass
+Time: 0.2875378131866455
+ 
+Application: poisson
+Result: Pass
+Time: 0.3625800609588623
+ 
+Tests Passed: 5/5
+--------------------------------------------------------- 

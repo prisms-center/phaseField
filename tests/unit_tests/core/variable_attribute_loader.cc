@@ -1,12 +1,15 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
+#include <prismspf/config.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attribute_loader.h>
 
 #include "catch.hpp"
 
 #include <string>
+
+PRISMS_PF_BEGIN_NAMESPACE
 
 /**
  * This unit tests looks at variable_attributes.h and variable_attribute_loader.h and how
@@ -356,3 +359,5 @@ TEST_CASE("Invalid dependencies")
     REQUIRE_THROWS(attributes.init_variable_attributes());
   }
 }
+
+PRISMS_PF_END_NAMESPACE

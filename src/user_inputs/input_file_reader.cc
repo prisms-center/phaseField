@@ -264,12 +264,11 @@ inputFileReader::get_model_constant_names()
             }
 
           // Add it to the list
-          AssertThrow(
-            entry_name_end_list.insert(entry).second,
-            dealii::ExcMessage(
-              "PRISMS-PF Error: Non-unique constant name in parameters.prm. The "
-              "constant that you attempted to create was \"" +
-              entry + "\"."));
+          AssertThrow(entry_name_end_list.insert(entry).second,
+                      dealii::ExcMessage(
+                        "Non-unique constant name in parameters.prm. The constant that "
+                        "you attempted to create was \"" +
+                        entry + "\"."));
         }
     }
   return entry_name_end_list;
