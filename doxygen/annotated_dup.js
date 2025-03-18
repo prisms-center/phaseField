@@ -1,5 +1,8 @@
 var annotated_dup =
 [
+    [ "GridRefinement", null, [
+      [ "RefinementCriterion", "classGridRefinement_1_1RefinementCriterion.html", "classGridRefinement_1_1RefinementCriterion" ]
+    ] ],
     [ "boundaryCondition", "structboundaryCondition.html", "structboundaryCondition" ],
     [ "boundaryParameters", "structboundaryParameters.html", "structboundaryParameters" ],
     [ "checkpointParameters", "structcheckpointParameters.html", "structcheckpointParameters" ],
@@ -38,7 +41,6 @@ var annotated_dup =
     [ "pairHash", "structpairHash.html", null ],
     [ "parseCMDOptions", "classparseCMDOptions.html", null ],
     [ "PDEProblem", "classPDEProblem.html", "classPDEProblem" ],
-    [ "RefinementCriterion", "classRefinementCriterion.html", "classRefinementCriterion" ],
     [ "solutionHandler", "classsolutionHandler.html", "classsolutionHandler" ],
     [ "solutionOutput", "classsolutionOutput.html", "classsolutionOutput" ],
     [ "spatialDiscretization", "structspatialDiscretization.html", "structspatialDiscretization" ],

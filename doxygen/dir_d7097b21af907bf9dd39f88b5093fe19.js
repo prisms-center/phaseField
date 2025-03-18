@@ -6,6 +6,5 @@ var dir_d7097b21af907bf9dd39f88b5093fe19 =
     [ "nucleation", "dir_cce3571c19e1460ab7bfdfaca6a2c71d.html", "dir_cce3571c19e1460ab7bfdfaca6a2c71d" ],
     [ "solvers", "dir_1b89f3ef2cea2c4e7a7e310b8e37f1bd.html", "dir_1b89f3ef2cea2c4e7a7e310b8e37f1bd" ],
     [ "user_inputs", "dir_8e29679e8d9320f4689771ebd9c97198.html", "dir_8e29679e8d9320f4689771ebd9c97198" ],
-    [ "types.h", "types_8h_source.html", null ],
-    [ "utilities.h", "utilities_8h_source.html", null ]
+    [ "utilities", "dir_db21045c204ec69458cba4d9d7ba76a8.html", "dir_db21045c204ec69458cba4d9d7ba76a8" ]
 ];

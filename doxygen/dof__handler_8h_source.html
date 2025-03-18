@@ -105,49 +105,57 @@ $(document).ready(function(){initNavTree('dof__handler_8h_source.html',''); init
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#ifndef dof_handler_h</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#define dof_handler_h</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;deal.II/dofs/dof_handler.h&gt;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;deal.II/fe/fe_system.h&gt;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;prismspf/core/triangulation_handler.h&gt;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;prismspf/user_inputs/user_input_parameters.h&gt;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;map&gt;</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>PRISMS_PF_BEGIN_NAMESPACE</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim&gt;</div>
-<div class="foldopen" id="foldopen00023" data-start="{" data-end="};">
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="classdofHandler.html">   23</a></span><span class="keyword">class </span><a class="code hl_class" href="classdofHandler.html">dofHandler</a></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>{</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="classdofHandler.html">dofHandler</a>(<span class="keyword">const</span> <a class="code hl_class" href="classuserInputParameters.html">userInputParameters&lt;dim&gt;</a> &amp;_user_inputs);</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <a class="code hl_function" href="classdofHandler.html#a00d8d3a37c6ed07e9e961f40064a74dd">~dofHandler</a>();</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <a class="code hl_function" href="classdofHandler.html#a0f94652a9343cbd9d7e6320618650ff5">init</a>(<span class="keyword">const</span> <a class="code hl_class" href="classtriangulationHandler.html">triangulationHandler&lt;dim&gt;</a>                  &amp;triangulation_handler,</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>       <span class="keyword">const</span> std::map&lt;fieldType, dealii::FESystem&lt;dim&gt;&gt; &amp;fe_system);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="classdofHandler.html#a49a94e21121f3fa47558faaa60edf488">   50</a></span>  std::vector&lt;dealii::DoFHandler&lt;dim&gt; *&gt; <a class="code hl_variable" href="classdofHandler.html#a49a94e21121f3fa47558faaa60edf488">dof_handlers</a>;</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;deal.II/base/mg_level_object.h&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;deal.II/dofs/dof_handler.h&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;deal.II/fe/fe_system.h&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;prismspf/core/triangulation_handler.h&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;prismspf/user_inputs/user_input_parameters.h&gt;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;map&gt;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim&gt;</div>
+<div class="foldopen" id="foldopen00024" data-start="{" data-end="};">
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="classdofHandler.html">   24</a></span><span class="keyword">class </span><a class="code hl_class" href="classdofHandler.html">dofHandler</a></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>{</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="classdofHandler.html">dofHandler</a>(<span class="keyword">const</span> <a class="code hl_class" href="classuserInputParameters.html">userInputParameters&lt;dim&gt;</a> &amp;_user_inputs);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keywordtype">void</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <a class="code hl_function" href="classdofHandler.html#a0f94652a9343cbd9d7e6320618650ff5">init</a>(<span class="keyword">const</span> <a class="code hl_class" href="classtriangulationHandler.html">triangulationHandler&lt;dim&gt;</a>                  &amp;triangulation_handler,</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>       <span class="keyword">const</span> std::map&lt;fieldType, dealii::FESystem&lt;dim&gt;&gt; &amp;fe_system);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  [[nodiscard]] <span class="keyword">const</span> std::vector&lt;const dealii::DoFHandler&lt;dim&gt; *&gt; &amp;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <a class="code hl_function" href="classdofHandler.html#a96be395e505d9fe04ca8b444dff6e28c">get_dof_handlers</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  [[nodiscard]] <span class="keyword">const</span> dealii::DoFHandler&lt;dim&gt; &amp;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <a class="code hl_function" href="classdofHandler.html#a76d900a8576c50427bb78cc563d4ed00">get_mg_dof_handler</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> index, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> level) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classdofHandler.html#a68028c6c74a2943d9d837108ab2b7ba2">   55</a></span>  std::vector&lt;const dealii::DoFHandler&lt;dim&gt; *&gt; <a class="code hl_variable" href="classdofHandler.html#a68028c6c74a2943d9d837108ab2b7ba2">const_dof_handlers</a>;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keyword">const</span> <a class="code hl_class" href="classuserInputParameters.html">userInputParameters&lt;dim&gt;</a> &amp;user_inputs;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>};</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keyword">const</span> <a class="code hl_class" href="classuserInputParameters.html">userInputParameters&lt;dim&gt;</a> *user_inputs;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  std::map&lt;unsigned int, std::unique_ptr&lt;dealii::DoFHandler&lt;dim&gt;&gt;&gt; dof_handlers;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  std::vector&lt;const dealii::DoFHandler&lt;dim&gt; *&gt; const_dof_handlers;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keywordtype">bool</span> has_multigrid = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  std::map&lt;unsigned int, dealii::MGLevelObject&lt;dealii::DoFHandler&lt;dim&gt;&gt;&gt; mg_dof_handlers;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>};</div>
 </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>PRISMS_PF_END_NAMESPACE</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassdofHandler_html"><div class="ttname"><a href="classdofHandler.html">dofHandler</a></div><div class="ttdoc">Class that manages the deal.II DoFHandlers.</div><div class="ttdef"><b>Definition</b> dof_handler.h:24</div></div>
-<div class="ttc" id="aclassdofHandler_html_a00d8d3a37c6ed07e9e961f40064a74dd"><div class="ttname"><a href="classdofHandler.html#a00d8d3a37c6ed07e9e961f40064a74dd">dofHandler::~dofHandler</a></div><div class="ttdeci">~dofHandler()</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition</b> dof_handler.cc:34</div></div>
-<div class="ttc" id="aclassdofHandler_html_a0f94652a9343cbd9d7e6320618650ff5"><div class="ttname"><a href="classdofHandler.html#a0f94652a9343cbd9d7e6320618650ff5">dofHandler::init</a></div><div class="ttdeci">void init(const triangulationHandler&lt; dim &gt; &amp;triangulation_handler, const std::map&lt; fieldType, dealii::FESystem&lt; dim &gt; &gt; &amp;fe_system)</div><div class="ttdoc">Initialize the DoFHandlers.</div><div class="ttdef"><b>Definition</b> dof_handler.cc:45</div></div>
-<div class="ttc" id="aclassdofHandler_html_a49a94e21121f3fa47558faaa60edf488"><div class="ttname"><a href="classdofHandler.html#a49a94e21121f3fa47558faaa60edf488">dofHandler::dof_handlers</a></div><div class="ttdeci">std::vector&lt; dealii::DoFHandler&lt; dim &gt; * &gt; dof_handlers</div><div class="ttdoc">Collection of the triangulation DoFs. The number of DoFHandlers should be equal to or less than the n...</div><div class="ttdef"><b>Definition</b> dof_handler.h:50</div></div>
-<div class="ttc" id="aclassdofHandler_html_a68028c6c74a2943d9d837108ab2b7ba2"><div class="ttname"><a href="classdofHandler.html#a68028c6c74a2943d9d837108ab2b7ba2">dofHandler::const_dof_handlers</a></div><div class="ttdeci">std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; const_dof_handlers</div><div class="ttdoc">Const copy of the dof_handlers.</div><div class="ttdef"><b>Definition</b> dof_handler.h:55</div></div>
-<div class="ttc" id="aclasstriangulationHandler_html"><div class="ttname"><a href="classtriangulationHandler.html">triangulationHandler</a></div><div class="ttdoc">This class handlers the generation and manipulation of triangulations.</div><div class="ttdef"><b>Definition</b> triangulation_handler.h:23</div></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>PRISMS_PF_END_NAMESPACE</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclassdofHandler_html"><div class="ttname"><a href="classdofHandler.html">dofHandler</a></div><div class="ttdoc">Class that manages the deal.II DoFHandlers.</div><div class="ttdef"><b>Definition</b> dof_handler.h:25</div></div>
+<div class="ttc" id="aclassdofHandler_html_a0f94652a9343cbd9d7e6320618650ff5"><div class="ttname"><a href="classdofHandler.html#a0f94652a9343cbd9d7e6320618650ff5">dofHandler::init</a></div><div class="ttdeci">void init(const triangulationHandler&lt; dim &gt; &amp;triangulation_handler, const std::map&lt; fieldType, dealii::FESystem&lt; dim &gt; &gt; &amp;fe_system)</div><div class="ttdoc">Initialize the DoFHandlers.</div><div class="ttdef"><b>Definition</b> dof_handler.cc:42</div></div>
+<div class="ttc" id="aclassdofHandler_html_a76d900a8576c50427bb78cc563d4ed00"><div class="ttname"><a href="classdofHandler.html#a76d900a8576c50427bb78cc563d4ed00">dofHandler::get_mg_dof_handler</a></div><div class="ttdeci">const dealii::DoFHandler&lt; dim &gt; &amp; get_mg_dof_handler(unsigned int index, unsigned int level) const</div><div class="ttdoc">Getter function for the DoFHandler at a certain field and multigrid level (constant reference).</div><div class="ttdef"><b>Definition</b> dof_handler.cc:131</div></div>
+<div class="ttc" id="aclassdofHandler_html_a96be395e505d9fe04ca8b444dff6e28c"><div class="ttname"><a href="classdofHandler.html#a96be395e505d9fe04ca8b444dff6e28c">dofHandler::get_dof_handlers</a></div><div class="ttdeci">const std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; &amp; get_dof_handlers() const</div><div class="ttdoc">Getter function for the DoFHandlers (constant reference).</div><div class="ttdef"><b>Definition</b> dof_handler.cc:122</div></div>
+<div class="ttc" id="aclasstriangulationHandler_html"><div class="ttname"><a href="classtriangulationHandler.html">triangulationHandler</a></div><div class="ttdoc">This class handlers the generation and manipulation of triangulations.</div><div class="ttdef"><b>Definition</b> triangulation_handler.h:24</div></div>
 <div class="ttc" id="aclassuserInputParameters_html"><div class="ttname"><a href="classuserInputParameters.html">userInputParameters</a></div><div class="ttdef"><b>Definition</b> user_input_parameters.h:22</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

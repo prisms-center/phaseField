@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>PRISMS-PF Manual: /home/runner/work/phaseField/phaseField/include/prismspf/core/element_volume.h Source File</title>
+<title>PRISMS-PF Manual: /home/runner/work/phaseField/phaseField/include/prismspf/utilities/element_volume.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -124,99 +124,96 @@ $(document).ready(function(){initNavTree('element__volume_8h_source.html',''); i
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classelementVolume.html#a5f797a6c4aee288f40eb27d9c568d6f1">   29</a></span>  <a class="code hl_function" href="classelementVolume.html#a5f797a6c4aee288f40eb27d9c568d6f1">elementVolume</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classelementVolume.html#ab786ec50124c85529c3ffbf842b56533">   34</a></span>  <a class="code hl_function" href="classelementVolume.html#ab786ec50124c85529c3ffbf842b56533">~elementVolume</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keywordtype">void</span></div>
-<div class="foldopen" id="foldopen00040" data-start="{" data-end="}">
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classelementVolume.html#a39e2e21cb38c085a2b5050b0dc774a79">   40</a></span>  <a class="code hl_function" href="classelementVolume.html#a39e2e21cb38c085a2b5050b0dc774a79">initialize</a>(std::shared_ptr&lt;dealii::MatrixFree&lt;dim, number&gt;&gt; _data);</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordtype">void</span></div>
-<div class="foldopen" id="foldopen00046" data-start="{" data-end="}">
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classelementVolume.html#a18e23b9f92f48eaabd54924663d3415b">   46</a></span>  <a class="code hl_function" href="classelementVolume.html#a18e23b9f92f48eaabd54924663d3415b">compute_element_volume</a>(<span class="keyword">const</span> dealii::FESystem&lt;dim&gt; &amp;fe);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keywordtype">void</span></div>
+<div class="foldopen" id="foldopen00035" data-start="{" data-end="}">
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classelementVolume.html#a39e2e21cb38c085a2b5050b0dc774a79">   35</a></span>  <a class="code hl_function" href="classelementVolume.html#a39e2e21cb38c085a2b5050b0dc774a79">initialize</a>(std::shared_ptr&lt;dealii::MatrixFree&lt;dim, number&gt;&gt; _data);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordtype">void</span></div>
+<div class="foldopen" id="foldopen00041" data-start="{" data-end="}">
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="classelementVolume.html#a18e23b9f92f48eaabd54924663d3415b">   41</a></span>  <a class="code hl_function" href="classelementVolume.html#a18e23b9f92f48eaabd54924663d3415b">compute_element_volume</a>(<span class="keyword">const</span> dealii::FESystem&lt;dim&gt; &amp;fe);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classelementVolume.html#a55851b1de09ed7f1a2b2573a83446e90">   46</a></span>  dealii::AlignedVector&lt;dealii::VectorizedArray&lt;number&gt;&gt; <a class="code hl_variable" href="classelementVolume.html#a55851b1de09ed7f1a2b2573a83446e90">element_volume</a>;</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="classelementVolume.html#a55851b1de09ed7f1a2b2573a83446e90">   51</a></span>  dealii::AlignedVector&lt;dealii::VectorizedArray&lt;number&gt;&gt; <a class="code hl_variable" href="classelementVolume.html#a55851b1de09ed7f1a2b2573a83446e90">element_volume</a>;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  std::shared_ptr&lt;dealii::MatrixFree&lt;dim, number&gt;&gt; data;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>};</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="keywordtype">void</span></div>
-<div class="foldopen" id="foldopen00062" data-start="{" data-end="}">
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="classelementVolume.html#a39e2e21cb38c085a2b5050b0dc774a79">   62</a></span><a class="code hl_function" href="classelementVolume.html#a39e2e21cb38c085a2b5050b0dc774a79">elementVolume&lt;dim, degree, number&gt;::initialize</a>(</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  std::shared_ptr&lt;dealii::MatrixFree&lt;dim, number&gt;&gt; _data)</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>{</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  data = _data;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>}</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  std::shared_ptr&lt;dealii::MatrixFree&lt;dim, number&gt;&gt; data;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>};</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="keywordtype">void</span></div>
+<div class="foldopen" id="foldopen00057" data-start="{" data-end="}">
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classelementVolume.html#a39e2e21cb38c085a2b5050b0dc774a79">   57</a></span><a class="code hl_function" href="classelementVolume.html#a39e2e21cb38c085a2b5050b0dc774a79">elementVolume&lt;dim, degree, number&gt;::initialize</a>(</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  std::shared_ptr&lt;dealii::MatrixFree&lt;dim, number&gt;&gt; _data)</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>{</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  data = _data;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>}</div>
 </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="keywordtype">void</span></div>
-<div class="foldopen" id="foldopen00070" data-start="{" data-end="}">
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="classelementVolume.html#a18e23b9f92f48eaabd54924663d3415b">   70</a></span><a class="code hl_function" href="classelementVolume.html#a18e23b9f92f48eaabd54924663d3415b">elementVolume&lt;dim, degree, number&gt;::compute_element_volume</a>(</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keyword">const</span> dealii::FESystem&lt;dim&gt; &amp;fe)</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>{</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="comment">// Get the number of cell batches. Note this is the same as the cell range in</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="comment">// cell_loop()</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_cells = data-&gt;n_cell_batches();</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="comment">// Resize vector</span></div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  element_volume.resize(n_cells);</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="comment">// Set quadrature rule and FEValues to update the JxW values</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  dealii::QGaussLobatto&lt;dim&gt; quadrature(degree + 1);</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  dealii::FEValues&lt;dim&gt;      fe_values(fe, quadrature, dealii::update_JxW_values);</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="comment">// Get the number of quadrature points</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> num_quad_points = quadrature.size();</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="comment">// Loop over the cells and each lane in the vectorized array</span></div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> cell = 0; cell &lt; n_cells; cell++)</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    {</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> lane = 0; lane &lt; data-&gt;n_active_entries_per_cell_batch(cell);</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>           lane++)</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        {</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>          <span class="comment">// Get the iterator for the current cell</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>          <span class="keyword">auto</span> cell_iterator = data-&gt;get_cell_iterator(cell, lane);</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>          <span class="comment">// Reinitialize the cell</span></div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>          fe_values.reinit(cell_iterator);</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>          <span class="comment">// Initialize volume to 0 for the current cell</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>          <span class="keywordtype">double</span> cell_volume = 0.0;</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>          <span class="comment">// Sum up the JxW values at each quadrature point to compute the element volume</span></div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>          <span class="comment">// in 3D or area in 2D.</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>          <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> q_point = 0; q_point &lt; num_quad_points; ++q_point)</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>            {</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>              cell_volume += fe_values.JxW(q_point);</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>            }</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>          <span class="comment">// Store the element volume</span></div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>          element_volume[cell][lane] = cell_volume;</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        }</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    }</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>}</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keywordtype">void</span></div>
+<div class="foldopen" id="foldopen00065" data-start="{" data-end="}">
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="classelementVolume.html#a18e23b9f92f48eaabd54924663d3415b">   65</a></span><a class="code hl_function" href="classelementVolume.html#a18e23b9f92f48eaabd54924663d3415b">elementVolume&lt;dim, degree, number&gt;::compute_element_volume</a>(</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keyword">const</span> dealii::FESystem&lt;dim&gt; &amp;fe)</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>{</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="comment">// Get the number of cell batches. Note this is the same as the cell range in</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="comment">// cell_loop()</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_cells = data-&gt;n_cell_batches();</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="comment">// Resize vector</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  element_volume.resize(n_cells);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="comment">// Set quadrature rule and FEValues to update the JxW values</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  dealii::QGaussLobatto&lt;dim&gt; quadrature(degree + 1);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  dealii::FEValues&lt;dim&gt;      fe_values(fe, quadrature, dealii::update_JxW_values);</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="comment">// Get the number of quadrature points</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> num_quad_points = quadrature.size();</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="comment">// Loop over the cells and each lane in the vectorized array</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> cell = 0; cell &lt; n_cells; cell++)</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    {</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> lane = 0; lane &lt; data-&gt;n_active_entries_per_cell_batch(cell);</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>           lane++)</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        {</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>          <span class="comment">// Get the iterator for the current cell</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>          <span class="keyword">auto</span> cell_iterator = data-&gt;get_cell_iterator(cell, lane);</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>          <span class="comment">// Reinitialize the cell</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>          fe_values.reinit(cell_iterator);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>          <span class="comment">// Initialize volume to 0 for the current cell</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>          <span class="keywordtype">double</span> cell_volume = 0.0;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>          <span class="comment">// Sum up the JxW values at each quadrature point to compute the element volume</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>          <span class="comment">// in 3D or area in 2D.</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>          <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> q_point = 0; q_point &lt; num_quad_points; ++q_point)</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>            {</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>              cell_volume += fe_values.JxW(q_point);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>            }</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>          <span class="comment">// Store the element volume</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>          element_volume[cell][lane] = cell_volume;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        }</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    }</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>}</div>
 </div>
 </div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>PRISMS_PF_END_NAMESPACE</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>PRISMS_PF_END_NAMESPACE</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="preprocessor">#endif</span></div>
 </div>
 </div>
 <div class="ttc" id="aclasselementVolume_html"><div class="ttname"><a href="classelementVolume.html">elementVolume</a></div><div class="ttdoc">Compute the element volume.</div><div class="ttdef"><b>Definition</b> element_volume.h:24</div></div>
-<div class="ttc" id="aclasselementVolume_html_a18e23b9f92f48eaabd54924663d3415b"><div class="ttname"><a href="classelementVolume.html#a18e23b9f92f48eaabd54924663d3415b">elementVolume::compute_element_volume</a></div><div class="ttdeci">void compute_element_volume(const dealii::FESystem&lt; dim &gt; &amp;fe)</div><div class="ttdoc">Compute element volume for the triangulation.</div><div class="ttdef"><b>Definition</b> element_volume.h:70</div></div>
-<div class="ttc" id="aclasselementVolume_html_a39e2e21cb38c085a2b5050b0dc774a79"><div class="ttname"><a href="classelementVolume.html#a39e2e21cb38c085a2b5050b0dc774a79">elementVolume::initialize</a></div><div class="ttdeci">void initialize(std::shared_ptr&lt; dealii::MatrixFree&lt; dim, number &gt; &gt; _data)</div><div class="ttdoc">Initialize.</div><div class="ttdef"><b>Definition</b> element_volume.h:62</div></div>
-<div class="ttc" id="aclasselementVolume_html_a55851b1de09ed7f1a2b2573a83446e90"><div class="ttname"><a href="classelementVolume.html#a55851b1de09ed7f1a2b2573a83446e90">elementVolume::element_volume</a></div><div class="ttdeci">dealii::AlignedVector&lt; dealii::VectorizedArray&lt; number &gt; &gt; element_volume</div><div class="ttdoc">Vector that stores element volumes.</div><div class="ttdef"><b>Definition</b> element_volume.h:51</div></div>
+<div class="ttc" id="aclasselementVolume_html_a18e23b9f92f48eaabd54924663d3415b"><div class="ttname"><a href="classelementVolume.html#a18e23b9f92f48eaabd54924663d3415b">elementVolume::compute_element_volume</a></div><div class="ttdeci">void compute_element_volume(const dealii::FESystem&lt; dim &gt; &amp;fe)</div><div class="ttdoc">Compute element volume for the triangulation.</div><div class="ttdef"><b>Definition</b> element_volume.h:65</div></div>
+<div class="ttc" id="aclasselementVolume_html_a39e2e21cb38c085a2b5050b0dc774a79"><div class="ttname"><a href="classelementVolume.html#a39e2e21cb38c085a2b5050b0dc774a79">elementVolume::initialize</a></div><div class="ttdeci">void initialize(std::shared_ptr&lt; dealii::MatrixFree&lt; dim, number &gt; &gt; _data)</div><div class="ttdoc">Initialize.</div><div class="ttdef"><b>Definition</b> element_volume.h:57</div></div>
+<div class="ttc" id="aclasselementVolume_html_a55851b1de09ed7f1a2b2573a83446e90"><div class="ttname"><a href="classelementVolume.html#a55851b1de09ed7f1a2b2573a83446e90">elementVolume::element_volume</a></div><div class="ttdeci">dealii::AlignedVector&lt; dealii::VectorizedArray&lt; number &gt; &gt; element_volume</div><div class="ttdoc">Vector that stores element volumes.</div><div class="ttdef"><b>Definition</b> element_volume.h:46</div></div>
 <div class="ttc" id="aclasselementVolume_html_a5f797a6c4aee288f40eb27d9c568d6f1"><div class="ttname"><a href="classelementVolume.html#a5f797a6c4aee288f40eb27d9c568d6f1">elementVolume::elementVolume</a></div><div class="ttdeci">elementVolume()=default</div><div class="ttdoc">Constructor.</div></div>
-<div class="ttc" id="aclasselementVolume_html_ab786ec50124c85529c3ffbf842b56533"><div class="ttname"><a href="classelementVolume.html#ab786ec50124c85529c3ffbf842b56533">elementVolume::~elementVolume</a></div><div class="ttdeci">~elementVolume()=default</div><div class="ttdoc">Destructor.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_72d2fbe96e504e5d9d70c5885bd9c513.html">core</a></li><li class="navelem"><b>element_volume.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_db21045c204ec69458cba4d9d7ba76a8.html">utilities</a></li><li class="navelem"><b>element_volume.h</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

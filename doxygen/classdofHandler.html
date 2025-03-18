@@ -93,7 +93,6 @@ $(document).ready(function(){initNavTree('classdofHandler.html',''); initResizab
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classdofHandler-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">dofHandler&lt; dim &gt; Class Template Reference</div></div>
 </div><!--header-->
@@ -110,25 +109,18 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>dofHandler</b> (const <a class="el" href="classuserInputParameters.html">userInputParameters</a>&lt; dim &gt; &amp;_user_inputs)</td></tr>
 <tr class="memdesc:a2ff8a73052c330733008360d1cd1203a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
 <tr class="separator:a2ff8a73052c330733008360d1cd1203a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00d8d3a37c6ed07e9e961f40064a74dd" id="r_a00d8d3a37c6ed07e9e961f40064a74dd"><td class="memItemLeft" align="right" valign="top"><a id="a00d8d3a37c6ed07e9e961f40064a74dd" name="a00d8d3a37c6ed07e9e961f40064a74dd"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>~dofHandler</b> ()</td></tr>
-<tr class="memdesc:a00d8d3a37c6ed07e9e961f40064a74dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
-<tr class="separator:a00d8d3a37c6ed07e9e961f40064a74dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f94652a9343cbd9d7e6320618650ff5" id="r_a0f94652a9343cbd9d7e6320618650ff5"><td class="memItemLeft" align="right" valign="top"><a id="a0f94652a9343cbd9d7e6320618650ff5" name="a0f94652a9343cbd9d7e6320618650ff5"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> (const <a class="el" href="classtriangulationHandler.html">triangulationHandler</a>&lt; dim &gt; &amp;triangulation_handler, const std::map&lt; fieldType, dealii::FESystem&lt; dim &gt; &gt; &amp;fe_system)</td></tr>
 <tr class="memdesc:a0f94652a9343cbd9d7e6320618650ff5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the DoFHandlers. <br /></td></tr>
 <tr class="separator:a0f94652a9343cbd9d7e6320618650ff5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a49a94e21121f3fa47558faaa60edf488" id="r_a49a94e21121f3fa47558faaa60edf488"><td class="memItemLeft" align="right" valign="top"><a id="a49a94e21121f3fa47558faaa60edf488" name="a49a94e21121f3fa47558faaa60edf488"></a>
-std::vector&lt; dealii::DoFHandler&lt; dim &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>dof_handlers</b></td></tr>
-<tr class="memdesc:a49a94e21121f3fa47558faaa60edf488"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collection of the triangulation DoFs. The number of DoFHandlers should be equal to or less than the number of fields. Technically, there's a small optimization we can use when multiple fields have the same constraints and quadrature rule, allowing us to share the same DoFHandler. An example of this might be grain growth. <br /></td></tr>
-<tr class="separator:a49a94e21121f3fa47558faaa60edf488"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68028c6c74a2943d9d837108ab2b7ba2" id="r_a68028c6c74a2943d9d837108ab2b7ba2"><td class="memItemLeft" align="right" valign="top"><a id="a68028c6c74a2943d9d837108ab2b7ba2" name="a68028c6c74a2943d9d837108ab2b7ba2"></a>
-std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>const_dof_handlers</b></td></tr>
-<tr class="memdesc:a68028c6c74a2943d9d837108ab2b7ba2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Const copy of the dof_handlers. <br /></td></tr>
-<tr class="separator:a68028c6c74a2943d9d837108ab2b7ba2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96be395e505d9fe04ca8b444dff6e28c" id="r_a96be395e505d9fe04ca8b444dff6e28c"><td class="memItemLeft" align="right" valign="top"><a id="a96be395e505d9fe04ca8b444dff6e28c" name="a96be395e505d9fe04ca8b444dff6e28c"></a>
+const std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_dof_handlers</b> () const</td></tr>
+<tr class="memdesc:a96be395e505d9fe04ca8b444dff6e28c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the DoFHandlers (constant reference). <br /></td></tr>
+<tr class="separator:a96be395e505d9fe04ca8b444dff6e28c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76d900a8576c50427bb78cc563d4ed00" id="r_a76d900a8576c50427bb78cc563d4ed00"><td class="memItemLeft" align="right" valign="top"><a id="a76d900a8576c50427bb78cc563d4ed00" name="a76d900a8576c50427bb78cc563d4ed00"></a>
+const dealii::DoFHandler&lt; dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_mg_dof_handler</b> (unsigned int index, unsigned int level) const</td></tr>
+<tr class="memdesc:a76d900a8576c50427bb78cc563d4ed00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the DoFHandler at a certain field and multigrid level (constant reference). <br /></td></tr>
+<tr class="separator:a76d900a8576c50427bb78cc563d4ed00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;int dim&gt;<br />

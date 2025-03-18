@@ -256,47 +256,39 @@ $(document).ready(function(){initNavTree('explicit__solver_8h_source.html',''); 
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    }</div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>  <span class="comment">// Compute the update</span></div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>  CALI_MARK_BEGIN(<span class="stringliteral">&quot;Explicit compute update&quot;</span>);</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>  this-&gt;system_matrix-&gt;compute_explicit_update(new_solution_subset, solution_subset);</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  CALI_MARK_END(<span class="stringliteral">&quot;Explicit compute update&quot;</span>);</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  <span class="comment">// Scale the update by the respective (SCALAR/VECTOR) invm. Note that we do this with</span></div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>  <span class="comment">// the original solution set to avoid some messy mapping.</span></div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>  CALI_MARK_BEGIN(<span class="stringliteral">&quot;Explicit scale solution&quot;</span>);</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> [index, vector] : this-&gt;solution_handler.new_solution_set)</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    {</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>      <span class="keywordflow">if</span> (this-&gt;subset_attributes.find(index) != this-&gt;subset_attributes.end())</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>        {</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>          vector-&gt;scale(this-&gt;invm_handler.get_invm(index));</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        }</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    }</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>  CALI_MARK_END(<span class="stringliteral">&quot;Explicit scale solution&quot;</span>);</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>  <span class="comment">// Update the solutions</span></div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>  CALI_MARK_BEGIN(<span class="stringliteral">&quot;Explicit update solution&quot;</span>);</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>  this-&gt;solution_handler.update(fieldSolveType::EXPLICIT);</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>  CALI_MARK_END(<span class="stringliteral">&quot;Explicit update solution&quot;</span>);</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  <span class="comment">// Apply constraints</span></div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  CALI_MARK_BEGIN(<span class="stringliteral">&quot;Explicit apply constraints&quot;</span>);</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;[pair, vector] : this-&gt;solution_handler.solution_set)</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    {</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>      <span class="keywordflow">if</span> (this-&gt;subset_attributes.find(pair.first) == this-&gt;subset_attributes.end())</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>        {</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>          <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>        }</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>      this-&gt;constraint_handler.get_constraint(pair.first).distribute(*vector);</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    }</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  CALI_MARK_END(<span class="stringliteral">&quot;Explicit apply constraints&quot;</span>);</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>}</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>  this-&gt;system_matrix-&gt;compute_explicit_update(new_solution_subset, solution_subset);</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  <span class="comment">// Scale the update by the respective (SCALAR/VECTOR) invm. Note that we do this with</span></div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  <span class="comment">// the original solution set to avoid some messy mapping.</span></div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> [index, vector] : this-&gt;solution_handler.new_solution_set)</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    {</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>      <span class="keywordflow">if</span> (this-&gt;subset_attributes.find(index) != this-&gt;subset_attributes.end())</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>        {</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>          vector-&gt;scale(this-&gt;invm_handler.get_invm(index));</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>        }</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    }</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span> </div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>  <span class="comment">// Update the solutions</span></div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>  this-&gt;solution_handler.update(fieldSolveType::EXPLICIT);</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span> </div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  <span class="comment">// Apply constraints</span></div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;[pair, vector] : this-&gt;solution_handler.solution_set)</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    {</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>      <span class="keywordflow">if</span> (this-&gt;subset_attributes.find(pair.first) == this-&gt;subset_attributes.end())</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>        {</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>          <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>        }</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>      this-&gt;constraint_handler.get_constraint(pair.first).distribute(*vector);</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    }</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>}</div>
 </div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span> </div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>PRISMS_PF_END_NAMESPACE</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span> </div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassconstraintHandler_html"><div class="ttname"><a href="classconstraintHandler.html">constraintHandler</a></div><div class="ttdoc">The class handles the generation and application of boundary conditions based on the user-inputs.</div><div class="ttdef"><b>Definition</b> constraint_handler.h:24</div></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span> </div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>PRISMS_PF_END_NAMESPACE</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclassconstraintHandler_html"><div class="ttname"><a href="classconstraintHandler.html">constraintHandler</a></div><div class="ttdoc">The class handles the generation and application of boundary conditions based on the user-inputs.</div><div class="ttdef"><b>Definition</b> constraint_handler.h:25</div></div>
 <div class="ttc" id="aclasscustomPDE_html"><div class="ttname"><a href="classcustomPDE.html">customPDE</a></div><div class="ttdef"><b>Definition</b> explicit_base.h:27</div></div>
-<div class="ttc" id="aclassdofHandler_html"><div class="ttname"><a href="classdofHandler.html">dofHandler</a></div><div class="ttdoc">Class that manages the deal.II DoFHandlers.</div><div class="ttdef"><b>Definition</b> dof_handler.h:24</div></div>
+<div class="ttc" id="aclassdofHandler_html"><div class="ttname"><a href="classdofHandler.html">dofHandler</a></div><div class="ttdoc">Class that manages the deal.II DoFHandlers.</div><div class="ttdef"><b>Definition</b> dof_handler.h:25</div></div>
 <div class="ttc" id="aclassexplicitBase_html"><div class="ttname"><a href="classexplicitBase.html">explicitBase</a></div><div class="ttdoc">Base class for explicit solves.</div><div class="ttdef"><b>Definition</b> explicit_base.h:34</div></div>
 <div class="ttc" id="aclassexplicitSolver_html"><div class="ttname"><a href="classexplicitSolver.html">explicitSolver</a></div><div class="ttdoc">This class handles the explicit solves of all explicit fields.</div><div class="ttdef"><b>Definition</b> explicit_solver.h:34</div></div>
 <div class="ttc" id="aclassexplicitSolver_html_a748fd723e57edaabefb733b633af732e"><div class="ttname"><a href="classexplicitSolver.html#a748fd723e57edaabefb733b633af732e">explicitSolver::solve</a></div><div class="ttdeci">void solve() override</div><div class="ttdoc">Solve a single update step.</div><div class="ttdef"><b>Definition</b> explicit_solver.h:169</div></div>
@@ -307,7 +299,7 @@ $(document).ready(function(){initNavTree('explicit__solver_8h_source.html',''); 
 <div class="ttc" id="aclassmatrixfreeHandler_html"><div class="ttname"><a href="classmatrixfreeHandler.html">matrixfreeHandler</a></div><div class="ttdoc">This class handlers the management and access of the matrix-free objects.</div><div class="ttdef"><b>Definition</b> matrix_free_handler.h:25</div></div>
 <div class="ttc" id="aclasssolutionHandler_html"><div class="ttname"><a href="classsolutionHandler.html">solutionHandler</a></div><div class="ttdoc">Class that manages solution initialization and swapping with old solutions.</div><div class="ttdef"><b>Definition</b> solution_handler.h:22</div></div>
 <div class="ttc" id="aclassuserInputParameters_html"><div class="ttname"><a href="classuserInputParameters.html">userInputParameters</a></div><div class="ttdef"><b>Definition</b> user_input_parameters.h:22</div></div>
-<div class="ttc" id="astructpairHash_html"><div class="ttname"><a href="structpairHash.html">pairHash</a></div><div class="ttdoc">Simple hash function for pairs.</div><div class="ttdef"><b>Definition</b> variable_attributes.h:23</div></div>
+<div class="ttc" id="astructpairHash_html"><div class="ttname"><a href="structpairHash.html">pairHash</a></div><div class="ttdoc">Simple hash function for pairs.</div><div class="ttdef"><b>Definition</b> variable_attributes.h:24</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

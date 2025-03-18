@@ -109,7 +109,7 @@ $(document).ready(function(){initNavTree('output__parameters_8h_source.html','')
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;prismspf/core/conditional_ostreams.h&gt;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;prismspf/core/exceptions.h&gt;</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;prismspf/user_inputs/temporal_discretization.h&gt;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;prismspf/utilities.h&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;prismspf/utilities/utilities.h&gt;</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;climits&gt;</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;set&gt;</span></div>
@@ -137,7 +137,7 @@ $(document).ready(function(){initNavTree('output__parameters_8h_source.html','')
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  std::string file_name;</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="comment">// Whether to output one vtu or vtk file per process</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="comment">// TODO: Actually implement this and set it to true is vtk outputs</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="comment">// TODO (landinjm): Actually implement this and set it to true is vtk outputs</span></div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keywordtype">bool</span> output_per_process = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="comment">// The number of steps between outputting relevant information to screen</span></div>
@@ -268,7 +268,7 @@ $(document).ready(function(){initNavTree('output__parameters_8h_source.html','')
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>PRISMS_PF_END_NAMESPACE</div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassconditionalOStreams_html_a78ca7c60d1c6bb1adfc3f0ec72e4fbb3"><div class="ttname"><a href="classconditionalOStreams.html#a78ca7c60d1c6bb1adfc3f0ec72e4fbb3">conditionalOStreams::pout_summary</a></div><div class="ttdeci">static dealii::ConditionalOStream &amp; pout_summary()</div><div class="ttdoc">Log output stream for writing a summary.log file.</div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:26</div></div>
+<div class="ttc" id="aclassconditionalOStreams_html_a78ca7c60d1c6bb1adfc3f0ec72e4fbb3"><div class="ttname"><a href="classconditionalOStreams.html#a78ca7c60d1c6bb1adfc3f0ec72e4fbb3">conditionalOStreams::pout_summary</a></div><div class="ttdeci">static dealii::ConditionalOStream &amp; pout_summary()</div><div class="ttdoc">Log output stream for writing a summary.log file.</div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:22</div></div>
 <div class="ttc" id="astructoutputParameters_html"><div class="ttname"><a href="structoutputParameters.html">outputParameters</a></div><div class="ttdoc">Struct that holds output parameters.</div><div class="ttdef"><b>Definition</b> output_parameters.h:23</div></div>
 <div class="ttc" id="astructoutputParameters_html_a3ed134537ffe07ce57435a739751d4f1"><div class="ttname"><a href="structoutputParameters.html#a3ed134537ffe07ce57435a739751d4f1">outputParameters::should_output</a></div><div class="ttdeci">bool should_output(unsigned int increment) const</div><div class="ttdoc">Return is the current increment should be output.</div><div class="ttdef"><b>Definition</b> output_parameters.h:73</div></div>
 <div class="ttc" id="astructoutputParameters_html_a7e27b9e2900752d37f9a65cb37fb231d"><div class="ttname"><a href="structoutputParameters.html#a7e27b9e2900752d37f9a65cb37fb231d">outputParameters::postprocess_and_validate</a></div><div class="ttdeci">void postprocess_and_validate(const temporalDiscretization &amp;temporal_discretization)</div><div class="ttdoc">Postprocess and validate parameters.</div><div class="ttdef"><b>Definition</b> output_parameters.h:79</div></div>

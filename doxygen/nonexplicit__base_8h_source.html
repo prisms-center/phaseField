@@ -307,7 +307,7 @@ $(document).ready(function(){initNavTree('nonexplicit__base_8h_source.html','');
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>          <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>        }</div>
 <div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span> </div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>      Assert(dof_handler.const_dof_handlers.size() &gt; index,</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>      Assert(dof_handler.get_dof_handlers().size() &gt; index,</div>
 <div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>             dealii::ExcMessage(</div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>               <span class="stringliteral">&quot;The const DoFHandler set is smaller than the given index = &quot;</span> +</div>
 <div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>               std::to_string(index)));</div>
@@ -324,13 +324,13 @@ $(document).ready(function(){initNavTree('nonexplicit__base_8h_source.html','');
 <div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span> </div>
 <div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>      dealii::VectorTools::interpolate(</div>
 <div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>        mapping,</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>        *(dof_handler.const_dof_handlers.at(index)),</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>        *(dof_handler.get_dof_handlers().at(index)),</div>
 <div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>        <a class="code hl_class" href="classinitialCondition.html">initialCondition&lt;dim&gt;</a>(index, subset_attributes.at(index).field_type),</div>
 <div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>        *(solution_handler.solution_set.at(</div>
 <div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>          std::make_pair(index, dependencyType::NORMAL))));</div>
 <div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span> </div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>      <span class="comment">// TODO: Fix so that we apply some sort of initial condition to all old vector for</span></div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>      <span class="comment">// all types.</span></div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>      <span class="comment">// TODO (landinjm): Fix so that we apply some sort of initial condition to all old</span></div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>      <span class="comment">// vector for all types.</span></div>
 <div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>      <span class="keywordflow">if</span> (solution_handler.solution_set.find(</div>
 <div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>            std::make_pair(index, dependencyType::OLD_1)) !=</div>
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>          solution_handler.solution_set.end())</div>
@@ -370,10 +370,10 @@ $(document).ready(function(){initNavTree('nonexplicit__base_8h_source.html','');
 <div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>PRISMS_PF_END_NAMESPACE</div>
 <div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span> </div>
 <div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassconditionalOStreams_html_a78ca7c60d1c6bb1adfc3f0ec72e4fbb3"><div class="ttname"><a href="classconditionalOStreams.html#a78ca7c60d1c6bb1adfc3f0ec72e4fbb3">conditionalOStreams::pout_summary</a></div><div class="ttdeci">static dealii::ConditionalOStream &amp; pout_summary()</div><div class="ttdoc">Log output stream for writing a summary.log file.</div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:26</div></div>
-<div class="ttc" id="aclassconstraintHandler_html"><div class="ttname"><a href="classconstraintHandler.html">constraintHandler</a></div><div class="ttdoc">The class handles the generation and application of boundary conditions based on the user-inputs.</div><div class="ttdef"><b>Definition</b> constraint_handler.h:24</div></div>
+<div class="ttc" id="aclassconditionalOStreams_html_a78ca7c60d1c6bb1adfc3f0ec72e4fbb3"><div class="ttname"><a href="classconditionalOStreams.html#a78ca7c60d1c6bb1adfc3f0ec72e4fbb3">conditionalOStreams::pout_summary</a></div><div class="ttdeci">static dealii::ConditionalOStream &amp; pout_summary()</div><div class="ttdoc">Log output stream for writing a summary.log file.</div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:22</div></div>
+<div class="ttc" id="aclassconstraintHandler_html"><div class="ttname"><a href="classconstraintHandler.html">constraintHandler</a></div><div class="ttdoc">The class handles the generation and application of boundary conditions based on the user-inputs.</div><div class="ttdef"><b>Definition</b> constraint_handler.h:25</div></div>
 <div class="ttc" id="aclasscustomPDE_html"><div class="ttname"><a href="classcustomPDE.html">customPDE</a></div><div class="ttdef"><b>Definition</b> explicit_base.h:27</div></div>
-<div class="ttc" id="aclassdofHandler_html"><div class="ttname"><a href="classdofHandler.html">dofHandler</a></div><div class="ttdoc">Class that manages the deal.II DoFHandlers.</div><div class="ttdef"><b>Definition</b> dof_handler.h:24</div></div>
+<div class="ttc" id="aclassdofHandler_html"><div class="ttname"><a href="classdofHandler.html">dofHandler</a></div><div class="ttdoc">Class that manages the deal.II DoFHandlers.</div><div class="ttdef"><b>Definition</b> dof_handler.h:25</div></div>
 <div class="ttc" id="aclassinitialCondition_html"><div class="ttname"><a href="classinitialCondition.html">initialCondition</a></div><div class="ttdoc">Function for user-implemented initial conditions. These are only ever calculated for explicit time de...</div><div class="ttdef"><b>Definition</b> initial_conditions.h:29</div></div>
 <div class="ttc" id="aclassinvmHandler_html"><div class="ttname"><a href="classinvmHandler.html">invmHandler</a></div><div class="ttdoc">This class handles the computation and access of the inverted mass matrix for explicit solves.</div><div class="ttdef"><b>Definition</b> invm_handler.h:25</div></div>
 <div class="ttc" id="aclassmatrixfreeHandler_html"><div class="ttname"><a href="classmatrixfreeHandler.html">matrixfreeHandler</a></div><div class="ttdoc">This class handlers the management and access of the matrix-free objects.</div><div class="ttdef"><b>Definition</b> matrix_free_handler.h:25</div></div>
@@ -399,7 +399,7 @@ $(document).ready(function(){initNavTree('nonexplicit__base_8h_source.html','');
 <div class="ttc" id="aclassnonexplicitBase_html_ae066db16b1c2a26a988ff8db17de7d23"><div class="ttname"><a href="classnonexplicitBase.html#ae066db16b1c2a26a988ff8db17de7d23">nonexplicitBase::compute_subset_attributes</a></div><div class="ttdeci">void compute_subset_attributes(const fieldSolveType &amp;field_solve_type)</div><div class="ttdoc">Compute the subset of variableAttributes that belongs to a given fieldSolveType. This function should...</div><div class="ttdef"><b>Definition</b> nonexplicit_base.h:187</div></div>
 <div class="ttc" id="aclassnonexplicitBase_html_af20ea9853e4791945d6e9664a6278217"><div class="ttname"><a href="classnonexplicitBase.html#af20ea9853e4791945d6e9664a6278217">nonexplicitBase::triangulation_handler</a></div><div class="ttdeci">const triangulationHandler&lt; dim &gt; &amp; triangulation_handler</div><div class="ttdoc">Triangulation handler.</div><div class="ttdef"><b>Definition</b> nonexplicit_base.h:115</div></div>
 <div class="ttc" id="aclasssolutionHandler_html"><div class="ttname"><a href="classsolutionHandler.html">solutionHandler</a></div><div class="ttdoc">Class that manages solution initialization and swapping with old solutions.</div><div class="ttdef"><b>Definition</b> solution_handler.h:22</div></div>
-<div class="ttc" id="aclasstriangulationHandler_html"><div class="ttname"><a href="classtriangulationHandler.html">triangulationHandler</a></div><div class="ttdoc">This class handlers the generation and manipulation of triangulations.</div><div class="ttdef"><b>Definition</b> triangulation_handler.h:23</div></div>
+<div class="ttc" id="aclasstriangulationHandler_html"><div class="ttname"><a href="classtriangulationHandler.html">triangulationHandler</a></div><div class="ttdoc">This class handlers the generation and manipulation of triangulations.</div><div class="ttdef"><b>Definition</b> triangulation_handler.h:24</div></div>
 <div class="ttc" id="aclassuserInputParameters_html"><div class="ttname"><a href="classuserInputParameters.html">userInputParameters</a></div><div class="ttdef"><b>Definition</b> user_input_parameters.h:22</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

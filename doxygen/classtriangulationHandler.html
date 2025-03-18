@@ -120,17 +120,37 @@ Public Member Functions</h2></td></tr>
 const Triangulation &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_triangulation</b> () const</td></tr>
 <tr class="memdesc:ac83501ae417a8a2f68f8e1c2f47e0dcb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for triangulation (constant reference). <br /></td></tr>
 <tr class="separator:ac83501ae417a8a2f68f8e1c2f47e0dcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2aa9654822af4a01d76dc08523981ffc" id="r_a2aa9654822af4a01d76dc08523981ffc"><td class="memItemLeft" align="right" valign="top"><a id="a2aa9654822af4a01d76dc08523981ffc" name="a2aa9654822af4a01d76dc08523981ffc"></a>
+const std::vector&lt; std::shared_ptr&lt; const dealii::Triangulation&lt; dim &gt; &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_mg_triangulation</b> () const</td></tr>
+<tr class="memdesc:a2aa9654822af4a01d76dc08523981ffc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the multigrid triangulation (constant reference). <br /></td></tr>
+<tr class="separator:a2aa9654822af4a01d76dc08523981ffc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a1e4dab57939221b1f0d3296540df75" id="r_a6a1e4dab57939221b1f0d3296540df75"><td class="memItemLeft" align="right" valign="top"><a id="a6a1e4dab57939221b1f0d3296540df75" name="a6a1e4dab57939221b1f0d3296540df75"></a>
+const dealii::Triangulation&lt; dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_mg_triangulation</b> (unsigned int level) const</td></tr>
+<tr class="memdesc:a6a1e4dab57939221b1f0d3296540df75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for a level in the globally coarsening multigrid triangulation (constant reference). <br /></td></tr>
+<tr class="separator:a6a1e4dab57939221b1f0d3296540df75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6391aacafbfb20cd42be313b32f1119" id="r_ac6391aacafbfb20cd42be313b32f1119"><td class="memItemLeft" align="right" valign="top"><a id="ac6391aacafbfb20cd42be313b32f1119" name="ac6391aacafbfb20cd42be313b32f1119"></a>
 unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>get_n_global_levels</b> () const</td></tr>
 <tr class="memdesc:ac6391aacafbfb20cd42be313b32f1119"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the global maximum level of the triangulation. <br /></td></tr>
 <tr class="separator:ac6391aacafbfb20cd42be313b32f1119"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0b95037f497f045cbf306820f0dc376" id="r_aa0b95037f497f045cbf306820f0dc376"><td class="memItemLeft" align="right" valign="top"><a id="aa0b95037f497f045cbf306820f0dc376" name="aa0b95037f497f045cbf306820f0dc376"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>get_mg_min_level</b> () const</td></tr>
+<tr class="memdesc:aa0b95037f497f045cbf306820f0dc376"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the maximum multigrid level. <br /></td></tr>
+<tr class="separator:aa0b95037f497f045cbf306820f0dc376"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4b695e66706ecc9ac55cea45ba8cc8c" id="r_ad4b695e66706ecc9ac55cea45ba8cc8c"><td class="memItemLeft" align="right" valign="top"><a id="ad4b695e66706ecc9ac55cea45ba8cc8c" name="ad4b695e66706ecc9ac55cea45ba8cc8c"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>get_mg_max_level</b> () const</td></tr>
+<tr class="memdesc:ad4b695e66706ecc9ac55cea45ba8cc8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the minimum multigrid level. <br /></td></tr>
+<tr class="separator:ad4b695e66706ecc9ac55cea45ba8cc8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1ddbd931ed9712d2b89e37849ebdb9b" id="r_aa1ddbd931ed9712d2b89e37849ebdb9b"><td class="memItemLeft" align="right" valign="top"><a id="aa1ddbd931ed9712d2b89e37849ebdb9b" name="aa1ddbd931ed9712d2b89e37849ebdb9b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>generate_mesh</b> ()</td></tr>
-<tr class="memdesc:aa1ddbd931ed9712d2b89e37849ebdb9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate mesh. <br /></td></tr>
+<tr class="memdesc:aa1ddbd931ed9712d2b89e37849ebdb9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate mesh based on the inputs provided by the user. <br /></td></tr>
 <tr class="separator:aa1ddbd931ed9712d2b89e37849ebdb9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc14f1f1d5a9a103a383c7e3e0fc9265" id="r_adc14f1f1d5a9a103a383c7e3e0fc9265"><td class="memItemLeft" align="right" valign="top"><a id="adc14f1f1d5a9a103a383c7e3e0fc9265" name="adc14f1f1d5a9a103a383c7e3e0fc9265"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>adaptively_refine_mesh</b> (<a class="el" href="classsolutionHandler.html">solutionHandler</a>&lt; dim &gt; &amp;solution_handler)</td></tr>
+<tr class="memdesc:adc14f1f1d5a9a103a383c7e3e0fc9265"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adaptively refine the mesh based on the inputs provided by the user. <br /></td></tr>
+<tr class="separator:adc14f1f1d5a9a103a383c7e3e0fc9265"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ebb794d89867a3bf852bf2b0f5a3f7a" id="r_a5ebb794d89867a3bf852bf2b0f5a3f7a"><td class="memItemLeft" align="right" valign="top"><a id="a5ebb794d89867a3bf852bf2b0f5a3f7a" name="a5ebb794d89867a3bf852bf2b0f5a3f7a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>export_triangulation_as_vtk</b> (const std::string &amp;filename) const</td></tr>
-<tr class="memdesc:a5ebb794d89867a3bf852bf2b0f5a3f7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export triangulation to vtk. <br /></td></tr>
+<tr class="memdesc:a5ebb794d89867a3bf852bf2b0f5a3f7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export triangulation to vtk. This is done for debugging purposes when dealing with unusual meshes (e.g., circular domains). <br /></td></tr>
 <tr class="separator:a5ebb794d89867a3bf852bf2b0f5a3f7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>

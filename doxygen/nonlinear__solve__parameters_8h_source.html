@@ -106,77 +106,78 @@ $(document).ready(function(){initNavTree('nonlinear__solve__parameters_8h_source
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#define nonlinear_solve_parameters_h</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;prismspf/user_inputs/linear_solve_parameters.h&gt;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>PRISMS_PF_BEGIN_NAMESPACE</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="foldopen" id="foldopen00015" data-start="{" data-end="};">
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="structnonlinearSolverParameters.html">   15</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structnonlinearSolverParameters.html">nonlinearSolverParameters</a></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>{</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <span class="comment">// Nonlinear step length</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <span class="keyword">mutable</span> <span class="keywordtype">double</span> step_length = 1.0;</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <span class="comment">// Max number of iterations for the nonlinear solve</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> max_iterations = 100;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>};</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;prismspf/core/types.h&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;prismspf/user_inputs/linear_solve_parameters.h&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="foldopen" id="foldopen00016" data-start="{" data-end="};">
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="structnonlinearSolverParameters.html">   16</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structnonlinearSolverParameters.html">nonlinearSolverParameters</a></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>{</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <span class="comment">// Nonlinear step length</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <span class="keyword">mutable</span> <span class="keywordtype">double</span> step_length = 1.0;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="comment">// Max number of iterations for the nonlinear solve</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> max_iterations = defaults::iterations;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>};</div>
 </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="foldopen" id="foldopen00028" data-start="{" data-end="};">
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="structnonlinearSolveParameters.html">   28</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structnonlinearSolveParameters.html">nonlinearSolveParameters</a></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <a class="code hl_function" href="structnonlinearSolveParameters.html#a0949339d8f18fc8aabcba228cb890e9c">postprocess_and_validate</a>();</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <a class="code hl_function" href="structnonlinearSolveParameters.html#af8b2f777a598610e541824876929af6d">print_parameter_summary</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="comment">// Map of nonlinear solve parameters for fields that require them</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  std::map&lt;unsigned int, nonlinearSolverParameters&gt; nonlinear_solve;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>};</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="foldopen" id="foldopen00029" data-start="{" data-end="};">
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="structnonlinearSolveParameters.html">   29</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structnonlinearSolveParameters.html">nonlinearSolveParameters</a></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keywordtype">void</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <a class="code hl_function" href="structnonlinearSolveParameters.html#a0949339d8f18fc8aabcba228cb890e9c">postprocess_and_validate</a>();</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordtype">void</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <a class="code hl_function" href="structnonlinearSolveParameters.html#af8b2f777a598610e541824876929af6d">print_parameter_summary</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="comment">// Map of nonlinear solve parameters for fields that require them</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  std::map&lt;unsigned int, nonlinearSolverParameters&gt; nonlinear_solve;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>};</div>
 </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keyword">inline</span> <span class="keywordtype">void</span></div>
-<div class="foldopen" id="foldopen00048" data-start="{" data-end="}">
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="structnonlinearSolveParameters.html#a0949339d8f18fc8aabcba228cb890e9c">   48</a></span><a class="code hl_function" href="structnonlinearSolveParameters.html#a0949339d8f18fc8aabcba228cb890e9c">nonlinearSolveParameters::postprocess_and_validate</a>()</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>{</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="comment">// Nothing to do here for now</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>}</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="keyword">inline</span> <span class="keywordtype">void</span></div>
+<div class="foldopen" id="foldopen00049" data-start="{" data-end="}">
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="structnonlinearSolveParameters.html#a0949339d8f18fc8aabcba228cb890e9c">   49</a></span><a class="code hl_function" href="structnonlinearSolveParameters.html#a0949339d8f18fc8aabcba228cb890e9c">nonlinearSolveParameters::postprocess_and_validate</a>()</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>{</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="comment">// Nothing to do here for now</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>}</div>
 </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="keyword">inline</span> <span class="keywordtype">void</span></div>
-<div class="foldopen" id="foldopen00054" data-start="{" data-end="}">
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="structnonlinearSolveParameters.html#af8b2f777a598610e541824876929af6d">   54</a></span><a class="code hl_function" href="structnonlinearSolveParameters.html#af8b2f777a598610e541824876929af6d">nonlinearSolveParameters::print_parameter_summary</a>()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keywordflow">if</span> (!nonlinear_solve.empty())</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    {</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>      <a class="code hl_function" href="classconditionalOStreams.html#a78ca7c60d1c6bb1adfc3f0ec72e4fbb3">conditionalOStreams::pout_summary</a>()</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        &lt;&lt; <span class="stringliteral">&quot;================================================\n&quot;</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        &lt;&lt; <span class="stringliteral">&quot;  Nonlinear Solve Parameters\n&quot;</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        &lt;&lt; <span class="stringliteral">&quot;================================================\n&quot;</span>;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[index, nonlinear_solver_parameters] : nonlinear_solve)</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        {</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>          <a class="code hl_function" href="classconditionalOStreams.html#a78ca7c60d1c6bb1adfc3f0ec72e4fbb3">conditionalOStreams::pout_summary</a>()</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>            &lt;&lt; <span class="stringliteral">&quot;Index: &quot;</span> &lt;&lt; index &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>            &lt;&lt; <span class="stringliteral">&quot;  Max iterations: &quot;</span> &lt;&lt; nonlinear_solver_parameters.max_iterations &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>            &lt;&lt; <span class="stringliteral">&quot;  Step length: &quot;</span> &lt;&lt; nonlinear_solver_parameters.step_length &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        }</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>      <a class="code hl_function" href="classconditionalOStreams.html#a78ca7c60d1c6bb1adfc3f0ec72e4fbb3">conditionalOStreams::pout_summary</a>() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span> &lt;&lt; std::flush;</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    }</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>}</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="keyword">inline</span> <span class="keywordtype">void</span></div>
+<div class="foldopen" id="foldopen00055" data-start="{" data-end="}">
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="structnonlinearSolveParameters.html#af8b2f777a598610e541824876929af6d">   55</a></span><a class="code hl_function" href="structnonlinearSolveParameters.html#af8b2f777a598610e541824876929af6d">nonlinearSolveParameters::print_parameter_summary</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordflow">if</span> (!nonlinear_solve.empty())</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    {</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      <a class="code hl_function" href="classconditionalOStreams.html#a78ca7c60d1c6bb1adfc3f0ec72e4fbb3">conditionalOStreams::pout_summary</a>()</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        &lt;&lt; <span class="stringliteral">&quot;================================================\n&quot;</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        &lt;&lt; <span class="stringliteral">&quot;  Nonlinear Solve Parameters\n&quot;</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        &lt;&lt; <span class="stringliteral">&quot;================================================\n&quot;</span>;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[index, nonlinear_solver_parameters] : nonlinear_solve)</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        {</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>          <a class="code hl_function" href="classconditionalOStreams.html#a78ca7c60d1c6bb1adfc3f0ec72e4fbb3">conditionalOStreams::pout_summary</a>()</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>            &lt;&lt; <span class="stringliteral">&quot;Index: &quot;</span> &lt;&lt; index &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>            &lt;&lt; <span class="stringliteral">&quot;  Max iterations: &quot;</span> &lt;&lt; nonlinear_solver_parameters.max_iterations &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>            &lt;&lt; <span class="stringliteral">&quot;  Step length: &quot;</span> &lt;&lt; nonlinear_solver_parameters.step_length &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        }</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>      <a class="code hl_function" href="classconditionalOStreams.html#a78ca7c60d1c6bb1adfc3f0ec72e4fbb3">conditionalOStreams::pout_summary</a>() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span> &lt;&lt; std::flush;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    }</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>}</div>
 </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>PRISMS_PF_END_NAMESPACE</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassconditionalOStreams_html_a78ca7c60d1c6bb1adfc3f0ec72e4fbb3"><div class="ttname"><a href="classconditionalOStreams.html#a78ca7c60d1c6bb1adfc3f0ec72e4fbb3">conditionalOStreams::pout_summary</a></div><div class="ttdeci">static dealii::ConditionalOStream &amp; pout_summary()</div><div class="ttdoc">Log output stream for writing a summary.log file.</div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:26</div></div>
-<div class="ttc" id="astructnonlinearSolveParameters_html"><div class="ttname"><a href="structnonlinearSolveParameters.html">nonlinearSolveParameters</a></div><div class="ttdoc">Struct that holds nonlinear solver parameters.</div><div class="ttdef"><b>Definition</b> nonlinear_solve_parameters.h:29</div></div>
-<div class="ttc" id="astructnonlinearSolveParameters_html_a0949339d8f18fc8aabcba228cb890e9c"><div class="ttname"><a href="structnonlinearSolveParameters.html#a0949339d8f18fc8aabcba228cb890e9c">nonlinearSolveParameters::postprocess_and_validate</a></div><div class="ttdeci">void postprocess_and_validate()</div><div class="ttdoc">Postprocess and validate parameters.</div><div class="ttdef"><b>Definition</b> nonlinear_solve_parameters.h:48</div></div>
-<div class="ttc" id="astructnonlinearSolveParameters_html_af8b2f777a598610e541824876929af6d"><div class="ttname"><a href="structnonlinearSolveParameters.html#af8b2f777a598610e541824876929af6d">nonlinearSolveParameters::print_parameter_summary</a></div><div class="ttdeci">void print_parameter_summary() const</div><div class="ttdoc">Print parameters to summary.log.</div><div class="ttdef"><b>Definition</b> nonlinear_solve_parameters.h:54</div></div>
-<div class="ttc" id="astructnonlinearSolverParameters_html"><div class="ttname"><a href="structnonlinearSolverParameters.html">nonlinearSolverParameters</a></div><div class="ttdoc">Struct that stores relevant nonlinear solve information of a certain field.</div><div class="ttdef"><b>Definition</b> nonlinear_solve_parameters.h:16</div></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>PRISMS_PF_END_NAMESPACE</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclassconditionalOStreams_html_a78ca7c60d1c6bb1adfc3f0ec72e4fbb3"><div class="ttname"><a href="classconditionalOStreams.html#a78ca7c60d1c6bb1adfc3f0ec72e4fbb3">conditionalOStreams::pout_summary</a></div><div class="ttdeci">static dealii::ConditionalOStream &amp; pout_summary()</div><div class="ttdoc">Log output stream for writing a summary.log file.</div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:22</div></div>
+<div class="ttc" id="astructnonlinearSolveParameters_html"><div class="ttname"><a href="structnonlinearSolveParameters.html">nonlinearSolveParameters</a></div><div class="ttdoc">Struct that holds nonlinear solver parameters.</div><div class="ttdef"><b>Definition</b> nonlinear_solve_parameters.h:30</div></div>
+<div class="ttc" id="astructnonlinearSolveParameters_html_a0949339d8f18fc8aabcba228cb890e9c"><div class="ttname"><a href="structnonlinearSolveParameters.html#a0949339d8f18fc8aabcba228cb890e9c">nonlinearSolveParameters::postprocess_and_validate</a></div><div class="ttdeci">void postprocess_and_validate()</div><div class="ttdoc">Postprocess and validate parameters.</div><div class="ttdef"><b>Definition</b> nonlinear_solve_parameters.h:49</div></div>
+<div class="ttc" id="astructnonlinearSolveParameters_html_af8b2f777a598610e541824876929af6d"><div class="ttname"><a href="structnonlinearSolveParameters.html#af8b2f777a598610e541824876929af6d">nonlinearSolveParameters::print_parameter_summary</a></div><div class="ttdeci">void print_parameter_summary() const</div><div class="ttdoc">Print parameters to summary.log.</div><div class="ttdef"><b>Definition</b> nonlinear_solve_parameters.h:55</div></div>
+<div class="ttc" id="astructnonlinearSolverParameters_html"><div class="ttname"><a href="structnonlinearSolverParameters.html">nonlinearSolverParameters</a></div><div class="ttdoc">Struct that stores relevant nonlinear solve information of a certain field.</div><div class="ttdef"><b>Definition</b> nonlinear_solve_parameters.h:17</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

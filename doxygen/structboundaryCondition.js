@@ -9,5 +9,6 @@ var structboundaryCondition =
       [ "NON_UNIFORM_DIRICHLET", "structboundaryCondition.html#a7f349381f33387bae2ac970a60be5ed4aa3e68144f30f7c0f4737577eebe18cbc", null ],
       [ "NON_UNIFORM_NEUMANN", "structboundaryCondition.html#a7f349381f33387bae2ac970a60be5ed4a729b0633559528ae3700acdcdf04e4a0", null ]
     ] ],
+    [ "operator==", "structboundaryCondition.html#a6d12a25f233e94856c5f258bb190f20f", null ],
     [ "to_string", "structboundaryCondition.html#a59fce99fe3cf5a7bb53bd6a6c0c8f2c8", null ]
 ];

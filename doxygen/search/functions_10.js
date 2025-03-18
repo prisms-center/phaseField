@@ -1,23 +1,8 @@
 var searchData=
 [
-  ['_7ecomputeintegral_0',['~computeIntegral',['../classcomputeIntegral.html#a52efe66fb027f15ee838a2caaa5ea1c0',1,'computeIntegral']]],
-  ['_7econditionalostreams_1',['~conditionalOStreams',['../classconditionalOStreams.html#ae9eafe0dc5354d6dce44d309eaf797dc',1,'conditionalOStreams']]],
-  ['_7edofhandler_2',['~dofHandler',['../classdofHandler.html#a00d8d3a37c6ed07e9e961f40064a74dd',1,'dofHandler']]],
-  ['_7eelementvolume_3',['~elementVolume',['../classelementVolume.html#ab786ec50124c85529c3ffbf842b56533',1,'elementVolume']]],
-  ['_7eexplicitbase_4',['~explicitBase',['../classexplicitBase.html#ad04bc94aac9b13f157226586b0e661da',1,'explicitBase']]],
-  ['_7eexplicitconstantsolver_5',['~explicitConstantSolver',['../classexplicitConstantSolver.html#a7187611948d7937068511aeeb7edaf27',1,'explicitConstantSolver']]],
-  ['_7eexplicitpostprocesssolver_6',['~explicitPostprocessSolver',['../classexplicitPostprocessSolver.html#a451b4b63085e0904edd00d2e39a6be01',1,'explicitPostprocessSolver']]],
-  ['_7eexplicitsolver_7',['~explicitSolver',['../classexplicitSolver.html#ad67d49f7001d52cf2a67da31281a2e65',1,'explicitSolver']]],
-  ['_7egmgsolver_8',['~GMGSolver',['../classGMGSolver.html#acd2d217d3255190e56b29b0dd058c977',1,'GMGSolver']]],
-  ['_7eidentitysolver_9',['~identitySolver',['../classidentitySolver.html#af158a1c075f97c7ef3559525ef9a53a3',1,'identitySolver']]],
-  ['_7elinearsolverbase_10',['~linearSolverBase',['../classlinearSolverBase.html#a7a982833e97a83cd694f503a95f12d58',1,'linearSolverBase']]],
-  ['_7enonexplicitauxiliarysolver_11',['~nonexplicitAuxiliarySolver',['../classnonexplicitAuxiliarySolver.html#af607c5436c06e2a953fcd2f9e107c4a5',1,'nonexplicitAuxiliarySolver']]],
-  ['_7enonexplicitbase_12',['~nonexplicitBase',['../classnonexplicitBase.html#a3092ab1ae437f373b8d2a6e00cc6c015',1,'nonexplicitBase']]],
-  ['_7enonexplicitlinearsolver_13',['~nonexplicitLinearSolver',['../classnonexplicitLinearSolver.html#a2bf478f799ba67ef509cbe83c94815ef',1,'nonexplicitLinearSolver']]],
-  ['_7enonexplicitselfnonlinearsolver_14',['~nonexplicitSelfNonlinearSolver',['../classnonexplicitSelfNonlinearSolver.html#ac6fe5fa5576cbfc05bde2f84b9e9e51b',1,'nonexplicitSelfNonlinearSolver']]],
-  ['_7epdeproblem_15',['~PDEProblem',['../classPDEProblem.html#a48116fb4918438aeffeecd82e2e1f0bd',1,'PDEProblem']]],
-  ['_7esolutionhandler_16',['~solutionHandler',['../classsolutionHandler.html#a62c497d404f45857fad94af8c0f45343',1,'solutionHandler']]],
-  ['_7etimer_17',['~timer',['../classtimer.html#ac62e813c93be20afaf9bd933f6f49c7a',1,'timer']]],
-  ['_7euserinputparameters_18',['~userInputParameters',['../classuserInputParameters.html#ac7da91743b287de0513e170a9b5c3e01',1,'userInputParameters']]],
-  ['_7evariableattributeloader_19',['~variableAttributeLoader',['../classvariableAttributeLoader.html#a498f796b3f923e338ff5979f7bbd9644',1,'variableAttributeLoader']]]
+  ['value_0',['value',['../classnonuniformDirichlet.html#aa61b16d94d4db9982ebbe86fd34124c9',1,'nonuniformDirichlet']]],
+  ['variableattributeloader_1',['variableAttributeLoader',['../classvariableAttributeLoader.html#a01c1fb95aff3b75dc75f251aa8ac3c2e',1,'variableAttributeLoader']]],
+  ['variablecontainer_2',['variableContainer',['../classvariableContainer.html#a8300b8750ac59eaab27c1c7a612c8178',1,'variableContainer']]],
+  ['vector_5fvalue_3',['vector_value',['../classinitialCondition.html#aac150a22c5873f49d6715942af0ad4a9',1,'initialCondition::vector_value()'],['../classnonuniformDirichlet.html#a7058b34db5a45472204e5b879e286d64',1,'nonuniformDirichlet::vector_value()']]],
+  ['vmult_4',['vmult',['../classmatrixFreeOperator.html#afb91ccd80e6c088b07eec8bf64158319',1,'matrixFreeOperator']]]
 ];

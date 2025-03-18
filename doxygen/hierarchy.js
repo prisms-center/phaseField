@@ -45,7 +45,7 @@ var hierarchy =
     [ "pairHash", "structpairHash.html", null ],
     [ "parseCMDOptions", "classparseCMDOptions.html", null ],
     [ "PDEProblem< dim, degree >", "classPDEProblem.html", null ],
-    [ "RefinementCriterion", "classRefinementCriterion.html", null ],
+    [ "GridRefinement::RefinementCriterion", "classGridRefinement_1_1RefinementCriterion.html", null ],
     [ "solutionHandler< dim >", "classsolutionHandler.html", null ],
     [ "solutionOutput< dim, number >", "classsolutionOutput.html", null ],
     [ "spatialDiscretization< dim >", "structspatialDiscretization.html", null ],
