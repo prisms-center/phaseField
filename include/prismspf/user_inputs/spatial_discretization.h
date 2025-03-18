@@ -8,7 +8,7 @@
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/refinement_criterion.h>
-#include <prismspf/utilities.h>
+#include <prismspf/utilities/utilities.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -77,7 +77,7 @@ public:
   unsigned int remeshing_period = UINT_MAX;
 
   // The criteria used for remeshing
-  std::vector<RefinementCriterion> refinement_criteria;
+  std::vector<GridRefinement::RefinementCriterion> refinement_criteria;
 };
 
 template <int dim>

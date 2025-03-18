@@ -25,8 +25,9 @@ matrixfreeHandler<dim, number>::matrixfreeHandler(
     dealii::MatrixFree<dim,
                        number>::AdditionalData::TasksParallelScheme::partition_partition;
 
-  // TODO: This should be done according to the residual flags to prevent excess data
-  // being evaluated for the shape functions. Note that this applies to all PDEs.
+  // TODO (landinjm): This should be done according to the residual flags to prevent
+  // excess data being evaluated for the shape functions. Note that this applies to all
+  // PDEs, so it might now be too wasteful.
   additional_data.mapping_update_flags =
     (dealii::update_values | dealii::update_gradients | dealii::update_JxW_values |
      dealii::update_quadrature_points);

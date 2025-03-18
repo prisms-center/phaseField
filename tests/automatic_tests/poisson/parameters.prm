@@ -19,7 +19,7 @@ subsection linear solver parameters: u
     set tolerance type = ABSOLUTE_RESIDUAL
     set tolerance value = 1e-10
     set max iterations = 1000 
-    set preconditioner type = NONE
+    set preconditioner type = GMG
     set smoothing range = 20
     set smoother degree = 5
     set eigenvalue cg iterations = 20

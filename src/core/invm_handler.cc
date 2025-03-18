@@ -19,12 +19,12 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <int dim, int degree, typename number>
 invmHandler<dim, degree, number>::invmHandler(
   const std::map<unsigned int, variableAttributes> &_variable_attributes)
-  : variable_attributes(_variable_attributes)
+  : variable_attributes(&_variable_attributes)
   , data(nullptr)
   , invm_scalar(VectorType())
   , invm_vector(VectorType())
 {
-  for (const auto &[index, variable] : variable_attributes)
+  for (const auto &[index, variable] : *variable_attributes)
     {
       if (variable.field_type == fieldType::SCALAR && !scalar_needed &&
           (variable.pde_type == PDEType::EXPLICIT_TIME_DEPENDENT ||
@@ -62,76 +62,13 @@ invmHandler<dim, degree, number>::compute_invm()
 {
   Assert(data != nullptr, dealii::ExcNotInitialized());
 
-  // Initialize the invm vectors and cell loop to compute the invm vector, as neccessary
   if (scalar_needed)
     {
-      data->initialize_dof_vector(invm_scalar, scalar_index);
-
-      dealii::FEEvaluation<dim, degree, degree + 1, 1, number> fe_eval(*data,
-                                                                       scalar_index);
-
-      for (unsigned int cell = 0; cell < data->n_cell_batches(); ++cell)
-        {
-          fe_eval.reinit(cell);
-          for (const unsigned int q : fe_eval.quadrature_point_indices())
-            {
-              fe_eval.submit_value(dealii::VectorizedArray<number>(1.0), q);
-            }
-          fe_eval.integrate(dealii::EvaluationFlags::values);
-          fe_eval.distribute_local_to_global(invm_scalar);
-        }
-      invm_scalar.compress(dealii::VectorOperation::add);
-
-      // Loop over cells and take the inverse
-      for (unsigned int i = 0; i < invm_scalar.locally_owned_size(); ++i)
-        {
-          if (invm_scalar.local_element(i) > 1.0e-15)
-            {
-              invm_scalar.local_element(i) = 1.0 / invm_scalar.local_element(i);
-            }
-          else
-            {
-              invm_scalar.local_element(i) = 1;
-            }
-        }
+      compute_scalar_invm();
     }
   if (vector_needed)
     {
-      data->initialize_dof_vector(invm_vector, vector_index);
-
-      dealii::FEEvaluation<dim, degree, degree + 1, dim, number> fe_eval(*data,
-                                                                         vector_index);
-
-      dealii::Tensor<1, dim, dealii::VectorizedArray<number>> one;
-      for (unsigned int i = 0; i < dim; i++)
-        {
-          one[i] = 1.0;
-        }
-
-      for (unsigned int cell = 0; cell < data->n_cell_batches(); ++cell)
-        {
-          fe_eval.reinit(cell);
-          for (const unsigned int q : fe_eval.quadrature_point_indices())
-            {
-              fe_eval.submit_value(one, q);
-            }
-          fe_eval.integrate(dealii::EvaluationFlags::values);
-          fe_eval.distribute_local_to_global(invm_vector);
-        }
-      invm_vector.compress(dealii::VectorOperation::add);
-
-      // Loop over cells and take the inverse
-      for (unsigned int i = 0; i < invm_vector.locally_owned_size(); ++i)
-        {
-          if (invm_vector.local_element(i) > 1.0e-15)
-            {
-              invm_vector.local_element(i) = 1.0 / invm_vector.local_element(i);
-            }
-          else
-            {
-              invm_vector.local_element(i) = 1;
-            }
-        }
+      compute_vector_invm();
     }
 }
 
@@ -148,12 +85,12 @@ invmHandler<dim, degree, number>::get_invm(const unsigned int &index) const
 {
   Assert(data != nullptr, dealii::ExcNotInitialized());
 
-  Assert(variable_attributes.find(index) != variable_attributes.end(),
+  Assert(variable_attributes->find(index) != variable_attributes->end(),
          dealii::ExcMessage(
            "Invalid index. The provided index does not have an entry in the variable "
            "attributes that were provided to the constructor."));
 
-  if (variable_attributes.at(index).field_type == fieldType::SCALAR)
+  if (variable_attributes->at(index).field_type == fieldType::SCALAR)
     {
       Assert(scalar_needed,
              dealii::ExcMessage(
@@ -166,7 +103,7 @@ invmHandler<dim, degree, number>::get_invm(const unsigned int &index) const
 
       return invm_scalar;
     }
-  else if (variable_attributes.at(index).field_type == fieldType::VECTOR)
+  if (variable_attributes->at(index).field_type == fieldType::VECTOR)
     {
       Assert(vector_needed,
              dealii::ExcMessage(
@@ -194,6 +131,80 @@ invmHandler<dim, degree, number>::clear()
   vector_needed = false;
   scalar_index  = numbers::invalid_index;
   vector_index  = numbers::invalid_index;
+}
+
+template <int dim, int degree, typename number>
+void
+invmHandler<dim, degree, number>::compute_scalar_invm()
+{
+  data->initialize_dof_vector(invm_scalar, scalar_index);
+
+  dealii::FEEvaluation<dim, degree, degree + 1, 1, number> fe_eval(*data, scalar_index);
+
+  for (unsigned int cell = 0; cell < data->n_cell_batches(); ++cell)
+    {
+      fe_eval.reinit(cell);
+      for (const unsigned int quad : fe_eval.quadrature_point_indices())
+        {
+          fe_eval.submit_value(dealii::VectorizedArray<number>(1.0), quad);
+        }
+      fe_eval.integrate(dealii::EvaluationFlags::values);
+      fe_eval.distribute_local_to_global(invm_scalar);
+    }
+  invm_scalar.compress(dealii::VectorOperation::add);
+
+  // Loop over cells and take the inverse
+  for (unsigned int i = 0; i < invm_scalar.locally_owned_size(); ++i)
+    {
+      if (invm_scalar.local_element(i) > tolerance)
+        {
+          invm_scalar.local_element(i) = 1.0 / invm_scalar.local_element(i);
+        }
+      else
+        {
+          invm_scalar.local_element(i) = 1.0;
+        }
+    }
+}
+
+template <int dim, int degree, typename number>
+void
+invmHandler<dim, degree, number>::compute_vector_invm()
+{
+  data->initialize_dof_vector(invm_vector, vector_index);
+
+  dealii::FEEvaluation<dim, degree, degree + 1, dim, number> fe_eval(*data, vector_index);
+
+  dealii::Tensor<1, dim, dealii::VectorizedArray<number>> one;
+  for (unsigned int i = 0; i < dim; i++)
+    {
+      one[i] = 1.0;
+    }
+
+  for (unsigned int cell = 0; cell < data->n_cell_batches(); ++cell)
+    {
+      fe_eval.reinit(cell);
+      for (const unsigned int quad : fe_eval.quadrature_point_indices())
+        {
+          fe_eval.submit_value(one, quad);
+        }
+      fe_eval.integrate(dealii::EvaluationFlags::values);
+      fe_eval.distribute_local_to_global(invm_vector);
+    }
+  invm_vector.compress(dealii::VectorOperation::add);
+
+  // Loop over cells and take the inverse
+  for (unsigned int i = 0; i < invm_vector.locally_owned_size(); ++i)
+    {
+      if (invm_vector.local_element(i) > tolerance)
+        {
+          invm_vector.local_element(i) = 1.0 / invm_vector.local_element(i);
+        }
+      else
+        {
+          invm_vector.local_element(i) = 1.0;
+        }
+    }
 }
 
 INSTANTIATE_TRI_TEMPLATE(invmHandler)

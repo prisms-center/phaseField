@@ -4,6 +4,7 @@
 #ifndef dof_handler_h
 #define dof_handler_h
 
+#include <deal.II/base/mg_level_object.h>
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/fe/fe_system.h>
 
@@ -29,16 +30,30 @@ public:
   explicit dofHandler(const userInputParameters<dim> &_user_inputs);
 
   /**
-   * \brief Destructor.
-   */
-  ~dofHandler();
-
-  /**
    * \brief Initialize the DoFHandlers
    */
   void
   init(const triangulationHandler<dim>                  &triangulation_handler,
        const std::map<fieldType, dealii::FESystem<dim>> &fe_system);
+
+  /**
+   * \brief Getter function for the DoFHandlers (constant reference).
+   */
+  [[nodiscard]] const std::vector<const dealii::DoFHandler<dim> *> &
+  get_dof_handlers() const;
+
+  /**
+   * \brief Getter function for the DoFHandler at a certain field and multigrid level
+   * (constant reference).
+   */
+  [[nodiscard]] const dealii::DoFHandler<dim> &
+  get_mg_dof_handler(unsigned int index, unsigned int level) const;
+
+private:
+  /**
+   * \brief User-inputs.
+   */
+  const userInputParameters<dim> *user_inputs;
 
   /**
    * \brief Collection of the triangulation DoFs. The number of DoFHandlers should be
@@ -47,18 +62,24 @@ public:
    * quadrature rule, allowing us to share the same DoFHandler. An example of this might
    * be grain growth.
    */
-  std::vector<dealii::DoFHandler<dim> *> dof_handlers;
+  std::map<unsigned int, std::unique_ptr<dealii::DoFHandler<dim>>> dof_handlers;
 
   /**
    * \brief Const copy of the dof_handlers.
    */
   std::vector<const dealii::DoFHandler<dim> *> const_dof_handlers;
 
-private:
   /**
-   * \brief User-inputs.
+   * \brief Whether we have multigrid.
    */
-  const userInputParameters<dim> &user_inputs;
+  bool has_multigrid = false;
+
+  /**
+   * \brief Collection of the triangulation DoFs for each multigrid level for all fields
+   * that require it. Like before, we can share the same DoFHandler for multiple fields in
+   * special cases.
+   */
+  std::map<unsigned int, dealii::MGLevelObject<dealii::DoFHandler<dim>>> mg_dof_handlers;
 };
 
 PRISMS_PF_END_NAMESPACE

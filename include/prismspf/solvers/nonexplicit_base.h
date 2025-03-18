@@ -270,7 +270,7 @@ nonexplicitBase<dim, degree>::set_initial_condition()
           continue;
         }
 
-      Assert(dof_handler.const_dof_handlers.size() > index,
+      Assert(dof_handler.get_dof_handlers().size() > index,
              dealii::ExcMessage(
                "The const DoFHandler set is smaller than the given index = " +
                std::to_string(index)));
@@ -287,13 +287,13 @@ nonexplicitBase<dim, degree>::set_initial_condition()
 
       dealii::VectorTools::interpolate(
         mapping,
-        *(dof_handler.const_dof_handlers.at(index)),
+        *(dof_handler.get_dof_handlers().at(index)),
         initialCondition<dim>(index, subset_attributes.at(index).field_type),
         *(solution_handler.solution_set.at(
           std::make_pair(index, dependencyType::NORMAL))));
 
-      // TODO: Fix so that we apply some sort of initial condition to all old vector for
-      // all types.
+      // TODO (landinjm): Fix so that we apply some sort of initial condition to all old
+      // vector for all types.
       if (solution_handler.solution_set.find(
             std::make_pair(index, dependencyType::OLD_1)) !=
           solution_handler.solution_set.end())

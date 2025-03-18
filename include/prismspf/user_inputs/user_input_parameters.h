@@ -28,11 +28,6 @@ public:
   userInputParameters(inputFileReader          &input_file_reader,
                       dealii::ParameterHandler &parameter_handler);
 
-  /**
-   * \brief Destructor.
-   */
-  ~userInputParameters() = default;
-
   // Variable attributes
   const std::map<unsigned int, variableAttributes> &var_attributes;
 

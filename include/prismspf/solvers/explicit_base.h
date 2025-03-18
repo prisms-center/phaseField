@@ -231,7 +231,7 @@ explicitBase<dim, degree>::set_initial_condition()
 {
   for (const auto &[index, variable] : subset_attributes)
     {
-      Assert(dof_handler.const_dof_handlers.size() > index,
+      Assert(dof_handler.get_dof_handlers().size() > index,
              dealii::ExcMessage(
                "The const DoFHandler set is smaller than the given index = " +
                std::to_string(index)));
@@ -248,7 +248,7 @@ explicitBase<dim, degree>::set_initial_condition()
 
       dealii::VectorTools::interpolate(
         mapping,
-        *(dof_handler.const_dof_handlers.at(index)),
+        *(dof_handler.get_dof_handlers().at(index)),
         initialCondition<dim>(index, subset_attributes.at(index).field_type),
         *(solution_handler.solution_set.at(
           std::make_pair(index, dependencyType::NORMAL))));

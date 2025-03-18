@@ -4,6 +4,7 @@ CMakeFiles/
 CMakeCache.txt
 *.cmake
 !cmake/*.cmake
+!cmake/*/*.cmake
 Makefile
 .ninja*
 build.ninja
@@ -58,6 +59,8 @@ main
 
 #Output files
 applications/*/*.vtk
+tests/automatic_tests/*/*.vtk
+tests/performance_tests/*/*.vtk
 *.vtu
 *.pvtu
 *.vts

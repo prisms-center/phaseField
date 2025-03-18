@@ -16,17 +16,22 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <int dim>
 solutionHandler<dim>::solutionHandler(
   const std::map<unsigned int, variableAttributes> &_attributes_list)
-  : attributes_list(_attributes_list)
+  : attributes_list(&_attributes_list)
 {}
 
 template <int dim>
 solutionHandler<dim>::~solutionHandler()
 {
-  for (const auto &[pair, solution] : solution_set)
+  for (auto &[pair, solution] : solution_set)
     {
       delete solution;
     }
   solution_set.clear();
+  for (auto &[index, new_solution] : new_solution_set)
+    {
+      delete new_solution;
+    }
+  new_solution_set.clear();
 }
 
 template <int dim>
@@ -34,7 +39,7 @@ void
 solutionHandler<dim>::init(matrixfreeHandler<dim> &matrix_free_handler)
 {
   // Create all entries
-  for (const auto &[index, variable] : attributes_list)
+  for (const auto &[index, variable] : *attributes_list)
     {
       // Add the current variable if it doesn't already exist
       if (solution_set.find(std::make_pair(index, dependencyType::NORMAL)) ==
@@ -100,7 +105,7 @@ solutionHandler<dim>::update(const fieldSolveType &field_solve_type,
           case fieldSolveType::EXPLICIT_CONSTANT:
             break;
           case fieldSolveType::EXPLICIT:
-            if (attributes_list.at(index).field_solve_type == field_solve_type)
+            if (attributes_list->at(index).field_solve_type == field_solve_type)
               {
                 (*new_vector)
                   .swap(
@@ -136,7 +141,7 @@ solutionHandler<dim>::update(const fieldSolveType &field_solve_type,
               }
             break;
           case fieldSolveType::NONEXPLICIT_LINEAR:
-            if (attributes_list.at(index).field_solve_type == field_solve_type &&
+            if (attributes_list->at(index).field_solve_type == field_solve_type &&
                 variable_index == index)
               {
                 (*new_vector)
@@ -178,7 +183,7 @@ solutionHandler<dim>::update(const fieldSolveType &field_solve_type,
           case fieldSolveType::NONEXPLICIT_SELF_NONLINEAR:
             break;
           case fieldSolveType::NONEXPLICIT_AUXILIARY:
-            if (attributes_list.at(index).field_solve_type == field_solve_type &&
+            if (attributes_list->at(index).field_solve_type == field_solve_type &&
                 variable_index == index)
               {
                 (*new_vector)
@@ -217,7 +222,7 @@ solutionHandler<dim>::update(const fieldSolveType &field_solve_type,
           case fieldSolveType::NONEXPLICIT_CO_NONLINEAR:
             break;
           case fieldSolveType::EXPLICIT_POSTPROCESS:
-            if (attributes_list.at(index).field_solve_type == field_solve_type)
+            if (attributes_list->at(index).field_solve_type == field_solve_type)
               {
                 (*new_vector)
                   .swap(
