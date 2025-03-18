@@ -52,7 +52,6 @@ jobs:
           cmake .
           make -j $(nproc)
           ctest
-          cd ..
 
       - name: Run PRISMS-PF automatic tests
         timeout-minutes: 60
@@ -60,6 +59,6 @@ jobs:
           export OMPI_ALLOW_RUN_AS_ROOT=1
           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
-          cd automatic_tests
+          cd tests/automatic_tests
           python3 run_automatic_tests.py
 
