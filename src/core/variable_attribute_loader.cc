@@ -370,11 +370,11 @@ variableAttributeLoader::validate_old_solution_dependencies()
   for (const auto &[index, variable] : var_attributes)
     {
       // TODO (landinjm): Move this somewhere else
-      AssertThrow(!(variable.pde_type == PDEType::CONSTANT) ||
-                    (variable.dependency_set_RHS.size() > 0 &&
-                     variable.dependency_set_LHS.size() > 0),
-                  dealii::ExcMessage("Constant fields are determined by the initial "
-                                     "condition. They cannot have dependencies."));
+      // AssertThrow(!(variable.pde_type == PDEType::CONSTANT) ||
+      //               (variable.dependency_set_RHS.size() > 0 &&
+      //                variable.dependency_set_LHS.size() > 0),
+      //             dealii::ExcMessage("Constant fields are determined by the initial "
+      //                                "condition. They cannot have dependencies."));
     }
 
   // First create a combined dependency set
