@@ -7,7 +7,6 @@
 #include <prismspf/config.h>
 
 #include <ostream>
-#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -34,26 +33,24 @@ private:
 
   protected:
     int
-    overflow(int c) override
+    overflow(int character) override
     {
-      if (c == EOF)
+      if (character == EOF)
         {
           return static_cast<int>(!EOF);
         }
-      else
-        {
-          const int r1 = stream1->sputc(c);
-          const int r2 = stream2->sputc(c);
-          return r1 == EOF || r2 == EOF ? EOF : c;
-        }
+
+      const int result1 = stream1->sputc(static_cast<char_type>(character));
+      const int result2 = stream2->sputc(static_cast<char_type>(character));
+      return result1 == EOF || result2 == EOF ? EOF : character;
     }
 
     int
     sync() override
     {
-      const int r1 = stream1->pubsync();
-      const int r2 = stream2->pubsync();
-      return r1 == 0 && r2 == 0 ? 0 : -1;
+      const int result1 = stream1->pubsync();
+      const int result2 = stream2->pubsync();
+      return result1 == 0 && result2 == 0 ? 0 : -1;
     }
 
   private:

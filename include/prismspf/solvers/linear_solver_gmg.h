@@ -115,16 +115,6 @@ private:
   const dealii::MappingQ1<dim> mapping;
 
   /**
-   * \brief Collection of triangulations for each multigrid level.
-   */
-  std::vector<std::shared_ptr<const dealii::Triangulation<dim>>> coarse_triangulations;
-
-  /**
-   * \brief Collection of DoFhandlers for each multigrid level.
-   */
-  dealii::MGLevelObject<dealii::DoFHandler<dim>> mg_dof_handlers;
-
-  /**
    * \brief Collection of constraints for each multigrid level.
    */
   dealii::MGLevelObject<dealii::AffineConstraints<float>> level_constraints;
@@ -196,42 +186,10 @@ GMGSolver<dim, degree>::init()
   // We solve the system with a global coarsening approach. There are two options when
   // doing this: geometric coarsening and polynomial coarsening. We only support geometric
   // as of now.
-  const auto *current_dof_handler = dof_handler.const_dof_handlers.at(this->field_index);
 
-  Assert(this->triangulation_handler.get_triangulation().n_global_levels() > 1,
-         dealii::ExcMessage(
-           "Multigrid preconditioner requires a multilevel triangulation"));
-  if constexpr (dim != 1)
-    {
-      Assert(this->triangulation_handler.get_triangulation()
-               .is_multilevel_hierarchy_constructed(),
-             dealii::ExcMessage(
-               "parrallel::distributed::Triangulation must be constructed with "
-               "multilevel hierarchy"));
-    }
-
-  // Create the triangulations for the coarser levels
-  coarse_triangulations =
-    dealii::MGTransferGlobalCoarseningTools::create_geometric_coarsening_sequence(
-      this->triangulation_handler.get_triangulation());
-
-  // Placeholder for p-multigrid
-  const auto polynomial_coarsening_sequence =
-    dealii::MGTransferGlobalCoarseningTools::create_polynomial_coarsening_sequence(
-      current_dof_handler->get_fe().degree,
-      dealii::MGTransferGlobalCoarseningTools::PolynomialCoarseningSequenceType::
-        decrease_by_one);
-
-  // Create the levels where h is the refinement and p is the polynomial degree.
-  std::vector<std::pair<unsigned int, unsigned int>> levels;
-  for (unsigned int i = 0; i < coarse_triangulations.size(); ++i)
-    {
-      levels.emplace_back(i, polynomial_coarsening_sequence.back());
-    }
-
-  // Set the maximum and minimum levels for the multigrid based on the triangulation.
-  min_level = 0;
-  max_level = levels.size() - 1;
+  // Grab the min and max level
+  min_level = triangulation_handler.get_mg_min_level();
+  max_level = triangulation_handler.get_mg_max_level();
 
   // Init the multilevel operator objects
   mg_operators =
@@ -243,32 +201,30 @@ GMGSolver<dim, degree>::init()
   mg_transfer_operators.resize(min_level, max_level);
 
   // Object for constraints on different levels
-  level_constraints.resize(min_level, max_level);
-  mg_matrix_free_handler.resize(min_level, max_level, this->user_inputs);
-
-  // Distribute DoFs for each level of the triangulation
-  mg_dof_handlers.resize(min_level, max_level);
-  for (unsigned int level = min_level; level <= max_level; ++level)
-    {
-      mg_dof_handlers[level].reinit(*coarse_triangulations[level]);
-
-      mg_dof_handlers[level].distribute_dofs(current_dof_handler->get_fe());
-    }
+  level_constraints.resize(triangulation_handler.get_mg_min_level(),
+                           triangulation_handler.get_mg_max_level());
+  mg_matrix_free_handler.resize(triangulation_handler.get_mg_min_level(),
+                                triangulation_handler.get_mg_max_level(),
+                                this->user_inputs);
 
   // Apply constraints on each level
-  for (unsigned int level = min_level; level <= max_level; ++level)
+  for (unsigned int level = triangulation_handler.get_mg_min_level();
+       level <= triangulation_handler.get_mg_max_level();
+       ++level)
     {
       level_constraints[level].clear();
 
       const dealii::IndexSet locally_relevant_dofs =
-        dealii::DoFTools::extract_locally_relevant_dofs(mg_dof_handlers[level]);
+        dealii::DoFTools::extract_locally_relevant_dofs(
+          dof_handler.get_mg_dof_handler(this->field_index, level));
 
       level_constraints[level].reinit(locally_relevant_dofs);
 
-      dealii::DoFTools::make_hanging_node_constraints(mg_dof_handlers[level],
-                                                      level_constraints[level]);
+      dealii::DoFTools::make_hanging_node_constraints(
+        dof_handler.get_mg_dof_handler(this->field_index, level),
+        level_constraints[level]);
 
-      // TODO: Fix for pinned points
+      // TODO (landinjm): Fix for pinned points
       const auto &boundary_condition =
         this->user_inputs.boundary_parameters.boundary_condition_list.at(
           this->field_index);
@@ -295,7 +251,7 @@ GMGSolver<dim, degree>::init()
                     {
                       dealii::VectorTools::interpolate_boundary_values(
                         mapping,
-                        mg_dof_handlers[level],
+                        dof_handler.get_mg_dof_handler(this->field_index, level),
                         boundary_id,
                         dealii::Functions::ZeroFunction<dim, float>(1),
                         level_constraints[level]);
@@ -304,7 +260,7 @@ GMGSolver<dim, degree>::init()
                     {
                       dealii::VectorTools::interpolate_boundary_values(
                         mapping,
-                        mg_dof_handlers[level],
+                        dof_handler.get_mg_dof_handler(this->field_index, level),
                         boundary_id,
                         dealii::Functions::ZeroFunction<dim, float>(dim),
                         level_constraints[level],
@@ -329,11 +285,12 @@ GMGSolver<dim, degree>::init()
                     static_cast<unsigned int>(std::floor(boundary_id / dim));
 
                   // Collect the matched pairs on the coarsest level of the mesh
-                  dealii::GridTools::collect_periodic_faces(mg_dof_handlers[level],
-                                                            boundary_id,
-                                                            boundary_id + 1,
-                                                            direction,
-                                                            periodicity_vector);
+                  dealii::GridTools::collect_periodic_faces(
+                    dof_handler.get_mg_dof_handler(this->field_index, level),
+                    boundary_id,
+                    boundary_id + 1,
+                    direction,
+                    periodicity_vector);
 
                   // Set constraints
                   if (this->user_inputs.var_attributes.at(this->field_index).field_type !=
@@ -362,7 +319,7 @@ GMGSolver<dim, degree>::init()
                     {
                       dealii::VectorTools::interpolate_boundary_values(
                         mapping,
-                        mg_dof_handlers[level],
+                        dof_handler.get_mg_dof_handler(this->field_index, level),
                         boundary_id,
                         dealii::Functions::ZeroFunction<dim, float>(1),
                         level_constraints[level]);
@@ -371,7 +328,7 @@ GMGSolver<dim, degree>::init()
                     {
                       dealii::VectorTools::interpolate_boundary_values(
                         mapping,
-                        mg_dof_handlers[level],
+                        dof_handler.get_mg_dof_handler(this->field_index, level),
                         boundary_id,
                         dealii::Functions::ZeroFunction<dim, float>(dim),
                         level_constraints[level],
@@ -389,17 +346,21 @@ GMGSolver<dim, degree>::init()
     }
 
   // Setup operator on each level
-  mg_newton_update_src.resize(min_level, max_level);
-  for (unsigned int level = min_level; level <= max_level; ++level)
+  mg_newton_update_src.resize(triangulation_handler.get_mg_min_level(),
+                              triangulation_handler.get_mg_max_level());
+  for (unsigned int level = triangulation_handler.get_mg_min_level();
+       level <= triangulation_handler.get_mg_max_level();
+       ++level)
     {
-      // TODO: Fix so mapping is same as rest of the problem. Do the same for the finite
-      // element I think.
-      // TODO: Fix so that we include all DoF handlers and constraints and select only the
-      // ones we need.
-      mg_matrix_free_handler[level].reinit(mapping,
-                                           mg_dof_handlers[level],
-                                           level_constraints[level],
-                                           dealii::QGaussLobatto<1>(degree + 1));
+      // TODO (landinjm): Fix so mapping is same as rest of the problem. Do the same for
+      // the finite element I think.
+      // TODO (landinjm): Fix so that we include all DoF handlers and constraints and
+      // select only the ones we need.
+      mg_matrix_free_handler[level].reinit(
+        mapping,
+        dof_handler.get_mg_dof_handler(this->field_index, level),
+        level_constraints[level],
+        dealii::QGaussLobatto<1>(degree + 1));
 
       (*mg_operators)[level].initialize(mg_matrix_free_handler[level].get_matrix_free());
 
@@ -416,27 +377,31 @@ GMGSolver<dim, degree>::init()
         }
 
       // Check that the vector partitioning is right
-      // TODO: Check this for all of the vectors. May also be able to remove this
+      // TODO (landinjm): Check this for all of the vectors. May also be able to remove
+      // this
       Assert((*mg_operators)[level]
                .get_matrix_free()
                ->get_vector_partitioner(this->field_index)
                ->is_compatible(*(mg_newton_update_src[level][0]->get_partitioner())),
              dealii::ExcMessage("Incompatabile vector partitioners"));
 
-      // TODO: Allow for src subset that is float instead of double. Not sure how to
-      // handle this to be honest. I would rather not store more matrices than I need
-      // to.
+      // TODO (landinjm): Allow for src subset that is float instead of double. Not sure
+      // how to handle this to be honest. I would rather not store more matrices than I
+      // need to.
       (*mg_operators)[level].add_src_solution_subset(mg_newton_update_src[level]);
     }
   mg_matrix = std::make_shared<dealii::mg::Matrix<MGVectorType>>(*mg_operators);
 
   // Setup transfer operators
-  for (unsigned int level = min_level; level < max_level; ++level)
+  for (unsigned int level = triangulation_handler.get_mg_min_level();
+       level < triangulation_handler.get_mg_max_level();
+       ++level)
     {
-      mg_transfer_operators[level + 1].reinit(mg_dof_handlers[level + 1],
-                                              mg_dof_handlers[level],
-                                              level_constraints[level + 1],
-                                              level_constraints[level]);
+      mg_transfer_operators[level + 1].reinit(
+        dof_handler.get_mg_dof_handler(this->field_index, level + 1),
+        dof_handler.get_mg_dof_handler(this->field_index, level),
+        level_constraints[level + 1],
+        level_constraints[level]);
     }
   mg_transfer = std::make_shared<dealii::MGTransferGlobalCoarsening<dim, MGVectorType>>(
     mg_transfer_operators);
@@ -462,21 +427,29 @@ GMGSolver<dim, degree>::init()
 #ifdef DEBUG
   conditionalOStreams::pout_summary()
     << "\nMultigrid Setup Information for index " << this->field_index << ":\n"
-    << "  Min level: " << min_level << "\n"
-    << "  Max level: " << max_level << "\n";
-  for (unsigned int level = min_level; level <= max_level; ++level)
+    << "  Min level: " << triangulation_handler.get_mg_min_level() << "\n"
+    << "  Max level: " << triangulation_handler.get_mg_max_level() << "\n";
+  for (unsigned int level = triangulation_handler.get_mg_min_level();
+       level <= triangulation_handler.get_mg_max_level();
+       ++level)
     {
       conditionalOStreams::pout_summary()
         << "  Level: " << level << "\n"
-        << "    Cells: " << coarse_triangulations[level]->n_global_active_cells() << "\n"
-        << "    DoFs: " << mg_dof_handlers[level].n_dofs() << "\n"
+        << "    Cells: "
+        << triangulation_handler.get_mg_triangulation(level).n_global_active_cells()
+        << "\n"
+        << "    DoFs: "
+        << dof_handler.get_mg_dof_handler(this->field_index, level).n_dofs() << "\n"
         << "    Constrained DoFs: " << level_constraints[level].n_constraints() << "\n";
     }
   conditionalOStreams::pout_summary()
     << "  MG vertical communication efficiency: "
-    << dealii::MGTools::vertical_communication_efficiency(coarse_triangulations) << "\n"
+    << dealii::MGTools::vertical_communication_efficiency(
+         triangulation_handler.get_mg_triangulation())
+    << "\n"
     << "  MG workload imbalance: "
-    << dealii::MGTools::workload_imbalance(coarse_triangulations) << "\n\n"
+    << dealii::MGTools::workload_imbalance(triangulation_handler.get_mg_triangulation())
+    << "\n\n"
     << std::flush;
 #endif
 }
@@ -490,7 +463,7 @@ template <int dim, int degree>
 inline void
 GMGSolver<dim, degree>::solve(const double step_length)
 {
-  const auto *current_dof_handler = dof_handler.const_dof_handlers.at(this->field_index);
+  const auto *current_dof_handler = dof_handler.get_dof_handlers().at(this->field_index);
   auto       *solution            = this->solution_handler.solution_set.at(
     std::make_pair(this->field_index, dependencyType::NORMAL));
 
@@ -512,8 +485,12 @@ GMGSolver<dim, degree>::solve(const double step_length)
        local_index++)
     {
       // Create a temporary collection of the the dst pointers
-      dealii::MGLevelObject<MGVectorType> mg_src_subset(min_level, max_level);
-      for (unsigned int level = min_level; level < max_level; ++level)
+      dealii::MGLevelObject<MGVectorType> mg_src_subset(
+        triangulation_handler.get_mg_min_level(),
+        triangulation_handler.get_mg_max_level());
+      for (unsigned int level = triangulation_handler.get_mg_min_level();
+           level < triangulation_handler.get_mg_max_level();
+           ++level)
         {
           mg_src_subset[level] = *mg_newton_update_src[level][local_index];
         }
@@ -527,9 +504,12 @@ GMGSolver<dim, degree>::solve(const double step_length)
   // Create smoother for each level
   using SmootherType = dealii::PreconditionChebyshev<LevelMatrixType, MGVectorType>;
   dealii::MGSmootherPrecondition<LevelMatrixType, SmootherType, MGVectorType> mg_smoother;
-  dealii::MGLevelObject<typename SmootherType::AdditionalData> smoother_data(min_level,
-                                                                             max_level);
-  for (unsigned int level = min_level; level <= max_level; ++level)
+  dealii::MGLevelObject<typename SmootherType::AdditionalData> smoother_data(
+    triangulation_handler.get_mg_min_level(),
+    triangulation_handler.get_mg_max_level());
+  for (unsigned int level = triangulation_handler.get_mg_min_level();
+       level <= triangulation_handler.get_mg_max_level();
+       ++level)
     {
       smoother_data[level].smoothing_range =
         this->user_inputs.linear_solve_parameters.linear_solve.at(this->field_index)
@@ -556,8 +536,8 @@ GMGSolver<dim, degree>::solve(const double step_length)
                                      *mg_transfer,
                                      mg_smoother,
                                      mg_smoother,
-                                     min_level,
-                                     max_level,
+                                     triangulation_handler.get_mg_min_level(),
+                                     triangulation_handler.get_mg_max_level(),
                                      dealii::Multigrid<MGVectorType>::Cycle::v_cycle);
 
   // Create the preconditioner

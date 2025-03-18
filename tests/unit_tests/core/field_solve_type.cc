@@ -1,12 +1,15 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
+#include <prismspf/config.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attribute_loader.h>
 
 #include "catch.hpp"
 
 #include <string>
+
+PRISMS_PF_BEGIN_NAMESPACE
 
 /**
  * This unit test looks at variable_attributes.h and variable_attribute_loader.h and how
@@ -57,7 +60,8 @@ TEST_CASE("Field solve types")
 
     testVariableAttributeLoader attributes;
     attributes.init_variable_attributes();
-    AttributesList variables = attributes.get_var_attributes();
+    std::map<unsigned int, variableAttributes> variables =
+      attributes.get_var_attributes();
 
     REQUIRE(variables.size() == 2);
     for (unsigned int index : {0, 1})
@@ -135,7 +139,8 @@ TEST_CASE("Field solve types")
 
     testVariableAttributeLoader attributes;
     attributes.init_variable_attributes();
-    AttributesList variables = attributes.get_var_attributes();
+    std::map<unsigned int, variableAttributes> variables =
+      attributes.get_var_attributes();
 
     REQUIRE(variables.size() == 4);
     for (unsigned int index : {0, 1})
@@ -178,7 +183,8 @@ TEST_CASE("Field solve types")
 
     testVariableAttributeLoader attributes;
     attributes.init_variable_attributes();
-    AttributesList variables = attributes.get_var_attributes();
+    std::map<unsigned int, variableAttributes> variables =
+      attributes.get_var_attributes();
 
     REQUIRE(variables.size() == 4);
     for (unsigned int index : {0, 1, 2, 3})
@@ -226,7 +232,8 @@ TEST_CASE("Field solve types")
 
     testVariableAttributeLoader attributes;
     attributes.init_variable_attributes();
-    AttributesList variables = attributes.get_var_attributes();
+    std::map<unsigned int, variableAttributes> variables =
+      attributes.get_var_attributes();
 
     REQUIRE(variables.size() == 4);
     for (unsigned int index : {0, 1})
@@ -290,7 +297,8 @@ TEST_CASE("Field solve types")
 
     testVariableAttributeLoader attributes;
     attributes.init_variable_attributes();
-    AttributesList variables = attributes.get_var_attributes();
+    std::map<unsigned int, variableAttributes> variables =
+      attributes.get_var_attributes();
 
     REQUIRE(variables.size() == 4);
     for (unsigned int index : {0, 1})
@@ -304,3 +312,5 @@ TEST_CASE("Field solve types")
       }
   }
 }
+
+PRISMS_PF_END_NAMESPACE

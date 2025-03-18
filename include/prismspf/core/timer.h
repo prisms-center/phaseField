@@ -22,11 +22,6 @@ public:
   timer();
 
   /**
-   * \brief Destructor
-   */
-  ~timer() = default;
-
-  /**
    * \brief deal.II timer for the 0th MPI process
    */
   static dealii::TimerOutput &

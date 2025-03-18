@@ -7,6 +7,7 @@
 #include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/type_enums.h>
+#include <prismspf/core/types.h>
 
 #include <map>
 
@@ -19,13 +20,13 @@ struct linearSolverParameters
 {
 public:
   // Solver tolerance
-  double tolerance = 1.0e-6;
+  double tolerance = defaults::tolerance;
 
   // Solver tolerance type
   solverToleranceType tolerance_type = solverToleranceType::RELATIVE_RESIDUAL_CHANGE;
 
   // Max number of iterations for the linear solve
-  unsigned int max_iterations = 100;
+  unsigned int max_iterations = defaults::iterations;
 
   // Preconditioner
   preconditionerType preconditioner = preconditionerType::GMG;

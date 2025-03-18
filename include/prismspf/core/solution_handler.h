@@ -26,7 +26,8 @@ public:
   /**
    * \brief Constructor.
    */
-  solutionHandler(const std::map<unsigned int, variableAttributes> &_attributes_list);
+  explicit solutionHandler(
+    const std::map<unsigned int, variableAttributes> &_attributes_list);
 
   /**
    * \brief Destructor.
@@ -70,7 +71,7 @@ private:
   /**
    * \brief The attribute list of the relevant variables.
    */
-  const std::map<unsigned int, variableAttributes> &attributes_list;
+  const std::map<unsigned int, variableAttributes> *attributes_list;
 };
 
 PRISMS_PF_END_NAMESPACE

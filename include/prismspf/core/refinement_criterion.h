@@ -12,86 +12,103 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-enum RefinementCriterionFlags : std::uint8_t
+namespace GridRefinement
 {
-  criterion_default  = 0,
-  criterion_value    = 0x0001,
-  criterion_gradient = 0x0002
-};
+  /**
+   * \brief Flags for refinement criterion.
+   */
+  enum RefinementFlags : std::uint8_t
+  {
+    /**
+     * \brief No adaptive refinement criterion.
+     */
+    nothing = 0,
 
-// Function that enables bitwise OR between flags
-inline RefinementCriterionFlags
-operator|(const RefinementCriterionFlags flag_1, const RefinementCriterionFlags flag_2)
-{
-  return static_cast<RefinementCriterionFlags>(static_cast<unsigned int>(flag_1) |
-                                               static_cast<unsigned int>(flag_2));
-}
+    /**
+     * \brief Use value of the variable as a criterion for refinement.
+     */
+    value = 0x0001,
 
-// Function that enables bitwise compound OR between flags
-inline RefinementCriterionFlags &
-operator|=(RefinementCriterionFlags &flag_1, const RefinementCriterionFlags flag_2)
-{
-  flag_1 = flag_1 | flag_2;
-  return flag_1;
-}
+    /**
+     * \brief Use gradient of the variable as a criterion for refinement.
+     */
+    gradient = 0x0002,
+  };
 
-// Function that enables bitwise AND between flags
-inline RefinementCriterionFlags
-operator&(const RefinementCriterionFlags flag_1, const RefinementCriterionFlags flag_2)
-{
-  return static_cast<RefinementCriterionFlags>(static_cast<unsigned int>(flag_1) &
-                                               static_cast<unsigned int>(flag_2));
-}
+  // Function that enables bitwise OR between flags
+  inline RefinementFlags
+  operator|(const RefinementFlags flag_1, const RefinementFlags flag_2)
+  {
+    return static_cast<RefinementFlags>(static_cast<unsigned int>(flag_1) |
+                                        static_cast<unsigned int>(flag_2));
+  }
 
-// Function that enables bitwise compound AND between flags
-inline RefinementCriterionFlags &
-operator&=(RefinementCriterionFlags &flag_1, const RefinementCriterionFlags flag_2)
-{
-  flag_1 = flag_1 & flag_2;
-  return flag_1;
-}
+  // Function that enables bitwise compound OR between flags
+  inline RefinementFlags &
+  operator|=(RefinementFlags &flag_1, const RefinementFlags flag_2)
+  {
+    flag_1 = flag_1 | flag_2;
+    return flag_1;
+  }
 
-/**
- * This class holds information for a determining whether the mesh should be
- * refined.
- */
-class RefinementCriterion
-{
-public:
-  std::string              variable_name;
-  unsigned int             variable_index = 0;
-  RefinementCriterionFlags criterion_type = RefinementCriterionFlags::criterion_default;
-  double                   value_lower_bound    = DBL_MAX;
-  double                   value_upper_bound    = DBL_MAX;
-  double                   gradient_lower_bound = DBL_MAX;
+  // Function that enables bitwise AND between flags
+  inline RefinementFlags
+  operator&(const RefinementFlags flag_1, const RefinementFlags flag_2)
+  {
+    return static_cast<RefinementFlags>(static_cast<unsigned int>(flag_1) &
+                                        static_cast<unsigned int>(flag_2));
+  }
+
+  // Function that enables bitwise compound AND between flags
+  inline RefinementFlags &
+  operator&=(RefinementFlags &flag_1, const RefinementFlags flag_2)
+  {
+    flag_1 = flag_1 & flag_2;
+    return flag_1;
+  }
 
   /**
-   * \brief Convert refinement criterion type to string.
+   * This class holds information for a determining whether the mesh should be
+   * refined.
    */
-  [[nodiscard]] std::string
-  criterion_to_string() const
+  class RefinementCriterion
   {
-    if (criterion_type == RefinementCriterionFlags::criterion_default)
-      {
-        return "None";
-      }
-    if (((criterion_type & RefinementCriterionFlags::criterion_value) != 0U) &&
-        ((criterion_type & RefinementCriterionFlags::criterion_gradient) != 0U))
-      {
-        return "Value and gradient";
-      }
-    if ((criterion_type & RefinementCriterionFlags::criterion_value) != 0U)
-      {
-        return "Value";
-      }
-    if ((criterion_type & RefinementCriterionFlags::criterion_gradient) != 0U)
-      {
-        return "Gradient";
-      }
+  public:
+    std::string     variable_name;
+    unsigned int    variable_index       = 0;
+    RefinementFlags criterion_type       = RefinementFlags::nothing;
+    double          value_lower_bound    = DBL_MAX;
+    double          value_upper_bound    = DBL_MAX;
+    double          gradient_lower_bound = DBL_MAX;
 
-    return "Unknown criterion";
-  }
-};
+    /**
+     * \brief Convert refinement criterion type to string.
+     */
+    [[nodiscard]] std::string
+    criterion_to_string() const
+    {
+      if (criterion_type == RefinementFlags::nothing)
+        {
+          return "None";
+        }
+      if (((criterion_type & RefinementFlags::value) != 0U) &&
+          ((criterion_type & RefinementFlags::gradient) != 0U))
+        {
+          return "Value and gradient";
+        }
+      if ((criterion_type & RefinementFlags::value) != 0U)
+        {
+          return "Value";
+        }
+      if ((criterion_type & RefinementFlags::gradient) != 0U)
+        {
+          return "Gradient";
+        }
+
+      return "Unknown criterion";
+    }
+  };
+} // namespace GridRefinement
 
 PRISMS_PF_END_NAMESPACE
 

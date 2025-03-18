@@ -4,6 +4,7 @@
 #ifndef constraint_handler_h
 #define constraint_handler_h
 
+#include <deal.II/base/mg_level_object.h>
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/fe/mapping_q1.h>
 #include <deal.II/lac/affine_constraints.h>
@@ -41,11 +42,33 @@ public:
   get_constraint(const unsigned int &index) const;
 
   /**
-   * \brief Make constraints based on the inputs of the construct.
+   * \brief Getter function for the multigrid constraints of an index (constant
+   * reference).
+   */
+  [[nodiscard]] const dealii::MGLevelObject<dealii::AffineConstraints<float>> &
+  get_mg_constraint(const unsigned int &index) const;
+
+  /**
+   * \brief Getter function for the multigrid constraints of an index at a certain
+   * multigrid level (constant reference).
+   */
+  [[nodiscard]] const dealii::AffineConstraints<float> &
+  get_mg_level_constraint(const unsigned int &index, const unsigned int &level) const;
+
+  /**
+   * \brief Make constraints based on the inputs of the constructor.
    */
   void
-  make_constraints(const dealii::Mapping<dim>                   &mapping,
-                   const std::vector<dealii::DoFHandler<dim> *> &dof_handlers);
+  make_constraints(const dealii::Mapping<dim>                         &mapping,
+                   const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers);
+
+  /**
+   * \brief Make multigrid constraints based on the inputs of the constructor.
+   */
+  void
+  make_mg_constraints(
+    const dealii::Mapping<dim>                                          &mapping,
+    const std::vector<dealii::MGLevelObject<dealii::DoFHandler<dim>> *> &dof_handlers);
 
 private:
   /**
@@ -57,6 +80,14 @@ private:
                   const unsigned int            &index);
 
   /**
+   * \brief Make the multigrid constrainst for a single index.
+   */
+  void
+  make_mg_constraint(const dealii::Mapping<dim>                           &mapping,
+                     const dealii::MGLevelObject<dealii::DoFHandler<dim>> &dof_handler,
+                     const unsigned int                                   &index);
+
+  /**
    * \brief Set the dirichlet constraint for the pinned point.
    */
   void
@@ -65,12 +96,17 @@ private:
   /**
    * \brief User-inputs.
    */
-  const userInputParameters<dim> &user_inputs;
+  const userInputParameters<dim> *user_inputs;
 
   /**
    * \brief Constraints.
    */
   std::vector<dealii::AffineConstraints<double>> constraints;
+
+  /**
+   * \brief Multigrid constraints.
+   */
+  std::vector<dealii::MGLevelObject<dealii::AffineConstraints<float>>> mg_constraints;
 };
 
 PRISMS_PF_END_NAMESPACE

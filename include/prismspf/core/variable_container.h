@@ -211,7 +211,7 @@ public:
     const std::pair<unsigned int, unsigned int> &cell_range);
 
   /**
-   * \brief TODO: Add comments
+   * \brief TODO (landinjm): Add comments
    */
   void
   eval_local_diagonal(
@@ -375,9 +375,15 @@ private:
   unsigned int n_dofs_per_cell;
 
   /**
-   * \brief Diagonal matrix that is used for preconditioning.
+   * \brief Diagonal matrix that is used for preconditioning of scalar fields.
    */
-  std::unique_ptr<dealii::AlignedVector<size_type>> diagonal;
+  std::unique_ptr<dealii::AlignedVector<size_type>> scalar_diagonal;
+
+  /**
+   * \brief Diagonal matrix that is used for preconditioning of vector fields.
+   */
+  std::unique_ptr<dealii::AlignedVector<dealii::Tensor<1, dim, size_type>>>
+    vector_diagonal;
 };
 
 PRISMS_PF_END_NAMESPACE

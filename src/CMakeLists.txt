@@ -2,7 +2,6 @@
 set(PRISMS_PF_SOURCE_FILES)
 foreach(TARGET IN ITEMS
   core
-  solvers
   user_inputs
 )
   add_subdirectory(${TARGET})

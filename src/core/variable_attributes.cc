@@ -8,7 +8,7 @@
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
-#include <prismspf/utilities.h>
+#include <prismspf/utilities/utilities.h>
 
 #include <map>
 #include <ostream>
@@ -254,8 +254,8 @@ variableAttributes::determine_field_solve_type(
       field_solve_type = fieldSolveType::NONEXPLICIT_AUXILIARY;
       return;
     }
-  else if (pde_type == PDEType::TIME_INDEPENDENT ||
-           pde_type == PDEType::IMPLICIT_TIME_DEPENDENT)
+  if (pde_type == PDEType::TIME_INDEPENDENT ||
+      pde_type == PDEType::IMPLICIT_TIME_DEPENDENT)
     {
       field_solve_type = fieldSolveType::NONEXPLICIT_LINEAR;
       return;
@@ -424,7 +424,6 @@ variableAttributes::find_circular_dependencies(
 }
 
 // NOLINTBEGIN(misc-no-recursion)
-
 void
 variableAttributes::recursive_DFS(
   const std::map<unsigned int, variableAttributes> &other_var_attributes,

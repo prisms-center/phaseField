@@ -17,7 +17,7 @@ APP_DIR=$(cd "$APP_DIR";pwd)
 N_COPIES=$2
 
 # Check that the paths are correct
-if [ ! -f "$APP_DIR/custom_pde.h" ] || [ ! -f "main.cc" ] ; then
+if [ ! -f "$APP_DIR/custom_pde.h" ] || [ ! -f "$APP_DIR/CMakeLists.txt" ] ; then
     echo "Usage:"
     echo "  scale_problem.sh /path/to/application <number of copies>"
     exit 1

@@ -3,7 +3,21 @@
 #  Adapted from the ASPECT CMake file
 ##
 
-cmake_minimum_required(VERSION 3.8.0)
+# cmake config
+message(STATUS "Using CMake ${CMAKE_VERSION}")
+message(STATUS "")
+cmake_minimum_required(VERSION 3.13.4)
+cmake_policy(VERSION 3.13.4)
+
+# Grab modules
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules/)
+
+# Load macros
+file(GLOB macro_files "${CMAKE_SOURCE_DIR}/cmake/macros/*.cmake")
+foreach(file ${macro_files})
+  message(STATUS "Include ${file}")
+  include(${file})
+endforeach()
 
 file(STRINGS "${CMAKE_SOURCE_DIR}/VERSION" PRISMS_PF_VERSION LIMIT_COUNT 1)
 
@@ -27,6 +41,9 @@ endif()
 
 # Print the current cmake version
 message(STATUS "CMake version: ${CMAKE_VERSION}")
+
+# Grab git information
+prisms_pf_git_version()
 
 # Set the standard to C++17
 set(CMAKE_CXX_STANDARD 17)
@@ -77,7 +94,7 @@ message(STATUS "=========================================================")
 message(STATUS "")
 
 # Find deal.II installation
-find_package(deal.II 9.5.0 QUIET
+find_package(deal.II 9.6.0 QUIET
 	HINTS ${DEAL_II_DIR} $ENV{DEAL_II_DIR}
   )
 if(NOT ${deal.II_FOUND})
@@ -91,6 +108,13 @@ endif()
 message(STATUS "Found deal.II version ${DEAL_II_PACKAGE_VERSION} at '${deal.II_DIR}'")
 
 set(DEALII_INSTALL_VALID ON)
+
+if(NOT DEAL_II_WITH_LAPACK)
+    message(SEND_ERROR
+      "\n**deal.II was built without support for lapack!\n"
+      )
+    set(DEALII_INSTALL_VALID OFF)
+endif()
 
 if(NOT DEAL_II_WITH_P4EST)
     message(SEND_ERROR
@@ -165,6 +189,10 @@ message(STATUS "")
 
 project(prisms_pf CXX)
 
+# Grab flag for additional optimizations
+set(ADDITIONAL_OPTIMIZATIONS OFF CACHE BOOL "Whether the user wants to enable additional optimizations, or not.")
+message(STATUS "ADDITIONAL_OPTIMIZATIONS = '${ADDITIONAL_OPTIMIZATIONS}'")
+
 # Generate config.h to enable and disable certain features within the source code.
 set(PRISMS_PF_SOURCE_DIR ${CMAKE_SOURCE_DIR})
 
@@ -182,7 +210,7 @@ add_subdirectory(src)
 if(CMAKE_GENERATOR MATCHES "Ninja")
   set(_make_command "$ ninja")
 else()
-  set(_make_command " $ make")
+  set(_make_command "$ make")
 endif()
 
 # Debug and release targets
@@ -304,3 +332,10 @@ if(${PRISMS_PF_BUILD_RELEASE} STREQUAL "ON")
     target_link_libraries(${LIBRARY_NAME_RELEASE} caliper)
   endif()
 endif()
+
+# Write config to file
+include(${CMAKE_SOURCE_DIR}/cmake/write_config.cmake)
+
+# Print the config
+file(READ ${CMAKE_SOURCE_DIR}/summary.log PRISMS_PF_SUMMARY)
+message("${PRISMS_PF_SUMMARY}")

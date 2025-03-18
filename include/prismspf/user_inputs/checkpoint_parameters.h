@@ -8,7 +8,7 @@
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/user_inputs/temporal_discretization.h>
-#include <prismspf/utilities.h>
+#include <prismspf/utilities/utilities.h>
 
 #include <climits>
 #include <set>

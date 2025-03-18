@@ -8,6 +8,7 @@
 #include <boost/range/algorithm/remove.hpp>
 
 #include <prismspf/config.h>
+#include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attribute_loader.h>
 #include <prismspf/core/variable_attributes.h>
@@ -194,13 +195,13 @@ variableAttributeLoader::validate_variable_name(
   unsigned int                 index)
 {
   AssertThrow(!name.empty(),
-              dealii::ExcMessage("PRISMS-PF Error: " + context +
+              dealii::ExcMessage(context +
                                  " Variable names must not be empty.\nProblem index: " +
                                  std::to_string(index)));
 
   for ([[maybe_unused]] const std::string &forbidden_name : forbidden_names)
     {
-      std::string error_message = "PRISMS-PF Error: " + context +
+      std::string error_message = context +
                                   " Variable names must not contain \"grad(\", "
                                   "\"hess(\", \"change(\", \"hessdiag(\", \"lap(\", "
                                   "\"div(\", \"symgrad(\", \"curl(\", \"old_1(\", "
@@ -260,8 +261,7 @@ variableAttributeLoader::validate_dependencies(
 {
   for (const std::string &dependency : dependencies)
     {
-      std::string error_message =
-        "PRISMS-PF Error: Invalid " + context + " dependency.\nProblem index: ";
+      std::string error_message = "Invalid " + context + " dependency.\nProblem index: ";
       error_message.append(
         std::to_string(index).append(", Variable name: " + variable_name));
       error_message.append(
@@ -286,13 +286,6 @@ variableAttributeLoader::validate_attributes()
       AssertThrow(
         !variable.is_postprocess || variable.pde_type == PDEType::EXPLICIT_TIME_DEPENDENT,
         dealii::ExcMessage("Currently, postprocessing only allows explicit equations."));
-
-      // Check that constant equation types have no dependencies
-      AssertThrow(!(variable.pde_type == PDEType::CONSTANT) ||
-                    (variable.dependency_set_RHS.empty() &&
-                     variable.dependency_set_LHS.empty()),
-                  dealii::ExcMessage("Constant fields are determined by the initial "
-                                     "condition. They cannot have dependencies."));
     }
 
   // Make sure dependencies are all variable names. If there are change() dependencies
@@ -374,6 +367,16 @@ variableAttributeLoader::validate_attributes()
 void
 variableAttributeLoader::validate_old_solution_dependencies()
 {
+  for (const auto &[index, variable] : var_attributes)
+    {
+      // TODO (landinjm): Move this somewhere else
+      AssertThrow(!(variable.pde_type == PDEType::CONSTANT) ||
+                    (variable.dependency_set_RHS.size() > 0 &&
+                     variable.dependency_set_LHS.size() > 0),
+                  dealii::ExcMessage("Constant fields are determined by the initial "
+                                     "condition. They cannot have dependencies."));
+    }
+
   // First create a combined dependency set
   std::unordered_map<std::pair<unsigned int, dependencyType>,
                      dealii::EvaluationFlags::EvaluationFlags,

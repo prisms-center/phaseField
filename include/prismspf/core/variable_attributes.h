@@ -8,6 +8,7 @@
 
 #include <prismspf/config.h>
 #include <prismspf/core/type_enums.h>
+#include <prismspf/core/types.h>
 
 #include <map>
 #include <set>
@@ -44,7 +45,7 @@ struct variableAttributes
   /**
    * \brief Field index. \remark User-set
    */
-  unsigned int field_index = 0;
+  types::index field_index = numbers::invalid_index;
 
   /**
    * \brief Field type (SCALAR/VECTOR). \remark User-set
@@ -60,6 +61,13 @@ struct variableAttributes
    * \brief Postprocess variable. \remark User-set
    */
   bool is_postprocess = false;
+
+#ifdef ADDITIONAL_OPTIMIZATIONS
+  /**
+   * \brief Duplicate field index. \remark Internally determined
+   */
+  mutable types::index duplicate_field_index = numbers::invalid_index;
+#endif
 
   /**
    * \brief Internal classification for the field solve type. \remark Internally

@@ -67,10 +67,22 @@ public:
 
 private:
   /**
+   * \brief Compute the invm for scalar fields.
+   */
+  void
+  compute_scalar_invm();
+
+  /**
+   * \brief Compute the invm for vector fields.
+   */
+  void
+  compute_vector_invm();
+
+  /**
    * \brief Variable attributes. This is used to determine the proper return type for the
    * invm when given a field index.
    */
-  const std::map<unsigned int, variableAttributes> &variable_attributes;
+  const std::map<unsigned int, variableAttributes> *variable_attributes;
 
   /**
    * \brief Matrix-free object.
@@ -108,6 +120,11 @@ private:
    * attached the FEEvaluation objects to evaluate and initialize the invm vector.
    */
   unsigned int vector_index = numbers::invalid_index;
+
+  /**
+   * \brief Tolerance for minimum value of the mass matrix when inverting.
+   */
+  number tolerance = 1.0e-15;
 };
 
 PRISMS_PF_END_NAMESPACE

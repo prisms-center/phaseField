@@ -4,6 +4,7 @@
 #include <deal.II/base/point.h>
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/dofs/dof_tools.h>
+#include <deal.II/fe/component_mask.h>
 #include <deal.II/fe/mapping_q1.h>
 #include <deal.II/grid/grid_tools.h>
 #include <deal.II/lac/affine_constraints.h>
@@ -23,8 +24,10 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <int dim>
 constraintHandler<dim>::constraintHandler(const userInputParameters<dim> &_user_inputs)
-  : user_inputs(_user_inputs)
-  , constraints(user_inputs.var_attributes.size(), dealii::AffineConstraints<double>())
+  : user_inputs(&_user_inputs)
+  , constraints(_user_inputs.var_attributes.size(), dealii::AffineConstraints<double>())
+  , mg_constraints(_user_inputs.var_attributes.size(),
+                   dealii::MGLevelObject<dealii::AffineConstraints<float>>())
 {}
 
 template <int dim>
@@ -51,14 +54,56 @@ constraintHandler<dim>::get_constraint(const unsigned int &index) const
 }
 
 template <int dim>
+const dealii::MGLevelObject<dealii::AffineConstraints<float>> &
+constraintHandler<dim>::get_mg_constraint(const unsigned int &index) const
+{
+  Assert(mg_constraints.size() > index,
+         dealii::ExcMessage("The constraint set does not contain index = " +
+                            std::to_string(index)));
+  Assert(mg_constraints.at(index).n_levels() != 1,
+         dealii::ExcMessage(
+           "There doesn't seem to multigrid constraints for the index = " +
+           std::to_string(index)));
+  return mg_constraints.at(index);
+}
+
+template <int dim>
+const dealii::AffineConstraints<float> &
+constraintHandler<dim>::get_mg_level_constraint(const unsigned int &index,
+                                                const unsigned int &level) const
+{
+  Assert(mg_constraints.size() > index,
+         dealii::ExcMessage("The constraint set does not contain index = " +
+                            std::to_string(index)));
+  Assert(mg_constraints.at(index).max_level() <= level &&
+           mg_constraints.at(index).min_level() >= level,
+         dealii::ExcMessage(
+           "There doesn't seem to multigrid constraints for the index = " +
+           std::to_string(index) + " at level = " + std::to_string(level)));
+  return mg_constraints.at(index)[level];
+}
+
+template <int dim>
 void
 constraintHandler<dim>::make_constraints(
-  const dealii::Mapping<dim>                   &mapping,
-  const std::vector<dealii::DoFHandler<dim> *> &dof_handlers)
+  const dealii::Mapping<dim>                         &mapping,
+  const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers)
 {
-  for (const auto &[index, variable] : user_inputs.var_attributes)
+  for (const auto &[index, variable] : user_inputs->var_attributes)
     {
       make_constraint(mapping, *dof_handlers.at(index), index);
+    }
+}
+
+template <int dim>
+void
+constraintHandler<dim>::make_mg_constraints(
+  const dealii::Mapping<dim>                                          &mapping,
+  const std::vector<dealii::MGLevelObject<dealii::DoFHandler<dim>> *> &dof_handlers)
+{
+  for (const auto &[index, variable] : user_inputs->var_attributes)
+    {
+      make_mg_constraint(mapping, *dof_handlers.at(index), index);
     }
 }
 
@@ -81,48 +126,42 @@ constraintHandler<dim>::make_constraint(const dealii::Mapping<dim>    &mapping,
 
   // First check the normal boundary conditions
   const auto &boundary_condition =
-    user_inputs.boundary_parameters.boundary_condition_list.at(index);
-
+    user_inputs->boundary_parameters.boundary_condition_list.at(index);
   for (const auto &[component, condition] : boundary_condition)
     {
       for (const auto &[boundary_id, boundary_type] : condition.boundary_condition_map)
         {
-          // Create a mask. This is only applied for vector fields to apply boundary
-          // conditions to
-          // each component of the vector.
-          std::vector<bool> mask(dim, false);
-          mask.at(component) = true;
+          const bool is_vector_field =
+            user_inputs->var_attributes.at(index).field_type == fieldType::VECTOR;
 
+          // Create a component mask. This will only select a certain component for vector
+          // fields
+          dealii::ComponentMask mask = {};
+          if (is_vector_field)
+            {
+              std::vector<bool> temp_mask(dim, false);
+              temp_mask.at(component) = true;
+
+              mask = dealii::ComponentMask(temp_mask);
+            }
+
+          // Apply the boundary conditions
           if (boundary_type == boundaryCondition::type::NATURAL)
             {
               // Do nothing because they are naturally enforced.
               continue;
             }
-          else if (boundary_type == boundaryCondition::type::DIRICHLET)
+          if (boundary_type == boundaryCondition::type::DIRICHLET)
             {
-              if (user_inputs.var_attributes.at(index).field_type != fieldType::VECTOR)
-                {
-                  dealii::VectorTools::interpolate_boundary_values(
-                    mapping,
-                    dof_handler,
-                    boundary_id,
-                    dealii::Functions::ConstantFunction<dim>(
-                      condition.dirichlet_value_map.at(boundary_id),
-                      1),
-                    constraints.at(index));
-                }
-              else
-                {
-                  dealii::VectorTools::interpolate_boundary_values(
-                    mapping,
-                    dof_handler,
-                    boundary_id,
-                    dealii::Functions::ConstantFunction<dim>(
-                      condition.dirichlet_value_map.at(boundary_id),
-                      dim),
-                    constraints.at(index),
-                    mask);
-                }
+              dealii::VectorTools::interpolate_boundary_values(
+                mapping,
+                dof_handler,
+                boundary_id,
+                dealii::Functions::ConstantFunction<dim>(condition.dirichlet_value_map.at(
+                                                           boundary_id),
+                                                         is_vector_field ? dim : 1),
+                constraints.at(index),
+                mask);
             }
           else if (boundary_type == boundaryCondition::type::PERIODIC)
             {
@@ -149,19 +188,10 @@ constraintHandler<dim>::make_constraint(const dealii::Mapping<dim>    &mapping,
                                                         periodicity_vector);
 
               // Set constraints
-              if (user_inputs.var_attributes.at(index).field_type != fieldType::VECTOR)
-                {
-                  dealii::DoFTools::make_periodicity_constraints<dim, dim>(
-                    periodicity_vector,
-                    constraints.at(index));
-                }
-              else
-                {
-                  dealii::DoFTools::make_periodicity_constraints<dim, dim>(
-                    periodicity_vector,
-                    constraints.at(index),
-                    mask);
-                }
+              dealii::DoFTools::make_periodicity_constraints<dim, dim>(periodicity_vector,
+                                                                       constraints.at(
+                                                                         index),
+                                                                       mask);
             }
           else if (boundary_type == boundaryCondition::type::NEUMANN)
             {
@@ -169,7 +199,7 @@ constraintHandler<dim>::make_constraint(const dealii::Mapping<dim>    &mapping,
             }
           else if (boundary_type == boundaryCondition::type::NON_UNIFORM_DIRICHLET)
             {
-              if (user_inputs.var_attributes.at(index).field_type != fieldType::VECTOR)
+              if (user_inputs->var_attributes.at(index).field_type != fieldType::VECTOR)
                 {
                   dealii::VectorTools::interpolate_boundary_values(
                     mapping,
@@ -198,8 +228,8 @@ constraintHandler<dim>::make_constraint(const dealii::Mapping<dim>    &mapping,
     }
 
   // Second check for pinned points, if they exist
-  if (user_inputs.boundary_parameters.pinned_point_list.find(index) !=
-      user_inputs.boundary_parameters.pinned_point_list.end())
+  if (user_inputs->boundary_parameters.pinned_point_list.find(index) !=
+      user_inputs->boundary_parameters.pinned_point_list.end())
     {
       set_pinned_point(dof_handler, index);
     }
@@ -210,14 +240,26 @@ constraintHandler<dim>::make_constraint(const dealii::Mapping<dim>    &mapping,
 
 template <int dim>
 void
+constraintHandler<dim>::make_mg_constraint(
+  const dealii::Mapping<dim>                           &mapping,
+  const dealii::MGLevelObject<dealii::DoFHandler<dim>> &dof_handler,
+  const unsigned int                                   &index)
+{
+  AssertThrow(false, FeatureNotImplemented("Multigrid constraints"));
+}
+
+template <int dim>
+void
 constraintHandler<dim>::set_pinned_point(const dealii::DoFHandler<dim> &dof_handler,
                                          const unsigned int            &index)
 {
-  Assert(user_inputs.var_attributes.at(index).field_type == fieldType::VECTOR,
+  Assert(user_inputs->var_attributes.at(index).field_type == fieldType::VECTOR,
          FeatureNotImplemented("Pinned points for vector fields"));
 
+  const double tolerance = 1.0e-2;
+
   const auto &value_point_pair =
-    user_inputs.boundary_parameters.pinned_point_list.at(index);
+    user_inputs->boundary_parameters.pinned_point_list.at(index);
 
   for (const auto &cell : dof_handler.active_cell_iterators())
     {
@@ -227,7 +269,7 @@ constraintHandler<dim>::set_pinned_point(const dealii::DoFHandler<dim> &dof_hand
             {
               // Check if the vertex is the target vertex
               if (value_point_pair.second.distance(cell->vertex(i)) <
-                  1.0e-2 * cell->diameter())
+                  tolerance * cell->diameter())
                 {
                   unsigned int nodeID = cell->vertex_dof_index(i, 0);
                   constraints.at(index).add_line(nodeID);

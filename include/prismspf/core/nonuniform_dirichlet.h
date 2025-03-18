@@ -31,15 +31,11 @@ public:
    */
   nonuniformDirichlet(const unsigned int &_index, const unsigned int &_boundary_id);
 
-  // NOLINTBEGIN(readability-avoid-const-params-in-decls)
-
   /**
    * \brief Scalar value.
    */
   double
   value(const dealii::Point<dim> &p, const unsigned int component = 0) const override;
-
-  // NOLINTEND(readability-avoid-const-params-in-decls)
 
   /**
    * \brief Vector value.
