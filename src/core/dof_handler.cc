@@ -127,6 +127,16 @@ dofHandler<dim>::get_dof_handlers() const
 }
 
 template <int dim>
+const std::map<unsigned int, dealii::MGLevelObject<dealii::DoFHandler<dim>>> &
+dofHandler<dim>::get_mg_dof_handlers() const
+{
+  Assert(has_multigrid, dealii::ExcNotInitialized());
+  Assert(!mg_dof_handlers.empty(),
+         dealii::ExcMessage("The multigrid dof handler map is empty."));
+  return mg_dof_handlers;
+}
+
+template <int dim>
 const dealii::DoFHandler<dim> &
 dofHandler<dim>::get_mg_dof_handler(unsigned int index, unsigned int level) const
 {
