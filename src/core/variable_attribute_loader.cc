@@ -8,6 +8,7 @@
 #include <boost/range/algorithm/remove.hpp>
 
 #include <prismspf/config.h>
+#include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attribute_loader.h>
 #include <prismspf/core/variable_attributes.h>
@@ -368,12 +369,12 @@ variableAttributeLoader::validate_old_solution_dependencies()
 {
   for (const auto &[index, variable] : var_attributes)
     {
-      // TODO (landinjm): Check that constant equation types have no dependencies
-      /*AssertThrow(!(variable.pde_type == PDEType::CONSTANT) ||
-                    (variable.dependency_set_RHS.empty() &&
-                     variable.dependency_set_LHS.empty()),
+      // TODO (landinjm): Move this somewhere else
+      AssertThrow(!(variable.pde_type == PDEType::CONSTANT) ||
+                    (variable.dependency_set_RHS.size() > 0 &&
+                     variable.dependency_set_LHS.size() > 0),
                   dealii::ExcMessage("Constant fields are determined by the initial "
-                                     "condition. They cannot have dependencies."));*/
+                                     "condition. They cannot have dependencies."));
     }
 
   // First create a combined dependency set
