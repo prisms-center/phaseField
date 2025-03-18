@@ -26,8 +26,6 @@ template <int dim>
 constraintHandler<dim>::constraintHandler(const userInputParameters<dim> &_user_inputs)
   : user_inputs(&_user_inputs)
   , constraints(_user_inputs.var_attributes.size(), dealii::AffineConstraints<double>())
-  , mg_constraints(_user_inputs.var_attributes.size(),
-                   dealii::MGLevelObject<dealii::AffineConstraints<float>>())
 {}
 
 template <int dim>
@@ -55,9 +53,9 @@ constraintHandler<dim>::get_constraint(const unsigned int &index) const
 
 template <int dim>
 const dealii::MGLevelObject<dealii::AffineConstraints<float>> &
-constraintHandler<dim>::get_mg_constraint(const unsigned int &index) const
+constraintHandler<dim>::get_mg_constraint(unsigned int index) const
 {
-  Assert(mg_constraints.size() > index,
+  Assert(mg_constraints.find(index) != mg_constraints.end(),
          dealii::ExcMessage("The constraint set does not contain index = " +
                             std::to_string(index)));
   Assert(mg_constraints.at(index).n_levels() != 1,
@@ -69,14 +67,13 @@ constraintHandler<dim>::get_mg_constraint(const unsigned int &index) const
 
 template <int dim>
 const dealii::AffineConstraints<float> &
-constraintHandler<dim>::get_mg_level_constraint(const unsigned int &index,
-                                                const unsigned int &level) const
+constraintHandler<dim>::get_mg_constraint(unsigned int index, unsigned int level) const
 {
-  Assert(mg_constraints.size() > index,
+  Assert(mg_constraints.find(index) != mg_constraints.end(),
          dealii::ExcMessage("The constraint set does not contain index = " +
                             std::to_string(index)));
-  Assert(mg_constraints.at(index).max_level() <= level &&
-           mg_constraints.at(index).min_level() >= level,
+  Assert(mg_constraints.at(index).min_level() <= level &&
+           mg_constraints.at(index).max_level() >= level,
          dealii::ExcMessage(
            "There doesn't seem to multigrid constraints for the index = " +
            std::to_string(index) + " at level = " + std::to_string(level)));
@@ -98,12 +95,13 @@ constraintHandler<dim>::make_constraints(
 template <int dim>
 void
 constraintHandler<dim>::make_mg_constraints(
-  const dealii::Mapping<dim>                                          &mapping,
-  const std::vector<dealii::MGLevelObject<dealii::DoFHandler<dim>> *> &dof_handlers)
+  const dealii::Mapping<dim> &mapping,
+  const std::map<unsigned int, dealii::MGLevelObject<dealii::DoFHandler<dim>>>
+    &mg_dof_handlers)
 {
-  for (const auto &[index, variable] : user_inputs->var_attributes)
+  for (const auto &[index, mg_dof_handler] : mg_dof_handlers)
     {
-      make_mg_constraint(mapping, *dof_handlers.at(index), index);
+      make_mg_constraint(mapping, mg_dof_handler, index);
     }
 }
 
@@ -245,7 +243,143 @@ constraintHandler<dim>::make_mg_constraint(
   const dealii::MGLevelObject<dealii::DoFHandler<dim>> &dof_handler,
   const unsigned int                                   &index)
 {
-  AssertThrow(false, FeatureNotImplemented("Multigrid constraints"));
+  const unsigned int min_level = dof_handler.min_level();
+  const unsigned int max_level = dof_handler.max_level();
+
+  mg_constraints.emplace(
+    index,
+    dealii::MGLevelObject<dealii::AffineConstraints<float>>(min_level, max_level));
+
+  for (unsigned int level = min_level; level <= max_level; ++level)
+    {
+      mg_constraints.at(index)[level].clear();
+
+      const dealii::IndexSet locally_relevant_dofs =
+        dealii::DoFTools::extract_locally_relevant_dofs(dof_handler[level]);
+
+      mg_constraints.at(index)[level].reinit(locally_relevant_dofs);
+
+      dealii::DoFTools::make_hanging_node_constraints(dof_handler[level],
+                                                      mg_constraints.at(index)[level]);
+
+      // TODO (landinjm): Fix for pinned points
+      const auto &boundary_condition =
+        this->user_inputs->boundary_parameters.boundary_condition_list.at(index);
+      for (const auto &[component, condition] : boundary_condition)
+        {
+          for (const auto &[boundary_id, boundary_type] :
+               condition.boundary_condition_map)
+            {
+              // Create a mask. This is only applied for vector fields to apply boundary
+              // conditions to
+              // each component of the vector.
+              std::vector<bool> mask(dim, false);
+              mask.at(component) = true;
+
+              if (boundary_type == boundaryCondition::type::NATURAL)
+                {
+                  // Do nothing because they are naturally enforced.
+                  continue;
+                }
+              else if (boundary_type == boundaryCondition::type::DIRICHLET)
+                {
+                  if (this->user_inputs->var_attributes.at(index).field_type !=
+                      fieldType::VECTOR)
+                    {
+                      dealii::VectorTools::interpolate_boundary_values(
+                        mapping,
+                        dof_handler[level],
+                        boundary_id,
+                        dealii::Functions::ZeroFunction<dim, float>(1),
+                        mg_constraints.at(index)[level]);
+                    }
+                  else
+                    {
+                      dealii::VectorTools::interpolate_boundary_values(
+                        mapping,
+                        dof_handler[level],
+                        boundary_id,
+                        dealii::Functions::ZeroFunction<dim, float>(dim),
+                        mg_constraints.at(index)[level],
+                        mask);
+                    }
+                }
+              else if (boundary_type == boundaryCondition::type::PERIODIC)
+                {
+                  // Skip boundary ids that are odd since those map to the even faces
+                  if (boundary_id % 2 != 0)
+                    {
+                      continue;
+                    }
+                  // Create a vector of matched pairs that we fill and enforce upon the
+                  // constaints
+                  std::vector<dealii::GridTools::PeriodicFacePair<
+                    typename dealii::DoFHandler<dim>::cell_iterator>>
+                    periodicity_vector;
+
+                  // Determine the direction
+                  const auto direction =
+                    static_cast<unsigned int>(std::floor(boundary_id / dim));
+
+                  // Collect the matched pairs on the coarsest level of the mesh
+                  dealii::GridTools::collect_periodic_faces(dof_handler[level],
+                                                            boundary_id,
+                                                            boundary_id + 1,
+                                                            direction,
+                                                            periodicity_vector);
+
+                  // Set constraints
+                  if (user_inputs->var_attributes.at(index).field_type !=
+                      fieldType::VECTOR)
+                    {
+                      dealii::DoFTools::make_periodicity_constraints<dim, dim>(
+                        periodicity_vector,
+                        mg_constraints.at(index)[level]);
+                    }
+                  else
+                    {
+                      dealii::DoFTools::make_periodicity_constraints<dim, dim>(
+                        periodicity_vector,
+                        mg_constraints.at(index)[level],
+                        mask);
+                    }
+                }
+              else if (boundary_type == boundaryCondition::type::NEUMANN)
+                {
+                  Assert(false, FeatureNotImplemented("Neumann boundary conditions"));
+                }
+              else if (boundary_type == boundaryCondition::type::NON_UNIFORM_DIRICHLET)
+                {
+                  if (user_inputs->var_attributes.at(index).field_type !=
+                      fieldType::VECTOR)
+                    {
+                      dealii::VectorTools::interpolate_boundary_values(
+                        mapping,
+                        dof_handler[level],
+                        boundary_id,
+                        dealii::Functions::ZeroFunction<dim, float>(1),
+                        mg_constraints.at(index)[level]);
+                    }
+                  else
+                    {
+                      dealii::VectorTools::interpolate_boundary_values(
+                        mapping,
+                        dof_handler[level],
+                        boundary_id,
+                        dealii::Functions::ZeroFunction<dim, float>(dim),
+                        mg_constraints.at(index)[level],
+                        mask);
+                    }
+                }
+              else if (boundary_type == boundaryCondition::type::NON_UNIFORM_NEUMANN)
+                {
+                  Assert(false,
+                         FeatureNotImplemented("Nonuniform neumann boundary conditions"));
+                }
+            }
+        }
+      mg_constraints.at(index)[level].close();
+    }
 }
 
 template <int dim>

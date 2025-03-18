@@ -115,11 +115,6 @@ private:
   const dealii::MappingQ1<dim> mapping;
 
   /**
-   * \brief Collection of constraints for each multigrid level.
-   */
-  dealii::MGLevelObject<dealii::AffineConstraints<float>> level_constraints;
-
-  /**
    * \brief Collection of transfer operators for each multigrid level.
    */
   dealii::MGLevelObject<dealii::MGTwoLevelTransfer<dim, MGVectorType>>
@@ -201,165 +196,18 @@ GMGSolver<dim, degree>::init()
   mg_transfer_operators.resize(min_level, max_level);
 
   // Object for constraints on different levels
-  level_constraints.resize(triangulation_handler.get_mg_min_level(),
-                           triangulation_handler.get_mg_max_level());
-  mg_matrix_free_handler.resize(triangulation_handler.get_mg_min_level(),
-                                triangulation_handler.get_mg_max_level(),
-                                this->user_inputs);
-
-  // Apply constraints on each level
-  for (unsigned int level = triangulation_handler.get_mg_min_level();
-       level <= triangulation_handler.get_mg_max_level();
-       ++level)
-    {
-      level_constraints[level].clear();
-
-      const dealii::IndexSet locally_relevant_dofs =
-        dealii::DoFTools::extract_locally_relevant_dofs(
-          dof_handler.get_mg_dof_handler(this->field_index, level));
-
-      level_constraints[level].reinit(locally_relevant_dofs);
-
-      dealii::DoFTools::make_hanging_node_constraints(
-        dof_handler.get_mg_dof_handler(this->field_index, level),
-        level_constraints[level]);
-
-      // TODO (landinjm): Fix for pinned points
-      const auto &boundary_condition =
-        this->user_inputs.boundary_parameters.boundary_condition_list.at(
-          this->field_index);
-      for (const auto &[component, condition] : boundary_condition)
-        {
-          for (const auto &[boundary_id, boundary_type] :
-               condition.boundary_condition_map)
-            {
-              // Create a mask. This is only applied for vector fields to apply boundary
-              // conditions to
-              // each component of the vector.
-              std::vector<bool> mask(dim, false);
-              mask.at(component) = true;
-
-              if (boundary_type == boundaryCondition::type::NATURAL)
-                {
-                  // Do nothing because they are naturally enforced.
-                  continue;
-                }
-              else if (boundary_type == boundaryCondition::type::DIRICHLET)
-                {
-                  if (this->user_inputs.var_attributes.at(this->field_index).field_type !=
-                      fieldType::VECTOR)
-                    {
-                      dealii::VectorTools::interpolate_boundary_values(
-                        mapping,
-                        dof_handler.get_mg_dof_handler(this->field_index, level),
-                        boundary_id,
-                        dealii::Functions::ZeroFunction<dim, float>(1),
-                        level_constraints[level]);
-                    }
-                  else
-                    {
-                      dealii::VectorTools::interpolate_boundary_values(
-                        mapping,
-                        dof_handler.get_mg_dof_handler(this->field_index, level),
-                        boundary_id,
-                        dealii::Functions::ZeroFunction<dim, float>(dim),
-                        level_constraints[level],
-                        mask);
-                    }
-                }
-              else if (boundary_type == boundaryCondition::type::PERIODIC)
-                {
-                  // Skip boundary ids that are odd since those map to the even faces
-                  if (boundary_id % 2 != 0)
-                    {
-                      continue;
-                    }
-                  // Create a vector of matched pairs that we fill and enforce upon the
-                  // constaints
-                  std::vector<dealii::GridTools::PeriodicFacePair<
-                    typename dealii::DoFHandler<dim>::cell_iterator>>
-                    periodicity_vector;
-
-                  // Determine the direction
-                  const auto direction =
-                    static_cast<unsigned int>(std::floor(boundary_id / dim));
-
-                  // Collect the matched pairs on the coarsest level of the mesh
-                  dealii::GridTools::collect_periodic_faces(
-                    dof_handler.get_mg_dof_handler(this->field_index, level),
-                    boundary_id,
-                    boundary_id + 1,
-                    direction,
-                    periodicity_vector);
-
-                  // Set constraints
-                  if (this->user_inputs.var_attributes.at(this->field_index).field_type !=
-                      fieldType::VECTOR)
-                    {
-                      dealii::DoFTools::make_periodicity_constraints<dim, dim>(
-                        periodicity_vector,
-                        level_constraints[level]);
-                    }
-                  else
-                    {
-                      dealii::DoFTools::make_periodicity_constraints<dim, dim>(
-                        periodicity_vector,
-                        level_constraints[level],
-                        mask);
-                    }
-                }
-              else if (boundary_type == boundaryCondition::type::NEUMANN)
-                {
-                  Assert(false, FeatureNotImplemented("Neumann boundary conditions"));
-                }
-              else if (boundary_type == boundaryCondition::type::NON_UNIFORM_DIRICHLET)
-                {
-                  if (this->user_inputs.var_attributes.at(this->field_index).field_type !=
-                      fieldType::VECTOR)
-                    {
-                      dealii::VectorTools::interpolate_boundary_values(
-                        mapping,
-                        dof_handler.get_mg_dof_handler(this->field_index, level),
-                        boundary_id,
-                        dealii::Functions::ZeroFunction<dim, float>(1),
-                        level_constraints[level]);
-                    }
-                  else
-                    {
-                      dealii::VectorTools::interpolate_boundary_values(
-                        mapping,
-                        dof_handler.get_mg_dof_handler(this->field_index, level),
-                        boundary_id,
-                        dealii::Functions::ZeroFunction<dim, float>(dim),
-                        level_constraints[level],
-                        mask);
-                    }
-                }
-              else if (boundary_type == boundaryCondition::type::NON_UNIFORM_NEUMANN)
-                {
-                  Assert(false,
-                         FeatureNotImplemented("Nonuniform neumann boundary conditions"));
-                }
-            }
-        }
-      level_constraints[level].close();
-    }
+  mg_matrix_free_handler.resize(min_level, max_level, this->user_inputs);
 
   // Setup operator on each level
-  mg_newton_update_src.resize(triangulation_handler.get_mg_min_level(),
-                              triangulation_handler.get_mg_max_level());
-  for (unsigned int level = triangulation_handler.get_mg_min_level();
-       level <= triangulation_handler.get_mg_max_level();
-       ++level)
+  mg_newton_update_src.resize(min_level, max_level);
+  for (unsigned int level = min_level; level <= max_level; ++level)
     {
       // TODO (landinjm): Fix so mapping is same as rest of the problem. Do the same for
       // the finite element I think.
-      // TODO (landinjm): Fix so that we include all DoF handlers and constraints and
-      // select only the ones we need.
       mg_matrix_free_handler[level].reinit(
         mapping,
         dof_handler.get_mg_dof_handler(this->field_index, level),
-        level_constraints[level],
+        this->constraint_handler.get_mg_constraint(this->field_index, level),
         dealii::QGaussLobatto<1>(degree + 1));
 
       (*mg_operators)[level].initialize(mg_matrix_free_handler[level].get_matrix_free());
@@ -385,23 +233,18 @@ GMGSolver<dim, degree>::init()
                ->is_compatible(*(mg_newton_update_src[level][0]->get_partitioner())),
              dealii::ExcMessage("Incompatabile vector partitioners"));
 
-      // TODO (landinjm): Allow for src subset that is float instead of double. Not sure
-      // how to handle this to be honest. I would rather not store more matrices than I
-      // need to.
       (*mg_operators)[level].add_src_solution_subset(mg_newton_update_src[level]);
     }
   mg_matrix = std::make_shared<dealii::mg::Matrix<MGVectorType>>(*mg_operators);
 
   // Setup transfer operators
-  for (unsigned int level = triangulation_handler.get_mg_min_level();
-       level < triangulation_handler.get_mg_max_level();
-       ++level)
+  for (unsigned int level = min_level; level < max_level; ++level)
     {
       mg_transfer_operators[level + 1].reinit(
         dof_handler.get_mg_dof_handler(this->field_index, level + 1),
         dof_handler.get_mg_dof_handler(this->field_index, level),
-        level_constraints[level + 1],
-        level_constraints[level]);
+        this->constraint_handler.get_mg_constraint(this->field_index, level + 1),
+        this->constraint_handler.get_mg_constraint(this->field_index, level));
     }
   mg_transfer = std::make_shared<dealii::MGTransferGlobalCoarsening<dim, MGVectorType>>(
     mg_transfer_operators);
@@ -424,14 +267,13 @@ GMGSolver<dim, degree>::init()
     .distribute(*(this->solution_handler.solution_set.at(
       std::make_pair(this->field_index, dependencyType::NORMAL))));
 
+  // TODO (landinjm): Should I put this somewhere else?
 #ifdef DEBUG
   conditionalOStreams::pout_summary()
     << "\nMultigrid Setup Information for index " << this->field_index << ":\n"
-    << "  Min level: " << triangulation_handler.get_mg_min_level() << "\n"
-    << "  Max level: " << triangulation_handler.get_mg_max_level() << "\n";
-  for (unsigned int level = triangulation_handler.get_mg_min_level();
-       level <= triangulation_handler.get_mg_max_level();
-       ++level)
+    << "  Min level: " << min_level << "\n"
+    << "  Max level: " << max_level << "\n";
+  for (unsigned int level = min_level; level <= max_level; ++level)
     {
       conditionalOStreams::pout_summary()
         << "  Level: " << level << "\n"
@@ -440,7 +282,10 @@ GMGSolver<dim, degree>::init()
         << "\n"
         << "    DoFs: "
         << dof_handler.get_mg_dof_handler(this->field_index, level).n_dofs() << "\n"
-        << "    Constrained DoFs: " << level_constraints[level].n_constraints() << "\n";
+        << "    Constrained DoFs: "
+        << this->constraint_handler.get_mg_constraint(this->field_index, level)
+             .n_constraints()
+        << "\n";
     }
   conditionalOStreams::pout_summary()
     << "  MG vertical communication efficiency: "
@@ -485,12 +330,8 @@ GMGSolver<dim, degree>::solve(const double step_length)
        local_index++)
     {
       // Create a temporary collection of the the dst pointers
-      dealii::MGLevelObject<MGVectorType> mg_src_subset(
-        triangulation_handler.get_mg_min_level(),
-        triangulation_handler.get_mg_max_level());
-      for (unsigned int level = triangulation_handler.get_mg_min_level();
-           level < triangulation_handler.get_mg_max_level();
-           ++level)
+      dealii::MGLevelObject<MGVectorType> mg_src_subset(min_level, max_level);
+      for (unsigned int level = min_level; level < max_level; ++level)
         {
           mg_src_subset[level] = *mg_newton_update_src[level][local_index];
         }
@@ -504,12 +345,9 @@ GMGSolver<dim, degree>::solve(const double step_length)
   // Create smoother for each level
   using SmootherType = dealii::PreconditionChebyshev<LevelMatrixType, MGVectorType>;
   dealii::MGSmootherPrecondition<LevelMatrixType, SmootherType, MGVectorType> mg_smoother;
-  dealii::MGLevelObject<typename SmootherType::AdditionalData> smoother_data(
-    triangulation_handler.get_mg_min_level(),
-    triangulation_handler.get_mg_max_level());
-  for (unsigned int level = triangulation_handler.get_mg_min_level();
-       level <= triangulation_handler.get_mg_max_level();
-       ++level)
+  dealii::MGLevelObject<typename SmootherType::AdditionalData> smoother_data(min_level,
+                                                                             max_level);
+  for (unsigned int level = min_level; level <= max_level; ++level)
     {
       smoother_data[level].smoothing_range =
         this->user_inputs.linear_solve_parameters.linear_solve.at(this->field_index)
@@ -523,7 +361,8 @@ GMGSolver<dim, degree>::solve(const double step_length)
       (*mg_operators)[level].compute_diagonal(this->field_index);
       smoother_data[level].preconditioner =
         (*mg_operators)[level].get_matrix_diagonal_inverse();
-      smoother_data[level].constraints.copy_from(level_constraints[level]);
+      smoother_data[level].constraints.copy_from(
+        this->constraint_handler.get_mg_constraint(this->field_index, level));
     }
   mg_smoother.initialize(*mg_operators, smoother_data);
 
@@ -536,8 +375,8 @@ GMGSolver<dim, degree>::solve(const double step_length)
                                      *mg_transfer,
                                      mg_smoother,
                                      mg_smoother,
-                                     triangulation_handler.get_mg_min_level(),
-                                     triangulation_handler.get_mg_max_level(),
+                                     min_level,
+                                     max_level,
                                      dealii::Multigrid<MGVectorType>::Cycle::v_cycle);
 
   // Create the preconditioner
