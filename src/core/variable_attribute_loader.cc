@@ -286,6 +286,12 @@ variableAttributeLoader::validate_attributes()
       AssertThrow(
         !variable.is_postprocess || variable.pde_type == PDEType::EXPLICIT_TIME_DEPENDENT,
         dealii::ExcMessage("Currently, postprocessing only allows explicit equations."));
+      // Check that constant fields have no dependencies
+      AssertThrow(!(variable.pde_type == PDEType::CONSTANT) ||
+                    (variable.dependencies_RHS.empty() &&
+                     variable.dependencies_LHS.empty()),
+                  dealii::ExcMessage("Constant fields are determined by the initial "
+                                     "condition. They cannot have dependencies."));
     }
 
   // Make sure dependencies are all variable names. If there are change() dependencies
@@ -367,16 +373,6 @@ variableAttributeLoader::validate_attributes()
 void
 variableAttributeLoader::validate_old_solution_dependencies()
 {
-  for (const auto &[index, variable] : var_attributes)
-    {
-      // TODO (landinjm): Move this somewhere else
-      // AssertThrow(!(variable.pde_type == PDEType::CONSTANT) ||
-      //               (variable.dependency_set_RHS.size() > 0 &&
-      //                variable.dependency_set_LHS.size() > 0),
-      //             dealii::ExcMessage("Constant fields are determined by the initial "
-      //                                "condition. They cannot have dependencies."));
-    }
-
   // First create a combined dependency set
   std::unordered_map<std::pair<unsigned int, dependencyType>,
                      dealii::EvaluationFlags::EvaluationFlags,
