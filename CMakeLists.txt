@@ -253,6 +253,8 @@ add_custom_target(distclean
   COMMAND ${CMAKE_COMMAND} -E remove
     CMakeCache.txt cmake_install.cmake Makefile
     build.ninja rules.ninja .ninja_deps .ninja_log
+    clang-tidy.log cppcheck.log output.txt error.txt
+    summary.log detailed.log
   COMMENT "distclean invoked"
   )
 
