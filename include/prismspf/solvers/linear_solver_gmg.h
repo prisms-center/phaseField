@@ -326,8 +326,7 @@ GMGSolver<dim, degree>::solve(const double step_length)
   dealii::SolverCG<VectorType> cg(this->solver_control);
 
   // Interpolate the newton update src vector to each multigrid level
-  for (unsigned int local_index = 0; local_index < this->newton_update_src.size();
-       local_index++)
+  for (const auto &[pair, local_index] : this->newton_update_global_to_local_solution)
     {
       // Create a temporary collection of the the dst pointers
       dealii::MGLevelObject<MGVectorType> mg_src_subset(min_level, max_level);
@@ -337,7 +336,7 @@ GMGSolver<dim, degree>::solve(const double step_length)
         }
 
       // Interpolate
-      mg_transfer->interpolate_to_mg(*current_dof_handler,
+      mg_transfer->interpolate_to_mg(*dof_handler.get_dof_handlers().at(pair.first),
                                      mg_src_subset,
                                      *this->newton_update_src[local_index]);
     }
