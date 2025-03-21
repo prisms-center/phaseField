@@ -1,15 +1,13 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef pde_problem_h
-#define pde_problem_h
+#pragma once
 
 #include <deal.II/base/quadrature_lib.h>
 #include <deal.II/fe/fe_q.h>
 #include <deal.II/fe/fe_system.h>
 #include <deal.II/fe/mapping_q1.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/constraint_handler.h>
 #include <prismspf/core/dof_handler.h>
@@ -21,13 +19,18 @@
 #include <prismspf/core/triangulation_handler.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
+
+#include <prismspf/user_inputs/user_input_parameters.h>
+
 #include <prismspf/solvers/explicit_postprocess_solver.h>
 #include <prismspf/solvers/explicit_solver.h>
 #include <prismspf/solvers/nonexplicit_auxiliary_solver.h>
 #include <prismspf/solvers/nonexplicit_linear_solver.h>
 #include <prismspf/solvers/nonexplicit_self_nonlinear_solver.h>
-#include <prismspf/user_inputs/user_input_parameters.h>
+
 #include <prismspf/utilities/element_volume.h>
+
+#include <prismspf/config.h>
 
 #include <map>
 
@@ -175,8 +178,8 @@ PDEProblem<dim, degree>::PDEProblem(const userInputParameters<dim> &_user_inputs
   : user_inputs(_user_inputs)
   , triangulation_handler(_user_inputs)
   , constraint_handler(_user_inputs)
-  , matrix_free_handler(_user_inputs)
-  , multigrid_matrix_free_handler(0, 0, _user_inputs)
+  , matrix_free_handler()
+  , multigrid_matrix_free_handler(0, 0)
   , invm_handler(_user_inputs.var_attributes)
   , solution_handler(_user_inputs.var_attributes)
   , dof_handler(_user_inputs)
@@ -286,7 +289,12 @@ PDEProblem<dim, degree>::init_system()
   // Create the constraints
   conditionalOStreams::pout_base() << "creating constraints...\n" << std::flush;
   constraint_handler.make_constraints(mapping, dof_handler.get_dof_handlers());
-  constraint_handler.make_mg_constraints(mapping, dof_handler.get_mg_dof_handlers());
+  if (triangulation_handler.has_setup_multigrid())
+    {
+      conditionalOStreams::pout_base() << "creating multigrid constraints...\n"
+                                       << std::flush;
+      constraint_handler.make_mg_constraints(mapping, dof_handler.get_mg_dof_handlers());
+    }
 
   // Reinit the matrix-free objects
   conditionalOStreams::pout_base() << "initializing matrix-free objects...\n"
@@ -295,6 +303,21 @@ PDEProblem<dim, degree>::init_system()
                              dof_handler.get_dof_handlers(),
                              constraint_handler.get_constraints(),
                              dealii::QGaussLobatto<1>(degree + 1));
+  if (triangulation_handler.has_setup_multigrid())
+    {
+      const unsigned int min_level = triangulation_handler.get_mg_min_level();
+      const unsigned int max_level = triangulation_handler.get_mg_max_level();
+
+      multigrid_matrix_free_handler.resize(min_level, max_level);
+
+      for (unsigned int level = min_level; level <= max_level; ++level)
+        {
+          conditionalOStreams::pout_base()
+            << "initializing multgrid matrix-free object at level " << level << "...\n"
+            << std::flush;
+          // multigrid_matrix_free_handler[level].reinit(mapping, );
+        }
+    }
 
   // Initialize the solution set
   conditionalOStreams::pout_base() << "initializing solution set...\n" << std::flush;
@@ -353,11 +376,11 @@ PDEProblem<dim, degree>::init_system()
 
   // Output initial condition
   conditionalOStreams::pout_base() << "outputting initial condition...\n" << std::flush;
-  solutionOutput<dim> output_solution(solution_handler.solution_set,
-                                      dof_handler.get_dof_handlers(),
-                                      degree,
-                                      "solution",
-                                      user_inputs);
+  solutionOutput<dim>(solution_handler.solution_set,
+                      dof_handler.get_dof_handlers(),
+                      degree,
+                      "solution",
+                      user_inputs);
 
   timer::serial_timer().leave_subsection();
 }
@@ -414,11 +437,11 @@ PDEProblem<dim, degree>::solve()
         {
           postprocess_explicit_solver.solve();
 
-          solutionOutput<dim> output_solution(solution_handler.solution_set,
-                                              dof_handler.get_dof_handlers(),
-                                              degree,
-                                              "solution",
-                                              user_inputs);
+          solutionOutput<dim>(solution_handler.solution_set,
+                              dof_handler.get_dof_handlers(),
+                              degree,
+                              "solution",
+                              user_inputs);
 
           // Print the l2-norms of each solution
           conditionalOStreams::pout_base()
@@ -446,5 +469,3 @@ PDEProblem<dim, degree>::run()
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

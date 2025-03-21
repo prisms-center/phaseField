@@ -1,13 +1,14 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef CUSTOM_PDE_H_
-#define CUSTOM_PDE_H_
+#pragma once
 
-#include <prismspf/config.h>
 #include <prismspf/core/matrix_free_operator.h>
 #include <prismspf/core/variable_attributes.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -85,5 +86,3 @@ private:
 };
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

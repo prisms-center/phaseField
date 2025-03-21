@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef linear_solver_base_h
-#define linear_solver_base_h
+#pragma once
 
 #include <deal.II/base/quadrature_lib.h>
 #include <deal.II/fe/fe_q.h>
@@ -10,7 +9,6 @@
 #include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/lac/solver_control.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/constraint_handler.h>
 #include <prismspf/core/matrix_free_handler.h>
@@ -18,7 +16,10 @@
 #include <prismspf/core/triangulation_handler.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -275,5 +276,3 @@ linearSolverBase<dim, degree>::compute_solver_tolerance()
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

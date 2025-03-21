@@ -1,10 +1,10 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef user_input_parameters_h
-#define user_input_parameters_h
+#pragma once
 
-#include <prismspf/config.h>
+#include <deal.II/base/parameter_handler.h>
+
 #include <prismspf/user_inputs/boundary_parameters.h>
 #include <prismspf/user_inputs/checkpoint_parameters.h>
 #include <prismspf/user_inputs/input_file_reader.h>
@@ -14,6 +14,8 @@
 #include <prismspf/user_inputs/spatial_discretization.h>
 #include <prismspf/user_inputs/temporal_discretization.h>
 #include <prismspf/user_inputs/user_constants.h>
+
+#include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -130,10 +132,8 @@ private:
    * \brief Assign the provided user constants.
    */
   void
-  load_model_constants(inputFileReader          &input_file_reader,
+  load_model_constants(const inputFileReader    &input_file_reader,
                        dealii::ParameterHandler &parameter_handler);
 };
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

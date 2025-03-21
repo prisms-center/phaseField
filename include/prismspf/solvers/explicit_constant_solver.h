@@ -1,18 +1,20 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef explicit_constant_solver_h
-#define explicit_constant_solver_h
+#pragma once
 
-#include <prismspf/config.h>
 #include <prismspf/core/constraint_handler.h>
 #include <prismspf/core/dof_handler.h>
 #include <prismspf/core/invm_handler.h>
 #include <prismspf/core/matrix_free_handler.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/type_enums.h>
-#include <prismspf/solvers/explicit_base.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/solvers/explicit_base.h>
+
+#include <prismspf/config.h>
 
 #ifdef PRISMS_PF_WITH_CALIPER
 #  include <caliper/cali.h>
@@ -95,5 +97,3 @@ explicitConstantSolver<dim, degree>::solve()
 {}
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

@@ -1,12 +1,10 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef explicit_base_h
-#define explicit_base_h
+#pragma once
 
 #include <deal.II/numerics/vector_tools.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/constraint_handler.h>
 #include <prismspf/core/dof_handler.h>
 #include <prismspf/core/exceptions.h>
@@ -16,7 +14,10 @@
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -205,13 +206,13 @@ explicitBase<dim, degree>::compute_shared_dependencies()
 
   // Compute the shared dependency set
   auto &dependency_set = subset_attributes.begin()->second.dependency_set_RHS;
-  for (const auto &[index, variable] : subset_attributes)
+  for (const auto &[main_index, variable] : subset_attributes)
     {
-      for (const auto &[index, map] : variable.dependency_set_RHS)
+      for (const auto &[dependency_index, map] : variable.dependency_set_RHS)
         {
           for (const auto &[dependency_type, field_type] : map)
             {
-              dependency_set[index].emplace(dependency_type, field_type);
+              dependency_set[dependency_index].emplace(dependency_type, field_type);
             }
         }
     }
@@ -277,5 +278,3 @@ explicitBase<dim, degree>::print()
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

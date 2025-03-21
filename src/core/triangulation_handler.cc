@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
+#include <deal.II/base/exceptions.h>
+#include <deal.II/base/geometry_info.h>
+#include <deal.II/base/point.h>
 #include <deal.II/distributed/tria.h>
 #include <deal.II/grid/grid_generator.h>
 #include <deal.II/grid/grid_out.h>
@@ -8,18 +11,22 @@
 #include <deal.II/grid/grid_tools.h>
 #include <deal.II/grid/tria.h>
 #include <deal.II/grid/tria_accessor.h>
-#include <deal.II/multigrid/mg_coarse.h>
 #include <deal.II/multigrid/mg_transfer_global_coarsening.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
-#include <prismspf/core/exceptions.h>
 #include <prismspf/core/triangulation_handler.h>
+#include <prismspf/core/type_enums.h>
+
+#include <prismspf/user_inputs/boundary_parameters.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#include <prismspf/config.h>
+
+#include <cmath>
 #include <fstream>
 #include <memory>
-#include <string>
+#include <mpi.h>
+#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -97,6 +104,13 @@ triangulationHandler<dim>::get_mg_max_level() const
 }
 
 template <int dim>
+bool
+triangulationHandler<dim>::has_setup_multigrid() const
+{
+  return has_multigrid;
+}
+
+template <int dim>
 void
 triangulationHandler<dim>::generate_mesh()
 {
@@ -171,15 +185,6 @@ triangulationHandler<dim>::generate_mesh()
   // Set the maximum and minimum levels for the multigrid based on the triangulation.
   min_level = 0; // TODO (landinjm): This should be set based on the user inputs
   max_level = coarsened_triangulations.size() - 1;
-}
-
-template <int dim>
-void
-triangulationHandler<dim>::adaptively_refine_mesh(solutionHandler<dim> &solution_handler)
-{
-  AssertThrow(false, FeatureNotImplemented("Adaptive mesh refinement"));
-  // TODO (landinjm): Implement adaptive mesh refinement
-  (void) solution_handler;
 }
 
 template <int dim>

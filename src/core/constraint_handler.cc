@@ -1,23 +1,32 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include <deal.II/base/point.h>
+#include <deal.II/base/exceptions.h>
+#include <deal.II/base/function.h>
+#include <deal.II/base/geometry_info.h>
+#include <deal.II/base/index_set.h>
+#include <deal.II/base/mg_level_object.h>
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/dofs/dof_tools.h>
 #include <deal.II/fe/component_mask.h>
-#include <deal.II/fe/mapping_q1.h>
+#include <deal.II/fe/mapping.h>
 #include <deal.II/grid/grid_tools.h>
 #include <deal.II/lac/affine_constraints.h>
 #include <deal.II/numerics/vector_tools_boundary.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/constraint_handler.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/nonuniform_dirichlet.h>
 #include <prismspf/core/type_enums.h>
+
+#include <prismspf/user_inputs/boundary_parameters.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
-#include <cmath>
+#include <prismspf/config.h>
+
+#include <algorithm>
+#include <iterator>
+#include <string>
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -34,10 +43,15 @@ constraintHandler<dim>::get_constraints()
 {
   std::vector<const dealii::AffineConstraints<double> *> temp;
   temp.reserve(constraints.size());
-  for (const auto &constraint : constraints)
-    {
-      temp.push_back(&constraint);
-    }
+
+  std::transform(constraints.begin(),
+                 constraints.end(),
+                 std::back_inserter(temp),
+                 [](const dealii::AffineConstraints<double> &constraint)
+                 {
+                   return &constraint;
+                 });
+
   return temp;
 }
 
@@ -261,7 +275,8 @@ constraintHandler<dim>::make_mg_constraint(
       const dealii::IndexSet locally_relevant_dofs =
         dealii::DoFTools::extract_locally_relevant_dofs(dof_handler[level]);
 
-      mg_constraints.at(index)[level].reinit(locally_relevant_dofs);
+      mg_constraints.at(index)[level].reinit(dof_handler[level].locally_owned_dofs(),
+                                             locally_relevant_dofs);
 
       dealii::DoFTools::make_hanging_node_constraints(dof_handler[level],
                                                       mg_constraints.at(index)[level]);
@@ -274,11 +289,18 @@ constraintHandler<dim>::make_mg_constraint(
           for (const auto &[boundary_id, boundary_type] :
                condition.boundary_condition_map)
             {
-              // Create a mask. This is only applied for vector fields to apply boundary
-              // conditions to
-              // each component of the vector.
-              std::vector<bool> mask(dim, false);
-              mask.at(component) = true;
+              const bool is_vector_field =
+                user_inputs->var_attributes.at(index).field_type == fieldType::VECTOR;
+              // Create a component mask. This will only select a certain component for
+              // vector fields.
+              dealii::ComponentMask mask = {};
+              if (is_vector_field)
+                {
+                  std::vector<bool> temp_mask(dim, false);
+                  temp_mask.at(component) = true;
+
+                  mask = dealii::ComponentMask(temp_mask);
+                }
 
               if (boundary_type == boundaryCondition::type::NATURAL)
                 {
@@ -409,7 +431,7 @@ constraintHandler<dim>::set_pinned_point(const dealii::DoFHandler<dim> &dof_hand
               if (value_point_pair.second.distance(cell->vertex(i)) <
                   tolerance * cell->diameter())
                 {
-                  unsigned int nodeID = cell->vertex_dof_index(i, 0);
+                  const unsigned int nodeID = cell->vertex_dof_index(i, 0);
                   constraints.at(index).add_line(nodeID);
                   constraints.at(index).set_inhomogeneity(nodeID, value_point_pair.first);
                 }

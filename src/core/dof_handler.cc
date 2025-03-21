@@ -1,17 +1,22 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
+#include <deal.II/base/exceptions.h>
+#include <deal.II/base/mg_level_object.h>
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/fe/fe_system.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/dof_handler.h>
 #include <prismspf/core/triangulation_handler.h>
+#include <prismspf/core/type_enums.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
 
-#include <map>
-#include <vector>
+#include <prismspf/config.h>
+
+#include <ostream>
+#include <set>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -134,6 +139,21 @@ dofHandler<dim>::get_mg_dof_handlers() const
   Assert(!mg_dof_handlers.empty(),
          dealii::ExcMessage("The multigrid dof handler map is empty."));
   return mg_dof_handlers;
+}
+
+template <int dim>
+const std::vector<const dealii::DoFHandler<dim> *> &
+dofHandler<dim>::get_mg_dof_handlers(unsigned int level) const
+{
+  Assert(has_multigrid, dealii::ExcNotInitialized());
+  Assert(!mg_dof_handlers.empty(),
+         dealii::ExcMessage("The multigrid dof handler map is empty."));
+  Assert(level >= const_mg_dof_handlers.min_level() &&
+           level <= const_mg_dof_handlers.max_level(),
+         dealii::ExcIndexRange(level,
+                               const_mg_dof_handlers.min_level(),
+                               const_mg_dof_handlers.max_level()));
+  return const_mg_dof_handlers[level];
 }
 
 template <int dim>

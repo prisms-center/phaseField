@@ -1,16 +1,17 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef initial_conditions_h
-#define initial_conditions_h
+#pragma once
 
 #include <deal.II/base/function.h>
 #include <deal.II/base/point.h>
 #include <deal.II/lac/vector.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/type_enums.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -36,14 +37,18 @@ public:
                    const fieldType                &field_type,
                    const userInputParameters<dim> &_user_inputs);
 
+  // NOLINTBEGIN(readability-identifier-length)
+
   /**
    * \brief Scalar/Vector value.
    */
   void
   vector_value(const dealii::Point<dim> &p, dealii::Vector<double> &value) const override;
 
+  // NOLINTEND(readability-identifier-length)
+
 private:
-  const unsigned int index;
+  unsigned int index;
 
   const userInputParameters<dim> *user_inputs;
 
@@ -58,6 +63,8 @@ initialCondition<dim>::initialCondition(const unsigned int             &_index,
   , index(_index)
   , user_inputs(&_user_inputs)
 {}
+
+// NOLINTBEGIN(readability-identifier-length)
 
 template <int dim>
 inline void
@@ -80,6 +87,8 @@ initialCondition<dim>::vector_value(const dealii::Point<dim> &p,
 
   value = vector_value;
 }
+
+// NOLINTEND(readability-identifier-length)
 
 /**
  * \brief User-facing implementation of initial conditions
@@ -107,5 +116,3 @@ public:
 };
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

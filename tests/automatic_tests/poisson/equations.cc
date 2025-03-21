@@ -3,9 +3,10 @@
 
 #include "custom_pde.h"
 
-#include <prismspf/config.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attribute_loader.h>
+
+#include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -34,7 +35,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  if (this->current_index == 0)
+  if (this->get_current_index() == 0)
     {
       vectorGrad ux = variable_list.get_vector_gradient(0);
 
@@ -49,7 +50,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_LHS(
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  if (this->current_index == 0)
+  if (this->get_current_index() == 0)
     {
       vectorGrad change_ux = variable_list.get_vector_gradient(0, CHANGE);
 

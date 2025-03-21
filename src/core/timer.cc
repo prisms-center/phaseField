@@ -4,12 +4,14 @@
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/timer.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/timer.h>
 
+#include <prismspf/config.h>
+
 #include <iostream>
 #include <mpi.h>
+#include <ostream>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -56,8 +58,7 @@ timer::print_summary()
 
       conditionalOStreams::pout_base()
         << "Serial: " << section << " - " << wall_time << "s (" << wall_time / n_calls
-        << "s/call, " << n_calls << " calls)"
-        << "\n"
+        << "s/call, " << n_calls << " calls)" << "\n"
         << std::flush;
     }
 }

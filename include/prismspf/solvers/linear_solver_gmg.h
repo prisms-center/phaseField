@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef linear_solver_gmg_h
-#define linear_solver_gmg_h
+#pragma once
 
 #include <deal.II/grid/grid_tools.h>
 #include <deal.II/lac/precondition.h>
@@ -18,11 +17,13 @@
 #include <deal.II/multigrid/mg_transfer_matrix_free.h>
 #include <deal.II/multigrid/multigrid.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/dof_handler.h>
 #include <prismspf/core/solution_output.h>
 #include <prismspf/core/triangulation_handler.h>
+
 #include <prismspf/solvers/linear_solver_base.h>
+
+#include <prismspf/config.h>
 
 #ifdef PRISMS_PF_WITH_CALIPER
 #  include <caliper/cali.h>
@@ -195,15 +196,14 @@ GMGSolver<dim, degree>::init()
                                                              this->subset_attributes);
   mg_transfer_operators.resize(min_level, max_level);
 
-  // Object for constraints on different levels
-  mg_matrix_free_handler.resize(min_level, max_level, this->user_inputs);
-
   // Setup operator on each level
   mg_newton_update_src.resize(min_level, max_level);
   for (unsigned int level = min_level; level <= max_level; ++level)
     {
       // TODO (landinjm): Fix so mapping is same as rest of the problem. Do the same for
       // the finite element I think.
+      // TODO (landinjm): This should include dof handlers for all dependency fields. That
+      // also means I need some sort of local indexing.
       mg_matrix_free_handler[level].reinit(
         mapping,
         dof_handler.get_mg_dof_handler(this->field_index, level),
@@ -323,11 +323,10 @@ GMGSolver<dim, degree>::solve(const double step_length)
 
   // Update solver controls
   this->solver_control.set_tolerance(this->tolerance);
-  dealii::SolverCG<VectorType> cg(this->solver_control);
+  dealii::SolverCG<VectorType> cg_solver(this->solver_control);
 
   // Interpolate the newton update src vector to each multigrid level
-  for (unsigned int local_index = 0; local_index < this->newton_update_src.size();
-       local_index++)
+  for (const auto &[pair, local_index] : this->newton_update_global_to_local_solution)
     {
       // Create a temporary collection of the the dst pointers
       dealii::MGLevelObject<MGVectorType> mg_src_subset(min_level, max_level);
@@ -337,7 +336,7 @@ GMGSolver<dim, degree>::solve(const double step_length)
         }
 
       // Interpolate
-      mg_transfer->interpolate_to_mg(*current_dof_handler,
+      mg_transfer->interpolate_to_mg(*dof_handler.get_dof_handlers().at(pair.first),
                                      mg_src_subset,
                                      *this->newton_update_src[local_index]);
     }
@@ -370,28 +369,29 @@ GMGSolver<dim, degree>::solve(const double step_length)
   mg_coarse.initialize(mg_smoother);
 
   // Create multigrid object
-  dealii::Multigrid<MGVectorType> mg(*mg_matrix,
-                                     mg_coarse,
-                                     *mg_transfer,
-                                     mg_smoother,
-                                     mg_smoother,
-                                     min_level,
-                                     max_level,
-                                     dealii::Multigrid<MGVectorType>::Cycle::v_cycle);
+  dealii::Multigrid<MGVectorType> multigrid(
+    *mg_matrix,
+    mg_coarse,
+    *mg_transfer,
+    mg_smoother,
+    mg_smoother,
+    min_level,
+    max_level,
+    dealii::Multigrid<MGVectorType>::Cycle::v_cycle);
 
   // Create the preconditioner
   dealii::PreconditionMG<dim,
                          MGVectorType,
                          dealii::MGTransferGlobalCoarsening<dim, MGVectorType>>
-    preconditioner(*current_dof_handler, mg, *mg_transfer);
+    preconditioner(*current_dof_handler, multigrid, *mg_transfer);
 
   try
     {
       *this->newton_update = 0.0;
-      cg.solve(*(this->update_system_matrix),
-               *this->newton_update,
-               *this->residual,
-               preconditioner);
+      cg_solver.solve(*(this->update_system_matrix),
+                      *this->newton_update,
+                      *this->residual,
+                      preconditioner);
     }
   catch (...)
     {
@@ -416,5 +416,3 @@ GMGSolver<dim, degree>::solve(const double step_length)
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

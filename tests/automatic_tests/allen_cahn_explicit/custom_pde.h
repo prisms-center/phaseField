@@ -1,13 +1,14 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef CUSTOM_PDE_H_
-#define CUSTOM_PDE_H_
+#pragma once
 
-#include <prismspf/config.h>
 #include <prismspf/core/matrix_free_operator.h>
 #include <prismspf/core/variable_attributes.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -83,10 +84,8 @@ private:
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
     const override;
 
-  number MnV = this->user_inputs.user_constants.get_model_constant_double("MnV");
-  number KnV = this->user_inputs.user_constants.get_model_constant_double("KnV");
+  number MnV = this->get_user_inputs().user_constants.get_model_constant_double("MnV");
+  number KnV = this->get_user_inputs().user_constants.get_model_constant_double("KnV");
 };
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

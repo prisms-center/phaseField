@@ -1,22 +1,33 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
+#include <deal.II/base/aligned_vector.h>
+#include <deal.II/base/exceptions.h>
 #include <deal.II/base/point.h>
+#include <deal.II/base/tensor.h>
+#include <deal.II/base/vectorization.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
+#include <deal.II/matrix_free/matrix_free.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
 #include <prismspf/core/variable_container.h>
 
+#include <prismspf/config.h>
+
+#include <functional>
+#include <map>
 #include <string>
+#include <unordered_map>
+#include <utility>
+#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <int dim, int degree, typename number>
 variableContainer<dim, degree, number>::variableContainer(
-  const dealii::MatrixFree<dim, number>            &data,
+  const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
   const std::map<unsigned int, variableAttributes> &_subset_attributes,
   const std::unordered_map<std::pair<unsigned int, dependencyType>,
                            unsigned int,
@@ -87,13 +98,13 @@ variableContainer<dim, degree, number>::eval_local_operator(
       // Initialize, read DOFs, and set evaulation flags for each variable
       reinit_and_eval(src, cell);
 
-      for (unsigned int q = 0; q < get_n_q_points(); ++q)
+      for (unsigned int quad = 0; quad < get_n_q_points(); ++quad)
         {
           // Set the quadrature point
-          q_point = q;
+          q_point = quad;
 
           // Grab the quadrature point location
-          dealii::Point<dim, size_type> q_point_loc = get_q_point_location();
+          const dealii::Point<dim, size_type> q_point_loc = get_q_point_location();
 
           // Calculate the residuals
           func(*this, q_point_loc);
@@ -118,13 +129,13 @@ variableContainer<dim, degree, number>::eval_local_operator(
       // Initialize, read DOFs, and set evaulation flags for each variable
       reinit_and_eval(src, cell);
 
-      for (unsigned int q = 0; q < get_n_q_points(); ++q)
+      for (unsigned int quad = 0; quad < get_n_q_points(); ++quad)
         {
           // Set the quadrature point
-          q_point = q;
+          q_point = quad;
 
           // Grab the quadrature point location
-          dealii::Point<dim, size_type> q_point_loc = get_q_point_location();
+          const dealii::Point<dim, size_type> q_point_loc = get_q_point_location();
 
           // Calculate the residuals
           func(*this, q_point_loc);
@@ -151,13 +162,13 @@ variableContainer<dim, degree, number>::eval_local_operator(
       reinit_and_eval(src, cell);
       reinit_and_eval(src_subset, cell);
 
-      for (unsigned int q = 0; q < get_n_q_points(); ++q)
+      for (unsigned int quad = 0; quad < get_n_q_points(); ++quad)
         {
           // Set the quadrature point
-          q_point = q;
+          q_point = quad;
 
           // Grab the quadrature point location
-          dealii::Point<dim, size_type> q_point_loc = get_q_point_location();
+          const dealii::Point<dim, size_type> q_point_loc = get_q_point_location();
 
           // Calculate the residuals
           func(*this, q_point_loc);
@@ -215,13 +226,14 @@ variableContainer<dim, degree, number>::eval_local_diagonal(
               // Evaluate the dependencies based on the flags
               eval(global_var_index);
 
-              for (unsigned int q = 0; q < get_n_q_points(); ++q)
+              for (unsigned int quad = 0; quad < get_n_q_points(); ++quad)
                 {
                   // Set the quadrature point
-                  q_point = q;
+                  q_point = quad;
 
                   // Grab the quadrature point location
-                  dealii::Point<dim, size_type> q_point_loc = get_q_point_location();
+                  const dealii::Point<dim, size_type> q_point_loc =
+                    get_q_point_location();
 
                   // Calculate the residuals
                   func(*this, q_point_loc);
@@ -277,9 +289,9 @@ variableContainer<dim, degree, number>::eval_local_diagonal(
               else
                 {
                   dealii::Tensor<1, dim, size_type> one;
-                  for (unsigned int d = 0; d < dim; ++d)
+                  for (unsigned int dimension = 0; dimension < dim; ++dimension)
                     {
-                      one[d] = dealii::make_vectorized_array<number>(1.0);
+                      one[dimension] = dealii::make_vectorized_array<number>(1.0);
                     }
 
                   vector_FEEval_ptr->submit_dof_value(one, i);
@@ -291,13 +303,14 @@ variableContainer<dim, degree, number>::eval_local_diagonal(
               // Evaluate the dependencies based on the flags
               eval(global_var_index);
 
-              for (unsigned int q = 0; q < get_n_q_points(); ++q)
+              for (unsigned int quad = 0; quad < get_n_q_points(); ++quad)
                 {
                   // Set the quadrature point
-                  q_point = q;
+                  q_point = quad;
 
                   // Grab the quadrature point location
-                  dealii::Point<dim, size_type> q_point_loc = get_q_point_location();
+                  const dealii::Point<dim, size_type> q_point_loc =
+                    get_q_point_location();
 
                   // Calculate the residuals
                   func(*this, q_point_loc);
@@ -415,7 +428,7 @@ variableContainer<dim, degree, number>::get_n_q_points() const
 
       return first_scalar_FEEval.begin()->second->n_q_points;
     }
-  else if (!vector_vars_map.empty())
+  if (!vector_vars_map.empty())
     {
       const auto &first_vector_FEEval = vector_vars_map.begin()->second;
 
@@ -446,7 +459,7 @@ variableContainer<dim, degree, number>::get_q_point_location() const
 
       return first_scalar_FEEval.begin()->second->quadrature_point(q_point);
     }
-  else if (!vector_vars_map.empty())
+  if (!vector_vars_map.empty())
     {
       const auto &first_vector_FEEval = vector_vars_map.begin()->second;
 

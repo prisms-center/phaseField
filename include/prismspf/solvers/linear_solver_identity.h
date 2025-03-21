@@ -1,15 +1,15 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef linear_solver_identity_h
-#define linear_solver_identity_h
+#pragma once
 
 #include <deal.II/lac/precondition.h>
 #include <deal.II/lac/solver_cg.h>
 #include <deal.II/matrix_free/matrix_free.h>
 
-#include <prismspf/config.h>
 #include <prismspf/solvers/linear_solver_base.h>
+
+#include <prismspf/config.h>
 
 #ifdef PRISMS_PF_WITH_CALIPER
 #  include <caliper/cali.h>
@@ -121,15 +121,15 @@ identitySolver<dim, degree>::solve(const double step_length)
 
   // Update solver controls
   this->solver_control.set_tolerance(this->tolerance);
-  dealii::SolverCG<VectorType> cg(this->solver_control);
+  dealii::SolverCG<VectorType> cg_solver(this->solver_control);
 
   try
     {
       *this->newton_update = 0.0;
-      cg.solve(*(this->update_system_matrix),
-               *this->newton_update,
-               *this->residual,
-               dealii::PreconditionIdentity());
+      cg_solver.solve(*(this->update_system_matrix),
+                      *this->newton_update,
+                      *this->residual,
+                      dealii::PreconditionIdentity());
     }
   catch (...)
     {
@@ -154,5 +154,3 @@ identitySolver<dim, degree>::solve(const double step_length)
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

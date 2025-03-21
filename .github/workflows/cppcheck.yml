@@ -1,0 +1,65 @@
+name: Cppcheck
+
+on:
+  push:
+      branches:
+        - master
+  pull_request:
+      branches:
+        - master
+        - devel
+      types:
+        - opened
+        - reopened
+        - synchronize
+        - ready_for_review
+      paths-ignore:
+      - 'contrib/**'
+      - 'doc/**'
+
+
+concurrency:
+  group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request'}}
+
+jobs:
+    clang-tidy:
+      runs-on: [ubuntu-22.04]
+
+      container:
+        image: dealii/dealii:v9.6.0-jammy
+        options: --user root
+
+      steps:
+        - name: Checkout repo
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 30
+
+        - name: Cache cppcheck installation
+          uses: actions/cache@v3
+          with:
+            path: |
+              /usr/local/bin/cppcheck
+              /usr/local/share/Cppcheck
+              cppcheck-2.17.1/build
+            key: ${{ runner.os }}-cppcheck-2.17.1
+            restore-keys: |
+              ${{ runner.os }}-cppcheck-
+
+        - name: Install cppcheck
+          if: steps.cache.outputs.cache-hit != 'true'
+          run: |
+            wget https://github.com/danmar/cppcheck/archive/refs/tags/2.17.1.tar.gz
+            tar -xvzf 2.17.1.tar.gz
+            cd cppcheck-2.17.1/
+            mkdir build
+            cd build
+            cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+            cmake --build . --config RelWithDebInfo
+            sudo make install
+
+        - name: Run cppcheck
+          run: |
+            ./contrib/utilities/cppcheck.sh
+

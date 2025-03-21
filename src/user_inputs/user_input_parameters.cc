@@ -8,15 +8,17 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 
-#include <prismspf/config.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/refinement_criterion.h>
 #include <prismspf/core/type_enums.h>
+
 #include <prismspf/user_inputs/input_file_reader.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#include <prismspf/config.h>
+
+#include <climits>
 #include <cmath>
-#include <string>
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -101,33 +103,24 @@ userInputParameters<dim>::assign_spatial_discretization_parameters(
         const std::string crit_type_string = parameter_handler.get("type");
         if (!boost::iequals(crit_type_string, "none"))
           {
-            GridRefinement::RefinementCriterion new_criterion;
-            new_criterion.variable_index = index;
-            new_criterion.variable_name  = variable.name;
+            GridRefinement::RefinementCriterion new_criterion(
+              GridRefinement::RefinementFlags::nothing,
+              parameter_handler.get_double("value lower bound"),
+              parameter_handler.get_double("value upper bound"),
+              parameter_handler.get_double("gradient magnitude lower bound"));
+
             if (boost::iequals(crit_type_string, "value"))
               {
-                new_criterion.criterion_type = GridRefinement::RefinementFlags::value;
-                new_criterion.value_lower_bound =
-                  parameter_handler.get_double("value lower bound");
-                new_criterion.value_upper_bound =
-                  parameter_handler.get_double("value upper bound");
+                new_criterion.set_criterion(GridRefinement::RefinementFlags::value);
               }
             else if (boost::iequals(crit_type_string, "gradient"))
               {
-                new_criterion.criterion_type = GridRefinement::RefinementFlags::gradient;
-                new_criterion.gradient_lower_bound =
-                  parameter_handler.get_double("gradient magnitude lower bound");
+                new_criterion.set_criterion(GridRefinement::RefinementFlags::gradient);
               }
             else if (boost::iequals(crit_type_string, "value_and_gradient"))
               {
-                new_criterion.criterion_type = GridRefinement::RefinementFlags::value |
-                                               GridRefinement::RefinementFlags::gradient;
-                new_criterion.value_lower_bound =
-                  parameter_handler.get_double("value lower bound");
-                new_criterion.value_upper_bound =
-                  parameter_handler.get_double("value upper bound");
-                new_criterion.gradient_lower_bound =
-                  parameter_handler.get_double("gradient magnitude lower bound");
+                new_criterion.set_criterion(GridRefinement::RefinementFlags::value |
+                                            GridRefinement::RefinementFlags::gradient);
               }
             else
               {
@@ -323,6 +316,9 @@ userInputParameters<dim>::assign_linear_solve_parameters(
           linear_solve_parameters.linear_solve[index].eig_cg_n_iterations =
             parameter_handler.get_integer("eigenvalue cg iterations");
 
+          linear_solve_parameters.linear_solve[index].min_mg_level =
+            parameter_handler.get_integer("min mg level");
+
           parameter_handler.leave_subsection();
         }
     }
@@ -357,7 +353,7 @@ userInputParameters<dim>::assign_nonlinear_solve_parameters(
 template <int dim>
 void
 userInputParameters<dim>::load_model_constants(
-  inputFileReader          &input_file_reader,
+  const inputFileReader    &input_file_reader,
   dealii::ParameterHandler &parameter_handler)
 {
   for (const std::string &constant_name : input_file_reader.model_constant_names)
