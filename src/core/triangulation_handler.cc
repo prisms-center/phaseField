@@ -97,6 +97,13 @@ triangulationHandler<dim>::get_mg_max_level() const
 }
 
 template <int dim>
+bool
+triangulationHandler<dim>::has_setup_multigrid() const
+{
+  return has_multigrid;
+}
+
+template <int dim>
 void
 triangulationHandler<dim>::generate_mesh()
 {

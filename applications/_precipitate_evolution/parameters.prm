@@ -1,77 +1,41 @@
-set Number of dimensions = 2
+set dim = 2
+set global refinement = 5
+set degree = 2
 
-set Domain size X = 40.0
-set Domain size Y = 40.0
-set Domain size Z = 40.0
-
-set Subdivisions X = 3
-set Subdivisions Y = 3
-set Subdivisions Z = 3
-
-set Refine factor = 5
-
-set Element degree = 2
-
-set Mesh adaptivity = true
-
-set Max refinement level = 5
-set Min refinement level = 1
-
-set Steps between remeshing operations = 1000
-
-subsection Refinement criterion: n1
-    set Criterion type = VALUE
-    set Value lower bound = 0.01
-    set Value upper bound = 0.99
+subsection rectangular mesh
+  set x size = 40.0
+  set y size = 40.0
+  set z size = 40.0
+  set x subdivisions = 3
+  set y subdivisions = 3  
+  set z subdivisions = 3
 end
 
-subsection Refinement criterion: n2
-    set Criterion type = VALUE
-    set Value lower bound = 0.01
-    set Value upper bound = 0.99
+set time step = 6.0e-4
+set number steps = 20000
+
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 10
 end
 
-subsection Refinement criterion: n3
-    set Criterion type = VALUE
-    set Value lower bound = 0.01
-    set Value upper bound = 0.99
+set boundary condition for c = NATURAL
+set boundary condition for n1 = NATURAL
+set boundary condition for n2 = NATURAL
+set boundary condition for n3 = NATURAL
+set boundary condition for u, x component = DIRICHLET: 0.0
+set boundary condition for u, y component = DIRICHLET: 0.0
+set boundary condition for u, z component = DIRICHLET: 0.0
+
+subsection linear solver parameters: u
+    set tolerance type = ABSOLUTE_RESIDUAL
+    set tolerance value = 1e-10
+    set max iterations = 1000 
+    set preconditioner type = GMG
+    set smoothing range = 20
+    set smoother degree = 5
+    set eigenvalue cg iterations = 20
 end
-
-set Time step = 6.0e-4
-
-set Number of time steps = 20000
-
-
-subsection Linear solver parameters: u
-    set Tolerance type = ABSOLUTE_RESIDUAL
-
-    set Tolerance value = 5e-3
-
-    set Maximum linear solver iterations = 1000
-end
-
-set Output condition =  EQUAL_SPACING
-
-set Number of outputs = 10
-
-set Skip print steps = 1
-
-set Load from a checkpoint = false
-
-set Checkpoint condition = EQUAL_SPACING
-
-set Number of checkpoints = 2
-
-
-set Boundary condition for variable c = NATURAL
-set Boundary condition for variable n1 = NATURAL
-set Boundary condition for variable n2 = NATURAL
-set Boundary condition for variable n3 = NATURAL
-set Boundary condition for variable u, x component = DIRICHLET: 0.0
-set Boundary condition for variable u, y component = DIRICHLET: 0.0
-set Boundary condition for variable u, z component = DIRICHLET: 0.0
-
-
 
 set Model constant McV = 1.0, double
 

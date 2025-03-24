@@ -50,6 +50,14 @@ public:
   get_mg_dof_handlers() const;
 
   /**
+   * \brief Getter function for the DoFHandlers at a certain multigrid level
+   * (constant reference). Note that this is only the DoFHandlers that are neccessary for
+   * multigrid and may be different that the non-multigrid getter function.
+   */
+  [[nodiscard]] const std::vector<const dealii::DoFHandler<dim> *> &
+  get_mg_dof_handlers(unsigned int level) const;
+
+  /**
    * \brief Getter function for the DoFHandler at a certain field and multigrid level
    * (constant reference).
    */
@@ -87,6 +95,12 @@ private:
    * special cases.
    */
   std::map<unsigned int, dealii::MGLevelObject<dealii::DoFHandler<dim>>> mg_dof_handlers;
+
+  /**
+   * \brief Const copy of the mg_dof_handlers by multigrid level.
+   */
+  dealii::MGLevelObject<std::vector<const dealii::DoFHandler<dim> *>>
+    const_mg_dof_handlers;
 };
 
 PRISMS_PF_END_NAMESPACE

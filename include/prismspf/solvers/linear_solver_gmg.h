@@ -195,15 +195,14 @@ GMGSolver<dim, degree>::init()
                                                              this->subset_attributes);
   mg_transfer_operators.resize(min_level, max_level);
 
-  // Object for constraints on different levels
-  mg_matrix_free_handler.resize(min_level, max_level, this->user_inputs);
-
   // Setup operator on each level
   mg_newton_update_src.resize(min_level, max_level);
   for (unsigned int level = min_level; level <= max_level; ++level)
     {
       // TODO (landinjm): Fix so mapping is same as rest of the problem. Do the same for
       // the finite element I think.
+      // TODO (landinjm): This should include dof handlers for all dependency fields. That
+      // also means I need some sort of local indexing.
       mg_matrix_free_handler[level].reinit(
         mapping,
         dof_handler.get_mg_dof_handler(this->field_index, level),

@@ -71,6 +71,12 @@ public:
   get_mg_max_level() const;
 
   /**
+   * \brief Whether multigrid has been setup.
+   */
+  [[nodiscard]] bool
+  has_setup_multigrid() const;
+
+  /**
    * \brief Generate mesh based on the inputs provided by the user.
    */
   void

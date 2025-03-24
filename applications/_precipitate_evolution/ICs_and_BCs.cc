@@ -1,43 +1,37 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-// ===========================================================================
-// FUNCTION FOR INITIAL CONDITIONS
-// ===========================================================================
+#include <prismspf/config.h>
+#include <prismspf/core/initial_conditions.h>
+#include <prismspf/core/nonuniform_dirichlet.h>
 
-template <int dim, int degree>
+#include <cmath>
+
+PRISMS_PF_BEGIN_NAMESPACE
+
+template <int dim>
 void
-customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &p,
-                                            [[maybe_unused]] const unsigned int index,
-                                            [[maybe_unused]] double            &scalar_IC,
-                                            [[maybe_unused]] Vector<double>    &vector_IC)
+customInitialCondition<dim>::set_initial_condition(
+  [[maybe_unused]] const unsigned int       &index,
+  [[maybe_unused]] const unsigned int       &component,
+  [[maybe_unused]] const dealii::Point<dim> &point,
+  [[maybe_unused]] double                   &scalar_value,
+  [[maybe_unused]] double                   &vector_component_value) const
 {
-  // ---------------------------------------------------------------------
-  // ENTER THE INITIAL CONDITIONS HERE
-  // ---------------------------------------------------------------------
-  // Enter the function describing conditions for the fields at point "p".
-  // Use "if" statements to set the initial condition for each variable
-  // according to its variable index
-
   double center[4][3] = {
     {1.0 / 3.0, 1.0 / 3.0, 0.5},
     {2.0 / 3.0, 2.0 / 3.0, 0.5},
     {3.0 / 4.0, 1.0 / 4.0, 0.5},
     {1.0 / 4.0, 3.0 / 4,   0.5}
   };
-  double rad[4]         = {userInputs.size[0] / 16.0,
-                           userInputs.size[0] / 16.0,
-                           userInputs.size[0] / 16.0,
-                           userInputs.size[0] / 16.0};
+  double rad[4]         = {40.0 / 16.0, 40.0 / 16.0, 40.0 / 16.0, 40.0 / 16.0};
   double orientation[4] = {1, 1, 2, 3};
-  double dx             = userInputs.size[0] / ((double) userInputs.subdivisions[0]) /
-              std::pow(2.0, userInputs.global_refinement);
-  double dist;
-  scalar_IC = 0;
+  double dx             = 40.0 / (3.0 / std::pow(2.0, 5));
+  double dist           = 0.0;
 
   if (index == 0)
     {
-      scalar_IC = 0.04;
+      scalar_value = 0.04;
     }
 
   for (unsigned int i = 0; i < 4; i++)
@@ -45,53 +39,35 @@ customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &
       dist = 0.0;
       for (unsigned int dir = 0; dir < dim; dir++)
         {
-          dist += (p[dir] - center[i][dir] * userInputs.size[dir]) *
-                  (p[dir] - center[i][dir] * userInputs.size[dir]);
+          dist +=
+            (point[dir] - center[i][dir] * 40.0) * (point[dir] - center[i][dir] * 40.0);
         }
       dist = std::sqrt(dist);
 
       if (index == orientation[i])
         {
-          scalar_IC += 0.5 * (1.0 - std::tanh((dist - rad[i]) / (dx)));
+          scalar_value += 0.5 * (1.0 - std::tanh((dist - rad[i]) / (dx)));
         }
     }
 
   if (index == 4)
     {
-      for (unsigned int d = 0; d < dim; d++)
-        {
-          vector_IC(d) = 0.0;
-        }
+      vector_component_value = 0.0;
     }
-
-  // --------------------------------------------------------------------------
 }
 
-// ===========================================================================
-// FUNCTION FOR NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS
-// ===========================================================================
-
-template <int dim, int degree>
+template <int dim>
 void
-customPDE<dim, degree>::setNonUniformDirichletBCs(
-  [[maybe_unused]] const Point<dim>  &p,
-  [[maybe_unused]] const unsigned int index,
-  [[maybe_unused]] const unsigned int direction,
-  [[maybe_unused]] const double       time,
-  [[maybe_unused]] double            &scalar_BC,
-  [[maybe_unused]] Vector<double>    &vector_BC)
-{
-  // --------------------------------------------------------------------------
-  // ENTER THE NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS HERE
-  // --------------------------------------------------------------------------
-  // Enter the function describing conditions for the fields at point "p".
-  // Use "if" statements to set the boundary condition for each variable
-  // according to its variable index. This function can be left blank if there
-  // are no non-uniform Dirichlet boundary conditions. For BCs that change in
-  // time, you can access the current time through the variable "time". The
-  // boundary index can be accessed via the variable "direction", which starts
-  // at zero and uses the same order as the BC specification in parameters.in
-  // (i.e. left = 0, right = 1, bottom = 2, top = 3, front = 4, back = 5).
+customNonuniformDirichlet<dim>::set_nonuniform_dirichlet(
+  [[maybe_unused]] const unsigned int       &index,
+  [[maybe_unused]] const unsigned int       &boundary_id,
+  [[maybe_unused]] const unsigned int       &component,
+  [[maybe_unused]] const dealii::Point<dim> &point,
+  [[maybe_unused]] double                   &scalar_value,
+  [[maybe_unused]] double                   &vector_component_value) const
+{}
 
-  // -------------------------------------------------------------------------
-}
+INSTANTIATE_UNI_TEMPLATE(customInitialCondition)
+INSTANTIATE_UNI_TEMPLATE(customNonuniformDirichlet)
+
+PRISMS_PF_END_NAMESPACE

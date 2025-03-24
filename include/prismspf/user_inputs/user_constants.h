@@ -263,7 +263,7 @@ userConstants<dim>::remove_parentheses(std::vector<std::string> &tensor_elements
   for (std::string &element : tensor_elements)
     {
       boost::range::remove_erase(element, '(');
-      boost::range::remove_erase(element, '(');
+      boost::range::remove_erase(element, ')');
     }
 }
 
@@ -273,9 +273,9 @@ userConstants<dim>::compute_rank_1_tensor_constant(
   const unsigned int             &n_elements,
   const std::vector<std::string> &tensor_elements)
 {
-  AssertThrow(n_elements == dim,
+  AssertThrow(n_elements == 3,
               dealii::ExcMessage("The columns in user-defined constant tensors must be "
-                                 "equal to the number of dimensions."));
+                                 "equal to the maximum number of dimensions."));
 
   dealii::Tensor<1, dim> temp;
   for (unsigned int i = 0; i < dim; i++)
@@ -292,10 +292,9 @@ userConstants<dim>::compute_rank_2_tensor_constant(
   const unsigned int             &n_elements,
   const std::vector<std::string> &tensor_elements)
 {
-  AssertThrow(n_elements == (dim * dim),
-              dealii::ExcMessage(
-                "User-defined constant tensor does not have the "
-                "correct number of elements, matrices must be 2x2 or 3x3."));
+  AssertThrow(n_elements == 9,
+              dealii::ExcMessage("User-defined constant tensor does not have the "
+                                 "correct number of elements, matrices must be 3x3."));
 
   const unsigned int row_length = dim;
 
@@ -340,7 +339,7 @@ userConstants<dim>::construct_user_constant(
       const unsigned int open_parentheses =
         compute_tensor_parentheses(n_elements, model_constants_strings);
 
-      AssertThrow(open_parentheses < 4,
+      AssertThrow(open_parentheses <= 4,
                   FeatureNotImplemented("3rd rank tensors and above"));
 
       remove_parentheses(model_constants_strings);
@@ -367,7 +366,6 @@ userConstants<dim>::construct_user_constant(
           temp_elastic_constants.push_back(
             dealii::Utilities::string_to_double(model_constants_strings.at(i)));
         }
-
       const std::string &elastic_const_symmetry = model_constants_type_strings.at(0);
       dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)> temp =
         get_Cij_tensor(temp_elastic_constants, elastic_const_symmetry);
@@ -461,9 +459,8 @@ inline dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
 userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
                                  const std::vector<double> &constants) const
 {
+  // Initialize tensor
   dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)> CIJ;
-
-  (void) constants; // TODO (landinjm): Implement this function
 
   switch (dim)
     {
@@ -475,10 +472,17 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
               // selecting the x index. It would allow the user to switch from 2D to 1D to
               // 3D, but would produce unexpected behavior.
               case ISOTROPIC:
-              default:
                 {
-                  AssertThrow(false, dealii::ExcMessage("Invalid elasticity model type"));
+                  const double modulus = constants.at(0);
+
+                  CIJ[0][0] = modulus;
+                  break;
                 }
+              default:
+                AssertThrow(false,
+                            dealii::ExcMessage(
+                              "Invalid elasticity model type for 1D. We only accept "
+                              "isotropic elasticity tensors."));
             }
           break;
         }
@@ -487,11 +491,25 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
           switch (model)
             {
               case ISOTROPIC:
+                {
+                  // TODO (landinjm): Document this
+                  const double modulus = constants.at(0);
+                  const double poisson = constants.at(1);
+
+                  const double mu = modulus / (2 * (1 + poisson));
+                  const double lambda =
+                    poisson * modulus / ((1 + poisson) * (1 - 2 * poisson));
+
+                  CIJ[0][0] = lambda + 2 * mu;
+                  CIJ[1][1] = lambda + 2 * mu;
+                  CIJ[2][2] = mu;
+                  CIJ[0][1] = lambda;
+                  CIJ[1][0] = lambda;
+                  break;
+                }
               case ANISOTROPIC:
               default:
-                {
-                  AssertThrow(false, dealii::ExcMessage("Invalid elasticity model type"));
-                }
+                AssertThrow(false, dealii::ExcMessage("Invalid elasticity model type"));
             }
           break;
         }
@@ -504,9 +522,7 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
               case ORTHOTROPIC:
               case ANISOTROPIC:
               default:
-                {
-                  AssertThrow(false, dealii::ExcMessage("Invalid elasticity model type"));
-                }
+                AssertThrow(false, dealii::ExcMessage("Invalid elasticity model type"));
             }
           break;
         }
