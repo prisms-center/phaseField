@@ -154,7 +154,6 @@ inputFileReader::get_subsection_entry_list(const std::string &subsec_name,
   std::string               line;
   std::string               entry;
   bool                      in_subsection       = false;
-  bool                      found_entry         = false;
   bool                      desired_entry_found = false;
   unsigned int              subsection_index    = 0;
   std::vector<std::string>  entry_list;
@@ -167,8 +166,7 @@ inputFileReader::get_subsection_entry_list(const std::string &subsec_name,
       // and store the subsection index
       if (!in_subsection)
         {
-          found_entry = parse_line(line, "subsection", subsec_name, entry, false);
-          if (found_entry)
+          if (parse_line(line, "subsection", subsec_name, entry, false))
             {
               in_subsection       = true;
               subsection_index    = dealii::Utilities::string_to_int(entry);
@@ -179,15 +177,13 @@ inputFileReader::get_subsection_entry_list(const std::string &subsec_name,
       // of the subsection
       else
         {
-          found_entry = parse_line(line, "set", entry_name, entry, true);
-          if (found_entry)
+          if (parse_line(line, "set", entry_name, entry, true))
             {
               entry_list.push_back(entry);
               index_list.push_back(subsection_index);
               desired_entry_found = true;
             }
-          found_entry = parse_line(line, "end", "", entry, false);
-          if (found_entry)
+          if (parse_line(line, "end", "", entry, false))
             {
               if (!desired_entry_found)
                 {
@@ -228,15 +224,13 @@ inputFileReader::get_model_constant_names()
 
   std::string line;
   std::string entry;
-  bool        found_entry = false;
 
   std::set<std::string> entry_name_end_list;
 
   // Loop through each line
   while (std::getline(input_file, line))
     {
-      found_entry = parse_line(line, keyword, entry_name_begining, entry, false);
-      if (found_entry)
+      if (parse_line(line, keyword, entry_name_begining, entry, false))
         {
           // Strip whitespace, the equals sign, and everything after the equals
           // sign
