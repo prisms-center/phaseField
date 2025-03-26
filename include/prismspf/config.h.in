@@ -1,5 +1,4 @@
-#ifndef prisms_pf_config_h
-#define prisms_pf_config_h
+#pragma once
 
 // TODO (landinjm): Remove the no lint and change how template instantiations are done
 
@@ -81,5 +80,3 @@
   template class class_name<3>;
 
 // NOLINTEND
-
-#endif

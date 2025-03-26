@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef linear_solver_gmg_h
-#define linear_solver_gmg_h
+#pragma once
 
 #include <deal.II/grid/grid_tools.h>
 #include <deal.II/lac/precondition.h>
@@ -414,5 +413,3 @@ GMGSolver<dim, degree>::solve(const double step_length)
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

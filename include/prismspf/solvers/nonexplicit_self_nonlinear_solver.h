@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef nonexplicit_self_nonlinear_solver_h
-#define nonexplicit_self_nonlinear_solver_h
+#pragma once
 
 #include <prismspf/config.h>
 
@@ -183,5 +182,3 @@ nonexplicitSelfNonlinearSolver<dim, degree>::solve()
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

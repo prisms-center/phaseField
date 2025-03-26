@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef CUSTOM_PDE_H_
-#define CUSTOM_PDE_H_
+#pragma once
 
 #include <prismspf/config.h>
 #include <prismspf/core/initial_conditions.h>
@@ -212,5 +211,3 @@ INSTANTIATE_UNI_TEMPLATE(customNonuniformDirichlet)
 INSTANTIATE_TRI_TEMPLATE(customPDE)
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

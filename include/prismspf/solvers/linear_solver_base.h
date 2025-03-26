@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef linear_solver_base_h
-#define linear_solver_base_h
+#pragma once
 
 #include <deal.II/base/quadrature_lib.h>
 #include <deal.II/fe/fe_q.h>
@@ -275,5 +274,3 @@ linearSolverBase<dim, degree>::compute_solver_tolerance()
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

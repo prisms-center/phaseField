@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef nonexplicit_base_h
-#define nonexplicit_base_h
+#pragma once
 
 #include <deal.II/numerics/vector_tools.h>
 
@@ -328,5 +327,3 @@ nonexplicitBase<dim, degree>::print()
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

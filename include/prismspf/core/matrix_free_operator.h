@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef matrix_free_operator_h
-#define matrix_free_operator_h
+#pragma once
 
 #include <deal.II/base/subscriptor.h>
 #include <deal.II/base/vectorization.h>
@@ -759,5 +758,3 @@ matrixFreeOperator<dim, degree, number>::local_compute_diagonal(
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

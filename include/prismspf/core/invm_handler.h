@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef invm_handler_h
-#define invm_handler_h
+#pragma once
 
 #include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/matrix_free/matrix_free.h>
@@ -128,5 +127,3 @@ private:
 };
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

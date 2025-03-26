@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef variable_attribute_loader_h
-#define variable_attribute_loader_h
+#pragma once
 
 #include <prismspf/config.h>
 #include <prismspf/core/type_enums.h>
@@ -266,5 +265,3 @@ public:
 };
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

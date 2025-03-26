@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef matrix_free_handler_h
-#define matrix_free_handler_h
+#pragma once
 
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/fe/mapping.h>
@@ -80,5 +79,3 @@ private:
 };
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

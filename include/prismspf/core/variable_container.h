@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef variable_container_h
-#define variable_container_h
+#pragma once
 
 #include <deal.II/lac/vector.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
@@ -387,5 +386,3 @@ private:
 };
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

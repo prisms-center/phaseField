@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef exceptions_h
-#define exceptions_h
+#pragma once
 
 #include <deal.II/base/exceptions.h>
 
@@ -65,5 +64,3 @@ DeclException2(DependencyNotFound,
 // NOLINTEND
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef nonlinear_solve_parameters_h
-#define nonlinear_solve_parameters_h
+#pragma once
 
 #include <prismspf/config.h>
 #include <prismspf/core/types.h>
@@ -74,5 +73,3 @@ nonlinearSolveParameters::print_parameter_summary() const
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

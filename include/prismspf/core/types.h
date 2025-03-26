@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef types_h
-#define types_h
+#pragma once
 
 #include <prismspf/config.h>
 
@@ -46,5 +45,3 @@ namespace defaults
 } // namespace defaults
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

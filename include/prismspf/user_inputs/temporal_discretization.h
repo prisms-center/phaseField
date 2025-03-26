@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef temporal_discretization_h
-#define temporal_discretization_h
+#pragma once
 
 #include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
@@ -95,5 +94,3 @@ temporalDiscretization::print_parameter_summary() const
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

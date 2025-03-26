@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef boundary_parameters_h
-#define boundary_parameters_h
+#pragma once
 
 #include <deal.II/base/point.h>
 #include <deal.II/base/types.h>
@@ -493,5 +492,3 @@ boundaryParameters<dim>::validate_boundary_conditions() const
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

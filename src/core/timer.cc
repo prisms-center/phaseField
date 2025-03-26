@@ -56,8 +56,7 @@ timer::print_summary()
 
       conditionalOStreams::pout_base()
         << "Serial: " << section << " - " << wall_time << "s (" << wall_time / n_calls
-        << "s/call, " << n_calls << " calls)"
-        << "\n"
+        << "s/call, " << n_calls << " calls)" << "\n"
         << std::flush;
     }
 }

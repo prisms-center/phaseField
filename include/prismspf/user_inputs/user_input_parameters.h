@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef user_input_parameters_h
-#define user_input_parameters_h
+#pragma once
 
 #include <prismspf/config.h>
 #include <prismspf/user_inputs/boundary_parameters.h>
@@ -135,5 +134,3 @@ private:
 };
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef user_constants_h
-#define user_constants_h
+#pragma once
 
 #include <deal.II/base/tensor.h>
 #include <deal.II/base/utilities.h>
@@ -536,5 +535,3 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

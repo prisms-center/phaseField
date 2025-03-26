@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef compute_integral_h
-#define compute_integral_h
+#pragma once
 
 #include <deal.II/matrix_free/matrix_free.h>
 
@@ -69,5 +68,3 @@ computeIntegral<dim, degree, number>::compute_integral()
 {}
 
 PRISMS_PF_END_NAMESPACE
-
-#endif
