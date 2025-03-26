@@ -1,5 +1,6 @@
 #!/bin/bash
-
+# SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
+# SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 #
 # This script runs cppcheck on the PRISMS-PF code base.
 #
