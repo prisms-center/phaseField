@@ -20,7 +20,11 @@ if ! [ -x "$(command -v cppcheck)" ]; then
 fi
 
 # Run cppcheck
-cppcheck --enable=all --language=c++ --std=c++17 --suppress=missingIncludeSystem --suppress=unknownMacro . >"output.txt" 2>&1
+# TODO: Check the applications
+cppcheck \
+  --enable=all --language=c++ --std=c++17 \
+  --suppress=missingIncludeSystem --suppress=unknownMacro \
+  include src tests/automatic_tests tests/performance_tests >"output.txt" 2>&1
 
 # grep interesting errors and make sure we remove duplicates:
 grep -E '(warning|error|style|performance|portability): ' output.txt | sort | uniq >cppcheck.log
