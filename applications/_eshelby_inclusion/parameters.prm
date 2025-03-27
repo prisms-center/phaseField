@@ -1,4 +1,4 @@
-set Number of dimensions = 3
+set dim = 3
 
 set Domain size X = 100.0
 set Domain size Y = 100.0
@@ -8,9 +8,9 @@ set Subdivisions X = 1
 set Subdivisions Y = 1
 set Subdivisions Z = 1
 
-set Refine factor = 6
+set global refinement = 6
 
-set Element degree = 1
+set degree = 1
 
 
 subsection Linear solver parameters: u

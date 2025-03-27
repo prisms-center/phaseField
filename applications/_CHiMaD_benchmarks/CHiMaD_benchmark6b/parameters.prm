@@ -1,4 +1,4 @@
-set Number of dimensions = 2
+set dim = 2
 
 set Domain size X = 50
 set Domain size Y = 100
@@ -8,9 +8,9 @@ set Subdivisions X = 2
 set Subdivisions Y = 3
 set Subdivisions Z = 3
 
-set Refine factor = 4
+set global refinement = 4
 
-set Element degree = 2
+set degree = 2
 
 set Time step = 0.1e-4
 

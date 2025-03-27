@@ -1,5 +1,5 @@
 
-set Number of dimensions = 2
+set dim = 2
 
 set Domain size X = 204.8
 set Domain size Y = 204.8
@@ -9,9 +9,9 @@ set Subdivisions X = 1
 set Subdivisions Y = 1
 set Subdivisions Z = 1
 
-set Refine factor = 8
+set global refinement = 8
 
-set Element degree = 2
+set degree = 2
 
 set Mesh adaptivity = true
 
