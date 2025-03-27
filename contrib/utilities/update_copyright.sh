@@ -12,7 +12,7 @@
 
 if test ! -d src -o ! -d include -o ! -d applications; then
   echo "This script must be run from the top-level directory of PRISMS-PF"
-  exit 0
+  exit 1
 fi
 
 if command -v clang-format &>/dev/null; then
@@ -20,7 +20,7 @@ if command -v clang-format &>/dev/null; then
 elif command -v clang-format-18 &>/dev/null; then
   CLANG_FORMAT=clang-format-18
 else
-  echo "Error: Neither clang-format nor clang-format-18 are in path."
+  echo "Neither clang-format nor clang-format-18 are in path."
   exit 1
 fi
 
@@ -61,3 +61,4 @@ for TARGET_DIR in "${TARGET_DIRS[@]}"; do
 done
 
 echo "Done"
+exit 0

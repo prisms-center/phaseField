@@ -11,7 +11,7 @@
 
 if test ! -d src -o ! -d include -o ! -d applications; then
   echo "This script must be run from the top-level directory of PRISMS-PF"
-  exit 0
+  exit 1
 fi
 
 if ! [ -x "$(command -v cppcheck)" ]; then
@@ -32,7 +32,7 @@ grep -E '(warning|error|style|performance|portability): ' output.txt | sort | un
 # If we have errors, report them and set exit status to failure
 if [ -s cppcheck.log ]; then
   cat cppcheck.log
-  exit 4
+  exit 2
 fi
 
 echo "OK"
