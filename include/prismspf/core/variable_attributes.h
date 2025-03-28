@@ -61,6 +61,13 @@ struct variableAttributes
    */
   bool is_postprocess = false;
 
+  /**
+   * \brief Whether the variable is required for the LHS of multigrid. This is then used
+   * to determine which fields must be interpolated for the coarse grid levels. \remark
+   * Internally determined
+   */
+  bool is_mg = false;
+
 #ifdef ADDITIONAL_OPTIMIZATIONS
   /**
    * \brief Duplicate field index. \remark Internally determined
