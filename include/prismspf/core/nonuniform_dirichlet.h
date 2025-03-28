@@ -34,6 +34,8 @@ public:
                       const unsigned int             &_boundary_id,
                       const userInputParameters<dim> &_user_inputs);
 
+  // NOLINTBEGIN(readability-identifier-length)
+
   /**
    * \brief Scalar value.
    */
@@ -45,6 +47,8 @@ public:
    */
   void
   vector_value(const dealii::Point<dim> &p, dealii::Vector<double> &value) const override;
+
+  // NOLINTEND(readability-identifier-length)
 
 private:
   const unsigned int index;
@@ -66,6 +70,8 @@ nonuniformDirichlet<dim, field_type>::nonuniformDirichlet(
   , boundary_id(_boundary_id)
   , user_inputs(&_user_inputs)
 {}
+
+// NOLINTBEGIN(readability-identifier-length)
 
 template <int dim, fieldType field_type>
 inline double
@@ -112,6 +118,8 @@ nonuniformDirichlet<dim, field_type>::vector_value(const dealii::Point<dim> &p,
 
   value = vector_value;
 }
+
+// NOLINTEND(readability-identifier-length)
 
 /**
  * \brief User-facing implementation of nonuniform boundary conditions

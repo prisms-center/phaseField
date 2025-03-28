@@ -8,7 +8,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <int dim, typename number>
 matrixfreeHandler<dim, number>::matrixfreeHandler(
   const userInputParameters<dim> &_user_inputs)
-  : user_inputs(_user_inputs)
+  : user_inputs(&_user_inputs)
   , matrix_free_object(std::make_shared<dealii::MatrixFree<dim, number>>())
 {
   additional_data.tasks_parallel_scheme =

@@ -36,11 +36,15 @@ public:
                    const fieldType                &field_type,
                    const userInputParameters<dim> &_user_inputs);
 
+  // NOLINTBEGIN(readability-identifier-length)
+
   /**
    * \brief Scalar/Vector value.
    */
   void
   vector_value(const dealii::Point<dim> &p, dealii::Vector<double> &value) const override;
+
+  // NOLINTEND(readability-identifier-length)
 
 private:
   const unsigned int index;
@@ -58,6 +62,8 @@ initialCondition<dim>::initialCondition(const unsigned int             &_index,
   , index(_index)
   , user_inputs(&_user_inputs)
 {}
+
+// NOLINTBEGIN(readability-identifier-length)
 
 template <int dim>
 inline void
@@ -80,6 +86,8 @@ initialCondition<dim>::vector_value(const dealii::Point<dim> &p,
 
   value = vector_value;
 }
+
+// NOLINTEND(readability-identifier-length)
 
 /**
  * \brief User-facing implementation of initial conditions

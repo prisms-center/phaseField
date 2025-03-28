@@ -49,28 +49,28 @@ public:
   /**
    * \brief Return the value of the specified scalar field.
    */
-  size_type
+  [[nodiscard]] size_type
   get_scalar_value(unsigned int   global_variable_index,
                    dependencyType dependency_type = dependencyType::NORMAL) const;
 
   /**
    * \brief Return the gradient of the specified scalar field.
    */
-  dealii::Tensor<1, dim, size_type>
+  [[nodiscard]] dealii::Tensor<1, dim, size_type>
   get_scalar_gradient(unsigned int   global_variable_index,
                       dependencyType dependency_type = dependencyType::NORMAL) const;
 
   /**
    * \brief Return the hessian of the specified scalar field.
    */
-  dealii::Tensor<2, dim, size_type>
+  [[nodiscard]] dealii::Tensor<2, dim, size_type>
   get_scalar_hessian(unsigned int   global_variable_index,
                      dependencyType dependency_type = dependencyType::NORMAL) const;
 
   /**
    * \brief Return the diagonal of the hessian of the specified scalar field.
    */
-  dealii::Tensor<1, dim, size_type>
+  [[nodiscard]] dealii::Tensor<1, dim, size_type>
   get_scalar_hessian_diagonal(
     unsigned int   global_variable_index,
     dependencyType dependency_type = dependencyType::NORMAL) const;
@@ -78,35 +78,35 @@ public:
   /**
    * \brief Return the laplacian of the specified scalar field.
    */
-  size_type
+  [[nodiscard]] size_type
   get_scalar_laplacian(unsigned int   global_variable_index,
                        dependencyType dependency_type = dependencyType::NORMAL) const;
 
   /**
    * \brief Return the value of the specified vector field.
    */
-  dealii::Tensor<1, dim, size_type>
+  [[nodiscard]] dealii::Tensor<1, dim, size_type>
   get_vector_value(unsigned int   global_variable_index,
                    dependencyType dependency_type = dependencyType::NORMAL) const;
 
   /**
    * \brief Return the gradient of the specified vector field.
    */
-  dealii::Tensor<2, dim, size_type>
+  [[nodiscard]] dealii::Tensor<2, dim, size_type>
   get_vector_gradient(unsigned int   global_variable_index,
                       dependencyType dependency_type = dependencyType::NORMAL) const;
 
   /**
    * \brief Return the hessian of the specified vector field.
    */
-  dealii::Tensor<3, dim, size_type>
+  [[nodiscard]] dealii::Tensor<3, dim, size_type>
   get_vector_hessian(unsigned int   global_variable_index,
                      dependencyType dependency_type = dependencyType::NORMAL) const;
 
   /**
    * \brief Return the diagonal of the hessian of the specified vector field.
    */
-  dealii::Tensor<2, dim, size_type>
+  [[nodiscard]] dealii::Tensor<2, dim, size_type>
   get_vector_hessian_diagonal(
     unsigned int   global_variable_index,
     dependencyType dependency_type = dependencyType::NORMAL) const;
@@ -114,21 +114,21 @@ public:
   /**
    * \brief Return the laplacian of the specified vector field.
    */
-  dealii::Tensor<1, dim, size_type>
+  [[nodiscard]] dealii::Tensor<1, dim, size_type>
   get_vector_laplacian(unsigned int   global_variable_index,
                        dependencyType dependency_type = dependencyType::NORMAL) const;
 
   /**
    * \brief Return the divergence of the specified vector field.
    */
-  size_type
+  [[nodiscard]] size_type
   get_vector_divergence(unsigned int   global_variable_index,
                         dependencyType dependency_type = dependencyType::NORMAL) const;
 
   /**
    * \brief Return the symmetric gradient of the specified vector field.
    */
-  dealii::Tensor<2, dim, size_type>
+  [[nodiscard]] dealii::Tensor<2, dim, size_type>
   get_vector_symmetric_gradient(
     unsigned int   global_variable_index,
     dependencyType dependency_type = dependencyType::NORMAL) const;
@@ -138,7 +138,7 @@ public:
    * dealii::VectorizedArray<number> type for 2D and dealii::Tensor<1, dim,
    * dealii::VectorizedArray<number>> type for 3D.
    */
-  dealii::Tensor<1, (dim == 2 ? 1 : dim), size_type>
+  [[nodiscard]] dealii::Tensor<1, (dim == 2 ? 1 : dim), size_type>
   get_vector_curl(unsigned int   global_variable_index,
                   dependencyType dependency_type = dependencyType::NORMAL) const;
 
