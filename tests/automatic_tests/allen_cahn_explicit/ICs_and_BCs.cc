@@ -12,11 +12,12 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <int dim>
 void
 customInitialCondition<dim>::set_initial_condition(
-  [[maybe_unused]] const unsigned int       &index,
-  [[maybe_unused]] const unsigned int       &component,
-  [[maybe_unused]] const dealii::Point<dim> &point,
-  [[maybe_unused]] double                   &scalar_value,
-  [[maybe_unused]] double                   &vector_component_value) const
+  [[maybe_unused]] const unsigned int             &index,
+  [[maybe_unused]] const unsigned int             &component,
+  [[maybe_unused]] const dealii::Point<dim>       &point,
+  [[maybe_unused]] double                         &scalar_value,
+  [[maybe_unused]] double                         &vector_component_value,
+  [[maybe_unused]] const userInputParameters<dim> &user_inputs) const
 {
   double center[12][3] = {
     {0.1, 0.3,  0},
@@ -52,12 +53,13 @@ customInitialCondition<dim>::set_initial_condition(
 template <int dim>
 void
 customNonuniformDirichlet<dim>::set_nonuniform_dirichlet(
-  [[maybe_unused]] const unsigned int       &index,
-  [[maybe_unused]] const unsigned int       &boundary_id,
-  [[maybe_unused]] const unsigned int       &component,
-  [[maybe_unused]] const dealii::Point<dim> &point,
-  [[maybe_unused]] double                   &scalar_value,
-  [[maybe_unused]] double                   &vector_component_value) const
+  [[maybe_unused]] const unsigned int             &index,
+  [[maybe_unused]] const unsigned int             &boundary_id,
+  [[maybe_unused]] const unsigned int             &component,
+  [[maybe_unused]] const dealii::Point<dim>       &point,
+  [[maybe_unused]] double                         &scalar_value,
+  [[maybe_unused]] double                         &vector_component_value,
+  [[maybe_unused]] const userInputParameters<dim> &user_inputs) const
 {}
 
 INSTANTIATE_UNI_TEMPLATE(customInitialCondition)
