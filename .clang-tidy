@@ -11,6 +11,7 @@ Checks: >
   google-*,
   hicpp-*,
   misc-*,
+  -misc-non-private-member-variables-in-classes,
   modernize-*,
   -modernize-use-trailing-return-type,
   mpi-*,
