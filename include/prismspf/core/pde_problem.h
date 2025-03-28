@@ -291,6 +291,8 @@ PDEProblem<dim, degree>::init_system()
   constraint_handler.make_constraints(mapping, dof_handler.get_dof_handlers());
   if (triangulation_handler.has_setup_multigrid())
     {
+      conditionalOStreams::pout_base() << "creating multigrid constraints...\n"
+                                       << std::flush;
       constraint_handler.make_mg_constraints(mapping, dof_handler.get_mg_dof_handlers());
     }
 
@@ -310,6 +312,9 @@ PDEProblem<dim, degree>::init_system()
 
       for (unsigned int level = min_level; level <= max_level; ++level)
         {
+          conditionalOStreams::pout_base()
+            << "initializing multgrid matrix-free object at level " << level << "...\n"
+            << std::flush;
           // multigrid_matrix_free_handler[level].reinit(mapping, );
         }
     }

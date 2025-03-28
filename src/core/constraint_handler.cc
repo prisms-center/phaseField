@@ -64,6 +64,11 @@ constraintHandler<dim>::get_mg_constraint(unsigned int index, unsigned int level
 }
 
 template <int dim>
+std::vector<dealii::AffineConstraints<float> *>
+constraintHandler<dim>::get_mg_level_constraints(unsigned int level) const
+{}
+
+template <int dim>
 void
 constraintHandler<dim>::make_constraints(
   const dealii::Mapping<dim>                         &mapping,
@@ -244,7 +249,8 @@ constraintHandler<dim>::make_mg_constraint(
       const dealii::IndexSet locally_relevant_dofs =
         dealii::DoFTools::extract_locally_relevant_dofs(dof_handler[level]);
 
-      mg_constraints.at(index)[level].reinit(locally_relevant_dofs);
+      mg_constraints.at(index)[level].reinit(dof_handler[level].locally_owned_dofs(),
+                                             locally_relevant_dofs);
 
       dealii::DoFTools::make_hanging_node_constraints(dof_handler[level],
                                                       mg_constraints.at(index)[level]);
@@ -257,11 +263,18 @@ constraintHandler<dim>::make_mg_constraint(
           for (const auto &[boundary_id, boundary_type] :
                condition.boundary_condition_map)
             {
-              // Create a mask. This is only applied for vector fields to apply boundary
-              // conditions to
-              // each component of the vector.
-              std::vector<bool> mask(dim, false);
-              mask.at(component) = true;
+              const bool is_vector_field =
+                user_inputs->var_attributes.at(index).field_type == fieldType::VECTOR;
+              // Create a component mask. This will only select a certain component for
+              // vector fields.
+              dealii::ComponentMask mask = {};
+              if (is_vector_field)
+                {
+                  std::vector<bool> temp_mask(dim, false);
+                  temp_mask.at(component) = true;
+
+                  mask = dealii::ComponentMask(temp_mask);
+                }
 
               if (boundary_type == boundaryCondition::type::NATURAL)
                 {

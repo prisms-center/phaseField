@@ -61,6 +61,13 @@ public:
   get_mg_constraint(unsigned int index, unsigned int level) const;
 
   /**
+   * \brief Getter function for the multigrid constraints at a certain multigrid level
+   * (constant reference).
+   */
+  [[nodiscard]] std::vector<dealii::AffineConstraints<float> *>
+  get_mg_level_constraints(unsigned int level) const;
+
+  /**
    * \brief Make constraints based on the inputs of the constructor.
    */
   void

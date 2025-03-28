@@ -74,7 +74,7 @@ struct variableAttributes
    * to determine which fields must be interpolated for the coarse grid levels. \remark
    * Internally determined
    */
-  bool is_mg = false;
+  bool is_required_for_mg = false;
 
 #ifdef ADDITIONAL_OPTIMIZATIONS
   /**

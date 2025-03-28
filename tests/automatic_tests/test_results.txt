@@ -184,3 +184,34 @@ Time: 1.8527178764343262
  
 Tests Passed: 5/5
 --------------------------------------------------------- 
+--------------------------------------------------------- 
+Regression test on 2025-03-28 12:00
+Architecture: x86_64
+Model name: AMD Ryzen 7 7745HX with Radeon Graphics
+CPU(s): 16
+CPU max/min MHz: 5151.0000, 400.0000
+Hypervisor vendor: None
+Number of processes: 1
+--------------------------------------------------------- 
+Application: allen_cahn_explicit
+Result: Pass
+Time: 7.588613510131836
+ 
+Application: allen_cahn_implicit
+Result: Pass
+Time: 78.88656759262085
+ 
+Application: cahn_hilliard_explicit
+Result: Pass
+Time: 60.95834493637085
+ 
+Application: heat_equation_steady_state
+Result: Pass
+Time: 2.639742374420166
+ 
+Application: poisson
+Result: Pass
+Time: 2.9604971408843994
+ 
+Tests Passed: 5/5
+--------------------------------------------------------- 
