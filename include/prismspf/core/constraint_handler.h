@@ -5,13 +5,11 @@
 
 #include <deal.II/base/mg_level_object.h>
 #include <deal.II/dofs/dof_handler.h>
-#include <deal.II/fe/mapping_q1.h>
+#include <deal.II/fe/mapping_q.h>
 #include <deal.II/lac/affine_constraints.h>
 
 #include <prismspf/config.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
-
-#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

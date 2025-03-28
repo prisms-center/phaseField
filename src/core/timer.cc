@@ -8,7 +8,6 @@
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/timer.h>
 
-#include <iostream>
 #include <mpi.h>
 
 PRISMS_PF_BEGIN_NAMESPACE

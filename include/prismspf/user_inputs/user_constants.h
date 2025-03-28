@@ -135,7 +135,7 @@ private:
   get_Cij_tensor(std::vector<double> elastic_constants,
                  const std::string  &elastic_const_symmetry) const;
 
-  dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
+  [[nodiscard]] dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
   getCIJMatrix(const elasticityModel &model, const std::vector<double> &constants) const;
 };
 

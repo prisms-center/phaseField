@@ -1,24 +1,15 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include <deal.II/base/point.h>
-#include <deal.II/dofs/dof_handler.h>
 #include <deal.II/dofs/dof_tools.h>
 #include <deal.II/fe/component_mask.h>
-#include <deal.II/fe/mapping_q1.h>
 #include <deal.II/grid/grid_tools.h>
-#include <deal.II/lac/affine_constraints.h>
 #include <deal.II/numerics/vector_tools_boundary.h>
 
 #include <prismspf/config.h>
 #include <prismspf/core/constraint_handler.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/nonuniform_dirichlet.h>
-#include <prismspf/core/type_enums.h>
-#include <prismspf/user_inputs/user_input_parameters.h>
-
-#include <cmath>
-#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
