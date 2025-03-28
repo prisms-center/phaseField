@@ -39,7 +39,7 @@ public:
   /**
    * \brief Destructor.
    */
-  virtual ~variableAttributeLoader() = 0;
+  virtual ~variableAttributeLoader() = default;
 
   /**
    * \brief Initialize the variable attributes from the two user-facing methods
