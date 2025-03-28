@@ -1,4 +1,4 @@
-name: Clang-tidy
+name: Cppcheck
 
 on:
   push:
