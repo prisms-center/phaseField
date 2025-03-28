@@ -203,7 +203,9 @@ constraintHandler<dim>::make_constraint(const dealii::Mapping<dim>    &mapping,
                     mapping,
                     dof_handler,
                     boundary_id,
-                    nonuniformDirichlet<dim, fieldType::SCALAR>(index, boundary_id),
+                    nonuniformDirichlet<dim, fieldType::SCALAR>(index,
+                                                                boundary_id,
+                                                                *user_inputs),
                     constraints.at(index));
                 }
               else
@@ -212,7 +214,9 @@ constraintHandler<dim>::make_constraint(const dealii::Mapping<dim>    &mapping,
                     mapping,
                     dof_handler,
                     boundary_id,
-                    nonuniformDirichlet<dim, fieldType::VECTOR>(index, boundary_id),
+                    nonuniformDirichlet<dim, fieldType::VECTOR>(index,
+                                                                boundary_id,
+                                                                *user_inputs),
                     constraints.at(index),
                     mask);
                 }

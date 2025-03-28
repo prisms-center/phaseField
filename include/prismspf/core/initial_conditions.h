@@ -10,6 +10,7 @@
 
 #include <prismspf/config.h>
 #include <prismspf/core/type_enums.h>
+#include <prismspf/user_inputs/user_input_parameters.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -31,7 +32,9 @@ public:
   /**
    * \brief Constructor.
    */
-  initialCondition(const unsigned int &_index, const fieldType &field_type);
+  initialCondition(const unsigned int             &_index,
+                   const fieldType                &field_type,
+                   const userInputParameters<dim> &_user_inputs);
 
   /**
    * \brief Scalar/Vector value.
@@ -42,14 +45,18 @@ public:
 private:
   const unsigned int index;
 
+  const userInputParameters<dim> *user_inputs;
+
   customInitialCondition<dim> custom_initial_condition;
 };
 
 template <int dim>
-initialCondition<dim>::initialCondition(const unsigned int &_index,
-                                        const fieldType    &field_type)
+initialCondition<dim>::initialCondition(const unsigned int             &_index,
+                                        const fieldType                &field_type,
+                                        const userInputParameters<dim> &_user_inputs)
   : dealii::Function<dim>((field_type == fieldType::VECTOR) ? dim : 1)
   , index(_index)
+  , user_inputs(&_user_inputs)
 {}
 
 template <int dim>
@@ -67,7 +74,8 @@ initialCondition<dim>::vector_value(const dealii::Point<dim> &p,
                                                      i,
                                                      p,
                                                      vector_value(0),
-                                                     vector_value(i));
+                                                     vector_value(i),
+                                                     *user_inputs);
     }
 
   value = vector_value;
@@ -90,11 +98,12 @@ public:
    * condition.
    */
   void
-  set_initial_condition(const unsigned int       &index,
-                        const unsigned int       &component,
-                        const dealii::Point<dim> &point,
-                        double                   &scalar_value,
-                        double                   &vector_component_value) const;
+  set_initial_condition(const unsigned int             &index,
+                        const unsigned int             &component,
+                        const dealii::Point<dim>       &point,
+                        double                         &scalar_value,
+                        double                         &vector_component_value,
+                        const userInputParameters<dim> &user_inputs) const;
 };
 
 PRISMS_PF_END_NAMESPACE
