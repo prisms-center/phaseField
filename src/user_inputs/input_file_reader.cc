@@ -12,13 +12,14 @@
 #include <climits>
 #include <fstream>
 #include <string>
+#include <utility>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
 inputFileReader::inputFileReader(
-  const std::string                                &input_file_name,
+  std::string                                       input_file_name,
   const std::map<unsigned int, variableAttributes> &_var_attributes)
-  : parameters_file_name(input_file_name)
+  : parameters_file_name(std::move(input_file_name))
   , var_attributes(_var_attributes)
 {
   model_constant_names             = get_model_constant_names();

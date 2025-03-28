@@ -35,7 +35,7 @@ public:
   /**
    * \brief Constructor.
    */
-  inputFileReader(const std::string                                &input_file_name,
+  inputFileReader(std::string                                       input_file_name,
                   const std::map<unsigned int, variableAttributes> &_var_attributes);
 
   /**
