@@ -1,7 +1,16 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
+#include <deal.II/base/conditional_ostream.h>
+
 #include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/core/tee_stream.h>
+
+#include <prismspf/config.h>
+
+#include <fstream>
+#include <iostream>
+#include <stdexcept>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

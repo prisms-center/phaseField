@@ -1,7 +1,17 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
+#include <deal.II/base/exceptions.h>
+#include <deal.II/base/utilities.h>
+
 #include <prismspf/user_inputs/input_file_reader.h>
+
+#include <prismspf/config.h>
+
+#include <cfloat>
+#include <climits>
+#include <fstream>
+#include <string>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
