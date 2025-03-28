@@ -6,10 +6,6 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
-variableAttributeLoader::loadVariableAttributes()
-{}
-
-void
 variableAttributeLoader::init_variable_attributes()
 {
   loadVariableAttributes();
@@ -451,14 +447,6 @@ variableAttributeLoader::validate_old_solution_dependencies()
                   dealii::ExcMessage("If old_n() of a field is specified, the "
                                      "previous old_n() to old_1() must be present."));
     }
-}
-
-std::string
-variableAttributeLoader::strip_whitespace(const std::string &_text)
-{
-  std::string text = _text;
-  text.erase(boost::range::remove(text, ' '), text.end());
-  return text;
 }
 
 PRISMS_PF_END_NAMESPACE

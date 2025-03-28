@@ -55,6 +55,17 @@ compute_stress(const dealii::Tensor<2, (2 * dim) - 1 + (dim / 3), T> &elasticity
 }
 
 /**
+ * \brief Remove whitepace from strings
+ */
+inline std::string
+strip_whitespace(const std::string &_text)
+{
+  std::string text = _text;
+  text.erase(std::remove_if(text.begin(), text.end(), ::isspace), text.end());
+  return text;
+}
+
+/**
  * \brief Convert bool to string.
  */
 inline const char *

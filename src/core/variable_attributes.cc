@@ -409,6 +409,7 @@ variableAttributes::find_circular_dependencies(
 }
 
 // NOLINTBEGIN(misc-no-recursion)
+
 void
 variableAttributes::recursive_DFS(
   const std::map<unsigned int, variableAttributes> &other_var_attributes,

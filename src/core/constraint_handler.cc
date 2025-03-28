@@ -64,11 +64,6 @@ constraintHandler<dim>::get_mg_constraint(unsigned int index, unsigned int level
 }
 
 template <int dim>
-std::vector<dealii::AffineConstraints<float> *>
-constraintHandler<dim>::get_mg_level_constraints(unsigned int level) const
-{}
-
-template <int dim>
 void
 constraintHandler<dim>::make_constraints(
   const dealii::Mapping<dim>                         &mapping,
