@@ -14,10 +14,8 @@ on:
         - synchronize
         - ready_for_review
       paths-ignore:
-      - 'applications/**'
       - 'contrib/**'
       - 'doc/**'
-      - 'tests/**'
 
 
 concurrency:
@@ -38,26 +36,12 @@ jobs:
           with:
             fetch-depth: 30
 
-        - name: Cache llvm-18 installation
-          uses: actions/cache@v3
-          with:
-            path: /usr/lib/llvm-18
-            key: ${{ runner.os }}-llvm-18
-            restore-keys: |
-              ${{ runner.os }}-llvm
-
-        - name: Install llvm-18
-          if: steps.cache.outputs.cache-hit != 'true'
+        - name: Install cppcheck
           run: |
-            wget https://apt.llvm.org/llvm.sh
-            chmod +x llvm.sh
-            ./llvm.sh 18 all
+            sudo apt-get update
+            sudo apt-get install -y cppcheck
 
-        - name: Set up path for llvm-18
+        - name: Run cppcheck
           run: |
-            echo "/usr/lib/llvm-18/bin" >> "$GITHUB_PATH"
-
-        - name: Run clang-tidy
-          run: |
-            ./contrib/utilities/clang_tidy.sh
+            ./contrib/utilities/cppcheck.sh
 

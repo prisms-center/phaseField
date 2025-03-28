@@ -3,7 +3,7 @@ name: Publish doc to GitHub pages
 on:
   push:
     branches:
-      - devel
+      - master
     
 permissions:
   contents: write
