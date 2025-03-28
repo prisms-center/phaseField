@@ -42,6 +42,9 @@ public:
 
   // Maximum number of CG iterations used to find the maximum eigenvalue
   unsigned int eig_cg_n_iterations = 10;
+
+  // The minimum multigrid level
+  unsigned int min_mg_level = 0;
 };
 
 /**
@@ -100,7 +103,9 @@ linearSolveParameters::print_parameter_summary() const
                 << "  Smoother degree: " << linear_solver_parameters.smoother_degree
                 << "\n"
                 << "  Max eigenvalue CG iterations: "
-                << linear_solver_parameters.eig_cg_n_iterations << "\n";
+                << linear_solver_parameters.eig_cg_n_iterations << "\n"
+                << "Min multigrid level: " << linear_solver_parameters.min_mg_level
+                << "\n";
             }
         }
 

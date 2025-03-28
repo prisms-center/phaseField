@@ -298,6 +298,9 @@ userInputParameters<dim>::assign_linear_solve_parameters(
           linear_solve_parameters.linear_solve[index].eig_cg_n_iterations =
             parameter_handler.get_integer("eigenvalue cg iterations");
 
+          linear_solve_parameters.linear_solve[index].min_mg_level =
+            parameter_handler.get_integer("min mg level");
+
           parameter_handler.leave_subsection();
         }
     }

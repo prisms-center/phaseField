@@ -447,6 +447,10 @@ inputFileReader::declare_solver_parameters()
               "10",
               dealii::Patterns::Integer(1, INT_MAX),
               "The maximum number of CG iterations used to find the maximum eigenvalue.");
+            parameter_handler.declare_entry("min mg level",
+                                            "0",
+                                            dealii::Patterns::Integer(0, INT_MAX),
+                                            "The minimum multigrid level.");
           }
           parameter_handler.leave_subsection();
         }
@@ -849,14 +853,16 @@ inputFileReader::declare_grain_loading_parameters()
   //   "vtk file type",
   //   "UNSTRUCTURED",
   //   dealii::Patterns::Anything(),
-  //   "Whether to load an unstructured file for grain structure."); // reads the type of
+  //   "Whether to load an unstructured file for grain structure."); // reads the type
+  //   of
   //                                                                 // file from the
   //                                                                 input
   //                                                                 // parameters.prm
   //                                                                 file,
   //                                                                 // deafault setting
   //                                                                 is
-  //                                                                 // unstructured mesh
+  //                                                                 // unstructured
+  //                                                                 mesh
 
   // parameter_handler.declare_entry(
   //   "Grain structure filename",
