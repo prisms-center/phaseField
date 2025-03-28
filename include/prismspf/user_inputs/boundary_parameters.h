@@ -367,15 +367,18 @@ boundaryParameters<dim>::set_boundary(const std::string  &BC_string,
   boundaryCondition condition;
   for (unsigned int i = 0; i < (2 * dim); i++)
     {
+      const std::string dirichlet = "DIRICHLET";
+      const std::string neumann   = "NEUMANN";
+
       if (boost::iequals(BC_string_list[i], "NATURAL"))
         {
           condition.boundary_condition_map.emplace(i, boundaryCondition::type::NATURAL);
         }
-      else if (boost::iequals(BC_string_list[i].substr(0, 9), "DIRICHLET"))
+      else if (boost::iequals(BC_string_list[i].substr(0, dirichlet.size()), dirichlet))
         {
           condition.boundary_condition_map.emplace(i, boundaryCondition::type::DIRICHLET);
           std::string dirichlet_value =
-            BC_string_list[i].substr(10, BC_string_list[i].size());
+            BC_string_list[i].substr(dirichlet.size() + 1, BC_string_list[i].size());
           dirichlet_value = dealii::Utilities::trim(dirichlet_value);
           condition.dirichlet_value_map.emplace(i,
                                                 dealii::Utilities::string_to_double(
@@ -385,7 +388,7 @@ boundaryParameters<dim>::set_boundary(const std::string  &BC_string,
         {
           condition.boundary_condition_map.emplace(i, boundaryCondition::type::PERIODIC);
         }
-      else if (boost::iequals(BC_string_list[i].substr(0, 7), "NEUMANN"))
+      else if (boost::iequals(BC_string_list[i].substr(0, neumann.size()), neumann))
         {
           AssertThrow(false, FeatureNotImplemented("Neumann boundary conditions"));
         }

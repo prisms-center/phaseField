@@ -35,13 +35,13 @@ public:
   // smoothed [1.2 λ^max / smoothing_range, 1.2 λ^max], where λ^max is the estimated
   // maximum eigenvalue. A choice between 5 and 20 is usually useful when the
   // preconditioner is used as a smoother in multigrid.
-  double smoothing_range = 15.0;
+  double smoothing_range = defaults::smoothing_range;
 
   // Polynomial degree for the Chebyshev smoother
-  unsigned int smoother_degree = 5;
+  unsigned int smoother_degree = defaults::smoother_degree;
 
   // Maximum number of CG iterations used to find the maximum eigenvalue
-  unsigned int eig_cg_n_iterations = 10;
+  unsigned int eig_cg_n_iterations = defaults::eig_cg_n_iterations;
 
   // The minimum multigrid level
   unsigned int min_mg_level = 0;

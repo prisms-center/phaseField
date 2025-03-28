@@ -228,17 +228,10 @@ variableAttributes::determine_field_solve_type(
     }
 
   // Check for self-nonlinear solves.
-  bool LHS_has_change_eval_flags = false;
-  bool LHS_has_normal_eval_flags = false;
-
-  LHS_has_change_eval_flags =
-    eval_flag_set_LHS.find({field_index, dependencyType::CHANGE}) !=
-    eval_flag_set_LHS.end();
-  LHS_has_normal_eval_flags =
-    eval_flag_set_LHS.find({field_index, dependencyType::NORMAL}) !=
-    eval_flag_set_LHS.end();
-
-  if (LHS_has_change_eval_flags && LHS_has_normal_eval_flags)
+  if (eval_flag_set_LHS.find({field_index, dependencyType::CHANGE}) !=
+        eval_flag_set_LHS.end() &&
+      eval_flag_set_LHS.find({field_index, dependencyType::NORMAL}) !=
+        eval_flag_set_LHS.end())
     {
       field_solve_type = fieldSolveType::NONEXPLICIT_SELF_NONLINEAR;
       return;
