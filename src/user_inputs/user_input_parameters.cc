@@ -101,33 +101,24 @@ userInputParameters<dim>::assign_spatial_discretization_parameters(
         const std::string crit_type_string = parameter_handler.get("type");
         if (!boost::iequals(crit_type_string, "none"))
           {
-            GridRefinement::RefinementCriterion new_criterion;
-            new_criterion.variable_index = index;
-            new_criterion.variable_name  = variable.name;
+            GridRefinement::RefinementCriterion new_criterion(
+              GridRefinement::RefinementFlags::nothing,
+              parameter_handler.get_double("value lower bound"),
+              parameter_handler.get_double("value upper bound"),
+              parameter_handler.get_double("gradient magnitude lower bound"));
+
             if (boost::iequals(crit_type_string, "value"))
               {
-                new_criterion.criterion_type = GridRefinement::RefinementFlags::value;
-                new_criterion.value_lower_bound =
-                  parameter_handler.get_double("value lower bound");
-                new_criterion.value_upper_bound =
-                  parameter_handler.get_double("value upper bound");
+                new_criterion.set_criterion(GridRefinement::RefinementFlags::value);
               }
             else if (boost::iequals(crit_type_string, "gradient"))
               {
-                new_criterion.criterion_type = GridRefinement::RefinementFlags::gradient;
-                new_criterion.gradient_lower_bound =
-                  parameter_handler.get_double("gradient magnitude lower bound");
+                new_criterion.set_criterion(GridRefinement::RefinementFlags::gradient);
               }
             else if (boost::iequals(crit_type_string, "value_and_gradient"))
               {
-                new_criterion.criterion_type = GridRefinement::RefinementFlags::value |
-                                               GridRefinement::RefinementFlags::gradient;
-                new_criterion.value_lower_bound =
-                  parameter_handler.get_double("value lower bound");
-                new_criterion.value_upper_bound =
-                  parameter_handler.get_double("value upper bound");
-                new_criterion.gradient_lower_bound =
-                  parameter_handler.get_double("gradient magnitude lower bound");
+                new_criterion.set_criterion(GridRefinement::RefinementFlags::value |
+                                            GridRefinement::RefinementFlags::gradient);
               }
             else
               {

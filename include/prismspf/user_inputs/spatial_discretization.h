@@ -123,7 +123,8 @@ spatialDiscretization<dim>::postprocess_and_validate()
       // Check that the refinement criteria are valid for the lower and upper bounds
       for (const auto &criterion : refinement_criteria)
         {
-          AssertThrow((criterion.value_lower_bound <= criterion.value_upper_bound),
+          AssertThrow((criterion.get_value_lower_bound() <=
+                       criterion.get_value_upper_bound()),
                       dealii::ExcMessage(
                         "The lower bound of the value-based refinement "
                         "criteria must be less than or equal to the upper bound."));
@@ -187,12 +188,10 @@ spatialDiscretization<dim>::print_parameter_summary() const
   for (const auto &criterion : refinement_criteria)
     {
       conditionalOStreams::pout_summary()
-        << "  Variable name: " << criterion.variable_name << "\n"
-        << "  Variable index: " << criterion.variable_index << "\n"
         << "  Criterion type: " << criterion.criterion_to_string() << "\n"
-        << "  Value lower bound: " << criterion.value_lower_bound << "\n"
-        << "  Value upper bound: " << criterion.value_upper_bound << "\n"
-        << "  Gradient lower bound: " << criterion.gradient_lower_bound << "\n\n";
+        << "  Value lower bound: " << criterion.get_value_lower_bound() << "\n"
+        << "  Value upper bound: " << criterion.get_value_upper_bound() << "\n"
+        << "  Gradient lower bound: " << criterion.get_gradient_lower_bound() << "\n\n";
     }
   conditionalOStreams::pout_summary() << "\n" << std::flush;
 }
