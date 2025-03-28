@@ -49,9 +49,11 @@ public:
 private:
   const unsigned int index;
 
-  const unsigned int              boundary_id;
-  const userInputParameters<dim> &user_inputs;
-  customNonuniformDirichlet<dim>  custom_nonuniform_dirichlet;
+  const unsigned int boundary_id;
+
+  const userInputParameters<dim> *user_inputs;
+
+  customNonuniformDirichlet<dim> custom_nonuniform_dirichlet;
 };
 
 template <int dim, fieldType field_type>
@@ -62,7 +64,7 @@ nonuniformDirichlet<dim, field_type>::nonuniformDirichlet(
   : dealii::Function<dim>((field_type == fieldType::VECTOR) ? dim : 1)
   , index(_index)
   , boundary_id(_boundary_id)
-  , user_inputs(_user_inputs)
+  , user_inputs(&_user_inputs)
 {}
 
 template <int dim, fieldType field_type>
@@ -82,7 +84,7 @@ nonuniformDirichlet<dim, field_type>::value(
                                                        p,
                                                        scalar_value,
                                                        vector_value(0),
-                                                       user_inputs);
+                                                       *user_inputs);
 
   return scalar_value;
 }
@@ -105,7 +107,7 @@ nonuniformDirichlet<dim, field_type>::vector_value(const dealii::Point<dim> &p,
                                                            p,
                                                            scalar_value,
                                                            vector_value(i),
-                                                           user_inputs);
+                                                           *user_inputs);
     }
 
   value = vector_value;

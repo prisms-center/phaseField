@@ -45,7 +45,7 @@ public:
 private:
   const unsigned int index;
 
-  const userInputParameters<dim> &user_inputs;
+  const userInputParameters<dim> *user_inputs;
 
   customInitialCondition<dim> custom_initial_condition;
 };
@@ -56,7 +56,7 @@ initialCondition<dim>::initialCondition(const unsigned int             &_index,
                                         const userInputParameters<dim> &_user_inputs)
   : dealii::Function<dim>((field_type == fieldType::VECTOR) ? dim : 1)
   , index(_index)
-  , user_inputs(_user_inputs)
+  , user_inputs(&_user_inputs)
 {}
 
 template <int dim>
@@ -75,7 +75,7 @@ initialCondition<dim>::vector_value(const dealii::Point<dim> &p,
                                                      p,
                                                      vector_value(0),
                                                      vector_value(i),
-                                                     user_inputs);
+                                                     *user_inputs);
     }
 
   value = vector_value;
