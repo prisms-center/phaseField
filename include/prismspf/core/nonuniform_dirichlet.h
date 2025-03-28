@@ -10,6 +10,7 @@
 
 #include <prismspf/config.h>
 #include <prismspf/core/type_enums.h>
+#include <prismspf/user_inputs/user_input_parameters.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -29,7 +30,9 @@ public:
   /**
    * \brief Constructor.
    */
-  nonuniformDirichlet(const unsigned int &_index, const unsigned int &_boundary_id);
+  nonuniformDirichlet(const unsigned int             &_index,
+                      const unsigned int             &_boundary_id,
+                      const userInputParameters<dim> &_user_inputs);
 
   /**
    * \brief Scalar value.
@@ -48,16 +51,20 @@ private:
 
   const unsigned int boundary_id;
 
+  const userInputParameters<dim> *user_inputs;
+
   customNonuniformDirichlet<dim> custom_nonuniform_dirichlet;
 };
 
 template <int dim, fieldType field_type>
 nonuniformDirichlet<dim, field_type>::nonuniformDirichlet(
-  const unsigned int &_index,
-  const unsigned int &_boundary_id)
+  const unsigned int             &_index,
+  const unsigned int             &_boundary_id,
+  const userInputParameters<dim> &_user_inputs)
   : dealii::Function<dim>((field_type == fieldType::VECTOR) ? dim : 1)
   , index(_index)
   , boundary_id(_boundary_id)
+  , user_inputs(&_user_inputs)
 {}
 
 template <int dim, fieldType field_type>
@@ -71,8 +78,13 @@ nonuniformDirichlet<dim, field_type>::value(
   dealii::Vector<double> vector_value(dim);
 
   // Pass variables to user-facing function to evaluate
-  custom_nonuniform_dirichlet
-    .set_nonuniform_dirichlet(index, boundary_id, 0, p, scalar_value, vector_value(0));
+  custom_nonuniform_dirichlet.set_nonuniform_dirichlet(index,
+                                                       boundary_id,
+                                                       0,
+                                                       p,
+                                                       scalar_value,
+                                                       vector_value(0),
+                                                       *user_inputs);
 
   return scalar_value;
 }
@@ -94,7 +106,8 @@ nonuniformDirichlet<dim, field_type>::vector_value(const dealii::Point<dim> &p,
                                                            i,
                                                            p,
                                                            scalar_value,
-                                                           vector_value(i));
+                                                           vector_value(i),
+                                                           *user_inputs);
     }
 
   value = vector_value;
@@ -117,12 +130,13 @@ public:
    * dirichlet.
    */
   void
-  set_nonuniform_dirichlet(const unsigned int       &index,
-                           const unsigned int       &boundary_id,
-                           const unsigned int       &component,
-                           const dealii::Point<dim> &point,
-                           double                   &scalar_value,
-                           double                   &vector_component_value) const;
+  set_nonuniform_dirichlet(const unsigned int             &index,
+                           const unsigned int             &boundary_id,
+                           const unsigned int             &component,
+                           const dealii::Point<dim>       &point,
+                           double                         &scalar_value,
+                           double                         &vector_component_value,
+                           const userInputParameters<dim> &user_inputs) const;
 };
 
 PRISMS_PF_END_NAMESPACE

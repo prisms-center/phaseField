@@ -288,7 +288,7 @@ nonexplicitBase<dim, degree>::set_initial_condition()
       dealii::VectorTools::interpolate(
         mapping,
         *(dof_handler.get_dof_handlers().at(index)),
-        initialCondition<dim>(index, subset_attributes.at(index).field_type),
+        initialCondition<dim>(index, subset_attributes.at(index).field_type, user_inputs),
         *(solution_handler.solution_set.at(
           std::make_pair(index, dependencyType::NORMAL))));
 
