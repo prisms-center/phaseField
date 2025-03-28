@@ -8,7 +8,6 @@
 #include <deal.II/fe/fe_system.h>
 #include <deal.II/fe/mapping_q1.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/constraint_handler.h>
 #include <prismspf/core/dof_handler.h>
@@ -20,13 +19,18 @@
 #include <prismspf/core/triangulation_handler.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
+
+#include <prismspf/user_inputs/user_input_parameters.h>
+
 #include <prismspf/solvers/explicit_postprocess_solver.h>
 #include <prismspf/solvers/explicit_solver.h>
 #include <prismspf/solvers/nonexplicit_auxiliary_solver.h>
 #include <prismspf/solvers/nonexplicit_linear_solver.h>
 #include <prismspf/solvers/nonexplicit_self_nonlinear_solver.h>
-#include <prismspf/user_inputs/user_input_parameters.h>
+
 #include <prismspf/utilities/element_volume.h>
+
+#include <prismspf/config.h>
 
 #include <map>
 

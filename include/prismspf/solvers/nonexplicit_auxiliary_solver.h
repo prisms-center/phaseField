@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <prismspf/config.h>
 #include <prismspf/core/constraint_handler.h>
 #include <prismspf/core/dof_handler.h>
 #include <prismspf/core/invm_handler.h>
@@ -11,8 +10,12 @@
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
-#include <prismspf/solvers/nonexplicit_base.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/solvers/nonexplicit_base.h>
+
+#include <prismspf/config.h>
 
 #ifdef PRISMS_PF_WITH_CALIPER
 #  include <caliper/cali.h>

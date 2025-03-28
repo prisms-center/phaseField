@@ -8,8 +8,9 @@
 #include <deal.II/lac/affine_constraints.h>
 #include <deal.II/matrix_free/matrix_free.h>
 
-#include <prismspf/config.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/config.h>
 
 #include <vector>
 

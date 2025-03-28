@@ -3,11 +3,13 @@
 
 #pragma once
 
-#include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/refinement_criterion.h>
+
 #include <prismspf/utilities/utilities.h>
+
+#include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

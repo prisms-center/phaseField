@@ -7,10 +7,12 @@
 #include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/numerics/data_out.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/type_enums.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/config.h>
 
 #include <string>
 

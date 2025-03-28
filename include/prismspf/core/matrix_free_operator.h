@@ -9,11 +9,13 @@
 #include <deal.II/matrix_free/matrix_free.h>
 #include <deal.II/matrix_free/operators.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
 #include <prismspf/core/variable_container.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

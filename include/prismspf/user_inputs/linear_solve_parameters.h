@@ -3,10 +3,11 @@
 
 #pragma once
 
-#include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
+
+#include <prismspf/config.h>
 
 #include <map>
 

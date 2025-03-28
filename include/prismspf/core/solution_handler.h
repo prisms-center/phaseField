@@ -5,10 +5,11 @@
 
 #include <deal.II/lac/la_parallel_vector.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/matrix_free_handler.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
+
+#include <prismspf/config.h>
 
 #include <unordered_map>
 

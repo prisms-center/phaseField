@@ -9,12 +9,13 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 
-#include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 #include <prismspf/core/variable_attributes.h>
+
+#include <prismspf/config.h>
 
 #include <cstddef>
 #include <map>

@@ -3,14 +3,16 @@
 
 #pragma once
 
-#include <prismspf/config.h>
 #include <prismspf/core/initial_conditions.h>
 #include <prismspf/core/matrix_free_operator.h>
 #include <prismspf/core/nonuniform_dirichlet.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attribute_loader.h>
 #include <prismspf/core/variable_attributes.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/config.h>
 
 #include <algorithm>
 #include <cmath>

@@ -5,8 +5,9 @@
 
 #include <deal.II/base/exceptions.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/types.h>
+
+#include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

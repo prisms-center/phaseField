@@ -10,10 +10,11 @@
 #include <boost/range/algorithm_ext/erase.hpp>
 #include <boost/variant.hpp>
 
-#include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/type_enums.h>
+
+#include <prismspf/config.h>
 
 #include <iomanip>
 #include <map>

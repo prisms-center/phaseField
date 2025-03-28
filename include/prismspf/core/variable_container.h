@@ -9,10 +9,11 @@
 #include <deal.II/matrix_free/fe_evaluation.h>
 #include <deal.II/matrix_free/matrix_free.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
+
+#include <prismspf/config.h>
 
 #include <string>
 

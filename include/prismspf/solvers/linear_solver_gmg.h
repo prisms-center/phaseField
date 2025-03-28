@@ -17,11 +17,13 @@
 #include <deal.II/multigrid/mg_transfer_matrix_free.h>
 #include <deal.II/multigrid/multigrid.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/dof_handler.h>
 #include <prismspf/core/solution_output.h>
 #include <prismspf/core/triangulation_handler.h>
+
 #include <prismspf/solvers/linear_solver_base.h>
+
+#include <prismspf/config.h>
 
 #ifdef PRISMS_PF_WITH_CALIPER
 #  include <caliper/cali.h>

@@ -5,8 +5,9 @@
 
 #include <deal.II/base/mpi.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
+
+#include <prismspf/config.h>
 
 #include <algorithm>
 #include <fstream>

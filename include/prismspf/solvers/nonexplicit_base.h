@@ -5,7 +5,6 @@
 
 #include <deal.II/numerics/vector_tools.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/constraint_handler.h>
 #include <prismspf/core/dof_handler.h>
 #include <prismspf/core/exceptions.h>
@@ -16,7 +15,10 @@
 #include <prismspf/core/triangulation_handler.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

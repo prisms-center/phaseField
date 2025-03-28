@@ -5,8 +5,9 @@
 
 #include <deal.II/matrix_free/matrix_free.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/element_volume.h>
+
+#include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

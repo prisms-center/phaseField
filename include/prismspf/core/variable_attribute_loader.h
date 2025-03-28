@@ -9,10 +9,11 @@
 
 #include <boost/range/algorithm/remove.hpp>
 
-#include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
+
+#include <prismspf/config.h>
 
 #include <map>
 #include <set>

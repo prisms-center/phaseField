@@ -3,10 +3,12 @@
 
 #pragma once
 
-#include <prismspf/config.h>
 #include <prismspf/core/invm_handler.h>
 #include <prismspf/core/matrix_free_handler.h>
+
 #include <prismspf/solvers/explicit_constant_solver.h>
+
+#include <prismspf/config.h>
 
 #ifdef PRISMS_PF_WITH_CALIPER
 #  include <caliper/cali.h>

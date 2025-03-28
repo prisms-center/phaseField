@@ -6,11 +6,13 @@
 #include <deal.II/base/exceptions.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
+
 #include <prismspf/utilities/utilities.h>
+
+#include <prismspf/config.h>
 
 #include <map>
 #include <ostream>

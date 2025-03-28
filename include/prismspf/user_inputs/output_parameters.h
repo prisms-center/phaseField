@@ -3,11 +3,14 @@
 
 #pragma once
 
-#include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
+
 #include <prismspf/user_inputs/temporal_discretization.h>
+
 #include <prismspf/utilities/utilities.h>
+
+#include <prismspf/config.h>
 
 #include <climits>
 #include <set>

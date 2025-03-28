@@ -3,9 +3,11 @@
 
 #pragma once
 
-#include <prismspf/config.h>
 #include <prismspf/core/types.h>
+
 #include <prismspf/user_inputs/linear_solve_parameters.h>
+
+#include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
