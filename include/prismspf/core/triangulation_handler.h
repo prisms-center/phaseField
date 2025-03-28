@@ -4,12 +4,22 @@
 #pragma once
 
 #include <deal.II/distributed/tria.h>
+#include <deal.II/grid/grid_generator.h>
+#include <deal.II/grid/grid_out.h>
+#include <deal.II/grid/grid_refinement.h>
+#include <deal.II/grid/grid_tools.h>
 #include <deal.II/grid/tria.h>
+#include <deal.II/grid/tria_accessor.h>
+#include <deal.II/multigrid/mg_coarse.h>
+#include <deal.II/multigrid/mg_transfer_global_coarsening.h>
 
 #include <prismspf/config.h>
+#include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/core/exceptions.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#include <fstream>
 #include <memory>
 #include <string>
 

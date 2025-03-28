@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <deal.II/base/point.h>
 #include <deal.II/lac/vector.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
 #include <deal.II/matrix_free/fe_evaluation.h>
@@ -12,6 +13,8 @@
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
+
+#include <string>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

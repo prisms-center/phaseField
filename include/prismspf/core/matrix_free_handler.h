@@ -11,7 +11,6 @@
 #include <prismspf/config.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
-#include <memory>
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE

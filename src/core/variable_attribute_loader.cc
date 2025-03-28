@@ -1,25 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include <deal.II/base/exceptions.h>
-#include <deal.II/base/utilities.h>
-#include <deal.II/matrix_free/evaluation_flags.h>
-
-#include <boost/range/algorithm/remove.hpp>
-
-#include <prismspf/config.h>
-#include <prismspf/core/conditional_ostreams.h>
-#include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attribute_loader.h>
-#include <prismspf/core/variable_attributes.h>
-
-#include <map>
-#include <set>
-#include <stdexcept>
-#include <string>
-#include <unordered_map>
-#include <utility>
-#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

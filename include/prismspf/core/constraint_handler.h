@@ -5,10 +5,16 @@
 
 #include <deal.II/base/mg_level_object.h>
 #include <deal.II/dofs/dof_handler.h>
+#include <deal.II/dofs/dof_tools.h>
+#include <deal.II/fe/component_mask.h>
 #include <deal.II/fe/mapping_q.h>
+#include <deal.II/grid/grid_tools.h>
 #include <deal.II/lac/affine_constraints.h>
+#include <deal.II/numerics/vector_tools_boundary.h>
 
 #include <prismspf/config.h>
+#include <prismspf/core/exceptions.h>
+#include <prismspf/core/nonuniform_dirichlet.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
 PRISMS_PF_BEGIN_NAMESPACE

@@ -1,23 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include <deal.II/base/exceptions.h>
-#include <deal.II/base/parameter_handler.h>
-#include <deal.II/base/point.h>
-#include <deal.II/base/utilities.h>
-
-#include <boost/algorithm/string/predicate.hpp>
-
-#include <prismspf/config.h>
-#include <prismspf/core/exceptions.h>
-#include <prismspf/core/refinement_criterion.h>
-#include <prismspf/core/type_enums.h>
-#include <prismspf/user_inputs/input_file_reader.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
-
-#include <cmath>
-#include <string>
-#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

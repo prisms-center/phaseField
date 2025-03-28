@@ -1,17 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include <deal.II/dofs/dof_handler.h>
-#include <deal.II/fe/fe_system.h>
-
-#include <prismspf/config.h>
-#include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/dof_handler.h>
-#include <prismspf/core/triangulation_handler.h>
-#include <prismspf/user_inputs/user_input_parameters.h>
-
-#include <map>
-#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

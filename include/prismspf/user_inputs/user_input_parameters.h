@@ -3,7 +3,17 @@
 
 #pragma once
 
+#include <deal.II/base/exceptions.h>
+#include <deal.II/base/parameter_handler.h>
+#include <deal.II/base/point.h>
+#include <deal.II/base/utilities.h>
+
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <prismspf/config.h>
+#include <prismspf/core/exceptions.h>
+#include <prismspf/core/refinement_criterion.h>
+#include <prismspf/core/type_enums.h>
 #include <prismspf/user_inputs/boundary_parameters.h>
 #include <prismspf/user_inputs/checkpoint_parameters.h>
 #include <prismspf/user_inputs/input_file_reader.h>
@@ -13,6 +23,10 @@
 #include <prismspf/user_inputs/spatial_discretization.h>
 #include <prismspf/user_inputs/temporal_discretization.h>
 #include <prismspf/user_inputs/user_constants.h>
+
+#include <cmath>
+#include <string>
+#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
