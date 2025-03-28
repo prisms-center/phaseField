@@ -178,8 +178,8 @@ PDEProblem<dim, degree>::PDEProblem(const userInputParameters<dim> &_user_inputs
   : user_inputs(_user_inputs)
   , triangulation_handler(_user_inputs)
   , constraint_handler(_user_inputs)
-  , matrix_free_handler(_user_inputs)
-  , multigrid_matrix_free_handler(0, 0, _user_inputs)
+  , matrix_free_handler()
+  , multigrid_matrix_free_handler(0, 0)
   , invm_handler(_user_inputs.var_attributes)
   , solution_handler(_user_inputs.var_attributes)
   , dof_handler(_user_inputs)
@@ -308,7 +308,7 @@ PDEProblem<dim, degree>::init_system()
       const unsigned int min_level = triangulation_handler.get_mg_min_level();
       const unsigned int max_level = triangulation_handler.get_mg_max_level();
 
-      multigrid_matrix_free_handler.resize(min_level, max_level, user_inputs);
+      multigrid_matrix_free_handler.resize(min_level, max_level);
 
       for (unsigned int level = min_level; level <= max_level; ++level)
         {

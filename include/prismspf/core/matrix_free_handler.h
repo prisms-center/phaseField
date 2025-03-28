@@ -26,7 +26,7 @@ public:
   /**
    * \brief Constructor.
    */
-  matrixfreeHandler(const userInputParameters<dim> &_user_inputs);
+  matrixfreeHandler();
 
   /**
    * \brief Reinitialize the matrix-free object with the same quad rule.
@@ -62,13 +62,6 @@ public:
   get_matrix_free() const;
 
 private:
-  /**
-   * \brief User-inputs.
-   *
-   * TODO (landinjm): This not used. Remove
-   */
-  const userInputParameters<dim> *user_inputs;
-
   /**
    * \brief Matrix-free object that collects data to be used in cell loop operations.
    */
