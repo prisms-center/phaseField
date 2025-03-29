@@ -239,13 +239,13 @@ nonexplicitBase<dim, degree>::compute_shared_dependencies()
 
   // Compute the shared dependency set
   auto &dependency_set = subset_attributes.begin()->second.dependency_set_RHS;
-  for (const auto &[index, variable] : subset_attributes)
+  for (const auto &[main_index, variable] : subset_attributes)
     {
-      for (const auto &[index, map] : variable.dependency_set_RHS)
+      for (const auto &[dependency_index, map] : variable.dependency_set_RHS)
         {
           for (const auto &[dependency_type, field_type] : map)
             {
-              dependency_set[index].emplace(dependency_type, field_type);
+              dependency_set[dependency_index].emplace(dependency_type, field_type);
             }
         }
     }

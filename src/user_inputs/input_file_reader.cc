@@ -50,7 +50,7 @@ inputFileReader::strip_spaces(std::string &line)
 }
 
 bool
-inputFileReader::check_keyword_match(std::string &line, const std::string &keyword)
+inputFileReader::check_keyword_match(const std::string &line, const std::string &keyword)
 {
   // Early return if the line is less than the keyword size
   if (line.size() < keyword.size())
@@ -136,79 +136,6 @@ inputFileReader::parse_line(std::string        line,
   return true;
 }
 
-// Method to parse an input file to get a list of variables from related
-// subsections
-std::vector<std::string>
-inputFileReader::get_subsection_entry_list(const std::string &subsec_name,
-                                           const std::string &entry_name,
-                                           const std::string &default_entry)
-{
-  std::ifstream input_file;
-  input_file.open(parameters_file_name);
-
-  std::string               line;
-  std::string               entry;
-  bool                      in_subsection       = false;
-  bool                      desired_entry_found = false;
-  unsigned int              subsection_index    = 0;
-  std::vector<std::string>  entry_list;
-  std::vector<unsigned int> index_list;
-
-  // Loop through each line
-  while (std::getline(input_file, line))
-    {
-      // If the line is the start of a subsection, turn 'in_subsection' to true
-      // and store the subsection index
-      if (!in_subsection)
-        {
-          if (parse_line(line, "subsection", subsec_name, entry, false))
-            {
-              in_subsection       = true;
-              subsection_index    = dealii::Utilities::string_to_int(entry);
-              desired_entry_found = false;
-            }
-        }
-      // If in a subsection, look for the line setting the entry or for the end
-      // of the subsection
-      else
-        {
-          if (parse_line(line, "set", entry_name, entry, true))
-            {
-              entry_list.push_back(entry);
-              index_list.push_back(subsection_index);
-              desired_entry_found = true;
-            }
-          if (parse_line(line, "end", "", entry, false))
-            {
-              if (!desired_entry_found)
-                {
-                  entry_list.push_back(default_entry);
-                  index_list.push_back(subsection_index);
-                }
-              in_subsection       = false;
-              desired_entry_found = false;
-            }
-        }
-    }
-
-  // Now sort the entry list vector so that it is in index order
-  std::vector<std::string> sorted_entry_list;
-  for (unsigned int i = 0; i < entry_list.size(); i++)
-    {
-      for (unsigned int j = 0; j < entry_list.size(); j++)
-        {
-          if (i == j)
-            {
-              sorted_entry_list.push_back(entry_list[index_list[j]]);
-              break;
-            }
-        }
-    }
-  return sorted_entry_list;
-}
-
-// Method to parse an input file to get a list of variables from related
-// subsections
 std::set<std::string>
 inputFileReader::get_model_constant_names()
 {

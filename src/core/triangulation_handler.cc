@@ -164,15 +164,6 @@ triangulationHandler<dim>::generate_mesh()
 
 template <int dim>
 void
-triangulationHandler<dim>::adaptively_refine_mesh(solutionHandler<dim> &solution_handler)
-{
-  AssertThrow(false, FeatureNotImplemented("Adaptive mesh refinement"));
-  // TODO (landinjm): Implement adaptive mesh refinement
-  (void) solution_handler;
-}
-
-template <int dim>
-void
 triangulationHandler<dim>::export_triangulation_as_vtk(const std::string &filename) const
 {
   dealii::GridOut grid_out;

@@ -343,7 +343,7 @@ userInputParameters<dim>::assign_nonlinear_solve_parameters(
 template <int dim>
 void
 userInputParameters<dim>::load_model_constants(
-  inputFileReader          &input_file_reader,
+  const inputFileReader    &input_file_reader,
   dealii::ParameterHandler &parameter_handler)
 {
   for (const std::string &constant_name : input_file_reader.model_constant_names)

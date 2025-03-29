@@ -81,19 +81,19 @@ nonuniformDirichlet<dim, field_type>::value(
   [[maybe_unused]] const unsigned int component) const
 {
   // Initialize passed variables to zero
-  double                 scalar_value = 0.0;
-  dealii::Vector<double> vector_value(dim);
+  double                 temp_scalar_value = 0.0;
+  dealii::Vector<double> temp_vector_value(dim);
 
   // Pass variables to user-facing function to evaluate
   custom_nonuniform_dirichlet.set_nonuniform_dirichlet(index,
                                                        boundary_id,
                                                        0,
                                                        p,
-                                                       scalar_value,
-                                                       vector_value(0),
+                                                       temp_scalar_value,
+                                                       temp_vector_value(0),
                                                        *user_inputs);
 
-  return scalar_value;
+  return temp_scalar_value;
 }
 
 template <int dim, fieldType field_type>
@@ -102,8 +102,8 @@ nonuniformDirichlet<dim, field_type>::vector_value(const dealii::Point<dim> &p,
                                                    dealii::Vector<double>   &value) const
 {
   // Initialize passed variables to zero
-  double                 scalar_value = 0.0;
-  dealii::Vector<double> vector_value(dim);
+  double                 temp_scalar_value = 0.0;
+  dealii::Vector<double> temp_vector_value(dim);
 
   // Pass variables to user-facing function to evaluate
   for (unsigned int i = 0; i < dim; i++)
@@ -112,12 +112,12 @@ nonuniformDirichlet<dim, field_type>::vector_value(const dealii::Point<dim> &p,
                                                            boundary_id,
                                                            i,
                                                            p,
-                                                           scalar_value,
-                                                           vector_value(i),
+                                                           temp_scalar_value,
+                                                           temp_vector_value(i),
                                                            *user_inputs);
     }
 
-  value = vector_value;
+  value = temp_vector_value;
 }
 
 // NOLINTEND(readability-identifier-length)

@@ -94,12 +94,6 @@ public:
   generate_mesh();
 
   /**
-   * \brief Adaptively refine the mesh based on the inputs provided by the user.
-   */
-  void
-  adaptively_refine_mesh(solutionHandler<dim> &solution_handler);
-
-  /**
    * \brief Export triangulation to vtk. This is done for debugging purposes when dealing
    * with unusual meshes (e.g., circular domains).
    */

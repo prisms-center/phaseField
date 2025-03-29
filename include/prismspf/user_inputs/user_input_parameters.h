@@ -145,7 +145,7 @@ private:
    * \brief Assign the provided user constants.
    */
   void
-  load_model_constants(inputFileReader          &input_file_reader,
+  load_model_constants(const inputFileReader    &input_file_reader,
                        dealii::ParameterHandler &parameter_handler);
 };
 

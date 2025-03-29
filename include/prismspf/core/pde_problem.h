@@ -376,11 +376,11 @@ PDEProblem<dim, degree>::init_system()
 
   // Output initial condition
   conditionalOStreams::pout_base() << "outputting initial condition...\n" << std::flush;
-  solutionOutput<dim> output_solution(solution_handler.solution_set,
-                                      dof_handler.get_dof_handlers(),
-                                      degree,
-                                      "solution",
-                                      user_inputs);
+  solutionOutput<dim>(solution_handler.solution_set,
+                      dof_handler.get_dof_handlers(),
+                      degree,
+                      "solution",
+                      user_inputs);
 
   timer::serial_timer().leave_subsection();
 }
@@ -437,11 +437,11 @@ PDEProblem<dim, degree>::solve()
         {
           postprocess_explicit_solver.solve();
 
-          solutionOutput<dim> output_solution(solution_handler.solution_set,
-                                              dof_handler.get_dof_handlers(),
-                                              degree,
-                                              "solution",
-                                              user_inputs);
+          solutionOutput<dim>(solution_handler.solution_set,
+                              dof_handler.get_dof_handlers(),
+                              degree,
+                              "solution",
+                              user_inputs);
 
           // Print the l2-norms of each solution
           conditionalOStreams::pout_base()

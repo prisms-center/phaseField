@@ -191,7 +191,7 @@ variableAttributes::parse_dependencies(
 
 void
 variableAttributes::determine_field_solve_type(
-  std::map<unsigned int, variableAttributes> &other_var_attributes)
+  const std::map<unsigned int, variableAttributes> &other_var_attributes)
 {
   // Early return for constant fields
   if (pde_type == PDEType::CONSTANT)

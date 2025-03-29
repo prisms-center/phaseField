@@ -445,10 +445,13 @@ userConstants<dim>::get_Cij_tensor(std::vector<double> elastic_constants,
       std::vector<double> elastic_constants_temp = elastic_constants;
       elastic_constants.clear();
       const std::vector<unsigned int> indices_2D = {0, 1, 5, 6, 10, 14};
-      for (const auto &index : indices_2D)
-        {
-          elastic_constants.push_back(elastic_constants_temp.at(index));
-        }
+      std::transform(indices_2D.begin(),
+                     indices_2D.end(),
+                     std::back_inserter(elastic_constants),
+                     [&elastic_constants_temp](unsigned int index)
+                     {
+                       return elastic_constants_temp.at(index);
+                     });
     }
 
   return getCIJMatrix(mat_model, elastic_constants);

@@ -39,15 +39,6 @@ public:
                   const std::map<unsigned int, variableAttributes> &_var_attributes);
 
   /**
-   * \brief Method to get a list of entry values from multiple subsections in an input
-   * file.
-   */
-  [[nodiscard]] std::vector<std::string>
-  get_subsection_entry_list(const std::string &subsec_name,
-                            const std::string &entry_name,
-                            const std::string &default_entry);
-
-  /**
    * \brief Get the trailing part of the entry name after a specified string (used to
    * extract the model constant names).
    */
@@ -80,7 +71,7 @@ public:
    * \brief Check whether a string starts with a keyword.
    */
   bool
-  check_keyword_match(std::string &line, const std::string &keyword);
+  check_keyword_match(const std::string &line, const std::string &keyword);
 
   /**
    * \brief Declare parameters for the mesh.

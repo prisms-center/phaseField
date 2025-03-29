@@ -205,7 +205,7 @@ struct variableAttributes
    */
   void
   determine_field_solve_type(
-    std::map<unsigned int, variableAttributes> &other_var_attributes);
+    const std::map<unsigned int, variableAttributes> &other_var_attributes);
 
   /**
    * \brief Print variable attributes to summary.log

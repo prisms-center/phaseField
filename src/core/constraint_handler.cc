@@ -3,6 +3,8 @@
 
 #include <prismspf/core/constraint_handler.h>
 
+#include <algorithm>
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <int dim>
@@ -17,10 +19,15 @@ constraintHandler<dim>::get_constraints()
 {
   std::vector<const dealii::AffineConstraints<double> *> temp;
   temp.reserve(constraints.size());
-  for (const auto &constraint : constraints)
-    {
-      temp.push_back(&constraint);
-    }
+
+  std::transform(constraints.begin(),
+                 constraints.end(),
+                 std::back_inserter(temp),
+                 [](const dealii::AffineConstraints<double> &constraint)
+                 {
+                   return &constraint;
+                 });
+
   return temp;
 }
 

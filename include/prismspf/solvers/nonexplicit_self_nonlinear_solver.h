@@ -150,7 +150,7 @@ nonexplicitSelfNonlinearSolver<dim, degree>::solve()
     {
       bool         is_converged = true;
       unsigned int iteration    = 0;
-      auto        &step_length =
+      const auto  &step_length =
         this->user_inputs.nonlinear_solve_parameters.nonlinear_solve.at(index)
           .step_length;
 

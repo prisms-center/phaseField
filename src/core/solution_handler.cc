@@ -41,25 +41,16 @@ solutionHandler<dim>::init(matrixfreeHandler<dim> &matrix_free_handler)
 
           new_solution_set[index] = new VectorType();
         }
-      else if (new_solution_set.find(index) == new_solution_set.end())
-        {
-          new_solution_set[index] = new VectorType();
-        }
+      new_solution_set.try_emplace(index, new VectorType());
 
       // Add dependencies if they don't exist
       for (const auto &[pair, flags] : variable.eval_flag_set_RHS)
         {
-          if (solution_set.find(pair) == solution_set.end())
-            {
-              solution_set[pair] = new VectorType();
-            }
+          solution_set.try_emplace(pair, new VectorType());
         }
       for (const auto &[pair, flags] : variable.eval_flag_set_LHS)
         {
-          if (solution_set.find(pair) == solution_set.end())
-            {
-              solution_set[pair] = new VectorType();
-            }
+          solution_set.try_emplace(pair, new VectorType());
         }
     }
 

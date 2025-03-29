@@ -375,7 +375,7 @@ private:
   /**
    * \brief Number of DoFs per cell.
    */
-  unsigned int n_dofs_per_cell;
+  unsigned int n_dofs_per_cell = 0;
 
   /**
    * \brief Diagonal matrix that is used for preconditioning of scalar fields.

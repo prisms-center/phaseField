@@ -46,14 +46,21 @@ cppcheck \
   --suppress=missingIncludeSystem --suppress=unknownMacro \
   --project=compile_commands.json >"output.txt" 2>&1
 
+# Separate unusedFunction messages into a different file. This is because most functions
+# are used by the user. It doesn't hurt to periodically check.
+grep 'unusedFunction' output.txt | sort | uniq >cppcheck_unused.log
+
 # grep interesting errors and make sure we remove duplicates:
-grep -E '(warning|error|style|performance|portability): ' output.txt | sort | uniq >cppcheck.log
+grep -E '(warning|error|style|performance|portability): ' output.txt | grep -v 'unusedFunction' | sort | uniq >cppcheck.log
 
 # If we have errors, report them and set exit status to failure
 if [ -s cppcheck.log ]; then
   cat cppcheck.log
   exit 4
 fi
+
+# Print unused functions
+cat cppcheck_unused.log
 
 echo "OK"
 exit 0
