@@ -1,0 +1,88 @@
+set dim = 3
+
+set Domain size X = 400
+set Domain size Y = 400
+set Domain size Z = 400
+
+set Subdivisions X = 1
+set Subdivisions Y = 1
+set Subdivisions Z = 1
+
+set global refinement = 2
+
+set degree = 2
+
+set Mesh adaptivity = true
+
+set Max refinement level = 7
+set Min refinement level = 2
+
+set Steps between remeshing operations = 500
+
+subsection Refinement criterion: n
+    set Criterion type = VALUE
+    set Value lower bound = 0.01
+    set Value upper bound = 0.99
+end
+
+set Time step = 0.022
+
+set Number of time steps = 100
+
+set Output condition = EQUAL_SPACING
+
+set Number of outputs = 10
+
+set Skip print steps = 100
+
+set Load from a checkpoint = false
+
+set Checkpoint condition = EQUAL_SPACING
+
+set Number of checkpoints = 2
+
+
+set Boundary condition for variable c = NATURAL
+set Boundary condition for variable n = NATURAL
+
+
+set Time steps between nucleation attempts = 30
+set Minimum allowed distance between nuclei = 20.0
+set Order parameter cutoff value = 0.01
+
+subsection Nucleation parameters: n
+    set Nucleus semiaxes (x, y, z) = 10, 10, 10
+    set Freeze zone semiaxes (x, y, z) = 15, 15, 15
+    set Nucleus rotation in degrees (x, y, z) = 0, 0, 0
+    set Freeze time following nucleation = 20
+    set Nucleation-free border thickness = 10
+end
+
+
+set Model constant c_avg = 0.1, DOUBLE
+
+set Model constant McV = 1.0, DOUBLE
+
+set Model constant MnV = 1.0, DOUBLE
+
+set Model constant KnV = 2.0, DOUBLE
+
+set Model constant W_barrier = 2.0, DOUBLE
+
+set Model constant A0 = 0.0, DOUBLE
+set Model constant A2 = 1.0, DOUBLE
+set Model constant calmin = 0.0, DOUBLE
+set Model constant B0 = 0.0, DOUBLE
+set Model constant B2 = 4.0, DOUBLE
+set Model constant cbtmin = 1.0, DOUBLE
+
+set Model constant k1 = 1.30183e-4, DOUBLE
+set Model constant k2_b = 0.0981628, DOUBLE
+set Model constant k2_gb = 0.0290852, DOUBLE
+
+set Model constant tau_b = 0.0, DOUBLE
+set Model constant tau_gb = 0.0, DOUBLE
+
+set Model constant wgb = 8.0, DOUBLE
+set Model constant gbll = 196, DOUBLE
+set Model constant gbrl = 204, DOUBLE

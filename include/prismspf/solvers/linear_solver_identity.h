@@ -1,15 +1,15 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef linear_solver_identity_h
-#define linear_solver_identity_h
+#pragma once
 
 #include <deal.II/lac/precondition.h>
 #include <deal.II/lac/solver_cg.h>
 #include <deal.II/matrix_free/matrix_free.h>
 
-#include <prismspf/config.h>
 #include <prismspf/solvers/linear_solver_base.h>
+
+#include <prismspf/config.h>
 
 #ifdef PRISMS_PF_WITH_CALIPER
 #  include <caliper/cali.h>
@@ -154,5 +154,3 @@ identitySolver<dim, degree>::solve(const double step_length)
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

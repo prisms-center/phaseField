@@ -1,16 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include <deal.II/base/point.h>
-#include <deal.II/matrix_free/evaluation_flags.h>
-
-#include <prismspf/config.h>
-#include <prismspf/core/exceptions.h>
-#include <prismspf/core/type_enums.h>
-#include <prismspf/core/variable_attributes.h>
 #include <prismspf/core/variable_container.h>
-
-#include <string>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

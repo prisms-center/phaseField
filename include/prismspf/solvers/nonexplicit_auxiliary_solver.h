@@ -1,10 +1,8 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef nonexplicit_auxiliary_solver_h
-#define nonexplicit_auxiliary_solver_h
+#pragma once
 
-#include <prismspf/config.h>
 #include <prismspf/core/constraint_handler.h>
 #include <prismspf/core/dof_handler.h>
 #include <prismspf/core/invm_handler.h>
@@ -12,8 +10,12 @@
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
-#include <prismspf/solvers/nonexplicit_base.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/solvers/nonexplicit_base.h>
+
+#include <prismspf/config.h>
 
 #ifdef PRISMS_PF_WITH_CALIPER
 #  include <caliper/cali.h>
@@ -216,5 +218,3 @@ nonexplicitAuxiliarySolver<dim, degree>::solve()
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

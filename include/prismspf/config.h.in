@@ -1,5 +1,4 @@
-#ifndef prisms_pf_config_h
-#define prisms_pf_config_h
+#pragma once
 
 // TODO (landinjm): Remove the no lint and change how template instantiations are done
 
@@ -11,6 +10,7 @@
 #cmakedefine PRISMS_PF_WITH_ZLIB
 #cmakedefine PRISMS_PF_WITH_SUNDIALS
 #cmakedefine PRISMS_PF_WITH_CALIPER
+#cmakedefine PRISMS_PF_WTIH_CUDA
 
 // Flags for enabling and disabling certain features
 #cmakedefine ADDITIONAL_OPTIMIZATIONS
@@ -28,18 +28,9 @@
 #endif
 
 // Templating parameters
-#define PRISMS_PF_DIMS \
-  {                    \
-    1, 2, 3            \
-  }
-#define PRISMS_PF_DEGREES \
-  {                       \
-    1, 2, 3, 4, 5, 6      \
-  }
-#define PRISMS_PF_NUMBERS \
-  {                       \
-    float, double         \
-  }
+#define PRISMS_PF_DIMS {1, 2, 3}
+#define PRISMS_PF_DEGREES {1, 2, 3, 4, 5, 6}
+#define PRISMS_PF_NUMBERS {float, double}
 
 // Macro for template instantations with <dim, degree, number>
 #define INSTANTIATE_TRI_TEMPLATE(class_name) \
@@ -81,5 +72,3 @@
   template class class_name<3>;
 
 // NOLINTEND
-
-#endif

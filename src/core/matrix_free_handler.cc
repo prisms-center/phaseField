@@ -1,25 +1,13 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include <deal.II/dofs/dof_handler.h>
-#include <deal.II/fe/mapping.h>
-#include <deal.II/lac/affine_constraints.h>
-#include <deal.II/matrix_free/matrix_free.h>
-
-#include <prismspf/config.h>
 #include <prismspf/core/matrix_free_handler.h>
-#include <prismspf/user_inputs/user_input_parameters.h>
-
-#include <memory>
-#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <int dim, typename number>
-matrixfreeHandler<dim, number>::matrixfreeHandler(
-  const userInputParameters<dim> &_user_inputs)
-  : user_inputs(_user_inputs)
-  , matrix_free_object(std::make_shared<dealii::MatrixFree<dim, number>>())
+matrixfreeHandler<dim, number>::matrixfreeHandler()
+  : matrix_free_object(std::make_shared<dealii::MatrixFree<dim, number>>())
 {
   additional_data.tasks_parallel_scheme =
     dealii::MatrixFree<dim,

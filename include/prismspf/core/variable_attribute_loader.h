@@ -1,15 +1,27 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef variable_attribute_loader_h
-#define variable_attribute_loader_h
+#pragma once
 
-#include <prismspf/config.h>
+#include <deal.II/base/exceptions.h>
+#include <deal.II/base/utilities.h>
+#include <deal.II/matrix_free/evaluation_flags.h>
+
+#include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
 
+#include <prismspf/utilities/utilities.h>
+
+#include <prismspf/config.h>
+
 #include <map>
+#include <set>
+#include <stdexcept>
 #include <string>
+#include <unordered_map>
+#include <utility>
+#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -49,7 +61,7 @@ protected:
    * and postprocess fields.
    */
   virtual void
-  loadVariableAttributes();
+  loadVariableAttributes() = 0;
 
   /**
    * \brief Set the name of the variable at `index` to `name`.
@@ -244,13 +256,6 @@ private:
    */
   void
   validate_old_solution_dependencies();
-
-  /**
-   * \brief Utility to remove whitespace from strings
-   */
-  static std::string
-  strip_whitespace(const std::string &text);
-  // The above function should be moved to a 'utilities' module
 };
 
 // Template derived class for variableAttributeLoader for applications.
@@ -266,5 +271,3 @@ public:
 };
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

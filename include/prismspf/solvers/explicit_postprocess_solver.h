@@ -1,13 +1,14 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef explicit_postprocess_solver_h
-#define explicit_postprocess_solver_h
+#pragma once
 
-#include <prismspf/config.h>
 #include <prismspf/core/invm_handler.h>
 #include <prismspf/core/matrix_free_handler.h>
+
 #include <prismspf/solvers/explicit_constant_solver.h>
+
+#include <prismspf/config.h>
 
 #ifdef PRISMS_PF_WITH_CALIPER
 #  include <caliper/cali.h>
@@ -176,5 +177,3 @@ explicitPostprocessSolver<dim, degree>::solve()
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

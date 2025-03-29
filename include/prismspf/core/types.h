@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef types_h
-#define types_h
+#pragma once
 
 #include <prismspf/config.h>
 
@@ -43,8 +42,21 @@ namespace defaults
    */
   static const unsigned int iterations = 100;
 
+  /**
+   * \brief Default eigenvalue smoothing range for multigrid.
+   */
+  static const double smoothing_range = 15.0;
+
+  /**
+   * \brief Default smoother degree for multigrid.
+   */
+  static const unsigned int smoother_degree = 5;
+
+  /**
+   * \brief Default CG iterations to find the maximum eigenvalue for multigrid.
+   */
+  static const unsigned int eig_cg_n_iterations = 10;
+
 } // namespace defaults
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

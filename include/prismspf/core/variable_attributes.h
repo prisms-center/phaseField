@@ -1,19 +1,26 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef variable_attributes_h
-#define variable_attributes_h
+#pragma once
 
+#include <deal.II/base/exceptions.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
 
-#include <prismspf/config.h>
+#include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
+#include <prismspf/utilities/utilities.h>
+
+#include <prismspf/config.h>
+
 #include <map>
+#include <ostream>
 #include <set>
 #include <string>
 #include <unordered_map>
+#include <utility>
+#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -61,6 +68,13 @@ struct variableAttributes
    * \brief Postprocess variable. \remark User-set
    */
   bool is_postprocess = false;
+
+  /**
+   * \brief Whether the variable is required for the LHS of multigrid. This is then used
+   * to determine which fields must be interpolated for the coarse grid levels. \remark
+   * Internally determined
+   */
+  bool is_required_for_mg = false;
 
 #ifdef ADDITIONAL_OPTIMIZATIONS
   /**
@@ -191,7 +205,7 @@ struct variableAttributes
    */
   void
   determine_field_solve_type(
-    std::map<unsigned int, variableAttributes> &other_var_attributes);
+    const std::map<unsigned int, variableAttributes> &other_var_attributes);
 
   /**
    * \brief Print variable attributes to summary.log
@@ -243,5 +257,3 @@ private:
 };
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

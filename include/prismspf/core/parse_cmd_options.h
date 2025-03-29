@@ -1,13 +1,13 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef parse_cmd_options_h
-#define parse_cmd_options_h
+#pragma once
 
 #include <deal.II/base/mpi.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
+
+#include <prismspf/config.h>
 
 #include <algorithm>
 #include <fstream>
@@ -153,5 +153,3 @@ private:
 };
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

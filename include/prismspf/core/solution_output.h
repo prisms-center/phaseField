@@ -1,17 +1,18 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef solution_output_h
-#define solution_output_h
+#pragma once
 
 #include <deal.II/base/mpi.h>
 #include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/numerics/data_out.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/type_enums.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/config.h>
 
 #include <string>
 
@@ -159,5 +160,3 @@ solutionOutput<dim, number>::solutionOutput(
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

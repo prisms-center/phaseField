@@ -1,14 +1,24 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef input_file_reader_h
-#define input_file_reader_h
+#pragma once
 
+#include <deal.II/base/exceptions.h>
 #include <deal.II/base/parameter_handler.h>
+#include <deal.II/base/patterns.h>
+#include <deal.II/base/utilities.h>
+
+#include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/core/type_enums.h>
+#include <prismspf/core/variable_attribute_loader.h>
+#include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/config.h>
-#include <prismspf/core/variable_attribute_loader.h>
 
+#include <cfloat>
+#include <climits>
+#include <fstream>
+#include <map>
 #include <set>
 #include <string>
 #include <vector>
@@ -25,17 +35,8 @@ public:
   /**
    * \brief Constructor.
    */
-  inputFileReader(const std::string                                &input_file_name,
+  inputFileReader(std::string                                       input_file_name,
                   const std::map<unsigned int, variableAttributes> &_var_attributes);
-
-  /**
-   * \brief Method to get a list of entry values from multiple subsections in an input
-   * file.
-   */
-  [[nodiscard]] std::vector<std::string>
-  get_subsection_entry_list(const std::string &subsec_name,
-                            const std::string &entry_name,
-                            const std::string &default_entry);
 
   /**
    * \brief Get the trailing part of the entry name after a specified string (used to
@@ -70,7 +71,7 @@ public:
    * \brief Check whether a string starts with a keyword.
    */
   bool
-  check_keyword_match(std::string &line, const std::string &keyword);
+  check_keyword_match(const std::string &line, const std::string &keyword);
 
   /**
    * \brief Declare parameters for the mesh.
@@ -152,5 +153,3 @@ public:
 };
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

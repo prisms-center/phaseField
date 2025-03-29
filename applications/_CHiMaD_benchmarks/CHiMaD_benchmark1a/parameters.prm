@@ -1,0 +1,33 @@
+set dim = 2
+
+
+set Domain size X = 200
+set Domain size Y = 200
+set Domain size Z = 200
+
+
+set Subdivisions X = 1
+set Subdivisions Y = 1
+set Subdivisions Z = 1
+
+set global refinement = 7
+
+set degree = 1
+
+
+set Time step = 1.0e-2
+
+set Simulation end time = 1000
+
+
+set Boundary condition for variable c = PERIODIC
+set Boundary condition for variable mu = PERIODIC
+
+
+set Output condition = EQUAL_SPACING
+
+set Number of outputs = 1
+
+set Skip print steps = 1000
+
+set Number of checkpoints = 0

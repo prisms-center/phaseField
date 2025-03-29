@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef element_volume_h
-#define element_volume_h
+#pragma once
 
 #include <deal.II/base/aligned_vector.h>
 #include <deal.II/base/quadrature_lib.h>
@@ -108,5 +107,3 @@ elementVolume<dim, degree, number>::compute_element_volume(
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

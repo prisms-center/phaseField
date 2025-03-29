@@ -3,13 +3,15 @@
 
 #include "custom_pde.h"
 
-#include <prismspf/config.h>
 #include <prismspf/core/parse_cmd_options.h>
 #include <prismspf/core/pde_problem.h>
 #include <prismspf/core/variable_attribute_loader.h>
 #include <prismspf/core/variable_attributes.h>
+
 #include <prismspf/user_inputs/input_file_reader.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/config.h>
 
 #ifdef PRISMS_PF_WITH_CALIPER
 #  include <caliper/cali-manager.h>

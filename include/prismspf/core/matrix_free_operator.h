@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef matrix_free_operator_h
-#define matrix_free_operator_h
+#pragma once
 
 #include <deal.II/base/subscriptor.h>
 #include <deal.II/base/vectorization.h>
@@ -10,11 +9,13 @@
 #include <deal.II/matrix_free/matrix_free.h>
 #include <deal.II/matrix_free/operators.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
 #include <prismspf/core/variable_container.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -759,5 +760,3 @@ matrixFreeOperator<dim, degree, number>::local_compute_diagonal(
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

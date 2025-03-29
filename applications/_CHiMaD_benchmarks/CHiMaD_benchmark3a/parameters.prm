@@ -1,0 +1,60 @@
+set dim = 2
+
+set Domain size X = 960
+set Domain size Y = 960
+set Domain size Z = 960
+
+set Subdivisions X = 3
+set Subdivisions Y = 3
+set Subdivisions Z = 3
+
+set global refinement = 7
+
+set degree = 3
+
+set Mesh adaptivity = true
+
+set Max refinement level = 7
+set Min refinement level = 0
+
+set Steps between remeshing operations = 500
+
+subsection Refinement criterion: phi
+    set Criterion type = VALUE
+    set Value lower bound = -0.9999
+    set Value upper bound = 0.9999
+end
+
+set Time step = 0.005
+
+set Simulation end time = 1500.0
+
+
+set Boundary condition for variable u = NATURAL, DIRICHLET: -0.3, NATURAL, DIRICHLET: -0.3
+set Boundary condition for variable phi = NATURAL
+set Boundary condition for variable mu = NATURAL
+
+
+set Model constant D = 10.0, DOUBLE
+
+set Model constant W0 = 1.0, DOUBLE
+
+set Model constant delta = 0.3, DOUBLE
+
+set Model constant epsilonM = 0.05, DOUBLE
+
+set Model constant theta0 = 0.0, DOUBLE
+
+set Model constant mult = 4.0, DOUBLE
+
+set Output condition = EQUAL_SPACING
+
+set Number of outputs = 30
+
+set Skip print steps = 10000
+
+set Load from a checkpoint = false
+
+set Checkpoint condition = EQUAL_SPACING
+
+set Number of checkpoints = 2

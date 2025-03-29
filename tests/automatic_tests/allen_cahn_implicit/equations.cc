@@ -3,9 +3,10 @@
 
 #include "custom_pde.h"
 
-#include <prismspf/config.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attribute_loader.h>
+
+#include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

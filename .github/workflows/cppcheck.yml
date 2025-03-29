@@ -1,0 +1,47 @@
+name: Cppcheck
+
+on:
+  push:
+      branches:
+        - master
+  pull_request:
+      branches:
+        - master
+        - devel
+      types:
+        - opened
+        - reopened
+        - synchronize
+        - ready_for_review
+      paths-ignore:
+      - 'contrib/**'
+      - 'doc/**'
+
+
+concurrency:
+  group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request'}}
+
+jobs:
+    clang-tidy:
+      runs-on: [ubuntu-22.04]
+
+      container:
+        image: dealii/dealii:v9.6.0-jammy
+        options: --user root
+
+      steps:
+        - name: Checkout repo
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 30
+
+        - name: Install cppcheck
+          run: |
+            sudo apt-get update
+            sudo apt-get install -y cppcheck
+
+        - name: Run cppcheck
+          run: |
+            ./contrib/utilities/cppcheck.sh
+
