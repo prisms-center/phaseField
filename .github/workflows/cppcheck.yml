@@ -41,6 +41,7 @@ jobs:
           with:
             path: |
               /usr/local/bin/cppcheck
+              /usr/local/bin/cppcheck-htmlreport
               /usr/local/share/Cppcheck
               cppcheck-2.17.1/build
             key: ${{ runner.os }}-cppcheck-2.17.1
