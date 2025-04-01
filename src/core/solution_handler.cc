@@ -37,6 +37,34 @@ solutionHandler<dim>::~solutionHandler()
 }
 
 template <int dim>
+typename solutionHandler<dim>::VectorType *
+solutionHandler<dim>::get_solution_vector(unsigned int   index,
+                                          dependencyType dependency_type) const
+{
+  const auto pair = std::make_pair(index, dependency_type);
+
+  Assert(solution_set.find(pair) != solution_set.end(),
+         dealii::ExcMessage(
+           "There is no solution vector for the given index = " + std::to_string(index) +
+           " and type = " + to_string(dependency_type)));
+  Assert(solution_set.at(pair) != nullptr, dealii::ExcNotInitialized());
+
+  return solution_set.at(pair);
+}
+
+template <int dim>
+typename solutionHandler<dim>::VectorType *
+solutionHandler<dim>::get_new_solution_vector(unsigned int index) const
+{
+  Assert(new_solution_set.find(index) != new_solution_set.end(),
+         dealii::ExcMessage("There is no new solution vector for the given index = " +
+                            std::to_string(index)));
+  Assert(new_solution_set.at(index) != nullptr, dealii::ExcNotInitialized());
+
+  return new_solution_set.at(index);
+}
+
+template <int dim>
 void
 solutionHandler<dim>::init(matrixfreeHandler<dim> &matrix_free_handler)
 {

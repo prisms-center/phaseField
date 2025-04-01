@@ -145,21 +145,10 @@ explicitSolver<dim, degree>::init()
         {
           const auto pair = std::make_pair(index, dependency_type);
 
-          Assert(this->solution_handler.solution_set.find(pair) !=
-                   this->solution_handler.solution_set.end(),
-                 dealii::ExcMessage("There is no solution vector for the given index = " +
-                                    std::to_string(index) +
-                                    " and type = " + to_string(dependency_type)));
-
-          Assert(this->solution_handler.new_solution_set.find(index) !=
-                   this->solution_handler.new_solution_set.end(),
-                 dealii::ExcMessage(
-                   "There is no new solution vector for the given index = " +
-                   std::to_string(index)));
-
-          solution_subset.push_back(this->solution_handler.solution_set.at(pair));
+          solution_subset.push_back(
+            this->solution_handler.get_solution_vector(index, dependency_type));
           new_solution_subset.push_back(
-            this->solution_handler.new_solution_set.at(index));
+            this->solution_handler.get_new_solution_vector(index));
           global_to_local_solution.emplace(pair, solution_subset.size() - 1);
         }
     }

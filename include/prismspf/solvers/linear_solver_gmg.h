@@ -264,8 +264,8 @@ GMGSolver<dim, degree>::init()
 
   // Apply constraints
   this->constraint_handler.get_constraint(this->field_index)
-    .distribute(*(this->solution_handler.solution_set.at(
-      std::make_pair(this->field_index, dependencyType::NORMAL))));
+    .distribute(*(this->solution_handler.get_solution_vector(this->field_index,
+                                                             dependencyType::NORMAL)));
 
   // TODO (landinjm): Should I put this somewhere else?
 #ifdef DEBUG
@@ -309,8 +309,8 @@ inline void
 GMGSolver<dim, degree>::solve(const double step_length)
 {
   const auto *current_dof_handler = dof_handler.get_dof_handlers().at(this->field_index);
-  auto       *solution            = this->solution_handler.solution_set.at(
-    std::make_pair(this->field_index, dependencyType::NORMAL));
+  auto       *solution =
+    this->solution_handler.get_solution_vector(this->field_index, dependencyType::NORMAL);
 
   // Compute the residual
   this->system_matrix->compute_residual(*this->residual, *solution);

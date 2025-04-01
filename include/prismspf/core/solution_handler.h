@@ -36,6 +36,22 @@ public:
   ~solutionHandler();
 
   /**
+   * \brief Get a solution vector of a given field index and dependency type.
+   *
+   * TODO (landinjm): Make const ptr?
+   */
+  VectorType *
+  get_solution_vector(unsigned int index, dependencyType dependency_type) const;
+
+  /**
+   * \brief Get the "new" solution vector of a given field index.
+   *
+   * TODO (landinjm): Make const ptr?
+   */
+  VectorType *
+  get_new_solution_vector(unsigned int index) const;
+
+  /**
    * \brief Initialize the solution set.
    */
   void

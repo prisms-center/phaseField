@@ -179,9 +179,9 @@ linearSolverBase<dim, degree>::linearSolverBase(
   , constraint_handler(_constraint_handler)
   , solution_handler(_solution_handler)
   , field_index(_variable_attributes.field_index)
-  , residual(solution_handler.new_solution_set.at(field_index))
-  , newton_update(solution_handler.solution_set.at(
-      std::make_pair(field_index, dependencyType::CHANGE)))
+  , residual(solution_handler.get_new_solution_vector(field_index))
+  , newton_update(
+      solution_handler.get_solution_vector(field_index, dependencyType::CHANGE))
   , solver_control(
       _user_inputs.linear_solve_parameters.linear_solve.at(field_index).max_iterations)
 {
@@ -195,8 +195,8 @@ linearSolverBase<dim, degree>::linearSolverBase(
     std::make_unique<SystemMatrixType>(user_inputs, field_index, subset_attributes);
 
   // Create the residual subset of solution vectors and add the mapping to customPDE
-  residual_src.push_back(solution_handler.solution_set.at(
-    std::make_pair(field_index, dependencyType::NORMAL)));
+  residual_src.push_back(
+    solution_handler.get_solution_vector(field_index, dependencyType::NORMAL));
   residual_global_to_local_solution.emplace(std::make_pair(field_index,
                                                            dependencyType::NORMAL),
                                             0);
@@ -206,19 +206,8 @@ linearSolverBase<dim, degree>::linearSolverBase(
         {
           const auto pair = std::make_pair(variable_index, dependency_type);
 
-          Assert(solution_handler.solution_set.find(pair) !=
-                   solution_handler.solution_set.end(),
-                 dealii::ExcMessage("There is no solution vector for the given index = " +
-                                    std::to_string(variable_index) +
-                                    " and type = " + to_string(dependency_type)));
-
-          Assert(solution_handler.new_solution_set.find(variable_index) !=
-                   solution_handler.new_solution_set.end(),
-                 dealii::ExcMessage(
-                   "There is no new solution vector for the given index = " +
-                   std::to_string(variable_index)));
-
-          residual_src.push_back(solution_handler.solution_set.at(pair));
+          residual_src.push_back(
+            solution_handler.get_solution_vector(variable_index, dependency_type));
           residual_global_to_local_solution.emplace(pair, residual_src.size() - 1);
         }
     }
@@ -230,7 +219,7 @@ linearSolverBase<dim, degree>::linearSolverBase(
   // iterative updates. For this reason, we have to pass the residual vector as
   // VectorType src and all other dependencies for the LHS as std::vector<VectorType*>
   // src_subset.
-  newton_update_src.push_back(solution_handler.new_solution_set.at(field_index));
+  newton_update_src.push_back(solution_handler.get_new_solution_vector(field_index));
   newton_update_global_to_local_solution.emplace(std::make_pair(field_index,
                                                                 dependencyType::CHANGE),
                                                  0);
@@ -244,19 +233,8 @@ linearSolverBase<dim, degree>::linearSolverBase(
             }
           const auto pair = std::make_pair(variable_index, dependency_type);
 
-          Assert(solution_handler.solution_set.find(pair) !=
-                   solution_handler.solution_set.end(),
-                 dealii::ExcMessage("There is no solution vector for the given index = " +
-                                    std::to_string(variable_index) +
-                                    " and type = " + to_string(dependency_type)));
-
-          Assert(solution_handler.new_solution_set.find(variable_index) !=
-                   solution_handler.new_solution_set.end(),
-                 dealii::ExcMessage(
-                   "There is no new solution vector for the given index = " +
-                   std::to_string(variable_index)));
-
-          newton_update_src.push_back(solution_handler.solution_set.at(pair));
+          newton_update_src.push_back(
+            solution_handler.get_solution_vector(variable_index, dependency_type));
           newton_update_global_to_local_solution.emplace(pair,
                                                          newton_update_src.size() - 1);
         }

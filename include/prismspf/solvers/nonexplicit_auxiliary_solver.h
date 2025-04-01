@@ -149,9 +149,9 @@ nonexplicitAuxiliarySolver<dim, degree>::init()
 
       // Create the subset of solution vectors and add the mapping to customPDE
       new_solution_subset[index].push_back(
-        this->solution_handler.new_solution_set.at(index));
-      solution_subset[index].push_back(this->solution_handler.solution_set.at(
-        std::make_pair(index, dependencyType::NORMAL)));
+        this->solution_handler.get_new_solution_vector(index));
+      solution_subset[index].push_back(
+        this->solution_handler.get_solution_vector(index, dependencyType::NORMAL));
       global_to_local_solution[index].emplace(std::make_pair(index,
                                                              dependencyType::NORMAL),
                                               0);
@@ -162,21 +162,9 @@ nonexplicitAuxiliarySolver<dim, degree>::init()
             {
               const auto pair = std::make_pair(variable_index, dependency_type);
 
-              Assert(this->solution_handler.solution_set.find(pair) !=
-                       this->solution_handler.solution_set.end(),
-                     dealii::ExcMessage(
-                       "There is no solution vector for the given index = " +
-                       std::to_string(variable_index) +
-                       " and type = " + to_string(dependency_type)));
-
-              Assert(this->solution_handler.new_solution_set.find(variable_index) !=
-                       this->solution_handler.new_solution_set.end(),
-                     dealii::ExcMessage(
-                       "There is no new solution vector for the given index = " +
-                       std::to_string(variable_index)));
-
               solution_subset[index].push_back(
-                this->solution_handler.solution_set.at(pair));
+                this->solution_handler.get_solution_vector(variable_index,
+                                                           dependency_type));
               global_to_local_solution[index].emplace(pair,
                                                       solution_subset.at(index).size() -
                                                         1);
@@ -212,8 +200,7 @@ nonexplicitAuxiliarySolver<dim, degree>::solve()
 
       // Apply constraints
       this->constraint_handler.get_constraint(index).distribute(
-        *(this->solution_handler.solution_set.at(
-          std::make_pair(index, dependencyType::NORMAL))));
+        *(this->solution_handler.get_solution_vector(index, dependencyType::NORMAL)));
     }
 }
 

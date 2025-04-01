@@ -279,19 +279,12 @@ nonexplicitBase<dim, degree>::set_initial_condition()
              dealii::ExcMessage(
                "There is no entry in the attribute subset for the given index = " +
                std::to_string(index)));
-      Assert(solution_handler.solution_set.find(
-               std::make_pair(index, dependencyType::NORMAL)) !=
-               solution_handler.solution_set.end(),
-             dealii::ExcMessage("There is no solution vector for the given index = " +
-                                std::to_string(index) +
-                                " and type = " + to_string(dependencyType::NORMAL)));
 
       dealii::VectorTools::interpolate(
         mapping,
         *(dof_handler.get_dof_handlers().at(index)),
         initialCondition<dim>(index, subset_attributes.at(index).field_type, user_inputs),
-        *(solution_handler.solution_set.at(
-          std::make_pair(index, dependencyType::NORMAL))));
+        *(solution_handler.get_solution_vector(index, dependencyType::NORMAL)));
 
       // TODO (landinjm): Fix so that we apply some sort of initial condition to all old
       // vector for all types.

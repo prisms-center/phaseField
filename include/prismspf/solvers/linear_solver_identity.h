@@ -94,8 +94,8 @@ identitySolver<dim, degree>::init()
 
   // Apply constraints
   this->constraint_handler.get_constraint(this->field_index)
-    .distribute(*(this->solution_handler.solution_set.at(
-      std::make_pair(this->field_index, dependencyType::NORMAL))));
+    .distribute(*(this->solution_handler.get_solution_vector(this->field_index,
+                                                             dependencyType::NORMAL)));
 }
 
 template <int dim, int degree>
@@ -107,8 +107,8 @@ template <int dim, int degree>
 inline void
 identitySolver<dim, degree>::solve(const double step_length)
 {
-  auto *solution = this->solution_handler.solution_set.at(
-    std::make_pair(this->field_index, dependencyType::NORMAL));
+  auto *solution =
+    this->solution_handler.get_solution_vector(this->field_index, dependencyType::NORMAL);
 
   // Compute the residual
   this->system_matrix->compute_residual(*this->residual, *solution);
