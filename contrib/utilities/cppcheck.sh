@@ -38,7 +38,7 @@ cmake --build . || exit 3
 (
   cd include
   find . -name '*.h'
-) | grep -v allheaders.h | sed 's|^./|#include <|' | sed 's|$|>|' >include/allheaders.h
+) | grep -v allheaders.h | sed 's|^./|#include <|' | sed 's|$|>|' >include/prismspf/allheaders.h
 
 # Run cppcheck
 cppcheck \
