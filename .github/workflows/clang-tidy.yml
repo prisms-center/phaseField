@@ -38,16 +38,7 @@ jobs:
           with:
             fetch-depth: 30
 
-        - name: Cache llvm-18 installation
-          uses: actions/cache@v3
-          with:
-            path: /usr/lib/llvm-18
-            key: ${{ runner.os }}-llvm-18
-            restore-keys: |
-              ${{ runner.os }}-llvm
-
         - name: Install llvm-18
-          if: steps.cache.outputs.cache-hit != 'true'
           run: |
             wget https://apt.llvm.org/llvm.sh
             chmod +x llvm.sh
