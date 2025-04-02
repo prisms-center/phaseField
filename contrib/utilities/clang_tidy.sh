@@ -47,7 +47,8 @@ cmake --build . || exit 3
     find . -name '*.h'
 ) | grep -v allheaders.h | sed 's|^./|#include <|' | sed 's|$|>|' >include/prismspf/allheaders.h
 
-# TODO: cat the clang-tidy rules here
+# Print clang-tidy rules
+cat .clang-tidy
 
 # Run clang-tidy
 $CLANG_TIDY -p . -quiet -header-filter "include/*" -extra-arg='-DCLANG_TIDY' 2>error.txt >output.txt

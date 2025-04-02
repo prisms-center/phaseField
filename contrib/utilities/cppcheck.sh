@@ -42,7 +42,7 @@ cmake --build . || exit 3
 
 # Run cppcheck
 cppcheck \
-  --enable=all --language=c++ --std=c++17 --inline-suppr \
+  --enable=all -q --language=c++ --std=c++17 --inline-suppr \
   --suppress=missingIncludeSystem --suppress=unknownMacro \
   --project=compile_commands.json --check-level=exhaustive \
   >"output.txt" 2>&1
