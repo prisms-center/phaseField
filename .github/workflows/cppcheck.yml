@@ -23,7 +23,7 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request'}}
 
 jobs:
-    clang-tidy:
+    cppcheck:
       runs-on: [ubuntu-22.04]
 
       container:
@@ -36,20 +36,7 @@ jobs:
           with:
             fetch-depth: 30
 
-        - name: Cache cppcheck installation
-          uses: actions/cache@v3
-          with:
-            path: |
-              /usr/local/bin/cppcheck
-              /usr/local/bin/cppcheck-htmlreport
-              /usr/local/share/Cppcheck
-              cppcheck-2.17.1/build
-            key: ${{ runner.os }}-cppcheck-2.17.1
-            restore-keys: |
-              ${{ runner.os }}-cppcheck-
-
         - name: Install cppcheck
-          if: steps.cache.outputs.cache-hit != 'true'
           run: |
             wget https://github.com/danmar/cppcheck/archive/refs/tags/2.17.1.tar.gz
             tar -xvzf 2.17.1.tar.gz
