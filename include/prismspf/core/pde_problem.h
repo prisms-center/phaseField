@@ -376,7 +376,7 @@ PDEProblem<dim, degree>::init_system()
 
   // Output initial condition
   conditionalOStreams::pout_base() << "outputting initial condition...\n" << std::flush;
-  solutionOutput<dim>(solution_handler.solution_set,
+  solutionOutput<dim>(solution_handler.get_solution_vector(),
                       dof_handler.get_dof_handlers(),
                       degree,
                       "solution",
@@ -437,7 +437,7 @@ PDEProblem<dim, degree>::solve()
         {
           postprocess_explicit_solver.solve();
 
-          solutionOutput<dim>(solution_handler.solution_set,
+          solutionOutput<dim>(solution_handler.get_solution_vector(),
                               dof_handler.get_dof_handlers(),
                               degree,
                               "solution",
@@ -446,7 +446,7 @@ PDEProblem<dim, degree>::solve()
           // Print the l2-norms of each solution
           conditionalOStreams::pout_base()
             << "Iteration: " << user_inputs.temporal_discretization.increment << "\n";
-          for (const auto &[pair, vector] : solution_handler.solution_set)
+          for (const auto &[pair, vector] : solution_handler.get_solution_vector())
             {
               conditionalOStreams::pout_base()
                 << "  Solution index " << pair.first << " type " << to_string(pair.second)

@@ -36,12 +36,26 @@ public:
   ~solutionHandler();
 
   /**
+   * \brief Get the solution vector set.
+   */
+  std::unordered_map<std::pair<unsigned int, dependencyType>, VectorType *, pairHash>
+  get_solution_vector() const;
+
+  /**
    * \brief Get a solution vector of a given field index and dependency type.
    *
    * TODO (landinjm): Make const ptr?
    */
   VectorType *
   get_solution_vector(unsigned int index, dependencyType dependency_type) const;
+
+  /**
+   * \brief Get the "new" solution vector set.
+   *
+   * TODO (landinjm): Make const ptr?
+   */
+  std::unordered_map<unsigned int, VectorType *>
+  get_new_solution_vector() const;
 
   /**
    * \brief Get the "new" solution vector of a given field index.
@@ -70,6 +84,12 @@ public:
   void
   update(const fieldSolveType &field_solve_type, const unsigned int &variable_index = 0);
 
+private:
+  /**
+   * \brief The attribute list of the relevant variables.
+   */
+  const std::map<unsigned int, variableAttributes> *attributes_list;
+
   /**
    * \brief The collection of solution vector at the current timestep. This includes
    * current values and old values.
@@ -83,12 +103,6 @@ public:
    * current values which get updated in the `solution_set`.
    */
   std::unordered_map<unsigned int, VectorType *> new_solution_set;
-
-private:
-  /**
-   * \brief The attribute list of the relevant variables.
-   */
-  const std::map<unsigned int, variableAttributes> *attributes_list;
 };
 
 PRISMS_PF_END_NAMESPACE

@@ -37,6 +37,16 @@ solutionHandler<dim>::~solutionHandler()
 }
 
 template <int dim>
+std::unordered_map<std::pair<unsigned int, dependencyType>,
+                   typename solutionHandler<dim>::VectorType *,
+                   pairHash>
+solutionHandler<dim>::get_solution_vector() const
+{
+  // TODO (landinjm): Add assertions here
+  return solution_set;
+}
+
+template <int dim>
 typename solutionHandler<dim>::VectorType *
 solutionHandler<dim>::get_solution_vector(unsigned int   index,
                                           dependencyType dependency_type) const
@@ -50,6 +60,13 @@ solutionHandler<dim>::get_solution_vector(unsigned int   index,
   Assert(solution_set.at(pair) != nullptr, dealii::ExcNotInitialized());
 
   return solution_set.at(pair);
+}
+
+template <int dim>
+std::unordered_map<unsigned int, typename solutionHandler<dim>::VectorType *>
+solutionHandler<dim>::get_new_solution_vector() const
+{
+  return new_solution_set;
 }
 
 template <int dim>

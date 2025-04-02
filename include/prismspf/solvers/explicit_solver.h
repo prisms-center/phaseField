@@ -124,7 +124,7 @@ explicitSolver<dim, degree>::init()
   this->set_initial_condition();
 
   // Apply constraints
-  for (auto &[pair, vector] : this->solution_handler.solution_set)
+  for (auto &[pair, vector] : this->solution_handler.get_solution_vector())
     {
       if (this->subset_attributes.find(pair.first) == this->subset_attributes.end())
         {
@@ -170,7 +170,7 @@ explicitSolver<dim, degree>::solve()
 
   // Scale the update by the respective (SCALAR/VECTOR) invm. Note that we do this with
   // the original solution set to avoid some messy mapping.
-  for (auto [index, vector] : this->solution_handler.new_solution_set)
+  for (auto [index, vector] : this->solution_handler.get_new_solution_vector())
     {
       if (this->subset_attributes.find(index) != this->subset_attributes.end())
         {
@@ -182,7 +182,7 @@ explicitSolver<dim, degree>::solve()
   this->solution_handler.update(fieldSolveType::EXPLICIT);
 
   // Apply constraints
-  for (auto &[pair, vector] : this->solution_handler.solution_set)
+  for (auto &[pair, vector] : this->solution_handler.get_solution_vector())
     {
       if (this->subset_attributes.find(pair.first) == this->subset_attributes.end())
         {
