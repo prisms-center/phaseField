@@ -78,6 +78,24 @@ public:
   update_ghosts() const;
 
   /**
+   * \brief Apply the given constraints to a solution vector of a given field index.
+   *
+   * Note this applies constraints for all dependencyTypes of the given index.
+   */
+  void
+  apply_constraints(unsigned int                             index,
+                    const dealii::AffineConstraints<double> &constraints);
+
+  /**
+   * \brief Apply intial condition to the old fields. For now, this simply copies the
+   * values in the normal field to the old.
+   *
+   * TODO (landinjm): What should we do for the initial condition of old fields.
+   */
+  void
+  apply_initial_condition_for_old_fields();
+
+  /**
    * \brief Update the `solution_set` with the `new_solution_set`. This has different
    * variants on which solutions to swap based on the fieldSolveType.
    */

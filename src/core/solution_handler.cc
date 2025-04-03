@@ -132,6 +132,37 @@ solutionHandler<dim>::update_ghosts() const
 
 template <int dim>
 void
+solutionHandler<dim>::apply_constraints(
+  unsigned int                             index,
+  const dealii::AffineConstraints<double> &constraints)
+{
+  for (auto &[pair, vector] : solution_set)
+    {
+      if (pair.first != index)
+        {
+          continue;
+        }
+      constraints.distribute(*vector);
+    }
+}
+
+template <int dim>
+void
+solutionHandler<dim>::apply_initial_condition_for_old_fields()
+{
+  for (auto &[pair, vector] : solution_set)
+    {
+      if (pair.second == dependencyType::NORMAL)
+        {
+          continue;
+        }
+      *(get_solution_vector(pair.first, pair.second)) =
+        *(get_solution_vector(pair.first, dependencyType::NORMAL));
+    }
+}
+
+template <int dim>
+void
 solutionHandler<dim>::update(const fieldSolveType &field_solve_type,
                              const unsigned int   &variable_index)
 {

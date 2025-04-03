@@ -288,13 +288,7 @@ nonexplicitBase<dim, degree>::set_initial_condition()
 
       // TODO (landinjm): Fix so that we apply some sort of initial condition to all old
       // vector for all types.
-      if (solution_handler.get_solution_vector().find(
-            std::make_pair(index, dependencyType::OLD_1)) !=
-          solution_handler.get_solution_vector().end())
-        {
-          *(solution_handler.get_solution_vector(index, dependencyType::OLD_1)) =
-            *(solution_handler.get_solution_vector(index, dependencyType::NORMAL));
-        }
+      solution_handler.apply_initial_condition_for_old_fields();
     }
 }
 

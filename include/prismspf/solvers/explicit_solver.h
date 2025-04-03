@@ -124,13 +124,11 @@ explicitSolver<dim, degree>::init()
   this->set_initial_condition();
 
   // Apply constraints
-  for (auto &[pair, vector] : this->solution_handler.get_solution_vector())
+  for (const auto &[index, variable] : this->subset_attributes)
     {
-      if (this->subset_attributes.find(pair.first) == this->subset_attributes.end())
-        {
-          continue;
-        }
-      this->constraint_handler.get_constraint(pair.first).distribute(*vector);
+      this->solution_handler.apply_constraints(index,
+                                               this->constraint_handler.get_constraint(
+                                                 index));
     }
 
   // Set up the user-implemented equations and create the residual vectors
@@ -182,13 +180,13 @@ explicitSolver<dim, degree>::solve()
   this->solution_handler.update(fieldSolveType::EXPLICIT);
 
   // Apply constraints
-  for (auto &[pair, vector] : this->solution_handler.get_solution_vector())
+  // TODO (landinjm): This applies the constraints even to the old fields, which is
+  // incorrect.
+  for (const auto &[index, variable] : this->subset_attributes)
     {
-      if (this->subset_attributes.find(pair.first) == this->subset_attributes.end())
-        {
-          continue;
-        }
-      this->constraint_handler.get_constraint(pair.first).distribute(*vector);
+      this->solution_handler.apply_constraints(index,
+                                               this->constraint_handler.get_constraint(
+                                                 index));
     }
 }
 
