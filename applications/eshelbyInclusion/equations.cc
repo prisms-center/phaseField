@@ -82,7 +82,8 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
   scalarvalueType dist, a;
 
   // Radius of the inclusion
-  a = constV(10.0);
+  //a = constV(10.0);
+  a = incRadius;
 
   // Distance from the center of the inclusion
   dist = std::sqrt((q_point_loc[0] - constV(0.0)) * (q_point_loc[0] - constV(0.0)) +
@@ -96,9 +97,11 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
         {
           if (i == j)
             {
-              sfts[i][j] =
-                0.01 * (0.5 + 0.5 * (constV(1.0) - std::exp(-20.0 * (dist - a))) /
-                                (constV(1.0) + std::exp(-20.0 * (dist - a))));
+              //sfts[i][j] =
+              //  0.01 * (0.5 + 0.5 * (constV(1.0) - std::exp(-20.0 * (dist - a))) /
+              //                  (constV(1.0) + std::exp(-20.0 * (dist - a))));
+              sfts[i][j] = 
+                0.01 * (0.5 + 0.5 * (-1.0 * std::tanh(-20.0 * (dist - a))));
             }
           else
             {

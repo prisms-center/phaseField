@@ -60,9 +60,14 @@ set Boundary condition for variable u, x component = DIRICHLET: 0.0, DIRICHLET: 
 set Boundary condition for variable u, y component = NATURAL, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0
 set Boundary condition for variable u, z component = NATURAL, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0
 
+#set Boundary condition for variable u, x component = DIRICHLET: 0.0, NON_UNIFORM_DIRICHLET, NATURAL, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0
+#set Boundary condition for variable u, y component = NATURAL, DIRICHLET: 0.0, DIRICHLET: 0.0, NON_UNIFORM_DIRICHLET, NATURAL, DIRICHLET: 0.0
+#set Boundary condition for variable u, z component = NATURAL, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0, DIRICHLET: 0.0, NON_UNIFORM_DIRICHLET
+
 # =================================================================================
 # Set the model constants
 # =================================================================================
 # Type options currently are double, int, bool, and tensor
 
 set Model constant CIJ = (22.5,0.3), isotropic elastic constants
+set Model constant incRadius = 10.0, DOUBLE
