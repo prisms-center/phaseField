@@ -446,11 +446,11 @@ PDEProblem<dim, degree>::solve()
           // Print the l2-norms of each solution
           conditionalOStreams::pout_base()
             << "Iteration: " << user_inputs.temporal_discretization.increment << "\n";
-          for (const auto &[pair, vector] : solution_handler.get_solution_vector())
+          for (const auto &[index, vector] : solution_handler.get_solution_vector())
             {
               conditionalOStreams::pout_base()
-                << "  Solution index " << pair.first << " type " << to_string(pair.second)
-                << " l2-norm: " << vector->l2_norm() << "\n";
+                << "  Solution index " << index << " l2-norm: " << vector->l2_norm()
+                << "\n";
             }
           conditionalOStreams::pout_base() << "\n" << std::flush;
         }

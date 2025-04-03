@@ -37,13 +37,23 @@ solutionHandler<dim>::~solutionHandler()
 }
 
 template <int dim>
-std::unordered_map<std::pair<unsigned int, dependencyType>,
-                   typename solutionHandler<dim>::VectorType *,
-                   pairHash>
+std::map<unsigned int, typename solutionHandler<dim>::VectorType *>
 solutionHandler<dim>::get_solution_vector() const
 {
-  // TODO (landinjm): Add assertions here
-  return solution_set;
+  std::map<unsigned int, VectorType *> temp;
+  for (auto &[pair, vector] : solution_set)
+    {
+      if (pair.second != dependencyType::NORMAL)
+        {
+          continue;
+        }
+
+      Assert(vector != nullptr, dealii::ExcNotInitialized());
+
+      temp.emplace(pair.first, vector);
+    }
+
+  return temp;
 }
 
 template <int dim>

@@ -39,9 +39,7 @@ public:
   /**
    * \brief Constructor for a multiple fields that must be output.
    */
-  solutionOutput(const std::unordered_map<std::pair<unsigned int, dependencyType>,
-                                          VectorType *,
-                                          pairHash>                 &solution_set,
+  solutionOutput(const std::map<unsigned int, VectorType *>         &solution_set,
                  const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers,
                  const unsigned int                                 &degree,
                  const std::string                                  &name,
@@ -96,9 +94,7 @@ solutionOutput<dim, number>::solutionOutput(const VectorType               &solu
 
 template <int dim, typename number>
 solutionOutput<dim, number>::solutionOutput(
-  const std::unordered_map<std::pair<unsigned int, dependencyType>,
-                           VectorType *,
-                           pairHash>                 &solution_set,
+  const std::map<unsigned int, VectorType *>         &solution_set,
   const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers,
   const unsigned int                                 &degree,
   const std::string                                  &name,
@@ -114,7 +110,7 @@ solutionOutput<dim, number>::solutionOutput(
   // Add data vectors
   for (const auto &[index, variable] : user_inputs.var_attributes)
     {
-      auto *solution = solution_set.at(std::make_pair(index, dependencyType::NORMAL));
+      auto *solution = solution_set.at(index);
       solution->update_ghost_values();
 
       // Mark field as SCALAR/VECTOR

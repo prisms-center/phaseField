@@ -36,9 +36,12 @@ public:
   ~solutionHandler();
 
   /**
-   * \brief Get the solution vector set.
+   * \brief Get the solution vector set. This contains all the normal fields and is
+   * typically used for output.
+   *
+   * TODO (landinjm): Make const ptr?
    */
-  std::unordered_map<std::pair<unsigned int, dependencyType>, VectorType *, pairHash>
+  [[nodiscard]] std::map<unsigned int, VectorType *>
   get_solution_vector() const;
 
   /**
@@ -46,7 +49,7 @@ public:
    *
    * TODO (landinjm): Make const ptr?
    */
-  VectorType *
+  [[nodiscard]] VectorType *
   get_solution_vector(unsigned int index, dependencyType dependency_type) const;
 
   /**
@@ -54,7 +57,7 @@ public:
    *
    * TODO (landinjm): Make const ptr?
    */
-  std::unordered_map<unsigned int, VectorType *>
+  [[nodiscard]] std::unordered_map<unsigned int, VectorType *>
   get_new_solution_vector() const;
 
   /**
@@ -62,7 +65,7 @@ public:
    *
    * TODO (landinjm): Make const ptr?
    */
-  VectorType *
+  [[nodiscard]] VectorType *
   get_new_solution_vector(unsigned int index) const;
 
   /**
