@@ -315,13 +315,12 @@ MatrixFreePDE<dim, degree>::applyInitialConditions()
   // Read in each vtk once and apply initial conditions
   using ScalarField = PRISMS::PField<double *, double, dim>;
   using Body        = PRISMS::Body<double *, dim>;
-  Body body;
 
-  for (const auto &pair : file_field_map)
+  for (const auto &[filename_no_ext, index_list] : file_field_map)
     {
-      bool                using_parallel_files = false;
-      std::string         filename             = pair.first;
-      std::vector<size_t> index_list           = pair.second;
+      std::string filename = filename_no_ext;
+      Body        body;
+      bool        using_parallel_files = false;
       // For parallel file capability
       for (const auto &index : index_list)
         {
