@@ -57,7 +57,7 @@ public:
    *
    * TODO (landinjm): Make const ptr?
    */
-  [[nodiscard]] std::unordered_map<unsigned int, VectorType *>
+  [[nodiscard]] const std::unordered_map<unsigned int, VectorType *> &
   get_new_solution_vector() const;
 
   /**

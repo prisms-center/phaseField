@@ -73,7 +73,7 @@ solutionHandler<dim>::get_solution_vector(unsigned int   index,
 }
 
 template <int dim>
-std::unordered_map<unsigned int, typename solutionHandler<dim>::VectorType *>
+const std::unordered_map<unsigned int, typename solutionHandler<dim>::VectorType *> &
 solutionHandler<dim>::get_new_solution_vector() const
 {
   return new_solution_set;
