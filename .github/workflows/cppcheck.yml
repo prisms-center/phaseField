@@ -27,7 +27,7 @@ jobs:
       runs-on: [ubuntu-22.04]
 
       container:
-        image: dealii/dealii:v9.6.0-jammy
+        image: dealii/dealii:v9.6.0-rc2-jammy
         options: --user root
 
       steps:

@@ -41,7 +41,7 @@ cmake --build . || exit 3
 ) | grep -v allheaders.h | sed 's|^./|#include <|' | sed 's|$|>|' >include/prismspf/allheaders.h
 
 # Run cppcheck
-cppcheck --enable=all -q --language=c++ --std=c++17 --inline-suppr --suppress=missingIncludeSystem --suppress=unknownMacro --project=compile_commands.json --check-level=exhaustive >"output.txt" 2>&1
+cppcheck --enable=all -q --inline-suppr --suppress=missingIncludeSystem --suppress=unknownMacro --project=compile_commands.json --check-level=exhaustive >"output.txt" 2>&1
 
 # Separate unusedFunction messages into a different file. This is because most functions
 # are used by the user. It doesn't hurt to periodically check.
