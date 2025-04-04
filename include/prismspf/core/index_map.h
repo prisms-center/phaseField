@@ -6,7 +6,6 @@
 #include <prismspf/config.h>
 
 #include <map>
-#include <ostream>
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -25,6 +24,8 @@ PRISMS_PF_BEGIN_NAMESPACE
 class indexMap
 {
 public:
+  using map_index = unsigned int;
+
   /**
    *  \brief Blank constructor.
    */
@@ -61,7 +62,7 @@ indexMap::indexMap(const std::map<unsigned int, variableAttributes> &_variable_a
   init();
 }
 
-void
+inline void
 indexMap::init()
 {
   Assert(variable_attributes != nullptr, dealii::ExcNotInitialized());
@@ -70,45 +71,6 @@ indexMap::init()
   // in such a way that the vector is ordered in terms of index and then
   // dependencyType. For example, 1 NORMAL, 1 OLD_1, 2 NORMAL, 3 NORMAL, 3
   // OLD_1, 3 OLD_2...
-
-  // For now, I'll do a double loop through the variableAttributes to get the
-  // right ordering.
-  for (const auto &[index_1, variable_1] : *variable_attributes)
-    {
-      mapping.emplace_back(index_1, dependencyType::NORMAL);
-
-      for (const auto &[index_2, variable_2] : *variable_attributes)
-        {
-          if (variable_2.dependency_set_RHS.find(index_1) !=
-              variable_2.dependency_set_RHS.end())
-            {
-              for (const auto &[dependency_type, field_type] :
-                   variable_2.dependency_set_RHS.at(index_1))
-                {
-                  if (dependency_type == dependencyType::NORMAL ||
-                      dependency_type == dependencyType::CHANGE)
-                    {
-                      continue;
-                    }
-                  mapping.emplace_back(index_1, dependency_type);
-                }
-            }
-          if (variable_2.dependency_set_LHS.find(index_1) !=
-              variable_2.dependency_set_LHS.end())
-            {
-              for (const auto &[dependency_type, field_type] :
-                   variable_2.dependency_set_LHS.at(index_1))
-                {
-                  if (dependency_type == dependencyType::NORMAL ||
-                      dependency_type == dependencyType::CHANGE)
-                    {
-                      continue;
-                    }
-                  mapping.emplace_back(index_1, dependency_type);
-                }
-            }
-        }
-    }
 }
 
 PRISMS_PF_END_NAMESPACE
