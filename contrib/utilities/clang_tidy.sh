@@ -17,12 +17,10 @@ if test ! -d src -o ! -d include -o ! -d applications; then
 fi
 
 # TODO: Don't think I need to use clang compiler if mpi compiler is being used by default
-if [ -x "$(command -v run-clang-tidy)" ] && [ -x "$(command -v clang++)" ]; then
+if [ -x "$(command -v run-clang-tidy)" ]; then
     CLANG_TIDY=run-clang-tidy
-    CXX_COMPILER=clang++
-elif [ -x "$(command -v run-clang-tidy-18)" ] && [ -x "$(command -v clang++-18)" ]; then
+elif [ -x "$(command -v run-clang-tidy-18)" ]; then
     CLANG_TIDY=run-clang-tidy-18
-    CXX_COMPILER=clang++-18
 else
     echo "Neither run-clang-tidy and clang++ nor run-clang-tidy-18 and clang++-18 are in path."
     exit 1
