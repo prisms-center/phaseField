@@ -1,4 +1,4 @@
-name: CI-Linux
+name: linux
 
 on: 
   push:
@@ -26,7 +26,7 @@ permissions:
   contents: read
 
 jobs:
-  CI-Linux:
+  linux-base:
     runs-on: [ubuntu-22.04]
     timeout-minutes: 120
 
@@ -40,8 +40,8 @@ jobs:
 
       - name: Compile PRISMS-PF
         run: |
-          cmake .
-          make -j $(nproc)
+          cmake -G Ninja .
+          ninja -j $(nproc)
 
       - name: Run PRISMS-PF unit tests
         run: |
@@ -49,8 +49,8 @@ jobs:
           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
           cd tests/unit_tests
-          cmake .
-          make -j $(nproc)
+          cmake -G Ninja .
+          ninja -j $(nproc)
           ctest
 
       - name: Run PRISMS-PF automatic tests
