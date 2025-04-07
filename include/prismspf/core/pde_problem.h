@@ -29,6 +29,7 @@
 #include <prismspf/solvers/nonexplicit_linear_solver.h>
 #include <prismspf/solvers/nonexplicit_self_nonlinear_solver.h>
 
+#include <prismspf/utilities/compute_integral.h>
 #include <prismspf/utilities/element_volume.h>
 
 #include <prismspf/config.h>
@@ -144,9 +145,16 @@ private:
   dealii::MappingQ1<dim> mapping;
 
   /**
-   * \brief Element volumes
+   * \brief Element volumes.
    */
   elementVolume<dim, degree, double> element_volume;
+
+  /**
+   * \brief Integral utility.
+   *
+   * TODO (landinjm): Rename this class.
+   */
+  computeIntegral<dim, degree, double> integral_computer;
 
   /**
    * \brief Explicit constant field solver class.
@@ -451,14 +459,44 @@ PDEProblem<dim, degree>::solve()
                               "solution",
                               *user_inputs);
 
-          // Print the l2-norms of each solution
+          // Print the l2-norms and integrals of each solution
           conditionalOStreams::pout_base()
             << "Iteration: " << user_inputs->temporal_discretization.increment << "\n";
           for (const auto &[index, vector] : solution_handler.get_solution_vector())
             {
               conditionalOStreams::pout_base()
                 << "  Solution index " << index << " l2-norm: " << vector->l2_norm()
-                << "\n";
+                << " integrated value: ";
+
+              const auto local_field_type =
+                user_inputs->var_attributes->at(index).field_type;
+
+              if (local_field_type == fieldType::VECTOR)
+                {
+                  std::vector<double> integrated_values(dim, 0.0);
+                  integral_computer.compute_integral(
+                    integrated_values,
+                    *dof_handler.get_dof_handlers()[index],
+                    *vector);
+
+                  for (unsigned int dimension = 0; dimension < dim; dimension++)
+                    {
+                      conditionalOStreams::pout_base()
+                        << integrated_values[dimension] << " ";
+                    }
+                }
+              else
+                {
+                  double integrated_value = 0.0;
+                  integral_computer.compute_integral(
+                    integrated_value,
+                    *dof_handler.get_dof_handlers()[index],
+                    *vector);
+
+                  conditionalOStreams::pout_base() << integrated_value;
+                }
+
+              conditionalOStreams::pout_base() << "\n";
             }
           conditionalOStreams::pout_base() << "\n" << std::flush;
         }

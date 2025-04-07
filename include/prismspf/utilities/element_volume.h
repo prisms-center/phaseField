@@ -42,15 +42,20 @@ public:
   compute_element_volume(const dealii::FESystem<dim> &fe_system);
 
   /**
-   * \brief Vector that stores element volumes
+   * \brief Get the vector of element volumes (const reference).
    */
-  dealii::AlignedVector<dealii::VectorizedArray<number>> element_volume;
+  const dealii::AlignedVector<dealii::VectorizedArray<number>> &
+  get_element_volumes() const;
 
-private:
   /**
    * \brief Matrix-free object.
    */
   std::shared_ptr<dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>> data;
+
+  /**
+   * \brief Vector that stores element volumes
+   */
+  dealii::AlignedVector<dealii::VectorizedArray<number>> element_volume;
 };
 
 template <int dim, int degree, typename number>
@@ -66,6 +71,7 @@ void
 elementVolume<dim, degree, number>::compute_element_volume(
   const dealii::FESystem<dim> &fe_system)
 {
+  Assert(data != nullptr, dealii::ExcNotInitialized());
   // Get the number of cell batches. Note this is the same as the cell range in
   // cell_loop()
   const unsigned int n_cells = data->n_cell_batches();
@@ -107,5 +113,16 @@ elementVolume<dim, degree, number>::compute_element_volume(
         }
     }
 }
+
+template <int dim, int degree, typename number>
+const dealii::AlignedVector<dealii::VectorizedArray<number>> &
+elementVolume<dim, degree, number>::get_element_volumes() const
+{
+  Assert(data != nullptr, dealii::ExcNotInitialized());
+  Assert(!element_volume.empty(),
+         dealii::ExcMessage("The vector of element volumes is empty. Make sure to call "
+                            "`compute_element_volume` beforehand"));
+  return element_volume;
+};
 
 PRISMS_PF_END_NAMESPACE
