@@ -31,7 +31,7 @@ public:
                       dealii::ParameterHandler &parameter_handler);
 
   // Variable attributes
-  const std::map<unsigned int, variableAttributes> &var_attributes;
+  const std::map<unsigned int, variableAttributes> *var_attributes;
 
   // Spatial discretization parameters
   spatialDiscretization<dim> spatial_discretization;

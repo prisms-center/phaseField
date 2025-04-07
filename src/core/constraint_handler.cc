@@ -34,7 +34,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <int dim>
 constraintHandler<dim>::constraintHandler(const userInputParameters<dim> &_user_inputs)
   : user_inputs(&_user_inputs)
-  , constraints(_user_inputs.var_attributes.size(), dealii::AffineConstraints<double>())
+  , constraints(_user_inputs.var_attributes->size(), dealii::AffineConstraints<double>())
 {}
 
 template <int dim>
@@ -100,7 +100,7 @@ constraintHandler<dim>::make_constraints(
   const dealii::Mapping<dim>                         &mapping,
   const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers)
 {
-  for (const auto &[index, variable] : user_inputs->var_attributes)
+  for (const auto &[index, variable] : *user_inputs->var_attributes)
     {
       make_constraint(mapping, *dof_handlers.at(index), index);
     }
@@ -144,7 +144,7 @@ constraintHandler<dim>::make_constraint(const dealii::Mapping<dim>    &mapping,
       for (const auto &[boundary_id, boundary_type] : condition.boundary_condition_map)
         {
           const bool is_vector_field =
-            user_inputs->var_attributes.at(index).field_type == fieldType::VECTOR;
+            user_inputs->var_attributes->at(index).field_type == fieldType::VECTOR;
 
           // Create a component mask. This will only select a certain component for vector
           // fields
@@ -211,7 +211,7 @@ constraintHandler<dim>::make_constraint(const dealii::Mapping<dim>    &mapping,
             }
           else if (boundary_type == boundaryCondition::type::NON_UNIFORM_DIRICHLET)
             {
-              if (user_inputs->var_attributes.at(index).field_type != fieldType::VECTOR)
+              if (user_inputs->var_attributes->at(index).field_type != fieldType::VECTOR)
                 {
                   dealii::VectorTools::interpolate_boundary_values(
                     mapping,
@@ -290,7 +290,7 @@ constraintHandler<dim>::make_mg_constraint(
                condition.boundary_condition_map)
             {
               const bool is_vector_field =
-                user_inputs->var_attributes.at(index).field_type == fieldType::VECTOR;
+                user_inputs->var_attributes->at(index).field_type == fieldType::VECTOR;
               // Create a component mask. This will only select a certain component for
               // vector fields.
               dealii::ComponentMask mask = {};
@@ -309,7 +309,7 @@ constraintHandler<dim>::make_mg_constraint(
                 }
               else if (boundary_type == boundaryCondition::type::DIRICHLET)
                 {
-                  if (this->user_inputs->var_attributes.at(index).field_type !=
+                  if (this->user_inputs->var_attributes->at(index).field_type !=
                       fieldType::VECTOR)
                     {
                       dealii::VectorTools::interpolate_boundary_values(
@@ -355,7 +355,7 @@ constraintHandler<dim>::make_mg_constraint(
                                                             periodicity_vector);
 
                   // Set constraints
-                  if (user_inputs->var_attributes.at(index).field_type !=
+                  if (user_inputs->var_attributes->at(index).field_type !=
                       fieldType::VECTOR)
                     {
                       dealii::DoFTools::make_periodicity_constraints<dim, dim>(
@@ -376,7 +376,7 @@ constraintHandler<dim>::make_mg_constraint(
                 }
               else if (boundary_type == boundaryCondition::type::NON_UNIFORM_DIRICHLET)
                 {
-                  if (user_inputs->var_attributes.at(index).field_type !=
+                  if (user_inputs->var_attributes->at(index).field_type !=
                       fieldType::VECTOR)
                     {
                       dealii::VectorTools::interpolate_boundary_values(
@@ -413,7 +413,7 @@ void
 constraintHandler<dim>::set_pinned_point(const dealii::DoFHandler<dim> &dof_handler,
                                          const unsigned int            &index)
 {
-  Assert(user_inputs->var_attributes.at(index).field_type == fieldType::VECTOR,
+  Assert(user_inputs->var_attributes->at(index).field_type == fieldType::VECTOR,
          FeatureNotImplemented("Pinned points for vector fields"));
 
   const double tolerance = 1.0e-2;

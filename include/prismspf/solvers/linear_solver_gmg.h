@@ -98,7 +98,7 @@ private:
   /**
    * \brief Matrix-free object handler for multigrid data.
    */
-  dealii::MGLevelObject<matrixfreeHandler<dim, float>> &mg_matrix_free_handler;
+  dealii::MGLevelObject<matrixfreeHandler<dim, float>> *mg_matrix_free_handler;
 
   /**
    * \brief Minimum multigrid level
@@ -162,7 +162,7 @@ GMGSolver<dim, degree>::GMGSolver(
                                   _solution_handler)
   , triangulation_handler(&_triangulation_handler)
   , dof_handler(&_dof_handler)
-  , mg_matrix_free_handler(_mg_matrix_free_handler)
+  , mg_matrix_free_handler(&_mg_matrix_free_handler)
 {}
 
 template <int dim, int degree>
@@ -206,13 +206,14 @@ GMGSolver<dim, degree>::init()
       // the finite element I think.
       // TODO (landinjm): This should include dof handlers for all dependency fields. That
       // also means I need some sort of local indexing.
-      mg_matrix_free_handler[level].reinit(
+      (*mg_matrix_free_handler)[level].reinit(
         mapping,
         dof_handler->get_mg_dof_handler(this->field_index, level),
         this->constraint_handler->get_mg_constraint(this->field_index, level),
         dealii::QGaussLobatto<1>(degree + 1));
 
-      (*mg_operators)[level].initialize(mg_matrix_free_handler[level].get_matrix_free());
+      (*mg_operators)[level].initialize(
+        (*mg_matrix_free_handler)[level].get_matrix_free());
 
       (*mg_operators)[level].add_global_to_local_mapping(
         this->newton_update_global_to_local_solution);

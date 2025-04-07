@@ -108,7 +108,7 @@ solutionOutput<dim, number>::solutionOutput(
   dealii::DataOut<dim> data_out;
 
   // Add data vectors
-  for (const auto &[index, variable] : user_inputs.var_attributes)
+  for (const auto &[index, variable] : *user_inputs.var_attributes)
     {
       auto *solution = solution_set.at(index);
       solution->update_ghost_values();

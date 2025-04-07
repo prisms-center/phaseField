@@ -41,7 +41,7 @@ private:
   /**
    * \brief Element volumes
    */
-  const elementVolume<dim, degree, double> &element_volume;
+  const elementVolume<dim, degree, double> *element_volume;
 
   /**
    * \brief Matrix-free object.
@@ -52,7 +52,7 @@ private:
 template <int dim, int degree, typename number>
 computeIntegral<dim, degree, number>::computeIntegral(
   const elementVolume<dim, degree, number> &_element_volume)
-  : element_volume(_element_volume)
+  : element_volume(&_element_volume)
 {}
 
 template <int dim, int degree, typename number>

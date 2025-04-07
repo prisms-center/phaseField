@@ -96,37 +96,37 @@ protected:
   /**
    * \brief User-inputs.
    */
-  const userInputParameters<dim> &user_inputs;
+  const userInputParameters<dim> *user_inputs;
 
   /**
    * \brief Matrix-free object handler for non-multigrid data.
    */
-  const matrixfreeHandler<dim> &matrix_free_handler;
+  const matrixfreeHandler<dim> *matrix_free_handler;
 
   /**
    * \brief invm handler.
    */
-  const invmHandler<dim, degree> &invm_handler;
+  const invmHandler<dim, degree> *invm_handler;
 
   /**
    * \brief Constraint handler.
    */
-  const constraintHandler<dim> &constraint_handler;
+  const constraintHandler<dim> *constraint_handler;
 
   /**
    * \brief DoF handler.
    */
-  const dofHandler<dim> &dof_handler;
+  const dofHandler<dim> *dof_handler;
 
   /**
    * \brief Mappings to and from reference cell.
    */
-  const dealii::MappingQ1<dim> &mapping;
+  const dealii::MappingQ1<dim> *mapping;
 
   /**
    * \brief Solution handler.
    */
-  solutionHandler<dim> &solution_handler;
+  solutionHandler<dim> *solution_handler;
 
   /**
    * \brief Subset of variable attributes.
@@ -148,13 +148,13 @@ explicitBase<dim, degree>::explicitBase(
   const dofHandler<dim>          &_dof_handler,
   const dealii::MappingQ1<dim>   &_mapping,
   solutionHandler<dim>           &_solution_handler)
-  : user_inputs(_user_inputs)
-  , matrix_free_handler(_matrix_free_handler)
-  , invm_handler(_invm_handler)
-  , constraint_handler(_constraint_handler)
-  , dof_handler(_dof_handler)
-  , mapping(_mapping)
-  , solution_handler(_solution_handler)
+  : user_inputs(&_user_inputs)
+  , matrix_free_handler(&_matrix_free_handler)
+  , invm_handler(&_invm_handler)
+  , constraint_handler(&_constraint_handler)
+  , dof_handler(&_dof_handler)
+  , mapping(&_mapping)
+  , solution_handler(&_solution_handler)
 {}
 
 template <int dim, int degree>
@@ -171,7 +171,7 @@ explicitBase<dim, degree>::compute_subset_attributes(
 
   subset_attributes.clear();
 
-  for (const auto &[index, variable] : user_inputs.var_attributes)
+  for (const auto &[index, variable] : *user_inputs->var_attributes)
     {
       if (variable.field_solve_type == field_solve_type)
         {
@@ -232,7 +232,7 @@ explicitBase<dim, degree>::set_initial_condition()
 {
   for (const auto &[index, variable] : subset_attributes)
     {
-      Assert(dof_handler.get_dof_handlers().size() > index,
+      Assert(dof_handler->get_dof_handlers().size() > index,
              dealii::ExcMessage(
                "The const DoFHandler set is smaller than the given index = " +
                std::to_string(index)));
@@ -242,10 +242,12 @@ explicitBase<dim, degree>::set_initial_condition()
                std::to_string(index)));
 
       dealii::VectorTools::interpolate(
-        mapping,
-        *(dof_handler.get_dof_handlers().at(index)),
-        initialCondition<dim>(index, subset_attributes.at(index).field_type, user_inputs),
-        *(solution_handler.get_solution_vector(index, dependencyType::NORMAL)));
+        *mapping,
+        *(dof_handler->get_dof_handlers().at(index)),
+        initialCondition<dim>(index,
+                              subset_attributes.at(index).field_type,
+                              *user_inputs),
+        *(solution_handler->get_solution_vector(index, dependencyType::NORMAL)));
     }
 }
 

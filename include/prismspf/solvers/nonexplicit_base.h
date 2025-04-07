@@ -103,47 +103,47 @@ protected:
   /**
    * \brief User-inputs.
    */
-  const userInputParameters<dim> &user_inputs;
+  const userInputParameters<dim> *user_inputs;
 
   /**
    * \brief Matrix-free object handler for non-multigrid data.
    */
-  const matrixfreeHandler<dim> &matrix_free_handler;
+  const matrixfreeHandler<dim> *matrix_free_handler;
 
   /**
    * \brief Triangulation handler.
    */
-  const triangulationHandler<dim> &triangulation_handler;
+  const triangulationHandler<dim> *triangulation_handler;
 
   /**
    * \brief invm handler.
    */
-  const invmHandler<dim, degree> &invm_handler;
+  const invmHandler<dim, degree> *invm_handler;
 
   /**
    * \brief Constraint handler.
    */
-  const constraintHandler<dim> &constraint_handler;
+  const constraintHandler<dim> *constraint_handler;
 
   /**
    * \brief DoF handler.
    */
-  const dofHandler<dim> &dof_handler;
+  const dofHandler<dim> *dof_handler;
 
   /**
    * \brief Mappings to and from reference cell.
    */
-  const dealii::MappingQ1<dim> &mapping;
+  const dealii::MappingQ1<dim> *mapping;
 
   /**
    * \brief Matrix-free object handler for multigrid data.
    */
-  dealii::MGLevelObject<matrixfreeHandler<dim, float>> &mg_matrix_free_handler;
+  dealii::MGLevelObject<matrixfreeHandler<dim, float>> *mg_matrix_free_handler;
 
   /**
    * \brief Solution handler.
    */
-  solutionHandler<dim> &solution_handler;
+  solutionHandler<dim> *solution_handler;
 
   /**
    * \brief Subset of variable attributes for fields.
@@ -172,15 +172,15 @@ nonexplicitBase<dim, degree>::nonexplicitBase(
   const dealii::MappingQ1<dim>                         &_mapping,
   dealii::MGLevelObject<matrixfreeHandler<dim, float>> &_mg_matrix_free_handler,
   solutionHandler<dim>                                 &_solution_handler)
-  : user_inputs(_user_inputs)
-  , matrix_free_handler(_matrix_free_handler)
-  , triangulation_handler(_triangulation_handler)
-  , invm_handler(_invm_handler)
-  , constraint_handler(_constraint_handler)
-  , dof_handler(_dof_handler)
-  , mapping(_mapping)
-  , mg_matrix_free_handler(_mg_matrix_free_handler)
-  , solution_handler(_solution_handler)
+  : user_inputs(&_user_inputs)
+  , matrix_free_handler(&_matrix_free_handler)
+  , triangulation_handler(&_triangulation_handler)
+  , invm_handler(&_invm_handler)
+  , constraint_handler(&_constraint_handler)
+  , dof_handler(&_dof_handler)
+  , mapping(&_mapping)
+  , mg_matrix_free_handler(&_mg_matrix_free_handler)
+  , solution_handler(&_solution_handler)
 {}
 
 template <int dim, int degree>
@@ -199,7 +199,7 @@ nonexplicitBase<dim, degree>::compute_subset_attributes(
 
   subset_attributes.clear();
 
-  for (const auto &[index, variable] : user_inputs.var_attributes)
+  for (const auto &[index, variable] : *user_inputs->var_attributes)
     {
       if (variable.field_solve_type == field_solve_type)
         {
@@ -271,7 +271,7 @@ nonexplicitBase<dim, degree>::set_initial_condition()
           continue;
         }
 
-      Assert(dof_handler.get_dof_handlers().size() > index,
+      Assert(dof_handler->get_dof_handlers().size() > index,
              dealii::ExcMessage(
                "The const DoFHandler set is smaller than the given index = " +
                std::to_string(index)));
@@ -281,14 +281,16 @@ nonexplicitBase<dim, degree>::set_initial_condition()
                std::to_string(index)));
 
       dealii::VectorTools::interpolate(
-        mapping,
-        *(dof_handler.get_dof_handlers().at(index)),
-        initialCondition<dim>(index, subset_attributes.at(index).field_type, user_inputs),
-        *(solution_handler.get_solution_vector(index, dependencyType::NORMAL)));
+        *mapping,
+        *(dof_handler->get_dof_handlers().at(index)),
+        initialCondition<dim>(index,
+                              subset_attributes.at(index).field_type,
+                              *user_inputs),
+        *(solution_handler->get_solution_vector(index, dependencyType::NORMAL)));
 
       // TODO (landinjm): Fix so that we apply some sort of initial condition to all old
       // vector for all types.
-      solution_handler.apply_initial_condition_for_old_fields();
+      solution_handler->apply_initial_condition_for_old_fields();
     }
 }
 

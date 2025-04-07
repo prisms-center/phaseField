@@ -89,7 +89,7 @@ private:
   /**
    * \brief User-inputs.
    */
-  const userInputParameters<dim> &user_inputs;
+  const userInputParameters<dim> *user_inputs;
 
   /**
    * \brief Index map.
@@ -181,37 +181,37 @@ private:
 
 template <int dim, int degree>
 PDEProblem<dim, degree>::PDEProblem(const userInputParameters<dim> &_user_inputs)
-  : user_inputs(_user_inputs)
-  , index_map(_user_inputs.var_attributes)
+  : user_inputs(&_user_inputs)
+  , index_map(*_user_inputs.var_attributes)
   , triangulation_handler(_user_inputs)
   , constraint_handler(_user_inputs)
   , matrix_free_handler()
   , multigrid_matrix_free_handler(0, 0)
-  , invm_handler(_user_inputs.var_attributes)
-  , solution_handler(_user_inputs.var_attributes)
+  , invm_handler(*_user_inputs.var_attributes)
+  , solution_handler(*_user_inputs.var_attributes)
   , dof_handler(_user_inputs)
-  , explicit_constant_solver(user_inputs,
+  , explicit_constant_solver(_user_inputs,
                              matrix_free_handler,
                              invm_handler,
                              constraint_handler,
                              dof_handler,
                              mapping,
                              solution_handler)
-  , explicit_solver(user_inputs,
+  , explicit_solver(_user_inputs,
                     matrix_free_handler,
                     invm_handler,
                     constraint_handler,
                     dof_handler,
                     mapping,
                     solution_handler)
-  , postprocess_explicit_solver(user_inputs,
+  , postprocess_explicit_solver(_user_inputs,
                                 matrix_free_handler,
                                 invm_handler,
                                 constraint_handler,
                                 dof_handler,
                                 mapping,
                                 solution_handler)
-  , nonexplicit_auxiliary_solver(user_inputs,
+  , nonexplicit_auxiliary_solver(_user_inputs,
                                  matrix_free_handler,
                                  triangulation_handler,
                                  invm_handler,
@@ -220,7 +220,7 @@ PDEProblem<dim, degree>::PDEProblem(const userInputParameters<dim> &_user_inputs
                                  mapping,
                                  multigrid_matrix_free_handler,
                                  solution_handler)
-  , nonexplicit_linear_solver(user_inputs,
+  , nonexplicit_linear_solver(_user_inputs,
                               matrix_free_handler,
                               triangulation_handler,
                               invm_handler,
@@ -229,7 +229,7 @@ PDEProblem<dim, degree>::PDEProblem(const userInputParameters<dim> &_user_inputs
                               mapping,
                               multigrid_matrix_free_handler,
                               solution_handler)
-  , nonexplicit_self_nonlinear_solver(user_inputs,
+  , nonexplicit_self_nonlinear_solver(_user_inputs,
                                       matrix_free_handler,
                                       triangulation_handler,
                                       invm_handler,
@@ -261,7 +261,7 @@ PDEProblem<dim, degree>::init_system()
 
   // Create the SCALAR/VECTOR FESystem's, if applicable
   conditionalOStreams::pout_base() << "creating FESystem...\n" << std::flush;
-  for (const auto &[index, variable] : user_inputs.var_attributes)
+  for (const auto &[index, variable] : *user_inputs->var_attributes)
     {
       if (variable.field_type == fieldType::SCALAR &&
           fe_system.find(fieldType::SCALAR) == fe_system.end())
@@ -387,7 +387,7 @@ PDEProblem<dim, degree>::init_system()
                       dof_handler.get_dof_handlers(),
                       degree,
                       "solution",
-                      user_inputs);
+                      *user_inputs);
 
   timer::serial_timer().leave_subsection();
 }
@@ -429,18 +429,19 @@ PDEProblem<dim, degree>::solve()
        "  Solve\n"
     << "================================================\n"
     << std::flush;
-  while (user_inputs.temporal_discretization.increment <
-         user_inputs.temporal_discretization.total_increments)
+  while (user_inputs->temporal_discretization.increment <
+         user_inputs->temporal_discretization.total_increments)
     {
-      user_inputs.temporal_discretization.increment++;
-      user_inputs.temporal_discretization.time += user_inputs.temporal_discretization.dt;
+      user_inputs->temporal_discretization.increment++;
+      user_inputs->temporal_discretization.time +=
+        user_inputs->temporal_discretization.dt;
 
       CALI_MARK_BEGIN("Solve Increment");
       solve_increment();
       CALI_MARK_END("Solve Increment");
 
-      if (user_inputs.output_parameters.should_output(
-            user_inputs.temporal_discretization.increment))
+      if (user_inputs->output_parameters.should_output(
+            user_inputs->temporal_discretization.increment))
         {
           postprocess_explicit_solver.solve();
 
@@ -448,11 +449,11 @@ PDEProblem<dim, degree>::solve()
                               dof_handler.get_dof_handlers(),
                               degree,
                               "solution",
-                              user_inputs);
+                              *user_inputs);
 
           // Print the l2-norms of each solution
           conditionalOStreams::pout_base()
-            << "Iteration: " << user_inputs.temporal_discretization.increment << "\n";
+            << "Iteration: " << user_inputs->temporal_discretization.increment << "\n";
           for (const auto &[index, vector] : solution_handler.get_solution_vector())
             {
               conditionalOStreams::pout_base()

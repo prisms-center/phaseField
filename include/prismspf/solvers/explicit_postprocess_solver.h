@@ -112,11 +112,11 @@ explicitPostprocessSolver<dim, degree>::init()
 
   // Create the implementation of customPDE with the subset of variable attributes
   this->system_matrix =
-    std::make_unique<SystemMatrixType>(this->user_inputs, this->subset_attributes);
+    std::make_unique<SystemMatrixType>(*this->user_inputs, this->subset_attributes);
 
   // Set up the user-implemented equations and create the residual vectors
   this->system_matrix->clear();
-  this->system_matrix->initialize(this->matrix_free_handler.get_matrix_free());
+  this->system_matrix->initialize(this->matrix_free_handler->get_matrix_free());
 
   // Create the subset of solution vectors and add the mapping to customPDE
   for (const auto &[index, map] :
@@ -127,9 +127,9 @@ explicitPostprocessSolver<dim, degree>::init()
           const auto pair = std::make_pair(index, dependency_type);
 
           solution_subset.push_back(
-            this->solution_handler.get_solution_vector(index, dependency_type));
+            this->solution_handler->get_solution_vector(index, dependency_type));
           new_solution_subset.push_back(
-            this->solution_handler.get_new_solution_vector(index));
+            this->solution_handler->get_new_solution_vector(index));
           global_to_local_solution.emplace(pair, solution_subset.size() - 1);
         }
     }
@@ -153,16 +153,16 @@ explicitPostprocessSolver<dim, degree>::solve()
 
   // Scale the update by the respective (SCALAR/VECTOR) invm. Note that we do this with
   // the original solution set to avoid some messy mapping.
-  for (auto [index, vector] : this->solution_handler.get_new_solution_vector())
+  for (auto [index, vector] : this->solution_handler->get_new_solution_vector())
     {
       if (this->subset_attributes.find(index) != this->subset_attributes.end())
         {
-          vector->scale(this->invm_handler.get_invm(index));
+          vector->scale(this->invm_handler->get_invm(index));
         }
     }
 
   // Update the solutions
-  this->solution_handler.update(fieldSolveType::EXPLICIT_POSTPROCESS);
+  this->solution_handler->update(fieldSolveType::EXPLICIT_POSTPROCESS);
 }
 
 PRISMS_PF_END_NAMESPACE

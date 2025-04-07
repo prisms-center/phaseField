@@ -33,8 +33,8 @@ variableContainer<dim, degree, number>::variableContainer(
                            unsigned int,
                            pairHash>               &_global_to_local_solution,
   const solveType                                  &_solve_type)
-  : subset_attributes(_subset_attributes)
-  , global_to_local_solution(_global_to_local_solution)
+  : subset_attributes(&_subset_attributes)
+  , global_to_local_solution(&_global_to_local_solution)
   , solve_type(_solve_type)
 {
   auto construct_map =
@@ -63,24 +63,24 @@ variableContainer<dim, degree, number>::variableContainer(
   // For explicit solves we have already flattened the dependencies
   if (solve_type == solveType::EXPLICIT_RHS || solve_type == solveType::POSTPROCESS)
     {
-      construct_map(subset_attributes.begin()->second.dependency_set_RHS);
+      construct_map(subset_attributes->begin()->second.dependency_set_RHS);
       return;
     }
 
   // TODO (landinjm): Add stuff for cononlinear solves
 
   // Loop through the variable attributes for nonexplicit solves
-  Assert(subset_attributes.size() == 1,
+  Assert(subset_attributes->size() == 1,
          dealii::ExcMessage(
            "For nonexplicit solves, subset attributes should only be 1 variable."));
 
   if (solve_type == solveType::NONEXPLICIT_LHS)
     {
-      construct_map(subset_attributes.begin()->second.dependency_set_LHS);
+      construct_map(subset_attributes->begin()->second.dependency_set_LHS);
     }
   else
     {
-      construct_map(subset_attributes.begin()->second.dependency_set_RHS);
+      construct_map(subset_attributes->begin()->second.dependency_set_RHS);
     }
 }
 
@@ -188,12 +188,12 @@ variableContainer<dim, degree, number>::eval_local_diagonal(
   const std::vector<VectorType *>             &src_subset,
   const std::pair<unsigned int, unsigned int> &cell_range)
 {
-  Assert(subset_attributes.size() == 1,
+  Assert(subset_attributes->size() == 1,
          dealii::ExcMessage(
            "For nonexplicit solves, subset attributes should only be 1 variable."));
 
-  const auto &global_var_index = subset_attributes.begin()->first;
-  const auto &field_type       = subset_attributes.begin()->second.field_type;
+  const auto &global_var_index = subset_attributes->begin()->first;
+  const auto &field_type       = subset_attributes->begin()->second.field_type;
 
   if (field_type == fieldType::SCALAR)
     {
@@ -382,7 +382,7 @@ variableContainer<dim, degree, number>::access_valid(
   [[maybe_unused]] const dependencyType                           &dependency_type,
   [[maybe_unused]] const dealii::EvaluationFlags::EvaluationFlags &flag) const
 {
-  for ([[maybe_unused]] const auto &[index, variable] : subset_attributes)
+  for ([[maybe_unused]] const auto &[index, variable] : *subset_attributes)
     {
       if (solve_type == solveType::NONEXPLICIT_LHS)
         {
@@ -503,7 +503,8 @@ variableContainer<dim, degree, number>::reinit_and_eval(
 
             const auto &pair = std::make_pair(dependency_index, dependency_type);
 
-            Assert(global_to_local_solution.find(pair) != global_to_local_solution.end(),
+            Assert(global_to_local_solution->find(pair) !=
+                     global_to_local_solution->end(),
                    dealii::ExcMessage(
                      "The global to local mapping does not exists for global index = " +
                      std::to_string(dependency_index) +
@@ -519,7 +520,7 @@ variableContainer<dim, degree, number>::reinit_and_eval(
 
                 if (eval_flag_set.find(pair) != eval_flag_set.end())
                   {
-                    const unsigned int &local_index = global_to_local_solution.at(pair);
+                    const unsigned int &local_index = global_to_local_solution->at(pair);
 
                     Assert(src.size() > local_index,
                            dealii::ExcMessage(
@@ -543,7 +544,7 @@ variableContainer<dim, degree, number>::reinit_and_eval(
 
                 if (eval_flag_set.find(pair) != eval_flag_set.end())
                   {
-                    const unsigned int &local_index = global_to_local_solution.at(pair);
+                    const unsigned int &local_index = global_to_local_solution->at(pair);
 
                     Assert(src.size() > local_index,
                            dealii::ExcMessage(
@@ -563,8 +564,8 @@ variableContainer<dim, degree, number>::reinit_and_eval(
 
   if (solve_type == solveType::EXPLICIT_RHS || solve_type == solveType::POSTPROCESS)
     {
-      reinit_and_eval_map(subset_attributes.begin()->second.eval_flag_set_RHS,
-                          subset_attributes.begin()->second.dependency_set_RHS);
+      reinit_and_eval_map(subset_attributes->begin()->second.eval_flag_set_RHS,
+                          subset_attributes->begin()->second.dependency_set_RHS);
       return;
     }
   if (src.empty())
@@ -572,19 +573,19 @@ variableContainer<dim, degree, number>::reinit_and_eval(
       return;
     }
 
-  Assert(subset_attributes.size() == 1,
+  Assert(subset_attributes->size() == 1,
          dealii::ExcMessage(
            "For nonexplicit solves, subset attributes should only be 1 variable."));
 
   if (solve_type == solveType::NONEXPLICIT_LHS)
     {
-      reinit_and_eval_map(subset_attributes.begin()->second.eval_flag_set_LHS,
-                          subset_attributes.begin()->second.dependency_set_LHS);
+      reinit_and_eval_map(subset_attributes->begin()->second.eval_flag_set_LHS,
+                          subset_attributes->begin()->second.dependency_set_LHS);
     }
   else
     {
-      reinit_and_eval_map(subset_attributes.begin()->second.eval_flag_set_RHS,
-                          subset_attributes.begin()->second.dependency_set_RHS);
+      reinit_and_eval_map(subset_attributes->begin()->second.eval_flag_set_RHS,
+                          subset_attributes->begin()->second.dependency_set_RHS);
     }
 }
 
@@ -608,7 +609,8 @@ variableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
           {
             const auto &pair = std::make_pair(dependency_index, dependency_type);
 
-            Assert(global_to_local_solution.find(pair) != global_to_local_solution.end(),
+            Assert(global_to_local_solution->find(pair) !=
+                     global_to_local_solution->end(),
                    dealii::ExcMessage(
                      "The global to local mapping does not exists for global index = " +
                      std::to_string(dependency_index) +
@@ -638,14 +640,14 @@ variableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
       }
   };
 
-  Assert(subset_attributes.size() == 1,
+  Assert(subset_attributes->size() == 1,
          dealii::ExcMessage(
            "For nonexplicit solves, subset attributes should only be 1 variable."));
 
   if (solve_type == solveType::NONEXPLICIT_LHS)
     {
-      reinit_and_eval_map(subset_attributes.begin()->second.eval_flag_set_LHS,
-                          subset_attributes.begin()->second.dependency_set_LHS);
+      reinit_and_eval_map(subset_attributes->begin()->second.eval_flag_set_LHS,
+                          subset_attributes->begin()->second.dependency_set_LHS);
     }
   else
     {
@@ -669,12 +671,12 @@ variableContainer<dim, degree, number>::reinit(unsigned int        cell,
         const unsigned int   &dependency_index = pair.first;
         const dependencyType &dependency_type  = pair.second;
 
-        Assert(subset_attributes.find(dependency_index) != subset_attributes.end(),
+        Assert(subset_attributes->find(dependency_index) != subset_attributes->end(),
                dealii::ExcMessage(
                  "The subset attribute entry does not exists for global index = " +
                  std::to_string(dependency_index)));
 
-        if (subset_attributes.at(dependency_index).field_type == fieldType::SCALAR)
+        if (subset_attributes->at(dependency_index).field_type == fieldType::SCALAR)
           {
             scalar_FEEval_exists(dependency_index, dependency_type);
 
@@ -695,21 +697,21 @@ variableContainer<dim, degree, number>::reinit(unsigned int        cell,
 
   if (solve_type == solveType::NONEXPLICIT_LHS)
     {
-      Assert(subset_attributes.find(global_variable_index) != subset_attributes.end(),
+      Assert(subset_attributes->find(global_variable_index) != subset_attributes->end(),
              dealii::ExcMessage(
                "The subset attribute entry does not exists for global index = " +
                std::to_string(global_variable_index)));
 
-      reinit_map(subset_attributes.at(global_variable_index).eval_flag_set_LHS);
+      reinit_map(subset_attributes->at(global_variable_index).eval_flag_set_LHS);
     }
   else
     {
-      Assert(subset_attributes.find(global_variable_index) != subset_attributes.end(),
+      Assert(subset_attributes->find(global_variable_index) != subset_attributes->end(),
              dealii::ExcMessage(
                "The subset attribute entry does not exists for global index = " +
                std::to_string(global_variable_index)));
 
-      reinit_map(subset_attributes.at(global_variable_index).eval_flag_set_RHS);
+      reinit_map(subset_attributes->at(global_variable_index).eval_flag_set_RHS);
     }
 }
 
@@ -736,7 +738,8 @@ variableContainer<dim, degree, number>::read_dof_values(
 
             const auto &pair = std::make_pair(dependency_index, dependency_type);
 
-            Assert(global_to_local_solution.find(pair) != global_to_local_solution.end(),
+            Assert(global_to_local_solution->find(pair) !=
+                     global_to_local_solution->end(),
                    dealii::ExcMessage(
                      "The global to local mapping does not exists for global index = " +
                      std::to_string(dependency_index) +
@@ -751,7 +754,7 @@ variableContainer<dim, degree, number>::read_dof_values(
 
                 if (eval_flag_set.find(pair) != eval_flag_set.end())
                   {
-                    const unsigned int &local_index = global_to_local_solution.at(pair);
+                    const unsigned int &local_index = global_to_local_solution->at(pair);
 
                     Assert(src.size() > local_index,
                            dealii::ExcMessage(
@@ -774,7 +777,7 @@ variableContainer<dim, degree, number>::read_dof_values(
 
                 if (eval_flag_set.find(pair) != eval_flag_set.end())
                   {
-                    const unsigned int &local_index = global_to_local_solution.at(pair);
+                    const unsigned int &local_index = global_to_local_solution->at(pair);
 
                     Assert(src.size() > local_index,
                            dealii::ExcMessage(
@@ -802,12 +805,12 @@ variableContainer<dim, degree, number>::read_dof_values(
       return;
     }
 
-  Assert(subset_attributes.size() == 1,
+  Assert(subset_attributes->size() == 1,
          dealii::ExcMessage(
            "For nonexplicit solves, subset attributes should only be 1 variable."));
 
-  reinit_and_eval_map(subset_attributes.begin()->second.eval_flag_set_LHS,
-                      subset_attributes.begin()->second.dependency_set_LHS);
+  reinit_and_eval_map(subset_attributes->begin()->second.eval_flag_set_LHS,
+                      subset_attributes->begin()->second.dependency_set_LHS);
 }
 
 template <int dim, int degree, typename number>
@@ -823,12 +826,12 @@ variableContainer<dim, degree, number>::eval(const unsigned int &global_variable
         const unsigned int   &dependency_index = pair.first;
         const dependencyType &dependency_type  = pair.second;
 
-        Assert(subset_attributes.find(dependency_index) != subset_attributes.end(),
+        Assert(subset_attributes->find(dependency_index) != subset_attributes->end(),
                dealii::ExcMessage(
                  "The subset attribute entry does not exists for global index = " +
                  std::to_string(dependency_index)));
 
-        if (subset_attributes.at(dependency_index).field_type == fieldType::SCALAR)
+        if (subset_attributes->at(dependency_index).field_type == fieldType::SCALAR)
           {
             scalar_FEEval_exists(dependency_index, dependency_type);
 
@@ -849,21 +852,21 @@ variableContainer<dim, degree, number>::eval(const unsigned int &global_variable
 
   if (solve_type == solveType::NONEXPLICIT_LHS)
     {
-      Assert(subset_attributes.find(global_variable_index) != subset_attributes.end(),
+      Assert(subset_attributes->find(global_variable_index) != subset_attributes->end(),
              dealii::ExcMessage(
                "The subset attribute entry does not exists for global index = " +
                std::to_string(global_variable_index)));
 
-      eval_map(subset_attributes.at(global_variable_index).eval_flag_set_LHS);
+      eval_map(subset_attributes->at(global_variable_index).eval_flag_set_LHS);
     }
   else
     {
-      Assert(subset_attributes.find(global_variable_index) != subset_attributes.end(),
+      Assert(subset_attributes->find(global_variable_index) != subset_attributes->end(),
              dealii::ExcMessage(
                "The subset attribute entry does not exists for global index = " +
                std::to_string(global_variable_index)));
 
-      eval_map(subset_attributes.at(global_variable_index).eval_flag_set_RHS);
+      eval_map(subset_attributes->at(global_variable_index).eval_flag_set_RHS);
     }
 }
 
@@ -872,12 +875,12 @@ void
 variableContainer<dim, degree, number>::integrate(
   const unsigned int &global_variable_index)
 {
-  Assert(subset_attributes.find(global_variable_index) != subset_attributes.end(),
+  Assert(subset_attributes->find(global_variable_index) != subset_attributes->end(),
          dealii::ExcMessage(
            "The subset attribute entry does not exists for global index = " +
            std::to_string(global_variable_index)));
 
-  const auto &variable = subset_attributes.at(global_variable_index);
+  const auto &variable = subset_attributes->at(global_variable_index);
 
   if (solve_type == solveType::NONEXPLICIT_LHS)
     {
@@ -917,14 +920,14 @@ variableContainer<dim, degree, number>::integrate_and_distribute(
         const unsigned int                             &residual_index)
   {
     Assert(
-      global_to_local_solution.find(std::make_pair(residual_index, dependency_type)) !=
-        global_to_local_solution.end(),
+      global_to_local_solution->find(std::make_pair(residual_index, dependency_type)) !=
+        global_to_local_solution->end(),
       dealii::ExcMessage(
         "The global to local mapping does not exists for global index = " +
         std::to_string(residual_index) + "  and type = " + to_string(dependency_type)));
 
     const unsigned int &local_index =
-      global_to_local_solution.at(std::make_pair(residual_index, dependency_type));
+      global_to_local_solution->at(std::make_pair(residual_index, dependency_type));
 
     Assert(dst.size() > local_index,
            dealii::ExcMessage(
@@ -932,12 +935,12 @@ variableContainer<dim, degree, number>::integrate_and_distribute(
              std::to_string(local_index) +
              " for global index = " + std::to_string(residual_index) +
              "  and type = " + to_string(dependency_type)));
-    Assert(subset_attributes.find(residual_index) != subset_attributes.end(),
+    Assert(subset_attributes->find(residual_index) != subset_attributes->end(),
            dealii::ExcMessage(
              "The subset attribute entry does not exists for global index = " +
              std::to_string(residual_index)));
 
-    if (subset_attributes.at(residual_index).field_type == fieldType::SCALAR)
+    if (subset_attributes->at(residual_index).field_type == fieldType::SCALAR)
       {
         scalar_FEEval_exists(residual_index, dependency_type);
 
@@ -955,7 +958,7 @@ variableContainer<dim, degree, number>::integrate_and_distribute(
       }
   };
 
-  for (const auto &[index, variable] : subset_attributes)
+  for (const auto &[index, variable] : *subset_attributes)
     {
       if (solve_type == solveType::NONEXPLICIT_LHS)
         {
@@ -981,12 +984,12 @@ variableContainer<dim, degree, number>::integrate_and_distribute(VectorType &dst
         const dependencyType                           &dependency_type,
         const unsigned int                             &residual_index)
   {
-    Assert(subset_attributes.find(residual_index) != subset_attributes.end(),
+    Assert(subset_attributes->find(residual_index) != subset_attributes->end(),
            dealii::ExcMessage(
              "The subset attribute entry does not exists for global index = " +
              std::to_string(residual_index)));
 
-    if (subset_attributes.at(residual_index).field_type == fieldType::SCALAR)
+    if (subset_attributes->at(residual_index).field_type == fieldType::SCALAR)
       {
         scalar_FEEval_exists(residual_index, dependency_type);
 
@@ -1004,23 +1007,23 @@ variableContainer<dim, degree, number>::integrate_and_distribute(VectorType &dst
       }
   };
 
-  Assert(subset_attributes.size() == 1,
+  Assert(subset_attributes->size() == 1,
          dealii::ExcMessage(
            "For nonexplicit solves, subset attributes should only be 1 variable."));
 
   if (solve_type == solveType::NONEXPLICIT_LHS)
     {
       integrate_and_distribute_map(
-        subset_attributes.begin()->second.eval_flags_residual_LHS,
+        subset_attributes->begin()->second.eval_flags_residual_LHS,
         dependencyType::CHANGE,
-        subset_attributes.begin()->first);
+        subset_attributes->begin()->first);
     }
   else
     {
       integrate_and_distribute_map(
-        subset_attributes.begin()->second.eval_flags_residual_RHS,
+        subset_attributes->begin()->second.eval_flags_residual_RHS,
         dependencyType::NORMAL,
-        subset_attributes.begin()->first);
+        subset_attributes->begin()->first);
     }
 }
 

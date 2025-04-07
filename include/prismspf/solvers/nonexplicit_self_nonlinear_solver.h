@@ -107,30 +107,30 @@ nonexplicitSelfNonlinearSolver<dim, degree>::init()
 
   for (const auto &[index, variable] : this->subset_attributes)
     {
-      if (this->user_inputs.linear_solve_parameters.linear_solve.at(index)
+      if (this->user_inputs->linear_solve_parameters.linear_solve.at(index)
             .preconditioner == preconditionerType::GMG)
         {
           gmg_solvers.emplace(
             index,
-            std::make_unique<GMGSolver<dim, degree>>(this->user_inputs,
+            std::make_unique<GMGSolver<dim, degree>>(*this->user_inputs,
                                                      variable,
-                                                     this->matrix_free_handler,
-                                                     this->constraint_handler,
-                                                     this->triangulation_handler,
-                                                     this->dof_handler,
-                                                     this->mg_matrix_free_handler,
-                                                     this->solution_handler));
+                                                     *this->matrix_free_handler,
+                                                     *this->constraint_handler,
+                                                     *this->triangulation_handler,
+                                                     *this->dof_handler,
+                                                     *this->mg_matrix_free_handler,
+                                                     *this->solution_handler));
           gmg_solvers.at(index)->init();
         }
       else
         {
           identity_solvers.emplace(
             index,
-            std::make_unique<identitySolver<dim, degree>>(this->user_inputs,
+            std::make_unique<identitySolver<dim, degree>>(*this->user_inputs,
                                                           variable,
-                                                          this->matrix_free_handler,
-                                                          this->constraint_handler,
-                                                          this->solution_handler));
+                                                          *this->matrix_free_handler,
+                                                          *this->constraint_handler,
+                                                          *this->solution_handler));
           identity_solvers.at(index)->init();
         }
     }
@@ -151,7 +151,7 @@ nonexplicitSelfNonlinearSolver<dim, degree>::solve()
       bool         is_converged = true;
       unsigned int iteration    = 0;
       const auto  &step_length =
-        this->user_inputs.nonlinear_solve_parameters.nonlinear_solve.at(index)
+        this->user_inputs->nonlinear_solve_parameters.nonlinear_solve.at(index)
           .step_length;
 
       while (is_converged)
@@ -159,7 +159,7 @@ nonexplicitSelfNonlinearSolver<dim, degree>::solve()
           is_converged = false;
 
           // Perform the linear solve with the step length
-          if (this->user_inputs.linear_solve_parameters.linear_solve.at(index)
+          if (this->user_inputs->linear_solve_parameters.linear_solve.at(index)
                 .preconditioner == preconditionerType::GMG)
             {
               gmg_solvers.at(index)->solve(step_length);
@@ -172,7 +172,7 @@ nonexplicitSelfNonlinearSolver<dim, degree>::solve()
           iteration++;
 
           if (iteration <
-              this->user_inputs.nonlinear_solve_parameters.nonlinear_solve.at(index)
+              this->user_inputs->nonlinear_solve_parameters.nonlinear_solve.at(index)
                 .max_iterations)
             {
               is_converged = true;

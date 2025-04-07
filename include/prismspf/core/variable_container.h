@@ -333,14 +333,14 @@ private:
   /**
    * \brief The attribute list of the relevant subset of variables.
    */
-  const std::map<unsigned int, variableAttributes> &subset_attributes;
+  const std::map<unsigned int, variableAttributes> *subset_attributes;
 
   /**
    * \brief Mapping from global solution vectors to the local ones
    */
   const std::unordered_map<std::pair<unsigned int, dependencyType>,
                            unsigned int,
-                           pairHash> &global_to_local_solution;
+                           pairHash> *global_to_local_solution;
 
   /**
    * \brief The residual evaluation flags taken in from the subset attributes. For all
@@ -363,7 +363,7 @@ private:
   /**
    * \brief The solve type
    */
-  const solveType solve_type;
+  solveType solve_type;
 
   /**
    * \brief The quadrature point index.
