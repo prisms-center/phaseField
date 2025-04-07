@@ -291,6 +291,7 @@ constraintHandler<dim>::make_mg_constraint(
             {
               const bool is_vector_field =
                 user_inputs->var_attributes->at(index).field_type == fieldType::VECTOR;
+
               // Create a component mask. This will only select a certain component for
               // vector fields.
               dealii::ComponentMask mask = {};
@@ -307,28 +308,15 @@ constraintHandler<dim>::make_mg_constraint(
                   // Do nothing because they are naturally enforced.
                   continue;
                 }
-              else if (boundary_type == boundaryCondition::type::DIRICHLET)
+              if (boundary_type == boundaryCondition::type::DIRICHLET)
                 {
-                  if (this->user_inputs->var_attributes->at(index).field_type !=
-                      fieldType::VECTOR)
-                    {
-                      dealii::VectorTools::interpolate_boundary_values(
-                        mapping,
-                        dof_handler[level],
-                        boundary_id,
-                        dealii::Functions::ZeroFunction<dim, float>(1),
-                        mg_constraints.at(index)[level]);
-                    }
-                  else
-                    {
-                      dealii::VectorTools::interpolate_boundary_values(
-                        mapping,
-                        dof_handler[level],
-                        boundary_id,
-                        dealii::Functions::ZeroFunction<dim, float>(dim),
-                        mg_constraints.at(index)[level],
-                        mask);
-                    }
+                  dealii::VectorTools::interpolate_boundary_values(
+                    mapping,
+                    dof_handler[level],
+                    boundary_id,
+                    dealii::Functions::ZeroFunction<dim, float>(is_vector_field ? dim
+                                                                                : 1),
+                    mg_constraints.at(index)[level]);
                 }
               else if (boundary_type == boundaryCondition::type::PERIODIC)
                 {
@@ -355,20 +343,10 @@ constraintHandler<dim>::make_mg_constraint(
                                                             periodicity_vector);
 
                   // Set constraints
-                  if (user_inputs->var_attributes->at(index).field_type !=
-                      fieldType::VECTOR)
-                    {
-                      dealii::DoFTools::make_periodicity_constraints<dim, dim>(
-                        periodicity_vector,
-                        mg_constraints.at(index)[level]);
-                    }
-                  else
-                    {
-                      dealii::DoFTools::make_periodicity_constraints<dim, dim>(
-                        periodicity_vector,
-                        mg_constraints.at(index)[level],
-                        mask);
-                    }
+                  dealii::DoFTools::make_periodicity_constraints<dim, dim>(
+                    periodicity_vector,
+                    mg_constraints.at(index)[level],
+                    mask);
                 }
               else if (boundary_type == boundaryCondition::type::NEUMANN)
                 {

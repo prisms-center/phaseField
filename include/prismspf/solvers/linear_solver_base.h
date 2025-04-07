@@ -106,7 +106,7 @@ protected:
   /**
    * \brief The field index we are solving.
    */
-  const unsigned int field_index;
+  unsigned int field_index;
 
   /**
    * \brief Mapping from global solution vectors to the local ones for the residual solve.

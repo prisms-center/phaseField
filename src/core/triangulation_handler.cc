@@ -37,12 +37,12 @@ triangulationHandler<dim>::triangulationHandler(
 {
   if constexpr (dim == 1)
     {
-      triangulation = std::make_shared<dealii::Triangulation<dim>>(
+      triangulation = std::make_shared<Triangulation>(
         dealii::Triangulation<dim>::limit_level_difference_at_vertices);
     }
   else
     {
-      triangulation = std::make_shared<dealii::parallel::distributed::Triangulation<dim>>(
+      triangulation = std::make_shared<Triangulation>(
         MPI_COMM_WORLD,
         dealii::Triangulation<dim>::limit_level_difference_at_vertices);
     }
@@ -191,8 +191,8 @@ template <int dim>
 void
 triangulationHandler<dim>::export_triangulation_as_vtk(const std::string &filename) const
 {
-  dealii::GridOut grid_out;
-  std::ofstream   out(filename + ".vtk");
+  const dealii::GridOut grid_out;
+  std::ofstream         out(filename + ".vtk");
   grid_out.write_vtk(*triangulation, out);
   conditionalOStreams::pout_base() << "Triangulation written to " << filename << ".vtk\n";
 }
