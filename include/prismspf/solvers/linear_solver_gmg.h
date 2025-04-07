@@ -82,18 +82,18 @@ public:
    * \brief Solve the system Ax=b.
    */
   void
-  solve(const double step_length = 1.0) override;
+  solve(const double &step_length = 1.0) override;
 
 private:
   /**
    * \brief Triangulation handler.
    */
-  const triangulationHandler<dim> &triangulation_handler;
+  const triangulationHandler<dim> *triangulation_handler;
 
   /**
    * \brief DoF handler.
    */
-  const dofHandler<dim> &dof_handler;
+  const dofHandler<dim> *dof_handler;
 
   /**
    * \brief Matrix-free object handler for multigrid data.
@@ -112,8 +112,10 @@ private:
 
   /**
    * \brief Mappings to and from reference cell.
+   *
+   * TODO (landinjm): This should be the same as the rest of the problem.
    */
-  const dealii::MappingQ1<dim> mapping;
+  dealii::MappingQ1<dim> mapping;
 
   /**
    * \brief Collection of transfer operators for each multigrid level.
@@ -158,8 +160,8 @@ GMGSolver<dim, degree>::GMGSolver(
                                   _matrix_free_handler,
                                   _constraint_handler,
                                   _solution_handler)
-  , triangulation_handler(_triangulation_handler)
-  , dof_handler(_dof_handler)
+  , triangulation_handler(&_triangulation_handler)
+  , dof_handler(&_dof_handler)
   , mg_matrix_free_handler(_mg_matrix_free_handler)
 {}
 
@@ -184,14 +186,14 @@ GMGSolver<dim, degree>::init()
   // as of now.
 
   // Grab the min and max level
-  min_level = triangulation_handler.get_mg_min_level();
-  max_level = triangulation_handler.get_mg_max_level();
+  min_level = triangulation_handler->get_mg_min_level();
+  max_level = triangulation_handler->get_mg_max_level();
 
   // Init the multilevel operator objects
   mg_operators =
     std::make_unique<dealii::MGLevelObject<LevelMatrixType>>(min_level,
                                                              max_level,
-                                                             this->user_inputs,
+                                                             *this->user_inputs,
                                                              this->field_index,
                                                              this->subset_attributes);
   mg_transfer_operators.resize(min_level, max_level);
@@ -206,8 +208,8 @@ GMGSolver<dim, degree>::init()
       // also means I need some sort of local indexing.
       mg_matrix_free_handler[level].reinit(
         mapping,
-        dof_handler.get_mg_dof_handler(this->field_index, level),
-        this->constraint_handler.get_mg_constraint(this->field_index, level),
+        dof_handler->get_mg_dof_handler(this->field_index, level),
+        this->constraint_handler->get_mg_constraint(this->field_index, level),
         dealii::QGaussLobatto<1>(degree + 1));
 
       (*mg_operators)[level].initialize(mg_matrix_free_handler[level].get_matrix_free());
@@ -241,18 +243,18 @@ GMGSolver<dim, degree>::init()
   for (unsigned int level = min_level; level < max_level; ++level)
     {
       mg_transfer_operators[level + 1].reinit(
-        dof_handler.get_mg_dof_handler(this->field_index, level + 1),
-        dof_handler.get_mg_dof_handler(this->field_index, level),
-        this->constraint_handler.get_mg_constraint(this->field_index, level + 1),
-        this->constraint_handler.get_mg_constraint(this->field_index, level));
+        dof_handler->get_mg_dof_handler(this->field_index, level + 1),
+        dof_handler->get_mg_dof_handler(this->field_index, level),
+        this->constraint_handler->get_mg_constraint(this->field_index, level + 1),
+        this->constraint_handler->get_mg_constraint(this->field_index, level));
     }
   mg_transfer = std::make_shared<dealii::MGTransferGlobalCoarsening<dim, MGVectorType>>(
     mg_transfer_operators);
 
   this->system_matrix->clear();
-  this->system_matrix->initialize(this->matrix_free_handler.get_matrix_free());
+  this->system_matrix->initialize(this->matrix_free_handler->get_matrix_free());
   this->update_system_matrix->clear();
-  this->update_system_matrix->initialize(this->matrix_free_handler.get_matrix_free());
+  this->update_system_matrix->initialize(this->matrix_free_handler->get_matrix_free());
 
   this->system_matrix->add_global_to_local_mapping(
     this->residual_global_to_local_solution);
@@ -263,9 +265,9 @@ GMGSolver<dim, degree>::init()
   this->update_system_matrix->add_src_solution_subset(this->newton_update_src);
 
   // Apply constraints
-  this->constraint_handler.get_constraint(this->field_index)
-    .distribute(*(this->solution_handler.get_solution_vector(this->field_index,
-                                                             dependencyType::NORMAL)));
+  this->constraint_handler->get_constraint(this->field_index)
+    .distribute(*(this->solution_handler->get_solution_vector(this->field_index,
+                                                              dependencyType::NORMAL)));
 
   // TODO (landinjm): Should I put this somewhere else?
 #ifdef DEBUG
@@ -278,22 +280,22 @@ GMGSolver<dim, degree>::init()
       conditionalOStreams::pout_summary()
         << "  Level: " << level << "\n"
         << "    Cells: "
-        << triangulation_handler.get_mg_triangulation(level).n_global_active_cells()
+        << triangulation_handler->get_mg_triangulation(level).n_global_active_cells()
         << "\n"
         << "    DoFs: "
-        << dof_handler.get_mg_dof_handler(this->field_index, level).n_dofs() << "\n"
+        << dof_handler->get_mg_dof_handler(this->field_index, level).n_dofs() << "\n"
         << "    Constrained DoFs: "
-        << this->constraint_handler.get_mg_constraint(this->field_index, level)
+        << this->constraint_handler->get_mg_constraint(this->field_index, level)
              .n_constraints()
         << "\n";
     }
   conditionalOStreams::pout_summary()
     << "  MG vertical communication efficiency: "
     << dealii::MGTools::vertical_communication_efficiency(
-         triangulation_handler.get_mg_triangulation())
+         triangulation_handler->get_mg_triangulation())
     << "\n"
     << "  MG workload imbalance: "
-    << dealii::MGTools::workload_imbalance(triangulation_handler.get_mg_triangulation())
+    << dealii::MGTools::workload_imbalance(triangulation_handler->get_mg_triangulation())
     << "\n\n"
     << std::flush;
 #endif
@@ -306,11 +308,11 @@ GMGSolver<dim, degree>::reinit()
 
 template <int dim, int degree>
 inline void
-GMGSolver<dim, degree>::solve(const double step_length)
+GMGSolver<dim, degree>::solve(const double &step_length)
 {
-  const auto *current_dof_handler = dof_handler.get_dof_handlers().at(this->field_index);
-  auto       *solution =
-    this->solution_handler.get_solution_vector(this->field_index, dependencyType::NORMAL);
+  const auto *current_dof_handler = dof_handler->get_dof_handlers().at(this->field_index);
+  auto       *solution = this->solution_handler->get_solution_vector(this->field_index,
+                                                               dependencyType::NORMAL);
 
   // Compute the residual
   this->system_matrix->compute_residual(*this->residual, *solution);
@@ -336,7 +338,7 @@ GMGSolver<dim, degree>::solve(const double step_length)
         }
 
       // Interpolate
-      mg_transfer->interpolate_to_mg(*dof_handler.get_dof_handlers().at(pair.first),
+      mg_transfer->interpolate_to_mg(*dof_handler->get_dof_handlers().at(pair.first),
                                      mg_src_subset,
                                      *this->newton_update_src[local_index]);
     }
@@ -349,19 +351,19 @@ GMGSolver<dim, degree>::solve(const double step_length)
   for (unsigned int level = min_level; level <= max_level; ++level)
     {
       smoother_data[level].smoothing_range =
-        this->user_inputs.linear_solve_parameters.linear_solve.at(this->field_index)
+        this->user_inputs->linear_solve_parameters.linear_solve.at(this->field_index)
           .smoothing_range;
       smoother_data[level].degree =
-        this->user_inputs.linear_solve_parameters.linear_solve.at(this->field_index)
+        this->user_inputs->linear_solve_parameters.linear_solve.at(this->field_index)
           .smoother_degree;
       smoother_data[level].eig_cg_n_iterations =
-        this->user_inputs.linear_solve_parameters.linear_solve.at(this->field_index)
+        this->user_inputs->linear_solve_parameters.linear_solve.at(this->field_index)
           .eig_cg_n_iterations;
       (*mg_operators)[level].compute_diagonal(this->field_index);
       smoother_data[level].preconditioner =
         (*mg_operators)[level].get_matrix_diagonal_inverse();
       smoother_data[level].constraints.copy_from(
-        this->constraint_handler.get_mg_constraint(this->field_index, level));
+        this->constraint_handler->get_mg_constraint(this->field_index, level));
     }
   mg_smoother.initialize(*mg_operators, smoother_data);
 
@@ -398,7 +400,7 @@ GMGSolver<dim, degree>::solve(const double step_length)
       conditionalOStreams::pout_base()
         << "Warning: linear solver did not converge as per set tolerances.\n";
     }
-  this->constraint_handler.get_constraint(this->field_index)
+  this->constraint_handler->get_constraint(this->field_index)
     .set_zero(*this->newton_update);
 
   conditionalOStreams::pout_summary()
@@ -408,11 +410,11 @@ GMGSolver<dim, degree>::solve(const double step_length)
 
   // Update the solutions
   (*solution).add(step_length, *this->newton_update);
-  this->solution_handler.update(fieldSolveType::NONEXPLICIT_LINEAR, this->field_index);
+  this->solution_handler->update(fieldSolveType::NONEXPLICIT_LINEAR, this->field_index);
 
   // Apply constraints
   // This may be redundant with the constraints on the update step.
-  this->constraint_handler.get_constraint(this->field_index).distribute(*solution);
+  this->constraint_handler->get_constraint(this->field_index).distribute(*solution);
 }
 
 PRISMS_PF_END_NAMESPACE

@@ -5,7 +5,7 @@
 
 #include <deal.II/matrix_free/matrix_free.h>
 
-#include <prismspf/core/element_volume.h>
+#include <prismspf/utilities/element_volume.h>
 
 #include <prismspf/config.h>
 

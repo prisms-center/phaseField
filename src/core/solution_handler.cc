@@ -28,7 +28,7 @@ std::map<unsigned int, typename solutionHandler<dim>::VectorType *>
 solutionHandler<dim>::get_solution_vector() const
 {
   std::map<unsigned int, VectorType *> temp;
-  for (auto &[pair, vector] : solution_set)
+  for (const auto &[pair, vector] : solution_set)
     {
       if (pair.second != dependencyType::NORMAL)
         {
@@ -64,7 +64,7 @@ std::map<unsigned int, typename solutionHandler<dim>::VectorType *>
 solutionHandler<dim>::get_new_solution_vector() const
 {
   std::map<unsigned int, VectorType *> temp;
-  for (auto &[index, vector] : new_solution_set)
+  for (const auto &[index, vector] : new_solution_set)
     {
       Assert(vector != nullptr, dealii::ExcNotInitialized());
 

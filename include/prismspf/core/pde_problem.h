@@ -141,7 +141,7 @@ private:
   /**
    * \brief Mappings to and from reference cell.
    */
-  const dealii::MappingQ1<dim> mapping;
+  dealii::MappingQ1<dim> mapping;
 
   /**
    * \brief Element volumes

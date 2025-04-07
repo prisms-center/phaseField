@@ -58,7 +58,7 @@ public:
    * \brief Solve the system Ax=b.
    */
   void
-  solve(const double step_length = 1.0) override;
+  solve(const double &step_length = 1.0) override;
 };
 
 template <int dim, int degree>
@@ -80,9 +80,9 @@ inline void
 identitySolver<dim, degree>::init()
 {
   this->system_matrix->clear();
-  this->system_matrix->initialize(this->matrix_free_handler.get_matrix_free());
+  this->system_matrix->initialize(this->matrix_free_handler->get_matrix_free());
   this->update_system_matrix->clear();
-  this->update_system_matrix->initialize(this->matrix_free_handler.get_matrix_free());
+  this->update_system_matrix->initialize(this->matrix_free_handler->get_matrix_free());
 
   this->system_matrix->add_global_to_local_mapping(
     this->residual_global_to_local_solution);
@@ -93,9 +93,9 @@ identitySolver<dim, degree>::init()
   this->update_system_matrix->add_src_solution_subset(this->newton_update_src);
 
   // Apply constraints
-  this->constraint_handler.get_constraint(this->field_index)
-    .distribute(*(this->solution_handler.get_solution_vector(this->field_index,
-                                                             dependencyType::NORMAL)));
+  this->constraint_handler->get_constraint(this->field_index)
+    .distribute(*(this->solution_handler->get_solution_vector(this->field_index,
+                                                              dependencyType::NORMAL)));
 }
 
 template <int dim, int degree>
@@ -105,10 +105,10 @@ identitySolver<dim, degree>::reinit()
 
 template <int dim, int degree>
 inline void
-identitySolver<dim, degree>::solve(const double step_length)
+identitySolver<dim, degree>::solve(const double &step_length)
 {
-  auto *solution =
-    this->solution_handler.get_solution_vector(this->field_index, dependencyType::NORMAL);
+  auto *solution = this->solution_handler->get_solution_vector(this->field_index,
+                                                               dependencyType::NORMAL);
 
   // Compute the residual
   this->system_matrix->compute_residual(*this->residual, *solution);
@@ -136,7 +136,7 @@ identitySolver<dim, degree>::solve(const double step_length)
       conditionalOStreams::pout_base()
         << "Warning: linear solver did not converge as per set tolerances.\n";
     }
-  this->constraint_handler.get_constraint(this->field_index)
+  this->constraint_handler->get_constraint(this->field_index)
     .set_zero(*this->newton_update);
 
   conditionalOStreams::pout_summary()
@@ -146,11 +146,11 @@ identitySolver<dim, degree>::solve(const double step_length)
 
   // Update the solutions
   (*solution).add(step_length, *this->newton_update);
-  this->solution_handler.update(fieldSolveType::NONEXPLICIT_LINEAR, this->field_index);
+  this->solution_handler->update(fieldSolveType::NONEXPLICIT_LINEAR, this->field_index);
 
   // Apply constraints
   // This may be redundant with the constraints on the update step.
-  this->constraint_handler.get_constraint(this->field_index).distribute(*solution);
+  this->constraint_handler->get_constraint(this->field_index).distribute(*solution);
 }
 
 PRISMS_PF_END_NAMESPACE
