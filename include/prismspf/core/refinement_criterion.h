@@ -79,6 +79,9 @@ namespace GridRefinement
   public:
     /**
      * \brief Default constructor.
+     *
+     * TODO (landinjm): Add some assertions here to make sure that nonsensical criteria
+     * aren't specified
      */
     explicit RefinementCriterion(const RefinementFlags &_criterion,
                                  const double          &_value_lower_bound    = DBL_MAX,
@@ -87,10 +90,7 @@ namespace GridRefinement
       : criterion(_criterion)
       , value_lower_bound(_value_lower_bound)
       , value_upper_bound(_value_upper_bound)
-      , gradient_lower_bound(_gradient_lower_bound) {
-        // TODO (landinjm): Add some assertions here to make sure that nonsensical
-        // criteria aren't specified.
-      };
+      , gradient_lower_bound(_gradient_lower_bound) {};
 
     /**
      * \brief Set the refinement criterion.
