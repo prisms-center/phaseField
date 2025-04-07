@@ -1,17 +1,18 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef CUSTOM_PDE_H_
-#define CUSTOM_PDE_H_
+#pragma once
 
-#include <prismspf/config.h>
 #include <prismspf/core/initial_conditions.h>
 #include <prismspf/core/matrix_free_operator.h>
 #include <prismspf/core/nonuniform_dirichlet.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attribute_loader.h>
 #include <prismspf/core/variable_attributes.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/config.h>
 
 #include <algorithm>
 #include <cmath>
@@ -175,8 +176,8 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
       scalarGrad  nx = variable_list.get_scalar_gradient(i);
 
       scalarValue fnV   = (4.0 * n * (n - 1.0) * (n - 0.5));
-      scalarValue eq_n  = (n - (this->user_inputs.temporal_discretization.dt * fnV));
-      scalarGrad  eqx_n = (-this->user_inputs.temporal_discretization.dt * 2.0 * nx);
+      scalarValue eq_n  = (n - (this->get_timestep() * fnV));
+      scalarGrad  eqx_n = (-this->get_timestep() * 2.0 * nx);
 
       variable_list.set_scalar_value_term(i, eq_n);
       variable_list.set_scalar_gradient_term(i, eqx_n);
@@ -212,5 +213,3 @@ INSTANTIATE_UNI_TEMPLATE(customNonuniformDirichlet)
 INSTANTIATE_TRI_TEMPLATE(customPDE)
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

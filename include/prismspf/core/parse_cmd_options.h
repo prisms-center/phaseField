@@ -1,15 +1,14 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef parse_cmd_options_h
-#define parse_cmd_options_h
+#pragma once
 
 #include <deal.II/base/mpi.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
 
-#include <algorithm>
+#include <prismspf/config.h>
+
 #include <fstream>
 #include <string>
 #include <vector>
@@ -22,6 +21,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 class parseCMDOptions
 {
 public:
+  // NOLINTBEGIN (cppcoreguidelines-pro-bounds-pointer-arithmetic)
   parseCMDOptions(int &_argc, char **argv)
     : argc(_argc)
   {
@@ -31,13 +31,16 @@ public:
       }
   }
 
+  // NOLINTEND (cppcoreguidelines-pro-bounds-pointer-arithmetic)
+
   std::string
   get_parameters_filename()
   {
     // Allowed number of arguments
-    int n_args = 3;
 #ifdef PRISMS_PF_WITH_CALIPER
-    n_args += 2;
+    const int n_args = 5;
+#else
+    const int n_args = 3;
 #endif
 
     // Check that there aren't too many arguments
@@ -74,7 +77,7 @@ public:
       }
 
     // Check if the file exists
-    std::ifstream ifs_prm(parameters_filename);
+    const std::ifstream ifs_prm(parameters_filename);
     if (!ifs_prm)
       {
         throw std::runtime_error("The specified parameters file `" + parameters_filename +
@@ -135,11 +138,14 @@ private:
   [[nodiscard]] const std::string &
   get_cmd_option(const std::string &option) const
   {
-    std::vector<std::string>::const_iterator itr;
-    itr = std::find(tokens.begin(), tokens.end(), option);
-    if (itr != tokens.end() && ++itr != tokens.end())
+    auto itr = std::find(tokens.begin(), tokens.end(), option);
+    if (itr != tokens.end())
       {
-        return *itr;
+        ++itr; // Increment the iterator to get the value
+        if (itr != tokens.end())
+          {
+            return *itr;
+          }
       }
     static const std::string empty_string;
     return empty_string;
@@ -153,5 +159,3 @@ private:
 };
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

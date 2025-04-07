@@ -5,7 +5,6 @@ list(APPEND PRISMS_PF_SOURCE_FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/dof_handler.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/invm_handler.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/matrix_free_handler.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/pde_problem.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/solution_handler.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/timer.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/triangulation_handler.cc

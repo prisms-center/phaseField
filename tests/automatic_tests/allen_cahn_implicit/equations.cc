@@ -3,9 +3,10 @@
 
 #include "custom_pde.h"
 
-#include <prismspf/config.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attribute_loader.h>
+
+#include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -48,16 +49,15 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  if (this->current_index == 0)
+  if (this->get_current_index() == 0)
     {
       scalarValue n     = variable_list.get_scalar_value(0);
       scalarValue old_n = variable_list.get_scalar_value(0, OLD_1);
       scalarGrad  nx    = variable_list.get_scalar_gradient(0);
 
-      scalarValue fnV = 4.0 * n * (n - 1.0) * (n - 0.5);
-      scalarValue eq_n =
-        old_n - n - this->user_inputs.temporal_discretization.dt * MnV * fnV;
-      scalarGrad eqx_n = -this->user_inputs.temporal_discretization.dt * KnV * MnV * nx;
+      scalarValue fnV   = 4.0 * n * (n - 1.0) * (n - 0.5);
+      scalarValue eq_n  = old_n - n - this->get_timestep() * MnV * fnV;
+      scalarGrad  eqx_n = -this->get_timestep() * KnV * MnV * nx;
 
       variable_list.set_scalar_value_term(0, eq_n);
       variable_list.set_scalar_gradient_term(0, eqx_n);
@@ -71,16 +71,14 @@ customPDE<dim, degree, number>::compute_nonexplicit_LHS(
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  if (this->current_index == 0)
+  if (this->get_current_index() == 0)
     {
       scalarValue change_n  = variable_list.get_scalar_value(0, CHANGE);
       scalarGrad  change_nx = variable_list.get_scalar_gradient(0, CHANGE);
 
-      scalarValue fnV = 4.0 * change_n * (change_n - 1.0) * (change_n - 0.5);
-      scalarValue eq_change_n =
-        change_n + this->user_inputs.temporal_discretization.dt * MnV * fnV;
-      scalarGrad eqx_change_n =
-        this->user_inputs.temporal_discretization.dt * KnV * MnV * change_nx;
+      scalarValue fnV          = 4.0 * change_n * (change_n - 1.0) * (change_n - 0.5);
+      scalarValue eq_change_n  = change_n + this->get_timestep() * MnV * fnV;
+      scalarGrad  eqx_change_n = this->get_timestep() * KnV * MnV * change_nx;
 
       variable_list.set_scalar_value_term(0, eq_change_n, CHANGE);
       variable_list.set_scalar_gradient_term(0, eqx_change_n, CHANGE);

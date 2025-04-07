@@ -1,23 +1,32 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include <deal.II/base/point.h>
+#include <deal.II/base/exceptions.h>
+#include <deal.II/base/function.h>
+#include <deal.II/base/geometry_info.h>
+#include <deal.II/base/index_set.h>
+#include <deal.II/base/mg_level_object.h>
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/dofs/dof_tools.h>
 #include <deal.II/fe/component_mask.h>
-#include <deal.II/fe/mapping_q1.h>
+#include <deal.II/fe/mapping.h>
 #include <deal.II/grid/grid_tools.h>
 #include <deal.II/lac/affine_constraints.h>
 #include <deal.II/numerics/vector_tools_boundary.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/constraint_handler.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/nonuniform_dirichlet.h>
 #include <prismspf/core/type_enums.h>
+
+#include <prismspf/user_inputs/boundary_parameters.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
-#include <cmath>
+#include <prismspf/config.h>
+
+#include <algorithm>
+#include <iterator>
+#include <string>
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -25,7 +34,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <int dim>
 constraintHandler<dim>::constraintHandler(const userInputParameters<dim> &_user_inputs)
   : user_inputs(&_user_inputs)
-  , constraints(_user_inputs.var_attributes.size(), dealii::AffineConstraints<double>())
+  , constraints(_user_inputs.var_attributes->size(), dealii::AffineConstraints<double>())
 {}
 
 template <int dim>
@@ -34,10 +43,15 @@ constraintHandler<dim>::get_constraints()
 {
   std::vector<const dealii::AffineConstraints<double> *> temp;
   temp.reserve(constraints.size());
-  for (const auto &constraint : constraints)
-    {
-      temp.push_back(&constraint);
-    }
+
+  std::transform(constraints.begin(),
+                 constraints.end(),
+                 std::back_inserter(temp),
+                 [](const dealii::AffineConstraints<double> &constraint)
+                 {
+                   return &constraint;
+                 });
+
   return temp;
 }
 
@@ -86,7 +100,7 @@ constraintHandler<dim>::make_constraints(
   const dealii::Mapping<dim>                         &mapping,
   const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers)
 {
-  for (const auto &[index, variable] : user_inputs->var_attributes)
+  for (const auto &[index, variable] : *user_inputs->var_attributes)
     {
       make_constraint(mapping, *dof_handlers.at(index), index);
     }
@@ -130,7 +144,7 @@ constraintHandler<dim>::make_constraint(const dealii::Mapping<dim>    &mapping,
       for (const auto &[boundary_id, boundary_type] : condition.boundary_condition_map)
         {
           const bool is_vector_field =
-            user_inputs->var_attributes.at(index).field_type == fieldType::VECTOR;
+            user_inputs->var_attributes->at(index).field_type == fieldType::VECTOR;
 
           // Create a component mask. This will only select a certain component for vector
           // fields
@@ -197,7 +211,7 @@ constraintHandler<dim>::make_constraint(const dealii::Mapping<dim>    &mapping,
             }
           else if (boundary_type == boundaryCondition::type::NON_UNIFORM_DIRICHLET)
             {
-              if (user_inputs->var_attributes.at(index).field_type != fieldType::VECTOR)
+              if (user_inputs->var_attributes->at(index).field_type != fieldType::VECTOR)
                 {
                   dealii::VectorTools::interpolate_boundary_values(
                     mapping,
@@ -261,7 +275,8 @@ constraintHandler<dim>::make_mg_constraint(
       const dealii::IndexSet locally_relevant_dofs =
         dealii::DoFTools::extract_locally_relevant_dofs(dof_handler[level]);
 
-      mg_constraints.at(index)[level].reinit(locally_relevant_dofs);
+      mg_constraints.at(index)[level].reinit(dof_handler[level].locally_owned_dofs(),
+                                             locally_relevant_dofs);
 
       dealii::DoFTools::make_hanging_node_constraints(dof_handler[level],
                                                       mg_constraints.at(index)[level]);
@@ -274,39 +289,34 @@ constraintHandler<dim>::make_mg_constraint(
           for (const auto &[boundary_id, boundary_type] :
                condition.boundary_condition_map)
             {
-              // Create a mask. This is only applied for vector fields to apply boundary
-              // conditions to
-              // each component of the vector.
-              std::vector<bool> mask(dim, false);
-              mask.at(component) = true;
+              const bool is_vector_field =
+                user_inputs->var_attributes->at(index).field_type == fieldType::VECTOR;
+
+              // Create a component mask. This will only select a certain component for
+              // vector fields.
+              dealii::ComponentMask mask = {};
+              if (is_vector_field)
+                {
+                  std::vector<bool> temp_mask(dim, false);
+                  temp_mask.at(component) = true;
+
+                  mask = dealii::ComponentMask(temp_mask);
+                }
 
               if (boundary_type == boundaryCondition::type::NATURAL)
                 {
                   // Do nothing because they are naturally enforced.
                   continue;
                 }
-              else if (boundary_type == boundaryCondition::type::DIRICHLET)
+              if (boundary_type == boundaryCondition::type::DIRICHLET)
                 {
-                  if (this->user_inputs->var_attributes.at(index).field_type !=
-                      fieldType::VECTOR)
-                    {
-                      dealii::VectorTools::interpolate_boundary_values(
-                        mapping,
-                        dof_handler[level],
-                        boundary_id,
-                        dealii::Functions::ZeroFunction<dim, float>(1),
-                        mg_constraints.at(index)[level]);
-                    }
-                  else
-                    {
-                      dealii::VectorTools::interpolate_boundary_values(
-                        mapping,
-                        dof_handler[level],
-                        boundary_id,
-                        dealii::Functions::ZeroFunction<dim, float>(dim),
-                        mg_constraints.at(index)[level],
-                        mask);
-                    }
+                  dealii::VectorTools::interpolate_boundary_values(
+                    mapping,
+                    dof_handler[level],
+                    boundary_id,
+                    dealii::Functions::ZeroFunction<dim, float>(is_vector_field ? dim
+                                                                                : 1),
+                    mg_constraints.at(index)[level]);
                 }
               else if (boundary_type == boundaryCondition::type::PERIODIC)
                 {
@@ -333,20 +343,10 @@ constraintHandler<dim>::make_mg_constraint(
                                                             periodicity_vector);
 
                   // Set constraints
-                  if (user_inputs->var_attributes.at(index).field_type !=
-                      fieldType::VECTOR)
-                    {
-                      dealii::DoFTools::make_periodicity_constraints<dim, dim>(
-                        periodicity_vector,
-                        mg_constraints.at(index)[level]);
-                    }
-                  else
-                    {
-                      dealii::DoFTools::make_periodicity_constraints<dim, dim>(
-                        periodicity_vector,
-                        mg_constraints.at(index)[level],
-                        mask);
-                    }
+                  dealii::DoFTools::make_periodicity_constraints<dim, dim>(
+                    periodicity_vector,
+                    mg_constraints.at(index)[level],
+                    mask);
                 }
               else if (boundary_type == boundaryCondition::type::NEUMANN)
                 {
@@ -354,7 +354,7 @@ constraintHandler<dim>::make_mg_constraint(
                 }
               else if (boundary_type == boundaryCondition::type::NON_UNIFORM_DIRICHLET)
                 {
-                  if (user_inputs->var_attributes.at(index).field_type !=
+                  if (user_inputs->var_attributes->at(index).field_type !=
                       fieldType::VECTOR)
                     {
                       dealii::VectorTools::interpolate_boundary_values(
@@ -391,7 +391,7 @@ void
 constraintHandler<dim>::set_pinned_point(const dealii::DoFHandler<dim> &dof_handler,
                                          const unsigned int            &index)
 {
-  Assert(user_inputs->var_attributes.at(index).field_type == fieldType::VECTOR,
+  Assert(user_inputs->var_attributes->at(index).field_type == fieldType::VECTOR,
          FeatureNotImplemented("Pinned points for vector fields"));
 
   const double tolerance = 1.0e-2;
@@ -409,7 +409,7 @@ constraintHandler<dim>::set_pinned_point(const dealii::DoFHandler<dim> &dof_hand
               if (value_point_pair.second.distance(cell->vertex(i)) <
                   tolerance * cell->diameter())
                 {
-                  unsigned int nodeID = cell->vertex_dof_index(i, 0);
+                  const unsigned int nodeID = cell->vertex_dof_index(i, 0);
                   constraints.at(index).add_line(nodeID);
                   constraints.at(index).set_inhomogeneity(nodeID, value_point_pair.first);
                 }

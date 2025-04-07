@@ -1,17 +1,22 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
+#include <deal.II/base/exceptions.h>
+#include <deal.II/base/mg_level_object.h>
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/fe/fe_system.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/dof_handler.h>
 #include <prismspf/core/triangulation_handler.h>
+#include <prismspf/core/type_enums.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
 
-#include <map>
-#include <vector>
+#include <prismspf/config.h>
+
+#include <ostream>
+#include <set>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -19,14 +24,14 @@ template <int dim>
 dofHandler<dim>::dofHandler(const userInputParameters<dim> &_user_inputs)
   : user_inputs(&_user_inputs)
 {
-  for (const auto &[index, variable] : user_inputs->var_attributes)
+  for (const auto &[index, variable] : *user_inputs->var_attributes)
     {
 #ifdef ADDITIONAL_OPTIMIZATIONS
-      if (user_inputs->var_attributes.at(index).duplicate_field_index !=
+      if (user_inputs->var_attributes->at(index).duplicate_field_index !=
           numbers::invalid_index)
         {
           const_dof_handlers.push_back(
-            dof_handlers.at(user_inputs->var_attributes.at(index).duplicate_field_index)
+            dof_handlers.at(user_inputs->var_attributes->at(index).duplicate_field_index)
               .get());
           continue;
         }
@@ -44,14 +49,14 @@ dofHandler<dim>::init(const triangulationHandler<dim> &triangulation_handler,
 {
   // TODO (landinjm): Include multigrid degrees of freedom.
   unsigned int n_dofs = 0;
-  for (const auto &[index, variable] : user_inputs->var_attributes)
+  for (const auto &[index, variable] : *user_inputs->var_attributes)
     {
 #ifdef ADDITIONAL_OPTIMIZATIONS
-      if (user_inputs->var_attributes.at(index).duplicate_field_index !=
+      if (user_inputs->var_attributes->at(index).duplicate_field_index !=
           numbers::invalid_index)
         {
           n_dofs +=
-            dof_handlers.at(user_inputs->var_attributes.at(index).duplicate_field_index)
+            dof_handlers.at(user_inputs->var_attributes->at(index).duplicate_field_index)
               ->n_dofs();
           continue;
         }
@@ -89,7 +94,7 @@ dofHandler<dim>::init(const triangulationHandler<dim> &triangulation_handler,
   const unsigned int min_level      = triangulation_handler.get_mg_min_level();
   const unsigned int max_level      = triangulation_handler.get_mg_max_level();
   unsigned int       n_dofs_with_mg = n_dofs;
-  for (const auto &[index, variable] : user_inputs->var_attributes)
+  for (const auto &[index, variable] : *user_inputs->var_attributes)
     {
       if (fields_with_multigrid.find(index) == fields_with_multigrid.end())
         {
@@ -121,7 +126,7 @@ template <int dim>
 const std::vector<const dealii::DoFHandler<dim> *> &
 dofHandler<dim>::get_dof_handlers() const
 {
-  Assert(const_dof_handlers.size() == user_inputs->var_attributes.size(),
+  Assert(const_dof_handlers.size() == user_inputs->var_attributes->size(),
          dealii::ExcNotInitialized());
   return const_dof_handlers;
 }
@@ -134,6 +139,21 @@ dofHandler<dim>::get_mg_dof_handlers() const
   Assert(!mg_dof_handlers.empty(),
          dealii::ExcMessage("The multigrid dof handler map is empty."));
   return mg_dof_handlers;
+}
+
+template <int dim>
+const std::vector<const dealii::DoFHandler<dim> *> &
+dofHandler<dim>::get_mg_dof_handlers(unsigned int level) const
+{
+  Assert(has_multigrid, dealii::ExcNotInitialized());
+  Assert(!mg_dof_handlers.empty(),
+         dealii::ExcMessage("The multigrid dof handler map is empty."));
+  Assert(level >= const_mg_dof_handlers.min_level() &&
+           level <= const_mg_dof_handlers.max_level(),
+         dealii::ExcIndexRange(level,
+                               const_mg_dof_handlers.min_level(),
+                               const_mg_dof_handlers.max_level()));
+  return const_mg_dof_handlers[level];
 }
 
 template <int dim>

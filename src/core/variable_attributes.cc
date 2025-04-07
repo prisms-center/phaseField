@@ -4,11 +4,13 @@
 #include <deal.II/base/exceptions.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
+
 #include <prismspf/utilities/utilities.h>
+
+#include <prismspf/config.h>
 
 #include <map>
 #include <ostream>
@@ -195,7 +197,7 @@ variableAttributes::parse_dependencies(
 
 void
 variableAttributes::determine_field_solve_type(
-  std::map<unsigned int, variableAttributes> &other_var_attributes)
+  const std::map<unsigned int, variableAttributes> &other_var_attributes)
 {
   // Early return for constant fields
   if (pde_type == PDEType::CONSTANT)
@@ -232,17 +234,10 @@ variableAttributes::determine_field_solve_type(
     }
 
   // Check for self-nonlinear solves.
-  bool LHS_has_change_eval_flags = false;
-  bool LHS_has_normal_eval_flags = false;
-
-  LHS_has_change_eval_flags =
-    eval_flag_set_LHS.find({field_index, dependencyType::CHANGE}) !=
-    eval_flag_set_LHS.end();
-  LHS_has_normal_eval_flags =
-    eval_flag_set_LHS.find({field_index, dependencyType::NORMAL}) !=
-    eval_flag_set_LHS.end();
-
-  if (LHS_has_change_eval_flags && LHS_has_normal_eval_flags)
+  if (eval_flag_set_LHS.find({field_index, dependencyType::CHANGE}) !=
+        eval_flag_set_LHS.end() &&
+      eval_flag_set_LHS.find({field_index, dependencyType::NORMAL}) !=
+        eval_flag_set_LHS.end())
     {
       field_solve_type = fieldSolveType::NONEXPLICIT_SELF_NONLINEAR;
       return;
@@ -424,6 +419,7 @@ variableAttributes::find_circular_dependencies(
 }
 
 // NOLINTBEGIN(misc-no-recursion)
+
 void
 variableAttributes::recursive_DFS(
   const std::map<unsigned int, variableAttributes> &other_var_attributes,

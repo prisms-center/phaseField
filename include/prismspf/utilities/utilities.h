@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef utilities_h
-#define utilities_h
+#pragma once
 
 #include <deal.II/base/tensor.h>
 #include <deal.II/base/vectorization.h>
@@ -56,6 +55,17 @@ compute_stress(const dealii::Tensor<2, (2 * dim) - 1 + (dim / 3), T> &elasticity
 }
 
 /**
+ * \brief Remove whitepace from strings
+ */
+inline std::string
+strip_whitespace(const std::string &_text)
+{
+  std::string text = _text;
+  text.erase(std::remove_if(text.begin(), text.end(), ::isspace), text.end());
+  return text;
+}
+
+/**
  * \brief Convert bool to string.
  */
 inline const char *
@@ -102,5 +112,3 @@ eval_flags_to_string(dealii::EvaluationFlags::EvaluationFlags flag)
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

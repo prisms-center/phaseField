@@ -1,17 +1,18 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef solution_output_h
-#define solution_output_h
+#pragma once
 
 #include <deal.II/base/mpi.h>
 #include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/numerics/data_out.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/type_enums.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/config.h>
 
 #include <string>
 
@@ -38,9 +39,7 @@ public:
   /**
    * \brief Constructor for a multiple fields that must be output.
    */
-  solutionOutput(const std::unordered_map<std::pair<unsigned int, dependencyType>,
-                                          VectorType *,
-                                          pairHash>                 &solution_set,
+  solutionOutput(const std::map<unsigned int, VectorType *>         &solution_set,
                  const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers,
                  const unsigned int                                 &degree,
                  const std::string                                  &name,
@@ -95,9 +94,7 @@ solutionOutput<dim, number>::solutionOutput(const VectorType               &solu
 
 template <int dim, typename number>
 solutionOutput<dim, number>::solutionOutput(
-  const std::unordered_map<std::pair<unsigned int, dependencyType>,
-                           VectorType *,
-                           pairHash>                 &solution_set,
+  const std::map<unsigned int, VectorType *>         &solution_set,
   const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers,
   const unsigned int                                 &degree,
   const std::string                                  &name,
@@ -111,9 +108,9 @@ solutionOutput<dim, number>::solutionOutput(
   dealii::DataOut<dim> data_out;
 
   // Add data vectors
-  for (const auto &[index, variable] : user_inputs.var_attributes)
+  for (const auto &[index, variable] : *user_inputs.var_attributes)
     {
-      auto *solution = solution_set.at(std::make_pair(index, dependencyType::NORMAL));
+      auto *solution = solution_set.at(index);
       solution->update_ghost_values();
 
       // Mark field as SCALAR/VECTOR
@@ -159,5 +156,3 @@ solutionOutput<dim, number>::solutionOutput(
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif
