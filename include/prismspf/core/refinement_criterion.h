@@ -88,9 +88,9 @@ namespace GridRefinement
       , value_lower_bound(_value_lower_bound)
       , value_upper_bound(_value_upper_bound)
       , gradient_lower_bound(_gradient_lower_bound) {
-          // TODO (landinjm): Add some assertions here to make sure that nonsensical
-          // criteria aren't specified.
-        };
+        // TODO (landinjm): Add some assertions here to make sure that nonsensical
+        // criteria aren't specified.
+      };
 
     /**
      * \brief Set the refinement criterion.
