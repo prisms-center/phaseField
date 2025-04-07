@@ -1,18 +1,18 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef constraint_handler_h
-#define constraint_handler_h
+#pragma once
 
 #include <deal.II/base/mg_level_object.h>
 #include <deal.II/dofs/dof_handler.h>
-#include <deal.II/fe/mapping_q1.h>
+#include <deal.II/fe/mapping.h>
 #include <deal.II/lac/affine_constraints.h>
 
-#include <prismspf/config.h>
+#include <prismspf/core/exceptions.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
 
-#include <vector>
+#include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -54,6 +54,13 @@ public:
    */
   [[nodiscard]] const dealii::AffineConstraints<float> &
   get_mg_constraint(unsigned int index, unsigned int level) const;
+
+  /**
+   * \brief Getter function for the multigrid constraints at a certain multigrid level
+   * (constant reference).
+   */
+  [[nodiscard]] std::vector<dealii::AffineConstraints<float> *>
+  get_mg_level_constraints(unsigned int level) const;
 
   /**
    * \brief Make constraints based on the inputs of the constructor.
@@ -112,5 +119,3 @@ private:
 };
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

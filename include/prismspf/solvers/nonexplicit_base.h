@@ -1,12 +1,10 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef nonexplicit_base_h
-#define nonexplicit_base_h
+#pragma once
 
 #include <deal.II/numerics/vector_tools.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/constraint_handler.h>
 #include <prismspf/core/dof_handler.h>
 #include <prismspf/core/exceptions.h>
@@ -17,7 +15,10 @@
 #include <prismspf/core/triangulation_handler.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -102,47 +103,47 @@ protected:
   /**
    * \brief User-inputs.
    */
-  const userInputParameters<dim> &user_inputs;
+  const userInputParameters<dim> *user_inputs;
 
   /**
    * \brief Matrix-free object handler for non-multigrid data.
    */
-  const matrixfreeHandler<dim> &matrix_free_handler;
+  const matrixfreeHandler<dim> *matrix_free_handler;
 
   /**
    * \brief Triangulation handler.
    */
-  const triangulationHandler<dim> &triangulation_handler;
+  const triangulationHandler<dim> *triangulation_handler;
 
   /**
    * \brief invm handler.
    */
-  const invmHandler<dim, degree> &invm_handler;
+  const invmHandler<dim, degree> *invm_handler;
 
   /**
    * \brief Constraint handler.
    */
-  const constraintHandler<dim> &constraint_handler;
+  const constraintHandler<dim> *constraint_handler;
 
   /**
    * \brief DoF handler.
    */
-  const dofHandler<dim> &dof_handler;
+  const dofHandler<dim> *dof_handler;
 
   /**
    * \brief Mappings to and from reference cell.
    */
-  const dealii::MappingQ1<dim> &mapping;
+  const dealii::MappingQ1<dim> *mapping;
 
   /**
    * \brief Matrix-free object handler for multigrid data.
    */
-  dealii::MGLevelObject<matrixfreeHandler<dim, float>> &mg_matrix_free_handler;
+  dealii::MGLevelObject<matrixfreeHandler<dim, float>> *mg_matrix_free_handler;
 
   /**
    * \brief Solution handler.
    */
-  solutionHandler<dim> &solution_handler;
+  solutionHandler<dim> *solution_handler;
 
   /**
    * \brief Subset of variable attributes for fields.
@@ -171,15 +172,15 @@ nonexplicitBase<dim, degree>::nonexplicitBase(
   const dealii::MappingQ1<dim>                         &_mapping,
   dealii::MGLevelObject<matrixfreeHandler<dim, float>> &_mg_matrix_free_handler,
   solutionHandler<dim>                                 &_solution_handler)
-  : user_inputs(_user_inputs)
-  , matrix_free_handler(_matrix_free_handler)
-  , triangulation_handler(_triangulation_handler)
-  , invm_handler(_invm_handler)
-  , constraint_handler(_constraint_handler)
-  , dof_handler(_dof_handler)
-  , mapping(_mapping)
-  , mg_matrix_free_handler(_mg_matrix_free_handler)
-  , solution_handler(_solution_handler)
+  : user_inputs(&_user_inputs)
+  , matrix_free_handler(&_matrix_free_handler)
+  , triangulation_handler(&_triangulation_handler)
+  , invm_handler(&_invm_handler)
+  , constraint_handler(&_constraint_handler)
+  , dof_handler(&_dof_handler)
+  , mapping(&_mapping)
+  , mg_matrix_free_handler(&_mg_matrix_free_handler)
+  , solution_handler(&_solution_handler)
 {}
 
 template <int dim, int degree>
@@ -198,7 +199,7 @@ nonexplicitBase<dim, degree>::compute_subset_attributes(
 
   subset_attributes.clear();
 
-  for (const auto &[index, variable] : user_inputs.var_attributes)
+  for (const auto &[index, variable] : *user_inputs->var_attributes)
     {
       if (variable.field_solve_type == field_solve_type)
         {
@@ -238,13 +239,13 @@ nonexplicitBase<dim, degree>::compute_shared_dependencies()
 
   // Compute the shared dependency set
   auto &dependency_set = subset_attributes.begin()->second.dependency_set_RHS;
-  for (const auto &[index, variable] : subset_attributes)
+  for (const auto &[main_index, variable] : subset_attributes)
     {
-      for (const auto &[index, map] : variable.dependency_set_RHS)
+      for (const auto &[dependency_index, map] : variable.dependency_set_RHS)
         {
           for (const auto &[dependency_type, field_type] : map)
             {
-              dependency_set[index].emplace(dependency_type, field_type);
+              dependency_set[dependency_index].emplace(dependency_type, field_type);
             }
         }
     }
@@ -270,7 +271,7 @@ nonexplicitBase<dim, degree>::set_initial_condition()
           continue;
         }
 
-      Assert(dof_handler.get_dof_handlers().size() > index,
+      Assert(dof_handler->get_dof_handlers().size() > index,
              dealii::ExcMessage(
                "The const DoFHandler set is smaller than the given index = " +
                std::to_string(index)));
@@ -278,31 +279,18 @@ nonexplicitBase<dim, degree>::set_initial_condition()
              dealii::ExcMessage(
                "There is no entry in the attribute subset for the given index = " +
                std::to_string(index)));
-      Assert(solution_handler.solution_set.find(
-               std::make_pair(index, dependencyType::NORMAL)) !=
-               solution_handler.solution_set.end(),
-             dealii::ExcMessage("There is no solution vector for the given index = " +
-                                std::to_string(index) +
-                                " and type = " + to_string(dependencyType::NORMAL)));
 
       dealii::VectorTools::interpolate(
-        mapping,
-        *(dof_handler.get_dof_handlers().at(index)),
-        initialCondition<dim>(index, subset_attributes.at(index).field_type, user_inputs),
-        *(solution_handler.solution_set.at(
-          std::make_pair(index, dependencyType::NORMAL))));
+        *mapping,
+        *(dof_handler->get_dof_handlers().at(index)),
+        initialCondition<dim>(index,
+                              subset_attributes.at(index).field_type,
+                              *user_inputs),
+        *(solution_handler->get_solution_vector(index, dependencyType::NORMAL)));
 
       // TODO (landinjm): Fix so that we apply some sort of initial condition to all old
       // vector for all types.
-      if (solution_handler.solution_set.find(
-            std::make_pair(index, dependencyType::OLD_1)) !=
-          solution_handler.solution_set.end())
-        {
-          *(solution_handler.solution_set.at(
-            std::make_pair(index, dependencyType::OLD_1))) =
-            *(solution_handler.solution_set.at(
-              std::make_pair(index, dependencyType::NORMAL)));
-        }
+      solution_handler->apply_initial_condition_for_old_fields();
     }
 }
 
@@ -328,5 +316,3 @@ nonexplicitBase<dim, degree>::print()
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

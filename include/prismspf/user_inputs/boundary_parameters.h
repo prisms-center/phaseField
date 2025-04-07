@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef boundary_parameters_h
-#define boundary_parameters_h
+#pragma once
 
 #include <deal.II/base/point.h>
 #include <deal.II/base/types.h>
@@ -10,12 +9,13 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 
-#include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 #include <prismspf/core/variable_attributes.h>
+
+#include <prismspf/config.h>
 
 #include <cstddef>
 #include <map>
@@ -68,9 +68,9 @@ public:
    * \brief Enum to string for type
    */
   [[nodiscard]] std::string
-  to_string(type i) const
+  to_string(type boundary_type) const
   {
-    switch (i)
+    switch (boundary_type)
       {
         case type::UNDEFINED_BOUNDARY:
           return "UNDEFINED_BOUNDARY";
@@ -130,7 +130,7 @@ public:
 
   // Map of pinned points. The first key is the global index. The pair is the pinned
   // value and point.
-  PinnedPointMap pinned_point_list;
+  PinnedPointMap pinned_point_list = {};
 
   // Map of boundary conditions. The first key is the global index. The second key is the
   // number of dimensions.
@@ -367,15 +367,18 @@ boundaryParameters<dim>::set_boundary(const std::string  &BC_string,
   boundaryCondition condition;
   for (unsigned int i = 0; i < (2 * dim); i++)
     {
+      const std::string dirichlet = "DIRICHLET";
+      const std::string neumann   = "NEUMANN";
+
       if (boost::iequals(BC_string_list[i], "NATURAL"))
         {
           condition.boundary_condition_map.emplace(i, boundaryCondition::type::NATURAL);
         }
-      else if (boost::iequals(BC_string_list[i].substr(0, 9), "DIRICHLET"))
+      else if (boost::iequals(BC_string_list[i].substr(0, dirichlet.size()), dirichlet))
         {
           condition.boundary_condition_map.emplace(i, boundaryCondition::type::DIRICHLET);
           std::string dirichlet_value =
-            BC_string_list[i].substr(10, BC_string_list[i].size());
+            BC_string_list[i].substr(dirichlet.size() + 1, BC_string_list[i].size());
           dirichlet_value = dealii::Utilities::trim(dirichlet_value);
           condition.dirichlet_value_map.emplace(i,
                                                 dealii::Utilities::string_to_double(
@@ -385,7 +388,7 @@ boundaryParameters<dim>::set_boundary(const std::string  &BC_string,
         {
           condition.boundary_condition_map.emplace(i, boundaryCondition::type::PERIODIC);
         }
-      else if (boost::iequals(BC_string_list[i].substr(0, 7), "NEUMANN"))
+      else if (boost::iequals(BC_string_list[i].substr(0, neumann.size()), neumann))
         {
           AssertThrow(false, FeatureNotImplemented("Neumann boundary conditions"));
         }
@@ -493,5 +496,3 @@ boundaryParameters<dim>::validate_boundary_conditions() const
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

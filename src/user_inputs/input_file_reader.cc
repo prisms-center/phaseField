@@ -3,13 +3,15 @@
 
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/patterns.h>
-#include <deal.II/base/utilities.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/type_enums.h>
+#include <prismspf/core/types.h>
 #include <prismspf/core/variable_attributes.h>
+
 #include <prismspf/user_inputs/input_file_reader.h>
+
+#include <prismspf/config.h>
 
 #include <cfloat>
 #include <climits>
@@ -17,14 +19,14 @@
 #include <map>
 #include <set>
 #include <string>
-#include <vector>
+#include <utility>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
 inputFileReader::inputFileReader(
-  const std::string                                &input_file_name,
+  std::string                                       input_file_name,
   const std::map<unsigned int, variableAttributes> &_var_attributes)
-  : parameters_file_name(input_file_name)
+  : parameters_file_name(std::move(input_file_name))
   , var_attributes(_var_attributes)
 {
   model_constant_names             = get_model_constant_names();
@@ -55,7 +57,7 @@ inputFileReader::strip_spaces(std::string &line)
 }
 
 bool
-inputFileReader::check_keyword_match(std::string &line, const std::string &keyword)
+inputFileReader::check_keyword_match(const std::string &line, const std::string &keyword)
 {
   // Early return if the line is less than the keyword size
   if (line.size() < keyword.size())
@@ -141,83 +143,6 @@ inputFileReader::parse_line(std::string        line,
   return true;
 }
 
-// Method to parse an input file to get a list of variables from related
-// subsections
-std::vector<std::string>
-inputFileReader::get_subsection_entry_list(const std::string &subsec_name,
-                                           const std::string &entry_name,
-                                           const std::string &default_entry)
-{
-  std::ifstream input_file;
-  input_file.open(parameters_file_name);
-
-  std::string               line;
-  std::string               entry;
-  bool                      in_subsection       = false;
-  bool                      found_entry         = false;
-  bool                      desired_entry_found = false;
-  unsigned int              subsection_index    = 0;
-  std::vector<std::string>  entry_list;
-  std::vector<unsigned int> index_list;
-
-  // Loop through each line
-  while (std::getline(input_file, line))
-    {
-      // If the line is the start of a subsection, turn 'in_subsection' to true
-      // and store the subsection index
-      if (!in_subsection)
-        {
-          found_entry = parse_line(line, "subsection", subsec_name, entry, false);
-          if (found_entry)
-            {
-              in_subsection       = true;
-              subsection_index    = dealii::Utilities::string_to_int(entry);
-              desired_entry_found = false;
-            }
-        }
-      // If in a subsection, look for the line setting the entry or for the end
-      // of the subsection
-      else
-        {
-          found_entry = parse_line(line, "set", entry_name, entry, true);
-          if (found_entry)
-            {
-              entry_list.push_back(entry);
-              index_list.push_back(subsection_index);
-              desired_entry_found = true;
-            }
-          found_entry = parse_line(line, "end", "", entry, false);
-          if (found_entry)
-            {
-              if (!desired_entry_found)
-                {
-                  entry_list.push_back(default_entry);
-                  index_list.push_back(subsection_index);
-                }
-              in_subsection       = false;
-              desired_entry_found = false;
-            }
-        }
-    }
-
-  // Now sort the entry list vector so that it is in index order
-  std::vector<std::string> sorted_entry_list;
-  for (unsigned int i = 0; i < entry_list.size(); i++)
-    {
-      for (unsigned int j = 0; j < entry_list.size(); j++)
-        {
-          if (i == j)
-            {
-              sorted_entry_list.push_back(entry_list[index_list[j]]);
-              break;
-            }
-        }
-    }
-  return sorted_entry_list;
-}
-
-// Method to parse an input file to get a list of variables from related
-// subsections
 std::set<std::string>
 inputFileReader::get_model_constant_names()
 {
@@ -228,15 +153,13 @@ inputFileReader::get_model_constant_names()
 
   std::string line;
   std::string entry;
-  bool        found_entry = false;
 
   std::set<std::string> entry_name_end_list;
 
   // Loop through each line
   while (std::getline(input_file, line))
     {
-      found_entry = parse_line(line, keyword, entry_name_begining, entry, false);
-      if (found_entry)
+      if (parse_line(line, keyword, entry_name_begining, entry, false))
         {
           // Strip whitespace, the equals sign, and everything after the equals
           // sign
@@ -302,7 +225,8 @@ inputFileReader::declare_mesh()
                                   true);
   parameter_handler.declare_entry("degree",
                                   "1",
-                                  dealii::Patterns::Integer(1, 6),
+                                  dealii::Patterns::Integer(1,
+                                                            numbers::max_element_degree),
                                   "The polynomial order of the finite element.",
                                   true);
   parameter_handler.declare_entry("global refinement",
@@ -469,6 +393,10 @@ inputFileReader::declare_solver_parameters()
               "10",
               dealii::Patterns::Integer(1, INT_MAX),
               "The maximum number of CG iterations used to find the maximum eigenvalue.");
+            parameter_handler.declare_entry("min mg level",
+                                            "0",
+                                            dealii::Patterns::Integer(0, INT_MAX),
+                                            "The minimum multigrid level.");
           }
           parameter_handler.leave_subsection();
         }
@@ -871,14 +799,16 @@ inputFileReader::declare_grain_loading_parameters()
   //   "vtk file type",
   //   "UNSTRUCTURED",
   //   dealii::Patterns::Anything(),
-  //   "Whether to load an unstructured file for grain structure."); // reads the type of
+  //   "Whether to load an unstructured file for grain structure."); // reads the type
+  //   of
   //                                                                 // file from the
   //                                                                 input
   //                                                                 // parameters.prm
   //                                                                 file,
   //                                                                 // deafault setting
   //                                                                 is
-  //                                                                 // unstructured mesh
+  //                                                                 // unstructured
+  //                                                                 mesh
 
   // parameter_handler.declare_entry(
   //   "Grain structure filename",

@@ -1,0 +1,89 @@
+set dim = 2
+
+set Domain size X = 100
+set Domain size Y = 100
+set Domain size Z = 100
+
+set Subdivisions X = 3
+set Subdivisions Y = 3
+set Subdivisions Z = 3
+
+set global refinement = 4
+
+set degree = 2
+
+set Mesh adaptivity = true
+
+set Max refinement level = 6
+set Min refinement level = 4
+
+set Steps between remeshing operations = 20
+
+subsection Refinement criterion: n0
+    set Criterion type = VALUE
+    set Value lower bound = 1e-3
+    set Value upper bound = 0.999
+end
+
+subsection Refinement criterion: n1
+    set Criterion type = VALUE
+    set Value lower bound = 1e-3
+    set Value upper bound = 0.999
+end
+
+subsection Refinement criterion: n2
+    set Criterion type = VALUE
+    set Value lower bound = 1e-3
+    set Value upper bound = 0.999
+end
+
+subsection Refinement criterion: n3
+    set Criterion type = VALUE
+    set Value lower bound = 1e-3
+    set Value upper bound = 0.999
+end
+
+subsection Refinement criterion: n4
+    set Criterion type = VALUE
+    set Value lower bound = 1e-3
+    set Value upper bound = 0.999
+end
+
+subsection Refinement criterion: n5
+    set Criterion type = VALUE
+    set Value lower bound = 1e-3
+    set Value upper bound = 0.999
+end
+
+set Time step = 1.0e-1
+
+set Number of time steps = 400
+
+set Output condition = EQUAL_SPACING
+
+set Number of outputs = 20
+
+set Skip print steps = 50
+
+
+set Activate grain reassignment = true
+set Order parameter fields for grain reassignment = n0, n1, n2, n3, n4, n5
+set Time steps between grain reassignments = 100
+set Order parameter cutoff for grain identification = 1e-2
+set Buffer between grains before reassignment = 5.0
+set Load grain structure = false
+
+
+set Boundary condition for variable n0 = NATURAL
+set Boundary condition for variable n1 = NATURAL
+set Boundary condition for variable n2 = NATURAL
+set Boundary condition for variable n3 = NATURAL
+set Boundary condition for variable n4 = NATURAL
+set Boundary condition for variable n5 = NATURAL
+
+
+set Model constant MnV = 1.0, DOUBLE
+
+set Model constant KnV = 0.1, DOUBLE
+
+set Model constant alpha = 1.5, DOUBLE

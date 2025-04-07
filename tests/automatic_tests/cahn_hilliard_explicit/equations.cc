@@ -3,9 +3,10 @@
 
 #include "custom_pde.h"
 
-#include <prismspf/config.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attribute_loader.h>
+
+#include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -42,7 +43,7 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
   scalarGrad  mux = variable_list.get_scalar_gradient(1);
 
   scalarValue eq_c  = c;
-  scalarGrad  eqx_c = -McV * this->user_inputs.temporal_discretization.dt * mux;
+  scalarGrad  eqx_c = -McV * this->get_timestep() * mux;
 
   variable_list.set_scalar_value_term(0, eq_c);
   variable_list.set_scalar_gradient_term(0, eqx_c);
@@ -55,7 +56,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  if (this->current_index == 1)
+  if (this->get_current_index() == 1)
     {
       scalarValue c  = variable_list.get_scalar_value(0);
       scalarGrad  cx = variable_list.get_scalar_gradient(0);

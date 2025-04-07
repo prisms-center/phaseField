@@ -1,16 +1,17 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef dof_handler_h
-#define dof_handler_h
+#pragma once
 
 #include <deal.II/base/mg_level_object.h>
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/fe/fe_system.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/triangulation_handler.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/config.h>
 
 #include <map>
 #include <vector>
@@ -50,6 +51,14 @@ public:
   get_mg_dof_handlers() const;
 
   /**
+   * \brief Getter function for the DoFHandlers at a certain multigrid level
+   * (constant reference). Note that this is only the DoFHandlers that are neccessary for
+   * multigrid and may be different that the non-multigrid getter function.
+   */
+  [[nodiscard]] const std::vector<const dealii::DoFHandler<dim> *> &
+  get_mg_dof_handlers(unsigned int level) const;
+
+  /**
    * \brief Getter function for the DoFHandler at a certain field and multigrid level
    * (constant reference).
    */
@@ -87,8 +96,12 @@ private:
    * special cases.
    */
   std::map<unsigned int, dealii::MGLevelObject<dealii::DoFHandler<dim>>> mg_dof_handlers;
+
+  /**
+   * \brief Const copy of the mg_dof_handlers by multigrid level.
+   */
+  dealii::MGLevelObject<std::vector<const dealii::DoFHandler<dim> *>>
+    const_mg_dof_handlers;
 };
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

@@ -17,7 +17,6 @@ on:
       - 'applications/**'
       - 'contrib/**'
       - 'doc/**'
-      - 'automatic_test/**'
       - 'tests/**'
 
 
@@ -30,7 +29,7 @@ jobs:
       runs-on: [ubuntu-22.04]
 
       container:
-        image: dealii/dealii:v9.6.0-jammy
+        image: dealii/dealii:v9.6.0-rc2-jammy
         options: --user root
 
       steps:
@@ -39,16 +38,7 @@ jobs:
           with:
             fetch-depth: 30
 
-        - name: Cache llvm-18 installation
-          uses: actions/cache@v3
-          with:
-            path: /usr/lib/llvm-18
-            key: ${{ runner.os }}-llvm-18
-            restore-keys: |
-              ${{ runner.os }}-llvm
-
         - name: Install llvm-18
-          if: steps.cache.outputs.cache-hit != 'true'
           run: |
             wget https://apt.llvm.org/llvm.sh
             chmod +x llvm.sh
@@ -60,5 +50,5 @@ jobs:
 
         - name: Run clang-tidy
           run: |
-            ./contrib/utilities/clang_tidy.sh .
+            ./contrib/utilities/clang_tidy.sh
 

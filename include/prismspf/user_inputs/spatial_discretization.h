@@ -1,14 +1,15 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef spatial_discretization_h
-#define spatial_discretization_h
+#pragma once
 
-#include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/refinement_criterion.h>
+
 #include <prismspf/utilities/utilities.h>
+
+#include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -31,8 +32,7 @@ public:
   /**
    * \brief Constructor.
    */
-  spatialDiscretization()
-    : subdivisions(dim, 1) {};
+  spatialDiscretization() = default;
 
   /**
    * \brief Postprocess and validate parameters.
@@ -56,7 +56,7 @@ public:
   double radius = 0.0;
 
   // Mesh subdivisions in each cartesian direction
-  std::vector<unsigned int> subdivisions;
+  std::vector<unsigned int> subdivisions = std::vector<unsigned int>(dim, 1);
 
   // Global refinement of mesh
   unsigned int global_refinement = 0;
@@ -124,7 +124,8 @@ spatialDiscretization<dim>::postprocess_and_validate()
       // Check that the refinement criteria are valid for the lower and upper bounds
       for (const auto &criterion : refinement_criteria)
         {
-          AssertThrow((criterion.value_lower_bound <= criterion.value_upper_bound),
+          AssertThrow((criterion.get_value_lower_bound() <=
+                       criterion.get_value_upper_bound()),
                       dealii::ExcMessage(
                         "The lower bound of the value-based refinement "
                         "criteria must be less than or equal to the upper bound."));
@@ -188,16 +189,12 @@ spatialDiscretization<dim>::print_parameter_summary() const
   for (const auto &criterion : refinement_criteria)
     {
       conditionalOStreams::pout_summary()
-        << "  Variable name: " << criterion.variable_name << "\n"
-        << "  Variable index: " << criterion.variable_index << "\n"
         << "  Criterion type: " << criterion.criterion_to_string() << "\n"
-        << "  Value lower bound: " << criterion.value_lower_bound << "\n"
-        << "  Value upper bound: " << criterion.value_upper_bound << "\n"
-        << "  Gradient lower bound: " << criterion.gradient_lower_bound << "\n\n";
+        << "  Value lower bound: " << criterion.get_value_lower_bound() << "\n"
+        << "  Value upper bound: " << criterion.get_value_upper_bound() << "\n"
+        << "  Gradient lower bound: " << criterion.get_gradient_lower_bound() << "\n\n";
     }
   conditionalOStreams::pout_summary() << "\n" << std::flush;
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

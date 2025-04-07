@@ -1,82 +1,60 @@
 #!/bin/bash
-## ------------------------------------------------------------------------
-##
-## SPDX-License-Identifier: LGPL-2.1-or-later
-## Copyright (C) 2018 - 2020 by the deal.II authors
-##
-## This file is part of the deal.II library.
-##
-## Part of the source code is dual licensed under Apache-2.0 WITH
-## LLVM-exception OR LGPL-2.1-or-later. Detailed license information
-## governing the source code and code contributions can be found in
-## LICENSE.md and CONTRIBUTING.md at the top level directory of deal.II.
-##
-## ------------------------------------------------------------------------
-## Modifications:
-## - Modified by landinjm on 2/4/2025
-## - Description of changes: 
-##     - Updated LLVM requirements (line 37)
-##     - Changed file path check (line 44) to reflect PRISMS-PF
-##     - Removal of some cmake arguments (line 65)
-##     - Modified allheader.h generation (line 68)
-## ------------------------------------------------------------------------
-
+# SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
+# SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 #
-# This script runs the clang-tidy tool on the deal.II code base.
+# This script runs clang-tidy on the PRISMS-PF code base.
 #
 #
 # Usage:
-# /contrib/utilities/run_clang_tidy.sh SRC_DIR OPTIONAL_CMAKE_ARGS
+# ./contrib/utilities/clang_tidy.sh CMAKE_ARGS
 #   with:
-#     SRC_DIR points to a deal.II source directory
-#     OPTIONAL_CMAKE_ARGS are optional arguments to pass to CMake
-#   make sure to run this script in an empty build directory
+#     CMAKE_ARGS are the optional arguments passed to cmake
 #
-# Requirements:
-# LLVM 16.0.0 or later in your path.
 
-# grab first argument and make relative path an absolute one:
-SRC=$1
-SRC=$(cd "$SRC";pwd)
-shift
-
-if test ! -d "$SRC/src" -o ! -d "$SRC/include" -o ! -d "$SRC/applications" -o ! -f "$SRC/CMakeLists.txt" ; then
-    echo "Usage:"
-    echo "  run_clang_tidy.sh /path/to/dealII"
+if test ! -d src -o ! -d include -o ! -d applications; then
+    echo "This script must be run from the top-level directory of PRISMS-PF"
     exit 1
 fi
-echo "SRC-DIR=$SRC"
 
-# enable MPI (to get MPI warnings)
-# export compile commands (so that run-clang-tidy works)
-ARGS=("-D" "DEAL_II_WITH_MPI=ON" "-D" "CMAKE_EXPORT_COMPILE_COMMANDS=ON" "-D" "CMAKE_BUILD_TYPE=Debug" "$@")
-
-# for a list of checks, see /.clang-tidy
-cat "$SRC/.clang-tidy"
-
-if ! [ -x "$(command -v run-clang-tidy)" ] || ! [ -x "$(command -v clang++)" ]; then
-    echo "make sure clang, clang++, and run-clang-tidy (part of clang) are in the path"
-    exit 2
+# TODO: Don't think I need to use clang compiler if mpi compiler is being used by default
+if [ -x "$(command -v run-clang-tidy)" ]; then
+    CLANG_TIDY=run-clang-tidy
+elif [ -x "$(command -v run-clang-tidy-18)" ]; then
+    CLANG_TIDY=run-clang-tidy-18
+else
+    echo "Neither run-clang-tidy and clang++ nor run-clang-tidy-18 and clang++-18 are in path."
+    exit 1
 fi
 
-CC=clang CXX=clang++ cmake "${ARGS[@]}" "$SRC" || (echo "cmake failed!"; false) || exit 2
+# Construct the cmake arguments
+ARGS=("-D" "CMAKE_EXPORT_COMPILE_COMMANDS=ON" "-D" "CMAKE_BUILD_TYPE=Debug" "$@")
 
-# cmake --build . --target expand_all_instantiations || (echo "make expand_all_instantiations failed!"; false) || exit 3
+# Compile
+if [ -f CMakeCache.txt ]; then
+    rm -f CMakeCache.txt
+fi
+cmake "${ARGS[@]}" . || (
+    echo "cmake failed!"
+    false
+) || exit 2
 cmake --build . || exit 3
 
-# generate allheaders.h
-(cd include; find . -name '*.h'; cd $SRC/include/; find . -name '*.h') | grep -v allheaders.h | grep -v undefine_macros.h | sed 's|^./|#include <|' | sed 's|$|>|' >include/allheaders.h
+# Create a file that contains all the headers to ensure that clang-tidy runs on all headers
+(
+    cd include
+    find . -name '*.h'
+) | grep -v allheaders.h | sed 's|^./|#include <|' | sed 's|$|>|' >include/prismspf/allheaders.h
 
-# finally run clang-tidy on deal.II
-#
-# pipe away stderr (just contains nonsensical "x warnings generated")
-# pipe output to output.txt
-run-clang-tidy -p . -quiet -header-filter "$SRC/include/*" -extra-arg='-DCLANG_TIDY' 2>error.txt >output.txt
+# Print clang-tidy rules
+cat .clang-tidy
+
+# Run clang-tidy
+$CLANG_TIDY -p . -quiet -header-filter "include/*" -extra-arg='-DCLANG_TIDY' 2>error.txt >output.txt
 
 # grep interesting errors and make sure we remove duplicates:
 grep -E '(warning|error): ' output.txt | sort | uniq >clang-tidy.log
 
-# if we have errors, report them and set exit status to failure
+# If we have errors, report them and set exit status to failure
 if [ -s clang-tidy.log ]; then
     cat clang-tidy.log
     exit 4

@@ -4,11 +4,12 @@
 #include <deal.II/base/conditional_ostream.h>
 #include <deal.II/base/mpi.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/tee_stream.h>
 
-#include <ios>
+#include <prismspf/config.h>
+
+#include <fstream>
 #include <iostream>
 #include <mpi.h>
 #include <stdexcept>

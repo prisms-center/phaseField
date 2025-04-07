@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef types_h
-#define types_h
+#pragma once
 
 #include <prismspf/config.h>
 
@@ -24,6 +23,11 @@ namespace numbers
    */
   static const types::index invalid_index = static_cast<types::index>(-1);
 
+  /**
+   * \brief Max element degree.
+   */
+  static const unsigned int max_element_degree = 6;
+
 } // namespace numbers
 
 namespace defaults
@@ -39,12 +43,30 @@ namespace defaults
   static const double tolerance = 1.0e-6;
 
   /**
+   * \brief Default mesh tolerance.
+   */
+  static const double mesh_tolerance = 1.0e-15;
+
+  /**
    * \brief Default iterations.
    */
   static const unsigned int iterations = 100;
 
+  /**
+   * \brief Default eigenvalue smoothing range for multigrid.
+   */
+  static const double smoothing_range = 15.0;
+
+  /**
+   * \brief Default smoother degree for multigrid.
+   */
+  static const unsigned int smoother_degree = 5;
+
+  /**
+   * \brief Default CG iterations to find the maximum eigenvalue for multigrid.
+   */
+  static const unsigned int eig_cg_n_iterations = 10;
+
 } // namespace defaults
 
 PRISMS_PF_END_NAMESPACE
-
-#endif
