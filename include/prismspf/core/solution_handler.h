@@ -11,7 +11,6 @@
 #include <prismspf/config.h>
 
 #include <map>
-#include <unordered_map>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -29,11 +28,6 @@ public:
    */
   explicit solutionHandler(
     const std::map<unsigned int, variableAttributes> &_attributes_list);
-
-  /**
-   * \brief Destructor.
-   */
-  ~solutionHandler();
 
   /**
    * \brief Get the solution vector set. This contains all the normal fields and is
@@ -57,7 +51,7 @@ public:
    *
    * TODO (landinjm): Make const ptr?
    */
-  [[nodiscard]] const std::unordered_map<unsigned int, VectorType *> &
+  [[nodiscard]] std::map<unsigned int, VectorType *>
   get_new_solution_vector() const;
 
   /**
@@ -115,7 +109,7 @@ private:
    * \brief The collection of solution vector at the current timestep. This includes
    * current values and old values.
    */
-  std::unordered_map<std::pair<unsigned int, dependencyType>, VectorType *, pairHash>
+  std::map<std::pair<unsigned int, dependencyType>, std::unique_ptr<VectorType>>
     solution_set;
 
   /**
@@ -123,7 +117,7 @@ private:
    * dst vector that is filled in the cell_loop. Unlike before, this only include the
    * current values which get updated in the `solution_set`.
    */
-  std::unordered_map<unsigned int, VectorType *> new_solution_set;
+  std::map<unsigned int, std::unique_ptr<VectorType>> new_solution_set;
 };
 
 PRISMS_PF_END_NAMESPACE

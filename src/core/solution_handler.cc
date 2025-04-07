@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
 #include <deal.II/base/exceptions.h>
+#include <deal.II/lac/affine_constraints.h>
 
 #include <prismspf/core/matrix_free_handler.h>
 #include <prismspf/core/solution_handler.h>
@@ -11,6 +12,7 @@
 #include <prismspf/config.h>
 
 #include <map>
+#include <string>
 #include <utility>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -20,21 +22,6 @@ solutionHandler<dim>::solutionHandler(
   const std::map<unsigned int, variableAttributes> &_attributes_list)
   : attributes_list(&_attributes_list)
 {}
-
-template <int dim>
-solutionHandler<dim>::~solutionHandler()
-{
-  for (auto &[pair, solution] : solution_set)
-    {
-      delete solution;
-    }
-  solution_set.clear();
-  for (auto &[index, new_solution] : new_solution_set)
-    {
-      delete new_solution;
-    }
-  new_solution_set.clear();
-}
 
 template <int dim>
 std::map<unsigned int, typename solutionHandler<dim>::VectorType *>
@@ -50,7 +37,7 @@ solutionHandler<dim>::get_solution_vector() const
 
       Assert(vector != nullptr, dealii::ExcNotInitialized());
 
-      temp.emplace(pair.first, vector);
+      temp.emplace(pair.first, vector.get());
     }
 
   return temp;
@@ -69,14 +56,22 @@ solutionHandler<dim>::get_solution_vector(unsigned int   index,
            " and type = " + to_string(dependency_type)));
   Assert(solution_set.at(pair) != nullptr, dealii::ExcNotInitialized());
 
-  return solution_set.at(pair);
+  return solution_set.at(pair).get();
 }
 
 template <int dim>
-const std::unordered_map<unsigned int, typename solutionHandler<dim>::VectorType *> &
+std::map<unsigned int, typename solutionHandler<dim>::VectorType *>
 solutionHandler<dim>::get_new_solution_vector() const
 {
-  return new_solution_set;
+  std::map<unsigned int, VectorType *> temp;
+  for (auto &[index, vector] : new_solution_set)
+    {
+      Assert(vector != nullptr, dealii::ExcNotInitialized());
+
+      temp.emplace(index, vector.get());
+    }
+
+  return temp;
 }
 
 template <int dim>
@@ -88,7 +83,7 @@ solutionHandler<dim>::get_new_solution_vector(unsigned int index) const
                             std::to_string(index)));
   Assert(new_solution_set.at(index) != nullptr, dealii::ExcNotInitialized());
 
-  return new_solution_set.at(index);
+  return new_solution_set.at(index).get();
 }
 
 template <int dim>
@@ -102,20 +97,21 @@ solutionHandler<dim>::init(matrixfreeHandler<dim> &matrix_free_handler)
       if (solution_set.find(std::make_pair(index, dependencyType::NORMAL)) ==
           solution_set.end())
         {
-          solution_set[std::make_pair(index, dependencyType::NORMAL)] = new VectorType();
+          solution_set[std::make_pair(index, dependencyType::NORMAL)] =
+            std::make_unique<VectorType>();
 
-          new_solution_set[index] = new VectorType();
+          new_solution_set[index] = std::make_unique<VectorType>();
         }
-      new_solution_set.try_emplace(index, new VectorType());
+      new_solution_set.try_emplace(index, std::make_unique<VectorType>());
 
       // Add dependencies if they don't exist
       for (const auto &[pair, flags] : variable.eval_flag_set_RHS)
         {
-          solution_set.try_emplace(pair, new VectorType());
+          solution_set.try_emplace(pair, std::make_unique<VectorType>());
         }
       for (const auto &[pair, flags] : variable.eval_flag_set_LHS)
         {
-          solution_set.try_emplace(pair, new VectorType());
+          solution_set.try_emplace(pair, std::make_unique<VectorType>());
         }
     }
 
@@ -186,36 +182,31 @@ solutionHandler<dim>::update(const fieldSolveType &field_solve_type,
           case fieldSolveType::EXPLICIT:
             if (attributes_list->at(index).field_solve_type == field_solve_type)
               {
-                (*new_vector)
-                  .swap(
-                    *(solution_set.at(std::make_pair(index, dependencyType::NORMAL))));
+                new_vector->swap(
+                  *(solution_set.at(std::make_pair(index, dependencyType::NORMAL))));
                 if (solution_set.find(std::make_pair(index, dependencyType::OLD_1)) !=
                     solution_set.end())
                   {
-                    (*new_vector)
-                      .swap(
-                        *(solution_set.at(std::make_pair(index, dependencyType::OLD_1))));
+                    new_vector->swap(
+                      *(solution_set.at(std::make_pair(index, dependencyType::OLD_1))));
                   }
                 if (solution_set.find(std::make_pair(index, dependencyType::OLD_2)) !=
                     solution_set.end())
                   {
-                    (*new_vector)
-                      .swap(
-                        *(solution_set.at(std::make_pair(index, dependencyType::OLD_2))));
+                    new_vector->swap(
+                      *(solution_set.at(std::make_pair(index, dependencyType::OLD_2))));
                   }
                 if (solution_set.find(std::make_pair(index, dependencyType::OLD_3)) !=
                     solution_set.end())
                   {
-                    (*new_vector)
-                      .swap(
-                        *(solution_set.at(std::make_pair(index, dependencyType::OLD_3))));
+                    new_vector->swap(
+                      *(solution_set.at(std::make_pair(index, dependencyType::OLD_3))));
                   }
                 if (solution_set.find(std::make_pair(index, dependencyType::OLD_4)) !=
                     solution_set.end())
                   {
-                    (*new_vector)
-                      .swap(
-                        *(solution_set.at(std::make_pair(index, dependencyType::OLD_4))));
+                    new_vector->swap(
+                      *(solution_set.at(std::make_pair(index, dependencyType::OLD_4))));
                   }
               }
             break;
@@ -223,40 +214,34 @@ solutionHandler<dim>::update(const fieldSolveType &field_solve_type,
             if (attributes_list->at(index).field_solve_type == field_solve_type &&
                 variable_index == index)
               {
-                (*new_vector)
-                  .swap(
-                    *(solution_set.at(std::make_pair(index, dependencyType::NORMAL))));
+                new_vector->swap(
+                  *(solution_set.at(std::make_pair(index, dependencyType::NORMAL))));
                 if (solution_set.find(std::make_pair(index, dependencyType::OLD_1)) !=
                     solution_set.end())
                   {
-                    (*new_vector)
-                      .swap(
-                        *(solution_set.at(std::make_pair(index, dependencyType::OLD_1))));
+                    new_vector->swap(
+                      *(solution_set.at(std::make_pair(index, dependencyType::OLD_1))));
                   }
                 if (solution_set.find(std::make_pair(index, dependencyType::OLD_2)) !=
                     solution_set.end())
                   {
-                    (*new_vector)
-                      .swap(
-                        *(solution_set.at(std::make_pair(index, dependencyType::OLD_2))));
+                    new_vector->swap(
+                      *(solution_set.at(std::make_pair(index, dependencyType::OLD_2))));
                   }
                 if (solution_set.find(std::make_pair(index, dependencyType::OLD_3)) !=
                     solution_set.end())
                   {
-                    (*new_vector)
-                      .swap(
-                        *(solution_set.at(std::make_pair(index, dependencyType::OLD_3))));
+                    new_vector->swap(
+                      *(solution_set.at(std::make_pair(index, dependencyType::OLD_3))));
                   }
                 if (solution_set.find(std::make_pair(index, dependencyType::OLD_4)) !=
                     solution_set.end())
                   {
-                    (*new_vector)
-                      .swap(
-                        *(solution_set.at(std::make_pair(index, dependencyType::OLD_4))));
+                    new_vector->swap(
+                      *(solution_set.at(std::make_pair(index, dependencyType::OLD_4))));
                   }
-                (*new_vector)
-                  .swap(
-                    *(solution_set.at(std::make_pair(index, dependencyType::NORMAL))));
+                new_vector->swap(
+                  *(solution_set.at(std::make_pair(index, dependencyType::NORMAL))));
               }
             break;
           case fieldSolveType::NONEXPLICIT_SELF_NONLINEAR:
@@ -265,36 +250,31 @@ solutionHandler<dim>::update(const fieldSolveType &field_solve_type,
             if (attributes_list->at(index).field_solve_type == field_solve_type &&
                 variable_index == index)
               {
-                (*new_vector)
-                  .swap(
-                    *(solution_set.at(std::make_pair(index, dependencyType::NORMAL))));
+                new_vector->swap(
+                  *(solution_set.at(std::make_pair(index, dependencyType::NORMAL))));
                 if (solution_set.find(std::make_pair(index, dependencyType::OLD_1)) !=
                     solution_set.end())
                   {
-                    (*new_vector)
-                      .swap(
-                        *(solution_set.at(std::make_pair(index, dependencyType::OLD_1))));
+                    new_vector->swap(
+                      *(solution_set.at(std::make_pair(index, dependencyType::OLD_1))));
                   }
                 if (solution_set.find(std::make_pair(index, dependencyType::OLD_2)) !=
                     solution_set.end())
                   {
-                    (*new_vector)
-                      .swap(
-                        *(solution_set.at(std::make_pair(index, dependencyType::OLD_2))));
+                    new_vector->swap(
+                      *(solution_set.at(std::make_pair(index, dependencyType::OLD_2))));
                   }
                 if (solution_set.find(std::make_pair(index, dependencyType::OLD_3)) !=
                     solution_set.end())
                   {
-                    (*new_vector)
-                      .swap(
-                        *(solution_set.at(std::make_pair(index, dependencyType::OLD_3))));
+                    new_vector->swap(
+                      *(solution_set.at(std::make_pair(index, dependencyType::OLD_3))));
                   }
                 if (solution_set.find(std::make_pair(index, dependencyType::OLD_4)) !=
                     solution_set.end())
                   {
-                    (*new_vector)
-                      .swap(
-                        *(solution_set.at(std::make_pair(index, dependencyType::OLD_4))));
+                    new_vector->swap(
+                      *(solution_set.at(std::make_pair(index, dependencyType::OLD_4))));
                   }
               }
             break;
@@ -303,9 +283,8 @@ solutionHandler<dim>::update(const fieldSolveType &field_solve_type,
           case fieldSolveType::EXPLICIT_POSTPROCESS:
             if (attributes_list->at(index).field_solve_type == field_solve_type)
               {
-                (*new_vector)
-                  .swap(
-                    *(solution_set.at(std::make_pair(index, dependencyType::NORMAL))));
+                new_vector->swap(
+                  *(solution_set.at(std::make_pair(index, dependencyType::NORMAL))));
               }
             break;
           default:
