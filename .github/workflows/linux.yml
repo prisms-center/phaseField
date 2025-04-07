@@ -1,4 +1,4 @@
-name: CI-Linux
+name: linux
 
 on: 
   push:
@@ -26,7 +26,7 @@ permissions:
   contents: read
 
 jobs:
-  CI-Linux:
+  linux-base:
     runs-on: [ubuntu-22.04]
     timeout-minutes: 120
 
