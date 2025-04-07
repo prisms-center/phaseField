@@ -3,8 +3,9 @@
 
 #include <deal.II/base/tensor.h>
 
-#include <prismspf/config.h>
 #include <prismspf/utilities/utilities.h>
+
+#include <prismspf/config.h>
 
 #include "catch.hpp"
 

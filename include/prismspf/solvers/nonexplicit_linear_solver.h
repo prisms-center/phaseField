@@ -1,24 +1,26 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef nonexplicit_linear_solver_h
-#define nonexplicit_linear_solver_h
+#pragma once
 
 #include <deal.II/lac/precondition.h>
 #include <deal.II/lac/solver_cg.h>
 #include <deal.II/lac/solver_control.h>
 
-#include <prismspf/config.h>
 #include <prismspf/core/constraint_handler.h>
 #include <prismspf/core/dof_handler.h>
 #include <prismspf/core/matrix_free_handler.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
+
+#include <prismspf/user_inputs/user_input_parameters.h>
+
 #include <prismspf/solvers/linear_solver_gmg.h>
 #include <prismspf/solvers/linear_solver_identity.h>
 #include <prismspf/solvers/nonexplicit_base.h>
-#include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/config.h>
 
 #ifdef PRISMS_PF_WITH_CALIPER
 #  include <caliper/cali.h>
@@ -122,30 +124,30 @@ nonexplicitLinearSolver<dim, degree>::init()
 
   for (const auto &[index, variable] : this->subset_attributes)
     {
-      if (this->user_inputs.linear_solve_parameters.linear_solve.at(index)
+      if (this->user_inputs->linear_solve_parameters.linear_solve.at(index)
             .preconditioner == preconditionerType::GMG)
         {
           gmg_solvers.emplace(
             index,
-            std::make_unique<GMGSolver<dim, degree>>(this->user_inputs,
+            std::make_unique<GMGSolver<dim, degree>>(*this->user_inputs,
                                                      variable,
-                                                     this->matrix_free_handler,
-                                                     this->constraint_handler,
-                                                     this->triangulation_handler,
-                                                     this->dof_handler,
-                                                     this->mg_matrix_free_handler,
-                                                     this->solution_handler));
+                                                     *this->matrix_free_handler,
+                                                     *this->constraint_handler,
+                                                     *this->triangulation_handler,
+                                                     *this->dof_handler,
+                                                     *this->mg_matrix_free_handler,
+                                                     *this->solution_handler));
           gmg_solvers.at(index)->init();
         }
       else
         {
           identity_solvers.emplace(
             index,
-            std::make_unique<identitySolver<dim, degree>>(this->user_inputs,
+            std::make_unique<identitySolver<dim, degree>>(*this->user_inputs,
                                                           variable,
-                                                          this->matrix_free_handler,
-                                                          this->constraint_handler,
-                                                          this->solution_handler));
+                                                          *this->matrix_free_handler,
+                                                          *this->constraint_handler,
+                                                          *this->solution_handler));
           identity_solvers.at(index)->init();
         }
     }
@@ -163,7 +165,7 @@ nonexplicitLinearSolver<dim, degree>::solve()
 
   for (const auto &[index, variable] : this->subset_attributes)
     {
-      if (this->user_inputs.linear_solve_parameters.linear_solve.at(index)
+      if (this->user_inputs->linear_solve_parameters.linear_solve.at(index)
             .preconditioner == preconditionerType::GMG)
         {
           gmg_solvers.at(index)->solve();
@@ -176,5 +178,3 @@ nonexplicitLinearSolver<dim, degree>::solve()
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef element_volume_h
-#define element_volume_h
+#pragma once
 
 #include <deal.II/base/aligned_vector.h>
 #include <deal.II/base/quadrature_lib.h>
@@ -32,13 +31,15 @@ public:
    * \brief Initialize.
    */
   void
-  initialize(std::shared_ptr<dealii::MatrixFree<dim, number>> _data);
+  initialize(
+    std::shared_ptr<dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>>
+      _data);
 
   /**
    * \brief Compute element volume for the triangulation
    */
   void
-  compute_element_volume(const dealii::FESystem<dim> &fe);
+  compute_element_volume(const dealii::FESystem<dim> &fe_system);
 
   /**
    * \brief Vector that stores element volumes
@@ -49,13 +50,13 @@ private:
   /**
    * \brief Matrix-free object.
    */
-  std::shared_ptr<dealii::MatrixFree<dim, number>> data;
+  std::shared_ptr<dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>> data;
 };
 
 template <int dim, int degree, typename number>
 void
 elementVolume<dim, degree, number>::initialize(
-  std::shared_ptr<dealii::MatrixFree<dim, number>> _data)
+  std::shared_ptr<dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>> _data)
 {
   data = _data;
 }
@@ -63,7 +64,7 @@ elementVolume<dim, degree, number>::initialize(
 template <int dim, int degree, typename number>
 void
 elementVolume<dim, degree, number>::compute_element_volume(
-  const dealii::FESystem<dim> &fe)
+  const dealii::FESystem<dim> &fe_system)
 {
   // Get the number of cell batches. Note this is the same as the cell range in
   // cell_loop()
@@ -74,7 +75,7 @@ elementVolume<dim, degree, number>::compute_element_volume(
 
   // Set quadrature rule and FEValues to update the JxW values
   dealii::QGaussLobatto<dim> quadrature(degree + 1);
-  dealii::FEValues<dim>      fe_values(fe, quadrature, dealii::update_JxW_values);
+  dealii::FEValues<dim>      fe_values(fe_system, quadrature, dealii::update_JxW_values);
 
   // Get the number of quadrature points
   const unsigned int num_quad_points = quadrature.size();
@@ -108,5 +109,3 @@ elementVolume<dim, degree, number>::compute_element_volume(
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

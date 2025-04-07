@@ -1,18 +1,18 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef variable_container_h
-#define variable_container_h
+#pragma once
 
+#include <deal.II/base/point.h>
 #include <deal.II/lac/vector.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
 #include <deal.II/matrix_free/fe_evaluation.h>
 #include <deal.II/matrix_free/matrix_free.h>
 
-#include <prismspf/config.h>
-#include <prismspf/core/exceptions.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
+
+#include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -36,38 +36,39 @@ public:
   /**
    * \brief Constructor.
    */
-  variableContainer(const dealii::MatrixFree<dim, number>            &data,
-                    const std::map<unsigned int, variableAttributes> &_subset_attributes,
-                    const std::unordered_map<std::pair<unsigned int, dependencyType>,
-                                             unsigned int,
-                                             pairHash> &_global_to_local_solution,
-                    const solveType                    &_solve_type);
+  variableContainer(
+    const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
+    const std::map<unsigned int, variableAttributes> &_subset_attributes,
+    const std::unordered_map<std::pair<unsigned int, dependencyType>,
+                             unsigned int,
+                             pairHash>               &_global_to_local_solution,
+    const solveType                                  &_solve_type);
 
   /**
    * \brief Return the value of the specified scalar field.
    */
-  size_type
+  [[nodiscard]] size_type
   get_scalar_value(unsigned int   global_variable_index,
                    dependencyType dependency_type = dependencyType::NORMAL) const;
 
   /**
    * \brief Return the gradient of the specified scalar field.
    */
-  dealii::Tensor<1, dim, size_type>
+  [[nodiscard]] dealii::Tensor<1, dim, size_type>
   get_scalar_gradient(unsigned int   global_variable_index,
                       dependencyType dependency_type = dependencyType::NORMAL) const;
 
   /**
    * \brief Return the hessian of the specified scalar field.
    */
-  dealii::Tensor<2, dim, size_type>
+  [[nodiscard]] dealii::Tensor<2, dim, size_type>
   get_scalar_hessian(unsigned int   global_variable_index,
                      dependencyType dependency_type = dependencyType::NORMAL) const;
 
   /**
    * \brief Return the diagonal of the hessian of the specified scalar field.
    */
-  dealii::Tensor<1, dim, size_type>
+  [[nodiscard]] dealii::Tensor<1, dim, size_type>
   get_scalar_hessian_diagonal(
     unsigned int   global_variable_index,
     dependencyType dependency_type = dependencyType::NORMAL) const;
@@ -75,35 +76,35 @@ public:
   /**
    * \brief Return the laplacian of the specified scalar field.
    */
-  size_type
+  [[nodiscard]] size_type
   get_scalar_laplacian(unsigned int   global_variable_index,
                        dependencyType dependency_type = dependencyType::NORMAL) const;
 
   /**
    * \brief Return the value of the specified vector field.
    */
-  dealii::Tensor<1, dim, size_type>
+  [[nodiscard]] dealii::Tensor<1, dim, size_type>
   get_vector_value(unsigned int   global_variable_index,
                    dependencyType dependency_type = dependencyType::NORMAL) const;
 
   /**
    * \brief Return the gradient of the specified vector field.
    */
-  dealii::Tensor<2, dim, size_type>
+  [[nodiscard]] dealii::Tensor<2, dim, size_type>
   get_vector_gradient(unsigned int   global_variable_index,
                       dependencyType dependency_type = dependencyType::NORMAL) const;
 
   /**
    * \brief Return the hessian of the specified vector field.
    */
-  dealii::Tensor<3, dim, size_type>
+  [[nodiscard]] dealii::Tensor<3, dim, size_type>
   get_vector_hessian(unsigned int   global_variable_index,
                      dependencyType dependency_type = dependencyType::NORMAL) const;
 
   /**
    * \brief Return the diagonal of the hessian of the specified vector field.
    */
-  dealii::Tensor<2, dim, size_type>
+  [[nodiscard]] dealii::Tensor<2, dim, size_type>
   get_vector_hessian_diagonal(
     unsigned int   global_variable_index,
     dependencyType dependency_type = dependencyType::NORMAL) const;
@@ -111,21 +112,21 @@ public:
   /**
    * \brief Return the laplacian of the specified vector field.
    */
-  dealii::Tensor<1, dim, size_type>
+  [[nodiscard]] dealii::Tensor<1, dim, size_type>
   get_vector_laplacian(unsigned int   global_variable_index,
                        dependencyType dependency_type = dependencyType::NORMAL) const;
 
   /**
    * \brief Return the divergence of the specified vector field.
    */
-  size_type
+  [[nodiscard]] size_type
   get_vector_divergence(unsigned int   global_variable_index,
                         dependencyType dependency_type = dependencyType::NORMAL) const;
 
   /**
    * \brief Return the symmetric gradient of the specified vector field.
    */
-  dealii::Tensor<2, dim, size_type>
+  [[nodiscard]] dealii::Tensor<2, dim, size_type>
   get_vector_symmetric_gradient(
     unsigned int   global_variable_index,
     dependencyType dependency_type = dependencyType::NORMAL) const;
@@ -135,7 +136,7 @@ public:
    * dealii::VectorizedArray<number> type for 2D and dealii::Tensor<1, dim,
    * dealii::VectorizedArray<number>> type for 3D.
    */
-  dealii::Tensor<1, (dim == 2 ? 1 : dim), size_type>
+  [[nodiscard]] dealii::Tensor<1, (dim == 2 ? 1 : dim), size_type>
   get_vector_curl(unsigned int   global_variable_index,
                   dependencyType dependency_type = dependencyType::NORMAL) const;
 
@@ -332,14 +333,14 @@ private:
   /**
    * \brief The attribute list of the relevant subset of variables.
    */
-  const std::map<unsigned int, variableAttributes> &subset_attributes;
+  const std::map<unsigned int, variableAttributes> *subset_attributes;
 
   /**
    * \brief Mapping from global solution vectors to the local ones
    */
   const std::unordered_map<std::pair<unsigned int, dependencyType>,
                            unsigned int,
-                           pairHash> &global_to_local_solution;
+                           pairHash> *global_to_local_solution;
 
   /**
    * \brief The residual evaluation flags taken in from the subset attributes. For all
@@ -362,7 +363,7 @@ private:
   /**
    * \brief The solve type
    */
-  const solveType solve_type;
+  solveType solve_type;
 
   /**
    * \brief The quadrature point index.
@@ -372,7 +373,7 @@ private:
   /**
    * \brief Number of DoFs per cell.
    */
-  unsigned int n_dofs_per_cell;
+  unsigned int n_dofs_per_cell = 0;
 
   /**
    * \brief Diagonal matrix that is used for preconditioning of scalar fields.
@@ -387,5 +388,3 @@ private:
 };
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

@@ -1,15 +1,17 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef triangulation_handler_h
-#define triangulation_handler_h
+#pragma once
 
 #include <deal.II/distributed/tria.h>
 #include <deal.II/grid/tria.h>
 
-#include <prismspf/config.h>
+#include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/solution_handler.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/config.h>
 
 #include <memory>
 #include <string>
@@ -71,16 +73,16 @@ public:
   get_mg_max_level() const;
 
   /**
+   * \brief Whether multigrid has been setup.
+   */
+  [[nodiscard]] bool
+  has_setup_multigrid() const;
+
+  /**
    * \brief Generate mesh based on the inputs provided by the user.
    */
   void
   generate_mesh();
-
-  /**
-   * \brief Adaptively refine the mesh based on the inputs provided by the user.
-   */
-  void
-  adaptively_refine_mesh(solutionHandler<dim> &solution_handler);
 
   /**
    * \brief Export triangulation to vtk. This is done for debugging purposes when dealing
@@ -142,5 +144,3 @@ private:
 };
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

@@ -85,9 +85,21 @@ IncludeCategories:
   # boost headers:
   - Regex:    '<boost.*>'
     Priority:       9
+  # prismspf core headers:
+  - Regex:    '<prismspf/core.*>'
+    Priority:       10
+  # prismspf user input headers:
+  - Regex:    '<prismspf/user_inputs.*>'
+    Priority:       11
+  # prismspf solver headers:
+  - Regex:    '<prismspf/solvers.*>'
+    Priority:       12
+  # prismspf utilities headers:
+  - Regex:    '<prismspf/utilities.*>'
+    Priority:       13
   # prismspf headers:
   - Regex:    '<prismspf.*>'
-    Priority:       10
+    Priority:       14
   # all standard <...> headers
   - Regex:    '<[-\w\/-_]+[\.\/]*[-\w\/-_]+>>'
     Priority:       99       

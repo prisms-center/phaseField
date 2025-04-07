@@ -1,15 +1,18 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef invm_handler_h
-#define invm_handler_h
+#pragma once
 
 #include <deal.II/lac/la_parallel_vector.h>
+#include <deal.II/matrix_free/fe_evaluation.h>
 #include <deal.II/matrix_free/matrix_free.h>
 
-#include <prismspf/config.h>
+#include <prismspf/core/types.h>
 #include <prismspf/core/variable_attributes.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/config.h>
 
 #include <map>
 #include <memory>
@@ -124,9 +127,7 @@ private:
   /**
    * \brief Tolerance for minimum value of the mass matrix when inverting.
    */
-  number tolerance = 1.0e-15;
+  number tolerance = defaults::mesh_tolerance;
 };
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

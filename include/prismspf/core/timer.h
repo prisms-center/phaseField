@@ -1,10 +1,11 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#ifndef timer_h
-#define timer_h
+#pragma once
 
 #include <deal.II/base/timer.h>
+
+#include <prismspf/core/conditional_ostreams.h>
 
 #include <prismspf/config.h>
 
@@ -41,5 +42,3 @@ public:
 };
 
 PRISMS_PF_END_NAMESPACE
-
-#endif
