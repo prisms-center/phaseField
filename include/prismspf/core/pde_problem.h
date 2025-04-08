@@ -11,7 +11,6 @@
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/constraint_handler.h>
 #include <prismspf/core/dof_handler.h>
-#include <prismspf/core/index_map.h>
 #include <prismspf/core/invm_handler.h>
 #include <prismspf/core/matrix_free_handler.h>
 #include <prismspf/core/solution_handler.h>
@@ -94,11 +93,6 @@ private:
    * \brief User-inputs.
    */
   const userInputParameters<dim> *user_inputs;
-
-  /**
-   * \brief Index map.
-   */
-  indexMap index_map;
 
   /**
    * \brief Triangulation handler.

@@ -10,7 +10,6 @@ PDEProblem<dim, degree>::PDEProblem(
   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
   std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float)
   : user_inputs(&_user_inputs)
-  , index_map(*_user_inputs.var_attributes)
   , triangulation_handler(_user_inputs)
   , constraint_handler(_user_inputs)
   , matrix_free_handler()
