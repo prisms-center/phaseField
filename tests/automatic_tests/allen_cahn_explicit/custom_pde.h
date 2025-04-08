@@ -32,7 +32,7 @@ public:
   using vectorHess  = dealii::Tensor<3, dim, dealii::VectorizedArray<number>>;
 
   /**
-   * \brief Constructor for concurrent solves.
+   * \brief Constructor.
    */
   explicit customPDE(const userInputParameters<dim> &_user_inputs)
     : PDEOperator<dim, degree, number>(_user_inputs)
