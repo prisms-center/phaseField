@@ -1,0 +1,5 @@
+#include <prismspf/config.h>
+
+PRISMS_PF_BEGIN_NAMESPACE
+
+PRISMS_PF_END_NAMESPACE

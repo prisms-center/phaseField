@@ -2,7 +2,9 @@
 set(PRISMS_PF_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/dummy.cc)
 foreach(TARGET IN ITEMS
   core
+  solvers
   user_inputs
+  utilities
 )
   add_subdirectory(${TARGET})
 endforeach()

@@ -70,6 +70,7 @@ inline void
 indexMap::init()
 {
   Assert(variable_attributes != nullptr, dealii::ExcNotInitialized());
+  (void) variable_attributes;
 
   // Loop through the variable_attributes and fill in the mappings. This is done
   // in such a way that the vector is ordered in terms of index and then

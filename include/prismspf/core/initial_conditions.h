@@ -55,41 +55,6 @@ private:
   customInitialCondition<dim> custom_initial_condition;
 };
 
-template <int dim>
-initialCondition<dim>::initialCondition(const unsigned int             &_index,
-                                        const fieldType                &field_type,
-                                        const userInputParameters<dim> &_user_inputs)
-  : dealii::Function<dim>((field_type == fieldType::VECTOR) ? dim : 1)
-  , index(_index)
-  , user_inputs(&_user_inputs)
-{}
-
-// NOLINTBEGIN(readability-identifier-length)
-
-template <int dim>
-inline void
-initialCondition<dim>::vector_value(const dealii::Point<dim> &p,
-                                    dealii::Vector<double>   &value) const
-{
-  // Initialize passed variables to zero
-  dealii::Vector<double> vector_value(dim);
-
-  // Pass variables to user-facing function to evaluate
-  for (unsigned int i = 0; i < dim; i++)
-    {
-      custom_initial_condition.set_initial_condition(index,
-                                                     i,
-                                                     p,
-                                                     vector_value(0),
-                                                     vector_value(i),
-                                                     *user_inputs);
-    }
-
-  value = vector_value;
-}
-
-// NOLINTEND(readability-identifier-length)
-
 /**
  * \brief User-facing implementation of initial conditions
  */
