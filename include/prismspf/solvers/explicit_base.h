@@ -11,6 +11,8 @@
 #include <prismspf/core/initial_conditions.h>
 #include <prismspf/core/invm_handler.h>
 #include <prismspf/core/matrix_free_handler.h>
+#include <prismspf/core/matrix_free_operator.h>
+#include <prismspf/core/pde_operator.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
@@ -22,19 +24,13 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * Forward declaration for user-implemented PDE class.
- */
-template <int dim, int degree, typename number>
-class customPDE;
-
-/**
  * \brief Base class for explicit solves.
  */
 template <int dim, int degree>
 class explicitBase
 {
 public:
-  using SystemMatrixType = customPDE<dim, degree, double>;
+  using SystemMatrixType = matrixFreeOperator<dim, degree, double>;
 
   /**
    * \brief Constructor.
@@ -45,7 +41,8 @@ public:
                const constraintHandler<dim>   &_constraint_handler,
                const dofHandler<dim>          &_dof_handler,
                const dealii::MappingQ1<dim>   &_mapping,
-               solutionHandler<dim>           &_solution_handler);
+               solutionHandler<dim>           &_solution_handler,
+               std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator);
 
   /**
    * \brief Destructor.
@@ -136,18 +133,24 @@ protected:
   /**
    * \brief PDE operator.
    */
+  std::shared_ptr<const PDEOperator<dim, degree, double>> pde_operator;
+
+  /**
+   * \brief Matrix-free operator.
+   */
   std::unique_ptr<SystemMatrixType> system_matrix;
 };
 
 template <int dim, int degree>
 explicitBase<dim, degree>::explicitBase(
-  const userInputParameters<dim> &_user_inputs,
-  const matrixfreeHandler<dim>   &_matrix_free_handler,
-  const invmHandler<dim, degree> &_invm_handler,
-  const constraintHandler<dim>   &_constraint_handler,
-  const dofHandler<dim>          &_dof_handler,
-  const dealii::MappingQ1<dim>   &_mapping,
-  solutionHandler<dim>           &_solution_handler)
+  const userInputParameters<dim>                         &_user_inputs,
+  const matrixfreeHandler<dim>                           &_matrix_free_handler,
+  const invmHandler<dim, degree>                         &_invm_handler,
+  const constraintHandler<dim>                           &_constraint_handler,
+  const dofHandler<dim>                                  &_dof_handler,
+  const dealii::MappingQ1<dim>                           &_mapping,
+  solutionHandler<dim>                                   &_solution_handler,
+  std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator)
   : user_inputs(&_user_inputs)
   , matrix_free_handler(&_matrix_free_handler)
   , invm_handler(&_invm_handler)
@@ -155,6 +158,7 @@ explicitBase<dim, degree>::explicitBase(
   , dof_handler(&_dof_handler)
   , mapping(&_mapping)
   , solution_handler(&_solution_handler)
+  , pde_operator(_pde_operator)
 {}
 
 template <int dim, int degree>

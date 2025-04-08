@@ -7,6 +7,9 @@
 #include <deal.II/lac/solver_cg.h>
 #include <deal.II/matrix_free/matrix_free.h>
 
+#include <prismspf/core/matrix_free_operator.h>
+#include <prismspf/core/pde_operator.h>
+
 #include <prismspf/solvers/linear_solver_base.h>
 
 #include <prismspf/config.h>
@@ -25,7 +28,7 @@ template <int dim, int degree>
 class identitySolver : public linearSolverBase<dim, degree>
 {
 public:
-  using SystemMatrixType = customPDE<dim, degree, double>;
+  using SystemMatrixType = matrixFreeOperator<dim, degree, double>;
   using VectorType       = dealii::LinearAlgebra::distributed::Vector<double>;
 
   /**
@@ -35,7 +38,8 @@ public:
                  const variableAttributes       &_variable_attributes,
                  const matrixfreeHandler<dim>   &_matrix_free_handler,
                  const constraintHandler<dim>   &_constraint_handler,
-                 solutionHandler<dim>           &_solution_handler);
+                 solutionHandler<dim>           &_solution_handler,
+                 std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator);
 
   /**
    * \brief Destructor.
@@ -63,16 +67,18 @@ public:
 
 template <int dim, int degree>
 identitySolver<dim, degree>::identitySolver(
-  const userInputParameters<dim> &_user_inputs,
-  const variableAttributes       &_variable_attributes,
-  const matrixfreeHandler<dim>   &_matrix_free_handler,
-  const constraintHandler<dim>   &_constraint_handler,
-  solutionHandler<dim>           &_solution_handler)
+  const userInputParameters<dim>                         &_user_inputs,
+  const variableAttributes                               &_variable_attributes,
+  const matrixfreeHandler<dim>                           &_matrix_free_handler,
+  const constraintHandler<dim>                           &_constraint_handler,
+  solutionHandler<dim>                                   &_solution_handler,
+  std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator)
   : linearSolverBase<dim, degree>(_user_inputs,
                                   _variable_attributes,
                                   _matrix_free_handler,
                                   _constraint_handler,
-                                  _solution_handler)
+                                  _solution_handler,
+                                  _pde_operator)
 {}
 
 template <int dim, int degree>

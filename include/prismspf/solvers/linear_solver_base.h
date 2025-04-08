@@ -12,6 +12,8 @@
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/constraint_handler.h>
 #include <prismspf/core/matrix_free_handler.h>
+#include <prismspf/core/matrix_free_operator.h>
+#include <prismspf/core/pde_operator.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/triangulation_handler.h>
 #include <prismspf/core/type_enums.h>
@@ -24,19 +26,13 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * Forward declaration for user-implemented PDE class.
- */
-template <int dim, int degree, typename number>
-class customPDE;
-
-/**
  * \brief Base class that handles the assembly and linear solving of a field.
  */
 template <int dim, int degree>
 class linearSolverBase
 {
 public:
-  using SystemMatrixType = customPDE<dim, degree, double>;
+  using SystemMatrixType = matrixFreeOperator<dim, degree, double>;
   using VectorType       = dealii::LinearAlgebra::distributed::Vector<double>;
 
   /**
@@ -46,7 +42,8 @@ public:
                    const variableAttributes       &_variable_attributes,
                    const matrixfreeHandler<dim>   &_matrix_free_handler,
                    const constraintHandler<dim>   &_constraint_handler,
-                   solutionHandler<dim>           &_solution_handler);
+                   solutionHandler<dim>           &_solution_handler,
+                   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator);
 
   /**
    * \brief Destructor.
@@ -141,12 +138,17 @@ protected:
   VectorType *newton_update;
 
   /**
-   * \brief PDE operator for the residual side.
+   * \brief PDE operator.
+   */
+  std::shared_ptr<const PDEOperator<dim, degree, double>> pde_operator;
+
+  /**
+   * \brief Matrix-free operator for the residual side.
    */
   std::unique_ptr<SystemMatrixType> system_matrix;
 
   /**
-   * \brief PDE operator for the newton update side.
+   * \brief Matrix-free operator for the newton update side.
    */
   std::unique_ptr<SystemMatrixType> update_system_matrix;
 
@@ -168,11 +170,12 @@ protected:
 
 template <int dim, int degree>
 linearSolverBase<dim, degree>::linearSolverBase(
-  const userInputParameters<dim> &_user_inputs,
-  const variableAttributes       &_variable_attributes,
-  const matrixfreeHandler<dim>   &_matrix_free_handler,
-  const constraintHandler<dim>   &_constraint_handler,
-  solutionHandler<dim>           &_solution_handler)
+  const userInputParameters<dim>                         &_user_inputs,
+  const variableAttributes                               &_variable_attributes,
+  const matrixfreeHandler<dim>                           &_matrix_free_handler,
+  const constraintHandler<dim>                           &_constraint_handler,
+  solutionHandler<dim>                                   &_solution_handler,
+  std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator)
   : user_inputs(&_user_inputs)
   , variable_attributes(&_variable_attributes)
   , matrix_free_handler(&_matrix_free_handler)
@@ -182,19 +185,22 @@ linearSolverBase<dim, degree>::linearSolverBase(
   , residual(_solution_handler.get_new_solution_vector(field_index))
   , newton_update(
       _solution_handler.get_solution_vector(field_index, dependencyType::CHANGE))
+  , pde_operator(_pde_operator)
   , solver_control(
       _user_inputs.linear_solve_parameters.linear_solve.at(field_index).max_iterations)
 {
   // Creating map to match types
   subset_attributes.emplace(field_index, *variable_attributes);
 
-  // Create the implementation of customPDE with the subset of variable attributes
+  // Create the implementation of matrixFreeOperator with the subset of variable
+  // attributes
   system_matrix =
-    std::make_unique<SystemMatrixType>(*user_inputs, field_index, subset_attributes);
+    std::make_unique<SystemMatrixType>(subset_attributes, pde_operator, field_index);
   update_system_matrix =
-    std::make_unique<SystemMatrixType>(*user_inputs, field_index, subset_attributes);
+    std::make_unique<SystemMatrixType>(subset_attributes, pde_operator, field_index);
 
-  // Create the residual subset of solution vectors and add the mapping to customPDE
+  // Create the residual subset of solution vectors and add the mapping to
+  // matrixFreeOperator
   residual_src.push_back(
     solution_handler->get_solution_vector(field_index, dependencyType::NORMAL));
   residual_global_to_local_solution.emplace(std::make_pair(field_index,
@@ -213,7 +219,7 @@ linearSolverBase<dim, degree>::linearSolverBase(
     }
 
   // Create the newton update subset of solution vectors and add the mapping to
-  // customPDE. For this one we consider the singular src vector as the residual
+  // matrixFreeOperator. For this one we consider the singular src vector as the residual
   // vector above and the src subset all other dependencies vectors. This is
   // complicated, but has to do with the way deal.II's solvers (like CG) handle
   // iterative updates. For this reason, we have to pass the residual vector as

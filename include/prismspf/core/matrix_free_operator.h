@@ -9,6 +9,7 @@
 #include <deal.II/matrix_free/matrix_free.h>
 #include <deal.II/matrix_free/operators.h>
 
+#include <prismspf/core/pde_operator.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
 #include <prismspf/core/variable_container.h>
@@ -37,21 +38,14 @@ public:
 
   /**
    * \brief Default constructor.
+   *
+   * TODO (landinjm): Should we have a default constructor and pass everything through
+   * initialize? Need to pick one.
    */
-  matrixFreeOperator() = default;
-
-  /**
-   * \brief Constructor for concurrent solves.
-   */
-  matrixFreeOperator(const userInputParameters<dim>                   &_user_inputs,
-                     const std::map<unsigned int, variableAttributes> &_attributes_list);
-
-  /**
-   * \brief Constructor for single solves.
-   */
-  matrixFreeOperator(const userInputParameters<dim>                   &_user_inputs,
-                     const unsigned int                               &_current_index,
-                     const std::map<unsigned int, variableAttributes> &_attributes_list);
+  explicit matrixFreeOperator(
+    const std::map<unsigned int, variableAttributes>       &_attributes_list,
+    std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
+    types::index _current_index = numbers::invalid_index);
 
   /**
    * \brief Initialize operator.
@@ -168,54 +162,6 @@ public:
   void
   compute_diagonal(unsigned int field_index);
 
-  /**
-   * \brief Get the user inputs (constant reference).
-   */
-  const userInputParameters<dim> &
-  get_user_inputs() const;
-
-  /**
-   * \brief Get the index of the field that is currently being solved (copy).
-   */
-  unsigned int
-  get_current_index() const;
-
-  /**
-   * \brief Get the timestep (copy).
-   */
-  number
-  get_timestep() const;
-
-protected:
-  /**
-   * \brief User-implemented class for the RHS of explicit equations.
-   */
-  virtual void
-  compute_explicit_RHS(variableContainer<dim, degree, number> &variable_list,
-                       const dealii::Point<dim, size_type>    &q_point_loc) const = 0;
-
-  /**
-   * \brief User-implemented class for the RHS of nonexplicit equations.
-   */
-  virtual void
-  compute_nonexplicit_RHS(variableContainer<dim, degree, number> &variable_list,
-                          const dealii::Point<dim, size_type>    &q_point_loc) const = 0;
-
-  /**
-   * \brief User-implemented class for the LHS of nonexplicit equations.
-   */
-  virtual void
-  compute_nonexplicit_LHS(variableContainer<dim, degree, number> &variable_list,
-                          const dealii::Point<dim, size_type>    &q_point_loc) const = 0;
-
-  /**
-   * \brief User-implemented class for the RHS of postprocessed explicit equations.
-   */
-  virtual void
-  compute_postprocess_explicit_RHS(
-    variableContainer<dim, degree, number> &variable_list,
-    const dealii::Point<dim, size_type>    &q_point_loc) const = 0;
-
 private:
   /**
    * \brief Local computation of the explicit update.
@@ -276,19 +222,19 @@ private:
                          const std::pair<unsigned int, unsigned int> &cell_range) const;
 
   /**
-   * \brief The user-inputs.
-   */
-  const userInputParameters<dim> *user_inputs;
-
-  /**
-   * \brief The current index that is being solved.
-   */
-  unsigned int current_index = numbers::invalid_index;
-
-  /**
    * \brief The attribute list of the relevant variables.
    */
   const std::map<unsigned int, variableAttributes> *attributes_list = nullptr;
+
+  /**
+   * \brief PDE operator object for user defined PDEs.
+   */
+  std::shared_ptr<const PDEOperator<dim, degree, number>> pde_operator;
+
+  /**
+   * \brief Current field index that is being evaluated.
+   */
+  types::index current_index = numbers::invalid_index;
 
   /**
    * \brief Matrix-free object.
@@ -329,22 +275,13 @@ private:
 
 template <int dim, int degree, typename number>
 matrixFreeOperator<dim, degree, number>::matrixFreeOperator(
-  const userInputParameters<dim>                   &_user_inputs,
-  const std::map<unsigned int, variableAttributes> &_attributes_list)
+  const std::map<unsigned int, variableAttributes>       &_attributes_list,
+  std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
+  types::index                                            _current_index)
   : Subscriptor()
-  , user_inputs(&_user_inputs)
   , attributes_list(&_attributes_list)
-{}
-
-template <int dim, int degree, typename number>
-matrixFreeOperator<dim, degree, number>::matrixFreeOperator(
-  const userInputParameters<dim>                   &_user_inputs,
-  const unsigned int                               &_current_index,
-  const std::map<unsigned int, variableAttributes> &_attributes_list)
-  : Subscriptor()
-  , user_inputs(&_user_inputs)
+  , pde_operator(_pde_operator)
   , current_index(_current_index)
-  , attributes_list(&_attributes_list)
 {}
 
 template <int dim, int degree, typename number>
@@ -614,7 +551,7 @@ matrixFreeOperator<dim, degree, number>::compute_local_explicit_update(
     [this](variableContainer<dim, degree, number> &var_list,
            const dealii::Point<dim, size_type>    &q_point_loc)
     {
-      this->compute_explicit_RHS(var_list, q_point_loc);
+      this->pde_operator->compute_explicit_RHS(var_list, q_point_loc);
     },
     dst,
     src,
@@ -640,7 +577,7 @@ matrixFreeOperator<dim, degree, number>::compute_local_postprocess_explicit_upda
     [this](variableContainer<dim, degree, number> &var_list,
            const dealii::Point<dim, size_type>    &q_point_loc)
     {
-      this->compute_postprocess_explicit_RHS(var_list, q_point_loc);
+      this->pde_operator->compute_postprocess_explicit_RHS(var_list, q_point_loc);
     },
     dst,
     src,
@@ -666,7 +603,7 @@ matrixFreeOperator<dim, degree, number>::compute_local_nonexplicit_auxiliary_upd
     [this](variableContainer<dim, degree, number> &var_list,
            const dealii::Point<dim, size_type>    &q_point_loc)
     {
-      this->compute_nonexplicit_RHS(var_list, q_point_loc);
+      this->pde_operator->compute_nonexplicit_RHS(var_list, q_point_loc, current_index);
     },
     dst,
     src,
@@ -692,7 +629,7 @@ matrixFreeOperator<dim, degree, number>::compute_local_residual(
     [this](variableContainer<dim, degree, number> &var_list,
            const dealii::Point<dim, size_type>    &q_point_loc)
     {
-      this->compute_nonexplicit_RHS(var_list, q_point_loc);
+      this->pde_operator->compute_nonexplicit_RHS(var_list, q_point_loc, current_index);
     },
     dst,
     src_solution_subset,
@@ -719,7 +656,7 @@ matrixFreeOperator<dim, degree, number>::compute_local_newton_update(
     [this](variableContainer<dim, degree, number> &var_list,
            const dealii::Point<dim, size_type>    &q_point_loc)
     {
-      this->compute_nonexplicit_LHS(var_list, q_point_loc);
+      this->pde_operator->compute_nonexplicit_LHS(var_list, q_point_loc, current_index);
     },
     dst,
     src,
@@ -752,30 +689,6 @@ matrixFreeOperator<dim, degree, number>::compute_diagonal(unsigned int field_ind
 }
 
 template <int dim, int degree, typename number>
-const userInputParameters<dim> &
-matrixFreeOperator<dim, degree, number>::get_user_inputs() const
-{
-  Assert(user_inputs != nullptr, dealii::ExcNotInitialized());
-  return *user_inputs;
-}
-
-template <int dim, int degree, typename number>
-unsigned int
-matrixFreeOperator<dim, degree, number>::get_current_index() const
-{
-  Assert(current_index != numbers::invalid_index, dealii::ExcNotInitialized());
-  return current_index;
-}
-
-template <int dim, int degree, typename number>
-number
-matrixFreeOperator<dim, degree, number>::get_timestep() const
-{
-  Assert(user_inputs != nullptr, dealii::ExcNotInitialized());
-  return user_inputs->temporal_discretization.dt;
-}
-
-template <int dim, int degree, typename number>
 void
 matrixFreeOperator<dim, degree, number>::local_compute_diagonal(
   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
@@ -794,7 +707,7 @@ matrixFreeOperator<dim, degree, number>::local_compute_diagonal(
     [this](variableContainer<dim, degree, number> &var_list,
            const dealii::Point<dim, size_type>    &q_point_loc)
     {
-      this->compute_nonexplicit_LHS(var_list, q_point_loc);
+      this->pde_operator->compute_nonexplicit_LHS(var_list, q_point_loc, current_index);
     },
     dst,
     src_solution_subset,

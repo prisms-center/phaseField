@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <prismspf/core/matrix_free_operator.h>
+#include <prismspf/core/pde_operator.h>
 #include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/user_inputs/user_input_parameters.h>
@@ -21,7 +21,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \tparam number Datatype to use. Either double or float.
  */
 template <int dim, int degree, typename number>
-class customPDE : public matrixFreeOperator<dim, degree, number>
+class customPDE : public PDEOperator<dim, degree, number>
 {
 public:
   using scalarValue = dealii::VectorizedArray<number>;
@@ -34,20 +34,8 @@ public:
   /**
    * \brief Constructor for concurrent solves.
    */
-  customPDE(const userInputParameters<dim>                   &_user_inputs,
-            const std::map<unsigned int, variableAttributes> &subset_attributes)
-    : matrixFreeOperator<dim, degree, number>(_user_inputs, subset_attributes)
-  {}
-
-  /**
-   * \brief Constructor for single solves.
-   */
-  customPDE(const userInputParameters<dim>                   &_user_inputs,
-            const unsigned int                               &_current_index,
-            const std::map<unsigned int, variableAttributes> &subset_attributes)
-    : matrixFreeOperator<dim, degree, number>(_user_inputs,
-                                              _current_index,
-                                              subset_attributes)
+  explicit customPDE(const userInputParameters<dim> &_user_inputs)
+    : PDEOperator<dim, degree, number>(_user_inputs)
   {}
 
 private:
@@ -63,17 +51,19 @@ private:
    * \brief User-implemented class for the RHS of nonexplicit equations.
    */
   void
-  compute_nonexplicit_RHS(variableContainer<dim, degree, number> &variable_list,
-                          const dealii::Point<dim, dealii::VectorizedArray<number>>
-                            &q_point_loc) const override;
+  compute_nonexplicit_RHS(
+    variableContainer<dim, degree, number>                    &variable_list,
+    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    types::index current_index = numbers::invalid_index) const override;
 
   /**
    * \brief User-implemented class for the LHS of nonexplicit equations.
    */
   void
-  compute_nonexplicit_LHS(variableContainer<dim, degree, number> &variable_list,
-                          const dealii::Point<dim, dealii::VectorizedArray<number>>
-                            &q_point_loc) const override;
+  compute_nonexplicit_LHS(
+    variableContainer<dim, degree, number>                    &variable_list,
+    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    types::index current_index = numbers::invalid_index) const override;
 
   /**
    * \brief User-implemented class for the RHS of postprocessed explicit equations.

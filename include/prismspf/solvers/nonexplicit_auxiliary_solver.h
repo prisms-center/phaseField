@@ -7,6 +7,7 @@
 #include <prismspf/core/dof_handler.h>
 #include <prismspf/core/invm_handler.h>
 #include <prismspf/core/matrix_free_handler.h>
+#include <prismspf/core/matrix_free_operator.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
@@ -24,34 +25,29 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * Forward declaration for user-implemented PDE class.
- */
-template <int dim, int degree, typename number>
-class customPDE;
-
-/**
  * \brief This class handles all auxiliary solves.
  */
 template <int dim, int degree>
 class nonexplicitAuxiliarySolver : public nonexplicitBase<dim, degree>
 {
 public:
-  using SystemMatrixType = customPDE<dim, degree, double>;
+  using SystemMatrixType = matrixFreeOperator<dim, degree, double>;
   using VectorType       = dealii::LinearAlgebra::distributed::Vector<double>;
 
   /**
    * \brief Constructor.
    */
   nonexplicitAuxiliarySolver(
-    const userInputParameters<dim>                       &_user_inputs,
-    const matrixfreeHandler<dim>                         &_matrix_free_handler,
-    const triangulationHandler<dim>                      &_triangulation_handler,
-    const invmHandler<dim, degree>                       &_invm_handler,
-    const constraintHandler<dim>                         &_constraint_handler,
-    const dofHandler<dim>                                &_dof_handler,
-    const dealii::MappingQ1<dim>                         &_mapping,
-    dealii::MGLevelObject<matrixfreeHandler<dim, float>> &_mg_matrix_free_handler,
-    solutionHandler<dim>                                 &_solution_handler);
+    const userInputParameters<dim>                         &_user_inputs,
+    const matrixfreeHandler<dim>                           &_matrix_free_handler,
+    const triangulationHandler<dim>                        &_triangulation_handler,
+    const invmHandler<dim, degree>                         &_invm_handler,
+    const constraintHandler<dim>                           &_constraint_handler,
+    const dofHandler<dim>                                  &_dof_handler,
+    const dealii::MappingQ1<dim>                           &_mapping,
+    dealii::MGLevelObject<matrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
+    solutionHandler<dim>                                   &_solution_handler,
+    std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator);
 
   /**
    * \brief Destructor.
@@ -97,15 +93,16 @@ private:
 
 template <int dim, int degree>
 nonexplicitAuxiliarySolver<dim, degree>::nonexplicitAuxiliarySolver(
-  const userInputParameters<dim>                       &_user_inputs,
-  const matrixfreeHandler<dim>                         &_matrix_free_handler,
-  const triangulationHandler<dim>                      &_triangulation_handler,
-  const invmHandler<dim, degree>                       &_invm_handler,
-  const constraintHandler<dim>                         &_constraint_handler,
-  const dofHandler<dim>                                &_dof_handler,
-  const dealii::MappingQ1<dim>                         &_mapping,
-  dealii::MGLevelObject<matrixfreeHandler<dim, float>> &_mg_matrix_free_handler,
-  solutionHandler<dim>                                 &_solution_handler)
+  const userInputParameters<dim>                         &_user_inputs,
+  const matrixfreeHandler<dim>                           &_matrix_free_handler,
+  const triangulationHandler<dim>                        &_triangulation_handler,
+  const invmHandler<dim, degree>                         &_invm_handler,
+  const constraintHandler<dim>                           &_constraint_handler,
+  const dofHandler<dim>                                  &_dof_handler,
+  const dealii::MappingQ1<dim>                           &_mapping,
+  dealii::MGLevelObject<matrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
+  solutionHandler<dim>                                   &_solution_handler,
+  std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator)
   : nonexplicitBase<dim, degree>(_user_inputs,
                                  _matrix_free_handler,
                                  _triangulation_handler,
@@ -114,7 +111,8 @@ nonexplicitAuxiliarySolver<dim, degree>::nonexplicitAuxiliarySolver(
                                  _dof_handler,
                                  _mapping,
                                  _mg_matrix_free_handler,
-                                 _solution_handler)
+                                 _solution_handler,
+                                 _pde_operator)
 {}
 
 template <int dim, int degree>
@@ -136,18 +134,19 @@ nonexplicitAuxiliarySolver<dim, degree>::init()
       temp.emplace(index, variable);
       subset_attributes_list.push_back(temp);
 
-      // Create the implementation of customPDE with the subset of variable attributes
+      // Create the implementation of matrixFreeOperator with the subset of variable
+      // attributes
       this->system_matrix[index] =
-        std::make_unique<SystemMatrixType>(*this->user_inputs,
-                                           index,
-                                           subset_attributes_list.back());
+        std::make_unique<SystemMatrixType>(subset_attributes_list.back(),
+                                           this->pde_operator,
+                                           index);
 
       // Set up the user-implemented equations and create the residual vectors
       this->system_matrix.at(index)->clear();
       this->system_matrix.at(index)->initialize(
         this->matrix_free_handler->get_matrix_free());
 
-      // Create the subset of solution vectors and add the mapping to customPDE
+      // Create the subset of solution vectors and add the mapping to matrixFreeOperator
       new_solution_subset[index].push_back(
         this->solution_handler->get_new_solution_vector(index));
       solution_subset[index].push_back(

@@ -53,7 +53,10 @@ public:
   /**
    * \brief Constructor.
    */
-  explicit PDEProblem(const userInputParameters<dim> &_user_inputs);
+  explicit PDEProblem(
+    const userInputParameters<dim>                         &_user_inputs,
+    std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
+    std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float);
 
   /**
    * \brief Run initialization and solving steps of the given problem.
@@ -188,7 +191,10 @@ private:
 };
 
 template <int dim, int degree>
-PDEProblem<dim, degree>::PDEProblem(const userInputParameters<dim> &_user_inputs)
+PDEProblem<dim, degree>::PDEProblem(
+  const userInputParameters<dim>                         &_user_inputs,
+  std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
+  std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float)
   : user_inputs(&_user_inputs)
   , index_map(*_user_inputs.var_attributes)
   , triangulation_handler(_user_inputs)
@@ -204,21 +210,24 @@ PDEProblem<dim, degree>::PDEProblem(const userInputParameters<dim> &_user_inputs
                              constraint_handler,
                              dof_handler,
                              mapping,
-                             solution_handler)
+                             solution_handler,
+                             _pde_operator)
   , explicit_solver(_user_inputs,
                     matrix_free_handler,
                     invm_handler,
                     constraint_handler,
                     dof_handler,
                     mapping,
-                    solution_handler)
+                    solution_handler,
+                    _pde_operator)
   , postprocess_explicit_solver(_user_inputs,
                                 matrix_free_handler,
                                 invm_handler,
                                 constraint_handler,
                                 dof_handler,
                                 mapping,
-                                solution_handler)
+                                solution_handler,
+                                _pde_operator)
   , nonexplicit_auxiliary_solver(_user_inputs,
                                  matrix_free_handler,
                                  triangulation_handler,
@@ -227,7 +236,8 @@ PDEProblem<dim, degree>::PDEProblem(const userInputParameters<dim> &_user_inputs
                                  dof_handler,
                                  mapping,
                                  multigrid_matrix_free_handler,
-                                 solution_handler)
+                                 solution_handler,
+                                 _pde_operator)
   , nonexplicit_linear_solver(_user_inputs,
                               matrix_free_handler,
                               triangulation_handler,
@@ -236,7 +246,9 @@ PDEProblem<dim, degree>::PDEProblem(const userInputParameters<dim> &_user_inputs
                               dof_handler,
                               mapping,
                               multigrid_matrix_free_handler,
-                              solution_handler)
+                              solution_handler,
+                              _pde_operator,
+                              _pde_operator_float)
   , nonexplicit_self_nonlinear_solver(_user_inputs,
                                       matrix_free_handler,
                                       triangulation_handler,
@@ -245,7 +257,9 @@ PDEProblem<dim, degree>::PDEProblem(const userInputParameters<dim> &_user_inputs
                                       dof_handler,
                                       mapping,
                                       multigrid_matrix_free_handler,
-                                      solution_handler)
+                                      solution_handler,
+                                      _pde_operator,
+                                      _pde_operator_float)
 {}
 
 template <int dim, int degree>

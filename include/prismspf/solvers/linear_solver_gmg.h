@@ -18,6 +18,8 @@
 #include <deal.II/multigrid/multigrid.h>
 
 #include <prismspf/core/dof_handler.h>
+#include <prismspf/core/matrix_free_operator.h>
+#include <prismspf/core/pde_operator.h>
 #include <prismspf/core/solution_output.h>
 #include <prismspf/core/triangulation_handler.h>
 
@@ -32,20 +34,14 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * Forward declaration for user-implemented PDE class.
- */
-template <int dim, int degree, typename number>
-class customPDE;
-
-/**
  * \brief Class that handles the assembly and solving of a field with a GMG preconditioner
  */
 template <int dim, int degree>
 class GMGSolver : public linearSolverBase<dim, degree>
 {
 public:
-  using SystemMatrixType = customPDE<dim, degree, double>;
-  using LevelMatrixType  = customPDE<dim, degree, float>;
+  using SystemMatrixType = matrixFreeOperator<dim, degree, double>;
+  using LevelMatrixType  = matrixFreeOperator<dim, degree, float>;
   using VectorType       = dealii::LinearAlgebra::distributed::Vector<double>;
   using MGVectorType     = dealii::LinearAlgebra::distributed::Vector<float>;
 
@@ -59,7 +55,9 @@ public:
             const triangulationHandler<dim>                      &_triangulation_handler,
             const dofHandler<dim>                                &_dof_handler,
             dealii::MGLevelObject<matrixfreeHandler<dim, float>> &_mg_matrix_free_handler,
-            solutionHandler<dim>                                 &_solution_handler);
+            solutionHandler<dim>                                 &_solution_handler,
+            std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
+            std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float);
 
   /**
    * \brief Destructor.
@@ -143,26 +141,35 @@ private:
    * each multigrid level.
    */
   dealii::MGLevelObject<std::vector<MGVectorType *>> mg_newton_update_src;
+
+  /**
+   * \brief PDE operator but for floats!
+   */
+  std::shared_ptr<const PDEOperator<dim, degree, float>> pde_operator_float;
 };
 
 template <int dim, int degree>
 GMGSolver<dim, degree>::GMGSolver(
-  const userInputParameters<dim>                       &_user_inputs,
-  const variableAttributes                             &_variable_attributes,
-  const matrixfreeHandler<dim>                         &_matrix_free_handler,
-  const constraintHandler<dim>                         &_constraint_handler,
-  const triangulationHandler<dim>                      &_triangulation_handler,
-  const dofHandler<dim>                                &_dof_handler,
-  dealii::MGLevelObject<matrixfreeHandler<dim, float>> &_mg_matrix_free_handler,
-  solutionHandler<dim>                                 &_solution_handler)
+  const userInputParameters<dim>                         &_user_inputs,
+  const variableAttributes                               &_variable_attributes,
+  const matrixfreeHandler<dim>                           &_matrix_free_handler,
+  const constraintHandler<dim>                           &_constraint_handler,
+  const triangulationHandler<dim>                        &_triangulation_handler,
+  const dofHandler<dim>                                  &_dof_handler,
+  dealii::MGLevelObject<matrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
+  solutionHandler<dim>                                   &_solution_handler,
+  std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
+  std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float)
   : linearSolverBase<dim, degree>(_user_inputs,
                                   _variable_attributes,
                                   _matrix_free_handler,
                                   _constraint_handler,
-                                  _solution_handler)
+                                  _solution_handler,
+                                  _pde_operator)
   , triangulation_handler(&_triangulation_handler)
   , dof_handler(&_dof_handler)
   , mg_matrix_free_handler(&_mg_matrix_free_handler)
+  , pde_operator_float(_pde_operator_float)
 {}
 
 template <int dim, int degree>
@@ -193,9 +200,9 @@ GMGSolver<dim, degree>::init()
   mg_operators =
     std::make_unique<dealii::MGLevelObject<LevelMatrixType>>(min_level,
                                                              max_level,
-                                                             *this->user_inputs,
-                                                             this->field_index,
-                                                             this->subset_attributes);
+                                                             this->subset_attributes,
+                                                             pde_operator_float,
+                                                             this->field_index);
   mg_transfer_operators.resize(min_level, max_level);
 
   // Setup operator on each level
