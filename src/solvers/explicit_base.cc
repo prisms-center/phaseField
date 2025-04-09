@@ -1,3 +1,7 @@
+#include <deal.II/base/exceptions.h>
+
+#include <prismspf/user_inputs/user_input_parameters.h>
+
 #include <prismspf/solvers/explicit_base.h>
 
 #include <prismspf/config.h>

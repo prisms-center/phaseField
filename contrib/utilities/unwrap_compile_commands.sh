@@ -39,7 +39,8 @@ COMPILER=$(grep -m1 '"command":' compile_commands.json | sed -E 's/.*"command": 
 }
 UNWRAPPED_COMPILER=$($COMPILER -show) || {
     echo "Failed to run '$COMPILER -show'"
-    exit 1
+    rm compile_commands.json.bak
+    exit 0
 }
 
 # Replace the COMPILER instances with the UNWRAPPED_COMPILER

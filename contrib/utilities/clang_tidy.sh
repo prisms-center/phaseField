@@ -40,8 +40,7 @@ cmake --build . || exit 3
 
 # Try to run unwrap_compile_commands
 if [ -x "$(command -v contrib/utilities/unwrap_compile_commands.sh)" ]; then
-    contrib/utilities/unwrap_compile_commands.sh -i compile_commands.json -o compile_commands_unwrapped.json || exit 3
-    mv compile_commands_unwrapped.json compile_commands.json
+    contrib/utilities/unwrap_compile_commands.sh || exit 3
 fi
 
 # Create a file that contains all the headers to ensure that clang-tidy runs on all headers

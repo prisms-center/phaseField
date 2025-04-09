@@ -1,6 +1,18 @@
+#include <deal.II/base/mpi.h>
+#include <deal.II/numerics/data_out.h>
+
+#include <prismspf/core/exceptions.h>
 #include <prismspf/core/solution_output.h>
+#include <prismspf/core/type_enums.h>
+
+#include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/config.h>
+
+#include <map>
+#include <mpi.h>
+#include <string>
+#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

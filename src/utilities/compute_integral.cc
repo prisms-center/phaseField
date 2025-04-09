@@ -1,13 +1,15 @@
 #include <deal.II/base/exceptions.h>
+#include <deal.II/base/quadrature_lib.h>
+#include <deal.II/dofs/dof_handler.h>
+#include <deal.II/fe/fe_update_flags.h>
 #include <deal.II/fe/fe_values.h>
-#include <deal.II/matrix_free/matrix_free.h>
-
-#include <prismspf/core/type_enums.h>
+#include <deal.II/lac/vector.h>
 
 #include <prismspf/utilities/compute_integral.h>
 
 #include <prismspf/config.h>
 
+#include <mpi.h>
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -26,8 +28,8 @@ computeIntegral<dim, degree, number>::compute_integral(
                             "should be 1 component."));
 
   // Set quadrature rule and FEValues to update the JxW values
-  dealii::QGaussLobatto<dim> quadrature(degree + 1);
-  dealii::FEValues<dim>      fe_values(dof_handler.get_fe(),
+  const dealii::QGaussLobatto<dim> quadrature(degree + 1);
+  dealii::FEValues<dim>            fe_values(dof_handler.get_fe(),
                                   quadrature,
                                   dealii::update_values | dealii::update_JxW_values);
 
@@ -77,8 +79,8 @@ computeIntegral<dim, degree, number>::compute_integral(
          dealii::ExcMessage("The provided `integral_value` must already be size dim"));
 
   // Set quadrature rule and FEValues to update the JxW values
-  dealii::QGaussLobatto<dim> quadrature(degree + 1);
-  dealii::FEValues<dim>      fe_values(dof_handler.get_fe(),
+  const dealii::QGaussLobatto<dim> quadrature(degree + 1);
+  dealii::FEValues<dim>            fe_values(dof_handler.get_fe(),
                                   quadrature,
                                   dealii::update_values | dealii::update_JxW_values);
 

@@ -4,7 +4,7 @@
 #pragma once
 
 #include <deal.II/dofs/dof_handler.h>
-#include <deal.II/lac/vector.h>
+#include <deal.II/lac/la_parallel_vector.h>
 
 #include <prismspf/config.h>
 

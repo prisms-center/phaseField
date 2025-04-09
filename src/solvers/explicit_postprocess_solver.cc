@@ -1,3 +1,5 @@
+#include <prismspf/user_inputs/user_input_parameters.h>
+
 #include <prismspf/solvers/explicit_postprocess_solver.h>
 
 #include <prismspf/config.h>

@@ -1,4 +1,11 @@
+#include <deal.II/base/function.h>
+#include <deal.II/base/point.h>
+#include <deal.II/lac/vector.h>
+
 #include <prismspf/core/nonuniform_dirichlet.h>
+#include <prismspf/core/type_enums.h>
+
+#include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/config.h>
 

@@ -1,10 +1,16 @@
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/quadrature_lib.h>
+#include <deal.II/base/vectorization.h>
+#include <deal.II/fe/fe_system.h>
+#include <deal.II/fe/fe_update_flags.h>
 #include <deal.II/fe/fe_values.h>
+#include <deal.II/matrix_free/matrix_free.h>
 
 #include <prismspf/utilities/element_volume.h>
 
 #include <prismspf/config.h>
+
+#include <memory>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -13,7 +19,7 @@ void
 elementVolume<dim, degree, number>::initialize(
   std::shared_ptr<dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>> _data)
 {
-  data = _data;
+  data = std::move(_data);
 }
 
 template <int dim, int degree, typename number>
@@ -30,8 +36,8 @@ elementVolume<dim, degree, number>::compute_element_volume(
   element_volume.resize(n_cells);
 
   // Set quadrature rule and FEValues to update the JxW values
-  dealii::QGaussLobatto<dim> quadrature(degree + 1);
-  dealii::FEValues<dim>      fe_values(fe_system, quadrature, dealii::update_JxW_values);
+  const dealii::QGaussLobatto<dim> quadrature(degree + 1);
+  dealii::FEValues<dim> fe_values(fe_system, quadrature, dealii::update_JxW_values);
 
   // Get the number of quadrature points
   const unsigned int num_quad_points = quadrature.size();

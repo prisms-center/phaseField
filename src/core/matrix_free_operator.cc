@@ -1,3 +1,5 @@
+#include <deal.II/base/exceptions.h>
+
 #include <prismspf/core/matrix_free_operator.h>
 
 #include <prismspf/config.h>
