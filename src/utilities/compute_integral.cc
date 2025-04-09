@@ -1,8 +1,14 @@
+#include <deal.II/base/exceptions.h>
 #include <deal.II/fe/fe_values.h>
+#include <deal.II/matrix_free/matrix_free.h>
+
+#include <prismspf/core/type_enums.h>
 
 #include <prismspf/utilities/compute_integral.h>
 
 #include <prismspf/config.h>
+
+#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

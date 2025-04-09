@@ -1,3 +1,7 @@
+#include <deal.II/base/exceptions.h>
+#include <deal.II/base/quadrature_lib.h>
+#include <deal.II/fe/fe_values.h>
+
 #include <prismspf/utilities/element_volume.h>
 
 #include <prismspf/config.h>

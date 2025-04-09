@@ -57,11 +57,16 @@ dealii::types::global_dof_index
 matrixFreeOperator<dim, degree, number>::m() const
 {
   Assert(data.get() != nullptr, dealii::ExcNotInitialized());
-  unsigned int total_size = 0;
-  for (const unsigned int field : selected_fields)
-    {
-      total_size += data->get_vector_partitioner(field)->size();
-    }
+
+  unsigned int total_size =
+    std::accumulate(selected_fields.begin(),
+                    selected_fields.end(),
+                    0u,
+                    [this](unsigned int sum, unsigned int field)
+                    {
+                      return sum + data->get_vector_partitioner(field)->size();
+                    });
+
   return total_size;
 }
 

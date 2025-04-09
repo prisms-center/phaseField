@@ -3,12 +3,8 @@
 
 #pragma once
 
-#include <deal.II/base/exceptions.h>
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/lac/vector.h>
-#include <deal.II/matrix_free/matrix_free.h>
-
-#include <prismspf/core/type_enums.h>
 
 #include <prismspf/config.h>
 

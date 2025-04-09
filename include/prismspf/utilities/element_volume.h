@@ -4,11 +4,8 @@
 #pragma once
 
 #include <deal.II/base/aligned_vector.h>
-#include <deal.II/base/quadrature_lib.h>
 #include <deal.II/base/vectorization.h>
-#include <deal.II/fe/fe_q.h>
 #include <deal.II/fe/fe_system.h>
-#include <deal.II/fe/fe_values.h>
 #include <deal.II/matrix_free/matrix_free.h>
 
 #include <prismspf/config.h>
