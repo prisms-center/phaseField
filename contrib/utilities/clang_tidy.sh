@@ -57,7 +57,7 @@ cat .clang-tidy
 $CLANG_TIDY -p . -quiet -header-filter "include/prismspf/*" -extra-arg='-DCLANG_TIDY' 2>error.txt >output.txt
 
 # grep interesting errors and make sure we remove duplicates:
-grep -E '(warning|error): ' output.txt | sort | uniq >clang-tidy.log
+grep -E '(warning|error): ' output.txt | grep -v 'include/deal.II' | sort | uniq >clang-tidy.log
 
 # If we have errors, report them and set exit status to failure
 if [ -s clang-tidy.log ]; then
