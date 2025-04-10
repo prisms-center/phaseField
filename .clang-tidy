@@ -13,7 +13,6 @@ Checks: >
   hicpp-*,
   -hicpp-special-member-functions,
   misc-*,
-  -misc-const-correctness,
   modernize-*,
   -modernize-use-trailing-return-type,
   mpi-*,
