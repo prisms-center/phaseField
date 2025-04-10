@@ -16,13 +16,21 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-std::ofstream conditionalOStreams::summary_log_file("summary.log",
-                                                    std::ios::out | std::ios::trunc);
+std::ofstream &
+get_summary_log_file()
+{
+  static std::ofstream file("summary.log", std::ios::out | std::ios::trunc);
+  if (!file.is_open())
+    {
+      throw std::runtime_error("Unable to open summary.log for writing.");
+    }
+  return file;
+}
 
 dealii::ConditionalOStream &
 conditionalOStreams::pout_summary()
 {
-  static dealii::ConditionalOStream instance(summary_log_file,
+  static dealii::ConditionalOStream instance(get_summary_log_file(),
                                              dealii::Utilities::MPI::this_mpi_process(
                                                MPI_COMM_WORLD) == 0);
   return instance;
@@ -31,7 +39,7 @@ conditionalOStreams::pout_summary()
 dealii::ConditionalOStream &
 conditionalOStreams::pout_base()
 {
-  static TeeStream                  tee_stream(std::cout, summary_log_file);
+  static TeeStream                  tee_stream(std::cout, get_summary_log_file());
   static dealii::ConditionalOStream instance(tee_stream,
                                              dealii::Utilities::MPI::this_mpi_process(
                                                MPI_COMM_WORLD) == 0);
@@ -41,7 +49,7 @@ conditionalOStreams::pout_base()
 dealii::ConditionalOStream &
 conditionalOStreams::pout_verbose()
 {
-  static TeeStream                  tee_stream(std::cout, summary_log_file);
+  static TeeStream                  tee_stream(std::cout, get_summary_log_file());
   static dealii::ConditionalOStream instance(tee_stream,
 #ifndef DEBUG
                                              false &&
@@ -49,22 +57,6 @@ conditionalOStreams::pout_verbose()
                                                dealii::Utilities::MPI::this_mpi_process(
                                                  MPI_COMM_WORLD) == 0);
   return instance;
-}
-
-conditionalOStreams::conditionalOStreams()
-{
-  if (!summary_log_file.is_open())
-    {
-      throw std::runtime_error("Unable to open summary.log for writing.");
-    }
-}
-
-conditionalOStreams::~conditionalOStreams()
-{
-  if (summary_log_file.is_open())
-    {
-      summary_log_file.close();
-    }
 }
 
 PRISMS_PF_END_NAMESPACE
