@@ -105,10 +105,8 @@ public:
    * \brief Add the mappings from global to local solution vectors.
    */
   void
-  add_global_to_local_mapping(
-    const std::unordered_map<std::pair<unsigned int, dependencyType>,
-                             unsigned int,
-                             pairHash> &_global_to_local_solution);
+  add_global_to_local_mapping(const std::map<std::pair<unsigned int, dependencyType>,
+                                             unsigned int> &_global_to_local_solution);
 
   /**
    * \brief Add the solution subset for src vector.
@@ -254,7 +252,7 @@ private:
   /**
    * \brief Mapping from global solution vectors to the local ones
    */
-  std::unordered_map<std::pair<unsigned int, dependencyType>, unsigned int, pairHash>
+  std::map<std::pair<unsigned int, dependencyType>, unsigned int>
     global_to_local_solution;
 
   /**

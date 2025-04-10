@@ -17,7 +17,6 @@
 #include <set>
 #include <stdexcept>
 #include <string>
-#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -370,9 +369,8 @@ void
 variableAttributeLoader::validate_old_solution_dependencies()
 {
   // First create a combined dependency set
-  std::unordered_map<std::pair<unsigned int, dependencyType>,
-                     dealii::EvaluationFlags::EvaluationFlags,
-                     pairHash>
+  std::map<std::pair<unsigned int, dependencyType>,
+           dealii::EvaluationFlags::EvaluationFlags>
     dependency_set;
   for (const auto &[index, variable] : var_attributes)
     {

@@ -108,7 +108,7 @@ protected:
   /**
    * \brief Mapping from global solution vectors to the local ones for the residual solve.
    */
-  std::unordered_map<std::pair<unsigned int, dependencyType>, unsigned int, pairHash>
+  std::map<std::pair<unsigned int, dependencyType>, unsigned int>
     residual_global_to_local_solution;
 
   /**
@@ -124,7 +124,7 @@ protected:
   /**
    * \brief Mapping from global solution vectors to the local ones for the newton update.
    */
-  std::unordered_map<std::pair<unsigned int, dependencyType>, unsigned int, pairHash>
+  std::map<std::pair<unsigned int, dependencyType>, unsigned int>
     newton_update_global_to_local_solution;
 
   /**

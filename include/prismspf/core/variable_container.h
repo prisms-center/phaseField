@@ -39,10 +39,9 @@ public:
   variableContainer(
     const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
     const std::map<unsigned int, variableAttributes> &_subset_attributes,
-    const std::unordered_map<std::pair<unsigned int, dependencyType>,
-                             unsigned int,
-                             pairHash>               &_global_to_local_solution,
-    const solveType                                  &_solve_type);
+    const std::map<std::pair<unsigned int, dependencyType>, unsigned int>
+                    &_global_to_local_solution,
+    const solveType &_solve_type);
 
   /**
    * \brief Return the value of the specified scalar field.
@@ -338,18 +337,16 @@ private:
   /**
    * \brief Mapping from global solution vectors to the local ones
    */
-  const std::unordered_map<std::pair<unsigned int, dependencyType>,
-                           unsigned int,
-                           pairHash> *global_to_local_solution;
+  const std::map<std::pair<unsigned int, dependencyType>, unsigned int>
+    *global_to_local_solution;
 
   /**
    * \brief The residual evaluation flags taken in from the subset attributes. For all
    * solve types, there is only a single unique instance of the eval flags, so we can
    * simply store it here when the constructor is called.
    */
-  std::unordered_map<std::pair<unsigned int, dependencyType>,
-                     dealii::EvaluationFlags::EvaluationFlags,
-                     pairHash>
+  std::map<std::pair<unsigned int, dependencyType>,
+           dealii::EvaluationFlags::EvaluationFlags>
     src_eval_flags;
 
   /**

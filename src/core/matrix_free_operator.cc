@@ -18,7 +18,6 @@
 
 #include <map>
 #include <memory>
-#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -144,9 +143,8 @@ matrixFreeOperator<dim, degree, number>::set_constrained_entries_to_one(
 template <int dim, int degree, typename number>
 void
 matrixFreeOperator<dim, degree, number>::add_global_to_local_mapping(
-  const std::unordered_map<std::pair<unsigned int, dependencyType>,
-                           unsigned int,
-                           pairHash> &_global_to_local_solution)
+  const std::map<std::pair<unsigned int, dependencyType>, unsigned int>
+    &_global_to_local_solution)
 {
   global_to_local_solution = _global_to_local_solution;
 }

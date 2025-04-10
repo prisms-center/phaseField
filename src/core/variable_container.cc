@@ -19,7 +19,6 @@
 #include <functional>
 #include <map>
 #include <string>
-#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -29,10 +28,9 @@ template <int dim, int degree, typename number>
 variableContainer<dim, degree, number>::variableContainer(
   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
   const std::map<unsigned int, variableAttributes> &_subset_attributes,
-  const std::unordered_map<std::pair<unsigned int, dependencyType>,
-                           unsigned int,
-                           pairHash>               &_global_to_local_solution,
-  const solveType                                  &_solve_type)
+  const std::map<std::pair<unsigned int, dependencyType>, unsigned int>
+                  &_global_to_local_solution,
+  const solveType &_solve_type)
   : subset_attributes(&_subset_attributes)
   , global_to_local_solution(&_global_to_local_solution)
   , solve_type(_solve_type)
@@ -487,9 +485,8 @@ variableContainer<dim, degree, number>::reinit_and_eval(
   // the variable we're evaluating, which may or may not be an actually dependency. For
   // this reason, I selectively read dofs and evaluate the flags.
   auto reinit_and_eval_map =
-    [&](const std::unordered_map<std::pair<unsigned int, dependencyType>,
-                                 dealii::EvaluationFlags::EvaluationFlags,
-                                 pairHash>                                &eval_flag_set,
+    [&](const std::map<std::pair<unsigned int, dependencyType>,
+                       dealii::EvaluationFlags::EvaluationFlags>          &eval_flag_set,
         const std::map<unsigned int, std::map<dependencyType, fieldType>> &dependency_set)
   {
     for (const auto &[dependency_index, map] : dependency_set)
@@ -598,9 +595,8 @@ variableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
   // the variable we're evaluating, which may or may not be an actually dependency. For
   // this reason, I selectively read dofs and evaluate the flags.
   auto reinit_and_eval_map =
-    [&](const std::unordered_map<std::pair<unsigned int, dependencyType>,
-                                 dealii::EvaluationFlags::EvaluationFlags,
-                                 pairHash>                                &eval_flag_set,
+    [&](const std::map<std::pair<unsigned int, dependencyType>,
+                       dealii::EvaluationFlags::EvaluationFlags>          &eval_flag_set,
         const std::map<unsigned int, std::map<dependencyType, fieldType>> &dependency_set)
   {
     for (const auto &[dependency_index, map] : dependency_set)
@@ -662,9 +658,9 @@ void
 variableContainer<dim, degree, number>::reinit(unsigned int        cell,
                                                const unsigned int &global_variable_index)
 {
-  auto reinit_map = [&](const std::unordered_map<std::pair<unsigned int, dependencyType>,
-                                                 dealii::EvaluationFlags::EvaluationFlags,
-                                                 pairHash> &eval_flag_set)
+  auto reinit_map =
+    [&](const std::map<std::pair<unsigned int, dependencyType>,
+                       dealii::EvaluationFlags::EvaluationFlags> &eval_flag_set)
   {
     for (const auto &[pair, flags] : eval_flag_set)
       {
@@ -722,9 +718,8 @@ variableContainer<dim, degree, number>::read_dof_values(
   unsigned int                     cell)
 {
   auto reinit_and_eval_map =
-    [&](const std::unordered_map<std::pair<unsigned int, dependencyType>,
-                                 dealii::EvaluationFlags::EvaluationFlags,
-                                 pairHash>                                &eval_flag_set,
+    [&](const std::map<std::pair<unsigned int, dependencyType>,
+                       dealii::EvaluationFlags::EvaluationFlags>          &eval_flag_set,
         const std::map<unsigned int, std::map<dependencyType, fieldType>> &dependency_set)
   {
     for (const auto &[dependency_index, map] : dependency_set)
@@ -817,9 +812,9 @@ template <int dim, int degree, typename number>
 void
 variableContainer<dim, degree, number>::eval(const unsigned int &global_variable_index)
 {
-  auto eval_map = [&](const std::unordered_map<std::pair<unsigned int, dependencyType>,
-                                               dealii::EvaluationFlags::EvaluationFlags,
-                                               pairHash> &eval_flag_set)
+  auto eval_map =
+    [&](const std::map<std::pair<unsigned int, dependencyType>,
+                       dealii::EvaluationFlags::EvaluationFlags> &eval_flag_set)
   {
     for (const auto &[pair, flags] : eval_flag_set)
       {

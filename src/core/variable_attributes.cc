@@ -16,7 +16,6 @@
 #include <ostream>
 #include <set>
 #include <string>
-#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -144,11 +143,11 @@ variableAttributes::parse_dependencies(
   }();
 
   // Helper lambda to validate and fill in dependency sets
-  auto set_dependencies = [&](const std::set<std::string>  &dependencies,
-                              std::unordered_map<std::pair<unsigned int, dependencyType>,
-                                                 dealii::EvaluationFlags::EvaluationFlags,
-                                                 pairHash> &eval_flag_set,
-                              const std::string            &context)
+  auto set_dependencies =
+    [&](const std::set<std::string>                        &dependencies,
+        std::map<std::pair<unsigned int, dependencyType>,
+                 dealii::EvaluationFlags::EvaluationFlags> &eval_flag_set,
+        const std::string                                  &context)
   {
     // Loop through the available delimiters
     for (const auto &[variation, delimiter] : delimiters)
