@@ -16,7 +16,6 @@ if test ! -d src -o ! -d include -o ! -d applications; then
     exit 1
 fi
 
-# TODO: Don't think I need to use clang compiler if mpi compiler is being used by default
 if [ -x "$(command -v run-clang-tidy)" ]; then
     CLANG_TIDY=run-clang-tidy
 elif [ -x "$(command -v run-clang-tidy-18)" ]; then
@@ -27,7 +26,7 @@ else
 fi
 
 # Construct the cmake arguments
-ARGS=("-D" "CMAKE_EXPORT_COMPILE_COMMANDS=ON" "-D" "CMAKE_BUILD_TYPE=Debug" "$@")
+ARGS=("-D" "CMAKE_EXPORT_COMPILE_COMMANDS=ON" "-D" "CMAKE_BUILD_TYPE=Debug" "-D" "UNWRAP_COMPILER=ON" "$@")
 
 # Compile
 if [ -f CMakeCache.txt ]; then
@@ -39,6 +38,11 @@ cmake "${ARGS[@]}" . || (
 ) || exit 2
 cmake --build . || exit 3
 
+# Try to run unwrap_compile_commands
+if [ -x "$(command -v contrib/utilities/unwrap_compile_commands.sh)" ]; then
+    contrib/utilities/unwrap_compile_commands.sh || exit 3
+fi
+
 # Create a file that contains all the headers to ensure that clang-tidy runs on all headers
 (
     cd include
@@ -49,10 +53,10 @@ cmake --build . || exit 3
 cat .clang-tidy
 
 # Run clang-tidy
-$CLANG_TIDY -p . -quiet -header-filter "include/*" -extra-arg='-DCLANG_TIDY' 2>error.txt >output.txt
+$CLANG_TIDY -p . -quiet -header-filter "include/prismspf/*" -extra-arg='-DCLANG_TIDY' 2>error.txt >output.txt
 
 # grep interesting errors and make sure we remove duplicates:
-grep -E '(warning|error): ' output.txt | sort | uniq >clang-tidy.log
+grep -E '(warning|error): ' output.txt | grep -v 'include/deal.II' | sort | uniq >clang-tidy.log
 
 # If we have errors, report them and set exit status to failure
 if [ -s clang-tidy.log ]; then

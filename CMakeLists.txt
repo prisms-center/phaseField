@@ -272,13 +272,13 @@ file(WRITE ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/print_usage.cmake
 "message(
 \"###
 #
-#  Project ${TARGET_EXE} set up with  ${DEAL_II_PACKAGE_NAME}-${DEAL_II_PACKAGE_VERSION}  found at
+#  PRISMS-PF set up with ${DEAL_II_PACKAGE_NAME}-${DEAL_II_PACKAGE_VERSION} found at
 #      ${DEAL_II_PATH}
 #
 #  CMAKE_BUILD_TYPE:          ${CMAKE_BUILD_TYPE}
 #
 #  You can now run
-#      ${_make_command}                - to compile and link ${TARGET_EXE}
+#      ${_make_command}                - to compile and link
 #      ${_make_command} debug          - to switch the build type to 'Debug'
 #      ${_make_command} release        - to switch the build type to 'Release'
 #      ${_make_command} debugrelease   - to switch the build type to compile both
@@ -342,6 +342,17 @@ if(${PRISMS_PF_BUILD_RELEASE} STREQUAL "ON")
   if(${PRISMS_PF_WITH_CALIPER})
     target_link_libraries(${LIBRARY_NAME_RELEASE} caliper)
   endif()
+endif()
+
+# Unwrap the compiler compile_commands.json after the build
+set(UNWRAP_COMPILER OFF CACHE BOOL "Whether the user wants to unwrap the compiler, or not.")
+if(${UNWRAP_COMPILER} STREQUAL "ON")
+  add_custom_command(
+    TARGET ${LIBRARY_NAME_DEBUG} POST_BUILD
+    COMMAND /bin/bash ${CMAKE_SOURCE_DIR}/contrib/utilities/unwrap_compile_commands.sh
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    COMMENT "Unwrapping compiler for compile_commands.json"
+  )
 endif()
 
 # Write config to file
