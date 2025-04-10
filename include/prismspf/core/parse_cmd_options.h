@@ -22,6 +22,7 @@ class parseCMDOptions
 {
 public:
   // NOLINTBEGIN (cppcoreguidelines-pro-bounds-pointer-arithmetic)
+
   parseCMDOptions(int &_argc, char **argv)
     : argc(_argc)
   {

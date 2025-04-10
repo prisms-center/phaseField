@@ -7,8 +7,6 @@
 
 #include <prismspf/config.h>
 
-#include <fstream>
-
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
@@ -22,12 +20,12 @@ public:
   /**
    * \brief Constructor.
    */
-  conditionalOStreams();
+  conditionalOStreams() = default;
 
   /**
    * \brief Destructor.
    */
-  ~conditionalOStreams();
+  ~conditionalOStreams() = default;
 
   /**
    * \brief Generic parallel output stream. Used for essential information in release and
@@ -47,10 +45,6 @@ public:
    */
   static dealii::ConditionalOStream &
   pout_summary();
-
-private:
-  // summary.log file
-  static std::ofstream summary_log_file;
 };
 
 PRISMS_PF_END_NAMESPACE

@@ -59,7 +59,7 @@ invmHandler<dim, degree, number>::initialize(
                             "Please call clear() before calling this function."));
 
   // Grab the shared_ptr to the matrix-free object
-  data = _data;
+  data = std::move(_data);
 }
 
 template <int dim, int degree, typename number>
