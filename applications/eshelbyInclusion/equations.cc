@@ -86,9 +86,9 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
   a = incRadius;
 
   // Distance from the center of the inclusion
-  dist = std::sqrt((q_point_loc[0] - constV(0.0)) * (q_point_loc[0] - constV(0.0)) +
-                   (q_point_loc[1] - constV(0.0)) * (q_point_loc[1] - constV(0.0)) +
-                   (q_point_loc[2] - constV(0.0)) * (q_point_loc[2] - constV(0.0)));
+  dist = std::sqrt((q_point_loc[0] - centerX) * (q_point_loc[0] - centerX) +
+                   (q_point_loc[1] - centerY) * (q_point_loc[1] - centerY) +
+                   (q_point_loc[2] - centerZ) * (q_point_loc[2] - centerZ));
 
   // Calculation the stress-free transformation strain (the misfit)
   for (unsigned int i = 0; i < dim; i++)

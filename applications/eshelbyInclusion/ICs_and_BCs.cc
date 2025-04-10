@@ -28,6 +28,17 @@ customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &
 // FUNCTION FOR NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS
 // ===========================================================================
 
+
+//First we need a Kronecker Delta
+int kDelta(int i, int j) 
+{
+  if (i == j) {
+      return 1;
+  } else {
+      return 0;
+  }
+}
+
 template <int dim, int degree>
 void
 customPDE<dim, degree>::setNonUniformDirichletBCs(
@@ -51,38 +62,28 @@ customPDE<dim, degree>::setNonUniformDirichletBCs(
   // (i.e. left = 0, right = 1, bottom = 2, top = 3, front = 4, back = 5).
 
   // -------------------------------------------------------------------------
-  //radius is declared in equations.cc but this code doesn't see that so I'm defining it here as well
+
   for (unsigned int i = 0; i < dim; i++)
   {
-    //double radius = 10.0; //radius of inclusion
-    double mag = sqrt(p[0]*p[0] + p[1]*p[1] + p[2]*p[2]); //magnitude function
-    double A = (incRadius*incRadius*incRadius)/(6*0.9); //All constants for the displacement equation
-    //eigenstrain is only a function of distance from inclusion
-    //double sfts = 0.01 * (0.5 + 0.5 * (1.0 - std::exp(-20.0 * (mag - incRadius))) /
-    //     (1.0 + std::exp(-20.0 * (mag - incRadius))));
-    double sfts = 0.01 * (0.5 + 0.5 * (-1.0 * std::tanh(-20.0 * (mag - incRadius))));
-    if (direction == 1)
+    double A = (incRadius*incRadius*incRadius)/(6*(1-poisson)); //All constants for the displacement equation
+    double dist = sqrt((p[0] - centerX)*(p[0] - centerX)  
+                + (p[1] - centerY)*(p[1] - centerY) 
+                + (p[2] - centerZ)*(p[2] - centerZ)); //distance from center of inclusion
+    //double sfts = 0.01;
+    double G = 0.0;
+    for (unsigned int j = 0; j < dim; j ++)
     {
-      //eigenstrain is uniform and diagonal so I need only three directional functions
-      //directional functions change based on direction of displacement
-      double xdir = 0.8*(p[0]/mag) + 3*(p[0]*p[0]*p[0])/(mag*mag*mag); // with a 0.1 poisson
-      double ydir = 0.8*(-1*p[0]/mag) + 3*(p[0]*p[1]*p[1])/(mag*mag*mag);
-      double zdir = 0.8*(-1*p[0]/mag) + 3*(p[0]*p[2]*p[2])/(mag*mag*mag);
-      vector_BC(i) = A*(1/(mag*mag))*sfts*(xdir + ydir + zdir);
+      for (unsigned int k = 0; k < dim; k++)
+      {
+        double g = (1-2*poisson) *
+                   (kDelta(i,j)*((p[k]-centerZ)/dist) + 
+                    kDelta(i,k)*((p[j]-centerY)/dist) - 
+                    kDelta(j,k)*((p[i]-centerX)/dist)) + 
+                    3*((p[i]-centerX)/dist)*((p[j]-centerY)/dist)*((p[k]-centerZ)/dist);
+        double sfts = kDelta(j,k)*0.01;
+        G += sfts*g;
+      }
     }
-    if (direction == 3)
-    {
-      double xdir = 0.8*(-1*p[1]/mag) + 3*(p[1]*p[0]*p[0])/(mag*mag*mag);
-      double ydir = 0.8*(p[1]/mag) + 3*(p[1]*p[1]*p[1])/(mag*mag*mag);
-      double zdir = 0.8*(-1*p[1]/mag) + 3*(p[1]*p[2]*p[2])/(mag*mag*mag);
-      vector_BC(i) = A*(1/(mag*mag))*sfts*(xdir + ydir + zdir);
-    }
-    if (direction == 5)
-    {
-      double xdir = 0.8*(-1*p[2]/mag) + 3*(p[2]*p[0]*p[0])/(mag*mag*mag);
-      double ydir = 0.8*(-1*p[2]/mag) + 3*(p[2]*p[1]*p[1])/(mag*mag*mag);
-      double zdir = 0.8*(p[2]/mag) + 3*(p[2]*p[2]*p[2])/(mag*mag*mag);
-     vector_BC(i) = A*(1/(mag*mag))*sfts*(xdir + ydir + zdir);
-    }
+    vector_BC(i) = -1.0*A*(1/(dist*dist))*G;
   }
 }
