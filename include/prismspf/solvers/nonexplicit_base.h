@@ -51,7 +51,7 @@ public:
   /**
    * \brief Destructor.
    */
-  ~nonexplicitBase() = default;
+  virtual ~nonexplicitBase() = default;
 
   /**
    * \brief Initialize system.

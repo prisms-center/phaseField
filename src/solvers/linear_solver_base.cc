@@ -1,8 +1,18 @@
+#include <prismspf/core/constraint_handler.h>
+#include <prismspf/core/matrix_free_handler.h>
+#include <prismspf/core/pde_operator.h>
+#include <prismspf/core/solution_handler.h>
+#include <prismspf/core/type_enums.h>
+#include <prismspf/core/variable_attributes.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/solvers/linear_solver_base.h>
 
 #include <prismspf/config.h>
+
+#include <memory>
+#include <utility>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -23,7 +33,7 @@ linearSolverBase<dim, degree>::linearSolverBase(
   , residual(_solution_handler.get_new_solution_vector(field_index))
   , newton_update(
       _solution_handler.get_solution_vector(field_index, dependencyType::CHANGE))
-  , pde_operator(_pde_operator)
+  , pde_operator(std::move(_pde_operator))
   , solver_control(
       _user_inputs.linear_solve_parameters.linear_solve.at(field_index).max_iterations)
 {

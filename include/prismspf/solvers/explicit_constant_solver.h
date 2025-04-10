@@ -46,7 +46,7 @@ public:
   /**
    * \brief Destructor.
    */
-  ~explicitConstantSolver() = default;
+  ~explicitConstantSolver() override = default;
 
   /**
    * \brief Initialize system.

@@ -1,8 +1,26 @@
 #include <deal.II/base/exceptions.h>
+#include <deal.II/base/point.h>
+#include <deal.II/base/subscriptor.h>
+#include <deal.II/base/types.h>
+#include <deal.II/base/vectorization.h>
+#include <deal.II/lac/diagonal_matrix.h>
+#include <deal.II/matrix_free/matrix_free.h>
 
+#include <prismspf/core/exceptions.h>
 #include <prismspf/core/matrix_free_operator.h>
+#include <prismspf/core/pde_operator.h>
+#include <prismspf/core/type_enums.h>
+#include <prismspf/core/types.h>
+#include <prismspf/core/variable_attributes.h>
+#include <prismspf/core/variable_container.h>
 
 #include <prismspf/config.h>
+
+#include <map>
+#include <memory>
+#include <unordered_map>
+#include <utility>
+#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -13,7 +31,7 @@ matrixFreeOperator<dim, degree, number>::matrixFreeOperator(
   types::index                                            _current_index)
   : Subscriptor()
   , attributes_list(&_attributes_list)
-  , pde_operator(_pde_operator)
+  , pde_operator(std::move(_pde_operator))
   , current_index(_current_index)
 {}
 
@@ -23,12 +41,12 @@ matrixFreeOperator<dim, degree, number>::initialize(
   std::shared_ptr<const dealii::MatrixFree<dim, number, size_type>> _data,
   const std::vector<unsigned int> &selected_field_indexes)
 {
-  data = _data;
+  data = std::move(_data);
 
   selected_fields.clear();
   if (selected_field_indexes.empty())
     {
-      for (unsigned int i = 0; i < _data->n_components(); ++i)
+      for (unsigned int i = 0; i < data->n_components(); ++i)
         {
           selected_fields.push_back(i);
         }
@@ -37,7 +55,7 @@ matrixFreeOperator<dim, degree, number>::initialize(
     {
       for (unsigned int i = 0; i < selected_field_indexes.size(); ++i)
         {
-          AssertIndexRange(selected_field_indexes[i], _data->n_components());
+          AssertIndexRange(selected_field_indexes[i], data->n_components());
           for (unsigned int j = 0; j < selected_field_indexes.size(); ++j)
             {
               if (j != i)
@@ -60,10 +78,10 @@ matrixFreeOperator<dim, degree, number>::m() const
 {
   Assert(data.get() != nullptr, dealii::ExcNotInitialized());
 
-  unsigned int total_size =
+  const unsigned int total_size =
     std::accumulate(selected_fields.begin(),
                     selected_fields.end(),
-                    0u,
+                    0U,
                     [this](unsigned int sum, unsigned int field)
                     {
                       return sum + data->get_vector_partitioner(field)->size();
@@ -409,7 +427,7 @@ matrixFreeOperator<dim, degree, number>::compute_diagonal(unsigned int field_ind
   inverse_diagonal_entries.reset(new dealii::DiagonalMatrix<VectorType>());
   VectorType &inverse_diagonal = inverse_diagonal_entries->get_vector();
   data->initialize_dof_vector(inverse_diagonal, field_index);
-  unsigned int dummy = 0;
+  const unsigned int dummy = 0;
   data->cell_loop(&matrixFreeOperator::local_compute_diagonal,
                   this,
                   inverse_diagonal,

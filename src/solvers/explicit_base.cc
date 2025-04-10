@@ -1,10 +1,25 @@
 #include <deal.II/base/exceptions.h>
+#include <deal.II/fe/mapping_q1.h>
+
+#include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/core/constraint_handler.h>
+#include <prismspf/core/dof_handler.h>
+#include <prismspf/core/initial_conditions.h>
+#include <prismspf/core/invm_handler.h>
+#include <prismspf/core/matrix_free_handler.h>
+#include <prismspf/core/pde_operator.h>
+#include <prismspf/core/solution_handler.h>
+#include <prismspf/core/type_enums.h>
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/solvers/explicit_base.h>
 
 #include <prismspf/config.h>
+
+#include <memory>
+#include <ostream>
+#include <string>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -25,7 +40,7 @@ explicitBase<dim, degree>::explicitBase(
   , dof_handler(&_dof_handler)
   , mapping(&_mapping)
   , solution_handler(&_solution_handler)
-  , pde_operator(_pde_operator)
+  , pde_operator(std::move(_pde_operator))
 {}
 
 template <int dim, int degree>

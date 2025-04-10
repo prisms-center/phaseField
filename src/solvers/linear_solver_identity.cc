@@ -1,8 +1,21 @@
+#include <deal.II/lac/solver_cg.h>
+
+#include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/core/constraint_handler.h>
+#include <prismspf/core/matrix_free_handler.h>
+#include <prismspf/core/pde_operator.h>
+#include <prismspf/core/solution_handler.h>
+#include <prismspf/core/type_enums.h>
+#include <prismspf/core/variable_attributes.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#include <prismspf/solvers/linear_solver_base.h>
 #include <prismspf/solvers/linear_solver_identity.h>
 
 #include <prismspf/config.h>
+
+#include <memory>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -19,7 +32,7 @@ identitySolver<dim, degree>::identitySolver(
                                   _matrix_free_handler,
                                   _constraint_handler,
                                   _solution_handler,
-                                  _pde_operator)
+                                  std::move(_pde_operator))
 {}
 
 template <int dim, int degree>

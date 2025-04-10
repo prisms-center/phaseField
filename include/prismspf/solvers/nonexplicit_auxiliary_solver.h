@@ -52,7 +52,7 @@ public:
   /**
    * \brief Destructor.
    */
-  ~nonexplicitAuxiliarySolver() = default;
+  ~nonexplicitAuxiliarySolver() override = default;
 
   /**
    * \brief Initialize system.

@@ -57,7 +57,7 @@ public:
   /**
    * \brief Destructor.
    */
-  ~nonexplicitSelfNonlinearSolver() = default;
+  ~nonexplicitSelfNonlinearSolver() override = default;
 
   /**
    * \brief Initialize system.

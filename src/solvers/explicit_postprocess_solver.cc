@@ -1,8 +1,21 @@
+#include <deal.II/fe/mapping_q1.h>
+
+#include <prismspf/core/constraint_handler.h>
+#include <prismspf/core/dof_handler.h>
+#include <prismspf/core/invm_handler.h>
+#include <prismspf/core/matrix_free_handler.h>
+#include <prismspf/core/pde_operator.h>
+#include <prismspf/core/solution_handler.h>
+#include <prismspf/core/type_enums.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#include <prismspf/solvers/explicit_base.h>
 #include <prismspf/solvers/explicit_postprocess_solver.h>
 
 #include <prismspf/config.h>
+
+#include <memory>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -23,7 +36,7 @@ explicitPostprocessSolver<dim, degree>::explicitPostprocessSolver(
                               _dof_handler,
                               _mapping,
                               _solution_handler,
-                              _pde_operator)
+                              std::move(_pde_operator))
 {}
 
 template <int dim, int degree>

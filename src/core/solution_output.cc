@@ -1,7 +1,8 @@
-#include <deal.II/base/mpi.h>
+#include <deal.II/base/data_out_base.h>
+#include <deal.II/dofs/dof_handler.h>
+#include <deal.II/numerics/data_component_interpretation.h>
 #include <deal.II/numerics/data_out.h>
 
-#include <prismspf/core/exceptions.h>
 #include <prismspf/core/solution_output.h>
 #include <prismspf/core/type_enums.h>
 
@@ -91,7 +92,7 @@ solutionOutput<dim, number>::solutionOutput(
                    ? dealii::DataComponentInterpretation::component_is_scalar
                    : dealii::DataComponentInterpretation::component_is_part_of_vector);
 
-      const std::vector<std::string> names(n_components, variable.name.c_str());
+      const std::vector<std::string> names(n_components, variable.name);
 
       data_out.add_data_vector(*(dof_handlers.at(index)), *solution, names, dataType);
 

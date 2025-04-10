@@ -1,6 +1,25 @@
+#include <deal.II/base/mpi.h>
+#include <deal.II/base/quadrature_lib.h>
+#include <deal.II/base/utilities.h>
+#include <deal.II/base/vectorization.h>
+#include <deal.II/fe/fe_q.h>
+#include <deal.II/fe/fe_system.h>
+
+#include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/core/pde_operator.h>
 #include <prismspf/core/pde_problem.h>
+#include <prismspf/core/solution_output.h>
+#include <prismspf/core/timer.h>
+#include <prismspf/core/type_enums.h>
+
+#include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/config.h>
+
+#include <memory>
+#include <mpi.h>
+#include <ostream>
+#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

@@ -344,14 +344,8 @@ if(${PRISMS_PF_BUILD_RELEASE} STREQUAL "ON")
   endif()
 endif()
 
-# Write config to file
-include(${CMAKE_SOURCE_DIR}/cmake/write_config.cmake)
-
-# Print the config
-file(READ ${CMAKE_SOURCE_DIR}/summary.log PRISMS_PF_SUMMARY)
-message("${PRISMS_PF_SUMMARY}")
-
 # Unwrap the compiler compile_commands.json after the build
+set(UNWRAP_COMPILER OFF CACHE BOOL "Whether the user wants to unwrap the compiler, or not.")
 if(${UNWRAP_COMPILER} STREQUAL "ON")
   add_custom_command(
     TARGET ${LIBRARY_NAME_DEBUG} POST_BUILD
@@ -360,3 +354,10 @@ if(${UNWRAP_COMPILER} STREQUAL "ON")
     COMMENT "Unwrapping compiler for compile_commands.json"
   )
 endif()
+
+# Write config to file
+include(${CMAKE_SOURCE_DIR}/cmake/write_config.cmake)
+
+# Print the config
+file(READ ${CMAKE_SOURCE_DIR}/summary.log PRISMS_PF_SUMMARY)
+message("${PRISMS_PF_SUMMARY}")

@@ -43,7 +43,7 @@ public:
   /**
    * \brief Destructor.
    */
-  ~explicitPostprocessSolver() = default;
+  ~explicitPostprocessSolver() override = default;
 
   /**
    * \brief Initialize system.

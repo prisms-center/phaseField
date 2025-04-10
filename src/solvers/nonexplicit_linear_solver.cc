@@ -1,6 +1,16 @@
+#include <prismspf/core/constraint_handler.h>
+#include <prismspf/core/dof_handler.h>
+#include <prismspf/core/invm_handler.h>
+#include <prismspf/core/matrix_free_handler.h>
+#include <prismspf/core/solution_handler.h>
+#include <prismspf/core/triangulation_handler.h>
+#include <prismspf/core/type_enums.h>
+
 #include <prismspf/solvers/nonexplicit_linear_solver.h>
 
 #include <prismspf/config.h>
+
+#include <memory>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

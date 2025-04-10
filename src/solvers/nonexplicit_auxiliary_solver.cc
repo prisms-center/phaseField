@@ -1,8 +1,26 @@
+#include <deal.II/base/mg_level_object.h>
+#include <deal.II/fe/mapping_q1.h>
+
+#include <prismspf/core/constraint_handler.h>
+#include <prismspf/core/dof_handler.h>
+#include <prismspf/core/invm_handler.h>
+#include <prismspf/core/matrix_free_handler.h>
+#include <prismspf/core/pde_operator.h>
+#include <prismspf/core/solution_handler.h>
+#include <prismspf/core/triangulation_handler.h>
+#include <prismspf/core/type_enums.h>
+#include <prismspf/core/variable_attributes.h>
+
 #include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/solvers/nonexplicit_auxiliary_solver.h>
+#include <prismspf/solvers/nonexplicit_base.h>
 
 #include <prismspf/config.h>
+
+#include <map>
+#include <memory>
+#include <utility>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -27,7 +45,7 @@ nonexplicitAuxiliarySolver<dim, degree>::nonexplicitAuxiliarySolver(
                                  _mapping,
                                  _mg_matrix_free_handler,
                                  _solution_handler,
-                                 _pde_operator)
+                                 std::move(_pde_operator))
 {}
 
 template <int dim, int degree>
