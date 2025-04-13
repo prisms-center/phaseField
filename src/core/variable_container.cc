@@ -44,15 +44,13 @@ variableContainer<dim, degree, number>::variableContainer(
           {
             if (field_type == fieldType::SCALAR)
               {
-                scalar_vars_map[dependency_index].emplace(
-                  dependency_type,
-                  std::make_unique<scalar_FEEval>(data, dependency_index));
+                feeval_map[dependency_index][dependency_type] =
+                  std::make_unique<scalar_FEEval>(data, dependency_index);
               }
             else
               {
-                vector_vars_map[dependency_index].emplace(
-                  dependency_type,
-                  std::make_unique<vector_FEEval>(data, dependency_index));
+                feeval_map[dependency_index][dependency_type] =
+                  std::make_unique<vector_FEEval>(data, dependency_index);
               }
           }
       }
@@ -195,8 +193,29 @@ variableContainer<dim, degree, number>::eval_local_diagonal(
 
   if (field_type == fieldType::SCALAR)
     {
-      auto *scalar_FEEval_ptr =
-        scalar_vars_map.at(global_var_index).at(dependencyType::CHANGE).get();
+      scalar_FEEval *scalar_FEEval_ptr = nullptr;
+      if constexpr (dim == 1)
+        {
+          scalar_FEEval_ptr =
+            feeval_map.at(global_var_index).at(dependencyType::CHANGE).get();
+        }
+      else
+        {
+          std::visit(
+            [&scalar_FEEval_ptr](auto &ptr)
+            {
+              using T = std::decay_t<decltype(ptr)>;
+              if constexpr (std::is_same_v<T, std::unique_ptr<scalar_FEEval>>)
+                {
+                  scalar_FEEval_ptr = ptr.get();
+                }
+              else
+                {
+                  Assert(false, dealii::ExcNotInitialized());
+                }
+            },
+            feeval_map.at(global_var_index).at(dependencyType::CHANGE));
+        }
 
       n_dofs_per_cell = scalar_FEEval_ptr->dofs_per_cell;
       scalar_diagonal =
@@ -251,8 +270,29 @@ variableContainer<dim, degree, number>::eval_local_diagonal(
     }
   else if (field_type == fieldType::VECTOR)
     {
-      auto *vector_FEEval_ptr =
-        vector_vars_map.at(global_var_index).at(dependencyType::CHANGE).get();
+      vector_FEEval *vector_FEEval_ptr = nullptr;
+      if constexpr (dim == 1)
+        {
+          vector_FEEval_ptr =
+            feeval_map.at(global_var_index).at(dependencyType::CHANGE).get();
+        }
+      else
+        {
+          std::visit(
+            [&vector_FEEval_ptr](auto &ptr)
+            {
+              using T = std::decay_t<decltype(ptr)>;
+              if constexpr (std::is_same_v<T, std::unique_ptr<vector_FEEval>>)
+                {
+                  vector_FEEval_ptr = ptr.get();
+                }
+              else
+                {
+                  Assert(false, dealii::ExcNotInitialized());
+                }
+            },
+            feeval_map.at(global_var_index).at(dependencyType::CHANGE));
+        }
 
       n_dofs_per_cell = vector_FEEval_ptr->dofs_per_component;
       vector_diagonal =
@@ -341,34 +381,16 @@ variableContainer<dim, degree, number>::eval_local_diagonal(
 
 template <int dim, int degree, typename number>
 void
-variableContainer<dim, degree, number>::scalar_FEEval_exists(
+variableContainer<dim, degree, number>::FEEval_exists(
   [[maybe_unused]] const unsigned int   &dependency_index,
   [[maybe_unused]] const dependencyType &dependency_type) const
 {
-  Assert(scalar_vars_map.find(dependency_index) != scalar_vars_map.end(),
-         dealii::ExcMessage(
-           "The scalar FEEvaluation object does not exist for global index = " +
-           std::to_string(dependency_index)));
-  Assert(scalar_vars_map.at(dependency_index).find(dependency_type) !=
-           scalar_vars_map.at(dependency_index).end(),
-         dealii::ExcMessage("The scalar FEEvaluation object with global index = " +
-                            std::to_string(dependency_index) +
-                            " does not exist for type = " + to_string(dependency_type)));
-}
-
-template <int dim, int degree, typename number>
-void
-variableContainer<dim, degree, number>::vector_FEEval_exists(
-  [[maybe_unused]] const unsigned int   &dependency_index,
-  [[maybe_unused]] const dependencyType &dependency_type) const
-{
-  Assert(vector_vars_map.find(dependency_index) != vector_vars_map.end(),
-         dealii::ExcMessage(
-           "The vector FEEvaluation object does not exist for global index = " +
-           std::to_string(dependency_index)));
-  Assert(vector_vars_map.at(dependency_index).find(dependency_type) !=
-           vector_vars_map.at(dependency_index).end(),
-         dealii::ExcMessage("The vector FEEvaluation object with global index = " +
+  Assert(feeval_map.find(dependency_index) != feeval_map.end(),
+         dealii::ExcMessage("The FEEvaluation object does not exist for global index = " +
+                            std::to_string(dependency_index)));
+  Assert(feeval_map.at(dependency_index).find(dependency_type) !=
+           feeval_map.at(dependency_index).end(),
+         dealii::ExcMessage("The FEEvaluation object with global index = " +
                             std::to_string(dependency_index) +
                             " does not exist for type = " + to_string(dependency_type)));
 }
@@ -416,25 +438,25 @@ template <int dim, int degree, typename number>
 unsigned int
 variableContainer<dim, degree, number>::get_n_q_points() const
 {
-  if (!scalar_vars_map.empty())
+  for (const auto &[dependency_index, dependency_map] : feeval_map)
     {
-      const auto &first_scalar_FEEval = scalar_vars_map.begin()->second;
-
-      Assert(!first_scalar_FEEval.empty(),
-             dealii::ExcMessage("When trying to access the number of quadrature points, "
-                                "all FEEvaluation object containers were empty."));
-
-      return first_scalar_FEEval.begin()->second->n_q_points;
-    }
-  if (!vector_vars_map.empty())
-    {
-      const auto &first_vector_FEEval = vector_vars_map.begin()->second;
-
-      Assert(!first_vector_FEEval.empty(),
-             dealii::ExcMessage("When trying to access the number of quadrature points, "
-                                "all FEEvaluation object containers were empty."));
-
-      return first_vector_FEEval.begin()->second->n_q_points;
+      for (const auto &[dependency_type, feeval_variant] : dependency_map)
+        {
+          if constexpr (dim == 1)
+            {
+              return feeval_variant->n_q_points;
+            }
+          else
+            {
+              return std::visit(
+                [&](const auto &feeval_ptr) -> unsigned int
+                {
+                  Assert(feeval_ptr != nullptr, dealii::ExcNotInitialized());
+                  return feeval_ptr->n_q_points;
+                },
+                feeval_variant);
+            }
+        }
     }
 
   Assert(false,
@@ -447,25 +469,25 @@ template <int dim, int degree, typename number>
 dealii::Point<dim, typename variableContainer<dim, degree, number>::size_type>
 variableContainer<dim, degree, number>::get_q_point_location() const
 {
-  if (!scalar_vars_map.empty())
+  for (const auto &[dependency_index, dependency_map] : feeval_map)
     {
-      const auto &first_scalar_FEEval = scalar_vars_map.begin()->second;
-
-      Assert(!first_scalar_FEEval.empty(),
-             dealii::ExcMessage("When trying to access the quadrature point location, "
-                                "all FEEvaluation object containers were empty."));
-
-      return first_scalar_FEEval.begin()->second->quadrature_point(q_point);
-    }
-  if (!vector_vars_map.empty())
-    {
-      const auto &first_vector_FEEval = vector_vars_map.begin()->second;
-
-      Assert(!first_vector_FEEval.empty(),
-             dealii::ExcMessage("When trying to access the quadrature point location, "
-                                "all FEEvaluation object containers were empty."));
-
-      return first_vector_FEEval.begin()->second->quadrature_point(q_point);
+      for (const auto &[dependency_type, feeval_variant] : dependency_map)
+        {
+          if constexpr (dim == 1)
+            {
+              return feeval_variant->quadrature_point(q_point);
+            }
+          else
+            {
+              return std::visit(
+                [&](const auto &feeval_ptr) -> dealii::Point<dim, size_type>
+                {
+                  Assert(feeval_ptr != nullptr, dealii::ExcNotInitialized());
+                  return feeval_ptr->quadrature_point(q_point);
+                },
+                feeval_variant);
+            }
+        }
     }
 
   Assert(false,
@@ -509,12 +531,31 @@ variableContainer<dim, degree, number>::reinit_and_eval(
 
             if (field_type == fieldType::SCALAR)
               {
-                scalar_FEEval_exists(dependency_index, dependency_type);
-
-                auto *scalar_FEEval_ptr =
-                  scalar_vars_map.at(dependency_index).at(dependency_type).get();
+                FEEval_exists(dependency_index, dependency_type);
+                scalar_FEEval *scalar_FEEval_ptr = nullptr;
+                if constexpr (dim == 1)
+                  {
+                    scalar_FEEval_ptr =
+                      feeval_map.at(dependency_index).at(dependency_type).get();
+                  }
+                else
+                  {
+                    std::visit(
+                      [&scalar_FEEval_ptr](auto &ptr)
+                      {
+                        using T = std::decay_t<decltype(ptr)>;
+                        if constexpr (std::is_same_v<T, std::unique_ptr<scalar_FEEval>>)
+                          {
+                            scalar_FEEval_ptr = ptr.get();
+                          }
+                        else
+                          {
+                            Assert(false, dealii::ExcNotInitialized());
+                          }
+                      },
+                      feeval_map.at(dependency_index).at(dependency_type));
+                  }
                 scalar_FEEval_ptr->reinit(cell);
-
                 if (eval_flag_set.find(pair) != eval_flag_set.end())
                   {
                     const unsigned int &local_index = global_to_local_solution->at(pair);
@@ -533,10 +574,30 @@ variableContainer<dim, degree, number>::reinit_and_eval(
               }
             else
               {
-                vector_FEEval_exists(dependency_index, dependency_type);
-
-                auto *vector_FEEval_ptr =
-                  vector_vars_map.at(dependency_index).at(dependency_type).get();
+                FEEval_exists(dependency_index, dependency_type);
+                vector_FEEval *vector_FEEval_ptr = nullptr;
+                if constexpr (dim == 1)
+                  {
+                    vector_FEEval_ptr =
+                      feeval_map.at(dependency_index).at(dependency_type).get();
+                  }
+                else
+                  {
+                    std::visit(
+                      [&vector_FEEval_ptr](auto &ptr)
+                      {
+                        using T = std::decay_t<decltype(ptr)>;
+                        if constexpr (std::is_same_v<T, std::unique_ptr<vector_FEEval>>)
+                          {
+                            vector_FEEval_ptr = ptr.get();
+                          }
+                        else
+                          {
+                            Assert(false, dealii::ExcNotInitialized());
+                          }
+                      },
+                      feeval_map.at(dependency_index).at(dependency_type));
+                  }
                 vector_FEEval_ptr->reinit(cell);
 
                 if (eval_flag_set.find(pair) != eval_flag_set.end())
@@ -614,20 +675,60 @@ variableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
 
             if (field_type == fieldType::SCALAR)
               {
-                scalar_FEEval_exists(dependency_index, dependency_type);
-
-                auto *scalar_FEEval_ptr =
-                  scalar_vars_map.at(dependency_index).at(dependency_type).get();
+                FEEval_exists(dependency_index, dependency_type);
+                scalar_FEEval *scalar_FEEval_ptr = nullptr;
+                if constexpr (dim == 1)
+                  {
+                    scalar_FEEval_ptr =
+                      feeval_map.at(dependency_index).at(dependency_type).get();
+                  }
+                else
+                  {
+                    std::visit(
+                      [&scalar_FEEval_ptr](auto &ptr)
+                      {
+                        using T = std::decay_t<decltype(ptr)>;
+                        if constexpr (std::is_same_v<T, std::unique_ptr<scalar_FEEval>>)
+                          {
+                            scalar_FEEval_ptr = ptr.get();
+                          }
+                        else
+                          {
+                            Assert(false, dealii::ExcNotInitialized());
+                          }
+                      },
+                      feeval_map.at(dependency_index).at(dependency_type));
+                  }
                 scalar_FEEval_ptr->reinit(cell);
                 scalar_FEEval_ptr->read_dof_values_plain(src);
                 scalar_FEEval_ptr->evaluate(eval_flag_set.at(pair));
               }
             else
               {
-                vector_FEEval_exists(dependency_index, dependency_type);
-
-                auto *vector_FEEval_ptr =
-                  vector_vars_map.at(dependency_index).at(dependency_type).get();
+                FEEval_exists(dependency_index, dependency_type);
+                vector_FEEval *vector_FEEval_ptr = nullptr;
+                if constexpr (dim == 1)
+                  {
+                    vector_FEEval_ptr =
+                      feeval_map.at(dependency_index).at(dependency_type).get();
+                  }
+                else
+                  {
+                    std::visit(
+                      [&vector_FEEval_ptr](auto &ptr)
+                      {
+                        using T = std::decay_t<decltype(ptr)>;
+                        if constexpr (std::is_same_v<T, std::unique_ptr<vector_FEEval>>)
+                          {
+                            vector_FEEval_ptr = ptr.get();
+                          }
+                        else
+                          {
+                            Assert(false, dealii::ExcNotInitialized());
+                          }
+                      },
+                      feeval_map.at(dependency_index).at(dependency_type));
+                  }
                 vector_FEEval_ptr->reinit(cell);
                 vector_FEEval_ptr->read_dof_values_plain(src);
                 vector_FEEval_ptr->evaluate(eval_flag_set.at(pair));
@@ -674,18 +775,58 @@ variableContainer<dim, degree, number>::reinit(unsigned int        cell,
 
         if (subset_attributes->at(dependency_index).field_type == fieldType::SCALAR)
           {
-            scalar_FEEval_exists(dependency_index, dependency_type);
-
-            auto *scalar_FEEval_ptr =
-              scalar_vars_map.at(dependency_index).at(dependency_type).get();
+            FEEval_exists(dependency_index, dependency_type);
+            scalar_FEEval *scalar_FEEval_ptr = nullptr;
+            if constexpr (dim == 1)
+              {
+                scalar_FEEval_ptr =
+                  feeval_map.at(dependency_index).at(dependency_type).get();
+              }
+            else
+              {
+                std::visit(
+                  [&scalar_FEEval_ptr](auto &ptr)
+                  {
+                    using T = std::decay_t<decltype(ptr)>;
+                    if constexpr (std::is_same_v<T, std::unique_ptr<scalar_FEEval>>)
+                      {
+                        scalar_FEEval_ptr = ptr.get();
+                      }
+                    else
+                      {
+                        Assert(false, dealii::ExcNotInitialized());
+                      }
+                  },
+                  feeval_map.at(dependency_index).at(dependency_type));
+              }
             scalar_FEEval_ptr->reinit(cell);
           }
         else
           {
-            vector_FEEval_exists(dependency_index, dependency_type);
-
-            auto *vector_FEEval_ptr =
-              vector_vars_map.at(dependency_index).at(dependency_type).get();
+            FEEval_exists(dependency_index, dependency_type);
+            vector_FEEval *vector_FEEval_ptr = nullptr;
+            if constexpr (dim == 1)
+              {
+                vector_FEEval_ptr =
+                  feeval_map.at(dependency_index).at(dependency_type).get();
+              }
+            else
+              {
+                std::visit(
+                  [&vector_FEEval_ptr](auto &ptr)
+                  {
+                    using T = std::decay_t<decltype(ptr)>;
+                    if constexpr (std::is_same_v<T, std::unique_ptr<vector_FEEval>>)
+                      {
+                        vector_FEEval_ptr = ptr.get();
+                      }
+                    else
+                      {
+                        Assert(false, dealii::ExcNotInitialized());
+                      }
+                  },
+                  feeval_map.at(dependency_index).at(dependency_type));
+              }
             vector_FEEval_ptr->reinit(cell);
           }
       }
@@ -742,10 +883,30 @@ variableContainer<dim, degree, number>::read_dof_values(
 
             if (field_type == fieldType::SCALAR)
               {
-                scalar_FEEval_exists(dependency_index, dependency_type);
-
-                auto *scalar_FEEval_ptr =
-                  scalar_vars_map.at(dependency_index).at(dependency_type).get();
+                FEEval_exists(dependency_index, dependency_type);
+                scalar_FEEval *scalar_FEEval_ptr = nullptr;
+                if constexpr (dim == 1)
+                  {
+                    scalar_FEEval_ptr =
+                      feeval_map.at(dependency_index).at(dependency_type).get();
+                  }
+                else
+                  {
+                    std::visit(
+                      [&scalar_FEEval_ptr](auto &ptr)
+                      {
+                        using T = std::decay_t<decltype(ptr)>;
+                        if constexpr (std::is_same_v<T, std::unique_ptr<scalar_FEEval>>)
+                          {
+                            scalar_FEEval_ptr = ptr.get();
+                          }
+                        else
+                          {
+                            Assert(false, dealii::ExcNotInitialized());
+                          }
+                      },
+                      feeval_map.at(dependency_index).at(dependency_type));
+                  }
 
                 if (eval_flag_set.find(pair) != eval_flag_set.end())
                   {
@@ -764,10 +925,30 @@ variableContainer<dim, degree, number>::read_dof_values(
               }
             else
               {
-                vector_FEEval_exists(dependency_index, dependency_type);
-
-                auto *vector_FEEval_ptr =
-                  vector_vars_map.at(dependency_index).at(dependency_type).get();
+                FEEval_exists(dependency_index, dependency_type);
+                vector_FEEval *vector_FEEval_ptr = nullptr;
+                if constexpr (dim == 1)
+                  {
+                    vector_FEEval_ptr =
+                      feeval_map.at(dependency_index).at(dependency_type).get();
+                  }
+                else
+                  {
+                    std::visit(
+                      [&vector_FEEval_ptr](auto &ptr)
+                      {
+                        using T = std::decay_t<decltype(ptr)>;
+                        if constexpr (std::is_same_v<T, std::unique_ptr<vector_FEEval>>)
+                          {
+                            vector_FEEval_ptr = ptr.get();
+                          }
+                        else
+                          {
+                            Assert(false, dealii::ExcNotInitialized());
+                          }
+                      },
+                      feeval_map.at(dependency_index).at(dependency_type));
+                  }
                 vector_FEEval_ptr->reinit(cell);
 
                 if (eval_flag_set.find(pair) != eval_flag_set.end())
@@ -828,18 +1009,58 @@ variableContainer<dim, degree, number>::eval(const unsigned int &global_variable
 
         if (subset_attributes->at(dependency_index).field_type == fieldType::SCALAR)
           {
-            scalar_FEEval_exists(dependency_index, dependency_type);
-
-            auto *scalar_FEEval_ptr =
-              scalar_vars_map.at(dependency_index).at(dependency_type).get();
+            FEEval_exists(dependency_index, dependency_type);
+            scalar_FEEval *scalar_FEEval_ptr = nullptr;
+            if constexpr (dim == 1)
+              {
+                scalar_FEEval_ptr =
+                  feeval_map.at(dependency_index).at(dependency_type).get();
+              }
+            else
+              {
+                std::visit(
+                  [&scalar_FEEval_ptr](auto &ptr)
+                  {
+                    using T = std::decay_t<decltype(ptr)>;
+                    if constexpr (std::is_same_v<T, std::unique_ptr<scalar_FEEval>>)
+                      {
+                        scalar_FEEval_ptr = ptr.get();
+                      }
+                    else
+                      {
+                        Assert(false, dealii::ExcNotInitialized());
+                      }
+                  },
+                  feeval_map.at(dependency_index).at(dependency_type));
+              }
             scalar_FEEval_ptr->evaluate(flags);
           }
         else
           {
-            vector_FEEval_exists(dependency_index, dependency_type);
-
-            auto *vector_FEEval_ptr =
-              vector_vars_map.at(dependency_index).at(dependency_type).get();
+            FEEval_exists(dependency_index, dependency_type);
+            vector_FEEval *vector_FEEval_ptr = nullptr;
+            if constexpr (dim == 1)
+              {
+                vector_FEEval_ptr =
+                  feeval_map.at(dependency_index).at(dependency_type).get();
+              }
+            else
+              {
+                std::visit(
+                  [&vector_FEEval_ptr](auto &ptr)
+                  {
+                    using T = std::decay_t<decltype(ptr)>;
+                    if constexpr (std::is_same_v<T, std::unique_ptr<vector_FEEval>>)
+                      {
+                        vector_FEEval_ptr = ptr.get();
+                      }
+                    else
+                      {
+                        Assert(false, dealii::ExcNotInitialized());
+                      }
+                  },
+                  feeval_map.at(dependency_index).at(dependency_type));
+              }
             vector_FEEval_ptr->evaluate(flags);
           }
       }
@@ -881,18 +1102,58 @@ variableContainer<dim, degree, number>::integrate(
     {
       if (variable.field_type == fieldType::SCALAR)
         {
-          scalar_FEEval_exists(global_variable_index, dependencyType::CHANGE);
-
-          auto *scalar_FEEval_ptr =
-            scalar_vars_map.at(global_variable_index).at(dependencyType::CHANGE).get();
+          FEEval_exists(global_variable_index, dependencyType::CHANGE);
+          scalar_FEEval *scalar_FEEval_ptr = nullptr;
+          if constexpr (dim == 1)
+            {
+              scalar_FEEval_ptr =
+                feeval_map.at(global_variable_index).at(dependencyType::CHANGE).get();
+            }
+          else
+            {
+              std::visit(
+                [&scalar_FEEval_ptr](auto &ptr)
+                {
+                  using T = std::decay_t<decltype(ptr)>;
+                  if constexpr (std::is_same_v<T, std::unique_ptr<scalar_FEEval>>)
+                    {
+                      scalar_FEEval_ptr = ptr.get();
+                    }
+                  else
+                    {
+                      Assert(false, dealii::ExcNotInitialized());
+                    }
+                },
+                feeval_map.at(global_variable_index).at(dependencyType::CHANGE));
+            }
           scalar_FEEval_ptr->integrate(variable.eval_flags_residual_LHS);
         }
       else
         {
-          vector_FEEval_exists(global_variable_index, dependencyType::CHANGE);
-
-          auto *vector_FEEval_ptr =
-            vector_vars_map.at(global_variable_index).at(dependencyType::CHANGE).get();
+          FEEval_exists(global_variable_index, dependencyType::CHANGE);
+          vector_FEEval *vector_FEEval_ptr = nullptr;
+          if constexpr (dim == 1)
+            {
+              vector_FEEval_ptr =
+                feeval_map.at(global_variable_index).at(dependencyType::CHANGE).get();
+            }
+          else
+            {
+              std::visit(
+                [&vector_FEEval_ptr](auto &ptr)
+                {
+                  using T = std::decay_t<decltype(ptr)>;
+                  if constexpr (std::is_same_v<T, std::unique_ptr<vector_FEEval>>)
+                    {
+                      vector_FEEval_ptr = ptr.get();
+                    }
+                  else
+                    {
+                      Assert(false, dealii::ExcNotInitialized());
+                    }
+                },
+                feeval_map.at(global_variable_index).at(dependencyType::CHANGE));
+            }
           vector_FEEval_ptr->integrate(variable.eval_flags_residual_LHS);
         }
     }
@@ -937,18 +1198,56 @@ variableContainer<dim, degree, number>::integrate_and_distribute(
 
     if (subset_attributes->at(residual_index).field_type == fieldType::SCALAR)
       {
-        scalar_FEEval_exists(residual_index, dependency_type);
-
-        auto *scalar_FEEval_ptr =
-          scalar_vars_map.at(residual_index).at(dependency_type).get();
+        FEEval_exists(residual_index, dependency_type);
+        scalar_FEEval *scalar_FEEval_ptr = nullptr;
+        if constexpr (dim == 1)
+          {
+            scalar_FEEval_ptr = feeval_map.at(residual_index).at(dependency_type).get();
+          }
+        else
+          {
+            std::visit(
+              [&scalar_FEEval_ptr](auto &ptr)
+              {
+                using T = std::decay_t<decltype(ptr)>;
+                if constexpr (std::is_same_v<T, std::unique_ptr<scalar_FEEval>>)
+                  {
+                    scalar_FEEval_ptr = ptr.get();
+                  }
+                else
+                  {
+                    Assert(false, dealii::ExcNotInitialized());
+                  }
+              },
+              feeval_map.at(residual_index).at(dependency_type));
+          }
         scalar_FEEval_ptr->integrate_scatter(residual_flag_set, *(dst.at(local_index)));
       }
     else
       {
-        vector_FEEval_exists(residual_index, dependency_type);
-
-        auto *vector_FEEval_ptr =
-          vector_vars_map.at(residual_index).at(dependency_type).get();
+        FEEval_exists(residual_index, dependency_type);
+        vector_FEEval *vector_FEEval_ptr = nullptr;
+        if constexpr (dim == 1)
+          {
+            vector_FEEval_ptr = feeval_map.at(residual_index).at(dependency_type).get();
+          }
+        else
+          {
+            std::visit(
+              [&vector_FEEval_ptr](auto &ptr)
+              {
+                using T = std::decay_t<decltype(ptr)>;
+                if constexpr (std::is_same_v<T, std::unique_ptr<vector_FEEval>>)
+                  {
+                    vector_FEEval_ptr = ptr.get();
+                  }
+                else
+                  {
+                    Assert(false, dealii::ExcNotInitialized());
+                  }
+              },
+              feeval_map.at(residual_index).at(dependency_type));
+          }
         vector_FEEval_ptr->integrate_scatter(residual_flag_set, *(dst.at(local_index)));
       }
   };
@@ -986,18 +1285,56 @@ variableContainer<dim, degree, number>::integrate_and_distribute(VectorType &dst
 
     if (subset_attributes->at(residual_index).field_type == fieldType::SCALAR)
       {
-        scalar_FEEval_exists(residual_index, dependency_type);
-
-        auto *scalar_FEEval_ptr =
-          scalar_vars_map.at(residual_index).at(dependency_type).get();
+        FEEval_exists(residual_index, dependency_type);
+        scalar_FEEval *scalar_FEEval_ptr = nullptr;
+        if constexpr (dim == 1)
+          {
+            scalar_FEEval_ptr = feeval_map.at(residual_index).at(dependency_type).get();
+          }
+        else
+          {
+            std::visit(
+              [&scalar_FEEval_ptr](auto &ptr)
+              {
+                using T = std::decay_t<decltype(ptr)>;
+                if constexpr (std::is_same_v<T, std::unique_ptr<scalar_FEEval>>)
+                  {
+                    scalar_FEEval_ptr = ptr.get();
+                  }
+                else
+                  {
+                    Assert(false, dealii::ExcNotInitialized());
+                  }
+              },
+              feeval_map.at(residual_index).at(dependency_type));
+          }
         scalar_FEEval_ptr->integrate_scatter(residual_flag_set, dst);
       }
     else
       {
-        vector_FEEval_exists(residual_index, dependency_type);
-
-        auto *vector_FEEval_ptr =
-          vector_vars_map.at(residual_index).at(dependency_type).get();
+        FEEval_exists(residual_index, dependency_type);
+        vector_FEEval *vector_FEEval_ptr = nullptr;
+        if constexpr (dim == 1)
+          {
+            vector_FEEval_ptr = feeval_map.at(residual_index).at(dependency_type).get();
+          }
+        else
+          {
+            std::visit(
+              [&vector_FEEval_ptr](auto &ptr)
+              {
+                using T = std::decay_t<decltype(ptr)>;
+                if constexpr (std::is_same_v<T, std::unique_ptr<vector_FEEval>>)
+                  {
+                    vector_FEEval_ptr = ptr.get();
+                  }
+                else
+                  {
+                    Assert(false, dealii::ExcNotInitialized());
+                  }
+              },
+              feeval_map.at(residual_index).at(dependency_type));
+          }
         vector_FEEval_ptr->integrate_scatter(residual_flag_set, dst);
       }
   };
@@ -1032,12 +1369,32 @@ variableContainer<dim, degree, number>::get_scalar_value(
   access_valid(global_variable_index,
                dependency_type,
                dealii::EvaluationFlags::EvaluationFlags::values);
-  scalar_FEEval_exists(global_variable_index, dependency_type);
+  FEEval_exists(global_variable_index, dependency_type);
 #endif
 
-  return scalar_vars_map.at(global_variable_index)
-    .at(dependency_type)
-    ->get_value(q_point);
+  if constexpr (dim == 1)
+    {
+      return feeval_map.at(global_variable_index).at(dependency_type)->get_value(q_point);
+    }
+  else
+    {
+      return std::visit(
+        [&](const auto &feeval_ptr) -> size_type
+        {
+          using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
+          if constexpr (std::is_same_v<FEEvalType, scalar_FEEval>)
+            {
+              return feeval_ptr->get_value(q_point);
+            }
+          else
+            {
+              Assert(false,
+                     dealii::ExcMessage("Expected scalar_FEEval but got vector_FEEval."));
+              return size_type();
+            }
+        },
+        feeval_map.at(global_variable_index).at(dependency_type));
+    }
 }
 
 template <int dim, int degree, typename number>
@@ -1050,12 +1407,34 @@ variableContainer<dim, degree, number>::get_scalar_gradient(
   access_valid(global_variable_index,
                dependency_type,
                dealii::EvaluationFlags::EvaluationFlags::gradients);
-  scalar_FEEval_exists(global_variable_index, dependency_type);
+  FEEval_exists(global_variable_index, dependency_type);
 #endif
 
-  return scalar_vars_map.at(global_variable_index)
-    .at(dependency_type)
-    ->get_gradient(q_point);
+  if constexpr (dim == 1)
+    {
+      return feeval_map.at(global_variable_index)
+        .at(dependency_type)
+        ->get_gradient(q_point);
+    }
+  else
+    {
+      return std::visit(
+        [&](const auto &feeval_ptr) -> dealii::Tensor<1, dim, size_type>
+        {
+          using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
+          if constexpr (std::is_same_v<FEEvalType, scalar_FEEval>)
+            {
+              return feeval_ptr->get_gradient(q_point);
+            }
+          else
+            {
+              Assert(false,
+                     dealii::ExcMessage("Expected scalar_FEEval but got vector_FEEval."));
+              return dealii::Tensor<1, dim, size_type>();
+            }
+        },
+        feeval_map.at(global_variable_index).at(dependency_type));
+    }
 }
 
 template <int dim, int degree, typename number>
@@ -1068,12 +1447,34 @@ variableContainer<dim, degree, number>::get_scalar_hessian(
   access_valid(global_variable_index,
                dependency_type,
                dealii::EvaluationFlags::EvaluationFlags::hessians);
-  scalar_FEEval_exists(global_variable_index, dependency_type);
+  FEEval_exists(global_variable_index, dependency_type);
 #endif
 
-  return scalar_vars_map.at(global_variable_index)
-    .at(dependency_type)
-    ->get_hessian(q_point);
+  if constexpr (dim == 1)
+    {
+      return feeval_map.at(global_variable_index)
+        .at(dependency_type)
+        ->get_hessian(q_point);
+    }
+  else
+    {
+      return std::visit(
+        [&](const auto &feeval_ptr) -> dealii::Tensor<2, dim, size_type>
+        {
+          using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
+          if constexpr (std::is_same_v<FEEvalType, scalar_FEEval>)
+            {
+              return feeval_ptr->get_hessian(q_point);
+            }
+          else
+            {
+              Assert(false,
+                     dealii::ExcMessage("Expected scalar_FEEval but got vector_FEEval."));
+              return dealii::Tensor<2, dim, size_type>();
+            }
+        },
+        feeval_map.at(global_variable_index).at(dependency_type));
+    }
 }
 
 template <int dim, int degree, typename number>
@@ -1086,12 +1487,34 @@ variableContainer<dim, degree, number>::get_scalar_hessian_diagonal(
   access_valid(global_variable_index,
                dependency_type,
                dealii::EvaluationFlags::EvaluationFlags::hessians);
-  scalar_FEEval_exists(global_variable_index, dependency_type);
+  FEEval_exists(global_variable_index, dependency_type);
 #endif
 
-  return scalar_vars_map.at(global_variable_index)
-    .at(dependency_type)
-    ->get_hessian_diagonal(q_point);
+  if constexpr (dim == 1)
+    {
+      return feeval_map.at(global_variable_index)
+        .at(dependency_type)
+        ->get_hessian_diagonal(q_point);
+    }
+  else
+    {
+      return std::visit(
+        [&](const auto &feeval_ptr) -> dealii::Tensor<1, dim, size_type>
+        {
+          using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
+          if constexpr (std::is_same_v<FEEvalType, scalar_FEEval>)
+            {
+              return feeval_ptr->get_hessian_diagonal(q_point);
+            }
+          else
+            {
+              Assert(false,
+                     dealii::ExcMessage("Expected scalar_FEEval but got vector_FEEval."));
+              return dealii::Tensor<1, dim, size_type>();
+            }
+        },
+        feeval_map.at(global_variable_index).at(dependency_type));
+    }
 }
 
 template <int dim, int degree, typename number>
@@ -1104,12 +1527,34 @@ variableContainer<dim, degree, number>::get_scalar_laplacian(
   access_valid(global_variable_index,
                dependency_type,
                dealii::EvaluationFlags::EvaluationFlags::hessians);
-  scalar_FEEval_exists(global_variable_index, dependency_type);
+  FEEval_exists(global_variable_index, dependency_type);
 #endif
 
-  return scalar_vars_map.at(global_variable_index)
-    .at(dependency_type)
-    ->get_laplacian(q_point);
+  if constexpr (dim == 1)
+    {
+      return feeval_map.at(global_variable_index)
+        .at(dependency_type)
+        ->get_laplacian(q_point);
+    }
+  else
+    {
+      return std::visit(
+        [&](const auto &feeval_ptr) -> size_type
+        {
+          using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
+          if constexpr (std::is_same_v<FEEvalType, scalar_FEEval>)
+            {
+              return feeval_ptr->get_laplacian(q_point);
+            }
+          else
+            {
+              Assert(false,
+                     dealii::ExcMessage("Expected scalar_FEEval but got vector_FEEval."));
+              return size_type();
+            }
+        },
+        feeval_map.at(global_variable_index).at(dependency_type));
+    }
 }
 
 template <int dim, int degree, typename number>
@@ -1122,23 +1567,34 @@ variableContainer<dim, degree, number>::get_vector_value(
   access_valid(global_variable_index,
                dependency_type,
                dealii::EvaluationFlags::EvaluationFlags::values);
-  vector_FEEval_exists(global_variable_index, dependency_type);
+  FEEval_exists(global_variable_index, dependency_type);
 #endif
-
-  const auto &value =
-    vector_vars_map.at(global_variable_index).at(dependency_type)->get_value(q_point);
 
   if constexpr (dim == 1)
     {
-      // Wrap the value for consistency
       dealii::Tensor<1, dim, size_type> wrapper;
-      wrapper[0] = value;
+      wrapper[0] =
+        feeval_map.at(global_variable_index).at(dependency_type)->get_value(q_point);
       return wrapper;
     }
   else
     {
-      // Return the value directly for dim > 1
-      return value;
+      return std::visit(
+        [&](const auto &feeval_ptr) -> dealii::Tensor<1, dim, size_type>
+        {
+          using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
+          if constexpr (std::is_same_v<FEEvalType, vector_FEEval>)
+            {
+              return feeval_ptr->get_value(q_point);
+            }
+          else
+            {
+              Assert(false,
+                     dealii::ExcMessage("Expected vector_FEEval but got scalar_FEEval."));
+              return dealii::Tensor<1, dim, size_type>();
+            }
+        },
+        feeval_map.at(global_variable_index).at(dependency_type));
     }
 }
 
@@ -1152,23 +1608,34 @@ variableContainer<dim, degree, number>::get_vector_gradient(
   access_valid(global_variable_index,
                dependency_type,
                dealii::EvaluationFlags::EvaluationFlags::gradients);
-  vector_FEEval_exists(global_variable_index, dependency_type);
+  FEEval_exists(global_variable_index, dependency_type);
 #endif
-
-  const auto &grad =
-    vector_vars_map.at(global_variable_index).at(dependency_type)->get_gradient(q_point);
 
   if constexpr (dim == 1)
     {
-      // Wrap the value for consistency
       dealii::Tensor<2, dim, size_type> wrapper;
-      wrapper[0] = grad;
+      wrapper[0] =
+        feeval_map.at(global_variable_index).at(dependency_type)->get_gradient(q_point);
       return wrapper;
     }
   else
     {
-      // Return the value directly for dim > 1
-      return grad;
+      return std::visit(
+        [&](const auto &feeval_ptr) -> dealii::Tensor<2, dim, size_type>
+        {
+          using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
+          if constexpr (std::is_same_v<FEEvalType, vector_FEEval>)
+            {
+              return feeval_ptr->get_gradient(q_point);
+            }
+          else
+            {
+              Assert(false,
+                     dealii::ExcMessage("Expected vector_FEEval but got scalar_FEEval."));
+              return dealii::Tensor<2, dim, size_type>();
+            }
+        },
+        feeval_map.at(global_variable_index).at(dependency_type));
     }
 }
 
@@ -1182,23 +1649,34 @@ variableContainer<dim, degree, number>::get_vector_hessian(
   access_valid(global_variable_index,
                dependency_type,
                dealii::EvaluationFlags::EvaluationFlags::hessians);
-  vector_FEEval_exists(global_variable_index, dependency_type);
+  FEEval_exists(global_variable_index, dependency_type);
 #endif
-
-  const auto &hess =
-    vector_vars_map.at(global_variable_index).at(dependency_type)->get_hessian(q_point);
 
   if constexpr (dim == 1)
     {
-      // Wrap the value for consistency
       dealii::Tensor<3, dim, size_type> wrapper;
-      wrapper[0] = hess;
+      wrapper[0] =
+        feeval_map.at(global_variable_index).at(dependency_type)->get_hessian(q_point);
       return wrapper;
     }
   else
     {
-      // Return the value directly for dim > 1
-      return hess;
+      return std::visit(
+        [&](const auto &feeval_ptr) -> dealii::Tensor<3, dim, size_type>
+        {
+          using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
+          if constexpr (std::is_same_v<FEEvalType, vector_FEEval>)
+            {
+              return feeval_ptr->get_hessian(q_point);
+            }
+          else
+            {
+              Assert(false,
+                     dealii::ExcMessage("Expected vector_FEEval but got scalar_FEEval."));
+              return dealii::Tensor<3, dim, size_type>();
+            }
+        },
+        feeval_map.at(global_variable_index).at(dependency_type));
     }
 }
 
@@ -1212,24 +1690,35 @@ variableContainer<dim, degree, number>::get_vector_hessian_diagonal(
   access_valid(global_variable_index,
                dependency_type,
                dealii::EvaluationFlags::EvaluationFlags::hessians);
-  vector_FEEval_exists(global_variable_index, dependency_type);
+  FEEval_exists(global_variable_index, dependency_type);
 #endif
-
-  const auto &hess_diag = vector_vars_map.at(global_variable_index)
-                            .at(dependency_type)
-                            ->get_hessian_diagonal(q_point);
 
   if constexpr (dim == 1)
     {
-      // Wrap the value for consistency
       dealii::Tensor<2, dim, size_type> wrapper;
-      wrapper[0] = hess_diag;
+      wrapper[0] = feeval_map.at(global_variable_index)
+                     .at(dependency_type)
+                     ->get_hessian_diagonal(q_point);
       return wrapper;
     }
   else
     {
-      // Return the value directly for dim > 1
-      return hess_diag;
+      return std::visit(
+        [&](const auto &feeval_ptr) -> dealii::Tensor<2, dim, size_type>
+        {
+          using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
+          if constexpr (std::is_same_v<FEEvalType, vector_FEEval>)
+            {
+              return feeval_ptr->get_hessian_diagonal(q_point);
+            }
+          else
+            {
+              Assert(false,
+                     dealii::ExcMessage("Expected vector_FEEval but got scalar_FEEval."));
+              return dealii::Tensor<2, dim, size_type>();
+            }
+        },
+        feeval_map.at(global_variable_index).at(dependency_type));
     }
 }
 
@@ -1243,23 +1732,34 @@ variableContainer<dim, degree, number>::get_vector_laplacian(
   access_valid(global_variable_index,
                dependency_type,
                dealii::EvaluationFlags::EvaluationFlags::hessians);
-  vector_FEEval_exists(global_variable_index, dependency_type);
+  FEEval_exists(global_variable_index, dependency_type);
 #endif
-
-  const auto &lap =
-    vector_vars_map.at(global_variable_index).at(dependency_type)->get_laplacian(q_point);
 
   if constexpr (dim == 1)
     {
-      // Wrap the value for consistency
       dealii::Tensor<1, dim, size_type> wrapper;
-      wrapper[0] = lap;
+      wrapper[0] =
+        feeval_map.at(global_variable_index).at(dependency_type)->get_laplacian(q_point);
       return wrapper;
     }
   else
     {
-      // Return the value directly for dim > 1
-      return lap;
+      return std::visit(
+        [&](const auto &feeval_ptr) -> dealii::Tensor<1, dim, size_type>
+        {
+          using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
+          if constexpr (std::is_same_v<FEEvalType, vector_FEEval>)
+            {
+              return feeval_ptr->get_laplacian(q_point);
+            }
+          else
+            {
+              Assert(false,
+                     dealii::ExcMessage("Expected vector_FEEval but got scalar_FEEval."));
+              return dealii::Tensor<1, dim, size_type>();
+            }
+        },
+        feeval_map.at(global_variable_index).at(dependency_type));
     }
 }
 
@@ -1273,12 +1773,34 @@ variableContainer<dim, degree, number>::get_vector_divergence(
   access_valid(global_variable_index,
                dependency_type,
                dealii::EvaluationFlags::EvaluationFlags::gradients);
-  vector_FEEval_exists(global_variable_index, dependency_type);
+  FEEval_exists(global_variable_index, dependency_type);
 #endif
 
-  return vector_vars_map.at(global_variable_index)
-    .at(dependency_type)
-    ->get_divergence(q_point);
+  if constexpr (dim == 1)
+    {
+      return feeval_map.at(global_variable_index)
+        .at(dependency_type)
+        ->get_divergence(q_point);
+    }
+  else
+    {
+      return std::visit(
+        [&](const auto &feeval_ptr) -> size_type
+        {
+          using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
+          if constexpr (std::is_same_v<FEEvalType, vector_FEEval>)
+            {
+              return feeval_ptr->get_divergence(q_point);
+            }
+          else
+            {
+              Assert(false,
+                     dealii::ExcMessage("Expected vector_FEEval but got scalar_FEEval."));
+              return size_type();
+            }
+        },
+        feeval_map.at(global_variable_index).at(dependency_type));
+    }
 }
 
 template <int dim, int degree, typename number>
@@ -1291,12 +1813,34 @@ variableContainer<dim, degree, number>::get_vector_symmetric_gradient(
   access_valid(global_variable_index,
                dependency_type,
                dealii::EvaluationFlags::EvaluationFlags::gradients);
-  vector_FEEval_exists(global_variable_index, dependency_type);
+  FEEval_exists(global_variable_index, dependency_type);
 #endif
 
-  return vector_vars_map.at(global_variable_index)
-    .at(dependency_type)
-    ->get_symmetric_gradient(q_point);
+  if constexpr (dim == 1)
+    {
+      return feeval_map.at(global_variable_index)
+        .at(dependency_type)
+        ->get_symmetric_gradient(q_point);
+    }
+  else
+    {
+      return std::visit(
+        [&](const auto &feeval_ptr) -> dealii::Tensor<2, dim, size_type>
+        {
+          using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
+          if constexpr (std::is_same_v<FEEvalType, vector_FEEval>)
+            {
+              return feeval_ptr->get_symmetric_gradient(q_point);
+            }
+          else
+            {
+              Assert(false,
+                     dealii::ExcMessage("Expected vector_FEEval but got scalar_FEEval."));
+              return dealii::Tensor<2, dim, size_type>();
+            }
+        },
+        feeval_map.at(global_variable_index).at(dependency_type));
+    }
 }
 
 template <int dim, int degree, typename number>
@@ -1311,7 +1855,7 @@ variableContainer<dim, degree, number>::get_vector_curl(
   access_valid(global_variable_index,
                dependency_type,
                dealii::EvaluationFlags::EvaluationFlags::gradients);
-  vector_FEEval_exists(global_variable_index, dependency_type);
+  FEEval_exists(global_variable_index, dependency_type);
 #endif
 
   if constexpr (dim == 1)
@@ -1322,9 +1866,22 @@ variableContainer<dim, degree, number>::get_vector_curl(
   else
     {
       // Return the value directly for dim > 1
-      return vector_vars_map.at(global_variable_index)
-        .at(dependency_type)
-        ->get_curl(q_point);
+      return std::visit(
+        [&](const auto &feeval_ptr) -> dealii::Tensor<1, (dim == 2 ? 1 : dim), size_type>
+        {
+          using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
+          if constexpr (std::is_same_v<FEEvalType, vector_FEEval>)
+            {
+              return feeval_ptr->get_curl(q_point);
+            }
+          else
+            {
+              Assert(false,
+                     dealii::ExcMessage("Expected vector_FEEval but got scalar_FEEval."));
+              return dealii::Tensor<1, (dim == 2 ? 1 : dim), size_type>();
+            }
+        },
+        feeval_map.at(global_variable_index).at(dependency_type));
     }
 }
 
@@ -1337,12 +1894,33 @@ variableContainer<dim, degree, number>::set_scalar_value_term(
 {
 #ifdef DEBUG
   submission_valid(dependency_type);
-  scalar_FEEval_exists(global_variable_index, dependency_type);
+  FEEval_exists(global_variable_index, dependency_type);
 #endif
 
-  scalar_vars_map.at(global_variable_index)
-    .at(dependency_type)
-    ->submit_value(val, q_point);
+  if constexpr (dim == 1)
+    {
+      return feeval_map.at(global_variable_index)
+        .at(dependency_type)
+        ->submit_value(val, q_point);
+    }
+  else
+    {
+      std::visit(
+        [&](auto &feeval_ptr)
+        {
+          using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
+          if constexpr (std::is_same_v<FEEvalType, scalar_FEEval>)
+            {
+              feeval_ptr->submit_value(val, q_point);
+            }
+          else
+            {
+              Assert(false,
+                     dealii::ExcMessage("Expected scalar_FEEval but got vector_FEEval."));
+            }
+        },
+        feeval_map.at(global_variable_index).at(dependency_type));
+    }
 }
 
 template <int dim, int degree, typename number>
@@ -1354,12 +1932,33 @@ variableContainer<dim, degree, number>::set_scalar_gradient_term(
 {
 #ifdef DEBUG
   submission_valid(dependency_type);
-  scalar_FEEval_exists(global_variable_index, dependency_type);
+  FEEval_exists(global_variable_index, dependency_type);
 #endif
 
-  scalar_vars_map.at(global_variable_index)
-    .at(dependency_type)
-    ->submit_gradient(grad, q_point);
+  if constexpr (dim == 1)
+    {
+      return feeval_map.at(global_variable_index)
+        .at(dependency_type)
+        ->submit_gradient(grad, q_point);
+    }
+  else
+    {
+      std::visit(
+        [&](auto &feeval_ptr)
+        {
+          using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
+          if constexpr (std::is_same_v<FEEvalType, scalar_FEEval>)
+            {
+              feeval_ptr->submit_gradient(grad, q_point);
+            }
+          else
+            {
+              Assert(false,
+                     dealii::ExcMessage("Expected scalar_FEEval but got vector_FEEval."));
+            }
+        },
+        feeval_map.at(global_variable_index).at(dependency_type));
+    }
 }
 
 template <int dim, int degree, typename number>
@@ -1371,13 +1970,33 @@ variableContainer<dim, degree, number>::set_vector_value_term(
 {
 #ifdef DEBUG
   submission_valid(dependency_type);
-  vector_FEEval_exists(global_variable_index, dependency_type);
-
+  FEEval_exists(global_variable_index, dependency_type);
 #endif
 
-  vector_vars_map.at(global_variable_index)
-    .at(dependency_type)
-    ->submit_value(val, q_point);
+  if constexpr (dim == 1)
+    {
+      return feeval_map.at(global_variable_index)
+        .at(dependency_type)
+        ->submit_value(val, q_point);
+    }
+  else
+    {
+      std::visit(
+        [&](auto &feeval_ptr)
+        {
+          using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
+          if constexpr (std::is_same_v<FEEvalType, vector_FEEval>)
+            {
+              feeval_ptr->submit_value(val, q_point);
+            }
+          else
+            {
+              Assert(false,
+                     dealii::ExcMessage("Expected vector_FEEval but got scalar_FEEval."));
+            }
+        },
+        feeval_map.at(global_variable_index).at(dependency_type));
+    }
 }
 
 template <int dim, int degree, typename number>
@@ -1389,12 +2008,33 @@ variableContainer<dim, degree, number>::set_vector_gradient_term(
 {
 #ifdef DEBUG
   submission_valid(dependency_type);
-  vector_FEEval_exists(global_variable_index, dependency_type);
+  FEEval_exists(global_variable_index, dependency_type);
 #endif
 
-  vector_vars_map.at(global_variable_index)
-    .at(dependency_type)
-    ->submit_gradient(grad, q_point);
+  if constexpr (dim == 1)
+    {
+      return feeval_map.at(global_variable_index)
+        .at(dependency_type)
+        ->submit_gradient(grad, q_point);
+    }
+  else
+    {
+      std::visit(
+        [&](auto &feeval_ptr)
+        {
+          using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
+          if constexpr (std::is_same_v<FEEvalType, vector_FEEval>)
+            {
+              feeval_ptr->submit_gradient(grad, q_point);
+            }
+          else
+            {
+              Assert(false,
+                     dealii::ExcMessage("Expected vector_FEEval but got scalar_FEEval."));
+            }
+        },
+        feeval_map.at(global_variable_index).at(dependency_type));
+    }
 }
 
 INSTANTIATE_TRI_TEMPLATE(variableContainer)

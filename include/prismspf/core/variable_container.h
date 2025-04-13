@@ -14,6 +14,8 @@
 
 #include <prismspf/config.h>
 
+#include <variant>
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
@@ -222,22 +224,31 @@ public:
     const std::pair<unsigned int, unsigned int> &cell_range);
 
 private:
+  /**
+   * \brief Typedef for scalar evaluation objects.
+   */
   using scalar_FEEval = dealii::FEEvaluation<dim, degree, degree + 1, 1, number>;
+
+  /**
+   * \brief Typedef for vector evaluation objects.
+   */
   using vector_FEEval = dealii::FEEvaluation<dim, degree, degree + 1, dim, number>;
 
   /**
-   * \brief Check whether the map entry for the scalar FEEvaluation exists.
+   * \brief Typedef for the varaint evaluation objects. Note that the states become
+   * degenerate at dim = 1, hence the use of std::conditional_t.
    */
-  void
-  scalar_FEEval_exists(const unsigned int   &dependency_index,
-                       const dependencyType &dependency_type) const;
+  using variant_FEEval = std::conditional_t<
+    std::is_same_v<scalar_FEEval, vector_FEEval>,
+    std::unique_ptr<scalar_FEEval>,
+    std::variant<std::unique_ptr<scalar_FEEval>, std::unique_ptr<vector_FEEval>>>;
 
   /**
-   * \brief Check whether the map entry for the vector FEEvaluation exists.
+   * \brief Check whether the map entry for the  FEEvaluation exists.
    */
   void
-  vector_FEEval_exists(const unsigned int   &dependency_index,
-                       const dependencyType &dependency_type) const;
+  FEEval_exists(const unsigned int   &dependency_index,
+                const dependencyType &dependency_type) const;
 
   /**
    * \brief Check that a variable value/gradient/hessians was marked as needed and thus
@@ -316,18 +327,11 @@ private:
   integrate(const unsigned int &global_variable_index);
 
   /**
-   * \brief Map of FEEvaluation objects for each active scalar variables. The first
-   * mapping is for the global variable and the second is for the dependencyType.
+   * \brief Map of FEEvaluation objects for each active variable. The first mapping is
+   * for the global variable, the second is for the dependencyType, and the value is
+   * a variant that can hold either a scalar or vector FEEvaluation.
    */
-  std::map<unsigned int, std::map<dependencyType, std::unique_ptr<scalar_FEEval>>>
-    scalar_vars_map;
-
-  /**
-   * \brief Map of FEEvaluation objects for each active vector variables. The first
-   * mapping is for the global variable and the second is for the dependencyType.
-   */
-  std::map<unsigned int, std::map<dependencyType, std::unique_ptr<vector_FEEval>>>
-    vector_vars_map;
+  std::map<unsigned int, std::map<dependencyType, variant_FEEval>> feeval_map;
 
   /**
    * \brief The attribute list of the relevant subset of variables.
