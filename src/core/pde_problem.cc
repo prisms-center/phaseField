@@ -6,6 +6,7 @@
 #include <deal.II/fe/fe_system.h>
 
 #include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/pde_operator.h>
 #include <prismspf/core/pde_problem.h>
 #include <prismspf/core/solution_output.h>
@@ -92,7 +93,10 @@ PDEProblem<dim, degree>::PDEProblem(
                                       solution_handler,
                                       _pde_operator,
                                       _pde_operator_float)
-{}
+{
+  MGInfo<dim> mg_info(_user_inputs);
+  mg_info.print();
+}
 
 template <int dim, int degree>
 void
@@ -176,7 +180,11 @@ PDEProblem<dim, degree>::init_system()
           conditionalOStreams::pout_base()
             << "initializing multgrid matrix-free object at level " << level << "...\n"
             << std::flush;
-          // multigrid_matrix_free_handler[level].reinit(mapping, );
+          // multigrid_matrix_free_handler[level].reinit(
+          //   mapping,
+          //   dof_handler.get_mg_dof_handlers(level),
+          //   constraint_handler.get_mg_level_constraints(level),
+          //   dealii::QGaussLobatto<1>(degree + 1));
         }
     }
 

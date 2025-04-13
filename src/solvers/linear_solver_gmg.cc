@@ -1,6 +1,33 @@
+#include <deal.II/base/exceptions.h>
+#include <deal.II/base/mg_level_object.h>
+#include <deal.II/base/quadrature_lib.h>
+#include <deal.II/lac/precondition.h>
+#include <deal.II/lac/solver_cg.h>
+#include <deal.II/multigrid/mg_coarse.h>
+#include <deal.II/multigrid/mg_matrix.h>
+#include <deal.II/multigrid/mg_smoother.h>
+#include <deal.II/multigrid/mg_tools.h>
+#include <deal.II/multigrid/mg_transfer_global_coarsening.h>
+#include <deal.II/multigrid/multigrid.h>
+
+#include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/core/constraint_handler.h>
+#include <prismspf/core/dof_handler.h>
+#include <prismspf/core/matrix_free_handler.h>
+#include <prismspf/core/pde_operator.h>
+#include <prismspf/core/solution_handler.h>
+#include <prismspf/core/triangulation_handler.h>
+#include <prismspf/core/type_enums.h>
+#include <prismspf/core/variable_attributes.h>
+
+#include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/solvers/linear_solver_base.h>
 #include <prismspf/solvers/linear_solver_gmg.h>
 
 #include <prismspf/config.h>
+
+#include <memory>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -21,11 +48,11 @@ GMGSolver<dim, degree>::GMGSolver(
                                   _matrix_free_handler,
                                   _constraint_handler,
                                   _solution_handler,
-                                  _pde_operator)
+                                  std::move(_pde_operator))
   , triangulation_handler(&_triangulation_handler)
   , dof_handler(&_dof_handler)
   , mg_matrix_free_handler(&_mg_matrix_free_handler)
-  , pde_operator_float(_pde_operator_float)
+  , pde_operator_float(std::move(_pde_operator_float))
 {}
 
 template <int dim, int degree>
@@ -246,9 +273,9 @@ GMGSolver<dim, degree>::solve(const double &step_length)
     dealii::Multigrid<MGVectorType>::Cycle::v_cycle);
 
   // Create the preconditioner
-  dealii::PreconditionMG<dim,
-                         MGVectorType,
-                         dealii::MGTransferGlobalCoarsening<dim, MGVectorType>>
+  const dealii::PreconditionMG<dim,
+                               MGVectorType,
+                               dealii::MGTransferGlobalCoarsening<dim, MGVectorType>>
     preconditioner(*current_dof_handler, multigrid, *mg_transfer);
 
   try

@@ -74,13 +74,12 @@ dofHandler<dim>::init(const triangulationHandler<dim> &triangulation_handler,
     {
       if (linear_solver_parameters.preconditioner == preconditionerType::GMG)
         {
-          has_multigrid = true;
           fields_with_multigrid.insert(index);
         }
     }
 
   // If we don't have multigrid print relevant info and return early
-  if (!has_multigrid)
+  if (fields_with_multigrid.empty())
     {
       // TODO (landinjm): Print other useful information in debug mode
       conditionalOStreams::pout_base()
@@ -88,19 +87,27 @@ dofHandler<dim>::init(const triangulationHandler<dim> &triangulation_handler,
         << std::flush;
       return;
     }
+  has_multigrid = true;
 
   // TODO (landinjm): Add optimizations for shared DoFHandlers
 
-  const unsigned int min_level      = triangulation_handler.get_mg_min_level();
-  const unsigned int max_level      = triangulation_handler.get_mg_max_level();
-  unsigned int       n_dofs_with_mg = n_dofs;
+  const unsigned int min_level = triangulation_handler.get_mg_min_level();
+  const unsigned int max_level = triangulation_handler.get_mg_max_level();
+  const_mg_dof_handlers.resize(min_level, max_level);
+  unsigned int n_dofs_with_mg = n_dofs;
   for (const auto &[index, variable] : *user_inputs->var_attributes)
     {
+      // FIX (landinjm): Going to disable this line below since I need to construct dof
+      // handlers for all fields on the LHS side of the multigrid solves. Right now, I'm
+      // just going to do it for all fields and optimize later.
+      /*
       if (fields_with_multigrid.find(index) == fields_with_multigrid.end())
         {
           continue;
         }
+      */
 
+      // TODO (landinjm): I think this should be a ptr
       mg_dof_handlers.emplace(index,
                               dealii::MGLevelObject<dealii::DoFHandler<dim>>(min_level,
                                                                              max_level));
@@ -112,6 +119,8 @@ dofHandler<dim>::init(const triangulationHandler<dim> &triangulation_handler,
           mg_dof_handlers.at(index)[level].distribute_dofs(
             fe_system.at(variable.field_type));
           n_dofs_with_mg += mg_dof_handlers.at(index)[level].n_dofs();
+
+          const_mg_dof_handlers[level].push_back(&mg_dof_handlers.at(index)[level]);
         }
     }
 

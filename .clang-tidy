@@ -17,6 +17,8 @@ Checks: >
   performance-*,
   readability-*,
   -readability-convert-member-functions-to-static,
+  -cppcoreguidelines-non-private-member-variables-in-classes,
+  -misc-non-private-member-variables-in-classes
 
 CheckOptions:
   - key: readability-function-cognitive-complexity.IgnoreMacros
