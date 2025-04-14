@@ -1,7 +1,6 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include <deal.II/base/aligned_vector.h>
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/point.h>
 #include <deal.II/base/tensor.h>
@@ -230,7 +229,7 @@ variableContainer<dim, degree, number>::eval_local_diagonal(
             else
               {
                 local_value_type one;
-                for (unsigned int dimension = 0; dimension < dim; ++dimension)
+                for (int dimension = 0; dimension < dim; ++dimension)
                   {
                     one[dimension] = dealii::make_vectorized_array<number>(1.0);
                   }

@@ -181,7 +181,7 @@ invmHandler<dim, degree, number>::compute_vector_invm()
   dealii::FEEvaluation<dim, degree, degree + 1, dim, number> fe_eval(*data, vector_index);
 
   dealii::Tensor<1, dim, dealii::VectorizedArray<number>> one;
-  for (unsigned int i = 0; i < dim; i++)
+  for (int i = 0; i < dim; i++)
     {
       one[i] = 1.0;
     }
