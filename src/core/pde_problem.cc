@@ -18,9 +18,8 @@
 #include <prismspf/core/timer.h>
 #include <prismspf/core/triangulation_handler.h>
 #include <prismspf/core/type_enums.h>
+#include <prismspf/core/variable_attributes.h>
 
-#include <prismspf/user_inputs/spatial_discretization.h>
-#include <prismspf/user_inputs/temporal_discretization.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/solvers/explicit_constant_solver.h>
