@@ -4,6 +4,7 @@
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/tensor.h>
 #include <deal.II/base/vectorization.h>
+#include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/lac/vector_operation.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
 #include <deal.II/matrix_free/fe_evaluation.h>
