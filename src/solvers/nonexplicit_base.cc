@@ -145,7 +145,7 @@ nonexplicitBase<dim, degree>::set_initial_condition()
              dealii::ExcMessage(
                "The const DoFHandler set is smaller than the given index = " +
                std::to_string(index)));
-      Assert(subset_attributes.find(index) != subset_attributes.end(),
+      Assert(subset_attributes.contains(index),
              dealii::ExcMessage(
                "There is no entry in the attribute subset for the given index = " +
                std::to_string(index)));

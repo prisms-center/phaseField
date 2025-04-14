@@ -9,8 +9,29 @@
 #include <deal.II/fe/fe_system.h>
 #include <deal.II/fe/mapping_q1.h>
 
+#include <prismspf/core/constraint_handler.h>
+#include <prismspf/core/dof_handler.h>
+#include <prismspf/core/invm_handler.h>
+#include <prismspf/core/matrix_free_handler.h>
 #include <prismspf/core/pde_operator.h>
+#include <prismspf/core/solution_handler.h>
+#include <prismspf/core/timer.h>
+#include <prismspf/core/triangulation_handler.h>
 #include <prismspf/core/type_enums.h>
+#include <prismspf/core/variable_attributes.h>
+
+#include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/solvers/explicit_constant_solver.h>
+#include <prismspf/solvers/explicit_postprocess_solver.h>
+#include <prismspf/solvers/explicit_solver.h>
+#include <prismspf/solvers/nonexplicit_auxiliary_solver.h>
+#include <prismspf/solvers/nonexplicit_co_nonlinear_solver.h>
+#include <prismspf/solvers/nonexplicit_linear_solver.h>
+#include <prismspf/solvers/nonexplicit_self_nonlinear_solver.h>
+
+#include <prismspf/utilities/compute_integral.h>
+#include <prismspf/utilities/element_volume.h>
 
 #include <prismspf/config.h>
 
@@ -19,58 +40,6 @@
 #endif
 
 PRISMS_PF_BEGIN_NAMESPACE
-
-template <int dim>
-class userInputParameters;
-
-template <int dim>
-class constraintHandler;
-
-template <int dim>
-class dofHandler;
-
-template <int dim, int degree, typename number>
-class invmHandler;
-
-template <int dim, typename number>
-class matrixfreeHandler;
-
-template <int dim>
-class solutionHandler;
-
-template <int dim, typename number>
-class solutionOutput;
-
-class timer;
-
-template <int dim>
-class triangulationHandler;
-
-struct variableAttributes;
-
-template <int dim, int degree>
-class explicitConstantSolver;
-
-template <int dim, int degree>
-class explicitPostprocessSolver;
-
-template <int dim, int degree>
-class explicitSolver;
-
-template <int dim, int degree>
-class nonexplicitAuxiliarySolver;
-
-template <int dim, int degree>
-class nonexplicitLinearSolver;
-
-template <int dim, int degree>
-class nonexplicitSelfNonlinearSolver;
-
-template <int dim, int degree, typename number>
-class computeIntegral;
-
-template <int dim, int degree, typename number>
-class elementVolume;
 
 /**
  * \brief This is the main class that handles the construction and solving of
