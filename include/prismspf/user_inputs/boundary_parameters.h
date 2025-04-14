@@ -349,7 +349,8 @@ boundaryParameters<dim>::set_boundary(const std::string  &BC_string,
 
   // Check that there is either 1 or 2*dim entries in the vector. This can be changed
   // later to support other geometries.
-  AssertThrow(BC_string_list.size() == 1 || BC_string_list.size() == 2 * dim,
+  AssertThrow(BC_string_list.size() == 1 ||
+                BC_string_list.size() == static_cast<std::size_t>(2 * dim),
               dealii::ExcMessage(
                 "Either 1 or 2*dim boundary conditions must be specified."));
 
@@ -357,7 +358,7 @@ boundaryParameters<dim>::set_boundary(const std::string  &BC_string,
   // entry.
   if (BC_string_list.size() == 1)
     {
-      BC_string_list.resize(2 * dim, BC_string_list[0]);
+      BC_string_list.resize(static_cast<std::size_t>(2 * dim), BC_string_list[0]);
     }
 
   // Assign boundary condition

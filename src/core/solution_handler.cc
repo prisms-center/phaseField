@@ -172,108 +172,67 @@ void
 solutionHandler<dim>::update(const fieldSolveType &field_solve_type,
                              const unsigned int   &variable_index)
 {
+  // Helper function to swap vectors for all dependency types
+  auto swap_all_dependency_vectors = [this](unsigned int index, auto &new_vector)
+  {
+    // Always swap the NORMAL dependency
+    new_vector->swap(*(solution_set.at(std::make_pair(index, dependencyType::NORMAL))));
+
+    // Swap old dependency types if they exist
+    const std::array<dependencyType, 4> old_types = {dependencyType::OLD_1,
+                                                     dependencyType::OLD_2,
+                                                     dependencyType::OLD_3,
+                                                     dependencyType::OLD_4};
+
+    for (const auto &dep_type : old_types)
+      {
+        if (solution_set.contains(std::make_pair(index, dep_type)))
+          {
+            new_vector->swap(*(solution_set.at(std::make_pair(index, dep_type))));
+          }
+      }
+  };
+
   // Loop through the solutions and swap them
   for (auto &[index, new_vector] : new_solution_set)
     {
+      const auto &attr_field_type = attributes_list->at(index).field_solve_type;
+
+      // Skip if field solve types don't match
+      if (attr_field_type != field_solve_type)
+        {
+          continue;
+        }
+
       switch (field_solve_type)
         {
           case fieldSolveType::EXPLICIT_CONSTANT:
             break;
           case fieldSolveType::EXPLICIT:
-            if (attributes_list->at(index).field_solve_type == field_solve_type)
-              {
-                new_vector->swap(
-                  *(solution_set.at(std::make_pair(index, dependencyType::NORMAL))));
-                if (solution_set.contains(std::make_pair(index, dependencyType::OLD_1)))
-                  {
-                    new_vector->swap(
-                      *(solution_set.at(std::make_pair(index, dependencyType::OLD_1))));
-                  }
-                if (solution_set.contains(std::make_pair(index, dependencyType::OLD_2)))
-                  {
-                    new_vector->swap(
-                      *(solution_set.at(std::make_pair(index, dependencyType::OLD_2))));
-                  }
-                if (solution_set.contains(std::make_pair(index, dependencyType::OLD_3)))
-                  {
-                    new_vector->swap(
-                      *(solution_set.at(std::make_pair(index, dependencyType::OLD_3))));
-                  }
-                if (solution_set.contains(std::make_pair(index, dependencyType::OLD_4)))
-                  {
-                    new_vector->swap(
-                      *(solution_set.at(std::make_pair(index, dependencyType::OLD_4))));
-                  }
-              }
+          case fieldSolveType::EXPLICIT_POSTPROCESS:
+            // For EXPLICIT_POSTPROCESS we only swap NORMAL, but the helper function will
+            // do that first and ignore the rest since they should exist
+            swap_all_dependency_vectors(index, new_vector);
             break;
           case fieldSolveType::NONEXPLICIT_LINEAR:
-            if (attributes_list->at(index).field_solve_type == field_solve_type &&
-                variable_index == index)
+            if (variable_index == index)
               {
+                swap_all_dependency_vectors(index, new_vector);
+                // Additional swap for NONEXPLICIT_LINEAR since the change term is the NEW
+                // vector and the NORMAL vector is the old one
                 new_vector->swap(
                   *(solution_set.at(std::make_pair(index, dependencyType::NORMAL))));
-                if (solution_set.contains(std::make_pair(index, dependencyType::OLD_1)))
-                  {
-                    new_vector->swap(
-                      *(solution_set.at(std::make_pair(index, dependencyType::OLD_1))));
-                  }
-                if (solution_set.contains(std::make_pair(index, dependencyType::OLD_2)))
-                  {
-                    new_vector->swap(
-                      *(solution_set.at(std::make_pair(index, dependencyType::OLD_2))));
-                  }
-                if (solution_set.contains(std::make_pair(index, dependencyType::OLD_3)))
-                  {
-                    new_vector->swap(
-                      *(solution_set.at(std::make_pair(index, dependencyType::OLD_3))));
-                  }
-                if (solution_set.contains(std::make_pair(index, dependencyType::OLD_4)))
-                  {
-                    new_vector->swap(
-                      *(solution_set.at(std::make_pair(index, dependencyType::OLD_4))));
-                  }
-                new_vector->swap(
-                  *(solution_set.at(std::make_pair(index, dependencyType::NORMAL))));
+              }
+            break;
+          case fieldSolveType::NONEXPLICIT_AUXILIARY:
+            if (variable_index == index)
+              {
+                swap_all_dependency_vectors(index, new_vector);
               }
             break;
           case fieldSolveType::NONEXPLICIT_SELF_NONLINEAR:
-            break;
-          case fieldSolveType::NONEXPLICIT_AUXILIARY:
-            if (attributes_list->at(index).field_solve_type == field_solve_type &&
-                variable_index == index)
-              {
-                new_vector->swap(
-                  *(solution_set.at(std::make_pair(index, dependencyType::NORMAL))));
-                if (solution_set.contains(std::make_pair(index, dependencyType::OLD_1)))
-                  {
-                    new_vector->swap(
-                      *(solution_set.at(std::make_pair(index, dependencyType::OLD_1))));
-                  }
-                if (solution_set.contains(std::make_pair(index, dependencyType::OLD_2)))
-                  {
-                    new_vector->swap(
-                      *(solution_set.at(std::make_pair(index, dependencyType::OLD_2))));
-                  }
-                if (solution_set.contains(std::make_pair(index, dependencyType::OLD_3)))
-                  {
-                    new_vector->swap(
-                      *(solution_set.at(std::make_pair(index, dependencyType::OLD_3))));
-                  }
-                if (solution_set.contains(std::make_pair(index, dependencyType::OLD_4)))
-                  {
-                    new_vector->swap(
-                      *(solution_set.at(std::make_pair(index, dependencyType::OLD_4))));
-                  }
-              }
-            break;
           case fieldSolveType::NONEXPLICIT_CO_NONLINEAR:
-            break;
-          case fieldSolveType::EXPLICIT_POSTPROCESS:
-            if (attributes_list->at(index).field_solve_type == field_solve_type)
-              {
-                new_vector->swap(
-                  *(solution_set.at(std::make_pair(index, dependencyType::NORMAL))));
-              }
+            Assert(false, dealii::ExcNotImplemented());
             break;
           default:
             AssertThrow(false, dealii::ExcMessage("Invalid fieldSolveType"));
