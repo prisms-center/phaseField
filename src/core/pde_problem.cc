@@ -21,7 +21,6 @@
 #include <prismspf/core/timer.h>
 #include <prismspf/core/triangulation_handler.h>
 #include <prismspf/core/type_enums.h>
-#include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
@@ -374,7 +373,7 @@ PDEProblem<dim, degree>::solve()
                     *dof_handler.get_dof_handlers()[index],
                     *vector);
 
-                  for (unsigned int dimension = 0; dimension < dim; dimension++)
+                  for (int dimension = 0; dimension < dim; dimension++)
                     {
                       conditionalOStreams::pout_base()
                         << integrated_values[dimension] << " ";
