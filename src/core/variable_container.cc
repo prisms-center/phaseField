@@ -192,188 +192,187 @@ variableContainer<dim, degree, number>::eval_local_diagonal(
 
   const auto &global_var_index = subset_attributes->begin()->first;
   const auto &field_type       = subset_attributes->begin()->second.field_type;
+  FEEval_exists(global_var_index, dependencyType::CHANGE);
+  auto &feeval_variant = feeval_map.at(global_var_index).at(dependencyType::CHANGE);
+
+  auto process_feeval = [&](auto &feeval_ptr, auto &diag_ptr)
+  {
+    using feeval_type      = std::decay_t<decltype(*feeval_ptr)>;
+    using diag_type        = std::decay_t<decltype(*diag_ptr)>;
+    using local_value_type = typename diag_type::value_type;
+
+    for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
+      {
+        // Reinit the cell for all the dependencies
+        reinit(cell, global_var_index);
+
+        for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
+          {
+            // Submit an identity matrix for the change term
+            for (unsigned int j = 0; j < n_dofs_per_cell; ++j)
+              {
+                if constexpr (std::is_same_v<local_value_type, size_type> || dim == 1)
+                  {
+                    feeval_ptr->submit_dof_value(size_type(), j);
+                  }
+                else
+                  {
+                    feeval_ptr->submit_dof_value(local_value_type(), j);
+                  }
+              }
+
+            // Set the i-th value to 1.0
+            if constexpr (std::is_same_v<local_value_type, size_type> || dim == 1)
+              {
+                feeval_ptr->submit_dof_value(dealii::make_vectorized_array<number>(1.0),
+                                             i);
+              }
+            else
+              {
+                local_value_type one;
+                for (unsigned int dimension = 0; dimension < dim; ++dimension)
+                  {
+                    one[dimension] = dealii::make_vectorized_array<number>(1.0);
+                  }
+                feeval_ptr->submit_dof_value(one, i);
+              }
+
+            // Read plain dof values for non change src
+            read_dof_values(src_subset);
+
+            // Evaluate the dependencies based on the flags
+            eval(global_var_index);
+
+            for (unsigned int quad = 0; quad < get_n_q_points(); ++quad)
+              {
+                // Set the quadrature point
+                q_point = quad;
+
+                // Grab the quadrature point location
+                const dealii::Point<dim, size_type> q_point_loc = get_q_point_location();
+
+                // Calculate the residuals
+                func(*this, q_point_loc);
+              }
+
+            // Integrate the diagonal
+            integrate(global_var_index);
+            (*diag_ptr)[i] = feeval_ptr->get_dof_value(i);
+          }
+
+        // Submit calculated diagonal values and distribute
+        for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
+          {
+            if constexpr (std::is_same_v<local_value_type, size_type>)
+              {
+                feeval_ptr->submit_dof_value((*diag_ptr)[i], i);
+              }
+            else if constexpr (dim == 1)
+              {
+                feeval_ptr->submit_dof_value((*diag_ptr)[i][0], i);
+              }
+            else
+              {
+                feeval_ptr->submit_dof_value((*diag_ptr)[i], i);
+              }
+          }
+        feeval_ptr->distribute_local_to_global(dst);
+      }
+  };
 
   if (field_type == fieldType::SCALAR)
     {
-      scalar_FEEval *scalar_FEEval_ptr = nullptr;
+      scalar_FEEval *scalar_feeval_ptr = nullptr;
+
       if constexpr (dim == 1)
         {
-          scalar_FEEval_ptr =
-            feeval_map.at(global_var_index).at(dependencyType::CHANGE).get();
+          scalar_feeval_ptr = feeval_variant.get();
         }
       else
         {
           std::visit(
-            [&scalar_FEEval_ptr](auto &ptr)
+            [&scalar_feeval_ptr](auto &ptr)
             {
               using T = std::decay_t<decltype(ptr)>;
               if constexpr (std::is_same_v<T, std::unique_ptr<scalar_FEEval>>)
                 {
-                  scalar_FEEval_ptr = ptr.get();
+                  scalar_feeval_ptr = ptr.get();
                 }
               else
                 {
                   Assert(false, dealii::ExcNotInitialized());
                 }
             },
-            feeval_map.at(global_var_index).at(dependencyType::CHANGE));
+            feeval_variant);
         }
 
-      n_dofs_per_cell = scalar_FEEval_ptr->dofs_per_cell;
-      scalar_diagonal =
-        std::make_unique<dealii::AlignedVector<size_type>>(n_dofs_per_cell);
+      n_dofs_per_cell              = scalar_feeval_ptr->dofs_per_cell;
+      diagonal                     = std::make_unique<scalar_diag>(n_dofs_per_cell);
+      scalar_diag *scalar_diag_ptr = nullptr;
 
-      for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
+      std::visit(
+        [&scalar_diag_ptr](auto &ptr)
         {
-          // Reinit the cell for all the dependencies
-          reinit(cell, global_var_index);
-
-          for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
+          using T = std::decay_t<decltype(ptr)>;
+          if constexpr (std::is_same_v<T, std::unique_ptr<scalar_diag>>)
             {
-              // Submit an identity matrix for the change term
-              for (unsigned int j = 0; j < n_dofs_per_cell; ++j)
-                {
-                  scalar_FEEval_ptr->submit_dof_value(size_type(), j);
-                }
-              scalar_FEEval_ptr->submit_dof_value(dealii::make_vectorized_array<number>(
-                                                    1.0),
-                                                  i);
-
-              // Read plain dof values for non change src
-              read_dof_values(src_subset, cell);
-
-              // Evaluate the dependencies based on the flags
-              eval(global_var_index);
-
-              for (unsigned int quad = 0; quad < get_n_q_points(); ++quad)
-                {
-                  // Set the quadrature point
-                  q_point = quad;
-
-                  // Grab the quadrature point location
-                  const dealii::Point<dim, size_type> q_point_loc =
-                    get_q_point_location();
-
-                  // Calculate the residuals
-                  func(*this, q_point_loc);
-                }
-
-              // Integrate the diagonal
-              integrate(global_var_index);
-              (*scalar_diagonal)[i] = scalar_FEEval_ptr->get_dof_value(i);
+              scalar_diag_ptr = ptr.get();
             }
-
-          for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
+          else
             {
-              scalar_FEEval_ptr->submit_dof_value((*scalar_diagonal)[i], i);
+              Assert(false, dealii::ExcNotInitialized());
             }
-          scalar_FEEval_ptr->distribute_local_to_global(dst);
-        }
+        },
+        diagonal);
+
+      process_feeval(scalar_feeval_ptr, scalar_diag_ptr);
     }
   else if (field_type == fieldType::VECTOR)
     {
-      vector_FEEval *vector_FEEval_ptr = nullptr;
+      vector_FEEval *vector_feeval_ptr = nullptr;
+
       if constexpr (dim == 1)
         {
-          vector_FEEval_ptr =
-            feeval_map.at(global_var_index).at(dependencyType::CHANGE).get();
+          vector_feeval_ptr = feeval_variant.get();
         }
       else
         {
           std::visit(
-            [&vector_FEEval_ptr](auto &ptr)
+            [&vector_feeval_ptr](auto &ptr)
             {
               using T = std::decay_t<decltype(ptr)>;
               if constexpr (std::is_same_v<T, std::unique_ptr<vector_FEEval>>)
                 {
-                  vector_FEEval_ptr = ptr.get();
+                  vector_feeval_ptr = ptr.get();
                 }
               else
                 {
                   Assert(false, dealii::ExcNotInitialized());
                 }
             },
-            feeval_map.at(global_var_index).at(dependencyType::CHANGE));
+            feeval_variant);
         }
 
-      n_dofs_per_cell = vector_FEEval_ptr->dofs_per_component;
-      vector_diagonal =
-        std::make_unique<dealii::AlignedVector<dealii::Tensor<1, dim, size_type>>>(
-          n_dofs_per_cell);
+      n_dofs_per_cell              = vector_feeval_ptr->dofs_per_component;
+      diagonal                     = std::make_unique<vector_diag>(n_dofs_per_cell);
+      vector_diag *vector_diag_ptr = nullptr;
 
-      for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
+      std::visit(
+        [&vector_diag_ptr](auto &ptr)
         {
-          // Reinit the cell for all the dependencies
-          reinit(cell, global_var_index);
-
-          for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
+          using T = std::decay_t<decltype(ptr)>;
+          if constexpr (std::is_same_v<T, std::unique_ptr<vector_diag>>)
             {
-              // Submit an identity matrix for the change term
-              for (unsigned int j = 0; j < n_dofs_per_cell; ++j)
-                {
-                  if constexpr (dim == 1)
-                    {
-                      vector_FEEval_ptr->submit_dof_value(size_type(), j);
-                    }
-                  else
-                    {
-                      vector_FEEval_ptr
-                        ->submit_dof_value(dealii::Tensor<1, dim, size_type>(), j);
-                    }
-                }
-              if constexpr (dim == 1)
-                {
-                  vector_FEEval_ptr
-                    ->submit_dof_value(dealii::make_vectorized_array<number>(1.0), i);
-                }
-              else
-                {
-                  dealii::Tensor<1, dim, size_type> one;
-                  for (unsigned int dimension = 0; dimension < dim; ++dimension)
-                    {
-                      one[dimension] = dealii::make_vectorized_array<number>(1.0);
-                    }
-
-                  vector_FEEval_ptr->submit_dof_value(one, i);
-                }
-
-              // Read plain dof values for non change src
-              read_dof_values(src_subset, cell);
-
-              // Evaluate the dependencies based on the flags
-              eval(global_var_index);
-
-              for (unsigned int quad = 0; quad < get_n_q_points(); ++quad)
-                {
-                  // Set the quadrature point
-                  q_point = quad;
-
-                  // Grab the quadrature point location
-                  const dealii::Point<dim, size_type> q_point_loc =
-                    get_q_point_location();
-
-                  // Calculate the residuals
-                  func(*this, q_point_loc);
-                }
-
-              // Integrate the diagonal
-              integrate(global_var_index);
-              (*vector_diagonal)[i] = vector_FEEval_ptr->get_dof_value(i);
+              vector_diag_ptr = ptr.get();
             }
-
-          for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
+          else
             {
-              if constexpr (dim == 1)
-                {
-                  vector_FEEval_ptr->submit_dof_value((*vector_diagonal)[i][0], i);
-                }
-              else
-                {
-                  vector_FEEval_ptr->submit_dof_value((*vector_diagonal)[i], i);
-                }
+              Assert(false, dealii::ExcNotInitialized());
             }
-          vector_FEEval_ptr->distribute_local_to_global(dst);
-        }
+        },
+        diagonal);
+
+      process_feeval(vector_feeval_ptr, vector_diag_ptr);
     }
   else
     {
@@ -510,30 +509,6 @@ variableContainer<dim, degree, number>::reinit_and_eval(
                        dealii::EvaluationFlags::EvaluationFlags>          &eval_flag_set,
         const std::map<unsigned int, std::map<dependencyType, fieldType>> &dependency_set)
   {
-    auto process_feeval = [&](auto                 &feeval_ptr,
-                              const unsigned int   &dependency_index,
-                              const dependencyType &dependency_type)
-    {
-      feeval_ptr->reinit(cell);
-
-      const auto &pair = std::make_pair(dependency_index, dependency_type);
-      if (eval_flag_set.contains(pair))
-        {
-          const unsigned int &local_index = global_to_local_solution->at(pair);
-
-          Assert(src.size() > local_index,
-                 dealii::ExcMessage(
-                   "The provided src vector's size is below the given local "
-                   "index = " +
-                   std::to_string(local_index) +
-                   " for global index = " + std::to_string(dependency_index) +
-                   "  and type = " + to_string(dependency_type)));
-
-          feeval_ptr->read_dof_values_plain(*(src.at(local_index)));
-          feeval_ptr->evaluate(eval_flag_set.at(pair));
-        }
-    };
-
     for (const auto &[dependency_index, map] : dependency_set)
       {
         for (const auto &[dependency_type, field_type] : map)
@@ -544,20 +519,36 @@ variableContainer<dim, degree, number>::reinit_and_eval(
               }
 
             const auto &pair = std::make_pair(dependency_index, dependency_type);
-
             Assert(global_to_local_solution->contains(pair),
                    dealii::ExcMessage(
                      "The global to local mapping does not exists for global index = " +
                      std::to_string(dependency_index) +
                      "  and type = " + to_string(dependency_type)));
-
             FEEval_exists(dependency_index, dependency_type);
+            auto &feeval_variant = feeval_map.at(dependency_index).at(dependency_type);
+
+            auto process_feeval = [&](auto &feeval_ptr)
+            {
+              feeval_ptr->reinit(cell);
+              if (!eval_flag_set.contains(pair))
+                {
+                  return;
+                }
+              const unsigned int &local_index = global_to_local_solution->at(pair);
+              Assert(src.size() > local_index,
+                     dealii::ExcMessage(
+                       "The provided src vector's size is below the given local "
+                       "index = " +
+                       std::to_string(local_index) +
+                       " for global index = " + std::to_string(dependency_index) +
+                       "  and type = " + to_string(dependency_type)));
+              feeval_ptr->read_dof_values_plain(*(src.at(local_index)));
+              feeval_ptr->evaluate(eval_flag_set.at(pair));
+            };
 
             if constexpr (dim == 1)
               {
-                process_feeval(feeval_map.at(dependency_index).at(dependency_type),
-                               dependency_index,
-                               dependency_type);
+                process_feeval(feeval_variant);
               }
             else
               {
@@ -565,17 +556,12 @@ variableContainer<dim, degree, number>::reinit_and_eval(
                   [&](auto &ptr)
                   {
                     using T = std::decay_t<decltype(ptr)>;
-                    if constexpr (std::is_same_v<T, std::unique_ptr<scalar_FEEval>> ||
-                                  std::is_same_v<T, std::unique_ptr<vector_FEEval>>)
-                      {
-                        process_feeval(ptr, dependency_index, dependency_type);
-                      }
-                    else
-                      {
-                        Assert(false, dealii::ExcNotInitialized());
-                      }
+                    static_assert(std::is_same_v<T, std::unique_ptr<scalar_FEEval>> ||
+                                    std::is_same_v<T, std::unique_ptr<vector_FEEval>>,
+                                  "Unexpected type in feeval_map variant");
+                    process_feeval(ptr);
                   },
-                  feeval_map.at(dependency_index).at(dependency_type));
+                  feeval_variant);
               }
           }
       }
@@ -583,8 +569,8 @@ variableContainer<dim, degree, number>::reinit_and_eval(
 
   if (solve_type == solveType::EXPLICIT_RHS || solve_type == solveType::POSTPROCESS)
     {
-      reinit_and_eval_map(subset_attributes->begin()->second.eval_flag_set_RHS,
-                          subset_attributes->begin()->second.dependency_set_RHS);
+      const auto &attrs = subset_attributes->begin()->second;
+      reinit_and_eval_map(attrs.eval_flag_set_RHS, attrs.dependency_set_RHS);
       return;
     }
   if (src.empty())
@@ -595,16 +581,14 @@ variableContainer<dim, degree, number>::reinit_and_eval(
   Assert(subset_attributes->size() == 1,
          dealii::ExcMessage(
            "For nonexplicit solves, subset attributes should only be 1 variable."));
-
+  const auto &attrs = subset_attributes->begin()->second;
   if (solve_type == solveType::NONEXPLICIT_LHS)
     {
-      reinit_and_eval_map(subset_attributes->begin()->second.eval_flag_set_LHS,
-                          subset_attributes->begin()->second.dependency_set_LHS);
+      reinit_and_eval_map(attrs.eval_flag_set_LHS, attrs.dependency_set_LHS);
     }
   else
     {
-      reinit_and_eval_map(subset_attributes->begin()->second.eval_flag_set_RHS,
-                          subset_attributes->begin()->second.dependency_set_RHS);
+      reinit_and_eval_map(attrs.eval_flag_set_RHS, attrs.dependency_set_RHS);
     }
 }
 
@@ -626,72 +610,37 @@ variableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
         for (const auto &[dependency_type, field_type] : map)
           {
             const auto &pair = std::make_pair(dependency_index, dependency_type);
-
             Assert(global_to_local_solution->contains(pair),
                    dealii::ExcMessage(
                      "The global to local mapping does not exists for global index = " +
                      std::to_string(dependency_index) +
                      "  and type = " + to_string(dependency_type)));
+            FEEval_exists(dependency_index, dependency_type);
+            auto &feeval_variant = feeval_map.at(dependency_index).at(dependency_type);
 
-            if (field_type == fieldType::SCALAR)
+            auto process_feeval = [&](auto &feeval_ptr)
+            {
+              feeval_ptr->reinit(cell);
+              feeval_ptr->read_dof_values_plain(src);
+              feeval_ptr->evaluate(eval_flag_set.at(pair));
+            };
+
+            if constexpr (dim == 1)
               {
-                FEEval_exists(dependency_index, dependency_type);
-                scalar_FEEval *scalar_FEEval_ptr = nullptr;
-                if constexpr (dim == 1)
-                  {
-                    scalar_FEEval_ptr =
-                      feeval_map.at(dependency_index).at(dependency_type).get();
-                  }
-                else
-                  {
-                    std::visit(
-                      [&scalar_FEEval_ptr](auto &ptr)
-                      {
-                        using T = std::decay_t<decltype(ptr)>;
-                        if constexpr (std::is_same_v<T, std::unique_ptr<scalar_FEEval>>)
-                          {
-                            scalar_FEEval_ptr = ptr.get();
-                          }
-                        else
-                          {
-                            Assert(false, dealii::ExcNotInitialized());
-                          }
-                      },
-                      feeval_map.at(dependency_index).at(dependency_type));
-                  }
-                scalar_FEEval_ptr->reinit(cell);
-                scalar_FEEval_ptr->read_dof_values_plain(src);
-                scalar_FEEval_ptr->evaluate(eval_flag_set.at(pair));
+                process_feeval(feeval_variant);
               }
             else
               {
-                FEEval_exists(dependency_index, dependency_type);
-                vector_FEEval *vector_FEEval_ptr = nullptr;
-                if constexpr (dim == 1)
+                std::visit(
+                  [&](auto &ptr)
                   {
-                    vector_FEEval_ptr =
-                      feeval_map.at(dependency_index).at(dependency_type).get();
-                  }
-                else
-                  {
-                    std::visit(
-                      [&vector_FEEval_ptr](auto &ptr)
-                      {
-                        using T = std::decay_t<decltype(ptr)>;
-                        if constexpr (std::is_same_v<T, std::unique_ptr<vector_FEEval>>)
-                          {
-                            vector_FEEval_ptr = ptr.get();
-                          }
-                        else
-                          {
-                            Assert(false, dealii::ExcNotInitialized());
-                          }
-                      },
-                      feeval_map.at(dependency_index).at(dependency_type));
-                  }
-                vector_FEEval_ptr->reinit(cell);
-                vector_FEEval_ptr->read_dof_values_plain(src);
-                vector_FEEval_ptr->evaluate(eval_flag_set.at(pair));
+                    using T = std::decay_t<decltype(ptr)>;
+                    static_assert(std::is_same_v<T, std::unique_ptr<scalar_FEEval>> ||
+                                    std::is_same_v<T, std::unique_ptr<vector_FEEval>>,
+                                  "Unexpected type in feeval_map variant");
+                    process_feeval(ptr);
+                  },
+                  feeval_variant);
               }
           }
       }
@@ -700,18 +649,15 @@ variableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
   Assert(subset_attributes->size() == 1,
          dealii::ExcMessage(
            "For nonexplicit solves, subset attributes should only be 1 variable."));
-
+  const auto &attrs = subset_attributes->begin()->second;
   if (solve_type == solveType::NONEXPLICIT_LHS)
     {
-      reinit_and_eval_map(subset_attributes->begin()->second.eval_flag_set_LHS,
-                          subset_attributes->begin()->second.dependency_set_LHS);
+      reinit_and_eval_map(attrs.eval_flag_set_LHS, attrs.dependency_set_LHS);
+      return;
     }
-  else
-    {
-      Assert(false,
-             dealii::ExcMessage(
-               "reinit_and_eval(src) should only be called for LHS evaluations"));
-    }
+  Assert(false,
+         dealii::ExcMessage(
+           "reinit_and_eval(src) should only be called for LHS evaluations"));
 }
 
 template <int dim, int degree, typename number>
@@ -732,91 +678,53 @@ variableContainer<dim, degree, number>::reinit(unsigned int        cell,
                dealii::ExcMessage(
                  "The subset attribute entry does not exists for global index = " +
                  std::to_string(dependency_index)));
+        FEEval_exists(dependency_index, dependency_type);
+        auto &feeval_variant = feeval_map.at(dependency_index).at(dependency_type);
 
-        if (subset_attributes->at(dependency_index).field_type == fieldType::SCALAR)
+        auto process_feeval = [&](auto &feeval_ptr)
+        {
+          feeval_ptr->reinit(cell);
+        };
+
+        if constexpr (dim == 1)
           {
-            FEEval_exists(dependency_index, dependency_type);
-            scalar_FEEval *scalar_FEEval_ptr = nullptr;
-            if constexpr (dim == 1)
-              {
-                scalar_FEEval_ptr =
-                  feeval_map.at(dependency_index).at(dependency_type).get();
-              }
-            else
-              {
-                std::visit(
-                  [&scalar_FEEval_ptr](auto &ptr)
-                  {
-                    using T = std::decay_t<decltype(ptr)>;
-                    if constexpr (std::is_same_v<T, std::unique_ptr<scalar_FEEval>>)
-                      {
-                        scalar_FEEval_ptr = ptr.get();
-                      }
-                    else
-                      {
-                        Assert(false, dealii::ExcNotInitialized());
-                      }
-                  },
-                  feeval_map.at(dependency_index).at(dependency_type));
-              }
-            scalar_FEEval_ptr->reinit(cell);
+            process_feeval(feeval_variant);
           }
         else
           {
-            FEEval_exists(dependency_index, dependency_type);
-            vector_FEEval *vector_FEEval_ptr = nullptr;
-            if constexpr (dim == 1)
+            std::visit(
+              [&](auto &ptr)
               {
-                vector_FEEval_ptr =
-                  feeval_map.at(dependency_index).at(dependency_type).get();
-              }
-            else
-              {
-                std::visit(
-                  [&vector_FEEval_ptr](auto &ptr)
-                  {
-                    using T = std::decay_t<decltype(ptr)>;
-                    if constexpr (std::is_same_v<T, std::unique_ptr<vector_FEEval>>)
-                      {
-                        vector_FEEval_ptr = ptr.get();
-                      }
-                    else
-                      {
-                        Assert(false, dealii::ExcNotInitialized());
-                      }
-                  },
-                  feeval_map.at(dependency_index).at(dependency_type));
-              }
-            vector_FEEval_ptr->reinit(cell);
+                using T = std::decay_t<decltype(ptr)>;
+                static_assert(std::is_same_v<T, std::unique_ptr<scalar_FEEval>> ||
+                                std::is_same_v<T, std::unique_ptr<vector_FEEval>>,
+                              "Unexpected type in feeval_map variant");
+                process_feeval(ptr);
+              },
+              feeval_variant);
           }
       }
   };
 
+  Assert(subset_attributes->contains(global_variable_index),
+         dealii::ExcMessage(
+           "The subset attribute entry does not exists for global index = " +
+           std::to_string(global_variable_index)));
+  const auto &attrs = subset_attributes->at(global_variable_index);
   if (solve_type == solveType::NONEXPLICIT_LHS)
     {
-      Assert(subset_attributes->contains(global_variable_index),
-             dealii::ExcMessage(
-               "The subset attribute entry does not exists for global index = " +
-               std::to_string(global_variable_index)));
-
-      reinit_map(subset_attributes->at(global_variable_index).eval_flag_set_LHS);
+      reinit_map(attrs.eval_flag_set_LHS);
     }
   else
     {
-      Assert(subset_attributes->contains(global_variable_index),
-             dealii::ExcMessage(
-               "The subset attribute entry does not exists for global index = " +
-               std::to_string(global_variable_index)));
-
-      reinit_map(subset_attributes->at(global_variable_index).eval_flag_set_RHS);
+      reinit_map(attrs.eval_flag_set_RHS);
     }
 }
 
 template <int dim, int degree, typename number>
 void
 variableContainer<dim, degree, number>::read_dof_values(
-  const std::vector<VectorType *> &src,
-  unsigned int                     cell)
+  const std::vector<VectorType *> &src)
 {
   auto reinit_and_eval_map =
     [&](const std::map<std::pair<unsigned int, dependencyType>,
@@ -833,98 +741,46 @@ variableContainer<dim, degree, number>::read_dof_values(
               }
 
             const auto &pair = std::make_pair(dependency_index, dependency_type);
-
             Assert(global_to_local_solution->contains(pair),
                    dealii::ExcMessage(
                      "The global to local mapping does not exists for global index = " +
                      std::to_string(dependency_index) +
                      "  and type = " + to_string(dependency_type)));
+            FEEval_exists(dependency_index, dependency_type);
+            auto &feeval_variant = feeval_map.at(dependency_index).at(dependency_type);
 
-            if (field_type == fieldType::SCALAR)
+            auto process_feeval = [&](auto &feeval_ptr)
+            {
+              if (eval_flag_set.contains(pair))
+                {
+                  const unsigned int &local_index = global_to_local_solution->at(pair);
+                  Assert(src.size() > local_index,
+                         dealii::ExcMessage(
+                           "The provided src vector's size is below the given local "
+                           "index = " +
+                           std::to_string(local_index) +
+                           " for global index = " + std::to_string(dependency_index) +
+                           "  and type = " + to_string(dependency_type)));
+                  feeval_ptr->read_dof_values_plain(*(src.at(local_index)));
+                }
+            };
+
+            if constexpr (dim == 1)
               {
-                FEEval_exists(dependency_index, dependency_type);
-                scalar_FEEval *scalar_FEEval_ptr = nullptr;
-                if constexpr (dim == 1)
-                  {
-                    scalar_FEEval_ptr =
-                      feeval_map.at(dependency_index).at(dependency_type).get();
-                  }
-                else
-                  {
-                    std::visit(
-                      [&scalar_FEEval_ptr](auto &ptr)
-                      {
-                        using T = std::decay_t<decltype(ptr)>;
-                        if constexpr (std::is_same_v<T, std::unique_ptr<scalar_FEEval>>)
-                          {
-                            scalar_FEEval_ptr = ptr.get();
-                          }
-                        else
-                          {
-                            Assert(false, dealii::ExcNotInitialized());
-                          }
-                      },
-                      feeval_map.at(dependency_index).at(dependency_type));
-                  }
-
-                if (eval_flag_set.contains(pair))
-                  {
-                    const unsigned int &local_index = global_to_local_solution->at(pair);
-
-                    Assert(src.size() > local_index,
-                           dealii::ExcMessage(
-                             "The provided src vector's size is below the given local "
-                             "index = " +
-                             std::to_string(local_index) +
-                             " for global index = " + std::to_string(dependency_index) +
-                             "  and type = " + to_string(dependency_type)));
-
-                    scalar_FEEval_ptr->read_dof_values_plain(*(src.at(local_index)));
-                  }
+                process_feeval(feeval_variant);
               }
             else
               {
-                FEEval_exists(dependency_index, dependency_type);
-                vector_FEEval *vector_FEEval_ptr = nullptr;
-                if constexpr (dim == 1)
+                std::visit(
+                  [&](auto &ptr)
                   {
-                    vector_FEEval_ptr =
-                      feeval_map.at(dependency_index).at(dependency_type).get();
-                  }
-                else
-                  {
-                    std::visit(
-                      [&vector_FEEval_ptr](auto &ptr)
-                      {
-                        using T = std::decay_t<decltype(ptr)>;
-                        if constexpr (std::is_same_v<T, std::unique_ptr<vector_FEEval>>)
-                          {
-                            vector_FEEval_ptr = ptr.get();
-                          }
-                        else
-                          {
-                            Assert(false, dealii::ExcNotInitialized());
-                          }
-                      },
-                      feeval_map.at(dependency_index).at(dependency_type));
-                  }
-                vector_FEEval_ptr->reinit(cell);
-
-                if (eval_flag_set.contains(pair))
-                  {
-                    const unsigned int &local_index = global_to_local_solution->at(pair);
-
-                    Assert(src.size() > local_index,
-                           dealii::ExcMessage(
-                             "The provided src vector's size is below the given local "
-                             "index = " +
-                             std::to_string(local_index) +
-                             " for global index = " + std::to_string(dependency_index) +
-                             "  and type = " + to_string(dependency_type)));
-
-                    vector_FEEval_ptr->read_dof_values_plain(*(src.at(local_index)));
-                    vector_FEEval_ptr->evaluate(eval_flag_set.at(pair));
-                  }
+                    using T = std::decay_t<decltype(ptr)>;
+                    static_assert(std::is_same_v<T, std::unique_ptr<scalar_FEEval>> ||
+                                    std::is_same_v<T, std::unique_ptr<vector_FEEval>>,
+                                  "Unexpected type in feeval_map variant");
+                    process_feeval(ptr);
+                  },
+                  feeval_variant);
               }
           }
       }
@@ -943,9 +799,8 @@ variableContainer<dim, degree, number>::read_dof_values(
   Assert(subset_attributes->size() == 1,
          dealii::ExcMessage(
            "For nonexplicit solves, subset attributes should only be 1 variable."));
-
-  reinit_and_eval_map(subset_attributes->begin()->second.eval_flag_set_LHS,
-                      subset_attributes->begin()->second.dependency_set_LHS);
+  const auto &attrs = subset_attributes->begin()->second;
+  reinit_and_eval_map(attrs.eval_flag_set_LHS, attrs.dependency_set_LHS);
 }
 
 template <int dim, int degree, typename number>
@@ -965,83 +820,46 @@ variableContainer<dim, degree, number>::eval(const unsigned int &global_variable
                dealii::ExcMessage(
                  "The subset attribute entry does not exists for global index = " +
                  std::to_string(dependency_index)));
+        FEEval_exists(dependency_index, dependency_type);
+        auto &feeval_variant = feeval_map.at(dependency_index).at(dependency_type);
 
-        if (subset_attributes->at(dependency_index).field_type == fieldType::SCALAR)
+        auto process_feeval = [&](auto &feeval_ptr)
+        {
+          feeval_ptr->evaluate(flags);
+        };
+
+        if constexpr (dim == 1)
           {
-            FEEval_exists(dependency_index, dependency_type);
-            scalar_FEEval *scalar_FEEval_ptr = nullptr;
-            if constexpr (dim == 1)
-              {
-                scalar_FEEval_ptr =
-                  feeval_map.at(dependency_index).at(dependency_type).get();
-              }
-            else
-              {
-                std::visit(
-                  [&scalar_FEEval_ptr](auto &ptr)
-                  {
-                    using T = std::decay_t<decltype(ptr)>;
-                    if constexpr (std::is_same_v<T, std::unique_ptr<scalar_FEEval>>)
-                      {
-                        scalar_FEEval_ptr = ptr.get();
-                      }
-                    else
-                      {
-                        Assert(false, dealii::ExcNotInitialized());
-                      }
-                  },
-                  feeval_map.at(dependency_index).at(dependency_type));
-              }
-            scalar_FEEval_ptr->evaluate(flags);
+            process_feeval(feeval_variant);
           }
         else
           {
-            FEEval_exists(dependency_index, dependency_type);
-            vector_FEEval *vector_FEEval_ptr = nullptr;
-            if constexpr (dim == 1)
+            std::visit(
+              [&](auto &ptr)
               {
-                vector_FEEval_ptr =
-                  feeval_map.at(dependency_index).at(dependency_type).get();
-              }
-            else
-              {
-                std::visit(
-                  [&vector_FEEval_ptr](auto &ptr)
-                  {
-                    using T = std::decay_t<decltype(ptr)>;
-                    if constexpr (std::is_same_v<T, std::unique_ptr<vector_FEEval>>)
-                      {
-                        vector_FEEval_ptr = ptr.get();
-                      }
-                    else
-                      {
-                        Assert(false, dealii::ExcNotInitialized());
-                      }
-                  },
-                  feeval_map.at(dependency_index).at(dependency_type));
-              }
-            vector_FEEval_ptr->evaluate(flags);
+                using T = std::decay_t<decltype(ptr)>;
+                static_assert(std::is_same_v<T, std::unique_ptr<scalar_FEEval>> ||
+                                std::is_same_v<T, std::unique_ptr<vector_FEEval>>,
+                              "Unexpected type in feeval_map variant");
+                process_feeval(ptr);
+              },
+              feeval_variant);
           }
       }
   };
 
+  Assert(subset_attributes->contains(global_variable_index),
+         dealii::ExcMessage(
+           "The subset attribute entry does not exists for global index = " +
+           std::to_string(global_variable_index)));
+  const auto &attrs = subset_attributes->at(global_variable_index);
   if (solve_type == solveType::NONEXPLICIT_LHS)
     {
-      Assert(subset_attributes->contains(global_variable_index),
-             dealii::ExcMessage(
-               "The subset attribute entry does not exists for global index = " +
-               std::to_string(global_variable_index)));
-
-      eval_map(subset_attributes->at(global_variable_index).eval_flag_set_LHS);
+      eval_map(attrs.eval_flag_set_LHS);
     }
   else
     {
-      Assert(subset_attributes->contains(global_variable_index),
-             dealii::ExcMessage(
-               "The subset attribute entry does not exists for global index = " +
-               std::to_string(global_variable_index)));
-
-      eval_map(subset_attributes->at(global_variable_index).eval_flag_set_RHS);
+      eval_map(attrs.eval_flag_set_RHS);
     }
 }
 
@@ -1054,74 +872,42 @@ variableContainer<dim, degree, number>::integrate(
          dealii::ExcMessage(
            "The subset attribute entry does not exists for global index = " +
            std::to_string(global_variable_index)));
-
   const auto &variable = subset_attributes->at(global_variable_index);
 
   if (solve_type == solveType::NONEXPLICIT_LHS)
     {
-      if (variable.field_type == fieldType::SCALAR)
+      FEEval_exists(global_variable_index, dependencyType::CHANGE);
+      auto &feeval_variant =
+        feeval_map.at(global_variable_index).at(dependencyType::CHANGE);
+
+      auto process_feeval = [&](auto &feeval_ptr)
+      {
+        feeval_ptr->integrate(variable.eval_flags_residual_LHS);
+      };
+
+      if constexpr (dim == 1)
         {
-          FEEval_exists(global_variable_index, dependencyType::CHANGE);
-          scalar_FEEval *scalar_FEEval_ptr = nullptr;
-          if constexpr (dim == 1)
-            {
-              scalar_FEEval_ptr =
-                feeval_map.at(global_variable_index).at(dependencyType::CHANGE).get();
-            }
-          else
-            {
-              std::visit(
-                [&scalar_FEEval_ptr](auto &ptr)
-                {
-                  using T = std::decay_t<decltype(ptr)>;
-                  if constexpr (std::is_same_v<T, std::unique_ptr<scalar_FEEval>>)
-                    {
-                      scalar_FEEval_ptr = ptr.get();
-                    }
-                  else
-                    {
-                      Assert(false, dealii::ExcNotInitialized());
-                    }
-                },
-                feeval_map.at(global_variable_index).at(dependencyType::CHANGE));
-            }
-          scalar_FEEval_ptr->integrate(variable.eval_flags_residual_LHS);
+          process_feeval(feeval_variant);
         }
       else
         {
-          FEEval_exists(global_variable_index, dependencyType::CHANGE);
-          vector_FEEval *vector_FEEval_ptr = nullptr;
-          if constexpr (dim == 1)
+          std::visit(
+            [&](auto &ptr)
             {
-              vector_FEEval_ptr =
-                feeval_map.at(global_variable_index).at(dependencyType::CHANGE).get();
-            }
-          else
-            {
-              std::visit(
-                [&vector_FEEval_ptr](auto &ptr)
-                {
-                  using T = std::decay_t<decltype(ptr)>;
-                  if constexpr (std::is_same_v<T, std::unique_ptr<vector_FEEval>>)
-                    {
-                      vector_FEEval_ptr = ptr.get();
-                    }
-                  else
-                    {
-                      Assert(false, dealii::ExcNotInitialized());
-                    }
-                },
-                feeval_map.at(global_variable_index).at(dependencyType::CHANGE));
-            }
-          vector_FEEval_ptr->integrate(variable.eval_flags_residual_LHS);
+              using T = std::decay_t<decltype(ptr)>;
+              static_assert(std::is_same_v<T, std::unique_ptr<scalar_FEEval>> ||
+                              std::is_same_v<T, std::unique_ptr<vector_FEEval>>,
+                            "Unexpected type in feeval_map variant");
+              process_feeval(ptr);
+            },
+            feeval_variant);
         }
+      return;
     }
-  else
-    {
-      AssertThrow(false,
-                  dealii::ExcMessage(
-                    "Integrate called for a solve type that is not NONEXPLICIT_LHS."));
-    }
+
+  AssertThrow(false,
+              dealii::ExcMessage(
+                "Integrate called for a solve type that is not NONEXPLICIT_LHS."));
 }
 
 template <int dim, int degree, typename number>
@@ -1139,10 +925,8 @@ variableContainer<dim, degree, number>::integrate_and_distribute(
       dealii::ExcMessage(
         "The global to local mapping does not exists for global index = " +
         std::to_string(residual_index) + "  and type = " + to_string(dependency_type)));
-
     const unsigned int &local_index =
       global_to_local_solution->at(std::make_pair(residual_index, dependency_type));
-
     Assert(dst.size() > local_index,
            dealii::ExcMessage(
              "The provided dst vector's size is below the given local index = " +
@@ -1153,60 +937,30 @@ variableContainer<dim, degree, number>::integrate_and_distribute(
            dealii::ExcMessage(
              "The subset attribute entry does not exists for global index = " +
              std::to_string(residual_index)));
+    FEEval_exists(residual_index, dependency_type);
+    auto &feeval_variant = feeval_map.at(residual_index).at(dependency_type);
 
-    if (subset_attributes->at(residual_index).field_type == fieldType::SCALAR)
+    auto process_feeval = [&](auto &feeval_ptr)
+    {
+      feeval_ptr->integrate_scatter(residual_flag_set, *(dst.at(local_index)));
+    };
+
+    if constexpr (dim == 1)
       {
-        FEEval_exists(residual_index, dependency_type);
-        scalar_FEEval *scalar_FEEval_ptr = nullptr;
-        if constexpr (dim == 1)
-          {
-            scalar_FEEval_ptr = feeval_map.at(residual_index).at(dependency_type).get();
-          }
-        else
-          {
-            std::visit(
-              [&scalar_FEEval_ptr](auto &ptr)
-              {
-                using T = std::decay_t<decltype(ptr)>;
-                if constexpr (std::is_same_v<T, std::unique_ptr<scalar_FEEval>>)
-                  {
-                    scalar_FEEval_ptr = ptr.get();
-                  }
-                else
-                  {
-                    Assert(false, dealii::ExcNotInitialized());
-                  }
-              },
-              feeval_map.at(residual_index).at(dependency_type));
-          }
-        scalar_FEEval_ptr->integrate_scatter(residual_flag_set, *(dst.at(local_index)));
+        process_feeval(feeval_variant);
       }
     else
       {
-        FEEval_exists(residual_index, dependency_type);
-        vector_FEEval *vector_FEEval_ptr = nullptr;
-        if constexpr (dim == 1)
+        std::visit(
+          [&](auto &ptr)
           {
-            vector_FEEval_ptr = feeval_map.at(residual_index).at(dependency_type).get();
-          }
-        else
-          {
-            std::visit(
-              [&vector_FEEval_ptr](auto &ptr)
-              {
-                using T = std::decay_t<decltype(ptr)>;
-                if constexpr (std::is_same_v<T, std::unique_ptr<vector_FEEval>>)
-                  {
-                    vector_FEEval_ptr = ptr.get();
-                  }
-                else
-                  {
-                    Assert(false, dealii::ExcNotInitialized());
-                  }
-              },
-              feeval_map.at(residual_index).at(dependency_type));
-          }
-        vector_FEEval_ptr->integrate_scatter(residual_flag_set, *(dst.at(local_index)));
+            using T = std::decay_t<decltype(ptr)>;
+            static_assert(std::is_same_v<T, std::unique_ptr<scalar_FEEval>> ||
+                            std::is_same_v<T, std::unique_ptr<vector_FEEval>>,
+                          "Unexpected type in feeval_map variant");
+            process_feeval(ptr);
+          },
+          feeval_variant);
       }
   };
 
@@ -1240,60 +994,30 @@ variableContainer<dim, degree, number>::integrate_and_distribute(VectorType &dst
            dealii::ExcMessage(
              "The subset attribute entry does not exists for global index = " +
              std::to_string(residual_index)));
+    FEEval_exists(residual_index, dependency_type);
+    auto &feeval_variant = feeval_map.at(residual_index).at(dependency_type);
 
-    if (subset_attributes->at(residual_index).field_type == fieldType::SCALAR)
+    auto process_feeval = [&](auto &feeval_ptr)
+    {
+      feeval_ptr->integrate_scatter(residual_flag_set, dst);
+    };
+
+    if constexpr (dim == 1)
       {
-        FEEval_exists(residual_index, dependency_type);
-        scalar_FEEval *scalar_FEEval_ptr = nullptr;
-        if constexpr (dim == 1)
-          {
-            scalar_FEEval_ptr = feeval_map.at(residual_index).at(dependency_type).get();
-          }
-        else
-          {
-            std::visit(
-              [&scalar_FEEval_ptr](auto &ptr)
-              {
-                using T = std::decay_t<decltype(ptr)>;
-                if constexpr (std::is_same_v<T, std::unique_ptr<scalar_FEEval>>)
-                  {
-                    scalar_FEEval_ptr = ptr.get();
-                  }
-                else
-                  {
-                    Assert(false, dealii::ExcNotInitialized());
-                  }
-              },
-              feeval_map.at(residual_index).at(dependency_type));
-          }
-        scalar_FEEval_ptr->integrate_scatter(residual_flag_set, dst);
+        process_feeval(feeval_variant);
       }
     else
       {
-        FEEval_exists(residual_index, dependency_type);
-        vector_FEEval *vector_FEEval_ptr = nullptr;
-        if constexpr (dim == 1)
+        std::visit(
+          [&](auto &ptr)
           {
-            vector_FEEval_ptr = feeval_map.at(residual_index).at(dependency_type).get();
-          }
-        else
-          {
-            std::visit(
-              [&vector_FEEval_ptr](auto &ptr)
-              {
-                using T = std::decay_t<decltype(ptr)>;
-                if constexpr (std::is_same_v<T, std::unique_ptr<vector_FEEval>>)
-                  {
-                    vector_FEEval_ptr = ptr.get();
-                  }
-                else
-                  {
-                    Assert(false, dealii::ExcNotInitialized());
-                  }
-              },
-              feeval_map.at(residual_index).at(dependency_type));
-          }
-        vector_FEEval_ptr->integrate_scatter(residual_flag_set, dst);
+            using T = std::decay_t<decltype(ptr)>;
+            static_assert(std::is_same_v<T, std::unique_ptr<scalar_FEEval>> ||
+                            std::is_same_v<T, std::unique_ptr<vector_FEEval>>,
+                          "Unexpected type in feeval_map variant");
+            process_feeval(ptr);
+          },
+          feeval_variant);
       }
   };
 

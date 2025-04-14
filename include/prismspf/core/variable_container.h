@@ -244,6 +244,22 @@ private:
     std::variant<std::unique_ptr<scalar_FEEval>, std::unique_ptr<vector_FEEval>>>;
 
   /**
+   * \brief Typedef for scalar diagonal matrix objects.
+   */
+  using scalar_diag = dealii::AlignedVector<size_type>;
+
+  /**
+   * \brief Typedef for vector diagonal matrix objects.
+   */
+  using vector_diag = dealii::AlignedVector<dealii::Tensor<1, dim, size_type>>;
+
+  /**
+   * \brief Typedef for the varaint diagonal matrix objects.
+   */
+  using variant_diag =
+    std::variant<std::unique_ptr<scalar_diag>, std::unique_ptr<vector_diag>>;
+
+  /**
    * \brief Check whether the map entry for the  FEEvaluation exists.
    */
   void
@@ -299,7 +315,7 @@ private:
    * \brief Read dofs values on the cell for all dependencies of a certain variable index.
    */
   void
-  read_dof_values(const std::vector<VectorType *> &src, unsigned int cell);
+  read_dof_values(const std::vector<VectorType *> &src);
 
   /**
    * \brief Evaluate the flags on the cell for all dependencies of a certain variable
@@ -377,15 +393,9 @@ private:
   unsigned int n_dofs_per_cell = 0;
 
   /**
-   * \brief Diagonal matrix that is used for preconditioning of scalar fields.
+   * \brief Diagonal matrix that is used for preconditioning of fields.
    */
-  std::unique_ptr<dealii::AlignedVector<size_type>> scalar_diagonal;
-
-  /**
-   * \brief Diagonal matrix that is used for preconditioning of vector fields.
-   */
-  std::unique_ptr<dealii::AlignedVector<dealii::Tensor<1, dim, size_type>>>
-    vector_diagonal;
+  variant_diag diagonal;
 };
 
 PRISMS_PF_END_NAMESPACE
