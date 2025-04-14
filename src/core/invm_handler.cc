@@ -90,8 +90,7 @@ const typename invmHandler<dim, degree, number>::VectorType &
 invmHandler<dim, degree, number>::get_invm(const unsigned int &index) const
 {
   Assert(data != nullptr, dealii::ExcNotInitialized());
-
-  Assert(variable_attributes->find(index) != variable_attributes->end(),
+  Assert(variable_attributes->contains(index),
          dealii::ExcMessage(
            "Invalid index. The provided index does not have an entry in the variable "
            "attributes that were provided to the constructor."));

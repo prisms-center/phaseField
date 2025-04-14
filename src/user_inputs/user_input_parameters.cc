@@ -65,7 +65,7 @@ userInputParameters<dim>::assign_spatial_discretization_parameters(
   parameter_handler.enter_subsection("rectangular mesh");
   {
     std::vector<std::string> axis_labels = {"x", "y", "z"};
-    for (unsigned int i = 0; i < dim; ++i)
+    for (int i = 0; i < dim; ++i)
       {
         spatial_discretization.size[i] =
           parameter_handler.get_double(axis_labels[i] + " size");
@@ -209,7 +209,7 @@ userInputParameters<dim>::assign_boundary_parameters(
       else
         {
           std::vector<std::string> axis_labels = {"x", "y", "z"};
-          for (unsigned int i = 0; i < dim; i++)
+          for (int i = 0; i < dim; i++)
             {
               std::string bc_text = "boundary condition for ";
               bc_text.append(variable.name + ", " + axis_labels[i] + " component");
@@ -240,7 +240,7 @@ userInputParameters<dim>::assign_boundary_parameters(
           // Otherwise, fill out point and value
           std::vector<std::string> axis_labels = {"x", "y", "z"};
           dealii::Point<dim>       point;
-          for (unsigned int i = 0; i < dim; ++i)
+          for (int i = 0; i < dim; ++i)
             {
               point[i] = parameter_handler.get_double(axis_labels[i]);
             }

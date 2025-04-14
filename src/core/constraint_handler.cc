@@ -69,7 +69,7 @@ template <int dim>
 const dealii::MGLevelObject<dealii::AffineConstraints<float>> &
 constraintHandler<dim>::get_mg_constraint(unsigned int index) const
 {
-  Assert(mg_constraints.find(index) != mg_constraints.end(),
+  Assert(mg_constraints.contains(index),
          dealii::ExcMessage("The constraint set does not contain index = " +
                             std::to_string(index)));
   Assert(mg_constraints.at(index).n_levels() != 1,
@@ -83,7 +83,7 @@ template <int dim>
 const dealii::AffineConstraints<float> &
 constraintHandler<dim>::get_mg_constraint(unsigned int index, unsigned int level) const
 {
-  Assert(mg_constraints.find(index) != mg_constraints.end(),
+  Assert(mg_constraints.contains(index),
          dealii::ExcMessage("The constraint set does not contain index = " +
                             std::to_string(index)));
   Assert(mg_constraints.at(index).min_level() <= level &&

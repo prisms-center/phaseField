@@ -18,7 +18,9 @@
 
 #include <functional>
 #include <map>
+#include <memory>
 #include <string>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
@@ -385,11 +387,10 @@ variableContainer<dim, degree, number>::FEEval_exists(
   [[maybe_unused]] const unsigned int   &dependency_index,
   [[maybe_unused]] const dependencyType &dependency_type) const
 {
-  Assert(feeval_map.find(dependency_index) != feeval_map.end(),
+  Assert(feeval_map.contains(dependency_index),
          dealii::ExcMessage("The FEEvaluation object does not exist for global index = " +
                             std::to_string(dependency_index)));
-  Assert(feeval_map.at(dependency_index).find(dependency_type) !=
-           feeval_map.at(dependency_index).end(),
+  Assert(feeval_map.at(dependency_index).contains(dependency_type),
          dealii::ExcMessage("The FEEvaluation object with global index = " +
                             std::to_string(dependency_index) +
                             " does not exist for type = " + to_string(dependency_type)));
@@ -406,16 +407,14 @@ variableContainer<dim, degree, number>::access_valid(
     {
       if (solve_type == solveType::NONEXPLICIT_LHS)
         {
-          Assert(variable.eval_flag_set_LHS.find(
-                   std::make_pair(dependency_index, dependency_type)) !=
-                   variable.eval_flag_set_LHS.end(),
+          Assert(variable.eval_flag_set_LHS.contains(
+                   std::make_pair(dependency_index, dependency_type)),
                  DependencyNotFound(dependency_index, to_string(dependency_type)));
         }
       else
         {
-          Assert(variable.eval_flag_set_RHS.find(
-                   std::make_pair(dependency_index, dependency_type)) !=
-                   variable.eval_flag_set_RHS.end(),
+          Assert(variable.eval_flag_set_RHS.contains(
+                   std::make_pair(dependency_index, dependency_type)),
                  DependencyNotFound(dependency_index, to_string(dependency_type)));
         }
     }
@@ -511,6 +510,30 @@ variableContainer<dim, degree, number>::reinit_and_eval(
                        dealii::EvaluationFlags::EvaluationFlags>          &eval_flag_set,
         const std::map<unsigned int, std::map<dependencyType, fieldType>> &dependency_set)
   {
+    auto process_feeval = [&](auto                 &feeval_ptr,
+                              const unsigned int   &dependency_index,
+                              const dependencyType &dependency_type)
+    {
+      feeval_ptr->reinit(cell);
+
+      const auto &pair = std::make_pair(dependency_index, dependency_type);
+      if (eval_flag_set.contains(pair))
+        {
+          const unsigned int &local_index = global_to_local_solution->at(pair);
+
+          Assert(src.size() > local_index,
+                 dealii::ExcMessage(
+                   "The provided src vector's size is below the given local "
+                   "index = " +
+                   std::to_string(local_index) +
+                   " for global index = " + std::to_string(dependency_index) +
+                   "  and type = " + to_string(dependency_type)));
+
+          feeval_ptr->read_dof_values_plain(*(src.at(local_index)));
+          feeval_ptr->evaluate(eval_flag_set.at(pair));
+        }
+    };
+
     for (const auto &[dependency_index, map] : dependency_set)
       {
         for (const auto &[dependency_type, field_type] : map)
@@ -522,99 +545,37 @@ variableContainer<dim, degree, number>::reinit_and_eval(
 
             const auto &pair = std::make_pair(dependency_index, dependency_type);
 
-            Assert(global_to_local_solution->find(pair) !=
-                     global_to_local_solution->end(),
+            Assert(global_to_local_solution->contains(pair),
                    dealii::ExcMessage(
                      "The global to local mapping does not exists for global index = " +
                      std::to_string(dependency_index) +
                      "  and type = " + to_string(dependency_type)));
 
-            if (field_type == fieldType::SCALAR)
+            FEEval_exists(dependency_index, dependency_type);
+
+            if constexpr (dim == 1)
               {
-                FEEval_exists(dependency_index, dependency_type);
-                scalar_FEEval *scalar_FEEval_ptr = nullptr;
-                if constexpr (dim == 1)
-                  {
-                    scalar_FEEval_ptr =
-                      feeval_map.at(dependency_index).at(dependency_type).get();
-                  }
-                else
-                  {
-                    std::visit(
-                      [&scalar_FEEval_ptr](auto &ptr)
-                      {
-                        using T = std::decay_t<decltype(ptr)>;
-                        if constexpr (std::is_same_v<T, std::unique_ptr<scalar_FEEval>>)
-                          {
-                            scalar_FEEval_ptr = ptr.get();
-                          }
-                        else
-                          {
-                            Assert(false, dealii::ExcNotInitialized());
-                          }
-                      },
-                      feeval_map.at(dependency_index).at(dependency_type));
-                  }
-                scalar_FEEval_ptr->reinit(cell);
-                if (eval_flag_set.find(pair) != eval_flag_set.end())
-                  {
-                    const unsigned int &local_index = global_to_local_solution->at(pair);
-
-                    Assert(src.size() > local_index,
-                           dealii::ExcMessage(
-                             "The provided src vector's size is below the given local "
-                             "index = " +
-                             std::to_string(local_index) +
-                             " for global index = " + std::to_string(dependency_index) +
-                             "  and type = " + to_string(dependency_type)));
-
-                    scalar_FEEval_ptr->read_dof_values_plain(*(src.at(local_index)));
-                    scalar_FEEval_ptr->evaluate(eval_flag_set.at(pair));
-                  }
+                process_feeval(feeval_map.at(dependency_index).at(dependency_type),
+                               dependency_index,
+                               dependency_type);
               }
             else
               {
-                FEEval_exists(dependency_index, dependency_type);
-                vector_FEEval *vector_FEEval_ptr = nullptr;
-                if constexpr (dim == 1)
+                std::visit(
+                  [&](auto &ptr)
                   {
-                    vector_FEEval_ptr =
-                      feeval_map.at(dependency_index).at(dependency_type).get();
-                  }
-                else
-                  {
-                    std::visit(
-                      [&vector_FEEval_ptr](auto &ptr)
+                    using T = std::decay_t<decltype(ptr)>;
+                    if constexpr (std::is_same_v<T, std::unique_ptr<scalar_FEEval>> ||
+                                  std::is_same_v<T, std::unique_ptr<vector_FEEval>>)
                       {
-                        using T = std::decay_t<decltype(ptr)>;
-                        if constexpr (std::is_same_v<T, std::unique_ptr<vector_FEEval>>)
-                          {
-                            vector_FEEval_ptr = ptr.get();
-                          }
-                        else
-                          {
-                            Assert(false, dealii::ExcNotInitialized());
-                          }
-                      },
-                      feeval_map.at(dependency_index).at(dependency_type));
-                  }
-                vector_FEEval_ptr->reinit(cell);
-
-                if (eval_flag_set.find(pair) != eval_flag_set.end())
-                  {
-                    const unsigned int &local_index = global_to_local_solution->at(pair);
-
-                    Assert(src.size() > local_index,
-                           dealii::ExcMessage(
-                             "The provided src vector's size is below the given local "
-                             "index = " +
-                             std::to_string(local_index) +
-                             " for global index = " + std::to_string(dependency_index) +
-                             "  and type = " + to_string(dependency_type)));
-
-                    vector_FEEval_ptr->read_dof_values_plain(*(src.at(local_index)));
-                    vector_FEEval_ptr->evaluate(eval_flag_set.at(pair));
-                  }
+                        process_feeval(ptr, dependency_index, dependency_type);
+                      }
+                    else
+                      {
+                        Assert(false, dealii::ExcNotInitialized());
+                      }
+                  },
+                  feeval_map.at(dependency_index).at(dependency_type));
               }
           }
       }
@@ -666,8 +627,7 @@ variableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
           {
             const auto &pair = std::make_pair(dependency_index, dependency_type);
 
-            Assert(global_to_local_solution->find(pair) !=
-                     global_to_local_solution->end(),
+            Assert(global_to_local_solution->contains(pair),
                    dealii::ExcMessage(
                      "The global to local mapping does not exists for global index = " +
                      std::to_string(dependency_index) +
@@ -768,7 +728,7 @@ variableContainer<dim, degree, number>::reinit(unsigned int        cell,
         const unsigned int   &dependency_index = pair.first;
         const dependencyType &dependency_type  = pair.second;
 
-        Assert(subset_attributes->find(dependency_index) != subset_attributes->end(),
+        Assert(subset_attributes->contains(dependency_index),
                dealii::ExcMessage(
                  "The subset attribute entry does not exists for global index = " +
                  std::to_string(dependency_index)));
@@ -834,7 +794,7 @@ variableContainer<dim, degree, number>::reinit(unsigned int        cell,
 
   if (solve_type == solveType::NONEXPLICIT_LHS)
     {
-      Assert(subset_attributes->find(global_variable_index) != subset_attributes->end(),
+      Assert(subset_attributes->contains(global_variable_index),
              dealii::ExcMessage(
                "The subset attribute entry does not exists for global index = " +
                std::to_string(global_variable_index)));
@@ -843,7 +803,7 @@ variableContainer<dim, degree, number>::reinit(unsigned int        cell,
     }
   else
     {
-      Assert(subset_attributes->find(global_variable_index) != subset_attributes->end(),
+      Assert(subset_attributes->contains(global_variable_index),
              dealii::ExcMessage(
                "The subset attribute entry does not exists for global index = " +
                std::to_string(global_variable_index)));
@@ -874,8 +834,7 @@ variableContainer<dim, degree, number>::read_dof_values(
 
             const auto &pair = std::make_pair(dependency_index, dependency_type);
 
-            Assert(global_to_local_solution->find(pair) !=
-                     global_to_local_solution->end(),
+            Assert(global_to_local_solution->contains(pair),
                    dealii::ExcMessage(
                      "The global to local mapping does not exists for global index = " +
                      std::to_string(dependency_index) +
@@ -908,7 +867,7 @@ variableContainer<dim, degree, number>::read_dof_values(
                       feeval_map.at(dependency_index).at(dependency_type));
                   }
 
-                if (eval_flag_set.find(pair) != eval_flag_set.end())
+                if (eval_flag_set.contains(pair))
                   {
                     const unsigned int &local_index = global_to_local_solution->at(pair);
 
@@ -951,7 +910,7 @@ variableContainer<dim, degree, number>::read_dof_values(
                   }
                 vector_FEEval_ptr->reinit(cell);
 
-                if (eval_flag_set.find(pair) != eval_flag_set.end())
+                if (eval_flag_set.contains(pair))
                   {
                     const unsigned int &local_index = global_to_local_solution->at(pair);
 
@@ -1002,7 +961,7 @@ variableContainer<dim, degree, number>::eval(const unsigned int &global_variable
         const unsigned int   &dependency_index = pair.first;
         const dependencyType &dependency_type  = pair.second;
 
-        Assert(subset_attributes->find(dependency_index) != subset_attributes->end(),
+        Assert(subset_attributes->contains(dependency_index),
                dealii::ExcMessage(
                  "The subset attribute entry does not exists for global index = " +
                  std::to_string(dependency_index)));
@@ -1068,7 +1027,7 @@ variableContainer<dim, degree, number>::eval(const unsigned int &global_variable
 
   if (solve_type == solveType::NONEXPLICIT_LHS)
     {
-      Assert(subset_attributes->find(global_variable_index) != subset_attributes->end(),
+      Assert(subset_attributes->contains(global_variable_index),
              dealii::ExcMessage(
                "The subset attribute entry does not exists for global index = " +
                std::to_string(global_variable_index)));
@@ -1077,7 +1036,7 @@ variableContainer<dim, degree, number>::eval(const unsigned int &global_variable
     }
   else
     {
-      Assert(subset_attributes->find(global_variable_index) != subset_attributes->end(),
+      Assert(subset_attributes->contains(global_variable_index),
              dealii::ExcMessage(
                "The subset attribute entry does not exists for global index = " +
                std::to_string(global_variable_index)));
@@ -1091,7 +1050,7 @@ void
 variableContainer<dim, degree, number>::integrate(
   const unsigned int &global_variable_index)
 {
-  Assert(subset_attributes->find(global_variable_index) != subset_attributes->end(),
+  Assert(subset_attributes->contains(global_variable_index),
          dealii::ExcMessage(
            "The subset attribute entry does not exists for global index = " +
            std::to_string(global_variable_index)));
@@ -1176,8 +1135,7 @@ variableContainer<dim, degree, number>::integrate_and_distribute(
         const unsigned int                             &residual_index)
   {
     Assert(
-      global_to_local_solution->find(std::make_pair(residual_index, dependency_type)) !=
-        global_to_local_solution->end(),
+      global_to_local_solution->contains(std::make_pair(residual_index, dependency_type)),
       dealii::ExcMessage(
         "The global to local mapping does not exists for global index = " +
         std::to_string(residual_index) + "  and type = " + to_string(dependency_type)));
@@ -1191,7 +1149,7 @@ variableContainer<dim, degree, number>::integrate_and_distribute(
              std::to_string(local_index) +
              " for global index = " + std::to_string(residual_index) +
              "  and type = " + to_string(dependency_type)));
-    Assert(subset_attributes->find(residual_index) != subset_attributes->end(),
+    Assert(subset_attributes->contains(residual_index),
            dealii::ExcMessage(
              "The subset attribute entry does not exists for global index = " +
              std::to_string(residual_index)));
@@ -1278,7 +1236,7 @@ variableContainer<dim, degree, number>::integrate_and_distribute(VectorType &dst
         const dependencyType                           &dependency_type,
         const unsigned int                             &residual_index)
   {
-    Assert(subset_attributes->find(residual_index) != subset_attributes->end(),
+    Assert(subset_attributes->contains(residual_index),
            dealii::ExcMessage(
              "The subset attribute entry does not exists for global index = " +
              std::to_string(residual_index)));

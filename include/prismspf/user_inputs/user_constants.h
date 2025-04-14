@@ -277,7 +277,7 @@ userConstants<dim>::compute_rank_1_tensor_constant(
                                  "equal to the maximum number of dimensions."));
 
   dealii::Tensor<1, dim> temp;
-  for (unsigned int i = 0; i < dim; i++)
+  for (int i = 0; i < dim; i++)
     {
       temp[i] = dealii::Utilities::string_to_double(tensor_elements.at(i));
     }
@@ -298,9 +298,9 @@ userConstants<dim>::compute_rank_2_tensor_constant(
   const unsigned int row_length = dim;
 
   dealii::Tensor<2, dim> temp;
-  for (unsigned int i = 0; i < dim; i++)
+  for (int i = 0; i < dim; i++)
     {
-      for (unsigned int j = 0; j < dim; j++)
+      for (int j = 0; j < dim; j++)
         {
           temp[i][j] =
             dealii::Utilities::string_to_double(tensor_elements.at((i * row_length) + j));
@@ -359,11 +359,11 @@ userConstants<dim>::construct_user_constant(
       remove_parentheses(model_constants_strings);
 
       // Load in the elastic constants as a vector
-      std::vector<double> temp_elastic_constants;
+      std::vector<double> temp_elastic_constants(n_elements);
       for (unsigned int i = 0; i < n_elements; i++)
         {
-          temp_elastic_constants.push_back(
-            dealii::Utilities::string_to_double(model_constants_strings.at(i)));
+          temp_elastic_constants[i] =
+            dealii::Utilities::string_to_double(model_constants_strings.at(i));
         }
       const std::string &elastic_const_symmetry = model_constants_type_strings.at(0);
       dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)> temp =

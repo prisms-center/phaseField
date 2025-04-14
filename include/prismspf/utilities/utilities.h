@@ -7,6 +7,9 @@
 #include <deal.II/base/vectorization.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
 
+#include <boost/range/algorithm.hpp>
+#include <boost/range/algorithm_ext.hpp>
+
 #include <prismspf/config.h>
 
 #include <array>
@@ -33,7 +36,7 @@ constT(const std::array<number, dim> &vector)
   dealii::Tensor<1, dim, dealii::VectorizedArray<number>> tensor;
 
   // Populate the Tensor with vectorized arrays
-  for (std::size_t i = 0; i < dim; ++i)
+  for (int i = 0; i < dim; ++i)
     {
       tensor[i] = dealii::make_vectorized_array<number>(vector[i]);
     }
@@ -61,7 +64,7 @@ inline std::string
 strip_whitespace(const std::string &_text)
 {
   std::string text = _text;
-  text.erase(std::remove_if(text.begin(), text.end(), ::isspace), text.end());
+  boost::range::remove_erase_if(text, ::isspace);
   return text;
 }
 

@@ -246,3 +246,136 @@ Time: 0.4876258373260498
  
 Tests Passed: 5/5
 --------------------------------------------------------- 
+--------------------------------------------------------- 
+Regression test on 2025-04-13 17:12
+Architecture: x86_64
+Model name: AMD Ryzen 9 7900X 12-Core Processor
+CPU(s): 24
+CPU max/min MHz: None, None
+Hypervisor vendor: Microsoft
+Number of processes: 1
+--------------------------------------------------------- 
+Application: allen_cahn_explicit
+Result: Pass
+Time: 4.036636829376221
+ 
+Application: allen_cahn_implicit
+Result: Pass
+Time: 54.22470808029175
+ 
+Application: cahn_hilliard_explicit
+Result: Pass
+Time: 48.46760320663452
+ 
+Application: heat_equation_steady_state
+Result: Pass
+Time: 0.15922236442565918
+ 
+Application: poisson
+Result: Pass
+Time: 0.46365857124328613
+ 
+Tests Passed: 5/5
+--------------------------------------------------------- 
+--------------------------------------------------------- 
+Regression test on 2025-04-13 18:36
+Architecture: x86_64
+Model name: AMD Ryzen 9 7900X 12-Core Processor
+CPU(s): 24
+CPU max/min MHz: None, None
+Hypervisor vendor: Microsoft
+Number of processes: 1
+--------------------------------------------------------- 
+--------------------------------------------------------- 
+Regression test on 2025-04-13 19:01
+Architecture: x86_64
+Model name: AMD Ryzen 9 7900X 12-Core Processor
+CPU(s): 24
+CPU max/min MHz: None, None
+Hypervisor vendor: Microsoft
+Number of processes: 1
+--------------------------------------------------------- 
+Application: allen_cahn_explicit
+Result: Pass
+Time: 4.1883156299591064
+ 
+Application: allen_cahn_implicit
+Result: Pass
+Time: 56.839879751205444
+ 
+Application: cahn_hilliard_explicit
+Result: Pass
+Time: 46.63813829421997
+ 
+Application: heat_equation_steady_state
+Result: Pass
+Time: 0.3151421546936035
+ 
+Application: poisson
+Result: Pass
+Time: 0.4034230709075928
+ 
+Tests Passed: 5/5
+--------------------------------------------------------- 
+--------------------------------------------------------- 
+Regression test on 2025-04-13 19:30
+Architecture: x86_64
+Model name: AMD Ryzen 9 7900X 12-Core Processor
+CPU(s): 24
+CPU max/min MHz: None, None
+Hypervisor vendor: Microsoft
+Number of processes: 1
+--------------------------------------------------------- 
+Application: allen_cahn_explicit
+Result: Pass
+Time: 4.5571815967559814
+ 
+Application: allen_cahn_implicit
+Result: Pass
+Time: 51.91458177566528
+ 
+Application: cahn_hilliard_explicit
+Result: Pass
+Time: 48.695746660232544
+ 
+Application: heat_equation_steady_state
+Result: Pass
+Time: 0.2611706256866455
+ 
+Application: poisson
+Result: Pass
+Time: 0.5701308250427246
+ 
+Tests Passed: 5/5
+--------------------------------------------------------- 
+--------------------------------------------------------- 
+Regression test on 2025-04-13 21:00
+Architecture: x86_64
+Model name: AMD Ryzen 9 7900X 12-Core Processor
+CPU(s): 24
+CPU max/min MHz: None, None
+Hypervisor vendor: Microsoft
+Number of processes: 1
+--------------------------------------------------------- 
+Application: allen_cahn_explicit
+Result: Pass
+Time: 4.3914124965667725
+ 
+Application: allen_cahn_implicit
+Result: Pass
+Time: 58.088316679000854
+ 
+Application: cahn_hilliard_explicit
+Result: Pass
+Time: 50.12295365333557
+ 
+Application: heat_equation_steady_state
+Result: Pass
+Time: 0.3110361099243164
+ 
+Application: poisson
+Result: Pass
+Time: 0.5130798816680908
+ 
+Tests Passed: 5/5
+--------------------------------------------------------- 

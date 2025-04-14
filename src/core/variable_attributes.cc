@@ -162,7 +162,7 @@ variableAttributes::parse_dependencies(
               delimiter.first + other_variable.name + delimiter.second;
 
             // Populate the dependencies
-            if (dependencies.find(possible_dependency) != dependencies.end())
+            if (dependencies.contains(possible_dependency))
               {
                 const dependencyType dep_type = relevant_flag.at(variation).first;
                 const dealii::EvaluationFlags::EvaluationFlags flags =
@@ -173,7 +173,7 @@ variableAttributes::parse_dependencies(
                 const std::pair<unsigned int, dependencyType> key = {other_index,
                                                                      dep_type};
 
-                if (eval_flag_set.find(key) != eval_flag_set.end())
+                if (eval_flag_set.contains(key))
                   {
                     eval_flag_set[key] |= flags;
                   }
@@ -233,10 +233,8 @@ variableAttributes::determine_field_solve_type(
     }
 
   // Check for self-nonlinear solves.
-  if (eval_flag_set_LHS.find({field_index, dependencyType::CHANGE}) !=
-        eval_flag_set_LHS.end() &&
-      eval_flag_set_LHS.find({field_index, dependencyType::NORMAL}) !=
-        eval_flag_set_LHS.end())
+  if (eval_flag_set_LHS.contains({field_index, dependencyType::CHANGE}) &&
+      eval_flag_set_LHS.contains({field_index, dependencyType::NORMAL}))
     {
       field_solve_type = fieldSolveType::NONEXPLICIT_SELF_NONLINEAR;
       return;
@@ -347,7 +345,7 @@ variableAttributes::compute_dependency_set(
           continue;
         }
 
-      Assert(other_var_attributes.find(pair.first) != other_var_attributes.end(),
+      Assert(other_var_attributes.contains(pair.first),
              dealii::ExcMessage(
                "The provided attributes does not have an entry for the index = " +
                std::to_string(pair.first)));
@@ -364,7 +362,7 @@ variableAttributes::compute_dependency_set(
           continue;
         }
 
-      Assert(other_var_attributes.find(pair.first) != other_var_attributes.end(),
+      Assert(other_var_attributes.contains(pair.first),
              dealii::ExcMessage(
                "The provided attributes does not have an entry for the index = " +
                std::to_string(pair.first)));
@@ -434,13 +432,13 @@ variableAttributes::recursive_DFS(
   for (const auto &dependency : other_var_attributes.at(vertex).simplified_dependency_set)
     {
       // If the current recursion stack already has the dependency, we have a cycle
-      if (current_stack.find(dependency) != current_stack.end())
+      if (current_stack.contains(dependency))
         {
           field_solve_type = fieldSolveType::NONEXPLICIT_CO_NONLINEAR;
           return;
         }
       // Otherwise, if we haven't already visited this node continue down the graph
-      if (visited.find(dependency) == visited.end())
+      if (!visited.contains(dependency))
         {
           recursive_DFS(other_var_attributes, visited, current_stack, dependency);
         }

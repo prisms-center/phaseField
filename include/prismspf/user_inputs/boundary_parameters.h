@@ -163,7 +163,7 @@ boundaryParameters<dim>::postprocess_and_validate(
       // components
       if (variable.field_type == fieldType::VECTOR)
         {
-          for (unsigned int i = 0; i < dim; i++)
+          for (int i = 0; i < dim; i++)
             {
               if (variable.is_postprocess)
                 {
@@ -171,10 +171,9 @@ boundaryParameters<dim>::postprocess_and_validate(
                 }
               else
                 {
-                  AssertThrow(BC_list.find(variable.field_index) != BC_list.end(),
+                  AssertThrow(BC_list.contains(variable.field_index),
                               dealii::ExcMessage("Invalid entry"));
-                  AssertThrow(BC_list.at(variable.field_index).find(i) !=
-                                BC_list.at(variable.field_index).end(),
+                  AssertThrow(BC_list.at(variable.field_index).contains(i),
                               dealii::ExcMessage("Invalid entry"));
                   AssertThrow(!BC_list.at(variable.field_index).at(i).empty(),
                               dealii::ExcMessage(
@@ -195,10 +194,9 @@ boundaryParameters<dim>::postprocess_and_validate(
             }
           else
             {
-              AssertThrow(BC_list.find(variable.field_index) != BC_list.end(),
+              AssertThrow(BC_list.contains(variable.field_index),
                           dealii::ExcMessage("Invalid entry"));
-              AssertThrow(BC_list.at(variable.field_index).find(0) !=
-                            BC_list.at(variable.field_index).end(),
+              AssertThrow(BC_list.at(variable.field_index).contains(0),
                           dealii::ExcMessage("Invalid entry"));
               AssertThrow(!BC_list.at(variable.field_index).at(0).empty(),
                           dealii::ExcMessage("Boundary conditions must be specified "
@@ -272,9 +270,9 @@ boundaryParameters<dim>::check_duplicate_boundary_conditions(
       return false;
     }
 
-  Assert(boundary_condition_list.find(index_1) != boundary_condition_list.end(),
+  Assert(boundary_condition_list.contains(index_1),
          dealii::ExcMessage("Invalid entry for index = " + std::to_string(index_1)));
-  Assert(boundary_condition_list.find(index_2) != boundary_condition_list.end(),
+  Assert(boundary_condition_list.contains(index_2),
          dealii::ExcMessage("Invalid entry for index = " + std::to_string(index_2)));
 
   bool is_duplicate = false;
@@ -286,8 +284,7 @@ boundaryParameters<dim>::check_duplicate_boundary_conditions(
   is_duplicate = boundary_condition_1 == boundary_condition_2;
 
   // Check the pinned points
-  if (pinned_point_list.find(index_1) != pinned_point_list.end() &&
-      pinned_point_list.find(index_2) != pinned_point_list.end())
+  if (pinned_point_list.contains(index_1) && pinned_point_list.contains(index_2))
     {
       is_duplicate =
         is_duplicate && pinned_point_list.at(index_1) == pinned_point_list.at(index_2);
@@ -352,20 +349,20 @@ boundaryParameters<dim>::set_boundary(const std::string  &BC_string,
 
   // Check that there is either 1 or 2*dim entries in the vector. This can be changed
   // later to support other geometries.
-  AssertThrow(
-    BC_string_list.size() == 1 || BC_string_list.size() == static_cast<size_t>(2 * dim),
-    dealii::ExcMessage("Either 1 or 2*dim boundary conditions must be specified."));
+  AssertThrow(BC_string_list.size() == 1 || BC_string_list.size() == 2 * dim,
+              dealii::ExcMessage(
+                "Either 1 or 2*dim boundary conditions must be specified."));
 
   // If there is only 1 boundary condition resize BC_string_list, copying the first
   // entry.
   if (BC_string_list.size() == 1)
     {
-      BC_string_list.resize(static_cast<size_t>(2 * dim), BC_string_list[0]);
+      BC_string_list.resize(2 * dim, BC_string_list[0]);
     }
 
   // Assign boundary condition
   boundaryCondition condition;
-  for (unsigned int i = 0; i < (2 * dim); i++)
+  for (int i = 0; i < (2 * dim); i++)
     {
       const std::string dirichlet = "DIRICHLET";
       const std::string neumann   = "NEUMANN";

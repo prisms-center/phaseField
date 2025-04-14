@@ -31,7 +31,7 @@ initialCondition<dim>::vector_value(const dealii::Point<dim> &p,
   dealii::Vector<double> vector_value(dim);
 
   // Pass variables to user-facing function to evaluate
-  for (unsigned int i = 0; i < dim; i++)
+  for (int i = 0; i < dim; i++)
     {
       custom_initial_condition.set_initial_condition(index,
                                                      i,

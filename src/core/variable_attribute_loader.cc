@@ -265,9 +265,8 @@ variableAttributeLoader::validate_dependencies(
         "used for the field \"variable_A\"). Additionally, postprocessed fields are not "
         "allowed to be dependencies.\n");
 
-      AssertThrow(reg_possible_deps.find(dependency) != reg_possible_deps.end() ||
-                    change_possible_deps.at(index).find(dependency) !=
-                      change_possible_deps.at(index).end(),
+      AssertThrow(reg_possible_deps.contains(dependency) ||
+                    change_possible_deps.at(index).contains(dependency),
                   dealii::ExcMessage(error_message));
     }
 }
@@ -410,18 +409,18 @@ variableAttributeLoader::validate_old_solution_dependencies()
       const auto old_3 = std::make_pair(index, dependencyType::OLD_3);
       const auto old_4 = std::make_pair(index, dependencyType::OLD_4);
 
-      if (dependency_set.find(old_1) != dependency_set.end())
+      if (dependency_set.contains(old_1))
         {
-          if (dependency_set.find(old_2) != dependency_set.end())
+          if (dependency_set.contains(old_2))
             {
-              if (dependency_set.find(old_3) != dependency_set.end())
+              if (dependency_set.contains(old_3))
                 {
-                  if (dependency_set.find(old_4) != dependency_set.end())
+                  if (dependency_set.contains(old_4))
                     {
                       return;
                     }
                 }
-              else if (dependency_set.find(old_4) != dependency_set.end())
+              else if (dependency_set.contains(old_4))
                 {
                   AssertThrow(false,
                               dealii::ExcMessage(
@@ -433,8 +432,7 @@ variableAttributeLoader::validate_old_solution_dependencies()
                   return;
                 }
             }
-          else if (dependency_set.find(old_3) != dependency_set.end() ||
-                   dependency_set.find(old_4) != dependency_set.end())
+          else if (dependency_set.contains(old_3) || dependency_set.contains(old_4))
             {
               AssertThrow(false,
                           dealii::ExcMessage(
@@ -446,9 +444,8 @@ variableAttributeLoader::validate_old_solution_dependencies()
               return;
             }
         }
-      else if (dependency_set.find(old_2) != dependency_set.end() ||
-               dependency_set.find(old_3) != dependency_set.end() ||
-               dependency_set.find(old_4) != dependency_set.end())
+      else if (dependency_set.contains(old_2) || dependency_set.contains(old_3) ||
+               dependency_set.contains(old_4))
         {
           AssertThrow(false,
                       dealii::ExcMessage("If old_n() of a field is specified, the "

@@ -56,7 +56,7 @@ nonuniformDirichlet<dim, field_type>::vector_value(const dealii::Point<dim> &p,
   dealii::Vector<double> temp_vector_value(dim);
 
   // Pass variables to user-facing function to evaluate
-  for (unsigned int i = 0; i < dim; i++)
+  for (int i = 0; i < dim; i++)
     {
       custom_nonuniform_dirichlet.set_nonuniform_dirichlet(index,
                                                            boundary_id,
