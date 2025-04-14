@@ -11,6 +11,7 @@
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/refinement_criterion.h>
 #include <prismspf/core/type_enums.h>
+#include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/user_inputs/input_file_reader.h>
 #include <prismspf/user_inputs/user_input_parameters.h>

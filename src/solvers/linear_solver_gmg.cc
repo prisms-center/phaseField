@@ -14,6 +14,7 @@
 #include <prismspf/core/constraint_handler.h>
 #include <prismspf/core/dof_handler.h>
 #include <prismspf/core/matrix_free_handler.h>
+#include <prismspf/core/matrix_free_operator.h>
 #include <prismspf/core/pde_operator.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/triangulation_handler.h>

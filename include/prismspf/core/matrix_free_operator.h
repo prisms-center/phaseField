@@ -9,19 +9,27 @@
 #include <deal.II/matrix_free/matrix_free.h>
 #include <deal.II/matrix_free/operators.h>
 
-#include <prismspf/core/pde_operator.h>
 #include <prismspf/core/type_enums.h>
-#include <prismspf/core/variable_attributes.h>
-#include <prismspf/core/variable_container.h>
-
-#include <prismspf/user_inputs/user_input_parameters.h>
+#include <prismspf/core/types.h>
 
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
+template <int dim>
+class userInputParameters;
+
+struct variableAttributes;
+
+template <int dim, int degree, typename number>
+class variableContainer;
+
+template <int dim, int degree, typename number>
+class PDEOperator;
+
 /**
- * \brief This is the abstract base class for the matrix-free implementation of some PDE.
+ * \brief This is the abstract base class for the matrix-free implementation of some
+ * PDE.
  *
  * \tparam dim The number of dimensions in the problem.
  * \tparam degree The polynomial degree of the shape functions.

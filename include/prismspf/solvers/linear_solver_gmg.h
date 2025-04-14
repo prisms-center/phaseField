@@ -17,12 +17,6 @@
 #include <deal.II/multigrid/mg_transfer_matrix_free.h>
 #include <deal.II/multigrid/multigrid.h>
 
-#include <prismspf/core/dof_handler.h>
-#include <prismspf/core/matrix_free_operator.h>
-#include <prismspf/core/pde_operator.h>
-#include <prismspf/core/solution_output.h>
-#include <prismspf/core/triangulation_handler.h>
-
 #include <prismspf/solvers/linear_solver_base.h>
 
 #include <prismspf/config.h>
@@ -32,6 +26,9 @@
 #endif
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+template <int dim>
+class dofHandler;
 
 /**
  * \brief Class that handles the assembly and solving of a field with a GMG preconditioner
@@ -50,7 +47,7 @@ public:
    */
   GMGSolver(const userInputParameters<dim>                       &_user_inputs,
             const variableAttributes                             &_variable_attributes,
-            const matrixfreeHandler<dim>                         &_matrix_free_handler,
+            const matrixfreeHandler<dim, double>                 &_matrix_free_handler,
             const constraintHandler<dim>                         &_constraint_handler,
             const triangulationHandler<dim>                      &_triangulation_handler,
             const dofHandler<dim>                                &_dof_handler,

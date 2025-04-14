@@ -5,14 +5,18 @@
 
 #include <deal.II/lac/la_parallel_vector.h>
 
-#include <prismspf/core/matrix_free_handler.h>
-#include <prismspf/core/variable_attributes.h>
+#include <prismspf/core/type_enums.h>
 
 #include <prismspf/config.h>
 
 #include <map>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+template <int dim, typename number>
+class matrixfreeHandler;
+
+struct variableAttributes;
 
 /**
  * \brief Class that manages solution initialization and swapping with old solutions.
@@ -66,7 +70,7 @@ public:
    * \brief Initialize the solution set.
    */
   void
-  init(matrixfreeHandler<dim> &matrix_free_handler);
+  init(matrixfreeHandler<dim, double> &matrix_free_handler);
 
   /**
    * \brief Update the ghost values.

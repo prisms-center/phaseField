@@ -9,21 +9,30 @@
 #include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/lac/solver_control.h>
 
-#include <prismspf/core/conditional_ostreams.h>
-#include <prismspf/core/constraint_handler.h>
-#include <prismspf/core/matrix_free_handler.h>
 #include <prismspf/core/matrix_free_operator.h>
 #include <prismspf/core/pde_operator.h>
-#include <prismspf/core/solution_handler.h>
-#include <prismspf/core/triangulation_handler.h>
 #include <prismspf/core/type_enums.h>
-#include <prismspf/core/variable_attributes.h>
-
-#include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+template <int dim>
+class userInputParameters;
+
+template <int dim>
+class constraintHandler;
+
+template <int dim, typename number>
+class matrixfreeHandler;
+
+template <int dim>
+class solutionHandler;
+
+template <int dim>
+class triangulationHandler;
+
+struct variableAttributes;
 
 /**
  * \brief Base class that handles the assembly and linear solving of a field.
@@ -38,11 +47,11 @@ public:
   /**
    * \brief Constructor.
    */
-  linearSolverBase(const userInputParameters<dim> &_user_inputs,
-                   const variableAttributes       &_variable_attributes,
-                   const matrixfreeHandler<dim>   &_matrix_free_handler,
-                   const constraintHandler<dim>   &_constraint_handler,
-                   solutionHandler<dim>           &_solution_handler,
+  linearSolverBase(const userInputParameters<dim>       &_user_inputs,
+                   const variableAttributes             &_variable_attributes,
+                   const matrixfreeHandler<dim, double> &_matrix_free_handler,
+                   const constraintHandler<dim>         &_constraint_handler,
+                   solutionHandler<dim>                 &_solution_handler,
                    std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator);
 
   /**
@@ -88,7 +97,7 @@ protected:
   /**
    * \brief Matrix-free object handler for non-multigrid data.
    */
-  const matrixfreeHandler<dim> *matrix_free_handler;
+  const matrixfreeHandler<dim, double> *matrix_free_handler;
 
   /**
    * \brief Constraint handler.

@@ -9,14 +9,12 @@
 #include <deal.II/lac/affine_constraints.h>
 #include <deal.II/matrix_free/matrix_free.h>
 
-#include <prismspf/user_inputs/user_input_parameters.h>
-
 #include <prismspf/config.h>
 
-#include <memory>
-#include <vector>
-
 PRISMS_PF_BEGIN_NAMESPACE
+
+template <int dim>
+class userInputParameters;
 
 /**
  * \brief This class handlers the management and access of the matrix-free objects.

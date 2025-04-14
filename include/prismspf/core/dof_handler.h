@@ -7,16 +7,17 @@
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/fe/fe_system.h>
 
-#include <prismspf/core/triangulation_handler.h>
-
-#include <prismspf/user_inputs/user_input_parameters.h>
+#include <prismspf/core/type_enums.h>
 
 #include <prismspf/config.h>
 
-#include <map>
-#include <vector>
-
 PRISMS_PF_BEGIN_NAMESPACE
+
+template <int dim>
+class userInputParameters;
+
+template <int dim>
+class triangulationHandler;
 
 /**
  * \brief Class that manages the deal.II DoFHandlers

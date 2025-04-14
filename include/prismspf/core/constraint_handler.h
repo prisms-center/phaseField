@@ -8,13 +8,12 @@
 #include <deal.II/fe/mapping.h>
 #include <deal.II/lac/affine_constraints.h>
 
-#include <prismspf/core/exceptions.h>
-
-#include <prismspf/user_inputs/user_input_parameters.h>
-
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+template <int dim>
+class userInputParameters;
 
 /**
  * \brief The class handles the generation and application of boundary conditions based on

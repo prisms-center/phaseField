@@ -5,13 +5,14 @@
 
 #include <deal.II/lac/la_parallel_vector.h>
 
-#include <prismspf/user_inputs/user_input_parameters.h>
-
 #include <prismspf/config.h>
 
 #include <string>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+template <int dim>
+class userInputParameters;
 
 /**
  * \brief Class that outputs a passed solution to vtu, vtk, or pvtu

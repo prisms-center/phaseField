@@ -105,6 +105,7 @@ inline MGInfo<dim>::MGInfo(const userInputParameters<dim> &_user_inputs)
         std::make_tuple(index_1, dependencyType::CHANGE, min_levels.at(index_1)));
 
       // Then add the LHS dependencies.
+      (void) variable_1;
     }
 }
 

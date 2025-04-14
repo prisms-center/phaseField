@@ -9,11 +9,12 @@
 
 #include <prismspf/core/type_enums.h>
 
-#include <prismspf/user_inputs/user_input_parameters.h>
-
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+template <int dim>
+class userInputParameters;
 
 /**
  * \brief Forward declaration of user-facing implementation

@@ -10,13 +10,14 @@
 #include <deal.II/matrix_free/matrix_free.h>
 
 #include <prismspf/core/type_enums.h>
-#include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/config.h>
 
 #include <variant>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+struct variableAttributes;
 
 /**
  * \brief This class permits the access of a subset of indexed fields and gives an error

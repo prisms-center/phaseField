@@ -6,14 +6,32 @@
 #include <deal.II/fe/fe_system.h>
 
 #include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/core/constraint_handler.h>
+#include <prismspf/core/dof_handler.h>
+#include <prismspf/core/invm_handler.h>
+#include <prismspf/core/matrix_free_handler.h>
 #include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/pde_operator.h>
 #include <prismspf/core/pde_problem.h>
+#include <prismspf/core/solution_handler.h>
 #include <prismspf/core/solution_output.h>
 #include <prismspf/core/timer.h>
+#include <prismspf/core/triangulation_handler.h>
 #include <prismspf/core/type_enums.h>
 
+#include <prismspf/user_inputs/spatial_discretization.h>
+#include <prismspf/user_inputs/temporal_discretization.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/solvers/explicit_constant_solver.h>
+#include <prismspf/solvers/explicit_postprocess_solver.h>
+#include <prismspf/solvers/explicit_solver.h>
+#include <prismspf/solvers/nonexplicit_auxiliary_solver.h>
+#include <prismspf/solvers/nonexplicit_linear_solver.h>
+#include <prismspf/solvers/nonexplicit_self_nonlinear_solver.h>
+
+#include <prismspf/utilities/compute_integral.h>
+#include <prismspf/utilities/element_volume.h>
 
 #include <prismspf/config.h>
 

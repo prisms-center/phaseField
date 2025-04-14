@@ -3,11 +3,7 @@
 
 #pragma once
 
-#include <prismspf/core/invm_handler.h>
-#include <prismspf/core/matrix_free_handler.h>
-#include <prismspf/core/matrix_free_operator.h>
-
-#include <prismspf/solvers/explicit_constant_solver.h>
+#include <prismspf/solvers/explicit_base.h>
 
 #include <prismspf/config.h>
 
@@ -32,8 +28,8 @@ public:
    */
   explicitPostprocessSolver(
     const userInputParameters<dim>                         &_user_inputs,
-    const matrixfreeHandler<dim>                           &_matrix_free_handler,
-    const invmHandler<dim, degree>                         &_invm_handler,
+    const matrixfreeHandler<dim, double>                   &_matrix_free_handler,
+    const invmHandler<dim, degree, double>                 &_invm_handler,
     const constraintHandler<dim>                           &_constraint_handler,
     const dofHandler<dim>                                  &_dof_handler,
     const dealii::MappingQ1<dim>                           &_mapping,

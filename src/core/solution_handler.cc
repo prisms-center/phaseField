@@ -89,7 +89,7 @@ solutionHandler<dim>::get_new_solution_vector(unsigned int index) const
 
 template <int dim>
 void
-solutionHandler<dim>::init(matrixfreeHandler<dim> &matrix_free_handler)
+solutionHandler<dim>::init(matrixfreeHandler<dim, double> &matrix_free_handler)
 {
   // Create all entries
   for (const auto &[index, variable] : *attributes_list)
