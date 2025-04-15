@@ -99,16 +99,45 @@ inline MGInfo<dim>::MGInfo(const userInputParameters<dim> &_user_inputs)
   // Create the set of tuples that let us know which fields have what multigrid levels.
   // Note that we don't have to do this if the dependencyType is CHANGE, although we must
   // always include dependencyType::NORMAL.
-  for (const auto &index_1 : fields_with_multigrid)
+  std::set<std::tuple<types::index, dependencyType, min>> all_lhs_fields;
+  for (const auto &index : fields_with_multigrid)
     {
-      const auto &variable_1 = user_inputs->var_attributes->at(index_1);
+      const auto &variable = user_inputs->var_attributes->at(index);
 
       // First add the dependencyType::CHANGE
-      lhs_fields.insert(
-        std::make_tuple(index_1, dependencyType::CHANGE, min_levels.at(index_1)));
+      all_lhs_fields.insert(
+        std::make_tuple(index, dependencyType::CHANGE, min_levels.at(index)));
 
-      // Then add the LHS dependencies.
-      (void) variable_1;
+      // Then add the LHS dependencies. For now I just add all of them and go back to trim
+      // the duplicates that have the same variable but different min multigrid levels.
+      for (const auto &[pair, eval_flag] : variable.eval_flag_set_LHS)
+        {
+          // Skip if the eval flags is not set (e.i., nothing)
+          if (eval_flag == 0U)
+            {
+              continue;
+            }
+
+          all_lhs_fields.insert(
+            std::make_tuple(pair.first, pair.second, min_levels.at(index)));
+        }
+    }
+  // Trim fields that have the same first and second entry of the tuple.
+  std::map<std::pair<types::index, dependencyType>, min> lowest_mg_level;
+  for (const auto &tuple : all_lhs_fields)
+    {
+      auto key       = std::make_pair(std::get<0>(tuple), std::get<1>(tuple));
+      min  min_level = std::get<2>(tuple);
+
+      auto iterator = lowest_mg_level.find(key);
+      if (iterator == lowest_mg_level.end() || min_level < iterator->second)
+        {
+          lowest_mg_level[key] = min_level;
+        }
+    }
+  for (const auto &[key, min_level] : lowest_mg_level)
+    {
+      lhs_fields.insert(std::make_tuple(key.first, key.second, min_level));
     }
 }
 

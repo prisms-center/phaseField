@@ -4,8 +4,6 @@
 #include <prismspf/core/initial_conditions.h>
 #include <prismspf/core/nonuniform_dirichlet.h>
 
-#include <prismspf/user_inputs/user_input_parameters.h>
-
 #include <prismspf/config.h>
 
 #include <cmath>
@@ -21,48 +19,7 @@ customInitialCondition<dim>::set_initial_condition(
   [[maybe_unused]] double                         &scalar_value,
   [[maybe_unused]] double                         &vector_component_value,
   [[maybe_unused]] const userInputParameters<dim> &user_inputs) const
-{
-  double center[4][3] = {
-    {1.0 / 3.0, 1.0 / 3.0, 0.5},
-    {2.0 / 3.0, 2.0 / 3.0, 0.5},
-    {3.0 / 4.0, 1.0 / 4.0, 0.5},
-    {1.0 / 4.0, 3.0 / 4,   0.5}
-  };
-  double rad[4]         = {user_inputs.spatial_discretization.size[0] / 16.0,
-                           user_inputs.spatial_discretization.size[0] / 16.0,
-                           user_inputs.spatial_discretization.size[0] / 16.0,
-                           user_inputs.spatial_discretization.size[0] / 16.0};
-  double orientation[4] = {1, 1, 2, 3};
-  double dx   = user_inputs.spatial_discretization.size[0] / (3.0 / std::pow(2.0, 5));
-  double dist = 0.0;
-
-  if (index == 0)
-    {
-      scalar_value = 0.04;
-    }
-
-  for (unsigned int i = 0; i < 4; i++)
-    {
-      dist = 0.0;
-      for (unsigned int dir = 0; dir < dim; dir++)
-        {
-          dist +=
-            (point[dir] - center[i][dir] * user_inputs.spatial_discretization.size[dir]) *
-            (point[dir] - center[i][dir] * user_inputs.spatial_discretization.size[dir]);
-        }
-      dist = std::sqrt(dist);
-
-      if (index == orientation[i])
-        {
-          scalar_value += 0.5 * (1.0 - std::tanh((dist - rad[i]) / (dx)));
-        }
-    }
-
-  if (index == 4)
-    {
-      vector_component_value = 0.0;
-    }
-}
+{}
 
 template <int dim>
 void

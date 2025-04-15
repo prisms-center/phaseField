@@ -5,7 +5,40 @@
 
 #include <prismspf/config.h>
 
+#include <utility>
+
 PRISMS_PF_BEGIN_NAMESPACE
+
+/**
+ * Generic class for strong types. This ensures consistency in interfaces.
+ */
+template <typename T, typename Parameter>
+class NamedType
+{
+public:
+  explicit NamedType(const T &_value)
+    : value(_value)
+  {}
+
+  explicit NamedType(T &&_value)
+    : value(std::move(_value))
+  {}
+
+  T &
+  get()
+  {
+    return value;
+  }
+
+  [[nodiscard]] const T &
+  get() const
+  {
+    return value;
+  }
+
+private:
+  T value;
+};
 
 namespace types
 {
