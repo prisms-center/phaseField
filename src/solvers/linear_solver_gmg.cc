@@ -211,9 +211,13 @@ GMGSolver<dim, degree>::solve(const double &step_length)
 
   // Compute the residual
   this->system_matrix->compute_residual(*this->residual, *solution);
-  conditionalOStreams::pout_summary()
-    << "  field: " << this->field_index
-    << " Initial residual: " << this->residual->l2_norm() << std::flush;
+  if (this->user_inputs->output_parameters.should_output(
+        this->user_inputs->temporal_discretization.increment))
+    {
+      conditionalOStreams::pout_summary()
+        << "  field: " << this->field_index
+        << " Initial residual: " << this->residual->l2_norm() << std::flush;
+    }
 
   // Determine the residual tolerance
   this->compute_solver_tolerance();
@@ -298,10 +302,14 @@ GMGSolver<dim, degree>::solve(const double &step_length)
   this->constraint_handler->get_constraint(this->field_index)
     .set_zero(*this->newton_update);
 
-  conditionalOStreams::pout_summary()
-    << " Final residual: " << this->solver_control.last_value()
-    << " Steps: " << this->solver_control.last_step() << "\n"
-    << std::flush;
+  if (this->user_inputs->output_parameters.should_output(
+        this->user_inputs->temporal_discretization.increment))
+    {
+      conditionalOStreams::pout_summary()
+        << " Final residual: " << this->solver_control.last_value()
+        << " Steps: " << this->solver_control.last_step() << "\n"
+        << std::flush;
+    }
 
   // Update the solutions
   (*solution).add(step_length, *this->newton_update);

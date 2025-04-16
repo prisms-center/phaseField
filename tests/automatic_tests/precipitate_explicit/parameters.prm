@@ -12,11 +12,11 @@ subsection rectangular mesh
 end
 
 set time step = 6.0e-4
-set number steps = 20000
+set number steps = 50000
 
 subsection output
   set condition = EQUAL_SPACING
-  set number = 10
+  set number = 20
 end
 
 set boundary condition for c = NATURAL
@@ -29,7 +29,7 @@ set boundary condition for u, z component = DIRICHLET: 0.0
 
 subsection linear solver parameters: u
     set tolerance type = ABSOLUTE_RESIDUAL
-    set tolerance value = 5e-3
+    set tolerance value = 1e-5
     set max iterations = 1000
     set preconditioner type = NONE
     set smoothing range = 20
