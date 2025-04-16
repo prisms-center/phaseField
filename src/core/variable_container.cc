@@ -608,6 +608,13 @@ variableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
       {
         for (const auto &[dependency_type, field_type] : map)
           {
+            // TODO (landinjm): This can be drastically simplified because all we're doing
+            // in reinit-ing and eval-ing the change solution.
+            if (dependency_type != dependencyType::CHANGE)
+              {
+                continue;
+              }
+
             const auto &pair = std::make_pair(dependency_index, dependency_type);
             Assert(global_to_local_solution->contains(pair),
                    dealii::ExcMessage(

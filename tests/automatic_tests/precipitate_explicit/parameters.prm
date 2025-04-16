@@ -1,12 +1,70 @@
-set dim = 3
-set global refinement = 4
-set degree = 1
+set dim = 2
+set global refinement = 5
+set degree = 2
 
 subsection rectangular mesh
-    set x size = 100
-    set y size = 100
-    set z size = 100
-    set x subdivisions = 1
-    set y subdivisions = 1
-    set z subdivisions = 1
+  set x size = 40.0
+  set y size = 40.0
+  set z size = 40.0
+  set x subdivisions = 3
+  set y subdivisions = 3  
+  set z subdivisions = 3
 end
+
+set time step = 6.0e-4
+set number steps = 20000
+
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 10
+end
+
+set boundary condition for c = NATURAL
+set boundary condition for n1 = NATURAL
+set boundary condition for n2 = NATURAL
+set boundary condition for n3 = NATURAL
+set boundary condition for u, x component = DIRICHLET: 0.0
+set boundary condition for u, y component = DIRICHLET: 0.0
+set boundary condition for u, z component = DIRICHLET: 0.0
+
+subsection linear solver parameters: u
+    set tolerance type = ABSOLUTE_RESIDUAL
+    set tolerance value = 5e-3
+    set max iterations = 1000
+    set preconditioner type = NONE
+    set smoothing range = 20
+    set smoother degree = 5
+    set eigenvalue cg iterations = 20
+end
+
+set Model constant McV = 1.0, double
+
+set Model constant Mn1V = 100.0, double
+set Model constant Mn2V = 100.0, double
+set Model constant Mn3V = 100.0, double
+
+set Model constant Kn1 = ((0.03,0,0),(0,0.007,0),(0,0,1.0)), tensor
+set Model constant Kn2 = ((0.01275,-0.009959,0),(-0.009959,0.02425,0),(0,0,1.0)), tensor
+set Model constant Kn3 = ((0.01275,0.009959,0),(0.009959,0.02425,0),(0,0,1.0)), tensor
+
+set Model constant n_dependent_stiffness = true, bool
+
+set Model constant sfts_linear1 = ((0,0,0),(0,0,0),(0,0,0)), tensor
+set Model constant sfts_const1 = ((0.0345,0,0),(0,0.0185,0),(0,0,-0.00270)), tensor
+set Model constant sfts_linear2 = ((0,0,0),(0,0,0),(0,0,0)), tensor
+set Model constant sfts_const2 = ((0.0225,-0.0069,0),(-0.0069,0.0305,0),(0,0,-0.00270)), tensor
+set Model constant sfts_linear3 = ((0,0,0),(0,0,0),(0,0,0)), tensor
+set Model constant sfts_const3 = ((0.0225, 0.0069,0),(0.0069,0.0305,0),(0,0,-0.00270)), tensor
+
+set Model constant A4 = 1.3687, double
+set Model constant A3 = -2.7375, double
+set Model constant A2 = 5.1622, double
+set Model constant A1 = -4.776, double
+set Model constant A0 = -1.6704, double
+
+set Model constant B2 = 5.0, double
+set Model constant B1 = -5.9746, double
+set Model constant B0 = -1.5924, double
+
+set Model constant CIJ_Mg = (40.0,0.3), isotropic elastic constants
+set Model constant CIJ_Beta = (50.0,0.3), isotropic elastic constants

@@ -37,9 +37,26 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
 {
   if (current_index == 0)
     {
-      vectorGrad ux = variable_list.get_vector_gradient(0);
-
-      variable_list.set_vector_gradient_term(0, -ux);
+      vectorGrad  ux = variable_list.get_vector_gradient(0);
+      vectorGrad  eqx_u;
+      scalarValue strain[dim][dim];
+      scalarValue stress[dim][dim];
+      for (int i = 0; i < dim; i++)
+        {
+          for (int j = 0; j < dim; j++)
+            {
+              strain[i][j] = 0.5 * (ux[i][j] + ux[j][i]);
+            }
+        }
+      compute_stress<dim, scalarValue>(CIJ, strain, stress);
+      for (int i = 0; i < dim; i++)
+        {
+          for (int j = 0; j < dim; j++)
+            {
+              eqx_u[i][j] = -stress[i][j];
+            }
+        }
+      variable_list.set_vector_gradient_term(0, eqx_u);
     }
 }
 
@@ -52,9 +69,26 @@ customPDE<dim, degree, number>::compute_nonexplicit_LHS(
 {
   if (current_index == 0)
     {
-      vectorGrad change_ux = variable_list.get_vector_gradient(0, CHANGE);
-
-      variable_list.set_vector_gradient_term(0, change_ux, CHANGE);
+      vectorGrad  change_ux = variable_list.get_vector_gradient(0, CHANGE);
+      vectorGrad  eqx_change_u;
+      scalarValue strain[dim][dim];
+      scalarValue stress[dim][dim];
+      for (int i = 0; i < dim; i++)
+        {
+          for (int j = 0; j < dim; j++)
+            {
+              strain[i][j] = 0.5 * (change_ux[i][j] + change_ux[j][i]);
+            }
+        }
+      compute_stress<dim, scalarValue>(CIJ, stress, strain);
+      for (int i = 0; i < dim; i++)
+        {
+          for (int j = 0; j < dim; j++)
+            {
+              eqx_change_u[i][j] = stress[i][j];
+            }
+        }
+      variable_list.set_vector_gradient_term(0, eqx_change_u, CHANGE);
     }
 }
 

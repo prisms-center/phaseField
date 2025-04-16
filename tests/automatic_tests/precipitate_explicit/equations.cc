@@ -171,11 +171,11 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
                 CIJ_Mg[i][j] * (1.0 - sum_hV) + CIJ_Beta[i][j] * sum_hV;
             }
         }
-      compute_stress<dim, number>(CIJ_combined, strain_2, stress);
+      compute_stress<dim, scalarValue>(CIJ_combined, strain_2, stress);
     }
   else
     {
-      compute_stress<dim, number>(CIJ_Mg, strain_2, stress);
+      compute_stress<dim, scalarValue>(CIJ_Mg, strain_2, stress);
     }
 
   // Compute one of the stress terms in the order parameter chemical potential,
@@ -208,7 +208,7 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
   if (n_dependent_stiffness == true)
     {
       // compute_stress<dim,number>(CIJ_diff, strain_2, stress_2);
-      compute_stress<dim, number>(CIJ_Beta - CIJ_Mg, strain_2, stress_2);
+      compute_stress<dim, scalarValue>(CIJ_Beta - CIJ_Mg, strain_2, stress_2);
       for (unsigned int i = 0; i < dim; i++)
         {
           for (unsigned int j = 0; j < dim; j++)
@@ -242,11 +242,11 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
 
       if (n_dependent_stiffness == true)
         {
-          compute_stress<dim, number>(CIJ_combined, strain_3, stress_3);
+          compute_stress<dim, scalarValue>(CIJ_combined, strain_3, stress_3);
         }
       else
         {
-          compute_stress<dim, number>(CIJ_Mg, strain_3, stress_3);
+          compute_stress<dim, scalarValue>(CIJ_Mg, strain_3, stress_3);
         }
 
       for (unsigned int i = 0; i < dim; i++)
@@ -346,7 +346,6 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
       // Calculate the stress-free transformation strain and its derivatives at the
       // quadrature point
       vectorGrad sfts1, sfts2, sfts3;
-
       for (unsigned int i = 0; i < dim; i++)
         {
           for (unsigned int j = 0; j < dim; j++)
@@ -385,19 +384,19 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
         {
           scalarValue sum_hV;
           sum_hV = h1V + h2V + h3V;
-          for (unsigned int i = 0; i < 2 * dim - 1 + dim / 3; i++)
+          for (unsigned int i = 0; i < CIJ_tensor_size; i++)
             {
-              for (unsigned int j = 0; j < 2 * dim - 1 + dim / 3; j++)
+              for (unsigned int j = 0; j < CIJ_tensor_size; j++)
                 {
                   CIJ_combined[i][j] =
                     CIJ_Mg[i][j] * (1.0 - sum_hV) + CIJ_Beta[i][j] * sum_hV;
                 }
             }
-          compute_stress<dim, number>(CIJ_combined, strain_2, stress);
+          compute_stress<dim, scalarValue>(CIJ_combined, strain_2, stress);
         }
       else
         {
-          compute_stress<dim, number>(CIJ_Mg, strain_2, stress);
+          compute_stress<dim, scalarValue>(CIJ_Mg, strain_2, stress);
         }
 
       vectorGrad eqx_u;
@@ -441,7 +440,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_LHS(
       // Take advantage of E being simply 0.5*(ux + transpose(ux)) and use the
       // dealii "symmetrize" function
       vectorGrad E;
-      E = symmetrize(Dux);
+      E = dealii::symmetrize(Dux);
 
       // Compute stress tensor (which is equal to the residual, Rux)
       if (n_dependent_stiffness == true)
@@ -449,11 +448,11 @@ customPDE<dim, degree, number>::compute_nonexplicit_LHS(
           dealii::Tensor<2, CIJ_tensor_size, scalarValue> CIJ_combined;
           CIJ_combined = CIJ_Mg * (1.0 - h1V - h2V - h3V) + CIJ_Beta * (h1V + h2V + h3V);
 
-          compute_stress<dim, number>(CIJ_combined, E, eqx_Du);
+          compute_stress<dim, scalarValue>(CIJ_combined, E, eqx_Du);
         }
       else
         {
-          compute_stress<dim, number>(CIJ_Mg, E, eqx_Du);
+          compute_stress<dim, scalarValue>(CIJ_Mg, E, eqx_Du);
         }
 
       variable_list.set_vector_gradient_term(4, eqx_Du, CHANGE);
@@ -574,11 +573,11 @@ customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
                 CIJ_Mg[i][j] * (1.0 - sum_hV) + CIJ_Beta[i][j] * sum_hV;
             }
         }
-      compute_stress<dim, number>(CIJ_combined, strain_2, stress);
+      compute_stress<dim, scalarValue>(CIJ_combined, strain_2, stress);
     }
   else
     {
-      compute_stress<dim, number>(CIJ_Mg, strain_2, stress);
+      compute_stress<dim, scalarValue>(CIJ_Mg, strain_2, stress);
     }
 
   scalarValue f_el = constV<number>(0.0);
@@ -593,7 +592,7 @@ customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
 
   f_tot = f_chem + f_grad + f_el;
 
-  variable_list.set_scalar_value_term(0, f_tot);
+  variable_list.set_scalar_value_term(5, f_tot);
 }
 
 INSTANTIATE_TRI_TEMPLATE(customPDE)

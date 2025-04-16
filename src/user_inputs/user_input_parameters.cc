@@ -55,6 +55,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
   output_parameters.print_parameter_summary();
   checkpoint_parameters.print_parameter_summary();
   boundary_parameters.print_parameter_summary();
+  user_constants.print();
 }
 
 template <int dim>

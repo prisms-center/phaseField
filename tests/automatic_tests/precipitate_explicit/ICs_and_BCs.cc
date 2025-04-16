@@ -28,13 +28,10 @@ customInitialCondition<dim>::set_initial_condition(
     {3.0 / 4.0, 1.0 / 4.0, 0.5},
     {1.0 / 4.0, 3.0 / 4,   0.5}
   };
-  double rad[4]         = {user_inputs.spatial_discretization.size[0] / 16.0,
-                           user_inputs.spatial_discretization.size[0] / 16.0,
-                           user_inputs.spatial_discretization.size[0] / 16.0,
-                           user_inputs.spatial_discretization.size[0] / 16.0};
+  double rad[4]         = {40.0 / 16.0, 40.0 / 16.0, 40.0 / 16.0, 40.0 / 16.0};
   double orientation[4] = {1, 1, 2, 3};
-  double dx   = user_inputs.spatial_discretization.size[0] / (3.0 / std::pow(2.0, 5));
-  double dist = 0.0;
+  double dx             = 40.0 / (3.0 * std::pow(2.0, 5.0));
+  double dist           = 0.0;
 
   if (index == 0)
     {
@@ -47,14 +44,13 @@ customInitialCondition<dim>::set_initial_condition(
       for (unsigned int dir = 0; dir < dim; dir++)
         {
           dist +=
-            (point[dir] - center[i][dir] * user_inputs.spatial_discretization.size[dir]) *
-            (point[dir] - center[i][dir] * user_inputs.spatial_discretization.size[dir]);
+            (point[dir] - center[i][dir] * 40.0) * (point[dir] - center[i][dir] * 40.0);
         }
       dist = std::sqrt(dist);
 
       if (index == orientation[i])
         {
-          scalar_value += 0.5 * (1.0 - std::tanh((dist - rad[i]) / (dx)));
+          scalar_value += 0.5 * (1.0 - std::tanh((dist - rad[i]) / dx));
         }
     }
 
