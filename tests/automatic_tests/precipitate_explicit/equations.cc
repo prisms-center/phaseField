@@ -63,6 +63,9 @@ customAttributeLoader::loadVariableAttributes()
   set_is_postprocessed_field(5, true);
 }
 
+#define compute_hV(n) (10.0 * n * n * n - 15.0 * n * n * n * n + 6.0 * n * n * n * n * n);
+#define compute_hnV(n) (30.0 * n * n - 60.0 * n * n * n + 30.0 * n * n * n * n);
+
 template <int dim, int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_explicit_RHS(
@@ -104,15 +107,13 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
   scalarValue fbV   = B2 * c * c + B1 * c + B0;
   scalarValue fbcV  = 2.0 * B2 * c + B1;
   scalarValue fbccV = 2.0 * B2;
-  scalarValue h1V =
-    10.0 * n1 * n1 * n1 - 15.0 * n1 * n1 * n1 * n1 + 6.0 * n1 * n1 * n1 * n1 * n1;
-  scalarValue h2V =
-    10.0 * n2 * n2 * n2 - 15.0 * n2 * n2 * n2 * n2 + 6.0 * n2 * n2 * n2 * n2 * n2;
-  scalarValue h3V =
-    10.0 * n3 * n3 * n3 - 15.0 * n3 * n3 * n3 * n3 + 6.0 * n3 * n3 * n3 * n3 * n3;
-  scalarValue hn1V = 30.0 * n1 * n1 - 60.0 * n1 * n1 * n1 + 30.0 * n1 * n1 * n1 * n1;
-  scalarValue hn2V = 30.0 * n2 * n2 - 60.0 * n2 * n2 * n2 + 30.0 * n2 * n2 * n2 * n2;
-  scalarValue hn3V = 30.0 * n3 * n3 - 60.0 * n3 * n3 * n3 + 30.0 * n3 * n3 * n3 * n3;
+  scalarValue h1V   = compute_hV(n1);
+  scalarValue h2V   = compute_hV(n2);
+  scalarValue h3V   = compute_hV(n3);
+
+  scalarValue hn1V = compute_hnV(n1);
+  scalarValue hn2V = compute_hnV(n2);
+  scalarValue hn3V = compute_hnV(n3);
 
   // Calculate the stress-free transformation strain and its derivatives at the
   // quadrature point
@@ -336,35 +337,18 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
       vectorGrad  ux = variable_list.get_vector_gradient(4);
 
       // Interpolation functions
-      scalarValue h1V =
-        10.0 * n1 * n1 * n1 - 15.0 * n1 * n1 * n1 * n1 + 6.0 * n1 * n1 * n1 * n1 * n1;
-      scalarValue h2V =
-        10.0 * n2 * n2 * n2 - 15.0 * n2 * n2 * n2 * n2 + 6.0 * n2 * n2 * n2 * n2 * n2;
-      scalarValue h3V =
-        10.0 * n3 * n3 * n3 - 15.0 * n3 * n3 * n3 * n3 + 6.0 * n3 * n3 * n3 * n3 * n3;
+      scalarValue h1V = compute_hV(n1);
+      scalarValue h2V = compute_hV(n2);
+      scalarValue h3V = compute_hV(n3);
 
       // Calculate the stress-free transformation strain and its derivatives at the
       // quadrature point
-      vectorGrad sfts1, sfts2, sfts3;
-      for (unsigned int i = 0; i < dim; i++)
-        {
-          for (unsigned int j = 0; j < dim; j++)
-            {
-              // Polynomial fits for the stress-free transformation strains, of the
-              // form: sfts = a_p * c + b_p
-              sfts1[i][j] = sfts_linear1[i][j] * c + sfts_const1[i][j];
-              // Polynomial fits for the stress-free transformation strains, of the
-              // form: sfts = a_p * c + b_p
-              sfts2[i][j] = sfts_linear2[i][j] * c + sfts_const2[i][j];
-              // Polynomial fits for the stress-free transformation strains, of the
-              // form: sfts = a_p * c + b_p
-              sfts3[i][j] = sfts_linear3[i][j] * c + sfts_const3[i][j];
-            }
-        }
+      vectorGrad sfts1 = sfts_linear1 * c + sfts_const1;
+      vectorGrad sfts2 = sfts_linear2 * c + sfts_const2;
+      vectorGrad sfts3 = sfts_linear3 * c + sfts_const3;
 
       // compute strain_2=(E-E0)
       scalarValue strain_2[dim][dim], stress[dim][dim];
-
       for (unsigned int i = 0; i < dim; i++)
         {
           for (unsigned int j = 0; j < dim; j++)
@@ -379,7 +363,6 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
       // stress=C*(E-E0)
       //  Compute stress tensor (which is equal to the residual, Rux)
       scalarValue CIJ_combined[CIJ_tensor_size][CIJ_tensor_size];
-
       if (n_dependent_stiffness == true)
         {
           scalarValue sum_hV;
@@ -429,13 +412,9 @@ customPDE<dim, degree, number>::compute_nonexplicit_LHS(
       vectorGrad eqx_Du;
 
       // Interpolation functions
-
-      scalarValue h1V =
-        10.0 * n1 * n1 * n1 - 15.0 * n1 * n1 * n1 * n1 + 6.0 * n1 * n1 * n1 * n1 * n1;
-      scalarValue h2V =
-        10.0 * n2 * n2 * n2 - 15.0 * n2 * n2 * n2 * n2 + 6.0 * n2 * n2 * n2 * n2 * n2;
-      scalarValue h3V =
-        10.0 * n3 * n3 * n3 - 15.0 * n3 * n3 * n3 * n3 + 6.0 * n3 * n3 * n3 * n3 * n3;
+      scalarValue h1V = compute_hV(n1);
+      scalarValue h2V = compute_hV(n2);
+      scalarValue h3V = compute_hV(n3);
 
       // Take advantage of E being simply 0.5*(ux + transpose(ux)) and use the
       // dealii "symmetrize" function
@@ -480,12 +459,9 @@ customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
   // Free energy expressions and interpolation functions
   scalarValue faV = A0 + A1 * c + A2 * c * c + A3 * c * c * c + A4 * c * c * c * c;
   scalarValue fbV = B2 * c * c + B1 * c + B0;
-  scalarValue h1V =
-    10.0 * n1 * n1 * n1 - 15.0 * n1 * n1 * n1 * n1 + 6.0 * n1 * n1 * n1 * n1 * n1;
-  scalarValue h2V =
-    10.0 * n2 * n2 * n2 - 15.0 * n2 * n2 * n2 * n2 + 6.0 * n2 * n2 * n2 * n2 * n2;
-  scalarValue h3V =
-    10.0 * n3 * n3 * n3 - 15.0 * n3 * n3 * n3 * n3 + 6.0 * n3 * n3 * n3 * n3 * n3;
+  scalarValue h1V = compute_hV(n1);
+  scalarValue h2V = compute_hV(n2);
+  scalarValue h3V = compute_hV(n3);
 
   scalarValue f_chem = (1.0 - (h1V + h2V + h3V)) * faV + (h1V + h2V + h3V) * fbV;
 
