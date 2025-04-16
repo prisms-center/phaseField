@@ -265,64 +265,32 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
       scalarValue n1 = variable_list.get_scalar_value(1);
       scalarValue n2 = variable_list.get_scalar_value(2);
       scalarValue n3 = variable_list.get_scalar_value(3);
-      vectorGrad  ux = variable_list.get_vector_gradient(4);
+      vectorGrad  ux = variable_list.get_vector_symmetric_gradient(4);
 
       // Interpolation functions
       scalarValue h1V = compute_hV(n1);
       scalarValue h2V = compute_hV(n2);
       scalarValue h3V = compute_hV(n3);
 
-      // Calculate the stress-free transformation strain and its derivatives at the
-      // quadrature point
-      vectorGrad sfts1 = sfts_const1;
-      vectorGrad sfts2 = sfts_const2;
-      vectorGrad sfts3 = sfts_const3;
+      // Compute strain
+      vectorGrad strain =
+        ux - (sfts_const1 * h1V + sfts_const2 * h2V + sfts_const3 * h3V);
 
-      // compute strain_2=(E-E0)
-      scalarValue strain_2[dim][dim], stress[dim][dim];
-      for (unsigned int i = 0; i < dim; i++)
-        {
-          for (unsigned int j = 0; j < dim; j++)
-            {
-              strain_2[i][j] =
-                0.5 * (ux[i][j] + ux[j][i]) -
-                (sfts1[i][j] * h1V + sfts2[i][j] * h2V + sfts3[i][j] * h3V);
-            }
-        }
-
-      // compute stress
-      // stress=C*(E-E0)
-      //  Compute stress tensor (which is equal to the residual, Rux)
-      scalarValue CIJ_combined[CIJ_tensor_size][CIJ_tensor_size];
+      // Compute stress
+      vectorGrad stress;
       if (n_dependent_stiffness == true)
         {
-          scalarValue sum_hV;
-          sum_hV = h1V + h2V + h3V;
-          for (unsigned int i = 0; i < CIJ_tensor_size; i++)
-            {
-              for (unsigned int j = 0; j < CIJ_tensor_size; j++)
-                {
-                  CIJ_combined[i][j] =
-                    CIJ_Mg[i][j] * (1.0 - sum_hV) + CIJ_Beta[i][j] * sum_hV;
-                }
-            }
-          compute_stress<dim, scalarValue>(CIJ_combined, strain_2, stress);
+          scalarValue                                     sum_hV = h1V + h2V + h3V;
+          dealii::Tensor<2, CIJ_tensor_size, scalarValue> CIJ_combined =
+            CIJ_Mg * (1.0 - sum_hV) + CIJ_Beta * sum_hV;
+          compute_stress<dim, scalarValue>(CIJ_combined, strain, stress);
         }
       else
         {
-          compute_stress<dim, scalarValue>(CIJ_Mg, strain_2, stress);
+          compute_stress<dim, scalarValue>(CIJ_Mg, strain, stress);
         }
 
-      vectorGrad eqx_u;
-      for (unsigned int i = 0; i < dim; i++)
-        {
-          for (unsigned int j = 0; j < dim; j++)
-            {
-              eqx_u[i][j] = -stress[i][j];
-            }
-        }
-
-      variable_list.set_vector_gradient_term(4, eqx_u);
+      variable_list.set_vector_gradient_term(4, -stress);
     }
 }
 
@@ -335,37 +303,34 @@ customPDE<dim, degree, number>::compute_nonexplicit_LHS(
 {
   if (current_index == 4)
     {
-      scalarValue n1  = variable_list.get_scalar_value(1);
-      scalarValue n2  = variable_list.get_scalar_value(2);
-      scalarValue n3  = variable_list.get_scalar_value(3);
-      vectorGrad  Dux = variable_list.get_vector_gradient(4, CHANGE);
-
-      vectorGrad eqx_Du;
+      scalarValue n1        = variable_list.get_scalar_value(1);
+      scalarValue n2        = variable_list.get_scalar_value(2);
+      scalarValue n3        = variable_list.get_scalar_value(3);
+      vectorGrad  change_ux = variable_list.get_vector_symmetric_gradient(4, CHANGE);
 
       // Interpolation functions
       scalarValue h1V = compute_hV(n1);
       scalarValue h2V = compute_hV(n2);
       scalarValue h3V = compute_hV(n3);
 
-      // Take advantage of E being simply 0.5*(ux + transpose(ux)) and use the
-      // dealii "symmetrize" function
-      vectorGrad E;
-      E = dealii::symmetrize(Dux);
+      // Compute strain
+      vectorGrad strain = change_ux;
 
-      // Compute stress tensor (which is equal to the residual, Rux)
+      // Compute stress
+      vectorGrad stress;
       if (n_dependent_stiffness == true)
         {
-          dealii::Tensor<2, CIJ_tensor_size, scalarValue> CIJ_combined;
-          CIJ_combined = CIJ_Mg * (1.0 - h1V - h2V - h3V) + CIJ_Beta * (h1V + h2V + h3V);
-
-          compute_stress<dim, scalarValue>(CIJ_combined, E, eqx_Du);
+          scalarValue                                     sum_hV = h1V + h2V + h3V;
+          dealii::Tensor<2, CIJ_tensor_size, scalarValue> CIJ_combined =
+            CIJ_Mg * (1.0 - sum_hV) + CIJ_Beta * sum_hV;
+          compute_stress<dim, scalarValue>(CIJ_combined, strain, stress);
         }
       else
         {
-          compute_stress<dim, scalarValue>(CIJ_Mg, E, eqx_Du);
+          compute_stress<dim, scalarValue>(CIJ_Mg, strain, stress);
         }
 
-      variable_list.set_vector_gradient_term(4, eqx_Du, CHANGE);
+      variable_list.set_vector_gradient_term(4, stress, CHANGE);
     }
 }
 
