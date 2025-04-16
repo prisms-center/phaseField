@@ -1,4 +1,4 @@
-set dim = 2
+set dim = 3
 set global refinement = 4
 set degree = 1
 
@@ -11,15 +11,15 @@ subsection rectangular mesh
     set z subdivisions = 1
 end
 
-set boundary condition for u, x component = DIRICHLET: -1.0, DIRICHLET: 0.0, NATURAL, NATURAL
-set boundary condition for u, y component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, NATURAL
-set boundary condition for u, z component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, NATURAL
+set boundary condition for u, x component = DIRICHLET: -1.0, DIRICHLET: 0.0, NATURAL, NATURAL, NATURAL, NATURAL
+set boundary condition for u, y component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, NATURAL, NATURAL, NATURAL
+set boundary condition for u, z component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, NATURAL, NATURAL, NATURAL
 
 subsection linear solver parameters: u
     set tolerance type = ABSOLUTE_RESIDUAL
     set tolerance value = 1e-10
     set max iterations = 1000 
-    set preconditioner type = NONE
+    set preconditioner type = GMG
     set smoothing range = 20
     set smoother degree = 5
     set eigenvalue cg iterations = 20

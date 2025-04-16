@@ -86,18 +86,20 @@ compute_stress(const dealii::Tensor<2, voigt_tensor_size<dim>, T> &elasticity_te
       epsilon[4] = strain[0][2] + strain[2][0];
       epsilon[5] = strain[0][1] + strain[1][0];
 
-      // Multiply elasticity_tensor and epsilon (in the language of Deal.II this is a
-      // tensor contraction) to get sigma
+      // Multiply elasticity_tensor and epsilon to get sigma
       sigma = elasticity_tensor * epsilon;
 
       stress[0][0] = sigma[0];
       stress[1][1] = sigma[1];
       stress[2][2] = sigma[2];
+
       stress[1][2] = sigma[3];
-      stress[0][2] = sigma[4];
-      stress[0][1] = sigma[5];
       stress[2][1] = sigma[3];
+
+      stress[0][2] = sigma[4];
       stress[2][0] = sigma[4];
+
+      stress[0][1] = sigma[5];
       stress[1][0] = sigma[5];
     }
   else if constexpr (dim == 2)
@@ -107,8 +109,7 @@ compute_stress(const dealii::Tensor<2, voigt_tensor_size<dim>, T> &elasticity_te
       // In Voigt notation: epsilonngineering shear strain=2*strain
       epsilon[2] = strain[0][1] + strain[1][0];
 
-      // Multiply elasticity_tensor and epsilon (in the language of Deal.II this is a
-      // tensor contraction) to get sigma
+      // Multiply elasticity_tensor and epsilon to get sigma
       sigma = elasticity_tensor * epsilon;
 
       stress[0][0] = sigma[0];
