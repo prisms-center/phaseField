@@ -20,7 +20,7 @@ customAttributeLoader::loadVariableAttributes()
   set_dependencies_value_term_RHS(0, "c");
   set_dependencies_gradient_term_RHS(
     0,
-    "c, grad(c), n1, grad(n1), n2, grad(n2), n3, grad(n3), grad(u), hess(u)");
+    "c, grad(c), n1, grad(n1), n2, grad(n2), n3, grad(n3), grad(u)");
 
   set_variable_name(1, "n1");
   set_variable_type(1, SCALAR);
@@ -48,7 +48,7 @@ customAttributeLoader::loadVariableAttributes()
   set_variable_equation_type(4, TIME_INDEPENDENT);
 
   set_dependencies_value_term_RHS(4, "");
-  set_dependencies_gradient_term_RHS(4, "c, n1, n2, n3, grad(u)");
+  set_dependencies_gradient_term_RHS(4, "n1, n2, n3, grad(u)");
   set_dependencies_value_term_LHS(4, "");
   set_dependencies_gradient_term_LHS(4, "n1, n2, n3, grad(change(u))");
 
@@ -83,23 +83,6 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
   scalarGrad  n3x = variable_list.get_scalar_gradient(3);
   vectorGrad  ux  = variable_list.get_vector_gradient(4);
 
-  vectorHess uxx;
-  bool       c_dependent_misfit = false;
-  for (unsigned int i = 0; i < dim; i++)
-    {
-      for (unsigned int j = 0; j < dim; j++)
-        {
-          if (std::abs(sfts_linear1[i][j]) > 1.0e-12)
-            {
-              c_dependent_misfit = true;
-            }
-        }
-    }
-  if (c_dependent_misfit == true)
-    {
-      uxx = variable_list.get_vector_hessian(4);
-    }
-
   // Free energy expressions and interpolation functions
   scalarValue faV   = A0 + A1 * c + A2 * c * c + A3 * c * c * c + A4 * c * c * c * c;
   scalarValue facV  = A1 + 2.0 * A2 * c + 3.0 * A3 * c * c + 4.0 * A4 * c * c * c;
@@ -125,20 +108,20 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
         {
           // Polynomial fits for the stress-free transformation strains, of the
           // form: sfts = a_p * c + b_p
-          sfts1[i][j]   = sfts_linear1[i][j] * c + sfts_const1[i][j];
-          sfts1c[i][j]  = sfts_linear1[i][j];
+          sfts1[i][j]   = sfts_const1[i][j];
+          sfts1c[i][j]  = constV<number>(0.0);
           sfts1cc[i][j] = constV<number>(0.0);
 
           // Polynomial fits for the stress-free transformation strains, of the
           // form: sfts = a_p * c + b_p
-          sfts2[i][j]   = sfts_linear2[i][j] * c + sfts_const2[i][j];
-          sfts2c[i][j]  = sfts_linear1[i][j];
+          sfts2[i][j]   = sfts_const2[i][j];
+          sfts2c[i][j]  = constV<number>(0.0);
           sfts2cc[i][j] = constV<number>(0.0);
 
           // Polynomial fits for the stress-free transformation strains, of the
           // form: sfts = a_p * c + b_p
-          sfts3[i][j]   = sfts_linear3[i][j] * c + sfts_const3[i][j];
-          sfts3c[i][j]  = sfts_linear3[i][j];
+          sfts3[i][j]   = sfts_const3[i][j];
+          sfts3c[i][j]  = constV<number>(0.0);
           sfts3cc[i][j] = constV<number>(0.0);
         }
     }
@@ -228,57 +211,6 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
   // potential, grad_mu_el = [C*(E-E0)*E0c]x, must be a vector with length dim
   scalarGrad grad_mu_el;
 
-  if (c_dependent_misfit == true)
-    {
-      scalarValue strain_3[dim][dim], stress_3[dim][dim];
-
-      for (unsigned int i = 0; i < dim; i++)
-        {
-          for (unsigned int j = 0; j < dim; j++)
-            {
-              strain_3[i][j] =
-                -(sfts1c[i][j] * h1V + sfts2c[i][j] * h2V + sfts3c[i][j] * h3V);
-            }
-        }
-
-      if (n_dependent_stiffness == true)
-        {
-          compute_stress<dim, scalarValue>(CIJ_combined, strain_3, stress_3);
-        }
-      else
-        {
-          compute_stress<dim, scalarValue>(CIJ_Mg, strain_3, stress_3);
-        }
-
-      for (unsigned int i = 0; i < dim; i++)
-        {
-          for (unsigned int j = 0; j < dim; j++)
-            {
-              for (unsigned int k = 0; k < dim; k++)
-                {
-                  grad_mu_el[k] +=
-                    stress_3[i][j] *
-                    (0.5 * (uxx[i][j][k] + uxx[j][i][k]) + strain_3[i][j] * cx[k] -
-                     (sfts1[i][j] * hn1V * n1x[k] + sfts2[i][j] * hn2V * n2x[k] +
-                      sfts3[i][j] * hn3V * n3x[k]));
-
-                  grad_mu_el[k] +=
-                    -stress[i][j] *
-                    (sfts1c[i][j] * hn1V * n1x[k] + sfts2c[i][j] * hn2V * n2x[k] +
-                     sfts3c[i][j] * hn3V * n3x[k] +
-                     (sfts1cc[i][j] * h1V + sfts2cc[i][j] * h2V + sfts3cc[i][j] * h3V) *
-                       cx[k]);
-
-                  if (n_dependent_stiffness == true)
-                    {
-                      grad_mu_el[k] += stress_2[i][j] * strain_3[i][j] *
-                                       (hn1V * n1x[k] + hn2V * n2x[k] + hn3V * n3x[k]);
-                    }
-                }
-            }
-        }
-    }
-
   // compute K*nx
   scalarGrad Knx1, Knx2, Knx3;
   for (unsigned int a = 0; a < dim; a++)
@@ -330,7 +262,6 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
 {
   if (current_index == 4)
     {
-      scalarValue c  = variable_list.get_scalar_value(0);
       scalarValue n1 = variable_list.get_scalar_value(1);
       scalarValue n2 = variable_list.get_scalar_value(2);
       scalarValue n3 = variable_list.get_scalar_value(3);
@@ -343,9 +274,9 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
 
       // Calculate the stress-free transformation strain and its derivatives at the
       // quadrature point
-      vectorGrad sfts1 = sfts_linear1 * c + sfts_const1;
-      vectorGrad sfts2 = sfts_linear2 * c + sfts_const2;
-      vectorGrad sfts3 = sfts_linear3 * c + sfts_const3;
+      vectorGrad sfts1 = sfts_const1;
+      vectorGrad sfts2 = sfts_const2;
+      vectorGrad sfts3 = sfts_const3;
 
       // compute strain_2=(E-E0)
       scalarValue strain_2[dim][dim], stress[dim][dim];
@@ -501,20 +432,20 @@ customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
         {
           // Polynomial fits for the stress-free transformation strains, of the
           // form: sfts = a_p * c + b_p
-          sfts1[i][j]   = sfts_linear1[i][j] * c + sfts_const1[i][j];
-          sfts1c[i][j]  = sfts_linear1[i][j];
+          sfts1[i][j]   = sfts_const1[i][j];
+          sfts1c[i][j]  = constV<number>(0.0);
           sfts1cc[i][j] = constV<number>(0.0);
 
           // Polynomial fits for the stress-free transformation strains, of the
           // form: sfts = a_p * c + b_p
-          sfts2[i][j]   = sfts_linear2[i][j] * c + sfts_const2[i][j];
-          sfts2c[i][j]  = sfts_linear1[i][j];
+          sfts2[i][j]   = sfts_const2[i][j];
+          sfts2c[i][j]  = constV<number>(0.0);
           sfts2cc[i][j] = constV<number>(0.0);
 
           // Polynomial fits for the stress-free transformation strains, of the
           // form: sfts = a_p * c + b_p
-          sfts3[i][j]   = sfts_linear3[i][j] * c + sfts_const3[i][j];
-          sfts3c[i][j]  = sfts_linear3[i][j];
+          sfts3[i][j]   = sfts_const3[i][j];
+          sfts3c[i][j]  = constV<number>(0.0);
           sfts3cc[i][j] = constV<number>(0.0);
         }
     }

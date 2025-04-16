@@ -91,16 +91,6 @@ private:
     this->get_user_inputs().user_constants.get_model_constant_bool(
       "n_dependent_stiffness");
 
-  dealii::Tensor<2, dim, number> sfts_linear1 =
-    this->get_user_inputs().user_constants.get_model_constant_rank_2_tensor(
-      "sfts_linear1");
-  dealii::Tensor<2, dim, number> sfts_linear2 =
-    this->get_user_inputs().user_constants.get_model_constant_rank_2_tensor(
-      "sfts_linear2");
-  dealii::Tensor<2, dim, number> sfts_linear3 =
-    this->get_user_inputs().user_constants.get_model_constant_rank_2_tensor(
-      "sfts_linear3");
-
   dealii::Tensor<2, dim, number> sfts_const1 =
     this->get_user_inputs().user_constants.get_model_constant_rank_2_tensor(
       "sfts_const1");
