@@ -113,16 +113,6 @@ GMGSolver<dim, degree>::init()
           (*mg_operators)[level]
             .initialize_dof_vector(*mg_newton_update_src[level][local_index], pair.first);
         }
-
-      // Check that the vector partitioning is right
-      // TODO (landinjm): Check this for all of the vectors. May also be able to remove
-      // this
-      Assert((*mg_operators)[level]
-               .get_matrix_free()
-               ->get_vector_partitioner(this->field_index)
-               ->is_compatible(*(mg_newton_update_src[level][0]->get_partitioner())),
-             dealii::ExcMessage("Incompatabile vector partitioners"));
-
       (*mg_operators)[level].add_src_solution_subset(mg_newton_update_src[level]);
     }
   mg_matrix = std::make_shared<dealii::mg::Matrix<MGVectorType>>(*mg_operators);

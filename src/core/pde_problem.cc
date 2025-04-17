@@ -55,7 +55,7 @@ PDEProblem<dim, degree>::PDEProblem(
   , matrix_free_handler()
   , multigrid_matrix_free_handler(0, 0)
   , invm_handler(*_user_inputs.var_attributes)
-  , solution_handler(*_user_inputs.var_attributes)
+  , solution_handler(*_user_inputs.var_attributes, mg_info)
   , dof_handler(_user_inputs, mg_info)
   , explicit_constant_solver(_user_inputs,
                              matrix_free_handler,
@@ -217,6 +217,10 @@ PDEProblem<dim, degree>::init_system()
   // Initialize the solution set
   conditionalOStreams::pout_base() << "initializing solution set...\n" << std::flush;
   solution_handler.init(matrix_free_handler);
+  if (mg_info.has_multigrid())
+    {
+      solution_handler.mg_init(multigrid_matrix_free_handler);
+    }
 
   // Initialize the invm and compute it
   // TODO (landinjm): Output the invm for debug mode. This will create a lot of bloat in
