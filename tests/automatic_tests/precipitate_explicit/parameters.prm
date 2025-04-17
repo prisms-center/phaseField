@@ -35,7 +35,7 @@ subsection linear solver parameters: u
     set smoothing range = 20
     set smoother degree = 5
     set eigenvalue cg iterations = 20
-    set min mg level = 5
+    set min mg level = 0
 end
 
 set Model constant McV = 1.0, double

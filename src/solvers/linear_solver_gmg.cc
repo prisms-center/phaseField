@@ -20,6 +20,7 @@
 #include <prismspf/core/matrix_free_operator.h>
 #include <prismspf/core/pde_operator.h>
 #include <prismspf/core/solution_handler.h>
+#include <prismspf/core/solution_output.h>
 #include <prismspf/core/triangulation_handler.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
@@ -117,19 +118,19 @@ GMGSolver<dim, degree>::init()
     {
       unsigned int global_index = 0;
       // Hard-coding so I can fix later
-      if (local_index = 0)
+      if (local_index == 0)
         {
           global_index = 4;
         }
-      else if (local_index = 1)
+      else if (local_index == 1)
         {
           global_index = 1;
         }
-      else if (local_index = 2)
+      else if (local_index == 2)
         {
           global_index = 2;
         }
-      else if (local_index = 3)
+      else if (local_index == 3)
         {
           global_index = 3;
         }
@@ -141,6 +142,7 @@ GMGSolver<dim, degree>::init()
           const unsigned int mg_hierarchy_index =
             mg_info->get_local_index(global_index, level);
 
+          conditionalOStreams::pout_base() << "Some indexing issue" << std::endl;
           // TODO (landinjm): local_index here is wrong
           mg_transfer_operators[local_index][level + 1].reinit(
             *dof_handler->get_mg_dof_handlers(level + 1)[mg_hierarchy_index],
@@ -148,6 +150,7 @@ GMGSolver<dim, degree>::init()
             this->constraint_handler->get_mg_constraint(level + 1, mg_hierarchy_index),
             this->constraint_handler->get_mg_constraint(level, mg_hierarchy_index));
         }
+      conditionalOStreams::pout_base() << "We got to mg transfer operators." << std::endl;
       mg_transfer[local_index] =
         std::make_shared<dealii::MGTransferGlobalCoarsening<dim, MGVectorType>>(
           mg_transfer_operators[local_index]);
@@ -242,13 +245,31 @@ GMGSolver<dim, degree>::solve(const double &step_length)
         {
           change_index = local_index;
         }
+      unsigned int global_index = 0;
+      // Hard-coding so I can fix later
+      if (local_index == 0)
+        {
+          global_index = 4;
+        }
+      else if (local_index == 1)
+        {
+          global_index = 1;
+        }
+      else if (local_index == 2)
+        {
+          global_index = 2;
+        }
+      else if (local_index == 3)
+        {
+          global_index = 3;
+        }
 
       // Create a temporary collection of the the dst pointers
       dealii::MGLevelObject<MGVectorType> mg_src_subset(min_level, max_level);
       for (unsigned int level = min_level; level < max_level; ++level)
         {
           const unsigned int mg_hierarchy_index =
-            mg_info->get_local_index(level, pair.first);
+            mg_info->get_local_index(global_index, level);
 
           mg_src_subset[level] =
             *this->solution_handler->get_mg_solution_vector(level, mg_hierarchy_index);
@@ -259,6 +280,20 @@ GMGSolver<dim, degree>::solve(const double &step_length)
                                                     pair.first),
                                                   mg_src_subset,
                                                   *this->newton_update_src[local_index]);
+
+      for (unsigned int level = min_level; level < max_level; level++)
+        {
+          const unsigned int mg_hierarchy_index =
+            mg_info->get_local_index(global_index, level);
+
+          // Output the solution
+          solutionOutput<dim, float>(
+            *this->solution_handler->get_mg_solution_vector(level, mg_hierarchy_index),
+            *dof_handler->get_mg_dof_handlers(level)[mg_hierarchy_index],
+            degree,
+            "index" + std::to_string(pair.first),
+            *this->user_inputs);
+        }
     }
 
   // Create smoother for each level
