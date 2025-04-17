@@ -238,8 +238,8 @@ inline MGInfo<dim>::MGInfo(const userInputParameters<dim> &_user_inputs)
   std::map<std::pair<types::index, dependencyType>, min> lowest_mg_level;
   for (const auto &tuple : all_lhs_fields)
     {
-      auto key       = std::make_pair(std::get<0>(tuple), std::get<1>(tuple));
-      min  min_level = std::get<2>(tuple);
+      auto      key       = std::make_pair(std::get<0>(tuple), std::get<1>(tuple));
+      const min min_level = std::get<2>(tuple);
 
       auto iterator = lowest_mg_level.find(key);
       if (iterator == lowest_mg_level.end() || min_level < iterator->second)

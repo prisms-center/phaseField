@@ -8,6 +8,7 @@
 
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/dof_handler.h>
+#include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/triangulation_handler.h>
 #include <prismspf/core/type_enums.h>
 
@@ -15,8 +16,8 @@
 
 #include <prismspf/config.h>
 
+#include <memory>
 #include <ostream>
-#include <set>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

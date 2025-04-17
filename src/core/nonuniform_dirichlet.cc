@@ -6,7 +6,6 @@
 #include <deal.II/lac/vector.h>
 
 #include <prismspf/core/nonuniform_dirichlet.h>
-#include <prismspf/core/type_enums.h>
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
@@ -55,6 +54,9 @@ void
 nonuniformDirichlet<dim, number>::vector_value(const dealii::Point<dim> &p,
                                                dealii::Vector<number>   &value) const
 {
+  // TODO (landinjm): I think this function is not called for 1D vector and might break
+  // when the user goes from 2D to 1D vector fields.
+
   // Initialize passed variables to zero
   number                 temp_scalar_value = 0.0;
   dealii::Vector<number> temp_vector_value(dim);
