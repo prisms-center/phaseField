@@ -31,19 +31,27 @@ customInitialCondition<dim>::set_initial_condition(
     }
 }
 
-template <int dim>
+template <int dim, typename number>
 void
-customNonuniformDirichlet<dim>::set_nonuniform_dirichlet(
+customNonuniformDirichlet<dim, number>::set_nonuniform_dirichlet(
   [[maybe_unused]] const unsigned int             &index,
   [[maybe_unused]] const unsigned int             &boundary_id,
   [[maybe_unused]] const unsigned int             &component,
   [[maybe_unused]] const dealii::Point<dim>       &point,
-  [[maybe_unused]] double                         &scalar_value,
-  [[maybe_unused]] double                         &vector_component_value,
+  [[maybe_unused]] number                         &scalar_value,
+  [[maybe_unused]] number                         &vector_component_value,
   [[maybe_unused]] const userInputParameters<dim> &user_inputs) const
 {}
 
-INSTANTIATE_UNI_TEMPLATE(customInitialCondition)
-INSTANTIATE_UNI_TEMPLATE(customNonuniformDirichlet)
+template class customInitialCondition<1>;
+template class customInitialCondition<2>;
+template class customInitialCondition<3>;
+
+template class customNonuniformDirichlet<1, double>;
+template class customNonuniformDirichlet<2, double>;
+template class customNonuniformDirichlet<3, double>;
+template class customNonuniformDirichlet<1, float>;
+template class customNonuniformDirichlet<2, float>;
+template class customNonuniformDirichlet<3, float>;
 
 PRISMS_PF_END_NAMESPACE
