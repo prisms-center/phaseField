@@ -13,6 +13,7 @@
 #include <prismspf/core/dof_handler.h>
 #include <prismspf/core/invm_handler.h>
 #include <prismspf/core/matrix_free_handler.h>
+#include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/pde_operator.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/timer.h>
@@ -93,6 +94,11 @@ private:
    * \brief User-inputs.
    */
   const userInputParameters<dim> *user_inputs;
+
+  /**
+   * \brief Multigrid info class.
+   */
+  MGInfo<dim> mg_info;
 
   /**
    * \brief Triangulation handler.

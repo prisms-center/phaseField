@@ -80,6 +80,7 @@ GMGSolver<dim, degree>::init()
   // as of now.
 
   // Grab the min and max level
+  // TODO(landinjm): This should be done in the constructor and with MGInfo
   min_level = triangulation_handler->get_mg_min_level();
   max_level = triangulation_handler->get_mg_max_level();
 
@@ -96,16 +97,8 @@ GMGSolver<dim, degree>::init()
   mg_newton_update_src.resize(min_level, max_level);
   for (unsigned int level = min_level; level <= max_level; ++level)
     {
-      // TODO (landinjm): Fix so mapping is same as rest of the problem. Do the same for
-      // the finite element I think.
-      // TODO (landinjm): This should include dof handlers for all dependency fields. That
-      // also means I need some sort of local indexing.
-      (*mg_matrix_free_handler)[level].reinit(
-        mapping,
-        dof_handler->get_mg_dof_handler(this->field_index, level),
-        this->constraint_handler->get_mg_constraint(this->field_index, level),
-        dealii::QGaussLobatto<1>(degree + 1));
-
+      // TODO (landinjm): Need to fix how I do local indexing here since it is not the
+      // same as usual.
       (*mg_operators)[level].initialize(
         (*mg_matrix_free_handler)[level].get_matrix_free());
 
@@ -137,11 +130,12 @@ GMGSolver<dim, degree>::init()
   // Setup transfer operators
   for (unsigned int level = min_level; level < max_level; ++level)
     {
+      // TODO (landinjm): Index here is wrong
       mg_transfer_operators[level + 1].reinit(
-        dof_handler->get_mg_dof_handler(this->field_index, level + 1),
-        dof_handler->get_mg_dof_handler(this->field_index, level),
-        this->constraint_handler->get_mg_constraint(this->field_index, level + 1),
-        this->constraint_handler->get_mg_constraint(this->field_index, level));
+        *dof_handler->get_mg_dof_handlers(level + 1)[0],
+        *dof_handler->get_mg_dof_handlers(level)[0],
+        this->constraint_handler->get_mg_constraint(level + 1, 0),
+        this->constraint_handler->get_mg_constraint(level, 0));
     }
   mg_transfer = std::make_shared<dealii::MGTransferGlobalCoarsening<dim, MGVectorType>>(
     mg_transfer_operators);
@@ -166,33 +160,34 @@ GMGSolver<dim, degree>::init()
 
   // TODO (landinjm): Should I put this somewhere else?
 #ifdef DEBUG
-  conditionalOStreams::pout_summary()
-    << "\nMultigrid Setup Information for index " << this->field_index << ":\n"
-    << "  Min level: " << min_level << "\n"
-    << "  Max level: " << max_level << "\n";
-  for (unsigned int level = min_level; level <= max_level; ++level)
-    {
-      conditionalOStreams::pout_summary()
-        << "  Level: " << level << "\n"
-        << "    Cells: "
-        << triangulation_handler->get_mg_triangulation(level).n_global_active_cells()
-        << "\n"
-        << "    DoFs: "
-        << dof_handler->get_mg_dof_handler(this->field_index, level).n_dofs() << "\n"
-        << "    Constrained DoFs: "
-        << this->constraint_handler->get_mg_constraint(this->field_index, level)
-             .n_constraints()
-        << "\n";
-    }
-  conditionalOStreams::pout_summary()
-    << "  MG vertical communication efficiency: "
-    << dealii::MGTools::vertical_communication_efficiency(
-         triangulation_handler->get_mg_triangulation())
-    << "\n"
-    << "  MG workload imbalance: "
-    << dealii::MGTools::workload_imbalance(triangulation_handler->get_mg_triangulation())
-    << "\n\n"
-    << std::flush;
+  // conditionalOStreams::pout_summary()
+  //   << "\nMultigrid Setup Information for index " << this->field_index << ":\n"
+  //   << "  Min level: " << min_level << "\n"
+  //   << "  Max level: " << max_level << "\n";
+  // for (unsigned int level = min_level; level <= max_level; ++level)
+  //   {
+  //     conditionalOStreams::pout_summary()
+  //       << "  Level: " << level << "\n"
+  //       << "    Cells: "
+  //       << triangulation_handler->get_mg_triangulation(level).n_global_active_cells()
+  //       << "\n"
+  //       << "    DoFs: "
+  //       << dof_handler->get_mg_dof_handler(this->field_index, level).n_dofs() << "\n"
+  //       << "    Constrained DoFs: "
+  //       << this->constraint_handler->get_mg_constraint(this->field_index, level)
+  //            .n_constraints()
+  //       << "\n";
+  //   }
+  // conditionalOStreams::pout_summary()
+  //   << "  MG vertical communication efficiency: "
+  //   << dealii::MGTools::vertical_communication_efficiency(
+  //        triangulation_handler->get_mg_triangulation())
+  //   << "\n"
+  //   << "  MG workload imbalance: "
+  //   <<
+  //   dealii::MGTools::workload_imbalance(triangulation_handler->get_mg_triangulation())
+  //   << "\n\n"
+  //   << std::flush;
 #endif
 }
 
@@ -261,8 +256,9 @@ GMGSolver<dim, degree>::solve(const double &step_length)
       (*mg_operators)[level].compute_diagonal(this->field_index);
       smoother_data[level].preconditioner =
         (*mg_operators)[level].get_matrix_diagonal_inverse();
+      // TODO (landinjm): Fix index
       smoother_data[level].constraints.copy_from(
-        this->constraint_handler->get_mg_constraint(this->field_index, level));
+        this->constraint_handler->get_mg_constraint(level, this->field_index));
     }
   mg_smoother.initialize(*mg_operators, smoother_data);
 

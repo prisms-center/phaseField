@@ -49,13 +49,14 @@ PDEProblem<dim, degree>::PDEProblem(
   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
   std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float)
   : user_inputs(&_user_inputs)
-  , triangulation_handler(_user_inputs)
-  , constraint_handler(_user_inputs)
+  , mg_info(_user_inputs)
+  , triangulation_handler(_user_inputs, mg_info)
+  , constraint_handler(_user_inputs, mg_info)
   , matrix_free_handler()
   , multigrid_matrix_free_handler(0, 0)
   , invm_handler(*_user_inputs.var_attributes)
   , solution_handler(*_user_inputs.var_attributes)
-  , dof_handler(_user_inputs)
+  , dof_handler(_user_inputs, mg_info)
   , explicit_constant_solver(_user_inputs,
                              matrix_free_handler,
                              invm_handler,
@@ -112,10 +113,7 @@ PDEProblem<dim, degree>::PDEProblem(
                                       solution_handler,
                                       _pde_operator,
                                       _pde_operator_float)
-{
-  MGInfo<dim> mg_info(_user_inputs);
-  mg_info.print();
-}
+{}
 
 template <int dim, int degree>
 void
@@ -166,18 +164,29 @@ PDEProblem<dim, degree>::init_system()
   conditionalOStreams::pout_base() << "creating triangulation...\n" << std::flush;
   triangulation_handler.generate_mesh();
 
+  // Print multigrid info
+  mg_info.print();
+
   // Create the dof handlers.
   conditionalOStreams::pout_base() << "creating DoFHandlers...\n" << std::flush;
-  dof_handler.init(triangulation_handler, fe_system);
+  dof_handler.init(triangulation_handler, fe_system, mg_info);
 
   // Create the constraints
   conditionalOStreams::pout_base() << "creating constraints...\n" << std::flush;
   constraint_handler.make_constraints(mapping, dof_handler.get_dof_handlers());
-  if (triangulation_handler.has_setup_multigrid())
+  if (mg_info.has_multigrid())
     {
-      conditionalOStreams::pout_base() << "creating multigrid constraints...\n"
-                                       << std::flush;
-      constraint_handler.make_mg_constraints(mapping, dof_handler.get_mg_dof_handlers());
+      const unsigned int min_level = mg_info.get_mg_min_level();
+      const unsigned int max_level = mg_info.get_mg_max_level();
+      for (unsigned int level = min_level; level <= max_level; ++level)
+        {
+          conditionalOStreams::pout_base()
+            << "creating multigrid constraints at level " << level << "...\n"
+            << std::flush;
+          constraint_handler.make_mg_constraints(mapping,
+                                                 dof_handler.get_mg_dof_handlers(level),
+                                                 level);
+        }
     }
 
   // Reinit the matrix-free objects
@@ -187,23 +196,21 @@ PDEProblem<dim, degree>::init_system()
                              dof_handler.get_dof_handlers(),
                              constraint_handler.get_constraints(),
                              dealii::QGaussLobatto<1>(degree + 1));
-  if (triangulation_handler.has_setup_multigrid())
+  if (mg_info.has_multigrid())
     {
-      const unsigned int min_level = triangulation_handler.get_mg_min_level();
-      const unsigned int max_level = triangulation_handler.get_mg_max_level();
-
+      const unsigned int min_level = mg_info.get_mg_min_level();
+      const unsigned int max_level = mg_info.get_mg_max_level();
       multigrid_matrix_free_handler.resize(min_level, max_level);
-
       for (unsigned int level = min_level; level <= max_level; ++level)
         {
           conditionalOStreams::pout_base()
             << "initializing multgrid matrix-free object at level " << level << "...\n"
             << std::flush;
-          // multigrid_matrix_free_handler[level].reinit(
-          //   mapping,
-          //   dof_handler.get_mg_dof_handlers(level),
-          //   constraint_handler.get_mg_level_constraints(level),
-          //   dealii::QGaussLobatto<1>(degree + 1));
+          multigrid_matrix_free_handler[level].reinit(
+            mapping,
+            dof_handler.get_mg_dof_handlers(level),
+            constraint_handler.get_mg_constraints(level),
+            dealii::QGaussLobatto<1>(degree + 1));
         }
     }
 

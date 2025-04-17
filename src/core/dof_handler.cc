@@ -21,12 +21,15 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <int dim>
-dofHandler<dim>::dofHandler(const userInputParameters<dim> &_user_inputs)
+dofHandler<dim>::dofHandler(const userInputParameters<dim> &_user_inputs,
+                            const MGInfo<dim>              &mg_info)
   : user_inputs(&_user_inputs)
 {
   for (const auto &[index, variable] : *user_inputs->var_attributes)
     {
 #ifdef ADDITIONAL_OPTIMIZATIONS
+      // TODO (landinjm): This relies on the fact the entry has already been created. Add
+      // an assertion
       if (user_inputs->var_attributes->at(index).duplicate_field_index !=
           numbers::invalid_index)
         {
@@ -40,14 +43,62 @@ dofHandler<dim>::dofHandler(const userInputParameters<dim> &_user_inputs)
       dof_handlers[index] = std::make_unique<dealii::DoFHandler<dim>>();
       const_dof_handlers.push_back(dof_handlers.at(index).get());
     }
+  // If we don't have multigrid, we can return early
+  if (!mg_info.has_multigrid())
+    {
+      return;
+    }
+  has_multigrid = true;
+
+  // Go through all fields that have multigrid levels and create the DoFHandlers
+  global_min_level                    = mg_info.get_mg_min_level();
+  const unsigned int global_max_level = mg_info.get_mg_max_level();
+  const_mg_dof_handlers.resize(global_max_level - global_min_level + 1);
+  for (const auto &[index, dependency, min_level] : mg_info.get_lhs_fields())
+    {
+      const unsigned int relative_level = min_level - global_min_level;
+#ifdef ADDITIONAL_OPTIMIZATIONS
+      // TODO (landinjm): This relies on the fact the entry has already been created. Add
+      // an assertion
+
+      // TODO (landinjm): Duplicate field index is not supported yet because we have
+      // to handle the case where the duplicate field has different min multigrid
+      // levels.
+      AssertThrow(false, dealii::ExcNotImplemented());
+      // TODO (landinjm): Add n_mg_dofs
+
+#endif
+      if (mg_dof_handlers.contains(index))
+        {
+          // TODO (landinjm): Small edge case where the CHANGE and NORMAL term have
+          // different min levels.
+          Assert(mg_dof_handlers.at(index).min_level() == min_level,
+                 dealii::ExcMessage("The minimum multigrid level for index " +
+                                    std::to_string(index) +
+                                    " is not the same as the one in the MGInfo class."));
+          continue;
+        }
+
+      mg_dof_handlers[index] =
+        dealii::MGLevelObject<std::unique_ptr<dealii::DoFHandler<dim>>>(min_level,
+                                                                        global_max_level);
+      for (unsigned int level = relative_level; level < const_mg_dof_handlers.size();
+           level++)
+        {
+          mg_dof_handlers[index][level + global_min_level] =
+            std::make_unique<dealii::DoFHandler<dim>>();
+          const_mg_dof_handlers[level].push_back(
+            mg_dof_handlers[index][level + global_min_level].get());
+        }
+    }
 }
 
 template <int dim>
 void
 dofHandler<dim>::init(const triangulationHandler<dim> &triangulation_handler,
-                      const std::map<fieldType, dealii::FESystem<dim>> &fe_system)
+                      const std::map<fieldType, dealii::FESystem<dim>> &fe_system,
+                      const MGInfo<dim>                                &mg_info)
 {
-  // TODO (landinjm): Include multigrid degrees of freedom.
   unsigned int n_dofs = 0;
   for (const auto &[index, variable] : *user_inputs->var_attributes)
     {
@@ -67,19 +118,8 @@ dofHandler<dim>::init(const triangulationHandler<dim> &triangulation_handler,
       n_dofs += dof_handlers.at(index)->n_dofs();
     }
 
-  // Check if multigrid is enabled
-  std::set<unsigned int> fields_with_multigrid;
-  for (const auto &[index, linear_solver_parameters] :
-       user_inputs->linear_solve_parameters.linear_solve)
-    {
-      if (linear_solver_parameters.preconditioner == preconditionerType::GMG)
-        {
-          fields_with_multigrid.insert(index);
-        }
-    }
-
   // If we don't have multigrid print relevant info and return early
-  if (fields_with_multigrid.empty())
+  if (!has_multigrid)
     {
       // TODO (landinjm): Print other useful information in debug mode
       conditionalOStreams::pout_base()
@@ -87,40 +127,22 @@ dofHandler<dim>::init(const triangulationHandler<dim> &triangulation_handler,
         << std::flush;
       return;
     }
-  has_multigrid = true;
 
-  // TODO (landinjm): Add optimizations for shared DoFHandlers
-
-  const unsigned int min_level = triangulation_handler.get_mg_min_level();
-  const unsigned int max_level = triangulation_handler.get_mg_max_level();
-  const_mg_dof_handlers.resize(min_level, max_level);
   unsigned int n_dofs_with_mg = n_dofs;
-  for (const auto &[index, variable] : *user_inputs->var_attributes)
+
+  // Go through all fields that have multigrid levels and reinit the DoFHandlers
+  for (const auto &[index, dependency, min_level] : mg_info.get_lhs_fields())
     {
-      // FIX (landinjm): Going to disable this line below since I need to construct dof
-      // handlers for all fields on the LHS side of the multigrid solves. Right now, I'm
-      // just going to do it for all fields and optimize later.
-      /*
-      if (fields_with_multigrid.find(index) == fields_with_multigrid.end())
+#ifdef ADDITIONAL_OPTIMIZATIONS
+      AssertThrow(false, dealii::ExcNotImplemented());
+#endif
+      for (unsigned int level = min_level; level <= mg_info.get_mg_max_level(); ++level)
         {
-          continue;
-        }
-      */
-
-      // TODO (landinjm): I think this should be a ptr
-      mg_dof_handlers.emplace(index,
-                              dealii::MGLevelObject<dealii::DoFHandler<dim>>(min_level,
-                                                                             max_level));
-
-      for (unsigned int level = min_level; level <= max_level; ++level)
-        {
-          mg_dof_handlers.at(index)[level].reinit(
+          mg_dof_handlers.at(index)[level]->reinit(
             triangulation_handler.get_mg_triangulation(level));
-          mg_dof_handlers.at(index)[level].distribute_dofs(
-            fe_system.at(variable.field_type));
-          n_dofs_with_mg += mg_dof_handlers.at(index)[level].n_dofs();
-
-          const_mg_dof_handlers[level].push_back(&mg_dof_handlers.at(index)[level]);
+          mg_dof_handlers.at(index)[level]->distribute_dofs(
+            fe_system.at(user_inputs->var_attributes->at(index).field_type));
+          n_dofs_with_mg += mg_dof_handlers.at(index)[level]->n_dofs();
         }
     }
 
@@ -141,45 +163,14 @@ dofHandler<dim>::get_dof_handlers() const
 }
 
 template <int dim>
-const std::map<unsigned int, dealii::MGLevelObject<dealii::DoFHandler<dim>>> &
-dofHandler<dim>::get_mg_dof_handlers() const
-{
-  Assert(has_multigrid, dealii::ExcNotInitialized());
-  Assert(!mg_dof_handlers.empty(),
-         dealii::ExcMessage("The multigrid dof handler map is empty."));
-  return mg_dof_handlers;
-}
-
-template <int dim>
 const std::vector<const dealii::DoFHandler<dim> *> &
 dofHandler<dim>::get_mg_dof_handlers(unsigned int level) const
 {
   Assert(has_multigrid, dealii::ExcNotInitialized());
-  Assert(!mg_dof_handlers.empty(),
-         dealii::ExcMessage("The multigrid dof handler map is empty."));
-  Assert(level >= const_mg_dof_handlers.min_level() &&
-           level <= const_mg_dof_handlers.max_level(),
-         dealii::ExcIndexRange(level,
-                               const_mg_dof_handlers.min_level(),
-                               const_mg_dof_handlers.max_level()));
-  return const_mg_dof_handlers[level];
-}
-
-template <int dim>
-const dealii::DoFHandler<dim> &
-dofHandler<dim>::get_mg_dof_handler(unsigned int index, unsigned int level) const
-{
-  Assert(has_multigrid, dealii::ExcNotInitialized());
-  Assert(!mg_dof_handlers.empty(),
-         dealii::ExcMessage("The multigrid dof handler map is empty."));
-  Assert(mg_dof_handlers.find(index) != mg_dof_handlers.end(),
-         dealii::ExcMessage("The multigrid dof handler map does not contain the index."));
-  Assert(level >= mg_dof_handlers.at(index).min_level() &&
-           level <= mg_dof_handlers.at(index).max_level(),
-         dealii::ExcIndexRange(level,
-                               mg_dof_handlers.at(index).min_level(),
-                               mg_dof_handlers.at(index).max_level()));
-  return mg_dof_handlers.at(index)[level];
+  Assert(!const_mg_dof_handlers.empty(), dealii::ExcNotInitialized());
+  Assert((level - global_min_level) < const_mg_dof_handlers.size(),
+         dealii::ExcMessage("The requested level is out of range."));
+  return const_mg_dof_handlers[level - global_min_level];
 }
 
 INSTANTIATE_UNI_TEMPLATE(dofHandler)

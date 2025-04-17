@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <deal.II/base/exceptions.h>
+
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
@@ -36,6 +38,107 @@ public:
   explicit MGInfo(const userInputParameters<dim> &_user_inputs);
 
   /**
+   * \brief If multigrid is enabled.
+   */
+  [[nodiscard]] bool
+  has_multigrid() const
+  {
+    return multigrid_on;
+  }
+
+  /**
+   * \brief Get the minimum multigrid level.
+   */
+  [[nodiscard]] min
+  get_mg_min_level() const
+  {
+    Assert(multigrid_on, dealii::ExcNotInitialized());
+    return global_mg_level.first;
+  }
+
+  /**
+   * \brief Get the maximum multigrid level.
+   */
+  [[nodiscard]] max
+  get_mg_max_level() const
+  {
+    Assert(multigrid_on, dealii::ExcNotInitialized());
+    return global_mg_level.second;
+  }
+
+  /**
+   * \brief Get the collection of minimum multigrid levels for the LHS fields.
+   */
+  [[nodiscard]] std::set<std::tuple<types::index, dependencyType, min>>
+  get_lhs_fields() const
+  {
+    Assert(multigrid_on, dealii::ExcNotInitialized());
+    return lhs_fields;
+  }
+
+  /**
+   * \brief Get the depth of the multigrid hierarchy
+   */
+  [[nodiscard]] unsigned int
+  get_mg_depth() const
+  {
+    Assert(multigrid_on, dealii::ExcNotInitialized());
+    return mg_levels.size();
+  }
+
+  /**
+   * \brief Get the depth of the multigrid hierarchy
+   */
+  [[nodiscard]] unsigned int
+  get_mg_breadth(unsigned int level) const
+  {
+    Assert(multigrid_on, dealii::ExcNotInitialized());
+    Assert(level < mg_levels.size(),
+           dealii::ExcMessage(
+             "The multigrid hierarchy does not contain the relative level = " +
+             std::to_string(level)));
+    return mg_levels[level].size();
+  }
+
+  /**
+   * \brief Get the global index for a given local index and relative level.
+   */
+  [[nodiscard]] unsigned int
+  get_global_index(unsigned int index, unsigned int level) const
+  {
+    Assert(multigrid_on, dealii::ExcNotInitialized());
+    Assert(level < mg_levels.size(),
+           dealii::ExcMessage(
+             "The multigrid hierarchy does not contain the relative level = " +
+             std::to_string(level)));
+    Assert(index < mg_levels[level].size(),
+           dealii::ExcMessage(
+             "The multigrid hierarchy does not contain the local index = " +
+             std::to_string(index)));
+    return mg_levels[level][index];
+  }
+
+  /**
+   * \brief Get the local index for a given global index and level.
+   */
+  [[nodiscard]] unsigned int
+  get_local_index(unsigned int global_index, unsigned int level) const
+  {
+    Assert(multigrid_on, dealii::ExcNotInitialized());
+    const unsigned int relative_level = level - global_mg_level.first;
+    Assert(relative_level < mg_levels.size(),
+           dealii::ExcMessage("The multigrid hierarchy does not contain level = " +
+                              std::to_string(level)));
+    auto iterator = std::find(mg_levels[relative_level].begin(),
+                              mg_levels[relative_level].end(),
+                              global_index);
+    Assert(iterator != mg_levels[relative_level].end(),
+           dealii::ExcMessage("The multigrid level does not contain index = " +
+                              std::to_string(global_index)));
+    return std::distance(mg_levels[relative_level].begin(), iterator);
+  }
+
+  /**
    * \brief Print information about the instances of this class.
    */
   void
@@ -50,7 +153,7 @@ private:
   /**
    * \brief Whether multigrid is enabled.
    */
-  bool has_multigrid = false;
+  bool multigrid_on = false;
 
   /**
    * \brief Global min and max multigrid levels.
@@ -62,6 +165,11 @@ private:
    * initialized for the LHS of gmg fields.
    */
   std::set<std::tuple<types::index, dependencyType, min>> lhs_fields;
+
+  /**
+   * \brief Vector hierarchy of required multigrid levels.
+   */
+  std::vector<std::vector<unsigned int>> mg_levels;
 };
 
 template <int dim>
@@ -91,10 +199,10 @@ inline MGInfo<dim>::MGInfo(const userInputParameters<dim> &_user_inputs)
 
   if (fields_with_multigrid.empty())
     {
-      has_multigrid = false;
+      multigrid_on = false;
       return;
     }
-  has_multigrid = true;
+  multigrid_on = true;
 
   // Create the set of tuples that let us know which fields have what multigrid levels.
   // Note that we don't have to do this if the dependencyType is CHANGE, although we must
@@ -118,6 +226,10 @@ inline MGInfo<dim>::MGInfo(const userInputParameters<dim> &_user_inputs)
               continue;
             }
 
+          AssertThrow(pair.second == dependencyType::NORMAL ||
+                        pair.second == dependencyType::CHANGE,
+                      dealii::ExcNotImplemented());
+
           all_lhs_fields.insert(
             std::make_tuple(pair.first, pair.second, min_levels.at(index)));
         }
@@ -139,33 +251,57 @@ inline MGInfo<dim>::MGInfo(const userInputParameters<dim> &_user_inputs)
     {
       lhs_fields.insert(std::make_tuple(key.first, key.second, min_level));
     }
+
+  mg_levels.resize(global_mg_level.second - global_mg_level.first + 1);
+  for (const auto &[index, dependency, min_level] : lhs_fields)
+    {
+      const unsigned int relative_level = min_level - global_mg_level.first;
+      for (unsigned int level = relative_level; level < mg_levels.size(); level++)
+        {
+          mg_levels[level].push_back(index);
+        }
+    }
 }
 
 template <int dim>
 void
 MGInfo<dim>::print()
 {
-  conditionalOStreams::pout_base()
+  conditionalOStreams::pout_summary()
     << "================================================\n"
     << "  MGInfo\n"
     << "================================================\n";
-  if (!has_multigrid)
+  if (!multigrid_on)
     {
-      conditionalOStreams::pout_base()
+      conditionalOStreams::pout_summary()
         << "  There are no fields with multigrid enabled\n\n"
         << std::flush;
       return;
     }
-  conditionalOStreams::pout_base() << "  Global min = " << global_mg_level.first
-                                   << " and max = " << global_mg_level.second << "\n"
-                                   << "  LHS dependency fields:\n";
+  conditionalOStreams::pout_summary() << "  Global min = " << global_mg_level.first
+                                      << " and max = " << global_mg_level.second << "\n"
+                                      << "  LHS dependency fields:\n";
   for (const auto &[field, dependency, minimum] : lhs_fields)
     {
-      conditionalOStreams::pout_base()
+      conditionalOStreams::pout_summary()
         << "    Index " << field << " Type " << to_string(dependency) << " Min "
         << minimum << "\n";
     }
-  conditionalOStreams::pout_base() << std::flush;
+  unsigned int outer_index = 0;
+  conditionalOStreams::pout_summary() << "  LHS index hierarchy:\n";
+  for (const auto &vector : mg_levels)
+    {
+      conditionalOStreams::pout_summary() << "    Outer index " << outer_index << "\n";
+      unsigned int inner_index = 0;
+      for (const auto &index : vector)
+        {
+          conditionalOStreams::pout_summary()
+            << "      Inner index " << inner_index << " Field index: " << index << "\n";
+          inner_index++;
+        }
+      outer_index++;
+    }
+  conditionalOStreams::pout_summary() << "\n" << std::flush;
 }
 
 PRISMS_PF_END_NAMESPACE

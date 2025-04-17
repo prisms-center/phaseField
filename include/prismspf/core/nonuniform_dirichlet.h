@@ -19,36 +19,37 @@ class userInputParameters;
 /**
  * \brief Forward declaration of user-facing implementation
  */
-template <int dim>
+template <int dim, typename number>
 class customNonuniformDirichlet;
 
 /**
  * \brief Function for user-implemented nonuniform dirichlet boundary condition.
  */
-template <int dim, fieldType field_type = fieldType::SCALAR>
-class nonuniformDirichlet : public dealii::Function<dim, double>
+template <int dim, typename number>
+class nonuniformDirichlet : public dealii::Function<dim, number>
 {
 public:
   /**
    * \brief Constructor.
    */
-  nonuniformDirichlet(const unsigned int             &_index,
-                      const unsigned int             &_boundary_id,
-                      const userInputParameters<dim> &_user_inputs);
+  nonuniformDirichlet(unsigned int                    _index,
+                      unsigned int                    _boundary_id,
+                      const userInputParameters<dim> &_user_inputs,
+                      unsigned int                    spacedim);
 
   // NOLINTBEGIN(readability-identifier-length, readability-avoid-const-params-in-decls)
 
   /**
    * \brief Scalar value.
    */
-  double
+  number
   value(const dealii::Point<dim> &p, const unsigned int component = 0) const override;
 
   /**
    * \brief Vector value.
    */
   void
-  vector_value(const dealii::Point<dim> &p, dealii::Vector<double> &value) const override;
+  vector_value(const dealii::Point<dim> &p, dealii::Vector<number> &value) const override;
 
   // NOLINTEND(readability-identifier-length, readability-avoid-const-params-in-decls)
 
@@ -59,13 +60,13 @@ private:
 
   const userInputParameters<dim> *user_inputs;
 
-  customNonuniformDirichlet<dim> custom_nonuniform_dirichlet;
+  customNonuniformDirichlet<dim, number> custom_nonuniform_dirichlet;
 };
 
 /**
  * \brief User-facing implementation of nonuniform boundary conditions
  */
-template <int dim>
+template <int dim, typename number>
 class customNonuniformDirichlet
 {
 public:
@@ -83,8 +84,8 @@ public:
                            const unsigned int             &boundary_id,
                            const unsigned int             &component,
                            const dealii::Point<dim>       &point,
-                           double                         &scalar_value,
-                           double                         &vector_component_value,
+                           number                         &scalar_value,
+                           number                         &vector_component_value,
                            const userInputParameters<dim> &user_inputs) const;
 };
 

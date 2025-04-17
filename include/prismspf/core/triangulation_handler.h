@@ -6,6 +6,8 @@
 #include <deal.II/distributed/tria.h>
 #include <deal.II/grid/tria.h>
 
+#include <prismspf/core/multigrid_info.h>
+
 #include <prismspf/config.h>
 
 #include <string>
@@ -33,7 +35,8 @@ public:
   /**
    * \brief Constructor.
    */
-  explicit triangulationHandler(const userInputParameters<dim> &_user_inputs);
+  explicit triangulationHandler(const userInputParameters<dim> &_user_inputs,
+                                const MGInfo<dim>              &mg_info);
 
   /**
    * \brief Getter function for triangulation (constant reference).

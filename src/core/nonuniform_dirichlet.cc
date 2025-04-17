@@ -14,12 +14,13 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim, fieldType field_type>
-nonuniformDirichlet<dim, field_type>::nonuniformDirichlet(
-  const unsigned int             &_index,
-  const unsigned int             &_boundary_id,
-  const userInputParameters<dim> &_user_inputs)
-  : dealii::Function<dim>((field_type == fieldType::VECTOR) ? dim : 1)
+template <int dim, typename number>
+nonuniformDirichlet<dim, number>::nonuniformDirichlet(
+  unsigned int                    _index,
+  unsigned int                    _boundary_id,
+  const userInputParameters<dim> &_user_inputs,
+  unsigned int                    spacedim)
+  : dealii::Function<dim, number>(spacedim)
   , index(_index)
   , boundary_id(_boundary_id)
   , user_inputs(&_user_inputs)
@@ -27,15 +28,15 @@ nonuniformDirichlet<dim, field_type>::nonuniformDirichlet(
 
 // NOLINTBEGIN(readability-identifier-length)
 
-template <int dim, fieldType field_type>
-double
-nonuniformDirichlet<dim, field_type>::value(
+template <int dim, typename number>
+number
+nonuniformDirichlet<dim, number>::value(
   const dealii::Point<dim>           &p,
   [[maybe_unused]] const unsigned int component) const
 {
   // Initialize passed variables to zero
-  double                 temp_scalar_value = 0.0;
-  dealii::Vector<double> temp_vector_value(dim);
+  number                 temp_scalar_value = 0.0;
+  dealii::Vector<number> temp_vector_value(dim);
 
   // Pass variables to user-facing function to evaluate
   custom_nonuniform_dirichlet.set_nonuniform_dirichlet(index,
@@ -49,14 +50,14 @@ nonuniformDirichlet<dim, field_type>::value(
   return temp_scalar_value;
 }
 
-template <int dim, fieldType field_type>
+template <int dim, typename number>
 void
-nonuniformDirichlet<dim, field_type>::vector_value(const dealii::Point<dim> &p,
-                                                   dealii::Vector<double>   &value) const
+nonuniformDirichlet<dim, number>::vector_value(const dealii::Point<dim> &p,
+                                               dealii::Vector<number>   &value) const
 {
   // Initialize passed variables to zero
-  double                 temp_scalar_value = 0.0;
-  dealii::Vector<double> temp_vector_value(dim);
+  number                 temp_scalar_value = 0.0;
+  dealii::Vector<number> temp_vector_value(dim);
 
   // Pass variables to user-facing function to evaluate
   for (int i = 0; i < dim; i++)
@@ -75,11 +76,11 @@ nonuniformDirichlet<dim, field_type>::vector_value(const dealii::Point<dim> &p,
 
 // NOLINTEND(readability-identifier-length)
 
-template class nonuniformDirichlet<1, fieldType::SCALAR>;
-template class nonuniformDirichlet<1, fieldType::VECTOR>;
-template class nonuniformDirichlet<2, fieldType::SCALAR>;
-template class nonuniformDirichlet<2, fieldType::VECTOR>;
-template class nonuniformDirichlet<3, fieldType::SCALAR>;
-template class nonuniformDirichlet<3, fieldType::VECTOR>;
+template class nonuniformDirichlet<1, double>;
+template class nonuniformDirichlet<2, double>;
+template class nonuniformDirichlet<3, double>;
+template class nonuniformDirichlet<1, float>;
+template class nonuniformDirichlet<2, float>;
+template class nonuniformDirichlet<3, float>;
 
 PRISMS_PF_END_NAMESPACE

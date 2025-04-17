@@ -8,6 +8,8 @@
 #include <deal.II/fe/mapping.h>
 #include <deal.II/lac/affine_constraints.h>
 
+#include <prismspf/core/multigrid_info.h>
+
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -26,7 +28,8 @@ public:
   /**
    * \brief Constructor.
    */
-  explicit constraintHandler(const userInputParameters<dim> &_user_inputs);
+  constraintHandler(const userInputParameters<dim> &_user_inputs,
+                    const MGInfo<dim>              &_mg_info);
 
   /**
    * \brief Getter function for the constraints.
@@ -38,28 +41,20 @@ public:
    * \brief Getter function for the constraint of an index (constant reference).
    */
   [[nodiscard]] const dealii::AffineConstraints<double> &
-  get_constraint(const unsigned int &index) const;
+  get_constraint(unsigned int index) const;
 
   /**
-   * \brief Getter function for the multigrid constraints of an index (constant
-   * reference).
+   * \brief Getter function for the multigrid constraints of a certain level.
    */
-  [[nodiscard]] const dealii::MGLevelObject<dealii::AffineConstraints<float>> &
-  get_mg_constraint(unsigned int index) const;
+  [[nodiscard]] std::vector<const dealii::AffineConstraints<float> *>
+  get_mg_constraints(unsigned int level);
 
   /**
-   * \brief Getter function for the multigrid constraints of an index at a certain
-   * multigrid level (constant reference).
-   */
-  [[nodiscard]] const dealii::AffineConstraints<float> &
-  get_mg_constraint(unsigned int index, unsigned int level) const;
-
-  /**
-   * \brief Getter function for the multigrid constraints at a certain multigrid level
+   * \brief Getter function for the multigrid constraint of a certain level and index
    * (constant reference).
    */
-  [[nodiscard]] std::vector<dealii::AffineConstraints<float> *>
-  get_mg_level_constraints(unsigned int level) const;
+  [[nodiscard]] const dealii::AffineConstraints<float> &
+  get_mg_constraint(unsigned int level, unsigned int index) const;
 
   /**
    * \brief Make constraints based on the inputs of the constructor.
@@ -69,41 +64,106 @@ public:
                    const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers);
 
   /**
-   * \brief Make multigrid constraints based on the inputs of the constructor.
+   * \brief Make multigrid constraints for a given level based on the inputs of the
+   * constructor.
    */
   void
-  make_mg_constraints(
-    const dealii::Mapping<dim> &mapping,
-    const std::map<unsigned int, dealii::MGLevelObject<dealii::DoFHandler<dim>>>
-      &mg_dof_handlers);
+  make_mg_constraints(const dealii::Mapping<dim>                         &mapping,
+                      const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers,
+                      unsigned int                                        level);
 
 private:
   /**
-   * \brief Make the constrainst for a single index.
+   * \brief Make the constraint for a single index.
    */
   void
   make_constraint(const dealii::Mapping<dim>    &mapping,
                   const dealii::DoFHandler<dim> &dof_handler,
-                  const unsigned int            &index);
+                  unsigned int                   index);
 
   /**
-   * \brief Make the multigrid constrainst for a single index.
+   * \brief Make the multigrid constraint for a single index at a single level.
    */
   void
-  make_mg_constraint(const dealii::Mapping<dim>                           &mapping,
-                     const dealii::MGLevelObject<dealii::DoFHandler<dim>> &dof_handler,
-                     const unsigned int                                   &index);
+  make_mg_constraint(const dealii::Mapping<dim>    &mapping,
+                     const dealii::DoFHandler<dim> &dof_handler,
+                     unsigned int                   index,
+                     unsigned int                   level,
+                     dependencyType                 dependency_type);
 
   /**
    * \brief Set the dirichlet constraint for the pinned point.
    */
+  template <typename number>
   void
-  set_pinned_point(const dealii::DoFHandler<dim> &dof_handler, const unsigned int &index);
+  set_pinned_point(const dealii::DoFHandler<dim>     &dof_handler,
+                   dealii::AffineConstraints<number> &constraints,
+                   unsigned int                       index) const;
+
+  /**
+   * \brief Set the dirichlet constraint for the pinned point.
+   */
+  template <typename number>
+  void
+  set_mg_pinned_point(const dealii::DoFHandler<dim>     &dof_handler,
+                      dealii::AffineConstraints<number> &constraints,
+                      unsigned int                       index) const;
+
+  /**
+   * \brief Clear, reinitialize and make hanging node constraints
+   */
+  template <typename number>
+  void
+  apply_generic_constraints(const dealii::DoFHandler<dim>     &dof_handler,
+                            dealii::AffineConstraints<number> &constraints) const;
+
+  /**
+   * \brief Apply constraints for common boundary conditions.
+   */
+  template <typename number, int spacedim>
+  void
+  apply_constraints(const dealii::Mapping<dim>        &mapping,
+                    const dealii::DoFHandler<dim>     &dof_handler,
+                    dealii::AffineConstraints<number> &constraints,
+                    const boundaryCondition           &boundary_condition,
+                    boundaryCondition::type            boundary_type,
+                    unsigned int                       boundary_id,
+                    unsigned int                       component,
+                    unsigned int                       index) const;
+
+  /**
+   * \brief Apply multigrid constraints for common boundary conditions. The only
+   * difference between this function and the previous one is that an dirichlet boundary
+   * conditions are constrained to 0.
+   */
+  template <typename number, int spacedim>
+  void
+  apply_mg_constraints(const dealii::Mapping<dim>        &mapping,
+                       const dealii::DoFHandler<dim>     &dof_handler,
+                       dealii::AffineConstraints<number> &constraints,
+                       boundaryCondition::type            boundary_type,
+                       unsigned int                       boundary_id,
+                       unsigned int                       component) const;
 
   /**
    * \brief User-inputs.
    */
   const userInputParameters<dim> *user_inputs;
+
+  /**
+   * \brief Multigrid info
+   */
+  const MGInfo<dim> *mg_info;
+
+  /**
+   * \brief Whether we have multigrid.
+   */
+  bool has_multigrid = false;
+
+  /**
+   * \brief Global minimum level for multigrid.
+   */
+  unsigned int global_min_level = 0;
 
   /**
    * \brief Constraints.
@@ -113,8 +173,7 @@ private:
   /**
    * \brief Multigrid constraints.
    */
-  std::map<unsigned int, dealii::MGLevelObject<dealii::AffineConstraints<float>>>
-    mg_constraints;
+  std::vector<std::vector<dealii::AffineConstraints<float>>> mg_constraints;
 };
 
 PRISMS_PF_END_NAMESPACE
