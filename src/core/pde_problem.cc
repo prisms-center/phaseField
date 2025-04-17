@@ -101,7 +101,8 @@ PDEProblem<dim, degree>::PDEProblem(
                               multigrid_matrix_free_handler,
                               solution_handler,
                               _pde_operator,
-                              _pde_operator_float)
+                              _pde_operator_float,
+                              mg_info)
   , nonexplicit_self_nonlinear_solver(_user_inputs,
                                       matrix_free_handler,
                                       triangulation_handler,
@@ -112,7 +113,8 @@ PDEProblem<dim, degree>::PDEProblem(
                                       multigrid_matrix_free_handler,
                                       solution_handler,
                                       _pde_operator,
-                                      _pde_operator_float)
+                                      _pde_operator_float,
+                                      mg_info)
 {}
 
 template <int dim, int degree>

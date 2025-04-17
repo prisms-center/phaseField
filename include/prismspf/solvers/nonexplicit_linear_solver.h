@@ -38,7 +38,8 @@ public:
     dealii::MGLevelObject<matrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
     solutionHandler<dim>                                   &_solution_handler,
     std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
-    std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float);
+    std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float,
+    const MGInfo<dim>                                      &_mg_info);
 
   /**
    * \brief Destructor.
@@ -72,6 +73,11 @@ private:
    * \brief PDE operator but for floats!
    */
   std::shared_ptr<const PDEOperator<dim, degree, float>> pde_operator_float;
+
+  /**
+   * \brief Multigrid information
+   */
+  const MGInfo<dim> *mg_info;
 };
 
 PRISMS_PF_END_NAMESPACE

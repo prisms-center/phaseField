@@ -39,7 +39,8 @@ nonexplicitSelfNonlinearSolver<dim, degree>::nonexplicitSelfNonlinearSolver(
   dealii::MGLevelObject<matrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
   solutionHandler<dim>                                   &_solution_handler,
   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
-  std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float)
+  std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float,
+  const MGInfo<dim>                                      &_mg_info)
   : nonexplicitBase<dim, degree>(_user_inputs,
                                  _matrix_free_handler,
                                  _triangulation_handler,
@@ -51,6 +52,7 @@ nonexplicitSelfNonlinearSolver<dim, degree>::nonexplicitSelfNonlinearSolver(
                                  _solution_handler,
                                  std::move(_pde_operator))
   , pde_operator_float(std::move(_pde_operator_float))
+  , mg_info(&_mg_info)
 {}
 
 template <int dim, int degree>
@@ -83,7 +85,8 @@ nonexplicitSelfNonlinearSolver<dim, degree>::init()
                                                      *this->mg_matrix_free_handler,
                                                      *this->solution_handler,
                                                      this->pde_operator,
-                                                     pde_operator_float));
+                                                     pde_operator_float,
+                                                     *mg_info));
           gmg_solvers.at(index)->init();
         }
       else
