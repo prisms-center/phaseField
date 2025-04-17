@@ -243,27 +243,23 @@ constraintHandler<dim>::make_mg_constraint(const dealii::Mapping<dim>    &mappin
           for (const auto &[boundary_id, boundary_type] :
                condition.boundary_condition_map)
             {
-              for (const auto &[boundary_id, boundary_type] :
-                   condition.boundary_condition_map)
+              if (user_inputs->var_attributes->at(global_index).field_type !=
+                  fieldType::VECTOR)
                 {
-                  if (user_inputs->var_attributes->at(global_index).field_type !=
-                      fieldType::VECTOR)
-                    {
-                      apply_mg_constraints<float, 1>(mapping,
-                                                     dof_handler,
-                                                     local_constraint,
-                                                     boundary_type,
-                                                     boundary_id,
-                                                     component);
-                      continue;
-                    }
-                  apply_mg_constraints<float, dim>(mapping,
-                                                   dof_handler,
-                                                   local_constraint,
-                                                   boundary_type,
-                                                   boundary_id,
-                                                   component);
+                  apply_mg_constraints<float, 1>(mapping,
+                                                 dof_handler,
+                                                 local_constraint,
+                                                 boundary_type,
+                                                 boundary_id,
+                                                 component);
+                  continue;
                 }
+              apply_mg_constraints<float, dim>(mapping,
+                                               dof_handler,
+                                               local_constraint,
+                                               boundary_type,
+                                               boundary_id,
+                                               component);
             }
         }
 
@@ -282,31 +278,27 @@ constraintHandler<dim>::make_mg_constraint(const dealii::Mapping<dim>    &mappin
           for (const auto &[boundary_id, boundary_type] :
                condition.boundary_condition_map)
             {
-              for (const auto &[boundary_id, boundary_type] :
-                   condition.boundary_condition_map)
+              if (user_inputs->var_attributes->at(global_index).field_type !=
+                  fieldType::VECTOR)
                 {
-                  if (user_inputs->var_attributes->at(global_index).field_type !=
-                      fieldType::VECTOR)
-                    {
-                      apply_constraints<float, 1>(mapping,
-                                                  dof_handler,
-                                                  local_constraint,
-                                                  condition,
-                                                  boundary_type,
-                                                  boundary_id,
-                                                  component,
-                                                  index);
-                      continue;
-                    }
-                  apply_constraints<float, dim>(mapping,
-                                                dof_handler,
-                                                local_constraint,
-                                                condition,
-                                                boundary_type,
-                                                boundary_id,
-                                                component,
-                                                index);
+                  apply_constraints<float, 1>(mapping,
+                                              dof_handler,
+                                              local_constraint,
+                                              condition,
+                                              boundary_type,
+                                              boundary_id,
+                                              component,
+                                              index);
+                  continue;
                 }
+              apply_constraints<float, dim>(mapping,
+                                            dof_handler,
+                                            local_constraint,
+                                            condition,
+                                            boundary_type,
+                                            boundary_id,
+                                            component,
+                                            index);
             }
         }
 
