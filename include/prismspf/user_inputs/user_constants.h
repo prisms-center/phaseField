@@ -153,58 +153,58 @@ private:
   {
   public:
     void
-    operator()(double d) const
+    operator()(double value) const
     {
-      conditionalOStreams::pout_summary() << d;
+      conditionalOStreams::pout_summary() << value;
     }
 
     void
-    operator()(int i) const
+    operator()(int value) const
     {
-      conditionalOStreams::pout_summary() << i;
+      conditionalOStreams::pout_summary() << value;
     }
 
     void
-    operator()(bool b) const
+    operator()(bool value) const
     {
-      conditionalOStreams::pout_summary() << std::boolalpha << b;
+      conditionalOStreams::pout_summary() << std::boolalpha << value;
     }
 
     void
-    operator()(const dealii::Tensor<1, dim> &t) const
+    operator()(const dealii::Tensor<1, dim> &value) const
     {
       conditionalOStreams::pout_summary() << "Tensor<1, " << dim << ">: ";
-      for (unsigned int i = 0; i < dim; ++i)
+      for (int i = 0; i < dim; ++i)
         {
-          conditionalOStreams::pout_summary() << t[i] << ' ';
+          conditionalOStreams::pout_summary() << value[i] << ' ';
         }
     }
 
     void
-    operator()(const dealii::Tensor<2, dim> &t) const
+    operator()(const dealii::Tensor<2, dim> &value) const
     {
       conditionalOStreams::pout_summary() << "Tensor<2, " << dim << ">: ";
-      for (unsigned int i = 0; i < dim; ++i)
+      for (int i = 0; i < dim; ++i)
         {
-          for (unsigned int j = 0; j < dim; ++j)
+          for (int j = 0; j < dim; ++j)
             {
-              conditionalOStreams::pout_summary() << t[i][j] << ' ';
+              conditionalOStreams::pout_summary() << value[i][j] << ' ';
             }
         }
     }
 
     template <int D = dim>
     void
-    operator()(const dealii::Tensor<2, (2 * D) - 1 + (D / 3)> &t) const
+    operator()(const dealii::Tensor<2, (2 * D) - 1 + (D / 3)> &value) const
     requires((D != ((2 * D) - 1 + (D / 3))))
     {
-      constexpr int d = (2 * D) - 1 + (D / 3);
-      conditionalOStreams::pout_summary() << "Tensor<2, " << d << ">: ";
-      for (unsigned int i = 0; i < d; ++i)
+      constexpr int dimension = (2 * D) - 1 + (D / 3);
+      conditionalOStreams::pout_summary() << "Tensor<2, " << dimension << ">: ";
+      for (int i = 0; i < dimension; ++i)
         {
-          for (unsigned int j = 0; j < d; ++j)
+          for (int j = 0; j < dimension; ++j)
             {
-              conditionalOStreams::pout_summary() << t[i][j] << ' ';
+              conditionalOStreams::pout_summary() << value[i][j] << ' ';
             }
         }
     }
