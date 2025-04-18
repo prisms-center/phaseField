@@ -53,7 +53,8 @@ public:
   explicit matrixFreeOperator(
     const std::map<unsigned int, variableAttributes>       &_attributes_list,
     std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
-    types::index _current_index = numbers::invalid_index);
+    types::index _current_index     = numbers::invalid_index,
+    bool         _use_local_mapping = false);
 
   /**
    * \brief Initialize operator.
@@ -241,6 +242,11 @@ private:
    * \brief Current field index that is being evaluated.
    */
   types::index current_index = numbers::invalid_index;
+
+  /**
+   * \brief Whether to use local mapping for the variableContainer object.
+   */
+  bool use_local_mapping = false;
 
   /**
    * \brief Matrix-free object.

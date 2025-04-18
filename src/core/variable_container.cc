@@ -31,7 +31,8 @@ variableContainer<dim, degree, number>::variableContainer(
   const std::map<unsigned int, variableAttributes> &_subset_attributes,
   const std::map<std::pair<unsigned int, dependencyType>, unsigned int>
                   &_global_to_local_solution,
-  const solveType &_solve_type)
+  const solveType &_solve_type,
+  bool             use_local_mapping)
   : subset_attributes(&_subset_attributes)
   , global_to_local_solution(&_global_to_local_solution)
   , solve_type(_solve_type)
@@ -45,13 +46,40 @@ variableContainer<dim, degree, number>::variableContainer(
           {
             if (field_type == fieldType::SCALAR)
               {
-                feeval_map[dependency_index][dependency_type] =
-                  std::make_unique<scalar_FEEval>(data, dependency_index);
+                if (!use_local_mapping)
+                  {
+                    feeval_map[dependency_index][dependency_type] =
+                      std::make_unique<scalar_FEEval>(data, dependency_index);
+                  }
+                else
+                  {
+                    // TODO (landinjm): Find a better way to represent this. Maybe it
+                    // would be better just to pass the desired mapping of global
+                    // variables to matrix free indices. For most cases, they are one and
+                    // the same, but for multigrid they are different as not all fields
+                    // have matrixfree data associated for the multigrid levels.
+                    feeval_map[dependency_index][dependency_type] =
+                      std::make_unique<scalar_FEEval>(data,
+                                                      global_to_local_solution->at(
+                                                        std::make_pair(dependency_index,
+                                                                       dependency_type)));
+                  }
               }
             else
               {
-                feeval_map[dependency_index][dependency_type] =
-                  std::make_unique<vector_FEEval>(data, dependency_index);
+                if (!use_local_mapping)
+                  {
+                    feeval_map[dependency_index][dependency_type] =
+                      std::make_unique<vector_FEEval>(data, dependency_index);
+                  }
+                else
+                  {
+                    feeval_map[dependency_index][dependency_type] =
+                      std::make_unique<vector_FEEval>(data,
+                                                      global_to_local_solution->at(
+                                                        std::make_pair(dependency_index,
+                                                                       dependency_type)));
+                  }
               }
           }
       }
@@ -679,11 +707,6 @@ variableContainer<dim, degree, number>::reinit(unsigned int        cell,
       {
         const unsigned int   &dependency_index = pair.first;
         const dependencyType &dependency_type  = pair.second;
-
-        Assert(subset_attributes->contains(dependency_index),
-               dealii::ExcMessage(
-                 "The subset attribute entry does not exists for global index = " +
-                 std::to_string(dependency_index)));
         FEEval_exists(dependency_index, dependency_type);
         auto &feeval_variant = feeval_map.at(dependency_index).at(dependency_type);
 
@@ -821,11 +844,6 @@ variableContainer<dim, degree, number>::eval(const unsigned int &global_variable
       {
         const unsigned int   &dependency_index = pair.first;
         const dependencyType &dependency_type  = pair.second;
-
-        Assert(subset_attributes->contains(dependency_index),
-               dealii::ExcMessage(
-                 "The subset attribute entry does not exists for global index = " +
-                 std::to_string(dependency_index)));
         FEEval_exists(dependency_index, dependency_type);
         auto &feeval_variant = feeval_map.at(dependency_index).at(dependency_type);
 

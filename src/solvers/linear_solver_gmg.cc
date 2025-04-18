@@ -66,10 +66,24 @@ template <int dim, int degree>
 inline void
 GMGSolver<dim, degree>::init()
 {
+  // We solve the system with a global coarsening approach. There are two options when
+  // doing this: geometric coarsening and polynomial coarsening. We only support geometric
+  // as of now.
+
+  // Grab the min and max level
+  // TODO(landinjm): This should be done in the constructor and with MGInfo
+  min_level = mg_info->get_mg_min_level();
+  max_level = mg_info->get_mg_max_level();
+
   // Print the local indices and global ones and check that they match the MGInfo provided
   // ones.
+  unsigned int change_index = 0;
   for (const auto &[pair, local_index] : this->newton_update_global_to_local_solution)
     {
+      if (pair.second == dependencyType::CHANGE)
+        {
+          change_index = local_index;
+        }
       for (unsigned int level = min_level; level <= max_level; ++level)
         {
           Assert(local_index == mg_info->get_local_index(pair.first, level),
@@ -78,28 +92,20 @@ GMGSolver<dim, degree>::init()
         }
     }
 
-  // We solve the system with a global coarsening approach. There are two options when
-  // doing this: geometric coarsening and polynomial coarsening. We only support geometric
-  // as of now.
-
-  // Grab the min and max level
-  // TODO(landinjm): This should be done in the constructor and with MGInfo
-  min_level = triangulation_handler->get_mg_min_level();
-  max_level = triangulation_handler->get_mg_max_level();
-
   // Init the multilevel operator objects
   mg_operators =
     std::make_unique<dealii::MGLevelObject<LevelMatrixType>>(min_level,
                                                              max_level,
                                                              this->subset_attributes,
                                                              pde_operator_float,
-                                                             this->field_index);
+                                                             this->field_index,
+                                                             true);
 
   // Setup operator on each level
   for (unsigned int level = min_level; level <= max_level; ++level)
     {
-      (*mg_operators)[level].initialize(
-        (*mg_matrix_free_handler)[level].get_matrix_free());
+      (*mg_operators)[level]
+        .initialize((*mg_matrix_free_handler)[level].get_matrix_free(), {change_index});
 
       (*mg_operators)[level].add_global_to_local_mapping(
         this->newton_update_global_to_local_solution);

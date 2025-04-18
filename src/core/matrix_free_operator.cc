@@ -30,11 +30,13 @@ template <int dim, int degree, typename number>
 matrixFreeOperator<dim, degree, number>::matrixFreeOperator(
   const std::map<unsigned int, variableAttributes>       &_attributes_list,
   std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
-  types::index                                            _current_index)
+  types::index                                            _current_index,
+  bool                                                    _use_local_mapping)
   : Subscriptor()
   , attributes_list(&_attributes_list)
   , pde_operator(std::move(_pde_operator))
   , current_index(_current_index)
+  , use_local_mapping(_use_local_mapping)
 {}
 
 template <int dim, int degree, typename number>
@@ -405,7 +407,8 @@ matrixFreeOperator<dim, degree, number>::compute_local_newton_update(
   variableContainer<dim, degree, number> variable_list(data,
                                                        *attributes_list,
                                                        global_to_local_solution,
-                                                       solveType::NONEXPLICIT_LHS);
+                                                       solveType::NONEXPLICIT_LHS,
+                                                       use_local_mapping);
 
   // Initialize, evaluate, and submit based on user function. Note that the src solution
   // subset must not include the src vector.
@@ -457,7 +460,8 @@ matrixFreeOperator<dim, degree, number>::local_compute_diagonal(
   variableContainer<dim, degree, number> variable_list(data,
                                                        *attributes_list,
                                                        global_to_local_solution,
-                                                       solveType::NONEXPLICIT_LHS);
+                                                       solveType::NONEXPLICIT_LHS,
+                                                       use_local_mapping);
 
   // Initialize, evaluate, and submit diagonal based on user function.
   variable_list.eval_local_diagonal(

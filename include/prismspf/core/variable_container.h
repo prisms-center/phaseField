@@ -44,7 +44,8 @@ public:
     const std::map<unsigned int, variableAttributes> &_subset_attributes,
     const std::map<std::pair<unsigned int, dependencyType>, unsigned int>
                     &_global_to_local_solution,
-    const solveType &_solve_type);
+    const solveType &_solve_type,
+    bool             use_local_mapping = false);
 
   /**
    * \brief Return the value of the specified scalar field.

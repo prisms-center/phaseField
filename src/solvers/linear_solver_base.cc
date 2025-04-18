@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
+#include <deal.II/base/exceptions.h>
+
 #include <prismspf/core/constraint_handler.h>
 #include <prismspf/core/matrix_free_handler.h>
 #include <prismspf/core/matrix_free_operator.h>
@@ -89,18 +91,17 @@ linearSolverBase<dim, degree>::linearSolverBase(
               Assert(field_index == variable_index,
                      dealii::ExcMessage("The change type should have the same type as "
                                         "the field we're solving."));
-              newton_update_src.push_back(
-                solution_handler->get_new_solution_vector(variable_index));
             }
-          else
-            {
-              newton_update_src.push_back(
-                solution_handler->get_solution_vector(variable_index, dependency_type));
-            }
+          newton_update_src.push_back(
+            solution_handler->get_solution_vector(variable_index, dependency_type));
           newton_update_global_to_local_solution.emplace(pair,
                                                          newton_update_src.size() - 1);
         }
     }
+  Assert(
+    newton_update_global_to_local_solution.size() == newton_update_src.size(),
+    dealii::ExcMessage(
+      "The newton update src and global to local mappings must have the same size."));
 }
 
 template <int dim, int degree>
