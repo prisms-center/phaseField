@@ -102,7 +102,7 @@ def compile_and_run_simulation(application_path, n_threads=1):
     with open("output.txt", "w") as outfile:
         try:
             subprocess.run(
-                ["mpirun", "-n", "1", "./main"],
+                ["mpirun", "-n", f"{n_threads}", "./main"],
                 stdout=outfile,
                 stderr=subprocess.PIPE,
                 check=True,
@@ -218,7 +218,11 @@ parser = argparse.ArgumentParser(
 )
 parser.add_argument("-n", "--ntasks", type=int, default=1, help="Number of processes")
 parser.add_argument(
-    "-j", "--nthreads", type=int, default=1, help="Number of threads for ninja"
+    "-j",
+    "--nthreads",
+    type=int,
+    default=1,
+    help="Number of threads for compiling & running tests",
 )
 args = parser.parse_args()
 n_processes = args.ntasks

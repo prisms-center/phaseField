@@ -53,12 +53,21 @@ jobs:
           ninja -j $(nproc)
           ctest
 
-      - name: Run PRISMS-PF automatic tests
-        timeout-minutes: 60
+      - name: Run PRISMS-PF automatic tests in serial
+        timeout-minutes: 30
         run: |
           export OMPI_ALLOW_RUN_AS_ROOT=1
           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
           cd tests/automatic_tests
           python3 run_automatic_tests.py
+
+      - name: Run PRISMS-PF automatic tests in parallel
+        timeout-minutes: 30
+        run: |
+          export OMPI_ALLOW_RUN_AS_ROOT=1
+          export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
+
+          cd tests/automatic_tests
+          python3 run_automatic_tests.py -j $(nproc)
 
