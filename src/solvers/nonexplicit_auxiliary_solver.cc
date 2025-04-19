@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
+// SPDX-License-Identifier: GNU Lesser General Public Version 2.1
+
 #include <deal.II/base/mg_level_object.h>
 #include <deal.II/fe/mapping_q1.h>
 
@@ -5,6 +8,7 @@
 #include <prismspf/core/dof_handler.h>
 #include <prismspf/core/invm_handler.h>
 #include <prismspf/core/matrix_free_handler.h>
+#include <prismspf/core/matrix_free_operator.h>
 #include <prismspf/core/pde_operator.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/triangulation_handler.h>

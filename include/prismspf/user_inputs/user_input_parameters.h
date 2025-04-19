@@ -7,7 +7,6 @@
 
 #include <prismspf/user_inputs/boundary_parameters.h>
 #include <prismspf/user_inputs/checkpoint_parameters.h>
-#include <prismspf/user_inputs/input_file_reader.h>
 #include <prismspf/user_inputs/linear_solve_parameters.h>
 #include <prismspf/user_inputs/nonlinear_solve_parameters.h>
 #include <prismspf/user_inputs/output_parameters.h>
@@ -18,6 +17,10 @@
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+struct variableAttributes;
+
+class inputFileReader;
 
 template <int dim>
 class userInputParameters

@@ -236,7 +236,7 @@ applicationList = [
     "allen_cahn_implicit",
     "cahn_hilliard_explicit",
     "heat_equation_steady_state",
-    "poisson",
+    "mechanics",
 ]
 getNewGoldStandardList = [
     False,

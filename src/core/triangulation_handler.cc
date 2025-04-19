@@ -32,7 +32,8 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <int dim>
 triangulationHandler<dim>::triangulationHandler(
-  const userInputParameters<dim> &_user_inputs)
+  const userInputParameters<dim> &_user_inputs,
+  const MGInfo<dim>              &mg_info)
   : user_inputs(&_user_inputs)
 {
   if constexpr (dim == 1)
@@ -46,6 +47,10 @@ triangulationHandler<dim>::triangulationHandler(
         MPI_COMM_WORLD,
         dealii::Triangulation<dim>::limit_level_difference_at_vertices);
     }
+
+  has_multigrid = mg_info.has_multigrid();
+  min_level     = mg_info.get_mg_min_level();
+  max_level     = mg_info.get_mg_max_level();
 }
 
 template <int dim>
@@ -158,15 +163,6 @@ triangulationHandler<dim>::generate_mesh()
 
   // Create the triangulations for the coarser levels if we have at least one instance of
   // multigrid for any of the fields
-  for (const auto &[index, linear_solver_parameters] :
-       user_inputs->linear_solve_parameters.linear_solve)
-    {
-      if (linear_solver_parameters.preconditioner == preconditionerType::GMG)
-        {
-          has_multigrid = true;
-        }
-    }
-
   if (!has_multigrid)
     {
       return;
@@ -181,10 +177,6 @@ triangulationHandler<dim>::generate_mesh()
       *triangulation);
 
   // TODO (landinjm): p-multigrid
-
-  // Set the maximum and minimum levels for the multigrid based on the triangulation.
-  min_level = 0; // TODO (landinjm): This should be set based on the user inputs
-  max_level = coarsened_triangulations.size() - 1;
 }
 
 template <int dim>

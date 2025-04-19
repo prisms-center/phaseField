@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
+// SPDX-License-Identifier: GNU Lesser General Public Version 2.1
+
 #include <deal.II/base/data_out_base.h>
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/numerics/data_component_interpretation.h>
@@ -31,8 +34,12 @@ solutionOutput<dim, number>::solutionOutput(const VectorType               &solu
   // Init data out
   dealii::DataOut<dim> data_out;
 
+  solution.update_ghost_values();
+
   // Add data vector
   data_out.add_data_vector(dof_handler, solution, name);
+
+  solution.zero_out_ghost_values();
 
   // Build patches to linearly interpolate from higher order element degrees. Note that
   // this essentially converts the element to an equal amount of subdivisions in the

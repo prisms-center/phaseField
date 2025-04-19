@@ -10,11 +10,14 @@
 #include <deal.II/matrix_free/matrix_free.h>
 
 #include <prismspf/core/type_enums.h>
-#include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/config.h>
 
+#include <variant>
+
 PRISMS_PF_BEGIN_NAMESPACE
+
+struct variableAttributes;
 
 /**
  * \brief This class permits the access of a subset of indexed fields and gives an error
@@ -39,10 +42,10 @@ public:
   variableContainer(
     const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
     const std::map<unsigned int, variableAttributes> &_subset_attributes,
-    const std::unordered_map<std::pair<unsigned int, dependencyType>,
-                             unsigned int,
-                             pairHash>               &_global_to_local_solution,
-    const solveType                                  &_solve_type);
+    const std::map<std::pair<unsigned int, dependencyType>, unsigned int>
+                    &_global_to_local_solution,
+    const solveType &_solve_type,
+    bool             use_local_mapping = false);
 
   /**
    * \brief Return the value of the specified scalar field.
@@ -223,22 +226,47 @@ public:
     const std::pair<unsigned int, unsigned int> &cell_range);
 
 private:
+  /**
+   * \brief Typedef for scalar evaluation objects.
+   */
   using scalar_FEEval = dealii::FEEvaluation<dim, degree, degree + 1, 1, number>;
+
+  /**
+   * \brief Typedef for vector evaluation objects.
+   */
   using vector_FEEval = dealii::FEEvaluation<dim, degree, degree + 1, dim, number>;
 
   /**
-   * \brief Check whether the map entry for the scalar FEEvaluation exists.
+   * \brief Typedef for the varaint evaluation objects. Note that the states become
+   * degenerate at dim = 1, hence the use of std::conditional_t.
    */
-  void
-  scalar_FEEval_exists(const unsigned int   &dependency_index,
-                       const dependencyType &dependency_type) const;
+  using variant_FEEval = std::conditional_t<
+    std::is_same_v<scalar_FEEval, vector_FEEval>,
+    std::unique_ptr<scalar_FEEval>,
+    std::variant<std::unique_ptr<scalar_FEEval>, std::unique_ptr<vector_FEEval>>>;
 
   /**
-   * \brief Check whether the map entry for the vector FEEvaluation exists.
+   * \brief Typedef for scalar diagonal matrix objects.
+   */
+  using scalar_diag = dealii::AlignedVector<size_type>;
+
+  /**
+   * \brief Typedef for vector diagonal matrix objects.
+   */
+  using vector_diag = dealii::AlignedVector<dealii::Tensor<1, dim, size_type>>;
+
+  /**
+   * \brief Typedef for the varaint diagonal matrix objects.
+   */
+  using variant_diag =
+    std::variant<std::unique_ptr<scalar_diag>, std::unique_ptr<vector_diag>>;
+
+  /**
+   * \brief Check whether the map entry for the  FEEvaluation exists.
    */
   void
-  vector_FEEval_exists(const unsigned int   &dependency_index,
-                       const dependencyType &dependency_type) const;
+  FEEval_exists(const unsigned int   &dependency_index,
+                const dependencyType &dependency_type) const;
 
   /**
    * \brief Check that a variable value/gradient/hessians was marked as needed and thus
@@ -289,7 +317,7 @@ private:
    * \brief Read dofs values on the cell for all dependencies of a certain variable index.
    */
   void
-  read_dof_values(const std::vector<VectorType *> &src, unsigned int cell);
+  read_dof_values(const std::vector<VectorType *> &src);
 
   /**
    * \brief Evaluate the flags on the cell for all dependencies of a certain variable
@@ -317,18 +345,11 @@ private:
   integrate(const unsigned int &global_variable_index);
 
   /**
-   * \brief Map of FEEvaluation objects for each active scalar variables. The first
-   * mapping is for the global variable and the second is for the dependencyType.
+   * \brief Map of FEEvaluation objects for each active variable. The first mapping is
+   * for the global variable, the second is for the dependencyType, and the value is
+   * a variant that can hold either a scalar or vector FEEvaluation.
    */
-  std::map<unsigned int, std::map<dependencyType, std::unique_ptr<scalar_FEEval>>>
-    scalar_vars_map;
-
-  /**
-   * \brief Map of FEEvaluation objects for each active vector variables. The first
-   * mapping is for the global variable and the second is for the dependencyType.
-   */
-  std::map<unsigned int, std::map<dependencyType, std::unique_ptr<vector_FEEval>>>
-    vector_vars_map;
+  std::map<unsigned int, std::map<dependencyType, variant_FEEval>> feeval_map;
 
   /**
    * \brief The attribute list of the relevant subset of variables.
@@ -338,18 +359,16 @@ private:
   /**
    * \brief Mapping from global solution vectors to the local ones
    */
-  const std::unordered_map<std::pair<unsigned int, dependencyType>,
-                           unsigned int,
-                           pairHash> *global_to_local_solution;
+  const std::map<std::pair<unsigned int, dependencyType>, unsigned int>
+    *global_to_local_solution;
 
   /**
    * \brief The residual evaluation flags taken in from the subset attributes. For all
    * solve types, there is only a single unique instance of the eval flags, so we can
    * simply store it here when the constructor is called.
    */
-  std::unordered_map<std::pair<unsigned int, dependencyType>,
-                     dealii::EvaluationFlags::EvaluationFlags,
-                     pairHash>
+  std::map<std::pair<unsigned int, dependencyType>,
+           dealii::EvaluationFlags::EvaluationFlags>
     src_eval_flags;
 
   /**
@@ -376,15 +395,9 @@ private:
   unsigned int n_dofs_per_cell = 0;
 
   /**
-   * \brief Diagonal matrix that is used for preconditioning of scalar fields.
+   * \brief Diagonal matrix that is used for preconditioning of fields.
    */
-  std::unique_ptr<dealii::AlignedVector<size_type>> scalar_diagonal;
-
-  /**
-   * \brief Diagonal matrix that is used for preconditioning of vector fields.
-   */
-  std::unique_ptr<dealii::AlignedVector<dealii::Tensor<1, dim, size_type>>>
-    vector_diagonal;
+  variant_diag diagonal;
 };
 
 PRISMS_PF_END_NAMESPACE

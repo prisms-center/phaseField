@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
+// SPDX-License-Identifier: GNU Lesser General Public Version 2.1
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/mg_level_object.h>
 #include <deal.II/fe/mapping_q1.h>
@@ -8,6 +11,7 @@
 #include <prismspf/core/initial_conditions.h>
 #include <prismspf/core/invm_handler.h>
 #include <prismspf/core/matrix_free_handler.h>
+#include <prismspf/core/matrix_free_operator.h>
 #include <prismspf/core/pde_operator.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/triangulation_handler.h>
@@ -141,7 +145,7 @@ nonexplicitBase<dim, degree>::set_initial_condition()
              dealii::ExcMessage(
                "The const DoFHandler set is smaller than the given index = " +
                std::to_string(index)));
-      Assert(subset_attributes.find(index) != subset_attributes.end(),
+      Assert(subset_attributes.contains(index),
              dealii::ExcMessage(
                "There is no entry in the attribute subset for the given index = " +
                std::to_string(index)));

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
+// SPDX-License-Identifier: GNU Lesser General Public Version 2.1
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/quadrature_lib.h>
 #include <deal.II/dofs/dof_handler.h>
@@ -107,7 +110,7 @@ computeIntegral<dim, degree, number>::compute_integral(
           // compute the element integral.
           for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
             {
-              for (unsigned int dimension = 0; dimension < dim; dimension++)
+              for (int dimension = 0; dimension < dim; dimension++)
                 {
                   value[dimension] +=
                     quad_values[q_point][dimension] * fe_values.JxW(q_point);
@@ -116,7 +119,7 @@ computeIntegral<dim, degree, number>::compute_integral(
         }
     }
 
-  for (unsigned int dimension = 0; dimension < dim; dimension++)
+  for (int dimension = 0; dimension < dim; dimension++)
     {
       value[dimension] = dealii::Utilities::MPI::sum(value[dimension], MPI_COMM_WORLD);
     }

@@ -4,20 +4,18 @@
 #pragma once
 
 #include <deal.II/lac/la_parallel_vector.h>
-#include <deal.II/matrix_free/fe_evaluation.h>
 #include <deal.II/matrix_free/matrix_free.h>
 
 #include <prismspf/core/types.h>
-#include <prismspf/core/variable_attributes.h>
-
-#include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/config.h>
 
-#include <map>
-#include <memory>
-
 PRISMS_PF_BEGIN_NAMESPACE
+
+template <int dim>
+class userInputParameters;
+
+struct variableAttributes;
 
 /**
  * \brief This class handles the computation and access of the inverted mass matrix for
