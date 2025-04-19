@@ -256,24 +256,28 @@ PDEProblem<dim, degree>::init_system()
   conditionalOStreams::pout_base() << "solving auxiliary variables in 0th timestep...\n"
                                    << std::flush;
   nonexplicit_auxiliary_solver.solve();
+  solution_handler.update_ghosts();
 
   // Solve the linear time-independent fields at the 0th step
   conditionalOStreams::pout_base()
     << "solving linear time-independent variables in 0th timestep...\n"
     << std::flush;
   nonexplicit_linear_solver.solve();
+  solution_handler.update_ghosts();
 
   // Solve the self-nonlinear time-independent fields at the 0th step
   conditionalOStreams::pout_base()
     << "solving self-nonlinear time-independent variables in 0th timestep...\n"
     << std::flush;
   nonexplicit_self_nonlinear_solver.solve();
+  solution_handler.update_ghosts();
 
   // Solve the postprocessed fields at the 0th step
   conditionalOStreams::pout_base()
     << "solving postprocessed variables in 0th timestep...\n"
     << std::flush;
   postprocess_explicit_solver.solve();
+  solution_handler.update_ghosts();
 
   // Output initial condition
   conditionalOStreams::pout_base() << "outputting initial condition...\n" << std::flush;

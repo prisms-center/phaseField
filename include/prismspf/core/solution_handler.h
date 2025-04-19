@@ -96,6 +96,9 @@ public:
 
   /**
    * \brief Update the ghost values.
+   *
+   * TODO (landinjm): Fix so this isn't as wasteful in updating ghost values for all
+   * solution vectors.
    */
   void
   update_ghosts() const;

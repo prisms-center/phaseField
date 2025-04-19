@@ -66,6 +66,25 @@ template <int dim, int degree>
 inline void
 GMGSolver<dim, degree>::init()
 {
+  // Basic intialization that is the same as the identity solve.
+  this->system_matrix->clear();
+  this->system_matrix->initialize(this->matrix_free_handler->get_matrix_free());
+  this->update_system_matrix->clear();
+  this->update_system_matrix->initialize(this->matrix_free_handler->get_matrix_free());
+
+  this->system_matrix->add_global_to_local_mapping(
+    this->residual_global_to_local_solution);
+  this->system_matrix->add_src_solution_subset(this->residual_src);
+
+  this->update_system_matrix->add_global_to_local_mapping(
+    this->newton_update_global_to_local_solution);
+  this->update_system_matrix->add_src_solution_subset(this->newton_update_src);
+
+  // Apply constraints
+  this->constraint_handler->get_constraint(this->field_index)
+    .distribute(*(this->solution_handler->get_solution_vector(this->field_index,
+                                                              dependencyType::NORMAL)));
+
   // We solve the system with a global coarsening approach. There are two options when
   // doing this: geometric coarsening and polynomial coarsening. We only support geometric
   // as of now.
@@ -134,57 +153,27 @@ GMGSolver<dim, degree>::init()
         }
       mg_transfer[local_index] =
         std::make_shared<dealii::MGTransferGlobalCoarsening<dim, MGVectorType>>(
-          mg_transfer_operators[local_index]);
+          mg_transfer_operators[local_index],
+          std::function<void(const unsigned int, MGVectorType &)>(
+            [&](const unsigned int level, MGVectorType &vec)
+            {
+              (*mg_operators)[level].initialize_dof_vector(vec, local_index);
+            }));
     }
 
-  this->system_matrix->clear();
-  this->system_matrix->initialize(this->matrix_free_handler->get_matrix_free());
-  this->update_system_matrix->clear();
-  this->update_system_matrix->initialize(this->matrix_free_handler->get_matrix_free());
-
-  this->system_matrix->add_global_to_local_mapping(
-    this->residual_global_to_local_solution);
-  this->system_matrix->add_src_solution_subset(this->residual_src);
-
-  this->update_system_matrix->add_global_to_local_mapping(
-    this->newton_update_global_to_local_solution);
-  this->update_system_matrix->add_src_solution_subset(this->newton_update_src);
-
-  // Apply constraints
-  this->constraint_handler->get_constraint(this->field_index)
-    .distribute(*(this->solution_handler->get_solution_vector(this->field_index,
-                                                              dependencyType::NORMAL)));
-
-  // TODO (landinjm): Should I put this somewhere else?
 #ifdef DEBUG
-  // conditionalOStreams::pout_summary()
-  //   << "\nMultigrid Setup Information for index " << this->field_index << ":\n"
-  //   << "  Min level: " << min_level << "\n"
-  //   << "  Max level: " << max_level << "\n";
-  // for (unsigned int level = min_level; level <= max_level; ++level)
-  //   {
-  //     conditionalOStreams::pout_summary()
-  //       << "  Level: " << level << "\n"
-  //       << "    Cells: "
-  //       << triangulation_handler->get_mg_triangulation(level).n_global_active_cells()
-  //       << "\n"
-  //       << "    DoFs: "
-  //       << dof_handler->get_mg_dof_handler(this->field_index, level).n_dofs() << "\n"
-  //       << "    Constrained DoFs: "
-  //       << this->constraint_handler->get_mg_constraint(this->field_index, level)
-  //            .n_constraints()
-  //       << "\n";
-  //   }
-  // conditionalOStreams::pout_summary()
-  //   << "  MG vertical communication efficiency: "
-  //   << dealii::MGTools::vertical_communication_efficiency(
-  //        triangulation_handler->get_mg_triangulation())
-  //   << "\n"
-  //   << "  MG workload imbalance: "
-  //   <<
-  //   dealii::MGTools::workload_imbalance(triangulation_handler->get_mg_triangulation())
-  //   << "\n\n"
-  //   << std::flush;
+  conditionalOStreams::pout_summary()
+    << "\nMultigrid Setup Information for index " << this->field_index << ":\n"
+    << "  Min level: " << min_level << "\n"
+    << "  Max level: " << max_level << "\n"
+    << "  MG vertical communication efficiency: "
+    << dealii::MGTools::vertical_communication_efficiency(
+         triangulation_handler->get_mg_triangulation())
+    << "\n"
+    << "  MG workload imbalance: "
+    << dealii::MGTools::workload_imbalance(triangulation_handler->get_mg_triangulation())
+    << "\n\n"
+    << std::flush;
 #endif
 }
 
@@ -233,6 +222,13 @@ GMGSolver<dim, degree>::solve(const double &step_length)
         {
           mg_src_subset[level] =
             *this->solution_handler->get_mg_solution_vector(level, local_index);
+
+          // Check that the vector partitioning is right
+          Assert((*mg_operators)[level]
+                   .get_matrix_free()
+                   ->get_vector_partitioner(local_index)
+                   ->is_compatible(*mg_src_subset[level].get_partitioner()),
+                 dealii::ExcMessage("Incompatabile vector partitioners"));
         }
 
       // Interpolate

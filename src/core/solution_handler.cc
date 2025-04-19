@@ -179,10 +179,12 @@ solutionHandler<dim>::init(matrixfreeHandler<dim, double> &matrix_free_handler)
   for (const auto &[pair, solution] : solution_set)
     {
       matrix_free_handler.get_matrix_free()->initialize_dof_vector(*solution, pair.first);
+      // TODO (landinjm): Should I ghost values here?
     }
   for (const auto &[index, new_solution] : new_solution_set)
     {
       matrix_free_handler.get_matrix_free()->initialize_dof_vector(*new_solution, index);
+      // TODO (landinjm): Should I ghost values here?
     }
 }
 
@@ -200,6 +202,7 @@ solutionHandler<dim>::mg_init(
           mg_matrix_free_handler[level + global_min_level]
             .get_matrix_free()
             ->initialize_dof_vector(*mg_solution_set[level][index], index);
+          mg_solution_set[level][index]->update_ghost_values();
         }
     }
 }
@@ -211,6 +214,13 @@ solutionHandler<dim>::update_ghosts() const
   for (const auto &[pair, solution] : solution_set)
     {
       solution->update_ghost_values();
+    }
+  for (const auto &index_vector : mg_solution_set)
+    {
+      for (const auto &solution : index_vector)
+        {
+          solution->update_ghost_values();
+        }
     }
 }
 
