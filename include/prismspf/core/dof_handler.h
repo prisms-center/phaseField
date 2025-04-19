@@ -7,16 +7,18 @@
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/fe/fe_system.h>
 
-#include <prismspf/core/triangulation_handler.h>
-
-#include <prismspf/user_inputs/user_input_parameters.h>
+#include <prismspf/core/multigrid_info.h>
+#include <prismspf/core/type_enums.h>
 
 #include <prismspf/config.h>
 
-#include <map>
-#include <vector>
-
 PRISMS_PF_BEGIN_NAMESPACE
+
+template <int dim>
+class userInputParameters;
+
+template <int dim>
+class triangulationHandler;
 
 /**
  * \brief Class that manages the deal.II DoFHandlers
@@ -28,14 +30,15 @@ public:
   /**
    * \brief Constructor.
    */
-  explicit dofHandler(const userInputParameters<dim> &_user_inputs);
+  dofHandler(const userInputParameters<dim> &_user_inputs, const MGInfo<dim> &mg_info);
 
   /**
    * \brief Initialize the DoFHandlers
    */
   void
   init(const triangulationHandler<dim>                  &triangulation_handler,
-       const std::map<fieldType, dealii::FESystem<dim>> &fe_system);
+       const std::map<fieldType, dealii::FESystem<dim>> &fe_system,
+       const MGInfo<dim>                                &mg_info);
 
   /**
    * \brief Getter function for the DoFHandlers (constant reference).
@@ -44,26 +47,11 @@ public:
   get_dof_handlers() const;
 
   /**
-   * \brief Getter function for the multigrid DoFHandlers (constant reference).
-   */
-  [[nodiscard]] const std::map<unsigned int,
-                               dealii::MGLevelObject<dealii::DoFHandler<dim>>> &
-  get_mg_dof_handlers() const;
-
-  /**
-   * \brief Getter function for the DoFHandlers at a certain multigrid level
-   * (constant reference). Note that this is only the DoFHandlers that are neccessary for
-   * multigrid and may be different that the non-multigrid getter function.
+   * \brief Getter function for the DoFHandlers at a given multigrid level (constant
+   * reference).
    */
   [[nodiscard]] const std::vector<const dealii::DoFHandler<dim> *> &
   get_mg_dof_handlers(unsigned int level) const;
-
-  /**
-   * \brief Getter function for the DoFHandler at a certain field and multigrid level
-   * (constant reference).
-   */
-  [[nodiscard]] const dealii::DoFHandler<dim> &
-  get_mg_dof_handler(unsigned int index, unsigned int level) const;
 
 private:
   /**
@@ -91,17 +79,22 @@ private:
   bool has_multigrid = false;
 
   /**
+   * \brief Global minimum level for multigrid.
+   */
+  unsigned int global_min_level = 0;
+
+  /**
    * \brief Collection of the triangulation DoFs for each multigrid level for all fields
    * that require it. Like before, we can share the same DoFHandler for multiple fields in
    * special cases.
    */
-  std::map<unsigned int, dealii::MGLevelObject<dealii::DoFHandler<dim>>> mg_dof_handlers;
+  std::map<unsigned int, dealii::MGLevelObject<std::unique_ptr<dealii::DoFHandler<dim>>>>
+    mg_dof_handlers;
 
   /**
-   * \brief Const copy of the mg_dof_handlers by multigrid level.
+   * \brief Const copy of the mg_dof_handlers.
    */
-  dealii::MGLevelObject<std::vector<const dealii::DoFHandler<dim> *>>
-    const_mg_dof_handlers;
+  std::vector<std::vector<const dealii::DoFHandler<dim> *>> const_mg_dof_handlers;
 };
 
 PRISMS_PF_END_NAMESPACE

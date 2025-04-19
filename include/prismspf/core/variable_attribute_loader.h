@@ -3,8 +3,6 @@
 
 #pragma once
 
-#include <prismspf/core/variable_attributes.h>
-
 #include <prismspf/config.h>
 
 #include <map>
@@ -12,6 +10,8 @@
 #include <string>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+struct variableAttributes;
 
 /**
  * \brief Class to manage the variable attributes that the user specifies.

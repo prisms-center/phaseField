@@ -23,4 +23,7 @@ subsection linear solver parameters: u
     set smoothing range = 20
     set smoother degree = 5
     set eigenvalue cg iterations = 20
+    set min mg level = 1
 end
+
+set Model constant CIJ = (2.0,0.3), isotropic elastic constants

@@ -5,8 +5,6 @@
 
 #include <deal.II/base/parameter_handler.h>
 
-#include <prismspf/core/variable_attributes.h>
-
 #include <prismspf/config.h>
 
 #include <map>
@@ -14,6 +12,8 @@
 #include <string>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+struct variableAttributes;
 
 /**
  * \brief Parameters file reader. Declares parameter names in a dealii parameter_handler

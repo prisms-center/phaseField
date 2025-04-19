@@ -45,8 +45,8 @@ message(STATUS "CMake version: ${CMAKE_VERSION}")
 # Grab git information
 prisms_pf_git_version()
 
-# Set the standard to C++17
-set(CMAKE_CXX_STANDARD 17)
+# Set the standard to C++20
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -262,7 +262,7 @@ add_custom_target(distclean
   COMMAND ${CMAKE_COMMAND} -E remove
     CMakeCache.txt cmake_install.cmake Makefile
     build.ninja rules.ninja .ninja_deps .ninja_log
-    clang-tidy.log cppcheck.log output.txt error.txt
+    clang-tidy.log cppcheck.log cppcheck_unused.log output.txt error.txt
     summary.log detailed.log
   COMMENT "distclean invoked"
   )

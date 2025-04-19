@@ -44,6 +44,7 @@ public:
   const dealii::AlignedVector<dealii::VectorizedArray<number>> &
   get_element_volumes() const;
 
+private:
   /**
    * \brief Matrix-free object.
    */

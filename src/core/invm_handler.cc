@@ -4,6 +4,7 @@
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/tensor.h>
 #include <deal.II/base/vectorization.h>
+#include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/lac/vector_operation.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
 #include <deal.II/matrix_free/fe_evaluation.h>
@@ -90,8 +91,7 @@ const typename invmHandler<dim, degree, number>::VectorType &
 invmHandler<dim, degree, number>::get_invm(const unsigned int &index) const
 {
   Assert(data != nullptr, dealii::ExcNotInitialized());
-
-  Assert(variable_attributes->find(index) != variable_attributes->end(),
+  Assert(variable_attributes->contains(index),
          dealii::ExcMessage(
            "Invalid index. The provided index does not have an entry in the variable "
            "attributes that were provided to the constructor."));
@@ -182,7 +182,7 @@ invmHandler<dim, degree, number>::compute_vector_invm()
   dealii::FEEvaluation<dim, degree, degree + 1, dim, number> fe_eval(*data, vector_index);
 
   dealii::Tensor<1, dim, dealii::VectorizedArray<number>> one;
-  for (unsigned int i = 0; i < dim; i++)
+  for (int i = 0; i < dim; i++)
     {
       one[i] = 1.0;
     }

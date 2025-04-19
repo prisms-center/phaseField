@@ -3,16 +3,22 @@
 
 #pragma once
 
+#include <deal.II/base/mg_level_object.h>
 #include <deal.II/lac/la_parallel_vector.h>
 
-#include <prismspf/core/matrix_free_handler.h>
-#include <prismspf/core/variable_attributes.h>
+#include <prismspf/core/multigrid_info.h>
+#include <prismspf/core/type_enums.h>
 
 #include <prismspf/config.h>
 
 #include <map>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+template <int dim, typename number>
+class matrixfreeHandler;
+
+struct variableAttributes;
 
 /**
  * \brief Class that manages solution initialization and swapping with old solutions.
@@ -21,13 +27,14 @@ template <int dim>
 class solutionHandler
 {
 public:
-  using VectorType = dealii::LinearAlgebra::distributed::Vector<double>;
+  using VectorType   = dealii::LinearAlgebra::distributed::Vector<double>;
+  using MGVectorType = dealii::LinearAlgebra::distributed::Vector<float>;
 
   /**
    * \brief Constructor.
    */
-  explicit solutionHandler(
-    const std::map<unsigned int, variableAttributes> &_attributes_list);
+  solutionHandler(const std::map<unsigned int, variableAttributes> &_attributes_list,
+                  const MGInfo<dim>                                &_mg_info);
 
   /**
    * \brief Get the solution vector set. This contains all the normal fields and is
@@ -63,13 +70,35 @@ public:
   get_new_solution_vector(unsigned int index) const;
 
   /**
+   * \brief Get the mg solution vector set at a given level.
+   */
+  [[nodiscard]] std::vector<MGVectorType *>
+  get_mg_solution_vector(unsigned int level) const;
+
+  /**
+   * \brief Get the mg solution vector set at a given level and index;
+   */
+  [[nodiscard]] MGVectorType *
+  get_mg_solution_vector(unsigned int level, unsigned int index) const;
+
+  /**
    * \brief Initialize the solution set.
    */
   void
-  init(matrixfreeHandler<dim> &matrix_free_handler);
+  init(matrixfreeHandler<dim, double> &matrix_free_handler);
+
+  /**
+   * \brief Initialize the multigrid solution set.
+   */
+  void
+  mg_init(
+    const dealii::MGLevelObject<matrixfreeHandler<dim, float>> &mg_matrix_free_handler);
 
   /**
    * \brief Update the ghost values.
+   *
+   * TODO (landinjm): Fix so this isn't as wasteful in updating ghost values for all
+   * solution vectors.
    */
   void
   update_ghosts() const;
@@ -106,6 +135,21 @@ private:
   const std::map<unsigned int, variableAttributes> *attributes_list;
 
   /**
+   * \brief Whether multigrid has been enabled.
+   */
+  bool has_multigrid = false;
+
+  /**
+   * \brief Global minimum level for multigrid.
+   */
+  unsigned int global_min_level;
+
+  /**
+   * \brief Multigrid information.
+   */
+  const MGInfo<dim> *mg_info;
+
+  /**
    * \brief The collection of solution vector at the current timestep. This includes
    * current values and old values.
    */
@@ -118,6 +162,12 @@ private:
    * current values which get updated in the `solution_set`.
    */
   std::map<unsigned int, std::unique_ptr<VectorType>> new_solution_set;
+
+  /**
+   * \brief The collection of solution vectors at the current timestep for the multigrid
+   * hierarchy.
+   */
+  std::vector<std::vector<std::unique_ptr<MGVectorType>>> mg_solution_set;
 };
 
 PRISMS_PF_END_NAMESPACE

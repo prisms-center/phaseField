@@ -94,8 +94,16 @@ public:
   [[nodiscard]] dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
   get_model_constant_elasticity_tensor(const std::string &constant_name) const;
 
-  // List of user-defined constants
+  /**
+   * \brief List of user-defined constants.
+   */
   std::map<std::string, InputVariant> model_constants;
+
+  /**
+   * \brief Print all user-specified constants
+   */
+  void
+  print() const;
 
 private:
   /**
@@ -137,6 +145,70 @@ private:
 
   [[nodiscard]] dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
   getCIJMatrix(const elasticityModel &model, const std::vector<double> &constants) const;
+
+  /**
+   * \brief Class for printing of variant types. This is bad practice and should be fixed.
+   */
+  class VariantPrinter : public boost::static_visitor<>
+  {
+  public:
+    void
+    operator()(double value) const
+    {
+      conditionalOStreams::pout_summary() << value;
+    }
+
+    void
+    operator()(int value) const
+    {
+      conditionalOStreams::pout_summary() << value;
+    }
+
+    void
+    operator()(bool value) const
+    {
+      conditionalOStreams::pout_summary() << std::boolalpha << value;
+    }
+
+    void
+    operator()(const dealii::Tensor<1, dim> &value) const
+    {
+      conditionalOStreams::pout_summary() << "Tensor<1, " << dim << ">: ";
+      for (int i = 0; i < dim; ++i)
+        {
+          conditionalOStreams::pout_summary() << value[i] << ' ';
+        }
+    }
+
+    void
+    operator()(const dealii::Tensor<2, dim> &value) const
+    {
+      conditionalOStreams::pout_summary() << "Tensor<2, " << dim << ">: ";
+      for (int i = 0; i < dim; ++i)
+        {
+          for (int j = 0; j < dim; ++j)
+            {
+              conditionalOStreams::pout_summary() << value[i][j] << ' ';
+            }
+        }
+    }
+
+    template <int D = dim>
+    void
+    operator()(const dealii::Tensor<2, (2 * D) - 1 + (D / 3)> &value) const
+    requires((D != ((2 * D) - 1 + (D / 3))))
+    {
+      constexpr int dimension = (2 * D) - 1 + (D / 3);
+      conditionalOStreams::pout_summary() << "Tensor<2, " << dimension << ">: ";
+      for (int i = 0; i < dimension; ++i)
+        {
+          for (int j = 0; j < dimension; ++j)
+            {
+              conditionalOStreams::pout_summary() << value[i][j] << ' ';
+            }
+        }
+    }
+  };
 };
 
 template <int dim>
@@ -277,7 +349,7 @@ userConstants<dim>::compute_rank_1_tensor_constant(
                                  "equal to the maximum number of dimensions."));
 
   dealii::Tensor<1, dim> temp;
-  for (unsigned int i = 0; i < dim; i++)
+  for (int i = 0; i < dim; i++)
     {
       temp[i] = dealii::Utilities::string_to_double(tensor_elements.at(i));
     }
@@ -295,12 +367,12 @@ userConstants<dim>::compute_rank_2_tensor_constant(
               dealii::ExcMessage("User-defined constant tensor does not have the "
                                  "correct number of elements, matrices must be 3x3."));
 
-  const unsigned int row_length = dim;
+  const unsigned int row_length = 3;
 
   dealii::Tensor<2, dim> temp;
-  for (unsigned int i = 0; i < dim; i++)
+  for (int i = 0; i < dim; i++)
     {
-      for (unsigned int j = 0; j < dim; j++)
+      for (int j = 0; j < dim; j++)
         {
           temp[i][j] =
             dealii::Utilities::string_to_double(tensor_elements.at((i * row_length) + j));
@@ -359,11 +431,11 @@ userConstants<dim>::construct_user_constant(
       remove_parentheses(model_constants_strings);
 
       // Load in the elastic constants as a vector
-      std::vector<double> temp_elastic_constants;
+      std::vector<double> temp_elastic_constants(n_elements);
       for (unsigned int i = 0; i < n_elements; i++)
         {
-          temp_elastic_constants.push_back(
-            dealii::Utilities::string_to_double(model_constants_strings.at(i)));
+          temp_elastic_constants[i] =
+            dealii::Utilities::string_to_double(model_constants_strings.at(i));
         }
       const std::string &elastic_const_symmetry = model_constants_type_strings.at(0);
       dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)> temp =
@@ -520,6 +592,26 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
           switch (model)
             {
               case ISOTROPIC:
+                {
+                  // TODO (landinjm): Document this
+                  const double modulus = constants.at(0);
+                  const double poisson = constants.at(1);
+
+                  const double shear_modulus = modulus / (2 * (1 + poisson));
+                  const double lambda =
+                    poisson * modulus / ((1 + poisson) * (1 - 2 * poisson));
+
+                  CIJ[0][0] = lambda + 2 * shear_modulus;
+                  CIJ[1][1] = lambda + 2 * shear_modulus;
+                  CIJ[2][2] = lambda + 2 * shear_modulus;
+                  CIJ[3][3] = shear_modulus;
+                  CIJ[4][4] = shear_modulus;
+                  CIJ[5][5] = shear_modulus;
+                  CIJ[0][1] = CIJ[1][0] = lambda;
+                  CIJ[0][2] = CIJ[2][0] = lambda;
+                  CIJ[1][2] = CIJ[2][1] = lambda;
+                  break;
+                }
               case TRANSVERSE:
               case ORTHOTROPIC:
               case ANISOTROPIC:
@@ -535,6 +627,27 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
     }
 
   return CIJ;
+}
+
+template <int dim>
+void
+userConstants<dim>::print() const
+{
+  if (!model_constants.empty())
+    {
+      conditionalOStreams::pout_summary()
+        << "================================================\n"
+        << "  User Constants\n"
+        << "================================================\n";
+
+      for (const auto &[constant_name, variant] : model_constants)
+        {
+          conditionalOStreams::pout_summary() << constant_name << ": ";
+          boost::apply_visitor(VariantPrinter(), variant);
+          conditionalOStreams::pout_summary() << "\n";
+        }
+      conditionalOStreams::pout_summary() << "\n" << std::flush;
+    }
 }
 
 PRISMS_PF_END_NAMESPACE

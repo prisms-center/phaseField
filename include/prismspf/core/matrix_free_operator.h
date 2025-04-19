@@ -9,19 +9,27 @@
 #include <deal.II/matrix_free/matrix_free.h>
 #include <deal.II/matrix_free/operators.h>
 
-#include <prismspf/core/pde_operator.h>
 #include <prismspf/core/type_enums.h>
-#include <prismspf/core/variable_attributes.h>
-#include <prismspf/core/variable_container.h>
-
-#include <prismspf/user_inputs/user_input_parameters.h>
+#include <prismspf/core/types.h>
 
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
+template <int dim>
+class userInputParameters;
+
+struct variableAttributes;
+
+template <int dim, int degree, typename number>
+class variableContainer;
+
+template <int dim, int degree, typename number>
+class PDEOperator;
+
 /**
- * \brief This is the abstract base class for the matrix-free implementation of some PDE.
+ * \brief This is the abstract base class for the matrix-free implementation of some
+ * PDE.
  *
  * \tparam dim The number of dimensions in the problem.
  * \tparam degree The polynomial degree of the shape functions.
@@ -45,7 +53,8 @@ public:
   explicit matrixFreeOperator(
     const std::map<unsigned int, variableAttributes>       &_attributes_list,
     std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
-    types::index _current_index = numbers::invalid_index);
+    types::index _current_index     = numbers::invalid_index,
+    bool         _use_local_mapping = false);
 
   /**
    * \brief Initialize operator.
@@ -105,10 +114,8 @@ public:
    * \brief Add the mappings from global to local solution vectors.
    */
   void
-  add_global_to_local_mapping(
-    const std::unordered_map<std::pair<unsigned int, dependencyType>,
-                             unsigned int,
-                             pairHash> &_global_to_local_solution);
+  add_global_to_local_mapping(const std::map<std::pair<unsigned int, dependencyType>,
+                                             unsigned int> &_global_to_local_solution);
 
   /**
    * \brief Add the solution subset for src vector.
@@ -237,6 +244,11 @@ private:
   types::index current_index = numbers::invalid_index;
 
   /**
+   * \brief Whether to use local mapping for the variableContainer object.
+   */
+  bool use_local_mapping = false;
+
+  /**
    * \brief Matrix-free object.
    */
   std::shared_ptr<const dealii::MatrixFree<dim, number, size_type>> data;
@@ -254,7 +266,7 @@ private:
   /**
    * \brief Mapping from global solution vectors to the local ones
    */
-  std::unordered_map<std::pair<unsigned int, dependencyType>, unsigned int, pairHash>
+  std::map<std::pair<unsigned int, dependencyType>, unsigned int>
     global_to_local_solution;
 
   /**

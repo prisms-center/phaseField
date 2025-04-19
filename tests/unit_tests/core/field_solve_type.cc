@@ -3,6 +3,7 @@
 
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attribute_loader.h>
+#include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/config.h>
 

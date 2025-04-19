@@ -15,24 +15,9 @@
 #include <map>
 #include <set>
 #include <string>
-#include <unordered_map>
 #include <utility>
 
 PRISMS_PF_BEGIN_NAMESPACE
-
-/**
- * \brief Simple hash function for pairs.
- */
-struct pairHash
-{
-public:
-  template <typename T, typename U>
-  std::size_t
-  operator()(const std::pair<T, U> &pair) const
-  {
-    return std::hash<T>()(pair.first) ^ std::hash<U>()(pair.second);
-  }
-};
 
 /**
  * \brief Structure to hold the variable attributes of a field. This includes things like
@@ -64,13 +49,6 @@ struct variableAttributes
    * \brief Postprocess variable. \remark User-set
    */
   bool is_postprocess = false;
-
-  /**
-   * \brief Whether the variable is required for the LHS of multigrid. This is then used
-   * to determine which fields must be interpolated for the coarse grid levels. \remark
-   * Internally determined
-   */
-  bool is_required_for_mg = false;
 
 #ifdef ADDITIONAL_OPTIMIZATIONS
   /**
@@ -122,9 +100,8 @@ struct variableAttributes
    * This will tell deal.II whether to evaluate the value, gradient, and/or hessian for
    * the specified field. \remark Internally determined
    */
-  std::unordered_map<std::pair<unsigned int, dependencyType>,
-                     dealii::EvaluationFlags::EvaluationFlags,
-                     pairHash>
+  std::map<std::pair<unsigned int, dependencyType>,
+           dealii::EvaluationFlags::EvaluationFlags>
     eval_flag_set_RHS;
 
   /**
@@ -132,9 +109,8 @@ struct variableAttributes
    * This will tell deal.II whether to evaluate the value, gradient, and/or hessian for
    * the specified field. \remark Internally determined
    */
-  std::unordered_map<std::pair<unsigned int, dependencyType>,
-                     dealii::EvaluationFlags::EvaluationFlags,
-                     pairHash>
+  std::map<std::pair<unsigned int, dependencyType>,
+           dealii::EvaluationFlags::EvaluationFlags>
     eval_flag_set_LHS;
 
   /**

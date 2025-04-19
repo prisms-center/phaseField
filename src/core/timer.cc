@@ -51,8 +51,7 @@ timer::print_summary()
 
   for (const auto &[section, wall_time] : serial_wall_times)
     {
-      Assert(serial_n_calls.find(section) != serial_n_calls.end(),
-             dealii::ExcInternalError());
+      Assert(serial_n_calls.contains(section), dealii::ExcInternalError());
 
       const auto n_calls = serial_n_calls.at(section);
 

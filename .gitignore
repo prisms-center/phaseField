@@ -66,6 +66,7 @@ tests/performance_tests/*/*.vtk
 *.vts
 *.frt
 *.png
+*.json
 tests/performance_tests/*/trial*.txt
 output.txt
 error.txt
@@ -89,7 +90,6 @@ restart.time.info.old
 
 # Misc
 visitlog.py
-DoxygenWarningLog.txt
 
 #Tex files
 *.aux

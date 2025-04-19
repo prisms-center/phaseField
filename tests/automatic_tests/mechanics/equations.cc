@@ -37,9 +37,10 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
 {
   if (current_index == 0)
     {
-      vectorGrad ux = variable_list.get_vector_gradient(0);
-
-      variable_list.set_vector_gradient_term(0, -ux);
+      vectorGrad ux = variable_list.get_vector_symmetric_gradient(0);
+      vectorGrad stress;
+      compute_stress<dim, scalarValue>(CIJ, ux, stress);
+      variable_list.set_vector_gradient_term(0, -stress);
     }
 }
 
@@ -52,9 +53,10 @@ customPDE<dim, degree, number>::compute_nonexplicit_LHS(
 {
   if (current_index == 0)
     {
-      vectorGrad change_ux = variable_list.get_vector_gradient(0, CHANGE);
-
-      variable_list.set_vector_gradient_term(0, change_ux, CHANGE);
+      vectorGrad change_ux = variable_list.get_vector_symmetric_gradient(0, CHANGE);
+      vectorGrad stress;
+      compute_stress<dim, scalarValue>(CIJ, change_ux, stress);
+      variable_list.set_vector_gradient_term(0, stress, CHANGE);
     }
 }
 

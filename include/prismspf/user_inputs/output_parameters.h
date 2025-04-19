@@ -74,7 +74,7 @@ public:
 inline bool
 outputParameters::should_output(unsigned int increment) const
 {
-  return output_list.find(increment) != output_list.end();
+  return output_list.contains(increment);
 }
 
 inline void

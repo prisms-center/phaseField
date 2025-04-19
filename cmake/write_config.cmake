@@ -41,7 +41,7 @@ write_to_both("#    Git timestamp:         ${PRISMS_PF_GIT_TIMESTAMP}
 write_to_detailed("#    CMAKE_GENERATOR:       ${CMAKE_GENERATOR}\n"
 )
 write_to_both("#
-#    C++ standard:          C++17
+#    C++ standard:          C++20
 ")
 write_to_detailed("#
 #    CXX_FLAGS:             ${EAL_II_CXX_FLAGS}
