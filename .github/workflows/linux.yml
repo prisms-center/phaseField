@@ -69,5 +69,5 @@ jobs:
           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
           cd tests/automatic_tests
-          python3 run_automatic_tests.py -j $(nproc)
+          python3 run_automatic_tests.py -j 2
 
