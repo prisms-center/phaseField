@@ -237,8 +237,10 @@ applicationList = [
     "cahn_hilliard_explicit",
     "heat_equation_steady_state",
     "mechanics",
+    "precipitate_explicit",
 ]
 getNewGoldStandardList = [
+    False,
     False,
     False,
     False,
