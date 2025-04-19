@@ -6,17 +6,19 @@
 #include <deal.II/distributed/tria.h>
 #include <deal.II/grid/tria.h>
 
-#include <prismspf/core/conditional_ostreams.h>
-#include <prismspf/core/solution_handler.h>
-
-#include <prismspf/user_inputs/user_input_parameters.h>
+#include <prismspf/core/multigrid_info.h>
 
 #include <prismspf/config.h>
 
-#include <memory>
 #include <string>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+template <int dim>
+class userInputParameters;
+
+template <int dim>
+class solutionHandler;
 
 /**
  * \brief This class handlers the generation and manipulation of triangulations.
@@ -33,7 +35,8 @@ public:
   /**
    * \brief Constructor.
    */
-  explicit triangulationHandler(const userInputParameters<dim> &_user_inputs);
+  explicit triangulationHandler(const userInputParameters<dim> &_user_inputs,
+                                const MGInfo<dim>              &mg_info);
 
   /**
    * \brief Getter function for triangulation (constant reference).

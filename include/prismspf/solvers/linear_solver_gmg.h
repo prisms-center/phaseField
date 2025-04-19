@@ -17,11 +17,7 @@
 #include <deal.II/multigrid/mg_transfer_matrix_free.h>
 #include <deal.II/multigrid/multigrid.h>
 
-#include <prismspf/core/dof_handler.h>
-#include <prismspf/core/matrix_free_operator.h>
-#include <prismspf/core/pde_operator.h>
-#include <prismspf/core/solution_output.h>
-#include <prismspf/core/triangulation_handler.h>
+#include <prismspf/core/multigrid_info.h>
 
 #include <prismspf/solvers/linear_solver_base.h>
 
@@ -32,6 +28,9 @@
 #endif
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+template <int dim>
+class dofHandler;
 
 /**
  * \brief Class that handles the assembly and solving of a field with a GMG preconditioner
@@ -50,19 +49,20 @@ public:
    */
   GMGSolver(const userInputParameters<dim>                       &_user_inputs,
             const variableAttributes                             &_variable_attributes,
-            const matrixfreeHandler<dim>                         &_matrix_free_handler,
+            const matrixfreeHandler<dim, double>                 &_matrix_free_handler,
             const constraintHandler<dim>                         &_constraint_handler,
             const triangulationHandler<dim>                      &_triangulation_handler,
             const dofHandler<dim>                                &_dof_handler,
             dealii::MGLevelObject<matrixfreeHandler<dim, float>> &_mg_matrix_free_handler,
             solutionHandler<dim>                                 &_solution_handler,
             std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
-            std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float);
+            std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float,
+            const MGInfo<dim>                                      &_mg_info);
 
   /**
    * \brief Destructor.
    */
-  ~GMGSolver() override;
+  ~GMGSolver() override = default;
 
   /**
    * \brief Initialize the system.
@@ -118,7 +118,7 @@ private:
   /**
    * \brief Collection of transfer operators for each multigrid level.
    */
-  dealii::MGLevelObject<dealii::MGTwoLevelTransfer<dim, MGVectorType>>
+  std::vector<dealii::MGLevelObject<dealii::MGTwoLevelTransfer<dim, MGVectorType>>>
     mg_transfer_operators;
 
   /**
@@ -134,18 +134,18 @@ private:
   /**
    * \brief Transfer operator for global coarsening.
    */
-  std::shared_ptr<dealii::MGTransferGlobalCoarsening<dim, MGVectorType>> mg_transfer;
-
-  /**
-   * \brief Subset of fields that are necessary for the source of the newton update for
-   * each multigrid level.
-   */
-  dealii::MGLevelObject<std::vector<MGVectorType *>> mg_newton_update_src;
+  std::vector<std::shared_ptr<dealii::MGTransferGlobalCoarsening<dim, MGVectorType>>>
+    mg_transfer;
 
   /**
    * \brief PDE operator but for floats!
    */
   std::shared_ptr<const PDEOperator<dim, degree, float>> pde_operator_float;
+
+  /**
+   * \brief Multigrid information.
+   */
+  const MGInfo<dim> *mg_info;
 };
 
 PRISMS_PF_END_NAMESPACE

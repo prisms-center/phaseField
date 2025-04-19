@@ -27,10 +27,10 @@ concurrency:
 jobs:
     clang-tidy:
       runs-on: [ubuntu-22.04]
-      timeout-minutes: 60
+      timeout-minutes: 120
 
       container:
-        image: dealii/dealii:v9.6.0-rc2-jammy
+        image: dealii/dealii:v9.6.0-jammy
         options: --user root
 
       steps:

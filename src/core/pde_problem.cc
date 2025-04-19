@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
+// SPDX-License-Identifier: GNU Lesser General Public Version 2.1
+
 #include <deal.II/base/mpi.h>
 #include <deal.II/base/quadrature_lib.h>
 #include <deal.II/base/utilities.h>
@@ -6,13 +9,30 @@
 #include <deal.II/fe/fe_system.h>
 
 #include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/core/constraint_handler.h>
+#include <prismspf/core/dof_handler.h>
+#include <prismspf/core/invm_handler.h>
+#include <prismspf/core/matrix_free_handler.h>
+#include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/pde_operator.h>
 #include <prismspf/core/pde_problem.h>
+#include <prismspf/core/solution_handler.h>
 #include <prismspf/core/solution_output.h>
 #include <prismspf/core/timer.h>
+#include <prismspf/core/triangulation_handler.h>
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/solvers/explicit_constant_solver.h>
+#include <prismspf/solvers/explicit_postprocess_solver.h>
+#include <prismspf/solvers/explicit_solver.h>
+#include <prismspf/solvers/nonexplicit_auxiliary_solver.h>
+#include <prismspf/solvers/nonexplicit_linear_solver.h>
+#include <prismspf/solvers/nonexplicit_self_nonlinear_solver.h>
+
+#include <prismspf/utilities/compute_integral.h>
+#include <prismspf/utilities/element_volume.h>
 
 #include <prismspf/config.h>
 
@@ -29,13 +49,14 @@ PDEProblem<dim, degree>::PDEProblem(
   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
   std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float)
   : user_inputs(&_user_inputs)
-  , triangulation_handler(_user_inputs)
-  , constraint_handler(_user_inputs)
+  , mg_info(_user_inputs)
+  , triangulation_handler(_user_inputs, mg_info)
+  , constraint_handler(_user_inputs, mg_info)
   , matrix_free_handler()
   , multigrid_matrix_free_handler(0, 0)
   , invm_handler(*_user_inputs.var_attributes)
-  , solution_handler(*_user_inputs.var_attributes)
-  , dof_handler(_user_inputs)
+  , solution_handler(*_user_inputs.var_attributes, mg_info)
+  , dof_handler(_user_inputs, mg_info)
   , explicit_constant_solver(_user_inputs,
                              matrix_free_handler,
                              invm_handler,
@@ -80,7 +101,8 @@ PDEProblem<dim, degree>::PDEProblem(
                               multigrid_matrix_free_handler,
                               solution_handler,
                               _pde_operator,
-                              _pde_operator_float)
+                              _pde_operator_float,
+                              mg_info)
   , nonexplicit_self_nonlinear_solver(_user_inputs,
                                       matrix_free_handler,
                                       triangulation_handler,
@@ -91,7 +113,8 @@ PDEProblem<dim, degree>::PDEProblem(
                                       multigrid_matrix_free_handler,
                                       solution_handler,
                                       _pde_operator,
-                                      _pde_operator_float)
+                                      _pde_operator_float,
+                                      mg_info)
 {}
 
 template <int dim, int degree>
@@ -143,18 +166,29 @@ PDEProblem<dim, degree>::init_system()
   conditionalOStreams::pout_base() << "creating triangulation...\n" << std::flush;
   triangulation_handler.generate_mesh();
 
+  // Print multigrid info
+  mg_info.print();
+
   // Create the dof handlers.
   conditionalOStreams::pout_base() << "creating DoFHandlers...\n" << std::flush;
-  dof_handler.init(triangulation_handler, fe_system);
+  dof_handler.init(triangulation_handler, fe_system, mg_info);
 
   // Create the constraints
   conditionalOStreams::pout_base() << "creating constraints...\n" << std::flush;
   constraint_handler.make_constraints(mapping, dof_handler.get_dof_handlers());
-  if (triangulation_handler.has_setup_multigrid())
+  if (mg_info.has_multigrid())
     {
-      conditionalOStreams::pout_base() << "creating multigrid constraints...\n"
-                                       << std::flush;
-      constraint_handler.make_mg_constraints(mapping, dof_handler.get_mg_dof_handlers());
+      const unsigned int min_level = mg_info.get_mg_min_level();
+      const unsigned int max_level = mg_info.get_mg_max_level();
+      for (unsigned int level = min_level; level <= max_level; ++level)
+        {
+          conditionalOStreams::pout_base()
+            << "creating multigrid constraints at level " << level << "...\n"
+            << std::flush;
+          constraint_handler.make_mg_constraints(mapping,
+                                                 dof_handler.get_mg_dof_handlers(level),
+                                                 level);
+        }
     }
 
   // Reinit the matrix-free objects
@@ -164,25 +198,31 @@ PDEProblem<dim, degree>::init_system()
                              dof_handler.get_dof_handlers(),
                              constraint_handler.get_constraints(),
                              dealii::QGaussLobatto<1>(degree + 1));
-  if (triangulation_handler.has_setup_multigrid())
+  if (mg_info.has_multigrid())
     {
-      const unsigned int min_level = triangulation_handler.get_mg_min_level();
-      const unsigned int max_level = triangulation_handler.get_mg_max_level();
-
+      const unsigned int min_level = mg_info.get_mg_min_level();
+      const unsigned int max_level = mg_info.get_mg_max_level();
       multigrid_matrix_free_handler.resize(min_level, max_level);
-
       for (unsigned int level = min_level; level <= max_level; ++level)
         {
           conditionalOStreams::pout_base()
             << "initializing multgrid matrix-free object at level " << level << "...\n"
             << std::flush;
-          // multigrid_matrix_free_handler[level].reinit(mapping, );
+          multigrid_matrix_free_handler[level].reinit(
+            mapping,
+            dof_handler.get_mg_dof_handlers(level),
+            constraint_handler.get_mg_constraints(level),
+            dealii::QGaussLobatto<1>(degree + 1));
         }
     }
 
   // Initialize the solution set
   conditionalOStreams::pout_base() << "initializing solution set...\n" << std::flush;
   solution_handler.init(matrix_free_handler);
+  if (mg_info.has_multigrid())
+    {
+      solution_handler.mg_init(multigrid_matrix_free_handler);
+    }
 
   // Initialize the invm and compute it
   // TODO (landinjm): Output the invm for debug mode. This will create a lot of bloat in
@@ -216,24 +256,28 @@ PDEProblem<dim, degree>::init_system()
   conditionalOStreams::pout_base() << "solving auxiliary variables in 0th timestep...\n"
                                    << std::flush;
   nonexplicit_auxiliary_solver.solve();
+  solution_handler.update_ghosts();
 
   // Solve the linear time-independent fields at the 0th step
   conditionalOStreams::pout_base()
     << "solving linear time-independent variables in 0th timestep...\n"
     << std::flush;
   nonexplicit_linear_solver.solve();
+  solution_handler.update_ghosts();
 
   // Solve the self-nonlinear time-independent fields at the 0th step
   conditionalOStreams::pout_base()
     << "solving self-nonlinear time-independent variables in 0th timestep...\n"
     << std::flush;
   nonexplicit_self_nonlinear_solver.solve();
+  solution_handler.update_ghosts();
 
   // Solve the postprocessed fields at the 0th step
   conditionalOStreams::pout_base()
     << "solving postprocessed variables in 0th timestep...\n"
     << std::flush;
   postprocess_explicit_solver.solve();
+  solution_handler.update_ghosts();
 
   // Output initial condition
   conditionalOStreams::pout_base() << "outputting initial condition...\n" << std::flush;
@@ -254,10 +298,23 @@ PDEProblem<dim, degree>::solve_increment()
 
   // Update ghosts
   solution_handler.update_ghosts();
+
+  // TOOD (landinjm): I think I have to update the ghosts after each solve. This should be
+  // apparent in an application that includes multiple of these solve types. Also only
+  // update ghosts that need to be. It's wasteful to over communicate.
+
+  // Solve a single increment
   explicit_solver.solve();
+  solution_handler.update_ghosts();
+
   nonexplicit_auxiliary_solver.solve();
+  solution_handler.update_ghosts();
+
   nonexplicit_linear_solver.solve();
+  solution_handler.update_ghosts();
+
   nonexplicit_self_nonlinear_solver.solve();
+  solution_handler.update_ghosts();
 
   timer::serial_timer().leave_subsection();
 }
@@ -297,13 +354,21 @@ PDEProblem<dim, degree>::solve()
       if (user_inputs->output_parameters.should_output(
             user_inputs->temporal_discretization.increment))
         {
+          // Ideally just update ghosts that need to be here.
+          solution_handler.update_ghosts();
           postprocess_explicit_solver.solve();
 
+          // TODO (landinjm): Do I need to zero out the ghost values when outputting the
+          // solution?
           solutionOutput<dim>(solution_handler.get_solution_vector(),
                               dof_handler.get_dof_handlers(),
                               degree,
                               "solution",
                               *user_inputs);
+
+          // Update the ghost again so we can call compute integral. May as well wrap this
+          // into computeIntegral.
+          solution_handler.update_ghosts();
 
           // Print the l2-norms and integrals of each solution
           conditionalOStreams::pout_base()
@@ -325,7 +390,7 @@ PDEProblem<dim, degree>::solve()
                     *dof_handler.get_dof_handlers()[index],
                     *vector);
 
-                  for (unsigned int dimension = 0; dimension < dim; dimension++)
+                  for (int dimension = 0; dimension < dim; dimension++)
                     {
                       conditionalOStreams::pout_base()
                         << integrated_values[dimension] << " ";

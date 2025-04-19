@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
+// SPDX-License-Identifier: GNU Lesser General Public Version 2.1
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/point.h>
 #include <deal.II/base/subscriptor.h>
@@ -18,7 +21,6 @@
 
 #include <map>
 #include <memory>
-#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -28,11 +30,13 @@ template <int dim, int degree, typename number>
 matrixFreeOperator<dim, degree, number>::matrixFreeOperator(
   const std::map<unsigned int, variableAttributes>       &_attributes_list,
   std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
-  types::index                                            _current_index)
+  types::index                                            _current_index,
+  bool                                                    _use_local_mapping)
   : Subscriptor()
   , attributes_list(&_attributes_list)
   , pde_operator(std::move(_pde_operator))
   , current_index(_current_index)
+  , use_local_mapping(_use_local_mapping)
 {}
 
 template <int dim, int degree, typename number>
@@ -144,9 +148,8 @@ matrixFreeOperator<dim, degree, number>::set_constrained_entries_to_one(
 template <int dim, int degree, typename number>
 void
 matrixFreeOperator<dim, degree, number>::add_global_to_local_mapping(
-  const std::unordered_map<std::pair<unsigned int, dependencyType>,
-                           unsigned int,
-                           pairHash> &_global_to_local_solution)
+  const std::map<std::pair<unsigned int, dependencyType>, unsigned int>
+    &_global_to_local_solution)
 {
   global_to_local_solution = _global_to_local_solution;
 }
@@ -404,7 +407,8 @@ matrixFreeOperator<dim, degree, number>::compute_local_newton_update(
   variableContainer<dim, degree, number> variable_list(data,
                                                        *attributes_list,
                                                        global_to_local_solution,
-                                                       solveType::NONEXPLICIT_LHS);
+                                                       solveType::NONEXPLICIT_LHS,
+                                                       use_local_mapping);
 
   // Initialize, evaluate, and submit based on user function. Note that the src solution
   // subset must not include the src vector.
@@ -456,7 +460,8 @@ matrixFreeOperator<dim, degree, number>::local_compute_diagonal(
   variableContainer<dim, degree, number> variable_list(data,
                                                        *attributes_list,
                                                        global_to_local_solution,
-                                                       solveType::NONEXPLICIT_LHS);
+                                                       solveType::NONEXPLICIT_LHS,
+                                                       use_local_mapping);
 
   // Initialize, evaluate, and submit diagonal based on user function.
   variable_list.eval_local_diagonal(

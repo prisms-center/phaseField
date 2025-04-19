@@ -1,6 +1,11 @@
 Using the input parameter file: parameters.prm
 Number of constants: 2
 Number of variables: 3
+================================================
+  MGInfo
+================================================
+  There are no fields with multigrid enabled
+
 number of processes: 1
 vectorization over 2 doubles = 128 bits (SSE2)
 creating FESystem...
@@ -20,39 +25,29 @@ solving postprocessed variables in 0th timestep...
 outputting initial condition...
 
 Iteration: 300
-  Solution index 1 type NORMAL l2-norm: 8.41815
-  Solution index 0 type CHANGE l2-norm: 0.0430068
-  Solution index 2 type NORMAL l2-norm: 3.82289
-  Solution index 0 type OLD_1 l2-norm: 114.977
-  Solution index 0 type NORMAL l2-norm: 114.973
+  Solution index 0 l2-norm: 114.973 integrated value: 2052.27
+  Solution index 1 l2-norm: 8.41815 integrated value: 66.3314
+  Solution index 2 l2-norm: 3.82289 integrated value: 23.0453
 
 Iteration: 600
-  Solution index 1 type NORMAL l2-norm: 8.14627
-  Solution index 0 type CHANGE l2-norm: 0.032668
-  Solution index 2 type NORMAL l2-norm: 3.6989
-  Solution index 0 type OLD_1 l2-norm: 115.757
-  Solution index 0 type NORMAL l2-norm: 115.755
+  Solution index 0 l2-norm: 115.755 integrated value: 2073.23
+  Solution index 1 l2-norm: 8.14627 integrated value: 61.5275
+  Solution index 2 l2-norm: 3.6989 integrated value: 21.4781
 
 Iteration: 900
-  Solution index 1 type NORMAL l2-norm: 7.9413
-  Solution index 0 type CHANGE l2-norm: 0.0286421
-  Solution index 2 type NORMAL l2-norm: 3.62561
-  Solution index 0 type OLD_1 l2-norm: 116.4
-  Solution index 0 type NORMAL l2-norm: 116.398
+  Solution index 0 l2-norm: 116.398 integrated value: 2092.18
+  Solution index 1 l2-norm: 7.9413 integrated value: 58.275
+  Solution index 2 l2-norm: 3.62561 integrated value: 20.4873
 
 Iteration: 1200
-  Solution index 1 type NORMAL l2-norm: 7.7644
-  Solution index 0 type CHANGE l2-norm: 0.0263169
-  Solution index 2 type NORMAL l2-norm: 3.55416
-  Solution index 0 type OLD_1 l2-norm: 117.006
-  Solution index 0 type NORMAL l2-norm: 117.004
+  Solution index 0 l2-norm: 117.004 integrated value: 2110.79
+  Solution index 1 l2-norm: 7.7644 integrated value: 55.6137
+  Solution index 2 l2-norm: 3.55416 integrated value: 19.6139
 
 Iteration: 1500
-  Solution index 1 type NORMAL l2-norm: 7.60472
-  Solution index 0 type CHANGE l2-norm: 0.0247863
-  Solution index 2 type NORMAL l2-norm: 3.4781
-  Solution index 0 type OLD_1 l2-norm: 117.592
-  Solution index 0 type NORMAL l2-norm: 117.59
+  Solution index 0 l2-norm: 117.59 integrated value: 2129.23
+  Solution index 1 l2-norm: 7.60472 integrated value: 53.294
+  Solution index 2 l2-norm: 3.4781 integrated value: 18.7789
 
-Serial: Initialization - 0.0978511s (0.0978511s/call, 1 calls)
-Serial: Solve Increment - 4.05816s (0.00270544s/call, 1500 calls)
+Serial: Initialization - 0.192802s (0.192802s/call, 1 calls)
+Serial: Solve Increment - 51.5261s (0.0343507s/call, 1500 calls)

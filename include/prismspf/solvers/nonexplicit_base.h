@@ -5,24 +5,39 @@
 
 #include <deal.II/numerics/vector_tools.h>
 
-#include <prismspf/core/constraint_handler.h>
-#include <prismspf/core/dof_handler.h>
-#include <prismspf/core/exceptions.h>
-#include <prismspf/core/initial_conditions.h>
-#include <prismspf/core/invm_handler.h>
-#include <prismspf/core/matrix_free_handler.h>
 #include <prismspf/core/matrix_free_operator.h>
 #include <prismspf/core/pde_operator.h>
-#include <prismspf/core/solution_handler.h>
-#include <prismspf/core/triangulation_handler.h>
 #include <prismspf/core/type_enums.h>
-#include <prismspf/core/variable_attributes.h>
-
-#include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+template <int dim>
+class userInputParameters;
+
+template <int dim>
+class constraintHandler;
+
+template <int dim>
+class dofHandler;
+
+template <int dim>
+class initialCondition;
+
+template <int dim, int degree, typename number>
+class invmHandler;
+
+template <int dim, typename number>
+class matrixfreeHandler;
+
+template <int dim>
+class solutionHandler;
+
+template <int dim>
+class triangulationHandler;
+
+struct variableAttributes;
 
 /**
  * \brief Base class for nonexplicit solves.
@@ -38,9 +53,9 @@ public:
    */
   nonexplicitBase(
     const userInputParameters<dim>                         &_user_inputs,
-    const matrixfreeHandler<dim>                           &_matrix_free_handler,
+    const matrixfreeHandler<dim, double>                   &_matrix_free_handler,
     const triangulationHandler<dim>                        &_triangulation_handler,
-    const invmHandler<dim, degree>                         &_invm_handler,
+    const invmHandler<dim, degree, double>                 &_invm_handler,
     const constraintHandler<dim>                           &_constraint_handler,
     const dofHandler<dim>                                  &_dof_handler,
     const dealii::MappingQ1<dim>                           &_mapping,
@@ -105,7 +120,7 @@ protected:
   /**
    * \brief Matrix-free object handler for non-multigrid data.
    */
-  const matrixfreeHandler<dim> *matrix_free_handler;
+  const matrixfreeHandler<dim, double> *matrix_free_handler;
 
   /**
    * \brief Triangulation handler.
@@ -115,7 +130,7 @@ protected:
   /**
    * \brief invm handler.
    */
-  const invmHandler<dim, degree> *invm_handler;
+  const invmHandler<dim, degree, double> *invm_handler;
 
   /**
    * \brief Constraint handler.

@@ -61,7 +61,7 @@ public:
 inline bool
 checkpointParameters::should_checkpoint(unsigned int increment) const
 {
-  return checkpoint_list.find(increment) != checkpoint_list.end();
+  return checkpoint_list.contains(increment);
 }
 
 inline void

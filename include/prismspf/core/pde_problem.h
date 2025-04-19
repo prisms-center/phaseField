@@ -3,18 +3,19 @@
 
 #pragma once
 
+#include <deal.II/base/mg_level_object.h>
 #include <deal.II/base/quadrature_lib.h>
 #include <deal.II/fe/fe_q.h>
 #include <deal.II/fe/fe_system.h>
 #include <deal.II/fe/mapping_q1.h>
 
-#include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/constraint_handler.h>
 #include <prismspf/core/dof_handler.h>
 #include <prismspf/core/invm_handler.h>
 #include <prismspf/core/matrix_free_handler.h>
+#include <prismspf/core/multigrid_info.h>
+#include <prismspf/core/pde_operator.h>
 #include <prismspf/core/solution_handler.h>
-#include <prismspf/core/solution_output.h>
 #include <prismspf/core/timer.h>
 #include <prismspf/core/triangulation_handler.h>
 #include <prismspf/core/type_enums.h>
@@ -22,9 +23,11 @@
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#include <prismspf/solvers/explicit_constant_solver.h>
 #include <prismspf/solvers/explicit_postprocess_solver.h>
 #include <prismspf/solvers/explicit_solver.h>
 #include <prismspf/solvers/nonexplicit_auxiliary_solver.h>
+#include <prismspf/solvers/nonexplicit_co_nonlinear_solver.h>
 #include <prismspf/solvers/nonexplicit_linear_solver.h>
 #include <prismspf/solvers/nonexplicit_self_nonlinear_solver.h>
 
@@ -32,8 +35,6 @@
 #include <prismspf/utilities/element_volume.h>
 
 #include <prismspf/config.h>
-
-#include <map>
 
 #ifdef PRISMS_PF_WITH_CALIPER
 #  include <caliper/cali.h>
@@ -95,6 +96,11 @@ private:
   const userInputParameters<dim> *user_inputs;
 
   /**
+   * \brief Multigrid info class.
+   */
+  MGInfo<dim> mg_info;
+
+  /**
    * \brief Triangulation handler.
    */
   triangulationHandler<dim> triangulation_handler;
@@ -107,7 +113,7 @@ private:
   /**
    * \brief Matrix-free object handler for non-multigrid data.
    */
-  matrixfreeHandler<dim> matrix_free_handler;
+  matrixfreeHandler<dim, double> matrix_free_handler;
 
   /**
    * \brief Matrix-free object handler for multigrid data.
@@ -117,7 +123,7 @@ private:
   /**
    * \brief invm handler.
    */
-  invmHandler<dim, degree> invm_handler;
+  invmHandler<dim, degree, double> invm_handler;
 
   /**
    * \brief Solution handler.

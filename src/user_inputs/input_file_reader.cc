@@ -107,7 +107,7 @@ inputFileReader::parse_line(std::string        line,
   strip_spaces(line);
 
   // now see whether the next word is the word we look for
-  if (line.find(entry_name) != 0)
+  if (!line.starts_with(entry_name))
     {
       return false;
     }

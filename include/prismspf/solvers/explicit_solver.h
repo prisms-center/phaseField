@@ -3,16 +3,6 @@
 
 #pragma once
 
-#include <prismspf/core/constraint_handler.h>
-#include <prismspf/core/dof_handler.h>
-#include <prismspf/core/invm_handler.h>
-#include <prismspf/core/matrix_free_handler.h>
-#include <prismspf/core/matrix_free_operator.h>
-#include <prismspf/core/solution_handler.h>
-#include <prismspf/core/type_enums.h>
-
-#include <prismspf/user_inputs/user_input_parameters.h>
-
 #include <prismspf/solvers/explicit_base.h>
 
 #include <prismspf/config.h>
@@ -36,13 +26,13 @@ public:
   /**
    * \brief Constructor.
    */
-  explicitSolver(const userInputParameters<dim> &_user_inputs,
-                 const matrixfreeHandler<dim>   &_matrix_free_handler,
-                 const invmHandler<dim, degree> &_invm_handler,
-                 const constraintHandler<dim>   &_constraint_handler,
-                 const dofHandler<dim>          &_dof_handler,
-                 const dealii::MappingQ1<dim>   &_mapping,
-                 solutionHandler<dim>           &_solution_handler,
+  explicitSolver(const userInputParameters<dim>         &_user_inputs,
+                 const matrixfreeHandler<dim, double>   &_matrix_free_handler,
+                 const invmHandler<dim, degree, double> &_invm_handler,
+                 const constraintHandler<dim>           &_constraint_handler,
+                 const dofHandler<dim>                  &_dof_handler,
+                 const dealii::MappingQ1<dim>           &_mapping,
+                 solutionHandler<dim>                   &_solution_handler,
                  std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator);
 
   /**
@@ -66,7 +56,7 @@ private:
   /**
    * \brief Mapping from global solution vectors to the local ones
    */
-  std::unordered_map<std::pair<unsigned int, dependencyType>, unsigned int, pairHash>
+  std::map<std::pair<unsigned int, dependencyType>, unsigned int>
     global_to_local_solution;
 
   /**

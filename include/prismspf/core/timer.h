@@ -5,8 +5,6 @@
 
 #include <deal.II/base/timer.h>
 
-#include <prismspf/core/conditional_ostreams.h>
-
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
