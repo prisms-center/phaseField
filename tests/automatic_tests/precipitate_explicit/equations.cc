@@ -81,7 +81,7 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
   scalarGrad  n2x = variable_list.get_scalar_gradient(2);
   scalarValue n3  = variable_list.get_scalar_value(3);
   scalarGrad  n3x = variable_list.get_scalar_gradient(3);
-  vectorGrad  ux  = variable_list.get_vector_gradient(4);
+  vectorGrad  ux  = variable_list.get_vector_symmetric_gradient(4);
 
   // Free energy expressions and interpolation functions
   scalarValue faV   = A0 + A1 * c + A2 * c * c + A3 * c * c * c + A4 * c * c * c * c;
@@ -98,68 +98,21 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
   scalarValue hn2V = compute_hnV(n2);
   scalarValue hn3V = compute_hnV(n3);
 
-  // Calculate the stress-free transformation strain and its derivatives at the
-  // quadrature point
-  vectorGrad sfts1, sfts1c, sfts1cc, sfts2, sfts2c, sfts2cc, sfts3, sfts3c, sfts3cc;
+  // Compute strain
+  vectorGrad strain = ux - (sfts_const1 * h1V + sfts_const2 * h2V + sfts_const3 * h3V);
 
-  for (unsigned int i = 0; i < dim; i++)
-    {
-      for (unsigned int j = 0; j < dim; j++)
-        {
-          // Polynomial fits for the stress-free transformation strains, of the
-          // form: sfts = a_p * c + b_p
-          sfts1[i][j]   = sfts_const1[i][j];
-          sfts1c[i][j]  = constV<number>(0.0);
-          sfts1cc[i][j] = constV<number>(0.0);
-
-          // Polynomial fits for the stress-free transformation strains, of the
-          // form: sfts = a_p * c + b_p
-          sfts2[i][j]   = sfts_const2[i][j];
-          sfts2c[i][j]  = constV<number>(0.0);
-          sfts2cc[i][j] = constV<number>(0.0);
-
-          // Polynomial fits for the stress-free transformation strains, of the
-          // form: sfts = a_p * c + b_p
-          sfts3[i][j]   = sfts_const3[i][j];
-          sfts3c[i][j]  = constV<number>(0.0);
-          sfts3cc[i][j] = constV<number>(0.0);
-        }
-    }
-
-  // compute strain_2=(E-E0)
-  scalarValue strain_2[dim][dim], stress[dim][dim];
-
-  for (unsigned int i = 0; i < dim; i++)
-    {
-      for (unsigned int j = 0; j < dim; j++)
-        {
-          strain_2[i][j] = 0.5 * (ux[i][j] + ux[j][i]) -
-                           (sfts1[i][j] * h1V + sfts2[i][j] * h2V + sfts3[i][j] * h3V);
-        }
-    }
-
-  // compute stress
-  // stress=C*(E-E0)
-  //  Compute stress tensor (which is equal to the residual, Rux)
-  scalarValue CIJ_combined[CIJ_tensor_size][CIJ_tensor_size];
-
+  // Compute stress
+  vectorGrad stress;
   if (n_dependent_stiffness == true)
     {
-      scalarValue sum_hV;
-      sum_hV = h1V + h2V + h3V;
-      for (unsigned int i = 0; i < 2 * dim - 1 + dim / 3; i++)
-        {
-          for (unsigned int j = 0; j < 2 * dim - 1 + dim / 3; j++)
-            {
-              CIJ_combined[i][j] =
-                CIJ_Mg[i][j] * (1.0 - sum_hV) + CIJ_Beta[i][j] * sum_hV;
-            }
-        }
-      compute_stress<dim, scalarValue>(CIJ_combined, strain_2, stress);
+      scalarValue                                     sum_hV = h1V + h2V + h3V;
+      dealii::Tensor<2, CIJ_tensor_size, scalarValue> CIJ_combined =
+        CIJ_Mg * (1.0 - sum_hV) + CIJ_Beta * sum_hV;
+      compute_stress<dim, scalarValue>(CIJ_combined, strain, stress);
     }
   else
     {
-      compute_stress<dim, scalarValue>(CIJ_Mg, strain_2, stress);
+      compute_stress<dim, scalarValue>(CIJ_Mg, strain, stress);
     }
 
   // Compute one of the stress terms in the order parameter chemical potential,
@@ -167,14 +120,13 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
   scalarValue nDependentMisfitAC1 = constV<number>(0.0);
   scalarValue nDependentMisfitAC2 = constV<number>(0.0);
   scalarValue nDependentMisfitAC3 = constV<number>(0.0);
-
   for (unsigned int i = 0; i < dim; i++)
     {
       for (unsigned int j = 0; j < dim; j++)
         {
-          nDependentMisfitAC1 += stress[i][j] * sfts1[i][j];
-          nDependentMisfitAC2 += stress[i][j] * sfts2[i][j];
-          nDependentMisfitAC3 += stress[i][j] * sfts3[i][j];
+          nDependentMisfitAC1 += stress[i][j] * sfts_const1[i][j];
+          nDependentMisfitAC2 += stress[i][j] * sfts_const2[i][j];
+          nDependentMisfitAC3 += stress[i][j] * sfts_const3[i][j];
         }
     }
 
@@ -187,29 +139,22 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
   scalarValue heterMechAC1 = constV<number>(0.0);
   scalarValue heterMechAC2 = constV<number>(0.0);
   scalarValue heterMechAC3 = constV<number>(0.0);
-  scalarValue stress_2[dim][dim];
-
   if (n_dependent_stiffness == true)
     {
-      // compute_stress<dim,number>(CIJ_diff, strain_2, stress_2);
-      compute_stress<dim, scalarValue>(CIJ_Beta - CIJ_Mg, strain_2, stress_2);
+      vectorGrad stress_2;
+      compute_stress<dim, scalarValue>(CIJ_Beta - CIJ_Mg, strain, stress_2);
       for (unsigned int i = 0; i < dim; i++)
         {
           for (unsigned int j = 0; j < dim; j++)
             {
-              heterMechAC1 += stress_2[i][j] * strain_2[i][j];
+              heterMechAC1 += stress_2[i][j] * strain[i][j];
             }
         }
       // Aside from HnpV, heterMechAC1, heterMechAC2, and heterMechAC3 are equal
       heterMechAC2 = 0.5 * hn2V * heterMechAC1;
       heterMechAC3 = 0.5 * hn3V * heterMechAC1;
-
       heterMechAC1 = 0.5 * hn1V * heterMechAC1;
     }
-
-  // compute the stress term in the gradient of the concentration chemical
-  // potential, grad_mu_el = [C*(E-E0)*E0c]x, must be a vector with length dim
-  scalarGrad grad_mu_el;
 
   // compute K*nx
   scalarGrad Knx1, Knx2, Knx3;
@@ -226,22 +171,23 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
         }
     }
 
+  scalarValue sum_hV = h1V + h2V + h3V;
+
   // The terms in the govering equations
-  scalarValue eq_c = (c);
-  scalarGrad  eqx_c_temp =
-    (cx * ((1.0 - h1V - h2V - h3V) * faccV + (h1V + h2V + h3V) * fbccV) +
-     n1x * ((fbcV - facV) * hn1V) + n2x * ((fbcV - facV) * hn2V) +
-     n3x * ((fbcV - facV) * hn3V) + grad_mu_el);
-  scalarGrad  eqx_c  = (-this->get_timestep() * McV * eqx_c_temp);
-  scalarValue eq_n1  = (n1 - this->get_timestep() * Mn1V *
-                              ((fbV - faV) * hn1V + nDependentMisfitAC1 + heterMechAC1));
-  scalarValue eq_n2  = (n2 - this->get_timestep() * Mn2V *
-                              ((fbV - faV) * hn2V + nDependentMisfitAC2 + heterMechAC2));
-  scalarValue eq_n3  = (n3 - this->get_timestep() * Mn3V *
-                              ((fbV - faV) * hn3V + nDependentMisfitAC3 + heterMechAC3));
-  scalarGrad  eqx_n1 = (-this->get_timestep() * Mn1V * Knx1);
-  scalarGrad  eqx_n2 = (-this->get_timestep() * Mn2V * Knx2);
-  scalarGrad  eqx_n3 = (-this->get_timestep() * Mn3V * Knx3);
+  scalarValue eq_c       = c;
+  scalarGrad  eqx_c_temp = cx * ((1.0 - sum_hV) * faccV + sum_hV * fbccV) +
+                          n1x * ((fbcV - facV) * hn1V) + n2x * ((fbcV - facV) * hn2V) +
+                          n3x * ((fbcV - facV) * hn3V);
+  scalarGrad  eqx_c = -this->get_timestep() * McV * eqx_c_temp;
+  scalarValue eq_n1 = n1 - this->get_timestep() * Mn1V *
+                             ((fbV - faV) * hn1V + nDependentMisfitAC1 + heterMechAC1);
+  scalarValue eq_n2 = n2 - this->get_timestep() * Mn2V *
+                             ((fbV - faV) * hn2V + nDependentMisfitAC2 + heterMechAC2);
+  scalarValue eq_n3 = n3 - this->get_timestep() * Mn3V *
+                             ((fbV - faV) * hn3V + nDependentMisfitAC3 + heterMechAC3);
+  scalarGrad eqx_n1 = -this->get_timestep() * Mn1V * Knx1;
+  scalarGrad eqx_n2 = -this->get_timestep() * Mn2V * Knx2;
+  scalarGrad eqx_n3 = -this->get_timestep() * Mn3V * Knx3;
 
   variable_list.set_scalar_value_term(0, eq_c);
   variable_list.set_scalar_gradient_term(0, eqx_c);
@@ -348,121 +294,54 @@ customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
   scalarGrad  n2x = variable_list.get_scalar_gradient(2);
   scalarValue n3  = variable_list.get_scalar_value(3);
   scalarGrad  n3x = variable_list.get_scalar_gradient(3);
-  vectorGrad  ux  = variable_list.get_vector_gradient(4);
-
-  scalarValue f_tot = constV<number>(0.0);
+  vectorGrad  ux  = variable_list.get_vector_symmetric_gradient(4);
 
   // Free energy expressions and interpolation functions
-  scalarValue faV = A0 + A1 * c + A2 * c * c + A3 * c * c * c + A4 * c * c * c * c;
-  scalarValue fbV = B2 * c * c + B1 * c + B0;
-  scalarValue h1V = compute_hV(n1);
-  scalarValue h2V = compute_hV(n2);
-  scalarValue h3V = compute_hV(n3);
+  scalarValue faV    = A0 + A1 * c + A2 * c * c + A3 * c * c * c + A4 * c * c * c * c;
+  scalarValue fbV    = B2 * c * c + B1 * c + B0;
+  scalarValue h1V    = compute_hV(n1);
+  scalarValue h2V    = compute_hV(n2);
+  scalarValue h3V    = compute_hV(n3);
+  scalarValue sum_hV = h1V + h2V + h3V;
 
-  scalarValue f_chem = (1.0 - (h1V + h2V + h3V)) * faV + (h1V + h2V + h3V) * fbV;
+  scalarValue f_chem = (1.0 - sum_hV) * faV + sum_hV * fbV;
 
   scalarValue f_grad = constV<number>(0.0);
-
   for (int i = 0; i < dim; i++)
     {
       for (int j = 0; j < dim; j++)
         {
-          f_grad += 0.5 * Kn1[i][j] * n1x[i] * n1x[j];
+          f_grad += 0.5 * Kn1[i][j] * n1x[i] * n1x[j] +
+                    0.5 * Kn2[i][j] * n2x[i] * n2x[j] + 0.5 * Kn3[i][j] * n3x[i] * n3x[j];
         }
     }
 
-  for (int i = 0; i < dim; i++)
-    {
-      for (int j = 0; j < dim; j++)
-        {
-          f_grad += 0.5 * Kn2[i][j] * n2x[i] * n2x[j];
-        }
-    }
+  // Compute strain
+  vectorGrad strain = ux - (sfts_const1 * h1V + sfts_const2 * h2V + sfts_const3 * h3V);
 
-  for (int i = 0; i < dim; i++)
-    {
-      for (int j = 0; j < dim; j++)
-        {
-          f_grad += 0.5 * Kn3[i][j] * n3x[i] * n3x[j];
-        }
-    }
-
-  // Calculate the stress-free transformation strain and its derivatives at the
-  // quadrature point
-  vectorGrad sfts1, sfts1c, sfts1cc, sfts2, sfts2c, sfts2cc, sfts3, sfts3c, sfts3cc;
-
-  for (unsigned int i = 0; i < dim; i++)
-    {
-      for (unsigned int j = 0; j < dim; j++)
-        {
-          // Polynomial fits for the stress-free transformation strains, of the
-          // form: sfts = a_p * c + b_p
-          sfts1[i][j]   = sfts_const1[i][j];
-          sfts1c[i][j]  = constV<number>(0.0);
-          sfts1cc[i][j] = constV<number>(0.0);
-
-          // Polynomial fits for the stress-free transformation strains, of the
-          // form: sfts = a_p * c + b_p
-          sfts2[i][j]   = sfts_const2[i][j];
-          sfts2c[i][j]  = constV<number>(0.0);
-          sfts2cc[i][j] = constV<number>(0.0);
-
-          // Polynomial fits for the stress-free transformation strains, of the
-          // form: sfts = a_p * c + b_p
-          sfts3[i][j]   = sfts_const3[i][j];
-          sfts3c[i][j]  = constV<number>(0.0);
-          sfts3cc[i][j] = constV<number>(0.0);
-        }
-    }
-
-  // compute strain_2=(E-E0)
-  scalarValue strain_2[dim][dim], stress[dim][dim];
-
-  for (unsigned int i = 0; i < dim; i++)
-    {
-      for (unsigned int j = 0; j < dim; j++)
-        {
-          // strain_2[i][j]= constV(0.5)*(ux[i][j]+ux[j][i])-( sfts1[i][j]*h1V +
-          // sfts2[i][j]*h2V + sfts3[i][j]*h3V);
-          strain_2[i][j] = 0.5 * (ux[i][j] + ux[j][i]) -
-                           (sfts1[i][j] * h1V + sfts2[i][j] * h2V + sfts3[i][j] * h3V);
-        }
-    }
-
-  // compute stress
-  // stress=C*(E-E0)
-  scalarValue CIJ_combined[CIJ_tensor_size][CIJ_tensor_size];
-
+  // Compute stress
+  vectorGrad stress;
   if (n_dependent_stiffness == true)
     {
-      scalarValue sum_hV;
-      sum_hV = h1V + h2V + h3V;
-      for (unsigned int i = 0; i < 2 * dim - 1 + dim / 3; i++)
-        {
-          for (unsigned int j = 0; j < 2 * dim - 1 + dim / 3; j++)
-            {
-              CIJ_combined[i][j] =
-                CIJ_Mg[i][j] * (1.0 - sum_hV) + CIJ_Beta[i][j] * sum_hV;
-            }
-        }
-      compute_stress<dim, scalarValue>(CIJ_combined, strain_2, stress);
+      dealii::Tensor<2, CIJ_tensor_size, scalarValue> CIJ_combined =
+        CIJ_Mg * (1.0 - sum_hV) + CIJ_Beta * sum_hV;
+      compute_stress<dim, scalarValue>(CIJ_combined, strain, stress);
     }
   else
     {
-      compute_stress<dim, scalarValue>(CIJ_Mg, strain_2, stress);
+      compute_stress<dim, scalarValue>(CIJ_Mg, strain, stress);
     }
 
   scalarValue f_el = constV<number>(0.0);
-
   for (unsigned int i = 0; i < dim; i++)
     {
       for (unsigned int j = 0; j < dim; j++)
         {
-          f_el += 0.5 * stress[i][j] * strain_2[i][j];
+          f_el += 0.5 * stress[i][j] * strain[i][j];
         }
     }
 
-  f_tot = f_chem + f_grad + f_el;
+  scalarValue f_tot = f_chem + f_grad + f_el;
 
   variable_list.set_scalar_value_term(5, f_tot);
 }

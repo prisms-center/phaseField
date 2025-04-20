@@ -102,7 +102,7 @@ def compile_and_run_simulation(application_path, n_threads=1):
     with open("output.txt", "w") as outfile:
         try:
             subprocess.run(
-                ["mpirun", "-n", "1", "./main"],
+                ["mpirun", "-n", f"{n_threads}", "./main"],
                 stdout=outfile,
                 stderr=subprocess.PIPE,
                 check=True,
@@ -121,12 +121,12 @@ def compile_and_run_simulation(application_path, n_threads=1):
     return end - start
 
 
-def run_regression_test(application, new_gold_standard, test_dir):
+def run_regression_test(application, new_gold_standard, test_dir, n_threads=1):
     # Move to the application directory
     application_path = os.path.join(test_dir, application)
 
     # Run the simulation and move the results to the test directory
-    test_time = compile_and_run_simulation(application_path)
+    test_time = compile_and_run_simulation(application_path, n_threads)
 
     # Compare the result against the gold standard, if it exists
     tolerance = 1e-3
@@ -193,14 +193,16 @@ def run_regression_test(application, new_gold_standard, test_dir):
 
 
 def run_regression_tests_in_parallel(
-    application_list, gold_standard_list, test_dir, n_processes=None
+    application_list, gold_standard_list, test_dir, n_processes=None, n_threads=1
 ):
     regression_test_counter = 0
     regression_tests_passed = 0
 
     with ProcessPoolExecutor(max_workers=n_processes) as executor:
         futures = [
-            executor.submit(run_regression_test, application, gold_standard, test_dir)
+            executor.submit(
+                run_regression_test, application, gold_standard, test_dir, n_threads
+            )
             for application, gold_standard in zip(application_list, gold_standard_list)
         ]
 
@@ -218,10 +220,17 @@ parser = argparse.ArgumentParser(
 )
 parser.add_argument("-n", "--ntasks", type=int, default=1, help="Number of processes")
 parser.add_argument(
-    "-j", "--nthreads", type=int, default=1, help="Number of threads for ninja"
+    "-j",
+    "--nthreads",
+    type=int,
+    default=1,
+    help="Number of threads for compiling & running tests",
 )
 args = parser.parse_args()
 n_processes = args.ntasks
+n_threads = args.nthreads
+
+print(f"Running automatic tests with {n_processes} processes and {n_threads} threads.")
 
 # Grab current directory and the path to the test results file
 pwd = os.path.dirname(os.path.realpath(__file__))
@@ -237,8 +246,10 @@ applicationList = [
     "cahn_hilliard_explicit",
     "heat_equation_steady_state",
     "mechanics",
+    "precipitate_explicit",
 ]
 getNewGoldStandardList = [
+    False,
     False,
     False,
     False,
@@ -268,7 +279,7 @@ write_to_file(
 # Run tests in parallel
 start_parallel = time.time()
 regression_tests_passed, regression_test_counter = run_regression_tests_in_parallel(
-    applicationList, getNewGoldStandardList, pwd, n_processes
+    applicationList, getNewGoldStandardList, pwd, n_processes, n_threads
 )
 end_parallel = time.time()
 print(f"Total time spend on regressions tests: {end_parallel - start_parallel}")
