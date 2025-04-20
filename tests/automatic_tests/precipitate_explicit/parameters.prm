@@ -12,11 +12,11 @@ subsection rectangular mesh
 end
 
 set time step = 6.0e-4
-set number steps = 50000
+set number steps = 50
 
 subsection output
   set condition = EQUAL_SPACING
-  set number = 20
+  set number = 5
 end
 
 set boundary condition for c = NATURAL
