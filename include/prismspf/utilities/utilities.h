@@ -58,7 +58,7 @@ template <unsigned int dim, typename T>
 inline void
 compute_stress(const dealii::Tensor<2, voigt_tensor_size<dim>, T> &elasticity_tensor,
                const dealii::Tensor<1, voigt_tensor_size<dim>, T> &strain,
-               dealii::Tensor<1, (2 * dim) - 1 + (dim / 3), T>    &stress)
+               dealii::Tensor<1, voigt_tensor_size<dim>, T>       &stress)
 {
   stress = elasticity_tensor * strain;
 }
