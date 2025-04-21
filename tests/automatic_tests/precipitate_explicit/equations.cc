@@ -66,7 +66,7 @@ customAttributeLoader::loadVariableAttributes()
 #define compute_hV(n) (10.0 * n * n * n - 15.0 * n * n * n * n + 6.0 * n * n * n * n * n);
 #define compute_hnV(n) (30.0 * n * n - 60.0 * n * n * n + 30.0 * n * n * n * n);
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_explicit_RHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
@@ -199,7 +199,7 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
   variable_list.set_scalar_gradient_term(3, eqx_n3);
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_nonexplicit_RHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
@@ -240,7 +240,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_nonexplicit_LHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
@@ -280,7 +280,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_LHS(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
@@ -307,9 +307,9 @@ customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
   scalarValue f_chem = (1.0 - sum_hV) * faV + sum_hV * fbV;
 
   scalarValue f_grad = constV<number>(0.0);
-  for (int i = 0; i < dim; i++)
+  for (unsigned int i = 0; i < dim; i++)
     {
-      for (int j = 0; j < dim; j++)
+      for (unsigned int j = 0; j < dim; j++)
         {
           f_grad += 0.5 * Kn1[i][j] * n1x[i] * n1x[j] +
                     0.5 * Kn2[i][j] * n2x[i] * n2x[j] + 0.5 * Kn3[i][j] * n3x[i] * n3x[j];
