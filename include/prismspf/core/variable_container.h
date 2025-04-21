@@ -229,12 +229,14 @@ private:
   /**
    * \brief Typedef for scalar evaluation objects.
    */
-  using scalar_FEEval = dealii::FEEvaluation<dim, degree, degree + 1, 1, number>;
+  using scalar_FEEval = dealii::
+    FEEvaluation<dim, degree, degree + 1, 1, number, dealii::VectorizedArray<number>>;
 
   /**
    * \brief Typedef for vector evaluation objects.
    */
-  using vector_FEEval = dealii::FEEvaluation<dim, degree, degree + 1, dim, number>;
+  using vector_FEEval = dealii::
+    FEEvaluation<dim, degree, degree + 1, dim, number, dealii::VectorizedArray<number>>;
 
   /**
    * \brief Typedef for the varaint evaluation objects. Note that the states become
