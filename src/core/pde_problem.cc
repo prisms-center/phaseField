@@ -340,19 +340,18 @@ PDEProblem<dim, degree>::solve()
        "  Solve\n"
     << "================================================\n"
     << std::flush;
-  while (user_inputs->temporal_discretization.increment <
-         user_inputs->temporal_discretization.total_increments)
+  while (user_inputs->temporal_discretization.get_current_increment() <
+         user_inputs->temporal_discretization.get_total_increments())
     {
-      user_inputs->temporal_discretization.increment++;
-      user_inputs->temporal_discretization.time +=
-        user_inputs->temporal_discretization.dt;
+      user_inputs->temporal_discretization.update_current_increment();
+      user_inputs->temporal_discretization.update_current_time();
 
       CALI_MARK_BEGIN("Solve Increment");
       solve_increment();
       CALI_MARK_END("Solve Increment");
 
       if (user_inputs->output_parameters.should_output(
-            user_inputs->temporal_discretization.increment))
+            user_inputs->temporal_discretization.get_current_increment()))
         {
           // Ideally just update ghosts that need to be here.
           solution_handler.update_ghosts();
@@ -372,7 +371,8 @@ PDEProblem<dim, degree>::solve()
 
           // Print the l2-norms and integrals of each solution
           conditionalOStreams::pout_base()
-            << "Iteration: " << user_inputs->temporal_discretization.increment << "\n";
+            << "Iteration: "
+            << user_inputs->temporal_discretization.get_current_increment() << "\n";
           for (const auto &[index, vector] : solution_handler.get_solution_vector())
             {
               conditionalOStreams::pout_base()

@@ -95,9 +95,14 @@ public:
   get_model_constant_elasticity_tensor(const std::string &constant_name) const;
 
   /**
-   * \brief List of user-defined constants.
+   * \brief Print all user-specified constants
    */
-  std::map<std::string, InputVariant> model_constants;
+  void
+  add_user_constant(const std::string        &constant_name,
+                    std::vector<std::string> &model_constants_strings)
+  {
+    model_constants[constant_name] = construct_user_constant(model_constants_strings);
+  };
 
   /**
    * \brief Print all user-specified constants
@@ -145,6 +150,11 @@ private:
 
   [[nodiscard]] dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
   getCIJMatrix(const elasticityModel &model, const std::vector<double> &constants) const;
+
+  /**
+   * \brief List of user-defined constants.
+   */
+  std::map<std::string, InputVariant> model_constants;
 
   /**
    * \brief Class for printing of variant types. This is bad practice and should be fixed.

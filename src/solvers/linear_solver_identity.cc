@@ -77,7 +77,7 @@ identitySolver<dim, degree>::solve(const double &step_length)
   // Compute the residual
   this->system_matrix->compute_residual(*this->residual, *solution);
   if (this->user_inputs->output_parameters.should_output(
-        this->user_inputs->temporal_discretization.increment))
+        this->user_inputs->temporal_discretization.get_current_increment()))
     {
       conditionalOStreams::pout_summary()
         << "  field: " << this->field_index
@@ -108,7 +108,7 @@ identitySolver<dim, degree>::solve(const double &step_length)
     .set_zero(*this->newton_update);
 
   if (this->user_inputs->output_parameters.should_output(
-        this->user_inputs->temporal_discretization.increment))
+        this->user_inputs->temporal_discretization.get_current_increment()))
     {
       conditionalOStreams::pout_summary()
         << " Final residual: " << this->solver_control.last_value()

@@ -139,10 +139,10 @@ void
 userInputParameters<dim>::assign_temporal_discretization_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
-  temporal_discretization.dt         = parameter_handler.get_double("time step");
-  temporal_discretization.final_time = parameter_handler.get_double("end time");
-  temporal_discretization.total_increments =
-    static_cast<unsigned int>(parameter_handler.get_integer("number steps"));
+  temporal_discretization.set_timestep(parameter_handler.get_double("time step"));
+  temporal_discretization.set_final_time(parameter_handler.get_double("end time"));
+  temporal_discretization.set_total_increments(
+    static_cast<unsigned int>(parameter_handler.get_integer("number steps")));
 }
 
 template <unsigned int dim>
@@ -365,8 +365,7 @@ userInputParameters<dim>::load_model_constants(
       std::vector<std::string> model_constants_strings =
         dealii::Utilities::split_string_list(parameter_handler.get(constants_text));
 
-      user_constants.model_constants[constant_name] =
-        user_constants.construct_user_constant(model_constants_strings);
+      user_constants.add_user_constant(constant_name, model_constants_strings);
     }
 }
 

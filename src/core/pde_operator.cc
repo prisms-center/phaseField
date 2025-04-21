@@ -30,7 +30,7 @@ number
 PDEOperator<dim, degree, number>::get_timestep() const
 {
   Assert(user_inputs != nullptr, dealii::ExcNotInitialized());
-  return user_inputs->temporal_discretization.dt;
+  return user_inputs->temporal_discretization.get_timestep();
 }
 
 INSTANTIATE_TRI_TEMPLATE(PDEOperator)
