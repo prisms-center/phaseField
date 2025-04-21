@@ -23,7 +23,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 identitySolver<dim, degree>::identitySolver(
   const userInputParameters<dim>                         &_user_inputs,
   const variableAttributes                               &_variable_attributes,
@@ -39,7 +39,7 @@ identitySolver<dim, degree>::identitySolver(
                                   std::move(_pde_operator))
 {}
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 inline void
 identitySolver<dim, degree>::init()
 {
@@ -62,12 +62,12 @@ identitySolver<dim, degree>::init()
                                                               dependencyType::NORMAL)));
 }
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 inline void
 identitySolver<dim, degree>::reinit()
 {}
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 inline void
 identitySolver<dim, degree>::solve(const double &step_length)
 {

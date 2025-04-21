@@ -18,7 +18,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim, typename number>
+template <unsigned int dim, typename number>
 matrixfreeHandler<dim, number>::matrixfreeHandler()
   : matrix_free_object(
       std::make_shared<
@@ -36,7 +36,7 @@ matrixfreeHandler<dim, number>::matrixfreeHandler()
      dealii::update_quadrature_points);
 }
 
-template <int dim, typename number>
+template <unsigned int dim, typename number>
 void
 matrixfreeHandler<dim, number>::reinit(
   const dealii::Mapping<dim>              &mapping,
@@ -47,7 +47,7 @@ matrixfreeHandler<dim, number>::reinit(
   matrix_free_object->reinit(mapping, dof_handler, constraint, quad, additional_data);
 }
 
-template <int dim, typename number>
+template <unsigned int dim, typename number>
 void
 matrixfreeHandler<dim, number>::reinit(
   const dealii::Mapping<dim>                                   &mapping,
@@ -58,7 +58,7 @@ matrixfreeHandler<dim, number>::reinit(
   matrix_free_object->reinit(mapping, dof_handler, constraint, quad, additional_data);
 }
 
-template <int dim, typename number>
+template <unsigned int dim, typename number>
 void
 matrixfreeHandler<dim, number>::reinit(
   const dealii::Mapping<dim>                                   &mapping,
@@ -69,7 +69,7 @@ matrixfreeHandler<dim, number>::reinit(
   matrix_free_object->reinit(mapping, dof_handler, constraint, quad, additional_data);
 }
 
-template <int dim, typename number>
+template <unsigned int dim, typename number>
 std::shared_ptr<dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>>
 matrixfreeHandler<dim, number>::get_matrix_free() const
 {

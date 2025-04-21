@@ -15,7 +15,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief Compute the element volume.
  */
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 class elementVolume
 {
 public:

@@ -22,7 +22,7 @@ struct variableAttributes;
 
 class inputFileReader;
 
-template <int dim>
+template <unsigned int dim>
 class userInputParameters
 {
 public:

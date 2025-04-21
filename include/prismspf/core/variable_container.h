@@ -28,7 +28,7 @@ struct variableAttributes;
  * \tparam number Datatype to use for `dealii::VectorizedArray<number>`. Either
  * double or float.
  */
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 class variableContainer
 {
 public:

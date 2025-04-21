@@ -28,7 +28,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 nonexplicitAuxiliarySolver<dim, degree>::nonexplicitAuxiliarySolver(
   const userInputParameters<dim>                         &_user_inputs,
   const matrixfreeHandler<dim>                           &_matrix_free_handler,
@@ -52,7 +52,7 @@ nonexplicitAuxiliarySolver<dim, degree>::nonexplicitAuxiliarySolver(
                                  std::move(_pde_operator))
 {}
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 inline void
 nonexplicitAuxiliarySolver<dim, degree>::init()
 {
@@ -111,7 +111,7 @@ nonexplicitAuxiliarySolver<dim, degree>::init()
     }
 }
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 inline void
 nonexplicitAuxiliarySolver<dim, degree>::solve()
 {

@@ -31,7 +31,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim>
+template <unsigned int dim>
 constraintHandler<dim>::constraintHandler(const userInputParameters<dim> &_user_inputs,
                                           const MGInfo<dim>              &_mg_info)
   : user_inputs(&_user_inputs)
@@ -53,7 +53,7 @@ constraintHandler<dim>::constraintHandler(const userInputParameters<dim> &_user_
     }
 }
 
-template <int dim>
+template <unsigned int dim>
 std::vector<const dealii::AffineConstraints<double> *>
 constraintHandler<dim>::get_constraints()
 {
@@ -71,7 +71,7 @@ constraintHandler<dim>::get_constraints()
   return temp;
 }
 
-template <int dim>
+template <unsigned int dim>
 const dealii::AffineConstraints<double> &
 constraintHandler<dim>::get_constraint(unsigned int index) const
 {
@@ -81,7 +81,7 @@ constraintHandler<dim>::get_constraint(unsigned int index) const
   return constraints.at(index);
 }
 
-template <int dim>
+template <unsigned int dim>
 std::vector<const dealii::AffineConstraints<float> *>
 constraintHandler<dim>::get_mg_constraints(unsigned int level)
 {
@@ -106,7 +106,7 @@ constraintHandler<dim>::get_mg_constraints(unsigned int level)
   return temp;
 }
 
-template <int dim>
+template <unsigned int dim>
 const dealii::AffineConstraints<float> &
 constraintHandler<dim>::get_mg_constraint(unsigned int level, unsigned int index) const
 {
@@ -123,7 +123,7 @@ constraintHandler<dim>::get_mg_constraint(unsigned int level, unsigned int index
   return mg_constraints[relative_level][index];
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 constraintHandler<dim>::make_constraints(
   const dealii::Mapping<dim>                         &mapping,
@@ -135,7 +135,7 @@ constraintHandler<dim>::make_constraints(
     }
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 constraintHandler<dim>::make_mg_constraints(
   const dealii::Mapping<dim>                         &mapping,
@@ -157,7 +157,7 @@ constraintHandler<dim>::make_mg_constraints(
     }
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 constraintHandler<dim>::make_constraint(const dealii::Mapping<dim>    &mapping,
                                         const dealii::DoFHandler<dim> &dof_handler,
@@ -211,7 +211,7 @@ constraintHandler<dim>::make_constraint(const dealii::Mapping<dim>    &mapping,
   local_constraint.close();
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 constraintHandler<dim>::make_mg_constraint(const dealii::Mapping<dim>    &mapping,
                                            const dealii::DoFHandler<dim> &dof_handler,
@@ -316,7 +316,7 @@ constraintHandler<dim>::make_mg_constraint(const dealii::Mapping<dim>    &mappin
   local_constraint.close();
 }
 
-template <int dim>
+template <unsigned int dim>
 template <typename number>
 void
 constraintHandler<dim>::set_pinned_point(const dealii::DoFHandler<dim>     &dof_handler,
@@ -350,7 +350,7 @@ constraintHandler<dim>::set_pinned_point(const dealii::DoFHandler<dim>     &dof_
     }
 }
 
-template <int dim>
+template <unsigned int dim>
 template <typename number>
 void
 constraintHandler<dim>::set_mg_pinned_point(
@@ -385,7 +385,7 @@ constraintHandler<dim>::set_mg_pinned_point(
     }
 }
 
-template <int dim>
+template <unsigned int dim>
 template <typename number>
 void
 constraintHandler<dim>::apply_generic_constraints(
@@ -403,7 +403,7 @@ constraintHandler<dim>::apply_generic_constraints(
   dealii::DoFTools::make_hanging_node_constraints(dof_handler, constraints);
 }
 
-template <int dim>
+template <unsigned int dim>
 template <typename number, int spacedim>
 void
 constraintHandler<dim>::apply_constraints(const dealii::Mapping<dim>        &mapping,
@@ -502,7 +502,7 @@ constraintHandler<dim>::apply_constraints(const dealii::Mapping<dim>        &map
     }
 }
 
-template <int dim>
+template <unsigned int dim>
 template <typename number, int spacedim>
 void
 constraintHandler<dim>::apply_mg_constraints(

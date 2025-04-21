@@ -95,7 +95,7 @@ public:
 /**
  * \brief Struct that holds boundary parameters.
  */
-template <int dim>
+template <unsigned int dim>
 struct boundaryParameters
 {
 public:
@@ -152,7 +152,7 @@ private:
   validate_boundary_conditions() const;
 };
 
-template <int dim>
+template <unsigned int dim>
 inline void
 boundaryParameters<dim>::postprocess_and_validate(
   const std::map<unsigned int, variableAttributes> &var_attributes)
@@ -163,7 +163,7 @@ boundaryParameters<dim>::postprocess_and_validate(
       // components
       if (variable.field_type == fieldType::VECTOR)
         {
-          for (int i = 0; i < dim; i++)
+          for (unsigned int i = 0; i < dim; i++)
             {
               if (variable.is_postprocess)
                 {
@@ -258,7 +258,7 @@ boundaryParameters<dim>::postprocess_and_validate(
 #endif
 }
 
-template <int dim>
+template <unsigned int dim>
 inline bool
 boundaryParameters<dim>::check_duplicate_boundary_conditions(
   const types::index &index_1,
@@ -293,7 +293,7 @@ boundaryParameters<dim>::check_duplicate_boundary_conditions(
   return is_duplicate;
 }
 
-template <int dim>
+template <unsigned int dim>
 inline void
 boundaryParameters<dim>::print_parameter_summary() const
 {
@@ -338,7 +338,7 @@ boundaryParameters<dim>::print_parameter_summary() const
   conditionalOStreams::pout_summary() << "\n" << std::flush;
 }
 
-template <int dim>
+template <unsigned int dim>
 inline void
 boundaryParameters<dim>::set_boundary(const std::string  &BC_string,
                                       const types::index &index,
@@ -363,7 +363,7 @@ boundaryParameters<dim>::set_boundary(const std::string  &BC_string,
 
   // Assign boundary condition
   boundaryCondition condition;
-  for (int i = 0; i < (2 * dim); i++)
+  for (unsigned int i = 0; i < (2 * dim); i++)
     {
       const std::string dirichlet = "DIRICHLET";
       const std::string neumann   = "NEUMANN";
@@ -420,7 +420,7 @@ boundaryParameters<dim>::set_boundary(const std::string  &BC_string,
   boundary_condition_list[index].emplace(component, condition);
 }
 
-template <int dim>
+template <unsigned int dim>
 inline void
 boundaryParameters<dim>::validate_boundary_conditions() const
 {

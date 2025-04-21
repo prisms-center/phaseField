@@ -30,7 +30,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim>
+template <unsigned int dim>
 triangulationHandler<dim>::triangulationHandler(
   const userInputParameters<dim> &_user_inputs,
   const MGInfo<dim>              &mg_info)
@@ -53,7 +53,7 @@ triangulationHandler<dim>::triangulationHandler(
   max_level     = mg_info.get_mg_max_level();
 }
 
-template <int dim>
+template <unsigned int dim>
 const typename triangulationHandler<dim>::Triangulation &
 triangulationHandler<dim>::get_triangulation() const
 {
@@ -61,7 +61,7 @@ triangulationHandler<dim>::get_triangulation() const
   return *triangulation;
 }
 
-template <int dim>
+template <unsigned int dim>
 const std::vector<std::shared_ptr<const dealii::Triangulation<dim>>> &
 triangulationHandler<dim>::get_mg_triangulation() const
 {
@@ -70,7 +70,7 @@ triangulationHandler<dim>::get_mg_triangulation() const
   return coarsened_triangulations;
 }
 
-template <int dim>
+template <unsigned int dim>
 const dealii::Triangulation<dim> &
 triangulationHandler<dim>::get_mg_triangulation(unsigned int level) const
 {
@@ -82,7 +82,7 @@ triangulationHandler<dim>::get_mg_triangulation(unsigned int level) const
   return *coarsened_triangulations[level];
 }
 
-template <int dim>
+template <unsigned int dim>
 unsigned int
 triangulationHandler<dim>::get_n_global_levels() const
 {
@@ -90,7 +90,7 @@ triangulationHandler<dim>::get_n_global_levels() const
   return triangulation->n_global_levels();
 }
 
-template <int dim>
+template <unsigned int dim>
 unsigned int
 triangulationHandler<dim>::get_mg_min_level() const
 {
@@ -99,7 +99,7 @@ triangulationHandler<dim>::get_mg_min_level() const
   return min_level;
 }
 
-template <int dim>
+template <unsigned int dim>
 unsigned int
 triangulationHandler<dim>::get_mg_max_level() const
 {
@@ -108,14 +108,14 @@ triangulationHandler<dim>::get_mg_max_level() const
   return max_level;
 }
 
-template <int dim>
+template <unsigned int dim>
 bool
 triangulationHandler<dim>::has_setup_multigrid() const
 {
   return has_multigrid;
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 triangulationHandler<dim>::generate_mesh()
 {
@@ -179,7 +179,7 @@ triangulationHandler<dim>::generate_mesh()
   // TODO (landinjm): p-multigrid
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 triangulationHandler<dim>::export_triangulation_as_vtk(const std::string &filename) const
 {
@@ -189,7 +189,7 @@ triangulationHandler<dim>::export_triangulation_as_vtk(const std::string &filena
   conditionalOStreams::pout_base() << "Triangulation written to " << filename << ".vtk\n";
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 triangulationHandler<dim>::mark_boundaries() const
 {
@@ -222,7 +222,7 @@ triangulationHandler<dim>::mark_boundaries() const
     }
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 triangulationHandler<dim>::mark_periodic()
 {

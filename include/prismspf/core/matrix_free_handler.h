@@ -13,13 +13,13 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim>
+template <unsigned int dim>
 class userInputParameters;
 
 /**
  * \brief This class handlers the management and access of the matrix-free objects.
  */
-template <int dim, typename number = double>
+template <unsigned int dim, typename number = double>
 class matrixfreeHandler
 {
 public:

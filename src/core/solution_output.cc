@@ -20,7 +20,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim, typename number>
+template <unsigned int dim, typename number>
 solutionOutput<dim, number>::solutionOutput(const VectorType               &solution,
                                             const dealii::DoFHandler<dim>  &dof_handler,
                                             const unsigned int             &degree,
@@ -68,7 +68,7 @@ solutionOutput<dim, number>::solutionOutput(const VectorType               &solu
                                       n_trailing_digits);
 }
 
-template <int dim, typename number>
+template <unsigned int dim, typename number>
 solutionOutput<dim, number>::solutionOutput(
   const std::map<unsigned int, VectorType *>         &solution_set,
   const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers,

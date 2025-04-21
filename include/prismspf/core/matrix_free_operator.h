@@ -16,15 +16,15 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim>
+template <unsigned int dim>
 class userInputParameters;
 
 struct variableAttributes;
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 class variableContainer;
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 class PDEOperator;
 
 /**
@@ -36,7 +36,7 @@ class PDEOperator;
  * \tparam number Datatype to use for `LinearAlgebra::distributed::Vector<number>`. Either
  * double or float.
  */
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 class matrixFreeOperator : public dealii::Subscriptor
 {
 public:

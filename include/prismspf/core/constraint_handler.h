@@ -14,14 +14,14 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim>
+template <unsigned int dim>
 class userInputParameters;
 
 /**
  * \brief The class handles the generation and application of boundary conditions based on
  * the user-inputs.
  */
-template <int dim>
+template <unsigned int dim>
 class constraintHandler
 {
 public:

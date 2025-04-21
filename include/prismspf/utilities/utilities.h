@@ -29,7 +29,7 @@ constV(T value)
 /**
  * \brief Convert given vector to a tensor of vectorized arrays.
  */
-template <int dim, typename number>
+template <unsigned int dim, typename number>
 constexpr auto
 constT(const std::array<number, dim> &vector)
 {
@@ -47,14 +47,14 @@ constT(const std::array<number, dim> &vector)
 /**
  * \brief Voigt notation index range
  */
-template <int dim>
+template <unsigned int dim>
 constexpr unsigned int voigt_tensor_size = (2 * dim) - 1 + (dim / 3);
 
 /**
  * \brief Compute the stress with a given displacement and elasticity tensor. This assumes
  * that the provided parameters are in Voigt notation.
  */
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 inline void
 compute_stress(const dealii::Tensor<2, voigt_tensor_size<dim>, T> &elasticity_tensor,
                const dealii::Tensor<1, voigt_tensor_size<dim>, T> &strain,
@@ -67,7 +67,7 @@ compute_stress(const dealii::Tensor<2, voigt_tensor_size<dim>, T> &elasticity_te
  * \brief Compute the stress with a given displacement and elasticity tensor. Note: this
  * functions internally converts to Voigt notation.
  */
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 inline void
 compute_stress(const dealii::Tensor<2, voigt_tensor_size<dim>, T> &elasticity_tensor,
                const dealii::Tensor<2, dim, T>                    &strain,
@@ -127,7 +127,7 @@ compute_stress(const dealii::Tensor<2, voigt_tensor_size<dim>, T> &elasticity_te
  * \brief Compute the stress with a given displacement and elasticity tensor. Note: this
  * functions internally converts to Voigt notation.
  */
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 inline void
 compute_stress(
   const T (&elasticity_tensor)[voigt_tensor_size<dim>][voigt_tensor_size<dim>],
@@ -195,7 +195,7 @@ compute_stress(
  * \brief Compute the stress with a given displacement and elasticity tensor. Note: this
  * functions internally converts to Voigt notation.
  */
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 inline void
 compute_stress(const dealii::Tensor<2, voigt_tensor_size<dim>, T> &elasticity_tensor,
                const T (&strain)[][dim],

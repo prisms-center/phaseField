@@ -22,7 +22,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 linearSolverBase<dim, degree>::linearSolverBase(
   const userInputParameters<dim>                         &_user_inputs,
   const variableAttributes                               &_variable_attributes,
@@ -104,7 +104,7 @@ linearSolverBase<dim, degree>::linearSolverBase(
       "The newton update src and global to local mappings must have the same size."));
 }
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 inline void
 linearSolverBase<dim, degree>::compute_solver_tolerance()
 {

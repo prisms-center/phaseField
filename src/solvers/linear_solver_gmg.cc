@@ -36,7 +36,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 GMGSolver<dim, degree>::GMGSolver(
   const userInputParameters<dim>                         &_user_inputs,
   const variableAttributes                               &_variable_attributes,
@@ -62,7 +62,7 @@ GMGSolver<dim, degree>::GMGSolver(
   , mg_info(&_mg_info)
 {}
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 inline void
 GMGSolver<dim, degree>::init()
 {
@@ -177,12 +177,12 @@ GMGSolver<dim, degree>::init()
 #endif
 }
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 inline void
 GMGSolver<dim, degree>::reinit()
 {}
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 inline void
 GMGSolver<dim, degree>::solve(const double &step_length)
 {

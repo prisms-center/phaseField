@@ -21,7 +21,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \brief Class that handles the assembly and solving of a field with the identity
  * preconditioner (no preconditioner)
  */
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 class identitySolver : public linearSolverBase<dim, degree>
 {
 public:

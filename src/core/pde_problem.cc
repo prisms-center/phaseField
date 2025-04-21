@@ -43,7 +43,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 PDEProblem<dim, degree>::PDEProblem(
   const userInputParameters<dim>                         &_user_inputs,
   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
@@ -117,7 +117,7 @@ PDEProblem<dim, degree>::PDEProblem(
                                       mg_info)
 {}
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 void
 PDEProblem<dim, degree>::init_system()
 {
@@ -290,7 +290,7 @@ PDEProblem<dim, degree>::init_system()
   timer::serial_timer().leave_subsection();
 }
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 void
 PDEProblem<dim, degree>::solve_increment()
 {
@@ -319,7 +319,7 @@ PDEProblem<dim, degree>::solve_increment()
   timer::serial_timer().leave_subsection();
 }
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 void
 PDEProblem<dim, degree>::solve()
 {
@@ -390,7 +390,7 @@ PDEProblem<dim, degree>::solve()
                     *dof_handler.get_dof_handlers()[index],
                     *vector);
 
-                  for (int dimension = 0; dimension < dim; dimension++)
+                  for (unsigned int dimension = 0; dimension < dim; dimension++)
                     {
                       conditionalOStreams::pout_base()
                         << integrated_values[dimension] << " ";
@@ -414,7 +414,7 @@ PDEProblem<dim, degree>::solve()
     }
 }
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 void
 PDEProblem<dim, degree>::run()
 {

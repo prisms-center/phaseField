@@ -17,19 +17,19 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim>
+template <unsigned int dim>
 class userInputParameters;
 
-template <int dim>
+template <unsigned int dim>
 class constraintHandler;
 
-template <int dim, typename number>
+template <unsigned int dim, typename number>
 class matrixfreeHandler;
 
-template <int dim>
+template <unsigned int dim>
 class solutionHandler;
 
-template <int dim>
+template <unsigned int dim>
 class triangulationHandler;
 
 struct variableAttributes;
@@ -37,7 +37,7 @@ struct variableAttributes;
 /**
  * \brief Base class that handles the assembly and linear solving of a field.
  */
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 class linearSolverBase
 {
 public:

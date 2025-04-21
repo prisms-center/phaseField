@@ -23,7 +23,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 invmHandler<dim, degree, number>::invmHandler(
   const std::map<unsigned int, variableAttributes> &_variable_attributes)
   : variable_attributes(&_variable_attributes)
@@ -50,7 +50,7 @@ invmHandler<dim, degree, number>::invmHandler(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 invmHandler<dim, degree, number>::initialize(
   std::shared_ptr<dealii::MatrixFree<dim, number, size_type>> _data)
@@ -63,7 +63,7 @@ invmHandler<dim, degree, number>::initialize(
   data = std::move(_data);
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 invmHandler<dim, degree, number>::compute_invm()
 {
@@ -79,14 +79,14 @@ invmHandler<dim, degree, number>::compute_invm()
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 invmHandler<dim, degree, number>::recompute_invm()
 {
   this->compute_invm();
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 const typename invmHandler<dim, degree, number>::VectorType &
 invmHandler<dim, degree, number>::get_invm(const unsigned int &index) const
 {
@@ -126,7 +126,7 @@ invmHandler<dim, degree, number>::get_invm(const unsigned int &index) const
   AssertThrow(false, UnreachableCode());
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 invmHandler<dim, degree, number>::clear()
 {
@@ -139,7 +139,7 @@ invmHandler<dim, degree, number>::clear()
   vector_index  = numbers::invalid_index;
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 invmHandler<dim, degree, number>::compute_scalar_invm()
 {
@@ -173,7 +173,7 @@ invmHandler<dim, degree, number>::compute_scalar_invm()
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 invmHandler<dim, degree, number>::compute_vector_invm()
 {
@@ -182,7 +182,7 @@ invmHandler<dim, degree, number>::compute_vector_invm()
   dealii::FEEvaluation<dim, degree, degree + 1, dim, number> fe_eval(*data, vector_index);
 
   dealii::Tensor<1, dim, dealii::VectorizedArray<number>> one;
-  for (int i = 0; i < dim; i++)
+  for (unsigned int i = 0; i < dim; i++)
     {
       one[i] = 1.0;
     }

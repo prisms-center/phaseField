@@ -23,7 +23,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief Class the stores and manages user-defined constants.
  */
-template <int dim>
+template <unsigned int dim>
 class userConstants
 {
 public:
@@ -174,7 +174,7 @@ private:
     operator()(const dealii::Tensor<1, dim> &value) const
     {
       conditionalOStreams::pout_summary() << "Tensor<1, " << dim << ">: ";
-      for (int i = 0; i < dim; ++i)
+      for (unsigned int i = 0; i < dim; ++i)
         {
           conditionalOStreams::pout_summary() << value[i] << ' ';
         }
@@ -184,25 +184,25 @@ private:
     operator()(const dealii::Tensor<2, dim> &value) const
     {
       conditionalOStreams::pout_summary() << "Tensor<2, " << dim << ">: ";
-      for (int i = 0; i < dim; ++i)
+      for (unsigned int i = 0; i < dim; ++i)
         {
-          for (int j = 0; j < dim; ++j)
+          for (unsigned int j = 0; j < dim; ++j)
             {
               conditionalOStreams::pout_summary() << value[i][j] << ' ';
             }
         }
     }
 
-    template <int D = dim>
+    template <unsigned int D = dim>
     void
     operator()(const dealii::Tensor<2, (2 * D) - 1 + (D / 3)> &value) const
     requires((D != ((2 * D) - 1 + (D / 3))))
     {
-      constexpr int dimension = (2 * D) - 1 + (D / 3);
+      constexpr unsigned int dimension = (2 * D) - 1 + (D / 3);
       conditionalOStreams::pout_summary() << "Tensor<2, " << dimension << ">: ";
-      for (int i = 0; i < dimension; ++i)
+      for (unsigned int i = 0; i < dimension; ++i)
         {
-          for (int j = 0; j < dimension; ++j)
+          for (unsigned int j = 0; j < dimension; ++j)
             {
               conditionalOStreams::pout_summary() << value[i][j] << ' ';
             }
@@ -211,7 +211,7 @@ private:
   };
 };
 
-template <int dim>
+template <unsigned int dim>
 inline double
 userConstants<dim>::get_model_constant_double(const std::string &constant_name) const
 {
@@ -224,7 +224,7 @@ userConstants<dim>::get_model_constant_double(const std::string &constant_name) 
   return boost::get<double>(model_constants.at(constant_name));
 }
 
-template <int dim>
+template <unsigned int dim>
 inline int
 userConstants<dim>::get_model_constant_int(const std::string &constant_name) const
 {
@@ -237,7 +237,7 @@ userConstants<dim>::get_model_constant_int(const std::string &constant_name) con
   return boost::get<int>(model_constants.at(constant_name));
 }
 
-template <int dim>
+template <unsigned int dim>
 inline bool
 userConstants<dim>::get_model_constant_bool(const std::string &constant_name) const
 {
@@ -250,7 +250,7 @@ userConstants<dim>::get_model_constant_bool(const std::string &constant_name) co
   return boost::get<bool>(model_constants.at(constant_name));
 }
 
-template <int dim>
+template <unsigned int dim>
 inline dealii::Tensor<1, dim>
 userConstants<dim>::get_model_constant_rank_1_tensor(
   const std::string &constant_name) const
@@ -264,7 +264,7 @@ userConstants<dim>::get_model_constant_rank_1_tensor(
   return boost::get<dealii::Tensor<1, dim>>(model_constants.at(constant_name));
 }
 
-template <int dim>
+template <unsigned int dim>
 inline dealii::Tensor<2, dim>
 userConstants<dim>::get_model_constant_rank_2_tensor(
   const std::string &constant_name) const
@@ -278,7 +278,7 @@ userConstants<dim>::get_model_constant_rank_2_tensor(
   return boost::get<dealii::Tensor<2, dim>>(model_constants.at(constant_name));
 }
 
-template <int dim>
+template <unsigned int dim>
 inline dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
 userConstants<dim>::get_model_constant_elasticity_tensor(
   const std::string &constant_name) const
@@ -293,7 +293,7 @@ userConstants<dim>::get_model_constant_elasticity_tensor(
     model_constants.at(constant_name));
 }
 
-template <int dim>
+template <unsigned int dim>
 inline unsigned int
 userConstants<dim>::compute_tensor_parentheses(
   const unsigned int             &n_elements,
@@ -327,7 +327,7 @@ userConstants<dim>::compute_tensor_parentheses(
   return open_parentheses;
 }
 
-template <int dim>
+template <unsigned int dim>
 inline void
 userConstants<dim>::remove_parentheses(std::vector<std::string> &tensor_elements)
 {
@@ -338,7 +338,7 @@ userConstants<dim>::remove_parentheses(std::vector<std::string> &tensor_elements
     }
 }
 
-template <int dim>
+template <unsigned int dim>
 inline dealii::Tensor<1, dim>
 userConstants<dim>::compute_rank_1_tensor_constant(
   const unsigned int             &n_elements,
@@ -349,7 +349,7 @@ userConstants<dim>::compute_rank_1_tensor_constant(
                                  "equal to the maximum number of dimensions."));
 
   dealii::Tensor<1, dim> temp;
-  for (int i = 0; i < dim; i++)
+  for (unsigned int i = 0; i < dim; i++)
     {
       temp[i] = dealii::Utilities::string_to_double(tensor_elements.at(i));
     }
@@ -357,7 +357,7 @@ userConstants<dim>::compute_rank_1_tensor_constant(
   return temp;
 }
 
-template <int dim>
+template <unsigned int dim>
 inline dealii::Tensor<2, dim>
 userConstants<dim>::compute_rank_2_tensor_constant(
   const unsigned int             &n_elements,
@@ -370,9 +370,9 @@ userConstants<dim>::compute_rank_2_tensor_constant(
   const unsigned int row_length = 3;
 
   dealii::Tensor<2, dim> temp;
-  for (int i = 0; i < dim; i++)
+  for (unsigned int i = 0; i < dim; i++)
     {
-      for (int j = 0; j < dim; j++)
+      for (unsigned int j = 0; j < dim; j++)
         {
           temp[i][j] =
             dealii::Utilities::string_to_double(tensor_elements.at((i * row_length) + j));
@@ -382,7 +382,7 @@ userConstants<dim>::compute_rank_2_tensor_constant(
   return temp;
 }
 
-template <int dim>
+template <unsigned int dim>
 inline typename userConstants<dim>::InputVariant
 userConstants<dim>::construct_user_constant(
   std::vector<std::string> &model_constants_strings)
@@ -449,7 +449,7 @@ userConstants<dim>::construct_user_constant(
   return 0;
 }
 
-template <int dim>
+template <unsigned int dim>
 inline typename userConstants<dim>::InputVariant
 userConstants<dim>::primitive_model_constant(
   std::vector<std::string> &model_constants_strings)
@@ -479,7 +479,7 @@ userConstants<dim>::primitive_model_constant(
   return 0;
 }
 
-template <int dim>
+template <unsigned int dim>
 inline dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
 userConstants<dim>::get_Cij_tensor(std::vector<double> elastic_constants,
                                    const std::string  &elastic_const_symmetry) const
@@ -528,7 +528,7 @@ userConstants<dim>::get_Cij_tensor(std::vector<double> elastic_constants,
   return getCIJMatrix(mat_model, elastic_constants);
 }
 
-template <int dim>
+template <unsigned int dim>
 inline dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
 userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
                                  const std::vector<double> &constants) const
@@ -629,7 +629,7 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
   return CIJ;
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 userConstants<dim>::print() const
 {

@@ -23,7 +23,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 explicitPostprocessSolver<dim, degree>::explicitPostprocessSolver(
   const userInputParameters<dim>                         &_user_inputs,
   const matrixfreeHandler<dim>                           &_matrix_free_handler,
@@ -43,7 +43,7 @@ explicitPostprocessSolver<dim, degree>::explicitPostprocessSolver(
                               std::move(_pde_operator))
 {}
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 void
 explicitPostprocessSolver<dim, degree>::init()
 {
@@ -85,7 +85,7 @@ explicitPostprocessSolver<dim, degree>::init()
   this->system_matrix->add_global_to_local_mapping(global_to_local_solution);
 }
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 void
 explicitPostprocessSolver<dim, degree>::solve()
 {

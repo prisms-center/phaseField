@@ -27,7 +27,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 nonexplicitSelfNonlinearSolver<dim, degree>::nonexplicitSelfNonlinearSolver(
   const userInputParameters<dim>                         &_user_inputs,
   const matrixfreeHandler<dim>                           &_matrix_free_handler,
@@ -55,7 +55,7 @@ nonexplicitSelfNonlinearSolver<dim, degree>::nonexplicitSelfNonlinearSolver(
   , mg_info(&_mg_info)
 {}
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 inline void
 nonexplicitSelfNonlinearSolver<dim, degree>::init()
 {
@@ -104,7 +104,7 @@ nonexplicitSelfNonlinearSolver<dim, degree>::init()
     }
 }
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 inline void
 nonexplicitSelfNonlinearSolver<dim, degree>::solve()
 {

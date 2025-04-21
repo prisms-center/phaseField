@@ -14,16 +14,16 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim>
+template <unsigned int dim>
 class userInputParameters;
 
-template <int dim>
+template <unsigned int dim>
 class solutionHandler;
 
 /**
  * \brief This class handlers the generation and manipulation of triangulations.
  */
-template <int dim>
+template <unsigned int dim>
 class triangulationHandler
 {
 public:

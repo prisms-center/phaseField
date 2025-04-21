@@ -16,7 +16,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief This class handles all auxiliary solves.
  */
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 class nonexplicitAuxiliarySolver : public nonexplicitBase<dim, degree>
 {
 public:

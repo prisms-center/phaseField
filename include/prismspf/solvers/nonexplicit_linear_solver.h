@@ -18,7 +18,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief This class handles all linear solves.
  */
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 class nonexplicitLinearSolver : public nonexplicitBase<dim, degree>
 {
 public:

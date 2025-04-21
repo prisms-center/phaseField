@@ -46,7 +46,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \brief This is the main class that handles the construction and solving of
  * user-specified PDEs.
  */
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 class PDEProblem
 {
 public:

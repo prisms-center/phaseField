@@ -25,7 +25,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 variableContainer<dim, degree, number>::variableContainer(
   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
   const std::map<unsigned int, variableAttributes> &_subset_attributes,
@@ -109,7 +109,7 @@ variableContainer<dim, degree, number>::variableContainer(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 variableContainer<dim, degree, number>::eval_local_operator(
   const std::function<void(variableContainer &, const dealii::Point<dim, size_type> &)>
@@ -140,7 +140,7 @@ variableContainer<dim, degree, number>::eval_local_operator(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 variableContainer<dim, degree, number>::eval_local_operator(
   const std::function<void(variableContainer &, const dealii::Point<dim, size_type> &)>
@@ -171,7 +171,7 @@ variableContainer<dim, degree, number>::eval_local_operator(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 variableContainer<dim, degree, number>::eval_local_operator(
   const std::function<void(variableContainer &, const dealii::Point<dim, size_type> &)>
@@ -204,7 +204,7 @@ variableContainer<dim, degree, number>::eval_local_operator(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 variableContainer<dim, degree, number>::eval_local_diagonal(
   const std::function<void(variableContainer &, const dealii::Point<dim, size_type> &)>
@@ -257,7 +257,7 @@ variableContainer<dim, degree, number>::eval_local_diagonal(
             else
               {
                 local_value_type one;
-                for (int dimension = 0; dimension < dim; ++dimension)
+                for (unsigned int dimension = 0; dimension < dim; ++dimension)
                   {
                     one[dimension] = dealii::make_vectorized_array<number>(1.0);
                   }
@@ -407,7 +407,7 @@ variableContainer<dim, degree, number>::eval_local_diagonal(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 variableContainer<dim, degree, number>::FEEval_exists(
   [[maybe_unused]] const unsigned int   &dependency_index,
@@ -422,7 +422,7 @@ variableContainer<dim, degree, number>::FEEval_exists(
                             " does not exist for type = " + to_string(dependency_type)));
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 variableContainer<dim, degree, number>::access_valid(
   [[maybe_unused]] const unsigned int                             &dependency_index,
@@ -446,7 +446,7 @@ variableContainer<dim, degree, number>::access_valid(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 variableContainer<dim, degree, number>::submission_valid(
   [[maybe_unused]] const dependencyType &dependency_type) const
@@ -459,7 +459,7 @@ variableContainer<dim, degree, number>::submission_valid(
            "LHS residuals are only allowed to submit change gradient terms."));
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 unsigned int
 variableContainer<dim, degree, number>::get_n_q_points() const
 {
@@ -490,7 +490,7 @@ variableContainer<dim, degree, number>::get_n_q_points() const
   return 0;
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 dealii::Point<dim, typename variableContainer<dim, degree, number>::size_type>
 variableContainer<dim, degree, number>::get_q_point_location() const
 {
@@ -522,7 +522,7 @@ variableContainer<dim, degree, number>::get_q_point_location() const
   return dealii::Point<dim, size_type>();
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 variableContainer<dim, degree, number>::reinit_and_eval(
   const std::vector<VectorType *> &src,
@@ -619,7 +619,7 @@ variableContainer<dim, degree, number>::reinit_and_eval(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 variableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
                                                         unsigned int      cell)
@@ -694,7 +694,7 @@ variableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
            "reinit_and_eval(src) should only be called for LHS evaluations"));
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 variableContainer<dim, degree, number>::reinit(unsigned int        cell,
                                                const unsigned int &global_variable_index)
@@ -750,7 +750,7 @@ variableContainer<dim, degree, number>::reinit(unsigned int        cell,
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 variableContainer<dim, degree, number>::read_dof_values(
   const std::vector<VectorType *> &src)
@@ -832,7 +832,7 @@ variableContainer<dim, degree, number>::read_dof_values(
   reinit_and_eval_map(attrs.eval_flag_set_LHS, attrs.dependency_set_LHS);
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 variableContainer<dim, degree, number>::eval(const unsigned int &global_variable_index)
 {
@@ -887,7 +887,7 @@ variableContainer<dim, degree, number>::eval(const unsigned int &global_variable
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 variableContainer<dim, degree, number>::integrate(
   const unsigned int &global_variable_index)
@@ -934,7 +934,7 @@ variableContainer<dim, degree, number>::integrate(
                 "Integrate called for a solve type that is not NONEXPLICIT_LHS."));
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 variableContainer<dim, degree, number>::integrate_and_distribute(
   std::vector<VectorType *> &dst)
@@ -1005,7 +1005,7 @@ variableContainer<dim, degree, number>::integrate_and_distribute(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 variableContainer<dim, degree, number>::integrate_and_distribute(VectorType &dst)
 {
@@ -1065,7 +1065,7 @@ variableContainer<dim, degree, number>::integrate_and_distribute(VectorType &dst
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 typename variableContainer<dim, degree, number>::size_type
 variableContainer<dim, degree, number>::get_scalar_value(
   unsigned int   global_variable_index,
@@ -1103,7 +1103,7 @@ variableContainer<dim, degree, number>::get_scalar_value(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 dealii::Tensor<1, dim, typename variableContainer<dim, degree, number>::size_type>
 variableContainer<dim, degree, number>::get_scalar_gradient(
   unsigned int   global_variable_index,
@@ -1143,7 +1143,7 @@ variableContainer<dim, degree, number>::get_scalar_gradient(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 dealii::Tensor<2, dim, typename variableContainer<dim, degree, number>::size_type>
 variableContainer<dim, degree, number>::get_scalar_hessian(
   unsigned int   global_variable_index,
@@ -1183,7 +1183,7 @@ variableContainer<dim, degree, number>::get_scalar_hessian(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 dealii::Tensor<1, dim, typename variableContainer<dim, degree, number>::size_type>
 variableContainer<dim, degree, number>::get_scalar_hessian_diagonal(
   unsigned int   global_variable_index,
@@ -1223,7 +1223,7 @@ variableContainer<dim, degree, number>::get_scalar_hessian_diagonal(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 typename variableContainer<dim, degree, number>::size_type
 variableContainer<dim, degree, number>::get_scalar_laplacian(
   unsigned int   global_variable_index,
@@ -1263,7 +1263,7 @@ variableContainer<dim, degree, number>::get_scalar_laplacian(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 dealii::Tensor<1, dim, typename variableContainer<dim, degree, number>::size_type>
 variableContainer<dim, degree, number>::get_vector_value(
   unsigned int   global_variable_index,
@@ -1304,7 +1304,7 @@ variableContainer<dim, degree, number>::get_vector_value(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 dealii::Tensor<2, dim, typename variableContainer<dim, degree, number>::size_type>
 variableContainer<dim, degree, number>::get_vector_gradient(
   unsigned int   global_variable_index,
@@ -1345,7 +1345,7 @@ variableContainer<dim, degree, number>::get_vector_gradient(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 dealii::Tensor<3, dim, typename variableContainer<dim, degree, number>::size_type>
 variableContainer<dim, degree, number>::get_vector_hessian(
   unsigned int   global_variable_index,
@@ -1386,7 +1386,7 @@ variableContainer<dim, degree, number>::get_vector_hessian(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 dealii::Tensor<2, dim, typename variableContainer<dim, degree, number>::size_type>
 variableContainer<dim, degree, number>::get_vector_hessian_diagonal(
   unsigned int   global_variable_index,
@@ -1428,7 +1428,7 @@ variableContainer<dim, degree, number>::get_vector_hessian_diagonal(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 dealii::Tensor<1, dim, typename variableContainer<dim, degree, number>::size_type>
 variableContainer<dim, degree, number>::get_vector_laplacian(
   unsigned int   global_variable_index,
@@ -1469,7 +1469,7 @@ variableContainer<dim, degree, number>::get_vector_laplacian(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 typename variableContainer<dim, degree, number>::size_type
 variableContainer<dim, degree, number>::get_vector_divergence(
   unsigned int   global_variable_index,
@@ -1509,7 +1509,7 @@ variableContainer<dim, degree, number>::get_vector_divergence(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 dealii::Tensor<2, dim, typename variableContainer<dim, degree, number>::size_type>
 variableContainer<dim, degree, number>::get_vector_symmetric_gradient(
   unsigned int   global_variable_index,
@@ -1549,7 +1549,7 @@ variableContainer<dim, degree, number>::get_vector_symmetric_gradient(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 dealii::Tensor<1,
                (dim == 2 ? 1 : dim),
                typename variableContainer<dim, degree, number>::size_type>
@@ -1591,7 +1591,7 @@ variableContainer<dim, degree, number>::get_vector_curl(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 variableContainer<dim, degree, number>::set_scalar_value_term(
   const unsigned int   &global_variable_index,
@@ -1629,7 +1629,7 @@ variableContainer<dim, degree, number>::set_scalar_value_term(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 variableContainer<dim, degree, number>::set_scalar_gradient_term(
   const unsigned int                      &global_variable_index,
@@ -1667,7 +1667,7 @@ variableContainer<dim, degree, number>::set_scalar_gradient_term(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 variableContainer<dim, degree, number>::set_vector_value_term(
   const unsigned int                      &global_variable_index,
@@ -1705,7 +1705,7 @@ variableContainer<dim, degree, number>::set_vector_value_term(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 variableContainer<dim, degree, number>::set_vector_gradient_term(
   const unsigned int                      &global_variable_index,
