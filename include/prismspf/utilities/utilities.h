@@ -78,48 +78,61 @@ compute_stress(const dealii::Tensor<2, voigt_tensor_size<dim>, T> &elasticity_te
 
   if constexpr (dim == 3)
     {
-      epsilon[0] = strain[0][0];
-      epsilon[1] = strain[1][1];
-      epsilon[2] = strain[2][2];
-      // In Voigt notation: epsilonngineering shear strain=2*strain
-      epsilon[3] = strain[1][2] + strain[2][1];
-      epsilon[4] = strain[0][2] + strain[2][0];
-      epsilon[5] = strain[0][1] + strain[1][0];
+      const int xx_dir = 0;
+      const int yy_dir = 1;
+      const int zz_dir = 2;
+      const int yz_dir = 3;
+      const int xz_dir = 4;
+      const int xy_dir = 5;
+
+      epsilon[xx_dir] = strain[xx_dir][xx_dir];
+      epsilon[yy_dir] = strain[yy_dir][yy_dir];
+      epsilon[zz_dir] = strain[zz_dir][zz_dir];
+      // In Voigt notation: epsilonngineering shear strain=zz_dir*strain
+      epsilon[yz_dir] = strain[yy_dir][zz_dir] + strain[zz_dir][yy_dir];
+      epsilon[xz_dir] = strain[xx_dir][zz_dir] + strain[zz_dir][xx_dir];
+      epsilon[xy_dir] = strain[xx_dir][yy_dir] + strain[yy_dir][xx_dir];
 
       // Multiply elasticity_tensor and epsilon to get sigma
       sigma = elasticity_tensor * epsilon;
 
-      stress[0][0] = sigma[0];
-      stress[1][1] = sigma[1];
-      stress[2][2] = sigma[2];
+      stress[xx_dir][xx_dir] = sigma[xx_dir];
+      stress[yy_dir][yy_dir] = sigma[yy_dir];
+      stress[zz_dir][zz_dir] = sigma[zz_dir];
 
-      stress[1][2] = sigma[3];
-      stress[2][1] = sigma[3];
+      stress[yy_dir][zz_dir] = sigma[yz_dir];
+      stress[zz_dir][yy_dir] = sigma[yz_dir];
 
-      stress[0][2] = sigma[4];
-      stress[2][0] = sigma[4];
+      stress[xx_dir][zz_dir] = sigma[xz_dir];
+      stress[zz_dir][xx_dir] = sigma[xz_dir];
 
-      stress[0][1] = sigma[5];
-      stress[1][0] = sigma[5];
+      stress[xx_dir][yy_dir] = sigma[xy_dir];
+      stress[yy_dir][xx_dir] = sigma[xy_dir];
     }
   else if constexpr (dim == 2)
     {
-      epsilon[0] = strain[0][0];
-      epsilon[1] = strain[1][1];
-      // In Voigt notation: epsilonngineering shear strain=2*strain
-      epsilon[2] = strain[0][1] + strain[1][0];
+      const int xx_dir = 0;
+      const int yy_dir = 1;
+      const int xy_dir = 2;
+
+      epsilon[xx_dir] = strain[xx_dir][xx_dir];
+      epsilon[yy_dir] = strain[yy_dir][yy_dir];
+      // In Voigt notation: epsilonngineering shear strain=xy_dir*strain
+      epsilon[xy_dir] = strain[xx_dir][yy_dir] + strain[yy_dir][xx_dir];
 
       // Multiply elasticity_tensor and epsilon to get sigma
       sigma = elasticity_tensor * epsilon;
 
-      stress[0][0] = sigma[0];
-      stress[1][1] = sigma[1];
-      stress[0][1] = sigma[2];
-      stress[1][0] = sigma[2];
+      stress[xx_dir][xx_dir] = sigma[xx_dir];
+      stress[yy_dir][yy_dir] = sigma[yy_dir];
+      stress[xx_dir][yy_dir] = sigma[xy_dir];
+      stress[yy_dir][xx_dir] = sigma[xy_dir];
     }
   else
     {
-      stress[0][0] = elasticity_tensor[0][0] * strain[0][0];
+      const int xx_dir = 0;
+
+      stress[xx_dir][xx_dir] = elasticity_tensor[xx_dir][xx_dir] * strain[xx_dir][xx_dir];
     }
 }
 

@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
 #include <deal.II/base/exceptions.h>
+#include <deal.II/base/mg_level_object.h>
 #include <deal.II/lac/affine_constraints.h>
 
 #include <prismspf/core/matrix_free_handler.h>
+#include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
@@ -12,10 +14,12 @@
 #include <prismspf/config.h>
 
 #include <array>
+#include <iterator>
 #include <map>
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

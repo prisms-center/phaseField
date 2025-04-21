@@ -3,7 +3,6 @@
 
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/mg_level_object.h>
-#include <deal.II/base/quadrature_lib.h>
 #include <deal.II/lac/precondition.h>
 #include <deal.II/lac/solver_cg.h>
 #include <deal.II/multigrid/mg_coarse.h>
@@ -18,6 +17,7 @@
 #include <prismspf/core/dof_handler.h>
 #include <prismspf/core/matrix_free_handler.h>
 #include <prismspf/core/matrix_free_operator.h>
+#include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/pde_operator.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/solution_output.h>
@@ -32,6 +32,7 @@
 
 #include <prismspf/config.h>
 
+#include <functional>
 #include <memory>
 
 PRISMS_PF_BEGIN_NAMESPACE

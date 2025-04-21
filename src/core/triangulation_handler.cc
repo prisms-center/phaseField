@@ -14,8 +14,8 @@
 #include <deal.II/multigrid/mg_transfer_global_coarsening.h>
 
 #include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/triangulation_handler.h>
-#include <prismspf/core/type_enums.h>
 
 #include <prismspf/user_inputs/boundary_parameters.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
@@ -206,15 +206,11 @@ triangulationHandler<dim>::mark_boundaries() const
           // Direction for quad and hex cells
           auto direction = static_cast<unsigned int>(std::floor(face_number / 2));
 
-          // Mark the boundary id for x=0, y=0, z=0
-          if (std::fabs(cell->face(face_number)->center()(direction) - 0) < tolerance)
-            {
-              cell->face(face_number)->set_boundary_id(face_number);
-            }
-          // Mark the boundary id for x=max, y=max, z=max
-          else if (std::fabs(cell->face(face_number)->center()(direction) -
-                             (user_inputs->spatial_discretization.size[direction])) <
-                   tolerance)
+          // Mark the boundary id for x=0, y=0, z=0 and x=max, y=max, z=max
+          if (std::fabs(cell->face(face_number)->center()(direction) - 0) < tolerance ||
+              std::fabs(cell->face(face_number)->center()(direction) -
+                        (user_inputs->spatial_discretization.size[direction])) <
+                tolerance)
             {
               cell->face(face_number)->set_boundary_id(face_number);
             }

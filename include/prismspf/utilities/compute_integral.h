@@ -24,7 +24,7 @@ public:
   /**
    * \brief Constructor.
    */
-  explicit computeIntegral() = default;
+  computeIntegral() = default;
 
   /**
    * \brief Compute the integral for a scalar field

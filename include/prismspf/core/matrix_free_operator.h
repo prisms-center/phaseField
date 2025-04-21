@@ -50,7 +50,7 @@ public:
    * TODO (landinjm): Should we have a default constructor and pass everything through
    * initialize? Need to pick one.
    */
-  explicit matrixFreeOperator(
+  matrixFreeOperator(
     const std::map<unsigned int, variableAttributes>       &_attributes_list,
     std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
     types::index _current_index     = numbers::invalid_index,

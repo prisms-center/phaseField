@@ -35,8 +35,8 @@ public:
   /**
    * \brief Constructor.
    */
-  explicit triangulationHandler(const userInputParameters<dim> &_user_inputs,
-                                const MGInfo<dim>              &mg_info);
+  triangulationHandler(const userInputParameters<dim> &_user_inputs,
+                       const MGInfo<dim>              &mg_info);
 
   /**
    * \brief Getter function for triangulation (constant reference).

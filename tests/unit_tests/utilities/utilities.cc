@@ -91,35 +91,6 @@ TEST_CASE("Compute stress")
     REQUIRE(stress[1] == 0.2);
     REQUIRE(stress[2] == 0.2);
   }
-  SECTION("2D - C array")
-  {
-    const unsigned int dim       = 2;
-    const double       tolerance = 1e-3;
-
-    // Create objects
-    dealii::Tensor<2, (2 * dim) - 1 + (dim / 3), double> elasticity_tensor;
-    double                                               strain[dim][dim];
-    double                                               stress[dim][dim];
-
-    // Fill in elasticity tensor and strain
-    elasticity_tensor[0][0] = 2.69231;
-    elasticity_tensor[1][1] = 2.69231;
-    elasticity_tensor[2][2] = 0.76923;
-    elasticity_tensor[0][1] = 1.15385;
-    elasticity_tensor[1][0] = 1.15385;
-    strain[0][0]            = 1.0;
-    strain[1][1]            = 0.0;
-    strain[0][1]            = 0.0;
-    strain[1][0]            = 0.0;
-
-    // Compute stress & validate
-    compute_stress<dim, double>(elasticity_tensor, strain, stress);
-
-    REQUIRE((stress[0][0] - 2.69231) < tolerance);
-    REQUIRE((stress[1][1] - 1.15385) < tolerance);
-    REQUIRE((stress[0][1] - 0.0) < tolerance);
-    REQUIRE((stress[1][0] - 0.0) < tolerance);
-  }
 }
 
 PRISMS_PF_END_NAMESPACE

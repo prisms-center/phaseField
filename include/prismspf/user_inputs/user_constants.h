@@ -540,6 +540,8 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
     {
       case 1:
         {
+          const int xx_dir = 0;
+
           switch (model)
             {
               // TODO (landinjm): Should we both fixing this for the other cases and just
@@ -549,7 +551,7 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
                 {
                   const double modulus = constants.at(0);
 
-                  CIJ[0][0] = modulus;
+                  CIJ[xx_dir][xx_dir] = modulus;
                   break;
                 }
               default:
@@ -562,6 +564,10 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
         }
       case 2:
         {
+          const int xx_dir = 0;
+          const int yy_dir = 1;
+          const int xy_dir = 2;
+
           switch (model)
             {
               case ISOTROPIC:
@@ -574,11 +580,9 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
                   const double lambda =
                     poisson * modulus / ((1 + poisson) * (1 - 2 * poisson));
 
-                  CIJ[0][0] = lambda + 2 * shear_modulus;
-                  CIJ[1][1] = lambda + 2 * shear_modulus;
-                  CIJ[2][2] = shear_modulus;
-                  CIJ[0][1] = lambda;
-                  CIJ[1][0] = lambda;
+                  CIJ[xx_dir][xx_dir] = CIJ[yy_dir][yy_dir] = lambda + 2 * shear_modulus;
+                  CIJ[xy_dir][xy_dir]                       = shear_modulus;
+                  CIJ[xx_dir][yy_dir] = CIJ[yy_dir][xx_dir] = lambda;
                   break;
                 }
               case ANISOTROPIC:
@@ -589,6 +593,13 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
         }
       case 3:
         {
+          const int xx_dir = 0;
+          const int yy_dir = 1;
+          const int zz_dir = 2;
+          const int yz_dir = 3;
+          const int xz_dir = 4;
+          const int xy_dir = 5;
+
           switch (model)
             {
               case ISOTROPIC:
@@ -601,15 +612,13 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
                   const double lambda =
                     poisson * modulus / ((1 + poisson) * (1 - 2 * poisson));
 
-                  CIJ[0][0] = lambda + 2 * shear_modulus;
-                  CIJ[1][1] = lambda + 2 * shear_modulus;
-                  CIJ[2][2] = lambda + 2 * shear_modulus;
-                  CIJ[3][3] = shear_modulus;
-                  CIJ[4][4] = shear_modulus;
-                  CIJ[5][5] = shear_modulus;
-                  CIJ[0][1] = CIJ[1][0] = lambda;
-                  CIJ[0][2] = CIJ[2][0] = lambda;
-                  CIJ[1][2] = CIJ[2][1] = lambda;
+                  CIJ[xx_dir][xx_dir] = CIJ[yy_dir][yy_dir] = CIJ[zz_dir][zz_dir] =
+                    lambda + 2 * shear_modulus;
+                  CIJ[yz_dir][yz_dir] = CIJ[xz_dir][xz_dir] = CIJ[xy_dir][xy_dir] =
+                    shear_modulus;
+                  CIJ[xx_dir][yy_dir] = CIJ[yy_dir][xx_dir] = CIJ[xx_dir][zz_dir] =
+                    CIJ[zz_dir][xx_dir] = CIJ[yy_dir][zz_dir] = CIJ[zz_dir][yy_dir] =
+                      lambda;
                   break;
                 }
               case TRANSVERSE:

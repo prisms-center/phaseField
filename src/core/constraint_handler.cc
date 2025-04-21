@@ -4,8 +4,6 @@
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/function.h>
 #include <deal.II/base/geometry_info.h>
-#include <deal.II/base/index_set.h>
-#include <deal.II/base/mg_level_object.h>
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/dofs/dof_tools.h>
 #include <deal.II/fe/component_mask.h>
@@ -16,6 +14,7 @@
 
 #include <prismspf/core/constraint_handler.h>
 #include <prismspf/core/exceptions.h>
+#include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/nonuniform_dirichlet.h>
 #include <prismspf/core/type_enums.h>
 
@@ -25,6 +24,7 @@
 #include <prismspf/config.h>
 
 #include <algorithm>
+#include <cmath>
 #include <iterator>
 #include <string>
 #include <vector>

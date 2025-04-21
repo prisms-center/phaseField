@@ -425,34 +425,13 @@ inline void
 boundaryParameters<dim>::validate_boundary_conditions() const
 {
   // Throw a warning if the pinned point is not on a vertex
+  // TODO (landinjm): This should be fixed
   for (const auto &[index, point_value_map] : pinned_point_list)
     {
-      const auto point     = point_value_map.second;
-      bool       on_vertex = false;
-      if constexpr (dim == 1)
-        {
-          const dealii::Point<1> vertex_1(0);
-
-          on_vertex = point == vertex_1;
-        }
-      else if constexpr (dim == 2)
-        {
-          const dealii::Point<2> vertex_1(0, 0);
-
-          on_vertex = point == vertex_1;
-        }
-      else if constexpr (dim == 3)
-        {
-          const dealii::Point<3> vertex_1(0, 0, 0);
-
-          on_vertex = point == vertex_1;
-        }
-      else
-        {
-          AssertThrow(false, UnreachableCode());
-        }
-
-      AssertThrow(on_vertex, dealii::ExcMessage("Pinned point must be on the origin"));
+      const auto               point = point_value_map.second;
+      const dealii::Point<dim> origin {};
+      AssertThrow(point == origin,
+                  dealii::ExcMessage("Pinned point must be on the origin"));
     }
 
   // Throw a warning if only some fields have periodic boundary conditions
