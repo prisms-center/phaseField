@@ -176,7 +176,8 @@ constraintHandler<dim>::make_constraint(const dealii::Mapping<dim>    &mapping,
     user_inputs->boundary_parameters.boundary_condition_list.at(index);
   for (const auto &[component, condition] : boundary_condition)
     {
-      for (const auto &[boundary_id, boundary_type] : condition.boundary_condition_map)
+      for (const auto &[boundary_id, boundary_type] :
+           condition.get_boundary_condition_map())
         {
           if (user_inputs->var_attributes->at(index).field_type != fieldType::VECTOR)
             {
@@ -241,7 +242,7 @@ constraintHandler<dim>::make_mg_constraint(const dealii::Mapping<dim>    &mappin
       for (const auto &[component, condition] : boundary_condition)
         {
           for (const auto &[boundary_id, boundary_type] :
-               condition.boundary_condition_map)
+               condition.get_boundary_condition_map())
             {
               if (user_inputs->var_attributes->at(global_index).field_type !=
                   fieldType::VECTOR)
@@ -276,7 +277,7 @@ constraintHandler<dim>::make_mg_constraint(const dealii::Mapping<dim>    &mappin
       for (const auto &[component, condition] : boundary_condition)
         {
           for (const auto &[boundary_id, boundary_type] :
-               condition.boundary_condition_map)
+               condition.get_boundary_condition_map())
             {
               if (user_inputs->var_attributes->at(global_index).field_type !=
                   fieldType::VECTOR)
@@ -441,7 +442,7 @@ constraintHandler<dim>::apply_constraints(const dealii::Mapping<dim>        &map
         dof_handler,
         boundary_id,
         dealii::Functions::ConstantFunction<dim, number>(
-          boundary_condition.dirichlet_value_map.at(boundary_id),
+          boundary_condition.get_dirichlet_value(boundary_id),
           is_vector_field ? dim : 1),
         constraints,
         mask);

@@ -230,7 +230,7 @@ triangulationHandler<dim>::mark_periodic()
       for (const auto &[component, condition] : boundary_condition)
         {
           for (const auto &[boundary_id, boundary_type] :
-               condition.boundary_condition_map)
+               condition.get_boundary_condition_map())
             {
               if (boundary_type == boundaryCondition::type::PERIODIC)
                 {
