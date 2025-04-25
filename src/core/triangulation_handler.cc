@@ -14,8 +14,8 @@
 #include <deal.II/multigrid/mg_transfer_global_coarsening.h>
 
 #include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/triangulation_handler.h>
-#include <prismspf/core/type_enums.h>
 
 #include <prismspf/user_inputs/boundary_parameters.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
@@ -30,7 +30,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim>
+template <unsigned int dim>
 triangulationHandler<dim>::triangulationHandler(
   const userInputParameters<dim> &_user_inputs,
   const MGInfo<dim>              &mg_info)
@@ -53,7 +53,7 @@ triangulationHandler<dim>::triangulationHandler(
   max_level     = mg_info.get_mg_max_level();
 }
 
-template <int dim>
+template <unsigned int dim>
 const typename triangulationHandler<dim>::Triangulation &
 triangulationHandler<dim>::get_triangulation() const
 {
@@ -61,7 +61,7 @@ triangulationHandler<dim>::get_triangulation() const
   return *triangulation;
 }
 
-template <int dim>
+template <unsigned int dim>
 const std::vector<std::shared_ptr<const dealii::Triangulation<dim>>> &
 triangulationHandler<dim>::get_mg_triangulation() const
 {
@@ -70,7 +70,7 @@ triangulationHandler<dim>::get_mg_triangulation() const
   return coarsened_triangulations;
 }
 
-template <int dim>
+template <unsigned int dim>
 const dealii::Triangulation<dim> &
 triangulationHandler<dim>::get_mg_triangulation(unsigned int level) const
 {
@@ -82,7 +82,7 @@ triangulationHandler<dim>::get_mg_triangulation(unsigned int level) const
   return *coarsened_triangulations[level];
 }
 
-template <int dim>
+template <unsigned int dim>
 unsigned int
 triangulationHandler<dim>::get_n_global_levels() const
 {
@@ -90,7 +90,7 @@ triangulationHandler<dim>::get_n_global_levels() const
   return triangulation->n_global_levels();
 }
 
-template <int dim>
+template <unsigned int dim>
 unsigned int
 triangulationHandler<dim>::get_mg_min_level() const
 {
@@ -99,7 +99,7 @@ triangulationHandler<dim>::get_mg_min_level() const
   return min_level;
 }
 
-template <int dim>
+template <unsigned int dim>
 unsigned int
 triangulationHandler<dim>::get_mg_max_level() const
 {
@@ -108,14 +108,14 @@ triangulationHandler<dim>::get_mg_max_level() const
   return max_level;
 }
 
-template <int dim>
+template <unsigned int dim>
 bool
 triangulationHandler<dim>::has_setup_multigrid() const
 {
   return has_multigrid;
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 triangulationHandler<dim>::generate_mesh()
 {
@@ -179,7 +179,7 @@ triangulationHandler<dim>::generate_mesh()
   // TODO (landinjm): p-multigrid
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 triangulationHandler<dim>::export_triangulation_as_vtk(const std::string &filename) const
 {
@@ -189,7 +189,7 @@ triangulationHandler<dim>::export_triangulation_as_vtk(const std::string &filena
   conditionalOStreams::pout_base() << "Triangulation written to " << filename << ".vtk\n";
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 triangulationHandler<dim>::mark_boundaries() const
 {
@@ -206,15 +206,11 @@ triangulationHandler<dim>::mark_boundaries() const
           // Direction for quad and hex cells
           auto direction = static_cast<unsigned int>(std::floor(face_number / 2));
 
-          // Mark the boundary id for x=0, y=0, z=0
-          if (std::fabs(cell->face(face_number)->center()(direction) - 0) < tolerance)
-            {
-              cell->face(face_number)->set_boundary_id(face_number);
-            }
-          // Mark the boundary id for x=max, y=max, z=max
-          else if (std::fabs(cell->face(face_number)->center()(direction) -
-                             (user_inputs->spatial_discretization.size[direction])) <
-                   tolerance)
+          // Mark the boundary id for x=0, y=0, z=0 and x=max, y=max, z=max
+          if (std::fabs(cell->face(face_number)->center()(direction) - 0) < tolerance ||
+              std::fabs(cell->face(face_number)->center()(direction) -
+                        (user_inputs->spatial_discretization.size[direction])) <
+                tolerance)
             {
               cell->face(face_number)->set_boundary_id(face_number);
             }
@@ -222,7 +218,7 @@ triangulationHandler<dim>::mark_boundaries() const
     }
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 triangulationHandler<dim>::mark_periodic()
 {
@@ -234,7 +230,7 @@ triangulationHandler<dim>::mark_periodic()
       for (const auto &[component, condition] : boundary_condition)
         {
           for (const auto &[boundary_id, boundary_type] :
-               condition.boundary_condition_map)
+               condition.get_boundary_condition_map())
             {
               if (boundary_type == boundaryCondition::type::PERIODIC)
                 {

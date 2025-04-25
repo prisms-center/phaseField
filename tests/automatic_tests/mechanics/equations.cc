@@ -20,7 +20,7 @@ customAttributeLoader::loadVariableAttributes()
   set_dependencies_gradient_term_LHS(0, "grad(change(u))");
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_explicit_RHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
@@ -28,7 +28,7 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
   const
 {}
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_nonexplicit_RHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
@@ -44,7 +44,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_nonexplicit_LHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
@@ -60,7 +60,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_LHS(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,

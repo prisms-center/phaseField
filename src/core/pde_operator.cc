@@ -11,13 +11,13 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 PDEOperator<dim, degree, number>::PDEOperator(
   const userInputParameters<dim> &_user_inputs)
   : user_inputs(&_user_inputs)
 {}
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 const userInputParameters<dim> &
 PDEOperator<dim, degree, number>::get_user_inputs() const
 {
@@ -25,12 +25,12 @@ PDEOperator<dim, degree, number>::get_user_inputs() const
   return *user_inputs;
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 number
 PDEOperator<dim, degree, number>::get_timestep() const
 {
   Assert(user_inputs != nullptr, dealii::ExcNotInitialized());
-  return user_inputs->temporal_discretization.dt;
+  return user_inputs->temporal_discretization.get_timestep();
 }
 
 INSTANTIATE_TRI_TEMPLATE(PDEOperator)

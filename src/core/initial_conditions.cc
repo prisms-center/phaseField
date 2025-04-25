@@ -14,7 +14,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim>
+template <unsigned int dim>
 initialCondition<dim>::initialCondition(const unsigned int             &_index,
                                         const fieldType                &field_type,
                                         const userInputParameters<dim> &_user_inputs)
@@ -25,7 +25,7 @@ initialCondition<dim>::initialCondition(const unsigned int             &_index,
 
 // NOLINTBEGIN(readability-identifier-length)
 
-template <int dim>
+template <unsigned int dim>
 void
 initialCondition<dim>::vector_value(const dealii::Point<dim> &p,
                                     dealii::Vector<double>   &value) const
@@ -34,7 +34,7 @@ initialCondition<dim>::vector_value(const dealii::Point<dim> &p,
   dealii::Vector<double> vector_value(dim);
 
   // Pass variables to user-facing function to evaluate
-  for (int i = 0; i < dim; i++)
+  for (unsigned int i = 0; i < dim; i++)
     {
       custom_initial_condition.set_initial_condition(index,
                                                      i,

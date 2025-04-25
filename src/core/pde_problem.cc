@@ -43,11 +43,11 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 PDEProblem<dim, degree>::PDEProblem(
-  const userInputParameters<dim>                         &_user_inputs,
-  std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
-  std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float)
+  const userInputParameters<dim>                                &_user_inputs,
+  const std::shared_ptr<const PDEOperator<dim, degree, double>> &_pde_operator,
+  const std::shared_ptr<const PDEOperator<dim, degree, float>>  &_pde_operator_float)
   : user_inputs(&_user_inputs)
   , mg_info(_user_inputs)
   , triangulation_handler(_user_inputs, mg_info)
@@ -117,7 +117,7 @@ PDEProblem<dim, degree>::PDEProblem(
                                       mg_info)
 {}
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 void
 PDEProblem<dim, degree>::init_system()
 {
@@ -290,7 +290,7 @@ PDEProblem<dim, degree>::init_system()
   timer::serial_timer().leave_subsection();
 }
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 void
 PDEProblem<dim, degree>::solve_increment()
 {
@@ -319,7 +319,7 @@ PDEProblem<dim, degree>::solve_increment()
   timer::serial_timer().leave_subsection();
 }
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 void
 PDEProblem<dim, degree>::solve()
 {
@@ -340,19 +340,18 @@ PDEProblem<dim, degree>::solve()
        "  Solve\n"
     << "================================================\n"
     << std::flush;
-  while (user_inputs->temporal_discretization.increment <
-         user_inputs->temporal_discretization.total_increments)
+  while (user_inputs->temporal_discretization.get_current_increment() <
+         user_inputs->temporal_discretization.get_total_increments())
     {
-      user_inputs->temporal_discretization.increment++;
-      user_inputs->temporal_discretization.time +=
-        user_inputs->temporal_discretization.dt;
+      user_inputs->temporal_discretization.update_current_increment();
+      user_inputs->temporal_discretization.update_current_time();
 
       CALI_MARK_BEGIN("Solve Increment");
       solve_increment();
       CALI_MARK_END("Solve Increment");
 
       if (user_inputs->output_parameters.should_output(
-            user_inputs->temporal_discretization.increment))
+            user_inputs->temporal_discretization.get_current_increment()))
         {
           // Ideally just update ghosts that need to be here.
           solution_handler.update_ghosts();
@@ -372,7 +371,8 @@ PDEProblem<dim, degree>::solve()
 
           // Print the l2-norms and integrals of each solution
           conditionalOStreams::pout_base()
-            << "Iteration: " << user_inputs->temporal_discretization.increment << "\n";
+            << "Iteration: "
+            << user_inputs->temporal_discretization.get_current_increment() << "\n";
           for (const auto &[index, vector] : solution_handler.get_solution_vector())
             {
               conditionalOStreams::pout_base()
@@ -390,7 +390,7 @@ PDEProblem<dim, degree>::solve()
                     *dof_handler.get_dof_handlers()[index],
                     *vector);
 
-                  for (int dimension = 0; dimension < dim; dimension++)
+                  for (unsigned int dimension = 0; dimension < dim; dimension++)
                     {
                       conditionalOStreams::pout_base()
                         << integrated_values[dimension] << " ";
@@ -414,7 +414,7 @@ PDEProblem<dim, degree>::solve()
     }
 }
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 void
 PDEProblem<dim, degree>::run()
 {

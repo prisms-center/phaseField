@@ -12,7 +12,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim>
+template <unsigned int dim>
 class userInputParameters;
 
 struct variableAttributes;
@@ -21,7 +21,7 @@ struct variableAttributes;
  * \brief This class handles the computation and access of the inverted mass matrix for
  * explicit solves.
  */
-template <int dim, int degree, typename number = double>
+template <unsigned int dim, unsigned int degree, typename number = double>
 class invmHandler
 {
 public:

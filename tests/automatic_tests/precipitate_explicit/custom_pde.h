@@ -20,7 +20,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \tparam degree The polynomial degree of the shape functions.
  * \tparam number Datatype to use. Either double or float.
  */
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 class customPDE : public PDEOperator<dim, degree, number>
 {
 public:

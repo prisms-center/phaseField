@@ -16,7 +16,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief This class handles the explicit solves of all explicit fields
  */
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 class explicitSolver : public explicitBase<dim, degree>
 {
 public:

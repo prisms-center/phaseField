@@ -27,7 +27,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 nonexplicitLinearSolver<dim, degree>::nonexplicitLinearSolver(
   const userInputParameters<dim>                         &_user_inputs,
   const matrixfreeHandler<dim>                           &_matrix_free_handler,
@@ -55,7 +55,7 @@ nonexplicitLinearSolver<dim, degree>::nonexplicitLinearSolver(
   , mg_info(&_mg_info)
 {}
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 inline void
 nonexplicitLinearSolver<dim, degree>::init()
 {
@@ -104,7 +104,7 @@ nonexplicitLinearSolver<dim, degree>::init()
     }
 }
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 inline void
 nonexplicitLinearSolver<dim, degree>::solve()
 {

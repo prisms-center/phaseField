@@ -29,7 +29,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 nonexplicitBase<dim, degree>::nonexplicitBase(
   const userInputParameters<dim>                         &_user_inputs,
   const matrixfreeHandler<dim>                           &_matrix_free_handler,
@@ -53,7 +53,7 @@ nonexplicitBase<dim, degree>::nonexplicitBase(
   , pde_operator(std::move(_pde_operator))
 {}
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 inline void
 nonexplicitBase<dim, degree>::compute_subset_attributes(
   const fieldSolveType &field_solve_type)
@@ -78,7 +78,7 @@ nonexplicitBase<dim, degree>::compute_subset_attributes(
     }
 }
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 inline void
 nonexplicitBase<dim, degree>::compute_shared_dependencies()
 {
@@ -129,7 +129,7 @@ nonexplicitBase<dim, degree>::compute_shared_dependencies()
 #endif
 }
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 inline void
 nonexplicitBase<dim, degree>::set_initial_condition()
 {
@@ -164,7 +164,7 @@ nonexplicitBase<dim, degree>::set_initial_condition()
     }
 }
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 inline void
 nonexplicitBase<dim, degree>::print()
 {

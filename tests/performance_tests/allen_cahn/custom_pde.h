@@ -29,7 +29,7 @@ const unsigned int n_copies = 64;
  * \tparam degree The polynomial degree of the shape functions.
  * \tparam number Datatype to use. Either double or float.
  */
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 class customPDE : public matrixFreeOperator<dim, degree, number>
 {
 public:
@@ -110,7 +110,7 @@ customAttributeLoader::loadVariableAttributes()
     }
 }
 
-template <int dim>
+template <unsigned int dim>
 inline void
 customInitialCondition<dim>::set_initial_condition(
   [[maybe_unused]] const unsigned int             &index,
@@ -151,7 +151,7 @@ customInitialCondition<dim>::set_initial_condition(
   scalar_value = std::min(scalar_value, 1.0);
 }
 
-template <int dim>
+template <unsigned int dim>
 inline void
 customNonuniformDirichlet<dim>::set_nonuniform_dirichlet(
   [[maybe_unused]] const unsigned int             &index,
@@ -163,7 +163,7 @@ customNonuniformDirichlet<dim>::set_nonuniform_dirichlet(
   [[maybe_unused]] const userInputParameters<dim> &user_inputs) const
 {}
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 inline void
 customPDE<dim, degree, number>::compute_explicit_RHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
@@ -184,7 +184,7 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 inline void
 customPDE<dim, degree, number>::compute_nonexplicit_RHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
@@ -192,7 +192,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
   const
 {}
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 inline void
 customPDE<dim, degree, number>::compute_nonexplicit_LHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
@@ -200,7 +200,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_LHS(
   const
 {}
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 inline void
 customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,

@@ -99,14 +99,14 @@ outputParameters::postprocess_and_validate(
 
   // If the number of outputs is greater than the number of increments, force them to be
   // equivalent
-  n_outputs = std::min(n_outputs, temporal_discretization.total_increments);
+  n_outputs = std::min(n_outputs, temporal_discretization.get_total_increments());
 
   // Determine the output list from the other criteria
   if (condition == "EQUAL_SPACING")
     {
       for (unsigned int iteration = 0;
-           iteration <= temporal_discretization.total_increments;
-           iteration += temporal_discretization.total_increments / n_outputs)
+           iteration <= temporal_discretization.get_total_increments();
+           iteration += temporal_discretization.get_total_increments() / n_outputs)
         {
           output_list.insert(iteration);
         }
@@ -117,20 +117,20 @@ outputParameters::postprocess_and_validate(
       for (unsigned int output = 1; output <= n_outputs; output++)
         {
           output_list.insert(static_cast<unsigned int>(std::round(
-            std::pow(static_cast<double>(temporal_discretization.total_increments),
+            std::pow(static_cast<double>(temporal_discretization.get_total_increments()),
                      static_cast<double>(output) / static_cast<double>(n_outputs)))));
         }
     }
   else if (condition == "N_PER_DECADE")
     {
-      AssertThrow(temporal_discretization.total_increments > 1,
+      AssertThrow(temporal_discretization.get_total_increments() > 1,
                   dealii::ExcMessage("For n per decaded spaced outputs, the number of "
                                      "increments must be greater than 1."));
 
       output_list.insert(0);
       output_list.insert(1);
       for (unsigned int iteration = 2;
-           iteration <= temporal_discretization.total_increments;
+           iteration <= temporal_discretization.get_total_increments();
            iteration++)
         {
           const auto decade = static_cast<unsigned int>(std::ceil(std::log10(iteration)));

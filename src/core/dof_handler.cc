@@ -21,7 +21,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim>
+template <unsigned int dim>
 dofHandler<dim>::dofHandler(const userInputParameters<dim> &_user_inputs,
                             const MGInfo<dim>              &mg_info)
   : user_inputs(&_user_inputs)
@@ -94,7 +94,7 @@ dofHandler<dim>::dofHandler(const userInputParameters<dim> &_user_inputs,
     }
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 dofHandler<dim>::init(const triangulationHandler<dim> &triangulation_handler,
                       const std::map<fieldType, dealii::FESystem<dim>> &fe_system,
@@ -154,7 +154,7 @@ dofHandler<dim>::init(const triangulationHandler<dim> &triangulation_handler,
     << std::flush;
 }
 
-template <int dim>
+template <unsigned int dim>
 const std::vector<const dealii::DoFHandler<dim> *> &
 dofHandler<dim>::get_dof_handlers() const
 {
@@ -163,7 +163,7 @@ dofHandler<dim>::get_dof_handlers() const
   return const_dof_handlers;
 }
 
-template <int dim>
+template <unsigned int dim>
 const std::vector<const dealii::DoFHandler<dim> *> &
 dofHandler<dim>::get_mg_dof_handlers(unsigned int level) const
 {
