@@ -3,7 +3,6 @@
 
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/mg_level_object.h>
-#include <deal.II/base/quadrature_lib.h>
 #include <deal.II/lac/precondition.h>
 #include <deal.II/lac/solver_cg.h>
 #include <deal.II/multigrid/mg_coarse.h>
@@ -18,6 +17,7 @@
 #include <prismspf/core/dof_handler.h>
 #include <prismspf/core/matrix_free_handler.h>
 #include <prismspf/core/matrix_free_operator.h>
+#include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/pde_operator.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/solution_output.h>
@@ -32,11 +32,12 @@
 
 #include <prismspf/config.h>
 
+#include <functional>
 #include <memory>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 GMGSolver<dim, degree>::GMGSolver(
   const userInputParameters<dim>                         &_user_inputs,
   const variableAttributes                               &_variable_attributes,
@@ -62,7 +63,7 @@ GMGSolver<dim, degree>::GMGSolver(
   , mg_info(&_mg_info)
 {}
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 inline void
 GMGSolver<dim, degree>::init()
 {
@@ -177,12 +178,12 @@ GMGSolver<dim, degree>::init()
 #endif
 }
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 inline void
 GMGSolver<dim, degree>::reinit()
 {}
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 inline void
 GMGSolver<dim, degree>::solve(const double &step_length)
 {
@@ -193,7 +194,7 @@ GMGSolver<dim, degree>::solve(const double &step_length)
   // Compute the residual
   this->system_matrix->compute_residual(*this->residual, *solution);
   if (this->user_inputs->output_parameters.should_output(
-        this->user_inputs->temporal_discretization.increment))
+        this->user_inputs->temporal_discretization.get_current_increment()))
     {
       conditionalOStreams::pout_summary()
         << "  field: " << this->field_index
@@ -306,7 +307,7 @@ GMGSolver<dim, degree>::solve(const double &step_length)
     .set_zero(*this->newton_update);
 
   if (this->user_inputs->output_parameters.should_output(
-        this->user_inputs->temporal_discretization.increment))
+        this->user_inputs->temporal_discretization.get_current_increment()))
     {
       conditionalOStreams::pout_summary()
         << " Final residual: " << this->solver_control.last_value()

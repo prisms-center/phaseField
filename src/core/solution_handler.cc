@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
 #include <deal.II/base/exceptions.h>
+#include <deal.II/base/mg_level_object.h>
 #include <deal.II/lac/affine_constraints.h>
 
 #include <prismspf/core/matrix_free_handler.h>
+#include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
@@ -12,14 +14,16 @@
 #include <prismspf/config.h>
 
 #include <array>
+#include <iterator>
 #include <map>
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim>
+template <unsigned int dim>
 solutionHandler<dim>::solutionHandler(
   const std::map<unsigned int, variableAttributes> &_attributes_list,
   const MGInfo<dim>                                &_mg_info)
@@ -41,7 +45,7 @@ solutionHandler<dim>::solutionHandler(
     }
 }
 
-template <int dim>
+template <unsigned int dim>
 std::map<unsigned int, typename solutionHandler<dim>::VectorType *>
 solutionHandler<dim>::get_solution_vector() const
 {
@@ -61,7 +65,7 @@ solutionHandler<dim>::get_solution_vector() const
   return temp;
 }
 
-template <int dim>
+template <unsigned int dim>
 typename solutionHandler<dim>::VectorType *
 solutionHandler<dim>::get_solution_vector(unsigned int   index,
                                           dependencyType dependency_type) const
@@ -77,7 +81,7 @@ solutionHandler<dim>::get_solution_vector(unsigned int   index,
   return solution_set.at(pair).get();
 }
 
-template <int dim>
+template <unsigned int dim>
 std::map<unsigned int, typename solutionHandler<dim>::VectorType *>
 solutionHandler<dim>::get_new_solution_vector() const
 {
@@ -92,7 +96,7 @@ solutionHandler<dim>::get_new_solution_vector() const
   return temp;
 }
 
-template <int dim>
+template <unsigned int dim>
 typename solutionHandler<dim>::VectorType *
 solutionHandler<dim>::get_new_solution_vector(unsigned int index) const
 {
@@ -104,7 +108,7 @@ solutionHandler<dim>::get_new_solution_vector(unsigned int index) const
   return new_solution_set.at(index).get();
 }
 
-template <int dim>
+template <unsigned int dim>
 std::vector<typename solutionHandler<dim>::MGVectorType *>
 solutionHandler<dim>::get_mg_solution_vector(unsigned int level) const
 {
@@ -128,7 +132,7 @@ solutionHandler<dim>::get_mg_solution_vector(unsigned int level) const
   return temp;
 }
 
-template <int dim>
+template <unsigned int dim>
 typename solutionHandler<dim>::MGVectorType *
 solutionHandler<dim>::get_mg_solution_vector(unsigned int level, unsigned int index) const
 {
@@ -147,7 +151,7 @@ solutionHandler<dim>::get_mg_solution_vector(unsigned int level, unsigned int in
   return mg_solution_set[relative_level][index].get();
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 solutionHandler<dim>::init(matrixfreeHandler<dim, double> &matrix_free_handler)
 {
@@ -188,7 +192,7 @@ solutionHandler<dim>::init(matrixfreeHandler<dim, double> &matrix_free_handler)
     }
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 solutionHandler<dim>::mg_init(
   const dealii::MGLevelObject<matrixfreeHandler<dim, float>> &mg_matrix_free_handler)
@@ -207,7 +211,7 @@ solutionHandler<dim>::mg_init(
     }
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 solutionHandler<dim>::update_ghosts() const
 {
@@ -224,7 +228,7 @@ solutionHandler<dim>::update_ghosts() const
     }
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 solutionHandler<dim>::apply_constraints(
   unsigned int                             index,
@@ -240,7 +244,7 @@ solutionHandler<dim>::apply_constraints(
     }
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 solutionHandler<dim>::apply_initial_condition_for_old_fields()
 {
@@ -255,7 +259,7 @@ solutionHandler<dim>::apply_initial_condition_for_old_fields()
     }
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 solutionHandler<dim>::update(const fieldSolveType &field_solve_type,
                              const unsigned int   &variable_index)

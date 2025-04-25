@@ -139,7 +139,7 @@ private:
   [[nodiscard]] const std::string &
   get_cmd_option(const std::string &option) const
   {
-    auto itr = std::find(tokens.begin(), tokens.end(), option);
+    auto itr = std::ranges::find(tokens, option);
     if (itr != tokens.end())
       {
         ++itr; // Increment the iterator to get the value
@@ -155,7 +155,7 @@ private:
   [[nodiscard]] bool
   cmd_option_exists(const std::string &option) const
   {
-    return std::find(tokens.begin(), tokens.end(), option) != tokens.end();
+    return std::ranges::find(tokens, option) != tokens.end();
   }
 };
 

@@ -12,7 +12,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim>
+template <unsigned int dim>
 void
 customInitialCondition<dim>::set_initial_condition(
   [[maybe_unused]] const unsigned int             &index,
@@ -69,7 +69,7 @@ customInitialCondition<dim>::set_initial_condition(
     }
 }
 
-template <int dim, typename number>
+template <unsigned int dim, typename number>
 void
 customNonuniformDirichlet<dim, number>::set_nonuniform_dirichlet(
   [[maybe_unused]] const unsigned int             &index,

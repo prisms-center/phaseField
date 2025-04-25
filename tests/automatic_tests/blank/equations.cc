@@ -14,7 +14,7 @@ void
 customAttributeLoader::loadVariableAttributes()
 {}
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_explicit_RHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
@@ -22,7 +22,7 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
   const
 {}
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_nonexplicit_RHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
@@ -30,7 +30,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
   [[maybe_unused]] types::index current_index) const
 {}
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_nonexplicit_LHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
@@ -38,7 +38,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_LHS(
   [[maybe_unused]] types::index current_index) const
 {}
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,

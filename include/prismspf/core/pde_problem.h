@@ -46,17 +46,17 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \brief This is the main class that handles the construction and solving of
  * user-specified PDEs.
  */
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 class PDEProblem
 {
 public:
   /**
    * \brief Constructor.
    */
-  explicit PDEProblem(
-    const userInputParameters<dim>                         &_user_inputs,
-    std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
-    std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float);
+  PDEProblem(
+    const userInputParameters<dim>                                &_user_inputs,
+    const std::shared_ptr<const PDEOperator<dim, degree, double>> &_pde_operator,
+    const std::shared_ptr<const PDEOperator<dim, degree, float>>  &_pde_operator_float);
 
   /**
    * \brief Run initialization and solving steps of the given problem.

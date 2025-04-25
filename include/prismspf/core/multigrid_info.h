@@ -25,7 +25,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \brief This class centralized the collection of multigrid data, which is of particular
  * important when dealing with multiple fields that have multigrid enabled.
  */
-template <int dim>
+template <unsigned int dim>
 class MGInfo
 {
 public:
@@ -172,7 +172,7 @@ private:
   std::vector<std::vector<unsigned int>> mg_levels;
 };
 
-template <int dim>
+template <unsigned int dim>
 inline MGInfo<dim>::MGInfo(const userInputParameters<dim> &_user_inputs)
   : user_inputs(&_user_inputs)
 {
@@ -263,7 +263,7 @@ inline MGInfo<dim>::MGInfo(const userInputParameters<dim> &_user_inputs)
     }
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 MGInfo<dim>::print()
 {

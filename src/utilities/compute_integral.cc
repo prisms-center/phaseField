@@ -17,7 +17,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 computeIntegral<dim, degree, number>::compute_integral(
   number                        &integral_value,
@@ -63,10 +63,10 @@ computeIntegral<dim, degree, number>::compute_integral(
         }
     }
 
-  integral_value = value;
+  integral_value = dealii::Utilities::MPI::sum(value, MPI_COMM_WORLD);
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 computeIntegral<dim, degree, number>::compute_integral(
   std::vector<number>           &integral_value,
@@ -110,7 +110,7 @@ computeIntegral<dim, degree, number>::compute_integral(
           // compute the element integral.
           for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
             {
-              for (int dimension = 0; dimension < dim; dimension++)
+              for (unsigned int dimension = 0; dimension < dim; dimension++)
                 {
                   value[dimension] +=
                     quad_values[q_point][dimension] * fe_values.JxW(q_point);
@@ -119,7 +119,7 @@ computeIntegral<dim, degree, number>::compute_integral(
         }
     }
 
-  for (int dimension = 0; dimension < dim; dimension++)
+  for (unsigned int dimension = 0; dimension < dim; dimension++)
     {
       value[dimension] = dealii::Utilities::MPI::sum(value[dimension], MPI_COMM_WORLD);
     }

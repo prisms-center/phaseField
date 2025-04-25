@@ -29,7 +29,7 @@ constV(T value)
 /**
  * \brief Convert given vector to a tensor of vectorized arrays.
  */
-template <int dim, typename number>
+template <unsigned int dim, typename number>
 constexpr auto
 constT(const std::array<number, dim> &vector)
 {
@@ -47,18 +47,18 @@ constT(const std::array<number, dim> &vector)
 /**
  * \brief Voigt notation index range
  */
-template <int dim>
+template <unsigned int dim>
 constexpr unsigned int voigt_tensor_size = (2 * dim) - 1 + (dim / 3);
 
 /**
  * \brief Compute the stress with a given displacement and elasticity tensor. This assumes
  * that the provided parameters are in Voigt notation.
  */
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 inline void
 compute_stress(const dealii::Tensor<2, voigt_tensor_size<dim>, T> &elasticity_tensor,
                const dealii::Tensor<1, voigt_tensor_size<dim>, T> &strain,
-               dealii::Tensor<1, (2 * dim) - 1 + (dim / 3), T>    &stress)
+               dealii::Tensor<1, voigt_tensor_size<dim>, T>       &stress)
 {
   stress = elasticity_tensor * strain;
 }
@@ -67,7 +67,7 @@ compute_stress(const dealii::Tensor<2, voigt_tensor_size<dim>, T> &elasticity_te
  * \brief Compute the stress with a given displacement and elasticity tensor. Note: this
  * functions internally converts to Voigt notation.
  */
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 inline void
 compute_stress(const dealii::Tensor<2, voigt_tensor_size<dim>, T> &elasticity_tensor,
                const dealii::Tensor<2, dim, T>                    &strain,
@@ -78,183 +78,61 @@ compute_stress(const dealii::Tensor<2, voigt_tensor_size<dim>, T> &elasticity_te
 
   if constexpr (dim == 3)
     {
-      epsilon[0] = strain[0][0];
-      epsilon[1] = strain[1][1];
-      epsilon[2] = strain[2][2];
-      // In Voigt notation: epsilonngineering shear strain=2*strain
-      epsilon[3] = strain[1][2] + strain[2][1];
-      epsilon[4] = strain[0][2] + strain[2][0];
-      epsilon[5] = strain[0][1] + strain[1][0];
+      const int xx_dir = 0;
+      const int yy_dir = 1;
+      const int zz_dir = 2;
+      const int yz_dir = 3;
+      const int xz_dir = 4;
+      const int xy_dir = 5;
+
+      epsilon[xx_dir] = strain[xx_dir][xx_dir];
+      epsilon[yy_dir] = strain[yy_dir][yy_dir];
+      epsilon[zz_dir] = strain[zz_dir][zz_dir];
+      // In Voigt notation: epsilonngineering shear strain=zz_dir*strain
+      epsilon[yz_dir] = strain[yy_dir][zz_dir] + strain[zz_dir][yy_dir];
+      epsilon[xz_dir] = strain[xx_dir][zz_dir] + strain[zz_dir][xx_dir];
+      epsilon[xy_dir] = strain[xx_dir][yy_dir] + strain[yy_dir][xx_dir];
 
       // Multiply elasticity_tensor and epsilon to get sigma
       sigma = elasticity_tensor * epsilon;
 
-      stress[0][0] = sigma[0];
-      stress[1][1] = sigma[1];
-      stress[2][2] = sigma[2];
+      stress[xx_dir][xx_dir] = sigma[xx_dir];
+      stress[yy_dir][yy_dir] = sigma[yy_dir];
+      stress[zz_dir][zz_dir] = sigma[zz_dir];
 
-      stress[1][2] = sigma[3];
-      stress[2][1] = sigma[3];
+      stress[yy_dir][zz_dir] = sigma[yz_dir];
+      stress[zz_dir][yy_dir] = sigma[yz_dir];
 
-      stress[0][2] = sigma[4];
-      stress[2][0] = sigma[4];
+      stress[xx_dir][zz_dir] = sigma[xz_dir];
+      stress[zz_dir][xx_dir] = sigma[xz_dir];
 
-      stress[0][1] = sigma[5];
-      stress[1][0] = sigma[5];
+      stress[xx_dir][yy_dir] = sigma[xy_dir];
+      stress[yy_dir][xx_dir] = sigma[xy_dir];
     }
   else if constexpr (dim == 2)
     {
-      epsilon[0] = strain[0][0];
-      epsilon[1] = strain[1][1];
-      // In Voigt notation: epsilonngineering shear strain=2*strain
-      epsilon[2] = strain[0][1] + strain[1][0];
+      const int xx_dir = 0;
+      const int yy_dir = 1;
+      const int xy_dir = 2;
+
+      epsilon[xx_dir] = strain[xx_dir][xx_dir];
+      epsilon[yy_dir] = strain[yy_dir][yy_dir];
+      // In Voigt notation: epsilonngineering shear strain=xy_dir*strain
+      epsilon[xy_dir] = strain[xx_dir][yy_dir] + strain[yy_dir][xx_dir];
 
       // Multiply elasticity_tensor and epsilon to get sigma
       sigma = elasticity_tensor * epsilon;
 
-      stress[0][0] = sigma[0];
-      stress[1][1] = sigma[1];
-      stress[0][1] = sigma[2];
-      stress[1][0] = sigma[2];
+      stress[xx_dir][xx_dir] = sigma[xx_dir];
+      stress[yy_dir][yy_dir] = sigma[yy_dir];
+      stress[xx_dir][yy_dir] = sigma[xy_dir];
+      stress[yy_dir][xx_dir] = sigma[xy_dir];
     }
   else
     {
-      stress[0][0] = elasticity_tensor[0][0] * strain[0][0];
-    }
-}
+      const int xx_dir = 0;
 
-/**
- * \brief Compute the stress with a given displacement and elasticity tensor. Note: this
- * functions internally converts to Voigt notation.
- */
-template <int dim, typename T>
-inline void
-compute_stress(
-  const T (&elasticity_tensor)[voigt_tensor_size<dim>][voigt_tensor_size<dim>],
-  const T (&strain)[][dim],
-  T (&stress)[][dim])
-{
-  std::array<T, voigt_tensor_size<dim>> sigma {};
-  std::array<T, voigt_tensor_size<dim>> epsilon {};
-
-  if constexpr (dim == 3)
-    {
-      epsilon[0] = strain[0][0];
-      epsilon[1] = strain[1][1];
-      epsilon[2] = strain[2][2];
-      // Voight notation to shear strain = 2 * strain
-      epsilon[3] = strain[1][2] + strain[2][1];
-      epsilon[4] = strain[0][2] + strain[2][0];
-      epsilon[5] = strain[0][1] + strain[1][0];
-      for (unsigned int i = 0; i < voigt_tensor_size<dim>; i++)
-        {
-          sigma[i] = 0.0;
-          for (unsigned int j = 0; j < voigt_tensor_size<dim>; j++)
-            {
-              sigma[i] += elasticity_tensor[i][j] * epsilon[j];
-            }
-        }
-      stress[0][0] = sigma[0];
-      stress[1][1] = sigma[1];
-      stress[2][2] = sigma[2];
-      stress[1][2] = sigma[3];
-      stress[0][2] = sigma[4];
-      stress[0][1] = sigma[5];
-      stress[2][1] = sigma[3];
-      stress[2][0] = sigma[4];
-      stress[1][0] = sigma[5];
-    }
-  else if constexpr (dim == 2)
-    {
-      epsilon[0] = strain[0][0];
-      epsilon[1] = strain[1][1];
-      // In Voigt notation: Engineering shear strain=2*strain
-      epsilon[2] = strain[0][1] + strain[1][0];
-      for (unsigned int i = 0; i < voigt_tensor_size<dim>; i++)
-        {
-          sigma[i] = 0.0;
-          for (unsigned int j = 0; j < voigt_tensor_size<dim>; j++)
-            {
-              sigma[i] += elasticity_tensor[i][j] * epsilon[j];
-            }
-        }
-      stress[0][0] = sigma[0];
-      stress[1][1] = sigma[1];
-      stress[0][1] = sigma[2];
-      stress[1][0] = sigma[2];
-    }
-  else
-    {
-      epsilon[0]   = strain[0][0];
-      sigma[0]     = elasticity_tensor[0][0] * epsilon[0];
-      stress[0][0] = sigma[0];
-    }
-}
-
-/**
- * \brief Compute the stress with a given displacement and elasticity tensor. Note: this
- * functions internally converts to Voigt notation.
- */
-template <int dim, typename T>
-inline void
-compute_stress(const dealii::Tensor<2, voigt_tensor_size<dim>, T> &elasticity_tensor,
-               const T (&strain)[][dim],
-               T (&stress)[][dim])
-{
-  std::array<T, voigt_tensor_size<dim>> sigma {};
-  std::array<T, voigt_tensor_size<dim>> epsilon {};
-
-  if (dim == 3)
-    {
-      epsilon[0] = strain[0][0];
-      epsilon[1] = strain[1][1];
-      epsilon[2] = strain[2][2];
-      // In Voigt notation: epsilonngineering shear strain=2*strain
-      epsilon[3] = strain[1][2] + strain[2][1];
-      epsilon[4] = strain[0][2] + strain[2][0];
-      epsilon[5] = strain[0][1] + strain[1][0];
-      for (unsigned int i = 0; i < voigt_tensor_size<dim>; i++)
-        {
-          sigma[i] = 0.0;
-          for (unsigned int j = 0; j < voigt_tensor_size<dim>; j++)
-            {
-              sigma[i] += elasticity_tensor[i][j] * epsilon[j];
-            }
-        }
-      stress[0][0] = sigma[0];
-      stress[1][1] = sigma[1];
-      stress[2][2] = sigma[2];
-      stress[1][2] = sigma[3];
-      stress[0][2] = sigma[4];
-      stress[0][1] = sigma[5];
-      stress[2][1] = sigma[3];
-      stress[2][0] = sigma[4];
-      stress[1][0] = sigma[5];
-    }
-  else if (dim == 2)
-    {
-      epsilon[0] = strain[0][0];
-      epsilon[1] = strain[1][1];
-      // In Voigt notation: epsilonngineering shear strain=2*strain
-      epsilon[2] = strain[0][1] + strain[1][0];
-      for (unsigned int i = 0; i < voigt_tensor_size<dim>; i++)
-        {
-          sigma[i] = 0.0;
-          for (unsigned int j = 0; j < voigt_tensor_size<dim>; j++)
-            {
-              sigma[i] += elasticity_tensor[i][j] * epsilon[j];
-            }
-        }
-      stress[0][0] = sigma[0];
-      stress[1][1] = sigma[1];
-      stress[0][1] = sigma[2];
-      stress[1][0] = sigma[2];
-    }
-  else
-    {
-      epsilon[0]   = strain[0][0];
-      sigma[0]     = elasticity_tensor[0][0] * epsilon[0];
-      stress[0][0] = sigma[0];
+      stress[xx_dir][xx_dir] = elasticity_tensor[xx_dir][xx_dir] * strain[xx_dir][xx_dir];
     }
 }
 

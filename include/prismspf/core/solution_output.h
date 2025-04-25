@@ -11,13 +11,13 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim>
+template <unsigned int dim>
 class userInputParameters;
 
 /**
  * \brief Class that outputs a passed solution to vtu, vtk, or pvtu
  */
-template <int dim, typename number = double>
+template <unsigned int dim, typename number = double>
 class solutionOutput
 {
 public:

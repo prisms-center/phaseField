@@ -18,7 +18,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief This class handles the self-nonlinear solves of a single nonexplicit field
  */
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 class nonexplicitSelfNonlinearSolver : public nonexplicitBase<dim, degree>
 {
 public:
