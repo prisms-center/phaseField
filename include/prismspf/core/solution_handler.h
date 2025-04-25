@@ -15,7 +15,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim, typename number>
+template <unsigned int dim, typename number>
 class matrixfreeHandler;
 
 struct variableAttributes;
@@ -23,7 +23,7 @@ struct variableAttributes;
 /**
  * \brief Class that manages solution initialization and swapping with old solutions.
  */
-template <int dim>
+template <unsigned int dim>
 class solutionHandler
 {
 public:

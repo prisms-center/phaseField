@@ -23,7 +23,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 explicitConstantSolver<dim, degree>::explicitConstantSolver(
   const userInputParameters<dim>                         &_user_inputs,
   const matrixfreeHandler<dim>                           &_matrix_free_handler,
@@ -43,7 +43,7 @@ explicitConstantSolver<dim, degree>::explicitConstantSolver(
                               std::move(_pde_operator))
 {}
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 void
 explicitConstantSolver<dim, degree>::init()
 {
@@ -58,7 +58,7 @@ explicitConstantSolver<dim, degree>::init()
   this->set_initial_condition();
 }
 
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 void
 explicitConstantSolver<dim, degree>::solve()
 {}

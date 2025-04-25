@@ -13,25 +13,25 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim>
+template <unsigned int dim>
 class userInputParameters;
 
-template <int dim>
+template <unsigned int dim>
 class constraintHandler;
 
-template <int dim>
+template <unsigned int dim>
 class dofHandler;
 
-template <int dim>
+template <unsigned int dim>
 class initialCondition;
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 class invmHandler;
 
-template <int dim, typename number>
+template <unsigned int dim, typename number>
 class matrixfreeHandler;
 
-template <int dim>
+template <unsigned int dim>
 class solutionHandler;
 
 struct variableAttributes;
@@ -39,7 +39,7 @@ struct variableAttributes;
 /**
  * \brief Base class for explicit solves.
  */
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 class explicitBase
 {
 public:

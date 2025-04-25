@@ -13,19 +13,19 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim>
+template <unsigned int dim>
 class userInputParameters;
 
 /**
  * \brief Forward declaration of user-facing implementation
  */
-template <int dim, typename number>
+template <unsigned int dim, typename number>
 class customNonuniformDirichlet;
 
 /**
  * \brief Function for user-implemented nonuniform dirichlet boundary condition.
  */
-template <int dim, typename number>
+template <unsigned int dim, typename number>
 class nonuniformDirichlet : public dealii::Function<dim, number>
 {
 public:
@@ -66,7 +66,7 @@ private:
 /**
  * \brief User-facing implementation of nonuniform boundary conditions
  */
-template <int dim, typename number>
+template <unsigned int dim, typename number>
 class customNonuniformDirichlet
 {
 public:

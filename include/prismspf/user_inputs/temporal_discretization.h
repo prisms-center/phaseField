@@ -29,8 +29,103 @@ public:
   void
   print_parameter_summary() const;
 
-  // Final time
-  double final_time = 0.0;
+  /**
+   * \brief Get the final time.
+   */
+  double
+  get_final_time() const
+  {
+    return final_time;
+  }
+
+  /**
+   * \brief Set the final time.
+   */
+  void
+  set_final_time(double _final_time)
+  {
+    final_time = _final_time;
+  }
+
+  /**
+   * \brief Get the current time.
+   */
+  double
+  get_current_time() const
+  {
+    return time;
+  }
+
+  /**
+   * \brief Update the current time with the current timestep.
+   *
+   * Note that this function is const even though it does increment the current timestep.
+   */
+  void
+  update_current_time() const
+  {
+    time += dt;
+  }
+
+  /**
+   * \brief Get the total number of increments.
+   */
+  unsigned int
+  get_total_increments() const
+  {
+    return total_increments;
+  }
+
+  /**
+   * \brief Set the total number of increments.
+   */
+  void
+  set_total_increments(unsigned int _total_increments)
+  {
+    total_increments = _total_increments;
+  }
+
+  /**
+   * \brief Get the current increment.
+   */
+  unsigned int
+  get_current_increment() const
+  {
+    return increment;
+  }
+
+  /**
+   * \brief Update the current increment by one.
+   *
+   * Note that this function is const even though it does increment the current increment.
+   */
+  void
+  update_current_increment() const
+  {
+    increment++;
+  }
+
+  /**
+   * \brief Get the current timestep.
+   */
+  double
+  get_timestep() const
+  {
+    return dt;
+  }
+
+  /**
+   * \brief Set the timestep.
+   */
+  void
+  set_timestep(double _dt)
+  {
+    dt = _dt;
+  }
+
+private:
+  // The current increment
+  mutable unsigned int increment = 0;
 
   // Total number of increments
   unsigned int total_increments = 0;
@@ -38,11 +133,11 @@ public:
   // Timestep
   mutable double dt = 0.0;
 
-  // The current increment
-  mutable unsigned int increment = 0;
-
   // The current time
   mutable double time = 0.0;
+
+  // Final time
+  double final_time = 0.0;
 };
 
 inline void

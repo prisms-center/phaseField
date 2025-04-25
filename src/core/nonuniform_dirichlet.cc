@@ -13,7 +13,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim, typename number>
+template <unsigned int dim, typename number>
 nonuniformDirichlet<dim, number>::nonuniformDirichlet(
   unsigned int                    _index,
   unsigned int                    _boundary_id,
@@ -27,7 +27,7 @@ nonuniformDirichlet<dim, number>::nonuniformDirichlet(
 
 // NOLINTBEGIN(readability-identifier-length)
 
-template <int dim, typename number>
+template <unsigned int dim, typename number>
 number
 nonuniformDirichlet<dim, number>::value(
   const dealii::Point<dim>           &p,
@@ -49,7 +49,7 @@ nonuniformDirichlet<dim, number>::value(
   return temp_scalar_value;
 }
 
-template <int dim, typename number>
+template <unsigned int dim, typename number>
 void
 nonuniformDirichlet<dim, number>::vector_value(const dealii::Point<dim> &p,
                                                dealii::Vector<number>   &value) const
@@ -62,7 +62,7 @@ nonuniformDirichlet<dim, number>::vector_value(const dealii::Point<dim> &p,
   dealii::Vector<number> temp_vector_value(dim);
 
   // Pass variables to user-facing function to evaluate
-  for (int i = 0; i < dim; i++)
+  for (unsigned int i = 0; i < dim; i++)
     {
       custom_nonuniform_dirichlet.set_nonuniform_dirichlet(index,
                                                            boundary_id,

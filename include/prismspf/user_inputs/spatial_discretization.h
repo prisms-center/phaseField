@@ -16,7 +16,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief Struct that holds spatial discretization parameters.
  */
-template <int dim>
+template <unsigned int dim>
 struct spatialDiscretization
 {
 public:
@@ -80,7 +80,7 @@ public:
   std::vector<GridRefinement::RefinementCriterion> refinement_criteria;
 };
 
-template <int dim>
+template <unsigned int dim>
 inline void
 spatialDiscretization<dim>::postprocess_and_validate()
 {
@@ -133,7 +133,7 @@ spatialDiscretization<dim>::postprocess_and_validate()
     }
 }
 
-template <int dim>
+template <unsigned int dim>
 inline void
 spatialDiscretization<dim>::print_parameter_summary() const
 {

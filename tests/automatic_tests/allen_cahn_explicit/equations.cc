@@ -32,7 +32,7 @@ customAttributeLoader::loadVariableAttributes()
   set_dependencies_value_term_RHS(2, "n, grad(n)");
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_explicit_RHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
@@ -50,7 +50,7 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
   variable_list.set_scalar_gradient_term(0, eqx_n);
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_nonexplicit_RHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
@@ -58,7 +58,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
   [[maybe_unused]] types::index current_index) const
 {}
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_nonexplicit_LHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
@@ -66,7 +66,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_LHS(
   [[maybe_unused]] types::index current_index) const
 {}
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
@@ -79,9 +79,9 @@ customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
   scalarValue f_tot  = constV<number>(0.0);
   scalarValue f_chem = n * n * n * n - 2.0 * n * n * n + n * n;
   scalarValue f_grad = constV<number>(0.0);
-  for (int i = 0; i < dim; i++)
+  for (unsigned int i = 0; i < dim; i++)
     {
-      for (int j = 0; j < dim; j++)
+      for (unsigned int j = 0; j < dim; j++)
         {
           f_grad += 0.5 * KnV * nx[i] * nx[j];
         }

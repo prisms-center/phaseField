@@ -367,25 +367,19 @@ variableAttributeLoader::validate_attributes()
 void
 variableAttributeLoader::validate_old_solution_dependencies()
 {
-  // First create a combined dependency set
+  // First create a combined dependency set for all fields
   std::map<std::pair<unsigned int, dependencyType>,
            dealii::EvaluationFlags::EvaluationFlags>
     dependency_set;
   for (const auto &[index, variable] : var_attributes)
     {
-      if (!variable.eval_flag_set_RHS.empty())
+      for (const auto &[pair, flag] : variable.eval_flag_set_RHS)
         {
-          for (const auto &[pair, flag] : variable.eval_flag_set_RHS)
-            {
-              dependency_set[pair] |= flag;
-            }
+          dependency_set[pair] |= flag;
         }
-      if (!variable.eval_flag_set_LHS.empty())
+      for (const auto &[pair, flag] : variable.eval_flag_set_LHS)
         {
-          for (const auto &[pair, flag] : variable.eval_flag_set_LHS)
-            {
-              dependency_set[pair] |= flag;
-            }
+          dependency_set[pair] |= flag;
         }
     }
 
@@ -404,61 +398,31 @@ variableAttributeLoader::validate_old_solution_dependencies()
   // Check that old fields dependencies are sequential
   for (const auto &[index, variable] : var_attributes)
     {
-      const auto old_1 = std::make_pair(index, dependencyType::OLD_1);
-      const auto old_2 = std::make_pair(index, dependencyType::OLD_2);
-      const auto old_3 = std::make_pair(index, dependencyType::OLD_3);
-      const auto old_4 = std::make_pair(index, dependencyType::OLD_4);
+      std::vector<dependencyType> old_types = {dependencyType::OLD_1,
+                                               dependencyType::OLD_2,
+                                               dependencyType::OLD_3,
+                                               dependencyType::OLD_4};
 
-      if (dependency_set.contains(old_1))
+      // Find first gap in sequence
+      unsigned int gap_index = 0;
+      while (gap_index < old_types.size() &&
+             dependency_set.contains(std::make_pair(gap_index, old_types[gap_index])))
         {
-          if (dependency_set.contains(old_2))
-            {
-              if (dependency_set.contains(old_3))
-                {
-                  if (dependency_set.contains(old_4))
-                    {
-                      return;
-                    }
-                }
-              else if (dependency_set.contains(old_4))
-                {
-                  AssertThrow(false,
-                              dealii::ExcMessage(
-                                "If old_n() of a field is specified, the "
-                                "previous old_n() to old_1() must be present."));
-                }
-              else
-                {
-                  return;
-                }
-            }
-          else if (dependency_set.contains(old_3) || dependency_set.contains(old_4))
+          gap_index++;
+        }
+
+      // Check no dependencies exist after gap
+      for (unsigned int second_index = gap_index; second_index < old_types.size();
+           second_index++)
+        {
+          if (dependency_set.contains(std::make_pair(index, old_types[second_index])))
             {
               AssertThrow(false,
                           dealii::ExcMessage(
                             "If old_n() of a field is specified, the "
                             "previous old_n() to old_1() must be present."));
             }
-          else
-            {
-              return;
-            }
         }
-      else if (dependency_set.contains(old_2) || dependency_set.contains(old_3) ||
-               dependency_set.contains(old_4))
-        {
-          AssertThrow(false,
-                      dealii::ExcMessage("If old_n() of a field is specified, the "
-                                         "previous old_n() to old_1() must be present."));
-        }
-      else
-        {
-          return;
-        }
-
-      AssertThrow(false,
-                  dealii::ExcMessage("If old_n() of a field is specified, the "
-                                     "previous old_n() to old_1() must be present."));
     }
 }
 

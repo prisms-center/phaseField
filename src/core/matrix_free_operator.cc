@@ -26,7 +26,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 matrixFreeOperator<dim, degree, number>::matrixFreeOperator(
   const std::map<unsigned int, variableAttributes>       &_attributes_list,
   std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
@@ -39,7 +39,7 @@ matrixFreeOperator<dim, degree, number>::matrixFreeOperator(
   , use_local_mapping(_use_local_mapping)
 {}
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 matrixFreeOperator<dim, degree, number>::initialize(
   std::shared_ptr<const dealii::MatrixFree<dim, number, size_type>> _data,
@@ -76,7 +76,7 @@ matrixFreeOperator<dim, degree, number>::initialize(
   edge_constrained_indices.resize(selected_fields.size());
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 dealii::types::global_dof_index
 matrixFreeOperator<dim, degree, number>::m() const
 {
@@ -94,7 +94,7 @@ matrixFreeOperator<dim, degree, number>::m() const
   return total_size;
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 number
 matrixFreeOperator<dim, degree, number>::el(
   [[maybe_unused]] const unsigned int &row,
@@ -104,7 +104,7 @@ matrixFreeOperator<dim, degree, number>::el(
   return 0.0;
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 matrixFreeOperator<dim, degree, number>::clear()
 {
@@ -113,7 +113,7 @@ matrixFreeOperator<dim, degree, number>::clear()
   global_to_local_solution.clear();
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 matrixFreeOperator<dim, degree, number>::initialize_dof_vector(
   VectorType  &dst,
@@ -122,7 +122,7 @@ matrixFreeOperator<dim, degree, number>::initialize_dof_vector(
   data->initialize_dof_vector(dst, dof_handler_index);
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 matrixFreeOperator<dim, degree, number>::set_constrained_entries_to_one(
   VectorType &dst) const
@@ -145,7 +145,7 @@ matrixFreeOperator<dim, degree, number>::set_constrained_entries_to_one(
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 matrixFreeOperator<dim, degree, number>::add_global_to_local_mapping(
   const std::map<std::pair<unsigned int, dependencyType>, unsigned int>
@@ -154,14 +154,14 @@ matrixFreeOperator<dim, degree, number>::add_global_to_local_mapping(
   global_to_local_solution = _global_to_local_solution;
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 std::shared_ptr<const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>>
 matrixFreeOperator<dim, degree, number>::get_matrix_free() const
 {
   return data;
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 const std::shared_ptr<
   dealii::DiagonalMatrix<typename matrixFreeOperator<dim, degree, number>::VectorType>> &
 matrixFreeOperator<dim, degree, number>::get_matrix_diagonal_inverse() const
@@ -171,7 +171,7 @@ matrixFreeOperator<dim, degree, number>::get_matrix_diagonal_inverse() const
   return inverse_diagonal_entries;
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 matrixFreeOperator<dim, degree, number>::add_src_solution_subset(
   const std::vector<VectorType *> &_src_solution_subset)
@@ -179,7 +179,7 @@ matrixFreeOperator<dim, degree, number>::add_src_solution_subset(
   src_solution_subset = _src_solution_subset;
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 matrixFreeOperator<dim, degree, number>::compute_explicit_update(
   std::vector<VectorType *>       &dst,
@@ -199,7 +199,7 @@ matrixFreeOperator<dim, degree, number>::compute_explicit_update(
                         true);
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 matrixFreeOperator<dim, degree, number>::compute_postprocess_explicit_update(
   std::vector<VectorType *>       &dst,
@@ -219,7 +219,7 @@ matrixFreeOperator<dim, degree, number>::compute_postprocess_explicit_update(
                         true);
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 matrixFreeOperator<dim, degree, number>::compute_nonexplicit_auxiliary_update(
   std::vector<VectorType *>       &dst,
@@ -239,7 +239,7 @@ matrixFreeOperator<dim, degree, number>::compute_nonexplicit_auxiliary_update(
                         true);
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 matrixFreeOperator<dim, degree, number>::compute_residual(VectorType       &dst,
                                                           const VectorType &src) const
@@ -262,7 +262,7 @@ matrixFreeOperator<dim, degree, number>::compute_residual(VectorType       &dst,
                         true);
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 matrixFreeOperator<dim, degree, number>::vmult(VectorType       &dst,
                                                const VectorType &src) const
@@ -283,7 +283,7 @@ matrixFreeOperator<dim, degree, number>::vmult(VectorType       &dst,
                         true);
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 matrixFreeOperator<dim, degree, number>::Tvmult(VectorType       &dst,
                                                 const VectorType &src) const
@@ -291,7 +291,7 @@ matrixFreeOperator<dim, degree, number>::Tvmult(VectorType       &dst,
   this->vmult(dst, src);
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 matrixFreeOperator<dim, degree, number>::compute_local_explicit_update(
   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
@@ -317,7 +317,7 @@ matrixFreeOperator<dim, degree, number>::compute_local_explicit_update(
     cell_range);
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 matrixFreeOperator<dim, degree, number>::compute_local_postprocess_explicit_update(
   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
@@ -343,7 +343,7 @@ matrixFreeOperator<dim, degree, number>::compute_local_postprocess_explicit_upda
     cell_range);
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 matrixFreeOperator<dim, degree, number>::compute_local_nonexplicit_auxiliary_update(
   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
@@ -369,7 +369,7 @@ matrixFreeOperator<dim, degree, number>::compute_local_nonexplicit_auxiliary_upd
     cell_range);
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 matrixFreeOperator<dim, degree, number>::compute_local_residual(
   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
@@ -395,7 +395,7 @@ matrixFreeOperator<dim, degree, number>::compute_local_residual(
     cell_range);
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 matrixFreeOperator<dim, degree, number>::compute_local_newton_update(
   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
@@ -424,7 +424,7 @@ matrixFreeOperator<dim, degree, number>::compute_local_newton_update(
     cell_range);
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 matrixFreeOperator<dim, degree, number>::compute_diagonal(unsigned int field_index)
 {
@@ -448,7 +448,7 @@ matrixFreeOperator<dim, degree, number>::compute_diagonal(unsigned int field_ind
     }
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 matrixFreeOperator<dim, degree, number>::local_compute_diagonal(
   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,

@@ -13,13 +13,13 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim>
+template <unsigned int dim>
 class userInputParameters;
 
 /**
  * \brief Forward declaration of user-facing implementation
  */
-template <int dim>
+template <unsigned int dim>
 class customInitialCondition;
 
 /**
@@ -27,7 +27,7 @@ class customInitialCondition;
  * for explicit time dependent fields and implicit time dependent, as all others are
  * calculated at runtime.
  */
-template <int dim>
+template <unsigned int dim>
 class initialCondition : public dealii::Function<dim, double>
 {
 public:
@@ -59,7 +59,7 @@ private:
 /**
  * \brief User-facing implementation of initial conditions
  */
-template <int dim>
+template <unsigned int dim>
 class customInitialCondition
 {
 public:

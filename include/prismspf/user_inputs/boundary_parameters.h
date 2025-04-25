@@ -55,14 +55,47 @@ public:
            dirichlet_value_map == other.dirichlet_value_map;
   }
 
-  // Map of boundary conditions and domain boundary for which they correspond to. For a
-  // simple geometry like a square the boundary ids are marked, in order, by x=0, x=max,
-  // y=0, y=max. More complex geometries can have somewhat arbitrary ordering, but will
-  // render some of our assertions moot.
-  std::map<dealii::types::boundary_id, type> boundary_condition_map;
+  /**
+   * \brief Get the map of boundary conditions.
+   */
+  [[nodiscard]] const std::map<dealii::types::boundary_id, type> &
+  get_boundary_condition_map() const
+  {
+    return boundary_condition_map;
+  }
 
-  // A map of boundary values for dirichlet boundary conditions
-  std::map<dealii::types::boundary_id, double> dirichlet_value_map;
+  /**
+   * \brief Add a boundary conditions.
+   */
+  void
+  add_boundary_condition(dealii::types::boundary_id boundary_id, type boundary_type)
+  {
+    boundary_condition_map.emplace(boundary_id, boundary_type);
+  }
+
+  /**
+   * \brief Get the value for a homogenous dirichlet boundary condition.
+   */
+  [[nodiscard]] double
+  get_dirichlet_value(dealii::types::boundary_id boundary_id) const
+  {
+    Assert(boundary_condition_map.at(boundary_id) == type::DIRICHLET,
+           dealii::ExcMessage("Boundary condition is not dirichlet"));
+    Assert(dirichlet_value_map.contains(boundary_id),
+           dealii::ExcMessage("Value does not exist in the map."));
+    return dirichlet_value_map.at(boundary_id);
+  }
+
+  /**
+   * \brief Add the value for a homogenous dirichlet boundary condition.
+   */
+  void
+  add_boundary_condition(dealii::types::boundary_id boundary_id, double boundary_value)
+  {
+    Assert(boundary_condition_map.at(boundary_id) == type::DIRICHLET,
+           dealii::ExcMessage("Boundary condition is not dirichlet"));
+    dirichlet_value_map.emplace(boundary_id, boundary_value);
+  }
 
   /**
    * \brief Enum to string for type
@@ -90,12 +123,22 @@ public:
           return "UNKNOWN";
       }
   }
+
+private:
+  // Map of boundary conditions and domain boundary for which they correspond to. For a
+  // simple geometry like a square the boundary ids are marked, in order, by x=0, x=max,
+  // y=0, y=max. More complex geometries can have somewhat arbitrary ordering, but will
+  // render some of our assertions moot.
+  std::map<dealii::types::boundary_id, type> boundary_condition_map;
+
+  // A map of boundary values for dirichlet boundary conditions
+  std::map<dealii::types::boundary_id, double> dirichlet_value_map;
 };
 
 /**
  * \brief Struct that holds boundary parameters.
  */
-template <int dim>
+template <unsigned int dim>
 struct boundaryParameters
 {
 public:
@@ -152,7 +195,7 @@ private:
   validate_boundary_conditions() const;
 };
 
-template <int dim>
+template <unsigned int dim>
 inline void
 boundaryParameters<dim>::postprocess_and_validate(
   const std::map<unsigned int, variableAttributes> &var_attributes)
@@ -163,7 +206,7 @@ boundaryParameters<dim>::postprocess_and_validate(
       // components
       if (variable.field_type == fieldType::VECTOR)
         {
-          for (int i = 0; i < dim; i++)
+          for (unsigned int i = 0; i < dim; i++)
             {
               if (variable.is_postprocess)
                 {
@@ -258,7 +301,7 @@ boundaryParameters<dim>::postprocess_and_validate(
 #endif
 }
 
-template <int dim>
+template <unsigned int dim>
 inline bool
 boundaryParameters<dim>::check_duplicate_boundary_conditions(
   const types::index &index_1,
@@ -293,7 +336,7 @@ boundaryParameters<dim>::check_duplicate_boundary_conditions(
   return is_duplicate;
 }
 
-template <int dim>
+template <unsigned int dim>
 inline void
 boundaryParameters<dim>::print_parameter_summary() const
 {
@@ -309,7 +352,7 @@ boundaryParameters<dim>::print_parameter_summary() const
         {
           conditionalOStreams::pout_summary() << "  Component: " << component << "\n";
           for (const auto &[domain_id, boundary_type] :
-               boundary_condition.boundary_condition_map)
+               boundary_condition.get_boundary_condition_map())
             {
               conditionalOStreams::pout_summary()
                 << "    Boundary id: " << domain_id << "    "
@@ -317,7 +360,7 @@ boundaryParameters<dim>::print_parameter_summary() const
               if (boundary_type == boundaryCondition::type::DIRICHLET)
                 {
                   conditionalOStreams::pout_summary()
-                    << " = " << boundary_condition.dirichlet_value_map.at(domain_id);
+                    << " = " << boundary_condition.get_dirichlet_value(domain_id);
                 }
               conditionalOStreams::pout_summary() << "\n";
             }
@@ -338,7 +381,7 @@ boundaryParameters<dim>::print_parameter_summary() const
   conditionalOStreams::pout_summary() << "\n" << std::flush;
 }
 
-template <int dim>
+template <unsigned int dim>
 inline void
 boundaryParameters<dim>::set_boundary(const std::string  &BC_string,
                                       const types::index &index,
@@ -363,28 +406,28 @@ boundaryParameters<dim>::set_boundary(const std::string  &BC_string,
 
   // Assign boundary condition
   boundaryCondition condition;
-  for (int i = 0; i < (2 * dim); i++)
+  for (unsigned int i = 0; i < (2 * dim); i++)
     {
       const std::string dirichlet = "DIRICHLET";
       const std::string neumann   = "NEUMANN";
 
       if (boost::iequals(BC_string_list[i], "NATURAL"))
         {
-          condition.boundary_condition_map.emplace(i, boundaryCondition::type::NATURAL);
+          condition.add_boundary_condition(i, boundaryCondition::type::NATURAL);
         }
       else if (boost::iequals(BC_string_list[i].substr(0, dirichlet.size()), dirichlet))
         {
-          condition.boundary_condition_map.emplace(i, boundaryCondition::type::DIRICHLET);
+          condition.add_boundary_condition(i, boundaryCondition::type::DIRICHLET);
           std::string dirichlet_value =
             BC_string_list[i].substr(dirichlet.size() + 1, BC_string_list[i].size());
           dirichlet_value = dealii::Utilities::trim(dirichlet_value);
-          condition.dirichlet_value_map.emplace(i,
-                                                dealii::Utilities::string_to_double(
-                                                  dirichlet_value));
+          condition.add_boundary_condition(i,
+                                           dealii::Utilities::string_to_double(
+                                             dirichlet_value));
         }
       else if (boost::iequals(BC_string_list[i], "PERIODIC"))
         {
-          condition.boundary_condition_map.emplace(i, boundaryCondition::type::PERIODIC);
+          condition.add_boundary_condition(i, boundaryCondition::type::PERIODIC);
         }
       else if (boost::iequals(BC_string_list[i].substr(0, neumann.size()), neumann))
         {
@@ -392,8 +435,8 @@ boundaryParameters<dim>::set_boundary(const std::string  &BC_string,
         }
       else if (boost::iequals(BC_string_list[i], "NON_UNIFORM_DIRICHLET"))
         {
-          condition.boundary_condition_map
-            .emplace(i, boundaryCondition::type::NON_UNIFORM_DIRICHLET);
+          condition
+            .add_boundary_condition(i, boundaryCondition::type::NON_UNIFORM_DIRICHLET);
         }
       else if (boost::iequals(BC_string_list[i], "NON_UNIFORM_NEUMANN"))
         {
@@ -420,39 +463,18 @@ boundaryParameters<dim>::set_boundary(const std::string  &BC_string,
   boundary_condition_list[index].emplace(component, condition);
 }
 
-template <int dim>
+template <unsigned int dim>
 inline void
 boundaryParameters<dim>::validate_boundary_conditions() const
 {
   // Throw a warning if the pinned point is not on a vertex
+  // TODO (landinjm): This should be fixed
   for (const auto &[index, point_value_map] : pinned_point_list)
     {
-      const auto point     = point_value_map.second;
-      bool       on_vertex = false;
-      if constexpr (dim == 1)
-        {
-          const dealii::Point<1> vertex_1(0);
-
-          on_vertex = point == vertex_1;
-        }
-      else if constexpr (dim == 2)
-        {
-          const dealii::Point<2> vertex_1(0, 0);
-
-          on_vertex = point == vertex_1;
-        }
-      else if constexpr (dim == 3)
-        {
-          const dealii::Point<3> vertex_1(0, 0, 0);
-
-          on_vertex = point == vertex_1;
-        }
-      else
-        {
-          AssertThrow(false, UnreachableCode());
-        }
-
-      AssertThrow(on_vertex, dealii::ExcMessage("Pinned point must be on the origin"));
+      const auto               point = point_value_map.second;
+      const dealii::Point<dim> origin {};
+      AssertThrow(point == origin,
+                  dealii::ExcMessage("Pinned point must be on the origin"));
     }
 
   // Throw a warning if only some fields have periodic boundary conditions
@@ -462,7 +484,7 @@ boundaryParameters<dim>::validate_boundary_conditions() const
       for (const auto &[component, boundary_condition] : component_map)
         {
           for (const auto &[domain_id, boundary_type] :
-               boundary_condition.boundary_condition_map)
+               boundary_condition.get_boundary_condition_map())
             {
               if (boundary_type == boundaryCondition::type::PERIODIC)
                 {
@@ -476,7 +498,7 @@ boundaryParameters<dim>::validate_boundary_conditions() const
       for (const auto &[component, boundary_condition] : component_map)
         {
           for (const auto &[domain_id, boundary_type] :
-               boundary_condition.boundary_condition_map)
+               boundary_condition.get_boundary_condition_map())
             {
               if (boundary_type != boundaryCondition::type::PERIODIC &&
                   periodic_ids[domain_id])

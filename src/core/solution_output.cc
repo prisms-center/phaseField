@@ -20,7 +20,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim, typename number>
+template <unsigned int dim, typename number>
 solutionOutput<dim, number>::solutionOutput(const VectorType               &solution,
                                             const dealii::DoFHandler<dim>  &dof_handler,
                                             const unsigned int             &degree,
@@ -29,7 +29,8 @@ solutionOutput<dim, number>::solutionOutput(const VectorType               &solu
 {
   // Some stuff to determine the actual name of the output file.
   const auto n_trailing_digits = static_cast<unsigned int>(
-    std::floor(std::log10(user_inputs.temporal_discretization.total_increments)) + 1);
+    std::floor(std::log10(user_inputs.temporal_discretization.get_total_increments())) +
+    1);
 
   // Init data out
   dealii::DataOut<dim> data_out;
@@ -49,8 +50,8 @@ solutionOutput<dim, number>::solutionOutput(const VectorType               &solu
 
   // Set some flags for data output
   dealii::DataOutBase::VtkFlags flags;
-  flags.time                = user_inputs.temporal_discretization.time;
-  flags.cycle               = user_inputs.temporal_discretization.increment;
+  flags.time                = user_inputs.temporal_discretization.get_current_time();
+  flags.cycle               = user_inputs.temporal_discretization.get_current_increment();
   flags.print_date_and_time = true;
 #ifdef PRISMS_PF_WITH_ZLIB
   // TODO (landinjm): Make this a user input parameter so they can select between
@@ -61,14 +62,15 @@ solutionOutput<dim, number>::solutionOutput(const VectorType               &solu
 
   // Write to file based on the user input.
   // TODO (landinjm): actually write stuff according to user input.
-  data_out.write_vtu_with_pvtu_record("./",
-                                      name,
-                                      user_inputs.temporal_discretization.increment,
-                                      MPI_COMM_WORLD,
-                                      n_trailing_digits);
+  data_out.write_vtu_with_pvtu_record(
+    "./",
+    name,
+    user_inputs.temporal_discretization.get_current_increment(),
+    MPI_COMM_WORLD,
+    n_trailing_digits);
 }
 
-template <int dim, typename number>
+template <unsigned int dim, typename number>
 solutionOutput<dim, number>::solutionOutput(
   const std::map<unsigned int, VectorType *>         &solution_set,
   const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers,
@@ -78,7 +80,8 @@ solutionOutput<dim, number>::solutionOutput(
 {
   // Some stuff to determine the actual name of the output file.
   const auto n_trailing_digits = static_cast<unsigned int>(
-    std::floor(std::log10(user_inputs.temporal_discretization.total_increments)) + 1);
+    std::floor(std::log10(user_inputs.temporal_discretization.get_total_increments())) +
+    1);
 
   // Init data out
   dealii::DataOut<dim> data_out;
@@ -114,8 +117,8 @@ solutionOutput<dim, number>::solutionOutput(
 
   // Set some flags for data output
   dealii::DataOutBase::VtkFlags flags;
-  flags.time                = user_inputs.temporal_discretization.time;
-  flags.cycle               = user_inputs.temporal_discretization.increment;
+  flags.time                = user_inputs.temporal_discretization.get_current_time();
+  flags.cycle               = user_inputs.temporal_discretization.get_current_increment();
   flags.print_date_and_time = true;
 #ifdef PRISMS_PF_WITH_ZLIB
   flags.compression_level = dealii::DataOutBase::CompressionLevel::best_speed;
@@ -124,11 +127,12 @@ solutionOutput<dim, number>::solutionOutput(
 
   // Write to file based on the user input.
   // TODO (landinjm): actually write stuff according to user input.
-  data_out.write_vtu_with_pvtu_record("./",
-                                      name,
-                                      user_inputs.temporal_discretization.increment,
-                                      MPI_COMM_WORLD,
-                                      n_trailing_digits);
+  data_out.write_vtu_with_pvtu_record(
+    "./",
+    name,
+    user_inputs.temporal_discretization.get_current_increment(),
+    MPI_COMM_WORLD,
+    n_trailing_digits);
 }
 
 template class solutionOutput<1, float>;

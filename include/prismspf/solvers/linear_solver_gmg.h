@@ -29,13 +29,13 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim>
+template <unsigned int dim>
 class dofHandler;
 
 /**
  * \brief Class that handles the assembly and solving of a field with a GMG preconditioner
  */
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree>
 class GMGSolver : public linearSolverBase<dim, degree>
 {
 public:

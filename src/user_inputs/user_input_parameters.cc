@@ -23,7 +23,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim>
+template <unsigned int dim>
 userInputParameters<dim>::userInputParameters(inputFileReader          &input_file_reader,
                                               dealii::ParameterHandler &parameter_handler)
   : var_attributes(&input_file_reader.var_attributes)
@@ -58,7 +58,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
   user_constants.print();
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 userInputParameters<dim>::assign_spatial_discretization_parameters(
   dealii::ParameterHandler &parameter_handler)
@@ -66,7 +66,7 @@ userInputParameters<dim>::assign_spatial_discretization_parameters(
   parameter_handler.enter_subsection("rectangular mesh");
   {
     std::vector<std::string> axis_labels = {"x", "y", "z"};
-    for (int i = 0; i < dim; ++i)
+    for (unsigned int i = 0; i < dim; ++i)
       {
         spatial_discretization.size[i] =
           parameter_handler.get_double(axis_labels[i] + " size");
@@ -134,18 +134,18 @@ userInputParameters<dim>::assign_spatial_discretization_parameters(
     }
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 userInputParameters<dim>::assign_temporal_discretization_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
-  temporal_discretization.dt         = parameter_handler.get_double("time step");
-  temporal_discretization.final_time = parameter_handler.get_double("end time");
-  temporal_discretization.total_increments =
-    static_cast<unsigned int>(parameter_handler.get_integer("number steps"));
+  temporal_discretization.set_timestep(parameter_handler.get_double("time step"));
+  temporal_discretization.set_final_time(parameter_handler.get_double("end time"));
+  temporal_discretization.set_total_increments(
+    static_cast<unsigned int>(parameter_handler.get_integer("number steps")));
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 userInputParameters<dim>::assign_output_parameters(
   dealii::ParameterHandler &parameter_handler)
@@ -169,7 +169,7 @@ userInputParameters<dim>::assign_output_parameters(
   parameter_handler.leave_subsection();
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 userInputParameters<dim>::assign_checkpoint_parameters(
   dealii::ParameterHandler &parameter_handler)
@@ -187,7 +187,7 @@ userInputParameters<dim>::assign_checkpoint_parameters(
   parameter_handler.leave_subsection();
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 userInputParameters<dim>::assign_boundary_parameters(
   dealii::ParameterHandler &parameter_handler)
@@ -210,7 +210,7 @@ userInputParameters<dim>::assign_boundary_parameters(
       else
         {
           std::vector<std::string> axis_labels = {"x", "y", "z"};
-          for (int i = 0; i < dim; i++)
+          for (unsigned int i = 0; i < dim; i++)
             {
               std::string bc_text = "boundary condition for ";
               bc_text.append(variable.name + ", " + axis_labels[i] + " component");
@@ -241,7 +241,7 @@ userInputParameters<dim>::assign_boundary_parameters(
           // Otherwise, fill out point and value
           std::vector<std::string> axis_labels = {"x", "y", "z"};
           dealii::Point<dim>       point;
-          for (int i = 0; i < dim; ++i)
+          for (unsigned int i = 0; i < dim; ++i)
             {
               point[i] = parameter_handler.get_double(axis_labels[i]);
             }
@@ -263,7 +263,7 @@ userInputParameters<dim>::assign_boundary_parameters(
     }
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 userInputParameters<dim>::assign_linear_solve_parameters(
   dealii::ParameterHandler &parameter_handler)
@@ -325,7 +325,7 @@ userInputParameters<dim>::assign_linear_solve_parameters(
     }
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 userInputParameters<dim>::assign_nonlinear_solve_parameters(
   dealii::ParameterHandler &parameter_handler)
@@ -351,7 +351,7 @@ userInputParameters<dim>::assign_nonlinear_solve_parameters(
     }
 }
 
-template <int dim>
+template <unsigned int dim>
 void
 userInputParameters<dim>::load_model_constants(
   const inputFileReader    &input_file_reader,
@@ -365,8 +365,7 @@ userInputParameters<dim>::load_model_constants(
       std::vector<std::string> model_constants_strings =
         dealii::Utilities::split_string_list(parameter_handler.get(constants_text));
 
-      user_constants.model_constants[constant_name] =
-        user_constants.construct_user_constant(model_constants_strings);
+      user_constants.add_user_constant(constant_name, model_constants_strings);
     }
 }
 

@@ -15,7 +15,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief Compute the integral of a given field.
  */
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 class computeIntegral
 {
 public:
@@ -24,7 +24,7 @@ public:
   /**
    * \brief Constructor.
    */
-  explicit computeIntegral() = default;
+  computeIntegral() = default;
 
   /**
    * \brief Compute the integral for a scalar field
