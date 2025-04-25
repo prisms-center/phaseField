@@ -63,7 +63,7 @@ computeIntegral<dim, degree, number>::compute_integral(
         }
     }
 
-  integral_value = value;
+  integral_value = dealii::Utilities::MPI::sum(value, MPI_COMM_WORLD);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
