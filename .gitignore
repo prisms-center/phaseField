@@ -1,129 +1,38 @@
 # Build files & folders
-build/*
-CMakeFiles/
+**/build*
+**/CMakeFiles/
 CMakeCache.txt
-*.cmake
-!cmake/*.cmake
-!cmake/*/*.cmake
+cmake_install.cmake
 Makefile
-.ninja*
-build.ninja
+*.ninja*
+CTest*
 
 # Config files
 include/prismspf/config.h
-*.project
-*.cproject
-*.DS_Store
-
-# IDE files
-*.vscode/*
-.clangd
 compile_commands.json
 
-# Python virtual environments
-.venv/*
-*.venv/
+# IDE files
+**/.vscode
 
-# Clang-tidy
-output.txt
-error.txt
+# clangd
+**/.cache
+**/.clangd
 
-# Compressed Libraries
-*.zip
-*.tar.gz
+# Slurm logs
+*.out
+*.err
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Compiled Static libraries
-*.lai
-*.la
+# Compiled libraries
 *.a
-*.lib
 
 # Executables
-*.exe
-*.out
-*.app
-*.pbs
-main-debug
 main
+main-debug
 
-#Output files
-applications/*/*.vtk
-tests/automatic_tests/*/*.vtk
-tests/performance_tests/*/*.vtk
+# Output files
 *.vtu
 *.pvtu
-*.vts
-*.frt
-*.png
-*.json
-tests/performance_tests/*/trial*.txt
+*.vtk
+*.log
 output.txt
 error.txt
-CTestCostData.txt
-
-# Checkpoint/restart files
-restart.*
-restart.mesh
-restart.mesh.old
-restart.mesh.info
-restart.mesh.info.old
-restart.time.info
-restart.time.info.old
-
-#Temporary files
-*~
-*#
-*.#
-*.btr
-.*vtu*
-
-# Misc
-visitlog.py
-
-#Tex files
-*.aux
-*.glo
-*.idx
-*.log
-*.toc
-*.ist
-*.acn
-*.acr
-*.alg
-*.bbl
-*.blg
-*.dvi
-*.glg
-*.gls
-*.ilg
-*.ind
-*.lof
-*.lot
-*.maf
-*.mtc
-*.mtc1
-*.out
-*.synctex.gz
-*.fdb_latexmk
-*.fls
-*.nav
-*.snm
-*.nlo
-
-# Doxygen
-doc/doxygen/html/*
-doc/doxygen/latex/*
-doc/doxygen/Doxyfile.doc_doxygen
-doc/doxygen/CMakeDoxyfile.in
-doc/doxygen/DoxygenWarningLog.txt
