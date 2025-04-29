@@ -255,3 +255,9 @@ for app_name, (status, output) in results.items():
         print(f"Error details:\n{output}\n")
 
 print(f"\nTotal applications passed: {passed_count} out of {len(results)}")
+
+# Set exit code
+if passed_count < len(results):
+    sys.exit(1)
+else:
+    sys.exit(0)
