@@ -58,8 +58,10 @@ def set_timestep(number, app_dir, new_parameter_file):
     # Absolute path of the parameters file
     parameter_file_path = os.path.join(app_dir, "parameters.prm")
 
-    # Check that the filepath exists
-    does_filepath_exist(parameter_file_path)
+    # Check if the file exists, if not return early
+    if not os.path.exists(parameter_file_path):
+        print(f"Warning: {parameter_file_path} does not exist, skipping parameter modification")
+        return
 
     # Make a copy of the original parameters file
     new_parameter_file_path = os.path.join(app_dir, new_parameter_file)
@@ -233,6 +235,7 @@ if not run_application:
 # Application list
 application_list = [
     "allen_cahn_explicit",
+    "allen_cahn_implicit",
 ]
 
 # Run tests in parallel
