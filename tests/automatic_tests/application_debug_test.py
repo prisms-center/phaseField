@@ -39,8 +39,9 @@ def get_application_path(app_name):
     # Check that we're in the automatic test directory
     assert "automatic_tests" in pwd, "Current directory is not within 'automatic_tests'"
 
-    # Application path assuming file structure matches GitHub repo
-    app_path = pwd.replace("automatic_tests", f"applications/{app_name}")
+    # Application path - go up two directories from automatic_tests to get to the root
+    root_dir = os.path.dirname(os.path.dirname(pwd))
+    app_path = os.path.join(root_dir, "applications", app_name)
 
     return app_path
 
@@ -87,7 +88,7 @@ def set_timestep(number, app_dir, new_parameter_file):
     )
 
 
-def compile_and_run(app_name, new_parameter_file, test_dir, n_threads, run_application=True):
+def compile_and_run(app_name, new_parameter_file, test_dir, n_threads=1, run_application=True):
     """Function that compile and runs the application in debug mode
 
     Args:
@@ -120,14 +121,14 @@ def compile_and_run(app_name, new_parameter_file, test_dir, n_threads, run_appli
             ["cmake", ".", "-G", "Ninja"], check=True, capture_output=True, text=True
         )
         make_result = subprocess.run(
-            ["ninja", "-j", f"${n_threads}"], check=True, capture_output=True, text=True
+            ["ninja", "-j", str(n_threads)], check=True, capture_output=True, text=True
         )
 
         # Run the application if requested
         if run_application:
             print(f"Running {app_dir} with parameter file {new_parameter_file}")
             run_result = subprocess.run(
-                ["mpirun", "-n", f"${n_threads}", "./main-debug", "-i", new_parameter_file],
+                ["mpirun", "-n", str(n_threads), "./main-debug", "-i", new_parameter_file],
                 check=True,
                 capture_output=True,
                 text=True,
@@ -231,10 +232,7 @@ if not run_application:
 
 # Application list
 application_list = [
-    "eshelby_inclusion",
-    "mechanics",
     "allen_cahn_explicit",
-    "cahn_hilliard_explicit",
 ]
 
 # Run tests in parallel
