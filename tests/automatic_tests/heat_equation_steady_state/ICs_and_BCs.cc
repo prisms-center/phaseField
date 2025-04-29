@@ -4,6 +4,8 @@
 #include <prismspf/core/initial_conditions.h>
 #include <prismspf/core/nonuniform_dirichlet.h>
 
+#include <prismspf/user_inputs/user_input_parameters.h>
+
 #include <prismspf/config.h>
 
 #include <cmath>
