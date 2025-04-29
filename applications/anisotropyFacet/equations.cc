@@ -1,3 +1,6 @@
+//SPDX-FileCopyrightText: © 2025 PRISMS Phase Field Laboratory at the University of Michigan <prisms-pf@umich.edu>
+//SPDX-License-Identifier: GNU Lesser General Public Version 2.1
+
 #include "anisotropy_facet.h"
 
 // =================================================================================

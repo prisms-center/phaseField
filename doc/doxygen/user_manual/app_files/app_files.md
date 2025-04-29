@@ -17,16 +17,43 @@ The file ''equations.cc'' contains a list of the variables in the model equation
 
 To modify the functions in this file, one needs to be familiar with the weak form of the governing equations. In PRISMS-PF, the governing equations are expressed in two terms. The first is the part of the integrand that is multiplied by the test function (marked by 'eq' with the subscript of the variable in the example below). The second is the part of the integrand that multiplied by the gradient of the test function (marked by 'eqx' with the subscript of the variable in the example below). For the coupled Cahn-Hilliard/Allen-Cahn system, the governing equations are
 
-\f[
-\int_{\Omega}   w  \eta^{n+1}  ~dV =\int_{\Omega}  w  \left( \underbrace{\eta^{n} - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n)}_{eq_{\eta}} \right)+ \nabla w \cdot \underbrace{(- \Delta t M_{\eta}\kappa) \nabla \eta^{n}}_{eqx_{\eta}} ~dV
-\f]
+$$
+\begin{align}
+\int_{\Omega}   w  \eta^{n+1}  ~dV =\int_{\Omega}  w  \left( \eta^{n} - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n) \right)+ \nabla w \cdot (- \Delta t M_{\eta}\kappa) \nabla \eta^{n} ~dV
+\end{align}
+$$
+
+$$
+\begin{align}
+eq_{\eta} &= \eta^{n} - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n)
+\end{align}
+$$
+
+$$
+\begin{align}
+eqx_{\eta} &= (- \Delta t M_{\eta}\kappa) \nabla \eta^{n}
+\end{align}
+$$
 
 and
 
-\f[
+$$
+\begin{align}
+]$\int_{\Omega}   w  c^{n+1}  ~dV = \int_{\Omega}   w c^{n} +  \nabla w   (-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n+1})+f_{\beta,cc}^n H^{n+1}) \nabla c + ~((f_{\beta,c}^n-f_{\alpha,c}^n)H^{n+1}_{,\eta} \nabla \eta) ] ~dV
+\end{align}
+$$
 
-]$\int_{\Omega}   w  c^{n+1}  ~dV = \int_{\Omega}   w \underbrace{c^{n}}_{eq_c} +  \nabla w   \underbrace{(-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n+1})+f_{\beta,cc}^n H^{n+1}) \nabla c + ~((f_{\beta,c}^n-f_{\alpha,c}^n)H^{n+1}_{,\eta} \nabla \eta) ] }_{eqx_{c}} ~dV
-\f]
+$$
+\begin{align}
+eq_c &= c^{n}
+\end{align}
+$$
+
+$$
+\begin{align}
+eqx_{c} &= (-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n+1})+f_{\beta,cc}^n H^{n+1}) \nabla c + ~((f_{\beta,c}^n-f_{\alpha,c}^n)H^{n+1}_{,\eta} \nabla \eta)
+\end{align}
+$$
 
 for the Allen-Cahn and Cahn-Hilliard equation, respectively. Each of the terms in the governing equation is marked with an underbrace. The terms multiplied by the test function are referred to as the value terms and the terms multiplied by the gradient of the test function are referred to as the gradient terms.
 
@@ -139,31 +166,53 @@ The 'nonExplicitEquationRHS' function is where the terms in the RHS of the gover
 In the coupledCahnHilliardAllenCahn app, the equationLHS function is empty because it is only needed for TIME_INDEPENDENT PDEs (or more specifically, when a non-trivial matrix inversion needs to be performed). Here we go through the equationLHS function from the precipitateEvolution application, where the equation for mechanical equilibrium is TIME_INDEPENDENT.
 
 From the formulation file in the precipitateEvolution application, the governing equation for the mechanical displacement is:
-\f[
+
+$$
+\begin{align}
 R(u) = \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \epsilon - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0
-\f]
+\end{align}
+$$
+
 
 In PRISMS-PF, matrix inversion problems are always written as Newton's method iterations. For linear equations, like the one above, the solution is reached in a single Newton step. The reason for this approach is two-fold. First, it provides an identical user interface for linear and nonlinear problems. Second, it enables the efficient handling of constraints for when inhomogeneous Dirichlet boundary conditions are used.
 
-To write the above equations in terms of a Newton iteration, the solution, \f$u\f$, can be written as the sum of an initial guess, \f$u_0\f$, and an update, \f$\Delta u\f$:
+To write the above equations in terms of a Newton iteration, the solution, $u$, can be written as the sum of an initial guess, $u_0$, and an update, $\Delta u$:
 
-\f[
+$$
+\begin{align}
 R(u) = R(u_0 + \Delta u) = R(u_0) +  \int_{\Omega} \left. \frac{\delta R(u)}{\delta u}\right|_{u=u_0} \Delta u ~dV = 0
-\f]
+\end{align}
+$$
 
 In this case, the equation is linear and the variation derivative is trivial:
 
-\f[
+$$
+\begin{align}
 R(u_0 + \Delta u) =  \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \epsilon(u_0 + \Delta u) - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \epsilon(u_0) + \epsilon(\Delta u) - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0
-\f]
+\end{align}
+$$
 
 Rearranging yields:
 
-\f[
-\int_{\Omega} \nabla w : \underbrace{C : \nabla (\epsilon(\Delta u))}_{eqx_{u}^{LHS}} dV = -\int_{\Omega}   \nabla w : \underbrace{C :(\epsilon(u_0)-\epsilon^0)}_{eqx_{u}^{RHS}} ~dV
-\f]
+$$
+\begin{align}
+\int_{\Omega} \nabla w : C : \nabla (\epsilon(\Delta u)) dV = -\int_{\Omega}   \nabla w : C :(\epsilon(u_0)-\epsilon^0) ~dV
+\end{align}
+$$
 
-The above values of \f$eqx_{u}^{LHS}\f$ and \f$eqx_{u}^{RHS}\f$ are used to define the residuals in the equations.h file. A similar process can be undertaken for other TIME_INDEPENDENT problems.
+$$
+\begin{align}
+eqx_{u}^{LHS} &= C : \nabla (\epsilon(\Delta u))
+\end{align}
+$$
+
+$$
+\begin{align}
+eqx_{u}^{RHS} &= C :(\epsilon(u_0)-\epsilon^0)
+\end{align}
+$$
+
+The above values of $eqx_{u}^{LHS}$ and $eqx_{u}^{RHS}$ are used to define the residuals in the equations.h file. A similar process can be undertaken for other TIME_INDEPENDENT problems.
 
 Here is the 'equationLHS' function from the precipitateEvolution example application:
 ```
