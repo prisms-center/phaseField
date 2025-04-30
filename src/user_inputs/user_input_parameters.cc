@@ -152,12 +152,11 @@ userInputParameters<dim>::assign_output_parameters(
 {
   parameter_handler.enter_subsection("output");
   {
-    output_parameters.file_name = parameter_handler.get("file name");
-    output_parameters.file_type = parameter_handler.get("file type");
-    output_parameters.output_per_process =
-      parameter_handler.get_bool("separate files per process");
-    output_parameters.condition        = parameter_handler.get("condition");
-    output_parameters.user_output_list = dealii::Utilities::string_to_int(
+    output_parameters.file_name          = parameter_handler.get("file name");
+    output_parameters.file_type          = parameter_handler.get("file type");
+    output_parameters.patch_subdivisions = parameter_handler.get_integer("subdivisions");
+    output_parameters.condition          = parameter_handler.get("condition");
+    output_parameters.user_output_list   = dealii::Utilities::string_to_int(
       dealii::Utilities::split_string_list(parameter_handler.get("list")));
     output_parameters.n_outputs =
       static_cast<unsigned int>(parameter_handler.get_integer("number"));
