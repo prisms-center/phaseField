@@ -23,6 +23,7 @@ customAttributeLoader::loadVariableAttributes()
 }
 
 //JM updated template and customPDE
+template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_explicit_RHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
@@ -31,7 +32,7 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
 {}
 
 //JM new function for nonexplicit RHS
-template <unisgned int dim, unsigned int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_nonexplicit_RHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
@@ -74,8 +75,8 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
             }
         }
       vectorGrad stress;
-      compute_stress<dim, scalarValue>(CIJ, ux - transformation_strain, stress)
-      variable_list.set_vector_gradient_term_RHS(0, -stress);
+      compute_stress<dim, scalarValue>(CIJ, ux - transformation_strain, stress);
+      variable_list.set_vector_gradient_term(0, -stress);
     }
 }
 
@@ -87,12 +88,12 @@ customPDE<dim, degree, number>::compute_nonexplicit_LHS(
   [[maybe_unused]] types::index current_index) const
 {
   if (current_index == 0)
-  {
-    vectorGrad change_ux = variable_list.get_vector_symmetric_gradient(0, CHANGE)
-    vectorGrad stress;
-    compute_stress<dim, scalarValue>(CIJ, change_ux, stress);
-    variable_list.set_vector_gradient_term_LHS(0, stress, CHANGE);
-  }
+    {
+      vectorGrad change_ux = variable_list.get_vector_symmetric_gradient(0, CHANGE);
+      vectorGrad stress;
+      compute_stress<dim, scalarValue>(CIJ, change_ux, stress);
+      variable_list.set_vector_gradient_term(0, stress, CHANGE);
+    }
 }
 
 template <unsigned int dim, unsigned int degree, typename number>

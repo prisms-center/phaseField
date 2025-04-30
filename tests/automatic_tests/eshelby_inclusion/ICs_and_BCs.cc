@@ -14,17 +14,17 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
 void
-customInitialCondition<dim>::setInitialCondition(
-  [[maybe_unused]] const dealii::Point<dim>       &point,
+customInitialCondition<dim>::set_initial_condition(
   [[maybe_unused]] const unsigned int             &index,
   [[maybe_unused]] const unsigned int             &component,
+  [[maybe_unused]] const dealii::Point<dim>       &point,
   [[maybe_unused]] double                         &scalar_value,
   [[maybe_unused]] double                         &vector_component_value,
   [[maybe_unused]] const userInputParameters<dim> &user_inputs) const
 {}
 
 //JM helper function: a Kronecker Delta
-int kDelta(int i, int j) 
+int kDelta(unsigned int i, unsigned int j) 
 {
   if (i == j) {
       return 1;
@@ -33,20 +33,23 @@ int kDelta(int i, int j)
   }
 }
 
-template <int dim, int degree>
+template <unsigned int dim, typename number>
 void
-customNonuniformDirichlet<dim, degree>::set_nonuniform_dirichlet(
-  [[maybe_unused]] const dealii::Point<dim>         &point,
+customNonuniformDirichlet<dim, number>::set_nonuniform_dirichlet(
   [[maybe_unused]] const unsigned int               &index,
   [[maybe_unused]] const unsigned int               &boundary_id,
   [[maybe_unused]] const unsigned int               &component,
-  [[maybe_unused]] number                           &vector_component_value,
+  [[maybe_unused]] const dealii::Point<dim>         &point,
   [[maybe_unused]] number                           &scalar_value,
-  [[maybe_unused]] const userInputerParameters<dim> &user_inputs)
+  [[maybe_unused]] number                           &vector_component_value,
+  [[maybe_unused]] const userInputParameters<dim>   &user_inputs) const
 {
-  const double radius = user_inputs.incRadius;
-  const double poisson = user_inputs.poisson;
   
+  const double radius = user_inputs.user_constants.get_model_constant_double("incRadius");
+  const double poisson = user_inputs.user_constants.get_model_constant_double("poisson");
+  const dealii::Tensor<1, dim, double> center =
+  user_inputs.user_constants.get_model_constant_rank_1_tensor("center");
+
   double eshelbyConstant = (radius*radius*radius)/(6.0*(1-poisson));
   double dist_from_inclusion = 0.0;
   for (unsigned int i = 0; i < dim; i++)
@@ -75,3 +78,16 @@ customNonuniformDirichlet<dim, degree>::set_nonuniform_dirichlet(
         }
     }
 }
+
+template class customInitialCondition<1>;
+template class customInitialCondition<2>;
+template class customInitialCondition<3>;
+
+template class customNonuniformDirichlet<1, double>;
+template class customNonuniformDirichlet<2, double>;
+template class customNonuniformDirichlet<3, double>;
+template class customNonuniformDirichlet<1, float>;
+template class customNonuniformDirichlet<2, float>;
+template class customNonuniformDirichlet<3, float>;
+
+PRISMS_PF_END_NAMESPACE

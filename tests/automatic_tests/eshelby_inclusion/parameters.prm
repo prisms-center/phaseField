@@ -1,31 +1,11 @@
-# =================================================================================
-# Set the number of dimensions (1, 2, or 3 for a 1D, 2D, or 3D calculation)
-# =================================================================================
-#JM parameters contain some subsections now, gonna try to group things accordingly
-#set Number of dimensions = 3
-
 set dim = 3
 set global refinement = 6
 set degree = 1
 
 # =================================================================================
-# Set the length of the domain in all three dimensions
+# Set the domain parameters
 # =================================================================================
-# Each axes spans from zero to the specified length
-#set Domain size X = 100.0
-#set Domain size Y = 100.0
-#set Domain size Z = 100.0
 
-# =================================================================================
-# Set the element parameters
-# =================================================================================
-# The number of elements in each direction is 2^(refineFactor) * subdivisions
-# For optimal performance, use refineFactor primarily to determine the element size
-#set Subdivisions X = 1
-#set Subdivisions Y = 1
-#set Subdivisions Z = 1
-
-#starting the domain subsection
 subsection rectangular mesh
   set x size = 100.0
   set y size = 100.0
@@ -35,59 +15,37 @@ subsection rectangular mesh
   set z subdivisions = 1
 end
 
-#JM Refine and degree set above
-#set Refine factor = 6
-
-# Set the polynomial degree of the element (allowed values: 1, 2, or 3)
-#set Element degree = 1
-
 # =================================================================================
 # Set the linear solver parameters
 # =================================================================================
 
-subsection Linear solver parameters: u
-    # Whether the tolerance value is compared to the residual (ABSOLUTE_RESIDUAL)
-    # or the change in the residual (RELATIVE_RESIDUAL_CHANGE)
+subsection linear solver parameters: u
     set tolerance type = ABSOLUTE_RESIDUAL
-
-    # The tolerance for convergence (L2 norm)
     set tolerance value = 1e-10
-
-    # The maximum number of linear solver iterations per solve
-    #set Maximum linear solver iterations = 1000
     set max iterations = 1000
-    #JM there are more output parameters but they aren't used in old eshelby
 end
 
 # =================================================================================
 # Set the output parameters
 # =================================================================================
-# Type of spacing between outputs ("EQUAL_SPACING", "LOG_SPACING", "N_PER_DECADE",
-# or "LIST")
-#Moderate changes to syntax 
-set condition =  EQUAL_SPACING
 
-# Number of times the program outputs the fields (total number for "EQUAL_SPACING"
-# and "LOG_SPACING", number per decade for "N_PER_DECADE", ignored for "LIST")
-set number = 1
+subsection output
+  set condition =  EQUAL_SPACING
+  set number = 1
+end
 
 # =================================================================================
 # Set the boundary conditions
 # =================================================================================
 
-#set Boundary condition for variable u, x component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0
-#set Boundary condition for variable u, y component = NATURAL, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0
-#set Boundary condition for variable u, z component = NATURAL, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0
-
-set Boundary condition for variable u, x component = NON_UNIFORM_DIRICHLET
-set Boundary condition for variable u, y component = NON_UNIFORM_DIRICHLET
-set Boundary condition for variable u, z component = NON_UNIFORM_DIRICHLET
+set boundary condition for u, x component = NON_UNIFORM_DIRICHLET
+set boundary condition for u, y component = NON_UNIFORM_DIRICHLET
+set boundary condition for u, z component = NON_UNIFORM_DIRICHLET
 
 # =================================================================================
 # Set the model constants
 # =================================================================================
-# Type options currently are double, int, bool, and tensor
-#May add in sfts here instead of having by definied in equations.cc
+
 set Model constant CIJ = (22.5,0.3), isotropic elastic constants
 set Model constant incRadius = 10.0, DOUBLE
 set Model constant poisson = 0.3, double
