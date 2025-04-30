@@ -1,0 +1,54 @@
+name: compile-applications
+
+on: 
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+      - devel
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+    paths-ignore:
+      - 'doc/**'
+      - 'contrib/**'
+
+concurrency:
+  group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request'}}
+
+permissions:
+  contents: read
+
+jobs:
+  compile-applications:
+    runs-on: [ubuntu-22.04]
+    timeout-minutes: 60
+
+    container:
+      image: dealii/dealii:v9.6.0-jammy
+      options: --user root
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Compile PRISMS-PF
+        run: |
+          cmake -G Ninja .
+          ninja -j $(nproc)
+
+
+      - name: Run PRISMS-PF automatic tests in serial
+        timeout-minutes: 30
+        run: |
+          export OMPI_ALLOW_RUN_AS_ROOT=1
+          export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
+
+          cd tests/automatic_tests
+          python3 application_debug_test.py --no-run
+
