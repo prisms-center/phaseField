@@ -55,6 +55,8 @@ public:
   : PDEOperator<dim, degree, number>(_user_inputs)
   {}
   //JM leaving this for now, sets IC's + BC's, prob changed in 3.0
+  //JM IC and BC function in different file
+  /*
   // Function to set the initial conditions (in ICs_and_BCs.h)
   void
   setInitialCondition([[maybe_unused]] const Point<dim>  &p,
@@ -71,9 +73,9 @@ public:
                             [[maybe_unused]] const double       time,
                             [[maybe_unused]] double            &scalar_BC,
                             [[maybe_unused]] Vector<double>    &vector_BC) override;
-
+  */
 private:
-#include <core/typeDefs.h>
+//#include <core/typeDefs.h> //JM does not exist anymore
   /**
    * \brief User-implemented class for the RHS of explicit equations.
    */
@@ -92,11 +94,9 @@ private:
   */
   //JM new explicit RHS
   void
-  compute_explicit_RHS(variableContainer<dim, degree, number, dealii::VectorizedArray<double>> 
-                                                                    &variable_list,
+  compute_explicit_RHS(variableContainer<dim, degree, number> &variable_list,
                        const dealii::Point<dim, dealii::VectorizedArray<number>>
-                         &q_point_loc
-                       const dealii::VectorizedArray<number> element_volume) const override;
+                         &q_point_loc) const override;
 
   //JM old nonexplicit RHS
   // Function to set the RHS of the governing equations for all other equations
@@ -120,13 +120,21 @@ private:
     types::index current_index = numbers::invalid_index) const override;
  
     //JM note, eshelby has no existing differentiation between explicit and nonexplicit LHS
+    //JM LHS equations are updated
     // Function to set the LHS of the governing equations (in equations.h)
+  /*
   void
   equationLHS(
     variableContainer<dim, degree, VectorizedArray<number>>
                                                               &variable_list,
     const Point<dim, VectorizedArray<double>> q_point_loc,
     const VectorizedArray<double> element_volume) const override;
+  */
+  void
+  compute_nonexplicit_LHS(
+    variableContainer<dim, degree, number>                    &variable_list,
+    const dealii:Point<dim, dealii::VectorizedArray<number>>  &q_point_loc,
+    types::index current_index = numbers::invalid_index) const override;
 
 //JM Slated to overhaul, for now it is commented out
 // Function to set postprocessing expressions (in postprocess.h)
@@ -151,16 +159,12 @@ private:
                            [[maybe_unused]] double                 dV) const override;
 #endif
 */
-
-  // ================================================================
-  // Methods specific to this subclass
-  // ================================================================
-
   // ================================================================
   // Model constants specific to this subclass
   // ================================================================
 
   constexpr static unsigned int  CIJ_tensor_size = 2 * dim - 1 + dim / 3; //JM modified to constexpr
+  
   //JM syntax update for stiffness tensor and other constants
   dealii::Tensor<2, CIJ_tensor_size, number> CIJ = 
     this->get_user_inputs().user_constants.get_model_constant_elasticity_tensor("CIJ");

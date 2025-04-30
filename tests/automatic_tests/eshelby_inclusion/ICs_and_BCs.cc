@@ -44,30 +44,34 @@ customNonuniformDirichlet<dim, degree>::set_nonuniform_dirichlet(
   [[maybe_unused]] number                           &scalar_value,
   [[maybe_unused]] const userInputerParameters<dim> &user_inputs)
 {
-  //JM need to update this BC
+  const double radius = user_inputs.incRadius;
+  const double poisson = user_inputs.poisson;
+  
+  double eshelbyConstant = (radius*radius*radius)/(6.0*(1-poisson));
+  double dist_from_inclusion = 0.0;
   for (unsigned int i = 0; i < dim; i++)
-  {
-    scalarValue eshelbyConstant = (incRadius*incradius*incRadius)/(6.0*(1-poisson));
-    scalarValue dist_from_inclusion
-    for (unsigned int i = 0; i < dim; i++)
-      {
-        dist_from_inclusion += (point[i] - constV<number>(0.0)) *
-                               (point[i] - constV<number>(0.0));
-      }
-    scalarValue G;
-    for (unsigned int j = 0; j < dim; j ++)
     {
-      for (unsigned int k = 0; k < dim; k++)
-      {
-        G += (kDelta(j,k)*0.01) * ((1-2*poisson) *
-             (kDelta(i,j)*((point[k]-center[k])/dist_from_inclusion) + 
-              kDelta(i,k)*((point[j]-center[j])/dist_from_inclusion) - 
-              kDelta(j,k)*((point[i]-center[i])/dist_from_inclusion)) + 
-              3 * ((point[i]-center[k])/dist_from_inclusion) * 
-              ((point[j]-center[j])/dist_from_inclusion) * 
-              ((point[k]-center[i])/dist_from_inclusion));
-      }
+      dist_from_inclusion += (point[i] - center[i]) *
+                             (point[i] - center[i]);
+    
+      double G = 0.0;
+      for (unsigned int j = 0; j < dim; j ++)
+        {
+          for (unsigned int k = 0; k < dim; k++)
+            {
+              G += (kDelta(j,k)*0.01) * ((1-2*poisson) *
+                   (kDelta(i,j)*((point[k]-center[k])/dist_from_inclusion) + 
+                    kDelta(i,k)*((point[j]-center[j])/dist_from_inclusion) - 
+                    kDelta(j,k)*((point[i]-center[i])/dist_from_inclusion)) + 
+                    3 * ((point[i]-center[i])/dist_from_inclusion) * 
+                    ((point[j]-center[j])/dist_from_inclusion) * 
+                    ((point[k]-center[k])/dist_from_inclusion));
+            }
+        }
+      
+      if (component == i)
+        {
+          vector_component_value = -1.0*eshelbyConstant*(1/(dist_from_inclusion*dist_from_inclusion))*G;
+        }
     }
-    vector_BC(i) = -1.0*A*(1/(dist*dist))*G;
-  }
 }
