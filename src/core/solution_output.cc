@@ -13,8 +13,11 @@
 
 #include <prismspf/config.h>
 
+#include <fstream>
+#include <iomanip>
 #include <map>
 #include <mpi.h>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -46,7 +49,10 @@ solutionOutput<dim, number>::solutionOutput(const VectorType               &solu
   // this essentially converts the element to an equal amount of subdivisions in the
   // output. This does not make subdivisions and element degree equivalent in the
   // simulation!
-  data_out.build_patches(degree);
+  const unsigned int n_divisions = user_inputs.output_parameters.patch_subdivisions == 0
+                                     ? degree
+                                     : user_inputs.output_parameters.patch_subdivisions;
+  data_out.build_patches(n_divisions);
 
   // Set some flags for data output
   dealii::DataOutBase::VtkFlags flags;
@@ -61,13 +67,37 @@ solutionOutput<dim, number>::solutionOutput(const VectorType               &solu
   data_out.set_flags(flags);
 
   // Write to file based on the user input.
-  // TODO (landinjm): actually write stuff according to user input.
-  data_out.write_vtu_with_pvtu_record(
-    "./",
-    name,
-    user_inputs.temporal_discretization.get_current_increment(),
-    MPI_COMM_WORLD,
-    n_trailing_digits);
+  const std::string  directory = "./";
+  const unsigned int increment =
+    user_inputs.temporal_discretization.get_current_increment();
+
+  if (user_inputs.output_parameters.file_type == "vtu")
+    {
+      std::ostringstream increment_stream;
+      increment_stream << std::setw(n_trailing_digits) << std::setfill('0') << increment;
+      std::string filename = directory + name + "_" + increment_stream.str() + ".vtu";
+      data_out.write_vtu_in_parallel(filename, MPI_COMM_WORLD);
+    }
+  else if (user_inputs.output_parameters.file_type == "pvtu")
+    {
+      data_out.write_vtu_with_pvtu_record(directory,
+                                          name,
+                                          increment,
+                                          MPI_COMM_WORLD,
+                                          n_trailing_digits);
+    }
+  else if (user_inputs.output_parameters.file_type == "vtk")
+    {
+      std::ostringstream increment_stream;
+      increment_stream << std::setw(n_trailing_digits) << std::setfill('0') << increment;
+      std::string   filename = directory + name + "_" + increment_stream.str() + ".vtk";
+      std::ofstream vtk_output(filename);
+      data_out.write_vtk(vtk_output);
+    }
+  else
+    {
+      AssertThrow(false, UnreachableCode());
+    }
 }
 
 template <unsigned int dim, typename number>
@@ -113,7 +143,10 @@ solutionOutput<dim, number>::solutionOutput(
   // this essentially converts the element to an equal amount of subdivisions in the
   // output. This does not make subdivisions and element degree equivalent in the
   // simulation!
-  data_out.build_patches(degree);
+  const unsigned int n_divisions = user_inputs.output_parameters.patch_subdivisions == 0
+                                     ? degree
+                                     : user_inputs.output_parameters.patch_subdivisions;
+  data_out.build_patches(n_divisions);
 
   // Set some flags for data output
   dealii::DataOutBase::VtkFlags flags;
@@ -126,13 +159,37 @@ solutionOutput<dim, number>::solutionOutput(
   data_out.set_flags(flags);
 
   // Write to file based on the user input.
-  // TODO (landinjm): actually write stuff according to user input.
-  data_out.write_vtu_with_pvtu_record(
-    "./",
-    name,
-    user_inputs.temporal_discretization.get_current_increment(),
-    MPI_COMM_WORLD,
-    n_trailing_digits);
+  const std::string  directory = "./";
+  const unsigned int increment =
+    user_inputs.temporal_discretization.get_current_increment();
+
+  if (user_inputs.output_parameters.file_type == "vtu")
+    {
+      std::ostringstream increment_stream;
+      increment_stream << std::setw(n_trailing_digits) << std::setfill('0') << increment;
+      std::string filename = directory + name + "_" + increment_stream.str() + ".vtu";
+      data_out.write_vtu_in_parallel(filename, MPI_COMM_WORLD);
+    }
+  else if (user_inputs.output_parameters.file_type == "pvtu")
+    {
+      data_out.write_vtu_with_pvtu_record(directory,
+                                          name,
+                                          increment,
+                                          MPI_COMM_WORLD,
+                                          n_trailing_digits);
+    }
+  else if (user_inputs.output_parameters.file_type == "vtk")
+    {
+      std::ostringstream increment_stream;
+      increment_stream << std::setw(n_trailing_digits) << std::setfill('0') << increment;
+      std::string   filename = directory + name + "_" + increment_stream.str() + ".vtk";
+      std::ofstream vtk_output(filename);
+      data_out.write_vtk(vtk_output);
+    }
+  else
+    {
+      AssertThrow(false, UnreachableCode());
+    }
 }
 
 template class solutionOutput<1, float>;
