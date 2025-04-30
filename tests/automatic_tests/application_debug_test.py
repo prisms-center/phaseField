@@ -235,9 +235,7 @@ if not run_application:
 # Application list
 application_list = [
     "allen_cahn_explicit",
-    "allen_cahn_implicit",
-    "cahn_hilliard_explicit",
-    "cahn_hilliard_implicit",
+    "eshelby_inclusion",
 ]
 
 # Run tests in parallel
