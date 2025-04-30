@@ -472,11 +472,10 @@ inputFileReader::declare_output_parameters()
                                     dealii::Patterns::Selection("vtu|vtk|pvtu"),
                                     "The output file type (either vtu, pvtu, or vtk).");
     parameter_handler.declare_entry(
-      "separate files per process",
-      "false",
-      dealii::Patterns::Bool(),
-      "Whether to output separate vtu files for each process in a parallel "
-      "calculation (automatically set to true for vtk files).");
+      "subdivisions",
+      "0",
+      dealii::Patterns::Integer(0, INT_MAX),
+      "The number of subdivisions to apply to the mesh when building output patches.");
     parameter_handler.declare_entry(
       "condition",
       "EQUAL_SPACING",

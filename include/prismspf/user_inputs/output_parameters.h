@@ -48,12 +48,12 @@ public:
   // Output file name
   std::string file_name;
 
-  // Whether to output one vtu or vtk file per process
-  // TODO (landinjm): Actually implement this and set it to true is vtk outputs
-  bool output_per_process = false;
-
   // The number of steps between outputting relevant information to screen
   unsigned int print_output_period = UINT_MAX;
+
+  // The number of subdivisions to apply when building patches. By default this is the
+  // element degree.
+  unsigned int patch_subdivisions = 0;
 
   // Output condition type
   std::string condition;
@@ -65,6 +65,7 @@ public:
   std::vector<int> user_output_list;
 
   // Whether to print timing information with output
+  // TODO (landinjm): Implement this.
   bool print_timing_with_output = false;
 
   // List of increments that output the solution to file
@@ -157,6 +158,7 @@ outputParameters::print_parameter_summary() const
     << "================================================\n"
     << "Output file type: " << file_type << "\n"
     << "Output file name: " << file_name << "\n"
+    << "Output subdivisions: " << patch_subdivisions << "\n"
     << "Print output period: " << print_output_period << "\n"
     << "Output condition: " << condition << "\n"
     << "Number of outputs: " << n_outputs << "\n"
