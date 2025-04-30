@@ -4,13 +4,15 @@
 #include <prismspf/core/initial_conditions.h>
 #include <prismspf/core/nonuniform_dirichlet.h>
 
+#include <prismspf/user_inputs/user_input_parameters.h>
+
 #include <prismspf/config.h>
 
 #include <cmath>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <int dim>
+template <unsigned int dim>
 void
 customInitialCondition<dim>::set_initial_condition(
   [[maybe_unused]] const unsigned int             &index,
@@ -42,7 +44,8 @@ customInitialCondition<dim>::set_initial_condition(
       for (unsigned int dir = 0; dir < dim; dir++)
         {
           dist +=
-            (point[dir] - center[i][dir] * 100) * (point[dir] - center[i][dir] * 100);
+            (point[dir] - center[i][dir] * user_inputs.spatial_discretization.size[dir]) *
+            (point[dir] - center[i][dir] * user_inputs.spatial_discretization.size[dir]);
         }
       dist = std::sqrt(dist);
 
@@ -51,19 +54,27 @@ customInitialCondition<dim>::set_initial_condition(
   scalar_value = std::min(scalar_value, 1.0);
 }
 
-template <int dim>
+template <unsigned int dim, typename number>
 void
-customNonuniformDirichlet<dim>::set_nonuniform_dirichlet(
+customNonuniformDirichlet<dim, number>::set_nonuniform_dirichlet(
   [[maybe_unused]] const unsigned int             &index,
   [[maybe_unused]] const unsigned int             &boundary_id,
   [[maybe_unused]] const unsigned int             &component,
   [[maybe_unused]] const dealii::Point<dim>       &point,
-  [[maybe_unused]] double                         &scalar_value,
-  [[maybe_unused]] double                         &vector_component_value,
+  [[maybe_unused]] number                         &scalar_value,
+  [[maybe_unused]] number                         &vector_component_value,
   [[maybe_unused]] const userInputParameters<dim> &user_inputs) const
 {}
 
-INSTANTIATE_UNI_TEMPLATE(customInitialCondition)
-INSTANTIATE_UNI_TEMPLATE(customNonuniformDirichlet)
+template class customInitialCondition<1>;
+template class customInitialCondition<2>;
+template class customInitialCondition<3>;
+
+template class customNonuniformDirichlet<1, double>;
+template class customNonuniformDirichlet<2, double>;
+template class customNonuniformDirichlet<3, double>;
+template class customNonuniformDirichlet<1, float>;
+template class customNonuniformDirichlet<2, float>;
+template class customNonuniformDirichlet<3, float>;
 
 PRISMS_PF_END_NAMESPACE

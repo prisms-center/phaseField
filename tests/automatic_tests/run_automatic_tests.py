@@ -215,9 +215,7 @@ def run_regression_tests_in_parallel(
 
 
 # Initialize arg parser
-parser = argparse.ArgumentParser(
-    description="The maximum processes to use to run the regression tests"
-)
+parser = argparse.ArgumentParser()
 parser.add_argument("-n", "--ntasks", type=int, default=1, help="Number of processes")
 parser.add_argument(
     "-j",
@@ -242,11 +240,6 @@ now = datetime.datetime.now()
 # List of applications
 applicationList = [
     "allen_cahn_explicit",
-    "allen_cahn_implicit",
-    "cahn_hilliard_explicit",
-    "heat_equation_steady_state",
-    "mechanics",
-    "precipitate_explicit",
 ]
 getNewGoldStandardList = [
     False,

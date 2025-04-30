@@ -16,7 +16,6 @@ customAttributeLoader::loadVariableAttributes()
   set_variable_name(0, "n");
   set_variable_type(0, SCALAR);
   set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
-
   set_dependencies_value_term_RHS(0, "n");
   set_dependencies_gradient_term_RHS(0, "grad(n)");
 
@@ -24,7 +23,6 @@ customAttributeLoader::loadVariableAttributes()
   set_variable_type(1, SCALAR);
   set_variable_equation_type(1, EXPLICIT_TIME_DEPENDENT);
   set_is_postprocessed_field(1, true);
-
   set_dependencies_value_term_RHS(1, "grad(n)");
   set_dependencies_gradient_term_RHS(1, "");
 
@@ -32,12 +30,11 @@ customAttributeLoader::loadVariableAttributes()
   set_variable_type(2, SCALAR);
   set_variable_equation_type(2, EXPLICIT_TIME_DEPENDENT);
   set_is_postprocessed_field(2, true);
-
   set_dependencies_value_term_RHS(2, "n, grad(n)");
   set_dependencies_gradient_term_RHS(2, "");
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_explicit_RHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
@@ -47,33 +44,31 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
   scalarValue n  = variable_list.get_scalar_value(0);
   scalarGrad  nx = variable_list.get_scalar_gradient(0);
 
-  scalarValue fnV = 4.0 * n * (n - 1.0) * (n - 0.5);
-  scalarValue eq_n =
-    n - constV<number>(this->user_inputs.temporal_discretization.dt * MnV) * fnV;
-  scalarGrad eqx_n =
-    constV<number>(-this->user_inputs.temporal_discretization.dt * KnV * MnV) * nx;
+  scalarValue fnV   = 4.0 * n * (n - 1.0) * (n - 0.5);
+  scalarValue eq_n  = n - this->get_timestep() * MnV * fnV;
+  scalarGrad  eqx_n = -this->get_timestep() * KnV * MnV * nx;
 
   variable_list.set_scalar_value_term(0, eq_n);
   variable_list.set_scalar_gradient_term(0, eqx_n);
 }
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_nonexplicit_RHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
-  [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
-  const
+  [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+  [[maybe_unused]] types::index current_index) const
 {}
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_nonexplicit_LHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
-  [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
-  const
+  [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+  [[maybe_unused]] types::index current_index) const
 {}
 
-template <int dim, int degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
@@ -83,23 +78,19 @@ customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
   scalarValue n  = variable_list.get_scalar_value(0);
   scalarGrad  nx = variable_list.get_scalar_gradient(0);
 
-  scalarValue f_tot = constV<number>(0.0);
-
-  scalarValue f_chem = (n * n * n * n - 2.0 * n * n * n + n * n);
-
+  scalarValue f_tot  = constV<number>(0.0);
+  scalarValue f_chem = n * n * n * n - 2.0 * n * n * n + n * n;
   scalarValue f_grad = constV<number>(0.0);
-
-  for (int i = 0; i < dim; i++)
+  for (unsigned int i = 0; i < dim; i++)
     {
-      for (int j = 0; j < dim; j++)
+      for (unsigned int j = 0; j < dim; j++)
         {
-          f_grad += constV<number>(0.5 * KnV) * nx[i] * nx[j];
+          f_grad += 0.5 * KnV * nx[i] * nx[j];
         }
     }
   f_tot = f_chem + f_grad;
 
   variable_list.set_scalar_value_term(1, std::sqrt(nx[0] * nx[0] + nx[1] * nx[1]));
-
   variable_list.set_scalar_value_term(2, f_tot);
 }
 
