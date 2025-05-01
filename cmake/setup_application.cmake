@@ -84,7 +84,6 @@ if(NOT DEALII_INSTALL_VALID)
 endif()
 
 # Optional deal.II packages
-set(PRISMS_PF_WITH_ZLIB OFF CACHE BOOL "Whether the user wants to compile PRISMS-PF with deal.II's zlib dependency, or not.")
 message(STATUS "Using PRISMS_PF_WITH_ZLIB = '${PRISMS_PF_WITH_ZLIB}'")
 if(PRISMS_PF_WITH_ZLIB)
   if(DEAL_II_WITH_ZLIB)
@@ -94,7 +93,6 @@ if(PRISMS_PF_WITH_ZLIB)
   endif()
 endif()
 
-set(PRISMS_PF_WITH_SUNDIALS OFF CACHE BOOL "Whether the user wants to compile PRISMS-PF with deal.II's SUNDIALS dependency, or not.")
 message(STATUS "Using PRISMS_PF_WITH_SUNDIALS = '${PRISMS_PF_WITH_SUNDIALS}'")
 if(PRISMS_PF_WITH_SUNDIALS)
   if(DEAL_II_WITH_SUNDIALS)
@@ -108,7 +106,6 @@ endif()
 deal_ii_initialize_cached_variables()
 
 # Caliper
-set(PRISMS_PF_WITH_CALIPER OFF CACHE BOOL "Whether the user wants to compile PRISMS-PF with the profiling code Caliper, or not.")
 message(STATUS "Using PRISMS_PF_WITH_CALIPER = '${PRISMS_PF_WITH_CALIPER}'")
 if(PRISMS_PF_WITH_CALIPER)
   find_package(CALIPER)
