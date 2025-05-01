@@ -5,6 +5,10 @@
 
 cmake_minimum_required(VERSION 3.13.4)
 
+# Include core library's configuration
+include(${CMAKE_SOURCE_DIR}/../../../cmake/prisms_pf_config.cmake)
+
+# Include setup script
 include(${CMAKE_SOURCE_DIR}/../../../cmake/setup_application.cmake)
 
 project(myapp CXX)
@@ -20,11 +24,7 @@ include_directories(${CMAKE_SOURCE_DIR})
 if(${PRISMS_PF_WITH_CALIPER})
   find_package(caliper REQUIRED)
   include_directories(${CALIPER_INCLUDE_DIR})
-  message(STATUS "PRISMS_WITH_CALIPER = ON")
-else()
-  message(STATUS "PRISMS_WITH_CALIPER = OFF")
 endif()
-  message(STATUS "")
 
 # Set the location of the main.cc file
 set(TARGET_SRC "${CMAKE_SOURCE_DIR}/../../../src/main.cc" "${CMAKE_SOURCE_DIR}/equations.cc" "${CMAKE_SOURCE_DIR}/ICs_and_BCs.cc")

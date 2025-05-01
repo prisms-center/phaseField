@@ -381,6 +381,13 @@ endif()
 # Write config to file
 include(${CMAKE_SOURCE_DIR}/cmake/write_config.cmake)
 
+# Generate configuration file for applications
+configure_file(
+  ${CMAKE_SOURCE_DIR}/cmake/prisms_pf_config.cmake.in
+  ${CMAKE_BINARY_DIR}/cmake/prisms_pf_config.cmake
+  @ONLY
+)
+
 # Print the config
 file(READ ${CMAKE_SOURCE_DIR}/summary.log PRISMS_PF_SUMMARY)
 message("${PRISMS_PF_SUMMARY}")
