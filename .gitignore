@@ -9,6 +9,7 @@ CTest*
 
 # Config files
 include/prismspf/config.h
+cmake/prisms_pf_config.cmake
 compile_commands.json
 
 # IDE files

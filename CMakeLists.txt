@@ -83,6 +83,10 @@ else()
   set(PRISMS_PF_BUILD_RELEASE "OFF")
 endif()
 
+# Enable autodetection of deal.II dependencies
+set(PRISMS_PF_AUTODETECTION ON CACHE BOOL "Autodetection of deal.II dependencies.")
+message(STATUS "PRISMS_PF_AUTODETECTION = '${PRISMS_PF_AUTODETECTION}'")
+
 # =========================================================
 # External libraries
 # =========================================================
@@ -138,6 +142,9 @@ endif()
 
 # Optional deal.II packages
 set(PRISMS_PF_WITH_ZLIB OFF CACHE BOOL "Whether the user wants to compile PRISMS-PF with deal.II's zlib dependency, or not.")
+if(PRISMS_PF_AUTODETECTION AND DEAL_II_WITH_ZLIB)
+  set(PRISMS_PF_WITH_ZLIB ON)
+endif()
 message(STATUS "Using PRISMS_PF_WITH_ZLIB = '${PRISMS_PF_WITH_ZLIB}'")
 if(PRISMS_PF_WITH_ZLIB)
   if(DEAL_II_WITH_ZLIB)
@@ -146,7 +153,11 @@ if(PRISMS_PF_WITH_ZLIB)
     message(FATAL_ERROR "deal.II installation with zlib not found. Disable PRISMS_PF_WITH_ZLIB or recompile deal.II with zlib.")
   endif()
 endif()
+
 set(PRISMS_PF_WITH_CUDA OFF CACHE BOOL "Whether the user wants to compile PRISMS-PF with deal.II's CUDA dependency, or not.")
+if(PRISMS_PF_AUTODETECTION AND DEAL_II_WITH_CUDA)
+  set(PRISMS_PF_WITH_CUDA ON)
+endif()
 message(STATUS "Using PRISMS_PF_WITH_CUDA = '${PRISMS_PF_WITH_CUDA}'")
 if(PRISMS_PF_WITH_CUDA)
   if(DEAL_II_WITH_CUDA)
@@ -157,6 +168,9 @@ if(PRISMS_PF_WITH_CUDA)
 endif()
 
 set(PRISMS_PF_WITH_SUNDIALS OFF CACHE BOOL "Whether the user wants to compile PRISMS-PF with deal.II's SUNDIALS dependency, or not.")
+if(PRISMS_PF_AUTODETECTION AND DEAL_II_WITH_SUNDIALS)
+  set(PRISMS_PF_WITH_SUNDIALS ON)
+endif()
 message(STATUS "Using PRISMS_PF_WITH_SUNDIALS = '${PRISMS_PF_WITH_SUNDIALS}'")
 if(PRISMS_PF_WITH_SUNDIALS)
   if(DEAL_II_WITH_SUNDIALS)
@@ -171,6 +185,12 @@ deal_ii_initialize_cached_variables()
 
 # Caliper
 set(PRISMS_PF_WITH_CALIPER OFF CACHE BOOL "Whether the user wants to compile PRISMS-PF with the profiling code Caliper, or not.")
+if(PRISMS_PF_AUTODETECTION)
+  find_package(CALIPER QUIET)
+  if(${CALIPER_FOUND})
+    set(PRISMS_PF_WITH_CALIPER ON)
+  endif()
+endif()
 message(STATUS "Using PRISMS_PF_WITH_CALIPER = '${PRISMS_PF_WITH_CALIPER}'")
 if(PRISMS_PF_WITH_CALIPER)
   find_package(CALIPER)
@@ -201,6 +221,9 @@ project(prisms_pf CXX)
 # Grab flag for additional optimizations
 set(ADDITIONAL_OPTIMIZATIONS OFF CACHE BOOL "Whether the user wants to enable additional optimizations, or not.")
 message(STATUS "ADDITIONAL_OPTIMIZATIONS = '${ADDITIONAL_OPTIMIZATIONS}'")
+if(ADDITIONAL_OPTIMIZATIONS)
+  message(WARNING "ADDITIONAL_OPTIMIZATIONS is enabled. Procede with caution.")
+endif()
 
 # Generate config.h to enable and disable certain features within the source code.
 set(PRISMS_PF_SOURCE_DIR ${CMAKE_SOURCE_DIR})
@@ -357,6 +380,13 @@ endif()
 
 # Write config to file
 include(${CMAKE_SOURCE_DIR}/cmake/write_config.cmake)
+
+# Generate configuration file for applications
+configure_file(
+  ${CMAKE_SOURCE_DIR}/cmake/prisms_pf_config.cmake.in
+  ${CMAKE_BINARY_DIR}/cmake/prisms_pf_config.cmake
+  @ONLY
+)
 
 # Print the config
 file(READ ${CMAKE_SOURCE_DIR}/summary.log PRISMS_PF_SUMMARY)
