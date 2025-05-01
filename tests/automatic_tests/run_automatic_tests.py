@@ -240,6 +240,11 @@ now = datetime.datetime.now()
 # List of applications
 applicationList = [
     "allen_cahn_explicit",
+    "allen_cahn_implicit",
+    "cahn_hilliard_explicit",
+    "heat_equation_steady_state",
+    "mechanics",
+    "precipitate_explicit",
 ]
 getNewGoldStandardList = [
     False,
