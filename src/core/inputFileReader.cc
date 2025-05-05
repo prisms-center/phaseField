@@ -5,6 +5,7 @@
 #include <core/inputFileReader.h>
 #include <core/refinement/RefinementCriterion.h>
 #include <fstream>
+#include <iostream>
 
 inputFileReader::inputFileReader(const std::string    &input_file_name,
                                  const AttributesList &_var_attributes,

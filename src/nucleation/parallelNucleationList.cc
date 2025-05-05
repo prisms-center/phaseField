@@ -1,6 +1,7 @@
 #include <deal.II/base/mpi.h>
 #include <deal.II/base/utilities.h>
 
+#include <iostream>
 #include <nucleation/nucleus.h>
 #include <nucleation/parallelNucleationList.h>
 

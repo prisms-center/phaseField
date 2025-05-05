@@ -3,6 +3,7 @@
 
 #include <core/exceptions.h>
 #include <core/userInputParameters.h>
+#include <iostream>
 
 template <int dim>
 userInputParameters<dim>::userInputParameters(inputFileReader          &input_file_reader,
