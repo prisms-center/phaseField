@@ -49,8 +49,12 @@ triangulationHandler<dim>::triangulationHandler(
     }
 
   has_multigrid = mg_info.has_multigrid();
-  min_level     = mg_info.get_mg_min_level();
-  max_level     = mg_info.get_mg_max_level();
+  if (!has_multigrid)
+    {
+      return;
+    }
+  min_level = mg_info.get_mg_min_level();
+  max_level = mg_info.get_mg_max_level();
 }
 
 template <unsigned int dim>
