@@ -1253,7 +1253,7 @@ userInputParameters<dim>::construct_user_constant(
             }
 
           const std::string elastic_const_symmetry = model_constants_type_strings.at(0);
-          dealii::Tensor<2, 2 * dim - 1 + dim / 3> temp =
+          dealii::Tensor<2, 2 *dim - 1 + dim / 3> temp =
             get_Cij_tensor(temp_elastic_constants, elastic_const_symmetry);
           return temp;
         }
