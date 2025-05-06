@@ -17,34 +17,6 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Convert given scalar to vectorized array.
- */
-template <typename number, typename T>
-constexpr auto
-constV(T value)
-{
-  return dealii::make_vectorized_array<number>(static_cast<number>(value));
-}
-
-/**
- * \brief Convert given vector to a tensor of vectorized arrays.
- */
-template <unsigned int dim, typename number>
-constexpr auto
-constT(const std::array<number, dim> &vector)
-{
-  dealii::Tensor<1, dim, dealii::VectorizedArray<number>> tensor;
-
-  // Populate the Tensor with vectorized arrays
-  for (int i = 0; i < dim; ++i)
-    {
-      tensor[i] = dealii::make_vectorized_array<number>(vector[i]);
-    }
-
-  return tensor;
-}
-
-/**
  * \brief Voigt notation index range
  */
 template <unsigned int dim>

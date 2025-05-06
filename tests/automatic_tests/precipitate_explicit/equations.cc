@@ -117,9 +117,9 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
 
   // Compute one of the stress terms in the order parameter chemical potential,
   // nDependentMisfitACp = C*(E-E0)*(E0_p*Hn)
-  scalarValue nDependentMisfitAC1 = constV<number>(0.0);
-  scalarValue nDependentMisfitAC2 = constV<number>(0.0);
-  scalarValue nDependentMisfitAC3 = constV<number>(0.0);
+  scalarValue nDependentMisfitAC1 = 0.0;
+  scalarValue nDependentMisfitAC2 = 0.0;
+  scalarValue nDependentMisfitAC3 = 0.0;
   for (unsigned int i = 0; i < dim; i++)
     {
       for (unsigned int j = 0; j < dim; j++)
@@ -136,9 +136,9 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
 
   // Compute the other stress term in the order parameter chemical potential,
   // heterMechACp = 0.5*Hn*(C_beta-C_alpha)*(E-E0)*(E-E0)
-  scalarValue heterMechAC1 = constV<number>(0.0);
-  scalarValue heterMechAC2 = constV<number>(0.0);
-  scalarValue heterMechAC3 = constV<number>(0.0);
+  scalarValue heterMechAC1 = 0.0;
+  scalarValue heterMechAC2 = 0.0;
+  scalarValue heterMechAC3 = 0.0;
   if (n_dependent_stiffness == true)
     {
       vectorGrad stress_2;
@@ -306,7 +306,7 @@ customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
 
   scalarValue f_chem = (1.0 - sum_hV) * faV + sum_hV * fbV;
 
-  scalarValue f_grad = constV<number>(0.0);
+  scalarValue f_grad = 0.0;
   for (unsigned int i = 0; i < dim; i++)
     {
       for (unsigned int j = 0; j < dim; j++)
@@ -332,7 +332,7 @@ customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
       compute_stress<dim, scalarValue>(CIJ_Mg, strain, stress);
     }
 
-  scalarValue f_el = constV<number>(0.0);
+  scalarValue f_el = 0.0;
   for (unsigned int i = 0; i < dim; i++)
     {
       for (unsigned int j = 0; j < dim; j++)
