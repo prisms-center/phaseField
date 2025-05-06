@@ -39,12 +39,11 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
     {
       vectorGrad ux = variable_list.get_vector_symmetric_gradient(0);
 
-      scalarValue dist_from_inclusion = constV<number>(0.0);
+      scalarValue dist_from_inclusion = 0.0;
       scalarValue inclusion_radius    = 10.0;
       for (unsigned int i = 0; i < dim; i++)
         {
-          dist_from_inclusion += (q_point_loc[i] - constV<number>(0.0)) *
-                                 (q_point_loc[i] - constV<number>(0.0));
+          dist_from_inclusion += (q_point_loc[i] - 0.0) * (q_point_loc[i] - 0.0);
         }
       dist_from_inclusion = std::sqrt(dist_from_inclusion);
 
