@@ -89,9 +89,9 @@ customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
   scalarValue c  = variable_list.get_scalar_value(0);
   scalarGrad  cx = variable_list.get_scalar_gradient(0);
 
-  scalarValue f_tot  = constV<number>(0.0);
+  scalarValue f_tot  = 0.0;
   scalarValue f_chem = c * c * c * c - 2.0 * c * c * c + c * c;
-  scalarValue f_grad = constV<number>(0.0);
+  scalarValue f_grad = 0.0;
 
   for (unsigned int i = 0; i < dim; i++)
     {
