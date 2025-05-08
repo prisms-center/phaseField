@@ -9,6 +9,7 @@
 #include <prismspf/config.h>
 
 #include <cmath>
+#include <numbers>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -24,8 +25,8 @@ customInitialCondition<dim>::set_initial_condition(
 {
   const double center[3] = {10.0, 12.0, 0.0};
   const double dx        = user_inputs.spatial_discretization.size[0] /
-                    ((double) user_inputs.spatial_discretization.subdivisions[0] /
-                     std::pow(2.0, user_inputs.spatial_discretization.global_refinement));
+                    double(user_inputs.spatial_discretization.subdivisions[0]) /
+                    std::pow(2.0, user_inputs.spatial_discretization.global_refinement);
   const double clength =
     user_inputs.user_constants.get_model_constant_double("cracklength");
 
@@ -41,8 +42,8 @@ customInitialCondition<dim>::set_initial_condition(
 
   if (index == 0)
     {
-      if ((std::abs(point[1] - user_inputs.spatial_discretization.size[1] / 2.0 +
-                    0.5 * dx) < dx) &&
+      if ((std::abs(point[1] - (user_inputs.spatial_discretization.size[1] / 2.0) +
+                    (0.5 * dx)) < dx) &&
           (point[0] < clength))
         {
           scalar_value = 1.0;
@@ -64,7 +65,50 @@ customNonuniformDirichlet<dim, number>::set_nonuniform_dirichlet(
   [[maybe_unused]] number                         &scalar_value,
   [[maybe_unused]] number                         &vector_component_value,
   [[maybe_unused]] const userInputParameters<dim> &user_inputs) const
-{}
+{
+  if (index == 1)
+    {
+      const number time = user_inputs.temporal_discretization.get_current_time();
+
+      constexpr static unsigned int CIJ_tensor_size = (2 * dim) - 1 + (dim / 3);
+
+      const number dx =
+        user_inputs.spatial_discretization.size[0] /
+        number(user_inputs.spatial_discretization.subdivisions[0]) /
+        std::pow(2.0, user_inputs.spatial_discretization.global_refinement);
+
+      const number clength =
+        user_inputs.user_constants.get_model_constant_double("cracklength");
+      const dealii::Tensor<2, CIJ_tensor_size, number> CIJ_base =
+        user_inputs.user_constants.get_model_constant_elasticity_tensor("CIJ_base");
+      const number KI_nom =
+        user_inputs.user_constants.get_model_constant_double("KI_nom");
+      const number vel_nom =
+        user_inputs.user_constants.get_model_constant_double("vel_nom");
+
+      number x = (point[0] - (vel_nom * time) - clength);
+      number y =
+        point[1] - (user_inputs.spatial_discretization.size[1] / 2.0) + (dx * 0.5);
+      number r      = std::sqrt((x * x) + (y * y));
+      number theta  = std::atan2(y, x);
+      number mu     = CIJ_base[dim][dim];
+      number lambda = CIJ_base[0][0] - (2.0 * mu);
+      number nu     = lambda / 2.0 / (lambda + mu);
+      number kappa  = 3.0 - (4.0 * nu);
+
+      vector_component_value = 0.5 * (KI_nom / mu) *
+                               std::sqrt(0.5 * r / std::numbers::pi) *
+                               (kappa - std::cos(theta));
+      if (component == 0)
+        {
+          vector_component_value *= std::cos(0.5 * theta);
+        }
+      if (component == 1)
+        {
+          vector_component_value *= std::sin(0.5 * theta);
+        }
+    }
+}
 
 template class customInitialCondition<1>;
 template class customInitialCondition<2>;

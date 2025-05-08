@@ -72,6 +72,27 @@ public:
                       const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers,
                       unsigned int                                        level);
 
+  /**
+   * \brief Update time-dependent constraints.
+   *
+   * For now this only updates the non-uniform dirichlet constraints.
+   */
+  void
+  update_time_dependent_constraints(
+    const dealii::Mapping<dim>                         &mapping,
+    const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers);
+
+  /**
+   * \brief Update time-dependent multigrid constraints for a given level.
+   *
+   * For now this only updates the non-uniform dirichlet constraints.
+   */
+  void
+  update_time_dependent_mg_constraints(
+    const dealii::Mapping<dim>                         &mapping,
+    const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers,
+    unsigned int                                        level);
+
 private:
   /**
    * \brief Make the constraint for a single index.

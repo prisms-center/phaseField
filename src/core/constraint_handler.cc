@@ -159,6 +159,45 @@ constraintHandler<dim>::make_mg_constraints(
 
 template <unsigned int dim>
 void
+constraintHandler<dim>::update_time_dependent_constraints(
+  const dealii::Mapping<dim>                         &mapping,
+  const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers)
+{
+  for (const auto &[index, variable] : *user_inputs->var_attributes)
+    {
+      // TODO (landinjm): This should be a special function that only updates the
+      // time-dependent constraints.
+      make_constraint(mapping, *dof_handlers.at(index), index);
+    }
+}
+
+template <unsigned int dim>
+void
+constraintHandler<dim>::update_time_dependent_mg_constraints(
+  const dealii::Mapping<dim>                         &mapping,
+  const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers,
+  unsigned int                                        level)
+{
+  Assert(has_multigrid, dealii::ExcNotInitialized());
+
+  for (unsigned int index = 0; index < dof_handlers.size(); index++)
+    {
+      // TODO (landinjm): Fix this so we can actually apply constraints to the LHS fields
+      // baseded on whether it is normal or change. For now, I know this will have no
+      // effect on the precipitate app, so I'll leave it.
+
+      // TODO (landinjm): This should be a special function that only updates the
+      // time-dependent constraints.
+      make_mg_constraint(mapping,
+                         *dof_handlers[index],
+                         index,
+                         level,
+                         dependencyType::CHANGE);
+    }
+}
+
+template <unsigned int dim>
+void
 constraintHandler<dim>::make_constraint(const dealii::Mapping<dim>    &mapping,
                                         const dealii::DoFHandler<dim> &dof_handler,
                                         unsigned int                   index)

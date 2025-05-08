@@ -25,7 +25,6 @@ set boundary condition for Gx = NATURAL
 set boundary condition for dndt = NATURAL
 set boundary condition for u, x component = NON_UNIFORM_DIRICHLET
 set boundary condition for u, y component = NON_UNIFORM_DIRICHLET 
-set boundary condition for u, z component = NON_UNIFORM_DIRICHLET
 
 subsection linear solver parameters: u
     set tolerance type = ABSOLUTE_RESIDUAL
