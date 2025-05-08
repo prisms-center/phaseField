@@ -23,6 +23,7 @@ subsection linear solver parameters: u
     set tolerance type = ABSOLUTE_RESIDUAL
     set tolerance value = 1e-10
     set max iterations = 1000
+    set preconditioner type = NONE
 end
 
 # =================================================================================
@@ -48,5 +49,5 @@ set boundary condition for u, z component = NON_UNIFORM_DIRICHLET
 
 set Model constant CIJ = (22.5,0.3), isotropic elastic constants
 set Model constant incRadius = 10.0, DOUBLE
-set Model constant poisson = 0.3, double
+set Model constant poisson = 0.3, DOUBLE
 set Model constant center = (50.0,50.0,50.0), TENSOR

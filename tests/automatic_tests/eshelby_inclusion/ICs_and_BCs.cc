@@ -54,9 +54,11 @@ customNonuniformDirichlet<dim, number>::set_nonuniform_dirichlet(
   double dist_from_inclusion = 0.0;
   for (unsigned int i = 0; i < dim; i++)
     {
-      dist_from_inclusion += (point[i] - center[i]) *
-                             (point[i] - center[i]);
-    
+      //potential dist rewrite
+      dist_from_inclusion = std::sqrt((point[0] - center[0]) * (point[0] - center[0]) +
+                                      (point[1] - center[1]) * (point[1] - center[1]) +
+                                      (point[2] - center[2]) * (point[2] - center[2]));
+
       double G = 0.0;
       for (unsigned int j = 0; j < dim; j ++)
         {
