@@ -72,7 +72,77 @@ public:
                       const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers,
                       unsigned int                                        level);
 
+  /**
+   * \brief Update time-dependent constraints.
+   *
+   * For now this only updates the non-uniform dirichlet constraints.
+   */
+  void
+  update_time_dependent_constraints(
+    const dealii::Mapping<dim>                         &mapping,
+    const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers);
+
+  /**
+   * \brief Update time-dependent multigrid constraints for a given level.
+   *
+   * For now this only updates the non-uniform dirichlet constraints.
+   */
+  void
+  update_time_dependent_mg_constraints(
+    const dealii::Mapping<dim>                         &mapping,
+    const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers,
+    unsigned int                                        level);
+
 private:
+  /**
+   * \brief Create a component mask.
+   */
+  [[nodiscard]] dealii::ComponentMask
+  create_component_mask(unsigned int component, bool is_vector_field) const;
+
+  /**
+   * \brief Apply natural constraints.
+   */
+  void
+  apply_natural_constraints() const;
+
+  /**
+   * \brief Apply dirichlet constraints.
+   */
+  template <typename number>
+  void
+  apply_dirichlet_constraints(const dealii::Mapping<dim>        &mapping,
+                              const dealii::DoFHandler<dim>     &dof_handler,
+                              const unsigned int                &boundary_id,
+                              const bool                        &is_vector_field,
+                              const number                      &value,
+                              dealii::AffineConstraints<number> &constraints,
+                              const dealii::ComponentMask       &mask) const;
+
+  /**
+   * \brief Apply periodic constraints.
+   */
+  template <typename number>
+  void
+  apply_periodic_constraints(const dealii::DoFHandler<dim>     &dof_handler,
+                             const unsigned int                &boundary_id,
+                             dealii::AffineConstraints<number> &constraints,
+                             const dealii::ComponentMask       &mask) const;
+
+  /**
+   * \brief Apply nonuniform dirichlet constraints.
+   */
+  template <typename number>
+  void
+  apply_nonuniform_dirichlet_constraints(const dealii::Mapping<dim>    &mapping,
+                                         const dealii::DoFHandler<dim> &dof_handler,
+                                         const unsigned int            &boundary_id,
+                                         const unsigned int            &index,
+                                         const bool                    &is_vector_field,
+                                         dealii::AffineConstraints<number> &constraints,
+                                         const dealii::ComponentMask       &mask,
+                                         bool is_change_term = false) const;
+
   /**
    * \brief Make the constraint for a single index.
    */
@@ -98,16 +168,8 @@ private:
   void
   set_pinned_point(const dealii::DoFHandler<dim>     &dof_handler,
                    dealii::AffineConstraints<number> &constraints,
-                   unsigned int                       index) const;
-
-  /**
-   * \brief Set the dirichlet constraint for the pinned point.
-   */
-  template <typename number>
-  void
-  set_mg_pinned_point(const dealii::DoFHandler<dim>     &dof_handler,
-                      dealii::AffineConstraints<number> &constraints,
-                      unsigned int                       index) const;
+                   unsigned int                       index,
+                   bool                               is_change_term = false) const;
 
   /**
    * \brief Clear, reinitialize and make hanging node constraints
@@ -129,7 +191,8 @@ private:
                     boundaryCondition::type            boundary_type,
                     unsigned int                       boundary_id,
                     unsigned int                       component,
-                    unsigned int                       index) const;
+                    unsigned int                       index,
+                    bool                               is_change_term = false) const;
 
   /**
    * \brief Apply multigrid constraints for common boundary conditions. The only

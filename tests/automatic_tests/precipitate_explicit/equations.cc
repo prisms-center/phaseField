@@ -105,8 +105,8 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
   vectorGrad stress;
   if (n_dependent_stiffness == true)
     {
-      scalarValue                                     sum_hV = h1V + h2V + h3V;
-      dealii::Tensor<2, CIJ_tensor_size, scalarValue> CIJ_combined =
+      scalarValue                                            sum_hV = h1V + h2V + h3V;
+      dealii::Tensor<2, voigt_tensor_size<dim>, scalarValue> CIJ_combined =
         CIJ_Mg * (1.0 - sum_hV) + CIJ_Beta * sum_hV;
       compute_stress<dim, scalarValue>(CIJ_combined, strain, stress);
     }
@@ -226,8 +226,8 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
       vectorGrad stress;
       if (n_dependent_stiffness == true)
         {
-          scalarValue                                     sum_hV = h1V + h2V + h3V;
-          dealii::Tensor<2, CIJ_tensor_size, scalarValue> CIJ_combined =
+          scalarValue                                            sum_hV = h1V + h2V + h3V;
+          dealii::Tensor<2, voigt_tensor_size<dim>, scalarValue> CIJ_combined =
             CIJ_Mg * (1.0 - sum_hV) + CIJ_Beta * sum_hV;
           compute_stress<dim, scalarValue>(CIJ_combined, strain, stress);
         }
@@ -266,8 +266,8 @@ customPDE<dim, degree, number>::compute_nonexplicit_LHS(
       vectorGrad stress;
       if (n_dependent_stiffness == true)
         {
-          scalarValue                                     sum_hV = h1V + h2V + h3V;
-          dealii::Tensor<2, CIJ_tensor_size, scalarValue> CIJ_combined =
+          scalarValue                                            sum_hV = h1V + h2V + h3V;
+          dealii::Tensor<2, voigt_tensor_size<dim>, scalarValue> CIJ_combined =
             CIJ_Mg * (1.0 - sum_hV) + CIJ_Beta * sum_hV;
           compute_stress<dim, scalarValue>(CIJ_combined, strain, stress);
         }
@@ -323,7 +323,7 @@ customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
   vectorGrad stress;
   if (n_dependent_stiffness == true)
     {
-      dealii::Tensor<2, CIJ_tensor_size, scalarValue> CIJ_combined =
+      dealii::Tensor<2, voigt_tensor_size<dim>, scalarValue> CIJ_combined =
         CIJ_Mg * (1.0 - sum_hV) + CIJ_Beta * sum_hV;
       compute_stress<dim, scalarValue>(CIJ_combined, strain, stress);
     }

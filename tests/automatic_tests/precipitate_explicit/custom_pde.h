@@ -8,6 +8,8 @@
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#include <prismspf/utilities/utilities.h>
+
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -74,8 +76,6 @@ private:
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
     const override;
 
-  constexpr static unsigned int CIJ_tensor_size = (2 * dim) - 1 + (dim / 3);
-
   number McV  = this->get_user_inputs().user_constants.get_model_constant_double("McV");
   number Mn1V = this->get_user_inputs().user_constants.get_model_constant_double("Mn1V");
   number Mn2V = this->get_user_inputs().user_constants.get_model_constant_double("Mn2V");
@@ -111,9 +111,9 @@ private:
   number B1 = this->get_user_inputs().user_constants.get_model_constant_double("B1");
   number B0 = this->get_user_inputs().user_constants.get_model_constant_double("B0");
 
-  dealii::Tensor<2, CIJ_tensor_size, number> CIJ_Mg =
+  dealii::Tensor<2, voigt_tensor_size<dim>, number> CIJ_Mg =
     this->get_user_inputs().user_constants.get_model_constant_elasticity_tensor("CIJ_Mg");
-  dealii::Tensor<2, CIJ_tensor_size, number> CIJ_Beta =
+  dealii::Tensor<2, voigt_tensor_size<dim>, number> CIJ_Beta =
     this->get_user_inputs().user_constants.get_model_constant_elasticity_tensor(
       "CIJ_Beta");
 };

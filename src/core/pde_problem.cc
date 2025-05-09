@@ -296,6 +296,25 @@ PDEProblem<dim, degree>::solve_increment()
 {
   timer::serial_timer().enter_subsection("Solve Increment");
 
+  // Update the time-dependent constraints
+  if (!user_inputs->boundary_parameters.time_dependent_BC_list.empty())
+    {
+      constraint_handler
+        .update_time_dependent_constraints(mapping, dof_handler.get_dof_handlers());
+      if (mg_info.has_multigrid())
+        {
+          const unsigned int min_level = mg_info.get_mg_min_level();
+          const unsigned int max_level = mg_info.get_mg_max_level();
+          for (unsigned int level = min_level; level <= max_level; ++level)
+            {
+              constraint_handler.update_time_dependent_mg_constraints(
+                mapping,
+                dof_handler.get_mg_dof_handlers(level),
+                level);
+            }
+        }
+    }
+
   // Update ghosts
   solution_handler.update_ghosts();
 
