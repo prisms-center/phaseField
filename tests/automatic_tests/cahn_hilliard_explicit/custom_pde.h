@@ -42,6 +42,16 @@ public:
 
 private:
   /**
+   * \brief User-implemented class for the initial conditions.
+   */
+  void
+  set_initial_condition(const unsigned int       &index,
+                        const unsigned int       &component,
+                        const dealii::Point<dim> &point,
+                        double                   &scalar_value,
+                        double                   &vector_component_value) const override;
+
+  /**
    * \brief User-implemented class for the RHS of explicit equations.
    */
   void

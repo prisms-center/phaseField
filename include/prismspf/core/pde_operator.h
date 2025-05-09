@@ -64,6 +64,16 @@ public:
     const dealii::Point<dim, size_type>    &q_point_loc) const = 0;
 
   /**
+   * \brief User-implemented class for the setting initial conditions.
+   */
+  virtual void
+  set_initial_condition(const unsigned int       &index,
+                        const unsigned int       &component,
+                        const dealii::Point<dim> &point,
+                        double                   &scalar_value,
+                        double                   &vector_component_value) const = 0;
+
+  /**
    * \brief Get the user inputs (constant reference).
    */
   [[nodiscard]] const userInputParameters<dim> &

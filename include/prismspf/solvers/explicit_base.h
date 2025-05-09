@@ -22,7 +22,7 @@ class constraintHandler;
 template <unsigned int dim>
 class dofHandler;
 
-template <unsigned int dim>
+template <unsigned int dim, unsigned int degree>
 class initialCondition;
 
 template <unsigned int dim, unsigned int degree, typename number>
